@@ -1,8 +1,6 @@
 # React Typescript Boilerplate
 
-## 架构
-
-### 技术栈
+## 技术栈
 
 - [typescript](https://www.tslang.cn/docs/home.html)
 - [react](https://reactjs.org/tutorial/tutorial.html)
@@ -66,6 +64,6 @@ CSS类名重复问题一直没有一个标准解决方案，却又是大型项�
 
 主要用作公共组件和工具库的测试，确保添加新功能时不会对原本模块的影响。
 
-### 已知问题
+## 已知问题
 
 1. 在`styled-components`中使用泛型后，语法高亮失效，这是插件的[问题](https://github.com/styled-components/vscode-styled-components/issues/114)
