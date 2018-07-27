@@ -1,5 +1,29 @@
 # React Typescript Boilerplate
 
+## 使用方法
+
+1. 克隆仓库
+
+```shell
+git clone http://dev.cr-health.com:380/huangwenhao/react-typescript-boilerplate.git
+```
+
+2. 安装依赖
+
+```shell
+npm install
+```
+
+3. 运行项目
+
+```shell
+# mock模式（区别请看FAQ）
+npm run mock
+
+# 正常模式
+npm run start
+```
+
 ## 技术栈
 
 - [typescript](https://www.tslang.cn/docs/home.html)
@@ -64,28 +88,35 @@ Jest作为React配套测试框架，主要有以下特点：
 
 主要用作公共组件和工具库的测试，确保添加新功能时不会对原本模块的影响。
 
-## 目录结构
+## 项目结构
 
 ```shell
 ├── .vscode                             // vscode配置
 ├── config-overrides                    // react-app-rewired配置
 ├── public                              // 静态页面
 ├── src                                 // 源代码
-    ├── assets                          // 静态资源
-    ├── components                      // 通用组件
+    ├── assets                          // 静态资源 [说明1]
+    ├── components                      // 通用组件 [说明2]
+        ├── Base.tsx                    // 基础类 [说明3]
+        ├── RouterView.tsx              // 路由组件封装 [说明4]
     ├── configs                         // 配置文件
+        ├── mocks                       // 模拟数据配置
+        ├── routes.ts                   // 路由配置
     ├── libs                            // 函数库
+        ├── http                        // http请求客户端
+        ├── mock.ts                     // mock装饰器
+        ├── to.ts                       // await异常转换器
     ├── models                          // 模型定义
-    ├── services                        // 服务类
+    ├── services                        // 服务类 [说明5]
+        ├── BaseApiService.ts           // 基础Api服务类 [说明6]
     ├── stores                          // 全局状态
+    ├── styles                          // 全局样式
     ├── types                           // typescript声明
-    ├── views                           // 页面组件
+    ├── views                           // 页面组件 [说明7]
     ├── App.test.tsx                    // 根组件测试文件
     ├── App.tsx                         // 根组件
     ├── index.tsx                       // 入口文件
     ├── registerServiceWorker.ts        // PWA服务
-    ├── routes.ts                       // 路由配置
-    ├── styles.ts                       // 全局样式
 ├── .editorconfig                       // 通用编辑器配置
 ├── .env                                // 环境变量
 ├── .env.development                    // 环境变量（开发环境）
@@ -98,6 +129,66 @@ Jest作为React配套测试框架，主要有以下特点：
 ├── tsconfig.json                       // typescript配置
 └── tslint.json                         // tslint配置
 ```
+
+**[说明1]** `assets`用于存放全局使用的静态资源，如图片、字体等，对于局部使用的图片资源，请放置在`views`中对应的页面组件`images`目录内。
+
+**[说明2]** `components`用于存放全局使用的组件，对于局部使用的组件，请放置在`views`中对应的页面组件`components`目录内。
+
+**[说明3]** `Base.tsx`为基础类，定义`className`属性和常用方法，请务必确保所有自定义的组件都继承这个类，并实现`className`传入到组件节点上。
+
+**[说明4]** `RouterView.tsx`
+
+## FAQ
+
+* Q: 什么是`mock模式`？
+
+  A: 通过`npm run mock`运行mock模式，项目中所有`@Mock(fn)`修饰的函数，都会被替换成`fn`执行。其中一个应用就是用来模拟接口数据，当后端接口还没来得及写，或者出了问题在花时间调试，这时，可以使用模拟接口，保证前端可以不受影响继续开发。
+
+  如果需要在正常模式临时开启mock模式，请使用`@Mock(fn, true)`，即传入第二个参数`true`，无需重启项目。
+
+* Q: 路由跳转了，为什么但是没有渲染对应的子组件，或者渲染的是错误的子组件？
+
+  A: 前者可能是父路由组件没有放置`<RouterView routes={routes}/>`。后者可能是路由匹配优先级问题，例如有如下路由配置：
+
+  ```json
+  const routes = [
+    {
+      path: '/',
+      component: ViewHome,
+    },
+    {
+      path: '/login',
+      component: ViewLogin,
+    }
+  ]
+  ```
+
+  例如当前的pathname是`/login`，根据路由配置的顺序，会有限匹配到`/`即`ViewHome`，如果希望匹配到`/login`，请将`/login`对应的配置移到前面。
+
+* Q: `mobx`状态不会响应？
+
+  A: 是不是忘加`@action`或组件上少了`@observer`
+
+* Q: `styled-components`修饰一个自定义组件，样式没有效果？
+
+  A: `styled-components`原理是随机生成一个类名，并把类名应用到组件上，所以请确保该组件是支持传入`className`属性的，本项目中推荐所有自定义组件继承`Base`类，并自行将`props`中的`className`传入到节点上。例如：
+
+  ```ts
+  class Button extends Base {            // 推荐直接继承Base类
+    render () {
+      const { className, children } = this.props
+      return (
+        <button className={className}>   // 必须将className传入到节点上
+          {children}
+        </button>
+      )
+    }
+  }
+
+  const StyledButton = styled(Button)`
+    blackround: blue;
+  `
+  ```
 
 ## 已知问题
 

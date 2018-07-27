@@ -1,7 +1,19 @@
 import * as React from 'react'
-import { Switch, Route } from 'react-router'
+import { Redirect, Route, RouteComponentProps as RouteProps, Switch } from 'react-router'
 
-import { RouteItem } from '../routes'
+export interface RouteComponentProps<P = {}> extends RouteProps<P> {
+  routes?: RouteItem[]
+}
+
+export interface RouteComponentClass<P> extends React.ComponentClass<RouteComponentProps<P>> {}
+
+export interface RouteItem {
+  path: string
+  exact?: boolean
+  component?: RouteComponentClass<any>
+  redirect?: string
+  routes?: RouteItem[]
+}
 
 export interface Props {
   switched?: boolean
@@ -27,7 +39,15 @@ export default class RouterView extends React.Component<Props, State> {
           <Route
             key={i}
             path={route.path}
-            render={(props) => <route.component {...props} routes={route.routes}/>}
+            exact={route.exact}
+            render={(props) => (
+                (route.redirect && route.path === props.location.pathname) ? (
+                  <Redirect to={route.redirect}/>
+                ) : route.component ? (
+                  <route.component {...props} routes={route.routes}/>
+                ) : null
+              )
+            }
           />
         ))}
       </Wrapper>

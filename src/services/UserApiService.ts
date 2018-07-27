@@ -1,0 +1,29 @@
+import mockUser from '../configs/mocks/user'
+import User from '../models/User'
+import BaseApiService from './BaseApiService'
+import { Mock } from '../libs/mock'
+
+export default class UserApiService extends BaseApiService {
+
+  @Mock(mockUser.listUser)
+  public listUser () {
+    return this.get(`/users`)
+  }
+
+  public getUser (id: string) {
+    return this.get(`/users/${id}`)
+  }
+
+  public addUser (user: Partial<User>) {
+    return this.post(`/users`, user)
+  }
+
+  public updateUser (id: string, user: Partial<User>) {
+    return this.put(`/users/${id}`, user)
+  }
+
+  public removeUser (id: string) {
+    return this.delete(`/users/${id}`)
+  }
+
+}

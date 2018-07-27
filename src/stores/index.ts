@@ -1,3 +1,3 @@
-import CounterStore from './CounterStore'
+import AppStore from './AppStore'
 
-export const counterStore = new CounterStore()
+export const appStore = new AppStore()

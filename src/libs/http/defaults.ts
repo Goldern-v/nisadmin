@@ -4,11 +4,6 @@ import apiConfig from '../../configs/api'
 import ResponseError from './ResponseError'
 
 /**
- * 登录页面路径
- */
-export const loginURL = '#/login'
-
-/**
  * axios配置
  */
 export const axiosConfig: AxiosRequestConfig = {
@@ -33,7 +28,7 @@ export function onRequestFulfilled (config: AxiosRequestConfig) {
   if (token) {
     config.headers.common[apiConfig.dynamicTokenKey] = token
   } else {
-    window.location.href = loginURL
+    window.location.href = apiConfig.loginURL
   }
 
   return config
@@ -61,7 +56,7 @@ export function onResponseFulfilled (response: AxiosResponse) {
       // Message.error('登录超时，请重新登录')
       localStorage.setItem('token', '')
 
-      window.location.href = loginURL
+      window.location.href = apiConfig.loginURL
       break
 
     default:
