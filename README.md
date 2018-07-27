@@ -1,6 +1,6 @@
 # React Typescript Boilerplate
 
-## 使用方法
+## 一、使用方法
 
 1. 克隆仓库
 
@@ -24,7 +24,7 @@ npm run mock
 npm run start
 ```
 
-## 技术栈
+## 二、技术栈
 
 - [typescript](https://www.tslang.cn/docs/home.html)
 - [react](https://reactjs.org/tutorial/tutorial.html)
@@ -88,7 +88,7 @@ Jest作为React配套测试框架，主要有以下特点：
 
 主要用作公共组件和工具库的测试，确保添加新功能时不会对原本模块的影响。
 
-## 项目结构
+## 三、项目结构
 
 ```shell
 ├── .vscode                             // vscode配置
@@ -136,9 +136,15 @@ Jest作为React配套测试框架，主要有以下特点：
 
 **[说明3]** `Base.tsx`为基础类，定义`className`属性和常用方法，请务必确保所有自定义的组件都继承这个类，并实现`className`传入到组件节点上。
 
-**[说明4]** `RouterView.tsx`
+**[说明4]** `RouterView.tsx`封装了一个类似vue中的RouterView用法的组件，配合`routes.ts`中的配置使用。
 
-## FAQ
+**[说明5]** `services`用于存放服务类，目前更多的是`ApiService`，请看[说明6]。
+
+**[说明6]** `BaseApiService.ts`基础Api服务类，定义了http中的`get`、`post`、等方法和返回值的类型优化，所有的http请求请统一使用该类实现。
+
+**[说明7]** `views`存放页面组件，对于大型项目，推荐划分模块，并根据模块或页面细分`components`、`images`、`services`等目录。
+
+## 四、FAQ
 
 * Q: 什么是`mock模式`？
 
@@ -150,7 +156,7 @@ Jest作为React配套测试框架，主要有以下特点：
 
   A: 前者可能是父路由组件没有放置`<RouterView routes={routes}/>`。后者可能是路由匹配优先级问题，例如有如下路由配置：
 
-  ```json
+  ```js
   const routes = [
     {
       path: '/',
@@ -173,7 +179,7 @@ Jest作为React配套测试框架，主要有以下特点：
 
   A: `styled-components`原理是随机生成一个类名，并把类名应用到组件上，所以请确保该组件是支持传入`className`属性的，本项目中推荐所有自定义组件继承`Base`类，并自行将`props`中的`className`传入到节点上。例如：
 
-  ```ts
+  ```jsx
   class Button extends Base {            // 推荐直接继承Base类
     render () {
       const { className, children } = this.props
@@ -190,11 +196,11 @@ Jest作为React配套测试框架，主要有以下特点：
   `
   ```
 
-## 已知问题
+## 五、已知问题
 
 1. 在styled-components中使用泛型后，语法高亮失效，这是插件的[问题](https://github.com/styled-components/vscode-styled-components/issues/114)
 
-## 更多
+## 六、更多
 
 - [react / styled-components相关snippets](./SNIPPETS.md)
 
