@@ -2,10 +2,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { message, Spin, Table } from 'antd'
 
-import to from '../../libs/to'
 import User from '../../models/User'
 import { RouteComponentProps } from '../../components/RouterView'
 import { userApiService } from '../../services'
+import { to } from '../../libs/fns'
 
 export interface Props extends RouteComponentProps {}
 
