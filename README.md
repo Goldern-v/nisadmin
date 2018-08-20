@@ -24,6 +24,8 @@ npm run mock
 npm run start
 ```
 
+> mock模式下的用户名：admin，密码：123456
+
 ## 二、技术栈
 
 - [typescript](https://www.tslang.cn/docs/home.html)
