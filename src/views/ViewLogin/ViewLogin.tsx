@@ -40,7 +40,7 @@ export default class ViewLogin extends React.Component<Props, State> {
     this.setState({ loading: false })
 
     if (err) return message.error(err.message)
-      
+
     localStorage.setItem('token', token)
     appStore.updateUser(user)
 

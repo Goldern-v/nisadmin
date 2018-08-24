@@ -4,6 +4,4 @@ export interface Prop {
   className?: string
 }
 
-export default class Base<P, S> extends React.Component<Prop & P, S> {
-
-}
+export default class Base<P, S> extends React.Component<Prop & P, S> {}

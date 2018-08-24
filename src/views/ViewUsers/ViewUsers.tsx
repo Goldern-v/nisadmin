@@ -35,7 +35,7 @@ export default class ViewUsers extends React.Component<Props, State> {
     this.setState({ loading: true })
 
     const [err, { users }] = await to(userApiService.listUser())
-    
+
     this.setState({ loading: false })
 
     if (err) return message.error(err.message)

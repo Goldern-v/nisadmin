@@ -2,10 +2,10 @@ export type Fallible<T> = [null | Error, T]
 
 /**
  * 简化Promise返回值
- * 
+ *
  * 用类似callback参数的形式，代替try-catch来捕获异常
  * https://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/
- * 
+ *
  * 使用方法：
  * const [error, user] = await to(getUser('test'))
  * if (error) alert(error.message)
