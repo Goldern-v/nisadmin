@@ -1,11 +1,7 @@
 import axios from 'axios'
-import {
-  axiosConfig,
-  onRequestFulfilled,
-  onRequestRejected,
-  onResponseFulfilled,
-  onResponseRejected,
-} from './defaults'
+
+import axiosConfig from './config'
+import { onRequestFulfilled, onRequestRejected, onResponseFulfilled, onResponseRejected } from './interceptors'
 
 const http = axios.create(axiosConfig)
 

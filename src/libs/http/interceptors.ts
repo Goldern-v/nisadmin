@@ -4,18 +4,6 @@ import apiConfig from '../../configs/api'
 import ResponseError from './ResponseError'
 
 /**
- * axios配置
- */
-export const axiosConfig: AxiosRequestConfig = {
-  baseURL: apiConfig.baseURL,
-  // headers: {
-  //   common: {
-  //     [apiConfig.staticTokenKey]: apiConfig.staticTokenValue,
-  //   },
-  // },
-}
-
-/**
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {

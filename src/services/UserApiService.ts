@@ -1,7 +1,7 @@
 import mockUser from '../configs/mocks/user'
+import Mock from '../libs/mock'
 import User from '../models/User'
 import BaseApiService from './BaseApiService'
-import { Mock } from '../libs/mock'
 
 export default class UserApiService extends BaseApiService {
 
