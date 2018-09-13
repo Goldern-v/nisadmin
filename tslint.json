@@ -1,7 +1,6 @@
 {
   "defaultSeverity": "error",
   "extends": [
-    "@cr/cr-tslint-config",
     "tslint-eslint-rules"
   ],
   "rules": {
