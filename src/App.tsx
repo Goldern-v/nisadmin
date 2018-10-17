@@ -2,8 +2,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { HashRouter as Router } from 'react-router-dom'
 
-import RouterView from './components/RouterView'
-import routes from './configs/routes'
+import RouterView from '@/components/RouterView'
+import routes from '@/configs/routes'
 
 export interface Props {}
 

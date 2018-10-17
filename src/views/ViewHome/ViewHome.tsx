@@ -1,12 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Icon, Layout, Menu, Button } from 'antd'
+import { Button, Icon, Layout, Menu } from 'antd'
 import { Route } from 'react-router-dom'
 import { SelectParam } from 'antd/lib/menu'
 import { observer } from 'mobx-react'
 
-import RouterView, { RouteComponentProps } from '../../components/RouterView'
-import { appStore } from '../../stores'
+import RouterView, { RouteComponentProps } from '@/components/RouterView'
+import { appStore } from '@/stores'
 
 export interface Props extends RouteComponentProps {}
 

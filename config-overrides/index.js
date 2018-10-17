@@ -2,8 +2,10 @@ const rewireStyledComponents = require('react-app-rewire-styled-components')
 const rewireTypescript = require('react-app-rewire-typescript')
 const rewireTsJest = require('react-app-rewire-ts-jest')
 
-const rewireAntd = require('./rewire-antd')
 const tsOptions = require('./typescript-options')
+const rewireAntd = require('./rewire-antd')
+const rewireTsPaths = require('./rewire-ts-paths')
+const rewireTsJestPaths = require('./rewire-ts-jest-paths')
 
 module.exports = {
   webpack: (config, env) => {
@@ -16,10 +18,13 @@ module.exports = {
       config = rewireTypescript(config, env)
     }
 
+    config = rewireTsPaths(config, env)
+
     return config
   },
   jest: (config) => {
     config = rewireTsJest(config)
+    config = rewireTsJestPaths(config)
 
     return config
   }

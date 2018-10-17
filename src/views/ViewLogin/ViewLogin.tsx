@@ -2,10 +2,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { Button, Input, message, Spin } from 'antd'
 
-import { RouteComponentProps } from '../../components/RouterView'
-import { appStore } from '../../stores'
-import { authApiService } from '../../services'
-import { to } from '../../libs/fns'
+import { RouteComponentProps } from '@/components/RouterView'
+import { authApiService } from '@/services'
+import { to } from '@/libs/fns'
+import { appStore } from '@/stores'
 
 export interface Props extends RouteComponentProps {}
 

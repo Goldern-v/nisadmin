@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx'
 
-import User from '../models/User'
+import User from '@/models/User'
 
 export default class AppStore {
 
