@@ -3,6 +3,7 @@ import { Redirect, Route, RouteComponentProps as RouteProps, Switch } from 'reac
 
 export interface RouteComponentProps<P = {}> extends RouteProps<P> {
   routes?: RouteItem[]
+  payload?: any
 }
 
 export interface RouteComponentClass<P> extends React.ComponentClass<RouteComponentProps<P>> {}
@@ -13,6 +14,7 @@ export interface RouteItem {
   component?: RouteComponentClass<any>
   redirect?: string
   routes?: RouteItem[]
+  payload?: any
 }
 
 export interface Props {
@@ -44,7 +46,7 @@ export default class RouterView extends React.Component<Props, State> {
                 (route.redirect && route.path === props.location.pathname) ? (
                   <Redirect to={route.redirect}/>
                 ) : route.component ? (
-                  <route.component {...props} routes={route.routes}/>
+                  <route.component {...props} routes={route.routes} payload={route.payload}/>
                 ) : null
               )
             }
