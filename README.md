@@ -17,14 +17,9 @@ npm install
 3. 运行项目
 
 ```shell
-# mock模式（区别请看FAQ）
-npm run start:mock
-
 # 正常模式
 npm run start
 ```
-
-> mock模式下的用户名：admin，密码：123456
 
 ## 二、技术栈
 
@@ -44,7 +39,7 @@ tslint等同于eslint的作用，严格限制编码规范，也能在一定程�
 
 ### React
 
-[为什么选择React，而不是Vue？](./WHY_REACT.md)
+[为什么选择React，而不是Vue？](./docs/WHY_REACT.md)
 
 ### Mobx
 
@@ -102,11 +97,9 @@ Jest作为React配套测试框架，主要有以下特点：
         ├── Base.tsx                    // 基础类 [说明3]
         ├── RouterView.tsx              // 路由组件封装 [说明4]
     ├── configs                         // 配置文件
-        ├── mocks                       // 模拟数据配置
         ├── routes.ts                   // 路由配置
     ├── libs                            // 函数库
         ├── http                        // http请求客户端
-        ├── mock.ts                     // mock装饰器
         ├── to.ts                       // await异常转换器
     ├── models                          // 模型定义
     ├── services                        // 服务类 [说明5]
@@ -147,12 +140,6 @@ Jest作为React配套测试框架，主要有以下特点：
 **[说明7]** `views`存放页面组件，对于大型项目，推荐划分模块，并根据模块或页面细分`components`、`images`、`services`等目录。
 
 ## 四、FAQ
-
-* Q: 什么是`mock模式`？
-
-  A: 通过`npm run start:mock`运行mock模式，项目中所有`@Mock(fn)`修饰的函数，都会被替换成`fn`执行。其中一个应用就是用来模拟接口数据，当后端接口还没来得及写，或者出了问题在花时间调试，这时，可以使用模拟接口，保证前端可以不受影响继续开发。
-
-  如果需要在正常模式临时开启mock模式，请使用`@Mock(fn, true)`，即传入第二个参数`true`，无需重启项目。
 
 * Q: 路由跳转了，为什么但是没有渲染对应的子组件，或者渲染的是错误的子组件？
 
@@ -204,6 +191,6 @@ Jest作为React配套测试框架，主要有以下特点：
 
 ## 六、更多
 
-- [react / styled-components相关snippets](./SNIPPETS.md)
+- [react / styled-components相关snippets](./docs/SNIPPETS.md)
 
 - [推荐vscode插件（打开项目时会提示安装）](./.vscode/extensions.json)

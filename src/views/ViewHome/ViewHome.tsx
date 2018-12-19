@@ -20,14 +20,14 @@ export default class ViewHome extends React.Component<Props, State> {
 
   public static getDerivedStateFromProps (props: any) {
     return {
-      selectedMenu: props.location.pathname.split('/')[1],
+      selectedMenu: props.location.pathname.split('/')[1]
     }
   }
 
   private menus = [
     { key: 'users', icon: 'user', title: 'Users' },
     { key: 'videos', icon: 'video-camera', title: 'Videos' },
-    { key: 'tags', icon: 'tags-o', title: 'Tags' },
+    { key: 'tags', icon: 'tags-o', title: 'Tags' }
   ]
 
   public constructor (props: Props) {
@@ -39,7 +39,7 @@ export default class ViewHome extends React.Component<Props, State> {
 
     this.state = {
       collapsed: true,
-      selectedMenu: '',
+      selectedMenu: ''
     }
   }
 

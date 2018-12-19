@@ -6,7 +6,7 @@ import { RouteItem } from '../components/RouterView'
 const routes: RouteItem[] = [
   {
     path: '/login',
-    component: ViewLogin,
+    component: ViewLogin
   },
   {
     path: '/',
@@ -15,10 +15,10 @@ const routes: RouteItem[] = [
     routes: [
       {
         path: '/users',
-        component: ViewUsers,
-      },
-    ],
-  },
+        component: ViewUsers
+      }
+    ]
+  }
 ]
 
 export default routes

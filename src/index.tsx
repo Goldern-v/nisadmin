@@ -1,5 +1,3 @@
-import './styles/global'
-
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
@@ -8,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker'
 
 ReactDOM.render(
   <App />,
-  document.getElementById('root'),
+  document.getElementById('root')
 )
 
 registerServiceWorker()

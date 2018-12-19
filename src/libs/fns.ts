@@ -1,4 +1,4 @@
-export type Fallible<T> = [null | Error, T]
+import { Fallible } from './types'
 
 /**
  * 简化Promise返回值

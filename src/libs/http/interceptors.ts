@@ -1,23 +1,16 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import apiConfig from '../../configs/api'
+import commonConfig from '../../configs/common'
 import ResponseError from './ResponseError'
 
 /**
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {
-  if (isAuthURL(config.url!)) {
-    return config
-  }
+  if (isAuthURL(config.url!)) return config
 
   const token = localStorage.getItem('token')
-
-  if (token) {
-    config.headers.common[apiConfig.dynamicTokenKey] = token
-  } else {
-    window.location.href = apiConfig.loginURL
-  }
+  if (token) config.headers.common.token = token
 
   return config
 }
@@ -29,42 +22,54 @@ export function onRequestRejected (error: Error) {
   return Promise.reject(error)
 }
 
+enum StatusCode {
+  fail = 0,
+  success = 1,
+  unauthorized = 401,
+  forbidden = 403,
+  unknown = 500
+}
+
 /**
  * 响应成功拦截
  */
 export function onResponseFulfilled (response: AxiosResponse) {
-  const data = response.data
-  const { code, desc } = data
+  const { headers, data } = response
 
-  switch (code) {
-    case '300': // 请求参数错误、服务器错误等
-      return Promise.reject(new ResponseError(desc, response))
-
-    case '301': // token无效
-      // Message.error('登录超时，请重新登录')
-      localStorage.setItem('token', '')
-
-      window.location.href = apiConfig.loginURL
-      break
-
-    default:
+  if (!headers['content-type'].includes('application/json')) {
+    return response
   }
 
-  return data.data
+  const { code, msg } = data
+
+  switch (code) {
+    case StatusCode.success:
+      return data.data
+
+    case StatusCode.fail: // 请求参数错误、服务器错误等
+      return Promise.reject(new ResponseError(msg, response))
+
+    case StatusCode.unauthorized:
+      localStorage.setItem('token', '')
+      window.location.href = commonConfig.loginURL
+      return Promise.reject(new ResponseError('请重新登录', response))
+
+    case StatusCode.forbidden:
+      window.location.href = location.pathname
+      return Promise.reject(new ResponseError('暂无权限', response))
+
+    default:
+      return Promise.reject(new ResponseError('未知错误', response))
+  }
 }
 
 /**
  * 响应失败拦截
  */
 export function onResponseRejected (error: Error) {
-  // Message.error('服务器开小差了')
-
-  return Promise.reject(error)
+  return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
 }
 
 function isAuthURL (url: string) {
-  return (
-    url.includes('login') ||
-    url.includes('logout')
-  )
+  return url.includes('login') || url.includes('logout')
 }

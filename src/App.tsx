@@ -1,15 +1,18 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { HashRouter as Router } from 'react-router-dom'
+import { hot } from 'react-hot-loader'
 
 import RouterView from '@/components/RouterView'
 import routes from '@/configs/routes'
+
+import GlobalStyle from './styles/global'
 
 export interface Props {}
 
 export interface State {}
 
-export default class App extends React.Component<Props, State> {
+export class App extends React.Component<Props, State> {
 
   public render () {
     return (
@@ -19,11 +22,14 @@ export default class App extends React.Component<Props, State> {
             <RouterView routes={routes}/>
           </Router>
         </Inner>
+        <GlobalStyle/>
       </Wrapper>
     )
   }
 
 }
+
+export default hot(module)(App)
 
 const Wrapper = styled.div`
   position: relative;

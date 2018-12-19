@@ -20,7 +20,7 @@ export default class ViewLogin extends React.Component<Props, State> {
   public state: State = {
     loading: false,
     username: '',
-    password: '',
+    password: ''
   }
 
   private onUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

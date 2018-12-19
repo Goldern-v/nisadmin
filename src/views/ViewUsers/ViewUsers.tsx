@@ -18,16 +18,16 @@ export default class ViewUsers extends React.Component<Props, State> {
 
   public state: State = {
     loading: false,
-    users: [],
+    users: []
   }
 
   private columns = [
     { title: '姓名', dataIndex: 'name' },
     { title: '年龄', dataIndex: 'age' },
-    { title: '电话', dataIndex: 'phone' },
+    { title: '电话', dataIndex: 'phone' }
   ]
 
-  public componentDidMount ()  {
+  public componentDidMount () {
     this.load()
   }
 
