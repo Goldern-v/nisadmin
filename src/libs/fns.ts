@@ -19,4 +19,6 @@ export function to<T = any> (promise: Promise<T>): Promise<Fallible<T>> {
 /**
  * 空函数
  */
-export function noop (...args: any[]) {/* */}
+export function noop (...args: any[]) {
+  /* */
+}

@@ -67,7 +67,9 @@ export function onResponseFulfilled (response: AxiosResponse) {
  * 响应失败拦截
  */
 export function onResponseRejected (error: Error) {
-  return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
+  return Promise.reject(
+    new ResponseError('服务器开小差了', (error as any).response)
+  )
 }
 
 function isAuthURL (url: string) {

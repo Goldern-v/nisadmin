@@ -3,7 +3,6 @@ import User from '@/models/User'
 import BaseApiService from './BaseApiService'
 
 export default class UserApiService extends BaseApiService {
-
   public listUser () {
     return this.get(`/users`)
   }
@@ -23,5 +22,4 @@ export default class UserApiService extends BaseApiService {
   public removeUser (id: string) {
     return this.delete(`/users/${id}`)
   }
-
 }

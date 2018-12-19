@@ -3,7 +3,6 @@ import { action, observable } from 'mobx'
 import User from '@/models/User'
 
 export default class AppStore {
-
   @observable public user: User | null = null
 
   @action
@@ -15,5 +14,4 @@ export default class AppStore {
   public async removeUser () {
     this.user = null
   }
-
 }

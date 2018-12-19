@@ -15,7 +15,6 @@ export interface State {
 }
 
 export default class ViewUsers extends React.Component<Props, State> {
-
   public state: State = {
     loading: false,
     users: []
@@ -48,12 +47,11 @@ export default class ViewUsers extends React.Component<Props, State> {
     return (
       <Wrapper>
         <Spin spinning={loading}>
-          <Table rowKey='id' columns={this.columns} dataSource={users}/>
+          <Table rowKey='id' columns={this.columns} dataSource={users} />
         </Spin>
       </Wrapper>
     )
   }
-
 }
 
 const Wrapper = styled.div`

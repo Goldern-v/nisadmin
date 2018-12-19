@@ -17,7 +17,6 @@ export interface State {
 
 @observer
 export default class ViewHome extends React.Component<Props, State> {
-
   public static getDerivedStateFromProps (props: any) {
     return {
       selectedMenu: props.location.pathname.split('/')[1]
@@ -64,21 +63,17 @@ export default class ViewHome extends React.Component<Props, State> {
 
     return (
       <Wrapper>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={this.onCollapse}
-        >
-          <Logo/>
+        <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+          <Logo />
           <Menu
             theme='dark'
             mode='inline'
             selectedKeys={[selectedMenu]}
             onSelect={this.onMenuSelect}
           >
-            {this.menus.map((menu) => (
+            {this.menus.map(menu => (
               <Menu.Item key={menu.key}>
-                <Icon type={menu.icon}/>
+                <Icon type={menu.icon} />
                 <span>{menu.title}</span>
               </Menu.Item>
             ))}
@@ -88,24 +83,23 @@ export default class ViewHome extends React.Component<Props, State> {
           <Header>
             <Title>
               <Route
-                children={(props) => (
-                  <span>{props.location.pathname}</span>
-                )}
+                children={props => <span>{props.location.pathname}</span>}
               />
             </Title>
             <Extra>
               您好，{appStore.user.name}&nbsp;
-              <Button size='small' onClick={this.onLogout}>退出</Button>
+              <Button size='small' onClick={this.onLogout}>
+                退出
+              </Button>
             </Extra>
           </Header>
           <Content>
-            <RouterView routes={routes}/>
+            <RouterView routes={routes} />
           </Content>
         </Layout>
       </Wrapper>
     )
   }
-
 }
 
 const Wrapper = styled(Layout)`

@@ -13,20 +13,18 @@ export interface Props {}
 export interface State {}
 
 export class App extends React.Component<Props, State> {
-
   public render () {
     return (
       <Wrapper>
         <Inner>
           <Router>
-            <RouterView routes={routes}/>
+            <RouterView routes={routes} />
           </Router>
         </Inner>
-        <GlobalStyle/>
+        <GlobalStyle />
       </Wrapper>
     )
   }
-
 }
 
 export default hot(module)(App)
@@ -35,7 +33,7 @@ const Wrapper = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-  background: #F4F8FB;
+  background: #f4f8fb;
 `
 
 const Inner = styled.div`
@@ -44,7 +42,8 @@ const Inner = styled.div`
   left: 50%;
   width: 600px;
   background: white;
-  box-shadow: 8px 14px 38px rgba(39,44,49,.06), 1px 3px 8px rgba(39,44,49,.03);
+  box-shadow: 8px 14px 38px rgba(39, 44, 49, 0.06),
+    1px 3px 8px rgba(39, 44, 49, 0.03);
   border-radius: 3px;
   transform: translate(-50%, -50%);
 `

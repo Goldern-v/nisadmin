@@ -1,9 +1,7 @@
 import { AxiosResponse } from 'axios'
 
 export default class ResponseError extends Error {
-
   public readonly response!: AxiosResponse
-
   public readonly message!: string
 
   public constructor (message: string, response: AxiosResponse) {
@@ -12,5 +10,4 @@ export default class ResponseError extends Error {
     this.response = response
     this.message = message
   }
-
 }

@@ -16,7 +16,6 @@ export interface State {
 }
 
 export default class ViewLogin extends React.Component<Props, State> {
-
   public state: State = {
     loading: false,
     username: '',
@@ -35,7 +34,9 @@ export default class ViewLogin extends React.Component<Props, State> {
     this.setState({ loading: true })
 
     const { username, password } = this.state
-    const [err, { token, user }] = await to(authApiService.login(username, password))
+    const [err, { token, user }] = await to(
+      authApiService.login(username, password)
+    )
 
     this.setState({ loading: false })
 
@@ -70,7 +71,11 @@ export default class ViewLogin extends React.Component<Props, State> {
               onChange={this.onPasswordChange}
               onPressEnter={this.onLogin}
             />
-            <StyledButton type='primary' disabled={loading} onClick={this.onLogin}>
+            <StyledButton
+              type='primary'
+              disabled={loading}
+              onClick={this.onLogin}
+            >
               {loading ? '登陆中...' : '登陆'}
             </StyledButton>
           </Spin>
@@ -84,7 +89,6 @@ export default class ViewLogin extends React.Component<Props, State> {
       </Wrapper>
     )
   }
-
 }
 
 const Wrapper = styled.div`

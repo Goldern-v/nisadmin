@@ -5,6 +5,9 @@
     "stylelint-config-styled-components"
   ],
   "rules": {
-    "block-no-empty": [true, {"severity": "warning"}]
+    "block-no-empty": null,
+    "no-duplicate-selectors": null,
+    "no-descending-specificity": null,
+    "font-family-no-missing-generic-family-keyword": null,
   }
 }
