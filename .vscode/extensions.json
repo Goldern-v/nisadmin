@@ -4,15 +4,17 @@
 
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
+    "EditorConfig.EditorConfig",
+    "eg2.tslint",
+    "esbenp.prettier-vscode",
     "formulahendry.auto-close-tag",
     "formulahendry.auto-rename-tag",
+    "jpoissonnier.vscode-styled-components",
     "orta.vscode-jest",
     "shinnn.stylelint",
-    "eg2.tslint",
-    "jpoissonnier.vscode-styled-components"
+    "streetsidesoftware.code-spell-checker",
+    "varharrie.import-beautify"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
-  "unwantedRecommendations": [
-
-  ]
+  "unwantedRecommendations": []
 }
