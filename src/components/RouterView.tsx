@@ -6,13 +6,13 @@ export interface RouteComponentProps<P = {}> extends RouteProps<P> {
   payload?: any
 }
 
-export interface RouteComponentClass<P>
-  extends React.ComponentClass<RouteComponentProps<P>> {}
+export interface RouteComponentClass<P> extends React.ComponentClass<RouteComponentProps<P>> {}
 
 export interface RouteItem {
   path: string
   exact?: boolean
-  component?: RouteComponentClass<any>
+  // component?: RouteComponentClass<any>
+  component?: React.ComponentType<RouteComponentProps<any>>
   redirect?: string
   routes?: RouteItem[]
   payload?: any
@@ -42,15 +42,11 @@ export default class RouterView extends React.Component<Props, State> {
             key={i}
             path={route.path}
             exact={route.exact}
-            render={props =>
+            render={(props) =>
               route.redirect && route.path === props.location.pathname ? (
                 <Redirect to={route.redirect} />
               ) : route.component ? (
-                <route.component
-                  {...props}
-                  routes={route.routes}
-                  payload={route.payload}
-                />
+                <route.component {...props} routes={route.routes} payload={route.payload} />
               ) : null
             }
           />

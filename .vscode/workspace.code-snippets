@@ -59,5 +59,44 @@
     "scope": "typescriptreact",
     "prefix": "tag",
     "body": "const ${1:Wrapper} = styled.${2:div}`$3`"
+  },
+  "react fun com": {
+    "scope": "typescriptreact",
+    "prefix": "trf",
+    "body": [
+      "import styled from 'styled-components'",
+      "import React, { useState, useEffect } from 'react'",
+      "import { RouteComponentProps } from 'react-router'",
+      "export interface Props extends RouteComponentProps {} ",
+      "",
+      "export default function ${1:${TM_FILENAME_BASE}} () {",
+      "const [count, setCount] = useState(0)",
+      "useEffect(() => { console.log(count, setCount)})",
+      "return <Wrapper>{count}</Wrapper>",
+      "}",
+      "const Wrapper = styled.div``"
+    ]
+  },
+  "react mobx": {
+    "scope": "typescript",
+    "prefix": "mobx",
+    "body": [
+      "import { observable, computed, action } from 'mobx'",
+      "",
+      "class ${1:${TM_FILENAME_BASE}} {",
+      "@observable public title = ''",
+      "@computed",
+      "public get getTitle () {",
+      "return this.title",
+      "}",
+      "@action",
+      "public setTitle = (newTitle: any) => {",
+      "this.title = newTitle",
+      "}",
+      "}",
+      "",
+      "const scheduleHomeViewModel = new ScheduleHomeViewModel()",
+      "export default scheduleHomeViewModel"
+    ]
   }
 }

@@ -1,9 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint-config-standard",
-    "tslint-react"
-  ],
+  "extends": ["tslint-config-standard", "tslint-react"],
   "rules": {
     "align": [true, "parameters", "statements"],
     "indent": [true, "spaces", 2],
@@ -25,6 +22,8 @@
     "no-floating-promises": false,
     "no-shadowed-variable": true,
     "no-string-literal": true,
-    "switch-default": true
+    "switch-default": true,
+    "jsx-self-close": false,
+    "no-unused-variable": false
   }
 }
