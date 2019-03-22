@@ -8,6 +8,7 @@ import routes from '@/configs/routes'
 
 import GlobalStyle from './styles/global'
 import { theme } from './styles/theme'
+import './styles/iconfont.css'
 
 export interface Props {}
 
