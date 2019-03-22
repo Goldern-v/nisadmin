@@ -1,17 +1,20 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-
-import commonConfig from '../../configs/common'
+import { message } from 'antd'
+// import commonConfig from '../../configs/common'
 import ResponseError from './ResponseError'
+import { authStore } from '@/stores'
+
+/**
+ * 登录页面路径
+ */
+export const loginURL = '#/login'
 
 /**
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {
-  if (isAuthURL(config.url!)) return config
-
-  const token = localStorage.getItem('token')
-  if (token) config.headers.common.token = token
-
+  config.headers.common['App-Token-Nursing'] = '51e827c9-d80e-40a1-a95a-1edc257596e7'
+  config.headers.common['Auth-Token-Nursing'] = authStore.authToken
   return config
 }
 
@@ -23,43 +26,31 @@ export function onRequestRejected (error: Error) {
 }
 
 enum StatusCode {
-  fail = 0,
-  success = 1,
-  unauthorized = 401,
-  forbidden = 403,
-  unknown = 500
+  error = 300,
+  success = 200,
+  logout = 301
 }
 
 /**
  * 响应成功拦截
  */
 export function onResponseFulfilled (response: AxiosResponse) {
-  const { headers, data } = response
-
-  if (!headers['content-type'].includes('application/json')) {
-    return response
-  }
-
-  const { code, msg } = data
-
+  let { code, msg, data } = response.data
   switch (code) {
-    case StatusCode.success:
-      return data.data
-
-    case StatusCode.fail: // 请求参数错误、服务器错误等
-      return Promise.reject(new ResponseError(msg, response))
-
-    case StatusCode.unauthorized:
-      localStorage.setItem('token', '')
-      window.location.href = commonConfig.loginURL
-      return Promise.reject(new ResponseError('请重新登录', response))
-
-    case StatusCode.forbidden:
-      window.location.href = location.pathname
-      return Promise.reject(new ResponseError('暂无权限', response))
-
+    case StatusCode.error: {
+      message.error(msg)
+      return Promise.reject(msg)
+    }
+    case StatusCode.logout: {
+      message.warning('登录超时，请重新登录 ')
+      window.location.href = loginURL
+      return Promise.reject(msg)
+    }
+    case StatusCode.success: {
+      return data
+    }
     default:
-      return Promise.reject(new ResponseError('未知错误', response))
+      return Promise.reject(`未知异常`)
   }
 }
 
@@ -67,11 +58,5 @@ export function onResponseFulfilled (response: AxiosResponse) {
  * 响应失败拦截
  */
 export function onResponseRejected (error: Error) {
-  return Promise.reject(
-    new ResponseError('服务器开小差了', (error as any).response)
-  )
-}
-
-function isAuthURL (url: string) {
-  return url.includes('login') || url.includes('logout')
+  return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
 }

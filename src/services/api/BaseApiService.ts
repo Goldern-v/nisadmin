@@ -1,7 +1,7 @@
 import * as qs from 'qs'
 import { AxiosRequestConfig } from 'axios'
 
-import http from '@/libs/http'
+import { http } from '@/libs/http/http'
 
 export default abstract class BaseApiService {
   protected request<T = any> (config: AxiosRequestConfig) {
@@ -16,11 +16,7 @@ export default abstract class BaseApiService {
     return (http.head(url, config) as any) as Promise<T>
   }
 
-  protected post<T = any> (
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ) {
+  protected post<T = any> (url: string, data?: any, config?: AxiosRequestConfig) {
     return (http.post(url, data, config) as any) as Promise<T>
   }
 
@@ -28,11 +24,7 @@ export default abstract class BaseApiService {
     return (http.put(url, data, config) as any) as Promise<T>
   }
 
-  protected patch<T = any> (
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ) {
+  protected patch<T = any> (url: string, data?: any, config?: AxiosRequestConfig) {
     return (http.patch(url, data, config) as any) as Promise<T>
   }
 

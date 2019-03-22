@@ -1,17 +1,14 @@
 import { action, observable } from 'mobx'
 
-import User from '@/models/User'
-
 export default class AppStore {
-  @observable public user: User | null = null
-
-  @action
-  public async updateUser (user: User) {
-    this.user = user
+  public constructor () {
+    this.isExpand = (localStorage.getItem('isExpand') as any) || '1'
   }
+  @observable public isExpand: '1' | '0' = '1'
 
   @action
-  public async removeUser () {
-    this.user = null
+  public setExpand = (isExpand: '1' | '0') => {
+    this.isExpand = isExpand
+    localStorage.setItem('isExpand', isExpand)
   }
 }

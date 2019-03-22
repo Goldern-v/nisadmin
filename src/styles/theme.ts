@@ -1,6 +1,6 @@
 export const theme = {
   /** 主题色 */
-  $mtc: '#4bb08d'
+  $mtc: '#5BBE98'
 }
 
 export type Theme = typeof theme

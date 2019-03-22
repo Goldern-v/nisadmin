@@ -17,7 +17,7 @@ const routes: RouteItem[] = [
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   {
     path: '/',
-    redirect: '/main'
+    redirect: '/home'
   }
 ]
 

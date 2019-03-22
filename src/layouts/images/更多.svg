@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7px" height="12px" viewBox="0 0 7 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+
+    <desc>Created with Sketch.</desc>
+    <g id="宸瑞护理管理系统" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="护理管理系统-首页" transform="translate(-450.000000, -190.000000)" fill-rule="nonzero">
+            <g id="进入" transform="translate(445.000000, 188.000000)">
+                <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <path d="M9.77125,8 L5.52859375,12.2426406 C5.26825,12.5029844 5.26825,12.9250938 5.52859375,13.1854531 C5.7889375,13.4457969 6.2110625,13.4457969 6.47140625,13.1854531 L11.1854531,8.47139062 C11.4457969,8.2110625 11.4457969,7.7889375 11.1854531,7.52859375 L6.47139062,2.81454688 C6.2110625,2.55420313 5.7889375,2.55420313 5.52859375,2.81454688 C5.26825,3.07490625 5.26825,3.49701563 5.52859375,3.75735938 L9.77125,8 Z" id="路径" fill="#CCCCCC"></path>
+            </g>
+        </g>
+    </g>
+</svg>
