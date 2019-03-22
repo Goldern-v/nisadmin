@@ -3,7 +3,7 @@ import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import ReactSVG from 'react-svg'
 import store from '@/stores'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
 const navList = [

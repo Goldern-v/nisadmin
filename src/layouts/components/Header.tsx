@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React from 'react'
 import store from '@/stores'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 function Header () {
   return (

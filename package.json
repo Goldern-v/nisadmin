@@ -79,6 +79,7 @@
     "lodash": "^4.17.11",
     "mobx": "~5.8.0",
     "mobx-react": "~5.4.3",
+    "mobx-react-lite": "^1.1.1",
     "prop-types": "~15.6.2",
     "qs": "~6.6.0",
     "react": "~16.8.4",
