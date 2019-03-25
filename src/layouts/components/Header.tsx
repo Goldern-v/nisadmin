@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import store from '@/stores'
 
-import { authApiService } from '@/services'
+import service from 'src/services/api'
 
 import { observer } from 'mobx-react-lite'
 
@@ -13,7 +13,7 @@ function Header () {
   const user = JSON.parse(sessionStorage.getItem('user') || '[]')
 
   if (!adminNurse || !authToken || !user) {
-    authApiService.logout()
+    service.authApiService.logout()
   }
 
   return (
@@ -33,7 +33,7 @@ function Header () {
         <Text>消息</Text>
       </span>
       <BreakLine />
-      <span style={{ display: 'contents', cursor: 'pointer' }} onClick={authApiService.logout}>
+      <span style={{ display: 'contents', cursor: 'pointer' }} onClick={service.authApiService.logout}>
         <Icon src={require('../images/退出.png')} />
         <Text>注销</Text>
       </span>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 
-import { authApiService } from '@/services'
+import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
 
@@ -19,7 +19,7 @@ export default function LoginView () {
     // e.target.style.color = '#3FB593'
   }
   function login () {
-    authApiService.login(username, password)
+    service.authApiService.login(username, password)
   }
   function handleKeyUp (e: any) {
     if (e.keyCode === 13) {

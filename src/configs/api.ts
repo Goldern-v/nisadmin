@@ -1,5 +1,5 @@
 const apiConfig = {
-  baseURL: process.env.REACT_APP_API_BASE_URL
+  baseURL: '/crNursing/api'
 }
 
 export default apiConfig

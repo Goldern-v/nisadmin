@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 
-import { schedulingApiService } from '@/services'
+import service from 'src/services/api'
 
 import { DatePicker } from 'antd'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
@@ -23,7 +23,7 @@ export default function LeftBar () {
       stratTime: dateString[0], // stratTime 开始时间（刚开始由后台传给前台）
       endTime: dateString[1] // endTime   结束时间（刚开始由后台传给前台）
     }
-    schedulingApiService
+    service.schedulingApiService
       .findShiftList(postData)
       .then((res) => {
         console.log('排班记录', res)
