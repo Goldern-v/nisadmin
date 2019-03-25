@@ -1,21 +1,42 @@
 import styled from 'styled-components'
 import React from 'react'
 import store from '@/stores'
+
+import { authApiService } from '@/services'
+
 import { observer } from 'mobx-react-lite'
 
 function Header () {
+  // 登陆判断
+  const adminNurse = sessionStorage.getItem('adminNurse') || ''
+  const authToken = sessionStorage.getItem('authToken') || ''
+  const user = JSON.parse(sessionStorage.getItem('user') || '[]')
+
+  if (!adminNurse || !authToken || !user) {
+    authApiService.logout()
+  }
+
   return (
     <Wrapper isExpand={store.appStore.isExpand}>
       <Logo src={require('../images/logo.png')} />
       <SystemName src={require('../images/系统名称.png')} />
       <div style={{ flex: 1 }} />
-      <Text>张晓琪</Text>
+      <Text>{sessionStorage.getItem('adminNurse')}</Text>
       <BreakLine />
-      <Icon src={require('../images/消息.png')} />
-      <Text>消息</Text>
+      <span
+        style={{ display: 'contents', cursor: 'pointer' }}
+        onClick={() => {
+          alert('没有消息')
+        }}
+      >
+        <Icon src={require('../images/消息.png')} />
+        <Text>消息</Text>
+      </span>
       <BreakLine />
-      <Icon src={require('../images/退出.png')} />
-      <Text>注销</Text>
+      <span style={{ display: 'contents', cursor: 'pointer' }} onClick={authApiService.logout}>
+        <Icon src={require('../images/退出.png')} />
+        <Text>注销</Text>
+      </span>
     </Wrapper>
   )
 }

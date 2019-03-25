@@ -10,6 +10,14 @@ import { authStore } from '@/stores'
 export const loginURL = '#/login'
 
 /**
+ * 请求登陆成功拦截
+ */
+export function onRequestLoginFilled (config: AxiosRequestConfig) {
+  config.headers.common['App-Token-Nursing'] = '51e827c9-d80e-40a1-a95a-1edc257596e7'
+  return config
+}
+
+/**
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {
@@ -36,20 +44,25 @@ enum StatusCode {
  */
 export function onResponseFulfilled (response: AxiosResponse) {
   let { code, msg, data } = response.data
-  switch (code) {
+  switch (parseInt(code, 10)) {
     case StatusCode.error: {
-      message.error(msg)
+      console.error(response, code, response.data.desc || '')
+      message.error(response.data.desc || msg)
       return Promise.reject(msg)
     }
     case StatusCode.logout: {
       message.warning('登录超时，请重新登录 ')
+      sessionStorage.setItem('adminNurse', '')
+      sessionStorage.setItem('authToken', '')
+      sessionStorage.setItem('user', '')
       window.location.href = loginURL
       return Promise.reject(msg)
     }
     case StatusCode.success: {
-      return data
+      return response
     }
     default:
+      console.log('默认响应', response.data, code, msg, data)
       return Promise.reject(`未知异常`)
   }
 }

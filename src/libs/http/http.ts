@@ -1,7 +1,13 @@
 import axios from 'axios'
 
 import axiosConfig from './config'
-import { onRequestFulfilled, onRequestRejected, onResponseFulfilled, onResponseRejected } from './interceptors'
+import {
+  onRequestLoginFilled,
+  onRequestFulfilled,
+  onRequestRejected,
+  onResponseFulfilled,
+  onResponseRejected
+} from './interceptors'
 
 /** 带token */
 const http = axios.create(axiosConfig)
@@ -12,4 +18,9 @@ http.interceptors.response.use(onResponseFulfilled, onResponseRejected)
 const httpNoToken = axios.create(axiosConfig)
 httpNoToken.interceptors.response.use(onResponseFulfilled, onResponseRejected)
 
-export { http, httpNoToken }
+/** 登陆带token */
+const httpLoginToken = axios.create(axiosConfig)
+httpLoginToken.interceptors.request.use(onRequestLoginFilled, onRequestRejected)
+httpLoginToken.interceptors.response.use(onResponseFulfilled, onResponseRejected)
+
+export { http, httpNoToken, httpLoginToken }

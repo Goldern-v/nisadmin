@@ -2,41 +2,55 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
+
+import { authApiService } from '@/services'
+
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView () {
-  const [count, setCount] = useState(0)
+  const [count, setCount ] = useState(0)
+  const [username, setUsername ] = useState('')
+  const [password, setPassword ] = useState('')
   useEffect(() => {
     console.log(count, setCount)
   })
+
   function checkClick () {
     // e.target.style.color = '#3FB593'
+  }
+  function login () {
+    authApiService.login(username, password)
+  }
+  function handleKeyUp (e: any) {
+    if (e.keyCode === 13) {
+      login()
+    }
   }
   return (
     <Wrapper>
       <BgImg>
-        <BoxInput>
+        <BoxInput onKeyUp={(e) => { handleKeyUp(e) }}>
           <img src={require('./img/logo.png')} alt='logo' className='BoxLogin' />
           <h1 className='Title'>护理质量管理系统</h1>
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe648;</div>
-            <input type='text' placeholder='用户名' />
+            <input onChange={(e) => setUsername(e.target.value)} type='text' placeholder='用户名' />
           </div>
 
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe6cb;</div>
-            <input type='text' placeholder='密码' />
+            <input onChange={(e) => setPassword(e.target.value)} type='password' placeholder='密码' />
           </div>
 
           <div className='CheckItem' onClick={checkClick}>
-            <input type='checkbox' />
-            记住账号
+            <input type='checkbox' id='rememberCheckbox' />
+            <label htmlFor='rememberCheckbox'>记住账号</label>
           </div>
-          <button>登陆系统</button>
+          <button onClick={login} >登陆系统</button>
         </BoxInput>
       </BgImg>
       <BottomContent>
-        广州宸瑞软件科技有限公司 http://www.cr-health.com 版权所有©2013-2017，All rights reseved. 关于宸瑞 |
+        广州宸瑞软件科技有限公司 http://www.cr-health.com 版权所有©2013-{new Date().getFullYear()}，All rights reseved. 关于宸瑞 |
         关于智慧护理 | 联系客服
       </BottomContent>
     </Wrapper>
@@ -104,7 +118,8 @@ const BoxInput = styled.div`
       z-index: 2;
     }
   }
-  input[type='text'] {
+  input[type='text'],
+  input[type='password'] {
     position: relative;
     padding-left: 30px;
     background: #fff;
@@ -116,10 +131,12 @@ const BoxInput = styled.div`
     outline: none;
     transition: box-shadow 0.2s;
   }
-  input[type='text']:hover {
+  input[type='text']:hover,
+  input[type='password']:hover {
     box-shadow: 0 0 0 1px #4fb390;
   }
-  input[type='text']:focus {
+  input[type='text']:focus,
+  input[type='password']:focus {
     z-index: 1;
     box-shadow: 0 0 0 1px #4fb390;
   }

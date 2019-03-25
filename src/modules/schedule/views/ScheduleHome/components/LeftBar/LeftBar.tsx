@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
+
+import { schedulingApiService } from '@/services'
+
 import { DatePicker } from 'antd'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 
 const { RangePicker } = DatePicker
 export interface Props extends RouteComponentProps {}
 
-const dateFormat = 'YYYY/MM/DD'
+const dateFormat = 'YYYY-MM-DD'
 export default function LeftBar () {
   const [count, setCount] = useState(0)
   useEffect(() => {
@@ -15,6 +18,19 @@ export default function LeftBar () {
   })
   function onChange (date: any, dateString: any) {
     console.log(date, dateString)
+    const postData = {
+      deptCode: '2508', // deptCode  科室编码 // "门诊护理"
+      stratTime: dateString[0], // stratTime 开始时间（刚开始由后台传给前台）
+      endTime: dateString[1] // endTime   结束时间（刚开始由后台传给前台）
+    }
+    schedulingApiService
+      .findShiftList(postData)
+      .then((res) => {
+        console.log('排班记录', res)
+      })
+      .catch((err) => {
+        console.log('排班记录错误', err)
+      })
   }
   return (
     <Wrapper>

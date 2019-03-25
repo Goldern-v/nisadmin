@@ -6,7 +6,7 @@ import User from '@/models/User'
 export default class AuthStore {
   public constructor () {
     try {
-      this.user = JSON.parse(sessionStorage.getItem('user') + '')
+      this.user = JSON.parse(sessionStorage.getItem('user') || '[]')
       this.authToken = sessionStorage.getItem('authToken')
       this.adminNurse = sessionStorage.getItem('adminNurse')
     } catch (error) {
