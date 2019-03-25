@@ -91,5 +91,6 @@
     "react-svg": "^8.0.0",
     "react-transition-group": "~2.5.1",
     "styled-components": "~4.1.3"
-  }
+  },
+  "proxy": "http://120.25.105.45:9864"
 }

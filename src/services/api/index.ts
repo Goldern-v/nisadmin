@@ -1,5 +1,12 @@
 import AuthApiService from './AuthApiService'
 import UserApiService from './UserApiService'
 
-export const authApiService = new AuthApiService()
-export const userApiService = new UserApiService()
+const authApiService = new AuthApiService()
+const userApiService = new UserApiService()
+
+const service = {
+  userApiService,
+  authApiService
+}
+
+export default service

@@ -10,6 +10,13 @@ import { authStore } from '@/stores'
 export const loginURL = '#/login'
 
 /**
+ * 请求成功拦截 无token
+ */
+export function onRequestNoToken (config: AxiosRequestConfig) {
+  config.headers.common['App-Token-Nursing'] = '51e827c9-d80e-40a1-a95a-1edc257596e7'
+  return config
+}
+/**
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {
@@ -26,25 +33,25 @@ export function onRequestRejected (error: Error) {
 }
 
 enum StatusCode {
-  error = 300,
-  success = 200,
-  logout = 301
+  error = '300',
+  success = '200',
+  logout = '301'
 }
 
 /**
  * 响应成功拦截
  */
 export function onResponseFulfilled (response: AxiosResponse) {
-  let { code, msg, data } = response.data
+  let { code, desc, data } = response.data
   switch (code) {
     case StatusCode.error: {
-      message.error(msg)
-      return Promise.reject(msg)
+      message.error(desc)
+      return Promise.reject(desc)
     }
     case StatusCode.logout: {
       message.warning('登录超时，请重新登录 ')
       window.location.href = loginURL
-      return Promise.reject(msg)
+      return Promise.reject(desc)
     }
     case StatusCode.success: {
       return data

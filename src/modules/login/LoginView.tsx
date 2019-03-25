@@ -1,16 +1,19 @@
 // import * as React from 'react'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
+import service from 'src/services/api'
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView () {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
   function checkClick () {
-    // e.target.style.color = '#3FB593'
+    console.log(password, username)
+  }
+  function onLogin () {
+    service.authApiService.login(username, password)
   }
   return (
     <Wrapper>
@@ -20,19 +23,19 @@ export default function LoginView () {
           <h1 className='Title'>护理质量管理系统</h1>
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe648;</div>
-            <input type='text' placeholder='用户名' />
+            <input type='text' value={username} onChange={(e) => setUsername(e.target.value)} placeholder='用户名' />
           </div>
 
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe6cb;</div>
-            <input type='text' placeholder='密码' />
+            <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='密码' />
           </div>
 
           <div className='CheckItem' onClick={checkClick}>
             <input type='checkbox' />
             记住账号
           </div>
-          <button>登陆系统</button>
+          <button onClick={onLogin}>登陆系统</button>
         </BoxInput>
       </BgImg>
       <BottomContent>
@@ -104,7 +107,7 @@ const BoxInput = styled.div`
       z-index: 2;
     }
   }
-  input[type='text'] {
+  input {
     position: relative;
     padding-left: 30px;
     background: #fff;
@@ -116,10 +119,10 @@ const BoxInput = styled.div`
     outline: none;
     transition: box-shadow 0.2s;
   }
-  input[type='text']:hover {
+  input:hover {
     box-shadow: 0 0 0 1px #4fb390;
   }
-  input[type='text']:focus {
+  input:focus {
     z-index: 1;
     box-shadow: 0 0 0 1px #4fb390;
   }

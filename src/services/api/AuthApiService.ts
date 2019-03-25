@@ -1,8 +1,9 @@
+import qs from 'qs'
 import { httpNoToken } from '@/libs/http/http'
 
 export default class AuthApiService {
   public login (username: string, password: string) {
-    return httpNoToken.post('/login', { username, password }).then((res) => {
+    return httpNoToken.post('/login', qs.stringify({ username, password })).then((res) => {
       let { adminNurse, authToken, user } = res.data
       sessionStorage.setItem('adminNurse', adminNurse)
       sessionStorage.setItem('authToken', authToken)
