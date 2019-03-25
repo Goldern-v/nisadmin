@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { DatePicker } from 'antd'
+import locale from 'antd/lib/date-picker/locale/zh_CN'
 
 const { RangePicker } = DatePicker
 export interface Props extends RouteComponentProps {}
@@ -17,10 +18,11 @@ export default function LeftBar () {
   }
   return (
     <Wrapper>
+      <label>排班记录</label>
       <SelectCon>
-        <RangePicker onChange={onChange} format={dateFormat} />
+        <RangePicker onChange={onChange} format={dateFormat} locale={locale} />
       </SelectCon>
-      <ListCon>2</ListCon>
+      <ListCon>第158周 03/01 - 03/07</ListCon>
     </Wrapper>
   )
 }

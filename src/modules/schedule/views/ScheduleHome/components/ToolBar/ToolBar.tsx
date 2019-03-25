@@ -13,14 +13,12 @@ export default function ToolBar () {
   })
   return (
     <Wrapper>
-      <Label>科室</Label>
-      <Select defaultValue='lucy' style={{ width: 200 }}>
-        <Option value='jack'>Jack</Option>
-        <Option value='lucy'>Lucy</Option>
-        <Option value='disabled' disabled>
-          Disabled
-        </Option>
-        <Option value='Yiminghe'>yiminghe</Option>
+      <Label>科室：</Label>
+      <Select defaultValue='普外科护理单元' style={{ width: 200 }}>
+        <Option value='骨科护理单元'>骨科护理单元</Option>
+        <Option value='普外科护理单元'>普外科护理单元</Option>
+        <Option value='泌尿外科护理单元'>泌尿外科护理单元</Option>
+        <Option value='产科护理单元'>产科护理单元</Option>
       </Select>
       <Button style={{ marginLeft: 20, marginRight: 10 }}>编辑排班</Button>
       <Button>导出Excel</Button>
