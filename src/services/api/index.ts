@@ -4,11 +4,12 @@ import SchedulingApiService from './SchedulingApiService'
 
 const authApiService = new AuthApiService()
 const userApiService = new UserApiService()
+const schedulingApiService = new SchedulingApiService()
 
 const service = {
   userApiService,
   authApiService,
-  SchedulingApiService
+  schedulingApiService
 }
 
 export default service
