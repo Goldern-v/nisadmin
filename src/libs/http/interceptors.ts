@@ -21,7 +21,7 @@ export function onRequestLoginFilled (config: AxiosRequestConfig) {
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {
-  config.headers.common['App-Token-Nursing'] = appStore.getAppToken() // '51e827c9-d80e-40a1-a95a-1edc257596e7'
+  config.headers.common['App-Token-Nursing'] = appStore.getAppToken()
   config.headers.common['Auth-Token-Nursing'] = authStore.getAuthToken()
   return config
 }
@@ -36,7 +36,9 @@ export function onRequestRejected (error: Error) {
 enum StatusCode {
   error = 300,
   success = 200,
-  logout = 301
+  logout = 301,
+  notFound = 404,
+  badGateWay = 502
 }
 
 /**
@@ -48,7 +50,7 @@ export function onResponseFulfilled (response: AxiosResponse) {
     case StatusCode.error: {
       console.error(response, code, response.data.desc || '')
       message.error(response.data.desc || msg)
-      return Promise.reject(msg)
+      return Promise.reject(response.data.desc || msg)
     }
     case StatusCode.logout: {
       message.warning('登录超时，请重新登录 ')
@@ -59,6 +61,15 @@ export function onResponseFulfilled (response: AxiosResponse) {
       return Promise.reject(msg)
     }
     case StatusCode.success: {
+      return response
+    }
+    case StatusCode.notFound: {
+      console.log('404响应', response.data, code, msg, data)
+      return response
+    }
+    case StatusCode.badGateWay: {
+      message.warning('系统部署中...')
+      console.log('502响应', response.data, code, msg, data)
       return response
     }
     default:

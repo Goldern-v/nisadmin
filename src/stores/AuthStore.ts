@@ -29,13 +29,18 @@ export default class AuthStore {
   }
 
   @action
+  public getUser () {
+    return this.user as User
+  }
+
+  @action
   public setAuthToken (token: string) {
     this.authToken = token
   }
 
   @action
   public getAuthToken () {
-    return this.authToken || ''
+    return (this.authToken as string) || ''
   }
 
   @action
@@ -45,6 +50,6 @@ export default class AuthStore {
 
   @action
   public getAdminNurse () {
-    return this.adminNurse
+    return (this.adminNurse as string) || ''
   }
 }

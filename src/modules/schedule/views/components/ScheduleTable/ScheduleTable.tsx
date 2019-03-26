@@ -4,6 +4,12 @@ import { RouteComponentProps } from 'react-router'
 import Th from './Th'
 import Tr from './Tr'
 import Col from './Col'
+
+import { Card } from 'antd'
+const { Meta } = Card
+
+import emitter from 'src/libs/ev'
+
 export interface Props extends RouteComponentProps {}
 
 export interface ThItem {
@@ -26,7 +32,7 @@ const tableData: TableData = {
   th: [
     {
       value: '序号',
-      width: '4%'
+      width: '5%'
     },
     {
       value: '工号',
@@ -87,88 +93,155 @@ const tableData: TableData = {
   ],
   tr: [
     {
-      key: '',
-      value: '1'
+      key: 'id',
+      value: 'id'
     },
     {
-      key: '',
-      value: '2'
+      key: 'empNo',
+      value: 'empNo'
     },
     {
-      key: '',
-      value: '3'
+      key: 'empName',
+      value: 'empName'
     },
     {
-      key: '',
-      value: '4'
+      key: 'currentLevel',
+      value: 'currentLevel'
     },
     {
-      key: '',
-      value: '5'
+      key: 'title',
+      value: 'title'
     },
     {
-      key: '',
-      value: '6'
+      key: 'rangeName1',
+      value: 'rangeName1'
     },
     {
-      key: '',
-      value: '7'
+      key: 'rangeName2',
+      value: 'rangeName2'
     },
     {
-      key: '',
-      value: '8'
+      key: 'rangeName3',
+      value: 'rangeName3'
     },
     {
-      key: '',
-      value: '9'
+      key: 'rangeName4',
+      value: 'rangeName4'
     },
     {
-      key: '',
-      value: '10'
+      key: 'rangeName5',
+      value: 'rangeName5'
     },
     {
-      key: '',
-      value: '11'
+      key: 'rangeName6',
+      value: 'rangeName6'
     },
     {
-      key: '',
-      value: '12'
+      key: 'rangeName7',
+      value: 'rangeName7'
     },
     {
-      key: '',
-      value: '13'
+      key: 'remark',
+      value: 'remark'
     },
     {
-      key: '',
-      value: '14'
+      key: 'thisWeekHour',
+      value: 'thisWeekHour'
     },
     {
-      key: '',
-      value: '15'
+      key: 'status',
+      value: 'status'
     }
   ]
 }
 
 export default function ScheduleTable () {
   const [count, setCount] = useState(0)
+  const [scheduleList, setscheduleList] = useState([
+    [
+      {
+        key: '',
+        value: ''
+      }
+    ]
+  ])
   useEffect(() => {
     console.log(count, setCount)
-  })
+    setscheduleList([])
+
+    let eventEmitterClean = emitter.addListener('清空排班记录', () => {
+      setscheduleList([])
+    })
+
+    let eventEmitter = emitter.addListener('本周排班记录', (scheduleData) => {
+      console.log('接收:本周排班记录event', scheduleData, scheduleList)
+      // schShiftUser
+      let trArry = {}
+      let newList = [[]]
+      scheduleData.schShiftUser.map((nurse: any, index: number) => {
+        console.log('nurse', index, nurse.empName, nurse)
+        let getRangeName = (range: any, i: number) => {
+          let result = ''
+          try {
+            result = range[i].rangeName
+          } catch (error) {
+            return ''
+          }
+          return result
+        }
+        trArry = {
+          id: nurse.id || '',
+          empNo: nurse.empNo || '',
+          empName: nurse.empName || '',
+          currentLevel: nurse.currentLevel || '',
+          title: nurse.title || '',
+          rangeName1: getRangeName(nurse.settingDtos, 0) || '',
+          rangeName2: getRangeName(nurse.settingDtos, 1) || '',
+          rangeName3: getRangeName(nurse.settingDtos, 2) || '',
+          rangeName4: getRangeName(nurse.settingDtos, 3) || '',
+          rangeName5: getRangeName(nurse.settingDtos, 4) || '',
+          rangeName6: getRangeName(nurse.settingDtos, 5) || '',
+          rangeName7: getRangeName(nurse.settingDtos, 6) || '',
+          remark: nurse.remark || '',
+          thisWeekHour: nurse.thisWeekHour || '',
+          status: nurse.status || ''
+        }
+        let tr = []
+        for (let key in trArry) {
+          if (trArry.hasOwnProperty(key)) {
+            let value = (trArry as any)[key]
+            tr.push({ key: key, value: value })
+          }
+        }
+        console.log('tr', tr, newList)
+        newList.push(tr as any)
+      })
+      setscheduleList(newList)
+    })
+    console.log('eventEmitter', eventEmitter, eventEmitterClean)
+  }, [])
   return (
     <Wrapper>
-      <table>
-        <Col th={tableData.th} />
-        <thead>
-          <Th th={tableData.th} />
-        </thead>
-      </table>
-      <Tbody>
+      {scheduleList.length > 0 && (
         <table>
           <Col th={tableData.th} />
-
-          <Tr tr={tableData.tr} />
+          <thead>
+            <Th th={tableData.th} />
+          </thead>
+          {scheduleList.map((nurse, index) => (
+            <Tr tr={nurse} />
+          ))}
         </table>
-      </Tbody>
+      )}
+      {scheduleList.length === 0 && (
+        <NoScheduleCon>
+          <CardBox>
+            <Card hoverable style={{ width: 240 }} cover={<img alt='' src='#' />}>
+              <Meta style={{ textAlign: 'center' }} title='创建排班' />
+            </Card>
+          </CardBox>
+        </NoScheduleCon>
+      )}
     </Wrapper>
   )
 }
@@ -182,7 +255,7 @@ const Wrapper = styled.div`
   td,
   tr,
   th {
-    border: 1px solid #000;
+    border: 1px solid #d9d8d8;
     min-height: 30px;
     text-align: center;
   }
@@ -191,9 +264,17 @@ const Wrapper = styled.div`
     padding: 5px 0;
   }
 `
-
-const Tbody = styled.div`
+const NoScheduleCon = styled.div`
   height: calc(100vh - 300px);
   overflow: auto;
   margin-top: -1px;
+  background: #fff;
+`
+
+const CardBox = styled.div`
+  width: 200px;
+  margin: auto auto;
+  position: relative;
+  top: 35%;
+  background: green;
 `

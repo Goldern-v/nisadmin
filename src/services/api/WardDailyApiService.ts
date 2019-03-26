@@ -12,7 +12,7 @@ import BaseApiService from './BaseApiService'
 
 export default class WardDailyApiService extends BaseApiService {
   // 1.根据护理单元获取科室编码和名称
-  public getDeptWithWardcode (deptCode: string) {
-    return this.post(`/wardDaily/getDeptWithWardcode/${deptCode}`)
+  public async getDeptWithWardcode (deptCode: string) {
+    return this.get(`/wardDaily/getDeptWithWardcode/${deptCode}`)
   }
 }
