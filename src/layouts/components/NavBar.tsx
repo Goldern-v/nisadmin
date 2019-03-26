@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import ReactSVG from 'react-svg'
-import store from '@/stores'
 import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
@@ -60,8 +59,6 @@ const navList = [
 ]
 
 export default observer(function NavBar (props: Props) {
-  const isExpand = store.appStore.isExpand
-  const setExpand = store.appStore.setExpand
   const toNavLink = (path: string) => {
     return () => props.history.push(path)
   }
@@ -72,71 +69,51 @@ export default observer(function NavBar (props: Props) {
         <NavItem onClick={toNavLink(item.path)} active={location.pathname === item.path} key={item.name}>
           <ReactSVG src={item.icon} svgClassName='nav-icon' />
           <div className='nav-name'>{item.name}</div>
-          <div className='active-line' />
         </NavItem>
       ))}
-      {isExpand === '1' ? (
-        <NavItem style={{ width: '60px', borderRight: 0, flex: 0 }} onClick={() => setExpand('0')}>
-          <ReactSVG src={require('../images/收起.svg')} svgClassName='nav-icon' />
-          <div className='nav-name'>收起</div>
-        </NavItem>
-      ) : (
-        <NavItem style={{ width: '60px', borderRight: 0, flex: 0 }} onClick={() => setExpand('1')}>
-          <ReactSVG src={require('../images/展开.svg')} svgClassName='nav-icon' />
-          <div className='nav-name'>展开</div>
-        </NavItem>
-      )}
     </Wrapper>
   )
 })
 const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
-  height: 64px;
+  height: 40px;
   background: #fff;
   box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
   margin-bottom: 10px;
-`
-const NavItem = styled.div<{ active?: boolean }>`
-  width: 0;
-  flex: 1;
-  display: flex;
-  padding: 0 15px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  cursor: pointer;
-  border-right: 1px solid #f2f2f2;
-  font-size: 13px;
   position: relative;
-  color: ${(p) => (p.active ? p.theme.$mtc : '#747474')};
-  .nav-icon {
-    width: 26px;
-    height: 26px;
-    path {
-      fill: ${(p) => (p.active ? p.theme.$mtc : '#747474')};
-    }
-    title {
-      display: none;
-    }
-  }
-  .nav-name {
-    margin-top: -3px;
-  }
-  .active-line {
+  padding-bottom: 2px;
+  &:after {
+    content: '';
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
-    height: 3px;
-    background: ${(p) => p.theme.$mtc};
-    width: ${(p) => (p.active ? '48px' : 0)};
-    margin: auto;
-    transition: width 0.5s;
+    top: -1px;
+    height: 2px;
+    background: #fff;
   }
-  &:hover {
-    .active-line {
-      width: 48px;
+`
+const NavItem = styled.div<{ active?: boolean }>`
+  min-width: 50px;
+  display: flex;
+  padding: 0 22px 0 16px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  position: relative;
+  background: ${(p) => (p.active ? p.theme.$mtc : '#fff')};
+  color: ${(p) => (p.active ? '#fff' : '#747474')};
+  .nav-icon {
+    width: 16px;
+    height: 16px;
+    margin-top: 6px;
+    margin-right: 2px;
+    path {
+      fill: ${(p) => (p.active ? '#fff' : '#747474')};
+    }
+    title {
+      display: none;
     }
   }
 `

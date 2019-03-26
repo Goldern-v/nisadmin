@@ -44,8 +44,8 @@ function Header () {
 export default observer(Header)
 
 const Wrapper = styled.div<{ isExpand: '0' | '1' }>`
-  height: 46px;
-  background: ${(p) => p.theme.$mtc};
+  height: 53px;
+  background: #fff;
   display: flex;
   align-items: center;
   padding: 0 16px 0 12px;
@@ -53,8 +53,8 @@ const Wrapper = styled.div<{ isExpand: '0' | '1' }>`
   ${(p) => p.isExpand === '0' && 'margin-top: -42px'}
 `
 const Logo = styled.img`
-  height: 31px;
-  width: 31px;
+  height: 38px;
+  width: 37px;
 `
 const SystemName = styled.img`
   height: 17px;
@@ -62,12 +62,12 @@ const SystemName = styled.img`
 `
 const Text = styled.div`
   font-size: 13px;
-  color: #fff;
+  color: #333;
 `
 
 const BreakLine = styled.div`
   height: 14px;
-  background: #fff;
+  background: #dbe0e4;
   width: 1px;
   margin: 0 10px;
 `
