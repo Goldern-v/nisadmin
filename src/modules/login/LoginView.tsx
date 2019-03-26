@@ -73,7 +73,7 @@ const BgImg = styled.div`
   left: 50%;
   width: 975px;
   height: 414px;
-  background-image: url(http://192.168.1.20:8764/crNisManage/static/img/background.12db47e.png);
+  background-image: url(${require('./img/background.png')});
   background-size: 100% 100%;
   transform: translate(-50%, -50%);
   box-sizing: border-box;

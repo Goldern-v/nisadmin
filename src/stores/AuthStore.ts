@@ -15,8 +15,8 @@ export default class AuthStore {
   }
 
   @observable public user: User | null = null
-  @observable public authToken: string | null = null
-  @observable public adminNurse: string | null = null
+  @observable private authToken: string | null = null
+  @observable private adminNurse: string | null = null
 
   @action
   public async updateUser (user: User) {
@@ -26,5 +26,25 @@ export default class AuthStore {
   @action
   public async removeUser () {
     this.user = null
+  }
+
+  @action
+  public async setAuthToken (token: string) {
+    this.authToken = token
+  }
+
+  @action
+  public async getAuthToken () {
+    return this.authToken
+  }
+
+  @action
+  public async setAdminNurse (name: string) {
+    this.adminNurse = name
+  }
+
+  @action
+  public async getAdminNurse () {
+    return this.adminNurse
   }
 }

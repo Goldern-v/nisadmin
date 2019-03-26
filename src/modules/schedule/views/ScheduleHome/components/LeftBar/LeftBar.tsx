@@ -16,8 +16,10 @@ export default function LeftBar () {
   useEffect(() => {
     console.log(count, setCount)
   })
+  // 选择日期间段发生改变时执行
   function onChange (date: any, dateString: any) {
     console.log(date, dateString)
+    // 接口请求参数
     const postData = {
       deptCode: '2508', // deptCode  科室编码 // "门诊护理"
       stratTime: dateString[0], // stratTime 开始时间（刚开始由后台传给前台）

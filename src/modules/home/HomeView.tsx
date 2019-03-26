@@ -16,6 +16,7 @@ export default function HomeView () {
   useEffect(() => {
     console.log(count, setCount)
   })
+
   return (
     <Wrapper>
       <SelectCon>

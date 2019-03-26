@@ -14,8 +14,8 @@ export default class AuthApiService extends BaseApiService {
         sessionStorage.setItem('adminNurse', adminNurse)
         sessionStorage.setItem('authToken', authToken)
         sessionStorage.setItem('user', JSON.stringify(user))
-        authStore.authToken = authToken
-        authStore.adminNurse = adminNurse
+        authStore.setAuthToken(authToken)
+        authStore.setAdminNurse(adminNurse)
         authStore.updateUser(user)
         window.location.href = '#/home'
         console.log('登陆成功', adminNurse, authToken, user, sessionStorage)
@@ -28,8 +28,8 @@ export default class AuthApiService extends BaseApiService {
     sessionStorage.removeItem('adminNurse')
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('user')
-    authStore.authToken = ''
-    authStore.adminNurse = ''
+    authStore.setAuthToken('')
+    authStore.setAdminNurse('')
     authStore.removeUser()
     window.location.href = '#/login'
   }

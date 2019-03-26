@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'antd'
 // import commonConfig from '../../configs/common'
 import ResponseError from './ResponseError'
-import { authStore } from '@/stores'
+import { authStore, appStore } from '@/stores'
 
 /**
  * 登录页面路径
@@ -13,7 +13,7 @@ export const loginURL = '#/login'
  * 请求登陆成功拦截
  */
 export function onRequestLoginFilled (config: AxiosRequestConfig) {
-  config.headers.common['App-Token-Nursing'] = '51e827c9-d80e-40a1-a95a-1edc257596e7'
+  config.headers.common['App-Token-Nursing'] = appStore.getAppToken()
   return config
 }
 
@@ -21,8 +21,8 @@ export function onRequestLoginFilled (config: AxiosRequestConfig) {
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {
-  config.headers.common['App-Token-Nursing'] = '51e827c9-d80e-40a1-a95a-1edc257596e7'
-  config.headers.common['Auth-Token-Nursing'] = authStore.authToken
+  config.headers.common['App-Token-Nursing'] = appStore.getAppToken() // '51e827c9-d80e-40a1-a95a-1edc257596e7'
+  config.headers.common['Auth-Token-Nursing'] = authStore.getAuthToken()
   return config
 }
 
