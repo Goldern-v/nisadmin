@@ -7,8 +7,8 @@ export default class AuthStore {
   public constructor () {
     try {
       this.user = JSON.parse(sessionStorage.getItem('user') || '[]')
-      this.authToken = sessionStorage.getItem('authToken')
-      this.adminNurse = sessionStorage.getItem('adminNurse')
+      this.authToken = sessionStorage.getItem('authToken') || ''
+      this.adminNurse = sessionStorage.getItem('adminNurse') || ''
     } catch (error) {
       console.log(error)
     }
@@ -29,22 +29,22 @@ export default class AuthStore {
   }
 
   @action
-  public async setAuthToken (token: string) {
+  public setAuthToken (token: string) {
     this.authToken = token
   }
 
   @action
-  public async getAuthToken () {
-    return this.authToken
+  public getAuthToken () {
+    return this.authToken || ''
   }
 
   @action
-  public async setAdminNurse (name: string) {
+  public setAdminNurse (name: string) {
     this.adminNurse = name
   }
 
   @action
-  public async getAdminNurse () {
+  public getAdminNurse () {
     return this.adminNurse
   }
 }
