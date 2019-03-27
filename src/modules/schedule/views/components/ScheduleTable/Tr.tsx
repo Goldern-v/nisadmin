@@ -10,7 +10,7 @@ export default function Tr (props: Props) {
   return (
     <Wrapper>
       {props.tr.map((item, index) => (
-        <td key={index}>{item.value}</td>
+        <td key={item.key + index}>{item.value}</td>
       ))}
     </Wrapper>
   )

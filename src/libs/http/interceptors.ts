@@ -1,8 +1,8 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { message } from 'antd'
+import { message, notification } from 'antd'
 // import commonConfig from '../../configs/common'
 import ResponseError from './ResponseError'
-import { authStore } from '@/stores'
+import { authStore, appStore } from '@/stores'
 
 /**
  * 登录页面路径
@@ -10,11 +10,19 @@ import { authStore } from '@/stores'
 export const loginURL = '#/login'
 
 /**
+ * 请求登陆成功拦截
+ */
+export function onRequestLoginFilled (config: AxiosRequestConfig) {
+  config.headers.common['App-Token-Nursing'] = appStore.getAppToken()
+  return config
+}
+
+/**
  * 请求成功拦截
  */
 export function onRequestFulfilled (config: AxiosRequestConfig) {
-  config.headers.common['App-Token-Nursing'] = '51e827c9-d80e-40a1-a95a-1edc257596e7'
-  config.headers.common['Auth-Token-Nursing'] = authStore.authToken
+  config.headers.common['App-Token-Nursing'] = appStore.getAppToken()
+  config.headers.common['Auth-Token-Nursing'] = authStore.getAuthToken()
   return config
 }
 
@@ -28,7 +36,9 @@ export function onRequestRejected (error: Error) {
 enum StatusCode {
   error = 300,
   success = 200,
-  logout = 301
+  logout = 301,
+  notFound = 404,
+  badGateWay = 502
 }
 
 /**
@@ -36,20 +46,38 @@ enum StatusCode {
  */
 export function onResponseFulfilled (response: AxiosResponse) {
   let { code, msg, data } = response.data
-  switch (code) {
+  let status = response.status
+  switch (parseInt(code, 10)) {
     case StatusCode.error: {
-      message.error(msg)
-      return Promise.reject(msg)
+      console.error(response, code, response.data.desc || '')
+      message.error(response.data.desc || msg)
+      return Promise.reject(response.data.desc || msg)
     }
     case StatusCode.logout: {
       message.warning('登录超时，请重新登录 ')
+      sessionStorage.setItem('adminNurse', '')
+      sessionStorage.setItem('authToken', '')
+      sessionStorage.setItem('user', '')
       window.location.href = loginURL
       return Promise.reject(msg)
     }
     case StatusCode.success: {
-      return data
+      return response
+    }
+    case StatusCode.notFound: {
+      console.log('404响应', response.data, code, msg, data)
+      return response
+    }
+    case StatusCode.badGateWay: {
+      message.warning('系统部署中...')
+      console.log('502响应', response.data, code, msg, data)
+      return response
     }
     default:
+      if (status === 200) {
+        return response
+      }
+      console.log('默认响应', response, response.data, code, msg, data)
       return Promise.reject(`未知异常`)
   }
 }
@@ -58,5 +86,18 @@ export function onResponseFulfilled (response: AxiosResponse) {
  * 响应失败拦截
  */
 export function onResponseRejected (error: Error) {
-  return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
+  message.loading('服务器开小差了' + new ResponseError('服务器开小差了', (error as any).response), 5000)
+  // return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
+  notification.error({
+    message: '服务器开小差了',
+    duration: 0,
+    placement: 'bottomRight',
+    description:
+      '' +
+      new ResponseError('服务器开小差了', (error as any).response) +
+      `code: ${(error as any).response.status} ${(error as any).response.statusText}`,
+    onClick: () => {
+      console.log('服务器开小差了', (error as any).response)
+    }
+  })
 }

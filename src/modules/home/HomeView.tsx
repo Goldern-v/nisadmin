@@ -25,17 +25,16 @@ export default function HomeView () {
   useEffect(() => {
     console.log(count, setCount)
   })
+
   return (
     <Wrapper>
       <SelectCon>
         <span className='label'>科室：</span>
-        <Select defaultValue='lucy' style={{ width: 200 }} onChange={handleChange}>
-          <Option value='jack'>Jack</Option>
-          <Option value='lucy'>Lucy</Option>
-          <Option value='disabled' disabled>
-            Disabled
-          </Option>
-          <Option value='Yiminghe'>yiminghe</Option>
+        <Select defaultValue='普外科护理单元' style={{ width: 200 }} onChange={handleChange}>
+          <Option value='骨科护理单元'>骨科护理单元</Option>
+          <Option value='普外科护理单元'>普外科护理单元</Option>
+          <Option value='泌尿外科护理单元'>泌尿外科护理单元</Option>
+          <Option value='产科护理单元'>产科护理单元</Option>
         </Select>
         <Button style={{ marginLeft: 20, marginRight: 10 }}>查询</Button>
         <Button>刷新</Button>
