@@ -2,10 +2,17 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 
+import { scheduleStore } from '@/stores'
+
 import { Card, Table, Tag } from 'antd'
 const { Meta } = Card
 
 import emitter from 'src/libs/ev'
+
+import moment from 'moment'
+moment.locale('zh-cn', {
+  weekdays: '日_一_二_三_四_五_六'.split('_')
+})
 
 export interface Props extends RouteComponentProps {}
 
@@ -38,6 +45,18 @@ const getTextColor = (text: any) =>
     <span>{text}</span>
   )
 
+const getWeekDay = (weekday: number) => {
+  let days = ['', '一', '二', '三', '四', '五', '六', '日']
+  let date = moment(scheduleStore.getStartTime())
+    .add(weekday - 1, 'days')
+    .format('M[月]D[日(周]dddd[)]')
+  // console.log('周', weekday, scheduleStore.getStartTime(), date)
+  if (date.indexOf('Invalid date') > -1) {
+    return `周${days[weekday - 1]}`
+  }
+  return `${date}`
+}
+
 const columns = [
   {
     title: '序号',
@@ -65,43 +84,43 @@ const columns = [
     width: '5%'
   },
   {
-    title: '周一',
+    title: () => getWeekDay(1),
     dataIndex: 'rangeName1',
     width: '6%',
     render: (text: any) => getTextColor(text)
   },
   {
-    title: '周二',
+    title: () => getWeekDay(2),
     dataIndex: 'rangeName2',
     width: '6%',
     render: (text: any) => getTextColor(text)
   },
   {
-    title: '周三',
+    title: () => getWeekDay(3),
     dataIndex: 'rangeName3',
     width: '6%',
     render: (text: any) => getTextColor(text)
   },
   {
-    title: '周四',
+    title: () => getWeekDay(4),
     dataIndex: 'rangeName4',
     width: '6%',
     render: (text: any) => getTextColor(text)
   },
   {
-    title: '周五',
+    title: () => getWeekDay(5),
     dataIndex: 'rangeName5',
     width: '6%',
     render: (text: any) => getTextColor(text)
   },
   {
-    title: '周六',
+    title: () => getWeekDay(6),
     dataIndex: 'rangeName6',
     width: '6%',
     render: (text: any) => getTextColor(text)
   },
   {
-    title: '周日',
+    title: () => getWeekDay(7),
     dataIndex: 'rangeName7',
     width: '6%',
     render: (text: any) => getTextColor(text)
@@ -123,23 +142,42 @@ const columns = [
   }
 ]
 
+let tableState = {
+  bordered: false,
+  loading: false,
+  pagination: { pageSize: 10 }
+  // expandedRowRender,
+  // size: 'middle',
+  // title: undefined,
+  // showHeader: false,
+  // footer,
+  // rowSelection: {},
+  // scroll: undefined
+  // hasData: true
+}
+
 export default function ScheduleTable () {
   const [count, setCount] = useState(0)
   const [footer, setFooter] = useState('')
   const [scheduleList, setScheduleList] = useState([])
+  // const [stratTime, setStratTime] = useState('')
 
   useEffect(() => {
     console.log(count, setCount)
     setScheduleList([])
     setFooter('排班小计')
 
+    tableState.loading = true
     let eventEmitterClean = emitter.addListener('清空排班记录', () => {
       setScheduleList([])
     })
 
     let eventEmitter = emitter.addListener('本周排班记录', (scheduleData) => {
       console.log('接收:本周排班记录event', scheduleData, scheduleList)
-      // schShiftUser
+
+      scheduleStore.setStartTime(scheduleData.stratTime)
+      scheduleStore.setEndTime(scheduleData.endTime)
+
       let tr = {}
       let newList = new Array()
       scheduleData.schShiftUser.map((nurse: any, shcIndex: number) => {
@@ -185,6 +223,7 @@ export default function ScheduleTable () {
         // console.log('tr', tr)
         newList.push(tr as any)
       })
+      //
       // 统计
       statisticFooter(newList)
       // 补空行
@@ -210,6 +249,7 @@ export default function ScheduleTable () {
           })
         }
       }
+      tableState.loading = false
       setScheduleList(newList as any)
     })
     console.log('eventEmitter', eventEmitter, eventEmitterClean)
@@ -259,7 +299,7 @@ export default function ScheduleTable () {
       {scheduleList.length > 0 && (
         <ScheduleCon>
           <ScheduleTableCon>
-            <Table columns={columns} dataSource={scheduleList} pagination={{ pageSize: 10 }} footer={() => footer} />
+            <Table {...tableState} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
           </ScheduleTableCon>
         </ScheduleCon>
       )}
@@ -311,16 +351,22 @@ const CardBox = styled.div`
 `
 
 const ScheduleCon = styled.div`
-  height: calc(100vh - 300px);
+  height: calc(100vh - 200px);
   overflow: auto;
   margin-top: 0px;
   background: #fff;
 `
 
 const ScheduleTableCon = styled.div`
-  height: calc(100vh - 300px);
+  height: auto; /* calc(100vh - 300px); */
   overflow: auto;
   margin-top: 0px;
   background: #fff;
   /* background: red; */
+
+  th,
+  td {
+    text-align: center !important;
+    padding: 0px !important;
+  }
 `

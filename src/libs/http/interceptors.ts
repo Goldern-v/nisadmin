@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { message } from 'antd'
+import { message, notification } from 'antd'
 // import commonConfig from '../../configs/common'
 import ResponseError from './ResponseError'
 import { authStore, appStore } from '@/stores'
@@ -46,6 +46,7 @@ enum StatusCode {
  */
 export function onResponseFulfilled (response: AxiosResponse) {
   let { code, msg, data } = response.data
+  let status = response.status
   switch (parseInt(code, 10)) {
     case StatusCode.error: {
       console.error(response, code, response.data.desc || '')
@@ -73,7 +74,10 @@ export function onResponseFulfilled (response: AxiosResponse) {
       return response
     }
     default:
-      console.log('默认响应', response.data, code, msg, data)
+      if (status === 200) {
+        return response
+      }
+      console.log('默认响应', response, response.data, code, msg, data)
       return Promise.reject(`未知异常`)
   }
 }
@@ -82,5 +86,18 @@ export function onResponseFulfilled (response: AxiosResponse) {
  * 响应失败拦截
  */
 export function onResponseRejected (error: Error) {
-  return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
+  message.loading('服务器开小差了' + new ResponseError('服务器开小差了', (error as any).response), 5000)
+  // return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
+  notification.error({
+    message: '服务器开小差了',
+    duration: 0,
+    placement: 'bottomRight',
+    description:
+      '' +
+      new ResponseError('服务器开小差了', (error as any).response) +
+      `code: ${(error as any).response.status} ${(error as any).response.statusText}`,
+    onClick: () => {
+      console.log('服务器开小差了', (error as any).response)
+    }
+  })
 }

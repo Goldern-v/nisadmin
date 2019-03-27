@@ -9,6 +9,8 @@ import { Menu, Icon, DatePicker } from 'antd'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 
 import moment from 'moment'
+import { scheduleStore } from '@/stores'
+moment.locale('zh-cn')
 
 const { RangePicker } = DatePicker
 export interface Props extends RouteComponentProps {}
@@ -46,18 +48,20 @@ export default function LeftBar () {
       endTime: moment().format(dateFormat) // endTime   结束时间（刚开始由后台传给前台）
     }
     setMonthStart(moment(firstDay).format(dateFormat))
-    updateWeekList(postData.deptCode, postData.stratTime, postData.endTime)
+    updateWeekList(postData.stratTime, postData.endTime, (time: any) => {
+      handleItem(time[0])
+    })
   }, [])
   // 选择日期间段发生改变时执行
   function onChange (date: any, dateString: any) {
     console.log(date, dateString)
-    updateWeekList('2508', dateString[0], dateString[1])
+    updateWeekList(dateString[0], dateString[1])
   }
 
-  function updateWeekList (deptCode: string, stratTime: string, endTime: string) {
+  function updateWeekList (stratTime: string, endTime: string, callBack: any = null) {
     // 接口请求参数
     const postData = {
-      deptCode: '2508', // deptCode  科室编码 // "门诊护理"
+      deptCode: '2508' || scheduleStore.getDepartment().deptCode, // deptCode  科室编码 // "门诊护理"
       stratTime: stratTime, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
@@ -65,7 +69,11 @@ export default function LeftBar () {
       .findTimeList(postData)
       .then((res) => {
         console.log('排班周列表', res)
+        //
         setShiftList(res.data.data)
+        if (callBack) {
+          callBack(res.data.data)
+        }
       })
       .catch((err) => {
         console.log('排班周列表错误', err)
@@ -76,7 +84,7 @@ export default function LeftBar () {
     console.log('排班', time)
     // 接口请求参数
     const postData = {
-      deptCode: '2508', // deptCode  科室编码 // "门诊护理"
+      deptCode: '2508' || scheduleStore.getDepartment().deptCode, // deptCode  科室编码 // "门诊护理"
       stratTime: time.mondy, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: time.sundy // endTime   结束时间（刚开始由后台传给前台）
     }

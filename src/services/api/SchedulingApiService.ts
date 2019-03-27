@@ -63,7 +63,7 @@ export default class SchedulingApiService extends BaseApiService {
       stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
-    return this.post(`/scheduling/export`, postData)
+    return this.post(`/scheduling/export`, postData, { responseType: 'blob' })
   }
 
   // 5.护士按月份和排班类型统计（按时数）(按天数)
