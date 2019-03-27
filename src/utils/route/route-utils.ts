@@ -26,3 +26,10 @@ export function setLayout (path: string, view: any, layout?: any, data?: any): R
   if (data) router.payload = data
   return router
 }
+
+/**
+ * 路由方法2
+ */
+export function setRouteItem () {
+  //
+}

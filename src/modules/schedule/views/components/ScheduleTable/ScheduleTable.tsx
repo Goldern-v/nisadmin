@@ -167,9 +167,23 @@ export default function ScheduleTable () {
     setScheduleList([])
     setFooter('排班小计')
 
-    tableState.loading = true
+    let eventEmitterLoading = emitter.addListener('动画载入表格中', () => {
+      tableState.loading = true
+    })
+
+    let eventEmitterLoaded = emitter.addListener('动画载入表格完成', () => {
+      tableState.loading = false
+    })
+
     let eventEmitterClean = emitter.addListener('清空排班记录', () => {
       setScheduleList([])
+    })
+
+    let eventEmitterEmptyTable = emitter.addListener('空白排班记录', () => {
+      let newList = new Array()
+      genEmptyTable(newList)
+      setScheduleList(newList as any)
+      setFooter('排班小计: 空')
     })
 
     let eventEmitter = emitter.addListener('本周排班记录', (scheduleData) => {
@@ -224,36 +238,49 @@ export default function ScheduleTable () {
         newList.push(tr as any)
       })
       //
+      // 补空行
+      genEmptyTable(newList)
       // 统计
       statisticFooter(newList)
-      // 补空行
-      let diff = 10 - newList.length
-      if (diff > 0) {
-        for (let j = 0; j < diff; j++) {
-          newList.push({
-            id: '',
-            empNo: '',
-            empName: '',
-            currentLevel: '',
-            title: '',
-            rangeName1: '',
-            rangeName2: '',
-            rangeName3: '',
-            rangeName4: '',
-            rangeName5: '',
-            rangeName6: '',
-            rangeName7: '',
-            remark: '',
-            thisWeekHour: '',
-            status: ''
-          })
-        }
-      }
+
       tableState.loading = false
       setScheduleList(newList as any)
     })
-    console.log('eventEmitter', eventEmitter, eventEmitterClean)
+    console.log(
+      'eventEmitter',
+      eventEmitter,
+      eventEmitterClean,
+      eventEmitterLoading,
+      eventEmitterLoaded,
+      eventEmitterEmptyTable
+    )
   }, [])
+
+  function genEmptyTable (newList: any) {
+    // 补空行
+    let diff = 10 - newList.length
+    if (diff > 0) {
+      for (let j = 0; j < diff; j++) {
+        newList.push({
+          id: '',
+          empNo: '',
+          empName: '',
+          currentLevel: '',
+          title: '',
+          rangeName1: '',
+          rangeName2: '',
+          rangeName3: '',
+          rangeName4: '',
+          rangeName5: '',
+          rangeName6: '',
+          rangeName7: '',
+          remark: '',
+          thisWeekHour: '',
+          status: ''
+        })
+      }
+    }
+  }
 
   function statisticFooter (list: any) {
     console.log('统计', list)
@@ -296,21 +323,24 @@ export default function ScheduleTable () {
 
   return (
     <Wrapper>
-      {scheduleList.length > 0 && (
-        <ScheduleCon>
-          <ScheduleTableCon>
-            <Table {...tableState} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
-          </ScheduleTableCon>
-        </ScheduleCon>
-      )}
-      {scheduleList.length === 0 && (
+      {scheduleList.length === 0 ? (
         <NoScheduleCon>
-          <CardBox>
+          <CardBox
+            onClick={() => {
+              emitter.emit('空白排班记录')
+            }}
+          >
             <Card hoverable style={{ width: 240 }} cover={<img alt='' src='#' />}>
               <Meta style={{ textAlign: 'center' }} title='创建排班' />
             </Card>
           </CardBox>
         </NoScheduleCon>
+      ) : (
+        <ScheduleCon>
+          <ScheduleTableCon>
+            <Table {...tableState} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
+          </ScheduleTableCon>
+        </ScheduleCon>
       )}
     </Wrapper>
   )

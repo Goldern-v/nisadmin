@@ -92,10 +92,7 @@ export function onResponseRejected (error: Error) {
     message: '服务器开小差了',
     duration: 0,
     placement: 'bottomRight',
-    description:
-      '' +
-      new ResponseError('服务器开小差了', (error as any).response) +
-      `code: ${(error as any).response.status} ${(error as any).response.statusText}`,
+    description: `code: ${(error as any).response.status} ${(error as any).response.statusText}`,
     onClick: () => {
       console.log('服务器开小差了', (error as any).response)
     }

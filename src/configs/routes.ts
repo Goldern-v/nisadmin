@@ -9,11 +9,14 @@ import layouts from 'src/layouts'
 // import { scheduleHorizontalMenuConfig } from 'src/modules/schedule/config/scheduleHorizontalMenuConfig'
 import HomeView from 'src/modules/home/HomeView'
 import ScheduleHomeView from 'src/modules/schedule/views/ScheduleHome/ScheduleHomeView'
+import NurseSettingView from 'src/modules/schedule/views/NurseSetting/NurseSettingView' // 排班人员设置
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
   setLayout('/home', HomeView, layouts.MainLayout),
   setLayout('/scheduleHome', ScheduleHomeView, layouts.MainLayout),
+  setLayout('/nurseSetting', NurseSettingView, layouts.MainLayout),
+  setLayout('/scheduleHome/:type', NurseSettingView, layouts.HorizontalMenuLayout, {}),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   {
     path: '/',

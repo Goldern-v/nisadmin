@@ -58,6 +58,47 @@ export default function LeftBar () {
     updateWeekList(dateString[0], dateString[1])
   }
 
+  // 产生每周列表
+  function genWeekList (stratTime: string, endTime: string) {
+    let timelist = new Array()
+    let startTimeTemp = stratTime
+    timelist.push({
+      mondy: moment(stratTime)
+        .startOf('isoWeek')
+        .format(dateFormat),
+      sundy: moment(stratTime)
+        .endOf('isoWeek')
+        .format(dateFormat),
+      week: moment(stratTime)
+        .startOf('isoWeek')
+        .format('w'),
+      status: '-1'
+    })
+
+    while (moment(startTimeTemp).isBefore(endTime)) {
+      startTimeTemp = moment(startTimeTemp)
+        .add(1, 'w')
+        .startOf('isoWeek')
+        .format(dateFormat)
+      timelist.push({
+        mondy: moment(startTimeTemp)
+          .startOf('isoWeek')
+          .format(dateFormat),
+        sundy: moment(startTimeTemp)
+          .endOf('isoWeek')
+          .format(dateFormat),
+        week: moment(startTimeTemp)
+          .startOf('isoWeek')
+          .format('w'),
+        status: '-1'
+      })
+    }
+    timelist.pop()
+    console.log('产生列表', startTimeTemp, stratTime, endTime, timelist)
+    return timelist
+  }
+
+  // 更新周列表
   function updateWeekList (stratTime: string, endTime: string, callBack: any = null) {
     // 接口请求参数
     const postData = {
@@ -65,14 +106,34 @@ export default function LeftBar () {
       stratTime: stratTime, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
+
+    let timelist = genWeekList(postData.stratTime, postData.endTime)
+    console.log('排班周列表timelist', timelist, postData)
+
     service.schedulingApiService
       .findTimeList(postData)
       .then((res) => {
-        console.log('排班周列表', res)
-        //
-        setShiftList(res.data.data)
+        console.log('排班周列表', res, postData)
+        // moment().startOf('week')
+        timelist = genWeekList(postData.stratTime, postData.endTime)
+        // console.log('排班周列表timelist', timelist)
+        let list = res.data.data
+        // Object.assign(timelist, list)
+        if (list) {
+          list.map((time: any) => {
+            timelist.map((t: any) => {
+              if (Number(t.week) === Number(time.week)) {
+                t.status = time.status
+                // console.log('###', t, time, timelist)
+              }
+              // console.log('!!!!', t, time, timelist)
+            })
+          })
+        }
+        setShiftList(timelist as any)
+        // setShiftList(res.data.data)
         if (callBack) {
-          callBack(res.data.data)
+          callBack(timelist as any)
         }
       })
       .catch((err) => {
@@ -80,8 +141,18 @@ export default function LeftBar () {
       })
   }
 
+  // 处理周点击
   function handleItem (time: any) {
     console.log('排班', time)
+
+    scheduleStore.setStartTime(time.mondy)
+    scheduleStore.setEndTime(time.sundy)
+
+    if (Number(time.status) === -1) {
+      return emitter.emit('清空排班记录')
+    }
+
+    emitter.emit('动画载入表格中')
     // 接口请求参数
     const postData = {
       deptCode: '2508' || scheduleStore.getDepartment().deptCode, // deptCode  科室编码 // "门诊护理"
@@ -93,7 +164,11 @@ export default function LeftBar () {
       .then((res) => {
         console.log('发出：排班记录，从组件LeftBar', res)
         // todo ... emitter 将数据传递给表格组件进行下一步数据渲染
-        emitter.emit('本周排班记录', res.data.data)
+        if (res && res.data.data) {
+          emitter.emit('本周排班记录', res.data.data)
+        } else {
+          emitter.emit('清空排班记录')
+        }
       })
       .catch((err) => {
         console.log('排班记录错误', err)
@@ -101,7 +176,7 @@ export default function LeftBar () {
   }
   return (
     <Wrapper>
-      <Menu mode='inline' style={{ width: '100%', height: 'auto', minHeight: '100vh' }}>
+      <Menu mode='inline' defaultSelectedKeys={['0']} style={{ width: '100%', height: 'auto', minHeight: '100vh' }}>
         <ItemMenu onClick={(e) => emitter.emit('清空排班记录')} key='sub1'>
           <span>
             <Icon type='calendar' />

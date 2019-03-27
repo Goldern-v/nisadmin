@@ -1,30 +1,21 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import LeftBar from './components/LeftBar/LeftBar'
-import ToolBar from './components/ToolBar/ToolBar'
-import ScheduleTable from '../components/ScheduleTable/ScheduleTable'
 
 export interface Props extends RouteComponentProps {}
 
-export default function ScheduleHomeView (props: Props) {
+export default function NuserSettingView () {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
-    console.log('路径参数', props, props.match.params)
   })
   return (
     <Wrapper>
-      <LeftBarCon>
-        <LeftBar />
-      </LeftBarCon>
+      <div> 排班人员设置 </div>
+      <LeftBarCon />
       <MainCon>
-        <ToolBarCon>
-          <ToolBar />
-        </ToolBarCon>
-        <MainContent>
-          <ScheduleTable />
-        </MainContent>
+        <ToolBarCon />
+        <MainContent />
       </MainCon>
     </Wrapper>
   )

@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Select, Button } from 'antd'
+import { Link } from 'react-router-dom'
+
+import { Select, Button, message } from 'antd'
 import { authStore, scheduleStore } from '@/stores'
 import service from 'src/services/api'
 
@@ -32,10 +34,13 @@ export default function ToolBar () {
         setWardList(res.data.data) // 更新科室列表
         setWardValue(res.data.data[0].deptName)
         console.log('更新wardList:', wardValue, wardCode, wardList)
-        scheduleStore.setDepartmentValue('wardCode', wardCode)
-        scheduleStore.setDepartmentValue('wardName', res.data.data[0].deptName)
-        scheduleStore.setDepartmentValue('deptName', res.data.data[0].deptName)
-        scheduleStore.setDepartmentValue('deptCode', res.data.data[0].deptCode)
+        let dept = {
+          wardCode: wardCode,
+          wardName: res.data.data[0].deptName,
+          deptName: res.data.data[0].deptName,
+          deptCode: res.data.data[0].deptCode
+        }
+        scheduleStore.setDepartment(dept as any)
       })
     }
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
@@ -46,28 +51,47 @@ export default function ToolBar () {
       if (ward.deptCode === code) {
         setWardCode(ward.deptCode)
         setWardValue(ward.deptName)
-        scheduleStore.setDepartmentValue('wardCode', ward.deptCode)
-        scheduleStore.setDepartmentValue('wardName', ward.deptName)
-        scheduleStore.setDepartmentValue('deptCode', ward.deptCode)
-        scheduleStore.setDepartmentValue('deptName', ward.deptName)
+        let dept = {
+          wardCode: ward.deptCode,
+          wardName: ward.deptName,
+          deptName: ward.deptName,
+          deptCode: ward.deptCode
+        }
+        scheduleStore.setDepartment(dept as any)
+        // scheduleStore.setDepartmentValue('wardCode', ward.deptCode)
+        // scheduleStore.setDepartmentValue('wardName', ward.deptName)
+        // scheduleStore.setDepartmentValue('deptCode', ward.deptCode)
+        // scheduleStore.setDepartmentValue('deptName', ward.deptName)
       }
     })
   }
 
   const fileDownload = (res: any) => {
-    let filename = res.headers['content-disposition'].replace('attachment;filename=', '') || 'fileName.xls'
+    let filename = res.headers['content-disposition']
+      ? res.headers['content-disposition'].replace('attachment;filename=', '')
+      : '导出文件'
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
+    // "application/json"
     let blob = new Blob([res.data], {
-      type: 'application/vnd.ms-excel;charset=utf-8'
+      type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    let a = document.createElement('a')
-    let href = window.URL.createObjectURL(blob) // 创建链接对象
-    a.href = href
-    a.download = filename // 自定义文件名
-    document.body.appendChild(a)
-    a.click()
-    window.URL.revokeObjectURL(href)
-    document.body.removeChild(a) // 移除a元素
+    if (res.data.type.indexOf('excel') > -1) {
+      let a = document.createElement('a')
+      let href = window.URL.createObjectURL(blob) // 创建链接对象
+      a.href = href
+      a.download = filename // 自定义文件名
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(href)
+      document.body.removeChild(a) // 移除a元素
+    } else {
+      let reader = new FileReader()
+      reader.addEventListener('loadend', function (data: any) {
+        // reader.result 包含转化为类型数组的blob
+        message.error(`${reader.result}`)
+      })
+      reader.readAsText(blob)
+    }
   }
 
   return (
@@ -89,7 +113,7 @@ export default function ToolBar () {
             endTime: scheduleStore.getEndTime() // endTime   结束时间（刚开始由后台传给前台）
           }
           service.schedulingApiService.export(postData).then((res) => {
-            // console.log(res, '接收excel')
+            console.log(res, '接收excel')
             fileDownload(res)
           })
           console.log(e)
@@ -98,11 +122,23 @@ export default function ToolBar () {
         导出Excel
       </Button>
       <div style={{ flex: 1 }} />
-      <LinkText>排班人员设置</LinkText>
+      <LinkText>
+        <Link to='/nurseSetting' style={{ color: '#747474' }}>
+          排班人员设置
+        </Link>
+      </LinkText>
       <BreakLine>|</BreakLine>
-      <LinkText>班次设置</LinkText>
+      <LinkText>
+        <Link to='/nurseSetting' style={{ color: '#747474' }}>
+          班次设置
+        </Link>
+      </LinkText>
       <BreakLine>|</BreakLine>
-      <LinkText>排班套餐设置</LinkText>
+      <LinkText>
+        <Link to='/nurseSetting' style={{ color: '#747474' }}>
+          排班套餐设置
+        </Link>
+      </LinkText>
     </Wrapper>
   )
 }
