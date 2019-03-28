@@ -9,7 +9,7 @@ import { Menu, Icon, DatePicker } from 'antd'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 
 import moment from 'moment'
-import { scheduleStore } from '@/stores'
+import { authStore, scheduleStore } from '@/stores'
 moment.locale('zh-cn')
 
 const { RangePicker } = DatePicker
@@ -38,12 +38,20 @@ export default function LeftBar () {
   useEffect(() => {
     console.log(count, setCount)
     setShiftList([])
+    initial()
+    onEventsEmitter()
+  }, [])
+
+  // 初始化周列表
+  function initial () {
     // 默认获取最近一月排班
     let date = new Date()
     let firstDay = date.setDate(1)
+    // JSON.parse(sessionStorage.user).deptCode ||
+    // JSON.parse(sessionStorage.user).deptName ||
     // 接口请求参数
     const postData = {
-      deptCode: '2508', // deptCode  科室编码 // "门诊护理"
+      // deptCode: scheduleStore.getDeptCode() || authStore.getUser().deptCode, // '2508', // deptCode  科室编码 // "门诊护理"
       stratTime: moment(firstDay).format(dateFormat), // stratTime 开始时间（刚开始由后台传给前台）
       endTime: moment().format(dateFormat) // endTime   结束时间（刚开始由后台传给前台）
     }
@@ -51,7 +59,15 @@ export default function LeftBar () {
     updateWeekList(postData.stratTime, postData.endTime, (time: any) => {
       handleItem(time[0])
     })
-  }, [])
+  }
+
+  function onEventsEmitter () {
+    let eventEmitterInitalWeekTime = emitter.addListener('初始化周排班列表', () => {
+      initial()
+    })
+    console.log(eventEmitterInitalWeekTime)
+  }
+
   // 选择日期间段发生改变时执行
   function onChange (date: any, dateString: any) {
     console.log(date, dateString)
@@ -102,11 +118,18 @@ export default function LeftBar () {
   function updateWeekList (stratTime: string, endTime: string, callBack: any = null) {
     // 接口请求参数
     const postData = {
-      deptCode: '2508' || scheduleStore.getDepartment().deptCode, // deptCode  科室编码 // "门诊护理"
+      deptCode: scheduleStore.getDeptCode() || authStore.getUser().deptCode, // deptCode  科室编码 // "门诊护理"
       stratTime: stratTime, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
-
+    console.log(
+      '接口请求参数updateWeekList',
+      postData,
+      scheduleStore.getDepartment(),
+      scheduleStore.getDeptCode(),
+      authStore.getUser(),
+      authStore.getUser().deptCode
+    )
     let timelist = genWeekList(postData.stratTime, postData.endTime)
     console.log('排班周列表timelist', timelist, postData)
 
@@ -149,13 +172,15 @@ export default function LeftBar () {
     scheduleStore.setEndTime(time.sundy)
 
     if (Number(time.status) === -1) {
+      emitter.emit('禁止工具按钮', true)
       return emitter.emit('清空排班记录')
     }
 
     emitter.emit('动画载入表格中')
+    emitter.emit('禁止工具按钮', false)
     // 接口请求参数
     const postData = {
-      deptCode: '2508' || scheduleStore.getDepartment().deptCode, // deptCode  科室编码 // "门诊护理"
+      deptCode: scheduleStore.getDeptCode(), // deptCode  科室编码 // "门诊护理"
       stratTime: time.mondy, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: time.sundy // endTime   结束时间（刚开始由后台传给前台）
     }

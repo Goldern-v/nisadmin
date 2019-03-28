@@ -15,8 +15,11 @@ const routes: RouteItem[] = [
   setLayout('/login', LoginView),
   setLayout('/home', HomeView, layouts.MainLayout),
   setLayout('/scheduleHome', ScheduleHomeView, layouts.MainLayout),
-  setLayout('/nurseSetting', NurseSettingView, layouts.MainLayout),
-  setLayout('/scheduleHome/:type', NurseSettingView, layouts.HorizontalMenuLayout, {}),
+  // setLayout('/nurseSetting', NurseSettingView, layouts.MainLayout),
+  setLayout('/nurseSetting', NurseSettingView, layouts.BreadcrumbLayout, [
+    { name: '排班管理', link: '/scheduleHome' },
+    { name: '排班人员设置', link: '' }
+  ]),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   {
     path: '/',

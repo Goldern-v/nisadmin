@@ -7,40 +7,58 @@ import { Select, Button, message } from 'antd'
 import { authStore, scheduleStore } from '@/stores'
 import service from 'src/services/api'
 
+import emitter from 'src/libs/ev'
+
 const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
 export default function ToolBar () {
   // 在react hooks 用 useState 定义 class component 里的 state 变量
+  const [buttonDisabled, setButtonDisabled] = useState(true)
   const [wardCode, setWardCode] = useState('')
   const [wardValue, setWardValue] = useState('')
   const [wardList, setWardList] = useState([
     {
-      deptCode: '',
-      deptName: ''
+      code: '',
+      name: ''
     }
   ])
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    console.log(wardCode, setWardCode, wardValue, setWardValue)
     setWardList([])
+    setButtonDisabled(true)
+
+    let eventEmitterLoading = emitter.addListener('禁止工具按钮', (disable: boolean) => {
+      setButtonDisabled(disable)
+    })
+
+    console.log(eventEmitterLoading)
+
     if (authStore.getUser()) {
-      let deptCode = authStore.getUser().deptCode || ''
+      // let deptCode = authStore.getUser().deptCode || ''
+      if (scheduleStore.getDeptName()) {
+        setWardValue(scheduleStore.getDeptName())
+        setWardCode(scheduleStore.getDeptCode())
+      }
       // 根据部门代码获取科室代码列表
-      service.wardDailyApiService.getDeptWithWardcode(deptCode).then((res) => {
+      service.commonApiService.getUintList().then((res) => {
         console.log('更新科室列表', res)
         if (!res) {
           return
         }
-        setWardList(res.data.data) // 更新科室列表
-        setWardValue(res.data.data[0].deptName)
-        console.log('更新wardList:', wardValue, wardCode, wardList)
-        let dept = {
-          wardCode: wardCode,
-          wardName: res.data.data[0].deptName,
-          deptName: res.data.data[0].deptName,
-          deptCode: res.data.data[0].deptCode
+        setWardList(res.data.data.deptList) // 更新科室列表
+        if (!scheduleStore.getDeptName()) {
+          setWardValue(res.data.data.deptName)
+          // console.log('更新wardList:', wardValue, wardCode, wardList)
+          let dept = {
+            wardCode: res.data.defaultDept,
+            wardName: res.data.datadeptName,
+            deptName: res.data.datadeptName,
+            deptCode: res.data.defaultDept
+          }
+          scheduleStore.setDepartment(dept as any)
         }
-        scheduleStore.setDepartment(dept as any)
       })
     }
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
@@ -48,20 +66,25 @@ export default function ToolBar () {
   const handleChange = (code: any) => {
     // console.log('handleChange', code, wardList)
     wardList.map((ward) => {
-      if (ward.deptCode === code) {
-        setWardCode(ward.deptCode)
-        setWardValue(ward.deptName)
+      if (ward.code === code) {
+        setWardCode(ward.code)
+        setWardValue(ward.name)
         let dept = {
-          wardCode: ward.deptCode,
-          wardName: ward.deptName,
-          deptName: ward.deptName,
-          deptCode: ward.deptCode
+          wardCode: ward.code,
+          wardName: ward.name,
+          deptName: ward.name,
+          deptCode: ward.code
         }
+
+        message.success(`切换至 ${ward.name}`)
+        emitter.emit('清空排班记录')
+        emitter.emit('初始化周排班列表')
+
         scheduleStore.setDepartment(dept as any)
-        // scheduleStore.setDepartmentValue('wardCode', ward.deptCode)
-        // scheduleStore.setDepartmentValue('wardName', ward.deptName)
-        // scheduleStore.setDepartmentValue('deptCode', ward.deptCode)
-        // scheduleStore.setDepartmentValue('deptName', ward.deptName)
+        // scheduleStore.setDepartmentValue('wardCode', ward.code)
+        // scheduleStore.setDepartmentValue('wardName', ward.name)
+        // scheduleStore.setDepartmentValue('deptCode', ward.code)
+        // scheduleStore.setDepartmentValue('deptName', ward.name)
       }
     })
   }
@@ -99,16 +122,20 @@ export default function ToolBar () {
       <Label>科室：</Label>
       <Select value={wardValue} onChange={handleChange} style={{ width: 200 }}>
         {wardList.map((ward) => (
-          <Option key={ward.deptCode} value={ward.deptCode}>
-            {ward.deptName}
+          <Option key={ward.code} value={ward.code}>
+            {ward.name}
           </Option>
         ))}
       </Select>
-      <Button style={{ marginLeft: 20, marginRight: 10 }}>编辑排班</Button>
+
+      <Button disabled={buttonDisabled} style={{ marginLeft: 20, marginRight: 10 }}>
+        编辑排班
+      </Button>
       <Button
+        disabled={buttonDisabled}
         onClick={(e: any) => {
           const postData = {
-            deptCode: '2508' || scheduleStore.getDepartment().deptCode || '', // deptCode  科室编码
+            deptCode: scheduleStore.getDeptCode() || '', // deptCode  科室编码
             stratTime: scheduleStore.getStartTime(), // stratTime 开始时间（刚开始由后台传给前台）
             endTime: scheduleStore.getEndTime() // endTime   结束时间（刚开始由后台传给前台）
           }
@@ -121,6 +148,7 @@ export default function ToolBar () {
       >
         导出Excel
       </Button>
+
       <div style={{ flex: 1 }} />
       <LinkText>
         <Link to='/nurseSetting' style={{ color: '#747474' }}>
