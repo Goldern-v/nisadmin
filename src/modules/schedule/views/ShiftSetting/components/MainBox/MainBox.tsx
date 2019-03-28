@@ -17,64 +17,54 @@ export interface Props extends RouteComponentProps {}
 
 const columns = [
   {
-    title: '工号',
-    dataIndex: 'empNo',
-    key: 'empNo',
+    title: '班次名称',
+    dataIndex: 'name',
+    key: 'name',
     width: '8%'
   },
   {
-    title: '姓名',
-    dataIndex: 'empName',
-    key: 'empName',
+    title: '类别',
+    dataIndex: 'shiftType',
+    key: 'shiftType',
     width: '12%'
   },
   {
-    title: '所在科室',
-    dataIndex: 'deptName',
+    title: '开始时间',
+    dataIndex: 'stratTime',
     width: '30%',
-    key: 'deptName'
+    key: 'stratTime'
   },
   {
-    title: '性别',
-    dataIndex: 'sex',
-    key: 'sex',
+    title: '结束时间',
+    dataIndex: 'endTime',
+    key: 'endTime',
     width: '8%'
   },
   {
-    title: '年龄',
-    dataIndex: 'age',
-    key: 'age'
+    title: '工时(小时）',
+    dataIndex: 'effectiveDur',
+    key: 'effectiveDur'
   },
   {
-    title: '职称',
+    title: '操作',
     dataIndex: 'title',
     width: '12%',
     key: 'title'
-  },
-  {
-    title: '现任能级',
-    dataIndex: 'currentLevel',
-    key: 'currentLevel'
-  },
-  {
-    title: '职务',
-    dataIndex: 'roleJurisdict',
-    key: 'roleJurisdict'
   }
 ]
 
 let data = {
   key: '',
   id: '',
-  empNo: '',
-  empName: '',
-  deptName: '',
-  sex: '',
-  age: '',
-  title: '',
-  currentLevel: '',
-  roleJurisdict: '',
-  rangeShow: null
+  name: '',
+  deptCode: '',
+  shiftType: '',
+  stratTime: '',
+  endTime: '',
+  effectiveDur: '',
+  remarks: '',
+  createTime: '',
+  creatorNo: ''
 }
 
 let allUser = new Array()
@@ -97,56 +87,17 @@ let rowSelection = {
     name: record.key
   }),
   hideDefaultSelections: true
-  // selections: [
-  //   {
-  //     key: 'all-data',
-  //     text: '全选',
-  //     onSelect: () => {
-  //       // selectedRowKeys
-  //     }
-  //   },
-  //   {
-  //     key: 'odd',
-  //     text: '单',
-  //     onSelect: (changableRowKeys: any) => {
-  //       let newSelectedRowKeys = []
-  //       newSelectedRowKeys = changableRowKeys.filter((key: any, index: any) => {
-  //         if (index % 2 !== 0) {
-  //           return false
-  //         }
-  //         return true
-  //       })
-  //       console.log('单', newSelectedRowKeys, changableRowKeys)
-  //       // selectedRowKeysGroup = newSelectedRowKeys
-  //     }
-  //   },
-  //   {
-  //     key: 'even',
-  //     text: '双',
-  //     onSelect: (changableRowKeys: any) => {
-  //       let newSelectedRowKeys = []
-  //       newSelectedRowKeys = changableRowKeys.filter((key: any, index: any) => {
-  //         if (index % 2 !== 0) {
-  //           return true
-  //         }
-  //         return false
-  //       })
-  //       console.log('双', newSelectedRowKeys, changableRowKeys)
-  //       // selectedRowKeysGroup = newSelectedRowKeys
-  //     }
-  //   }
-  // ]
 }
 
 export default function MainBox () {
   const [count, setCount] = useState(0)
-  const [userList, setUserList] = useState(new Array())
+  const [ShiftList, setShiftList] = useState(new Array())
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    getUserList()
+    getShiftList()
 
-    let eventEmitterGetSelectedUser = emitter.addListener('获取选中人员列表', (callback: any) => {
+    let eventEmitterGetSelectedUser = emitter.addListener('获取选中班次列表', (callback: any) => {
       if (callback) {
         callback(allUser)
       }
@@ -155,10 +106,10 @@ export default function MainBox () {
     console.log(count, setCount, eventEmitterGetSelectedUser)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
-  const getUserList = () => {
+  const getShiftList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
-    service.scheduleUserApiService.getByDeptCode(deptCode).then((res) => {
-      console.log('查找排班人员res', res, data)
+    service.scheduleShiftApiService.getShiftListByCode(deptCode, 'true').then((res) => {
+      console.log('查找排班班次res', res, data)
       let oneUser = new Object()
       allUser = new Array()
       // columns
@@ -188,8 +139,8 @@ export default function MainBox () {
         })
 
         genEmptyTable(allUser)
-        setUserList(allUser)
-        console.log('查找排班人员', userList, allUser, tableData)
+        setShiftList(allUser)
+        console.log('查找排班班次', ShiftList, allUser, tableData)
       }
     })
   }
@@ -210,7 +161,7 @@ export default function MainBox () {
 
   return (
     <Wrapper>
-      <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={userList} />
+      <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} />
     </Wrapper>
   )
 }

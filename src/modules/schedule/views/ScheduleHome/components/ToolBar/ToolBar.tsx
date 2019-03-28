@@ -157,7 +157,7 @@ export default function ToolBar () {
       </LinkText>
       <BreakLine>|</BreakLine>
       <LinkText>
-        <Link to='/nurseSetting' style={{ color: '#747474' }}>
+        <Link to='/shiftSetting' style={{ color: '#747474' }}>
           班次设置
         </Link>
       </LinkText>

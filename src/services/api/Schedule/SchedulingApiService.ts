@@ -19,7 +19,7 @@
  * 12.科室排班统计（按班次）（非json传参）
  */
 
-import BaseApiService from './BaseApiService'
+import BaseApiService from '../BaseApiService'
 
 export default class SchedulingApiService extends BaseApiService {
   // 1.新建排班
