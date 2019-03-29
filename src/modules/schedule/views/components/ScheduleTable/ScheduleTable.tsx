@@ -49,7 +49,7 @@ const getWeekDay = (weekday: number) => {
   let days = ['', '一', '二', '三', '四', '五', '六', '日']
   let date = moment(scheduleStore.getStartTime())
     .add(weekday - 1, 'days')
-    .format('M[月]D[日(周]dddd[)]')
+    .format('M[月]DD[日(周]dddd[)]')
   // console.log('周', weekday, scheduleStore.getStartTime(), date)
   if (date.indexOf('Invalid date') > -1) {
     return `周${days[weekday - 1]}`

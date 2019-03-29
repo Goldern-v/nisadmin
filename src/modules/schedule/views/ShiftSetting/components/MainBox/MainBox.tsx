@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-import { Table } from 'antd'
+import { Table, message, Popconfirm, Divider } from 'antd'
 // import { authStore, scheduleStore } from '@/stores'
 import service from 'src/services/api'
 import { scheduleStore } from '@/stores'
@@ -29,10 +29,16 @@ const columns = [
     width: '12%'
   },
   {
+    title: '颜色标记',
+    dataIndex: 'nameColor',
+    key: 'nameColor',
+    width: '12%'
+  },
+  {
     title: '开始时间',
-    dataIndex: 'stratTime',
+    dataIndex: 'startTime',
     width: '30%',
-    key: 'stratTime'
+    key: 'startTime'
   },
   {
     title: '结束时间',
@@ -42,29 +48,48 @@ const columns = [
   },
   {
     title: '工时(小时）',
-    dataIndex: 'effectiveDur',
-    key: 'effectiveDur'
+    dataIndex: 'effectiveTime',
+    key: 'effectiveTime'
   },
   {
     title: '操作',
     dataIndex: 'title',
     width: '12%',
-    key: 'title'
+    key: 'title',
+    render: (text: string, record: any) =>
+      record.id ? (
+        <span>
+          <a
+            href='javascript:;'
+            onClick={() => {
+              message.success(`编辑${record.key}`)
+            }}
+          >
+            编辑
+          </a>
+          <Divider type='vertical' />
+          <Popconfirm title='确认要删除?' onConfirm={() => message.success(`删除${record.key}`)}>
+            <a href='javascript:;'>删除</a>
+          </Popconfirm>
+        </span>
+      ) : (
+        ''
+      )
   }
 ]
 
 let data = {
   key: '',
   id: '',
-  name: '',
-  deptCode: '',
-  shiftType: '',
-  stratTime: '',
-  endTime: '',
-  effectiveDur: '',
-  remarks: '',
   createTime: '',
-  creatorNo: ''
+  deptCode: '',
+  effectiveTime: '',
+  endTime: '',
+  name: '',
+  nameColor: '',
+  shiftType: '',
+  startTime: '',
+  status: ''
 }
 
 let allUser = new Array()
@@ -82,8 +107,8 @@ let rowSelection = {
     console.log('onSelectAll', selected, selectedRows, changeRows)
   },
   getCheckboxProps: (record: any) => ({
-    disabled: record.rangeShow === null, // Column configuration not to be checked
-    defaultChecked: record.rangeShow,
+    disabled: !record.id, // Column configuration not to be checked
+    defaultChecked: record.status === true,
     name: record.key
   }),
   hideDefaultSelections: true
