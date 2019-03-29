@@ -5,6 +5,7 @@ import store from '@/stores'
 import service from 'src/services/api'
 
 import { observer } from 'mobx-react-lite'
+import { message } from 'antd'
 
 function Header () {
   // 登陆判断
@@ -26,7 +27,7 @@ function Header () {
       <span
         style={{ display: 'contents', cursor: 'pointer' }}
         onClick={() => {
-          alert('没有消息')
+          message.success('没有消息')
         }}
       >
         <Icon src={require('../images/消息.png')} />

@@ -10,6 +10,9 @@ import GlobalStyle from './styles/global'
 import { theme } from './styles/theme'
 import './styles/iconfont.css'
 
+import zhCN from 'antd/lib/locale-provider/zh_CN'
+import { LocaleProvider } from 'antd'
+
 export interface Props {}
 
 export interface State {}
@@ -17,16 +20,18 @@ export interface State {}
 export class App extends React.Component<Props, State> {
   public render () {
     return (
-      <ThemeProvider theme={theme}>
-        <Wrapper>
-          <Inner>
-            <Router>
-              <RouterView routes={routes} />
-            </Router>
-          </Inner>
-          <GlobalStyle />
-        </Wrapper>
-      </ThemeProvider>
+      <LocaleProvider locale={zhCN}>
+        <ThemeProvider theme={theme}>
+          <Wrapper>
+            <Inner>
+              <Router>
+                <RouterView routes={routes} />
+              </Router>
+            </Inner>
+            <GlobalStyle />
+          </Wrapper>
+        </ThemeProvider>
+      </LocaleProvider>
     )
   }
 }

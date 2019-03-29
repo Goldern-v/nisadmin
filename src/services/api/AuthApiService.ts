@@ -1,6 +1,6 @@
 import { httpLoginToken } from '@/libs/http/http'
 
-import { authStore } from '@/stores'
+import { authStore, scheduleStore } from '@/stores'
 
 import BaseApiService from './BaseApiService'
 
@@ -17,8 +17,10 @@ export default class AuthApiService extends BaseApiService {
         authStore.setAuthToken(authToken)
         authStore.setAdminNurse(adminNurse)
         authStore.updateUser(user)
+        scheduleStore.setDepartmentValue('deptCode', user.deptCode)
+        scheduleStore.setDepartmentValue('deptName', user.deptName)
         window.location.href = '#/home'
-        console.log('登陆成功', adminNurse, authToken, user, sessionStorage)
+        console.log('登陆成功', adminNurse, authToken, user, sessionStorage, scheduleStore)
       })
       .catch((err) => {
         console.log('登陆失败', err)

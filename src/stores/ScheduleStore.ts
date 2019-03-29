@@ -1,12 +1,13 @@
 import { action, observable } from 'mobx'
+import { authStore } from '.'
 
 export default class ScheduleStore {
   public constructor () {
     this.startTime = ''
     this.endTime = ''
     this.department = {
-      deptCode: '',
-      deptName: '',
+      deptCode: authStore.getUser().deptCode,
+      deptName: authStore.getUser().deptName,
       wardCode: '',
       wardName: ''
     }
@@ -48,5 +49,15 @@ export default class ScheduleStore {
   @action
   public getDepartment = () => {
     return this.department
+  }
+
+  @action
+  public getDeptCode = () => {
+    return this.department.deptCode
+  }
+
+  @action
+  public getDeptName = () => {
+    return this.department.deptName
   }
 }
