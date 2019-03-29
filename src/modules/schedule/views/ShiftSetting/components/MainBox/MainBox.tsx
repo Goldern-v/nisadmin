@@ -61,14 +61,24 @@ const columns = [
         <span>
           <a
             href='javascript:;'
-            onClick={() => {
-              message.success(`编辑${record.key}`)
+            onClick={(e: any) => {
+              console.log('编辑e', e)
+              // message.success(`编辑${record.key}`)
+              emitter.emit('弹窗编辑排班', record)
             }}
           >
             编辑
           </a>
           <Divider type='vertical' />
-          <Popconfirm title='确认要删除?' onConfirm={() => message.success(`删除${record.key}`)}>
+          <Popconfirm
+            title='确认要删除?'
+            onConfirm={() => {
+              service.scheduleShiftApiService.delete(record.key).then((res) => {
+                emitter.emit('更新班次列表')
+              })
+              message.success(`删除${record.key}`)
+            }}
+          >
             <a href='javascript:;'>删除</a>
           </Popconfirm>
         </span>
@@ -94,13 +104,23 @@ let data = {
 
 let allUser = new Array()
 
+let tableData = new Array()
+let selectedRowsArray = new Array()
+
 // rowSelection objects indicates the need for row selection
 let rowSelection = {
   onChange: (selectedRowKeys: any, selectedRows: any) => {
+    // selectedRowsArray = selectedRows
     console.log(`onChange:selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
   },
   onSelect: (record: any, selected: any, selectedRows: any) => {
-    record.rangeShow = selected
+    record.status = selected
+    selectedRowsArray.map((res) => {
+      if (res.id === record.id) {
+        res.status = selected
+      }
+    })
+    // selectedRowsArray
     console.log('onSelect', record, selected, selectedRows)
   },
   onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
@@ -122,13 +142,21 @@ export default function MainBox () {
   useEffect(() => {
     getShiftList()
 
-    let eventEmitterGetSelectedUser = emitter.addListener('获取选中班次列表', (callback: any) => {
+    emitter.removeAllListeners('获取选中班次列表')
+    emitter.removeAllListeners('更新班次列表')
+
+    const eventEmitterGetSelectedUser = emitter.addListener('获取选中班次列表', (callback: any) => {
       if (callback) {
-        callback(allUser)
+        callback(selectedRowsArray)
       }
     })
+
+    const eventEmitterUpdateShiftList = emitter.addListener('更新班次列表', () => {
+      getShiftList()
+    })
+
     //
-    console.log(count, setCount, eventEmitterGetSelectedUser)
+    console.log(count, setCount, eventEmitterGetSelectedUser, eventEmitterUpdateShiftList)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const getShiftList = () => {
@@ -137,19 +165,20 @@ export default function MainBox () {
       console.log('查找排班班次res', res, data)
       let oneUser = new Object()
       allUser = new Array()
+      selectedRowsArray = new Array()
       // columns
 
       if (res && res.data.data) {
-        let tableData = res.data.data
+        tableData = res.data.data
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {
-          console.log('oneObj', index, oneObj, oneObj.rangeShow)
-          if (oneObj.rangeShow === true) {
+          console.log('oneObj', index, oneObj, oneObj.status)
+          if (oneObj.status === true) {
             console.log('tableDataindex', index)
             rowKeys.push(oneObj.id)
           } else {
-            oneObj.rangeShow = false
+            oneObj.status = false
           }
           oneUser = new Object()
           for (const key in data) {
@@ -161,11 +190,12 @@ export default function MainBox () {
             }
           }
           (allUser as any).push(oneUser)
+          selectedRowsArray.push(oneUser)
         })
 
         genEmptyTable(allUser)
         setShiftList(allUser)
-        console.log('查找排班班次', ShiftList, allUser, tableData)
+        console.log('查找排班班次', ShiftList, allUser, tableData, selectedRowsArray)
       }
     })
   }

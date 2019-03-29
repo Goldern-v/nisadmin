@@ -146,6 +146,8 @@ export default function MainBox () {
   useEffect(() => {
     getUserList()
 
+    emitter.removeAllListeners('获取选中人员列表')
+
     let eventEmitterGetSelectedUser = emitter.addListener('获取选中人员列表', (callback: any) => {
       if (callback) {
         callback(allUser)

@@ -29,6 +29,8 @@ export default function ToolBar () {
     setWardList([])
     setButtonDisabled(true)
 
+    emitter.removeAllListeners('禁止工具按钮')
+
     let eventEmitterLoading = emitter.addListener('禁止工具按钮', (disable: boolean) => {
       setButtonDisabled(disable)
     })

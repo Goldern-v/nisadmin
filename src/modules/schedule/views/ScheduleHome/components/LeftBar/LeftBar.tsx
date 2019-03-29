@@ -89,6 +89,8 @@ export default function LeftBar () {
   }
 
   function onEventsEmitter () {
+    emitter.removeAllListeners('初始化周排班列表')
+
     let eventEmitterInitalWeekTime = emitter.addListener('初始化周排班列表', () => {
       initial()
     })

@@ -167,6 +167,12 @@ export default function ScheduleTable () {
     setScheduleList([])
     setFooter('排班小计')
 
+    emitter.removeAllListeners('动画载入表格中')
+    emitter.removeAllListeners('动画载入表格完成')
+    emitter.removeAllListeners('清空排班记录')
+    emitter.removeAllListeners('空白排班记录')
+    emitter.removeAllListeners('本周排班记录')
+
     let eventEmitterLoading = emitter.addListener('动画载入表格中', () => {
       tableState.loading = true
     })
