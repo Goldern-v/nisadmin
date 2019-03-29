@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function BedSituation () {
   const [count, setCount] = useState(0)
@@ -56,10 +56,10 @@ const MidItem = styled.div`
   line-height: 26px;
   display: flex;
   .leftItem {
-    width: 75%;
+    width: 70%;
   }
   .rightItem {
-    width: 25%;
+    width: 30%;
     text-align: right;
   }
 `

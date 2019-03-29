@@ -6,6 +6,17 @@ export default function BedSituation () {
   useEffect(() => {
     console.log(count, setCount)
   })
+  // let dataLen = 4
+  // const tbodyData = []
+  // for (let i = 0; i < dataLen; i++) {
+  //   tbodyData.push({})
+  // }
+  // const tbodyDom = tbodyData.map((item, index) => (
+  //   <tr>
+  //     <td key={index}>{item}</td>
+  //   </tr>
+  // ))
+
   return (
     <div>
       <Head>
@@ -20,12 +31,32 @@ export default function BedSituation () {
             <th>已完成</th>
             <th>未完成</th>
           </tr>
-          <tr>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
+          <tbody>
+            <tr>
+              <td>三测单</td>
+              <td>10</td>
+              <td>9</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>护理评估</td>
+              <td>168</td>
+              <td>100</td>
+              <td>88</td>
+            </tr>
+            <tr>
+              <td>护理记录单</td>
+              <td>12</td>
+              <td>10</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>护理计划</td>
+              <td>10</td>
+              <td>10</td>
+              <td>0</td>
+            </tr>
+          </tbody>
         </table>
       </Mid>
     </div>
