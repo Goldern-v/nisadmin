@@ -5,6 +5,9 @@ export default class ScheduleStore {
   public constructor () {
     this.startTime = ''
     this.endTime = ''
+    this.weekStartTime = ''
+    this.weekEndTime = ''
+    this.selectedWeekIndex = '0'
     this.department = {
       deptCode: authStore.getUser().deptCode,
       deptName: authStore.getUser().deptName,
@@ -12,9 +15,41 @@ export default class ScheduleStore {
       wardName: ''
     }
   }
+  @observable private weekStartTime: string
+  @observable private weekEndTime: string
   @observable private startTime: string
   @observable private endTime: string
+  @observable private selectedWeekIndex: string
   @observable private department: any
+
+  @action
+  public setSelectedWeekIndex = (selectedWeekIndex: string) => {
+    this.selectedWeekIndex = selectedWeekIndex
+  }
+
+  @action
+  public getSelectedWeekIndex = () => {
+    return this.selectedWeekIndex
+  }
+  @action
+  public setWeekStartTime = (weekStartTime: string) => {
+    this.weekStartTime = weekStartTime
+  }
+
+  @action
+  public getWeekStartTime = () => {
+    return this.weekStartTime
+  }
+
+  @action
+  public setWeekEndTime = (weekEndTime: string) => {
+    this.weekEndTime = weekEndTime
+  }
+
+  @action
+  public getWeekEndTime = () => {
+    return this.weekEndTime
+  }
 
   @action
   public setStartTime = (startTime: string) => {
