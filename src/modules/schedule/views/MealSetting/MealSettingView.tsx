@@ -7,7 +7,7 @@ import MainBox from './components/MainBox/MainBox'
 
 export interface Props extends RouteComponentProps {}
 
-export default function NuserSettingView () {
+export default function MealSettingView () {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)

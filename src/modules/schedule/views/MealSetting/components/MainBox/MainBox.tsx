@@ -15,61 +15,72 @@ import emitter from 'src/libs/ev'
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
+const getTextColor = (text: string, record: any, colorName: string) =>
+  text && text.length > 0 ? (
+    <span>
+      <Tag color={colorName} key={text}>
+        {text.toUpperCase()}
+      </Tag>
+    </span>
+  ) : (
+    ''
+  )
+
 const columns = [
   {
-    title: '班次名称',
+    title: '班次套餐名',
     dataIndex: 'name',
     key: 'name',
     width: '8%'
-    // render: (text: string, record: any) =>
-    //   text.length > 0 ? (
-    //     <span>
-    //       <Tag color={record.nameColor} key={text}>
-    //         {text.toUpperCase()}
-    //       </Tag>
-    //     </span>
-    //   ) : (
-    //     ''
-    //   )
   },
   {
-    title: '类别',
-    dataIndex: 'shiftType',
-    key: 'shiftType',
-    width: '12%'
-  },
-  {
-    title: '颜色标记',
-    dataIndex: 'nameColor',
-    key: 'nameColor',
+    title: '周一',
+    dataIndex: 'mondayName',
+    key: 'mondayName',
     width: '12%',
-    render: (text: string, record: any) =>
-      text.length > 0 ? (
-        <span>
-          <Tag color={record.nameColor} key={text}>
-            {text.toUpperCase()}
-          </Tag>
-        </span>
-      ) : (
-        ''
-      )
+    render: (text: string, record: any) => getTextColor(text, record, record.mondayNameColor)
   },
   {
-    title: '开始时间',
-    dataIndex: 'startTime',
-    width: '30%',
-    key: 'startTime'
+    title: '周二',
+    dataIndex: 'tuesdayName',
+    key: 'tuesdayName',
+    width: '12%',
+    render: (text: string, record: any) => getTextColor(text, record, record.tuesdayNameColor)
   },
   {
-    title: '结束时间',
-    dataIndex: 'endTime',
-    key: 'endTime',
-    width: '8%'
+    title: '周三',
+    dataIndex: 'wednesdayName',
+    key: 'wednesdayName',
+    width: '12%',
+    render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
   },
   {
-    title: '工时(小时）',
-    dataIndex: 'effectiveTime',
-    key: 'effectiveTime'
+    title: '周四',
+    dataIndex: 'thursdayName',
+    key: 'thursdayName',
+    width: '12%',
+    render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
+  },
+  {
+    title: '周五',
+    dataIndex: 'fridayName',
+    key: 'fridayName',
+    width: '12%',
+    render: (text: string, record: any) => getTextColor(text, record, record.fridayNameColor)
+  },
+  {
+    title: '周六',
+    dataIndex: 'saturdayName',
+    key: 'saturdayName',
+    width: '12%',
+    render: (text: string, record: any) => getTextColor(text, record, record.saturdayNameColor)
+  },
+  {
+    title: '周日',
+    dataIndex: 'sundayName',
+    key: 'sundayName',
+    width: '12%',
+    render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor)
   },
   {
     title: '操作',
@@ -84,7 +95,7 @@ const columns = [
             onClick={(e: any) => {
               console.log('编辑e', e)
               // message.success(`编辑${record.key}`)
-              emitter.emit('弹窗编辑排班', record)
+              emitter.emit('弹窗编辑排班套餐', record)
             }}
           >
             编辑
@@ -93,8 +104,8 @@ const columns = [
           <Popconfirm
             title='确认要删除?'
             onConfirm={() => {
-              service.scheduleShiftApiService.delete(record.key).then((res) => {
-                emitter.emit('更新班次列表')
+              service.scheduleMealApiService.delete(record.key).then((res) => {
+                emitter.emit('更新班次套餐列表')
               })
               message.success(`删除${record.key}`)
             }}
@@ -113,12 +124,21 @@ let data = {
   id: '',
   createTime: '',
   deptCode: '',
-  effectiveTime: '',
-  endTime: '',
   name: '',
-  nameColor: '',
-  shiftType: '',
-  startTime: '',
+  mondayName: '',
+  tuesdayName: '',
+  wednesdayName: '',
+  thursdayName: '',
+  fridayName: '',
+  saturdayName: '',
+  sundayName: '',
+  mondayNameColor: '',
+  tuesdayNameColor: '',
+  wednesdayNameColor: '',
+  thursdayNameColor: '',
+  fridayNameColor: '',
+  saturdayNameColor: '',
+  sundayNameColor: '',
   status: ''
 }
 
@@ -158,7 +178,7 @@ let rowSelection = {
   },
   getCheckboxProps: (record: any) => ({
     disabled: !record.id, // Column configuration not to be checked
-    defaultChecked: record.status === true,
+    defaultChecked: record.status === true || record.status === 1,
     name: record.key
   }),
   hideDefaultSelections: true
@@ -166,33 +186,33 @@ let rowSelection = {
 
 export default function MainBox () {
   const [count, setCount] = useState(0)
-  const [ShiftList, setShiftList] = useState(new Array())
+  const [MealList, setMealList] = useState(new Array())
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    getShiftList()
+    getMealList()
 
-    emitter.removeAllListeners('获取选中班次列表')
-    emitter.removeAllListeners('更新班次列表')
+    emitter.removeAllListeners('获取选中班次套餐列表')
+    emitter.removeAllListeners('更新班次套餐列表')
 
-    emitter.addListener('获取选中班次列表', (callback: any) => {
+    emitter.addListener('获取选中班次套餐列表', (callback: any) => {
       if (callback) {
         callback(selectedRowsArray)
       }
     })
 
-    emitter.addListener('更新班次列表', () => {
-      getShiftList()
+    emitter.addListener('更新班次套餐列表', () => {
+      getMealList()
     })
 
     //
     console.log(count, setCount)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
-  const getShiftList = () => {
+  const getMealList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
-    service.scheduleShiftApiService.getShiftListByCode(deptCode, 'true').then((res) => {
-      console.log('查找排班班次res', res, data)
+    service.scheduleMealApiService.getMealListByCode(deptCode, 'true').then((res) => {
+      console.log('查找排班班次套餐res', res, data)
       let oneUser = new Object()
       allUser = new Array()
       selectedRowsArray = new Array()
@@ -224,8 +244,8 @@ export default function MainBox () {
         })
 
         genEmptyTable(allUser)
-        setShiftList(allUser)
-        console.log('查找排班班次', ShiftList, allUser, tableData, selectedRowsArray)
+        setMealList(allUser)
+        console.log('查找排班班次套餐', MealList, allUser, tableData, selectedRowsArray)
       }
     })
   }
@@ -246,7 +266,7 @@ export default function MainBox () {
 
   return (
     <Wrapper>
-      <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} />
+      <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={MealList} />
     </Wrapper>
   )
 }

@@ -167,32 +167,35 @@ export default function ScheduleTable () {
     setScheduleList([])
     setFooter('排班小计')
 
-    emitter.removeAllListeners('动画载入表格中')
-    emitter.removeAllListeners('动画载入表格完成')
-    emitter.removeAllListeners('清空排班记录')
-    emitter.removeAllListeners('空白排班记录')
-    emitter.removeAllListeners('本周排班记录')
+    let eventList = ['动画载入表格中', '动画载入表格完成', '清空排班记录', '空白排班记录', '本周排班记录']
+    eventList.map((ename) => emitter.removeAllListeners(ename))
+    //
+    // emitter.removeAllListeners('动画载入表格中')
+    // emitter.removeAllListeners('动画载入表格完成')
+    // emitter.removeAllListeners('清空排班记录')
+    // emitter.removeAllListeners('空白排班记录')
+    // emitter.removeAllListeners('本周排班记录')
 
-    let eventEmitterLoading = emitter.addListener('动画载入表格中', () => {
+    emitter.addListener('动画载入表格中', () => {
       tableState.loading = true
     })
 
-    let eventEmitterLoaded = emitter.addListener('动画载入表格完成', () => {
+    emitter.addListener('动画载入表格完成', () => {
       tableState.loading = false
     })
 
-    let eventEmitterClean = emitter.addListener('清空排班记录', () => {
+    emitter.addListener('清空排班记录', () => {
       setScheduleList([])
     })
 
-    let eventEmitterEmptyTable = emitter.addListener('空白排班记录', () => {
+    emitter.addListener('空白排班记录', () => {
       let newList = new Array()
       genEmptyTable(newList)
       setScheduleList(newList as any)
       setFooter('排班小计: 空')
     })
 
-    let eventEmitter = emitter.addListener('本周排班记录', (scheduleData) => {
+    emitter.addListener('本周排班记录', (scheduleData) => {
       console.log('接收:本周排班记录event', scheduleData, scheduleList)
 
       scheduleStore.setStartTime(scheduleData.stratTime)
@@ -252,14 +255,14 @@ export default function ScheduleTable () {
       tableState.loading = false
       setScheduleList(newList as any)
     })
-    console.log(
-      'eventEmitter',
-      eventEmitter,
-      eventEmitterClean,
-      eventEmitterLoading,
-      eventEmitterLoaded,
-      eventEmitterEmptyTable
-    )
+    // console.log(
+    //   'eventEmitter',
+    //   eventEmitter,
+    //   eventEmitterClean,
+    //   eventEmitterLoading,
+    //   eventEmitterLoaded,
+    //   eventEmitterEmptyTable
+    // )
   }, [])
 
   function genEmptyTable (newList: any) {

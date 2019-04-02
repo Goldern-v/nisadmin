@@ -28,7 +28,7 @@ export default function ToolBar () {
 
     emitter.removeAllListeners('弹窗编辑排班')
 
-    const eventEmitterOpenAndEditShift = emitter.addListener('弹窗编辑排班', (record: any) => {
+    emitter.addListener('弹窗编辑排班', (record: any) => {
       fields = {
         shiftName: {
           value: record.name || ''
@@ -52,20 +52,12 @@ export default function ToolBar () {
           value: record.nameColor || ''
         },
         status: {
-          value: record.status || true
+          value: record.status != null ? record.status : true
         }
       }
       console.log('编辑排班-', record)
       addShift('编辑排班')
     })
-
-    console.log('eventNames', eventEmitterOpenAndEditShift.eventNames)
-    // return () => {
-    //   // Clean up the subscription
-    //   emitter.removeListener('弹窗编辑排班', () => {
-    //     console.log('移除-弹窗编辑排班')
-    //   })
-    // }
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const save = (e: any) => {
@@ -73,7 +65,7 @@ export default function ToolBar () {
     // console.log('获取选中班次', e)
     // return
     emitter.emit('获取选中班次列表', (shiftList: any) => {
-      message.success('保存排班班次设置')
+      // message.success('保存排班班次设置')
       console.log('获取选中班次', shiftList)
       // return
       shiftList = shiftList.filter((u: any) => {
@@ -81,6 +73,7 @@ export default function ToolBar () {
       })
       service.scheduleShiftApiService.saveAll(shiftList).then((res) => {
         message.success('保存排班班次设置成功')
+        emitter.emit('更新班次列表')
         console.log('保存排班班次', res)
       })
     })
@@ -183,7 +176,7 @@ export default function ToolBar () {
               placeholder='red'
               filterOption={(inputValue: any, option: any) =>
                 option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
-                dataSourceColor.indexOf(inputValue.toUpperCase()) > -1
+                (dataSourceColor.indexOf(inputValue) > -1 || dataSourceColor.indexOf(inputValue) === -1)
               }
             />
           )}
@@ -204,14 +197,6 @@ export default function ToolBar () {
         diff = fields.endTime.value.diff(changedFields.startTime.value, 'hours')
       } else if (Object.keys(changedFields).indexOf('endTime') > -1) {
         diff = changedFields.endTime.value.diff(fields.startTime.value, 'hours')
-        // } else if (Object.keys(changedFields).indexOf('workHour') > -1) {
-        // let wk = parseInt(changedFields.workHour.value) || 0
-        // fields.endTime.value = moment(fields.startTime.value.format(dateFormat), dateFormat).add(wk, 'h')
-        // fields.endTime.value = fields.startTime.value.add(2, 'h')
-        // console.log('新工时', wk)
-        // customizedForm.setFieldsValue({
-        //   endTime: moment(fields.startTime.value.format(dateFormat), dateFormat).add(wk, 'h')
-        // })
       }
       if (diff) {
         diff = Math.abs(diff)

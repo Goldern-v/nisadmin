@@ -6,6 +6,7 @@ import WardDailyApiService from './WardDailyApiService'
 import SchedulingApiService from './Schedule/SchedulingApiService'
 import ScheduleUserApiService from './Schedule/ScheduleUserApiService'
 import ScheduleShiftApiService from './Schedule/ScheduleShiftApiService'
+import ScheduleMealApiService from './Schedule/ScheduleMealApiService'
 
 const service = {
   authApiService: new AuthApiService(),
@@ -14,7 +15,8 @@ const service = {
   schedulingApiService: new SchedulingApiService(),
   scheduleUserApiService: new ScheduleUserApiService(),
   wardDailyApiService: new WardDailyApiService(),
-  scheduleShiftApiService: new ScheduleShiftApiService()
+  scheduleShiftApiService: new ScheduleShiftApiService(),
+  scheduleMealApiService: new ScheduleMealApiService()
 }
 
 export default service

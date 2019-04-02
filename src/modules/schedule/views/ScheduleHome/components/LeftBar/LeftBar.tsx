@@ -69,12 +69,17 @@ export default function LeftBar () {
     if (scheduleStore.getWeekStartTime() && scheduleStore.getWeekEndTime()) {
       date = new Date(scheduleStore.getWeekStartTime())
       firstDay = date.getTime()
-      endTime = moment(scheduleStore.getWeekEndTime()).format(dateFormat)
+      endTime = moment(scheduleStore.getWeekEndTime())
+        .endOf('week')
+        .format(dateFormat)
     } else {
       date = new Date()
       firstDay = date.setDate(1)
-      endTime = moment().format(dateFormat)
+      endTime = moment()
+        .endOf('week')
+        .format(dateFormat)
     }
+    setdefaultEndTime(endTime)
     setMonthStart(moment(firstDay).format(dateFormat))
     console.log('开始时间：date', date.toJSON(), firstDay, endTime, scheduleStore.getWeekEndTime())
 
@@ -91,10 +96,9 @@ export default function LeftBar () {
   function onEventsEmitter () {
     emitter.removeAllListeners('初始化周排班列表')
 
-    let eventEmitterInitalWeekTime = emitter.addListener('初始化周排班列表', () => {
+    emitter.addListener('初始化周排班列表', () => {
       initial()
     })
-    console.log(eventEmitterInitalWeekTime)
   }
 
   // 选择日期间段发生改变时执行
@@ -167,12 +171,12 @@ export default function LeftBar () {
     scheduleStore.setWeekEndTime(endTime)
     let timelist = genWeekList(postData.stratTime, postData.endTime)
     console.log('排班周列表timelist', timelist, postData)
-
+    // moment().endOf('week')
     service.schedulingApiService
       .findTimeList(postData)
       .then((res) => {
         console.log('排班周列表', res, postData)
-        // moment().startOf('week')
+
         timelist = genWeekList(postData.stratTime, postData.endTime)
         // console.log('排班周列表timelist', timelist)
         let list = res.data.data
