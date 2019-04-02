@@ -178,7 +178,7 @@ let rowSelection = {
   },
   getCheckboxProps: (record: any) => ({
     disabled: !record.id, // Column configuration not to be checked
-    defaultChecked: record.status === true || record.status === 1,
+    defaultChecked: record.status === true,
     name: record.key
   }),
   hideDefaultSelections: true
