@@ -26,6 +26,36 @@ export default function BedSituation () {
             <td>4</td>
             <td>90%</td>
           </tr>
+          <tr>
+            <td />
+            <td />
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+            <td />
+            <td />
+          </tr>
         </table>
       </Mid>
     </div>

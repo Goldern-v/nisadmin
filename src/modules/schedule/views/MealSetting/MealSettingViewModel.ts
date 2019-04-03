@@ -11,6 +11,5 @@ class MealSettingViewModel {
     this.title = newTitle
   }
 }
-
 const mealSettingViewModel = new MealSettingViewModel()
-export default MealSettingViewModel
+export default mealSettingViewModel

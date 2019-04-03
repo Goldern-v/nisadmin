@@ -22,6 +22,30 @@ export default function BedSituation () {
             <td>原有病人</td>
             <td>200</td>
           </tr>
+          <tr>
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+          </tr>
         </table>
       </Mid>
     </div>

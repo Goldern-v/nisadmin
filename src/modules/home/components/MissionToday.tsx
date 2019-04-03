@@ -56,6 +56,18 @@ export default function BedSituation () {
               <td>10</td>
               <td>0</td>
             </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
           </tbody>
         </table>
       </Mid>
