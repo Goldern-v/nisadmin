@@ -39,4 +39,5 @@ const Wrapper = styled.div``
 const RouterViewCon = styled.div`
   flex: 1;
   overflow: auto;
+  height: auto;
 `

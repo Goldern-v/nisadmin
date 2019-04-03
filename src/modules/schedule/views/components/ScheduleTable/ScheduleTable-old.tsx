@@ -169,6 +169,9 @@ export default function ScheduleTable () {
     console.log(count, setCount)
     setscheduleList([])
 
+    emitter.removeAllListeners('清空排班记录')
+    emitter.removeAllListeners('本周排班记录')
+
     let eventEmitterClean = emitter.addListener('清空排班记录', () => {
       setscheduleList([])
     })

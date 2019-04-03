@@ -5,6 +5,7 @@
  * @api: /schShiftUser/
  * @description:
  * 接口包含以下内容:  按 增删改查 顺序如下:
+ * 0.排班班次设置新增
  * 1.查找班次设置列表
  * 2.查找班次设置列表
  * 3.班次设置删除
@@ -14,8 +15,26 @@
 import BaseApiService from '../BaseApiService'
 
 export default class ScheduleShiftApiService extends BaseApiService {
+  // 0.排班班次设置新增
+  public async saveAll (data: any) {
+    const postData = {
+      ranges: data // 是否勾选 data = [ { id:'' , rangeShow:'' } ]
+    }
+    return this.post(`/schShiftSetting/updateStatus`, postData)
+  }
   // 1.查找班次设置列表
   public async getShiftListByCode (deptCode: string, status: string) {
+    // deptCode - 科室编码
+    // status - 启用状态 true或者false
+    const postData = {
+      deptCode: deptCode
+      // status: ''
+    }
+    return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(postData))
+  }
+
+  // 1.查找班次设置列表
+  public async getShiftListByCodeWithStatus (deptCode: string, status: string) {
     // deptCode - 科室编码
     // status - 启用状态 true或者false
     return this.get(`/schShiftSetting/getByDeptCode/${deptCode}/${status}`)
@@ -34,6 +53,7 @@ export default class ScheduleShiftApiService extends BaseApiService {
   // 4.班次设置新增或更新(JSON传参)
   public async save (data: any) {
     const postData = {
+      id: data.id, // 	Long 必须参数 班次名称
       name: data.name, // 	Long 必须参数 班次名称
       deptCode: data.deptCode, // string 必须参数 科室编码
       shiftType: data.shiftType, // string 必须参数 所属类别

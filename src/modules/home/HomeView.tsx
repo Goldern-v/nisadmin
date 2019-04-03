@@ -75,7 +75,7 @@ export default function HomeView () {
 }
 const Wrapper = styled.div`
   padding: 0 20px;
-  /* border: 1px solid red;s */
+  /* border: 1px solid red;*/
 `
 
 // const SelectCon = styled.div`

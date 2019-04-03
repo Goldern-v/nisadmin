@@ -20,7 +20,7 @@ function Header () {
   return (
     <Wrapper isExpand={store.appStore.isExpand}>
       <Logo src={require('../images/logo.png')} />
-      <SystemName src={require('../images/系统名称.png')} />
+      <SystemName src={require('../images/logoText.png')} />
       <div style={{ flex: 1 }} />
       <Text>{sessionStorage.getItem('adminNurse')}</Text>
       <BreakLine />

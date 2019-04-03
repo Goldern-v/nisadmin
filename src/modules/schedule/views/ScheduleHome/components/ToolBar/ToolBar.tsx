@@ -29,6 +29,8 @@ export default function ToolBar () {
     setWardList([])
     setButtonDisabled(true)
 
+    emitter.removeAllListeners('禁止工具按钮')
+
     let eventEmitterLoading = emitter.addListener('禁止工具按钮', (disable: boolean) => {
       setButtonDisabled(disable)
     })
@@ -163,7 +165,7 @@ export default function ToolBar () {
       </LinkText>
       <BreakLine>|</BreakLine>
       <LinkText>
-        <Link to='/nurseSetting' style={{ color: '#747474' }}>
+        <Link to='/mealSetting' style={{ color: '#747474' }}>
           排班套餐设置
         </Link>
       </LinkText>

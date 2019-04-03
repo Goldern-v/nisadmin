@@ -12,6 +12,7 @@ import ScheduleHomeView from 'src/modules/schedule/views/ScheduleHome/ScheduleHo
 import NurseSettingView from 'src/modules/schedule/views/NurseSetting/NurseSettingView' // 排班人员设置
 import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSettingView' // 排班人员设置
 import StatisticView from 'src/modules/statistic/StatisticView'
+import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -31,6 +32,10 @@ const routes: RouteItem[] = [
     { name: '班次设置', link: '' }
   ]),
   setLayout('/statistic', StatisticView, layouts.MainLayout),
+  setLayout('/mealSetting', MealSettingView, layouts.BreadcrumbLayout, [
+    { name: '排班管理', link: '/scheduleHome' },
+    { name: '班次套餐设置', link: '' }
+  ]),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   {
     path: '/',

@@ -9,6 +9,8 @@ import ScheduleShiftApiService from './Schedule/ScheduleShiftApiService'
 // 首页
 import HomeDataApiServices from './Home/HomeDataApiService'
 // 统计
+import ScheduleMealApiService from './Schedule/ScheduleMealApiService'
+
 const service = {
   authApiService: new AuthApiService(),
   userApiService: new UserApiService(),
@@ -17,7 +19,8 @@ const service = {
   scheduleUserApiService: new ScheduleUserApiService(),
   wardDailyApiService: new WardDailyApiService(),
   scheduleShiftApiService: new ScheduleShiftApiService(),
-  homeDataApiServices: new HomeDataApiServices()
+  homeDataApiServices: new HomeDataApiServices(),
+  scheduleMealApiService: new ScheduleMealApiService()
 }
 
 export default service

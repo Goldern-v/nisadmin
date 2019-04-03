@@ -42,7 +42,7 @@ const Wrapper = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
-  background: #f4f8fb;
+  background: #fff;
 `
 
 const Inner = styled.div`

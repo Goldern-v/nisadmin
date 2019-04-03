@@ -19,12 +19,25 @@ const dateFormat = 'YYYY-MM-DD'
 // const SubMenu = Menu.SubMenu
 const ItemMenu = Menu.Item
 
+// let rangePickerDefaultValue = new Array()
+
 export default function LeftBar () {
   const [count, setCount] = useState(0)
+  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState([scheduleStore.getSelectedWeekIndex()])
   const [monthStart, setMonthStart] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
+    if (scheduleStore.getWeekStartTime()) {
+      return scheduleStore.getWeekStartTime()
+    }
     return moment(firstDay).format(dateFormat)
+  })
+  const [defaultEndTime, setdefaultEndTime] = useState(() => {
+    let date = new Date()
+    if (scheduleStore.getWeekEndTime()) {
+      return scheduleStore.getWeekEndTime()
+    }
+    return date
   })
   const [shiftList, setShiftList] = useState([
     {
@@ -37,6 +50,8 @@ export default function LeftBar () {
 
   useEffect(() => {
     console.log(count, setCount)
+    console.log(defaultSelectedKeys, setDefaultSelectedKeys)
+    console.log(defaultEndTime, setdefaultEndTime)
     setShiftList([])
     initial()
     onEventsEmitter()
@@ -44,28 +59,46 @@ export default function LeftBar () {
 
   // 初始化周列表
   function initial () {
+    let weekIndex = scheduleStore.getSelectedWeekIndex() + ''
+    setDefaultSelectedKeys([weekIndex])
+
     // 默认获取最近一月排班
     let date = new Date()
-    let firstDay = date.setDate(1)
-    // JSON.parse(sessionStorage.user).deptCode ||
-    // JSON.parse(sessionStorage.user).deptName ||
+    let firstDay = 0
+    let endTime = moment().format(dateFormat)
+    if (scheduleStore.getWeekStartTime() && scheduleStore.getWeekEndTime()) {
+      date = new Date(scheduleStore.getWeekStartTime())
+      firstDay = date.getTime()
+      endTime = moment(scheduleStore.getWeekEndTime())
+        .endOf('week')
+        .format(dateFormat)
+    } else {
+      date = new Date()
+      firstDay = date.setDate(1)
+      endTime = moment()
+        .endOf('week')
+        .format(dateFormat)
+    }
+    setdefaultEndTime(endTime)
+    setMonthStart(moment(firstDay).format(dateFormat))
+    console.log('开始时间：date', date.toJSON(), firstDay, endTime, scheduleStore.getWeekEndTime())
+
     // 接口请求参数
     const postData = {
-      // deptCode: scheduleStore.getDeptCode() || authStore.getUser().deptCode, // '2508', // deptCode  科室编码 // "门诊护理"
       stratTime: moment(firstDay).format(dateFormat), // stratTime 开始时间（刚开始由后台传给前台）
-      endTime: moment().format(dateFormat) // endTime   结束时间（刚开始由后台传给前台）
+      endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
-    setMonthStart(moment(firstDay).format(dateFormat))
     updateWeekList(postData.stratTime, postData.endTime, (time: any) => {
-      handleItem(time[0])
+      handleItem(time[weekIndex], weekIndex)
     })
   }
 
   function onEventsEmitter () {
-    let eventEmitterInitalWeekTime = emitter.addListener('初始化周排班列表', () => {
+    emitter.removeAllListeners('初始化周排班列表')
+
+    emitter.addListener('初始化周排班列表', () => {
       initial()
     })
-    console.log(eventEmitterInitalWeekTime)
   }
 
   // 选择日期间段发生改变时执行
@@ -90,6 +123,11 @@ export default function LeftBar () {
         .format('w'),
       status: '-1'
     })
+    scheduleStore.setWeekStartTime(
+      moment(stratTime)
+        .startOf('isoWeek')
+        .format(dateFormat)
+    )
 
     while (moment(startTimeTemp).isBefore(endTime)) {
       startTimeTemp = moment(startTimeTemp)
@@ -130,26 +168,24 @@ export default function LeftBar () {
       authStore.getUser(),
       authStore.getUser().deptCode
     )
+    scheduleStore.setWeekEndTime(endTime)
     let timelist = genWeekList(postData.stratTime, postData.endTime)
     console.log('排班周列表timelist', timelist, postData)
-
+    // moment().endOf('week')
     service.schedulingApiService
       .findTimeList(postData)
       .then((res) => {
         console.log('排班周列表', res, postData)
-        // moment().startOf('week')
+
         timelist = genWeekList(postData.stratTime, postData.endTime)
         // console.log('排班周列表timelist', timelist)
         let list = res.data.data
-        // Object.assign(timelist, list)
         if (list) {
           list.map((time: any) => {
             timelist.map((t: any) => {
               if (Number(t.week) === Number(time.week)) {
                 t.status = time.status
-                // console.log('###', t, time, timelist)
               }
-              // console.log('!!!!', t, time, timelist)
             })
           })
         }
@@ -165,8 +201,10 @@ export default function LeftBar () {
   }
 
   // 处理周点击
-  function handleItem (time: any) {
-    console.log('排班', time)
+  function handleItem (time: any, i: string) {
+    scheduleStore.setSelectedWeekIndex(i)
+    setDefaultSelectedKeys([i])
+    console.log('排班', time, defaultSelectedKeys, i, scheduleStore.getSelectedWeekIndex())
 
     scheduleStore.setStartTime(time.mondy)
     scheduleStore.setEndTime(time.sundy)
@@ -201,7 +239,11 @@ export default function LeftBar () {
   }
   return (
     <Wrapper>
-      <Menu mode='inline' defaultSelectedKeys={['0']} style={{ width: '100%', height: 'auto', minHeight: '100vh' }}>
+      <Menu
+        mode='inline'
+        defaultSelectedKeys={defaultSelectedKeys}
+        style={{ width: '100%', height: 'auto', minHeight: '100vh' }}
+      >
         <ItemMenu onClick={(e) => emitter.emit('清空排班记录')} key='sub1'>
           <span>
             <Icon type='calendar' />
@@ -210,14 +252,14 @@ export default function LeftBar () {
         </ItemMenu>
         <SelectCon>
           <RangePicker
-            defaultValue={[moment(monthStart, dateFormat), moment(new Date(), dateFormat)]}
+            defaultValue={[moment(monthStart, dateFormat), moment(defaultEndTime, dateFormat)]}
             onChange={onChange}
             format={dateFormat}
             locale={locale}
           />
         </SelectCon>
         {shiftList.map((time, index) => (
-          <ItemMenu onClick={(e) => handleItem(time)} key={index}>
+          <ItemMenu onClick={(e) => handleItem(time, `${index}`)} key={index}>
             <CircleCon color={time.status} />
             {`第${moment(time.mondy || new Date()).format('w') || time.week}周 ${moment(
               time.mondy || new Date()

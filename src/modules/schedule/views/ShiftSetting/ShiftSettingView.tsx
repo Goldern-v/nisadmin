@@ -41,5 +41,5 @@ const ToolBarCon = styled.div`
   height: 60px;
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid rgb(244, 248, 251);
+  /* border-bottom: 1px solid rgb(244, 248, 251); */
 `

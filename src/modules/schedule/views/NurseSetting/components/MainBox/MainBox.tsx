@@ -146,13 +146,15 @@ export default function MainBox () {
   useEffect(() => {
     getUserList()
 
-    let eventEmitterGetSelectedUser = emitter.addListener('获取选中人员列表', (callback: any) => {
+    emitter.removeAllListeners('获取选中人员列表')
+
+    emitter.addListener('获取选中人员列表', (callback: any) => {
       if (callback) {
         callback(allUser)
       }
     })
     //
-    console.log(count, setCount, eventEmitterGetSelectedUser)
+    console.log(count, setCount)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const getUserList = () => {
