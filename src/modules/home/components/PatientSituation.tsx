@@ -56,38 +56,61 @@ export default function BedSituation () {
 }
 
 const Head = styled.div`
-  height: 32px;
-  line-height: 32px;
+  height: 37px;
+  line-height: 37px;
   width: 100%;
-  background-color: #3493dd;
+  background-color: rgba(245, 246, 247, 1);
   .headLeft {
-    padding-left: 14px;
+    padding-left: 17px;
     float: left;
-    font-size: 16px;
-    color: #ffffff;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #333333;
   }
   .headRight {
     padding-right: 14px;
     float: right;
-    font-size: 14px;
-    color: #ffffff;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #999999;
   }
 `
 const Mid = styled.div`
-  padding: 18px 18px 0 18px;
+  /* padding: 18px 18px 0 18px; */
+  height: 282px;
+  overflow-y: auto;
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
   table {
     width: 100%;
-    border: 1px solid #a1a1a1;
+    border: 1px solid #e5e5e5;
     text-align: center;
   }
   th {
-    height: 32px;
-    border: 1px solid #a1a1a1;
-    background-color: #a5d5fb;
+    height: 36px;
+    border: 1px solid #e5e5e5;
+    color: #666666;
+    background: rgba(247, 250, 250, 1);
   }
   td {
-    height: 32px;
-    border: 1px solid #a1a1a1;
+    height: 36px;
+    border: 1px solid #e5e5e5;
   }
   td:nth-of-type(1) {
     width: 38%;

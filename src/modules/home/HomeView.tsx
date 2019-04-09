@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import { RouteComponentProps } from 'react-router'
-import { Select, Button } from 'antd'
+// import { Select, Button } from 'antd'
+import SelectCommon from './common/SelectCommon'
 import BedSituation from './components/BedSituation'
 import MissionToday from './components/MissionToday'
 import MyAudit from './components/MyAudit'
@@ -14,11 +15,11 @@ import PatientDistribute from './components/PatientDistribute/PatientDistribute'
 
 // export interface Props extends RouteComponentProps {}
 
-const Option = Select.Option
+// const Option = Select.Option
 
-function handleChange (value: any) {
-  console.log(`selected ${value}`)
-}
+// function handleChange (value: any) {
+//   console.log(`selected ${value}`)
+// }
 
 export default function HomeView () {
   const [count, setCount] = useState(0)
@@ -28,7 +29,8 @@ export default function HomeView () {
 
   return (
     <Wrapper>
-      <SelectCon>
+      <SelectCommon />
+      {/* <SelectCon>
         <span className='label'>科室：</span>
         <Select defaultValue='普外科护理单元' style={{ width: 200 }} onChange={handleChange}>
           <Option value='骨科护理单元'>骨科护理单元</Option>
@@ -38,7 +40,7 @@ export default function HomeView () {
         </Select>
         <Button style={{ marginLeft: 20, marginRight: 10 }}>查询</Button>
         <Button>刷新</Button>
-      </SelectCon>
+      </SelectCon> */}
       <HomeDetail>
         <HomeDetailItem>
           <BedSituation />
@@ -73,14 +75,14 @@ export default function HomeView () {
 }
 const Wrapper = styled.div`
   padding: 0 20px;
-  /* border: 1px solid red; */
+  /* border: 1px solid red;*/
 `
 
-const SelectCon = styled.div`
-  padding: 20px 0;
-  display: flex;
-  align-items: center;
-`
+// const SelectCon = styled.div`
+//   padding: 20px 0;
+//   display: flex;
+//   align-items: center;
+// `
 const HomeDetail = styled.div`
   width: 100%;
   display: flex;
@@ -89,11 +91,13 @@ const HomeDetail = styled.div`
   /* background-color: red; */
 `
 const HomeDetailItem = styled.div`
-  margin: 4px 0.83% 22px 0.83%;
+  margin: 4px 0.53% 16px 0.53%;
   padding: 0;
-  width: 31.66%;
-  height: 290px;
+  width: 32.26%;
+  height: 320px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 5px;
+  border: 1px solid rgba(161, 175, 179, 1);
   overflow: hidden;
   /* box-sizing: border-box; */
-  border: 1px solid #aeaeae;
 `

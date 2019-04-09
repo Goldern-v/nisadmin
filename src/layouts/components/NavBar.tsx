@@ -44,7 +44,7 @@ const navList = [
   {
     name: '统计查询',
     icon: require('../images/统计查询.svg'),
-    path: ''
+    path: '/statistic'
   },
   {
     name: '通知公告',
