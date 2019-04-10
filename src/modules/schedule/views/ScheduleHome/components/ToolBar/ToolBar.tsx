@@ -131,7 +131,7 @@ export default function ToolBar () {
       </Select>
 
       <Button disabled={buttonDisabled} style={{ marginLeft: 20, marginRight: 10 }}>
-        编辑排班
+        <Link to='/scheduleSetting'>编辑排班</Link>
       </Button>
       <Button
         disabled={buttonDisabled}

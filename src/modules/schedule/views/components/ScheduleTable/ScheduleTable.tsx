@@ -4,12 +4,13 @@ import { RouteComponentProps } from 'react-router'
 
 import { scheduleStore } from '@/stores'
 
-import { Card, Table, Tag } from 'antd'
+import { Card, Table, Tag, message } from 'antd'
 const { Meta } = Card
 
 import emitter from 'src/libs/ev'
 
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 moment.locale('zh-cn', {
   weekdays: '日_一_二_三_四_五_六'.split('_')
 })
@@ -336,12 +337,15 @@ export default function ScheduleTable () {
         <NoScheduleCon>
           <CardBox
             onClick={() => {
-              emitter.emit('空白排班记录')
+              message.info('创建排班')
+              // emitter.emit('空白排班记录')
             }}
           >
-            <Card hoverable style={{ width: 240 }} cover={<img alt='' src='#' />}>
-              <Meta style={{ textAlign: 'center' }} title='创建排班' />
-            </Card>
+            <Link to='/scheduleSetting'>
+              <Card hoverable style={{ width: 240 }} cover={<img alt='' src='#' />}>
+                <Meta style={{ textAlign: 'center' }} title='创建排班' />
+              </Card>
+            </Link>
           </CardBox>
         </NoScheduleCon>
       ) : (
