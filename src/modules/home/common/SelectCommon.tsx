@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Select, Button } from 'antd'
 import service from 'src/services/api'
+// import { any } from 'prop-types'
 
 const Option = Select.Option
 
@@ -9,20 +10,13 @@ function handleChange (value: any) {
   console.log(`selected ${value}`)
 }
 
-// const getListDepartment = () => {
-//   service.homeDataApiServices.getListDepartment().then((res) => {
-//     if (res && res.data.data) {
-//       console.log(res)
-//     }
-//   })
-// }
 export default function SelectCommon () {
   const [count, setCount] = useState(0)
-  // let getDepartmentName
-  let departmentName
+  const [officeList, setOfficeList] = useState([])
   useEffect(() => {
     console.log(count, setCount)
-    // const getListDepartment = () =>s {
+  })
+  useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res) => {
       if (res && res.data.data) {
         let listDepartment = res.data.data.deptList
@@ -30,18 +24,31 @@ export default function SelectCommon () {
           // 获取后的科室相关数据
           listDepartment = []
         }
-        departmentName = listDepartment.map((item: any) => (
+        setOfficeList(listDepartment)
+        return listDepartment.map((item: any) => (
           <Option key={item.name.toString()} value={item.name}>
             {item.name}
           </Option>
         ))
       }
     })
-    // }5ss
-  })
-  let getDepartmentName = departmentName
-  console.log(6666)
-  console.log(getDepartmentName)
+  }, [])
+  // function getDepartmentName () {
+  //   service.homeDataApiServices.getListDepartment().then((res) => {
+  //     if (res && res.data.data) {
+  //       let listDepartment = res.data.data.deptList
+  //       if (!listDepartment) {
+  //         // 获取后的科室相关数据
+  //         listDepartment = []
+  //       }
+  //       return listDepartment.map((item: any) => (
+  //         <Option key={item.name.toString()} value={item.name}>
+  //           {item.name}
+  //         </Option>
+  //       ))
+  //     }
+  //   })
+  // }
   return (
     <div>
       <SelectCon>
@@ -51,7 +58,11 @@ export default function SelectCommon () {
           <Option value='普外科护理单元'>普外科护理单元</Option>
           <Option value='泌尿外科护理单元'>泌尿外科护理单元</Option>
           <Option value='产科护理单元'>产科护理单元</Option>
-          {getDepartmentName}
+          {officeList.map((item: any) => (
+            <Option key={item.name.toString()} value={item.name}>
+              {item.name}
+            </Option>
+          ))}
         </Select>
         <Button style={{ marginLeft: 20, marginRight: 10 }}>查询</Button>
         <Button>刷新</Button>
