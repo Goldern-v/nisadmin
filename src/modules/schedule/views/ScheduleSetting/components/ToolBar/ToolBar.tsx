@@ -32,7 +32,7 @@ export default function ToolBar () {
     // 获取排班列表
     emitter.addListener('获取排班列表', (callback: any) => {
       let deptCode = scheduleStore.getDeptCode()
-      service.scheduleShiftApiService.getShiftListByCode(deptCode, '').then((res: any) => {
+      service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
         if (res && res.data.data) {
           if (callback) {
             callback(res.data.data)
@@ -84,21 +84,21 @@ export default function ToolBar () {
 
   const save = (e: any) => {
     // 获取选中班次套餐
-    // console.log('获取选中班次套餐', e)
+    console.log('保存排班设置', e)
     // return
-    emitter.emit('获取选中班次套餐列表', (mealList: any) => {
-      // message.success('保存排班班次套餐设置')
-      console.log('获取选中班次套餐', mealList)
-      // return
-      mealList = mealList.filter((u: any) => {
-        return u.status !== null
-      })
-      service.scheduleMealApiService.saveAll(mealList).then((res) => {
-        message.success('保存排班班次套餐设置成功')
-        emitter.emit('更新班次套餐列表')
-        console.log('保存排班班次套餐', res)
-      })
-    })
+    // emitter.emit('获取选中班次套餐列表', (mealList: any) => {
+    message.success('保存排班设置')
+    //   console.log('获取选中班次套餐', mealList)
+    //   // return
+    //   mealList = mealList.filter((u: any) => {
+    //     return u.status !== null
+    //   })
+    //   service.scheduleMealApiService.saveAll(mealList).then((res) => {
+    //     message.success('保存排班班次套餐设置成功')
+    //     emitter.emit('更新班次套餐列表')
+    //     console.log('保存排班班次套餐', res)
+    //   })
+    // })
   }
 
   let shiftList = new Array()
@@ -107,7 +107,7 @@ export default function ToolBar () {
   const initalTreeData = () => {
     shiftList = new Array()
     let deptCode = scheduleStore.getDeptCode()
-    service.scheduleShiftApiService.getShiftListByCode(deptCode, '').then((res: any) => {
+    service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
       console.log('获取排班列表', res)
       if (res && res.data.data) {
         shiftList = res.data.data
@@ -517,7 +517,13 @@ export default function ToolBar () {
       <Button onClick={() => message.info('复制上周排班')} className='button-tools'>
         复制上周排班
       </Button>
-      <Button onClick={() => message.info('刷新排班人员')} className='button-tools'>
+      <Button
+        onClick={() => {
+          message.info('刷新排班人员')
+          emitter.emit('更新排班人员列表')
+        }}
+        className='button-tools'
+      >
         刷新排班人员
       </Button>
       <Button onClick={save} className='button-tools'>

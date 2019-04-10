@@ -24,10 +24,12 @@ export default function BreadcrumbBox (props: Props) {
         <Breadcrumb>
           {props && props.data ? (
             props.data.map((item) => (
-              <Breadcrumb.Item>{item.link ? <Link to={item.link}>{item.name}</Link> : item.name}</Breadcrumb.Item>
+              <Breadcrumb.Item key={item.name}>
+                {item.link ? <Link to={item.link}>{item.name}</Link> : item.name}
+              </Breadcrumb.Item>
             ))
           ) : (
-            <span>111</span>
+            <span>-</span>
           )}
         </Breadcrumb>
       </BreadcrumbContainer>

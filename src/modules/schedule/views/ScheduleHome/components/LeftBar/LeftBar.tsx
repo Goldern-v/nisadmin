@@ -154,9 +154,11 @@ export default function LeftBar () {
 
   // 更新周列表
   function updateWeekList (stratTime: string, endTime: string, callBack: any = null) {
+    let user = authStore.getUser()
+    let deptCode = user && user.hasOwnProperty('deptCode') ? user.deptCode : ''
     // 接口请求参数
     const postData = {
-      deptCode: scheduleStore.getDeptCode() || authStore.getUser().deptCode, // deptCode  科室编码 // "门诊护理"
+      deptCode: scheduleStore.getDeptCode() || deptCode, // deptCode  科室编码 // "门诊护理"
       stratTime: stratTime, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
@@ -165,8 +167,8 @@ export default function LeftBar () {
       postData,
       scheduleStore.getDepartment(),
       scheduleStore.getDeptCode(),
-      authStore.getUser(),
-      authStore.getUser().deptCode
+      user,
+      deptCode
     )
     scheduleStore.setWeekEndTime(endTime)
     let timelist = genWeekList(postData.stratTime, postData.endTime)

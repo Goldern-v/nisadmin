@@ -191,7 +191,7 @@ export default function MainBox () {
 
   const getShiftList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
-    service.scheduleShiftApiService.getShiftListByCode(deptCode, 'true').then((res) => {
+    service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res) => {
       console.log('查找排班班次res', res, data)
       let oneUser = new Object()
       allUser = new Array()

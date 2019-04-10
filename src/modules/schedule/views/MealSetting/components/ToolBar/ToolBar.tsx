@@ -32,7 +32,7 @@ export default function ToolBar () {
     // 获取排班列表
     emitter.addListener('获取排班列表', (callback: any) => {
       let deptCode = scheduleStore.getDeptCode()
-      service.scheduleShiftApiService.getShiftListByCode(deptCode, '').then((res: any) => {
+      service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
         if (res && res.data.data) {
           if (callback) {
             callback(res.data.data)
@@ -107,7 +107,7 @@ export default function ToolBar () {
   const initalTreeData = () => {
     shiftList = new Array()
     let deptCode = scheduleStore.getDeptCode()
-    service.scheduleShiftApiService.getShiftListByCode(deptCode, '').then((res: any) => {
+    service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
       console.log('获取排班列表', res)
       if (res && res.data.data) {
         shiftList = res.data.data
@@ -435,7 +435,7 @@ export default function ToolBar () {
       console.log('添加班次套餐成功', res)
       // 更新班次套餐列表
     })
-    message.success('onOk')
+    // message.success('onOk')
   }
 
   let inputWidth = '250px'
