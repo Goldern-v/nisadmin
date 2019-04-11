@@ -10,10 +10,14 @@ const { Meta } = Card
 import emitter from 'src/libs/ev'
 
 import moment from 'moment'
+import service from 'src/services/api'
 import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 moment.locale('zh-cn', {
   weekdays: '日_一_二_三_四_五_六'.split('_')
 })
+
+const dateFormat = 'YYYY-MM-DD'
 
 export interface Props extends RouteComponentProps {}
 
@@ -29,21 +33,15 @@ export interface TdItem {
   value: string
 }
 
-const getTextColor = (text: any) =>
-  text.indexOf('N') > -1 ? (
+const getTextColor = (text: any, colorName: any) =>
+  text.length > 0 ? (
     <span>
-      <Tag color={'red'} key={text}>
-        {text.toUpperCase()}
-      </Tag>
-    </span>
-  ) : text.indexOf('休') > -1 ? (
-    <span>
-      <Tag color={'blue'} key={text}>
+      <Tag color={colorName || ''} key={text} style={{ margin: 'auto auto' }}>
         {text.toUpperCase()}
       </Tag>
     </span>
   ) : (
-    <span>{text}</span>
+    ''
   )
 
 const getWeekDay = (weekday: number) => {
@@ -88,43 +86,43 @@ const columns = [
     title: () => getWeekDay(1),
     dataIndex: 'rangeName1',
     width: '6%',
-    render: (text: any) => getTextColor(text)
+    render: (text: any, record: any) => getTextColor(text, record.rangeNameColor1)
   },
   {
     title: () => getWeekDay(2),
     dataIndex: 'rangeName2',
     width: '6%',
-    render: (text: any) => getTextColor(text)
+    render: (text: any, record: any) => getTextColor(text, record.rangeNameColor2)
   },
   {
     title: () => getWeekDay(3),
     dataIndex: 'rangeName3',
     width: '6%',
-    render: (text: any) => getTextColor(text)
+    render: (text: any, record: any) => getTextColor(text, record.rangeNameColor3)
   },
   {
     title: () => getWeekDay(4),
     dataIndex: 'rangeName4',
     width: '6%',
-    render: (text: any) => getTextColor(text)
+    render: (text: any, record: any) => getTextColor(text, record.rangeNameColor4)
   },
   {
     title: () => getWeekDay(5),
     dataIndex: 'rangeName5',
     width: '6%',
-    render: (text: any) => getTextColor(text)
+    render: (text: any, record: any) => getTextColor(text, record.rangeNameColor5)
   },
   {
     title: () => getWeekDay(6),
     dataIndex: 'rangeName6',
     width: '6%',
-    render: (text: any) => getTextColor(text)
+    render: (text: any, record: any) => getTextColor(text, record.rangeNameColor6)
   },
   {
     title: () => getWeekDay(7),
     dataIndex: 'rangeName7',
     width: '6%',
-    render: (text: any) => getTextColor(text)
+    render: (text: any, record: any) => getTextColor(text, record.rangeNameColor7)
   },
   {
     title: '备注',
@@ -194,6 +192,54 @@ export default function ScheduleTable () {
       genEmptyTable(newList)
       setScheduleList(newList as any)
       setFooter('排班小计: 空')
+      // newSchedule
+      let deptCode = scheduleStore.getDeptCode()
+      let stratTime = scheduleStore.getStartTime()
+      let endTime = scheduleStore.getEndTime()
+      console.log(deptCode, stratTime, endTime)
+      const postData = {
+        deptCode: deptCode, // deptCode  科室编码
+        stratTime: stratTime, // stratTime 开始时间
+        endTime: endTime // endTime   结束时间
+      }
+      service.schedulingApiService.newSchedule(postData).then((res) => {
+        console.log('新建成功', res)
+        emitter.emit('本周排班记录', res.data.data)
+        if (res && res.data.data) {
+          console.log('postDataArray', res)
+          let userList = res.data.data.schShiftUser
+          let postDataArray: any = new Array()
+          let postLine: any = new Array()
+          let startTime = scheduleStore.getStartTime()
+
+          userList.map((user: any) => {
+            for (let index = 0; index < 7; index++) {
+              // 自动新建保存空白内容
+              postLine = {
+                id: {
+                  userId: user.id,
+                  workDate: moment(startTime)
+                    .add('d', index)
+                    .format(dateFormat)
+                },
+                rangeId: '',
+                status: '0',
+                thisWeekHour: '0',
+                rangeName: '',
+                remark: ''
+              }
+              // console.log(key, element, shift, postLine)
+              postDataArray.push(JSON.parse(JSON.stringify(postLine)))
+            }
+          })
+          console.log('postDataArray', postDataArray)
+          service.schedulingApiService.update(postDataArray).then((result: any) => {
+            message.success(result.data.desc || '新建成功')
+            console.log('新建成功result', result)
+            emitter.emit('禁止工具按钮', false)
+          })
+        }
+      })
     })
 
     emitter.addListener('本周排班记录', (scheduleData) => {
@@ -206,10 +252,11 @@ export default function ScheduleTable () {
       let newList = new Array()
       scheduleData.schShiftUser.map((nurse: any, shcIndex: number) => {
         console.log('nurse', shcIndex, nurse.empName, nurse)
-        let getRangeName = (range: any, i: number) => {
+        let getRangeObj = (user: any, keyname: any, i: number) => {
           let result = ''
           try {
-            result = range[i].rangeName
+            result = user[i].range[keyname] // .rangeName
+            // range[i].range.nameColor
           } catch (error) {
             return ''
           }
@@ -233,13 +280,20 @@ export default function ScheduleTable () {
           empName: nurse.empName || '',
           currentLevel: nurse.currentLevel || '',
           title: nurse.title || '',
-          rangeName1: getRangeName(nurse.settingDtos, 0) || '',
-          rangeName2: getRangeName(nurse.settingDtos, 1) || '',
-          rangeName3: getRangeName(nurse.settingDtos, 2) || '',
-          rangeName4: getRangeName(nurse.settingDtos, 3) || '',
-          rangeName5: getRangeName(nurse.settingDtos, 4) || '',
-          rangeName6: getRangeName(nurse.settingDtos, 5) || '',
-          rangeName7: getRangeName(nurse.settingDtos, 6) || '',
+          rangeName1: getRangeObj(nurse.settingDtos, 'name', 0) || '',
+          rangeName2: getRangeObj(nurse.settingDtos, 'name', 1) || '',
+          rangeName3: getRangeObj(nurse.settingDtos, 'name', 2) || '',
+          rangeName4: getRangeObj(nurse.settingDtos, 'name', 3) || '',
+          rangeName5: getRangeObj(nurse.settingDtos, 'name', 4) || '',
+          rangeName6: getRangeObj(nurse.settingDtos, 'name', 5) || '',
+          rangeName7: getRangeObj(nurse.settingDtos, 'name', 6) || '',
+          rangeNameColor1: getRangeObj(nurse.settingDtos, 'nameColor', 0) || '',
+          rangeNameColor2: getRangeObj(nurse.settingDtos, 'nameColor', 1) || '',
+          rangeNameColor3: getRangeObj(nurse.settingDtos, 'nameColor', 2) || '',
+          rangeNameColor4: getRangeObj(nurse.settingDtos, 'nameColor', 3) || '',
+          rangeNameColor5: getRangeObj(nurse.settingDtos, 'nameColor', 4) || '',
+          rangeNameColor6: getRangeObj(nurse.settingDtos, 'nameColor', 5) || '',
+          rangeNameColor7: getRangeObj(nurse.settingDtos, 'nameColor', 6) || '',
           remark: nurse.remark || '',
           thisWeekHour: nurse.thisWeekHour || '',
           status: getStatus() || ''
@@ -284,6 +338,13 @@ export default function ScheduleTable () {
           rangeName5: '',
           rangeName6: '',
           rangeName7: '',
+          rangeNameColor1: '',
+          rangeNameColor2: '',
+          rangeNameColor3: '',
+          rangeNameColor4: '',
+          rangeNameColor5: '',
+          rangeNameColor6: '',
+          rangeNameColor7: '',
           remark: '',
           thisWeekHour: '',
           status: ''

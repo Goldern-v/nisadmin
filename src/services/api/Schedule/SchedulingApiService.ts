@@ -23,7 +23,7 @@ import BaseApiService from '../BaseApiService'
 
 export default class SchedulingApiService extends BaseApiService {
   // 1.新建排班
-  public async newSchedul (data: any) {
+  public async newSchedule (data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       stratTime: data.stratTime, // stratTime 开始时间
@@ -35,13 +35,14 @@ export default class SchedulingApiService extends BaseApiService {
   // 2.对排班信息进行每周的新增或修改
   public async update (data: any) {
     const postData = {
-      userId: data.userId, // userId  护士ID
-      workDate: data.workDate, // workDate 时间
-      rangeId: data.rangeId, // rangeId   班次Id
-      status: data.status, // status   0代表暂存，1代表发布
-      thisWeekHour: data.thisWeekHour, // thisWeekHour   本周工时
-      rangeName: data.rangeName, // rangeName   班次名字，这名字可修改得
-      remark: data.remark // remark   备注
+      setting: data
+      // userId: data.userId, // userId  护士ID
+      // workDate: data.workDate, // workDate 时间
+      // rangeId: data.rangeId, // rangeId   班次Id
+      // status: data.status, // status   0代表暂存，1代表发布
+      // thisWeekHour: data.thisWeekHour, // thisWeekHour   本周工时
+      // rangeName: data.rangeName, // rangeName   班次名字，这名字可修改得
+      // remark: data.remark // remark   备注
     }
     return this.post(`/scheduling/saveOrUpdate`, postData)
   }
