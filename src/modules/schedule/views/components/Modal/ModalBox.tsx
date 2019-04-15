@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Modal, message } from 'antd'
+import { Modal } from 'antd'
 // import { RouteComponentProps } from 'react-router'
 
 // {props.th.map((item, index) => (
@@ -18,28 +18,44 @@ interface Props {
 export default function ModalBox (props: Props) {
   const [modalVisible, setModalVisible] = useState(false)
   const [contant, setContant] = useState('')
+  const [configBox, setConfigBox] = useState(new Object() as any)
   const [boxWidth, setBoxWidth] = useState(400)
+  // const [onOKFunc, setOnOKFunc] = useState(new Function())
+  // let onOKFunc: any = null
+
+  let onOK = () => {
+    if (configBox.hasOwnProperty('onOK')) {
+      configBox.onOK(true)
+    }
+    setModalVisible(false)
+  }
+
+  const afterClose = () => {
+    console.log('afterClose', contant)
+  }
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    emitter.removeAllListeners('打开')
-    emitter.removeAllListeners('关闭')
+    emitter.removeAllListeners('打开弹框')
+    emitter.removeAllListeners('关闭弹框')
 
     emitter.addListener('打开弹框', (config: any) => {
-      setModalVisible(true)
+      // setModalVisible(true)
       console.log('打开弹框', config)
       setContant(config.contant)
+      setConfigBox(config)
       if (config.width) {
         setBoxWidth(config.width)
       }
+      open()
     })
 
     emitter.addListener('关闭弹框', () => {
       setModalVisible(false)
     })
     //
-    console.log(modalVisible, setModalVisible, open)
+    console.log(modalVisible, setModalVisible)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const open = () => {
@@ -50,12 +66,14 @@ export default function ModalBox (props: Props) {
       <Modal
         title={props.title}
         centered
+        destroyOnClose
+        afterClose={afterClose}
         width={boxWidth}
         visible={modalVisible}
-        onOk={() => message.success('onOk')}
+        onOk={onOK}
         onCancel={() => {
           setModalVisible(false)
-          message.success('onCancel')
+          // message.success('onCancel')
         }}
       >
         {contant}
@@ -64,10 +82,13 @@ export default function ModalBox (props: Props) {
   )
 }
 const Wrapper = styled.colgroup`
-  .ant-form-item {
+  .ant-modal-body > .ant-form-item {
     margin-bottom: 0px !important;
   }
   .ant-input-number-input {
     text-align: center !important;
+  }
+  .ant-modal-body > .ant-row {
+    display: inline-flex !important;
   }
 `

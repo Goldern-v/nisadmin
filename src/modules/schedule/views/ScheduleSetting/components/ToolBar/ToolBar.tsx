@@ -8,18 +8,14 @@ import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 
 import { Button, message, Modal, Form, Input, TreeSelect, Switch, DatePicker } from 'antd'
-
-const { RangePicker } = DatePicker
-// import { authStore, scheduleStore } from '@/stores'
-import service from 'src/services/api'
-// import moment from 'moment'
 import { scheduleStore } from '@/stores'
+import service from 'src/services/api'
 import moment from 'moment'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 
-// import emitter from 'src/libs/ev'
-
 const dateFormat = 'YYYY-MM-DD'
+const { WeekPicker } = DatePicker
+// const { RangePicker, WeekPicker } = DatePicker
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
@@ -27,6 +23,10 @@ export interface Props extends RouteComponentProps {}
 export default function ToolBar () {
   const [count, setCount] = useState(0)
   const [pageTitle, setPageTitle] = useState('编辑排班')
+  const [formatDay, setFormatDay] = useState('七')
+  const [formatMonth, setFormatMonth] = useState('七')
+
+  // let weekValue: any = moment(monthStart, dateFormat)
   // 编辑排班
   const [monthStart, setMonthStart] = useState(() => {
     let date = new Date()
@@ -39,15 +39,19 @@ export default function ToolBar () {
   const [defaultEndTime, setdefaultEndTime] = useState(() => {
     let date = new Date()
     if (scheduleStore.getEndTime()) {
+      setFormatMonth(`${moment(scheduleStore.getEndTime()).month() + 1}`)
+      setFormatDay(`${moment(scheduleStore.getEndTime()).date()}`)
       return scheduleStore.getEndTime()
     }
     return date
   })
 
+  const [weekValue, setWeekValue] = useState(moment(monthStart, dateFormat))
+
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    console.log(count, setCount, setMonthStart, setdefaultEndTime, setPageTitle)
+    console.log(count, setCount, setMonthStart, setdefaultEndTime, setPageTitle, setWeekValue)
 
     emitter.removeAllListeners('弹窗编辑排班套餐')
     emitter.removeAllListeners('获取排班列表')
@@ -112,28 +116,71 @@ export default function ToolBar () {
     //
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
-  const save = (e: any) => {
-    // 获取选中班次套餐
-    console.log('保存排班设置', e)
-    // return
-    // emitter.emit('获取选中班次套餐列表', (mealList: any) => {
-    message.success('保存排班设置')
-    //   console.log('获取选中班次套餐', mealList)
-    //   // return
-    //   mealList = mealList.filter((u: any) => {
-    //     return u.status !== null
-    //   })
-    //   service.scheduleMealApiService.saveAll(mealList).then((res) => {
-    //     message.success('保存排班班次套餐设置成功')
-    //     emitter.emit('更新班次套餐列表')
-    //     console.log('保存排班班次套餐', res)
-    //   })
-    // })
+  const save = (e: any, isPublish: boolean = false) => {
+    let postData: any = new Array()
+    let postLine: any = new Array()
+    let startTime = scheduleStore.getStartTime()
+    // let endTime = scheduleStore.getEndTime()
+
+    emitter.emit('获取编辑排班列表', (shiftData: any, shiftListData: any) => {
+      console.log('获取编辑排班列表', shiftData, shiftListData, postData)
+      let weekDayToNumber: any = {
+        mondayName: 0,
+        tuesdayName: 1,
+        wednesdayName: 2,
+        thursdayName: 3,
+        fridayName: 4,
+        saturdayName: 5,
+        sundayName: 6
+      }
+      shiftData.map((nurse: any, index: any) => {
+        for (const key in nurse) {
+          if (nurse.hasOwnProperty(key)) {
+            let element = nurse[key]
+            if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1) {
+              let shift = shiftListData.find((s: any) => element === s.name)
+              // if (!shift) {
+              //   continue
+              // }
+              postLine = {
+                id: {
+                  userId: nurse.id || '',
+                  workDate: moment(startTime)
+                    .add('d', weekDayToNumber[key])
+                    .format(dateFormat)
+                },
+                rangeId: shift ? shift.id + '' : '',
+                status: isPublish ? '1' : '0',
+                thisWeekHour: nurse.thisWeekHour,
+                rangeName: shift ? element || shift.name : '',
+                remark: nurse.remark
+              }
+              // console.log(key, element, shift, postLine)
+              postData.push(JSON.parse(JSON.stringify(postLine)))
+            }
+          }
+        }
+      })
+      console.log('获取编辑排班列表postData', postData)
+      service.schedulingApiService.update(postData).then((res) => {
+        console.log(res)
+        if (res && res.data.desc) {
+          message.success(res.data.desc)
+          if (isPublish) {
+            emitter.emit('发布并更新排班列表')
+            console.log('发布成功')
+          } else {
+            emitter.emit('更新排班列表表格')
+            console.log('暂存成功')
+          }
+        }
+      })
+    })
   }
 
   let shiftList = new Array()
   let treeData = new Array()
-  // let treeExpandedKeys = new Array()
+
   const initalTreeData = () => {
     shiftList = new Array()
     let deptCode = scheduleStore.getDeptCode()
@@ -172,8 +219,6 @@ export default function ToolBar () {
                 }
               ]
             })
-            //
-            // ;(treeExpandedKeys as any).push(s.shiftType)
           }
         })
         console.log('分类', treeData)
@@ -460,12 +505,12 @@ export default function ToolBar () {
     }
     console.log('提交表单postData', postData)
     service.scheduleMealApiService.save(postData).then((res) => {
-      message.success('添加班次套餐成功')
+      console.log('添加班次套餐成功')
       emitter.emit('更新班次套餐列表')
       console.log('添加班次套餐成功', res)
       // 更新班次套餐列表
     })
-    message.success('onOk')
+    console.log('onOk')
   }
 
   let inputWidth = '250px'
@@ -518,7 +563,7 @@ export default function ToolBar () {
       // visible: false,
       onOk: onOk,
       onCancel: () => {
-        message.success('onCancel')
+        console.log('onCancel')
         // modalInfo.destroy()
       },
       iconType: 'form',
@@ -534,13 +579,60 @@ export default function ToolBar () {
     // }
   }
 
+  const resetShift = () => {
+    message.info('重置排班')
+    emitter.emit('重置排班列表')
+  }
+
+  const copyShift = () => {
+    message.info('复制上周排班')
+    const postData = {
+      deptCode: scheduleStore.getDeptCode(), // deptCode  科室编码
+      stratTime: scheduleStore.getStartTime(), // stratTime 开始时间（直接传当前得时间就行）
+      endTime: scheduleStore.getEndTime() // endTime   结束时间（直接传当前得时间就行）
+    }
+    console.log('复制上周排班postData', postData)
+    service.schedulingApiService.copy(postData).then((res) => {
+      console.log('复制上周排班', res)
+      if (res && res.data.data) {
+        emitter.emit('更新复制上周排班', res.data.data)
+      }
+    })
+  }
+
   // {/* <ModalBox title={'添加排班/编辑排班'} /> */}
   // 选择日期间段发生改变时执行
-  const onChange = (date: any, dateString: any) => {
-    console.log(date, dateString)
+  // const onChange = (date: any, dateString: any) => {
+  //   console.log(date, dateString)
+  //   // 更新排班列表
+  //   scheduleStore.setStartTime(dateString[0])
+  //   scheduleStore.setEndTime(dateString[1])
+  //   emitter.emit('更新排班列表')
+  // }
+
+  const onWeekChange = (date: any, dateString: string) => {
+    let weekFirstDay = moment(date)
+      .startOf('week')
+      .add('d', 1)
+    let weekLastDay = moment(date)
+      .startOf('week')
+      .add('d', 7)
+    setWeekValue(weekFirstDay)
+    console.log(
+      'WeekPicker',
+      weekFirstDay.format(dateFormat),
+      weekLastDay.format(dateFormat),
+      defaultEndTime,
+      dateString
+    )
+
+    setFormatMonth(`${weekLastDay.month() + 1}`)
+    setFormatDay(`${weekLastDay.date()}`)
+
+    setdefaultEndTime(weekLastDay.format(dateFormat))
     // 更新排班列表
-    scheduleStore.setStartTime(dateString[0])
-    scheduleStore.setEndTime(dateString[0])
+    scheduleStore.setStartTime(weekFirstDay.format(dateFormat))
+    scheduleStore.setEndTime(weekLastDay.format(dateFormat))
     emitter.emit('更新排班列表')
   }
 
@@ -549,16 +641,24 @@ export default function ToolBar () {
       <Title>{pageTitle}</Title>
       <div style={{ flex: 1 }} />
       {/* <DatePicker className='button-tools' /> */}
-      <RangePicker
+      {/* <RangePicker
         defaultValue={[moment(monthStart, dateFormat), moment(defaultEndTime, dateFormat)]}
         onChange={onChange}
         format={dateFormat}
         locale={locale}
+      /> */}
+      <WeekPicker
+        defaultValue={moment(monthStart, dateFormat)}
+        style={{ width: '300px' }}
+        onChange={onWeekChange}
+        value={weekValue}
+        format={`[第]wo[周 ]YYYY年M月D日[ - ][${formatMonth}]月[${formatDay}]日`}
+        locale={locale}
       />
-      <Button onClick={() => message.info('重置排班')} className='button-tools'>
+      <Button onClick={() => resetShift()} className='button-tools'>
         重置排班
       </Button>
-      <Button onClick={() => message.info('复制上周排班')} className='button-tools'>
+      <Button onClick={() => copyShift()} className='button-tools'>
         复制上周排班
       </Button>
       <Button
@@ -570,65 +670,10 @@ export default function ToolBar () {
       >
         刷新排班人员
       </Button>
-      <Button
-        onClick={(e: any) => {
-          message.info('暂存')
-          let postData: any = new Array()
-          let postLine: any = new Array()
-          let startTime = scheduleStore.getStartTime()
-          // let endTime = scheduleStore.getEndTime()
-
-          emitter.emit('获取编辑排班列表', (shiftData: any, shiftListData: any) => {
-            console.log('获取编辑排班列表', shiftData, shiftListData, postData)
-            let weekDayToNumber: any = {
-              mondayName: 0,
-              tuesdayName: 1,
-              wednesdayName: 2,
-              thursdayName: 3,
-              fridayName: 4,
-              saturdayName: 5,
-              sundayName: 6
-            }
-            shiftData.map((nurse: any, index: any) => {
-              for (const key in nurse) {
-                if (nurse.hasOwnProperty(key)) {
-                  let element = nurse[key]
-                  if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1) {
-                    let shift = shiftListData.find((s: any) => element === s.name)
-                    // if (!shift) {
-                    //   continue
-                    // }
-                    postLine = {
-                      id: {
-                        userId: nurse.id || '',
-                        workDate: moment(startTime)
-                          .add('d', weekDayToNumber[key])
-                          .format(dateFormat)
-                      },
-                      rangeId: shift ? shift.id + '' : '',
-                      status: '0',
-                      thisWeekHour: nurse.thisWeekHour,
-                      rangeName: shift ? element || shift.name : '',
-                      remark: nurse.remark
-                    }
-                    // console.log(key, element, shift, postLine)
-                    postData.push(JSON.parse(JSON.stringify(postLine)))
-                  }
-                }
-              }
-            })
-            console.log('获取编辑排班列表postData', postData)
-            service.schedulingApiService.update(postData).then((res) => {
-              console.log(res)
-              message.success(res.data.desc)
-            })
-          })
-        }}
-        className='button-tools'
-      >
+      <Button onClick={save} className='button-tools'>
         暂存
       </Button>
-      <Button onClick={save} className='button-tools'>
+      <Button onClick={(e: any) => save(e, true)} className='button-tools'>
         发布排班
       </Button>
     </Wrapper>
@@ -652,6 +697,11 @@ const Wrapper = styled.div`
     margin-right: 60px !important;
     margin-bottom: 0;
     justify-content: flex-end !important;
+  }
+
+  .ant-calendar-picker > .ant-calendar-picker-input,
+  .ant-input {
+    width: 300px;
   }
 `
 const FormFlexLayoutStyle = (offset: string = '60px') => ({

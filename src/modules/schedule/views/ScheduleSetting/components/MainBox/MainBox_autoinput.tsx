@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-import { Table, Tabs, Button, Input, InputNumber, Form } from 'antd'
+import { Table, Tabs, Button, Input, InputNumber, Form, AutoComplete } from 'antd'
 // import { Table, message, Popconfirm, Divider, Tag } from 'antd'
 // import { authStore, scheduleStore } from '@/stores'
+
 import service from 'src/services/api'
 import { scheduleStore } from '@/stores'
 
@@ -33,306 +34,12 @@ let weekdayList = [
 // const dateFormat = 'YYYY-MM-DD'
 
 const TabPane = Tabs.TabPane
+const Option = AutoComplete.Option
 
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
-
-const countWorkHours = (record: any, target: any = null) => {
-  // shiftListData  effectiveTime
-  console.log('countWorkHours', record, shiftListData)
-  let result = 0
-  let shift: any = new Object()
-  for (const key in record) {
-    if (record.hasOwnProperty(key) && key.toLowerCase().indexOf('dayname') > -1) {
-      const element = record[key]
-      shift = shiftListData.find((s) => element === s.name)
-      if (shift) {
-        result += parseInt(shift.effectiveTime, 10) || 0
-        if (target && target.name && target.name === key + record.id) {
-          target.style.color = shift.nameColor || ''
-        }
-      }
-    }
-  }
-  record.thisWeekHour = result + ''
-  console.log('result', result)
-  return result
-}
-
-const onChangeInputText = (e: any, record: any, key: any) => {
-  // shiftList
-  console.log('onChangeInputText', e, record, key, e.currentTarget.value)
-  let selectedCellObj: any = new Object()
-  selectedRowsArray.map((row) => {
-    if (row.id === record.id) {
-      row[key] = e.currentTarget.value
-      record[key] = e.currentTarget.value
-      selectedCellObj = row
-    }
-  })
-  countWorkHours(record, e.currentTarget)
-  let inputW = selectedRow.target.querySelector(`input[name="thisWeekHour${selectedCell.record.id}"]`)
-  if (inputW) {
-    inputW.value = selectedRow.record.thisWeekHour
-    selectedCellObj.thisWeekHour = selectedRow.record.thisWeekHour
-  }
-  console.log('inputW', inputW, selectedRow)
-
-  // 计算工时
-}
-
-const onClickInputText = (e: any, record: any, key?: any) => {
-  record[key] = e.currentTarget.value
-  selectedCell = new Object({
-    record: record,
-    key: key,
-    target: e.currentTarget
-  })
-  console.log('onClickInputText', e, e.currentTarget, record, e.currentTarget.value, key, selectedCell)
-}
-
-const getShiftColor = (text: string) => {
-  if (!text) {
-    return 'black'
-  }
-  let shift = shiftListData.find((s) => text === s.name)
-  return shift ? shift.nameColor : 'black'
-}
-
-const getWeekDay = (weekday: number) => {
-  let days = ['', '一', '二', '三', '四', '五', '六', '日']
-  let date = moment(scheduleStore.getStartTime())
-    .add(weekday - 1, 'days')
-    .format('M[月]DD[日(周]dddd[)]')
-  // console.log('周', weekday, scheduleStore.getStartTime(), date)
-  if (date.indexOf('Invalid date') > -1) {
-    return `周${days[weekday - 1]}`
-  }
-  return `${date}`
-}
-
-const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
-  record.showIndex ? (
-    <div>
-      <Input
-        id={'WeekInput' + key + record.key}
-        name={key + record.key}
-        onClick={(e) => onClickInputText(e, record, key)}
-        onChange={(e) => onChangeInputText(e, record, key)}
-        style={{ color: colorName || getShiftColor(text) || '' }}
-        className={'table-input'}
-        defaultValue={text || ''}
-      />
-    </div>
-  ) : (
-    ''
-  )
-
-// let ModalBoxRef: any = new Object() // React.createRef()
-
-const columns = [
-  // {
-  //   title: '序号',
-  //   dataIndex: 'id',
-  //   key: 'id',
-  //   width: '5%'
-  // },
-  {
-    title: '序号',
-    dataIndex: 'showIndex',
-    key: 'showIndex',
-    width: '5%'
-  },
-  {
-    title: '工号',
-    dataIndex: 'empNo',
-    key: 'empNo',
-    width: '5%'
-  },
-  {
-    title: '姓名',
-    dataIndex: 'empName',
-    key: 'empName',
-    width: '5%'
-  },
-  {
-    title: '层级',
-    dataIndex: 'currentLevel',
-    key: 'currentLevel',
-    width: '5%'
-  },
-  {
-    title: '职称',
-    dataIndex: 'title',
-    key: 'title',
-    width: '8%'
-  },
-  {
-    title: () => getWeekDay(1),
-    dataIndex: 'mondayName',
-    key: 'mondayName',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, record.mondayNameColor, 'mondayName')
-  },
-  {
-    title: () => getWeekDay(2),
-    dataIndex: 'tuesdayName',
-    key: 'tuesdayName',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, record.tuesdayNameColor, 'tuesdayName')
-  },
-  {
-    title: () => getWeekDay(3),
-    dataIndex: 'wednesdayName',
-    key: 'wednesdayName',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'wednesdayName')
-  },
-  {
-    title: () => getWeekDay(4),
-    dataIndex: 'thursdayName',
-    key: 'thursdayName',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'thursdayName')
-  },
-  {
-    title: () => getWeekDay(5),
-    dataIndex: 'fridayName',
-    key: 'fridayName',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, record.fridayNameColor, 'fridayName')
-  },
-  {
-    title: () => getWeekDay(6),
-    dataIndex: 'saturdayName',
-    key: 'saturdayName',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, record.saturdayNameColor, 'saturdayName')
-  },
-  {
-    title: () => getWeekDay(7),
-    dataIndex: 'sundayName',
-    key: 'sundayName',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor, 'sundayName')
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-    key: 'remark',
-    width: '15%',
-    render: (text: string, record: any) => getTextColor(text, record, 'black', 'remark')
-  },
-  {
-    title: '本周工时(小时)',
-    dataIndex: 'thisWeekHour',
-    key: 'thisWeekHour',
-    width: '6%',
-    render: (text: string, record: any) => getTextColor(text, record, 'black', 'thisWeekHour')
-  },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    key: 'status',
-    width: '10%',
-    render: (text: string, record: any) => (record.id ? <span id={'status' + record.id}>{getStatus(text)}</span> : '')
-  }
-]
-
-let data = {
-  key: '',
-  id: '',
-  createTime: '',
-  deptCode: '',
-  name: '',
-  mondayName: '',
-  tuesdayName: '',
-  wednesdayName: '',
-  thursdayName: '',
-  fridayName: '',
-  saturdayName: '',
-  sundayName: '',
-  mondayNameColor: '',
-  tuesdayNameColor: '',
-  wednesdayNameColor: '',
-  thursdayNameColor: '',
-  fridayNameColor: '',
-  saturdayNameColor: '',
-  sundayNameColor: '',
-  status: ''
-}
-
-let allUser = new Array()
-
-let tableData = new Array()
-let selectedRowsArray = new Array()
-let selectedCell: any = new Object()
-let selectedRow: any = new Object()
-
-let shiftListData = new Array()
-
-let getStatus = (status: any) => {
-  // status   0代表暂存，1代表发布
-  switch (status) {
-    case '0':
-      return '暂存'
-    case '1':
-      return '发布'
-    default:
-      return '未设置排班'
-  }
-}
-
-let getStatusToNum = (status: any) => {
-  // status   0代表暂存，1代表发布
-  switch (status) {
-    case '暂存':
-      return '0'
-    case '发布':
-      return '1'
-    default:
-      return '-1'
-  }
-}
-
-// rowSelection objects indicates the need for row selection
-// let rowSelection = {
-//   onChange: (selectedRowKeys: any, selectedRows: any) => {
-//     // selectedRowsArray = selectedRows
-//     console.log(`onChange:selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
-//   },
-//   onSelect: (record: any, selected: any, selectedRows: any) => {
-//     record.status = selected
-//     selectedRowsArray.map((res: any) => {
-//       if (res.id === record.id) {
-//         res.status = selected
-//       }
-//     })
-//     // selectedRowsArray
-//     console.log('onSelect', record, selected, selectedRows)
-//   },
-//   onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-//     if (selectedRows && selectedRows.length === 0) {
-//       selectedRowsArray.map((res: any) => {
-//         res.status = false
-//       })
-//     } else {
-//       selectedRows.map((res: any) => {
-//         res.status = true
-//       })
-//     }
-
-//     console.log('onSelectAll', selected, selectedRows, changeRows)
-//   },
-//   getCheckboxProps: (record: any) => ({
-//     disabled: !record.id, // Column configuration not to be checked
-//     defaultChecked: record.status === true,
-//     name: record.key
-//   }),
-//   hideDefaultSelections: true
-// }
 
 export default function MainBox () {
   const [count, setCount] = useState(0)
@@ -341,8 +48,369 @@ export default function MainBox () {
   const [mealList, setMealList] = useState(new Array())
   const [tableList, setTableList] = useState(new Array())
   const [shiftList, setShiftList] = useState(new Array())
+  const [dataSource, setDataSource] = useState(new Array())
   const [shiftUserList, setShiftUserList] = useState(new Array())
 
+  const [shiftTableData, setShiftTableData] = useState(new Array())
+
+  const [selectedCellObject, setSelectedCellObject] = useState(new Object() as any)
+  const [selectedRowObject, setSelectedRowObject] = useState(new Object() as any)
+
+  const countWorkHours = (record: any, target: any = null) => {
+    // shiftListData  effectiveTime
+    console.log('countWorkHours', record, shiftListData)
+    let result = 0
+    let shift: any = new Object()
+    for (const key in record) {
+      if (record.hasOwnProperty(key) && key.toLowerCase().indexOf('dayname') > -1) {
+        const element = record[key]
+        shift = shiftListData.find((s) => element === s.name)
+        if (shift) {
+          result += parseInt(shift.effectiveTime, 10) || 0
+          if (target && target.name && target.name === key + record.id) {
+            target.style.color = shift.nameColor || ''
+          }
+        }
+      }
+    }
+    record.thisWeekHour = result + ''
+    console.log('result', result)
+    return result
+  }
+
+  const onChangeAutoInputText = (value: any, record: any, key: any) => {
+    // shiftList
+    console.log('onChangeAutoInputText', value, record, key, selectedCell)
+    let selectedCellObj: any = new Object()
+
+    selectedCell = selectedCellObject
+    selectedRow = selectedRowObject
+
+    selectedCell.target.style.color = getShiftColor(value)
+
+    selectedRowsArray.map((row) => {
+      if (row.id === record.id) {
+        row[key] = value
+        record[key] = value
+        selectedCellObj = row
+      }
+    })
+    countWorkHours(record, selectedCell.target)
+    let inputW = selectedRow.target.querySelector(`span[id="thisWeekHour${selectedCell.record.id}"]`)
+    if (inputW) {
+      inputW.innerHTML = selectedRow.record.thisWeekHour
+      selectedCellObj.thisWeekHour = selectedRow.record.thisWeekHour
+    }
+
+    setSelectedCellObject(selectedCell)
+    setSelectedRowObject(selectedRow)
+    setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
+
+    console.log('inputW', inputW, selectedRow, selectedCell, shiftList, selectedRowsArray)
+
+    // 计算工时
+  }
+
+  const onClickAutoInputText = (e: any, record: any, key?: any) => {
+    let autoInput = e.currentTarget.querySelector('input')
+    record[key] = autoInput.value
+    selectedCell = new Object({
+      record: record,
+      key: key,
+      target: autoInput
+    })
+    setSelectedCellObject(selectedCell)
+    selectedRowsArray = JSON.parse(JSON.stringify(shiftTableData))
+
+    console.log(
+      'onClickAutoInputText',
+      e,
+      autoInput,
+      autoInput.value,
+      record,
+      key,
+      selectedCell,
+      selectedRowsArray,
+      shiftTableData
+    )
+  }
+
+  const onChangeInputText = (e: any, record: any, key: any) => {
+    // shiftList
+    console.log('onChangeInputText', e, record, key, e.currentTarget.value)
+    let selectedCellObj: any = new Object()
+
+    selectedCell = selectedCellObject
+    selectedRow = selectedRowObject
+
+    selectedRowsArray.map((row) => {
+      if (row.id === record.id) {
+        row[key] = e.currentTarget.value
+        record[key] = e.currentTarget.value
+        selectedCellObj = row
+      }
+    })
+    countWorkHours(record, e.currentTarget)
+    let inputW = selectedRow.target.querySelector(`span[id="thisWeekHour${selectedCell.record.id}"]`)
+    if (inputW) {
+      inputW.innerHTML = selectedRow.record.thisWeekHour
+      selectedCellObj.thisWeekHour = selectedRow.record.thisWeekHour
+    }
+    console.log('inputW', inputW, selectedRow, selectedRowsArray)
+    setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
+
+    // 计算工时
+  }
+
+  const onClickInputText = (e: any, record: any, key?: any) => {
+    record[key] = e.currentTarget.value
+    selectedCell = new Object({
+      record: record,
+      key: key,
+      target: e.currentTarget
+    })
+    setSelectedCellObject(selectedCell)
+    console.log('onClickInputText', e, e.currentTarget, record, e.currentTarget.value, key, selectedCell)
+  }
+
+  const getShiftColor = (text: string) => {
+    if (!text) {
+      return 'black'
+    }
+    let shift = shiftList.find((s) => text === s.name)
+    let shiftData = shiftListData.find((s) => text === s.name)
+    if (shift) {
+      return shift.nameColor
+    }
+    if (shiftData) {
+      return shiftData.nameColor
+    }
+    return 'black'
+  }
+
+  const renderOption = (item: string) => {
+    return (
+      <Option key={item} value={item} style={{ color: getShiftColor(item) }}>
+        {item}
+      </Option>
+    )
+  }
+
+  const getWeekDay = (weekday: number) => {
+    let days = ['', '一', '二', '三', '四', '五', '六', '日']
+    let date = moment(scheduleStore.getStartTime())
+      .add(weekday - 1, 'days')
+      .format('M[月]DD[日(周]dddd[)]')
+    // console.log('周', weekday, scheduleStore.getStartTime(), date)
+    if (date.indexOf('Invalid date') > -1) {
+      return `周${days[weekday - 1]}`
+    }
+    return `${date}`
+  }
+
+  let data = {
+    key: '',
+    id: '',
+    createTime: '',
+    deptCode: '',
+    name: '',
+    mondayName: '',
+    tuesdayName: '',
+    wednesdayName: '',
+    thursdayName: '',
+    fridayName: '',
+    saturdayName: '',
+    sundayName: '',
+    mondayNameColor: '',
+    tuesdayNameColor: '',
+    wednesdayNameColor: '',
+    thursdayNameColor: '',
+    fridayNameColor: '',
+    saturdayNameColor: '',
+    sundayNameColor: '',
+    status: ''
+  }
+
+  let allUser = new Array()
+
+  let tableData = new Array()
+  let selectedRowsArray = new Array()
+  let selectedCell: any = new Object()
+  let selectedRow: any = new Object()
+
+  let shiftListData = new Array()
+
+  let getStatus = (status: any) => {
+    // status   0代表暂存，1代表发布
+    switch (status) {
+      case '0':
+        return '暂存'
+      case '1':
+        return '发布'
+      default:
+        return '未设置排班'
+    }
+  }
+
+  let getStatusToNum = (status: any) => {
+    // status   0代表暂存，1代表发布
+    switch (status) {
+      case '暂存':
+        return '0'
+      case '发布':
+        return '1'
+      default:
+        return '-1'
+    }
+  }
+
+  const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
+    record.showIndex ? (
+      <div>
+        {key && key === 'remark' ? (
+          <Input
+            name={key + record.key}
+            onClick={(e) => onClickInputText(e, record, key)}
+            onChange={(e) => onChangeInputText(e, record, key)}
+            style={{ color: colorName || getShiftColor(text) || '' }}
+            className={'table-input'}
+            defaultValue={text && text.length > 0 ? text : ''}
+          />
+        ) : (
+          <div onClick={(e) => onClickAutoInputText(e, record, key)}>
+            <AutoComplete
+              dataSource={dataSource.map(renderOption)}
+              onChange={(e) => onChangeAutoInputText(e, record, key)}
+              id={'WeekInput' + key + record.key}
+              filterOption={(inputValue: any, option: any) =>
+                option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
+                dataSource.indexOf(inputValue.toUpperCase()) !== -1
+              }
+              className={'table-input'}
+              style={{ color: colorName || getShiftColor(text) || '' }}
+              defaultValue={text && text.length > 0 ? text : ''}
+            />
+          </div>
+        )}
+      </div>
+    ) : (
+      ''
+    )
+
+  // let ModalBoxRef: any = new Object() // React.createRef()
+
+  const columns = [
+    // {
+    //   title: '序号',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   width: '5%'
+    // },
+    {
+      title: '序号',
+      dataIndex: 'showIndex',
+      key: 'showIndex',
+      width: '5%'
+    },
+    {
+      title: '工号',
+      dataIndex: 'empNo',
+      key: 'empNo',
+      width: '5%'
+    },
+    {
+      title: '姓名',
+      dataIndex: 'empName',
+      key: 'empName',
+      width: '5%'
+    },
+    {
+      title: '层级',
+      dataIndex: 'currentLevel',
+      key: 'currentLevel',
+      width: '5%'
+    },
+    {
+      title: '职称',
+      dataIndex: 'title',
+      key: 'title',
+      width: '8%'
+    },
+    {
+      title: () => getWeekDay(1),
+      dataIndex: 'mondayName',
+      key: 'mondayName',
+      width: '70px',
+      render: (text: string, record: any) => getTextColor(text, record, record.mondayNameColor, 'mondayName')
+    },
+    {
+      title: () => getWeekDay(2),
+      dataIndex: 'tuesdayName',
+      key: 'tuesdayName',
+      width: '70px',
+      render: (text: string, record: any) => getTextColor(text, record, record.tuesdayNameColor, 'tuesdayName')
+    },
+    {
+      title: () => getWeekDay(3),
+      dataIndex: 'wednesdayName',
+      key: 'wednesdayName',
+      width: '70px',
+      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'wednesdayName')
+    },
+    {
+      title: () => getWeekDay(4),
+      dataIndex: 'thursdayName',
+      key: 'thursdayName',
+      width: '70px',
+      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'thursdayName')
+    },
+    {
+      title: () => getWeekDay(5),
+      dataIndex: 'fridayName',
+      key: 'fridayName',
+      width: '70px',
+      render: (text: string, record: any) => getTextColor(text, record, record.fridayNameColor, 'fridayName')
+    },
+    {
+      title: () => getWeekDay(6),
+      dataIndex: 'saturdayName',
+      key: 'saturdayName',
+      width: '70px',
+      render: (text: string, record: any) => getTextColor(text, record, record.saturdayNameColor, 'saturdayName')
+    },
+    {
+      title: () => getWeekDay(7),
+      dataIndex: 'sundayName',
+      key: 'sundayName',
+      width: '70px',
+      render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor, 'sundayName')
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      key: 'remark',
+      width: '15%',
+      render: (text: string, record: any) => getTextColor(text, record, 'black', 'remark')
+    },
+    {
+      title: '本周工时(小时)',
+      dataIndex: 'thisWeekHour',
+      key: 'thisWeekHour',
+      width: '6%',
+      render: (text: string, record: any) => (record.id ? <span id={'thisWeekHour' + record.id}>{text}</span> : '')
+      // render: (text: string, record: any) => getTextColor(text, record, 'black', 'thisWeekHour')
+      //
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      width: '10%',
+      render: (text: string, record: any) => (record.id ? <span id={'status' + record.id}>{getStatus(text)}</span> : '')
+    }
+  ]
+
+  // let dataSource = ['A', 'N', 'P']
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     getMealList()
@@ -382,7 +450,6 @@ export default function MainBox () {
     })
 
     emitter.addListener('更新排班列表', () => {
-      setTableLoading(true)
       updateTableUI(true)
       getSchedule()
     })
@@ -417,9 +484,9 @@ export default function MainBox () {
       shiftUserList,
       setShiftUserList,
       mealList,
-      setMealList
-      // shiftTableData,
-      // setShiftTableData
+      setMealList,
+      shiftTableData,
+      setShiftTableData
       // rowSelection,
       // setRowSelection
     )
@@ -427,15 +494,14 @@ export default function MainBox () {
 
   const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false) => {
     // selectedRowsArray = shiftTableData
-    // console.log('====updateTableUI', selectedRowsArray, shiftTableData)
+    console.log('====updateTableUI', selectedRowsArray, shiftTableData)
     selectedRowsArray.map((s, k) => {
       if (s && s.id) {
         for (let key in s) {
           if (s[key] && (key.indexOf('dayName') > -1 || key.indexOf('remark') > -1) && key.indexOf('status') === -1) {
             // console.log('key', key, s[key])
             s[key] = isEmpty ? '' : s[key] || ''
-            let input: any = document.querySelector(`input[name="${key}${s.id}"]`)
-            console.log('=updateTableUI==input', s[key], input)
+            let input: any = document.querySelector(`div#WeekInput${key}${s.id} input`)
             if (input) {
               input.value = isEmpty ? '' : s[key]
               input.style.color = isEmpty ? '' : getShiftColor(s[key])
@@ -463,13 +529,13 @@ export default function MainBox () {
         // span id
         // 更新工时
         countWorkHours(s)
-        let inputW: any = document.querySelector(`input[name="thisWeekHour${s.id}"]`)
+        let inputW: any = document.querySelector(`span[id="thisWeekHour${s.id}"]`)
         s.thisWeekHour = isEmpty ? '' : s.thisWeekHour + ''
         if (inputW) {
-          inputW.value = s.thisWeekHour
+          inputW.innerHTML = s.thisWeekHour
           s.thisWeekHour = s.thisWeekHour
         }
-        console.log('inputW', inputW, selectedRow)
+        // console.log('inputW', inputW, selectedRow)
       }
     })
 
@@ -488,7 +554,7 @@ export default function MainBox () {
     // })
     let newTabelData = JSON.parse(JSON.stringify(selectedRowsArray))
 
-    // setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
+    setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
 
     genEmptyTable(newTabelData)
     setTableList(newTabelData)
@@ -547,6 +613,12 @@ export default function MainBox () {
       if (res && res.data.data) {
         setShiftList(res.data.data)
         shiftListData = JSON.parse(JSON.stringify(res.data.data))
+        let dataSourceArray = new Array()
+        shiftListData.map((s: any) => {
+          dataSourceArray.push(s.name)
+        })
+        setDataSource(dataSourceArray)
+        console.log('查找排班班次dataSourceArray', shiftListData, dataSource, dataSourceArray)
       }
     })
   }
@@ -635,7 +707,6 @@ export default function MainBox () {
           callback(userList)
         }
       }
-      setTableLoading(false)
     })
   }
 
@@ -643,8 +714,6 @@ export default function MainBox () {
     selectedRowsArray = new Array()
     let tr = {}
     let newList = new Array()
-
-    setTableLoading(true)
 
     schShiftUser.map((nurse: any, shcIndex: number) => {
       console.log('nurse', shcIndex, nurse.empName, nurse)
@@ -683,14 +752,14 @@ export default function MainBox () {
     })
     // console.log('schShiftUser', schShiftUser, newList, selectedRowsArray)
     //
-    // setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
+    setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
     // 补空行
     genEmptyTable(newList)
     // // 统计
     // // statisticFooter(newList)
     setTableLoading(false)
     setTableList(JSON.parse(JSON.stringify(newList as any)))
-    console.log('tableList', tableList, newList, selectedRowsArray)
+    console.log('tableList', tableList, newList, selectedRowsArray, shiftTableData)
     updateTableUI()
   }
 
@@ -731,13 +800,10 @@ export default function MainBox () {
         selectedRow.record = m
         for (let key in m) {
           // console.log('key', key, m[key])
-          if (
-            m[key] &&
-            (key.indexOf('dayName') > -1 || key.indexOf('remark') > -1 || key.indexOf('thisWeekHour') > -1)
-          ) {
+          if (m[key] && (key.indexOf('dayName') > -1 || key.indexOf('thisWeekHour') > -1)) {
             console.log('key', key, m[key])
             s[key] = m[key]
-            let input = selectedRow.target.querySelector(`input[name="${key}${s.id}"]`)
+            let input = selectedRow.target.querySelector(`div#WeekInput${key}${s.id} input`)
             console.log('input', key, key + s.id, s, input)
             if (input) {
               input.value = m[key]
@@ -747,9 +813,9 @@ export default function MainBox () {
         }
         countWorkHours(selectedRow.record)
         // selectedRowsArray[selectedRow.index]
-        let inputW = selectedRow.target.querySelector(`input[name="thisWeekHour${selectedCell.record.id}"]`)
+        let inputW = selectedRow.target.querySelector(`span[id="thisWeekHour${selectedCell.record.id}"]`)
         if (inputW) {
-          inputW.value = selectedRow.record.thisWeekHour
+          inputW.innerHTML = selectedRow.record.thisWeekHour
           s.thisWeekHour = selectedRow.record.thisWeekHour
         }
         console.log('inputW', inputW, selectedRow)
@@ -771,23 +837,13 @@ export default function MainBox () {
           record: record,
           target: event.currentTarget
         })
-        tableList.map((t) => {
-          if (t.id === record.id) {
-            t = Object.assign(t, record)
-          }
-        })
-        let input = selectedRow.target.querySelector(`input[name="thisWeekHour${record.id}"]`)
-        if (input) {
-          input.value = record.thisWeekHour
-        }
-        selectedRowsArray.map((s) => {
-          if (s.id === record.id) {
-            s = Object.assign(s, record)
-          }
-        })
+        setSelectedRowObject(selectedRow)
+        console.log('onRow', selectedRow, index, record)
+        tableUpdate(record, selectedRow, index)
+
+        // updateTableUI()
         // selectedRowsArray
         // thisWeekHour
-        console.log('onRowClick', record, index, event, event.currentTarget, selectedRow, shiftListData, tableList)
         // setRowSelection(event.currentTarget)
       }, // click row
       onDoubleClick: (event: any) => {
@@ -886,7 +942,7 @@ export default function MainBox () {
       </div>
       <div style={{ flex: 1 }} />
       <div className='card-container'>
-        <Tabs type='card'>
+        <Tabs onChange={(e) => console.log('切换选卡至 ' + e)} type='card'>
           <TabPane tab='可选班次' key='可选班次'>
             {shiftList.map((m, i) =>
               m.status === true ? (
@@ -894,27 +950,54 @@ export default function MainBox () {
                   style={{ minWidth: '45%', width: '45%', margin: '4px 4px', color: m.nameColor || '' }}
                   onClick={(e: any) => {
                     // message.info(m.name)
-                    console.log(e, m, selectedCell, selectedRowsArray)
+                    console.log('--可选班', e, m, selectedCell, selectedCellObject, selectedRow, shiftTableData)
+
+                    selectedCell = selectedCellObject
+                    selectedRow = selectedRowObject
+
                     if (selectedCell && selectedCell.record) {
                       let key = selectedCell.key
                       selectedCell.record[key] = m.name
                       let selectedCellObj: any = new Object()
-                      selectedRowsArray.map((s) => {
-                        if (s.id === selectedCell.record.id && key.indexOf('dayName') > -1) {
-                          s[key] = m.name
-                          selectedCell.target.value = m.name
-                          selectedCell.target.style.color = m.nameColor || ''
-                          selectedCellObj = s
+
+                      // setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
+                      selectedRowsArray = JSON.parse(JSON.stringify(shiftTableData))
+
+                      if (selectedRowsArray && selectedRowsArray.length > 0) {
+                        selectedRowsArray.map((s) => {
+                          if (s.id === selectedCell.record.id && key.indexOf('dayName') > -1) {
+                            s[key] = m.name
+                            selectedCell.target.value = m.name
+                            selectedCell.target.style.color = m.nameColor || ''
+                            selectedCellObj = JSON.parse(JSON.stringify(s))
+                          }
+                        })
+                        countWorkHours(selectedCellObj)
+                        let input = selectedRow.target.querySelector(`span[id="thisWeekHour${selectedCellObj.id}"]`)
+                        if (input) {
+                          input.value = selectedCellObj.thisWeekHour
                         }
-                      })
-                      countWorkHours(selectedCellObj)
-                      let input = selectedRow.target.querySelector(`input[name="thisWeekHour${selectedCellObj.id}"]`)
-                      if (input) {
-                        input.value = selectedCellObj.thisWeekHour
+                        console.log(
+                          '!!可选班次选中',
+                          e,
+                          m,
+                          key,
+                          selectedCell,
+                          selectedCellObj,
+                          selectedRowsArray,
+                          selectedRow,
+                          input
+                        )
+                      } else {
+                        console.log('!!空空selectedRowsArray')
                       }
-                      let newList = JSON.parse(JSON.stringify(selectedRowsArray))
-                      genEmptyTable(newList)
-                      setTableList(newList)
+
+                      // setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
+
+                      // updateTableUI()
+                      // let newList = JSON.parse(JSON.stringify(selectedRowsArray))
+                      // genEmptyTable(newList)
+                      // setTableList(newList)
                     }
                   }}
                   key={m.name + i}
@@ -935,22 +1018,18 @@ export default function MainBox () {
                     // message.info(m.name)
                     console.log(e, m, selectedCell, selectedRowsArray, selectedRow)
                     if (selectedRow && selectedRow.record) {
-                      // let inputs = selectedRow.target.querySelectorAll(`input[name*="${selectedRow.record.id}"]`)
+                      // let inputs = selectedRow.target.querySelectorAll(`input[id*="${selectedRow.record.id}"]`)
                       // console.log('inputs', inputs)
+                      selectedRowsArray = JSON.parse(JSON.stringify(shiftTableData))
                       selectedRowsArray.map((s, k) => {
                         if (s.id === selectedCell.record.id) {
                           selectedRow.record = m
                           for (let key in m) {
                             // console.log('key', key, m[key])
-                            if (
-                              m[key] &&
-                              (key.indexOf('dayName') > -1 ||
-                                key.indexOf('remark') > -1 ||
-                                key.indexOf('thisWeekHour') > -1)
-                            ) {
+                            if (m[key] && (key.indexOf('dayName') > -1 || key.indexOf('thisWeekHour') > -1)) {
                               console.log('key', key, m[key])
                               s[key] = m[key]
-                              let input = selectedRow.target.querySelector(`input[name="${key}${s.id}"]`)
+                              let input = selectedRow.target.querySelector(`div#WeekInput${key}${s.id} input`)
                               console.log('input', key, key + s.id, s, input)
                               if (input) {
                                 input.value = m[key]
@@ -961,18 +1040,13 @@ export default function MainBox () {
                           countWorkHours(selectedRow.record)
                           // selectedRowsArray[selectedRow.index]
                           let inputW = selectedRow.target.querySelector(
-                            `input[name="thisWeekHour${selectedCell.record.id}"]`
+                            `span[id="thisWeekHour${selectedCell.record.id}"]`
                           )
                           if (inputW) {
-                            inputW.value = selectedRow.record.thisWeekHour
+                            inputW.innerHTML = selectedRow.record.thisWeekHour
                             s.thisWeekHour = selectedRow.record.thisWeekHour
                           }
                           console.log('inputW', inputW, selectedRow)
-                          // if(s[k] === selectedCell.record[k]){
-                          //   s[k] = m.name
-                          //   // selectedCell.target.value = m.name
-                          //   // selectedCell.target.style.color = m.nameColor
-                          // }
                         }
                       })
                       console.log('班次模版selectedRowsArray', selectedRowsArray)

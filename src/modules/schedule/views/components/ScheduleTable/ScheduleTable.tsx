@@ -85,43 +85,43 @@ const columns = [
   {
     title: () => getWeekDay(1),
     dataIndex: 'rangeName1',
-    width: '6%',
+    width: '70px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor1)
   },
   {
     title: () => getWeekDay(2),
     dataIndex: 'rangeName2',
-    width: '6%',
+    width: '70px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor2)
   },
   {
     title: () => getWeekDay(3),
     dataIndex: 'rangeName3',
-    width: '6%',
+    width: '70px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor3)
   },
   {
     title: () => getWeekDay(4),
     dataIndex: 'rangeName4',
-    width: '6%',
+    width: '70px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor4)
   },
   {
     title: () => getWeekDay(5),
     dataIndex: 'rangeName5',
-    width: '6%',
+    width: '70px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor5)
   },
   {
     title: () => getWeekDay(6),
     dataIndex: 'rangeName6',
-    width: '6%',
+    width: '70px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor6)
   },
   {
     title: () => getWeekDay(7),
     dataIndex: 'rangeName7',
-    width: '6%',
+    width: '70px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor7)
   },
   {

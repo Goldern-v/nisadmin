@@ -78,11 +78,14 @@ export default function ToolBar () {
           deptCode: ward.code
         }
 
+        scheduleStore.setDepartment(dept as any)
+        scheduleStore.setDepartmentValue('deptName', ward.name)
+        scheduleStore.setDepartmentValue('deptCode', ward.code)
+
         message.success(`切换至 ${ward.name}`)
         emitter.emit('清空排班记录')
         emitter.emit('初始化周排班列表')
 
-        scheduleStore.setDepartment(dept as any)
         // scheduleStore.setDepartmentValue('wardCode', ward.code)
         // scheduleStore.setDepartmentValue('wardName', ward.name)
         // scheduleStore.setDepartmentValue('deptCode', ward.code)
