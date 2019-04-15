@@ -94,7 +94,7 @@ let rowSelection = {
   getCheckboxProps: (record: any) => ({
     disabled: record.rangeShow === null, // Column configuration not to be checked
     defaultChecked: record.rangeShow,
-    name: record.key
+    name: record.key + ''
   }),
   hideDefaultSelections: true
   // selections: [
