@@ -14,6 +14,7 @@ import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSetti
 import StatisticView from 'src/modules/statistic/StatisticView'
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
+import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -41,7 +42,7 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '编辑排班', link: '' }
   ]),
-  // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
+  setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   {
     path: '/',
     redirect: '/home'
