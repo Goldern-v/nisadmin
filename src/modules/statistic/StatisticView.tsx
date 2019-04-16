@@ -8,11 +8,11 @@ import NurseScheduleByShift from './components/NurseScheduleByShift'
 
 export default function StatisticView () {
   const [count, setCount] = useState(0)
-  const [shiftClass, setShiftClass] = useState([])
+  // const [shiftClass, setShiftClass] = useState([])
   useEffect(() => {
     console.log(count, setCount)
-    console.log(3333)
-    console.log(shiftClass)
+    // console.log(3333)
+    // console.log(shiftClass)
   })
   // function getShiftClass (shiftClass: any) {
   //   setShiftClass(shiftClass)
