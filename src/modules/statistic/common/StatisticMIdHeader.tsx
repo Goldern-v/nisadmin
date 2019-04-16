@@ -13,19 +13,26 @@ export default function StatisticMIdHeader () {
     statisticViewModel.setTitle('护士休假统计')
     return statisticViewModel.getTitle
   })
+  const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
+  const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
   useEffect(() => {
-    console.log(title, settitle)
+    console.log(title, settitle, setStartDate, setEndDate)
 
     emitter.removeAllListeners('设置统计页标题')
+    emitter.removeAllListeners('设置统计页日期')
     emitter.addListener('设置统计页标题', (titleName: any) => {
       settitle(titleName)
+    })
+    emitter.addListener('设置统计页日期', (value: any) => {
+      setStartDate(value[0])
+      setEndDate(value[1])
     })
   })
   return (
     <Con>
       <div className='firstTitle'>{title}</div>
       <div className='secondTitle'>
-        日期：{statisticViewModel.startDate} 至 {statisticViewModel.endDate}
+        日期：{startDate} 至 {endDate}
       </div>
     </Con>
   )

@@ -5,6 +5,7 @@ import moment from 'moment'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 
 const { RangePicker } = DatePicker
+import emitter from 'src/libs/ev'
 
 const dateFormat = 'YYYY年MM月DD日'
 // const monthFormat = 'YYYY/MM'
@@ -42,6 +43,7 @@ export default function SelectData () {
           statisticViewModel.endDate = value[1]
           setstartDate(value[0])
           setendDate(value[1])
+          emitter.emit('设置统计页日期', value)
         }}
         format={dateFormat}
       />

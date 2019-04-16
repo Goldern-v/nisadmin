@@ -10,14 +10,25 @@ class StatisticViewModel {
   public get getTitle () {
     return this.deptName + this.title
   }
+  @computed
+  public get getDeptName () {
+    return this.deptName
+  }
+  @computed
+  public get getDeptCode () {
+    return this.deptCode
+  }
+  @computed
+  public get getStartDate () {
+    return this.startDate
+  }
+  @computed
+  public get getEndDate () {
+    return this.endDate
+  }
   @action
   public setTitle = (newTitle: any) => {
     this.title = newTitle
-  }
-
-  @action
-  public getDeptName = () => {
-    return this.deptName
   }
 }
 
