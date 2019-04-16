@@ -8,13 +8,13 @@ import NurseScheduleByShift from './components/NurseScheduleByShift'
 
 export default function StatisticView () {
   const [count, setCount] = useState(0)
-  // const [shiftClass, setShiftClass] = useState([])
+  const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
-    console.log(count, setCount)
+    console.log(count, setCount, shiftClass)
     // console.log(3333)
     // console.log(shiftClass)
   })
-  // function getShiftClass (shiftClass: any) {
+  // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)
   // }
   return (
@@ -27,9 +27,10 @@ export default function StatisticView () {
           {/* 对应表 */}
           {/* <NurseSchedule /> */}
           <NurseScheduleByShift
-          // postShiftClass={(shiftClass: any) => {
-          //   getShiftClass
-          // }}
+            postShiftClass={(shiftclass: any) => {
+              // getShiftClass(shiftclass)
+              setShiftClass(shiftclass)
+            }}
           />
         </StatisticMid>
       </StatisticRightCon>
