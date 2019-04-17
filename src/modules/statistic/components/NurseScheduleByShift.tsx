@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import TableModel from '../common/TableModel'
 import { Radio, Checkbox } from 'antd'
+import emitter from 'src/libs/ev'
 import { RouteComponentProps } from 'react-router'
 const RadioGroup = Radio.Group
 const startShiftClass = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
@@ -13,17 +14,18 @@ export default function BedSituation (props: any) {
   const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   useEffect(() => {
     // props.postShiftClass(shiftClass)
-    console.log(shiftClass)
+    emitter.emit('设置班次大类', shiftClass)
   })
 
   function onChange (e: any) {
     let target = e.target
     let targetValue = target.value
+    let cacheShiftClass
     if (!target.checked) {
       for (let i = 0; i < startShiftClass.length; i++) {
         if (targetValue === startShiftClass[i]) {
           ShiftClassState.splice(i, 1, '')
-          let cacheShiftClass = ShiftClassState.filter((n) => n)
+          cacheShiftClass = ShiftClassState.filter((n) => n)
           setShiftClass(cacheShiftClass)
         }
       }
@@ -32,7 +34,7 @@ export default function BedSituation (props: any) {
       for (let i = 0; i < startShiftClass.length; i++) {
         if (target.value === startShiftClass[i]) {
           ShiftClassState.splice(i, 1, targetValue)
-          let cacheShiftClass = ShiftClassState.filter((n) => n)
+          cacheShiftClass = ShiftClassState.filter((n) => n)
           setShiftClass(cacheShiftClass)
         }
       }

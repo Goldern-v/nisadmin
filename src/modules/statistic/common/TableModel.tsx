@@ -1,10 +1,15 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-
+import emitter from 'src/libs/ev'
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
+  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   useEffect(() => {
-    console.log(count, setCount)
+    // console.log(222)
+    emitter.removeAllListeners('设置班次大类')
+    emitter.addListener('设置班次大类', (shiftClass: any) => {
+      setGetShiftClass(shiftClass)
+    })
   })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
@@ -14,6 +19,8 @@ export default function BedSituation () {
     })
     parentNode.classList.add('addRowClass')
   }
+  // th DOM
+  const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
   return (
     <Con>
       <div className='tableCon'>
@@ -22,12 +29,7 @@ export default function BedSituation () {
             <tr>
               <th>序号</th>
               <th>姓名</th>
-              <th>A班</th>
-              <th>P班</th>
-              <th>N班</th>
-              <th>休假</th>
-              <th>进修学习</th>
-              <th>其它</th>
+              {getShiftClassDom}
               <th>合计</th>
             </tr>
           </table>

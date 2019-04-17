@@ -12,7 +12,6 @@ const dateFormat = 'YYYY年MM月DD日'
 
 // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY']
 export default function SelectData () {
-  const [count, setCount] = useState(0)
   const [startDate, setstartDate] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
@@ -24,9 +23,7 @@ export default function SelectData () {
     statisticViewModel.endDate = moment(date).format(dateFormat)
     return date
   })
-  useEffect(() => {
-    console.log(count, setCount, setstartDate, setendDate)
-  })
+
   return (
     <SelectCon>
       <span className='label'>日期：</span>

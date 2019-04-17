@@ -34,6 +34,7 @@ const routes: RouteItem[] = [
     { name: '班次设置', link: '' }
   ]),
   setLayout('/statistic', StatisticView, layouts.MainLayout),
+
   setLayout('/mealSetting', MealSettingView, layouts.BreadcrumbLayout, [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '班次套餐设置', link: '' }
