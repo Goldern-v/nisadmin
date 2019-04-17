@@ -1,16 +1,39 @@
 import styled from 'styled-components'
-import React from 'react'
-// import React, { useState, useEffect } from 'react'
+// import React from 'react'
+import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+import React, { useState, useEffect } from 'react'
+import { authStore } from 'src/stores/index'
+import emitter from 'src/libs/ev'
 
-export default function BedSituation () {
-  // const [count, setCount] = useState(0)
-  // useEffect(() => {
-  //   console.log(count, setCount)
-  // })
+export default function StatisticMIdHeader () {
+  const [title, settitle] = useState(() => {
+    let deptName = authStore.getUser().deptName || ''
+    console.log('deptName', deptName, authStore.getUser())
+    statisticViewModel.deptName = deptName
+    statisticViewModel.setTitle('护士休假统计')
+    return statisticViewModel.getTitle
+  })
+  const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
+  const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
+  useEffect(() => {
+    console.log(title, settitle, setStartDate, setEndDate)
+
+    emitter.removeAllListeners('设置统计页标题')
+    emitter.removeAllListeners('设置统计页日期')
+    emitter.addListener('设置统计页标题', (titleName: any) => {
+      settitle(titleName)
+    })
+    emitter.addListener('设置统计页日期', (value: any) => {
+      setStartDate(value[0])
+      setEndDate(value[1])
+    })
+  })
   return (
     <Con>
-      <div className='firstTitle'>神经内科护理单元护士休假统计</div>
-      <div className='secondTitle'>日期：2019年1月 至 2019年12月</div>
+      <div className='firstTitle'>{title}</div>
+      <div className='secondTitle'>
+        日期：{startDate} 至 {endDate}
+      </div>
     </Con>
   )
 }
@@ -32,7 +55,7 @@ const Con = styled.div`
   }
   .secondTitle {
     margin: 0 auto;
-    width: 221px;
+    width: 100%;
     height: 18px;
     font-size: 13px;
     font-family: PingFangSC-Regular;

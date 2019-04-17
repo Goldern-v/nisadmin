@@ -2,11 +2,15 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import TableModel from '../common/TableModel'
 import { Radio, Checkbox } from 'antd'
+import { RouteComponentProps } from 'react-router'
 const RadioGroup = Radio.Group
 const startShiftClass = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
 const ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
+
+export interface Props extends RouteComponentProps {}
+
 export default function BedSituation (props: any) {
-  // const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   useEffect(() => {
     // props.postShiftClass(shiftClass)
