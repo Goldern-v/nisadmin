@@ -10,7 +10,6 @@ const ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其�
 export interface Props extends RouteComponentProps {}
 
 export default function BedSituation (props: any) {
-  const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   useEffect(() => {
     // props.postShiftClass(shiftClass)
