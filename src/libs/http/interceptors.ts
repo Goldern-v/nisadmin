@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message, notification } from 'antd'
 // import commonConfig from '../../configs/common'
 import ResponseError from './ResponseError'
-import { authStore, appStore } from '@/stores'
+import { authStore, appStore } from 'src/stores'
 
 /**
  * 登录页面路径

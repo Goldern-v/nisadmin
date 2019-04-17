@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import store from '@/stores'
+import store from 'src/stores'
 export interface Props {
   rowNum: number
 }

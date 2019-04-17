@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 
 import { Button, message, Modal, Form, Input, TreeSelect, Switch, DatePicker } from 'antd'
-import { scheduleStore } from '@/stores'
+import { scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import moment from 'moment'
 import locale from 'antd/lib/date-picker/locale/zh_CN'

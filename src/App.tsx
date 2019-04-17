@@ -3,8 +3,8 @@ import styled, { ThemeProvider } from 'styled-components'
 import { HashRouter as Router } from 'react-router-dom'
 import { hot } from 'react-hot-loader'
 
-import RouterView from '@/components/RouterView'
-import routes from '@/configs/routes'
+import RouterView from 'src/components/RouterView'
+import routes from 'src/configs/routes'
 
 import GlobalStyle from './styles/global'
 import { theme } from './styles/theme'

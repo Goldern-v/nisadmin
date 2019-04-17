@@ -9,7 +9,7 @@ import { Menu, Icon, DatePicker } from 'antd'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 
 import moment from 'moment'
-import { authStore, scheduleStore } from '@/stores'
+import { authStore, scheduleStore } from 'src/stores'
 moment.locale('zh-cn')
 
 const { RangePicker } = DatePicker

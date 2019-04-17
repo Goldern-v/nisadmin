@@ -1,6 +1,6 @@
 // import original module declarations
 import 'styled-components'
-import { Theme } from '@/styles/theme'
+import { Theme } from 'src/styles/theme'
 
 // and extend them!
 declare module 'styled-components' {

@@ -5,10 +5,10 @@ import { RouteComponentProps } from 'react-router'
 
 import { Table, Tabs, Button, Input, InputNumber, Form, AutoComplete } from 'antd'
 // import { Table, message, Popconfirm, Divider, Tag } from 'antd'
-// import { authStore, scheduleStore } from '@/stores'
+// import { authStore, scheduleStore } from 'src/stores'
 
 import service from 'src/services/api'
-import { scheduleStore } from '@/stores'
+import { scheduleStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
 // import ButtonGroup from 'antd/lib/button/button-group'

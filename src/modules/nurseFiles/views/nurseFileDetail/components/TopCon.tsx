@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Breadcrumb } from 'antd'
-import store from '@/stores'
+import store from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')

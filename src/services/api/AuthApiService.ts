@@ -1,6 +1,6 @@
-import { httpLoginToken } from '@/libs/http/http'
+import { httpLoginToken } from 'src/libs/http/http'
 
-import { authStore, scheduleStore } from '@/stores'
+import { authStore, scheduleStore } from 'src/stores'
 
 import BaseApiService from './BaseApiService'
 

@@ -1,4 +1,4 @@
-import { RouteItem } from '@/components/RouterView'
+import { RouteItem } from 'src/components/RouterView'
 
 /**
  * 路由方法

@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
 
 import { Select, Button, message } from 'antd'
-import { authStore, scheduleStore } from '@/stores'
+import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 
 import emitter from 'src/libs/ev'

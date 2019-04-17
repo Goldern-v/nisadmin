@@ -8,10 +8,10 @@ import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 
 import { Button, message, Modal, Form, Input, AutoComplete, TimePicker, Switch } from 'antd'
-// import { authStore, scheduleStore } from '@/stores'
+// import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import moment from 'moment'
-import { scheduleStore } from '@/stores'
+import { scheduleStore } from 'src/stores'
 
 // import emitter from 'src/libs/ev'
 

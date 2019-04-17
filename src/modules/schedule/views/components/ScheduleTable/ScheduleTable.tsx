@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 
-import { scheduleStore } from '@/stores'
+import { scheduleStore } from 'src/stores'
 
 import { Card, Table, Tag, message } from 'antd'
 const { Meta } = Card
