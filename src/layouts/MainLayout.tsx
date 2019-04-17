@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import NavBar from './components/NavBar'
-import RouterView, { RouteComponentProps } from '@/components/RouterView'
-import store from '@/stores'
+import RouterView, { RouteComponentProps } from 'src/components/RouterView'
+import store from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function MainLayout (props: Props) {

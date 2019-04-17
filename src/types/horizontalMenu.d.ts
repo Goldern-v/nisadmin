@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { RouteComponentProps } from '@/components/RouterView'
+import { RouteComponentProps } from 'src/components/RouterView'
 
 export interface HorizontalMenuItem {
   name: string

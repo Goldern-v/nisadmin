@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import store from '@/stores'
+import store from 'src/stores'
 
 import service from 'src/services/api'
 

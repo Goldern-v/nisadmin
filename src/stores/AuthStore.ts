@@ -1,7 +1,7 @@
 /** 权限验证 */
 import { action, observable } from 'mobx'
 
-import User from '@/models/User'
+import User from 'src/models/User'
 
 export default class AuthStore {
   public constructor () {

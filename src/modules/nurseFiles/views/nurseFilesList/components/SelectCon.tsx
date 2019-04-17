@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState } from 'react'
-import { Place } from '@/components/common'
+import { Place } from 'src/components/common'
 import { Select, Input, Button } from 'antd'
 import nurseFilesListViewModel from '../NurseFilesListViewModel'
 import AddNursingModal from '../modal/AddNursingModal'

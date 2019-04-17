@@ -1,7 +1,7 @@
 import * as qs from 'qs'
 import { AxiosRequestConfig } from 'axios'
 
-import { http } from '@/libs/http/http'
+import { http } from 'src/libs/http/http'
 
 export default abstract class BaseApiService {
   protected request<T = any> (config: AxiosRequestConfig) {
