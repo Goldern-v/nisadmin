@@ -23,6 +23,9 @@ const GlobalStyle = createGlobalStyle`
   #root {
     height: 100%;
   }
+  * {
+    font-family: '微软雅黑'
+  }
 `
 
 export default GlobalStyle

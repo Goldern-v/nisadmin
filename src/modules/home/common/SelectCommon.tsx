@@ -72,7 +72,7 @@ export default function SelectCommon () {
 }
 
 const SelectCon = styled.div`
-  padding: 20px 0;
+  padding: 0 0 15px;
   display: flex;
   align-items: center;
 `

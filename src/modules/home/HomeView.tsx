@@ -74,7 +74,7 @@ export default function HomeView () {
   )
 }
 const Wrapper = styled.div`
-  padding: 0 20px;
+  padding: ${(p) => p.theme.$mcp};
   /* border: 1px solid red;*/
 `
 

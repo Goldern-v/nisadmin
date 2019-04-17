@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx'
-
+import * as H from 'history'
 export default class AppStore {
   public constructor () {
     this.isExpand = (localStorage.getItem('isExpand') as any) || '1'
@@ -7,6 +7,9 @@ export default class AppStore {
   }
   @observable public isExpand: '1' | '0' = '1'
   @observable private appToken: string | null = null
+
+  /** 路由控制器 */
+  public history!: H.History
 
   @action
   public setExpand = (isExpand: '1' | '0') => {
