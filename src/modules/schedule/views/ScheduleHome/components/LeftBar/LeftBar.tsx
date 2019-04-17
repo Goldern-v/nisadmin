@@ -23,6 +23,7 @@ const ItemMenu = Menu.Item
 
 export default function LeftBar () {
   const [count, setCount] = useState(0)
+  // const [menuLoading, setMenuLoading] = useState(true)
   const [defaultSelectedKeys, setDefaultSelectedKeys] = useState([scheduleStore.getSelectedWeekIndex()])
   const [monthStart, setMonthStart] = useState(() => {
     let date = new Date()
@@ -155,7 +156,7 @@ export default function LeftBar () {
   // 更新周列表
   function updateWeekList (stratTime: string, endTime: string, callBack: any = null) {
     let user = authStore.getUser()
-    let deptCode = user && user.hasOwnProperty('deptCode') ? user.deptCode : ''
+    let deptCode = scheduleStore.getDeptCode() // user && user.hasOwnProperty('deptCode') ? user.deptCode : ''
     // 接口请求参数
     const postData = {
       deptCode: scheduleStore.getDeptCode() || deptCode, // deptCode  科室编码 // "门诊护理"
@@ -173,6 +174,7 @@ export default function LeftBar () {
     scheduleStore.setWeekEndTime(endTime)
     let timelist = genWeekList(postData.stratTime, postData.endTime)
     console.log('排班周列表timelist', timelist, postData)
+    setShiftList(new Array())
     // moment().endOf('week')
     service.schedulingApiService
       .findTimeList(postData)
@@ -192,6 +194,7 @@ export default function LeftBar () {
           })
         }
         setShiftList(timelist as any)
+        // setMenuLoading(false)
         // setShiftList(res.data.data)
         if (callBack) {
           callBack(timelist as any)
@@ -290,6 +293,6 @@ const CircleCon = styled.div`
   display: inline-block;
   border-radius: 5px;
   margin-right: 5px;
-  background: ${(props) => (props.color === '1' ? 'green' : props.color === '0' ? 'red' : 'gray')};
+  background: ${(props) => (props.color === '1' ? '#5dbf9a' : props.color === '0' ? 'red' : 'gray')};
 `
 // 0代表暂存红，1代表发布绿, 其他灰色

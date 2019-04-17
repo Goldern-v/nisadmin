@@ -4,6 +4,7 @@ import Schedule2View from '../views/Schedule2View'
 import Schedule3View from '../views/Schedule3View'
 
 /** 侧边菜单配置信息 */
+
 export const scheduleHorizontalMenuConfig: HorizontalMenuItem[] = [
   {
     name: '排班统计',

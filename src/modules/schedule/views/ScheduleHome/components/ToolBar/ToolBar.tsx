@@ -16,7 +16,7 @@ export default function ToolBar () {
   // 在react hooks 用 useState 定义 class component 里的 state 变量
   const [buttonDisabled, setButtonDisabled] = useState(true)
   const [wardCode, setWardCode] = useState('')
-  const [wardValue, setWardValue] = useState('')
+  const [wardValue, setWardValue] = useState(authStore.getUser().deptName || '')
   const [wardList, setWardList] = useState([
     {
       code: '',
@@ -78,11 +78,14 @@ export default function ToolBar () {
           deptCode: ward.code
         }
 
-        message.success(`切换至 ${ward.name}`)
+        scheduleStore.setDepartment(dept as any)
+        scheduleStore.setDepartmentValue('deptName', ward.name)
+        scheduleStore.setDepartmentValue('deptCode', ward.code)
+
+        // message.success(`切换至 ${ward.name}`)
         emitter.emit('清空排班记录')
         emitter.emit('初始化周排班列表')
 
-        scheduleStore.setDepartment(dept as any)
         // scheduleStore.setDepartmentValue('wardCode', ward.code)
         // scheduleStore.setDepartmentValue('wardName', ward.name)
         // scheduleStore.setDepartmentValue('deptCode', ward.code)
@@ -122,9 +125,9 @@ export default function ToolBar () {
   return (
     <Wrapper>
       <Label>科室：</Label>
-      <Select value={wardValue} onChange={handleChange} style={{ width: 200 }}>
-        {wardList.map((ward) => (
-          <Option key={ward.code} value={ward.code}>
+      <Select defaultValue={wardValue} onChange={handleChange} style={{ width: 200 }}>
+        {wardList.map((ward: any) => (
+          <Option key={ward.code + ''} value={ward.code + ''}>
             {ward.name}
           </Option>
         ))}
