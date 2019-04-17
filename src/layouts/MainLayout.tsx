@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import NavBar from './components/NavBar'
 import RouterView, { RouteComponentProps } from '@/components/RouterView'
+import store from '@/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function MainLayout (props: Props) {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    store.appStore.history = props.history
   })
   return (
     <Wrapper>
@@ -26,6 +27,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
+  background: #f8f8f8;
 `
 const RouterViewCon = styled.div`
   flex: 1;

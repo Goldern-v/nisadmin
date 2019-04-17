@@ -23,7 +23,6 @@
     "no-shadowed-variable": true,
     "no-string-literal": true,
     "switch-default": true,
-    "jsx-self-close": false,
-    "no-unused-variable": false
+    "jsx-self-close": false
   }
 }

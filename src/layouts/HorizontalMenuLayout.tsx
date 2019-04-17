@@ -27,7 +27,6 @@ export default function HorizontalMenuLayout (props: Props) {
       <Header />
       <NavBar {...props} />
       <HorizontalMenu data={payload} />
-      {/* <RouterView routes={props.routes} /> */}
       <CurrentRouteComponent />
     </Wrapper>
   )

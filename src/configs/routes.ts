@@ -14,6 +14,8 @@ import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSetti
 import StatisticView from 'src/modules/statistic/StatisticView'
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
+import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
+import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetail'
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 
 const routes: RouteItem[] = [
@@ -43,6 +45,9 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '编辑排班', link: '' }
   ]),
+  // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
+  setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+  setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   {
     path: '/',

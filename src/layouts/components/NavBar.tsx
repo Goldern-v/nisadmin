@@ -24,7 +24,7 @@ const navList = [
   {
     name: '护士档案',
     icon: require('../images/护士档案.svg'),
-    path: ''
+    path: '/nurseFilesList'
   },
   {
     name: '不良事件',
@@ -80,7 +80,7 @@ const Wrapper = styled.div`
   height: 40px;
   background: #fff;
   box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   position: relative;
   padding-bottom: 2px;
   &:after {

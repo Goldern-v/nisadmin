@@ -74,8 +74,7 @@ export default function HomeView () {
   )
 }
 const Wrapper = styled.div`
-  padding: 0 20px;
-  background: rgba(248, 248, 248, 1);
+  padding: ${(p) => p.theme.$mcp};
   /* border: 1px solid red;*/
 `
 
