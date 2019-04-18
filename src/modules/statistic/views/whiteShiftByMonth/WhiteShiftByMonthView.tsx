@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import StatisticLeftList from './components/StatisticLeftList'
-import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeader from './common/StatisticMIdHeader'
+import StatisticLeftList from '../../components/StatisticLeftList'
+import StatisticHeader from '../../components/StatisticHeader'
+import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 // import NurseSchedule from './components/NurseSchedule'
-// import NurseScheduleByShift from './components/NurseScheduleByShift'
-// import TableModel from './common/TableModel'
+import TableModel from '../../common/TableModel'
 
 export default function StatisticView () {
   const [count, setCount] = useState(0)
@@ -27,13 +26,8 @@ export default function StatisticView () {
           <StatisticMIdHeader />
           {/* 对应表 */}
           {/* <NurseSchedule /> */}
-          {/* <TableModel></TableModel> */}
-          {/* <NurseScheduleByShift
-            postShiftClass={(shiftclass: any) => {
-              // getShiftClass(shiftclass)
-              setShiftClass(shiftclass)
-            }}
-          /> */}
+          <TableModel></TableModel>
+          fdsfdsfdsfds 
         </StatisticMid>
       </StatisticRightCon>
     </Con>
@@ -50,6 +44,7 @@ const StatisticRightCon = styled.div`
   flex: 1;
 `
 const StatisticMid = styled.div`
+  position:relative;
   margin: 14px;
   padding: 18px 10px;
   height: 712px;

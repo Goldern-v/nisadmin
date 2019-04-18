@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import StatisticLeftList from './components/StatisticLeftList'
-import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeader from './common/StatisticMIdHeader'
+import StatisticLeftList from '../../components/StatisticLeftList'
+import StatisticHeader from '../../components/StatisticHeader'
+import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 // import NurseSchedule from './components/NurseSchedule'
-// import NurseScheduleByShift from './components/NurseScheduleByShift'
-// import TableModel from './common/TableModel'
+import NurseByShiftChoose from './components/NurseByShiftChoose'
+import TableModel from '../../common/TableModel'
 
-export default function StatisticView () {
+export default function StatisticView() {
   const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
@@ -27,13 +27,11 @@ export default function StatisticView () {
           <StatisticMIdHeader />
           {/* 对应表 */}
           {/* <NurseSchedule /> */}
-          {/* <TableModel></TableModel> */}
-          {/* <NurseScheduleByShift
-            postShiftClass={(shiftclass: any) => {
-              // getShiftClass(shiftclass)
-              setShiftClass(shiftclass)
-            }}
-          /> */}
+          <TableModel></TableModel>
+          <div className="NurseByShiftChooseCon">
+            <NurseByShiftChoose></NurseByShiftChoose>
+          </div>
+          fdsfdsfdsfds
         </StatisticMid>
       </StatisticRightCon>
     </Con>
@@ -50,6 +48,7 @@ const StatisticRightCon = styled.div`
   flex: 1;
 `
 const StatisticMid = styled.div`
+  position:relative;
   margin: 14px;
   padding: 18px 10px;
   height: 712px;
@@ -58,4 +57,9 @@ const StatisticMid = styled.div`
   border-radius: 5px;
   border: 1px solid rgba(161, 175, 179, 1);
   overflow-y: auto;
+  .NurseByShiftChooseCon{ 
+    position: absolute;
+    top:30px;
+    right: 20px; 
+  }
 `

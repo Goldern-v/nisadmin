@@ -3,13 +3,15 @@ import React, { useState, useEffect } from 'react'
 import { Collapse } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { RouteComponentProps } from 'react-router'
+import store from 'src/stores';
+// import console = require('console');
 export interface Props extends RouteComponentProps {}
 const Panel = Collapse.Panel
 // 左侧列表数据
 const leftListPath = [
   { name: '护士排班表', path: '/statistic/护士排班表' },
   { name: '护士排班统计（按班次）', path: '/statistic/护士排班统计（按班次）' },
-  { name: '护士白班统计（按月份', path: '/statistic/护士白班统计（按月份' },
+  { name: '护士白班统计（按月份)', path: '/statistic/护士白班统计（按月份）' },
   { name: '护士夜班统计（按月份）', path: '/statistic/护士夜班统计（按月份）' },
   { name: '护士休假统计（按月份）', path: '/statistic/护士休假统计（按月份）' },
   { name: '护士节假日排班表', path: '/statistic/护士节假日排班表' },
@@ -45,7 +47,10 @@ export default observer(function BedSituation (props: any) {
       item.classList.remove('liClickClass')
     })
     liNode.classList.add('liClickClass')
-    return () => props.history.push(path)
+    console.log(path)
+    // props.history.push(path)
+    // return () => props.history.push(path)
+    store.appStore.history.push(path)
   }
   const leftListCoponet = leftListPath.map((item: any) => (
     <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
@@ -55,7 +60,7 @@ export default observer(function BedSituation (props: any) {
   return (
     <Con>
       <div className='header'>排班统计</div>
-      <Collapse bordered={false} accordion>
+      <Collapse bordered={false} accordion defaultActiveKey={['1']} >
         <Panel header='排班统计' key='1'>
           {leftListCoponet}
         </Panel>
@@ -96,6 +101,10 @@ const Con = styled.div`
     line-height: 34px; */
     background-color: #f8f8f8;
     font-size: 13px !important;
+  }
+  /* 箭头左偏 */
+  .ant-collapse-arrow{
+    left: 0 !important
   }
   .arrow {
     left: 0px !important;
