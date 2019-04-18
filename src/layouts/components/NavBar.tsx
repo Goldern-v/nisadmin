@@ -71,6 +71,8 @@ export default observer(function NavBar (props: Props) {
           <div className='nav-name'>{item.name}</div>
         </NavItem>
       ))}
+
+      
     </Wrapper>
   )
 })
@@ -83,6 +85,7 @@ const Wrapper = styled.div`
   /* margin-bottom: 10px; */
   position: relative;
   padding-bottom: 2px;
+  z-index: 2;
   &:after {
     content: '';
     position: absolute;

@@ -5,6 +5,8 @@ import _ from 'lodash'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import TopCon from './components/TopCon'
 import LeftMenu from './components/LeftMenu'
+import BaseInfo from './views/BaseInfo'
+import WorkHistory from './views/WorkHistory'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -12,7 +14,13 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
 const ROUTE_LIST = [
   {
     type: 'baseInfo',
-    component: ''
+    component: BaseInfo,
+    name: '基本信息'
+  },
+  {
+    type: 'workHistory',
+    component: WorkHistory,
+    name: '工作经历'
   }
 ]
 
@@ -30,7 +38,7 @@ export default function NurseFileDetail (props: Props) {
       <TopCon />
       <MainCon>
         <LeftMenuCon>
-          <LeftMenu />
+          <LeftMenu routeList={ROUTE_LIST} />
         </LeftMenuCon>
         <DetailCon>{CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}</DetailCon>
       </MainCon>
@@ -45,7 +53,11 @@ const Wrapper = styled.div`
 
 const LeftMenuCon = styled.div`
   width: 160px;
-  background: red;
+  position: relative;
+  z-index: 1;
+  background: rgba(248, 248, 248, 1);
+  box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(228, 228, 228, 1);
 `
 const MainCon = styled.div`
   flex: 1;

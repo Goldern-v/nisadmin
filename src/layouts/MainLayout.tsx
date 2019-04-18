@@ -8,9 +8,9 @@ export interface Props extends RouteComponentProps {}
 
 export default function MainLayout (props: Props) {
   const [count, setCount] = useState(0)
-  useEffect(() => {
-    store.appStore.history = props.history
-  })
+  store.appStore.history = props.history
+  store.appStore.match = props.match
+  useEffect(() => {})
   return (
     <Wrapper>
       <Header />

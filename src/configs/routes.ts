@@ -50,6 +50,10 @@ const routes: RouteItem[] = [
   setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   {
+    path: '/nurseFileDetail',
+    redirect: '/nurseFileDetail/baseInfo'
+  },
+  {
     path: '/',
     redirect: '/home'
   }
