@@ -1,9 +1,25 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Collapse } from 'antd'
+import { observer } from 'mobx-react-lite'
+import { RouteComponentProps } from 'react-router'
+export interface Props extends RouteComponentProps {}
 const Panel = Collapse.Panel
-
-export default function BedSituation () {
+// 左侧列表数据
+const leftListPath = [
+  { name: '护士排班表', path: '/statistic/护士排班表' },
+  { name: '护士排班统计（按班次）', path: '/statistic/护士排班统计（按班次）' },
+  { name: '护士白班统计（按月份', path: '/statistic/护士白班统计（按月份' },
+  { name: '护士夜班统计（按月份）', path: '/statistic/护士夜班统计（按月份）' },
+  { name: '护士休假统计（按月份）', path: '/statistic/护士休假统计（按月份）' },
+  { name: '护士节假日排班表', path: '/statistic/护士节假日排班表' },
+  { name: '科室排班统计（按班次）', path: '/statistic/科室排班统计（按班次）' },
+  { name: '科室白班统计（按月份）', path: '/statistic/科室白班统计（按月份）' },
+  { name: '科室夜班统计（按月份）', path: '/statistic/科室夜班统计（按月份）' },
+  { name: '科室休假统计（按月份）', path: '/statistic/科室休假统计（按月份）' },
+  { name: '护士节假日排班人数', path: '/statistic/护士节假日排班人数' }
+]
+export default observer(function BedSituation (props: any) {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
@@ -22,17 +38,18 @@ export default function BedSituation () {
     '科室休假统计（按月份）',
     '护士节假日排班人数'
   ]
-  function leftLiClick (e: any) {
+  function leftLiClick (e: any, path: string) {
     let liNode = e.target
     let allLi = liNode.parentNode.querySelectorAll('li')
     allLi.forEach((item: any) => {
       item.classList.remove('liClickClass')
     })
     liNode.classList.add('liClickClass')
+    return () => props.history.push(path)
   }
-  const leftListCoponet = leftListData.map((item: string) => (
-    <li key={item.toString()} onClick={leftLiClick}>
-      {item}
+  const leftListCoponet = leftListPath.map((item: any) => (
+    <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
+      {item.name}
     </li>
   ))
   return (
@@ -51,7 +68,7 @@ export default function BedSituation () {
       </Collapse>
     </Con>
   )
-}
+})
 
 const Con = styled.div`
   padding: 0 0 0 14px;

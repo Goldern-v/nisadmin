@@ -35,7 +35,6 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '班次设置', link: '' }
   ]),
-  setLayout('/statistic', StatisticView, layouts.MainLayout),
 
   setLayout('/mealSetting', MealSettingView, layouts.BreadcrumbLayout, [
     { name: '排班管理', link: '/scheduleHome' },
@@ -45,6 +44,8 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '编辑排班', link: '' }
   ]),
+  setLayout('/statistic', StatisticView, layouts.MainLayout),
+  setLayout('/statistic/护士排班表', StatisticView, layouts.MainLayout),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
   setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
