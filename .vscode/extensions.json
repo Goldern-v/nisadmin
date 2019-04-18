@@ -5,7 +5,7 @@
   // List of extensions which should be recommended for users of this workspace.
   "recommendations": [
     "EditorConfig.EditorConfig",
-    "eg2.tslint",
+    "ms-vscode.vscode-typescript-tslint-plugin",
     "esbenp.prettier-vscode",
     "formulahendry.auto-close-tag",
     "formulahendry.auto-rename-tag",

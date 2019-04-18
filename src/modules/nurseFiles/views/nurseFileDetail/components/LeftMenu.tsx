@@ -1,18 +1,43 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-export interface Props extends RouteComponentProps {}
+import { appStore } from 'src/stores'
+
+interface RouteType {
+  type: string
+  component: any
+  name: string
+}
+
+export interface Props {
+  routeList: RouteType[]
+}
 
 const BG = require('../../../images/侧边背景.png')
 
-export default function LeftMenu () {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+export default function LeftMenu (props: Props) {
+  let history = appStore.history
+  let {
+    path,
+    params: { type }
+  } = appStore.match
+
   return (
     <Wrapper>
-      <Li>基本信息</Li>
+      {props.routeList.map((item: RouteType) => {
+        let isActive: string = type === item.type ? 'active' : ''
+        return (
+          <Li
+            className={isActive}
+            key={item.name}
+            onClick={() => {
+              history.push('/nurseFileDetail/' + item.type)
+            }}
+          >
+            {item.name}
+          </Li>
+        )
+      })}
     </Wrapper>
   )
 }
@@ -29,4 +54,10 @@ const Li = styled.div`
   padding: 0 16px;
   font-size: 13px;
   color: #333;
+  cursor: pointer;
+  &:hover,
+  &.active {
+    color: #fff;
+    background: ${(p) => p.theme.$mtc};
+  }
 `

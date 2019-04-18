@@ -60,6 +60,10 @@ const routes: RouteItem[] = [
   //   redirect: '/statistic/护士排班统计（按班次）'
   // },
   {
+    path: '/nurseFileDetail',
+    redirect: '/nurseFileDetail/baseInfo'
+  },
+  {
     path: '/',
     redirect: '/home'
   }

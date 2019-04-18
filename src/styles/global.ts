@@ -26,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-family: '微软雅黑'
   }
+
 `
 
 export default GlobalStyle

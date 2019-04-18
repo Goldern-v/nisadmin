@@ -7,6 +7,10 @@ export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
 
+const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
+
+const WARNNING_ICON = require('../../../images/注意.png')
+
 export default function TopCon () {
   let history = store.appStore.history
   return (
@@ -19,6 +23,13 @@ export default function TopCon () {
           <Breadcrumb.Item>档案详情</Breadcrumb.Item>
         </Breadcrumb>
       </BreadcrumbCon>
+      <HeadImg src={DEFAULT_HEADIMG} />
+      <Name>刘盼盼</Name>
+      <Info>主管护师 | N3 | 神经内科护理单元</Info>
+      <Tip>
+        <img src={WARNNING_ICON} alt='' />
+        注意：刘盼盼有5条未审核信息，点击
+      </Tip>
     </Wrapper>
   )
 }
@@ -29,6 +40,7 @@ const Wrapper = styled.div`
   box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid #dbe0e4;
   font-size: 13px;
+  position: relative;
 `
 const BreadcrumbCon = styled.div`
   padding: 12px 15px;
@@ -39,5 +51,43 @@ const A = styled.span`
   cursor: pointer;
   &:hover {
     color: #333;
+  }
+`
+
+const HeadImg = styled.img`
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  left: 15px;
+  bottom: 15px;
+`
+
+const Name = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  top: 58px;
+  left: 100px;
+  position: absolute;
+`
+const Info = styled.div`
+  font-size: 13px;
+  color: #666;
+  top: 88px;
+  left: 100px;
+  position: absolute;
+`
+
+const Tip = styled.div`
+  font-size: 13px;
+  color: #333;
+  position: absolute;
+  right: 20px;
+  bottom: 30px;
+  img {
+    width: 14px;
+    margin-right: 4px;
+    margin-top: -4px;
   }
 `
