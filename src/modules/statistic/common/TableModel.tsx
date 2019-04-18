@@ -4,11 +4,16 @@ import emitter from 'src/libs/ev'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
+  const [getCheckboxItem, setGetCheckboxItem] = useState([])
   useEffect(() => {
     // console.log(222)
     emitter.removeAllListeners('设置班次大类')
     emitter.addListener('设置班次大类', (shiftClass: any) => {
       setGetShiftClass(shiftClass)
+    })
+    emitter.removeAllListeners('设置自定义班次')
+    emitter.addListener('设置自定义班次', (checkboxItem: any) => {
+      setGetCheckboxItem(checkboxItem)
     })
   })
   function trClickChange (e: any) {
@@ -21,6 +26,7 @@ export default function BedSituation () {
   }
   // th DOM
   const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
+  const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
   return (
     <Con>
       <div className='tableCon'>
@@ -30,6 +36,7 @@ export default function BedSituation () {
               <th>序号</th>
               <th>姓名</th>
               {getShiftClassDom}
+              {getCheckboxItemDom}
               <th>合计</th>
             </tr>
           </table>

@@ -26,8 +26,8 @@ export default function StatisticView () {
           <StatisticMIdHeader />
           {/* 对应表 */}
           {/* <NurseSchedule /> */}
-          <TableModel></TableModel>
-          fdsfdsfdsfds 
+          <TableModel />
+          fdsfdsfdsfds
         </StatisticMid>
       </StatisticRightCon>
     </Con>
@@ -44,7 +44,7 @@ const StatisticRightCon = styled.div`
   flex: 1;
 `
 const StatisticMid = styled.div`
-  position:relative;
+  position: relative;
   margin: 14px;
   padding: 18px 10px;
   height: 712px;

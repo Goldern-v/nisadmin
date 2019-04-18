@@ -6,7 +6,7 @@ export default class HomeDataApiServices extends BaseApiService {
   public async getListDepartment () {
     // deptCode - 科室编码
     // status - 启用状态 true或者false
-    return this.get(`/user/nursingUnit/`)
+    return this.get(`/user/nursingUnit`)
   }
 
   public async getShiftListByCode (deptCode: string, status: string) {
