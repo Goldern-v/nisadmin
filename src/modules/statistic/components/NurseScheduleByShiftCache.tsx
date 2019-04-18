@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import TableModel from '../common/TableModel'
+// import TableModel from '../common/TableModel'
 import { Radio, Checkbox } from 'antd'
 import emitter from 'src/libs/ev'
 import { RouteComponentProps } from 'react-router'
@@ -8,16 +8,16 @@ const RadioGroup = Radio.Group
 const startShiftClass = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
 const ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
-export default function BedSituation (props: any) {
+export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   useEffect(() => {
     // props.postShiftClass(shiftClass)
     emitter.emit('设置班次大类', shiftClass)
   })
 
-  function onChange (e: any) {
+  function onChange(e: any) {
     let target = e.target
     let targetValue = target.value
     let cacheShiftClass
@@ -40,9 +40,10 @@ export default function BedSituation (props: any) {
       }
     }
   }
+
   return (
     <Con>
-      <TableModel />
+      {/* <TableModel /> */}
       <RightChooseByShift>
         <div className='RightChooseByShiftHeader'>统计班次</div>
         <div className='RightChooseByShiftRadio'>

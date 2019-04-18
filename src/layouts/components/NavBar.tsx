@@ -65,7 +65,7 @@ export default observer(function NavBar (props: Props) {
   let { location } = props
   return (
     <Wrapper>
-      {navList.map((item) => (
+     {navList.map((item) => (
         <NavItem onClick={toNavLink(item.path)} active={location.pathname === item.path} key={item.name}>
           <ReactSVG src={item.icon} svgClassName='nav-icon' />
           <div className='nav-name'>{item.name}</div>

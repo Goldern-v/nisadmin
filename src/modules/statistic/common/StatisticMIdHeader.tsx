@@ -43,7 +43,7 @@ const Con = styled.div`
   width: 100%;
   text-align: center;
   .firstTitle {
-    margin: 0 auto;
+        margin: 0 auto;
     width: 510px;
     height: 29px;
     font-size: 21px;

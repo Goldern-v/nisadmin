@@ -50,11 +50,11 @@ export function onResponseFulfilled (response: AxiosResponse) {
   switch (parseInt(code, 10)) {
     case StatusCode.error: {
       console.error(response, code, response.data.desc || '')
-      message.error(response.data.desc || msg)
+      // message.error(response.data.desc || msg)
       return Promise.reject(response.data.desc || msg)
     }
     case StatusCode.logout: {
-      message.warning('登录超时，请重新登录 ')
+      // message.warning('登录超时，请重新登录 ')
       sessionStorage.setItem('adminNurse', '')
       sessionStorage.setItem('authToken', '')
       sessionStorage.setItem('user', '')
