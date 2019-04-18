@@ -7,6 +7,8 @@ import TopCon from './components/TopCon'
 import LeftMenu from './components/LeftMenu'
 import BaseInfo from './views/BaseInfo'
 import WorkHistory from './views/WorkHistory'
+import SpecialCard from './views/SpecialCard'
+import EducationalExperience from './views/EducationalExperience'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -21,6 +23,16 @@ const ROUTE_LIST = [
     type: 'workHistory',
     component: WorkHistory,
     name: '工作经历'
+  },
+  {
+    type: 'specialCard',
+    component: SpecialCard,
+    name: '特殊资格证'
+  },
+  {
+    type: 'educationalExperience',
+    component: EducationalExperience,
+    name: '教育经历'
   }
 ]
 

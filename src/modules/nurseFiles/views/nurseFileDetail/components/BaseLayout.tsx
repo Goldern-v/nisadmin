@@ -25,7 +25,12 @@ export default function BaseLayout (props: Props) {
       <Head>
         <Title>{title}</Title>
         <Place />
-        {btnList && btnList.map((item: BtnType) => <Button key={item.label}>{item.label}</Button>)}
+        {btnList &&
+          btnList.map((item: BtnType) => (
+            <Button key={item.label} onClick={item.onClick}>
+              {item.label}
+            </Button>
+          ))}
       </Head>
       <MainCon>{props.children}</MainCon>
     </Wrapper>

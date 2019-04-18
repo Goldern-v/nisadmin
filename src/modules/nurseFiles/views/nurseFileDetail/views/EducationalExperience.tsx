@@ -7,15 +7,15 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
+import EditEducationalExperience from '../modal/EditEducationalExperience'
 
 export interface Props extends RouteComponentProps {}
-const editWorkHistoryModal = createModal(EditWorkHistoryModal)
+const editEducationalExperience = createModal(EditEducationalExperience)
 const btnList = [
   {
     label: '添加',
     onClick: () =>
-      editWorkHistoryModal.show({
+      editEducationalExperience.show({
         id: '12'
       })
   }
@@ -45,37 +45,44 @@ const columns: ColumnProps<any>[] = [
     width: 43
   },
   {
-    title: '开始年月',
+    title: '就读时间',
     dataIndex: 'name',
     key: '2',
     width: 100,
     align: 'center'
   },
   {
-    title: '结束年月',
+    title: '毕业时间',
     dataIndex: '3',
     key: '3',
     width: 100,
     align: 'center'
   },
   {
-    title: '单位',
+    title: '毕业学校',
     dataIndex: '4',
     key: '4',
     width: 200,
     align: 'center'
   },
   {
-    title: '专业技术工作',
+    title: '专业',
     dataIndex: '5',
     key: '5',
     width: 200,
     align: 'center'
   },
   {
-    title: '技术职称',
+    title: '学历',
     dataIndex: '6',
     key: '6',
+    width: 150,
+    align: 'center'
+  },
+  {
+    title: '附件',
+    dataIndex: '7',
+    key: '7',
     width: 150,
     align: 'center'
   },
@@ -83,7 +90,7 @@ const columns: ColumnProps<any>[] = [
     title: '状态',
     dataIndex: '7',
     key: '7',
-    width: 150,
+    width: 100,
     align: 'center'
   },
   {
@@ -103,16 +110,16 @@ const columns: ColumnProps<any>[] = [
     }
   }
 ]
-export default observer(function WorkHistory () {
+export default observer(function EducationalExperience () {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
   })
 
   return (
-    <BaseLayout title='工作经历' btnList={btnList}>
+    <BaseLayout title='教育经历' btnList={btnList}>
       <BaseTable dataSource={dataSource} columns={columns} />
-      <editWorkHistoryModal.Component />
+      <editEducationalExperience.Component />
     </BaseLayout>
   )
 })
