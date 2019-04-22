@@ -78,12 +78,13 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
-  padding: 0 0 0 14px;
+  /* padding: 0 0 0 14px; */
   width: 220px;
   height: 789px;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
   .header {
+    padding-left: 14px;
     height: 44px;
     line-height: 44px;
     font-size: 15px;
@@ -97,16 +98,20 @@ const Con = styled.div`
   .ant-collapse-header {
     box-sizing: border-box;
     width: 100% !important;
-    padding: 4px 0 4px 20px !important;
+    padding: 4px 0 4px 34px !important;
     /* width: 100%;
     height: 34px;
     line-height: 34px; */
     background-color: #f8f8f8;
     font-size: 13px !important;
   }
+  .ant-collapse-header:hover {
+    background-color: #5bbe98;
+    color: white;
+  }
   /* 箭头左偏 */
   .ant-collapse-arrow {
-    left: 0 !important;
+    /* left: 0 !important; */
   }
   .arrow {
     left: 0px !important;
@@ -117,15 +122,21 @@ const Con = styled.div`
     /* border: none !important; */
   }
   .ant-collapse-content-box {
-    padding: 0 0 0 32px !important;
+    padding: 0 !important;
   }
   /* 每列的样式 */
   li {
+    padding-left: 44px;
     height: 34px;
     line-height: 34px;
   }
+  li:hover {
+    background-color: #5bbe98;
+    color: white;
+  }
   /* 增添点击的样式 */
   .liClickClass {
-    background-color: #e1e2e3;
+    background-color: #5bbe98;
+    color: white;
   }
 `
