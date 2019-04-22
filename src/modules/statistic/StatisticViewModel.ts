@@ -30,6 +30,9 @@ class StatisticViewModel {
   public setTitle = (newTitle: any) => {
     this.title = newTitle
   }
+  public setDeptCode = (newDeptCode: any) => {
+    this.deptCode = newDeptCode
+  }
 }
 
 const statisticViewModel = new StatisticViewModel()

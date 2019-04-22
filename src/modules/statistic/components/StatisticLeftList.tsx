@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Collapse } from 'antd'
-import { observer } from 'mobx-react-lite'
-import { RouteComponentProps } from 'react-router'
-import store from 'src/stores';
-// import console = require('console');
-export interface Props extends RouteComponentProps {}
+import store from 'src/stores'
+
+// import { RouteComponentProps } from 'src/components/RouterView'
+// export interface Props extends RouteComponentProps<{ type?: string }> {
+//   aa: string
+// }
 const Panel = Collapse.Panel
 // 左侧列表数据
 const leftListPath = [
@@ -21,10 +22,11 @@ const leftListPath = [
   { name: '科室休假统计（按月份）', path: '/statistic/科室休假统计（按月份）' },
   { name: '护士节假日排班人数', path: '/statistic/护士节假日排班人数' }
 ]
-export default observer(function BedSituation (props: any) {
+export default function BedSituation () {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
+    // console.log(store.appStore.history.location.pathname, 3333)
   })
   // 左侧列表数据
   const leftListData = [
@@ -40,14 +42,14 @@ export default observer(function BedSituation (props: any) {
     '科室休假统计（按月份）',
     '护士节假日排班人数'
   ]
-  function leftLiClick (e: any, path: string) {
-    let liNode = e.target
+  function leftLiClick (ev: any, path: string) {
+    let liNode = ev.target
     let allLi = liNode.parentNode.querySelectorAll('li')
     allLi.forEach((item: any) => {
       item.classList.remove('liClickClass')
     })
     liNode.classList.add('liClickClass')
-    console.log(path)
+    // console.log(path)
     // props.history.push(path)
     // return () => props.history.push(path)
     store.appStore.history.push(path)
@@ -60,7 +62,7 @@ export default observer(function BedSituation (props: any) {
   return (
     <Con>
       <div className='header'>排班统计</div>
-      <Collapse bordered={false} accordion defaultActiveKey={['1']} >
+      <Collapse bordered={false} accordion defaultActiveKey={['1']}>
         <Panel header='排班统计' key='1'>
           {leftListCoponet}
         </Panel>
@@ -73,7 +75,7 @@ export default observer(function BedSituation (props: any) {
       </Collapse>
     </Con>
   )
-})
+}
 
 const Con = styled.div`
   padding: 0 0 0 14px;
@@ -103,8 +105,8 @@ const Con = styled.div`
     font-size: 13px !important;
   }
   /* 箭头左偏 */
-  .ant-collapse-arrow{
-    left: 0 !important
+  .ant-collapse-arrow {
+    left: 0 !important;
   }
   .arrow {
     left: 0px !important;

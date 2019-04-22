@@ -1,31 +1,19 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
-import service from 'src/services/api'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+// import service from 'src/services/api'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
-  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
-  const [getCheckboxItem, setGetCheckboxItem] = useState([])
+  const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
+  const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
   useEffect(() => {
-    // console.log(222)
+    // service.statisticApiService.postNurseByShiftView()
     emitter.removeAllListeners('设置班次大类')
-    emitter.addListener('设置班次大类', (shiftClass: any) => {
-      setGetShiftClass(shiftClass)
-    })
-    emitter.removeAllListeners('设置自定义班次')
-    emitter.addListener('设置自定义班次', (checkboxItem: any) => {
-      setGetCheckboxItem(checkboxItem)
-    })
-    let tableData = {
-      deptCode: statisticViewModel.deptCode,
-      stratTime: statisticViewModel.startDate,
-      endTime: statisticViewModel.endDate,
-      ls: getShiftClass.concat(getCheckboxItem)
-    }
-    service.statisticApiService.postNurseByShiftView(tableData).then((res: any) => {
-      console.log(333)
-      console.log(res)
+    emitter.addListener('设置班次大类', (shiftClass: any) => {})
+    emitter.addListener('设置统计页日期', (value: any) => {
+      setStartDate(value[0])
+      setEndDate(value[1])
     })
   })
   function trClickChange (e: any) {
@@ -37,8 +25,6 @@ export default function BedSituation () {
     parentNode.classList.add('addRowClass')
   }
   // th DOM
-  const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
-  const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
   return (
     <Con>
       <div className='tableCon'>
@@ -47,8 +33,6 @@ export default function BedSituation () {
             <tr>
               <th>序号</th>
               <th>姓名</th>
-              {getShiftClassDom}
-              {getCheckboxItemDom}
               <th>合计</th>
             </tr>
           </table>
@@ -122,6 +106,7 @@ export default function BedSituation () {
 
 const Con = styled.div`
   width: 100%;
+  background: rgba(255, 255, 255, 1);
   display: flex;
   .tableCon {
     /* width: 540px; */
@@ -133,7 +118,7 @@ const Con = styled.div`
       font-size: 12px;
       font-family: PingFangSC-Medium;
       font-weight: 500;
-      color: rgba(103, 103, 103, 1);
+      /* color: rgba(103, 103, 103, 1); */
       /* 整体字体设置 上*/
       border-collapse: collapse;
       text-align: center;
@@ -172,12 +157,12 @@ const Con = styled.div`
       }
     }
     .tableMid {
-      width: 640px;
+      width: 960px;
       overflow-x: hidden;
       overflow-y: auto;
       height: 180px;
       .tableMidCon {
-        width: 640px;
+        width: 960px;
         table {
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);

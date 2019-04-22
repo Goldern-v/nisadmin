@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import StatisticLeftList from '../../components/StatisticLeftList'
+// import StatisticLeftList from '../../components/StatisticLeftList'
 import StatisticHeader from '../../components/StatisticHeader'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 // import NurseSchedule from './components/NurseSchedule'
 import NurseByShiftChoose from './components/NurseByShiftChoose'
 import TableModel from '../../common/TableModel'
 
-export default function StatisticView() {
+export default function StatisticView () {
   const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
@@ -20,46 +20,28 @@ export default function StatisticView() {
   // }
   return (
     <Con>
-      <StatisticLeftList />
-      <StatisticRightCon>
-        <StatisticHeader />
-        <StatisticMid>
-          <StatisticMIdHeader />
-          {/* 对应表 */}
-          {/* <NurseSchedule /> */}
-          <TableModel></TableModel>
-          <div className="NurseByShiftChooseCon">
-            <NurseByShiftChoose></NurseByShiftChoose>
-          </div>
-          fdsfdsfdsfds
-        </StatisticMid>
-      </StatisticRightCon>
+      {/* 对应表 */}
+      <TableModel />
+      <div className='NurseByShiftChooseCon'>
+        <NurseByShiftChoose />
+      </div>
     </Con>
   )
 }
 
 const Con = styled.div`
   width: 100%;
+  height: 629px;
   display: flex;
   background: rgba(248, 248, 248, 1);
+  position: relative;
   overflow: hidden;
+  .NurseByShiftChooseCon {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 `
 const StatisticRightCon = styled.div`
   flex: 1;
-`
-const StatisticMid = styled.div`
-  position:relative;
-  margin: 14px;
-  padding: 18px 10px;
-  height: 712px;
-  /* height: 330px; */
-  background: rgba(255, 255, 255, 1);
-  border-radius: 5px;
-  border: 1px solid rgba(161, 175, 179, 1);
-  overflow-y: auto;
-  .NurseByShiftChooseCon{ 
-    position: absolute;
-    top:30px;
-    right: 20px; 
-  }
 `
