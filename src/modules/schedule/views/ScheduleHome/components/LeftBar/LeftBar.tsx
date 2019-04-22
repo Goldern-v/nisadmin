@@ -183,7 +183,7 @@ export default function LeftBar () {
 
         timelist = genWeekList(postData.stratTime, postData.endTime)
         // console.log('排班周列表timelist', timelist)
-        let list = res.data.data
+        let list = res.data
         if (list) {
           list.map((time: any) => {
             timelist.map((t: any) => {
@@ -195,7 +195,7 @@ export default function LeftBar () {
         }
         setShiftList(timelist as any)
         // setMenuLoading(false)
-        // setShiftList(res.data.data)
+        // setShiftList(res.data)
         if (callBack) {
           callBack(timelist as any)
         }
@@ -232,8 +232,8 @@ export default function LeftBar () {
       .then((res) => {
         console.log('发出：排班记录，从组件LeftBar', res)
         // todo ... emitter 将数据传递给表格组件进行下一步数据渲染
-        if (res && res.data.data) {
-          emitter.emit('本周排班记录', res.data.data)
+        if (res && res.data) {
+          emitter.emit('本周排班记录', res.data)
         } else {
           emitter.emit('清空排班记录')
         }

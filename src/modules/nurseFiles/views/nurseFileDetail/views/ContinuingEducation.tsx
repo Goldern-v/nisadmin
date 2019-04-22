@@ -7,16 +7,16 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
+import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
 
 export interface Props extends RouteComponentProps {}
-export default observer(function WorkHistory () {
-  const editWorkHistoryModal = createModal(EditWorkHistoryModal)
+export default observer(function EducationalExperience () {
+  const editContinuingEducationModal = createModal(EditContinuingEducationModal)
   const btnList = [
     {
       label: '添加',
       onClick: () =>
-        editWorkHistoryModal.show({
+        editContinuingEducationModal.show({
           id: '12'
         })
     }
@@ -46,55 +46,61 @@ export default observer(function WorkHistory () {
       width: 43
     },
     {
-      title: '开始年月',
+      title: '开始时间',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
-      title: '结束年月',
+      title: '结束时间',
       dataIndex: '3',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
-      title: '单位',
+      title: '培训单位',
       dataIndex: '4',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
-      title: '专业技术工作',
+      title: '培训内容',
       dataIndex: '5',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
-      title: '技术职称',
+      title: '学时',
       dataIndex: '6',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
-      title: '状态',
+      title: '附件',
       dataIndex: '7',
       key: '7',
       width: 150,
       align: 'center'
     },
     {
-      title: '操作',
+      title: '状态',
       dataIndex: '8',
       key: '8',
       width: 100,
+      align: 'center'
+    },
+    {
+      title: '操作',
+      dataIndex: '9',
+      key: '9',
+      width: 100,
       align: 'center',
       render: (a: any, b: any, c: any) => {
-        console.log(a, b, c)
         return (
           <DoCon>
             <span>修改</span>
@@ -104,16 +110,15 @@ export default observer(function WorkHistory () {
       }
     }
   ]
-
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
   })
 
   return (
-    <BaseLayout title='工作经历' btnList={btnList}>
+    <BaseLayout title='继续教育' btnList={btnList}>
       <BaseTable dataSource={dataSource} columns={columns} />
-      <editWorkHistoryModal.Component />
+      <editContinuingEducationModal.Component />
     </BaseLayout>
   )
 })

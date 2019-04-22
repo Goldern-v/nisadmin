@@ -33,9 +33,9 @@ export default function ToolBar () {
     emitter.addListener('获取排班列表', (callback: any) => {
       let deptCode = scheduleStore.getDeptCode()
       service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
-        if (res && res.data.data) {
+        if (res && res.data) {
           if (callback) {
-            callback(res.data.data)
+            callback(res.data)
           }
         }
       })
@@ -109,8 +109,8 @@ export default function ToolBar () {
     let deptCode = scheduleStore.getDeptCode()
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
       console.log('获取排班列表', res)
-      if (res && res.data.data) {
-        shiftList = res.data.data
+      if (res && res.data) {
+        shiftList = res.data
         console.log(shiftList)
         // 分类
         shiftList.map((s: any) => {

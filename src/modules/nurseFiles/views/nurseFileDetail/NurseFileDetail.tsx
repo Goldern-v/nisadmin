@@ -9,6 +9,15 @@ import BaseInfo from './views/BaseInfo'
 import WorkHistory from './views/WorkHistory'
 import SpecialCard from './views/SpecialCard'
 import EducationalExperience from './views/EducationalExperience'
+import LevelChange from './views/LevelChange'
+import ContinuingEducation from './views/ContinuingEducation'
+import Writings from './views/Writings'
+import Awards from './views/Awards'
+import BadAction from './views/BadAction'
+import ThreeBases from './views/ThreeBases'
+import ExaminationResults from './views/ExaminationResults'
+import WorkRegistrationForm from './views/WorkRegistrationForm'
+import FileList from './views/FileList'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -33,6 +42,51 @@ const ROUTE_LIST = [
     type: 'educationalExperience',
     component: EducationalExperience,
     name: '教育经历'
+  },
+  {
+    type: 'levelChange',
+    component: LevelChange,
+    name: '职称及层级变动'
+  },
+  {
+    type: 'continuingEducation',
+    component: ContinuingEducation,
+    name: '继续教育'
+  },
+  {
+    type: 'writings',
+    component: Writings,
+    name: '著作译文论文'
+  },
+  {
+    type: 'awards',
+    component: Awards,
+    name: '所获奖励'
+  },
+  {
+    type: 'badAction',
+    component: BadAction,
+    name: '不良行为'
+  },
+  {
+    type: 'examinationResults',
+    component: ExaminationResults,
+    name: '年度考核结果'
+  },
+  {
+    type: 'threeBases',
+    component: ThreeBases,
+    name: '医院三基考核'
+  },
+  {
+    type: 'workRegistrationForm',
+    component: WorkRegistrationForm,
+    name: '工作情况登记表'
+  },
+  {
+    type: 'fileList',
+    component: FileList,
+    name: '附件'
   }
 ]
 
