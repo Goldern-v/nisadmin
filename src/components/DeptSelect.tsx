@@ -23,7 +23,7 @@ export default observer(function DeptSelect (props: Props) {
   }
   useEffect(() => {
     onChange(defaultValue)
-  })
+  }, [])
   return (
     <Wrapper>
       <Select defaultValue={defaultValue} showSearch style={{ width: 200 }} onChange={onChange}>
