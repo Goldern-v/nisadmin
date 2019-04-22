@@ -22,6 +22,7 @@ export default observer(function MainLayout (props: Props) {
     <Wrapper>
       <Header />
       <NavBar {...props} />
+      {/* {store.authStore.selectedDeptName} */}
       <RouterViewCon>
         <RouterView routes={props.routes} />
       </RouterViewCon>
