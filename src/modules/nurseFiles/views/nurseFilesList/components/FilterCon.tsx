@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import nurseFilesListViewModel from '../NurseFilesListViewModel'
+import {nurseFilesListViewModel} from '../NurseFilesListViewModel'
 import { observer } from 'mobx-react-lite'
 
 const FILTER_MAP: any = {

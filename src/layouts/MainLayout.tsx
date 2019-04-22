@@ -5,18 +5,17 @@ import NavBar from './components/NavBar'
 import RouterView, { RouteComponentProps } from 'src/components/RouterView'
 import store from 'src/stores'
 import service from 'src/services/api'
-import { toJS } from 'mobx'
+import { observer } from 'mobx-react-lite'
+
 export interface Props extends RouteComponentProps {}
 
-export default function MainLayout (props: Props) {
-  const [count, setCount] = useState(0)
+export default observer(function MainLayout (props: Props) {
   /** 数据初始化 */
   store.appStore.history = props.history
   store.appStore.match = props.match
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res) => {
       store.authStore.deptList = res.data.deptList || []
-      console.log(toJS(store.authStore.deptList), 'resss')
     })
   })
   return (
@@ -28,7 +27,7 @@ export default function MainLayout (props: Props) {
       </RouterViewCon>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   height: 100%;
   display: flex;

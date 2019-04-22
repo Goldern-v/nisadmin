@@ -7,42 +7,29 @@ import NurseCard from './components/NurseCard'
 import { numberToArray } from 'src/utils/array/array'
 import PaginationCon from './components/PaginationCon'
 import { nurseFilesService } from '../../services/NurseFilesService'
+import { observer } from 'mobx-react-lite'
+import { nurseFilesListViewModel } from './NurseFilesListViewModel'
+import { Spin } from 'antd'
 export interface Props extends RouteComponentProps {}
-
 /** 一行的列数 */
 let rowNum: number = 7
 
-export default function NurseFilesListView () {
-  const [count, setCount] = useState(0)
-  const onLoad = () => {
-    let query = {
-      // deptCode: ,
-      // empNo:
-      // education:
-      // title:
-      // currentLevel:
-      // post:
-      // pageIndex:
-      // pageSize:
-    }
-    // nurseFilesService.getByFormCodePC(query)
-  }
-  useEffect(() => {
-    onLoad()
-  })
+export default observer(function NurseFilesListView () {
   return (
     <Wrapper>
       <SelectCon />
       <FilterCon />
-      <NurseCardCon>
-        {numberToArray(14).map((item, index) => (
-          <NurseCard rowNum={rowNum} key={index} />
-        ))}
-      </NurseCardCon>
-      <PaginationCon />
+      <Spin spinning={nurseFilesListViewModel.listSpinning}>
+        <NurseCardCon>
+          {numberToArray(14).map((item, index) => (
+            <NurseCard rowNum={rowNum} key={index} />
+          ))}
+        </NurseCardCon>
+      </Spin>
+      <PaginationCon rowNum={rowNum} />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   padding: ${(p) => p.theme.$mcp};
 `

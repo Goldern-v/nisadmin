@@ -9,7 +9,7 @@ export interface Props {
   onChange: (value: string) => void
 }
 
-interface DeptType {
+export interface DeptType {
   code: string
   name: string
 }

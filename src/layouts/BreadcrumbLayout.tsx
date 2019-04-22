@@ -13,10 +13,7 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
 export default function BreadcrumbLayout (props: Props) {
   const [count, setCount] = useState(0)
   const { payload } = props
-  useEffect(() => {
-    console.log(count, setCount)
-    console.log(props, 'props')
-  })
+  useEffect(() => {})
   let currentRouteType = props.match.params.type
   let currentRouteList: any[] = _.flattenDeep(props.payload.map((item) => (item.childrens ? item.childrens : item)))
   // console.log(currentRouteList, 'currentRouteList')

@@ -38,9 +38,7 @@ const test = [
 
 export default function HorizontalMenu (props: Props) {
   const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+  useEffect(() => {})
   const handleClick = (e: any) => {
     console.log('click ', e)
   }

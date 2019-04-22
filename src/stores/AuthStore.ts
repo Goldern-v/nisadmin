@@ -1,7 +1,8 @@
 /** 权限验证 */
-import { action, observable } from 'mobx'
+import { action, observable, computed } from 'mobx'
 
 import User from 'src/models/User'
+import { DeptType } from 'src/components/DeptSelect'
 
 export default class AuthStore {
   public constructor () {
@@ -17,12 +18,20 @@ export default class AuthStore {
   @observable public adminNurse: string | null = null
 
   /** 当前用户科室列表 */
-  @observable public deptList: any = []
+  @observable public deptList: DeptType[] = []
   /** 当前用户默认科室 */
   @observable public defaultDeptCode: any = ''
   /** 用户选择的科室 */
   @observable public selectedDeptCode: any = ''
 
+  @computed
+  public get selectedDeptName () {
+    try {
+      return this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name
+    } catch (error) {
+      return ''
+    }
+  }
   /** 用户初始化 */
   @action
   public initUser () {
@@ -32,6 +41,7 @@ export default class AuthStore {
     this.defaultDeptCode = this.user && this.user.deptCode
     this.selectedDeptCode = sessionStorage.getItem('selectedDeptCode') || this.defaultDeptCode || ''
   }
+
   /** 用户清除数据 */
   @action
   public delUser () {

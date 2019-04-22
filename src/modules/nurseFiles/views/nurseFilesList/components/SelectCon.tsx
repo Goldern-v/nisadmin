@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState } from 'react'
 import { Place } from 'src/components/common'
 import { Select, Input, Button } from 'antd'
-import nurseFilesListViewModel from '../NurseFilesListViewModel'
+import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import AddNursingModal from '../modal/AddNursingModal'
 import DeptSelect from 'src/components/DeptSelect'
 
@@ -21,6 +21,12 @@ export default function SelectCon () {
   const onChange = (value: string) => {
     nurseFilesListViewModel.loadNursingList()
   }
+  const onSearch = () => {
+    nurseFilesListViewModel.loadNursingList()
+  }
+  const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    nurseFilesListViewModel.filterText = e.target.value
+  }
 
   return (
     <React.Fragment>
@@ -29,8 +35,10 @@ export default function SelectCon () {
         <Place />
         <span>科室：</span>
         <DeptSelect onChange={onChange} />
-        <Input placeholder='请输入搜索关键字' style={{ width: 160 }} />
-        <Button type='primary'>搜索</Button>
+        <Input placeholder='请输入搜索关键字' style={{ width: 160 }} onChange={SearchByText} />
+        <Button type='primary' onClick={onSearch}>
+          搜索
+        </Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
       </Wrapper>
       <AddNursingModal visible={visible} handleOk={handleOk} handleCancel={handleCancel} />
