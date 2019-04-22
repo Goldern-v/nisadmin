@@ -22,6 +22,24 @@ const leftListPath = [
   { name: '科室休假统计（按月份）', path: '/statistic/科室休假统计（按月份）' },
   { name: '护士节假日排班人数', path: '/statistic/护士节假日排班人数' }
 ]
+const leftListNursePath = [
+  { name: '护理人员统计', path: '/statistic/护理人员统计' },
+  { name: '护理人员一览表', path: '/statistic/护理人员一览表' },
+  { name: '科室护士明细表', path: '/statistic/科室护士明细表' },
+  { name: '科室护士结构信息汇总表', path: '/statistic/科室护士结构信息汇总表' },
+  { name: '护士离职率', path: '/statistic/护士离职率' }
+]
+
+const leftListPatientQueryPath = [
+  { name: '患者查询', path: '/statistic/患者查询' },
+  { name: '住院病人认知情况', path: '/statistic/住院病人认知情况' },
+  { name: '床位使用情况统计表', path: '/statistic/床位使用情况统计表' },
+  { name: '病区流转', path: '/statistic/病区流转' },
+  { name: '在院患者病情统计表', path: '/statistic/在院患者病情统计表' },
+  { name: '出院病人统计表', path: '/statistic/出院病人统计表' },
+  { name: '住院执行单统计表', path: '/statistic/护理人员统计' },
+  { name: '患者分布统计表', path: '/statistic/护理人员统计' }
+]
 export default function BedSituation () {
   const [count, setCount] = useState(0)
   useEffect(() => {
@@ -54,7 +72,19 @@ export default function BedSituation () {
     // return () => props.history.push(path)
     store.appStore.history.push(path)
   }
-  const leftListCoponet = leftListPath.map((item: any) => (
+  // 组件
+  const leftListComponent = leftListPath.map((item: any) => (
+    <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
+      {item.name}
+    </li>
+  ))
+
+  const leftListNursePathComponent = leftListNursePath.map((item: any) => (
+    <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
+      {item.name}
+    </li>
+  ))
+  const leftListPatientQueryPathComponent = leftListPatientQueryPath.map((item: any) => (
     <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
       {item.name}
     </li>
@@ -64,13 +94,13 @@ export default function BedSituation () {
       <div className='header'>排班统计</div>
       <Collapse bordered={false} accordion defaultActiveKey={['1']}>
         <Panel header='排班统计' key='1'>
-          {leftListCoponet}
+          {leftListComponent}
         </Panel>
-        <Panel header='xx统计' key='2'>
-          {leftListCoponet}
+        <Panel header='护理人员统计' key='2'>
+          {leftListNursePathComponent}
         </Panel>
-        <Panel header='xx统计' key='3'>
-          {leftListCoponet}
+        <Panel header='患者查询统计' key='3'>
+          {leftListPatientQueryPathComponent}
         </Panel>
       </Collapse>
     </Con>
