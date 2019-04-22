@@ -10,6 +10,7 @@ import ScheduleShiftApiService from './Schedule/ScheduleShiftApiService'
 import HomeDataApiServices from './Home/HomeDataApiService'
 // 统计
 import ScheduleMealApiService from './Schedule/ScheduleMealApiService'
+import StatisticApiService from './statistic/StatisticApiService'
 
 const service = {
   authApiService: new AuthApiService(),
@@ -20,7 +21,8 @@ const service = {
   wardDailyApiService: new WardDailyApiService(),
   scheduleShiftApiService: new ScheduleShiftApiService(),
   homeDataApiServices: new HomeDataApiServices(),
-  scheduleMealApiService: new ScheduleMealApiService()
+  scheduleMealApiService: new ScheduleMealApiService(),
+  statisticApiService: new StatisticApiService()
 }
 
 export default service

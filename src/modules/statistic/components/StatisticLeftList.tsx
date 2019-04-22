@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Collapse } from 'antd'
-import { observer } from 'mobx-react-lite'
-import { RouteComponentProps } from 'react-router'
-import store from 'src/stores';
-// import console = require('console');
-export interface Props extends RouteComponentProps {}
+import store from 'src/stores'
+
+// import { RouteComponentProps } from 'src/components/RouterView'
+// export interface Props extends RouteComponentProps<{ type?: string }> {
+//   aa: string
+// }
 const Panel = Collapse.Panel
 // 左侧列表数据
 const leftListPath = [
@@ -21,10 +22,29 @@ const leftListPath = [
   { name: '科室休假统计（按月份）', path: '/statistic/科室休假统计（按月份）' },
   { name: '护士节假日排班人数', path: '/statistic/护士节假日排班人数' }
 ]
-export default observer(function BedSituation (props: any) {
+const leftListNursePath = [
+  { name: '护理人员统计', path: '/statistic/护理人员统计' },
+  { name: '护理人员一览表', path: '/statistic/护理人员一览表' },
+  { name: '科室护士明细表', path: '/statistic/科室护士明细表' },
+  { name: '科室护士结构信息汇总表', path: '/statistic/科室护士结构信息汇总表' },
+  { name: '护士离职率', path: '/statistic/护士离职率' }
+]
+
+const leftListPatientQueryPath = [
+  { name: '患者查询', path: '/statistic/患者查询' },
+  { name: '住院病人认知情况', path: '/statistic/住院病人认知情况' },
+  { name: '床位使用情况统计表', path: '/statistic/床位使用情况统计表' },
+  { name: '病区流转', path: '/statistic/病区流转' },
+  { name: '在院患者病情统计表', path: '/statistic/在院患者病情统计表' },
+  { name: '出院病人统计表', path: '/statistic/出院病人统计表' },
+  { name: '住院执行单统计表', path: '/statistic/护理人员统计' },
+  { name: '患者分布统计表', path: '/statistic/护理人员统计' }
+]
+export default function BedSituation () {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
+    // console.log(store.appStore.history.location.pathname, 3333)
   })
   // 左侧列表数据
   const leftListData = [
@@ -40,19 +60,31 @@ export default observer(function BedSituation (props: any) {
     '科室休假统计（按月份）',
     '护士节假日排班人数'
   ]
-  function leftLiClick (e: any, path: string) {
-    let liNode = e.target
+  function leftLiClick (ev: any, path: string) {
+    let liNode = ev.target
     let allLi = liNode.parentNode.querySelectorAll('li')
     allLi.forEach((item: any) => {
       item.classList.remove('liClickClass')
     })
     liNode.classList.add('liClickClass')
-    console.log(path)
+    // console.log(path)
     // props.history.push(path)
     // return () => props.history.push(path)
     store.appStore.history.push(path)
   }
-  const leftListCoponet = leftListPath.map((item: any) => (
+  // 组件
+  const leftListComponent = leftListPath.map((item: any) => (
+    <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
+      {item.name}
+    </li>
+  ))
+
+  const leftListNursePathComponent = leftListNursePath.map((item: any) => (
+    <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
+      {item.name}
+    </li>
+  ))
+  const leftListPatientQueryPathComponent = leftListPatientQueryPath.map((item: any) => (
     <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
       {item.name}
     </li>
@@ -60,28 +92,29 @@ export default observer(function BedSituation (props: any) {
   return (
     <Con>
       <div className='header'>排班统计</div>
-      <Collapse bordered={false} accordion defaultActiveKey={['1']} >
+      <Collapse bordered={false} accordion defaultActiveKey={['1']}>
         <Panel header='排班统计' key='1'>
-          {leftListCoponet}
+          {leftListComponent}
         </Panel>
-        <Panel header='xx统计' key='2'>
-          {leftListCoponet}
+        <Panel header='护理人员统计' key='2'>
+          {leftListNursePathComponent}
         </Panel>
-        <Panel header='xx统计' key='3'>
-          {leftListCoponet}
+        <Panel header='患者查询统计' key='3'>
+          {leftListPatientQueryPathComponent}
         </Panel>
       </Collapse>
     </Con>
   )
-})
+}
 
 const Con = styled.div`
-  padding: 0 0 0 14px;
+  /* padding: 0 0 0 14px; */
   width: 220px;
   height: 789px;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
   .header {
+    padding-left: 14px;
     height: 44px;
     line-height: 44px;
     font-size: 15px;
@@ -95,16 +128,20 @@ const Con = styled.div`
   .ant-collapse-header {
     box-sizing: border-box;
     width: 100% !important;
-    padding: 4px 0 4px 20px !important;
+    padding: 4px 0 4px 34px !important;
     /* width: 100%;
     height: 34px;
     line-height: 34px; */
     background-color: #f8f8f8;
     font-size: 13px !important;
   }
+  .ant-collapse-header:hover {
+    background-color: #5bbe98;
+    color: white;
+  }
   /* 箭头左偏 */
-  .ant-collapse-arrow{
-    left: 0 !important
+  .ant-collapse-arrow {
+    /* left: 0 !important; */
   }
   .arrow {
     left: 0px !important;
@@ -115,15 +152,21 @@ const Con = styled.div`
     /* border: none !important; */
   }
   .ant-collapse-content-box {
-    padding: 0 0 0 32px !important;
+    padding: 0 !important;
   }
   /* 每列的样式 */
   li {
+    padding-left: 44px;
     height: 34px;
     line-height: 34px;
   }
+  li:hover {
+    background-color: #5bbe98;
+    color: white;
+  }
   /* 增添点击的样式 */
   .liClickClass {
-    background-color: #e1e2e3;
+    background-color: #5bbe98;
+    color: white;
   }
 `

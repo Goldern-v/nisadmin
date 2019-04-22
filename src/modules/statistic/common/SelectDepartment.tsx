@@ -12,6 +12,7 @@ const Option = Select.Option
 
 function handleChange (value: any) {
   console.log(`selected ${value}`)
+  console.log(333)
   statisticViewModel.deptName = value
   statisticViewModel.setTitle('护士休假统计')
   console.log('getTitle', statisticViewModel.getTitle)
@@ -51,22 +52,9 @@ export default function SelectDepartment () {
       }
     })
   }, [])
-  // function getDepartmentName () {
-  //   service.homeDataApiServices.getListDepartment().then((res) => {
-  //     if (res && res.data) {
-  //       let listDepartment = res.data.deptList
-  //       if (!listDepartment) {
-  //         // 获取后的科室相关数据
-  //         listDepartment = []
-  //       }
-  //       return listDepartment.map((item: any) => (
-  //         <Option key={item.name.toString()} value={item.name}>
-  //           {item.name}
-  //         </Option>
-  //       ))
-  //     }
-  //   })
-  // }
+  function optionClick (code: any) {
+    statisticViewModel.setDeptCode(code)
+  }
   return (
     <div>
       <SelectCon>

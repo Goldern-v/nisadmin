@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import SelectDepartment from '../common/SelectDepartment'
+import DeptSelect from 'src/components/DeptSelect'
 import SelectData from '../common/SelectData'
 import { Button } from 'antd'
 
