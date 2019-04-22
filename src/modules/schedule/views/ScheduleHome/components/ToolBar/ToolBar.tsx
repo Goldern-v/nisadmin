@@ -49,14 +49,14 @@ export default function ToolBar () {
         if (!res) {
           return
         }
-        setWardList(res.data.data.deptList) // 更新科室列表
+        setWardList(res.data.deptList) // 更新科室列表
         if (!scheduleStore.getDeptName()) {
-          setWardValue(res.data.data.deptName)
+          setWardValue(res.data.deptName)
           // console.log('更新wardList:', wardValue, wardCode, wardList)
           let dept = {
             wardCode: res.data.defaultDept,
-            wardName: res.data.datadeptName,
-            deptName: res.data.datadeptName,
+            wardName: res.datadeptName,
+            deptName: res.datadeptName,
             deptCode: res.data.defaultDept
           }
           scheduleStore.setDepartment(dept as any)

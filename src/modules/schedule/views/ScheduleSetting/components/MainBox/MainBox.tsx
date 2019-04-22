@@ -513,8 +513,8 @@ export default function MainBox () {
       // selectedRowsArray = new Array()
       // columns
 
-      if (res && res.data.data) {
-        tableData = res.data.data
+      if (res && res.data) {
+        tableData = res.data
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {
@@ -552,9 +552,9 @@ export default function MainBox () {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res) => {
       console.log('查找排班班次res', res)
-      if (res && res.data.data) {
-        setShiftList(res.data.data)
-        shiftListData = JSON.parse(JSON.stringify(res.data.data))
+      if (res && res.data) {
+        setShiftList(res.data)
+        shiftListData = JSON.parse(JSON.stringify(res.data))
       }
     })
   }
@@ -564,8 +564,8 @@ export default function MainBox () {
     allUser = new Array()
     service.scheduleUserApiService.getByDeptCode(deptCode).then((res) => {
       console.log('刷新排班人员', res)
-      if (res && res.data.data) {
-        allUser = res.data.data
+      if (res && res.data) {
+        allUser = res.data
         allUser = allUser.filter((u) => u.rangeShow === true)
         setShiftUserList(allUser)
         allUser.map((u, i) => {
@@ -600,13 +600,13 @@ export default function MainBox () {
         console.log('本周排班记录', res)
         // todo ... emitter 将数据传递给表格组件进行下一步数据渲染
         let scheduleList: any = new Array()
-        if (res && res.data.data) {
-          scheduleList = res.data.data
+        if (res && res.data) {
+          scheduleList = res.data
           let schShiftUser = scheduleList.schShiftUser
           // sort
           schShiftUser = schShiftUser.sort((a: any, b: any) => a.id < b.id)
           console.log('本周排班记录scheduleList', scheduleList, schShiftUser)
-          // emitter.emit('本周排班记录', res.data.data)
+          // emitter.emit('本周排班记录', res.data)
           // genEmptyTable(scheduleList)
           // setTableList(scheduleList)
           if (schShiftUser && schShiftUser.length > 0 && !isReset) {
@@ -635,10 +635,10 @@ export default function MainBox () {
     console.log('新建newSchedule', postData)
     service.schedulingApiService.newSchedule(postData).then((res) => {
       console.log('新建成功', res)
-      // emitter.emit('本周排班记录', res.data.data)
-      if (res && res.data.data) {
+      // emitter.emit('本周排班记录', res.data)
+      if (res && res.data) {
         console.log('postDataArray', res)
-        let userList = res.data.data.schShiftUser
+        let userList = res.data.schShiftUser
         if (callback) {
           callback(userList)
         }

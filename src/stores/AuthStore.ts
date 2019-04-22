@@ -6,26 +6,52 @@ import User from 'src/models/User'
 export default class AuthStore {
   public constructor () {
     try {
-      this.user = JSON.parse(sessionStorage.getItem('user') || '[]')
-      this.authToken = sessionStorage.getItem('authToken') || ''
-      this.adminNurse = sessionStorage.getItem('adminNurse') || ''
+      this.initUser()
     } catch (error) {
       console.log(error)
     }
   }
 
   @observable public user: User | null = null
-  @observable private authToken: string | null = null
-  @observable private adminNurse: string | null = null
+  @observable public authToken: string | null = null
+  @observable public adminNurse: string | null = null
+
+  /** 当前用户科室列表 */
+  @observable public deptList: any = []
+  /** 当前用户默认科室 */
+  @observable public defaultDeptCode: any = ''
+  /** 用户选择的科室 */
+  @observable public selectedDeptCode: any = ''
+
+  /** 用户初始化 */
+  @action
+  public initUser () {
+    this.user = JSON.parse(sessionStorage.getItem('user') || '[]')
+    this.authToken = sessionStorage.getItem('authToken') || ''
+    this.adminNurse = sessionStorage.getItem('adminNurse') || ''
+    this.defaultDeptCode = this.user && this.user.deptCode
+    this.selectedDeptCode = sessionStorage.getItem('selectedDeptCode') || this.defaultDeptCode || ''
+  }
+  /** 用户清除数据 */
+  @action
+  public delUser () {
+    this.user = null
+    this.authToken = null
+    this.adminNurse = null
+    this.defaultDeptCode = null
+    this.selectedDeptCode = null
+    this.deptList = []
+  }
+
+  @action
+  public selectDeptCode (value: string) {
+    this.selectedDeptCode = value
+    sessionStorage.setItem('selectedDeptCode', value)
+  }
 
   @action
   public async updateUser (user: User) {
     this.user = user
-  }
-
-  @action
-  public async removeUser () {
-    this.user = null
   }
 
   @action

@@ -204,10 +204,10 @@ export default function ScheduleTable () {
       }
       service.schedulingApiService.newSchedule(postData).then((res) => {
         console.log('新建成功', res)
-        emitter.emit('本周排班记录', res.data.data)
-        if (res && res.data.data) {
+        emitter.emit('本周排班记录', res.data)
+        if (res && res.data) {
           console.log('postDataArray', res)
-          let userList = res.data.data.schShiftUser
+          let userList = res.data.schShiftUser
           let postDataArray: any = new Array()
           let postLine: any = new Array()
           let startTime = scheduleStore.getStartTime()

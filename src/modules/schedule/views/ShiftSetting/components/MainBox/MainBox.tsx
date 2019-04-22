@@ -198,8 +198,8 @@ export default function MainBox () {
       selectedRowsArray = new Array()
       // columns
 
-      if (res && res.data.data) {
-        tableData = res.data.data
+      if (res && res.data) {
+        tableData = res.data
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {

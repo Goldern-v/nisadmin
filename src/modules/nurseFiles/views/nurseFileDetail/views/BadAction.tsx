@@ -7,16 +7,16 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
+import EditBadActionModal from '../modal/EditBadActionModal'
 
 export interface Props extends RouteComponentProps {}
-export default observer(function WorkHistory () {
-  const editWorkHistoryModal = createModal(EditWorkHistoryModal)
+export default observer(function BadAction () {
+  const editBadActionModal = createModal(EditBadActionModal)
   const btnList = [
     {
       label: '添加',
       onClick: () =>
-        editWorkHistoryModal.show({
+        editBadActionModal.show({
           id: '12'
         })
     }
@@ -46,44 +46,37 @@ export default observer(function WorkHistory () {
       width: 43
     },
     {
-      title: '开始年月',
+      title: '日期',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
-      title: '结束年月',
+      title: '事件原因',
       dataIndex: '3',
       key: '3',
+      width: 300,
+      align: 'center'
+    },
+    {
+      title: '处理结论',
+      dataIndex: '4',
+      key: '4',
       width: 100,
       align: 'center'
     },
     {
-      title: '单位',
-      dataIndex: '4',
-      key: '4',
-      width: 200,
-      align: 'center'
-    },
-    {
-      title: '专业技术工作',
-      dataIndex: '5',
-      key: '5',
-      width: 200,
-      align: 'center'
-    },
-    {
-      title: '技术职称',
-      dataIndex: '6',
-      key: '6',
+      title: '附件',
+      dataIndex: '611',
+      key: '611',
       width: 150,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '7',
-      key: '7',
+      dataIndex: '61',
+      key: '61',
       width: 150,
       align: 'center'
     },
@@ -104,16 +97,15 @@ export default observer(function WorkHistory () {
       }
     }
   ]
-
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
   })
 
   return (
-    <BaseLayout title='工作经历' btnList={btnList}>
+    <BaseLayout title='护理不良行为（包括医德医风）记录' btnList={btnList}>
       <BaseTable dataSource={dataSource} columns={columns} />
-      <editWorkHistoryModal.Component />
+      <editBadActionModal.Component />
     </BaseLayout>
   )
 })

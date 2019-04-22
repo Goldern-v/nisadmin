@@ -62,7 +62,7 @@ export function onResponseFulfilled (response: AxiosResponse) {
       return Promise.reject(msg)
     }
     case StatusCode.success: {
-      return response
+      return response.data
     }
     case StatusCode.notFound: {
       console.log('404响应', response.data, code, msg, data)
@@ -75,7 +75,7 @@ export function onResponseFulfilled (response: AxiosResponse) {
     }
     default:
       if (status === 200) {
-        return response
+        return response.data
       }
       console.log('默认响应', response, response.data, code, msg, data)
       return Promise.reject(`未知异常`)

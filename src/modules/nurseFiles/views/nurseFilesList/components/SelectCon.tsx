@@ -4,6 +4,7 @@ import { Place } from 'src/components/common'
 import { Select, Input, Button } from 'antd'
 import nurseFilesListViewModel from '../NurseFilesListViewModel'
 import AddNursingModal from '../modal/AddNursingModal'
+import DeptSelect from 'src/components/DeptSelect'
 
 const Option = Select.Option
 
@@ -16,37 +17,18 @@ export default function SelectCon () {
   const handleCancel = () => {
     setVisible(false)
   }
-  function handleChange (value: any) {
-    console.log(`selected ${value}`)
+
+  const onChange = (value: string) => {
+    nurseFilesListViewModel.loadNursingList()
   }
 
-  function handleBlur () {
-    console.log('blur')
-  }
-
-  function handleFocus () {
-    console.log('focus')
-  }
   return (
     <React.Fragment>
       <Wrapper>
         <Title>护士档案</Title>
         <Place />
         <span>科室：</span>
-        <Select
-          showSearch
-          style={{ width: 200 }}
-          placeholder='Select a person'
-          optionFilterProp='children'
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          filterOption={(input, option) => input}
-        >
-          <Option value='jack'>Jack</Option>
-          <Option value='lucy'>Lucy</Option>
-          <Option value='tom'>Tom</Option>
-        </Select>
+        <DeptSelect onChange={onChange} />
         <Input placeholder='请输入搜索关键字' style={{ width: 160 }} />
         <Button type='primary'>搜索</Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>

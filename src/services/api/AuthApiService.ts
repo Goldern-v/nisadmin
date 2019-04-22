@@ -10,7 +10,7 @@ export default class AuthApiService extends BaseApiService {
       .post('/login', this.stringify({ empNo: username, password: password }))
       .then((res) => {
         // console.log('登陆成功',res)
-        let { adminNurse, authToken, user } = res.data.data
+        let { adminNurse, authToken, user } = res.data
         sessionStorage.setItem('adminNurse', adminNurse)
         sessionStorage.setItem('authToken', authToken)
         sessionStorage.setItem('user', JSON.stringify(user))
@@ -19,8 +19,8 @@ export default class AuthApiService extends BaseApiService {
         authStore.updateUser(user)
         scheduleStore.setDepartmentValue('deptCode', user.deptCode)
         scheduleStore.setDepartmentValue('deptName', user.deptName)
+        authStore.initUser()
         window.location.href = '#/home'
-        console.log('登陆成功', adminNurse, authToken, user, sessionStorage, scheduleStore)
       })
       .catch((err) => {
         console.log('登陆失败', err)
@@ -30,9 +30,7 @@ export default class AuthApiService extends BaseApiService {
     sessionStorage.removeItem('adminNurse')
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('user')
-    authStore.setAuthToken('')
-    authStore.setAdminNurse('')
-    authStore.removeUser()
+    authStore.delUser()
     window.location.href = '#/login'
   }
 }

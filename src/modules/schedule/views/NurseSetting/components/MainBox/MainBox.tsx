@@ -165,8 +165,8 @@ export default function MainBox () {
       allUser = new Array()
       // columns
 
-      if (res && res.data.data) {
-        let tableData = res.data.data
+      if (res && res.data) {
+        let tableData = res.data
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {

@@ -7,16 +7,16 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
+import EditWorkRegistrationFormModal from '../modal/EditWorkRegistrationFormModal'
 
 export interface Props extends RouteComponentProps {}
-export default observer(function WorkHistory () {
-  const editWorkHistoryModal = createModal(EditWorkHistoryModal)
+export default observer(function WorkRegistrationForm () {
+  const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
   const btnList = [
     {
       label: '添加',
       onClick: () =>
-        editWorkHistoryModal.show({
+        editWorkRegistrationFormModal.show({
           id: '12'
         })
     }
@@ -46,44 +46,72 @@ export default observer(function WorkHistory () {
       width: 43
     },
     {
-      title: '开始年月',
+      title: '年度',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
-      title: '结束年月',
+      title: '夜班',
       dataIndex: '3',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
-      title: '单位',
+      title: '查房',
       dataIndex: '4',
       key: '4',
-      width: 200,
+      width: 100,
       align: 'center'
     },
     {
-      title: '专业技术工作',
+      title: '护理会诊',
       dataIndex: '5',
       key: '5',
-      width: 200,
+      width: 150,
       align: 'center'
     },
     {
-      title: '技术职称',
+      title: '病例讨论',
       dataIndex: '6',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
+      title: '个案',
+      dataIndex: '61',
+      key: '61',
+      width: 150,
+      align: 'center'
+    },
+    {
+      title: '小讲课',
+      dataIndex: '621',
+      key: '621',
+      width: 150,
+      align: 'center'
+    },
+    {
+      title: '代教',
+      dataIndex: '621',
+      key: '621',
+      width: 150,
+      align: 'center'
+    },
+    {
+      title: '证明人',
+      dataIndex: '6233',
+      key: '6231',
+      width: 150,
+      align: 'center'
+    },
+    {
       title: '状态',
-      dataIndex: '7',
-      key: '7',
+      dataIndex: '61233',
+      key: '61231',
       width: 150,
       align: 'center'
     },
@@ -104,16 +132,15 @@ export default observer(function WorkHistory () {
       }
     }
   ]
-
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
   })
 
   return (
-    <BaseLayout title='工作经历' btnList={btnList}>
+    <BaseLayout title='临床护理工作情况登记表' btnList={btnList}>
       <BaseTable dataSource={dataSource} columns={columns} />
-      <editWorkHistoryModal.Component />
+      <editWorkRegistrationFormModal.Component />
     </BaseLayout>
   )
 })

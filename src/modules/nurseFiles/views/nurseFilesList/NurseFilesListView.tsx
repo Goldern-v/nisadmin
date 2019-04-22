@@ -6,6 +6,7 @@ import FilterCon from './components/FilterCon'
 import NurseCard from './components/NurseCard'
 import { numberToArray } from 'src/utils/array/array'
 import PaginationCon from './components/PaginationCon'
+import { nurseFilesService } from '../../services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 
 /** 一行的列数 */
@@ -13,8 +14,21 @@ let rowNum: number = 7
 
 export default function NurseFilesListView () {
   const [count, setCount] = useState(0)
+  const onLoad = () => {
+    let query = {
+      // deptCode: ,
+      // empNo:
+      // education:
+      // title:
+      // currentLevel:
+      // post:
+      // pageIndex:
+      // pageSize:
+    }
+    // nurseFilesService.getByFormCodePC(query)
+  }
   useEffect(() => {
-    console.log(count, setCount)
+    onLoad()
   })
   return (
     <Wrapper>

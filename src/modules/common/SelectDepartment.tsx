@@ -18,8 +18,8 @@ export default function SelectDepartment () {
   // })
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res) => {
-      if (res && res.data.data) {
-        let listDepartment = res.data.data.deptList
+      if (res && res.data) {
+        let listDepartment = res.data.deptList
         if (!listDepartment) {
           // 获取后的科室相关数据
           listDepartment = []
@@ -35,8 +35,8 @@ export default function SelectDepartment () {
   }, [])
   // function getDepartmentName () {
   //   service.homeDataApiServices.getListDepartment().then((res) => {
-  //     if (res && res.data.data) {
-  //       let listDepartment = res.data.data.deptList
+  //     if (res && res.data) {
+  //       let listDepartment = res.data.deptList
   //       if (!listDepartment) {
   //         // 获取后的科室相关数据
   //         listDepartment = []
