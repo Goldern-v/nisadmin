@@ -13,11 +13,12 @@ export default observer(function MainLayout (props: Props) {
   /** 数据初始化 */
   store.appStore.history = props.history
   store.appStore.match = props.match
+  store.appStore.location = props.location
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res: any) => {
       store.authStore.deptList = res.data.deptList || []
     })
-  })
+  }, [])
   return (
     <Wrapper>
       <Header />

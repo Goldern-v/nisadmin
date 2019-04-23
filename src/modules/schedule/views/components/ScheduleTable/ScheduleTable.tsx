@@ -159,7 +159,7 @@ export default function ScheduleTable () {
   const [count, setCount] = useState(0)
   const [footer, setFooter] = useState('')
   const [scheduleList, setScheduleList] = useState([])
-  // const [stratTime, setStratTime] = useState('')
+  // const [startTime, setstartTime] = useState('')
 
   useEffect(() => {
     console.log(count, setCount)
@@ -194,12 +194,12 @@ export default function ScheduleTable () {
       setFooter('排班小计: 空')
       // newSchedule
       let deptCode = scheduleStore.getDeptCode()
-      let stratTime = scheduleStore.getStartTime()
+      let startTime = scheduleStore.getStartTime()
       let endTime = scheduleStore.getEndTime()
-      console.log(deptCode, stratTime, endTime)
+      console.log(deptCode, startTime, endTime)
       const postData = {
         deptCode: deptCode, // deptCode  科室编码
-        stratTime: stratTime, // stratTime 开始时间
+        startTime: startTime, // startTime 开始时间
         endTime: endTime // endTime   结束时间
       }
       service.schedulingApiService.newSchedule(postData).then((res) => {
@@ -210,7 +210,7 @@ export default function ScheduleTable () {
           let userList = res.data.schShiftUser
           let postDataArray: any = new Array()
           let postLine: any = new Array()
-          let startTime = scheduleStore.getStartTime()
+          // let startTime = scheduleStore.getStartTime()
 
           userList.map((user: any) => {
             for (let index = 0; index < 7; index++) {
@@ -245,13 +245,13 @@ export default function ScheduleTable () {
     emitter.addListener('本周排班记录', (scheduleData) => {
       console.log('接收:本周排班记录event', scheduleData, scheduleList)
 
-      scheduleStore.setStartTime(scheduleData.stratTime)
+      scheduleStore.setStartTime(scheduleData.startTime)
       scheduleStore.setEndTime(scheduleData.endTime)
 
       let tr = {}
       let newList = new Array()
       scheduleData.schShiftUser.map((nurse: any, shcIndex: number) => {
-        console.log('nurse', shcIndex, nurse.empName, nurse)
+        // console.log('nurse', shcIndex, nurse.empName, nurse)
         let getRangeObj = (user: any, keyname: any, i: number) => {
           let result = ''
           try {

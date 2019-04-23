@@ -19,7 +19,7 @@ import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseBySh
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
 import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
-import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetail'
+import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 
 const routes: RouteItem[] = [
@@ -46,7 +46,7 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
     { name: '排班管理', link: '/scheduleHome' },
-    { name: '编辑排班', link: '' }
+    { name: '排班编辑', link: '' }
   ]),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
   // setLayout('/statistic/护士白班统计（按月份）', WhiteShiftByMonthView, layouts.MainLayout),

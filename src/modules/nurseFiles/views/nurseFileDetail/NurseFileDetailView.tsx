@@ -18,6 +18,8 @@ import ThreeBases from './views/ThreeBases'
 import ExaminationResults from './views/ExaminationResults'
 import WorkRegistrationForm from './views/WorkRegistrationForm'
 import FileList from './views/FileList'
+import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
+import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -91,11 +93,8 @@ const ROUTE_LIST = [
 ]
 
 export default function NurseFileDetail (props: Props) {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-    console.log(props, 'props')
-  })
+  nurseFileDetailViewModal.nurserInfo = appStore.queryObj
+
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
 

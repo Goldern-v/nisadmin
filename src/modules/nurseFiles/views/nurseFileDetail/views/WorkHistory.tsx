@@ -8,6 +8,8 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { auditedStatusEnum } from 'src/libs/enum/common'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function WorkHistory () {
@@ -19,20 +21,6 @@ export default observer(function WorkHistory () {
         editWorkHistoryModal.show({
           id: '12'
         })
-    }
-  ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号'
     }
   ]
 
@@ -47,36 +35,43 @@ export default observer(function WorkHistory () {
     },
     {
       title: '开始年月',
-      dataIndex: 'name',
+      dataIndex: 'stratTime',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '结束年月',
-      dataIndex: '3',
+      dataIndex: 'endTime',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '单位',
-      dataIndex: '4',
+      dataIndex: 'unit',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '专业技术工作',
-      dataIndex: '5',
+      dataIndex: 'professionalWork',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '技术职称',
-      dataIndex: '6',
-      key: '6',
+      dataIndex: 'professional',
+      key: 'professional',
+      width: 150,
+      align: 'center'
+    },
+    {
+      title: '职务',
+      dataIndex: 'post',
+      key: 'post',
       width: 150,
       align: 'center'
     },
@@ -85,7 +80,10 @@ export default observer(function WorkHistory () {
       dataIndex: '7',
       key: '7',
       width: 150,
-      align: 'center'
+      align: 'center',
+      render: (text: any, item: any, index: any) => {
+        return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>
+      }
     },
     {
       title: '操作',
@@ -105,14 +103,16 @@ export default observer(function WorkHistory () {
     }
   ]
 
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    nurseFilesService.findByEmpNoSubmit(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }, [])
 
   return (
     <BaseLayout title='工作经历' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} />
       <editWorkHistoryModal.Component />
     </BaseLayout>
   )

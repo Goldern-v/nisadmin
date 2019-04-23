@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Breadcrumb } from 'antd'
 import store from 'src/stores'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
@@ -11,8 +13,9 @@ const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
 
 const WARNNING_ICON = require('../../../images/注意.png')
 
-export default function TopCon () {
+export default observer(function TopCon () {
   let history = store.appStore.history
+  let { empName, post, deptName, currentLevel, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
   return (
     <Wrapper>
       <BreadcrumbCon>
@@ -23,16 +26,25 @@ export default function TopCon () {
           <Breadcrumb.Item>档案详情</Breadcrumb.Item>
         </Breadcrumb>
       </BreadcrumbCon>
-      <HeadImg src={DEFAULT_HEADIMG} />
-      <Name>刘盼盼</Name>
-      <Info>主管护师 | N3 | 神经内科护理单元</Info>
+      <HeadImg src={nearImageUrl || DEFAULT_HEADIMG} />
+      <Name>{empName}</Name>
+      <Info>
+        {post} | {currentLevel} | {deptName}
+      </Info>
       <Tip>
         <img src={WARNNING_ICON} alt='' />
-        注意：刘盼盼有5条未审核信息，点击
+        {nurseFileDetailViewModal.badgeTotal && (
+          <span>
+            {' '}
+            注意：刘盼盼有{nurseFileDetailViewModal.badgeTotal}条未审核信息，点击
+            <ClickSpan>这里</ClickSpan>
+            进行审核
+          </span>
+        )}
       </Tip>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   height: 135px;
   background: url(${BG});
@@ -61,6 +73,7 @@ const HeadImg = styled.img`
   border-radius: 50%;
   left: 15px;
   bottom: 15px;
+  object-fit: cover;
 `
 
 const Name = styled.div`
@@ -90,4 +103,11 @@ const Tip = styled.div`
     margin-right: 4px;
     margin-top: -4px;
   }
+`
+const ClickSpan = styled.span`
+  cursor: pointer;
+  color: #5472c4;
+  margin: 0px 4px;
+  display: inline-block;
+  border-bottom: 1px solid #5472c4;
 `

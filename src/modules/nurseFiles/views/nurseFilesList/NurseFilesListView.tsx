@@ -21,8 +21,8 @@ export default observer(function NurseFilesListView () {
       <FilterCon />
       <Spin spinning={nurseFilesListViewModel.listSpinning}>
         <NurseCardCon>
-          {numberToArray(14).map((item, index) => (
-            <NurseCard rowNum={rowNum} key={index} />
+          {nurseFilesListViewModel.nurseList.map((item: any, index: number) => (
+            <NurseCard rowNum={rowNum} key={index} data={item} />
           ))}
         </NurseCardCon>
       </Spin>

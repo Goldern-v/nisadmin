@@ -236,7 +236,7 @@ export default function MainBox () {
         const element = record[key]
         shift = shiftListData.find((s) => element === s.name)
         if (shift) {
-          result += parseInt(shift.effectiveTime, 10) || 0
+          result += ~~(shift.effectiveTime) //parseInt(shift.effectiveTime, 10) || 0
           if (target && target.name && target.name === key + record.id) {
             target.style.color = shift.nameColor || ''
           }
@@ -259,13 +259,13 @@ export default function MainBox () {
         selectedCellObj = row
       }
     })
-    countWorkHours(record, e.currentTarget)
-    let inputW = selectedRow.target.querySelector(`input[name="thisWeekHour${selectedCell.record.id}"]`)
+    let newResult = countWorkHours(record, e.currentTarget)
+    let inputW = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCell.record.id}"]`)
     if (inputW) {
-      inputW.value = selectedRow.record.thisWeekHour
-      selectedCellObj.thisWeekHour = selectedRow.record.thisWeekHour
+      inputW.value = newResult || selectedRow.record.thisWeekHour
+      selectedCellObj.thisWeekHour = newResult || selectedRow.record.thisWeekHour
     }
-    console.log('inputW', inputW, selectedRow)
+    console.log('onChangeInputText:inputW', inputW, selectedRow)
 
     // 统计
     statisticFooter(selectedRowsArray)
@@ -280,6 +280,7 @@ export default function MainBox () {
       key: key,
       target: e.currentTarget
     })
+    // selectedCell.target.value= '!XXX!'
     console.log('onClickInputText', e, e.currentTarget, record, e.currentTarget.value, key, selectedCell)
   }
 
@@ -305,17 +306,17 @@ export default function MainBox () {
 
   const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
     record.showIndex ? (
-      <div>
-        <Input
-          id={'WeekInput' + key + record.key}
-          name={key + record.key}
+      // <div>
+        <input
+          // id={'WeekInput' + key + record.id}
+          name={key + record.id}
           onClick={(e) => onClickInputText(e, record, key)}
           onChange={(e) => onChangeInputText(e, record, key)}
           style={{ color: colorName || getShiftColor(text) || '' }}
           className={'table-input'}
           defaultValue={text || ''}
         />
-      </div>
+      // </div>
     ) : (
       ''
     )
@@ -433,16 +434,20 @@ export default function MainBox () {
 
   const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false) => {
     // selectedRowsArray = shiftTableData
-    // console.log('====updateTableUI', selectedRowsArray, shiftTableData)
+    console.log('====updateTableUI', selectedRowsArray, isEmpty)
     selectedRowsArray.map((s, k) => {
       if (s && s.id) {
         for (let key in s) {
-          if (s[key] && (key.indexOf('dayName') > -1 || key.indexOf('remark') > -1) && key.indexOf('status') === -1) {
+          if (
+            s.hasOwnProperty(key) > -1 &&
+            (key.indexOf('dayName') > -1 || key.indexOf('remark') > -1) &&
+            key.indexOf('status') === -1
+          ) {
             // console.log('key', key, s[key])
             s[key] = isEmpty ? '' : s[key] || ''
-            let input: any = document.querySelector(`input[name="${key}${s.id}"]`)
-            // console.log('=updateTableUI==input', s[key], input)
-            if (input) {
+            let input: any = document.querySelector(`[name="${key}${s.id}"]`)
+            // console.log('=updateTableUI==input', key, s[key], input, isEmpty)
+            if (input !== null || input !== undefined) {
               input.value = isEmpty ? '' : s[key]
               input.style.color = isEmpty ? '' : getShiftColor(s[key])
             }
@@ -469,11 +474,12 @@ export default function MainBox () {
         // span id
         // 更新工时
         countWorkHours(s)
-        let inputW: any = document.querySelector(`input[name="thisWeekHour${s.id}"]`)
+        let inputW: any = document.querySelector(`[name="thisWeekHour${s.id}"]`)
         s.thisWeekHour = isEmpty ? '' : s.thisWeekHour + ''
         if (inputW) {
-          inputW.value = s.thisWeekHour
-          s.thisWeekHour = s.thisWeekHour
+          inputW.value = isEmpty ? '' : s.thisWeekHour
+          inputW.innerHTML = isEmpty ? '' : s.thisWeekHour
+          s.thisWeekHour = isEmpty ? '' : s.thisWeekHour
         }
         console.log('inputW', inputW, selectedRow)
       }
@@ -587,11 +593,11 @@ export default function MainBox () {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
     let startTime = scheduleStore.getStartTime()
     let endTime = scheduleStore.getEndTime()
-    console.log('getSchedule', deptCode, startTime, endTime)
+    console.log('SSgetSchedule', deptCode, startTime, endTime)
     // 接口请求参数
     const postData = {
       deptCode: deptCode, // deptCode  科室编码 // "门诊护理"
-      stratTime: startTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     service.schedulingApiService
@@ -624,12 +630,12 @@ export default function MainBox () {
 
   const newShedule = (callback: Function) => {
     let deptCode = scheduleStore.getDeptCode()
-    let stratTime = scheduleStore.getStartTime()
+    let startTime = scheduleStore.getStartTime()
     let endTime = scheduleStore.getEndTime()
-    console.log(deptCode, stratTime, endTime)
+    console.log(deptCode, startTime, endTime)
     const postData = {
       deptCode: deptCode, // deptCode  科室编码
-      stratTime: stratTime, // stratTime 开始时间
+      startTime: startTime, // startTime 开始时间
       endTime: endTime // endTime   结束时间
     }
     console.log('新建newSchedule', postData)
@@ -718,7 +724,7 @@ export default function MainBox () {
   }
 
   function statisticFooter (list: any) {
-    console.log('统计', list)
+    // console.log('统计', list)
     let workhour = 0
     let rangeNames = new Array()
     let rangeObj = new Object()
@@ -749,7 +755,7 @@ export default function MainBox () {
     }
     rangeSum = rangeSum.trim()
 
-    console.log('统计', workhour, rangeNames, rangeObj)
+    // console.log('统计', workhour, rangeNames, rangeObj)
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
     setFooter(`排班小计：${rangeSum}工时${workhour}小时。`)
     return ''
@@ -783,7 +789,7 @@ export default function MainBox () {
           ) {
             console.log('key', key, m[key])
             s[key] = m[key]
-            let input = selectedRow.target.querySelector(`input[name="${key}${s.id}"]`)
+            let input = selectedRow.target.querySelector(`[name="${key}${s.id}"]`)
             console.log('input', key, key + s.id, s, input)
             if (input) {
               input.value = m[key]
@@ -793,7 +799,7 @@ export default function MainBox () {
         }
         countWorkHours(selectedRow.record)
         // selectedRowsArray[selectedRow.index]
-        let inputW = selectedRow.target.querySelector(`input[name="thisWeekHour${selectedCell.record.id}"]`)
+        let inputW = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCell.record.id}"]`)
         if (inputW) {
           inputW.value = selectedRow.record.thisWeekHour
           s.thisWeekHour = selectedRow.record.thisWeekHour
@@ -824,7 +830,8 @@ export default function MainBox () {
             t = Object.assign(t, record)
           }
         })
-        let input = selectedRow.target.querySelector(`input[name="thisWeekHour${record.id}"]`)
+        console.log('onRow', selectedRow, tableList)
+        let input = selectedRow.target.querySelector(`[name="thisWeekHour${record.id}"]`)
         if (input) {
           input.value = record.thisWeekHour
         }
@@ -948,24 +955,35 @@ export default function MainBox () {
                       let key = selectedCell.key
                       selectedCell.record[key] = m.name
                       let selectedCellObj: any = new Object()
+                      let input: any = null
                       selectedRowsArray.map((s) => {
                         if (s.id === selectedCell.record.id && key.indexOf('dayName') > -1) {
-                          s[key] = m.name
-                          selectedCell.target.value = m.name
-                          selectedCell.target.style.color = m.nameColor || ''
+                          s[key] = m.name + ''
+                          selectedCell.target.value = m.name+'' || '!!!'
+                          selectedCell.target.style.color = m.nameColor+'' || ''
                           selectedCellObj = s
+                          input = document.querySelector(`[name="${key}${s.id}"]`)
+                          console.log('input', key, key + s.id, s, input, m, selectedCell, selectedRow)
+                          // if (input) {
+                          //   input.value = m.name || ''
+                          //   input.style.color = m.nameColor || ''
+                          //   console.log('input_value',input.value,input.style.color, input )
+                          // }
                         }
                       })
+                      console.log('==可选班次', selectedRowsArray, selectedCellObj)
                       countWorkHours(selectedCellObj)
-                      let input = selectedRow.target.querySelector(`input[name="thisWeekHour${selectedCellObj.id}"]`)
+                      input = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
                       if (input) {
                         input.value = selectedCellObj.thisWeekHour
                       }
                       let newList = JSON.parse(JSON.stringify(selectedRowsArray))
+                      console.log('==newList:',newList, selectedCell, selectedRowsArray)
                       genEmptyTable(newList)
                       setTableList(newList)
+                      // updateTableUI()
                       // 统计
-                      statisticFooter(newList)
+                      // statisticFooter(newList)
                     }
                   }}
                   key={m.name + i}
@@ -986,8 +1004,8 @@ export default function MainBox () {
                     // message.info(m.name)
                     console.log(e, m, selectedCell, selectedRowsArray, selectedRow)
                     if (selectedRow && selectedRow.record) {
-                      // let inputs = selectedRow.target.querySelectorAll(`input[name*="${selectedRow.record.id}"]`)
-                      // console.log('inputs', inputs)
+                      let inputs = selectedRow.target.querySelectorAll(`input[name*="${selectedRow.record.id}"]`)
+                      console.log('inputs', inputs)
                       selectedRowsArray.map((s, k) => {
                         if (s.id === selectedCell.record.id) {
                           selectedRow.record = m
@@ -1001,7 +1019,7 @@ export default function MainBox () {
                             ) {
                               console.log('key', key, m[key])
                               s[key] = m[key]
-                              let input = selectedRow.target.querySelector(`input[name="${key}${s.id}"]`)
+                              let input = selectedRow.target.querySelector(`[name="${key}${s.id}"]`)
                               console.log('input', key, key + s.id, s, input)
                               if (input) {
                                 input.value = m[key]
@@ -1012,7 +1030,7 @@ export default function MainBox () {
                           countWorkHours(selectedRow.record)
                           // selectedRowsArray[selectedRow.index]
                           let inputW = selectedRow.target.querySelector(
-                            `input[name="thisWeekHour${selectedCell.record.id}"]`
+                            `[name="thisWeekHour${selectedCell.record.id}"]`
                           )
                           if (inputW) {
                             inputW.value = selectedRow.record.thisWeekHour
@@ -1128,6 +1146,8 @@ const Wrapper = styled.div`
   }
 
   .table-input {
+    width: 100%;
+    height: 100%;
     border: 0px;
     outline: 0px solid white !important;
     text-align: center;
