@@ -143,7 +143,7 @@ const columns = [
 
 let tableState = {
   bordered: false,
-  loading: false,
+  // loading: false,
   pagination: { pageSize: 10 }
   // expandedRowRender,
   // size: 'middle',
@@ -158,11 +158,13 @@ let tableState = {
 export default function ScheduleTable () {
   const [count, setCount] = useState(0)
   const [footer, setFooter] = useState('')
+  const [loading, setLoading] = useState(false)
   const [scheduleList, setScheduleList] = useState([])
-  // const [stratTime, setStratTime] = useState('')
+  // const [startTime, setstartTime] = useState('')
 
   useEffect(() => {
     console.log(count, setCount)
+    console.log(loading, setLoading)
     setScheduleList([])
     setFooter('排班小计')
 
@@ -176,11 +178,13 @@ export default function ScheduleTable () {
     // emitter.removeAllListeners('本周排班记录')
 
     emitter.addListener('动画载入表格中', () => {
-      tableState.loading = true
+      // tableState.loading = true
+      setLoading(true)
     })
 
     emitter.addListener('动画载入表格完成', () => {
-      tableState.loading = false
+      // tableState.loading = false
+      setLoading(false)
     })
 
     emitter.addListener('清空排班记录', () => {
@@ -194,12 +198,12 @@ export default function ScheduleTable () {
       setFooter('排班小计: 空')
       // newSchedule
       let deptCode = scheduleStore.getDeptCode()
-      let stratTime = scheduleStore.getStartTime()
+      let startTime = scheduleStore.getStartTime()
       let endTime = scheduleStore.getEndTime()
-      console.log(deptCode, stratTime, endTime)
+      console.log(deptCode, startTime, endTime)
       const postData = {
         deptCode: deptCode, // deptCode  科室编码
-        stratTime: stratTime, // stratTime 开始时间
+        startTime: startTime, // startTime 开始时间
         endTime: endTime // endTime   结束时间
       }
       service.schedulingApiService.newSchedule(postData).then((res) => {
@@ -210,7 +214,7 @@ export default function ScheduleTable () {
           let userList = res.data.schShiftUser
           let postDataArray: any = new Array()
           let postLine: any = new Array()
-          let startTime = scheduleStore.getStartTime()
+          // let startTime = scheduleStore.getStartTime()
 
           userList.map((user: any) => {
             for (let index = 0; index < 7; index++) {
@@ -245,7 +249,7 @@ export default function ScheduleTable () {
     emitter.addListener('本周排班记录', (scheduleData) => {
       console.log('接收:本周排班记录event', scheduleData, scheduleList)
 
-      scheduleStore.setStartTime(scheduleData.stratTime)
+      scheduleStore.setStartTime(scheduleData.startTime)
       scheduleStore.setEndTime(scheduleData.endTime)
 
       let tr = {}
@@ -307,7 +311,8 @@ export default function ScheduleTable () {
       // 统计
       statisticFooter(newList)
 
-      tableState.loading = false
+      // tableState.loading = false
+      setLoading(false)
       setScheduleList(newList as any)
     })
     // console.log(
@@ -412,7 +417,7 @@ export default function ScheduleTable () {
       ) : (
         <ScheduleCon>
           <ScheduleTableCon>
-            <Table {...tableState} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
+            <Table {...tableState} loading={loading} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
           </ScheduleTableCon>
         </ScheduleCon>
       )}

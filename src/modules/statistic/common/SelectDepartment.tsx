@@ -17,7 +17,7 @@ function handleChange (value: any) {
   statisticViewModel.setTitle('护士休假统计')
   console.log('getTitle', statisticViewModel.getTitle)
   // 设置统计页标题
-  emitter.emit('设置统计页标题', statisticViewModel.getTitle)
+  // emitter.emit('设置统计页标题', statisticViewModel.getTitle)
 }
 
 export default function SelectDepartment () {
@@ -34,7 +34,7 @@ export default function SelectDepartment () {
     //
     statisticViewModel.deptName = deptName
     statisticViewModel.setTitle('护士休假统计')
-    emitter.emit('设置统计页标题', statisticViewModel.getTitle)
+    // emitter.emit('设置统计页标题', statisticViewModel.getTitle)
     //
     service.homeDataApiServices.getListDepartment().then((res) => {
       if (res && res.data) {

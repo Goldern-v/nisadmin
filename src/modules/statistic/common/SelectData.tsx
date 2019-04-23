@@ -7,7 +7,7 @@ import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 const { RangePicker } = DatePicker
 import emitter from 'src/libs/ev'
 
-const dateFormat = 'YYYY年MM月DD日'
+const dateFormat = 'YYYY-MM-DD'
 // const monthFormat = 'YYYY/MM'
 
 // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY']
@@ -34,7 +34,8 @@ export default function SelectData () {
       <MonthPicker defaultValue={moment('2015/01', monthFormat)} format={monthFormat} />
       <br /> */}
       <RangePicker
-        defaultValue={[moment(startDate, dateFormat), moment(endDate, dateFormat)]}
+        // defaultValue={[moment(startDate, dateFormat), moment(endDate, dateFormat)]}
+        defaultValue={[moment('2019/01/01', dateFormat), moment('2019/09/01', dateFormat)]}
         onChange={(e: any, value: any) => {
           statisticViewModel.startDate = value[0]
           statisticViewModel.endDate = value[1]

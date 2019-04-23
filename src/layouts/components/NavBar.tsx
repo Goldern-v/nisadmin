@@ -29,7 +29,7 @@ const navList = [
   {
     name: '不良事件',
     icon: require('../images/不良事件.svg'),
-    path: ''
+    path: '/badEvents'
   },
   {
     name: '培训考核',

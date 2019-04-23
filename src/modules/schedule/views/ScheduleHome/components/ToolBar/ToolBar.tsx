@@ -141,7 +141,7 @@ export default function ToolBar () {
         onClick={(e: any) => {
           const postData = {
             deptCode: scheduleStore.getDeptCode() || '', // deptCode  科室编码
-            stratTime: scheduleStore.getStartTime(), // stratTime 开始时间（刚开始由后台传给前台）
+            startTime: scheduleStore.getStartTime(), // startTime 开始时间（刚开始由后台传给前台）
             endTime: scheduleStore.getEndTime() // endTime   结束时间（刚开始由后台传给前台）
           }
           service.schedulingApiService.export(postData).then((res) => {
@@ -177,10 +177,12 @@ export default function ToolBar () {
 }
 const Wrapper = styled.div`
   background: #fff;
-  height: 60px;
+  height: 45px;
   display: flex;
   align-items: center;
   padding: 0 20px;
+  background: rgba(248, 248, 248, 1);
+  box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
 `
 
 const BreakLine = styled.div`

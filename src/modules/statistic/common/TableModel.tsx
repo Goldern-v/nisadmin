@@ -2,11 +2,13 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
+import schedulingStatisticsApi from 'src/modules/statistic/views/api/schedulingStatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
+  const [getTableList, setGetTableList] = useState([])
   useEffect(() => {
     // console.log(222)
     emitter.removeAllListeners('设置班次大类')
@@ -17,17 +19,12 @@ export default function BedSituation () {
     emitter.addListener('设置自定义班次', (checkboxItem: any) => {
       setGetCheckboxItem(checkboxItem)
     })
-    let tableData = {
-      deptCode: statisticViewModel.deptCode,
-      stratTime: statisticViewModel.startDate,
-      endTime: statisticViewModel.endDate,
-      ls: getShiftClass.concat(getCheckboxItem)
-    }
-    service.statisticApiService.postNurseByShiftView(tableData).then((res: any) => {
-      console.log(333)
-      console.log(res)
+    let tableData = getShiftClass.concat(getCheckboxItem).join(',')
+    schedulingStatisticsApi.postNurseByShiftView(tableData).then((res: any) => {
+      setGetTableList(res.data)
+      console.log(getTableList)
     })
-  })
+  }, [])
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -39,6 +36,17 @@ export default function BedSituation () {
   // th DOM
   const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
   const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
+  // td DOM
+  const getTdDom = getTableList.map((itemTr: any, index: number) => (
+    <tr key={index} onClick={trClickChange}>
+      <td>{itemTr.序列}</td>
+      <td>{itemTr.姓名}</td>
+      {getShiftClass.map((itemTd: any, indexTd: number) => (
+        <td key={indexTd}>{itemTr[itemTd]}</td>
+      ))}
+      <td>66</td>
+    </tr>
+  ))
   return (
     <Con>
       <div className='tableCon'>
@@ -55,64 +63,7 @@ export default function BedSituation () {
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>
-              <tr onClick={trClickChange}>
-                <td>1</td>
-                <td>王大锤</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-              </tr>
-              <tr onClick={trClickChange}>
-                <td>2</td>
-                <td>王大锤</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-              </tr>
-              <tr onClick={trClickChange}>
-                <td>3</td>
-                <td>王大锤</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-              </tr>
-              <tr onClick={trClickChange}>
-                <td>4</td>
-                <td>王大锤</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-              </tr>
-
-              <tr onClick={trClickChange}>
-                <td>5</td>
-                <td>王大锤</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-                <td>333</td>
-              </tr>
-            </table>
+            <table>{getTdDom}</table>
           </div>
         </div>
       </div>

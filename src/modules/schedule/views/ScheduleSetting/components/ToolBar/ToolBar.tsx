@@ -31,6 +31,7 @@ export default function ToolBar () {
   const [monthStart, setMonthStart] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
+    console.log('编辑排班getStartTime', scheduleStore.getStartTime())
     if (scheduleStore.getStartTime()) {
       return scheduleStore.getStartTime()
     }
@@ -38,6 +39,7 @@ export default function ToolBar () {
   })
   const [defaultEndTime, setdefaultEndTime] = useState(() => {
     let date = new Date()
+    console.log('编辑排班getEndTime', scheduleStore.getEndTime())
     if (scheduleStore.getEndTime()) {
       setFormatMonth(`${moment(scheduleStore.getEndTime()).month() + 1}`)
       setFormatDay(`${moment(scheduleStore.getEndTime()).date()}`)
@@ -164,8 +166,8 @@ export default function ToolBar () {
       console.log('获取编辑排班列表postData', postData)
       service.schedulingApiService.update(postData).then((res) => {
         console.log(res)
-        if (res && res.data.desc) {
-          message.success(res.data.desc)
+        if (res && (res.desc || res.data.desc)) {
+          message.success(res.desc || res.data.desc)
           if (isPublish) {
             emitter.emit('发布并更新排班列表')
             console.log('发布成功')
@@ -588,7 +590,7 @@ export default function ToolBar () {
     message.info('复制上周排班')
     const postData = {
       deptCode: scheduleStore.getDeptCode(), // deptCode  科室编码
-      stratTime: scheduleStore.getStartTime(), // stratTime 开始时间（直接传当前得时间就行）
+      startTime: scheduleStore.getStartTime(), // startTime 开始时间（直接传当前得时间就行）
       endTime: scheduleStore.getEndTime() // endTime   结束时间（直接传当前得时间就行）
     }
     console.log('复制上周排班postData', postData)

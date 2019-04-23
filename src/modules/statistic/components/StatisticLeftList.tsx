@@ -111,6 +111,7 @@ const Con = styled.div`
   /* padding: 0 0 0 14px; */
   width: 220px;
   height: 789px;
+  overflow: auto;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
   .header {

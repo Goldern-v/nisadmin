@@ -20,6 +20,9 @@ import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingV
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
 import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
 import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
+
+import BadEventView from 'src/modules/badEvents/views/BadEventView'
+
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 import Indicator from 'src/modules/indicator/Indicator'
 
@@ -47,7 +50,7 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
     { name: '排班管理', link: '/scheduleHome' },
-    { name: '编辑排班', link: '' }
+    { name: '排班编辑', link: '' }
   ]),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
   // setLayout('/statistic/护士白班统计（按月份）', WhiteShiftByMonthView, layouts.MainLayout),
@@ -58,6 +61,9 @@ const routes: RouteItem[] = [
   setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
+
+  setLayout('/badEvents/', BadEventView, layouts.MainLayout),
+  setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   // {
   //   path: '/statistic',
   //   redirect: '/statistic/护士排班统计（按班次）'

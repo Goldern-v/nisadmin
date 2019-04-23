@@ -86,10 +86,10 @@ export default function LeftBar () {
 
     // 接口请求参数
     const postData = {
-      stratTime: moment(firstDay).format(dateFormat), // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: moment(firstDay).format(dateFormat), // startTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
-    updateWeekList(postData.stratTime, postData.endTime, (time: any) => {
+    updateWeekList(postData.startTime, postData.endTime, (time: any) => {
       handleItem(time[weekIndex], weekIndex)
     })
   }
@@ -109,23 +109,23 @@ export default function LeftBar () {
   }
 
   // 产生每周列表
-  function genWeekList (stratTime: string, endTime: string) {
+  function genWeekList (startTime: string, endTime: string) {
     let timelist = new Array()
-    let startTimeTemp = stratTime
+    let startTimeTemp = startTime
     timelist.push({
-      mondy: moment(stratTime)
+      mondy: moment(startTime)
         .startOf('isoWeek')
         .format(dateFormat),
-      sundy: moment(stratTime)
+      sundy: moment(startTime)
         .endOf('isoWeek')
         .format(dateFormat),
-      week: moment(stratTime)
+      week: moment(startTime)
         .startOf('isoWeek')
         .format('w'),
       status: '-1'
     })
     scheduleStore.setWeekStartTime(
-      moment(stratTime)
+      moment(startTime)
         .startOf('isoWeek')
         .format(dateFormat)
     )
@@ -149,18 +149,18 @@ export default function LeftBar () {
       })
     }
     timelist.pop()
-    console.log('产生列表', startTimeTemp, stratTime, endTime, timelist)
+    console.log('产生列表', startTimeTemp, startTime, endTime, timelist)
     return timelist
   }
 
   // 更新周列表
-  function updateWeekList (stratTime: string, endTime: string, callBack: any = null) {
+  function updateWeekList (startTime: string, endTime: string, callBack: any = null) {
     let user = authStore.getUser()
     let deptCode = scheduleStore.getDeptCode() // user && user.hasOwnProperty('deptCode') ? user.deptCode : ''
     // 接口请求参数
     const postData = {
       deptCode: scheduleStore.getDeptCode() || deptCode, // deptCode  科室编码 // "门诊护理"
-      stratTime: stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     console.log(
@@ -172,7 +172,7 @@ export default function LeftBar () {
       deptCode
     )
     scheduleStore.setWeekEndTime(endTime)
-    let timelist = genWeekList(postData.stratTime, postData.endTime)
+    let timelist = genWeekList(postData.startTime, postData.endTime)
     console.log('排班周列表timelist', timelist, postData)
     setShiftList(new Array())
     // moment().endOf('week')
@@ -181,7 +181,7 @@ export default function LeftBar () {
       .then((res) => {
         console.log('排班周列表', res, postData)
 
-        timelist = genWeekList(postData.stratTime, postData.endTime)
+        timelist = genWeekList(postData.startTime, postData.endTime)
         // console.log('排班周列表timelist', timelist)
         let list = res.data
         if (list) {
@@ -207,6 +207,8 @@ export default function LeftBar () {
 
   // 处理周点击
   function handleItem (time: any, i: string) {
+    emitter.emit('动画载入表格中')
+    
     scheduleStore.setSelectedWeekIndex(i)
     setDefaultSelectedKeys([i])
     console.log('排班', time, defaultSelectedKeys, i, scheduleStore.getSelectedWeekIndex())
@@ -219,12 +221,12 @@ export default function LeftBar () {
       return emitter.emit('清空排班记录')
     }
 
-    emitter.emit('动画载入表格中')
+    
     emitter.emit('禁止工具按钮', false)
     // 接口请求参数
     const postData = {
       deptCode: scheduleStore.getDeptCode(), // deptCode  科室编码 // "门诊护理"
-      stratTime: time.mondy, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: time.mondy, // startTime 开始时间（刚开始由后台传给前台）
       endTime: time.sundy // endTime   结束时间（刚开始由后台传给前台）
     }
     service.schedulingApiService
@@ -279,10 +281,16 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: rgba(248, 248, 248, 1);
+  box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
+  ul,
+  li {
+    background: rgba(248, 248, 248, 1);
+  }
 `
 const SelectCon = styled.div`
   height: 60px;
-  background: #fff;
+  background: rgba(248, 248, 248, 1);
   display: flex;
   align-items: center;
   padding: 0 5px;

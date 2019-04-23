@@ -1,5 +1,7 @@
+// 护士排班（按班次）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
+
 // import StatisticLeftList from '../../components/StatisticLeftList'
 import StatisticHeader from '../../components/StatisticHeader'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
@@ -21,6 +23,7 @@ export default function StatisticView () {
   return (
     <Con>
       {/* 对应表 */}
+      <StatisticMIdHeader />
       <TableModel />
       <div className='NurseByShiftChooseCon'>
         <NurseByShiftChoose />
@@ -32,7 +35,7 @@ export default function StatisticView () {
 const Con = styled.div`
   width: 100%;
   height: 629px;
-  display: flex;
+  /* display: flex; */
   background: rgba(248, 248, 248, 1);
   position: relative;
   overflow: hidden;
