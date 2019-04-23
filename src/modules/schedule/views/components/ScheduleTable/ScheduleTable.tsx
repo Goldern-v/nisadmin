@@ -143,7 +143,7 @@ const columns = [
 
 let tableState = {
   bordered: false,
-  loading: false,
+  // loading: false,
   pagination: { pageSize: 10 }
   // expandedRowRender,
   // size: 'middle',
@@ -158,11 +158,13 @@ let tableState = {
 export default function ScheduleTable () {
   const [count, setCount] = useState(0)
   const [footer, setFooter] = useState('')
+  const [loading, setLoading] = useState(false)
   const [scheduleList, setScheduleList] = useState([])
   // const [startTime, setstartTime] = useState('')
 
   useEffect(() => {
     console.log(count, setCount)
+    console.log(loading, setLoading)
     setScheduleList([])
     setFooter('排班小计')
 
@@ -176,11 +178,13 @@ export default function ScheduleTable () {
     // emitter.removeAllListeners('本周排班记录')
 
     emitter.addListener('动画载入表格中', () => {
-      tableState.loading = true
+      // tableState.loading = true
+      setLoading(true)
     })
 
     emitter.addListener('动画载入表格完成', () => {
-      tableState.loading = false
+      // tableState.loading = false
+      setLoading(false)
     })
 
     emitter.addListener('清空排班记录', () => {
@@ -251,7 +255,7 @@ export default function ScheduleTable () {
       let tr = {}
       let newList = new Array()
       scheduleData.schShiftUser.map((nurse: any, shcIndex: number) => {
-        // console.log('nurse', shcIndex, nurse.empName, nurse)
+        console.log('nurse', shcIndex, nurse.empName, nurse)
         let getRangeObj = (user: any, keyname: any, i: number) => {
           let result = ''
           try {
@@ -307,7 +311,8 @@ export default function ScheduleTable () {
       // 统计
       statisticFooter(newList)
 
-      tableState.loading = false
+      // tableState.loading = false
+      setLoading(false)
       setScheduleList(newList as any)
     })
     // console.log(
@@ -412,7 +417,7 @@ export default function ScheduleTable () {
       ) : (
         <ScheduleCon>
           <ScheduleTableCon>
-            <Table {...tableState} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
+            <Table {...tableState} loading={loading} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
           </ScheduleTableCon>
         </ScheduleCon>
       )}

@@ -187,6 +187,7 @@ export default function MainBox () {
     })
 
     emitter.addListener('重置排班列表', () => {
+      setTableLoading(true)
       setFooter('排班小计: 空')
       updateTableUI(true)
     })
@@ -201,6 +202,7 @@ export default function MainBox () {
 
     emitter.addListener('更新复制上周排班', (schShiftUser: any) => {
       updateTableUI(true)
+      setTableLoading(true)
       genDataTable(schShiftUser)
       updateTableUI()
     })
@@ -508,6 +510,7 @@ export default function MainBox () {
     setTableList(newTabelData)
     // setTableList(tableList)
     console.log('==!!排班列表', selectedRow, shiftListData, tableList, selectedRowsArray)
+    setTableLoading(false)
   }
 
   const getMealList = () => {
@@ -702,7 +705,7 @@ export default function MainBox () {
     genEmptyTable(newList)
     // 统计
     // statisticFooter(newList)
-    setTableLoading(false)
+    // setTableLoading(false)
     setTableList(JSON.parse(JSON.stringify(newList as any)))
     console.log('tableList', tableList, newList, selectedRowsArray)
     updateTableUI()

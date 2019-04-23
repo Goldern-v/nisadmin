@@ -22,7 +22,7 @@ export default function BaseInfo () {
   useEffect(() => {
     nurseFilesService.getByEmpNoAudite(appStore.queryObj.empNo).then((res) => {
       let data = res.data
-      setInfo(data)
+      // setInfo(data)
       setTableData([
         {
           性别: sexEnum[data.sex],
@@ -76,7 +76,11 @@ export default function BaseInfo () {
               <Value>{appStore.queryObj.empNo}</Value>
             </td>
             <td rowSpan={5}>
-              <img className='head-img' src={info.nearImageUrl || require('../../../images/护士默认头像.png')} alt='' />
+              <img
+                className='head-img'
+                src={(info && info.nearImageUrl) || require('../../../images/护士默认头像.png')}
+                alt=''
+              />
             </td>
           </tr>
           {tableData.map((obj: any, index: number) => (
