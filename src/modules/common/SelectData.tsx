@@ -24,7 +24,7 @@ export default function SelectData () {
       <MonthPicker defaultValue={moment('2015/01', monthFormat)} format={monthFormat} />
       <br /> */}
       <RangePicker
-        defaultValue={[moment('2019年01月01日', dateFormat), moment('2019年02月01日', dateFormat)]}
+        defaultValue={[moment('2019年01月01日', dateFormat), moment('2019年09月01日', dateFormat)]}
         format={dateFormat}
       />
     </SelectCon>

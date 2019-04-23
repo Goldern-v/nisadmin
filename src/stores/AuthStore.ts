@@ -27,7 +27,7 @@ export default class AuthStore {
   @computed
   public get selectedDeptName () {
     try {
-      return this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name
+      return this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name + '护士休假统计'
     } catch (error) {
       return ''
     }

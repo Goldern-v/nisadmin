@@ -1,14 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
-import service from 'src/services/api'
-import schedulingStatisticsApi from 'src/modules/statistic/views/api/schedulingStatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
-  const [getTableList, setGetTableList] = useState([])
   useEffect(() => {
     // console.log(222)
     emitter.removeAllListeners('设置班次大类')
@@ -20,11 +17,7 @@ export default function BedSituation () {
       setGetCheckboxItem(checkboxItem)
     })
     let tableData = getShiftClass.concat(getCheckboxItem).join(',')
-    schedulingStatisticsApi.postNurseByShiftView(tableData).then((res: any) => {
-      setGetTableList(res.data)
-      console.log(getTableList)
-    })
-  }, [])
+  })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -34,17 +27,158 @@ export default function BedSituation () {
     parentNode.classList.add('addRowClass')
   }
   // th DOM
-  const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
-  const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
-  // td DOM
-  const getTdDom = getTableList.map((itemTr: any, index: number) => (
+  // const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
+  // const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>
+  // cache th data
+  const thData = [
+    '序号',
+    '姓名',
+    '职称',
+    '层级',
+    '4月23(周一)',
+    '4月24(周二)',
+    '4月24(周三)',
+    '4月24(周四)',
+    '4月24(周五)',
+    '4月24(周六)',
+    '4月24(周日)'
+  ]
+  // cache td data
+  const tdData = [
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    },
+    {
+      xh: 1,
+      xm: '王大锤',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A1',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A1'
+    }
+  ]
+  // cache th DOM
+  const thDom = thData.map((item: any) => <th key={item.toString()}>{item}</th>)
+  // cache td DOM
+  const tdDom = tdData.map((itemTr: any, index: any) => (
     <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.序列}</td>
-      <td>{itemTr.姓名}</td>
-      {getShiftClass.map((itemTd: any, indexTd: number) => (
-        <td key={indexTd}>{itemTr[itemTd]}</td>
-      ))}
-      <td>66</td>
+      <td>{itemTr.xh}</td>
+      <td>{itemTr.xm}</td>
+      <td>{itemTr.zc}</td>
+      <td>{itemTr.cj}</td>
+      <td>{itemTr.d1}</td>
+      <td>{itemTr.d2}</td>
+      <td>{itemTr.d3}</td>
+      <td>{itemTr.d4}</td>
+      <td>{itemTr.d5}</td>
+      <td>{itemTr.d6}</td>
+      <td>{itemTr.d7}</td>
     </tr>
   ))
   return (
@@ -53,17 +187,15 @@ export default function BedSituation () {
         <div className='tableHead'>
           <table>
             <tr>
-              <th>序号</th>
-              <th>姓名</th>
-              {getShiftClassDom}
-              {getCheckboxItemDom}
-              <th>合计</th>
+              {thDom}
+              {/* {getShiftClassDom} */}
+              {/* {getCheckboxItemDom} */}
             </tr>
           </table>
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>{getTdDom}</table>
+            <table>{tdDom}</table>
           </div>
         </div>
       </div>
@@ -73,6 +205,7 @@ export default function BedSituation () {
 
 const Con = styled.div`
   width: 100%;
+  overflow: auto;
   display: flex;
   .tableCon {
     /* width: 540px; */
@@ -123,12 +256,12 @@ const Con = styled.div`
       }
     }
     .tableMid {
-      width: 640px;
+      width: 960px;
       overflow-x: hidden;
       overflow-y: auto;
-      height: 180px;
+      height: 636px;
       .tableMidCon {
-        width: 640px;
+        width: 960px;
         table {
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);

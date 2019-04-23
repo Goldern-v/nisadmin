@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import StatisticLeftList from './components/StatisticLeftList'
 import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeader from './common/StatisticMIdHeader'
 import store from 'src/stores'
 // 护士排班表
 import NurseSchedulingView from './views/nurseScheduling/NurseSchedulingView'
@@ -26,6 +25,9 @@ import DepartmentNightByMonthView from './views/departmentNightByMonth/Departmen
 import DepartmentVacationByMonthView from './views/departmentVacationByMonth/DepartmentVacationByMonthView'
 // 科室节假日排班统计
 import DepartmentHolidayScheduleView from './views/departmentHolidaySchedule/DepartmentHolidayScheduleView'
+
+// 全院护理人员一览表
+import NurseList from './views/nursingStatistics/nurseList/NurseList'
 // import { RouteComponentProps } from 'src/components/RouterView'
 // import NurseSchedule from './components/NurseSchedule'
 // import NurseScheduleByShift from './components/NurseScheduleByShift'
@@ -80,8 +82,11 @@ export default function StatisticView () {
     },
     { name: '科室节假日排班统计', path: '/statistic/科室节假日排班统计', component: DepartmentHolidayScheduleView }
   ]
+  const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
+
   let currentRoutePath = store.appStore.history.location.pathname
   let CurrentRoute = leftListPath.find((item) => item.path === currentRoutePath)
+  let NursingStatisticsRoute = leftNursingStatistics.find((item) => item.path === currentRoutePath)
   return (
     <Con>
       {/* <StatisticLeftList {...props} aa='11' /> */}
@@ -89,9 +94,9 @@ export default function StatisticView () {
       <StatisticRightCon>
         <StatisticHeader />
         <StatisticMid>
-          <StatisticMIdHeader />
           {/* 对应表 */}
           {CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}
+          {NursingStatisticsRoute && NursingStatisticsRoute.component && <NursingStatisticsRoute.component />}
           {/* <NurseNightShiftByMonthView /> */}
         </StatisticMid>
       </StatisticRightCon>
@@ -100,7 +105,7 @@ export default function StatisticView () {
 }
 
 const Con = styled.div`
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   background: rgba(248, 248, 248, 1);
   overflow: hidden;
@@ -112,9 +117,10 @@ const StatisticMid = styled.div`
   margin: 14px;
   padding: 18px 10px;
   height: 712px;
+  background-color: #fff;
   /* height: 330px; */
-  background: rgba(255, 255, 255, 1);
+  /* background: rgba(255, 255, 255, 1); */
   border-radius: 5px;
   border: 1px solid rgba(161, 175, 179, 1);
-  overflow-y: auto;
+  overflow: hidden;
 `

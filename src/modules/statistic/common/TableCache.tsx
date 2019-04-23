@@ -53,103 +53,103 @@ export default function BedSituation () {
     {
       xh: 1,
       xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
+      mounth1: '2900',
+      mounth2: '3000',
+      mounth3: '2300',
+      mounth4: '3100',
+      mounth5: '0',
+      mounth6: '0',
+      mounth7: '0',
+      mounth8: '0',
+      mounth9: '0',
+      mounth10: '0',
+      mounth11: '0',
+      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
       xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
+      mounth1: '2900',
+      mounth2: '3000',
+      mounth3: '2300',
+      mounth4: '3100',
+      mounth5: '0',
+      mounth6: '0',
+      mounth7: '0',
+      mounth8: '0',
+      mounth9: '0',
+      mounth10: '0',
+      mounth11: '0',
+      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
       xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
+      mounth1: '2900',
+      mounth2: '3000',
+      mounth3: '2300',
+      mounth4: '3100',
+      mounth5: '0',
+      mounth6: '0',
+      mounth7: '0',
+      mounth8: '0',
+      mounth9: '0',
+      mounth10: '0',
+      mounth11: '0',
+      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
       xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
+      mounth1: '2900',
+      mounth2: '3000',
+      mounth3: '2300',
+      mounth4: '3100',
+      mounth5: '0',
+      mounth6: '0',
+      mounth7: '0',
+      mounth8: '0',
+      mounth9: '0',
+      mounth10: '0',
+      mounth11: '0',
+      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
       xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
+      mounth1: '2900',
+      mounth2: '3000',
+      mounth3: '2300',
+      mounth4: '3100',
+      mounth5: '0',
+      mounth6: '0',
+      mounth7: '0',
+      mounth8: '0',
+      mounth9: '0',
+      mounth10: '0',
+      mounth11: '0',
+      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
       xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
+      mounth1: '2900',
+      mounth2: '3000',
+      mounth3: '2300',
+      mounth4: '3100',
+      mounth5: '0',
+      mounth6: '0',
+      mounth7: '0',
+      mounth8: '0',
+      mounth9: '0',
+      mounth10: '0',
+      mounth11: '0',
+      mounth12: '0',
       xj: '11300'
     },
     {
@@ -274,26 +274,7 @@ export default function BedSituation () {
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>
-              {tdDom}
-              <tr>
-                <td>合计</td>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-              </tr>
-            </table>
+            <table>{tdDom}</table>
           </div>
         </div>
       </div>
