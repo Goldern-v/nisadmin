@@ -207,6 +207,8 @@ export default function LeftBar () {
 
   // 处理周点击
   function handleItem (time: any, i: string) {
+    emitter.emit('动画载入表格中')
+    
     scheduleStore.setSelectedWeekIndex(i)
     setDefaultSelectedKeys([i])
     console.log('排班', time, defaultSelectedKeys, i, scheduleStore.getSelectedWeekIndex())
@@ -219,7 +221,7 @@ export default function LeftBar () {
       return emitter.emit('清空排班记录')
     }
 
-    emitter.emit('动画载入表格中')
+    
     emitter.emit('禁止工具按钮', false)
     // 接口请求参数
     const postData = {
