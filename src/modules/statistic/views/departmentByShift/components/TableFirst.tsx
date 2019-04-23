@@ -54,7 +54,7 @@ export default function BedSituation () {
           <table>
             <tr>
               <th>序号</th>
-              <th>姓名</th>
+              <th>科室</th>
               {getShiftClassDom}
               {getCheckboxItemDom}
               <th>合计</th>

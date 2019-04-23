@@ -1,18 +1,24 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import SelectDepartment from '../common/SelectDepartment'
+// import SelectDepartment from '../common/SelectDepartment'
 import DeptSelect from 'src/components/DeptSelect'
 import SelectData from '../common/SelectData'
 import { Button } from 'antd'
-
+// import { observer } from 'mobx-react-lite'
 export default function BedSituation () {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
   })
+
+  const onChange = (value: string) => {
+    // nurseFilesListViewModel.loadNursingList()
+    console.log(value)
+  }
   return (
     <Con>
-      <SelectDepartment />
+      <DeptSelect onChange={onChange} />
+      {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
       <Button className='searchButton'>查询</Button>
@@ -27,7 +33,7 @@ const Con = styled.div`
   width: 100%;
   height: 45px;
   line-height: 45px;
-  padding-left: 57px;
+  padding-left: 14px;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
   .searchButton {

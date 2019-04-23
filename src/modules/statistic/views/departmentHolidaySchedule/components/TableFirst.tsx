@@ -33,7 +33,7 @@ export default function BedSituation () {
   // cache th data
   const thData = [
     '序号',
-    '姓名',
+    '科室',
     '2019年1月',
     '2019年2月',
     '2019年3月',
@@ -43,118 +43,13 @@ export default function BedSituation () {
     '2019年7月',
     '2019年8月',
     '2019年9月',
-    '2019年10月',
-    '2019年11月',
-    '2019年12月',
     '合计'
   ]
   // cache td data
   const tdData = [
     {
       xh: 1,
-      xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      month1: '2900',
-      month2: '3000',
-      month3: '2300',
-      month4: '3100',
-      month5: '0',
-      month6: '0',
-      month7: '0',
-      month8: '0',
-      month9: '0',
-      month10: '0',
-      month11: '0',
-      month12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
+      xm: '神经内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
       mounth3: '2300',
@@ -164,14 +59,11 @@ export default function BedSituation () {
       mounth7: '0',
       mounth8: '0',
       mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
-      xm: '王伟',
+      xm: '呼吸内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
       mounth3: '2300',
@@ -181,14 +73,11 @@ export default function BedSituation () {
       mounth7: '0',
       mounth8: '0',
       mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
-      xm: '王伟',
+      xm: '消化内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
       mounth3: '2300',
@@ -198,14 +87,11 @@ export default function BedSituation () {
       mounth7: '0',
       mounth8: '0',
       mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
-      xm: '王伟',
+      xm: '心血管内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
       mounth3: '2300',
@@ -215,14 +101,11 @@ export default function BedSituation () {
       mounth7: '0',
       mounth8: '0',
       mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
       xj: '11300'
     },
     {
       xh: 1,
-      xm: '王伟',
+      xm: '血液内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
       mounth3: '2300',
@@ -232,9 +115,20 @@ export default function BedSituation () {
       mounth7: '0',
       mounth8: '0',
       mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
+      xj: '11300'
+    },
+    {
+      xh: 1,
+      xm: '肾内科护理单元',
+      mounth1: '2900',
+      mounth2: '3000',
+      mounth3: '2300',
+      mounth4: '3100',
+      mounth5: '0',
+      mounth6: '0',
+      mounth7: '0',
+      mounth8: '0',
+      mounth9: '0',
       xj: '11300'
     }
   ]
@@ -254,9 +148,6 @@ export default function BedSituation () {
       <td>{itemTr.mounth7}</td>
       <td>{itemTr.mounth8}</td>
       <td>{itemTr.mounth9}</td>
-      <td>{itemTr.mounth10}</td>
-      <td>{itemTr.mounth11}</td>
-      <td>{itemTr.mounth12}</td>
       <td>{itemTr.xj}</td>
     </tr>
   ))
@@ -277,14 +168,8 @@ export default function BedSituation () {
             <table>
               {tdDom}
               <tr>
-                <td>合计</td>
                 <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
+                <td>合 计</td>
                 <td />
                 <td />
                 <td />
@@ -344,7 +229,7 @@ const Con = styled.div`
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        min-width: 50px;
+        min-width: 125px;
       }
       th:nth-of-type(12) {
         box-sizing: border-box;
@@ -379,7 +264,7 @@ const Con = styled.div`
           }
           td:nth-of-type(2) {
             box-sizing: border-box;
-            min-width: 50px;
+            min-width: 125px;
           }
           td:nth-of-type(12) {
             box-sizing: border-box;

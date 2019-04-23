@@ -4,11 +4,11 @@ import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import React, { useState, useEffect } from 'react'
 import { authStore } from 'src/stores/index'
 import emitter from 'src/libs/ev'
+import { observer } from 'mobx-react-lite'
 
-export default function StatisticMIdHeader () {
-  const [title, settitle] = useState(() => {
-    let deptName = authStore.getUser().deptName || ''
-    console.log('deptName', deptName, authStore.getUser())
+export default observer(function StatisticMIdHeader () {
+  const [title, setTitle] = useState(() => {
+    let deptName = authStore.selectedDeptName || ''
     statisticViewModel.deptName = deptName
     statisticViewModel.setTitle('护士休假统计')
     return statisticViewModel.getTitle
@@ -16,13 +16,13 @@ export default function StatisticMIdHeader () {
   const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
   const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
   useEffect(() => {
-    console.log(title, settitle, setStartDate, setEndDate)
-
-    emitter.removeAllListeners('设置统计页标题')
+    let getTitleByAuthStore = statisticViewModel.deptName + '护士休假统计'
+    setTitle(getTitleByAuthStore)
+    // emitter.removeAllListeners('设置统计页标题')
     emitter.removeAllListeners('设置统计页日期')
-    emitter.addListener('设置统计页标题', (titleName: any) => {
-      settitle(titleName)
-    })
+    // emitter.addListener('设置统计页标题', (titleName: any) => {
+    //   settitle(titleName)
+    // })
     emitter.addListener('设置统计页日期', (value: any) => {
       setStartDate(value[0])
       setEndDate(value[1])
@@ -30,20 +30,21 @@ export default function StatisticMIdHeader () {
   })
   return (
     <Con>
-      <div className='firstTitle'>{title}</div>
+      {/* {authStore.selectedDeptName} */}
+      <div className='firstTitle'>{authStore.selectedDeptName}</div>
       <div className='secondTitle'>
         日期：{startDate} 至 {endDate}
       </div>
     </Con>
   )
-}
+})
 
 const Con = styled.div`
   margin-bottom: 8px;
   width: 100%;
   text-align: center;
   .firstTitle {
-        margin: 0 auto;
+    margin: 0 auto;
     width: 510px;
     height: 29px;
     font-size: 21px;
