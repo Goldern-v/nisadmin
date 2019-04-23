@@ -21,8 +21,8 @@ export default function BaseInfo () {
   ]
   useEffect(() => {
     nurseFilesService.getByEmpNoAudite(appStore.queryObj.empNo).then((res) => {
-      let data = res.data
-      // setInfo(data)
+      let data = res.data || info
+      setInfo(data)
       setTableData([
         {
           性别: sexEnum[data.sex],
