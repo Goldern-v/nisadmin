@@ -32,6 +32,7 @@ export default class AuthStore {
       return ''
     }
   }
+
   /** 用户初始化 */
   @action
   public initUser () {

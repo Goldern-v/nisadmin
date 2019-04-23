@@ -2,44 +2,15 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { appStore, authStore } from 'src/stores'
+import { sexEnum } from 'src/libs/enum/common'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 export interface Props extends RouteComponentProps {}
 
 export default function BaseInfo () {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
-  const TABLE_DATA = [
-    {
-      性别: '男',
-      民族: '汉族'
-    },
-    {
-      出生年月: '男',
-      年龄: '汉族'
-    },
-    {
-      籍贯: '男',
-      职务: '汉族'
-    },
-    {
-      参加工作时间: '参加工作时间',
-      最高学历: '最高学历'
-    },
-    {
-      技术职称: '参加工作时间',
-      护士执业证书编号: '最高学历'
-    },
-
-    {
-      身份证号: '参加工作时间',
-      社会团体职务: '最高学历'
-    },
-    {
-      联系电话: '参加工作时间',
-      家庭住址: '最高学历'
-    }
-  ]
+  let [tableData, setTableData]: [any, any] = useState([])
+  let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const btnList = [
     {
       label: '修改'
@@ -48,6 +19,42 @@ export default function BaseInfo () {
       label: '审核'
     }
   ]
+  useEffect(() => {
+    nurseFilesService.getByEmpNoAudite(appStore.queryObj.empNo).then((res) => {
+      let data = res.data
+      setInfo(data)
+      setTableData([
+        {
+          性别: sexEnum[data.sex],
+          民族: data.nation
+        },
+        {
+          出生年月: data.birthday,
+          年龄: data.age
+        },
+        {
+          籍贯: data.nativePlace,
+          职务: data.post
+        },
+        {
+          参加工作时间: data.goWorkTime,
+          最高学历: data.highestEducation
+        },
+        {
+          技术职称: data.title,
+          护士执业证书编号: data.zyzsNumber
+        },
+        {
+          身份证号: data.cardNumber,
+          社会团体职务: data.socialGroup
+        },
+        {
+          联系电话: data.phone,
+          家庭住址: data.address
+        }
+      ])
+    })
+  }, [])
   return (
     <BaseLayout title='基本信息' btnList={btnList}>
       <InfoTable>
@@ -62,17 +69,17 @@ export default function BaseInfo () {
           <tr>
             <td>姓名</td>
             <td>
-              <Value>刘盼盼</Value>
+              <Value>{appStore.queryObj.empName}</Value>
             </td>
             <td>工号</td>
             <td>
-              <Value>92312</Value>
+              <Value>{appStore.queryObj.empNo}</Value>
             </td>
             <td rowSpan={5}>
-              <img className='head-img' src={require('../../../images/护士默认头像.png')} alt='' />
+              <img className='head-img' src={info.nearImageUrl || require('../../../images/护士默认头像.png')} alt='' />
             </td>
           </tr>
-          {TABLE_DATA.map((obj: any, index) => (
+          {tableData.map((obj: any, index: number) => (
             <tr key={index}>
               <td>{Object.keys(obj)[0]}</td>
               <td>
@@ -88,7 +95,7 @@ export default function BaseInfo () {
       </InfoTable>
       <ZyzsCon>
         <span>职业证书：</span>
-        <img src={require('../../../images/顶部背景.png')} alt='' />
+        {info.zyzsUrl && <img src={info.zyzsUrl} alt='' />}
       </ZyzsCon>
     </BaseLayout>
   )
@@ -122,6 +129,7 @@ const Value = styled.div`
   border-radius: 2px;
   border: 1px solid rgba(227, 228, 230, 1);
   padding: 3px 13px;
+  min-height: 27px;
 `
 
 const ZyzsCon = styled.div`

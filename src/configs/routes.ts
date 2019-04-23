@@ -19,7 +19,7 @@ import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseBySh
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
 import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
-import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetail'
+import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 
 const routes: RouteItem[] = [

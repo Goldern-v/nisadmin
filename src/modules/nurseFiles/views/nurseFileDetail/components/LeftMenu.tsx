@@ -2,7 +2,9 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores'
-
+import qs from 'qs'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 interface RouteType {
   type: string
   component: any
@@ -22,19 +24,33 @@ export default function LeftMenu (props: Props) {
     params: { type }
   } = appStore.match
 
+  let [listInfo, setListInfo] = useState([])
+
+  useEffect(() => {
+    nurseFilesService.findByEmpNo(appStore.queryObj.empNo).then((res) => {
+      setListInfo(res.data)
+      let badgeTotal: number = res.data.reduce((total: number, item: any) => {
+        return total + item.detailNumber
+      }, 0)
+      nurseFileDetailViewModal.badgeTotal = badgeTotal
+    })
+  }, [])
   return (
     <Wrapper>
       {props.routeList.map((item: RouteType) => {
         let isActive: string = type === item.type ? 'active' : ''
+        let itemInfo: any = listInfo.find((info: any) => info.name === item.name)
+        let isBadge: any = itemInfo && itemInfo.statusColor === '1'
         return (
           <Li
             className={isActive}
             key={item.name}
             onClick={() => {
-              history.push('/nurseFileDetail/' + item.type)
+              history.push('/nurseFileDetail/' + item.type + `?${appStore.query}`)
             }}
           >
             {item.name}
+            {isBadge && <Badge />}
           </Li>
         )
       })}
@@ -55,9 +71,19 @@ const Li = styled.div`
   font-size: 13px;
   color: #333;
   cursor: pointer;
+  position: relative;
   &:hover,
   &.active {
     color: #fff;
     background: ${(p) => p.theme.$mtc};
   }
+`
+const Badge = styled.div`
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ff3b30;
+  left: 4px;
+  top: 4px;
 `

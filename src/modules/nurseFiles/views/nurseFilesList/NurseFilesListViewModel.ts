@@ -19,9 +19,10 @@ class NurseFilesListViewModel {
   @observable public filterCj: string = '全部'
   @observable public filterZw: string = '全部'
   @observable public pageIndex: number = 1
-  @observable public pageSize: number = 10
-  @observable public pageTotal: number = 100
+  @observable public pageSize: number = 14
+  @observable public totalCount: number = 0
   @observable public listSpinning: boolean = false
+  @observable public nurseList: any = []
 
   @action
   public loadNursingList = () => {
@@ -33,14 +34,15 @@ class NurseFilesListViewModel {
       currentLevel: this.filterCj /** 能级、层级 */,
       post: this.filterZw /**  职务  */,
       pageIndex: this.pageIndex /**  当前页数 */,
-      pageSize: this.pageSize /**   每页页数 */
+      pageSize: this.pageSize /**   每页页数 */,
+      empName: this.filterText /**   每页页数 */
     }
     this.listSpinning = true
-    setTimeout(() => {
-      this.listSpinning = false
-    }, 2000)
     nurseFilesService.getByFormCodePC(obj).then((res) => {
-      console.log(res, 'res')
+      this.pageIndex = res.data.pageIndex
+      this.totalCount = res.data.totalCount
+      this.nurseList = res.data.list
+      this.listSpinning = false
     })
   }
 }
