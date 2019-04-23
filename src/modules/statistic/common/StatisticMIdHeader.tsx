@@ -13,8 +13,10 @@ export default observer(function StatisticMIdHeader () {
     statisticViewModel.setTitle('护士休假统计')
     return statisticViewModel.getTitle
   })
-  const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
-  const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
+  // const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
+  // const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
+  const [startDate, setStartDate] = useState('2019-01-01')
+  const [endDate, setEndDate] = useState('2019-09-01')
   useEffect(() => {
     let getTitleByAuthStore = statisticViewModel.deptName + '护士休假统计'
     setTitle(getTitleByAuthStore)
