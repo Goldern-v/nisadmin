@@ -26,7 +26,7 @@ export default class SchedulingApiService extends BaseApiService {
   public async newSchedule (data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间
+      startTime: data.startTime, // startTime 开始时间
       endTime: data.endTime // endTime   结束时间
     }
     return this.post(`/scheduling/findSaveOrUpdateTemplate`, postData)
@@ -51,7 +51,7 @@ export default class SchedulingApiService extends BaseApiService {
   public async copy (data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（直接传当前得时间就行）
+      startTime: data.startTime, // startTime 开始时间（直接传当前得时间就行）
       endTime: data.endTime // endTime   结束时间（直接传当前得时间就行）
     }
     return this.post(`/scheduling/copyPrevSetting`, postData)
@@ -61,7 +61,7 @@ export default class SchedulingApiService extends BaseApiService {
   public async export (data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/export`, postData, { responseType: 'blob' })
@@ -74,7 +74,7 @@ export default class SchedulingApiService extends BaseApiService {
       hourOrNum: data.hourOrNum, // 是否按照工时
       status: data.status, // 是否导出 true\false
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/countShiftTypeUser`, postData)
@@ -85,7 +85,7 @@ export default class SchedulingApiService extends BaseApiService {
     const postData = {
       ls: data.ls, // A班,P班,N班,休假,进修学习,其他
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/countUser`, this.stringify(postData))
@@ -96,7 +96,7 @@ export default class SchedulingApiService extends BaseApiService {
     const postData = {
       status: data.status, // 是否导出 true\false
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/countUserHolidays`, postData)
@@ -105,7 +105,7 @@ export default class SchedulingApiService extends BaseApiService {
   public async deptStatisticByHolidays (data: any) {
     const postData = {
       status: data.status, // 是否导出 true\false
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/CountDeptCodeHolidays`, postData)
@@ -114,7 +114,7 @@ export default class SchedulingApiService extends BaseApiService {
   public async findShiftList (data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/findBylist`, postData)
@@ -123,7 +123,7 @@ export default class SchedulingApiService extends BaseApiService {
   public async findTimeList (data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/findByTime`, postData)
@@ -136,7 +136,7 @@ export default class SchedulingApiService extends BaseApiService {
       hourOrNum: data.hourOrNum, // 是否按照工时
       status: data.status, // 是否导出 true\false
       deptCode: data.deptCode, // deptCode  科室编码
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/countShiftTypeDeptCode`, postData)
@@ -146,7 +146,7 @@ export default class SchedulingApiService extends BaseApiService {
   public async deptStatisticByDeptCode (data: any) {
     const postData = {
       ls: data.ls, // A班,P班,N班,休假,进修学习,其他
-      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/countByDeptCode`, this.stringify(postData))

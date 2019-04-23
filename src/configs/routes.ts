@@ -46,7 +46,7 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
     { name: '排班管理', link: '/scheduleHome' },
-    { name: '编辑排班', link: '' }
+    { name: '排班编辑', link: '' }
   ]),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
   // setLayout('/statistic/护士白班统计（按月份）', WhiteShiftByMonthView, layouts.MainLayout),

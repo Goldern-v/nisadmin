@@ -15,7 +15,9 @@ export default observer(function MainLayout (props: Props) {
   store.appStore.match = props.match
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res) => {
-      store.authStore.deptList = res.data.deptList || []
+      if (res && res.data) {
+        store.authStore.deptList = res.data.deptList || []
+      }
     })
   })
   return (

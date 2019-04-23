@@ -655,7 +655,7 @@ export default function MainBox () {
     // 接口请求参数
     const postData = {
       deptCode: deptCode, // deptCode  科室编码 // "门诊护理"
-      stratTime: startTime, // stratTime 开始时间（刚开始由后台传给前台）
+      startTime: startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     service.schedulingApiService
@@ -688,12 +688,12 @@ export default function MainBox () {
 
   const newShedule = (callback: Function) => {
     let deptCode = scheduleStore.getDeptCode()
-    let stratTime = scheduleStore.getStartTime()
+    let startTime = scheduleStore.getStartTime()
     let endTime = scheduleStore.getEndTime()
-    console.log(deptCode, stratTime, endTime)
+    console.log(deptCode, startTime, endTime)
     const postData = {
       deptCode: deptCode, // deptCode  科室编码
-      stratTime: stratTime, // stratTime 开始时间
+      startTime: startTime, // startTime 开始时间
       endTime: endTime // endTime   结束时间
     }
     console.log('新建newSchedule', postData)
