@@ -21,6 +21,7 @@ import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/Sche
 import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
 import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
+import Indicator from 'src/modules/indicator/Indicator'
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -55,6 +56,7 @@ const routes: RouteItem[] = [
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
   setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
+  setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   // {
   //   path: '/statistic',
@@ -63,6 +65,10 @@ const routes: RouteItem[] = [
   {
     path: '/nurseFileDetail',
     redirect: '/nurseFileDetail/baseInfo'
+  },
+  {
+    path: '/indicator',
+    redirect: '/indicator/床护比统计'
   },
   {
     path: '/',

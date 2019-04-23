@@ -39,7 +39,7 @@ const navList = [
   {
     name: '敏感指标',
     icon: require('../images/敏感指标.svg'),
-    path: ''
+    path: '/indicator'
   },
   {
     name: '统计查询',
