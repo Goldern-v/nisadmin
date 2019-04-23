@@ -95,8 +95,7 @@
       "}",
       "}",
       "",
-      "const scheduleHomeViewModel = new ScheduleHomeViewModel()",
-      "export default scheduleHomeViewModel"
+      "export const scheduleHomeViewModel = new ScheduleHomeViewModel()"
     ]
   }
 }

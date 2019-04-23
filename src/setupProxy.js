@@ -9,4 +9,12 @@ module.exports = function(app) {
       changeOrigin: true
     })
   )
+  app.use(
+    proxy('/asset', {
+      // target: 'http://192.168.1.20:8964',
+      target: 'http://120.25.105.45:9864',
+      secure: false,
+      changeOrigin: true
+    })
+  )
 }
