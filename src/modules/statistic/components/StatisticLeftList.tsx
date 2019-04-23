@@ -20,7 +20,7 @@ const leftListPath = [
   { name: '科室白班统计（按月份）', path: '/statistic/科室白班统计（按月份）' },
   { name: '科室夜班统计（按月份）', path: '/statistic/科室夜班统计（按月份）' },
   { name: '科室休假统计（按月份）', path: '/statistic/科室休假统计（按月份）' },
-  { name: '护士节假日排班人数', path: '/statistic/护士节假日排班人数' }
+  { name: '科室节假日排班表', path: '/statistic/科室节假日排班表' }
 ]
 const leftListNursePath = [
   { name: '护理人员统计', path: '/statistic/护理人员统计' },
@@ -58,7 +58,7 @@ export default function BedSituation () {
     '科室白班统计（按月份）',
     '科室夜班统计（按月份）',
     '科室休假统计（按月份）',
-    '护士节假日排班人数'
+    '科室节假日排班表'
   ]
   function leftLiClick (ev: any, path: string) {
     let liNode = ev.target

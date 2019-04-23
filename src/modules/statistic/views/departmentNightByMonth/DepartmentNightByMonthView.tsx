@@ -1,7 +1,7 @@
 // 科室夜班统计（按月份）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-// import TableFirst from './components/TableFirst'
+import TableFirst from './components/TableFirst'
 import { Button } from 'antd'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 const ButtonGroup = Button.Group
@@ -21,8 +21,8 @@ export default function StatisticView () {
           <Button value='按次数'>按次数</Button>
         </ButtonGroup>
       </div>
-      {/* 科室夜班统计（按月份） */}
-      {/* <TableFirst /> */}
+      {/*  科室夜班统计（按月份） */}
+      <TableFirst />
     </Con>
   )
 }

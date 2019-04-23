@@ -4,6 +4,7 @@ import { DatePicker } from 'antd'
 import moment from 'moment'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 // 中文化
+// tslint:disable-next-line: no-duplicate-imports
 import { LocaleProvider } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import 'moment/locale/zh-cn'
@@ -15,13 +16,13 @@ const dateFormat = 'YYYY-MM'
 
 // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY']
 export default function SelectData () {
-  const [startDate, setstartDate] = useState(() => {
+  const [startDate, setStartDate] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
     statisticViewModel.startDate = moment(firstDay).format(dateFormat)
     return moment(firstDay).format(dateFormat)
   })
-  const [endDate, setendDate] = useState(() => {
+  const [endDate, setEndDate] = useState(() => {
     let date = new Date()
     statisticViewModel.endDate = moment(date).format(dateFormat)
     return date
@@ -50,8 +51,8 @@ export default function SelectData () {
           // onChange={(e: any, value: any) => {
           //   statisticViewModel.startDate = value[0]
           //   statisticViewModel.endDate = value[1]
-          //   setstartDate(value[0])
-          //   setendDate(value[1])
+          //   setStartDate(value[0])
+          //   setEndDate(value[1])
           //   emitter.emit('设置统计页日期', value)
           // }}
           value={valueM}
