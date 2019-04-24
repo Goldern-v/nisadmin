@@ -238,7 +238,7 @@ export default function MainBox () {
         const element = record[key]
         shift = shiftListData.find((s) => element === s.name)
         if (shift) {
-          result += ~~(shift.effectiveTime) //parseInt(shift.effectiveTime, 10) || 0
+          result += ~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
           if (target && target.name && target.name === key + record.id) {
             target.style.color = shift.nameColor || ''
           }
@@ -309,17 +309,17 @@ export default function MainBox () {
   const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
     record.showIndex ? (
       // <div>
-        <input
-          // id={'WeekInput' + key + record.id}
-          name={key + record.id}
-          onClick={(e) => onClickInputText(e, record, key)}
-          onChange={(e) => onChangeInputText(e, record, key)}
-          style={{ color: colorName || getShiftColor(text) || '' }}
-          className={'table-input'}
-          defaultValue={text || ''}
-        />
-      // </div>
+      <input
+        // id={'WeekInput' + key + record.id}
+        name={key + record.id}
+        onClick={(e) => onClickInputText(e, record, key)}
+        onChange={(e) => onChangeInputText(e, record, key)}
+        style={{ color: colorName || getShiftColor(text) || '' }}
+        className={'table-input'}
+        defaultValue={text || ''}
+      />
     ) : (
+      // </div>
       ''
     )
 
@@ -449,7 +449,7 @@ export default function MainBox () {
             s[key] = isEmpty ? '' : s[key] || ''
             let input: any = document.querySelector(`[name="${key}${s.id}"]`)
             // console.log('=updateTableUI==input', key, s[key], input, isEmpty)
-            if (input !== null || input !== undefined) {
+            if (input !== null && input !== undefined) {
               input.value = isEmpty ? '' : s[key]
               input.style.color = isEmpty ? '' : getShiftColor(s[key])
             }
@@ -962,8 +962,8 @@ export default function MainBox () {
                       selectedRowsArray.map((s) => {
                         if (s.id === selectedCell.record.id && key.indexOf('dayName') > -1) {
                           s[key] = m.name + ''
-                          selectedCell.target.value = m.name+'' || '!!!'
-                          selectedCell.target.style.color = m.nameColor+'' || ''
+                          selectedCell.target.value = m.name + '' || '!!!'
+                          selectedCell.target.style.color = m.nameColor + '' || ''
                           selectedCellObj = s
                           input = document.querySelector(`[name="${key}${s.id}"]`)
                           console.log('input', key, key + s.id, s, input, m, selectedCell, selectedRow)
@@ -981,7 +981,7 @@ export default function MainBox () {
                         input.value = selectedCellObj.thisWeekHour
                       }
                       let newList = JSON.parse(JSON.stringify(selectedRowsArray))
-                      console.log('==newList:',newList, selectedCell, selectedRowsArray)
+                      console.log('==newList:', newList, selectedCell, selectedRowsArray)
                       genEmptyTable(newList)
                       setTableList(newList)
                       // updateTableUI()
