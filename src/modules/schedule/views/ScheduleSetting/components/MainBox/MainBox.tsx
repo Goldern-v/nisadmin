@@ -435,8 +435,7 @@ export default function MainBox () {
   ]
 
   const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false) => {
-    // selectedRowsArray = shiftTableData
-    console.log('====updateTableUI', selectedRowsArray, isEmpty)
+    // console.log('====updateTableUI', selectedRowsArray, isEmpty)
     selectedRowsArray.map((s, k) => {
       if (s && s.id) {
         for (let key in s) {
@@ -456,9 +455,6 @@ export default function MainBox () {
           }
         }
         // 更新状态 status
-        // let inputS: any = document.querySelector(`span[id="status${s.id}"]`)
-        // s.status = isEmpty ? getStatus(0) : getStatus(s.status)
-        // s.status = isEmpty ? getStatus(-1) : isPublish ? getStatus(1) : getStatus(0)
         if (isEmpty) {
           s.status = '-1' // getStatus(-1)
         } else {
@@ -469,11 +465,6 @@ export default function MainBox () {
           }
         }
 
-        // if (inputS) {
-        //   inputS.innerHTML = getStatus(s.status)
-        // }
-        // console.log('inputS', inputS, s.status)
-        // span id
         // 更新工时
         countWorkHours(s)
         let inputW: any = document.querySelector(`[name="thisWeekHour${s.id}"]`)
@@ -489,22 +480,7 @@ export default function MainBox () {
       statisticFooter(selectedRowsArray)
     })
 
-    // tableList.map((t: any, key: any) => {
-    //   if (t.id === s.id) {
-    //     console.log('---', s.id, key)
-    //     if (
-    //       s[key] &&
-    //       (key.indexOf('dayName') > -1 || key.indexOf('thisWeekHour') > -1) &&
-    //       key.indexOf('status') === -1
-    //     ) {
-    //       t[key] = isEmpty ? '' : s[key]
-    //       console.log('---', key)
-    //     }
-    //   }
-    // })
     let newTabelData = JSON.parse(JSON.stringify(selectedRowsArray))
-
-    // setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
 
     genEmptyTable(newTabelData)
     setTableList(newTabelData)
