@@ -33,7 +33,7 @@ export default observer(function EducationalExperience () {
       zy: '护理',
       xl: '本科',
       fj: '有',
-      zt: '学'
+      zt: '待护士长审核'
     },
     {
       key: '2',
