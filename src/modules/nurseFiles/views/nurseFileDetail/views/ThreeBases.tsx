@@ -26,25 +26,45 @@ export default observer(function ThreeBases () {
       key: '1',
       name: '胡彦斌',
       age: 32,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      nd: '2018',
+      lnkf: '89',
+      czkf: '93',
+      fj: '有',
+      zt: '已审核'
     },
     {
       key: '2',
       name: '杨春',
       age: 24,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      nd: '2018',
+      lnkf: '84',
+      czkf: '86',
+      fj: '有',
+      zt: '已审核'
     },
     {
       key: '3',
       name: '赵平',
       age: 34,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      nd: '2018',
+      lnkf: '79',
+      czkf: '91',
+      fj: '有',
+      zt: '已审核'
     },
     {
       key: '4',
       name: '易小惠',
       age: 33,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      nd: '2018',
+      lnkf: '86',
+      czkf: '89',
+      fj: '有',
+      zt: '已审核'
     }
   ]
 
@@ -58,43 +78,50 @@ export default observer(function ThreeBases () {
       width: 43
     },
     {
-      title: '年度',
+      title: '姓名',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
+      title: '年度',
+      dataIndex: 'nd',
+      key: '2',
+      width: 100,
+      align: 'center'
+    },
+    {
       title: '理论考核成绩(分)',
-      dataIndex: '3',
+      dataIndex: 'lnkf',
       key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '操作考核成绩(分)',
-      dataIndex: '4',
+      dataIndex: 'czkf',
       key: '4',
       width: 100,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: '6',
+      dataIndex: 'fj',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '61',
+      dataIndex: 'zt',
       key: '61',
       width: 150,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '8',
+      dataIndex: 'cz',
       key: '8',
       width: 100,
       align: 'center',

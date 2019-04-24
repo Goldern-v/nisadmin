@@ -26,25 +26,49 @@ export default observer(function Writings () {
       key: '1',
       name: '胡彦斌',
       age: 32,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      fbDate: '2012-09-16',
+      tm: '护理六步法',
+      brpm: '13',
+      cbkd: '昆山日报',
+      fj: '有',
+      zt: '待护士长审核'
     },
     {
       key: '2',
       name: '杨春',
-      age: 24,
-      address: '西湖区湖底公园1号'
+      age: 36,
+      address: '西湖区湖底公园1号',
+      fbDate: '2015-08-23',
+      tm: '儿童预防接种反应',
+      brpm: '36',
+      cbkd: '天天日报',
+      fj: '有',
+      zt: '待护士长审核'
     },
     {
       key: '3',
       name: '赵平',
-      age: 34,
-      address: '西湖区湖底公园1号'
+      age: 35,
+      address: '西湖区湖底公园1号',
+      fbDate: '2013-08-16',
+      tm: '老年糖尿病护理',
+      brpm: '53',
+      cbkd: '青年杂社',
+      fj: '有',
+      zt: '待护士长审核'
     },
     {
       key: '4',
       name: '易小惠',
-      age: 33,
-      address: '西湖区湖底公园1号'
+      age: 34,
+      address: '西湖区湖底公园1号',
+      fbDate: '2012-09-36',
+      tm: '烧伤护理法',
+      brpm: '39',
+      cbkd: '长沙周刊',
+      fj: '有',
+      zt: '待护士长审核'
     }
   ]
 
@@ -58,50 +82,57 @@ export default observer(function Writings () {
       width: 43
     },
     {
-      title: '发表日期',
+      title: '姓名',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
+      title: '发表日期',
+      dataIndex: 'fbDate',
+      key: '2',
+      width: 150,
+      align: 'center'
+    },
+    {
       title: '题目',
-      dataIndex: '3',
+      dataIndex: 'tm',
       key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '本人排名',
-      dataIndex: '4',
+      dataIndex: 'brpm',
       key: '4',
       width: 100,
       align: 'center'
     },
     {
       title: '出版或刊登物',
-      dataIndex: '5',
+      dataIndex: 'cbkd',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: '6',
+      dataIndex: 'fj',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '61',
+      dataIndex: 'zt',
       key: '61',
       width: 150,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '8',
+      dataIndex: 'cz',
       key: '8',
       width: 100,
       align: 'center',
