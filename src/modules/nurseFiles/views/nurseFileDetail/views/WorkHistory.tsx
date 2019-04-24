@@ -37,14 +37,14 @@ export default observer(function WorkHistory () {
       title: '开始年月',
       dataIndex: 'stratTime',
       key: '2',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
       title: '结束年月',
       dataIndex: 'endTime',
       key: '3',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {

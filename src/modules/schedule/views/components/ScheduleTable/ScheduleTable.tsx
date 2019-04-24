@@ -33,6 +33,8 @@ export interface TdItem {
   value: string
 }
 
+const newImg = require('src/modules/schedule/views/components/images/new.png')
+
 const getTextColor = (text: any, colorName: any) =>
   text.length > 0 ? (
     <span>
@@ -408,7 +410,13 @@ export default function ScheduleTable () {
             }}
           >
             <Link to='/scheduleSetting'>
-              <Card hoverable style={{ width: 240 }} cover={<img alt='' src='#' />}>
+              <Card
+                hoverable
+                style={{ width: 240 }}
+                cover={
+                  <img alt='' src={newImg} style={{ width: '72px', margin: 'auto auto', padding: '10px 0 0 0' }} />
+                }
+              >
                 <Meta style={{ textAlign: 'center' }} title='创建排班' />
               </Card>
             </Link>
@@ -417,7 +425,14 @@ export default function ScheduleTable () {
       ) : (
         <ScheduleCon>
           <ScheduleTableCon>
-            <Table {...tableState} loading={loading} size='middle' columns={columns} dataSource={scheduleList} footer={() => footer} />
+            <Table
+              {...tableState}
+              loading={loading}
+              size='middle'
+              columns={columns}
+              dataSource={scheduleList}
+              footer={() => footer}
+            />
           </ScheduleTableCon>
         </ScheduleCon>
       )}
