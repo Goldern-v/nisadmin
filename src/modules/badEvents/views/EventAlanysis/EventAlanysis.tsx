@@ -3,16 +3,16 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from 'src/modules/badEvents/views/components/BaseLayout'
 import BaseTable from 'src/modules/badEvents/views/components/BaseTable'
-import NoData from 'src/modules/badEvents/views/components/NoData'
+import PagesBox from 'src/modules/badEvents/views/components/PagesBox'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
-// import createModal from 'src/libs/createModal'
-// import EditAwardsModal from '../modal/EditAwardsModal'
+import createModal from 'src/libs/createModal'
+import CreateReportModal from 'src/modules/badEvents/views/modal/CreateReportModal'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function EventAlanysis (props: Props) {
-  // const editAwardsModal = createModal(EditAwardsModal)
+  const createReportModal = createModal(CreateReportModal)
   const [btnList, setBtnList] = useState([
     {
       label: '分析报告：',
@@ -32,7 +32,7 @@ export default observer(function EventAlanysis (props: Props) {
       label: '编辑',
       type: 'button'
       // onClick: () => {}
-      // editAwardsModal.show({
+      // CreateReportModal.show({
       //   id: '12'
       // })
     },
@@ -40,7 +40,7 @@ export default observer(function EventAlanysis (props: Props) {
       label: '删除',
       type: 'button'
       // onClick: () => {}
-      // editAwardsModal.show({
+      // CreateReportModal.show({
       //   id: '12'
       // })
     },
@@ -48,7 +48,7 @@ export default observer(function EventAlanysis (props: Props) {
       label: '打印',
       type: 'button'
       // onClick: () => {}
-      // editAwardsModal.show({
+      // CreateReportModal.show({
       //   id: '12'
       // })
     },
@@ -56,11 +56,13 @@ export default observer(function EventAlanysis (props: Props) {
       label: '创建',
       type: 'button',
       btnType: 'primary',
-      style: { right: '10px', position: 'absolute' }
-      // onClick: () => {}
-      // editAwardsModal.show({
-      //   id: '12'
-      // })
+      style: { right: '10px', position: 'absolute' },
+      onClick: () => {
+        console.log('创建')
+        createReportModal.show({
+          id: '12'
+        })
+      }
     }
   ])
 
@@ -165,7 +167,8 @@ export default observer(function EventAlanysis (props: Props) {
   return (
     <BaseLayout title='汇总报告' btnList={btnList}>
       {/* <BaseTable title={getTitle()} dataSource={tableSource} columns={columns} /> */}
-      <NoData />
+
+      <PagesBox />
     </BaseLayout>
   )
 })
