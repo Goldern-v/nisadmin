@@ -26,13 +26,40 @@ export default observer(function EducationalExperience () {
       key: '1',
       name: '胡彦斌',
       age: 32,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      ksTime: '2015-09',
+      jsTime: '2017-07',
+      pxDW: '护理职工学院',
+      pxLR: '全程护理',
+      xs: '376',
+      fj: '有',
+      zt: '待护士长审核'
     },
     {
       key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号'
+      name: '杨平',
+      age: 28,
+      address: '西湖区湖底公园1号',
+      ksTime: '2014-09',
+      jsTime: '2016-07',
+      pxDW: '护理职工学院',
+      pxLR: '全程护理',
+      xs: '376',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '3',
+      name: '赵立',
+      age: 29,
+      address: '西湖区湖底公园1号',
+      ksTime: '2013-09',
+      jsTime: '2015-07',
+      pxDW: '护理职工学院',
+      pxLR: '全程护理',
+      xs: '376',
+      fj: '有',
+      zt: '待护士长审核'
     }
   ]
 
@@ -46,50 +73,57 @@ export default observer(function EducationalExperience () {
       width: 43
     },
     {
-      title: '开始时间',
+      title: '姓名',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
+      title: '开始时间',
+      dataIndex: 'ksTime',
+      key: '2',
+      width: 100,
+      align: 'center'
+    },
+    {
       title: '结束时间',
-      dataIndex: '3',
+      dataIndex: 'jsTime',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '培训单位',
-      dataIndex: '4',
+      dataIndex: 'pxDW',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '培训内容',
-      dataIndex: '5',
+      dataIndex: 'pxLR',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '学时',
-      dataIndex: '6',
+      dataIndex: 'xs',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: '7',
+      dataIndex: 'fj',
       key: '7',
       width: 150,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '8',
+      dataIndex: 'zt',
       key: '8',
       width: 100,
       align: 'center'

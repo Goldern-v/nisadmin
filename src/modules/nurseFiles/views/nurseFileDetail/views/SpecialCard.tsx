@@ -26,13 +26,34 @@ export default observer(function SpecialCard () {
       key: '1',
       name: '胡彦斌',
       age: 32,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      hdTime: '2007-03-08',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-04344-45435-78841',
+      fj: '有',
+      zt: '待护士长审核'
     },
     {
-      key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号'
+      key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
+      name: '杨华',
+      age: 28,
+      address: '西湖区湖底公园1号',
+      hdTime: '2015-03-08',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43434-55434-33443',
+      fj: '有',
+      zt: '待护士长审核'
     }
   ]
 
@@ -46,43 +67,50 @@ export default observer(function SpecialCard () {
       width: 43
     },
     {
-      title: '获得时间',
+      title: '姓名',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
+      title: '获得时间',
+      dataIndex: 'hdTime',
+      key: '2',
+      width: 100,
+      align: 'center'
+    },
+    {
       title: '资格名称',
-      dataIndex: '3',
+      dataIndex: 'zjName',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '资格证编号',
-      dataIndex: '4',
+      dataIndex: 'zgzNumber',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: '5',
+      dataIndex: 'fj',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '6',
+      dataIndex: 'zt',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '8',
+      dataIndex: 'cz',
       key: '8',
       width: 100,
       align: 'center',

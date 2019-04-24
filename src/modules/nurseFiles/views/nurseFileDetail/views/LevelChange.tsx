@@ -26,13 +26,34 @@ export default observer(function LevelChange () {
       key: '1',
       name: '胡彦斌',
       age: 32,
-      address: '西湖区湖底公园1号'
+      address: '西湖区湖底公园1号',
+      pyTime: '2012-5',
+      jd: '高级护工',
+      cj: '高级护士',
+      fj: '有',
+      zt: '待护士长审核'
     },
     {
       key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号'
+      name: '杨平',
+      age: 26,
+      address: '西湖区湖底公园1号',
+      pyTime: '2015-5',
+      jd: '中级护工',
+      cj: '中级护士',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '3',
+      name: '易小惠',
+      age: 29,
+      address: '西湖区湖底公园1号',
+      pyTime: '2017-5',
+      jd: '中级护工',
+      cj: '中级护士',
+      fj: '有',
+      zt: '待护士长审核'
     }
   ]
 
@@ -46,36 +67,43 @@ export default observer(function LevelChange () {
       width: 43
     },
     {
-      title: '职称聘用时间',
+      title: '姓名',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
+      title: '职称聘用时间',
+      dataIndex: 'pyTime',
+      key: '2',
+      width: 100,
+      align: 'center'
+    },
+    {
       title: '取得职称',
-      dataIndex: '3',
+      dataIndex: 'jd',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '层级',
-      dataIndex: '4',
+      dataIndex: 'cj',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: '5',
+      dataIndex: 'fj',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '7',
+      dataIndex: 'zt',
       key: '7',
       width: 150,
       align: 'center'

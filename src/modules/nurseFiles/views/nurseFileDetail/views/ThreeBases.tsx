@@ -16,7 +16,7 @@ export default observer(function ThreeBases () {
     {
       label: '添加',
       onClick: () =>
-      editThreeBasesModal.show({
+        editThreeBasesModal.show({
           id: '12'
         })
     }
@@ -30,8 +30,20 @@ export default observer(function ThreeBases () {
     },
     {
       key: '2',
-      name: '胡彦祖',
-      age: 42,
+      name: '杨春',
+      age: 24,
+      address: '西湖区湖底公园1号'
+    },
+    {
+      key: '3',
+      name: '赵平',
+      age: 34,
+      address: '西湖区湖底公园1号'
+    },
+    {
+      key: '4',
+      name: '易小惠',
+      age: 33,
       address: '西湖区湖底公园1号'
     }
   ]
