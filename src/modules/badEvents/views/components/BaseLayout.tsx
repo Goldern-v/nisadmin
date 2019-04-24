@@ -48,7 +48,8 @@ export default function BaseLayout (props: Props) {
     console.log(count, setCount, monthStart, setMonthStart, defaultEndTime, setdefaultEndTime)
   }, [])
   let { title, btnList } = props
-  let getInputElements = (item: BtnType) => {
+  //
+  let getInputElements = (item: BtnType, gindex: any) => {
     // switch (item.type) {
     console.log('getInputElements', item)
     if (item.type === 'button') {
@@ -67,7 +68,7 @@ export default function BaseLayout (props: Props) {
     // case 'datetime':
     if (item.type === 'datetime') {
       return (
-        <div className='item-head'>
+        <div className='item-head' key={gindex}>
           <span style={{ padding: '10px 0' }}>{item.label}</span>
           <RangePicker
             defaultValue={[moment(monthStart, dateFormat), moment(defaultEndTime, dateFormat)]}
@@ -89,6 +90,7 @@ export default function BaseLayout (props: Props) {
               style={item.style}
               placeholder={item.placeholder}
               onChange={item.onChange}
+              key={gindex}
             >
               {item.options
                 ? item.options.map((option: any, index: any) => (
@@ -99,7 +101,7 @@ export default function BaseLayout (props: Props) {
                 : ''}
             </Select>
           ) : (
-            <DeptSelect onChange={(e) => console.log(e)} />
+            <DeptSelect key={gindex} onChange={(e) => console.log(e)} />
           )}
         </div>
       )
@@ -108,7 +110,7 @@ export default function BaseLayout (props: Props) {
   return (
     <Wrapper>
       <Head>
-        {btnList && btnList.map((item: BtnType) => getInputElements(item))}
+        {btnList && btnList.map((item: BtnType, index: any) => getInputElements(item, index))}
         <Place />
         {/* <Title>{title}</Title> */}
       </Head>

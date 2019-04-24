@@ -21,7 +21,7 @@ const pages = [P1, P2, P3, P4, P5]
 
 // const WARNNING_ICON = require('../../../images/注意.png')
 
-export default observer(function NoData () {
+export default observer(function PagesBox () {
   let history = store.appStore.history
 
   console.log('history', history, history.location.pathname)
@@ -29,11 +29,11 @@ export default observer(function NoData () {
   return (
     <Wrapper>
       {/* <NoDataBox>暂无分析报告～</NoDataBox> */}
-      <PagesBox>
-        {pages.map((p: any) => (
-          <PageImg src={p} />
+      <PageBox>
+        {pages.map((p: any, index: any) => (
+          <PageImg src={p} key={index} />
         ))}
-      </PagesBox>
+      </PageBox>
     </Wrapper>
   )
 })
@@ -110,7 +110,7 @@ const NoDataBox = styled.div`
   margin-top: 20%;
 `
 
-const PagesBox = styled.div`
+const PageBox = styled.div`
   width: 100%;
   margin: auto auto;
   text-align: center;
