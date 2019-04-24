@@ -58,22 +58,29 @@ export default observer(function FileList () {
       width: 43
     },
     {
-      title: '内容',
+      title: '姓名',
       dataIndex: 'name',
       key: '2',
       width: 300,
       align: 'center'
     },
     {
+      title: '内容',
+      dataIndex: 'nr',
+      key: '2',
+      width: 300,
+      align: 'center'
+    },
+    {
       title: '文件数',
-      dataIndex: '3',
+      dataIndex: 'wjs',
       key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '4',
+      dataIndex: 'zt',
       key: '4',
       width: 100,
       align: 'center'
