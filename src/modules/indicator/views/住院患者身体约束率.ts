@@ -21,8 +21,8 @@ const columns: any = [
   },
   {
     title: '身体约束率(%)',
-    dataIndex: '同期患者数',
-    key: '同期患者数',
+    dataIndex: '身体约束率(%)',
+    key: '身体约束率(%)',
     align: 'center'
   }
 ]

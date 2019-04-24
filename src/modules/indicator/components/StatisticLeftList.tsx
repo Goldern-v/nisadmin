@@ -21,22 +21,37 @@ const leftListPath = [
   { name: '产科护理质量数据', path: '/indicator/产科护理质量数据' }
 ]
 const leftListNursePath = [
-  { name: '护理人员统计', path: '/statistic/护理人员统计' },
-  { name: '护理人员一览表', path: '/statistic/护理人员一览表' },
-  { name: '科室护士明细表', path: '/statistic/科室护士明细表' },
-  { name: '科室护士结构信息汇总表', path: '/statistic/科室护士结构信息汇总表' },
-  { name: '护士离职率', path: '/statistic/护士离职率' }
+  { name: '高危药物静脉外渗率', path: '/indicator/高危药物静脉外渗率' },
+  { name: '输血/输液反应倒数', path: '/indicator/输血输液反应倒数' },
+  { name: '非计划拔管发生率', path: '/indicator/非计划拔管发生率' },
+  { name: '导管相关血液感染发生率', path: '/indicator/导管相关血液感染发生率' },
+  { name: '尿管相关泌尿系感染发生率', path: '/indicator/尿管相关泌尿系感染发生率' },
+  { name: '手术相关肺部感染发生率', path: '/indicator/手术相关肺部感染发生率' },
+  { name: '患者入院前已有压疮统计', path: '/indicator/患者入院前已有压疮统计' },
+  { name: '入院时压疮高风险患者评估率', path: '/indicator/入院时压疮高风险患者评估率' },
+  { name: '住院压疮高风险压疮发生率', path: '/indicator/住院压疮高风险压疮发生率' },
+  { name: '住院患者手术室压疮发生率', path: '/indicator/住院患者手术室压疮发生率' },
+  { name: '排便失禁患者失禁性皮炎发生率', path: '/indicator/排便失禁患者失禁性皮炎发生率' },
+  { name: '跌倒坠床高风险患者评估率', path: '/indicator/跌倒坠床高风险患者评估率' },
+  { name: '住院患者跌倒发生率', path: '/indicator/住院患者跌倒发生率' },
+  { name: '住院患者跌倒坠床伤害程度', path: '/indicator/住院患者跌倒坠床伤害程度' },
+  { name: '住院患者误吸高风险评估率', path: '/indicator/住院患者误吸高风险评估率' },
+  { name: '住院高风险患者误吸发生率', path: '/indicator/住院高风险患者误吸发生率' },
+  { name: '患者走失高风险患者评估率', path: '/indicator/患者走失高风险患者评估率' },
+  { name: '患者走失发生率', path: '/indicator/患者走失发生率' },
+  { name: '患者足下垂的发生率', path: '/indicator/患者足下垂的发生率' }
 ]
 
-const leftListPatientQueryPath = [
-  { name: '患者查询', path: '/statistic/患者查询' },
-  { name: '住院病人认知情况', path: '/statistic/住院病人认知情况' },
-  { name: '床位使用情况统计表', path: '/statistic/床位使用情况统计表' },
-  { name: '病区流转', path: '/statistic/病区流转' },
-  { name: '在院患者病情统计表', path: '/statistic/在院患者病情统计表' },
-  { name: '出院病人统计表', path: '/statistic/出院病人统计表' },
-  { name: '住院执行单统计表', path: '/statistic/护理人员统计' },
-  { name: '患者分布统计表', path: '/statistic/护理人员统计' }
+const leftListPatientQueryPath = [{ name: '新生儿烧伤、烫伤发生率', path: '/indicator/新生儿烧伤烫伤发生率' }]
+const leftListPatientQueryPath4 = [
+  { name: '查对制度落实合格率', path: '/indicator/查对制度落实合格率' },
+  { name: '护理不良事件报告处理符合率', path: '/indicator/护理不良事件报告处理符合率' },
+  { name: '使用药物错误的发生率', path: '/indicator/使用药物错误的发生率' },
+  { name: '急救设备器材及药品完好合格率', path: '/indicator/急救设备器材及药品完好合格率' },
+  { name: '无菌物品合格率', path: '/indicator/无菌物品合格率' },
+  { name: '器械清洗合格率', path: '/indicator/器械清洗合格率' },
+  { name: '包装合格率', path: '/indicator/包装合格率' },
+  { name: '湿包发生率', path: '/indicator/湿包发生率' }
 ]
 export default function StatisticLeftList () {
   const [count, setCount] = useState(0)
@@ -87,6 +102,11 @@ export default function StatisticLeftList () {
       {item.name}
     </li>
   ))
+  const leftListPatientQueryPathComponent4 = leftListPatientQueryPath4.map((item: any) => (
+    <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
+      {item.name}
+    </li>
+  ))
   return (
     <Con>
       {/* <div className='header'>排班统计</div> */}
@@ -94,12 +114,15 @@ export default function StatisticLeftList () {
         <Panel header='护理敏感质量指标' key='1'>
           {leftListComponent}
         </Panel>
-        {/* <Panel header='护理人员统计' key='2'>
+        <Panel header='临床护理质量指标' key='2'>
           {leftListNursePathComponent}
         </Panel>
-        <Panel header='患者查询统计' key='3'>
+        <Panel header='专科护理质量指标' key='3'>
           {leftListPatientQueryPathComponent}
-        </Panel> */}
+        </Panel>
+        <Panel header='护理工作质量指标' key='4'>
+          {leftListPatientQueryPathComponent4}
+        </Panel>
       </Collapse>
     </Con>
   )
@@ -160,6 +183,7 @@ const Con = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 13px;
   }
   li:hover {
     background-color: #5bbe98;

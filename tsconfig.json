@@ -3,7 +3,10 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "lib": ["es2016", "dom"],
+    "lib": [
+      "es2016",
+      "dom"
+    ],
     "jsx": "preserve",
     "strict": true,
     "noUnusedLocals": false,
@@ -19,5 +22,8 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["src", "src/modules/indicator/views/插管患者非计划拔管发生率.ts"]
+  "include": [
+    "src",
+    "src/modules/indicator/views/插管患者非计划拔管发生率.ts"
+  ]
 }
