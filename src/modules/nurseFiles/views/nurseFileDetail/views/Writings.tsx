@@ -92,7 +92,7 @@ export default observer(function Writings () {
       title: '发表日期',
       dataIndex: 'fbDate',
       key: '2',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
