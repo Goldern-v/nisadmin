@@ -96,14 +96,14 @@ export default observer(function EducationalExperience () {
       title: '就读时间',
       dataIndex: 'jdTime',
       key: '2',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
       title: '毕业时间',
       dataIndex: 'byTime',
       key: '3',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
@@ -138,7 +138,7 @@ export default observer(function EducationalExperience () {
       title: '状态',
       dataIndex: 'zt',
       key: '8',
-      width: 100,
+      width: 200,
       align: 'center'
     },
     {

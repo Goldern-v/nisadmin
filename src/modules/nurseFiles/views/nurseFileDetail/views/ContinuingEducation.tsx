@@ -125,7 +125,7 @@ export default observer(function EducationalExperience () {
       title: '状态',
       dataIndex: 'zt',
       key: '8',
-      width: 100,
+      width: 200,
       align: 'center'
     },
     {

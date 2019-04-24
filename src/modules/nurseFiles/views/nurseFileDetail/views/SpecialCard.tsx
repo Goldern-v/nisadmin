@@ -84,7 +84,7 @@ export default observer(function SpecialCard () {
       title: '资格名称',
       dataIndex: 'zjName',
       key: '3',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
