@@ -9,11 +9,17 @@ export default function BedSituation () {
   // })
   return (
     <div>
-      <Con>demo</Con>
+      <Con>
+        <img src={require('src/modules/login/img/pageTable.png')} alt='logo' />
+      </Con>
     </div>
   )
 }
 
 const Con = styled.div`
-  width: 100%;
+  /* width: 700px; */
+  /* background-image: url(${require('src/modules/login/img/pageTable.png')}); */
+  img{
+    width:930px;
+  }
 `

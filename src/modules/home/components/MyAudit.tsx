@@ -19,11 +19,11 @@ export default function BedSituation () {
         </MidItem>
         <MidItem>
           <div className='leftItem'>中国上海市</div>
-          <div className='rightItem'>2019-01-10</div>
+          <div className='rightItem'>2019-01-11</div>
         </MidItem>
         <MidItem>
           <div className='leftItem'>中国上海市</div>
-          <div className='rightItem'>2019-01-10</div>
+          <div className='rightItem'>2019-01-12</div>
         </MidItem>
         <MidItem>
           <div className='leftItem'>中国上海市</div>

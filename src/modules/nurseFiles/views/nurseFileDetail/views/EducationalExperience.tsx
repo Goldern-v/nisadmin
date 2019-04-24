@@ -25,14 +25,54 @@ export default observer(function EducationalExperience () {
     {
       key: '1',
       name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号'
+      age: 26,
+      address: '西湖区湖底公园1号',
+      jdTime: '1996-09-01',
+      byTime: '2012-07-01',
+      bySchool: '南华医学院',
+      zy: '护理',
+      xl: '本科',
+      fj: '有',
+      zt: '待护士长审核'
     },
     {
       key: '2',
-      name: '胡彦祖',
-      age: 42,
-      address: '西湖区湖底公园1号'
+      name: '杨华',
+      age: 37,
+      address: '南城区海洋公园6号',
+      jdTime: '1986-09-01',
+      byTime: '2002-07-01',
+      bySchool: '南方医科大学',
+      zy: '护理',
+      xl: '本科',
+      fj: '无',
+      zt: '待护士长审核'
+    },
+    {
+      key: '3',
+      name: '赵平',
+      age: 32,
+      address: '西湖区湖底公园1号',
+      jdTime: '1989-09-01',
+      byTime: '2005-07-01',
+      bySchool: '南华医学院',
+      zy: '护理',
+      xl: '本科',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '4',
+      name: '杨晓春',
+      age: 27,
+      address: '西湖区湖底公园1号',
+      jdTime: '1991-09-01',
+      byTime: '2008-07-01',
+      bySchool: '长春医学院',
+      zy: '护理',
+      xl: '本科',
+      fj: '有',
+      zt: '待护士长审核'
     }
   ]
 
@@ -46,52 +86,59 @@ export default observer(function EducationalExperience () {
       width: 43
     },
     {
-      title: '就读时间',
+      title: '姓名',
       dataIndex: 'name',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
+      title: '就读时间',
+      dataIndex: 'jdTime',
+      key: '2',
+      width: 150,
+      align: 'center'
+    },
+    {
       title: '毕业时间',
-      dataIndex: '3',
+      dataIndex: 'byTime',
       key: '3',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
       title: '毕业学校',
-      dataIndex: '4',
+      dataIndex: 'bySchool',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '专业',
-      dataIndex: '5',
+      dataIndex: 'zy',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '学历',
-      dataIndex: '6',
+      dataIndex: 'xl',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: '7',
+      dataIndex: 'fj',
       key: '7',
       width: 150,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '8',
+      dataIndex: 'zt',
       key: '8',
-      width: 100,
+      width: 200,
       align: 'center'
     },
     {
