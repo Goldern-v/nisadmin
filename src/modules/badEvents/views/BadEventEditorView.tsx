@@ -52,37 +52,41 @@ const ROUTE_LIST = [
   // }
 ]
 
-const btnList = [
-  {
-    label: '删除报告',
-    type: 'button',
-    onClick: () => {
-      console.log('删除报告')
-    }
-  },
-  {
-    label: '保存',
-    type: 'button',
-    onClick: () => {
-      console.log('保存报告')
-    }
-  }
-]
-
 export default function BadEventEditorView (props: Props) {
   // nurseFileDetailViewModal.nurserInfo = appStore.queryObj
-  const [editorState, setEditorState] = useState('')
+  const [editorState, setEditorState] = useState(new Object() as any)
   // const [editorState, setEditorState] = useState(BraftEditor.createEditorState(null))
 
   useEffect(() => {
     //
     console.log('BadEventEditorView:useEffect', props, props.match.params)
     //
+    setEditorHtml('<h1>title</h1>')
     // 假设此处从服务端获取html格式的编辑器内容
     // const htmlContent = await fetchEditorContent()
     // // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
     // setEditorState(BraftEditor.createEditorState(htmlContent))
   }, [])
+
+  const btnList = [
+    {
+      label: '删除报告',
+      type: 'button',
+      onClick: () => {
+        console.log('删除报告')
+      }
+    },
+    {
+      label: '保存',
+      type: 'button',
+      onClick: () => {
+        if (editorState) {
+          console.log('保存报告', editorState)
+          console.log(editorState.toHTML())
+        }
+      }
+    }
+  ]
 
   // let currentRouteType: any = props.match.params.type || 'search'
   // let CurrentRoute: any = ROUTE_LIST.find((item) => item.type === currentRouteType)
@@ -94,9 +98,15 @@ export default function BadEventEditorView (props: Props) {
     // const result = await saveEditorContent(htmlContent)
   }
 
-  const handleEditorChange = (editorNewState: string) => {
+  const handleEditorChange = (editorNewState: any) => {
     setEditorState(editorNewState)
     console.log('handleEditorChange', editorNewState)
+  }
+
+  const setEditorHtml = (htmlString: string) => {
+    let html = BraftEditor.createEditorState(htmlString)
+    setEditorState(html)
+    console.log('handleEditorChange', html)
   }
 
   const controls: any[] = [
@@ -182,7 +192,7 @@ const TopConBox = styled.div`
 
 const EditorCon = styled.div`
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   position: absolute;
   margin-top: 80px;
   background: white;

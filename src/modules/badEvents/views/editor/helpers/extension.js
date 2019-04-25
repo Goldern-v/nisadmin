@@ -9,7 +9,7 @@ const extensionDecorators = []
 const propInterceptors = []
 
 const extensionBlockRenderMaps = []
-const extensionBlockRendererFns= []
+const extensionBlockRendererFns = []
 
 const extensionInlineStyleMaps = []
 const extensionInlineStyleFns = []
@@ -97,6 +97,7 @@ export const compositeStyleExportFn = (styleExportFn, editorId) => (style) => {
       result = item.exporter
       return true
     }
+    return false
   })
 
   return result
@@ -136,6 +137,7 @@ export const compositeEntityExportFn = (entityExportFn, editorId) => (entity, or
       result = entityItem.exporter ? entityItem.exporter(entity, originalText) : undefined
       return true
     }
+    return false
   })
 
   return result
@@ -185,11 +187,14 @@ const useExtension = (extension) => {
     return false
   }
 
-  if(!extension || !extension.type || typeof extension.type !== 'string') {
+  if (!extension || !extension.type || typeof extension.type !== 'string') {
     return false
   }
 
-  const { includeEditors, excludeEditors } = extension
+  const {
+    includeEditors,
+    excludeEditors
+  } = extension
 
   if (extension.type === 'control') {
 
@@ -254,7 +259,10 @@ const useExtension = (extension) => {
       excludeEditors: excludeEditors,
       data: {
         inlineStyleName: inlineStyleName,
-        exporter: extension.exporter ? extension.exporter(extension) : <span style={extension.style}/>
+        exporter: extension.exporter ? extension.exporter(extension) : < span style = {
+          extension.style
+        }
+        />
       }
     })
 
@@ -355,7 +363,9 @@ const useExtension = (extension) => {
     // TODO
   } else if (extension.type === 'decorator') {
 
-    const { decorator } = extension
+    const {
+      decorator
+    } = extension
 
     if (decorator && decorator.strategy && decorator.component) {
       extensionDecorators.push({

@@ -66,6 +66,21 @@ export default class Image extends React.Component {
     document.addEventListener('mouseup', this.upImage)
   }
 
+  onloadImage = (e) => {
+    console.log('onloadImage', e)
+  }
+
+  getBase64Image = (img) => {
+    let canvas = document.createElement('canvas')
+    canvas.width = img.width
+    canvas.height = img.height
+    let ctx = canvas.getContext('2d')
+    ctx.drawImage(img, 0, 0, img.width, img.height)
+    let ext = img.src.substring(img.src.lastIndexOf('.') + 1).toLowerCase()
+    let dataURL = canvas.toDataURL('image/' + ext)
+    return dataURL
+  }
+
   render() {
     const { mediaData, language, imageControls } = this.props
     const { toolbarVisible, toolbarOffset, linkEditorVisible, sizeEditorVisible, tempWidth, tempHeight } = this.state
@@ -95,9 +110,11 @@ export default class Image extends React.Component {
     const renderedControlItems = imageControls.map((item, index) => {
       if (typeof item === 'string' && imageControlItems[item]) {
         return (
+          // eslint-disable-next-line
           <a
             className={item === 'link' && link ? 'active' : ''}
             key={index}
+            // eslint-disable-next-line
             href='javascript:void(0);'
             onClick={() => this.executeCommand(imageControlItems[item].command)}
           >
@@ -108,6 +125,7 @@ export default class Image extends React.Component {
         return item.render ? (
           item.render(mediaData, this.props.block)
         ) : (
+          // eslint-disable-next-line
           <a key={index} href='javascript:void(0);' onClick={() => item.onClick && this.executeCommand(item.onClick)}>
             {item.text}
           </a>
@@ -186,7 +204,15 @@ export default class Image extends React.Component {
             </div>
           ) : null}
           <div style={{ position: 'relative', width: `${width}px`, height: `${height}px`, display: 'inline-block' }}>
-            <img ref={(instance) => (this.imageElement = instance)} src={url} width={width} height={height} {...meta} />
+            <img
+              ref={(instance) => (this.imageElement = instance)}
+              src={url}
+              width={width}
+              height={height}
+              onLoad={this.onloadImage(this)}
+              alt={''}
+              {...meta}
+            />
             {toolbarVisible && (
               <div className='bf-csize-icon right-bottom' onMouseDown={this.repareChangeSize('rightbottom')} />
             )}

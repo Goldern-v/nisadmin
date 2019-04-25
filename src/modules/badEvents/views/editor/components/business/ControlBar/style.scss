@@ -39,14 +39,14 @@
     &::before {
       margin-top: 3px;
       border: 5px solid transparent;
-      border-bottom-color: $COLOR_DARK;
+      border-bottom-color: $COLOR_GREEN;
       content: '';
     }
 
     &::after {
       margin-top: 12px;
       padding: 5px;
-      background-color: $COLOR_DARK;
+      background-color: $COLOR_GREEN;
       border-radius: 2px;
       box-shadow: 0 5px 15px rgba(#000, .2);
       color: #fff;
