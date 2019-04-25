@@ -31,7 +31,7 @@ export default observer(function WorkHistory () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 43
+      width: 80
     },
     {
       title: '开始年月',
