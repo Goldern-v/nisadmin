@@ -28,14 +28,14 @@ export default function SelectCon () {
     <React.Fragment>
       <Wrapper>
         <span>创建时间：</span>
-        <RangePicker />
+        <RangePicker style={{ width: 300 }} />
         <Place />
         <span>科室：</span>
         <DeptSelect onChange={onChange} />
         <div style={{ width: 10 }} />
         <span>物流：</span>
         <DeptSelect onChange={onChange} />
-        <Input placeholder='物品名称、物流单号' style={{ width: 160 }} onChange={SearchByText} />
+        <Input placeholder='物品名称、物流单号' style={{ width: 120 }} onChange={SearchByText} />
         <Button type='primary' onClick={onSearch}>
           搜索
         </Button>
