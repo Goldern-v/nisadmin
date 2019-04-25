@@ -8,6 +8,8 @@ import DeptSelect from 'src/components/DeptSelect'
 
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker
 
+import { badEventViewModal } from 'src/modules/badEvents/views/BadEventViewModal'
+
 import moment from 'moment'
 
 const Option = Select.Option

@@ -10,6 +10,8 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import CreateReportModal from 'src/modules/badEvents/views/modal/CreateReportModal'
 
+import { badEventViewModal } from 'src/modules/badEvents/views/BadEventViewModal'
+
 export interface Props extends RouteComponentProps {}
 export default observer(function EventAlanysis (props: Props) {
   const createReportModal = createModal(CreateReportModal)
@@ -27,7 +29,10 @@ export default observer(function EventAlanysis (props: Props) {
         { code: '2018年 第三季度', name: '2018年 第三季度' },
         { code: '2018年 第二季度', name: '2018年 第二季度' },
         { code: '2018年 第一季度', name: '2018年 第一季度' }
-      ]
+      ],
+      onChange: (value: any) => {
+        badEventViewModal.reportTitle = value + '不良事件分析报告'
+      }
     },
     {
       label: '编辑',
@@ -61,7 +66,9 @@ export default observer(function EventAlanysis (props: Props) {
       onClick: () => {
         console.log('创建')
         createReportModal.show({
-          id: '12'
+          id: '0',
+          type: 'create',
+          next: '/badEvents/alanysis/create'
         })
       }
     }
@@ -149,7 +156,7 @@ export default observer(function EventAlanysis (props: Props) {
 
   useEffect(() => {
     console.log(count, setCount)
-
+    badEventViewModal.reportTitle = '2019年 第二季度不良事件分析报告'
     genEmptyTable(dataSource)
     setTableSource(dataSource)
   }, [])
