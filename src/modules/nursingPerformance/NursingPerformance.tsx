@@ -6,8 +6,9 @@ import PerformanceLeftList from './components/PerformanceLeftList'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { 绩效表 } from './view/绩效表'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
-
-export default function NursingPerformance (props: Props) {
+import { authStore } from 'src/stores/index'
+import { observer } from 'mobx-react-lite'
+export default observer(function NursingPerformance (props: Props) {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
   //   console.log(count, setCount)
@@ -25,13 +26,17 @@ export default function NursingPerformance (props: Props) {
       <ConRight>
         <PerformanceHeader />
         <PerformanceMid>
-          <PerformanceMidTitelCon>e</PerformanceMidTitelCon>
+          <PerformanceMidTitleCon>
+            <div className='titleFirst'> {authStore.selectedDeptName}</div>
+            <div className='titleSecond'>2019年3月绩效表</div>
+            <PerformanceMidInputCon />
+          </PerformanceMidTitleCon>
           <TableModel dataSource={绩效表.dataSource} columns={绩效表.columns} />
         </PerformanceMid>
       </ConRight>
     </Con>
   )
-}
+})
 
 const Con = styled.div`
   width: 100%;
@@ -107,6 +112,31 @@ const PerformanceMid = styled.div`
     background-color: #ffffff;
   }
 `
-const PerformanceMidTitelCon = styled.div`
-  height: 60px;
+const PerformanceMidTitleCon = styled.div`
+  .titleFirst {
+    margin: 0 auto;
+    width: 510px;
+    height: 29px;
+    font-size: 21px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    line-height: 29px;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .titleSecond {
+    margin: 0 auto;
+    width: 134px;
+    height: 22px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    line-height: 22px;
+    text-align: center;
+  }
+`
+const PerformanceMidInputCon = styled.div`
+  height: 50px;
 `

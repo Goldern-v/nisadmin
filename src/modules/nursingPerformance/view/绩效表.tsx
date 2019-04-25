@@ -4,8 +4,8 @@ const columns: any = [
     dataIndex: '1',
     key: '序号',
     render: (text: any, record: any, index: number) => index + 1,
-    align: 'center',
-    width: 50
+    align: 'center'
+    // width: 50
   },
   {
     title: '工号',

@@ -4,11 +4,11 @@ import { Chart, Tooltip, Axis, Bar } from 'viser-react'
 
 export default function BedSituation () {
   const data = [
-    { year: '1951 年', sales: 38 },
-    { year: '1952 年', sales: 52 },
-    { year: '1956 年', sales: 61 },
-    { year: '1957 年', sales: 120 },
-    { year: '1958 年', sales: 48 }
+    { year: '护士', sales: 38 },
+    { year: '护师', sales: 89 },
+    { year: '主管护师', sales: 46 },
+    { year: '副主任护师', sales: 38 },
+    { year: '主任护师', sales: 16 }
   ]
   const scale = [
     {
@@ -35,7 +35,8 @@ export default function BedSituation () {
 
 const ChartCon = styled.div`
   canvas {
-    margin: 0 0 0 -46px;
-    width: 400px !important;
+    width: 100% !important;
+    margin: -15px 0 0 -46px;
+    /* width: 400px !important; */
   }
 `

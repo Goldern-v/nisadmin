@@ -27,34 +27,40 @@ export default function BedSituation () {
             <td>90%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
-            <td />
+            <td>口服药</td>
+            <td>10</td>
+            <td>10</td>
+            <td>100%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
-            <td />
+            <td>雾化</td>
+            <td>188</td>
+            <td>99</td>
+            <td>50%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
-            <td />
+            <td>注射</td>
+            <td>12</td>
+            <td>2</td>
+            <td>20%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
-            <td />
+            <td>皮试</td>
+            <td>10</td>
+            <td>5</td>
+            <td>50%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
-            <td />
+            <td>标本</td>
+            <td>2</td>
+            <td>1</td>
+            <td>20%</td>
+          </tr>
+          <tr>
+            <td>输血</td>
+            <td>10</td>
+            <td>1</td>
+            <td>50%</td>
           </tr>
         </table>
       </Mid>

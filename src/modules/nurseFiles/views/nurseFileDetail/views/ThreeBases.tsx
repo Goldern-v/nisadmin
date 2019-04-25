@@ -75,7 +75,7 @@ export default observer(function ThreeBases () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 43
+      width: 50
     },
     {
       title: '姓名',
@@ -102,7 +102,7 @@ export default observer(function ThreeBases () {
       title: '操作考核成绩(分)',
       dataIndex: 'czkf',
       key: '4',
-      width: 100,
+      width: 200,
       align: 'center'
     },
     {
