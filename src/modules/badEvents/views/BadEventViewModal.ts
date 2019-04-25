@@ -1,8 +1,7 @@
 import { observable, computed, action } from 'mobx'
 
-class NurseFileDetailViewModal {
-  @observable public badgeTotal: number = 0
-  @observable public nurserInfo: any = {}
+class BadEventViewModal {
+  @observable public reportTitle: string = '2019年第二季度不良事件分析报告'
 }
 
-export const nurseFileDetailViewModal = new NurseFileDetailViewModal()
+export const badEventViewModal = new BadEventViewModal()

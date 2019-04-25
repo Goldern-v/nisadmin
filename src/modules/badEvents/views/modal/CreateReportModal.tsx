@@ -6,10 +6,16 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import moment from 'moment'
 import { to } from 'src/libs/fns'
+import { appStore } from 'src/stores'
+
+import { badEventViewModal } from '../BadEventViewModal'
+
 // import ImageUploader from 'src/components/ImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id: string
+  type: string
+  next: string
 }
 
 export default function CreateReportModal (props: Props) {
@@ -23,7 +29,13 @@ export default function CreateReportModal (props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     console.log('onOk:value', value, refForm)
+    badEventViewModal.reportTitle = `${(value as any).yearReport}年${(value as any).seasonReport}不良事件分析报告`
+    // 2019年第二季度不良事件分析报告
     if (err) return
+    if (props.next) {
+      let history = appStore.history
+      history.push(props.next)
+    }
     onClose()
   }
   const uploadCard = () => Promise.resolve('123')

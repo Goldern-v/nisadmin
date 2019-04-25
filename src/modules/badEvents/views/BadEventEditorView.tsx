@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'src/components/RouterView'
 import _ from 'lodash'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 
+import { badEventViewModal } from './BadEventViewModal'
 import TopCon from './components/TopCon'
 import LeftMenu from './components/LeftMenu'
 import BaseLayout from './components/BaseLayout'
@@ -25,6 +26,7 @@ BraftEditor.use(
 
 // import { BadEventViewModal } from './BadEventViewModal'
 import { appStore } from 'src/stores'
+import { message } from 'antd'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -52,16 +54,37 @@ const ROUTE_LIST = [
   // }
 ]
 
+const P1 = require('src/modules/badEvents/views/EventAlanysis/images/1.png')
+const P2 = require('src/modules/badEvents/views/EventAlanysis/images/2.png')
+const P3 = require('src/modules/badEvents/views/EventAlanysis/images/3.png')
+const P4 = require('src/modules/badEvents/views/EventAlanysis/images/4.png')
+const P5 = require('src/modules/badEvents/views/EventAlanysis/images/5.png')
+
+const pages = [P1, P2, P3, P4, P5]
+
 export default function BadEventEditorView (props: Props) {
   // nurseFileDetailViewModal.nurserInfo = appStore.queryObj
+  let history = appStore.history
   const [editorState, setEditorState] = useState(new Object() as any)
+  const [breadcrumbItem, setBreadcrumbItem] = useState('创建分析报告')
   // const [editorState, setEditorState] = useState(BraftEditor.createEditorState(null))
 
   useEffect(() => {
     //
+    let type = props.match.params.type
+    if (type && type === 'edit') {
+      setBreadcrumbItem('编辑分析报告')
+    }
+    //
     console.log('BadEventEditorView:useEffect', props, props.match.params)
     //
-    setEditorHtml('<h1>title</h1>')
+    let html = `` // `<img src="${P1}" alt="" />`
+    pages.map((p) => {
+      html += `<br/><br/><br/><img src="${p}" alt="" /><br/><br/><br/>`
+    })
+    //
+    setEditorHtml(html)
+    //
     // 假设此处从服务端获取html格式的编辑器内容
     // const htmlContent = await fetchEditorContent()
     // // 使用BraftEditor.createEditorState将html字符串转换为编辑器需要的editorStat
@@ -81,6 +104,7 @@ export default function BadEventEditorView (props: Props) {
       type: 'button',
       onClick: () => {
         if (editorState) {
+          message.success('保存报告')
           console.log('保存报告', editorState)
           console.log(editorState.toHTML())
         }
@@ -152,7 +176,7 @@ export default function BadEventEditorView (props: Props) {
     <Wrapper>
       <MainCon>
         {/* <TopConBox>123</TopConBox> */}
-        <TopCon title={'2019年第二季度不良事件分析报告'} breadcrumbItem={'创建分析报告'} btnList={btnList} />
+        <TopCon title={badEventViewModal.reportTitle} breadcrumbItem={breadcrumbItem} btnList={btnList} />
         <EditorCon>
           <BraftEditor value={editorState} onChange={handleEditorChange} onSave={submitContent} controls={controls} />
         </EditorCon>
