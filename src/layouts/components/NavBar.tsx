@@ -54,7 +54,7 @@ const navList = [
   {
     name: '系统设置',
     icon: require('../images/系统设置.svg'),
-    path: ''
+    path: '/setting'
   }
 ]
 

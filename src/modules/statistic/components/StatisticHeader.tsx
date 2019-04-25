@@ -30,7 +30,6 @@ export default function BedSituation () {
 const Con = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
   height: 45px;
   line-height: 45px;
   padding-left: 14px;

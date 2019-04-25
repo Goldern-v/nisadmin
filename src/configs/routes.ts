@@ -12,7 +12,7 @@ import ScheduleHomeView from 'src/modules/schedule/views/ScheduleHome/ScheduleHo
 import NurseSettingView from 'src/modules/schedule/views/NurseSetting/NurseSettingView' // 排班人员设置
 import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSettingView' // 排班人员设置
 import StatisticView from 'src/modules/statistic/StatisticView'
-import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
+// import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
 // import WhiteShiftByMonthView from 'src/modules/statistic/views/whiteShiftByMonth/WhiteShiftByMonthView'
 // import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView'
 
@@ -27,6 +27,7 @@ import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
 
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 import Indicator from 'src/modules/indicator/Indicator'
+import SettingView from 'src/modules/setting/SettingView'
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -57,7 +58,7 @@ const routes: RouteItem[] = [
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
   // setLayout('/statistic/护士白班统计（按月份）', WhiteShiftByMonthView, layouts.MainLayout),
   // setLayout('/statistic/护士夜班统计（按月份）', NeightShiftByMonthView, layouts.MainLayout),
-  setLayout('/statistic/', StatisticView, layouts.MainLayout),
+  setLayout('/statistic/:name', StatisticView, layouts.MainLayout),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
   setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
@@ -66,6 +67,12 @@ const routes: RouteItem[] = [
 
   setLayout('/badEvents/alanysis/:type', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
+  {
+    path: '/statistic',
+    redirect: '/statistic/护士排班表'
+  },
+  setLayout('/setting/:type', SettingView, layouts.MainLayout),
+  // setLayout('/setting', SettingView, layouts.MainLayout),
   // {
   //   path: '/statistic',
   //   redirect: '/statistic/护士排班统计（按班次）'
@@ -81,6 +88,10 @@ const routes: RouteItem[] = [
   {
     path: '/indicator',
     redirect: '/indicator/床护比统计'
+  },
+  {
+    path: '/setting',
+    redirect: '/setting/物品分类字典设置'
   },
   {
     path: '/',

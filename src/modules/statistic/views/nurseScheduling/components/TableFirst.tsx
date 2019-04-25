@@ -1,3 +1,4 @@
+// 护士排班表
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
@@ -35,132 +36,262 @@ export default function BedSituation () {
     '姓名',
     '职称',
     '层级',
-    '4月23(周一)',
-    '4月24(周二)',
-    '4月24(周三)',
-    '4月24(周四)',
-    '4月24(周五)',
-    '4月24(周六)',
-    '4月24(周日)'
+    '3月04(周一)',
+    '3月05(周二)',
+    '3月06(周三)',
+    '3月07(周四)',
+    '3月08(周五)',
+    '3月09(周六)',
+    '3月10(周日)'
   ]
   // cache td data
   const tdData = [
     {
       xh: 1,
-      xm: '王大锤',
+      xm: '赵芳',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
       d2: 'A1',
+      d3: 'A2',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A4'
+    },
+    {
+      xh: 2,
+      xm: '李楚清',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'P1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A3',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A4'
+    },
+    {
+      xh: 3,
+      xm: '王丽',
+      zc: '护士长',
+      cj: 'N6',
+      d1: 'N1',
+      d2: 'A3',
       d3: 'A1',
+      d4: 'A2',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
+    },
+    {
+      xh: 4,
+      xm: '周倩',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'N1',
+      d3: 'A5',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
       d7: 'A1'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 5,
+      xm: '王春蓝',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
-      d2: 'A1',
-      d3: 'A1',
+      d2: 'A5',
+      d3: 'A3',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A2'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 6,
+      xm: '吴起飞',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
-      d2: 'A1',
-      d3: 'A1',
+      d2: 'A5',
+      d3: 'A2',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A5'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 7,
+      xm: '卞晓丽',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
-      d2: 'A1',
+      d2: 'A2',
       d3: 'A1',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A3'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 8,
+      xm: '祝晓春',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
       d2: 'A1',
-      d3: 'A1',
+      d3: 'A3',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A3'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 9,
+      xm: '李想',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
       d2: 'A1',
       d3: 'A1',
-      d4: 'A1',
+      d4: 'A3',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A6'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 8,
+      xm: '祝晓春',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
       d2: 'A1',
-      d3: 'A1',
+      d3: 'A3',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A3'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 8,
+      xm: '祝晓春',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
       d2: 'A1',
-      d3: 'A1',
+      d3: 'A3',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A3'
     },
     {
-      xh: 1,
-      xm: '王大锤',
+      xh: 8,
+      xm: '祝晓春',
       zc: '护士',
       cj: 'N1',
       d1: 'A1',
       d2: 'A1',
-      d3: 'A1',
+      d3: 'A3',
       d4: 'A1',
       d5: 'A1',
       d6: 'A1',
-      d7: 'A1'
+      d7: 'A3'
+    },
+    {
+      xh: 8,
+      xm: '祝晓春',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
+    },
+    {
+      xh: 8,
+      xm: '祝晓春',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
+    },
+    {
+      xh: 8,
+      xm: '祝晓春',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
+    },
+    {
+      xh: 8,
+      xm: '祝晓春',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
+    },
+    {
+      xh: 8,
+      xm: '祝晓春',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
+    },
+    {
+      xh: 8,
+      xm: '祝晓春',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
+    },
+    {
+      xh: 8,
+      xm: '祝晓春',
+      zc: '护士',
+      cj: 'N1',
+      d1: 'A1',
+      d2: 'A1',
+      d3: 'A3',
+      d4: 'A1',
+      d5: 'A1',
+      d6: 'A1',
+      d7: 'A3'
     }
   ]
   // cache th DOM
@@ -204,11 +335,7 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
-  width: 100%;
-  overflow: auto;
-  display: flex;
   .tableCon {
-    /* width: 540px; */
     table {
       width: 100%;
       border: 1px solid #d6d6d6;
@@ -227,7 +354,7 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         height: 37px;
         background: rgba(242, 244, 245, 1);
-        width: 60px;
+        width: 6%;
       }
       /* 设置整体td */
       td {
@@ -235,55 +362,52 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         border-top: none;
         height: 37px;
-        width: 60px;
+        width: 6%;
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        width: 30px;
+        width: 3%;
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        width: 80px;
+        width: 8%;
       }
       th:nth-of-type(3) {
         box-sizing: border-box;
-        width: 60px;
+        width: 6%;
       }
       th:nth-of-type(9) {
         /* width: 60px; */
       }
     }
     .tableMid {
-      width: 960px;
       overflow-x: hidden;
       overflow-y: auto;
-      height: 636px;
       .tableMidCon {
-        width: 960px;
         table {
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
           }
           td {
             box-sizing: border-box;
-            width: 60px;
+            width: 6%;
           }
           .addRowClass {
             background: rgba(228, 233, 235, 1) !important;
           }
           td:nth-of-type(1) {
             box-sizing: border-box;
-            width: 30px;
+            width: 3%;
           }
           td:nth-of-type(2) {
             box-sizing: border-box;
-            width: 80px;
+            width: 8%;
           }
           td:nth-of-type(3) {
             box-sizing: border-box;
-            width: 60px;
+            width: 6%;
           }
         }
       }

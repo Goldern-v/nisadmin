@@ -7,7 +7,7 @@ import StatisticHeader from '../../components/StatisticHeader'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 // import NurseSchedule from './components/NurseSchedule'
 import NurseByShiftChoose from './components/NurseByShiftChoose'
-import TableModel from '../../common/TableModel'
+import TableFirst from './components/TableFirst'
 
 export default function StatisticView () {
   const [count, setCount] = useState(0)
@@ -24,27 +24,30 @@ export default function StatisticView () {
     <Con>
       {/* 对应表 */}
       <StatisticMIdHeader />
-      <TableModel />
-      <div className='NurseByShiftChooseCon'>
-        <NurseByShiftChoose />
-      </div>
+      <MidMidCon>
+        <TableCon>
+          <TableFirst />
+        </TableCon>
+        <div className='NurseByShiftChooseCon'>
+          <NurseByShiftChoose />
+        </div>
+      </MidMidCon>
     </Con>
   )
 }
 
-const Con = styled.div`
+const Con = styled.div``
+const MidMidCon = styled.div`
   width: 100%;
-  height: 629px;
-  /* display: flex; */
-  background: rgba(248, 248, 248, 1);
-  position: relative;
-  overflow: hidden;
+  display: flex;
   .NurseByShiftChooseCon {
-    position: absolute;
-    top: 0;
+    width: 222px;
+    position: relative;
+    top: -52px;
     right: 0;
   }
 `
-const StatisticRightCon = styled.div`
+const TableCon = styled.div`
   flex: 1;
+  width: 0;
 `

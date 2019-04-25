@@ -19,7 +19,4 @@ export default function StatisticView () {
   )
 }
 
-const Con = styled.div`
-  width: 100%;
-  overflow: hidden;
-`
+const Con = styled.div``
