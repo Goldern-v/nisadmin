@@ -58,7 +58,7 @@ const navList = [
   },
   {
     name: '物流平台',
-    icon: require('../images/通知公告.svg'),
+    icon: require('../images/物流平台.svg'),
     path: '/Lms'
   },
   {
@@ -109,9 +109,9 @@ const Wrapper = styled.div`
   }
 `
 const NavItem = styled.div<{ active?: boolean }>`
-  min-width: 50px;
+  min-width: 45px;
   display: flex;
-  padding: 0 22px 0 16px;
+  padding: 0 20px 0 14px;
   align-items: center;
   justify-content: center;
   cursor: pointer;

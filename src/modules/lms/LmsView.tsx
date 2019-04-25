@@ -21,7 +21,7 @@ const columns: any = [
     dataIndex: '物流单号',
     key: '物流单号',
     align: 'center',
-    width: 250
+    width: 180
   },
   {
     title: '物品名称',
@@ -34,7 +34,7 @@ const columns: any = [
     title: '物流创建科室',
     dataIndex: '物流创建科室',
     key: '物流创建科室',
-    width: 200,
+    width: 120,
     align: 'center'
   },
   {
@@ -42,19 +42,20 @@ const columns: any = [
     dataIndex: '物流分类',
     key: '物流分类',
     align: 'center',
-    width: 100
+    width: 120
   },
   {
     title: '提交人',
     dataIndex: '提交人',
     key: '提交人',
-    align: 'center'
+    align: 'center',
+    width: 100
   },
   {
     title: '创建时间',
     dataIndex: '创建时间',
     key: '创建时间',
-    width: 200,
+    width: 170,
     align: 'center'
   },
   {
@@ -68,28 +69,28 @@ const columns: any = [
     title: '当前流程',
     dataIndex: '当前流程',
     key: '当前流程',
-    width: 150,
+    width: 100,
     align: 'center'
   },
   {
     title: '最后处理人',
     dataIndex: '最后处理人',
     key: '最后处理人',
-    width: 150,
+    width: 100,
     align: 'center'
   },
   {
     title: '最后处理时间',
     dataIndex: '最后处理时间',
     key: '最后处理时间',
-    width: 200,
+    width: 170,
     align: 'center'
   },
   {
     title: '操作',
     dataIndex: 'cz',
     key: '8',
-    width: 100,
+    width: 80,
     align: 'center',
     render: (a: any, b: any, c: any) => {
       const DoCon = styled.div`
