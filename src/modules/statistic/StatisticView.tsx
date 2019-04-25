@@ -80,7 +80,8 @@ export default function StatisticView () {
       path: '/statistic/科室休假统计（按月份）',
       component: DepartmentVacationByMonthView
     },
-    { name: '科室节假日排班表', path: '/statistic/科室节假日排班表', component: DepartmentHolidayScheduleView }
+    { name: '科室节假日排班表', path: '/statistic/科室节假日排班表', component: DepartmentHolidayScheduleView },
+    { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }
   ]
   const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 
