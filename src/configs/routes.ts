@@ -29,6 +29,9 @@ import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/s
 import Indicator from 'src/modules/indicator/Indicator'
 import SettingView from 'src/modules/setting/SettingView'
 
+// 护理绩效
+import NursingPerformance from 'src/modules/nursingPerformance/NursingPerformance'
+
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
   setLayout('/home', HomeView, layouts.MainLayout),
@@ -59,6 +62,8 @@ const routes: RouteItem[] = [
   // setLayout('/statistic/护士白班统计（按月份）', WhiteShiftByMonthView, layouts.MainLayout),
   // setLayout('/statistic/护士夜班统计（按月份）', NeightShiftByMonthView, layouts.MainLayout),
   setLayout('/statistic/:name', StatisticView, layouts.MainLayout),
+  // 护理绩效
+  setLayout('/nursingPerformance', NursingPerformance, layouts.MainLayout),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
   setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
@@ -72,11 +77,6 @@ const routes: RouteItem[] = [
     redirect: '/statistic/护士排班表'
   },
   setLayout('/setting/:type', SettingView, layouts.MainLayout),
-  // setLayout('/setting', SettingView, layouts.MainLayout),
-  // {
-  //   path: '/statistic',
-  //   redirect: '/statistic/护士排班统计（按班次）'
-  // },
   {
     path: '/badEvents',
     redirect: '/badEvents/search'

@@ -32,6 +32,11 @@ const navList = [
     path: '/badEvents'
   },
   {
+    name: '护理绩效',
+    icon: require('../images/统计查询.svg'),
+    path: '/nursingPerformance'
+  },
+  {
     name: '培训考核',
     icon: require('../images/培训考核.svg'),
     path: ''
