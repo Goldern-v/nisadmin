@@ -39,7 +39,7 @@ const navList = [
   {
     name: '培训考核',
     icon: require('../images/培训考核.svg'),
-    path: ''
+    path: '/test'
   },
   {
     name: '敏感指标',
@@ -54,7 +54,12 @@ const navList = [
   {
     name: '通知公告',
     icon: require('../images/通知公告.svg'),
-    path: ''
+    path: '/notice'
+  },
+  {
+    name: '物流平台',
+    icon: require('../images/通知公告.svg'),
+    path: '/Lms'
   },
   {
     name: '系统设置',

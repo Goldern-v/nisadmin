@@ -42,6 +42,7 @@ export default function NurseCard (props: Props) {
   })
   let { rowNum, data } = props
   let history = store.appStore.history
+  data.currentLevel = 'N' + (parseInt(Math.random() * 100 + '', 10) % 6)
   return (
     <Padding rowNum={rowNum}>
       <Wrapper onClick={() => history.push(`/nurseFileDetail/baseInfo?${qs.stringify(data)}`)}>
