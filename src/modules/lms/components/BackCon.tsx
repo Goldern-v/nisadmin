@@ -8,7 +8,7 @@ import createModal from 'src/libs/createModal'
 import AddLmsModal from '../modal/AddLmsModal'
 import { appStore } from 'src/stores'
 
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker
+const { MonthPicker, RangePicker } = DatePicker
 const Option = Select.Option
 
 export default function BackCon () {
