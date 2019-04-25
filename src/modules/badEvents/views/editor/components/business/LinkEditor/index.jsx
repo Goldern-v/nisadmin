@@ -61,14 +61,14 @@ export default class LinkEditor extends React.Component {
               <label>{this.props.language.linkEditor.openInNewWindow}</label>
             </div>
             <div className='buttons'>
-              <a
+              <button
                 onClick={this.handleUnlink}
                 className='primary button-remove-link pull-left'
-                href='javascript:void(0);'
+                // href='javascript:void(0);'
               >
                 <i className='bfi-close' />
                 <span>{this.props.language.linkEditor.removeLink}</span>
-              </a>
+              </button>
               <button type='button' onClick={this.handleConfirm} className='primary pull-right'>
                 {this.props.language.base.confirm}
               </button>

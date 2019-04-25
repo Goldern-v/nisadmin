@@ -213,7 +213,8 @@ export default class ControlBar extends React.Component {
 
     return (
       <div className={`bf-controlbar ${className || ''}`} style={style} onMouseDown={this.preventDefault}>
-        {allControls.map((item, index) => {
+        {// eslint-disable-next-line
+        allControls.map((item, index) => {
           let itemKey = typeof item === 'string' ? item : item.key
           if (typeof itemKey !== 'string') {
             return null

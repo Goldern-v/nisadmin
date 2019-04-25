@@ -90,6 +90,7 @@ export default (superProps, customBlockRendererFn) => (block) => {
       blockRenderer = item.rendererFn ? item.rendererFn(superProps) : null
       return true
     }
+    return false
   })
 
   if (blockRenderer) {
