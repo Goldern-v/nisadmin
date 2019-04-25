@@ -55,7 +55,7 @@ export default observer(function Awards () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 43
+      width: 50
     },
     {
       title: '时间',

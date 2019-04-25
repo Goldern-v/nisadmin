@@ -76,7 +76,7 @@ export default observer(function ExaminationResults () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 43
+      width: 50
     },
     {
       title: '姓名',

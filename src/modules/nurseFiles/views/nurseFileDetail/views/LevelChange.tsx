@@ -64,7 +64,7 @@ export default observer(function LevelChange () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 43
+      width: 50
     },
     {
       title: '姓名',
@@ -77,7 +77,7 @@ export default observer(function LevelChange () {
       title: '职称聘用时间',
       dataIndex: 'pyTime',
       key: '2',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
