@@ -32,6 +32,10 @@ import AuditsManagementView from 'src/modules/auditsManagement/AuditsManagementV
 
 // 护理绩效
 import NursingPerformance from 'src/modules/nursingPerformance/NursingPerformance'
+import LmsView from 'src/modules/lms/LmsView'
+import testView from 'src/modules/test/testView'
+import NoticeView from 'src/modules/notice/NoticeView'
+import LmsDetails from 'src/modules/lms/views/LmsDetails'
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -74,6 +78,10 @@ const routes: RouteItem[] = [
   setLayout('/badEvents/alanysis/:type', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/auditsManagement', AuditsManagementView, layouts.MainLayout),
+  setLayout('/Lms', LmsView, layouts.MainLayout),
+  setLayout('/test', testView, layouts.MainLayout),
+  setLayout('/notice', NoticeView, layouts.MainLayout),
+  setLayout('/lmsDetails', LmsDetails, layouts.MainLayout),
   {
     path: '/statistic',
     redirect: '/statistic/护士排班表'

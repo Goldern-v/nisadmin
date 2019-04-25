@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table'
-export interface Props extends TableProps<any> {}
+export interface Props extends TableProps<any> {
+  style?: any
+}
 
 export default function BaseTable (props: Props) {
   let { dataSource, columns } = props
@@ -16,7 +18,7 @@ export default function BaseTable (props: Props) {
     props
   )
   return (
-    <Wrapper>
+    <Wrapper style={props.style}>
       <Table {...option} />
     </Wrapper>
   )

@@ -126,6 +126,7 @@ const LeftMenuCon = styled.div`
 `
 const MainCon = styled.div`
   flex: 1;
+  height: 0;
   align-items: stretch;
   display: flex;
 `

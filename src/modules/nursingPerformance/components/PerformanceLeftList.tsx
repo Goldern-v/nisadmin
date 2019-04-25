@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Collapse } from 'antd'
 import store from 'src/stores'
 import PerformanceDataSelect from '../common/PerformanceDataSelect'
-
+import createModal from 'src/libs/createModal'
+import AddNPModal from '../modal/AddNPModal'
 // import { RouteComponentProps } from 'src/components/RouterView'
 // export interface Props extends RouteComponentProps<{ type?: string }> {
 //   aa: string
@@ -41,6 +42,9 @@ const leftListPatientQueryPath = [
   { name: '住院执行单统计表', path: '/statistic/护理人员统计' },
   { name: '患者分布统计表', path: '/statistic/护理人员统计' }
 ]
+
+const addNPModal = createModal(AddNPModal)
+
 export default function BedSituation () {
   const [count, setCount] = useState(0)
   useEffect(() => {
@@ -107,7 +111,8 @@ export default function BedSituation () {
         </PerformanceDataSelectCon>
       </HeadCon>
       <MidCon>{PerformanceDateListDom}</MidCon>
-      <BottomCon>创建新的绩效</BottomCon>
+      <BottomCon onClick={() => addNPModal.show()}>创建新的绩效</BottomCon>
+      <addNPModal.Component />
     </Con>
   )
 }

@@ -12,7 +12,7 @@ const columns: any = [
     key: '1',
     render: (text: any, record: any, index: number) => index + 1,
     align: 'center',
-    width: 43
+    width: 50
   },
   {
     title: '类型',
@@ -129,7 +129,7 @@ const dataSource = [
     提交时间: '2019-04-25 17:09'
   },
   {
-    key: '5',
+    key: '512313',
     类型: '护士档案',
     内容: '档案更新【刘萌萌】',
     科室: '神经内科护理单元',
@@ -138,7 +138,7 @@ const dataSource = [
     提交时间: '2019-04-25 16:44'
   },
   {
-    key: '6',
+    key: '62',
     类型: '不良事件',
     内容: '跌倒事件上报',
     科室: '神经内科护理单元',
