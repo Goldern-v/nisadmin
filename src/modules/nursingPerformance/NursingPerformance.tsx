@@ -5,6 +5,7 @@ import TableModel from './common/TableModel'
 import PerformanceLeftList from './components/PerformanceLeftList'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { 绩效表 } from './view/绩效表'
+import PerformanceMidInput from './components/PerformanceMidInput'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 import { authStore } from 'src/stores/index'
 import { observer } from 'mobx-react-lite'
@@ -29,7 +30,9 @@ export default observer(function NursingPerformance (props: Props) {
           <PerformanceMidTitleCon>
             <div className='titleFirst'> {authStore.selectedDeptName}</div>
             <div className='titleSecond'>2019年3月绩效表</div>
-            <PerformanceMidInputCon />
+            <PerformanceMidInputCon>
+              <PerformanceMidInput />
+            </PerformanceMidInputCon>
           </PerformanceMidTitleCon>
           <TableModel dataSource={绩效表.dataSource} columns={绩效表.columns} />
         </PerformanceMid>
@@ -116,7 +119,7 @@ const PerformanceMidTitleCon = styled.div`
   .titleFirst {
     margin: 0 auto;
     width: 510px;
-    height: 29px;
+    /* height: 29px; */
     font-size: 21px;
     font-family: PingFangSC-Medium;
     font-weight: 500;
@@ -138,5 +141,5 @@ const PerformanceMidTitleCon = styled.div`
   }
 `
 const PerformanceMidInputCon = styled.div`
-  height: 50px;
+  /* height: 50px; */
 `
