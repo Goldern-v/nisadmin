@@ -13,6 +13,7 @@ import CreateReportModal from 'src/modules/badEvents/views/modal/CreateReportMod
 export interface Props extends RouteComponentProps {}
 export default observer(function EventAlanysis (props: Props) {
   const createReportModal = createModal(CreateReportModal)
+  let history = appStore.history
   const [btnList, setBtnList] = useState([
     {
       label: '分析报告：',
@@ -30,11 +31,11 @@ export default observer(function EventAlanysis (props: Props) {
     },
     {
       label: '编辑',
-      type: 'button'
-      // onClick: () => {}
-      // CreateReportModal.show({
-      //   id: '12'
-      // })
+      type: 'button',
+      onClick: () => {
+        history.push(history.location.pathname + '/edit')
+        // console.log('编辑props', props, history.location.pathname)
+      }
     },
     {
       label: '删除',
@@ -158,16 +159,16 @@ export default observer(function EventAlanysis (props: Props) {
     return (
       <TitleBox>
         <h1>东 莞 市 厚 街 医 院</h1>
-        <h3>不良事件统计表</h3>
+        <h3>不良事件分析报告</h3>
         <h4>统计日期：2018-01-01 ~ 2018-01-20</h4>
       </TitleBox>
     )
   }
 
   return (
-    <BaseLayout title='汇总报告' btnList={btnList}>
+    <BaseLayout title='分析报告' btnList={btnList}>
       {/* <BaseTable title={getTitle()} dataSource={tableSource} columns={columns} /> */}
-
+      <createReportModal.Component />
       <PagesBox />
     </BaseLayout>
   )

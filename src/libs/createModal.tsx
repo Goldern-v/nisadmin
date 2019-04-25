@@ -29,6 +29,7 @@ export type ModalComponentProps<O = any> = {
   visible: boolean
   onOk: (output: O) => any
   onCancel: () => any
+  onClose: () => any
 }
 
 /** 模态窗口组件类型 */
@@ -119,11 +120,24 @@ export default function createModal<O = any, I extends ModalComponentProps<O> = 
         this.hide()
       }
 
+      // 关闭窗口
+      private onClose = () => {
+        this.hide()
+      }
+
       // 渲染，传入状态和事件
       public render () {
         const { visible, input } = this.state
         const props: any = { ...this.props, visible, onHide: this.hide }
-        return <OriginalComponent {...input} {...props} onOk={this.onConfirm} onCancel={this.onCancel} />
+        return (
+          <OriginalComponent
+            {...input}
+            {...props}
+            onOk={this.onConfirm}
+            onCancel={this.onCancel}
+            onClose={this.onClose}
+          />
+        )
       }
     }
   }

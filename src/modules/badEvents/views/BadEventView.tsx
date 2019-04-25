@@ -13,6 +13,8 @@ import EventReport from './EventReport/EventReport'
 import EventAlanysis from './EventAlanysis/EventAlanysis'
 import EventFrequentOccurence from './EventFrequentOccurence/EventFrequentOccurence'
 
+import BadEventEditorView from './BadEventEditorView'
+
 // import { BadEventViewModal } from './BadEventViewModal'
 import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps<{ type?: string }> {
@@ -20,11 +22,6 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
 }
 
 const ROUTE_LIST = [
-  // {
-  //   type: 'index',
-  //   component: EventSearch,
-  //   name: '不良事件'
-  // },
   {
     type: 'search',
     component: EventSearch,
@@ -43,23 +40,26 @@ const ROUTE_LIST = [
   {
     type: 'alanysis',
     component: EventAlanysis,
-    name: '不良事件分析报告'
+    name: '不良事件分析报告',
+    childrens: [
+      {
+        type: 'edit',
+        component: BadEventEditorView,
+        name: '不良事件编辑'
+      }
+    ]
   }
 ]
 
 export default function BadEventView (props: Props) {
   // nurseFileDetailViewModal.nurserInfo = appStore.queryObj
-  let history = appStore.history
-  let type = ''
-  try {
-    let pname = history.location.pathname
-    pname = pname.replace('badEvents', '')
-    type = pname.replace(/[/\\]*/g, '')
-  } catch (error) {
-    type = 'search'
-  }
 
-  let currentRouteType: any = type || props.match.params.type || 'search'
+  useEffect(() => {
+    //
+    console.log('useEffect', props, props.match.params)
+  }, [])
+
+  let currentRouteType: any = props.match.params.type || 'search'
   let CurrentRoute: any = ROUTE_LIST.find((item) => item.type === currentRouteType)
 
   return (

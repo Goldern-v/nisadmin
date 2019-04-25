@@ -31,7 +31,9 @@ export default observer(function PagesBox () {
       {/* <NoDataBox>暂无分析报告～</NoDataBox> */}
       <PageBox>
         {pages.map((p: any, index: any) => (
-          <PageImg src={p} key={index} />
+          <div style={{ width: '100%' }}>
+            <PageImg src={p} key={index} />
+          </div>
         ))}
       </PageBox>
     </Wrapper>
