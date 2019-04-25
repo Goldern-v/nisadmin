@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import TopCon from './components/TopCon'
-import LeftMenu from './components/LeftMenu'
+import LeftMenu from 'src/components/LeftMenu'
 import { appStore } from 'src/stores'
 import moment from 'moment'
-import BaseTable from './components/BaseTable'
+import BaseTable from 'src/components/BaseTable'
 import { Radio } from 'antd'
 import BaseChart from './components/BaseChart'
 import StatisticLeftList from './components/StatisticLeftList'
@@ -51,6 +51,7 @@ import { 无菌物品合格率 } from './views2/无菌物品合格率'
 import { 器械清洗合格率 } from './views2/器械清洗合格率'
 import { 包装合格率 } from './views2/包装合格率'
 import { 湿包发生率 } from './views2/湿包发生率'
+import { LEFT_MENU } from './config'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
@@ -407,8 +408,8 @@ export default function Indicator (props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        {/* <LeftMenu routeList={ROUTE_LIST} /> */}
-        <StatisticLeftList />
+        <LeftMenu config={LEFT_MENU} />
+        {/* <StatisticLeftList /> */}
       </LeftMenuCon>
       <MainCon>
         <TopCon />
@@ -457,25 +458,7 @@ const LeftMenuCon = styled.div`
   box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(228, 228, 228, 1);
   border-top: 0;
-  overflow: auto;
-  ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 4px;
-  }
-  ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-  }
-  /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px #ffffff;
-    border-radius: 5px;
-    background-color: #ffffff;
-  }
+  height: 100%;
 `
 const MainCon = styled.div`
   flex: 1;
@@ -495,7 +478,7 @@ const MainInner = styled.div`
   border: 1px solid rgba(219, 224, 228, 1);
   min-height: calc(100vh - 168px);
   margin: 15px;
-  padding: 10px 30px;
+  padding: 10px 0px;
   position: relative;
 `
 
@@ -515,7 +498,6 @@ const Date = styled.div`
   font-size: 13px;
   color: #333;
   text-align: center;
-  margin-bottom: 20px;
 `
 
 const RadioCon = styled.div`

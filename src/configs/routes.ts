@@ -25,6 +25,7 @@ import BadEventView from 'src/modules/badEvents/views/BadEventView'
 
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 import Indicator from 'src/modules/indicator/Indicator'
+import SettingView from 'src/modules/setting/SettingView'
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -64,6 +65,8 @@ const routes: RouteItem[] = [
 
   setLayout('/badEvents/', BadEventView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
+  setLayout('/setting/:type', SettingView, layouts.MainLayout),
+  // setLayout('/setting', SettingView, layouts.MainLayout),
   // {
   //   path: '/statistic',
   //   redirect: '/statistic/护士排班统计（按班次）'
@@ -75,6 +78,10 @@ const routes: RouteItem[] = [
   {
     path: '/indicator',
     redirect: '/indicator/床护比统计'
+  },
+  {
+    path: '/setting',
+    redirect: '/setting/物品分类字典设置'
   },
   {
     path: '/',
