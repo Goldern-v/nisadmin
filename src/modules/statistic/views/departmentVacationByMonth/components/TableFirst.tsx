@@ -62,7 +62,7 @@ export default function BedSituation () {
       xj: '11300'
     },
     {
-      xh: 1,
+      xh: 2,
       xm: '呼吸内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
@@ -76,7 +76,7 @@ export default function BedSituation () {
       xj: '11300'
     },
     {
-      xh: 1,
+      xh: 3,
       xm: '消化内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
@@ -90,7 +90,7 @@ export default function BedSituation () {
       xj: '11300'
     },
     {
-      xh: 1,
+      xh: 4,
       xm: '心血管内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
@@ -104,7 +104,7 @@ export default function BedSituation () {
       xj: '11300'
     },
     {
-      xh: 1,
+      xh: 5,
       xm: '血液内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
@@ -118,7 +118,7 @@ export default function BedSituation () {
       xj: '11300'
     },
     {
-      xh: 1,
+      xh: 6,
       xm: '肾内科护理单元',
       mounth1: '2900',
       mounth2: '3000',
@@ -177,6 +177,9 @@ export default function BedSituation () {
                 <td />
                 <td />
                 <td />
+                <td />
+                <td />
+                <td />
               </tr>
             </table>
           </div>
@@ -187,14 +190,9 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
-  width: 970px;
-  overflow: hidden;
-  overflow-x: auto;
-  display: flex;
-  background-color: #ffffff;
   .tableCon {
-    background-color: #ffffff;
     table {
+      width: 100%;
       border: 1px solid #d6d6d6;
       border-top: none;
       /* 整体字体设置下*/
@@ -211,7 +209,7 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         height: 37px;
         background: rgba(242, 244, 245, 1);
-        min-width: 70px;
+        width: 6%;
       }
       /* 设置整体td */
       td {
@@ -219,64 +217,52 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         border-top: none;
         height: 37px;
-        min-width: 70px;
+        width: 6%;
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        min-width: 30px;
+        width: 3%;
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        min-width: 125px;
+        width: 8%;
       }
-      th:nth-of-type(12) {
+      th:nth-of-type(3) {
         box-sizing: border-box;
-        min-width: 80px;
+        width: 6%;
       }
-      th:nth-of-type(13) {
-        box-sizing: border-box;
-        min-width: 80px;
-      }
-      th:nth-of-type(14) {
-        box-sizing: border-box;
-        min-width: 80px;
+      th:nth-of-type(9) {
+        /* width: 60px; */
       }
     }
     .tableMid {
-      /* width: 960px; */
       overflow-x: hidden;
       overflow-y: auto;
-      height: 400px;
       .tableMidCon {
-        /* width: 960px; */
         table {
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
+          }
+          td {
+            box-sizing: border-box;
+            width: 6%;
           }
           .addRowClass {
             background: rgba(228, 233, 235, 1) !important;
           }
           td:nth-of-type(1) {
             box-sizing: border-box;
-            min-width: 30px;
+            width: 3%;
           }
           td:nth-of-type(2) {
             box-sizing: border-box;
-            min-width: 125px;
+            width: 8%;
           }
-          td:nth-of-type(12) {
+          td:nth-of-type(3) {
             box-sizing: border-box;
-            min-width: 80px;
-          }
-          td:nth-of-type(13) {
-            box-sizing: border-box;
-            min-width: 80px;
-          }
-          td:nth-of-type(14) {
-            box-sizing: border-box;
-            min-width: 80px;
+            width: 6%;
           }
         }
       }

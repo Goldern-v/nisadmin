@@ -1,5 +1,4 @@
-// { name: '科室排班统计（按班次）', path: '/statistic/科室排班统计（按班次）', component: 'DepartmentByShiftView' },
-// 科室排班统计（按班次）
+// 护士排班（按班次）
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 
@@ -25,28 +24,30 @@ export default function StatisticView () {
     <Con>
       {/* 对应表 */}
       <StatisticMIdHeader />
-      {/* 科室排班统计（按班次） */}
-      <TableFirst />
-      <div className='NurseByShiftChooseCon'>
-        <NurseByShiftChoose />
-      </div>
+      <MidMidCon>
+        <TableCon>
+          <TableFirst />
+        </TableCon>
+        <div className='NurseByShiftChooseCon'>
+          <NurseByShiftChoose />
+        </div>
+      </MidMidCon>
     </Con>
   )
 }
 
-const Con = styled.div`
+const Con = styled.div``
+const MidMidCon = styled.div`
   width: 100%;
-  height: 629px;
-  /* display: flex; */
-  background: rgba(248, 248, 248, 1);
-  position: relative;
-  overflow: hidden;
+  display: flex;
   .NurseByShiftChooseCon {
-    position: absolute;
-    top: 0;
+    width: 222px;
+    position: relative;
+    top: -52px;
     right: 0;
   }
 `
-const StatisticRightCon = styled.div`
+const TableCon = styled.div`
   flex: 1;
+  width: 0;
 `

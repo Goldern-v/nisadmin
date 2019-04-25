@@ -33,6 +33,25 @@ export default function BedSituation () {
     })
     parentNode.classList.add('addRowClass')
   }
+  // Cache Td date
+  const tdCacheDate = [
+    { 序列: 1, 科室: '骨科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 2, 科室: '显微手足护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 3, 科室: '整形外科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 4, 科室: '普外科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 5, 科室: '介入科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 }
+  ]
+  // Cache Td DOM
+  const cacheGetDom = tdCacheDate.map((itemTr: any, index: number) => (
+    <tr key={index} onClick={trClickChange}>
+      <td>{itemTr.序列}</td>
+      <td>{itemTr.科室}</td>
+      {getShiftClass.map((itemTd: any, indexTd: number) => (
+        <td key={indexTd}>{itemTr[itemTd]}</td>
+      ))}
+      <td />
+    </tr>
+  ))
   // th DOM
   const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
   const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
@@ -40,7 +59,7 @@ export default function BedSituation () {
   const getTdDom = getTableList.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
       <td>{itemTr.序列}</td>
-      <td>{itemTr.姓名}</td>
+      <td>{itemTr.科室}</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
       ))}
@@ -63,7 +82,7 @@ export default function BedSituation () {
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>{getTdDom}</table>
+            <table>{cacheGetDom}</table>
           </div>
         </div>
       </div>
@@ -72,10 +91,10 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
-  width: 100%;
+  padding-right: 5%;
   display: flex;
   .tableCon {
-    /* width: 540px; */
+    width: 98%;
     table {
       width: 100%;
       border: 1px solid #d6d6d6;
@@ -94,7 +113,7 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         height: 37px;
         background: rgba(242, 244, 245, 1);
-        width: 60px;
+        width: 6%;
       }
       /* 设置整体td */
       td {
@@ -102,55 +121,56 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         border-top: none;
         height: 37px;
-        width: 60px;
+        width: 6%;
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        width: 30px;
+        width: 3%;
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        width: 80px;
+        width: 8%;
       }
       th:nth-of-type(3) {
         box-sizing: border-box;
-        width: 60px;
+        width: 6%;
       }
       th:nth-of-type(9) {
         /* width: 60px; */
       }
     }
     .tableMid {
-      width: 640px;
-      overflow-x: hidden;
-      overflow-y: auto;
-      height: 180px;
+      width: 100%;
+      overflow: hidden;
+      /* overflow-y: auto; */
+      /* height: 380px; */
       .tableMidCon {
-        width: 640px;
+        width: calc(100%+20px);
         table {
+          /* width: 100%; */
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
           }
           td {
             box-sizing: border-box;
-            width: 60px;
+            width: 6%;
           }
           .addRowClass {
             background: rgba(228, 233, 235, 1) !important;
           }
           td:nth-of-type(1) {
             box-sizing: border-box;
-            width: 30px;
+            width: 3%;
           }
           td:nth-of-type(2) {
             box-sizing: border-box;
-            width: 80px;
+            width: 8%;
           }
           td:nth-of-type(3) {
             box-sizing: border-box;
-            width: 60px;
+            min-width: 6%;
           }
         }
       }

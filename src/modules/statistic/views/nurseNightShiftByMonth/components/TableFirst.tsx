@@ -43,199 +43,79 @@ export default function BedSituation () {
     '2019年7月',
     '2019年8月',
     '2019年9月',
-    '2019年10月',
-    '2019年11月',
-    '2019年12月',
     '合计'
   ]
   // cache td data
   const tdData = [
     {
       xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
+      xm: '杜丽娜',
+      month1: '2903',
+      month2: '3005',
+      month3: '2302',
+      month4: '3106',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '11316'
     },
     {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
+      xh: 2,
+      xm: '王重光',
+      month1: '2810',
+      month2: '3102',
+      month3: '2305',
+      month4: '3123',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '11340'
     },
     {
-      xh: 1,
+      xh: 3,
       xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
+      month1: '2873',
+      month2: '3103',
+      month3: '2607',
+      month4: '3109',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '11692'
     },
     {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
+      xh: 4,
+      xm: '周倩',
+      month1: '3009',
+      month2: '2863',
+      month3: '2532',
+      month4: '2910',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '11314'
     },
     {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
-    },
-    {
-      xh: 1,
-      xm: '王伟',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      mounth10: '0',
-      mounth11: '0',
-      mounth12: '0',
-      xj: '11300'
+      xh: 5,
+      xm: '王春蓝',
+      month1: '2965',
+      month2: '3231',
+      month3: '2987',
+      month4: '2993',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '12176'
     }
   ]
   // cache th DOM
@@ -245,18 +125,15 @@ export default function BedSituation () {
     <tr key={index} onClick={trClickChange}>
       <td>{itemTr.xh}</td>
       <td>{itemTr.xm}</td>
-      <td>{itemTr.mounth1}</td>
-      <td>{itemTr.mounth2}</td>
-      <td>{itemTr.mounth3}</td>
-      <td>{itemTr.mounth4}</td>
-      <td>{itemTr.mounth5}</td>
-      <td>{itemTr.mounth6}</td>
-      <td>{itemTr.mounth7}</td>
-      <td>{itemTr.mounth8}</td>
-      <td>{itemTr.mounth9}</td>
-      <td>{itemTr.mounth10}</td>
-      <td>{itemTr.mounth11}</td>
-      <td>{itemTr.mounth12}</td>
+      <td>{itemTr.month1}</td>
+      <td>{itemTr.month2}</td>
+      <td>{itemTr.month3}</td>
+      <td>{itemTr.month4}</td>
+      <td>{itemTr.month5}</td>
+      <td>{itemTr.month6}</td>
+      <td>{itemTr.month7}</td>
+      <td>{itemTr.month8}</td>
+      <td>{itemTr.month9}</td>
       <td>{itemTr.xj}</td>
     </tr>
   ))
@@ -277,21 +154,18 @@ export default function BedSituation () {
             <table>
               {tdDom}
               <tr>
-                <td>合计</td>
                 <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
+                <td>合 计</td>
+                <td>14560</td>
+                <td>15304</td>
+                <td>12733</td>
+                <td>15241</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>57838</td>
               </tr>
             </table>
           </div>
@@ -302,14 +176,9 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
-  width: 970px;
-  overflow: hidden;
-  overflow-x: auto;
-  display: flex;
-  background-color: #ffffff;
   .tableCon {
-    background-color: #ffffff;
     table {
+      width: 100%;
       border: 1px solid #d6d6d6;
       border-top: none;
       /* 整体字体设置下*/
@@ -326,7 +195,7 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         height: 37px;
         background: rgba(242, 244, 245, 1);
-        min-width: 70px;
+        width: 6%;
       }
       /* 设置整体td */
       td {
@@ -334,64 +203,52 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         border-top: none;
         height: 37px;
-        min-width: 70px;
+        width: 6%;
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        min-width: 30px;
+        width: 3%;
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        min-width: 50px;
+        width: 8%;
       }
-      th:nth-of-type(12) {
+      th:nth-of-type(3) {
         box-sizing: border-box;
-        min-width: 80px;
+        width: 6%;
       }
-      th:nth-of-type(13) {
-        box-sizing: border-box;
-        min-width: 80px;
-      }
-      th:nth-of-type(14) {
-        box-sizing: border-box;
-        min-width: 80px;
+      th:nth-of-type(9) {
+        /* width: 60px; */
       }
     }
     .tableMid {
-      /* width: 960px; */
       overflow-x: hidden;
       overflow-y: auto;
-      height: 400px;
       .tableMidCon {
-        /* width: 960px; */
         table {
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
+          }
+          td {
+            box-sizing: border-box;
+            width: 6%;
           }
           .addRowClass {
             background: rgba(228, 233, 235, 1) !important;
           }
           td:nth-of-type(1) {
             box-sizing: border-box;
-            min-width: 30px;
+            width: 3%;
           }
           td:nth-of-type(2) {
             box-sizing: border-box;
-            min-width: 50px;
+            width: 8%;
           }
-          td:nth-of-type(12) {
+          td:nth-of-type(3) {
             box-sizing: border-box;
-            min-width: 80px;
-          }
-          td:nth-of-type(13) {
-            box-sizing: border-box;
-            min-width: 80px;
-          }
-          td:nth-of-type(14) {
-            box-sizing: border-box;
-            min-width: 80px;
+            width: 6%;
           }
         }
       }
