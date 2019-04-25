@@ -25,29 +25,29 @@ export default function BedSituation () {
             <td>0.5%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
+            <td>病危病重</td>
+            <td>5</td>
+            <td>1%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
+            <td>特级护理</td>
+            <td>188</td>
+            <td>50%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
+            <td>一级护理</td>
+            <td>12</td>
+            <td>12%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
+            <td>高危跌倒</td>
+            <td>10</td>
+            <td>10%</td>
           </tr>
           <tr>
-            <td />
-            <td />
-            <td />
+            <td>高危压疮</td>
+            <td>2</td>
+            <td>0.2%</td>
           </tr>
         </table>
       </Mid>

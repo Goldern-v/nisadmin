@@ -5,10 +5,10 @@ import { Chart, Tooltip, Axis, Bar } from 'viser-react'
 export default function BedSituation () {
   const data = [
     { year: '护士', sales: 38 },
-    { year: '护师', sales: 52 },
-    { year: '主管护师', sales: 61 },
-    { year: '副主任护师', sales: 120 },
-    { year: '主任护师', sales: 48 }
+    { year: '护师', sales: 89 },
+    { year: '主管护师', sales: 46 },
+    { year: '副主任护师', sales: 38 },
+    { year: '主任护师', sales: 16 }
   ]
   const scale = [
     {
@@ -36,7 +36,7 @@ export default function BedSituation () {
 const ChartCon = styled.div`
   canvas {
     width: 100% !important;
-    margin: -10px 0 0 -46px;
+    margin: -15px 0 0 -46px;
     /* width: 400px !important; */
   }
 `

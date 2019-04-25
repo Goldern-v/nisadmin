@@ -23,28 +23,40 @@ export default function BedSituation () {
             <td>200</td>
           </tr>
           <tr>
-            <td />
-            <td />
+            <td>现有病人</td>
+            <td>188</td>
           </tr>
           <tr>
-            <td />
-            <td />
+            <td>今日入院</td>
+            <td>12</td>
           </tr>
           <tr>
-            <td />
-            <td />
+            <td>他科转入</td>
+            <td>10</td>
           </tr>
           <tr>
-            <td />
-            <td />
+            <td>转往他科</td>
+            <td>2</td>
           </tr>
           <tr>
-            <td />
-            <td />
+            <td>今日出院</td>
+            <td>16</td>
           </tr>
           <tr>
-            <td />
-            <td />
+            <td>今日手术</td>
+            <td>22</td>
+          </tr>
+          <tr>
+            <td>明日手术</td>
+            <td>32</td>
+          </tr>
+          <tr>
+            <td>新生儿</td>
+            <td>20</td>
+          </tr>
+          <tr>
+            <td>死亡</td>
+            <td>0</td>
           </tr>
         </table>
       </Mid>

@@ -68,7 +68,7 @@ export default observer(function Awards () {
       title: '获奖/推广创新项目名称',
       dataIndex: '3',
       key: '3',
-      width: 200,
+      width: 220,
       align: 'center'
     },
     {
