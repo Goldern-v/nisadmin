@@ -1,0 +1,65 @@
+import styled from 'styled-components'
+import React, { useState, useEffect } from 'react'
+import { RouteComponentProps } from 'react-router'
+import SelectCon from './components/SelectCon'
+import BaseTabs from 'src/components/BaseTabs'
+import AuditsTable1 from './components/AuditsTable1'
+import AuditsTable2 from './components/AuditsTable2'
+import AuditsTable3 from './components/AuditsTable3'
+import AuditsTable4 from './components/AuditsTable4'
+import AuditsTable5 from './components/AuditsTable5'
+import AuditsTable6 from './components/AuditsTable6'
+
+export interface Props extends RouteComponentProps {}
+
+const TABS_LIST = [
+  {
+    title: '待我审核',
+    component: <AuditsTable1 />
+  },
+  {
+    title: '待护士长审核',
+    component: <AuditsTable2 />
+  },
+  {
+    title: '护士长审核退回',
+    component: <AuditsTable3 />
+  },
+  {
+    title: '待护理部审核',
+    component: <AuditsTable4 />
+  },
+  {
+    title: '护理部审核退回',
+    component: <AuditsTable5 />
+  },
+  {
+    title: '审核通过',
+    component: <AuditsTable6 />
+  }
+]
+
+export default function AuditsManagementView () {
+  return (
+    <Wrapper>
+      <SelectCon />
+      <ScrollCon>
+        <BaseTabs config={TABS_LIST} />
+      </ScrollCon>
+    </Wrapper>
+  )
+}
+const Wrapper = styled.div`
+  padding: ${(p) => p.theme.$mcp};
+  padding-bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
+
+const ScrollCon = styled.div`
+  flex: 1;
+  overflow: auto;
+  margin: 0 -15px;
+  padding: ${(p) => p.theme.$mcp};
+`

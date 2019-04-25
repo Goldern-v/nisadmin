@@ -14,7 +14,7 @@ const navList = [
   {
     name: '审核管理',
     icon: require('../images/审核管理.svg'),
-    path: ''
+    path: '/auditsManagement'
   },
   {
     name: '护士排班',
