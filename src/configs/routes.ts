@@ -28,6 +28,7 @@ import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 import Indicator from 'src/modules/indicator/Indicator'
 import SettingView from 'src/modules/setting/SettingView'
+import AuditsManagementView from 'src/modules/auditsManagement/AuditsManagementView'
 
 // 护理绩效
 import NursingPerformance from 'src/modules/nursingPerformance/NursingPerformance'
@@ -72,6 +73,7 @@ const routes: RouteItem[] = [
 
   setLayout('/badEvents/alanysis/:type', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
+  setLayout('/auditsManagement', AuditsManagementView, layouts.MainLayout),
   {
     path: '/statistic',
     redirect: '/statistic/护士排班表'
