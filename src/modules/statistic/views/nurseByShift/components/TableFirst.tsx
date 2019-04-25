@@ -1,12 +1,14 @@
-// 护士白班统计（按月份)
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
+import service from 'src/services/api'
+import schedulingStatisticsApi from 'src/modules/statistic/views/api/schedulingStatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
+  const [getTableList, setGetTableList] = useState([])
   useEffect(() => {
     // console.log(222)
     emitter.removeAllListeners('设置班次大类')
@@ -18,7 +20,11 @@ export default function BedSituation () {
       setGetCheckboxItem(checkboxItem)
     })
     let tableData = getShiftClass.concat(getCheckboxItem).join(',')
-  })
+    schedulingStatisticsApi.postNurseByShiftView(tableData).then((res: any) => {
+      setGetTableList(res.data)
+      console.log(getTableList)
+    })
+  }, [])
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -27,161 +33,56 @@ export default function BedSituation () {
     })
     parentNode.classList.add('addRowClass')
   }
-  // th DOM
-  // const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
-  // const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>
-  // cache th data
-  const thData = [
-    '序号',
-    '姓名',
-    '2019年1月',
-    '2019年2月',
-    '2019年3月',
-    '2019年4月',
-    '2019年5月',
-    '2019年6月',
-    '2019年7月',
-    '2019年8月',
-    '2019年9月',
-    '合计'
+  // Cache Td date
+  const tdCacheDate = [
+    { 序列: 1, 姓名: '杨好', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 2, 姓名: '王佩', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 3, 姓名: '李楚清', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 4, 姓名: '祝晓春', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 5, 姓名: '卞晓丽', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 }
   ]
-  // cache td data
-  const tdData = [
-    {
-      xh: 1,
-      xm: '祝晓春',
-      mounth1: '2903',
-      mounth2: '3005',
-      mounth3: '2302',
-      mounth4: '3106',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11316'
-    },
-    {
-      xh: 2,
-      xm: '杜丽娜',
-      mounth1: '2903',
-      mounth2: '3005',
-      mounth3: '2302',
-      mounth4: '3106',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11316'
-    },
-    {
-      xh: 3,
-      xm: '王重光',
-      mounth1: '2816',
-      mounth2: '3103',
-      mounth3: '2303',
-      mounth4: '3124',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11346'
-    },
-    {
-      xh: 4,
-      xm: '赵平志',
-      mounth1: '2873',
-      mounth2: '3103',
-      mounth3: '2607',
-      mounth4: '3109',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11692'
-    },
-    {
-      xh: 5,
-      xm: '王春蓝',
-      mounth1: '3009',
-      mounth2: '2863',
-      mounth3: '2532',
-      mounth4: '2910',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11314'
-    },
-    {
-      xh: 6,
-      xm: '王安水',
-      mounth1: '2965',
-      mounth2: '3231',
-      mounth3: '2987',
-      mounth4: '2993',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '12176'
-    }
-  ]
-  // cache th DOM
-  const thDom = thData.map((item: any) => <th key={item.toString()}>{item}</th>)
-  // cache td DOM
-  const tdDom = tdData.map((itemTr: any, index: any) => (
+  // Cache Td DOM
+  const cacheGetDom = tdCacheDate.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.xh}</td>
-      <td>{itemTr.xm}</td>
-      <td>{itemTr.mounth1}</td>
-      <td>{itemTr.mounth2}</td>
-      <td>{itemTr.mounth3}</td>
-      <td>{itemTr.mounth4}</td>
-      <td>{itemTr.mounth5}</td>
-      <td>{itemTr.mounth6}</td>
-      <td>{itemTr.mounth7}</td>
-      <td>{itemTr.mounth8}</td>
-      <td>{itemTr.mounth9}</td>
-      <td>{itemTr.xj}</td>
+      <td>{itemTr.序列}</td>
+      <td>{itemTr.姓名}</td>
+      {getShiftClass.map((itemTd: any, indexTd: number) => (
+        <td key={indexTd}>{itemTr[itemTd]}</td>
+      ))}
+      <td />
+    </tr>
+  ))
+  // th DOM
+  const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
+  const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
+  // td DOM
+  const getTdDom = getTableList.map((itemTr: any, index: number) => (
+    <tr key={index} onClick={trClickChange}>
+      <td>{itemTr.序列}</td>
+      <td>{itemTr.姓名}</td>
+      {getShiftClass.map((itemTd: any, indexTd: number) => (
+        <td key={indexTd}>{itemTr[itemTd]}</td>
+      ))}
+      <td>66</td>
     </tr>
   ))
   return (
-    <Con className='addClass'>
+    <Con>
       <div className='tableCon'>
         <div className='tableHead'>
           <table>
             <tr>
-              {thDom}
-              {/* {getShiftClassDom} */}
-              {/* {getCheckboxItemDom} */}
+              <th>序号</th>
+              <th>姓名</th>
+              {getShiftClassDom}
+              {getCheckboxItemDom}
+              <th>合计</th>
             </tr>
           </table>
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>
-              {tdDom}
-              <tr>
-                <td />
-                <td>合 计</td>
-                <td>17370</td>
-                <td>18406</td>
-                <td>18038</td>
-                <td>18364</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>60961</td>
-              </tr>
-            </table>
+            <table>{getTdDom && cacheGetDom}</table>
           </div>
         </div>
       </div>
@@ -190,7 +91,10 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
+  padding-right: 5%;
+  display: flex;
   .tableCon {
+    width: 98%;
     table {
       width: 100%;
       border: 1px solid #d6d6d6;
@@ -238,10 +142,14 @@ const Con = styled.div`
       }
     }
     .tableMid {
-      overflow-x: hidden;
-      overflow-y: auto;
+      width: 100%;
+      overflow: hidden;
+      /* overflow-y: auto; */
+      /* height: 380px; */
       .tableMidCon {
+        width: calc(100%+20px);
         table {
+          /* width: 100%; */
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
           }
@@ -262,7 +170,7 @@ const Con = styled.div`
           }
           td:nth-of-type(3) {
             box-sizing: border-box;
-            width: 6%;
+            min-width: 6%;
           }
         }
       }

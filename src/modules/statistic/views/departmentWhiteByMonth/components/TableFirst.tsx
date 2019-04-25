@@ -49,86 +49,86 @@ export default function BedSituation () {
   const tdData = [
     {
       xh: 1,
-      xm: '神经内科护理单元',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      xm: '整形外科护理单元',
+      month1: '2900',
+      month2: '3000',
+      month3: '2300',
+      month4: '3100',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '11300'
     },
     {
-      xh: 1,
-      xm: '呼吸内科护理单元',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      xh: 2,
+      xm: '产科护理单元',
+      month1: '2900',
+      month2: '3000',
+      month3: '2300',
+      month4: '3100',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '11300'
     },
     {
-      xh: 1,
-      xm: '消化内科护理单元',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      xh: 3,
+      xm: '耳鼻咽喉护理单元',
+      month1: '2900',
+      month2: '3000',
+      month3: '2300',
+      month4: '3100',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '11300'
     },
     {
-      xh: 1,
-      xm: '心血管内科护理单元',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      xh: 4,
+      xm: '感染科护理单元',
+      month1: '2900',
+      month2: '3000',
+      month3: '2300',
+      month4: '3100',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '11300'
     },
     {
-      xh: 1,
-      xm: '血液内科护理单元',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      xh: 5,
+      xm: '门诊护理',
+      month1: '2900',
+      month2: '3000',
+      month3: '2300',
+      month4: '3100',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '11300'
     },
     {
-      xh: 1,
-      xm: '肾内科护理单元',
-      mounth1: '2900',
-      mounth2: '3000',
-      mounth3: '2300',
-      mounth4: '3100',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      xh: 6,
+      xm: '商务体检护理单元',
+      month1: '2900',
+      month2: '3000',
+      month3: '2300',
+      month4: '3100',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '11300'
     }
   ]
@@ -139,15 +139,15 @@ export default function BedSituation () {
     <tr key={index} onClick={trClickChange}>
       <td>{itemTr.xh}</td>
       <td>{itemTr.xm}</td>
-      <td>{itemTr.mounth1}</td>
-      <td>{itemTr.mounth2}</td>
-      <td>{itemTr.mounth3}</td>
-      <td>{itemTr.mounth4}</td>
-      <td>{itemTr.mounth5}</td>
-      <td>{itemTr.mounth6}</td>
-      <td>{itemTr.mounth7}</td>
-      <td>{itemTr.mounth8}</td>
-      <td>{itemTr.mounth9}</td>
+      <td>{itemTr.month1}</td>
+      <td>{itemTr.month2}</td>
+      <td>{itemTr.month3}</td>
+      <td>{itemTr.month4}</td>
+      <td>{itemTr.month5}</td>
+      <td>{itemTr.month6}</td>
+      <td>{itemTr.month7}</td>
+      <td>{itemTr.month8}</td>
+      <td>{itemTr.month9}</td>
       <td>{itemTr.xj}</td>
     </tr>
   ))
@@ -177,6 +177,9 @@ export default function BedSituation () {
                 <td />
                 <td />
                 <td />
+                <td />
+                <td />
+                <td />
               </tr>
             </table>
           </div>
@@ -187,14 +190,9 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
-  width: 970px;
-  overflow: hidden;
-  overflow-x: auto;
-  display: flex;
-  background-color: #ffffff;
   .tableCon {
-    background-color: #ffffff;
     table {
+      width: 100%;
       border: 1px solid #d6d6d6;
       border-top: none;
       /* 整体字体设置下*/
@@ -211,7 +209,7 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         height: 37px;
         background: rgba(242, 244, 245, 1);
-        min-width: 70px;
+        width: 6%;
       }
       /* 设置整体td */
       td {
@@ -219,64 +217,52 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         border-top: none;
         height: 37px;
-        min-width: 70px;
+        width: 6%;
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        min-width: 30px;
+        width: 3%;
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        min-width: 125px;
+        width: 8%;
       }
-      th:nth-of-type(12) {
+      th:nth-of-type(3) {
         box-sizing: border-box;
-        min-width: 80px;
+        width: 6%;
       }
-      th:nth-of-type(13) {
-        box-sizing: border-box;
-        min-width: 80px;
-      }
-      th:nth-of-type(14) {
-        box-sizing: border-box;
-        min-width: 80px;
+      th:nth-of-type(9) {
+        /* width: 60px; */
       }
     }
     .tableMid {
-      /* width: 960px; */
       overflow-x: hidden;
       overflow-y: auto;
-      height: 400px;
       .tableMidCon {
-        /* width: 960px; */
         table {
           tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
+          }
+          td {
+            box-sizing: border-box;
+            width: 6%;
           }
           .addRowClass {
             background: rgba(228, 233, 235, 1) !important;
           }
           td:nth-of-type(1) {
             box-sizing: border-box;
-            min-width: 30px;
+            width: 3%;
           }
           td:nth-of-type(2) {
             box-sizing: border-box;
-            min-width: 125px;
+            width: 8%;
           }
-          td:nth-of-type(12) {
+          td:nth-of-type(3) {
             box-sizing: border-box;
-            min-width: 80px;
-          }
-          td:nth-of-type(13) {
-            box-sizing: border-box;
-            min-width: 80px;
-          }
-          td:nth-of-type(14) {
-            box-sizing: border-box;
-            min-width: 80px;
+            width: 6%;
           }
         }
       }

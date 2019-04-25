@@ -90,37 +90,92 @@ export default function StatisticView () {
   return (
     <Con>
       {/* <StatisticLeftList {...props} aa='11' /> */}
-      <StatisticLeftList />
-      <StatisticRightCon>
+      <ConLeft>
+        <StatisticLeftList />
+      </ConLeft>
+      <ConRight>
         <StatisticHeader />
         <StatisticMid>
           {/* 对应表 */}
-          {CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}
-          {NursingStatisticsRoute && NursingStatisticsRoute.component && <NursingStatisticsRoute.component />}
+          {CurrentRoute && CurrentRoute.component ? <CurrentRoute.component /> : <NurseSchedulingView />}
           {/* <NurseNightShiftByMonthView /> */}
         </StatisticMid>
-      </StatisticRightCon>
+      </ConRight>
     </Con>
   )
 }
 
 const Con = styled.div`
-  /* width: 100%; */
+  width: 100%;
+  height: 100%;
   display: flex;
+  align-items: stretch;
   background: rgba(248, 248, 248, 1);
   overflow: hidden;
 `
-const StatisticRightCon = styled.div`
+const ConLeft = styled.div`
+  width: 220px;
+  z-index: 1;
+  background: rgba(248, 248, 248, 1);
+  box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(228, 228, 228, 1);
+  /* border: 1px solid red; */
+  border-top: 0;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
+`
+const ConRight = styled.div`
   flex: 1;
+  width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `
 const StatisticMid = styled.div`
+  flex: 1;
+  height: 0;
+  /* width: 0; */
   margin: 14px;
   padding: 18px 10px;
-  height: 712px;
   background-color: #fff;
   /* height: 330px; */
   /* background: rgba(255, 255, 255, 1); */
   border-radius: 5px;
   border: 1px solid rgba(161, 175, 179, 1);
-  overflow: hidden;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
 `

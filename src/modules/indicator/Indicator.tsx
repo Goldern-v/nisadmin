@@ -397,6 +397,7 @@ export default function Indicator (props: Props) {
   let [showType, setShowType] = useState('详情')
   useEffect(() => {
     setShowType('详情')
+    console.log(props)
   }, [props.match.params.name])
   let currentRouteName = props.match.params.name
   let currentRoute = ROUTE_LIST.find((item) => item.name === currentRouteName)

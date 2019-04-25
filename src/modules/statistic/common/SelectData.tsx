@@ -48,11 +48,13 @@ export default function SelectData () {
     </SelectCon>
   )
 }
-
 const SelectCon = styled.div`
+  width: 25%;
   display: flex;
   align-items: center;
   .ant-calendar-picker-input {
-    width: 280px;
+  }
+  .ant-calendar-picker {
+    flex: 1;
   }
 `
