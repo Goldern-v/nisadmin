@@ -47,14 +47,15 @@ enum StatusCode {
 export function onResponseFulfilled (response: AxiosResponse) {
   let { code, msg, data } = response.data
   let status = response.status
-  switch (parseInt(code, 10)) {
+  console.log(status, 'response')
+  switch (status) {
     case StatusCode.error: {
       console.error(response, code, response.data.desc || '')
       // message.error(response.data.desc || msg)
       return Promise.reject(response.data.desc || msg)
     }
     case StatusCode.logout: {
-      // message.warning('登录超时，请重新登录 ')
+      message.warning('登录超时，请重新登录 ')
       sessionStorage.setItem('adminNurse', '')
       sessionStorage.setItem('authToken', '')
       sessionStorage.setItem('user', '')
@@ -65,13 +66,13 @@ export function onResponseFulfilled (response: AxiosResponse) {
       return response.data
     }
     case StatusCode.notFound: {
-      console.log('404响应', response.data, code, msg, data)
-      return response
+      message.warning('404响应')
+      return Promise.reject()
     }
     case StatusCode.badGateWay: {
       // message.warning('系统部署中...')
       console.log('502响应', response.data, code, msg, data)
-      return response
+      return Promise.reject()
     }
     default:
       if (status === 200) {
@@ -95,6 +96,8 @@ export function onResponseRejected (error: Error) {
   //   description: `code: ${(error as any).response.status} ${(error as any).response.statusText}`,
   //   onClick: () => {
   console.log('服务器开小差了', (error as any).response)
+  message.warning('服务器开小差了 ')
   //   }
   // })
+  return Promise.reject()
 }
