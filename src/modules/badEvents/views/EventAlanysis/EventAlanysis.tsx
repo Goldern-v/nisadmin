@@ -13,6 +13,7 @@ import CreateReportModal from 'src/modules/badEvents/views/modal/CreateReportMod
 export interface Props extends RouteComponentProps {}
 export default observer(function EventAlanysis (props: Props) {
   const createReportModal = createModal(CreateReportModal)
+  let history = appStore.history
   const [btnList, setBtnList] = useState([
     {
       label: '分析报告：',
@@ -30,11 +31,11 @@ export default observer(function EventAlanysis (props: Props) {
     },
     {
       label: '编辑',
-      type: 'button'
-      // onClick: () => {}
-      // CreateReportModal.show({
-      //   id: '12'
-      // })
+      type: 'button',
+      onClick: () => {
+        history.push(history.location.pathname + '/edit')
+        // console.log('编辑props', props, history.location.pathname)
+      }
     },
     {
       label: '删除',

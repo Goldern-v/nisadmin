@@ -22,6 +22,8 @@ import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/Nurs
 import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
 
 import BadEventView from 'src/modules/badEvents/views/BadEventView'
+import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
+// import { BadEventConfig } from 'src/modules/badEvents/views/config/badEventConfig'
 
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
 import Indicator from 'src/modules/indicator/Indicator'
@@ -63,7 +65,7 @@ const routes: RouteItem[] = [
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
 
-  setLayout('/badEvents/', BadEventView, layouts.MainLayout),
+  setLayout('/badEvents/alanysis/:type', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/setting/:type', SettingView, layouts.MainLayout),
   // setLayout('/setting', SettingView, layouts.MainLayout),
@@ -71,6 +73,10 @@ const routes: RouteItem[] = [
   //   path: '/statistic',
   //   redirect: '/statistic/护士排班统计（按班次）'
   // },
+  {
+    path: '/badEvents',
+    redirect: '/badEvents/search'
+  },
   {
     path: '/nurseFileDetail',
     redirect: '/nurseFileDetail/baseInfo'
