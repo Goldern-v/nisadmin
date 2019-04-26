@@ -86,7 +86,7 @@ const routes: RouteItem[] = [
     path: '/statistic',
     redirect: '/statistic/护士排班表'
   },
-  setLayout('/setting/:type', SettingView, layouts.MainLayout),
+  setLayout('/setting/:name', SettingView, layouts.MainLayout),
   {
     path: '/badEvents',
     redirect: '/badEvents/search'
