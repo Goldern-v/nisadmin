@@ -88,18 +88,21 @@ const PerformanceMid = styled.div`
   flex: 1;
   height: 0;
   /* width: 0; */
+  display: flex;
+  flex-direction: column;
   margin: 14px;
-  padding: 18px 10px;
+  padding: 15px 30px;
   background-color: #fff;
   /* height: 330px; */
   /* background: rgba(255, 255, 255, 1); */
   border-radius: 5px;
   border: 1px solid rgba(161, 175, 179, 1);
-  overflow: auto;
+  overflow: hidden;
+  overflow-y: auto;
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 4px;
+    height: 8px;
   }
   ::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
@@ -119,7 +122,6 @@ const PerformanceMidTitleCon = styled.div`
   .titleFirst {
     margin: 0 auto;
     width: 510px;
-    /* height: 29px; */
     font-size: 21px;
     font-family: PingFangSC-Medium;
     font-weight: 500;

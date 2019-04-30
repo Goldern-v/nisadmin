@@ -94,7 +94,7 @@ const ROUTE_LIST = [
 
 export default function NurseFileDetail (props: Props) {
   nurseFileDetailViewModal.nurserInfo = appStore.queryObj
-
+  // appStore.match.params.type
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
 

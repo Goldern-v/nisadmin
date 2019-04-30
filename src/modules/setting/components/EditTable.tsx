@@ -30,7 +30,7 @@ data.push({
   物品类别: `其他`,
   预计重量: 6
 })
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 2; i++) {
   data.push({
     key: i,
     物品类别: ``,

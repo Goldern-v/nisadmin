@@ -17,9 +17,28 @@ export default function TableModel (props: Props) {
   )
 }
 const Wrapper = styled.div`
-  /* background: rgba(255, 255, 255, 1);
-  border: 1px solid rgba(219, 224, 228, 1);
-  padding: 20px 30px; */
+  flex: 1;
+  /* overflow: hidden;
+  overflow-x: auto; */
+  overflow: auto;
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
   .ant-table-small > .ant-table-content > .ant-table-body {
     margin: 0 !important;
   }
@@ -34,5 +53,8 @@ const Wrapper = styled.div`
   }
   tbody tr:nth-of-type(2n) {
     background: rgba(242, 244, 245, 1);
+  }
+  .ant-table {
+    width: 150%;
   }
 `
