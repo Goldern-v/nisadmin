@@ -44,7 +44,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   font-size: #333;
-  margin-bottom: 15px;
   input,
   button {
     margin-left: 10px;

@@ -75,7 +75,6 @@ const LeftMenuCon = styled.div`
   z-index: 1;
   background: #f8f8f8;
   box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(228, 228, 228, 1);
   border-top: 0;
 `
 const MainCon = styled.div`

@@ -36,4 +36,5 @@ const Wrapper = styled.div`
 
 const NurseCardCon = styled.div`
   margin: 0 -10px;
+  min-height: 440px;
 `
