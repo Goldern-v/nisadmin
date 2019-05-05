@@ -1,69 +1,81 @@
 import styled from 'styled-components'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import ReactSVG from 'react-svg'
 import { observer } from 'mobx-react-lite'
+import { ReactComponent as SY } from '../images/首页.svg'
+import { ReactComponent as SHGL } from '../images/审核管理.svg'
+import { ReactComponent as HSPB } from '../images/护士排班.svg'
+import { ReactComponent as HSDA } from '../images/护士档案.svg'
+import { ReactComponent as BLSJ } from '../images/不良事件.svg'
+import { ReactComponent as HLJX } from '../images/护理绩效.svg'
+import { ReactComponent as PXKH } from '../images/培训考核.svg'
+import { ReactComponent as MGZB } from '../images/敏感指标.svg'
+import { ReactComponent as TJCX } from '../images/统计查询.svg'
+import { ReactComponent as TZGG } from '../images/通知公告.svg'
+import { ReactComponent as WLPT } from '../images/物流平台.svg'
+import { ReactComponent as XTSZ } from '../images/系统设置.svg'
+
 export interface Props extends RouteComponentProps {}
 
 const navList = [
   {
     name: '首页',
-    icon: require('../images/首页.svg'),
+    icon: <SY />,
     path: '/home'
   },
   {
     name: '审核管理',
-    icon: require('../images/审核管理.svg'),
+    icon: <SHGL />,
     path: '/auditsManagement'
   },
   {
     name: '护士排班',
-    icon: require('../images/护士排班.svg'),
+    icon: <HSPB />,
     path: '/scheduleHome'
   },
   {
     name: '护士档案',
-    icon: require('../images/护士档案.svg'),
+    icon: <HSDA />,
     path: '/nurseFilesList'
   },
   {
     name: '不良事件',
-    icon: require('../images/不良事件.svg'),
+    icon: <BLSJ />,
     path: '/badEvents'
   },
   {
     name: '护理绩效',
-    icon: require('../images/统计查询.svg'),
+    icon: <HLJX />,
     path: '/nursingPerformance'
   },
   {
     name: '培训考核',
-    icon: require('../images/培训考核.svg'),
+    icon: <PXKH />,
     path: '/test'
   },
   {
     name: '敏感指标',
-    icon: require('../images/敏感指标.svg'),
+    icon: <MGZB />,
     path: '/indicator'
   },
   {
     name: '统计查询',
-    icon: require('../images/统计查询.svg'),
+    icon: <TJCX />,
     path: '/statistic'
   },
   {
     name: '通知公告',
-    icon: require('../images/通知公告.svg'),
+    icon: <TZGG />,
     path: '/notice'
   },
   {
     name: '物流平台',
-    icon: require('../images/物流平台.svg'),
+    icon: <WLPT />,
     path: '/Lms'
   },
   {
     name: '系统设置',
-    icon: require('../images/系统设置.svg'),
+    icon: <XTSZ />,
     path: '/setting'
   }
 ]
@@ -81,7 +93,8 @@ export default observer(function NavBar (props: Props) {
           active={item.path !== '' && location.pathname.indexOf(item.path) !== -1}
           key={item.name}
         >
-          <ReactSVG src={item.icon} svgClassName='nav-icon' />
+          {item.icon}
+          {/* <ReactSVG src={item.icon} svgClassName='nav-icon' /> */}
           <div className='nav-name'>{item.name}</div>
         </NavItem>
       ))}
@@ -119,7 +132,7 @@ const NavItem = styled.div<{ active?: boolean }>`
   position: relative;
   background: ${(p) => (p.active ? p.theme.$mtc : '#fff')};
   color: ${(p) => (p.active ? '#fff' : '#747474')};
-  .nav-icon {
+  svg {
     width: 16px;
     height: 16px;
     margin-top: 6px;

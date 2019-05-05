@@ -73,11 +73,21 @@ export default function BedSituation () {
     store.appStore.history.push(path)
   }
   // 组件
-  const leftListComponent = leftListPath.map((item: any) => (
-    <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
-      {item.name}
-    </li>
-  ))
+  const leftListComponent = leftListPath.map((item: any, index: number) => {
+    if (index === 0) {
+      return (
+        <li key={item.name} className='liClickClass' onClick={(e) => leftLiClick(e, item.path)}>
+          {item.name}
+        </li>
+      )
+    } else {
+      return (
+        <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>
+          {item.name}
+        </li>
+      )
+    }
+  })
 
   const leftListNursePathComponent = leftListNursePath.map((item: any) => (
     <li key={item.name} onClick={(e) => leftLiClick(e, item.path)}>

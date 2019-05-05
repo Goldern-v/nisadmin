@@ -63,6 +63,7 @@ export default function LeftMenu (props: Props) {
 
   return (
     <Wrapper>
+      <Title>敏感指标</Title>
       <Menu
         onSelect={handleSelect}
         defaultSelectedKeys={defaultSelectedKeys}
@@ -79,6 +80,7 @@ const Wrapper = styled.div`
   height: 100%;
   padding: 10px 0;
   overflow: auto;
+  background: ${(p) => p.theme.$mtc};
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
@@ -102,20 +104,57 @@ const Wrapper = styled.div`
     height: 38px !important;
     line-height: 38px !important;
     margin: 0 !important;
-    font-size: 13px !important;
-    color: #666 !important;
+    font-size: 12px !important;
+    color: #bddbd0 !important;
     &:hover {
-      color: ${(p) => p.theme.$mtc} !important;
-    }
-    &.ant-menu-item-selected {
-      background: ${(p) => p.theme.$mtc} !important;
       color: #fff !important;
     }
+    &:active {
+      background: transparent !important;
+    }
+    &.ant-menu-item-selected {
+      background: transparent !important;
+      color: #fff !important;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        width: 3px;
+        height: 17px;
+        background: #f6c235;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        left: 0;
+      }
+    }
+  }
+  .ant-menu-submenu-arrow::after,
+  .ant-menu-submenu-arrow::before {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)) !important;
   }
   .ant-menu-item::after {
     display: none !important;
   }
-  .ant-menu {
-    background: transparent !important;
+  .ant-menu-root {
+    background: transparent;
+    border: 0 !important;
+    overflow: hidden !important;
   }
+  .ant-menu-inline {
+    width: auto !important;
+  }
+  ul.ant-menu-sub {
+    background: #328b6a !important;
+    border-radius: 3px !important;
+    margin: 0 10px !important;
+    padding: 0 -10px !important;
+    border: 0 !important;
+  }
+`
+
+const Title = styled.div`
+  font-size: 12px;
+  color: #fff;
+  padding: 10px 10px 0;
 `

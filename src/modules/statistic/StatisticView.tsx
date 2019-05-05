@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import StatisticLeftList from './components/StatisticLeftList'
 import StatisticHeader from './components/StatisticHeader'
 import store from 'src/stores'
+
 // 护士排班表
 import NurseSchedulingView from './views/nurseScheduling/NurseSchedulingView'
 // 护士排班统计（按班次）
@@ -40,8 +41,8 @@ export default function StatisticView () {
     console.log(count, setCount, shiftClass)
     // console.log(3333)
     // console.log(shiftClass)
-    console.log(store.appStore.history.location.pathname, 9999)
-  })
+    // console.log(store.appStore.history.location.pathname, 9999)
+  }, [])
   // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)
   // }
@@ -152,12 +153,9 @@ const ConRight = styled.div`
 const StatisticMid = styled.div`
   flex: 1;
   height: 0;
-  /* width: 0; */
   margin: 14px;
-  padding: 18px 10px;
+  padding: 15px 30px;
   background-color: #fff;
-  /* height: 330px; */
-  /* background: rgba(255, 255, 255, 1); */
   border-radius: 5px;
   border: 1px solid rgba(161, 175, 179, 1);
   overflow: auto;

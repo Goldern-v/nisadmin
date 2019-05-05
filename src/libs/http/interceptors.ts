@@ -34,33 +34,32 @@ export function onRequestRejected (error: Error) {
 }
 
 enum StatusCode {
-  error = 300,
-  success = 200,
-  logout = 301,
-  notFound = 404,
-  badGateWay = 502
+  error = '300',
+  success = '200',
+  logout = '301',
+  notFound = '404',
+  badGateWay = '502'
 }
 
 /**
  * 响应成功拦截
  */
 export function onResponseFulfilled (response: AxiosResponse) {
-  let { code, msg, data } = response.data
-  let status = response.status
+  let { code, desc, data } = response.data
+  let status = code
   console.log(status, 'response')
   switch (status) {
     case StatusCode.error: {
-      console.error(response, code, response.data.desc || '')
-      // message.error(response.data.desc || msg)
-      return Promise.reject(response.data.desc || msg)
+      message.error(desc || '未知异常')
+      return Promise.reject(response.data.desc || desc)
     }
     case StatusCode.logout: {
-      message.warning('登录超时，请重新登录 ')
+      message.warning(desc || '登录超时，请重新登录')
       sessionStorage.setItem('adminNurse', '')
       sessionStorage.setItem('authToken', '')
       sessionStorage.setItem('user', '')
       window.location.href = loginURL
-      return Promise.reject(msg)
+      return Promise.reject(desc)
     }
     case StatusCode.success: {
       return response.data
@@ -71,14 +70,14 @@ export function onResponseFulfilled (response: AxiosResponse) {
     }
     case StatusCode.badGateWay: {
       // message.warning('系统部署中...')
-      console.log('502响应', response.data, code, msg, data)
+      console.log('502响应', response.data, code, desc, data)
       return Promise.reject()
     }
     default:
       if (status === 200) {
         return response.data
       }
-      console.log('默认响应', response, response.data, code, msg, data)
+      console.log('默认响应', response, response.data, code, desc, data)
       return Promise.reject(`未知异常`)
   }
 }

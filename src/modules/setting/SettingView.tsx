@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import { RouteComponentProps } from 'src/components/RouterView'
+// import { RouteComponentProps } from 'react-router'
 import LeftMenu from 'src/components/LeftMenu'
 import { appStore } from 'src/stores'
 import EditTable from './components/EditTable'
-export interface Props extends RouteComponentProps {}
+import 绩效参数设置 from './view/绩效参数设置'
+
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
   {
@@ -24,7 +27,8 @@ const LEFT_MENU_CONFIG = [
     children: [
       {
         title: '物品分类字典设置',
-        path: '/setting/物品分类字典设置'
+        path: '/setting/物品分类字典设置',
+        component: EditTable
       },
       {
         title: '物流角色设置',
@@ -35,35 +39,60 @@ const LEFT_MENU_CONFIG = [
         path: '/setting/物流分类及流程设置'
       }
     ]
+  },
+  {
+    title: '绩效参数设置',
+    path: '/setting/绩效参数设置',
+    component: 绩效参数设置
   }
 ]
 
-const getCurrentRoute = (type: string) => {
-  return {
-    title: type
-  }
-}
+// const getCurrentRoute = (type: string) => {
+//   return {
+//     title: type
+//   }
+// }
 
-export default function SettingView () {
-  let currentType = appStore.match.params.type
-  let currentRoute = getCurrentRoute(currentType)
+export default function SettingView (props: Props) {
+  // let currentType = appStore.match.params.type
+  // let currentRoute = getCurrentRoute(currentType)
+  useEffect(() => {
+    console.log(props)
+    console.log(currentRoute)
+  }, [props.match.params.name])
+  let currentRouteName = props.match.params.name || ''
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'title', currentRouteName)
+  // 筛选目标对象
+  function getTargetObj (listDate: any, targetKey: string, targetName: string) {
+    let chooseRoute = listDate.find((item: any) => {
+      if (item.children) {
+        return item.children.find((item1: any) => item1[targetKey] === targetName)
+      } else {
+        return item[targetKey] === targetName
+      }
+    })
+    if (chooseRoute && chooseRoute.children) {
+      chooseRoute = chooseRoute.children.find((item1: any) => item1.title === targetName)
+    }
+    return chooseRoute
+  }
   return (
     <Wrapper>
       <LeftMenuCon>
         <LeftMenu config={LEFT_MENU_CONFIG} />
       </LeftMenuCon>
       <MainCon>
-        <TopCon>{currentRoute.title}</TopCon>
-        <MainScroll>
-          <TableCon>
-            <EditTable />
-          </TableCon>
-        </MainScroll>
+        <TopCon>{currentRoute && currentRoute.title}</TopCon>
+        <TableCon>
+          {/* <EditTable /> */}
+          {currentRoute && currentRoute.component && <currentRoute.component />}
+        </TableCon>
       </MainCon>
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
+  overflow: hidden;
   height: 100%;
   display: flex;
   align-items: stretch;
@@ -75,7 +104,6 @@ const LeftMenuCon = styled.div`
   z-index: 1;
   background: #f8f8f8;
   box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(228, 228, 228, 1);
   border-top: 0;
 `
 const MainCon = styled.div`
@@ -84,10 +112,6 @@ const MainCon = styled.div`
   align-items: stretch;
   display: flex;
   flex-direction: column;
-`
-const MainScroll = styled.div`
-  flex: 1;
-  overflow: auto;
 `
 
 const TopCon = styled.div`
@@ -106,7 +130,8 @@ const TopCon = styled.div`
 `
 
 const TableCon = styled.div`
-  margin: 20px;
+  flex: 1;
+  margin: 15px;
   background: #fff;
   border: 1px solid rgba(228, 228, 228, 1);
 `

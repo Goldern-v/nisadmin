@@ -6,25 +6,20 @@ import BaseApiService from './BaseApiService'
 
 export default class AuthApiService extends BaseApiService {
   public login (username: string, password: string) {
-    return httpLoginToken
-      .post('/login', this.stringify({ empNo: username, password: password }))
-      .then((res) => {
-        // console.log('登陆成功',res)
-        let { adminNurse, authToken, user } = res.data
-        sessionStorage.setItem('adminNurse', adminNurse)
-        sessionStorage.setItem('authToken', authToken)
-        sessionStorage.setItem('user', JSON.stringify(user))
-        authStore.setAuthToken(authToken)
-        authStore.setAdminNurse(adminNurse)
-        authStore.updateUser(user)
-        scheduleStore.setDepartmentValue('deptCode', user.deptCode)
-        scheduleStore.setDepartmentValue('deptName', user.deptName)
-        authStore.initUser()
-        window.location.href = '#/home'
-      })
-      .catch((err) => {
-        console.log('登陆失败', err)
-      })
+    return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password })).then((res) => {
+      // console.log('登陆成功',res)
+      let { adminNurse, authToken, user } = res.data
+      sessionStorage.setItem('adminNurse', adminNurse)
+      sessionStorage.setItem('authToken', authToken)
+      sessionStorage.setItem('user', JSON.stringify(user))
+      authStore.setAuthToken(authToken)
+      authStore.setAdminNurse(adminNurse)
+      authStore.updateUser(user)
+      scheduleStore.setDepartmentValue('deptCode', user.deptCode)
+      scheduleStore.setDepartmentValue('deptName', user.deptName)
+      authStore.initUser()
+      window.location.href = '#/home'
+    })
   }
   public logout () {
     sessionStorage.removeItem('adminNurse')

@@ -48,11 +48,16 @@ const TabsCon = styled.div`
     border-radius: 0 !important;
     font-size: 13px !important;
     color: #7a7f8f !important;
+    transition: background 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
   }
 
   .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab.ant-tabs-tab-active {
     background: #fff !important;
     border-bottom: 0 !important;
     color: #333333 !important;
+  }
+  *::after,
+  *::before {
+    display: none !important;
   }
 `

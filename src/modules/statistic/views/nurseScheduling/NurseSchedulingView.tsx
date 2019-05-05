@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 // import TableModel from '../../common/TableModel'
-import NurseSchedulingView from './components/TableFirst'
+import TableFirst from './components/TableFirst'
 export default function StatisticView () {
   const [count, setCount] = useState(0)
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function StatisticView () {
       <StatisticMIdHeader />
       {/* 护士排班表 */}
       {/* <TableModel /> */}
-      <NurseSchedulingView />
+      <TableFirst />
     </Con>
   )
 }
