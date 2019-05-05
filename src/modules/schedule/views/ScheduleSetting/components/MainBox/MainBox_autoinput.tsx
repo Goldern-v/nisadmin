@@ -559,7 +559,7 @@ export default function MainBox () {
     genEmptyTable(newTabelData)
     setTableList(newTabelData)
     // setTableList(tableList)
-    console.log('==!!排班列表', selectedRow, shiftListData, tableList, selectedRowsArray)
+    // console.log('==!!排班列表', selectedRow, shiftListData, tableList, selectedRowsArray)
   }
 
   const getMealList = () => {

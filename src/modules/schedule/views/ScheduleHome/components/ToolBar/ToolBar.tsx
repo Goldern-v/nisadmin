@@ -25,7 +25,7 @@ export default function ToolBar () {
   ])
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    console.log(wardCode, setWardCode, wardValue, setWardValue)
+    // console.log(wardCode, setWardCode, wardValue, setWardValue)
     setWardList([])
     setButtonDisabled(true)
 
@@ -35,7 +35,7 @@ export default function ToolBar () {
       setButtonDisabled(disable)
     })
 
-    console.log(eventEmitterLoading)
+    // console.log(eventEmitterLoading)
 
     if (authStore.getUser()) {
       // let deptCode = authStore.getUser().deptCode || ''

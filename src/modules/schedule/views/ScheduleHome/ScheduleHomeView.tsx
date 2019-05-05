@@ -10,8 +10,8 @@ export interface Props extends RouteComponentProps {}
 export default function ScheduleHomeView (props: Props) {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
-    console.log('路径参数', props, props.match.params)
+    // console.log(count, setCount)
+    // console.log('路径参数', props, props.match.params)
   })
   return (
     <Wrapper>

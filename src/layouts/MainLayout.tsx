@@ -16,7 +16,7 @@ export default observer(function MainLayout (props: Props) {
   store.appStore.location = props.location
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res: any) => {
-      if (res) {
+      if (res && res.data && res.data.deptList) {
         store.authStore.deptList = res.data.deptList || []
       }
     })

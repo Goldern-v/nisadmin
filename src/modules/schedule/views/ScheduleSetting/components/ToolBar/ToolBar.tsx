@@ -53,11 +53,10 @@ export default function ToolBar () {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    console.log(count, setCount, setMonthStart, setdefaultEndTime, setPageTitle, setWeekValue)
+    // console.log(count, setCount, setMonthStart, setdefaultEndTime, setPageTitle, setWeekValue)
 
     emitter.removeAllListeners('弹窗编辑排班套餐')
     emitter.removeAllListeners('获取排班列表')
-
     emitter.removeAllListeners('设置页面标题')
 
     // setPageTitle
