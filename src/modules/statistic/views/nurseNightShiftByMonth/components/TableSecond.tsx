@@ -3,16 +3,21 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
-
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
-  const [tableData, setTableData] = useState([])
+  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
+  const [getCheckboxItem, setGetCheckboxItem] = useState([])
   useEffect(() => {
-    let startTime = statisticViewModel.startDate
-    let endTime = statisticViewModel.endDate
-    console.log()
     // console.log(222)
+    emitter.removeAllListeners('设置班次大类')
+    emitter.addListener('设置班次大类', (shiftClass: any) => {
+      setGetShiftClass(shiftClass)
+    })
+    emitter.removeAllListeners('设置自定义班次')
+    emitter.addListener('设置自定义班次', (checkboxItem: any) => {
+      setGetCheckboxItem(checkboxItem)
+    })
+    let tableData = getShiftClass.concat(getCheckboxItem).join(',')
   })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
@@ -44,86 +49,72 @@ export default function BedSituation () {
   const tdData = [
     {
       xh: 1,
-      xm: '祝晓春',
-      mounth1: '2903',
-      mounth2: '3005',
-      mounth3: '2302',
-      mounth4: '3106',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      xm: '杜丽娜',
+      month1: '2903',
+      month2: '3005',
+      month3: '2302',
+      month4: '3106',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '11316'
     },
     {
       xh: 2,
-      xm: '杜丽娜',
-      mounth1: '2903',
-      mounth2: '3005',
-      mounth3: '2302',
-      mounth4: '3106',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11316'
+      xm: '王重光',
+      month1: '2810',
+      month2: '3102',
+      month3: '2305',
+      month4: '3123',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '11340'
     },
     {
       xh: 3,
-      xm: '王重光',
-      mounth1: '2816',
-      mounth2: '3103',
-      mounth3: '2303',
-      mounth4: '3124',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11346'
+      xm: '王伟',
+      month1: '2873',
+      month2: '3103',
+      month3: '2607',
+      month4: '3109',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '11692'
     },
     {
       xh: 4,
-      xm: '赵平志',
-      mounth1: '2873',
-      mounth2: '3103',
-      mounth3: '2607',
-      mounth4: '3109',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11692'
+      xm: '周倩',
+      month1: '3009',
+      month2: '2863',
+      month3: '2532',
+      month4: '2910',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
+      xj: '11314'
     },
     {
       xh: 5,
       xm: '王春蓝',
-      mounth1: '3009',
-      mounth2: '2863',
-      mounth3: '2532',
-      mounth4: '2910',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
-      xj: '11314'
-    },
-    {
-      xh: 6,
-      xm: '王安水',
-      mounth1: '2965',
-      mounth2: '3231',
-      mounth3: '2987',
-      mounth4: '2993',
-      mounth5: '0',
-      mounth6: '0',
-      mounth7: '0',
-      mounth8: '0',
-      mounth9: '0',
+      month1: '2965',
+      month2: '3231',
+      month3: '2987',
+      month4: '2993',
+      month5: '0',
+      month6: '0',
+      month7: '0',
+      month8: '0',
+      month9: '0',
       xj: '12176'
     }
   ]
@@ -134,15 +125,15 @@ export default function BedSituation () {
     <tr key={index} onClick={trClickChange}>
       <td>{itemTr.xh}</td>
       <td>{itemTr.xm}</td>
-      <td>{itemTr.mounth1}</td>
-      <td>{itemTr.mounth2}</td>
-      <td>{itemTr.mounth3}</td>
-      <td>{itemTr.mounth4}</td>
-      <td>{itemTr.mounth5}</td>
-      <td>{itemTr.mounth6}</td>
-      <td>{itemTr.mounth7}</td>
-      <td>{itemTr.mounth8}</td>
-      <td>{itemTr.mounth9}</td>
+      <td>{itemTr.month1}</td>
+      <td>{itemTr.month2}</td>
+      <td>{itemTr.month3}</td>
+      <td>{itemTr.month4}</td>
+      <td>{itemTr.month5}</td>
+      <td>{itemTr.month6}</td>
+      <td>{itemTr.month7}</td>
+      <td>{itemTr.month8}</td>
+      <td>{itemTr.month9}</td>
       <td>{itemTr.xj}</td>
     </tr>
   ))
@@ -165,16 +156,16 @@ export default function BedSituation () {
               <tr>
                 <td />
                 <td>合 计</td>
-                <td>17370</td>
-                <td>18406</td>
-                <td>18038</td>
-                <td>18364</td>
+                <td>14560</td>
+                <td>15304</td>
+                <td>12733</td>
+                <td>15241</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-                <td>60961</td>
+                <td>57838</td>
               </tr>
             </table>
           </div>

@@ -22,7 +22,6 @@ export default function StatisticView () {
         </ButtonGroup>
       </div>
       {/* 护士白班统计（按月份) */}
-      <TableFirst />
     </Con>
   )
 }

@@ -3,25 +3,27 @@ import React, { useState, useEffect } from 'react'
 import { Radio, Checkbox } from 'antd'
 import emitter from 'src/libs/ev'
 import { RouteComponentProps } from 'react-router'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 const RadioGroup = Radio.Group
 const startShiftClass = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
 const ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
-const checkboxItemStandard = [
-  '班次1',
-  '班次2',
-  '班次3',
-  '班次4',
-  '班次5',
-  '班次6',
-  '班次7',
-  '班次8',
-  '班次9',
-  '班次10',
-  '班次11',
-  '班次12',
-  '班次13',
-  '班次14'
-]
+
+// const checkboxItemStandard = [
+// '班次1',
+// '班次2',
+// '班次3',
+// '班次4',
+// '班次5',
+// '班次6',
+// '班次7',
+// '班次8',
+// '班次9',
+// '班次10',
+// '班次11',
+// '班次12',
+// '班次13',
+// '班次14'
+// ]
 const checkboxItemState: any = []
 export interface Props extends RouteComponentProps {}
 
@@ -29,13 +31,21 @@ export default function BedSituation (props: any) {
   const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [rightChooseCheckboxShow, setRightChooseCheckboxShow] = useState([true, false])
   const [checkboxItem, setCheckboxItem] = useState([])
-  useEffect(() => {
-    // props.postShiftClass(shiftClass)
-    emitter.emit('设置班次大类', shiftClass)
-    emitter.emit('设置自定义班次', checkboxItem)
-    // console.log(checkboxItem)
-  })
+  const [checkboxItemStandard, setCheckboxItemStandard] = useState([])
+  const [cacheCheckboxItem, setCacheCheckboxItem] = useState([])
 
+  useEffect(() => {
+    StatisticsApi.postName().then((res) => {
+      let listData = res.data
+      let getShiftType = listData.map((item: any) => item.shiftType)
+      setCheckboxItemStandard(getShiftType)
+    })
+    console.log(checkboxItemStandard)
+    // props.postShiftClass(shiftClass)
+    // console.log(checkboxItem)
+  }, [])
+  emitter.emit('设置班次大类', shiftClass)
+  emitter.emit('设置自定义班次', checkboxItem)
   function onChange (e: any) {
     let target = e.target
     let targetValue = target.value
@@ -67,19 +77,20 @@ export default function BedSituation (props: any) {
   function radioClickRight () {
     setRightChooseCheckboxShow([false, true])
     setShiftClass([])
+    setCheckboxItem([])
   }
   // checkbox变动
   function checkboxChange (e: any) {
     let target = e.target
     let targetValue = target.value
-    let cacheCheckboxItem
     if (target.checked) {
       for (let i = 0; i < checkboxItemStandard.length; i++) {
         if (targetValue === checkboxItemStandard[i]) {
           checkboxItemState[i] = targetValue
         }
-        cacheCheckboxItem = checkboxItemState.filter((n: any) => n)
-        setCheckboxItem(cacheCheckboxItem)
+        let cacheSetCacheCheckboxItem = checkboxItemState.filter((n: any) => n)
+        setCacheCheckboxItem(cacheSetCacheCheckboxItem)
+        setCheckboxItem(cacheSetCacheCheckboxItem)
       }
     }
     if (!target.checked) {
@@ -88,8 +99,9 @@ export default function BedSituation (props: any) {
           checkboxItemState[i] = null
         }
       }
-      cacheCheckboxItem = checkboxItemState.filter((n: any) => n)
-      setCheckboxItem(cacheCheckboxItem)
+      let cacheSetcacheCheckboxItem = checkboxItemState.filter((n: any) => n)
+      setCacheCheckboxItem(cacheSetcacheCheckboxItem)
+      setCheckboxItem(cacheSetcacheCheckboxItem)
     }
   }
   // 组件
@@ -127,80 +139,94 @@ export default function BedSituation (props: any) {
       </div>
     </div>
   )
+  // const RightChooseByCustomCheckbox = (
+  //   <div className='RightChooseByShiftCheckbox'>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次1'>
+  //         班次1
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次2'>
+  //         班次2
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次3'>
+  //         班次3
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次4'>
+  //         班次4
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次5'>
+  //         班次5
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次6'>
+  //         班次6
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次7'>
+  //         班次7
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次8'>
+  //         班次8
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次9'>
+  //         班次9
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次10'>
+  //         班次10
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次11'>
+  //         班次11
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次12'>
+  //         班次12
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次13'>
+  //         班次13
+  //       </Checkbox>
+  //     </div>
+  //     <div className='RightChooseByShiftCheckboxItem'>
+  //       <Checkbox onChange={checkboxChange} value='班次14'>
+  //         班次14
+  //       </Checkbox>
+  //     </div>
+  //   </div>
+  // )
+
+  // 接口组件
   const RightChooseByCustomCheckbox = (
     <div className='RightChooseByShiftCheckbox'>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次1'>
-          班次1
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次2'>
-          班次2
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次3'>
-          班次3
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次4'>
-          班次4
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次5'>
-          班次5
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次6'>
-          班次6
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次7'>
-          班次7
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次8'>
-          班次8
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次9'>
-          班次9
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次10'>
-          班次10
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次11'>
-          班次11
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次12'>
-          班次12
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次13'>
-          班次13
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox onChange={checkboxChange} value='班次14'>
-          班次14
-        </Checkbox>
-      </div>
+      {checkboxItemStandard.map((item: any, index: any) => (
+        <div className='RightChooseByShiftCheckboxItem' key={index}>
+          <Checkbox onChange={checkboxChange} value={item}>
+            {item}
+          </Checkbox>
+        </div>
+      ))}
     </div>
   )
+
   return (
     <Con>
       {/* <TableModel /> */}
@@ -256,11 +282,10 @@ const RightChooseByShift = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
-    .RightChooseByShiftCheckboxItem {
-      width: 104px;
-      height: 36px;
-      line-height: 36px;
-    }
+  }
+  .RightChooseByShiftCheckboxItem {
+    width: 104px;
+    height: 36px;
+    line-height: 36px;
   }
 `

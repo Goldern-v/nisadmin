@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
-import schedulingStatisticsApi from 'src/modules/statistic/views/api/schedulingStatisticsApi'
+import schedulingStatisticsApi from 'src/modules/statistic/views/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)

@@ -1,12 +1,11 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-class SchedulingStatisticsApi extends BaseApiService {
+class StatisticsApi extends BaseApiService {
   // 护士排班统计（按班次）
-
   public async postNurseByShiftView (data: any) {
     let postData = {
-      type: 'shift_type',
+      shift: 'shift_type',
       deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
       endTime: statisticViewModel.endDate,
@@ -15,7 +14,24 @@ class SchedulingStatisticsApi extends BaseApiService {
     let trancePostData = this.stringify(postData)
     return this.post(`/scheduling/countUser`, trancePostData)
   }
-
+  // 护士夜班统计（按月份）
+  public async postNurseNigthByMonth (showType: any) {
+    if (showType === '按时数') {
+      showType = true
+    } else if (showType === '按次数') {
+      showType = false
+    }
+    let postData = {
+      shiftType: 'name',
+      deptCode: authStore.selectedDeptCode,
+      hourOrNum: showType,
+      startTime: statisticViewModel.startDate,
+      endTime: statisticViewModel.endDate,
+      status: true
+    }
+    let trancePostData = this.stringify(postData)
+    return this.post(`/scheduling/countShiftTypeUser`, trancePostData)
+  }
   // 2.查找排班人员
   public async getShiftListById (id: string) {
     return this.get(`/schShiftSetting/getById/${id}`)
@@ -42,4 +58,4 @@ class SchedulingStatisticsApi extends BaseApiService {
   }
 }
 
-export default new SchedulingStatisticsApi()
+export default new StatisticsApi()

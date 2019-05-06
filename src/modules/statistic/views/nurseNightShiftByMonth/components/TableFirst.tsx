@@ -3,10 +3,15 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-export default function BedSituation () {
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+export interface Props {
+  showType: string
+}
+export default function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
+  const [bodyTabel, setBodyTable] = useState([{}])
   useEffect(() => {
     // console.log(222)
     emitter.removeAllListeners('设置班次大类')
@@ -18,7 +23,10 @@ export default function BedSituation () {
       setGetCheckboxItem(checkboxItem)
     })
     let tableData = getShiftClass.concat(getCheckboxItem).join(',')
-  })
+    StatisticsApi.postNurseScheduling('').then((res) => {
+      setBodyTable(res.data)
+    })
+  }, [])
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -120,6 +128,19 @@ export default function BedSituation () {
   ]
   // cache th DOM
   const thDom = thData.map((item: any) => <th key={item.toString()}>{item}</th>)
+  // interface th DOM
+  let cacheThTabel = bodyTabel[0]
+  if (!cacheThTabel) {
+    cacheThTabel = {}
+  }
+  let cacheThData = Object.keys(cacheThTabel)
+  if (!cacheThData) {
+    cacheThData = []
+  }
+  let interfaceThDom = cacheThData.map((item: string, index: number) => {
+    <tr>{item[index]}</tr>
+  })
+  // interfaceThDom = <th>{interfaceThDom}</th>
   // cache td DOM
   const tdDom = tdData.map((itemTr: any, index: any) => (
     <tr key={index} onClick={trClickChange}>
@@ -137,13 +158,22 @@ export default function BedSituation () {
       <td>{itemTr.xj}</td>
     </tr>
   ))
+  // interface td DOM
+  const interfaceTdDom = bodyTabel.map((itemTr: any, index: any) => (
+    <tr key={index} onClick={trClickChange}>
+      cacheThData.map()
+      {cacheThData.map((itemTd: any, indexTd: number) => (
+        <td key={indexTd}>{itemTr[itemTd]}</td>
+      ))}
+    </tr>
+  ))
   return (
     <Con className='addClass'>
       <div className='tableCon'>
         <div className='tableHead'>
           <table>
             <tr>
-              {thDom}
+              {interfaceThDom && thDom}
               {/* {getShiftClassDom} */}
               {/* {getCheckboxItemDom} */}
             </tr>
@@ -152,7 +182,7 @@ export default function BedSituation () {
         <div className='tableMid'>
           <div className='tableMidCon'>
             <table>
-              {tdDom}
+              {interfaceTdDom && tdDom}
               <tr>
                 <td />
                 <td>合 计</td>
