@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
-import schedulingStatisticsApi from 'src/modules/statistic/views/api/StatisticsApi'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
@@ -14,15 +14,25 @@ export default function BedSituation () {
     emitter.removeAllListeners('设置班次大类')
     emitter.addListener('设置班次大类', (shiftClass: any) => {
       setGetShiftClass(shiftClass)
+      let tableData = getShiftClass.concat(getCheckboxItem).join(',')
+      if (shiftClass.length) {
+        let cacheGetShiftClass = shiftClass.join(',')
+        StatisticsApi.postDepartmentByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
+          setGetTableList(res.data)
+          console.log(getTableList)
+        })
+      }
     })
     emitter.removeAllListeners('设置自定义班次')
     emitter.addListener('设置自定义班次', (checkboxItem: any) => {
       setGetCheckboxItem(checkboxItem)
-    })
-    let tableData = getShiftClass.concat(getCheckboxItem).join(',')
-    schedulingStatisticsApi.postNurseByShiftView(tableData).then((res: any) => {
-      setGetTableList(res.data)
-      console.log(getTableList)
+      if (checkboxItem.length) {
+        let cacheCheckboxItem = checkboxItem.join(',')
+        StatisticsApi.postDepartmentByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
+          setGetTableList(res.data)
+          console.log(getTableList)
+        })
+      }
     })
   }, [])
   function trClickChange (e: any) {
@@ -35,17 +45,17 @@ export default function BedSituation () {
   }
   // Cache Td date
   const tdCacheDate = [
-    { 序列: 1, 科室: '骨科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 2, 科室: '显微手足护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 3, 科室: '整形外科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 4, 科室: '普外科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
-    { 序列: 5, 科室: '介入科护理单元', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 }
+    { 序列: 1, 姓名: '杨好', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 2, 姓名: '王佩', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 3, 姓名: '李楚清', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 4, 姓名: '祝晓春', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 },
+    { 序列: 5, 姓名: '卞晓丽', A班: 2, P班: 5, N班: 2, 休假: 3, 进修学习: 2, 其它: 5 }
   ]
   // Cache Td DOM
   const cacheGetDom = tdCacheDate.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
       <td>{itemTr.序列}</td>
-      <td>{itemTr.科室}</td>
+      <td>{itemTr.姓名}</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
       ))}
@@ -63,7 +73,10 @@ export default function BedSituation () {
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
       ))}
-      <td>66</td>
+      {getCheckboxItem.map((itemTd: any, indexTd: number) => (
+        <td key={indexTd}>{itemTr[itemTd]}</td>
+      ))}
+      <td>{itemTr.合计}</td>
     </tr>
   ))
   return (
@@ -82,7 +95,7 @@ export default function BedSituation () {
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>{cacheGetDom}</table>
+            <table>{getTdDom}</table>
           </div>
         </div>
       </div>

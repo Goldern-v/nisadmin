@@ -3,7 +3,7 @@ import { authStore } from 'src/stores/index'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 class StatisticsApi extends BaseApiService {
   // 护士排班表
-  public async postNurseScheduling (exportData: any = '') {
+  public async postNurseScheduling (exportData: any = true) {
     let postData = {
       deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
@@ -11,7 +11,7 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/export`, trancePostData)
+    return this.post(`/scheduling/User`, trancePostData)
   }
   // 获取按班次自定义的名称
   public async postName () {
@@ -22,7 +22,7 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/schShiftSetting/getByDeptCode`, trancePostData)
   }
   // 护士排班统计（按班次）
-  public async postNurseByShiftView (showType: any, data: any) {
+  public async postNurseByShiftView (showType: any, data: any, exportData: any = true) {
     if (showType === '按班次大类') {
       showType = 'shift_type'
     } else if (showType === '自定义班次') {
@@ -33,7 +33,8 @@ class StatisticsApi extends BaseApiService {
       deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
       endTime: statisticViewModel.endDate,
-      ls: data
+      ls: data,
+      status: exportData
     }
     let trancePostData = this.stringify(postData)
     return this.post(`/scheduling/countUser`, trancePostData)
@@ -79,7 +80,7 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/scheduling/countUserHolidays`, trancePostData)
   }
   // 科室排班统计（按班次）
-  public async postDepartmentByShiftView (showType: string, data: any) {
+  public async postDepartmentByShiftView (showType: string, data: any, exportData: any = true) {
     if (showType === '按班次大类') {
       showType = 'shift_type'
     } else if (showType === '自定义班次') {
@@ -90,7 +91,8 @@ class StatisticsApi extends BaseApiService {
       deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
       endTime: statisticViewModel.endDate,
-      ls: data
+      ls: data,
+      status: exportData
     }
     let trancePostData = this.stringify(postData)
     return this.post(`/scheduling/countByDeptCode`, trancePostData)
@@ -120,7 +122,7 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/countShiftTypeUser`, trancePostData)
+    return this.post(`/scheduling/countShiftTypeDeptCode`, trancePostData)
   }
 
   // 科室节假日排班表

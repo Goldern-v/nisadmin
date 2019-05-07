@@ -2,12 +2,15 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import TableFirst from './components/TableFirst'
-import { Button } from 'antd'
+import { Button, Radio } from 'antd'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
-const ButtonGroup = Button.Group
+import TableModel from '../../common/TableModel'
+// import TableDate from './components/TableData'
+// const ButtonGroup = Button.Group
 
 // import SelectMonth from '../../common/SelectMonth'  //月份选择器
 export default function StatisticView () {
+  const [showType, setShowType] = useState('按时数')
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
@@ -16,13 +19,17 @@ export default function StatisticView () {
     <Con>
       <StatisticMIdHeader />
       <div className='buttonCon'>
-        <ButtonGroup>
-          <Button value='按时数'>按时数</Button>
-          <Button value='按次数'>按次数</Button>
-        </ButtonGroup>
+        <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
+          <Radio.Button value='按时数'>按时数</Radio.Button>
+          <Radio.Button value='按次数'>按次数</Radio.Button>
+        </Radio.Group>{' '}
       </div>
-      {/*  科室夜班统计（按月份） */}
-      <TableFirst />
+      {/* 护士夜班统计（按月份) */}
+      {<TableFirst showType={showType} />}
+      {/* {showType === '按时数' && (
+        <TableModel dataSource={TableData.dataSource} columns={TableData.columns} showType={showType} />
+      )}
+      {showType === '按次数' && <TableSecond />} */}
     </Con>
   )
 }
@@ -32,12 +39,12 @@ const Con = styled.div`
   position: relative;
   /* display: flex; */
   overflow: hidden;
-  .ant-btn {
+  /* .ant-btn {
     height: 30px;
     background: rgba(241, 244, 246, 1);
     border-radius: 3px;
     border: 1px solid rgba(192, 203, 206, 1);
-  }
+  } */
   .buttonCon {
     position: absolute;
     top: 10px;
