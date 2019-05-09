@@ -13,8 +13,10 @@ export default observer(function BedSituation (props: Props) {
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
   const [bodyTabel, setBodyTable] = useState([{}])
+  const [getShowType, setGetShowType] = useState(props.showType)
   useEffect(() => {
-    // console.log(222)
+    console.log(222)
+    setGetShowType(props.showType)
     emitter.removeAllListeners('设置班次大类')
     emitter.addListener('设置班次大类', (shiftClass: any) => {
       setGetShiftClass(shiftClass)
@@ -24,10 +26,11 @@ export default observer(function BedSituation (props: Props) {
       setGetCheckboxItem(checkboxItem)
     })
     let tableData = getShiftClass.concat(getCheckboxItem).join(',')
-    StatisticsApi.postNurseByMonth('夜班', props.showType).then((res) => {
+    StatisticsApi.postNurseByMonth('夜班', getShowType).then((res) => {
       setBodyTable(res.data)
     })
   }, [])
+
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')

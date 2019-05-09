@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Table, Input, InputNumber, Popconfirm, Form } from 'antd'
 import BaseTable from 'src/components/BaseTable'
-
+// import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
 const data: any = []
 data.push({
   key: '一次性针头',

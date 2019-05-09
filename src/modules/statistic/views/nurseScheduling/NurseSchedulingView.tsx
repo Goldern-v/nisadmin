@@ -18,14 +18,8 @@ export default function StatisticView () {
   return (
     <Con>
       <StatisticMIdHeader />
-      <div className='buttonCon'>
-        <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
-          <Radio.Button value='按时数'>按时数</Radio.Button>
-          <Radio.Button value='按次数'>按次数</Radio.Button>
-        </Radio.Group>{' '}
-      </div>
       {/* 护士夜班统计（按月份) */}
-      {<TableFirst showType={showType} />}
+      {/* {<TableFirst showType={showType} />} */}
       {/* {showType === '按时数' && (
         <TableModel dataSource={TableData.dataSource} columns={TableData.columns} showType={showType} />
       )}

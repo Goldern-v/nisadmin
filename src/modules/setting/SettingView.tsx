@@ -6,6 +6,8 @@ import LeftMenu from 'src/components/LeftMenu'
 import { appStore } from 'src/stores'
 import EditTable from './components/EditTable'
 import 绩效参数设置 from './view/绩效参数设置'
+import 节假日设置 from './view/节假日设置'
+import settingViewModel from './SettingViewModel'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
@@ -21,6 +23,11 @@ const LEFT_MENU_CONFIG = [
   {
     title: '护理评估设置',
     path: '/setting/护理评估设置'
+  },
+  {
+    title: '节假日设置',
+    path: '/setting/节假日设置',
+    component: 节假日设置
   },
   {
     title: '物流平台设置',
@@ -56,6 +63,7 @@ const LEFT_MENU_CONFIG = [
 export default function SettingView (props: Props) {
   // let currentType = appStore.match.params.type
   // let currentRoute = getCurrentRoute(currentType)
+
   useEffect(() => {
     console.log(props)
     console.log(currentRoute)
@@ -76,17 +84,23 @@ export default function SettingView (props: Props) {
     }
     return chooseRoute
   }
+  let cacheSetHeadTitle = currentRoute && currentRoute.title
+  settingViewModel.setHeadTitle(cacheSetHeadTitle)
   return (
     <Wrapper>
       <LeftMenuCon>
         <LeftMenu config={LEFT_MENU_CONFIG} />
       </LeftMenuCon>
       <MainCon>
+        {/*
         <TopCon>{currentRoute && currentRoute.title}</TopCon>
-        <TableCon>
-          {/* <EditTable /> */}
-          {currentRoute && currentRoute.component && <currentRoute.component />}
-        </TableCon>
+        <TableCon> */}
+        {/* <EditTable /> */}
+        {currentRoute && currentRoute.component && (
+          <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+        )}
+        {/* </TableCon>
+         */}{' '}
       </MainCon>
     </Wrapper>
   )

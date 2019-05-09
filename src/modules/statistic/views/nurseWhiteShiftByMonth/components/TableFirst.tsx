@@ -2,32 +2,25 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
-import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+// import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import { observer } from 'mobx-react-lite'
+import spacePhoto from '../../../img/spacePhoto.svg'
 export interface Props {
   showType: string
 }
-export default observer(function BedSituation (props: Props) {
+export default function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
-  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
-  const [getCheckboxItem, setGetCheckboxItem] = useState([])
-  const [bodyTabel, setBodyTable] = useState([{}])
+  const [bodyTable, setBodyTable] = useState([{}])
   useEffect(() => {
-    // console.log(222)
-    emitter.removeAllListeners('设置班次大类')
-    emitter.addListener('设置班次大类', (shiftClass: any) => {
-      setGetShiftClass(shiftClass)
-    })
-    emitter.removeAllListeners('设置自定义班次')
-    emitter.addListener('设置自定义班次', (checkboxItem: any) => {
-      setGetCheckboxItem(checkboxItem)
-    })
-    let tableData = getShiftClass.concat(getCheckboxItem).join(',')
     StatisticsApi.postNurseByMonth('白班', props.showType).then((res) => {
-      setBodyTable(res.data)
+      if (res && res.data) {
+        setBodyTable(res.data)
+      }
     })
+    // console.log(222)
   }, [])
+
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -36,34 +29,52 @@ export default observer(function BedSituation (props: Props) {
     })
     parentNode.classList.add('addRowClass')
   }
+  let interfaceThDom
+  let interfaceTdDom
+  let TableShow
+  if (bodyTable[0]) {
+    let interfaceThData = Object.keys(bodyTable[0])
 
-  let interfaceThData = Object.keys(bodyTabel[0])
+    interfaceThDom = Object.keys(bodyTable[0]).map((item: any, index: number) => <th>{item}</th>)
 
-  let interfaceThDom = Object.keys(bodyTabel[0]).map((item: any, index: number) => <th>{item}</th>)
+    // interface td DOM
+    interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (
+      <tr key={index} onClick={trClickChange}>
+        {interfaceThData.map((itemTd: any, indexTd: number) => (
+          <td key={indexTd}>{itemTr[itemTd]}</td>
+        ))}
+      </tr>
+    ))
+    TableShow = (
+      <table>
+        <thead>
+          <tr>{interfaceThDom}</tr>
+        </thead>
+        <tbody>{interfaceTdDom}</tbody>
+      </table>
+    )
+  }
+  let SpaceShow
+  if (!interfaceThDom && !interfaceTdDom) {
+    SpaceShow = (
+      <SpaceCon>
+        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+        <div className='spaceFont'>暂无数据</div>
+      </SpaceCon>
+    )
+  }
 
-  // interface td DOM
-  const interfaceTdDom = bodyTabel.map((itemTr: any, index: any) => (
-    <tr key={index} onClick={trClickChange}>
-      {interfaceThData.map((itemTd: any, indexTd: number) => (
-        <td key={indexTd}>{itemTr[itemTd]}</td>
-      ))}
-    </tr>
-  ))
   return (
-    <Con className='addClass'>
+    <Con>
       <div className='tableCon'>
         <div className='tableHead'>
-          <table>
-            <thead>
-              <tr>{interfaceThDom}</tr>
-            </thead>
-            <tbody>{interfaceTdDom}</tbody>
-          </table>
+          {TableShow}
+          {SpaceShow}
         </div>
       </div>
     </Con>
   )
-})
+}
 
 const Con = styled.div`
   .tableCon {
@@ -130,5 +141,14 @@ const Con = styled.div`
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     /* border-radius: 10px; */
     background: rgba(237, 237, 237, 1);
+  }
+`
+const SpaceCon = styled.div`
+  margin: 20px auto;
+  /* width: 200px; */
+  text-align: center;
+  .spaceFont {
+    margin-top: 8px;
+    font-size: 16px;
   }
 `

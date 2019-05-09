@@ -15,13 +15,16 @@ export default function BedSituation () {
     // nurseFilesListViewModel.loadNursingList()
     console.log(value)
   }
+  function searchButtonClick () {}
   return (
     <Con>
       <DeptSelect onChange={onChange} />
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
-      <Button className='searchButton'>查询</Button>
+      <Button className='searchButton' onClick={searchButtonClick}>
+        查询
+      </Button>
       <Button className='exportButton'>导出excl</Button>
     </Con>
   )
