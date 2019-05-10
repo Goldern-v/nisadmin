@@ -9,7 +9,7 @@ import { LocaleProvider } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import 'moment/locale/zh-cn'
 import emitter from 'src/libs/ev'
-const dateFormat = 'YYYY年MM月DD日'
+const dateFormat = 'YYYY-MM-DD'
 
 export default function SelectData () {
   const [dataValue, setDataValue] = useState(() => {
@@ -33,7 +33,7 @@ export default function SelectData () {
           defaultValue={moment(dataValue, dateFormat)}
           format={dateFormat}
           onChange={(e: any, value: any) => {
-            SettingViewModel.holidayDate = value
+            SettingViewModel.holidayDate3 = value
             setDataValue(value)
           }}
         />

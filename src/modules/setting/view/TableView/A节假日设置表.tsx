@@ -9,24 +9,25 @@ import SettingApi from 'src/modules/setting/api/SettingApi.ts'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function A节假日设置表 () {
-  let dataSource = [
-    {
-      节目名称: '元旦1',
-      日期: '2019年1月1日'
-    },
-    {
-      节目名称: '元旦2',
-      日期: '2019年1月1日'
-    },
-    {
-      节目名称: '元旦3',
-      日期: '2019年1月1日'
-    },
-    {
-      节目名称: '元旦4',
-      日期: '2019年1月1日'
-    }
-  ]
+  // //模拟数据
+  // let dataSource = [
+  //   {
+  //     节目名称: '元旦1',
+  //     日期: '2019年1月1日'
+  //   },
+  //   {
+  //     节目名称: '元旦2',
+  //     日期: '2019年1月1日'
+  //   },
+  //   {
+  //     节目名称: '元旦3',
+  //     日期: '2019年1月1日'
+  //   },
+  //   {
+  //     节目名称: '元旦4',
+  //     日期: '2019年1月1日'
+  //   }
+  // ]
 
   //
   const columns: any = [
@@ -65,9 +66,16 @@ export default observer(function A节假日设置表 () {
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
         `
+
         return (
           <DoCon>
-            <span data-index={index} onClick={deleteClick}>
+            <span
+              data-index={index}
+              onClick={(e) => {
+                deleteClick(e, record, text)
+              }}
+              data-record={record}
+            >
               删除
             </span>
           </DoCon>
@@ -82,10 +90,15 @@ export default observer(function A节假日设置表 () {
     })
     // SettingViewModel.setTableDate(tableDataSource)
   }, [])
-  const deleteClick = (e: any) => {
-    let deletIndex = e.target.getAttribute('data-index')
+  const deleteClick = (e: any, record: any, text: any) => {
+    let deleteIndex = e.target.getAttribute('data-index')
+    console.log(e.target.getAttribute('data-text'))
+    let deleteData = { name: record.name, holidaysDate: record.holidaysDate }
+    // 后台删除数据
+    console.log(deleteData)
+    SettingApi.getHolidayDelete(deleteData)
     let cacheTableDate = [...SettingViewModel.tableDate]
-    cacheTableDate.splice(deletIndex, 1)
+    cacheTableDate.splice(deleteIndex, 1)
     SettingViewModel.setTableDate(cacheTableDate)
   }
   // let getAddTableData = tableData.concat(SettingViewModel.tableHolidayAdd)

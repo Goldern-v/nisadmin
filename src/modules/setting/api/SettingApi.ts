@@ -7,9 +7,19 @@ class SettingApi extends BaseApiService {
   //   let trancePostData = this.stringify(postData)
   //   return this.post(`/scheduling/User`, trancePostData)
   // }
-  // 节假日设置表
+  // 节假日设置表获取
   public async getHolidayTable (HolidaysDate: string) {
     return this.get(`/schHolidays/getByHolidaysDate/${HolidaysDate}`)
+  }
+
+  // 节假日设置表新增节日
+  public async postHolidayAdd () {
+    let postData = { holidays: SettingViewModel.getHolidayAdd }
+    return this.post(`/schHolidays/saveOrUpdate`, postData)
+  }
+  // 节假日设置删除节日
+  public async getHolidayDelete (deleteData: any) {
+    return this.get(`schHolidays/delById/${deleteData}`)
   }
 }
 

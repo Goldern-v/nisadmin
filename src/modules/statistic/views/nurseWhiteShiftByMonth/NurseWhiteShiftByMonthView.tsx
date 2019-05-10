@@ -5,6 +5,7 @@ import TableFirst from './components/TableFirst'
 import { Button, Radio } from 'antd'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 import TableModel from '../../common/TableModel'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 // import TableDate from './components/TableData'
 // const ButtonGroup = Button.Group
 
@@ -15,11 +16,18 @@ export default function StatisticView () {
   useEffect(() => {
     console.log(count, setCount)
   })
+  const selectShowType = (e: any) => {
+    setShowType(e.target.value)
+    StatisticsApi.postNurseByMonth('白班', e.target.value).then((res) => {
+      console.log(res)
+    })
+    console.log(33)
+  }
   return (
     <Con>
       <StatisticMIdHeader />
       <div className='buttonCon'>
-        <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
+        <Radio.Group value={showType} buttonStyle='solid' onChange={selectShowType}>
           <Radio.Button value='按时数'>按时数</Radio.Button>
           <Radio.Button value='按次数'>按次数</Radio.Button>
         </Radio.Group>

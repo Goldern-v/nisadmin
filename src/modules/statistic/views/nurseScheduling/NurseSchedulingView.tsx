@@ -19,7 +19,7 @@ export default function StatisticView () {
     <Con>
       <StatisticMIdHeader />
       {/* 护士夜班统计（按月份) */}
-      {/* {<TableFirst showType={showType} />} */}
+      <TableFirst showType={showType} />
       {/* {showType === '按时数' && (
         <TableModel dataSource={TableData.dataSource} columns={TableData.columns} showType={showType} />
       )}

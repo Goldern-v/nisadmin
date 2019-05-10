@@ -15,7 +15,9 @@ export default function BedSituation () {
     // nurseFilesListViewModel.loadNursingList()
     console.log(value)
   }
-  function searchButtonClick () {}
+  function searchButtonClick () {
+    
+  }
   return (
     <Con>
       <DeptSelect onChange={onChange} />

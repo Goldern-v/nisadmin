@@ -3,9 +3,12 @@ class SettingViewModel {
   @observable public headTitle = ''
   @observable public selectYear = ''
   @observable public holidayName = ''
-  @observable public holidayDate = ''
-  @observable public holidayAdd: any = {}
+  @observable public holidayDate1 = ''
+  @observable public holidayDate2 = ''
+  @observable public holidayDate3 = ''
+  @observable public holidayAdd: any = []
   @observable public tableDate: any = []
+  @observable public tableDateCache: any = []
   @computed public get getHeadTitle () {
     return this.headTitle
   }
@@ -19,7 +22,30 @@ class SettingViewModel {
     return this.selectYear
   }
   @computed public get getHolidayAdd () {
-    return { name: this.holidayName, holidaysDate: this.holidayDate }
+    if (this.holidayDate1 && this.holidayDate2 && this.holidayDate3) {
+      return [
+        { name: this.holidayName, holidaysDate: this.holidayDate1 },
+        { name: this.holidayName, holidaysDate: this.holidayDate2 },
+        { name: this.holidayName, holidaysDate: this.holidayDate3 }
+      ]
+    } else if (this.holidayDate1 && this.holidayDate2) {
+      return [
+        { name: this.holidayName, holidaysDate: this.holidayDate1 },
+        { name: this.holidayName, holidaysDate: this.holidayDate2 }
+      ]
+    } else if (this.holidayDate2 && this.holidayDate3) {
+      return [
+        { name: this.holidayName, holidaysDate: this.holidayDate2 },
+        { name: this.holidayName, holidaysDate: this.holidayDate3 }
+      ]
+    } else if (this.holidayDate1) {
+      return [{ name: this.holidayName, holidaysDate: this.holidayDate1 }]
+    } else if (this.holidayDate2) {
+      return [{ name: this.holidayName, holidaysDate: this.holidayDate2 }]
+    } else if (this.holidayDate3) {
+      return [{ name: this.holidayName, holidaysDate: this.holidayDate3 }]
+    }
+    // return [{ name: this.holidayName, holidaysDate: this.holidayDate1 }]
   }
   @action public setHeadTitle = (newTitle: any) => {
     this.headTitle = newTitle
@@ -32,6 +58,10 @@ class SettingViewModel {
   // }
   @action public setHolidayDate = (newTitle: any) => {
     this.selectYear = newTitle
+  }
+
+  @action public setTableDateCache = (newDate: any) => {
+    this.tableDateCache = newDate
   }
   @action public setTableDate = (newDate: any) => {
     this.tableDate = newDate

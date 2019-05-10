@@ -124,7 +124,33 @@ class StatisticsApi extends BaseApiService {
     let trancePostData = this.stringify(postData)
     return this.post(`/scheduling/countShiftTypeDeptCode`, trancePostData)
   }
+  // 测试1
+  public async postNurseByMonthttt (classShow: string, showType: any, getDeptCode: any, exportData: any = true) {
+    if (classShow === '白班') {
+      classShow = 'A班'
+    } else if (classShow === '夜班') {
+      classShow = 'P班'
+    } else if (classShow === '休假') {
+      classShow = '休假'
+    }
+    if (showType === '按时数') {
+      showType = true
+    } else if (showType === '按次数') {
+      showType = false
+    }
 
+    let postData = {
+      shiftType: classShow,
+      deptCode: getDeptCode,
+      // deptCode: authStore.selectedDeptCode,
+      hourOrNum: showType,
+      startTime: statisticViewModel.startDate,
+      endTime: statisticViewModel.endDate,
+      status: exportData
+    }
+    let trancePostData = this.stringify(postData)
+    return this.post(`/scheduling/countShiftTypeUser`, trancePostData)
+  }
   // 科室节假日排班表
   public async postDepartmentHolidaySchedule (exportData: any = true) {
     let postData = {

@@ -12,7 +12,7 @@ export default observer(function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
-  const [bodyTabel, setBodyTable] = useState([{}])
+  const [bodyTable, setBodyTable] = useState([{}])
   useEffect(() => {
     // console.log(222)
     emitter.removeAllListeners('设置班次大类')
@@ -37,28 +37,58 @@ export default observer(function BedSituation (props: Props) {
     parentNode.classList.add('addRowClass')
   }
 
-  let interfaceThData = Object.keys(bodyTabel[0]) || []
+  // let interfaceThData = Object.keys(bodyTabel[0]) || []
 
-  let interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
+  // let interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
 
-  // interface td DOM
-  const interfaceTdDom = bodyTabel.map((itemTr: any, index: any) => (
-    <tr key={index} onClick={trClickChange}>
-      {interfaceThData.map((itemTd: any, indexTd: number) => (
-        <td key={indexTd}>{itemTr[itemTd]}</td>
-      ))}
-    </tr>
-  ))
+  // // interface td DOM
+  // const interfaceTdDom = bodyTabel.map((itemTr: any, index: any) => (
+  //   <tr key={index} onClick={trClickChange}>
+  //     {interfaceThData.map((itemTd: any, indexTd: number) => (
+  //       <td key={indexTd}>{itemTr[itemTd]}</td>
+  //     ))}
+  //   </tr>
+  // ))
+  let interfaceThDom
+  let interfaceTdDom
+  let TableShow
+  if (bodyTable[0]) {
+    let interfaceThData = Object.keys(bodyTable[0])
+
+    interfaceThDom = Object.keys(bodyTable[0]).map((item: any, index: number) => <th>{item}</th>)
+
+    // interface td DOM
+    interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (
+      <tr key={index} onClick={trClickChange}>
+        {interfaceThData.map((itemTd: any, indexTd: number) => (
+          <td key={indexTd}>{itemTr[itemTd]}</td>
+        ))}
+      </tr>
+    ))
+    TableShow = (
+      <table>
+        <thead>
+          <tr>{interfaceThDom}</tr>
+        </thead>
+        <tbody>{interfaceTdDom}</tbody>
+      </table>
+    )
+  }
+  let SpaceShow
+  if (!interfaceThDom && !interfaceTdDom) {
+    SpaceShow = (
+      <SpaceCon>
+        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+        <div className='spaceFont'>暂无数据</div>
+      </SpaceCon>
+    )
+  }
   return (
     <Con className='addClass'>
       <div className='tableCon'>
         <div className='tableHead'>
-          <table>
-            <thead>
-              <tr>{interfaceThDom}</tr>
-            </thead>
-            <tbody>{interfaceTdDom}</tbody>
-          </table>
+          {TableShow}
+          {SpaceShow}
         </div>
       </div>
     </Con>
@@ -130,5 +160,14 @@ const Con = styled.div`
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     /* border-radius: 10px; */
     background: rgba(237, 237, 237, 1);
+  }
+`
+const SpaceCon = styled.div`
+  margin: 20px auto;
+  /* width: 200px; */
+  text-align: center;
+  .spaceFont {
+    margin-top: 8px;
+    font-size: 16px;
   }
 `

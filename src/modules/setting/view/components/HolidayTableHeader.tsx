@@ -21,8 +21,10 @@ export default function BedSituation () {
     console.log(settingViewModel.getHolidayAdd)
     let cacheAddHoliday = settingViewModel.getHolidayAdd
     let cacheTarget = [...settingViewModel.tableDate]
-    cacheTarget.push(cacheAddHoliday)
+    cacheTarget = cacheTarget.concat(cacheAddHoliday)
     settingViewModel.setTableDate(cacheTarget)
+    // 接口添加数据
+    SettingApi.postHolidayAdd()
   }
 
   const handleCancel = () => {
