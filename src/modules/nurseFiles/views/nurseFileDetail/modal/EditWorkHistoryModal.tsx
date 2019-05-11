@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
@@ -12,6 +12,7 @@ import { Rules } from 'src/components/Form/interfaces'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id: string
+  getTableData?: () => {}
 }
 const rules: Rules = {
   startTime: (val) => !!val || '请选择开始时间',
@@ -35,7 +36,11 @@ export default function EditWorkHistoryModal (props: Props) {
     if (err) return
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
-    nurseFilesService.nurseWorkExperienceSaveOrUpdatePC({ ...obj, ...value }).then((res: any) => {})
+    nurseFilesService.nurseWorkExperienceSaveOrUpdatePC({ ...obj, ...value }).then((res: any) => {
+      message.success('保存成功')
+      props.getTableData && props.getTableData()
+      onCancel()
+    })
   }
   return (
     <Modal title='修改工作经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存'>
