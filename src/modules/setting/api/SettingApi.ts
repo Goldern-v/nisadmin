@@ -19,7 +19,7 @@ class SettingApi extends BaseApiService {
   }
   // 节假日设置删除节日
   public async getHolidayDelete (deleteData: any) {
-    return this.get(`schHolidays/delById/${deleteData}`)
+    return this.post(`schHolidays/delById`, deleteData)
   }
 }
 

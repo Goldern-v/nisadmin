@@ -21,12 +21,12 @@ export default function EditWorkHistoryModal (props: Props) {
         <Row>
           <Row gutter={10}>
             <Col span={15}>
-              <Form.Field label={`时间`} name='orgName' required suffix='到'>
+              <Form.Field label={`时间`} name='orgNameStart' required suffix='到'>
                 <DatePicker />
               </Form.Field>
             </Col>
             <Col span={9}>
-              <Form.Field name='orgName'>
+              <Form.Field name='orgNameEnd'>
                 <DatePicker />
               </Form.Field>
             </Col>

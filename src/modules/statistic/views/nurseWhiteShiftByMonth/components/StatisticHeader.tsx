@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react'
 // import SelectDepartment from '../common/SelectDepartment'
 import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
-import { Button } from 'antd'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
+import { Button, message } from 'antd'
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation () {
   const [count, setCount] = useState(0)
@@ -16,6 +17,40 @@ export default function BedSituation () {
     console.log(value)
   }
   function searchButtonClick () {}
+  // 导出文件
+  const fileDownload = (res: any) => {
+    let filename = res.headers['content-disposition']
+      ? res.headers['content-disposition'].replace('attachment;filename=', '')
+      : '导出文件'
+    // "attachment;filename=????2019-3-18-2019-3-24??.xls"
+    // "application/json"
+    let blob = new Blob([res.data], {
+      type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
+    })
+    if (res.data.type.indexOf('excel') > -1) {
+      let a = document.createElement('a')
+      let href = window.URL.createObjectURL(blob) // 创建链接对象
+      a.href = href
+      a.download = filename // 自定义文件名
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(href)
+      document.body.removeChild(a) // 移除a元素
+    } else {
+      let reader = new FileReader()
+      reader.addEventListener('loadend', function (data: any) {
+        // reader.result 包含转化为类型数组的blob
+        message.error(`${reader.result}`)
+      })
+      reader.readAsText(blob)
+    }
+  }
+  const exportButtonClick = () => {
+    StatisticsApi.postNurseScheduling(false).then((res) => {
+      fileDownload(res)
+    })
+  }
+
   return (
     <Con>
       <DeptSelect onChange={onChange} />
@@ -25,7 +60,9 @@ export default function BedSituation () {
       <Button className='searchButton' onClick={searchButtonClick}>
         查询
       </Button>
-      <Button className='exportButton'>导出excl</Button>
+      <Button className='exportButton' onClick={exportButtonClick}>
+        导出excl
+      </Button>
     </Con>
   )
 }
