@@ -104,16 +104,19 @@ export default observer(function WorkHistory () {
   ]
 
   const [tableData, setTableData] = useState([])
-  useEffect(() => {
+  const getTableData = () => {
     nurseFilesService.findByEmpNoSubmit(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
+  }
+  useEffect(() => {
+    getTableData()
   }, [])
 
   return (
     <BaseLayout title='工作经历' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} />
-      <editWorkHistoryModal.Component />
+      <editWorkHistoryModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
