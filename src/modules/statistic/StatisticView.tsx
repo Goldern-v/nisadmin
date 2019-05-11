@@ -96,7 +96,7 @@ export default function StatisticView () {
         <StatisticLeftList />
       </ConLeft>
       <ConRight>
-        <StatisticHeader />
+        {/* <StatisticHeader /> */}
         <StatisticMid>
           {/* 对应表 */}
           {CurrentRoute && CurrentRoute.component ? <CurrentRoute.component /> : <NurseSchedulingView />}
@@ -153,28 +153,9 @@ const ConRight = styled.div`
 const StatisticMid = styled.div`
   flex: 1;
   height: 0;
-  margin: 14px;
+  /* margin: 14px;
   padding: 15px 30px;
   background-color: #fff;
   border-radius: 5px;
-  border: 1px solid rgba(161, 175, 179, 1);
-  overflow: auto;
-  ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 4px;
-  }
-  ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-  }
-  /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px #ffffff;
-    border-radius: 5px;
-    background-color: #ffffff;
-  }
+  border: 1px solid rgba(161, 175, 179, 1); */
 `

@@ -3,15 +3,25 @@ import { authStore } from 'src/stores/index'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 class StatisticsApi extends BaseApiService {
   // 护士排班表
-  public async postNurseScheduling (exportData: any = true) {
+  public async postNurseScheduling (Data: any, exportData: any = true) {
+    // let postData = {
+    //   deptCode: authStore.selectedDeptCode,
+    //   startTime: statisticViewModel.startDate,
+    // endTime: statisticViewModel.endDate,
+    // status: exportData
+    // }
     let postData = {
-      deptCode: authStore.selectedDeptCode,
-      startTime: statisticViewModel.startDate,
-      endTime: statisticViewModel.endDate,
+      deptCode: Data.deptCode,
+      startTime: Data.startTime,
+      endTime: Data.endTime,
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/User`, trancePostData)
+    if (exportData === false) {
+      return this.post(`/scheduling/User`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/User`, trancePostData)
+    }
   }
   // 获取按班次自定义的名称
   public async postName () {
@@ -88,7 +98,6 @@ class StatisticsApi extends BaseApiService {
     }
     let postData = {
       type: showType,
-      deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
       endTime: statisticViewModel.endDate,
       ls: data,
@@ -115,7 +124,7 @@ class StatisticsApi extends BaseApiService {
     }
     let postData = {
       shiftType: classShow,
-      deptCode: authStore.selectedDeptCode,
+      // deptCode: authStore.selectedDeptCode,
       hourOrNum: showType,
       startTime: statisticViewModel.startDate,
       endTime: statisticViewModel.endDate,
@@ -154,7 +163,7 @@ class StatisticsApi extends BaseApiService {
   // 科室节假日排班表
   public async postDepartmentHolidaySchedule (exportData: any = true) {
     let postData = {
-      deptCode: authStore.selectedDeptCode,
+      // deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
       endTime: statisticViewModel.endDate,
       status: exportData

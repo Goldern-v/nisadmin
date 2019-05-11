@@ -104,8 +104,8 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
+  flex: 1;
   padding-right: 5%;
-  display: flex;
   .tableCon {
     width: 98%;
     table {

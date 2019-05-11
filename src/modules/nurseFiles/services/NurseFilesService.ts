@@ -16,7 +16,7 @@ export default class NurseFilesService extends BaseApiService {
   // 获取护士列表
   public async getByFormCodePC (obj: any) {
     Object.keys(obj).forEach((key: any) => {
-      if (obj[key] == '全部') {
+      if (obj[key] === '全部') {
         obj[key] = ''
       }
     })
@@ -42,6 +42,10 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseWorkExperienceSaveOrUpdatePC (obj: any) {
     return this.post(`/nurseWorkExperience/saveOrUpdatePC`, obj)
   }
+  // // 查找护士特殊资格证
+  // public async findByEmpNoSubmit (empNo: any) {
+  //   return this.get(`/nurseWorkExperience/findByEmpNoSubmit/${empNo}`)
+  // }
 }
 
 export const nurseFilesService = new NurseFilesService()

@@ -1,30 +1,26 @@
-// 护士排班表
+// 护士白班统计（按月份)
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
-import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+// import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
-import { authStore } from 'src/stores/index'
 import { observer } from 'mobx-react-lite'
+import spacePhoto from '../../../img/spacePhoto.svg'
 export interface Props {
   showType: string
 }
-export default observer(function BedSituation (props: Props) {
+export default function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
-  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
-  const [getCheckboxItem, setGetCheckboxItem] = useState([])
   const [bodyTable, setBodyTable] = useState([{}])
   useEffect(() => {
-    // console.log(222)
-    let postData = {
-      deptCode: authStore.selectedDeptCode,
-      startTime: statisticViewModel.startDate,
-      endTime: statisticViewModel.endDate
-    }
-    StatisticsApi.postNurseScheduling(postData).then((res) => {
-      setBodyTable(res.data)
+    StatisticsApi.postNurseByMonth('白班', props.showType).then((res) => {
+      if (res && res.data) {
+        setBodyTable(res.data)
+      }
     })
+    // console.log(222)
   }, [])
+
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -33,32 +29,13 @@ export default observer(function BedSituation (props: Props) {
     })
     parentNode.classList.add('addRowClass')
   }
-
-  // let interfaceThData = Object.keys(bodyTabel[0])
-  // interfaceThData.pop()
-  // interfaceThData.pop()
-  // interfaceThData.pop()
-
-  // let interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
-
-  // // interface td DOM
-  // const interfaceTdDom = bodyTabel.map((itemTr: any, index: any) => (
-  //   <tr key={index} onClick={trClickChange}>
-  //     {interfaceThData.map((itemTd: any, indexTd: number) => (
-  //       <td key={indexTd}>{itemTr[itemTd]}</td>
-  //     ))}
-  //   </tr>
-  // ))
   let interfaceThDom
   let interfaceTdDom
   let TableShow
   if (bodyTable[0]) {
     let interfaceThData = Object.keys(bodyTable[0])
-    interfaceThData.pop()
-    interfaceThData.pop()
-    interfaceThData.pop()
 
-    interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
+    interfaceThDom = Object.keys(bodyTable[0]).map((item: any, index: number) => <th>{item}</th>)
 
     // interface td DOM
     interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (
@@ -77,7 +54,6 @@ export default observer(function BedSituation (props: Props) {
       </table>
     )
   }
-
   let SpaceShow
   if (!interfaceThDom && !interfaceTdDom) {
     SpaceShow = (
@@ -87,8 +63,9 @@ export default observer(function BedSituation (props: Props) {
       </SpaceCon>
     )
   }
+
   return (
-    <Con className='addClass'>
+    <Con>
       <div className='tableCon'>
         <div className='tableHead'>
           {TableShow}
@@ -97,7 +74,7 @@ export default observer(function BedSituation (props: Props) {
       </div>
     </Con>
   )
-})
+}
 
 const Con = styled.div`
   .tableCon {
