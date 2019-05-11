@@ -46,6 +46,83 @@ export default observer(function SpecialCard () {
     },
     {
       key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
+      name: '赵志平',
+      age: 29,
+      address: '城市花园37号',
+      hdTime: '2013-06-09',
+      zjName: '特级护理医疗证',
+      zgzNumber: 'thx-43324-55342-67898',
+      fj: '有',
+      zt: '待护士长审核'
+    },
+    {
+      key: '1',
       name: '杨华',
       age: 28,
       address: '西湖区湖底公园1号',
@@ -132,7 +209,7 @@ export default observer(function SpecialCard () {
 
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
+      <BaseTable dataSource={dataSource} columns={columns} surplusHeight={390} />
       <editSpecialCardModal.Component />
     </BaseLayout>
   )

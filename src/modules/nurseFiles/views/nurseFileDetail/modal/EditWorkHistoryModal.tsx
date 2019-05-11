@@ -14,7 +14,7 @@ export interface Props extends ModalComponentProps {
   id: string
 }
 const rules: Rules = {
-  stratTime: (val) => !!val || '请选择开始时间',
+  startTime: (val) => !!val || '请选择开始时间',
   endTime: (val) => !!val || '请选择结束时间',
   unit: (val) => !!val || '请填写工作单位',
   professionalWork: (val) => !!val || '请填写专业技术工作',

@@ -3,12 +3,15 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table'
+import windowHeight from 'src/hooks/windowHeight'
 export interface Props extends TableProps<any> {
   style?: any
+  /**多余的高度 */
+  surplusHeight?: number
 }
 
 export default function BaseTable (props: Props) {
-  let { dataSource, columns } = props
+  let wih = windowHeight()
   let option: any = Object.assign(
     {
       bordered: true,
@@ -17,6 +20,9 @@ export default function BaseTable (props: Props) {
     },
     props
   )
+  if (props.surplusHeight) {
+    option.scroll = { y: wih - props.surplusHeight }
+  }
   return (
     <Wrapper style={props.style}>
       <Table {...option} />

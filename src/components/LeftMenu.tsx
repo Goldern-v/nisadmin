@@ -9,6 +9,7 @@ const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 export interface Props {
   config: any
+  menuTitle: string
 }
 
 export default function LeftMenu (props: Props) {
@@ -28,7 +29,8 @@ export default function LeftMenu (props: Props) {
             key={item.title}
             title={
               <span>
-                {item.icon && <Icon type='mail' />}
+                {/* {item.icon && <Icon type='mail' />} */}
+                {item.icon && <MenuIcon src={item.icon} />}
                 <span>{item.title}</span>
               </span>
             }
@@ -63,13 +65,13 @@ export default function LeftMenu (props: Props) {
 
   return (
     <Wrapper>
-      <Title>敏感指标</Title>
+      {props.menuTitle && <Title>{props.menuTitle}</Title>}
       <Menu
         onSelect={handleSelect}
         defaultSelectedKeys={defaultSelectedKeys}
         defaultOpenKeys={defaultOpenKeys}
         mode='inline'
-        inlineIndent={12}
+        inlineIndent={10}
       >
         {renderMenu(props.config)}
       </Menu>
@@ -106,6 +108,7 @@ const Wrapper = styled.div`
     margin: 0 !important;
     font-size: 12px !important;
     color: #bddbd0 !important;
+    width: 100% !important;
     &:hover {
       color: #fff !important;
     }
@@ -140,6 +143,11 @@ const Wrapper = styled.div`
     background: transparent;
     border: 0 !important;
     overflow: hidden !important;
+    padding-left: 1px !important;
+    > .ant-menu-submenu .ant-menu-submenu-title,
+    > .ant-menu-item {
+      color: #fff !important;
+    }
   }
   .ant-menu-inline {
     width: auto !important;
@@ -148,7 +156,8 @@ const Wrapper = styled.div`
     background: #328b6a !important;
     border-radius: 3px !important;
     margin: 0 10px !important;
-    padding: 0 -10px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     border: 0 !important;
   }
 `
@@ -157,4 +166,11 @@ const Title = styled.div`
   font-size: 12px;
   color: #fff;
   padding: 10px 10px 0;
+`
+
+const MenuIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  margin-left: -4px;
 `
