@@ -409,7 +409,7 @@ export default function Indicator (props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU} />
+        <LeftMenu config={LEFT_MENU} menuTitle='敏感指标' />
         {/* <StatisticLeftList /> */}
       </LeftMenuCon>
       <MainCon>

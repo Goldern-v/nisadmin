@@ -89,7 +89,7 @@ export default function SettingView (props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU_CONFIG} />
+        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle='系统设置' />
       </LeftMenuCon>
       <MainCon>
         {/*
