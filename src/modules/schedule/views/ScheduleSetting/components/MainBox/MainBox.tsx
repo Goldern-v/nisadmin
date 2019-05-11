@@ -230,7 +230,7 @@ export default function MainBox () {
 
   const countWorkHours = (record: any, target: any = null) => {
     // shiftListData  effectiveTime
-    console.log('countWorkHours', record, shiftListData)
+    // console.log('countWorkHours', record, shiftListData)
     let result = 0
     let shift: any = new Object()
     for (const key in record) {
@@ -246,7 +246,7 @@ export default function MainBox () {
       }
     }
     record.thisWeekHour = result + ''
-    console.log('result', result)
+    // console.log('result', result)
     return result
   }
 
@@ -474,7 +474,7 @@ export default function MainBox () {
           inputW.innerHTML = isEmpty ? '' : s.thisWeekHour
           s.thisWeekHour = isEmpty ? '' : s.thisWeekHour
         }
-        console.log('inputW', inputW, selectedRow)
+        // console.log('inputW', inputW, selectedRow)
       }
       // 统计
       statisticFooter(selectedRowsArray)
@@ -485,7 +485,7 @@ export default function MainBox () {
     genEmptyTable(newTabelData)
     setTableList(newTabelData)
     // setTableList(tableList)
-    console.log('==!!排班列表', selectedRow, shiftListData, tableList, selectedRowsArray)
+    // console.log('==!!排班列表', selectedRow, shiftListData, tableList, selectedRowsArray)
     setTableLoading(false)
   }
 
@@ -640,7 +640,7 @@ export default function MainBox () {
     setTableLoading(true)
 
     schShiftUser.map((nurse: any, shcIndex: number) => {
-      console.log('nurse', shcIndex, nurse.empName, nurse)
+      // console.log('nurse', shcIndex, nurse.empName, nurse)
       let getRangeName = (range: any, i: number) => {
         let result = ''
         try {

@@ -4,6 +4,7 @@ import BaseTabs from 'src/components/BaseTabs'
 import BaseBonus from './components/BaseBonus'
 import PerformanceBonus from './components/PerformanceBonus'
 import CacheItem from './components/CacheItem'
+import TableHeader from './common/TableHeader'
 // import React, { useState, useEffect } from 'react'
 const TABS_LIST = [
   {
@@ -25,18 +26,32 @@ export default function BedSituation () {
   //   console.log(count, setCount)
   // })
   return (
-    <div>
-      <Con>
+    // <div>
+    <Con>
+      <TableHeader />
+      <TableCon>
         <BaseTabs config={TABS_LIST} />
-      </Con>
-    </div>
+      </TableCon>
+    </Con>
+    // </div>
   )
 }
 
 const Con = styled.div`
   width: 100%;
   height: 100%;
-  .hFcINA {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* .hFcINA {
     border: none;
-  }
+  } */
+`
+const TableCon = styled.div`
+  overflow-y: auto;
+  flex: 1;
+  height: 0;
+  margin: 15px;
+  background: #fff;
+  border: 1px solid rgba(228, 228, 228, 1);
 `

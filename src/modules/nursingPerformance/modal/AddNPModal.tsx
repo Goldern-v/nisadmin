@@ -4,7 +4,6 @@ import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
-import ImageUploader from 'src/components/ImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id: string

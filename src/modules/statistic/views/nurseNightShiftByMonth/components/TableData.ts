@@ -1,0 +1,57 @@
+const columns: any = [
+  {
+    title: '序号',
+    dataIndex: '1',
+    key: '1',
+    render: (text: any, record: any, index: number) => index + 1,
+    align: 'center',
+    width: 50
+  },
+  {
+    title: '统计项目',
+    dataIndex: '统计项目',
+    key: '统计项目',
+    align: 'center'
+  },
+  {
+    title: '人数',
+    dataIndex: '人数',
+    key: '人数',
+    align: 'center'
+  }
+]
+
+const dataSource = [
+  {
+    key: 1,
+    统计项目: '产伤的新生儿出院人数',
+    人数: 3
+  },
+  {
+    key: 2,
+    统计项目: '同期活产儿人数',
+    人数: 30
+  },
+  {
+    key: 3,
+    统计项目: '产伤新生儿占比',
+    人数: 10
+  },
+  {
+    key: 4,
+    统计项目: '发生产伤的阴道分娩产妇出院人数',
+    人数: 2
+  },
+  {
+    key: 5,
+    统计项目: '阴道分娩产妇出院人数',
+    人数: 20
+  },
+  {
+    key: 4,
+    统计项目: '发生产伤的产妇占比',
+    人数: 10
+  }
+]
+
+export const TableData = { dataSource, columns }

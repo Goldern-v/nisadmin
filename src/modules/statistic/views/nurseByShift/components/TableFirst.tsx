@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
-import schedulingStatisticsApi from 'src/modules/statistic/views/api/schedulingStatisticsApi'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
@@ -14,15 +14,25 @@ export default function BedSituation () {
     emitter.removeAllListeners('设置班次大类')
     emitter.addListener('设置班次大类', (shiftClass: any) => {
       setGetShiftClass(shiftClass)
+      let tableData = getShiftClass.concat(getCheckboxItem).join(',')
+      if (shiftClass.length) {
+        let cacheGetShiftClass = shiftClass.join(',')
+        StatisticsApi.postNurseByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
+          setGetTableList(res.data)
+          console.log(getTableList)
+        })
+      }
     })
     emitter.removeAllListeners('设置自定义班次')
     emitter.addListener('设置自定义班次', (checkboxItem: any) => {
       setGetCheckboxItem(checkboxItem)
-    })
-    let tableData = getShiftClass.concat(getCheckboxItem).join(',')
-    schedulingStatisticsApi.postNurseByShiftView(tableData).then((res: any) => {
-      setGetTableList(res.data)
-      console.log(getTableList)
+      if (checkboxItem.length) {
+        let cacheCheckboxItem = checkboxItem.join(',')
+        StatisticsApi.postNurseByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
+          setGetTableList(res.data)
+          console.log(getTableList)
+        })
+      }
     })
   }, [])
   function trClickChange (e: any) {
@@ -63,7 +73,10 @@ export default function BedSituation () {
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
       ))}
-      <td>66</td>
+      {getCheckboxItem.map((itemTd: any, indexTd: number) => (
+        <td key={indexTd}>{itemTr[itemTd]}</td>
+      ))}
+      <td>{itemTr.合计}</td>
     </tr>
   ))
   return (
@@ -82,7 +95,7 @@ export default function BedSituation () {
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>{getTdDom && cacheGetDom}</table>
+            <table>{getTdDom}</table>
           </div>
         </div>
       </div>
