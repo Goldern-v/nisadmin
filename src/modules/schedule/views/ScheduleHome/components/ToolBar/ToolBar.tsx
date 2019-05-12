@@ -8,6 +8,7 @@ import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 
 import emitter from 'src/libs/ev'
+import DeptSelect from 'src/components/DeptSelect'
 
 const Option = Select.Option
 export interface Props extends RouteComponentProps {}
@@ -125,14 +126,14 @@ export default function ToolBar () {
   return (
     <Wrapper>
       <Label>科室：</Label>
-      <Select defaultValue={wardValue} onChange={handleChange} style={{ width: 200 }}>
+      {/* <Select defaultValue={wardValue} onChange={handleChange} style={{ width: 200 }}>
         {wardList.map((ward: any) => (
           <Option key={ward.code + ''} value={ward.code + ''}>
             {ward.name}
           </Option>
         ))}
-      </Select>
-
+      </Select> */}
+      <DeptSelect onChange={handleChange} />
       <Button disabled={buttonDisabled} style={{ marginLeft: 20, marginRight: 10 }}>
         <Link to='/scheduleSetting'>编辑排班</Link>
       </Button>
@@ -153,7 +154,6 @@ export default function ToolBar () {
       >
         导出Excel
       </Button>
-
       <div style={{ flex: 1 }} />
       <LinkText>
         <Link to='/nurseSetting' style={{ color: '#747474' }}>
