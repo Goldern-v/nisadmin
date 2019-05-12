@@ -38,7 +38,11 @@ const columns = [
     title: '性别',
     dataIndex: 'sex',
     key: 'sex',
-    width: '8%'
+    width: '8%',
+    render (text: any) {
+      if (text == 0) return '男'
+      if (text == 1) return '女'
+    }
   },
   {
     title: '年龄',
@@ -89,6 +93,9 @@ let rowSelection = {
     console.log('onSelect', record, selected, selectedRows)
   },
   onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
+    selectedRows.forEach((record: any) => {
+      record.rangeShow = selected
+    })
     console.log('onSelectAll', selected, selectedRows, changeRows)
   },
   getCheckboxProps: (record: any) => ({
