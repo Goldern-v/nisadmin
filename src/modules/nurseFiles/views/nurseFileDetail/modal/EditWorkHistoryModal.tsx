@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
@@ -9,9 +9,10 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
+import moment from 'moment'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  id: string
+  data?: any
   getTableData?: () => {}
 }
 const rules: Rules = {
@@ -23,7 +24,7 @@ const rules: Rules = {
   post: (val) => !!val || '请选择职务'
 }
 export default function EditWorkHistoryModal (props: Props) {
-  let { visible, onCancel, onOk } = props
+  let { visible, onCancel, onOk, data } = props
   let refForm = React.createRef<Form>()
   const onFieldChange = () => {}
   const onSave = async () => {
@@ -42,8 +43,27 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
+  setTimeout(() => console.log('update', refForm.current), 1000)
+
+  useLayoutEffect(() => {
+    console.log(visible, 'visible', refForm.current, 'refForm.current')
+    /** 如果是修改 */
+    if (data && refForm.current && visible) {
+      console.log(refForm.current, visible, data)
+      refForm!.current!.setFields({
+        startTime: moment(data.startTime),
+        endTime: moment(data.endTime),
+        unit: data.unit,
+        professionalWork: data.professionalWork,
+        professional: data.professional,
+        post: data.post
+      })
+      // refForm.current.setField('unit', 123)
+    }
+  }, [visible])
+
   return (
-    <Modal title='修改工作经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存'>
+    <Modal title='修改工作经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={rules}>
         <Row>
           <Row gutter={12}>

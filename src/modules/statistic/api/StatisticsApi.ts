@@ -116,6 +116,8 @@ class StatisticsApi extends BaseApiService {
       classShow = 'P班'
     } else if (classShow === '休假') {
       classShow = '休假'
+    } else {
+      return classShow
     }
     if (showType === '按时数') {
       showType = true

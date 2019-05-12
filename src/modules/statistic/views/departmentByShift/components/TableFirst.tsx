@@ -55,7 +55,7 @@ export default function BedSituation () {
   const cacheGetDom = tdCacheDate.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
       <td>{itemTr.序列}</td>
-      <td>{itemTr.姓名}</td>
+      <td>{itemTr.科室}</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
       ))}
@@ -104,8 +104,8 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
+  flex: 1;
   padding-right: 5%;
-  display: flex;
   .tableCon {
     width: 98%;
     table {

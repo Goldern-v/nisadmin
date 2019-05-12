@@ -17,10 +17,7 @@ export default observer(function WorkHistory () {
   const btnList = [
     {
       label: '添加',
-      onClick: () =>
-        editWorkHistoryModal.show({
-          id: '12'
-        })
+      onClick: () => editWorkHistoryModal.show()
     }
   ]
 
@@ -91,11 +88,10 @@ export default observer(function WorkHistory () {
       key: '8',
       width: 100,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
-        console.log(a, b, c)
+      render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span>修改</span>
+            <span onClick={() => editWorkHistoryModal.show({ data: row })}>修改</span>
             <span>审核</span>
           </DoCon>
         )
@@ -127,4 +123,7 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
+  span {
+    cursor: pointer;
+  }
 `

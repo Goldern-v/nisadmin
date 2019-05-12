@@ -116,7 +116,7 @@ const Con = styled.div`
   overflow: hidden;
 `
 const ConLeft = styled.div`
-  width: 220px;
+  width: 200px;
   z-index: 1;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);

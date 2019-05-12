@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditExaminationResultsModal from '../modal/EditExaminationResultsModal'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
@@ -161,10 +162,18 @@ export default observer(function EducationalExperience () {
   useEffect(() => {
     console.log(count, setCount)
   })
-
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.findByUserId(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
+  useEffect(() => {
+    getTableData()
+  }, [])
   return (
     <BaseLayout title='教育经历' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} />
       <editExaminationResultsModal.Component />
     </BaseLayout>
   )

@@ -12,10 +12,10 @@ export default function BedSituation () {
     console.log(count, setCount)
   })
 
-  const onChange = (value: string) => {
-    // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
-  }
+  // const onChange = (value: string) => {
+  //   // nurseFilesListViewModel.loadNursingList()
+  //   console.log(value)
+  // }
   function searchButtonClick () {}
   // 导出文件
   const fileDownload = (res: any) => {
@@ -53,7 +53,7 @@ export default function BedSituation () {
 
   return (
     <Con>
-      <DeptSelect onChange={onChange} />
+      {/* <DeptSelect onChange={onChange} /> */}
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
