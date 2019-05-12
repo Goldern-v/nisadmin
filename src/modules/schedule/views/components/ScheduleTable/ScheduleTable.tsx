@@ -218,6 +218,18 @@ export default function ScheduleTable () {
           let postLine: any = new Array()
           // let startTime = scheduleStore.getStartTime()
 
+          // currentLevel: ""
+          // deptCode: "030502"
+          // deptName: "神经内科护理单元"
+          // empName: "彭彩红"
+          // empNo: "6949"
+          // id: 2005
+          // remark: ""
+          // settingDtos: null
+          // status: ""
+          // thisWeekHour: null
+          // title: "护士"
+
           userList.map((user: any) => {
             for (let index = 0; index < 7; index++) {
               // 自动新建保存空白内容
@@ -228,11 +240,15 @@ export default function ScheduleTable () {
                     .add('d', index)
                     .format(dateFormat)
                 },
-                rangeId: '',
+                // rangeId: '',
                 status: '0',
                 thisWeekHour: '0',
                 rangeName: '',
                 remark: ''
+                // "shiftType":"排班类型"
+                // "nameColor":"班次颜色"
+                // "effectiveTime":"标准工时"
+                // "deptCode":"科室"
               }
               // console.log(key, element, shift, postLine)
               postDataArray.push(JSON.parse(JSON.stringify(postLine)))
@@ -261,7 +277,7 @@ export default function ScheduleTable () {
         let getRangeObj = (user: any, keyname: any, i: number) => {
           let result = ''
           try {
-            result = user[i].range[keyname] // .rangeName
+            result = user[i][keyname] // .rangeName
             // range[i].range.nameColor
           } catch (error) {
             return ''
@@ -286,13 +302,13 @@ export default function ScheduleTable () {
           empName: nurse.empName || '',
           currentLevel: nurse.currentLevel || '',
           title: nurse.title || '',
-          rangeName1: getRangeObj(nurse.settingDtos, 'name', 0) || '',
-          rangeName2: getRangeObj(nurse.settingDtos, 'name', 1) || '',
-          rangeName3: getRangeObj(nurse.settingDtos, 'name', 2) || '',
-          rangeName4: getRangeObj(nurse.settingDtos, 'name', 3) || '',
-          rangeName5: getRangeObj(nurse.settingDtos, 'name', 4) || '',
-          rangeName6: getRangeObj(nurse.settingDtos, 'name', 5) || '',
-          rangeName7: getRangeObj(nurse.settingDtos, 'name', 6) || '',
+          rangeName1: getRangeObj(nurse.settingDtos, 'rangeName', 0) || '',
+          rangeName2: getRangeObj(nurse.settingDtos, 'rangeName', 1) || '',
+          rangeName3: getRangeObj(nurse.settingDtos, 'rangeName', 2) || '',
+          rangeName4: getRangeObj(nurse.settingDtos, 'rangeName', 3) || '',
+          rangeName5: getRangeObj(nurse.settingDtos, 'rangeName', 4) || '',
+          rangeName6: getRangeObj(nurse.settingDtos, 'rangeName', 5) || '',
+          rangeName7: getRangeObj(nurse.settingDtos, 'rangeName', 6) || '',
           rangeNameColor1: getRangeObj(nurse.settingDtos, 'nameColor', 0) || '',
           rangeNameColor2: getRangeObj(nurse.settingDtos, 'nameColor', 1) || '',
           rangeNameColor3: getRangeObj(nurse.settingDtos, 'nameColor', 2) || '',

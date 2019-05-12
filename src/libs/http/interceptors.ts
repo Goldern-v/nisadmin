@@ -77,6 +77,10 @@ export function onResponseFulfilled (response: AxiosResponse) {
       if (status === 200) {
         return response.data
       }
+      if (response.data) {
+        console.log('默认响应', response, response.data, code, desc, data)
+        return response
+      }
       console.log('默认响应', response, response.data, code, desc, data)
       return Promise.reject(`未知异常`)
   }
