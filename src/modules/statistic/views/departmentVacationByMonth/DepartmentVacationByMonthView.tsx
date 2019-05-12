@@ -1,10 +1,13 @@
-// 护士休假统计（按月份）
+// 科室休假统计（按月份)
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import TableFirst from './components/TableFirst'
+import TableSecond from './components/TableSecond'
 import { Button, Radio } from 'antd'
+import StatisticHeader from './components/StatisticHeader'
 import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 import TableModel from '../../common/TableModel'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 // import TableDate from './components/TableData'
 // const ButtonGroup = Button.Group
 
@@ -15,33 +18,75 @@ export default function StatisticView () {
   useEffect(() => {
     console.log(count, setCount)
   })
+  const selectShowType = (e: any) => {
+    setShowType(e.target.value)
+    StatisticsApi.postDepartmentByMonth('休假', e.target.value).then((res) => {
+      console.log(res)
+    })
+    console.log(33)
+  }
   return (
     <Con>
-      <StatisticMIdHeader />
-      <div className='buttonCon'>
-        <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
-          <Radio.Button value='按时数'>按时数</Radio.Button>
-          <Radio.Button value='按次数'>按次数</Radio.Button>
-        </Radio.Group>
-      </div>
-      {/* 护士休假统计（按月份）) */}
-      {<TableFirst showType={showType} />}
-      {/* {showType === '按时数' && (
-        <TableModel dataSource={TableData.dataSource} columns={TableData.columns} showType={showType} />
-      )}
-      {showType === '按次数' && <TableSecond />} */}
+      <StatisticHeader />
+      <TableCon>
+        <StatisticMIdHeader />
+        <div className='buttonCon'>
+          <Radio.Group value={showType} buttonStyle='solid' onChange={selectShowType}>
+            <Radio.Button value='按时数'>按时数</Radio.Button>
+            <Radio.Button value='按次数'>按次数</Radio.Button>
+          </Radio.Group>
+        </div>
+        {/* 护士夜班统计（按月份) */}
+        {showType === '按时数' && <TableFirst showType={showType} />}
+        {showType === '按次数' && <TableSecond showType={showType} />}
+      </TableCon>
     </Con>
   )
 }
 
 const Con = styled.div`
-  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  /* .ant-btn {
+    height: 30px;
+    background: rgba(241, 244, 246, 1);
+    border-radius: 3px;
+    border: 1px solid rgba(192, 203, 206, 1);
+  } */
+`
+const TableCon = styled.div`
+  flex: 1;
+  height: 0;
+  margin: 14px;
+  padding: 15px 30px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid rgba(161, 175, 179, 1);
   position: relative;
-  /* display: flex; */
-  overflow: hidden;
+  overflow: auto;
   .buttonCon {
     position: absolute;
     top: 10px;
     right: 10px;
+  }
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
   }
 `
