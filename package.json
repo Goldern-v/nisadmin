@@ -36,6 +36,7 @@
     "mobx": "^5.9.4",
     "mobx-react-lite": "^1.2.0",
     "node-sass": "^4.11.0",
+    "node-ssh": "^6.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router": "^5.0.0",
@@ -48,6 +49,7 @@
   "scripts": {
     "dev": "npm run start",
     "start": "react-app-rewired start",
+    "publish": "node publish.js",
     "start:demo": "env-cmd .env.demo npm run start",
     "build": "react-app-rewired build",
     "build:demo": "env-cmd .env.demo npm run build",
