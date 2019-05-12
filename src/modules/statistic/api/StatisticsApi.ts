@@ -47,7 +47,11 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/countUser`, trancePostData)
+    if (exportData === false) {
+      return this.post(`/scheduling/countUser`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/countUser`, trancePostData)
+    }
   }
   // 护士白班统计（按月份）  classShow不同
   // 护士夜班统计（按月份）
