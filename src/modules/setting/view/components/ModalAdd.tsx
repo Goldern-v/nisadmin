@@ -5,7 +5,9 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Form, Input, Button, Radio, DatePicker, Select, message } from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
 import { observer } from 'mobx-react-lite'
-import SelectHoliday from 'src/modules/setting/view/common/SelectHoliday1'
+import SelectHoliday1 from 'src/modules/setting/view/common/SelectHoliday1'
+import SelectHoliday2 from 'src/modules/setting/view/common/SelectHoliday2'
+import SelectHoliday3 from 'src/modules/setting/view/common/SelectHoliday3'
 import SettingViewModel from 'src/modules/setting/SettingViewModel'
 
 export interface Props extends FormComponentProps {
@@ -85,17 +87,17 @@ function ModalAdd (props: Props) {
       <Form.Item {...formItemLayout} label='日期1'>
         {getFieldDecorator('selectDate1', {
           rules: [{ required: true, message: '日期不能为空' }]
-        })(<SelectHoliday />)}
+        })(<SelectHoliday1 />)}
       </Form.Item>
       <Form.Item {...formItemLayout} label='日期2'>
         {getFieldDecorator('selectDate2', {
           rules: [{ required: true, message: '日期不能为空' }]
-        })(<SelectHoliday />)}
+        })(<SelectHoliday2 />)}
       </Form.Item>
       <Form.Item {...formItemLayout} label='日期3'>
         {getFieldDecorator('selectDate3', {
           rules: [{ required: true, message: '日期不能为空' }]
-        })(<SelectHoliday />)}
+        })(<SelectHoliday3 />)}
       </Form.Item>
     </Modal>
   )

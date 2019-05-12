@@ -46,7 +46,7 @@ export default function BedSituation () {
     }
   }
   const exportButtonClick = () => {
-    StatisticsApi.postNurseScheduling(false).then((res) => {
+    StatisticsApi.postNurseHolidaySchedule(false).then((res) => {
       fileDownload(res)
     })
   }

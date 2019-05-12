@@ -16,12 +16,12 @@ export default observer(function BedSituation (props: Props) {
   const [bodyTable, setBodyTable] = useState([{}])
   useEffect(() => {
     // console.log(222)
-    let postData = {
-      deptCode: authStore.selectedDeptCode,
-      startTime: statisticViewModel.startDate,
-      endTime: statisticViewModel.endDate
-    }
-    StatisticsApi.postNurseScheduling(postData).then((res) => {
+    // let postData = {
+    //   deptCode: authStore.selectedDeptCode,
+    //   startTime: statisticViewModel.startDate,
+    //   endTime: statisticViewModel.endDate
+    // }
+    StatisticsApi.postNurseScheduling().then((res) => {
       setBodyTable(res.data)
     })
   }, [])

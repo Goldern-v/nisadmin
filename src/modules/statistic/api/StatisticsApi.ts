@@ -3,19 +3,19 @@ import { authStore } from 'src/stores/index'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 class StatisticsApi extends BaseApiService {
   // 护士排班表
-  public async postNurseScheduling (Data: any, exportData: any = true) {
-    // let postData = {
-    //   deptCode: authStore.selectedDeptCode,
-    //   startTime: statisticViewModel.startDate,
-    // endTime: statisticViewModel.endDate,
-    // status: exportData
-    // }
+  public async postNurseScheduling (exportData: any = true) {
     let postData = {
-      deptCode: Data.deptCode,
-      startTime: Data.startTime,
-      endTime: Data.endTime,
+      deptCode: authStore.selectedDeptCode,
+      startTime: statisticViewModel.startDate,
+      endTime: statisticViewModel.endDate,
       status: exportData
     }
+    // let postData = {
+    //   deptCode: Data.deptCode,
+    //   startTime: Data.startTime,
+    //   endTime: Data.endTime,
+    //   status: exportData
+    // }
     let trancePostData = this.stringify(postData)
     if (exportData === false) {
       return this.post(`/scheduling/User`, trancePostData, { responseType: 'blob' })

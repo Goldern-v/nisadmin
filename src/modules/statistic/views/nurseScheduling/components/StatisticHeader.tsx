@@ -19,6 +19,7 @@ export default function BedSituation () {
   function searchButtonClick () {}
   // 导出文件
   const fileDownload = (res: any) => {
+    console.log(res)
     let filename = res.headers['content-disposition']
       ? res.headers['content-disposition'].replace('attachment;filename=', '')
       : '导出文件'
@@ -27,6 +28,7 @@ export default function BedSituation () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
+    console.log('fileDownload', res)
     if (res.data.type.indexOf('excel') > -1) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象

@@ -6,6 +6,9 @@ class StatisticViewModel {
   @observable public deptCode = ''
   @observable public startDate = ''
   @observable public endDate = ''
+  @observable public classDiff: any = ''
+  @observable public classItem: any = ''
+
   @computed
   public get getTitle () {
     return this.deptName + this.title

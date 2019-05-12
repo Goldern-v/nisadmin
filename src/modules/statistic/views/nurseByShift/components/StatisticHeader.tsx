@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
+import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message } from 'antd'
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation () {
@@ -19,6 +20,7 @@ export default function BedSituation () {
   function searchButtonClick () {}
   // 导出文件
   const fileDownload = (res: any) => {
+    console.log(res)
     let filename = res.headers['content-disposition']
       ? res.headers['content-disposition'].replace('attachment;filename=', '')
       : '导出文件'
@@ -27,28 +29,34 @@ export default function BedSituation () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    if (res.data.type.indexOf('excel') > -1) {
-      let a = document.createElement('a')
-      let href = window.URL.createObjectURL(blob) // 创建链接对象
-      a.href = href
-      a.download = filename // 自定义文件名
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(href)
-      document.body.removeChild(a) // 移除a元素
-    } else {
-      let reader = new FileReader()
-      reader.addEventListener('loadend', function (data: any) {
-        // reader.result 包含转化为类型数组的blob
-        message.error(`${reader.result}`)
-      })
-      reader.readAsText(blob)
+    console.log('fileDownload', res)
+    if (res.data.type) {
+      if (res.data.type.indexOf('excel') > -1) {
+        let a = document.createElement('a')
+        let href = window.URL.createObjectURL(blob) // 创建链接对象
+        a.href = href
+        a.download = filename // 自定义文件名
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(href)
+        document.body.removeChild(a) // 移除a元素
+      } else {
+        let reader = new FileReader()
+        reader.addEventListener('loadend', function (data: any) {
+          // reader.result 包含转化为类型数组的blob
+          message.error(`${reader.result}`)
+        })
+        reader.readAsText(blob)
+      }
     }
   }
   const exportButtonClick = () => {
-    StatisticsApi.postNurseScheduling(false).then((res) => {
-      fileDownload(res)
-    })
+    // showType: any, data: any, exportData: any = true
+    StatisticsApi.postNurseByShiftView(statisticViewModel.classDiff, statisticViewModel.classItem, false).then(
+      (res) => {
+        fileDownload(res)
+      }
+    )
   }
 
   return (
