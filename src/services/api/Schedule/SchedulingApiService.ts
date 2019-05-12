@@ -43,6 +43,10 @@ export default class SchedulingApiService extends BaseApiService {
       // thisWeekHour: data.thisWeekHour, // thisWeekHour   本周工时
       // rangeName: data.rangeName, // rangeName   班次名字，这名字可修改得
       // remark: data.remark // remark   备注
+      //
+      //
+      // "endTime": "2019-05-11",
+      // "stratTime": "2019-03-17"
     }
     return this.post(`/scheduling/saveOrUpdate`, postData)
   }
@@ -64,8 +68,7 @@ export default class SchedulingApiService extends BaseApiService {
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
-    let postDataA = this.stringify(postData)
-    return this.post(`/scheduling/export`, postDataA, { responseType: 'blob' })
+    return this.post(`/scheduling/export`, postData, { responseType: 'blob' })
   }
 
   // 5.护士按月份和排班类型统计（按时数）(按天数)
