@@ -4,6 +4,7 @@ import emitter from 'src/libs/ev'
 import service from 'src/services/api'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
@@ -19,10 +20,17 @@ export default function BedSituation () {
         let cacheGetShiftClass = shiftClass.join(',')
         statisticViewModel.classDiff = '按班次大类'
         statisticViewModel.classItem = cacheGetShiftClass
-        StatisticsApi.postNurseByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
-          setGetTableList(res.data)
-          console.log(getTableList)
-        })
+        let postNurseByShiftView = () => {
+          StatisticsApi.postNurseByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
+            setGetTableList(res.data)
+            console.log(getTableList)
+          })
+        }
+        postNurseByShiftView()
+        // emitter.removeAllListeners('护士排班按班次')
+        // emitter.('护士排班按班次',()=>{
+
+        // })
       }
     })
     emitter.removeAllListeners('设置自定义班次')
@@ -32,10 +40,13 @@ export default function BedSituation () {
         let cacheCheckboxItem = checkboxItem.join(',')
         statisticViewModel.classDiff = '自定义班次'
         statisticViewModel.classItem = cacheCheckboxItem
-        StatisticsApi.postNurseByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
-          setGetTableList(res.data)
-          console.log(getTableList)
-        })
+        let postNurseByShiftView = () => {
+          StatisticsApi.postNurseByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
+            setGetTableList(res.data)
+            console.log(getTableList)
+          })
+        }
+        postNurseByShiftView()
       }
     })
   }, [])

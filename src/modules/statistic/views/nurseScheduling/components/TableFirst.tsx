@@ -11,20 +11,21 @@ export interface Props {
 }
 export default observer(function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
-  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
-  const [getCheckboxItem, setGetCheckboxItem] = useState([])
   const [bodyTable, setBodyTable] = useState([{}])
-  useEffect(() => {
-    // console.log(222)
-    // let postData = {
-    //   deptCode: authStore.selectedDeptCode,
-    //   startTime: statisticViewModel.startDate,
-    //   endTime: statisticViewModel.endDate
-    // }
+  const postNurseScheduling = () =>
     StatisticsApi.postNurseScheduling().then((res) => {
       setBodyTable(res.data)
     })
+
+  useEffect(() => {
+    emitter.addListener('touchState', () => {
+      postNurseScheduling()
+    })
+    postNurseScheduling()
   }, [])
+  // const postNurseScheduling = StatisticsApi.postNurseScheduling().then((res) => {
+  //   setBodyTable(res.data)
+  // })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -45,7 +46,7 @@ export default observer(function BedSituation (props: Props) {
     interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
 
     // interface td DOM
-    interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (
+    interfaceTdDom = bodyTable.map((itemTr: any, index: number) => (
       <tr key={index} onClick={trClickChange}>
         {interfaceThData.map((itemTd: any, indexTd: number) => (
           <td key={indexTd}>{itemTr[itemTd]}</td>

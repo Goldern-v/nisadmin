@@ -46,9 +46,9 @@ export default function BedSituation () {
         <AddButtonCon>
           <Button onClick={addButtonClick}>添加</Button>
         </AddButtonCon>
-        <SaveButtonCon>
+        {/* <SaveButtonCon>
           <Button>保存</Button>
-        </SaveButtonCon>
+        </SaveButtonCon> */}
       </TopCon>
       <ModalAdd visible={visible} handleOk={handleOk} handleCancel={handleCancel} />
     </Con>
@@ -75,6 +75,6 @@ const TopCon = styled.div`
 const AddButtonCon = styled.div`
   padding-left: 30px;
 `
-const SaveButtonCon = styled.div`
-  padding-left: 15px;
-`
+// const SaveButtonCon = styled.div`
+//   padding-left: 15px;
+// `

@@ -63,8 +63,7 @@ export default observer(function BedSituation () {
     <Con className='addClass'>
       <div className='tableCon'>
         <div className='tableHead'>
-          {/* fdfdss
-          {TableShow} */}
+          {TableShow}
           {SpaceShow}
         </div>
       </div>

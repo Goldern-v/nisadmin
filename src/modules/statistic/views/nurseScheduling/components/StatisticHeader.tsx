@@ -5,18 +5,22 @@ import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 import { Button, message } from 'antd'
+import emitter from 'src/libs/ev'
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation () {
   const [count, setCount] = useState(0)
+  // const [getMethods, setGetMethods] = useState(() => null)
   useEffect(() => {
     console.log(count, setCount)
-  })
+  }, [])
 
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
     console.log(value)
   }
-  function searchButtonClick () {}
+  function searchButtonClick () {
+    emitter.emit('touchState')
+  }
   // 导出文件
   const fileDownload = (res: any) => {
     console.log(res)
@@ -47,6 +51,7 @@ export default function BedSituation () {
       reader.readAsText(blob)
     }
   }
+
   const exportButtonClick = () => {
     StatisticsApi.postNurseScheduling(false).then((res) => {
       fileDownload(res)
