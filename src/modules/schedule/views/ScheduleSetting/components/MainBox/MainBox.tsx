@@ -141,6 +141,7 @@ export default function MainBox () {
   const [tableList, setTableList] = useState(new Array())
   const [shiftList, setShiftList] = useState(new Array())
   const [shiftUserList, setShiftUserList] = useState(new Array())
+  const [isPublished, setIsPublished] = useState(false)
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -149,6 +150,7 @@ export default function MainBox () {
     getShiftUserList()
     getSchedule()
 
+    emitter.removeAllListeners('排班列表载入动画')
     emitter.removeAllListeners('获取编辑排班列表')
     emitter.removeAllListeners('更新班次套餐列表')
     emitter.removeAllListeners('更新排班人员列表')
@@ -162,13 +164,19 @@ export default function MainBox () {
       // console.log('获取编辑排班列表addListener', selectedRowsArray, selectedCell)
       selectedRowsArray.map((nurse) => {
         nurse.status = getStatusToNum(nurse.status)
+        // console.log('--nurse.status', nurse.status)
       })
+      // console.log('获取编辑排班列表selectedRowsArray', selectedRowsArray)
 
       if (callback) {
         // console.log('获取编辑排班列表addListener',selectedRowsArray, shiftTableData)
         // callback(shiftTableData, shiftListData)
         callback(selectedRowsArray, shiftListData)
       }
+    })
+
+    emitter.addListener('排班列表载入动画', (isLoding) => {
+      setTableLoading(isLoding)
     })
 
     emitter.addListener('更新班次套餐列表', () => {
@@ -182,22 +190,23 @@ export default function MainBox () {
 
     emitter.addListener('更新排班列表', () => {
       setTableLoading(true)
-      updateTableUI(true)
+      updateTableUI(true, isPublished)
       getSchedule()
     })
 
     emitter.addListener('重置排班列表', () => {
-      setTableLoading(true)
       setFooter('排班小计: 空')
       updateTableUI(true)
     })
 
     emitter.addListener('发布并更新排班列表', () => {
-      updateTableUI(false, true)
+      setTableLoading(true)
+      updateTableUI(false, true, true)
     })
 
     emitter.addListener('更新排班列表表格', () => {
-      updateTableUI()
+      setTableLoading(true)
+      updateTableUI(false, false, true)
     })
 
     emitter.addListener('更新复制上周排班', (schShiftUser: any) => {
@@ -430,11 +439,18 @@ export default function MainBox () {
       dataIndex: 'status',
       key: 'status',
       width: '10%',
-      render: (text: string, record: any) => (record.id ? <span id={'status' + record.id}>{getStatus(text)}</span> : '')
+      render: (text: string, record: any) =>
+        record.id ? (
+          <span id={'status' + record.id}>
+            {getStatus(text)}
+          </span>
+        ) : (
+          ''
+        )
     }
   ]
 
-  const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false) => {
+  const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false, isActive:any = null) => {
     // console.log('====updateTableUI', selectedRowsArray, isEmpty)
     selectedRowsArray.map((s, k) => {
       if (s && s.id) {
@@ -457,13 +473,21 @@ export default function MainBox () {
         // 更新状态 status
         if (isEmpty) {
           s.status = '-1' // getStatus(-1)
-        } else {
-          if (isPublish) {
+        } 
+        if(isActive){
+            if (isPublish) {
             s.status = '1' // getStatus(1)
           } else {
             s.status = '0' // getStatus(0)
           }
         }
+        // else {
+        //   if (isPublish) {
+        //     s.status = '1' // getStatus(1)
+        //   } else {
+        //     s.status = '0' // getStatus(0)
+        //   }
+        // }
 
         // 更新工时
         countWorkHours(s)
@@ -640,7 +664,7 @@ export default function MainBox () {
     setTableLoading(true)
 
     schShiftUser.map((nurse: any, shcIndex: number) => {
-      // console.log('nurse', shcIndex, nurse.empName, nurse)
+      console.log('nurse', shcIndex, nurse.empName, nurse, nurse.status)
       let getRangeName = (range: any, i: number) => {
         let result = ''
         try {
@@ -670,7 +694,9 @@ export default function MainBox () {
         thisWeekHour: nurse.thisWeekHour || '',
         status: nurse.status // getStatus(nurse.status) || ''
       }
-      // console.log('tr', tr)
+      let isPub = nurse.status==='1'?true:false
+      setIsPublished(isPub)
+      // console.log('---tr', tr,isPublished,nurse.status,nurse.status==='1')
       newList.push(tr as any)
       selectedRowsArray.push(tr as any)
     })

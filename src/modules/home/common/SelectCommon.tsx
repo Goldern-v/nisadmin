@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Select, Button } from 'antd'
 import service from 'src/services/api'
+import DeptSelect from 'src/components/DeptSelect'
 // import { any } from 'prop-types'
 
 const Option = Select.Option
@@ -53,17 +54,7 @@ export default function SelectCommon () {
     <div>
       <SelectCon>
         <span className='label'>科室：</span>
-        <Select defaultValue='普外科护理单元' style={{ width: 200 }} onChange={handleChange}>
-          <Option value='骨科护理单元'>骨科护理单元</Option>
-          <Option value='普外科护理单元'>普外科护理单元</Option>
-          <Option value='泌尿外科护理单元'>泌尿外科护理单元</Option>
-          <Option value='产科护理单元'>产科护理单元</Option>
-          {officeList.map((item: any) => (
-            <Option key={item.name.toString()} value={item.name}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>
+        <DeptSelect onChange={handleChange} />
         <Button style={{ marginLeft: 20, marginRight: 10 }}>查询</Button>
         <Button>刷新</Button>
       </SelectCon>
