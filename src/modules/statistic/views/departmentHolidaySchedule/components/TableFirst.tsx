@@ -9,8 +9,6 @@ import { observer } from 'mobx-react-lite'
 
 export default observer(function BedSituation () {
   // const [count, setCount] = useState(0)
-  const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
-  const [getCheckboxItem, setGetCheckboxItem] = useState([])
   const [bodyTable, setBodyTable] = useState([{}])
   useEffect(() => {
     // console.log(222)

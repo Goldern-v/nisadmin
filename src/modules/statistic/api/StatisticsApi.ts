@@ -79,7 +79,11 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/countShiftTypeUser`, trancePostData)
+    if (exportData === false) {
+      return this.post(`/scheduling/countShiftTypeUser`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/countShiftTypeUser`, trancePostData)
+    }
   }
 
   // 护士节假日排班表
@@ -91,7 +95,11 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/countUserHolidays`, trancePostData)
+    if (exportData === false) {
+      return this.post(`/scheduling/countUserHolidays`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/countUserHolidays`, trancePostData)
+    }
   }
   // 科室排班统计（按班次）
   public async postDepartmentByShiftView (showType: string, data: any, exportData: any = true) {
@@ -108,7 +116,11 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/countByDeptCode`, trancePostData)
+    if (exportData === false) {
+      return this.post(`/scheduling/countByDeptCode`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/countByDeptCode`, trancePostData)
+    }
   }
   // 科室白班统计（按月份）
   // 科室夜班统计（按月份）
@@ -137,7 +149,11 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/countShiftTypeDeptCode`, trancePostData)
+    if (exportData === false) {
+      return this.post(`/scheduling/countShiftTypeDeptCode`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/countShiftTypeDeptCode`, trancePostData)
+    }
   }
   // 测试1
   public async postNurseByMonthttt (classShow: string, showType: any, getDeptCode: any, exportData: any = true) {

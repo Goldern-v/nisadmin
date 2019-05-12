@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import SelectDepartment from '../common/SelectDepartment'
 // import DeptSelect from 'src/components/DeptSelect'
+import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 import { Button, message } from 'antd'
@@ -46,9 +47,11 @@ export default function BedSituation () {
     }
   }
   const exportButtonClick = () => {
-    StatisticsApi.postNurseScheduling(false).then((res) => {
-      fileDownload(res)
-    })
+    StatisticsApi.postDepartmentByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime, false).then(
+      (res) => {
+        fileDownload(res)
+      }
+    )
   }
 
   return (

@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
-// import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import { observer } from 'mobx-react-lite'
 import spacePhoto from '../../../img/spacePhoto.svg'
@@ -13,6 +13,8 @@ export default function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
   const [bodyTable, setBodyTable] = useState([{}])
   useEffect(() => {
+    statisticViewModel.whiteBlack = '夜班'
+    statisticViewModel.hourTime = props.showType
     StatisticsApi.postDepartmentByMonth('夜班', props.showType).then((res) => {
       if (res && res.data) {
         setBodyTable(res.data)

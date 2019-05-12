@@ -31,11 +31,8 @@ export default observer(function BedSituation (props: Props) {
   let TableShow
   if (bodyTable[0]) {
     let interfaceThData = Object.keys(bodyTable[0])
-    interfaceThData.pop()
-    interfaceThData.pop()
-    interfaceThData.pop()
 
-    interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
+    interfaceThDom = interfaceThData.map((item: any, index: number) => <th key={index}>{item}</th>)
 
     // interface td DOM
     interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (

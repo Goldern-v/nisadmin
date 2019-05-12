@@ -8,6 +8,10 @@ class StatisticViewModel {
   @observable public endDate = ''
   @observable public classDiff: any = ''
   @observable public classItem: any = ''
+  // 白班/夜班
+  @observable public whiteBlack: any = ''
+  // 时数/次数
+  @observable public hourTime: any = ''
 
   @computed
   public get getTitle () {

@@ -17,6 +17,8 @@ export default function BedSituation () {
       let tableData = getShiftClass.concat(getCheckboxItem).join(',')
       if (shiftClass.length) {
         let cacheGetShiftClass = shiftClass.join(',')
+        statisticViewModel.classDiff = '按班次大类'
+        statisticViewModel.classItem = cacheGetShiftClass
         StatisticsApi.postDepartmentByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
           setGetTableList(res.data)
           console.log(getTableList)
@@ -28,6 +30,8 @@ export default function BedSituation () {
       setGetCheckboxItem(checkboxItem)
       if (checkboxItem.length) {
         let cacheCheckboxItem = checkboxItem.join(',')
+        statisticViewModel.classDiff = '自定义班次'
+        statisticViewModel.classItem = cacheCheckboxItem
         StatisticsApi.postDepartmentByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
           setGetTableList(res.data)
           console.log(getTableList)
