@@ -1,4 +1,4 @@
-// 护士夜班统计（按月份)
+// 护士白班统计（按月份)
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import TableFirst from './components/TableFirst'

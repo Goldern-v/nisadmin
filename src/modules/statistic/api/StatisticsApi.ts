@@ -36,7 +36,7 @@ class StatisticsApi extends BaseApiService {
     if (showType === '按班次大类') {
       showType = 'shift_type'
     } else if (showType === '自定义班次') {
-      showType = 'name'
+      showType = 'range_name'
     }
     let postData = {
       type: showType,
@@ -94,7 +94,7 @@ class StatisticsApi extends BaseApiService {
     if (showType === '按班次大类') {
       showType = 'shift_type'
     } else if (showType === '自定义班次') {
-      showType = 'name'
+      showType = 'range_name'
     }
     let postData = {
       type: showType,
