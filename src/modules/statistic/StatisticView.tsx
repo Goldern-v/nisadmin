@@ -41,7 +41,7 @@ export default function StatisticView () {
     console.log(count, setCount, shiftClass)
     // console.log(3333)
     // console.log(shiftClass)
-    // console.log(store.appStore.history.location.pathname, 9999)
+    console.log(store.appStore, 9999)
   }, [])
   // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)
