@@ -255,7 +255,12 @@ export default function ScheduleTable () {
             }
           })
           console.log('postDataArray', postDataArray)
-          service.schedulingApiService.update(postDataArray).then((result: any) => {
+          let weekRange = {
+            startTime: scheduleStore.getStartTime(),
+            endTime: scheduleStore.getEndTime()
+          }
+
+          service.schedulingApiService.update(postDataArray, weekRange).then((result: any) => {
             message.success(result.data.desc || '新建成功')
             console.log('新建成功result', result)
             emitter.emit('禁止工具按钮', false)

@@ -142,6 +142,7 @@ export default function ToolBar () {
             let element = nurse[key]
             if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1) {
               let shift = shiftListData.find((s: any) => element === s.name)
+              // console.log('!!!!shift', shift, key, nurse[key], nurse)
               // if (!shift) {
               //   continue
               // }
@@ -157,9 +158,9 @@ export default function ToolBar () {
                 thisWeekHour: nurse.thisWeekHour,
                 rangeName: shift ? element || shift.name : '',
                 remark: nurse.remark,
-                shiftType: shift.shiftType,
-                nameColor: shift.nameColor,
-                effectiveTime: shift.effectiveTime,
+                shiftType: shift ? shift.shiftType : '',
+                nameColor: shift ? shift.nameColor : '',
+                effectiveTime: shift ? shift.effectiveTime : '',
                 deptCode: scheduleStore.getDeptCode()
               }
               // console.log(key, element, shift, postLine)
@@ -169,7 +170,12 @@ export default function ToolBar () {
         }
       })
       console.log('获取编辑排班列表postData', postData)
-      service.schedulingApiService.update(postData).then((res) => {
+      let weekRange = {
+        startTime: scheduleStore.getStartTime(),
+        endTime: scheduleStore.getEndTime()
+      }
+      emitter.emit('排班列表载入动画',true)
+      service.schedulingApiService.update(postData, weekRange).then((res) => {
         console.log(res)
         if (res && (res.desc || res.data.desc)) {
           message.success(res.desc || res.data.desc)
@@ -592,13 +598,14 @@ export default function ToolBar () {
   }
 
   const copyShift = () => {
-    message.info('复制上周排班')
+    message.info('正在复制上周排班')
     const postData = {
       deptCode: scheduleStore.getDeptCode(), // deptCode  科室编码
       startTime: scheduleStore.getStartTime(), // startTime 开始时间（直接传当前得时间就行）
       endTime: scheduleStore.getEndTime() // endTime   结束时间（直接传当前得时间就行）
     }
     console.log('复制上周排班postData', postData)
+    emitter.emit('排班列表载入动画',true)
     service.schedulingApiService.copy(postData).then((res) => {
       console.log('复制上周排班', res)
       if (res && res.data) {
@@ -659,7 +666,7 @@ export default function ToolBar () {
         style={{ width: '300px' }}
         onChange={onWeekChange}
         value={weekValue}
-        format={`[第]wo[周 ]YYYY年M月D日[ - ][${formatMonth}]月[${formatDay}]日`}
+        format={`[第]wo[ ]YYYY年M月D日[ - ][${formatMonth}]月[${formatDay}]日`}
         locale={locale}
       />
       <Button onClick={() => resetShift()} className='button-tools'>
@@ -693,9 +700,7 @@ export default function ToolBar () {
           okText='发布'
           cancelText='取消'
         >
-          <Button className='button-tools'>
-            发布排班
-          </Button>
+          <Button className='button-tools'>发布排班</Button>
         </Popconfirm>
       )}
     </Wrapper>
