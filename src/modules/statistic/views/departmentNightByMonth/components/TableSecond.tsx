@@ -37,7 +37,7 @@ export default function BedSituation (props: Props) {
   if (bodyTable[0]) {
     let interfaceThData = Object.keys(bodyTable[0])
 
-    interfaceThDom = Object.keys(bodyTable[0]).map((item: any, index: number) => <th>{item}</th>)
+    interfaceThDom = Object.keys(bodyTable[0]).map((item: any, index: number) => <th key={index}>{item}</th>)
 
     // interface td DOM
     interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (

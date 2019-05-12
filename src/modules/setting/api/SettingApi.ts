@@ -14,8 +14,6 @@ class SettingApi extends BaseApiService {
 
   // 节假日设置表新增节日
   public async postHolidayAdd () {
-    // let postData = { holidays: SettingViewModel.getHolidayAdd }
-
     let nameHoliday = SettingViewModel.holidayName
     let data1 = SettingViewModel.holidayDate1
     let data2 = SettingViewModel.holidayDate2
