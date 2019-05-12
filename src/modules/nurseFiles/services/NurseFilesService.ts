@@ -46,6 +46,19 @@ export default class NurseFilesService extends BaseApiService {
   // public async findByEmpNoSubmit (empNo: any) {
   //   return this.get(`/nurseWorkExperience/findByEmpNoSubmit/${empNo}`)
   // }
+  // ----//查找护士教育经历
+  public async userEducat (empNo: any) {
+    return this.get(`/userEducat/getById/${empNo}`)
+  }
+  // 查找护士教育列表
+  public async findByUserId (empNo: any) {
+    return this.get(`/userEducat/findByUserId/${empNo}`)
+  }
+  // ----//查找护士职称及层级变动-单个(护士)
+  public async nurseProfessionalAndLevelChange (empNo: any) {
+    return this.get(`/nurseProfessionalAndLevelChange/getById/${empNo}`)
+  }
+  //
 }
 
 export const nurseFilesService = new NurseFilesService()

@@ -1,9 +1,10 @@
-// 护士节假日排班表
+// 护士排班表
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+import { authStore } from 'src/stores/index'
 import { observer } from 'mobx-react-lite'
 export interface Props {
   showType: string
@@ -15,15 +16,6 @@ export default observer(function BedSituation (props: Props) {
   const [bodyTable, setBodyTable] = useState([{}])
   useEffect(() => {
     // console.log(222)
-    emitter.removeAllListeners('设置班次大类')
-    emitter.addListener('设置班次大类', (shiftClass: any) => {
-      setGetShiftClass(shiftClass)
-    })
-    emitter.removeAllListeners('设置自定义班次')
-    emitter.addListener('设置自定义班次', (checkboxItem: any) => {
-      setGetCheckboxItem(checkboxItem)
-    })
-    let tableData = getShiftClass.concat(getCheckboxItem).join(',')
     StatisticsApi.postNurseHolidaySchedule().then((res) => {
       setBodyTable(res.data)
     })
@@ -36,26 +28,16 @@ export default observer(function BedSituation (props: Props) {
     })
     parentNode.classList.add('addRowClass')
   }
-
-  // let interfaceThData = Object.keys(bodyTabel[0]) || []
-
-  // let interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
-
-  // // interface td DOM
-  // const interfaceTdDom = bodyTabel.map((itemTr: any, index: any) => (
-  //   <tr key={index} onClick={trClickChange}>
-  //     {interfaceThData.map((itemTd: any, indexTd: number) => (
-  //       <td key={indexTd}>{itemTr[itemTd]}</td>
-  //     ))}
-  //   </tr>
-  // ))
   let interfaceThDom
   let interfaceTdDom
   let TableShow
   if (bodyTable[0]) {
     let interfaceThData = Object.keys(bodyTable[0])
+    interfaceThData.pop()
+    interfaceThData.pop()
+    interfaceThData.pop()
 
-    interfaceThDom = Object.keys(bodyTable[0]).map((item: any, index: number) => <th>{item}</th>)
+    interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
 
     // interface td DOM
     interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (
@@ -74,6 +56,7 @@ export default observer(function BedSituation (props: Props) {
       </table>
     )
   }
+
   let SpaceShow
   if (!interfaceThDom && !interfaceTdDom) {
     SpaceShow = (

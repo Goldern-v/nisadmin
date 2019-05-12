@@ -17,7 +17,8 @@ export default function SelectData () {
   })
   const [endDate, setEndDate] = useState(() => {
     let date = new Date()
-    statisticViewModel.endDate = moment(date).format(dateFormat)
+    let secondDay = date.setDate(7)
+    statisticViewModel.endDate = moment(secondDay).format(dateFormat)
     return statisticViewModel.endDate
   })
 

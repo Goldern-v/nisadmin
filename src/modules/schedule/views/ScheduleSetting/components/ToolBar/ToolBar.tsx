@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router'
 
 import emitter from 'src/libs/ev'
 
-import { Button, message, Modal, Form, Input, TreeSelect, Switch, DatePicker } from 'antd'
+import { Button, message, Modal, Form, Input, TreeSelect, Switch, DatePicker, Popconfirm } from 'antd'
 import { scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import moment from 'moment'
@@ -25,6 +25,7 @@ export default function ToolBar () {
   const [pageTitle, setPageTitle] = useState('编辑排班')
   const [formatDay, setFormatDay] = useState('七')
   const [formatMonth, setFormatMonth] = useState('七')
+  const [isPublished, setIsPublished] = useState(false)
 
   // let weekValue: any = moment(monthStart, dateFormat)
   // 编辑排班
@@ -122,6 +123,7 @@ export default function ToolBar () {
     let postLine: any = new Array()
     let startTime = scheduleStore.getStartTime()
     // let endTime = scheduleStore.getEndTime()
+    setIsPublished(isPublish)
 
     emitter.emit('获取编辑排班列表', (shiftData: any, shiftListData: any) => {
       console.log('获取编辑排班列表', shiftData, shiftListData, postData)
@@ -154,7 +156,11 @@ export default function ToolBar () {
                 status: isPublish ? '1' : '0',
                 thisWeekHour: nurse.thisWeekHour,
                 rangeName: shift ? element || shift.name : '',
-                remark: nurse.remark
+                remark: nurse.remark,
+                shiftType: shift.shiftType,
+                nameColor: shift.nameColor,
+                effectiveTime: shift.effectiveTime,
+                deptCode: scheduleStore.getDeptCode()
               }
               // console.log(key, element, shift, postLine)
               postData.push(JSON.parse(JSON.stringify(postLine)))
@@ -674,9 +680,24 @@ export default function ToolBar () {
       <Button onClick={save} className='button-tools'>
         暂存
       </Button>
-      <Button onClick={(e: any) => save(e, true)} className='button-tools'>
-        发布排班
-      </Button>
+
+      {!isPublished ? (
+        <Button onClick={(e: any) => save(e, true)} className='button-tools'>
+          发布排班
+        </Button>
+      ) : (
+        <Popconfirm
+          placement='top'
+          title={'你已经发布过排班，是否继续发布'}
+          onConfirm={(e: any) => save(e, true)}
+          okText='发布'
+          cancelText='取消'
+        >
+          <Button className='button-tools'>
+            发布排班
+          </Button>
+        </Popconfirm>
+      )}
     </Wrapper>
   )
 }

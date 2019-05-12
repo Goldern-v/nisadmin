@@ -104,6 +104,7 @@ export default function ToolBar () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
+    console.log('fileDownload', res)
     if (res.data.type.indexOf('excel') > -1) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象
@@ -145,10 +146,15 @@ export default function ToolBar () {
             startTime: scheduleStore.getStartTime(), // startTime 开始时间（刚开始由后台传给前台）
             endTime: scheduleStore.getEndTime() // endTime   结束时间（刚开始由后台传给前台）
           }
-          service.schedulingApiService.export(postData).then((res) => {
-            console.log(res, '接收excel')
-            fileDownload(res)
-          })
+          service.schedulingApiService
+            .export(postData)
+            .then((res) => {
+              console.log(res, '接收excel')
+              fileDownload(res)
+            })
+            .catch((err) => {
+              console.log(err, '接收excel:err')
+            })
           console.log(e)
         }}
       >

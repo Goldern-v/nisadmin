@@ -37,7 +37,6 @@ export default function StatisticView () {
           </Radio.Group>
         </div>
         {/* 护士夜班统计（按月份) */}
-        {<TableFirst showType={showType} />}
         {showType === '按时数' && <TableFirst showType={showType} />}
         {showType === '按次数' && <TableSecond showType={showType} />}
       </TableCon>
