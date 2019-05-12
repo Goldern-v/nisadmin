@@ -50,6 +50,7 @@
     "dev": "npm run start",
     "start": "react-app-rewired start",
     "publish:45": "node publish.js",
+    "build:45": "react-app-rewired build && node publish.js",
     "start:demo": "env-cmd .env.demo npm run start",
     "build": "react-app-rewired build",
     "build:demo": "env-cmd .env.demo npm run build",
