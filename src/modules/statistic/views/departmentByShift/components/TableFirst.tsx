@@ -9,6 +9,12 @@ export default function BedSituation () {
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
   const [getTableList, setGetTableList] = useState([])
+  const [changeClass, setChangeClass] = useState('')
+  const [classItem, setClassItem] = useState('')
+  const postDepartmentByShiftViewMethod = () =>
+    StatisticsApi.postDepartmentByShiftView(changeClass, classItem).then((res: any) => {
+      setGetTableList(res.data)
+    })
   useEffect(() => {
     // console.log(222)
     emitter.removeAllListeners('设置班次大类')
@@ -19,6 +25,8 @@ export default function BedSituation () {
         let cacheGetShiftClass = shiftClass.join(',')
         statisticViewModel.classDiff = '按班次大类'
         statisticViewModel.classItem = cacheGetShiftClass
+        setChangeClass('按班次大类')
+        setClassItem(cacheGetShiftClass)
         StatisticsApi.postDepartmentByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
           setGetTableList(res.data)
           console.log(getTableList)
@@ -32,6 +40,8 @@ export default function BedSituation () {
         let cacheCheckboxItem = checkboxItem.join(',')
         statisticViewModel.classDiff = '自定义班次'
         statisticViewModel.classItem = cacheCheckboxItem
+        setChangeClass('按班次大类')
+        setClassItem(cacheCheckboxItem)
         StatisticsApi.postDepartmentByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
           setGetTableList(res.data)
           console.log(getTableList)
@@ -39,6 +49,10 @@ export default function BedSituation () {
       }
     })
   }, [])
+  emitter.removeAllListeners('科室排班按班次')
+  emitter.addListener('科室排班按班次', () => {
+    postDepartmentByShiftViewMethod()
+  })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')

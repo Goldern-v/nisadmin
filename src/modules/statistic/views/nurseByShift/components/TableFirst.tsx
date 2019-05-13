@@ -56,7 +56,7 @@ export default function BedSituation () {
       }
     })
   }, [])
-
+  emitter.removeAllListeners('护士排班按班次')
   emitter.addListener('护士排班按班次', () => {
     console.log(555555)
     postNurseByShiftViewMethod()

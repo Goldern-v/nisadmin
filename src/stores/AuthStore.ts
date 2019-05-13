@@ -3,7 +3,7 @@ import { action, observable, computed } from 'mobx'
 
 import User from 'src/models/User'
 import { DeptType } from 'src/components/DeptSelect'
-import store from 'src/stores'
+import { appStore } from 'src/stores'
 
 export default class AuthStore {
   public constructor () {
@@ -29,8 +29,7 @@ export default class AuthStore {
   public get selectedDeptName () {
     try {
       return (
-        this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name +
-        store.appStore.history.location.pathname
+        this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name + appStore.match.params.name
       )
     } catch (error) {
       return ''

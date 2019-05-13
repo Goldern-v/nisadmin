@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
-import { authStore } from 'src/stores/index'
+import { appStore } from 'src/stores/index'
 import { observer } from 'mobx-react-lite'
 export interface Props {
   showType: string
@@ -21,6 +21,8 @@ export default observer(function BedSituation (props: Props) {
     emitter.addListener('touchState', () => {
       postNurseScheduling()
     })
+    console.log(appStore.match.params.name)
+    console.log(44444444444444444444444444)
     postNurseScheduling()
   }, [])
   // const postNurseScheduling = StatisticsApi.postNurseScheduling().then((res) => {
@@ -43,7 +45,7 @@ export default observer(function BedSituation (props: Props) {
     interfaceThData.pop()
     interfaceThData.pop()
 
-    interfaceThDom = interfaceThData.map((item: any, index: number) => <th>{item}</th>)
+    interfaceThDom = interfaceThData.map((item: any, index: number) => <th key={index}>{item}</th>)
 
     // interface td DOM
     interfaceTdDom = bodyTable.map((itemTr: any, index: number) => (

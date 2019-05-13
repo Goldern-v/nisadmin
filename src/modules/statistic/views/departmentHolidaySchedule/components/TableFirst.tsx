@@ -42,7 +42,6 @@ export default observer(function BedSituation () {
     TableShow = (
       <table>
         <thead>
-          <tr>fdfd</tr>
           <tr>{interfaceThDom}</tr>
         </thead>
         <tbody>{interfaceTdDom}</tbody>
