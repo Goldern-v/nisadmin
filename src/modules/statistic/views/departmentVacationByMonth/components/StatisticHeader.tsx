@@ -7,6 +7,7 @@ import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message } from 'antd'
 // import { observer } from 'mobx-react-lite'
+import emitter from 'src/libs/ev'
 export default function BedSituation () {
   const [count, setCount] = useState(0)
   useEffect(() => {
@@ -17,7 +18,9 @@ export default function BedSituation () {
   //   // nurseFilesListViewModel.loadNursingList()
   //   console.log(value)
   // }
-  function searchButtonClick () {}
+  function searchButtonClick () {
+    emitter.emit('科室休假统计')
+  }
   // 导出文件
   const fileDownload = (res: any) => {
     let filename = res.headers['content-disposition']

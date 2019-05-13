@@ -12,17 +12,23 @@ export interface Props {
 export default function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
   const [bodyTable, setBodyTable] = useState([{}])
-  useEffect(() => {
-    statisticViewModel.whiteBlack = '休假'
-    statisticViewModel.hourTime = props.showType
-    StatisticsApi.postDepartmentByMonth('休假', props.showType).then((res) => {
+  const postDepartmentByMonthMethod = () =>
+    StatisticsApi.postDepartmentByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
       if (res && res.data) {
         setBodyTable(res.data)
       }
     })
-    // console.log(222)
+  useEffect(() => {
+    statisticViewModel.whiteBlack = '休假'
+    statisticViewModel.hourTime = props.showType
+    postDepartmentByMonthMethod()
   }, [])
-
+  emitter.removeAllListeners('科室休假统计')
+  emitter.addListener('科室休假统计', () => {
+    if (statisticViewModel.hourTime === '按次数') {
+      postDepartmentByMonthMethod()
+    }
+  })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')

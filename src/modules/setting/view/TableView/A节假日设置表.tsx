@@ -66,7 +66,6 @@ export default observer(function A节假日设置表 () {
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
         `
-
         return (
           <DoCon>
             <span

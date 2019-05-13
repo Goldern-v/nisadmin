@@ -6,6 +6,7 @@ import SelectData from 'src/modules/statistic/common/SelectData.tsx'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message } from 'antd'
+import emitter from 'src/libs/ev'
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation () {
   const [count, setCount] = useState(0)
@@ -17,7 +18,9 @@ export default function BedSituation () {
     // nurseFilesListViewModel.loadNursingList()
     console.log(value)
   }
-  function searchButtonClick () {}
+  function searchButtonClick () {
+    emitter.emit('护士夜班统计')
+  }
   // 导出文件
   const fileDownload = (res: any) => {
     let filename = res.headers['content-disposition']

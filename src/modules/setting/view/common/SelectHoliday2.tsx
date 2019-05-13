@@ -14,9 +14,9 @@ const dateFormat = 'YYYY-MM-DD'
 export default function SelectData () {
   const [dataValue, setDataValue] = useState(() => {
     let nowDate = new Date()
-    let firstDay = nowDate.setDate(1)
-    SettingViewModel.selectYear = moment(firstDay).format(dateFormat)
-    return SettingViewModel.selectYear
+    let firstDay = nowDate.setDate(2)
+    SettingViewModel.holidayDate2 = moment(firstDay).format(dateFormat)
+    return SettingViewModel.holidayDate2
   })
   // const selectYearChange = (e: any, value: any) => {
   //   setDataValue(value)

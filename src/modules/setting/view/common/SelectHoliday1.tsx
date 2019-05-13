@@ -15,13 +15,9 @@ export default function SelectData () {
   const [dataValue, setDataValue] = useState(() => {
     let nowDate = new Date()
     let firstDay = nowDate.setDate(1)
-    SettingViewModel.selectYear = moment(firstDay).format(dateFormat)
-    return SettingViewModel.selectYear
+    SettingViewModel.holidayDate1 = moment(firstDay).format(dateFormat)
+    return SettingViewModel.holidayDate1
   })
-  // const selectYearChange = (e: any, value: any) => {
-  //   setDataValue(value)
-  //   SettingViewModel.selectYear = value
-  // }
 
   useEffect(() => {}, [])
 

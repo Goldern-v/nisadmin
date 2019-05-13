@@ -10,20 +10,27 @@ import spacePhoto from '../../../img/spacePhoto.svg'
 export interface Props {
   showType: string
 }
-export default function BedSituation (props: Props) {
+export default observer(function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
   const [bodyTable, setBodyTable] = useState([{}])
-  useEffect(() => {
-    statisticViewModel.whiteBlack = '白班'
-    statisticViewModel.hourTime = props.showType
-    StatisticsApi.postNurseByMonth('白班', props.showType).then((res) => {
+  const postNurseByMonthMethod = () =>
+    StatisticsApi.postNurseByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
       if (res && res.data) {
         setBodyTable(res.data)
       }
     })
-    // console.log(222)
+  useEffect(() => {
+    statisticViewModel.whiteBlack = '白班'
+    statisticViewModel.hourTime = props.showType
+    postNurseByMonthMethod()
   }, [])
-
+  emitter.removeAllListeners('护士白班统计')
+  emitter.addListener('护士白班统计', () => {
+    console.log(555555555)
+    if (statisticViewModel.hourTime === '按时数') {
+      postNurseByMonthMethod()
+    }
+  })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
@@ -77,7 +84,7 @@ export default function BedSituation (props: Props) {
       </div>
     </Con>
   )
-}
+})
 
 const Con = styled.div`
   .tableCon {

@@ -12,12 +12,17 @@ export interface Props {
 export default observer(function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
   const [bodyTable, setBodyTable] = useState([{}])
-  useEffect(() => {
-    // console.log(222)
+  const postNurseHolidayScheduleMethod = () =>
     StatisticsApi.postNurseHolidaySchedule().then((res) => {
       setBodyTable(res.data)
     })
+  useEffect(() => {
+    postNurseHolidayScheduleMethod()
   }, [])
+  emitter.removeAllListeners('护士节假日排班表')
+  emitter.addListener('护士节假日排班表', () => {
+    postNurseHolidayScheduleMethod()
+  })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')

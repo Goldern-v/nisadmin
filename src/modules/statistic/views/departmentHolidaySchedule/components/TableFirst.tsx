@@ -10,12 +10,17 @@ import { observer } from 'mobx-react-lite'
 export default observer(function BedSituation () {
   // const [count, setCount] = useState(0)
   const [bodyTable, setBodyTable] = useState([{}])
-  useEffect(() => {
-    // console.log(222)
+  const postDepartmentHolidayScheduleMethod = () =>
     StatisticsApi.postDepartmentHolidaySchedule().then((res) => {
       setBodyTable(res.data)
     })
+  useEffect(() => {
+    postDepartmentHolidayScheduleMethod()
   }, [])
+  emitter.removeAllListeners('科室节假日排班表')
+  emitter.addListener('科室节假日排班表', () => {
+    postDepartmentHolidayScheduleMethod()
+  })
   function trClickChange (e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
