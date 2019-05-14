@@ -2,15 +2,16 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
+import loginViewModel from './LoginViewModel'
 
 import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView () {
-  const [count, setCount ] = useState(0)
-  const [username, setUsername ] = useState('')
-  const [password, setPassword ] = useState('')
+  const [count, setCount] = useState(0)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   useEffect(() => {
     console.log(count, setCount)
   })
@@ -19,7 +20,10 @@ export default function LoginView () {
     // e.target.style.color = '#3FB593'
   }
   function login () {
-    service.authApiService.login(username, password)
+    service.authApiService.login(username, password).then((res: any) => {
+      loginViewModel.user = res.data.user
+      console.log(loginViewModel.user)
+    })
   }
   function handleKeyUp (e: any) {
     if (e.keyCode === 13) {
@@ -29,7 +33,11 @@ export default function LoginView () {
   return (
     <Wrapper>
       <BgImg>
-        <BoxInput onKeyUp={(e) => { handleKeyUp(e) }}>
+        <BoxInput
+          onKeyUp={(e) => {
+            handleKeyUp(e)
+          }}
+        >
           <img src={require('./img/logo.png')} alt='logo' className='BoxLogin' />
           <h1 className='Title'>护理质量管理系统</h1>
           <div className='TextItem'>
@@ -46,12 +54,12 @@ export default function LoginView () {
             <input type='checkbox' id='rememberCheckbox' />
             <label htmlFor='rememberCheckbox'>记住账号</label>
           </div>
-          <button onClick={login} >登陆系统</button>
+          <button onClick={login}>登陆系统</button>
         </BoxInput>
       </BgImg>
       <BottomContent>
-        广州宸瑞软件科技有限公司 http://www.cr-health.com 版权所有©2013-{new Date().getFullYear()}，All rights reseved. 关于宸瑞 |
-        关于智慧护理 | 联系客服
+        广州宸瑞软件科技有限公司 http://www.cr-health.com 版权所有©2013-{new Date().getFullYear()}，All rights reseved.
+        关于宸瑞 | 关于智慧护理 | 联系客服
       </BottomContent>
     </Wrapper>
   )

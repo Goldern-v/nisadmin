@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditLevelChangeModal from '../modal/EditLevelChangeModal'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function LevelChange () {
@@ -68,28 +69,28 @@ export default observer(function LevelChange () {
     },
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'empName',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '职称聘用时间',
-      dataIndex: 'pyTime',
+      dataIndex: 'appointmentTime',
       key: '2',
       width: 150,
       align: 'center'
     },
     {
       title: '取得职称',
-      dataIndex: 'jd',
+      dataIndex: 'titleQualification',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '层级',
-      dataIndex: 'cj',
+      dataIndex: 'hierarchy',
       key: '4',
       width: 200,
       align: 'center'
@@ -103,7 +104,7 @@ export default observer(function LevelChange () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '7',
       width: 150,
       align: 'center'
@@ -125,15 +126,19 @@ export default observer(function LevelChange () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseProfessionalAndLevelChange(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
-
+    getTableData()
+  }, [])
   return (
     <BaseLayout title='职称及层级变动' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editLevelChangeModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editLevelChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWorkRegistrationFormModal from '../modal/EditWorkRegistrationFormModal'
-
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function WorkRegistrationForm () {
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
@@ -59,70 +59,70 @@ export default observer(function WorkRegistrationForm () {
     },
     {
       title: '年度',
-      dataIndex: 'name',
+      dataIndex: 'year',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '夜班',
-      dataIndex: '3',
+      dataIndex: 'nightShift',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '查房',
-      dataIndex: '4',
+      dataIndex: 'checkOut',
       key: '4',
       width: 100,
       align: 'center'
     },
     {
       title: '护理会诊',
-      dataIndex: '5',
+      dataIndex: 'nursingConsultation',
       key: '5',
       width: 150,
       align: 'center'
     },
     {
       title: '病例讨论',
-      dataIndex: '6',
+      dataIndex: 'caseDiscussion',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
       title: '个案',
-      dataIndex: '61',
+      dataIndex: 'individualCase',
       key: '61',
       width: 150,
       align: 'center'
     },
     {
       title: '小讲课',
-      dataIndex: '621',
+      dataIndex: 'lecture',
       key: '621',
       width: 150,
       align: 'center'
     },
     {
-      title: '代教',
-      dataIndex: '621',
+      title: '带教',
+      dataIndex: 'teaching',
       key: '621',
       width: 150,
       align: 'center'
     },
     {
       title: '证明人',
-      dataIndex: '6233',
+      dataIndex: 'witness',
       key: '6231',
       width: 150,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '61233',
+      dataIndex: 'auditedStatusName',
       key: '61231',
       width: 150,
       align: 'center'
@@ -144,15 +144,20 @@ export default observer(function WorkRegistrationForm () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseRegistrationWork(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    getTableData()
+  }, [])
 
   return (
     <BaseLayout title='临床护理工作情况登记表' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editWorkRegistrationFormModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editWorkRegistrationFormModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

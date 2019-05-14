@@ -137,7 +137,7 @@ export default observer(function EducationalExperience () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '8',
       width: 200,
       align: 'center'
@@ -164,7 +164,7 @@ export default observer(function EducationalExperience () {
   })
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.findByUserId(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.userEducat(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

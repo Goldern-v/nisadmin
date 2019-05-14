@@ -8,17 +8,14 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditAwardsModal from '../modal/EditAwardsModal'
-
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards () {
   const editAwardsModal = createModal(EditAwardsModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () =>
-        editAwardsModal.show({
-          id: '12'
-        })
+      onClick: () => editAwardsModal.show()
     }
   ]
   const dataSource = [
@@ -59,49 +56,49 @@ export default observer(function Awards () {
     },
     {
       title: '时间',
-      dataIndex: 'name',
+      dataIndex: 'time',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '获奖/推广创新项目名称',
-      dataIndex: '3',
+      dataIndex: 'awardWinningName',
       key: '3',
       width: 220,
       align: 'center'
     },
     {
       title: '本人排名',
-      dataIndex: '4',
+      dataIndex: 'rank',
       key: '4',
       width: 100,
       align: 'center'
     },
     {
       title: '授奖级别',
-      dataIndex: '5',
+      dataIndex: 'awardlevel',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '批准机关',
-      dataIndex: '6',
+      dataIndex: 'approvalAuthority',
       key: '6',
       width: 150,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: '611',
+      dataIndex: 'attachmentId',
       key: '611',
       width: 150,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: '61',
+      dataIndex: 'auditedStatusName',
       key: '61',
       width: 150,
       align: 'center'
@@ -123,15 +120,20 @@ export default observer(function Awards () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseAwardWinning(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    getTableData()
+  }, [])
 
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editAwardsModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editAwardsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

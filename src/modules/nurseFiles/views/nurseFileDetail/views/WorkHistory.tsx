@@ -74,7 +74,7 @@ export default observer(function WorkHistory () {
     },
     {
       title: '状态',
-      dataIndex: '7',
+      dataIndex: 'auditedStatusName',
       key: '7',
       width: 150,
       align: 'center',
@@ -101,7 +101,7 @@ export default observer(function WorkHistory () {
 
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.findByEmpNoSubmit(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWorkExperience(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

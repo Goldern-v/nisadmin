@@ -108,7 +108,7 @@ export default observer(function ExaminationResults () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '61',
       width: 150,
       align: 'center'

@@ -10,11 +10,16 @@ import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModa
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
+import loginViewModel from 'src/modules/login/LoginViewModel'
+// 加附件
+import ImageUploader from 'src/components/ImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
+  id?: string
   data?: any
   getTableData?: () => {}
 }
+const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   startTime: (val) => !!val || '请选择开始时间',
   endTime: (val) => !!val || '请选择结束时间',
@@ -26,18 +31,29 @@ const rules: Rules = {
 export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data } = props
   let refForm = React.createRef<Form>()
+  console.log('this is refForm')
+  console.log(refForm)
   const onFieldChange = () => {}
   const onSave = async () => {
+    let getPostData = loginViewModel.post
+    let auditedStatusShow = 'waitAuditedDepartment'
+    if (getPostData === '护士长') {
+      auditedStatusShow = 'waitAuditedNurse'
+    } else if (getPostData === '护理部') {
+      auditedStatusShow = 'waitAuditedDepartment'
+    }
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
-      empName: nurseFileDetailViewModal.nurserInfo.empName
+      empName: nurseFileDetailViewModal.nurserInfo.empName,
+      auditedStatus: auditedStatusShow
+      // attachmentId: '56,57'
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
-    nurseFilesService.nurseWorkExperienceSaveOrUpdatePC({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWorkExperienceAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       onCancel()

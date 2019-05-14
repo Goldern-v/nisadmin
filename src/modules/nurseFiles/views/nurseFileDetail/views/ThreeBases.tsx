@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditThreeBasesModal from '../modal/EditThreeBasesModal'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function ThreeBases () {
@@ -78,29 +79,22 @@ export default observer(function ThreeBases () {
       width: 50
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
-    {
       title: '年度',
-      dataIndex: 'nd',
+      dataIndex: 'year',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '理论考核成绩(分)',
-      dataIndex: 'lnkf',
+      dataIndex: 'theoryScore',
       key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '操作考核成绩(分)',
-      dataIndex: 'czkf',
+      dataIndex: 'technologyScore',
       key: '4',
       width: 200,
       align: 'center'
@@ -114,7 +108,7 @@ export default observer(function ThreeBases () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '61',
       width: 150,
       align: 'center'
@@ -136,15 +130,21 @@ export default observer(function ThreeBases () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseRegistrationWork(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    getTableData()
+  }, [])
 
   return (
     <BaseLayout title='医院三基考核' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editThreeBasesModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editThreeBasesModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

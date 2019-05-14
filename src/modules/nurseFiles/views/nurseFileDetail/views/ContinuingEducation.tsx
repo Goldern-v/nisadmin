@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
-
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
   const editContinuingEducationModal = createModal(EditContinuingEducationModal)
@@ -21,6 +21,7 @@ export default observer(function EducationalExperience () {
         })
     }
   ]
+  // 附件属性是什么
   const dataSource = [
     {
       key: '1',
@@ -74,42 +75,42 @@ export default observer(function EducationalExperience () {
     },
     {
       title: '姓名',
-      dataIndex: 'name',
+      dataIndex: 'empName',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '开始时间',
-      dataIndex: 'ksTime',
+      dataIndex: 'startTime',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '结束时间',
-      dataIndex: 'jsTime',
+      dataIndex: 'endTime',
       key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '培训单位',
-      dataIndex: 'pxDW',
+      dataIndex: 'trainingUnit',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '培训内容',
-      dataIndex: 'pxLR',
+      dataIndex: 'trainingContent',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '学时',
-      dataIndex: 'xs',
+      dataIndex: 'hours',
       key: '6',
       width: 150,
       align: 'center'
@@ -123,7 +124,7 @@ export default observer(function EducationalExperience () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '8',
       width: 200,
       align: 'center'
@@ -144,15 +145,19 @@ export default observer(function EducationalExperience () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseContinuingEducation(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
-
+    getTableData()
+  }, [])
   return (
     <BaseLayout title='继续教育' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editContinuingEducationModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

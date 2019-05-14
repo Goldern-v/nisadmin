@@ -9,6 +9,8 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditBadActionModal from '../modal/EditBadActionModal'
 
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+
 export interface Props extends RouteComponentProps {}
 export default observer(function BadAction () {
   const editBadActionModal = createModal(EditBadActionModal)
@@ -78,29 +80,22 @@ export default observer(function BadAction () {
       width: 50
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
-    {
       title: '日期',
-      dataIndex: 'date',
+      dataIndex: 'time',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '事件原因',
-      dataIndex: 'sjyy',
+      dataIndex: 'reason',
       key: '3',
       width: 300,
       align: 'center'
     },
     {
       title: '处理结论',
-      dataIndex: 'cljl',
+      dataIndex: 'result',
       key: '4',
       width: 100,
       align: 'center'
@@ -114,7 +109,7 @@ export default observer(function BadAction () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '61',
       width: 150,
       align: 'center'
@@ -136,14 +131,20 @@ export default observer(function BadAction () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseBehaviorRecord(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    getTableData()
+  }, [])
 
   return (
     <BaseLayout title='护理不良行为（包括医德医风）记录' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} />
       <editBadActionModal.Component />
     </BaseLayout>
   )

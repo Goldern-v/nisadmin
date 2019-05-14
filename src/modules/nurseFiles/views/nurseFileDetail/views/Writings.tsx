@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWritingsModal from '../modal/EditWritingsModal'
-
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function Writings () {
   const editWritingsModal = createModal(EditWritingsModal)
@@ -81,37 +81,31 @@ export default observer(function Writings () {
       align: 'center',
       width: 50
     },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
+
     {
       title: '发表日期',
-      dataIndex: 'fbDate',
+      dataIndex: 'publicDate',
       key: '2',
       width: 150,
       align: 'center'
     },
     {
       title: '题目',
-      dataIndex: 'tm',
+      dataIndex: 'title',
       key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '本人排名',
-      dataIndex: 'brpm',
+      dataIndex: 'rank',
       key: '4',
       width: 100,
       align: 'center'
     },
     {
       title: '出版或刊登物',
-      dataIndex: 'cbkd',
+      dataIndex: 'publication',
       key: '5',
       width: 200,
       align: 'center'
@@ -125,7 +119,7 @@ export default observer(function Writings () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '61',
       width: 150,
       align: 'center'
@@ -147,15 +141,20 @@ export default observer(function Writings () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nursePaperExperience(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    getTableData()
+  }, [])
 
   return (
     <BaseLayout title='著作译文论文' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editWritingsModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editWritingsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

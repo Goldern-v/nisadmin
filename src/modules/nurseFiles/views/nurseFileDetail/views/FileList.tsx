@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWritingsModal from '../modal/EditWritingsModal'
-
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function FileList () {
   const editWritingsModal = createModal(EditWritingsModal)
@@ -58,13 +58,6 @@ export default observer(function FileList () {
       width: 50
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: '2',
-      width: 300,
-      align: 'center'
-    },
-    {
       title: '内容',
       dataIndex: 'nr',
       key: '2',
@@ -80,16 +73,9 @@ export default observer(function FileList () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '4',
       width: 100,
-      align: 'center'
-    },
-    {
-      title: '状态',
-      dataIndex: '61',
-      key: '61',
-      width: 150,
       align: 'center'
     },
     {
@@ -109,15 +95,20 @@ export default observer(function FileList () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseAttachment(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    getTableData()
+  }, [])
 
   return (
     <BaseLayout title='附件' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editWritingsModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editWritingsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
