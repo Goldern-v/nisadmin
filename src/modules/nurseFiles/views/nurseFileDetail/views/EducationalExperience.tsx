@@ -7,18 +7,18 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditExaminationResultsModal from '../modal/EditExaminationResultsModal'
+import EditEducationalExperienceModal from '../modal/EditEducationalExperienceModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
-  const editExaminationResultsModal = createModal(EditExaminationResultsModal)
+  const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
   const btnList = [
     {
       label: '添加',
       onClick: () =>
-        editExaminationResultsModal.show({
-          id: '12'
+        editEducationalExperienceModal.show({
+          id: '4'
         })
     }
   ]
@@ -87,43 +87,36 @@ export default observer(function EducationalExperience () {
       width: 80
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
-    {
       title: '就读时间',
-      dataIndex: 'jdTime',
+      dataIndex: 'readTime',
       key: '2',
       width: 150,
       align: 'center'
     },
     {
       title: '毕业时间',
-      dataIndex: 'byTime',
+      dataIndex: 'graduationTime',
       key: '3',
       width: 150,
       align: 'center'
     },
     {
       title: '毕业学校',
-      dataIndex: 'bySchool',
+      dataIndex: 'graduationSchool',
       key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '专业',
-      dataIndex: 'zy',
+      dataIndex: 'readProfessional',
       key: '5',
       width: 200,
       align: 'center'
     },
     {
       title: '学历',
-      dataIndex: 'xl',
+      dataIndex: 'education',
       key: '6',
       width: 150,
       align: 'center'
@@ -164,7 +157,7 @@ export default observer(function EducationalExperience () {
   })
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.userEducat(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseYearCheck(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -174,7 +167,7 @@ export default observer(function EducationalExperience () {
   return (
     <BaseLayout title='教育经历' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} />
-      <editExaminationResultsModal.Component />
+      <editEducationalExperienceModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

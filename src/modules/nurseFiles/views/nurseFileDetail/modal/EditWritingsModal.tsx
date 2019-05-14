@@ -43,14 +43,16 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow
+      auditedStatus: auditedStatusShow,
+      attachmentId: '',
+      urlImageOne: ''
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     // value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
-    nurseFilesService.nurseWorkExperienceSaveOrUpdatePC({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nursePaperExperienceAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       onCancel()

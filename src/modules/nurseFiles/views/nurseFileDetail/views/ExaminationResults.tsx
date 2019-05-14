@@ -7,16 +7,17 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditWritingsModal from '../modal/EditWritingsModal'
+import EditExaminationResultsModal from '../modal/EditExaminationResultsModal'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function ExaminationResults () {
-  const editWritingsModal = createModal(EditWritingsModal)
+  const editExaminationResultsModal = createModal(EditExaminationResultsModal)
   const btnList = [
     {
       label: '添加',
       onClick: () =>
-        editWritingsModal.show({
+        editExaminationResultsModal.show({
           id: '12'
         })
     }
@@ -79,29 +80,22 @@ export default observer(function ExaminationResults () {
       width: 50
     },
     {
-      title: '姓名',
-      dataIndex: 'name',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
-    {
       title: '年度',
-      dataIndex: 'ld',
+      dataIndex: 'year',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '考核结果',
-      dataIndex: 'khjg',
+      dataIndex: 'checkResult',
       key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'fj',
+      dataIndex: 'urllmageOne',
       key: '6',
       width: 150,
       align: 'center'
@@ -130,15 +124,20 @@ export default observer(function ExaminationResults () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseYearCheck(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    getTableData()
+  }, [])
 
   return (
     <BaseLayout title='年度履职考核结果' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} />
-      <editWritingsModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} />
+      <editExaminationResultsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

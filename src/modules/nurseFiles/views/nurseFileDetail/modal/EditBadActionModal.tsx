@@ -43,14 +43,15 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow
-      // attachmentId: '56,57'
+      auditedStatus: auditedStatusShow,
+      attachmentId: '',
+      urlImageOne: ''
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.time && (value.time = value.time.format('YYYY-MM-DD'))
-    nurseFilesService.nurseWorkExperienceSaveOrUpdatePC({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseBehaviorRecordAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       onCancel()
@@ -73,7 +74,7 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='修改不良行为' visible={visible} onCancel={onCancel} okText='保存'>
+    <Modal title='修改不良行为' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存'>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>

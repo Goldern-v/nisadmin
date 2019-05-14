@@ -21,6 +21,15 @@ export default function LoginView () {
   }
   function login () {
     service.authApiService.login(username, password).then((res: any) => {
+      if (!res) {
+        res = {}
+      }
+      if (!res.data) {
+        res.data = {}
+      }
+      if (!res.data.user) {
+        res.data.user = {}
+      }
       loginViewModel.user = res.data.user
       console.log(loginViewModel.user)
     })

@@ -74,24 +74,17 @@ export default observer(function EducationalExperience () {
       width: 80
     },
     {
-      title: '姓名',
-      dataIndex: 'empName',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
-    {
       title: '开始时间',
       dataIndex: 'startTime',
       key: '2',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
       title: '结束时间',
-      dataIndex: 'endTime',
+      dataIndex: 'startTime',
       key: '3',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
@@ -120,7 +113,14 @@ export default observer(function EducationalExperience () {
       dataIndex: 'fj',
       key: '7',
       width: 150,
-      align: 'center'
+      align: 'center',
+      render: (a: any, b: any, c: any) => {
+        return (
+          <DoCon>
+            <span>查看</span>
+          </DoCon>
+        )
+      }
     },
     {
       title: '状态',
@@ -168,4 +168,5 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
+  cursor: pointer;
 `

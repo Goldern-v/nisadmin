@@ -58,7 +58,7 @@ export default observer(function Awards () {
       title: '时间',
       dataIndex: 'time',
       key: '2',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {

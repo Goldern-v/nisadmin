@@ -45,8 +45,9 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow
-      // attachmentId: '56,57'
+      auditedStatus: auditedStatusShow,
+      attachmentId: '',
+      urlImageOne: ''
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
@@ -79,7 +80,7 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='修改工作经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title='修改资格证书' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={rules}>
         <Row>
           <Row gutter={12}>

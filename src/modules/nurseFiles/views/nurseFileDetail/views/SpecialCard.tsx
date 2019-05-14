@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditSpecialCardModal from '../modal/EditSpecialCardModal'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function SpecialCard () {
@@ -143,30 +144,24 @@ export default observer(function SpecialCard () {
       align: 'center',
       width: 50
     },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
+
     {
       title: '获得时间',
-      dataIndex: 'hdTime',
+      dataIndex: 'time',
       key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '资格名称',
-      dataIndex: 'zjName',
+      dataIndex: 'specialQualificationName',
       key: '3',
       width: 150,
       align: 'center'
     },
     {
       title: '资格证编号',
-      dataIndex: 'zgzNumber',
+      dataIndex: 'specialQualificationNo',
       key: '4',
       width: 200,
       align: 'center'
@@ -180,7 +175,7 @@ export default observer(function SpecialCard () {
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      dataIndex: 'auditedStatusName',
       key: '6',
       width: 150,
       align: 'center'
@@ -202,15 +197,19 @@ export default observer(function SpecialCard () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.nurseSpecialQualification(appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   useEffect(() => {
-    console.log(count, setCount)
-  })
-
+    getTableData()
+  }, [])
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
-      <BaseTable dataSource={dataSource} columns={columns} surplusHeight={390} />
-      <editSpecialCardModal.Component />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={390} />
+      <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

@@ -33,7 +33,8 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: 'waitAuditedNurse',
-      attachmentId: '56,57'
+      attachmentId: '',
+      urlImageOne: ''
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
@@ -96,18 +97,20 @@ export default function EditWorkHistoryModal (props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`职称`} name='titleQualification' required>
-              <Select>
+              {/* <Select>
                 <Option value='1'>1</Option>
                 <Option value='2'>2</Option>
-              </Select>
+              </Select> */}
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`层级`} name='hierarchy' required>
-              <Select>
+              {/* <Select>
                 <Option value='1'>1</Option>
                 <Option value='2'>2</Option>
-              </Select>
+              </Select> */}
+              <Input />
             </Form.Field>
           </Col>
         </Row>

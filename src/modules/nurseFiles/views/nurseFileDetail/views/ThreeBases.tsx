@@ -133,7 +133,7 @@ export default observer(function ThreeBases () {
 
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseRegistrationWork(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseHospitalsThreeBase(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

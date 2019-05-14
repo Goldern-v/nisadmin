@@ -108,7 +108,7 @@ export default observer(function FileList () {
   return (
     <BaseLayout title='附件' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} />
-      <editWritingsModal.Component getTableData={getTableData} />
+      <editWritingsModal.Component />
     </BaseLayout>
   )
 })

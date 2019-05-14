@@ -48,13 +48,14 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow
-      // attachmentId: '56,57'
+      auditedStatus: auditedStatusShow,
+      attachmentId: '',
+      urlImageOne: ''
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    value.startTime && (value.year = value.year.format('YYYY'))
+    value.year && (value.year = value.year.format('YYYY'))
     nurseFilesService.nurseRegistrationWorkAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -70,7 +71,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        year: moment(data.year),
+        year: data.year,
         nightShift: data.nightShift,
         checkOut: data.checkOut,
         professional: data.professional,
@@ -86,7 +87,7 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='修改工作情况登记表' visible={visible} onCancel={onCancel} okText='保存'>
+    <Modal title='修改工作情况登记表' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存'>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row>

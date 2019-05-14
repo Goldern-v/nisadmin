@@ -38,14 +38,18 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseWorkExperience (empNo: any) {
     return this.get(`/nurseWorkExperience/findByEmpNoSubmit/${empNo}`)
   }
-  // 2-1护士工作经历新增或更新
+  // 2-1护士工作经历新增或更新 //护长
   public async nurseWorkExperienceAdd (obj: any) {
     return this.post(`/nurseWorkExperience/saveOrUpdatePC`, obj)
   }
-  // 3// 查找护士特殊资格证
-  // public async findByEmpNoSubmit (empNo: any) {
-  //   return this.get(`/nurseWorkExperience/findByEmpNoSubmit/${empNo}`)
-  // }
+  // 3// 查找护士特殊资格证 //护长
+  public async nurseSpecialQualification (empNo: any) {
+    return this.get(`/nurseSpecialQualification/findByEmpNoSubmit/${empNo}`)
+  }
+  // 3-1护士特殊资格证 新增 //护长
+  public async nurseSpecialQualificationAdd (obj: any) {
+    return this.post(`/nurseSpecialQualification/saveOrUpdatePC/`, obj)
+  }
   // 4//查找护士教育经历
   public async userEducat (empNo: any) {
     return this.get(`/nurseMedicalEducation/findByEmpNoSubmit/${empNo}`)
@@ -95,7 +99,14 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseBehaviorRecordAdd (obj: any) {
     return this.post(`/nurseBehaviorRecord/saveOrUpdatePC`, obj)
   }
-  // 10
+  // 10 查找护士 年度考核结果-列表(护长)
+  public async nurseYearCheck (empNo: any) {
+    return this.get(`/nurseYearCheck/findByEmpNoSubmit/${empNo}`)
+  }
+  // 10-1 护士 年度考核结果 新增或更新(网页护长)
+  public async nurseYearCheckAdd (obj: any) {
+    return this.post(`/nurseYearCheck/saveOrUpdatePC`, obj)
+  }
   // 11 查找护士医院三基考核-列表(护长)
   public async nurseHospitalsThreeBase (empNo: any) {
     return this.get(`/nurseHospitalsThreeBase/findByEmpNoSubmit/${empNo}`)
@@ -114,11 +125,14 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 13 查找护士附件情况(护长)
   public async nurseAttachment (empNo: any) {
-    return this.get(`/nurseAttachment/findByEmpNoSubmit/${empNo}`)
+    return this.get(`/nurseAttachment/findByEmpNo//${empNo}`)
   }
-  // 13-1 护士附件情况 新增(网页护长)
-  public async nurseAttachmentAdd (obj: any) {
-    return this.post(`/nurseAttachment/saveOrUpdatePC`, obj)
+
+  // 15 新增添加附件
+  // 该接口有问题
+  public async fileAdd (obj: any) {
+    this.stringify(obj)
+    return this.post(`file/uploadNurse`, obj)
   }
 }
 
