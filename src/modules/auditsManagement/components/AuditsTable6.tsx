@@ -169,7 +169,7 @@ const dataSource = [
 export default function AuditsTable6 () {
   return (
     <Wrapper>
-      <BaseTable dataSource={dataSource} columns={columns} />
+      <BaseTable dataSource={[] || dataSource} columns={columns} />
     </Wrapper>
   )
 }

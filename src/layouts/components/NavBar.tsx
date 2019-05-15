@@ -38,16 +38,16 @@ const navList = [
     icon: <HSDA />,
     path: '/nurseFilesList'
   },
-  {
-    name: '不良事件',
-    icon: <BLSJ />,
-    path: '/badEvents'
-  },
-  {
-    name: '护理绩效',
-    icon: <HLJX />,
-    path: '/nursingPerformance'
-  },
+  // {
+  //   name: '不良事件',
+  //   icon: <BLSJ />,
+  //   path: '/badEvents'
+  // },
+  // {
+  //   name: '护理绩效',
+  //   icon: <HLJX />,
+  //   path: '/nursingPerformance'
+  // },
   {
     name: '培训考核',
     icon: <PXKH />,
@@ -63,11 +63,11 @@ const navList = [
     icon: <TJCX />,
     path: '/statistic'
   },
-  {
-    name: '通知公告',
-    icon: <TZGG />,
-    path: '/notice'
-  },
+  // {
+  //   name: '通知公告',
+  //   icon: <TZGG />,
+  //   path: '/notice'
+  // },
   {
     name: '物流平台',
     icon: <WLPT />,
@@ -135,7 +135,7 @@ const NavItem = styled.div<{ active?: boolean }>`
   svg {
     width: 16px;
     height: 16px;
-    margin-top: 6px;
+    /* margin-top: 6px; */
     margin-right: 2px;
     path {
       fill: ${(p) => (p.active ? '#fff' : '#747474')};

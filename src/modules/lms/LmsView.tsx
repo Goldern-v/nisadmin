@@ -315,7 +315,7 @@ export default function LmsView () {
     <Wrapper>
       <SelectCon />
       <ScrollCon>
-        <BaseTable columns={columns} dataSource={dataSource} style={{ padding: 0 }} pagination={{}} />
+        <BaseTable columns={columns} dataSource={[] || dataSource} style={{ padding: 0 }} pagination={{}} />
       </ScrollCon>
     </Wrapper>
   )
