@@ -12,8 +12,8 @@ import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  id: string
   data?: any
+  signShow?: string
   getTableData?: () => {}
 }
 const rules: Rules = {
@@ -23,7 +23,7 @@ const rules: Rules = {
   hierarchy: (val) => !!val || '请选择层级'
 }
 export default function EditWorkHistoryModal (props: Props) {
-  let { visible, onCancel, onOk, data } = props
+  let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
   console.log('this is refForm')
   console.log(refForm)
@@ -35,6 +35,12 @@ export default function EditWorkHistoryModal (props: Props) {
       auditedStatus: 'waitAuditedNurse',
       attachmentId: '',
       urlImageOne: ''
+    }
+    if (signShow === '修改') {
+      Object.assign(obj, { id: data.id })
+    }
+    if (signShow === '添加') {
+      onCancel()
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())

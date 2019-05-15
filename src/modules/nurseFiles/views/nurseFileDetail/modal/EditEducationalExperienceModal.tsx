@@ -15,8 +15,9 @@ import ImageUploader from 'src/components/ImageUploader'
 const uploadCard = () => Promise.resolve('123')
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  id?: string
+  id?: number
   data?: any
+  signShow: string
   getTableData?: () => {}
 }
 const rules: Rules = {
@@ -29,7 +30,7 @@ const rules: Rules = {
   // urlImageOne: (val) => !!val || '学位证'
 }
 export default function EditWorkHistoryModal (props: Props) {
-  let { visible, onCancel, onOk, data } = props
+  let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
   console.log('this is refForm')
   console.log(refForm)
@@ -48,6 +49,12 @@ export default function EditWorkHistoryModal (props: Props) {
       auditedStatus: auditedStatusShow,
       attachmentId: '',
       urlImageOne: ''
+    }
+    if (signShow === '修改') {
+      Object.assign(obj, { id: data.id })
+    }
+    if (signShow === '添加') {
+      onCancel()
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())

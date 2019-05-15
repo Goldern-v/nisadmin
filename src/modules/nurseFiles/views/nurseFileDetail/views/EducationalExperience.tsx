@@ -18,7 +18,7 @@ export default observer(function EducationalExperience () {
       label: '添加',
       onClick: () =>
         editEducationalExperienceModal.show({
-          id: '4'
+          signShow: '添加'
         })
     }
   ]
@@ -141,10 +141,16 @@ export default observer(function EducationalExperience () {
       key: '9',
       width: 100,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
+      render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span>修改</span>
+            <span
+              onClick={() => {
+                editEducationalExperienceModal.show({ data: row, signShow: '修改' })
+              }}
+            >
+              修改
+            </span>
             <span>审核</span>
           </DoCon>
         )

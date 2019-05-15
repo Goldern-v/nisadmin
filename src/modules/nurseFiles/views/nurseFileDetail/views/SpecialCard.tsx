@@ -18,7 +18,7 @@ export default observer(function SpecialCard () {
       label: '添加',
       onClick: () =>
         editSpecialCardModal.show({
-          id: '12'
+          signShow: '添加'
         })
     }
   ]
@@ -140,7 +140,7 @@ export default observer(function SpecialCard () {
       title: '序号',
       dataIndex: '1',
       key: '1',
-      render: (text: any, record: any, index: number) => index + 1,
+      render: (text: any, row: any, index: number) => index + 1,
       align: 'center',
       width: 50
     },
@@ -186,11 +186,16 @@ export default observer(function SpecialCard () {
       key: '8',
       width: 100,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
-        console.log(a, b, c)
+      render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span>修改</span>
+            <span
+              onClick={() => {
+                editSpecialCardModal.show({ data: row, signShow: '修改' })
+              }}
+            >
+              修改
+            </span>
             <span>审核</span>
           </DoCon>
         )
@@ -220,4 +225,7 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
+  span {
+    cursor: pointer;
+  }
 `

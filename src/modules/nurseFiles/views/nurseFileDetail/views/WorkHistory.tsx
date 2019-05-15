@@ -12,12 +12,18 @@ import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesSer
 import { auditedStatusEnum } from 'src/libs/enum/common'
 
 export interface Props extends RouteComponentProps {}
+
 export default observer(function WorkHistory () {
+  const [getId, setGetId] = useState(0)
   const editWorkHistoryModal = createModal(EditWorkHistoryModal)
+
   const btnList = [
     {
       label: '添加',
-      onClick: () => editWorkHistoryModal.show()
+      onClick: () =>
+        editWorkHistoryModal.show({
+          signShow: '添加'
+        })
     }
   ]
 
@@ -91,7 +97,13 @@ export default observer(function WorkHistory () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span onClick={() => editWorkHistoryModal.show({ data: row })}>修改</span>
+            <span
+              onClick={() => {
+                editWorkHistoryModal.show({ data: row, signShow: '修改' })
+              }}
+            >
+              修改
+            </span>
             <span>审核</span>
           </DoCon>
         )
@@ -103,6 +115,7 @@ export default observer(function WorkHistory () {
   const getTableData = () => {
     nurseFilesService.nurseWorkExperience(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
+      // setGetId(res.data)
     })
   }
   useEffect(() => {

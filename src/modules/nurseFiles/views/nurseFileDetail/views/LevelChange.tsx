@@ -18,7 +18,7 @@ export default observer(function LevelChange () {
       label: '添加',
       onClick: () =>
         editLevelChangeModal.show({
-          id: '12'
+          signShow: '添加'
         })
     }
   ]
@@ -115,11 +115,16 @@ export default observer(function LevelChange () {
       key: '8',
       width: 100,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
-        console.log(a, b, c)
+      render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span>修改</span>
+            <span
+              onClick={() => {
+                editLevelChangeModal.show({ data: row, signShow: '修改' })
+              }}
+            >
+              修改
+            </span>
             <span>审核</span>
           </DoCon>
         )
