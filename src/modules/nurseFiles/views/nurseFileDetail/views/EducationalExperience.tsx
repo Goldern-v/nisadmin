@@ -157,7 +157,7 @@ export default observer(function EducationalExperience () {
   })
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseYearCheck(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.userEducat(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
