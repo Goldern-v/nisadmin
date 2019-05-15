@@ -39,10 +39,6 @@ export default function StatisticView () {
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
     console.log(count, setCount, shiftClass)
-    // console.log(3333)
-    // console.log(shiftClass)
-    console.log(store, 9999)
-    console.log(4444444444444444444444444444444444444444444444444444444)
   }, [])
   // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)

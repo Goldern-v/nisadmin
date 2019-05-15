@@ -105,6 +105,7 @@ const Con = styled.div`
         box-sizing: border-box;
         border: 1px solid #d6d6d6;
         height: 37px;
+        min-width: 60px;
         background: rgba(242, 244, 245, 1);
       }
       /* 设置整体td */
@@ -118,7 +119,7 @@ const Con = styled.div`
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        width: 3%;
+        min-width: 3%;
       }
     }
     tbody {
@@ -130,7 +131,7 @@ const Con = styled.div`
       }
       td:nth-of-type(1) {
         box-sizing: border-box;
-        width: 3%;
+        min-width: 3%;
       }
     }
   }
