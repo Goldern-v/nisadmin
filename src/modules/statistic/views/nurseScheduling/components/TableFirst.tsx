@@ -105,7 +105,7 @@ const Con = styled.div`
         box-sizing: border-box;
         border: 1px solid #d6d6d6;
         height: 37px;
-        min-width: 60px;
+        min-width: 90px;
         background: rgba(242, 244, 245, 1);
       }
       /* 设置整体td */
@@ -114,12 +114,13 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         border-top: none;
         height: 37px;
+        min-width: 90px;
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        min-width: 3%;
+        min-width: 30px;
       }
     }
     tbody {
@@ -131,14 +132,14 @@ const Con = styled.div`
       }
       td:nth-of-type(1) {
         box-sizing: border-box;
-        min-width: 3%;
+        min-width: 30px;
       }
     }
   }
   .tableMid::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 1px;
+    height: 6px;
   }
   .tableMid::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
