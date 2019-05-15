@@ -68,13 +68,6 @@ export default observer(function LevelChange () {
       width: 50
     },
     {
-      title: '姓名',
-      dataIndex: 'empName',
-      key: '2',
-      width: 100,
-      align: 'center'
-    },
-    {
       title: '职称聘用时间',
       dataIndex: 'appointmentTime',
       key: '2',
@@ -154,4 +147,7 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
+  span {
+    cursor: pointer;
+  }
 `

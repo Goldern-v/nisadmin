@@ -17,7 +17,7 @@ export default observer(function EducationalExperience () {
       label: '添加',
       onClick: () =>
         editContinuingEducationModal.show({
-          id: '12'
+          signShow: '添加'
         })
     }
   ]
@@ -135,10 +135,16 @@ export default observer(function EducationalExperience () {
       key: '9',
       width: 100,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
+      render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            <span>修改</span>
+            <span
+              onClick={() => {
+                editContinuingEducationModal.show({ data: row, signShow: '修改' })
+              }}
+            >
+              修改
+            </span>
             <span>审核</span>
           </DoCon>
         )
@@ -168,5 +174,7 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
-  cursor: pointer;
+  span {
+    cursor: pointer;
+  }
 `

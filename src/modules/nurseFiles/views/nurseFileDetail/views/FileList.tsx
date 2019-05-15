@@ -15,10 +15,7 @@ export default observer(function FileList () {
   const btnList = [
     {
       label: '添加',
-      onClick: () =>
-        editWritingsModal.show({
-          id: '12'
-        })
+      onClick: () => editWritingsModal.show({})
     }
   ]
   const dataSource = [

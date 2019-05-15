@@ -19,7 +19,7 @@ export default observer(function BadAction () {
       label: '添加',
       onClick: () =>
         editBadActionModal.show({
-          id: '12'
+          signShow: '添加'
         })
     }
   ]
@@ -120,11 +120,16 @@ export default observer(function BadAction () {
       key: '8',
       width: 100,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
-        console.log(a, b, c)
+      render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            <span>修改</span>
+            <span
+              onClick={() => {
+                editBadActionModal.show({ data: row, signShow: '修改' })
+              }}
+            >
+              修改
+            </span>
             <span>审核</span>
           </DoCon>
         )
@@ -156,4 +161,7 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
+  span {
+    cursor: pointer;
+  }
 `

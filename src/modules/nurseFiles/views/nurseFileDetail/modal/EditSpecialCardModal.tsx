@@ -28,8 +28,9 @@ const rules: Rules = {
 export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
-  console.log('this is refForm')
-  console.log(refForm)
+  if (signShow === '添加') {
+    data = {}
+  }
   const onFieldChange = () => {}
   const onSave = async () => {
     let getPostData = loginViewModel.post
@@ -49,9 +50,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
-    if (signShow === '添加') {
-      // onCancel()
-    }
+
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
@@ -70,7 +69,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        time: data.time,
+        // time: moment(data.time),
         specialQualificationName: data.specialQualificationName,
         specialQualificationNo: data.specialQualificationNo
       })

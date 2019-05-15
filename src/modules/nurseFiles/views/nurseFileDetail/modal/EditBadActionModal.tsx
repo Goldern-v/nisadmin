@@ -16,8 +16,8 @@ import ImageUploader from 'src/components/ImageUploader'
 const Option = Select.Option
 const { TextArea } = Input
 export interface Props extends ModalComponentProps {
-  id?: string
   data?: any
+  signShow?: string
   getTableData?: () => {}
 }
 const uploadCard = () => Promise.resolve('123')
@@ -27,10 +27,13 @@ const rules: Rules = {
   result: (val) => !!val || '处理结论'
 }
 export default function EditWorkHistoryModal (props: Props) {
-  let { visible, onCancel, onOk, data } = props
+  let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
   console.log('this is refForm')
   console.log(refForm)
+  if (signShow === '添加') {
+    data = {}
+  }
   const onFieldChange = () => {}
   const onSave = async () => {
     let getPostData = loginViewModel.post
@@ -46,6 +49,9 @@ export default function EditWorkHistoryModal (props: Props) {
       auditedStatus: auditedStatusShow,
       attachmentId: '',
       urlImageOne: ''
+    }
+    if (signShow === '修改') {
+      Object.assign(obj, { id: data.id })
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
@@ -65,7 +71,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        time: moment(data.time),
+        // time: moment(data.time),
         reason: data.reason,
         result: data.result
       })

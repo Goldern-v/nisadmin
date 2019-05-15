@@ -15,8 +15,8 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  id?: string
   data?: any
+  signShow?: string
   getTableData?: () => {}
 }
 const uploadCard = () => Promise.resolve('123')
@@ -26,11 +26,14 @@ const rules: Rules = {
   technologyScore: (val) => !!val || '操作考核成绩'
 }
 export default function EditWorkHistoryModal (props: Props) {
-  let { visible, onCancel, onOk, data } = props
+  let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
   console.log('this is refForm')
   console.log(refForm)
   const onFieldChange = () => {}
+  if (signShow === '添加') {
+    data = {}
+  }
   const onSave = async () => {
     let getPostData = loginViewModel.post
     let auditedStatusShow = 'waitAuditedDepartment'
@@ -45,6 +48,9 @@ export default function EditWorkHistoryModal (props: Props) {
       auditedStatus: auditedStatusShow,
       attachmentId: '',
       urlImageOne: ''
+    }
+    if (signShow === '修改') {
+      Object.assign(obj, { id: data.id })
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
@@ -64,7 +70,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        year: data.year,
+        // year: data.year,
         theoryScore: data.theoryScore,
         technologyScore: data.technologyScore,
         post: data.post

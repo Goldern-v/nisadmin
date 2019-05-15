@@ -35,6 +35,9 @@ export default function EditWorkHistoryModal (props: Props) {
   console.log('this is refForm')
   console.log(refForm)
   const onFieldChange = () => {}
+  if (signShow === '添加') {
+    data = {}
+  }
   const onSave = async () => {
     let getPostData = loginViewModel.post
     let auditedStatusShow = 'waitAuditedDepartment'
@@ -53,9 +56,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
-    if (signShow === '添加') {
-      onCancel()
-    }
+
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
@@ -75,8 +76,8 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        readTime: data.readTime.moment(),
-        graduationTime: data.graduationTime.moment(),
+        // readTime: data.readTime.moment(),
+        // graduationTime: data.graduationTime.moment(),
         graduationSchool: data.graduationSchool,
         readProfessional: data.readProfessional,
         education: data.education

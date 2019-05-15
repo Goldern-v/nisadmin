@@ -17,7 +17,7 @@ export default observer(function WorkRegistrationForm () {
       label: '添加',
       onClick: () =>
         editWorkRegistrationFormModal.show({
-          id: '12'
+          signShow: '添加'
         })
     }
   ]
@@ -131,13 +131,18 @@ export default observer(function WorkRegistrationForm () {
       title: '操作',
       dataIndex: '8',
       key: '8',
-      width: 100,
+      width: 150,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
-        console.log(a, b, c)
+      render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            <span>修改</span>
+            <span
+              onClick={() => {
+                editWorkRegistrationFormModal.show({ data: row, signShow: '修改' })
+              }}
+            >
+              修改
+            </span>
             <span>审核</span>
           </DoCon>
         )
@@ -168,4 +173,7 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
+  span {
+    cursor: pointer;
+  }
 `

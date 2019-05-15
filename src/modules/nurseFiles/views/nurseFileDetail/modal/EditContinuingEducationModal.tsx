@@ -13,8 +13,8 @@ import moment from 'moment'
 import ImageUploader from 'src/components/ImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  id: string
   data?: any
+  signShow?: string
   getTableData?: () => {}
 }
 const rules: Rules = {
@@ -25,10 +25,11 @@ const rules: Rules = {
   hours: (val) => !!val || '请填写学时/分'
 }
 export default function EditWorkHistoryModal (props: Props) {
-  let { visible, onCancel, onOk, data } = props
+  let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
-  console.log('this is refForm')
-  console.log(refForm)
+  if (signShow === '添加') {
+    data = {}
+  }
   const uploadCard = () => Promise.resolve('123')
   const onFieldChange = () => {}
   const onSave = async () => {
@@ -38,6 +39,9 @@ export default function EditWorkHistoryModal (props: Props) {
       auditedStatus: 'waitAuditedNurse',
       attachmentId: '',
       urlImageOne: ''
+    }
+    if (signShow === '修改') {
+      Object.assign(obj, { id: data.id })
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
@@ -53,13 +57,13 @@ export default function EditWorkHistoryModal (props: Props) {
   setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
-    console.log(visible, 'visible', refForm.current, 'refForm.current')
+    // console.log(visible, 'visible', refForm.current, 'refForm.current')
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        startTime: moment(data.startTime),
-        endTime: moment(data.endTime),
+        // startTime: moment(data.startTime),
+        // endTime: moment(data.endTime),
         trainingUnit: data.trainingUnit,
         trainingContent: data.trainingContent,
         hours: data.hours

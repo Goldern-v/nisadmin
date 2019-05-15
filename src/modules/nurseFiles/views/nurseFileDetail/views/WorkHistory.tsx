@@ -38,7 +38,7 @@ export default observer(function WorkHistory () {
     },
     {
       title: '开始年月',
-      dataIndex: 'stratTime',
+      dataIndex: 'startTime',
       key: '2',
       width: 150,
       align: 'center'

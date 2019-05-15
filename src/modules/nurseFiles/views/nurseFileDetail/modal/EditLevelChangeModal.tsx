@@ -28,6 +28,9 @@ export default function EditWorkHistoryModal (props: Props) {
   console.log('this is refForm')
   console.log(refForm)
   const onFieldChange = () => {}
+  if (signShow === '添加') {
+    data = {}
+  }
   const onSave = async () => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
@@ -39,9 +42,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
-    if (signShow === '添加') {
-      onCancel()
-    }
+
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
@@ -60,8 +61,8 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
+        // appointmentTime: data.appointmentTime.format('YYYY-MM-DD'),
         empName: data.empName,
-        appointmentTime: data.appointmentTime.format('YYYY-MM-DD'),
         titleQualification: data.titleQualification,
         hierarchy: data.hierarchy
       })
@@ -90,11 +91,6 @@ export default function EditWorkHistoryModal (props: Props) {
               <Input />
             </Form.Field>
           </Col> */}
-          <Col span={24}>
-            <Form.Field label={`姓名`} name='empName' required>
-              <Input />
-            </Form.Field>
-          </Col>
 
           <Col span={24}>
             <Form.Field label={`聘用时间`} name='appointmentTime' required>
