@@ -20,7 +20,7 @@ export default function BaseInfo () {
     }
   ]
   useEffect(() => {
-    nurseFilesService.getByEmpNoAudite(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
       setInfo(data)
       setTableData([
