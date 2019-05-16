@@ -20,7 +20,7 @@ export default function BedSituation () {
   // let sum = parseInt(getData[0].count, 10) + parseInt(getData[1].count, 10)
   // let count1 = parseInt(getData[0].count, 10)*(parseInt(getData[0].count, 10) / sum)
   // let count2 = parseInt(getData[1].count, 10) * (parseInt(getData10].count, 10) / sum)
-  const sourceData = [{ item: '已占用', count: 80 }, { item: '空床', count: 20 }]
+  const sourceData = [{ item: '已占用', count: 50 }, { item: '空床', count: 50 }]
   const scale = [
     {
       dataKey: 'percent',
@@ -47,12 +47,12 @@ export default function BedSituation () {
         <div className='ChartConLeft'>
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare' />
-            <div className='leftItemMessage'>已占用：160</div>
+            <div className='leftItemMessage'>已占用：50%</div>
           </div>
 
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare LeftItemSquareColor' />
-            <div className='leftItemMessage'>空床：40</div>
+            <div className='leftItemMessage'>空床：50%</div>
           </div>
         </div>
 

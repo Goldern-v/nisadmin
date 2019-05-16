@@ -16,7 +16,6 @@ export default function BedSituation () {
   //     <td key={index}>{item}</td>
   //   </tr>
   // ))
-
   return (
     <div>
       <Head>
@@ -33,34 +32,40 @@ export default function BedSituation () {
           </tr>
           <tbody>
             <tr>
-              <td>三测单</td>
-              <td>10</td>
-              <td>9</td>
-              <td>1</td>
+              <td />
+              <td />
+              <td />
+              <td />
             </tr>
             <tr>
-              <td>护理评估</td>
-              <td>168</td>
-              <td>100</td>
-              <td>88</td>
+              <td />
+              <td />
+              <td />
+              <td />
             </tr>
             <tr>
-              <td>护理记录单</td>
-              <td>12</td>
-              <td>10</td>
-              <td>2</td>
+              <td />
+              <td />
+              <td />
+              <td />
             </tr>
             <tr>
-              <td>护理计划</td>
-              <td>10</td>
-              <td>10</td>
-              <td>0</td>
+              <td />
+              <td />
+              <td />
+              <td />
             </tr>
             <tr>
-              <td>执行单</td>
-              <td>200</td>
-              <td>100</td>
-              <td>100</td>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
             </tr>
           </tbody>
         </table>

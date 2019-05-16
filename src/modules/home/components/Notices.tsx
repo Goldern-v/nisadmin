@@ -14,28 +14,28 @@ export default function BedSituation () {
       </Head>
       <Mid>
         <MidItem>
-          <div className='leftItem'>2019年度新护士标准化培训 </div>
-          <div className='rightItem'>2019-02-10</div>
+          <div className='leftItem'> </div>
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>器物发放标准 </div>
-          <div className='rightItem'>2019-02-11</div>
+          <div className='leftItem'> </div>
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>放假通知 </div>
-          <div className='rightItem'>2019-02-12</div>
+          <div className='leftItem'> </div>
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>调休规则调整 </div>
-          <div className='rightItem'>2019-02-18</div>
+          <div className='leftItem'> </div>
+          <div className='rightItem' />
         </MidItem>{' '}
         <MidItem>
-          <div className='leftItem'>护士实验室正式开放 </div>
-          <div className='rightItem'>2019-02-14</div>
+          <div className='leftItem'> </div>
+          <div className='rightItem' />
         </MidItem>{' '}
         <MidItem>
-          <div className='leftItem'>今有暴雨，注意安全 </div>
-          <div className='rightItem'>2019-02-15</div>
+          <div className='leftItem'> </div>
+          <div className='rightItem' />
         </MidItem>
       </Mid>
     </div>

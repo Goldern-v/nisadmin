@@ -20,34 +20,34 @@ export default function BedSituation () {
             <th>与现有人数比率</th>
           </tr>
           <tr>
-            <td>MEWS预警</td>
-            <td>5</td>
-            <td>0.5%</td>
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
-            <td>病危病重</td>
-            <td>5</td>
-            <td>1%</td>
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
-            <td>特级护理</td>
-            <td>188</td>
-            <td>50%</td>
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
-            <td>一级护理</td>
-            <td>12</td>
-            <td>12%</td>
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
-            <td>高危跌倒</td>
-            <td>10</td>
-            <td>10%</td>
+            <td />
+            <td />
+            <td />
           </tr>
           <tr>
-            <td>高危压疮</td>
-            <td>2</td>
-            <td>0.2%</td>
+            <td />
+            <td />
+            <td />
           </tr>
         </table>
       </Mid>

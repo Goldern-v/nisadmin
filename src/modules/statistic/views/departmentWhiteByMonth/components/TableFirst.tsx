@@ -66,7 +66,7 @@ export default observer(function BedSituation (props: Props) {
   if (!interfaceThDom && !interfaceTdDom) {
     SpaceShow = (
       <SpaceCon>
-        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+        <embed src={require('src/modules/statistic/img/spacePhoto.svg')} type='image/svg+xml' />
         <div className='spaceFont'>暂无数据</div>
       </SpaceCon>
     )

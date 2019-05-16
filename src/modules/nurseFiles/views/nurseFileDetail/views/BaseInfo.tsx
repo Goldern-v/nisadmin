@@ -7,13 +7,19 @@ import { appStore, authStore } from 'src/stores'
 import { sexEnum } from 'src/libs/enum/common'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 export interface Props extends RouteComponentProps {}
-
+import createModal from 'src/libs/createModal'
+import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 export default function BaseInfo () {
+  const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const btnList = [
     {
-      label: '修改'
+      label: '修改',
+      onClick: () =>
+        editBaseInfoModal.show({
+          signShow: '添加'
+        })
     },
     {
       label: '审核'

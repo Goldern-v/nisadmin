@@ -6,6 +6,7 @@ export default function BedSituation () {
   useEffect(() => {
     console.log(count, setCount)
   })
+
   return (
     <div>
       <Head>
@@ -14,28 +15,28 @@ export default function BedSituation () {
       </Head>
       <Mid>
         <MidItem>
-          <div className='leftItem'>【神内】王萌更新了档案 </div>
-          <div className='rightItem'>2019-01-10</div>
+          <div className='leftItem'> </div>
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>【神内】王萌上报一例跌倒事件</div>
-          <div className='rightItem'>2019-01-10</div>
+          <div className='leftItem' />
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>刘鲜更改了病例事件</div>
-          <div className='rightItem'>2019-01-12</div>
+          <div className='leftItem' />
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>赵平之领取护理配件</div>
-          <div className='rightItem'>2019-01-13</div>
+          <div className='leftItem' />
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>王华提交了病区体温</div>
-          <div className='rightItem'>2019-01-14</div>
+          <div className='leftItem' />
+          <div className='rightItem' />
         </MidItem>
         <MidItem>
-          <div className='leftItem'>周若水更新了档案</div>
-          <div className='rightItem'>2019-01-15</div>
+          <div className='leftItem' />
+          <div className='rightItem' />
         </MidItem>
       </Mid>
     </div>
