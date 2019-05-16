@@ -22,10 +22,7 @@ export default class NurseFilesService extends BaseApiService {
     })
     return this.post(`/auditeNurseList/getByFormCodePC`, this.stringify(obj))
   }
-  // 护士信息新增或者更新
-  public async saveOrUpdate (obj: any) {
-    return this.post(`/nurseInformation/saveOrUpdatePC`, obj)
-  }
+
   // 查看护士首页信息
   public async findByEmpNo (empNo: any) {
     return this.get(`/auditeNurseFileIndex/findByEmpNo/${empNo}`)
@@ -33,6 +30,10 @@ export default class NurseFilesService extends BaseApiService {
   // 1查找护士基本信息 护长
   public async nurseInformation (empNo: any) {
     return this.get(`/nurseInformation/getByEmpNo/${empNo}`)
+  }
+  // 1-1护士基本信息信息更新
+  public async saveOrUpdate (obj: any) {
+    return this.post(`/nurseInformation/saveOrUpdatePC`, obj)
   }
   // 2 查找护士工作经历 //护长
   public async nurseWorkExperience (empNo: any) {
@@ -58,7 +59,7 @@ export default class NurseFilesService extends BaseApiService {
   public async userEducatAdd (obj: any) {
     return this.post(`/nurseMedicalEducation/saveOrUpdatePC`, obj)
   }
-  // 4-2 有附件上传
+  // 4-2 教育经历有附件上传
   public async uploadFileUserEducat (getFile: any) {
     // let postData = {
     //   file: getFile,

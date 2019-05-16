@@ -1,12 +1,24 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import JobTitleMap from './components/JobTitleMap'
+import { Button, Radio, Icon } from 'antd'
 
 export default function BedSituation () {
   const [count, setCount] = useState(0)
+  const [titleBy, setTitleBy] = useState('按职称')
   useEffect(() => {
     console.log(count, setCount)
   })
+  // const selectChange = () => {}
+  const choose1 = () => {
+    setTitleBy('按职称')
+  }
+  const choose2 = () => {
+    setTitleBy('按层级')
+  }
+  const choose3 = () => {
+    setTitleBy('按工龄')
+  }
   return (
     <div>
       <Head>
@@ -17,12 +29,23 @@ export default function BedSituation () {
         <MidHeader>
           <div className='headerLeft'>护理人员合计：</div>
           <div className='headerRight'>
-            <div className='headerRightItem'>按职称</div>
-            <div className='headerRightItem'>按层级</div>
-            <div className='headerRightItem'>按工龄</div>
+            <div className='headerRightItem' onClick={choose1}>
+              按职称
+            </div>
+            <div className='headerRightItem' onClick={choose2}>
+              按层级
+            </div>
+            <div className='headerRightItem' onClick={choose3}>
+              按工龄
+            </div>
+            {/* <Radio.Group defaultValue='按职称' size='small' onChange={selectChange}>
+              <Radio.Button value='按职称'>按职称</Radio.Button>
+              <Radio.Button value='按层级'>按层级</Radio.Button>
+              <Radio.Button value='按工龄'>按工龄</Radio.Button>
+            </Radio.Group> */}
           </div>
         </MidHeader>
-        <JobTitleMap />
+        <JobTitleMap titleByGet={titleBy} />
       </Mid>
     </div>
   )
@@ -46,6 +69,9 @@ const Head = styled.div`
     font-size: 13px;
     letter-spacing: 1px;
     color: #999999;
+    .ant-radio-button-wrapper {
+      background-color: red !important;
+    }
   }
 `
 const Mid = styled.div`
@@ -75,7 +101,6 @@ const MidHeader = styled.div`
       height: 100%;
       width: 33.33%;
       border: 1px solid #c0cbce;
-      /* transform: scale(1.1); */
     }
     .headerRightItem:hover {
       border-color: #0092fe;

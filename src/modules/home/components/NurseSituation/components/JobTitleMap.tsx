@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Chart, Tooltip, Axis, Bar } from 'viser-react'
-
-export default function BedSituation () {
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import { authStore } from 'src/stores/index'
+export interface Props {
+  titleByGet: string
+}
+export default function BedSituation (props: Props) {
   const data = [
     { year: '护士', sales: 38 },
     { year: '护师', sales: 89 },
@@ -18,8 +22,15 @@ export default function BedSituation () {
   ]
   const [count, setCount] = useState(0)
   useEffect(() => {
+    let postData = {
+      deptCode: authStore.selectedDeptCode,
+      item: props.titleByGet
+    }
+    HomeApi.indexInfo(postData).then((res) => {
+      console.log(res)
+    })
     console.log(count, setCount)
-  })
+  }, [])
   return (
     <div>
       <ChartCon>

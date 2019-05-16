@@ -9,26 +9,31 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 export interface Props extends RouteComponentProps {}
 import createModal from 'src/libs/createModal'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
-export default function BaseInfo () {
+import { observer } from 'mobx-react-lite'
+export default observer(function BaseInfo () {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
+  const [idData, setIdData] = useState(0)
   const btnList = [
     {
       label: '修改',
-      onClick: () =>
+      onClick: () => {
         editBaseInfoModal.show({
-          signShow: '添加'
+          id: idData,
+          data: tableData
         })
+      }
     },
     {
       label: '审核'
     }
   ]
-  useEffect(() => {
+  const getTableData = () =>
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
       setInfo(data)
+      setIdData(data.id)
       setTableData([
         {
           性别: sexEnum[data.sex],
@@ -60,6 +65,8 @@ export default function BaseInfo () {
         }
       ])
     })
+  useEffect(() => {
+    getTableData()
   }, [])
   return (
     <BaseLayout title='基本信息' btnList={btnList}>
@@ -107,9 +114,10 @@ export default function BaseInfo () {
         <span>职业证书：</span>
         {info.zyzsUrl && <img src={info.zyzsUrl} alt='' />}
       </ZyzsCon>
+      <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
-}
+})
 const InfoTable = styled.table`
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;

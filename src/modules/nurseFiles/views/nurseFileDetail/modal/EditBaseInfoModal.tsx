@@ -17,53 +17,50 @@ const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
   data?: any
-  signShow?: string
   getTableData?: () => {}
 }
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
-  startTime: (val) => !!val || '请选择开始时间',
-  endTime: (val) => !!val || '请选择结束时间',
-  unit: (val) => !!val || '请填写工作单位',
-  professionalWork: (val) => !!val || '请填写专业技术工作',
-  professional: (val) => !!val || '请选择技术职称',
-  post: (val) => !!val || '请选择职务'
+  empName: (val) => !!val || '',
+  empNo: (val) => !!val || '',
+  sex: (val) => !!val || '',
+  nation: (val) => !!val || '',
+  birthday: (val) => !!val || '',
+  entryDate: (val) => !!val || '',
+  nativePlace: (val) => !!val || '',
+  post: (val) => !!val || '',
+  goWorkTime: (val) => !!val || '',
+  highestEducation: (val) => !!val || '最高学历',
+  zyzsNumber: (val) => !!val || '',
+  cardNumber: (val) => !!val || '',
+  socialGroup: (val) => !!val || '社会团体职务',
+  phone: (val) => !!val || '',
+  address: (val) => !!val || ''
 }
 export default function EditWorkHistoryModal (props: Props) {
-  let { visible, onCancel, onOk, data, signShow } = props
+  let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
   console.log('this is refForm')
   console.log(refForm)
   const onFieldChange = () => {}
-  if (signShow === '添加') {
-    data = {}
-  }
-
   const onSave = async () => {
     let getPostData = loginViewModel.post
     let auditedStatusShow = 'waitAuditedDepartment'
-    if (getPostData === '护士长') {
-      auditedStatusShow = 'waitAuditedNurse'
-    } else if (getPostData === '护理部') {
-      auditedStatusShow = 'waitAuditedDepartment'
-    }
+    // if (getPostData === '护士长') {
+    //   auditedStatusShow = 'waitAuditedNurse'
+    // } else if (getPostData === '护理部') {
+    //   auditedStatusShow = 'waitAuditedDepartment'
+    // }
     let obj = {
-      empNo: nurseFileDetailViewModal.nurserInfo.empNo,
-      empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow,
-      attachmentId: '',
-      urlImageOne: ''
-    }
-    if (signShow === '修改') {
-      Object.assign(obj, { id: data.id })
+      id: id
     }
 
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
-    value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
-    nurseFilesService.nurseWorkExperienceAdd({ ...obj, ...value }).then((res: any) => {
+    // value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
+    // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       onCancel()
@@ -77,65 +74,120 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       console.log('moment(data.startTime)', moment(data.startTime))
+
       refForm!.current!.setFields({
-        startTime: moment(data.startTime),
-        endTime: moment(data.endTime),
-        unit: data.unit,
-        professionalWork: data.professionalWork,
-        professional: data.professional,
-        post: data.post
+        empName: data.empName,
+        empNo: data.empNo,
+        sex: data.sex,
+        post: data.post,
+        nation: data.nation,
+        entryDate: data.entryDate,
+        nativePlace: data.nativePlace,
+        highestEducation: data.highestEducation,
+        zyzsNumber: data.zyzsNumber,
+        cardNumber: data.cardNumber,
+        socialGroup: data.socialGroup,
+        phone: data.phone,
+        address: data.address
       })
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
 
   return (
-    <Modal title='修改资格证书' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={rules}>
+    <Modal title='修改基本信息' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存'>
+      <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={{}}>
         <Row>
-          <Row gutter={12}>
-            <Col span={15}>
-              <Form.Field label={`时间`} name='startTime' required suffix='到'>
-                <DatePicker />
-              </Form.Field>
-            </Col>
-            <Col span={9}>
-              <Form.Field name='endTime' required>
-                <DatePicker />
-              </Form.Field>
-            </Col>
-          </Row>
-          <Col span={24}>
-            <Form.Field label={`工作单位`} name='unit' required>
+          <Col span={12}>
+            <Form.Field label={`姓名`} name='empName' required>
               <Input />
             </Form.Field>
           </Col>
-
-          <Col span={24}>
-            <Form.Field label={`专业技术工作`} name='professionalWork' required>
+          <Col span={12}>
+            <Form.Field label={`工号`} name='empNo' required>
               <Input />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`技术职称`} name='professional' required>
-              <Select>
-                {TITLE_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
+          <Col span={12}>
+            <Form.Field label={`性别`} name='sex' required>
+              <Input />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
+            <Form.Field label={`名族`} name='nation' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`出身年月`} name='birthday' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`年龄`} name='entryDate' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`籍贯`} name='nativePlace' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
             <Form.Field label={`职务`} name='post' required>
+              <Input />
+            </Form.Field>
+          </Col>{' '}
+          <Col span={12}>
+            <Form.Field label={`参加工作时间`} name='goWorkTime' required>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`最高学历`} name='highestEducation' required>
               <Select>
-                {POST_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
+                <Option value='中专'>中专</Option>
+                <Option value='大专'>大专</Option>
+                <Option value='本科'>本科</Option>
+                <Option value='硕士'>硕士</Option>
+                <Option value='博士'>博士</Option>
               </Select>
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`技术职称`} name='title' required>
+              <Select>
+                <Option value='护士'>护士</Option>
+                <Option value='护师'>护师</Option>
+                <Option value='主管护师'>主管护师</Option>
+                <Option value='副主任护师'>副主任护师</Option>
+                <Option value='主任护师'>主任护师</Option>
+              </Select>
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`护士执业证书编号`} name='zyzsNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`身份证号`} name='cardNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`社会团体职务`} name='socialGroup' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`联系电话`} name='phone' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`家庭住址`} name='address' required>
+              <Input />
             </Form.Field>
           </Col>
         </Row>
