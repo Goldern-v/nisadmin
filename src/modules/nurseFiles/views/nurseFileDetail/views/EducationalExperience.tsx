@@ -126,7 +126,15 @@ export default observer(function EducationalExperience () {
       dataIndex: 'fj',
       key: '7',
       width: 150,
-      align: 'center'
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return (
+          <DoCon>
+            <a href={row.urlImageTwo}>毕业证</a>
+            <a href={row.urlImageOne}>学位证 </a>
+          </DoCon>
+        )
+      }
     },
     {
       title: '状态',
@@ -184,7 +192,7 @@ const DoCon = styled.div`
   justify-content: space-around;
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
-  span {
+  a {
     cursor: pointer;
   }
 `

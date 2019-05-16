@@ -1,5 +1,5 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-
+import { appStore } from 'src/stores'
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */
   empNo?: string /** 员工工号 */
@@ -48,7 +48,7 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 3-1护士特殊资格证 新增 //护长
   public async nurseSpecialQualificationAdd (obj: any) {
-    return this.post(`/nurseSpecialQualification/saveOrUpdatePC/`, obj)
+    return this.post(`/nurseSpecialQualification/saveOrUpdatePC`, obj)
   }
   // 4//查找护士教育经历
   public async userEducat (empNo: any) {
@@ -56,7 +56,21 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 4-1 教育经历新增/更新
   public async userEducatAdd (obj: any) {
-    return this.post(`/nurseMedicalEducation/saveOrUpdatePC/`, obj)
+    return this.post(`/nurseMedicalEducation/saveOrUpdatePC`, obj)
+  }
+  // 4-2 有附件上传
+  public async uploadFileUserEducat (getFile: any) {
+    // let postData = {
+    //   file: getFile,
+    //   empNo: appStore.queryObj.empNo,
+    //   type: 2
+    // }
+    // let trancePostData = this.stringify(postData)
+    const trancePostData = new FormData()
+    trancePostData.append('file', getFile)
+    trancePostData.append('empNo', appStore.queryObj.empNo)
+    trancePostData.append('type', '2')
+    return this.post(`/file/uploadNurse`, trancePostData)
   }
 
   // 5//查找护士职称及层级变动-单个(护长)
@@ -67,6 +81,14 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseProfessionalAndLevelChangeAdd (obj: any) {
     return this.post(`/nurseProfessionalAndLevelChange/saveOrUpdatePC`, obj)
   }
+  // 5-2 护士职称及层级变动附件上传
+  // public async uploadFileUserEducat (getFile: any) {
+  //   const trancePostData = new FormData()
+  //   trancePostData.append('file', getFile)
+  //   trancePostData.append('empNo', appStore.queryObj.empNo)
+  //   trancePostData.append('type', '2')
+  //   return this.post(`/file/uploadNurse`, trancePostData)
+  // }
   // 6//查找护士继续教育列表（护长）
   public async nurseContinuingEducation (empNo: any) {
     return this.get(`/nurseContinuingEducation/findByEmpNoSubmit/${empNo}`)
