@@ -56,9 +56,9 @@ export default function BedSituation () {
 
   return (
     <Con>
-      <DeptSelect onChange={onChange} />
+      {/* <DeptSelect onChange={onChange} /> */}
       {/* <SelectDepartment /> */}
-      <Spacing />
+      {/* <Spacing /> */}
       <SelectData />
       <Button className='searchButton' onClick={searchButtonClick}>
         查询

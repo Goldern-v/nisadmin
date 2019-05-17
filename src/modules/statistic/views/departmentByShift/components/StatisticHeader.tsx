@@ -18,7 +18,7 @@ export default function BedSituation () {
   //   // nurseFilesListViewModel.loadNursingList()
   //   console.log(value)
   // }
-  //查询
+  // 查询
   function searchButtonClick () {
     emitter.emit('科室排班按班次')
   }
@@ -62,7 +62,7 @@ export default function BedSituation () {
     <Con>
       {/* <DeptSelect onChange={onChange} /> */}
       {/* <SelectDepartment /> */}
-      <Spacing />
+      {/* <Spacing /> */}
       <SelectData />
       <Button className='searchButton' onClick={searchButtonClick}>
         查询
