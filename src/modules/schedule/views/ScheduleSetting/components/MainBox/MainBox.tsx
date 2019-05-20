@@ -949,7 +949,7 @@ export default function MainBox () {
                   style={{ minWidth: '45%', width: '45%', margin: '4px 4px', color: m.nameColor || '' }}
                   onClick={(e: any) => {
                     // message.info(m.name)
-                    console.log('点击:可选班次', e, m, selectedCell, selectedRowsArray, weekdayList)
+                    // console.log('点击:可选班次', e, m, selectedCell, selectedRowsArray, weekdayList)
                     if (selectedCell && selectedCell.record) {
                       let key = selectedCell.key
                       selectedCell.record[key] = m.name
@@ -970,26 +970,46 @@ export default function MainBox () {
                           // }
                         }
                       })
-                      console.log('==可选班次', selectedRowsArray, selectedCellObj)
+                      // console.log('==可选班次', selectedRowsArray, selectedCellObj)
                       countWorkHours(selectedCellObj)
                       input = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
                       if (input) {
                         input.value = selectedCellObj.thisWeekHour
                       }
                       let newList = JSON.parse(JSON.stringify(selectedRowsArray))
-                      console.log('==newList:', newList, selectedCell, selectedRowsArray)
+                      // console.log('==newList:', newList, selectedCell, selectedRowsArray)
                       genEmptyTable(newList)
                       setTableList(newList)
                       // updateTableUI()
                       // 统计
-                      // statisticFooter(newList)
+                      statisticFooter(newList)
                       //
                       // 交点向右侧元件转移
-                      // selectedCell = new Object({
-                      //   record: selectedCell.record,
-                      //   key: key,
-                      //   target: e.currentTarget
-                      // })
+                      let showIndex = ~~selectedCell.record.showIndex || 0
+                      let recordId = ~~selectedCell.record.id
+                      let newReocrd = selectedRowsArray[showIndex] || selectedRowsArray[0]
+                      let record = selectedCell.record
+                      let newReocrdId = newReocrd.id
+
+                      let index = (weekdayList.indexOf(key) + 1) % weekdayList.length
+                      let newKey = weekdayList[index]
+
+                      if (newKey === 'mondayName') {
+                        recordId = newReocrdId
+                        record = newReocrd
+                      }
+
+                      input = document.querySelector(`[name="${newKey}${recordId}"]`)
+
+                      if (input) {
+                        input.focus()
+                        selectedCell = new Object({
+                          record: record,
+                          key: newKey,
+                          target: input // e.currentTarget
+                        })
+                      }
+
                       //
                     }
                   }}
@@ -1091,7 +1111,7 @@ const Wrapper = styled.div`
     color: black;
   }
   th div {
-    text-align: center!important;
+    text-align: center !important;
     padding: 2px !important;
     min-height: 40px !important;
     height: auto !important;
@@ -1153,11 +1173,21 @@ const Wrapper = styled.div`
     padding: 0px !important;
   }
 
+  td {
+    text-align: center !important;
+    padding: 0px !important;
+    &:focus-within {
+      outline: 1px solid green !important;
+      background: yellow;
+      color: black !important;
+    }
+  }
+
   .table-input {
     width: 100%;
     height: 100%;
     border: 0px;
-    outline: 0px solid white !important;
+    outline: 0px solid green !important;
     text-align: center;
     background: transparent;
     div,
@@ -1174,7 +1204,7 @@ const Wrapper = styled.div`
 
   .table-input:focus,
   .table-input:focus-within {
-    outline: 0px solid white !important;
+    outline: 0px solid green !important;
     background: yellow;
     color: black !important;
   }
