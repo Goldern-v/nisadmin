@@ -27,7 +27,7 @@ export default function BedSituation (props: Props) {
       item: props.titleByGet
     }
     HomeApi.indexInfo(postData).then((res) => {
-      console.log(res)
+      console.log('====indexInfo:', res)
     })
     console.log(count, setCount)
   }, [])

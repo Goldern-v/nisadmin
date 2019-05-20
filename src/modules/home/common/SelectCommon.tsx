@@ -8,7 +8,7 @@ import DeptSelect from 'src/components/DeptSelect'
 const Option = Select.Option
 
 function handleChange (value: any) {
-  console.log(`selected ${value}`,value)
+  console.log(`selected ${value}`, value)
 }
 
 export default function SelectCommon () {
@@ -18,21 +18,21 @@ export default function SelectCommon () {
   //   // console.log(count, setCount)
   // })
   useEffect(() => {
-    service.homeDataApiServices.getListDepartment().then((res) => {
-      if (res && res.data) {
-        let listDepartment = res.data.deptList
-        if (!listDepartment) {
-          // 获取后的科室相关数据
-          listDepartment = []
-        }
-        setOfficeList(listDepartment)
-        return listDepartment.map((item: any) => (
-          <Option key={item.name.toString()} value={item.name}>
-            {item.name}
-          </Option>
-        ))
-      }
-    })
+    // service.homeDataApiServices.getListDepartment().then((res) => {
+    //   if (res && res.data) {
+    //     let listDepartment = res.data.deptList
+    //     if (!listDepartment) {
+    //       // 获取后的科室相关数据
+    //       listDepartment = []
+    //     }
+    //     setOfficeList(listDepartment)
+    //     return listDepartment.map((item: any) => (
+    //       <Option key={item.name.toString()} value={item.name}>
+    //         {item.name}
+    //       </Option>
+    //     ))
+    //   }
+    // })
   }, [])
   // function getDepartmentName () {
   //   service.homeDataApiServices.getListDepartment().then((res) => {

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import PatientAreaMap from './components/PatientAreaMap'
 
-export default function BedSituation () {
+export default function PatientDistribute () {
   // const [count, setCount] = useState(0)
   useEffect(() => {
     // console.log(count, setCount)

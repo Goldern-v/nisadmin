@@ -3,11 +3,29 @@ import React, { useState, useEffect } from 'react'
 // import * as React from 'react'
 import { Chart, Tooltip, Axis, Legend, Coord, Pie } from 'viser-react'
 
+import service from 'src/services/api'
+import { authStore } from 'src/stores/index'
+import moment from 'moment'
+moment.locale('zh-cn')
+const dateFormat = 'YYYY-MM-DD 00:00:00'
+
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   useEffect(() => {
     // console.log(count, setCount)
-  })
+    const postData = {
+      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
+      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
+      endTime: moment()
+        .add(1, 'd')
+        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
+    }
+    // console.log('===BedSituation', postData)
+    // service
+    service.homeApiServices.bedInfo(postData).then((res) => {
+      console.log('===BedSituation', res)
+    })
+  }, [])
   // 表图
   const DataSet = require('@antv/data-set')
   // let getData = [{ item: '已占用', count: 160 }, { item: '空床', count: 40 }]

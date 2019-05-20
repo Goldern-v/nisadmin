@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Chart, Tooltip, Axis, Legend, Pie, Coord } from 'viser-react'
 
-export default function BedSituation () {
+export default function PatientAreaMap () {
   // const [count, setCount] = useState(0)
   useEffect(() => {
     // console.log(count, setCount)
