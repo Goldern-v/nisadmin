@@ -972,9 +972,9 @@ export default function MainBox () {
                       })
                       // console.log('==可选班次', selectedRowsArray, selectedCellObj)
                       countWorkHours(selectedCellObj)
-                      input = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
-                      if (input) {
-                        input.value = selectedCellObj.thisWeekHour
+                      let inputW = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
+                      if (inputW) {
+                        inputW.value = selectedCellObj.thisWeekHour
                       }
                       let newList = JSON.parse(JSON.stringify(selectedRowsArray))
                       // console.log('==newList:', newList, selectedCell, selectedRowsArray)
@@ -1008,6 +1008,16 @@ export default function MainBox () {
                           key: newKey,
                           target: input // e.currentTarget
                         })
+                        selectedRow = new Object({
+                          index: showIndex || 0,
+                          record: record,
+                          target: input.parentNode.parentNode
+                        })
+                        // inputW = selectedRow.target.querySelector(`[name="thisWeekHour${recordId}"]`)
+                        // if (inputW) {
+                        //   // countWorkHours(record,inputW)
+                        //   inputW.value = record.thisWeekHour+'!!'
+                        // }
                       }
 
                       //
