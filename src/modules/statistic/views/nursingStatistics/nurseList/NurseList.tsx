@@ -4,25 +4,61 @@ import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
 import React, { useState, useEffect } from 'react'
 import { data } from './data'
+import { Spin } from 'antd'
 export default function BedSituation () {
   const [leftList, setLeftList] = useState([])
+  const [infoList, setInfoList] = useState([])
   const [midList, setMidList] = useState([])
   const [rightList, setRightList] = useState([])
+  const [spinning, setSpinning] = useState(false)
   useEffect(() => {
+    setSpinning(true)
     statisticsApi.getTotalUser().then((res: any) => {
+      let users = res.data[0]!.users
       // let res = data
       let l: any = []
       let m: any = []
       let r: any = []
-      for (let i = 0; i < res.data.length; i += 3) {
-        l.push(res.data[i])
-        m.push(res.data[i + 1])
-        r.push(res.data[i + 2])
+      for (let i = 0; i < users.length; i += 3) {
+        l.push(users[i])
+        m.push(users[i + 1])
+        r.push(users[i + 2])
       }
-      console.log(l, m, r, 9999999)
       setLeftList(l)
       setMidList(m)
       setRightList(r)
+      setSpinning(false)
+      let list: any = [
+        {
+          key: '总人数',
+          value: res.data[0].allTotal
+        },
+        {
+          key: '主任护师',
+          value: res.data[0].nurseDirector
+        },
+        {
+          key: '副主任护师',
+          value: res.data[0].nurseDeputyDirector
+        },
+        {
+          key: '主管护师',
+          value: res.data[0].nurseInCharge
+        },
+        {
+          key: '护师',
+          value: res.data[0].nursePractitioner
+        },
+        {
+          key: '护士',
+          value: res.data[0].nurse
+        }
+        // {
+        //   key: '培训护师',
+        //   value: res.data[0].nurseInCharge
+        // }
+      ]
+      setInfoList(list)
     })
   }, [])
   return (
@@ -31,23 +67,32 @@ export default function BedSituation () {
         <Container>
           <HisName>东莞市厚街医院</HisName>
           <Title>东莞市厚街医院</Title>
-          <MainPart>
-            <CardCon>
-              {leftList.map((item) => (
-                <CardItem data={item} />
-              ))}
-            </CardCon>
-            <CardCon>
-              {midList.map((item) => (
-                <CardItem data={item} />
-              ))}
-            </CardCon>
-            <CardCon>
-              {rightList.map((item) => (
-                <CardItem data={item} />
-              ))}
-            </CardCon>
-          </MainPart>
+          <Info>
+            {infoList.map((item: any) => (
+              <InfoItem>
+                {item.key}：{item.value}人
+              </InfoItem>
+            ))}
+          </Info>
+          <Spin spinning={spinning}>
+            <MainPart>
+              <CardCon>
+                {leftList.map((item) => (
+                  <CardItem data={item} />
+                ))}
+              </CardCon>
+              <CardCon>
+                {midList.map((item) => (
+                  <CardItem data={item} />
+                ))}
+              </CardCon>
+              <CardCon>
+                {rightList.map((item) => (
+                  <CardItem data={item} />
+                ))}
+              </CardCon>
+            </MainPart>
+          </Spin>
           <Footer>
             <span>图例：</span>
             <span>主任护师：</span>
@@ -104,6 +149,7 @@ const Title = styled.div`
 `
 const MainPart = styled.div`
   display: flex;
+  min-height: 400px;
 `
 const CardCon = styled.div`
   width: 360px;
@@ -122,7 +168,7 @@ const Footer = styled.div`
     width: 42px;
     height: 20px;
     border-radius: 1px;
-    margin: 0 50px 0 10px;
+    margin: 0 30px 0 10px;
     &.color-1 {
       background: #f5ad77;
     }
@@ -142,4 +188,15 @@ const Footer = styled.div`
       background: #cacaca;
     }
   }
+`
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin: 10px;
+`
+
+const InfoItem = styled.div`
+  margin-right: 30px;
 `

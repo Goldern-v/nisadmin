@@ -11,6 +11,7 @@ interface NurseCardType {
   title: '培训护士' | '护士' | '护师' | '主管护师' | '副主任护师' | '主任护师'
   /** 层级 */
   currentLevel: string
+  nurseHierarchy: string
   /** 护理单元 */
   deptName: string
   /** 状态 */
@@ -42,7 +43,7 @@ export default function NurseCard (props: Props) {
   })
   let { rowNum, data } = props
   let history = store.appStore.history
-  data.currentLevel = 'N' + (parseInt(Math.random() * 100 + '', 10) % 6)
+  // data.currentLevel = 'N' + (parseInt(Math.random() * 100 + '', 10) % 6)
   return (
     <Padding rowNum={rowNum}>
       <Wrapper onClick={() => history.push(`/nurseFileDetail/baseInfo?${qs.stringify(data)}`)}>
@@ -54,7 +55,7 @@ export default function NurseCard (props: Props) {
           {data.statusColor === '1' && <Badge />}
         </Name>
         <span>
-          {data.title} | {data.currentLevel}
+          {data.title} | {data.nurseHierarchy}
         </span>
         <span>{data.deptName}</span>
       </Wrapper>

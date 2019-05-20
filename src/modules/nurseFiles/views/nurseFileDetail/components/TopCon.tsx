@@ -15,7 +15,7 @@ const WARNNING_ICON = require('../../../images/注意.png')
 
 export default observer(function TopCon () {
   let history = store.appStore.history
-  let { empName, post, deptName, currentLevel, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
+  let { empName, post, deptName, nurseHierarchy, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
   return (
     <Wrapper>
       <BreadcrumbCon>
@@ -29,7 +29,7 @@ export default observer(function TopCon () {
       <HeadImg src={nearImageUrl || DEFAULT_HEADIMG} />
       <Name>{empName}</Name>
       <Info>
-        {post} | {currentLevel} | {deptName}
+        {post} | {nurseHierarchy} | {deptName}
       </Info>
       <Tip>
         <img src={WARNNING_ICON} alt='' />

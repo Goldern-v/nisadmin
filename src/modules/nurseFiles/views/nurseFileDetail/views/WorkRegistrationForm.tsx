@@ -161,7 +161,7 @@ export default observer(function WorkRegistrationForm () {
 
   return (
     <BaseLayout title='临床护理工作情况登记表' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
       <editWorkRegistrationFormModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

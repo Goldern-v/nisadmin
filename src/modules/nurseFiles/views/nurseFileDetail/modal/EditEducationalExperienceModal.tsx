@@ -34,6 +34,8 @@ export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [pathImgGraduate, setPathImgGraduate] = useState('')
   const [pathImgDegree, setPathImgDegree] = useState('')
+  const [attachmentId1, setAttachmentId1] = useState('')
+  const [attachmentId2, setAttachmentId2] = useState('')
   const uploadCardGraduate = async (file: any) => {
     const [err, res] = await to(nurseFilesService.uploadFileUserEducat(file))
     if (err) {
@@ -45,6 +47,7 @@ export default function EditWorkHistoryModal (props: Props) {
       data.urlImageTwo = pathImg
       console.log(pathImg)
       setPathImgGraduate(pathImg)
+      setAttachmentId1(res.data.id)
       return pathImg
     }
   }
@@ -60,6 +63,7 @@ export default function EditWorkHistoryModal (props: Props) {
       data.urlImageOne = pathImg
       console.log(pathImg)
       setPathImgDegree(pathImg)
+      setAttachmentId2(res.data.id)
       return pathImg
     }
   }
@@ -82,9 +86,9 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: auditedStatusShow,
-      attachmentId: '',
       urlImageOne: pathImgDegree,
-      urlImageTwo: pathImgGraduate
+      urlImageTwo: pathImgGraduate,
+      attachmentId: attachmentId1 + ',' + attachmentId2 + ','
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
@@ -109,6 +113,8 @@ export default function EditWorkHistoryModal (props: Props) {
     console.log(visible, 'visible', refForm.current, 'refForm.current')
     /** 如果是修改 */
     if (data && refForm.current && visible) {
+      setAttachmentId1(data.attachmentId.split(',')[0] || '')
+      setAttachmentId2(data.attachmentId.split(',')[1] || '')
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
         readTime: moment(data.readTime),
@@ -124,7 +130,7 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='修改教育经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存'>
+    <Modal title='修改教育经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>

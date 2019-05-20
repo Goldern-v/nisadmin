@@ -70,6 +70,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   useLayoutEffect(() => {
     console.log(visible, 'visible', refForm.current, 'refForm.current')
+    console.log(data, 'data')
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
@@ -95,7 +96,15 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='修改基本信息' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存'>
+    <Modal
+      title='修改基本信息'
+      width={1200}
+      visible={visible}
+      onCancel={onCancel}
+      onOk={onSave}
+      okText='保存'
+      forceRender
+    >
       <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={{}}>
         <Row>
           <Col span={12}>

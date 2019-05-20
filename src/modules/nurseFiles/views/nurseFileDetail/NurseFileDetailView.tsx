@@ -65,11 +65,11 @@ const ROUTE_LIST = [
     component: Awards,
     name: '所获奖励'
   },
-  {
-    type: 'badAction',
-    component: BadAction,
-    name: '不良行为'
-  },
+  // {
+  //   type: 'badAction',
+  //   component: BadAction,
+  //   name: '不良行为'
+  // },
   {
     type: 'examinationResults',
     component: ExaminationResults,

@@ -115,7 +115,18 @@ export default observer(function Writings () {
       dataIndex: 'fj',
       key: '6',
       width: 150,
-      align: 'center'
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return (
+          <DoCon>
+            {row.urlImageOne && (
+              <a href={row.urlImageOne} target='_blank'>
+                查看
+              </a>
+            )}
+          </DoCon>
+        )
+      }
     },
     {
       title: '状态',
@@ -158,7 +169,7 @@ export default observer(function Writings () {
 
   return (
     <BaseLayout title='著作译文论文' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
       <editWritingsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

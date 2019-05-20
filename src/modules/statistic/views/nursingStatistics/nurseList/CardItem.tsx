@@ -20,6 +20,7 @@ export default function CardItem (props: Props) {
   })
 
   const adapter = (list: any[] = []) => {
+    if (!list) return [[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]]
     let length = 10
     let result: any[] = []
     for (let i = 0; i < list.length; i += length) {
@@ -37,7 +38,16 @@ export default function CardItem (props: Props) {
   }
 
   let deptName = props.data && props.data.deptName
-  let data = props.data && adapter(props.data.users)
+  let userSortList: any[] = ((props.data && props.data.users) || [])
+    .map((item: any) => {
+      let titles = [null, '', '培训护士', '护士', '护师', '主管护师', '副主任护师', '主任护师']
+
+      item.titleScore = titles.indexOf(item.title) || 0
+
+      return item
+    })
+    .sort((a: any, b: any) => b.titleScore - a.titleScore)
+  let data = props.data && adapter(userSortList || [])
   console.log(props, 'propspropsprops')
   console.log(data, 'datadata')
   if (!data) return <div />

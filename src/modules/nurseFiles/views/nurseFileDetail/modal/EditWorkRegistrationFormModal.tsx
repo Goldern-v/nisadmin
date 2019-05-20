@@ -61,7 +61,6 @@ export default function EditWorkHistoryModal (props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    value.year && (value.year = value.year.format('YYYY'))
     nurseFilesService.nurseRegistrationWorkAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -77,7 +76,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        // year: data.year,
+        year: data.year,
         nightShift: data.nightShift,
         checkOut: data.checkOut,
         professional: data.professional,
@@ -93,13 +92,24 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='修改工作情况登记表' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存'>
+    <Modal title='修改工作情况登记表' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row>
             <Col span={24}>
               <Form.Field label={`年度`} name='year'>
-                <DatePicker />
+                <Select>
+                  <Option value='2019'>2019</Option>
+                  <Option value='2018'>2018</Option>
+                  <Option value='2017'>2017</Option>
+                  <Option value='2016'>2016</Option>
+                  <Option value='2015'>2015</Option>
+                  <Option value='2014'>2014</Option>
+                  <Option value='2013'>2013</Option>
+                  <Option value='2012'>2012</Option>
+                  <Option value='2011'>2011</Option>
+                  <Option value='2010'>2010</Option>
+                </Select>
               </Form.Field>
             </Col>
           </Row>
