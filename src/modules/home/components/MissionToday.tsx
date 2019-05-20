@@ -2,9 +2,9 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    // console.log(count, setCount)
   })
   // let dataLen = 4
   // const tbodyData = []
@@ -24,12 +24,14 @@ export default function BedSituation () {
       </Head>
       <Mid>
         <table>
-          <tr>
-            <th>任务类型</th>
-            <th>任务数</th>
-            <th>已完成</th>
-            <th>未完成</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>任务类型</th>
+              <th>任务数</th>
+              <th>已完成</th>
+              <th>未完成</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
               <td />

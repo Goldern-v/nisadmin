@@ -4,10 +4,10 @@ import JobTitleMap from './components/JobTitleMap'
 import { Button, Radio, Icon } from 'antd'
 
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   const [titleBy, setTitleBy] = useState('按职称')
   useEffect(() => {
-    console.log(count, setCount)
+    // console.log(count, setCount)
   })
   // const selectChange = () => {}
   const choose1 = () => {

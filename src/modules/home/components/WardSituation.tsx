@@ -2,9 +2,9 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    // console.log(count, setCount)
   })
   return (
     <div>
@@ -14,34 +14,38 @@ export default function BedSituation () {
       </Head>
       <Mid>
         <table>
-          <tr>
-            <th>类型</th>
-            <th>人数</th>
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
+          <thead>
+            <tr>
+              <th>类型</th>
+              <th>人数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+          </tbody>
         </table>
       </Mid>
     </div>

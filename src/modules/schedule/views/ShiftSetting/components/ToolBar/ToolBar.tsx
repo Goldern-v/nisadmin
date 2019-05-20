@@ -39,11 +39,8 @@ export default function ToolBar () {
         type: {
           value: record.shiftType || ''
         },
-        startTime: {
-          value: moment(record.startTime, 'HH:mm:ss') || ''
-        },
-        endTime: {
-          value: moment(record.endTime, 'HH:mm:ss') || ''
+        workTime: {
+          value: record.workTime || ''
         },
         workHour: {
           value: record.effectiveTime || ''
@@ -101,14 +98,18 @@ export default function ToolBar () {
           ...props.type,
           value: props.type.value
         }),
-        startTime: Form.createFormField({
-          ...props.startTime,
-          value: props.startTime.value
+        workTime: Form.createFormField({
+          ...props.workTime,
+          value: props.workTime.value
         }),
-        endTime: Form.createFormField({
-          ...props.endTime,
-          value: props.endTime.value
-        }),
+        // startTime: Form.createFormField({
+        //   ...props.startTime,
+        //   value: props.startTime.value
+        // }),
+        // endTime: Form.createFormField({
+        //   ...props.endTime,
+        //   value: props.endTime.value
+        // }),
         workHour: Form.createFormField({
           ...props.workHour,
           value: props.workHour.value
@@ -151,16 +152,21 @@ export default function ToolBar () {
             />
           )}
         </Form.Item>
-        <Form.Item label='开始时间'>
+        <Form.Item label='上班时间'>
+          {getFieldDecorator('workTime', {
+            rules: [{ required: false, message: '' }]
+          })(<Input style={{ width: inputWidth }} />)}
+        </Form.Item>
+        {/* <Form.Item label='开始时间'>
           {getFieldDecorator('startTime', {
             rules: [{ required: false, message: '' }]
           })(<TimePicker style={{ width: inputWidth }} />)}
-        </Form.Item>
-        <Form.Item label='结束时间'>
+        </Form.Item> */}
+        {/* <Form.Item label='结束时间'>
           {getFieldDecorator('endTime', {
             rules: [{ required: false, message: '' }]
           })(<TimePicker style={{ width: inputWidth }} />)}
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label='标准工时'>
           {getFieldDecorator('workHour', {
             rules: [{ required: false, message: '' }]
@@ -190,23 +196,23 @@ export default function ToolBar () {
     fields = { ...fields, ...changedFields }
     console.log('handleFormChange', changedFields, customizedForm)
     // console.log('onFieldsChange', props, changedFields)
-    let diff = 0
+    // let diff = 0
     // let dateFormat = 'YYYY-MM-DD HH:mm:ss'
-    try {
-      if (Object.keys(changedFields).indexOf('startTime') > -1) {
-        diff = fields.endTime.value.diff(changedFields.startTime.value, 'hours')
-      } else if (Object.keys(changedFields).indexOf('endTime') > -1) {
-        diff = changedFields.endTime.value.diff(fields.startTime.value, 'hours')
-      }
-      if (diff) {
-        diff = Math.abs(diff)
-        fields.workHour.value = `${diff}`
-        customizedForm.setFieldsValue({ workHour: diff })
-      }
-    } catch (error) {
-      //
-    }
-    console.log('工时', diff, fields.endTime)
+    // try {
+    //   if (Object.keys(changedFields).indexOf('startTime') > -1) {
+    //     diff = fields.endTime.value.diff(changedFields.startTime.value, 'hours')
+    //   } else if (Object.keys(changedFields).indexOf('endTime') > -1) {
+    //     diff = changedFields.endTime.value.diff(fields.startTime.value, 'hours')
+    //   }
+    //   if (diff) {
+    //     diff = Math.abs(diff)
+    //     fields.workHour.value = `${diff}`
+    //     customizedForm.setFieldsValue({ workHour: diff })
+    //   }
+    // } catch (error) {
+    //   //
+    // }
+    // console.log('工时', diff, fields.endTime)
   }
 
   let fields = {
@@ -219,11 +225,14 @@ export default function ToolBar () {
     type: {
       value: 'A班'
     },
-    startTime: {
-      value: moment(new Date(), 'HH:mm:ss')
-    },
-    endTime: {
-      value: moment(new Date(), 'HH:mm:ss').add(8, 'h')
+    // startTime: {
+    //   value: moment(new Date(), 'HH:mm:ss')
+    // },
+    // endTime: {
+    //   value: moment(new Date(), 'HH:mm:ss').add(8, 'h')
+    // },
+    workTime: {
+      value: '8:00 - 16:00'
     },
     workHour: {
       value: '8'
@@ -243,8 +252,9 @@ export default function ToolBar () {
       name: fields.shiftName.value, // 	Long 必须参数 班次名称
       deptCode: scheduleStore.getDeptCode(), // string 必须参数 科室编码
       shiftType: fields.type.value, // string 必须参数 所属类别
-      startTime: fields.startTime.value.format('HH:mm'), // string 必须参数 开始时间
-      endTime: fields.endTime.value.format('HH:mm'), // string 必须参数 结束时间
+      workTime: fields.workTime.value, // string
+      // startTime: fields.startTime.value.format('HH:mm'), // string 必须参数 开始时间
+      // endTime: fields.endTime.value.format('HH:mm'), // string 必须参数 结束时间
       effectiveTime: fields.workHour.value, // string 必须参数 标准工时
       nameColor: fields.color.value, // string 必须参数 班次颜色
       status: fields.status.value // Boolean 必须参数 启用状态 true或者false
@@ -255,7 +265,7 @@ export default function ToolBar () {
       console.log('添加班次成功', res)
       // 更新班次列表
     })
-    message.success('onOk')
+    // message.success('onOk')
   }
 
   let inputWidth = '250px'
@@ -278,11 +288,8 @@ export default function ToolBar () {
         type: {
           value: 'A班'
         },
-        startTime: {
-          value: moment(new Date(), 'HH:mm:ss')
-        },
-        endTime: {
-          value: moment(new Date(), 'HH:mm:ss').add(8, 'h')
+        workTime: {
+          value: '8:00 - 16:00'
         },
         workHour: {
           value: '8'
@@ -295,6 +302,13 @@ export default function ToolBar () {
         }
       }
     }
+
+    // startTime: {
+    //   value: moment(new Date(), 'HH:mm:ss')
+    // },
+    // endTime: {
+    //   value: moment(new Date(), 'HH:mm:ss').add(8, 'h')
+    // },
     // if (!modalInfo) {
     Modal.confirm({
       title: title + '',
@@ -302,7 +316,7 @@ export default function ToolBar () {
       // visible: false,
       onOk: onOk,
       onCancel: () => {
-        message.success('onCancel')
+        // message.success('onCancel')
         // modalInfo.destroy()
       },
       iconType: 'form',

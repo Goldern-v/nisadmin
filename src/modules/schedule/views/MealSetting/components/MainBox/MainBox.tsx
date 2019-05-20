@@ -280,7 +280,7 @@ const Wrapper = styled.div`
   td,
   th,
   th div {
-    text-align: center;
+    text-align: center !important;
     padding: 5px !important;
   }
 `

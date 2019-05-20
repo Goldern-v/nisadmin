@@ -50,12 +50,13 @@ const getWeekDay = (weekday: number) => {
   let days = ['', '一', '二', '三', '四', '五', '六', '日']
   let date = moment(scheduleStore.getStartTime())
     .add(weekday - 1, 'days')
-    .format('M[月]DD[日(周]dddd[)]')
+    .format('MM[月]DD[日]')
+  // .format('M[月]DD[日(周]dddd[)]')
   // console.log('周', weekday, scheduleStore.getStartTime(), date)
   if (date.indexOf('Invalid date') > -1) {
     return `周${days[weekday - 1]}`
   }
-  return `${date}`
+  return `${date}(周${days[weekday]})`
 }
 
 const columns = [
@@ -87,43 +88,43 @@ const columns = [
   {
     title: () => getWeekDay(1),
     dataIndex: 'rangeName1',
-    width: '70px',
+    width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor1)
   },
   {
     title: () => getWeekDay(2),
     dataIndex: 'rangeName2',
-    width: '70px',
+    width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor2)
   },
   {
     title: () => getWeekDay(3),
     dataIndex: 'rangeName3',
-    width: '70px',
+    width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor3)
   },
   {
     title: () => getWeekDay(4),
     dataIndex: 'rangeName4',
-    width: '70px',
+    width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor4)
   },
   {
     title: () => getWeekDay(5),
     dataIndex: 'rangeName5',
-    width: '70px',
+    width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor5)
   },
   {
     title: () => getWeekDay(6),
     dataIndex: 'rangeName6',
-    width: '70px',
+    width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor6)
   },
   {
     title: () => getWeekDay(7),
     dataIndex: 'rangeName7',
-    width: '70px',
+    width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor7)
   },
   {
