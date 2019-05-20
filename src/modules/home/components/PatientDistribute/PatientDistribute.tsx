@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react'
 import PatientAreaMap from './components/PatientAreaMap'
 
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    // console.log(count, setCount)
   })
   return (
     <div>

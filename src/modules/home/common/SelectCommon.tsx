@@ -8,7 +8,7 @@ import DeptSelect from 'src/components/DeptSelect'
 const Option = Select.Option
 
 function handleChange (value: any) {
-  console.log(`selected ${value}`)
+  console.log(`selected ${value}`,value)
 }
 
 export default function SelectCommon () {
