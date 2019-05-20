@@ -15,6 +15,7 @@ export default class AuthApiService extends BaseApiService {
       authStore.setAuthToken(authToken)
       authStore.setAdminNurse(adminNurse)
       authStore.updateUser(user)
+      authStore.selectDeptCode(user.deptCode)
       scheduleStore.setDepartmentValue('deptCode', user.deptCode)
       scheduleStore.setDepartmentValue('deptName', user.deptName)
       authStore.initUser()

@@ -69,7 +69,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        // time: moment(data.time),
+        time: moment(data.time),
         specialQualificationName: data.specialQualificationName,
         specialQualificationNo: data.specialQualificationNo
       })

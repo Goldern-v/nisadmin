@@ -26,7 +26,7 @@ export interface Props {
 
 const DEFALT_HEADIMG = require('../../../images/护士默认头像.png')
 
-enum TITLE_COLOR {
+export enum TITLE_COLOR {
   '培训护士' = '#D3D2D7',
   '护士' = '#43B965',
   '护师' = '#6B9AE2',

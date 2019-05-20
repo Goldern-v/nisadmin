@@ -23,6 +23,22 @@ export default function BaseTable (props: Props) {
   if (props.surplusHeight) {
     option.scroll = { y: wih - props.surplusHeight }
   }
+  if (option.dataSource.length < 10) {
+    while (option.dataSource.length < 10) {
+      option.dataSource.push({})
+    }
+  }
+  let doCols: any = option.columns.filter((item: any) => item.title == '操作' || item.title == '附件')
+
+  if (!!doCols.length) {
+    doCols.forEach((doCol: any) => {
+      let callback = doCol.render
+      doCol.render = (text: any, row: any, index: any) => {
+        if (Object.keys(row).length == 0) return <span />
+        return callback && callback(text, row, index)
+      }
+    })
+  }
   return (
     <Wrapper style={props.style}>
       <Table {...option} />
@@ -32,7 +48,8 @@ export default function BaseTable (props: Props) {
 const Wrapper = styled.div`
   background: rgba(255, 255, 255, 1);
   /* border: 1px solid rgba(219, 224, 228, 1); */
-  padding: 20px 30px;
+  /* padding: 20px 30px; */
+  padding: 15px 15px;
   .ant-table-small > .ant-table-content > .ant-table-body {
     margin: 0 !important;
   }

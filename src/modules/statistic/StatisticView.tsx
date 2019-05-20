@@ -106,7 +106,7 @@ export default function StatisticView () {
 
 const Con = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 93px);
   display: flex;
   align-items: stretch;
   background: rgba(248, 248, 248, 1);
