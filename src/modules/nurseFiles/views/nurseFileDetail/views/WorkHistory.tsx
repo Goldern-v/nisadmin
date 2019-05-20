@@ -34,20 +34,20 @@ export default observer(function WorkHistory () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 80
+      width: 70
     },
     {
       title: '开始年月',
       dataIndex: 'startTime',
       key: '2',
-      width: 150,
+      width: 140,
       align: 'center'
     },
     {
       title: '结束年月',
       dataIndex: 'endTime',
       key: '3',
-      width: 150,
+      width: 140,
       align: 'center'
     },
     {
@@ -75,14 +75,14 @@ export default observer(function WorkHistory () {
       title: '职务',
       dataIndex: 'post',
       key: 'post',
-      width: 150,
+      width: 100,
       align: 'center'
     },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '7',
-      width: 150,
+      width: 220,
       align: 'center',
       render: (text: any, item: any, index: any) => {
         return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>
@@ -95,6 +95,7 @@ export default observer(function WorkHistory () {
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
+        if (Object.keys(row).length == 0) return <span />
         return (
           <DoCon>
             <span
@@ -124,7 +125,7 @@ export default observer(function WorkHistory () {
 
   return (
     <BaseLayout title='工作经历' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
       <editWorkHistoryModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

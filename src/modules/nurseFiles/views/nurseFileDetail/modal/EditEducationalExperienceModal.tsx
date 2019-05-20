@@ -45,6 +45,7 @@ export default function EditWorkHistoryModal (props: Props) {
       data.urlImageTwo = pathImg
       console.log(pathImg)
       setPathImgGraduate(pathImg)
+      return pathImg
     }
   }
 
@@ -59,6 +60,7 @@ export default function EditWorkHistoryModal (props: Props) {
       data.urlImageOne = pathImg
       console.log(pathImg)
       setPathImgDegree(pathImg)
+      return pathImg
     }
   }
   let refForm = React.createRef<Form>()
@@ -91,7 +93,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    console.log()
+
     value.readTime && (value.readTime = value.readTime.format('YYYY-MM-DD'))
     value.graduationTime && (value.graduationTime = value.graduationTime.format('YYYY-MM-DD'))
 
@@ -109,11 +111,13 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        // readTime: data.readTime.moment(),
-        // graduationTime: data.graduationTime.moment(),
+        readTime: moment(data.readTime),
+        graduationTime: moment(data.graduationTime),
         graduationSchool: data.graduationSchool,
         readProfessional: data.readProfessional,
-        education: data.education
+        education: data.education,
+        urlImageTwo: data.urlImageTwo,
+        urlImageOne: data.urlImageOne
       })
       // refForm.current.setField('unit', 123)
     }

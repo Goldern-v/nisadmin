@@ -213,7 +213,7 @@ export default observer(function SpecialCard () {
   }, [])
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={390} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
