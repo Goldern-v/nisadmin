@@ -21,8 +21,8 @@ export default class HomeApiServices extends BaseApiService {
   public async bedInfo (data: any) {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime // string 必须参数 结束时间
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
     }
     return this.post(`/indexInfo/bedInfo`, postData)
   }
@@ -31,8 +31,8 @@ export default class HomeApiServices extends BaseApiService {
   public async todayTask (data: any) {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime // string 必须参数 结束时间
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
     }
     return this.post(`/indexInfo/todayTask`, postData)
   }
@@ -42,8 +42,8 @@ export default class HomeApiServices extends BaseApiService {
     const postData = {
       type: data.type, // 分布方式：1=来源，2=费别， 3=性别
       wardCode: data.wardCode, // string 必须参数 科室编码
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime // string 必须参数 结束时间
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
     }
     return this.post(`/indexInfo/patientdistribute`, postData)
   }
@@ -52,8 +52,8 @@ export default class HomeApiServices extends BaseApiService {
   public async patientCondition (data: any) {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime // string 必须参数 结束时间
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
     }
     return this.post(`/indexInfo/patientCondition`, postData)
   }
@@ -62,8 +62,8 @@ export default class HomeApiServices extends BaseApiService {
   public async executeStatus (data: any) {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime // string 必须参数 结束时间
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
     }
     return this.post(`/indexInfo/executeStatus`, postData)
   }
@@ -72,8 +72,8 @@ export default class HomeApiServices extends BaseApiService {
   public async nursingUser (data: any) {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime // string 必须参数 结束时间
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
     }
     return this.post(`/indexInfo/nursingUser`, postData)
   }
@@ -82,8 +82,8 @@ export default class HomeApiServices extends BaseApiService {
   public async wardFlow (data: any) {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime // string 必须参数 结束时间
+      startDate: data.startTime, // string 必须参数 开始时间
+      endDate: data.endTime // string 必须参数 结束时间
     }
     return this.post(`/indexInfo/wardFlow`, postData)
   }
@@ -93,7 +93,7 @@ export default class HomeApiServices extends BaseApiService {
 //   deptCode: data.deptCode, // string 必须参数 科室编码
 //   shiftType: data.shiftType, // string 必须参数 所属类别
 //   startTime: data.startTime, // string 必须参数 开始时间
-//   endTime: data.endTime, // string 必须参数 结束时间
+//   endDate: data.endTime, // string 必须参数 结束时间
 //   effectiveTime: data.effectiveTime, // string 必须参数 标准工时
 //   nameColor: data.nameColor, // string 必须参数 班次颜色
 //   status: data.status // Boolean 必须参数 启用状态 true或者false

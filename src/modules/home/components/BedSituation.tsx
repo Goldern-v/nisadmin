@@ -9,8 +9,32 @@ import moment from 'moment'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
 
+// import { DataSet } from '@antv/data-set'
+const DataSet = require('@antv/data-set')
+
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
+  const [totalBed, setTotalBed] = useState(100)
+  const [useBed, setUseBed] = useState(30)
+  // const [sourceData, setSourceData] = useState([
+  //   { item: '已占用', count: (useBed / totalBed) * 100 },
+  //   { item: '空床', count: (1 - useBed / totalBed) * 100 }
+  // ])
+
+  const [data, setData] = useState(
+    new DataSet.View()
+      .source([
+        { item: '已占用', count: (useBed / totalBed) * 100 },
+        { item: '空床', count: (1 - useBed / totalBed) * 100 }
+      ])
+      .transform({
+        type: 'percent',
+        field: 'count',
+        dimension: 'item',
+        as: 'percent'
+      }).rows
+  )
+
   useEffect(() => {
     // console.log(count, setCount)
     const postData = {
@@ -22,12 +46,83 @@ export default function BedSituation () {
     }
     // console.log('===BedSituation', postData)
     // service
-    service.homeApiServices.bedInfo(postData).then((res) => {
-      console.log('===BedSituation', res)
-    })
+    service.homeApiServices
+      .bedInfo(postData)
+      .then((res) => {
+        console.log('===BedSituation', res)
+        // {
+        //     "code": "200",
+        //     "desc": "操作成功",
+        //     "data": {
+        //         "wardCode": "030502",
+        //         "wardName": "神经内科护理单元",
+        //         "totalBed": "65",
+        //         "useBed": "40"
+        //     }
+        // }
+        if (res) {
+          let totalBed: any = res.data.totalBed
+          let useBed: any = res.data.useBed
+          setTotalBed(totalBed)
+          setUseBed(useBed)
+          // setSourceData([
+          //   { item: '已占用', count: (useBed / totalBed) * 100 },
+          //   { item: '空床', count: (1 - useBed / totalBed) * 100 }
+          // ])
+          setData(
+            new DataSet.View()
+              .source([
+                { item: '已占用', count: (useBed / totalBed) * 100 },
+                { item: '空床', count: (1 - useBed / totalBed) * 100 }
+              ])
+              .transform({
+                type: 'percent',
+                field: 'count',
+                dimension: 'item',
+                as: 'percent'
+              }).rows
+          )
+        }
+      })
+      .catch((err) => {
+        console.log('err', err)
+        let res = {
+          code: '200',
+          desc: '操作成功',
+          data: {
+            wardCode: '030502',
+            wardName: '神经内科护理单元',
+            totalBed: '65',
+            useBed: '40'
+          }
+        }
+        if (res) {
+          let totalBed: any = res.data.totalBed
+          let useBed: any = res.data.useBed
+          setTotalBed(totalBed)
+          setUseBed(useBed)
+          // setSourceData([
+          //   { item: '已占用', count: (useBed / totalBed) * 100 },
+          //   { item: '空床', count: (1 - useBed / totalBed) * 100 }
+          // ])
+          setData(
+            new DataSet.View()
+              .source([
+                { item: '已占用', count: (useBed / totalBed) * 100 },
+                { item: '空床', count: (1 - useBed / totalBed) * 100 }
+              ])
+              .transform({
+                type: 'percent',
+                field: 'count',
+                dimension: 'item',
+                as: 'percent'
+              }).rows
+          )
+        }
+      })
   }, [])
   // 表图
-  const DataSet = require('@antv/data-set')
+  // const DataSet = require('@antv/data-set')
   // let getData = [{ item: '已占用', count: 160 }, { item: '空床', count: 40 }]
   // 处理空数据
   // getData = getData ? getData : []
@@ -38,7 +133,7 @@ export default function BedSituation () {
   // let sum = parseInt(getData[0].count, 10) + parseInt(getData[1].count, 10)
   // let count1 = parseInt(getData[0].count, 10)*(parseInt(getData[0].count, 10) / sum)
   // let count2 = parseInt(getData[1].count, 10) * (parseInt(getData10].count, 10) / sum)
-  const sourceData = [{ item: '已占用', count: 50 }, { item: '空床', count: 50 }]
+  // const sourceData = [{ item: '已占用', count: 50 }, { item: '空床', count: 50 }]
   const scale = [
     {
       dataKey: 'percent',
@@ -47,14 +142,14 @@ export default function BedSituation () {
     }
   ]
 
-  const dv = new DataSet.View().source(sourceData)
-  dv.transform({
-    type: 'percent',
-    field: 'count',
-    dimension: 'item',
-    as: 'percent'
-  })
-  const data = dv.rows
+  // const dv = new DataSet.View().source(sourceData)
+  // dv.transform({
+  //   type: 'percent',
+  //   field: 'count',
+  //   dimension: 'item',
+  //   as: 'percent'
+  // })
+  // const data = dv.rows
   return (
     <div>
       <Head>
@@ -65,12 +160,12 @@ export default function BedSituation () {
         <div className='ChartConLeft'>
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare' />
-            <div className='leftItemMessage'>已占用：50%</div>
+            <div className='leftItemMessage'>已占用：{((useBed / totalBed) * 100).toFixed(0)}%</div>
           </div>
 
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare LeftItemSquareColor' />
-            <div className='leftItemMessage'>空床：50%</div>
+            <div className='leftItemMessage'>空床：{((1 - useBed / totalBed) * 100).toFixed(0)}%</div>
           </div>
         </div>
 
