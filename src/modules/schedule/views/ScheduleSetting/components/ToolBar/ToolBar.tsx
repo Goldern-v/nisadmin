@@ -627,10 +627,10 @@ export default function ToolBar () {
   const onWeekChange = (date: any, dateString: string) => {
     let weekFirstDay = moment(date)
       .startOf('week')
-      .add('d', 1)
+      .add('d', 0)
     let weekLastDay = moment(date)
       .startOf('week')
-      .add('d', 7)
+      .add('d', 6)
     setWeekValue(weekFirstDay)
     console.log(
       'WeekPicker',
