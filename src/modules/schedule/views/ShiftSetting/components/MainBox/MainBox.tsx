@@ -54,22 +54,29 @@ const columns = [
         ''
       )
   },
+  // {
+  //   title: '开始时间',
+  //   dataIndex: 'startTime',
+  //   width: '30%',
+  //   key: 'startTime'
+  // },
+  // {
+  //   title: '结束时间',
+  //   dataIndex: 'endTime',
+  //   key: 'endTime',
+  //   width: '8%'
+  // },
   {
-    title: '开始时间',
-    dataIndex: 'startTime',
-    width: '30%',
-    key: 'startTime'
-  },
-  {
-    title: '结束时间',
-    dataIndex: 'endTime',
-    key: 'endTime',
-    width: '8%'
+    title: '上班时间',
+    dataIndex: 'workTime',
+    key: 'workTime',
+    width: ''
   },
   {
     title: '工时(小时）',
     dataIndex: 'effectiveTime',
-    key: 'effectiveTime'
+    key: 'effectiveTime',
+    width: '8%'
   },
   {
     title: '操作',
@@ -114,11 +121,12 @@ let data = {
   createTime: '',
   deptCode: '',
   effectiveTime: '',
-  endTime: '',
+  // endTime: '',
   name: '',
   nameColor: '',
   shiftType: '',
-  startTime: '',
+  workTime: '',
+  // startTime: '',
   status: ''
 }
 
@@ -260,7 +268,7 @@ const Wrapper = styled.div`
   td,
   th,
   th div {
-    text-align: center;
+    text-align: center !important;
     padding: 5px !important;
   }
 `

@@ -79,7 +79,7 @@ let getStatus = (status: any) => {
     case '1':
       return '发布'
     default:
-      return '未设置排班'
+      return '未保存'
   }
 }
 
@@ -308,7 +308,7 @@ export default function MainBox () {
     let date = moment(scheduleStore.getStartTime())
       .add(weekday - 1, 'days')
       .format('MM[月]DD[日]')
-      // .format('MM[月]DD[日(周]dddd[)]')
+    // .format('MM[月]DD[日(周]dddd[)]')
     // console.log('周', weekday, scheduleStore.getStartTime(), date)
     if (date.indexOf('Invalid date') > -1) {
       return `周${days[weekday - 1]}`
@@ -440,18 +440,11 @@ export default function MainBox () {
       dataIndex: 'status',
       key: 'status',
       width: '10%',
-      render: (text: string, record: any) =>
-        record.id ? (
-          <span id={'status' + record.id}>
-            {getStatus(text)}
-          </span>
-        ) : (
-          ''
-        )
+      render: (text: string, record: any) => (record.id ? <span id={'status' + record.id}>{getStatus(text)}</span> : '')
     }
   ]
 
-  const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false, isActive:any = null) => {
+  const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false, isActive: any = null) => {
     // console.log('====updateTableUI', selectedRowsArray, isEmpty)
     selectedRowsArray.map((s, k) => {
       if (s && s.id) {
@@ -474,9 +467,9 @@ export default function MainBox () {
         // 更新状态 status
         if (isEmpty) {
           s.status = '-1' // getStatus(-1)
-        } 
-        if(isActive){
-            if (isPublish) {
+        }
+        if (isActive) {
+          if (isPublish) {
             s.status = '1' // getStatus(1)
           } else {
             s.status = '0' // getStatus(0)
@@ -695,7 +688,7 @@ export default function MainBox () {
         thisWeekHour: nurse.thisWeekHour || '',
         status: nurse.status // getStatus(nurse.status) || ''
       }
-      let isPub = nurse.status==='1'?true:false
+      let isPub = nurse.status === '1' ? true : false
       setIsPublished(isPub)
       // console.log('---tr', tr,isPublished,nurse.status,nurse.status==='1')
       newList.push(tr as any)
@@ -956,7 +949,7 @@ export default function MainBox () {
                   style={{ minWidth: '45%', width: '45%', margin: '4px 4px', color: m.nameColor || '' }}
                   onClick={(e: any) => {
                     // message.info(m.name)
-                    console.log(e, m, selectedCell, selectedRowsArray)
+                    console.log('点击:可选班次', e, m, selectedCell, selectedRowsArray, weekdayList)
                     if (selectedCell && selectedCell.record) {
                       let key = selectedCell.key
                       selectedCell.record[key] = m.name
@@ -990,6 +983,14 @@ export default function MainBox () {
                       // updateTableUI()
                       // 统计
                       // statisticFooter(newList)
+                      //
+                      // 交点向右侧元件转移
+                      // selectedCell = new Object({
+                      //   record: selectedCell.record,
+                      //   key: key,
+                      //   target: e.currentTarget
+                      // })
+                      //
                     }
                   }}
                   key={m.name + i}
@@ -1087,9 +1088,10 @@ const Wrapper = styled.div`
     padding: 4px !important;
     min-height: 32px !important;
     height: 32px !important;
+    color: black;
   }
   th div {
-    text-align: center;
+    text-align: center!important;
     padding: 2px !important;
     min-height: 40px !important;
     height: auto !important;

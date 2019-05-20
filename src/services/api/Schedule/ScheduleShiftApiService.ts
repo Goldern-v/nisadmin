@@ -57,8 +57,9 @@ export default class ScheduleShiftApiService extends BaseApiService {
       name: data.name, // 	Long 必须参数 班次名称
       deptCode: data.deptCode, // string 必须参数 科室编码
       shiftType: data.shiftType, // string 必须参数 所属类别
-      startTime: data.startTime, // string 必须参数 开始时间
-      endTime: data.endTime, // string 必须参数 结束时间
+      workTime: data.workTime,
+      // startTime: data.startTime, // string 必须参数 开始时间
+      // endTime: data.endTime, // string 必须参数 结束时间
       effectiveTime: data.effectiveTime, // string 必须参数 标准工时
       nameColor: data.nameColor, // string 必须参数 班次颜色
       status: data.status // Boolean 必须参数 启用状态 true或者false
