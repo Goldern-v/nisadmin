@@ -12,7 +12,7 @@ import Notices from './components/Notices'
 import PerformChart from './components/PerformChart'
 import NurseSituation from './components/NurseSituation/NurseSituation'
 import PatientDistribute from './components/PatientDistribute/PatientDistribute'
-
+import emitter from 'src/libs/ev'
 // export interface Props extends RouteComponentProps {}
 
 // const Option = Select.Option
@@ -22,11 +22,13 @@ import PatientDistribute from './components/PatientDistribute/PatientDistribute'
 // }
 
 export default function HomeView () {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
+  const [page, setPage] = useState('本页')
+  useEffect(() => {})
+  emitter.removeAllListeners('首页查询')
+  emitter.addListener('首页查询', () => {
+    setPage('查询')
+    console.log('5555555555555555555555 查询')
   })
-
   return (
     <Wrapper>
       <SelectCommon />

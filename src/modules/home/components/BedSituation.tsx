@@ -4,15 +4,17 @@ import React, { useState, useEffect } from 'react'
 import { Chart, Tooltip, Axis, Legend, Coord, Pie } from 'viser-react'
 
 import service from 'src/services/api'
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import { authStore } from 'src/stores/index'
 import moment from 'moment'
+import { observer } from 'mobx-react-lite'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
 
 // import { DataSet } from '@antv/data-set'
 const DataSet = require('@antv/data-set')
 
-export default function BedSituation () {
+export default observer(function BedSituation () {
   // const [count, setCount] = useState(0)
   const [totalBed, setTotalBed] = useState(100)
   const [useBed, setUseBed] = useState(30)
@@ -46,8 +48,12 @@ export default function BedSituation () {
     }
     // console.log('===BedSituation', postData)
     // service
-    service.homeApiServices
-      .bedInfo(postData)
+    // 换接口下
+    // service.homeApiServices
+    //   .bedInfo(postData)
+    //   .then((res) => {
+    // 换接口上
+    HomeApi.bedInfo(postData)
       .then((res) => {
         console.log('===BedSituation', res)
         // {
@@ -120,7 +126,7 @@ export default function BedSituation () {
           )
         }
       })
-  }, [])
+  }, [authStore.selectedDeptCode])
   // 表图
   // const DataSet = require('@antv/data-set')
   // let getData = [{ item: '已占用', count: 160 }, { item: '空床', count: 40 }]
@@ -190,7 +196,7 @@ export default function BedSituation () {
       </ChartCon>
     </div>
   )
-}
+})
 
 const Head = styled.div`
   height: 37px;

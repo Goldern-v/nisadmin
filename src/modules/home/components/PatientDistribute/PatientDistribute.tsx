@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import PatientAreaMap from './components/PatientAreaMap'
-
+import { Button, Radio, Icon } from 'antd'
 export default function PatientDistribute () {
-  // const [count, setCount] = useState(0)
-  useEffect(() => {
-    // console.log(count, setCount)
-  })
+  const [titleBy, setTitleBy] = useState('按地区')
+  useEffect(() => {})
+  const selectChange = (e: any) => {
+    setTitleBy(e.target.value)
+  }
   return (
     <div>
       <Head>
@@ -17,12 +18,19 @@ export default function PatientDistribute () {
         <MidHeader>
           <div className='headerLeft'>患者合计：</div>
           <div className='headerRight'>
+            <Radio.Group defaultValue='按地区' onChange={selectChange}>
+              <Radio.Button value='按地区'>按地区</Radio.Button>
+              <Radio.Button value='按费别'>按费别</Radio.Button>
+              <Radio.Button value='按性别'>按性别</Radio.Button>
+            </Radio.Group>
+            {/* <div className='headerRight'>
             <div className='headerRightItem'>按地区</div>
             <div className='headerRightItem'>按费别</div>
             <div className='headerRightItem'>按性别</div>
+          </div> */}
           </div>
         </MidHeader>
-        <PatientAreaMap />
+        <PatientAreaMap titleByGet={titleBy} />
       </Mid>
     </div>
   )
@@ -46,13 +54,15 @@ const Head = styled.div`
     font-size: 13px;
     letter-spacing: 1px;
     color: #999999;
+    .ant-radio-button-wrapper {
+      background-color: red !important;
+    }
   }
 `
 const Mid = styled.div`
-  /* padding: 0 18px; */
+  padding: 0 18px;
 `
 const MidHeader = styled.div`
-  padding: 0 18px;
   height: 42px;
   line-height: 42px;
   display: flex;
@@ -61,24 +71,42 @@ const MidHeader = styled.div`
   }
   .headerRight {
     margin-top: 7px;
+    width: 60%;
     height: 26px;
     line-height: 26px;
-    width: 50%;
     text-align: center;
-    color: #333333;
-    background-color: rgba(241, 244, 246, 1);
     display: flex;
-    z-index: 2;
+    color: #333333;
+    /* background-color: rgba(241, 244, 246, 1); */
+    /* border: 1px solid #c0cbce; */
     cursor: pointer;
+    .ant-radio-group-outline {
+      height: 100%;
+      width: 100%;
+      z-index: 3;
+      .ant-radio-button-wrapper {
+        /* box-sizing: border-box; */
+        padding: 0;
+        height: 100%;
+        line-height: height;
+        width: 33.33333%;
+        background-color: #f1f4f6;
+        span {
+          margin-top: -3px;
+        }
+      }
+    }
     .headerRightItem {
       margin: -1px 0 0 -1px;
       box-sizing: border-box;
-      border: 1px solid #c0cbce;
+      height: 100%;
       width: 33.33%;
+      border: 1px solid #c0cbce;
     }
     .headerRightItem:hover {
       border-color: #0092fe;
       color: #0092fe;
+      /* background-color: #5bbe98; */
     }
   }
 `

@@ -24,6 +24,44 @@ export default function PatientSituation () {
       console.log('===patientCondition', res)
     })
   }, [])
+  const columns: any = [
+    // {
+    //   title: '序号',
+    //   dataIndex: '序号',
+    //   key: '序号',
+    //   render: (text: any, record: any, index: number) => index + 1,
+    //   align: 'center',
+    //   width: 50
+    // },
+    {
+      title: '类型',
+      dataIndex: 'patientType',
+      key: '',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '总计',
+      dataIndex: 'totalCount',
+      key: '',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '已完成',
+      dataIndex: 'finishCount',
+      key: '',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '完成率',
+      dataIndex: 'finishCountN',
+      key: '',
+      align: 'center'
+      // width: 100
+    }
+  ]
   return (
     <div>
       <Head>

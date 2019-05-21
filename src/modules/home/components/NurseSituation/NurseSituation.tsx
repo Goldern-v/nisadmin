@@ -132,6 +132,7 @@ const MidHeader = styled.div`
     .ant-radio-group-outline {
       height: 100%;
       width: 100%;
+      z-index: 3;
       .ant-radio-button-wrapper {
         /* box-sizing: border-box; */
         padding: 0;
