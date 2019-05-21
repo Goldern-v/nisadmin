@@ -45,7 +45,8 @@ class NurseFilesListViewModel {
         .map((item: any) => {
           let titles = [null, '', '护士', '护师', '主管护师', '副主任护师', '主任护师']
           item.titleScore =
-            (titles.indexOf(item.title) || 0) + (item.nurseHierarchy ? Number(item.nurseHierarchy.substring(1, 2)) : 0)
+            (titles.indexOf(item.title) * 10 || 0) +
+            (item.nurseHierarchy ? Number(item.nurseHierarchy.substring(1, 2)) : 0)
           return item
         })
         .sort((a: any, b: any) => b.titleScore - a.titleScore)
