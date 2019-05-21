@@ -46,7 +46,7 @@ export default function ToolBar () {
           value: record.effectiveTime || ''
         },
         color: {
-          value: record.nameColor || ''
+          value: colorMap[record.nameColor] || ''
         },
         status: {
           value: record.status != null ? record.status : true
@@ -70,7 +70,7 @@ export default function ToolBar () {
       })
       service.scheduleShiftApiService.saveAll(shiftList).then((res) => {
         message.success('保存排班班次设置成功')
-        emitter.emit('更新班次列表')
+        // emitter.emit('更新班次列表')
         console.log('保存排班班次', res)
       })
     })
@@ -178,11 +178,11 @@ export default function ToolBar () {
           })(
             <AutoComplete
               style={{ width: inputWidth }}
-              dataSource={dataSourceColor}
-              placeholder='red'
+              dataSource={dataSourceColorCN}
+              placeholder='红色'
               filterOption={(inputValue: any, option: any) =>
                 option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
-                (dataSourceColor.indexOf(inputValue) > -1 || dataSourceColor.indexOf(inputValue) === -1)
+                (dataSourceColorCN.indexOf(inputValue) > -1 || dataSourceColorCN.indexOf(inputValue) === -1)
               }
             />
           )}
@@ -238,7 +238,7 @@ export default function ToolBar () {
       value: '8'
     },
     color: {
-      value: 'red'
+      value: '灰色'
     },
     status: {
       value: true
@@ -256,7 +256,7 @@ export default function ToolBar () {
       // startTime: fields.startTime.value.format('HH:mm'), // string 必须参数 开始时间
       // endTime: fields.endTime.value.format('HH:mm'), // string 必须参数 结束时间
       effectiveTime: fields.workHour.value, // string 必须参数 标准工时
-      nameColor: fields.color.value, // string 必须参数 班次颜色
+      nameColor: colorMapCN[fields.color.value], // string 必须参数 班次颜色
       status: fields.status.value // Boolean 必须参数 启用状态 true或者false
     }
     service.scheduleShiftApiService.save(postData).then((res) => {
@@ -271,6 +271,25 @@ export default function ToolBar () {
   let inputWidth = '250px'
   let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他']
   let dataSourceColor = ['red', 'green', 'blue', 'yellow', 'black', 'gray']
+  let dataSourceColorCN = ['红色', '绿色', '蓝色', '黄色', '黑色', '灰色']
+
+  let colorMap:any = {
+    'red':'红色',
+    'green':'绿色',
+    'blue':'蓝色',
+    'yellow':'黄色',
+    'black':'黑色',
+    'gray':'灰色'
+  }
+
+  let colorMapCN:any = {
+    '红色':'red',
+    '绿色':'green',
+    '蓝色':'blue',
+    '黄色':'yellow',
+    '黑色':'black',
+    '灰色':'gray'
+  }
 
   // let modalInfo: any = null
 
@@ -295,7 +314,7 @@ export default function ToolBar () {
           value: '8'
         },
         color: {
-          value: 'red'
+          value: '灰色'
         },
         status: {
           value: true
