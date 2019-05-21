@@ -145,9 +145,9 @@ export default function ToolBar () {
               console.log('!!!!shift', shift, key, nurse[key], nurse)
               if (!shift) {
                 shift = shiftListData.find((s: any) => nurse[key+'Code'] === s.name)
-                if(!shift){
-                  continue
-                }
+                // if(!shift){
+                //   continue
+                // }
               }
               postLine = {
                 id: {
