@@ -65,11 +65,11 @@ const ROUTE_LIST = [
     component: Awards,
     name: '所获奖励'
   },
-  {
-    type: 'badAction',
-    component: BadAction,
-    name: '不良行为'
-  },
+  // {
+  //   type: 'badAction',
+  //   component: BadAction,
+  //   name: '不良行为'
+  // },
   {
     type: 'examinationResults',
     component: ExaminationResults,
@@ -83,7 +83,7 @@ const ROUTE_LIST = [
   {
     type: 'workRegistrationForm',
     component: WorkRegistrationForm,
-    name: '工作情况登记表'
+    name: '工作情况登记'
   },
   {
     type: 'fileList',

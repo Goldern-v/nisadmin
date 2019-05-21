@@ -6,6 +6,7 @@ import { TableProps } from 'antd/lib/table'
 import windowHeight from 'src/hooks/windowHeight'
 export interface Props extends TableProps<any> {
   style?: any
+  type?: any
   /**多余的高度 */
   surplusHeight?: number
 }
@@ -23,11 +24,23 @@ export default function BaseTable (props: Props) {
   if (props.surplusHeight) {
     option.scroll = { y: wih - props.surplusHeight }
   }
-  if (option.dataSource.length < 10) {
-    while (option.dataSource.length < 10) {
-      option.dataSource.push({})
+  try {
+    if (option.type.includes('spaceRow')) {
+      /** 设置空行 */
+      if (option.dataSource.length < 10) {
+        while (option.dataSource.length < 10) {
+          option.dataSource.push({})
+        }
+      }
     }
-  }
+    // if (option.type.includes('fixedWidth')) {
+    //   /** 设置宽度 */
+    //   let totalWidth = option.columns.reduce((total: number, item: any) => total + (Number(item.width) || 0), 0)
+    //   if (!option.style) option.style = {}
+    //   option.style.width = totalWidth
+    // }
+  } catch (error) {}
+
   let doCols: any = option.columns.filter((item: any) => item.title == '操作' || item.title == '附件')
 
   if (!!doCols.length) {
@@ -40,7 +53,7 @@ export default function BaseTable (props: Props) {
     })
   }
   return (
-    <Wrapper style={props.style}>
+    <Wrapper {...option}>
       <Table {...option} />
     </Wrapper>
   )
@@ -50,6 +63,7 @@ const Wrapper = styled.div`
   /* border: 1px solid rgba(219, 224, 228, 1); */
   /* padding: 20px 30px; */
   padding: 15px 15px;
+  box-sizing: content-box;
   .ant-table-small > .ant-table-content > .ant-table-body {
     margin: 0 !important;
   }
@@ -58,5 +72,12 @@ const Wrapper = styled.div`
   }
   tbody tr:nth-of-type(2n) {
     background: rgba(242, 244, 245, 1);
+  }
+
+  .ant-table-placeholder {
+    height: ${(p: any) => `calc(100vh - ${p.surplusHeight - 20}px)`};
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `

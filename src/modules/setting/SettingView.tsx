@@ -7,6 +7,7 @@ import { appStore } from 'src/stores'
 import EditTable from './components/EditTable'
 import 绩效参数设置 from './view/绩效参数设置'
 import 节假日设置 from './view/节假日设置'
+import 物流角色设置 from './view/物流角色设置'
 import settingViewModel from './SettingViewModel'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -39,7 +40,8 @@ const LEFT_MENU_CONFIG = [
       },
       {
         title: '物流角色设置',
-        path: '/setting/物流角色设置'
+        path: '/setting/物流角色设置',
+        component: 物流角色设置
       },
       {
         title: '物流分类及流程设置',
@@ -100,14 +102,14 @@ export default function SettingView (props: Props) {
           <currentRoute.component getTitle={currentRoute && currentRoute.title} />
         )}
         {/* </TableCon>
-         */}{' '}
+         */}
       </MainCon>
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   overflow: hidden;
-  height: 100%;
+  height: calc(100vh - 93px);
   display: flex;
   align-items: stretch;
 `

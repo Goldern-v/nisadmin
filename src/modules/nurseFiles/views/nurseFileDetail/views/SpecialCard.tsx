@@ -171,7 +171,18 @@ export default observer(function SpecialCard () {
       dataIndex: 'fj',
       key: '5',
       width: 200,
-      align: 'center'
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return (
+          <DoCon>
+            {row.urlImageOne && (
+              <a href={row.urlImageOne} target='_blank'>
+                查看
+              </a>
+            )}
+          </DoCon>
+        )
+      }
     },
     {
       title: '状态',
@@ -213,14 +224,14 @@ export default observer(function SpecialCard () {
   }, [])
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
 const Wrapper = styled.div``
 
-const DoCon = styled.div`
+export const DoCon = styled.div`
   display: flex;
   justify-content: space-around;
   font-size: 12px;

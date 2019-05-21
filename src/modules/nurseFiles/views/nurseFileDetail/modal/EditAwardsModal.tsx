@@ -13,13 +13,14 @@ import moment from 'moment'
 import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
+import { authStore, appStore } from 'src/stores'
+import service from 'src/services/api'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
   signShow?: string
   getTableData?: () => {}
 }
-const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   time: (val) => !!val || '时间',
   awardWinningName: (val) => !!val || '获奖/推广创新项目名称',
@@ -28,6 +29,30 @@ const rules: Rules = {
   approvalAuthority: (val) => !!val || '批准机关'
 }
 export default function EditWorkHistoryModal (props: Props) {
+  const [attachmentId, setAttachmentId] = useState('')
+  const uploadCard = async (file: any) => {
+    let obj: any = {
+      file,
+      empNo: appStore.queryObj.empNo,
+      type: '0'
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
+    }
+
+    const [err, res] = await to(service.commonApiService.uploadFile(obj))
+    if (err) {
+      message.error(err.message)
+      return res || ''
+    }
+    if (res.data) {
+      let pathImg = `/asset/nurseAttachment${res.data.path}`
+      setAttachmentId(res.data.id + ',')
+      return pathImg
+    }
+  }
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
   console.log('this is refForm')
@@ -49,7 +74,7 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: auditedStatusShow,
-      attachmentId: '',
+      attachmentId: attachmentId,
       urlImageOne: ''
     }
     if (signShow === '修改') {
@@ -72,18 +97,20 @@ export default function EditWorkHistoryModal (props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
+      setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
-        // time: moment(data.time),
+        time: moment(data.time),
         awardWinningName: data.awardWinningName,
         rank: data.rank,
         awardlevel: data.awardlevel,
-        approvalAuthority: data.approvalAuthority
+        approvalAuthority: data.approvalAuthority,
+        urlImageOne: data.urlImageOne
       })
     }
   }, [visible])
 
   return (
-    <Modal title='修改所获奖励' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存'>
+    <Modal title='修改所获奖励' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
@@ -113,7 +140,7 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={``} name=''>
+            <Form.Field label={``} name='urlImageOne'>
               <ImageUploader upload={uploadCard} text='添加附件' />
             </Form.Field>
           </Col>

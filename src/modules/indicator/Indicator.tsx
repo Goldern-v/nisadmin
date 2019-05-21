@@ -67,7 +67,7 @@ const ROUTE_LIST = [
   {
     name: '护患比统计',
     columns: 护患比统计.columns,
-    ataSource: [] || 护患比统计.dataSource,
+    dataSource: [] || 护患比统计.dataSource,
     keys: ['患者数', '护士数'],
     gName: '护理单元',
     lineKey: '每天平均护患比'
@@ -75,7 +75,7 @@ const ROUTE_LIST = [
   {
     name: '24小时平均护理时数',
     columns: 小时平均护理时数.columns,
-    ataSource: [] || 小时平均护理时数.dataSource,
+    dataSource: [] || 小时平均护理时数.dataSource,
     keys: ['平均每天护理时数', '平均每天住院患者'],
     gName: '护理单元',
     lineKey: '每住院患者24小时平均护理时数'
@@ -83,7 +83,7 @@ const ROUTE_LIST = [
   {
     name: '不同级别护士配置',
     columns: 不同级别护士配置.columns,
-    ataSource: [] || 不同级别护士配置.dataSource,
+    dataSource: [] || 不同级别护士配置.dataSource,
     keys: ['护士总人数'],
     gName: '护理单元',
     lineKey: ''
@@ -91,7 +91,7 @@ const ROUTE_LIST = [
   {
     name: '护士离职率',
     columns: 护士离职率.columns,
-    ataSource: [] || 护士离职率.dataSource,
+    dataSource: [] || 护士离职率.dataSource,
     keys: ['离职率'],
     gName: '护理单元',
     lineKey: ''
@@ -99,7 +99,7 @@ const ROUTE_LIST = [
   {
     name: '住院患者跌倒发生率',
     columns: 住院患者跌倒发生率.columns,
-    ataSource: [] || 住院患者跌倒发生率.dataSource,
+    dataSource: [] || 住院患者跌倒发生率.dataSource,
     keys: ['跌倒发生率'],
     gName: '护理单元',
     lineKey: ''
@@ -107,7 +107,7 @@ const ROUTE_LIST = [
   {
     name: '院内压疮发生率',
     columns: 院内压疮发生率.columns,
-    ataSource: [] || 院内压疮发生率.dataSource,
+    dataSource: [] || 院内压疮发生率.dataSource,
     keys: ['压疮病例数', '同期患者数'],
     gName: '护理单元',
     lineKey: '压疮发生率(%)'
@@ -115,7 +115,7 @@ const ROUTE_LIST = [
   {
     name: '住院患者身体约束率',
     columns: 住院患者身体约束率.columns,
-    ataSource: [] || 住院患者身体约束率.dataSource,
+    dataSource: [] || 住院患者身体约束率.dataSource,
     keys: ['约束天数', '患者人日数'],
     gName: '护理单元',
     lineKey: '身体约束率(%)'
@@ -123,7 +123,7 @@ const ROUTE_LIST = [
   {
     name: '插管患者非计划拔管发生率',
     columns: 插管患者非计划拔管发生率.columns,
-    ataSource: [] || 插管患者非计划拔管发生率.dataSource,
+    dataSource: [] || 插管患者非计划拔管发生率.dataSource,
     keys: ['导管留置日数', 'UEX例数'],
     gName: '护理单元',
     lineKey: 'UEX发生率'
@@ -131,7 +131,7 @@ const ROUTE_LIST = [
   {
     name: '导尿管相关尿路感染发生率',
     columns: 导尿管相关尿路感染发生率.columns,
-    ataSource: [] || 导尿管相关尿路感染发生率.dataSource,
+    dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
     keys: ['感染例数', '插管例数'],
     gName: '护理单元',
     lineKey: '感染率'
@@ -139,7 +139,7 @@ const ROUTE_LIST = [
   {
     name: '中心导管相关血流感染发生率',
     columns: 中心导管相关血流感染发生率.columns,
-    ataSource: [] || 中心导管相关血流感染发生率.dataSource,
+    dataSource: [] || 中心导管相关血流感染发生率.dataSource,
     keys: ['感染例数', '插管例数'],
     gName: '护理单元',
     lineKey: '感染率'
@@ -147,7 +147,7 @@ const ROUTE_LIST = [
   {
     name: '呼吸机相关性肺炎发生率',
     columns: 呼吸机相关性肺炎发生率.columns,
-    ataSource: [] || 呼吸机相关性肺炎发生率.dataSource,
+    dataSource: [] || 呼吸机相关性肺炎发生率.dataSource,
     keys: ['感染例数', '插管例数'],
     gName: '护理单元',
     lineKey: '感染率'
@@ -155,7 +155,7 @@ const ROUTE_LIST = [
   {
     name: '产科护理质量数据',
     columns: 产科护理质量数据.columns,
-    ataSource: [] || 产科护理质量数据.dataSource,
+    dataSource: [] || 产科护理质量数据.dataSource,
     keys: ['人数'],
     gName: '统计项目',
     lineKey: ''
@@ -163,7 +163,7 @@ const ROUTE_LIST = [
   {
     name: '高危药物静脉外渗率',
     columns: 高危药物静脉外渗率.columns,
-    ataSource: [] || 高危药物静脉外渗率.dataSource,
+    dataSource: [] || 高危药物静脉外渗率.dataSource,
     keys: ['静脉使用高危药物发生外渗的例数'],
     gName: '护理单元',
     lineKey: '外渗率(%)'
@@ -171,7 +171,7 @@ const ROUTE_LIST = [
   {
     name: '输血输液反应倒数',
     columns: 输血输液反应倒数.columns,
-    ataSource: [] || 输血输液反应倒数.dataSource,
+    dataSource: [] || 输血输液反应倒数.dataSource,
     keys: ['输血反应例数', '输液反应例数'],
     gName: '护理单元',
     lineKey: ''
@@ -179,7 +179,7 @@ const ROUTE_LIST = [
   {
     name: '非计划拔管发生率',
     columns: 非计划拔管发生率.columns,
-    ataSource: [] || 非计划拔管发生率.dataSource,
+    dataSource: [] || 非计划拔管发生率.dataSource,
     keys: ['导管留置日数', 'UEX例数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -187,7 +187,7 @@ const ROUTE_LIST = [
   {
     name: '导管相关血液感染发生率',
     columns: 导管相关血液感染发生率.columns,
-    ataSource: [] || 导管相关血液感染发生率.dataSource,
+    dataSource: [] || 导管相关血液感染发生率.dataSource,
     keys: ['插管总日数', '感染人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -195,7 +195,7 @@ const ROUTE_LIST = [
   {
     name: '尿管相关泌尿系感染发生率',
     columns: 尿管相关泌尿系感染发生率.columns,
-    ataSource: [] || 尿管相关泌尿系感染发生率.dataSource,
+    dataSource: [] || 尿管相关泌尿系感染发生率.dataSource,
     keys: ['插管总日数', '感染人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -203,7 +203,7 @@ const ROUTE_LIST = [
   {
     name: '手术相关肺部感染发生率',
     columns: 手术相关肺部感染发生率.columns,
-    ataSource: [] || 手术相关肺部感染发生率.dataSource,
+    dataSource: [] || 手术相关肺部感染发生率.dataSource,
     keys: ['插管总日数', '感染人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -211,7 +211,7 @@ const ROUTE_LIST = [
   {
     name: '患者入院前已有压疮统计',
     columns: 患者入院前已有压疮统计.columns,
-    ataSource: [] || 患者入院前已有压疮统计.dataSource,
+    dataSource: [] || 患者入院前已有压疮统计.dataSource,
     keys: ['插管总日数', '感染人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -219,7 +219,7 @@ const ROUTE_LIST = [
   {
     name: '入院时压疮高风险患者评估率',
     columns: 入院时压疮高风险患者评估率.columns,
-    ataSource: [] || 入院时压疮高风险患者评估率.dataSource,
+    dataSource: [] || 入院时压疮高风险患者评估率.dataSource,
     keys: ['插管总日数', '感染人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -227,7 +227,7 @@ const ROUTE_LIST = [
   {
     name: '住院压疮高风险压疮发生率',
     columns: 住院压疮高风险压疮发生率.columns,
-    ataSource: [] || 住院压疮高风险压疮发生率.dataSource,
+    dataSource: [] || 住院压疮高风险压疮发生率.dataSource,
     keys: ['插管总日数', '感染人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -235,7 +235,7 @@ const ROUTE_LIST = [
   {
     name: '住院患者手术室压疮发生率',
     columns: 住院患者手术室压疮发生率.columns,
-    ataSource: [] || 住院患者手术室压疮发生率.dataSource,
+    dataSource: [] || 住院患者手术室压疮发生率.dataSource,
     keys: ['手术总人数', '发生压疮人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -243,7 +243,7 @@ const ROUTE_LIST = [
   {
     name: '排便失禁患者失禁性皮炎发生率',
     columns: 排便失禁患者失禁性皮炎发生率.columns,
-    ataSource: [] || 排便失禁患者失禁性皮炎发生率.dataSource,
+    dataSource: [] || 排便失禁患者失禁性皮炎发生率.dataSource,
     keys: ['失禁患者发生失禁性皮炎人数', '住院患者总人数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -251,7 +251,7 @@ const ROUTE_LIST = [
   {
     name: '跌倒坠床高风险患者评估率',
     columns: 跌倒坠床高风险患者评估率.columns,
-    ataSource: [] || 跌倒坠床高风险患者评估率.dataSource,
+    dataSource: [] || 跌倒坠床高风险患者评估率.dataSource,
     keys: ['跌倒/坠床高风险患者评估阳性例数', '入院时高风险患者总人数'],
     gName: '护理单元',
     lineKey: '评估率(%)'
@@ -259,7 +259,7 @@ const ROUTE_LIST = [
   {
     name: '住院患者跌倒发生率',
     columns: 住院患者跌倒发生率2.columns,
-    ataSource: [] || 住院患者跌倒发生率2.dataSource,
+    dataSource: [] || 住院患者跌倒发生率2.dataSource,
     keys: ['住院总人数', '跌倒人次'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -267,7 +267,7 @@ const ROUTE_LIST = [
   {
     name: '住院患者跌倒坠床伤害程度',
     columns: 住院患者跌倒坠床伤害程度.columns,
-    ataSource: [] || 住院患者跌倒坠床伤害程度.dataSource,
+    dataSource: [] || 住院患者跌倒坠床伤害程度.dataSource,
     keys: [],
     gName: '',
     lineKey: ''
@@ -275,7 +275,7 @@ const ROUTE_LIST = [
   {
     name: '住院患者误吸高风险评估率',
     columns: 住院患者误吸高风险评估率.columns,
-    ataSource: [] || 住院患者误吸高风险评估率.dataSource,
+    dataSource: [] || 住院患者误吸高风险评估率.dataSource,
     keys: ['入院时评估误吸高风险患者总人数', '误吸高风险患者评估阳性例数'],
     gName: '护理单元',
     lineKey: '评估率(%)'
@@ -283,7 +283,7 @@ const ROUTE_LIST = [
   {
     name: '住院高风险患者误吸发生率',
     columns: 住院高风险患者误吸发生率.columns,
-    ataSource: [] || 住院高风险患者误吸发生率.dataSource,
+    dataSource: [] || 住院高风险患者误吸发生率.dataSource,
     keys: ['住院患者总人数', '住院患者发生误吸例数'],
     gName: '护理单元',
     lineKey: '评估率(%)'
@@ -291,7 +291,7 @@ const ROUTE_LIST = [
   {
     name: '走失高风险住院患者评估阳性数',
     columns: 走失高风险住院患者评估阳性数.columns,
-    ataSource: [] || 走失高风险住院患者评估阳性数.dataSource,
+    dataSource: [] || 走失高风险住院患者评估阳性数.dataSource,
     keys: ['住院高风险患者例数', '走失高风险住院患者评估阳性数'],
     gName: '护理单元',
     lineKey: '评估率(%)'
@@ -299,7 +299,7 @@ const ROUTE_LIST = [
   {
     name: '患者走失发生率',
     columns: 患者走失发生率.columns,
-    ataSource: [] || 患者走失发生率.dataSource,
+    dataSource: [] || 患者走失发生率.dataSource,
     keys: ['住院患者总人数', '住院患者的走失例数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -307,7 +307,7 @@ const ROUTE_LIST = [
   {
     name: '患者走失高风险患者评估率',
     columns: 患者走失发生率.columns,
-    ataSource: [] || 患者走失发生率.dataSource,
+    dataSource: [] || 患者走失发生率.dataSource,
     keys: ['住院患者总人数', '住院患者的走失例数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -315,7 +315,7 @@ const ROUTE_LIST = [
   {
     name: '患者足下垂的发生率',
     columns: 患者足下垂的发生率.columns,
-    ataSource: [] || 患者足下垂的发生率.dataSource,
+    dataSource: [] || 患者足下垂的发生率.dataSource,
     keys: ['住院患者总人数', '患者发生足下垂例数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -323,7 +323,7 @@ const ROUTE_LIST = [
   {
     name: '新生儿烧伤烫伤发生率',
     columns: 新生儿烧伤烫伤发生率.columns,
-    ataSource: [] || 新生儿烧伤烫伤发生率.dataSource,
+    dataSource: [] || 新生儿烧伤烫伤发生率.dataSource,
     keys: ['住新生儿总人数', '烧伤烫伤例数'],
     gName: '护理单元',
     lineKey: '发生率(%)'
@@ -331,7 +331,7 @@ const ROUTE_LIST = [
   {
     name: '查对制度落实合格率',
     columns: 查对制度落实合格率.columns,
-    ataSource: [] || 查对制度落实合格率.dataSource,
+    dataSource: [] || 查对制度落实合格率.dataSource,
     keys: ['检查查对制度的总条款数', '查对制度不合格条款数'],
     gName: '护理单元',
     lineKey: '不合格率(%)'
@@ -339,7 +339,7 @@ const ROUTE_LIST = [
   {
     name: '护理不良事件报告处理符合率',
     columns: 护理不良事件报告处理符合率.columns,
-    ataSource: [] || 护理不良事件报告处理符合率.dataSource,
+    dataSource: [] || 护理不良事件报告处理符合率.dataSource,
     keys: ['检查总次数', '不合格数'],
     gName: '护理单元',
     lineKey: '不合格率(%)'
@@ -347,7 +347,7 @@ const ROUTE_LIST = [
   {
     name: '使用药物错误的发生率',
     columns: 使用药物错误的发生率.columns,
-    ataSource: [] || 使用药物错误的发生率.dataSource,
+    dataSource: [] || 使用药物错误的发生率.dataSource,
     keys: ['急救设备器材及药品总件数', '急救设备器材及药品不合格件数'],
     gName: '护理单元',
     lineKey: '错误发生率(%)'
@@ -355,7 +355,7 @@ const ROUTE_LIST = [
   {
     name: '急救设备器材及药品完好合格率',
     columns: 急救设备器材及药品完好合格率.columns,
-    ataSource: [] || 急救设备器材及药品完好合格率.dataSource,
+    dataSource: [] || 急救设备器材及药品完好合格率.dataSource,
     keys: ['急救设备器材及药品总件数', '急救设备器材及药品不合格件数'],
     gName: '护理单元',
     lineKey: '不合格率(%)'
@@ -363,7 +363,7 @@ const ROUTE_LIST = [
   {
     name: '无菌物品合格率',
     columns: 无菌物品合格率.columns,
-    ataSource: [] || 无菌物品合格率.dataSource,
+    dataSource: [] || 无菌物品合格率.dataSource,
     keys: ['全院无菌物品总件数', '无菌物品合格总件数'],
     gName: '护理单元',
     lineKey: '合格率(%)'
@@ -371,7 +371,7 @@ const ROUTE_LIST = [
   {
     name: '器械清洗合格率',
     columns: 器械清洗合格率.columns,
-    ataSource: [] || 器械清洗合格率.dataSource,
+    dataSource: [] || 器械清洗合格率.dataSource,
     keys: ['CSSD清洗器械总件数', 'CSSD清洗器械合格件数'],
     gName: '护理单元',
     lineKey: '合格率(%)'
@@ -379,7 +379,7 @@ const ROUTE_LIST = [
   {
     name: '包装合格率',
     columns: 包装合格率.columns,
-    ataSource: [] || 包装合格率.dataSource,
+    dataSource: [] || 包装合格率.dataSource,
     keys: ['CSSD灭菌包总件数', '合格灭菌器械包件数'],
     gName: '护理单元',
     lineKey: '合格率(%)'
@@ -387,7 +387,7 @@ const ROUTE_LIST = [
   {
     name: '湿包发生率',
     columns: 湿包发生率.columns,
-    ataSource: [] || 湿包发生率.dataSource,
+    dataSource: [] || 湿包发生率.dataSource,
     keys: ['CSSD灭菌包总件数', '湿包件数'],
     gName: '护理单元',
     lineKey: '湿包率(%)'

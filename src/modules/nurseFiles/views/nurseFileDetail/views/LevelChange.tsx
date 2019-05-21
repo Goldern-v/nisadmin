@@ -93,7 +93,18 @@ export default observer(function LevelChange () {
       dataIndex: 'fj',
       key: '5',
       width: 200,
-      align: 'center'
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return (
+          <DoCon>
+            {row.urlImageOne && (
+              <a href={row.urlImageOne} target='_blank'>
+                查看
+              </a>
+            )}
+          </DoCon>
+        )
+      }
     },
     {
       title: '状态',
@@ -135,7 +146,7 @@ export default observer(function LevelChange () {
   }, [])
   return (
     <BaseLayout title='职称及层级变动' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editLevelChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

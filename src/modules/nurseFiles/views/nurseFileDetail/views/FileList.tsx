@@ -18,32 +18,7 @@ export default observer(function FileList () {
       onClick: () => editWritingsModal.show({})
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '2',
-      name: '杨春',
-      age: 24,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '3',
-      name: '赵平',
-      age: 34,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '4',
-      name: '易小惠',
-      age: 33,
-      address: '西湖区湖底公园1号'
-    }
-  ]
+  const dataSource = []
 
   const columns: ColumnProps<any>[] = [
     {
@@ -56,21 +31,21 @@ export default observer(function FileList () {
     },
     {
       title: '内容',
-      dataIndex: 'nr',
+      dataIndex: 'content',
       key: '2',
       width: 300,
       align: 'center'
     },
     {
       title: '文件数',
-      dataIndex: 'wjs',
+      dataIndex: 'number',
       key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '状态',
-      dataIndex: 'auditedStatusName',
+      dataIndex: 'status',
       key: '4',
       width: 100,
       align: 'center'
@@ -95,7 +70,49 @@ export default observer(function FileList () {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.nurseAttachment(appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
+      let data: any = [
+        {
+          content: '身份证',
+          number: res.data.filter((item: any) => item.type === '1').length,
+          status: '待护士长审核'
+        },
+        {
+          content: '学历毕业证复印件',
+          number: res.data.filter((item: any) => item.type === '2').length,
+          status: '待护士长审核'
+        },
+        {
+          content: '执业证复印件',
+          number: res.data.filter((item: any) => item.type === '3').length,
+          status: '待护士长审核'
+        },
+        {
+          content: '资格证复印件',
+          number: res.data.filter((item: any) => item.type === '4').length,
+          status: '待护士长审核'
+        },
+        {
+          content: '职称聘用证明和层级晋级表',
+          number: res.data.filter((item: any) => item.type === '6').length,
+          status: '待护士长审核'
+        },
+        {
+          content: '护理会诊人员资质认定表',
+          number: res.data.filter((item: any) => item.type === '7').length,
+          status: '待护士长审核'
+        },
+        {
+          content: '厚街医院护理人员执业准入资格备案表',
+          number: res.data.filter((item: any) => item.type === '8').length,
+          status: '待护士长审核'
+        },
+        {
+          content: '高风险诊疗技术操作人员资质申请表',
+          number: res.data.filter((item: any) => item.type === '9').length,
+          status: '待护士长审核'
+        }
+      ]
+      setTableData(data)
     })
   }
   useEffect(() => {
@@ -104,7 +121,7 @@ export default observer(function FileList () {
 
   return (
     <BaseLayout title='附件' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
       <editWritingsModal.Component />
     </BaseLayout>
   )

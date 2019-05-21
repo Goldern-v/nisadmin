@@ -91,10 +91,21 @@ export default observer(function Awards () {
     },
     {
       title: '附件',
-      dataIndex: 'attachmentId',
-      key: '611',
-      width: 150,
-      align: 'center'
+      dataIndex: 'fj',
+      key: '5',
+      width: 200,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return (
+          <DoCon>
+            {row.urlImageOne && (
+              <a href={row.urlImageOne} target='_blank'>
+                查看
+              </a>
+            )}
+          </DoCon>
+        )
+      }
     },
     {
       title: '状态',
@@ -137,7 +148,7 @@ export default observer(function Awards () {
 
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
       <editAwardsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
