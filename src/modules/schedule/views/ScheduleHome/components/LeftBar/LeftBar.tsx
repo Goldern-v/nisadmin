@@ -262,6 +262,7 @@ export default function LeftBar () {
             onChange={onChange}
             format={dateFormat}
             locale={locale}
+            className={'range-picker-div'}
           />
         </SelectCon>
         {shiftList.map((time, index) => (
@@ -293,6 +294,20 @@ const SelectCon = styled.div`
   display: flex;
   align-items: center;
   padding: 0 5px;
+  .ant-calendar-picker-input,
+  .ant-input {
+    padding: 4px 1px !important;
+    display: flex;
+    justify-content: space-between;
+  }
+  .range-picker-div {
+    padding: 4px 1px !important;
+    display: flex;
+    justify-content: space-between;
+  }
+  .ant-calendar-picker-icon {
+    display: none !important;
+  }
 `
 const CircleCon = styled.div`
   height: 10px;
