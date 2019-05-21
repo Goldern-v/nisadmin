@@ -57,14 +57,14 @@ export default observer(function PerformChart () {
       dataIndex: 'patientType',
       key: '',
       align: 'center',
-      width: 100
+      width: 80
     },
     {
       title: '总计',
       dataIndex: 'totalCount',
       key: '',
       align: 'center',
-      width: 100
+      width: 80
     },
     {
       title: '已完成',
@@ -78,7 +78,6 @@ export default observer(function PerformChart () {
       dataIndex: 'finishCountN',
       key: '',
       align: 'center'
-      // width: 100
     }
   ]
   return (

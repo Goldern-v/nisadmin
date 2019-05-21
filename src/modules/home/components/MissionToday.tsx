@@ -109,14 +109,14 @@ export default observer(function MissionToday () {
       dataIndex: 'totalCount',
       key: '',
       align: 'center',
-      width: 100
+      width: 80
     },
     {
       title: '已完成',
       dataIndex: 'finishCount',
       key: '',
       align: 'center',
-      width: 100
+      width: 80
     },
     {
       title: '未完成',
