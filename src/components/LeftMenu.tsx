@@ -79,7 +79,8 @@ export default function LeftMenu (props: Props) {
   )
 }
 const Wrapper = styled.div`
-  height: 100%;
+  /* height: 100%; */
+  height: calc(100vh - 94px);
   padding: 10px 0;
   overflow: auto;
   background: ${(p) => p.theme.$mtc};

@@ -48,9 +48,9 @@ const Head = styled.div`
   margin-bottom: 10px;
   align-items: center;
   position: fixed;
-  left: 190px;
+  left: 174px;
   top: 235px;
-  right: 32px;
+  right: 15px;
   .ant-btn {
     margin-left: 10px;
   }

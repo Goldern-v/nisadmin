@@ -9,6 +9,7 @@ import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
+import BaseTable from 'src/components/BaseTable'
 
 // import emitter from 'src/libs/ev'
 
@@ -31,7 +32,7 @@ const columns = [
   {
     title: '所在科室',
     dataIndex: 'deptName',
-    width: '30%',
+    width: '20%',
     key: 'deptName'
   },
   {
@@ -48,23 +49,26 @@ const columns = [
   {
     title: '年龄',
     dataIndex: 'age',
-    key: 'age'
+    key: 'age',
+    width: '8%'
   },
   {
     title: '职称',
     dataIndex: 'title',
-    width: '12%',
+    width: '10%',
     key: 'title'
   },
   {
     title: '现任能级',
     dataIndex: 'currentLevel',
-    key: 'currentLevel'
+    key: 'currentLevel',
+    width: '10%'
   },
   {
     title: '职务',
     dataIndex: 'roleJurisdict',
-    key: 'roleJurisdict'
+    key: 'roleJurisdict',
+    width: '10%'
   }
 ]
 
@@ -206,28 +210,44 @@ export default function MainBox () {
 
   const genEmptyTable = (newList: any) => {
     // 补空行
-    let diff = 10 - (newList.length % 10)
-    if (diff > 0) {
-      for (let j = 0; j < diff; j++) {
-        let newData = JSON.parse(JSON.stringify(data))
-        if (newData.hasOwnProperty('key')) {
-          newData.key = 'empty' + j
-        }
-        newList.push(newData)
-      }
-    }
+    // let diff = 10 - (newList.length % 10)
+    // if (diff > 0) {
+    //   for (let j = 0; j < diff; j++) {
+    //     let newData = JSON.parse(JSON.stringify(data))
+    //     if (newData.hasOwnProperty('key')) {
+    //       newData.key = 'empty' + j
+    //     }
+    //     newList.push(newData)
+    //   }
+    // }
   }
 
   return (
     <Wrapper>
-      <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={userList} />
+      <BaseTable
+        bordered
+        size='middle'
+        columns={columns}
+        rowSelection={rowSelection}
+        dataSource={userList}
+        pagination={false}
+        surplusHeight={300}
+      />
+      {/* <Table
+        bordered
+        size='middle'
+        columns={columns}
+        rowSelection={rowSelection}
+        dataSource={userList}
+        pagination={false}
+      /> */}
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   /* background: #eee; */
   /* height: 100%; */
-  padding: 0 20px 20px 20px;
+  /* padding: 0 20px 20px 20px; */
   width: 100%;
   table,
   tr,
