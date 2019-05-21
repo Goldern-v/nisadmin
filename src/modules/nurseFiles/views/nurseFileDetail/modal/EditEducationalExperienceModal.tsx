@@ -88,6 +88,8 @@ export default function EditWorkHistoryModal (props: Props) {
       auditedStatus: auditedStatusShow,
       urlImageOne: pathImgDegree,
       urlImageTwo: pathImgGraduate,
+      // 每个附件对应的id
+      fileIdz: '',
       attachmentId: attachmentId1 + ',' + attachmentId2 + ','
     }
     if (signShow === '修改') {

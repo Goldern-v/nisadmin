@@ -12,6 +12,21 @@ const dateFormat = 'YYYY-MM-DD 00:00:00'
 export default function NurseSituation () {
   // const [count, setCount] = useState(0)
   const [titleBy, setTitleBy] = useState('按职称')
+  useEffect(() => {
+    // console.log(count, setCount)
+  })
+  const selectChange = (e: any) => {
+    setTitleBy(e.target.value)
+  }
+  // const choose1 = () => {
+  //   setTitleBy('按职称')
+  // }
+  // const choose2 = () => {
+  //   setTitleBy('按层级')
+  // }
+  // const choose3 = () => {
+  //   setTitleBy('按工龄')
+  // }
   const choose1 = () => {
     setTitleBy('按职称')
   }
@@ -48,7 +63,7 @@ export default function NurseSituation () {
         <MidHeader>
           <div className='headerLeft'>护理人员合计：</div>
           <div className='headerRight'>
-            <div className='headerRightItem' onClick={choose1}>
+            {/* <div className='headerRightItem' onClick={choose1}>
               按职称
             </div>
             <div className='headerRightItem' onClick={choose2}>
@@ -56,12 +71,12 @@ export default function NurseSituation () {
             </div>
             <div className='headerRightItem' onClick={choose3}>
               按工龄
-            </div>
-            {/* <Radio.Group defaultValue='按职称' size='small' onChange={selectChange}>
+            </div> */}
+            <Radio.Group defaultValue='按职称' onChange={selectChange}>
               <Radio.Button value='按职称'>按职称</Radio.Button>
               <Radio.Button value='按层级'>按层级</Radio.Button>
               <Radio.Button value='按工龄'>按工龄</Radio.Button>
-            </Radio.Group> */}
+            </Radio.Group>
           </div>
         </MidHeader>
         <JobTitleMap titleByGet={titleBy} />
@@ -105,15 +120,30 @@ const MidHeader = styled.div`
   }
   .headerRight {
     margin-top: 7px;
-    width: 50%;
+    width: 60%;
     height: 26px;
     line-height: 26px;
     text-align: center;
     display: flex;
     color: #333333;
-    background-color: rgba(241, 244, 246, 1);
+    /* background-color: rgba(241, 244, 246, 1); */
     /* border: 1px solid #c0cbce; */
     cursor: pointer;
+    .ant-radio-group-outline {
+      height: 100%;
+      width: 100%;
+      .ant-radio-button-wrapper {
+        /* box-sizing: border-box; */
+        padding: 0;
+        height: 100%;
+        line-height: height;
+        width: 33.33333%;
+        background-color: #f1f4f6;
+        span {
+          margin-top: -3px;
+        }
+      }
+    }
     .headerRightItem {
       margin: -1px 0 0 -1px;
       box-sizing: border-box;
