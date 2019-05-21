@@ -140,7 +140,7 @@ export default function ToolBar () {
         for (const key in nurse) {
           if (nurse.hasOwnProperty(key)) {
             let element = nurse[key]
-            if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1) {
+            if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1 && key.toLowerCase().indexOf('daynamecolor') === -1&& key.toLowerCase().indexOf('daynamecode') === -1) {
               let shift = shiftListData.find((s: any) => element === s.name)
               console.log('!!!!shift', shift, key, nurse[key], nurse)
               if (!shift) {
