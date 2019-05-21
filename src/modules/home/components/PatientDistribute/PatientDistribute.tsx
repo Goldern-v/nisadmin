@@ -2,9 +2,47 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import PatientAreaMap from './components/PatientAreaMap'
 import { Button, Radio, Icon } from 'antd'
-export default function PatientDistribute () {
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import { authStore } from 'src/stores/index'
+import moment from 'moment'
+import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
+import { observer } from 'mobx-react-lite'
+const dateFormat = 'YYYY-MM-DD 00:00:00'
+export default observer(function PatientDistribute () {
   const [titleBy, setTitleBy] = useState('按地区')
-  useEffect(() => {})
+  const [patientNumSum, setPatientNumSum] = useState(0)
+  // const [byBistrict, setByBistrict] = useState([
+  //   { patientType: '', patientNum: '1' },
+  //   { patientType: '', patientNum: '1' },
+  //   { patientType: '', patientNum: '1' }
+  // ])
+  useEffect(() => {
+    let postData = {
+      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
+      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
+      endTime: moment()
+        .add(1, 'd')
+        .format(dateFormat), // string 必须参数 结束时间 2019-01-02 00:00:00
+      type: titleBy
+    }
+    HomeApi.patientdistribute(postData).then((res) => {
+      console.log('====patientdistribute:', res)
+      if (res.data) {
+        if (titleBy === '按地区') {
+          let list = res.data
+          let chacheSum = 0
+          list.map((item: any) => {
+            chacheSum = chacheSum + parseInt(item.patientNum, 10)
+            return chacheSum
+          })
+          setPatientNumSum(chacheSum)
+
+          HomeViewModel.PatientDistributeData = res.data
+        }
+      }
+    })
+  }, [authStore.selectedDeptCode, titleBy])
+
   const selectChange = (e: any) => {
     setTitleBy(e.target.value)
   }
@@ -16,7 +54,7 @@ export default function PatientDistribute () {
       </Head>
       <Mid>
         <MidHeader>
-          <div className='headerLeft'>患者合计：</div>
+          <div className='headerLeft'>患者合计：{patientNumSum}</div>
           <div className='headerRight'>
             <Radio.Group defaultValue='按地区' onChange={selectChange}>
               <Radio.Button value='按地区'>按地区</Radio.Button>
@@ -30,11 +68,11 @@ export default function PatientDistribute () {
           </div> */}
           </div>
         </MidHeader>
-        <PatientAreaMap titleByGet={titleBy} />
+        <PatientAreaMap patientNumSumProp={patientNumSum} />
       </Mid>
     </div>
   )
-}
+})
 
 const Head = styled.div`
   height: 37px;
