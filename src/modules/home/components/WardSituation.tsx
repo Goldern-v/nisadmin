@@ -167,8 +167,8 @@ const Mid = styled.div`
       background-color: #ffffff;
     }
   }
-  .ceBJTl {
-    padding: 0;
+  .BaseTable__Wrapper-sc-18xwuv-0 {
+    padding: 0 ！ !important;
   }
   height: 282px;
 
