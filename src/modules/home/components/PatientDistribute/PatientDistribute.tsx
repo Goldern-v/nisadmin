@@ -28,17 +28,14 @@ export default observer(function PatientDistribute () {
     HomeApi.patientdistribute(postData).then((res) => {
       console.log('====patientdistribute:', res)
       if (res.data) {
-        if (titleBy === '按地区') {
-          let list = res.data
-          let chacheSum = 0
-          list.map((item: any) => {
-            chacheSum = chacheSum + parseInt(item.patientNum, 10)
-            return chacheSum
-          })
-          setPatientNumSum(chacheSum)
-
-          HomeViewModel.PatientDistributeData = res.data
-        }
+        let list = res.data
+        let cacheSum = 0
+        list.map((item: any) => {
+          cacheSum = cacheSum + parseInt(item.patientNum, 10)
+          return cacheSum
+        })
+        setPatientNumSum(cacheSum)
+        HomeViewModel.PatientDistributeData = res.data
       }
     })
   }, [authStore.selectedDeptCode, titleBy])

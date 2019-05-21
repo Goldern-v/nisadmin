@@ -27,7 +27,8 @@ export default observer(function PerformChart () {
         if (res.data) {
           let cacheData = res.data
           for (let i = 0; i < cacheData.length; i++) {
-            cacheData[i].finishCountN = parseInt(cacheData[i].totalCount) / parseInt(cacheData[i].finishCount)
+            cacheData[i].finishCountN =
+              ((parseInt(cacheData[i].finishCount, 10) / parseInt(cacheData[i].totalCount, 10)) * 100).toFixed(2) + '%'
           }
           // cacheData
           setDataSource(cacheData)
@@ -54,14 +55,7 @@ export default observer(function PerformChart () {
     // },
     {
       title: '类型',
-      dataIndex: 'patientType',
-      key: '',
-      align: 'center',
-      width: 80
-    },
-    {
-      title: '总计',
-      dataIndex: 'totalCount',
+      dataIndex: 'taskType',
       key: '',
       align: 'center',
       width: 80
@@ -73,6 +67,14 @@ export default observer(function PerformChart () {
       align: 'center',
       width: 100
     },
+    {
+      title: '总计',
+      dataIndex: 'totalCount',
+      key: '',
+      align: 'center',
+      width: 80
+    },
+
     {
       title: '完成率',
       dataIndex: 'finishCountN',
@@ -162,7 +164,9 @@ const Head = styled.div`
   }
 `
 const Mid = styled.div`
-  /* padding: 18px 18px 0 18px; */
+  .BaseTable__Wrapper-sc-18xwuv-0 {
+    padding: 0 !important;
+  }
   .ant-table-header {
     ::-webkit-scrollbar {
       /*滚动条整体样式*/
