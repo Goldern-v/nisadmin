@@ -398,7 +398,7 @@ export default function MainBox () {
       dataIndex: 'wednesdayName',
       key: 'wednesdayName',
       width: '50px',
-      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'wednesdayName')
+      render: (text: string, record: any) => getTextColor(text, record, record.wednesdayNameColor, 'wednesdayName')
     },
     {
       title: () => getWeekDay(4),
@@ -467,7 +467,7 @@ export default function MainBox () {
             // console.log('=updateTableUI==input', key, s[key], input, isEmpty)
             if (input !== null && input !== undefined) {
               input.value = isEmpty ? '' : s[key]
-              input.style.color = isEmpty ? '' : getShiftColor(s[key])
+              input.style.color = isEmpty ? '' : (s[key+'Color']||getShiftColor(s[key]))
             }
           }
         }
@@ -945,10 +945,11 @@ export default function MainBox () {
             })
 
             // 表格数据更新
-            tableUpdate(record, selectedRow, index)
-            setTimeout(() => {
+            
+            // setTimeout(() => {
+              tableUpdate(record, selectedRow, index)
               updateTableUI()
-            }, 100)
+            // }, 100)
             
           }
 
