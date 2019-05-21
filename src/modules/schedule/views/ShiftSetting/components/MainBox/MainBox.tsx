@@ -16,6 +16,24 @@ import BaseTable from 'src/components/BaseTable'
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
+let colorMap:any = {
+  'red':'红色',
+  'green':'绿色',
+  'blue':'蓝色',
+  'yellow':'黄色',
+  'black':'黑色',
+  'gray':'灰色'
+}
+
+let colorMapCN:any = {
+  '红色':'red',
+  '绿色':'green',
+  '蓝色':'blue',
+  '黄色':'yellow',
+  '黑色':'black',
+  '灰色':'gray'
+}
+
 const columns = [
   {
     title: '班次名称',
@@ -48,7 +66,7 @@ const columns = [
       text.length > 0 ? (
         <span>
           <Tag color={record.nameColor} key={text}>
-            {text.toUpperCase()}
+            {colorMap[text.toLowerCase()] || text}
           </Tag>
         </span>
       ) : (
@@ -153,15 +171,26 @@ let rowSelection = {
     console.log('onSelect', record, selected, selectedRows)
   },
   onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-    if (selectedRows && selectedRows.length === 0) {
-      selectedRowsArray.map((res: any) => {
-        res.status = false
-      })
-    } else {
-      selectedRows.map((res: any) => {
-        res.status = true
-      })
-    }
+    // if(!changeRows){
+      if (selectedRows && selectedRows.length === 0) {
+        selectedRowsArray.map((res: any) => {
+          res.status = false
+          res.rangeShow = selected
+        })
+      } else {
+        selectedRows.map((res: any) => {
+          res.status = true
+          res.rangeShow = selected
+        })
+      }
+
+      if(changeRows){
+        changeRows.map((record: any) => {
+          record.rangeShow = selected
+          record.status = selected
+        })
+      }
+    
 
     console.log('onSelectAll', selected, selectedRows, changeRows)
   },

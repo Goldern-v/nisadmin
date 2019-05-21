@@ -144,10 +144,11 @@ export default function ToolBar () {
               let shift = shiftListData.find((s: any) => element === s.name)
               console.log('!!!!shift', shift, key, nurse[key], nurse)
               if (!shift) {
-                shift = shiftListData.find((s: any) => nurse[key+'Code'] === s.name)
+                shift = shiftListData.find((s: any) => nurse[key+'Code'] === s.name || (nurse[key+'Code'] === s.shiftType&&nurse[key+'Code'] != s.name))
                 // if(!shift){
                 //   continue
                 // }
+                // console.log('===!!!!shift', shift, key, nurse[key], nurse)
               }
               postLine = {
                 id: {

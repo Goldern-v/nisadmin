@@ -98,7 +98,10 @@ let rowSelection = {
     console.log('onSelect', record, selected, selectedRows)
   },
   onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-    selectedRows.forEach((record: any) => {
+    selectedRows.map((recordItem: any) => {
+      recordItem.rangeShow = selected
+    })
+    changeRows.map((record: any) => {
       record.rangeShow = selected
     })
     console.log('onSelectAll', selected, selectedRows, changeRows)
