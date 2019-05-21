@@ -32,11 +32,11 @@ export default observer(function PatientAreaMap (props: Props) {
   const sourceData = [
     {
       item: byBistrict[0] && byBistrict[0].patientType,
-      count: (byBistrict[0] && parseInt(byBistrict[0].patientNum, 10) / sumerProp) || 0
+      count: byBistrict[0] && parseInt(byBistrict[0].patientNum, 10) / sumerProp
     },
     {
       item: byBistrict[1] && byBistrict[1].patientType,
-      count: (byBistrict[1] && parseInt(byBistrict[1].patientNum, 10) / sumerProp) || 0
+      count: byBistrict[1] && parseInt(byBistrict[1].patientNum, 10) / sumerProp
     },
     {
       item: byBistrict[2] && byBistrict[2].patientType,
@@ -67,7 +67,6 @@ export default observer(function PatientAreaMap (props: Props) {
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare' />
             <div className='leftItemMessage'>
-              {' '}
               {byBistrict[0] && byBistrict[0].patientType}：{byBistrict[0] && byBistrict[0].patientNum}
             </div>
           </div>
@@ -75,7 +74,6 @@ export default observer(function PatientAreaMap (props: Props) {
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare LeftItemSquareColor' />
             <div className='leftItemMessage'>
-              {' '}
               {byBistrict[1] && byBistrict[1].patientType}：{byBistrict[1] && byBistrict[1].patientNum}
             </div>
           </div>
@@ -83,11 +81,11 @@ export default observer(function PatientAreaMap (props: Props) {
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare LeftItemSquareColor3' />
             <div className='leftItemMessage'>
-              {' '}
               {byBistrict[2] && byBistrict[2].patientType}：{byBistrict[2] && byBistrict[2].patientNum}
             </div>
           </div>
         </div>
+        {/* {props.patientNumSumProp !== 0 && ( */}
         <Chart forceFit height={350} data={data} scale={scale}>
           <Tooltip showTitle={false} />
           <Axis />
@@ -106,6 +104,7 @@ export default observer(function PatientAreaMap (props: Props) {
             ]}
           />
         </Chart>
+        {/* )} */}
       </ChartCon>
     </div>
   )
