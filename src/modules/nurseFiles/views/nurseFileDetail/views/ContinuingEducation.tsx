@@ -114,10 +114,14 @@ export default observer(function EducationalExperience () {
       key: '7',
       width: 150,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
+      render: (a: any, row: any, c: any) => {
         return (
           <DoCon>
-            <span>查看</span>
+            {row.urlImageOne && (
+              <a href={row.urlImageOne} target='_blank'>
+                查看{' '}
+              </a>
+            )}
           </DoCon>
         )
       }
@@ -162,7 +166,7 @@ export default observer(function EducationalExperience () {
   }, [])
   return (
     <BaseLayout title='继续教育' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

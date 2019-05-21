@@ -65,11 +65,11 @@ const ROUTE_LIST = [
     component: Awards,
     name: '所获奖励'
   },
-  {
-    type: 'badAction',
-    component: BadAction,
-    name: '不良行为'
-  },
+  // {
+  //   type: 'badAction',
+  //   component: BadAction,
+  //   name: '不良行为'
+  // },
   {
     type: 'examinationResults',
     component: ExaminationResults,
@@ -126,7 +126,7 @@ const LeftMenuCon = styled.div`
 `
 const MainCon = styled.div`
   flex: 1;
-  height: 0;
+  height: calc(100vh - 230px);
   align-items: stretch;
   display: flex;
 `

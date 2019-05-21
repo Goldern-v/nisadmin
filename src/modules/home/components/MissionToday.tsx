@@ -1,11 +1,29 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 
-export default function BedSituation () {
-  const [count, setCount] = useState(0)
+import service from 'src/services/api'
+import { authStore } from 'src/stores/index'
+import moment from 'moment'
+moment.locale('zh-cn')
+const dateFormat = 'YYYY-MM-DD 00:00:00'
+
+export default function MissionToday () {
+  // const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    // console.log(count, setCount)
+    const postData = {
+      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
+      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
+      endTime: moment()
+        .add(1, 'd')
+        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
+    }
+    // console.log('===MissionToday', postData)
+    // service
+    service.homeApiServices.todayTask(postData).then((res) => {
+      console.log('===MissionToday', res)
+    })
+  }, [])
   // let dataLen = 4
   // const tbodyData = []
   // for (let i = 0; i < dataLen; i++) {
@@ -24,12 +42,14 @@ export default function BedSituation () {
       </Head>
       <Mid>
         <table>
-          <tr>
-            <th>任务类型</th>
-            <th>任务数</th>
-            <th>已完成</th>
-            <th>未完成</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>任务类型</th>
+              <th>任务数</th>
+              <th>已完成</th>
+              <th>未完成</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
               <td />

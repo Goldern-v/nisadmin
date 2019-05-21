@@ -3,11 +3,17 @@ import React, { useState, useEffect } from 'react'
 import JobTitleMap from './components/JobTitleMap'
 import { Button, Radio, Icon } from 'antd'
 
-export default function BedSituation () {
-  const [count, setCount] = useState(0)
+import service from 'src/services/api'
+import { authStore } from 'src/stores/index'
+import moment from 'moment'
+moment.locale('zh-cn')
+const dateFormat = 'YYYY-MM-DD 00:00:00'
+
+export default function NurseSituation () {
+  // const [count, setCount] = useState(0)
   const [titleBy, setTitleBy] = useState('按职称')
   useEffect(() => {
-    console.log(count, setCount)
+    // console.log(count, setCount)
   })
   const selectChange = (e: any) => {
     setTitleBy(e.target.value)
@@ -21,6 +27,32 @@ export default function BedSituation () {
   // const choose3 = () => {
   //   setTitleBy('按工龄')
   // }
+  const choose1 = () => {
+    setTitleBy('按职称')
+  }
+  const choose2 = () => {
+    setTitleBy('按层级')
+  }
+  const choose3 = () => {
+    setTitleBy('按工龄')
+  }
+  useEffect(() => {
+    // console.log(count, setCount)
+    const postData = {
+      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
+      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
+      endTime: moment()
+        .add(1, 'd')
+        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
+    }
+    // console.log('===NurseSituation', postData)
+    // service
+    service.homeApiServices.nursingUser(postData).then((res) => {
+      console.log('===NurseSituation', res)
+    })
+  }, [])
+  // const selectChange = () => {}
+
   return (
     <div>
       <Head>

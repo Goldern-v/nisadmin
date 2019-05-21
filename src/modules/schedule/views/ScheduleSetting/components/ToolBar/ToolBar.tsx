@@ -156,6 +156,7 @@ export default function ToolBar () {
                 rangeId: shift ? shift.id + '' : '',
                 status: isPublish ? '1' : '0',
                 thisWeekHour: nurse.thisWeekHour,
+                workTime: shift ? shift.workTime : '',
                 rangeName: shift ? element || shift.name : '',
                 remark: nurse.remark,
                 shiftType: shift ? shift.shiftType : '',
@@ -174,7 +175,7 @@ export default function ToolBar () {
         startTime: scheduleStore.getStartTime(),
         endTime: scheduleStore.getEndTime()
       }
-      emitter.emit('排班列表载入动画',true)
+      emitter.emit('排班列表载入动画', true)
       service.schedulingApiService.update(postData, weekRange).then((res) => {
         console.log(res)
         if (res && (res.desc || res.data.desc)) {
@@ -605,7 +606,7 @@ export default function ToolBar () {
       endTime: scheduleStore.getEndTime() // endTime   结束时间（直接传当前得时间就行）
     }
     console.log('复制上周排班postData', postData)
-    emitter.emit('排班列表载入动画',true)
+    emitter.emit('排班列表载入动画', true)
     service.schedulingApiService.copy(postData).then((res) => {
       console.log('复制上周排班', res)
       if (res && res.data) {
@@ -627,10 +628,10 @@ export default function ToolBar () {
   const onWeekChange = (date: any, dateString: string) => {
     let weekFirstDay = moment(date)
       .startOf('week')
-      .add('d', 1)
+      .add('d', 0)
     let weekLastDay = moment(date)
       .startOf('week')
-      .add('d', 7)
+      .add('d', 6)
     setWeekValue(weekFirstDay)
     console.log(
       'WeekPicker',

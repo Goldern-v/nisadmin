@@ -61,7 +61,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        // appointmentTime: data.appointmentTime.format('YYYY-MM-DD'),
+        appointmentTime: moment(data.appointmentTime),
         empName: data.empName,
         titleQualification: data.titleQualification,
         hierarchy: data.hierarchy
@@ -71,7 +71,7 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存'>
+    <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           {/* <Row gutter={10}>

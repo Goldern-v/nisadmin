@@ -193,6 +193,15 @@ class StatisticsApi extends BaseApiService {
     let trancePostData = this.stringify(postData)
     return this.post(`/scheduling/countDeptCodeHolidays`, trancePostData)
   }
+
+  // 护士节假日排班表
+  public async getTotalUser () {
+    return this.get(`/total/totalUser`)
+  }
 }
 
-export default new StatisticsApi()
+let statisticsApi = new StatisticsApi()
+
+export default statisticsApi
+
+export { statisticsApi }

@@ -34,6 +34,8 @@ export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [pathImgGraduate, setPathImgGraduate] = useState('')
   const [pathImgDegree, setPathImgDegree] = useState('')
+  const [attachmentId1, setAttachmentId1] = useState('')
+  const [attachmentId2, setAttachmentId2] = useState('')
   const uploadCardGraduate = async (file: any) => {
     const [err, res] = await to(nurseFilesService.uploadFileUserEducat(file))
     if (err) {
@@ -45,6 +47,8 @@ export default function EditWorkHistoryModal (props: Props) {
       data.urlImageTwo = pathImg
       console.log(pathImg)
       setPathImgGraduate(pathImg)
+      setAttachmentId1(res.data.id)
+      return pathImg
     }
   }
 
@@ -59,6 +63,8 @@ export default function EditWorkHistoryModal (props: Props) {
       data.urlImageOne = pathImg
       console.log(pathImg)
       setPathImgDegree(pathImg)
+      setAttachmentId2(res.data.id)
+      return pathImg
     }
   }
   let refForm = React.createRef<Form>()
@@ -80,11 +86,11 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: auditedStatusShow,
-      attachmentId: '',
       urlImageOne: pathImgDegree,
       urlImageTwo: pathImgGraduate,
       // 每个附件对应的id
-      fileIdz: ''
+      fileIdz: '',
+      attachmentId: attachmentId1 + ',' + attachmentId2 + ','
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
@@ -93,7 +99,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    console.log()
+
     value.readTime && (value.readTime = value.readTime.format('YYYY-MM-DD'))
     value.graduationTime && (value.graduationTime = value.graduationTime.format('YYYY-MM-DD'))
 
@@ -109,20 +115,24 @@ export default function EditWorkHistoryModal (props: Props) {
     console.log(visible, 'visible', refForm.current, 'refForm.current')
     /** 如果是修改 */
     if (data && refForm.current && visible) {
+      setAttachmentId1(data.attachmentId.split(',')[0] || '')
+      setAttachmentId2(data.attachmentId.split(',')[1] || '')
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
-        // readTime: data.readTime.moment(),
-        // graduationTime: data.graduationTime.moment(),
+        readTime: moment(data.readTime),
+        graduationTime: moment(data.graduationTime),
         graduationSchool: data.graduationSchool,
         readProfessional: data.readProfessional,
-        education: data.education
+        education: data.education,
+        urlImageTwo: data.urlImageTwo,
+        urlImageOne: data.urlImageOne
       })
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
 
   return (
-    <Modal title='修改教育经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存'>
+    <Modal title='修改教育经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>

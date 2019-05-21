@@ -8,6 +8,7 @@ import ScheduleUserApiService from './Schedule/ScheduleUserApiService'
 import ScheduleShiftApiService from './Schedule/ScheduleShiftApiService'
 // 首页
 import HomeDataApiServices from './Home/HomeDataApiService'
+import HomeApiServices from './Home/HomeApiService'
 // 统计
 import ScheduleMealApiService from './Schedule/ScheduleMealApiService'
 import StatisticApiService from './statistic/StatisticApiService'
@@ -21,6 +22,7 @@ const service = {
   wardDailyApiService: new WardDailyApiService(),
   scheduleShiftApiService: new ScheduleShiftApiService(),
   homeDataApiServices: new HomeDataApiServices(),
+  homeApiServices: new HomeApiServices(),
   scheduleMealApiService: new ScheduleMealApiService(),
   statisticApiService: new StatisticApiService()
 }

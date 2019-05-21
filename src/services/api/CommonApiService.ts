@@ -15,4 +15,13 @@ export default class CommonApiService extends BaseApiService {
   public async getUintList () {
     return this.get(`/user/nursingUnit`)
   }
+  public async uploadFile (obj: any) {
+    const trancePostData = new FormData()
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        trancePostData.append(key, obj[key])
+      }
+    }
+    return this.post(`/file/uploadNurse`, trancePostData)
+  }
 }

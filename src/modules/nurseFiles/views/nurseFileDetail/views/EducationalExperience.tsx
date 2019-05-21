@@ -130,8 +130,16 @@ export default observer(function EducationalExperience () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <a href={row.urlImageTwo}>毕业证</a>
-            <a href={row.urlImageOne}>学位证 </a>
+            {row.urlImageTwo && (
+              <a href={row.urlImageTwo} target='_blank'>
+                毕业证
+              </a>
+            )}
+            {row.urlImageOne && (
+              <a href={row.urlImageOne} target='_blank'>
+                学位证{' '}
+              </a>
+            )}
           </DoCon>
         )
       }
@@ -180,7 +188,7 @@ export default observer(function EducationalExperience () {
   }, [])
   return (
     <BaseLayout title='教育经历' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
       <editEducationalExperienceModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
@@ -193,6 +201,9 @@ const DoCon = styled.div`
   font-size: 12px;
   color: ${(p) => p.theme.$mtc};
   a {
+    cursor: pointer;
+  }
+  span {
     cursor: pointer;
   }
 `

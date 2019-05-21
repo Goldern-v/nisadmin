@@ -1,5 +1,5 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */
   empNo?: string /** 员工工号 */
@@ -70,7 +70,15 @@ export default class NurseFilesService extends BaseApiService {
     const trancePostData = new FormData()
     trancePostData.append('file', getFile)
     trancePostData.append('empNo', appStore.queryObj.empNo)
+
     trancePostData.append('type', '2')
+
+    if (authStore!.user!.post == '护长') {
+      trancePostData.append('auditedStatus', 'waitAuditedNurse')
+    } else if (authStore!.user!.post == '护理部') {
+      trancePostData.append('auditedStatus', 'waitAuditedDepartment')
+    }
+
     return this.post(`/file/uploadNurse`, trancePostData)
   }
 

@@ -1,11 +1,29 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 
-export default function BedSituation () {
-  const [count, setCount] = useState(0)
+import service from 'src/services/api'
+import { authStore } from 'src/stores/index'
+import moment from 'moment'
+moment.locale('zh-cn')
+const dateFormat = 'YYYY-MM-DD 00:00:00'
+
+export default function PerformChart () {
+  // const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    // console.log(count, setCount)
+    const postData = {
+      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
+      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
+      endTime: moment()
+        .add(1, 'd')
+        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
+    }
+    // console.log('===BedSituation', postData)
+    // service
+    service.homeApiServices.executeStatus(postData).then((res) => {
+      console.log('===BedSituation', res)
+    })
+  }, [])
   return (
     <div>
       <Head>
@@ -14,48 +32,52 @@ export default function BedSituation () {
       </Head>
       <Mid>
         <table>
-          <tr>
-            <th>类型</th>
-            <th>总计</th>
-            <th>已完成</th>
-            <th>完成率</th>
-          </tr>
-          <tr>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
+          <thead>
+            <tr>
+              <th>类型</th>
+              <th>总计</th>
+              <th>已完成</th>
+              <th>完成率</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          </tbody>
         </table>
       </Mid>
     </div>

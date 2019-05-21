@@ -1,11 +1,30 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 
-export default function BedSituation () {
-  const [count, setCount] = useState(0)
+import service from 'src/services/api'
+import { authStore } from 'src/stores/index'
+import moment from 'moment'
+moment.locale('zh-cn')
+const dateFormat = 'YYYY-MM-DD 00:00:00'
+
+export default function WardSituation () {
+  // const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    // console.log(count, setCount)
+    const postData = {
+      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
+      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
+      endTime: moment()
+        .add(1, 'd')
+        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
+    }
+    // console.log('===WardSituation', postData)
+    // service
+    service.homeApiServices.wardFlow(postData).then((res) => {
+      console.log('===WardSituation', res)
+    })
+  }, [])
+
   return (
     <div>
       <Head>
@@ -14,34 +33,38 @@ export default function BedSituation () {
       </Head>
       <Mid>
         <table>
-          <tr>
-            <th>类型</th>
-            <th>人数</th>
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
-          <tr>
-            <td />
-            <td />
-          </tr>
+          <thead>
+            <tr>
+              <th>类型</th>
+              <th>人数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td />
+              <td />
+            </tr>
+          </tbody>
         </table>
       </Mid>
     </div>

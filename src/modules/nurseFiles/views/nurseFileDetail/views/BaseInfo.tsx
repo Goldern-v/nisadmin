@@ -21,7 +21,7 @@ export default observer(function BaseInfo () {
       onClick: () => {
         editBaseInfoModal.show({
           id: idData,
-          data: tableData
+          data: info
         })
       }
     },

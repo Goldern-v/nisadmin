@@ -79,7 +79,7 @@ let getStatus = (status: any) => {
     case '1':
       return '发布'
     default:
-      return '未设置排班'
+      return '未保存'
   }
 }
 
@@ -307,12 +307,13 @@ export default function MainBox () {
     let days = ['', '一', '二', '三', '四', '五', '六', '日']
     let date = moment(scheduleStore.getStartTime())
       .add(weekday - 1, 'days')
-      .format('M[月]DD[日(周]dddd[)]')
+      .format('MM[月]DD[日]')
+    // .format('MM[月]DD[日(周]dddd[)]')
     // console.log('周', weekday, scheduleStore.getStartTime(), date)
     if (date.indexOf('Invalid date') > -1) {
       return `周${days[weekday - 1]}`
     }
-    return `${date}`
+    return `${date}(周${days[weekday]})`
   }
 
   const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
@@ -375,49 +376,49 @@ export default function MainBox () {
       title: () => getWeekDay(1),
       dataIndex: 'mondayName',
       key: 'mondayName',
-      width: '6%',
+      width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.mondayNameColor, 'mondayName')
     },
     {
       title: () => getWeekDay(2),
       dataIndex: 'tuesdayName',
       key: 'tuesdayName',
-      width: '6%',
+      width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.tuesdayNameColor, 'tuesdayName')
     },
     {
       title: () => getWeekDay(3),
       dataIndex: 'wednesdayName',
       key: 'wednesdayName',
-      width: '6%',
+      width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'wednesdayName')
     },
     {
       title: () => getWeekDay(4),
       dataIndex: 'thursdayName',
       key: 'thursdayName',
-      width: '6%',
+      width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'thursdayName')
     },
     {
       title: () => getWeekDay(5),
       dataIndex: 'fridayName',
       key: 'fridayName',
-      width: '6%',
+      width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.fridayNameColor, 'fridayName')
     },
     {
       title: () => getWeekDay(6),
       dataIndex: 'saturdayName',
       key: 'saturdayName',
-      width: '6%',
+      width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.saturdayNameColor, 'saturdayName')
     },
     {
       title: () => getWeekDay(7),
       dataIndex: 'sundayName',
       key: 'sundayName',
-      width: '6%',
+      width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor, 'sundayName')
     },
     {
@@ -439,18 +440,11 @@ export default function MainBox () {
       dataIndex: 'status',
       key: 'status',
       width: '10%',
-      render: (text: string, record: any) =>
-        record.id ? (
-          <span id={'status' + record.id}>
-            {getStatus(text)}
-          </span>
-        ) : (
-          ''
-        )
+      render: (text: string, record: any) => (record.id ? <span id={'status' + record.id}>{getStatus(text)}</span> : '')
     }
   ]
 
-  const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false, isActive:any = null) => {
+  const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false, isActive: any = null) => {
     // console.log('====updateTableUI', selectedRowsArray, isEmpty)
     selectedRowsArray.map((s, k) => {
       if (s && s.id) {
@@ -473,9 +467,9 @@ export default function MainBox () {
         // 更新状态 status
         if (isEmpty) {
           s.status = '-1' // getStatus(-1)
-        } 
-        if(isActive){
-            if (isPublish) {
+        }
+        if (isActive) {
+          if (isPublish) {
             s.status = '1' // getStatus(1)
           } else {
             s.status = '0' // getStatus(0)
@@ -694,7 +688,7 @@ export default function MainBox () {
         thisWeekHour: nurse.thisWeekHour || '',
         status: nurse.status // getStatus(nurse.status) || ''
       }
-      let isPub = nurse.status==='1'?true:false
+      let isPub = nurse.status === '1' ? true : false
       setIsPublished(isPub)
       // console.log('---tr', tr,isPublished,nurse.status,nurse.status==='1')
       newList.push(tr as any)
@@ -955,7 +949,7 @@ export default function MainBox () {
                   style={{ minWidth: '45%', width: '45%', margin: '4px 4px', color: m.nameColor || '' }}
                   onClick={(e: any) => {
                     // message.info(m.name)
-                    console.log(e, m, selectedCell, selectedRowsArray)
+                    // console.log('点击:可选班次', e, m, selectedCell, selectedRowsArray, weekdayList)
                     if (selectedCell && selectedCell.record) {
                       let key = selectedCell.key
                       selectedCell.record[key] = m.name
@@ -976,19 +970,57 @@ export default function MainBox () {
                           // }
                         }
                       })
-                      console.log('==可选班次', selectedRowsArray, selectedCellObj)
+                      // console.log('==可选班次', selectedRowsArray, selectedCellObj)
                       countWorkHours(selectedCellObj)
-                      input = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
-                      if (input) {
-                        input.value = selectedCellObj.thisWeekHour
+                      let inputW = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
+                      if (inputW) {
+                        inputW.value = selectedCellObj.thisWeekHour
                       }
                       let newList = JSON.parse(JSON.stringify(selectedRowsArray))
-                      console.log('==newList:', newList, selectedCell, selectedRowsArray)
+                      // console.log('==newList:', newList, selectedCell, selectedRowsArray)
                       genEmptyTable(newList)
                       setTableList(newList)
                       // updateTableUI()
                       // 统计
-                      // statisticFooter(newList)
+                      statisticFooter(newList)
+                      //
+                      // 交点向右侧元件转移
+                      let showIndex = ~~selectedCell.record.showIndex || 0
+                      let recordId = ~~selectedCell.record.id
+                      let newReocrd = selectedRowsArray[showIndex] || selectedRowsArray[0]
+                      let record = selectedCell.record
+                      let newReocrdId = newReocrd.id
+
+                      let index = (weekdayList.indexOf(key) + 1) % weekdayList.length
+                      let newKey = weekdayList[index]
+
+                      if (newKey === 'mondayName') {
+                        recordId = newReocrdId
+                        record = newReocrd
+                      }
+
+                      input = document.querySelector(`[name="${newKey}${recordId}"]`)
+
+                      if (input) {
+                        input.focus()
+                        selectedCell = new Object({
+                          record: record,
+                          key: newKey,
+                          target: input // e.currentTarget
+                        })
+                        selectedRow = new Object({
+                          index: showIndex || 0,
+                          record: record,
+                          target: input.parentNode.parentNode
+                        })
+                        // inputW = selectedRow.target.querySelector(`[name="thisWeekHour${recordId}"]`)
+                        // if (inputW) {
+                        //   // countWorkHours(record,inputW)
+                        //   inputW.value = record.thisWeekHour+'!!'
+                        // }
+                      }
+
+                      //
                     }
                   }}
                   key={m.name + i}
@@ -1086,9 +1118,10 @@ const Wrapper = styled.div`
     padding: 4px !important;
     min-height: 32px !important;
     height: 32px !important;
+    color: black;
   }
   th div {
-    text-align: center;
+    text-align: center !important;
     padding: 2px !important;
     min-height: 40px !important;
     height: auto !important;
@@ -1150,11 +1183,21 @@ const Wrapper = styled.div`
     padding: 0px !important;
   }
 
+  td {
+    text-align: center !important;
+    padding: 0px !important;
+    &:focus-within {
+      outline: 1px solid green !important;
+      background: yellow;
+      color: black !important;
+    }
+  }
+
   .table-input {
     width: 100%;
     height: 100%;
     border: 0px;
-    outline: 0px solid white !important;
+    outline: 0px solid green !important;
     text-align: center;
     background: transparent;
     div,
@@ -1171,7 +1214,7 @@ const Wrapper = styled.div`
 
   .table-input:focus,
   .table-input:focus-within {
-    outline: 0px solid white !important;
+    outline: 0px solid green !important;
     background: yellow;
     color: black !important;
   }

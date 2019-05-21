@@ -4,6 +4,10 @@ import { message, notification } from 'antd'
 import ResponseError from './ResponseError'
 import { authStore, appStore } from 'src/stores'
 
+message.config({
+  maxCount: 1
+})
+
 /**
  * 登录页面路径
  */
@@ -54,7 +58,8 @@ export function onResponseFulfilled (response: AxiosResponse) {
       return Promise.reject(response.data.desc || desc)
     }
     case StatusCode.logout: {
-      message.warning(desc || '登录超时，请重新登录')
+      // message.destroy()
+      message.warning('登录超时，请重新登录')
       sessionStorage.setItem('adminNurse', '')
       sessionStorage.setItem('authToken', '')
       sessionStorage.setItem('user', '')
