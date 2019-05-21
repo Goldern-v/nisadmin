@@ -31,7 +31,7 @@ export default observer(function TopCon () {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-      <Tip>
+      {/* <Tip>
         <img src={WARNNING_ICON} alt='' />
         {nurseFileDetailViewModal.badgeTotal && (
           <span>
@@ -41,7 +41,7 @@ export default observer(function TopCon () {
             进行审核
           </span>
         )}
-      </Tip>
+      </Tip> */}
     </Wrapper>
   )
 })

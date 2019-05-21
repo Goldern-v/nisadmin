@@ -142,10 +142,13 @@ export default function ToolBar () {
             let element = nurse[key]
             if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1) {
               let shift = shiftListData.find((s: any) => element === s.name)
-              // console.log('!!!!shift', shift, key, nurse[key], nurse)
-              // if (!shift) {
-              //   continue
-              // }
+              console.log('!!!!shift', shift, key, nurse[key], nurse)
+              if (!shift) {
+                shift = shiftListData.find((s: any) => nurse[key+'Code'] === s.name)
+                // if(!shift){
+                //   continue
+                // }
+              }
               postLine = {
                 id: {
                   userId: nurse.id || '',

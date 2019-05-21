@@ -3,7 +3,6 @@ import StatisticHeader from './StatisticHeader'
 import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
 import React, { useState, useEffect } from 'react'
-import { data } from './data'
 import { Spin } from 'antd'
 export default function BedSituation () {
   const [leftList, setLeftList] = useState([])

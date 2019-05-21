@@ -9,6 +9,7 @@ import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
+import BaseTable from 'src/components/BaseTable'
 
 // import emitter from 'src/libs/ev'
 
@@ -76,7 +77,7 @@ const columns = [
     title: '工时(小时）',
     dataIndex: 'effectiveTime',
     key: 'effectiveTime',
-    width: '8%'
+    width: '12%'
   },
   {
     title: '操作',
@@ -240,28 +241,37 @@ export default function MainBox () {
 
   const genEmptyTable = (newList: any) => {
     // 补空行
-    let diff = 10 - (newList.length % 10)
-    if (diff > 0) {
-      for (let j = 0; j < diff; j++) {
-        let newData = JSON.parse(JSON.stringify(data))
-        if (newData.hasOwnProperty('key')) {
-          newData.key = 'empty' + j
-        }
-        newList.push(newData)
-      }
-    }
+    // let diff = 10 - (newList.length % 10)
+    // if (diff > 0) {
+    //   for (let j = 0; j < diff; j++) {
+    //     let newData = JSON.parse(JSON.stringify(data))
+    //     if (newData.hasOwnProperty('key')) {
+    //       newData.key = 'empty' + j
+    //     }
+    //     newList.push(newData)
+    //   }
+    // }
   }
 
   return (
     <Wrapper>
-      <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} />
+      <BaseTable
+        bordered
+        size='middle'
+        columns={columns}
+        rowSelection={rowSelection}
+        dataSource={ShiftList}
+        pagination={false}
+        surplusHeight={300}
+      />
+      {/* <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   /* background: #eee; */
   /* height: 100%; */
-  padding: 0 20px 20px 20px;
+  /* padding: 0 20px 20px 20px; */
   width: 100%;
   table,
   tr,

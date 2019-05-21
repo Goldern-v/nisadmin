@@ -149,7 +149,7 @@ export default observer(function BadAction () {
 
   return (
     <BaseLayout title='护理不良行为（包括医德医风）记录' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
       <editBadActionModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

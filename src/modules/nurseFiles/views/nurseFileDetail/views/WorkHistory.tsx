@@ -125,7 +125,7 @@ export default observer(function WorkHistory () {
 
   return (
     <BaseLayout title='工作经历' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editWorkHistoryModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

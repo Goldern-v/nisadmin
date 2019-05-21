@@ -59,6 +59,13 @@ let data = {
   fridayNameColor: '',
   saturdayNameColor: '',
   sundayNameColor: '',
+  mondayNameCode: '',
+  tuesdayNameCode: '',
+  wednesdayNameCode: '',
+  thursdayNameCode: '',
+  fridayNameCode: '',
+  saturdayNameCode: '',
+  sundayNameCode: '',
   status: ''
 }
 
@@ -318,13 +325,13 @@ export default function MainBox () {
 
   const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
     record.showIndex ? (
-      // <div>
+      // <div> style={{ color: colorName || getShiftColor(text) || '' }}
       <input
         // id={'WeekInput' + key + record.id}
         name={key + record.id}
         onClick={(e) => onClickInputText(e, record, key)}
         onChange={(e) => onChangeInputText(e, record, key)}
-        style={{ color: colorName || getShiftColor(text) || '' }}
+        style={{ color: colorName  }}
         className={'table-input'}
         defaultValue={text || ''}
       />
@@ -391,7 +398,7 @@ export default function MainBox () {
       dataIndex: 'wednesdayName',
       key: 'wednesdayName',
       width: '50px',
-      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor, 'wednesdayName')
+      render: (text: string, record: any) => getTextColor(text, record, record.wednesdayNameColor, 'wednesdayName')
     },
     {
       title: () => getWeekDay(4),
@@ -460,7 +467,7 @@ export default function MainBox () {
             // console.log('=updateTableUI==input', key, s[key], input, isEmpty)
             if (input !== null && input !== undefined) {
               input.value = isEmpty ? '' : s[key]
-              input.style.color = isEmpty ? '' : getShiftColor(s[key])
+              input.style.color = isEmpty ? '' : (s[key+'Color']||getShiftColor(s[key]))
             }
           }
         }
@@ -669,6 +676,16 @@ export default function MainBox () {
         return result
       }
 
+      let getNameColor = (range: any, i: number) => {
+        let result = ''
+        try {
+          result = range[i].nameColor ? range[i].nameColor : ''
+        } catch (error) {
+          return ''
+        }
+        return result
+      }
+
       tr = {
         id: nurse.id || shcIndex + 1 || '',
         key: nurse.id || shcIndex + 1 || '',
@@ -684,6 +701,35 @@ export default function MainBox () {
         fridayName: nurse.settingDtos ? getRangeName(nurse.settingDtos, 4) : '',
         saturdayName: nurse.settingDtos ? getRangeName(nurse.settingDtos, 5) : '',
         sundayName: nurse.settingDtos ? getRangeName(nurse.settingDtos, 6) : '',
+        mondayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 0) : '',
+        tuesdayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 1) : '',
+        wednesdayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 2) : '',
+        thursdayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 3) : '',
+        fridayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 4) : '',
+        saturdayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 5) : '',
+        sundayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 6) : '',
+        mondayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 0) : '',
+        tuesdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 1) : '',
+        wednesdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 2) : '',
+        thursdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 3) : '',
+        fridayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 4) : '',
+        saturdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 5) : '',
+        sundayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 6) : '',
+
+        // mondayNameCode: '',
+        // tuesdayNameCode: '',
+        // wednesdayNameCode: '',
+        // thursdayNameCode: '',
+        // fridayNameCode: '',
+        // saturdayNameCode: '',
+        // sundayNameCode: '',
+        // mondayNameColor: '',
+        // tuesdayNameColor: '',
+        // wednesdayNameColor: '',
+        // thursdayNameColor: '',
+        // fridayNameColor: '',
+        // saturdayNameColor: '',
+        // sundayNameColor: '',
         remark: nurse.remark || '',
         thisWeekHour: nurse.thisWeekHour || '',
         status: nurse.status // getStatus(nurse.status) || ''
@@ -845,10 +891,32 @@ export default function MainBox () {
         // setRowSelection(event.currentTarget)
       }, // click row
       onDoubleClick: (event: any) => {
-        console.log('onRowDoubleClick', record, index, event, event.target)
         let selectedCellValue = event.target.value
         let selectedCellName = event.target.name.replace(record.id || '', '')
         let numberOfday = 0
+
+        
+
+        let clickedShift = shiftListData.filter(shift=>{
+          if(shift.name === selectedCellValue && shift.shiftType==='休假'){
+            return shift
+          }
+        })
+
+        console.log('onRowDoubleClick',
+          record,
+          index,
+          event,
+          event.target,
+          shiftListData,
+          selectedCellValue,
+          selectedCellName,
+          clickedShift)
+
+        if(!clickedShift || clickedShift.length===0){
+          return
+        }
+
         let onChangeInputNumber = (value: any) => {
           numberOfday = value
           console.log('onChangeInputNumber', value, numberOfday)
@@ -861,16 +929,28 @@ export default function MainBox () {
 
           let weekday = JSON.parse(JSON.stringify(weekdayList))
           let dayIndex = weekday.indexOf(selectedCellName)
+
+          console.log('===onChangeInputNumber',weekday,dayIndex,record,selectedRow,index,selectedCell)
+
+
           let subweekday = new Array()
           if (dayIndex > -1) {
+            let color = record[selectedCellName + 'Color']
             subweekday = weekday.slice(dayIndex, dayIndex + n + 1)
-            subweekday.map((key) => {
-              record[key] = selectedCellValue
+            console.log('==subweekday',subweekday)
+            subweekday.map((key, i) => {
+              record[key] = selectedCellValue + (i ? i : '')
+              record[key + 'Color'] = color
+              record[key + 'Code'] = selectedCellValue
             })
 
             // 表格数据更新
-            tableUpdate(record, selectedRow, index)
-            updateTableUI()
+            
+            // setTimeout(() => {
+              tableUpdate(record, selectedRow, index)
+              updateTableUI()
+            // }, 100)
+            
           }
 
           console.log(

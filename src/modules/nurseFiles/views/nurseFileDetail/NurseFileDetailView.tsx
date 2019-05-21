@@ -83,7 +83,7 @@ const ROUTE_LIST = [
   {
     type: 'workRegistrationForm',
     component: WorkRegistrationForm,
-    name: '工作情况登记表'
+    name: '工作情况登记'
   },
   {
     type: 'fileList',

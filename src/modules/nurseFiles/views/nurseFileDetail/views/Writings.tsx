@@ -169,7 +169,7 @@ export default observer(function Writings () {
 
   return (
     <BaseLayout title='著作译文论文' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editWritingsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
