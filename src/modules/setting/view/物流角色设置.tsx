@@ -35,7 +35,7 @@ export default function RoleSetting () {
       <Button onClick={testClick1}>记录单</Button>
       <Button onClick={testClick2}>护理单</Button>
       {console.log('return中的jsx执行')}
-      <div>{value}</div>
+      {/* <div>{value}</div> */}
     </Con>
   )
 }

@@ -4,7 +4,7 @@ import { Select, Button } from 'antd'
 import service from 'src/services/api'
 import DeptSelect from 'src/components/DeptSelect'
 // import { any } from 'prop-types'
-
+import emitter from 'src/libs/ev'
 const Option = Select.Option
 
 function handleChange (value: any) {
@@ -50,12 +50,17 @@ export default function SelectCommon () {
   //     }
   //   })
   // }
+  const serchClick = () => {
+    emitter.emit('首页查询')
+  }
   return (
     <div>
       <SelectCon>
         <span className='label'>科室：</span>
         <DeptSelect onChange={handleChange} />
-        <Button style={{ marginLeft: 20, marginRight: 10 }}>查询</Button>
+        <Button style={{ marginLeft: 20, marginRight: 10 }} onClick={serchClick}>
+          查询
+        </Button>
         <Button>刷新</Button>
       </SelectCon>
     </div>

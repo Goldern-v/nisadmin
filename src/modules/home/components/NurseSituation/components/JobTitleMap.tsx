@@ -30,7 +30,7 @@ export default function BedSituation (props: Props) {
       console.log('====indexInfo:', res)
     })
     console.log(count, setCount)
-  }, [])
+  }, [authStore.selectedDeptCode, props.titleByGet])
   return (
     <div>
       <ChartCon>

@@ -1,13 +1,44 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Chart, Tooltip, Axis, Legend, Pie, Coord } from 'viser-react'
-
-export default function PatientAreaMap () {
-  // const [count, setCount] = useState(0)
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import { authStore } from 'src/stores/index'
+import moment from 'moment'
+moment.locale('zh-cn')
+export interface Props {
+  titleByGet: string
+}
+const dateFormat = 'YYYY-MM-DD 00:00:00'
+export default function PatientAreaMap (props: Props) {
+  const [shiLei, setShiLei] = useState([0])
+  const [shenLlei, setShenLlei] = useState([0])
+  const [shenWei, setShenWei] = useState([0])
+  const [typeGet, setTypeGet] = useState(1)
   useEffect(() => {
-    // console.log(count, setCount)
-  })
+    let typeGet: any
+    if (props.titleByGet === '地区') {
+      setTypeGet(1)
+    } else if (data.type === '费别') {
+      setTypeGet(2)
+    } else if (data.type === '性别') {
+      setTypeGet(3)
+    }
+  }, [authStore.selectedDeptCode, props.titleByGet])
   // 表图
+  let postData = {
+    wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
+    startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
+    endTime: moment()
+      .add(1, 'd')
+      .format(dateFormat), // string 必须参数 结束时间 2019-01-02 00:00:00
+    type: typeGet
+  }
+  HomeApi.patientdistribute(postData).then((res) => {
+    console.log('====patientdistribute:', res)
+    if (res.data) {
+      let list = res.data
+    }
+  })
   const DataSet = require('@antv/data-set')
 
   const sourceData = [{ item: '本市', count: 40 }, { item: '市外', count: 30 }, { item: '外省', count: 30 }]
