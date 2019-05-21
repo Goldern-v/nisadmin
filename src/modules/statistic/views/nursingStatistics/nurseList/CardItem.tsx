@@ -40,7 +40,7 @@ export default function CardItem (props: Props) {
   let deptName = props.data && props.data.deptName
   let userSortList: any[] = ((props.data && props.data.users) || [])
     .map((item: any) => {
-      let titles = [null, '', '培训护士', '护士', '护师', '主管护师', '副主任护师', '主任护师']
+      let titles = [null, '', '护士', '护师', '主管护师', '副主任护师', '主任护师']
 
       item.titleScore = titles.indexOf(item.title) || 0
 

@@ -113,8 +113,8 @@ export default function EditWorkHistoryModal (props: Props) {
     console.log(visible, 'visible', refForm.current, 'refForm.current')
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      setAttachmentId1(data.attachmentId.split(',')[0] || '')
-      setAttachmentId2(data.attachmentId.split(',')[1] || '')
+      setAttachmentId1((data.attachmentId && data.attachmentId.split(',')[0]) || '')
+      setAttachmentId2((data.attachmentId && data.attachmentId.split(',')[1]) || '')
       console.log(refForm.current, visible, data)
       refForm!.current!.setFields({
         readTime: moment(data.readTime),

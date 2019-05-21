@@ -8,7 +8,7 @@ interface NurseCardType {
   /** 工号 */
   empNo: string
   /** 职务 */
-  title: '培训护士' | '护士' | '护师' | '主管护师' | '副主任护师' | '主任护师'
+  title:  '护士' | '护师' | '主管护师' | '副主任护师' | '主任护师'
   /** 层级 */
   currentLevel: string
   nurseHierarchy: string
