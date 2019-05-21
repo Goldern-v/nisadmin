@@ -159,7 +159,7 @@ export default observer(function ThreeBases () {
 
   return (
     <BaseLayout title='医院三基考核' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
       <editThreeBasesModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

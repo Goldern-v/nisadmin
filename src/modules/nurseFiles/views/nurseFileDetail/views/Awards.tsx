@@ -148,7 +148,7 @@ export default observer(function Awards () {
 
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
       <editAwardsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

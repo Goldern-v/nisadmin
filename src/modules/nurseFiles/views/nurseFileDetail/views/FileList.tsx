@@ -121,7 +121,7 @@ export default observer(function FileList () {
 
   return (
     <BaseLayout title='附件' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
       <editWritingsModal.Component />
     </BaseLayout>
   )

@@ -152,7 +152,7 @@ export default observer(function ExaminationResults () {
 
   return (
     <BaseLayout title='年度履职考核结果' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editExaminationResultsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

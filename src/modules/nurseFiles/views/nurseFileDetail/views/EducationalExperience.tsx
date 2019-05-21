@@ -189,7 +189,7 @@ export default observer(function EducationalExperience () {
   return (
     <BaseLayout title='教育经历' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
-      <editEducationalExperienceModal.Component getTableData={getTableData} />
+      <editEducationalExperienceModal.Component getTableData={getTableData} type={['spaceRow', 'fixedWidth']}/>
     </BaseLayout>
   )
 })

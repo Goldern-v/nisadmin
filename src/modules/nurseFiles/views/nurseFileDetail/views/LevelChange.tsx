@@ -146,7 +146,7 @@ export default observer(function LevelChange () {
   }, [])
   return (
     <BaseLayout title='职称及层级变动' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editLevelChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

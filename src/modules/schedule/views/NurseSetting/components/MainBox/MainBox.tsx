@@ -40,8 +40,9 @@ const columns = [
     key: 'sex',
     width: '8%',
     render (text: any) {
-      if (text == 0) return '男'
-      if (text == 1) return '女'
+      if (text === '0') return '男'
+      if (text === '1') return '女'
+      return text
     }
   },
   {
