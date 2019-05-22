@@ -8,7 +8,7 @@ import DeptSelect from 'src/components/DeptSelect'
 
 const Option = Select.Option
 
-export default function SelectCon () {
+export default function SelectCon (props: any, context: any) {
   const [visible, setVisible] = useState(false)
   const handleOk = () => {
     setVisible(false)
@@ -28,6 +28,7 @@ export default function SelectCon () {
     nurseFilesListViewModel.filterText = e.target.value
   }
 
+  console.log(context, '1contextcontextcontext1')
   return (
     <React.Fragment>
       <Wrapper>
