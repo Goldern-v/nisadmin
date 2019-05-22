@@ -18,9 +18,9 @@ export interface Props extends RouteComponentProps {}
 const getTextColor = (text: string, record: any, colorName: string) =>
   text && text.length > 0 ? (
     <span>
-      <Tag color={colorName} key={text}>
+      <span color={colorName} key={text} style={{color:colorName}}>
         {text.toUpperCase()}
-      </Tag>
+      </span>
     </span>
   ) : (
     ''
@@ -167,12 +167,23 @@ let rowSelection = {
     if (selectedRows && selectedRows.length === 0) {
       selectedRowsArray.map((res: any) => {
         res.status = false
+        res.rangeShow = selected
       })
     } else {
       selectedRows.map((res: any) => {
         res.status = true
+        res.rangeShow = selected
       })
     }
+
+    if(changeRows){
+      changeRows.map((record: any) => {
+        record.rangeShow = selected
+        record.status = selected
+      })
+    }
+    
+    
 
     console.log('onSelectAll', selected, selectedRows, changeRows)
   },

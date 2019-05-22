@@ -192,7 +192,8 @@ export default function MainBox () {
 
     emitter.addListener('更新排班人员列表', () => {
       setTableLoading(true)
-      getShiftUserList()
+      // getShiftUserList()
+      getSchedule(true)
     })
 
     emitter.addListener('更新排班列表', () => {
@@ -247,18 +248,27 @@ export default function MainBox () {
   const countWorkHours = (record: any, target: any = null) => {
     // shiftListData  effectiveTime
     // console.log('countWorkHours', record, shiftListData)
+
+    let list = JSON.parse(JSON.stringify(shiftListData))
+
     let result = 0
     let shift: any = new Object()
     for (const key in record) {
-      if (record.hasOwnProperty(key) && key.toLowerCase().indexOf('dayname') > -1) {
+      if (record.hasOwnProperty(key) && key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('daynamecolor') === -1 && key.toLowerCase().indexOf('daynamecode') === -1) {
         const element = record[key]
-        shift = shiftListData.find((s) => element === s.name)
+        shift = list.find((s: any) => element === s.name)
+        if (!shift) {
+          shift = list.find((s: any) => record[key+'Code'] === s.name || (record[key+'Code'] === s.shiftType&&record[key+'Code'] != s.name))
+        }
         if (shift) {
           result += ~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
           if (target && target.name && target.name === key + record.id) {
             target.style.color = shift.nameColor || ''
           }
         }
+        // else{
+        //   result = shift.thisWeekHour
+        // }
       }
     }
     record.thisWeekHour = result + ''
@@ -274,6 +284,10 @@ export default function MainBox () {
       if (row.id === record.id) {
         row[key] = e.currentTarget.value
         record[key] = e.currentTarget.value
+        if(!e.currentTarget.value){
+          row[key+'Code'] = ""
+          record[key+'Code'] = ""
+        }
         selectedCellObj = row
       }
     })
@@ -307,6 +321,9 @@ export default function MainBox () {
       return 'black'
     }
     let shift = shiftListData.find((s) => text === s.name)
+    // if(!shift){
+    //   shift = shiftListData.find((s) => text === s.name)
+    // }
     return shift ? shift.nameColor : 'black'
   }
 
@@ -459,12 +476,12 @@ export default function MainBox () {
           if (
             s.hasOwnProperty(key) > -1 &&
             (key.indexOf('dayName') > -1 || key.indexOf('remark') > -1) &&
-            key.indexOf('status') === -1
+            key.indexOf('status') === -1 
           ) {
             // console.log('key', key, s[key])
             s[key] = isEmpty ? '' : s[key] || ''
             let input: any = document.querySelector(`[name="${key}${s.id}"]`)
-            // console.log('=updateTableUI==input', key, s[key], input, isEmpty)
+            // console.log('=updateTableUI==input',s, key, s[key], input, isEmpty)
             if (input !== null && input !== undefined) {
               input.value = isEmpty ? '' : s[key]
               input.style.color = isEmpty ? '' : (s[key+'Color']||getShiftColor(s[key]))
@@ -528,9 +545,9 @@ export default function MainBox () {
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {
-          console.log('oneObj', index, oneObj, oneObj.status)
+          // console.log('oneObj', index, oneObj, oneObj.status)
           if (oneObj.status === true) {
-            console.log('tableDataIndex', index)
+            // console.log('tableDataIndex', index)
             rowKeys.push(oneObj.id)
           } else {
             oneObj.status = false
@@ -666,10 +683,23 @@ export default function MainBox () {
 
     schShiftUser.map((nurse: any, shcIndex: number) => {
       console.log('nurse', shcIndex, nurse.empName, nurse, nurse.status)
+
+      // let effectiveTime
+
       let getRangeName = (range: any, i: number) => {
         let result = ''
         try {
           result = range[i].rangeName ? range[i].rangeName : ''
+        } catch (error) {
+          return ''
+        }
+        return result
+      }
+
+      let getRangeNameCode = (range: any, i: number) => {
+        let result = ''
+        try {
+          result = range[i].rangeNameCode ? range[i].rangeNameCode : ''
         } catch (error) {
           return ''
         }
@@ -685,6 +715,29 @@ export default function MainBox () {
         }
         return result
       }
+
+      let getShiftType = (range: any, i: number) => {
+        let result = ''
+        try {
+          result = range[i].shiftType ? range[i].shiftType : ''
+        } catch (error) {
+          return ''
+        }
+        return result
+      }
+
+      // let thisWeekHour = 0 
+      
+      // if(nurse.settingDtos) {
+      //   nurse.settingDtos.map((n:any)=>{
+      //     thisWeekHour += ~~n.effectiveTime || 0
+      //   })
+      //   nurse.settingDtos.map((n:any)=>{
+      //     n.thisWeekHour = thisWeekHour
+      //   })
+      // }
+
+      // nurse.thisWeekHour = thisWeekHour
 
       tr = {
         id: nurse.id || shcIndex + 1 || '',
@@ -708,28 +761,15 @@ export default function MainBox () {
         fridayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 4) : '',
         saturdayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 5) : '',
         sundayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 6) : '',
-        mondayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 0) : '',
-        tuesdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 1) : '',
-        wednesdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 2) : '',
-        thursdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 3) : '',
-        fridayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 4) : '',
-        saturdayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 5) : '',
-        sundayNameCode: nurse.settingDtos ? getRangeName(nurse.settingDtos, 6) : '',
-
-        // mondayNameCode: '',
-        // tuesdayNameCode: '',
-        // wednesdayNameCode: '',
-        // thursdayNameCode: '',
-        // fridayNameCode: '',
-        // saturdayNameCode: '',
-        // sundayNameCode: '',
-        // mondayNameColor: '',
-        // tuesdayNameColor: '',
-        // wednesdayNameColor: '',
-        // thursdayNameColor: '',
-        // fridayNameColor: '',
-        // saturdayNameColor: '',
-        // sundayNameColor: '',
+        //
+        mondayNameCode: nurse.mondayNameCode ? nurse.mondayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 0) : ''),
+        tuesdayNameCode: nurse.tuesdayNameCode ? nurse.tuesdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 1) : ''),
+        wednesdayNameCode: nurse.wednesdayNameCode ? nurse.wednesdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 2) : ''),
+        thursdayNameCode: nurse.thursdayNameCode ? nurse.thursdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 3) : ''),
+        fridayNameCode: nurse.fridayNameCode ? nurse.fridayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 4) : ''),
+        saturdayNameCode: nurse.saturdayNameCode ? nurse.saturdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 5) : ''),
+        sundayNameCode: nurse.sundayNameCode ? nurse.sundayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 6) : ''),
+        //
         remark: nurse.remark || '',
         thisWeekHour: nurse.thisWeekHour || '',
         status: nurse.status // getStatus(nurse.status) || ''
@@ -778,8 +818,9 @@ export default function MainBox () {
       if (item.thisWeekHour) {
         workhour += ~~item.thisWeekHour || 0
       }
+      // console.log('----item',item,'weekdayList',weekdayList)
       for (const day of weekdayList) {
-        let element = (item as any)[day]
+        let element = (item as any)[day+'Code'] || (item as any)[day]
         if (element && element.length > 0) {
           if (rangeNames.indexOf(element) === -1) {
             (rangeObj as any)[element] = 1
@@ -808,6 +849,7 @@ export default function MainBox () {
 
   const tableUpdate = (record: any, event: any, index: any) => {
     countWorkHours(record, selectedRow.target)
+    // countWorkHours(record)
     // selectedRow = new Object({
     //   index: index,
     //   record: record,
@@ -893,12 +935,16 @@ export default function MainBox () {
       onDoubleClick: (event: any) => {
         let selectedCellValue = event.target.value
         let selectedCellName = event.target.name.replace(record.id || '', '')
+        let selectedCellNameCode = selectedCellName+'Code'
         let numberOfday = 0
+        let diffDays = 0
 
         
 
         let clickedShift = shiftListData.filter(shift=>{
-          if(shift.name === selectedCellValue && shift.shiftType==='休假'){
+          // if(shift.name === selectedCellValue && shift.shiftType==='休假'){
+          if(((record[selectedCellNameCode] === '休假' || shift.name === record[selectedCellName]||shift.name === record[selectedCellNameCode]) && shift.shiftType==='休假')){
+            selectedCellValue = shift.name
             return shift
           }
         })
@@ -929,27 +975,44 @@ export default function MainBox () {
 
           let weekday = JSON.parse(JSON.stringify(weekdayList))
           let dayIndex = weekday.indexOf(selectedCellName)
+          let endIndex = dayIndex
 
-          console.log('===onChangeInputNumber',weekday,dayIndex,record,selectedRow,index,selectedCell)
+
+          for(let j=dayIndex, len=weekday.length;j<len;j++){
+            console.log('----',j,weekday[j],record[weekday[j]],len)
+            if(j!=dayIndex&&record[weekday[j]] && record[weekday[j]].length>0){
+              endIndex = j
+              break
+            }
+          }
+
+          if(endIndex == dayIndex && endIndex<weekday.length){
+            endIndex = weekday.length
+          }
+
+          diffDays = endIndex - dayIndex
+
+          console.log('===onChangeInputNumber',weekday,dayIndex,endIndex,record,selectedRow,index,selectedCell,'clickedShift',clickedShift)
 
 
           let subweekday = new Array()
           if (dayIndex > -1) {
-            let color = record[selectedCellName + 'Color']
-            subweekday = weekday.slice(dayIndex, dayIndex + n + 1)
+            let color = getShiftColor(selectedCellValue)//record[record.key + 'Color']
+            subweekday = weekday.slice(dayIndex, endIndex) //dayIndex + n + 1
             console.log('==subweekday',subweekday)
+            
             subweekday.map((key, i) => {
-              record[key] = selectedCellValue + (i ? i : '')
+              record[key] = selectedCellValue + (numberOfday+i)
               record[key + 'Color'] = color
               record[key + 'Code'] = selectedCellValue
             })
 
             // 表格数据更新
             
-            // setTimeout(() => {
+            setTimeout(() => {
               tableUpdate(record, selectedRow, index)
               updateTableUI()
-            // }, 100)
+            }, 100)
             
           }
 
@@ -984,7 +1047,7 @@ export default function MainBox () {
           >
             <Form layout={'inline'}>
               <Form.Item label={selectedCellValue}>
-                <InputNumber defaultValue={0} min={0} size={'large'} autoFocus onChange={onChangeInputNumber} />
+                <InputNumber defaultValue={1} min={1} size={'large'} autoFocus onChange={onChangeInputNumber} />
               </Form.Item>
             </Form>
           </div>

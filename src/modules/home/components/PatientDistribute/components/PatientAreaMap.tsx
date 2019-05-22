@@ -4,44 +4,45 @@ import { Chart, Tooltip, Axis, Legend, Pie, Coord } from 'viser-react'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import { authStore } from 'src/stores/index'
 import moment from 'moment'
+import { observer } from 'mobx-react-lite'
+import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
 moment.locale('zh-cn')
 export interface Props {
-  titleByGet: string
+  patientNumSumProp: number
 }
 const dateFormat = 'YYYY-MM-DD 00:00:00'
-export default function PatientAreaMap (props: Props) {
-  const [shiLei, setShiLei] = useState([0])
-  const [shenLlei, setShenLlei] = useState([0])
-  const [shenWei, setShenWei] = useState([0])
-  const [typeGet, setTypeGet] = useState(1)
+export default observer(function PatientAreaMap (props: Props) {
+  const [byBistrict, setByBistrict] = useState([
+    { patientType: '', patientNum: '' },
+    { patientType: '', patientNum: '' },
+    { patientType: '', patientNum: '' }
+  ])
+  const [sumerProp, setSumerProp] = useState(props.patientNumSumProp)
+
   useEffect(() => {
-    let typeGet: any
-    if (props.titleByGet === '地区') {
-      setTypeGet(1)
-    } else if (data.type === '费别') {
-      setTypeGet(2)
-    } else if (data.type === '性别') {
-      setTypeGet(3)
+    if (props.patientNumSumProp === 0) {
+      setSumerProp(1)
     }
-  }, [authStore.selectedDeptCode, props.titleByGet])
+    setByBistrict(HomeViewModel.PatientDistributeData)
+  }, [props.patientNumSumProp])
   // 表图
-  let postData = {
-    wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
-    startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
-    endTime: moment()
-      .add(1, 'd')
-      .format(dateFormat), // string 必须参数 结束时间 2019-01-02 00:00:00
-    type: typeGet
-  }
-  HomeApi.patientdistribute(postData).then((res) => {
-    console.log('====patientdistribute:', res)
-    if (res.data) {
-      let list = res.data
-    }
-  })
+
   const DataSet = require('@antv/data-set')
 
-  const sourceData = [{ item: '本市', count: 40 }, { item: '市外', count: 30 }, { item: '外省', count: 30 }]
+  const sourceData = [
+    {
+      item: byBistrict[0] && byBistrict[0].patientType,
+      count: byBistrict[0] && parseInt(byBistrict[0].patientNum, 10) / sumerProp
+    },
+    {
+      item: byBistrict[1] && byBistrict[1].patientType,
+      count: byBistrict[1] && parseInt(byBistrict[1].patientNum, 10) / sumerProp
+    },
+    {
+      item: byBistrict[2] && byBistrict[2].patientType,
+      count: byBistrict[2] && parseInt(byBistrict[2].patientNum, 10) / sumerProp
+    }
+  ]
 
   const scale = [
     {
@@ -65,19 +66,26 @@ export default function PatientAreaMap (props: Props) {
         <div className='ChartConLeft'>
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare' />
-            <div className='leftItemMessage'>本市：142</div>
+            <div className='leftItemMessage'>
+              {byBistrict[0] && byBistrict[0].patientType}：{byBistrict[0] && byBistrict[0].patientNum}
+            </div>
           </div>
 
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare LeftItemSquareColor' />
-            <div className='leftItemMessage'>市外：25</div>
+            <div className='leftItemMessage'>
+              {byBistrict[1] && byBistrict[1].patientType}：{byBistrict[1] && byBistrict[1].patientNum}
+            </div>
           </div>
 
           <div className='ChartConLeftItem'>
             <div className='LeftItemSquare LeftItemSquareColor3' />
-            <div className='leftItemMessage'>外省：32</div>
+            <div className='leftItemMessage'>
+              {byBistrict[2] && byBistrict[2].patientType}：{byBistrict[2] && byBistrict[2].patientNum}
+            </div>
           </div>
         </div>
+        {/* {props.patientNumSumProp !== 0 && ( */}
         <Chart forceFit height={350} data={data} scale={scale}>
           <Tooltip showTitle={false} />
           <Axis />
@@ -96,10 +104,11 @@ export default function PatientAreaMap (props: Props) {
             ]}
           />
         </Chart>
+        {/* )} */}
       </ChartCon>
     </div>
   )
-}
+})
 
 const ChartCon = styled.div`
   .ChartConLeft {

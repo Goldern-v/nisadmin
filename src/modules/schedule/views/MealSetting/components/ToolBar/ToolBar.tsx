@@ -95,7 +95,7 @@ export default function ToolBar () {
       })
       service.scheduleMealApiService.saveAll(mealList).then((res) => {
         message.success('保存排班班次套餐设置成功')
-        emitter.emit('更新班次套餐列表')
+        // emitter.emit('更新班次套餐列表')
         console.log('保存排班班次套餐', res)
       })
     })
@@ -187,31 +187,31 @@ export default function ToolBar () {
           value: props.mealName.value
         }),
         mondayName: Form.createFormField({
-          ...props.type,
+          ...props.mondayName,
           value: props.mondayName.value
         }),
         tuesdayName: Form.createFormField({
-          ...props.startTime,
+          ...props.tuesdayName,
           value: props.tuesdayName.value
         }),
         wednesdayName: Form.createFormField({
-          ...props.endTime,
+          ...props.wednesdayName,
           value: props.wednesdayName.value
         }),
         thursdayName: Form.createFormField({
-          ...props.workHour,
+          ...props.thursdayName,
           value: props.thursdayName.value
         }),
         fridayName: Form.createFormField({
-          ...props.workHour,
+          ...props.fridayName,
           value: props.fridayName.value
         }),
         saturdayName: Form.createFormField({
-          ...props.workHour,
+          ...props.saturdayName,
           value: props.saturdayName.value
         }),
         sundayName: Form.createFormField({
-          ...props.color,
+          ...props.sundayName,
           value: props.sundayName.value
         }),
         status: Form.createFormField({
@@ -447,7 +447,7 @@ export default function ToolBar () {
   const addMeal = (title: string) => {
     // message.success('添加班次套餐')
     // console.log('Modal', Modal)
-    if (title === '添加排班套餐') {
+    if (title === '添加排班套餐' || title === '添加排班') {
       fields = {
         mealName: {
           value: ''
@@ -488,7 +488,7 @@ export default function ToolBar () {
       // visible: false,
       onOk: onOk,
       onCancel: () => {
-        message.success('onCancel')
+        // message.success('onCancel')
         // modalInfo.destroy()
       },
       iconType: 'form',

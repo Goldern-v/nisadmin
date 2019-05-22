@@ -27,14 +27,14 @@ class StatisticsApi extends BaseApiService {
   // 2.患者分布
   public async patientdistribute (data: any) {
     // let typeGet
-    // if (data.type === '地区') {
-    //   typeGet = 1
-    // } else if (data.type === '费别') {
-    //   typeGet = 2
-    // } else if (data.type === '性别') {
-    //   typeGet = 3
-    // }
-    const postData = {
+    if (data.type === '按地区') {
+      data.type = '1'
+    } else if (data.type === '按费别') {
+      data.type = '2'
+    } else if (data.type === '按性别') {
+      data.type = '3'
+    }
+    let postData = {
       type: data.type, // 分布方式：1=来源，2=费别， 3=性别
       wardCode: data.wardCode, // string 必须参数 科室编码
       startDate: data.startTime, // string 必须参数 开始时间

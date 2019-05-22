@@ -30,8 +30,9 @@ export default function BedSituation () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    if (res.data.type.indexOf('excel') > -1) {
+    if (true) {
       let a = document.createElement('a')
+
       let href = window.URL.createObjectURL(blob) // 创建链接对象
       a.href = href
       a.download = filename // 自定义文件名
@@ -49,7 +50,7 @@ export default function BedSituation () {
     }
   }
   const exportButtonClick = () => {
-    StatisticsApi.postNurseScheduling(false).then((res) => {
+    StatisticsApi.postDepartmentHolidaySchedule(false).then((res) => {
       fileDownload(res)
     })
   }
