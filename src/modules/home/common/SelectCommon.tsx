@@ -59,10 +59,10 @@ export default function SelectCommon () {
         <span className='label'>科室：</span>
         <DeptSelect onChange={handleChange} />
         {/* 暂时下面去掉这两个按钮 */}
-        {/* <Button style={{ marginLeft: 20, marginRight: 10 }} onClick={serchClick}>
+        <Button style={{ marginLeft: 20, marginRight: 10 }} onClick={serchClick}>
           查询
         </Button>
-        <Button>刷新</Button> */}
+        <Button>刷新</Button>
       </SelectCon>
     </div>
   )

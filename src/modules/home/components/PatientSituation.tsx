@@ -9,7 +9,7 @@ const dateFormat = 'YYYY-MM-DD 00:00:00'
 import { observer } from 'mobx-react-lite'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import BaseTable from 'src/components/BaseTable.tsx'
-export default function PatientSituation () {
+export default observer(function PatientSituation () {
   const [dataSource, setDataSource] = useState([])
   useEffect(() => {
     const postData = {
@@ -19,12 +19,14 @@ export default function PatientSituation () {
         .add(1, 'd')
         .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
     }
-    HomeApi.patientCondition(postData).then((res) => {
-      console.log('===patientCondition', res)
-      if (res.data) {
-        setDataSource(res.data)
-      }
-    })
+    if (authStore.selectedDeptCode) {
+      HomeApi.patientCondition(postData).then((res) => {
+        console.log('===patientCondition', res)
+        if (res.data) {
+          setDataSource(res.data)
+        }
+      })
+    }
   }, [authStore.selectedDeptCode])
   const columns: any = [
     // {
@@ -101,7 +103,7 @@ export default function PatientSituation () {
       </Mid>
     </div>
   )
-}
+})
 
 const Head = styled.div`
   height: 37px;

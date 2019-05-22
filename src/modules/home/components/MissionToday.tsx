@@ -55,27 +55,29 @@ export default observer(function MissionToday () {
         totalCount: '608'
       }
     ]
-    HomeApi.todayTask(postData)
-      .then((res) => {
-        console.log('===MissionToday', res)
-        if (res.data) {
-          let cacheData = res.data
-          for (let i = 0; i < cacheData.length; i++) {
-            cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
+    if (authStore.selectedDeptCode) {
+      HomeApi.todayTask(postData)
+        .then((res) => {
+          console.log('===MissionToday', res)
+          if (res.data) {
+            let cacheData = res.data
+            for (let i = 0; i < cacheData.length; i++) {
+              cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
+            }
+            // cacheData
+            setDataSource(cacheData)
+            // setDataSource(res.data)
+            // cacheData
           }
-          // cacheData
-          setDataSource(cacheData)
-          // setDataSource(res.data)
-          // cacheData
-        }
-      })
-      .catch(() => {
-        // for (let i = 0; i < cacheData.length; i++) {
-        //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
-        // }
-        // // cacheData
-        // setDataSource(cacheData)
-      })
+        })
+        .catch(() => {
+          // for (let i = 0; i < cacheData.length; i++) {
+          //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
+          // }
+          // // cacheData
+          // setDataSource(cacheData)
+        })
+    }
   }, [authStore.selectedDeptCode])
   // let dataLen = 4
   // const tbodyData = []

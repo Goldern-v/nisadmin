@@ -21,28 +21,31 @@ export default observer(function PerformChart () {
     }
     // console.log('===BedSituation', postData)
     // service
-    HomeApi.executeStatus(postData)
-      .then((res) => {
-        console.log('===BedSituation', res)
-        if (res.data) {
-          let cacheData = res.data
-          for (let i = 0; i < cacheData.length; i++) {
-            cacheData[i].finishCountN =
-              ((parseInt(cacheData[i].finishCount, 10) / parseInt(cacheData[i].totalCount, 10)) * 100).toFixed(2) + '%'
+    if (authStore.selectedDeptCode) {
+      HomeApi.executeStatus(postData)
+        .then((res) => {
+          console.log('===BedSituation', res)
+          if (res.data) {
+            let cacheData = res.data
+            for (let i = 0; i < cacheData.length; i++) {
+              cacheData[i].finishCountN =
+                ((parseInt(cacheData[i].finishCount, 10) / parseInt(cacheData[i].totalCount, 10)) * 100).toFixed(2) +
+                '%'
+            }
+            // cacheData
+            setDataSource(cacheData)
+            // setDataSource(res.data)
+            // cacheData
           }
-          // cacheData
-          setDataSource(cacheData)
-          // setDataSource(res.data)
-          // cacheData
-        }
-      })
-      .catch(() => {
-        // for (let i = 0; i < cacheData.length; i++) {
-        //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
-        // }
-        // // cacheData
-        // setDataSource(cacheData)
-      })
+        })
+        .catch(() => {
+          // for (let i = 0; i < cacheData.length; i++) {
+          //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
+          // }
+          // // cacheData
+          // setDataSource(cacheData)
+        })
+    }
   }, [authStore.selectedDeptCode])
   const columns: any = [
     // {
