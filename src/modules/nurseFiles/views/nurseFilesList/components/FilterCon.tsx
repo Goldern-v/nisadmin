@@ -85,7 +85,8 @@ export default observer(function FilterCon () {
 })
 const Wrapper = styled.div`
   background: rgba(255, 255, 255, 1);
-  border: 1px solid rgba(219, 224, 228, 1);
+  /* border: 1px solid rgba(219, 224, 228, 1); */
+  box-shadow: ${(p) => p.theme.$shadow};
   > div:last-child {
     border: 0;
   }
