@@ -12,6 +12,7 @@ import emitter from 'src/libs/ev'
 import moment from 'moment'
 import service from 'src/services/api'
 import { Link } from 'react-router-dom'
+import BaseTable from 'src/components/BaseTable'
 // import { Link } from 'react-router-dom'
 moment.locale('zh-cn', {
   weekdays: '日_一_二_三_四_五_六'.split('_')
@@ -447,13 +448,16 @@ export default function ScheduleTable () {
       ) : (
         <ScheduleCon>
           <ScheduleTableCon>
-            <Table
+            <BaseTable
               {...tableState}
               loading={loading}
               size='middle'
               columns={columns}
               dataSource={scheduleList}
               footer={() => footer}
+              pagination={false}
+              surplusHeight={250}
+              style={{ padding: 0 }}
             />
           </ScheduleTableCon>
         </ScheduleCon>
@@ -497,7 +501,7 @@ const CardBox = styled.div`
 `
 
 const ScheduleCon = styled.div`
-  height: calc(100vh - 200px);
+  /* height: calc(100vh - 200px); */
   overflow: auto;
   margin-top: 0px;
   background: #fff;

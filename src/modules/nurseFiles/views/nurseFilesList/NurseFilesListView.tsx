@@ -13,7 +13,12 @@ import { Spin } from 'antd'
 export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
 let rowNum: number = 7
-
+const ThemeContext = React.createContext({
+  theme: 'dark'
+})
+const value = {
+  theme: 'red'
+}
 export default observer(function NurseFilesListView () {
   return (
     <Wrapper>

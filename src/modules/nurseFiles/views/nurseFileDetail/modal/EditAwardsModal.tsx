@@ -118,7 +118,6 @@ export default function EditWorkHistoryModal (props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-
           <Col span={24}>
             <Form.Field label={`获奖项目名称`} name='awardWinningName' required>
               <Input />

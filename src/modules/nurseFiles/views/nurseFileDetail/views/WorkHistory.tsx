@@ -10,6 +10,7 @@ import createModal from 'src/libs/createModal'
 import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { auditedStatusEnum } from 'src/libs/enum/common'
+import { globalModal } from 'src/global/globalModal'
 
 export interface Props extends RouteComponentProps {}
 
@@ -105,7 +106,30 @@ export default observer(function WorkHistory () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  title: '审核工作经历',
+                  tableData: [
+                    {
+                      起始时间: `${row.startTime}`,
+                      结束时间: `${row.endTime}`
+                    },
+                    {
+                      工作单位: `${row.unit}`,
+                      专业技术工作: row.professionalWork
+                    },
+                    {
+                      技术职称: row.professional,
+                      职务: row.post
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }
