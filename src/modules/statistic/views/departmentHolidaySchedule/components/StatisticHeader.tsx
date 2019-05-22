@@ -30,7 +30,7 @@ export default function BedSituation () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    if (res.data.type.indexOf('excel') > -1) {
+    if (res.data.type && res.data.type.indexOf('excel') > -1) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象
       a.href = href
@@ -43,7 +43,8 @@ export default function BedSituation () {
       let reader = new FileReader()
       reader.addEventListener('loadend', function (data: any) {
         // reader.result 包含转化为类型数组的blob
-        message.error(`${reader.result}`)
+        // message.error(`${reader.result}`)
+        message.error(`请求数据出错`)
       })
       reader.readAsText(blob)
     }

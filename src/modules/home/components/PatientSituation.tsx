@@ -6,11 +6,12 @@ import { authStore } from 'src/stores/index'
 import moment from 'moment'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
-
-export default function PatientSituation () {
-  // const [count, setCount] = useState(0)
+import { observer } from 'mobx-react-lite'
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import BaseTable from 'src/components/BaseTable.tsx'
+export default observer(function PatientSituation () {
+  const [dataSource, setDataSource] = useState([])
   useEffect(() => {
-    // console.log(count, setCount)
     const postData = {
       wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
       startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
@@ -18,12 +19,15 @@ export default function PatientSituation () {
         .add(1, 'd')
         .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
     }
-    // console.log('===patientCondition', postData)
-    // service
-    service.homeApiServices.patientCondition(postData).then((res) => {
-      console.log('===patientCondition', res)
-    })
-  }, [])
+    if (authStore.selectedDeptCode) {
+      HomeApi.patientCondition(postData).then((res) => {
+        console.log('===patientCondition', res)
+        if (res.data) {
+          setDataSource(res.data)
+        }
+      })
+    }
+  }, [authStore.selectedDeptCode])
   const columns: any = [
     // {
     //   title: '序号',
@@ -38,28 +42,13 @@ export default function PatientSituation () {
       dataIndex: 'patientType',
       key: '',
       align: 'center',
-      width: 100
+      width: 200
     },
     {
-      title: '总计',
-      dataIndex: 'totalCount',
-      key: '',
-      align: 'center',
-      width: 100
-    },
-    {
-      title: '已完成',
-      dataIndex: 'finishCount',
-      key: '',
-      align: 'center',
-      width: 100
-    },
-    {
-      title: '完成率',
-      dataIndex: 'finishCountN',
+      title: '人数',
+      dataIndex: 'patientNum',
       key: '',
       align: 'center'
-      // width: 100
     }
   ]
   return (
@@ -69,7 +58,8 @@ export default function PatientSituation () {
         <div className='headRight'>更多></div>
       </Head>
       <Mid>
-        <table>
+        <BaseTable dataSource={dataSource} columns={columns} scroll={{ y: 240 }} />
+        {/* <table>
           <thead>
             <tr>
               <th>类型</th>
@@ -109,11 +99,11 @@ export default function PatientSituation () {
               <td />
             </tr>
           </tbody>
-        </table>
+        </table> */}
       </Mid>
     </div>
   )
-}
+})
 
 const Head = styled.div`
   height: 37px;
@@ -136,27 +126,52 @@ const Head = styled.div`
   }
 `
 const Mid = styled.div`
-  /* padding: 18px 18px 0 18px; */
+  .BaseTable__Wrapper-sc-18xwuv-0 {
+    padding: 0 !important;
+  }
+  .ant-table-header {
+    ::-webkit-scrollbar {
+      /*滚动条整体样式*/
+      /* width: 6px; 高宽分别对应横竖滚动条的尺寸 */
+      /* height: 4px; */
+    }
+    ::-webkit-scrollbar-thumb {
+      /*滚动条里面小方块*/
+      background: rgba(0, 0, 0, 0.2);
+    }
+    /*定义滚动条轨道 内阴影+圆角*/
+    ::-webkit-scrollbar-track {
+      /*滚动条里面轨道*/
+      /* box-shadow: inset 0 0 5px #f2f4f5; */
+      background-color: #f2f4f5;
+    }
+  }
+
+  .ant-table-body {
+    ::-webkit-scrollbar {
+      /*滚动条整体样式*/
+      width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      /*滚动条里面小方块*/
+      border-radius: 5px;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    /*定义滚动条轨道 内阴影+圆角*/
+    ::-webkit-scrollbar-track {
+      /*滚动条里面轨道*/
+      box-shadow: inset 0 0 5px #ffffff;
+      border-radius: 5px;
+      background-color: #ffffff;
+    }
+  }
+  .BaseTable__Wrapper-sc-18xwuv-0 {
+    padding: 0 ！ !important;
+  }
   height: 282px;
-  overflow-y: auto;
-  ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 4px;
-  }
-  ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-  }
-  /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px #ffffff;
-    border-radius: 5px;
-    background-color: #ffffff;
-  }
+
   table {
     width: 100%;
     border: 1px solid #e5e5e5;
@@ -171,14 +186,5 @@ const Mid = styled.div`
   td {
     height: 36px;
     border: 1px solid #e5e5e5;
-  }
-  td:nth-of-type(1) {
-    width: 38%;
-  }
-  td:nth-of-type(2) {
-    width: 24%;
-  }
-  td:nth-of-type(3) {
-    width: 38%;
   }
 `

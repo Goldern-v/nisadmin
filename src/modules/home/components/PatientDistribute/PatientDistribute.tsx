@@ -25,22 +25,21 @@ export default observer(function PatientDistribute () {
         .format(dateFormat), // string 必须参数 结束时间 2019-01-02 00:00:00
       type: titleBy
     }
-    HomeApi.patientdistribute(postData).then((res) => {
-      console.log('====patientdistribute:', res)
-      if (res.data) {
-        if (titleBy === '按地区') {
+    if (authStore.selectedDeptCode) {
+      HomeApi.patientdistribute(postData).then((res) => {
+        console.log('====patientdistribute:', res)
+        if (res.data) {
           let list = res.data
-          let chacheSum = 0
+          let cacheSum = 0
           list.map((item: any) => {
-            chacheSum = chacheSum + parseInt(item.patientNum, 10)
-            return chacheSum
+            cacheSum = cacheSum + parseInt(item.patientNum, 10)
+            return cacheSum
           })
-          setPatientNumSum(chacheSum)
-
+          setPatientNumSum(cacheSum)
           HomeViewModel.PatientDistributeData = res.data
         }
-      }
-    })
+      })
+    }
   }, [authStore.selectedDeptCode, titleBy])
 
   const selectChange = (e: any) => {

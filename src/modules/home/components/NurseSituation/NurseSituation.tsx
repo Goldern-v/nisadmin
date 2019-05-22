@@ -47,10 +47,12 @@ export default function NurseSituation () {
     }
     // console.log('===NurseSituation', postData)
     // service
-    service.homeApiServices.nursingUser(postData).then((res) => {
-      console.log('===NurseSituation', res)
-    })
-  }, [])
+    if (authStore.selectedDeptCode) {
+      service.homeApiServices.nursingUser(postData).then((res) => {
+        console.log('===NurseSituation', res)
+      })
+    }
+  }, [authStore.selectedDeptCode])
   // const selectChange = () => {}
 
   return (

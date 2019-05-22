@@ -53,79 +53,81 @@ export default observer(function BedSituation () {
     //   .bedInfo(postData)
     //   .then((res) => {
     // 换接口上
-    HomeApi.bedInfo(postData)
-      .then((res) => {
-        console.log('===BedSituation', res)
-        // {
-        //     "code": "200",
-        //     "desc": "操作成功",
-        //     "data": {
-        //         "wardCode": "030502",
-        //         "wardName": "神经内科护理单元",
-        //         "totalBed": "65",
-        //         "useBed": "40"
-        //     }
-        // }
-        if (res) {
-          let totalBed: any = res.data.totalBed
-          let useBed: any = res.data.useBed
-          setTotalBed(totalBed)
-          setUseBed(useBed)
-          // setSourceData([
-          //   { item: '已占用', count: (useBed / totalBed) * 100 },
-          //   { item: '空床', count: (1 - useBed / totalBed) * 100 }
-          // ])
-          setData(
-            new DataSet.View()
-              .source([
-                { item: '已占用', count: (useBed / totalBed) * 100 },
-                { item: '空床', count: (1 - useBed / totalBed) * 100 }
-              ])
-              .transform({
-                type: 'percent',
-                field: 'count',
-                dimension: 'item',
-                as: 'percent'
-              }).rows
-          )
-        }
-      })
-      .catch((err) => {
-        console.log('err', err)
-        let res = {
-          code: '200',
-          desc: '操作成功',
-          data: {
-            wardCode: '030502',
-            wardName: '神经内科护理单元',
-            totalBed: '65',
-            useBed: '40'
+    if (authStore.selectedDeptCode) {
+      HomeApi.bedInfo(postData)
+        .then((res) => {
+          console.log('===BedSituation', res)
+          // {
+          //     "code": "200",
+          //     "desc": "操作成功",
+          //     "data": {
+          //         "wardCode": "030502",
+          //         "wardName": "神经内科护理单元",
+          //         "totalBed": "65",
+          //         "useBed": "40"
+          //     }
+          // }
+          if (res) {
+            let totalBed: any = res.data.totalBed
+            let useBed: any = res.data.useBed
+            setTotalBed(totalBed)
+            setUseBed(useBed)
+            // setSourceData([
+            //   { item: '已占用', count: (useBed / totalBed) * 100 },
+            //   { item: '空床', count: (1 - useBed / totalBed) * 100 }
+            // ])
+            setData(
+              new DataSet.View()
+                .source([
+                  { item: '已占用', count: (useBed / totalBed) * 100 },
+                  { item: '空床', count: (1 - useBed / totalBed) * 100 }
+                ])
+                .transform({
+                  type: 'percent',
+                  field: 'count',
+                  dimension: 'item',
+                  as: 'percent'
+                }).rows
+            )
           }
-        }
-        if (res) {
-          let totalBed: any = res.data.totalBed
-          let useBed: any = res.data.useBed
-          setTotalBed(totalBed)
-          setUseBed(useBed)
-          // setSourceData([
-          //   { item: '已占用', count: (useBed / totalBed) * 100 },
-          //   { item: '空床', count: (1 - useBed / totalBed) * 100 }
-          // ])
-          setData(
-            new DataSet.View()
-              .source([
-                { item: '已占用', count: (useBed / totalBed) * 100 },
-                { item: '空床', count: (1 - useBed / totalBed) * 100 }
-              ])
-              .transform({
-                type: 'percent',
-                field: 'count',
-                dimension: 'item',
-                as: 'percent'
-              }).rows
-          )
-        }
-      })
+        })
+        .catch((err) => {
+          console.log('err', err)
+          let res = {
+            code: '200',
+            desc: '操作成功',
+            data: {
+              wardCode: '030502',
+              wardName: '神经内科护理单元',
+              totalBed: '65',
+              useBed: '40'
+            }
+          }
+          if (res) {
+            let totalBed: any = res.data.totalBed
+            let useBed: any = res.data.useBed
+            setTotalBed(totalBed)
+            setUseBed(useBed)
+            // setSourceData([
+            //   { item: '已占用', count: (useBed / totalBed) * 100 },
+            //   { item: '空床', count: (1 - useBed / totalBed) * 100 }
+            // ])
+            setData(
+              new DataSet.View()
+                .source([
+                  { item: '已占用', count: (useBed / totalBed) * 100 },
+                  { item: '空床', count: (1 - useBed / totalBed) * 100 }
+                ])
+                .transform({
+                  type: 'percent',
+                  field: 'count',
+                  dimension: 'item',
+                  as: 'percent'
+                }).rows
+            )
+          }
+        })
+    }
   }, [authStore.selectedDeptCode])
   // 表图
   // const DataSet = require('@antv/data-set')

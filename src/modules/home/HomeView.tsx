@@ -22,13 +22,14 @@ import emitter from 'src/libs/ev'
 // }
 
 export default function HomeView () {
-  const [page, setPage] = useState('本页')
+  const [page, setPage] = useState(['本页'])
   useEffect(() => {})
   emitter.removeAllListeners('首页查询')
   emitter.addListener('首页查询', () => {
-    setPage('查询')
+    setPage(['查询'])
     console.log('5555555555555555555555 查询')
   })
+  console.log(page)
   return (
     <Wrapper>
       <SelectCommon />

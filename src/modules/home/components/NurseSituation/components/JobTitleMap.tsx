@@ -26,9 +26,12 @@ export default function BedSituation (props: Props) {
       deptCode: authStore.selectedDeptCode,
       item: props.titleByGet
     }
-    HomeApi.indexInfo(postData).then((res) => {
-      console.log('====indexInfo:', res)
-    })
+    if (authStore.selectedDeptCode) {
+      HomeApi.indexInfo(postData).then((res) => {
+        console.log('====indexInfo:', res)
+      })
+    }
+
     console.log(count, setCount)
   }, [authStore.selectedDeptCode, props.titleByGet])
   return (

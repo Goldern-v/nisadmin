@@ -23,20 +23,22 @@ export default observer(function WardSituation () {
     }
     // console.log('===WardSituation', postData)
     // service
-    HomeApi.wardFlow(postData)
-      .then((res) => {
-        console.log('===WardSituation', res)
-        if (res.data) {
-          setDataSource(res.data)
-        }
-      })
-      .catch(() => {
-        // for (let i = 0; i < cacheData.length; i++) {
-        //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
-        // }
-        // // cacheData
-        // setDataSource(cacheData)
-      })
+    if (authStore.selectedDeptCode) {
+      HomeApi.wardFlow(postData)
+        .then((res) => {
+          console.log('===WardSituation', res)
+          if (res.data) {
+            setDataSource(res.data)
+          }
+        })
+        .catch(() => {
+          // for (let i = 0; i < cacheData.length; i++) {
+          //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
+          // }
+          // // cacheData
+          // setDataSource(cacheData)
+        })
+    }
   }, [authStore.selectedDeptCode])
   const columns: any = [
     // {
@@ -56,7 +58,7 @@ export default observer(function WardSituation () {
     },
     {
       title: '人数',
-      dataIndex: 'totalCount',
+      dataIndex: 'patientNum',
       key: '',
       align: 'center'
     }
@@ -129,6 +131,9 @@ const Head = styled.div`
   }
 `
 const Mid = styled.div`
+  .BaseTable__Wrapper-sc-18xwuv-0 {
+    padding: 0 !important;
+  }
   .ant-table-header {
     ::-webkit-scrollbar {
       /*滚动条整体样式*/
