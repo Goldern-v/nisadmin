@@ -187,31 +187,31 @@ export default function ToolBar () {
           value: props.mealName.value
         }),
         mondayName: Form.createFormField({
-          ...props.type,
+          ...props.mondayName,
           value: props.mondayName.value
         }),
         tuesdayName: Form.createFormField({
-          ...props.startTime,
+          ...props.tuesdayName,
           value: props.tuesdayName.value
         }),
         wednesdayName: Form.createFormField({
-          ...props.endTime,
+          ...props.wednesdayName,
           value: props.wednesdayName.value
         }),
         thursdayName: Form.createFormField({
-          ...props.workHour,
+          ...props.thursdayName,
           value: props.thursdayName.value
         }),
         fridayName: Form.createFormField({
-          ...props.workHour,
+          ...props.fridayName,
           value: props.fridayName.value
         }),
         saturdayName: Form.createFormField({
-          ...props.workHour,
+          ...props.saturdayName,
           value: props.saturdayName.value
         }),
         sundayName: Form.createFormField({
-          ...props.color,
+          ...props.sundayName,
           value: props.sundayName.value
         }),
         status: Form.createFormField({
