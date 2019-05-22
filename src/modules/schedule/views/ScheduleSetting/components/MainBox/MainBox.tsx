@@ -696,6 +696,16 @@ export default function MainBox () {
         return result
       }
 
+      let getRangeNameCode = (range: any, i: number) => {
+        let result = ''
+        try {
+          result = range[i].rangeNameCode ? range[i].rangeNameCode : ''
+        } catch (error) {
+          return ''
+        }
+        return result
+      }
+
       let getNameColor = (range: any, i: number) => {
         let result = ''
         try {
@@ -752,13 +762,13 @@ export default function MainBox () {
         saturdayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 5) : '',
         sundayNameColor: nurse.settingDtos ? getNameColor(nurse.settingDtos, 6) : '',
         //
-        mondayNameCode: nurse.settingDtos ? getShiftType(nurse.settingDtos, 0) : '',
-        tuesdayNameCode: nurse.settingDtos ? getShiftType(nurse.settingDtos, 1) : '',
-        wednesdayNameCode: nurse.settingDtos ? getShiftType(nurse.settingDtos, 2) : '',
-        thursdayNameCode: nurse.settingDtos ? getShiftType(nurse.settingDtos, 3) : '',
-        fridayNameCode: nurse.settingDtos ? getShiftType(nurse.settingDtos, 4) : '',
-        saturdayNameCode: nurse.settingDtos ? getShiftType(nurse.settingDtos, 5) : '',
-        sundayNameCode: nurse.settingDtos ? getShiftType(nurse.settingDtos, 6) : '',
+        mondayNameCode: nurse.mondayNameCode ? nurse.mondayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 0) : ''),
+        tuesdayNameCode: nurse.tuesdayNameCode ? nurse.tuesdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 1) : ''),
+        wednesdayNameCode: nurse.wednesdayNameCode ? nurse.wednesdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 2) : ''),
+        thursdayNameCode: nurse.thursdayNameCode ? nurse.thursdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 3) : ''),
+        fridayNameCode: nurse.fridayNameCode ? nurse.fridayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 4) : ''),
+        saturdayNameCode: nurse.saturdayNameCode ? nurse.saturdayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 5) : ''),
+        sundayNameCode: nurse.sundayNameCode ? nurse.sundayNameCode:(nurse.settingDtos ? getRangeNameCode(nurse.settingDtos, 6) : ''),
         //
         remark: nurse.remark || '',
         thisWeekHour: nurse.thisWeekHour || '',

@@ -38,9 +38,9 @@ const newImg = require('src/modules/schedule/views/components/images/new.png')
 const getTextColor = (text: any, colorName: any) =>
   text.length > 0 ? (
     <span>
-      <Tag color={colorName || ''} key={text} style={{ margin: 'auto auto' }}>
+      <span color={colorName || ''} key={text} style={{ margin: 'auto auto',color:colorName }}>
         {text.toUpperCase()}
-      </Tag>
+      </span>
     </span>
   ) : (
     ''
@@ -315,6 +315,13 @@ export default function ScheduleTable () {
           rangeName5: getRangeObj(nurse.settingDtos, 'rangeName', 4) || '',
           rangeName6: getRangeObj(nurse.settingDtos, 'rangeName', 5) || '',
           rangeName7: getRangeObj(nurse.settingDtos, 'rangeName', 6) || '',
+          rangeNameCode1: getRangeObj(nurse.settingDtos, 'rangeNameCode', 0) || '',
+          rangeNameCode2: getRangeObj(nurse.settingDtos, 'rangeNameCode', 1) || '',
+          rangeNameCode3: getRangeObj(nurse.settingDtos, 'rangeNameCode', 2) || '',
+          rangeNameCode4: getRangeObj(nurse.settingDtos, 'rangeNameCode', 3) || '',
+          rangeNameCode5: getRangeObj(nurse.settingDtos, 'rangeNameCode', 4) || '',
+          rangeNameCode6: getRangeObj(nurse.settingDtos, 'rangeNameCode', 5) || '',
+          rangeNameCode7: getRangeObj(nurse.settingDtos, 'rangeNameCode', 6) || '',
           rangeNameColor1: getRangeObj(nurse.settingDtos, 'nameColor', 0) || '',
           rangeNameColor2: getRangeObj(nurse.settingDtos, 'nameColor', 1) || '',
           rangeNameColor3: getRangeObj(nurse.settingDtos, 'nameColor', 2) || '',
@@ -367,6 +374,13 @@ export default function ScheduleTable () {
           rangeName5: '',
           rangeName6: '',
           rangeName7: '',
+          rangeNameCode1: '',
+          rangeNameCode2: '',
+          rangeNameCode3: '',
+          rangeNameCode4: '',
+          rangeNameCode5: '',
+          rangeNameCode6: '',
+          rangeNameCode7: '',
           rangeNameColor1: '',
           rangeNameColor2: '',
           rangeNameColor3: '',
@@ -393,7 +407,7 @@ export default function ScheduleTable () {
         workhour += item.thisWeekHour
       }
       for (let ii = 1; ii < 8; ii++) {
-        let element = (item as any)['rangeName' + ii]
+        let element = (item as any)['rangeNameCode' + ii] || (item as any)['rangeName' + ii]
         if (element && element.length > 0) {
           if (rangeNames.indexOf(element) === -1) {
             //
@@ -475,6 +489,7 @@ const Wrapper = styled.div`
     min-height: 30px;
     text-align: center;
     height: 30px;
+    color: black;
   }
   th {
     background: #f8f8f8;

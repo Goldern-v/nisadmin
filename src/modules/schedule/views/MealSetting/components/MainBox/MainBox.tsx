@@ -18,9 +18,9 @@ export interface Props extends RouteComponentProps {}
 const getTextColor = (text: string, record: any, colorName: string) =>
   text && text.length > 0 ? (
     <span>
-      <Tag color={colorName} key={text}>
+      <span color={colorName} key={text} style={{color:colorName}}>
         {text.toUpperCase()}
-      </Tag>
+      </span>
     </span>
   ) : (
     ''
