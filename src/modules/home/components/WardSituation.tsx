@@ -56,7 +56,7 @@ export default observer(function WardSituation () {
     },
     {
       title: '人数',
-      dataIndex: 'totalCount',
+      dataIndex: 'patientNum',
       key: '',
       align: 'center'
     }
