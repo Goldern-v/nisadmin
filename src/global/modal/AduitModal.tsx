@@ -38,7 +38,20 @@ export default function aduitModal (props: Props) {
       props.title ? setTitle(props.title) : setTitle('审核')
       props.allData ? setAuditStatus(props.allData.auditedStatusName) : setAuditStatus({})
       props.fileData ? setFileData(props.fileData) : setFileData([])
-
+      if (props.type === 'nurseInformation') {
+        modalService.getByIdAuditeDis(props.type).then((res) => {
+          let data = res.data
+          let tableData = props.tableFormat.map((item: any) => {
+            let keys = Object.keys(item)
+            if (!keys[1]) keys[1] = ''
+            return {
+              [keys[0]]: data[item[keys[0]]],
+              [keys[1]]: data[item[keys[1]]]
+            }
+          })
+          setTableData(tableData)
+        })
+      }
       /** 获取详情 */
       modalService.getByIdAudite(props.type, props.id).then((res) => {
         let data = res.data

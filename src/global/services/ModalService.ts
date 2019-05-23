@@ -10,6 +10,10 @@ export default class ModalService extends BaseApiService {
   public getByIdAudite (type: string, id: string) {
     return this.get(`/${type}/getByIdAudite/${id}`)
   }
+  // 基本信息获取详情
+  public getByIdAuditeDis (type: string) {
+    return this.get(`/${type}/getByEmpNoAudite/${appStore.queryObj.empNo}`)
+  }
 }
 
 export const modalService = new ModalService()

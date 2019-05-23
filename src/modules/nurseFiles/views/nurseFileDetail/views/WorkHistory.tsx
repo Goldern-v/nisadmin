@@ -11,7 +11,7 @@ import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { auditedStatusEnum } from 'src/libs/enum/common'
 import { globalModal } from 'src/global/globalModal'
-
+// import {}
 export interface Props extends RouteComponentProps {}
 
 export default observer(function WorkHistory () {

@@ -35,6 +35,7 @@ export default observer(function BaseInfo () {
         globalModal.auditModal.show({
           id: idData,
           type: 'nurseInformation',
+          // empNo: appStore.queryObj.empNo,
           title: '审核基础信息',
           tableFormat: [
             {
