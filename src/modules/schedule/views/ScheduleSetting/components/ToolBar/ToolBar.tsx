@@ -143,7 +143,7 @@ export default function ToolBar () {
             if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1 && key.toLowerCase().indexOf('daynamecolor') === -1&& key.toLowerCase().indexOf('daynamecode') === -1) {
               let shift = shiftListData.find((s: any) => element === s.name)
               let elementCode = nurse[key+'Code']
-              console.log('!!!!shift', shift, key, nurse[key],elementCode, nurse)
+              // console.log('!!!!shift', shift, key, nurse[key],elementCode, nurse)
               if (!shift) {
                 shift = shiftListData.find((s: any) => nurse[key+'Code'] === s.name || (nurse[key+'Code'] === s.shiftType&&nurse[key+'Code'] != s.name))
                 // if(!shift){

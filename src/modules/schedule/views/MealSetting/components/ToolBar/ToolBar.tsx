@@ -512,7 +512,7 @@ export default function ToolBar () {
       <div style={{ flex: 1 }} />
       <Button
         onClick={() => {
-          addMeal('添加排班')
+          addMeal('添加排班套餐')
         }}
         style={{ marginLeft: 20, marginRight: 10 }}
       >
