@@ -35,7 +35,14 @@ export default class AuthStore {
       return ''
     }
   }
-
+  @computed
+  public get post () {
+    try {
+      return this!.user!.post
+    } catch (error) {
+      return ''
+    }
+  }
   /** 用户初始化 */
   @action
   public initUser () {

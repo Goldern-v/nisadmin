@@ -132,7 +132,7 @@ export default observer(function WorkHistory () {
                   fileData: [
                     {
                       附件1: 'aaaa',
-                      附件2: 'bbb'
+                      附件2: require(`../../../images/证件空态度.png`)
                     }
                   ],
                   allData: row
