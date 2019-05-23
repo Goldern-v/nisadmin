@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 const RadioGroup = Radio.Group
 const startShiftClass = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
-const ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
+let ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
 
 // const checkboxItemStandard = [
 // '班次1',
@@ -24,7 +24,7 @@ const ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其�
 // '班次13',
 // '班次14'
 // ]
-const checkboxItemState: any = []
+let checkboxItemState: any = []
 export interface Props extends RouteComponentProps {}
 
 export default function BedSituation (props: any) {
@@ -73,11 +73,15 @@ export default function BedSituation (props: any) {
     setRightChooseCheckboxShow([true, false])
     setShiftClass(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
     setCheckboxItem([])
+    ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
+    checkboxItemState = []
   }
   function radioClickRight () {
     setRightChooseCheckboxShow([false, true])
     setShiftClass([])
     setCheckboxItem([])
+    ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
+    checkboxItemState = []
   }
   // checkbox变动
   function checkboxChange (e: any) {

@@ -80,4 +80,38 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
   }
+
+  *::-webkit-scrollbar {
+    width: 7px;
+    /* height: 7px; */
+    background-color: #eaeaea;
+  }
+  *::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 50px;
+    background-color: #eaeaea;
+  }
+  *::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #c2c2c2;
+  }
+
+  .ant-table-header {
+    *::-webkit-scrollbar {
+      width: 7px;
+      /* height: 7px; */
+      background-color: rgb(242, 244, 245);
+    }
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgb(242, 244, 245);
+      border-radius: 0;
+      background-color: rgb(242, 244, 245);
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0px;
+      -webkit-box-shadow: inset 0 0 6px rgb(242, 244, 245);
+      background-color: rgb(242, 244, 245);
+    }
+  }
 `

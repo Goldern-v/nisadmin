@@ -9,7 +9,7 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditExaminationResultsModal from '../modal/EditExaminationResultsModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
-
+import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function ExaminationResults () {
   const editExaminationResultsModal = createModal(EditExaminationResultsModal)
@@ -134,7 +134,30 @@ export default observer(function ExaminationResults () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseYearCheck',
+                  title: '审核年度考核结果',
+                  tableFormat: [
+                    {
+                      年度: `year`,
+                      考核结果: `checkResult`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne,
+                      附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }

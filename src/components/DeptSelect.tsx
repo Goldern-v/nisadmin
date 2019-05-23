@@ -26,7 +26,7 @@ export default observer(function DeptSelect (props: Props) {
   }, [])
   return (
     <Wrapper>
-      <Select defaultValue={defaultValue} showSearch style={{ width: 200 }} onChange={onChange}>
+      <Select value={defaultValue} showSearch style={{ width: 200 }} onChange={onChange}>
         {deptList.map((item: DeptType) => (
           <Select.Option key={item.code} value={item.code}>
             {item.name}

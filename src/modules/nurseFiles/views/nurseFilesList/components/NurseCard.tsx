@@ -8,7 +8,8 @@ interface NurseCardType {
   /** 工号 */
   empNo: string
   /** 职务 */
-  title:  '护士' | '护师' | '主管护师' | '副主任护师' | '主任护师'
+  title: '护士' | '护师' | '主管护师' | '副主任护师' | '主任护师'
+  newTitle: '护士' | '护师' | '主管护师' | '副主任护师' | '主任护师'
   /** 层级 */
   currentLevel: string
   nurseHierarchy: string
@@ -55,7 +56,7 @@ export default function NurseCard (props: Props) {
           {data.statusColor === '1' && <Badge />}
         </Name>
         <span>
-          {data.title} | {data.nurseHierarchy}
+          {data.newTitle} | {data.nurseHierarchy}
         </span>
         <span>{data.deptName}</span>
       </Wrapper>
@@ -75,7 +76,8 @@ const Wrapper = styled.div`
   width: 100%;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
-  border: 1px solid rgba(198, 198, 198, 1);
+  /* border: 1px solid rgba(198, 198, 198, 1); */
+  box-shadow: ${(p) => p.theme.$shadow};
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -9,7 +9,9 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditSpecialCardModal from '../modal/EditSpecialCardModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
-
+import { globalModal } from 'src/global/globalModal'
+import { authStore } from 'src/stores'
+import { Button } from 'antd'
 export interface Props extends RouteComponentProps {}
 export default observer(function SpecialCard () {
   const editSpecialCardModal = createModal(EditSpecialCardModal)
@@ -207,13 +209,74 @@ export default observer(function SpecialCard () {
             >
               修改
             </span>
-            <span>审核</span>
+            {authStore.post === '护长' && row.auditedStatusName === '待护士长审核' && (
+              <span
+                onClick={() => {
+                  globalModal.auditModal.show({
+                    id: row.id,
+                    type: 'nurseSpecialQualification',
+                    title: '审核特殊资格证',
+                    tableFormat: [
+                      {
+                        获得时间: `time`,
+                        资格名称: `specialQualificationName`
+                      },
+                      {
+                        资格证编号: `specialQualificationNo`
+                      }
+                    ],
+                    fileData: [
+                      {
+                        附件1: row.urlImageOne,
+                        附件2: require(`../../../images/证件空态度.png`)
+                      }
+                    ],
+                    allData: row
+                  })
+                }}
+              >
+                审核
+              </span>
+            )}
+
+            {authStore.post === '护理部' ||
+              ((authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
+                (row.auditedStatusName === '待护理部主任审核' && (
+                  <span
+                    onClick={() => {
+                      globalModal.auditModal.show({
+                        id: row.id,
+                        type: 'nurseSpecialQualification',
+                        title: '审核特殊资格证',
+                        tableFormat: [
+                          {
+                            获得时间: `time`,
+                            资格名称: `specialQualificationName`
+                          },
+                          {
+                            资格证编号: `specialQualificationNo`
+                          }
+                        ],
+                        fileData: [
+                          {
+                            附件1: row.urlImageOne,
+                            附件2: require(`../../../images/证件空态度.png`)
+                          }
+                        ],
+                        allData: row
+                      })
+                    }}
+                  >
+                    审核
+                  </span>
+                )))}
           </DoCon>
         )
       }
     }
   ]
   const [tableData, setTableData] = useState([])
+  const [statusNameGet, setStatusNameGet] = useState('')
   const getTableData = () => {
     nurseFilesService.nurseSpecialQualification(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
@@ -221,9 +284,18 @@ export default observer(function SpecialCard () {
   }
   useEffect(() => {
     getTableData()
+    // nurseFilesService.nurseSpecialQualification(appStore.queryObj.empNo).then((res) => {
+    //   setTableData(res.data)
+    //   setStatusNameGet(res.data[0].auditedStatusName)
+    // })
+    // setStatusNameGet(tableData[0]!.auditedStatusName)
   }, [])
+  const test = () => {
+    console.log(authStore.post)
+  }
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
+      <Button onClick={test}>按钮</Button>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>

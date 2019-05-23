@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
+import { globalModal } from 'src/global/globalModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
@@ -149,7 +150,34 @@ export default observer(function EducationalExperience () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseContinuingEducation',
+                  title: '审核继续教育',
+                  tableFormat: [
+                    {
+                      开始时间: `startTime`,
+                      结束时间: `startTime`
+                    },
+                    {
+                      培训单位: `trainingUnit`,
+                      培训内容: `trainingContent`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne,
+                      附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }
@@ -166,7 +194,7 @@ export default observer(function EducationalExperience () {
   }, [])
   return (
     <BaseLayout title='继续教育' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

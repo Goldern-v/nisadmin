@@ -32,7 +32,9 @@ export default function HomeView () {
   console.log(page)
   return (
     <Wrapper>
-      <SelectCommon />
+      <SelectCon>
+        <SelectCommon />
+      </SelectCon>
       {/* <SelectCon>
         <span className='label'>科室：</span>
         <Select defaultValue='普外科护理单元' style={{ width: 200 }} onChange={handleChange}>
@@ -77,15 +79,15 @@ export default function HomeView () {
   )
 }
 const Wrapper = styled.div`
-  padding: ${(p) => p.theme.$mcp};
-  /* border: 1px solid red;*/
+  padding:20px 10px;
+  /* padding: ${(p) => p.theme.$mcp}; */
+  /* 全局背景 */
+  background-color:  ${(p) => p.theme.$bgBody};
 `
 
-// const SelectCon = styled.div`
-//   padding: 20px 0;
-//   display: flex;
-//   align-items: center;
-// `
+const SelectCon = styled.div`
+  padding: 0 10px;
+`
 const HomeDetail = styled.div`
   width: 100%;
   display: flex;
@@ -94,13 +96,14 @@ const HomeDetail = styled.div`
   /* background-color: red; */
 `
 const HomeDetailItem = styled.div`
-  margin: 4px 0.53% 16px 0.53%;
+  box-sizing: border-box;
+  margin: 0.8416%;
   padding: 0;
-  width: 32.26%;
+  width: 31.65%;
   height: 320px;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
-  border: 1px solid rgba(161, 175, 179, 1);
+  /* border: 1px solid rgba(161, 175, 179, 1); */
+  box-shadow: ${(p) => p.theme.$shadow};
   overflow: hidden;
-  /* box-sizing: border-box; */
 `

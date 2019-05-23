@@ -88,12 +88,21 @@ export default function BedSituation () {
     <tr key={index} onClick={trClickChange}>
       <td>{itemTr.序列}</td>
       <td>{itemTr.科室}</td>
-      {getShiftClass.map((itemTd: any, indexTd: number) => (
-        <td key={indexTd}>{itemTr[itemTd]}</td>
-      ))}
-      {getCheckboxItem.map((itemTd: any, indexTd: number) => (
-        <td key={indexTd}>{itemTr[itemTd]}</td>
-      ))}
+
+      {getShiftClass.map((itemTd: any, indexTd: number) => {
+        if (itemTd === '序号') {
+          return <td key={indexTd}>{index + 1}</td>
+        } else {
+          return <td key={indexTd}>{itemTr[itemTd]}</td>
+        }
+      })}
+      {getCheckboxItem.map((itemTd: any, indexTd: number) => {
+        if (itemTd === '序号') {
+          return <td key={indexTd}>{index + 1}</td>
+        } else {
+          return <td key={indexTd}>{itemTr[itemTd]}</td>
+        }
+      })}
       <td>{itemTr.合计}</td>
     </tr>
   ))

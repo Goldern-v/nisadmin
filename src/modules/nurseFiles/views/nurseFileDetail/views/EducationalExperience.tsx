@@ -9,7 +9,7 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditEducationalExperienceModal from '../modal/EditEducationalExperienceModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
-
+import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
   const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
@@ -167,7 +167,37 @@ export default observer(function EducationalExperience () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseMedicalEducation',
+                  title: '审核特殊资格证',
+                  tableFormat: [
+                    {
+                      就读时间: `readTime`,
+                      毕业时间: `graduationTime`
+                    },
+                    {
+                      毕业学校: `graduationSchool`,
+                      专业: `readProfessional`
+                    },
+                    {
+                      学历: `education`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      毕业证: row.urlImageTwo,
+                      学位证: row.urlImageOne
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }
@@ -179,7 +209,7 @@ export default observer(function EducationalExperience () {
   })
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.userEducat(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseMedicalEducation(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -189,7 +219,7 @@ export default observer(function EducationalExperience () {
   return (
     <BaseLayout title='教育经历' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
-      <editEducationalExperienceModal.Component getTableData={getTableData} type={['spaceRow', 'fixedWidth']}/>
+      <editEducationalExperienceModal.Component getTableData={getTableData} type={['spaceRow', 'fixedWidth']} />
     </BaseLayout>
   )
 })

@@ -10,6 +10,9 @@ import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModa
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
+import { appStore, authStore } from 'src/stores'
+import ImageUploader from 'src/components/ImageUploader'
+import service from 'src/services/api'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -23,7 +26,31 @@ const rules: Rules = {
   hierarchy: (val) => !!val || '请选择层级'
 }
 export default function EditWorkHistoryModal (props: Props) {
+  const uploadCard = async (file: any) => {
+    let obj: any = {
+      file,
+      empNo: appStore.queryObj.empNo,
+      type: '4'
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
+    }
+
+    const [err, res] = await to(service.commonApiService.uploadFile(obj))
+    if (err) {
+      message.error(err.message)
+      return res || ''
+    }
+    if (res.data) {
+      let pathImg = `/asset/nurseAttachment${res.data.path}`
+      setAttachmentId(res.data.id + ',')
+      return pathImg
+    }
+  }
   let { visible, onCancel, onOk, data, signShow } = props
+  const [attachmentId, setAttachmentId] = useState('')
   let refForm = React.createRef<Form>()
   console.log('this is refForm')
   console.log(refForm)
@@ -113,6 +140,11 @@ export default function EditWorkHistoryModal (props: Props) {
                 <Option value='2'>2</Option>
               </Select> */}
               <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={``} name='urlImageOne'>
+              <ImageUploader upload={uploadCard} text='添加附件' />
             </Form.Field>
           </Col>
         </Row>

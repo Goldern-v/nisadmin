@@ -15,23 +15,29 @@ export interface Props extends RouteComponentProps<{ name?: string }> {}
 const LEFT_MENU_CONFIG = [
   {
     title: '护理诊断字典',
+    icon: require('./images/icon/护理诊断字典.png'),
     path: '/setting/护理诊断字典'
   },
   {
     title: '健康宣教字典',
-    path: '/setting/健康宣教字典'
+    icon: require('./images/icon/健康宣教字典.png'),
+    path: '/setting/健康宣教字典',
+    children: [{}]
   },
   {
     title: '护理评估设置',
+    icon: require('./images/icon/护理评估设置.png'),
     path: '/setting/护理评估设置'
   },
   {
     title: '节假日设置',
+    icon: require('./images/icon/节假日设置.png'),
     path: '/setting/节假日设置',
     component: 节假日设置
   },
   {
     title: '物流平台设置',
+    icon: require('./images/icon/物流平台设置.png'),
     children: [
       {
         title: '物品分类字典设置',
@@ -51,6 +57,7 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: '绩效参数设置',
+    icon: require('./images/icon/绩效参数设置.png'),
     path: '/setting/绩效参数设置',
     component: 绩效参数设置
   }

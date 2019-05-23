@@ -9,6 +9,7 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWritingsModal from '../modal/EditWritingsModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function Writings () {
   const editWritingsModal = createModal(EditWritingsModal)
@@ -151,7 +152,34 @@ export default observer(function Writings () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nursePaperExperience',
+                  title: '审核著作译文论文',
+                  tableFormat: [
+                    {
+                      发表日期: `publicDate`,
+                      题目: `title`
+                    },
+                    {
+                      本人排名: `rank`,
+                      出版或刊登物:`publication`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne,
+                      附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }

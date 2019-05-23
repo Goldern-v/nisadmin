@@ -10,7 +10,8 @@ import createModal from 'src/libs/createModal'
 import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { auditedStatusEnum } from 'src/libs/enum/common'
-
+import { globalModal } from 'src/global/globalModal'
+// import {}
 export interface Props extends RouteComponentProps {}
 
 export default observer(function WorkHistory () {
@@ -95,7 +96,7 @@ export default observer(function WorkHistory () {
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        if (Object.keys(row).length == 0) return <span />
+        if (Object.keys(row).length === 0) return <span />
         return (
           <DoCon>
             <span
@@ -105,7 +106,41 @@ export default observer(function WorkHistory () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseWorkExperience',
+                  title: '审核工作经历',
+                  tableFormat: [
+                    {
+                      起始时间: `startTime`,
+                      结束时间: `endTime`
+                    },
+                    {
+                      工作单位: `unit`,
+                      专业技术工作: 'professionalWork'
+                    },
+                    {
+                      技术职称: 'professional',
+                      职务: 'post'
+                    },
+                    {
+                      技术职称: 'professional'
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: 'aaaa',
+                      附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }

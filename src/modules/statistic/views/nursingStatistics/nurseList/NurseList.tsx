@@ -125,9 +125,9 @@ const Con = styled.div`
 const Container = styled.div`
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
-  border: 1px solid rgba(219, 224, 228, 1);
-  margin: 15px;
-  padding: 15px;
+  margin: ${(p) => p.theme.$margin};
+  padding: ${(p) => p.theme.$margin};
+  box-shadow: ${(p) => p.theme.$shadow};
 `
 const Wrapper = styled.div``
 
