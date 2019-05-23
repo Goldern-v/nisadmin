@@ -52,7 +52,7 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/nurseSpecialQualification/saveOrUpdatePC`, obj)
   }
   // 4//查找护士教育经历
-  public async userEducat (empNo: any) {
+  public async nurseMedicalEducation (empNo: any) {
     return this.get(`/nurseMedicalEducation/findByEmpNoSubmit/${empNo}`)
   }
   // 4-1 教育经历新增/更新

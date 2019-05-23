@@ -9,6 +9,7 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditThreeBasesModal from '../modal/EditThreeBasesModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { globalModal } from 'src/global/globalModal'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function ThreeBases () {
@@ -140,7 +141,33 @@ export default observer(function ThreeBases () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseHospitalsThreeBase',
+                  title: '审核特殊资格证',
+                  tableFormat: [
+                    {
+                      年度: `year`,
+                      理论考核成绩_分: `theoryScore`
+                    },
+                    {
+                      操作考核成绩_分: `technologyScore`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne,
+                      附件2: 'bbb'
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }
@@ -159,7 +186,7 @@ export default observer(function ThreeBases () {
 
   return (
     <BaseLayout title='医院三基考核' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editThreeBasesModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

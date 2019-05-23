@@ -10,6 +10,7 @@ export interface Props extends RouteComponentProps {}
 import createModal from 'src/libs/createModal'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { observer } from 'mobx-react-lite'
+import { globalModal } from 'src/global/globalModal'
 export default observer(function BaseInfo () {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
@@ -26,7 +27,33 @@ export default observer(function BaseInfo () {
       }
     },
     {
-      label: '审核'
+      label: '审核',
+      //
+
+      //
+      onClick: () => {
+        globalModal.auditModal.show({
+          id: idData,
+          type: 'nurseInformation',
+          title: '审核基础信息',
+          tableFormat: [
+            {
+              获得时间: `empName`,
+              资格名称: `birthday`
+            },
+            {
+              资格证编号: `age`
+            }
+          ],
+          // fileData: [
+          //   {
+          //     附件1: info.urlImageOne,
+          //     附件2: 'bbb'
+          //   }
+          // ],
+          allData: info
+        })
+      }
     }
   ]
   const getTableData = () =>

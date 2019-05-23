@@ -9,6 +9,7 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditLevelChangeModal from '../modal/EditLevelChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { globalModal } from 'src/global/globalModal'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function LevelChange () {
@@ -129,7 +130,33 @@ export default observer(function LevelChange () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseProfessionalAndLevelChange',
+                  title: '审核职称及层级变动',
+                  tableFormat: [
+                    {
+                      职称聘用时间: `appointmentTime`,
+                      取得职称: `titleQualification`
+                    },
+                    {
+                      层级: `hierarchy`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne,
+                      附件2: 'bbb'
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }

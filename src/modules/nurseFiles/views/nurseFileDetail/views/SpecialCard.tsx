@@ -9,7 +9,7 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditSpecialCardModal from '../modal/EditSpecialCardModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
-
+import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function SpecialCard () {
   const editSpecialCardModal = createModal(EditSpecialCardModal)
@@ -207,7 +207,33 @@ export default observer(function SpecialCard () {
             >
               修改
             </span>
-            <span>审核</span>
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseSpecialQualification',
+                  title: '审核特殊资格证',
+                  tableFormat: [
+                    {
+                      获得时间: `time`,
+                      资格名称: `specialQualificationName`
+                    },
+                    {
+                      资格证编号: `specialQualificationNo`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne,
+                      附件2: 'bbb'
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              审核
+            </span>
           </DoCon>
         )
       }
