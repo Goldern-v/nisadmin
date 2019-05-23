@@ -4,7 +4,12 @@ export const theme = {
   /** 深主题色 */
   $mtdc: '#1D9165',
   /** 页面的padding */
-  $mcp: '15px 15px'
+  $mcp: '15px 15px',
+  // padding: ${(p) => p.theme.$mcp};
+  // body背景色统一
+  $bgBody: '#eeeeee',
+  // 阴影
+  $shadow: '0px -2px 4px rgba(0, 0, 0, 0.15)'
 }
 
 export type Theme = typeof theme

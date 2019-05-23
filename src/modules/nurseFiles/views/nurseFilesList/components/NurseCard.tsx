@@ -76,7 +76,8 @@ const Wrapper = styled.div`
   width: 100%;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
-  border: 1px solid rgba(198, 198, 198, 1);
+  /* border: 1px solid rgba(198, 198, 198, 1); */
+  box-shadow: ${(p) => p.theme.$shadow};
   display: flex;
   flex-direction: column;
   justify-content: center;

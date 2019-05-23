@@ -37,9 +37,11 @@ export default observer(function NurseFilesListView () {
 })
 const Wrapper = styled.div`
   padding: ${(p) => p.theme.$mcp};
+  /* 全局背景色 */
+  background-color: ${(p) => p.theme.$bgBody};
 `
-
 const NurseCardCon = styled.div`
-  margin: 0 -10px;
+  margin: 10px -10px;
   min-height: 440px;
+  /* box-shadow: 0px -2px 4px #000000; */
 `

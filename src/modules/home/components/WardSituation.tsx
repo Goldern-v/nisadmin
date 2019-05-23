@@ -173,7 +173,7 @@ const Mid = styled.div`
     }
   }
   .BaseTable__Wrapper-sc-18xwuv-0 {
-    padding: 0 ！ !important;
+    padding: 0 !important;
   }
   height: 282px;
 

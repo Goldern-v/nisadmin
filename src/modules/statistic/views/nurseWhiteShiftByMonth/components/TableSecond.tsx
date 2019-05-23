@@ -47,11 +47,15 @@ export default observer(function BedSituation (props: Props) {
     interfaceThDom = Object.keys(bodyTable[0]).map((item: any, index: number) => <th>{item}</th>)
 
     // interface td DOM
-    interfaceTdDom = bodyTable.map((itemTr: any, index: any) => (
+    interfaceTdDom = bodyTable.map((itemTr: any, index: number) => (
       <tr key={index} onClick={trClickChange}>
-        {interfaceThData.map((itemTd: any, indexTd: number) => (
-          <td key={indexTd}>{itemTr[itemTd]}</td>
-        ))}
+        {interfaceThData.map((itemTd: any, indexTd: number) => {
+          if (itemTd === '序号') {
+            return <td key={indexTd}>{index + 1}</td>
+          } else {
+            return <td key={indexTd}>{itemTr[itemTd]}</td>
+          }
+        })}
       </tr>
     ))
     TableShow = (
