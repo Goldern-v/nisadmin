@@ -9,7 +9,11 @@ export const theme = {
   // body背景色统一
   $bgBody: '#eeeeee',
   // 阴影
-  $shadow: '0px -2px 4px rgba(0, 0, 0, 0.15)'
+  $shadow: '0px 2px 4px rgba(0, 0, 0, 0.15)',
+  // tab阴影
+  $tabShadow: '0px 1px 2px 0px rgba(0,0,0,0.15)',
+  // 上下左右间距
+  $margin: '20px'
 }
 
 export type Theme = typeof theme

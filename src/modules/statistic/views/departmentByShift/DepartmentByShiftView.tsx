@@ -45,8 +45,9 @@ const Con = styled.div`
 const MidMidCon = styled.div`
   flex: 1;
   height: 0;
-  margin: 14px;
-  padding: 15px 30px;
+  margin: ${(p) => p.theme.$margin};
+  padding: ${(p) => p.theme.$margin};
+  box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
   border-radius: 5px;
   border: 1px solid rgba(161, 175, 179, 1);
