@@ -10,6 +10,7 @@ import createModal from 'src/libs/createModal'
 import EditAwardsModal from '../modal/EditAwardsModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
+import { authStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards () {
   const editAwardsModal = createModal(EditAwardsModal)
@@ -131,37 +132,41 @@ export default observer(function Awards () {
             >
               修改
             </span>
-            <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  id: row.id,
-                  type: 'nurseAwardWinning',
-                  title: '审核所获奖励',
-                  tableFormat: [
-                    {
-                      时间: `time`,
-                      获奖_推广创新项目名称: `awardWinningName`
-                    },
-                    {
-                      本人排名: `rank`,
-                      授奖级别: `awardlevel`
-                    },
-                    {
-                      批准机关: `approvalAuthority`
-                    }
-                  ],
-                  fileData: [
-                    {
-                      附件1: row.urlImageOne,
-                      附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
-                  allData: row
-                })
-              }}
-            >
-              审核
-            </span>
+            {authStore.post === '护理部' ||
+              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
+              (row.auditedStatusName === '待护理部主任审核' && (
+                <span
+                  onClick={() => {
+                    globalModal.auditModal.show({
+                      id: row.id,
+                      type: 'nurseAwardWinning',
+                      title: '审核所获奖励',
+                      tableFormat: [
+                        {
+                          时间: `time`,
+                          获奖_推广创新项目名称: `awardWinningName`
+                        },
+                        {
+                          本人排名: `rank`,
+                          授奖级别: `awardlevel`
+                        },
+                        {
+                          批准机关: `approvalAuthority`
+                        }
+                      ],
+                      fileData: [
+                        {
+                          附件1: row.urlImageOne,
+                          附件2: require(`../../../images/证件空态度.png`)
+                        }
+                      ],
+                      allData: row
+                    })
+                  }}
+                >
+                  审核
+                </span>
+              ))}
           </DoCon>
         )
       }

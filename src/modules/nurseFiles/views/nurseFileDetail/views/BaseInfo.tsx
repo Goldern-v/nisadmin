@@ -11,6 +11,7 @@ import createModal from 'src/libs/createModal'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { observer } from 'mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
+
 export default observer(function BaseInfo () {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])

@@ -129,12 +129,7 @@ export default observer(function WorkHistory () {
                       技术职称: 'professional'
                     }
                   ],
-                  fileData: [
-                    {
-                      附件1: 'aaaa',
-                      附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
+
                   allData: row
                 })
               }}
