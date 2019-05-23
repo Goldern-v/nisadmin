@@ -109,19 +109,30 @@ export default observer(function WorkHistory () {
             <span
               onClick={() => {
                 globalModal.auditModal.show({
+                  id: row.id,
+                  type: 'nurseWorkExperience',
                   title: '审核工作经历',
-                  tableData: [
+                  tableFormat: [
                     {
-                      起始时间: `${row.startTime}`,
-                      结束时间: `${row.endTime}`
+                      起始时间: `startTime`,
+                      结束时间: `endTime`
                     },
                     {
-                      工作单位: `${row.unit}`,
-                      专业技术工作: row.professionalWork
+                      工作单位: `unit`,
+                      专业技术工作: 'professionalWork'
                     },
                     {
-                      技术职称: row.professional,
-                      职务: row.post
+                      技术职称: 'professional',
+                      职务: 'post'
+                    },
+                    {
+                      技术职称: 'professional'
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: 'aaaa',
+                      附件2: 'bbb'
                     }
                   ],
                   allData: row
