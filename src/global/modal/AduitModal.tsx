@@ -7,16 +7,24 @@ import { ReactComponent as AgreeIcon } from '../images/默认勾选.svg'
 const { TextArea } = Input
 import { Modal } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
+import { modalService } from '../services/ModalService'
 const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
 export interface Props extends ModalComponentProps {
   allData?: any
-  tableData?: any
+  tableFormat?: any
+  fileData?: any
   title?: string
+  type: string
+  id: string
 }
 
 export default function aduitModal (props: Props) {
   let { visible, onCancel } = props
+  /** 表格数据 */
   let [tableData, setTableData]: [any, any] = useState([])
+  /** 文件数据 */
+  let [fileData, setFileData]: [any, any] = useState([])
+  /** 标题 */
   let [title, setTitle]: [any, any] = useState('')
   /** 评估结果 */
   let [agree, setAgree]: [any, any] = useState('')
@@ -26,32 +34,55 @@ export default function aduitModal (props: Props) {
   let [opinion, setOpinion]: [any, any] = useState('')
   useEffect(() => {
     if (visible) {
-      props.tableData && setTableData(props.tableData)
-      props.title && setTitle(props.title)
-      props.allData && setAuditStatus(props.allData.auditedStatusName)
+      // props.tableData ? setTableData(props.tableData) : setTableData([])
+      props.title ? setTitle(props.title) : setTitle('审核')
+      props.allData ? setAuditStatus(props.allData.auditedStatusName) : setAuditStatus({})
+      props.fileData ? setFileData(props.fileData) : setFileData([])
+
+      /** 获取详情 */
+      modalService.getByIdAudite(props.type, props.id).then((res) => {
+        let data = res.data
+        let tableData = props.tableFormat.map((item: any) => {
+          let keys = Object.keys(item)
+          if (!keys[1]) keys[1] = ''
+          return {
+            [keys[0]]: data[item[keys[0]]],
+            [keys[1]]: data[item[keys[1]]]
+          }
+        })
+        setTableData(tableData)
+      })
     }
   }, [visible])
+
+  const onOk = () => {
+    // modalService
+    console.log(12312321)
+  }
   return (
-    <Modal title={title} visible={visible} onOk={onCancel} onCancel={onCancel} okText='保存' forceRender width={800}>
+    <Modal title={title} visible={visible} onOk={onOk} onCancel={onCancel} okText='保存' forceRender width={800}>
       <MainPart>
         <InfoTable>
-          {tableData.map((obj: any, index: number) => (
-            <tr key={index}>
-              <td>{Object.keys(obj)[0]}</td>
-              <td>
-                <Value>{obj[Object.keys(obj)[0]]}</Value>
-              </td>
-              <td>{Object.keys(obj)[1]}</td>
-              <td>
-                <Value>{obj[Object.keys(obj)[1]]}</Value>
-              </td>
-            </tr>
-          ))}
+          <tbody>
+            {tableData.map((obj: any, index: number) => (
+              <tr key={index}>
+                <td>{Object.keys(obj)[0]}</td>
+                <td>
+                  <Value>{obj[Object.keys(obj)[0]]}</Value>
+                </td>
+                <td>{Object.keys(obj)[1]}</td>
+                <td>{Object.keys(obj)[1] && <Value>{obj[Object.keys(obj)[1]]}</Value>}</td>
+              </tr>
+            ))}
+          </tbody>
         </InfoTable>
-        <UploadCon>
-          <UploadItem />
-          <UploadItem />
-        </UploadCon>
+
+        {fileData.map((obj: any, index: number) => (
+          <UploadCon key={index}>
+            {Object.keys(obj)[0] && <UploadItem label={Object.keys(obj)[0]} path={obj[Object.keys(obj)[0]]} />}
+            {Object.keys(obj)[1] && <UploadItem label={Object.keys(obj)[1]} path={obj[Object.keys(obj)[1]]} />}
+          </UploadCon>
+        ))}
       </MainPart>
       <AduitCon>
         <TimeLineCon>
@@ -148,7 +179,8 @@ function TimeLineItem (props: any) {
   )
 }
 
-function UploadItem () {
+function UploadItem (props: any) {
+  const { label, path } = props
   const ZyzsCon = styled.div`
     position: relative;
     font-size: 13px;
@@ -163,15 +195,16 @@ function UploadItem () {
     img {
       position: absolute;
       height: 174px;
+      min-width: 200px;
       border: 1px solid rgba(219, 224, 228, 1);
       top: 20px;
-      left: 120px;
+      left: 80px;
     }
   `
   return (
     <ZyzsCon>
-      <span>职业证书：</span>
-      <img src={defaultHead} alt='' />
+      <span>{label}：</span>
+      <img src={path || defaultHead} alt='' />
     </ZyzsCon>
   )
 }

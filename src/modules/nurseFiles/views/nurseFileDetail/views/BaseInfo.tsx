@@ -70,50 +70,52 @@ export default observer(function BaseInfo () {
   }, [])
   return (
     <BaseLayout title='基本信息' btnList={btnList}>
-      <InfoTable>
-        <colgroup>
-          <col width='120' />
-          <col />
-          <col width='139' />
-          <col />
-          <col width='200' />
-        </colgroup>
-        <tbody>
-          <tr>
-            <td>姓名</td>
-            <td>
-              <Value>{appStore.queryObj.empName}</Value>
-            </td>
-            <td>工号</td>
-            <td>
-              <Value>{appStore.queryObj.empNo}</Value>
-            </td>
-            <td rowSpan={5}>
-              <img
-                className='head-img'
-                src={(info && info.nearImageUrl) || require('../../../images/护士默认头像.png')}
-                alt=''
-              />
-            </td>
-          </tr>
-          {tableData.map((obj: any, index: number) => (
-            <tr key={index}>
-              <td>{Object.keys(obj)[0]}</td>
+      <ScrollCon>
+        <InfoTable>
+          <colgroup>
+            <col width='120' />
+            <col />
+            <col width='139' />
+            <col />
+            <col width='200' />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td>姓名</td>
               <td>
-                <Value>{obj[Object.keys(obj)[0]]}</Value>
+                <Value>{appStore.queryObj.empName}</Value>
               </td>
-              <td>{Object.keys(obj)[1]}</td>
-              <td colSpan={index >= 4 ? 2 : 1}>
-                <Value>{obj[Object.keys(obj)[1]]}</Value>
+              <td>工号</td>
+              <td>
+                <Value>{appStore.queryObj.empNo}</Value>
+              </td>
+              <td rowSpan={5}>
+                <img
+                  className='head-img'
+                  src={(info && info.nearImageUrl) || require('../../../images/护士默认头像.png')}
+                  alt=''
+                />
               </td>
             </tr>
-          ))}
-        </tbody>
-      </InfoTable>
-      <ZyzsCon>
-        <span>职业证书：</span>
-        {info.zyzsUrl && <img src={info.zyzsUrl} alt='' />}
-      </ZyzsCon>
+            {tableData.map((obj: any, index: number) => (
+              <tr key={index}>
+                <td>{Object.keys(obj)[0]}</td>
+                <td>
+                  <Value>{obj[Object.keys(obj)[0]]}</Value>
+                </td>
+                <td>{Object.keys(obj)[1]}</td>
+                <td colSpan={index >= 4 ? 2 : 1}>
+                  <Value>{obj[Object.keys(obj)[1]]}</Value>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </InfoTable>
+        <ZyzsCon>
+          <span>职业证书：</span>
+          {info.zyzsUrl && <img src={info.zyzsUrl} alt='' />}
+        </ZyzsCon>
+      </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
@@ -172,4 +174,9 @@ const ZyzsCon = styled.div`
     top: 20px;
     left: 137px;
   }
+`
+
+const ScrollCon = styled.div`
+  overflow: auto;
+  height: calc(100vh - 300px);
 `
