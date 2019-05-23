@@ -96,7 +96,7 @@ export default observer(function WorkHistory () {
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        if (Object.keys(row).length == 0) return <span />
+        if (Object.keys(row).length === 0) return <span />
         return (
           <DoCon>
             <span
