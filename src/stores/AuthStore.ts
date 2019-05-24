@@ -43,6 +43,15 @@ export default class AuthStore {
       return ''
     }
   }
+
+  /** 是否是管理员 */
+  public get isAdmin () {
+    try {
+      return this!.user!.superuser
+    } catch (error) {
+      return ''
+    }
+  }
   /** 用户初始化 */
   @action
   public initUser () {

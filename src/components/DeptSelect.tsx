@@ -7,6 +7,8 @@ import { observer } from 'mobx-react-lite'
 import { authStore } from 'src/stores'
 export interface Props {
   onChange: (value: string) => void
+  /** 是否包含全院 */
+  hasAllDept?: boolean
 }
 
 export interface DeptType {
@@ -27,6 +29,12 @@ export default observer(function DeptSelect (props: Props) {
   return (
     <Wrapper>
       <Select value={defaultValue} showSearch style={{ width: 200 }} onChange={onChange}>
+        {props.hasAllDept && (
+          <Select.Option key={'全院'} value={'全院'}>
+            全院
+          </Select.Option>
+        )}
+
         {deptList.map((item: DeptType) => (
           <Select.Option key={item.code} value={item.code}>
             {item.name}

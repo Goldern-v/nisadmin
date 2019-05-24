@@ -69,7 +69,6 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
-  setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
     console.log(visible, 'visible', refForm.current, 'refForm.current')

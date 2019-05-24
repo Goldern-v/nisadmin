@@ -175,7 +175,7 @@ function TimeLineItem (props: any) {
         height: 20px;
         background: #6cb45c;
         left: 35px;
-        top: -20px;
+        top: 72px;
       }
     }
     .right {
