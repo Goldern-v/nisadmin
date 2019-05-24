@@ -11,6 +11,7 @@ import createModal from 'src/libs/createModal'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { observer } from 'mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
+import Zimage from 'src/components/Zimage'
 
 export default observer(function BaseInfo () {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
@@ -180,11 +181,11 @@ export default observer(function BaseInfo () {
                 <Value>{appStore.queryObj.empNo}</Value>
               </td>
               <td rowSpan={5}>
-                <img
-                  className='head-img'
-                  src={(info && info.nearImageUrl) || require('../../../images/护士默认头像.png')}
-                  alt=''
-                />
+                {info && info.nearImageUrl ? (
+                  <Zimage className='head-img' src={info && info.nearImageUrl} alt='' />
+                ) : (
+                  <img className='head-img' src={require('../../../images/护士默认头像.png')} alt='' />
+                )}
               </td>
             </tr>
             {tableData.map((obj: any, index: number) => (
@@ -203,7 +204,7 @@ export default observer(function BaseInfo () {
         </InfoTable>
         <ZyzsCon>
           <span>职业证书：</span>
-          {info.zyzsUrl && <img src={info.zyzsUrl} alt='' />}
+          {info.zyzsUrl && <Zimage src={info.zyzsUrl} alt='' />}
         </ZyzsCon>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
@@ -222,6 +223,7 @@ const InfoTable = styled.table`
     height: 180px;
     margin: auto;
     display: block;
+    object-fit: contain;
   }
   td {
     height: 38px;

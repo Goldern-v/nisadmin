@@ -13,12 +13,18 @@ function handleChange (value: any) {
 }
 
 export default function SelectCommon () {
-  // const [count, setCount] = useState(0)
+  const [hasAllDept, setHasAllDept] = useState(false)
   const [officeList, setOfficeList] = useState([])
   // useEffect(() => {
   //   // console.log(count, setCount)
   // })
   useEffect(() => {
+    if (authStore.post == '护理部' || authStore.isAdmin) {
+      setHasAllDept(true)
+      authStore.selectedDeptCode = '全院'
+      // authStore.defaultDeptCode = '全院'
+    }
+
     return () => {
       setTimeout(() => {
         authStore.selectedDeptCode = authStore.defaultDeptCode
@@ -48,7 +54,7 @@ export default function SelectCommon () {
     <div>
       <SelectCon>
         <span className='label'>科室：</span>
-        <DeptSelect onChange={handleChange} hasAllDept />
+        <DeptSelect onChange={handleChange} hasAllDept={hasAllDept} />
         {/* 暂时下面去掉这两个按钮 */}
         <Button style={{ marginLeft: 20, marginRight: 10 }} onClick={serchClick}>
           查询

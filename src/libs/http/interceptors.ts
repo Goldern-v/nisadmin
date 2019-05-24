@@ -51,7 +51,6 @@ enum StatusCode {
 export function onResponseFulfilled (response: AxiosResponse) {
   let { code, desc, data } = response.data
   let status = code
-  console.log(status, 'response')
   switch (status) {
     case StatusCode.error: {
       message.error(desc || '未知异常')

@@ -7,7 +7,7 @@ export interface Props {
   accept: string
   value?: string
   text?: string
-  upload?: (file: File) => Promise<string>
+  upload?: (file: File) => Promise<string | undefined>
   onChange: (value: string) => void
 }
 
@@ -78,7 +78,7 @@ export default class ImageUploader extends React.Component<Props, State> {
       this.setState({ src, loading: true })
       const value = await upload(file)
       this.setState({ loading: false })
-      onChange(value)
+      value && onChange(value)
     }
   }
 

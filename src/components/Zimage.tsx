@@ -4,19 +4,33 @@ import ReactZmage from 'react-zmage'
 export interface Props {}
 
 export default function Zimage (props: any) {
-  let option = Object.assign({}, props)
+  let option = Object.assign(
+    {
+      backdrop: 'rgba(0,0,0, .8)'
+    },
+    props
+  )
+  let imgRef = React.createRef<any>()
   if (option.text) {
     return (
-      <Wrapper>
+      <Wrapper
+        onClick={() => {
+          console.log(imgRef, 'imgRefimgRefimgRef')
+          imgRef.current && imgRef.current.cover.click()
+        }}
+      >
         <Text>{option.text}</Text>
-        <ReactZmage {...option} />
+        <ReactZmage {...option} ref={imgRef} />
       </Wrapper>
     )
   }
   return <ReactZmage {...option} />
 }
 const Wrapper = styled.div`
+  cursor: pointer;
   img {
+    width: 0;
+    height: 0;
     position: absolute;
   }
 `
