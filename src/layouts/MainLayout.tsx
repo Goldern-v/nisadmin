@@ -57,7 +57,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  background: #f8f8f8;
+  background: #eee;
 `
 const RouterViewCon = styled.div`
   flex: 1;

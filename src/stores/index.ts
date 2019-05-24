@@ -13,3 +13,4 @@ const store = {
 }
 
 export default store
+;(window as any).store = store

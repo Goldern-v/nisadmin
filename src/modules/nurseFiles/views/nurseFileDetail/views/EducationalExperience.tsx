@@ -22,60 +22,6 @@ export default observer(function EducationalExperience () {
         })
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 26,
-      address: '西湖区湖底公园1号',
-      jdTime: '1996-09-01',
-      byTime: '2012-07-01',
-      bySchool: '南华医学院',
-      zy: '护理',
-      xl: '本科',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '2',
-      name: '杨华',
-      age: 37,
-      address: '南城区海洋公园6号',
-      jdTime: '1986-09-01',
-      byTime: '2002-07-01',
-      bySchool: '南方医科大学',
-      zy: '护理',
-      xl: '本科',
-      fj: '无',
-      zt: '待护士长审核'
-    },
-    {
-      key: '3',
-      name: '赵平',
-      age: 32,
-      address: '西湖区湖底公园1号',
-      jdTime: '1989-09-01',
-      byTime: '2005-07-01',
-      bySchool: '南华医学院',
-      zy: '护理',
-      xl: '本科',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '4',
-      name: '杨晓春',
-      age: 27,
-      address: '西湖区湖底公园1号',
-      jdTime: '1991-09-01',
-      byTime: '2008-07-01',
-      bySchool: '长春医学院',
-      zy: '护理',
-      xl: '本科',
-      fj: '有',
-      zt: '待护士长审核'
-    }
-  ]
 
   const columns: ColumnProps<any>[] = [
     {

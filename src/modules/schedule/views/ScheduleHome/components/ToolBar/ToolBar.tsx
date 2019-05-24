@@ -97,8 +97,9 @@ export default function ToolBar () {
 
   const fileDownload = (res: any) => {
     let filename = res.headers['content-disposition']
-      ? res.headers['content-disposition'].replace('attachment;filename=', '')
+      ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
       : '导出文件'
+    // decodeURIComponent
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
     // "application/json"
     let blob = new Blob([res.data], {

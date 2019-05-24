@@ -21,7 +21,7 @@ const columns = [
     title: '工号',
     dataIndex: 'empNo',
     key: 'empNo',
-    width: '8%'
+    width: '10'
   },
   {
     title: '姓名',

@@ -682,7 +682,7 @@ export default function MainBox () {
     setTableLoading(true)
 
     schShiftUser.map((nurse: any, shcIndex: number) => {
-      console.log('nurse', shcIndex, nurse.empName, nurse, nurse.status)
+      // console.log('nurse', shcIndex, nurse.empName, nurse, nurse.status)
 
       // let effectiveTime
 
@@ -979,8 +979,14 @@ export default function MainBox () {
 
 
           for(let j=dayIndex, len=weekday.length;j<len;j++){
-            console.log('----',j,weekday[j],record[weekday[j]],len)
-            if(j!=dayIndex&&record[weekday[j]] && record[weekday[j]].length>0){
+            console.log('----',j,weekday[j],record[weekday[j]],record[selectedCellName],record[weekday[j]+'Code'],len)
+            if(j!=dayIndex
+              && record[weekday[j]] 
+              && record[weekday[j]].length>0 
+              && ( record[selectedCellNameCode]==='' && (record[selectedCellName] !== record[weekday[j]+'Code']) 
+                  || record[selectedCellNameCode] && (record[selectedCellNameCode] !== record[weekday[j]+'Code'] )
+              )
+            ){
               endIndex = j
               break
             }
@@ -1096,11 +1102,13 @@ export default function MainBox () {
                     if (selectedCell && selectedCell.record) {
                       let key = selectedCell.key
                       selectedCell.record[key] = m.name
+                      selectedCell.record[key+'Code'] = m.name
                       let selectedCellObj: any = new Object()
                       let input: any = null
                       selectedRowsArray.map((s) => {
                         if (s.id === selectedCell.record.id && key.indexOf('dayName') > -1) {
                           s[key] = m.name + ''
+                          s[key+'Code'] = m.name + ''
                           selectedCell.target.value = m.name + '' || '!!!'
                           selectedCell.target.style.color = m.nameColor + '' || ''
                           selectedCellObj = s
@@ -1192,17 +1200,17 @@ export default function MainBox () {
                           for (let key in m) {
                             // console.log('key', key, m[key])
                             if (
-                              m[key] &&
+                              m.hasOwnProperty(key) &&
                               (key.indexOf('dayName') > -1 ||
                                 key.indexOf('remark') > -1 ||
                                 key.indexOf('thisWeekHour') > -1)
                             ) {
                               console.log('key', key, m[key])
-                              s[key] = m[key]
+                              s[key] = m[key] || ''
                               let input = selectedRow.target.querySelector(`[name="${key}${s.id}"]`)
                               console.log('input', key, key + s.id, s, input)
                               if (input) {
-                                input.value = m[key]
+                                input.value = m[key] || ''
                                 input.style.color = m[key + 'Color']
                               }
                             }

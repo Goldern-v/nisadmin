@@ -5,6 +5,7 @@ import service from 'src/services/api'
 import DeptSelect from 'src/components/DeptSelect'
 // import { any } from 'prop-types'
 import emitter from 'src/libs/ev'
+import { authStore } from 'src/stores'
 const Option = Select.Option
 
 function handleChange (value: any) {
@@ -18,21 +19,11 @@ export default function SelectCommon () {
   //   // console.log(count, setCount)
   // })
   useEffect(() => {
-    // service.homeDataApiServices.getListDepartment().then((res) => {
-    //   if (res && res.data) {
-    //     let listDepartment = res.data.deptList
-    //     if (!listDepartment) {
-    //       // 获取后的科室相关数据
-    //       listDepartment = []
-    //     }
-    //     setOfficeList(listDepartment)
-    //     return listDepartment.map((item: any) => (
-    //       <Option key={item.name.toString()} value={item.name}>
-    //         {item.name}
-    //       </Option>
-    //     ))
-    //   }
-    // })
+    return () => {
+      setTimeout(() => {
+        authStore.selectedDeptCode = authStore.defaultDeptCode
+      }, 0)
+    }
   }, [])
   // function getDepartmentName () {
   //   service.homeDataApiServices.getListDepartment().then((res) => {
@@ -57,7 +48,7 @@ export default function SelectCommon () {
     <div>
       <SelectCon>
         <span className='label'>科室：</span>
-        <DeptSelect onChange={handleChange} />
+        <DeptSelect onChange={handleChange} hasAllDept />
         {/* 暂时下面去掉这两个按钮 */}
         <Button style={{ marginLeft: 20, marginRight: 10 }} onClick={serchClick}>
           查询
