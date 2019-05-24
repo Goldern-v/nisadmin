@@ -8,6 +8,7 @@ const { TextArea } = Input
 import { Modal } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { modalService } from '../services/ModalService'
+import Zimage from 'src/components/Zimage'
 const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
 const aduitSuccessIcon = require('../images/审核通过.png')
 export interface Props extends ModalComponentProps {
@@ -239,12 +240,14 @@ function UploadItem (props: any) {
       border: 1px solid rgba(219, 224, 228, 1);
       top: 20px;
       left: 80px;
+      object-fit: cover;
     }
   `
   return (
     <ZyzsCon>
       <span>{label}：</span>
-      <img src={path || defaultHead} alt='' />
+      <Zimage src={path || defaultHead} />
+      {/* <img src={path || defaultHead} alt='' /> */}
     </ZyzsCon>
   )
 }
