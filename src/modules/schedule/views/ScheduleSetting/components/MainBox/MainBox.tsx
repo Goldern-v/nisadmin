@@ -1102,11 +1102,13 @@ export default function MainBox () {
                     if (selectedCell && selectedCell.record) {
                       let key = selectedCell.key
                       selectedCell.record[key] = m.name
+                      selectedCell.record[key+'Code'] = m.name
                       let selectedCellObj: any = new Object()
                       let input: any = null
                       selectedRowsArray.map((s) => {
                         if (s.id === selectedCell.record.id && key.indexOf('dayName') > -1) {
                           s[key] = m.name + ''
+                          s[key+'Code'] = m.name + ''
                           selectedCell.target.value = m.name + '' || '!!!'
                           selectedCell.target.style.color = m.nameColor + '' || ''
                           selectedCellObj = s
