@@ -14,39 +14,55 @@ export interface Props extends RouteComponentProps {}
 
 export interface Props extends RouteComponentProps {}
 
-const TABS_LIST = [
+const TABS_LIST_NURSE = [
   {
     title: '待我审核',
     component: <AuditsTable1 />
   },
   {
-    title: '待护士长审核',
+    title: '审核退回',
     component: <AuditsTable2 />
   },
   {
-    title: '护士长审核退回',
+    title: '待护理部审核',
     component: <AuditsTable3 />
   },
   {
-    title: '待护理部审核',
+    title: '护理部审核退回',
     component: <AuditsTable4 />
   },
   {
-    title: '护理部审核退回',
-    component: <AuditsTable5 />
-  },
-  {
     title: '审核通过',
-    component: <AuditsTable6 />
+    component: <AuditsTable5 />
   }
 ]
-const tabShow = () => {}
+
+const TABS_LIST_NURSING = [
+  {
+    title: '待我审核',
+    component: <AuditsTable1 />
+  },
+
+  {
+    title: '审核通过',
+    component: <AuditsTable5 />
+  }
+]
+const tabShow = () => {
+  if (authStore.post === '护长') {
+    return TABS_LIST_NURSE
+  } else if (authStore.post === '护理部') {
+    return TABS_LIST_NURSING
+  } else {
+    return []
+  }
+}
 export default function AuditsManagementView () {
   return (
     <Wrapper>
       <SelectCon />
       <ScrollCon>
-        <BaseTabs config={TABS_LIST} />
+        <BaseTabs config={tabShow()} />
       </ScrollCon>
     </Wrapper>
   )
