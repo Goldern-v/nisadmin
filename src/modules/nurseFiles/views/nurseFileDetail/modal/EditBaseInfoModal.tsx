@@ -22,23 +22,23 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const uploadCard = () => Promise.resolve('123')
-const rules: Rules = {
-  empName: (val) => !!val || '',
-  empNo: (val) => !!val || '',
-  sex: (val) => !!val || '',
-  nation: (val) => !!val || '',
-  birthday: (val) => !!val || '',
-  entryDate: (val) => !!val || '',
-  nativePlace: (val) => !!val || '',
-  post: (val) => !!val || '',
-  goWorkTime: (val) => !!val || '',
-  highestEducation: (val) => !!val || '最高学历',
-  zyzsNumber: (val) => !!val || '',
-  cardNumber: (val) => !!val || '',
-  socialGroup: (val) => !!val || '社会团体职务',
-  phone: (val) => !!val || '',
-  address: (val) => !!val || ''
-}
+// const rules: Rules = {
+//   empName: (val) => !!val || '请填写姓名',
+//   empNo: (val) => !!val || '请填写工号',
+//   sex: (val) => !!val || '请填写性别',
+//   nation: (val) => !!val || '请填写民族',
+//   birthday: (val) => !!val || '请选择出生日期',
+//   age: (val) => !!val || '请填写年龄',
+//   nativePlace: (val) => !!val || '',
+//   post: (val) => !!val || '',
+//   goWorkTime: (val) => !!val || '',
+//   highestEducation: (val) => !!val || '最高学历',
+//   zyzsNumber: (val) => !!val || '',
+//   cardNumber: (val) => !!val || '',
+//   socialGroup: (val) => !!val || '社会团体职务',
+//   phone: (val) => !!val || '',
+//   address: (val) => !!val || ''
+// }
 export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
@@ -89,20 +89,16 @@ export default function EditWorkHistoryModal (props: Props) {
   setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
-    console.log(visible, 'visible', refForm.current, 'refForm.current')
-    console.log(data, 'data')
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      console.log(refForm.current, visible, data)
-      console.log('moment(data.startTime)', moment(data.startTime))
-
       refForm!.current!.setFields({
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,
         post: data.post,
         nation: data.nation,
-        entryDate: data.entryDate,
+        age: data.age,
         nativePlace: data.nativePlace,
         highestEducation: data.highestEducation,
         zyzsNumber: data.zyzsNumber,
@@ -118,62 +114,65 @@ export default function EditWorkHistoryModal (props: Props) {
   return (
     <Modal
       title='修改基本信息'
-      width={1200}
+      width={1000}
       visible={visible}
       onCancel={onCancel}
       onOk={onSave}
       okText='保存'
       forceRender
     >
-      <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={{}}>
+      <Form ref={refForm} labelWidth={140} onChange={onFieldChange} rules={{}}>
         <Row>
           <Col span={12}>
-            <Form.Field label={`姓名`} name='empName' required>
+            <Form.Field label={`姓名`} name='empName'>
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`工号`} name='empNo'>
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`性别`} name='sex'>
+              <Select>
+                <Option value='0'>男</Option>
+                <Option value='1'>女</Option>
+              </Select>
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`民族`} name='nation'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`工号`} name='empNo' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`性别`} name='sex' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`民族`} name='nation' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`出身年月`} name='birthday' required>
+            <Form.Field label={`出身年月`} name='birthday'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`年龄`} name='entryDate' required>
+            <Form.Field label={`年龄`} name='age'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`籍贯`} name='nativePlace' required>
+            <Form.Field label={`籍贯`} name='nativePlace'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`职务`} name='post' required>
+            <Form.Field label={`职务`} name='post'>
               <Input />
             </Form.Field>
           </Col>{' '}
           <Col span={12}>
-            <Form.Field label={`参加工作时间`} name='goWorkTime' required>
+            <Form.Field label={`参加工作时间`} name='goWorkTime'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`最高学历`} name='highestEducation' required>
+            <Form.Field label={`最高学历`} name='highestEducation'>
               <Select>
                 <Option value='中专'>中专</Option>
                 <Option value='大专'>大专</Option>
@@ -184,7 +183,7 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`技术职称`} name='title' required>
+            <Form.Field label={`技术职称`} name='title'>
               <Select>
                 <Option value='护士'>护士</Option>
                 <Option value='护师'>护师</Option>
@@ -195,27 +194,27 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`护士执业证书编号`} name='zyzsNumber' required>
+            <Form.Field label={`护士执业证书编号`} name='zyzsNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`身份证号`} name='cardNumber' required>
+            <Form.Field label={`身份证号`} name='cardNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`社会团体职务`} name='socialGroup' required>
+            <Form.Field label={`社会团体职务`} name='socialGroup'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`联系电话`} name='phone' required>
+            <Form.Field label={`联系电话`} name='phone'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`家庭住址`} name='address' required>
+            <Form.Field label={`家庭住址`} name='address'>
               <Input />
             </Form.Field>
           </Col>

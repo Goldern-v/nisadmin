@@ -10,6 +10,7 @@ import createModal from 'src/libs/createModal'
 import EditEducationalExperienceModal from '../modal/EditEducationalExperienceModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
+import Zimage from 'src/components/Zimage'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
   // 保存表格每行数据
@@ -120,16 +121,8 @@ export default observer(function EducationalExperience () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            {row.urlImageTwo && (
-              <a href={row.urlImageTwo} target='_blank'>
-                毕业证
-              </a>
-            )}
-            {row.urlImageOne && (
-              <a href={row.urlImageOne} target='_blank'>
-                学位证{' '}
-              </a>
-            )}
+            {row.urlImageTwo && <Zimage text='毕业证' src={row.urlImageTwo} />}
+            {row.urlImageOne && <Zimage text='学位证' src={row.urlImageOne} />}
           </DoCon>
         )
       }
@@ -180,8 +173,8 @@ export default observer(function EducationalExperience () {
   }, [])
   return (
     <BaseLayout title='教育经历' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} />
-      <editEducationalExperienceModal.Component getTableData={getTableData} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow']} />
+      <editEducationalExperienceModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

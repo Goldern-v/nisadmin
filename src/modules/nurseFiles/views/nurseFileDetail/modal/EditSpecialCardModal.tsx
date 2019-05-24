@@ -54,9 +54,7 @@ export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [attachmentId, setAttachmentId] = useState('')
   let refForm = React.createRef<Form>()
-  if (signShow === '添加') {
-    data = {}
-  }
+
   const onFieldChange = () => {}
   const onSave = async () => {
     let getPostData = loginViewModel.post
@@ -86,10 +84,9 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
-  setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
-    console.log(visible, 'visible', refForm.current, 'refForm.current')
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       setAttachmentId(data.attachmentId)

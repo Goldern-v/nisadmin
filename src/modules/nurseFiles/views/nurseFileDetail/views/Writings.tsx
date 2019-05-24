@@ -10,6 +10,7 @@ import createModal from 'src/libs/createModal'
 import EditWritingsModal from '../modal/EditWritingsModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
+import Zimage from 'src/components/Zimage'
 export interface Props extends RouteComponentProps {}
 export default observer(function Writings () {
   // 保存表格每行数据
@@ -110,15 +111,7 @@ export default observer(function Writings () {
       width: 150,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return (
-          <DoCon>
-            {row.urlImageOne && (
-              <a href={row.urlImageOne} target='_blank'>
-                查看
-              </a>
-            )}
-          </DoCon>
-        )
+        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageTwo} />}</DoCon>
       }
     },
     {

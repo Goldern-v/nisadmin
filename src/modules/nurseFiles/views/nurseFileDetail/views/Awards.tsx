@@ -12,6 +12,7 @@ import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesSer
 import { globalModal } from 'src/global/globalModal'
 import { authStore } from 'src/stores'
 import Zimage from 'src/components/Zimage'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal';
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards () {
   // 保存表格每行数据
