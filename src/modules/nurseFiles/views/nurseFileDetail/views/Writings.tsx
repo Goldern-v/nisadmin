@@ -9,11 +9,10 @@ import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWritingsModal from '../modal/EditWritingsModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function Writings () {
-  // 保存表格每行数据
-  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editWritingsModal = createModal(EditWritingsModal)
   const btnList = [
     {
@@ -24,46 +23,6 @@ export default observer(function Writings () {
         })
     }
   ]
-  // 审核组件
-  const AuditComponent = (
-    <span
-      onClick={() => {
-        globalModal.auditModal.show({
-          id: rowData.id,
-          type: 'nursePaperExperience',
-          title: '审核著作译文论文',
-          tableFormat: [
-            {
-              发表日期: `publicDate`,
-              题目: `title`
-            },
-            {
-              本人排名: `rank`,
-              出版或刊登物: `publication`
-            }
-          ],
-          fileData: [
-            {
-              附件1: rowData.urlImageOne,
-              附件2: require(`../../../images/证件空态度.png`)
-            }
-          ],
-          allData: rowData
-        })
-      }}
-    >
-      审核
-    </span>
-  )
-  // 审核判断方法
-  const limitsComponent = (AuditComponent: any) => {
-    if (
-      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
-      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
-    ) {
-      return AuditComponent
-    }
-  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -137,8 +96,6 @@ export default observer(function Writings () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            {/* 保存行数据 */}
-            {setRowData(row)}
             <span
               onClick={() => {
                 editWritingsModal.show({ data: row, signShow: '修改' })
@@ -146,7 +103,39 @@ export default observer(function Writings () {
             >
               修改
             </span>
-            {limitsComponent(AuditComponent)}
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  globalModal.auditModal.show({
+                    getTableData: getTableData,
+                    id: row.id,
+                    type: 'nursePaperExperience',
+                    title: '审核著作译文论文',
+                    tableFormat: [
+                      {
+                        发表日期: `publicDate`,
+                        题目: `title`
+                      },
+                      {
+                        本人排名: `rank`,
+                        出版或刊登物: `publication`
+                      }
+                    ],
+                    fileData: [
+                      {
+                        附件1: row.urlImageOne,
+                        附件2: require(`../../../images/证件空态度.png`)
+                      }
+                    ],
+                    allData: row
+                  })
+                }}
+              >
+                审核
+              </span>
+            ) : (
+              ''
+            )}
           </DoCon>
         )
       }

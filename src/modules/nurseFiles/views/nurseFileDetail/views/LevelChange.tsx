@@ -11,7 +11,7 @@ import EditLevelChangeModal from '../modal/EditLevelChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import Zimage from 'src/components/Zimage'
-
+import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
 export default observer(function LevelChange () {
   // 保存表格每行数据
@@ -26,45 +26,6 @@ export default observer(function LevelChange () {
         })
     }
   ]
-  // 审核组件
-  const AuditComponent = (
-    <span
-      onClick={() => {
-        globalModal.auditModal.show({
-          id: rowData.id,
-          type: 'nurseProfessionalAndLevelChange',
-          title: '审核职称及层级变动',
-          tableFormat: [
-            {
-              职称聘用时间: `appointmentTime`,
-              取得职称: `titleQualification`
-            },
-            {
-              层级: `hierarchy`
-            }
-          ],
-          fileData: [
-            {
-              附件1: rowData.urlImageOne,
-              附件2: require(`../../../images/证件空态度.png`)
-            }
-          ],
-          allData: rowData
-        })
-      }}
-    >
-      审核
-    </span>
-  )
-  // 审核判断方法
-  const limitsComponent = (AuditComponent: any) => {
-    if (
-      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
-      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
-    ) {
-      return AuditComponent
-    }
-  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -103,13 +64,7 @@ export default observer(function LevelChange () {
       width: 200,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return (
-          <DoCon>
-            {row.urlImageOne && (
-              <Zimage text='查看' src={row.urlImageOne} />
-            )}
-          </DoCon>
-        )
+        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
       }
     },
     {
@@ -137,7 +92,38 @@ export default observer(function LevelChange () {
             >
               修改
             </span>
-            {limitsComponent(AuditComponent)}
+            {limitUtils ? (
+              <span
+                onClick={() => {
+                  globalModal.auditModal.show({
+                    getTableData: getTableData,
+                    id: row.id,
+                    type: 'nurseProfessionalAndLevelChange',
+                    title: '审核职称及层级变动',
+                    tableFormat: [
+                      {
+                        职称聘用时间: `appointmentTime`,
+                        取得职称: `titleQualification`
+                      },
+                      {
+                        层级: `hierarchy`
+                      }
+                    ],
+                    fileData: [
+                      {
+                        附件1: row.urlImageOne,
+                        附件2: require(`../../../images/证件空态度.png`)
+                      }
+                    ],
+                    allData: row
+                  })
+                }}
+              >
+                审核
+              </span>
+            ) : (
+              ''
+            )}
           </DoCon>
         )
       }

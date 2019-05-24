@@ -10,10 +10,9 @@ import createModal from 'src/libs/createModal'
 import EditEducationalExperienceModal from '../modal/EditEducationalExperienceModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
+import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
-  // 保存表格每行数据
-  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
   const btnList = [
     {
@@ -24,49 +23,6 @@ export default observer(function EducationalExperience () {
         })
     }
   ]
-  // 审核组件
-  const AuditComponent = (
-    <span
-      onClick={() => {
-        globalModal.auditModal.show({
-          id: rowData.id,
-          type: 'nurseMedicalEducation',
-          title: '审核特殊资格证',
-          tableFormat: [
-            {
-              就读时间: `readTime`,
-              毕业时间: `graduationTime`
-            },
-            {
-              毕业学校: `graduationSchool`,
-              专业: `readProfessional`
-            },
-            {
-              学历: `education`
-            }
-          ],
-          fileData: [
-            {
-              毕业证: rowData.urlImageTwo,
-              学位证: rowData.urlImageOne
-            }
-          ],
-          allData: rowData
-        })
-      }}
-    >
-      审核
-    </span>
-  )
-  // 审核判断方法
-  const limitsComponent = (AuditComponent: any) => {
-    if (
-      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
-      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
-    ) {
-      return AuditComponent
-    }
-  }
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -150,8 +106,6 @@ export default observer(function EducationalExperience () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            {/* 保存行数据 */}
-            {setRowData(row)}
             <span
               onClick={() => {
                 editEducationalExperienceModal.show({ data: row, signShow: '修改' })
@@ -159,7 +113,41 @@ export default observer(function EducationalExperience () {
             >
               修改
             </span>
-            {limitsComponent(AuditComponent)}
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  globalModal.auditModal.show({
+                    id: row.id,
+                    type: 'nurseMedicalEducation',
+                    title: '审核特殊资格证',
+                    tableFormat: [
+                      {
+                        就读时间: `readTime`,
+                        毕业时间: `graduationTime`
+                      },
+                      {
+                        毕业学校: `graduationSchool`,
+                        专业: `readProfessional`
+                      },
+                      {
+                        学历: `education`
+                      }
+                    ],
+                    fileData: [
+                      {
+                        毕业证: row.urlImageTwo,
+                        学位证: row.urlImageOne
+                      }
+                    ],
+                    allData: row
+                  })
+                }}
+              >
+                审核
+              </span>
+            ) : (
+              ''
+            )}
           </DoCon>
         )
       }
