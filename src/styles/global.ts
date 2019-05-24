@@ -27,6 +27,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: '微软雅黑'
   }
 
+
+/** Zimage 样式调整*/
+#zmageControl {
+  background: #fff !important;
+}
 `
 
 export default GlobalStyle

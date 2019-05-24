@@ -13,6 +13,8 @@ import moment from 'moment'
 import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
+import { appStore } from 'src/stores'
+import service from 'src/services/api'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -43,6 +45,24 @@ export default function EditWorkHistoryModal (props: Props) {
   console.log('this is refForm')
   console.log(refForm)
   const onFieldChange = () => {}
+
+  const uploadCard = async (file: any) => {
+    let obj: any = {
+      file,
+      empNo: appStore.queryObj.empNo,
+      type: '0'
+    }
+
+    const [err, res] = await to(service.commonApiService.uploadFile(obj))
+    if (err) {
+      return ''
+    }
+    if (res.data) {
+      let pathImg = `/asset/nurseAttachment${res.data.path}`
+      return pathImg
+    }
+  }
+
   const onSave = async () => {
     let getPostData = loginViewModel.post
     let auditedStatusShow = 'waitAuditedDepartment'
@@ -123,13 +143,13 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`名族`} name='nation' required>
+            <Form.Field label={`民族`} name='nation' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`出身年月`} name='birthday' required>
-              <Input />
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -197,6 +217,18 @@ export default function EditWorkHistoryModal (props: Props) {
           <Col span={12}>
             <Form.Field label={`家庭住址`} name='address' required>
               <Input />
+            </Form.Field>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <Form.Field label={`添加个人头像`} name='nearImageUrl'>
+              <ImageUploader upload={uploadCard} text='添加个人头像' />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`添加职业证书`} name='zyzsUrl'>
+              <ImageUploader upload={uploadCard} text='添加职业证书' />
             </Form.Field>
           </Col>
         </Row>

@@ -10,6 +10,7 @@ import createModal from 'src/libs/createModal'
 import EditLevelChangeModal from '../modal/EditLevelChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
+import Zimage from 'src/components/Zimage'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function LevelChange () {
@@ -105,9 +106,7 @@ export default observer(function LevelChange () {
         return (
           <DoCon>
             {row.urlImageOne && (
-              <a href={row.urlImageOne} target='_blank'>
-                查看
-              </a>
+              <Zimage text='查看' src={row.urlImageOne} />
             )}
           </DoCon>
         )
