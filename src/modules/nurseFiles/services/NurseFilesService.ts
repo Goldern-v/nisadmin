@@ -1,5 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { appStore, authStore } from 'src/stores'
+import { nurseFileDetailViewModal } from '../views/nurseFileDetail/NurseFileDetailViewModal'
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */
   empNo?: string /** 员工工号 */
@@ -30,7 +31,11 @@ export default class NurseFilesService extends BaseApiService {
   // getByEmpNoAudite
   // 1查找护士基本信息 护长
   public async nurseInformation (empNo: any) {
-    return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 1-1护士基本信息信息更新
   public async saveOrUpdate (obj: any) {
@@ -38,7 +43,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 2 查找护士工作经历 //护长
   public async nurseWorkExperience (empNo: any) {
-    return this.get(`/nurseWorkExperience/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWorkExperience/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 2-1护士工作经历新增或更新 //护长
   public async nurseWorkExperienceAdd (obj: any) {
@@ -46,7 +55,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 3// 查找护士特殊资格证 //护长
   public async nurseSpecialQualification (empNo: any) {
-    return this.get(`/nurseSpecialQualification/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseSpecialQualification/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 3-1护士特殊资格证 新增 //护长
   public async nurseSpecialQualificationAdd (obj: any) {
@@ -54,7 +67,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 4//查找护士教育经历
   public async nurseMedicalEducation (empNo: any) {
-    return this.get(`/nurseMedicalEducation/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseMedicalEducation/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 4-1 教育经历新增/更新
   public async userEducatAdd (obj: any) {
@@ -85,7 +102,11 @@ export default class NurseFilesService extends BaseApiService {
 
   // 5//查找护士职称及层级变动-单个(护长)
   public async nurseProfessionalAndLevelChange (empNo: any) {
-    return this.get(`/nurseProfessionalAndLevelChange/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseProfessionalAndLevelChange/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 5-1 新增护士职称及层级变动
   public async nurseProfessionalAndLevelChangeAdd (obj: any) {
@@ -101,15 +122,27 @@ export default class NurseFilesService extends BaseApiService {
   // }
   // 6//查找护士继续教育列表（护长）
   public async nurseContinuingEducation (empNo: any) {
-    return this.get(`/nurseContinuingEducation/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseContinuingEducation/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 6-1 查找护士继续教育列表（护式）新增
   public async nurseContinuingEducationAdd (obj: any) {
-    return this.post(`/nurseContinuingEducation/saveOrUpdatePC`, obj)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.post(`/nurseContinuingEducation/saveOrUpdatePC`, obj).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 7 查找护士主要著作、译文、论文发表情况-列表(护长)
   public async nursePaperExperience (empNo: any) {
-    return this.get(`/nursePaperExperience/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nursePaperExperience/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 7-1 护士主要著作、译文、论文发表情况新增或更新(护士)
   public async nursePaperExperienceAdd (obj: any) {
@@ -117,7 +150,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 8查找护士获奖情况-列表(护长)
   public async nurseAwardWinning (empNo: any) {
-    return this.get(`/nurseAwardWinning/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseAwardWinning/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 8-1护士获奖情况新增或更新(网页护长)
   public async nurseAwardWinningAdd (obj: any) {
@@ -125,7 +162,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 9查找护士护理不良行为记录列表（护长）
   public async nurseBehaviorRecord (empNo: any) {
-    return this.get(`/nurseBehaviorRecord/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseBehaviorRecord/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 9-1护士护理不良行为记录增或更新(网页护长)
   public async nurseBehaviorRecordAdd (obj: any) {
@@ -133,7 +174,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 10 查找护士 年度考核结果-列表(护长)
   public async nurseYearCheck (empNo: any) {
-    return this.get(`/nurseYearCheck/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseYearCheck/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 10-1 护士 年度考核结果 新增或更新(网页护长)
   public async nurseYearCheckAdd (obj: any) {
@@ -141,7 +186,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 11 查找护士医院三基考核-列表(护长)
   public async nurseHospitalsThreeBase (empNo: any) {
-    return this.get(`/nurseHospitalsThreeBase/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseHospitalsThreeBase/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 11-1护士医院三基考核新增或更新(网页护长)
   public async nurseHospitalsThreeBaseAdd (obj: any) {
@@ -149,7 +198,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 12 查找护士临床护理工作情况登记-列表(护长)
   public async nurseRegistrationWork (empNo: any) {
-    return this.get(`/nurseRegistrationWork/findByEmpNoSubmit/${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseRegistrationWork/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
   // 12-1护士临床护理工作情况新增或更新(网页护长)
   public async nurseRegistrationWorkAdd (obj: any) {
@@ -157,7 +210,11 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 13 查找护士附件情况(护长)
   public async nurseAttachment (empNo: any) {
-    return this.get(`/nurseAttachment/findByEmpNo//${empNo}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseAttachment/findByEmpNo//${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
   }
 
   // 15 新增添加附件

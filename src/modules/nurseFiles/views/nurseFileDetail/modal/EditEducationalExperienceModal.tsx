@@ -71,9 +71,7 @@ export default function EditWorkHistoryModal (props: Props) {
   console.log('this is refForm')
   console.log(refForm)
   const onFieldChange = () => {}
-  if (signShow === '添加') {
-    data = {}
-  }
+
   const onSave = async () => {
     let getPostData = loginViewModel.post
     let auditedStatusShow = 'waitAuditedDepartment'
@@ -112,7 +110,7 @@ export default function EditWorkHistoryModal (props: Props) {
   setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
-    console.log(visible, 'visible', refForm.current, 'refForm.current')
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       setAttachmentId1((data.attachmentId && data.attachmentId.split(',')[0]) || '')

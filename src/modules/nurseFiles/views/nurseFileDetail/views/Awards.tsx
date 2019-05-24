@@ -13,6 +13,7 @@ import { globalModal } from 'src/global/globalModal'
 import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal';
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards () {
   const editAwardsModal = createModal(EditAwardsModal)

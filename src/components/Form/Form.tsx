@@ -20,13 +20,10 @@ export interface Props<T> {
 
 export interface State<T> {
   values: T
-  errors: { [name in keyof T]: string }
+  errors: { [name in keyof T]: string } | {}
 }
 
-export default class Form<T extends Object = any> extends React.Component<
-  Props<T>,
-  State<T>
-> {
+export default class Form<T extends Object = any> extends React.Component<Props<T>, State<T>> {
   public static Field = FormField
 
   public static defaultProps: Partial<Props<any>> = {
@@ -57,9 +54,9 @@ export default class Form<T extends Object = any> extends React.Component<
   }
 
   public setField = (name: string, value: any, trigger: boolean = true) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.setState(
-        state => {
+        (state) => {
           const values = { ...(state.values as any) }
           return { values: set(values, name, value) }
         },
@@ -83,11 +80,7 @@ export default class Form<T extends Object = any> extends React.Component<
     const keys = Object.keys(newValues)
     if (!keys.length) return
 
-    return Promise.all(
-      Object.keys(newValues).map(name =>
-        this.setField(name, newValues[name], trigger)
-      )
-    )
+    return Promise.all(Object.keys(newValues).map((name) => this.setField(name, newValues[name], trigger)))
   }
 
   public clear = (callback: () => void = noop) => {
@@ -99,8 +92,7 @@ export default class Form<T extends Object = any> extends React.Component<
     if (!validator) return undefined
 
     const result = validator(this.getField(name), this.getFields())
-    const error =
-      result === true || result === undefined ? undefined : result || ''
+    const error = result === true || result === undefined ? undefined : result || ''
 
     if (apply) {
       this.setState({
@@ -114,7 +106,7 @@ export default class Form<T extends Object = any> extends React.Component<
   public validateFields = () => {
     const errors: any = {}
 
-    Object.keys(this.props.rules!).forEach(name => {
+    Object.keys(this.props.rules!).forEach((name) => {
       const error = this.validateField(name)
       if (error) errors[name] = error
     })
@@ -133,12 +125,7 @@ export default class Form<T extends Object = any> extends React.Component<
   private onFieldChange = (name: string, args: any[]) => {
     const e = args[0]
 
-    const value =
-      e && e.target
-        ? e.target.type === 'checkbox'
-          ? e.target.checked
-          : e.target.value
-        : e
+    const value = e && e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e
 
     this.setField(name, value)
   }
@@ -151,6 +138,17 @@ export default class Form<T extends Object = any> extends React.Component<
     this.props.onSubmit!(e, this)
   }
 
+  public cleanErrors = () => {
+    this.setState({
+      errors: {}
+    })
+  }
+
+  public clean = () => {
+    this.clear()
+    this.cleanErrors()
+  }
+
   public render () {
     const { className, labelWidth = 120, children } = this.props
 
@@ -158,7 +156,8 @@ export default class Form<T extends Object = any> extends React.Component<
       labelWidth,
       getFieldValue: this.getField,
       onFieldChange: this.onFieldChange,
-      getFieldError: this.getFieldError
+      getFieldError: this.getFieldError,
+      cleanErrors: this.cleanErrors
     }
 
     return (

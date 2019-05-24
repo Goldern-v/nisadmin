@@ -11,6 +11,7 @@ import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
 import { globalModal } from 'src/global/globalModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
+import Zimage from 'src/components/Zimage'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
   const editContinuingEducationModal = createModal(EditContinuingEducationModal)
@@ -75,15 +76,7 @@ export default observer(function EducationalExperience () {
       width: 150,
       align: 'center',
       render: (a: any, row: any, c: any) => {
-        return (
-          <DoCon>
-            {row.urlImageOne && (
-              <a href={row.urlImageOne} target='_blank'>
-                查看{' '}
-              </a>
-            )}
-          </DoCon>
-        )
+        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
       }
     },
     {

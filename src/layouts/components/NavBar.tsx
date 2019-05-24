@@ -107,7 +107,6 @@ const Wrapper = styled.div`
   height: 40px;
   background: #fff;
   box-shadow: ${(p) => p.theme.$tabShadow};
-  ${(p) => p.theme.$bgBody}
   /* margin-bottom: 10px; */
   position: relative;
   padding-bottom: 2px;

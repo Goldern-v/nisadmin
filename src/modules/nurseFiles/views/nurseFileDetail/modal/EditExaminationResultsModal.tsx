@@ -52,12 +52,8 @@ export default function EditWorkHistoryModal (props: Props) {
   }
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
-  console.log('this is refForm')
-  console.log(refForm)
+
   const onFieldChange = () => {}
-  if (signShow === '添加') {
-    data = {}
-  }
 
   const onSave = async () => {
     let getPostData = loginViewModel.post
@@ -82,17 +78,15 @@ export default function EditWorkHistoryModal (props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.year && (value.year = value.year.format('YYYY'))
-    // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
     nurseFilesService.nurseYearCheckAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       onCancel()
     })
   }
-  setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
-    console.log(visible, 'visible', refForm.current, 'refForm.current')
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       setAttachmentId(data.attachmentId)

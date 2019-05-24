@@ -30,9 +30,7 @@ export default function EditWorkHistoryModal (props: Props) {
   const [attachmentId, setAttachmentId] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
-  if (signShow === '添加') {
-    data = {}
-  }
+
   const uploadCard = async (file: any) => {
     let obj: any = {
       file,
@@ -83,7 +81,7 @@ export default function EditWorkHistoryModal (props: Props) {
   setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
-    // console.log(visible, 'visible', refForm.current, 'refForm.current')
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       console.log(refForm.current, visible, data)

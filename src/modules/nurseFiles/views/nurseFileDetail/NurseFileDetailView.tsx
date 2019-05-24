@@ -20,6 +20,8 @@ import WorkRegistrationForm from './views/WorkRegistrationForm'
 import FileList from './views/FileList'
 import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { appStore } from 'src/stores'
+import { Spin } from 'antd'
+import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -92,7 +94,7 @@ const ROUTE_LIST = [
   }
 ]
 
-export default function NurseFileDetail (props: Props, context: any) {
+export default observer(function NurseFileDetail (props: Props, context: any) {
   nurseFileDetailViewModal.nurserInfo = appStore.queryObj
   // appStore.match.params.type
   let currentRouteType = props.match.params.type
@@ -105,11 +107,15 @@ export default function NurseFileDetail (props: Props, context: any) {
         <LeftMenuCon>
           <LeftMenu routeList={ROUTE_LIST} />
         </LeftMenuCon>
-        <DetailCon>{CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}</DetailCon>
+        <DetailCon>
+          <Spin spinning={nurseFileDetailViewModal.pageSpinning}>
+            {CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}
+          </Spin>
+        </DetailCon>
       </MainCon>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   height: 100%;
   display: flex;
