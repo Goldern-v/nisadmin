@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Input } from 'antd'
 import { ReactComponent as AgreeIcon } from '../images/默认勾选.svg'
-
+import { authStore } from 'src/stores'
 const { TextArea } = Input
 import { Modal } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
@@ -76,8 +76,22 @@ export default function aduitModal (props: Props) {
   }, [visible])
 
   const onOk = () => {
-    // modalService
-    console.log(12312321)
+    let agreeStatus
+    if (agree === 'agree') {
+      agreeStatus = true
+    } else if (agree === 'disagree') {
+      agreeStatus = false
+    }
+    let postData = {
+      id: props.id,
+      empNo: props.allData.empNo,
+      empName: props.allData.empName,
+      saveStatus: props.allData.saveStatus,
+      flag: agreeStatus,
+      detail: opinion
+    }
+    modalService.auditeNurseFileIndex(props.type, postData)
+    onCancel()
   }
   return (
     <Modal title={title} visible={visible} onOk={onOk} onCancel={onCancel} okText='保存' forceRender width={800}>
@@ -142,7 +156,7 @@ export default function aduitModal (props: Props) {
           <div className='row' style={{ paddingTop: '2px' }}>
             <div className='key'>审核人：</div>
             <div className='vale'>
-              <div className='block'>夏怀虎</div>
+              <div className='block'>{authStore.user!.empName}</div>
             </div>
           </div>
         </FormCon>

@@ -9,6 +9,8 @@ import AuditsTable3 from './components/AuditsTable3'
 import AuditsTable4 from './components/AuditsTable4'
 import AuditsTable5 from './components/AuditsTable5'
 import AuditsTable6 from './components/AuditsTable6'
+import { authStore, appStore } from 'src/stores'
+export interface Props extends RouteComponentProps {}
 
 export interface Props extends RouteComponentProps {}
 
@@ -38,7 +40,7 @@ const TABS_LIST = [
     component: <AuditsTable6 />
   }
 ]
-
+const tabShow = () => {}
 export default function AuditsManagementView () {
   return (
     <Wrapper>
