@@ -6,7 +6,11 @@ module.exports = function(app) {
       // target: 'http://120.197.141.41:9094',
       //广
       // target: 'http://192.168.2.144:8080',
+<<<<<<< HEAD
       // target: 'http://120.25.105.45:9864',
+=======
+      target: 'http://120.25.105.45:9864',
+>>>>>>> 1469e2454c5393d69e656c3f3555acc83c1f2b1e
       //正式环境
       target: 'http://120.197.141.41:9094',
       secure: false,
@@ -19,7 +23,11 @@ module.exports = function(app) {
       // target: 'http://192.168.1.20:8964',
       // 广豪
       // target: 'http://192.168.2.144:8080',
+<<<<<<< HEAD
       // target: 'http://120.25.105.45:9864',
+=======
+      target: 'http://120.25.105.45:9864',
+>>>>>>> 1469e2454c5393d69e656c3f3555acc83c1f2b1e
       //正式环境
       target: 'http://120.197.141.41:9094',
       secure: false,

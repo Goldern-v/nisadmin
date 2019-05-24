@@ -12,6 +12,8 @@ import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesSer
 import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function WorkRegistrationForm () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
   const btnList = [
     {
@@ -22,32 +24,52 @@ export default observer(function WorkRegistrationForm () {
         })
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '2',
-      name: '杨春',
-      age: 24,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '3',
-      name: '赵平',
-      age: 34,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '4',
-      name: '易小惠',
-      age: 33,
-      address: '西湖区湖底公园1号'
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nurseRegistrationWork',
+          title: '审核特殊资格证',
+          tableFormat: [
+            {
+              年度: `year`,
+              夜班: `nightShift`
+            },
+            {
+              查房: `checkOut`,
+              护理会诊: `nursingConsultation`
+            },
+            {
+              病例讨论: `caseDiscussion`,
+              个案: `individualCase`
+            },
+            {
+              小讲课: `lecture`,
+              带教: `teaching`
+            },
+            {
+              证明人: `witness`
+            }
+          ],
+          // fileData: [{}],
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
     }
-  ]
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -137,6 +159,8 @@ export default observer(function WorkRegistrationForm () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editWorkRegistrationFormModal.show({ data: row, signShow: '修改' })
@@ -144,45 +168,7 @@ export default observer(function WorkRegistrationForm () {
             >
               修改
             </span>
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nurseRegistrationWork',
-                      title: '审核特殊资格证',
-                      tableFormat: [
-                        {
-                          年度: `year`,
-                          夜班: `nightShift`
-                        },
-                        {
-                          查房: `checkOut`,
-                          护理会诊: `nursingConsultation`
-                        },
-                        {
-                          病例讨论: `caseDiscussion`,
-                          个案: `individualCase`
-                        },
-                        {
-                          小讲课: `lecture`,
-                          带教: `teaching`
-                        },
-                        {
-                          证明人: `witness`
-                        }
-                      ],
-                      // fileData: [{}],
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }

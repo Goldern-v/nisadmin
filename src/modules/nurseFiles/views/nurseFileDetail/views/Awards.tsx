@@ -14,6 +14,8 @@ import { authStore } from 'src/stores'
 import Zimage from 'src/components/Zimage'
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editAwardsModal = createModal(EditAwardsModal)
   const btnList = [
     {
@@ -21,32 +23,49 @@ export default observer(function Awards () {
       onClick: () => editAwardsModal.show({ signShow: '添加' })
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '2',
-      name: '杨春',
-      age: 24,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '3',
-      name: '赵平',
-      age: 34,
-      address: '西湖区湖底公园1号'
-    },
-    {
-      key: '4',
-      name: '易小惠',
-      age: 33,
-      address: '西湖区湖底公园1号'
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nurseAwardWinning',
+          title: '审核所获奖励',
+          tableFormat: [
+            {
+              时间: `time`,
+              获奖_推广创新项目名称: `awardWinningName`
+            },
+            {
+              本人排名: `rank`,
+              授奖级别: `awardlevel`
+            },
+            {
+              批准机关: `approvalAuthority`
+            }
+          ],
+          fileData: [
+            {
+              附件1: rowData.urlImageOne,
+              附件2: require(`../../../images/证件空态度.png`)
+            }
+          ],
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
     }
-  ]
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -118,6 +137,8 @@ export default observer(function Awards () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editAwardsModal.show({ data: row, signShow: '修改' })
@@ -125,42 +146,7 @@ export default observer(function Awards () {
             >
               修改
             </span>
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nurseAwardWinning',
-                      title: '审核所获奖励',
-                      tableFormat: [
-                        {
-                          时间: `time`,
-                          获奖_推广创新项目名称: `awardWinningName`
-                        },
-                        {
-                          本人排名: `rank`,
-                          授奖级别: `awardlevel`
-                        },
-                        {
-                          批准机关: `approvalAuthority`
-                        }
-                      ],
-                      fileData: [
-                        {
-                          附件1: row.urlImageOne,
-                          附件2: require(`../../../images/证件空态度.png`)
-                        }
-                      ],
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }

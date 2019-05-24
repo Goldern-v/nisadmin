@@ -14,6 +14,8 @@ import Zimage from 'src/components/Zimage';
 
 export interface Props extends RouteComponentProps {}
 export default observer(function ThreeBases () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editThreeBasesModal = createModal(EditThreeBasesModal)
   const btnList = [
     {
@@ -24,52 +26,45 @@ export default observer(function ThreeBases () {
         })
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号',
-      nd: '2018',
-      lnkf: '89',
-      czkf: '93',
-      fj: '有',
-      zt: '已审核'
-    },
-    {
-      key: '2',
-      name: '杨春',
-      age: 24,
-      address: '西湖区湖底公园1号',
-      nd: '2018',
-      lnkf: '84',
-      czkf: '86',
-      fj: '有',
-      zt: '已审核'
-    },
-    {
-      key: '3',
-      name: '赵平',
-      age: 34,
-      address: '西湖区湖底公园1号',
-      nd: '2018',
-      lnkf: '79',
-      czkf: '91',
-      fj: '有',
-      zt: '已审核'
-    },
-    {
-      key: '4',
-      name: '易小惠',
-      age: 33,
-      address: '西湖区湖底公园1号',
-      nd: '2018',
-      lnkf: '86',
-      czkf: '89',
-      fj: '有',
-      zt: '已审核'
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nurseHospitalsThreeBase',
+          title: '审核特殊资格证',
+          tableFormat: [
+            {
+              年度: `year`,
+              理论考核成绩_分: `theoryScore`
+            },
+            {
+              操作考核成绩_分: `technologyScore`
+            }
+          ],
+          fileData: [
+            {
+              附件1: rowData.urlImageOne,
+              附件2: require(`../../../images/证件空态度.png`)
+            }
+          ],
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
     }
-  ]
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -127,6 +122,8 @@ export default observer(function ThreeBases () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editThreeBasesModal.show({ data: row, signShow: '修改' })
@@ -134,38 +131,7 @@ export default observer(function ThreeBases () {
             >
               修改
             </span>
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nurseHospitalsThreeBase',
-                      title: '审核特殊资格证',
-                      tableFormat: [
-                        {
-                          年度: `year`,
-                          理论考核成绩_分: `theoryScore`
-                        },
-                        {
-                          操作考核成绩_分: `technologyScore`
-                        }
-                      ],
-                      fileData: [
-                        {
-                          附件1: row.urlImageOne,
-                          附件2: require(`../../../images/证件空态度.png`)
-                        }
-                      ],
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }
