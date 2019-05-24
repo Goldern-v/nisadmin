@@ -12,6 +12,7 @@ function Header () {
   const adminNurse = sessionStorage.getItem('adminNurse') || ''
   const authToken = sessionStorage.getItem('authToken') || ''
   const user = JSON.parse(sessionStorage.getItem('user') || '[]')
+  const userName = user.empName
 
   if (!adminNurse || !authToken || !user) {
     service.authApiService.logout()
@@ -22,7 +23,7 @@ function Header () {
       <Logo src={require('../images/logo.png')} />
       <SystemName src={require('../images/logoText.png')} />
       <div style={{ flex: 1 }} />
-      <Text>{sessionStorage.getItem('adminNurse')}</Text>
+      <Text>{userName || sessionStorage.getItem('adminNurse')}</Text>
       <BreakLine />
       <span
         style={{ display: 'contents', cursor: 'pointer' }}
