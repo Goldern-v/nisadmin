@@ -9,6 +9,7 @@ import { Modal } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { modalService } from '../services/ModalService'
 const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
+const aduitSuccessIcon = require('../images/审核通过.png')
 export interface Props extends ModalComponentProps {
   allData?: any
   tableFormat?: any
@@ -32,6 +33,8 @@ export default function aduitModal (props: Props) {
   let [auditStatus, setAuditStatus]: [any, any] = useState('')
   /** 评估意见 */
   let [opinion, setOpinion]: [any, any] = useState('')
+  /** 审核列表 */
+  let [auditeListDtos, setAuditeListDtos]: [any, any] = useState([])
   useEffect(() => {
     if (visible) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
@@ -64,6 +67,7 @@ export default function aduitModal (props: Props) {
           }
         })
         setTableData(tableData)
+        setAuditeListDtos(data.auditeListDtos)
       })
     }
   }, [visible])
@@ -101,8 +105,8 @@ export default function aduitModal (props: Props) {
         <TimeLineCon>
           <div className='label'>审核过程：</div>
           <LinCon>
-            {[1, 2, 3].map((item, index) => (
-              <TimeLineItem data={item} index={index} key={index} />
+            {auditeListDtos.map((item: any, index: any, arr: any) => (
+              <TimeLineItem data={item} index={index} key={index} arr={arr} />
             ))}
           </LinCon>
         </TimeLineCon>
@@ -145,19 +149,33 @@ export default function aduitModal (props: Props) {
 }
 
 function TimeLineItem (props: any) {
-  const { data, index } = props
+  const { data, index, arr } = props
   const Con = styled.div<{ index: number }>`
     height: 72px;
     display: flex;
-    ${(p) => p.index !== 0 && `margin-top: 30px;`}
+    ${(p) => p.index !== 0 && `margin-top: 20px;`}
     .left {
       width: 72px;
       height: 72px;
-      img {
+      position: relative;
+      .head {
         width: 100%;
         height: 100%;
         border: 1px solid rgba(204, 204, 204, 1);
         border-radius: 50%;
+      }
+      .icon {
+        position: absolute;
+        top: 50px;
+        left: 42px;
+      }
+      .line {
+        position: absolute;
+        width: 2px;
+        height: 20px;
+        background: #6cb45c;
+        left: 35px;
+        top: -20px;
       }
     }
     .right {
@@ -182,11 +200,20 @@ function TimeLineItem (props: any) {
   return (
     <Con index={index}>
       <div className='left'>
-        <img src={defaultHead} alt='' />
+        <img className='head' src={defaultHead} alt='' />
+        {(index === 0 || data.auditedStatus.indexOf('Success') > -1) && (
+          <React.Fragment>
+            <img className='icon' src={aduitSuccessIcon} alt='' />
+            {index != arr.length - 1 && <div className='line' />}
+          </React.Fragment>
+        )}
       </div>
       <div className='right'>
-        <div className='title'>提交资料</div>
-        <div className='aside'>史熠熠&nbsp; 2018-05-20</div>
+        <div className='title'>{data.auditedStatusName}</div>
+        <div className='aside'>
+          {data.auditedName}&nbsp; {data.auditedTime}
+        </div>
+        <div className='aside'>{data.detail}</div>
       </div>
     </Con>
   )
@@ -207,8 +234,8 @@ function UploadItem (props: any) {
     }
     img {
       position: absolute;
-      height: 174px;
-      min-width: 200px;
+      height: 150px;
+      min-width: 180px;
       border: 1px solid rgba(219, 224, 228, 1);
       top: 20px;
       left: 80px;
