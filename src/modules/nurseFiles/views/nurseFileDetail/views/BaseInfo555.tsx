@@ -11,114 +11,53 @@ import createModal from 'src/libs/createModal'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { observer } from 'mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
-
+let editBaseInfoModal = createModal(EditBaseInfoModal)
 export default observer(function BaseInfo () {
-  const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
-  let btnList
-  // const btnList = [
-  //   {
-  //     label: '修改',
-  //     onClick: () => {
-  //       editBaseInfoModal.show({
-  //         id: idData,
-  //         data: info
-  //       })
-  //     }
-  //   },
-  //   {
-  //     label: '审核',
-  //     //
-
-  //     //
-  //     onClick: () => {
-  //       globalModal.auditModal.show({
-  //         id: idData,
-  //         type: 'nurseInformation',
-  //         // empNo: appStore.queryObj.empNo,
-  //         title: '审核基础信息',
-  //         tableFormat: [
-  //           {
-  //             获得时间: `empName`,
-  //             资格名称: `birthday`
-  //           },
-  //           {
-  //             资格证编号: `age`
-  //           }
-  //         ],
-  //         // fileData: [
-  //         //   {
-  //         //     附件1: info.urlImageOne,
-  //         //     附件2: 'bbb'
-  //         //   }
-  //         // ],
-  //         allData: info
-  //       })
-  //     }
-  //   }
-  // ]
-  if (
-    (authStore.post === '护长' && info.statusColor === '0') ||
-    authStore.post === '护理部' ||
-    (authStore.post === '护理部主任' && info.statusColor === '1') ||
-    info.auditedStatusName === '待护理部主任审核'
-  ) {
-    btnList = [
-      {
-        label: '修改',
-        onClick: () => {
-          editBaseInfoModal.show({
-            id: idData,
-            data: info
-          })
-        }
-      },
-      {
-        label: '审核',
-        //
-
-        //
-        onClick: () => {
-          globalModal.auditModal.show({
-            id: idData,
-            type: 'nurseInformation',
-            // empNo: appStore.queryObj.empNo,
-            title: '审核基础信息',
-            tableFormat: [
-              {
-                获得时间: `empName`,
-                资格名称: `birthday`
-              },
-              {
-                资格证编号: `age`
-              }
-            ],
-            // fileData: [
-            //   {
-            //     附件1: info.urlImageOne,
-            //     附件2: 'bbb'
-            //   }
-            // ],
-            allData: info
-          })
-        }
+  const btnList = [
+    {
+      label: '修改',
+      onClick: () => {
+        editBaseInfoModal.show({
+          id: idData,
+          data: info
+        })
       }
-    ]
-  } else {
-    btnList = [
-      {
-        label: '修改',
-        onClick: () => {
-          editBaseInfoModal.show({
-            id: idData,
-            data: info
-          })
-        }
+    },
+    {
+      label: '审核',
+      //
+
+      //
+      onClick: () => {
+        globalModal.auditModal.show({
+          id: idData,
+          type: 'nurseInformation',
+          // empNo: appStore.queryObj.empNo,
+          title: '审核基础信息',
+          tableFormat: [
+            {
+              获得时间: `empName`,
+              资格名称: `birthday`
+            },
+            {
+              资格证编号: `age`
+            }
+          ],
+          // fileData: [
+          //   {
+          //     附件1: info.urlImageOne,
+          //     附件2: 'bbb'
+          //   }
+          // ],
+          allData: info
+        })
       }
-    ]
-  }
+    }
+  ]
+
   const getTableData = () =>
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
@@ -157,7 +96,95 @@ export default observer(function BaseInfo () {
     })
   useEffect(() => {
     getTableData()
-  }, [])
+    // if (
+    //   (authStore.post === '护长' && info.auditedStatusName === '待护士长审核') ||
+    //   authStore.post === '护理部' ||
+    //   (authStore.post === '护理部主任' && info.auditedStatusName === '待护理部审核') ||
+    //   info.auditedStatusName === '待护理部主任审核'
+    // ) {
+    //   setBtnList([
+    //     {
+    //       label: '修改',
+    //       onClick: () => {
+    //         editBaseInfoModal.show({
+    //           id: idData,
+    //           data: info
+    //         })
+    //       }
+    //     },
+    //     {
+    //       label: '审核',
+    //       //
+    //       //
+    //       onClick: () => {
+    //         globalModal.auditModal.show({
+    //           id: idData,
+    //           type: 'nurseInformation',
+    //           // empNo: appStore.queryObj.empNo,
+    //           title: '审核基础信息',
+    //           tableFormat: [
+    //             {
+    //               获得时间: `empName`,
+    //               资格名称: `birthday`
+    //             },
+    //             {
+    //               资格证编号: `age`
+    //             }
+    //           ],
+    //           // fileData: [
+    //           //   {
+    //           //     附件1: info.urlImageOne,
+    //           //     附件2: 'bbb'
+    //           //   }
+    //           // ],
+    //           allData: info
+    //         })
+    //       }
+    //     }
+    //   ])
+    // } else {
+    //   setBtnList([
+    //     {
+    //       label: '修改',
+    //       onClick: () => {
+    //         editBaseInfoModal.show({
+    //           id: idData,
+    //           data: info
+    //         })
+    //       }
+    //     },
+    //     {
+    //       label: '审核',
+    //       //
+    //       //
+    //       onClick: () => {
+    //         globalModal.auditModal.show({
+    //           id: idData,
+    //           type: 'nurseInformation',
+    //           // empNo: appStore.queryObj.empNo,
+    //           title: '审核基础信息',
+    //           tableFormat: [
+    //             {
+    //               获得时间: `empName`,
+    //               资格名称: `birthday`
+    //             },
+    //             {
+    //               资格证编号: `age`
+    //             }
+    //           ],
+    //           // fileData: [
+    //           //   {
+    //           //     附件1: info.urlImageOne,
+    //           //     附件2: 'bbb'
+    //           //   }
+    //           // ],
+    //           allData: info
+    //         })
+    //       }
+    //     }
+    //   ])
+    // }
+  }, [authStore.post])
   return (
     <BaseLayout title='基本信息' btnList={btnList}>
       <ScrollCon>

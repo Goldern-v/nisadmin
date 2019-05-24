@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable from 'src/components/BaseTable'
-import { appStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
@@ -144,40 +144,45 @@ export default observer(function WorkRegistrationForm () {
             >
               修改
             </span>
-            <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  id: row.id,
-                  type: 'nurseRegistrationWork',
-                  title: '审核特殊资格证',
-                  tableFormat: [
-                    {
-                      年度: `year`,
-                      夜班: `nightShift`
-                    },
-                    {
-                      查房: `checkOut`,
-                      护理会诊: `nursingConsultation`
-                    },
-                    {
-                      病例讨论: `caseDiscussion`,
-                      个案: `individualCase`
-                    },
-                    {
-                      小讲课: `lecture`,
-                      带教: `teaching`
-                    },
-                    {
-                      证明人: `witness`
-                    }
-                  ],
-                  // fileData: [{}],
-                  allData: row
-                })
-              }}
-            >
-              审核
-            </span>
+            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
+              authStore.post === '护理部' ||
+              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
+              (row.auditedStatusName === '待护理部主任审核' && (
+                <span
+                  onClick={() => {
+                    globalModal.auditModal.show({
+                      id: row.id,
+                      type: 'nurseRegistrationWork',
+                      title: '审核特殊资格证',
+                      tableFormat: [
+                        {
+                          年度: `year`,
+                          夜班: `nightShift`
+                        },
+                        {
+                          查房: `checkOut`,
+                          护理会诊: `nursingConsultation`
+                        },
+                        {
+                          病例讨论: `caseDiscussion`,
+                          个案: `individualCase`
+                        },
+                        {
+                          小讲课: `lecture`,
+                          带教: `teaching`
+                        },
+                        {
+                          证明人: `witness`
+                        }
+                      ],
+                      // fileData: [{}],
+                      allData: row
+                    })
+                  }}
+                >
+                  审核
+                </span>
+              ))}
           </DoCon>
         )
       }

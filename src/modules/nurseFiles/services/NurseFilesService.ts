@@ -27,9 +27,10 @@ export default class NurseFilesService extends BaseApiService {
   public async findByEmpNo (empNo: any) {
     return this.get(`/auditeNurseFileIndex/findByEmpNo/${empNo}`)
   }
+  // getByEmpNoAudite
   // 1查找护士基本信息 护长
   public async nurseInformation (empNo: any) {
-    return this.get(`/nurseInformation/getByEmpNo/${empNo}`)
+    return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`)
   }
   // 1-1护士基本信息信息更新
   public async saveOrUpdate (obj: any) {

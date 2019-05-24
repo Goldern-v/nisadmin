@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable from 'src/components/BaseTable'
-import { appStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
@@ -150,34 +150,39 @@ export default observer(function EducationalExperience () {
             >
               修改
             </span>
-            <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  id: row.id,
-                  type: 'nurseContinuingEducation',
-                  title: '审核继续教育',
-                  tableFormat: [
-                    {
-                      开始时间: `startTime`,
-                      结束时间: `startTime`
-                    },
-                    {
-                      培训单位: `trainingUnit`,
-                      培训内容: `trainingContent`
-                    }
-                  ],
-                  fileData: [
-                    {
-                      附件1: row.urlImageOne,
-                      附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
-                  allData: row
-                })
-              }}
-            >
-              审核
-            </span>
+            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
+              authStore.post === '护理部' ||
+              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
+              (row.auditedStatusName === '待护理部主任审核' && (
+                <span
+                  onClick={() => {
+                    globalModal.auditModal.show({
+                      id: row.id,
+                      type: 'nurseContinuingEducation',
+                      title: '审核继续教育',
+                      tableFormat: [
+                        {
+                          开始时间: `startTime`,
+                          结束时间: `startTime`
+                        },
+                        {
+                          培训单位: `trainingUnit`,
+                          培训内容: `trainingContent`
+                        }
+                      ],
+                      fileData: [
+                        {
+                          附件1: row.urlImageOne,
+                          附件2: require(`../../../images/证件空态度.png`)
+                        }
+                      ],
+                      allData: row
+                    })
+                  }}
+                >
+                  审核
+                </span>
+              ))}
           </DoCon>
         )
       }

@@ -132,7 +132,8 @@ export default observer(function Awards () {
             >
               修改
             </span>
-            {authStore.post === '护理部' ||
+            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
+              authStore.post === '护理部' ||
               (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
               (row.auditedStatusName === '待护理部主任审核' && (
                 <span

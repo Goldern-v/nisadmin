@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable from 'src/components/BaseTable'
-import { appStore } from 'src/stores'
+import { authStore,appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
@@ -130,33 +130,38 @@ export default observer(function LevelChange () {
             >
               修改
             </span>
-            <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  id: row.id,
-                  type: 'nurseProfessionalAndLevelChange',
-                  title: '审核职称及层级变动',
-                  tableFormat: [
-                    {
-                      职称聘用时间: `appointmentTime`,
-                      取得职称: `titleQualification`
-                    },
-                    {
-                      层级: `hierarchy`
-                    }
-                  ],
-                  fileData: [
-                    {
-                      附件1: row.urlImageOne,
-                      附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
-                  allData: row
-                })
-              }}
-            >
-              审核
-            </span>
+            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
+              authStore.post === '护理部' ||
+              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
+              (row.auditedStatusName === '待护理部主任审核' && (
+                <span
+                  onClick={() => {
+                    globalModal.auditModal.show({
+                      id: row.id,
+                      type: 'nurseProfessionalAndLevelChange',
+                      title: '审核职称及层级变动',
+                      tableFormat: [
+                        {
+                          职称聘用时间: `appointmentTime`,
+                          取得职称: `titleQualification`
+                        },
+                        {
+                          层级: `hierarchy`
+                        }
+                      ],
+                      fileData: [
+                        {
+                          附件1: row.urlImageOne,
+                          附件2: require(`../../../images/证件空态度.png`)
+                        }
+                      ],
+                      allData: row
+                    })
+                  }}
+                >
+                  审核
+                </span>
+              ))}
           </DoCon>
         )
       }
