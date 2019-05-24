@@ -54,6 +54,7 @@ export default function aduitModal (props: Props) {
             }
           })
           setTableData(tableData)
+          setAuditeListDtos(data.auditeListDtos)
         })
       } else {
         /** 获取详情 */
