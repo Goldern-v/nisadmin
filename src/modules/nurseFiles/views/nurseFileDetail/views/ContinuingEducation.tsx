@@ -12,6 +12,8 @@ import { globalModal } from 'src/global/globalModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editContinuingEducationModal = createModal(EditContinuingEducationModal)
   const btnList = [
     {
@@ -22,48 +24,46 @@ export default observer(function EducationalExperience () {
         })
     }
   ]
-  // 附件属性是什么
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号',
-      ksTime: '2015-09',
-      jsTime: '2017-07',
-      pxDW: '护理职工学院',
-      pxLR: '全程护理',
-      xs: '376',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '2',
-      name: '杨平',
-      age: 28,
-      address: '西湖区湖底公园1号',
-      ksTime: '2014-09',
-      jsTime: '2016-07',
-      pxDW: '护理职工学院',
-      pxLR: '全程护理',
-      xs: '376',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '3',
-      name: '赵立',
-      age: 29,
-      address: '西湖区湖底公园1号',
-      ksTime: '2013-09',
-      jsTime: '2015-07',
-      pxDW: '护理职工学院',
-      pxLR: '全程护理',
-      xs: '376',
-      fj: '有',
-      zt: '待护士长审核'
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nurseContinuingEducation',
+          title: '审核继续教育',
+          tableFormat: [
+            {
+              开始时间: `startTime`,
+              结束时间: `startTime`
+            },
+            {
+              培训单位: `trainingUnit`,
+              培训内容: `trainingContent`
+            }
+          ],
+          fileData: [
+            {
+              附件1: rowData.urlImageOne,
+              附件2: require(`../../../images/证件空态度.png`)
+            }
+          ],
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
     }
-  ]
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -143,6 +143,8 @@ export default observer(function EducationalExperience () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editContinuingEducationModal.show({ data: row, signShow: '修改' })
@@ -150,39 +152,7 @@ export default observer(function EducationalExperience () {
             >
               修改
             </span>
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nurseContinuingEducation',
-                      title: '审核继续教育',
-                      tableFormat: [
-                        {
-                          开始时间: `startTime`,
-                          结束时间: `startTime`
-                        },
-                        {
-                          培训单位: `trainingUnit`,
-                          培训内容: `trainingContent`
-                        }
-                      ],
-                      fileData: [
-                        {
-                          附件1: row.urlImageOne,
-                          附件2: require(`../../../images/证件空态度.png`)
-                        }
-                      ],
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }

@@ -15,6 +15,8 @@ import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function WorkHistory () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const [getId, setGetId] = useState(0)
   const editWorkHistoryModal = createModal(EditWorkHistoryModal)
 
@@ -27,7 +29,48 @@ export default observer(function WorkHistory () {
         })
     }
   ]
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nurseWorkExperience',
+          title: '审核工作经历',
+          tableFormat: [
+            {
+              起始时间: `startTime`,
+              结束时间: `endTime`
+            },
+            {
+              工作单位: `unit`,
+              专业技术工作: 'professionalWork'
+            },
+            {
+              技术职称: 'professional',
+              职务: 'post'
+            },
+            {
+              技术职称: 'professional'
+            }
+          ],
 
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
+    }
+  }
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -99,6 +142,8 @@ export default observer(function WorkHistory () {
         if (Object.keys(row).length === 0) return <span />
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editWorkHistoryModal.show({ data: row, signShow: '修改' })
@@ -106,41 +151,7 @@ export default observer(function WorkHistory () {
             >
               修改
             </span>
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nurseWorkExperience',
-                      title: '审核工作经历',
-                      tableFormat: [
-                        {
-                          起始时间: `startTime`,
-                          结束时间: `endTime`
-                        },
-                        {
-                          工作单位: `unit`,
-                          专业技术工作: 'professionalWork'
-                        },
-                        {
-                          技术职称: 'professional',
-                          职务: 'post'
-                        },
-                        {
-                          技术职称: 'professional'
-                        }
-                      ],
-
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }

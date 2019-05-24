@@ -10,9 +10,11 @@ import createModal from 'src/libs/createModal'
 import EditSpecialCardModal from '../modal/EditSpecialCardModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
-import { Button } from 'antd'
+// import { Button } from 'antd'
 export interface Props extends RouteComponentProps {}
 export default observer(function SpecialCard () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editSpecialCardModal = createModal(EditSpecialCardModal)
   const btnList = [
     {
@@ -23,119 +25,45 @@ export default observer(function SpecialCard () {
         })
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号',
-      hdTime: '2007-03-08',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-04344-45435-78841',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '赵志平',
-      age: 29,
-      address: '城市花园37号',
-      hdTime: '2013-06-09',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43324-55342-67898',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '1',
-      name: '杨华',
-      age: 28,
-      address: '西湖区湖底公园1号',
-      hdTime: '2015-03-08',
-      zjName: '特级护理医疗证',
-      zgzNumber: 'thx-43434-55434-33443',
-      fj: '有',
-      zt: '待护士长审核'
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nurseSpecialQualification',
+          title: '审核特殊资格证',
+          tableFormat: [
+            {
+              获得时间: `time`,
+              资格名称: `specialQualificationName`
+            },
+            {
+              资格证编号: `specialQualificationNo`
+            }
+          ],
+          fileData: [
+            {
+              附件1: rowData.urlImageOne,
+              附件2: require(`../../../images/证件空态度.png`)
+            }
+          ],
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
     }
-  ]
-
+  }
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -201,6 +129,8 @@ export default observer(function SpecialCard () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editSpecialCardModal.show({ data: row, signShow: '修改' })
@@ -208,39 +138,7 @@ export default observer(function SpecialCard () {
             >
               修改
             </span>
-
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nurseSpecialQualification',
-                      title: '审核特殊资格证',
-                      tableFormat: [
-                        {
-                          获得时间: `time`,
-                          资格名称: `specialQualificationName`
-                        },
-                        {
-                          资格证编号: `specialQualificationNo`
-                        }
-                      ],
-                      fileData: [
-                        {
-                          附件1: row.urlImageOne,
-                          附件2: require(`../../../images/证件空态度.png`)
-                        }
-                      ],
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }
@@ -261,12 +159,12 @@ export default observer(function SpecialCard () {
     // })
     // setStatusNameGet(tableData[0]!.auditedStatusName)
   }, [])
-  const test = () => {
-    console.log(authStore.post)
-  }
+  // const test = () => {
+  //   console.log(authStore.post)
+  // }
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
-      <Button onClick={test}>按钮</Button>
+      {/* <Button onClick={test}>按钮</Button> */}
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>

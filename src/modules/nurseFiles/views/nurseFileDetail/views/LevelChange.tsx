@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable from 'src/components/BaseTable'
-import { authStore,appStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
@@ -13,6 +13,8 @@ import { globalModal } from 'src/global/globalModal'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function LevelChange () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editLevelChangeModal = createModal(EditLevelChangeModal)
   const btnList = [
     {
@@ -23,41 +25,45 @@ export default observer(function LevelChange () {
         })
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号',
-      pyTime: '2012-5',
-      jd: '高级护工',
-      cj: '高级护士',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '2',
-      name: '杨平',
-      age: 26,
-      address: '西湖区湖底公园1号',
-      pyTime: '2015-5',
-      jd: '中级护工',
-      cj: '中级护士',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '3',
-      name: '易小惠',
-      age: 29,
-      address: '西湖区湖底公园1号',
-      pyTime: '2017-5',
-      jd: '中级护工',
-      cj: '中级护士',
-      fj: '有',
-      zt: '待护士长审核'
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nurseProfessionalAndLevelChange',
+          title: '审核职称及层级变动',
+          tableFormat: [
+            {
+              职称聘用时间: `appointmentTime`,
+              取得职称: `titleQualification`
+            },
+            {
+              层级: `hierarchy`
+            }
+          ],
+          fileData: [
+            {
+              附件1: rowData.urlImageOne,
+              附件2: require(`../../../images/证件空态度.png`)
+            }
+          ],
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
     }
-  ]
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -123,6 +129,8 @@ export default observer(function LevelChange () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editLevelChangeModal.show({ data: row, signShow: '修改' })
@@ -130,38 +138,7 @@ export default observer(function LevelChange () {
             >
               修改
             </span>
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nurseProfessionalAndLevelChange',
-                      title: '审核职称及层级变动',
-                      tableFormat: [
-                        {
-                          职称聘用时间: `appointmentTime`,
-                          取得职称: `titleQualification`
-                        },
-                        {
-                          层级: `hierarchy`
-                        }
-                      ],
-                      fileData: [
-                        {
-                          附件1: row.urlImageOne,
-                          附件2: require(`../../../images/证件空态度.png`)
-                        }
-                      ],
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }

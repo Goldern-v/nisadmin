@@ -12,6 +12,8 @@ import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesSer
 import { globalModal } from 'src/global/globalModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function Writings () {
+  // 保存表格每行数据
+  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editWritingsModal = createModal(EditWritingsModal)
   const btnList = [
     {
@@ -22,56 +24,46 @@ export default observer(function Writings () {
         })
     }
   ]
-  const dataSource = [
-    {
-      key: '1',
-      name: '胡彦斌',
-      age: 32,
-      address: '西湖区湖底公园1号',
-      fbDate: '2012-09-16',
-      tm: '护理六步法',
-      brpm: '13',
-      cbkd: '昆山日报',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '2',
-      name: '杨春',
-      age: 36,
-      address: '西湖区湖底公园1号',
-      fbDate: '2015-08-23',
-      tm: '儿童预防接种反应',
-      brpm: '36',
-      cbkd: '天天日报',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '3',
-      name: '赵平',
-      age: 35,
-      address: '西湖区湖底公园1号',
-      fbDate: '2013-08-16',
-      tm: '老年糖尿病护理',
-      brpm: '53',
-      cbkd: '青年杂社',
-      fj: '有',
-      zt: '待护士长审核'
-    },
-    {
-      key: '4',
-      name: '易小惠',
-      age: 34,
-      address: '西湖区湖底公园1号',
-      fbDate: '2012-09-36',
-      tm: '烧伤护理法',
-      brpm: '39',
-      cbkd: '长沙周刊',
-      fj: '有',
-      zt: '待护士长审核'
+  // 审核组件
+  const AuditComponent = (
+    <span
+      onClick={() => {
+        globalModal.auditModal.show({
+          id: rowData.id,
+          type: 'nursePaperExperience',
+          title: '审核著作译文论文',
+          tableFormat: [
+            {
+              发表日期: `publicDate`,
+              题目: `title`
+            },
+            {
+              本人排名: `rank`,
+              出版或刊登物: `publication`
+            }
+          ],
+          fileData: [
+            {
+              附件1: rowData.urlImageOne,
+              附件2: require(`../../../images/证件空态度.png`)
+            }
+          ],
+          allData: rowData
+        })
+      }}
+    >
+      审核
+    </span>
+  )
+  // 审核判断方法
+  const limitsComponent = (AuditComponent: any) => {
+    if (
+      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
+      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
+    ) {
+      return AuditComponent
     }
-  ]
+  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -145,6 +137,8 @@ export default observer(function Writings () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
+            {/* 保存行数据 */}
+            {setRowData(row)}
             <span
               onClick={() => {
                 editWritingsModal.show({ data: row, signShow: '修改' })
@@ -152,39 +146,7 @@ export default observer(function Writings () {
             >
               修改
             </span>
-            {(authStore.post === '护长' && row.auditedStatusName === '待护士长审核') ||
-              authStore.post === '护理部' ||
-              (authStore.post === '护理部主任' && row.auditedStatusName === '待护理部审核') ||
-              (row.auditedStatusName === '待护理部主任审核' && (
-                <span
-                  onClick={() => {
-                    globalModal.auditModal.show({
-                      id: row.id,
-                      type: 'nursePaperExperience',
-                      title: '审核著作译文论文',
-                      tableFormat: [
-                        {
-                          发表日期: `publicDate`,
-                          题目: `title`
-                        },
-                        {
-                          本人排名: `rank`,
-                          出版或刊登物: `publication`
-                        }
-                      ],
-                      fileData: [
-                        {
-                          附件1: row.urlImageOne,
-                          附件2: require(`../../../images/证件空态度.png`)
-                        }
-                      ],
-                      allData: row
-                    })
-                  }}
-                >
-                  审核
-                </span>
-              ))}
+            {limitsComponent(AuditComponent)}
           </DoCon>
         )
       }
