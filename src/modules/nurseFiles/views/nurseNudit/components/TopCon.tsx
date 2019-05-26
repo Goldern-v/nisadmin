@@ -2,8 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Breadcrumb } from 'antd'
-import store, { appStore } from 'src/stores'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import store from 'src/stores'
 import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
@@ -15,7 +14,7 @@ const WARNNING_ICON = require('../../../images/注意.png')
 
 export default observer(function TopCon () {
   let history = store.appStore.history
-  let { empName, post, deptName, nurseHierarchy, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
+  let empName, post, deptName, nurseHierarchy, nearImageUrl
   return (
     <Wrapper>
       <BreadcrumbCon>
@@ -31,17 +30,17 @@ export default observer(function TopCon () {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-      <Tip>
+      {/* <Tip>
         <img src={WARNNING_ICON} alt='' />
         {nurseFileDetailViewModal.badgeTotal && (
           <span>
             {' '}
             注意：刘盼盼有{nurseFileDetailViewModal.badgeTotal}条未审核信息，点击
-            <ClickSpan onClick={() => appStore.history.push(`/nurseNudit?${appStore.query}`)}>这里</ClickSpan>
+            <ClickSpan>这里</ClickSpan>
             进行审核
           </span>
         )}
-      </Tip>
+      </Tip> */}
     </Wrapper>
   )
 })

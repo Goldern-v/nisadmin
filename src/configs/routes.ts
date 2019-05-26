@@ -20,6 +20,7 @@ import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingV
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
 import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
 import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
+import NurseNudit from 'src/modules/nurseFiles/views/nurseNudit/NurseNudit'
 
 import BadEventView from 'src/modules/badEvents/views/BadEventView'
 import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
@@ -71,6 +72,7 @@ const routes: RouteItem[] = [
   setLayout('/nursingPerformance', NursingPerformance, layouts.MainLayout),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+  setLayout('/nurseNudit', NurseNudit, layouts.MainLayout),
   setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),

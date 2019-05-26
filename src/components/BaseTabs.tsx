@@ -23,6 +23,7 @@ export default function BaseTabs (props: Props) {
 }
 const TabsCon = styled.div`
   min-height: 100%;
+  width: 100%;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
   border: 1px solid rgba(219, 224, 228, 1);
