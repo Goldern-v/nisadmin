@@ -7,6 +7,8 @@ import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesSer
 import store from 'src/stores'
 import AuditText from './auditText/AuditText'
 import emitter from 'src/libs/ev'
+import { Button } from 'antd'
+import { globalModal } from 'src/global/globalModal'
 export interface Props {
   type: string
 }
@@ -17,6 +19,7 @@ export default function AuditsTableDHSZ (props: Props) {
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
   const [total, setTotal] = useState(0)
+  const [selectedRows, setSelectedRows] = useState([])
 
   const columns: any = [
     {
@@ -86,7 +89,7 @@ export default function AuditsTableDHSZ (props: Props) {
   ]
 
   const onChange = (pagination: any) => {
-    onload(pagination.current)
+    pagination.current && onload(pagination.current)
   }
   const onload = (current: any) => {
     nurseFilesService.auditeStatusNurse(type, current).then((res) => {
@@ -95,6 +98,23 @@ export default function AuditsTableDHSZ (props: Props) {
       setCurrent(res.data.pageIndex)
     })
   }
+  const rowSelection = {
+    onChange: (selectedRowKeys: any, selectedRows: any) => {
+      setSelectedRows(selectedRows)
+      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
+    }
+  }
+
+  const openGroupModal = () => {
+    globalModal.groupsAduitModal.show({
+      selectedRows,
+      getTableData: () => {
+        setSelectedRows([])
+        emitter.emit('refreshNurseAuditTable')
+      }
+    })
+  }
+
   useEffect(() => {
     emitter.addListener('refreshNurseAuditTable', () => onload(current))
     onload(current)
@@ -104,6 +124,7 @@ export default function AuditsTableDHSZ (props: Props) {
   }, [])
   return (
     <Wrapper>
+      <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>
       <BaseTable
         dataSource={tableData}
         columns={columns}
@@ -114,8 +135,14 @@ export default function AuditsTableDHSZ (props: Props) {
           current: current
         }}
         onChange={onChange}
+        rowSelection={rowSelection}
       />
     </Wrapper>
   )
 }
 const Wrapper = styled.div``
+const GroupPostBtn = styled(Button)`
+  position: fixed !important;
+  top: 180px;
+  right: 20px;
+`

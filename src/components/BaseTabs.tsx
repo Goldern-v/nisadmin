@@ -57,8 +57,8 @@ const TabsCon = styled.div`
     border-bottom: 0 !important;
     color: #333333 !important;
   }
-  *::after,
-  *::before {
+  .ant-tabs-nav-container * ::after,
+  .ant-tabs-nav-container * ::before {
     display: none !important;
   }
 `

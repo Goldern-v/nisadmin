@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite'
 import AduitModal from '../global/modal/AduitModal'
 import createModal from 'src/libs/createModal'
 import { globalModal } from 'src/global/globalModal'
+import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function MainLayout (props: Props) {
@@ -17,7 +18,9 @@ export default observer(function MainLayout (props: Props) {
   store.appStore.match = props.match
   store.appStore.location = props.location
   const aduitModalRef: any = React.createRef()
+  const groupsAduitModalRef: any = React.createRef()
   const aduitModal = createModal(AduitModal)
+  const groupsAduitModal = createModal(GroupsAduitModal)
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res: any) => {
       if (res && res.data && res.data.deptList) {
@@ -33,6 +36,7 @@ export default observer(function MainLayout (props: Props) {
 
   useLayoutEffect(() => {
     globalModal.auditModal = aduitModalRef.current
+    globalModal.groupsAduitModal = groupsAduitModalRef.current
     setTimeout(() => {
       // console.log(globalModal!.auditModal, 'globalModal!.auditModal')
       // globalModal!.auditModal && globalModal!.auditModal!.show()
@@ -48,6 +52,7 @@ export default observer(function MainLayout (props: Props) {
         <RouterView routes={props.routes} />
       </RouterViewCon>
       <aduitModal.Component ref={aduitModalRef} />
+      <groupsAduitModal.Component ref={groupsAduitModalRef} />
     </Wrapper>
   )
 })
