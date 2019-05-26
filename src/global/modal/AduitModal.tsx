@@ -18,6 +18,7 @@ export interface Props extends ModalComponentProps {
   title?: string
   type: string
   id: string
+  getTableData?: () => {}
 }
 
 export default function aduitModal (props: Props) {
@@ -91,6 +92,7 @@ export default function aduitModal (props: Props) {
       detail: opinion
     }
     modalService.auditeNurseFileIndex(props.type, postData)
+    props.getTableData && props.getTableData()
     onCancel()
   }
   return (

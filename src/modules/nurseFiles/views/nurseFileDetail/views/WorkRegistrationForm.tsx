@@ -10,10 +10,9 @@ import createModal from 'src/libs/createModal'
 import EditWorkRegistrationFormModal from '../modal/EditWorkRegistrationFormModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
+import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
 export default observer(function WorkRegistrationForm () {
-  // 保存表格每行数据
-  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
   const btnList = [
     {
@@ -24,52 +23,6 @@ export default observer(function WorkRegistrationForm () {
         })
     }
   ]
-  // 审核组件
-  const AuditComponent = (
-    <span
-      onClick={() => {
-        globalModal.auditModal.show({
-          id: rowData.id,
-          type: 'nurseRegistrationWork',
-          title: '审核特殊资格证',
-          tableFormat: [
-            {
-              年度: `year`,
-              夜班: `nightShift`
-            },
-            {
-              查房: `checkOut`,
-              护理会诊: `nursingConsultation`
-            },
-            {
-              病例讨论: `caseDiscussion`,
-              个案: `individualCase`
-            },
-            {
-              小讲课: `lecture`,
-              带教: `teaching`
-            },
-            {
-              证明人: `witness`
-            }
-          ],
-          // fileData: [{}],
-          allData: rowData
-        })
-      }}
-    >
-      审核
-    </span>
-  )
-  // 审核判断方法
-  const limitsComponent = (AuditComponent: any) => {
-    if (
-      (authStore.post === '护长' && rowData.auditedStatusName === '待护士长审核') ||
-      (authStore.post === '护理部' && rowData.auditedStatusName === '待护理部审核')
-    ) {
-      return AuditComponent
-    }
-  }
 
   const columns: ColumnProps<any>[] = [
     {
@@ -159,8 +112,6 @@ export default observer(function WorkRegistrationForm () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            {/* 保存行数据 */}
-            {setRowData(row)}
             <span
               onClick={() => {
                 editWorkRegistrationFormModal.show({ data: row, signShow: '修改' })
@@ -168,7 +119,45 @@ export default observer(function WorkRegistrationForm () {
             >
               修改
             </span>
-            {limitsComponent(AuditComponent)}
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  globalModal.auditModal.show({
+                    getTableData: getTableData,
+                    id: row.id,
+                    type: 'nurseRegistrationWork',
+                    title: '审核特殊资格证',
+                    tableFormat: [
+                      {
+                        年度: `year`,
+                        夜班: `nightShift`
+                      },
+                      {
+                        查房: `checkOut`,
+                        护理会诊: `nursingConsultation`
+                      },
+                      {
+                        病例讨论: `caseDiscussion`,
+                        个案: `individualCase`
+                      },
+                      {
+                        小讲课: `lecture`,
+                        带教: `teaching`
+                      },
+                      {
+                        证明人: `witness`
+                      }
+                    ],
+                    // fileData: [{}],
+                    allData: row
+                  })
+                }}
+              >
+                审核
+              </span>
+            ) : (
+              ''
+            )}
           </DoCon>
         )
       }
@@ -191,7 +180,7 @@ export default observer(function WorkRegistrationForm () {
     </BaseLayout>
   )
 })
-const Wrapper = styled.div``
+// const Wrapper = styled.div``
 
 const DoCon = styled.div`
   display: flex;
