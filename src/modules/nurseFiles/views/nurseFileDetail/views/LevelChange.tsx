@@ -92,7 +92,7 @@ export default observer(function LevelChange () {
             >
               修改
             </span>
-            {limitUtils ? (
+            {limitUtils(row) ? (
               <span
                 onClick={() => {
                   globalModal.auditModal.show({

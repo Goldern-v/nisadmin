@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable from 'src/components/BaseTable'
-import { authStore,appStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
@@ -121,7 +121,7 @@ export default observer(function FileList () {
 
   return (
     <BaseLayout title='附件' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editWritingsModal.Component />
     </BaseLayout>
   )

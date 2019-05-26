@@ -12,35 +12,35 @@ import BaseTabs from 'src/components/BaseTabs'
 const TABS_LIST_NURSE = [
   {
     title: '待护士长审核',
-    component: <AuditsTableDHSZ />
+    component: <AuditsTableDHSZ type='waitAuditedNurse' />
   },
   {
     title: '护士长审核退回',
-    component: <AuditsTableDHSZ />
+    component: <AuditsTableDHSZ type='auditedFailNurse' />
   },
   {
     title: '待护理部审核',
-    component: <AuditsTableDHSZ />
+    component: <AuditsTableDHSZ type='waitAuditedDepartment' />
   },
   {
     title: '审核通过',
-    component: <AuditsTableDHSZ />
+    component: <AuditsTableDHSZ type='auditedSuccessDepartment' />
   }
 ]
 
 const TABS_LIST_NURSING = [
   {
     title: '待护理部审核',
-    component: <AuditsTableDHSZ />
+    component: <AuditsTableDHSZ type='waitAuditedDepartment' />
   },
 
   {
     title: '护理部审核退回',
-    component: <AuditsTableDHSZ />
+    component: <AuditsTableDHSZ type='auditedFailDepartment' />
   },
   {
     title: '审核通过',
-    component: <AuditsTableDHSZ />
+    component: <AuditsTableDHSZ type='auditedSuccessDepartment' />
   }
 ]
 const tabShow = () => {
@@ -52,7 +52,7 @@ const tabShow = () => {
     return []
   }
 }
-export default observer(function NurseFileDetail () {
+export default observer(function NurseAudit () {
   return (
     <Wrapper>
       <TopCon />

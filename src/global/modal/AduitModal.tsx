@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Input } from 'antd'
+import { Input, message } from 'antd'
 import { ReactComponent as AgreeIcon } from '../images/默认勾选.svg'
 import { authStore } from 'src/stores'
 const { TextArea } = Input
@@ -37,12 +37,15 @@ export default function aduitModal (props: Props) {
   let [opinion, setOpinion]: [any, any] = useState('')
   /** 审核列表 */
   let [auditeListDtos, setAuditeListDtos]: [any, any] = useState([])
+  /** 是否需要当前用户审核 */
+  let [needAudite, setNeedAudite]: [any, any] = useState(false)
   useEffect(() => {
     if (visible) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
       props.title ? setTitle(props.title) : setTitle('审核')
-      props.allData ? setAuditStatus(props.allData.auditedStatusName) : setAuditStatus({})
       props.fileData ? setFileData(props.fileData) : setFileData([])
+      setAgree('')
+      setOpinion('')
       if (props.type === 'nurseInformation') {
         modalService.getByIdAuditeDis(props.type).then((res) => {
           let data = res.data
@@ -56,6 +59,12 @@ export default function aduitModal (props: Props) {
           })
           setTableData(tableData)
           setAuditeListDtos(data.auditeListDtos)
+          if (data.statusColor == '0') {
+            setNeedAudite(false)
+          } else if (data.statusColor == '1') {
+            setNeedAudite(true)
+          }
+          setAuditStatus(data.auditedStatusName)
         })
       } else {
         /** 获取详情 */
@@ -71,6 +80,12 @@ export default function aduitModal (props: Props) {
           })
           setTableData(tableData)
           setAuditeListDtos(data.auditeListDtos)
+          if (data.statusColor == '0') {
+            setNeedAudite(false)
+          } else if (data.statusColor == '1') {
+            setNeedAudite(true)
+          }
+          setAuditStatus(data.auditedStatusName)
         })
       }
     }
@@ -91,9 +106,11 @@ export default function aduitModal (props: Props) {
       flag: agreeStatus,
       detail: opinion
     }
-    modalService.auditeNurseFileIndex(props.type, postData)
-    props.getTableData && props.getTableData()
-    onCancel()
+    modalService.auditeNurseFileIndex(props.type, postData).then((res) => {
+      message.success('审核成功')
+      props.getTableData && props.getTableData()
+      onCancel()
+    })
   }
   return (
     <Modal title={title} visible={visible} onOk={onOk} onCancel={onCancel} okText='保存' forceRender width={800}>
@@ -136,31 +153,41 @@ export default function aduitModal (props: Props) {
               <div className='status'>{auditStatus}</div>
             </div>
           </div>
-          <div className='row'>
-            <div className='key'>审核结果：</div>
-            <div className='vale'>
-              <ResultBox className={agree == 'agree' ? 'agree' : ''} onClick={() => setAgree('agree')}>
-                通过
-                <AgreeIcon />
-              </ResultBox>
-              <ResultBox className={agree == 'disagree' ? 'disagree' : ''} onClick={() => setAgree('disagree')}>
-                退回
-                <AgreeIcon />
-              </ResultBox>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='key'>审核意见：</div>
-            <div className='vale'>
-              <TextArea rows={3} style={{ width: 554 }} value={opinion} onChange={(e) => setOpinion(e.target.value)} />
-            </div>
-          </div>
-          <div className='row' style={{ paddingTop: '2px' }}>
-            <div className='key'>审核人：</div>
-            <div className='vale'>
-              <div className='block'>{authStore.user!.empName}</div>
-            </div>
-          </div>
+
+          {needAudite && (
+            <React.Fragment>
+              <div className='row'>
+                <div className='key'>审核结果：</div>
+                <div className='vale'>
+                  <ResultBox className={agree == 'agree' ? 'agree' : ''} onClick={() => setAgree('agree')}>
+                    通过
+                    <AgreeIcon />
+                  </ResultBox>
+                  <ResultBox className={agree == 'disagree' ? 'disagree' : ''} onClick={() => setAgree('disagree')}>
+                    退回
+                    <AgreeIcon />
+                  </ResultBox>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='key'>审核意见：</div>
+                <div className='vale'>
+                  <TextArea
+                    rows={3}
+                    style={{ width: 554 }}
+                    value={opinion}
+                    onChange={(e) => setOpinion(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className='row' style={{ paddingTop: '2px' }}>
+                <div className='key'>审核人：</div>
+                <div className='vale'>
+                  <div className='block'>{authStore.user!.empName}</div>
+                </div>
+              </div>
+            </React.Fragment>
+          )}
         </FormCon>
       </AduitCon>
     </Modal>

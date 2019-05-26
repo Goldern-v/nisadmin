@@ -229,7 +229,7 @@ export default class NurseFilesService extends BaseApiService {
     let obj = {
       status,
       deptCode: authStore.selectedDeptCode,
-      // empNo: authStore.user && authStore!.user!.empNo,
+      empNo: appStore.queryObj.empNo,
       pageIndex,
       pageSize: 10
     }
