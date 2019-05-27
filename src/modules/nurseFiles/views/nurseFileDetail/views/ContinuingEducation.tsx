@@ -32,41 +32,41 @@ export default observer(function EducationalExperience () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 80
+      width: 50
     },
     {
       title: '开始时间',
       dataIndex: 'startTime',
       key: '2',
-      width: 150,
+      width: 130,
       align: 'center'
     },
     {
       title: '结束时间',
       dataIndex: 'startTime',
       key: '3',
-      width: 150,
+      width: 130,
       align: 'center'
     },
     {
       title: '培训单位',
       dataIndex: 'trainingUnit',
       key: '4',
-      width: 200,
+      width: 100,
       align: 'center'
     },
     {
       title: '培训内容',
       dataIndex: 'trainingContent',
       key: '5',
-      width: 200,
+      width: 100,
       align: 'center'
     },
     {
       title: '学时',
       dataIndex: 'hours',
       key: '6',
-      width: 150,
+      width: 80,
       align: 'center'
     },
     {
@@ -83,7 +83,6 @@ export default observer(function EducationalExperience () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '8',
-      width: 200,
       align: 'center'
     },
     {

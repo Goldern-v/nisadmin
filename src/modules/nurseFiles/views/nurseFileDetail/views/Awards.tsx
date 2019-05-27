@@ -13,7 +13,7 @@ import { globalModal } from 'src/global/globalModal'
 import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal';
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards () {
   const editAwardsModal = createModal(EditAwardsModal)
@@ -37,7 +37,7 @@ export default observer(function Awards () {
       title: '时间',
       dataIndex: 'time',
       key: '2',
-      width: 150,
+      width: 130,
       align: 'center'
     },
     {
@@ -58,21 +58,21 @@ export default observer(function Awards () {
       title: '授奖级别',
       dataIndex: 'awardlevel',
       key: '5',
-      width: 200,
+      width: 100,
       align: 'center'
     },
     {
       title: '批准机关',
       dataIndex: 'approvalAuthority',
       key: '6',
-      width: 150,
+      width: 100,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
       key: '5',
-      width: 200,
+      width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
@@ -82,7 +82,7 @@ export default observer(function Awards () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '61',
-      width: 150,
+
       align: 'center'
     },
     {

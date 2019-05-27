@@ -76,7 +76,7 @@ export default function GroupsAduitModal (props: Props) {
             <div className='row' style={{ paddingTop: '2px' }}>
               <div className='key'>审核人：</div>
               <div className='vale'>
-                <div className='block'>{authStore.user!.empName}</div>
+                <div className='block'>{authStore!.user!.empName}</div>
               </div>
             </div>
           </FormCon>

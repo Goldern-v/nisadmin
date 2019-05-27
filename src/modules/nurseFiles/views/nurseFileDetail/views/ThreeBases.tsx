@@ -60,7 +60,7 @@ export default observer(function ThreeBases () {
       title: '附件',
       dataIndex: 'fj',
       key: '5',
-      width: 200,
+      width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
@@ -70,7 +70,7 @@ export default observer(function ThreeBases () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '61',
-      width: 150,
+
       align: 'center'
     },
     {

@@ -70,7 +70,7 @@ export default observer(function SpecialCard () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '6',
-      width: 150,
+
       align: 'center'
     },
     {
