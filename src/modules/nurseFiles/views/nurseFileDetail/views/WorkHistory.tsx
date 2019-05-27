@@ -35,41 +35,41 @@ export default observer(function WorkHistory () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 70
+      width: 50
     },
     {
       title: '开始年月',
       dataIndex: 'startTime',
       key: '2',
-      width: 140,
+      width: 100,
       align: 'center'
     },
     {
       title: '结束年月',
       dataIndex: 'endTime',
       key: '3',
-      width: 140,
+      width: 100,
       align: 'center'
     },
     {
       title: '单位',
       dataIndex: 'unit',
       key: '4',
-      width: 200,
+      width: 100,
       align: 'center'
     },
     {
       title: '专业技术工作',
       dataIndex: 'professionalWork',
       key: '5',
-      width: 200,
+      width: 150,
       align: 'center'
     },
     {
       title: '技术职称',
       dataIndex: 'professional',
       key: 'professional',
-      width: 150,
+      width: 100,
       align: 'center'
     },
     {
@@ -83,7 +83,6 @@ export default observer(function WorkHistory () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '',
-      width: 220,
       align: 'center'
       // render: (text: any, item: any, index: any) => {
       //   return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>

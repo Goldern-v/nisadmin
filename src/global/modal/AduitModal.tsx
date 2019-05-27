@@ -59,9 +59,9 @@ export default function aduitModal (props: Props) {
           })
           setTableData(tableData)
           setAuditeListDtos(data.auditeListDtos)
-          if (data.statusColor == '0') {
+          if (data.statusColor === '0') {
             setNeedAudite(false)
-          } else if (data.statusColor == '1') {
+          } else if (data.statusColor === '1') {
             setNeedAudite(true)
           }
           setAuditStatus(data.auditedStatusName)
@@ -80,9 +80,9 @@ export default function aduitModal (props: Props) {
           })
           setTableData(tableData)
           setAuditeListDtos(data.auditeListDtos)
-          if (data.statusColor == '0') {
+          if (data.statusColor === '0') {
             setNeedAudite(false)
-          } else if (data.statusColor == '1') {
+          } else if (data.statusColor === '1') {
             setNeedAudite(true)
           }
           setAuditStatus(data.auditedStatusName)

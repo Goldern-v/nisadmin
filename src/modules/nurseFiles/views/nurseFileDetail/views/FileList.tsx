@@ -7,16 +7,16 @@ import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditWritingsModal from '../modal/EditWritingsModal'
+import EditFileListModal from '../modal/EditFileListModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function FileList () {
-  const editWritingsModal = createModal(EditWritingsModal)
+  const editFileListModal = createModal(EditFileListModal)
   const btnList = [
-    {
-      label: '添加',
-      onClick: () => editWritingsModal.show({})
-    }
+    // {
+    //   label: '添加',
+    //   onClick: () => editFileListModal.show({})
+    // }
   ]
   const dataSource = []
 
@@ -120,9 +120,9 @@ export default observer(function FileList () {
   }, [])
 
   return (
-    <BaseLayout title='附件' btnList={btnList}>
+    <BaseLayout title='附件'>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
-      <editWritingsModal.Component />
+      <editFileListModal.Component />
     </BaseLayout>
   )
 })

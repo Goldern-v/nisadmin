@@ -31,76 +31,75 @@ export default observer(function WorkRegistrationForm () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 80
+      width: 50
     },
     {
       title: '年度',
       dataIndex: 'year',
       key: '2',
-      width: 100,
+      width: 80,
       align: 'center'
     },
     {
       title: '夜班',
       dataIndex: 'nightShift',
       key: '3',
-      width: 100,
+      width: 70,
       align: 'center'
     },
     {
       title: '查房',
       dataIndex: 'checkOut',
       key: '4',
-      width: 100,
+      width: 70,
       align: 'center'
     },
     {
       title: '护理会诊',
       dataIndex: 'nursingConsultation',
       key: '5',
-      width: 150,
+      width: 80,
       align: 'center'
     },
     {
       title: '病例讨论',
       dataIndex: 'caseDiscussion',
       key: '6',
-      width: 150,
+      width: 80,
       align: 'center'
     },
     {
       title: '个案',
       dataIndex: 'individualCase',
       key: '61',
-      width: 150,
+      width: 70,
       align: 'center'
     },
     {
       title: '小讲课',
       dataIndex: 'lecture',
       key: '621',
-      width: 150,
+      width: 80,
       align: 'center'
     },
     {
       title: '带教',
       dataIndex: 'teaching',
       key: '621',
-      width: 150,
+      width: 70,
       align: 'center'
     },
     {
       title: '证明人',
       dataIndex: 'witness',
       key: '6231',
-      width: 150,
+      width: 80,
       align: 'center'
     },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '61231',
-      width: 200,
       align: 'center'
     },
     {
