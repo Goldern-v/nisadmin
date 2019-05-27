@@ -52,11 +52,11 @@ export default function GroupsAduitModal (props: Props) {
             <div className='row'>
               <div className='key'>审核结果：</div>
               <div className='vale'>
-                <ResultBox className={agree == 'agree' ? 'agree' : ''} onClick={() => setAgree('agree')}>
+                <ResultBox className={agree === 'agree' ? 'agree' : ''} onClick={() => setAgree('agree')}>
                   通过
                   <AgreeIcon />
                 </ResultBox>
-                <ResultBox className={agree == 'disagree' ? 'disagree' : ''} onClick={() => setAgree('disagree')}>
+                <ResultBox className={agree === 'disagree' ? 'disagree' : ''} onClick={() => setAgree('disagree')}>
                   退回
                   <AgreeIcon />
                 </ResultBox>
@@ -76,7 +76,7 @@ export default function GroupsAduitModal (props: Props) {
             <div className='row' style={{ paddingTop: '2px' }}>
               <div className='key'>审核人：</div>
               <div className='vale'>
-                <div className='block'>{authStore!.user!.empName}</div>
+                <div className='block'>{authStore.user && authStore.user.empName}</div>
               </div>
             </div>
           </FormCon>
