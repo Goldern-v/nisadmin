@@ -29,7 +29,7 @@ const columns = [
     title: '工号',
     dataIndex: 'empNo',
     key: 'empNo',
-    width: '10'
+    width: 80
   },
   {
     title: '姓名',
@@ -267,5 +267,14 @@ const Wrapper = styled.div`
   th div {
     text-align: center !important;
     padding: 3px !important;
+    /* .ant-table-selection-column{
+      width: 30px!important;
+    } */
   }
+
+  /* tr > th .ant-table-selection-column {
+    width: 30px!important;
+  } */
+
+  
 `

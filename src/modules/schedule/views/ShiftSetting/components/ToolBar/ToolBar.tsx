@@ -245,7 +245,7 @@ export default function ToolBar () {
     }
   }
 
-  const onOk = () => {
+  const onOk = (title:any='排班设置') => {
     console.log('提交表单', fields)
     const postData = {
       id: fields.id.value, // 	Long 必须参数 班次名称
@@ -260,9 +260,9 @@ export default function ToolBar () {
       status: fields.status.value // Boolean 必须参数 启用状态 true或者false
     }
     service.scheduleShiftApiService.save(postData).then((res) => {
-      message.success('添加班次成功')
+      message.success(title+'成功')
       emitter.emit('更新班次列表')
-      console.log('添加班次成功', res)
+      console.log(title+'成功', res)
       // 更新班次列表
     })
     // message.success('onOk')
@@ -333,7 +333,7 @@ export default function ToolBar () {
       title: title + '',
       centered: true,
       // visible: false,
-      onOk: onOk,
+      onOk: ()=>onOk(title),
       onCancel: () => {
         // message.success('onCancel')
         // modalInfo.destroy()

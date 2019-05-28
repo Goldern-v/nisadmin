@@ -443,7 +443,7 @@ export default function ScheduleTable () {
         <NoScheduleCon>
           <CardBox
             onClick={() => {
-              message.info('创建排班')
+              message.success('创建排班')
               // emitter.emit('空白排班记录')
             }}
           >
