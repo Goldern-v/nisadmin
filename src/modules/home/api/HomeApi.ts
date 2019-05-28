@@ -24,7 +24,7 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/indexInfo/todayTask`, trancePostData)
   }
 
-  // 2.患者分布
+  // 9.患者分布
   public async patientdistribute (data: any) {
     // let typeGet
     if (data.type === '按地区') {
@@ -76,7 +76,15 @@ class StatisticsApi extends BaseApiService {
   //   return this.post(`/indexInfo/nursingUser`, postData)
   // }
   // 5首页 护理人员情况
-  public async indexInfo (exportData: any = true) {
+  public async indexInfo (exportData: any) {
+    if (exportData.item === '按职称') {
+      exportData.item = 'title'
+    } else if (exportData.item === '按层级') {
+      exportData.item = 'job'
+    } else if (exportData.item === '按工龄') {
+      exportData.item = 'workingYears'
+    } else {
+    }
     let postData = {
       deptCode: exportData.deptCode,
       item: exportData.item

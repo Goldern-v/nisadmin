@@ -109,7 +109,7 @@ export default function EditWorkHistoryModal (props: Props) {
   }, [visible])
 
   return (
-    <Modal title='添加附件' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title='修改附件' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>

@@ -216,6 +216,10 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
+  // 13-1 护士附件情况新增或更新(网页护长)
+  public async nurseAttachmentAdd (obj: any) {
+    return this.post(`/nurseAttachment/saveOrUpdate`, obj)
+  }
 
   // 15 新增添加附件
   // 该接口有问题
