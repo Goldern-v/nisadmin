@@ -38,7 +38,7 @@ const MainBoxCon = styled.div`
 `
 
 const ToolBarCon = styled.div`
-  height: 60px;
+  height: 30px;
   width: 100%;
   background: #fff;
   /* border-bottom: 1px solid rgb(244, 248, 251); */

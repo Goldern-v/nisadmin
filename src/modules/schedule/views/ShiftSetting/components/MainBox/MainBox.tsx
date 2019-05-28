@@ -39,8 +39,8 @@ const columns = [
     title: '序号',
     dataIndex: 'index',
     key: 'index',
-    width: 40,
-    render: (text: string, record: any,index:any) => record.id ? (<span style={{width:'40px'}}>{index+1}</span>) :''
+    width: 60,
+    render: (text: string, record: any,index:any) => record.id ? (<span style={{width:'60px'}}>{index+1}</span>) :''
   },
   {
     title: '班次名称',
@@ -62,13 +62,13 @@ const columns = [
     title: '类别',
     dataIndex: 'shiftType',
     key: 'shiftType',
-    width: '12%'
+    width: '10%'
   },
   {
     title: '颜色标记',
     dataIndex: 'nameColor',
     key: 'nameColor',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) =>
       text.length > 0 ? (
         <span>
@@ -277,30 +277,30 @@ export default function MainBox () {
 
   const genEmptyTable = (newList: any) => {
     // 补空行
-    // let diff = 10 - (newList.length % 10)
-    // if (diff > 0) {
-    //   for (let j = 0; j < diff; j++) {
-    //     let newData = JSON.parse(JSON.stringify(data))
-    //     if (newData.hasOwnProperty('key')) {
-    //       newData.key = 'empty' + j
-    //     }
-    //     newList.push(newData)
-    //   }
-    // }
+    let diff = 10 - (newList.length % 10)
+    if (diff > 0) {
+      for (let j = 0; j < diff; j++) {
+        let newData = JSON.parse(JSON.stringify(data))
+        if (newData.hasOwnProperty('key')) {
+          newData.key = 'empty' + j
+        }
+        newList.push(newData)
+      }
+    }
   }
 
   return (
     <Wrapper>
       <BaseTable
         bordered
-        size='middle'
+        size='small'
         columns={columns}
         rowSelection={rowSelection}
         dataSource={ShiftList}
         pagination={false}
         surplusHeight={300}
       />
-      {/* <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
+      {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
     </Wrapper>
   )
 }
@@ -315,6 +315,6 @@ const Wrapper = styled.div`
   th,
   th div {
     text-align: center !important;
-    padding: 5px !important;
+    padding: 3px !important;
   }
 `

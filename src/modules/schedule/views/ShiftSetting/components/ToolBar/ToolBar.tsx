@@ -361,11 +361,11 @@ export default function ToolBar () {
         onClick={() => {
           addShift('添加排班')
         }}
-        style={{ marginLeft: 20, marginRight: 10 }}
+        style={{ marginLeft: 5, marginRight: 5 }}
       >
         添加班次
       </Button>
-      <Button onClick={save} style={{ marginLeft: 20, marginRight: 10 }}>
+      <Button onClick={save} style={{ marginLeft: 5, marginRight: 5 }}>
         保存
       </Button>
     </Wrapper>
@@ -373,7 +373,7 @@ export default function ToolBar () {
 }
 const Wrapper = styled.div`
   /* background: #eee; */
-  height: 100%;
+  height: auto;
   padding: 0 20px 20px 20px;
   display: inline-flex;
   width: 100%;
