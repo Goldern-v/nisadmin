@@ -11,12 +11,13 @@ import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import EditFileListModal from '../modal/EditFileListModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
-import { Carousel, Modal, Button } from 'antd'
+import { Modal, Button, Icon, Carousel } from 'antd'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function FileList () {
   const [visible, setVisible] = useState(false)
   const editFileListModal = createModal(EditFileListModal)
+  const [pictureArr, setPictureArr] = useState([])
   const btnList = [
     // {
     //   label: '添加',
@@ -24,8 +25,10 @@ export default observer(function FileList () {
     // }
   ]
   const dataSource = []
-  const showModalPicture = () => {
+  const showModalPicture = (e: any, filterData: any) => {
     setVisible(true)
+    setPictureArr(filterData)
+    // console.log('33333333333333333333333', filterData)
   }
   const handleOk = (e: any) => {
     setVisible(false)
@@ -72,7 +75,7 @@ export default observer(function FileList () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span onClick={showModalPicture}>查看</span>
+            <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span>
             {limitUtils(row, '附件审核') ? (
               <span
                 onClick={() => {
@@ -92,8 +95,8 @@ export default observer(function FileList () {
                     ],
                     fileData: [
                       {
-                        附件1: row.urlImageOne,
-                        附件2: require(`../../../images/证件空态度.png`)
+                        附件1: row.urlImageOne
+                        // 附件2: require(`../../../images/证件空态度.png`)
                       }
                     ],
                     allData: row
@@ -169,28 +172,79 @@ export default observer(function FileList () {
   useEffect(() => {
     getTableData()
   }, [])
-
+  const bodyStyle = { width: '900px' }
+  // 轮播图组件
+  const pictureDom = pictureArr.map((item: any, index: number) => {
+    return (
+      <div style={{ height: '300px' }} key={index}>
+        <img src={item.path} style={{ height: '200px', widht: '600px', margin: '0 auto' }} />
+      </div>
+    )
+  })
   return (
     <BaseLayout title='附件'>
-      <BaseTable
-        // bodyStyle={width:300px}
-        dataSource={tableData}
-        columns={columns}
-        surplusHeight={365}
-        type={['spaceRow', 'fixedWidth']}
-      />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editFileListModal.Component />
       {/* 附件查看 */}
-      <Modal title='上一页的内容' visible={visible} onOk={handleOk} onCancel={handleCancel} footer={null}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
+      <ModalCon>
+        <Modal
+          width={1000}
+          title='上一页的内容'
+          visible={visible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <div className='CarouselCon'>
+            <div className='leftIcon'>
+              <Icon type='left' style={{ fontSize: '60px' }} />
+            </div>
+            <div className='rightIcon'>
+              <Icon type='right' style={{ fontSize: '60px' }} />
+            </div>
+            <Carousel>{pictureDom}</Carousel>
+          </div>
+        </Modal>
+      </ModalCon>
+      <Carousel>
+        <div>f</div>
+      </Carousel>
     </BaseLayout>
   )
 })
 const Wrapper = styled.div``
+const ModalCon = styled.div`
+  height: 70%;
+  . .CarouselCon {
+    height: 450px;
+    .leftIcon {
+      display: inline-block;
+      height: 200px;
+      width: 100px;
+    }
+    .rightIcon {
+      display: inline-block;
+      height: 200px;
+      width: 100px;
+    }
+    .slick-dots {
+      margin-top: 100px !important;
+      background-color: red !important;
+    }
+  }
 
+  .ant-carousel {
+    button {
+      background: red !important;
+      color: red;
+    }
+  }
+
+  .ant-carousel .slick-slide h3 {
+    color: yellow;
+    background-color: yellow;
+  }
+`
 const DoCon = styled.div`
   display: flex;
   justify-content: space-around;

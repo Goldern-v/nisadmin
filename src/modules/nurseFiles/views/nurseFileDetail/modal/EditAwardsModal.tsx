@@ -48,7 +48,7 @@ export default function EditWorkHistoryModal (props: Props) {
       return res || ''
     }
     if (res.data) {
-      let pathImg = `/asset/nurseAttachment${res.data.path}`
+      let pathImg = `${res.data.path}`
       setAttachmentId(res.data.id + ',')
       return pathImg
     }

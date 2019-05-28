@@ -43,7 +43,10 @@ export default function EditWorkHistoryModal (props: Props) {
       return res || ''
     }
     if (res.data) {
-      let pathImg = `/asset/nurseAttachment${res.data.path}`
+      let pathImg = `${res.data.path}`
+      if (!data) {
+        data = {}
+      }
       data.urlImageTwo = pathImg
       console.log(pathImg)
       setPathImgGraduate(pathImg)
@@ -59,7 +62,10 @@ export default function EditWorkHistoryModal (props: Props) {
       return res || ''
     }
     if (res.data) {
-      let pathImg = `/asset/nurseAttachment${res.data.path}`
+      let pathImg = `${res.data.path}`
+      if (!data) {
+        data = {}
+      }
       data.urlImageOne = pathImg
       console.log(pathImg)
       setPathImgDegree(pathImg)

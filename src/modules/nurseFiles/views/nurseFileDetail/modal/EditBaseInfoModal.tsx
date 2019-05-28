@@ -58,7 +58,7 @@ export default function EditWorkHistoryModal (props: Props) {
       return ''
     }
     if (res.data) {
-      let pathImg = `/asset/nurseAttachment${res.data.path}`
+      let pathImg = `${res.data.path}`
       return pathImg
     }
   }
@@ -78,7 +78,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    // value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
+    value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
     // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
     nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
@@ -93,6 +93,7 @@ export default function EditWorkHistoryModal (props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
+        birthday: data.birthday,
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,

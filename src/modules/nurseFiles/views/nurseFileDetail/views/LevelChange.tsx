@@ -112,7 +112,7 @@ export default observer(function LevelChange () {
                     fileData: [
                       {
                         附件1: row.urlImageOne,
-                        附件2: require(`../../../images/证件空态度.png`)
+                        // 附件2: require(`../../../images/证件空态度.png`)
                       }
                     ],
                     allData: row

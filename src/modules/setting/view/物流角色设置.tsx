@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Button } from 'antd'
 const staticData = ['记录单', '记录单']
-
+import { Carousel } from 'antd'
 console.log('组件全局中上层的执行')
 
 export default function RoleSetting () {
@@ -36,6 +36,20 @@ export default function RoleSetting () {
       <Button onClick={testClick2}>护理单</Button>
       {console.log('return中的jsx执行')}
       {/* <div>{value}</div> */}
+      <Carousel>
+        <div>
+          <h3>1</h3>
+        </div>
+        <div>
+          <h3>2</h3>
+        </div>
+        <div>
+          <h3>3</h3>
+        </div>
+        <div>
+          <h3>4</h3>
+        </div>
+      </Carousel>
     </Con>
   )
 }
