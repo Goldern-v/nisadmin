@@ -9,6 +9,7 @@ import { Table, Tabs, Button, Input, InputNumber, Form } from 'antd'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 
+import BaseTable from 'src/components/BaseTable'
 import emitter from 'src/libs/ev'
 // import ButtonGroup from 'antd/lib/button/button-group'
 
@@ -1077,7 +1078,17 @@ export default function MainBox () {
     <Wrapper>
       <ModalBox title={'设置班次计数'} />
       <div className='left-box'>
-        <Table
+      <BaseTable
+        bordered
+        size='middle'
+        onRow={onRow}
+        columns={columns}
+        dataSource={tableList}
+        pagination={false}
+        surplusHeight={300}
+        style={{ padding: 0 }}
+      />
+        {/* <Table
           // rowSelection={rowSelection}
           loading={tableLoading}
           bordered
@@ -1086,7 +1097,7 @@ export default function MainBox () {
           dataSource={tableList}
           footer={() => footer}
           rowKey={(record) => record.key}
-        />
+        /> */}
       </div>
       <div style={{ flex: 1 }} />
       <div className='card-container'>

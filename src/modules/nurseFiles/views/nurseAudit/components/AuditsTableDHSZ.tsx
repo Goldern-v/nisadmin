@@ -20,6 +20,7 @@ export default function AuditsTableDHSZ (props: Props) {
   const [current, setCurrent] = useState(1)
   const [total, setTotal] = useState(0)
   const [selectedRows, setSelectedRows] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
   const columns: any = [
     {
@@ -99,8 +100,10 @@ export default function AuditsTableDHSZ (props: Props) {
     })
   }
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       setSelectedRows(selectedRows)
+      setSelectedRowKeys(selectedRowKeys)
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
     }
   }
@@ -110,6 +113,7 @@ export default function AuditsTableDHSZ (props: Props) {
       selectedRows,
       getTableData: () => {
         setSelectedRows([])
+        setSelectedRowKeys([])
         emitter.emit('refreshNurseAuditTable')
       }
     })
