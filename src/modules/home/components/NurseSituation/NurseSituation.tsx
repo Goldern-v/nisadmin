@@ -2,58 +2,42 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import JobTitleMap from './components/JobTitleMap'
 import { Button, Radio, Icon } from 'antd'
-
-import service from 'src/services/api'
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import { authStore } from 'src/stores/index'
 import moment from 'moment'
+import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
 
 export default function NurseSituation () {
-  // const [count, setCount] = useState(0)
   const [titleBy, setTitleBy] = useState('按职称')
+  const [userTotal, setUserTotal] = useState(0)
   useEffect(() => {
     // console.log(count, setCount)
   })
   const selectChange = (e: any) => {
     setTitleBy(e.target.value)
   }
-  // const choose1 = () => {
-  //   setTitleBy('按职称')
-  // }
-  // const choose2 = () => {
-  //   setTitleBy('按层级')
-  // }
-  // const choose3 = () => {
-  //   setTitleBy('按工龄')
-  // }
-  const choose1 = () => {
-    setTitleBy('按职称')
-  }
-  const choose2 = () => {
-    setTitleBy('按层级')
-  }
-  const choose3 = () => {
-    setTitleBy('按工龄')
-  }
   useEffect(() => {
-    // console.log(count, setCount)
-    const postData = {
-      wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
-      startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
-      endTime: moment()
-        .add(1, 'd')
-        .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
+    let postData = {
+      deptCode: authStore.selectedDeptCode,
+      item: titleBy
     }
-    // console.log('===NurseSituation', postData)
-    // service
     if (authStore.selectedDeptCode) {
-      service.homeApiServices.nursingUser(postData).then((res) => {
-        console.log('===NurseSituation', res)
+      HomeApi.indexInfo(postData).then((res) => {
+        if (res.data) {
+          let data = res.data
+          setUserTotal(data.userTotal)
+          HomeViewModel.NurseSituationData = data
+          console.log('resssssssssssssssssssssssssss', data)
+          console.log('resssssssssssssssssssssssssss', HomeViewModel.NurseSituationData)
+          if (data.userTotal) {
+            // HomeViewModel.jobArr = Object.keys(data) || []
+          }
+        }
       })
     }
-  }, [authStore.selectedDeptCode])
-  // const selectChange = () => {}
+  }, [authStore.selectedDeptCode, titleBy])
 
   return (
     <div>
@@ -63,7 +47,7 @@ export default function NurseSituation () {
       </Head>
       <Mid>
         <MidHeader>
-          <div className='headerLeft'>护理人员合计：</div>
+          <div className='headerLeft'>护理人员合计：{userTotal}</div>
           <div className='headerRight'>
             {/* <div className='headerRightItem' onClick={choose1}>
               按职称
@@ -81,7 +65,7 @@ export default function NurseSituation () {
             </Radio.Group>
           </div>
         </MidHeader>
-        <JobTitleMap titleByGet={titleBy} />
+        <JobTitleMap userTotal={userTotal} />
       </Mid>
     </div>
   )

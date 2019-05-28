@@ -34,9 +34,9 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: appStore.queryObj.empNo,
       type: '4'
     }
-    if (authStore!.user!.post == '护长') {
+    if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
 

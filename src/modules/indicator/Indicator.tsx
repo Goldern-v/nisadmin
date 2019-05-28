@@ -477,10 +477,9 @@ const MainScroll = styled.div`
 const MainInner = styled.div`
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
-  border: 1px solid rgba(219, 224, 228, 1);
   min-height: calc(100vh - 168px);
-  margin: 15px;
-  padding: 10px 0px;
+  /* margin: 15px;
+  padding: 10px 0px; */
   position: relative;
 `
 

@@ -32,6 +32,7 @@ export default function LeftMenu (props: Props) {
       let badgeTotal: number = res.data.reduce((total: number, item: any) => {
         return total + item.detailNumber
       }, 0)
+      
       nurseFileDetailViewModal.badgeTotal = badgeTotal
     })
   }, [])

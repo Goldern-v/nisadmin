@@ -36,7 +36,7 @@ export default observer(function PatientDistribute () {
             return cacheSum
           })
           setPatientNumSum(cacheSum)
-          HomeViewModel.PatientDistributeData = res.data
+          HomeViewModel.PatientDistributeData = [...res.data]
         }
       })
     }
