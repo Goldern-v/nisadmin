@@ -36,6 +36,13 @@ let colorMapCN:any = {
 
 const columns = [
   {
+    title: '序号',
+    dataIndex: 'index',
+    key: 'index',
+    width: 40,
+    render: (text: string, record: any,index:any) => record.id ? (<span style={{width:'40px'}}>{index+1}</span>) :''
+  },
+  {
     title: '班次名称',
     dataIndex: 'name',
     key: 'name',

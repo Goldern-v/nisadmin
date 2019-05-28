@@ -5,6 +5,8 @@ import { RouteComponentProps } from 'react-router'
 
 // import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
 
+// BaseTreeSelect
+import BaseTreeSelect from 'src/components/BaseTreeSelect'
 import emitter from 'src/libs/ev'
 
 import { Button, message, Modal, Form, Input, TreeSelect, Switch } from 'antd'
@@ -240,15 +242,18 @@ export default function ToolBar () {
           {getFieldDecorator('mondayName', {
             rules: [{ required: false, message: '' }]
           })(
-            <TreeSelect
-              style={{ width: inputWidth }}
-              dropdownStyle={{ maxHeight: '400px', overflow: 'auto' }}
-              treeData={treeData}
-              searchPlaceholder='搜索'
-              placeholder='请选班'
-              allowClear
-              showSearch
-            />
+            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
+            // <TreeSelect
+            //   style={{ width: inputWidth }}
+            //   dropdownStyle={{ maxHeight: '400px', overflow: 'auto' }}
+            //   treeData={treeData}
+            //   searchPlaceholder='搜索'
+            //   placeholder='请选班'
+            //   allowClear
+            //   showSearch
+            // >
+            //   !!!!!!!!
+            // </TreeSelect>
           )}
         </Form.Item>
         <Form.Item label='星期二' style={FormFlexLayoutStyle()}>

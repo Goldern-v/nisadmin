@@ -8,6 +8,7 @@ import { Table, message, Popconfirm, Divider, Tag } from 'antd'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 
+import BaseTable from 'src/components/BaseTable'
 import emitter from 'src/libs/ev'
 
 // import emitter from 'src/libs/ev'
@@ -28,58 +29,65 @@ const getTextColor = (text: string, record: any, colorName: string) =>
 
 const columns = [
   {
+    title: '序号',
+    dataIndex: 'index',
+    key: 'index',
+    width: 40,
+    render: (text: string, record: any,index:any) => record.id ? (<span style={{width:'40px'}}>{index+1}</span>) :''
+  },
+  {
     title: '班次套餐名',
     dataIndex: 'name',
     key: 'name',
-    width: '8%'
+    width: '10%'
   },
   {
     title: '周一',
     dataIndex: 'mondayName',
     key: 'mondayName',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) => getTextColor(text, record, record.mondayNameColor)
   },
   {
     title: '周二',
     dataIndex: 'tuesdayName',
     key: 'tuesdayName',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) => getTextColor(text, record, record.tuesdayNameColor)
   },
   {
     title: '周三',
     dataIndex: 'wednesdayName',
     key: 'wednesdayName',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
   },
   {
     title: '周四',
     dataIndex: 'thursdayName',
     key: 'thursdayName',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
   },
   {
     title: '周五',
     dataIndex: 'fridayName',
     key: 'fridayName',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) => getTextColor(text, record, record.fridayNameColor)
   },
   {
     title: '周六',
     dataIndex: 'saturdayName',
     key: 'saturdayName',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) => getTextColor(text, record, record.saturdayNameColor)
   },
   {
     title: '周日',
     dataIndex: 'sundayName',
     key: 'sundayName',
-    width: '12%',
+    width: '10%',
     render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor)
   },
   {
@@ -182,8 +190,6 @@ let rowSelection = {
         record.status = selected
       })
     }
-    
-    
 
     console.log('onSelectAll', selected, selectedRows, changeRows)
   },
@@ -254,7 +260,7 @@ export default function MainBox () {
           selectedRowsArray.push(oneUser)
         })
 
-        genEmptyTable(allUser)
+        // genEmptyTable(allUser)
         setMealList(allUser)
         console.log('查找排班班次套餐', MealList, allUser, tableData, selectedRowsArray)
       }
@@ -277,7 +283,16 @@ export default function MainBox () {
 
   return (
     <Wrapper>
-      <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={MealList} />
+      <BaseTable
+        bordered
+        size='middle'
+        columns={columns}
+        rowSelection={rowSelection}
+        dataSource={MealList}
+        pagination={false}
+        surplusHeight={300}
+      />
+      {/* <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={MealList} /> */}
     </Wrapper>
   )
 }

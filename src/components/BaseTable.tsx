@@ -97,6 +97,10 @@ const Wrapper = styled.div`
     background-color: #c2c2c2;
   }
 
+  .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+    padding-bottom: 4px;
+  }
+
   .ant-table-header {
     *::-webkit-scrollbar {
       width: 7px;
