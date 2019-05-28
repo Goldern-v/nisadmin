@@ -207,7 +207,7 @@ export default observer(function FileList () {
         </Modal>
       </ModalCon>
       <Carousel>
-        <div>f</div>
+        {/* <div>f</div> */}
       </Carousel>
     </BaseLayout>
   )
