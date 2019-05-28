@@ -172,10 +172,16 @@ export default observer(function FileList () {
 
   return (
     <BaseLayout title='附件'>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable
+        // bodyStyle={width:300px}
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={365}
+        type={['spaceRow', 'fixedWidth']}
+      />
       <editFileListModal.Component />
       {/* 附件查看 */}
-      <Modal title='上一页的内容' visible={visible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title='上一页的内容' visible={visible} onOk={handleOk} onCancel={handleCancel} footer={null}>
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>
