@@ -52,7 +52,7 @@ export default function ToolBar () {
 }
 const Wrapper = styled.div`
   /* background: #eee; */
-  height: 100%;
+  height: auto;
   padding: 0 20px 20px 20px;
   display: inline-flex;
   width: 100%;

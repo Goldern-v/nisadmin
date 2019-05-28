@@ -140,6 +140,20 @@ let getStatusToNum = (status: any) => {
 //   hideDefaultSelections: true
 // }
 
+const bindInputElements = () => {
+  let allInputs:any = window.document.querySelectorAll('input,span[id*="CR-"]');
+  allInputs = [...allInputs];
+  allInputs = allInputs.filter((input:any)=> {return (input.id.indexOf('CR-X-')===-1 && input.readonly!==true && input.disabled!==true )})
+  allInputs.map((input:any, index:any) => {
+    let Lindex = (index - 1) % allInputs.length;
+    let Rindex = (index + 1) % allInputs.length;
+    input["$index"] = index + "";
+    input["$leftNode"] = allInputs[Lindex];
+    input["$rightNode"] = allInputs[Rindex];
+  });
+  console.log('bindInputElements',allInputs)
+}
+
 export default function MainBox () {
   const [count, setCount] = useState(0)
   const [footer, setFooter] = useState('')
@@ -228,22 +242,25 @@ export default function MainBox () {
     //
     setFooter('排班小计')
 
+
+    
+
     //
-    console.log(
-      count,
-      setCount,
-      setTableList,
-      shiftList,
-      setShiftList,
-      shiftUserList,
-      setShiftUserList,
-      mealList,
-      setMealList
+    // console.log(
+      // count,
+      // setCount,
+      // setTableList,
+      // shiftList,
+      // setShiftList,
+      // shiftUserList,
+      // setShiftUserList,
+      // mealList,
+      // setMealList
       // shiftTableData,
       // setShiftTableData
       // rowSelection,
       // setRowSelection
-    )
+    // )
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const countWorkHours = (record: any, target: any = null) => {
@@ -338,7 +355,8 @@ export default function MainBox () {
     if (date.indexOf('Invalid date') > -1) {
       return `周${days[weekday - 1]}`
     }
-    return `${date}(周${days[weekday]})`
+    // return `${date}(周${days[weekday]})`
+    return (<span>{date}<br/>(周{days[weekday]})</span>)
   }
 
   const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
@@ -454,7 +472,7 @@ export default function MainBox () {
       render: (text: string, record: any) => getTextColor(text, record, 'black', 'remark')
     },
     {
-      title: '本周工时(小时)',
+      title: ()=> {return (<span>本周工时<br/>(小时)</span>)},
       dataIndex: 'thisWeekHour',
       key: 'thisWeekHour',
       width: '6%',
@@ -530,6 +548,9 @@ export default function MainBox () {
     // setTableList(tableList)
     // console.log('==!!排班列表', selectedRow, shiftListData, tableList, selectedRowsArray)
     setTableLoading(false)
+
+    //
+    // bindInputElements()
   }
 
   const getMealList = () => {
@@ -937,7 +958,7 @@ export default function MainBox () {
         let selectedCellValue = event.target.value
         let selectedCellName = event.target.name.replace(record.id || '', '')
         let selectedCellNameCode = selectedCellName+'Code'
-        let numberOfday = 0
+        let numberOfday = 1
         let diffDays = 0
 
         
@@ -1124,7 +1145,7 @@ export default function MainBox () {
                           selectedCell.target.style.color = m.nameColor + '' || ''
                           selectedCellObj = s
                           input = document.querySelector(`[name="${key}${s.id}"]`)
-                          console.log('input', key, key + s.id, s, input, m, selectedCell, selectedRow)
+                          // console.log('input', key, key + s.id, s, input, m, selectedCell, selectedRow)
                           // if (input) {
                           //   input.value = m.name || ''
                           //   input.style.color = m.nameColor || ''
@@ -1146,7 +1167,7 @@ export default function MainBox () {
                       // 统计
                       statisticFooter(newList)
                       //
-                      // 交点向右侧元件转移
+                      // 交点向右侧元件转移  $rightNode
                       let showIndex = ~~selectedCell.record.showIndex || 0
                       let recordId = ~~selectedCell.record.id
                       let newReocrd = selectedRowsArray[showIndex] || selectedRowsArray[0]
@@ -1161,7 +1182,8 @@ export default function MainBox () {
                         record = newReocrd
                       }
 
-                      input = document.querySelector(`[name="${newKey}${recordId}"]`)
+                      input =  document.querySelector(`[name="${newKey}${recordId}"]`)
+                      //selectedCell.target.$rightNode//
 
                       if (input) {
                         input.focus()

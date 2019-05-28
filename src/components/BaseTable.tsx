@@ -101,6 +101,10 @@ const Wrapper = styled.div`
     padding-bottom: 4px;
   }
 
+  /* .container::-webkit-scrollbar {
+      display: none;
+  } */
+
   .ant-table-header {
     *::-webkit-scrollbar {
       width: 7px;

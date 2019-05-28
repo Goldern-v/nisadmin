@@ -18,10 +18,18 @@ export interface Props extends RouteComponentProps {}
 
 const columns = [
   {
+    title: '序号',
+    dataIndex: 'index',
+    key: 'index',
+    width: 60,
+    render: (text: string, record: any, index: any) =>
+      record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
+  },
+  {
     title: '工号',
     dataIndex: 'empNo',
     key: 'empNo',
-    width: '10'
+    width: 80
   },
   {
     title: '姓名',
@@ -32,7 +40,7 @@ const columns = [
   {
     title: '所在科室',
     dataIndex: 'deptName',
-    width: '20%',
+    width: '26%',
     key: 'deptName'
   },
   {
@@ -213,23 +221,23 @@ export default function MainBox () {
 
   const genEmptyTable = (newList: any) => {
     // 补空行
-    // let diff = 10 - (newList.length % 10)
-    // if (diff > 0) {
-    //   for (let j = 0; j < diff; j++) {
-    //     let newData = JSON.parse(JSON.stringify(data))
-    //     if (newData.hasOwnProperty('key')) {
-    //       newData.key = 'empty' + j
-    //     }
-    //     newList.push(newData)
-    //   }
-    // }
+    let diff = 10 - (newList.length % 10)
+    if (diff > 0) {
+      for (let j = 0; j < diff; j++) {
+        let newData = JSON.parse(JSON.stringify(data))
+        if (newData.hasOwnProperty('key')) {
+          newData.key = 'empty' + j
+        }
+        newList.push(newData)
+      }
+    }
   }
 
   return (
     <Wrapper>
       <BaseTable
         bordered
-        size='middle'
+        size='small'
         columns={columns}
         rowSelection={rowSelection}
         dataSource={userList}
@@ -238,7 +246,7 @@ export default function MainBox () {
       />
       {/* <Table
         bordered
-        size='middle'
+        size='small'
         columns={columns}
         rowSelection={rowSelection}
         dataSource={userList}
@@ -258,6 +266,15 @@ const Wrapper = styled.div`
   th,
   th div {
     text-align: center !important;
-    padding: 5px !important;
+    padding: 3px !important;
+    /* .ant-table-selection-column{
+      width: 30px!important;
+    } */
   }
+
+  /* tr > th .ant-table-selection-column {
+    width: 30px!important;
+  } */
+
+  
 `

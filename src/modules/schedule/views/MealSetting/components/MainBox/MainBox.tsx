@@ -19,7 +19,7 @@ export interface Props extends RouteComponentProps {}
 const getTextColor = (text: string, record: any, colorName: string) =>
   text && text.length > 0 ? (
     <span>
-      <span color={colorName} key={text} style={{color:colorName}}>
+      <span color={colorName} key={text} style={{ color: colorName }}>
         {text.toUpperCase()}
       </span>
     </span>
@@ -32,8 +32,9 @@ const columns = [
     title: '序号',
     dataIndex: 'index',
     key: 'index',
-    width: 40,
-    render: (text: string, record: any,index:any) => record.id ? (<span style={{width:'40px'}}>{index+1}</span>) :''
+    width: 60,
+    render: (text: string, record: any, index: any) =>
+      record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
   },
   {
     title: '班次套餐名',
@@ -184,7 +185,7 @@ let rowSelection = {
       })
     }
 
-    if(changeRows){
+    if (changeRows) {
       changeRows.map((record: any) => {
         record.rangeShow = selected
         record.status = selected
@@ -260,7 +261,7 @@ export default function MainBox () {
           selectedRowsArray.push(oneUser)
         })
 
-        // genEmptyTable(allUser)
+        genEmptyTable(allUser)
         setMealList(allUser)
         console.log('查找排班班次套餐', MealList, allUser, tableData, selectedRowsArray)
       }
@@ -285,21 +286,21 @@ export default function MainBox () {
     <Wrapper>
       <BaseTable
         bordered
-        size='middle'
+        size='small'
         columns={columns}
         rowSelection={rowSelection}
         dataSource={MealList}
         pagination={false}
         surplusHeight={300}
       />
-      {/* <Table bordered size='middle' columns={columns} rowSelection={rowSelection} dataSource={MealList} /> */}
+      {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={MealList} /> */}
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   /* background: #eee; */
   /* height: 100%; */
-  padding: 0 20px 20px 20px;
+  padding: 0;
   width: 100%;
   table,
   tr,
@@ -307,6 +308,6 @@ const Wrapper = styled.div`
   th,
   th div {
     text-align: center !important;
-    padding: 5px !important;
+    padding: 3px !important;
   }
 `

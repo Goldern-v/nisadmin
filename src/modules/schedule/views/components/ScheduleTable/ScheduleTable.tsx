@@ -52,12 +52,13 @@ const getWeekDay = (weekday: number) => {
   let date = moment(scheduleStore.getStartTime())
     .add(weekday - 1, 'days')
     .format('MM[月]DD[日]')
+  let result:any = null
   // .format('M[月]DD[日(周]dddd[)]')
   // console.log('周', weekday, scheduleStore.getStartTime(), date)
   if (date.indexOf('Invalid date') > -1) {
     return `周${days[weekday - 1]}`
   }
-  return `${date}(周${days[weekday]})`
+  return (<span>{date}<br/>(周{days[weekday]})</span>)
 }
 
 const columns = [
@@ -84,7 +85,7 @@ const columns = [
   {
     title: '职称',
     dataIndex: 'title',
-    width: '5%'
+    width: '8%'
   },
   {
     title: () => getWeekDay(1),
@@ -131,10 +132,10 @@ const columns = [
   {
     title: '备注',
     dataIndex: 'remark',
-    width: '20%'
+    width: '15%'
   },
   {
-    title: '本周工时(小时)',
+    title: ()=> {return (<span>本周工时<br/>(小时)</span>)},
     dataIndex: 'thisWeekHour',
     width: '7%'
   },
@@ -442,7 +443,7 @@ export default function ScheduleTable () {
         <NoScheduleCon>
           <CardBox
             onClick={() => {
-              message.info('创建排班')
+              message.success('创建排班')
               // emitter.emit('空白排班记录')
             }}
           >
