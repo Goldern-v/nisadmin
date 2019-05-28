@@ -40,7 +40,7 @@ const columns = [
   {
     title: '所在科室',
     dataIndex: 'deptName',
-    width: '20%',
+    width: '26%',
     key: 'deptName'
   },
   {
