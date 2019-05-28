@@ -958,7 +958,7 @@ export default function MainBox () {
         let selectedCellValue = event.target.value
         let selectedCellName = event.target.name.replace(record.id || '', '')
         let selectedCellNameCode = selectedCellName+'Code'
-        let numberOfday = 0
+        let numberOfday = 1
         let diffDays = 0
 
         
