@@ -5,6 +5,7 @@ import { appStore } from 'src/stores'
 import qs from 'qs'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import emitter from 'src/libs/ev'
 interface RouteType {
   type: string
   component: any
@@ -26,15 +27,21 @@ export default function LeftMenu (props: Props) {
 
   let [listInfo, setListInfo] = useState([])
 
-  useEffect(() => {
+  const onLoad = () => {
     nurseFilesService.findByEmpNo(appStore.queryObj.empNo).then((res) => {
       setListInfo(res.data)
       let badgeTotal: number = res.data.reduce((total: number, item: any) => {
         return total + item.detailNumber
       }, 0)
-      
       nurseFileDetailViewModal.badgeTotal = badgeTotal
     })
+  }
+  useEffect(() => {
+    emitter.addListener('refreshNurseFileDeatilLeftMenu', onLoad)
+    onLoad()
+    return () => {
+      emitter.removeAllListeners('refreshNurseFileDeatilLeftMenu')
+    }
   }, [])
   return (
     <Wrapper>

@@ -7,6 +7,7 @@ import { authStore } from 'src/stores'
 const { TextArea } = Input
 import { Modal } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
+import emitter from 'src/libs/ev'
 import { modalService } from '../services/ModalService'
 import Zimage from 'src/components/Zimage'
 const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
@@ -108,6 +109,7 @@ export default function aduitModal (props: Props) {
     }
     modalService.auditeNurseFileIndex(props.type, postData).then((res) => {
       message.success('审核成功')
+      emitter.emit('refreshNurseFileDeatilLeftMenu')
       props.getTableData && props.getTableData()
       onCancel()
     })

@@ -79,7 +79,7 @@ export default function EditWorkHistoryModal (props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
-    // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    value.goWorkTime && (value.goWorkTime = value.goWorkTime.format('YYYY-MM-DD'))
     nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -91,9 +91,10 @@ export default function EditWorkHistoryModal (props: Props) {
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
+    console.log(data, 'datadatadata')
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        birthday: data.birthday,
+        birthday: moment(data.birthday),
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,
@@ -106,7 +107,8 @@ export default function EditWorkHistoryModal (props: Props) {
         cardNumber: data.cardNumber,
         socialGroup: data.socialGroup,
         phone: data.phone,
-        address: data.address
+        address: data.address,
+        goWorkTime: moment(data.goWorkTime)
       })
       // refForm.current.setField('unit', 123)
     }
