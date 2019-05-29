@@ -61,19 +61,17 @@ export default function EditWorkHistoryModal (props: Props) {
   const onFieldChange = () => {}
 
   const onSave = async () => {
-    let getPostData = loginViewModel.post
-    let auditedStatusShow = 'waitAuditedDepartment'
-    if (getPostData === '护士长') {
-      auditedStatusShow = 'waitAuditedNurse'
-    } else if (getPostData === '护理部') {
-      auditedStatusShow = 'waitAuditedDepartment'
-    }
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow,
+      auditedStatus: '',
       attachmentId: attachmentId,
       urlImageOne: ''
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })

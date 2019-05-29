@@ -94,13 +94,17 @@ export default observer(function Awards () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                editAwardsModal.show({ data: row, signShow: '修改' })
-              }}
-            >
-              修改
-            </span>
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  editAwardsModal.show({ data: row, signShow: '修改' })
+                }}
+              >
+                修改
+              </span>
+            ) : (
+              ''
+            )}
             {limitUtils(row) ? (
               <span
                 onClick={() => {
@@ -124,7 +128,7 @@ export default observer(function Awards () {
                     ],
                     fileData: [
                       {
-                        附件1: row.urlImageOne,
+                        附件1: row.urlImageOne
                         // 附件2: require(`../../../images/证件空态度.png`)
                       }
                     ],

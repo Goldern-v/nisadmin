@@ -73,13 +73,17 @@ export default observer(function ExaminationResults () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                editExaminationResultsModal.show({ data: row, signShow: '修改' })
-              }}
-            >
-              修改
-            </span>
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  editExaminationResultsModal.show({ data: row, signShow: '修改' })
+                }}
+              >
+                修改
+              </span>
+            ) : (
+              ''
+            )}
             {limitUtils(row) ? (
               <span
                 onClick={() => {
@@ -96,7 +100,7 @@ export default observer(function ExaminationResults () {
                     ],
                     fileData: [
                       {
-                        附件1: row.urlImageOne,
+                        附件1: row.urlImageOne
                         // 附件2: require(`../../../images/证件空态度.png`)
                       }
                     ],

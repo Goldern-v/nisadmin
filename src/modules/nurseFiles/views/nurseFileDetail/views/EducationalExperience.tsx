@@ -99,17 +99,22 @@ export default observer(function EducationalExperience () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                editEducationalExperienceModal.show({ data: row, signShow: '修改' })
-              }}
-            >
-              修改
-            </span>
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  editEducationalExperienceModal.show({ data: row, signShow: '修改' })
+                }}
+              >
+                修改
+              </span>
+            ) : (
+              ''
+            )}
             {limitUtils(row) ? (
               <span
                 onClick={() => {
                   globalModal.auditModal.show({
+                    getTableData: getTableData,
                     id: row.id,
                     type: 'nurseMedicalEducation',
                     title: '审核特殊资格证',

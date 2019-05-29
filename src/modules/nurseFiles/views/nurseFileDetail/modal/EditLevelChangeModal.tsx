@@ -32,9 +32,9 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: appStore.queryObj.empNo,
       type: '4'
     }
-    if (authStore!.user!.post == '护长') {
+    if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
 
@@ -59,9 +59,14 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: 'waitAuditedNurse',
+      auditedStatus: '',
       attachmentId: '',
       urlImageOne: ''
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })

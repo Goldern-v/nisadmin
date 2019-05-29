@@ -1,9 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import ReactZmage from 'react-zmage'
-export interface Props {}
+export interface Props {
+  list: string[]
+  text: string
+}
 
-export default function Zimage (props: any) {
+export default function Zimage (props: Props | any) {
   let option = Object.assign(
     {
       backdrop: 'rgba(0,0,0, .8)'
@@ -12,17 +15,37 @@ export default function Zimage (props: any) {
   )
   let imgRef = React.createRef<any>()
   if (option.text) {
-    return (
-      <Wrapper
-        onClick={() => {
-          console.log(imgRef, 'imgRefimgRefimgRef')
-          imgRef.current && imgRef.current.cover.click()
-        }}
-      >
-        <Text>{option.text}</Text>
-        <ReactZmage {...option} ref={imgRef} />
-      </Wrapper>
-    )
+    if (option.list) {
+      return (
+        <Wrapper
+          onClick={() => {
+            imgRef.current && imgRef.current.cover.click()
+          }}
+        >
+          <Text>{option.text}</Text>
+          <ReactZmage
+            {...option}
+            ref={imgRef}
+            set={[
+              option.list.map((item: any) => {
+                return { src: item }
+              })
+            ]}
+          />
+        </Wrapper>
+      )
+    } else {
+      return (
+        <Wrapper
+          onClick={() => {
+            imgRef.current && imgRef.current.cover.click()
+          }}
+        >
+          <Text>{option.text}</Text>
+          <ReactZmage {...option} ref={imgRef} />
+        </Wrapper>
+      )
+    }
   }
   return <ReactZmage {...option} />
 }

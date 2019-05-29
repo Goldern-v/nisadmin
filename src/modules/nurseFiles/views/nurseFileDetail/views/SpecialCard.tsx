@@ -14,7 +14,7 @@ import { Button } from 'antd'
 import Zimage from 'src/components/Zimage'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
-export default observer(function SpecialCard () {
+export default function SpecialCard () {
   const editSpecialCardModal = createModal(EditSpecialCardModal)
   const btnList = [
     {
@@ -82,13 +82,18 @@ export default observer(function SpecialCard () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                editSpecialCardModal.show({ data: row, signShow: '修改' })
-              }}
-            >
-              修改
-            </span>
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  editSpecialCardModal.show({ data: row, signShow: '修改' })
+                }}
+              >
+                修改
+              </span>
+            ) : (
+              ''
+            )}
+
             {limitUtils(row) ? (
               <span
                 onClick={() => {
@@ -135,15 +140,10 @@ export default observer(function SpecialCard () {
   }
   useEffect(() => {
     getTableData()
-    // nurseFilesService.nurseSpecialQualification(appStore.queryObj.empNo).then((res) => {
-    //   setTableData(res.data)
-    //   setStatusNameGet(res.data[0].auditedStatusName)
-    // })
-    // setStatusNameGet(tableData[0]!.auditedStatusName)
   }, [])
-  // const test = () => {
-  //   console.log(authStore.post)
-  // }
+  const test = () => {
+    console.log(authStore.post)
+  }
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
       {/* <Button onClick={test}>按钮</Button> */}
@@ -151,7 +151,7 @@ export default observer(function SpecialCard () {
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
-})
+}
 const Wrapper = styled.div``
 
 export const DoCon = styled.div`

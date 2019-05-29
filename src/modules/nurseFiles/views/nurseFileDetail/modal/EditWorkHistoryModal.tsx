@@ -9,7 +9,9 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
+import { appStore, authStore } from 'src/stores'
 import moment from 'moment'
+
 import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
@@ -36,19 +38,17 @@ export default function EditWorkHistoryModal (props: Props) {
   const onFieldChange = () => {}
 
   const onSave = async () => {
-    let getPostData = loginViewModel.post
-    let auditedStatusShow = 'waitAuditedDepartment'
-    if (getPostData === '护士长') {
-      auditedStatusShow = 'waitAuditedNurse'
-    } else if (getPostData === '护理部') {
-      auditedStatusShow = 'waitAuditedDepartment'
-    }
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow,
+      auditedStatus: '',
       attachmentId: '',
       urlImageOne: ''
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })

@@ -8,27 +8,27 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import { globalModal } from 'src/global/globalModal'
+import Zimage from 'src/components/Zimage'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import EditFileListModal from '../modal/EditFileListModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { Modal, Button, Icon, Carousel } from 'antd'
-
 export interface Props extends RouteComponentProps {}
 export default observer(function FileList () {
   const [visible, setVisible] = useState(false)
   const editFileListModal = createModal(EditFileListModal)
   const [pictureArr, setPictureArr] = useState([])
-  const btnList = [
-    // {
-    //   label: '添加',
-    //   onClick: () => editFileListModal.show({})
-    // }
-  ]
+  // const btnList = [
+  //   {
+  //     label: '添加',
+  //     onClick: () => editFileListModal.show({})
+  //   }
+  // ]
   const dataSource = []
   const showModalPicture = (e: any, filterData: any) => {
     setVisible(true)
     setPictureArr(filterData)
-    // console.log('33333333333333333333333', filterData)
+    console.log('33333333333333333333333', filterData)
   }
   const handleOk = (e: any) => {
     setVisible(false)
@@ -75,7 +75,20 @@ export default observer(function FileList () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span>
+            {/* <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span> */}
+            <Zimage text='查看' list={row.filterData.map((item: any) => item.path)} />
+            {row.type > 6 ? (
+              <span
+                onClick={() => {
+                  // console.log('6666666666666666666666', row.statusColor)
+                  editFileListModal.show({ data: row, signShow: '添加' })
+                }}
+              >
+                添加
+              </span>
+            ) : (
+              ''
+            )}
             {limitUtils(row, '附件审核') ? (
               <span
                 onClick={() => {
@@ -121,49 +134,97 @@ export default observer(function FileList () {
           content: '身份证',
           number: res.data.filter((item: any) => item.type === '1').length,
           status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '1')
+          filterData: res.data.filter((item: any) => item.type === '1'),
+          fileName: '身份证',
+          type: '1'
         },
         {
           content: '学历毕业证复印件',
           number: res.data.filter((item: any) => item.type === '2').length,
           status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '2')
+          filterData: res.data.filter((item: any) => item.type === '2'),
+          fileName: '学历毕业证复印件',
+          type: '2'
         },
         {
           content: '执业证复印件',
           number: res.data.filter((item: any) => item.type === '3').length,
           status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '3')
+          filterData: res.data.filter((item: any) => item.type === '3'),
+          fileName: '执业证复印件',
+          type: '3'
         },
         {
           content: '资格证复印件',
           number: res.data.filter((item: any) => item.type === '4').length,
           status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '4')
+          filterData: res.data.filter((item: any) => item.type === '4'),
+          fileName: '资格证复印件',
+          type: '4'
         },
         {
-          content: '职称聘用证明和层级晋级表',
+          content: '职称聘用证明',
           number: res.data.filter((item: any) => item.type === '6').length,
           status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '6')
+          filterData: res.data.filter((item: any) => item.type === '6'),
+          fileName: '职称聘用证明',
+          type: '5'
+        },
+        {
+          content: '层级晋级表',
+          number: res.data.filter((item: any) => item.type === '6').length,
+          status: '待护士长审核',
+          filterData: res.data.filter((item: any) => item.type === '6'),
+          fileName: '层级晋级表',
+          type: '6'
         },
         {
           content: '护理会诊人员资质认定表',
           number: res.data.filter((item: any) => item.type === '7').length,
-          status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '7')
+          status:
+            res.data.filter((item: any) => item.type === '7')[0] &&
+            res.data.filter((item: any) => item.type === '7')[0].auditedStatusName,
+          filterData: res.data.filter((item: any) => item.type === '7'),
+          fileName: '护理会诊人员资质认定表',
+          statusColor:
+            res.data.filter((item: any) => item.type === '7')[0] &&
+            res.data.filter((item: any) => item.type === '7')[0].statusColor,
+          isShow:
+            res.data.filter((item: any) => item.type === '7')[0] &&
+            res.data.filter((item: any) => item.type === '7')[0].isShow,
+          type: '7'
         },
         {
           content: '厚街医院护理人员执业准入资格备案表',
           number: res.data.filter((item: any) => item.type === '8').length,
-          status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '8')
+          status:
+            res.data.filter((item: any) => item.type === '8')[0] &&
+            res.data.filter((item: any) => item.type === '8')[0].auditedStatusName,
+          filterData: res.data.filter((item: any) => item.type === '8'),
+          fileName: '厚街医院护理人员执业准入资格备案表',
+          statusColor:
+            res.data.filter((item: any) => item.type === '8')[0] &&
+            res.data.filter((item: any) => item.type === '8')[0].statusColor,
+          isShow:
+            res.data.filter((item: any) => item.type === '8')[0] &&
+            res.data.filter((item: any) => item.type === '8')[0].isShow,
+          type: '8'
         },
         {
           content: '高风险诊疗技术操作人员资质申请表',
           number: res.data.filter((item: any) => item.type === '9').length,
-          status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '9')
+          status:
+            res.data.filter((item: any) => item.type === '9')[0] &&
+            res.data.filter((item: any) => item.type === '9')[0].auditedStatusName,
+          filterData: res.data.filter((item: any) => item.type === '9'),
+          fileName: '高风险诊疗技术操作人员资质申请表',
+          statusColor:
+            res.data.filter((item: any) => item.type === '9')[0] &&
+            res.data.filter((item: any) => item.type === '9')[0].statusColor,
+          isShow:
+            res.data.filter((item: any) => item.type === '9')[0] &&
+            res.data.filter((item: any) => item.type === '9')[0].isShow,
+          type: '9'
         }
       ]
       setTableData(data)
@@ -184,7 +245,7 @@ export default observer(function FileList () {
   return (
     <BaseLayout title='附件'>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
-      <editFileListModal.Component />
+      <editFileListModal.Component getTableData={getTableData} />
       {/* 附件查看 */}
       <ModalCon>
         <Modal
@@ -206,9 +267,7 @@ export default observer(function FileList () {
           </div>
         </Modal>
       </ModalCon>
-      <Carousel>
-        {/* <div>f</div> */}
-      </Carousel>
+      <Carousel>{/* <div>f</div> */}</Carousel>
     </BaseLayout>
   )
 })

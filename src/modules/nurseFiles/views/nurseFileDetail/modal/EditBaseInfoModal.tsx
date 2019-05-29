@@ -10,10 +10,9 @@ import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModa
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
-import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -64,22 +63,21 @@ export default function EditWorkHistoryModal (props: Props) {
   }
 
   const onSave = async () => {
-    let getPostData = loginViewModel.post
-    let auditedStatusShow = 'waitAuditedDepartment'
-    // if (getPostData === '护士长') {
-    //   auditedStatusShow = 'waitAuditedNurse'
-    // } else if (getPostData === '护理部') {
-    //   auditedStatusShow = 'waitAuditedDepartment'
-    // }
     let obj = {
-      id: id
+      id: id,
+      auditedStatus: ''
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
     }
 
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
-    // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    value.goWorkTime && (value.goWorkTime = value.goWorkTime.format('YYYY-MM-DD'))
     nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -91,9 +89,10 @@ export default function EditWorkHistoryModal (props: Props) {
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
+    console.log(data, 'datadatadata')
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        birthday: data.birthday,
+        // birthday: moment(data.birthday),
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,
@@ -106,7 +105,8 @@ export default function EditWorkHistoryModal (props: Props) {
         cardNumber: data.cardNumber,
         socialGroup: data.socialGroup,
         phone: data.phone,
-        address: data.address
+        address: data.address,
+        goWorkTime: moment(data.goWorkTime)
       })
       // refForm.current.setField('unit', 123)
     }
