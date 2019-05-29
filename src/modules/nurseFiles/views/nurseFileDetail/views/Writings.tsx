@@ -70,7 +70,7 @@ export default observer(function Writings () {
       width: 150,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageTwo} />}</DoCon>
+        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
       }
     },
     {

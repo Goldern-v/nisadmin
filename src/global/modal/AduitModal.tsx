@@ -255,13 +255,14 @@ function TimeLineItem (props: any) {
   return (
     <Con index={index}>
       <div className='left'>
-        <img className='head' src={defaultHead} alt='' />
+        <img className='head' src={data.headUrl || defaultHead} alt='' />
         {(index === 0 || data.auditedStatus.indexOf('Success') > -1) && (
           <React.Fragment>
             <img className='icon' src={aduitSuccessIcon} alt='' />
             {index != arr.length - 1 && <div className='line' />}
           </React.Fragment>
         )}
+        {<React.Fragment>{index != arr.length - 1 && <div className='line' />}</React.Fragment>}
       </div>
       <div className='right'>
         <div className='title'>{data.auditedStatusName}</div>
