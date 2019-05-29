@@ -90,13 +90,12 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
-  setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      console.log(refForm.current, visible, data)
+
       setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         year: data.year,

@@ -89,7 +89,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      console.log(refForm.current, visible, data)
+ 
       refForm!.current!.setFields({
         appointmentTime: moment(data.appointmentTime),
         empName: data.empName,

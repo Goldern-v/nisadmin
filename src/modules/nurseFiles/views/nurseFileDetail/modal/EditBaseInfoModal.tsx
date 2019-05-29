@@ -42,8 +42,7 @@ const uploadCard = () => Promise.resolve('123')
 export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
-  console.log('this is refForm')
-  console.log(refForm)
+
   const onFieldChange = () => {}
 
   const uploadCard = async (file: any) => {
@@ -86,12 +85,10 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
-  setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
-    console.log(data, 'datadatadata')
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         birthday: moment(data.birthday),

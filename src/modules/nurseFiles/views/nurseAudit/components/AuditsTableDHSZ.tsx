@@ -104,7 +104,6 @@ export default function AuditsTableDHSZ (props: Props) {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       setSelectedRows(selectedRows)
       setSelectedRowKeys(selectedRowKeys)
-      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
     }
   }
 

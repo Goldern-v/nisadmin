@@ -9,7 +9,6 @@ export default class AppStore {
     this.appToken = '51e827c9-d80e-40a1-a95a-1edc257596e7'
     window.onresize = () => {
       this.wih = document.body.offsetHeight
-      console.log(this.match)
     }
   }
   @observable public isExpand: '1' | '0' = '1'

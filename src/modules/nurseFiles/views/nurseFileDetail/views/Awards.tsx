@@ -28,7 +28,7 @@ export default observer(function Awards () {
     {
       title: '序号',
       dataIndex: '1',
-      key: '1',
+      key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 50
@@ -36,7 +36,7 @@ export default observer(function Awards () {
     {
       title: '时间',
       dataIndex: 'time',
-      key: '2',
+      key: '时间',
       width: 130,
       align: 'center'
     },
@@ -50,28 +50,28 @@ export default observer(function Awards () {
     {
       title: '本人排名',
       dataIndex: 'rank',
-      key: '4',
+      key: '本人排名',
       width: 100,
       align: 'center'
     },
     {
       title: '授奖级别',
       dataIndex: 'awardlevel',
-      key: '5',
+      key: '授奖级别',
       width: 100,
       align: 'center'
     },
     {
       title: '批准机关',
       dataIndex: 'approvalAuthority',
-      key: '6',
+      key: 'approvalAuthority',
       width: 100,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
-      key: '5',
+      key: 'fj',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -81,8 +81,8 @@ export default observer(function Awards () {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '61',
-
+      key: 'auditedStatusName',
+      width: 150,
       align: 'center'
     },
     {
@@ -155,7 +155,7 @@ export default observer(function Awards () {
 
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow']} />
       <editAwardsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

@@ -15,7 +15,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -56,8 +56,7 @@ export default function EditWorkHistoryModal (props: Props) {
   }
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
-  console.log('this is refForm')
-  console.log(refForm)
+
   const onFieldChange = () => {}
 
   const onSave = async () => {
@@ -87,13 +86,11 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
-  setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      console.log(refForm.current, visible, data)
       setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         time: moment(data.time),
@@ -108,7 +105,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改所获奖励' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={{}} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`时间`} name='time'>

@@ -15,7 +15,7 @@ import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import { observer } from 'mobx-react-lite'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -100,12 +100,9 @@ export default observer(function EditWorkHistoryModal (props: Props) {
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
-  // const testClcik = (res: any) => {
-  //   console.log('test111111111111111111', authStore!.user!.post)
-  // }
+
   return (
     <div>
-      {/* <Button onClick={testClcik}>test</Button> */}
       <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
         <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
           <Row>
