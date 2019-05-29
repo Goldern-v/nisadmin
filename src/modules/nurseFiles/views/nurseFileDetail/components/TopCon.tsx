@@ -31,17 +31,21 @@ export default observer(function TopCon () {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-      <Tip>
-        <img src={WARNNING_ICON} alt='' />
-        {nurseFileDetailViewModal.badgeTotal && (
+      {nurseFileDetailViewModal.badgeTotal ? (
+        <Tip>
+          <img src={WARNNING_ICON} alt='' />
+
           <span>
             {' '}
             注意：刘盼盼有{nurseFileDetailViewModal.badgeTotal}条未审核信息，点击
             <ClickSpan onClick={() => appStore.history.push(`/nurseAudit?${appStore.query}`)}>这里</ClickSpan>
             进行审核
           </span>
-        )}
-      </Tip>
+        </Tip>
+      ) : (
+        <Tip />
+        // <Tip>你没有待审核的信息</Tip>
+      )}
     </Wrapper>
   )
 })

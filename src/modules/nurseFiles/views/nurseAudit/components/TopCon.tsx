@@ -14,6 +14,7 @@ const WARNNING_ICON = require('../../../images/注意.png')
 
 export default observer(function TopCon () {
   let history = store.appStore.history
+  let query = store.appStore.query
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
   return (
     <Wrapper>
@@ -21,6 +22,9 @@ export default observer(function TopCon () {
         <Breadcrumb>
           <Breadcrumb.Item>
             <A onClick={() => history.push('/nurseFilesList')}>护士档案</A>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <A onClick={() => history.push(`/nurseFileDetail/baseInfo?${query}`)}>档案详情</A>
           </Breadcrumb.Item>
           <Breadcrumb.Item>批量审核</Breadcrumb.Item>
         </Breadcrumb>

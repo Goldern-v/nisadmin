@@ -31,7 +31,7 @@ export default function LeftMenu (props: Props) {
     nurseFilesService.findByEmpNo(appStore.queryObj.empNo).then((res) => {
       setListInfo(res.data)
       let badgeTotal: number = res.data.reduce((total: number, item: any) => {
-        return total + item.detailNumber
+        return total + item.statusColorNum
       }, 0)
       nurseFileDetailViewModal.badgeTotal = badgeTotal
     })

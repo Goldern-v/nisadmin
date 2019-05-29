@@ -92,7 +92,7 @@ export default function EditWorkHistoryModal (props: Props) {
     console.log(data, 'datadatadata')
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        // birthday: moment(data.birthday),
+        birthday: moment(data.birthday),
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,
@@ -106,6 +106,9 @@ export default function EditWorkHistoryModal (props: Props) {
         socialGroup: data.socialGroup,
         phone: data.phone,
         address: data.address,
+        nearImageUrl: data.nearImageUrl,
+        zyzsUrl: data.zyzsUrl,
+        title: data.title,
         goWorkTime: moment(data.goWorkTime)
       })
       // refForm.current.setField('unit', 123)
