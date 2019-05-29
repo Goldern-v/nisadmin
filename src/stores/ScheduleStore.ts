@@ -9,7 +9,7 @@ export default class ScheduleStore {
     this.weekEndTime = ''
     this.selectedWeekIndex = '0'
     this.department = {
-      deptCode: authStore.getUser().deptCode,
+      deptCode: authStore.selectedDeptCode || authStore.getUser().deptCode,
       deptName: authStore.getUser().deptName,
       wardCode: '',
       wardName: ''
