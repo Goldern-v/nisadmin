@@ -110,42 +110,38 @@ export default observer(function EducationalExperience () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseMedicalEducation',
-                    title: '审核特殊资格证',
-                    tableFormat: [
-                      {
-                        就读时间: `readTime`,
-                        毕业时间: `graduationTime`
-                      },
-                      {
-                        毕业学校: `graduationSchool`,
-                        专业: `readProfessional`
-                      },
-                      {
-                        学历: `education`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        毕业证: row.urlImageTwo,
-                        学位证: row.urlImageOne
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-                审核
-              </span>
-            ) : (
-              ''
-            )}
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseMedicalEducation',
+                  title: '审核特殊资格证',
+                  tableFormat: [
+                    {
+                      就读时间: `readTime`,
+                      毕业时间: `graduationTime`
+                    },
+                    {
+                      毕业学校: `graduationSchool`,
+                      专业: `readProfessional`
+                    },
+                    {
+                      学历: `education`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      毕业证: row.urlImageTwo,
+                      学位证: row.urlImageOne
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }

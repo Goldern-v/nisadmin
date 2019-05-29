@@ -84,7 +84,7 @@ export default observer(function ExaminationResults () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
+         
               <span
                 onClick={() => {
                   globalModal.auditModal.show({
@@ -108,11 +108,9 @@ export default observer(function ExaminationResults () {
                   })
                 }}
               >
-                审核
+               {limitUtils(row) ? '审核' : '查看'}
               </span>
-            ) : (
-              ''
-            )}
+            
           </DoCon>
         )
       }

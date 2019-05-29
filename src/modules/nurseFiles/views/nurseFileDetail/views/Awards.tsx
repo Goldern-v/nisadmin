@@ -105,42 +105,39 @@ export default observer(function Awards () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseAwardWinning',
-                    title: '审核所获奖励',
-                    tableFormat: [
-                      {
-                        时间: `time`,
-                        获奖_推广创新项目名称: `awardWinningName`
-                      },
-                      {
-                        本人排名: `rank`,
-                        授奖级别: `awardlevel`
-                      },
-                      {
-                        批准机关: `approvalAuthority`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        附件1: row.urlImageOne
-                        // 附件2: require(`../../../images/证件空态度.png`)
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-                审核
-              </span>
-            ) : (
-              ''
-            )}
+
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseAwardWinning',
+                  title: '审核所获奖励',
+                  tableFormat: [
+                    {
+                      时间: `time`,
+                      获奖_推广创新项目名称: `awardWinningName`
+                    },
+                    {
+                      本人排名: `rank`,
+                      授奖级别: `awardlevel`
+                    },
+                    {
+                      批准机关: `approvalAuthority`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne
+                      // 附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }

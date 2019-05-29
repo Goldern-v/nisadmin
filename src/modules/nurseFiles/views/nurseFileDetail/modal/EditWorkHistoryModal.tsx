@@ -60,6 +60,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (err) return
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    console.log('obj：', obj, 'value: ', value)
     nurseFilesService.nurseWorkExperienceAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
