@@ -75,8 +75,8 @@ export default observer(function FileList () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span>
-            {/* <Zimage text='查看' list={row.filterData.map((item: any) => item.path)} /> */}
+            {/* <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span> */}
+            <Zimage text='查看' list={row.filterData.map((item: any) => item.path)} />
             {row.type > 6 ? (
               <span
                 onClick={() => {
