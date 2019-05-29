@@ -14,7 +14,7 @@ import moment from 'moment'
 import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -91,7 +91,7 @@ export default function EditWorkHistoryModal (props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        birthday: moment(data.birthday),
+        birthday: data.birthday ? moment(data.birthday) : null,
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,
@@ -108,7 +108,7 @@ export default function EditWorkHistoryModal (props: Props) {
         nearImageUrl: data.nearImageUrl,
         zyzsUrl: data.zyzsUrl,
         title: data.title,
-        goWorkTime: moment(data.goWorkTime)
+        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
       })
       // refForm.current.setField('unit', 123)
     }
