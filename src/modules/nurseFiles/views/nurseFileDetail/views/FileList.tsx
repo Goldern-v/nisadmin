@@ -133,7 +133,7 @@ export default observer(function FileList () {
         {
           content: '身份证',
           number: res.data.filter((item: any) => item.type === '1').length,
-          status: '待护士长审核',
+          status: '',
           filterData: res.data.filter((item: any) => item.type === '1'),
           fileName: '身份证',
           type: '1'
@@ -141,7 +141,7 @@ export default observer(function FileList () {
         {
           content: '学历毕业证复印件',
           number: res.data.filter((item: any) => item.type === '2').length,
-          status: '待护士长审核',
+          status: '',
           filterData: res.data.filter((item: any) => item.type === '2'),
           fileName: '学历毕业证复印件',
           type: '2'
@@ -149,7 +149,7 @@ export default observer(function FileList () {
         {
           content: '执业证复印件',
           number: res.data.filter((item: any) => item.type === '3').length,
-          status: '待护士长审核',
+          status: '',
           filterData: res.data.filter((item: any) => item.type === '3'),
           fileName: '执业证复印件',
           type: '3'
@@ -157,23 +157,23 @@ export default observer(function FileList () {
         {
           content: '资格证复印件',
           number: res.data.filter((item: any) => item.type === '4').length,
-          status: '待护士长审核',
+          status: '',
           filterData: res.data.filter((item: any) => item.type === '4'),
           fileName: '资格证复印件',
           type: '4'
         },
         {
           content: '职称聘用证明',
-          number: res.data.filter((item: any) => item.type === '6').length,
-          status: '待护士长审核',
-          filterData: res.data.filter((item: any) => item.type === '6'),
+          number: res.data.filter((item: any) => item.type === '5').length,
+          status: '',
+          filterData: res.data.filter((item: any) => item.type === '5'),
           fileName: '职称聘用证明',
           type: '5'
         },
         {
           content: '层级晋级表',
           number: res.data.filter((item: any) => item.type === '6').length,
-          status: '待护士长审核',
+          status: '',
           filterData: res.data.filter((item: any) => item.type === '6'),
           fileName: '层级晋级表',
           type: '6'

@@ -128,9 +128,11 @@ export default function EditWorkHistoryModal (props: Props) {
 }
 const FormCon = styled.div`
   .dlxvps {
+    width: 300px;
+    height: 200px;
     margin: 0 auto;
   }
-  .dlxvps {
+  .eSQqBR {
     width: 100%;
     text-align: center;
   }
