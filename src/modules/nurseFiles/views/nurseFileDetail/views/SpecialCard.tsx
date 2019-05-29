@@ -140,18 +140,13 @@ export default function SpecialCard () {
   }
   useEffect(() => {
     getTableData()
-    // nurseFilesService.nurseSpecialQualification(appStore.queryObj.empNo).then((res) => {
-    //   setTableData(res.data)
-    //   setStatusNameGet(res.data[0].auditedStatusName)
-    // })
-    // setStatusNameGet(tableData[0]!.auditedStatusName)
   }, [])
   const test = () => {
     console.log(authStore.post)
   }
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
-      <Button onClick={test}>按钮</Button>
+      {/* <Button onClick={test}>按钮</Button> */}
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>

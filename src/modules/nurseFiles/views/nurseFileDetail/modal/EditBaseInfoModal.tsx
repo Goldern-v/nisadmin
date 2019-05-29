@@ -10,10 +10,9 @@ import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModa
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
-import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -64,16 +63,14 @@ export default function EditWorkHistoryModal (props: Props) {
   }
 
   const onSave = async () => {
-    let getPostData = loginViewModel.post
-    let auditedStatusShow = 'waitAuditedDepartment'
-    if (getPostData === '护士长') {
-      auditedStatusShow = 'waitAuditedNurse'
-    } else if (getPostData === '护理部') {
-      auditedStatusShow = 'waitAuditedDepartment'
-    }
     let obj = {
       id: id,
-      auditedStatus: auditedStatusShow
+      auditedStatus: ''
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
     }
 
     if (!refForm.current) return
@@ -95,7 +92,7 @@ export default function EditWorkHistoryModal (props: Props) {
     console.log(data, 'datadatadata')
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        birthday: moment(data.birthday),
+        // birthday: moment(data.birthday),
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,

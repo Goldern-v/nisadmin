@@ -138,15 +138,15 @@ export default observer(function BaseInfo () {
       ]
     } else {
       return [
-        {
-          label: '修改',
-          onClick: () => {
-            editBaseInfoModal.show({
-              id: idData,
-              data: info
-            })
-          }
-        }
+        // {
+        //   label: '修改',
+        //   onClick: () => {
+        //     editBaseInfoModal.show({
+        //       id: idData,
+        //       data: info
+        //     })
+        //   }
+        // }
       ]
     }
   }

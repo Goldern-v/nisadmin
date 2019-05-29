@@ -31,12 +31,16 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj: any = {
       file,
       empNo: appStore.queryObj.empNo,
-      type: '0'
+      type: '0',
+      auditedStatus: ''
     }
-    if (authStore!.user!.post === '护长') {
+    if (authStore!.user!.post == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
+    } else if (authStore!.user!.post == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
+    }
+    if (signShow === '修改') {
+      Object.assign(obj, { id: data.id })
     }
 
     const [err, res] = await to(service.commonApiService.uploadFile(obj))

@@ -33,7 +33,8 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj: any = {
       file,
       empNo: appStore.queryObj.empNo,
-      type: '0'
+      type: '0',
+      auditedStatus: ''
     }
     if (authStore!.user!.post == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'

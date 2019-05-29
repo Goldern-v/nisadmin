@@ -12,7 +12,7 @@ import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
 import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
-
+import { appStore, authStore } from 'src/stores'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -79,22 +79,27 @@ export default function EditWorkHistoryModal (props: Props) {
   const onFieldChange = () => {}
 
   const onSave = async () => {
-    let getPostData = loginViewModel.post
-    let auditedStatusShow = 'waitAuditedDepartment'
-    if (getPostData === '护士长') {
-      auditedStatusShow = 'waitAuditedNurse'
-    } else if (getPostData === '护理部') {
-      auditedStatusShow = 'waitAuditedDepartment'
-    }
+    // let getPostData = loginViewModel.post
+    // let auditedStatusShow = 'waitAuditedDepartment'
+    // if (getPostData === '护士长') {
+    //   auditedStatusShow = 'waitAuditedNurse'
+    // } else if (getPostData === '护理部') {
+    //   auditedStatusShow = 'waitAuditedDepartment'
+    // }
     const obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow,
+      auditedStatus: '',
       urlImageOne: pathImgDegree,
       urlImageTwo: pathImgGraduate,
       // 每个附件对应的id
       fileIdz: '',
       attachmentId: attachmentId1 + ',' + attachmentId2 + ','
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
