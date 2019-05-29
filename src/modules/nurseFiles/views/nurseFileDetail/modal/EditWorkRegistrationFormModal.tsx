@@ -14,6 +14,7 @@ import moment from 'moment'
 import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
+import emitter from 'src/libs/ev';
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -59,6 +60,7 @@ export default function EditWorkHistoryModal (props: Props) {
     nurseFilesService.nurseRegistrationWorkAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
+      emitter.emit('refreshNurseFileDeatilLeftMenu')
       onCancel()
     })
   }

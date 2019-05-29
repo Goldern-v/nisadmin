@@ -89,7 +89,8 @@ export default observer(function FileList () {
             ) : (
               ''
             )}
-            {limitUtils(row, '附件审核') ? (
+
+            {row.id && (
               <span
                 onClick={() => {
                   globalModal.auditModal.show({
@@ -97,29 +98,18 @@ export default observer(function FileList () {
                     id: row.id,
                     type: 'nurseAttachment',
                     title: '附件审核',
-                    tableFormat: [
-                      // {
-                      //   获得时间: `time`,
-                      //   资格名称: `specialQualificationName`
-                      // },
-                      // {
-                      //   资格证编号: `specialQualificationNo`
-                      // }
-                    ],
+                    tableFormat: [],
                     fileData: [
                       {
-                        附件: row.path
-                        // 附件2: require(`../../../images/证件空态度.png`)
+                        附件1: row.path
                       }
                     ],
                     allData: row
                   })
                 }}
               >
-                审核
+                {limitUtils(row, '附件审核') ? '审核' : '查看'}
               </span>
-            ) : (
-              ''
             )}
           </DoCon>
         )
@@ -292,7 +282,7 @@ export default observer(function FileList () {
 const Wrapper = styled.div``
 const ModalCon = styled.div`
   height: 70%;
-  . .CarouselCon {
+  .CarouselCon {
     height: 450px;
     .leftIcon {
       display: inline-block;

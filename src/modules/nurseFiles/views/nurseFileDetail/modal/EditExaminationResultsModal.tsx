@@ -14,6 +14,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
+import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -85,6 +86,7 @@ export default function EditWorkHistoryModal (props: Props) {
     nurseFilesService.nurseYearCheckAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
+      emitter.emit('refreshNurseFileDeatilLeftMenu')
       onCancel()
     })
   }

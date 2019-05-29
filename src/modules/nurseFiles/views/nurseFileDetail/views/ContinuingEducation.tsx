@@ -105,37 +105,36 @@ export default observer(function EducationalExperience () {
             ) : (
               ''
             )}
-           
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseContinuingEducation',
-                    title: '审核继续教育',
-                    tableFormat: [
-                      {
-                        开始时间: `startTime`,
-                        结束时间: `startTime`
-                      },
-                      {
-                        培训单位: `trainingUnit`,
-                        培训内容: `trainingContent`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        附件1: row.urlImageOne
-                        // 附件2: require(`../../../images/证件空态度.png`)
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-                {limitUtils(row) ? '审核' : '查看'}
-              </span>
-            ) 
+
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseContinuingEducation',
+                  title: '审核继续教育',
+                  tableFormat: [
+                    {
+                      开始时间: `startTime`,
+                      结束时间: `startTime`
+                    },
+                    {
+                      培训单位: `trainingUnit`,
+                      培训内容: `trainingContent`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne
+                      // 附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }
