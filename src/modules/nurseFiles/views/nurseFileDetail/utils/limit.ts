@@ -11,6 +11,6 @@ export default function (row: any, limit: string = '') {
   if (row.statusColor === '0') {
     return false
   } else if (row.statusColor === '1') {
-    if (limit === '附件审核') return true
+    return true
   }
 }
