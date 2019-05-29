@@ -111,19 +111,29 @@ export default function EditWorkHistoryModal (props: Props) {
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
-
+  const numberData = 1
   return (
     <Modal title='添加附件' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
-        <Row>
-          <Col span={24}>
-            <Form.Field label={``} name='path'>
-              <ImageUploader upload={uploadCard} text='添加附件' />
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
+      <FormCon>
+        <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+          <Row>
+            <Col span={24}>
+              <Form.Field label={``} name='path' labelWidth={numberData}>
+                <ImageUploader upload={uploadCard} text='添加附件' />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      </FormCon>
     </Modal>
   )
 }
-const Wrapper = styled.div``
+const FormCon = styled.div`
+  .dlxvps {
+    margin: 0 auto;
+  }
+  .dlxvps {
+    width: 100%;
+    text-align: center;
+  }
+`

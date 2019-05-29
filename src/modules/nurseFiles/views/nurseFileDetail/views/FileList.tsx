@@ -282,7 +282,7 @@ export default observer(function FileList () {
 const Wrapper = styled.div``
 const ModalCon = styled.div`
   height: 70%;
-  . .CarouselCon {
+  .CarouselCon {
     height: 450px;
     .leftIcon {
       display: inline-block;
