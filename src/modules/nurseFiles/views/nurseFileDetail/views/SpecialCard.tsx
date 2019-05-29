@@ -94,38 +94,34 @@ export default function SpecialCard () {
               ''
             )}
 
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseSpecialQualification',
-                    title: '审核特殊资格证',
-                    tableFormat: [
-                      {
-                        获得时间: `time`,
-                        资格名称: `specialQualificationName`
-                      },
-                      {
-                        资格证编号: `specialQualificationNo`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        附件1: row.urlImageOne
-                        // 附件2: require(`../../../images/证件空态度.png`)
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-                审核
-              </span>
-            ) : (
-              ''
-            )}
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseSpecialQualification',
+                  title: '审核特殊资格证',
+                  tableFormat: [
+                    {
+                      获得时间: `time`,
+                      资格名称: `specialQualificationName`
+                    },
+                    {
+                      资格证编号: `specialQualificationNo`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne
+                      // 附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }

@@ -5,12 +5,13 @@ import { Input, message } from 'antd'
 import { ReactComponent as AgreeIcon } from '../images/默认勾选.svg'
 import { authStore } from 'src/stores'
 const { TextArea } = Input
-import { Modal } from 'antd'
+import { Modal, Spin } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
 import { modalService } from '../services/ModalService'
 import Zimage from 'src/components/Zimage'
 const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
+const defaultFile = require('../../modules/nurseFiles/images/证件空态度.png')
 const aduitSuccessIcon = require('../images/审核通过.png')
 export interface Props extends ModalComponentProps {
   allData?: any
@@ -25,6 +26,7 @@ export interface Props extends ModalComponentProps {
 export default function aduitModal (props: Props) {
   let { visible, onCancel } = props
   /** 表格数据 */
+  let [spinning, setSpinning]: [any, any] = useState(false)
   let [tableData, setTableData]: [any, any] = useState([])
   /** 文件数据 */
   let [fileData, setFileData]: [any, any] = useState([])
@@ -47,9 +49,10 @@ export default function aduitModal (props: Props) {
       props.fileData ? setFileData(props.fileData) : setFileData([])
       setAgree('')
       setOpinion('')
-      
+      setSpinning(true)
       if (props.type === 'nurseInformation') {
         modalService.getByIdAuditeDis(props.type).then((res) => {
+          setSpinning(false)
           let data = res.data
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
@@ -71,6 +74,7 @@ export default function aduitModal (props: Props) {
       } else {
         /** 获取详情 */
         modalService.getByIdAudite(props.type, props.id).then((res) => {
+          setSpinning(false)
           let data = res.data
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
@@ -117,82 +121,84 @@ export default function aduitModal (props: Props) {
   }
   return (
     <Modal title={title} visible={visible} onOk={onOk} onCancel={onCancel} okText='保存' forceRender width={800}>
-      <MainPart>
-        <InfoTable>
-          <tbody>
-            {tableData.map((obj: any, index: number) => (
-              <tr key={index}>
-                <td>{Object.keys(obj)[0]}</td>
-                <td>
-                  <Value>{obj[Object.keys(obj)[0]]}</Value>
-                </td>
-                <td>{Object.keys(obj)[1]}</td>
-                <td>{Object.keys(obj)[1] && <Value>{obj[Object.keys(obj)[1]]}</Value>}</td>
-              </tr>
-            ))}
-          </tbody>
-        </InfoTable>
+      <Spin spinning={spinning}>
+        <MainPart>
+          <InfoTable>
+            <tbody>
+              {tableData.map((obj: any, index: number) => (
+                <tr key={index}>
+                  <td>{Object.keys(obj)[0]}</td>
+                  <td>
+                    <Value>{obj[Object.keys(obj)[0]]}</Value>
+                  </td>
+                  <td>{Object.keys(obj)[1]}</td>
+                  <td>{Object.keys(obj)[1] && <Value>{obj[Object.keys(obj)[1]]}</Value>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </InfoTable>
 
-        {fileData.map((obj: any, index: number) => (
-          <UploadCon key={index}>
-            {Object.keys(obj)[0] && <UploadItem label={Object.keys(obj)[0]} path={obj[Object.keys(obj)[0]]} />}
-            {Object.keys(obj)[1] && <UploadItem label={Object.keys(obj)[1]} path={obj[Object.keys(obj)[1]]} />}
-          </UploadCon>
-        ))}
-      </MainPart>
-      <AduitCon>
-        <TimeLineCon>
-          <div className='label'>审核过程：</div>
-          <LinCon>
-            {auditeListDtos.map((item: any, index: any, arr: any) => (
-              <TimeLineItem data={item} index={index} key={index} arr={arr} />
-            ))}
-          </LinCon>
-        </TimeLineCon>
-        <FormCon>
-          <div className='row'>
-            <div className='key'>当前进度：</div>
-            <div className='vale'>
-              <div className='status'>{auditStatus}</div>
+          {fileData.map((obj: any, index: number) => (
+            <UploadCon key={index}>
+              {Object.keys(obj)[0] && <UploadItem label={Object.keys(obj)[0]} path={obj[Object.keys(obj)[0]]} />}
+              {Object.keys(obj)[1] && <UploadItem label={Object.keys(obj)[1]} path={obj[Object.keys(obj)[1]]} />}
+            </UploadCon>
+          ))}
+        </MainPart>
+        <AduitCon>
+          <TimeLineCon>
+            <div className='label'>审核过程：</div>
+            <LinCon>
+              {auditeListDtos.map((item: any, index: any, arr: any) => (
+                <TimeLineItem data={item} index={index} key={index} arr={arr} />
+              ))}
+            </LinCon>
+          </TimeLineCon>
+          <FormCon>
+            <div className='row'>
+              <div className='key'>当前进度：</div>
+              <div className='vale'>
+                <div className='status'>{auditStatus}</div>
+              </div>
             </div>
-          </div>
 
-          {needAudite && (
-            <React.Fragment>
-              <div className='row'>
-                <div className='key'>审核结果：</div>
-                <div className='vale'>
-                  <ResultBox className={agree == 'agree' ? 'agree' : ''} onClick={() => setAgree('agree')}>
-                    通过
-                    <AgreeIcon />
-                  </ResultBox>
-                  <ResultBox className={agree == 'disagree' ? 'disagree' : ''} onClick={() => setAgree('disagree')}>
-                    退回
-                    <AgreeIcon />
-                  </ResultBox>
+            {needAudite && (
+              <React.Fragment>
+                <div className='row'>
+                  <div className='key'>审核结果：</div>
+                  <div className='vale'>
+                    <ResultBox className={agree == 'agree' ? 'agree' : ''} onClick={() => setAgree('agree')}>
+                      通过
+                      <AgreeIcon />
+                    </ResultBox>
+                    <ResultBox className={agree == 'disagree' ? 'disagree' : ''} onClick={() => setAgree('disagree')}>
+                      退回
+                      <AgreeIcon />
+                    </ResultBox>
+                  </div>
                 </div>
-              </div>
-              <div className='row'>
-                <div className='key'>审核意见：</div>
-                <div className='vale'>
-                  <TextArea
-                    rows={3}
-                    style={{ width: 554 }}
-                    value={opinion}
-                    onChange={(e) => setOpinion(e.target.value)}
-                  />
+                <div className='row'>
+                  <div className='key'>审核意见：</div>
+                  <div className='vale'>
+                    <TextArea
+                      rows={3}
+                      style={{ width: 554 }}
+                      value={opinion}
+                      onChange={(e) => setOpinion(e.target.value)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className='row' style={{ paddingTop: '2px' }}>
-                <div className='key'>审核人：</div>
-                <div className='vale'>
-                  <div className='block'>{authStore.user!.empName}</div>
+                <div className='row' style={{ paddingTop: '2px' }}>
+                  <div className='key'>审核人：</div>
+                  <div className='vale'>
+                    <div className='block'>{authStore.user!.empName}</div>
+                  </div>
                 </div>
-              </div>
-            </React.Fragment>
-          )}
-        </FormCon>
-      </AduitCon>
+              </React.Fragment>
+            )}
+          </FormCon>
+        </AduitCon>
+      </Spin>
     </Modal>
   )
 }
@@ -294,7 +300,8 @@ function UploadItem (props: any) {
   return (
     <ZyzsCon>
       <span>{label}：</span>
-      <Zimage src={path || defaultHead} />
+      {path ? <Zimage src={path} /> : <img src={defaultFile} alt='' />}
+
       {/* <img src={path || defaultHead} alt='' /> */}
     </ZyzsCon>
   )
@@ -387,7 +394,7 @@ const Value = styled.div`
 `
 
 const UploadCon = styled.div`
-  height: 210px;
+  height: 190px;
   display: flex;
   margin: 10px 0;
 `

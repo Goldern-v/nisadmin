@@ -100,39 +100,35 @@ export default observer(function Writings () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nursePaperExperience',
-                    title: '审核著作译文论文',
-                    tableFormat: [
-                      {
-                        发表日期: `publicDate`,
-                        题目: `title`
-                      },
-                      {
-                        本人排名: `rank`,
-                        出版或刊登物: `publication`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        附件1: row.urlImageOne
-                        // 附件2: require(`../../../images/证件空态度.png`)
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-                审核
-              </span>
-            ) : (
-              ''
-            )}
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nursePaperExperience',
+                  title: '审核著作译文论文',
+                  tableFormat: [
+                    {
+                      发表日期: `publicDate`,
+                      题目: `title`
+                    },
+                    {
+                      本人排名: `rank`,
+                      出版或刊登物: `publication`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne
+                      // 附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }

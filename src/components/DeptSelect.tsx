@@ -32,7 +32,6 @@ export default observer(function DeptSelect (props: Props) {
         if (!authStore.selectedDeptCode) {
           authStore.selectedDeptCode = '全院'
         }
-        onChange(authStore.selectedDeptCode)
       } else {
         setHasAllDept(false)
         if (authStore.selectedDeptCode == '全院') {
@@ -40,6 +39,7 @@ export default observer(function DeptSelect (props: Props) {
         }
       }
     }
+    onChange(authStore.selectedDeptCode)
     return () => {
       setTimeout(() => {
         // authStore.selectedDeptCode = authStore.defaultDeptCode

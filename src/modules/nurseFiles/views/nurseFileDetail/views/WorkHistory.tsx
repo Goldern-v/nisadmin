@@ -109,40 +109,38 @@ export default observer(function WorkHistory () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseWorkExperience',
-                    title: '审核工作经历',
-                    tableFormat: [
-                      {
-                        起始时间: `startTime`,
-                        结束时间: `endTime`
-                      },
-                      {
-                        工作单位: `unit`,
-                        专业技术工作: 'professionalWork'
-                      },
-                      {
-                        技术职称: 'professional',
-                        职务: 'post'
-                      },
-                      {
-                        技术职称: 'professional'
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-                审核
-              </span>
-            ) : (
-              ''
-            )}
+
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseWorkExperience',
+                  title: '审核工作经历',
+                  tableFormat: [
+                    {
+                      起始时间: `startTime`,
+                      结束时间: `endTime`
+                    },
+                    {
+                      工作单位: `unit`,
+                      专业技术工作: 'professionalWork'
+                    },
+                    {
+                      技术职称: 'professional',
+                      职务: 'post'
+                    },
+                    {
+                      技术职称: 'professional'
+                    }
+                  ],
+
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }

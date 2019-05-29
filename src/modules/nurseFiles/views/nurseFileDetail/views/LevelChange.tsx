@@ -92,7 +92,7 @@ export default observer(function LevelChange () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
+           
               <span
                 onClick={() => {
                   globalModal.auditModal.show({
@@ -119,11 +119,9 @@ export default observer(function LevelChange () {
                   })
                 }}
               >
-                审核
+               {limitUtils(row) ? '审核' : '查看'}
               </span>
-            ) : (
-              ''
-            )}
+            
           </DoCon>
         )
       }

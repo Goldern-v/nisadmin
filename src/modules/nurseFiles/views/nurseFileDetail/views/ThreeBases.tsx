@@ -93,38 +93,35 @@ export default observer(function ThreeBases () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseHospitalsThreeBase',
-                    title: '审核特殊资格证',
-                    tableFormat: [
-                      {
-                        年度: `year`,
-                        理论考核成绩_分: `theoryScore`
-                      },
-                      {
-                        操作考核成绩_分: `technologyScore`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        附件1: row.urlImageOne
-                        // 附件2: require(`../../../images/证件空态度.png`)
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-                审核
-              </span>
-            ) : (
-              ''
-            )}
+
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseHospitalsThreeBase',
+                  title: '审核特殊资格证',
+                  tableFormat: [
+                    {
+                      年度: `year`,
+                      理论考核成绩_分: `theoryScore`
+                    },
+                    {
+                      操作考核成绩_分: `technologyScore`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne
+                      // 附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }

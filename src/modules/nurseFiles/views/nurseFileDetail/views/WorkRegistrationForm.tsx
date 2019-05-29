@@ -122,45 +122,41 @@ export default observer(function WorkRegistrationForm () {
             ) : (
               ''
             )}
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseRegistrationWork',
-                    title: '审核特殊资格证',
-                    tableFormat: [
-                      {
-                        年度: `year`,
-                        夜班: `nightShift`
-                      },
-                      {
-                        查房: `checkOut`,
-                        护理会诊: `nursingConsultation`
-                      },
-                      {
-                        病例讨论: `caseDiscussion`,
-                        个案: `individualCase`
-                      },
-                      {
-                        小讲课: `lecture`,
-                        带教: `teaching`
-                      },
-                      {
-                        证明人: `witness`
-                      }
-                    ],
-                    // fileData: [{}],
-                    allData: row
-                  })
-                }}
-              >
-                审核
-              </span>
-            ) : (
-              ''
-            )}
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseRegistrationWork',
+                  title: '审核特殊资格证',
+                  tableFormat: [
+                    {
+                      年度: `year`,
+                      夜班: `nightShift`
+                    },
+                    {
+                      查房: `checkOut`,
+                      护理会诊: `nursingConsultation`
+                    },
+                    {
+                      病例讨论: `caseDiscussion`,
+                      个案: `individualCase`
+                    },
+                    {
+                      小讲课: `lecture`,
+                      带教: `teaching`
+                    },
+                    {
+                      证明人: `witness`
+                    }
+                  ],
+                  // fileData: [{}],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }
