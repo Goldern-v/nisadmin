@@ -1107,6 +1107,7 @@ export default function MainBox () {
         dataSource={tableList}
         pagination={false}
         surplusHeight={300}
+        footer={() => footer}
         style={{ padding: 0 }}
       />
         {/* <Table
