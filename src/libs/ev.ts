@@ -1,6 +1,7 @@
 // 非嵌套组件间通信
 import { EventEmitter } from 'events'
-export default new EventEmitter()
+const emitter = new EventEmitter()
+export default emitter
 
 //
 // import emitter from "./ev"

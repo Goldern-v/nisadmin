@@ -78,14 +78,14 @@ export default observer(function WorkRegistrationForm () {
     {
       title: '小讲课',
       dataIndex: 'lecture',
-      key: '621',
+      key: '小讲课',
       width: 80,
       align: 'center'
     },
     {
       title: '带教',
       dataIndex: 'teaching',
-      key: '621',
+      key: '带教',
       width: 70,
       align: 'center'
     },

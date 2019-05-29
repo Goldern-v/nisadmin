@@ -41,15 +41,7 @@ class NurseFilesListViewModel {
     nurseFilesService.getByFormCodePC(obj).then((res) => {
       this.pageIndex = res.data.pageIndex
       this.totalCount = res.data.totalCount
-      this.nurseList = res.data.list
-        .map((item: any) => {
-          let titles = [null, '', '护士', '护师', '主管护师', '副主任护师', '主任护师']
-          item.titleScore =
-            (titles.indexOf(item.title) * 10 || 0) +
-            (item.nurseHierarchy ? Number(item.nurseHierarchy.substring(1, 2)) : 0)
-          return item
-        })
-        .sort((a: any, b: any) => b.titleScore - a.titleScore)
+      this.nurseList = res.data.genericTypeList
       this.listSpinning = false
     })
   }

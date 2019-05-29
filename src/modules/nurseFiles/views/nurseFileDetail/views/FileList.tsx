@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import { globalModal } from 'src/global/globalModal'
+import Zimage from 'src/components/Zimage'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import EditFileListModal from '../modal/EditFileListModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
@@ -27,7 +28,7 @@ export default observer(function FileList () {
   const showModalPicture = (e: any, filterData: any) => {
     setVisible(true)
     setPictureArr(filterData)
-    // console.log('33333333333333333333333', filterData)
+    console.log('33333333333333333333333', filterData)
   }
   const handleOk = (e: any) => {
     setVisible(false)
@@ -75,10 +76,11 @@ export default observer(function FileList () {
         return (
           <DoCon>
             <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span>
+            {/* <Zimage text='查看' list={row.filterData.map((item: any) => item.path)} /> */}
             {row.type > 6 ? (
               <span
                 onClick={() => {
-                  console.log('6666666666666666666666', row.statusColor)
+                  // console.log('6666666666666666666666', row.statusColor)
                   editFileListModal.show({ data: row, signShow: '添加' })
                 }}
               >

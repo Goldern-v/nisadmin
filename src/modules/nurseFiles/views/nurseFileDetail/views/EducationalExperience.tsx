@@ -110,6 +110,7 @@ export default observer(function EducationalExperience () {
               <span
                 onClick={() => {
                   globalModal.auditModal.show({
+                    getTableData: getTableData,
                     id: row.id,
                     type: 'nurseMedicalEducation',
                     title: '审核特殊资格证',
