@@ -34,7 +34,8 @@ export default observer(function EditWorkHistoryModal (props: Props) {
     let obj: any = {
       file,
       empNo: appStore.queryObj.empNo,
-      type: '4'
+      type: '4',
+      auditedStatus: ''
     }
     if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
@@ -58,16 +59,15 @@ export default observer(function EditWorkHistoryModal (props: Props) {
 
   const onFieldChange = () => {}
   const onSave = async () => {
-    let getPostData = loginViewModel.post
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       attachmentId: attachmentId,
       auditedStatus: ''
     }
-    if (authStore!.user!.post == '护长') {
+    if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
@@ -100,10 +100,13 @@ export default observer(function EditWorkHistoryModal (props: Props) {
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
-
+  const testClick = () => {
+    console.log('refForm44444444444445555555555', refForm!.current!.validateFields())
+  }
   return (
     <div>
-      <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+      <Button onClick={testClick}>test</Button>
+      <Modal title='修改特殊资格证' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
         <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
           <Row>
             <Col span={24}>

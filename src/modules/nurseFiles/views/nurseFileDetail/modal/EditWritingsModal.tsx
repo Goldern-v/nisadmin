@@ -26,8 +26,8 @@ const rules: Rules = {
   publicDate: (val) => !!val || '请填写发表日期',
   title: (val) => !!val || '请填写题目',
   rank: (val) => !!val || '请填写本人排名',
-  publication: (val) => !!val || '请填写出版或刊登物',
-  professional: (val) => !!val || '请选择技术职称'
+  publication: (val) => !!val || '请填写出版或刊登物'
+  // professional: (val) => !!val || '请选择技术职称'
 }
 
 export default function EditWorkHistoryModal (props: Props) {
@@ -94,14 +94,13 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
- 
       setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         publicDate: moment(data.publicDate),
         title: data.title,
         rank: data.rank,
         publication: data.publication,
-        professional: data.professional,
+        // professional: data.professional,
         urlImageOne: data.urlImageOne
       })
       // refForm.current.setField('unit', 123)

@@ -44,9 +44,9 @@ export default function EditWorkHistoryModal (props: Props) {
     } else if (authStore!.user!.post == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
-    if (signShow === '修改') {
-      Object.assign(obj, { id: data.id })
-    }
+    // if (signShow === '修改') {
+    //   Object.assign(obj, { id: data.id })
+    // }
     const [err, res] = await to(service.commonApiService.uploadFile(obj))
     if (err) {
       message.error(err.message)
@@ -83,13 +83,11 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
- 
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-     
       setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         startTime: moment(data.startTime),

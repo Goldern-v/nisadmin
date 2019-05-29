@@ -21,7 +21,7 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  empName: (val) => !!val || '请填写姓名',
+  // empName: (val) => !!val || '请填写姓名',
   appointmentTime: (val) => !!val || '请填写职称聘用时间',
   titleQualification: (val) => !!val || '请填写职称资格',
   hierarchy: (val) => !!val || '请选择层级'
@@ -31,7 +31,8 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj: any = {
       file,
       empNo: appStore.queryObj.empNo,
-      type: '4'
+      type: '4',
+      auditedStatus: ''
     }
     if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
@@ -61,9 +62,8 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: '',
-      attachmentId: '',
-      urlImageOne: ''
+      attachmentId: attachmentId,
+      auditedStatus: ''
     }
     if (authStore!.user!.post == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
@@ -73,7 +73,6 @@ export default function EditWorkHistoryModal (props: Props) {
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
-
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
@@ -90,29 +89,33 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
- 
       refForm!.current!.setFields({
         appointmentTime: moment(data.appointmentTime),
         empName: data.empName,
         titleQualification: data.titleQualification,
-        hierarchy: data.hierarchy
+        hierarchy: data.hierarchy,
+        urlImageOne: data.urlImageOne
       })
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
-
+  const testClick = () => {
+    console.log('refForm44444444444445555555555', refForm!.current!.validateFields())
+  }
   return (
-    <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
-        <Row>
-          {/* <Row gutter={10}>
+    <div>
+      <Button onClick={testClick}>test</Button>
+      <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+        <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
+          <Row>
+            {/* <Row gutter={10}>
             <Col span={15}>
               <Form.Field label={`聘用时间`} name='orgName' required>
                 <DatePicker />
               </Form.Field>
             </Col>
           </Row> */}
-          {/* <Col span={24}>
+            {/* <Col span={24}>
             <Form.Field label={`工作单位`} name='' required>
               <Input />
             </Form.Field>
@@ -123,37 +126,38 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col> */}
 
-          <Col span={24}>
-            <Form.Field label={`聘用时间`} name='appointmentTime' required>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`职称`} name='titleQualification' required>
-              {/* <Select>
+            <Col span={24}>
+              <Form.Field label={`聘用时间`} name='appointmentTime' required>
+                <DatePicker />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`职称`} name='titleQualification' required>
+                {/* <Select>
                 <Option value='1'>1</Option>
                 <Option value='2'>2</Option>
               </Select> */}
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`层级`} name='hierarchy' required>
-              {/* <Select>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`层级`} name='hierarchy' required>
+                {/* <Select>
                 <Option value='1'>1</Option>
                 <Option value='2'>2</Option>
               </Select> */}
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={``} name='urlImageOne'>
-              <ImageUploader upload={uploadCard} text='添加附件' />
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
-    </Modal>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={``} name='urlImageOne'>
+                <ImageUploader upload={uploadCard} text='添加附件' />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
+    </div>
   )
 }
 const Wrapper = styled.div``

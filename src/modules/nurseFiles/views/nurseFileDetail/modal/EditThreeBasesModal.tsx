@@ -35,6 +35,7 @@ export default function EditWorkHistoryModal (props: Props) {
       file,
       empNo: appStore.queryObj.empNo,
       type: '0',
+      attachmentId: attachmentId,
       auditedStatus: ''
     }
     if (authStore!.user!.post == '护长') {
@@ -42,9 +43,9 @@ export default function EditWorkHistoryModal (props: Props) {
     } else if (authStore!.user!.post == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
-    if (signShow === '修改') {
-      Object.assign(obj, { id: data.id })
-    }
+    // if (signShow === '修改') {
+    //   Object.assign(obj, { id: data.id })
+    // }
 
     const [err, res] = await to(service.commonApiService.uploadFile(obj))
     if (err) {
@@ -95,13 +96,13 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-
       setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         year: data.year,
         theoryScore: data.theoryScore,
         technologyScore: data.technologyScore,
-        post: data.post
+        post: data.post,
+        urlImageOne: data.urlImageOne
       })
       // refForm.current.setField('unit', 123)
     }

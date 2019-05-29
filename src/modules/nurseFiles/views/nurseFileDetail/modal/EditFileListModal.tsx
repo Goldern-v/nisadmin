@@ -14,7 +14,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 const uploadCard = () => Promise.resolve('123')
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -98,7 +98,6 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-
       setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         publicDate: moment(data.publicDate),
