@@ -310,7 +310,19 @@ export default function Format (row: any, getTableData: any) {
       })
     }
     case '附件': {
-      return
+      return globalModal.auditModal.show({
+        getTableData: getTableData,
+        id: row.id,
+        type: 'nurseAttachment',
+        title: '附件审核',
+        tableFormat: [],
+        fileData: [
+          {
+            附件1: row.path
+          }
+        ],
+        allData: row
+      })
     }
   }
 }

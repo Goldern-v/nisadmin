@@ -15,6 +15,7 @@ import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import { observer } from 'mobx-react-lite'
+import emitter from 'src/libs/ev';
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -80,6 +81,7 @@ export default observer(function EditWorkHistoryModal (props: Props) {
     nurseFilesService.nurseSpecialQualificationAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
+      emitter.emit('refreshNurseFileDeatilLeftMenu')
       onCancel()
     })
   }
