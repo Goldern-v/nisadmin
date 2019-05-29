@@ -83,6 +83,7 @@ export default observer(function EducationalExperience () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '8',
+      width: 150,
       align: 'center'
     },
     {

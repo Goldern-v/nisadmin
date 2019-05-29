@@ -98,6 +98,7 @@ export default function aduitModal (props: Props) {
   }, [visible])
 
   const onOk = () => {
+    if (!needAudite) return onCancel()
     let agreeStatus
     if (agree === 'agree') {
       agreeStatus = true
@@ -120,7 +121,15 @@ export default function aduitModal (props: Props) {
     })
   }
   return (
-    <Modal title={title} visible={visible} onOk={onOk} onCancel={onCancel} okText='保存' forceRender width={800}>
+    <Modal
+      title={title}
+      visible={visible}
+      onOk={onOk}
+      onCancel={onCancel}
+      okText={needAudite ? '审核' : '关闭'}
+      forceRender
+      width={800}
+    >
       <Spin spinning={spinning}>
         <MainPart>
           <InfoTable>

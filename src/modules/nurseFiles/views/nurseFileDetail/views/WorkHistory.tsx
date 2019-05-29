@@ -83,7 +83,8 @@ export default observer(function WorkHistory () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '',
-      align: 'center'
+      align: 'center',
+      width: 150
       // render: (text: any, item: any, index: any) => {
       //   return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>
       // }
@@ -129,8 +130,7 @@ export default observer(function WorkHistory () {
                     {
                       技术职称: 'professional',
                       职务: 'post'
-                    },
-              
+                    }
                   ],
 
                   allData: row

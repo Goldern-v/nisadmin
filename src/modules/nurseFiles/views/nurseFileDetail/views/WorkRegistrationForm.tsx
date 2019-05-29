@@ -100,7 +100,8 @@ export default observer(function WorkRegistrationForm () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '61231',
-      align: 'center'
+      align: 'center',
+      width: 150,
     },
     {
       title: '操作',

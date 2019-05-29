@@ -70,7 +70,7 @@ export default function SpecialCard () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '6',
-
+      width: 150,
       align: 'center'
     },
     {
@@ -137,7 +137,7 @@ export default function SpecialCard () {
   useEffect(() => {
     getTableData()
   }, [])
-  
+
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
       {/* <Button onClick={test}>按钮</Button> */}

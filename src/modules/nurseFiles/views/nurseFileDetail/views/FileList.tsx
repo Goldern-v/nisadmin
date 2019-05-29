@@ -55,14 +55,14 @@ export default observer(function FileList () {
       title: '文件数',
       dataIndex: 'number',
       key: '3',
-      width: 200,
+      width: 120,
       align: 'center'
     },
     {
       title: '状态',
       dataIndex: 'status',
       key: '4',
-      width: 100,
+      width: 150,
       align: 'center'
     },
     {
@@ -75,7 +75,7 @@ export default observer(function FileList () {
         return (
           <DoCon>
             {/* <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span> */}
-            {row.type <7 &&<Zimage text='查看' list={row.filterData.map((item: any) => item.path)} />}
+            {row.type < 7 && <Zimage text='查看' list={row.filterData.map((item: any) => item.path)} />}
             {row.type > 6 && row.isShow ? (
               <span
                 onClick={() => {
@@ -186,6 +186,15 @@ export default observer(function FileList () {
           id:
             res.data.filter((item: any) => item.type === '7')[0] &&
             res.data.filter((item: any) => item.type === '7')[0].id,
+          empNo:
+            res.data.filter((item: any) => item.type === '7')[0] &&
+            res.data.filter((item: any) => item.type === '7')[0].empNo,
+          saveStatus:
+            res.data.filter((item: any) => item.type === '7')[0] &&
+            res.data.filter((item: any) => item.type === '7')[0].saveStatus,
+          empName:
+            res.data.filter((item: any) => item.type === '7')[0] &&
+            res.data.filter((item: any) => item.type === '7')[0].empName,
           type: '7'
         },
         {
@@ -208,6 +217,15 @@ export default observer(function FileList () {
           id:
             res.data.filter((item: any) => item.type === '8')[0] &&
             res.data.filter((item: any) => item.type === '8')[0].id,
+          empNo:
+            res.data.filter((item: any) => item.type === '8')[0] &&
+            res.data.filter((item: any) => item.type === '8')[0].empNo,
+          saveStatus:
+            res.data.filter((item: any) => item.type === '8')[0] &&
+            res.data.filter((item: any) => item.type === '8')[0].saveStatus,
+          empName:
+            res.data.filter((item: any) => item.type === '8')[0] &&
+            res.data.filter((item: any) => item.type === '8')[0].empName,
           type: '8'
         },
         {
@@ -230,6 +248,15 @@ export default observer(function FileList () {
           path:
             res.data.filter((item: any) => item.type === '9')[0] &&
             res.data.filter((item: any) => item.type === '9')[0].path,
+          empNo:
+            res.data.filter((item: any) => item.type === '9')[0] &&
+            res.data.filter((item: any) => item.type === '9')[0].empNo,
+          saveStatus:
+            res.data.filter((item: any) => item.type === '9')[0] &&
+            res.data.filter((item: any) => item.type === '9')[0].saveStatus,
+          empName:
+            res.data.filter((item: any) => item.type === '9')[0] &&
+            res.data.filter((item: any) => item.type === '9')[0].empName,
           type: '9'
         }
       ]
