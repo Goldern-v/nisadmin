@@ -99,7 +99,7 @@ export default observer(function EditWorkHistoryModal (props: Props) {
     }
   }, [visible])
   // const testClcik = (res: any) => {
-  //   console.log('test111111111111111111', loginViewModel.post)
+  //   console.log('test111111111111111111', authStore!.user!.post)
   // }
   return (
     <div>

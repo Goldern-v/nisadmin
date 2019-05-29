@@ -90,35 +90,35 @@ export default observer(function FileList () {
               ''
             )}
             {limitUtils(row, '附件审核') ? (
-            <span
-              onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseAttachment',
-                  title: '附件审核',
-                  tableFormat: [
-                    // {
-                    //   获得时间: `time`,
-                    //   资格名称: `specialQualificationName`
-                    // },
-                    // {
-                    //   资格证编号: `specialQualificationNo`
-                    // }
-                  ],
-                  fileData: [
-                    {
-                      附件1: row.path
-                      // 附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
-                  allData: row
-                })
-              }}
-            >
-              审核
-            </span>
-             ) : (
+              <span
+                onClick={() => {
+                  globalModal.auditModal.show({
+                    getTableData: getTableData,
+                    id: row.id,
+                    type: 'nurseAttachment',
+                    title: '附件审核',
+                    tableFormat: [
+                      // {
+                      //   获得时间: `time`,
+                      //   资格名称: `specialQualificationName`
+                      // },
+                      // {
+                      //   资格证编号: `specialQualificationNo`
+                      // }
+                    ],
+                    fileData: [
+                      {
+                        附件: row.path
+                        // 附件2: require(`../../../images/证件空态度.png`)
+                      }
+                    ],
+                    allData: row
+                  })
+                }}
+              >
+                审核
+              </span>
+            ) : (
               ''
             )}
           </DoCon>

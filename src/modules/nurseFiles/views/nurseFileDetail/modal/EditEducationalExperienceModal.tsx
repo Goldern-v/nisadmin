@@ -101,10 +101,10 @@ export default function EditWorkHistoryModal (props: Props) {
     } else if (authStore!.user!.post == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
+    
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
-
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
