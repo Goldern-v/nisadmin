@@ -14,6 +14,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
+import { observer } from 'mobx-react-lite'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -27,7 +28,7 @@ const rules: Rules = {
   specialQualificationName: (val) => !!val || '资格名称',
   specialQualificationNo: (val) => !!val || '资格证编号'
 }
-export default function EditWorkHistoryModal (props: Props) {
+export default observer(function EditWorkHistoryModal (props: Props) {
   const uploadCard = async (file: any) => {
     let obj: any = {
       file,
@@ -39,7 +40,6 @@ export default function EditWorkHistoryModal (props: Props) {
     } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
-
     const [err, res] = await to(service.commonApiService.uploadFile(obj))
     if (err) {
       message.error(err.message)
@@ -58,17 +58,16 @@ export default function EditWorkHistoryModal (props: Props) {
   const onFieldChange = () => {}
   const onSave = async () => {
     let getPostData = loginViewModel.post
-    let auditedStatusShow = 'waitAuditedDepartment'
-    if (getPostData === '护士长') {
-      auditedStatusShow = 'waitAuditedNurse'
-    } else if (getPostData === '护理部') {
-      auditedStatusShow = 'waitAuditedDepartment'
-    }
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow,
-      attachmentId: attachmentId
+      attachmentId: attachmentId,
+      auditedStatus: ''
+    }
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
@@ -99,35 +98,40 @@ export default function EditWorkHistoryModal (props: Props) {
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
-
+  // const testClcik = (res: any) => {
+  //   console.log('test111111111111111111', loginViewModel.post)
+  // }
   return (
-    <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
-        <Row>
-          <Col span={24}>
-            <Form.Field label={`获得时间`} name='time' required>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`资格名称`} name='specialQualificationName' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`资格证编号`} name='specialQualificationNo' required>
-              <Input />
-            </Form.Field>
-          </Col>
+    <div>
+      {/* <Button onClick={testClcik}>test</Button> */}
+      <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+        <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+          <Row>
+            <Col span={24}>
+              <Form.Field label={`获得时间`} name='time' required>
+                <DatePicker />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`资格名称`} name='specialQualificationName' required>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`资格证编号`} name='specialQualificationNo' required>
+                <Input />
+              </Form.Field>
+            </Col>
 
-          <Col span={24}>
-            <Form.Field label={``} name='urlImageOne'>
-              <ImageUploader upload={uploadCard} text='添加附件' />
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
-    </Modal>
+            <Col span={24}>
+              <Form.Field label={``} name='urlImageOne'>
+                <ImageUploader upload={uploadCard} text='添加附件' />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
+    </div>
   )
-}
+})
 const Wrapper = styled.div``

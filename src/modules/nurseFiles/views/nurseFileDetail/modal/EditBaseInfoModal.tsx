@@ -66,13 +66,14 @@ export default function EditWorkHistoryModal (props: Props) {
   const onSave = async () => {
     let getPostData = loginViewModel.post
     let auditedStatusShow = 'waitAuditedDepartment'
-    // if (getPostData === '护士长') {
-    //   auditedStatusShow = 'waitAuditedNurse'
-    // } else if (getPostData === '护理部') {
-    //   auditedStatusShow = 'waitAuditedDepartment'
-    // }
+    if (getPostData === '护士长') {
+      auditedStatusShow = 'waitAuditedNurse'
+    } else if (getPostData === '护理部') {
+      auditedStatusShow = 'waitAuditedDepartment'
+    }
     let obj = {
-      id: id
+      id: id,
+      auditedStatus: auditedStatusShow
     }
 
     if (!refForm.current) return

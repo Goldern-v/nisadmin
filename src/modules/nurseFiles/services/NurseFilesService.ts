@@ -220,6 +220,7 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseAttachmentAdd (obj: any) {
     return this.post(`/nurseAttachment/saveOrUpdate`, obj)
   }
+  
 
   // 15 新增添加附件
   // 该接口有问题
@@ -227,6 +228,7 @@ export default class NurseFilesService extends BaseApiService {
     this.stringify(obj)
     return this.post(`file/uploadNurse`, obj)
   }
+  
 
   /** 审核列表 */
   public auditeStatusNurse (status: string, pageIndex: number) {

@@ -62,20 +62,22 @@ export default function EditWorkHistoryModal (props: Props) {
 
   const onSave = async () => {
     let getPostData = loginViewModel.post
-    let auditedStatusShow = 'waitAuditedDepartment'
-    if (getPostData === '护士长') {
-      auditedStatusShow = 'waitAuditedNurse'
-    } else if (getPostData === '护理部') {
-      auditedStatusShow = 'waitAuditedDepartment'
-    }
+
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow,
       attachmentId: attachmentId,
-      urlImageOne: ''
+      type: data.type,
+      // id: data.filterData[0].id,
+      fileName: data.fileName,
+      auditedStatus: ''
     }
-    if (signShow === '修改') {
+    if (authStore!.user!.post == '护长') {
+      obj.auditedStatus = 'waitAuditedNurse'
+    } else if (authStore!.user!.post == '护理部') {
+      obj.auditedStatus = 'waitAuditedDepartment'
+    }
+    if (signShow === '添加') {
       Object.assign(obj, { id: data.id })
     }
     if (!refForm.current) return
@@ -83,7 +85,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (err) return
     // value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
-    nurseFilesService.nursePaperExperienceAdd({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseAttachmentAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       onCancel()
@@ -102,24 +104,19 @@ export default function EditWorkHistoryModal (props: Props) {
         rank: data.rank,
         publication: data.publication,
         professional: data.professional,
-        urlImageOne: data.urlImageOne
+        path: data.path
       })
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
 
   return (
-    <Modal title='修改附件' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title='添加附件' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`内容`} name='title' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`文件数`} name='rank' required>
-              <Input />
+            <Form.Field label={``} name='path'>
+              <ImageUploader upload={uploadCard} text='添加附件' />
             </Form.Field>
           </Col>
         </Row>
