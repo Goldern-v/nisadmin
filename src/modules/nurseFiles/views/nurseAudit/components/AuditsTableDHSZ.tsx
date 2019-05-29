@@ -21,6 +21,7 @@ export default function AuditsTableDHSZ (props: Props) {
   const [total, setTotal] = useState(0)
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const columns: any = [
     {
@@ -93,7 +94,9 @@ export default function AuditsTableDHSZ (props: Props) {
     pagination.current && onload(pagination.current)
   }
   const onload = (current: any) => {
+    setLoading(true)
     nurseFilesService.auditeStatusNurse(type, current).then((res) => {
+      setLoading(false)
       setTableData(res.data.list)
       setTotal(res.data.totalCount)
       setCurrent(res.data.pageIndex)
@@ -127,7 +130,11 @@ export default function AuditsTableDHSZ (props: Props) {
   }, [])
   return (
     <Wrapper>
+      <GroupPostBtn onClick={() => onload(current)} style={{ right: 120 }}>
+        刷新
+      </GroupPostBtn>
       <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>
+
       <BaseTable
         dataSource={tableData}
         columns={columns}
@@ -139,6 +146,7 @@ export default function AuditsTableDHSZ (props: Props) {
         }}
         onChange={onChange}
         rowSelection={rowSelection}
+        loading={loading}
       />
     </Wrapper>
   )
