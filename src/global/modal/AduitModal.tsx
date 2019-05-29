@@ -47,6 +47,7 @@ export default function aduitModal (props: Props) {
       props.fileData ? setFileData(props.fileData) : setFileData([])
       setAgree('')
       setOpinion('')
+      
       if (props.type === 'nurseInformation') {
         modalService.getByIdAuditeDis(props.type).then((res) => {
           let data = res.data

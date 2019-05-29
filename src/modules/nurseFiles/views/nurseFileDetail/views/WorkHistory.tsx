@@ -98,13 +98,17 @@ export default observer(function WorkHistory () {
         if (Object.keys(row).length === 0) return <span />
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                editWorkHistoryModal.show({ data: row, signShow: '修改' })
-              }}
-            >
-              修改
-            </span>
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  editWorkHistoryModal.show({ data: row, signShow: '修改' })
+                }}
+              >
+                修改
+              </span>
+            ) : (
+              ''
+            )}
             {limitUtils(row) ? (
               <span
                 onClick={() => {

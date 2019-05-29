@@ -89,13 +89,17 @@ export default observer(function Writings () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                editWritingsModal.show({ data: row, signShow: '修改' })
-              }}
-            >
-              修改
-            </span>
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  editWritingsModal.show({ data: row, signShow: '修改' })
+                }}
+              >
+                修改
+              </span>
+            ) : (
+              ''
+            )}
             {limitUtils(row) ? (
               <span
                 onClick={() => {

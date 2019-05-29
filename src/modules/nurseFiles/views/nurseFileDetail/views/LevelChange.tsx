@@ -14,8 +14,6 @@ import Zimage from 'src/components/Zimage'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
 export default observer(function LevelChange () {
-  // 保存表格每行数据
-  const [rowData, setRowData] = useState({ id: '', urlImageOne: '', urlImageTwo: '', auditedStatusName: '' })
   const editLevelChangeModal = createModal(EditLevelChangeModal)
   const btnList = [
     {
@@ -83,8 +81,6 @@ export default observer(function LevelChange () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            {/* 保存行数据 */}
-            {setRowData(row)}
             {limitUtils(row) ? (
               <span
                 onClick={() => {

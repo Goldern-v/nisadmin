@@ -111,13 +111,17 @@ export default observer(function WorkRegistrationForm () {
       render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                editWorkRegistrationFormModal.show({ data: row, signShow: '修改' })
-              }}
-            >
-              修改
-            </span>
+            {limitUtils(row) ? (
+              <span
+                onClick={() => {
+                  editWorkRegistrationFormModal.show({ data: row, signShow: '修改' })
+                }}
+              >
+                修改
+              </span>
+            ) : (
+              ''
+            )}
             {limitUtils(row) ? (
               <span
                 onClick={() => {
