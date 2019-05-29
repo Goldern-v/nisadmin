@@ -15,7 +15,7 @@ export default function Zimage (props: Props | any) {
   )
   let imgRef = React.createRef<any>()
   if (option.text) {
-    if (option.list) {
+    if (option.list && option.list.length > 0) {
       return (
         <Wrapper
           onClick={() => {
@@ -23,18 +23,17 @@ export default function Zimage (props: Props | any) {
           }}
         >
           <Text>{option.text}</Text>
+
           <ReactZmage
             {...option}
             ref={imgRef}
-            set={[
-              option.list.map((item: any) => {
-                return { src: item }
-              })
-            ]}
+            set={option.list.map((item: any) => {
+              return { src: item }
+            })}
           />
         </Wrapper>
       )
-    } else {
+    } else if (option.src) {
       return (
         <Wrapper
           onClick={() => {
@@ -45,9 +44,12 @@ export default function Zimage (props: Props | any) {
           <ReactZmage {...option} ref={imgRef} />
         </Wrapper>
       )
+    } else {
+      return <React.Fragment />
     }
+  } else {
+    return option.src ? <ReactZmage {...option} /> : <span />
   }
-  return <ReactZmage {...option} />
 }
 const Wrapper = styled.div`
   cursor: pointer;

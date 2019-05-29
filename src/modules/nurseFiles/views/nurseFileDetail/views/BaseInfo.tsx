@@ -60,10 +60,7 @@ export default observer(function BaseInfo () {
   //   }
   // ]
   const limitsComponent = () => {
-    if (
-      (authStore.post === '护长' && info.statusColor === '0') ||
-      (authStore.post === '护理部' && info.statusColor === '1')
-    ) {
+    if (info.statusColor === '1') {
       return [
         {
           label: '修改',
@@ -235,7 +232,11 @@ export default observer(function BaseInfo () {
         </InfoTable>
         <ZyzsCon>
           <span>职业证书：</span>
-          {info.zyzsUrl && <Zimage src={info.zyzsUrl} alt='' />}
+          {info.zyzsUrl ? (
+            <Zimage src={info.zyzsUrl} alt='' />
+          ) : (
+            <img src={require('../../../images/证件空态度.png')} alt='' />
+          )}
         </ZyzsCon>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
@@ -296,6 +297,7 @@ const ZyzsCon = styled.div`
     border: 1px solid rgba(219, 224, 228, 1);
     top: 20px;
     left: 137px;
+    object-fit: cover;
   }
 `
 

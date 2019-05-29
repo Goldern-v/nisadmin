@@ -29,9 +29,10 @@ const GlobalStyle = createGlobalStyle`
 
 
 /** Zimage 样式调整*/
-#zmageControl {
+#zmageControl,#zmageControlFlipLeft, #zmageControlFlipRight,#zmageControlPagination {
   background: #fff !important;
 }
+
 `
 
 export default GlobalStyle
