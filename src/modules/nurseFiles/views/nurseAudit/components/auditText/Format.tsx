@@ -78,9 +78,6 @@ export default function Format (row: any, getTableData: any) {
           {
             技术职称: 'professional',
             职务: 'post'
-          },
-          {
-            技术职称: 'professional'
           }
         ],
 
