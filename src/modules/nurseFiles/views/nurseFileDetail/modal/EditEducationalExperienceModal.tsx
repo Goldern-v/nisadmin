@@ -13,7 +13,7 @@ import moment from 'moment'
 import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -22,11 +22,11 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  readTime: (val) => !!val || '就读时间',
-  graduationTime: (val) => !!val || '毕业时间',
-  graduationSchool: (val) => !!val || '毕业学校',
-  readProfessional: (val) => !!val || '专业',
-  education: (val) => !!val || '学历'
+  readTime: (val) => !!val || '请填写就读时间',
+  graduationTime: (val) => !!val || '请填写毕业时间',
+  graduationSchool: (val) => !!val || '请填写毕业学校',
+  readProfessional: (val) => !!val || '请填写专业',
+  education: (val) => !!val || '请填写学历'
 
   // urlImageTwo: (val) => !!val || '毕业证',
   // urlImageOne: (val) => !!val || '学位证'
@@ -97,12 +97,12 @@ export default function EditWorkHistoryModal (props: Props) {
       fileIdz: '',
       attachmentId: attachmentId1 + ',' + attachmentId2 + ','
     }
-    if (authStore!.user!.post == '护长') {
+    if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
-    
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
@@ -144,7 +144,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改教育经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>
             <Col span={15}>

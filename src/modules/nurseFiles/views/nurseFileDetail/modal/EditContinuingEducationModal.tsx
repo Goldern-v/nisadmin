@@ -105,7 +105,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改继续教育' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>
             <Col span={15}>

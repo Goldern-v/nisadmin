@@ -15,7 +15,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -23,11 +23,11 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  time: (val) => !!val || '时间',
-  awardWinningName: (val) => !!val || '获奖/推广创新项目名称',
-  rank: (val) => !!val || '本人排名',
-  awardlevel: (val) => !!val || '授奖级别',
-  approvalAuthority: (val) => !!val || '批准机关'
+  time: (val) => !!val || '请填写时间',
+  awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
+  rank: (val) => !!val || '请填写本人排名',
+  awardlevel: (val) => !!val || '请填写授奖级别',
+  approvalAuthority: (val) => !!val || '请填写批准机关'
 }
 export default function EditWorkHistoryModal (props: Props) {
   const [attachmentId, setAttachmentId] = useState('')
@@ -108,7 +108,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改所获奖励' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`时间`} name='time'>

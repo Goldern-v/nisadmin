@@ -23,10 +23,10 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  publicDate: (val) => !!val || '发表日期',
-  title: (val) => !!val || '题目',
-  rank: (val) => !!val || '本人排名',
-  publication: (val) => !!val || '出版或刊登物',
+  publicDate: (val) => !!val || '请填写发表日期',
+  title: (val) => !!val || '请填写题目',
+  rank: (val) => !!val || '请填写本人排名',
+  publication: (val) => !!val || '请填写出版或刊登物',
   professional: (val) => !!val || '请选择技术职称'
 }
 
@@ -38,9 +38,9 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: appStore.queryObj.empNo,
       type: '0'
     }
-    if (authStore!.user!.post == '护长') {
+    if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
 
@@ -69,9 +69,9 @@ export default function EditWorkHistoryModal (props: Props) {
       attachmentId: attachmentId,
       urlImageOne: ''
     }
-    if (authStore!.user!.post == '护长') {
+    if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
@@ -80,7 +80,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    // value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
+    value.publicDate && (value.publicDate = value.publicDate.format('YYYY-MM-DD'))
     // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
     nurseFilesService.nursePaperExperienceAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
@@ -110,7 +110,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改著作译文论文' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`发表日期`} name='publicDate'>

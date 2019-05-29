@@ -13,7 +13,7 @@ import moment from 'moment'
 import { appStore, authStore } from 'src/stores'
 import ImageUploader from 'src/components/ImageUploader'
 import service from 'src/services/api'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -21,9 +21,9 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  empName: (val) => !!val || '姓名',
+  empName: (val) => !!val || '请填写姓名',
   appointmentTime: (val) => !!val || '请填写职称聘用时间',
-  titleQualification: (val) => !!val || '职称资格',
+  titleQualification: (val) => !!val || '请填写职称资格',
   hierarchy: (val) => !!val || '请选择层级'
 }
 export default function EditWorkHistoryModal (props: Props) {
@@ -57,6 +57,7 @@ export default function EditWorkHistoryModal (props: Props) {
   const onFieldChange = () => {}
 
   const onSave = async () => {
+    console.log('444444444444444')
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
@@ -102,7 +103,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改职称及层级变动' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           {/* <Row gutter={10}>
             <Col span={15}>
