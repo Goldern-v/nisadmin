@@ -88,7 +88,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改工作情况登记表' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row>
             <Col span={24}>

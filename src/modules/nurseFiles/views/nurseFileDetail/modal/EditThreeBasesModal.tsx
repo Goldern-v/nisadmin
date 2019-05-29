@@ -24,9 +24,9 @@ export interface Props extends ModalComponentProps {
 }
 
 const rules: Rules = {
-  year: (val) => !!val || '年度',
-  theoryScore: (val) => !!val || '理论考核成绩',
-  technologyScore: (val) => !!val || '操作考核成绩'
+  year: (val) => !!val || '请填写年度',
+  theoryScore: (val) => !!val || '请填写理论考核成绩',
+  technologyScore: (val) => !!val || '请填写操作考核成绩'
 }
 export default function EditWorkHistoryModal (props: Props) {
   const [attachmentId, setAttachmentId] = useState('')
@@ -109,7 +109,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改医院三基考核' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={120} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`年度`} name='year'>

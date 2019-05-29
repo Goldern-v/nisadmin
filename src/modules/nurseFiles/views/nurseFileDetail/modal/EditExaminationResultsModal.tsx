@@ -35,9 +35,9 @@ export default function EditWorkHistoryModal (props: Props) {
       type: '0',
       auditedStatus: ''
     }
-    if (authStore!.user!.post == '护长') {
+    if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if (authStore!.user!.post === '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
@@ -108,7 +108,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title='修改年度履职考核结果' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`年度 `} name='year'>
