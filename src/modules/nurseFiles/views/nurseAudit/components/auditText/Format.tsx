@@ -80,7 +80,6 @@ export default function Format (row: any, getTableData: any) {
             职务: 'post'
           }
         ],
-
         allData: row
       })
     }
