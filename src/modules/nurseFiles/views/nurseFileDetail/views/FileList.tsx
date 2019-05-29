@@ -28,7 +28,6 @@ export default observer(function FileList () {
   const showModalPicture = (e: any, filterData: any) => {
     setVisible(true)
     setPictureArr(filterData)
-    console.log('33333333333333333333333', filterData)
   }
   const handleOk = (e: any) => {
     setVisible(false)
@@ -80,7 +79,6 @@ export default observer(function FileList () {
             {row.type > 6 && row.isShow ? (
               <span
                 onClick={() => {
-                  // console.log('6666666666666666666666', row.statusColor)
                   editFileListModal.show({ data: row, signShow: '添加' })
                 }}
               >

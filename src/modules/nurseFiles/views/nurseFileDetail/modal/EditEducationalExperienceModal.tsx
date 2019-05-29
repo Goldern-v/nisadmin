@@ -49,7 +49,7 @@ export default function EditWorkHistoryModal (props: Props) {
         data = {}
       }
       data.urlImageTwo = pathImg
-      console.log(pathImg)
+      
       setPathImgGraduate(pathImg)
       setAttachmentId1(res.data.id)
       return pathImg
@@ -68,15 +68,14 @@ export default function EditWorkHistoryModal (props: Props) {
         data = {}
       }
       data.urlImageOne = pathImg
-      console.log(pathImg)
+   
       setPathImgDegree(pathImg)
       setAttachmentId2(res.data.id)
       return pathImg
     }
   }
   let refForm = React.createRef<Form>()
-  console.log('this is refForm')
-  console.log(refForm)
+
   const onFieldChange = () => {}
 
   const onSave = async () => {
@@ -120,7 +119,6 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
-  setTimeout(() => console.log('update', refForm.current), 1000)
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
@@ -128,7 +126,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       setAttachmentId1((data.attachmentId && data.attachmentId.split(',')[0]) || '')
       setAttachmentId2((data.attachmentId && data.attachmentId.split(',')[1]) || '')
-      console.log(refForm.current, visible, data)
+    
       refForm!.current!.setFields({
         readTime: moment(data.readTime),
         graduationTime: moment(data.graduationTime),

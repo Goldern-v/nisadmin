@@ -147,10 +147,7 @@ export default observer(function EducationalExperience () {
       }
     }
   ]
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.nurseMedicalEducation(appStore.queryObj.empNo).then((res) => {

@@ -56,12 +56,12 @@ export default function EditWorkHistoryModal (props: Props) {
     }
 
     if (!refForm.current) return
-    console.log(refForm.current, 'refForm.currentrefForm.currentrefForm.current')
+
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
-    console.log('obj：', obj, 'value: ', value)
+
     nurseFilesService.nurseWorkExperienceAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()

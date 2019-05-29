@@ -28,7 +28,6 @@ export default function SelectCon (props: any, context: any) {
     nurseFilesListViewModel.filterText = e.target.value
   }
 
-  console.log(context, '1contextcontextcontext1')
   return (
     <React.Fragment>
       <Wrapper>

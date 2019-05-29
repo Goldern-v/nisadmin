@@ -99,7 +99,7 @@ export default observer(function NurseFileDetail (props: Props, context: any) {
   // appStore.match.params.type
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
-  console.log(context.theme, 'contextcontextcontextcontext')
+
   return (
     <Wrapper>
       <TopCon />

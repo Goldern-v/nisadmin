@@ -71,9 +71,7 @@ const setFilterAdapter = (label: string, value: string) => {
 }
 export default observer(function FilterCon () {
   const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+
 
   return (
     <Wrapper>

@@ -96,7 +96,7 @@ export default function EditWorkHistoryModal (props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       setAttachmentId(data.attachmentId)
-      console.log(refForm.current, visible, data)
+     
       refForm!.current!.setFields({
         year: moment(data.year),
         checkResult: data.checkResult,

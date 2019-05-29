@@ -137,9 +137,7 @@ export default function SpecialCard () {
   useEffect(() => {
     getTableData()
   }, [])
-  const test = () => {
-    console.log(authStore.post)
-  }
+  
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
       {/* <Button onClick={test}>按钮</Button> */}

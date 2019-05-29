@@ -15,10 +15,6 @@ interface BtnType {
 }
 
 export default function BaseLayout (props: Props) {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
   let { title, btnList } = props
   return (
     <Wrapper>

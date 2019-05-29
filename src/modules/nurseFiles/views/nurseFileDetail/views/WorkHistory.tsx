@@ -130,9 +130,7 @@ export default observer(function WorkHistory () {
                       技术职称: 'professional',
                       职务: 'post'
                     },
-                    {
-                      技术职称: 'professional'
-                    }
+              
                   ],
 
                   allData: row
