@@ -69,7 +69,7 @@ const Wrapper = styled.div`
     td {
       padding: 0 !important;
       box-sizing: border-box;
-      height: ${(p) => p.theme.$tableRowHeigth} !important;
+      height: ${(p) => p.theme.$tableRowHeight} !important;
     }
     /* 补充th下降的高度 */
     .ant-table-align-center {

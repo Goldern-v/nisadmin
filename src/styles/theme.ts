@@ -15,7 +15,6 @@ export const theme = {
   // 上下左右间距
   $margin: '20px',
   // 表格每行高度   height:${(p) => p.theme.$tableRowHeigth};
-  $tableRowHeigth: '34px'
+  $tableRowHeight: '34px'
 }
-
 export type Theme = typeof theme
