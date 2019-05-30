@@ -13,6 +13,7 @@ import { scheduleStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import emitter from 'src/libs/ev'
 // import ButtonGroup from 'antd/lib/button/button-group'
+import windowHeight from 'src/hooks/windowHeight'
 
 import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
 
@@ -165,6 +166,8 @@ export default function MainBox () {
   const [shiftList, setShiftList] = useState(new Array())
   const [shiftUserList, setShiftUserList] = useState(new Array())
   const [isPublished, setIsPublished] = useState(false)
+
+  let wih = windowHeight()
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -1133,8 +1136,9 @@ export default function MainBox () {
       </div>
       <div style={{ flex: 1 }} />
       <div className='card-container'>
-        <Tabs type='card'>
-          <TabPane tab='可选班次' key='可选班次'>
+        <Tabs type='card' >
+          <TabPane tab='可选班次' key='可选班次' >
+            <div style={{height:(wih-260)+'px',overflow: 'auto'}}>
             {shiftList.map((m, i) =>
               m.status === true ? (
                 <Button
@@ -1226,8 +1230,10 @@ export default function MainBox () {
                 ''
               )
             )}
+            </div>
           </TabPane>
           <TabPane tab='班次模版' key='班次模版'>
+            <div style={{height:(wih-260)+'px',overflow: 'auto'}}>
             {mealList.map((m, i) =>
               m.status === true || 1 ? (
                 <Button
@@ -1292,6 +1298,7 @@ export default function MainBox () {
                 ''
               )
             )}
+            </div>
           </TabPane>
         </Tabs>
       </div>
