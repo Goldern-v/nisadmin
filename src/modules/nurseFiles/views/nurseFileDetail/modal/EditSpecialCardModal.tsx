@@ -30,6 +30,12 @@ const rules: Rules = {
   specialQualificationNo: (val) => !!val || '资格证编号'
 }
 export default observer(function EditWorkHistoryModal (props: Props) {
+  const [title, setTitle] = useState('')
+  // emitter.removeAllListeners('护士档案左侧信息')
+  // emitter.addListener('护士档案左侧信息', (getLeftData: any) => {
+  //   setTitle(getLeftData)
+  //   console.log('接受了信息', getLeftData)
+  // })
   const uploadCard = async (file: any) => {
     let obj: any = {
       file,
@@ -99,14 +105,19 @@ export default observer(function EditWorkHistoryModal (props: Props) {
       })
       // refForm.current.setField('unit', 123)
     }
+    if (signShow === '修改') {
+      setTitle('修改特殊资格证')
+    } else if (signShow === '添加') {
+      setTitle('添加特殊资格证')
+    }
   }, [visible])
   const testClick = () => {
-    console.log('refForm44444444444445555555555', refForm!.current!.validateFields())
+    console.log('title44444444444445555555555', title)
   }
   return (
     <div>
       <Button onClick={testClick}>test</Button>
-      <Modal title='修改特殊资格证' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+      <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
         <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
           <Row>
             <Col span={24}>

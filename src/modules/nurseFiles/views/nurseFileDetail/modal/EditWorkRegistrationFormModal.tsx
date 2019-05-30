@@ -35,6 +35,8 @@ const rules: Rules = {
 }
 export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
+  const [title, setTitle] = useState('')
+  
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
@@ -84,10 +86,15 @@ export default function EditWorkHistoryModal (props: Props) {
       })
       // refForm.current.setField('unit', 123)
     }
+    if (signShow === '修改') {
+      setTitle('修改工作情况登记表')
+    } else if (signShow === '添加') {
+      setTitle('添加工作情况登记表')
+    }
   }, [visible])
 
   return (
-    <Modal title='修改工作情况登记表' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row>

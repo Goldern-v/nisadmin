@@ -28,6 +28,7 @@ const rules: Rules = {
   hours: (val) => !!val || '请填写学时/分'
 }
 export default function EditWorkHistoryModal (props: Props) {
+  const [title, setTitle] = useState('')
   const [attachmentId, setAttachmentId] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
@@ -99,10 +100,15 @@ export default function EditWorkHistoryModal (props: Props) {
       })
       // refForm.current.setField('unit', 123)
     }
+    if (signShow === '修改') {
+      setTitle('修改继续教育')
+    } else if (signShow === '添加') {
+      setTitle('添加继续教育')
+    }
   }, [visible])
 
   return (
-    <Modal title='修改继续教育' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>

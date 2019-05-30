@@ -15,7 +15,7 @@ import moment from 'moment'
 import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
-import emitter from 'src/libs/ev';
+import emitter from 'src/libs/ev'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -34,6 +34,7 @@ const rules: Rules = {
 }
 export default function EditWorkHistoryModal (props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
+  const [title, setTitle] = useState('')
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
@@ -84,10 +85,15 @@ export default function EditWorkHistoryModal (props: Props) {
       })
       // refForm.current.setField('unit', 123)
     }
+    if (signShow === '修改') {
+      setTitle('修改工作经历')
+    } else if (signShow === '添加') {
+      setTitle('添加工作经历')
+    }
   }, [visible])
 
   return (
-    <Modal title='修改资格证书' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={rules}>
         <Row>
           <Row gutter={12}>

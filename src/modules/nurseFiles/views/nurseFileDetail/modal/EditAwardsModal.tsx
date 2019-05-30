@@ -31,6 +31,7 @@ const rules: Rules = {
 }
 export default function EditWorkHistoryModal (props: Props) {
   const [attachmentId, setAttachmentId] = useState('')
+  const [title, setTitle] = useState('')
   const uploadCard = async (file: any) => {
     let obj: any = {
       file,
@@ -101,10 +102,15 @@ export default function EditWorkHistoryModal (props: Props) {
         urlImageOne: data.urlImageOne
       })
     }
+    if (signShow === '修改') {
+      setTitle('修改所获奖励')
+    } else if (signShow === '添加') {
+      setTitle('添加所获奖励')
+    }
   }, [visible])
 
   return (
-    <Modal title='修改所获奖励' visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>

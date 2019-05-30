@@ -30,6 +30,7 @@ const rules: Rules = {
 }
 export default function EditWorkHistoryModal (props: Props) {
   const [attachmentId, setAttachmentId] = useState('')
+  const [title, setTitle] = useState('')
   const uploadCard = async (file: any) => {
     let obj: any = {
       file,
@@ -91,7 +92,7 @@ export default function EditWorkHistoryModal (props: Props) {
       onCancel()
     })
   }
-
+  // console.log('signShow111111111111111111', signShow)
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
@@ -106,10 +107,15 @@ export default function EditWorkHistoryModal (props: Props) {
       })
       // refForm.current.setField('unit', 123)
     }
+    if (signShow === '修改') {
+      setTitle('修改医院三基考核')
+    } else if (signShow === '添加') {
+      setTitle('添加医院三基考核')
+    }
   }, [visible])
 
   return (
-    <Modal title='修改医院三基考核' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>

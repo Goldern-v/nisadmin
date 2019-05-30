@@ -21,7 +21,7 @@ export default observer(function ThreeBases () {
       label: '添加',
       onClick: () =>
         editThreeBasesModal.show({
-          signShow: '添加 '
+          signShow: '添加'
         })
     }
   ]

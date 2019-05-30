@@ -32,6 +32,7 @@ const rules: Rules = {
   // urlImageOne: (val) => !!val || '学位证'
 }
 export default function EditWorkHistoryModal (props: Props) {
+  const [title, setTitle] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
   const [pathImgGraduate, setPathImgGraduate] = useState('')
   const [pathImgDegree, setPathImgDegree] = useState('')
@@ -136,12 +137,17 @@ export default function EditWorkHistoryModal (props: Props) {
         urlImageTwo: data.urlImageTwo,
         urlImageOne: data.urlImageOne
       })
+      if (signShow === '修改') {
+        setTitle('修改教育经历')
+      } else if (signShow === '添加') {
+        setTitle('添加教育经历')
+      }
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
 
   return (
-    <Modal title='修改教育经历' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>

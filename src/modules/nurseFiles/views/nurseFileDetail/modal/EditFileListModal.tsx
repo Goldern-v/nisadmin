@@ -32,6 +32,8 @@ const rules: Rules = {
 
 export default function EditWorkHistoryModal (props: Props) {
   const [attachmentId, setAttachmentId] = useState('')
+  const [title, setTitle] = useState('')
+  
   const uploadCard = async (file: any) => {
     let obj: any = {
       file,
@@ -107,12 +109,17 @@ export default function EditWorkHistoryModal (props: Props) {
         professional: data.professional,
         path: data.path
       })
+      if (signShow === '修改') {
+        setTitle('修改附件')
+      } else if (signShow === '添加') {
+        setTitle('添加附件')
+      }
       // refForm.current.setField('unit', 123)
     }
   }, [visible])
   const numberData = 1
   return (
-    <Modal title='添加附件' visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <FormCon>
         <Form ref={refForm} rules={{}} labelWidth={80} onChange={onFieldChange}>
           <Row>
