@@ -14,7 +14,7 @@ export const theme = {
   $tabShadow: '0px 1px 2px 0px rgba(0,0,0,0.15)',
   // 上下左右间距
   $margin: '20px',
-  // 表格每行高度   height:${(p) => p.theme.$tableRowHeigth};
+  // 表格每行高度   height:${(p) => p.theme.$tableRowHeight};
   $tableRowHeight: '34px'
 }
 export type Theme = typeof theme
