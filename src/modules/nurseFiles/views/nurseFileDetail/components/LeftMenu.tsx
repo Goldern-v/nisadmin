@@ -56,7 +56,7 @@ export default function LeftMenu (props: Props) {
             onClick={() => {
               history.push('/nurseFileDetail/' + item.type + `?${appStore.query}`)
               // emitter.emit('护士档案左侧信息', item.name)
-              console.log('点击了')
+              // console.log('点击了')
             }}
           >
             {item.name}

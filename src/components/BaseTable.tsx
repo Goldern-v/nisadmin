@@ -64,6 +64,19 @@ const Wrapper = styled.div`
   /* padding: 20px 30px; */
   padding: 15px 15px;
   box-sizing: content-box;
+
+  .ant-table-wrapper {
+    td {
+      padding: 0 !important;
+      box-sizing: border-box;
+      height: ${(p) => p.theme.$tableRowHeigth} !important;
+    }
+    /* 补充th下降的高度 */
+    .ant-table-align-center {
+      padding: 8px 8px 14px 8px !important;
+    }
+  }
+
   .ant-table-small > .ant-table-content > .ant-table-body {
     margin: 0 !important;
   }
