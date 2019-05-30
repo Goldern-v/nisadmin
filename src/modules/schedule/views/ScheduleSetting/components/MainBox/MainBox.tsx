@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
 import { Table, Tabs, Button, Input, InputNumber, Form } from 'antd'
+
 // import { Table, message, Popconfirm, Divider, Tag } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
@@ -156,7 +157,7 @@ const bindInputElements = () => {
 
 export default function MainBox () {
   const [count, setCount] = useState(0)
-  const [footer, setFooter] = useState('')
+  const [footer, setFooter] = useState(()=>{return <span></span>})
   const [tableLoading, setTableLoading] = useState(true)
   // const [rowSelection, setRowSelection] = useState(new Object())
   const [mealList, setMealList] = useState(new Array())
@@ -218,7 +219,7 @@ export default function MainBox () {
     })
 
     emitter.addListener('重置排班列表', () => {
-      setFooter('排班小计: 空')
+      setFooter(()=>{return <span>排班小计: 空</span>})
       updateTableUI(true)
     })
 
@@ -240,7 +241,9 @@ export default function MainBox () {
     })
 
     //
-    setFooter('排班小计')
+    // setFooter('排班小计')
+
+    setFooter(()=>{return <span>排班小计: 空</span>})
 
 
     
@@ -464,13 +467,13 @@ export default function MainBox () {
       width: '50px',
       render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor, 'sundayName')
     },
-    {
-      title: '备注',
-      dataIndex: 'remark',
-      key: 'remark',
-      width: '15%',
-      render: (text: string, record: any) => getTextColor(text, record, 'black', 'remark')
-    },
+    // {
+    //   title: '备注',
+    //   dataIndex: 'remark',
+    //   key: 'remark',
+    //   width: '15%',
+    //   render: (text: string, record: any) => getTextColor(text, record, 'black', 'remark')
+    // },
     {
       title: ()=> {return (<span>本周工时<br/>(小时)</span>)},
       dataIndex: 'thisWeekHour',
@@ -543,7 +546,7 @@ export default function MainBox () {
 
     let newTabelData = JSON.parse(JSON.stringify(selectedRowsArray))
 
-    genEmptyTable(newTabelData)
+    // genEmptyTable(newTabelData)
     setTableList(newTabelData)
     // setTableList(tableList)
     // console.log('==!!排班列表', selectedRow, shiftListData, tableList, selectedRowsArray)
@@ -623,7 +626,7 @@ export default function MainBox () {
           }
         })
         console.log('刷新排班人员', allUser, allUser.length)
-        genEmptyTable(allUser)
+        // genEmptyTable(allUser)
         // setTableList(allUser)
         // console.log('刷新排班人员', tableList, allUser)
         setTableLoading(false)
@@ -806,7 +809,7 @@ export default function MainBox () {
     //
     // setShiftTableData(JSON.parse(JSON.stringify(selectedRowsArray)))
     // 补空行
-    genEmptyTable(newList)
+    // genEmptyTable(newList)
     // 统计
     // statisticFooter(newList)
     // setTableLoading(false)
@@ -835,6 +838,7 @@ export default function MainBox () {
     let workhour = 0
     let rangeNames = new Array()
     let rangeObj = new Object()
+    let remark = ''
 
     list.map((item: any) => {
       if (item.thisWeekHour) {
@@ -865,7 +869,13 @@ export default function MainBox () {
 
     // console.log('统计', workhour, rangeNames, rangeObj)
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
-    setFooter(`排班小计：${rangeSum}工时${workhour}小时。`)
+    // setFooter(`排班小计：${rangeSum}工时${workhour}小时。`)
+    let totle = `排班小计：${rangeSum}工时${workhour}小时。`
+    // remark = `备注：${remark||'空'}`
+    let result = ()=> {return <span>{totle}<br/>排班备注：<Input.TextArea style={{padding: '8px'}} defaultValue={remark} /></span>}
+
+    setFooter(result)
+
     return ''
   }
 
@@ -1106,8 +1116,8 @@ export default function MainBox () {
         columns={columns}
         dataSource={tableList}
         pagination={false}
-        surplusHeight={300}
-        footer={() => footer}
+        surplusHeight={400}
+        footer={() => {return footer}}
         style={{ padding: 0 }}
       />
         {/* <Table
@@ -1162,7 +1172,7 @@ export default function MainBox () {
                       }
                       let newList = JSON.parse(JSON.stringify(selectedRowsArray))
                       // console.log('==newList:', newList, selectedCell, selectedRowsArray)
-                      genEmptyTable(newList)
+                      // genEmptyTable(newList)
                       setTableList(newList)
                       // updateTableUI()
                       // 统计
@@ -1268,7 +1278,7 @@ export default function MainBox () {
                       })
                       console.log('班次模版selectedRowsArray', selectedRowsArray)
                       let newList = JSON.parse(JSON.stringify(selectedRowsArray))
-                      genEmptyTable(newList)
+                      // genEmptyTable(newList)
                       setTableList(newList)
                       // 统计
                       statisticFooter(newList)

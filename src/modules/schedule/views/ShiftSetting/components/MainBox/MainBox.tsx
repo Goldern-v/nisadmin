@@ -16,22 +16,22 @@ import BaseTable from 'src/components/BaseTable'
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-let colorMap:any = {
-  'red':'红色',
-  'green':'绿色',
-  'blue':'蓝色',
-  'yellow':'黄色',
-  'black':'黑色',
-  'gray':'灰色'
+let colorMap: any = {
+  red: '红色',
+  green: '绿色',
+  blue: '蓝色',
+  yellow: '黄色',
+  black: '黑色',
+  gray: '灰色'
 }
 
-let colorMapCN:any = {
-  '红色':'red',
-  '绿色':'green',
-  '蓝色':'blue',
-  '黄色':'yellow',
-  '黑色':'black',
-  '灰色':'gray'
+let colorMapCN: any = {
+  红色: 'red',
+  绿色: 'green',
+  蓝色: 'blue',
+  黄色: 'yellow',
+  黑色: 'black',
+  灰色: 'gray'
 }
 
 const columns = [
@@ -40,13 +40,14 @@ const columns = [
     dataIndex: 'index',
     key: 'index',
     width: 60,
-    render: (text: string, record: any,index:any) => record.id ? (<span style={{width:'60px'}}>{index+1}</span>) :''
+    render: (text: string, record: any, index: any) =>
+      record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
   },
   {
     title: '班次名称',
     dataIndex: 'name',
     key: 'name',
-    width: '8%'
+    width: 100
     // render: (text: string, record: any) =>
     //   text.length > 0 ? (
     //     <span>
@@ -62,13 +63,13 @@ const columns = [
     title: '类别',
     dataIndex: 'shiftType',
     key: 'shiftType',
-    width: '10%'
+    width: 100
   },
   {
     title: '颜色标记',
     dataIndex: 'nameColor',
     key: 'nameColor',
-    width: '10%',
+    width: 80,
     render: (text: string, record: any) =>
       text.length > 0 ? (
         <span>
@@ -102,12 +103,12 @@ const columns = [
     title: '工时(小时）',
     dataIndex: 'effectiveTime',
     key: 'effectiveTime',
-    width: '12%'
+    width: 100
   },
   {
     title: '操作',
     dataIndex: 'title',
-    width: '12%',
+    width: 120,
     key: 'title',
     render: (text: string, record: any) =>
       record.id ? (
@@ -179,25 +180,24 @@ let rowSelection = {
   },
   onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
     // if(!changeRows){
-      if (selectedRows && selectedRows.length === 0) {
-        selectedRowsArray.map((res: any) => {
-          res.status = false
-          res.rangeShow = selected
-        })
-      } else {
-        selectedRows.map((res: any) => {
-          res.status = true
-          res.rangeShow = selected
-        })
-      }
+    if (selectedRows && selectedRows.length === 0) {
+      selectedRowsArray.map((res: any) => {
+        res.status = false
+        res.rangeShow = selected
+      })
+    } else {
+      selectedRows.map((res: any) => {
+        res.status = true
+        res.rangeShow = selected
+      })
+    }
 
-      if(changeRows){
-        changeRows.map((record: any) => {
-          record.rangeShow = selected
-          record.status = selected
-        })
-      }
-    
+    if (changeRows) {
+      changeRows.map((record: any) => {
+        record.rangeShow = selected
+        record.status = selected
+      })
+    }
 
     console.log('onSelectAll', selected, selectedRows, changeRows)
   },
@@ -268,7 +268,7 @@ export default function MainBox () {
           selectedRowsArray.push(oneUser)
         })
 
-        genEmptyTable(allUser)
+        // genEmptyTable(allUser)
         setShiftList(allUser)
         console.log('查找排班班次', ShiftList, allUser, tableData, selectedRowsArray)
       }
@@ -316,5 +316,13 @@ const Wrapper = styled.div`
   th div {
     text-align: center !important;
     padding: 3px !important;
+  }
+
+  /* 表格前端打勾样式 */
+  .ant-table-thead > tr > th.ant-table-selection-column,
+  .ant-table-tbody > tr > td.ant-table-selection-column,
+  .ant-table-thead > tr:first-child > th:first-child {
+    width: 60px !important;
+    max-width: 60px !important;
   }
 `

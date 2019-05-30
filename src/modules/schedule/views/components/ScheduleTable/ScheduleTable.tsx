@@ -129,11 +129,11 @@ const columns = [
     width: '50px',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor7)
   },
-  {
-    title: '备注',
-    dataIndex: 'remark',
-    width: '15%'
-  },
+  // {
+  //   title: '备注',
+  //   dataIndex: 'remark',
+  //   width: '15%'
+  // },
   {
     title: ()=> {return (<span>本周工时<br/>(小时)</span>)},
     dataIndex: 'thisWeekHour',
@@ -162,7 +162,7 @@ let tableState = {
 
 export default function ScheduleTable () {
   const [count, setCount] = useState(0)
-  const [footer, setFooter] = useState('')
+  const [footer, setFooter] = useState(()=>{return <span></span>})
   const [loading, setLoading] = useState(false)
   const [scheduleList, setScheduleList] = useState([])
   // const [startTime, setstartTime] = useState('')
@@ -171,7 +171,8 @@ export default function ScheduleTable () {
     console.log(count, setCount)
     console.log(loading, setLoading)
     setScheduleList([])
-    setFooter('排班小计')
+    // setFooter('排班小计')
+    setFooter(()=>{return <span>排班小计: 空</span>})
 
     let eventList = ['动画载入表格中', '动画载入表格完成', '清空排班记录', '空白排班记录', '本周排班记录']
     eventList.map((ename) => emitter.removeAllListeners(ename))
@@ -198,9 +199,10 @@ export default function ScheduleTable () {
 
     emitter.addListener('空白排班记录', () => {
       let newList = new Array()
-      genEmptyTable(newList)
+      // genEmptyTable(newList)
       setScheduleList(newList as any)
-      setFooter('排班小计: 空')
+      // setFooter('排班小计: 空')
+      setFooter(()=>{return <span>排班小计: 空</span>})
       // newSchedule
       let deptCode = scheduleStore.getDeptCode()
       let startTime = scheduleStore.getStartTime()
@@ -340,7 +342,7 @@ export default function ScheduleTable () {
       })
       //
       // 补空行
-      genEmptyTable(newList)
+      // genEmptyTable(newList)
       // 统计
       statisticFooter(newList)
 
@@ -403,6 +405,7 @@ export default function ScheduleTable () {
     let workhour = 0
     let rangeNames = new Array()
     let rangeObj = new Object()
+    let remark = '空'
 
     list.map((item: any) => {
       if (item.thisWeekHour) {
@@ -433,7 +436,11 @@ export default function ScheduleTable () {
 
     console.log('统计', workhour, rangeNames, rangeObj)
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
-    setFooter(`排班小计：${rangeSum}工时${workhour}小时。`)
+    let totle = `排班小计：${rangeSum}工时${workhour}小时。`
+    // remark = `备注：${remark||'空'}`
+    let result = ()=> {return <span>{totle}<br/>排班备注：{remark}</span>}
+
+    setFooter(result)
     return ''
   }
 
@@ -469,9 +476,9 @@ export default function ScheduleTable () {
               size='middle'
               columns={columns}
               dataSource={scheduleList}
-              footer={() => footer}
+              footer={() => {return footer}}
               pagination={false}
-              surplusHeight={250}
+              surplusHeight={300}
               style={{ padding: 0 }}
             />
           </ScheduleTableCon>

@@ -21,21 +21,9 @@ const columns = [
     title: '序号',
     dataIndex: 'index',
     key: 'index',
-    width: 60,
+    width: 35,
     render: (text: string, record: any, index: any) =>
       record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
-  },
-  {
-    title: '工号',
-    dataIndex: 'empNo',
-    key: 'empNo',
-    width: 80
-  },
-  {
-    title: '姓名',
-    dataIndex: 'empName',
-    key: 'empName',
-    width: '12%'
   },
   {
     title: '所在科室',
@@ -44,10 +32,22 @@ const columns = [
     key: 'deptName'
   },
   {
+    title: '工号',
+    dataIndex: 'empNo',
+    key: 'empNo',
+    width: 60
+  },
+  {
+    title: '姓名',
+    dataIndex: 'empName',
+    key: 'empName',
+    width: 60
+  },
+  {
     title: '性别',
     dataIndex: 'sex',
     key: 'sex',
-    width: '8%',
+    width: 35,
     render (text: any) {
       if (text === '0') return '男'
       if (text === '1') return '女'
@@ -58,7 +58,7 @@ const columns = [
     title: '年龄',
     dataIndex: 'age',
     key: 'age',
-    width: '8%'
+    width: 35
   },
   {
     title: '职称',
@@ -212,7 +212,7 @@ export default function MainBox () {
           (allUser as any).push(oneUser)
         })
 
-        genEmptyTable(allUser)
+        // genEmptyTable(allUser)
         setUserList(allUser)
         console.log('查找排班人员', userList, allUser, tableData)
       }
@@ -272,9 +272,15 @@ const Wrapper = styled.div`
     } */
   }
 
+  /* 表格前端打勾样式 */
+  .ant-table-thead > tr > th.ant-table-selection-column,
+  .ant-table-tbody > tr > td.ant-table-selection-column,
+  .ant-table-thead > tr:first-child > th:first-child {
+    width: 20px !important;
+    max-width: 20px !important;
+  }
+
   /* tr > th .ant-table-selection-column {
     width: 30px!important;
   } */
-
-  
 `

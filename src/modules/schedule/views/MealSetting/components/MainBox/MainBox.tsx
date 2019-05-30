@@ -261,7 +261,7 @@ export default function MainBox () {
           selectedRowsArray.push(oneUser)
         })
 
-        genEmptyTable(allUser)
+        // genEmptyTable(allUser)
         setMealList(allUser)
         console.log('查找排班班次套餐', MealList, allUser, tableData, selectedRowsArray)
       }
@@ -310,4 +310,13 @@ const Wrapper = styled.div`
     text-align: center !important;
     padding: 3px !important;
   }
+
+  /* 表格前端打勾样式 */
+  .ant-table-thead > tr > th.ant-table-selection-column,
+  .ant-table-tbody > tr > td.ant-table-selection-column,
+  .ant-table-thead > tr:first-child > th:first-child {
+    width: 60px !important;
+    max-width: 60px !important;
+  }
+
 `
