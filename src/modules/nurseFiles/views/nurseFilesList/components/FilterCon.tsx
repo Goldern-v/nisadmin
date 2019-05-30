@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 
 const FILTER_MAP: any = {
   学历: ['全部', '中专', '大专', '本科', '研究生', '博士'],
-  职称: ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
+  职称: ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
   层级: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6'],
   职务: [
     '全部',
@@ -71,7 +71,6 @@ const setFilterAdapter = (label: string, value: string) => {
 }
 export default observer(function FilterCon () {
   const [count, setCount] = useState(0)
-
 
   return (
     <Wrapper>

@@ -1,6 +1,6 @@
 import { observable, computed, action } from 'mobx'
 class HomeViewModel {
-  @observable public PatientDistributeData: any = []
+  @observable public PatientDistributeData: any = [{}, {}, {}]
   @observable public NurseSituationData: any = {}
   @observable public jobArr: any = []
 

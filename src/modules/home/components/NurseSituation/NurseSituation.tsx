@@ -5,6 +5,7 @@ import { Button, Radio, Icon } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import { authStore } from 'src/stores/index'
 import moment from 'moment'
+import emitter from 'src/libs/ev'
 import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
@@ -29,9 +30,15 @@ export default function NurseSituation () {
           let data = res.data
           setUserTotal(data.userTotal)
           HomeViewModel.NurseSituationData = data
-          console.log('resssssssssssssssssssssssssss', data)
-          console.log('resssssssssssssssssssssssssss', HomeViewModel.NurseSituationData)
+
+          emitter.emit('护理人员情况全数据', { ...data })
+          // console.log('resssssssssssssssssssssssssss', data)
+          // console.log('resssssssssssssssssssssssssss', HomeViewModel.NurseSituationData)
           if (data.userTotal) {
+            emitter.emit('护理人员情况数组', () => {
+              let cacheArr = Object.keys(data) || []
+              return cacheArr
+            })
             // HomeViewModel.jobArr = Object.keys(data) || []
           }
         }

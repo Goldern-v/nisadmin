@@ -95,7 +95,7 @@ export default function EditWorkHistoryModal (props: Props) {
         empName: data.empName,
         empNo: data.empNo,
         sex: data.sex,
-        post: data.post,
+        job: data.job,
         nation: data.nation,
         age: data.age,
         nativePlace: data.nativePlace,
@@ -107,7 +107,7 @@ export default function EditWorkHistoryModal (props: Props) {
         address: data.address,
         nearImageUrl: data.nearImageUrl,
         zyzsUrl: data.zyzsUrl,
-        title: data.title,
+        newTitle: data.newTitle,
         goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
       })
       // refForm.current.setField('unit', 123)
@@ -165,7 +165,7 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`职务`} name='post'>
+            <Form.Field label={`职务`} name='job'>
               <Input />
             </Form.Field>
           </Col>{' '}
@@ -186,7 +186,7 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`技术职称`} name='title'>
+            <Form.Field label={`技术职称`} name='newTitle'>
               <Select>
                 <Option value='护士'>护士</Option>
                 <Option value='护师'>护师</Option>
