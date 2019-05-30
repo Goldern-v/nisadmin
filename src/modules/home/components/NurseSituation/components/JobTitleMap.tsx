@@ -6,7 +6,7 @@ import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
 import { observer } from 'mobx-react-lite'
 import { any } from 'prop-types'
 import emitter from 'src/libs/ev'
-
+import { Button } from 'antd'
 export interface Props {
   userTotal: number
 }
@@ -21,7 +21,7 @@ export default observer(function BedSituation (props: Props) {
     // 教学秘书: 0,
     // 科护士长: 0
   })
-  const [jobArr, setjobArr] = useState([])
+  const [jobArr, setjobArr]: any = useState([])
   const [tableData, setTableDate]: any = useState([])
   const scale = [
     {
@@ -51,23 +51,18 @@ export default observer(function BedSituation (props: Props) {
     emitter.removeAllListeners('护理人员情况全数据')
     emitter.addListener('护理人员情况全数据', (getData: any) => {
       setByIndexInfo(getData)
-      // let getArrData = jobArr.map((item: any) => {
-      //   return {
-      //     [item]: getData[item]
-      //   }
-      // })
-      // console.log('getArrData1111111111111111111111', getArrData)
     })
     emitter.removeAllListeners('护理人员情况数组')
     emitter.addListener('护理人员情况数组', (getArr: any) => {
-      for (let i = 0; i < getArr.length; i++) {
-        if (getArr[i] === 'userTotal') {
-          let cacheN = i
-          getArr.splice(cacheN, 1)
+      let unitArr = [...getArr()]
+      for (let i = 0; i < unitArr.length; i++) {
+        if (unitArr[i] === 'userTotal') {
+          unitArr.splice(i, 1)
         }
       }
       console.log('getArr666666666666666666666', getArr)
-      setjobArr(getArr)
+      console.log('----------------------------------')
+      setjobArr(unitArr)
       // let data = getArr.map((item: any) => {
       //   // if (item !== 'userTotal') {
       //   //   // console.log('HomeViewModel.jobArrHomeViewModel.j', HomeViewModel.jobArr)
@@ -83,20 +78,22 @@ export default observer(function BedSituation (props: Props) {
     })
   }, [authStore.selectedDeptCode])
   const tranceData = jobArr.map((item: any) => {
-    // byIndexInfo: any
-    // if (item !== 'userTotal') {
+    // if (item !== '护士') {
     // if (item === 'userTotal') {
     //   return
     // }
     return { year: item, sales: byIndexInfo[item] }
     // }
   })
-  console.log('tranceData11111111111111111111', tranceData)
-  // setTableDate(tranceData)
+
+  // const testClick = () => {
+  //   console.log('getArr666666666666666666666', jobArr)
+  //   console.log(jobArr)
+  // }
   return (
     <div>
+      {/* <Button onClick={testClick}>test</Button> */}
       <ChartCon>
-        {/* {data} */}
         <Chart forceFit height={300} data={tranceData} scale={scale}>
           <Tooltip />
           <Axis />
