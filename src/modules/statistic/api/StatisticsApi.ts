@@ -193,10 +193,26 @@ class StatisticsApi extends BaseApiService {
     let trancePostData = this.stringify(postData)
     return this.post(`/scheduling/countDeptCodeHolidays`, trancePostData)
   }
-
   // 护士节假日排班表
   public async getTotalUser () {
     return this.get(`/total/totalUser`)
+  }
+
+  //// 患者查询统计模块
+  public async patientStatistics (exportData: any = true) {
+    let cacheStart = exportData.startDate + ` 00:00:00`
+    let cacheEnd = exportData.endDate + ` 00:00:00`
+
+    let postData = {
+      // startDate: cacheStart,
+      // endDate: cacheEnd,
+      startDate: '2019-3-13 00:00:00',
+      endDate: '2019-3-14 00:00:00',
+      deptCode: exportData.deptCode,
+      type: exportData.type
+    }
+    // let trancePostData = this.stringify(postData)
+    return this.post(`/patientStatistics/getList`, postData)
   }
 }
 

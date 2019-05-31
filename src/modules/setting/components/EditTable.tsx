@@ -96,23 +96,27 @@ class EditableTable extends React.Component<any, any> {
         title: '物品类别',
         dataIndex: '物品类别',
         width: '25%',
+        align: 'left',
         editable: true
       },
       {
         title: '预计重量(kg)',
         dataIndex: '预计重量',
         width: '15%',
+        align: 'left',
         editable: true
       },
       {
         title: '备注',
         dataIndex: '备注',
         width: '30%',
+        align: 'left',
         editable: true
       },
       {
         title: '操作',
         dataIndex: '操作',
+        align: 'left',
         width: 100,
         render: (text: any, record: any) => {
           const { editingKey } = this.state
