@@ -4,15 +4,19 @@ import { RouteComponentProps } from 'react-router'
 import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table'
 import windowHeight from 'src/hooks/windowHeight'
+import windowWidth from 'src/hooks/windowWidth'
 export interface Props extends TableProps<any> {
   style?: any
   type?: any
   /**多余的高度 */
   surplusHeight?: number
+  /** 多余的宽度 */
+  surplusWidth?: number
 }
 
 export default function BaseTable (props: Props) {
   let wih = windowHeight()
+  let wiw = windowWidth()
   let option: any = Object.assign(
     {
       bordered: true,
@@ -23,6 +27,11 @@ export default function BaseTable (props: Props) {
   )
   if (props.surplusHeight) {
     option.scroll = { y: wih - props.surplusHeight }
+  }
+  if (props.surplusWidth) {
+    option.scroll = option.scroll
+      ? Object.assign(option.scroll, { x: wiw - props.surplusWidth })
+      : { x: wiw - props.surplusWidth }
   }
   try {
     if (option.type.includes('spaceRow')) {
