@@ -24,14 +24,13 @@ export default observer(function DeptSelect (props: Props) {
   }
 
   useEffect(() => {
-    console.log(appStore.match.path, 999999999999999999999999999999999999999)
     const hasAllDeptRouteList = ['/home', '/nurseFilesList', '/statistic/:name']
     if (authStore.post == '护理部' || authStore.isAdmin) {
       if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
         setHasAllDept(true)
-        if (!authStore.selectedDeptCode) {
-          authStore.selectedDeptCode = '全院'
-        }
+        // if (!authStore.selectedDeptCode) {
+        authStore.selectedDeptCode = '全院'
+        // }
       } else {
         setHasAllDept(false)
         if (authStore.selectedDeptCode == '全院') {
