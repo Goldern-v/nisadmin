@@ -90,43 +90,43 @@ const columns = [
   {
     title: () => getWeekDay(1),
     dataIndex: 'rangeName1',
-    width: '50px',
+    width: '8%',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor1)
   },
   {
     title: () => getWeekDay(2),
     dataIndex: 'rangeName2',
-    width: '50px',
+    width: '8%',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor2)
   },
   {
     title: () => getWeekDay(3),
     dataIndex: 'rangeName3',
-    width: '50px',
+    width: '8%',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor3)
   },
   {
     title: () => getWeekDay(4),
     dataIndex: 'rangeName4',
-    width: '50px',
+    width: '8%',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor4)
   },
   {
     title: () => getWeekDay(5),
     dataIndex: 'rangeName5',
-    width: '50px',
+    width: '8%',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor5)
   },
   {
     title: () => getWeekDay(6),
     dataIndex: 'rangeName6',
-    width: '50px',
+    width: '8%',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor6)
   },
   {
     title: () => getWeekDay(7),
     dataIndex: 'rangeName7',
-    width: '50px',
+    width: '8%',
     render: (text: any, record: any) => getTextColor(text, record.rangeNameColor7)
   },
   // {
@@ -410,6 +410,9 @@ export default function ScheduleTable () {
     list.map((item: any) => {
       if (item.thisWeekHour) {
         workhour += item.thisWeekHour
+      }
+      if(!remark || remark==='空'){
+        remark = item.remark
       }
       for (let ii = 1; ii < 8; ii++) {
         let element = (item as any)['rangeNameCode' + ii] || (item as any)['rangeName' + ii]

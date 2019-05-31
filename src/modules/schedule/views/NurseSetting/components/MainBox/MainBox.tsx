@@ -3,13 +3,19 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-import { Table } from 'antd'
+import { Table, Input } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
+
+// import { DragDropContext, DragSource, DropTarget } from 'react-dnd'
+// import HTML5Backend from 'react-dnd-html5-backend'
+// import update from 'immutability-helper'
+
+// let dragingIndex = -1
 
 // import emitter from 'src/libs/ev'
 
@@ -23,7 +29,14 @@ const columns = [
     key: 'index',
     width: 35,
     render: (text: string, record: any, index: any) =>
-      record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
+      record.id ? (
+        <span>
+          <Input style={{ background: 'transparent', border: 'none' }} defaultValue={index + 1} />
+        </span>
+      ) : (
+        ''
+      )
+    // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
   },
   {
     title: '所在科室',
@@ -283,4 +296,18 @@ const Wrapper = styled.div`
   /* tr > th .ant-table-selection-column {
     width: 30px!important;
   } */
+
+  .ant-input {
+    width: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  .ant-input:focus {
+    outline: none !important;
+    border: none !important;
+    background: yellow !important;
+    color: black !important;
+    border-radius: 0px;
+  }
 `
