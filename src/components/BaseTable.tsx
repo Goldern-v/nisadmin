@@ -67,7 +67,7 @@ const Wrapper = styled.div`
 
   .ant-table-wrapper {
     td {
-      padding: 0 !important;
+      padding: 0 8px !important;
       box-sizing: border-box;
       height: ${(p) => p.theme.$tableRowHeight} !important;
     }

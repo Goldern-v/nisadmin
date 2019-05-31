@@ -105,12 +105,12 @@ export default function EditWorkHistoryModal (props: Props) {
       setTitle('添加职称及层级变动')
     }
   }, [visible])
-  const testClick = () => {
-    console.log('refForm44444444444445555555555', refForm!.current!.validateFields())
-  }
+  // const testClick = () => {
+  //   console.log('refForm44444444444445555555555', refForm!.current!.validateFields())
+  // }
   return (
     <div>
-      <Button onClick={testClick}>test</Button>
+      {/* <Button onClick={testClick}>test</Button> */}
       <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
         <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
           <Row>

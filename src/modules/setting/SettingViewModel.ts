@@ -9,6 +9,7 @@ class SettingViewModel {
   @observable public holidayAdd: any = []
   @observable public tableDate: any = []
   @observable public tableDateCache: any = []
+  @observable public testArr: any = []
   @computed public get getHeadTitle () {
     return this.headTitle
   }
