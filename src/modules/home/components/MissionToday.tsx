@@ -203,7 +203,7 @@ const Head = styled.div`
   .headRight {
     padding-right: 14px;
     float: right;
-    font-size: 13px;
+    gvrtfont-size: 13px;
     letter-spacing: 1px;
     color: #999999;
   }
@@ -211,6 +211,9 @@ const Head = styled.div`
 const Mid = styled.div`
   .BaseTable__Wrapper-sc-18xwuv-0 {
     padding: 0 !important;
+  }
+  .ant-table {
+    border: none;
   }
   .ant-table-header {
     ::-webkit-scrollbar {

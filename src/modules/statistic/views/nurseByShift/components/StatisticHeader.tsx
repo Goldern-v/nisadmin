@@ -23,34 +23,32 @@ export default function BedSituation () {
   }
   // 导出文件
   const fileDownload = (res: any) => {
-    console.log(res)
     let filename = res.headers['content-disposition']
-      ? res.headers['content-disposition'].replace('attachment;filename=', '')
+      ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
       : '导出文件'
+    // decodeURIComponent
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
     // "application/json"
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
     console.log('fileDownload', res)
-    if (res.data.type) {
-      if (res.data.type.indexOf('excel') > -1) {
-        let a = document.createElement('a')
-        let href = window.URL.createObjectURL(blob) // 创建链接对象
-        a.href = href
-        a.download = filename // 自定义文件名
-        document.body.appendChild(a)
-        a.click()
-        window.URL.revokeObjectURL(href)
-        document.body.removeChild(a) // 移除a元素
-      } else {
-        let reader = new FileReader()
-        reader.addEventListener('loadend', function (data: any) {
-          // reader.result 包含转化为类型数组的blob
-          message.error(`${reader.result}`)
-        })
-        reader.readAsText(blob)
-      }
+    if (res.data.type.indexOf('excel') > -1) {
+      let a = document.createElement('a')
+      let href = window.URL.createObjectURL(blob) // 创建链接对象
+      a.href = href
+      a.download = filename // 自定义文件名
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(href)
+      document.body.removeChild(a) // 移除a元素
+    } else {
+      let reader = new FileReader()
+      reader.addEventListener('loadend', function (data: any) {
+        // reader.result 包含转化为类型数组的blob
+        message.error(`${reader.result}`)
+      })
+      reader.readAsText(blob)
     }
   }
   const exportButtonClick = () => {

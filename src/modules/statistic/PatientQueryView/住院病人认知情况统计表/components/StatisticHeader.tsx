@@ -24,10 +24,10 @@ export default function BedSituation () {
   }
   // 导出文件
   const fileDownload = (res: any) => {
-    console.log(res)
     let filename = res.headers['content-disposition']
-      ? res.headers['content-disposition'].replace('attachment;filename=', '')
+      ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
       : '导出文件'
+    // decodeURIComponent
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
     // "application/json"
     let blob = new Blob([res.data], {
