@@ -167,6 +167,9 @@ const Head = styled.div`
   }
 `
 const Mid = styled.div`
+ .ant-table {
+    border: none;
+  }
   .BaseTable__Wrapper-sc-18xwuv-0 {
     padding: 0 !important;
   }

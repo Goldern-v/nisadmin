@@ -13,7 +13,7 @@ export default function BedSituation () {
         <div className='headRight'>更多></div>
       </Head>
       <Mid>
-        <MidItem>
+        {/* <MidItem>
           <div className='leftItem'> </div>
           <div className='rightItem' />
         </MidItem>
@@ -36,7 +36,7 @@ export default function BedSituation () {
         <MidItem>
           <div className='leftItem'> </div>
           <div className='rightItem' />
-        </MidItem>
+        </MidItem> */}
       </Mid>
     </div>
   )

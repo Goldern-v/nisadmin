@@ -64,10 +64,14 @@ const Wrapper = styled.div`
   /* padding: 20px 30px; */
   padding: 15px 15px;
   box-sizing: content-box;
-
+  .ant-table-header-column {
+    width: 100%;
+    text-align: center;
+  }
   .ant-table-wrapper {
     td {
-      padding: 0 8px !important;
+      /* padding: 0 8px !important; */
+      padding: 0 !important;
       box-sizing: border-box;
       height: ${(p) => p.theme.$tableRowHeight} !important;
     }
@@ -121,7 +125,7 @@ const Wrapper = styled.div`
   .ant-table-header {
     *::-webkit-scrollbar {
       width: 7px;
-      /* height: 7px; */
+      height: 7px;
       background-color: rgb(242, 244, 245);
     }
     &::-webkit-scrollbar-track {

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
-
+// import SpaceShow from 'src/components/SpaceShow.tsx'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   useEffect(() => {
@@ -14,7 +14,8 @@ export default function BedSituation () {
         <div className='headRight'>更多></div>
       </Head>
       <Mid>
-        <MidItem>
+        {/* <SpaceShow /> */}
+        {/* <MidItem>
           <div className='leftItem'> </div>
           <div className='rightItem' />
         </MidItem>
@@ -37,7 +38,7 @@ export default function BedSituation () {
         <MidItem>
           <div className='leftItem' />
           <div className='rightItem' />
-        </MidItem>
+        </MidItem> */}
       </Mid>
     </div>
   )
