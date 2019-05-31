@@ -22,161 +22,196 @@ import BaseTable from 'src/components/BaseTable'
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-const columns = [
-  {
-    title: '序号',
-    dataIndex: 'index',
-    key: 'index',
-    width: 35,
-    render: (text: string, record: any, index: any) =>
-      record.id ? (
-        <span>
-          <Input style={{ background: 'transparent', border: 'none' }} defaultValue={index + 1} />
-        </span>
-      ) : (
-        ''
-      )
-    // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
-  },
-  {
-    title: '所在科室',
-    dataIndex: 'deptName',
-    width: '26%',
-    key: 'deptName'
-  },
-  {
-    title: '工号',
-    dataIndex: 'empNo',
-    key: 'empNo',
-    width: 60
-  },
-  {
-    title: '姓名',
-    dataIndex: 'empName',
-    key: 'empName',
-    width: 60
-  },
-  {
-    title: '性别',
-    dataIndex: 'sex',
-    key: 'sex',
-    width: 35,
-    render (text: any) {
-      if (text === '0') return '男'
-      if (text === '1') return '女'
-      return text
-    }
-  },
-  {
-    title: '年龄',
-    dataIndex: 'age',
-    key: 'age',
-    width: 35
-  },
-  {
-    title: '职称',
-    dataIndex: 'title',
-    width: '10%',
-    key: 'title'
-  },
-  {
-    title: '现任能级',
-    dataIndex: 'currentLevel',
-    key: 'currentLevel',
-    width: '10%'
-  },
-  {
-    title: '职务',
-    dataIndex: 'roleJurisdict',
-    key: 'roleJurisdict',
-    width: '10%'
-  }
-]
-
-let data = {
-  key: '',
-  id: '',
-  empNo: '',
-  empName: '',
-  deptName: '',
-  sex: '',
-  age: '',
-  title: '',
-  currentLevel: '',
-  roleJurisdict: '',
-  rangeShow: null
-}
-
-let allUser = new Array()
-
-// rowSelection objects indicates the need for row selection
-let rowSelection = {
-  onChange: (selectedRowKeys: any, selectedRows: any) => {
-    console.log(`onChange:selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
-  },
-  onSelect: (record: any, selected: any, selectedRows: any) => {
-    record.rangeShow = selected
-    console.log('onSelect', record, selected, selectedRows)
-  },
-  onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-    selectedRows.map((recordItem: any) => {
-      recordItem.rangeShow = selected
-    })
-    changeRows.map((record: any) => {
-      record.rangeShow = selected
-    })
-    console.log('onSelectAll', selected, selectedRows, changeRows)
-  },
-  getCheckboxProps: (record: any) => ({
-    disabled: record.rangeShow === null, // Column configuration not to be checked
-    defaultChecked: record.rangeShow,
-    name: record.key + ''
-  }),
-  hideDefaultSelections: true
-  // selections: [
-  //   {
-  //     key: 'all-data',
-  //     text: '全选',
-  //     onSelect: () => {
-  //       // selectedRowKeys
-  //     }
-  //   },
-  //   {
-  //     key: 'odd',
-  //     text: '单',
-  //     onSelect: (changableRowKeys: any) => {
-  //       let newSelectedRowKeys = []
-  //       newSelectedRowKeys = changableRowKeys.filter((key: any, index: any) => {
-  //         if (index % 2 !== 0) {
-  //           return false
-  //         }
-  //         return true
-  //       })
-  //       console.log('单', newSelectedRowKeys, changableRowKeys)
-  //       // selectedRowKeysGroup = newSelectedRowKeys
-  //     }
-  //   },
-  //   {
-  //     key: 'even',
-  //     text: '双',
-  //     onSelect: (changableRowKeys: any) => {
-  //       let newSelectedRowKeys = []
-  //       newSelectedRowKeys = changableRowKeys.filter((key: any, index: any) => {
-  //         if (index % 2 !== 0) {
-  //           return true
-  //         }
-  //         return false
-  //       })
-  //       console.log('双', newSelectedRowKeys, changableRowKeys)
-  //       // selectedRowKeysGroup = newSelectedRowKeys
-  //     }
-  //   }
-  // ]
-}
-
 export default function MainBox () {
   const [count, setCount] = useState(0)
   const [userList, setUserList] = useState(new Array())
+
+  const onPressEnter = (e: any, record: any) => {
+    record.sortValue = ~~e.target.value
+    userList.sort((a, b) => {
+      return ~~a.sortValue - ~~b.sortValue
+    })
+    let newUserList = JSON.parse(JSON.stringify(userList))
+    setUserList(new Array())
+    console.log('onPressEnter', e, e.target.value, record, userList)
+    setUserList(newUserList)
+  }
+
+  const onRow = (record: any, rowIndex: any) => {
+    return {
+      onClick: (event: any) => {
+        console.log('onClick', event, record, record.sortValue, rowIndex)
+      } // click row
+      // onDoubleClick: event => {}, // double click row
+      // onContextMenu: event => {}, // right button click row
+      // onMouseEnter: event => {}, // mouse enter row
+      // onMouseLeave: event => {}, // mouse leave row
+    }
+  }
+  // const onHeaderRow={column => {
+  //   return {
+  //     onClick: () => {}, // click header row
+  //   };
+  // }}
+
+  const columns = [
+    {
+      title: '序号',
+      dataIndex: 'sortValue',
+      key: 'sortValue',
+      width: 35,
+      render: (text: string, record: any, index: any) =>
+        record.id ? (
+          <span>
+            <Input
+              onPressEnter={(e: any) => {
+                onPressEnter(e, record)
+              }}
+              style={{ background: 'transparent', border: 'none' }}
+              defaultValue={index + 1}
+            />
+          </span>
+        ) : (
+          ''
+        )
+      // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
+    },
+    {
+      title: '所在科室',
+      dataIndex: 'deptName',
+      width: '26%',
+      key: 'deptName'
+    },
+    {
+      title: '工号',
+      dataIndex: 'empNo',
+      key: 'empNo',
+      width: 60
+    },
+    {
+      title: '姓名',
+      dataIndex: 'empName',
+      key: 'empName',
+      width: 60
+    },
+    {
+      title: '性别',
+      dataIndex: 'sex',
+      key: 'sex',
+      width: 35,
+      render (text: any) {
+        if (text === '0') return '男'
+        if (text === '1') return '女'
+        return text
+      }
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age',
+      width: 35
+    },
+    {
+      title: '职称',
+      dataIndex: 'title',
+      width: '10%',
+      key: 'title'
+    },
+    {
+      title: '现任能级',
+      dataIndex: 'currentLevel',
+      key: 'currentLevel',
+      width: '10%'
+    },
+    {
+      title: '职务',
+      dataIndex: 'roleJurisdict',
+      key: 'roleJurisdict',
+      width: '10%'
+    }
+  ]
+
+  let data = {
+    key: '',
+    id: '',
+    sortValue: '',
+    empNo: '',
+    empName: '',
+    deptName: '',
+    sex: '',
+    age: '',
+    title: '',
+    currentLevel: '',
+    roleJurisdict: '',
+    rangeShow: null
+  }
+
+  let allUser = new Array()
+
+  // rowSelection objects indicates the need for row selection
+  let rowSelection = {
+    onChange: (selectedRowKeys: any, selectedRows: any) => {
+      console.log(`onChange:selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
+    },
+    onSelect: (record: any, selected: any, selectedRows: any) => {
+      record.rangeShow = selected
+      console.log('onSelect', record, selected, selectedRows)
+    },
+    onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
+      selectedRows.map((recordItem: any) => {
+        recordItem.rangeShow = selected
+      })
+      changeRows.map((record: any) => {
+        record.rangeShow = selected
+      })
+      console.log('onSelectAll', selected, selectedRows, changeRows)
+    },
+    getCheckboxProps: (record: any) => ({
+      disabled: record.rangeShow === null, // Column configuration not to be checked
+      defaultChecked: record.rangeShow,
+      name: record.key + ''
+    }),
+    hideDefaultSelections: true
+    // selections: [
+    //   {
+    //     key: 'all-data',
+    //     text: '全选',
+    //     onSelect: () => {
+    //       // selectedRowKeys
+    //     }
+    //   },
+    //   {
+    //     key: 'odd',
+    //     text: '单',
+    //     onSelect: (changableRowKeys: any) => {
+    //       let newSelectedRowKeys = []
+    //       newSelectedRowKeys = changableRowKeys.filter((key: any, index: any) => {
+    //         if (index % 2 !== 0) {
+    //           return false
+    //         }
+    //         return true
+    //       })
+    //       console.log('单', newSelectedRowKeys, changableRowKeys)
+    //       // selectedRowKeysGroup = newSelectedRowKeys
+    //     }
+    //   },
+    //   {
+    //     key: 'even',
+    //     text: '双',
+    //     onSelect: (changableRowKeys: any) => {
+    //       let newSelectedRowKeys = []
+    //       newSelectedRowKeys = changableRowKeys.filter((key: any, index: any) => {
+    //         if (index % 2 !== 0) {
+    //           return true
+    //         }
+    //         return false
+    //       })
+    //       console.log('双', newSelectedRowKeys, changableRowKeys)
+    //       // selectedRowKeysGroup = newSelectedRowKeys
+    //     }
+    //   }
+    // ]
+  }
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -206,13 +241,19 @@ export default function MainBox () {
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {
-          console.log('oneObj', index, oneObj, oneObj.rangeShow)
+          console.log('oneObj', index, oneObj.sortValue, oneObj, oneObj.rangeShow)
+          //
           if (oneObj.rangeShow === true) {
             console.log('tableDataindex', index)
             rowKeys.push(oneObj.id)
           } else {
             oneObj.rangeShow = false
           }
+          // if (oneObj.sortValue === undefined || oneObj.sortValue == null || oneObj.sortValue == '') {
+          //   oneObj.sortValue = index + ''
+          // } else {
+          //   oneObj.sortValue = oneObj.sortValue
+          // }
           oneUser = new Object()
           for (const key in data) {
             if (data.hasOwnProperty(key) && oneObj.hasOwnProperty(key)) {
@@ -256,6 +297,7 @@ export default function MainBox () {
         dataSource={userList}
         pagination={false}
         surplusHeight={300}
+        onRow={onRow}
       />
       {/* <Table
         bordered
