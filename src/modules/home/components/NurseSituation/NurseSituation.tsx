@@ -7,10 +7,11 @@ import { authStore } from 'src/stores/index'
 import moment from 'moment'
 import emitter from 'src/libs/ev'
 import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
+import { observer } from 'mobx-react-lite'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
 
-export default function NurseSituation () {
+export default observer(function NurseSituation () {
   const [titleBy, setTitleBy] = useState('按职称')
   const [userTotal, setUserTotal] = useState(0)
   useEffect(() => {
@@ -76,7 +77,7 @@ export default function NurseSituation () {
       </Mid>
     </div>
   )
-}
+})
 
 const Head = styled.div`
   height: 37px;

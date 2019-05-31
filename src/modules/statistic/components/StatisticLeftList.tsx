@@ -33,7 +33,7 @@ const LEFT_MENU_CONFIG = [
     title: '患者查询统计',
     children: [
       { title: '患者查询', path: '/statistic/患者查询' },
-      { title: '住院病人认知情况', path: '/statistic/住院病人认知情况' },
+      { title: '住院病人认知情况统计表', path: '/statistic/住院病人认知情况统计表' },
       { title: '床位使用情况统计表', path: '/statistic/床位使用情况统计表' },
       { title: '病区流转', path: '/statistic/病区流转' },
       { title: '在院患者病情统计表', path: '/statistic/在院患者病情统计表' },

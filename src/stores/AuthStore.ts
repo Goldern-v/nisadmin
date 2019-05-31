@@ -35,6 +35,15 @@ export default class AuthStore {
       return ''
     }
   }
+  // 仅科室名
+  @computed
+  public get selectedDeptNameOnly () {
+    try {
+      return this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name
+    } catch (error) {
+      return ''
+    }
+  }
   @computed
   public get post () {
     try {

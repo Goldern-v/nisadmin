@@ -34,6 +34,11 @@ import NurseList from './views/nursingStatistics/nurseList/NurseList'
 // import NurseScheduleByShift from './components/NurseScheduleByShift'
 // import TableModel from './common/TableModel'
 // export interface Props extends RouteComponentProps<{ type?: string }> {}
+
+//// 患者查询统计   大块
+// 住院病人认知情况统计表
+import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
+
 export default function StatisticView () {
   const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
@@ -79,7 +84,9 @@ export default function StatisticView () {
       component: DepartmentVacationByMonthView
     },
     { name: '科室节假日排班表', path: '/statistic/科室节假日排班表', component: DepartmentHolidayScheduleView },
-    { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }
+    { name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList },
+    //// 患者查询统计   大块
+    { name: '住院病人认知情况统计表', path: '/statistic/住院病人认知情况统计表', component: 住院病人认知情况统计表 }
   ]
   const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 

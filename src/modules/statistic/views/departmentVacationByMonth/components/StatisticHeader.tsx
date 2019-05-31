@@ -24,13 +24,15 @@ export default function BedSituation () {
   // 导出文件
   const fileDownload = (res: any) => {
     let filename = res.headers['content-disposition']
-      ? res.headers['content-disposition'].replace('attachment;filename=', '')
+      ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
       : '导出文件'
+    // decodeURIComponent
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
     // "application/json"
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
+    console.log('fileDownload', res)
     if (res.data.type.indexOf('excel') > -1) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象

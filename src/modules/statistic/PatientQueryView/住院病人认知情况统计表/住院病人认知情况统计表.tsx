@@ -1,48 +1,42 @@
-// 护士排班表
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import TableFirst from './components/TableFirst'
-import { Button, Radio } from 'antd'
+import React from 'react'
 import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeader from '../../common/StatisticMIdHeader'
-import TableModel from '../../common/TableModel'
-// import TableDate from './components/TableData'
-// const ButtonGroup = Button.Group
-
-// import SelectMonth from '../../common/SelectMonth'  //月份选择器
-export default function StatisticView () {
-  const [showType, setShowType] = useState('按时数')
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+import MidHeader from './components/MidHeader'
+import Table from './components/Table'
+// import React, { useState, useEffect } from 'react'
+export default function BedSituation () {
+  // const [count, setCount] = useState(0)
+  // useEffect(() => {
+  //   console.log(count, setCount)
+  // })
   return (
     <Con>
       <StatisticHeader />
-      <TableCon>
-        <StatisticMIdHeader />
-        {/* 护士夜班统计（按月份) */}
-        <TableFirst showType={showType} />
-      </TableCon>
+      <MidCon>
+        <MidHeaderCon>
+          <MidHeader />
+        </MidHeaderCon>
+        <TableCon>
+          <Table />
+        </TableCon>
+      </MidCon>
     </Con>
   )
 }
 
 const Con = styled.div`
-  height: calc(100vh - 93px);
+  /* height: calc(100vh - 45px); */
+  height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
   overflow: hidden;
-  .buttonCon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
+  font-family: simsun, Times New Roman, Georgia, Serif !important;
 `
-const TableCon = styled.div`
+const MidCon = styled.div`
   flex: 1;
   height: 0;
+  display: flex;
+  flex-direction: column;
   margin: ${(p) => p.theme.$margin};
   padding: ${(p) => p.theme.$margin};
   box-shadow: ${(p) => p.theme.$shadow};
@@ -67,4 +61,14 @@ const TableCon = styled.div`
     border-radius: 5px;
     background-color: #ffffff;
   }
+`
+const MidHeaderCon = styled.div`
+  /* height: 80px; */
+  width: 100%;
+  /* background-color: gray; */
+`
+const TableCon = styled.div`
+  flex: 1;
+  height: 0;
+  /* background-color: yellow; */
 `

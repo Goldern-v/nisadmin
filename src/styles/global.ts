@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
   * {
-    font-family: '微软雅黑'
+    font-family: simsun,Times New Roman,Georgia,Serif !important
   }
 
 

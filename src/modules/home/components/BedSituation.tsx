@@ -53,7 +53,7 @@ export default observer(function BedSituation () {
     //   .bedInfo(postData)
     //   .then((res) => {
     // 换接口上
-    if (authStore.selectedDeptCode) {
+    if (authStore.selectedDeptCode && authStore.selectedDeptCode !== '8204') {
       HomeApi.bedInfo(postData)
         .then((res) => {
           console.log('===BedSituation', res)

@@ -4,21 +4,23 @@ import React, { useState, useEffect } from 'react'
 import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
-import { Button, message } from 'antd'
+import { Button, message, Select } from 'antd'
 import emitter from 'src/libs/ev'
+const { Option } = Select
 // import { observer } from 'mobx-react-lite'
-export default function StatisticHeader () {
+export default function BedSituation () {
   const [count, setCount] = useState(0)
+  // const [getMethods, setGetMethods] = useState(() => null)
   useEffect(() => {
     console.log(count, setCount)
-  })
+  }, [])
 
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
     console.log(value)
   }
   function searchButtonClick () {
-    emitter.emit('护士节假日排班表')
+    emitter.emit('住院病人认知情况统计表查询')
   }
   // 导出文件
   const fileDownload = (res: any) => {
@@ -50,22 +52,36 @@ export default function StatisticHeader () {
       reader.readAsText(blob)
     }
   }
+
   const exportButtonClick = () => {
-    StatisticsApi.postNurseHolidaySchedule(false).then((res) => {
+    StatisticsApi.postNurseScheduling(false).then((res) => {
       fileDownload(res)
     })
   }
-
+  const selectChange = (value: any) => {
+    emitter.emit('住院病人认知情况统计表类型', value)
+    console.log('value66666666666', value)
+  }
   return (
     <Con>
       <DeptSelect onChange={onChange} />
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
-      <Button className='searchButton' onClick={searchButtonClick}>
+      <SelectCon>
+        类型：
+        <Select defaultValue='在院' style={{ width: '90px' }} onChange={selectChange}>
+          <Option value='在院'>在院</Option>
+          <Option value='出院'>出院</Option>
+          {/* <Option value='disabled' disabled>
+          Disabled
+        </Option> */}
+        </Select>
+      </SelectCon>
+      <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询
       </Button>
-      <Button className='exportButton' onClick={exportButtonClick}>
+      <Button style={{ margin: '0 10px', width: '90px' }} onClick={exportButtonClick}>
         导出excl
       </Button>
     </Con>
@@ -91,7 +107,7 @@ const Con = styled.div`
   }
   .exportButton {
     margin-left: 10px;
-    width: 120px;
+    width: 90px;
     background: rgba(255, 255, 255, 1);
     border-radius: 3px;
     border: 1px solid rgba(192, 203, 206, 1);
@@ -101,4 +117,7 @@ const Con = styled.div`
 `
 const Spacing = styled.div`
   width: 20px;
+`
+const SelectCon = styled.div`
+  margin-left: 20px;
 `
