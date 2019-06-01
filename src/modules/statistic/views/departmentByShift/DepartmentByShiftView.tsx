@@ -24,14 +24,18 @@ export default function StatisticView () {
     <Con>
       <StatisticHeader />
       <MidMidCon>
-        <StatisticMIdHeader />
-        {/* 对应表 */}
-        <TableCon>
-          <TableFirst />
+        <LeftCon>
+          <StatisticMIdHeader />
+          {/* 对应表 */}
+          <TableCon>
+            <TableFirst />
+          </TableCon>
+        </LeftCon>
+        <RigthCon>
           <div className='NurseByShiftChooseCon'>
             <NurseByShiftChoose />
           </div>
-        </TableCon>
+        </RigthCon>
       </MidMidCon>
     </Con>
   )
@@ -45,12 +49,12 @@ const Con = styled.div`
 const MidMidCon = styled.div`
   flex: 1;
   height: 0;
+  display: flex;
   margin: ${(p) => p.theme.$margin};
   padding: ${(p) => p.theme.$margin};
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
   border-radius: 5px;
-  border: 1px solid rgba(161, 175, 179, 1);
   overflow: auto;
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
@@ -71,13 +75,22 @@ const MidMidCon = styled.div`
     background-color: #ffffff;
   }
 `
+const LeftCon = styled.div`
+  flex: 1;
+  width: 0;
+  display: flex;
+  flex-direction: column;
+`
+const RigthCon = styled.div`
+  width: 222px;
+`
 const TableCon = styled.div`
   display: flex;
   /* position: relative; */
   .NurseByShiftChooseCon {
-    width: 222px;
-    position: relative;
+    /* width: 222px; */
+    /* position: relative;
     top: -50px;
-    right: -15px;
+    right: -15px; */
   }
 `
