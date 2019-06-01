@@ -19,12 +19,21 @@ const GlobalStyle = createGlobalStyle`
     margin: 0px;
     height: 100%;
   }
-
   #root {
     height: 100%;
   }
+  th{
+    height:30px !important;
+    font-size:14px !important;
+    font-weight: bold !important;
+  }
+  td{
+    height:26px !important;
+    font-size:13px !important;
+  }
   * {
-    font-family: simsun,Times New Roman,Georgia,Serif !important
+    font-family: simsun,Times New Roman,Georgia,Serif !important ;
+    font-size:14px
   }
 
 

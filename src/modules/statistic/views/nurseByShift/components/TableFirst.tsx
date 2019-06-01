@@ -123,7 +123,7 @@ export default function BedSituation () {
               <th>姓名</th>
               {getShiftClassDom}
               {getCheckboxItemDom}
-              <th>合计</th>
+              <th>小计</th>
             </tr>
           </table>
         </div>
@@ -147,9 +147,7 @@ const Con = styled.div`
       border: 1px solid #d6d6d6;
       border-top: none;
       /* 整体字体设置下*/
-      font-size: 12px;
-      font-family: PingFangSC-Medium;
-      font-weight: 500;
+      font-size: 14px;
       color: rgba(103, 103, 103, 1);
       /* 整体字体设置 上*/
       border-collapse: collapse;
@@ -157,17 +155,21 @@ const Con = styled.div`
       /* 设置整体th */
       th {
         box-sizing: border-box;
+        padding: 0;
         border: 1px solid #d6d6d6;
-        height: 37px;
+        height: 30px;
         background: rgba(242, 244, 245, 1);
         width: 6%;
+        font-weight: bold;
       }
       /* 设置整体td */
       td {
         box-sizing: border-box;
+        padding: 0;
+        height: 26px;
+        font-size: 13px;
         border: 1px solid #d6d6d6;
         border-top: none;
-        height: 37px;
         width: 6%;
       }
     }
@@ -197,9 +199,9 @@ const Con = styled.div`
         width: calc(100%+20px);
         table {
           /* width: 100%; */
-          tr:nth-of-type(2n + 2) {
+          /* tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
-          }
+          } */
           td {
             box-sizing: border-box;
             width: 6%;

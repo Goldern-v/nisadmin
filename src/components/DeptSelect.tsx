@@ -16,16 +16,29 @@ export interface DeptType {
 
 export default observer(function DeptSelect (props: Props) {
   const [hasAllDept, setHasAllDept] = useState(false)
-  let defaultValue = authStore.selectedDeptCode || authStore.defaultDeptCode
+  let defaultValue = authStore.selectedDeptName || authStore.selectedDeptName
   let deptList = authStore.deptList
   const onChange = (value: string) => {
-    authStore.selectDeptCode(value)
-    props.onChange(value)
+    authStore.selectedDeptName = value
+    // if(authStore.deptList)
+    if (!authStore.deptList) {
+      authStore.deptList = []
+    }
+    if (!authStore.deptList[0]) {
+      authStore.deptList = [{ code: '', name: '' }]
+    }
+    let cacheCodeObj: any = authStore.deptList.find((item: any) => item.name === value)
+    if (!cacheCodeObj) {
+      cacheCodeObj = {}
+    }
+    let cacheCode = cacheCodeObj.code
+    authStore.selectDeptCode(cacheCode)
+    props.onChange(cacheCode)
   }
 
   useEffect(() => {
     const hasAllDeptRouteList = ['/home', '/nurseFilesList', '/statistic/:name']
-    if (authStore.post == '护理部' || authStore.isAdmin) {
+    if (authStore.post === '护理部' || authStore.isAdmin) {
       if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
         setHasAllDept(true)
         // if (!authStore.selectedDeptCode) {
@@ -33,12 +46,12 @@ export default observer(function DeptSelect (props: Props) {
         // }
       } else {
         setHasAllDept(false)
-        if (authStore.selectedDeptCode == '全院') {
+        if (authStore.selectedDeptCode === '全院') {
           authStore.selectedDeptCode = authStore.defaultDeptCode
         }
       }
     }
-    onChange(authStore.selectedDeptCode)
+    onChange(authStore.selectedDeptName)
     return () => {
       setTimeout(() => {
         // authStore.selectedDeptCode = authStore.defaultDeptCode
@@ -56,7 +69,7 @@ export default observer(function DeptSelect (props: Props) {
         )}
 
         {deptList.map((item: DeptType) => (
-          <Select.Option key={item.code} value={item.code}>
+          <Select.Option key={item.name} value={item.name}>
             {item.name}
           </Select.Option>
         ))}

@@ -96,19 +96,12 @@ const Con = styled.div`
       width: 100%;
       border: 1px solid #d6d6d6;
       border-top: none;
-      /* 整体字体设置下*/
-      font-size: 12px;
-      font-family: PingFangSC-Medium;
-      font-weight: 500;
-      color: rgba(103, 103, 103, 1);
-      /* 整体字体设置 上*/
       border-collapse: collapse;
       text-align: center;
       /* 设置整体th */
       th {
         box-sizing: border-box;
         border: 1px solid #d6d6d6;
-        height: 37px;
         min-width: 90px;
         background: rgba(242, 244, 245, 1);
       }
@@ -117,26 +110,57 @@ const Con = styled.div`
         box-sizing: border-box;
         border: 1px solid #d6d6d6;
         border-top: none;
-        height: 37px;
         min-width: 90px;
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        min-width: 30px;
+        min-width: 60px;
+      }
+      th:nth-of-type(2) {
+        box-sizing: border-box;
+        min-width: 80px;
+      }
+      th:nth-of-type(3) {
+        box-sizing: border-box;
+        min-width: 80px;
+      }
+      th:nth-of-type(4) {
+        box-sizing: border-box;
+        min-width: 60px;
+      }
+      th:nth-of-type(5) {
+        box-sizing: border-box;
+        min-width: 60px;
       }
     }
     tbody {
-      tr:nth-of-type(2n + 2) {
+      /* tr:nth-of-type(2n + 2) {
         background: rgba(242, 244, 245, 1);
-      }
+      } */
       .addRowClass {
         background: rgba(228, 233, 235, 1) !important;
       }
       td:nth-of-type(1) {
         box-sizing: border-box;
-        min-width: 30px;
+        min-width: 60px;
+      }
+      td:nth-of-type(2) {
+        box-sizing: border-box;
+        min-width: 80px;
+      }
+      td:nth-of-type(3) {
+        box-sizing: border-box;
+        min-width: 80px;
+      }
+      td:nth-of-type(4) {
+        box-sizing: border-box;
+        min-width: 60px;
+      }
+      td:nth-of-type(5) {
+        box-sizing: border-box;
+        min-width: 60px;
       }
     }
   }

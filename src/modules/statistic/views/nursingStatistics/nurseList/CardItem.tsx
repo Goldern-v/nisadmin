@@ -7,6 +7,7 @@ export interface Props {
 }
 enum TITLE_COLOR {
   '培训护士' = '#D3D2D7',
+  '见习期护士' = '#D3D2D7',
   '护士' = '#43B965',
   '护师' = '#6B9AE2',
   '主管护师' = '#9C6BC1',

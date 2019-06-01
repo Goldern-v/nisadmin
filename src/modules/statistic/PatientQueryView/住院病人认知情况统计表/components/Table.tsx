@@ -9,7 +9,7 @@ import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default observer(function BedSituation () {
   const [tableDate, setTableDate]: any = useState([])
-  const [typeGet, setTypeGet] = useState('在院')
+  const [typeGet, setTypeGet] = useState('出院')
   // const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
   // const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
 
@@ -45,61 +45,71 @@ export default observer(function BedSituation () {
       title: '姓名',
       dataIndex: 'name',
       key: 'name',
-      align: 'center'
+      align: 'center',
+      width: 80
     },
     {
       title: '性别',
       dataIndex: 'sex',
       key: 'sex',
-      align: 'center'
+      align: 'center',
+      width: 50
     },
     {
       title: '年龄',
       dataIndex: 'age',
       key: 'age',
-      align: 'center'
+      align: 'center',
+      width: 50
     },
     {
       title: '住院号',
       dataIndex: 'visitId',
       key: 'visitId',
-      align: 'center'
+      align: 'center',
+      width: 80
     },
     {
       title: '受教育程度',
       dataIndex: 'educationLevel',
       key: 'educationLevel',
-      align: 'center'
+      align: 'center',
+      width: 100
     },
     {
       title: 'MMSE得分',
       dataIndex: 'mmseScore',
       key: 'mmseScore ',
-      align: 'center'
+      align: 'center',
+      width: 80
     },
     {
       title: '入院日期',
       dataIndex: 'admissionDateTime',
       key: 'admissionDateTime',
-      align: 'center'
+      align: 'center',
+      width: 180
     },
     {
       title: '入院科室',
       dataIndex: 'admissionDept',
       key: 'admissionDept',
-      align: 'center'
+      align: 'center',
+      width: 80
     },
     {
       title: '出院日期',
       dataIndex: 'dischargeDateTime',
       key: 'dischargeDateTime',
-      align: 'center'
+      align: 'center',
+      width: 180
     },
     {
       title: '出院科室',
       dataIndex: 'dischargeDeptCode',
       key: 'dischargeDeptCode',
-      align: 'center'
+      align: 'center',
+      width: 80
     },
     {
       title: '诊断',
@@ -112,37 +122,43 @@ export default observer(function BedSituation () {
       title: '主管医生',
       dataIndex: 'doctor',
       key: 'doctor',
-      align: 'center'
+      align: 'center',
+      width: 80
     },
     {
       title: '电话',
       dataIndex: 'phone',
       key: 'phone',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '单位电话',
       dataIndex: 'companyPhone',
       key: 'companyPhone',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '联系人',
       dataIndex: 'contactName',
       key: 'contactName',
-      align: 'center'
+      align: 'center',
+      width: 80
     },
     {
       title: '联系人电话',
       dataIndex: 'contactPhone',
       key: 'contactPhone',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '身份证号',
       dataIndex: 'idNo',
       key: 'idNo',
-      align: 'center'
+      align: 'center',
+      width: 150
     },
     {
       title: '联系地址',
@@ -230,8 +246,11 @@ const Con = styled.div`
 `
 const TablleScroll = styled.div`
   height: 100%;
-  width: 200%;
-  .eUYVkN {
-    padding: 0;
+  width: 250%;
+  .BaseTable__Wrapper-sc-18xwuv-0 {
+    padding: 0 !important;
   }
+  /* .eUYVkN {
+    padding: 0;
+  } */
 `

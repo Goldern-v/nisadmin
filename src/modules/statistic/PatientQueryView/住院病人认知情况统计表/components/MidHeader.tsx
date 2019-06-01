@@ -12,7 +12,7 @@ export default observer(function BedSituation () {
     statisticViewModel.setTitle('护士休假统计')
     return statisticViewModel.getTitle
   })
-  const [typeGet, setTypeGet] = useState('在院')
+  const [typeGet, setTypeGet] = useState('出院')
   const [startDate, setStartDate] = useState(statisticViewModel.getStartDate)
   const [endDate, setEndDate] = useState(statisticViewModel.getEndDate)
   useEffect(() => {
