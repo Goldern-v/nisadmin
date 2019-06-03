@@ -30,6 +30,8 @@ const DEFALT_HEADIMG = require('../../../images/护士默认头像.png')
 
 export enum TITLE_COLOR {
   '培训护士' = '#D3D2D7',
+  // 添加
+  '见习期护士' = '#D3D2D7',
   '护士' = '#43B965',
   '护师' = '#6B9AE2',
   '主管护师' = '#9C6BC1',

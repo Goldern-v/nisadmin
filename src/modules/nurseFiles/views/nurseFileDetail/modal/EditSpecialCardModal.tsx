@@ -111,12 +111,12 @@ export default observer(function EditWorkHistoryModal (props: Props) {
       setTitle('添加特殊资格证')
     }
   }, [visible])
-  const testClick = () => {
-    console.log('title44444444444445555555555', title)
-  }
+  // const testClick = () => {
+  //   console.log('title44444444444445555555555', title)
+  // }
   return (
     <div>
-      <Button onClick={testClick}>test</Button>
+      {/* <Button onClick={testClick}>test</Button> */}
       <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
         <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
           <Row>

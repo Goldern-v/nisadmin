@@ -78,8 +78,15 @@ const Wrapper = styled.div`
     text-align: center;
   }
   .ant-table-wrapper {
+    /* th {
+      box-sizing: border-box;
+      height: 30px !important;
+      font-size: 14px !important;
+      font-weight: bold;
+    } */
     td {
       /* padding: 0 8px !important; */
+      font-size: 13px !important;
       padding: 0 !important;
       box-sizing: border-box;
       height: ${(p) => p.theme.$tableRowHeight} !important;

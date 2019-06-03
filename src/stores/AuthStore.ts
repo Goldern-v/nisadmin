@@ -25,8 +25,10 @@ export default class AuthStore {
   /** 用户选择的科室 */
   @observable public selectedDeptCode: any = ''
 
+  @observable public selectedDeptName: any = ''
+
   @computed
-  public get selectedDeptName () {
+  public get selectedDeptNameAdd () {
     try {
       return (
         this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name + appStore.match.params.name

@@ -31,7 +31,7 @@ export default observer(function StatisticMIdHeader () {
   return (
     <Con>
       {/* {authStore.selectedDeptName} */}
-      <div className='firstTitle'>{authStore.selectedDeptName}</div>
+      <div className='firstTitle'>{authStore.selectedDeptNameAdd}</div>
       <div className='secondTitle'>
         日期：{startDate} 至 {endDate}
       </div>
@@ -40,7 +40,6 @@ export default observer(function StatisticMIdHeader () {
 })
 
 const Con = styled.div`
-  margin-bottom: 8px;
   width: 100%;
   text-align: center;
   .firstTitle {
@@ -49,16 +48,18 @@ const Con = styled.div`
     height: 29px;
     font-size: 21px;
     font-family: PingFangSC-Medium;
-    font-weight: 500;
+    font-weight: bold;
     color: rgba(51, 51, 51, 1);
     line-height: 29px;
     letter-spacing: 1px;
   }
   .secondTitle {
-    margin: 0 auto;
+    margin-top: 8px;
+    margin-bottom: 32px;
+    padding-right: 16px;
+    /* margin: 0 auto; */
     width: 100%;
     height: 18px;
-    font-size: 13px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(51, 51, 51, 1);

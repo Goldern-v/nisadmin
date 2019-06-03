@@ -70,7 +70,7 @@ export default function BedSituation () {
       <SelectData />
       <SelectCon>
         类型：
-        <Select defaultValue='在院' style={{ width: '90px' }} onChange={selectChange}>
+        <Select defaultValue='出院' style={{ width: '90px' }} onChange={selectChange}>
           <Option value='在院'>在院</Option>
           <Option value='出院'>出院</Option>
           {/* <Option value='disabled' disabled>

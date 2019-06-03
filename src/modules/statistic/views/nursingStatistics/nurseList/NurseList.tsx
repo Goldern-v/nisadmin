@@ -51,6 +51,10 @@ export default function BedSituation () {
         {
           key: '护士',
           value: res.data[0].nurse
+        },
+        {
+          key: '见习期护士',
+          value: res.data[0].probationNurse
         }
         // {
         //   key: '培训护师',
@@ -104,7 +108,9 @@ export default function BedSituation () {
             <div className='block color-4' />
             <span>护 士：</span>
             <div className='block color-5' />
-            <span>培训护师：</span>
+            {/* <span>培训护师：</span>
+            <div className='block color-6' /> */}
+            <span>见习期护士：</span>
             <div className='block color-6' />
           </Footer>
         </Container>
