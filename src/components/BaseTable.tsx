@@ -6,7 +6,9 @@ import { TableProps } from 'antd/lib/table'
 import windowHeight from 'src/hooks/windowHeight'
 import windowWidth from 'src/hooks/windowWidth'
 export interface Props extends TableProps<any> {
-  style?: any
+  // style?: any
+  wrapperStyle?: any
+  tableStyle?: any
   type?: any
   /**多余的高度 */
   surplusHeight?: number
@@ -62,7 +64,7 @@ export default function BaseTable (props: Props) {
     })
   }
   return (
-    <Wrapper {...option}>
+    <Wrapper {...option} style={option.wrapperStyle || {}}>
       <Table {...option} />
     </Wrapper>
   )
@@ -108,7 +110,7 @@ const Wrapper = styled.div`
   } */
 
   .ant-table-placeholder {
-    height: ${(p: any) => `calc(100vh - ${p.surplusHeight - 20}px)`};
+    height: ${(p: any) => `calc(100vh - ${p.surplusHeight - 0}px)`};
     display: flex;
     justify-content: center;
     align-items: center;

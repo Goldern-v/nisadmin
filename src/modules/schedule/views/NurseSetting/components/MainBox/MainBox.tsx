@@ -79,7 +79,7 @@ export default function MainBox () {
     {
       title: '所在科室',
       dataIndex: 'deptName',
-      width: '26%',
+      width: 80,
       key: 'deptName'
     },
     {
@@ -296,7 +296,7 @@ export default function MainBox () {
         rowSelection={rowSelection}
         dataSource={userList}
         pagination={false}
-        surplusHeight={300}
+        surplusHeight={240}
         onRow={onRow}
       />
       {/* <Table
