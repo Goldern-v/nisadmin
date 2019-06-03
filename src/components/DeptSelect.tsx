@@ -16,7 +16,7 @@ export interface DeptType {
 
 export default observer(function DeptSelect (props: Props) {
   const [hasAllDept, setHasAllDept] = useState(false)
-  let defaultValue = authStore.selectedDeptName || authStore.selectedDeptName
+  const [defaultValue, setDefaultValue] = useState(authStore.selectedDeptCode)
   let deptList = authStore.deptList
   const onChange = (value: string) => {
     authStore.selectedDeptName = value
@@ -27,18 +27,10 @@ export default observer(function DeptSelect (props: Props) {
     if (!authStore.deptList[0]) {
       authStore.deptList = [{ code: '', name: '' }]
     }
-    let cacheCodeObj: any = authStore.deptList.find((item: any) => item.name === value)
-    if (!cacheCodeObj) {
-      cacheCodeObj = {}
-    }
-    let cacheCode = cacheCodeObj.code
-    // 特殊的不是接口里的数据
-    if (value === '全院') {
-      cacheCode = '全院'
-    }
-    authStore.selectDeptCode(cacheCode)
-    props.onChange(cacheCode)
-    console.log('6666666666666666666', value)
+
+    authStore.selectDeptCode(value)
+    setDefaultValue(value)
+    props.onChange(value)
   }
 
   useEffect(() => {
@@ -48,6 +40,7 @@ export default observer(function DeptSelect (props: Props) {
         setHasAllDept(true)
         // if (!authStore.selectedDeptCode) {
         authStore.selectedDeptCode = '全院'
+        console.log(authStore.selectedDeptCode, 'authStore.selectedDeptCodeauthStore.selectedDeptCode')
         // }
       } else {
         setHasAllDept(false)
@@ -56,7 +49,7 @@ export default observer(function DeptSelect (props: Props) {
         }
       }
     }
-    onChange(authStore.selectedDeptName)
+    onChange(authStore.selectedDeptCode)
     return () => {
       setTimeout(() => {
         // authStore.selectedDeptCode = authStore.defaultDeptCode
@@ -66,7 +59,15 @@ export default observer(function DeptSelect (props: Props) {
 
   return (
     <Wrapper>
-      <Select value={defaultValue} showSearch style={{ width: 200 }} onChange={onChange}>
+      <Select
+        value={defaultValue}
+        showSearch
+        style={{ width: 200 }}
+        onChange={onChange}
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
         {hasAllDept && (
           <Select.Option key={'全院'} value={'全院'}>
             全院
@@ -74,7 +75,7 @@ export default observer(function DeptSelect (props: Props) {
         )}
 
         {deptList.map((item: DeptType) => (
-          <Select.Option key={item.name} value={item.name}>
+          <Select.Option key={item.name} value={item.code}>
             {item.name}
           </Select.Option>
         ))}
