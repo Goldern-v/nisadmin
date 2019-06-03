@@ -9,12 +9,20 @@ export default function BedSituation () {
   // const [count, setCount] = useState(0)
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
-  const [getTableList, setGetTableList] = useState([])
+  const [getTableList, setGetTableList]: any = useState([])
   const [changeClass, setChangeClass] = useState('')
   const [classItem, setClassItem] = useState('')
   const postNurseByShiftViewMethod = () =>
     StatisticsApi.postNurseByShiftView(changeClass, classItem).then((res: any) => {
-      setGetTableList(res.data)
+      if (res.data) {
+        let addLength = 8 - res.data.length
+        if (addLength > 0) {
+          for (let i = 0; i < addLength; i++) {
+            res.data.push({ 序号: '' })
+          }
+        }
+        setGetTableList(res.data)
+      }
     })
   useEffect(() => {
     // console.log(222)
@@ -30,8 +38,15 @@ export default function BedSituation () {
         setClassItem(cacheGetShiftClass)
         let postNurseByShiftView = () => {
           StatisticsApi.postNurseByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
-            setGetTableList(res.data)
-            console.log(getTableList)
+            if (res.data) {
+              let addLength = 8 - res.data.length
+              if (addLength > 0) {
+                for (let i = 0; i < addLength; i++) {
+                  res.data.push({ 序号: '' })
+                }
+              }
+              setGetTableList(res.data)
+            }
           })
         }
         postNurseByShiftView()
@@ -48,8 +63,15 @@ export default function BedSituation () {
         setClassItem(cacheCheckboxItem)
         let postNurseByShiftView = () => {
           StatisticsApi.postNurseByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
-            setGetTableList(res.data)
-            console.log(getTableList)
+            if (res.data) {
+              let addLength = 8 - res.data.length
+              if (addLength > 0) {
+                for (let i = 0; i < addLength; i++) {
+                  res.data.push({ 序号: '' })
+                }
+              }
+              setGetTableList(res.data)
+            }
           })
         }
         postNurseByShiftView()
@@ -80,7 +102,7 @@ export default function BedSituation () {
   // Cache Td DOM
   const cacheGetDom = tdCacheDate.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.序列}</td>
+      <td>{itemTr.序号}</td>
       <td>{itemTr.姓名}</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
@@ -94,7 +116,7 @@ export default function BedSituation () {
   // td DOM
   const getTdDom = getTableList.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.序列}</td>
+      <td>{itemTr.序号}</td>
       <td>{itemTr.姓名}</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => {
         if (itemTd === '序号') {
@@ -115,8 +137,10 @@ export default function BedSituation () {
   ))
   const SpaceShow = (
     <SpaceCon>
-      <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
-      <div className='spaceFont'>暂无数据</div>
+      <td style={{ width: '100%' }}>
+        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+        <div className='spaceFont'>暂无数据</div>
+      </td>
     </SpaceCon>
   )
 
@@ -132,12 +156,12 @@ export default function BedSituation () {
               {getCheckboxItemDom}
               <th>小计</th>
             </tr>
-            {getTableList.length > 0 ? getTdDom : SpaceShow}
+            {getTdDom}
           </table>
         </div>
         {/* <div className='tableMid'>
           <div className='tableMidCon'>
-            <table />
+            <table>{getTableList.length > 0 ? getTdDom : SpaceShow}</table>
           </div>
         </div> */}
       </div>
@@ -146,76 +170,81 @@ export default function BedSituation () {
 }
 
 const Con = styled.div`
+  width: 100%;
   flex: 1;
-  padding-right: 5%;
+  margin-right: 30px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
   .tableCon {
-    width: 98%;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    overflow-x: auto;
-    table {
-      /* width: 100%; */
-      overflow-x: auto;
-      border: 1px solid #d6d6d6;
-      border-top: none;
-      /* 整体字体设置下*/
-      font-size: 14px;
-      color: rgba(103, 103, 103, 1);
-      /* 整体字体设置 上*/
-      border-collapse: collapse;
-      text-align: center;
-      /* 设置整体th */
-      th {
-        box-sizing: border-box;
-        padding: 0;
-        border: 1px solid #d6d6d6;
-        height: 30px;
-        background: rgba(242, 244, 245, 1);
-        min-width: 60px;
-        font-weight: bold;
-      }
-      /* 设置整体td */
-      td {
-        box-sizing: border-box;
-        padding: 0;
-        height: 26px;
-        font-size: 13px;
+    .tableHead {
+      table {
+        margin: 0 auto;
+        overflow-x: auto;
         border: 1px solid #d6d6d6;
         border-top: none;
-        /* width: 6%; */
+        /* 整体字体设置下*/
+        /* 整体字体设置 上*/
+        border-collapse: collapse;
+        text-align: center;
+        /* 设置整体th */
+        th {
+          box-sizing: border-box;
+          padding: 0;
+          border: 1px solid #d6d6d6;
+          background: rgba(242, 244, 245, 1);
+          min-width: 80px;
+          font-weight: bold;
+        }
+        /* 设置整体td */
+        td {
+          box-sizing: border-box;
+          padding: 0;
+          border: 1px solid #d6d6d6;
+          min-width: 80px;
+          border-top: none;
+          /* width: 6%; */
+        }
+        th:nth-of-type(1) {
+          box-sizing: border-box;
+          min-width: 60px;
+        }
+        td:nth-of-type(1) {
+          box-sizing: border-box;
+          min-width: 60px;
+        }
       }
     }
-    .tableHead {
-      th:nth-of-type(1) {
-        box-sizing: border-box;
-        min-width: 60px;
-      }
-      th:nth-of-type(2) {
-        box-sizing: border-box;
-        min-width: 70px;
-      }
-      th:nth-of-type(3) {
-        box-sizing: border-box;
-        width: 70%;
-      }
-      th:nth-of-type(9) {
-        /* width: 60px; */
-      }
-    }
+
     .tableMid {
       /* width: 100%; */
       overflow: hidden;
       /* overflow-y: auto; */
       /* height: 380px; */
       .tableMidCon {
-        width: calc(100%+20px);
+        /* width: calc(100%+20px); */
         table {
           /* width: 100%; */
           /* tr:nth-of-type(2n + 2) {
             background: rgba(242, 244, 245, 1);
           } */
-          td {
+          /* td {
             box-sizing: border-box;
             width: 6%;
           }
@@ -233,7 +262,7 @@ const Con = styled.div`
           td:nth-of-type(3) {
             box-sizing: border-box;
             min-width: 6%;
-          }
+          } */
         }
       }
     }
@@ -257,4 +286,6 @@ const Con = styled.div`
     }
   }
 `
-const SpaceCon = styled.div``
+const SpaceCon = styled.tr`
+  width: 100%;
+`

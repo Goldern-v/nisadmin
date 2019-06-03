@@ -13,7 +13,15 @@ export default function BedSituation () {
   const [classItem, setClassItem] = useState('')
   const postDepartmentByShiftViewMethod = () =>
     StatisticsApi.postDepartmentByShiftView(changeClass, classItem).then((res: any) => {
-      setGetTableList(res.data)
+      if (res.data) {
+        let addLength = 8 - res.data.length
+        if (addLength > 0) {
+          for (let i = 0; i < addLength; i++) {
+            res.data.push({ 序列: '' })
+          }
+        }
+        setGetTableList(res.data)
+      }
     })
   useEffect(() => {
     // console.log(222)
@@ -28,8 +36,15 @@ export default function BedSituation () {
         setChangeClass('按班次大类')
         setClassItem(cacheGetShiftClass)
         StatisticsApi.postDepartmentByShiftView('按班次大类', cacheGetShiftClass).then((res: any) => {
-          setGetTableList(res.data)
-          console.log(getTableList)
+          if (res.data) {
+            let addLength = 8 - res.data.length
+            if (addLength > 0) {
+              for (let i = 0; i < addLength; i++) {
+                res.data.push({ 序列: '' })
+              }
+            }
+            setGetTableList(res.data)
+          }
         })
       }
     })
@@ -43,8 +58,15 @@ export default function BedSituation () {
         setChangeClass('按班次大类')
         setClassItem(cacheCheckboxItem)
         StatisticsApi.postDepartmentByShiftView('自定义班次', cacheCheckboxItem).then((res: any) => {
-          setGetTableList(res.data)
-          console.log(getTableList)
+          if (res.data) {
+            let addLength = 8 - res.data.length
+            if (addLength > 0) {
+              for (let i = 0; i < addLength; i++) {
+                res.data.push({ 序列: '' })
+              }
+            }
+            setGetTableList(res.data)
+          }
         })
       }
     })
@@ -90,14 +112,14 @@ export default function BedSituation () {
       <td>{itemTr.科室}</td>
 
       {getShiftClass.map((itemTd: any, indexTd: number) => {
-        if (itemTd === '序号') {
+        if (itemTd === '序列') {
           return <td key={indexTd}>{index + 1}</td>
         } else {
           return <td key={indexTd}>{itemTr[itemTd]}</td>
         }
       })}
       {getCheckboxItem.map((itemTd: any, indexTd: number) => {
-        if (itemTd === '序号') {
+        if (itemTd === '序列') {
           return <td key={indexTd}>{index + 1}</td>
         } else {
           return <td key={indexTd}>{itemTr[itemTd]}</td>
@@ -112,6 +134,16 @@ export default function BedSituation () {
       <div className='spaceFont'>暂无数据</div>
     </SpaceCon>
   )
+  if (getTableList.length < 8) {
+    let addLength = 8 - getTableList.length
+    if (addLength > 0) {
+      let cacheTableList: any = [...getTableList]
+      for (let i = 0; i < addLength; i++) {
+        cacheTableList.push({ 序列: '' })
+      }
+      setGetTableList(cacheTableList)
+    }
+  }
   return (
     <Con>
       <div className='tableCon'>
@@ -124,67 +156,88 @@ export default function BedSituation () {
               {getCheckboxItemDom}
               <th>合计</th>
             </tr>
+            {getTdDom}
           </table>
         </div>
-        <div className='tableMid'>
+        {/* <div className='tableMid'>
           <div className='tableMidCon'>
             <table>{getTdDom ? getTdDom : SpaceShow}</table>
           </div>
-        </div>
+        </div> */}
       </div>
     </Con>
   )
 }
 
 const Con = styled.div`
+  width: 100%;
   flex: 1;
-  padding-right: 5%;
+  margin-right: 30px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px #ffffff;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
   .tableCon {
-    width: 98%;
-    table {
-      width: 100%;
-      border: 1px solid #d6d6d6;
-      border-top: none;
-      /* 整体字体设置下*/
-      font-size: 12px;
-      font-family: PingFangSC-Medium;
-      font-weight: 500;
-      color: rgba(103, 103, 103, 1);
-      /* 整体字体设置 上*/
-      border-collapse: collapse;
-      text-align: center;
-      /* 设置整体th */
-      th {
-        box-sizing: border-box;
-        border: 1px solid #d6d6d6;
-        height: 37px;
-        background: rgba(242, 244, 245, 1);
-        width: 6%;
-      }
-      /* 设置整体td */
-      td {
-        box-sizing: border-box;
+    .tableHead {
+      table {
+        margin: 0 auto;
+        overflow-x: auto;
         border: 1px solid #d6d6d6;
         border-top: none;
-        height: 37px;
-        width: 6%;
-      }
-    }
-    .tableHead {
-      th:nth-of-type(1) {
-        box-sizing: border-box;
-        width: 3%;
-      }
-      th:nth-of-type(2) {
-        box-sizing: border-box;
-        width: 8%;
-      }
-      th:nth-of-type(3) {
-        box-sizing: border-box;
-        width: 6%;
-      }
-      th:nth-of-type(9) {
-        /* width: 60px; */
+        /* 整体字体设置下*/
+        /* 整体字体设置 上*/
+        border-collapse: collapse;
+        text-align: center;
+        /* 设置整体th */
+        th {
+          box-sizing: border-box;
+          padding: 0;
+          border: 1px solid #d6d6d6;
+          background: rgba(242, 244, 245, 1);
+          min-width: 80px;
+          font-weight: bold;
+        }
+        /* 设置整体td */
+        td {
+          box-sizing: border-box;
+          padding: 0;
+          border: 1px solid #d6d6d6;
+          min-width: 80px;
+          border-top: none;
+          /* width: 6%; */
+        }
+        th:nth-of-type(1) {
+          box-sizing: border-box;
+          min-width: 60px;
+        }
+        th:nth-of-type(2) {
+          box-sizing: border-box;
+          min-width: 150px;
+        }
+
+        td:nth-of-type(1) {
+          box-sizing: border-box;
+          min-width: 60px;
+        }
+        td:nth-of-type(2) {
+          box-sizing: border-box;
+          min-width: 150px;
+        }
       }
     }
     .tableMid {
