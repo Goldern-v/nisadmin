@@ -19,7 +19,7 @@ class NurseFilesListViewModel {
   @observable public filterCj: string = '全部'
   @observable public filterZw: string = '全部'
   @observable public pageIndex: number = 1
-  @observable public pageSize: number = 14
+  @observable public pageSize: number = 10
   @observable public totalCount: number = 0
   @observable public listSpinning: boolean = false
   @observable public nurseList: any = []

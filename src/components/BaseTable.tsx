@@ -75,6 +75,9 @@ const Wrapper = styled.div`
   /* padding: 20px 30px; */
   padding: 15px 15px;
   box-sizing: content-box;
+  table {
+    table-layout: fixed;
+  }
   .ant-table-header-column {
     width: 100%;
     text-align: center;
@@ -95,9 +98,9 @@ const Wrapper = styled.div`
       height: ${(p) => p.theme.$tableRowHeight} !important;
     }
     /* 补充th下降的高度 */
-    .ant-table-align-center {
+    /* .ant-table-align-center {
       padding: 8px 8px 14px 8px !important;
-    }
+    } */
   }
 
   .ant-table-small > .ant-table-content > .ant-table-body {

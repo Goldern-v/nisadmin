@@ -13,9 +13,11 @@ import { Spin } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable from 'src/components/BaseTable'
 import { theme } from 'src/styles/theme'
+import store from 'src/stores'
+import qs from 'qs'
 export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
-let rowNum: number = 7
+let rowNum: number = 5
 const ThemeContext = React.createContext({
   theme: 'dark'
 })
@@ -33,35 +35,120 @@ const columns: ColumnProps<any>[] = [
   },
 
   {
-    title: '获得时间',
-    dataIndex: 'time',
-    key: '2',
+    title: '科室',
+    dataIndex: 'deptName',
+    key: 'deptName',
     width: 100,
     align: 'center'
   },
   {
-    title: '资格名称',
-    dataIndex: 'specialQualificationName',
-    key: '3',
-    width: 150,
+    title: '员工号',
+    dataIndex: 'empNo',
+    key: 'empNo',
+    width: 70,
     align: 'center'
   },
   {
-    title: '资格证编号',
-    dataIndex: 'specialQualificationNo',
-    key: '4',
-    width: 200,
+    title: '姓名',
+    dataIndex: 'empName',
+    key: 'empName',
+    width: 70,
     align: 'center'
   },
 
   {
+    title: '性别',
+    dataIndex: 'sex',
+    key: 'sex',
+    width: 70,
+    align: 'center',
+    render (sex: any) {
+      return sex == '0' ? '男' : sex == '1' ? '女' : ''
+    }
+  },
+  {
+    title: '年龄',
+    dataIndex: 'age',
+    key: 'age',
+    width: 60,
+    align: 'center'
+  },
+  {
+    title: '职称',
+    dataIndex: 'newTitle',
+    key: 'newTitle',
+    width: 90,
+    align: 'center'
+  },
+  {
+    title: '层级',
+    dataIndex: 'currentLevel',
+    key: 'currentLevel',
+    width: 70,
+    align: 'center'
+  },
+  {
+    title: '职务',
+    dataIndex: 'post',
+    key: 'post',
+    width: 70,
+    align: 'center'
+  },
+  {
+    title: '最高学历',
+    dataIndex: 'education',
+    key: 'education',
+    width: 90,
+    align: 'center'
+  },
+  {
     title: '状态',
+    dataIndex: 'status',
+    key: 'status',
+    width: 70,
+    align: 'center'
+  },
+  {
+    title: '籍贯',
+    dataIndex: 'nativePlace',
+    key: 'nativePlace',
+    width: 70,
+    align: 'center'
+  },
+  {
+    title: '民族',
+    dataIndex: 'nation',
+    key: 'nation',
+    width: 70,
+    align: 'center'
+  },
+  {
+    title: '职业证书编号',
+    dataIndex: 'zyzsNumber',
+    key: 'zyzsNumber',
+    width: 120,
+    align: 'center'
+  },
+  {
+    title: '操作',
     dataIndex: 'auditedStatusName',
     key: '6',
-    width: 150,
-    align: 'center'
+    width: 70,
+    align: 'center',
+    // fixed: 'right',
+    render (text: any, row: any) {
+      return (
+        <DoCon>
+          <span onClick={() => onDoubleClick(row)}>操作</span>
+        </DoCon>
+      )
+    }
   }
 ]
+
+const onDoubleClick = (record: any) => {
+  store.appStore.history.push(`/nurseFileDetail/baseInfo?${qs.stringify(record)}`)
+}
 
 export default observer(function NurseFilesListView () {
   return (
@@ -75,15 +162,21 @@ export default observer(function NurseFilesListView () {
           ))}
         </NurseCardCon>
       </Spin> */}
-      <div style={{ height: 20 }} />
+      <div style={{ height: 10 }} />
       <BaseTable
         wrapperStyle={{
           boxShadow: theme.$shadow
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={365}
-        type={['spaceRow', 'fixedWidth']}
+        surplusHeight={445}
+        surplusWidth={80}
+        type={['spaceRow']}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => onDoubleClick(record)
+          }
+        }}
       />
       <PaginationCon rowNum={rowNum} />
     </Wrapper>
@@ -98,4 +191,14 @@ const NurseCardCon = styled.div`
   margin: 10px -10px;
   min-height: 440px;
   /* box-shadow: 0px -2px 4px #000000; */
+`
+
+export const DoCon = styled.div`
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  color: ${(p) => p.theme.$mtc};
+  span {
+    cursor: pointer;
+  }
 `

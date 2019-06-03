@@ -65,7 +65,7 @@ function AddNursingModal (props: Props) {
     })
   }
   return (
-    <Modal title='Basic Modal' visible={visible} onOk={onSave} onCancel={handleCancel} okText='保存'>
+    <Modal title='添加护士' visible={visible} onOk={onSave} onCancel={handleCancel} okText='保存'>
       <Form>
         <Form.Item {...formItemLayout} label='姓名'>
           {getFieldDecorator('empName', {
