@@ -38,10 +38,9 @@ export default observer(function DeptSelect (props: Props) {
     if (authStore.post === '护理部' || authStore.isAdmin) {
       if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
         setHasAllDept(true)
-        // if (!authStore.selectedDeptCode) {
-        authStore.selectedDeptCode = '全院'
-        console.log(authStore.selectedDeptCode, 'authStore.selectedDeptCodeauthStore.selectedDeptCode')
-        // }
+        if (!authStore.selectedDeptCode) {
+          authStore.selectedDeptCode = '全院'
+        }
       } else {
         setHasAllDept(false)
         if (authStore.selectedDeptCode === '全院') {
