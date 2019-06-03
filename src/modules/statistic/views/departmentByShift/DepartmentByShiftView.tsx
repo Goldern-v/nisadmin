@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 
 // import StatisticLeftList from '../../components/StatisticLeftList'
 import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeader from '../../common/StatisticMIdHeader'
+import StatisticMIdHeaderDepartment from '../../common/StatisticMIdHeaderDepartment'
 // import NurseSchedule from './components/NurseSchedule'
 import NurseByShiftChoose from './components/NurseByShiftChoose'
 import TableFirst from './components/TableFirst'
@@ -25,7 +25,7 @@ export default function StatisticView () {
       <StatisticHeader />
       <MidMidCon>
         <LeftCon>
-          <StatisticMIdHeader />
+          <StatisticMIdHeaderDepartment />
           {/* 对应表 */}
           <TableCon>
             <TableFirst />

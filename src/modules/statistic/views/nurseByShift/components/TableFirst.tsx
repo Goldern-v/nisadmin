@@ -113,6 +113,13 @@ export default function BedSituation () {
       <td>{itemTr.合计}</td>
     </tr>
   ))
+  const SpaceShow = (
+    <SpaceCon>
+      <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+      <div className='spaceFont'>暂无数据</div>
+    </SpaceCon>
+  )
+
   return (
     <Con>
       <div className='tableCon'>
@@ -125,13 +132,14 @@ export default function BedSituation () {
               {getCheckboxItemDom}
               <th>小计</th>
             </tr>
+            {getTableList.length > 0 ? getTdDom : SpaceShow}
           </table>
         </div>
-        <div className='tableMid'>
+        {/* <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>{getTdDom}</table>
+            <table />
           </div>
-        </div>
+        </div> */}
       </div>
     </Con>
   )
@@ -142,8 +150,13 @@ const Con = styled.div`
   padding-right: 5%;
   .tableCon {
     width: 98%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    overflow-x: auto;
     table {
-      width: 100%;
+      /* width: 100%; */
+      overflow-x: auto;
       border: 1px solid #d6d6d6;
       border-top: none;
       /* 整体字体设置下*/
@@ -159,7 +172,7 @@ const Con = styled.div`
         border: 1px solid #d6d6d6;
         height: 30px;
         background: rgba(242, 244, 245, 1);
-        width: 6%;
+        min-width: 60px;
         font-weight: bold;
       }
       /* 设置整体td */
@@ -170,28 +183,28 @@ const Con = styled.div`
         font-size: 13px;
         border: 1px solid #d6d6d6;
         border-top: none;
-        width: 6%;
+        /* width: 6%; */
       }
     }
     .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        width: 3%;
+        min-width: 60px;
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        width: 8%;
+        min-width: 70px;
       }
       th:nth-of-type(3) {
         box-sizing: border-box;
-        width: 6%;
+        width: 70%;
       }
       th:nth-of-type(9) {
         /* width: 60px; */
       }
     }
     .tableMid {
-      width: 100%;
+      /* width: 100%; */
       overflow: hidden;
       /* overflow-y: auto; */
       /* height: 380px; */
@@ -211,7 +224,7 @@ const Con = styled.div`
           }
           td:nth-of-type(1) {
             box-sizing: border-box;
-            width: 3%;
+            min-width: 60px;
           }
           td:nth-of-type(2) {
             box-sizing: border-box;
@@ -244,3 +257,4 @@ const Con = styled.div`
     }
   }
 `
+const SpaceCon = styled.div``

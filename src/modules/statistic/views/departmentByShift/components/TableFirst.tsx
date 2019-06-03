@@ -106,6 +106,12 @@ export default function BedSituation () {
       <td>{itemTr.合计}</td>
     </tr>
   ))
+  const SpaceShow = (
+    <SpaceCon>
+      <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+      <div className='spaceFont'>暂无数据</div>
+    </SpaceCon>
+  )
   return (
     <Con>
       <div className='tableCon'>
@@ -122,7 +128,7 @@ export default function BedSituation () {
         </div>
         <div className='tableMid'>
           <div className='tableMidCon'>
-            <table>{getTdDom}</table>
+            <table>{getTdDom ? getTdDom : SpaceShow}</table>
           </div>
         </div>
       </div>
@@ -235,3 +241,4 @@ const Con = styled.div`
     }
   }
 `
+const SpaceCon = styled.div``

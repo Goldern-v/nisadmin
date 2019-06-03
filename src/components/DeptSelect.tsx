@@ -32,8 +32,13 @@ export default observer(function DeptSelect (props: Props) {
       cacheCodeObj = {}
     }
     let cacheCode = cacheCodeObj.code
+    // 特殊的不是接口里的数据
+    if (value === '全院') {
+      cacheCode = '全院'
+    }
     authStore.selectDeptCode(cacheCode)
     props.onChange(cacheCode)
+    console.log('6666666666666666666', value)
   }
 
   useEffect(() => {

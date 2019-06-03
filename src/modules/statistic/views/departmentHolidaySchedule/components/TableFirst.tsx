@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 
 export default observer(function BedSituation () {
   // const [count, setCount] = useState(0)
-  const [bodyTable, setBodyTable] = useState([{}])
+  const [bodyTable, setBodyTable] = useState([])
   const postDepartmentHolidayScheduleMethod = () =>
     StatisticsApi.postDepartmentHolidaySchedule().then((res) => {
       setBodyTable(res.data)
@@ -59,22 +59,17 @@ export default observer(function BedSituation () {
     )
   }
 
-  let SpaceShow
-  if (!interfaceThDom && !interfaceTdDom) {
-    SpaceShow = (
-      <SpaceCon>
-        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
-        <div className='spaceFont'>暂无数据</div>
-      </SpaceCon>
-    )
-  }
+  const SpaceShow = (
+    <SpaceCon>
+      <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+      <div className='spaceFont'>暂无数据</div>
+    </SpaceCon>
+  )
+
   return (
     <Con className='addClass'>
       <div className='tableCon'>
-        <div className='tableHead'>
-          {TableShow}
-          {SpaceShow}
-        </div>
+        <div className='tableHead'>{TableShow ? TableShow : SpaceShow}</div>
       </div>
     </Con>
   )
@@ -82,15 +77,13 @@ export default observer(function BedSituation () {
 
 const Con = styled.div`
   .tableCon {
+    width: 100%;
     table {
-      width: 100%;
+      margin: 0 auto;
+      /* width: 100%; */
       border: 1px solid #d6d6d6;
       border-top: none;
       /* 整体字体设置下*/
-      font-size: 12px;
-      font-family: PingFangSC-Medium;
-      font-weight: 500;
-      color: rgba(103, 103, 103, 1);
       /* 整体字体设置 上*/
       border-collapse: collapse;
       text-align: center;
@@ -98,33 +91,42 @@ const Con = styled.div`
       th {
         box-sizing: border-box;
         border: 1px solid #d6d6d6;
-        height: 37px;
         background: rgba(242, 244, 245, 1);
+        min-width: 90px;
       }
       /* 设置整体td */
       td {
         box-sizing: border-box;
         border: 1px solid #d6d6d6;
         border-top: none;
-        height: 37px;
+        min-width: 90px;
       }
-    }
-    .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
-        width: 3%;
+        min-width: 60px;
       }
-    }
-    tbody {
-      tr:nth-of-type(2n + 2) {
-        background: rgba(242, 244, 245, 1);
-      }
-      .addRowClass {
-        background: rgba(228, 233, 235, 1) !important;
+      th:nth-of-type(2) {
+        box-sizing: border-box;
+        min-width: 70px;
       }
       td:nth-of-type(1) {
         box-sizing: border-box;
-        width: 3%;
+        min-width: 60px;
+      }
+      td:nth-of-type(2) {
+        box-sizing: border-box;
+        min-width: 70px;
+      }
+    }
+    .tableHead {
+      margin: 0 auto;
+    }
+    tbody {
+      /* tr:nth-of-type(2n + 2) {
+        background: rgba(242, 244, 245, 1);
+      } */
+      .addRowClass {
+        background: rgba(228, 233, 235, 1) !important;
       }
     }
   }
@@ -148,7 +150,8 @@ const Con = styled.div`
   }
 `
 const SpaceCon = styled.div`
-  margin: 20px auto;
+  margin: 0px auto;
+  margin-top: 100px;
   /* width: 200px; */
   text-align: center;
   .spaceFont {
