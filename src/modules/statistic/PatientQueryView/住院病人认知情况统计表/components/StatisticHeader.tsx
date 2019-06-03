@@ -3,13 +3,16 @@ import React, { useState, useEffect } from 'react'
 // import SelectDepartment from '../common/SelectDepartment'
 import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
+import { authStore } from 'src/stores/index'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
+import { observer } from 'mobx-react-lite'
+import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message, Select } from 'antd'
 import emitter from 'src/libs/ev'
 const { Option } = Select
-// import { observer } from 'mobx-react-lite'
-export default function BedSituation () {
+export default observer(function BedSituation () {
   const [count, setCount] = useState(0)
+  const [typeGet, setTypeGet] = useState('出院')
   // const [getMethods, setGetMethods] = useState(() => null)
   useEffect(() => {
     console.log(count, setCount)
@@ -38,7 +41,7 @@ export default function BedSituation () {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象
       a.href = href
-      a.download = filename // 自定义文件名
+      a.download = filename // 自定义文件名u
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(href)
@@ -54,12 +57,19 @@ export default function BedSituation () {
   }
 
   const exportButtonClick = () => {
-    StatisticsApi.postNurseScheduling(false).then((res) => {
+    const postDate = {
+      startDate: statisticViewModel.startDate,
+      endDate: statisticViewModel.endDate,
+      deptCode: authStore.selectedDeptCode,
+      type: typeGet
+    }
+    StatisticsApi.patientStatisticsExcel(postDate).then((res) => {
       fileDownload(res)
     })
   }
   const selectChange = (value: any) => {
     emitter.emit('住院病人认知情况统计表类型', value)
+    setTypeGet(value)
     console.log('value66666666666', value)
   }
   return (
@@ -86,7 +96,7 @@ export default function BedSituation () {
       </Button>
     </Con>
   )
-}
+})
 
 const Con = styled.div`
   display: flex;

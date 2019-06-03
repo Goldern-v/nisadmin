@@ -16,7 +16,7 @@ export default function BedSituation () {
     StatisticsApi.postNurseByShiftView(changeClass, classItem).then((res: any) => {
       if (res.data) {
         let addLength = 8 - res.data.length
-        if (addLength > 0) {
+        if (addLength > 0 ) {
           for (let i = 0; i < addLength; i++) {
             res.data.push({ 序号: '' })
           }
@@ -209,7 +209,7 @@ const Con = styled.div`
           padding: 0;
           border: 1px solid #d6d6d6;
           background: rgba(242, 244, 245, 1);
-          min-width: 80px;
+          min-width: 60px;
           font-weight: bold;
         }
         /* 设置整体td */
@@ -217,7 +217,7 @@ const Con = styled.div`
           box-sizing: border-box;
           padding: 0;
           border: 1px solid #d6d6d6;
-          min-width: 80px;
+          min-width: 60px;
           border-top: none;
           /* width: 6%; */
         }

@@ -17,7 +17,7 @@ export default function BedSituation (props: Props) {
     StatisticsApi.postNurseByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
       if (res.data) {
         let addLength = 8 - res.data.length
-        if (addLength > 0) {
+        if (addLength > 0&& addLength !== 8) {
           for (let i = 0; i < addLength; i++) {
             res.data.push({ 序列: '' })
           }

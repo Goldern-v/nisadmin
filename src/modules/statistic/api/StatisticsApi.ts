@@ -199,6 +199,7 @@ class StatisticsApi extends BaseApiService {
   }
 
   //// 患者查询统计模块
+  // 住院病人认知情况统计表 查询
   public async patientStatistics (exportData: any = true) {
     let cacheStart = exportData.startDate + ` 00:00:00`
     let cacheEnd = exportData.endDate + ` 00:00:00`
@@ -213,6 +214,22 @@ class StatisticsApi extends BaseApiService {
     }
     // let trancePostData = this.stringify(postData)
     return this.post(`/patientStatistics/getList`, postData)
+  }
+
+  public async patientStatisticsExcel (exportData: any = true) {
+    let cacheStart = exportData.startDate + ` 00:00:00`
+    let cacheEnd = exportData.endDate + ` 00:00:00`
+
+    let postData = {
+      // startDate: cacheStart,
+      // endDate: cacheEnd,
+      startDate: '2019-3-13 00:00:00',
+      endDate: '2019-3-14 00:00:00',
+      deptCode: exportData.deptCode,
+      type: exportData.type
+    }
+    // let trancePostData = this.stringify(postData)
+    return this.post(`/patientStatistics/exportExcel`, postData)
   }
 }
 
