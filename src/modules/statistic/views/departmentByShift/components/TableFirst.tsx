@@ -209,7 +209,7 @@ const Con = styled.div`
           padding: 0;
           border: 1px solid #d6d6d6;
           background: rgba(242, 244, 245, 1);
-          min-width: 80px;
+          min-width: 60px;
           font-weight: bold;
         }
         /* 设置整体td */
@@ -217,7 +217,7 @@ const Con = styled.div`
           box-sizing: border-box;
           padding: 0;
           border: 1px solid #d6d6d6;
-          min-width: 80px;
+          min-width: 60px;
           border-top: none;
           /* width: 6%; */
         }

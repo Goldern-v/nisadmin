@@ -4,6 +4,7 @@ import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
 import React, { useState, useEffect } from 'react'
 import { Spin } from 'antd'
+import MidHeader from './MidHeader'
 export default function BedSituation () {
   const [leftList, setLeftList] = useState([])
   const [infoList, setInfoList] = useState([])
@@ -68,8 +69,9 @@ export default function BedSituation () {
     <Wrapper>
       <ScrollCon>
         <Container>
-          <HisName>东莞市厚街医院</HisName>
-          <Title>东莞市厚街医院</Title>
+          {/* <HisName>东莞市厚街医院</HisName>
+          <Title>东莞市厚街医院</Title> */}
+          <MidHeader />
           <Info>
             {infoList.map((item: any) => (
               <InfoItem>

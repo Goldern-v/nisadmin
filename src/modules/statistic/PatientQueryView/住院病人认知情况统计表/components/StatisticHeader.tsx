@@ -82,7 +82,7 @@ export default function BedSituation () {
         查询
       </Button>
       <Button style={{ margin: '0 10px', width: '90px' }} onClick={exportButtonClick}>
-        导出excl
+        导出Excel
       </Button>
     </Con>
   )

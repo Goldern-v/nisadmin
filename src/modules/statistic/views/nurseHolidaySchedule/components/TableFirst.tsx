@@ -14,7 +14,15 @@ export default observer(function BedSituation (props: Props) {
   const [bodyTable, setBodyTable]: any = useState([])
   const postNurseHolidayScheduleMethod = () =>
     StatisticsApi.postNurseHolidaySchedule().then((res) => {
-      setBodyTable(res.data)
+      if (res.data) {
+        let addLength = 8 - res.data.length
+        if (addLength > 0) {
+          for (let i = 0; i < addLength; i++) {
+            res.data.push({ 序列: '' })
+          }
+        }
+        setBodyTable(res.data)
+      }
     })
   useEffect(() => {
     postNurseHolidayScheduleMethod()
@@ -43,7 +51,7 @@ export default observer(function BedSituation (props: Props) {
     interfaceTdDom = bodyTable.map((itemTr: any, index: number) => (
       <tr key={index} onClick={trClickChange}>
         {interfaceThData.map((itemTd: any, indexTd: number) => {
-          if (itemTd === '序号') {
+          if (itemTd === '序列') {
             return <td key={indexTd}>{index + 1}</td>
           } else {
             return <td key={indexTd}>{itemTr[itemTd]}</td>

@@ -11,10 +11,16 @@ export interface Props {
 }
 export default observer(function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
-  const [bodyTable, setBodyTable]:any = useState([])
+  const [bodyTable, setBodyTable]: any = useState([])
   const postDepartmentByMonthMethod = () =>
     StatisticsApi.postDepartmentByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
-      if (res && res.data) {
+      if (res.data) {
+        let addLength = 8 - res.data.length
+        if (addLength > 0) {
+          for (let i = 0; i < addLength; i++) {
+            res.data.push({ 序列: '' })
+          }
+        }
         setBodyTable(res.data)
       }
     })
@@ -49,7 +55,7 @@ export default observer(function BedSituation (props: Props) {
     interfaceTdDom = bodyTable.map((itemTr: any, index: number) => (
       <tr key={index} onClick={trClickChange}>
         {interfaceThData.map((itemTd: any, indexTd: number) => {
-          if (itemTd === '序号') {
+          if (itemTd === '序列') {
             return <td key={indexTd}>{index + 1}</td>
           } else {
             return <td key={indexTd}>{itemTr[itemTd]}</td>
@@ -57,7 +63,7 @@ export default observer(function BedSituation (props: Props) {
         })}
       </tr>
     ))
-    
+
     TableShow = (
       <table>
         <thead>

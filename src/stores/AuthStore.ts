@@ -30,6 +30,9 @@ export default class AuthStore {
   @computed
   public get selectedDeptNameAdd () {
     try {
+      if (this.selectedDeptName === '全院') {
+        return '全院' + appStore.match.params.name
+      }
       return (
         this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name + appStore.match.params.name
       )
@@ -41,6 +44,9 @@ export default class AuthStore {
   @computed
   public get selectedDeptNameOnly () {
     try {
+      if (this.selectedDeptName === '全院') {
+        return '全院'
+      }
       return this!.deptList.find((item: DeptType) => item.code === this.selectedDeptCode)!.name
     } catch (error) {
       return ''
