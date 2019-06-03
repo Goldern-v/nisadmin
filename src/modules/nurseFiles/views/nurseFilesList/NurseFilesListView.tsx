@@ -38,7 +38,7 @@ const columns: ColumnProps<any>[] = [
     title: '科室',
     dataIndex: 'deptName',
     key: 'deptName',
-    width: 100,
+    width: 120,
     align: 'center'
   },
   {
@@ -139,7 +139,7 @@ const columns: ColumnProps<any>[] = [
     render (text: any, row: any) {
       return (
         <DoCon>
-          <span onClick={() => onDoubleClick(row)}>操作</span>
+          <span onClick={() => onDoubleClick(row)}>查看</span>
         </DoCon>
       )
     }
@@ -177,6 +177,7 @@ export default observer(function NurseFilesListView () {
             onDoubleClick: () => onDoubleClick(record)
           }
         }}
+        loading={nurseFilesListViewModel.listSpinning}
       />
       <PaginationCon rowNum={rowNum} />
     </Wrapper>

@@ -10,6 +10,8 @@ export interface Props extends TableProps<any> {
   wrapperStyle?: any
   tableStyle?: any
   type?: any
+  /** 空行数量，默认10 */
+  spaceRowNumber?: any
   /**多余的高度 */
   surplusHeight?: number
   /** 多余的宽度 */
@@ -38,8 +40,9 @@ export default function BaseTable (props: Props) {
   try {
     if (option.type.includes('spaceRow')) {
       /** 设置空行 */
-      if (option.dataSource.length < 10) {
-        while (option.dataSource.length < 10) {
+      let spaceRowNumber = props.spaceRowNumber || 10
+      if (option.dataSource.length < spaceRowNumber) {
+        while (option.dataSource.length < spaceRowNumber) {
           option.dataSource.push({})
         }
       }
