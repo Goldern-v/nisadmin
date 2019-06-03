@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import TableFirst from './components/TableFirst'
 import { Button, Radio } from 'antd'
 import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeader from '../../common/StatisticMIdHeader'
+import StatisticMIdHeaderDepartment from '../../common/StatisticMIdHeaderDepartment'
 import TableModel from '../../common/TableModel'
 // import TableDate from './components/TableData'
 // const ButtonGroup = Button.Group
@@ -19,7 +19,7 @@ export default function StatisticView () {
     <Con>
       <StatisticHeader />
       <TableCon>
-        <StatisticMIdHeader />
+        <StatisticMIdHeaderDepartment />
         {/* 科室节假日排班表*/}
         <TableFirst />
       </TableCon>

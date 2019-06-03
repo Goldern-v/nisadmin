@@ -5,7 +5,7 @@ import TableFirst from './components/TableFirst'
 import TableSecond from './components/TableSecond'
 import { Button, Radio } from 'antd'
 import StatisticHeader from './components/StatisticHeader'
-import StatisticMIdHeader from '../../common/StatisticMIdHeader'
+import StatisticMIdHeaderDepartment from '../../common/StatisticMIdHeaderDepartment'
 import TableModel from '../../common/TableModel'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 // import TableDate from './components/TableData'
@@ -29,7 +29,7 @@ export default function StatisticView () {
     <Con>
       <StatisticHeader />
       <TableCon>
-        <StatisticMIdHeader />
+        <StatisticMIdHeaderDepartment />
         <div className='buttonCon'>
           <Radio.Group value={showType} buttonStyle='solid' onChange={selectShowType}>
             <Radio.Button value='按时数'>按时数</Radio.Button>

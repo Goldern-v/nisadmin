@@ -103,9 +103,9 @@ const Wrapper = styled.div`
   .ant-table-thead {
     background: rgba(242, 244, 245, 1);
   }
-  tbody tr:nth-of-type(2n) {
+  /* tbody tr:nth-of-type(2n) {
     background: rgba(242, 244, 245, 1);
-  }
+  } */
 
   .ant-table-placeholder {
     height: ${(p: any) => `calc(100vh - ${p.surplusHeight - 20}px)`};

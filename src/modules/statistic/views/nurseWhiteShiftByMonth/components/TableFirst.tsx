@@ -12,7 +12,7 @@ export interface Props {
 }
 export default observer(function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
-  const [bodyTable, setBodyTable] = useState([{}])
+  const [bodyTable, setBodyTable]:any = useState([])
   const postNurseByMonthMethod = () =>
     StatisticsApi.postNurseByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
       if (res && res.data) {
@@ -68,23 +68,17 @@ export default observer(function BedSituation (props: Props) {
       </table>
     )
   }
-  let SpaceShow
-  if (!interfaceThDom && !interfaceTdDom) {
-    SpaceShow = (
-      <SpaceCon>
-        <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
-        <div className='spaceFont'>暂无数据</div>
-      </SpaceCon>
-    )
-  }
+  const SpaceShow = (
+    <SpaceCon>
+      <embed src={require('../../../img/spacePhoto.svg')} type='image/svg+xml' />
+      <div className='spaceFont'>暂无数据</div>
+    </SpaceCon>
+  )
 
   return (
-    <Con>
+    <Con className='addClass'>
       <div className='tableCon'>
-        <div className='tableHead'>
-          {TableShow}
-          {SpaceShow}
-        </div>
+        <div className='tableHead'>{TableShow ? TableShow : SpaceShow}</div>
       </div>
     </Con>
   )

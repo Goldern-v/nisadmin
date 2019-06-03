@@ -28,6 +28,12 @@ export default observer(function BedSituation () {
     }
     StatisticsApi.patientStatistics(postDate).then((res) => {
       if (res.data) {
+        let addLength = 6 - res.data.length
+        if (addLength > 0) {
+          for (let i = 0; i < addLength; i++) {
+            res.data.push({})
+          }
+        }
         setTableDate(res.data)
       }
     })
@@ -115,7 +121,7 @@ export default observer(function BedSituation () {
       title: '诊断',
       dataIndex: 'diagnosis',
       key: 'diagnosis',
-      width: 200,
+      width: 400,
       align: 'left'
     },
     {
