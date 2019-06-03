@@ -48,8 +48,8 @@ export default function NurseCard (props: Props) {
   return (
     <Padding rowNum={rowNum}>
       <Wrapper onClick={() => history.push(`/nurseFileDetail/baseInfo?${qs.stringify(data)}`)}>
-        <TriangleLabel color={TITLE_COLOR[data.title]} />
-        {data.status !== '在岗' && <SquareLabel>{data.status}</SquareLabel>}
+        <TriangleLabel color={TITLE_COLOR[data.newTitle]} />
+        {data.status && data.status !== '在岗' && <SquareLabel>{data.status}</SquareLabel>}
         <HeadImg src={DEFALT_HEADIMG} />
         <Name>
           {data.empName}
