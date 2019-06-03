@@ -86,17 +86,18 @@ const Wrapper = styled.div`
     text-align: center;
   }
   .ant-table-wrapper {
-    /* th {
+    th {
       box-sizing: border-box;
       height: 30px !important;
       font-size: 14px !important;
       font-weight: bold;
-    } */
+    }
     td {
       /* padding: 0 8px !important; */
       font-size: 13px !important;
       padding: 0 !important;
       box-sizing: border-box;
+      font-weight: 600;
       height: ${(p) => p.theme.$tableRowHeight} !important;
     }
     /* 补充th下降的高度 */

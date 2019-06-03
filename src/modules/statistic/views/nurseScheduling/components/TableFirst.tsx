@@ -11,10 +11,18 @@ export interface Props {
 }
 export default observer(function BedSituation (props: Props) {
   // const [count, setCount] = useState(0)
-  const [bodyTable, setBodyTable]:any = useState([])
+  const [bodyTable, setBodyTable]: any = useState([])
   const postNurseScheduling = () =>
     StatisticsApi.postNurseScheduling().then((res) => {
-      setBodyTable(res.data)
+      if (res.data) {
+        let addLength = 8 - res.data.length
+        if (addLength > 0 && addLength !== 8) {
+          for (let i = 0; i < addLength; i++) {
+            res.data.push({ 序列: '' })
+          }
+        }
+        setBodyTable(res.data)
+      }
     })
 
   useEffect(() => {
@@ -51,7 +59,7 @@ export default observer(function BedSituation (props: Props) {
     interfaceTdDom = bodyTable.map((itemTr: any, index: number) => (
       <tr key={index} onClick={trClickChange}>
         {interfaceThData.map((itemTd: any, indexTd: number) => {
-          if (itemTd === '序号') {
+          if (itemTd === '序列') {
             return <td key={indexTd}>{index + 1}</td>
           } else {
             return <td key={indexTd}>{itemTr[itemTd]}</td>
@@ -86,18 +94,22 @@ export default observer(function BedSituation (props: Props) {
 
 const Con = styled.div`
   .tableCon {
+    width: 100%;
     table {
-      width: 100%;
+      margin: 0 auto;
+      /* width: 100%; */
       border: 1px solid #d6d6d6;
       border-top: none;
+      /* 整体字体设置下*/
+      /* 整体字体设置 上*/
       border-collapse: collapse;
       text-align: center;
       /* 设置整体th */
       th {
         box-sizing: border-box;
         border: 1px solid #d6d6d6;
-        min-width: 90px;
         background: rgba(242, 244, 245, 1);
+        min-width: 90px;
       }
       /* 设置整体td */
       td {
@@ -106,28 +118,25 @@ const Con = styled.div`
         border-top: none;
         min-width: 90px;
       }
-    }
-    .tableHead {
       th:nth-of-type(1) {
         box-sizing: border-box;
         min-width: 60px;
       }
       th:nth-of-type(2) {
         box-sizing: border-box;
-        min-width: 80px;
+        min-width: 70px;
       }
-      th:nth-of-type(3) {
-        box-sizing: border-box;
-        min-width: 80px;
-      }
-      th:nth-of-type(4) {
+      td:nth-of-type(1) {
         box-sizing: border-box;
         min-width: 60px;
       }
-      th:nth-of-type(5) {
+      td:nth-of-type(2) {
         box-sizing: border-box;
-        min-width: 60px;
+        min-width: 70px;
       }
+    }
+    .tableHead {
+      margin: 0 auto;
     }
     tbody {
       /* tr:nth-of-type(2n + 2) {
@@ -154,7 +163,7 @@ const Con = styled.div`
       }
       td:nth-of-type(5) {
         box-sizing: border-box;
-        min-width: 60px;
+        min-width: 100px;
       }
     }
   }

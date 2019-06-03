@@ -23,17 +23,18 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
   th{
-    height:30px !important;
-    font-size:14px !important;
+    height: 30px !important;
+    font-size: 14px !important;
     font-weight: bold !important;
   }
   td{
-    height:26px !important;
-    font-size:13px !important;
+    height: 26px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
   }
   * {
     font-family: simsun,Times New Roman,Georgia,Serif !important ;
-    font-size:14px
+    font-size: 14px;
   }
 
 

@@ -217,6 +217,7 @@ export default observer(function BedSituation () {
   emitter.addListener('住院病人认知情况统计表查询', () => {
     getTableMethods()
   })
+
   return (
     <Con>
       <TablleScroll>
