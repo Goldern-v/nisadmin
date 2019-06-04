@@ -1,14 +1,15 @@
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Place } from 'src/components/common'
 import { Select, Input, Button } from 'antd'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import AddNursingModal from '../modal/AddNursingModal'
 import DeptSelect from 'src/components/DeptSelect'
+import { observer } from 'mobx-react-lite'
 
 const Option = Select.Option
 
-export default function SelectCon (props: any, context: any) {
+export default observer(function SelectCon (props: any, context: any) {
   const [visible, setVisible] = useState(false)
   const handleOk = () => {
     setVisible(false)
@@ -25,8 +26,15 @@ export default function SelectCon (props: any, context: any) {
     nurseFilesListViewModel.loadNursingList()
   }
   const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value, 'e.target.value')
     nurseFilesListViewModel.filterText = e.target.value
   }
+
+  useEffect(() => {
+    return () => {
+      nurseFilesListViewModel.filterText = ''
+    }
+  }, [])
 
   return (
     <React.Fragment>
@@ -35,7 +43,12 @@ export default function SelectCon (props: any, context: any) {
         <Place />
         <span>科室：</span>
         <DeptSelect onChange={onChange} />
-        <Input placeholder='请输入搜索关键字' style={{ width: 160 }} onChange={SearchByText} />
+        <Input
+          placeholder='请输入搜索关键字'
+          value={nurseFilesListViewModel.filterText}
+          style={{ width: 160 }}
+          onChange={SearchByText}
+        />
         <Button type='primary' onClick={onSearch}>
           搜索
         </Button>
@@ -44,7 +57,7 @@ export default function SelectCon (props: any, context: any) {
       <AddNursingModal visible={visible} handleOk={handleOk} handleCancel={handleCancel} />
     </React.Fragment>
   )
-}
+})
 const Wrapper = styled.div`
   display: flex;
   align-items: center;

@@ -82,22 +82,22 @@ const columns: ColumnProps<any>[] = [
   },
   {
     title: '层级',
-    dataIndex: 'currentLevel',
-    key: 'currentLevel',
+    dataIndex: 'nurseHierarchy',
+    key: 'nurseHierarchy',
     width: 70,
     align: 'center'
   },
   {
     title: '职务',
-    dataIndex: 'post',
-    key: 'post',
+    dataIndex: 'job',
+    key: 'job',
     width: 70,
     align: 'center'
   },
   {
     title: '最高学历',
-    dataIndex: 'education',
-    key: 'education',
+    dataIndex: 'highestEducation',
+    key: 'highestEducation',
     width: 90,
     align: 'center'
   },

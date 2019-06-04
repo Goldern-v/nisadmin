@@ -12,35 +12,34 @@ import BaseTabs from 'src/components/BaseTabs'
 const TABS_LIST_NURSE = [
   {
     title: '待护士长审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' />
+    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit />
   },
   {
     title: '护士长审核退回',
-    component: <AuditsTableDHSZ type='auditedFailNurse' />
+    component: <AuditsTableDHSZ type='auditedFailNurse' needAudit={false} />
   },
   {
     title: '待护理部审核',
-    component: <AuditsTableDHSZ type='waitAuditedDepartment' />
+    component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit={false} />
   },
   {
     title: '审核通过',
-    component: <AuditsTableDHSZ type='auditedSuccessDepartment' />
+    component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
   }
 ]
 
 const TABS_LIST_NURSING = [
   {
     title: '待护理部审核',
-    component: <AuditsTableDHSZ type='waitAuditedDepartment' />
+    component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit />
   },
-
   {
-    title: '护理部审核退回',
-    component: <AuditsTableDHSZ type='auditedFailDepartment' />
+    title: '待护士长审核',
+    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit={false} />
   },
   {
     title: '审核通过',
-    component: <AuditsTableDHSZ type='auditedSuccessDepartment' />
+    component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
   }
 ]
 const tabShow = () => {

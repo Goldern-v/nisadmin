@@ -75,7 +75,7 @@ export default observer(function BaseInfo () {
           label: '审核',
           onClick: () => {
             globalModal.auditModal.show({
-              id: idData,
+              empNo: idData,
               type: 'nurseInformation',
               // empNo: appStore.queryObj.empNo,
               title: '审核基础信息',
@@ -152,7 +152,7 @@ export default observer(function BaseInfo () {
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
       setInfo(data)
-      setIdData(data.id)
+      setIdData(data.empNo)
       setTableData([
         {
           性别: sexEnum[data.sex],

@@ -88,11 +88,11 @@ export default class ScheduleStore {
 
   @action
   public getDeptCode = () => {
-    return this.department.deptCode
+    return authStore.selectedDeptCode
   }
 
   @action
   public getDeptName = () => {
-    return this.department.deptName
+    return authStore.selectedDeptName
   }
 }

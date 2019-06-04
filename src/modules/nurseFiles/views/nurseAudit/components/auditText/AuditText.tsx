@@ -5,13 +5,14 @@ import Format from './Format'
 interface Props {
   row?: any
   getTableData?: any
+  needAudit: boolean
 }
 
 export default function AuditText (props: Props) {
   let { row, getTableData } = props
   const [count, setCount] = useState(0)
 
-  return Permission(row) ? (
+  return props.needAudit ? (
     <Wrapper onClick={() => Format(row, getTableData)}>审核</Wrapper>
   ) : (
     <Wrapper onClick={() => Format(row, getTableData)}>查看</Wrapper>

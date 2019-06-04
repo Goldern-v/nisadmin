@@ -11,6 +11,7 @@ import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
 export interface Props {
   type: string
+  needAudit: boolean
 }
 
 export default function AuditsTableDHSZ (props: Props) {
@@ -83,7 +84,11 @@ export default function AuditsTableDHSZ (props: Props) {
         `
         return (
           <DoCon>
-            <AuditText row={row} getTableData={() => emitter.emit('refreshNurseAuditTable')} />
+            <AuditText
+              needAudit={props.needAudit}
+              row={row}
+              getTableData={() => emitter.emit('refreshNurseAuditTable')}
+            />
           </DoCon>
         )
       }
@@ -133,7 +138,7 @@ export default function AuditsTableDHSZ (props: Props) {
       <GroupPostBtn onClick={() => onload(current)} style={{ right: 120 }}>
         刷新
       </GroupPostBtn>
-      <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>
+      {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>}
 
       <BaseTable
         dataSource={tableData}
