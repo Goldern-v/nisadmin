@@ -29,6 +29,14 @@ export default function ToolBar () {
       <div style={{ flex: 1 }} />
       <Button
         onClick={(e: any) => {
+          emitter.emit('刷新人员列表')
+        }}
+        style={{ marginLeft: 20, marginRight: 0 }}
+      >
+        刷新
+      </Button>
+      <Button
+        onClick={(e: any) => {
           // 获取选中人员
           // console.log('获取选中人员', e)
           // return
@@ -37,13 +45,13 @@ export default function ToolBar () {
             userList = userList.filter((u: any) => {
               return u.rangeShow !== null
             })
-            service.scheduleUserApiService.save(userList).then((res) => {
+            return service.scheduleUserApiService.save(userList).then((res) => {
               message.success('保存排班人员设置成功')
               console.log('保存排班人员', res)
             })
           })
         }}
-        style={{ marginLeft: 20, marginRight: 10 }}
+        style={{ marginLeft: 20, marginRight: 0 }}
       >
         保存
       </Button>

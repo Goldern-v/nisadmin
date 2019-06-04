@@ -42,7 +42,7 @@ function AddNursingModal (props: Props) {
     visible,
     handleOk,
     handleCancel,
-    form: { getFieldDecorator, validateFields }
+    form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
   const handleSubmit = (e: any) => {
     validateFields((err, value) => {
@@ -57,6 +57,7 @@ function AddNursingModal (props: Props) {
         return
       }
       if (value.birthday) value.birthday = value.birthday.format('YYYY-MM-DD')
+      if (value.deptCode) value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
       nurseFilesService.saveOrUpdate(value).then((res) => {
         message.success('操作成功')
         nurseFilesListViewModel.loadNursingList()
@@ -64,8 +65,15 @@ function AddNursingModal (props: Props) {
       })
     })
   }
+
+  useEffect(() => {
+    if (visible) {
+      resetFields()
+    }
+  }, [visible])
+
   return (
-    <Modal title='添加护士' visible={visible} onOk={onSave} onCancel={handleCancel} okText='保存'>
+    <Modal title='添加护士' visible={visible} onOk={onSave} onCancel={handleCancel} okText='保存' forceRender>
       <Form>
         <Form.Item {...formItemLayout} label='姓名'>
           {getFieldDecorator('empName', {
@@ -109,7 +117,7 @@ function AddNursingModal (props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='工号'>
-          {getFieldDecorator('gh', {
+          {getFieldDecorator('empNo', {
             rules: [{ required: true, message: '工号不能为空' }]
           })(<Input />)}
         </Form.Item>

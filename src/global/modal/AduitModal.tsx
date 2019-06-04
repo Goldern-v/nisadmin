@@ -19,7 +19,8 @@ export interface Props extends ModalComponentProps {
   fileData?: any
   title?: string
   type: string
-  id: string
+  id?: string
+  empNo?: string
   getTableData?: () => {}
 }
 
@@ -51,7 +52,7 @@ export default function aduitModal (props: Props) {
       setOpinion('')
       setSpinning(true)
       if (props.type === 'nurseInformation') {
-        modalService.getByIdAuditeDis(props.type).then((res) => {
+        modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
           setSpinning(false)
           let data = res.data
           let tableData = props.tableFormat.map((item: any) => {

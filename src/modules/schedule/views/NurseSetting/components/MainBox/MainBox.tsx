@@ -25,12 +25,13 @@ export interface Props extends RouteComponentProps {}
 export default function MainBox () {
   const [count, setCount] = useState(0)
   const [userList, setUserList] = useState(new Array())
+  const [loading, setLoading] = useState(false)
 
   const onPressEnter = (e: any, record: any) => {
     record.sortValue = ~~e.target.value
-    userList.sort((a, b) => {
-      return ~~a.sortValue - ~~b.sortValue
-    })
+    // userList.sort((a, b) => {
+    //   return ~~a.sortValue - ~~b.sortValue
+    // })
     let newUserList = JSON.parse(JSON.stringify(userList))
     setUserList(new Array())
     console.log('onPressEnter', e, e.target.value, record, userList)
@@ -64,11 +65,11 @@ export default function MainBox () {
         record.id ? (
           <span>
             <Input
-              onPressEnter={(e: any) => {
+              onChange={(e: any) => {
                 onPressEnter(e, record)
               }}
               style={{ background: 'transparent', border: 'none' }}
-              defaultValue={index + 1}
+              defaultValue={text}
             />
           </span>
         ) : (
@@ -113,20 +114,20 @@ export default function MainBox () {
     },
     {
       title: '职称',
-      dataIndex: 'title',
+      dataIndex: 'newTitle',
       width: '10%',
-      key: 'title'
+      key: 'newTitle'
     },
     {
-      title: '现任能级',
-      dataIndex: 'currentLevel',
-      key: 'currentLevel',
+      title: '层级',
+      dataIndex: 'nurseHierarchy',
+      key: 'nurseHierarchy',
       width: '10%'
     },
     {
       title: '职务',
-      dataIndex: 'roleJurisdict',
-      key: 'roleJurisdict',
+      dataIndex: 'job',
+      key: 'job',
       width: '10%'
     }
   ]
@@ -217,21 +218,31 @@ export default function MainBox () {
   useEffect(() => {
     getUserList()
 
-    emitter.removeAllListeners('获取选中人员列表')
-
-    emitter.addListener('获取选中人员列表', (callback: any) => {
-      if (callback) {
-        callback(allUser)
-      }
-    })
     //
     console.log(count, setCount)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
+  emitter.removeAllListeners('获取选中人员列表')
+
+  emitter.addListener('获取选中人员列表', (callback: any) => {
+    if (callback) {
+      callback(userList).then((res: any) => {
+        getUserList()
+      })
+    }
+  })
+  emitter.removeAllListeners('刷新人员列表')
+
+  emitter.addListener('刷新人员列表', () => {
+    getUserList()
+  })
+
   const getUserList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
+    setLoading(true)
     service.scheduleUserApiService.getByDeptCode(deptCode).then((res) => {
-      console.log('查找排班人员res', res, data)
+      setLoading(false)
+
       let oneUser = new Object()
       allUser = new Array()
       // columns
@@ -289,6 +300,7 @@ export default function MainBox () {
 
   return (
     <Wrapper>
+      {/* {JSON.stringify(userList)} */}
       <BaseTable
         bordered
         size='small'
@@ -298,6 +310,7 @@ export default function MainBox () {
         pagination={false}
         surplusHeight={240}
         onRow={onRow}
+        loading={loading}
       />
       {/* <Table
         bordered
