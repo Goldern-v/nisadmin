@@ -34,7 +34,7 @@ const columns: any = [
     title: '物流创建科室',
     dataIndex: '物流创建科室',
     key: '物流创建科室',
-    width: 120,
+    width: 150,
     align: 'center'
   },
   {
@@ -76,7 +76,7 @@ const columns: any = [
     title: '最后处理人',
     dataIndex: '最后处理人',
     key: '最后处理人',
-    width: 100,
+    width: 120,
     align: 'center'
   },
   {
