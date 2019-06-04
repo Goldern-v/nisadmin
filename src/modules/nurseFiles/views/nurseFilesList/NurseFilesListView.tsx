@@ -112,7 +112,7 @@ const columns: ColumnProps<any>[] = [
     title: '籍贯',
     dataIndex: 'nativePlace',
     key: 'nativePlace',
-    width: 70,
+    width: 100,
     align: 'center'
   },
   {
