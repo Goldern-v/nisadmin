@@ -3,11 +3,13 @@ import React, { useState } from 'react'
 import { Place } from 'src/components/common'
 import { Select, Input, Button } from 'antd'
 import DeptSelect from 'src/components/DeptSelect'
+import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 
 export default function SelectCon () {
   const [visible, setVisible] = useState(false)
+  const [searchText, setSearchText] = useState('')
   const handleOk = () => {
     setVisible(false)
   }
@@ -16,21 +18,31 @@ export default function SelectCon () {
     setVisible(false)
   }
 
-  const onChange = (value: string) => {}
-  const onSearch = () => {}
+  const onChange = (value: string) => {
+    emitter.emit('refreshNurseAuditTable', searchText)
+  }
+  const onChangeSearchText = (e: any) => {
+    setSearchText(e.target.value)
+  }
+
+  const onSearch = () => {
+    emitter.emit('refreshNurseAuditTable', searchText)
+  }
   const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
   return (
     <React.Fragment>
       <Wrapper>
         <Title>审核管理</Title>
-        <Place />
-        {/* <span>科室：</span> */}
         {/* <DeptSelect onChange={onChange} /> */}
+        <Place />
+        <span>科室：</span>
+        <DeptSelect onChange={onChange} />
         <Input
           placeholder='输入要搜索的关键字，包括提交人，标题，审核意见'
           style={{ width: 360 }}
-          onChange={SearchByText}
+          value={searchText}
+          onChange={onChangeSearchText}
         />
         <Button type='primary' onClick={onSearch}>
           搜索

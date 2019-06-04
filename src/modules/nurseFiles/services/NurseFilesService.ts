@@ -211,7 +211,7 @@ export default class NurseFilesService extends BaseApiService {
   // 13 查找护士附件情况(护长)
   public async nurseAttachment (empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
-    return this.get(`/nurseAttachment/findByEmpNo//${empNo}`).then((res) => {
+    return this.get(`/nurseAttachment/findByEmpNoSubmit/${empNo}`).then((res) => {
       nurseFileDetailViewModal.pageSpinning = false
       return res
     })
@@ -220,7 +220,6 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseAttachmentAdd (obj: any) {
     return this.post(`/nurseAttachment/saveOrUpdate`, obj)
   }
-  
 
   // 15 新增添加附件
   // 该接口有问题
@@ -228,7 +227,6 @@ export default class NurseFilesService extends BaseApiService {
     this.stringify(obj)
     return this.post(`file/uploadNurse`, obj)
   }
-  
 
   /** 审核列表 */
   public auditeStatusNurse (status: string, pageIndex: number) {
@@ -237,6 +235,18 @@ export default class NurseFilesService extends BaseApiService {
       deptCode: authStore.selectedDeptCode,
       empNo: appStore.queryObj.empNo,
       pageIndex,
+      pageSize: 10
+    }
+    return this.post(`/auditeNurseFileIndex/findListAuditePC`, this.stringify(obj))
+  }
+
+  /** 审核科室列表 */
+  public auditeStatusNurseInDept (status: string, pageIndex: number, searchText?: any) {
+    let obj = {
+      status,
+      deptCode: authStore.selectedDeptCode,
+      pageIndex,
+      searchText,
       pageSize: 10
     }
     return this.post(`/auditeNurseFileIndex/findListAuditePC`, this.stringify(obj))
