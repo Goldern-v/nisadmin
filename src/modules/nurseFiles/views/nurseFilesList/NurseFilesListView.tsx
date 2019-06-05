@@ -33,7 +33,6 @@ const columns: ColumnProps<any>[] = [
     align: 'center',
     width: 50
   },
-
   {
     title: '科室',
     dataIndex: 'deptName',
@@ -63,7 +62,7 @@ const columns: ColumnProps<any>[] = [
     width: 70,
     align: 'center',
     render (sex: any) {
-      return sex == '0' ? '男' : sex == '1' ? '女' : ''
+      return sex === '0' ? '男' : sex === '1' ? '女' : ''
     }
   },
   {

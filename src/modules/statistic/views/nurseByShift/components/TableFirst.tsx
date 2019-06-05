@@ -4,6 +4,7 @@ import emitter from 'src/libs/ev'
 import service from 'src/services/api'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+import { Button } from 'antd'
 
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
@@ -16,9 +17,9 @@ export default function BedSituation () {
     StatisticsApi.postNurseByShiftView(changeClass, classItem).then((res: any) => {
       if (res.data) {
         let addLength = 8 - res.data.length
-        if (addLength > 0 ) {
+        if (addLength > 0) {
           for (let i = 0; i < addLength; i++) {
-            res.data.push({ 序号: '' })
+            res.data.push({ 序列: '' })
           }
         }
         setGetTableList(res.data)
@@ -42,7 +43,7 @@ export default function BedSituation () {
               let addLength = 8 - res.data.length
               if (addLength > 0) {
                 for (let i = 0; i < addLength; i++) {
-                  res.data.push({ 序号: '' })
+                  res.data.push({ 序列: '' })
                 }
               }
               setGetTableList(res.data)
@@ -67,7 +68,7 @@ export default function BedSituation () {
               let addLength = 8 - res.data.length
               if (addLength > 0) {
                 for (let i = 0; i < addLength; i++) {
-                  res.data.push({ 序号: '' })
+                  res.data.push({ 序列: '' })
                 }
               }
               setGetTableList(res.data)
@@ -102,7 +103,7 @@ export default function BedSituation () {
   // Cache Td DOM
   const cacheGetDom = tdCacheDate.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.序号}</td>
+      <td>{itemTr.序列}</td>
       <td>{itemTr.姓名}</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => (
         <td key={indexTd}>{itemTr[itemTd]}</td>
@@ -116,21 +117,13 @@ export default function BedSituation () {
   // td DOM
   const getTdDom = getTableList.map((itemTr: any, index: number) => (
     <tr key={index} onClick={trClickChange}>
-      <td>{itemTr.序号}</td>
+      <td>{index + 1}</td>
       <td>{itemTr.姓名}</td>
       {getShiftClass.map((itemTd: any, indexTd: number) => {
-        if (itemTd === '序号') {
-          return <td key={indexTd}>{index + 1}</td>
-        } else {
-          return <td key={indexTd}>{itemTr[itemTd]}</td>
-        }
+        return <td key={indexTd}>{itemTr[itemTd]}</td>
       })}
       {getCheckboxItem.map((itemTd: any, indexTd: number) => {
-        if (itemTd === '序号') {
-          return <td key={indexTd}>{index + 1}</td>
-        } else {
-          return <td key={indexTd}>{itemTr[itemTd]}</td>
-        }
+        return <td key={indexTd}>{itemTr[itemTd]}</td>
       })}
       <td>{itemTr.合计}</td>
     </tr>
@@ -143,11 +136,14 @@ export default function BedSituation () {
       </td>
     </SpaceCon>
   )
-
+  const testClick = () => {
+    console.log(getTableList)
+  }
   return (
     <Con>
       <div className='tableCon'>
         <div className='tableHead'>
+          <Button onClick={testClick}>test</Button>
           <table>
             <tr>
               <th>序号</th>

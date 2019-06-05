@@ -37,7 +37,8 @@ export default observer(function BedSituation () {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
     console.log('fileDownload', res)
-    if (res.data.type.indexOf('excel') > -1) {
+    // if (res.data.type.indexOf('excel') > -1) {
+    if (res.data) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象
       a.href = href
