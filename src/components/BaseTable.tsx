@@ -109,6 +109,9 @@ const Wrapper = styled.div`
   .ant-table-small > .ant-table-content > .ant-table-body {
     margin: 0 !important;
   }
+  .ant-table-body {
+    overflow: auto !important;
+  }
   .ant-table-thead {
     background: rgba(242, 244, 245, 1);
   }
@@ -124,8 +127,8 @@ const Wrapper = styled.div`
   }
 
   *::-webkit-scrollbar {
-    width: 7px;
-    /* height: 7px; */
+    width: 8px;
+    height: 8px;
     background-color: #eaeaea;
   }
   *::-webkit-scrollbar-track {
@@ -149,8 +152,8 @@ const Wrapper = styled.div`
 
   .ant-table-header {
     *::-webkit-scrollbar {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       background-color: rgb(242, 244, 245);
     }
     &::-webkit-scrollbar-track {

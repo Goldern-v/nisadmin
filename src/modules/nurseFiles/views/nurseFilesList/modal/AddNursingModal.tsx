@@ -123,7 +123,7 @@ function AddNursingModal (props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='学历'>
-          {getFieldDecorator('education', {
+          {getFieldDecorator('highestEducation', {
             rules: [{ required: true, message: '学历不能为空' }]
           })(
             <Select showSearch style={{ width: '100%' }} placeholder='选择学历'>
@@ -137,7 +137,7 @@ function AddNursingModal (props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='职称'>
-          {getFieldDecorator('title', {
+          {getFieldDecorator('newTitle', {
             rules: [{ required: true, message: '职称不能为空' }]
           })(
             <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
@@ -150,7 +150,7 @@ function AddNursingModal (props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='层级'>
-          {getFieldDecorator('currentLevel', {
+          {getFieldDecorator('nurseHierarchy', {
             rules: [{ required: true, message: '层级不能为空' }]
           })(
             <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
@@ -163,7 +163,7 @@ function AddNursingModal (props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='职务'>
-          {getFieldDecorator('post', {
+          {getFieldDecorator('job', {
             rules: [{ required: true, message: '职务不能为空' }]
           })(
             <Select showSearch style={{ width: '100%' }} placeholder='选择职务'>

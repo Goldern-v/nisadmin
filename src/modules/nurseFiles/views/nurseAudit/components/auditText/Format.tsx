@@ -24,19 +24,19 @@ export default function Format (row: any, getTableData: any) {
           },
           {
             籍贯: `nativePlace`,
-            职务: `post`
+            职务: `job`
           },
           {
             参加工作时间: `goWorkTime`,
             最高学历: `highestEducation`
           },
           {
-            技术职称: `title`,
+            技术职称: `newTitle`,
             护士执业证书编号: `zyzsNumber`
           },
           {
             身份证号: `cardNumber`,
-            社会团体职务: `data.socialGroup`
+            社会团体职务: `socialGroup`
           },
           {
             联系电话: `phone`,

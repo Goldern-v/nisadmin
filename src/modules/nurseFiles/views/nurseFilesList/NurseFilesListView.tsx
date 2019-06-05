@@ -91,7 +91,7 @@ const columns: ColumnProps<any>[] = [
     title: '职务',
     dataIndex: 'job',
     key: 'job',
-    width: 70,
+    width: 90,
     align: 'center'
   },
   {
@@ -169,7 +169,7 @@ export default observer(function NurseFilesListView () {
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={445}
+        surplusHeight={430}
         surplusWidth={80}
         type={['spaceRow']}
         onRow={(record: any) => {
