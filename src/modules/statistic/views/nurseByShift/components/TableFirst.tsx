@@ -112,6 +112,13 @@ export default function BedSituation () {
     </tr>
   ))
   // th DOM
+  // const getShiftClassDom = getShiftClass.map((item: any) => {
+  //   if (item === '合计') {
+  //     return <th key={item.toString()}>小计</th>
+  //   } else {
+  //     return <th key={item.toString()}>{item}</th>
+  //   }
+  // })
   const getShiftClassDom = getShiftClass.map((item: any) => <th key={item.toString()}>{item}</th>)
   const getCheckboxItemDom = getCheckboxItem.map((item: any) => <th key={item.toString()}>{item}</th>)
   // td DOM
@@ -136,14 +143,51 @@ export default function BedSituation () {
       </td>
     </SpaceCon>
   )
-  const testClick = () => {
-    console.log(getTableList)
+
+  const TotalDomMethod = (arr: any) => {
+    let totalArr: any = []
+    if (arr instanceof Array) {
+      arr.map((itemN: any, indexN: any) => {
+        totalArr.push(0)
+        getTableList.map((itemTr: any, index: number) => {
+          getShiftClass.map((itemTd: any, indexTd: number) => {
+            if (itemTr[itemTd] && itemTd === arr[indexN]) {
+              totalArr[indexN] += parseInt(itemTr[itemTd], 10) || ''
+            }
+          })
+        })
+        getTableList.map((itemTr: any, index: number) => {
+          getCheckboxItem.map((itemTd: any, indexTd: number) => {
+            if (itemTr[itemTd] && itemTd === arr[indexN]) {
+              totalArr[indexN] += parseInt(itemTr[itemTd], 10) || ''
+            }
+          })
+        })
+      })
+      let endTotal = 0
+      totalArr.map((item: any) => {
+        endTotal += parseInt(item, 10)
+      })
+      totalArr.push(endTotal)
+    }
+    let tdDom = totalArr.map((item: any, index: number) => {
+      return <td key={index}>{item}</td>
+    })
+    return (
+      <tr>
+        <td colSpan={2}>合计</td>
+        {tdDom}
+      </tr>
+    )
   }
+  // const testClick = () => {
+  //   console.log(getTableList)
+  // }
   return (
     <Con>
       <div className='tableCon'>
         <div className='tableHead'>
-          <Button onClick={testClick}>test</Button>
+          {/* <Button onClick={testClick}>test</Button> */}
           <table>
             <tr>
               <th>序号</th>
@@ -153,6 +197,7 @@ export default function BedSituation () {
               <th>小计</th>
             </tr>
             {getTdDom}
+            {TotalDomMethod(getShiftClass.concat(getCheckboxItem))}
           </table>
         </div>
         {/* <div className='tableMid'>
