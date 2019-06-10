@@ -9,38 +9,38 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: '护理单元',
+    dataIndex: 'wardName',
     key: '护理单元',
     align: 'center'
   },
   {
     title: '导管留置日数',
-    dataIndex: '导管留置日数',
+    dataIndex: 'indwelling_days',
     key: '导管留置日数',
     align: 'center'
   },
   {
     title: 'UEX例数',
-    dataIndex: 'UEX例数',
+    dataIndex: 'uex_cases',
     key: 'UEX例数',
     align: 'center'
   },
   {
     title: 'UEX发生率(例数/留置日数)',
-    dataIndex: 'UEX发生率(例数/留置日数)',
+    dataIndex: 'uex_ratio_byday',
     key: 'UEX发生率(例数/留置日数)',
     align: 'center'
   },
   {
     title: '导管置管例数',
-    dataIndex: '导管置管例数',
+    dataIndex: 'indwelling_cases',
     key: '导管置管例数',
     align: 'center'
   },
   {
     title: 'UEX发生率(例数/置管例数)',
     dataIndex: 'UEX发生率(例数/置管例数)',
-    key: 'UEX发生率(例数/置管例数)',
+    key: 'uex_ratio_bycase',
     align: 'center'
   }
 ]

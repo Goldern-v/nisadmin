@@ -9,13 +9,13 @@ const columns: any = [
   },
   {
     title: '统计项目',
-    dataIndex: '统计项目',
+    dataIndex: 'statItem',
     key: '统计项目',
     align: 'center'
   },
   {
     title: '人数',
-    dataIndex: '人数',
+    dataIndex: 'value',
     key: '人数',
     align: 'center'
   }

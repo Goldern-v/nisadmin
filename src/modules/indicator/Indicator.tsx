@@ -81,7 +81,8 @@ const ROUTE_LIST = [
     dataSource: [] || 小时平均护理时数.dataSource,
     keys: ['平均每天护理时数', '平均每天住院患者'],
     gName: '护理单元',
-    lineKey: '每住院患者24小时平均护理时数'
+    lineKey: '每住院患者24小时平均护理时数',
+    serviceName: 'getNursingHours'
   },
   {
     name: '不同级别护士配置',
@@ -89,7 +90,8 @@ const ROUTE_LIST = [
     dataSource: [] || 不同级别护士配置.dataSource,
     keys: ['护士总人数'],
     gName: '护理单元',
-    lineKey: ''
+    lineKey: '',
+    serviceName: 'getNurseAllocation'
   },
   {
     name: '护士离职率',
@@ -97,7 +99,8 @@ const ROUTE_LIST = [
     dataSource: [] || 护士离职率.dataSource,
     keys: ['离职率'],
     gName: '护理单元',
-    lineKey: ''
+    lineKey: '',
+    serviceName: 'getNurseResignRatio'
   },
   {
     name: '住院患者跌倒发生率',
@@ -105,7 +108,8 @@ const ROUTE_LIST = [
     dataSource: [] || 住院患者跌倒发生率.dataSource,
     keys: ['跌倒发生率'],
     gName: '护理单元',
-    lineKey: ''
+    lineKey: '',
+    serviceName: 'getPatientFallRatio'
   },
   {
     name: '院内压疮发生率',
@@ -113,7 +117,8 @@ const ROUTE_LIST = [
     dataSource: [] || 院内压疮发生率.dataSource,
     keys: ['压疮病例数', '同期患者数'],
     gName: '护理单元',
-    lineKey: '压疮发生率(%)'
+    lineKey: '压疮发生率(%)',
+    serviceName: 'getPuRatio'
   },
   {
     name: '住院患者身体约束率',
@@ -121,7 +126,8 @@ const ROUTE_LIST = [
     dataSource: [] || 住院患者身体约束率.dataSource,
     keys: ['约束天数', '患者人日数'],
     gName: '护理单元',
-    lineKey: '身体约束率(%)'
+    lineKey: '身体约束率(%)',
+    serviceName: 'getBrRatio'
   },
   {
     name: '插管患者非计划拔管发生率',
@@ -129,7 +135,8 @@ const ROUTE_LIST = [
     dataSource: [] || 插管患者非计划拔管发生率.dataSource,
     keys: ['导管留置日数', 'UEX例数'],
     gName: '护理单元',
-    lineKey: 'UEX发生率'
+    lineKey: 'UEX发生率',
+    serviceName: 'getUexRatio'
   },
   {
     name: '导尿管相关尿路感染发生率',
@@ -137,7 +144,8 @@ const ROUTE_LIST = [
     dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
     keys: ['感染例数', '插管例数'],
     gName: '护理单元',
-    lineKey: '感染率'
+    lineKey: '感染率',
+    serviceName: 'uex_ratio_bycase'
   },
   {
     name: '中心导管相关血流感染发生率',
@@ -145,7 +153,8 @@ const ROUTE_LIST = [
     dataSource: [] || 中心导管相关血流感染发生率.dataSource,
     keys: ['感染例数', '插管例数'],
     gName: '护理单元',
-    lineKey: '感染率'
+    lineKey: '感染率',
+    serviceName: 'getClabsiRatio'
   },
   {
     name: '呼吸机相关性肺炎发生率',
@@ -153,7 +162,8 @@ const ROUTE_LIST = [
     dataSource: [] || 呼吸机相关性肺炎发生率.dataSource,
     keys: ['感染例数', '插管例数'],
     gName: '护理单元',
-    lineKey: '感染率'
+    lineKey: '感染率',
+    serviceName: 'getVapRatio'
   },
   {
     name: '产科护理质量数据',
@@ -161,7 +171,8 @@ const ROUTE_LIST = [
     dataSource: [] || 产科护理质量数据.dataSource,
     keys: ['人数'],
     gName: '统计项目',
-    lineKey: ''
+    lineKey: '',
+    serviceName: 'getObNursingQuqlity'
   },
   {
     name: '高危药物静脉外渗率',
