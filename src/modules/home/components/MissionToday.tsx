@@ -8,11 +8,15 @@ import moment from 'moment'
 import BaseTable from 'src/components/BaseTable.tsx'
 import { observer } from 'mobx-react-lite'
 import Item from 'antd/lib/list/Item'
+import { Button } from 'antd'
+import { DrawerLayoutAndroidBase } from 'react-native'
+
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
-
+let signData22: any = [{}]
 export default observer(function MissionToday () {
   const [dataSource, setDataSource] = useState([])
+  // let MidConRef: any = React.createRef()
   useEffect(() => {
     // console.log(count, setCount)
     const postData = {
@@ -128,12 +132,20 @@ export default observer(function MissionToday () {
       // width: 100
     }
   ]
+  // signData22 = [{}, {}]
+  // const testClick = () => {
+  //   console.log(signData22.length)
+  //   console.log('dataSource', dataSource)
+  //   console.log('signData22', signData22)
+  // }
   return (
     <div>
       <Head>
         <div className='headLeft'>今日任务</div>
         <div className='headRight'>更多></div>
       </Head>
+      {/* <Button onClick={testClick}>testClick</Button> */}
+      {/* <Mid ref={MidConRef}> */}
       <Mid>
         <BaseTable dataSource={dataSource} columns={columns} scroll={{ y: 240 }} />
         {/* <table>
@@ -203,7 +215,7 @@ const Head = styled.div`
   .headRight {
     padding-right: 14px;
     float: right;
-    gvrtfont-size: 13px;
+    font-size: 13px;
     letter-spacing: 1px;
     color: #999999;
   }
@@ -214,6 +226,10 @@ const Mid = styled.div`
   }
   .ant-table {
     border: none;
+    /* dataSource */
+    /* border-bottom: ${(props: any) => (props.data.length ? '0.5px solid rgb(229, 229, 229)' : 'none')}; */
+    border-bottom:0.5px solid rgb(229, 229, 229);
+    border-collapse: collapse;
   }
   .ant-table-header {
     ::-webkit-scrollbar {

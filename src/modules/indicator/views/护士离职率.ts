@@ -1,31 +1,31 @@
 const columns: any = [
   {
     title: '统计项目',
-    dataIndex: '统计项目',
+    dataIndex: 'statItem',
     key: '统计项目',
     align: 'center'
   },
   {
     title: '统计周期内离职人数',
-    dataIndex: '统计周期内离职人数',
+    dataIndex: 'resign_count',
     key: '统计周期内离职人数',
     align: 'center'
   },
   {
     title: '统计周期末在职人数',
-    dataIndex: '统计周期末在职人数',
+    dataIndex: 'payroll_count',
     key: '统计周期末在职人数',
     align: 'center'
   },
   {
     title: '统计周期末在职人数+统计周期内离职人数',
-    dataIndex: '统计周期末在职人数+统计周期内离职人数',
+    dataIndex: 'total_count',
     key: '统计周期末在职人数+统计周期内离职人数',
     align: 'center'
   },
   {
     title: '离职率(%)',
-    dataIndex: '离职率(%)',
+    dataIndex: 'resign_ratio',
     key: '离职率(%)',
     align: 'center'
   }

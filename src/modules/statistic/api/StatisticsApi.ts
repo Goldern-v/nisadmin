@@ -223,13 +223,19 @@ class StatisticsApi extends BaseApiService {
     let postData = {
       // startDate: cacheStart,
       // endDate: cacheEnd,
-      startDate: '2019-3-13 00:00:00',
-      endDate: '2019-3-14 00:00:00',
-      deptCode: exportData.deptCode,
-      type: exportData.type
+      // startDate: '2019-3-13 00:00:00',
+      // endDate: '2019-3-14 00:00:00',
+      // deptCode: exportData.deptCode,
+      // type: exportData.type,
+      // status: false
+
+      deptCode: authStore.selectedDeptCode,
+      startTime: statisticViewModel.startDate,
+      endTime: statisticViewModel.endDate,
+      status: false
     }
-    // let trancePostData = this.stringify(postData)
-    return this.post(`/patientStatistics/exportExcel`, postData)
+    let trancePostData = this.stringify(postData)
+    return this.post(`/patientStatistics/exportExcel`, trancePostData)
   }
 }
 

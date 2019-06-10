@@ -51,7 +51,7 @@ export default observer(function BedSituation () {
       let reader = new FileReader()
       reader.addEventListener('loadend', function (data: any) {
         // reader.result 包含转化为类型数组的blob
-        message.error(`${reader.result}`)
+        // message.error(`${reader.result}`)
       })
       reader.readAsText(blob)
     }

@@ -9,19 +9,19 @@ const columns: any = [
   },
   {
     title: '约束天数',
-    dataIndex: '约束天数',
+    dataIndex: 'br_days',
     key: '约束天数',
     align: 'center'
   },
   {
     title: '患者总人日数',
-    dataIndex: '患者总人日数',
+    dataIndex: 'patient_days',
     key: '患者总人日数',
     align: 'center'
   },
   {
     title: '身体约束率(%)',
-    dataIndex: '身体约束率(%)',
+    dataIndex: 'br_ratio',
     key: '身体约束率(%)',
     align: 'center'
   }
