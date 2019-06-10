@@ -6,7 +6,7 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
+import { TITLE_LIST, POST_LIST, CURRENTLEVEL_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
@@ -139,20 +139,26 @@ export default function EditWorkHistoryModal (props: Props) {
             </Col>
             <Col span={24}>
               <Form.Field label={`职称`} name='titleQualification' required>
-                {/* <Select>
-                <Option value='1'>1</Option>
-                <Option value='2'>2</Option>
-              </Select> */}
-                <Input />
+                <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
+                  {TITLE_LIST.map((item: string) => (
+                    <Select.Option value={item} key={item}>
+                      {item}
+                    </Select.Option>
+                  ))}
+                </Select>
+                {/* <Input /> */}
               </Form.Field>
             </Col>
             <Col span={24}>
               <Form.Field label={`层级`} name='hierarchy' required>
-                {/* <Select>
-                <Option value='1'>1</Option>
-                <Option value='2'>2</Option>
-              </Select> */}
-                <Input />
+                {/* <Input /> */}
+                <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
+                  {CURRENTLEVEL_LIST.map((item: string) => (
+                    <Select.Option value={item} key={item}>
+                      {item}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Field>
             </Col>
             <Col span={24}>

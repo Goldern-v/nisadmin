@@ -77,7 +77,7 @@ export default observer(function BadAction () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
     {
       title: '日期',

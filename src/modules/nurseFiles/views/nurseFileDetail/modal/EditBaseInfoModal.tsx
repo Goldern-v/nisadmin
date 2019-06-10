@@ -225,7 +225,7 @@ export default function EditWorkHistoryModal (props: Props) {
         <Row>
           <Col span={12}>
             <Form.Field label={`添加个人头像`} name='nearImageUrl'>
-              <ImageUploader upload={uploadCard} text='添加个人头像' />
+              <ImageUploader upload={uploadCard} text='添加个人头像' tip={'近期免冠照片或近期工作照片'} />
             </Form.Field>
           </Col>
           <Col span={12}>

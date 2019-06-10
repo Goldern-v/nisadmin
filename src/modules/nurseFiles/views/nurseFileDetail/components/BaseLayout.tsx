@@ -34,7 +34,7 @@ export default function BaseLayout (props: Props) {
 }
 const Wrapper = styled.div`
   height: 100%;
-  background: #f8f8f8;
+  /* background: #f8f8f8; */
   overflow: auto;
   /* padding: 20px 30px; */
   padding: 10px 15px 0;

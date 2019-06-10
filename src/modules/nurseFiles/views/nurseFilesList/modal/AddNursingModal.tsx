@@ -24,9 +24,9 @@ const formItemLayout = {
 /** 职务列表 */
 export const EDUCATION_LIST = ['中专', '大专', '本科', '研究生', '博士']
 export const TITLE_LIST = ['护士', '护师', '主管护师', '副主任护师', '主任护师']
-export const CURRENTLEVEL_LIST = ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
+export const CURRENTLEVEL_LIST = ['N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
 export const POST_LIST = [
-  '全部',
+  // '全部',
   '无',
   '教学小组组长',
   '教学秘书',
@@ -153,7 +153,7 @@ function AddNursingModal (props: Props) {
           {getFieldDecorator('nurseHierarchy', {
             rules: [{ required: true, message: '层级不能为空' }]
           })(
-            <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
+            <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
               {CURRENTLEVEL_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
                   {item}

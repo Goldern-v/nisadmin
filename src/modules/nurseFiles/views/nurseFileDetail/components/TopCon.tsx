@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
 import DeptChangeModal from '../modal/DeptChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import qs from 'qs'
 export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
@@ -23,13 +24,14 @@ export default observer(function TopCon () {
 
   const openDeptChangeModal = () => {
     deptChangeModal.show({
-      info: appStore.queryObj
+      info: appStore.queryObj,
+      callback: refreshNursingInfo
     })
   }
   /** 更新护士信息 */
   const refreshNursingInfo = () => {
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-      // appStore.history.replace()
+      store.appStore.history.replace(store.appStore.match.url + '?' + qs.stringify(res.data))
     })
   }
   return (

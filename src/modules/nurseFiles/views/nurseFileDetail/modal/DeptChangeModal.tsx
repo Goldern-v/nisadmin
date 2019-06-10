@@ -19,14 +19,11 @@ import emitter from 'src/libs/ev'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   info: any
-  getTableData?: () => {}
+  callback?: () => void
 }
 const rules: Rules = {
-  time: (val) => !!val || '请填写时间',
-  awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  rank: (val) => !!val || '请填写本人排名',
-  awardlevel: (val) => !!val || '请填写授奖级别',
-  approvalAuthority: (val) => !!val || '请填写批准机关'
+  date: (val) => !!val || '请填写调动时间',
+  deptCodeNew: (val) => !!val || '请选择新科室'
 }
 export default function DeptChangeModal (props: Props) {
   const [title, setTitle] = useState('科室调动')
@@ -40,11 +37,10 @@ export default function DeptChangeModal (props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    value.time && (value.startTime = value.time.format('YYYY-MM-DD'))
-    nurseFilesService.nurseAwardWinningAdd({ ...value }).then((res: any) => {
+    value.date && (value.date = value.date.format('YYYY-MM-DD'))
+    nurseFilesService.updateDeptCode({ ...value }).then((res: any) => {
       message.success('保存成功')
-      props.getTableData && props.getTableData()
-
+      props.callback && props.callback()
       onCancel()
     })
   }
@@ -55,15 +51,11 @@ export default function DeptChangeModal (props: Props) {
     if (info && refForm.current && visible) {
       refForm!.current!.setFields({
         date: moment(),
-        oldDept: info.deptName,
-        newDept: '',
-        job: info.job
-        // time: moment(data.time),
-        // awardWinningName: data.awardWinningName,
-        // rank: data.rank,
-        // awardlevel: data.awardlevel,
-        // approvalAuthority: data.approvalAuthority,
-        // urlImageOne: data.urlImageOne
+        deptCodeOld: info.deptCode,
+        deptCodeNameOld: info.deptName,
+        deptCodeNew: '',
+        job: info.job,
+        empNo: info.empNo
       })
     }
   }, [visible])
@@ -73,17 +65,17 @@ export default function DeptChangeModal (props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`调动时间`} name='date'>
+            <Form.Field label={`调动时间`} name='date' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`原科室`} name='oldDept' required>
+            <Form.Field label={`原科室`} name='deptCodeNameOld'>
               <Input disabled />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`新科室`} name='newDept' required>
+            <Form.Field label={`新科室`} name='deptCodeNew' required>
               <Select showSearch style={{ width: '100%' }} placeholder='选择新科室'>
                 {authStore.deptList.map((item: any) => {
                   return (
@@ -96,7 +88,7 @@ export default function DeptChangeModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`职务`} name='job' required>
+            <Form.Field label={`职务`} name='job'>
               <Select showSearch style={{ width: '100%' }} placeholder='选择职务'>
                 {POST_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>

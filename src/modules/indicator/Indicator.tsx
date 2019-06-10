@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import TopCon from './components/TopCon'
@@ -52,6 +52,7 @@ import { 器械清洗合格率 } from './views2/器械清洗合格率'
 import { 包装合格率 } from './views2/包装合格率'
 import { 湿包发生率 } from './views2/湿包发生率'
 import { LEFT_MENU } from './config'
+import { indicatorService } from './services/IndicatorService'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
@@ -62,7 +63,8 @@ const ROUTE_LIST = [
     dataSource: [] || 床护比统计.dataSource,
     keys: ['实际开放床位数', '实际配备护士数'],
     gName: '护理单元',
-    lineKey: '实际床护比'
+    lineKey: '实际床护比',
+    serviceName: 'getBedNurseRatio'
   },
   {
     name: '护患比统计',
@@ -70,7 +72,8 @@ const ROUTE_LIST = [
     dataSource: [] || 护患比统计.dataSource,
     keys: ['患者数', '护士数'],
     gName: '护理单元',
-    lineKey: '每天平均护患比'
+    lineKey: '每天平均护患比',
+    serviceName: 'getPatientNurseRatio'
   },
   {
     name: '24小时平均护理时数',
@@ -396,51 +399,75 @@ const ROUTE_LIST = [
 
 export default function Indicator (props: Props) {
   let [showType, setShowType] = useState('详情')
-  useEffect(() => {
+  let [startDate, setStartDate] = useState('')
+  let [endDate, setEndDate] = useState('详情')
+  let [loading, setLoading] = useState(false)
+  let [currentRoute, setCurrentRoute]: [any, any] = useState(null)
+
+  let topRef: any = React.createRef()
+  useLayoutEffect(() => {
     setShowType('详情')
-    console.log(props)
+    // try {
+
+    // } catch (error) {}
+    onload()
   }, [props.match.params.name])
-  let currentRouteName = props.match.params.name
-  let currentRoute = ROUTE_LIST.find((item) => item.name === currentRouteName)
-  let startDate = moment()
-    .subtract(1, 'M')
-    .format('YYYY-MM-DD')
-  let endDate = moment().format('YYYY-MM-DD')
+
+  const onload = async () => {
+    let startDate = moment(topRef.current.picker.state.value[0]).format('YYYY-MM-DD')
+    let endDate = moment(topRef.current.picker.state.value[1]).format('YYYY-MM-DD')
+    setStartDate(startDate)
+    setEndDate(endDate)
+    let currentRouteName = props.match.params.name
+    let currentRoute = ROUTE_LIST.find((item) => item.name === currentRouteName)
+    if (currentRoute) {
+      setLoading(true)
+      let { data } = await indicatorService.getIndicatoeData(currentRoute!.serviceName, startDate, endDate)
+      setLoading(false)
+      currentRoute.dataSource = data
+      setCurrentRoute(currentRoute)
+    }
+  }
   return (
     <Wrapper>
       <LeftMenuCon>
         <LeftMenu config={LEFT_MENU} menuTitle='敏感指标' />
         {/* <StatisticLeftList /> */}
       </LeftMenuCon>
-      <MainCon>
-        <TopCon />
-        <MainScroll>
-          <MainInner>
-            <RadioCon>
-              <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
-                <Radio.Button value='详情'>详情</Radio.Button>
-                <Radio.Button value='图表'>图表</Radio.Button>
-              </Radio.Group>{' '}
-            </RadioCon>
 
-            <HisName>东莞厚街医院</HisName>
-            <Title>{currentRoute!.name}</Title>
-            <Date>
-              日期：{startDate} 至 {endDate}
-            </Date>
-            {showType === '详情' && <BaseTable dataSource={currentRoute!.dataSource} columns={currentRoute!.columns} />}
-            {showType === '图表' && (
-              <BaseChart
-                dataSource={
-                  []
-                  // currentRoute!.name === '护士离职率' ? 住院患者跌倒发生率.dataSource : currentRoute!.dataSource
-                }
-                keys={currentRoute!.keys}
-                name={currentRoute!.gName}
-                lineKey={currentRoute!.lineKey}
-              />
-            )}
-          </MainInner>
+      <MainCon>
+        <TopCon ref={topRef} refreshData={onload} />
+        <MainScroll>
+          {currentRoute && (
+            <MainInner>
+              <RadioCon>
+                <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
+                  <Radio.Button value='详情'>详情</Radio.Button>
+                  <Radio.Button value='图表'>图表</Radio.Button>
+                </Radio.Group>{' '}
+              </RadioCon>
+
+              <HisName>东莞厚街医院</HisName>
+              <Title>{currentRoute!.name}</Title>
+              <Date>
+                日期：{startDate} 至 {endDate}
+              </Date>
+              {showType === '详情' && (
+                <BaseTable loading={loading} dataSource={currentRoute!.dataSource} columns={currentRoute!.columns} />
+              )}
+              {showType === '图表' && (
+                <BaseChart
+                  dataSource={
+                    []
+                    // currentRoute!.name === '护士离职率' ? 住院患者跌倒发生率.dataSource : currentRoute!.dataSource
+                  }
+                  keys={currentRoute!.keys}
+                  name={currentRoute!.gName}
+                  lineKey={currentRoute!.lineKey}
+                />
+              )}
+            </MainInner>
+          )}
         </MainScroll>
       </MainCon>
     </Wrapper>

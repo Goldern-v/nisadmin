@@ -32,7 +32,7 @@ export default observer(function LevelChange () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
     {
       title: '职称聘用时间',
@@ -52,14 +52,14 @@ export default observer(function LevelChange () {
       title: '层级',
       dataIndex: 'hierarchy',
       key: '4',
-      width: 200,
+      width: 100,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
       key: '5',
-      width: 200,
+      width: 120,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
@@ -92,36 +92,35 @@ export default observer(function LevelChange () {
             ) : (
               ''
             )}
-           
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseProfessionalAndLevelChange',
-                    title: '审核职称及层级变动',
-                    tableFormat: [
-                      {
-                        职称聘用时间: `appointmentTime`,
-                        取得职称: `titleQualification`
-                      },
-                      {
-                        层级: `hierarchy`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        附件1: row.urlImageOne
-                        // 附件2: require(`../../../images/证件空态度.png`)
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-               {limitUtils(row) ? '审核' : '查看'}
-              </span>
-            
+
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseProfessionalAndLevelChange',
+                  title: '审核职称及层级变动',
+                  tableFormat: [
+                    {
+                      职称聘用时间: `appointmentTime`,
+                      取得职称: `titleQualification`
+                    },
+                    {
+                      层级: `hierarchy`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne
+                      // 附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }
@@ -138,7 +137,7 @@ export default observer(function LevelChange () {
   }, [])
   return (
     <BaseLayout title='职称及层级变动' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'填写说明：记录2019年6月的职称及层级情况，以后凡是有职称或层级变动情况时随时更新信息。'}/>
       <editLevelChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

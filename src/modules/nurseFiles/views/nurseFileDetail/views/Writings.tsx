@@ -32,21 +32,21 @@ export default observer(function Writings () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
 
     {
       title: '发表日期',
       dataIndex: 'publicDate',
       key: '2',
-      width: 150,
+      width: 140,
       align: 'center'
     },
     {
       title: '题目',
       dataIndex: 'title',
       key: '3',
-      width: 200,
+      width: 150,
       align: 'center'
     },
     {
@@ -60,14 +60,14 @@ export default observer(function Writings () {
       title: '出版或刊登物',
       dataIndex: 'publication',
       key: '5',
-      width: 200,
+      width: 150,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
       key: '6',
-      width: 150,
+      width: 120,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
@@ -77,7 +77,7 @@ export default observer(function Writings () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '61',
-      width: 150,
+      width: 120,
       align: 'center'
     },
     {
@@ -146,7 +146,7 @@ export default observer(function Writings () {
 
   return (
     <BaseLayout title='著作译文论文' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={380} type={['spaceRow', 'fixedWidth']} tip={'填写说明：登记2010年以后发表的著作专利课题论文新技术新业务情况， 其中所登记的论文要求为第一作者或通讯作者，第二及以后排名的不需要登记；新技术新业务前三名要求登记，第四名及以后排名不需登记。'}/>
       <editWritingsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

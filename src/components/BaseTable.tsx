@@ -16,6 +16,7 @@ export interface Props extends TableProps<any> {
   surplusHeight?: number
   /** 多余的宽度 */
   surplusWidth?: number
+  tip?: string
 }
 
 export default function BaseTable (props: Props) {
@@ -69,6 +70,7 @@ export default function BaseTable (props: Props) {
   return (
     <Wrapper {...option} style={option.wrapperStyle || {}}>
       <Table {...option} />
+      {option.tip && <Tip>{option.tip}</Tip>}
     </Wrapper>
   )
 }
@@ -97,20 +99,22 @@ const Wrapper = styled.div`
       font-size: 13px !important;
       padding: 0 !important;
       box-sizing: border-box;
-      font-weight: 600;
+      /* font-weight: 600; */
       height: ${(p) => p.theme.$tableRowHeight} !important;
     }
     /* 补充th下降的高度 */
-    /* .ant-table-align-center {
+    .ant-table-align-center {
       padding: 8px 8px 14px 8px !important;
-    } */
+    }
   }
 
   .ant-table-small > .ant-table-content > .ant-table-body {
     margin: 0 !important;
   }
   .ant-table-body {
-    overflow: auto !important;
+    /* overflow: auto !important; */
+    overflow-y: scroll !important;
+    overflow-x: auto !important;
   }
   .ant-table-thead {
     background: rgba(242, 244, 245, 1);
@@ -132,13 +136,13 @@ const Wrapper = styled.div`
     background-color: #eaeaea;
   }
   *::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
     border-radius: 50px;
     background-color: #eaeaea;
   }
   *::-webkit-scrollbar-thumb {
     border-radius: 50px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
     background-color: #c2c2c2;
   }
 
@@ -167,4 +171,9 @@ const Wrapper = styled.div`
       background-color: rgb(242, 244, 245);
     }
   }
+`
+
+const Tip = styled.div`
+  font-size: 12px;
+  margin: 5px 0 -5px;
 `
