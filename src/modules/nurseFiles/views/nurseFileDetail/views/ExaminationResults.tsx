@@ -31,7 +31,7 @@ export default observer(function ExaminationResults () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
     {
       title: '年度',
@@ -84,33 +84,32 @@ export default observer(function ExaminationResults () {
             ) : (
               ''
             )}
-         
-              <span
-                onClick={() => {
-                  globalModal.auditModal.show({
-                    getTableData: getTableData,
-                    id: row.id,
-                    type: 'nurseYearCheck',
-                    title: '审核年度考核结果',
-                    tableFormat: [
-                      {
-                        年度: `year`,
-                        考核结果: `checkResult`
-                      }
-                    ],
-                    fileData: [
-                      {
-                        附件1: row.urlImageOne
-                        // 附件2: require(`../../../images/证件空态度.png`)
-                      }
-                    ],
-                    allData: row
-                  })
-                }}
-              >
-               {limitUtils(row) ? '审核' : '查看'}
-              </span>
-            
+
+            <span
+              onClick={() => {
+                globalModal.auditModal.show({
+                  getTableData: getTableData,
+                  id: row.id,
+                  type: 'nurseYearCheck',
+                  title: '审核年度考核结果',
+                  tableFormat: [
+                    {
+                      年度: `year`,
+                      考核结果: `checkResult`
+                    }
+                  ],
+                  fileData: [
+                    {
+                      附件1: row.urlImageOne
+                      // 附件2: require(`../../../images/证件空态度.png`)
+                    }
+                  ],
+                  allData: row
+                })
+              }}
+            >
+              {limitUtils(row) ? '审核' : '查看'}
+            </span>
           </DoCon>
         )
       }
@@ -128,7 +127,7 @@ export default observer(function ExaminationResults () {
 
   return (
     <BaseLayout title='年度履职考核结果' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'填写说明：记录2016年以后的年度考核结果。'}/>
       <editExaminationResultsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

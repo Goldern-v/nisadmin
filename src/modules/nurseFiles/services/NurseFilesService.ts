@@ -251,6 +251,11 @@ export default class NurseFilesService extends BaseApiService {
     }
     return this.post(`/auditeNurseFileIndex/findListAuditePC`, this.stringify(obj))
   }
+
+  /** 科室调动 */
+  public updateDeptCode (obj: any) {
+    return this.post(`/nurseInformation/updateDeptCode`, obj)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService()

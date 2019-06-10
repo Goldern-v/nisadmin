@@ -97,7 +97,7 @@ const columns = [
     title: '上班时间',
     dataIndex: 'workTime',
     key: 'workTime',
-    width: ''
+    width: 200
   },
   {
     title: '工时(小时）',
@@ -298,7 +298,7 @@ export default function MainBox () {
         rowSelection={rowSelection}
         dataSource={ShiftList}
         pagination={false}
-        surplusHeight={300}
+        surplusHeight={250}
       />
       {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
     </Wrapper>

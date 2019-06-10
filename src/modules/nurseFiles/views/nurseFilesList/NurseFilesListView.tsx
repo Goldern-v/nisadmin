@@ -59,7 +59,7 @@ const columns: ColumnProps<any>[] = [
     title: '性别',
     dataIndex: 'sex',
     key: 'sex',
-    width: 70,
+    width: 50,
     align: 'center',
     render (sex: any) {
       return sex === '0' ? '男' : sex === '1' ? '女' : ''
@@ -69,7 +69,7 @@ const columns: ColumnProps<any>[] = [
     title: '年龄',
     dataIndex: 'age',
     key: 'age',
-    width: 60,
+    width: 50,
     align: 'center'
   },
   {
@@ -90,14 +90,14 @@ const columns: ColumnProps<any>[] = [
     title: '职务',
     dataIndex: 'job',
     key: 'job',
-    width: 70,
+    width: 120,
     align: 'center'
   },
   {
     title: '最高学历',
     dataIndex: 'highestEducation',
     key: 'highestEducation',
-    width: 90,
+    width: 80,
     align: 'center'
   },
   {
@@ -168,7 +168,7 @@ export default observer(function NurseFilesListView () {
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={445}
+        surplusHeight={435}
         surplusWidth={80}
         type={['spaceRow']}
         onRow={(record: any) => {

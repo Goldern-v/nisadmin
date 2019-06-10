@@ -1,10 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Breadcrumb } from 'antd'
+import { Breadcrumb, Button } from 'antd'
 import store, { appStore } from 'src/stores'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { observer } from 'mobx-react-lite'
+import createModal from 'src/libs/createModal'
+import DeptChangeModal from '../modal/DeptChangeModal'
+import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import qs from 'qs'
 export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
@@ -14,8 +18,22 @@ const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
 const WARNNING_ICON = require('../../../images/注意.png')
 
 export default observer(function TopCon () {
+  const deptChangeModal = createModal(DeptChangeModal)
   let history = store.appStore.history
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
+
+  const openDeptChangeModal = () => {
+    deptChangeModal.show({
+      info: appStore.queryObj,
+      callback: refreshNursingInfo
+    })
+  }
+  /** 更新护士信息 */
+  const refreshNursingInfo = () => {
+    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+      store.appStore.history.replace(store.appStore.match.url + '?' + qs.stringify(res.data))
+    })
+  }
   return (
     <Wrapper>
       <BreadcrumbCon>
@@ -31,7 +49,8 @@ export default observer(function TopCon () {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-      {nurseFileDetailViewModal.badgeTotal ? (
+      <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn>
+      {nurseFileDetailViewModal.badgeTotal || true ? (
         <Tip>
           <img src={WARNNING_ICON} alt='' />
 
@@ -46,6 +65,7 @@ export default observer(function TopCon () {
         <Tip />
         // <Tip>你没有待审核的信息</Tip>
       )}
+      <deptChangeModal.Component />
     </Wrapper>
   )
 })
@@ -114,4 +134,10 @@ const ClickSpan = styled.span`
   margin: 0px 4px;
   display: inline-block;
   border-bottom: 1px solid #5472c4;
+`
+
+const DeptChangeBtn = styled(Button)`
+  position: absolute !important;
+  right: 20px;
+  top: 34px;
 `

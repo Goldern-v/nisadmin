@@ -32,7 +32,7 @@ export default observer(function EducationalExperience () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
     {
       title: '开始时间',
@@ -152,7 +152,7 @@ export default observer(function EducationalExperience () {
   }, [])
   return (
     <BaseLayout title='继续教育' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'填写说明：仅登记院外进修情况（以人事科签订合同为准的进修记录）。'} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

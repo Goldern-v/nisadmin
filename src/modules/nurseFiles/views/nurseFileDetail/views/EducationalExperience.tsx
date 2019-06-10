@@ -31,7 +31,7 @@ export default observer(function EducationalExperience () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
     {
       title: '就读时间',
@@ -159,7 +159,7 @@ export default observer(function EducationalExperience () {
   }, [])
   return (
     <BaseLayout title='教育经历' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow']} tip={'填写说明：记录专业教育经历，从第一学历至最高学历逐一填写。照片上传务必上传彩色原图、照片内容与学历信息内容一致。'}/>
       <editEducationalExperienceModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

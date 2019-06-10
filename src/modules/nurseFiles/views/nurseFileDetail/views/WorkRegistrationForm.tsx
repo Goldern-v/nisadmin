@@ -31,13 +31,13 @@ export default observer(function WorkRegistrationForm () {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
     {
       title: '年度',
       dataIndex: 'year',
       key: '2',
-      width: 80,
+      width: 70,
       align: 'center'
     },
     {
@@ -58,14 +58,14 @@ export default observer(function WorkRegistrationForm () {
       title: '护理会诊',
       dataIndex: 'nursingConsultation',
       key: '5',
-      width: 80,
+      width: 90,
       align: 'center'
     },
     {
       title: '病例讨论',
       dataIndex: 'caseDiscussion',
       key: '6',
-      width: 80,
+      width: 90,
       align: 'center'
     },
     {
@@ -101,13 +101,13 @@ export default observer(function WorkRegistrationForm () {
       dataIndex: 'auditedStatusName',
       key: '61231',
       align: 'center',
-      width: 150,
+      width: 120
     },
     {
       title: '操作',
       dataIndex: '8',
       key: '8',
-      width: 150,
+      width: 120,
       align: 'center',
       render: (text: any, row: any, index: number) => {
         return (
@@ -175,7 +175,13 @@ export default observer(function WorkRegistrationForm () {
 
   return (
     <BaseLayout title='临床护理工作情况登记表' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={365}
+        type={['spaceRow', 'fixedWidth']}
+        tip={'无需填写，由培训模块、排班模块自动导入。'}
+      />
       <editWorkRegistrationFormModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

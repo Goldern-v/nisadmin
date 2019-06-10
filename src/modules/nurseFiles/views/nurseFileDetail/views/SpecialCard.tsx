@@ -32,7 +32,7 @@ export default function SpecialCard () {
       key: '1',
       render: (text: any, row: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 60
     },
 
     {
@@ -53,14 +53,14 @@ export default function SpecialCard () {
       title: '资格证编号',
       dataIndex: 'specialQualificationNo',
       key: '4',
-      width: 200,
+      width: 160,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
       key: '5',
-      width: 200,
+      width: 150,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
@@ -70,7 +70,7 @@ export default function SpecialCard () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '6',
-      width: 150,
+      width: 140,
       align: 'center'
     },
     {
@@ -141,7 +141,15 @@ export default function SpecialCard () {
   return (
     <BaseLayout title='特殊资格证' btnList={btnList}>
       {/* <Button onClick={test}>按钮</Button> */}
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={380}
+        type={['spaceRow', 'fixedWidth']}
+        tip={
+          '填写说明：包括特殊岗位准入（ICU、手术室、高压氧、供应室、血透室、助产等）、高风险护理技术操作人员资质培训（PICC、伤口造口、CRRT等）、会诊人员资质准入（糖尿病、骨科、危重症、助产等）。'
+        }
+      />
       <editSpecialCardModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

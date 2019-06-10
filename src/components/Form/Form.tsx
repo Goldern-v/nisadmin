@@ -63,7 +63,7 @@ export default class Form<T extends Object = any> extends React.Component<Props<
         () => {
           if (trigger) {
             this.props.onChange!(name, value, this)
-            this.validateField(name, true)
+            // this.validateField(name, true)
           }
 
           resolve()

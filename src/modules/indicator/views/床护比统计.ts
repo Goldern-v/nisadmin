@@ -9,32 +9,38 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: '护理单元',
+    dataIndex: 'wardName',
+    align: 'center',
     key: '护理单元'
   },
   {
     title: '实际开放床位数',
-    dataIndex: '实际开放床位数',
+    dataIndex: 'actualOpenBeds',
+    align: 'center',
     key: '实际开放床位数'
   },
   {
     title: '实际配备护士数',
-    dataIndex: '实际配备护士数',
+    dataIndex: 'actualNurseCount',
+    align: 'center',
     key: '实际配备护士数'
   },
   {
     title: '实际床护比',
-    dataIndex: '实际床护比',
+    dataIndex: 'actualBedNurseRatio',
+    align: 'center',
     key: '实际床护比'
   },
   {
     title: '目标床护比',
-    dataIndex: '目标床护比',
+    dataIndex: 'targeBedNurseRatio',
+    align: 'center',
     key: '目标床护比'
   },
   {
     title: '需补充护士人数',
-    dataIndex: '需补充护士人数',
+    dataIndex: 'nurseToReplenish',
+    align: 'center',
     key: '需补充护士人数'
   }
 ]

@@ -7,21 +7,22 @@ import moment from 'moment'
 import { DatePicker, Button } from 'antd'
 export interface Props extends RouteComponentProps {}
 
-export default observer(function TopCon () {
+export default React.forwardRef(function TopCon (props: any, ref: any) {
   let history = store.appStore.history
   let startDate = moment().subtract(1, 'M')
   let endDate = moment()
   return (
     <Wrapper>
       <span>日期:</span>
-      <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220, margin: '0 10px' }} />
-      <Button type='primary' style={{ marginRight: 10 }}>
+      <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220, margin: '0 10px' }} ref={ref} />
+      <Button type='primary' style={{ marginRight: 10 }} onClick={() => props.refreshData()}>
         查询
       </Button>
       <Button>导出excl</Button>
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   height: 45px;
   background: rgba(248, 248, 248, 1);

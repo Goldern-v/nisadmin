@@ -34,7 +34,7 @@ export default function BaseLayout (props: Props) {
 }
 const Wrapper = styled.div`
   height: 100%;
-  background: #f8f8f8;
+  /* background: #f8f8f8; */
   overflow: auto;
   /* padding: 20px 30px; */
   padding: 10px 15px 0;
@@ -46,7 +46,7 @@ const Head = styled.div`
   position: fixed;
   left: 174px;
   top: 235px;
-  right: 15px;
+  right: 20px;
   .ant-btn {
     margin-left: 10px;
   }
