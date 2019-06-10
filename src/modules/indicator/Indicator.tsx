@@ -61,9 +61,16 @@ const ROUTE_LIST = [
     name: '床护比统计',
     columns: 床护比统计.columns,
     dataSource: [] || 床护比统计.dataSource,
-    keys: ['实际开放床位数', '实际配备护士数'],
-    gName: '护理单元',
-    lineKey: '实际床护比',
+    // keys: ['实际开放床位数', '实际配备护士数'],
+    keys: ['actualOpenBeds', 'actualNurseCount'],
+    gName: 'wardName',
+    lineKey: 'actualBedNurseRatio',
+    dictionary: {
+      actualOpenBeds: '实际开放床位数',
+      actualNurseCount: '实际配备护士数',
+      actualBedNurseRatio: '实际床护比',
+      wardName: '护理单元'
+    },
     serviceName: 'getBedNurseRatio'
   },
   {
@@ -457,13 +464,11 @@ export default function Indicator (props: Props) {
               )}
               {showType === '图表' && (
                 <BaseChart
-                  dataSource={
-                    []
-                    // currentRoute!.name === '护士离职率' ? 住院患者跌倒发生率.dataSource : currentRoute!.dataSource
-                  }
+                  dataSource={currentRoute!.dataSource}
                   keys={currentRoute!.keys}
                   name={currentRoute!.gName}
                   lineKey={currentRoute!.lineKey}
+                  dictionary={currentRoute.dictionary}
                 />
               )}
             </MainInner>

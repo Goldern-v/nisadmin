@@ -8,6 +8,7 @@ export interface Props {
   keys: string[]
   name: string
   lineKey: string
+  dictionary?: any
 }
 
 export default function BaseChart (props: Props) {
@@ -39,6 +40,14 @@ export default function BaseChart (props: Props) {
   })
   data = data.filter((item: any) => item.key !== '合计')
   console.log(data, 'data')
+
+  /** 字典项转换 */
+
+  let dataString = JSON.stringify(data)
+  for (let key in props.dictionary) {
+    dataString = dataString.replace(new RegExp(key, 'g'), props.dictionary[key])
+  }
+  data = JSON.parse(dataString)
   return (
     <Wrapper>
       <Chart forceFit height={400} data={data} padding={[50, 50, 90]}>

@@ -158,7 +158,7 @@ export default observer(function WorkHistory () {
 
   return (
     <BaseLayout title='工作经历' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'填写说明：从院校毕业后参加工作开始填写，不含院内轮训。如毕业后在多个单位工作过，请按照时间顺序逐一填写'}/>
+      <BaseTable  dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'填写说明：从院校毕业后参加工作开始填写，不含院内轮训。如毕业后在多个单位工作过，请按照时间顺序逐一填写'}/>
       <editWorkHistoryModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

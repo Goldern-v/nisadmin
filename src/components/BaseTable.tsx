@@ -67,6 +67,8 @@ export default function BaseTable (props: Props) {
       }
     })
   }
+
+
   return (
     <Wrapper {...option} style={option.wrapperStyle || {}}>
       <Table {...option} />
