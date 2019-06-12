@@ -315,7 +315,9 @@ export default function MainBox () {
           )
         }
         if (shift) {
-          result += ~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
+          let num = !isNaN(Number(shift.effectiveTime)) ? Number(shift.effectiveTime) : 0
+          result += num
+          //~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
           if (target && target.name && target.name === key + record.id) {
             target.style.color = shift.nameColor || ''
           }
@@ -389,18 +391,19 @@ export default function MainBox () {
     let date = moment(scheduleStore.getStartTime())
       .add(weekday - 1, 'days')
       .format('MM[月]DD[日]')
-    // .format('MM[月]DD[日(周]dddd[)]')
+    let result: any = null
+    let color: any = weekday > 5 ? 'red' : ''
+    // .format('M[月]DD[日(周]dddd[)]')
     // console.log('周', weekday, scheduleStore.getStartTime(), date)
     if (date.indexOf('Invalid date') > -1) {
       return `周${days[weekday - 1]}`
     }
-    // return `${date}(周${days[weekday]})`
     return (
-      <p style={{ padding: '10px 0' }}>
+      <div style={{ padding: '10px 0', color: color }}>
         {date}
         <br />
         (周{days[weekday]})
-      </p>
+      </div>
     )
   }
 
@@ -948,7 +951,9 @@ export default function MainBox () {
 
     list.map((item: any) => {
       if (item.thisWeekHour) {
-        workhour += ~~item.thisWeekHour || 0
+        // let num = !isNaN(Number(item.thisWeekHour)) ? Number(item.thisWeekHour) : 0
+        workhour += !isNaN(Number(item.thisWeekHour)) ? Number(item.thisWeekHour) : 0
+        // workhour += ~~item.thisWeekHour || 0
       }
       if (!remark || remark === '空') {
         remark = item.remark
