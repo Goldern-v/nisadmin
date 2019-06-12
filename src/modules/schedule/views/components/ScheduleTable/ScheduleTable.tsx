@@ -423,7 +423,7 @@ export default function ScheduleTable () {
 
     list.map((item: any) => {
       if (item.thisWeekHour) {
-        workhour += item.thisWeekHour
+        workhour += !isNaN(Number(item.thisWeekHour)) ? Number(item.thisWeekHour) : 0
       }
       if (!remark || remark === '空') {
         remark = item.remark

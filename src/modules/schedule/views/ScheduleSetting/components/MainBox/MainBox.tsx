@@ -286,7 +286,9 @@ export default function MainBox () {
           shift = list.find((s: any) => record[key+'Code'] === s.name || (record[key+'Code'] === s.shiftType&&record[key+'Code'] != s.name))
         }
         if (shift) {
-          result += ~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
+          let num = !isNaN(Number(shift.effectiveTime)) ? Number(shift.effectiveTime) : 0
+          result += num
+          //~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
           if (target && target.name && target.name === key + record.id) {
             target.style.color = shift.nameColor || ''
           }
@@ -866,7 +868,9 @@ export default function MainBox () {
 
     list.map((item: any) => {
       if (item.thisWeekHour) {
-        workhour += ~~item.thisWeekHour || 0
+        // let num = !isNaN(Number(item.thisWeekHour)) ? Number(item.thisWeekHour) : 0
+        workhour += !isNaN(Number(item.thisWeekHour)) ? Number(item.thisWeekHour) : 0
+        // workhour += ~~item.thisWeekHour || 0
       }
       if(!remark || remark==='空'){
         remark = item.remark
