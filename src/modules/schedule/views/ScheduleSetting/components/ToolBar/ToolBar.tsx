@@ -116,6 +116,9 @@ export default function ToolBar () {
     //
     console.log('初始化弹窗树', initalTreeData())
     //
+    if (!scheduleStore.getStartTime()) {
+      onWeekChange(new Date())
+    }
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const save = (e: any, isPublish: boolean = false) => {
@@ -140,17 +143,29 @@ export default function ToolBar () {
         for (const key in nurse) {
           if (nurse.hasOwnProperty(key)) {
             let element = nurse[key]
-            if (key.toLowerCase().indexOf('dayname') > -1 && key.toLowerCase().indexOf('color') === -1 && key.toLowerCase().indexOf('daynamecolor') === -1&& key.toLowerCase().indexOf('daynamecode') === -1) {
-              let shift = shiftListData.find((s: any) => element === s.name)
-              let elementCode = nurse[key+'Code']
+            if (
+              key.toLowerCase().indexOf('dayname') > -1 &&
+              key.toLowerCase().indexOf('color') === -1 &&
+              key.toLowerCase().indexOf('daynamecolor') === -1 &&
+              key.toLowerCase().indexOf('daynamecode') === -1
+            ) {
+              let shift = element ? shiftListData.find((s: any) => element === s.name) : null
+              let elementCode = nurse[key + 'Code']
               // console.log('!!!!shift', shift, key, nurse[key],elementCode, nurse)
               if (!shift) {
-                shift = shiftListData.find((s: any) => nurse[key+'Code'] === s.name || (nurse[key+'Code'] === s.shiftType&&nurse[key+'Code'] != s.name))
+                shift = element
+                  ? shiftListData.find(
+                      (s: any) =>
+                        nurse[key + 'Code'] === s.name ||
+                        (nurse[key + 'Code'] === s.shiftType && nurse[key + 'Code'] != s.name)
+                    )
+                  : null
                 // if(!shift){
                 //   continue
                 // }
                 // console.log('===!!!!shift', shift, key, nurse[key], nurse)
               }
+
               postLine = {
                 id: {
                   userId: nurse.id || '',
@@ -182,6 +197,7 @@ export default function ToolBar () {
         endTime: scheduleStore.getEndTime()
       }
       emitter.emit('排班列表载入动画', true)
+
       service.schedulingApiService.update(postData, weekRange).then((res) => {
         console.log(res)
         if (res && (res.desc || res.data.desc)) {
@@ -631,7 +647,7 @@ export default function ToolBar () {
   //   emitter.emit('更新排班列表')
   // }
 
-  const onWeekChange = (date: any, dateString: string) => {
+  const onWeekChange = (date: any, dateString?: string) => {
     let weekFirstDay = moment(date)
       .startOf('week')
       .add('d', 0)
@@ -676,6 +692,7 @@ export default function ToolBar () {
         format={`[第]wo[ ]YYYY年M月D日[ - ][${formatMonth}]月[${formatDay}]日`}
         locale={locale}
       />
+
       <Button onClick={() => resetShift()} className='button-tools'>
         重置排班
       </Button>
@@ -689,12 +706,11 @@ export default function ToolBar () {
         }}
         className='button-tools'
       >
-        刷新排班人员
+        同步排班人员
       </Button>
       <Button onClick={save} className='button-tools'>
         暂存
       </Button>
-
       {!isPublished ? (
         <Button onClick={(e: any) => save(e, true)} className='button-tools'>
           发布排班
@@ -716,7 +732,7 @@ export default function ToolBar () {
 const Wrapper = styled.div`
   /* background: #eee; */
   height: 100%;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 15px 20px;
   display: inline-flex;
   width: 100%;
   align-items: flex-end;

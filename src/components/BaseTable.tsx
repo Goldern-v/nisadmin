@@ -194,6 +194,9 @@ const Wrapper = styled.div`
   .ant-table-row {
     border-bottom: 1px solid #e8e8e8;
   }
+  .ant-table-footer {
+    padding: 10px;
+  }
 `
 
 const Tip = styled.div`

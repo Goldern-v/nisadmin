@@ -38,6 +38,6 @@ const Wrapper = styled.div``
 
 const BreadcrumbContainer = styled.div`
   position: relative;
-  padding: 10px 20px;
+  padding: 15px 20px 5px;
   background: #fff;
 `

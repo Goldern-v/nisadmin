@@ -115,13 +115,22 @@ export default class SchedulingApiService extends BaseApiService {
     return this.post(`/scheduling/CountDeptCodeHolidays`, postData)
   }
   // 9.查找排班列表(和编辑时查找)（json传参）
-  public async findShiftList (data: any) {
+  public findShiftList (data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/findBylist`, postData)
+  }
+  // 同步排班人员
+  public findSysnNurse (data: any) {
+    const postData = {
+      deptCode: data.deptCode, // deptCode  科室编码
+      startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
+      endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
+    }
+    return this.post(`/scheduling/findSysnNurse`, postData)
   }
   // 10.查询排班得时间列表
   public async findTimeList (data: any) {

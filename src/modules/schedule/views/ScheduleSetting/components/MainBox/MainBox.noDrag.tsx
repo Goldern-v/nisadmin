@@ -362,7 +362,7 @@ export default function MainBox () {
       return `周${days[weekday - 1]}`
     }
     // return `${date}(周${days[weekday]})`
-    return (<span>{date}<br/>(周{days[weekday]})</span>)
+    return (<span style={{ padding: '10px 0' }}>{date}<br/>(周{days[weekday]})</span>)
   }
 
   const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
