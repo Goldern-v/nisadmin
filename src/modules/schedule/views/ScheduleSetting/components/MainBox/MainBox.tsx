@@ -359,13 +359,20 @@ export default function MainBox () {
     let date = moment(scheduleStore.getStartTime())
       .add(weekday - 1, 'days')
       .format('MM[月]DD[日]')
-    // .format('MM[月]DD[日(周]dddd[)]')
+    let result: any = null
+    let color: any = weekday > 5 ? 'red' : ''
+    // .format('M[月]DD[日(周]dddd[)]')
     // console.log('周', weekday, scheduleStore.getStartTime(), date)
     if (date.indexOf('Invalid date') > -1) {
       return `周${days[weekday - 1]}`
     }
-    // return `${date}(周${days[weekday]})`
-    return (<span>{date}<br/>(周{days[weekday]})</span>)
+    return (
+      <div style={{ padding: '10px 0', color: color }}>
+        {date}
+        <br />
+        (周{days[weekday]})
+      </div>
+    )
   }
 
   const getTextColor = (text: string, record: any, colorName: string, key?: any) =>

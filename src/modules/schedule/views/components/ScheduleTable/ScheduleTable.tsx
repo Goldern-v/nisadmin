@@ -53,13 +53,14 @@ const getWeekDay = (weekday: number) => {
     .add(weekday - 1, 'days')
     .format('MM[月]DD[日]')
   let result: any = null
+  let color: any = weekday > 5 ? 'red' : ''
   // .format('M[月]DD[日(周]dddd[)]')
   // console.log('周', weekday, scheduleStore.getStartTime(), date)
   if (date.indexOf('Invalid date') > -1) {
     return `周${days[weekday - 1]}`
   }
   return (
-    <div style={{ padding: '10px 0' }}>
+    <div style={{ padding: '10px 0', color: color }}>
       {date}
       <br />
       (周{days[weekday]})
