@@ -31,13 +31,13 @@ export default observer(function Awards () {
       key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 60
+      width: 55
     },
     {
       title: '时间',
       dataIndex: 'time',
       key: '时间',
-      width: 130,
+      width: 120,
       align: 'center'
     },
     {
@@ -51,28 +51,28 @@ export default observer(function Awards () {
       title: '本人排名',
       dataIndex: 'rank',
       key: '本人排名',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
       title: '授奖级别',
       dataIndex: 'awardlevel',
       key: '授奖级别',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
       title: '批准机关',
       dataIndex: 'approvalAuthority',
       key: 'approvalAuthority',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
       key: 'fj',
-      width: 100,
+      width: 70,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
@@ -82,7 +82,7 @@ export default observer(function Awards () {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: 'auditedStatusName',
-      width: 150,
+      width: 120,
       align: 'center'
     },
     {
@@ -155,7 +155,7 @@ export default observer(function Awards () {
 
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={380} type={['spaceRow']} tip={'填表说明：登记2010年及以后时间所获得的省市级以上奖励，如为团体奖励，请注明排名情况，授奖级别是指省级（或市级）/一（二、三、优秀）等奖。批准机关指证书盖章单位名称。'}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow']} tip={'填表说明：登记2010年及以后时间所获得的省市级以上奖励，如为团体奖励，请注明排名情况，授奖级别是指省级（或市级）/一（二、三、优秀）等奖。批准机关指证书盖章单位名称。'}/>
       <editAwardsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

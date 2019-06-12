@@ -140,7 +140,7 @@ export default observer(function ThreeBases () {
 
   return (
     <BaseLayout title='医院三基考核' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'无需填写，由培训模块自动导入。'}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow', 'fixedWidth']} tip={'无需填写，由培训模块自动导入。'}/>
       <editThreeBasesModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

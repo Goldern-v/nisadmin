@@ -19,7 +19,7 @@ export default observer(function DeptSelect (props: Props) {
   const [defaultValue, setDefaultValue] = useState(authStore.selectedDeptCode)
   let deptList = authStore.deptList
   const onChange = (value: string) => {
-    authStore.selectedDeptName = value
+    authStore.selectedDeptCode = value
     // if(authStore.deptList)
     if (!authStore.deptList) {
       authStore.deptList = []

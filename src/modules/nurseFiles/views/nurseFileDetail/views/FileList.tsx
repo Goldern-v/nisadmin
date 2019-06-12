@@ -277,7 +277,7 @@ export default observer(function FileList () {
   })
   return (
     <BaseLayout title='附件'>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow', 'fixedWidth']} />
       <editFileListModal.Component getTableData={getTableData} />
       {/* 附件查看 */}
       <ModalCon>

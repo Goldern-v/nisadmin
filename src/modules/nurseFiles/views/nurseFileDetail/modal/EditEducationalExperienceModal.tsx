@@ -50,7 +50,7 @@ export default function EditWorkHistoryModal (props: Props) {
         data = {}
       }
       data.urlImageTwo = pathImg
-      
+
       setPathImgGraduate(pathImg)
       setAttachmentId1(res.data.id)
       return pathImg
@@ -69,7 +69,7 @@ export default function EditWorkHistoryModal (props: Props) {
         data = {}
       }
       data.urlImageOne = pathImg
-   
+
       setPathImgDegree(pathImg)
       setAttachmentId2(res.data.id)
       return pathImg
@@ -127,7 +127,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (data && refForm.current && visible) {
       setAttachmentId1((data.attachmentId && data.attachmentId.split(',')[0]) || '')
       setAttachmentId2((data.attachmentId && data.attachmentId.split(',')[1]) || '')
-    
+
       refForm!.current!.setFields({
         readTime: moment(data.readTime),
         graduationTime: moment(data.graduationTime),
@@ -137,12 +137,13 @@ export default function EditWorkHistoryModal (props: Props) {
         urlImageTwo: data.urlImageTwo,
         urlImageOne: data.urlImageOne
       })
-      if (signShow === '修改') {
-        setTitle('修改教育经历')
-      } else if (signShow === '添加') {
-        setTitle('添加教育经历')
-      }
+
       // refForm.current.setField('unit', 123)
+    }
+    if (signShow === '修改') {
+      setTitle('修改教育经历')
+    } else if (signShow === '添加') {
+      setTitle('添加教育经历')
     }
   }, [visible])
 

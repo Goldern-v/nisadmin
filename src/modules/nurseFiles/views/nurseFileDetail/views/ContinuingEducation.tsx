@@ -152,7 +152,7 @@ export default observer(function EducationalExperience () {
   }, [])
   return (
     <BaseLayout title='继续教育' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'填写说明：仅登记院外进修情况（以人事科签订合同为准的进修记录）。'} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow', 'fixedWidth']} tip={'填写说明：仅登记院外进修情况（以人事科签订合同为准的进修记录）。'} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

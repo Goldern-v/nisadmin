@@ -178,7 +178,7 @@ export default observer(function WorkRegistrationForm () {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={365}
+        surplusHeight={345}
         type={['spaceRow', 'fixedWidth']}
         tip={'无需填写，由培训模块、排班模块自动导入。'}
       />

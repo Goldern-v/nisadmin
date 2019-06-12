@@ -127,7 +127,7 @@ export default observer(function ExaminationResults () {
 
   return (
     <BaseLayout title='年度履职考核结果' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={365} type={['spaceRow', 'fixedWidth']} tip={'填写说明：记录2016年以后的年度考核结果。'}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow', 'fixedWidth']} tip={'填写说明：记录2016年以后的年度考核结果。'}/>
       <editExaminationResultsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

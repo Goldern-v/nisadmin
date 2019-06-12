@@ -25,8 +25,6 @@ export default class AuthStore {
   /** 用户选择的科室 */
   @observable public selectedDeptCode: any = ''
 
-  @observable public selectedDeptName: any = ''
-
   @computed
   public get selectedDeptNameAdd () {
     try {
@@ -56,6 +54,14 @@ export default class AuthStore {
   public get post () {
     try {
       return this!.user!.post
+    } catch (error) {
+      return ''
+    }
+  }
+  @computed
+  public get selectedDeptName () {
+    try {
+      return this.deptList.find((dept: any) => dept.code == this.selectedDeptCode)!.name
     } catch (error) {
       return ''
     }

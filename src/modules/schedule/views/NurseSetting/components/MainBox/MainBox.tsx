@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-import { Table, Input } from 'antd'
+import { Table, Input, Switch } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
@@ -18,6 +18,9 @@ import BaseTable from 'src/components/BaseTable'
 // let dragingIndex = -1
 
 // import emitter from 'src/libs/ev'
+import createModal from '../../../../../../libs/createModal'
+import AddScheduleNursingModal from '../../modal/AddScheduleNursingModal'
+import { Component } from 'react'
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
@@ -27,6 +30,7 @@ export default function MainBox () {
   const [userList, setUserList] = useState(new Array())
   const [loading, setLoading] = useState(false)
 
+  const addScheduleNursingModal = createModal(AddScheduleNursingModal)
   const onPressEnter = (e: any, record: any) => {
     record.sortValue = ~~e.target.value
     // userList.sort((a, b) => {
@@ -76,6 +80,35 @@ export default function MainBox () {
           ''
         )
       // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
+    },
+    {
+      title: '是否排班',
+      dataIndex: 'rangeShow',
+      key: '是否排班',
+      width: 35,
+      render: (text: any, record: any, index: any) =>
+        record.id ? (
+          <span>
+            <Switch
+              size='small'
+              onChange={(check: any) => {
+                record.rangeShow = check
+                // console.log(record, userList, 'chekc')
+                setUserList([...userList])
+              }}
+              checked={text}
+            />
+          </span>
+        ) : (
+          ''
+        )
+      // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
+    },
+    {
+      title: 'rangeShow',
+      dataIndex: 'rangeShow',
+      width: 80,
+      key: 'rangeShowrangeShow'
     },
     {
       title: '所在科室',
@@ -141,8 +174,9 @@ export default function MainBox () {
     deptName: '',
     sex: '',
     age: '',
-    title: '',
-    currentLevel: '',
+    newTitle: '',
+    nurseHierarchy: '',
+    job: '',
     roleJurisdict: '',
     rangeShow: null
   }
@@ -231,10 +265,23 @@ export default function MainBox () {
       })
     }
   })
+
   emitter.removeAllListeners('刷新人员列表')
 
   emitter.addListener('刷新人员列表', () => {
     getUserList()
+  })
+
+  emitter.removeAllListeners('删除排班人员')
+
+  emitter.addListener('删除排班人员', () => {
+    getUserList()
+  })
+
+  emitter.removeAllListeners('添加排班人员')
+
+  emitter.addListener('添加排班人员', () => {
+    addScheduleNursingModal.show({})
   })
 
   const getUserList = () => {
@@ -312,14 +359,7 @@ export default function MainBox () {
         onRow={onRow}
         loading={loading}
       />
-      {/* <Table
-        bordered
-        size='small'
-        columns={columns}
-        rowSelection={rowSelection}
-        dataSource={userList}
-        pagination={false}
-      /> */}
+      <addScheduleNursingModal.Component />
     </Wrapper>
   )
 }

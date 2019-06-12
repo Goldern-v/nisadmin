@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table'
@@ -22,6 +22,7 @@ export interface Props extends TableProps<any> {
 export default function BaseTable (props: Props) {
   let wih = windowHeight()
   let wiw = windowWidth()
+  let tableRef: any = React.createRef()
   let option: any = Object.assign(
     {
       bordered: true,
@@ -44,7 +45,7 @@ export default function BaseTable (props: Props) {
       let spaceRowNumber = props.spaceRowNumber || 10
       if (option.dataSource.length < spaceRowNumber) {
         while (option.dataSource.length < spaceRowNumber) {
-          option.dataSource.push({})
+          option.dataSource.push({ key: option.dataSource.length })
         }
       }
     }
@@ -62,17 +63,30 @@ export default function BaseTable (props: Props) {
     doCols.forEach((doCol: any) => {
       let callback = doCol.render
       doCol.render = (text: any, row: any, index: any) => {
-        if (Object.keys(row).length == 0) return <span />
+        if (Object.keys(row).length <= 1) return <span />
         return callback && callback(text, row, index)
       }
     })
   }
 
+  useLayoutEffect(() => {
+    if (option.tip && tableRef.current) {
+      let tip = tableRef!.current!.querySelector('#tip')
+      if (tip) {
+        tip.innerHTML = option.tip
+      } else {
+        tip = document.createElement('div')
+        tip.id = 'tip'
+        tip.innerHTML = option.tip
+        tableRef!.current!.querySelector('.ant-table-body').append(tip)
+      }
+    }
+  })
 
   return (
-    <Wrapper {...option} style={option.wrapperStyle || {}}>
+    <Wrapper {...option} style={option.wrapperStyle || {}} ref={tableRef}>
       <Table {...option} />
-      {option.tip && <Tip>{option.tip}</Tip>}
+      {/* {option.tip && <Tip>{option.tip}</Tip>} */}
     </Wrapper>
   )
 }
@@ -172,6 +186,13 @@ const Wrapper = styled.div`
       -webkit-box-shadow: inset 0 0 6px rgb(242, 244, 245);
       background-color: rgb(242, 244, 245);
     }
+  }
+  #tip {
+    font-size: 12px;
+    margin: 5px;
+  }
+  .ant-table-row {
+    border-bottom: 1px solid #e8e8e8;
   }
 `
 

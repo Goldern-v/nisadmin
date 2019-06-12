@@ -29,6 +29,22 @@ export default function ToolBar () {
       <div style={{ flex: 1 }} />
       <Button
         onClick={(e: any) => {
+          emitter.emit('添加排班人员')
+        }}
+        style={{ marginLeft: 20, marginRight: 0 }}
+      >
+        添加
+      </Button>
+      <Button
+        onClick={(e: any) => {
+          emitter.emit('删除排班人员')
+        }}
+        style={{ marginLeft: 20, marginRight: 0 }}
+      >
+        删除
+      </Button>
+      <Button
+        onClick={(e: any) => {
           emitter.emit('刷新人员列表')
         }}
         style={{ marginLeft: 20, marginRight: 0 }}

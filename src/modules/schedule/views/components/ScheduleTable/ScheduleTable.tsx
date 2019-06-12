@@ -39,7 +39,7 @@ const newImg = require('src/modules/schedule/views/components/images/new.png')
 const getTextColor = (text: any, colorName: any) =>
   text.length > 0 ? (
     <span>
-      <span color={colorName || ''} key={text} style={{ margin: 'auto auto',color:colorName }}>
+      <span color={colorName || ''} key={text} style={{ margin: 'auto auto', color: colorName }}>
         {text.toUpperCase()}
       </span>
     </span>
@@ -52,13 +52,19 @@ const getWeekDay = (weekday: number) => {
   let date = moment(scheduleStore.getStartTime())
     .add(weekday - 1, 'days')
     .format('MM[月]DD[日]')
-  let result:any = null
+  let result: any = null
   // .format('M[月]DD[日(周]dddd[)]')
   // console.log('周', weekday, scheduleStore.getStartTime(), date)
   if (date.indexOf('Invalid date') > -1) {
     return `周${days[weekday - 1]}`
   }
-  return (<span>{date}<br/>(周{days[weekday]})</span>)
+  return (
+    <div style={{ padding: '10px 0' }}>
+      {date}
+      <br />
+      (周{days[weekday]})
+    </div>
+  )
 }
 
 const columns = [
@@ -135,7 +141,15 @@ const columns = [
   //   width: '15%'
   // },
   {
-    title: ()=> {return (<span>本周工时<br/>(小时)</span>)},
+    title: () => {
+      return (
+        <span>
+          本周工时
+          <br />
+          (小时)
+        </span>
+      )
+    },
     dataIndex: 'thisWeekHour',
     width: '7%'
   },
@@ -162,7 +176,7 @@ let tableState = {
 
 export default function ScheduleTable () {
   const [count, setCount] = useState(0)
-  const [footer, setFooter] = useState(()=>{return <span></span>})
+  const [footer, setFooter] = useState('<span></span>')
   const [loading, setLoading] = useState(false)
   const [scheduleList, setScheduleList] = useState([])
   // const [startTime, setstartTime] = useState('')
@@ -172,7 +186,7 @@ export default function ScheduleTable () {
     console.log(loading, setLoading)
     setScheduleList([])
     // setFooter('排班小计')
-    setFooter(()=>{return <span>排班小计: 空</span>})
+    setFooter('<span>排班小计: 空</span>')
 
     let eventList = ['动画载入表格中', '动画载入表格完成', '清空排班记录', '空白排班记录', '本周排班记录']
     eventList.map((ename) => emitter.removeAllListeners(ename))
@@ -202,7 +216,7 @@ export default function ScheduleTable () {
       // genEmptyTable(newList)
       setScheduleList(newList as any)
       // setFooter('排班小计: 空')
-      setFooter(()=>{return <span>排班小计: 空</span>})
+      setFooter('<span>排班小计: 空</span>')
       // newSchedule
       let deptCode = scheduleStore.getDeptCode()
       let startTime = scheduleStore.getStartTime()
@@ -411,7 +425,7 @@ export default function ScheduleTable () {
       if (item.thisWeekHour) {
         workhour += item.thisWeekHour
       }
-      if(!remark || remark==='空'){
+      if (!remark || remark === '空') {
         remark = item.remark
       }
       for (let ii = 1; ii < 8; ii++) {
@@ -441,7 +455,7 @@ export default function ScheduleTable () {
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
     let totle = `排班小计：${rangeSum}工时${workhour}小时。`
     // remark = `备注：${remark||'空'}`
-    let result = ()=> {return <span>{totle}<br/>排班备注：{remark}</span>}
+    let result = `<span>${totle}<br/>排班备注：${remark}</span>`
 
     setFooter(result)
     return ''
@@ -479,9 +493,9 @@ export default function ScheduleTable () {
               size='middle'
               columns={columns}
               dataSource={scheduleList}
-              footer={() => {return footer}}
+              tip={footer}
               pagination={false}
-              surplusHeight={300}
+              surplusHeight={240}
               style={{ padding: 0 }}
             />
           </ScheduleTableCon>

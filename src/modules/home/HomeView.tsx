@@ -13,6 +13,8 @@ import PerformChart from './components/PerformChart'
 import NurseSituation from './components/NurseSituation/NurseSituation'
 import PatientDistribute from './components/PatientDistribute/PatientDistribute'
 import emitter from 'src/libs/ev'
+import { authStore } from '../../stores/index'
+import { observer } from 'mobx-react-lite'
 // export interface Props extends RouteComponentProps {}
 
 // const Option = Select.Option
@@ -21,7 +23,7 @@ import emitter from 'src/libs/ev'
 //   console.log(`selected ${value}`)
 // }
 
-export default function HomeView () {
+export default observer(function HomeView () {
   const [page, setPage] = useState(['本页'])
   useEffect(() => {})
   emitter.removeAllListeners('首页查询')
@@ -33,6 +35,8 @@ export default function HomeView () {
   return (
     <Wrapper>
       <SelectCon>
+        {/* {authStore.selectedDeptName}
+        {authStore.selectedDeptCode} */}
         <SelectCommon />
       </SelectCon>
       {/* <SelectCon>
@@ -77,7 +81,7 @@ export default function HomeView () {
       </HomeDetail>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   padding:20px 10px;
   /* padding: ${(p) => p.theme.$mcp}; */
