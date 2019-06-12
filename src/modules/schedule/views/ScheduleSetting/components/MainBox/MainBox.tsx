@@ -249,7 +249,7 @@ export default function MainBox () {
     // }
     confirm({
       title: '提示',
-      content: '同步前请确保已经保存，否则可能导致数据丢失',
+      content: '刷新人员可能会丢失本周排班表，如未保存，请先保存后再刷新',
       onOk () {
         setTableLoading(true)
         getSchedule(true)
@@ -317,7 +317,7 @@ export default function MainBox () {
         if (shift) {
           let num = !isNaN(Number(shift.effectiveTime)) ? Number(shift.effectiveTime) : 0
           result += num
-          //~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
+          // ~~shift.effectiveTime // parseInt(shift.effectiveTime, 10) || 0
           if (target && target.name && target.name === key + record.id) {
             target.style.color = shift.nameColor || ''
           }

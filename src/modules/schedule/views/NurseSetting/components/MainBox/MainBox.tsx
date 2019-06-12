@@ -81,35 +81,35 @@ export default function MainBox () {
         )
       // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
     },
-    {
-      title: '是否排班',
-      dataIndex: 'rangeShow',
-      key: '是否排班',
-      width: 35,
-      render: (text: any, record: any, index: any) =>
-        record.id ? (
-          <span>
-            <Switch
-              size='small'
-              onChange={(check: any) => {
-                record.rangeShow = check
-                // console.log(record, userList, 'chekc')
-                setUserList([...userList])
-              }}
-              checked={text}
-            />
-          </span>
-        ) : (
-          ''
-        )
-      // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
-    },
-    {
-      title: 'rangeShow',
-      dataIndex: 'rangeShow',
-      width: 80,
-      key: 'rangeShowrangeShow'
-    },
+    // {
+    //   title: '是否排班',
+    //   dataIndex: 'rangeShow',
+    //   key: '是否排班',
+    //   width: 35,
+    //   render: (text: any, record: any, index: any) =>
+    //     record.id ? (
+    //       <span>
+    //         <Switch
+    //           size='small'
+    //           onChange={(check: any) => {
+    //             record.rangeShow = check
+    //             // console.log(record, userList, 'chekc')
+    //             setUserList([...userList])
+    //           }}
+    //           checked={text}
+    //         />
+    //       </span>
+    //     ) : (
+    //       ''
+    //     )
+    //   // record.id ? <span style={{ width: '60px' }}><Input defaultValue={index + 1} /></span> : ''
+    // },
+    // {
+    //   title: 'rangeShow',
+    //   dataIndex: 'rangeShow',
+    //   width: 80,
+    //   key: 'rangeShowrangeShow'
+    // },
     {
       title: '所在科室',
       dataIndex: 'deptName',
