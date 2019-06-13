@@ -70,17 +70,22 @@ export default function BaseTable (props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (option.tip && tableRef.current) {
-      let tip = tableRef!.current!.querySelector('#tip')
-      if (tip) {
-        tip.innerHTML = option.tip
-      } else {
-        tip = document.createElement('div')
-        tip.id = 'tip'
-        tip.innerHTML = option.tip
-        tableRef!.current!.querySelector('.ant-table-body').append(tip)
-      }
-    }
+    try {
+      setTimeout(() => {
+        if (option.tip && tableRef.current) {
+          let tip = tableRef!.current!.querySelector('#tip')
+          if (tip) {
+            tip.innerHTML = option.tip
+          } else {
+            tip = document.createElement('div')
+            tip.id = 'tip'
+            tip.innerHTML = option.tip
+
+            tableRef!.current!.querySelector('.ant-table-body').append(tip)
+          }
+        }
+      }, 100)
+    } catch (error) {}
   })
 
   return (
