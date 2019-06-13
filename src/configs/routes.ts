@@ -38,6 +38,9 @@ import testView from 'src/modules/test/testView'
 import NoticeView from 'src/modules/notice/NoticeView'
 import LmsDetails from 'src/modules/lms/views/LmsDetails'
 
+//护理制度
+import NursingRules from 'src/modules/nursingRules/NursingRules'
+
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
   setLayout('/home', HomeView, layouts.MainLayout),
@@ -89,6 +92,7 @@ const routes: RouteItem[] = [
     redirect: '/statistic/护士排班表'
   },
   setLayout('/setting/:name', SettingView, layouts.MainLayout),
+  setLayout('/nursingRules', NursingRules, layouts.MainLayout),
   {
     path: '/badEvents',
     redirect: '/badEvents/search'

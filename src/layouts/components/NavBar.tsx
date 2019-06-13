@@ -15,7 +15,7 @@ import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as WLPT } from '../images/物流平台.svg'
 import { ReactComponent as XTSZ } from '../images/系统设置.svg'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const navList = [
   {
@@ -72,6 +72,10 @@ const navList = [
     name: '物流平台',
     icon: <WLPT />,
     path: '/Lms'
+  }, {
+    name: '护理制度',
+    icon: <HSDA />,
+    path: '/nursingRules'
   },
   {
     name: '系统设置',
@@ -80,7 +84,7 @@ const navList = [
   }
 ]
 
-export default observer(function NavBar (props: Props) {
+export default observer(function NavBar(props: Props) {
   const toNavLink = (path: string) => {
     return () => props.history.push(path)
   }
