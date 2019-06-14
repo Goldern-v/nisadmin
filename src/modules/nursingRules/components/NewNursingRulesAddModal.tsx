@@ -40,7 +40,8 @@ export default function NewNursingRulesAddModal(props: Props) {
 
   useEffect((): void => {
     if (deptList.length <= 0) setDeptList(authStore.deptList);
-    setEmpNo(authStore.getUser().empNo);
+    if(authStore.getUser())setEmpNo(authStore.getUser().empNo);
+    
     if (visible) {
       let nameEL = document.querySelector('.new-nursing-rules-add-modal .file-name') as HTMLInputElement;
       if (nameEL && nameEL.value) nameEL.value = "";
@@ -58,6 +59,8 @@ export default function NewNursingRulesAddModal(props: Props) {
       if (fileEL.files && fileEL.files.length > 0)
         file = fileEL.files[0]
 
+      if (!formData.institutionName)
+        return Message.error('未填写制度名称');
 
       if (file && nameEl.value) {
         let data = new FormData();

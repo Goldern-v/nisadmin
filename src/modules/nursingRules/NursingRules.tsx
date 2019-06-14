@@ -111,7 +111,7 @@ export default class NursingRules extends Component<Props> {
           preview: {
             url: previewUrl,
             type: record.type,
-            title: record.fileName
+            title: record.name
           }
         }, () => {
           PreviewModalWrapper.show();
@@ -231,9 +231,9 @@ export default class NursingRules extends Component<Props> {
           return (pageIndex - 1) * pageSize + index + 1;
         }
       }, {
-        title: '文件名',
-        dataIndex: 'fileName',
-        key: 'fileName',
+        title: '制度名称',
+        dataIndex: 'name',
+        key: 'name',
         align: 'center',
         render: (text: string) => {
           return <span style={{ wordBreak: 'break-all' }}>{text}</span>
