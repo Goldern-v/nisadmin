@@ -16,56 +16,40 @@ import ImageUploader from 'src/components/ImageUploader'
 import emitter from 'src/libs/ev'
 import { TITLE_LIST, POST_LIST } from 'src/modules/nurseFiles/views/nurseFilesList/modal/AddNursingModal'
 import { CURRENTLEVEL_LIST } from '../../../../nurseFiles/views/nurseFilesList/modal/AddNursingModal'
+import service from 'src/services/api'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  id?: number
-  data?: any
-  signShow?: string
-  getTableData?: () => {}
+  getTableData?: () => void
 }
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
-  startTime: (val) => !!val || '请选择开始时间',
-  endTime: (val) => !!val || '请选择结束时间',
-  unit: (val) => !!val || '请填写工作单位',
-  professionalWork: (val) => !!val || '请填写专业技术工作',
-  professional: (val) => !!val || '请选择技术职称',
-  post: (val) => !!val || '请选择职务'
+  empName: (val) => !!val || '请选择姓名'
 }
-export default function AddScheduleNursingModal (props: Props) {
-  let { visible, onCancel, onOk, data, signShow } = props
+export default function AddScheduleNursingModal(props: Props) {
+  let { visible, onCancel, onOk, getTableData } = props
   const [title, setTitle] = useState('')
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
 
   const onSave = async () => {
-    let obj = {
-      auditedStatus: '',
-      attachmentId: '',
-      urlImageOne: ''
-    }
-    if (authStore!.user!.post === '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
-    if (signShow === '修改') {
-      Object.assign(obj, { id: data.id })
-    }
-
     if (!refForm.current) return
 
     let [err, value] = await to(refForm.current.validateFields())
+    console.log(err, 'err')
     if (err) return
-    value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
-    value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    value.deptName = authStore.selectedDeptName
+    value.deptCode = authStore.selectedDeptCode
+    service.scheduleUserApiService.saveOrUpdate(value).then((res) => {
+      message.success('保存成功')
+      getTableData && getTableData()
+    })
   }
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
-    if (data && refForm.current && visible) {
+    if (refForm.current && visible) {
       refForm!.current!.setFields({
         empName: '',
         sex: '1',
@@ -88,7 +72,7 @@ export default function AddScheduleNursingModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`姓别`} name='sex' required>
+            <Form.Field label={`姓别`} name='sex'>
               <Select>
                 <Select.Option value='0' key={0}>
                   男
@@ -101,7 +85,7 @@ export default function AddScheduleNursingModal (props: Props) {
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`职称`} name='newTitle' required>
+            <Form.Field label={`职称`} name='newTitle'>
               <Select>
                 {TITLE_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>
@@ -112,7 +96,7 @@ export default function AddScheduleNursingModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`层级`} name='nurseHierarchy' required>
+            <Form.Field label={`层级`} name='nurseHierarchy'>
               <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
                 {CURRENTLEVEL_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>
@@ -123,7 +107,7 @@ export default function AddScheduleNursingModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`职务`} name='job' required>
+            <Form.Field label={`职务`} name='job'>
               <Select>
                 {POST_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>

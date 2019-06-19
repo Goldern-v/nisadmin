@@ -1,5 +1,5 @@
 {
-  "defaultSeverity": "error",
+  "defaultSeverity": "none",
   "extends": ["tslint-config-standard", "tslint-react"],
   "rules": {
     "align": [true, "parameters", "statements"],

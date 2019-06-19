@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-import { Table, message, Popconfirm, Divider, Tag } from 'antd'
+import { Table, message, Popconfirm, Divider, Tag, Switch } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
-import { scheduleStore } from 'src/stores'
+import { scheduleStore, authStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
@@ -34,9 +34,10 @@ export interface Props extends RouteComponentProps {}
 //   灰色: 'gray'
 // }
 
-export default function MainBox () {
+export default function MainBox() {
   const [count, setCount] = useState(0)
-  const [ShiftList, setShiftList] = useState(new Array())
+  const [tableLoading, setTableLoading] = useState(false)
+  const [shiftList, setShiftList] = useState(new Array())
 
   /** 颜色 */
   const [colorMap, setColorMap]: [any, any] = useState({})
@@ -48,8 +49,29 @@ export default function MainBox () {
       dataIndex: 'index',
       key: 'index',
       width: 60,
-      render: (text: string, record: any, index: any) =>
-        record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
+      render: (text: string, record: any, index: any) => index + 1
+    },
+    {
+      title: '列入排班',
+      dataIndex: 'status',
+      key: '是否排班',
+      width: 70,
+      render: (text: any, record: any, index: any) =>
+        record.id ? (
+          <span>
+            <Switch
+              size='small'
+              onChange={(check: any) => {
+                record.status = check
+                // console.log(record, userList, 'chekc')
+                setShiftList([...shiftList])
+              }}
+              checked={text}
+            />
+          </span>
+        ) : (
+          ''
+        )
     },
     {
       title: '班次名称',
@@ -79,7 +101,7 @@ export default function MainBox () {
       key: 'nameColor',
       width: 80,
       render: (text: string, record: any) =>
-        text.length > 0 ? (
+        text && text.length > 0 ? (
           <span>
             <Tag color={record.nameColor} key={text}>
               {colorMapCN[text]}
@@ -112,8 +134,12 @@ export default function MainBox () {
       dataIndex: 'effectiveTime',
       key: 'effectiveTime',
       width: 100
-    },
-    {
+    }
+  ]
+
+  let promise = authStore!.user!.post == '护理部' || authStore!.user!.empName == '管理员'
+  if (promise) {
+    columns.push({
       title: '操作',
       dataIndex: 'title',
       width: 120,
@@ -147,9 +173,8 @@ export default function MainBox () {
         ) : (
           ''
         )
-    }
-  ]
-
+    })
+  }
   let data = {
     key: '',
     id: '',
@@ -170,69 +195,9 @@ export default function MainBox () {
   let tableData = new Array()
   let selectedRowsArray = new Array()
 
-  // rowSelection objects indicates the need for row selection
-  let rowSelection = {
-    onChange: (selectedRowKeys: any, selectedRows: any) => {
-      // selectedRowsArray = selectedRows
-      console.log(`onChange:selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
-    },
-    onSelect: (record: any, selected: any, selectedRows: any) => {
-      record.status = selected
-      selectedRowsArray.map((res: any) => {
-        if (res.id === record.id) {
-          res.status = selected
-        }
-      })
-      // selectedRowsArray
-      console.log('onSelect', record, selected, selectedRows)
-    },
-    onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-      // if(!changeRows){
-      if (selectedRows && selectedRows.length === 0) {
-        selectedRowsArray.map((res: any) => {
-          res.status = false
-          res.rangeShow = selected
-        })
-      } else {
-        selectedRows.map((res: any) => {
-          res.status = true
-          res.rangeShow = selected
-        })
-      }
-
-      if (changeRows) {
-        changeRows.map((record: any) => {
-          record.rangeShow = selected
-          record.status = selected
-        })
-      }
-
-      console.log('onSelectAll', selected, selectedRows, changeRows)
-    },
-    getCheckboxProps: (record: any) => ({
-      disabled: !record.id, // Column configuration not to be checked
-      defaultChecked: record.status === true,
-      name: record.key + ''
-    }),
-    hideDefaultSelections: true
-  }
-
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     getShiftList()
-
-    emitter.removeAllListeners('获取选中班次列表')
-    emitter.removeAllListeners('更新班次列表')
-
-    emitter.addListener('获取选中班次列表', (callback: any) => {
-      if (callback) {
-        callback(selectedRowsArray)
-      }
-    })
-
-    emitter.addListener('更新班次列表', () => {
-      getShiftList()
-    })
 
     service.commonApiService.dictInfo('sch_range_color').then((res) => {
       let colorMap: any = {}
@@ -248,9 +213,23 @@ export default function MainBox () {
     console.log(count, setCount)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
+  emitter.removeAllListeners('获取选中班次列表')
+  emitter.removeAllListeners('更新班次列表')
+
+  emitter.addListener('获取选中班次列表', (callback: any) => {
+    if (callback) {
+      callback(selectedRowsArray)
+    }
+  })
+
+  emitter.addListener('更新班次列表', () => {
+    getShiftList()
+  })
   const getShiftList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
+    setTableLoading(true)
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res) => {
+      setTableLoading(false)
       console.log('查找排班班次res', res, data)
       let oneUser = new Object()
       allUser = new Array()
@@ -272,35 +251,21 @@ export default function MainBox () {
           oneUser = new Object()
           for (const key in data) {
             if (data.hasOwnProperty(key) && oneObj.hasOwnProperty(key)) {
-              (oneUser as any)[key] = oneObj[key]
+              ;(oneUser as any)[key] = oneObj[key]
             }
             if (key === 'id') {
-              (oneUser as any).key = oneObj[key]
+              ;(oneUser as any).key = oneObj[key]
             }
           }
-          (allUser as any).push(oneUser)
+          ;(allUser as any).push(oneUser)
           selectedRowsArray.push(oneUser)
         })
 
         // genEmptyTable(allUser)
         setShiftList(allUser)
-        console.log('查找排班班次', ShiftList, allUser, tableData, selectedRowsArray)
+        console.log('查找排班班次', shiftList, allUser, tableData, selectedRowsArray)
       }
     })
-  }
-
-  const genEmptyTable = (newList: any) => {
-    // 补空行
-    let diff = 10 - (newList.length % 10)
-    if (diff > 0) {
-      for (let j = 0; j < diff; j++) {
-        let newData = JSON.parse(JSON.stringify(data))
-        if (newData.hasOwnProperty('key')) {
-          newData.key = 'empty' + j
-        }
-        newList.push(newData)
-      }
-    }
   }
 
   return (
@@ -309,10 +274,11 @@ export default function MainBox () {
         bordered
         size='small'
         columns={columns}
-        rowSelection={rowSelection}
-        dataSource={ShiftList}
+        dataSource={shiftList}
         pagination={false}
         surplusHeight={250}
+        type={['spaceRow']}
+        loading={tableLoading}
       />
       {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
     </Wrapper>

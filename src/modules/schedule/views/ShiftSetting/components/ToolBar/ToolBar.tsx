@@ -11,14 +11,14 @@ import { Button, message, Modal, Form, Input, AutoComplete, TimePicker, Switch }
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import moment from 'moment'
-import { scheduleStore } from 'src/stores'
+import { scheduleStore, authStore } from 'src/stores'
 
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-export default function ToolBar () {
+export default function ToolBar() {
   let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
   // let bangci = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
   let dataSourceColor = ['red', 'green', 'blue', 'yellow', 'black', 'gray']
@@ -118,11 +118,11 @@ export default function ToolBar () {
   let customizedForm: any = null
   const CustomizedForm = Form.create({
     // name: 'coordinated',
-    onFieldsChange (props: any, changedFields: any) {
+    onFieldsChange(props: any, changedFields: any) {
       // props = { ...props, ...changedFields }
       props.onChange(changedFields)
     },
-    mapPropsToFields (props: any) {
+    mapPropsToFields(props: any) {
       console.log('mapPropsToFields', props)
       return {
         id: Form.createFormField({
@@ -163,7 +163,7 @@ export default function ToolBar () {
         })
       }
     },
-    onValuesChange (_: any, values: any) {
+    onValuesChange(_: any, values: any) {
       console.log(values)
     }
   })((props: any) => {
@@ -370,18 +370,24 @@ export default function ToolBar () {
   }
 
   // {/* <ModalBox title={'添加排班/编辑排班'} /> */}
-
+  let promise = authStore!.user!.post == '护理部' || authStore!.user!.empName == '管理员'
   return (
     <Wrapper>
       <Title>班次设置</Title>
       <div style={{ flex: 1 }} />
-      <Button
-        onClick={() => {
-          addShift('添加排班')
-        }}
-        style={{ marginLeft: 5, marginRight: 5 }}
-      >
-        添加班次
+      {promise && (
+        <Button
+          onClick={() => {
+            addShift('添加排班')
+          }}
+          style={{ marginLeft: 5, marginRight: 5 }}
+        >
+          添加班次
+        </Button>
+      )}
+
+      <Button onClick={() => emitter.emit('更新班次列表')} style={{ marginLeft: 5, marginRight: 5 }}>
+        刷新
       </Button>
       <Button onClick={save} style={{ marginLeft: 5, marginRight: 5 }}>
         保存

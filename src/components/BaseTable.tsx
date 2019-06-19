@@ -5,6 +5,9 @@ import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table'
 import windowHeight from 'src/hooks/windowHeight'
 import windowWidth from 'src/hooks/windowWidth'
+import { components } from './diagTableUtils'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 export interface Props extends TableProps<any> {
   // style?: any
   wrapperStyle?: any
@@ -17,9 +20,10 @@ export interface Props extends TableProps<any> {
   /** 多余的宽度 */
   surplusWidth?: number
   tip?: string
+  moveRow?: (dragIndex: number, hoverIndex: number) => void
 }
 
-export default function BaseTable (props: Props) {
+export default function BaseTable(props: Props) {
   let wih = windowHeight()
   let wiw = windowWidth()
   let tableRef: any = React.createRef()
@@ -48,6 +52,14 @@ export default function BaseTable (props: Props) {
           option.dataSource.push({ key: option.dataSource.length })
         }
       }
+    }
+    if (option.type.includes('diagRow')) {
+      /** 拖拽 */
+      option.components = components
+      option.onRow = (record: any, index: any) => ({
+        index,
+        moveRow: option.moveRow
+      })
     }
     // if (option.type.includes('fixedWidth')) {
     //   /** 设置宽度 */
@@ -88,13 +100,14 @@ export default function BaseTable (props: Props) {
     } catch (error) {}
   })
 
+  let TableComponent = option.type && option.type.includes('diagRow') ? DragDropContext(HTML5Backend)(Table) : Table
   return (
     <Wrapper {...option} style={option.wrapperStyle || {}} ref={tableRef}>
-      <Table {...option} />
-      {/* {option.tip && <Tip>{option.tip}</Tip>} */}
+      <TableComponent {...option} />
     </Wrapper>
   )
 }
+
 const Wrapper = styled.div`
   background: rgba(255, 255, 255, 1);
   /* border: 1px solid rgba(219, 224, 228, 1); */
@@ -125,7 +138,7 @@ const Wrapper = styled.div`
     }
     /* 补充th下降的高度 */
     .ant-table-align-center {
-      padding: 8px 8px 14px 8px !important;
+      /* padding: 8px 8px 14px 8px !important; */
     }
   }
 
@@ -176,6 +189,7 @@ const Wrapper = styled.div`
   } */
 
   .ant-table-header {
+    margin-bottom: -8px !important;
     *::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -202,9 +216,28 @@ const Wrapper = styled.div`
   .ant-table-footer {
     padding: 10px;
   }
+
+  /** 拖拽 */
+  tr.drop-over-downward td {
+    border-bottom: 2px dashed ${(p: any) => p.theme.$mtc};
+  }
+
+  tr.drop-over-upward td {
+    border-top: 2px dashed ${(p: any) => p.theme.$mtc};
+  }
 `
 
 const Tip = styled.div`
   font-size: 12px;
   margin: 5px 0 -5px;
+`
+
+export const DoCon = styled.div`
+  display: flex;
+  justify-content: space-around;
+  font-size: 12px;
+  color: ${(p) => p.theme.$mtc};
+  span {
+    cursor: pointer;
+  }
 `
