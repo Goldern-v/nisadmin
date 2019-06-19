@@ -327,8 +327,9 @@ export default function MainBox () {
         // }
       }
     }
-    record.thisWeekHour = result + ''
+    record.thisWeekHour = result.toFixed(2)
     // console.log('result', result)
+
     return result
   }
 
@@ -399,11 +400,11 @@ export default function MainBox () {
       return `周${days[weekday - 1]}`
     }
     return (
-      <div style={{ padding: '10px 0', color: color }}>
+      <article style={{ padding: '3px 0 10px', color: color }}>
         {date}
         <br />
         (周{days[weekday]})
-      </div>
+      </article>
     )
   }
 
@@ -984,7 +985,7 @@ export default function MainBox () {
     // console.log('统计', workhour, rangeNames, rangeObj)
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
     // setFooter(`排班小计：${rangeSum}工时${workhour}小时。`)
-    let totle = `排班小计：${rangeSum}工时${workhour}小时。`
+    let totle = `排班小计：${rangeSum}工时${Number(workhour).toFixed(2)}小时。`
     // remark = `备注：${remark||'空'}`
     let result = () => {
       return (
@@ -1261,7 +1262,7 @@ export default function MainBox () {
           columns={columns}
           dataSource={tableList}
           pagination={false}
-          surplusHeight={402}
+          surplusHeight={388}
           wrapperStyle={{
             padding: 0
           }}

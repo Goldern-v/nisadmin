@@ -4,7 +4,9 @@ export default function Format (row: any, getTableData: any) {
   switch (row.typeName) {
     case '基本信息': {
       return globalModal.auditModal.show({
+        getTableData: getTableData,
         empNo: row.empNo,
+        id: row.id,
         type: 'nurseInformation',
         // empNo: appStore.queryObj.empNo,
         title: '审核基础信息',

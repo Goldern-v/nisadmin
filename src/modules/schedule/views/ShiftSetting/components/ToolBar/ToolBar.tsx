@@ -19,44 +19,83 @@ import { scheduleStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function ToolBar () {
-  const [count, setCount] = useState(0)
+  let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
+  // let bangci = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
+  let dataSourceColor = ['red', 'green', 'blue', 'yellow', 'black', 'gray']
+
+  // let dataSourceColorCN = ['红色', '绿色', '蓝色', '黄色', '黑色', '灰色']
+
+  // let colorMap: any = {
+  //   red: '红色',
+  //   green: '绿色',
+  //   blue: '蓝色',
+  //   yellow: '黄色',
+  //   black: '黑色',
+  //   gray: '灰色'
+  // }
+
+  // let colorMapCN: any = {
+  //   红色: 'red',
+  //   绿色: 'green',
+  //   蓝色: 'blue',
+  //   黄色: 'yellow',
+  //   黑色: 'black',
+  //   灰色: 'gray'
+  // }
+  const [bangci, setBangci]: [any, any] = useState([])
+  const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([])
+  const [colorMap, setColorMap]: [any, any] = useState({})
+  const [colorMapCN, setColorMapCN]: [any, any] = useState({})
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    console.log(count, setCount)
-
-    emitter.removeAllListeners('弹窗编辑排班')
-
-    emitter.addListener('弹窗编辑排班', (record: any) => {
-      fields = {
-        shiftName: {
-          value: record.name || ''
-        },
-        id: {
-          value: record.key || ''
-        },
-        type: {
-          value: record.shiftType || ''
-        },
-        workTime: {
-          value: record.workTime || ''
-        },
-        workHour: {
-          value: record.effectiveTime || ''
-        },
-        color: {
-          value: colorMap[record.nameColor] || ''
-        },
-        status: {
-          value: record.status != null ? record.status : true
-        }
-      }
-      console.log('编辑排班-', record)
-      addShift('编辑排班')
+    service.commonApiService.dictInfo('sch_range_color').then((res) => {
+      let colorMap: any = {}
+      let colorMapCN: any = {}
+      let dataSourceColorCN: any = []
+      res.data.map((item: any) => {
+        colorMap[item.name] = item.code
+        colorMapCN[item.code] = item.name
+        dataSourceColorCN.push(item.name)
+      })
+      setColorMap(colorMap)
+      setColorMapCN(colorMapCN)
+      setDataSourceColorCN(dataSourceColorCN)
+    })
+    service.commonApiService.dictInfo('sch_range_shift_type').then((res) => {
+      setBangci(res.data.map((res: any) => res.name))
     })
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+  emitter.removeAllListeners('弹窗编辑排班')
 
+  emitter.addListener('弹窗编辑排班', (record: any) => {
+    fields = {
+      shiftName: {
+        value: record.name || ''
+      },
+      id: {
+        value: record.key || ''
+      },
+      type: {
+        value: record.shiftType || ''
+      },
+      workTime: {
+        value: record.workTime || ''
+      },
+      workHour: {
+        value: record.effectiveTime || ''
+      },
+      color: {
+        value: colorMapCN[record.nameColor] || ''
+      },
+      status: {
+        value: record.status != null ? record.status : true
+      }
+    }
+    console.log('编辑排班-', record)
+    addShift('编辑排班')
+  })
   const save = (e: any) => {
     // 获取选中班次
     // console.log('获取选中班次', e)
@@ -143,12 +182,12 @@ export default function ToolBar () {
           })(
             <AutoComplete
               style={{ width: inputWidth }}
-              dataSource={dataSource}
+              dataSource={bangci}
               placeholder='A班'
-              filterOption={(inputValue: any, option: any) =>
-                option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
-                dataSource.indexOf(inputValue.toUpperCase()) > -1
-              }
+              // filterOption={(inputValue: any, option: any) =>
+              //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
+              //   bangci.indexOf(inputValue.toUpperCase()) > -1
+              // }
             />
           )}
         </Form.Item>
@@ -172,6 +211,7 @@ export default function ToolBar () {
             rules: [{ required: false, message: '' }]
           })(<Input style={{ width: inputWidth }} placeholder='标准工时' />)}
         </Form.Item>
+
         <Form.Item label='颜色标记'>
           {getFieldDecorator('color', {
             rules: [{ required: false, message: '' }]
@@ -179,7 +219,7 @@ export default function ToolBar () {
             <AutoComplete
               style={{ width: inputWidth }}
               dataSource={dataSourceColorCN}
-              placeholder='红色'
+              placeholder=''
               filterOption={(inputValue: any, option: any) =>
                 option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
                 (dataSourceColorCN.indexOf(inputValue) > -1 || dataSourceColorCN.indexOf(inputValue) === -1)
@@ -245,8 +285,7 @@ export default function ToolBar () {
     }
   }
 
-  const onOk = (title:any='排班设置') => {
-    console.log('提交表单', fields)
+  const onOk = (title: any = '排班设置') => {
     const postData = {
       id: fields.id.value, // 	Long 必须参数 班次名称
       name: fields.shiftName.value, // 	Long 必须参数 班次名称
@@ -256,40 +295,19 @@ export default function ToolBar () {
       // startTime: fields.startTime.value.format('HH:mm'), // string 必须参数 开始时间
       // endTime: fields.endTime.value.format('HH:mm'), // string 必须参数 结束时间
       effectiveTime: fields.workHour.value, // string 必须参数 标准工时
-      nameColor: colorMapCN[fields.color.value], // string 必须参数 班次颜色
+      nameColor: colorMap[fields.color.value], // string 必须参数 班次颜色
       status: fields.status.value // Boolean 必须参数 启用状态 true或者false
     }
     service.scheduleShiftApiService.save(postData).then((res) => {
-      message.success(title+'成功')
+      message.success(title + '成功')
       emitter.emit('更新班次列表')
-      console.log(title+'成功', res)
+      console.log(title + '成功', res)
       // 更新班次列表
     })
     // message.success('onOk')
   }
 
   let inputWidth = '250px'
-  let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他']
-  let dataSourceColor = ['red', 'green', 'blue', 'yellow', 'black', 'gray']
-  let dataSourceColorCN = ['红色', '绿色', '蓝色', '黄色', '黑色', '灰色']
-
-  let colorMap:any = {
-    'red':'红色',
-    'green':'绿色',
-    'blue':'蓝色',
-    'yellow':'黄色',
-    'black':'黑色',
-    'gray':'灰色'
-  }
-
-  let colorMapCN:any = {
-    '红色':'red',
-    '绿色':'green',
-    '蓝色':'blue',
-    '黄色':'yellow',
-    '黑色':'black',
-    '灰色':'gray'
-  }
 
   // let modalInfo: any = null
 
@@ -333,7 +351,7 @@ export default function ToolBar () {
       title: title + '',
       centered: true,
       // visible: false,
-      onOk: ()=>onOk(title),
+      onOk: () => onOk(title),
       onCancel: () => {
         // message.success('onCancel')
         // modalInfo.destroy()

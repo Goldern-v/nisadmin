@@ -113,26 +113,26 @@ export default function MainBox () {
     {
       title: '所在科室',
       dataIndex: 'deptName',
-      width: 80,
+      width: 120,
       key: 'deptName'
     },
     {
       title: '工号',
       dataIndex: 'empNo',
       key: 'empNo',
-      width: 60
+      width: 120
     },
     {
       title: '姓名',
       dataIndex: 'empName',
       key: 'empName',
-      width: 60
+      width: 90
     },
     {
       title: '性别',
       dataIndex: 'sex',
       key: 'sex',
-      width: 35,
+      width: 65,
       render (text: any) {
         if (text === '0') return '男'
         if (text === '1') return '女'

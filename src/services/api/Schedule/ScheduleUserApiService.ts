@@ -24,4 +24,9 @@ export default class ScheduleUserApiService extends BaseApiService {
   public async getByDeptCode (deptCode: string) {
     return this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
   }
+
+  // 排班人员新增或者修改
+  public async saveOrUpdate (obj: any) {
+    return this.get(`/schShiftUser/saveOrUpdate`, obj)
+  }
 }

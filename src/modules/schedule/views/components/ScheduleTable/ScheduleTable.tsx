@@ -349,7 +349,7 @@ export default function ScheduleTable () {
           rangeNameColor6: getRangeObj(nurse.settingDtos, 'nameColor', 5) || '',
           rangeNameColor7: getRangeObj(nurse.settingDtos, 'nameColor', 6) || '',
           remark: nurse.remark || '',
-          thisWeekHour: nurse.thisWeekHour || '',
+          thisWeekHour: Number(nurse.thisWeekHour || 0).toFixed(2),
           status: getStatus() || ''
         }
         // console.log('tr', tr)
@@ -454,7 +454,7 @@ export default function ScheduleTable () {
 
     console.log('统计', workhour, rangeNames, rangeObj)
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
-    let totle = `排班小计：${rangeSum}工时${workhour}小时。`
+    let totle = `排班小计：${rangeSum}工时${Number(workhour).toFixed(2)}小时。`
     // remark = `备注：${remark||'空'}`
     let result = `<span>${totle}<br/>排班备注：${remark}</span>`
 

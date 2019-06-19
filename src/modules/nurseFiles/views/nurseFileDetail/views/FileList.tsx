@@ -118,14 +118,14 @@ export default observer(function FileList () {
   const getTableData = () => {
     nurseFilesService.nurseAttachment(appStore.queryObj.empNo).then((res) => {
       let data: any = [
-        {
-          content: '身份证',
-          number: res.data.filter((item: any) => item.type === '1').length,
-          status: '',
-          filterData: res.data.filter((item: any) => item.type === '1'),
-          fileName: '身份证',
-          type: '1'
-        },
+        // {
+        //   content: '身份证',
+        //   number: res.data.filter((item: any) => item.type === '1').length,
+        //   status: '',
+        //   filterData: res.data.filter((item: any) => item.type === '1'),
+        //   fileName: '身份证',
+        //   type: '1'
+        // },
         {
           content: '学历毕业证复印件',
           number: res.data.filter((item: any) => item.type === '2').length,

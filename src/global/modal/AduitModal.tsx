@@ -48,7 +48,7 @@ export default function aduitModal (props: Props) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
       props.title ? setTitle(props.title) : setTitle('审核')
       props.fileData ? setFileData(props.fileData) : setFileData([])
-      setAgree('')
+      setAgree('agree')
       setOpinion('')
       setSpinning(true)
       if (props.type === 'nurseInformation') {
@@ -114,6 +114,9 @@ export default function aduitModal (props: Props) {
       flag: agreeStatus,
       detail: opinion
     }
+    props.getTableData && props.getTableData()
+    // console.log(props.getTableData, '123213')
+    // onCancel()
     modalService.auditeNurseFileIndex(props.type, postData).then((res) => {
       message.success('审核成功')
       emitter.emit('refreshNurseFileDeatilLeftMenu')
