@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-import { Table, Input, Switch, message } from 'antd'
+import { Table, Input, Switch, message, Icon } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
@@ -208,10 +208,16 @@ export default function MainBox() {
         columns={columns}
         dataSource={userList}
         pagination={false}
-        surplusHeight={230}
+        surplusHeight={275}
         loading={loading}
         moveRow={moveRow}
         type={['diagRow', 'spaceRow']}
+        footer={() => (
+          <span>
+            <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />
+            可以通过拖拽排序,修改数据后需保存
+          </span>
+        )}
       />
       <addScheduleNursingModal.Component />
     </Wrapper>

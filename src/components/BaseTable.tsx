@@ -102,7 +102,7 @@ export default function BaseTable(props: Props) {
 
   let TableComponent = option.type && option.type.includes('diagRow') ? DragDropContext(HTML5Backend)(Table) : Table
   return (
-    <Wrapper {...option} style={option.wrapperStyle || {}} ref={tableRef}>
+    <Wrapper style={option.wrapperStyle || {}} ref={tableRef}>
       <TableComponent {...option} />
     </Wrapper>
   )
