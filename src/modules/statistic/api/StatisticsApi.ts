@@ -31,6 +31,12 @@ class StatisticsApi extends BaseApiService {
     let trancePostData = this.stringify(postData)
     return this.post(`/schShiftSetting/getByDeptCode`, trancePostData)
   }
+// 班次大类接口的数据
+  public async dictInfo () {
+    // let trancePostData = this.stringify(postData)
+    return this.get(`/dept/dictInfo`)
+  }
+
   // 护士排班统计（按班次）
   public async postNurseByShiftView (showType: any, data: any, exportData: any = true) {
     if (showType === '按班次大类') {

@@ -181,12 +181,14 @@ export default function BedSituation (props: any) {
 
 const Con = styled.div`
   width: 100%;
+  height: auto;
 `
 const RightChooseByShift = styled.div`
   /* position: absolute;
   top: -270px;
   right: 20px; */
-  height: 380px;
+  /* min-height: 380px; */
+  height: auto;
   border: 1px solid #d0d0d0;
   font-size: 12px;
   .RightChooseByShiftHeader {

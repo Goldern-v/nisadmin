@@ -8,7 +8,8 @@ import StatisticMIdHeader from '../../common/StatisticMIdHeader'
 // import NurseSchedule from './components/NurseSchedule'
 import NurseByShiftChoose from './components/NurseByShiftChoose'
 import TableFirst from './components/TableFirst'
-
+import { Button } from 'antd'
+import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 export default function StatisticView () {
   const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
@@ -20,6 +21,9 @@ export default function StatisticView () {
   // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)
   // }
+  const testClick = () => {
+    StatisticsApi.dictInfo().then((res) => {})
+  }
   return (
     <Con>
       <StatisticHeader />
@@ -28,14 +32,15 @@ export default function StatisticView () {
           <StatisticMIdHeader />
           {/* 对应表 */}
           <TableCon>
+            <Button onClick={testClick}> test </Button>
             <TableFirst />
           </TableCon>
         </LeftCon>
-        <RigthCon>
+        <RightCon>
           <div className='NurseByShiftChooseCon'>
             <NurseByShiftChoose />
           </div>
-        </RigthCon>
+        </RightCon>
       </MidMidCon>
     </Con>
   )
@@ -81,8 +86,9 @@ const LeftCon = styled.div`
   display: flex;
   flex-direction: column;
 `
-const RigthCon = styled.div`
+const RightCon = styled.div`
   width: 222px;
+  min-height: 380px;
 `
 const TableCon = styled.div`
   display: flex;

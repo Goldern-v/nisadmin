@@ -186,8 +186,7 @@ const ROUTE_LIST = [
     columns: 高危药物静脉外渗率.columns,
     dataSource: [] || 高危药物静脉外渗率.dataSource,
     keys: ['静脉使用高危药物发生外渗的例数'],
-    gName: '护理单元',
-    lineKey: '外渗率(%)'
+    gName: '护理单元', 
   },
   {
     name: '输血输液反应倒数',
