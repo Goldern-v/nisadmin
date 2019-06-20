@@ -126,18 +126,16 @@ export default function AuditsTableDHSZ (props: Props) {
       }
     })
   }
+  emitter.removeAllListeners('refreshNurseAuditTable')
+  emitter.addListener('refreshNurseAuditTable', (searchText: any) => {
+    setSearchText(searchText)
+    onload(current, searchText)
+  })
 
   useEffect(() => {
-    emitter.addListener('refreshNurseAuditTable', (searchText: any) => {
-      console.log(searchText, 'searchTextsearchText')
-      setSearchText(searchText)
-      onload(current, searchText)
-    })
     onload(current, searchText)
-    return () => {
-      emitter.removeAllListeners('refreshNurseAuditTable')
-    }
   }, [])
+
   return (
     <Wrapper>
       {/* <GroupPostBtn onClick={() => onload(current)} style={{ right: 120 }}>

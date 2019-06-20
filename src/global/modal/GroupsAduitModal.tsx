@@ -24,7 +24,7 @@ export default function GroupsAduitModal (props: Props) {
 
   useEffect(() => {
     if (visible) {
-      setAgree('')
+      setAgree('agree')
       setOpinion('')
     }
   }, [visible])

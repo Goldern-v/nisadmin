@@ -24,4 +24,9 @@ export default class CommonApiService extends BaseApiService {
     }
     return this.post(`/file/uploadNurse`, trancePostData)
   }
+
+  /** 获取字典 */
+  public dictInfo (code: string) {
+    return this.post(`/dept/dictInfo`, this.stringify({ code }))
+  }
 }

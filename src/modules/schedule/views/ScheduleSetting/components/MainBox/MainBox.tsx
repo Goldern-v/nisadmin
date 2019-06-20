@@ -157,7 +157,7 @@ const bindInputElements = () => {
   console.log('bindInputElements', allInputs)
 }
 
-export default function MainBox () {
+export default function MainBox() {
   const [count, setCount] = useState(0)
   const [footer, setFooter] = useState(() => {
     return <span />
@@ -250,11 +250,11 @@ export default function MainBox () {
     confirm({
       title: '提示',
       content: '刷新人员可能会丢失本周排班表，如未保存，请先保存后再刷新',
-      onOk () {
+      onOk() {
         setTableLoading(true)
         getSchedule(true)
       },
-      onCancel () {}
+      onCancel() {}
     })
   })
 
@@ -327,8 +327,9 @@ export default function MainBox () {
         // }
       }
     }
-    record.thisWeekHour = result + ''
+    record.thisWeekHour = result.toFixed(2)
     // console.log('result', result)
+
     return result
   }
 
@@ -399,11 +400,11 @@ export default function MainBox () {
       return `周${days[weekday - 1]}`
     }
     return (
-      <div style={{ padding: '10px 0', color: color }}>
+      <article style={{ padding: '3px 0 10px', color: color }}>
         {date}
         <br />
         (周{days[weekday]})
-      </div>
+      </article>
     )
   }
 
@@ -633,13 +634,13 @@ export default function MainBox () {
           oneUser = new Object()
           for (const key in data) {
             if (data.hasOwnProperty(key) && oneObj.hasOwnProperty(key)) {
-              (oneUser as any)[key] = oneObj[key]
+              ;(oneUser as any)[key] = oneObj[key]
             }
             if (key === 'id') {
-              (oneUser as any).key = oneObj[key]
+              ;(oneUser as any).key = oneObj[key]
             }
           }
-          (allUser as any).push(oneUser)
+          ;(allUser as any).push(oneUser)
           // selectedRowsArray.push(oneUser)
         })
 
@@ -713,7 +714,7 @@ export default function MainBox () {
           scheduleList = res.data
           let schShiftUser = scheduleList.schShiftUser
           // sort
-          schShiftUser = schShiftUser.sort((a: any, b: any) => a.id < b.id)
+          // schShiftUser = schShiftUser.sort((a: any, b: any) => a.id < b.id)
           console.log('本周排班记录scheduleList', scheduleList, schShiftUser)
           // emitter.emit('本周排班记录', res.data)
           // genEmptyTable(scheduleList)
@@ -942,7 +943,7 @@ export default function MainBox () {
     // setTableList(tableList)
   }
 
-  function statisticFooter (list: any) {
+  function statisticFooter(list: any) {
     // console.log('统计', list)
     let workhour = 0
     let rangeNames = new Array()
@@ -963,9 +964,9 @@ export default function MainBox () {
         let element = (item as any)[day + 'Code'] || (item as any)[day]
         if (element && element.length > 0) {
           if (rangeNames.indexOf(element) === -1) {
-            (rangeObj as any)[element] = 1
+            ;(rangeObj as any)[element] = 1
           } else {
-            (rangeObj as any)[element] += 1
+            ;(rangeObj as any)[element] += 1
           }
           rangeNames.push(element)
         }
@@ -984,7 +985,7 @@ export default function MainBox () {
     // console.log('统计', workhour, rangeNames, rangeObj)
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
     // setFooter(`排班小计：${rangeSum}工时${workhour}小时。`)
-    let totle = `排班小计：${rangeSum}工时${workhour}小时。`
+    let totle = `排班小计：${rangeSum}工时${Number(workhour).toFixed(2)}小时。`
     // remark = `备注：${remark||'空'}`
     let result = () => {
       return (
@@ -1261,7 +1262,7 @@ export default function MainBox () {
           columns={columns}
           dataSource={tableList}
           pagination={false}
-          surplusHeight={402}
+          surplusHeight={388}
           wrapperStyle={{
             padding: 0
           }}

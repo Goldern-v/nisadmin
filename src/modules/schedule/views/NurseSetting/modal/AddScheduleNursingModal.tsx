@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, Icon } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 
@@ -15,102 +15,77 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import emitter from 'src/libs/ev'
 import { TITLE_LIST, POST_LIST } from 'src/modules/nurseFiles/views/nurseFilesList/modal/AddNursingModal'
+import { CURRENTLEVEL_LIST } from '../../../../nurseFiles/views/nurseFilesList/modal/AddNursingModal'
+import service from 'src/services/api'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  id?: number
-  data?: any
-  signShow?: string
-  getTableData?: () => {}
+  getTableData?: () => void
 }
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
-  startTime: (val) => !!val || '请选择开始时间',
-  endTime: (val) => !!val || '请选择结束时间',
-  unit: (val) => !!val || '请填写工作单位',
-  professionalWork: (val) => !!val || '请填写专业技术工作',
-  professional: (val) => !!val || '请选择技术职称',
-  post: (val) => !!val || '请选择职务'
+  empName: (val) => !!val || '请选择姓名'
 }
-export default function AddScheduleNursingModal (props: Props) {
-  let { visible, onCancel, onOk, data, signShow } = props
+export default function AddScheduleNursingModal(props: Props) {
+  let { visible, onCancel, onOk, getTableData } = props
   const [title, setTitle] = useState('')
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
 
   const onSave = async () => {
-    let obj = {
-      auditedStatus: '',
-      attachmentId: '',
-      urlImageOne: ''
-    }
-    if (authStore!.user!.post === '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
-    if (signShow === '修改') {
-      Object.assign(obj, { id: data.id })
-    }
-
     if (!refForm.current) return
 
     let [err, value] = await to(refForm.current.validateFields())
+    console.log(err, 'err')
     if (err) return
-    value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
-    value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    value.deptName = authStore.selectedDeptName
+    value.deptCode = authStore.selectedDeptCode
+    service.scheduleUserApiService.saveOrUpdate(value).then((res) => {
+      message.success('保存成功')
+      getTableData && getTableData()
+    })
   }
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
-    if (data && refForm.current && visible) {
+    if (refForm.current && visible) {
       refForm!.current!.setFields({
-        startTime: moment(data.startTime),
-        endTime: moment(data.endTime),
-        unit: data.unit,
-        professionalWork: data.professionalWork,
-        professional: data.professional,
-        post: data.post
+        empName: '',
+        sex: '1',
+        newTitle: '',
+        nurseHierarchy: '',
+        job: ''
       })
       // refForm.current.setField('unit', 123)
     }
-    if (signShow === '修改') {
-      setTitle('修改工作经历')
-    } else if (signShow === '添加') {
-      setTitle('添加工作经历')
-    }
+    setTitle('添加排班人员')
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} labelWidth={100} onChange={onFieldChange} rules={rules}>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender width={480}>
+      <Form ref={refForm} labelWidth={60} onChange={onFieldChange} rules={rules}>
         <Row>
-          <Row gutter={12}>
-            <Col span={15}>
-              <Form.Field label={`时间`} name='startTime' required suffix='到'>
-                <DatePicker />
-              </Form.Field>
-            </Col>
-            <Col span={9}>
-              <Form.Field name='endTime' required>
-                <DatePicker />
-              </Form.Field>
-            </Col>
-          </Row>
           <Col span={24}>
-            <Form.Field label={`工作单位`} name='unit' required>
+            <Form.Field label={`姓名`} name='empName' required>
               <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`姓别`} name='sex'>
+              <Select>
+                <Select.Option value='0' key={0}>
+                  男
+                </Select.Option>
+                <Select.Option value='1' key={1}>
+                  女
+                </Select.Option>
+              </Select>
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`专业技术工作`} name='professionalWork' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`技术职称`} name='professional' required>
+            <Form.Field label={`职称`} name='newTitle'>
               <Select>
                 {TITLE_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>
@@ -121,7 +96,18 @@ export default function AddScheduleNursingModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`职务`} name='post' required>
+            <Form.Field label={`层级`} name='nurseHierarchy'>
+              <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
+                {CURRENTLEVEL_LIST.map((item: string) => (
+                  <Select.Option value={item} key={item}>
+                    {item}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`职务`} name='job'>
               <Select>
                 {POST_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>
@@ -133,7 +119,14 @@ export default function AddScheduleNursingModal (props: Props) {
           </Col>
         </Row>
       </Form>
+      <Aside>
+        <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />
+        注：只能添加没有工号的进修人员，有工号的正式人员请联系管理员进行添加
+      </Aside>
     </Modal>
   )
 }
-const Wrapper = styled.div``
+const Aside = styled.div`
+  font-size: 12px;
+  color: #666;
+`

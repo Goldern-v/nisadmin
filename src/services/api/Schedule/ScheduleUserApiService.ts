@@ -13,7 +13,7 @@ import BaseApiService from '../BaseApiService'
 
 export default class ScheduleUserApiService extends BaseApiService {
   // 1.排班人员设置新增
-  public async save (data: any) {
+  public async save(data: any) {
     const postData = {
       userList: data // 是否勾选 data = [ { id:'' , rangeShow:'' } ]
     }
@@ -21,7 +21,16 @@ export default class ScheduleUserApiService extends BaseApiService {
   }
 
   // 2.查找排班人员
-  public async getByDeptCode (deptCode: string) {
+  public async getByDeptCode(deptCode: string) {
     return this.get(`/schShiftUser/getByDeptCode/${deptCode}`)
+  }
+
+  // 排班人员新增或者修改
+  public async saveOrUpdate(obj: any) {
+    return this.post(`/schShiftUser/saveOrUpdate`, obj)
+  }
+  // 排班人员删除
+  public async delete(id: any) {
+    return this.get(`/schShiftUser/delete/${id}`)
   }
 }

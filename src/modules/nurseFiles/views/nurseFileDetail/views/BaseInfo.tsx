@@ -18,6 +18,7 @@ export default observer(function BaseInfo () {
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
+  const [id, setId] = useState(0)
   // const btnList = [
   //   {
   //     label: '修改',
@@ -66,7 +67,7 @@ export default observer(function BaseInfo () {
           label: '修改',
           onClick: () => {
             editBaseInfoModal.show({
-              id: idData,
+              id: id,
               data: info
             })
           }
@@ -76,7 +77,9 @@ export default observer(function BaseInfo () {
           onClick: () => {
             globalModal.auditModal.show({
               empNo: idData,
+              id: id,
               type: 'nurseInformation',
+              getTableData: getTableData,
               // empNo: appStore.queryObj.empNo,
               title: '审核基础信息',
               tableFormat: [
@@ -153,6 +156,7 @@ export default observer(function BaseInfo () {
       let data = res.data || info
       setInfo(data)
       setIdData(data.empNo)
+      setId(data.id)
       setTableData([
         {
           性别: sexEnum[data.sex],
