@@ -27,7 +27,7 @@ let ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它
 let checkboxItemState: any = []
 export interface Props extends RouteComponentProps {}
 
-export default function BedSituation (props: any) {
+export default function BedSituation(props: any) {
   const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [rightChooseCheckboxShow, setRightChooseCheckboxShow] = useState([true, false])
   const [checkboxItem, setCheckboxItem] = useState([])
@@ -46,7 +46,7 @@ export default function BedSituation (props: any) {
   }, [])
   emitter.emit('设置班次大类', shiftClass)
   emitter.emit('设置自定义班次', checkboxItem)
-  function onChange (e: any) {
+  function onChange(e: any) {
     let target = e.target
     let targetValue = target.value
     let cacheShiftClass
@@ -67,17 +67,17 @@ export default function BedSituation (props: any) {
           setShiftClass(cacheShiftClass)
         }
       }
-      ``
+      ;``
     }
   }
-  function radioClickLeft () {
+  function radioClickLeft() {
     setRightChooseCheckboxShow([true, false])
     setShiftClass(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
     setCheckboxItem([])
     ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
     checkboxItemState = []
   }
-  function radioClickRight () {
+  function radioClickRight() {
     setRightChooseCheckboxShow([false, true])
     setShiftClass([])
     setCheckboxItem([])
@@ -85,7 +85,7 @@ export default function BedSituation (props: any) {
     checkboxItemState = []
   }
   // checkbox变动
-  function checkboxChange (e: any) {
+  function checkboxChange(e: any) {
     let target = e.target
     let targetValue = target.value
     if (target.checked) {
@@ -187,7 +187,7 @@ const RightChooseByShift = styled.div`
   /* position: absolute;
   top: -270px;
   right: 20px; */
-  /* min-height: 380px; */
+  min-height: 300px;
   height: auto;
   border: 1px solid #d0d0d0;
   font-size: 12px;

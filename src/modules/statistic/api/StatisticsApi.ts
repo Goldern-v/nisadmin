@@ -3,7 +3,7 @@ import { authStore } from 'src/stores/index'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 class StatisticsApi extends BaseApiService {
   // 护士排班表
-  public async postNurseScheduling (exportData: any = true) {
+  public async postNurseScheduling(exportData: any = true) {
     let postData = {
       deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
@@ -24,21 +24,25 @@ class StatisticsApi extends BaseApiService {
     }
   }
   // 获取按班次自定义的名称
-  public async postName () {
+  public async postName() {
     let postData = {
       deptCode: authStore.selectedDeptCode
     }
     let trancePostData = this.stringify(postData)
     return this.post(`/schShiftSetting/getByDeptCode`, trancePostData)
   }
-// 班次大类接口的数据
-  public async dictInfo () {
+  // 班次大类接口的数据
+  public async dictInfo() {
     // let trancePostData = this.stringify(postData)
-    return this.get(`/dept/dictInfo`)
+    let postData = {
+      code: 'sch_range_shift_type'
+    }
+    let trancePostData = this.stringify(postData)
+    return this.post(`/dept/dictInfo`, trancePostData)
   }
 
   // 护士排班统计（按班次）
-  public async postNurseByShiftView (showType: any, data: any, exportData: any = true) {
+  public async postNurseByShiftView(showType: any, data: any, exportData: any = true) {
     if (showType === '按班次大类') {
       showType = 'shift_type'
     } else if (showType === '自定义班次') {
@@ -62,7 +66,7 @@ class StatisticsApi extends BaseApiService {
   // 护士白班统计（按月份）  classShow不同
   // 护士夜班统计（按月份）
   // 护士休假统计（按月份）
-  public async postNurseByMonth (classShow: string, showType: any, exportData: any = true) {
+  public async postNurseByMonth(classShow: string, showType: any, exportData: any = true) {
     if (classShow === '白班') {
       classShow = 'A班'
     } else if (classShow === '夜班') {
@@ -93,7 +97,7 @@ class StatisticsApi extends BaseApiService {
   }
 
   // 护士节假日排班表
-  public async postNurseHolidaySchedule (exportData: any = true) {
+  public async postNurseHolidaySchedule(exportData: any = true) {
     let postData = {
       deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
@@ -108,7 +112,7 @@ class StatisticsApi extends BaseApiService {
     }
   }
   // 科室排班统计（按班次）
-  public async postDepartmentByShiftView (showType: string, data: any, exportData: any = true) {
+  public async postDepartmentByShiftView(showType: string, data: any, exportData: any = true) {
     if (showType === '按班次大类') {
       showType = 'shift_type'
     } else if (showType === '自定义班次') {
@@ -131,7 +135,7 @@ class StatisticsApi extends BaseApiService {
   // 科室白班统计（按月份）
   // 科室夜班统计（按月份）
   // 科室休假统计（按月份）
-  public async postDepartmentByMonth (classShow: any, showType: any, exportData: any = true) {
+  public async postDepartmentByMonth(classShow: any, showType: any, exportData: any = true) {
     if (classShow === '白班') {
       classShow = 'A班'
     } else if (classShow === '夜班') {
@@ -162,7 +166,7 @@ class StatisticsApi extends BaseApiService {
     }
   }
   // 测试1
-  public async postNurseByMonthttt (classShow: string, showType: any, getDeptCode: any, exportData: any = true) {
+  public async postNurseByMonthttt(classShow: string, showType: any, getDeptCode: any, exportData: any = true) {
     if (classShow === '白班') {
       classShow = 'A班'
     } else if (classShow === '夜班') {
@@ -189,7 +193,7 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/scheduling/countShiftTypeUser`, trancePostData)
   }
   // 科室节假日排班表
-  public async postDepartmentHolidaySchedule (exportData: any = true) {
+  public async postDepartmentHolidaySchedule(exportData: any = true) {
     let postData = {
       // deptCode: authStore.selectedDeptCode,
       startTime: statisticViewModel.startDate,
@@ -200,13 +204,13 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/scheduling/countDeptCodeHolidays`, trancePostData)
   }
   // 护士节假日排班表
-  public async getTotalUser () {
+  public async getTotalUser() {
     return this.get(`/total/totalUser`)
   }
 
   //// 患者查询统计模块
   // 住院病人认知情况统计表 查询
-  public async patientStatistics (exportData: any = true) {
+  public async patientStatistics(exportData: any = true) {
     let cacheStart = exportData.startDate + ` 00:00:00`
     let cacheEnd = exportData.endDate + ` 00:00:00`
 
@@ -222,7 +226,7 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/patientStatistics/getList`, postData)
   }
 
-  public async patientStatisticsExcel (exportData: any = true) {
+  public async patientStatisticsExcel(exportData: any = true) {
     let cacheStart = exportData.startDate + ` 00:00:00`
     let cacheEnd = exportData.endDate + ` 00:00:00`
 
