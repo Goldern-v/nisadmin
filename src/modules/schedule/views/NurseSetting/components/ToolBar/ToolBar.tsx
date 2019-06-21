@@ -14,7 +14,7 @@ import service from 'src/services/api'
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-export default function ToolBar () {
+export default function ToolBar() {
   const [count, setCount] = useState(0)
 
   // Similar to componentDidMount and componentDidUpdate:
@@ -57,11 +57,8 @@ export default function ToolBar () {
           // console.log('获取选中人员', e)
           // return
           emitter.emit('获取选中人员列表', (userList: any) => {
-            console.log('获取选中人员', userList)
-            userList = userList.filter((u: any) => {
-              return u.rangeShow !== null
-            })
-            return service.scheduleUserApiService.save(userList).then((res) => {
+            let list = userList.map((item: any, key: number) => ({ ...item, key, sortValue: key }))
+            return service.scheduleUserApiService.save(list).then((res) => {
               message.success('保存排班人员设置成功')
               console.log('保存排班人员', res)
             })
