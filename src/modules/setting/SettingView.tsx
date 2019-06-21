@@ -9,7 +9,8 @@ import 绩效参数设置 from './view/绩效参数设置'
 import 节假日设置 from './view/节假日设置'
 import 物流角色设置 from './view/物流角色设置'
 import settingViewModel from './SettingViewModel'
-
+// 引入类别字典设置页面
+import CategoryDictionary from './view/CategoryDictionary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
@@ -22,7 +23,21 @@ const LEFT_MENU_CONFIG = [
     title: '健康宣教字典',
     icon: require('./images/icon/健康宣教字典.png'),
     path: '/setting/健康宣教字典',
-    children: [{}]
+    children: [
+      {
+        title: '类别字典设置',
+        path: '/setting/类别字典设置',
+        component: CategoryDictionary
+      },
+      {
+        title: '健康宣教字典',
+        path: '/setting/健康宣教字典'
+      },
+      {
+        title: '自动推送设置',
+        path: '/setting/自动推送设置'
+      }
+    ]
   },
   {
     title: '护理评估设置',

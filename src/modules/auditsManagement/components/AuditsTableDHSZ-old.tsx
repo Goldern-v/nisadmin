@@ -4,6 +4,8 @@ import { RouteComponentProps } from 'react-router'
 import BaseTable from 'src/components/BaseTable'
 import windowHeight from 'src/hooks/windowHeight'
 import { aMServices } from '../services/AMServices'
+import { Popconfirm } from 'antd'
+
 export interface Props extends RouteComponentProps {}
 
 const columns: any = [
