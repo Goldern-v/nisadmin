@@ -32,10 +32,10 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/schShiftSetting/getByDeptCode`, trancePostData)
   }
   // 班次大类接口的数据
-  public async dictInfo() {
+  public async dictInfo(data: any = { code: 'sch_range_shift_type' }) {
     // let trancePostData = this.stringify(postData)
     let postData = {
-      code: 'sch_range_shift_type'
+      code: data.code
     }
     let trancePostData = this.stringify(postData)
     return this.post(`/dept/dictInfo`, trancePostData)

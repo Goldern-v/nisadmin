@@ -5,34 +5,20 @@ import emitter from 'src/libs/ev'
 import { RouteComponentProps } from 'react-router'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
 const RadioGroup = Radio.Group
-const startShiftClass = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
-let ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
-
-// const checkboxItemStandard = [
-// '班次1',
-// '班次2',
-// '班次3',
-// '班次4',
-// '班次5',
-// '班次6',
-// '班次7',
-// '班次8',
-// '班次9',
-// '班次10',
-// '班次11',
-// '班次12',
-// '班次13',
-// '班次14'
-// ]
 let checkboxItemState: any = []
+let classState: any = []
 export interface Props extends RouteComponentProps {}
 
 export default function BedSituation(props: any) {
-  const [shiftClass, setShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
+  const [shiftClass, setShiftClass] = useState([])
   const [rightChooseCheckboxShow, setRightChooseCheckboxShow] = useState([true, false])
   const [checkboxItem, setCheckboxItem] = useState([])
   const [checkboxItemStandard, setCheckboxItemStandard] = useState([])
   const [cacheCheckboxItem, setCacheCheckboxItem] = useState([])
+
+  //
+  const [startClassList, setStartClassList]: any = useState([])
+  const [classList, setClassList]: any = useState([])
 
   useEffect(() => {
     StatisticsApi.postName().then((res) => {
@@ -40,48 +26,49 @@ export default function BedSituation(props: any) {
       let getShiftType = listData.map((item: any) => item.name)
       setCheckboxItemStandard(getShiftType)
     })
-    console.log(checkboxItemStandard)
-    // props.postShiftClass(shiftClass)
-    // console.log(checkboxItem)
+    StatisticsApi.dictInfo().then((res) => {
+      let listData = res.data
+      let ClassListInfo = listData.map((item: any) => item.name)
+      setStartClassList(ClassListInfo)
+      classState = [...ClassListInfo]
+      setClassList(ClassListInfo)
+    })
   }, [])
-  emitter.emit('设置班次大类', shiftClass)
+  emitter.emit('设置班次大类', classList)
   emitter.emit('设置自定义班次', checkboxItem)
   function onChange(e: any) {
     let target = e.target
     let targetValue = target.value
-    let cacheShiftClass
-    if (!target.checked) {
-      for (let i = 0; i < startShiftClass.length; i++) {
-        if (targetValue === startShiftClass[i]) {
-          ShiftClassState.splice(i, 1, '')
-          cacheShiftClass = ShiftClassState.filter((n) => n)
-          setShiftClass(cacheShiftClass)
+    if (target.checked) {
+      for (let i = 0; i < startClassList.length; i++) {
+        if (targetValue === startClassList[i]) {
+          classState[i] = targetValue
         }
+        let cacheClassList = classState.filter((n: any) => n)
+        setClassList(cacheClassList)
       }
     }
-    if (target.checked) {
-      for (let i = 0; i < startShiftClass.length; i++) {
-        if (targetValue === startShiftClass[i]) {
-          ShiftClassState.splice(i, 1, targetValue)
-          cacheShiftClass = ShiftClassState.filter((n) => n)
-          setShiftClass(cacheShiftClass)
+    if (!target.checked) {
+      for (let i = 0; i < startClassList.length; i++) {
+        if (targetValue === startClassList[i]) {
+          classState[i] = null
         }
       }
-      ;``
+      let cacheClassList = classState.filter((n: any) => n)
+      setClassList(cacheClassList)
     }
   }
   function radioClickLeft() {
     setRightChooseCheckboxShow([true, false])
-    setShiftClass(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
+    setClassList(startClassList)
+    classState = [...startClassList]
     setCheckboxItem([])
-    ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
     checkboxItemState = []
   }
   function radioClickRight() {
     setRightChooseCheckboxShow([false, true])
-    setShiftClass([])
+    setClassList([])
     setCheckboxItem([])
-    ShiftClassState = ['A班', 'P班', 'N班', '休假', '进修学习', '其它']
     checkboxItemState = []
   }
   // checkbox变动
@@ -112,37 +99,46 @@ export default function BedSituation(props: any) {
   // 组件
   const RightChooseByShiftCheckbox = (
     <div className='RightChooseByShiftCheckbox'>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox defaultChecked onChange={onChange} value='A班'>
-          A班
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox defaultChecked onChange={onChange} value='P班'>
-          P班
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox defaultChecked onChange={onChange} value='N班'>
-          N班
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox defaultChecked onChange={onChange} value='休假'>
-          休假
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox defaultChecked onChange={onChange} value='进修学习'>
-          进修学习
-        </Checkbox>
-      </div>
-      <div className='RightChooseByShiftCheckboxItem'>
-        <Checkbox defaultChecked onChange={onChange} value='其它'>
-          其它
-        </Checkbox>
-      </div>
+      {startClassList.map((item: any, index: number) => (
+        <div className='RightChooseByShiftCheckboxItem' key={index}>
+          <Checkbox defaultChecked onChange={onChange} value={item}>
+            {item}
+          </Checkbox>
+        </div>
+      ))}
     </div>
+    // <div className='RightChooseByShiftCheckbox'>
+    //   <div className='RightChooseByShiftCheckboxItem'>
+    //     <Checkbox defaultChecked onChange={onChange} value='A班'>
+    //       A班
+    //     </Checkbox>
+    //   </div>
+    //   <div className='RightChooseByShiftCheckboxItem'>
+    //     <Checkbox defaultChecked onChange={onChange} value='P班'>
+    //       P班
+    //     </Checkbox>
+    //   </div>
+    //   <div className='RightChooseByShiftCheckboxItem'>
+    //     <Checkbox defaultChecked onChange={onChange} value='N班'>
+    //       N班
+    //     </Checkbox>
+    //   </div>
+    //   <div className='RightChooseByShiftCheckboxItem'>
+    //     <Checkbox defaultChecked onChange={onChange} value='休假'>
+    //       休假
+    //     </Checkbox>
+    //   </div>
+    //   <div className='RightChooseByShiftCheckboxItem'>
+    //     <Checkbox defaultChecked onChange={onChange} value='进修学习'>
+    //       进修学习
+    //     </Checkbox>
+    //   </div>
+    //   <div className='RightChooseByShiftCheckboxItem'>
+    //     <Checkbox defaultChecked onChange={onChange} value='其它'>
+    //       其它
+    //     </Checkbox>
+    //   </div>
+    // </div>
   )
   // 接口组件
   const RightChooseByCustomCheckbox = (
