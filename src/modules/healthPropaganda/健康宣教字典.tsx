@@ -296,9 +296,6 @@ position: relative;
     &>span{
       margin-right: 10px
     }
-    .type{
-      width: 100px;
-    }
     .search-input{
       margin-right: 5px;
       width: 150px;

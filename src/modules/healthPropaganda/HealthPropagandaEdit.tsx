@@ -6,7 +6,7 @@ import Moment from 'moment'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import HealthProgandaService from './api/healthProgandaService'
-import { Select, Input, Button, message as Message } from 'antd'
+import { Select, Input, Button, message as Message, Modal } from 'antd'
 
 
 const api = new HealthProgandaService()
@@ -174,6 +174,19 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
     })
   }
 
+  const handleCancel = ()=>{
+    Modal.confirm({
+      title: '提示',
+      content: '是否取消编辑',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: () => {
+        history.goBack();
+      }
+    })
+  }
+
   return <Wrapper>
     <div className="top">
       <div className="nav">
@@ -202,7 +215,7 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
       </span>
       <span>
         <Button onClick={saveEdit}>保存</Button>
-        <Button onClick={() => history.goBack()}>取消</Button>
+        <Button onClick={handleCancel}>取消</Button>
       </span>
     </div>
   </Wrapper>
