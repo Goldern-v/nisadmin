@@ -17,10 +17,11 @@ export default function CategoryHeader (props: Props) {
 
 const HeaderModular = styled.div`
   width:100%;
-  height: 80px;
-  border-bottom:1px solid #ccc;
+  height: 45px;
+  /* border-bottom:1px solid #ccc; */
   text-align:center;
-  line-height:80px;
+  margin-top:20px;
+  /* line-height:50px; */
   padding:0 20px;
   box-sizing:border-box;
 `
@@ -31,5 +32,5 @@ const WorldCon = styled.div`
 `
 const RightButton = styled(Button)`
   float:right;
-  margin-top:25px;
+  /* margin-top:25px; */
 `

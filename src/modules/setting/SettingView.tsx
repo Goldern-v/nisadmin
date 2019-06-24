@@ -11,6 +11,9 @@ import 物流角色设置 from './view/物流角色设置'
 import settingViewModel from './SettingViewModel'
 // 引入类别字典设置页面
 import CategoryDictionary from './view/CategoryDictionary'
+// 引入自动推送设置页面
+import  AutomaticPush from './view/ AutomaticPush'
+
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
@@ -35,7 +38,8 @@ const LEFT_MENU_CONFIG = [
       },
       {
         title: '自动推送设置',
-        path: '/setting/自动推送设置'
+        path: '/setting/自动推送设置',
+        component: AutomaticPush
       }
     ]
   },
