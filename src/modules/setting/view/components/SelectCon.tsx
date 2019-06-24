@@ -23,18 +23,18 @@ export default function SelectCon () {
   return (
     <React.Fragment>
       <Wrapper>
-        <Title>审核管理</Title>
+        <Title>自动推送设置</Title>
         <Place />
-        {/* <span>科室：</span> */}
-        {/* <DeptSelect onChange={onChange} /> */}
-        <Input
+        <span>科室：</span> 
+        <DeptSelect onChange={onChange} /> 
+        {/* <Input
           placeholder='输入要搜索的关键字，包括提交人，标题，审核意见'
           style={{ width: 360 }}
           onChange={SearchByText}
         />
         <Button type='primary' onClick={onSearch}>
           搜索
-        </Button>
+        </Button> */}
         {/* <Button onClick={() => setVisible(true)}>+添加护士</Button> */}
       </Wrapper>
     </React.Fragment>
@@ -45,6 +45,7 @@ const Wrapper = styled.div`
   align-items: center;
   font-size: #333;
   margin-bottom: 15px;
+  margin-top: 25px;
   input,
   button {
     margin-left: 10px;

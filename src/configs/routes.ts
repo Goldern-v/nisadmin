@@ -40,6 +40,9 @@ import LmsDetails from 'src/modules/lms/views/LmsDetails'
 
 //护理制度
 import NursingRules from 'src/modules/nursingRules/NursingRules'
+//健康宣教
+import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
+import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaEdit'
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -93,6 +96,9 @@ const routes: RouteItem[] = [
   },
   setLayout('/setting/:name', SettingView, layouts.MainLayout),
   setLayout('/nursingRules', NursingRules, layouts.MainLayout),
+  setLayout('/healthPropagandaView/:id', HealthPropagandaView, layouts.MainLayout),
+  setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit, layouts.MainLayout),
+  setLayout('/healthPropagandaEdit', HealthPropagandaEdit, layouts.MainLayout),
   {
     path: '/badEvents',
     redirect: '/badEvents/search'

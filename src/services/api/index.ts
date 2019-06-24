@@ -12,6 +12,8 @@ import HomeApiServices from './Home/HomeApiService'
 // 统计
 import ScheduleMealApiService from './Schedule/ScheduleMealApiService'
 import StatisticApiService from './statistic/StatisticApiService'
+// 健康宣教
+import HealthyApiService from './HealthyDictionaries/HealthyApiService'
 
 const service = {
   authApiService: new AuthApiService(),
@@ -24,7 +26,8 @@ const service = {
   homeDataApiServices: new HomeDataApiServices(),
   homeApiServices: new HomeApiServices(),
   scheduleMealApiService: new ScheduleMealApiService(),
-  statisticApiService: new StatisticApiService()
+  statisticApiService: new StatisticApiService(),
+  healthyApiService: new HealthyApiService()
 }
 
 export default service
