@@ -9,25 +9,25 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: '护理单元',
+    dataIndex: 'wordName',
     key: '护理单元',
     align: 'center'
   },
   {
     title: '输血反应例数',
-    dataIndex: '输血反应例数',
+    dataIndex: 'btreact_count',
     key: '输血反应例数',
     align: 'center'
   },
   {
     title: '输液反应例数',
-    dataIndex: '输液反应例数',
+    dataIndex: 'ifreact_count',
     key: '输液反应例数',
     align: 'center'
   },
   {
     title: '小计',
-    dataIndex: '小计',
+    dataIndex: 'total',
     key: '小计',
     align: 'center'
   }

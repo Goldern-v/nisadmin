@@ -8,7 +8,7 @@ import moment from 'moment'
 import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
 import { observer } from 'mobx-react-lite'
 const dateFormat = 'YYYY-MM-DD 00:00:00'
-export default observer(function PatientDistribute () {
+export default observer(function PatientDistribute() {
   const [titleBy, setTitleBy] = useState('按地区')
   const [patientNumSum, setPatientNumSum] = useState(0)
   // const [byBistrict, setByBistrict] = useState([
@@ -100,11 +100,13 @@ const Mid = styled.div`
   padding: 0 18px;
 `
 const MidHeader = styled.div`
+  width: 100%;
   height: 42px;
   line-height: 42px;
   display: flex;
   .headerLeft {
-    width: 50%;
+    flex: 1;
+    width: 0;
   }
   .headerRight {
     margin-top: 7px;

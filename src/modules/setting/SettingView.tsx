@@ -8,9 +8,16 @@ import EditTable from './components/EditTable'
 import 绩效参数设置 from './view/绩效参数设置'
 import 节假日设置 from './view/节假日设置'
 import 物流角色设置 from './view/物流角色设置'
+import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
 import settingViewModel from './SettingViewModel'
+// 引入类别字典设置页面
+import CategoryDictionary from './view/CategoryDictionary'
+// 引入自动推送设置页面
+import  AutomaticPush from './view/ AutomaticPush'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
+
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 const LEFT_MENU_CONFIG = [
   {
@@ -19,10 +26,26 @@ const LEFT_MENU_CONFIG = [
     path: '/setting/护理诊断字典'
   },
   {
-    title: '健康宣教字典',
+    title: '健康宣教设置',
     icon: require('./images/icon/健康宣教字典.png'),
     path: '/setting/健康宣教字典',
-    children: [{}]
+    children: [
+      {
+        title: '类别字典设置',
+        path: '/setting/类别字典设置',
+        component: CategoryDictionary
+      },
+      {
+        title: '健康宣教字典',
+        path: '/setting/健康宣教字典',
+        component: 健康宣教字典
+      },
+      {
+        title: '自动推送设置',
+        path: '/setting/自动推送设置',
+        component: AutomaticPush
+      }
+    ]
   },
   {
     title: '护理评估设置',
@@ -69,7 +92,7 @@ const LEFT_MENU_CONFIG = [
 //   }
 // }
 
-export default function SettingView (props: Props) {
+export default function SettingView(props: Props) {
   // let currentType = appStore.match.params.type
   // let currentRoute = getCurrentRoute(currentType)
 
@@ -80,7 +103,7 @@ export default function SettingView (props: Props) {
   let currentRouteName = props.match.params.name || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'title', currentRouteName)
   // 筛选目标对象
-  function getTargetObj (listDate: any, targetKey: string, targetName: string) {
+  function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
         return item.children.find((item1: any) => item1[targetKey] === targetName)

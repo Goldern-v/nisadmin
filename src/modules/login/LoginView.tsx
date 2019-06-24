@@ -8,7 +8,7 @@ import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
 
-export default function LoginView () {
+export default function LoginView() {
   const [count, setCount] = useState(0)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -16,10 +16,10 @@ export default function LoginView () {
     console.log(count, setCount)
   })
 
-  function checkClick () {
+  function checkClick() {
     // e.target.style.color = '#3FB593'
   }
-  function login () {
+  function login() {
     service.authApiService.login(username, password).then((res: any) => {
       if (!res) {
         res = {}
@@ -34,7 +34,7 @@ export default function LoginView () {
       console.log(loginViewModel.user)
     })
   }
-  function handleKeyUp (e: any) {
+  function handleKeyUp(e: any) {
     if (e.keyCode === 13) {
       login()
     }
@@ -49,11 +49,12 @@ export default function LoginView () {
         >
           <img src={require('./img/logo.png')} alt='logo' className='BoxLogin' />
           <h1 className='Title'>护理质量管理系统</h1>
+
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe648;</div>
             <input onChange={(e) => setUsername(e.target.value)} type='text' placeholder='用户名' />
           </div>
-
+          <div style={{ height: '2px' }} />
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe6cb;</div>
             <input onChange={(e) => setPassword(e.target.value)} type='password' placeholder='密码' />
@@ -135,7 +136,18 @@ const BoxInput = styled.div`
       z-index: 2;
     }
   }
-  input[type='text'],
+  input[type='text'] {
+    position: relative;
+    padding-left: 30px;
+    background: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 1px #cbd5dd;
+    border: none;
+    width: 100%;
+    height: 35px;
+    outline: none;
+    transition: box-shadow 0.2s;
+  }
   input[type='password'] {
     position: relative;
     padding-left: 30px;
@@ -148,7 +160,9 @@ const BoxInput = styled.div`
     outline: none;
     transition: box-shadow 0.2s;
   }
-  input[type='text']:hover,
+  input[type='text']:hover {
+    box-shadow: 0 0 0 1px #4fb390;
+  }
   input[type='password']:hover {
     box-shadow: 0 0 0 1px #4fb390;
   }
@@ -162,7 +176,10 @@ const BoxInput = styled.div`
     margin-top: 12px;
     padding-left: 22px;
     text-align: left;
-    cursor: pointer;
+    /* cursor: pointer; */
+    label {
+      cursor: pointer;
+    }
     input[type='checkbox'] {
       display: inline-block;
       position: absolute;
