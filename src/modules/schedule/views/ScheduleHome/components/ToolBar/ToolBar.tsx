@@ -13,7 +13,7 @@ import DeptSelect from 'src/components/DeptSelect'
 const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-export default function ToolBar () {
+export default function ToolBar() {
   // 在react hooks 用 useState 定义 class component 里的 state 变量
   const [buttonDisabled, setButtonDisabled] = useState(true)
   const [wardCode, setWardCode] = useState('')
@@ -29,12 +29,6 @@ export default function ToolBar () {
     // console.log(wardCode, setWardCode, wardValue, setWardValue)
     setWardList([])
     setButtonDisabled(true)
-
-    emitter.removeAllListeners('禁止工具按钮')
-
-    let eventEmitterLoading = emitter.addListener('禁止工具按钮', (disable: boolean) => {
-      setButtonDisabled(disable)
-    })
 
     // console.log(eventEmitterLoading)
 
@@ -65,6 +59,12 @@ export default function ToolBar () {
       })
     }
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+
+  emitter.removeAllListeners('禁止工具按钮')
+
+  emitter.addListener('禁止工具按钮', (disable: boolean) => {
+    setButtonDisabled(disable)
+  })
 
   const handleChange = (code: any) => {
     // console.log('handleChange', code, wardList)
@@ -105,7 +105,7 @@ export default function ToolBar () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    console.log('fileDownload', res)
+
     if (res.data.type.indexOf('excel') > -1) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象
@@ -117,7 +117,7 @@ export default function ToolBar () {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function (data: any) {
+      reader.addEventListener('loadend', function(data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })

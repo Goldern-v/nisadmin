@@ -1,10 +1,11 @@
 import { action, observable } from 'mobx'
 import { authStore } from '.'
+import moment from 'moment'
 
 export default class ScheduleStore {
-  public constructor () {
-    this.startTime = ''
-    this.endTime = ''
+  public constructor() {
+    this.startTime = sessionStorage.scheduleStartTime || ''
+    this.endTime = sessionStorage.scheduleEndTime || ''
     this.weekStartTime = ''
     this.weekEndTime = ''
     this.selectedWeekIndex = '0'
@@ -54,6 +55,7 @@ export default class ScheduleStore {
   @action
   public setStartTime = (startTime: string) => {
     this.startTime = startTime
+    sessionStorage.scheduleStartTime = startTime
   }
 
   @action
@@ -64,6 +66,7 @@ export default class ScheduleStore {
   @action
   public setEndTime = (endTime: string) => {
     this.endTime = endTime
+    sessionStorage.scheduleEndTime = endTime
   }
 
   @action
@@ -94,5 +97,16 @@ export default class ScheduleStore {
   @action
   public getDeptName = () => {
     return authStore.selectedDeptName
+  }
+
+  @action
+  public getWeeks = () => {
+    let startWeekNumber = moment(this.getStartTime()).isoWeek()
+    let endWeekNumber = moment(this.getEndTime()).isoWeek()
+    if (startWeekNumber == endWeekNumber) {
+      return [startWeekNumber]
+    } else {
+      return [startWeekNumber, endWeekNumber]
+    }
   }
 }

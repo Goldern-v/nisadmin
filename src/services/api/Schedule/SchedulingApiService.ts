@@ -23,7 +23,7 @@ import BaseApiService from '../BaseApiService'
 
 export default class SchedulingApiService extends BaseApiService {
   // 1.新建排班
-  public async newSchedule (data: any) {
+  public async newSchedule(data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间
@@ -33,7 +33,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 2.对排班信息进行每周的新增或修改
-  public async update (data: any, weekRange: any) {
+  public async update(data: any, weekRange: any) {
     const postData = {
       setting: data,
       // userId: data.userId, // userId  护士ID
@@ -52,7 +52,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 3.复制上周排班（json传参）
-  public async copy (data: any) {
+  public async copy(data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（直接传当前得时间就行）
@@ -62,7 +62,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 4.导出护士排班
-  public async export (data: any) {
+  public async export(data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
@@ -72,7 +72,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 5.护士按月份和排班类型统计（按时数）(按天数)
-  public async nurseStatisticWithDateByShiftType (data: any) {
+  public async nurseStatisticWithDateByShiftType(data: any) {
     const postData = {
       shiftType: data.shiftType, // 排班类型
       hourOrNum: data.hourOrNum, // 是否按照工时
@@ -85,7 +85,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 6.护士排班统计（按班次）（非json传参）
-  public async nurseStatisticByDeptCode (data: any) {
+  public async nurseStatisticByDeptCode(data: any) {
     const postData = {
       ls: data.ls, // A班,P班,N班,休假,进修学习,其他
       deptCode: data.deptCode, // deptCode  科室编码
@@ -96,7 +96,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 7.按护士节假日排班表
-  public async nurseStatisticByHolidays (data: any) {
+  public async nurseStatisticByHolidays(data: any) {
     const postData = {
       status: data.status, // 是否导出 true\false
       deptCode: data.deptCode, // deptCode  科室编码
@@ -106,7 +106,7 @@ export default class SchedulingApiService extends BaseApiService {
     return this.post(`/scheduling/countUserHolidays`, postData)
   }
   // 8.按科室节假日排班表
-  public async deptStatisticByHolidays (data: any) {
+  public async deptStatisticByHolidays(data: any) {
     const postData = {
       status: data.status, // 是否导出 true\false
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
@@ -115,7 +115,7 @@ export default class SchedulingApiService extends BaseApiService {
     return this.post(`/scheduling/CountDeptCodeHolidays`, postData)
   }
   // 9.查找排班列表(和编辑时查找)（json传参）
-  public findShiftList (data: any) {
+  public findShiftList(data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
@@ -124,7 +124,7 @@ export default class SchedulingApiService extends BaseApiService {
     return this.post(`/scheduling/findBylist`, postData)
   }
   // 同步排班人员
-  public findSysnNurse (data: any) {
+  public findSysnNurse(data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
@@ -133,7 +133,7 @@ export default class SchedulingApiService extends BaseApiService {
     return this.post(`/scheduling/findSysnNurse`, postData)
   }
   // 10.查询排班得时间列表
-  public async findTimeList (data: any) {
+  public async findTimeList(data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
@@ -143,7 +143,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 11.科室按月份和排班类型统计（按时数）(按天数)
-  public async deptStatisticWithDateByShiftType (data: any) {
+  public async deptStatisticWithDateByShiftType(data: any) {
     const postData = {
       shiftType: data.shiftType, // 排班类型
       hourOrNum: data.hourOrNum, // 是否按照工时
@@ -156,12 +156,16 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 12.科室排班统计（按班次）（非json传参）
-  public async deptStatisticByDeptCode (data: any) {
+  public async deptStatisticByDeptCode(data: any) {
     const postData = {
       ls: data.ls, // A班,P班,N班,休假,进修学习,其他
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
       endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
     }
     return this.post(`/scheduling/countByDeptCode`, this.stringify(postData))
+  }
+  // 12.科室排班统计（按班次）（非json传参）
+  public copyPrevSettingRange(data: any) {
+    return this.post(`/scheduling/copyPrevSettingRange`, data)
   }
 }

@@ -1,45 +1,50 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
 
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 
-import { Menu, Icon, DatePicker } from 'antd'
+import { Menu, Icon, DatePicker, Radio } from 'antd'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 
 import moment from 'moment'
 import { authStore, scheduleStore } from 'src/stores'
+import createModal from '../../../../../../libs/createModal'
+import FilterDateModal from '../../modal/FilterDateModal'
+import { set } from 'lodash'
+import { inflateSync } from 'zlib'
+import { Place } from 'src/components/common'
+
 moment.locale('zh-cn')
 
 const { RangePicker } = DatePicker
-export interface Props extends RouteComponentProps {}
 
 const dateFormat = 'YYYY-MM-DD'
 // const SubMenu = Menu.SubMenu
 const ItemMenu = Menu.Item
 
 // let rangePickerDefaultValue = new Array()
+interface Props {}
 
-export default function LeftBar () {
-  const [count, setCount] = useState(0)
-  // const [menuLoading, setMenuLoading] = useState(true)
-  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState([scheduleStore.getSelectedWeekIndex()])
-  const [monthStart, setMonthStart] = useState(() => {
-    let date = new Date()
-    let firstDay = date.setDate(1)
-    if (scheduleStore.getWeekStartTime()) {
-      return scheduleStore.getWeekStartTime()
-    }
-    return moment(firstDay).format(dateFormat)
-  })
-  const [defaultEndTime, setdefaultEndTime] = useState(() => {
-    let date = new Date()
-    if (scheduleStore.getWeekEndTime()) {
-      return scheduleStore.getWeekEndTime()
-    }
-    return date
-  })
+export default function LeftBar(props: Props) {
+  /** 开始时间 结束时间*/
+  let [[startDate, endDate], setDate] = useState([
+    scheduleStore.getStartTime() ||
+      moment()
+        .startOf('month')
+        .isoWeekday(1)
+        .format('YYYY-MM-DD'),
+    scheduleStore.getEndTime() ||
+      moment()
+        .endOf('month')
+        .isoWeekday(7)
+        .format('YYYY-MM-DD')
+  ])
+
+  let [oneWeekList, setOneWeekList] = useState([])
+  let [twoWeekList, setTwoWeekList] = useState([])
+  let [selectedWeek, setSelectedWeek] = useState([])
+
   const [shiftList, setShiftList] = useState([
     {
       mondy: '',
@@ -49,156 +54,65 @@ export default function LeftBar () {
     }
   ])
 
+  /** 一周排班-1， 二周排班-2 */
+  const [scheduleType, setScheduleType] = useState(1)
+
+  const filterDateModal = createModal(FilterDateModal)
+
   useEffect(() => {
-    // console.log(count, setCount)
-    // console.log(defaultSelectedKeys, setDefaultSelectedKeys)
-    // console.log(defaultEndTime, setdefaultEndTime)
-    setShiftList([])
-    initial()
-    onEventsEmitter()
-  }, [])
+    updateWeekList(startDate, endDate)
+  }, [startDate, endDate])
 
-  // 初始化周列表
-  function initial () {
-    let weekIndex = scheduleStore.getSelectedWeekIndex() + ''
-    setDefaultSelectedKeys([weekIndex])
-
-    // 默认获取最近一月排班
-    let date = new Date()
-    let firstDay = 0
-    let endTime = moment().format(dateFormat)
-    if (scheduleStore.getWeekStartTime() && scheduleStore.getWeekEndTime()) {
-      date = new Date(scheduleStore.getWeekStartTime())
-      firstDay = date.getTime()
-      endTime = moment(scheduleStore.getWeekEndTime())
-        .endOf('week')
-        .format(dateFormat)
-    } else {
-      date = new Date()
-      firstDay = date.setDate(1)
-      endTime = moment()
-        .endOf('week')
-        .format(dateFormat)
-    }
-    setdefaultEndTime(endTime)
-    setMonthStart(moment(firstDay).format(dateFormat))
-    console.log('开始时间：date', date.toJSON(), firstDay, endTime, scheduleStore.getWeekEndTime())
-
-    // 接口请求参数
-    const postData = {
-      startTime: moment(firstDay).format(dateFormat), // startTime 开始时间（刚开始由后台传给前台）
-      endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
-    }
-    updateWeekList(postData.startTime, postData.endTime, (time: any) => {
-      handleItem(time[weekIndex], weekIndex)
-    })
-  }
-
-  function onEventsEmitter () {
-    emitter.removeAllListeners('初始化周排班列表')
-
-    emitter.addListener('初始化周排班列表', () => {
-      initial()
-    })
-  }
-
-  // 选择日期间段发生改变时执行
-  function onChange (date: any, dateString: any) {
-    console.log(date, dateString)
-    updateWeekList(dateString[0], dateString[1])
-  }
-
-  // 产生每周列表
-  function genWeekList (startTime: string, endTime: string) {
-    let timelist = new Array()
-    let startTimeTemp = startTime
-    timelist.push({
-      mondy: moment(startTime)
-        .startOf('isoWeek')
-        .format(dateFormat),
-      sundy: moment(startTime)
-        .endOf('isoWeek')
-        .format(dateFormat),
-      week: moment(startTime)
-        .startOf('isoWeek')
-        .format('w'),
-      status: '-1'
-    })
-    scheduleStore.setWeekStartTime(
-      moment(startTime)
-        .startOf('isoWeek')
-        .format(dateFormat)
-    )
-
-    while (moment(startTimeTemp).isBefore(endTime)) {
-      startTimeTemp = moment(startTimeTemp)
-        .add(1, 'w')
-        .startOf('isoWeek')
-        .format(dateFormat)
-      timelist.push({
-        mondy: moment(startTimeTemp)
-          .startOf('isoWeek')
-          .format(dateFormat),
-        sundy: moment(startTimeTemp)
-          .endOf('isoWeek')
-          .format(dateFormat),
-        week: moment(startTimeTemp)
-          .startOf('isoWeek')
-          .format('w'),
-        status: '-1'
-      })
-    }
-    timelist.pop()
-    console.log('产生列表', startTimeTemp, startTime, endTime, timelist)
-    return timelist
-  }
+  emitter.removeAllListeners('初始化周排班列表')
+  emitter.addListener('初始化周排班列表', () => updateWeekList(startDate, endDate))
 
   // 更新周列表
-  function updateWeekList (startTime: string, endTime: string, callBack: any = null) {
-    let user = authStore.getUser()
-    let deptCode = scheduleStore.getDeptCode() // user && user.hasOwnProperty('deptCode') ? user.deptCode : ''
+  function updateWeekList(startTime: string, endTime: string, callBack: any = null) {
     // 接口请求参数
     const postData = {
-      deptCode: scheduleStore.getDeptCode() || deptCode, // deptCode  科室编码 // "门诊护理"
-      startTime: startTime, // startTime 开始时间（刚开始由后台传给前台）
-      endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
+      deptCode: scheduleStore.getDeptCode(),
+      startTime: startTime,
+      endTime: endTime
     }
-    console.log(
-      '接口请求参数updateWeekList',
-      postData,
-      scheduleStore.getDepartment(),
-      scheduleStore.getDeptCode(),
-      user,
-      deptCode
-    )
-    scheduleStore.setWeekEndTime(endTime)
-    let timelist = genWeekList(postData.startTime, postData.endTime)
-    console.log('排班周列表timelist', timelist, postData)
-    setShiftList(new Array())
+
     // moment().endOf('week')
     service.schedulingApiService
       .findTimeList(postData)
       .then((res) => {
-        console.log('排班周列表', res, postData)
-
-        timelist = genWeekList(postData.startTime, postData.endTime)
-        // console.log('排班周列表timelist', timelist)
-        let list = res.data
-        if (list) {
-          list.map((time: any) => {
-            timelist.map((t: any) => {
-              if (Number(t.week) === Number(time.week)) {
-                t.status = time.status
-              }
+        let startWeekNumber = moment(startTime).isoWeek()
+        let endWeekNumber = moment(endTime).isoWeek()
+        let weekList: any = []
+        for (let i = startWeekNumber; i <= endWeekNumber; i++) {
+          let w = res.data.find((item: any) => item.week == i)
+          if (w) {
+            console.log(w, 'wwwww')
+            weekList.push(w)
+          } else {
+            weekList.push({
+              mondy: moment()
+                .isoWeek(i)
+                .isoWeekday(1)
+                .format('YYYY-MM-DD'),
+              status: '-1',
+              sundy: moment()
+                .isoWeek(i)
+                .isoWeekday(7)
+                .format('YYYY-MM-DD'),
+              week: i
             })
-          })
+          }
         }
-        setShiftList(timelist as any)
-        // setMenuLoading(false)
-        // setShiftList(res.data)
-        if (callBack) {
-          callBack(timelist as any)
+
+        let twoWeekList: any = []
+        setOneWeekList(weekList.map((item: any) => [item]))
+        for (let i = 0; i < weekList.length; i += 2) {
+          let weeks = []
+          weeks.push(weekList[i])
+          weekList[i + 1] && weeks.push(weekList[i + 1])
+          twoWeekList.push(weeks)
         }
+        console.log(twoWeekList, 'twoWeekListtwoWeekList')
+        setTwoWeekList(twoWeekList)
       })
       .catch((err) => {
         console.log('排班周列表错误', err)
@@ -206,35 +120,37 @@ export default function LeftBar () {
   }
 
   // 处理周点击
-  function handleItem (time: any, i: string) {
-    emitter.emit('动画载入表格中')
+  function handleItem(items: any, i: string) {
+    setSelectedWeek(items)
+    // emitter.emit('动画载入表格中')
+    // if (Number(time.status) === -1) {
+    //   emitter.emit('禁止工具按钮', true)
+    //   return emitter.emit('清空排班记录')
+    // }
 
-    scheduleStore.setSelectedWeekIndex(i)
-    setDefaultSelectedKeys([i])
-    console.log('排班', time, defaultSelectedKeys, i, scheduleStore.getSelectedWeekIndex())
-
-    scheduleStore.setStartTime(time.mondy)
-    scheduleStore.setEndTime(time.sundy)
-
-    if (Number(time.status) === -1) {
-      emitter.emit('禁止工具按钮', true)
-      return emitter.emit('清空排班记录')
-    }
-
-    emitter.emit('禁止工具按钮', false)
+    // emitter.emit('禁止工具按钮', false)
     // 接口请求参数
     const postData = {
-      deptCode: scheduleStore.getDeptCode(), // deptCode  科室编码 // "门诊护理"
-      startTime: time.mondy, // startTime 开始时间（刚开始由后台传给前台）
-      endTime: time.sundy // endTime   结束时间（刚开始由后台传给前台）
+      deptCode: scheduleStore.getDeptCode(),
+      startTime: items[0].mondy,
+      endTime: items[1] ? items[1].sundy : items[0].sundy
     }
     service.schedulingApiService
       .findShiftList(postData)
       .then((res) => {
-        console.log('发出：排班记录，从组件LeftBar', res)
         // todo ... emitter 将数据传递给表格组件进行下一步数据渲染
         if (res && res.data) {
-          emitter.emit('本周排班记录', res.data)
+          scheduleStore.setStartTime(items[0].mondy)
+          scheduleStore.setEndTime(items[1] ? items[1].sundy : items[0].sundy)
+
+          if (Math.max(...items.map((item: any) => Number(item.status))) > -1) {
+            emitter.emit('禁止工具按钮', false)
+          }
+          if (items.length == 2) {
+            emitter.emit('二周排班记录', res.data)
+          } else {
+            emitter.emit('本周排班记录', res.data)
+          }
         } else {
           emitter.emit('清空排班记录')
         }
@@ -243,37 +159,64 @@ export default function LeftBar () {
         console.log('排班记录错误', err)
       })
   }
+
+  let weekList = scheduleType == 1 ? oneWeekList : twoWeekList
   return (
     <Wrapper>
-      <Menu
-        mode='inline'
-        defaultSelectedKeys={defaultSelectedKeys}
-        style={{ width: '100%', height: 'auto', minHeight: '100vh' }}
-      >
-        <ItemMenu onClick={(e) => emitter.emit('清空排班记录')} key='sub1'>
-          <span>
-            <Icon type='calendar' />
-            <span>排班记录</span>
+      <ListPart style={{ width: '100%', height: 'auto', minHeight: '100vh' }}>
+        {/* {JSON.stringify(twoWeekList)} */}
+        <HeadCon>
+          <span className='title'>排班记录</span>
+          <span
+            className='filter-btn'
+            onClick={() =>
+              filterDateModal.show({
+                startDate,
+                endDate,
+                onOkCallBack: (startDate: string, endDate: string) => {
+                  setDate([startDate, endDate])
+                }
+              })
+            }
+          >
+            筛选
           </span>
-        </ItemMenu>
-        <SelectCon>
-          <RangePicker
-            defaultValue={[moment(monthStart, dateFormat), moment(defaultEndTime, dateFormat)]}
-            onChange={onChange}
-            format={dateFormat}
-            locale={locale}
-            className={'range-picker-div'}
-          />
-        </SelectCon>
-        {shiftList.map((time, index) => (
-          <ItemMenu onClick={(e) => handleItem(time, `${index}`)} key={index}>
-            <CircleCon color={time.status} />
-            {`第${moment(time.mondy || new Date()).format('w') || time.week}周 ${moment(
-              time.mondy || new Date()
-            ).format('MM/DD')} - ${moment(time.sundy || new Date()).format('MM/DD')}`}
-          </ItemMenu>
-        ))}
-      </Menu>
+        </HeadCon>
+        <RadioCon>
+          <Radio.Group
+            onChange={(e) => {
+              setScheduleType(e.target.value)
+            }}
+            value={scheduleType}
+          >
+            <Radio value={1}>一周排班</Radio>
+            <Radio value={2}>二周排班</Radio>
+          </Radio.Group>
+        </RadioCon>
+
+        {weekList.map((items: any, index) => {
+          let status = Math.max(...items.map((item: any) => Number(item.status))) + ''
+          let text = ''
+          let date = ''
+          let format = (date: string) => moment(date).format('MM/DD')
+          if (items.length == 1) {
+            text = `第${items[0].week}周`
+            date = `${format(items[0].mondy)} - ${format(items[0].sundy)}`
+          } else if (items.length == 2) {
+            text = `第${items[0].week}-${items[1].week}周`
+            date = `${format(items[0].mondy)} - ${format(items[1].sundy)}`
+          }
+          return (
+            <ListItem onClick={(e) => handleItem(items, `${index}`)} key={index} active={items === selectedWeek}>
+              <CircleCon color={status} />
+              <span>{text}</span>
+              <Place />
+              <span>{date}</span>
+            </ListItem>
+          )
+        })}
+      </ListPart>
+      <filterDateModal.Component />
     </Wrapper>
   )
 }
@@ -288,27 +231,7 @@ const Wrapper = styled.div`
     background: rgba(248, 248, 248, 1);
   }
 `
-const SelectCon = styled.div`
-  height: 60px;
-  background: rgba(248, 248, 248, 1);
-  display: flex;
-  align-items: center;
-  padding: 0 5px;
-  .ant-calendar-picker-input,
-  .ant-input {
-    padding: 4px 1px !important;
-    display: flex;
-    justify-content: space-between;
-  }
-  .range-picker-div {
-    padding: 4px 1px !important;
-    display: flex;
-    justify-content: space-between;
-  }
-  .ant-calendar-picker-icon {
-    display: none !important;
-  }
-`
+
 const CircleCon = styled.div`
   height: 10px;
   width: 10px;
@@ -318,3 +241,61 @@ const CircleCon = styled.div`
   background: ${(props) => (props.color === '1' ? '#5dbf9a' : props.color === '0' ? 'red' : 'gray')};
 `
 // 0代表暂存红，1代表发布绿, 其他灰色
+
+const HeadCon = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+  padding: 14px 10px 10px;
+  .title {
+    font-weight: bold;
+  }
+  .filter-btn {
+    cursor: pointer;
+    color: ${(p) => p.theme.$mtc};
+    &:hover {
+      font-weight: bold;
+    }
+  }
+`
+
+const RadioCon = styled.div`
+  padding: 10px;
+`
+
+const ListPart = styled.div``
+
+const ListItem = styled.div<{ active: boolean }>`
+  padding: 10px 20px 10px 10px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin: 5px 0;
+  cursor: pointer;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: ${(p: any) => p.theme.$mtc};
+    width: 4px;
+    display: none;
+  }
+  ${(p) =>
+    p.active &&
+    `
+    background: rgb(207, 230, 220);
+    &:after {
+      display: block;
+    }
+    `}
+
+  &:hover {
+    background: rgb(207, 230, 220);
+    &:active span {
+      color: ${(p) => p.theme.$mtc};
+    }
+  }
+`

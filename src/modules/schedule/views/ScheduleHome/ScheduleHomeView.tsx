@@ -4,15 +4,17 @@ import { RouteComponentProps } from 'react-router'
 import LeftBar from './components/LeftBar/LeftBar'
 import ToolBar from './components/ToolBar/ToolBar'
 import ScheduleTable from '../components/ScheduleTable/ScheduleTable'
+import createModal from '../../../../libs/createModal'
+import moment from 'moment'
 
 export interface Props extends RouteComponentProps {}
 
-export default function ScheduleHomeView (props: Props) {
-  const [count, setCount] = useState(0)
+export default function ScheduleHomeView(props: Props) {
   useEffect(() => {
     // console.log(count, setCount)
     // console.log('路径参数', props, props.match.params)
   })
+
   return (
     <Wrapper>
       <LeftBarCon>

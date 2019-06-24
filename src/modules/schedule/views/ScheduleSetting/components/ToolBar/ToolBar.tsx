@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router'
 
 import emitter from 'src/libs/ev'
 
-import { Button, message, Modal, Form, Input, TreeSelect, Switch, DatePicker, Popconfirm } from 'antd'
+import { Button, message, Modal, Form, Input, TreeSelect, Switch, DatePicker, Popconfirm, Icon } from 'antd'
 import { scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import moment from 'moment'
@@ -20,7 +20,7 @@ const { WeekPicker } = DatePicker
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-export default function ToolBar () {
+export default function ToolBar() {
   const [count, setCount] = useState(0)
   const [pageTitle, setPageTitle] = useState('编辑排班')
   const [formatDay, setFormatDay] = useState('七')
@@ -129,15 +129,22 @@ export default function ToolBar () {
     setIsPublished(isPublish)
 
     emitter.emit('获取编辑排班列表', (shiftData: any, shiftListData: any) => {
-      console.log('获取编辑排班列表', shiftData, shiftListData, postData)
+      // return console.log('获取编辑排班列表', shiftData, shiftListData, postData)
       let weekDayToNumber: any = {
-        mondayName: 0,
-        tuesdayName: 1,
-        wednesdayName: 2,
-        thursdayName: 3,
-        fridayName: 4,
-        saturdayName: 5,
-        sundayName: 6
+        mondayName_1: 0,
+        tuesdayName_1: 1,
+        wednesdayName_1: 2,
+        thursdayName_1: 3,
+        fridayName_1: 4,
+        saturdayName_1: 5,
+        sundayName_1: 6,
+        mondayName_2: 7,
+        tuesdayName_2: 8,
+        wednesdayName_2: 9,
+        thursdayName_2: 10,
+        fridayName_2: 11,
+        saturdayName_2: 12,
+        sundayName_2: 13
       }
       shiftData.map((nurse: any, index: any) => {
         for (const key in nurse) {
@@ -146,26 +153,28 @@ export default function ToolBar () {
             if (
               key.toLowerCase().indexOf('dayname') > -1 &&
               key.toLowerCase().indexOf('color') === -1 &&
-              key.toLowerCase().indexOf('daynamecolor') === -1 &&
-              key.toLowerCase().indexOf('daynamecode') === -1
+              key.toLowerCase().indexOf('code') === -1
             ) {
               let shift = element ? shiftListData.find((s: any) => element === s.name) : null
               let elementCode = nurse[key + 'Code']
               // console.log('!!!!shift', shift, key, nurse[key],elementCode, nurse)
               if (!shift) {
                 shift = element
-                  ? shiftListData.find(
-                      (s: any) =>
+                  ? shiftListData.find((s: any) => {
+                      // console.log('nurse-', nurse, 'key-', key, 's-', 's')
+                      return (
                         nurse[key + 'Code'] === s.name ||
                         (nurse[key + 'Code'] === s.shiftType && nurse[key + 'Code'] != s.name)
-                    )
+                      )
+                    })
                   : null
                 // if(!shift){
                 //   continue
                 // }
                 // console.log('===!!!!shift', shift, key, nurse[key], nurse)
               }
-
+              // console.log('shift-', shift, 'element-', element)
+              // console.log('startTime-', startTime, 'weekDayToNumber-', weekDayToNumber, 'key-', key)
               postLine = {
                 id: {
                   userId: nurse.id || '',
@@ -177,7 +186,7 @@ export default function ToolBar () {
                 status: isPublish ? '1' : '0',
                 thisWeekHour: nurse.thisWeekHour,
                 workTime: shift ? shift.workTime : '',
-                rangeName: shift ? element || shift.name : '',
+                rangeName: element ? element : shift ? shift.name : '',
                 rangeNameCode: elementCode ? elementCode : '',
                 remark: nurse.remark,
                 shiftType: shift ? shift.shiftType : '',
@@ -232,14 +241,14 @@ export default function ToolBar () {
               if (!t.hasOwnProperty('children')) {
                 t.children = new Array()
               }
-              (t.children as any).push({ title: s.name, value: s.name, key: s.shiftType + s.name, isLeaf: true })
+              ;(t.children as any).push({ title: s.name, value: s.name, key: s.shiftType + s.name, isLeaf: true })
               return t
             }
           })
           if (shift && shift.length > 0) {
             console.log(shift)
           } else {
-            (treeData as any).push({
+            ;(treeData as any).push({
               title: s.shiftType,
               value: s.shiftType,
               key: s.shiftType,
@@ -282,11 +291,11 @@ export default function ToolBar () {
   let customizedForm: any = null
   const CustomizedForm = Form.create({
     // name: 'coordinated',
-    onFieldsChange (props: any, changedFields: any) {
+    onFieldsChange(props: any, changedFields: any) {
       // props = { ...props, ...changedFields }
       props.onChange(changedFields)
     },
-    mapPropsToFields (props: any) {
+    mapPropsToFields(props: any) {
       console.log('mapPropsToFields', props)
       return {
         id: Form.createFormField({
@@ -331,7 +340,7 @@ export default function ToolBar () {
         })
       }
     },
-    onValuesChange (_: any, values: any) {
+    onValuesChange(_: any, values: any) {
       console.log(values)
     }
   })((props: any) => {
@@ -622,18 +631,20 @@ export default function ToolBar () {
 
   const copyShift = () => {
     message.info('正在复制上周排班')
-    const postData = {
-      deptCode: scheduleStore.getDeptCode(), // deptCode  科室编码
-      startTime: scheduleStore.getStartTime(), // startTime 开始时间（直接传当前得时间就行）
-      endTime: scheduleStore.getEndTime() // endTime   结束时间（直接传当前得时间就行）
-    }
-    console.log('复制上周排班postData', postData)
-    emitter.emit('排班列表载入动画', true)
-    service.schedulingApiService.copy(postData).then((res) => {
-      console.log('复制上周排班', res)
-      if (res && res.data) {
-        emitter.emit('更新复制上周排班', res.data)
+    emitter.emit('获取编辑排班列表', (shiftData: any, shiftListData: any) => {
+      // return console.log(shiftData, 'shiftDatashiftDatashiftDatashiftData')
+      emitter.emit('排班列表载入动画', true)
+      const postData = {
+        startTime: scheduleStore.getStartTime(),
+        endTime: scheduleStore.getEndTime(),
+        copyStatus: scheduleStore.getWeeks().length == 2 ? '1' : '',
+        ids: shiftData.map((item: any) => item.id)
       }
+      service.schedulingApiService.copyPrevSettingRange(postData).then((res) => {
+        if (res && res.data) {
+          emitter.emit('更新复制上周排班', res.data)
+        }
+      })
     })
   }
 
@@ -673,26 +684,30 @@ export default function ToolBar () {
     emitter.emit('更新排班列表')
   }
 
+  let startWeekNumber = moment(scheduleStore.getStartTime()).isoWeek()
+  let endWeekNumber = moment(scheduleStore.getEndTime()).isoWeek()
+  let weekString = ''
+  let weekLength = 1
+  if (startWeekNumber == endWeekNumber) {
+    weekString = `第${startWeekNumber}周 `
+  } else {
+    weekString = `第${startWeekNumber} - ${endWeekNumber}周 `
+    weekLength = 2
+  }
+  let dateString =
+    weekString +
+    ` ${moment(scheduleStore.getStartTime()).format('MM/DD')} - ${moment(scheduleStore.getEndTime()).format('MM/DD')}`
+
   return (
     <Wrapper>
       <Title>{pageTitle}</Title>
       <div style={{ flex: 1 }} />
-      {/* <DatePicker className='button-tools' /> */}
-      {/* <RangePicker
-        defaultValue={[moment(monthStart, dateFormat), moment(defaultEndTime, dateFormat)]}
-        onChange={onChange}
-        format={dateFormat}
-        locale={locale}
-      /> */}
-      <WeekPicker
-        defaultValue={moment(monthStart, dateFormat)}
-        style={{ width: '300px' }}
-        onChange={onWeekChange}
-        value={weekValue}
-        format={`[第]wo[ ]YYYY年M月D日[ - ][${formatMonth}]月[${formatDay}]日`}
-        locale={locale}
+      <Input
+        addonAfter={<Icon type='calendar' />}
+        value={dateString}
+        style={{ width: weekLength == 1 ? 210 : 260 }}
+        readOnly
       />
-
       <Button onClick={() => resetShift()} className='button-tools'>
         重置排班
       </Button>
@@ -701,8 +716,7 @@ export default function ToolBar () {
       </Button>
       <Button
         onClick={() => {
-          message.info('刷新排班人员')
-          emitter.emit('更新排班人员列表')
+          emitter.emit('同步排班人员')
         }}
         className='button-tools'
       >
