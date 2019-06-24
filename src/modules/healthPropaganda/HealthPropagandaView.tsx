@@ -47,7 +47,7 @@ export default withRouter(function HealthPropagandaView(props: any) {
   return <Wrapper>
     <div className="topbar">
       <div className="nav">
-        <Link to="/setting/健康宣教字典">健康宣教字典</Link> > {data.type}
+        <Link to="/setting/健康宣教字典">健康宣教字典</Link> > {data.name}
       </div>
       <div className="float-right">
         <Button onClick={() => history.push(`/healthPropagandaEdit/${match.params.id}`)} style={{ marginRight: '5px' }}>编辑</Button>

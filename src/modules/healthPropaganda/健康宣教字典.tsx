@@ -14,13 +14,14 @@ const { Option } = Select;
 export interface Props extends RouteComponentProps { }
 
 export default withRouter(observer(function 健康宣教字典(props: Props) {
+  //导入弹窗相关
   const [fileName, setFileName] = useState('');
   const [uploadVisible, setUploadVisible] = useState(false);
-
+  //表格数据载入状态
   const [dataLoading, setDataLoading] = useState(false);
   //科室列表
-  const initDeptList: any = [];
-  const [deptList, serDeptList] = useState(initDeptList);
+  // const initDeptList: any = [];
+  // const [deptList, serDeptList] = useState(initDeptList);
   //宣教类型列表
   const initTypeList: any = [];
   const [typeList, setTypeList] = useState(initTypeList);
@@ -45,9 +46,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       key: 'key',
       width: 50,
       align: 'center',
-      render: (text: string, record: any, index: number) => {
-        return index + 1;
-      }
+      render: (text: string, record: any, index: number) => index + 1
     },
     {
       title: '健康宣教',
@@ -89,7 +88,6 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       align: 'center',
       width: 120,
       render: (text: string, record: any) => {
-
         return <Fragment>
           <span onClick={e => viewContent(record)} className="operation-span">查看</span>
           <span onClick={e => handleDelete(record)} className="operation-span delete-span">删除</span>
@@ -100,8 +98,9 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
 
   useEffect(() => {
     if (authStore.user) {
-      setQuery({ ...query, deptCode: authStore.user.deptCode });
-      getTableData({ ...query, deptCode: authStore.user.deptCode });
+      let initQuery = { ...query, deptCode: authStore.user.deptCode };
+      setQuery(initQuery);
+      getTableData(initQuery);
     } else {
       getTableData();
     }
@@ -116,7 +115,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }, [query])
 
   const getTableData = (newQuery?: any) => {
-    let reqQuery = newQuery ? newQuery : query;
+    let reqQuery = newQuery || query;
     setDataLoading(true);
     api.getTableList(reqQuery).then(res => {
       setDataLoading(false);
@@ -228,8 +227,8 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
         </span>
         <span className="btn-group">
           <Button className="search" onClick={handleSearch}>搜索</Button>
-          <Button className="upload" onClick={handleUploadBtn} style={{ marginRight: '5px' }}>导入</Button>
-          <Button className="upload" onClick={handleCreateNew}>新建</Button>
+          <Button className="upload" onClick={handleUploadBtn}>导入</Button>
+          <Button className="create-new" onClick={handleCreateNew}>新建</Button>
         </span>
       </div>
     </div>
@@ -260,7 +259,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
     </div>
     <Modal title="导入宣教" visible={uploadVisible} onOk={handleUploadOkBtn} onCancel={() => setUploadVisible(false)}>
       <ModalWrapper>
-        <Input value={fileName} className="file-name-input" /><Button onClick={triggerFileUpload}>选择</Button>
+        <Input value={fileName} className="file-name-input" readOnly /><Button onClick={triggerFileUpload}>选择</Button>
         <input type="file" id="fileUpload" style={{ display: 'none' }} onChange={handleUploadChange} accept=".doc,.docx" />
       </ModalWrapper>
     </Modal>
@@ -301,6 +300,9 @@ position: relative;
       .ant-select{
         min-width: 100px;
       }
+    }
+    .upload{
+      margin-right: 5px;
     }
     .search-input{
       margin-right: 5px;
@@ -411,6 +413,26 @@ position: relative;
         margin-left: 10px;
       }
     }
+  }
+}
+.left .content{
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.1);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    // box-shadow: inset 0 0 5px #ffffff;
+    // border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 `
