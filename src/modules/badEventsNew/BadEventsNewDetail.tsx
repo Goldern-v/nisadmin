@@ -33,10 +33,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   })
 
   const [iframeLoading, setIframeLoading] = useState(true);
-
+  //初始化时间戳
   const initTimeLine = [
     {
-      title: '保存：XXX事件',
+      title: '保存',
       statuses: ['0'],
       description: <span>未完成</span>
     },
@@ -51,7 +51,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       description: <span>未完成</span>
     },
     {
-      title: 'XXXX科处理',
+      title: '主管科处理',
       statuses: ['3'],
       description: <span>未完成</span>
     },
@@ -66,8 +66,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       description: <span>未完成</span>
     },
   ];
-
+  //右侧时间轴
   const [timeLine, setTimeLine] = useState(initTimeLine.concat())
+  //用于刷新iframe的时间戳
+  const [timeSet, setTimeset] = useState(new Date().getTime());
 
   interface stringObj {
     [key: string]: string
@@ -95,7 +97,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventName,
       badEventType: eventType,
       badEventCode,
-      operation: 'view'
+      operation: 'view',
+      timeset: timeSet
     }
     for (let x in query) {
       if (!query[x]) return ''
@@ -195,8 +198,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             return newItem
           })
 
-          setIframeLoading(false);
           setTimeLine(newTimeline);
+          setTimeset(new Date().getTime());
         });
     }
   }
@@ -216,7 +219,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
 
   const handleIframeLoad = () => {
-    // setIframeLoading(false);
+    setIframeLoading(false);
   }
 
   const StepsCurrent = () => {
@@ -228,7 +231,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
   const AuditBtn = () => {
     let status = detailData.status;
-    let btnDisable = false;
+    let btnDisable = iframeLoading;
     let btnText = '';
 
     switch (status) {

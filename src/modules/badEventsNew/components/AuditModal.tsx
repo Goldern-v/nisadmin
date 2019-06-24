@@ -35,6 +35,8 @@ export default observer(function AduitModal(props: Props) {
   //验证用户弹窗显示
   const [userCheckVisible, setUserCheckVisible] = useState(false);
 
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
   //转发科室列表
   const dealerDepts = [
     { name: '医务科', value: '医务科', include: ['badevent_operation', 'badevent_blood_transfusion'] },
@@ -129,6 +131,7 @@ export default observer(function AduitModal(props: Props) {
 
   const auditFormSubmit = (userAudit: any) => {
     let params: any = {}
+    setConfirmLoading(true);
     params = {
       ...instance,
       paramMap: { ...formMap },
@@ -162,11 +165,18 @@ export default observer(function AduitModal(props: Props) {
     // console.log(params)
 
     api.aduit(params).then(res => {
+      setConfirmLoading(false);
       if (res.code == 200) {
         onOk();
-        Message.success('操作成功')
+        Message.success('操作成功');
+      } else {
+        if (res.desc) Message.error(res.desc);
       }
     })
+      .catch(() => {
+        setConfirmLoading(false);
+        Message.error('审核请求发送失败');
+      })
   }
   const AduitPannelTitle = () => {
     switch (status) {
@@ -337,6 +347,7 @@ export default observer(function AduitModal(props: Props) {
       title={AduitPannelTitle()}
       width={ModalWidth()}
       onOk={handleOkBtn}
+      confirmLoading={confirmLoading}
       onCancel={onCancel}
       visible={visible}>
       <Wrapper>{AduitPannelContent()}</Wrapper>
