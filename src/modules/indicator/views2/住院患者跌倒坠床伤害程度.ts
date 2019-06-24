@@ -9,29 +9,29 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: '护理单元',
+    dataIndex: 'wardName',
     key: '护理单元',
     align: 'center'
   },
-  {
-    title: '跌倒例数',
-    dataIndex: '跌倒例数',
-    key: '跌倒例数',
-    align: 'center'
-  },
+  // {
+  //   title: '跌倒例数',
+  //   dataIndex: '跌倒例数',
+  //   key: '跌倒例数',
+  //   align: 'center'
+  // },
   {
     title: '轻度伤害',
     align: 'center',
     children: [
       {
-        title: '例数',
-        dataIndex: '轻度伤害例数',
+        title: '轻度伤害例数',
+        dataIndex: 'minor_injury_count',
         key: '轻度伤害例数',
         align: 'center'
       },
       {
-        title: '占比',
-        dataIndex: '轻度伤害占比',
+        title: '轻度伤害比例',
+        dataIndex: 'minor_injury_ratio',
         key: '轻度伤害占比',
         align: 'center'
       }
@@ -42,14 +42,14 @@ const columns: any = [
     align: 'center',
     children: [
       {
-        title: '例数',
-        dataIndex: '中度伤害例数',
+        title: '中度伤害例数',
+        dataIndex: 'moderate_injury_count',
         key: '中度伤害例数',
         align: 'center'
       },
       {
-        title: '占比',
-        dataIndex: '中度伤害占比',
+        title: '中度伤害比例',
+        dataIndex: 'moderate_injury_ratio',
         key: '中度伤害占比',
         align: 'center'
       }
@@ -60,14 +60,14 @@ const columns: any = [
     align: 'center',
     children: [
       {
-        title: '例数',
-        dataIndex: '高度伤害例数',
+        title: '高度伤害例数',
+        dataIndex: 'severe_injury_count',
         key: '高度伤害例数',
         align: 'center'
       },
       {
-        title: '占比',
-        dataIndex: '高度伤害占比',
+        title: '高度伤害比例',
+        dataIndex: 'severe_injury_ratio',
         key: '高度伤害占比',
         align: 'center'
       }
@@ -78,14 +78,14 @@ const columns: any = [
     align: 'center',
     children: [
       {
-        title: '例数',
-        dataIndex: '死亡伤害例数',
+        title: '死亡伤害例数',
+        dataIndex: 'dead_injury_count',
         key: '死亡伤害例数',
         align: 'center'
       },
       {
-        title: '占比',
-        dataIndex: '死亡伤害占比',
+        title: '死亡伤害比例',
+        dataIndex: 'dead_injury_ratio',
         key: '死亡伤害占比',
         align: 'center'
       }

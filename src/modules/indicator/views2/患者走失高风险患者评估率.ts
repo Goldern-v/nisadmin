@@ -9,25 +9,25 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: '护理单元',
+    dataIndex: 'wardName',
     key: '护理单元',
     align: 'center'
   },
   {
-    title: '住院高风险患者例数',
-    dataIndex: '住院高风险患者例数',
-    key: '住院高风险患者例数',
-    align: 'center'
-  },
-  {
     title: '走失高风险住院患者评估阳性数',
-    dataIndex: '走失高风险住院患者评估阳性数',
+    dataIndex: 'lost_count',
     key: '走失高风险住院患者评估阳性数',
     align: 'center'
   },
   {
+    title: '住院高风险患者例数',
+    dataIndex: 'hres_count',
+    key: '住院高风险患者例数',
+    align: 'center'
+  },
+  {
     title: '评估率(%)',
-    dataIndex: '评估率(%)',
+    dataIndex: 'estimate_ratio',
     key: '评估率(%)',
     align: 'center'
   }

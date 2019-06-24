@@ -11,7 +11,7 @@ export interface Props {
   dictionary?: any
 }
 
-export default function BaseChart (props: Props) {
+export default function BaseChart(props: Props) {
   let sourceData = []
 
   for (let i = 0; i < props.keys.length; i++) {
