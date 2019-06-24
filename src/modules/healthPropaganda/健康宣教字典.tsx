@@ -60,14 +60,14 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       dataIndex: 'type',
       key: 'type',
       align: 'center',
-      width: 100
+      width: 120
     },
     {
       title: '科室',
       dataIndex: 'deptName',
       key: 'deptName',
       align: 'center',
-      width: 180
+      width: 150
     },
     {
       title: '修改人',
@@ -296,13 +296,19 @@ position: relative;
     &>span{
       margin-right: 10px
     }
+    .type{
+      margin-right: 15px;
+      .ant-select{
+        min-width: 100px;
+      }
+    }
     .search-input{
       margin-right: 5px;
       width: 150px;
     }
     .btn-group{
       .search{
-        margin-right: 10px;
+        margin-right: 15px;
       }
     }
   }
@@ -392,10 +398,14 @@ position: relative;
     border: 1px solid #ddd;
     height: 100%;
     overflow: hidden;
+    td{
+      font-weight: normal!important;
+    }
     .operation-span{
+      color: rgb(0, 166, 128);
       cursor: pointer;
       &:hover{
-        color: rgb(0, 166, 128);
+        font-weight: bold;
       }
       &.delete-span{
         margin-left: 10px;

@@ -174,7 +174,7 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
     })
   }
 
-  const handleCancel = ()=>{
+  const handleCancel = () => {
     Modal.confirm({
       title: '提示',
       content: '是否取消编辑',
@@ -213,8 +213,8 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
           {typeList.map((item: any) => <Option value={item.type} key={item.id}>{item.type}</Option>)}
         </Select>
       </span>
-      <span>
-        <Button onClick={saveEdit}>保存</Button>
+      <span className="float-right">
+        <Button onClick={saveEdit} type="primary">保存</Button>
         <Button onClick={handleCancel}>取消</Button>
       </span>
     </div>
@@ -243,7 +243,7 @@ const Wrapper = styled.div`
     left: 0;
     top: 40px;
     right: 0;
-    bottom: 40px;
+    bottom: 45px;
     overflow: hidden;
     .bf-controlbar {
       margin-top: -46px;
@@ -268,12 +268,13 @@ const Wrapper = styled.div`
     left: 0;
     bottom: 0;
     right: 0;
-    height: 40px;
-    line-height: 38px;
+    height: 45px;
     &>span{
       margin-left: 8px;
       display: inline-block;
       vertical-align: middle;
+      line-height: 45px;
+      height: 45px;
       &.title{
         margin-left: 15px;
       }
@@ -286,6 +287,10 @@ const Wrapper = styled.div`
       .type-select{
         min-width: 100px;
       }
+    }
+    .float-right{
+      margin-right: 15px;
+      float: right;
     }
   }
 `
