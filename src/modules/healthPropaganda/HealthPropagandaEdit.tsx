@@ -30,6 +30,8 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
     creator: '', //创建人工号
     creatorName: '', //创建人名字
     creatDate: '', //创建时间
+    templateCode: '', //推送类型
+    templateName: '' //推送类型名称
   })
 
   const controls: any[] = [
@@ -77,15 +79,31 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
         .then(res => {
           let data0 = res[0].data;
           let data1 = res[1].data;
-          let newParams: any = {}
+          let newParams: any = {};
+          let tpType = '';
+          let tpName = ''
           if (data0 instanceof Array && data0.length > 0) {
-            newParams = data0[0];
-            let { missionId, deptCode, deptName, publicUse, type, content, name, creator, creatorName, creatDate } = newParams;
+            let { missionId, deptCode, deptName, publicUse, type, content, name, creator, creatorName, creatDate, templateCode, templateName } = data0[0];
             setEditorState(BraftEditor.createEditorState(content));
-            setParams({ missionId, deptCode, deptName, publicUse, type, content: '', name, creator, creatorName, creatDate })
+            newParams = { missionId, deptCode, deptName, publicUse, type, content, name, creator, creatorName, creatDate };
+            tpType = templateCode || '';
+            tpName = templateName || '';
           }
 
-          if (data1 instanceof Array) setTypeList(data1);
+          if (data1 instanceof Array) {
+            setTypeList(data1);
+            if (!tpType) {
+              for (let i = 0; i < data1.length; i++) {
+                if (newParams.type == data1[i]) {
+                  tpType = data1[i].messageType;
+                  tpName = data1[i].messageTypeName;
+                  break;
+                }
+              }
+            }
+          };
+
+          setParams({ ...newParams, templateCode: tpType, templateName: tpName })
         })
     } else {
       let newParams: any = {}
@@ -109,6 +127,8 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
           if (data) {
             if (!params.type && data[0]) {
               newParams.type = data[0].type;
+              newParams.templateCode = data[0].messageType;
+              newParams.templateName = data[0].messageTypeName;
               setParams({ ...params, ...newParams })
             }
             setTypeList(data);
@@ -116,7 +136,6 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
         })
     }
   }, [])
-
 
   const handleDeptSelect = (code: any) => {
     authStore.deptList.map((item: any) => {
@@ -126,6 +145,17 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
         deptName: item.name
       });
     })
+  }
+
+  const handleTypeChange = (type: any) => {
+    for (let i = 0; i < typeList.length; i++) {
+      let item = typeList[i];
+      if (type == item.type) {
+        let { messageType, messageTypeName } = item;
+        setParams({ ...params, type, templateCode: messageType, templateName: messageTypeName })
+        break;
+      }
+    }
   }
 
   const saveEdit = () => {
@@ -158,7 +188,6 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
     else
       publicUse = "0"
 
-
     api.save({
       ...params,
       content,
@@ -170,6 +199,8 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
       if (res.code == "200") {
         Message.success('健康宣教保存成功');
         setTimeout(() => history.goBack(), 1000);
+      } else {
+        if (res.desc) Message.error(res.desc);
       }
     })
   }
@@ -209,7 +240,7 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
       </span>
       <span className="title">类别:</span>
       <span>
-        <Select className="type-select" onChange={(type: any) => setParams({ ...params, type })} value={params.type}>
+        <Select className="type-select" onChange={handleTypeChange} value={params.type}>
           {typeList.map((item: any) => <Option value={item.type} key={item.id}>{item.type}</Option>)}
         </Select>
       </span>
