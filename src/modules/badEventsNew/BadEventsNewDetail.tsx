@@ -18,13 +18,12 @@ const { Step } = Steps;
 export default withRouter(function BadEventsNewDetail(props: any) {
   const [auditModalvisible, setAuditModalvisible] = useState(false);
   // const [status, setStatus] = useState(3);
-  let paramMap: any = {};
   const [detailData, setDetailData] = useState({
     status: '',
     badEventCode: '',
     badEventName: '',
     eventType: '',
-    paramMap: paramMap
+    paramMap: {} as any
   });
 
   const [reportDept, setReportDept] = useState({
@@ -51,7 +50,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       description: <span>未完成</span>
     },
     {
-      title: '主管科处理',
+      title: '主管科室处理',
       statuses: ['3'],
       description: <span>未完成</span>
     },
@@ -155,6 +154,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                 }
                 let deptName = paramMap[`${badEventCode}_department_name`] || '';
 
+                let thExpain = '' as any;
+
                 switch (timeData[i].operatorStatus) {
                   case '0':
                     operatorName = '***'
@@ -170,7 +171,9 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                     break
                   case '2':
                     if (deptName) title = `质控科审核：转发${deptName}`
+                    break
                   case '-2':
+                    thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
                     break
                   case '3':
                     if (deptName) title = `${deptName}处理`
@@ -183,7 +186,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
                 description = <div>
                   <span>{`${operatorName} ${operatorWardName}`}</span><br />
-                  <span>{dateString}</span>
+                  <span>{dateString}</span><br />
+                  {thExpain}
                 </div>;
 
                 if (title) newItem.title = title;
@@ -347,6 +351,7 @@ const Wrapper = styled.div`
       border-left: 1px solid #ddd;
       overflow-y: auto;
       overflow-x: hidden;
+      padding-right: 18px;
     }
     .event-detail{
       overflow: hidden;
