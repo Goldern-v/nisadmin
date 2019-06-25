@@ -20,7 +20,7 @@ export interface Props {
   onCancel: any, //窗口关闭回调
   eventCode: string, //不良事件类型代码
   reportDept: any, //上报人科室名称代码
-  id: any //不良事件id
+  id: any, //不良事件id
 }
 
 export default observer(function AduitModal(props: Props) {
@@ -130,13 +130,17 @@ export default observer(function AduitModal(props: Props) {
   }
 
   const auditFormSubmit = (userAudit: any) => {
-    let params: any = {}
+    let params = {} as any;
     setConfirmLoading(true);
     params = {
       ...instance,
       paramMap: { ...formMap },
       operatorEmpNo: userAudit.empNo,
-      operatorPW: userAudit.password
+      operatorPW: userAudit.password,
+      departmentCode: formMap[`${eventCode}_department_code`] || '',
+      departmentName: formMap[`${eventCode}_department_name`] || '',
+      sac: formMap[`${eventCode}_sac_option`],
+      commitToQC: formMap[`${eventCode}_tjzlanwyh_option`]
     }
 
     switch (params.operatorStatus) {
@@ -145,24 +149,27 @@ export default observer(function AduitModal(props: Props) {
           params.isAllowNext = "0";
           params.paramMap[`${eventCode}_department_code`] = '';
           params.paramMap[`${eventCode}_department_name`] = '';
+
         } else {
-          params.departmentCode = formMap[`${eventCode}_department_code`]
-          params.departmentName = formMap[`${eventCode}_department_name`]
           params.paramMap[`${eventCode}_th_explain`] = '';
+          // -------------- // 先默认转发科室为上报人科室
+          params.departmentCode = reportDept.code
+          params.departmentName = reportDept.name
+          params.paramMap[`${eventCode}_department_code`] = reportDept.code;
+          params.paramMap[`${eventCode}_department_name`] = reportDept.name;
+          // -------------- //
         }
-        break
-      case '2':
-        params.sac = formMap[`${eventCode}_sac_option`]
         break
     }
 
     // -------------- // 先默认转发科室为上报人科室
-    params.departmentCode = reportDept.code
-    params.departmentName = reportDept.name
-    params.paramMap[`${eventCode}_department_code`] = reportDept.code;
-    params.paramMap[`${eventCode}_department_name`] = reportDept.name;
+    // params.departmentCode = reportDept.code
+    // params.departmentName = reportDept.name
+    // params.paramMap[`${eventCode}_department_code`] = reportDept.code;
+    // params.paramMap[`${eventCode}_department_name`] = reportDept.name;
     // -------------- //
-    // console.log(params)
+
+    // console.log(params, formMap[`${eventCode}_tjzlanwyh_option`]);
 
     api.aduit(params).then(res => {
       setConfirmLoading(false);
@@ -233,8 +240,8 @@ export default observer(function AduitModal(props: Props) {
                 <span>转发</span>
               </Col>
               <Col span={14}>
-                {/* <span>{reportDept.name || ''}</span> */}
-                <Select
+                <span style={{ lineHeight: '32px' }}>{reportDept.name || ''}</span>
+                {/* <Select
                   className="input-item"
                   defaultValue={formMap[`${eventCode}_department_code`]}
                   value={formMap[`${eventCode}_department_code`]}
@@ -242,7 +249,7 @@ export default observer(function AduitModal(props: Props) {
                   {dealerDepts.map((item: any, idx: number) => {
                     return <Select.Option value={item.value} key={idx}>{item.name}</Select.Option>
                   })}
-                </Select>
+                </Select> */}
               </Col>
             </Row>
           </Radio.Group>
