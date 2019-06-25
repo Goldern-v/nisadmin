@@ -218,7 +218,7 @@ export default function MainBox() {
 
   emitter.addListener('获取选中班次列表', (callback: any) => {
     if (callback) {
-      callback(selectedRowsArray)
+      callback(shiftList)
     }
   })
 
@@ -276,7 +276,7 @@ export default function MainBox() {
         columns={columns}
         dataSource={shiftList}
         pagination={false}
-        surplusHeight={250}
+        surplusHeight={230}
         type={['spaceRow']}
         loading={tableLoading}
       />

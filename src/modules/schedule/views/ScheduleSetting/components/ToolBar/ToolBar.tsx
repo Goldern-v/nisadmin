@@ -762,11 +762,6 @@ const Wrapper = styled.div`
     margin-bottom: 0;
     justify-content: flex-end !important;
   }
-
-  .ant-calendar-picker > .ant-calendar-picker-input,
-  .ant-input {
-    width: 300px;
-  }
 `
 const FormFlexLayoutStyle = (offset: string = '60px') => ({
   display: 'flex',

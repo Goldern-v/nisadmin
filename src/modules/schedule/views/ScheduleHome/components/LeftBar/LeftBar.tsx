@@ -29,12 +29,12 @@ interface Props {}
 export default function LeftBar(props: Props) {
   /** 开始时间 结束时间*/
   let [[startDate, endDate], setDate] = useState([
-    scheduleStore.getStartTime() ||
+    scheduleStore.getWeekStartTime() ||
       moment()
         .startOf('month')
         .isoWeekday(1)
         .format('YYYY-MM-DD'),
-    scheduleStore.getEndTime() ||
+    scheduleStore.getWeekEndTime() ||
       moment()
         .endOf('month')
         .isoWeekday(7)
@@ -174,12 +174,14 @@ export default function LeftBar(props: Props) {
                 startDate,
                 endDate,
                 onOkCallBack: (startDate: string, endDate: string) => {
+                  scheduleStore.setWeekStartTime(startDate)
+                  scheduleStore.setWeekEndTime(endDate)
                   setDate([startDate, endDate])
                 }
               })
             }
           >
-            筛选
+            筛选时间
           </span>
         </HeadCon>
         <RadioCon>

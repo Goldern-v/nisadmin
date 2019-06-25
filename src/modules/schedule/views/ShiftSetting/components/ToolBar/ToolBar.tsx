@@ -105,11 +105,11 @@ export default function ToolBar() {
       console.log('获取选中班次', shiftList)
       // return
       shiftList = shiftList.filter((u: any) => {
-        return u.status !== null
+        return u.status !== null && u.id
       })
       service.scheduleShiftApiService.saveAll(shiftList).then((res) => {
         message.success('保存排班班次设置成功')
-        // emitter.emit('更新班次列表')
+        emitter.emit('更新班次列表')
         console.log('保存排班班次', res)
       })
     })

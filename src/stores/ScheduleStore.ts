@@ -6,8 +6,8 @@ export default class ScheduleStore {
   public constructor() {
     this.startTime = sessionStorage.scheduleStartTime || ''
     this.endTime = sessionStorage.scheduleEndTime || ''
-    this.weekStartTime = ''
-    this.weekEndTime = ''
+    this.weekStartTime = sessionStorage.scheduleWeekStartTime || ''
+    this.weekEndTime = sessionStorage.scheduleWeekEndTime || ''
     this.selectedWeekIndex = '0'
     this.department = {
       deptCode: authStore.selectedDeptCode || authStore.getUser().deptCode,
@@ -34,6 +34,7 @@ export default class ScheduleStore {
   }
   @action
   public setWeekStartTime = (weekStartTime: string) => {
+    sessionStorage.scheduleWeekStartTime = weekStartTime
     this.weekStartTime = weekStartTime
   }
 
@@ -44,6 +45,7 @@ export default class ScheduleStore {
 
   @action
   public setWeekEndTime = (weekEndTime: string) => {
+    sessionStorage.scheduleWeekEndTime = weekEndTime
     this.weekEndTime = weekEndTime
   }
 
