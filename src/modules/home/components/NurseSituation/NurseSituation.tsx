@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
 
-export default observer(function NurseSituation () {
+export default observer(function NurseSituation() {
   const [titleBy, setTitleBy] = useState('按职称')
   const [userTotal, setUserTotal] = useState(0)
   useEffect(() => {
@@ -106,11 +106,14 @@ const Mid = styled.div`
   padding: 0 18px;
 `
 const MidHeader = styled.div`
+  width: 100%;
   height: 42px;
   line-height: 42px;
   display: flex;
   .headerLeft {
-    width: 50%;
+    flex: 1;
+    width: 0;
+    text-align: left;
   }
   .headerRight {
     margin-top: 7px;
@@ -132,7 +135,7 @@ const MidHeader = styled.div`
         padding: 0;
         height: 100%;
         line-height: height;
-        width: 33.33333%;
+        width: 33.33%;
         background-color: #f1f4f6;
         span {
           margin-top: -3px;

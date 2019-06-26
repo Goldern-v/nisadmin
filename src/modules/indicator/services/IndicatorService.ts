@@ -15,8 +15,8 @@ export interface NurseQuery {
 
 export default class IndicatorService extends BaseApiService {
   /** 获取指标数据 */
-  public getIndicatoeData (serviceName: any, beginDate: any, endDate: any) {
-    return this.post(`/nursingIndex/nationalIndex/${serviceName}`, {
+  public getIndicatoeData(serviceName: any, beginDate: any, endDate: any) {
+    return this.post(`/nursingIndex/${serviceName}`, {
       beginDate,
       endDate
     })

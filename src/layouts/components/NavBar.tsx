@@ -38,11 +38,11 @@ const navList = [
     icon: <HSDA />,
     path: '/nurseFilesList'
   },
-  // {
-  //   name: '不良事件',
-  //   icon: <BLSJ />,
-  //   path: '/badEvents'
-  // },
+  {
+    name: '不良事件',
+    icon: <BLSJ />,
+    path: '/badEventsNewList'
+  },
   // {
   //   name: '护理绩效',
   //   icon: <HLJX />,

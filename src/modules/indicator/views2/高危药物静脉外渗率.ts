@@ -9,25 +9,25 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: '护理单元',
+    dataIndex: 'wardName',
     key: '护理单元',
     align: 'center'
   },
   {
     title: '静脉使用高危药物发生外渗的例数',
-    dataIndex: '静脉使用高危药物发生外渗的例数',
+    dataIndex: 'exo_count',
     key: '静脉使用高危药物发生外渗的例数',
     align: 'center'
   },
   {
     title: '高风险患者总人数',
-    dataIndex: '高风险患者总人数',
+    dataIndex: 'hres_count',
     key: '高风险患者总人数',
     align: 'center'
   },
   {
     title: '高危药物静脉外渗率',
-    dataIndex: '高危药物静脉外渗率',
+    dataIndex: 'accident_ratio',
     key: '高危药物静脉外渗率',
     align: 'center'
   }

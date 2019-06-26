@@ -9,25 +9,25 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: '护理单元',
+    dataIndex: 'wardName',
     key: '护理单元',
     align: 'center'
   },
   {
-    title: '住院总人数',
-    dataIndex: '住院总人数',
-    key: '住院总人数',
-    align: 'center'
-  },
-  {
     title: '跌倒人次',
-    dataIndex: '跌倒人次',
+    dataIndex: 'fall_count',
     key: '跌倒人次',
     align: 'center'
   },
   {
+    title: '住院总人数',
+    dataIndex: 'patient_count',
+    key: '住院总人数',
+    align: 'center'
+  },
+  {
     title: '发生率(%)',
-    dataIndex: '发生率(%)',
+    dataIndex: 'accident_ratio',
     key: '发生率(%)',
     align: 'center'
   }

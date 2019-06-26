@@ -43,6 +43,9 @@ import NursingRules from 'src/modules/nursingRules/NursingRules'
 //健康宣教
 import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
 import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaEdit'
+//不良事件列表和审核流程
+import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList';
+import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail';
 
 const routes: RouteItem[] = [
   setLayout('/login', LoginView),
@@ -99,6 +102,8 @@ const routes: RouteItem[] = [
   setLayout('/healthPropagandaView/:id', HealthPropagandaView, layouts.MainLayout),
   setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit, layouts.MainLayout),
   setLayout('/healthPropagandaEdit', HealthPropagandaEdit, layouts.MainLayout),
+  setLayout('/badEventsNewList', BadEventsNewList, layouts.MainLayout),
+  setLayout('/badEventsNewDetail/:id/:orderNo', BadEventsNewDetail, layouts.MainLayout),
   {
     path: '/badEvents',
     redirect: '/badEvents/search'

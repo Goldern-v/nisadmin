@@ -57,7 +57,9 @@ export default function ToolBar() {
           // console.log('获取选中人员', e)
           // return
           emitter.emit('获取选中人员列表', (userList: any) => {
-            let list = userList.map((item: any, key: number) => ({ ...item, key, sortValue: key }))
+            let list = userList
+              .map((item: any, key: number) => ({ ...item, key, sortValue: key }))
+              .filter((item: any) => item.empName)
             return service.scheduleUserApiService.save(list).then((res) => {
               message.success('保存排班人员设置成功')
               console.log('保存排班人员', res)

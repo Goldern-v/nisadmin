@@ -14,13 +14,12 @@ const { Option } = Select;
 export interface Props extends RouteComponentProps { }
 
 export default withRouter(observer(function 健康宣教字典(props: Props) {
+  //导入弹窗相关
   const [fileName, setFileName] = useState('');
   const [uploadVisible, setUploadVisible] = useState(false);
-
+  const [uploadLoading, setUploadLoading] = useState(false);
+  //表格数据载入状态
   const [dataLoading, setDataLoading] = useState(false);
-  //科室列表
-  const initDeptList: any = [];
-  const [deptList, serDeptList] = useState(initDeptList);
   //宣教类型列表
   const initTypeList: any = [];
   const [typeList, setTypeList] = useState(initTypeList);
@@ -45,29 +44,29 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       key: 'key',
       width: 50,
       align: 'center',
-      render: (text: string, record: any, index: number) => {
-        return index + 1;
-      }
+      render: (text: string, record: any, index: number) => index + 1
     },
     {
       title: '健康宣教',
       dataIndex: 'name',
       key: 'name',
-      align: 'center'
+      align: 'center',
+      className: 'name',
+      render: (text: string) => <div title={text}>{text}</div>
     },
     {
       title: '类型',
       dataIndex: 'type',
       key: 'type',
       align: 'center',
-      width: 100
+      width: 120
     },
     {
       title: '科室',
       dataIndex: 'deptName',
       key: 'deptName',
       align: 'center',
-      width: 180
+      width: 150
     },
     {
       title: '修改人',
@@ -89,7 +88,6 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       align: 'center',
       width: 120,
       render: (text: string, record: any) => {
-
         return <Fragment>
           <span onClick={e => viewContent(record)} className="operation-span">查看</span>
           <span onClick={e => handleDelete(record)} className="operation-span delete-span">删除</span>
@@ -100,8 +98,9 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
 
   useEffect(() => {
     if (authStore.user) {
-      setQuery({ ...query, deptCode: authStore.user.deptCode });
-      getTableData({ ...query, deptCode: authStore.user.deptCode });
+      let initQuery = { ...query, deptCode: authStore.user.deptCode };
+      setQuery(initQuery);
+      getTableData(initQuery);
     } else {
       getTableData();
     }
@@ -116,7 +115,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }, [query])
 
   const getTableData = (newQuery?: any) => {
-    let reqQuery = newQuery ? newQuery : query;
+    let reqQuery = newQuery || query;
     setDataLoading(true);
     api.getTableList(reqQuery).then(res => {
       setDataLoading(false);
@@ -164,10 +163,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   const handleUploadBtn = () => {
     setUploadVisible(true);
 
-    // let fileUpload = document.getElementById('fileUpload') as HTMLInputElement;
-    // let initArr: any = [];
     setFileName('');
-    // if (fileUpload) fileUpload.files = initArr;
   }
 
   const handleUploadOkBtn = () => {
@@ -175,8 +171,10 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
     let data = new FormData();
     if (!fileUpload.files || fileName.length <= 0) return Message.error('未选择上传文件')
     data.append('file', fileUpload.files[0])
+    setUploadLoading(true);
     api.uploadWord(data)
       .then(res => {
+        setUploadLoading(false);
         if (res.code == 200) {
           setUploadVisible(false);
           let originString = res.data || '';
@@ -186,8 +184,14 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
             content: originString.replace(/\n/g, '<br/>')
           })
           props.history.push('/healthPropagandaEdit');
+          Message.success('宣教导入成功')
+        } else {
+          if (res.desc) Message.error(res.desc)
         }
-        Message.success('宣教导入成功')
+      })
+      .catch(err => {
+        setUploadVisible(false);
+        Message.error('网络原因，宣教导入失败')
       })
   }
 
@@ -228,8 +232,8 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
         </span>
         <span className="btn-group">
           <Button className="search" onClick={handleSearch}>搜索</Button>
-          <Button className="upload" onClick={handleUploadBtn} style={{ marginRight: '5px' }}>导入</Button>
-          <Button className="upload" onClick={handleCreateNew}>新建</Button>
+          <Button className="upload" onClick={handleUploadBtn}>导入</Button>
+          <Button className="create-new" onClick={handleCreateNew}>新建</Button>
         </span>
       </div>
     </div>
@@ -258,9 +262,14 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
           surplusHeight={250} />
       </div>
     </div>
-    <Modal title="导入宣教" visible={uploadVisible} onOk={handleUploadOkBtn} onCancel={() => setUploadVisible(false)}>
+    <Modal
+      title="导入宣教"
+      confirmLoading={uploadLoading}
+      visible={uploadVisible}
+      onOk={handleUploadOkBtn}
+      onCancel={() => setUploadVisible(false)}>
       <ModalWrapper>
-        <Input value={fileName} className="file-name-input" /><Button onClick={triggerFileUpload}>选择</Button>
+        <Input value={fileName} className="file-name-input" readOnly /><Button onClick={triggerFileUpload}>选择</Button>
         <input type="file" id="fileUpload" style={{ display: 'none' }} onChange={handleUploadChange} accept=".doc,.docx" />
       </ModalWrapper>
     </Modal>
@@ -296,13 +305,22 @@ position: relative;
     &>span{
       margin-right: 10px
     }
+    .type{
+      margin-right: 15px;
+      .ant-select{
+        min-width: 100px;
+      }
+    }
+    .upload{
+      margin-right: 5px;
+    }
     .search-input{
       margin-right: 5px;
       width: 150px;
     }
     .btn-group{
       .search{
-        margin-right: 10px;
+        margin-right: 15px;
       }
     }
   }
@@ -352,6 +370,7 @@ position: relative;
         }
         &.selected{
           color:#00A680;
+          font-weight: bold;
         }
         .before{
           position: absolute;
@@ -392,15 +411,54 @@ position: relative;
     border: 1px solid #ddd;
     height: 100%;
     overflow: hidden;
+    td{
+      font-weight: normal!important;
+      &.name{
+        position: relative;
+        >div{
+          position: absolute;
+          left: 0;
+          top: 0;
+          line-height: 32px;
+          height: 32px;
+          right: 0;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+          padding: 0 10px;
+        }
+      }
+    }
     .operation-span{
+      color: rgb(0, 166, 128);
       cursor: pointer;
       &:hover{
-        color: rgb(0, 166, 128);
+        font-weight: bold;
       }
       &.delete-span{
         margin-left: 10px;
       }
     }
+  }
+}
+.left .content{
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.1);
+  }
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    // box-shadow: inset 0 0 5px #ffffff;
+    // border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 `
