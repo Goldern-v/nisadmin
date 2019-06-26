@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { Component, useState, useEffect } from 'react'
 import BaseTable from 'src/components/BaseTable'
-import { Modal, Input, message, Popconfirm } from 'antd'
+import { Modal, Input, message, Popconfirm, Select } from 'antd'
 import service from 'src/services/api'
 export interface Props {
   isShow: any,
@@ -12,26 +12,51 @@ export interface Props {
 
 
 export default function AuditsTableDHSZ (props: Props) {
-  let [opinion] = useState('')
+  let [opinion, setOpinion] = useState('')
+  let [messageType, setmessageType] = useState('')
+  let [messageTypeName, setmessageTypeName] = useState('')
+  let [selectData, setSelectData] = useState([])
   const [tableData, setTableData] = useState([])
-  const setOpinion = (value: any) => {
-    opinion = value
-  }
   const handleOk = () => {
     let data = {
-      type: opinion
+      type: opinion,
+      messageType: messageType,
+      messageTypeName: messageTypeName
     }
+
     service.healthyApiService.preservationHealthy(data).then((res) => {
       if (res){
         props.setNoShow()
         getMealList()
+        setOpinion('')
         message.success('添加成功')
       }
     })
   }
+  const setSelect = (value: any) => {
+    selectData.map((item:any) => {
+      if (item.messageCode === value) {
+        setmessageTypeName(item.messageName)
+      }
+    })
+    setmessageType(value)
+  }
+
   const getMealList = () => {
     service.healthyApiService.getHealthyList().then((res) => {
       setTableData(res.data)
+    })
+  }
+  const getData = () => {
+    getMealList()
+    getSelectData()
+  }
+  
+  const getSelectData = () => {
+    service.healthyApiService.getPushType().then((res) => {
+      if (res && res.data) {
+        setSelectData(res.data)
+      }
     })
   }
 
@@ -48,6 +73,14 @@ export default function AuditsTableDHSZ (props: Props) {
       title: '类型名称',
       dataIndex: 'type',
       key: 'type',
+      align: 'center',
+      width: 100
+    }
+    ,
+    {
+      title: '微信推送类型',
+      dataIndex: 'messageTypeName',
+      key: 'messageTypeName',
       align: 'center',
       width: 100
     },
@@ -80,9 +113,8 @@ export default function AuditsTableDHSZ (props: Props) {
       }
     }
   ]
-  
   useEffect(() => {
-    getMealList()
+    getData()
   }, [])
   return (
     <Wrapper>
@@ -108,6 +140,16 @@ export default function AuditsTableDHSZ (props: Props) {
           <Input defaultValue=""
            onChange={(e) => setOpinion(e.target.value)}/>
         </div>
+        <div className="category">
+        <DivMargin>推送类型</DivMargin>
+        <Select onChange={(value: any) => setSelect(value)} showSearch style={{ width: '100%' }} placeholder='选择类型'>
+          {selectData.map((item: any) => (
+            <Select.Option value={item.messageCode} key={item.messageCode}>
+              {item.messageName}
+            </Select.Option>
+          ))}
+        </Select>
+        </div>
       </Modal>
     </Wrapper>
   )
@@ -119,4 +161,7 @@ const Wrapper = styled.div`
   .category {
     display: flex;
   }
+`
+const DivMargin = styled.div`
+margin-top:15px;
 `

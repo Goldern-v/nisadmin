@@ -10,48 +10,53 @@ import AuditsTableDHSZ from 'src/modules/auditsManagement/components/AuditsTable
 import EventTable from './EventTable'
 import AdviseTable from './AdviseTable'
 import OperationTable from './OperationTable'
-
 import BaseTabs from 'src/components/BaseTabs'
-// import EventBar from './EventBar';
-const TABS_LIST_NURSE = [
-  {
-    title: '事件',
-    component: <EventTable/>
-  },
-  {
-    title: '医嘱',
-    component: <AdviseTable/>
-  },
-  {
-    title: '手术',
-    component: <OperationTable/>
-  }
-]
-
-const TABS_LIST_NURSING = [
-  {
-    title: '事件',
-    component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit />
-  },
-  {
-    title: '待护士长审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit={false} />
-  },
-  {
-    title: '审核通过',
-    component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
-  }
-]
-const tabShow = () => {
-  if (authStore.post === '护长') {
-    return TABS_LIST_NURSE
-  } else if (authStore.post === '护理部') {
-    return TABS_LIST_NURSING
-  } else {
-    return []
-  }
+// import { Modal, Input, message, Popconfirm, Select } from 'antd'
+// import service from 'src/services/api'
+export interface Props {
+  isShow: any,
 }
-export default observer(function PushAudit () {
+
+// import EventBar from './EventBar';
+export default observer(function PushAudit (props: Props) {
+  const TABS_LIST_NURSE = [
+    {
+      title: '事件',
+      component: <EventTable isShow={props.isShow}/>
+    },
+    {
+      title: '医嘱',
+      component: <AdviseTable isShow={props.isShow}/>
+    },
+    {
+      title: '手术',
+      component: <OperationTable isShow={props.isShow}/>
+    }
+  ]
+  
+  const TABS_LIST_NURSING = [
+    {
+      title: '事件',
+      component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit />
+    },
+    {
+      title: '待护士长审核',
+      component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit={false} />
+    },
+    {
+      title: '审核通过',
+      component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
+    }
+  ]
+  const tabShow = () => {
+    if (authStore.post === '护长') {
+      return TABS_LIST_NURSE
+    } else if (authStore.post === '护理部') {
+      return TABS_LIST_NURSING
+    } else {
+      return []
+    }
+  }
   return (
     <Wrapper>
       <MainCon>
@@ -62,7 +67,6 @@ export default observer(function PushAudit () {
 })
 
 const Wrapper = styled.div`
-  height: 100%;
   display: flex;
   flex-direction: column;
   width:100%;
@@ -74,4 +78,6 @@ const MainCon = styled.div`
   align-items: stretch;
   display: flex;
   /* margin: 20px; */
+`
+const DivMargin = styled.div`
 `

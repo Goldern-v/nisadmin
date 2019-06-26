@@ -1,4 +1,5 @@
 import BaseApiService from '../BaseApiService'
+import qs from 'qs'
 
 export default class HomeApiServices extends BaseApiService {
   // 0.删除健康宣教类别字典
@@ -18,6 +19,8 @@ export default class HomeApiServices extends BaseApiService {
   public async preservationHealthy (data: any) {
     const postData = {list: [{
       type: data.type, // 健康宣教类别字典
+      messageType: data.messageType,
+      messageTypeName: data.messageTypeName
     }]}
     return this.post(`/briefMissionType/saveOrUpdateBriefMissionType`, postData)
   }
@@ -35,7 +38,7 @@ export default class HomeApiServices extends BaseApiService {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
     }
-    return this.post(`/educationSettingEvent/getEducationSettingEventList`, postData)
+    return this.post(`/educationSettingEvent/getEducationSettingEventList`, qs.stringify(postData))
   }
 
   // 5.保存自动推送事件类型
@@ -92,7 +95,7 @@ export default class HomeApiServices extends BaseApiService {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
     }
-    return this.post(`/educationSettingOperation/getEducationSettingOperationList`, postData)
+    return this.post(`/educationSettingOperation/getEducationSettingOperationList`, qs.stringify(postData))
   }
 
   // 11.删除自动推送医嘱类型
@@ -110,7 +113,7 @@ export default class HomeApiServices extends BaseApiService {
       wardCode: data.wardCode, // string 必须参数
       educationId: data.educationId, // string 必须参数
       educationName: data.educationName, // string 必须参数
-      patientEvent: data.patientEvent, // string 必须参数
+      orderText: data.orderText, // string 必须参数
       createDateTime: data.createDateTime, // string 非必须参数
       operator: data.operator, // string 必须参数
       messageType: data.messageType // string 必须参数
@@ -123,6 +126,16 @@ export default class HomeApiServices extends BaseApiService {
     const postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
     }
-    return this.post(`/educationSettingOperation/getEducationSettingOperationList`, postData)
+    return this.post(`/educationSettingOrder/getEducationSettingOrderList`, qs.stringify(postData))
+  }
+
+  // 14.获取宣教字典列表
+  public async getBriefMission (data: any) {
+    const postData = {
+      deptCode: data.wardCode, // string 非必须参数
+      type: data.messageType, // string 必须参数
+      name: data.educationName, // string 必须参数
+    }
+    return this.post(`/briefMission/getBriefMission`, postData)
   }
 }
