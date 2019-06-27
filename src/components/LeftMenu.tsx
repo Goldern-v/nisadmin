@@ -12,7 +12,7 @@ export interface Props {
   menuTitle: string
 }
 
-export default function LeftMenu (props: Props) {
+export default function LeftMenu(props: Props) {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
@@ -22,7 +22,9 @@ export default function LeftMenu (props: Props) {
     console.log('click ', e)
   }
   const renderMenu = (list: any) => {
-    return list.map((item: any, index: number) => {
+    return list.filter((item: any) => {
+      return !item.hide
+    }).map((item: any, index: number) => {
       if (item.children && item.children.length > 0) {
         return (
           <SubMenu
@@ -54,7 +56,13 @@ export default function LeftMenu (props: Props) {
         if (currentPath) return currentPath
       } else {
         if (item.path === path) {
-          return [parentKeys, [item.path]]
+          if(item.hide){
+            for(let j = i;j<list.length; j++){
+              if(!list[j].hide)return [parentKeys, [list[j].path]]
+            }
+          }else{
+            return [parentKeys, [item.path]]
+          }
         }
       }
     }

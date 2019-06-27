@@ -50,7 +50,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       title: '健康宣教',
       dataIndex: 'name',
       key: 'name',
-      align: 'center',
+      align: 'left',
       className: 'name',
       render: (text: string) => <div title={text}>{text}</div>
     },
@@ -58,30 +58,33 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       title: '类型',
       dataIndex: 'type',
       key: 'type',
-      align: 'center',
+      className: 'type',
+      align: 'left',
       width: 120
     },
     {
       title: '科室',
       dataIndex: 'deptName',
       key: 'deptName',
-      align: 'center',
+      align: 'left',
+      className: 'dept-name',
       width: 150
     },
+    // {
+    //   title: '修改人',
+    //   dataIndex: 'creatorName',
+    //   key: 'creatorName',
+    //   align: 'center',
+    //   width: 100
+    // },
+    // {
+    //   title: '最后修改时间',
+    //   dataIndex: 'creatDate',
+    //   key: 'creatDate',
+    //   align: 'center',
+    //   width: 180
+    // }, 
     {
-      title: '修改人',
-      dataIndex: 'creatorName',
-      key: 'creatorName',
-      align: 'center',
-      width: 100
-    },
-    {
-      title: '最后修改时间',
-      dataIndex: 'creatDate',
-      key: 'creatDate',
-      align: 'center',
-      width: 180
-    }, {
       title: '操作',
       dataIndex: '',
       key: 'operation',
@@ -112,7 +115,24 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
     if (cacheQuery.deptCode !== query.deptCode && cacheQuery.deptCode !== '') getTableData();
 
     setCacheQuery(query);
+
+
   }, [query])
+
+  useEffect(() => {
+    setTimeout(() => {
+      let contentEl = document.querySelector('.left .content') as HTMLElement;
+      let targetEl = document.getElementById(`dept${query.deptCode}`);
+      if (targetEl && contentEl) {
+        let contentHeight = contentEl.offsetHeight;
+        let contentTop = contentEl.offsetTop;
+        let itemTop = targetEl.offsetTop;
+        let scrollTop = ( itemTop-contentTop) - contentHeight / 2
+        // console.log('010', itemTop, contentHeight / 2)
+        contentEl.scrollTo({ left: 0, top: scrollTop })
+      }
+    }, 100)
+  }, [authStore.deptList])
 
   const getTableData = (newQuery?: any) => {
     let reqQuery = newQuery || query;
@@ -120,7 +140,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
     api.getTableList(reqQuery).then(res => {
       setDataLoading(false);
       let data = res.data;
-      if (data) setTableData(data.map((item: any, key: number) => {
+      if (data instanceof Array) setTableData(data.map((item: any, key: number) => {
         return { key, ...item }
       }))
     })
@@ -129,7 +149,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   const getTypeList = () => {
     api.getTypeList().then(res => {
       let data = res.data;
-      if (data) setTypeList(data);
+      if (data instanceof Array) setTypeList(data);
     })
   }
 
@@ -209,7 +229,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }
 
   const viewContent = (record: any) => {
-    props.history.push(`/healthPropagandaView/${record.missionId}`);
+    props.history.push(`/setting/健康宣教字典详情?id=${record.missionId}`);
   }
 
   const handleDeptSelect = (item: any) => {
@@ -247,6 +267,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
             return <div
               key={item.code}
               className={classes.join(' ')}
+              id={`dept${item.code}`}
               onClick={() => handleDeptSelect(item)}>
               <span className="before" />{item.name}<span className="after" />
             </div>
@@ -342,15 +363,17 @@ position: relative;
     width: 250px;
     overflow: hidden;
     border: 1px solid #ddd;
-    margin-right: 15px;
-    padding-top: 32px;
+    margin-right: 8px;
+    padding-top: 40px;
     .title{
-      text-indent: 30px;
-      margin-top: -32px;
+      text-indent: 16px;
+      margin-top: -40px;
       border-bottom: 1px solid #ddd;
-      height: 32px;
-      line-height: 32px;
-
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #ECEFF1;
     }
     .content{
       height: 100%;
@@ -369,7 +392,8 @@ position: relative;
           }
         }
         &.selected{
-          color:#00A680;
+          background: #00A680;
+          color: #fff;
           font-weight: bold;
         }
         .before{
@@ -411,6 +435,11 @@ position: relative;
     border: 1px solid #ddd;
     height: 100%;
     overflow: hidden;
+    tr{
+      :hover td{
+        background-color: #f5f5f5;
+      }
+    }
     td{
       font-weight: normal!important;
       &.name{
@@ -428,7 +457,11 @@ position: relative;
           padding: 0 10px;
         }
       }
+      &.type,&.dept-name{
+        padding-left: 8px!important;
+      }
     }
+
     .operation-span{
       color: rgb(0, 166, 128);
       cursor: pointer;
