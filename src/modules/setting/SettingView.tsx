@@ -16,9 +16,9 @@ import CategoryDictionary from './view/CategoryDictionary'
 // 引入自动推送设置页面
 import AutomaticPush from './view/ AutomaticPush'
 
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
   {
@@ -49,7 +49,7 @@ const LEFT_MENU_CONFIG = [
       },
       {
         title: '自动推送设置',
-        path: '/setting/自动推送设置',
+        path: '/setting/pushSetting',
         component: AutomaticPush
       }
     ]
@@ -107,8 +107,8 @@ export default function SettingView(props: Props) {
     console.log(props)
     console.log(currentRoute)
   }, [props.match.params.name])
-  let currentRouteName = props.match.params.name || ''
-  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'title', currentRouteName)
+  let currentRoutePath = props.match.url || ''
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -119,7 +119,7 @@ export default function SettingView(props: Props) {
       }
     })
     if (chooseRoute && chooseRoute.children) {
-      chooseRoute = chooseRoute.children.find((item1: any) => item1.title === targetName)
+      chooseRoute = chooseRoute.children.find((item1: any) => item1[targetKey] === targetName)
     }
     return chooseRoute
   }
