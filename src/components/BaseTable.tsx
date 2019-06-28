@@ -92,8 +92,10 @@ export default function BaseTable(props: Props) {
             tip = document.createElement('div')
             tip.id = 'tip'
             tip.innerHTML = option.tip
-
+            try {
             tableRef!.current!.querySelector('.ant-table-body').append(tip)
+            }
+            catch (error) {}
           }
         }
       }, 100)

@@ -179,7 +179,7 @@ export default function MainBox() {
       setLoading(false)
 
       let tableData = res.data
-        .sort((a: any, b: any) => a.sortValie - b.sortValie)
+        .sort((a: any, b: any) => a.sortValue - b.sortValue)
         .map((item: any, key: number) => ({ ...item, key, sortValue: key }))
       setUserList(tableData)
     })
