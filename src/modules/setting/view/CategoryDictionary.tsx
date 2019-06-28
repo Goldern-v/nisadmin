@@ -23,10 +23,21 @@ export default class CategoryDictionary extends Component {
     return (
       <Wrapper>
         <CategoryHeader setIsShow={this.setIsShow}/>
-        <CategoryTable isShow={this.state.isShow} setNoShow={this.setNoShow}/>
+       
+          <CategoryTable isShow={this.state.isShow} setNoShow={this.setNoShow}/>
       </Wrapper>
     )
   }
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+width:100%;
+height:100%;
+background:#fff;
+`
+
+const WhirBack = styled.div`
+/* width:100%;
+height:100%;
+background:#fff; */
+`

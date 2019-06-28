@@ -3,14 +3,17 @@ import React, { useState, useEffect } from 'react'
 import { Table, Input, InputNumber, Popconfirm, Form, Modal, Select, Radio, message } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
-import { authStore } from 'src/stores/index'
+import { authStore } from 'src/stores'
+
+const { Option } = Select
 // import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
 const FormItem = Form.Item
 const EditableContext = React.createContext<any>({})
+const deptCode = authStore.selectedDeptCode
 
 class EditableCell extends React.Component<any> {
   public getInput = () => {
-    if (this.props.inputType === 'number') {
+    if (this.props.inputType === 'number') {  
       return <InputNumber />
     }
     return <Input />
@@ -50,7 +53,7 @@ class EditableCell extends React.Component<any> {
 class EditableTable extends React.Component<any, any> {
   public constructor (props: any) {
     super(props)
-    this.state = { data: [], editingKey: false, selectData: [], showType: '', educationName: '', messageType: '', operation: ''}
+    this.state = { data: [], rowData: {}, editingKey: false, selectData: [], operationTiming: '', educationName: '', messageType: '', operation: ''}
     this.columns = [
       {
         title: '序号',
@@ -69,7 +72,7 @@ class EditableTable extends React.Component<any, any> {
       },
       {
         title: '时机',
-        dataIndex: '时机',
+        dataIndex: 'operationTiming',
         width: '8%',
         align: 'center',
         editable: true
@@ -117,22 +120,34 @@ class EditableTable extends React.Component<any, any> {
         render: (text: any, record: any) => {
           return (
             <div>
-                <a onClick={() => {this.getSelectData()}}>
+                <a onClick={() => {this.getSelectData(record)}}>
                   修改
                 </a>
+                <Popconfirm
+                  title='确认要删除?'
+                  onConfirm={e => {
+                    service.healthyApiService.detelePushType1(record).then((res) => {
+                      this.getMealList()
+                      message.success('删除成功')
+                    })
+                  }}
+                >
+                  <a href='javascript:;'>删除</a>
+                </Popconfirm>
             </div>
           )
         }
       }
     ]
   }
-  public getSelectData = () => {
+  public getSelectData = (record: any) => {
+    this.setState({rowData: record})
     service.healthyApiService.getPushType().then((res) => {
       if (res && res.data) {
-        this.setState({selectData: res.data})
+        this.setState({ selectData: res.data })
       }
     })
-    this.setState({editingKey: true})
+    this.setState({ editingKey: true })
   }
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
@@ -179,16 +194,33 @@ class EditableTable extends React.Component<any, any> {
   public edit (key: any) {
     this.setState({ editingKey: key })
   }
+  public toSearch() {
+    let postData = {
+      educationName: this.state.educationName[0],
+      wardCode: deptCode,
+      // messageType: this.state.messageType
+    }
+    // console.log(postData.messageType,"0000000000000000000")
 
+    service.healthyApiService.getBriefMission(postData).then((res) => {
+      if (res && res.data && res.data.length > 0) {
+        let array: any = []
+        res.data.map((item: any, i: any) => {
+          array.push(<Option key={i + 'key'}>{item.name}</Option>)
+        })
+        this.setState({ children: array })
+      }
+    })
+  }
   public handleOk () {
     const postData = {
-      serialNo: this.state.data.serialNo, // string 非必须参数
-      wardCode: this.state.data.wardCode, // string 非必须参数
-      educationId: this.state.data.educationId, // string 非必须参数
-      educationName: this.state.educationName, // string 非必须参数
+      serialNo: this.state.rowData.serialNo, // string 非必须参数
+      wardCode: this.state.rowData.wardCode, // string 非必须参数
+      educationId: this.state.rowData.educationId, // string 非必须参数
+      educationName: this.state.educationName[0], // string 非必须参数
       operationTiming: this.state.operationTiming,// string 非必须参数(手术时机)
-      createDateTime: this.state.data.createDateTime, // string 非必须参数
-      operator: this.state.data.operator, // string 非必须参数
+      createDateTime: this.state.rowData.createDateTime, // string 非必须参数
+      operator: this.state.rowData.operator, // string 非必须参数
       messageType: this.state.messageType, // string 非必须参数
       operation: this.state.operation // string 非必须参数
     }
@@ -223,7 +255,6 @@ class EditableTable extends React.Component<any, any> {
         })
       }
     })
-
     return (
       <EditableContext.Provider value={this.props.form}>
         <BaseTable
@@ -233,7 +264,11 @@ class EditableTable extends React.Component<any, any> {
           dataSource={this.state.data}
           columns={columns}
           rowClassName={() => 'editable-row'}
-          pagination={false}
+          // pagination={false}
+          pagination={{
+          total: this.state.data.length,
+          current: 1
+        }}
         />
           <Modal
             title="推送设置"
@@ -242,30 +277,39 @@ class EditableTable extends React.Component<any, any> {
             okText="保存"
             cancelText="返回"
             onCancel={() => {this.setState({ editingKey: false })}}
+            // style={{padding:'20'}}
           >
           <div className="category">
-            <div>宣教:</div>
-            <Input placeholder="输入名称进行检索"
-              onChange={value => { this.setState({ educationName: value }) }}/>
-            <a>查询</a>
+            <SpanOne>宣教:<span></span></SpanOne>
+            <Select
+              // maxTagTextLength= '3'
+              mode='multiple'
+              style={{ width: '70%'}}
+              placeholder='输入名称进行检索'
+              onChange={(value) => {
+                this.setState({ educationName: value })
+              }}
+            >
+              {this.state.children}
+            </Select>
+            <a onClick={this.toSearch.bind(this)} style={{marginLeft:"20px"}}>查询</a>
           </div>
-          <div className="category">
-          <div>手术名称:</div>
-          <Input defaultValue=""
-            onChange={value => { this.setState({ operation: value }) }}/>
-
+          <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>手术名称:</SpanOne>
+          <Input defaultValue="" style={{ width: '70%'}}
+            onChange={e => { this.setState({ operation: e.target.value }) }}/>
           </div>
-          <div className="category">
-          <div>时机:</div>
-          <Radio.Group onChange={ e => { this.setState({showType: e.target.value,}) } } value={this.state.showType}>
+          <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>时机:</SpanOne>
+          <Radio.Group onChange={ e => { this.setState({operationTiming: e.target.value}) } } value={this.state.operationTiming}>
             <Radio value='术前'>术前</Radio>
             <Radio value='术后'>术后</Radio>
           </Radio.Group>
           </div>
 
-          <div className="category">
-          <div>推送类型：</div>
-          <Select onChange={value => this.setState({ messageType: value }) } showSearch style={{ width: '100%' }} placeholder='选择类型'>
+          <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>推送类型：</SpanOne>
+          <Select onChange={value => this.setState({ messageType: value }) } showSearch style={{ width: '70%' }} placeholder='选择类型'>
             {this.state.selectData.map((item: any) => (
               <Select.Option value={item.messageCode} key={item.messageCode}>
                 {item.messageName}
@@ -279,6 +323,10 @@ class EditableTable extends React.Component<any, any> {
   }
 }
 
+const SpanOne = styled.span`
+display:inline-block;
+width:72px;
+text-align:justify;
+`
 const EditableFormTable = Form.create()(EditableTable)
-
 export default EditableFormTable

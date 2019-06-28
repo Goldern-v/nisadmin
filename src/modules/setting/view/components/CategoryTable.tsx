@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { Component, useState, useEffect } from 'react'
 import BaseTable from 'src/components/BaseTable'
-import { Modal, Input, message, Popconfirm } from 'antd'
+import { Modal, Input, message, Popconfirm, Select } from 'antd'
 import service from 'src/services/api'
 export interface Props {
   isShow: any,
@@ -12,26 +12,51 @@ export interface Props {
 
 
 export default function AuditsTableDHSZ (props: Props) {
-  let [opinion] = useState('')
+  let [opinion, setOpinion] = useState('')
+  let [messageType, setmessageType] = useState('')
+  let [messageTypeName, setmessageTypeName] = useState('')
+  let [selectData, setSelectData] = useState([])
   const [tableData, setTableData] = useState([])
-  const setOpinion = (value: any) => {
-    opinion = value
-  }
   const handleOk = () => {
     let data = {
-      type: opinion
+      type: opinion,
+      messageType: messageType,
+      messageTypeName: messageTypeName
     }
+
     service.healthyApiService.preservationHealthy(data).then((res) => {
       if (res){
         props.setNoShow()
         getMealList()
+        setOpinion('')
         message.success('添加成功')
       }
     })
   }
+  const setSelect = (value: any) => {
+    selectData.map((item:any) => {
+      if (item.messageCode === value) {
+        setmessageTypeName(item.messageName)
+      }
+    })
+    setmessageType(value)
+  }
+
   const getMealList = () => {
     service.healthyApiService.getHealthyList().then((res) => {
       setTableData(res.data)
+    })
+  }
+  const getData = () => {
+    getMealList()
+    getSelectData()
+  }
+  
+  const getSelectData = () => {
+    service.healthyApiService.getPushType().then((res) => {
+      if (res && res.data) {
+        setSelectData(res.data)
+      }
     })
   }
 
@@ -42,12 +67,20 @@ export default function AuditsTableDHSZ (props: Props) {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 30
     },
     {
       title: '类型名称',
       dataIndex: 'type',
       key: 'type',
+      align: 'left',
+      width: 100,
+    }
+    ,
+    {
+      title: '微信推送类型',
+      dataIndex: 'messageTypeName',
+      key: 'messageTypeName',
       align: 'center',
       width: 100
     },
@@ -63,6 +96,7 @@ export default function AuditsTableDHSZ (props: Props) {
           justify-content: space-around;
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
+          /* margin-left:10px */
         `
         return (
           <Popconfirm
@@ -80,16 +114,15 @@ export default function AuditsTableDHSZ (props: Props) {
       }
     }
   ]
-  
   useEffect(() => {
-    getMealList()
+    getData()
   }, [])
   return (
     <Wrapper>
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={305}
+        surplusHeight={265}
         // pagination={{
         //   total: 100,
         //   current: 1
@@ -103,10 +136,20 @@ export default function AuditsTableDHSZ (props: Props) {
         cancelText="返回"
         onCancel={props.setNoShow}
       >
-        <div className="category">
-          <div>类别名称</div>
-          <Input defaultValue=""
+        <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>类别名称:</SpanOne>
+          <Input defaultValue="" style={{ width: '70%'}}
            onChange={(e) => setOpinion(e.target.value)}/>
+        </div>
+        <div className="category" style={{marginTop: '20px',marginBottom: '20px'}}>  
+        <DivMargin>推送类型:</DivMargin>
+        <Select onChange={(value: any) => setSelect(value)} showSearch style={{ width: '70%' }} placeholder='选择类型'>
+          {selectData.map((item: any) => (
+            <Select.Option value={item.messageCode} key={item.messageCode}>
+              {item.messageName}
+            </Select.Option>
+          ))}
+        </Select>
         </div>
       </Modal>
     </Wrapper>
@@ -116,7 +159,26 @@ const Wrapper = styled.div`
   .ant-table-wrapper {
     width: 60%;
   }
+  .ant-modal-content{
+    width:450px!important
+  }
+  .ant-table-body {
+    .ant-table-row td:nth-child(2){
+      padding-left:20px!important; 
+      /* box-sizing:border-box!important; */
+    }
+  }
   .category {
     display: flex;
   }
 `
+const DivMargin = styled.span`
+margin-top:15px;
+display:inline-block;
+width:72px;
+`
+const SpanOne = styled.span`
+display:inline-block;
+width:72px;
+`
+

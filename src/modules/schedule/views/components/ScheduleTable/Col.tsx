@@ -15,4 +15,4 @@ export default function Col (props: Props) {
     </Wrapper>
   )
 }
-const Wrapper = styled.colgroup``
+const Wrapper = styled.div``

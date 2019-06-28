@@ -18,13 +18,13 @@ const { Step } = Steps;
 export default withRouter(function BadEventsNewDetail(props: any) {
   const [auditModalvisible, setAuditModalvisible] = useState(false);
   // const [status, setStatus] = useState(3);
-  let paramMap: any = {};
   const [detailData, setDetailData] = useState({
     status: '',
     badEventCode: '',
     badEventName: '',
     eventType: '',
-    paramMap: paramMap
+    departmentCode: '',
+    paramMap: {} as any
   });
 
   const [reportDept, setReportDept] = useState({
@@ -33,10 +33,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   })
 
   const [iframeLoading, setIframeLoading] = useState(true);
-
+  //初始化时间戳
   const initTimeLine = [
     {
-      title: '保存：XXX事件',
+      title: '保存',
       statuses: ['0'],
       description: <span>未完成</span>
     },
@@ -51,7 +51,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       description: <span>未完成</span>
     },
     {
-      title: 'XXXX科处理',
+      title: '主管科室处理',
       statuses: ['3'],
       description: <span>未完成</span>
     },
@@ -66,8 +66,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       description: <span>未完成</span>
     },
   ];
-
+  //右侧时间轴
   const [timeLine, setTimeLine] = useState(initTimeLine.concat())
+  //用于刷新iframe的时间戳
+  const [timeSet, setTimeset] = useState(new Date().getTime());
 
   interface stringObj {
     [key: string]: string
@@ -95,7 +97,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
       badEventName,
       badEventType: eventType,
       badEventCode,
-      operation: 'view'
+      operation: 'view',
+      timeset: timeSet
     }
     for (let x in query) {
       if (!query[x]) return ''
@@ -119,13 +122,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           let data = res[0].data.instance;
           let paramMap = res[0].data.paramMap;
           let timeData = res[1].data;
-          let { badEventCode, badEventName, eventType } = data;
+          let { badEventCode, badEventName, eventType, departmentCode } = data;
           setDetailData({
             ...detailData,
             status: data.status || '',
             badEventCode,
             badEventName,
             eventType,
+            departmentCode,
             paramMap
           });
 
@@ -152,6 +156,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                 }
                 let deptName = paramMap[`${badEventCode}_department_name`] || '';
 
+                let thExpain = '' as any;
+
                 switch (timeData[i].operatorStatus) {
                   case '0':
                     operatorName = '***'
@@ -167,7 +173,9 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                     break
                   case '2':
                     if (deptName) title = `质控科审核：转发${deptName}`
+                    break
                   case '-2':
+                    thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
                     break
                   case '3':
                     if (deptName) title = `${deptName}处理`
@@ -180,7 +188,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
                 description = <div>
                   <span>{`${operatorName} ${operatorWardName}`}</span><br />
-                  <span>{dateString}</span>
+                  <span>{dateString}</span><br />
+                  {thExpain}
                 </div>;
 
                 if (title) newItem.title = title;
@@ -195,8 +204,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             return newItem
           })
 
-          setIframeLoading(false);
           setTimeLine(newTimeline);
+          setTimeset(new Date().getTime());
         });
     }
   }
@@ -216,7 +225,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
 
   const handleIframeLoad = () => {
-    // setIframeLoading(false);
+    setIframeLoading(false);
   }
 
   const StepsCurrent = () => {
@@ -228,8 +237,9 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
   const AuditBtn = () => {
     let status = detailData.status;
-    let btnDisable = false;
+    let btnDisable = iframeLoading;
     let btnText = '';
+    if (!authStore.user) return '';
 
     switch (status) {
       case '1':
@@ -237,6 +247,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         break;
       case '2':
         btnText = '科室审核';
+        console.log(authStore.user,detailData.departmentCode)
+        if (authStore.user.deptCode !== detailData.departmentCode) btnDisable = true;
         break;
       case '3':
         btnText = '总结';
@@ -344,6 +356,7 @@ const Wrapper = styled.div`
       border-left: 1px solid #ddd;
       overflow-y: auto;
       overflow-x: hidden;
+      padding-right: 18px;
     }
     .event-detail{
       overflow: hidden;

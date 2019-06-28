@@ -9,13 +9,14 @@ import 绩效参数设置 from './view/绩效参数设置'
 import 节假日设置 from './view/节假日设置'
 import 物流角色设置 from './view/物流角色设置'
 import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
+import HealthPropagandaView from './../healthPropaganda/HealthPropagandaView'
 import settingViewModel from './SettingViewModel'
 // 引入类别字典设置页面
 import CategoryDictionary from './view/CategoryDictionary'
 // 引入自动推送设置页面
-import  AutomaticPush from './view/ AutomaticPush'
+import AutomaticPush from './view/ AutomaticPush'
 
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
@@ -34,6 +35,12 @@ const LEFT_MENU_CONFIG = [
         title: '类别字典设置',
         path: '/setting/类别字典设置',
         component: CategoryDictionary
+      },
+      {
+        title: '健康宣教字典详情',
+        path: '/setting/健康宣教字典详情',
+        component: HealthPropagandaView,
+        hide: true
       },
       {
         title: '健康宣教字典',

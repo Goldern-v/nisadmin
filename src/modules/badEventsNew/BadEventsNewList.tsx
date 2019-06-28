@@ -8,7 +8,7 @@ import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import BaseTable from 'src/components/BaseTable'
 import BadEventsNewService from './api/badEventsNewService'
-// import CustomPagination from 'src/components/CustomPagination'
+import CustomPagination from './components/CustomPagination'
 
 const api = new BadEventsNewService();
 
@@ -35,6 +35,11 @@ export default observer(function BadEventNewList() {
   //不良事件类型下拉选项
   const initEventTypeList: any = [];
   const [eventTypeList, setEventTypeList] = useState(initEventTypeList);
+  //前端分页控制
+  const [page, setPage] = useState({
+    current: 1,
+    size: 20
+  })
   //列表Table组件columns配置
   const columns: ColumnProps<any>[] = [
     {
@@ -43,9 +48,7 @@ export default observer(function BadEventNewList() {
       key: 'key',
       width: 50,
       align: 'center',
-      render: (text: string, record: any, index: number) => {
-        return index + 1;
-      }
+      render: (text: string) => Number(text) + 1
     }, {
       title: '事件单号',
       dataIndex: 'badEventOrderNo',
@@ -63,18 +66,24 @@ export default observer(function BadEventNewList() {
       dataIndex: 'eventType',
       key: 'eventType',
       align: 'center',
-      width: 90
+      width: 160
     }, {
       title: '发生时间',
       dataIndex: 'happenDate',
       key: 'happenDate',
       align: 'center',
-      width: 120
+      width: 120,
+      render: (text: string) => {
+        let dateStr = text == 'Invalid Date' ? '' : text;
+        return <span>{dateStr}</span>
+      }
     }, {
       title: '事件发生地点',
       dataIndex: 'happenPlace',
       key: 'happenPlace',
-      align: 'center'
+      className: 'happen-place',
+      align: 'center',
+      render: (text: string) => <div title={text}>{text}</div>
     }, {
       title: '严重程度',
       dataIndex: 'deverityLevel',
@@ -89,8 +98,8 @@ export default observer(function BadEventNewList() {
       width: 100
     }, {
       title: '提交医院质量安全管理委员会',
-      dataIndex: 'isCommit',
-      key: 'isCommit',
+      dataIndex: 'commitToQC',
+      key: 'commitToQC',
       align: 'center',
       width: 150
     }, {
@@ -111,7 +120,11 @@ export default observer(function BadEventNewList() {
       align: 'center',
       width: 100,
       render: (text: string, item: any) => {
-        return <Link className="view-detail" to={`/badEventsNewDetail/${item.id}/${item.badEventOrderNo}`}>查看</Link>
+        return <Link 
+          className="view-detail" 
+          to={`/badEventsNewDetail/${item.id}/${item.badEventOrderNo}`}>
+          查看
+        </Link>
       }
     }
   ];
@@ -150,6 +163,7 @@ export default observer(function BadEventNewList() {
 
   useEffect(() => {
     setDataLoading(true);
+    setPage({ ...page, current: 1 });
 
     api
       .getList(query)
@@ -257,10 +271,20 @@ export default observer(function BadEventNewList() {
         <BaseTable
           loading={dataLoading}
           columns={columns}
-          dataSource={data}
+          dataSource={data.filter((item: any, idx: number) => {
+            let { current, size } = page
+            let starIndex = (current - 1) * size
+            return idx + 1 > starIndex && idx + 1 <= starIndex + size
+          })}
           pagination={false}
-          surplusHeight={325} />
+          surplusHeight={330} />
       </div>
+      <CustomPagination
+        page={page.current}
+        size={page.size}
+        total={data.length - 1}
+        hideSizeInput={true}
+        onChange={(current: number) => setPage({ ...page, current })} />
     </div>
   </Wrapper>
 })
@@ -321,7 +345,28 @@ const Wrapper = styled.div`
       left 0;
       top: 0;
       right: 0;
+      bottom: 45px;
+      .happen-place{
+        position: relative;
+        &>div{
+          position: absolute;
+          left:0;
+          top: 0;
+          right: 0;
+          height: 30px;
+          line-height: 30px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+          padding: 0 10px;
+        }
+      }
+    }
+    .custom-pagination{
+      position: absolute;
+      left:0;
       bottom: 0;
+      right: 0;
     }
     .view-detail{
       &:hover{

@@ -4,12 +4,13 @@ import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 export interface Props {
   config: any[]
+  onChange?: (activeKey: string) => void
 }
 
-export default function BaseTabs (props: Props) {
+export default function BaseTabs(props: Props) {
   return (
     <TabsCon>
-      <Tabs type='card'>
+      <Tabs type='card' onChange={props.onChange}>
         {props.config.map((item: any, index: number) => {
           return (
             <TabPane tab={item.title} key={index.toString()}>

@@ -81,7 +81,7 @@ export default function ModalBox (props: Props) {
     </Wrapper>
   )
 }
-const Wrapper = styled.colgroup`
+const Wrapper = styled.div`
   .ant-modal-body > .ant-form-item {
     margin-bottom: 0px !important;
   }
