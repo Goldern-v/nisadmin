@@ -14,53 +14,48 @@ import BaseTabs from 'src/components/BaseTabs'
 // import { Modal, Input, message, Popconfirm, Select } from 'antd'
 // import service from 'src/services/api'
 export interface Props {
-  isShow: any,
+  isShow: any
 }
 
 // import EventBar from './EventBar';
-export default observer(function PushAudit (props: Props) {
+import emitter from '../../../../libs/ev'
+export default observer(function PushAudit(props: Props) {
+  const [activeKey, setActiveKey] = useState('0')
   const TABS_LIST_NURSE = [
     {
       title: '事件',
-      component: <EventTable isShow={props.isShow}/>
+      component: <EventTable isShow={props.isShow} />
     },
     {
       title: '医嘱',
-      component: <AdviseTable isShow={props.isShow}/>
+      component: <AdviseTable isShow={props.isShow} />
     },
     {
       title: '手术',
-      component: <OperationTable isShow={props.isShow}/>
+      component: <OperationTable isShow={props.isShow} />
     }
   ]
-  
-  const TABS_LIST_NURSING = [
-    {
-      title: '事件',
-      component: <AuditsTableDHSZ type='waitAuditedDepartment' needAudit />
-    },
-    {
-      title: '待护士长审核',
-      component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit={false} />
-    },
-    {
-      title: '审核通过',
-      component: <AuditsTableDHSZ type='auditedSuccessDepartment' needAudit={false} />
+
+  emitter.removeAllListeners('自动推送设置-添加')
+
+  emitter.addListener('自动推送设置-添加', () => {
+    if (activeKey === '0') {
+      emitter.emit('自动推送设置-添加-事件')
+    } else if (activeKey === '1') {
+      emitter.emit('自动推送设置-添加-医嘱')
+    } else if (activeKey === '2') {
+      emitter.emit('自动推送设置-添加-手术')
     }
-  ]
-  const tabShow = () => {
-    if (authStore.post === '护长') {
-      return TABS_LIST_NURSE
-    } else if (authStore.post === '护理部') {
-      return TABS_LIST_NURSING
-    } else {
-      return []
-    }
-  }
+  })
   return (
     <Wrapper>
       <MainCon>
-        <BaseTabs config={tabShow()} />
+        <BaseTabs
+          config={TABS_LIST_NURSE}
+          onChange={(activeKey) => {
+            setActiveKey(activeKey)
+          }}
+        />
       </MainCon>
     </Wrapper>
   )
@@ -69,7 +64,7 @@ export default observer(function PushAudit (props: Props) {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width:100%;
+  width: 100%;
 `
 
 const MainCon = styled.div`
@@ -79,5 +74,4 @@ const MainCon = styled.div`
   display: flex;
   /* margin: 20px; */
 `
-const DivMargin = styled.div`
-`
+const DivMargin = styled.div``

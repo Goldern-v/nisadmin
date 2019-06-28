@@ -5,6 +5,7 @@ import BaseTable from 'src/components/BaseTable'
 import { authStore } from 'src/stores/index'
 import service from 'src/services/api'
 import props from 'src/modules/healthPropaganda/editor/configs/props'
+import emitter from 'src/libs/ev'
 const { Option } = Select
 export interface Props {
   isShow: any
@@ -148,6 +149,13 @@ class EditableTable extends React.Component<any, any> {
         }
       }
     ]
+    /** 监听事件 */
+    emitter.removeAllListeners('自动推送设置-添加-事件')
+    emitter.addListener('自动推送设置-添加-事件', () => {
+      this.setState({
+        editingKey: true
+      })
+    })
   }
   public getSelectData = (record: any) => {
     this.setState({ rowData: record })
