@@ -236,8 +236,8 @@ export default function MainBox() {
       if (
         record.hasOwnProperty(key) &&
         key.toLowerCase().indexOf('dayname') > -1 &&
-        key.toLowerCase().indexOf('daynamecolor') === -1 &&
-        key.toLowerCase().indexOf('daynamecode') === -1
+        key.toLowerCase().indexOf('color') === -1 &&
+        key.toLowerCase().indexOf('code') === -1
       ) {
         const element = record[key]
         shift = list.find((s: any) => element === s.name)
