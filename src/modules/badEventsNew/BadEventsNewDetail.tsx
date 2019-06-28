@@ -23,6 +23,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     badEventCode: '',
     badEventName: '',
     eventType: '',
+    departmentCode: '',
     paramMap: {} as any
   });
 
@@ -121,13 +122,14 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           let data = res[0].data.instance;
           let paramMap = res[0].data.paramMap;
           let timeData = res[1].data;
-          let { badEventCode, badEventName, eventType } = data;
+          let { badEventCode, badEventName, eventType, departmentCode } = data;
           setDetailData({
             ...detailData,
             status: data.status || '',
             badEventCode,
             badEventName,
             eventType,
+            departmentCode,
             paramMap
           });
 
@@ -237,6 +239,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     let status = detailData.status;
     let btnDisable = iframeLoading;
     let btnText = '';
+    if (!authStore.user) return '';
 
     switch (status) {
       case '1':
@@ -244,6 +247,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         break;
       case '2':
         btnText = '科室审核';
+        console.log(authStore.user,detailData.departmentCode)
+        if (authStore.user.deptCode !== detailData.departmentCode) btnDisable = true;
         break;
       case '3':
         btnText = '总结';
