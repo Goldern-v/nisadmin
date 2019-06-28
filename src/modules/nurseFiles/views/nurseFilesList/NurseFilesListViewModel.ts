@@ -41,7 +41,7 @@ class NurseFilesListViewModel {
     nurseFilesService.getByFormCodePC(obj).then((res) => {
       this.pageIndex = res.data.pageIndex
       this.totalCount = res.data.totalCount
-      this.nurseList = res.data.genericTypeList
+      this.nurseList = res.data.list
       this.listSpinning = false
     })
   }
