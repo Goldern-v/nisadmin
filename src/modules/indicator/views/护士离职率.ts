@@ -3,7 +3,72 @@ const columns: any = [
     title: '统计项目',
     dataIndex: 'statItem',
     key: '统计项目',
-    align: 'center'
+    align: 'center',
+    width: 80,
+    colSpan: 2,
+    render: (value: any, row: any, index: number) => {
+      const obj: any = {
+        children: value,
+        props: {}
+      }
+
+      if (index === 0) {
+        obj.props.rowSpan = 3
+      }
+      if (index === 1) {
+        obj.props.rowSpan = 0
+      }
+      if (index === 2) {
+        obj.props.rowSpan = 0
+      }
+      if (index === 3) {
+        obj.props.rowSpan = 2
+      }
+      if (index === 4) {
+        obj.props.rowSpan = 0
+      }
+      if (index === 5) {
+        obj.props.rowSpan = 3
+      }
+      if (index === 6) {
+        obj.props.rowSpan = 0
+      }
+      if (index === 7) {
+        obj.props.rowSpan = 0
+      }
+      if (index === 8) {
+        obj.props.rowSpan = 2
+      }
+      if (index === 9) {
+        obj.props.rowSpan = 0
+      }
+      if (index === 10) {
+        obj.props.rowSpan = 2
+      }
+      if (index === 11) {
+        obj.props.rowSpan = 0
+      }
+      if (index === 12) {
+        obj.props.colSpan = 2
+      }
+      return obj
+    }
+  },
+  {
+    title: 'item',
+    colSpan: 0,
+    width: 100,
+    dataIndex: 'category',
+    render: (value: any, row: any, index: number) => {
+      const obj: any = {
+        children: value,
+        props: {}
+      }
+      if (index === 12) {
+        obj.props.colSpan = 0
+      }
+      return obj
+    }
   },
   {
     title: '统计周期内离职人数',
