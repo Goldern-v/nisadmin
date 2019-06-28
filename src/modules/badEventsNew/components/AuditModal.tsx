@@ -38,18 +38,7 @@ export default observer(function AduitModal(props: Props) {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   //转发科室列表
-  const dealerDepts = [
-    { name: '医务科', value: '医务科', include: ['badevent_operation', 'badevent_blood_transfusion'] },
-    { name: '护理部', value: '护理部' },
-    { name: '院感科', value: '院感科' },
-    { name: '临床药学部或药剂科', value: '临床药学部或药剂科', include: ['badevent_drug_error'] },
-    { name: '设备科', value: '设备科' },
-    { name: '总务科', value: '总务科' },
-    { name: '服务促进办及党办', value: '服务促进办及党办' },
-    { name: '保卫办', value: '保卫办', include: ['badevent_public_security', 'badevent_hurt'] },
-    { name: '信息科', value: '信息科' },
-    { name: '相关部门', value: '相关部门', include: ['badevent_public_accident'] },
-  ];
+  const [dealerDepts, setDealerDepts] = useState([] as any);
 
   useEffect(() => {
     if (visible) {
@@ -73,10 +62,11 @@ export default observer(function AduitModal(props: Props) {
       let newMap: any = {};
       switch (status) {
         case '1':
-          newMap[`${eventCode}_department_code`] = ''
-          newMap[`${eventCode}_department_name`] = ''
+          newMap[`${eventCode}_department_code`] = reportDept.code
+          newMap[`${eventCode}_department_name`] = reportDept.name
           newMap[`${eventCode}_shjg_option`] = '转发'
           newMap[`${eventCode}_th_explain`] = ''
+          if (dealerDepts.length <= 0) getDealerDepts();
           break
         case '2':
           newMap[`${eventCode}_shcdpd_option`] = '轻度'
@@ -94,8 +84,21 @@ export default observer(function AduitModal(props: Props) {
       }
 
       setFormMap({ ...paramMap, ...newMap });
+
     }
-  }, [visible])
+  }, [visible]);
+
+  const getDealerDepts = () => {
+    api.getDeptList().then(res => {
+      let deptList = res.data.deptList;
+      if (deptList instanceof Array) setDealerDepts(deptList.map((item: any) => {
+        return {
+          name: item.name,
+          value: item.code
+        }
+      }))
+    })
+  }
 
   const handleDeptChange = (code: any) => {
     let department_code = code;
@@ -149,37 +152,28 @@ export default observer(function AduitModal(props: Props) {
           params.isAllowNext = "0";
           params.paramMap[`${eventCode}_department_code`] = '';
           params.paramMap[`${eventCode}_department_name`] = '';
+          params.departmentCode = '';
+          params.departmentName = '';
 
         } else {
           params.paramMap[`${eventCode}_th_explain`] = '';
-          // -------------- // 先默认转发科室为上报人科室
-          params.departmentCode = reportDept.code
-          params.departmentName = reportDept.name
-          params.paramMap[`${eventCode}_department_code`] = reportDept.code;
-          params.paramMap[`${eventCode}_department_name`] = reportDept.name;
-          // -------------- //
         }
         break
     }
 
-    // -------------- // 先默认转发科室为上报人科室
-    // params.departmentCode = reportDept.code
-    // params.departmentName = reportDept.name
-    // params.paramMap[`${eventCode}_department_code`] = reportDept.code;
-    // params.paramMap[`${eventCode}_department_name`] = reportDept.name;
-    // -------------- //
+    // console.log(params)
 
-    // console.log(params, formMap[`${eventCode}_tjzlanwyh_option`]);
-
-    api.aduit(params).then(res => {
-      setConfirmLoading(false);
-      if (res.code == 200) {
-        onOk();
-        Message.success('操作成功');
-      } else {
-        if (res.desc) Message.error(res.desc);
-      }
-    })
+    api
+      .aduit(params)
+      .then(res => {
+        setConfirmLoading(false);
+        if (res.code == 200) {
+          onOk();
+          Message.success('操作成功');
+        } else {
+          if (res.desc) Message.error(res.desc);
+        }
+      })
       .catch(() => {
         setConfirmLoading(false);
         Message.error('审核请求发送失败');
@@ -240,16 +234,15 @@ export default observer(function AduitModal(props: Props) {
                 <span>转发</span>
               </Col>
               <Col span={14}>
-                <span style={{ lineHeight: '32px' }}>{reportDept.name || ''}</span>
-                {/* <Select
-                  className="input-item"
+                <Select
+                  className="input-item dept-select"
                   defaultValue={formMap[`${eventCode}_department_code`]}
                   value={formMap[`${eventCode}_department_code`]}
                   onChange={handleDeptChange}>
                   {dealerDepts.map((item: any, idx: number) => {
                     return <Select.Option value={item.value} key={idx}>{item.name}</Select.Option>
                   })}
-                </Select> */}
+                </Select>
               </Col>
             </Row>
           </Radio.Group>
@@ -382,6 +375,9 @@ const Wrapper = styled.div`
   .radio-group{
     width: 80%;
     margin：0 auto;
+  }
+  .dept-select{
+    width: 190px;
   }
 }
 .form2{
