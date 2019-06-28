@@ -277,13 +277,14 @@ class EditableTable extends React.Component<any, any> {
             okText="保存"
             cancelText="返回"
             onCancel={() => {this.setState({ editingKey: false })}}
+            // style={{padding:'20'}}
           >
           <div className="category">
-            <div>宣教:</div>
+            <SpanOne>宣教:<span></span></SpanOne>
             <Select
               // maxTagTextLength= '3'
               mode='multiple'
-              style={{ width: '100%'}}
+              style={{ width: '70%'}}
               placeholder='输入名称进行检索'
               onChange={(value) => {
                 this.setState({ educationName: value })
@@ -291,25 +292,24 @@ class EditableTable extends React.Component<any, any> {
             >
               {this.state.children}
             </Select>
-            <a onClick={this.toSearch.bind(this)}>查询</a>
+            <a onClick={this.toSearch.bind(this)} style={{marginLeft:"20px"}}>查询</a>
           </div>
-          <div className="category">
-          <div>手术名称:</div>
-          <Input defaultValue=""
+          <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>手术名称:</SpanOne>
+          <Input defaultValue="" style={{ width: '70%'}}
             onChange={e => { this.setState({ operation: e.target.value }) }}/>
-
           </div>
-          <div className="category">
-          <div>时机:</div>
+          <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>时机:</SpanOne>
           <Radio.Group onChange={ e => { this.setState({operationTiming: e.target.value}) } } value={this.state.operationTiming}>
             <Radio value='术前'>术前</Radio>
             <Radio value='术后'>术后</Radio>
           </Radio.Group>
           </div>
 
-          <div className="category">
-          <div>推送类型：</div>
-          <Select onChange={value => this.setState({ messageType: value }) } showSearch style={{ width: '100%' }} placeholder='选择类型'>
+          <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>推送类型：</SpanOne>
+          <Select onChange={value => this.setState({ messageType: value }) } showSearch style={{ width: '70%' }} placeholder='选择类型'>
             {this.state.selectData.map((item: any) => (
               <Select.Option value={item.messageCode} key={item.messageCode}>
                 {item.messageName}
@@ -323,6 +323,10 @@ class EditableTable extends React.Component<any, any> {
   }
 }
 
+const SpanOne = styled.span`
+display:inline-block;
+width:72px;
+text-align:justify;
+`
 const EditableFormTable = Form.create()(EditableTable)
-
 export default EditableFormTable

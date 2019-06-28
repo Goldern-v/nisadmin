@@ -67,14 +67,14 @@ export default function AuditsTableDHSZ (props: Props) {
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 50
+      width: 30
     },
     {
       title: '类型名称',
       dataIndex: 'type',
       key: 'type',
-      align: 'center',
-      width: 100
+      align: 'left',
+      width: 100,
     }
     ,
     {
@@ -96,6 +96,7 @@ export default function AuditsTableDHSZ (props: Props) {
           justify-content: space-around;
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
+          /* margin-left:10px */
         `
         return (
           <Popconfirm
@@ -121,7 +122,7 @@ export default function AuditsTableDHSZ (props: Props) {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={305}
+        surplusHeight={265}
         // pagination={{
         //   total: 100,
         //   current: 1
@@ -135,14 +136,14 @@ export default function AuditsTableDHSZ (props: Props) {
         cancelText="返回"
         onCancel={props.setNoShow}
       >
-        <div className="category">
-          <div>类别名称</div>
-          <Input defaultValue=""
+        <div className="category" style={{marginTop: '20px'}}>
+          <SpanOne>类别名称:</SpanOne>
+          <Input defaultValue="" style={{ width: '70%'}}
            onChange={(e) => setOpinion(e.target.value)}/>
         </div>
-        <div className="category">
-        <DivMargin>推送类型</DivMargin>
-        <Select onChange={(value: any) => setSelect(value)} showSearch style={{ width: '100%' }} placeholder='选择类型'>
+        <div className="category" style={{marginTop: '20px',marginBottom: '20px'}}>  
+        <DivMargin>推送类型:</DivMargin>
+        <Select onChange={(value: any) => setSelect(value)} showSearch style={{ width: '70%' }} placeholder='选择类型'>
           {selectData.map((item: any) => (
             <Select.Option value={item.messageCode} key={item.messageCode}>
               {item.messageName}
@@ -158,10 +159,26 @@ const Wrapper = styled.div`
   .ant-table-wrapper {
     width: 60%;
   }
+  .ant-modal-content{
+    width:450px!important
+  }
+  .ant-table-body {
+    .ant-table-row td:nth-child(2){
+      padding-left:20px!important; 
+      /* box-sizing:border-box!important; */
+    }
+  }
   .category {
     display: flex;
   }
 `
-const DivMargin = styled.div`
+const DivMargin = styled.span`
 margin-top:15px;
+display:inline-block;
+width:72px;
 `
+const SpanOne = styled.span`
+display:inline-block;
+width:72px;
+`
+
