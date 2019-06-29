@@ -378,7 +378,7 @@ class EditableTable extends React.Component<any, any> {
               ))}
             </Select>
           </div>
-          <div>{this.state.visible ? (<SpanTwo className="error">每一项不为空!</SpanTwo>) : ''}</div>
+          <div>{this.state.visible ? message.warning('保存前请将每一项信息填写完整'): ''}</div>
         </Modal>
       </EditableContext.Provider>
     )
