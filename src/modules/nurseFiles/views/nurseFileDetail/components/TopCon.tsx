@@ -50,7 +50,7 @@ export default observer(function TopCon () {
         {post} | {nurseHierarchy} | {deptName}
       </Info>
       <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn>
-      {nurseFileDetailViewModal.badgeTotal || true ? (
+      {nurseFileDetailViewModal.badgeTotal ? (
         <Tip>
           <img src={WARNNING_ICON} alt='' />
 
