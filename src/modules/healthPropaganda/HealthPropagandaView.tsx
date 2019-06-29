@@ -33,6 +33,7 @@ export default withRouter(function HealthPropagandaView(props: any) {
       title: '提示',
       content: '是否删除该健康宣教字典?',
       okText: '确定',
+      centered: true,
       okType: 'danger',
       cancelText: '取消',
       onOk: () => {
