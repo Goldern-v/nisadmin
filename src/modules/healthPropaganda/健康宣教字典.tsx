@@ -24,11 +24,8 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   const initTypeList: any = [];
   const [typeList, setTypeList] = useState(initTypeList);
   //宣教接口请求参数
-  const [cacheQuery, setCacheQuery] = useState({
-    type: '',
-    name: '',
-    deptCode: ''
-  })
+  const [queryInited, setQueryInited] = useState(false);
+  const [cacheDeptCode, setCacheDeptCode] = useState('');
   const [query, setQuery] = useState({
     type: '',
     name: '',
@@ -112,10 +109,15 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }, []);
 
   useEffect(() => {
-    if (cacheQuery.deptCode !== query.deptCode && cacheQuery.deptCode !== '') getTableData();
-
-    setCacheQuery(query);
-
+    // console.log(cacheDeptCode, query.deptCode)
+    if (cacheDeptCode !== query.deptCode) {
+      if (cacheDeptCode == '' && !queryInited) {
+        setQueryInited(true);
+      } else {
+        getTableData();
+      }
+      setCacheDeptCode(query.deptCode);
+    }
 
   }, [query])
 
@@ -127,7 +129,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
         let contentHeight = contentEl.offsetHeight;
         let contentTop = contentEl.offsetTop;
         let itemTop = targetEl.offsetTop;
-        let scrollTop = ( itemTop-contentTop) - contentHeight / 2
+        let scrollTop = (itemTop - contentTop) - contentHeight / 2
         // console.log('010', itemTop, contentHeight / 2)
         contentEl.scrollTo({ left: 0, top: scrollTop })
       }
@@ -135,7 +137,8 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }, [authStore.deptList])
 
   const getTableData = (newQuery?: any) => {
-    let reqQuery = newQuery || query;
+    let reqQuery = newQuery || { ...query };
+    if (!reqQuery.deptCode) reqQuery.publicUse = '1';
     setDataLoading(true);
     api.getTableList(reqQuery).then(res => {
       setDataLoading(false);
@@ -160,6 +163,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       okText: '确定',
       okType: 'danger',
       cancelText: '取消',
+      centered: true,
       onOk: () => {
         api.delete(record.missionId).then(res => {
           if (res.code == 200) {
@@ -261,6 +265,11 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       <div className="left">
         <div className="title">科室</div>
         <div className="content">
+          <div
+            className={query.deptCode == '' ? 'dept-item selected' : 'dept-item'}
+            onClick={() => handleDeptSelect({ code: '' })}>
+            <span className="before" />公共<span className="after" />
+          </div>
           {authStore.deptList.map((item: any) => {
             let classes = ['dept-item'];
             if (query.deptCode == item.code) classes.push('selected')
@@ -285,6 +294,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
     </div>
     <Modal
       title="导入宣教"
+      centered={true}
       confirmLoading={uploadLoading}
       visible={uploadVisible}
       onOk={handleUploadOkBtn}

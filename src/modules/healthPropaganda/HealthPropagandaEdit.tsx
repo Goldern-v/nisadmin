@@ -140,13 +140,21 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
   }, [])
 
   const handleDeptSelect = (code: any) => {
-    authStore.deptList.map((item: any) => {
-      if (item.code == code) setParams({
+    if (code == '') {
+      setParams({
         ...params,
-        deptCode: code,
-        deptName: item.name
+        deptCode: '',
+        deptName: ''
       });
-    })
+    } else {
+      authStore.deptList.map((item: any) => {
+        if (item.code == code) setParams({
+          ...params,
+          deptCode: code,
+          deptName: item.name
+        });
+      })
+    }
   }
 
   const handleTypeChange = (type: any) => {
@@ -163,7 +171,7 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
   const saveEdit = () => {
     let content = editorState.toHTML();
     if (content == '' || content == '<p></p>') return Message.error('请输入宣教内容');
-    if (!params.deptCode) return Message.error('请选择科室');
+    // if (!params.deptCode) return Message.error('请选择科室');
     if (params.name == '') return Message.error('请输入宣教名称');
 
     let creatDate = Moment().format('YYYY-MM-DD HH:mm:ss');
@@ -213,6 +221,7 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
       content: '是否取消编辑',
       okText: '确定',
       okType: 'danger',
+      centered: true,
       cancelText: '取消',
       onOk: () => {
         history.goBack();
@@ -249,9 +258,10 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
       <span>
         <Input value={params.name} onChange={(e: any) => setParams({ ...params, name: e.target.value })} />
       </span>
-      <span className="title">科室:</span>
+      <span className="title">科室权限:</span>
       <span>
         <Select className="dept-select" value={params.deptCode} onChange={handleDeptSelect} defaultValue={params.deptCode}>
+          <Option value="">公共</Option>
           {authStore.deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
       </span>
