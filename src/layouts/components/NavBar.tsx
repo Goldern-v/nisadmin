@@ -15,7 +15,7 @@ import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as WLPT } from '../images/物流平台.svg'
 import { ReactComponent as XTSZ } from '../images/系统设置.svg'
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const navList = [
   {
@@ -72,7 +72,8 @@ const navList = [
     name: '物流平台',
     icon: <WLPT />,
     path: '/Lms'
-  }, {
+  },
+  {
     name: '护理制度',
     icon: <HSDA />,
     path: '/nursingRules'
@@ -91,6 +92,10 @@ export default observer(function NavBar(props: Props) {
   let { location } = props
   return (
     <Wrapper>
+      <LogoCon>
+        <img src={require('../images/logo-white.png')} alt='' className='logo' />
+        <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
+      </LogoCon>
       {navList.map((item) => (
         <NavItem
           onClick={toNavLink(item.path)}
@@ -108,10 +113,8 @@ export default observer(function NavBar(props: Props) {
 const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
-  height: 40px;
-  background: #fff;
-  box-shadow: ${(p) => p.theme.$tabShadow};
-  /* margin-bottom: 10px; */
+  height: 50px;
+  background: ${(p) => p.theme.$mtc};
   position: relative;
   padding-bottom: 2px;
   z-index: 2;
@@ -125,7 +128,23 @@ const Wrapper = styled.div`
     background: #fff;
   }
 `
+const LogoCon = styled.div`
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .logo {
+    height: 26px;
+    margin-right: 10px;
+  }
+  .name {
+    height: 16px;
+  }
+`
+
 const NavItem = styled.div<{ active?: boolean }>`
+  height: 50px;
   min-width: 45px;
   display: flex;
   padding: 0 20px 0 14px;
