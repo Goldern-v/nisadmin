@@ -357,6 +357,9 @@ const Wrapper = styled.div`
       overflow-y: auto;
       overflow-x: hidden;
       padding-right: 18px;
+      .ant-steps-item-title{
+        font-weight: bold;
+      }
     }
     .event-detail{
       overflow: hidden;
