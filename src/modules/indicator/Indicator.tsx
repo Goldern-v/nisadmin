@@ -56,7 +56,7 @@ import { indicatorService } from './services/IndicatorService'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-const ROUTE_LIST = [
+const ROUTE_LIST: any = [
   {
     name: '床护比统计',
     columns: 床护比统计.columns,
@@ -65,12 +65,14 @@ const ROUTE_LIST = [
     keys: ['actualOpenBeds', 'actualNurseCount'],
     gName: 'wardName',
     lineKey: 'actualBedNurseRatio',
+
     dictionary: {
       actualOpenBeds: '实际开放床位数',
       actualNurseCount: '实际配备护士数',
       actualBedNurseRatio: '实际床护比',
       wardName: '护理单元'
     },
+    widthChar: '250%',
     serviceName: 'nationalIndex/getBedNurseRatio'
   },
   {
@@ -442,7 +444,7 @@ const ROUTE_LIST = [
     serviceName: ''
   }
 ]
-
+let widthCharGet: any = ''
 export default function Indicator(props: Props) {
   let [showType, setShowType] = useState('详情')
   let [startDate, setStartDate] = useState('')
@@ -465,15 +467,22 @@ export default function Indicator(props: Props) {
     setStartDate(startDate)
     setEndDate(endDate)
     let currentRouteName = props.match.params.name
-    let currentRoute = ROUTE_LIST.find((item) => item.name === currentRouteName)
+    let currentRoute = ROUTE_LIST.find((item: any) => item.name === currentRouteName)
     if (currentRoute) {
       setLoading(true)
       let { data } = await indicatorService.getIndicatoeData(currentRoute!.serviceName, startDate, endDate)
       setLoading(false)
+      // currentRoute.dataSource = data
+      // setCurrentRoute(currentRoute)
+      //除错
+      // if (currentRoute && data) {
       currentRoute.dataSource = data
+      currentRoute.dataSource = [...data]
       setCurrentRoute(currentRoute)
+      // }
     }
   }
+  // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
   return (
     <Wrapper>
       <LeftMenuCon>
@@ -502,15 +511,18 @@ export default function Indicator(props: Props) {
                 <BaseTable loading={loading} dataSource={currentRoute!.dataSource} columns={currentRoute!.columns} />
               )}
               {showType === '图表' && (
-                <BaseChartCon>
-                  <BaseChart
-                    dataSource={currentRoute!.dataSource}
-                    keys={currentRoute!.keys}
-                    name={currentRoute!.gName}
-                    lineKey={currentRoute!.lineKey}
-                    dictionary={currentRoute.dictionary}
-                  />
-                </BaseChartCon>
+                // <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
+                <BaseChartScrollCon>
+                  <div className='BaseCharCon'>
+                    <BaseChart
+                      dataSource={currentRoute!.dataSource}
+                      keys={currentRoute!.keys}
+                      name={currentRoute!.gName}
+                      lineKey={currentRoute!.lineKey}
+                      dictionary={currentRoute.dictionary}
+                    />
+                  </div>
+                </BaseChartScrollCon>
               )}
             </MainInner>
           )}
@@ -544,7 +556,8 @@ const MainCon = styled.div`
 `
 const MainScroll = styled.div`
   flex: 1;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 
 const MainInner = styled.div`
@@ -553,6 +566,8 @@ const MainInner = styled.div`
   min-height: calc(100vh - 168px);
   /* margin: 15px;
   padding: 10px 0px; */
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
 `
 
@@ -579,7 +594,11 @@ const RadioCon = styled.div`
   top: 20px;
   right: 35px;
 `
-const BaseChartCon = styled.div`
-  width: 100%;
-  overflow: scroll;
+const BaseChartScrollCon = styled.div`
+  width: 250%;
+  overflow: auto;
+  /* width: ${(props: any) => props.widthGet}; */
+  /* height:250%; */
+  .BaseCharCon {
+  }
 `

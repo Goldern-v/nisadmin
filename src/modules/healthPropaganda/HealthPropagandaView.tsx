@@ -51,7 +51,7 @@ export default withRouter(function HealthPropagandaView(props: any) {
     <div className="topbar">
       <div className="position-left">
         <Button className="back" onClick={() => history.goBack()} ><Icon type="double-left" className="icon-back" />返回</Button>
-        <span className="sub">由 {data.creatorName || ' '} 创建，最后修改于 {data.creatDate || ' '}</span>
+        <span className="sub">由 {data.creatorName || ' '} 编辑，最后修改于 {data.creatDate || ' '}</span>
       </div>
       <div className="base-info">
         <span className="title">{data.name}</span>
