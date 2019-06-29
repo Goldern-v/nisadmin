@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import React from 'react'
-import { Input, InputNumber, Popconfirm, Form, Modal, Select, message } from 'antd'
+import { Input, InputNumber, Popconfirm, Button, Form, Modal, Select, message } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
+import emitter from 'src/libs/ev'
 import { authStore } from 'src/stores/index'
 const { Option } = Select
 // import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
@@ -53,13 +54,21 @@ class EditableTable extends React.Component<any, any> {
     super(props)
     this.state = {
       data: [],
+      arrayData: [],
+      searchData: [],
+      searchValue: '',
+      missionId: '',
       children: [],
+      type: 0, // 0-修改 1-新增
+      visible: false,
       rowData: [],
       editingKey: false,
       selectData1: [],
       educationName: '',
       orderText: '',
-      messageType: ''
+      messageType: '',
+      timeout: null,
+      loading: false
     }
     this.columns = [
       {
@@ -120,41 +129,69 @@ class EditableTable extends React.Component<any, any> {
         render: (text: any, record: any) => {
           return (
             <div>
-              <a
+              <a style={{ fontSize:'13px'}}
                 onClick={() => {
-                  this.getSelectData(record)
+                  this.setState({type: 0})
+                  this.getSelectData(record, 0)
                 }}
               >
                 修改
               </a>
-              <Popconfirm
-                title='确认要删除?'
-                onConfirm={(e) => {
-                  service.healthyApiService.detelePushType2(record).then((res) => {
-                    this.getMealList()
-                    message.success('删除成功')
-                  })
-                }}
-              >
-                <a href='javascript:;'>删除</a>
-              </Popconfirm>
+              <a onClick={() => this.handleDelete(record)} style={{marginLeft:"8px"}}>删除</a>
             </div>
           )
         }
       }
     ]
+        /** 监听事件 */
+        emitter.removeAllListeners('自动推送设置-添加-医嘱')
+        emitter.addListener('自动推送设置-添加-医嘱', () => {
+          this.setState({type: 1})
+          this.getSelectData({}, 1)
+        })
   }
-  public getSelectData = (record: any) => {
+  // 删除
+  public handleDelete = (record:any) => {
+    Modal.confirm({
+      title: '提示',
+      content: '是否删除该推送宣教?',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk: () => {
+        service.healthyApiService.detelePushType2(record).then((res) => {
+          this.getMealList()
+          message.success('删除成功')
+        })
+      }
+    })
+
+  }
+  public getSelectData = (record: any, value: number) => {
+    // 如果是添加 则清空数据
+    if (value === 1) {
+      this.setState({missionId: ''})
+      this.setState({orderText: ''})
+      this.setState({messageType: ''})
+    }
+    // 如果是修改则回显数据
+    if (value === 0) {
+      this.setState({missionId: record.educationName})
+      this.setState({orderText: record.orderText})
+      this.setState({searchValue: record.educationName})
+    }
+    this.setState({visible: false})
     this.setState({ rowData: record })
     service.healthyApiService.getPushType().then((res) => {
       if (res && res.data) {
         this.setState({ selectData1: res.data })
+        // 如果是修改则回显数据
+        if (value === 0) {
+          this.setState({messageType: record.messageType})
+        }
       }
     })
     this.setState({ editingKey: true })
-  }
-  public handleChange = (value: any) => {
-    console.log(`selected ${value}`)
   }
   public getMealList = () => {
     let postData = {
@@ -172,64 +209,79 @@ class EditableTable extends React.Component<any, any> {
     })
   }
   public handleOk() {
-    const postData = {
-      serialNo: this.state.rowData.serialNo, // string 非必须参数
-      wardCode: this.state.rowData.wardCode, // string 非必须参数
-      educationId: this.state.rowData.educationId, // string 非必须参数
-      educationName: this.state.educationName[0], // string 非必须参数
-      createDateTime: this.state.rowData.createDateTime, // string 非必须参数
-      operator: this.state.rowData.operator, // string 非必须参数
-      messageType: this.state.messageType, // string 非必须参数
-      orderText: this.state.orderText // string 非必须参数
+    if (!this.state.searchValue || !this.state.orderText || !this.state.messageType) {
+      this.setState({visible: true})
+      return
+    }
+    let postData = {}
+    // 修改入参
+    if (this.state.type === 0) {
+      postData = {
+        serialNo: this.state.rowData.serialNo, // string 非必须参数
+        wardCode: this.state.rowData.wardCode, // string 非必须参数
+        educationId: this.state.rowData.educationId, // string 非必须参数
+        educationName: this.state.searchValue, // string 非必须参数
+        createDateTime: this.state.rowData.createDateTime, // string 非必须参数
+        operator: this.state.rowData.operator, // string 非必须参数
+        messageType: this.state.messageType, // string 非必须参数
+        orderText: this.state.orderText // string 非必须参数
+      }
+    }
+    // 新增入参
+    if (this.state.type === 1) {
+      let user = JSON.parse(sessionStorage.getItem('user') || '[]')
+      let empNo = user.empNo
+      postData = {
+        serialNo: '', // string 非必须参数
+        wardCode: authStore.selectedDeptCode, // string 非必须参数
+        educationId: this.state.missionId, // string 非必须参数
+        educationName: this.state.searchValue, // string 非必须参数
+        messageType: this.state.messageType, // string 非必须参数
+        operator: empNo, // 新增人
+        orderText: this.state.orderText // string 非必须参数
+      }
     }
     service.healthyApiService.preservationPushType2(postData).then((res) => {
       if (res) {
-        message.success('修改成功')
+        message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
         this.getMealList()
         this.setState({ editingKey: false })
       }
     })
   }
-  public componentWillMount() {}
+  public componentWillMount() {
+    this.getMealList()
+  }
 
-  public toSearch() {
-    let postData = {
-      educationName: this.state.educationName[0],
-      wardCode: authStore.selectedDeptCode,
-      messageType: this.state.messageType
+  public toSearch(value:any) {
+    if (this.state.timeout){
+      clearTimeout(this.state.timeout)
+      this.setState({timeout: null})
     }
-    service.healthyApiService.preservationPushType2(postData).then((res) => {
+    this.setState({ searchValue: value })
+    let postData = {
+      educationName: value,
+      wardCode: authStore.selectedDeptCode,
+      messageType: ''
+    }
+    this.setState({loading: true})
+    service.healthyApiService.getBriefMission(postData).then((res) => {
       if (res && res.data && res.data.length > 0) {
         let array: any = []
-        res.data.map((item: any, i: any) => {
-          array.push(<Option key={i + 'key'}>{item.name}</Option>)
+        this.setState({arrayData: res.data})
+        res.data.map((item: any) => {
+          array.push(<Option key={item.missionId}>{item.name}</Option>)
         })
-        this.setState({ children: array })
+        this.setState({loading: false})
+        this.setState({timeout: setTimeout(this.setState({ children: array }), 500)})
+      } else {
+        this.setState({loading: false})
+        this.setState({timeout: setTimeout(this.setState({ children: [] }), 500)})
       }
     })
   }
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
-  public save(form: any, key: any) {
-    form.validateFields((error: any, row: any) => {
-      if (error) {
-        return
-      }
-      const newData = [...this.state.data]
-      const index = newData.findIndex((item) => key === item.key)
-      if (index > -1) {
-        const item = newData[index]
-        newData.splice(index, 1, {
-          ...item,
-          ...row
-        })
-        this.setState({ data: newData, editingKey: '' })
-      } else {
-        newData.push(row)
-        this.setState({ data: newData, editingKey: '' })
-      }
-    })
-  }
 
   public edit(key: any) {
     this.setState({ editingKey: key })
@@ -284,35 +336,39 @@ class EditableTable extends React.Component<any, any> {
           }}
         >
           <div className='category'>
-            <div>宣教:</div>
-            <Select
-              mode='tags'
-              style={{ width: '100%' }}
-              placeholder='输入名称进行检索'
-              onChange={(value) => {
-                this.setState({ educationName: value })
-              }}
+          <SpanOne><span>宣</span>教:</SpanOne>
+          <Select
+            showSearch
+            value={this.state.missionId}
+            style={{ width: '80%' }}
+            placeholder='输入名称进行检索'
+            defaultActiveFirstOption={false}
+            showArrow={false}
+            loading={this.state.loading}
+            filterOption={false}
+            onChange={(value) => this.setState({ missionId: value })}
+            onSearch={this.toSearch.bind(this)}
+            notFoundContent='没有你查找的内容'
             >
               {this.state.children}
             </Select>
-            <a onClick={this.toSearch.bind(this)}>查询</a>
           </div>
-          <div className='category'>
-            <div>医嘱内容：</div>
+          <div className='category' style={{marginTop: '20px'}}>
+            <SpanOne>医嘱内容：</SpanOne>
             <Input
-              placeholder='输入名称进行检索'
+              style={{ width: '80%' }}
               onChange={(e) => {
                 this.setState({ orderText: e.target.value })
               }}
             />
           </div>
 
-          <div className='category'>
-            <div>推送类型：</div>
+          <div className='category' style={{marginTop: '20px'}}>
+            <SpanOne>推送类型：</SpanOne>
             <Select
               onChange={(value) => this.setState({ messageType: value })}
               showSearch
-              style={{ width: '100%' }}
+              style={{ width: '80%' }}
               placeholder='选择类型'
             >
               {this.state.selectData1.map((item: any) => (
@@ -322,11 +378,26 @@ class EditableTable extends React.Component<any, any> {
               ))}
             </Select>
           </div>
+          <div>{this.state.visible ? (<SpanTwo className="error">每一项不为空!</SpanTwo>) : ''}</div>
         </Modal>
       </EditableContext.Provider>
     )
   }
 }
+
+const SpanOne = styled.span`
+display:inline-block;
+width:75px;
+text-align:justify;
+  span{
+    margin-right:28px;
+  }
+`
+const SpanTwo = styled.span`
+  padding-left: 75px;
+  color: red;
+  line-height: 25px;
+`
 
 const EditableFormTable = Form.create()(EditableTable)
 

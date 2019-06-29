@@ -103,7 +103,7 @@ export default class HomeApiServices extends BaseApiService {
     const getData = {
       serialNo: data.serialNo, // 自动推送事件类型id
     }
-    return this.post(`/educationSettingOrder/delete/${getData.serialNo}`)
+    return this.get(`/educationSettingOrder/delete/${getData.serialNo}`)
   }
 
   // 12.保存自动推送医嘱类型

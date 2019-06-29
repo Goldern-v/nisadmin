@@ -3,6 +3,8 @@ import React, { Component, useState, useEffect } from 'react'
 import BaseTable from 'src/components/BaseTable'
 import { Modal, Input, message, Popconfirm, Select } from 'antd'
 import service from 'src/services/api'
+import emitter from 'src/libs/ev'
+
 export interface Props {
   isShow: any,
   setNoShow: any
