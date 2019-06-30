@@ -1,34 +1,38 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'src/components/RouterView'
-// import { RouteComponentProps } from 'react-router'
 import LeftMenu from 'src/components/LeftMenu'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'src/components/RouterView'
 import { appStore } from 'src/stores'
+
+import HealthPropagandaView from './../healthPropaganda/HealthPropagandaView'
 import EditTable from './components/EditTable'
+import settingViewModel from './SettingViewModel'
+import AutomaticPush from './view/ AutomaticPush'
+import CategoryDictionary from './view/CategoryDictionary'
+import { ReactComponent as HLZDZD } from './images/护理诊断字典.svg'
+import { ReactComponent as JKXJZD } from './images/健康宣教字典.svg'
+import { ReactComponent as HLPGSZ } from './images/护理评估设置.svg'
+import { ReactComponent as JJRSZ } from './images/节假日设置.svg'
+import { ReactComponent as WLPTSZ } from './images/物流平台设置.svg'
+import { ReactComponent as JXCSSZ } from './images/绩效参数设置.svg'
+
 import 绩效参数设置 from './view/绩效参数设置'
 import 节假日设置 from './view/节假日设置'
 import 物流角色设置 from './view/物流角色设置'
 import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
-import HealthPropagandaView from './../healthPropaganda/HealthPropagandaView'
-import settingViewModel from './SettingViewModel'
 // 引入类别字典设置页面
-import CategoryDictionary from './view/CategoryDictionary'
 // 引入自动推送设置页面
-import AutomaticPush from './view/ AutomaticPush'
-
-export interface Props extends RouteComponentProps<{ name?: string }> {}
-
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
   {
     title: '护理诊断字典',
-    icon: require('./images/icon/护理诊断字典.png'),
+    icon: <HLZDZD />,
     path: '/setting/护理诊断字典'
   },
   {
     title: '健康宣教设置',
-    icon: require('./images/icon/健康宣教字典.png'),
+    icon: <JKXJZD />,
     path: '/setting/健康宣教字典',
     children: [
       {
@@ -56,18 +60,18 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: '护理评估设置',
-    icon: require('./images/icon/护理评估设置.png'),
+    icon: <HLPGSZ />,
     path: '/setting/护理评估设置'
   },
   {
     title: '节假日设置',
-    icon: require('./images/icon/节假日设置.png'),
+    icon: <JJRSZ />,
     path: '/setting/节假日设置',
     component: 节假日设置
   },
   {
     title: '物流平台设置',
-    icon: require('./images/icon/物流平台设置.png'),
+    icon: <WLPTSZ />,
     children: [
       {
         title: '物品分类字典设置',
@@ -87,7 +91,7 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: '绩效参数设置',
-    icon: require('./images/icon/绩效参数设置.png'),
+    icon: <JXCSSZ />,
     path: '/setting/绩效参数设置',
     component: 绩效参数设置
   }
@@ -153,11 +157,6 @@ const Wrapper = styled.div`
 
 const LeftMenuCon = styled.div`
   width: 200px;
-  position: relative;
-  z-index: 1;
-  background: #f8f8f8;
-  box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
-  border-top: 0;
 `
 const MainCon = styled.div`
   flex: 1;

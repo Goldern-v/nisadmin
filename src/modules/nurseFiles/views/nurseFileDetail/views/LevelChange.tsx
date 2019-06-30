@@ -137,7 +137,7 @@ export default observer(function LevelChange () {
   }, [])
   return (
     <BaseLayout title='职称及层级变动' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow', 'fixedWidth']} tip={'填写说明：记录2019年6月的职称及层级情况，以后凡是有职称或层级变动情况时随时更新信息。'}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} type={['spaceRow', 'fixedWidth']} tip={'填写说明：记录2019年6月的职称及层级情况，以后凡是有职称或层级变动情况时随时更新信息。'}/>
       <editLevelChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

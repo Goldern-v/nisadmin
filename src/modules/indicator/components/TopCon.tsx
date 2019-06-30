@@ -1,13 +1,14 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import store from 'src/stores'
-import { observer } from 'mobx-react-lite'
 import moment from 'moment'
-import { DatePicker, Button } from 'antd'
+import store from 'src/stores'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { observer } from 'mobx-react-lite'
+import { Button, DatePicker } from 'antd'
+
 export interface Props extends RouteComponentProps {}
 
-export default React.forwardRef(function TopCon (props: any, ref: any) {
+export default React.forwardRef(function TopCon(props: any, ref: any) {
   let history = store.appStore.history
   let startDate = moment().subtract(1, 'M')
   let endDate = moment()
@@ -24,10 +25,10 @@ export default React.forwardRef(function TopCon (props: any, ref: any) {
 })
 
 const Wrapper = styled.div`
-  height: 45px;
-  background: rgba(248, 248, 248, 1);
+  height: 50px;
+  /* background: rgba(248, 248, 248, 1);
   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid #dbe0e4;
+  border-bottom: 1px solid #dbe0e4; */
   font-size: 13px;
   position: relative;
   font-size: 13px;

@@ -146,7 +146,7 @@ export default observer(function Writings () {
 
   return (
     <BaseLayout title='著作译文论文' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow', 'fixedWidth']} tip={'填写说明：登记2010年以后发表的著作专利课题论文新技术新业务情况， 其中所登记的论文要求为第一作者或通讯作者，第二及以后排名的不需要登记；新技术新业务前三名要求登记，第四名及以后排名不需登记。'}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} type={['spaceRow', 'fixedWidth']} tip={'填写说明：登记2010年以后发表的著作专利课题论文新技术新业务情况， 其中所登记的论文要求为第一作者或通讯作者，第二及以后排名的不需要登记；新技术新业务前三名要求登记，第四名及以后排名不需登记。'}/>
       <editWritingsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

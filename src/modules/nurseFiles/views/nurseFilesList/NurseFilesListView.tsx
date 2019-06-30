@@ -1,20 +1,22 @@
+import qs from 'qs'
+import BaseTable from 'src/components/BaseTable'
+import store from 'src/stores'
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import SelectCon from './components/SelectCon'
-import FilterCon from './components/FilterCon'
-import NurseCard from './components/NurseCard'
 import { numberToArray } from 'src/utils/array/array'
-import PaginationCon from './components/PaginationCon'
-import { nurseFilesService } from '../../services/NurseFilesService'
 import { observer } from 'mobx-react-lite'
-import { nurseFilesListViewModel } from './NurseFilesListViewModel'
 import { Spin } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
-import BaseTable from 'src/components/BaseTable'
 import { theme } from 'src/styles/theme'
-import store from 'src/stores'
-import qs from 'qs'
+
+import FilterCon from './components/FilterCon'
+import NurseCard from './components/NurseCard'
+import PaginationCon from './components/PaginationCon'
+import SelectCon from './components/SelectCon'
+import { nurseFilesService } from '../../services/NurseFilesService'
+import { nurseFilesListViewModel } from './NurseFilesListViewModel'
+
 export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
 let rowNum: number = 5
@@ -61,7 +63,7 @@ const columns: ColumnProps<any>[] = [
     key: 'sex',
     width: 50,
     align: 'center',
-    render (sex: any) {
+    render(sex: any) {
       return sex === '0' ? '男' : sex === '1' ? '女' : ''
     }
   },
@@ -135,7 +137,7 @@ const columns: ColumnProps<any>[] = [
     width: 70,
     align: 'center',
     // fixed: 'right',
-    render (text: any, row: any) {
+    render(text: any, row: any) {
       return (
         <DoCon>
           <span onClick={() => onDoubleClick(row)}>查看</span>
@@ -149,7 +151,7 @@ const onDoubleClick = (record: any) => {
   store.appStore.history.push(`/nurseFileDetail/baseInfo?${qs.stringify(record)}`)
 }
 
-export default observer(function NurseFilesListView () {
+export default observer(function NurseFilesListView() {
   return (
     <Wrapper>
       <SelectCon />
@@ -168,7 +170,7 @@ export default observer(function NurseFilesListView () {
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={435}
+        surplusHeight={395}
         surplusWidth={80}
         type={['spaceRow']}
         onRow={(record: any) => {

@@ -102,7 +102,7 @@ export default observer(function NavBar(props: Props) {
           active={item.path !== '' && location.pathname.indexOf(item.path) !== -1}
           key={item.name}
         >
-          {item.icon}
+          {/* {item.icon} */}
           {/* <ReactSVG src={item.icon} svgClassName='nav-icon' /> */}
           <div className='nav-name'>{item.name}</div>
         </NavItem>
@@ -153,15 +153,15 @@ const NavItem = styled.div<{ active?: boolean }>`
   cursor: pointer;
   font-size: 13px;
   position: relative;
-  background: ${(p) => (p.active ? p.theme.$mtc : '#fff')};
-  color: ${(p) => (p.active ? '#fff' : '#747474')};
+  background: ${(p) => p.active && p.theme.$mcc};
+  color: #fff;
   svg {
     width: 16px;
     height: 16px;
     /* margin-top: 6px; */
     margin-right: 2px;
     path {
-      fill: ${(p) => (p.active ? '#fff' : '#747474')};
+      /* fill: ${(p) => (p.active ? '#fff' : '#747474')}; */
     }
     title {
       display: none;

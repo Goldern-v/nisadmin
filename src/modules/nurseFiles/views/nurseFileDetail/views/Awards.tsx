@@ -155,7 +155,7 @@ export default observer(function Awards () {
 
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={345} type={['spaceRow']} tip={'填表说明：登记2010年及以后时间所获得的省市级以上奖励，如为团体奖励，请注明排名情况，授奖级别是指省级（或市级）/一（二、三、优秀）等奖。批准机关指证书盖章单位名称。'}/>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} type={['spaceRow']} tip={'填表说明：登记2010年及以后时间所获得的省市级以上奖励，如为团体奖励，请注明排名情况，授奖级别是指省级（或市级）/一（二、三、优秀）等奖。批准机关指证书盖章单位名称。'}/>
       <editAwardsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
