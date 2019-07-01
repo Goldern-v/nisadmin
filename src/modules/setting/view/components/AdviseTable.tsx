@@ -93,23 +93,15 @@ class EditableTable extends React.Component<any, any> {
         title: '推送宣教',
         dataIndex: 'educationName',
         width: '25%',
-<<<<<<< HEAD
-        // render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
-        // overflow:'hidden',
+        // render: (text: any) => (
+        //   <Tooltip placement='topLeft' title={text}>
+        //     {text}
+        //   </Tooltip>
+        // ),
+        // overflow: 'hidden',
         // whiteSpace: 'nowrap',
-        // textOverflow:'ellipsis',
-        // cursor:'pointer',
-=======
-        render: (text: any) => (
-          <Tooltip placement='topLeft' title={text}>
-            {text}
-          </Tooltip>
-        ),
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        cursor: 'pointer',
->>>>>>> 812e8939ec2c8a93dea9b8dd92d73d44599bc885
+        // textOverflow: 'ellipsis',
+        // cursor: 'pointer',
         align: 'left',
         editable: true
       },
@@ -187,15 +179,9 @@ class EditableTable extends React.Component<any, any> {
     console.log(record, 'record')
     // 如果是添加 则清空数据
     if (value === 1) {
-<<<<<<< HEAD
       this.setState({missionId: undefined})
       this.setState({orderText: ''})
       this.setState({messageType: ''})
-=======
-      this.setState({ missionId: '' })
-      this.setState({ orderText: '' })
-      this.setState({ messageType: '' })
->>>>>>> 812e8939ec2c8a93dea9b8dd92d73d44599bc885
     }
     // 如果是修改则回显数据
     if (value === 0) {
@@ -471,16 +457,11 @@ const Wrapper = styled.div`
       padding-left: 20px !important;
     }
     .ant-table-row td:nth-child(2) {
-<<<<<<< HEAD
       padding-left:20px!important; 
     } 
     .ant-table-row td:nth-child(4) {
       padding-left:20px!important; 
     } 
-=======
-      padding-left: 20px !important;
-    }
->>>>>>> 812e8939ec2c8a93dea9b8dd92d73d44599bc885
   }
 `
 const PaginationBox = styled.div`

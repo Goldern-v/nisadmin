@@ -101,23 +101,11 @@ class EditableTable extends React.Component<any, any> {
         title: '推送宣教',
         dataIndex: 'educationName',
         width: '25%',
-<<<<<<< HEAD
         // render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
         // overflow:'hidden',
         // whiteSpace: 'nowrap',
         // textOverflow:'ellipsis',
         // cursor:'pointer',
-=======
-        render: (text: any) => (
-          <Tooltip placement='topLeft' title={text}>
-            {text}
-          </Tooltip>
-        ),
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        cursor: 'pointer',
->>>>>>> 812e8939ec2c8a93dea9b8dd92d73d44599bc885
         align: 'left',
         editable: true
       },
@@ -177,17 +165,10 @@ class EditableTable extends React.Component<any, any> {
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
     if (value === 1) {
-<<<<<<< HEAD
       this.setState({missionId: undefined})
       this.setState({operation: ''})
       this.setState({messageType: ''})
       this.setState({operationTiming: ''})
-=======
-      this.setState({ missionId: '' })
-      this.setState({ operation: '' })
-      this.setState({ messageType: '' })
-      this.setState({ operationTiming: '' })
->>>>>>> 812e8939ec2c8a93dea9b8dd92d73d44599bc885
     }
     // 如果是修改则回显数据
     if (value === 0) {
@@ -428,7 +409,6 @@ class EditableTable extends React.Component<any, any> {
               this.setState({ editingKey: false })
             }}
           >
-<<<<<<< HEAD
           <div className="category" style={{marginTop: '30px'}}>
             <SpanOne><span>宣</span>教:</SpanOne>
             <Select
@@ -460,54 +440,6 @@ class EditableTable extends React.Component<any, any> {
             <Radio value='术后'>术后</Radio>
           </Radio.Group>
           </div>
-=======
-            <div className='category' style={{ marginTop: '30px' }}>
-              <SpanOne>
-                <span>宣</span>教:
-              </SpanOne>
-              <Select
-                showSearch
-                value={this.state.missionId}
-                style={{ width: '72%' }}
-                defaultActiveFirstOption={false}
-                showArrow={false}
-                loading={this.state.loading}
-                filterOption={false}
-                onChange={this.searchChange.bind(this)}
-                onSearch={this.toSearch.bind(this)}
-                notFoundContent='没有你查找的内容'
-                placeholder='输入名称进行'
-              >
-                {this.state.children}
-              </Select>
-            </div>
-            <div className='category' style={{ marginTop: '40px' }}>
-              <SpanOne>手术名称:</SpanOne>
-              <Input
-                defaultValue=''
-                style={{ width: '72%' }}
-                value={this.state.operation}
-                onChange={(e) => {
-                  this.setState({ operation: e.target.value })
-                }}
-              />
-            </div>
-            <div className='category' style={{ marginTop: '40px' }}>
-              <SpanOne>
-                <span>时</span>机:
-              </SpanOne>
-              <Radio.Group
-                onChange={(e) => {
-                  this.setState({ operationTiming: e.target.value })
-                }}
-                value={this.state.operationTiming}
-              >
-                <Radio value='术前'>术前</Radio>
-                <Radio value='术后'>术后</Radio>
-              </Radio.Group>
-            </div>
->>>>>>> 812e8939ec2c8a93dea9b8dd92d73d44599bc885
-
             <div className='category' style={{ marginTop: '40px', marginBottom: '30px' }}>
               <SpanOne>推送类型：</SpanOne>
               <Select
