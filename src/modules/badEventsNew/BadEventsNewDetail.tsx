@@ -136,8 +136,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           let newTimeline = timeLine.concat();
           newTimeline = newTimeline.map((item, idx) => {
             let newItem = { ...initTimeLine[idx] };
+
             for (let i = 0; i < timeData.length; i++) {
               if (item.statuses.indexOf(timeData[i].operatorStatus) >= 0) {
+                let timeStatusAbs = Math.abs(timeData[i].operatorStatus);
+                if (timeStatusAbs > Math.abs(data.status)) break;
+
                 let description;
                 let title = '';
                 let operatorName = timeData[i].operatorName;
@@ -175,7 +179,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
                     if (deptName) title = `质控科审核：转发${deptName}`
                     break
                   case '-2':
-                    thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
+                    if (data.status == '-2') thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
                     break
                   case '3':
                     if (deptName) title = `${deptName}处理`
@@ -247,7 +251,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
         break;
       case '2':
         btnText = '科室审核';
-        console.log(authStore.user,detailData.departmentCode)
+        console.log(authStore.user, detailData.departmentCode)
         if (authStore.user.deptCode !== detailData.departmentCode) btnDisable = true;
         break;
       case '3':
@@ -287,9 +291,9 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
             let icon: any;
             if (idx <= StepsCurrent()) {
-              icon = <Icon type="check-circle" className="icon-step" />
+              icon = <Icon type="check-circle" className="icon-step success" />
               if (idx == StepsCurrent() && detailData.status == '-2')
-                icon = <Icon type="close-circle" className="icon-step" style={{ color: 'red' }} />
+                icon = <Icon type="close-circle" className="icon-step error" />
             } else {
               icon = '';
             }
@@ -370,9 +374,38 @@ const Wrapper = styled.div`
   .status-line-content{
     margin: 15px 10px;
   }
-  .icon-step svg{
-    width: 24px;
-    height: 24px;
+  
+  .ant-steps-vertical.ant-steps-small .ant-steps-item-tail{
+    left: 14px;
+  }
+  
+  .ant-steps-small .ant-steps-item-icon{
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 28px;
+  }
+  .icon-step{
+    color: #fff;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    overflow:hidden;
+    &.success{
+      background: #00A680;
+    }
+    &.error{
+      background: red;
+    }
+    svg{
+      position: relative;
+      left: -3px;
+      top: -3px;
+      width: 34px;
+      height: 34px;
+    }
   }
   .iframe-loading{
     position: absolute;

@@ -2,14 +2,14 @@ import BaseTable from 'src/components/BaseTable'
 import Form from 'src/components/Form'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
-import { Button, DatePicker, Select } from 'antd'
+import { Button, DatePicker, Select, Pagination } from 'antd'
 import { Link } from 'react-router-dom'
 import { ColumnProps } from 'antd/lib/table'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 
 import BadEventsNewService from './api/badEventsNewService'
-import CustomPagination from './components/CustomPagination'
+// import CustomPagination from './components/CustomPagination'
 import Moment from 'moment'
 
 const api = new BadEventsNewService()
@@ -18,7 +18,7 @@ const api = new BadEventsNewService()
 const { RangePicker } = DatePicker
 
 export default observer(function BadEventNewList() {
-  const queryForm = React.createRef<Form>()
+  // const queryForm = React.createRef<Form>()
   //列表请求参数
   const [query, setQuery] = useState({
     wardCode: '',
@@ -28,15 +28,15 @@ export default observer(function BadEventNewList() {
     eventType: '',
     eventStatus: ''
   })
-  const initDeptList: any = []
-  const [deptList, setDeptList] = useState(initDeptList)
+  //
+  const [warNameSelected, setWaeNameSelected] = useState('' as string);
+  const [deptList, setDeptList] = useState([] as any)
   //列表数据
-  const [data, setData] = useState([])
+  const [data, setData] = useState([] as any)
   //列表Table组件loading状态
   const [dataLoading, setDataLoading] = useState(false)
   //不良事件类型下拉选项
-  const initEventTypeList: any = []
-  const [eventTypeList, setEventTypeList] = useState(initEventTypeList)
+  const [eventTypeList, setEventTypeList] = useState([] as any)
   //前端分页控制
   const [page, setPage] = useState({
     current: 1,
@@ -100,21 +100,21 @@ export default observer(function BadEventNewList() {
       dataIndex: 'deverityLevel',
       key: 'deverityLevel',
       align: 'center',
-      width: 120
+      width: 60
     },
     {
       title: 'SAC',
       dataIndex: 'sac',
       key: 'sac',
       align: 'center',
-      width: 100
+      width: 40
     },
     {
       title: '提交医院质量安全管理委员会',
       dataIndex: 'commitToQC',
       key: 'commitToQC',
       align: 'center',
-      width: 150
+      width: 60
     },
     {
       title: '事件状态',
@@ -231,6 +231,30 @@ export default observer(function BadEventNewList() {
     setPage({ ...page, current: 1 })
   }
 
+  const handleWarNameChange = (name: any) => {
+
+    if (name === undefined) name = '';
+
+    setWaeNameSelected(name);
+
+    if (name == '')
+      setQuery({
+        ...query,
+        wardCode: ''
+      })
+    else
+      for (let i = 0; i < deptList.length; i++) {
+        if (deptList[i].name == name) {
+          setQuery({
+            ...query,
+            wardCode: deptList[i].code
+          })
+          break;
+        }
+      }
+
+  }
+
   const defaultDateRange = () => {
     let startDate = Moment(Moment().format('YYYY-MM-') + '01');
     let ednDate = Moment(Moment().format('YYYY-MM-DD'));
@@ -255,11 +279,11 @@ export default observer(function BadEventNewList() {
             <div className='float-item'>
               <div className='item-title'>科室:</div>
               <div className='item-content'>
-                <Select defaultValue='' value={query.wardCode} onChange={(wardCode: any) => { setQuery({ ...query, wardCode }) }}>
+                <Select defaultValue='' value={warNameSelected} onChange={handleWarNameChange} showSearch allowClear>
                   <Select.Option value=''>全部</Select.Option>
                   {deptList.map((item: any, idx: number) => {
                     return (
-                      <Select.Option value={item.code} key={idx}>
+                      <Select.Option value={item.name} key={idx}>
                         {item.name}
                       </Select.Option>
                     )
@@ -314,17 +338,25 @@ export default observer(function BadEventNewList() {
               let starIndex = (current - 1) * size
               return idx + 1 > starIndex && idx + 1 <= starIndex + size
             })}
-            pagination={false}
-            surplusHeight={250}
+            surplusHeight={285}
           />
         </div>
-        <CustomPagination
+        <div className="custom-pagination">
+          <Pagination
+            showQuickJumper
+            total={data.length - 1}
+            current={page.current}
+            pageSize={page.size}
+            onChange={(current: number) => setPage({ ...page, current })}
+          />
+        </div>
+        {/* <CustomPagination
           page={page.current}
           size={page.size}
           total={data.length - 1}
           hideSizeInput={true}
           onChange={(current: number) => setPage({ ...page, current })}
-        />
+        /> */}
       </div>
     </Wrapper>
   )
@@ -397,6 +429,7 @@ const Wrapper = styled.div`
       top: 0;
       right: 0;
       bottom: 45px;
+      overflow: hidden;
       .align-left{
         padding-left: 15px!important;
       }
@@ -418,9 +451,13 @@ const Wrapper = styled.div`
     }
     .custom-pagination{
       position: absolute;
+      padding: 10px 15px;
       left:0;
       bottom: 0;
       right: 0;
+      .ant-pagination{
+        float: right;
+      }
     }
     .view-detail{
       &:hover{

@@ -84,7 +84,6 @@ export default observer(function AduitModal(props: Props) {
       }
 
       setFormMap({ ...paramMap, ...newMap });
-
     }
   }, [visible]);
 
@@ -100,16 +99,16 @@ export default observer(function AduitModal(props: Props) {
     })
   }
 
-  const handleDeptChange = (code: any) => {
-    let department_code = code;
-    let department_name = '';
+  const handleDeptChange = (name: any) => {
+    let department_code = '';
+    let department_name = name;
 
-    if (department_code == reportDept.code) {
-      department_name = reportDept.name;
+    if (department_name == reportDept.name) {
+      department_code = reportDept.code;
     } else {
       for (let i = 0; i < dealerDepts.length; i++) {
-        if (dealerDepts[i].value == department_code) {
-          department_name = dealerDepts[i].name;
+        if (dealerDepts[i].name == department_name) {
+          department_code = dealerDepts[i].value;
           break;
         }
       }
@@ -160,8 +159,6 @@ export default observer(function AduitModal(props: Props) {
         }
         break
     }
-
-    // console.log(params)
 
     api
       .aduit(params)
@@ -236,11 +233,12 @@ export default observer(function AduitModal(props: Props) {
               <Col span={14}>
                 <Select
                   className="input-item dept-select"
-                  defaultValue={formMap[`${eventCode}_department_code`]}
-                  value={formMap[`${eventCode}_department_code`]}
-                  onChange={handleDeptChange}>
+                  defaultValue={formMap[`${eventCode}_department_name`]}
+                  value={formMap[`${eventCode}_department_name`]}
+                  onChange={handleDeptChange}
+                  showSearch>
                   {dealerDepts.map((item: any, idx: number) => {
-                    return <Select.Option value={item.value} key={idx}>{item.name}</Select.Option>
+                    return <Select.Option value={item.name} key={idx}>{item.name}</Select.Option>
                   })}
                 </Select>
               </Col>
