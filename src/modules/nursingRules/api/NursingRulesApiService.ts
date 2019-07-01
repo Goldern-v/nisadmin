@@ -17,4 +17,8 @@ export default class NursingRulesApiService extends BaseApiService {
   public async deleteFile(query: any) {
     return this.post('/nursingInstitution/delete', qs.stringify(query));
   }
+
+  public async getType() {
+    return this.get('/nursingInstitution/getTypeDict');
+  }
 }

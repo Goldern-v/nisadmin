@@ -20,7 +20,11 @@ export default withRouter(function HealthPropagandaView(props: any) {
       api.getContent(query.id)
         .then(res => {
           let resData = res.data;
-          if (resData instanceof Array && resData.length > 0) setData(resData[0])
+          if (resData instanceof Array && resData.length > 0) {
+            let newData = resData[0];
+            newData.content = newData.content.replace(/  /g, '&nbsp;');
+            setData(newData)
+          }
         });
       setMatch(query)
     } else {

@@ -64,7 +64,7 @@ class EditableTable extends React.Component<any, any> {
       searchData: [],
       type: 0, // 0-修改 1-新增
       searchValue: '',
-      missionId: 1,
+      missionId: undefined,
       rowData: [],
       editingKey: false,
       selectData1: [],
@@ -100,15 +100,15 @@ class EditableTable extends React.Component<any, any> {
         title: '推送宣教',
         dataIndex: 'educationName',
         width: '27%',
-        render: (text: any) => (
-          <Tooltip placement='topLeft' title={text}>
-            {text}
-          </Tooltip>
-        ),
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        cursor: 'pointer',
+        // render: (text: any) => (
+        //   <Tooltip placement='topLeft' title={text}>
+        //     {text}
+        //   </Tooltip>
+        // ),
+        // overflow: 'hidden',
+        // whiteSpace: 'nowrap',
+        // textOverflow: 'ellipsis',
+        // cursor: 'pointer',
         align: 'left',
         editable: true
       },
@@ -116,7 +116,7 @@ class EditableTable extends React.Component<any, any> {
         title: '推送类型',
         dataIndex: 'messageTypeName',
         width: '14%',
-        align: 'center',
+        align: 'left',
         editable: true
       },
       {
@@ -169,7 +169,7 @@ class EditableTable extends React.Component<any, any> {
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
     if (value === 1) {
-      this.setState({ missionId: '' })
+      this.setState({ missionId: undefined })
       this.setState({ patientId: '' })
       this.setState({ messageType: '' })
     }
@@ -394,7 +394,6 @@ class EditableTable extends React.Component<any, any> {
               this.setState({ editingKey: false })
             }}
           >
-            
             <div className='category' style={{ marginTop: '30px' }}>
               <SpanOne>
                 <span>宣</span>教:
@@ -404,7 +403,7 @@ class EditableTable extends React.Component<any, any> {
                 value={this.state.missionId}
                 style={{ width: '72%' }}
                 // dropdownStyle={{height:'50px'}}
-                placeholder={this.props.placeholder}
+                placeholder='输入名称进行检索'
                 defaultActiveFirstOption={false}
                 showArrow={false}
                 loading={this.state.loading}
@@ -474,6 +473,9 @@ const Wrapper = styled.div`
     .ant-table-row td:nth-child(3) {
       padding-left: 20px !important;
     }
+    .ant-table-row td:nth-child(4) {
+      padding-left: 20px !important;
+    }
   }
 `
 const PaginationBox = styled.div`
@@ -486,6 +488,6 @@ const BigBox = styled.div`
   padding-bottom: 20px;
 `
 
-const EditableFormTable = Form.create()(EditableTable)
+const EditableFormTable = Form.create()(EditableTable) as any
 
 export default EditableFormTable
