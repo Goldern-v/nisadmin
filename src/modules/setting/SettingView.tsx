@@ -25,11 +25,11 @@ import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
-  {
-    title: '护理诊断字典',
-    icon: <HLZDZD />,
-    path: '/setting/护理诊断字典'
-  },
+  // {
+  //   title: '护理诊断字典',
+  //   icon: <HLZDZD />,
+  //   path: '/setting/护理诊断字典'
+  // },
   {
     title: '健康宣教设置',
     icon: <JKXJZD />,
@@ -37,7 +37,7 @@ const LEFT_MENU_CONFIG = [
     children: [
       {
         title: '类别字典设置',
-        path: '/setting/类别字典设置',
+        path: '/setting/typeDict',
         component: CategoryDictionary
       },
       {
@@ -57,44 +57,44 @@ const LEFT_MENU_CONFIG = [
         component: AutomaticPush
       }
     ]
-  },
-  {
-    title: '护理评估设置',
-    icon: <HLPGSZ />,
-    path: '/setting/护理评估设置'
-  },
-  {
-    title: '节假日设置',
-    icon: <JJRSZ />,
-    path: '/setting/节假日设置',
-    component: 节假日设置
-  },
-  {
-    title: '物流平台设置',
-    icon: <WLPTSZ />,
-    children: [
-      {
-        title: '物品分类字典设置',
-        path: '/setting/物品分类字典设置',
-        component: EditTable
-      },
-      {
-        title: '物流角色设置',
-        path: '/setting/物流角色设置',
-        component: 物流角色设置
-      },
-      {
-        title: '物流分类及流程设置',
-        path: '/setting/物流分类及流程设置'
-      }
-    ]
-  },
-  {
-    title: '绩效参数设置',
-    icon: <JXCSSZ />,
-    path: '/setting/绩效参数设置',
-    component: 绩效参数设置
   }
+  // {
+  //   title: '护理评估设置',
+  //   icon: <HLPGSZ />,
+  //   path: '/setting/护理评估设置'
+  // },
+  // {
+  //   title: '节假日设置',
+  //   icon: <JJRSZ />,
+  //   path: '/setting/节假日设置',
+  //   component: 节假日设置
+  // },
+  // {
+  //   title: '物流平台设置',
+  //   icon: <WLPTSZ />,
+  //   children: [
+  //     {
+  //       title: '物品分类字典设置',
+  //       path: '/setting/物品分类字典设置',
+  //       component: EditTable
+  //     },
+  //     {
+  //       title: '物流角色设置',
+  //       path: '/setting/物流角色设置',
+  //       component: 物流角色设置
+  //     },
+  //     {
+  //       title: '物流分类及流程设置',
+  //       path: '/setting/物流分类及流程设置'
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: '绩效参数设置',
+  //   icon: <JXCSSZ />,
+  //   path: '/setting/绩效参数设置',
+  //   component: 绩效参数设置
+  // }
 ]
 
 // const getCurrentRoute = (type: string) => {

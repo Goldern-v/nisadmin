@@ -59,6 +59,8 @@ const Wrapper = styled.div`
   width: 100%;
   left: 0;
   right: 0;
+  top: -1px;
+  bottom: 0;
   background: #eee;
 `
 const RouterViewCon = styled.div`

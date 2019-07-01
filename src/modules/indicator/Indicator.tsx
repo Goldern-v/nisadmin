@@ -101,7 +101,8 @@ const ROUTE_LIST: any = [
     keys: ['护士总人数'],
     gName: '护理单元',
     lineKey: '',
-    serviceName: 'nationalIndex/getNurseAllocation'
+    serviceName: 'nationalIndex/getNurseAllocation',
+    surplusHeight: 315
   },
   {
     name: '护士离职率',
@@ -516,7 +517,8 @@ export default function Indicator(props: Props) {
                   loading={loading}
                   dataSource={currentRoute!.dataSource}
                   columns={currentRoute!.columns}
-                  surplusHeight={290}
+                  surplusHeight={currentRoute.surplusHeight || 250}
+                  surplusWidth={260}
                 />
               )}
               {showType === '图表' && (

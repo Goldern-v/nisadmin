@@ -10,8 +10,8 @@ const columns: any = [
     title: '护士总人数',
     dataIndex: 'nursetotal',
     key: '护士总人数',
-    align: 'center'
-    // width: 40
+    align: 'center',
+    width: 60
   },
   {
     title: '卫生技术职务',
@@ -20,70 +20,70 @@ const columns: any = [
         title: '护士人数',
         dataIndex: 'staff_nurse_cn',
         key: '护士人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'staff_nurse_ro',
         key: '护士比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '护师人数',
         dataIndex: 'senior_nurse_cn',
         key: '护师人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'senior_nurse_ro',
         key: '护师比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '主管护师人数',
         dataIndex: 'supervisor_nurse_cn',
         key: '主管护师人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'supervisor_nurse_ro',
         key: '主管护师比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '副主任护师人数',
         dataIndex: 'cochief_nurse_cn',
         key: '副主任护师人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'cochief_nurse_ro',
         key: '副主任护师比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '主任护师人数',
         dataIndex: 'chief_nurse_cn',
         key: '主任护师人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'chief_nurse_ro',
         key: '主任护师比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       }
     ]
@@ -95,70 +95,70 @@ const columns: any = [
         title: '中专人数',
         dataIndex: 'secondary_degree_cn',
         key: '中专人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'secondary_degree_ro',
         key: '中专比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '高职高专人数',
         dataIndex: 'college_degree_cn',
         key: '高职高专人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'college_degree_ro',
         key: '高职高专比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '大学本科人数',
         dataIndex: 'bachelor_degree_cn',
         key: '大学本科人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'bachelor_degree_ro',
         key: '大学本科比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '硕士研究生人数',
         dataIndex: 'master_degree_cn',
         key: '硕士研究生人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'master_degree_ro',
         key: '硕士研究生比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '博士研究生人数',
         dataIndex: 'doctor_degree_cn',
         key: '博士研究生人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'doctor_degree_ro',
         key: '博士研究生比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       }
     ]
@@ -170,70 +170,70 @@ const columns: any = [
         title: '<1年人数',
         dataIndex: 'one_y_exp_cn',
         key: '<1年人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'one_y_exp_ro',
         key: '<1年比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '1(含)~2年人数',
         dataIndex: 'one_two_y_exp_cn',
         key: '1(含)~2年人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'one_two_y_exp_ro',
         key: '1(含)~2年比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '2(含)~5年人数',
         dataIndex: 'two_five_y_exp_cn',
         key: '2(含)~5年人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'two_five_y_exp_ro',
         key: '2(含)~5年比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '5(含)~10年人数',
         dataIndex: 'five_ten_y_exp_cn',
         key: '5(含)~10年人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'five_ten_y_exp_ro',
         key: '5(含)~10年比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '>10年人数',
         dataIndex: 'ten_y_exp_cn',
         key: '>10年人数',
-        width: 20,
+        width: 60,
         align: 'center'
       },
       {
         title: '比率%',
         dataIndex: 'ten_y_exp_ro',
         key: '>10年比率%',
-        width: 20,
+        width: 60,
         align: 'center'
       }
     ]
