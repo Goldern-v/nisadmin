@@ -5,6 +5,7 @@ import { RouteItem } from '../components/RouterView'
 import LoginView from 'src/modules/login/LoginView'
 import { setLayout } from 'src/utils/route/route-utils'
 import layouts from 'src/layouts'
+import demo from 'src/demo'
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
 // import { scheduleHorizontalMenuConfig } from 'src/modules/schedule/config/scheduleHorizontalMenuConfig'
 import HomeView from 'src/modules/home/HomeView'
@@ -44,10 +45,11 @@ import NursingRules from 'src/modules/nursingRules/NursingRules'
 //import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
 import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaEdit'
 //不良事件列表和审核流程
-import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList';
-import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail';
+import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList'
+import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail'
 
 const routes: RouteItem[] = [
+  setLayout('/demo', demo),
   setLayout('/login', LoginView),
   setLayout('/home', HomeView, layouts.MainLayout),
   setLayout('/scheduleHome', ScheduleHomeView, layouts.MainLayout),

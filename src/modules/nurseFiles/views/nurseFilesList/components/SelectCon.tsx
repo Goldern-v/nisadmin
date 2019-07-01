@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite'
 
 const Option = Select.Option
 
-export default observer(function SelectCon (props: any, context: any) {
+export default observer(function SelectCon(props: any, context: any) {
   const [visible, setVisible] = useState(false)
   const handleOk = () => {
     setVisible(false)

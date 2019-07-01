@@ -27,7 +27,7 @@ const formItemLayout = {
 /** 职务列表 */
 
 export const HOLIDAY_LIST = ['元旦', '春节', '清明节', '劳动节', '端午节', '中秋节', '国庆节']
-function ModalAdd (props: Props) {
+function ModalAdd(props: Props) {
   let {
     visible,
     handleOk,
@@ -43,7 +43,7 @@ function ModalAdd (props: Props) {
   }
   const onSave = (e: any) => {}
 
-  function HolidayChange (value: any) {
+  function HolidayChange(value: any) {
     // SettingViewModel.holidayName = value
     console.log(33333)
     console.log(value)
@@ -102,7 +102,7 @@ function ModalAdd (props: Props) {
     </Modal>
   )
 }
-export default Form.create()(observer(ModalAdd))
+export default Form.create()(observer(ModalAdd)) as any
 // const Wrapper = styled.div``
 
 const SelecDate = styled.div``

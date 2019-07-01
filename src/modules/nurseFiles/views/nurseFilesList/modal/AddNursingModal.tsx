@@ -37,7 +37,7 @@ export const POST_LIST = [
   '护理部副主任',
   '护理部主任'
 ]
-function AddNursingModal (props: Props) {
+function AddNursingModal(props: Props) {
   let {
     visible,
     handleOk,
@@ -186,5 +186,5 @@ function AddNursingModal (props: Props) {
     </Modal>
   )
 }
-export default Form.create()(observer(AddNursingModal))
+export default Form.create()(observer(AddNursingModal)) as any
 // const Wrapper = styled.div``
