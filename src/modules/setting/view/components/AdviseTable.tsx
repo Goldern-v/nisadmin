@@ -57,7 +57,7 @@ class EditableTable extends React.Component<any, any> {
       arrayData: [],
       searchData: [],
       searchValue: '',
-      missionId: '',
+      missionId: undefined,
       children: [],
       type: 0, // 0-修改 1-新增
       rowData: [],
@@ -93,11 +93,11 @@ class EditableTable extends React.Component<any, any> {
         title: '推送宣教',
         dataIndex: 'educationName',
         width: '25%',
-        render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
-        overflow:'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow:'ellipsis',
-        cursor:'pointer',
+        // render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
+        // overflow:'hidden',
+        // whiteSpace: 'nowrap',
+        // textOverflow:'ellipsis',
+        // cursor:'pointer',
         align: 'left',
         editable: true
       },
@@ -105,7 +105,7 @@ class EditableTable extends React.Component<any, any> {
         title: '推送类型',
         dataIndex: 'messageTypeName',
         width: '12%',
-        align: 'center',
+        align: 'left',
         editable: true
       },
       {
@@ -173,7 +173,7 @@ class EditableTable extends React.Component<any, any> {
     console.log(record, 'record')
     // 如果是添加 则清空数据
     if (value === 1) {
-      this.setState({missionId: ''})
+      this.setState({missionId: undefined})
       this.setState({orderText: ''})
       this.setState({messageType: ''})
     }
@@ -447,6 +447,9 @@ const Wrapper = styled.div`
       padding-left:20px!important; 
     } 
     .ant-table-row td:nth-child(2) {
+      padding-left:20px!important; 
+    } 
+    .ant-table-row td:nth-child(4) {
       padding-left:20px!important; 
     } 
   }

@@ -59,7 +59,7 @@ class EditableTable extends React.Component<any, any> {
       searchData: [],
       type: 0, // 0-修改 1-新增
       searchValue: '',
-      missionId: '',
+      missionId: undefined,
       rowData: {},
       editingKey: false,
       selectData: [],
@@ -87,7 +87,7 @@ class EditableTable extends React.Component<any, any> {
         title: '手术',
         dataIndex: 'operation',
         width: '10%',
-        align: 'center',
+        align: 'left',
         editable: true
       },
       {
@@ -101,11 +101,11 @@ class EditableTable extends React.Component<any, any> {
         title: '推送宣教',
         dataIndex: 'educationName',
         width: '25%',
-        render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
-        overflow:'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow:'ellipsis',
-        cursor:'pointer',
+        // render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
+        // overflow:'hidden',
+        // whiteSpace: 'nowrap',
+        // textOverflow:'ellipsis',
+        // cursor:'pointer',
         align: 'left',
         editable: true
       },
@@ -113,7 +113,7 @@ class EditableTable extends React.Component<any, any> {
         title: '推送类型',
         dataIndex: 'messageTypeName',
         width: '12%',
-        align: 'center',
+        align: 'left',
         editable: true
       },
       {
@@ -161,7 +161,7 @@ class EditableTable extends React.Component<any, any> {
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
     if (value === 1) {
-      this.setState({missionId: ''})
+      this.setState({missionId: undefined})
       this.setState({operation: ''})
       this.setState({messageType: ''})
       this.setState({operationTiming: ''})
@@ -417,7 +417,7 @@ class EditableTable extends React.Component<any, any> {
               onChange={this.searchChange.bind(this)}
               onSearch={this.toSearch.bind(this)}
               notFoundContent='没有你查找的内容'
-              placeholder='输入名称进行'
+              placeholder='输入名称进行检索'
             >
               {this.state.children}
             </Select>
@@ -471,6 +471,12 @@ const SpanTwo = styled.span`
 const Wrapper = styled.div`
   .ant-table-body {
     .ant-table-row td:nth-child(4){
+      padding-left:20px!important; 
+    }
+    .ant-table-row td:nth-child(2){
+      padding-left:20px!important; 
+    }
+    .ant-table-row td:nth-child(5){
       padding-left:20px!important; 
     }
   }
