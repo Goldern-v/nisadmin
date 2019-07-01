@@ -11,36 +11,42 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '患者人数',
     dataIndex: 'patient_count',
     key: '患者人数',
+    width: 100,
     align: 'center'
   },
   {
     title: '呼吸机患者例数',
     dataIndex: 'venti_case',
     key: '呼吸机患者例数',
+    width: 140,
     align: 'center'
   },
   {
     title: '呼吸机使用率',
     dataIndex: 'venti_ratio',
     key: '呼吸机使用率',
+    width: 140,
     align: 'center'
   },
   {
     title: '感染例数',
     dataIndex: 'infection_case',
     key: '感染例数',
+    width: 100,
     align: 'center'
   },
   {
     title: '留置导管总日数',
     dataIndex: 'venti_days',
     key: '留置导尿管总日数',
+    width: 140,
     align: 'center'
   },
   {

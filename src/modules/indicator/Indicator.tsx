@@ -452,6 +452,7 @@ export default function Indicator(props: Props) {
   let [endDate, setEndDate] = useState('详情')
   let [loading, setLoading] = useState(false)
   let [currentRoute, setCurrentRoute]: [any, any] = useState(null)
+  const [titleSecond, setTitleSecond] = useState('')
 
   let topRef: any = React.createRef()
   useLayoutEffect(() => {
@@ -479,6 +480,8 @@ export default function Indicator(props: Props) {
       // if (currentRoute && data) {
       currentRoute.dataSource = data
       currentRoute.dataSource = [...data]
+      let cacheTitle = currentRoute!.name + '统计'
+      setTitleSecond(cacheTitle)
       setCurrentRoute(currentRoute)
       // }
     }
@@ -503,8 +506,8 @@ export default function Indicator(props: Props) {
                 </Radio.Group>{' '}
               </RadioCon>
 
-              <HisName>东莞厚街医院</HisName>
-              <Title>{currentRoute!.name}</Title>
+              {/* <HisName>东莞厚街医院</HisName> */}
+              <Title>{currentRoute!.name + '统计'}</Title>
               <Date>
                 日期：{startDate} 至 {endDate}
               </Date>
@@ -518,7 +521,7 @@ export default function Indicator(props: Props) {
               )}
               {showType === '图表' && (
                 <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
-                {/* <BaseChartScrollCon> */}
+                  {/* <BaseChartScrollCon> */}
                   <div className='BaseCharCon'>
                     <BaseChart
                       dataSource={currentRoute!.dataSource}
@@ -588,7 +591,9 @@ const HisName = styled.div`
 `
 const Title = styled.div`
   font-size: 15px;
+  font-size: 20px;
   color: #333;
+  font-weight: bold;
   text-align: center;
 `
 const Date = styled.div`
@@ -602,11 +607,12 @@ const RadioCon = styled.div`
   top: 20px;
   right: 35px;
 `
-const BaseChartScrollCon = styled.div<{widthGet: any}>`
-  /* width: 250%; */
-  overflow: auto;
-  width: ${(props) => props.widthGet};
-  
+const BaseChartScrollCon = styled.div<{ widthGet: any }>`
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
   .BaseCharCon {
+    width: ${(props) => props.widthGet};
   }
 `

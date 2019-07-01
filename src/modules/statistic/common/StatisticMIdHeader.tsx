@@ -6,7 +6,7 @@ import { authStore } from 'src/stores/index'
 import emitter from 'src/libs/ev'
 import { observer } from 'mobx-react-lite'
 
-export default observer(function StatisticMIdHeader () {
+export default observer(function StatisticMIdHeader() {
   const [title, setTitle] = useState(() => {
     let deptName = authStore.selectedDeptName || ''
     statisticViewModel.deptName = deptName
@@ -46,7 +46,7 @@ const Con = styled.div`
     margin: 0 auto;
     width: 510px;
     height: 29px;
-    font-size: 21px;
+    font-size: 21px !important;
     font-family: PingFangSC-Medium;
     font-weight: bold;
     color: rgba(51, 51, 51, 1);

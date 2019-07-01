@@ -93,9 +93,8 @@ export default function BaseTable(props: Props) {
             tip.id = 'tip'
             tip.innerHTML = option.tip
             try {
-            tableRef!.current!.querySelector('.ant-table-body').append(tip)
-            }
-            catch (error) {}
+              tableRef!.current!.querySelector('.ant-table-body').append(tip)
+            } catch (error) {}
           }
         }
       }, 100)
@@ -129,12 +128,13 @@ const Wrapper = styled.div`
       height: 30px !important;
       font-size: 14px !important;
       font-weight: bold;
+      padding: 0 !important;
     }
     td {
+      box-sizing: border-box;
       /* padding: 0 8px !important; */
       font-size: 13px !important;
       padding: 0 !important;
-      box-sizing: border-box;
       /* font-weight: 600; */
       height: ${(p) => p.theme.$tableRowHeight} !important;
     }

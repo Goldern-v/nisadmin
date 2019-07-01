@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
-    align: 'center'
+    align: 'center',
+    width: 200
   },
   {
     title: '压疮病例数',
     dataIndex: 'pu_cases',
     key: '压疮病例数',
+    width: 200,
     align: 'center'
   },
   {
     title: '同期患者数',
     dataIndex: 'patient_count',
     key: '同期患者数',
+    width: 200,
     align: 'center'
   },
   {
     title: '压疮发生率(%)',
     dataIndex: 'pu_ratio',
     key: '压疮发生率(%)',
+    // width: 180,
     align: 'center'
   }
 ]

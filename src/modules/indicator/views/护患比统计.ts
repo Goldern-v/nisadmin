@@ -12,74 +12,86 @@ const columns: any = [
     dataIndex: 'wardName',
     align: 'center',
     key: '护理单元',
-    width: 180
+    width: 160
   },
   {
     title: 'A班',
+    // width: 210,
     children: [
       {
         title: '患者数',
         dataIndex: 'patientCount_A',
         align: 'center',
-        key: 'A班患者数'
+        key: 'A班患者数',
+        width: 70
       },
       {
         title: '护士数',
         dataIndex: 'nurseCount_A',
         align: 'center',
-        key: 'A班护士数'
+        key: 'A班护士数',
+        width: 70
       },
       {
         title: '护患比',
         dataIndex: 'pNRatio_A',
         align: 'center',
-        key: 'A班护患比'
+        key: 'A班护患比',
+        width: 70
       }
     ]
   },
   {
     title: 'P班',
+    // width: 210,
     children: [
       {
         title: '患者数',
         dataIndex: 'patientCount_P',
         align: 'center',
-        key: 'P班患者数'
+        key: 'P班患者数',
+        width: 70
       },
       {
         title: '护士数',
         dataIndex: 'nurseCount_P',
         align: 'center',
-        key: 'P班护士数'
+        key: 'P班护士数',
+        width: 70
       },
       {
         title: '护患比',
         dataIndex: 'pNRatio_P',
         align: 'center',
-        key: 'P班护患比'
+        key: 'P班护患比',
+        width: 70
       }
     ]
   },
   {
     title: 'N班',
+    // width: 210,
     children: [
       {
         title: '患者数',
         dataIndex: 'patientCount_N',
         align: 'center',
-        key: 'N班患者数'
+        key: 'N班患者数',
+        width: 70
       },
       {
         title: '护士数',
         dataIndex: 'nurseCount_N',
         align: 'center',
-        key: 'N班护士数'
+        key: 'N班护士数',
+        width: 70
       },
       {
         title: '护患比',
         dataIndex: 'pNRatio_N',
         align: 'center',
-        key: 'N班护患比'
+        key: 'N班护患比',
+        width: 70
       }
     ]
   },

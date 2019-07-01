@@ -11,14 +11,15 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
-    width: 150
+    align: 'center',
+    width: 180
   },
 
   {
     title: '统计周期天数',
     dataIndex: 'statPeriod',
     key: '统计周期天数',
-    width: 120,
+    width: 110,
     align: 'center'
   },
   {
@@ -26,34 +27,34 @@ const columns: any = [
     dataIndex: 'tNurShifts',
     key: '累计护理班次',
     align: 'center',
-    width: 120
+    width: 110
   },
   {
     title: '累计护理时数',
     dataIndex: 'tNurHours',
     key: '累计护理时数',
-    width: 120,
+    width: 110,
     align: 'center'
   },
   {
     title: '累计收治患者人次',
     dataIndex: 'tReceivePatients',
     key: '累计收治患者人次',
-    width: 120,
+    width: 110,
     align: 'center'
   },
   {
     title: '平均每天护理时数',
     dataIndex: 'avgNurHours',
     key: '平均每天护理时数',
-    width: 120,
+    width: 110,
     align: 'center'
   },
   {
     title: '平均每天住院患者',
     dataIndex: 'avgPatientCount',
     key: '平均每天住院患者',
-    width: 120,
+    width: 110,
     align: 'center'
   },
   {
