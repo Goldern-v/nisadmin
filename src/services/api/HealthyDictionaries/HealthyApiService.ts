@@ -36,6 +36,8 @@ export default class HomeApiServices extends BaseApiService {
   // 4.获取自动推送事件类型列表
   public async getAutomatic (data: any) {
     const postData = {
+      pageSize: data.pageSize,
+      pageIndex: data.pageIndex,
       wardCode: data.wardCode, // string 必须参数 科室编码
     }
     return this.post(`/educationSettingEvent/getEducationSettingEventList`, qs.stringify(postData))
@@ -93,6 +95,8 @@ export default class HomeApiServices extends BaseApiService {
   // 10.自动推送手术类型列表
   public async getPushList1 (data: any) {
     const postData = {
+      pageSize: data.pageSize,
+      pageIndex: data.pageIndex,
       wardCode: data.wardCode, // string 必须参数 科室编码
     }
     return this.post(`/educationSettingOperation/getEducationSettingOperationList`, qs.stringify(postData))
@@ -124,6 +128,8 @@ export default class HomeApiServices extends BaseApiService {
   // 13.自动推送医嘱类型列表)
   public async getPushList2 (data: any) {
     const postData = {
+      pageSize: data.pageSize,
+      pageIndex: data.pageIndex,
       wardCode: data.wardCode, // string 必须参数 科室编码
     }
     return this.post(`/educationSettingOrder/getEducationSettingOrderList`, qs.stringify(postData))

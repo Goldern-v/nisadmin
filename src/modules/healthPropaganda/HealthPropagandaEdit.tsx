@@ -163,14 +163,22 @@ export default withRouter(
     }, [])
 
     const handleDeptSelect = (code: any) => {
-      authStore.deptList.map((item: any) => {
-        if (item.code == code)
-          setParams({
-            ...params,
-            deptCode: code,
-            deptName: item.name
-          })
-      })
+      if (code == '000000') {
+        setParams({
+          ...params,
+          deptCode: code,
+          deptName: '公共'
+        })
+      } else {
+        authStore.deptList.map((item: any) => {
+          if (item.code == code)
+            setParams({
+              ...params,
+              deptCode: code,
+              deptName: item.name
+            })
+        })
+      }
     }
 
     const handleTypeChange = (type: any) => {
@@ -245,7 +253,9 @@ export default withRouter(
       })
     }
 
-    const sizeBase = 23.4375
+    let publicUse = params.publicUse
+    if (!params.deptCode || params.deptCode == '000000') publicUse = '1'
+    else publicUse = '0'
 
     // 定义输入转换函数
     const unitImportFn = (unit: any, type: any, source: any) => {
@@ -304,7 +314,7 @@ export default withRouter(
           <span>
             <Input value={params.name} onChange={(e: any) => setParams({ ...params, name: e.target.value })} />
           </span>
-          <span className='title'>科室:</span>
+          <span className='title'>科室权限:</span>
           <span>
             <Select
               className='dept-select'
@@ -312,6 +322,7 @@ export default withRouter(
               onChange={handleDeptSelect}
               defaultValue={params.deptCode}
             >
+              <Option value='000000'>公共</Option>
               {authStore.deptList.map((item: any) => (
                 <Option value={item.code} key={item.code}>
                   {item.name}
