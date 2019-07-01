@@ -162,25 +162,6 @@ export default withRouter(
       }
     }, [])
 
-<<<<<<< HEAD
-  const handleDeptSelect = (code: any) => {
-    if (code == '') {
-      setParams({
-        ...params,
-        deptCode: '',
-        deptName: ''
-      });
-    } else {
-      authStore.deptList.map((item: any) => {
-        if (item.code == code) setParams({
-          ...params,
-          deptCode: code,
-          deptName: item.name
-        });
-      })
-    }
-  }
-=======
     const handleDeptSelect = (code: any) => {
       authStore.deptList.map((item: any) => {
         if (item.code == code)
@@ -191,7 +172,6 @@ export default withRouter(
           })
       })
     }
->>>>>>> ui
 
     const handleTypeChange = (type: any) => {
       for (let i = 0; i < typeList.length; i++) {
@@ -204,15 +184,9 @@ export default withRouter(
       }
     }
 
-<<<<<<< HEAD
-  const saveEdit = () => {
-    let content = editorState.toHTML();
-    if (content == '' || content == '<p></p>') return Message.error('请输入宣教内容');
-    // if (!params.deptCode) return Message.error('请选择科室');
-    if (params.name == '') return Message.error('请输入宣教名称');
-=======
     const saveEdit = () => {
       let content = editorState.toHTML()
+      if (content == '' || content == '<p></p>') return Message.error('请输入宣教内容')
       if (content == '' || content == '<p></p>') return Message.error('请输入宣教内容')
       if (!params.deptCode) return Message.error('请选择科室')
       if (params.name == '') return Message.error('请输入宣教名称')
@@ -220,7 +194,6 @@ export default withRouter(
       let creatDate = Moment().format('YYYY-MM-DD HH:mm:ss')
       // let creatorName = params.creatorName;
       // let creator = params.creator;
->>>>>>> ui
 
       // let user = authStore.user;
       // if (user) {
@@ -274,28 +247,12 @@ export default withRouter(
 
     const sizeBase = 23.4375
 
-<<<<<<< HEAD
-  const handleCancel = () => {
-    Modal.confirm({
-      title: '提示',
-      content: '是否取消编辑',
-      okText: '确定',
-      okType: 'danger',
-      centered: true,
-      cancelText: '取消',
-      onOk: () => {
-        history.goBack();
-      }
-    })
-  }
-=======
     // 定义输入转换函数
     const unitImportFn = (unit: any, type: any, source: any) => {
       // type为单位类型，例如font-size等
       // source为输入来源，可能值为create或paste
 
       // 此函数的返回结果，需要过滤掉单位，只返回数值
->>>>>>> ui
 
       return parseFloat(unit)
     }
@@ -341,34 +298,6 @@ export default withRouter(
           </Button>
         </Button.Group>
       </div> */}
-<<<<<<< HEAD
-    </div>
-    <div className="bottom">
-      <span className="title">宣教名称:</span>
-      <span>
-        <Input value={params.name} onChange={(e: any) => setParams({ ...params, name: e.target.value })} />
-      </span>
-      <span className="title">科室权限:</span>
-      <span>
-        <Select className="dept-select" value={params.deptCode} onChange={handleDeptSelect} defaultValue={params.deptCode}>
-          <Option value="">公共</Option>
-          {authStore.deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
-        </Select>
-      </span>
-      <span className="title">类别:</span>
-      <span>
-        <Select className="type-select" onChange={handleTypeChange} value={params.type}>
-          {typeList.map((item: any) => <Option value={item.type} key={item.id}>{item.type}</Option>)}
-        </Select>
-      </span>
-      <span className="float-right">
-        <Button onClick={saveEdit} type="primary">保存</Button>
-        <Button onClick={handleCancel}>取消</Button>
-      </span>
-    </div>
-  </Wrapper>
-}))
-=======
         </div>
         <div className='bottom'>
           <span className='title'>宣教名称:</span>
@@ -411,7 +340,6 @@ export default withRouter(
     )
   })
 )
->>>>>>> ui
 
 const Wrapper = styled.div`
   position: absolute;
@@ -525,7 +453,7 @@ const Wrapper = styled.div`
       margin-top: -46px;
       background: #fff;
       padding-left: 80px;
-      // padding-right: 192px;
+      /* padding-right: 192px; */
       .bf-font-size-dropdown,
       .headings-dropdown {
         min-width: auto;
