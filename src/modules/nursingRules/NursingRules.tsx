@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
-import { Input, Button, message as Message, Select, Modal } from 'antd'
+import { Input, Button, message as Message, Select, Modal, Pagination } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 
 import NewNursingRulesAddModal from './components/NewNursingRulesAddModal'
 import PreviewModal from './components/PreviewModal'
-import CustomPagination from './components/CustomPagination';
+// import CustomPagination from './components/CustomPagination';
 
 import NursingRulesApiService from './api/NursingRulesApiService'
 import createModal from 'src/libs/createModal'
@@ -28,7 +28,7 @@ export default class NursingRules extends Component<Props> {
       pageSize: 10,
       fileType: ''
     },
-    dataTotal: 149,
+    dataTotal: 0,
     newRuleModalgVisible: false,
     preview: {
       url: '',
@@ -192,7 +192,7 @@ export default class NursingRules extends Component<Props> {
     });
   }
 
-  handlePageSizeChange(size: number) {
+  handlePageSizeChange(page: number, size: number) {
     let { query } = this.state;
     this.setState({
       query: {
@@ -337,12 +337,23 @@ export default class NursingRules extends Component<Props> {
           spaceRowNumber={query.pageSize}
           loading={tableLoading}
           type={['spaceRow']} surplusHeight={215} />
-        <CustomPagination
+        <div className="custom-pagination">
+          <Pagination
+            pageSizeOptions={['10', '20', '30', '40', '50']}
+            onShowSizeChange={this.handlePageSizeChange.bind(this)}
+            onChange={this.handlePageChange.bind(this)}
+            total={dataTotal}
+            showSizeChanger
+            showQuickJumper
+            pageSize={query.pageSize}
+            current={query.pageIndex} />
+        </div>
+        {/* <CustomPagination
           onChange={this.handlePageChange.bind(this)}
           onShowSizeChange={this.handlePageSizeChange.bind(this)}
           page={query.pageIndex}
           size={query.pageSize}
-          total={dataTotal} />
+          total={dataTotal} /> */}
       </div>
       <NewNursingRulesAddModal
         fileTypeList={typeList}
@@ -438,9 +449,13 @@ const Contain = styled.div`
     }
     .custom-pagination{
       position: absolute;
+      padding: 10px 15px;
       bottom:0;
       left: 0;
       right: 0;
+      .ant-pagination {
+        float: right;
+      }
     }
   }
 `
