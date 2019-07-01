@@ -122,7 +122,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }, [query])
 
   useEffect(() => {
-    setTimeout(() => {
+    let timeout = setTimeout(() => {
       let contentEl = document.querySelector('.left .content') as HTMLElement;
       let targetEl = document.getElementById(`dept${query.deptCode}`);
       if (targetEl && contentEl) {
@@ -133,7 +133,10 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
         // console.log('010', itemTop, contentHeight / 2)
         contentEl.scrollTo({ left: 0, top: scrollTop })
       }
-    }, 100)
+    }, 100);
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [authStore.deptList])
 
   const getTableData = (newQuery?: any) => {
@@ -266,8 +269,8 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
         <div className="title">科室</div>
         <div className="content">
           <div
-            className={query.deptCode == '' ? 'dept-item selected' : 'dept-item'}
-            onClick={() => handleDeptSelect({ code: '' })}>
+            className={query.deptCode == '000000' ? 'dept-item selected' : 'dept-item'}
+            onClick={() => handleDeptSelect({ code: '000000' })}>
             <span className="before" />公共<span className="after" />
           </div>
           {authStore.deptList.map((item: any) => {

@@ -140,11 +140,11 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
   }, [])
 
   const handleDeptSelect = (code: any) => {
-    if (code == '') {
+    if (code == '000000') {
       setParams({
         ...params,
-        deptCode: '',
-        deptName: ''
+        deptCode: code,
+        deptName: '公共'
       });
     } else {
       authStore.deptList.map((item: any) => {
@@ -193,7 +193,7 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
     }
 
     let publicUse = params.publicUse;
-    if (!params.deptCode)
+    if (!params.deptCode || params.deptCode == "000000")
       publicUse = "1"
     else
       publicUse = "0"
@@ -261,7 +261,7 @@ export default withRouter(observer(function HealthPropagandaEdit(props: any) {
       <span className="title">科室权限:</span>
       <span>
         <Select className="dept-select" value={params.deptCode} onChange={handleDeptSelect} defaultValue={params.deptCode}>
-          <Option value="">公共</Option>
+          <Option value="000000">公共</Option>
           {authStore.deptList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
       </span>
