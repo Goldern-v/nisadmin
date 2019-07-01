@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
-import { Input, Button, message as Message, Table } from 'antd'
+import { Input, Button, message as Message, Select, Modal } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
@@ -11,6 +11,7 @@ import CustomPagination from './components/CustomPagination';
 
 import NursingRulesApiService from './api/NursingRulesApiService'
 import createModal from 'src/libs/createModal'
+import Item from 'antd/lib/list/Item';
 
 const api = new NursingRulesApiService();
 
@@ -24,7 +25,8 @@ export default class NursingRules extends Component<Props> {
     query: {
       name: '',
       pageIndex: 1,
-      pageSize: 10
+      pageSize: 10,
+      fileType: ''
     },
     dataTotal: 149,
     newRuleModalgVisible: false,
@@ -33,7 +35,8 @@ export default class NursingRules extends Component<Props> {
       type: '',
       title: ''
     },
-    tableLoading: false
+    tableLoading: false,
+    typeList: [] as any
   }
 
   constructor(props: Props) {
@@ -45,7 +48,11 @@ export default class NursingRules extends Component<Props> {
   }
 
   componentDidMount() {
-    this.setTableData();
+    api.getType().then(res => {
+      if (res.data instanceof Array) this.setState({ typeList: res.data });
+    });
+
+    this.setTableData()
   }
 
   setTableData() {
@@ -151,14 +158,25 @@ export default class NursingRules extends Component<Props> {
 
   handleDelete(record: any) {
     // console.log(record)
-    api
-      .deleteFile({ id: record.id })
-      .then(res => {
-        Message.success(`文件 ${record.fileName} 删除成功`);
-        this.setTableData();
-      }, err => {
-        Message.error(`文件 ${record.fileName} 删除失败`);
-      })
+    Modal.confirm({
+      title: '提示',
+      content: '是否删除该护理制度?',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      onOk: () => {
+        api
+          .deleteFile({ id: record.id })
+          .then(res => {
+            Message.success(`文件 ${record.fileName} 删除成功`);
+            this.setTableData();
+          }, err => {
+            Message.error(`文件 ${record.fileName} 删除失败`);
+          })
+      }
+    })
+
   }
 
   handlePageChange(page: number) {
@@ -217,8 +235,12 @@ export default class NursingRules extends Component<Props> {
     return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
   }
 
+  handleFileTypeChange(fileType: any) {
+    this.setState({ query: { ...this.state.query, fileType } })
+  }
+
   render() {
-    const { query, data, dataTotal, newRuleModalgVisible, preview, tableLoading } = this.state;
+    const { query, data, dataTotal, newRuleModalgVisible, preview, tableLoading, typeList } = this.state;
     const rulesColumns: ColumnProps<any>[] = [
       {
         title: '序号',
@@ -234,9 +256,10 @@ export default class NursingRules extends Component<Props> {
         title: '制度名称',
         dataIndex: 'name',
         key: 'name',
-        align: 'center',
+        className: 'align-left',
+        align: 'left',
         render: (text: string) => {
-          return <span style={{ wordBreak: 'break-all' }}>{text}</span>
+          return <div className="rule-name" title={text}>{text}</div>
         }
       }, {
         title: '大小',
@@ -260,7 +283,8 @@ export default class NursingRules extends Component<Props> {
         title: '权限',
         dataIndex: 'deptName',
         key: 'deptName',
-        align: 'center',
+        className: 'align-left',
+        align: 'left',
         width: 150
       }, {
         title: '上传时间',
@@ -287,6 +311,13 @@ export default class NursingRules extends Component<Props> {
       <div className="topbar">
         <div className="title">护理制度</div>
         <div className="float-right">
+          <span className="type-label">护理类型：</span>
+          <span className="type-content">
+            <Select defaultValue={query.fileType} value={query.fileType} onChange={this.handleFileTypeChange.bind(this)}>
+              <Select.Option value="">全部</Select.Option>
+              {typeList.map((item: any) => <Select.Option value={item.type} key={item.id}>{item.type}</Select.Option>)}
+            </Select>
+          </span>
           <span className="search-input">
             <Input
               value={query.name}
@@ -305,7 +336,7 @@ export default class NursingRules extends Component<Props> {
           pagination={false}
           spaceRowNumber={query.pageSize}
           loading={tableLoading}
-          type={['spaceRow']} surplusHeight={250} />
+          type={['spaceRow']} surplusHeight={215} />
         <CustomPagination
           onChange={this.handlePageChange.bind(this)}
           onShowSizeChange={this.handlePageSizeChange.bind(this)}
@@ -314,6 +345,7 @@ export default class NursingRules extends Component<Props> {
           total={dataTotal} />
       </div>
       <NewNursingRulesAddModal
+        fileTypeList={typeList}
         onOk={this.handleModalOk.bind(this)}
         onCancel={this.handleModalCancel.bind(this)}
         visible={newRuleModalgVisible} />
@@ -352,6 +384,19 @@ const Contain = styled.div`
         vertical-align: middle;
       }
     }
+    .type-label{
+      margin-right:5px;
+      vertical-align: middle;
+    }
+    .type-content{
+      .ant-select{
+        vertical-align: middle;
+      }
+      margin-right:15px;
+      .ant-select-selection{
+        min-width: 150px;
+      }
+    }
   }
   .main-contain{
     position: absolute;
@@ -360,6 +405,23 @@ const Contain = styled.div`
     right: 15px;
     bottom: 10px;
     background: #fff;
+    td{
+      position: relative;
+      &.align-left{
+        padding-left: 15px;
+      }
+      div.rule-name{
+        position: absolute;
+        left: 15px;
+        right: 15px;
+        line-height: 30px;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap
+      }
+    }
     .operate-text{
       margin-right:5px;
       cursor: pointer;

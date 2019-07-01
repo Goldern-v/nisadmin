@@ -10,12 +10,13 @@ const api = new NursingRulesApiService();
 export interface Props {
   visible: boolean,
   onOk: any,
-  onCancel: any
+  onCancel: any,
+  fileTypeList: any
 }
 
 export default function NewNursingRulesAddModal(props: Props) {
   const refForm = React.createRef<Form>();
-  const { visible, onOk, onCancel } = props;
+  const { visible, onOk, onCancel, fileTypeList } = props;
   const [deptList, setDeptList] = useState(authStore.deptList);
   const [deptCode, setDeptCode] = useState('公共');
   const [empNo, setEmpNo] = useState();
@@ -30,8 +31,19 @@ export default function NewNursingRulesAddModal(props: Props) {
     let nameEL = document.querySelector('.new-nursing-rules-add-modal .file-name') as HTMLInputElement;
 
     let fName = target.value.split('\\');
+    fName = fName[fName.length - 1];
+    nameEL.value = fName;
 
-    nameEL.value = fName[fName.length - 1];
+    let current = refForm.current;
+    if (current) {
+      let institutionName = current.getField('institutionName');
+      if (!institutionName) {
+        let newName = fName.split('.');
+        if (newName.length >= 2) newName.pop();
+
+        current.setField('institutionName', newName.join('.'));
+      }
+    }
   }
 
   const handleSelect = (code: any) => {
@@ -40,8 +52,8 @@ export default function NewNursingRulesAddModal(props: Props) {
 
   useEffect((): void => {
     if (deptList.length <= 0) setDeptList(authStore.deptList);
-    if(authStore.getUser())setEmpNo(authStore.getUser().empNo);
-    
+    if (authStore.getUser()) setEmpNo(authStore.getUser().empNo);
+
     if (visible) {
       let nameEL = document.querySelector('.new-nursing-rules-add-modal .file-name') as HTMLInputElement;
       if (nameEL && nameEL.value) nameEL.value = "";
@@ -62,10 +74,13 @@ export default function NewNursingRulesAddModal(props: Props) {
       if (!formData.institutionName)
         return Message.error('未填写制度名称');
 
+      if (!formData.fileType)
+        return Message.error('未选择护理类型');
+
       if (file && nameEl.value) {
         let data = new FormData();
         let publicUse = 0;
-        if (!formData.deptCode || formData.deptCode == '公共')
+        if (!formData.deptCode || formData.deptCode == '公共' || formData.deptCode == '000000')
           publicUse = 1;
 
         data.append('publicUse', publicUse.toString());
@@ -115,7 +130,7 @@ export default function NewNursingRulesAddModal(props: Props) {
                 <Select
                   value={deptCode}
                   onSelect={handleSelect}>
-                  <Select.Option key={'公共'} value={'公共'}>公共</Select.Option>
+                  <Select.Option value={'000000'}>公共</Select.Option>
                   {deptList.map((item: any, index: number) => {
                     return <Select.Option key={index} value={item.code}>
                       {item.name}
@@ -127,6 +142,18 @@ export default function NewNursingRulesAddModal(props: Props) {
           </span>
         </div>
         <div className="row">
+          <span className="label">护理类型:</span>
+          <div className="content">
+            <div className="ipt">
+              <Form.Field name="fileType">
+                <Select>
+                  {fileTypeList.map((item: any) => <Select.Option value={item.type} key={item.id}>{item.type}</Select.Option>)}
+                </Select>
+              </Form.Field>
+            </div>
+          </div>
+        </div>
+        <div className="row">
           <span className="label">附件:</span>
           <span className="content">
             <input readOnly className="ipt ant-input file-name" />
@@ -135,7 +162,7 @@ export default function NewNursingRulesAddModal(props: Props) {
               <Input
                 type="file"
                 className="file-content"
-                accept="image/png,image/gif,image/jpeg,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf"
+                accept="image/png,image/gif,image/jpeg,application/msword,.doc,.docx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf"
                 onChange={handleImportFileChange} />
             </span>
           </span>
