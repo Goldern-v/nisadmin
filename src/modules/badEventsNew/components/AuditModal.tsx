@@ -377,7 +377,7 @@ const Wrapper = styled.div`
     margin：0 auto;
   }
   .dept-select{
-    width: 190px;
+    width: 220px;
   }
 }
 .form2{

@@ -235,7 +235,7 @@ export default observer(function BaseInfo () {
           </tbody>
         </InfoTable>
         <ZyzsCon>
-          <span>职业证书：</span>
+          <span>执业证书图片：</span>
           {info.zyzsUrl ? (
             <Zimage src={info.zyzsUrl} alt='' />
           ) : (

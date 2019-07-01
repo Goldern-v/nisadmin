@@ -31,7 +31,7 @@ const rules: Rules = {
   // urlImageTwo: (val) => !!val || '毕业证',
   // urlImageOne: (val) => !!val || '学位证'
 }
-export default function EditWorkHistoryModal (props: Props) {
+export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
   const [pathImgGraduate, setPathImgGraduate] = useState('')
@@ -179,12 +179,12 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`毕业证`} name='urlImageTwo'>
+            <Form.Field label={`毕业证`} name='urlImageOne'>
               <ImageUploader upload={uploadCardGraduate} text='添加毕业证' />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学位证`} name='urlImageOne'>
+            <Form.Field label={`学位证`} name='urlImageTwo'>
               <ImageUploader upload={uploadCardDegree} text='添加学位证' />
             </Form.Field>
           </Col>

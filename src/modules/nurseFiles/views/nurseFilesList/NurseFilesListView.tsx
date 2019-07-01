@@ -122,7 +122,7 @@ const columns: ColumnProps<any>[] = [
     align: 'center'
   },
   {
-    title: '职业证书编号',
+    title: '执业证书编号',
     dataIndex: 'zyzsNumber',
     key: 'zyzsNumber',
     width: 120,

@@ -50,6 +50,7 @@ export default function UserCheckModal(props: Props) {
         <Col span={6} className="label-col">用户名：</Col>
         <Col span={18}>
           <Input
+            autoComplete="off"
             className="input-item"
             value={userAudit.empNo}
             onChange={e => setUserAudit({ ...userAudit, empNo: e.target.value })} />
@@ -59,6 +60,7 @@ export default function UserCheckModal(props: Props) {
         <Col span={6} className="label-col">密码：</Col>
         <Col span={18}>
           <Input
+            autoComplete="new-password"
             className="input-item"
             type="password"
             value={userAudit.password}
@@ -72,6 +74,9 @@ export default function UserCheckModal(props: Props) {
 const Wrapper = styled.div`
 .ant-row{
   margin-bottom: 10px;
+}
+.label-col{
+  line-height: 32px;
 }
 .input-item{
   width: 240px;
