@@ -409,7 +409,7 @@ class EditableTable extends React.Component<any, any> {
             <Select
               showSearch
               value={this.state.missionId}
-              style={{ width: '85%'}}
+              style={{ width: '72%'}}
               defaultActiveFirstOption={false}
               showArrow={false}
               loading={this.state.loading}
@@ -424,7 +424,7 @@ class EditableTable extends React.Component<any, any> {
           </div>
           <div className="category" style={{marginTop: '40px'}}>
           <SpanOne>手术名称:</SpanOne>
-          <Input defaultValue="" style={{ width: '85%'}}
+          <Input defaultValue="" style={{ width: '72%'}}
             value={this.state.operation}
             onChange={e => { this.setState({ operation: e.target.value }) }}/>
           </div>
@@ -438,7 +438,7 @@ class EditableTable extends React.Component<any, any> {
 
           <div className="category" style={{marginTop: '40px', marginBottom:'30px'}}>
           <SpanOne>推送类型：</SpanOne>
-          <Select value={this.state.messageType} onChange={value => this.setState({ messageType: value }) } showSearch style={{ width: '85%' }} placeholder='选择类型'>
+          <Select value={this.state.messageType} onChange={value => this.setState({ messageType: value }) } showSearch style={{ width: '72%' }} placeholder='选择类型'>
             {this.state.selectData.map((item: any) => (
               <Select.Option value={item.messageCode} key={item.messageCode}>
                 {item.messageName}
@@ -458,6 +458,7 @@ const SpanOne = styled.span`
 display:inline-block;
 width:75px;
 text-align:justify;
+margin-left: 35px;
   span{
     margin-right:28px;
   }

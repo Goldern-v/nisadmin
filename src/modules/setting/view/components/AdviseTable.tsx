@@ -92,7 +92,7 @@ class EditableTable extends React.Component<any, any> {
       {
         title: '推送宣教',
         dataIndex: 'educationName',
-        width: '22%',
+        width: '25%',
         render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
         overflow:'hidden',
         whiteSpace: 'nowrap',
@@ -380,7 +380,7 @@ class EditableTable extends React.Component<any, any> {
           <Select
             showSearch
             value={this.state.missionId}
-            style={{ width: '85%' }}
+            style={{ width: '72%' }}
             placeholder='输入名称进行检索'
             defaultActiveFirstOption={false}
             showArrow={false}
@@ -397,7 +397,7 @@ class EditableTable extends React.Component<any, any> {
             <SpanOne>医嘱内容：</SpanOne>
             <Input
               value={this.state.orderText}
-              style={{ width: '85%' }}
+              style={{ width: '72%' }}
               onChange={(e) => {
                 this.setState({ orderText: e.target.value })
               }}
@@ -410,7 +410,7 @@ class EditableTable extends React.Component<any, any> {
               value={this.state.messageType}
               onChange={(value) => this.setState({ messageType: value })}
               showSearch
-              style={{ width: '85%' }}
+              style={{ width: '72%' }}
               placeholder='选择类型'
             >
               {this.state.selectData1.map((item: any) => (
@@ -431,6 +431,7 @@ const SpanOne = styled.span`
 display:inline-block;
 width:75px;
 text-align:justify;
+margin-left: 35px;
   span{
     margin-right:28px;
   }
