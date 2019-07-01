@@ -66,8 +66,7 @@ const ROUTE_LIST: any = [
     // keys: ['实际开放床位数', '实际配备护士数'],
     keys: ['actualOpenBeds', 'actualNurseCount'],
     gName: 'wardName',
-    lineKey: 'actualBedNurseRatio',
-
+    lineKey: '实际床护比',
     dictionary: {
       actualOpenBeds: '实际开放床位数',
       actualNurseCount: '实际配备护士数',
@@ -81,9 +80,19 @@ const ROUTE_LIST: any = [
     name: '护患比统计',
     columns: 护患比统计.columns,
     dataSource: [] || 护患比统计.dataSource,
-    keys: ['患者数', '护士数'],
-    gName: '护理单元',
-    lineKey: '每天平均护患比',
+    // keys: ['患者数', '护士数'],
+    // gName: '护理单元',
+    // lineKey: '每天平均护患比',
+    keys: ['actualOpenBeds', 'actualNurseCount'],
+    gName: 'wardName',
+    lineKey: 'actualBedNurseRatio',
+    dictionary: {
+      actualOpenBeds: '实际开放床位数',
+      actualNurseCount: '实际配备护士数',
+      actualBedNurseRatio: '实际床护比',
+      wardName: '护理单元'
+    },
+    widthChar: '250%',
     serviceName: 'nationalIndex/getPatientNurseRatio'
   },
   {

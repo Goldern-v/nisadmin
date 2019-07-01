@@ -54,15 +54,16 @@ export default function BaseChart(props: Props) {
         <Tooltip />
         <Axis />
         <Legend />
-        {/* <Legend
+        <Legend
           custom
           allowAllCanceled
           items={[{ value: 'people', marker: { symbol: 'hyphen', stroke: '#fdae6b', radius: 5, lineWidth: 3 } }]}
-        /> */}
+        />
         <Bar position='key*value' color='name' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
-        {props.lineKey && <SmoothLine position={'key*' + props.lineKey} color='#fdae6b' size={3} />}
-        {props.lineKey && <Point shape='circle' position={'key*' + props.lineKey} color='#fdae6b' size={3} />}
+        {props.lineKey && <Line position={'key*' + props.lineKey} color='#fdae6b' size={3} />}
+        {/* {props.lineKey && <Point shape='circle' position={'key*' + props.lineKey} color='#fdae6b' size={3} />} */}
       </Chart>
+      {props.lineKey}
       <LegendLine>{props.lineKey}</LegendLine>
     </Wrapper>
   )
