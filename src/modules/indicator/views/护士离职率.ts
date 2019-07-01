@@ -95,9 +95,8 @@ const columns: any = [
     title: '离职率(%)',
     dataIndex: 'resign_ratio',
     key: '离职率(%)',
-    // width: 100,
-    align: 'center'
-    // width: 100
+    align: 'center',
+    width: 100
   }
 ]
 
