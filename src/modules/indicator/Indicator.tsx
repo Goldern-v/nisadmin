@@ -217,7 +217,7 @@ const ROUTE_LIST: any = [
     name: '导管相关血液感染发生率',
     columns: 导管相关血液感染发生率.columns,
     dataSource: [] || 导管相关血液感染发生率.dataSource,
-    keys: ['插管总日数', '感染人数'],
+    keys: 'getCrbsiRatio',
     gName: '护理单元',
     lineKey: '发生率(%)',
     serviceName: 'cnqIndex/getCrbsiRatio'
@@ -226,7 +226,7 @@ const ROUTE_LIST: any = [
     name: '导尿管相关尿路感染发生率',
     columns: 导尿管相关尿路感染发生率.columns,
     dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
-    keys: ['插管总日数', '感染人数'],
+    keys: 'getCautiRatio',
     gName: '护理单元',
     lineKey: '发生率(%)',
     serviceName: 'cnqIndex/getCautiRatio'
