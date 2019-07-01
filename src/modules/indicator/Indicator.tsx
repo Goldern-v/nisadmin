@@ -164,10 +164,10 @@ const ROUTE_LIST: any = [
     name: '中心导管相关血流感染发生率',
     columns: 中心导管相关血流感染发生率.columns,
     dataSource: [] || 中心导管相关血流感染发生率.dataSource,
-    keys: ['感染例数', '插管例数'],
+    keys: 'getCrbsiRatio',
     gName: '护理单元',
     lineKey: '发生率',
-    serviceName: 'nationalIndex/getClabsiRatio'
+    serviceName: 'nationalIndex/getCrbsiRatio'
   },
   {
     name: '呼吸机相关性肺炎发生率',

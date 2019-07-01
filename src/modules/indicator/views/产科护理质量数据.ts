@@ -11,12 +11,14 @@ const columns: any = [
     title: '统计项目',
     dataIndex: 'statItem',
     key: '统计项目',
+    width: 200,
     align: 'center'
   },
   {
     title: '人数',
     dataIndex: 'value',
     key: '人数',
+    width: 100,
     align: 'center'
   }
 ]

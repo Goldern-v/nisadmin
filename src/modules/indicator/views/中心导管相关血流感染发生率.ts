@@ -11,17 +11,20 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '患者人数',
     dataIndex: 'patient_count',
     key: '患者人数',
+    width: 80,
     align: 'center'
   },
   {
     title: '中心插管例数',
     dataIndex: 'indwelling_case',
+    width: 100,
     key: '插管例数',
     align: 'center'
   },
@@ -29,24 +32,28 @@ const columns: any = [
     title: '中心导管使用率',
     dataIndex: 'indwelling_ratio',
     key: '留置导尿管使用率',
+    width: 100,
     align: 'center'
   },
   {
     title: '感染例数',
     dataIndex: 'infection_case',
     key: '感染例数',
+    width: 80,
     align: 'center'
   },
   {
     title: '留置导管总日数',
     dataIndex: 'indwelling_days',
     key: '留置导尿管总日数',
+    width: 100,
     align: 'center'
   },
   {
     title: '感染率（例/千导管日）',
     dataIndex: 'infection_ratio',
     key: '感染率（例/千导管日）',
+    width: 140,
     align: 'center'
   }
 ]
