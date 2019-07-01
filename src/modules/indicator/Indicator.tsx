@@ -102,7 +102,8 @@ const ROUTE_LIST: any = [
     gName: '护理单元',
     lineKey: '',
     serviceName: 'nationalIndex/getNurseAllocation',
-    surplusHeight: 315
+    surplusHeight: 315,
+    surplusWidth: 260
   },
   {
     name: '护士离职率',
@@ -138,6 +139,7 @@ const ROUTE_LIST: any = [
     keys: ['约束天数', '患者人日数'],
     gName: '护理单元',
     lineKey: '身体约束率(%)',
+    // surplusHeight:'400',
     serviceName: 'nationalIndex/getBrRatio'
   },
   {
@@ -221,9 +223,9 @@ const ROUTE_LIST: any = [
     serviceName: 'cnqIndex/getCrbsiRatio'
   },
   {
-    name: '尿管相关泌尿系感染发生率',
-    columns: 尿管相关泌尿系感染发生率.columns,
-    dataSource: [] || 尿管相关泌尿系感染发生率.dataSource,
+    name: '导尿管相关尿路感染发生率',
+    columns: 导尿管相关尿路感染发生率.columns,
+    dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
     keys: ['插管总日数', '感染人数'],
     gName: '护理单元',
     lineKey: '发生率(%)',
@@ -518,7 +520,7 @@ export default function Indicator(props: Props) {
                   dataSource={currentRoute!.dataSource}
                   columns={currentRoute!.columns}
                   surplusHeight={currentRoute.surplusHeight || 250}
-                  surplusWidth={260}
+                  surplusWidth={currentRoute.surplusWidth || 0}
                 />
               )}
               {showType === '图表' && (

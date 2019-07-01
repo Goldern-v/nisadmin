@@ -4,7 +4,7 @@ const columns: any = [
     dataIndex: 'statItem',
     key: '统计项目',
     align: 'center',
-    width: 180,
+    width: 40,
     colSpan: 2,
     render: (value: any, row: any, index: number) => {
       const obj: any = {
@@ -57,7 +57,7 @@ const columns: any = [
   {
     title: 'item',
     colSpan: 0,
-    width: 100,
+    width: 40,
     dataIndex: 'category',
     render: (value: any, row: any, index: number) => {
       const obj: any = {
@@ -74,21 +74,21 @@ const columns: any = [
     title: '统计周期内离职人数',
     dataIndex: 'resign_count',
     key: '统计周期内离职人数',
-    width: 100,
+    width: 60,
     align: 'center'
   },
   {
     title: '统计周期末在职人数',
     dataIndex: 'payroll_count',
     key: '统计周期末在职人数',
-    width: 100,
+    width: 60,
     align: 'center'
   },
   {
     title: '统计周期末在职人数+统计周期内离职人数',
     dataIndex: 'total_count',
     key: '统计周期末在职人数+统计周期内离职人数',
-    width: 100,
+    width: 60,
     align: 'center'
   },
   {
@@ -96,7 +96,7 @@ const columns: any = [
     dataIndex: 'resign_ratio',
     key: '离职率(%)',
     align: 'center',
-    width: 100
+    width: 60
   }
 ]
 

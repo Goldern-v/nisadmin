@@ -44,8 +44,9 @@ const columns: any = [
   },
   {
     title: 'UEX发生率(例数/置管例数)',
-    dataIndex: 'UEX发生率(例数/置管例数)',
+    dataIndex: 'uex_ratio_bycase',
     key: 'uex_ratio_bycase',
+    width: 180,
     align: 'center'
   }
 ]

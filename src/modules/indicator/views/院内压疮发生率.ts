@@ -32,7 +32,7 @@ const columns: any = [
     title: '压疮发生率(%)',
     dataIndex: 'pu_ratio',
     key: '压疮发生率(%)',
-    // width: 180,
+    width: 200,
     align: 'center'
   }
 ]
