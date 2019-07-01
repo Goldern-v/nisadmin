@@ -518,7 +518,7 @@ export default function Indicator(props: Props) {
                   dataSource={currentRoute!.dataSource}
                   columns={currentRoute!.columns}
                   surplusHeight={currentRoute.surplusHeight || 250}
-                  surplusWidth={300}
+                  surplusWidth={260}
                 />
               )}
               {showType === '图表' && (

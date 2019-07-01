@@ -45,9 +45,7 @@ const columns: any = [
   {
     title: '需补充护士人数',
     dataIndex: 'nurseToReplenish',
-
-    align: 'center',
-    key: '需补充护士人数'
+    width: 140
   }
 ]
 
