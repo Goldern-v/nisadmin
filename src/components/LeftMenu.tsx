@@ -19,8 +19,11 @@ export default function LeftMenu(props: Props) {
   })
   const handleSelect = (e: any) => {
     appStore.history.push(e.key)
-    setOpenKeys(getOpenKeyByPath(props.config, path, []) || [[], []][1])
-    console.log('click ', e)
+    if (e.item.props.level === 1) {
+      setOpenKeys([])
+    }
+
+    // console.log('click ', e)
   }
   const renderMenu = (list: any) => {
     return list
