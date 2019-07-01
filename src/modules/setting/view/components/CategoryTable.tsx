@@ -15,8 +15,8 @@ export interface Props {
 
 export default function AuditsTableDHSZ (props: Props) {
   let [opinion, setOpinion] = useState('')
-  let [messageType, setmessageType] = useState('')
-  let [messageTypeName, setmessageTypeName] = useState('')
+  let [messageType, setMessageType] = useState('')
+  let [messageTypeName, setMessageTypeName] = useState('')
   let [selectData, setSelectData] = useState([])
   const [tableData, setTableData] = useState([])
   const handleOk = () => {
@@ -25,23 +25,43 @@ export default function AuditsTableDHSZ (props: Props) {
       messageType: messageType,
       messageTypeName: messageTypeName
     }
-
     service.healthyApiService.preservationHealthy(data).then((res) => {
       if (res){
         props.setNoShow()
         getMealList()
         setOpinion('')
         message.success('添加成功')
+        setMessageType('')
+        setMessageTypeName('')
       }
     })
   }
+
+  const handleDelete = (record:any) => {
+    console.log(record, '///')
+    Modal.confirm({
+      title: '提示',
+      content: '是否删除该推送宣教?',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      centered:true,
+      onOk: () => {
+        service.healthyApiService.deteleHealthy(record).then((res) => {
+          getMealList()
+          message.success('删除成功')
+        })
+      }
+    })
+  }
+
   const setSelect = (value: any) => {
     selectData.map((item:any) => {
       if (item.messageCode === value) {
-        setmessageTypeName(item.messageName)
+        setMessageTypeName(item.messageName)
       }
     })
-    setmessageType(value)
+    setMessageType(value)
   }
 
   const getMealList = () => {
@@ -84,7 +104,7 @@ export default function AuditsTableDHSZ (props: Props) {
       dataIndex: 'messageTypeName',
       key: 'messageTypeName',
       align: 'center',
-      width: 100
+      width: 70
     },
     {
       title: '操作',
@@ -101,17 +121,9 @@ export default function AuditsTableDHSZ (props: Props) {
           /* margin-left:10px */
         `
         return (
-          <Popconfirm
-            title='确认要删除?'
-            onConfirm={e => {
-              service.healthyApiService.deteleHealthy(record).then((res) => {
-                getMealList()
-                message.success('删除成功')
-              })
-            }}
-          >
-            <a href='javascript:;'>删除</a>
-          </Popconfirm>
+          <div>
+            <a href='javascript:;' onClick={() => handleDelete(record)}>删除</a>
+          </div>
         )
       }
     }
@@ -131,21 +143,23 @@ export default function AuditsTableDHSZ (props: Props) {
         // }}
       />
       <Modal
+        centered={true}
         title="添加类别"
         visible={props.isShow}
         onOk={handleOk}
+        width='600px'
         okText="保存"
         cancelText="返回"
         onCancel={props.setNoShow}
       >
         <div className="category" style={{marginTop: '20px'}}>
           <SpanOne>类别名称:</SpanOne>
-          <Input defaultValue="" style={{ width: '70%'}}
+          <Input value={opinion} defaultValue="" style={{ width: '85%'}}
            onChange={(e) => setOpinion(e.target.value)}/>
         </div>
-        <div className="category" style={{marginTop: '20px',marginBottom: '20px'}}>  
+        <div className="category" style={{marginTop: '30px',marginBottom: '30px'}}>  
         <DivMargin>推送类型:</DivMargin>
-        <Select onChange={(value: any) => setSelect(value)} showSearch style={{ width: '70%' }} placeholder='选择类型'>
+        <Select value={messageType} onChange={(value: any) => setSelect(value)} showSearch style={{ width: '85%' }} placeholder='选择类型'>
           {selectData.map((item: any) => (
             <Select.Option value={item.messageCode} key={item.messageCode}>
               {item.messageName}

@@ -24,7 +24,7 @@ export default observer(function PushAudit(props: Props) {
   const TABS_LIST_NURSE = [
     {
       title: '事件',
-      component: <EventTable isShow={props.isShow}/>
+      component: <EventTable placeholder="input search text" isShow={props.isShow}/>
     },
     {
       title: '医嘱',
