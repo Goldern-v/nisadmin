@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Menu, Icon } from 'antd'
+import { Icon, Menu } from 'antd'
 import { appStore } from 'src/stores'
 import { toJS } from 'mobx'
 
@@ -19,31 +19,46 @@ export default function LeftMenu(props: Props) {
   })
   const handleSelect = (e: any) => {
     appStore.history.push(e.key)
-    console.log('click ', e)
+    if (e.item.props.level === 1) {
+      setOpenKeys([])
+    }
+
+    // console.log('click ', e)
   }
   const renderMenu = (list: any) => {
-    return list.filter((item: any) => {
-      return !item.hide
-    }).map((item: any, index: number) => {
-      if (item.children && item.children.length > 0) {
-        return (
-          <SubMenu
-            key={item.title}
-            title={
+    return list
+      .filter((item: any) => {
+        return !item.hide
+      })
+      .map((item: any, index: number) => {
+        if (item.children && item.children.length > 0) {
+          return (
+            <SubMenu
+              key={item.title}
+              title={
+                <span>
+                  {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
+                  <span>{item.title}</span>
+                </span>
+              }
+            >
+              {renderMenu(item.children)}
+            </SubMenu>
+          )
+        } else {
+          return (
+            <Menu.Item key={item.path}>
               <span>
-                {/* {item.icon && <Icon type='mail' />} */}
-                {item.icon && <MenuIcon src={item.icon} />}
+                {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
                 <span>{item.title}</span>
+                <span className='selected-arrow'>
+                  <img src={require('./images/菜单选中右箭头.png')} alt='' />
+                </span>
               </span>
-            }
-          >
-            {renderMenu(item.children)}
-          </SubMenu>
-        )
-      } else {
-        return <Menu.Item key={item.path}>{item.title}</Menu.Item>
-      }
-    })
+            </Menu.Item>
+          )
+        }
+      })
   }
 
   const getOpenKeyByPath: any = (list: any[], path: string, parentKeys: string[]) => {
@@ -56,11 +71,11 @@ export default function LeftMenu(props: Props) {
         if (currentPath) return currentPath
       } else {
         if (item.path === path) {
-          if(item.hide){
-            for(let j = i;j<list.length; j++){
-              if(!list[j].hide)return [parentKeys, [list[j].path]]
+          if (item.hide) {
+            for (let j = i; j < list.length; j++) {
+              if (!list[j].hide) return [parentKeys, [list[j].path]]
             }
-          }else{
+          } else {
             return [parentKeys, [item.path]]
           }
         }
@@ -68,118 +83,240 @@ export default function LeftMenu(props: Props) {
     }
   }
 
+  const onOpenChange = (openKeys: any) => {
+    setOpenKeys([openKeys[openKeys.length - 1]])
+  }
+
   let path = appStore.match.url
   let [defaultOpenKeys, defaultSelectedKeys] = getOpenKeyByPath(props.config, path, []) || [[], []]
+  const [openKeys, setOpenKeys] = useState(() => {
+    return defaultOpenKeys
+  })
 
   return (
-    <Wrapper>
-      {props.menuTitle && <Title>{props.menuTitle}</Title>}
+    <Wrapper id='left-menu-con'>
+      {/* {JSON.stringify(openKeys)} */}
       <Menu
         onSelect={handleSelect}
-        defaultSelectedKeys={defaultSelectedKeys}
-        defaultOpenKeys={defaultOpenKeys}
+        selectedKeys={defaultSelectedKeys}
+        openKeys={openKeys}
         mode='inline'
-        inlineIndent={10}
+        inlineIndent={12}
+        onOpenChange={onOpenChange}
       >
         {renderMenu(props.config)}
       </Menu>
     </Wrapper>
   )
 }
+
+const menu_bg_color = '#F2F2F2' // 背景色
+const item_bg_color = '#F9F9F9' // item背景色
+const normal_text_size = '13px' // 正常文字大小
+const normal_text_color = '#666666' // 正常文字颜色
+const active_text_color = '#00A680' // 激活文字颜色
+const sub_ul_bg = '#fff' // 二级菜单背景颜色
+const hover_li_bg = '#fff' // 划过item背景颜色
+const menu_li_bottom_line = '1px solid #E5E5E5' // 划过item背景颜色
+const sub_li_bottom_line = '1px dashed #E5E5E5' // 划过item背景颜色
 const Wrapper = styled.div`
-  /* height: 100%; */
-  height: calc(100vh - 94px);
-  padding: 10px 0;
-  overflow: auto;
-  background: ${(p) => p.theme.$mtc};
-  ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 4px;
-  }
-  ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-  }
-  /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px #ffffff;
-    border-radius: 5px;
-    background-color: #ffffff;
-  }
-  .ant-menu-submenu-title,
-  .ant-menu-item {
-    height: 38px !important;
-    line-height: 38px !important;
-    margin: 0 !important;
-    font-size: 12px !important;
-    color: #bddbd0 !important;
-    width: 100% !important;
-    &:hover {
-      color: #fff !important;
+  &#left-menu-con {
+    * {
+      font-size: ${normal_text_size};
     }
-    &:active {
-      background: transparent !important;
+    /* height: 100%; */
+    position: fixed;
+    left: 0;
+    top: 50px;
+    bottom: 0;
+    overflow: auto;
+    background: ${menu_bg_color};
+    width: 200px;
+    border-right: 1px solid #cccccc;
+    .ant-menu-inline {
+      width: calc(100% + 1px);
     }
-    &.ant-menu-item-selected {
-      background: transparent !important;
-      color: #fff !important;
+    ::-webkit-scrollbar {
+      /*滚动条整体样式*/
+      width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      /*滚动条里面小方块*/
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    /*定义滚动条轨道 内阴影+圆角*/
+    ::-webkit-scrollbar-track {
+      /*滚动条里面轨道*/
+      border-radius: 5px;
+      background-color: #ffffff;
+    }
+    .ant-menu-item,
+    .ant-menu-submenu-title {
+      height: 40px;
+      line-height: 40px;
+      margin: 0;
+      color: ${normal_text_color};
+      width: 100%;
+      border-bottom: ${menu_li_bottom_line};
       position: relative;
+      background: ${item_bg_color};
+      &:after {
+        display: none;
+      }
+      &:hover {
+        background: ${hover_li_bg};
+        &:after {
+          transform: none;
+          opacity: 1;
+          display: block;
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          right: auto;
+          width: 3px;
+          background: ${active_text_color};
+          right: auto;
+        }
+      }
+      &.ant-menu-item-selected.ant-menu-item-selected {
+        background: ${hover_li_bg};
+        color: ${active_text_color};
+        font-weight: bold;
+        position: relative;
+        &::after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 2px;
+          background: ${active_text_color};
+          top: 0;
+          bottom: 0;
+          right: -1px;
+          left: auto;
+          z-index: 3;
+        }
+        &::before {
+          content: '';
+          position: absolute;
+          display: block;
+          background: ${active_text_color};
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: auto;
+          width: 0;
+          height: 0;
+          border-top: 8px solid #fff;
+          border-bottom: 8px solid #fff;
+          border-left: 0 solid transparent;
+          border-right: 8px solid ${active_text_color};
+          margin: auto 0;
+        }
+        path {
+          fill: ${active_text_color};
+        }
+      }
+    }
+
+    .ant-menu-submenu-open {
+      background: ${sub_ul_bg};
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        background: ${active_text_color};
+        top: 0;
+        bottom: 0;
+        right: 0px;
+        left: auto;
+        z-index: 3;
+      }
+
       &::before {
         content: '';
         position: absolute;
-        width: 3px;
-        height: 17px;
-        background: #f6c235;
-        top: 0;
+        top: 40px;
         bottom: 0;
-        margin: auto 0;
-        left: 0;
+        left: 21px;
+        border-left: 1px dotted ${active_text_color};
+        z-index: 2;
+      }
+
+      .ant-menu-submenu-title,
+      .ant-menu-item {
+        background: ${sub_ul_bg};
+      }
+      .ant-menu-item {
+        border-bottom: ${sub_li_bottom_line};
+        padding-left: 36px !important;
+        &::after {
+          display: none;
+        }
+        &:hover {
+          color: ${active_text_color};
+          font-weight: bold;
+        }
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0px;
+          bottom: 0;
+          left: 21px;
+          width: 8px;
+          height: 0;
+          margin: auto 0;
+          border-top: 1px dotted ${active_text_color};
+          z-index: 2;
+        }
+      }
+    }
+    .ant-menu-submenu-selected {
+      path,
+      .ant-menu-submenu-title {
+        fill: ${active_text_color};
+        color: ${active_text_color};
+        font-weight: bold;
+      }
+      .ant-menu-item-selected {
+        font-weight: bold;
+        .selected-arrow {
+          display: block;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          color: ${active_text_color};
+          margin: auto 0;
+          left: 16px;
+          background: #fff;
+          z-index: 2;
+          height: 12px;
+        }
       }
     }
   }
-  .ant-menu-submenu-arrow::after,
-  .ant-menu-submenu-arrow::before {
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.65)) !important;
-  }
-  .ant-menu-item::after {
-    display: none !important;
-  }
-  .ant-menu-root {
-    background: transparent;
-    border: 0 !important;
-    overflow: hidden !important;
-    padding-left: 1px !important;
-    > .ant-menu-submenu .ant-menu-submenu-title,
-    > .ant-menu-item {
-      color: #fff !important;
+  .selected-arrow {
+    display: none;
+    img {
+      height: 12px;
+      display: block;
     }
   }
-  .ant-menu-inline {
-    width: auto !important;
-  }
-  ul.ant-menu-sub {
-    background: #328b6a !important;
-    border-radius: 3px !important;
-    margin: 0 10px !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    border: 0 !important;
-  }
 `
 
-const Title = styled.div`
-  font-size: 12px;
-  color: #fff;
-  padding: 10px 10px 0;
-`
-
-const MenuIcon = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-  margin-left: -4px;
+const MenuIcon = styled.span`
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    position: relative;
+    top: 4px;
+    path {
+      fill: ${normal_text_color};
+    }
+  }
 `

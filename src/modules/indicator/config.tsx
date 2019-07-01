@@ -1,7 +1,14 @@
+import React from 'react'
+
+import { ReactComponent as HLMGZL } from './images/护理敏感质量.svg'
+import { ReactComponent as LCHL } from './images/临床护理.svg'
+import { ReactComponent as ZKHL } from './images/专科护理.svg'
+import { ReactComponent as HLGZZL } from './images/护理工作质量.svg'
+
 export const LEFT_MENU = [
   {
     title: '护理敏感质量指标',
-    icon: require('./images/icon/护理敏感质量.png'),
+    icon: <HLMGZL />,
     children: [
       { title: '床护比统计', path: '/indicator/床护比统计' },
       { title: '护患比统计', path: '/indicator/护患比统计' },
@@ -20,7 +27,7 @@ export const LEFT_MENU = [
   },
   {
     title: '临床护理质量指标',
-    icon: require('./images/icon/临床护理.png'),
+    icon: <LCHL />,
     children: [
       { title: '高危药物静脉外渗率', path: '/indicator/高危药物静脉外渗率' },
       { title: '输血/输液反应倒数', path: '/indicator/输血输液反应倒数' },
@@ -45,12 +52,12 @@ export const LEFT_MENU = [
   },
   {
     title: '专科护理质量指标',
-    icon: require('./images/icon/专科护理.png'),
+    icon: <ZKHL />,
     children: [{ title: '新生儿烧伤、烫伤发生率', path: '/indicator/新生儿烧伤烫伤发生率' }]
   },
   {
     title: '护理工作质量指标',
-    icon: require('./images/icon/护理工作质量.png'),
+    icon: <HLGZZL />,
     children: [
       { title: '查对制度落实合格率', path: '/indicator/查对制度落实合格率' },
       { title: '护理不良事件报告处理符合率', path: '/indicator/护理不良事件报告处理符合率' },

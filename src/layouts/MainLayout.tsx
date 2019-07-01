@@ -12,7 +12,7 @@ import { globalModal } from 'src/global/globalModal'
 import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 export interface Props extends RouteComponentProps {}
 
-export default observer(function MainLayout (props: Props) {
+export default observer(function MainLayout(props: Props) {
   /** 数据初始化 */
   store.appStore.history = props.history
   store.appStore.match = props.match
@@ -28,7 +28,6 @@ export default observer(function MainLayout (props: Props) {
         if (!store.authStore.defaultDeptCode) {
           store.authStore.defaultDeptCode = store.authStore.deptList[0].code
           store.authStore.selectedDeptCode = store.authStore.deptList[0].code
-          console.log(store.authStore.selectedDeptCode, 'store.authStore.selectedDeptCode')
         }
       }
     })
@@ -37,15 +36,11 @@ export default observer(function MainLayout (props: Props) {
   useLayoutEffect(() => {
     globalModal.auditModal = aduitModalRef.current
     globalModal.groupsAduitModal = groupsAduitModalRef.current
-    setTimeout(() => {
-      // console.log(globalModal!.auditModal, 'globalModal!.auditModal')
-      // globalModal!.auditModal && globalModal!.auditModal!.show()
-    }, 200)
   })
 
   return (
     <Wrapper>
-      <Header />
+      {/* <Header /> */}
       <NavBar {...props} />
       {/* {store.authStore.selectedDeptName} */}
       <RouterViewCon>
@@ -60,8 +55,10 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   width: 100%;
+  left: 0;
+  right: 0;
   background: #eee;
 `
 const RouterViewCon = styled.div`

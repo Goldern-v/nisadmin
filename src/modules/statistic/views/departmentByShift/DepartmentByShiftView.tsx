@@ -9,7 +9,7 @@ import StatisticMIdHeaderDepartment from '../../common/StatisticMIdHeaderDepartm
 import NurseByShiftChoose from './components/NurseByShiftChoose'
 import TableFirst from './components/TableFirst'
 
-export default function StatisticView () {
+export default function StatisticView() {
   const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function StatisticView () {
 }
 
 const Con = styled.div`
-  height: calc(100vh - 93px);
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
 `
