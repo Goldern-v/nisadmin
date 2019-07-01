@@ -120,7 +120,7 @@ const routes: RouteItem[] = [
   },
   {
     path: '/setting',
-    redirect: '/setting/物品分类字典设置'
+    redirect: '/setting/typeDict'
   },
   {
     path: '/',
