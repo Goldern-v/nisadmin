@@ -10,7 +10,7 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: BreadcrumbItem[]
 }
 
-export default function BreadcrumbLayout (props: Props) {
+export default function BreadcrumbLayout(props: Props) {
   const [count, setCount] = useState(0)
   const { payload } = props
   useEffect(() => {})
@@ -22,7 +22,7 @@ export default function BreadcrumbLayout (props: Props) {
   // {/* <RouterView routes={props.routes} /> */} <CurrentRouteComponent />
   return (
     <Wrapper>
-      <Header />
+      {/* <Header /> */}
       <NavBar {...props} />
       <BreadcrumbBox data={payload} />
       <RouterViewCon>
@@ -31,7 +31,18 @@ export default function BreadcrumbLayout (props: Props) {
     </Wrapper>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: -1px;
+  bottom: 0;
+  background: #eee;
+`
 
 const RouterViewCon = styled.div`
   flex: 1;

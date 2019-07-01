@@ -10,7 +10,7 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
 
-export default function HorizontalMenuLayout (props: Props) {
+export default function HorizontalMenuLayout(props: Props) {
   const [count, setCount] = useState(0)
   const { payload } = props
   useEffect(() => {})
@@ -21,7 +21,7 @@ export default function HorizontalMenuLayout (props: Props) {
 
   return (
     <Wrapper>
-      <Header />
+      {/* <Header /> */}
       <NavBar {...props} />
       <HorizontalMenu data={payload} />
       <CurrentRouteComponent />
