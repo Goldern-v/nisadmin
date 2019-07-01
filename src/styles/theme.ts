@@ -1,6 +1,8 @@
 export const theme = {
   /** 主题色 */
   $mtc: '#00A680',
+  /** 主题对比色 */
+  $mcc: '#F0944B',
   /** 深主题色 */
   $mtdc: '#1D9165',
   /** 页面的padding */

@@ -144,7 +144,7 @@ export default function SpecialCard () {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={345}
+        surplusHeight={305}
         type={['spaceRow', 'fixedWidth']}
         tip={
           '填写说明：包括特殊岗位准入（ICU、手术室、高压氧、供应室、血透室、助产等）、高风险护理技术操作人员资质培训（PICC、伤口造口、CRRT等）、会诊人员资质准入（糖尿病、骨科、危重症、助产等）。'

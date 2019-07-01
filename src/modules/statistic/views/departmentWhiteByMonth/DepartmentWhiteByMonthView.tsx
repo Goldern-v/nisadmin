@@ -12,7 +12,7 @@ import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 // const ButtonGroup = Button.Group
 
 // import SelectMonth from '../../common/SelectMonth'  //月份选择器
-export default function StatisticView () {
+export default function StatisticView() {
   const [showType, setShowType] = useState('按时数')
   const [count, setCount] = useState(0)
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function StatisticView () {
 }
 
 const Con = styled.div`
-  height: calc(100vh - 93px);
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
 

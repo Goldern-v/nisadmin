@@ -45,7 +45,7 @@ export default observer(function MainLayout (props: Props) {
 
   return (
     <Wrapper>
-      <Header />
+      {/* <Header /> */}
       <NavBar {...props} />
       {/* {store.authStore.selectedDeptName} */}
       <RouterViewCon>

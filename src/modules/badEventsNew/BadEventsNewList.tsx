@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import BaseTable from 'src/components/BaseTable'
 import Form from 'src/components/Form'
-import { DatePicker, Select, Button } from 'antd'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { Button, DatePicker, Select } from 'antd'
 import { Link } from 'react-router-dom'
 import { ColumnProps } from 'antd/lib/table'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import BaseTable from 'src/components/BaseTable'
+
 import BadEventsNewService from './api/badEventsNewService'
 import CustomPagination from './components/CustomPagination'
 
-const api = new BadEventsNewService();
+const api = new BadEventsNewService()
 
 // export interface Props { }
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker
 
 export default observer(function BadEventNewList() {
-  const queryForm = React.createRef<Form>();
+  const queryForm = React.createRef<Form>()
   //列表请求参数
   const [query, setQuery] = useState({
     wardCode: '',
@@ -25,16 +26,16 @@ export default observer(function BadEventNewList() {
     patientName: '',
     eventType: '',
     eventStatus: ''
-  });
-  const initDeptList: any = [];
-  const [deptList, setDeptList] = useState(initDeptList);
+  })
+  const initDeptList: any = []
+  const [deptList, setDeptList] = useState(initDeptList)
   //列表数据
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
   //列表Table组件loading状态
-  const [dataLoading, setDataLoading] = useState(false);
+  const [dataLoading, setDataLoading] = useState(false)
   //不良事件类型下拉选项
-  const initEventTypeList: any = [];
-  const [eventTypeList, setEventTypeList] = useState(initEventTypeList);
+  const initEventTypeList: any = []
+  const [eventTypeList, setEventTypeList] = useState(initEventTypeList)
   //前端分页控制
   const [page, setPage] = useState({
     current: 1,
@@ -49,60 +50,69 @@ export default observer(function BadEventNewList() {
       width: 50,
       align: 'center',
       render: (text: string) => Number(text) + 1
-    }, {
+    },
+    {
       title: '事件单号',
       dataIndex: 'badEventOrderNo',
       key: 'badEventOrderNo',
       align: 'center',
       width: 180
-    }, {
+    },
+    {
       title: '科室',
       dataIndex: 'deptName',
       key: 'deptName',
       align: 'center',
       width: 180
-    }, {
+    },
+    {
       title: '事件类别',
       dataIndex: 'eventType',
       key: 'eventType',
       align: 'center',
       width: 160
-    }, {
+    },
+    {
       title: '发生时间',
       dataIndex: 'happenDate',
       key: 'happenDate',
       align: 'center',
       width: 120,
       render: (text: string) => {
-        let dateStr = text == 'Invalid Date' ? '' : text;
+        let dateStr = text == 'Invalid Date' ? '' : text
         return <span>{dateStr}</span>
       }
-    }, {
+    },
+    {
       title: '事件发生地点',
       dataIndex: 'happenPlace',
       key: 'happenPlace',
       className: 'happen-place',
       align: 'center',
       render: (text: string) => <div title={text}>{text}</div>
-    }, {
+    },
+    {
       title: '严重程度',
       dataIndex: 'deverityLevel',
       key: 'deverityLevel',
       align: 'center',
       width: 120
-    }, {
+    },
+    {
       title: 'SAC',
       dataIndex: 'sac',
       key: 'sac',
       align: 'center',
       width: 100
-    }, {
+    },
+    {
       title: '提交医院质量安全管理委员会',
       dataIndex: 'commitToQC',
       key: 'commitToQC',
       align: 'center',
       width: 150
-    }, {
+    },
+    {
       title: '事件状态',
       dataIndex: 'status',
       key: 'status',
@@ -110,24 +120,25 @@ export default observer(function BadEventNewList() {
       width: 150,
       render: (text: string, item: any) => {
         let statusText = ''
-        let target = eventStatusList.filter((item1: any) => item1.value == item.status);
-        if (target.length > 0) statusText = target[0].name;
+        let target = eventStatusList.filter((item1: any) => item1.value == item.status)
+        if (target.length > 0) statusText = target[0].name
         return <span style={{ wordBreak: 'break-word' }}>{statusText}</span>
       }
-    }, {
+    },
+    {
       title: '操作',
       key: 'operation',
       align: 'center',
       width: 100,
       render: (text: string, item: any) => {
-        return <Link 
-          className="view-detail" 
-          to={`/badEventsNewDetail/${item.id}/${item.badEventOrderNo}`}>
-          查看
-        </Link>
+        return (
+          <Link className='view-detail' to={`/badEventsNewDetail/${item.id}/${item.badEventOrderNo}`}>
+            查看
+          </Link>
+        )
       }
     }
-  ];
+  ]
   //不良事件状态对应的文本显示
   const eventStatusList = [
     { name: '禁用', value: -1 },
@@ -138,48 +149,49 @@ export default observer(function BadEventNewList() {
     { name: '责任科室已处理', value: 3 },
     { name: '质控科已总结', value: 4 },
     { name: '质量委员会已处理', value: 5 }
-  ];
+  ]
 
   useEffect(() => {
-    api.getDeptList()
-      .then(res => {
-        let data = res.data;
-        if (data) {
-          let { deptList } = data;
-          if (deptList instanceof Array) setDeptList(deptList);
-        }
-      })
+    api.getDeptList().then((res) => {
+      let data = res.data
+      if (data) {
+        let { deptList } = data
+        if (deptList instanceof Array) setDeptList(deptList)
+      }
+    })
 
-    let deptCode = '';
-    if (authStore.user) deptCode = authStore.user.deptCode;
-    api
-      .getEvetTypetList(deptCode)
-      .then(res => {
-        let data = res.data;
+    let deptCode = ''
+    if (authStore.user) deptCode = authStore.user.deptCode
+    api.getEvetTypetList(deptCode).then((res) => {
+      let data = res.data
 
-        if (data instanceof Array) setEventTypeList(data.map((item: any) => item.name))
-      })
-  }, []);
+      if (data instanceof Array) setEventTypeList(data.map((item: any) => item.name))
+    })
+  }, [])
 
   useEffect(() => {
-    setDataLoading(true);
-    setPage({ ...page, current: 1 });
+    setDataLoading(true)
+    setPage({ ...page, current: 1 })
 
-    api
-      .getList(query)
-      .then(res => {
-        setDataLoading(false);
-        let data = res.data;
-        if (data) setData(data.map((item: any, idx: number) => {
-          return {
-            key: idx,
-            ...item
-          }
-        }));
-      }, err => {
-        setDataLoading(false);
-      })
-  }, [query]);
+    api.getList(query).then(
+      (res) => {
+        setDataLoading(false)
+        let data = res.data
+        if (data)
+          setData(
+            data.map((item: any, idx: number) => {
+              return {
+                key: idx,
+                ...item
+              }
+            })
+          )
+      },
+      (err) => {
+        setDataLoading(false)
+      }
+    )
+  }, [query])
 
   const handleQueryDateRangeChange = (moments: any[]): void => {
     if (moments.length > 0) {
@@ -187,20 +199,20 @@ export default observer(function BadEventNewList() {
         ...query,
         dateBegin: moments[0].format('YYYY-MM-DD'),
         dateEnd: moments[1].format('YYYY-MM-DD')
-      });
+      })
     } else {
       setQuery({
         ...query,
         dateBegin: '',
         dateEnd: ''
-      });
+      })
     }
   }
 
   const handleSearch = (): void => {
-    let current = queryForm.current;
+    let current = queryForm.current
     if (current) {
-      let otherQuery = current.getFields();
+      let otherQuery = current.getFields()
       setQuery({
         ...query,
         ...otherQuery
@@ -208,85 +220,103 @@ export default observer(function BadEventNewList() {
     }
   }
 
-  return <Wrapper>
-    <div className="topbar">
-      <div className="title">不良事件</div>
-      <div className="query">
-        <Form ref={queryForm}>
-          <div className="float-left">
-            <div className="float-item">
-              <div className="item-title">事件日期:</div>
-              <div className="item-content date-range">
-                <RangePicker onChange={handleQueryDateRangeChange} />
+  return (
+    <Wrapper>
+      <div className='topbar'>
+        <div className='title'>不良事件</div>
+        <div className='query'>
+          <Form ref={queryForm}>
+            <div className='float-left'>
+              <div className='float-item'>
+                <div className='item-title'>事件日期:</div>
+                <div className='item-content date-range'>
+                  <RangePicker onChange={handleQueryDateRangeChange} />
+                </div>
+              </div>
+              <div className='float-item'>
+                <div className='item-title'>科室:</div>
+                <div className='item-content'>
+                  <Form.Field name='wardCode'>
+                    <Select defaultValue=''>
+                      <Select.Option value=''>全部</Select.Option>
+                      {deptList.map((item: any, idx: number) => {
+                        return (
+                          <Select.Option value={item.code} key={idx}>
+                            {item.name}
+                          </Select.Option>
+                        )
+                      })}
+                    </Select>
+                  </Form.Field>
+                </div>
+              </div>
+              <div className='float-item'>
+                <div className='item-title'>事件分类:</div>
+                <div className='item-content'>
+                  <Form.Field name='eventType'>
+                    <Select defaultValue=''>
+                      <Select.Option value=''>全部</Select.Option>
+                      {eventTypeList.map((item: any, idx: number) => {
+                        return (
+                          <Select.Option value={item} key={idx}>
+                            {item}
+                          </Select.Option>
+                        )
+                      })}
+                    </Select>
+                  </Form.Field>
+                </div>
+              </div>
+              <div className='float-item'>
+                <div className='item-title'>状态:</div>
+                <div className='item-content'>
+                  <Form.Field name='eventStatus'>
+                    <Select defaultValue=''>
+                      <Select.Option value=''>全部</Select.Option>
+                      {eventStatusList.map((item, idx) => {
+                        return (
+                          <Select.Option value={item.value} key={idx}>
+                            {item.name}
+                          </Select.Option>
+                        )
+                      })}
+                    </Select>
+                  </Form.Field>
+                </div>
               </div>
             </div>
-            <div className="float-item">
-              <div className="item-title">科室:</div>
-              <div className="item-content">
-                <Form.Field name="wardCode">
-                  <Select defaultValue="">
-                    <Select.Option value="">全部</Select.Option>
-                    {deptList.map((item: any, idx: number) => {
-                      return <Select.Option value={item.code} key={idx}>{item.name}</Select.Option>
-                    })}
-                  </Select>
-                </Form.Field>
-              </div>
+            <div className='float-right'>
+              <Button type='primary' onClick={handleSearch}>
+                查询
+              </Button>
             </div>
-            <div className="float-item">
-              <div className="item-title">事件分类:</div>
-              <div className="item-content">
-                <Form.Field name="eventType">
-                  <Select defaultValue="">
-                    <Select.Option value="">全部</Select.Option>
-                    {eventTypeList.map((item: any, idx: number) => {
-                      return <Select.Option value={item} key={idx}>{item}</Select.Option>
-                    })}
-                  </Select>
-                </Form.Field>
-              </div>
-            </div>
-            <div className="float-item">
-              <div className="item-title">状态:</div>
-              <div className="item-content">
-                <Form.Field name="eventStatus">
-                  <Select defaultValue="">
-                    <Select.Option value="">全部</Select.Option>
-                    {eventStatusList.map((item, idx) => {
-                      return <Select.Option value={item.value} key={idx}>{item.name}</Select.Option>
-                    })}
-                  </Select>
-                </Form.Field>
-              </div>
-            </div>
-          </div>
-          <div className="float-right">
-            <Button type="primary" onClick={handleSearch}>查询</Button>
-          </div>
-        </Form>
+          </Form>
+        </div>
       </div>
-    </div>
-    <div className="main-contain">
-      <div className="table-content">
-        <BaseTable
-          loading={dataLoading}
-          columns={columns}
-          dataSource={data.filter((item: any, idx: number) => {
-            let { current, size } = page
-            let starIndex = (current - 1) * size
-            return idx + 1 > starIndex && idx + 1 <= starIndex + size
-          })}
-          pagination={false}
-          surplusHeight={330} />
+      <div className='main-contain'>
+        <div className='table-content'>
+          <BaseTable
+            loading={dataLoading}
+            columns={columns}
+            dataSource={data.filter((item: any, idx: number) => {
+              let { current, size } = page
+              let starIndex = (current - 1) * size
+              return idx + 1 > starIndex && idx + 1 <= starIndex + size
+            })}
+            pagination={false}
+            surplusHeight={300}
+          />
+        </div>
+        <CustomPagination
+          page={page.current}
+          size={page.size}
+          total={data.length - 1}
+          hideSizeInput={true}
+          onChange={(current: number) => setPage({ ...page, current })}
+        />
       </div>
-      <CustomPagination
-        page={page.current}
-        size={page.size}
-        total={data.length - 1}
-        hideSizeInput={true}
-        onChange={(current: number) => setPage({ ...page, current })} />
-    </div>
-  </Wrapper>
+    </Wrapper>
+  )
 })
 
 const Wrapper = styled.div`
@@ -336,13 +366,13 @@ const Wrapper = styled.div`
   .main-contain{
     background: #fff;
     position: absolute;
-    left 10px;
-    top: 200px;
+    left: 10px;
+    top: 150px;
     right: 10px;
     bottom: 10px;
     .table-content{
       position: absolute;
-      left 0;
+      left: 0;
       top: 0;
       right: 0;
       bottom: 45px;

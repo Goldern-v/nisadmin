@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, ReactNode } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Place } from 'src/components/common'
 import { Button } from 'antd'
+
 export interface Props {
   children?: ReactNode
   title: string
@@ -14,7 +15,7 @@ interface BtnType {
   onClick?: () => void
 }
 
-export default function BaseLayout (props: Props) {
+export default function BaseLayout(props: Props) {
   let { title, btnList } = props
   return (
     <Wrapper>
@@ -45,7 +46,7 @@ const Head = styled.div`
   align-items: center;
   position: fixed;
   left: 174px;
-  top: 235px;
+  top: 192px;
   right: 20px;
   .ant-btn {
     margin-left: 10px;

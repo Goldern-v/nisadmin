@@ -14,8 +14,11 @@ import { ReactComponent as TJCX } from '../images/统计查询.svg'
 import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as WLPT } from '../images/物流平台.svg'
 import { ReactComponent as XTSZ } from '../images/系统设置.svg'
+import { Place } from 'src/components/common'
+import { authStore } from 'src/stores'
+import service from 'src/services/api'
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const navList = [
   {
@@ -72,7 +75,8 @@ const navList = [
     name: '物流平台',
     icon: <WLPT />,
     path: '/Lms'
-  }, {
+  },
+  {
     name: '护理制度',
     icon: <HSDA />,
     path: '/nursingRules'
@@ -91,27 +95,37 @@ export default observer(function NavBar(props: Props) {
   let { location } = props
   return (
     <Wrapper>
+      <LogoCon>
+        <img src={require('../images/logo-white.png')} alt='' className='logo' />
+        <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
+      </LogoCon>
       {navList.map((item) => (
         <NavItem
           onClick={toNavLink(item.path)}
           active={item.path !== '' && location.pathname.indexOf(item.path) !== -1}
           key={item.name}
         >
-          {item.icon}
+          {/* {item.icon} */}
           {/* <ReactSVG src={item.icon} svgClassName='nav-icon' /> */}
           <div className='nav-name'>{item.name}</div>
         </NavItem>
       ))}
+      <Place />
+      <RightCon>
+        <span className='name'>{authStore.user && authStore.user.empName}</span>
+        <span className='line'>|</span>
+        <span className='logout' onClick={service.authApiService.logout}>
+          退出
+        </span>
+      </RightCon>
     </Wrapper>
   )
 })
 const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
-  height: 40px;
-  background: #fff;
-  box-shadow: ${(p) => p.theme.$tabShadow};
-  /* margin-bottom: 10px; */
+  height: 50px;
+  background: ${(p) => p.theme.$mtc};
   position: relative;
   padding-bottom: 2px;
   z-index: 2;
@@ -125,7 +139,23 @@ const Wrapper = styled.div`
     background: #fff;
   }
 `
+const LogoCon = styled.div`
+  width: 200px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .logo {
+    height: 26px;
+    margin-right: 10px;
+  }
+  .name {
+    height: 16px;
+  }
+`
+
 const NavItem = styled.div<{ active?: boolean }>`
+  height: 50px;
   min-width: 45px;
   display: flex;
   padding: 0 20px 0 14px;
@@ -134,18 +164,40 @@ const NavItem = styled.div<{ active?: boolean }>`
   cursor: pointer;
   font-size: 13px;
   position: relative;
-  background: ${(p) => (p.active ? p.theme.$mtc : '#fff')};
-  color: ${(p) => (p.active ? '#fff' : '#747474')};
+  background: ${(p) => p.active && p.theme.$mcc};
+  color: #fff;
   svg {
     width: 16px;
     height: 16px;
     /* margin-top: 6px; */
     margin-right: 2px;
     path {
-      fill: ${(p) => (p.active ? '#fff' : '#747474')};
+      /* fill: ${(p) => (p.active ? '#fff' : '#747474')}; */
     }
     title {
       display: none;
+    }
+  }
+`
+
+const RightCon = styled.div`
+  font-size: 13px;
+  color: #fff;
+  margin-right: 15px;
+  span {
+    height: 50px;
+    line-height: 50px;
+  }
+  .line {
+    padding: 0 8px;
+  }
+  .logout {
+    width: 30px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    &:hover {
+      font-weight: bold;
     }
   }
 `

@@ -1,15 +1,16 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { RouteComponentProps } from 'src/components/RouterView'
-import { HorizontalMenuItem } from 'src/types/horizontalMenu'
-import TopCon from './components/TopCon'
-import LeftMenu from 'src/components/LeftMenu'
-import { appStore } from 'src/stores'
 import moment from 'moment'
 import BaseTable from 'src/components/BaseTable'
+import LeftMenu from 'src/components/LeftMenu'
+import styled from 'styled-components'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { RouteComponentProps } from 'src/components/RouterView'
+import { HorizontalMenuItem } from 'src/types/horizontalMenu'
+import { appStore } from 'src/stores'
 import { Radio } from 'antd'
+
 import BaseChart from './components/BaseChart'
 import StatisticLeftList from './components/StatisticLeftList'
+import TopCon from './components/TopCon'
 import { 床护比统计 } from './views/床护比统计'
 import { 护患比统计 } from './views/护患比统计'
 import { 小时平均护理时数 } from './views/24小时平均护理时数'
@@ -508,7 +509,12 @@ export default function Indicator(props: Props) {
                 日期：{startDate} 至 {endDate}
               </Date>
               {showType === '详情' && (
-                <BaseTable loading={loading} dataSource={currentRoute!.dataSource} columns={currentRoute!.columns} />
+                <BaseTable
+                  loading={loading}
+                  dataSource={currentRoute!.dataSource}
+                  columns={currentRoute!.columns}
+                  surplusHeight={290}
+                />
               )}
               {showType === '图表' && (
                 // <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
@@ -539,13 +545,13 @@ const Wrapper = styled.div`
 
 const LeftMenuCon = styled.div`
   width: 200px;
-  position: relative;
+  /* position: relative;
   z-index: 1;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(228, 228, 228, 1);
   border-top: 0;
-  height: 100%;
+  height: 100%; */
 `
 const MainCon = styled.div`
   flex: 1;
@@ -558,6 +564,7 @@ const MainScroll = styled.div`
   flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 5px 15px;
 `
 
 const MainInner = styled.div`
@@ -569,6 +576,7 @@ const MainInner = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
+  padding: 20px 5px 5px;
 `
 
 const HisName = styled.div`
