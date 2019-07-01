@@ -1,12 +1,14 @@
+import windowHeight from 'src/hooks/windowHeight'
+import windowWidth from 'src/hooks/windowWidth'
 import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Table } from 'antd'
 import { TableProps } from 'antd/lib/table'
-import windowHeight from 'src/hooks/windowHeight'
-import windowWidth from 'src/hooks/windowWidth'
-import { components } from './diagTableUtils'
 import { DragDropContext } from 'react-dnd'
+
+import { components } from './diagTableUtils'
+
 import HTML5Backend from 'react-dnd-html5-backend'
 export interface Props extends TableProps<any> {
   // style?: any
@@ -95,6 +97,16 @@ export default function BaseTable(props: Props) {
             try {
               tableRef!.current!.querySelector('.ant-table-body').append(tip)
             } catch (error) {}
+          }
+        }
+      }, 100)
+    } catch (error) {}
+    try {
+      setTimeout(() => {
+        if (tableRef.current) {
+          let footer = tableRef!.current!.querySelector('.ant-table-footer')
+          if (footer) {
+            tableRef!.current!.querySelector('.ant-table-body').append(footer)
           }
         }
       }, 100)

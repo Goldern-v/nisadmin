@@ -1,19 +1,20 @@
+import Zimage from 'src/components/Zimage'
+import createModal from 'src/libs/createModal'
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import BaseLayout from '../components/BaseLayout'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { appStore, authStore } from 'src/stores'
 import { sexEnum } from 'src/libs/enum/common'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-export interface Props extends RouteComponentProps {}
-import createModal from 'src/libs/createModal'
-import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { observer } from 'mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
-import Zimage from 'src/components/Zimage'
 
-export default observer(function BaseInfo () {
+import BaseLayout from '../components/BaseLayout'
+import EditBaseInfoModal from '../modal/EditBaseInfoModal'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+
+export interface Props extends RouteComponentProps {}
+export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
@@ -307,5 +308,5 @@ const ZyzsCon = styled.div`
 
 const ScrollCon = styled.div`
   overflow: auto;
-  height: calc(100vh - 285px);
+  height: calc(100vh - 240px);
 `

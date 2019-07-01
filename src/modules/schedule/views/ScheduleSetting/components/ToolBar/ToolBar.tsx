@@ -1,27 +1,23 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-// import { Link } from 'react-router-dom'
-
-// import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
-
-import emitter from 'src/libs/ev'
-
-import { Button, message, Modal, Form, Input, TreeSelect, Switch, DatePicker, Popconfirm, Icon } from 'antd'
-import { scheduleStore } from 'src/stores'
-import service from 'src/services/api'
-import moment from 'moment'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
+import moment from 'moment'
+import emitter from 'src/libs/ev'
+import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { Button, DatePicker, Form, Icon, Input, message, Modal, Popconfirm, Switch, TreeSelect } from 'antd'
+import { scheduleStore } from 'src/stores'
 
 const dateFormat = 'YYYY-MM-DD'
 const { WeekPicker } = DatePicker
-// const { RangePicker, WeekPicker } = DatePicker
 
-// const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+interface Props {
+  fullPage: boolean
+  setFullPage: any
+}
 
-export default function ToolBar() {
-  const [count, setCount] = useState(0)
+export default function ToolBar(props: Props) {
+  const { fullPage, setFullPage } = props
   const [pageTitle, setPageTitle] = useState('编辑排班')
   const [formatDay, setFormatDay] = useState('七')
   const [formatMonth, setFormatMonth] = useState('七')
@@ -740,6 +736,9 @@ export default function ToolBar() {
           <Button className='button-tools'>发布排班</Button>
         </Popconfirm>
       )}
+      <Button onClick={() => setFullPage(!fullPage)} className='button-tools'>
+        {fullPage ? '退出全屏' : '全屏'}
+      </Button>
     </Wrapper>
   )
 }

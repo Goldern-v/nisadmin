@@ -1,22 +1,20 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-// import { Link } from 'react-router-dom'
-
-import { Table, Tabs, Button, Input, InputNumber, Form, message, Modal } from 'antd'
-const confirm = Modal.confirm
-// import { authStore, scheduleStore } from 'src/stores'
+import moment from 'moment'
+import BaseTable from 'src/components/BaseTable'
+import windowHeight from 'src/hooks/windowHeight'
+import emitter from 'src/libs/ev'
+import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
 import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { Button, Form, Input, InputNumber, message, Modal, Table, Tabs } from 'antd'
 import { scheduleStore } from 'src/stores'
 
-import BaseTable from 'src/components/BaseTable'
-import emitter from 'src/libs/ev'
+// import { Link } from 'react-router-dom'
+
+const confirm = Modal.confirm
+// import { authStore, scheduleStore } from 'src/stores'
 // import ButtonGroup from 'antd/lib/button/button-group'
-import windowHeight from 'src/hooks/windowHeight'
-
-import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
-
-import moment from 'moment'
 // import { Link } from 'react-router-dom'
 moment.locale('zh-cn', {
   weekdays: '日_一_二_三_四_五_六'.split('_')
@@ -40,8 +38,6 @@ let weekdayList = [
 ]
 
 const TabPane = Tabs.TabPane
-
-export interface Props extends RouteComponentProps {}
 
 let data = {
   key: '',
@@ -127,7 +123,12 @@ let getStatusToNum = (status: any) => {
   }
 }
 
-export default function MainBox() {
+interface Props {
+  fullPage?: boolean
+}
+
+export default function MainBox(props: Props) {
+  let { fullPage } = props
   const [footer, setFooter] = useState(() => {
     return <span />
   })
@@ -995,8 +996,8 @@ export default function MainBox() {
     let result = () => {
       return (
         <span>
-          {totle}
-          <br />
+          {/* {totle} */}
+          {/* <br /> */}
           排班备注：
           <Input.TextArea onChange={remarkChange} style={{ padding: '8px' }} defaultValue={remark} />
         </span>
@@ -1184,7 +1185,7 @@ export default function MainBox() {
           columns={columns}
           dataSource={tableList}
           pagination={false}
-          surplusHeight={400}
+          surplusHeight={fullPage ? 100 : 200}
           wrapperStyle={{
             padding: 0
           }}
@@ -1200,7 +1201,7 @@ export default function MainBox() {
       <div className='card-container'>
         <Tabs type='card'>
           <TabPane tab='可选班次' key='可选班次'>
-            <div style={{ height: wih - 260 + 'px', overflow: 'auto' }}>
+            <div style={{ height: wih - (fullPage ? 110 : 210) + 'px', overflow: 'auto' }}>
               {shiftList.map((m, i) =>
                 m.status === true ? (
                   <Button
