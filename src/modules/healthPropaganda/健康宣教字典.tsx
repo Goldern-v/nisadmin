@@ -292,7 +292,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
           columns={columns}
           dataSource={tableData}
           pagination={false}
-          surplusHeight={250} />
+          surplusHeight={205} />
       </div>
     </div>
     <Modal
@@ -320,21 +320,23 @@ position: relative;
 }
 
 .topbar{
-  height: 50px;
-  border-bottom: 1px solid #ddd;
-  background: #f8f8f8;
-  box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
+  height: 60px;
+  // border-bottom: 1px solid #ddd;
+  // background: #f8f8f8;
+  // box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
   span{
     display: inline-block;
     vertical-align: middle;
   }
   .title{
     margin-left: 20px;
-    font-size: 16px;
-    line-height: 50px;
+    font-size: 18px;
+    color: #000;
+    line-height: 60px;
   }
   .float-right{
-    margin-top: 10px;
+    margin-top: 18px;
+    margin-right: 5px;
     display: inline-block;
     &>span{
       margin-right: 10px
