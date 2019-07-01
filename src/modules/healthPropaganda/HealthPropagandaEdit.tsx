@@ -99,7 +99,7 @@ export default withRouter(
               templateName
             } = data0[0]
             setEditorState(BraftEditor.createEditorState(content))
-            console.log(BraftEditor.createEditorState(content), 'BraftEditor.createEditorState(content)')
+            // console.log(BraftEditor.createEditorState(content), 'BraftEditor.createEditorState(content)')
             newParams = {
               missionId,
               deptCode,
@@ -218,8 +218,21 @@ export default withRouter(
       }
 
       let publicUse = params.publicUse
-      if (!params.deptCode) publicUse = '1'
+      if (!params.deptCode || params.deptCode == '000000') publicUse = '1'
       else publicUse = '0'
+
+      content = content.split('');
+
+      content = content.map((chat: string) => {
+        let newChart = chat;
+        let code = chat.charCodeAt(0);
+        if (code == 160) {
+          newChart = String.fromCharCode(32)
+        }
+        return newChart;
+      });
+
+      content = content.join('');
 
       api
         .save({
@@ -252,10 +265,6 @@ export default withRouter(
         }
       })
     }
-
-    let publicUse = params.publicUse
-    if (!params.deptCode || params.deptCode == '000000') publicUse = '1'
-    else publicUse = '0'
 
     // 定义输入转换函数
     const unitImportFn = (unit: any, type: any, source: any) => {

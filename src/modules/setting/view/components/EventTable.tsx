@@ -394,7 +394,6 @@ class EditableTable extends React.Component<any, any> {
               this.setState({ editingKey: false })
             }}
           >
-            
             <div className='category' style={{ marginTop: '30px' }}>
               <SpanOne>
                 <span>宣</span>教:
@@ -489,6 +488,6 @@ const BigBox = styled.div`
   padding-bottom: 20px;
 `
 
-const EditableFormTable = Form.create()(EditableTable)
+const EditableFormTable = Form.create()(EditableTable) as any
 
 export default EditableFormTable

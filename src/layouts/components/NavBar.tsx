@@ -158,7 +158,7 @@ const NavItem = styled.div<{ active?: boolean }>`
   height: 50px;
   min-width: 40px;
   display: flex;
-  padding: 0 20px 0 8px;
+  padding: 0 12px 0 12px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
