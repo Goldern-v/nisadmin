@@ -105,9 +105,8 @@ h6{
   margin-top: -52px;
   height: 52px;
   border-bottom: 1px solid #ddd;
-  background: #fff;
   background:rgba(248,248,248,1);
-  box-shadow:0px 3px 5px 0px rgba(0,0,0,0.1);
+  // box-shadow:0px 3px 5px 0px rgba(0,0,0,0.1);
   position: relative;
   z-index: 1;
   .position-left{

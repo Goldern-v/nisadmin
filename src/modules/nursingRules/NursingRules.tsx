@@ -408,7 +408,7 @@ const Contain = styled.div`
     td{
       position: relative;
       &.align-left{
-        padding-left: 15px;
+        padding-left: 15px!important;
       }
       div.rule-name{
         position: absolute;

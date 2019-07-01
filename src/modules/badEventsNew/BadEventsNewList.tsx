@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite'
 
 import BadEventsNewService from './api/badEventsNewService'
 import CustomPagination from './components/CustomPagination'
+import Moment from 'moment'
 
 const api = new BadEventsNewService()
 
@@ -55,22 +56,25 @@ export default observer(function BadEventNewList() {
       title: '事件单号',
       dataIndex: 'badEventOrderNo',
       key: 'badEventOrderNo',
-      align: 'center',
+      className: 'align-left',
+      align: 'left',
       width: 180
     },
     {
       title: '科室',
       dataIndex: 'deptName',
       key: 'deptName',
-      align: 'center',
-      width: 180
+      className: 'align-left',
+      align: 'left',
+      width: 160
     },
     {
       title: '事件类别',
       dataIndex: 'eventType',
       key: 'eventType',
-      align: 'center',
-      width: 160
+      className: 'align-left',
+      align: 'left',
+      width: 180
     },
     {
       title: '发生时间',
@@ -116,7 +120,8 @@ export default observer(function BadEventNewList() {
       title: '事件状态',
       dataIndex: 'status',
       key: 'status',
-      align: 'center',
+      className: 'align-left',
+      align: 'left',
       width: 150,
       render: (text: string, item: any) => {
         let statusText = ''
@@ -167,13 +172,25 @@ export default observer(function BadEventNewList() {
 
       if (data instanceof Array) setEventTypeList(data.map((item: any) => item.name))
     })
+
+    let dateRange = defaultDateRange();
+    let newQuery = {
+      ...query,
+      dateBegin: dateRange[0].format('YYYY-MM-DD'),
+      dateEnd: dateRange[1].format('YYYY-MM-DD')
+    }
+    setQuery(newQuery);
+    getEventList(newQuery);
   }, [])
 
-  useEffect(() => {
-    setDataLoading(true)
-    setPage({ ...page, current: 1 })
+  // useEffect(() => {
+  //   setDataLoading(true)
+  //   setPage({ ...page, current: 1 })
 
-    api.getList(query).then(
+  // }, [query])
+
+  const getEventList = (newQuery?: any) => {
+    api.getList(newQuery || query).then(
       (res) => {
         setDataLoading(false)
         let data = res.data
@@ -191,7 +208,7 @@ export default observer(function BadEventNewList() {
         setDataLoading(false)
       }
     )
-  }, [query])
+  }
 
   const handleQueryDateRangeChange = (moments: any[]): void => {
     if (moments.length > 0) {
@@ -210,87 +227,81 @@ export default observer(function BadEventNewList() {
   }
 
   const handleSearch = (): void => {
-    let current = queryForm.current
-    if (current) {
-      let otherQuery = current.getFields()
-      setQuery({
-        ...query,
-        ...otherQuery
-      })
-    }
+    getEventList()
+    setPage({ ...page, current: 1 })
+  }
+
+  const defaultDateRange = () => {
+    let startDate = Moment(Moment().format('YYYY-MM-') + '01');
+    let ednDate = Moment(Moment().format('YYYY-MM-DD'));
+
+    return [startDate, ednDate] as [Moment.Moment, Moment.Moment];
   }
 
   return (
     <Wrapper>
       <div className='topbar'>
-        <div className='title'>不良事件</div>
         <div className='query'>
-          <Form ref={queryForm}>
-            <div className='float-left'>
-              <div className='float-item'>
-                <div className='item-title'>事件日期:</div>
-                <div className='item-content date-range'>
-                  <RangePicker onChange={handleQueryDateRangeChange} />
-                </div>
-              </div>
-              <div className='float-item'>
-                <div className='item-title'>科室:</div>
-                <div className='item-content'>
-                  <Form.Field name='wardCode'>
-                    <Select defaultValue=''>
-                      <Select.Option value=''>全部</Select.Option>
-                      {deptList.map((item: any, idx: number) => {
-                        return (
-                          <Select.Option value={item.code} key={idx}>
-                            {item.name}
-                          </Select.Option>
-                        )
-                      })}
-                    </Select>
-                  </Form.Field>
-                </div>
-              </div>
-              <div className='float-item'>
-                <div className='item-title'>事件分类:</div>
-                <div className='item-content'>
-                  <Form.Field name='eventType'>
-                    <Select defaultValue=''>
-                      <Select.Option value=''>全部</Select.Option>
-                      {eventTypeList.map((item: any, idx: number) => {
-                        return (
-                          <Select.Option value={item} key={idx}>
-                            {item}
-                          </Select.Option>
-                        )
-                      })}
-                    </Select>
-                  </Form.Field>
-                </div>
-              </div>
-              <div className='float-item'>
-                <div className='item-title'>状态:</div>
-                <div className='item-content'>
-                  <Form.Field name='eventStatus'>
-                    <Select defaultValue=''>
-                      <Select.Option value=''>全部</Select.Option>
-                      {eventStatusList.map((item, idx) => {
-                        return (
-                          <Select.Option value={item.value} key={idx}>
-                            {item.name}
-                          </Select.Option>
-                        )
-                      })}
-                    </Select>
-                  </Form.Field>
-                </div>
+          <div className='float-left'>
+            <div className='title'>不良事件</div>
+          </div>
+          <div className='float-right'>
+            <div className='float-item'>
+              <div className='item-title'>事件日期:</div>
+              <div className='item-content date-range'>
+                <RangePicker onChange={handleQueryDateRangeChange} defaultValue={defaultDateRange()} />
               </div>
             </div>
-            <div className='float-right'>
-              <Button type='primary' onClick={handleSearch}>
-                查询
-              </Button>
+            <div className='float-item'>
+              <div className='item-title'>科室:</div>
+              <div className='item-content'>
+                <Select defaultValue='' value={query.wardCode} onChange={(wardCode: any) => { setQuery({ ...query, wardCode }) }}>
+                  <Select.Option value=''>全部</Select.Option>
+                  {deptList.map((item: any, idx: number) => {
+                    return (
+                      <Select.Option value={item.code} key={idx}>
+                        {item.name}
+                      </Select.Option>
+                    )
+                  })}
+                </Select>
+              </div>
             </div>
-          </Form>
+            <div className='float-item'>
+              <div className='item-title'>事件分类:</div>
+              <div className='item-content'>
+                <Select defaultValue='' value={query.eventType} onChange={(eventType: any) => { setQuery({ ...query, eventType }) }}>
+                  <Select.Option value=''>全部</Select.Option>
+                  {eventTypeList.map((item: any, idx: number) => {
+                    return (
+                      <Select.Option value={item} key={idx}>
+                        {item}
+                      </Select.Option>
+                    )
+                  })}
+                </Select>
+              </div>
+            </div>
+            <div className='float-item'>
+              <div className='item-title'>状态:</div>
+              <div className='item-content'>
+                <Select defaultValue='' value={query.eventStatus} onChange={(eventStatus: any) => { setQuery({ ...query, eventStatus }) }}>
+                  <Select.Option value=''>全部</Select.Option>
+                  {eventStatusList.map((item, idx) => {
+                    return (
+                      <Select.Option value={item.value} key={idx}>
+                        {item.name}
+                      </Select.Option>
+                    )
+                  })}
+                </Select>
+              </div>
+            </div>
+            <div className='float-item'>
+              <div className='item-title'></div>
+              <div className='item-content'><Button type='primary' onClick={handleSearch}>查询</Button></div>
+            </div>
+          </div>
         </div>
       </div>
       <div className='main-contain'>
@@ -304,7 +315,7 @@ export default observer(function BadEventNewList() {
               return idx + 1 > starIndex && idx + 1 <= starIndex + size
             })}
             pagination={false}
-            surplusHeight={300}
+            surplusHeight={250}
           />
         </div>
         <CustomPagination
@@ -322,13 +333,21 @@ export default observer(function BadEventNewList() {
 const Wrapper = styled.div`
   .topbar{
     padding: 10px 15px;
-    height: 100px;
+    height: 55px;
     overflow: hidden;
     .title{
       font-size: 20px;
       line-height: 32px;
       color: #000;
       width: 100%;
+    }
+    
+    .ant-calendar-picker-input{
+      padding-left: 0;
+      .ant-calendar-range-picker-separator{
+        position: relative;
+        top: 5px;
+      }
     }
     .query{
       margin-top: 10px;
@@ -356,9 +375,11 @@ const Wrapper = styled.div`
         margin-right: 5px;
       }
       .item-content{
-        width: 180px;
         &.date-range{
           width: 220px;
+        }
+        .ant-select {
+          min-width: 150px;
         }
       }
     }
@@ -367,7 +388,7 @@ const Wrapper = styled.div`
     background: #fff;
     position: absolute;
     left: 10px;
-    top: 150px;
+    top: 120px;
     right: 10px;
     bottom: 10px;
     .table-content{
@@ -376,6 +397,9 @@ const Wrapper = styled.div`
       top: 0;
       right: 0;
       bottom: 45px;
+      .align-left{
+        padding-left: 15px!important;
+      }
       .happen-place{
         position: relative;
         &>div{
