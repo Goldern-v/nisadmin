@@ -9,7 +9,7 @@ const columns: any = [
   },
   {
     title: '护理单元',
-    dataIndex: 'wordName',
+    dataIndex: 'wardName',
     key: '护理单元',
     align: 'center'
   },
