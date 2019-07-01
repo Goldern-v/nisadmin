@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
+    width:180,
     align: 'center'
   },
   {
     title: '无菌物品合格总件数',
     dataIndex: '无菌物品合格总件数',
     key: '无菌物品合格总件数',
+    width:180,
     align: 'center'
   },
   {
     title: '全院无菌物品总件数',
     dataIndex: '全院无菌物品总件数',
     key: '全院无菌物品总件数',
+    width:180,
     align: 'center'
   },
   {
     title: '合格率(%)',
     dataIndex: '合格率(%)',
     key: '合格率(%)',
+    width:120,
     align: 'center'
   }
 ]

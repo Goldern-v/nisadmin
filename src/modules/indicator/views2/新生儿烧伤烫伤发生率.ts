@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
+    width:180,
     align: 'center'
   },
   {
     title: '新生儿总人数',
     dataIndex: '新生儿总人数',
     key: '新生儿总人数',
+    width:180,
     align: 'center'
   },
   {
     title: '烧伤烫伤例数',
     dataIndex: '烧伤烫伤例数',
     key: '烧伤烫伤例数',
+    width:180,
     align: 'center'
   },
   {
     title: '发生率(%)',
     dataIndex: '发生率(%)',
     key: '发生率(%)',
+    width:120,
     align: 'center'
   }
 ]

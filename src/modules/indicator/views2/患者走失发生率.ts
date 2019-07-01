@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width:180,
     align: 'center'
   },
   {
     title: '住院患者总人数',
     dataIndex: 'patient_count',
     key: '住院患者总人数',
+    width:180,
     align: 'center'
   },
   {
     title: '住院患者的走失例数',
     dataIndex: 'lost_count',
     key: '住院患者的走失例数',
+    width:180,
     align: 'center'
   },
   {
     title: '发生率(%)',
     dataIndex: 'accident_ratio',
     key: '发生率(%)',
+    width:120,
     align: 'center'
   }
 ]

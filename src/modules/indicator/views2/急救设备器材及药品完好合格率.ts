@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
+    width:180,
     align: 'center'
   },
   {
     title: '急救设备器材及药品总件数',
     dataIndex: '急救设备器材及药品总件数',
     key: '急救设备器材及药品总件数',
+    width:180,
     align: 'center'
   },
   {
     title: '急救设备器材及药品不合格件数',
     dataIndex: '急救设备器材及药品不合格件数',
     key: '急救设备器材及药品不合格件数',
+    width:180,
     align: 'center'
   },
   {
     title: '不合格率(%)',
     dataIndex: '不合格率(%)',
     key: '不合格率(%)',
+    width:140,
     align: 'center'
   }
 ]

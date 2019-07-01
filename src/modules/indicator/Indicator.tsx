@@ -42,6 +42,7 @@ import { 住院患者误吸高风险评估率 } from './views2/住院患者误�
 import { 住院高风险患者误吸发生率 } from './views2/住院高风险患者误吸发生率'
 import { 走失高风险住院患者评估阳性数 } from './views2/走失高风险住院患者评估阳性数'
 import { 患者走失发生率 } from './views2/患者走失发生率'
+import { 患者走失高风险患者评估率 } from './views2/患者走失高风险患者评估率'
 import { 患者足下垂的发生率 } from './views2/患者足下垂的发生率'
 import { 新生儿烧伤烫伤发生率 } from './views2/新生儿烧伤烫伤发生率'
 import { 查对制度落实合格率 } from './views2/查对制度落实合格率'
@@ -121,7 +122,8 @@ const ROUTE_LIST: any = [
     keys: ['跌倒发生率'],
     gName: '护理单元',
     lineKey: '',
-    serviceName: 'nationalIndex/getPatientFallRatio'
+    serviceName: 'nationalIndex/getPatientFallRatio',
+    surplusWidth: 260
   },
   {
     name: '院内压疮发生率',
@@ -155,10 +157,10 @@ const ROUTE_LIST: any = [
     name: '导尿管相关尿路感染发生率',
     columns: 导尿管相关尿路感染发生率.columns,
     dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
-    keys: ['感染例数', '插管例数'],
+    keys: 'getCautiRatio',
     gName: '护理单元',
     lineKey: '感染率',
-    serviceName: 'nationalIndex/uex_ratio_bycase'
+    serviceName: 'nationalIndex/getCautiRatio'
   },
   {
     name: '中心导管相关血流感染发生率',
@@ -223,9 +225,9 @@ const ROUTE_LIST: any = [
     serviceName: 'cnqIndex/getCrbsiRatio'
   },
   {
-    name: '导尿管相关尿路感染发生率',
-    columns: 导尿管相关尿路感染发生率.columns,
-    dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
+    name: '尿管相关泌尿系感染发生率',
+    columns: 尿管相关泌尿系感染发生率.columns,
+    dataSource: [] || 尿管相关泌尿系感染发生率.dataSource,
     keys: 'getCautiRatio',
     gName: '护理单元',
     lineKey: '发生率(%)',
@@ -350,9 +352,9 @@ const ROUTE_LIST: any = [
   },
   {
     name: '患者走失高风险患者评估率',
-    columns: 患者走失发生率.columns,
-    dataSource: [] || 患者走失发生率.dataSource,
-    keys: ['住院患者总人数', '住院患者的走失例数'],
+    columns: 患者走失高风险患者评估率.columns,
+    dataSource: [] || 患者走失高风险患者评估率.dataSource,
+    keys: 'getHRPLostESRatio',
     gName: '护理单元',
     lineKey: '发生率(%)',
     serviceName: 'cnqIndex/getHRPLostESRatio'
@@ -456,6 +458,9 @@ export default function Indicator(props: Props) {
   let [loading, setLoading] = useState(false)
   let [currentRoute, setCurrentRoute]: [any, any] = useState(null)
   const [titleSecond, setTitleSecond] = useState('')
+  //
+  const [templateShow, setTemplateShow] = useState(false)
+  //
 
   let topRef: any = React.createRef()
   useLayoutEffect(() => {
@@ -472,21 +477,33 @@ export default function Indicator(props: Props) {
     setStartDate(startDate)
     setEndDate(endDate)
     let currentRouteName = props.match.params.name
-    let currentRoute = ROUTE_LIST.find((item: any) => item.name === currentRouteName)
+    let currentRoute = { ...ROUTE_LIST.find((item: any) => item.name === currentRouteName) }
     if (currentRoute) {
-      setLoading(true)
-      let { data } = await indicatorService.getIndicatoeData(currentRoute!.serviceName, startDate, endDate)
-      setLoading(false)
-      // currentRoute.dataSource = data
-      // setCurrentRoute(currentRoute)
-      //除错
-      // if (currentRoute && data) {
-      currentRoute.dataSource = data
-      currentRoute.dataSource = [...data]
-      let cacheTitle = currentRoute!.name + '统计'
-      setTitleSecond(cacheTitle)
-      setCurrentRoute(currentRoute)
-      // }
+      if (
+        currentRoute!.name !== '新生儿烧伤烫伤发生率' &&
+        currentRoute!.name !== '查对制度落实合格率' &&
+        currentRoute!.name !== '护理不良事件报告处理符合率' &&
+        currentRoute!.name !== '使用药物错误的发生率' &&
+        currentRoute!.name !== '急救设备器材及药品完好合格率' &&
+        currentRoute!.name !== '无菌物品合格率' &&
+        currentRoute!.name !== '器械清洗合格率' &&
+        currentRoute!.name !== '包装合格率' &&
+        currentRoute!.name !== '湿包发生率'
+      ) {
+        setTemplateShow(true)
+        setLoading(true)
+        const { data } = await indicatorService.getIndicatoeData(currentRoute!.serviceName, startDate, endDate)
+        setLoading(false)
+        //除错
+        if (currentRoute && data) {
+          currentRoute.dataSource = [...data]
+          let cacheTitle = currentRoute!.name + '统计'
+          setTitleSecond(cacheTitle)
+          setCurrentRoute(currentRoute)
+        }
+      } else {
+        setTemplateShow(false)
+      }
     }
   }
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
@@ -499,47 +516,66 @@ export default function Indicator(props: Props) {
 
       <MainCon>
         <TopCon ref={topRef} refreshData={onload} />
-        <MainScroll>
-          {currentRoute && (
-            <MainInner>
-              <RadioCon>
-                <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
-                  <Radio.Button value='详情'>详情</Radio.Button>
-                  <Radio.Button value='图表'>图表</Radio.Button>
-                </Radio.Group>{' '}
-              </RadioCon>
+        {templateShow ? (
+          <MainScroll>
+            {currentRoute && (
+              <MainInner>
+                <RadioCon>
+                  <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
+                    {/* <Radio.Button value='详情'>详情</Radio.Button> */}
+                    {/* <Radio.Button value='图表'>图表</Radio.Button> */}
+                  </Radio.Group>{' '}
+                </RadioCon>
 
-              {/* <HisName>东莞厚街医院</HisName> */}
-              <Title>{currentRoute!.name + '统计'}</Title>
-              <Date>
-                日期：{startDate} 至 {endDate}
-              </Date>
-              {showType === '详情' && (
-                <BaseTable
-                  loading={loading}
-                  dataSource={currentRoute!.dataSource}
-                  columns={currentRoute!.columns}
-                  surplusHeight={currentRoute.surplusHeight || 250}
-                  surplusWidth={currentRoute.surplusWidth || 0}
-                />
-              )}
-              {showType === '图表' && (
-                <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
-                  {/* <BaseChartScrollCon> */}
-                  <div className='BaseCharCon'>
-                    <BaseChart
+                {/* <HisName>东莞厚街医院</HisName> */}
+                <Title>{currentRoute!.name + '统计'}</Title>
+                <Date>
+                  日期：{startDate} 至 {endDate}
+                </Date>
+                {showType === '详情' && (
+                  <BaseTableCon>
+                    <BaseTable
+                      loading={loading}
                       dataSource={currentRoute!.dataSource}
-                      keys={currentRoute!.keys}
-                      name={currentRoute!.gName}
-                      lineKey={currentRoute!.lineKey}
-                      dictionary={currentRoute.dictionary}
+                      columns={currentRoute!.columns}
+                      surplusHeight={currentRoute.surplusHeight || 250}
+                      surplusWidth={currentRoute.surplusWidth || 0}
                     />
-                  </div>
-                </BaseChartScrollCon>
-              )}
-            </MainInner>
-          )}
-        </MainScroll>
+                  </BaseTableCon>
+                )}
+                {/* {templateShow ? (
+                <BaseTableCon>
+                  <BaseTable
+                    loading={loading}
+                    dataSource={currentRoute!.dataSource}
+                    columns={currentRoute!.columns}
+                    surplusHeight={currentRoute.surplusHeight || 250}
+                    surplusWidth={currentRoute.surplusWidth || 0}
+                  />
+                </BaseTableCon>
+              ) : (
+                <div style={{ marginTop: '60px', textAlign: 'center', fontSize: '30px' }}>暂无数据</div>
+              )} */}
+                {showType === '图表' && (
+                  <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
+                    {/* <BaseChartScrollCon> */}
+                    <div className='BaseCharCon'>
+                      <BaseChart
+                        dataSource={currentRoute!.dataSource}
+                        keys={currentRoute!.keys}
+                        name={currentRoute!.gName}
+                        lineKey={currentRoute!.lineKey}
+                        dictionary={currentRoute.dictionary}
+                      />
+                    </div>
+                  </BaseChartScrollCon>
+                )}
+              </MainInner>
+            )}
+          </MainScroll>
+        ) : (
+          <div style={{ marginTop: '200px', textAlign: 'center', fontSize: '30px' }}>暂无数据</div>
+        )}
       </MainCon>
     </Wrapper>
   )
@@ -619,4 +655,7 @@ const BaseChartScrollCon = styled.div<{ widthGet: any }>`
   .BaseCharCon {
     width: ${(props) => props.widthGet};
   }
+`
+const BaseTableCon = styled.div`
+  height: 100%;
 `

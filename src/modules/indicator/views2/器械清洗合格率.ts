@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
+    width:180,
     align: 'center'
   },
   {
     title: 'CSSD清洗器械总件数',
     dataIndex: 'CSSD清洗器械总件数',
     key: 'CSSD清洗器械总件数',
+    width:180,
     align: 'center'
   },
   {
     title: 'CSSD清洗器械合格件数',
     dataIndex: 'CSSD清洗器械合格件数',
     key: 'CSSD清洗器械合格件数',
+    width:180,
     align: 'center'
   },
   {
     title: '合格率(%)',
     dataIndex: '合格率(%)',
     key: '合格率(%)',
+    width:120,
     align: 'center'
   }
 ]

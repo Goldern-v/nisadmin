@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '跌倒/坠床高风险患者评估阳性例数',
     dataIndex: 'fall_count',
     key: '跌倒/坠床高风险患者评估阳性例数',
+    width: 200,
     align: 'center'
   },
   {
     title: '入院时高风险患者总人数',
     dataIndex: 'hres_count',
     key: '入院时高风险患者总人数',
+    width: 180,
     align: 'center'
   },
   {
     title: '评估率(%)',
     dataIndex: 'hres_ratio',
     key: '评估率(%)',
+    width: 120,
     align: 'center'
   }
 ]
@@ -39,6 +43,7 @@ const dataSource = [
     护理单元: '神经内科护理单元',
     '跌倒/坠床高风险患者评估阳性例数': 6,
     入院时高风险患者总人数: 0,
+
     '评估率(%)': 0
   },
   {

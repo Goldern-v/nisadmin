@@ -11,30 +11,35 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '急救设备器材及药品总件数',
     dataIndex: '急救设备器材及药品总件数',
     key: '急救设备器材及药品总件数',
+    width: 200,
     align: 'center'
   },
   {
     title: '急救设备器材及药品不合格件数',
     dataIndex: '急救设备器材及药品不合格件数',
     key: '急救设备器材及药品不合格件数',
+    width: 200,
     align: 'center'
   },
   {
     title: '错误发生率(%)',
     dataIndex: '错误发生率(%)',
     key: '错误发生率(%)',
+    width: 180,
     align: 'center'
   },
   {
     title: '患者使用药物错误的发生例次/月',
     dataIndex: '患者使用药物错误的发生例次/月',
     key: '患者使用药物错误的发生例次/月',
+    width: 200,
     align: 'center'
   }
 ]

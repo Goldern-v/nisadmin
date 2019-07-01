@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '入院评估高风险例数',
     dataIndex: 'hres_count',
     key: '插管总日数',
+    width: 180,
     align: 'center'
   },
   {
     title: '发生压疮例数',
     dataIndex: 'pu_count',
     key: '感染人数',
+    width: 180,
     align: 'center'
   },
   {
     title: '压疮发生率',
     dataIndex: 'accident_ratio',
     key: '发生率(%)',
+    width: 180,
     align: 'center'
   }
 ]

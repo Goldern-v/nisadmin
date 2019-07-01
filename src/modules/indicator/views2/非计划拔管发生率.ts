@@ -10,24 +10,28 @@ const columns: any = [
   {
     title: '护理单元',
     dataIndex: 'wardName',
+    width: 180,
     key: '护理单元',
     align: 'center'
   },
   {
     title: '导管留置日数',
     dataIndex: 'indwelling_days',
+    width: 180,
     key: '导管留置日数',
     align: 'center'
   },
   {
     title: 'UEX例数',
     dataIndex: 'uex_case',
+    width: 180,
     key: 'UEX例数',
     align: 'center'
   },
   {
     title: 'UEX发生率(例数/留置日数)',
     dataIndex: 'uex_ratio',
+    width: 180,
     key: 'UEX发生率(例数/留置日数)',
     align: 'center'
   }

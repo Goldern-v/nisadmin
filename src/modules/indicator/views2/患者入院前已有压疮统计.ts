@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '住院患者人数',
     dataIndex: 'patient_count',
     key: '插管总日数',
+    width: 180,
     align: 'center'
   },
   {
     title: '入院前已有压疮例数',
     dataIndex: 'pu_count',
     key: '感染人数',
+    width: 180,
     align: 'center'
   },
   {
     title: '已有压疮占比',
     dataIndex: 'pu_ratio',
     key: '发生率(%)',
+    width: 180,
     align: 'center'
   }
 ]

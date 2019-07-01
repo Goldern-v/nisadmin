@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
+    width:180,
     align: 'center'
   },
   {
     title: '检查总次数',
     dataIndex: '检查总次数',
     key: '检查总次数',
+    width:180,
     align: 'center'
   },
   {
     title: '不合格数',
     dataIndex: '不合格数',
     key: '不合格数',
+    width:180,
     align: 'center'
   },
   {
     title: '不合格率(%)',
     dataIndex: '不合格率(%)',
     key: '不合格率(%)',
+    width:180,
     align: 'center'
   }
 ]

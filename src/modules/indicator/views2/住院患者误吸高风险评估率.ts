@@ -11,18 +11,21 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '误吸高风险患者评估阳性例数',
     dataIndex: 'misInhal_count',
     key: '误吸高风险患者评估阳性例数',
+    width: 180,
     align: 'center'
   },
   {
     title: '入院时评估误吸高风险患者总人数',
     dataIndex: 'estimate_count',
     key: '入院时评估误吸高风险患者总人数',
+    width: 180,
     align: 'center'
   },
 
@@ -30,6 +33,7 @@ const columns: any = [
     title: '评估率(%)',
     dataIndex: 'estimate_ratio',
     key: '评估率(%)',
+    width: 180,
     align: 'center'
   }
 ]

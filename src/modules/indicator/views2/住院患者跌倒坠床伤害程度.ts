@@ -11,6 +11,7 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   // {
@@ -27,12 +28,15 @@ const columns: any = [
         title: '轻度伤害例数',
         dataIndex: 'minor_injury_count',
         key: '轻度伤害例数',
+        width: 120,
         align: 'center'
+        
       },
       {
         title: '轻度伤害比例',
         dataIndex: 'minor_injury_ratio',
         key: '轻度伤害占比',
+        width: 120,
         align: 'center'
       }
     ]
@@ -45,12 +49,14 @@ const columns: any = [
         title: '中度伤害例数',
         dataIndex: 'moderate_injury_count',
         key: '中度伤害例数',
+        width: 120,
         align: 'center'
       },
       {
         title: '中度伤害比例',
         dataIndex: 'moderate_injury_ratio',
         key: '中度伤害占比',
+        width: 120,
         align: 'center'
       }
     ]
@@ -63,12 +69,14 @@ const columns: any = [
         title: '高度伤害例数',
         dataIndex: 'severe_injury_count',
         key: '高度伤害例数',
+        width: 120,
         align: 'center'
       },
       {
         title: '高度伤害比例',
         dataIndex: 'severe_injury_ratio',
         key: '高度伤害占比',
+        width: 120,
         align: 'center'
       }
     ]
@@ -81,12 +89,14 @@ const columns: any = [
         title: '死亡伤害例数',
         dataIndex: 'dead_injury_count',
         key: '死亡伤害例数',
+        width: 120,
         align: 'center'
       },
       {
         title: '死亡伤害比例',
         dataIndex: 'dead_injury_ratio',
         key: '死亡伤害占比',
+        width: 120,
         align: 'center'
       }
     ]

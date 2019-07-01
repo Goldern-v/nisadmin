@@ -3,24 +3,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '手术总人数',
     dataIndex: 'so_count',
     key: '手术总人数',
+    width: 180,
     align: 'center'
   },
   {
     title: '发生压疮人数',
     dataIndex: 'pu_count',
     key: '发生压疮人数',
+    width: 180,
     align: 'center'
   },
   {
     title: '手术室压疮发生率(%)',
     dataIndex: 'pu_ratio',
     key: '手术室压疮发生率(%)',
+    width: 180,
     align: 'center'
   }
 ]

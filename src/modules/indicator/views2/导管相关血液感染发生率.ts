@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: '插管总日数',
     dataIndex: 'indwelling_days',
     key: '插管总日数',
+    width: 180,
     align: 'center'
   },
   {
     title: '感染人数',
     dataIndex: 'infection_count',
     key: '感染人数',
+    width: 180,
     align: 'center'
   },
   {
     title: '发生率(%)',
     dataIndex: 'accident_ratio',
     key: '发生率(%)',
+    width: 180,
     align: 'center'
   }
 ]

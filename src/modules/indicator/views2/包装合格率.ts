@@ -11,24 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
+    width: 180,
     align: 'center'
   },
   {
     title: 'CSSD灭菌包总件数',
     dataIndex: 'CSSD灭菌包总件数',
     key: 'CSSD灭菌包总件数',
+    width: 180,
     align: 'center'
   },
   {
     title: '合格灭菌器械包件数',
     dataIndex: '合格灭菌器械包件数',
     key: '合格灭菌器械包件数',
+    width: 180,
     align: 'center'
   },
   {
     title: '合格率(%)',
     dataIndex: '合格率(%)',
     key: '合格率(%)',
+    width: 120,
     align: 'center'
   }
 ]

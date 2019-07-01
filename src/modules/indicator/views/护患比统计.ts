@@ -99,6 +99,7 @@ const columns: any = [
     title: '每天平均护患比',
     dataIndex: 'pNRatio_avg',
     align: 'center',
+    width: 160,
     key: '每天平均护患比'
   }
 ]
