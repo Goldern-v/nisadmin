@@ -57,7 +57,7 @@
   },
   "Tag Component": {
     "scope": "typescriptreact",
-    "prefix": "tag",
+    "prefix": "styl",
     "body": "const ${1:Wrapper} = styled.${2:div}`$3`"
   },
   "react fun com": {

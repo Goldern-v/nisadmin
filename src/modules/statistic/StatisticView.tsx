@@ -39,7 +39,7 @@ import NurseList from './views/nursingStatistics/nurseList/NurseList'
 // 住院病人认知情况统计表
 import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
 
-export default function StatisticView () {
+export default function StatisticView() {
   const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function StatisticView () {
 
 const Con = styled.div`
   width: 100%;
-  height: calc(100vh - 93px);
+  height: calc(100vh - 50px);
   display: flex;
   align-items: stretch;
   background: rgba(248, 248, 248, 1);

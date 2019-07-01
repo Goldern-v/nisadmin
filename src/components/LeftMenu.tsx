@@ -19,6 +19,7 @@ export default function LeftMenu(props: Props) {
   })
   const handleSelect = (e: any) => {
     appStore.history.push(e.key)
+    setOpenKeys(getOpenKeyByPath(props.config, path, []) || [[], []][1])
     console.log('click ', e)
   }
   const renderMenu = (list: any) => {
@@ -47,7 +48,9 @@ export default function LeftMenu(props: Props) {
               <span>
                 {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
                 <span>{item.title}</span>
-                <span className='selected-arrow'>>></span>
+                <span className='selected-arrow'>
+                  <img src={require('./images/菜单选中右箭头.png')} alt='' />
+                </span>
               </span>
             </Menu.Item>
           )
@@ -83,9 +86,13 @@ export default function LeftMenu(props: Props) {
 
   let path = appStore.match.url
   let [defaultOpenKeys, defaultSelectedKeys] = getOpenKeyByPath(props.config, path, []) || [[], []]
-  const [openKeys, setOpenKeys] = useState(defaultOpenKeys)
+  const [openKeys, setOpenKeys] = useState(() => {
+    return defaultOpenKeys
+  })
+
   return (
     <Wrapper id='left-menu-con'>
+      {/* {JSON.stringify(openKeys)} */}
       <Menu
         onSelect={handleSelect}
         selectedKeys={defaultSelectedKeys}
@@ -101,6 +108,7 @@ export default function LeftMenu(props: Props) {
 }
 
 const menu_bg_color = '#F2F2F2' // 背景色
+const item_bg_color = '#F9F9F9' // item背景色
 const normal_text_size = '13px' // 正常文字大小
 const normal_text_color = '#666666' // 正常文字颜色
 const active_text_color = '#00A680' // 激活文字颜色
@@ -133,13 +141,11 @@ const Wrapper = styled.div`
     ::-webkit-scrollbar-thumb {
       /*滚动条里面小方块*/
       border-radius: 5px;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
       background: rgba(0, 0, 0, 0.2);
     }
     /*定义滚动条轨道 内阴影+圆角*/
     ::-webkit-scrollbar-track {
       /*滚动条里面轨道*/
-      box-shadow: inset 0 0 5px #ffffff;
       border-radius: 5px;
       background-color: #ffffff;
     }
@@ -152,7 +158,7 @@ const Wrapper = styled.div`
       width: 100%;
       border-bottom: ${menu_li_bottom_line};
       position: relative;
-      background: ${menu_bg_color};
+      background: ${item_bg_color};
       &:after {
         display: none;
       }
@@ -176,6 +182,7 @@ const Wrapper = styled.div`
       &.ant-menu-item-selected.ant-menu-item-selected {
         background: ${hover_li_bg};
         color: ${active_text_color};
+        font-weight: bold;
         position: relative;
         &::after {
           content: '';
@@ -187,7 +194,7 @@ const Wrapper = styled.div`
           bottom: 0;
           right: -1px;
           left: auto;
-          z-index: 2;
+          z-index: 3;
         }
         &::before {
           content: '';
@@ -224,6 +231,7 @@ const Wrapper = styled.div`
         bottom: 0;
         right: 0px;
         left: auto;
+        z-index: 3;
       }
 
       &::before {
@@ -232,7 +240,7 @@ const Wrapper = styled.div`
         top: 40px;
         bottom: 0;
         left: 21px;
-        border-left: 1px dashed ${active_text_color};
+        border-left: 1px dotted ${active_text_color};
         z-index: 2;
       }
 
@@ -246,6 +254,10 @@ const Wrapper = styled.div`
         &::after {
           display: none;
         }
+        &:hover {
+          color: ${active_text_color};
+          font-weight: bold;
+        }
         &::before {
           content: '';
           position: absolute;
@@ -255,7 +267,7 @@ const Wrapper = styled.div`
           width: 8px;
           height: 0;
           margin: auto 0;
-          border-top: 1px dashed ${active_text_color};
+          border-top: 1px dotted ${active_text_color};
           z-index: 2;
         }
       }
@@ -268,6 +280,7 @@ const Wrapper = styled.div`
         font-weight: bold;
       }
       .ant-menu-item-selected {
+        font-weight: bold;
         .selected-arrow {
           display: block;
           position: absolute;
@@ -278,14 +291,17 @@ const Wrapper = styled.div`
           left: 16px;
           background: #fff;
           z-index: 2;
-          height: 10px;
-          line-height: 10px;
+          height: 12px;
         }
       }
     }
   }
   .selected-arrow {
     display: none;
+    img {
+      height: 12px;
+      display: block;
+    }
   }
 `
 

@@ -310,7 +310,7 @@ export default withRouter(
               columns={columns}
               dataSource={tableData}
               pagination={false}
-              surplusHeight={250}
+              surplusHeight={180}
             />
           </div>
         </div>
@@ -393,7 +393,7 @@ const Wrapper = styled.div`
     left: 0;
     right: 0;
     top: 50px;
-    bottom: 70px;
+    bottom: 10px;
     padding: 0 10px 0 10px;
     & > div {
       background: #fff;

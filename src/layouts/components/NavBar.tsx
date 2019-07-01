@@ -14,6 +14,9 @@ import { ReactComponent as TJCX } from '../images/统计查询.svg'
 import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as WLPT } from '../images/物流平台.svg'
 import { ReactComponent as XTSZ } from '../images/系统设置.svg'
+import { Place } from 'src/components/common'
+import { authStore } from 'src/stores'
+import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
 
@@ -107,6 +110,14 @@ export default observer(function NavBar(props: Props) {
           <div className='nav-name'>{item.name}</div>
         </NavItem>
       ))}
+      <Place />
+      <RightCon>
+        <span className='name'>{authStore.user && authStore.user.empName}</span>
+        <span className='line'>|</span>
+        <span className='logout' onClick={service.authApiService.logout}>
+          退出
+        </span>
+      </RightCon>
     </Wrapper>
   )
 })
@@ -165,6 +176,28 @@ const NavItem = styled.div<{ active?: boolean }>`
     }
     title {
       display: none;
+    }
+  }
+`
+
+const RightCon = styled.div`
+  font-size: 13px;
+  color: #fff;
+  margin-right: 15px;
+  span {
+    height: 50px;
+    line-height: 50px;
+  }
+  .line {
+    padding: 0 8px;
+  }
+  .logout {
+    width: 30px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    &:hover {
+      font-weight: bold;
     }
   }
 `

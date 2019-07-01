@@ -150,7 +150,7 @@ export default function SettingView(props: Props) {
 }
 const Wrapper = styled.div`
   overflow: hidden;
-  height: calc(100vh - 93px);
+  height: calc(100vh - 50px);
   display: flex;
   align-items: stretch;
 `

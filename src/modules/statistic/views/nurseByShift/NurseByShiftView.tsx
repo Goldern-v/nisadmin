@@ -47,7 +47,7 @@ export default function StatisticView() {
 }
 
 const Con = styled.div`
-  height: calc(100vh - 93px);
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
 `

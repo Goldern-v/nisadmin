@@ -10,7 +10,7 @@ import TableModel from '../../common/TableModel'
 // const ButtonGroup = Button.Group
 
 // import SelectMonth from '../../common/SelectMonth'  //月份选择器
-export default function StatisticView () {
+export default function StatisticView() {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
@@ -28,7 +28,7 @@ export default function StatisticView () {
 }
 
 const Con = styled.div`
-  height: calc(100vh - 93px);
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
   position: relative;
