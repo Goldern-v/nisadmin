@@ -511,8 +511,8 @@ export default function Indicator(props: Props) {
                 <BaseTable loading={loading} dataSource={currentRoute!.dataSource} columns={currentRoute!.columns} />
               )}
               {showType === '图表' && (
-                // <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
-                <BaseChartScrollCon>
+                <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
+                {/* <BaseChartScrollCon> */}
                   <div className='BaseCharCon'>
                     <BaseChart
                       dataSource={currentRoute!.dataSource}
@@ -594,11 +594,11 @@ const RadioCon = styled.div`
   top: 20px;
   right: 35px;
 `
-const BaseChartScrollCon = styled.div`
-  width: 250%;
+const BaseChartScrollCon = styled.div<{widthGet: any}>`
+  /* width: 250%; */
   overflow: auto;
-  /* width: ${(props: any) => props.widthGet}; */
-  /* height:250%; */
+  width: ${(props) => props.widthGet};
+  
   .BaseCharCon {
   }
 `
