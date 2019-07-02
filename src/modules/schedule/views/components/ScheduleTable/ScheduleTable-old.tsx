@@ -155,7 +155,7 @@ const tableData: TableData = {
   ]
 }
 
-export default function ScheduleTable () {
+export default function ScheduleTable() {
   const [count, setCount] = useState(0)
   const [scheduleList, setscheduleList] = useState([
     [
@@ -268,19 +268,6 @@ const Wrapper = styled.div`
   table {
     width: 100%;
     border-collapse: collapse;
-  }
-  table,
-  td,
-  tr,
-  th {
-    border: 1px solid #d9d8d8;
-    min-height: 30px;
-    text-align: center;
-    height: 30px;
-  }
-  th {
-    background: #f8f8f8;
-    padding: 5px 0;
   }
 `
 const NoScheduleCon = styled.div`

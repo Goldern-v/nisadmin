@@ -150,8 +150,8 @@ export default function AuditsTableDHSZ(props: Props) {
         dataSource={tableData}
         columns={columns}
         surplusHeight={280}
-        spaceRowNumber={10}
-        type={['spaceRow']}
+        // spaceRowNumber={10}
+        // type={['spaceRow']}
         pagination={{
           total: total,
           current: current,
