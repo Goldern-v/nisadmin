@@ -157,6 +157,13 @@ class EditableTable extends React.Component<any, any> {
       this.setState({ type: 1 })
       this.getSelectData({}, 1)
     })
+
+    /** 监听事件 --- 控制刷新列表数据*/
+    emitter.removeAllListeners('自动推送设置-刷新-医嘱')
+    emitter.addListener('自动推送设置-刷新-医嘱', () => {
+      this.getMealList(null, null)
+    })
+    
   }
   // 删除
   public handleDelete = (record: any) => {

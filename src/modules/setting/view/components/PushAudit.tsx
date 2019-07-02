@@ -6,7 +6,6 @@ import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import { appStore, authStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
-import AuditsTableDHSZ from 'src/modules/auditsManagement/components/AuditsTableDHSZ'
 import EventTable from './EventTable'
 import AdviseTable from './AdviseTable'
 import OperationTable from './OperationTable'
@@ -47,6 +46,19 @@ export default observer(function PushAudit(props: Props) {
       emitter.emit('自动推送设置-添加-手术')
     }
   })
+  
+  emitter.removeAllListeners('自动推送设置-刷新')
+
+  emitter.addListener('自动推送设置-刷新', () => {
+    if (activeKey === '0') {
+      emitter.emit('自动推送设置-刷新-事件')
+    } else if (activeKey === '1') {
+      emitter.emit('自动推送设置-刷新-医嘱')
+    } else if (activeKey === '2') {
+      emitter.emit('自动推送设置-刷新-手术')
+    }
+  })
+  
   return (
     <Wrapper>
       <MainCon>

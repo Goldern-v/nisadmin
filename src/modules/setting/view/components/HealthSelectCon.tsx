@@ -20,6 +20,7 @@ export default function SelectCon() {
 
   const onChange = (value: string) => {
     emitter.emit('refreshNurseAuditTable', searchText)
+    emitter.emit('自动推送设置-刷新')
   }
   const onChangeSearchText = (e: any) => {
     setSearchText(e.target.value)

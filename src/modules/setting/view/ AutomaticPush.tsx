@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 //引入头部组件
-import SelectCon from './components/SelectCon'
+import SelectCon from './components/HealthSelectCon'
 //引入选项卡
 import PushAudit from './components/PushAudit'
 export interface Props extends RouteComponentProps {}
