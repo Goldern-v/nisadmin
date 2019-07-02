@@ -4,7 +4,7 @@ import { Input, InputNumber, Tooltip, Button, Pagination, Form, Modal, Select, m
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
-import { authStore } from 'src/stores/index'
+import { authStore, appStore} from 'src/stores/index'
 const { Option } = Select
 // import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
 const FormItem = Form.Item
@@ -85,7 +85,7 @@ class EditableTable extends React.Component<any, any> {
       {
         title: '医嘱',
         dataIndex: 'orderText',
-        width: '22%',
+        width: '21%',
         align: 'left',
         editable: true
       },
@@ -146,6 +146,9 @@ class EditableTable extends React.Component<any, any> {
               <a onClick={() => this.handleDelete(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
                 删除
               </a>
+              <a onClick={() => this.preview(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
+                预览
+              </a>
             </div>
           )
         }
@@ -182,6 +185,13 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
+    //预览
+    public preview = (record: any) => {
+      let getEducationId = record.educationId
+      appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}`)
+    }
+  
   public getSelectData = (record: any, value: number) => {
     console.log(record, 'record')
     // 如果是添加 则清空数据
@@ -363,7 +373,8 @@ class EditableTable extends React.Component<any, any> {
               rowClassName={() => 'editable-row'}
               // pagination={false}
               pagination={false}
-              scroll={{ y: 304 }}
+              surplusHeight={280}
+              // scroll={{ y: 304 }}
               loading={this.state.loadingTable}
             />
             <PaginationBox>
@@ -474,7 +485,7 @@ const Wrapper = styled.div`
 const PaginationBox = styled.div`
   clear: both;
   text-align: right;
-  padding-top: 10px;
+  /* padding-top: 10px; */
   padding-right: 19px;
 `
 const BigBox = styled.div`

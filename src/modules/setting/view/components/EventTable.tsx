@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 import React from 'react'
+import { ColumnProps } from 'antd/lib/table'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import * as ReactDOM from 'react-dom'
 import { Input, InputNumber, Form, Button, Modal, Select, Pagination, message, Tooltip } from 'antd'
 import BaseTable from 'src/components/BaseTable'
-import { authStore } from 'src/stores/index'
+import { authStore, appStore } from 'src/stores/index'
 import service from 'src/services/api'
 import props from 'src/modules/healthPropaganda/editor/configs/props'
 import emitter from 'src/libs/ev'
@@ -12,6 +14,7 @@ export interface Props {
   placeholder: any
 }
 // import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
+export interface Props extends RouteComponentProps {}
 
 const FormItem = Form.Item
 const EditableContext = React.createContext<any>({})
@@ -78,8 +81,8 @@ class EditableTable extends React.Component<any, any> {
       loadingTable: false,
       total: 0,
       pageSize: 10,
-      pageIndex: 1 ,// 当前页数
-      getEducationId:''
+      pageIndex: 1, // 当前页数
+      getEducationId: ''
     }
     this.columns = [
       {
@@ -229,14 +232,16 @@ class EditableTable extends React.Component<any, any> {
   }
 
   //预览
-  public preview = (record:any) => {
+  public preview = (record: any) => {
     let getEducationId = record.educationId
-    console.log(getEducationId,'0000000000')
-    let missionUrl = (getEducationId:any) => `/crNursing/nurseList/content.html?id=${getEducationId}`
-    let url = missionUrl(getEducationId); 
-    url = "http://120.25.105.45:9864" + url;
-    console.log(url)
-    window.location.href = url
+    // console.log(getEducationId, '0000000000')
+    // let missionUrl = (getEducationId: any) => `/crNursing/nurseList/content.html?id=${getEducationId}`
+    // let url = missionUrl(getEducationId)
+    // url = 'http://120.25.105.45:9864' + url
+    // console.log(url)
+    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}`)
+
+    // window.location.href = "/setting/健康宣教字典详情"
     // http://120.25.105.45:9864/crNursing/nurseList/content.html?id=199573
   }
 
@@ -387,10 +392,9 @@ class EditableTable extends React.Component<any, any> {
               bordered
               dataSource={this.state.data}
               columns={columns}
-              surplusHeight={60}
+              surplusHeight={280}
               rowClassName={() => 'editable-row'}
               pagination={false}
-              scroll={{ y: 304 }}
               // surplusHeight: {}
               loading={this.state.loadingTable}
               // getTableData={() => emitter.emit('refreshNurseAuditTable')}
@@ -507,7 +511,7 @@ const Wrapper = styled.div`
 const PaginationBox = styled.div`
   clear: both;
   text-align: right;
-  padding-top: 10px;
+  /* padding-top: 10px; */
   padding-right: 19px;
 `
 const BigBox = styled.div`

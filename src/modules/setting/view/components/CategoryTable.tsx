@@ -18,7 +18,7 @@ export default function AuditsTableDHSZ (props: Props) {
   let [messageType, setMessageType] = useState('')
   let [messageTypeName, setMessageTypeName] = useState('')
   let [selectData, setSelectData] = useState([])
-  // const [loadingTable, setLoadingTable] = useState(false)
+  let [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
   const handleOk = () => {
     let data = {
@@ -66,7 +66,9 @@ export default function AuditsTableDHSZ (props: Props) {
   }
 
   const getMealList = () => {
+    setLoadingTable(true)
     service.healthyApiService.getHealthyList().then((res) => {
+      setLoadingTable(false)
       setTableData(res.data)
     })
   }
@@ -139,7 +141,7 @@ export default function AuditsTableDHSZ (props: Props) {
         columns={columns}
         surplusHeight={265}
         bordered
-        // loadingTable={loadingTable}
+        loading={loadingTable}
       />
       <Modal
         centered={true}

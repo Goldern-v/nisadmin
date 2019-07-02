@@ -22,8 +22,8 @@ export interface Props extends RouteComponentProps {}
 
 const navList = [
   {
-    name: '首页',
-    icon: <SY />,
+    name: '首页钱钱钱',
+    // icon: <SY />,
     path: '/home'
   },
   {
@@ -33,7 +33,7 @@ const navList = [
   },
   {
     name: '护士排班',
-    icon: <HSPB />,
+    // icon: <HSPB />,
     path: '/scheduleHome'
   },
   {

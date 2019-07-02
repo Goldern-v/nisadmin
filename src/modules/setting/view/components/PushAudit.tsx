@@ -10,6 +10,7 @@ import EventTable from './EventTable'
 import AdviseTable from './AdviseTable'
 import OperationTable from './OperationTable'
 import BaseTabs from 'src/components/BaseTabs'
+import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
 // import { Modal, Input, message, Popconfirm, Select } from 'antd'
 // import service from 'src/services/api'
 export interface Props {
@@ -23,7 +24,14 @@ export default observer(function PushAudit(props: Props) {
   const TABS_LIST_NURSE = [
     {
       title: '事件',
-      component: <EventTable placeholder="input search text" isShow={props.isShow}/>
+      component: <EventTable placeholder="input search text" isShow={props.isShow}/>,
+      children: [
+        {
+          title: '类别字典设置',
+          path: '/setting/健康宣教字典详情',
+          component: <HealthPropagandaView/>
+        }
+      ]
     },
     {
       title: '医嘱',

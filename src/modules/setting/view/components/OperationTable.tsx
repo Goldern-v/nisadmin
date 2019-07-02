@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Table, Input, InputNumber, Pagination, Tooltip, Button, Form, Modal, Select, Radio, message } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 const { Option } = Select
 // import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
@@ -150,6 +150,9 @@ class EditableTable extends React.Component<any, any> {
               <a onClick={() => this.handleDelete(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
                 删除
               </a>
+              <a onClick={() => this.preview(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
+                预览
+              </a>
             </div>
           )
         }
@@ -213,6 +216,13 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
+  //预览
+  public preview = (record: any) => {
+    let getEducationId = record.educationId
+    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}`)
+  }
+  
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
   public getMealList = (current: any, pageSize: any) => {
@@ -389,7 +399,8 @@ class EditableTable extends React.Component<any, any> {
               rowClassName={() => 'editable-row'}
               // pagination={false}
               pagination={false}
-              scroll={{ y: 304 }}
+              // scroll={{ y: 304 }}
+              surplusHeight={280}
               loading={this.state.loadingTable}
             />
             <PaginationBox>
@@ -404,7 +415,6 @@ class EditableTable extends React.Component<any, any> {
               />
             </PaginationBox>
           </BigBox>
-
           <Modal
             title='推送设置'
             visible={this.state.editingKey}
@@ -500,7 +510,7 @@ const Wrapper = styled.div`
 const PaginationBox = styled.div`
   clear: both;
   text-align: right;
-  padding-top: 10px;
+  /* padding-top: 10px; */
   padding-right: 19px;
 `
 const BigBox = styled.div`
