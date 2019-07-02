@@ -115,14 +115,17 @@ export default function BaseTable(props: Props) {
     try {
       setTimeout(() => {
         if (tableRef.current && props.surplusHeight) {
-          let contentHeigt = wih - props.surplusHeight + 'px'
+          let contentHeight = wih - props.surplusHeight + 'px'
           let placeholder = tableRef!.current!.querySelector('.ant-table-placeholder')
+          let body = tableRef!.current!.querySelector('.ant-table-body')
           if (placeholder) {
-            placeholder.style.height = contentHeigt
-          } else {
-            let body = tableRef!.current!.querySelector('.ant-table-body')
+            placeholder.style.height = contentHeight
             if (body) {
-              body.style.height = wih - props.surplusHeight + 'px'
+              body.style.height = 0
+            }
+          } else {
+            if (body) {
+              body.style.height = contentHeight
             }
           }
         }
