@@ -1,5 +1,5 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-// import qs from 'qs';
+import qs from 'qs';
 
 export default class BadEventsNewService extends BaseApiService {
   //不良事件列表
@@ -27,8 +27,8 @@ export default class BadEventsNewService extends BaseApiService {
     return this.post(`/badEvent/aduit`, params);
   }
   //获取全部科室单元
-  public async getDeptList() {
-    return this.get(`/user/nursingUnit/all`);
+  public async getDeptList(types?: string) {
+    return this.post(`/badEventDept/getByTypeList`, qs.stringify({ type: types || '1,2' }));
   }
 }
 
