@@ -101,7 +101,7 @@ export default observer(function FilterCon() {
         </div>
         <div className='right'>
           <Button icon={open ? 'down' : 'left'} onClick={() => setOpen(!open)} size='small'>
-            {open ? '关闭' : '展开'}
+            {open ? '隐藏' : '展开'}
           </Button>
         </div>
       </Head>

@@ -638,20 +638,6 @@ const Wrapper = styled.div`
     width: 100%;
     border-collapse: collapse;
   }
-  table,
-  td,
-  tr,
-  th {
-    border: 1px solid #d9d8d8;
-    min-height: 30px;
-    text-align: center;
-    height: 30px;
-    color: black;
-  }
-  th {
-    background: #f8f8f8;
-    padding: 5px 0;
-  }
 `
 const NoScheduleCon = styled.div`
   height: calc(100vh - 300px);
