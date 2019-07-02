@@ -285,6 +285,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     </div>
     <div className="main-contain">
       <div className="status-line">
+        <div className="right-pannel-title">事件轨迹:</div>
         <Steps direction="vertical" size="small" current={StepsCurrent()} className="status-line-content">
           {timeLine.map((item, idx) => {
             if (detailData.paramMap[`${detailData.badEventCode}_tjzlanwyh_option`] == '不提交' && item.statuses.indexOf('5') >= 0) return '';
@@ -361,6 +362,14 @@ const Wrapper = styled.div`
       overflow-y: auto;
       overflow-x: hidden;
       padding-right: 18px;
+      .right-pannel-title{
+        margin-top: 20px;
+        line-height: 24px;
+        text-indent: 15px;
+      }
+      .ant-steps{
+        margin-left: 25px;
+      }
       .ant-steps-item-title{
         font-weight: bold;
       }

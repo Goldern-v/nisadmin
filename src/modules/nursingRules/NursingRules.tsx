@@ -325,7 +325,7 @@ export default class NursingRules extends Component<Props> {
               ref="searchInput"
               onChange={this.handleSearchChange} />
           </span>
-          <Button onClick={this.hadleSearch}>查询</Button>
+          <Button onClick={this.hadleSearch} type="primary">查询</Button>
           <Button onClick={this.openNewRuleDialog}>新建</Button>
         </div>
       </div>
@@ -378,13 +378,14 @@ const Contain = styled.div`
     .title{
       font-size: 20px;
       display: inline-block;
-      margin-left: 30px;
+      font-weight: bold;
+      margin-left: 15px;
       margin-top: 15px;
     }
     .float-right{
       float: right;
       margin-top: 15px;
-      margin-right: 30px;
+      margin-right: 15px;
       .search-input{
         width: 180px;
         display: inline-block;

@@ -370,6 +370,7 @@ const Wrapper = styled.div`
     .title{
       font-size: 20px;
       line-height: 32px;
+      font-weight: bold;
       color: #000;
       width: 100%;
     }
@@ -382,7 +383,7 @@ const Wrapper = styled.div`
       }
     }
     .query{
-      margin-top: 10px;
+      margin-top: 5px;
       width: 100%;
       overflow: hidden;
       .float-left{
@@ -420,7 +421,7 @@ const Wrapper = styled.div`
     background: #fff;
     position: absolute;
     left: 10px;
-    top: 120px;
+    top: 110px;
     right: 10px;
     bottom: 10px;
     .table-content{

@@ -258,7 +258,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
           <Input value={query.name} onChange={(e: any) => setQuery({ ...query, name: e.target.value })} allowClear />
         </span>
         <span className="btn-group">
-          <Button className="search" onClick={handleSearch}>搜索</Button>
+          <Button className="search" onClick={handleSearch} type="primary">搜索</Button>
           <Button className="upload" onClick={handleUploadBtn}>导入</Button>
           <Button className="create-new" onClick={handleCreateNew}>新建</Button>
         </span>
@@ -330,9 +330,10 @@ position: relative;
   }
   .title{
     margin-left: 20px;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: bold;
     color: #000;
-    line-height: 60px;
+    line-height: 70px;
   }
   .float-right{
     margin-top: 18px;
