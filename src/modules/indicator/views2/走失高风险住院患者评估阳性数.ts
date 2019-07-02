@@ -12,7 +12,7 @@ const columns: any = [
     dataIndex: '护理单元',
     key: '护理单元',
     width:180,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '住院高风险患者例数',

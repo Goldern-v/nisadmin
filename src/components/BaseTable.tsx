@@ -145,9 +145,9 @@ const Wrapper = styled.div`
     }
     td {
       box-sizing: border-box;
-      /* padding: 0 8px !important; */
+      padding: 0 8px !important;
       font-size: 13px !important;
-      padding: 0 !important;
+      /* padding: 0 !important; */
       /* font-weight: 600; */
       height: ${(p) => p.theme.$tableRowHeight} !important;
     }
