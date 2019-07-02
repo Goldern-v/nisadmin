@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { authStore, appStore } from 'src/stores'
 export interface Props {
   onChange: (value: string) => void
+  extraDept?: any[]
 }
 
 export interface DeptType {
@@ -14,7 +15,7 @@ export interface DeptType {
   name: string
 }
 
-export default observer(function DeptSelect (props: Props) {
+export default observer(function DeptSelect(props: Props) {
   const [hasAllDept, setHasAllDept] = useState(false)
   const [defaultValue, setDefaultValue] = useState(authStore.selectedDeptCode)
   let deptList = authStore.deptList
@@ -72,6 +73,13 @@ export default observer(function DeptSelect (props: Props) {
             全院
           </Select.Option>
         )}
+
+        {props.extraDept &&
+          props.extraDept.map((item: DeptType) => (
+            <Select.Option key={item.name} value={item.code}>
+              {item.name}
+            </Select.Option>
+          ))}
 
         {deptList.map((item: DeptType) => (
           <Select.Option key={item.name} value={item.code}>

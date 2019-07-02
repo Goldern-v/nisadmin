@@ -8,7 +8,7 @@ interface Props {
   rowNum: number
 }
 
-export default observer(function PaginationCon (props: Props) {
+export default observer(function PaginationCon(props: Props) {
   let { rowNum } = props
   let totalCount = nurseFilesListViewModel.totalCount
   let onChange = (pageIndex: number, pageSize: number | undefined) => {
@@ -16,10 +16,7 @@ export default observer(function PaginationCon (props: Props) {
     nurseFilesListViewModel.pageSize = pageSize || rowNum * 2
     nurseFilesListViewModel.loadNursingList()
   }
-  let pageSizeOptions = []
-  for (let i = 2; i <= 5; i++) {
-    pageSizeOptions.push(i * rowNum + '')
-  }
+  let pageSizeOptions = ['10', '20', '30']
   return (
     <Wrapper>
       <Pagination
@@ -30,7 +27,7 @@ export default observer(function PaginationCon (props: Props) {
         pageSizeOptions={pageSizeOptions}
         onChange={onChange}
         onShowSizeChange={onChange}
-        defaultPageSize={rowNum * 2}
+        pageSize={nurseFilesListViewModel.pageSize}
       />
     </Wrapper>
   )

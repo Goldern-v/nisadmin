@@ -14,12 +14,13 @@ export interface Props {
   needAudit: boolean
 }
 
-export default function AuditsTableDHSZ (props: Props) {
+export default function AuditsTableDHSZ(props: Props) {
   let { type } = props
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
   const [total, setTotal] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [loading, setLoading] = useState(false)
@@ -97,15 +98,18 @@ export default function AuditsTableDHSZ (props: Props) {
   ]
 
   const onChange = (pagination: any) => {
-    pagination.current && onload(pagination.current, searchText)
+    console.log(pagination, 'pagination')
+    pagination.current && onload(pagination.current, searchText, pagination.pageSize)
   }
-  const onload = (current: any, searchText: any) => {
+  const onload = (current: any, searchText: any, pageSize = 10) => {
     setLoading(true)
-    nurseFilesService.auditeStatusNurseInDept(type, current, searchText).then((res) => {
+    nurseFilesService.auditeStatusNurseInDept(type, current, pageSize, searchText).then((res) => {
       setLoading(false)
       setTableData(res.data.list)
+      console.log(res.data.list, 'res.data.listres.data.list')
       setTotal(res.data.totalCount)
       setCurrent(res.data.pageIndex)
+      setPageSize(res.data.pageSize)
     })
   }
   const rowSelection = {
@@ -133,7 +137,7 @@ export default function AuditsTableDHSZ (props: Props) {
   })
 
   useEffect(() => {
-    onload(current, searchText)
+    onload(current, searchText, pageSize)
   }, [])
 
   return (
@@ -142,16 +146,19 @@ export default function AuditsTableDHSZ (props: Props) {
         刷新
       </GroupPostBtn>*/}
       {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>}
-
       <BaseTable
         dataSource={tableData}
         columns={columns}
         surplusHeight={220}
-        spaceRowNumber={20}
+        spaceRowNumber={10}
         type={['spaceRow']}
         pagination={{
           total: total,
-          current: current
+          current: current,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          pageSizeOptions: ['10', '15', '20'],
+          pageSize: pageSize
         }}
         onChange={onChange}
         rowSelection={rowSelection}
@@ -163,6 +170,6 @@ export default function AuditsTableDHSZ (props: Props) {
 const Wrapper = styled.div``
 const GroupPostBtn = styled(Button)`
   position: fixed !important;
-  top: 165px;
+  top: 121px;
   right: 33px;
 `

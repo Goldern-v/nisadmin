@@ -3,7 +3,7 @@ import { nurseFilesService, NurseQuery } from '../../services/NurseFilesService'
 import { authStore } from 'src/stores'
 
 class NurseFilesListViewModel {
-  public constructor () {
+  public constructor() {
     /** 监听 */
     reaction(
       () => this.filterXl + this.filterZc + this.filterCj + this.filterZw,
@@ -23,6 +23,7 @@ class NurseFilesListViewModel {
   @observable public totalCount: number = 0
   @observable public listSpinning: boolean = false
   @observable public nurseList: any = []
+  @observable public isOpenFilter: boolean = true
 
   @action
   public loadNursingList = () => {
