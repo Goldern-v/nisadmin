@@ -112,6 +112,22 @@ export default function BaseTable(props: Props) {
         }
       }, 100)
     } catch (error) {}
+    try {
+      setTimeout(() => {
+        if (tableRef.current && props.surplusHeight) {
+          let contentHeigt = wih - props.surplusHeight + 'px'
+          let placeholder = tableRef!.current!.querySelector('.ant-table-placeholder')
+          if (placeholder) {
+            placeholder.style.height = contentHeigt
+          } else {
+            let body = tableRef!.current!.querySelector('.ant-table-body')
+            if (body) {
+              body.style.height = wih - props.surplusHeight + 'px'
+            }
+          }
+        }
+      }, 100)
+    } catch (error) {}
   })
 
   let TableComponent = option.type && option.type.includes('diagRow') ? DragDropContext(HTML5Backend)(Table) : Table
@@ -167,7 +183,7 @@ const Wrapper = styled.div`
     border-bottom: 1px solid #e8e8e8;
     border-radius: 2px;
     & tr :last-child {
-      border-bottom: 0 !important;
+      /* border-bottom: 0 !important; */
     }
   }
   .ant-table-footer {
