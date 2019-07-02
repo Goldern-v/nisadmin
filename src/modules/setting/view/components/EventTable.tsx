@@ -171,7 +171,6 @@ class EditableTable extends React.Component<any, any> {
     emitter.addListener('自动推送设置-刷新-事件', () => {
       this.getMealList(null, null)
     })
-
   }
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
@@ -337,7 +336,6 @@ class EditableTable extends React.Component<any, any> {
     this.getMealList(current, size)
   }
 
-
   public render() {
     const options = this.state.data.map((d: any) => <Option key={d.value}>{d.text}</Option>)
     const components = {
@@ -374,7 +372,7 @@ class EditableTable extends React.Component<any, any> {
               columns={columns}
               rowClassName={() => 'editable-row'}
               pagination={false}
-              scroll={{ y: 304 }}
+              surplusHeight={300}
               loading={this.state.loadingTable}
               // getTableData={() => emitter.emit('refreshNurseAuditTable')}
             />
