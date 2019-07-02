@@ -1,10 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import LeftMenu from 'src/components/LeftMenu'
+import { ReactComponent as PBTJ } from '../img/排班统计.svg'
+import { ReactComponent as HLRYTJ } from '../img/护理人员统计.svg'
+import { ReactComponent as HZCXTJ } from '../img/患者查询统计.svg'
 // 左侧列表数据
 const LEFT_MENU_CONFIG = [
   {
     title: '排班统计',
+    icon: <PBTJ />,
     children: [
       { title: '护士排班表', path: '/statistic/护士排班表' },
       { title: '护士排班统计（按班次）', path: '/statistic/护士排班统计（按班次）' },
@@ -21,6 +25,7 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: '护理人员统计',
+    icon: <HLRYTJ />,
     children: [
       { title: '护理人员统计', path: '/statistic/护理人员统计' },
       { title: '护理人员一览表', path: '/statistic/护理人员一览表' },
@@ -31,6 +36,7 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: '患者查询统计',
+    icon: <HZCXTJ />,
     children: [
       { title: '患者查询', path: '/statistic/患者查询' },
       { title: '住院病人认知情况统计表', path: '/statistic/住院病人认知情况统计表' },
@@ -43,7 +49,7 @@ const LEFT_MENU_CONFIG = [
     ]
   }
 ]
-export default function BedSituation () {
+export default function BedSituation() {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
