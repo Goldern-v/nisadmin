@@ -157,12 +157,14 @@ export default observer(function BadEventNewList() {
   ]
 
   useEffect(() => {
-    api.getDeptList().then((res) => {
+    api.getDeptList('2').then((res) => {
       let data = res.data
-      if (data) {
-        let { deptList } = data
-        if (deptList instanceof Array) setDeptList(deptList)
-      }
+      if (data instanceof Array) setDeptList(data.map((item: any) => {
+        return {
+          name: item.deptName,
+          code: item.deptCode
+        }
+      }));
     })
 
     let deptCode = ''
@@ -190,6 +192,7 @@ export default observer(function BadEventNewList() {
   // }, [query])
 
   const getEventList = (newQuery?: any) => {
+    setDataLoading(true)
     api.getList(newQuery || query).then(
       (res) => {
         setDataLoading(false)
@@ -338,10 +341,17 @@ export default observer(function BadEventNewList() {
               let starIndex = (current - 1) * size
               return idx + 1 > starIndex && idx + 1 <= starIndex + size
             })}
-            surplusHeight={285}
+            surplusHeight={280}
+            pagination={{
+              showQuickJumper: true,
+              total: data.length - 1,
+              current: page.current,
+              pageSize: page.size,
+              onChange: (current: number) => setPage({ ...page, current })
+            }}
           />
         </div>
-        <div className="custom-pagination">
+        {/* <div className="custom-pagination">
           <Pagination
             showQuickJumper
             total={data.length - 1}
@@ -349,7 +359,7 @@ export default observer(function BadEventNewList() {
             pageSize={page.size}
             onChange={(current: number) => setPage({ ...page, current })}
           />
-        </div>
+        </div> */}
         {/* <CustomPagination
           page={page.current}
           size={page.size}
@@ -418,7 +428,7 @@ const Wrapper = styled.div`
     }
   }
   .main-contain{
-    background: #fff;
+    // background: #fff;
     position: absolute;
     left: 10px;
     top: 110px;
@@ -429,7 +439,8 @@ const Wrapper = styled.div`
       left: 0;
       top: 0;
       right: 0;
-      bottom: 45px;
+      // bottom: 45px;
+      bottom: 0;
       overflow: hidden;
       .align-left{
         padding-left: 15px!important;
@@ -461,9 +472,10 @@ const Wrapper = styled.div`
       }
     }
     .view-detail{
-      &:hover{
-        cursor: pointer;
-        color: #00A680;
+      cursor: pointer;
+      color: #00A680;
+      :hover{
+        font-weight: bold;
       }
     }
 `

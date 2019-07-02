@@ -89,11 +89,11 @@ export default observer(function AduitModal(props: Props) {
 
   const getDealerDepts = () => {
     api.getDeptList().then(res => {
-      let deptList = res.data.deptList;
-      if (deptList instanceof Array) setDealerDepts(deptList.map((item: any) => {
+      let data = res.data;
+      if (data instanceof Array) setDealerDepts(data.map((item: any) => {
         return {
-          name: item.name,
-          value: item.code
+          name: item.deptName,
+          value: item.deptCode
         }
       }))
     })
