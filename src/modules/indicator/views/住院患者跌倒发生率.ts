@@ -12,7 +12,7 @@ const columns: any = [
     dataIndex: 'wardName',
     key: '护理单元',
     width: 180,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '跌倒病例数',

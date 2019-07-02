@@ -11,7 +11,7 @@ const columns: any = [
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',
-    align: 'center',
+    align: 'left',
     width: 180
   },
   {

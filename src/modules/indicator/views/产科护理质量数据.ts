@@ -5,14 +5,14 @@ const columns: any = [
     key: '1',
     render: (text: any, record: any, index: number) => index + 1,
     align: 'center',
-    width: 50
+    width: 30
   },
   {
     title: '统计项目',
     dataIndex: 'statItem',
     key: '统计项目',
     width: 200,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '人数',

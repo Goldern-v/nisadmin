@@ -73,7 +73,7 @@ const ROUTE_LIST: any = [
       actualBedNurseRatio: '实际床护比',
       wardName: '护理单元'
     },
-    widthChar: '250%',
+    widthChar: '380%',
     serviceName: 'nationalIndex/getBedNurseRatio'
   },
   {
@@ -531,8 +531,8 @@ export default function Indicator(props: Props) {
               <MainInner>
                 <RadioCon>
                   <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
-                    {/* <Radio.Button value='详情'>详情</Radio.Button> */}
-                    {/* <Radio.Button value='图表'>图表</Radio.Button> */}
+                    {/* <Radio.Button value='详情'>详情</Radio.Button>
+                    <Radio.Button value='图表'>图表</Radio.Button> */}
                   </Radio.Group>{' '}
                 </RadioCon>
 
@@ -552,19 +552,6 @@ export default function Indicator(props: Props) {
                     />
                   </BaseTableCon>
                 )}
-                {/* {templateShow ? (
-                <BaseTableCon>
-                  <BaseTable
-                    loading={loading}
-                    dataSource={currentRoute!.dataSource}
-                    columns={currentRoute!.columns}
-                    surplusHeight={currentRoute.surplusHeight || 250}
-                    surplusWidth={currentRoute.surplusWidth || 0}
-                  />
-                </BaseTableCon>
-              ) : (
-                <div style={{ marginTop: '60px', textAlign: 'center', fontSize: '30px' }}>暂无数据</div>
-              )} */}
                 {showType === '图表' && (
                   <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
                     {/* <BaseChartScrollCon> */}
@@ -639,7 +626,7 @@ const HisName = styled.div`
   letter-spacing: 4px;
 `
 const Title = styled.div`
-  font-size: 15px;
+  /* font-size: 15px; */
   font-size: 20px;
   color: #333;
   font-weight: bold;
