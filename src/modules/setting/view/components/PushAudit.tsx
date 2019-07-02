@@ -81,7 +81,7 @@ const Wrapper = styled.div`
 
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 125px);
   align-items: stretch;
   display: flex;
   /* margin: 20px; */

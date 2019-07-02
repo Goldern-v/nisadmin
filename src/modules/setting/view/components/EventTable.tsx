@@ -389,9 +389,11 @@ class EditableTable extends React.Component<any, any> {
               bordered
               dataSource={this.state.data}
               columns={columns}
+              surplusHeight={60}
               rowClassName={() => 'editable-row'}
               pagination={false}
               scroll={{ y: 304 }}
+              // surplusHeight: {}
               loading={this.state.loadingTable}
               // getTableData={() => emitter.emit('refreshNurseAuditTable')}
             />
