@@ -78,7 +78,8 @@ class EditableTable extends React.Component<any, any> {
       loadingTable: false,
       total: 0,
       pageSize: 10,
-      pageIndex: 1 // 当前页数
+      pageIndex: 1 ,// 当前页数
+      getEducationId:''
     }
     this.columns = [
       {
@@ -153,6 +154,9 @@ class EditableTable extends React.Component<any, any> {
               <a onClick={() => this.handleDelete(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
                 删除
               </a>
+              <a onClick={() => this.preview(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
+                预览
+              </a>
             </Wrapper>
           )
         }
@@ -224,6 +228,19 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
+  //预览
+  public preview = (record:any) => {
+    let getEducationId = record.educationId
+    console.log(getEducationId,'0000000000')
+    let missionUrl = (getEducationId:any) => `/crNursing/nurseList/content.html?id=${getEducationId}`
+    let url = missionUrl(getEducationId); 
+    url = "http://120.25.105.45:9864" + url;
+    console.log(url)
+    window.location.href = url
+    // http://120.25.105.45:9864/crNursing/nurseList/content.html?id=199573
+  }
+
   public getMealList = (current: any, pageSize: any) => {
     this.setState({ loadingTable: true })
     let postData = {

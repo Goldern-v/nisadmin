@@ -584,7 +584,7 @@ export default function ScheduleTable() {
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
     let totle = `排班小计：${rangeSum}工时${Number(workhour).toFixed(2)}小时。`
     // remark = `备注：${remark||'空'}`
-    let result = `<span>${totle}<br/>排班备注：${remark}</span>`
+    let result = `<span>排班备注：${remark}</span>`
 
     setFooter(result)
     return ''

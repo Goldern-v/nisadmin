@@ -40,25 +40,29 @@ export default function SelectCon() {
         <Title>自动推送设置</Title>
         <Place />
         <span>科室：</span>
-        <DeptSelect onChange={onChange} />
+        <DeptSelect onChange={onChange} extraDept={[{ name: '公共', code: '*' }]} />
         <Button onClick={add}>添加</Button>
       </Wrapper>
-    </React.Fragment>
+     </React.Fragment>
   )
 }
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  font-size: #333;
-  margin-bottom: 15px;
-  margin-top: 25px;
-  input,
+  height:60px;
+  /* font-size: #333; */
+  /* margin-bottom: 15px; */
+  /* margin-top: 25px; */
   button {
     margin-left: 10px;
   }
 `
 const Title = styled.div`
-  font-size: 20px;
+  font-size:20px;
+  font-weight:600;
+  float:left;
+  /* margin-left: 20px; */
   font-weight: bold;
-  color: #333;
+  color: #000;
+  line-height: 60px;
 `

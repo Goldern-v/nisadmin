@@ -1185,7 +1185,7 @@ export default function MainBox(props: Props) {
           columns={columns}
           dataSource={tableList}
           pagination={false}
-          surplusHeight={fullPage ? 100 : 200}
+          surplusHeight={fullPage ? 100 : 180}
           wrapperStyle={{
             padding: 0
           }}
@@ -1201,7 +1201,7 @@ export default function MainBox(props: Props) {
       <div className='card-container'>
         <Tabs type='card'>
           <TabPane tab='可选班次' key='可选班次'>
-            <div style={{ height: wih - (fullPage ? 110 : 210) + 'px', overflow: 'auto' }}>
+            <div style={{ height: wih - (fullPage ? 110 : 170) + 'px', overflow: 'auto' }}>
               {shiftList.map((m, i) =>
                 m.status === true ? (
                   <Button
@@ -1344,8 +1344,9 @@ export default function MainBox(props: Props) {
 }
 const Wrapper = styled.div`
   display: flex;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 0px 20px;
   width: 100%;
+  box-sizing: border-box;
   .left-box {
     width: calc(100% - 220px);
   }

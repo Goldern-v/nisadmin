@@ -49,6 +49,7 @@ export default function BaseTable(props: Props) {
     if (option.type.includes('spaceRow')) {
       /** 设置空行 */
       let spaceRowNumber = props.spaceRowNumber || 10
+      console.log(option.dataSource.length, 'option.dataSource.lengthoption.dataSource.length')
       if (option.dataSource.length < spaceRowNumber) {
         while (option.dataSource.length < spaceRowNumber) {
           option.dataSource.push({ key: option.dataSource.length })
@@ -163,6 +164,14 @@ const Wrapper = styled.div`
     /* overflow: auto !important; */
     overflow-y: scroll !important;
     overflow-x: auto !important;
+    border-bottom: 1px solid #e8e8e8;
+    border-radius: 2px;
+    & tr :last-child {
+      border-bottom: 0 !important;
+    }
+  }
+  .ant-table-footer {
+    border-bottom: 0 !important;
   }
   .ant-table-thead {
     background: rgba(242, 244, 245, 1);
