@@ -92,6 +92,7 @@ const ROUTE_LIST: any = [
       actualBedNurseRatio: '实际床护比',
       wardName: '护理单元'
     },
+    surplusHeight: 280,
     widthChar: '250%',
     serviceName: 'nationalIndex/getPatientNurseRatio'
   },
@@ -112,7 +113,7 @@ const ROUTE_LIST: any = [
     gName: '护理单元',
     lineKey: '',
     serviceName: 'nationalIndex/getNurseAllocation',
-    surplusHeight: 315,
+    surplusHeight: 280,
     surplusWidth: 260
   },
   {
@@ -131,8 +132,8 @@ const ROUTE_LIST: any = [
     keys: ['跌倒发生率'],
     gName: '护理单元',
     lineKey: '',
-    serviceName: 'nationalIndex/getPatientFallRatio',
-    surplusWidth: 260
+    serviceName: 'nationalIndex/getPatientFallRatio'
+    // surplusWidth: 260
   },
   {
     name: '院内压疮发生率',
@@ -528,7 +529,7 @@ export default function Indicator(props: Props) {
         {templateShow ? (
           <MainScroll>
             {currentRoute && (
-              <MainInner>
+              <MainInner surplusHeight={currentRoute.surplusHeight || 250}>
                 <RadioCon>
                   <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
                     {/* <Radio.Button value='详情'>详情</Radio.Button>
@@ -577,9 +578,10 @@ export default function Indicator(props: Props) {
   )
 }
 const Wrapper = styled.div`
-  height: 100%;
+  height: calc(100vh - 50px);
   display: flex;
   align-items: stretch;
+  overflow: hidden;
 `
 
 const LeftMenuCon = styled.div`
@@ -593,27 +595,34 @@ const LeftMenuCon = styled.div`
   height: 100%; */
 `
 const MainCon = styled.div`
+  box-sizing: border-box;
   flex: 1;
   width: 0;
   align-items: stretch;
   display: flex;
+  height: 100%;
+  overflow: hidden;
   flex-direction: column;
+  padding: 5px 15px;
 `
 const MainScroll = styled.div`
   flex: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 5px 15px;
+  height: 0;
+  /* overflow-x: hidden;
+  overflow-y: auto; */
+  overflow: hidden;
+  /* padding: 5px 15px; */
 `
 
-const MainInner = styled.div`
+const MainInner = styled.div<{ surplusHeight: number }>`
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
-  min-height: calc(100vh - 168px);
-  /* margin: 15px;
-  padding: 10px 0px; */
+  /* min-height: calc(100vh - 168px); */
+  height: 100%;
+  padding: 10px 0px;
   overflow-x: hidden;
   overflow-y: auto;
+  overflow: hidden;
   position: relative;
   padding: 20px 5px 5px;
 `

@@ -18,21 +18,21 @@ const columns: any = [
     title: '跌倒病例数',
     dataIndex: 'fall_count',
     key: '跌倒病例数',
-    width: 160,
+    width: 120,
     align: 'center'
   },
   {
     title: '住院患者人日数',
     dataIndex: 'patient_days',
     key: '住院患者人日数',
-    width: 160,
+    width: 140,
     align: 'center'
   },
   {
     title: '跌倒发生率/千床日',
     dataIndex: 'fall_ratio',
     key: '跌倒发生率/千床日',
-    width: 200,
+    width: 180,
     align: 'center'
   }
 ]
