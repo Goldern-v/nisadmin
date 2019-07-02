@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button, DatePicker, Form, Icon, Input, message, Modal, Popconfirm, Switch, TreeSelect } from 'antd'
-import { scheduleStore } from 'src/stores'
+import { scheduleStore, appStore } from 'src/stores'
 
 const dateFormat = 'YYYY-MM-DD'
 const { WeekPicker } = DatePicker
@@ -739,6 +739,9 @@ export default function ToolBar(props: Props) {
       <Button onClick={() => setFullPage(!fullPage)} className='button-tools'>
         {fullPage ? '退出全屏' : '全屏'}
       </Button>
+      <Button onClick={() => appStore.history.push('/scheduleHome')} className='button-tools'>
+        返回
+      </Button>
     </Wrapper>
   )
 }
@@ -749,6 +752,7 @@ const Wrapper = styled.div`
   display: inline-flex;
   width: 100%;
   align-items: flex-end;
+  margin-top: 5px;
 
   .button-tools {
     margin: 0px 3px !important;

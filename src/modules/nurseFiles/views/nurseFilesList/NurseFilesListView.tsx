@@ -170,7 +170,7 @@ export default observer(function NurseFilesListView() {
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={395}
+        surplusHeight={nurseFilesListViewModel.isOpenFilter ? 415 : 270}
         surplusWidth={80}
         type={['spaceRow']}
         onRow={(record: any) => {
@@ -185,7 +185,7 @@ export default observer(function NurseFilesListView() {
   )
 })
 const Wrapper = styled.div`
-  padding: ${(p) => p.theme.$mcp};
+  padding: 15px 15px 0;
   /* 全局背景色 */
   background-color: ${(p) => p.theme.$bgBody};
 `

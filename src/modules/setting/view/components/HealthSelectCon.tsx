@@ -40,7 +40,7 @@ export default function SelectCon() {
         <Title>自动推送设置</Title>
         <Place />
         <span>科室：</span>
-        <DeptSelect onChange={onChange} />
+        <DeptSelect onChange={onChange} extraDept={[{ name: '公共', code: '*' }]} />
         <Button onClick={add}>添加</Button>
       </Wrapper>
      </React.Fragment>

@@ -53,7 +53,7 @@ export default function BaseChart(props: Props) {
       <Chart forceFit height={400} data={data} padding={[50, 50, 90]}>
         <Tooltip />
         <Axis />
-        <Legend />
+        {/* <Legend /> */}
         <Legend
           custom
           allowAllCanceled

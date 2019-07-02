@@ -12,7 +12,7 @@ const columns: any = [
     dataIndex: 'wardName',
     width: 180,
     key: '护理单元',
-    align: 'center'
+    align: 'left'
   },
   {
     title: '导管留置日数',

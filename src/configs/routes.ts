@@ -71,10 +71,11 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '班次套餐设置', link: '' }
   ]),
-  setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
-    { name: '排班管理', link: '/scheduleHome' },
-    { name: '排班编辑', link: '' }
-  ]),
+  // setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
+  //   { name: '排班管理', link: '/scheduleHome' },
+  //   { name: '排班编辑', link: '' }
+  // ]),
+  setLayout('/scheduleSetting', ScheduleSettingView, layouts.MainLayout),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
   // setLayout('/statistic/护士白班统计（按月份）', WhiteShiftByMonthView, layouts.MainLayout),
   // setLayout('/statistic/护士夜班统计（按月份）', NeightShiftByMonthView, layouts.MainLayout),
