@@ -679,8 +679,10 @@ const BaseChartScrollCon = styled.div<{ widthGet: any }>`
     background-color: #ffffff;
   }
   .BaseCharCon {
+    height: 100%;
     overflow: hidden;
     width: ${(props) => props.widthGet};
+    position: relative;
   }
 `
 const BaseTableCon = styled.div`

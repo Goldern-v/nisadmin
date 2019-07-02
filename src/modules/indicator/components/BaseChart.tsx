@@ -50,7 +50,7 @@ export default function BaseChart(props: Props) {
   data = JSON.parse(dataString)
   return (
     <Wrapper>
-      <Chart forceFit height={400} data={data} padding={[50, 50, 90]}>
+      <Chart forceFit height={350} data={data} padding={[50, 50, 90]}>
         <Tooltip />
         <Axis />
         {/* <Legend /> */}
@@ -69,12 +69,14 @@ export default function BaseChart(props: Props) {
   )
 }
 const Wrapper = styled.div`
+  height: 100%;
+  width: 100%;
   position: relative;
 `
 
 const LegendLine = styled.div`
   position: absolute;
-  right: 10px;
+  left: 500px;
   top: 10px;
   font-size: 12px;
   &:after {
