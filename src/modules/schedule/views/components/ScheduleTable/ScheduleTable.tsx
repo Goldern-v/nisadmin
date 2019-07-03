@@ -58,7 +58,7 @@ const getWeekDay_1 = (weekday: number) => {
     return `周${days[weekday - 1]}`
   }
   return (
-    <div style={{ padding: '10px 0', color: color }}>
+    <div style={{ padding: '3px 0', color: color }}>
       {date}
       <br />
       (周{days[weekday]})
@@ -77,7 +77,7 @@ const getWeekDay_2 = (weekday: number) => {
     return `周${days[weekday - 1]}`
   }
   return (
-    <div style={{ padding: '10px 0', color: color }}>
+    <div style={{ padding: '3px 0', color: color }}>
       {date}
       <br />
       {days[weekday]}
@@ -618,12 +618,12 @@ export default function ScheduleTable() {
           <ScheduleTableCon>
             <BaseTable
               loading={loading}
-              size='middle'
               columns={columns}
               dataSource={scheduleList}
               tip={footer}
+              wrapperStyle={{ padding: 5 }}
               pagination={false}
-              surplusHeight={240}
+              surplusHeight={180}
               style={{ padding: 0 }}
             />
           </ScheduleTableCon>

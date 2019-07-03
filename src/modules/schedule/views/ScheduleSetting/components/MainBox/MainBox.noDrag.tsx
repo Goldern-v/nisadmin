@@ -1137,7 +1137,6 @@ export default function MainBox () {
       <div className='left-box'>
       <BaseTable
         bordered
-        size='middle'
         onRow={onRow}
         columns={columns}
         dataSource={tableList}

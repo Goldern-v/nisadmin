@@ -135,137 +135,140 @@ export default function BaseTable(props: Props) {
 
   let TableComponent = option.type && option.type.includes('diagRow') ? DragDropContext(HTML5Backend)(Table) : Table
   return (
-    <Wrapper style={option.wrapperStyle || {}} ref={tableRef}>
+    <Wrapper style={option.wrapperStyle || {}} ref={tableRef} id='baseTable'>
       <TableComponent {...option} />
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-  background: rgba(255, 255, 255, 1);
-  /* border: 1px solid rgba(219, 224, 228, 1); */
-  /* padding: 20px 30px; */
-  padding: 15px 15px;
-  box-sizing: content-box;
-  table {
-    table-layout: fixed;
-  }
-  .ant-table-header-column {
-    width: 100%;
-    text-align: center;
-  }
-  .ant-table-wrapper {
-    th {
-      box-sizing: border-box;
-      height: 30px !important;
-      font-size: 14px !important;
-      font-weight: bold;
-      padding: 0 !important;
+  &#baseTable {
+    background: rgba(255, 255, 255, 1);
+    /* border: 1px solid rgba(219, 224, 228, 1); */
+    /* padding: 20px 30px; */
+    padding: 15px 15px;
+    box-sizing: content-box;
+    table {
+      table-layout: fixed;
+      width: 100%;
     }
-    td {
-      box-sizing: border-box;
-      padding: 0 8px !important;
-      font-size: 13px !important;
-      /* padding: 0 !important; */
-      /* font-weight: 600; */
-      height: ${(p) => p.theme.$tableRowHeight} !important;
+    .ant-table-header-column {
+      width: 100%;
+      text-align: center;
     }
-    /* 补充th下降的高度 */
-    .ant-table-align-center {
-      /* padding: 8px 8px 14px 8px !important; */
+    .ant-table-wrapper {
+      th {
+        box-sizing: border-box;
+        height: 30px !important;
+        font-size: 14px !important;
+        font-weight: bold;
+        padding: 0 !important;
+      }
+      td {
+        box-sizing: border-box;
+        padding: 0 8px;
+        font-size: 13px !important;
+        /* padding: 0 !important; */
+        /* font-weight: 600; */
+        height: ${(p) => p.theme.$tableRowHeight} !important;
+      }
+      /* 补充th下降的高度 */
+      .ant-table-align-center {
+        /* padding: 8px 8px 14px 8px !important; */
+      }
     }
-  }
 
-  .ant-table-small > .ant-table-content > .ant-table-body {
-    margin: 0 !important;
-  }
-  .ant-table-body {
-    /* overflow: auto !important; */
-    overflow-y: scroll !important;
-    overflow-x: auto !important;
-    border-bottom: 1px solid #e8e8e8;
-    border-radius: 2px;
-    & tr :last-child {
-      /* border-bottom: 0 !important; */
+    .ant-table-small > .ant-table-content > .ant-table-body {
+      margin: 0 !important;
     }
-  }
-  .ant-table-footer {
-    border-bottom: 0 !important;
-  }
-  .ant-table-thead {
-    background: rgba(242, 244, 245, 1);
-  }
-  /* tbody tr:nth-of-type(2n) {
+    .ant-table-body {
+      /* overflow: auto !important; */
+      overflow-y: scroll !important;
+      overflow-x: auto !important;
+      /* border-bottom: 1px solid #e8e8e8; */
+      border-radius: 2px;
+      & tr :last-child {
+        /* border-bottom: 0 !important; */
+      }
+    }
+    .ant-table-footer {
+      border-bottom: 0 !important;
+    }
+    .ant-table-thead {
+      background: rgba(242, 244, 245, 1);
+    }
+    /* tbody tr:nth-of-type(2n) {
     background: rgba(242, 244, 245, 1);
   } */
 
-  .ant-table-placeholder {
-    height: ${(p: any) => `calc(100vh - ${p.surplusHeight - 0}px)`};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    .ant-table-placeholder {
+      height: ${(p: any) => `calc(100vh - ${p.surplusHeight - 0}px)`};
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background-color: #eaeaea;
-  }
-  *::-webkit-scrollbar-track {
-    /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
-    border-radius: 50px;
-    background-color: #eaeaea;
-  }
-  *::-webkit-scrollbar-thumb {
-    border-radius: 50px;
-    /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
-    background-color: #c2c2c2;
-  }
-
-  .ant-table-fixed-header .ant-table-scroll .ant-table-header {
-    padding-bottom: 4px;
-  }
-
-  /* .container::-webkit-scrollbar {
-      display: none;
-  } */
-
-  .ant-table-header {
-    margin-bottom: -8px !important;
     *::-webkit-scrollbar {
       width: 8px;
       height: 8px;
-      background-color: rgb(242, 244, 245);
+      background-color: #eaeaea;
     }
-    &::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 6px rgb(242, 244, 245);
-      border-radius: 0;
-      background-color: rgb(242, 244, 245);
+    *::-webkit-scrollbar-track {
+      /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+      border-radius: 50px;
+      background-color: #eaeaea;
     }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 0px;
-      -webkit-box-shadow: inset 0 0 6px rgb(242, 244, 245);
-      background-color: rgb(242, 244, 245);
+    *::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+      background-color: #c2c2c2;
     }
-  }
-  #tip {
-    font-size: 12px;
-    margin: 5px;
-  }
-  .ant-table-row {
-    border-bottom: 1px solid #e8e8e8;
-  }
-  .ant-table-footer {
-    padding: 10px;
-  }
 
-  /** 拖拽 */
-  tr.drop-over-downward td {
-    border-bottom: 2px dashed ${(p: any) => p.theme.$mtc};
-  }
+    .ant-table-fixed-header .ant-table-scroll .ant-table-header {
+      padding-bottom: 4px;
+    }
 
-  tr.drop-over-upward td {
-    border-top: 2px dashed ${(p: any) => p.theme.$mtc};
+    /* .container::-webkit-scrollbar {
+      display: none;
+  } */
+
+    .ant-table-header {
+      margin-bottom: -8px !important;
+      *::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: rgb(242, 244, 245);
+      }
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgb(242, 244, 245);
+        border-radius: 0;
+        background-color: rgb(242, 244, 245);
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0px;
+        -webkit-box-shadow: inset 0 0 6px rgb(242, 244, 245);
+        background-color: rgb(242, 244, 245);
+      }
+    }
+    #tip {
+      font-size: 12px;
+      margin: 5px;
+    }
+    .ant-table-row {
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .ant-table-footer {
+      padding: 10px;
+    }
+
+    /** 拖拽 */
+    tr.drop-over-downward td {
+      border-bottom: 2px dashed ${(p: any) => p.theme.$mtc};
+    }
+
+    tr.drop-over-upward td {
+      border-top: 2px dashed ${(p: any) => p.theme.$mtc};
+    }
   }
 `
 

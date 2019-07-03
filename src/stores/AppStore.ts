@@ -4,7 +4,7 @@ import { match } from 'react-router'
 import qs from 'qs'
 
 export default class AppStore {
-  public constructor () {
+  public constructor() {
     this.isExpand = (localStorage.getItem('isExpand') as any) || '1'
     this.appToken = '51e827c9-d80e-40a1-a95a-1edc257596e7'
     window.onresize = () => {
@@ -13,6 +13,9 @@ export default class AppStore {
   }
   @observable public isExpand: '1' | '0' = '1'
   @observable private appToken: string | null = null
+
+  /** 开发环境 true-开发  false-生产*/
+  @observable public isDev: boolean = process.env.NODE_ENV === 'development'
 
   /** 路由控制器 */
   @observable public history!: H.History
@@ -23,7 +26,7 @@ export default class AppStore {
 
   /** url 参数 */
   @computed
-  public get query () {
+  public get query() {
     try {
       return this.location.search.substr(1)
     } catch (error) {
@@ -32,7 +35,7 @@ export default class AppStore {
   }
 
   @computed
-  public get queryObj () {
+  public get queryObj() {
     try {
       return qs.parse(this.location.search.substr(1))
     } catch (error) {

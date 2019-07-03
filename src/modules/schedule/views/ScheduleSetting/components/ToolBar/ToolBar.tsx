@@ -701,7 +701,7 @@ export default function ToolBar(props: Props) {
       <Input
         addonAfter={<Icon type='calendar' />}
         value={dateString}
-        style={{ width: weekLength == 1 ? 210 : 260 }}
+        style={{ width: weekLength == 1 ? 220 : 270 }}
         readOnly
       />
       <Button onClick={() => resetShift()} className='button-tools'>
