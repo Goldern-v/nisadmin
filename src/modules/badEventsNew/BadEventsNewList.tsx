@@ -58,7 +58,7 @@ export default observer(function BadEventNewList() {
       key: 'badEventOrderNo',
       className: 'align-left',
       align: 'left',
-      width: 180
+      width: 160
     },
     {
       title: '科室',
@@ -66,7 +66,7 @@ export default observer(function BadEventNewList() {
       key: 'deptName',
       className: 'align-left',
       align: 'left',
-      width: 160
+      width: 150
     },
     {
       title: '事件类别',
@@ -74,14 +74,14 @@ export default observer(function BadEventNewList() {
       key: 'eventType',
       className: 'align-left',
       align: 'left',
-      width: 180
+      width: 190
     },
     {
       title: '发生时间',
       dataIndex: 'happenDate',
       key: 'happenDate',
       align: 'center',
-      width: 120,
+      width: 100,
       render: (text: string) => {
         let dateStr = text == 'Invalid Date' ? '' : text
         return <span>{dateStr}</span>
@@ -114,7 +114,7 @@ export default observer(function BadEventNewList() {
       dataIndex: 'commitToQC',
       key: 'commitToQC',
       align: 'center',
-      width: 60
+      width: 110
     },
     {
       title: '事件状态',
@@ -122,7 +122,7 @@ export default observer(function BadEventNewList() {
       key: 'status',
       className: 'align-left',
       align: 'left',
-      width: 150,
+      width: 140,
       render: (text: string, item: any) => {
         let statusText = ''
         let target = eventStatusList.filter((item1: any) => item1.value == item.status)
@@ -341,7 +341,7 @@ export default observer(function BadEventNewList() {
               let starIndex = (current - 1) * size
               return idx + 1 > starIndex && idx + 1 <= starIndex + size
             })}
-            surplusHeight={280}
+            surplusHeight={235}
             pagination={{
               showQuickJumper: true,
               total: data.length - 1,
@@ -442,8 +442,8 @@ const Wrapper = styled.div`
       // bottom: 45px;
       bottom: 0;
       overflow: hidden;
-      .align-left{
-        padding-left: 15px!important;
+      td.align-left{
+        padding-left: 10px!important;
       }
       .happen-place{
         position: relative;
