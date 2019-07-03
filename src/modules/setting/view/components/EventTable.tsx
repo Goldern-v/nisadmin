@@ -141,7 +141,7 @@ class EditableTable extends React.Component<any, any> {
         title: '操作',
         dataIndex: '操作',
         align: 'center',
-        width: 100,
+        width: 150,
         render: (text: any, record: any) => {
           return (
             <Wrapper>
