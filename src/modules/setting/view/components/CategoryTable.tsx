@@ -139,7 +139,7 @@ export default function AuditsTableDHSZ (props: Props) {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={265}
+        surplusHeight={180}
         bordered
         loading={loadingTable}
       />
