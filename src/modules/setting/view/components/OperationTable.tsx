@@ -81,26 +81,26 @@ class EditableTable extends React.Component<any, any> {
         key: '1',
         render: (text: any, record: any, index: number) => index + 1,
         align: 'center',
-        width: 40
+        width: 60
       },
       {
         title: '手术',
         dataIndex: 'operation',
-        width: '10%',
+        width: 100,
         align: 'left',
         editable: true
       },
       {
         title: '时机',
         dataIndex: 'operationTiming',
-        width: '8%',
+        width: 60,
         align: 'center',
         editable: true
       },
       {
         title: '推送宣教',
         dataIndex: 'educationName',
-        width: '25%',
+        width: 300,
         // render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
         // overflow:'hidden',
         // whiteSpace: 'nowrap',
@@ -112,21 +112,21 @@ class EditableTable extends React.Component<any, any> {
       {
         title: '推送类型',
         dataIndex: 'messageTypeName',
-        width: '12%',
+        width: 140,
         align: 'left',
         editable: true
       },
       {
         title: '创建人',
         dataIndex: 'operator',
-        width: '8%',
+        width: 100,
         align: 'center',
         editable: true
       },
       {
         title: '创建时间',
         dataIndex: 'createDateTime',
-        width: '18%',
+        width: 160,
         align: 'center',
         editable: true
       },
@@ -134,7 +134,7 @@ class EditableTable extends React.Component<any, any> {
         title: '操作',
         dataIndex: '操作',
         align: 'center',
-        width: 100,
+        width: 180,
         render: (text: any, record: any) => {
           return (
             <div>
@@ -392,7 +392,7 @@ class EditableTable extends React.Component<any, any> {
           <BigBox>
             <BaseTable
               size='small'
-              components={components}
+              // components={components}
               bordered
               dataSource={this.state.data}
               columns={columns}

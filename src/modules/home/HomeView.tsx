@@ -35,21 +35,8 @@ export default observer(function HomeView () {
   return (
     <Wrapper>
       <SelectCon>
-        {/* {authStore.selectedDeptName}
-        {authStore.selectedDeptCode} */}
         <SelectCommon />
       </SelectCon>
-      {/* <SelectCon>
-        <span className='label'>科室：</span>
-        <Select defaultValue='普外科护理单元' style={{ width: 200 }} onChange={handleChange}>
-          <Option value='骨科护理单元'>骨科护理单元</Option>
-          <Option value='普外科护理单元'>普外科护理单元</Option>
-          <Option value='泌尿外科护理单元'>泌尿外科护理单元</Option>
-          <Option value='产科护理单元'>产科护理单元</Option>
-        </Select>
-        <Button style={{ marginLeft: 20, marginRight: 10 }}>查询</Button>
-        <Button>刷新</Button>
-      </SelectCon> */}
       <HomeDetail>
         <HomeDetailItem>
           <BedSituation />
