@@ -11,7 +11,6 @@ import PreviewModal from './components/PreviewModal'
 
 import NursingRulesApiService from './api/NursingRulesApiService'
 import createModal from 'src/libs/createModal'
-import Item from 'antd/lib/list/Item';
 
 const api = new NursingRulesApiService();
 
@@ -333,11 +332,22 @@ export default class NursingRules extends Component<Props> {
         <BaseTable
           columns={rulesColumns}
           dataSource={data}
-          pagination={false}
+          pagination={{
+            pageSizeOptions: ['10', '20', '30', '40', '50'],
+            onShowSizeChange: this.handlePageSizeChange.bind(this),
+            onChange: this.handlePageChange.bind(this),
+            total: dataTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex
+          }}
           spaceRowNumber={query.pageSize}
           loading={tableLoading}
-          type={['spaceRow']} surplusHeight={215} />
-        <div className="custom-pagination">
+          type={['spaceRow']}
+          surplusHeight={215}
+        />
+        {/* <div className="custom-pagination">
           <Pagination
             pageSizeOptions={['10', '20', '30', '40', '50']}
             onShowSizeChange={this.handlePageSizeChange.bind(this)}
@@ -347,7 +357,7 @@ export default class NursingRules extends Component<Props> {
             showQuickJumper
             pageSize={query.pageSize}
             current={query.pageIndex} />
-        </div>
+        </div> */}
         {/* <CustomPagination
           onChange={this.handlePageChange.bind(this)}
           onShowSizeChange={this.handlePageSizeChange.bind(this)}
@@ -437,8 +447,9 @@ const Contain = styled.div`
     .operate-text{
       margin-right:5px;
       cursor: pointer;
+      color: #1db38b;
       &:hover{
-        color: #1db38b;
+        font-weight: bold;
       }
     }
     .ant-table-wrapper{

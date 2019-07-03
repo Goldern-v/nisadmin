@@ -13,6 +13,8 @@ export interface Props extends ModalComponentProps {
 export default function PreviewModal(props: Props) {
   let { visible, url, type, name, onClose } = props;
 
+  let pdfHeight = window.innerHeight * 0.8;
+
   const Content = function () {
     switch (type) {
       case 'jpg':
@@ -20,7 +22,7 @@ export default function PreviewModal(props: Props) {
       case 'jpeg':
         return <img src={url} width="100%" />
       case 'pdf':
-        return <object type="application/pdf" width="100%" style={{ height: '400px' }} data={url} />
+        return <object type="application/pdf" width="100%" style={{ height: `${pdfHeight}px` }} data={url} />
       default:
         return <div style={{ height: '300px', lineHeight: '300px', textAlign: 'center' }}>该文件格式不支持预览</div>
     }
@@ -29,6 +31,7 @@ export default function PreviewModal(props: Props) {
     visible={visible}
     title={name}
     width={'900px'}
+    centered
     onCancel={onClose}
     footer={null}
     onOk={onClose}>
