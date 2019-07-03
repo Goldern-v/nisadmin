@@ -22,7 +22,7 @@ export interface Props extends RouteComponentProps {}
 
 const navList = [
   {
-    name: '首页钱钱钱',
+    name: '首页',
     // icon: <SY />,
     path: '/home'
   },
