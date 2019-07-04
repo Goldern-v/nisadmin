@@ -57,11 +57,14 @@ export default function aduitModal(props: Props) {
           let data = res.data
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
-            console.log(keys, 'keyskeyskeys')
             if (!keys[1]) keys[1] = ''
+            let sexFormat: any = {
+              '0': '男',
+              '1': '女'
+            }
             return {
-              [keys[0]]: keys[2] ? item.format[data[item[keys[0]]]] : data[item[keys[0]]],
-              [keys[1]]: keys[2] ? item.format[data[item[keys[1]]]] : data[item[keys[1]]]
+              [keys[0]]: keys[0] == '性别' ? sexFormat[data[item[keys[0]]]] || '' : data[item[keys[0]]],
+              [keys[1]]: data[item[keys[1]]]
             }
           })
           setTableData(tableData)

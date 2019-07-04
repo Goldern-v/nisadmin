@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
+import { Select } from 'antd'
 import { RouteComponentProps } from 'react-router'
+import createModal from 'src/libs/createModal'
+import SelectPeopleModal from './modal/SelectPeopleModal'
 export interface Props extends RouteComponentProps {}
 
 export default function SentNoticeView() {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+  const selectPeopleModal = createModal(SelectPeopleModal)
+  const openSelectPeopleModal = () => {
+    selectPeopleModal.show()
+  }
   return (
     <Wrapper>
       <InputBox>
@@ -21,10 +24,19 @@ export default function SentNoticeView() {
           收件人
           <img src={require('../images/添加.png')} alt='' className='add-icon' />
         </div>
-        <div className='input-con'>
-          <input type='text' className='text-input' placeholder='请输入主题' />
+
+        <div className='input-con' onClick={openSelectPeopleModal}>
+          <Select
+            mode='tags'
+            placeholder='Please select'
+            value={[{ key: '1qqq', label: <span>231312</span> }]}
+            labelInValue={true}
+            style={{ width: '100%' }}
+            open={false}
+          />
         </div>
       </InputBox>
+      <selectPeopleModal.Component />
     </Wrapper>
   )
 }
@@ -47,7 +59,7 @@ const InputBox = styled.div`
   .label {
     color: #333333;
     width: 110px;
-    padding-left: 30px;
+    padding-left: 28px;
   }
   .input-con {
     flex: 1;
@@ -70,7 +82,14 @@ const InputBox = styled.div`
     width: 14px;
     height: 14px;
     float: right;
-    margin-top: 2px;
+    margin-top: 3px;
     margin-right: 13px;
+  }
+  .ant-select-selection {
+    min-height: 30px;
+    padding: 8px 0;
+    border: 0;
+    outline: none;
+    box-shadow: none !important;
   }
 `

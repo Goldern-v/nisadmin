@@ -116,7 +116,7 @@ export default observer(function EducationalExperience () {
                   getTableData: getTableData,
                   id: row.id,
                   type: 'nurseMedicalEducation',
-                  title: '审核特殊资格证',
+                  title: '审核教育经历',
                   tableFormat: [
                     {
                       就读时间: `readTime`,
@@ -132,8 +132,8 @@ export default observer(function EducationalExperience () {
                   ],
                   fileData: [
                     {
-                      毕业证: row.urlImageTwo,
-                      学位证: row.urlImageOne
+                      毕业证: row.urlImageOne,
+                      学位证: row.urlImageTwo
                     }
                   ],
                   allData: row

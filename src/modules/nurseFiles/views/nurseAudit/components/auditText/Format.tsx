@@ -18,11 +18,7 @@ export default function Format(row: any, getTableData: any) {
           },
           {
             性别: `sex`,
-            民族: `nation`,
-            format: {
-              '0': '男',
-              '1': '女'
-            }
+            民族: `nation`
           },
           {
             出生年月: `birthday`,
