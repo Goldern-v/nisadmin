@@ -370,6 +370,7 @@ position: relative;
   top: 50px;
   bottom: 0;
   padding: 15px;
+  height: calc(100vh - 95px);
   &>div{
     background: #fff;
   }
