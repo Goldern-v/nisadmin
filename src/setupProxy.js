@@ -29,4 +29,12 @@ module.exports = function(app) {
       changeOrigin: true
     })
   )
+  app.use(
+    proxy('/crNursing/nursingInstitution', {
+      // target: 'http://120.25.105.45:9864',
+      target: 'http://120.197.141.41:9091',
+      secure: false,
+      changeOrigin: true
+    })
+  )
 }

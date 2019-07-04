@@ -104,25 +104,30 @@ export default class NursingRules extends Component<Props> {
   }
 
   handlePreview(record: any) {
-    api
-      .download({ id: record.id })
-      .then(res => {
-        if (this.state.preview.url)
-          window.URL.revokeObjectURL(this.state.preview.url);
+    // api
+    //   .download({ id: record.id })
+    //   .then(res => {
+    //     if (this.state.preview.url)
+    //       window.URL.revokeObjectURL(this.state.preview.url);
 
-        let previewUrl = window.URL.createObjectURL(new Blob([res.data], {
-          type: res.data.type
-        }))
-        this.setState({
-          preview: {
-            url: previewUrl,
-            type: record.type,
-            title: record.name
-          }
-        }, () => {
-          PreviewModalWrapper.show();
-        });
-      })
+    //     let previewUrl = window.URL.createObjectURL(new Blob([res.data], {
+    //       type: res.data.type
+    //     }))
+
+    //     }, () => {
+    //       PreviewModalWrapper.show();
+    //     });
+    //   })
+
+    this.setState({
+      preview: {
+        url: '/crNursing/nursingInstitution' + record.path,
+        type: record.type,
+        title: record.name
+      }
+    })
+    PreviewModalWrapper.show();
+
   }
 
   handleDownload(record: any) {
