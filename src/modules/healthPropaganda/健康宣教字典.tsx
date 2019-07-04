@@ -23,6 +23,8 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   //宣教类型列表
   const initTypeList: any = [];
   const [typeList, setTypeList] = useState(initTypeList);
+  //科室列表
+  const [deptList,setDeptList] = useState([] as any)
   //宣教接口请求参数
   const [queryInited, setQueryInited] = useState(false);
   const [cacheDeptCode, setCacheDeptCode] = useState('');
@@ -106,6 +108,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
     }
 
     getTypeList();
+    getDeptList();
   }, []);
 
   useEffect(() => {
@@ -122,22 +125,30 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }, [query])
 
   useEffect(() => {
-    let timeout = setTimeout(() => {
-      let contentEl = document.querySelector('.left .content') as HTMLElement;
-      let targetEl = document.getElementById(`dept${query.deptCode}`);
-      if (targetEl && contentEl) {
-        let contentHeight = contentEl.offsetHeight;
-        let contentTop = contentEl.offsetTop;
-        let itemTop = targetEl.offsetTop;
-        let scrollTop = (itemTop - contentTop) - contentHeight / 2
-        // console.log('010', itemTop, contentHeight / 2)
-        contentEl.scrollTo({ left: 0, top: scrollTop })
-      }
-    }, 100);
-    return () => {
-      clearTimeout(timeout)
+    if(deptList.length>0){
+      let timeout = setTimeout(() => {
+        let contentEl = document.querySelector('.left .content') as HTMLElement;
+        let targetEl = document.getElementById(`dept${query.deptCode}`) as HTMLElement;
+
+        if (targetEl && contentEl) {
+          let contentHeight = contentEl.offsetHeight;
+          let contentTop = contentEl.offsetTop;
+          let itemTop = targetEl.offsetTop;
+          let scrollTop = (itemTop - contentTop) - contentHeight / 2
+          // console.log('010', itemTop, contentHeight / 2)
+          contentEl.scrollTo({ left: 0, top: scrollTop })
+        }
+
+        clearTimeout(timeout);
+      }, 1000);
     }
-  }, [authStore.deptList])
+  }, [deptList])
+
+  const getDeptList = ()=>{
+    api.getDeptList().then(res=>{
+      if(res.data.deptList instanceof Array)setDeptList(res.data.deptList);
+    })
+  }
 
   const getTableData = (newQuery?: any) => {
     let reqQuery = newQuery || { ...query };
@@ -273,7 +284,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
             onClick={() => handleDeptSelect({ code: '000000' })}>
             <span className="before" />公共<span className="after" />
           </div>
-          {authStore.deptList.map((item: any) => {
+          {deptList.map((item: any) => {
             let classes = ['dept-item'];
             if (query.deptCode == item.code) classes.push('selected')
             return <div
@@ -370,6 +381,7 @@ position: relative;
   top: 50px;
   bottom: 0;
   padding: 15px;
+  height: calc(100vh - 95px);
   &>div{
     background: #fff;
   }
