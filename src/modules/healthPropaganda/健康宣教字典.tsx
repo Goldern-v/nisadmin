@@ -24,7 +24,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   const initTypeList: any = [];
   const [typeList, setTypeList] = useState(initTypeList);
   //科室列表
-  const [deptList,setDeptList] = useState([] as any)
+  const [deptList, setDeptList] = useState([] as any)
   //宣教接口请求参数
   const [queryInited, setQueryInited] = useState(false);
   const [cacheDeptCode, setCacheDeptCode] = useState('');
@@ -125,8 +125,9 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   }, [query])
 
   useEffect(() => {
-    if(deptList.length>0){
-      let timeout = setTimeout(() => {
+    if (deptList.length > 0) {
+      let finish = false;
+      let setScrollView = () => {
         let contentEl = document.querySelector('.left .content') as HTMLElement;
         let targetEl = document.getElementById(`dept${query.deptCode}`) as HTMLElement;
 
@@ -136,17 +137,26 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
           let itemTop = targetEl.offsetTop;
           let scrollTop = (itemTop - contentTop) - contentHeight / 2
           // console.log('010', itemTop, contentHeight / 2)
-          contentEl.scrollTo({ left: 0, top: scrollTop })
-        }
 
-        clearTimeout(timeout);
-      }, 1000);
+          contentEl.scrollTop = scrollTop
+          finish = true;
+        }
+      }
+
+      let tryTime = 5;
+      while (tryTime--) {
+        let timeout = setTimeout(() => {
+          if (finish) return;
+          clearTimeout(timeout);
+          setScrollView();
+        }, 1000 - (tryTime * 200));
+      }
     }
   }, [deptList])
 
-  const getDeptList = ()=>{
-    api.getDeptList().then(res=>{
-      if(res.data.deptList instanceof Array)setDeptList(res.data.deptList);
+  const getDeptList = () => {
+    api.getDeptList().then(res => {
+      if (res.data.deptList instanceof Array) setDeptList(res.data.deptList);
     })
   }
 
