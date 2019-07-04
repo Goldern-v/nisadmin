@@ -2,48 +2,62 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button } from 'antd'
+import { noticeViewModel } from '../../NoticeViewModel'
+import { observer } from 'mobx-react-lite'
+import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
-export default function LeftMenu() {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+export default observer(function LeftMenu() {
   let menuItemList = [
     {
       icon: require('./images/收件箱.png'),
-      text: '收件箱'
+      text: '收件箱',
+      size: noticeViewModel.receiveSize
     },
     {
       icon: require('./images/发件箱.png'),
-      text: '发件箱'
+      text: '发件箱',
+      size: noticeViewModel.sendSize
     },
     {
       icon: require('./images/草稿箱.png'),
-      text: '草稿箱'
+      text: '草稿箱',
+      size: noticeViewModel.tempSaveSize
     },
     {
       icon: require('./images/收藏.png'),
-      text: '我的收藏'
+      text: '我的收藏',
+      size: 0
     }
   ]
 
   // type MenuItemList = typeof menuItemList
   return (
     <Wrapper>
-      <Button type='primary' icon='form' style={{ width: 170, margin: '15px auto', display: 'block' }}>
+      <Button
+        type='primary'
+        icon='form'
+        style={{ width: 170, margin: '15px auto', display: 'block' }}
+        onClick={() => {
+          appStore.history.push('/sentNotice')
+        }}
+      >
         新建通知
       </Button>
       <Title>文件夹</Title>
       {menuItemList.map((item) => (
-        <ItemBox>
+        <ItemBox
+          className={noticeViewModel.selectedMenu === item.text ? 'active' : ''}
+          onClick={() => noticeViewModel.setSelectedMenu(item.text)}
+          key={item.text}
+        >
           <img className='icon' src={item.icon} />
-          <div className='text'>{item.text}</div>
+          <div className='text'>{item.text + `（${item.size}）`}</div>
         </ItemBox>
       ))}
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   position: fixed;
   left: 0;
@@ -79,5 +93,8 @@ const ItemBox = styled.div`
   .icon {
     margin-right: 10px;
     width: 15px;
+  }
+  .text {
+    font-size: 13px;
   }
 `

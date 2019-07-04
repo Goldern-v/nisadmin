@@ -37,6 +37,7 @@ import NursingPerformance from 'src/modules/nursingPerformance/NursingPerformanc
 import LmsView from 'src/modules/lms/LmsView'
 import testView from 'src/modules/test/testView'
 import NoticeView from 'src/modules/notice/NoticeView'
+import SentNoticeView from 'src/modules/notice/page/SentNoticeView'
 import LmsDetails from 'src/modules/lms/views/LmsDetails'
 
 //护理制度
@@ -95,6 +96,7 @@ const routes: RouteItem[] = [
   setLayout('/Lms', LmsView, layouts.MainLayout),
   setLayout('/test', testView, layouts.MainLayout),
   setLayout('/notice', NoticeView, layouts.MainLayout),
+  setLayout('/sentNotice', SentNoticeView, layouts.MainLayout),
   setLayout('/lmsDetails', LmsDetails, layouts.MainLayout),
   {
     path: '/statistic',

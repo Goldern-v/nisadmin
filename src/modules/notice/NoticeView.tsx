@@ -5,13 +5,14 @@ import Null from 'src/components/null/Null'
 import LeftMenu from './components/LeftMenu/LeftMenu'
 import InfoList from './components/InfoList/InfoList'
 import MainDetail from './components/MainDetail/MainDetail'
+import { noticeViewModel } from './NoticeViewModel'
 export interface Props extends RouteComponentProps {}
 
 export default function NoticeView() {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    noticeViewModel.init()
+  }, [])
   return (
     <Wrapper>
       <LeftMenu />

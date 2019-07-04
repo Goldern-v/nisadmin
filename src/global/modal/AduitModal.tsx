@@ -24,7 +24,7 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 
-export default function aduitModal (props: Props) {
+export default function aduitModal(props: Props) {
   let { visible, onCancel } = props
   /** 表格数据 */
   let [spinning, setSpinning]: [any, any] = useState(false)
@@ -57,10 +57,11 @@ export default function aduitModal (props: Props) {
           let data = res.data
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
+            console.log(keys, 'keyskeyskeys')
             if (!keys[1]) keys[1] = ''
             return {
-              [keys[0]]: data[item[keys[0]]],
-              [keys[1]]: data[item[keys[1]]]
+              [keys[0]]: keys[2] ? item.format[data[item[keys[0]]]] : data[item[keys[0]]],
+              [keys[1]]: keys[2] ? item.format[data[item[keys[1]]]] : data[item[keys[1]]]
             }
           })
           setTableData(tableData)
@@ -216,7 +217,7 @@ export default function aduitModal (props: Props) {
   )
 }
 
-function TimeLineItem (props: any) {
+function TimeLineItem(props: any) {
   const { data, index, arr } = props
   const Con = styled.div<{ index: number }>`
     height: 72px;
@@ -288,7 +289,7 @@ function TimeLineItem (props: any) {
   )
 }
 
-function UploadItem (props: any) {
+function UploadItem(props: any) {
   const { label, path } = props
   const ZyzsCon = styled.div`
     position: relative;
