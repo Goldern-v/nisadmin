@@ -432,6 +432,7 @@ const Contain = styled.div`
     right: 15px;
     bottom: 10px;
     background: #fff;
+    height: calc(100vh - 120px);
     td{
       position: relative;
       &.align-left{
