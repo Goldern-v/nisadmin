@@ -31,23 +31,27 @@ export default class CommonApiService extends BaseApiService {
   }
 
   /** 根据科室获取人员列表 */
-  public groupByDeptInDeptList(deptCode: string, keyword?: String) {
+  public groupByDeptInDeptList(deptCode?: string, keyword?: String) {
     return this.post(`/user/groupByDeptInDeptList`, { deptCode, keyword })
   }
   /** 根据职称获取人员列表 */
-  public groupByTitleInDeptList(title: string, keyword?: String) {
+  public groupByTitleInDeptList(title?: string, keyword?: String) {
     return this.post(`/user/groupByTitleInDeptList`, { title, keyword })
   }
   /** 根据职务获取人员列表 */
-  public groupByJobInDeptList(job: string, keyword?: String) {
+  public groupByJobInDeptList(job?: string, keyword?: String) {
     return this.post(`/user/groupByJobInDeptList`, { job, keyword })
   }
   /** 根据职务获取人员列表 */
-  public groupByLevelInDeptList(currentLevel: string, keyword?: String) {
+  public groupByLevelInDeptList(currentLevel?: string, keyword?: String) {
     return this.post(`/user/groupByLevelInDeptList`, { currentLevel, keyword })
   }
   /** 根据用户名获取人员列表 */
   public searchUser(empName: string) {
     return this.post(`/user/search`, { empName })
+  }
+  /** 获取默认科室人员列表 */
+  public defaultDeptUser(keyword?: String) {
+    return this.post(`/user/defaultDeptUser`, { keyword })
   }
 }

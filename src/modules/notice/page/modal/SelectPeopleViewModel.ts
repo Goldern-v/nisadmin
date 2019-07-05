@@ -1,28 +1,94 @@
 import { observable, computed, action } from 'mobx'
 import { authStore } from 'src/stores'
-
+import { noticeService } from '../../serveices/NoticeService'
+import service from 'src/services/api'
 class SelectPeopleViewModel {
+  @observable modalLoading: boolean = false
   @observable public selectTreeData = [
     {
-      label: authStore.selectedDeptName
+      step: '默认科室',
+      label: authStore.selectedDeptName,
+      data: []
     },
     {
-      label: '按护理单元选择'
+      step: '按护理单元选择',
+      label: '按护理单元选择',
+      data: [],
+      dataLabel: 'deptName'
     },
     {
-      label: '按职务选择'
+      step: '按职务选择',
+      label: '按职务选择',
+      data: [],
+      dataLabel: 'job'
     },
     {
-      label: '按职称选择'
+      step: '按职称选择',
+      label: '按职称选择',
+      data: [],
+      dataLabel: 'title'
     },
     {
-      label: '按层级选择'
+      step: '按层级选择',
+      label: '按层级选择',
+      data: [],
+      dataLabel: 'level'
     }
   ]
-  @observable stepState = []
+  @observable stepState: string[] = []
 
   pushStep(step: string) {
-    // stepState
+    if (this.stepState.indexOf(step) == -1) {
+      this.stepState.push(step)
+    }
+  }
+  popStep() {
+    this.stepState.pop()
+  }
+
+  @computed get currentTreeData() {
+    if (this.stepState.length == 1) {
+      if (this.stepState[0] == '默认科室') {
+        return {
+          parent: authStore.selectedDeptName,
+          list: (this as any).selectTreeData[0].data.userList,
+          type: 'userList',
+          dataLabel: 'empName'
+        }
+      } else {
+        let { data, dataLabel } = this.selectTreeData.find((item) => item.step == this.stepState[0]) || {
+          data: [],
+          dataLabel: ''
+        }
+        return { parent: this.stepState[0], list: data, dataLabel, type: 'parentList' }
+      }
+    }
+    if (this.stepState.length == 2) {
+      let { data, dataLabel } = this.selectTreeData.find((item) => item.step == this.stepState[0]) || {
+        data: [],
+        dataLabel: ''
+      }
+      let userData: any = data.find((item: any) => item[dataLabel || ''] == this.stepState[1]) || {}
+      return { parent: userData[dataLabel || ''], list: userData.userList, type: 'userList', dataLabel: 'empName' }
+    }
+  }
+
+  /** 初始化数据 */
+  initData() {
+    this.modalLoading = true
+    let ser = service.commonApiService
+    return Promise.all([
+      ser.defaultDeptUser(),
+      ser.groupByDeptInDeptList(),
+      ser.groupByJobInDeptList(),
+      ser.groupByTitleInDeptList(),
+      ser.groupByLevelInDeptList()
+    ]).then((res) => {
+      this.modalLoading = false
+      res.forEach((item, index) => {
+        this.selectTreeData[index].data = item.data
+      })
+    })
   }
 }
 

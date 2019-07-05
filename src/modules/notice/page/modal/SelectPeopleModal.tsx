@@ -1,9 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, Icon, Checkbox } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, Icon, Checkbox, Spin } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { ScrollBox } from 'src/components/common'
 import { authStore } from 'src/stores'
+import { selectPeopleViewModel } from './SelectPeopleViewModel'
+import { noticeService } from '../../serveices/NoticeService'
+import { observer } from 'mobx-react-lite'
 const { Search } = Input
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -11,30 +14,17 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => {}
 }
 
-export default function SelectPeopleModal(props: Props) {
+export default observer(function SelectPeopleModal(props: Props) {
   let { visible, onCancel } = props
 
   const onSave = async () => {}
 
-  useLayoutEffect(() => {}, [visible])
-
-  let SelectList = [
-    {
-      label: authStore.selectedDeptName
-    },
-    {
-      label: '按护理单元选择'
-    },
-    {
-      label: '按职务选择'
-    },
-    {
-      label: '按职称选择'
-    },
-    {
-      label: '按层级选择'
+  useLayoutEffect(() => {
+    if (visible) {
+      selectPeopleViewModel.initData()
     }
-  ]
+  }, [visible])
+
   return (
     <Modal
       title='选择联系人'
@@ -48,18 +38,30 @@ export default function SelectPeopleModal(props: Props) {
     >
       <Wrapper>
         <div className='main-con'>
-          <div className='left-part'>
-            {/* <Search placeholder='请输入搜索关键字' onSearch={(value) => console.log(value)} style={{ width: '100%' }} /> */}
-            {/* <FileList>
-              {SelectList.map((item, index: any) => (
-                <div className='item-box'>
-                  <img src={require('../../images/文件夹.png')} alt='' />
-                  <span>{item.label}</span>
+          <div className='left-part scrollBox'>
+            <Spin spinning={selectPeopleViewModel.modalLoading}>
+              {selectPeopleViewModel.currentTreeData ? (
+                <CheckListCon />
+              ) : (
+                <div>
+                  <Search
+                    placeholder='请输入搜索关键字'
+                    onSearch={(value) => console.log(value)}
+                    style={{ width: '100%' }}
+                  />
+                  <FileList>
+                    {selectPeopleViewModel.selectTreeData.map((item, index: any) => (
+                      <div className='item-box' onClick={() => selectPeopleViewModel.pushStep(item.step)} key={index}>
+                        <img src={require('../../images/文件夹.png')} alt='' />
+                        <span>{item.label}</span>
+                      </div>
+                    ))}
+                  </FileList>
                 </div>
-              ))}
-            </FileList> */}
+              )}
 
-            <CheckListCon />
+              {/* <CheckListCon /> */}
+            </Spin>
           </div>
           <div className='right-part'>
             <SelectCon>
@@ -82,9 +84,8 @@ export default function SelectPeopleModal(props: Props) {
       </Wrapper>
     </Modal>
   )
-}
-
-function CheckListCon() {
+})
+const CheckListCon = observer(function() {
   let optionsWithDisabled = [
     { label: 'Apple', value: 'Apple' },
     { label: 'Pear', value: 'Pear' },
@@ -93,54 +94,75 @@ function CheckListCon() {
   const Con = styled.div`
     .title {
       color: #333;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
     }
     .ant-checkbox-group {
       width: 100%;
     }
     .check-row {
-      padding: 7px 0;
+      padding: 5px 0;
       display: flex;
       justify-content: space-between;
     }
     .open {
+      display: inline-block;
+      width: 38px;
+      text-align: center;
       color: ${(p) => p.theme.$mtc};
       cursor: pointer;
       &:hover {
         font-weight: bold;
       }
     }
+    .scrollBox {
+      height: 380px;
+      box-sizing: content-box;
+      padding-right: 10px;
+      margin-right: -10px;
+    }
   `
   return (
     <Con>
-      <div className='title'>
+      <div className='title' onClick={() => selectPeopleViewModel.popStep()}>
         <Icon type='left' />
-        <span style={{ paddingLeft: 5 }}>按科室选择</span>
+        <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.currentTreeData!.parent}</span>
       </div>
-      <div>
+      <div className='scrollBox'>
         <Checkbox.Group defaultValue={['Apple']}>
-          <div className='check-row'>
-            <Checkbox value='C'>C</Checkbox>
-            <div>
-              <span style={{ padding: '0 4px' }}>|</span>
-              <span className='open'>展开</span>
-            </div>
-          </div>
-          <div className='check-row'>
-            <Checkbox value='C'>C</Checkbox>
-          </div>
-          <div className='check-row'>
-            <Checkbox value='C'>C</Checkbox>
-          </div>
-          <div className='check-row'>
-            <Checkbox value='C'>C</Checkbox>
-          </div>
+          <Checkbox value='C'>全选</Checkbox>
+          {selectPeopleViewModel.currentTreeData!.list.map((item: any, index: number) => {
+            let type = selectPeopleViewModel!.currentTreeData!.type
+            let label =
+              type == 'userList'
+                ? item[selectPeopleViewModel!.currentTreeData!.dataLabel || '']
+                : `
+            ${item[selectPeopleViewModel!.currentTreeData!.dataLabel || '']}（${item.userList.length}人）
+            `
+            return (
+              <div className='check-row' key={index}>
+                <Checkbox value='C'>{label}</Checkbox>
+                {selectPeopleViewModel!.currentTreeData!.type !== 'userList' && (
+                  <div>
+                    <span style={{ padding: '0 4px' }}>|</span>
+                    <span
+                      className='open'
+                      onClick={() =>
+                        selectPeopleViewModel.pushStep(item[selectPeopleViewModel!.currentTreeData!.dataLabel || ''])
+                      }
+                    >
+                      展开
+                    </span>
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </Checkbox.Group>
       </div>
     </Con>
   )
-}
-
+})
 const Wrapper = styled.div`
   margin: -24px;
   .main-con,
@@ -154,7 +176,7 @@ const Wrapper = styled.div`
   .left-part {
     width: 350px;
     border-right: 1px solid #dddddd;
-    padding: 20px;
+    padding: 15px 20px;
   }
   .right-part {
     width: 0;

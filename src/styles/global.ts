@@ -33,6 +33,22 @@ const GlobalStyle = createGlobalStyle`
   background: #fff !important;
 }
 
+.scrollBox {
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 50px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background-color: #c2c2c2;
+  }
+}
 `
 
 export default GlobalStyle
