@@ -5,7 +5,7 @@ import { appStore, authStore } from 'src/stores/index'
 import emitter from 'src/libs/ev'
 import { observer } from 'mobx-react-lite'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-export default observer(function BedSituation () {
+export default observer(function BedSituation() {
   const [title, setTitle] = useState(() => {
     let deptName = authStore.selectedDeptName || ''
     statisticViewModel.deptName = deptName
@@ -30,7 +30,7 @@ export default observer(function BedSituation () {
   })
   return (
     <Con>
-      <div className='hospitalTitle'>东莞市厚街医院</div>
+      {/* <div className='hospitalTitle'>东莞市厚街医院</div> */}
       <div className='tableTitle'>{appStore.match.params.name}</div>
       {/* <ConditionCon>
         <div className='divisionCon'>科室：{authStore.selectedDeptNameOnly}</div>

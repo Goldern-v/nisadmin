@@ -1,5 +1,13 @@
 const columns: any = [
   {
+    title: '序号',
+    dataIndex: '1',
+    key: '1',
+    render: (text: any, record: any, index: number) => index + 1,
+    align: 'center',
+    width: 50
+  },
+  {
     title: '护理单元',
     dataIndex: 'wardName',
     key: '护理单元',

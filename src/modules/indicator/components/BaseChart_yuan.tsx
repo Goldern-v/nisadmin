@@ -57,29 +57,7 @@ export default function BaseChart(props: Props) {
         <Legend
           custom
           allowAllCanceled
-          position='top-left'
-          items={[
-            {
-              value: props.dictionary.actualOpenBeds,
-              marker: { symbol: 'square', stroke: '#fdae6b', radius: 5, lineWidth: 3 }
-            }
-          ]}
-          onClick={(ev, chart) => {
-            const item = ev.item
-            const value = item.value
-            const checked = ev.checked
-            const geoms = chart.getAllGeoms()
-            for (let i = 0; i < geoms.length; i++) {
-              const geom = geoms[i]
-              if (geom.getYScale().field === value) {
-                if (checked) {
-                  geom.show()
-                } else {
-                  geom.hide()
-                }
-              }
-            }
-          }}
+          items={[{ value: 'people', marker: { symbol: 'hyphen', stroke: '#fdae6b', radius: 5, lineWidth: 3 } }]}
         />
         <Bar position='key*value' color='name' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
         {props.lineKey && <Line position={'key*' + props.lineKey} color='#fdae6b' size={3} />}

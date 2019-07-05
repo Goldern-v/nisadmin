@@ -15,23 +15,23 @@ const columns: any = [
     align: 'left'
   },
   {
-    title: '插管总日数',
+    title: '手术总例数',
     dataIndex: 'sur_count',
     key: '插管总日数',
     width: 180,
     align: 'center'
   },
   {
-    title: '感染人数',
+    title: '感染例数',
     dataIndex: 'infection_count',
     key: '感染人数',
     width: 180,
     align: 'center'
   },
   {
-    title: '发生率(%)',
+    title: '发生率',
     dataIndex: 'accident_ratio',
-    key: '发生率(%)',
+    key: '发生率',
     width: 180,
     align: 'center'
   }

@@ -14,12 +14,12 @@ const columns: any = [
     width: 180,
     align: 'left'
   },
-  // {
-  //   title: '跌倒例数',
-  //   dataIndex: '跌倒例数',
-  //   key: '跌倒例数',
-  //   align: 'center'
-  // },
+  {
+    title: '跌倒例数',
+    dataIndex: 'total_count',
+    key: '跌倒例数',
+    align: 'center'
+  },
   {
     title: '轻度伤害',
     align: 'center',

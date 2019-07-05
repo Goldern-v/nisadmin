@@ -55,292 +55,561 @@ import { 包装合格率 } from './views2/包装合格率'
 import { 湿包发生率 } from './views2/湿包发生率'
 import { LEFT_MENU } from './config'
 import { indicatorService } from './services/IndicatorService'
+// 图
+import 护患比统计图 from 'src/modules/indicator/chartView/护患比统计图.tsx'
+import 无图 from 'src/modules/indicator/chartView/无图.tsx'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
-
+const widthChar = '400%'
 const ROUTE_LIST: any = [
   {
     name: '床护比统计',
     columns: 床护比统计.columns,
     dataSource: [] || 床护比统计.dataSource,
     // keys: ['实际开放床位数', '实际配备护士数'],
-    keys: ['actualOpenBeds', 'actualNurseCount'],
-    gName: 'wardName',
-    lineKey: '实际床护比',
+    // time: '10:10', call: 4, waiting: 2, people: 2
+    serviceName: 'nationalIndex/getBedNurseRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
+      wardName: '护理单元',
       actualOpenBeds: '实际开放床位数',
       actualNurseCount: '实际配备护士数',
-      actualBedNurseRatio: '实际床护比',
-      wardName: '护理单元'
+      actualBedNurseRatio: '实际床护比'
     },
-    widthChar: '380%',
-    serviceName: 'nationalIndex/getBedNurseRatio'
+    gName: '护理单元',
+    keys: ['实际开放床位数', '实际配备护士数'],
+    lineKey: '实际床护比',
+    // rowKey: { actualOpenBeds: '实际开放床位数', actualNurseCount: '实际配备护士数' },
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '护患比统计',
     columns: 护患比统计.columns,
     dataSource: [] || 护患比统计.dataSource,
-    // keys: ['患者数', '护士数'],
-    // gName: '护理单元',
-    // lineKey: '每天平均护患比',
-    keys: ['actualOpenBeds', 'actualNurseCount'],
-    gName: 'wardName',
-    lineKey: 'actualBedNurseRatio',
+    serviceName: 'nationalIndex/getPatientNurseRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
-      actualOpenBeds: '实际开放床位数',
-      actualNurseCount: '实际配备护士数',
-      actualBedNurseRatio: '实际床护比',
-      wardName: '护理单元'
+      wardName: '护理单元',
+      nurseCount_A: '护士数',
+      patientCount_A: '患者数',
+      pNRatio_A: '护患比'
     },
-    surplusHeight: 280,
-    widthChar: '250%',
-    serviceName: 'nationalIndex/getPatientNurseRatio'
+    gName: '护理单元',
+    keys: ['护士数', '患者数'],
+    lineKey: '护患比',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '24小时平均护理时数',
     columns: 小时平均护理时数.columns,
     dataSource: [] || 小时平均护理时数.dataSource,
-    keys: ['平均每天护理时数', '平均每天住院患者'],
+    serviceName: 'nationalIndex/getNursingHours',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      tNurHours: '累计护理时数',
+      tReceivePatients: '累计收治患者人次',
+      avgNurHPerPatient: '每住院患者24小时平均护理时数'
+    },
     gName: '护理单元',
+    keys: ['累计护理时数', '累计收治患者人次'],
     lineKey: '每住院患者24小时平均护理时数',
-    serviceName: 'nationalIndex/getNursingHours'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '不同级别护士配置',
     columns: 不同级别护士配置.columns,
     dataSource: [] || 不同级别护士配置.dataSource,
-    keys: ['护士总人数'],
-    gName: '护理单元',
-    lineKey: '',
     serviceName: 'nationalIndex/getNurseAllocation',
     surplusHeight: 280,
-    surplusWidth: 260
+    surplusWidth: 260,
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      nursetotal: '护士总人数'
+    },
+    gName: '护理单元',
+    keys: ['护士总人数'],
+    lineKey: '',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '护士离职率',
     columns: 护士离职率.columns,
     dataSource: [] || 护士离职率.dataSource,
-    keys: ['离职率'],
+    serviceName: 'nationalIndex/getNurseResignRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      resign_count: '统计周期内离职人数',
+      payroll_count: '统计周期末在职人数',
+      resign_ratio: '离职率'
+    },
     gName: '护理单元',
-    lineKey: '',
-    serviceName: 'nationalIndex/getNurseResignRatio'
+    keys: ['统计周期内离职人数', '统计周期末在职人数'],
+    lineKey: '离职率',
+    widthChar: widthChar,
+    chartComponent: 无图
   },
   {
     name: '住院患者跌倒发生率',
     columns: 住院患者跌倒发生率.columns,
     dataSource: [] || 住院患者跌倒发生率.dataSource,
-    keys: ['跌倒发生率'],
-    gName: '护理单元',
-    lineKey: '',
-    serviceName: 'nationalIndex/getPatientFallRatio'
+    serviceName: 'nationalIndex/getPatientFallRatio',
     // surplusWidth: 260
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      fall_count: '跌倒病例数',
+      fall_ratio: '跌倒发生率'
+    },
+    gName: '护理单元',
+    keys: ['跌倒病例数'],
+    lineKey: '跌倒发生率',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '院内压疮发生率',
     columns: 院内压疮发生率.columns,
     dataSource: [] || 院内压疮发生率.dataSource,
-    keys: ['压疮病例数', '同期患者数'],
+    serviceName: 'nationalIndex/getPuRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      pu_cases: '压疮病例数',
+      patient_count: '同期患者数',
+      pu_ratio: '压疮发生率(%)'
+    },
     gName: '护理单元',
+    keys: ['压疮病例数', '同期患者数'],
     lineKey: '压疮发生率(%)',
-    serviceName: 'nationalIndex/getPuRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '住院患者身体约束率',
     columns: 住院患者身体约束率.columns,
     dataSource: [] || 住院患者身体约束率.dataSource,
-    keys: ['约束天数', '患者人日数'],
-    gName: '护理单元',
-    lineKey: '身体约束率(%)',
     // surplusHeight:'400',
-    serviceName: 'nationalIndex/getBrRatio'
+    serviceName: 'nationalIndex/getBrRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      br_days: '约束天数',
+      patient_days: '患者总人日数',
+      br_ratio: '身体约束率(%)'
+    },
+    gName: '护理单元',
+    keys: ['约束天数', '患者总人日数'],
+    lineKey: '身体约束率(%)',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '插管患者非计划拔管发生率',
     columns: 插管患者非计划拔管发生率.columns,
     dataSource: [] || 插管患者非计划拔管发生率.dataSource,
-    keys: ['导管留置日数', 'UEX例数'],
+    serviceName: 'nationalIndex/getUexRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      uex_cases: 'UEX例数',
+      indwelling_cases: '导管置管例数',
+      uex_ratio_bycase: 'UEX发生率'
+    },
     gName: '护理单元',
+    keys: ['UEX例数', '导管置管例数'],
     lineKey: 'UEX发生率',
-    serviceName: 'nationalIndex/getUexRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '导尿管相关尿路感染发生率',
     columns: 导尿管相关尿路感染发生率.columns,
     dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
-    keys: 'getCautiRatio',
+    serviceName: 'nationalIndex/getCautiRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      uex_cases: '感染例数',
+      indwelling_days: '留置导尿管总日数',
+      infection_ratio: '感染率（例/千导管日）'
+    },
     gName: '护理单元',
-    lineKey: '感染率',
-    serviceName: 'nationalIndex/getCautiRatio'
+    keys: ['感染例数', '留置导尿管总日数'],
+    lineKey: '感染率（例/千导管日）',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '中心导管相关血流感染发生率',
     columns: 中心导管相关血流感染发生率.columns,
     dataSource: [] || 中心导管相关血流感染发生率.dataSource,
-    keys: 'getCrbsiRatio',
+    serviceName: 'nationalIndex/getCrbsiRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      infection_case: '感染例数',
+      indwelling_days: '留置导管总日数',
+      infection_ratio: '感染率（例/千导管日）'
+    },
     gName: '护理单元',
-    lineKey: '发生率',
-    serviceName: 'nationalIndex/getCrbsiRatio'
+    keys: ['感染例数', '留置导管总日数'],
+    lineKey: '感染率（例/千导管日）',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '呼吸机相关性肺炎发生率',
     columns: 呼吸机相关性肺炎发生率.columns,
     dataSource: [] || 呼吸机相关性肺炎发生率.dataSource,
-    keys: ['感染例数', '插管例数'],
+    serviceName: 'nationalIndex/getVapRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      infection_case: '感染例数',
+      venti_case: '呼吸机患者例数',
+      infection_ratio: '感染率（例/千机械通气日）'
+    },
     gName: '护理单元',
-    lineKey: '感染率',
-    serviceName: 'nationalIndex/getVapRatio'
+    keys: ['感染例数', '留置导管总日数'],
+    lineKey: '感染率（例/千机械通气日）',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '产科护理质量数据',
     columns: 产科护理质量数据.columns,
     dataSource: [] || 产科护理质量数据.dataSource,
+    serviceName: 'nationalIndex/getObNursingQuqlity',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      infection_case: '人数'
+    },
+    gName: '护理单元',
     keys: ['人数'],
-    gName: '统计项目',
     lineKey: '',
-    serviceName: 'nationalIndex/getObNursingQuqlity'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '高危药物静脉外渗率',
     columns: 高危药物静脉外渗率.columns,
     dataSource: [] || 高危药物静脉外渗率.dataSource,
-    keys: ['静脉使用高危药物发生外渗的例数'],
+    serviceName: 'cnqIndex/getHRDrugsExoRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      exo_count: '静脉使用高危药物发生外渗的例数',
+      accident_ratio: '高危药物静脉外渗率'
+    },
     gName: '护理单元',
-    serviceName: 'cnqIndex/getHRDrugsExoRatio'
+    keys: ['静脉使用高危药物发生外渗的例数'],
+    lineKey: '高危药物静脉外渗率',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '输血输液反应倒数',
     columns: 输血输液反应倒数.columns,
     dataSource: [] || 输血输液反应倒数.dataSource,
-    keys: ['输血反应例数', '输液反应例数'],
+    serviceName: 'cnqIndex/getInfuReactCases',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      btreact_count: '输血反应例数',
+      ifreact_count: '输液反应例数'
+    },
     gName: '护理单元',
+    keys: ['输血反应例数', '输液反应例数'],
     lineKey: '',
-    serviceName: 'cnqIndex/getInfuReactCases'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '非计划拔管发生率',
     columns: 非计划拔管发生率.columns,
     dataSource: [] || 非计划拔管发生率.dataSource,
-    keys: ['导管留置日数', 'UEX例数'],
+    serviceName: 'cnqIndex/getUexRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      uex_case: 'UEX例数',
+      indwelling_days: '导管留置日数',
+      uex_ratio: 'UEX发生率(例数/留置日数)'
+    },
     gName: '护理单元',
-    lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getUexRatio'
+    keys: ['UEX例数', '导管留置日数'],
+    lineKey: 'UEX发生率(例数/留置日数)',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '导管相关血液感染发生率',
     columns: 导管相关血液感染发生率.columns,
     dataSource: [] || 导管相关血液感染发生率.dataSource,
-    keys: 'getCrbsiRatio',
+    serviceName: 'cnqIndex/getCrbsiRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      infection_count: '感染人数',
+      indwelling_days: '插管总日数',
+      accident_ratio: '发生率(%)'
+    },
     gName: '护理单元',
+    keys: ['感染人数', '插管总日数'],
     lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getCrbsiRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '尿管相关泌尿系感染发生率',
     columns: 尿管相关泌尿系感染发生率.columns,
     dataSource: [] || 尿管相关泌尿系感染发生率.dataSource,
-    keys: 'getCautiRatio',
+    serviceName: 'cnqIndex/getCautiRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      infection_count: '感染人数',
+      indwelling_days: '插管总日数',
+      accident_ratio: '发生率(%)'
+    },
     gName: '护理单元',
+    keys: ['感染人数', '插管总日数'],
     lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getCautiRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '手术相关肺部感染发生率',
     columns: 手术相关肺部感染发生率.columns,
     dataSource: [] || 手术相关肺部感染发生率.dataSource,
-    keys: ['插管总日数', '感染人数'],
+    serviceName: 'cnqIndex/getSurPInfecRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      infection_count: '感染例数',
+      sur_count: '手术总例数',
+      accident_ratio: '发生率'
+    },
     gName: '护理单元',
-    lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getSurPInfecRatio'
+    keys: ['感染例数', '插管总日数'],
+    lineKey: '发生率',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '患者入院前已有压疮统计',
     columns: 患者入院前已有压疮统计.columns,
     dataSource: [] || 患者入院前已有压疮统计.dataSource,
-    keys: ['插管总日数', '感染人数'],
+    serviceName: 'cnqIndex/getPreAdmiPUCount',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      pu_count: '入院前已有压疮例数',
+      patient_count: '住院患者人数',
+      pu_ratio: '已有压疮占比'
+    },
     gName: '护理单元',
-    lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getPreAdmiPUCount'
+    keys: ['入院前已有压疮例数', '住院患者人数'],
+    lineKey: '已有压疮占比',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '入院时压疮高风险患者评估率',
     columns: 入院时压疮高风险患者评估率.columns,
     dataSource: [] || 入院时压疮高风险患者评估率.dataSource,
-    keys: ['插管总日数', '感染人数'],
+    serviceName: 'cnqIndex/getHRPUEsRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      pu_count: '高风险患者评估阳性例数',
+      hres_count: '入院时评估高风险患者人数',
+      hres_ratio: '评估率'
+    },
     gName: '护理单元',
-    lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getHRPUEsRatio'
+    keys: ['高风险患者评估阳性例数', '入院时评估高风险患者人数'],
+    lineKey: '评估率',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '住院压疮高风险压疮发生率',
     columns: 住院压疮高风险压疮发生率.columns,
     dataSource: [] || 住院压疮高风险压疮发生率.dataSource,
-    keys: ['插管总日数', '感染人数'],
+    serviceName: 'cnqIndex/getHRPUAcciRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      pu_count: '发生压疮例数',
+      hres_count: '入院评估高风险例数',
+      accident_ratio: '压疮发生率'
+    },
     gName: '护理单元',
-    lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getHRPUAcciRatio'
+    keys: ['发生压疮例数', '入院评估高风险例数'],
+    lineKey: '压疮发生率',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
+    // 无图
     name: '住院患者手术室压疮发生率',
     columns: 住院患者手术室压疮发生率.columns,
     dataSource: [] || 住院患者手术室压疮发生率.dataSource,
-    keys: ['手术总人数', '发生压疮人数'],
+    serviceName: 'cnqIndex/getORPUAcciRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元'
+    },
     gName: '护理单元',
-    lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getORPUAcciRatio'
+    keys: [],
+    lineKey: '',
+    widthChar: widthChar,
+    chartComponent: 无图
   },
   {
     name: '排便失禁患者失禁性皮炎发生率',
     columns: 排便失禁患者失禁性皮炎发生率.columns,
     dataSource: [] || 排便失禁患者失禁性皮炎发生率.dataSource,
-    keys: ['失禁患者发生失禁性皮炎人数', '住院患者总人数'],
+    serviceName: 'cnqIndex/getIADAcciRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      iad_count: '失禁患者发生失禁性皮炎人数',
+      patient_count: '住院患者总人数',
+      accident_ratio: '发生率(%)'
+    },
     gName: '护理单元',
+    keys: ['失禁患者发生失禁性皮炎人数', '住院患者总人数'],
     lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getIADAcciRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '跌倒坠床高风险患者评估率',
     columns: 跌倒坠床高风险患者评估率.columns,
     dataSource: [] || 跌倒坠床高风险患者评估率.dataSource,
-    keys: ['跌倒/坠床高风险患者评估阳性例数', '入院时高风险患者总人数'],
+    serviceName: 'cnqIndex/getHRFallEsRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      fall_count: '跌倒/坠床高风险患者评估阳性例数',
+      hres_count: '入院时高风险患者总人数',
+      hres_ratio: '评估率(%)'
+    },
     gName: '护理单元',
+    keys: ['跌倒/坠床高风险患者评估阳性例数', '入院时高风险患者总人数'],
     lineKey: '评估率(%)',
-    serviceName: 'cnqIndex/getHRFallEsRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '住院患者跌倒发生率',
     columns: 住院患者跌倒发生率2.columns,
     dataSource: [] || 住院患者跌倒发生率2.dataSource,
-    keys: ['住院总人数', '跌倒人次'],
+    serviceName: 'cnqIndex/getPatientFallAcciRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      fall_count: '跌倒人次',
+      patient_count: '住院总人数',
+      accident_ratio: '发生率(%)'
+    },
     gName: '护理单元',
+    keys: ['跌倒人次', '住院总人数'],
     lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getPatientFallAcciRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '住院患者跌倒坠床伤害程度',
     columns: 住院患者跌倒坠床伤害程度.columns,
     dataSource: [] || 住院患者跌倒坠床伤害程度.dataSource,
-    keys: [],
-    gName: '',
-    lineKey: '',
-    serviceName: 'cnqIndex/getFallISS'
+    serviceName: 'cnqIndex/getFallISS',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      minor_injury_count: '轻度伤害例数',
+      total_count: '跌倒例数',
+      minor_injury_ratio: '轻度伤害比例'
+    },
+    gName: '护理单元',
+    keys: ['轻度伤害例数', '跌倒例数'],
+    lineKey: '轻度伤害比例',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '住院患者误吸高风险评估率',
     columns: 住院患者误吸高风险评估率.columns,
     dataSource: [] || 住院患者误吸高风险评估率.dataSource,
-    keys: ['入院时评估误吸高风险患者总人数', '误吸高风险患者评估阳性例数'],
+    serviceName: 'cnqIndex/getMisInhalEsRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      misInhal_count: '误吸高风险患者评估阳性例数',
+      estimate_count: '入院时评估误吸高风险患者总人数',
+      estimate_ratio: '发生率(%)'
+    },
     gName: '护理单元',
-    lineKey: '评估率(%)',
-    serviceName: 'cnqIndex/getMisInhalEsRatio'
+    keys: ['误吸高风险患者评估阳性例数', '入院时评估误吸高风险患者总人数'],
+    lineKey: '发生率(%)',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '住院高风险患者误吸发生率',
     columns: 住院高风险患者误吸发生率.columns,
     dataSource: [] || 住院高风险患者误吸发生率.dataSource,
-    keys: ['住院患者总人数', '住院患者发生误吸例数'],
+    serviceName: 'cnqIndex/getMisInhalAcciRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      misInhal_count: '住院患者发生误吸例数',
+      patient_count: '住院患者总人数',
+      accident_ratio: '发生率(%)'
+    },
     gName: '护理单元',
-    lineKey: '评估率(%)',
-    serviceName: 'cnqIndex/getMisInhalAcciRatio'
+    keys: ['住院患者发生误吸例数', '住院患者总人数'],
+    lineKey: '发生率(%)',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '走失高风险住院患者评估阳性数',
@@ -355,28 +624,58 @@ const ROUTE_LIST: any = [
     name: '患者走失发生率',
     columns: 患者走失发生率.columns,
     dataSource: [] || 患者走失发生率.dataSource,
-    keys: ['住院患者总人数', '住院患者的走失例数'],
+    serviceName: 'cnqIndex/getPLostAcciRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      lost_count: '住院患者的走失例数',
+      patient_count: '住院患者总人数',
+      accident_ratio: '发生率(%)'
+    },
     gName: '护理单元',
+    keys: ['住院患者的走失例数', '住院患者总人数'],
     lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getPLostAcciRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '患者走失高风险患者评估率',
     columns: 患者走失高风险患者评估率.columns,
     dataSource: [] || 患者走失高风险患者评估率.dataSource,
-    keys: 'getHRPLostESRatio',
+    serviceName: 'cnqIndex/getHRPLostESRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      lost_count: '走失高风险住院患者评估阳性数',
+      hres_count: '住院高风险患者例数',
+      estimate_ratio: '评估率(%)'
+    },
     gName: '护理单元',
-    lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getHRPLostESRatio'
+    keys: ['走失高风险住院患者评估阳性数', '住院高风险患者例数'],
+    lineKey: '评估率(%)',
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '患者足下垂的发生率',
     columns: 患者足下垂的发生率.columns,
     dataSource: [] || 患者足下垂的发生率.dataSource,
-    keys: ['住院患者总人数', '患者发生足下垂例数'],
+    serviceName: 'cnqIndex/getPFDropAcciRatio',
+
+    legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
+    dictionary: {
+      wardName: '护理单元',
+      fdrop_count: '患者发生足下垂例数',
+      patient_count: '住院患者总人数',
+      accident_ratio: '发生率(%)'
+    },
     gName: '护理单元',
+    keys: ['患者发生足下垂例数', '住院患者总人数'],
     lineKey: '发生率(%)',
-    serviceName: 'cnqIndex/getPFDropAcciRatio'
+    widthChar: widthChar,
+    chartComponent: 护患比统计图
   },
   {
     name: '新生儿烧伤烫伤发生率',
@@ -517,6 +816,7 @@ export default function Indicator(props: Props) {
     }
   }
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
+  let ChartComponent = (currentRoute && currentRoute.chartComponent) || 护患比统计图
   return (
     <Wrapper>
       <LeftMenuCon>
@@ -532,8 +832,8 @@ export default function Indicator(props: Props) {
               <MainInner surplusHeight={currentRoute.surplusHeight || 250}>
                 <RadioCon>
                   <Radio.Group value={showType} buttonStyle='solid' onChange={(e: any) => setShowType(e.target.value)}>
-                    {/* <Radio.Button value='详情'>详情</Radio.Button>
-                    <Radio.Button value='图表'>图表</Radio.Button> */}
+                    <Radio.Button value='详情'>详情</Radio.Button>
+                    <Radio.Button value='图表'>图表</Radio.Button>
                   </Radio.Group>{' '}
                 </RadioCon>
 
@@ -557,12 +857,13 @@ export default function Indicator(props: Props) {
                   <BaseChartScrollCon widthGet={currentRoute!.widthChar}>
                     {/* <BaseChartScrollCon> */}
                     <div className='BaseCharCon'>
-                      <BaseChart
+                      <ChartComponent
                         dataSource={currentRoute!.dataSource}
                         keys={currentRoute!.keys}
                         name={currentRoute!.gName}
                         lineKey={currentRoute!.lineKey}
                         dictionary={currentRoute.dictionary}
+                        legendData={currentRoute.legendData}
                       />
                     </div>
                   </BaseChartScrollCon>
@@ -659,6 +960,7 @@ const BaseChartScrollCon = styled.div<{ widthGet: any }>`
   width: 100%;
   overflow: hidden;
   overflow: auto;
+  position: relative;
   /* overflow:auto; */
   ::-webkit-scrollbar {
     /*滚动条整体样式*/
@@ -679,10 +981,11 @@ const BaseChartScrollCon = styled.div<{ widthGet: any }>`
     background-color: #ffffff;
   }
   .BaseCharCon {
-    height: 100%;
+    height: auto;
     overflow: hidden;
     width: ${(props) => props.widthGet};
-    position: relative;
+    position: absolute;
+    bottom: 0;
   }
 `
 const BaseTableCon = styled.div`
