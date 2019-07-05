@@ -61,6 +61,8 @@ import 无图 from 'src/modules/indicator/chartView/无图.tsx'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 const widthChar = '400%'
+// surplusHeight: 280,
+// surplusWidth: 260,
 const ROUTE_LIST: any = [
   {
     name: '床护比统计',
@@ -89,6 +91,7 @@ const ROUTE_LIST: any = [
     columns: 护患比统计.columns,
     dataSource: [] || 护患比统计.dataSource,
     serviceName: 'nationalIndex/getPatientNurseRatio',
+    surplusHeight: 280,
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
