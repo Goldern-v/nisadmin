@@ -4,7 +4,7 @@ import { Input, Pagination, Form, Modal, Select, message } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
-import { authStore, appStore} from 'src/stores/index'
+import { authStore, appStore } from 'src/stores/index'
 const { Option } = Select
 const EditableContext = React.createContext<any>({})
 
@@ -62,7 +62,7 @@ class EditableTable extends React.Component<any, any> {
         width: 120,
         align: 'left',
         editable: true
-      },  
+      },
       {
         title: '创建人',
         dataIndex: 'operator',
@@ -117,7 +117,6 @@ class EditableTable extends React.Component<any, any> {
     emitter.addListener('自动推送设置-刷新-医嘱', () => {
       this.getMealList(null, null)
     })
-    
   }
   // 删除
   public handleDelete = (record: any) => {
@@ -147,9 +146,9 @@ class EditableTable extends React.Component<any, any> {
     console.log(record, 'record')
     // 如果是添加 则清空数据
     if (value === 1) {
-      this.setState({missionId: undefined})
-      this.setState({orderText: ''})
-      this.setState({messageType: ''})
+      this.setState({ missionId: undefined })
+      this.setState({ orderText: '' })
+      this.setState({ messageType: '' })
     }
     // 如果是修改则回显数据
     if (value === 0) {
@@ -381,7 +380,7 @@ class EditableTable extends React.Component<any, any> {
               <SpanOne>推送类型：</SpanOne>
               <Select
                 value={this.state.messageType}
-                onChange={(value) => this.setState({ messageType: value })}
+                onChange={(value: any) => this.setState({ messageType: value })}
                 showSearch
                 style={{ width: '72%' }}
                 placeholder='选择类型'
@@ -420,11 +419,11 @@ const Wrapper = styled.div`
       padding-left: 20px !important;
     }
     .ant-table-row td:nth-child(2) {
-      padding-left: 20px!important; 
-    } 
+      padding-left: 20px !important;
+    }
     .ant-table-row td:nth-child(4) {
-      padding-left: 20px!important; 
-    } 
+      padding-left: 20px !important;
+    }
   }
 `
 const PaginationBox = styled.div`

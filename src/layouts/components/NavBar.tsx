@@ -116,6 +116,9 @@ export default observer(function NavBar(props: Props) {
       )}
       <Place />
       <RightCon>
+        {authStore.user && authStore.user.nearImageUrl && (
+          <img src={authStore.user.nearImageUrl} alt='' className='headImg' />
+        )}
         <span className='name'>{authStore.user && authStore.user.empName}</span>
         <span className='line'>|</span>
         <span className='logout' onClick={service.authApiService.logout}>
@@ -203,5 +206,11 @@ const RightCon = styled.div`
     &:hover {
       font-weight: bold;
     }
+  }
+  .headImg {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
   }
 `

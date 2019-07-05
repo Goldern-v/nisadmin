@@ -1,6 +1,6 @@
 import { globalModal } from 'src/global/globalModal'
 
-export default function Format (row: any, getTableData: any) {
+export default function Format(row: any, getTableData: any) {
   switch (row.typeName) {
     case '基本信息': {
       return globalModal.auditModal.show({
@@ -48,10 +48,10 @@ export default function Format (row: any, getTableData: any) {
           {
             获得时间: `empName`,
             资格名称: `birthday`
-          },
-          {
-            资格证编号: `age`
           }
+          // {
+          //   资格证编号: `age`
+          // }
         ],
         // fileData: [
         //   {
@@ -112,7 +112,7 @@ export default function Format (row: any, getTableData: any) {
       return globalModal.auditModal.show({
         id: row.id,
         type: 'nurseMedicalEducation',
-        title: '审核特殊资格证',
+        title: '审核教育经历',
         tableFormat: [
           {
             就读时间: `readTime`,
@@ -128,8 +128,8 @@ export default function Format (row: any, getTableData: any) {
         ],
         fileData: [
           {
-            毕业证: row.urlImageTwo,
-            学位证: row.urlImageOne
+            毕业证: row.urlImageOne,
+            学位证: row.urlImageTwo
           }
         ],
         allData: row
@@ -258,7 +258,7 @@ export default function Format (row: any, getTableData: any) {
         getTableData: getTableData,
         id: row.id,
         type: 'nurseHospitalsThreeBase',
-        title: '审核特殊资格证',
+        title: '审核医院三基考核',
         tableFormat: [
           {
             年度: `year`,
@@ -281,7 +281,7 @@ export default function Format (row: any, getTableData: any) {
         getTableData: getTableData,
         id: row.id,
         type: 'nurseRegistrationWork',
-        title: '审核特殊资格证',
+        title: '审核工作情况登记',
         tableFormat: [
           {
             年度: `year`,

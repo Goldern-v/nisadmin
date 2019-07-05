@@ -8,7 +8,7 @@ export default class HealthProagandaService extends BaseApiService {
   }
   //字典列表
   public async getTableList(query: any) {
-    return this.post('/briefMission/getBriefMission', query)
+    return this.post('/briefMission/getBriefMissionForDict', query)
   }
   //将word文件转化为字符串
   public async uploadWord(data: any) {

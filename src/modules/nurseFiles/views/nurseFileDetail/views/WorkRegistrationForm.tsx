@@ -12,7 +12,7 @@ import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesSer
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
-export default observer(function WorkRegistrationForm () {
+export default observer(function WorkRegistrationForm() {
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
   const btnList = [
     {
@@ -129,7 +129,7 @@ export default observer(function WorkRegistrationForm () {
                   getTableData: getTableData,
                   id: row.id,
                   type: 'nurseRegistrationWork',
-                  title: '审核特殊资格证',
+                  title: '审核工作情况登记',
                   tableFormat: [
                     {
                       年度: `year`,

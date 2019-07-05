@@ -100,7 +100,7 @@ export default observer(function ThreeBases () {
                   getTableData: getTableData,
                   id: row.id,
                   type: 'nurseHospitalsThreeBase',
-                  title: '审核特殊资格证',
+                  title: '审核医院三基考核',
                   tableFormat: [
                     {
                       年度: `year`,

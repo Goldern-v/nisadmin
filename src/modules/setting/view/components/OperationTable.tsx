@@ -125,15 +125,14 @@ class EditableTable extends React.Component<any, any> {
     emitter.addListener('自动推送设置-刷新-手术', () => {
       this.getMealList(null, null)
     })
-    
   }
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
     if (value === 1) {
-      this.setState({missionId: undefined})
-      this.setState({operation: ''})
-      this.setState({messageType: ''})
-      this.setState({operationTiming: ''})
+      this.setState({ missionId: undefined })
+      this.setState({ operation: '' })
+      this.setState({ messageType: '' })
+      this.setState({ operationTiming: '' })
     }
     // 如果是修改则回显数据
     if (value === 0) {
@@ -177,7 +176,7 @@ class EditableTable extends React.Component<any, any> {
     let getEducationId = record.educationId
     appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=2`)
   }
-  
+
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
   public getMealList = (current: any, pageSize: any) => {
@@ -377,37 +376,51 @@ class EditableTable extends React.Component<any, any> {
               this.setState({ editingKey: false })
             }}
           >
-          <div className="category" style={{marginTop: '30px'}}>
-            <SpanOne><span>宣</span>教:</SpanOne>
-            <Select
-              showSearch
-              value={this.state.missionId}
-              style={{ width: '72%'}}
-              defaultActiveFirstOption={false}
-              showArrow={false}
-              loading={this.state.loading}
-              filterOption={false}
-              onChange={this.searchChange.bind(this)}
-              onSearch={this.toSearch.bind(this)}
-              notFoundContent='没有你查找的内容'
-              placeholder='输入名称进行检索'
-            >
-              {this.state.children}
-            </Select>
-          </div>
-          <div className="category" style={{marginTop: '40px'}}>
-          <SpanOne>手术名称:</SpanOne>
-          <Input defaultValue="" style={{ width: '72%'}}
-            value={this.state.operation}
-            onChange={e => { this.setState({ operation: e.target.value }) }}/>
-          </div>
-          <div className="category" style={{marginTop: '40px'}}>
-          <SpanOne><span>时</span>机:</SpanOne>
-          <Radio.Group onChange={ e => { this.setState({operationTiming: e.target.value}) } } value={this.state.operationTiming}>
-            <Radio value='术前'>术前</Radio>
-            <Radio value='术后'>术后</Radio>
-          </Radio.Group>
-          </div>
+            <div className='category' style={{ marginTop: '30px' }}>
+              <SpanOne>
+                <span>宣</span>教:
+              </SpanOne>
+              <Select
+                showSearch
+                value={this.state.missionId}
+                style={{ width: '72%' }}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                loading={this.state.loading}
+                filterOption={false}
+                onChange={this.searchChange.bind(this)}
+                onSearch={this.toSearch.bind(this)}
+                notFoundContent='没有你查找的内容'
+                placeholder='输入名称进行检索'
+              >
+                {this.state.children}
+              </Select>
+            </div>
+            <div className='category' style={{ marginTop: '40px' }}>
+              <SpanOne>手术名称:</SpanOne>
+              <Input
+                defaultValue=''
+                style={{ width: '72%' }}
+                value={this.state.operation}
+                onChange={(e) => {
+                  this.setState({ operation: e.target.value })
+                }}
+              />
+            </div>
+            <div className='category' style={{ marginTop: '40px' }}>
+              <SpanOne>
+                <span>时</span>机:
+              </SpanOne>
+              <Radio.Group
+                onChange={(e) => {
+                  this.setState({ operationTiming: e.target.value })
+                }}
+                value={this.state.operationTiming}
+              >
+                <Radio value='术前'>术前</Radio>
+                <Radio value='术后'>术后</Radio>
+              </Radio.Group>
+            </div>
             <div className='category' style={{ marginTop: '40px', marginBottom: '30px' }}>
               <SpanOne>推送类型：</SpanOne>
               <Select
@@ -450,11 +463,11 @@ const Wrapper = styled.div`
     .ant-table-row td:nth-child(4) {
       padding-left: 20px !important;
     }
-    .ant-table-row td:nth-child(2){
-      padding-left:20px!important; 
+    .ant-table-row td:nth-child(2) {
+      padding-left: 20px !important;
     }
-    .ant-table-row td:nth-child(5){
-      padding-left:20px!important; 
+    .ant-table-row td:nth-child(5) {
+      padding-left: 20px !important;
     }
   }
 `
