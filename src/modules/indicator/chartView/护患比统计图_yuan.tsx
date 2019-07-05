@@ -52,7 +52,16 @@ export default function BaseChart(props: Props) {
     <Wrapper>
       <Chart forceFit height={350} data={data} padding={[50, 50, 90]}>
         <Tooltip />
-        <Axis />
+        <Axis
+          dataKey={props.lineKey}
+          // grid={null}
+          // offset={[60, 80]}
+          label={{
+            textStyle: {
+              fill: '#fdae6b'
+            }
+          }}
+        />
         {/* <Legend /> */}
         <Legend
           custom
@@ -61,7 +70,7 @@ export default function BaseChart(props: Props) {
           items={[
             {
               value: props.dictionary.actualOpenBeds,
-              marker: { symbol: 'square', stroke: '#fdae6b', radius: 5, lineWidth: 3 }
+              marker: { symbol: 'square', fill: '#fdae6b', radius: 5, lineWidth: 3 }
             }
           ]}
           onClick={(ev, chart) => {
@@ -82,11 +91,12 @@ export default function BaseChart(props: Props) {
           }}
         />
         <Bar position='key*value' color='name' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
-        {props.lineKey && <Line position={'key*' + props.lineKey} color='#fdae6b' size={3} />}
+        <Point shape='circle' position={'key*' + props.lineKey} color='#fdae6b' size={3} />
+        {props.lineKey && <SmoothLine position={'key*' + props.lineKey} color='#fdae6b' size={3} />}
         {/* {props.lineKey && <Point shape='circle' position={'key*' + props.lineKey} color='#fdae6b' size={3} />} */}
       </Chart>
-      {props.lineKey}
-      <LegendLine>{props.lineKey}</LegendLine>
+      {/* {props.lineKey} */}
+      {/* <LegendLine>{props.lineKey}</LegendLine> */}
     </Wrapper>
   )
 }
