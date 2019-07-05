@@ -91,7 +91,6 @@ export default observer(function SelectPeopleModal(props: Props) {
 const CheckListCon = observer(function(props: any) {
   let { checkedUserList, setCheckedUserList } = props
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
-    console.log(e.target.checked, 'e.target.checked)')
     if (e.target.checked) {
       setCheckedUserList((prevList: any[]) => {
         return [
@@ -99,6 +98,27 @@ const CheckListCon = observer(function(props: any) {
           {
             key: e.target.value,
             userList: item.userList
+          }
+        ]
+      })
+    } else {
+      setCheckedUserList((prevList: any[]) => {
+        let index = prevList.findIndex((item: any) => item.key === e.target.value)
+        if (index != undefined) prevList.splice(index, 1)
+        return [...prevList]
+      })
+    }
+  }
+  const onCheckAll = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      setCheckedUserList((prevList: any[]) => {
+        let data = []
+        selectPeopleViewModel.currentTreeData!.list
+        return [
+          ...prevList,
+          {
+            key: e.target.value
+            // userList: item.userList
           }
         ]
       })
@@ -141,6 +161,37 @@ const CheckListCon = observer(function(props: any) {
       margin-right: -10px;
     }
   `
+
+  let checkAll = false
+  let indeterminate = false
+
+  try {
+    let allLabels = selectPeopleViewModel.currentTreeData!.list.map((item: any) => {
+      let type = selectPeopleViewModel!.currentTreeData!.type
+      let label =
+        type == 'userList'
+          ? item[selectPeopleViewModel!.currentTreeData!.dataLabel || '']
+          : `
+            ${item[selectPeopleViewModel!.currentTreeData!.dataLabel || '']}（${item.userList.length}人）
+            `
+      return label
+    })
+    let checkedLabels = checkedUserList.map((item: any) => item.key)
+
+    checkAll = (() => {
+      for (let i = 0; i < allLabels.length; i++) {
+        if (checkedLabels.indexOf(allLabels[i]) == -1) return false
+      }
+      return true
+    })()
+    indeterminate = (() => {
+      for (let i = 0; i < allLabels.length; i++) {
+        if (checkedLabels.indexOf(allLabels[i]) > -1) return true
+      }
+      return false
+    })()
+  } catch (error) {}
+
   return (
     <Con>
       <div className='title' onClick={() => selectPeopleViewModel.popStep()}>
@@ -148,10 +199,12 @@ const CheckListCon = observer(function(props: any) {
         <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.currentTreeData!.parent}</span>
       </div>
       <div className='scrollBox'>
+        <div className='check-row'>
+          <Checkbox checked={checkAll} indeterminate={indeterminate} onChange={(e) => onCheckAll(e)}>
+            全选
+          </Checkbox>
+        </div>
         <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
-          <div className='check-row'>
-            <Checkbox value='C'>全选</Checkbox>
-          </div>
           {selectPeopleViewModel.currentTreeData!.list.map((item: any, index: number) => {
             let type = selectPeopleViewModel!.currentTreeData!.type
             let label =
