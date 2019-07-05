@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, Icon, Checkbox } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { ScrollBox } from 'src/components/common'
 import { authStore } from 'src/stores'
@@ -49,15 +49,17 @@ export default function SelectPeopleModal(props: Props) {
       <Wrapper>
         <div className='main-con'>
           <div className='left-part'>
-            <Search placeholder='请输入搜索关键字' onSearch={(value) => console.log(value)} style={{ width: '100%' }} />
-            <FileList>
+            {/* <Search placeholder='请输入搜索关键字' onSearch={(value) => console.log(value)} style={{ width: '100%' }} /> */}
+            {/* <FileList>
               {SelectList.map((item, index: any) => (
                 <div className='item-box'>
                   <img src={require('../../images/文件夹.png')} alt='' />
                   <span>{item.label}</span>
                 </div>
               ))}
-            </FileList>
+            </FileList> */}
+
+            <CheckListCon />
           </div>
           <div className='right-part'>
             <SelectCon>
@@ -81,6 +83,64 @@ export default function SelectPeopleModal(props: Props) {
     </Modal>
   )
 }
+
+function CheckListCon() {
+  let optionsWithDisabled = [
+    { label: 'Apple', value: 'Apple' },
+    { label: 'Pear', value: 'Pear' },
+    { label: 'Orange', value: 'Orange', disabled: false }
+  ]
+  const Con = styled.div`
+    .title {
+      color: #333;
+      margin-bottom: 15px;
+    }
+    .ant-checkbox-group {
+      width: 100%;
+    }
+    .check-row {
+      padding: 7px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .open {
+      color: ${(p) => p.theme.$mtc};
+      cursor: pointer;
+      &:hover {
+        font-weight: bold;
+      }
+    }
+  `
+  return (
+    <Con>
+      <div className='title'>
+        <Icon type='left' />
+        <span style={{ paddingLeft: 5 }}>按科室选择</span>
+      </div>
+      <div>
+        <Checkbox.Group defaultValue={['Apple']}>
+          <div className='check-row'>
+            <Checkbox value='C'>C</Checkbox>
+            <div>
+              <span style={{ padding: '0 4px' }}>|</span>
+              <span className='open'>展开</span>
+            </div>
+          </div>
+          <div className='check-row'>
+            <Checkbox value='C'>C</Checkbox>
+          </div>
+          <div className='check-row'>
+            <Checkbox value='C'>C</Checkbox>
+          </div>
+          <div className='check-row'>
+            <Checkbox value='C'>C</Checkbox>
+          </div>
+        </Checkbox.Group>
+      </div>
+    </Con>
+  )
+}
+
 const Wrapper = styled.div`
   margin: -24px;
   .main-con,
