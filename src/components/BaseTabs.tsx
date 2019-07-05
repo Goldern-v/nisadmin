@@ -5,12 +5,13 @@ const TabPane = Tabs.TabPane
 export interface Props {
   config: any[]
   onChange?: (activeKey: string) => void
+  defaultActiveKey?: any
 }
 
 export default function BaseTabs(props: Props) {
   return (
     <TabsCon>
-      <Tabs type='card' onChange={props.onChange}>
+      <Tabs type='card' defaultActiveKey={props.defaultActiveKey || '0'} onChange={props.onChange}>
         {props.config.map((item: any, index: number) => {
           return (
             <TabPane tab={item.title} key={index.toString()}>

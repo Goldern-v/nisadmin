@@ -21,15 +21,16 @@ export interface Props {
 import emitter from '../../../../libs/ev'
 export default observer(function PushAudit(props: Props) {
   const [activeKey, setActiveKey] = useState('0')
+  let type = appStore.queryObj.type || '0'
   const TABS_LIST_NURSE = [
     {
       title: '事件',
-      component: <EventTable placeholder="input search text" isShow={props.isShow}/>,
+      component: <EventTable isShow={props.isShow} />,
       children: [
         {
           title: '类别字典设置',
           path: '/setting/健康宣教字典详情',
-          component: <HealthPropagandaView/>
+          component: <HealthPropagandaView />
         }
       ]
     },
@@ -39,12 +40,11 @@ export default observer(function PushAudit(props: Props) {
     },
     {
       title: '手术',
-      component: <OperationTable isShow={props.isShow}/>
+      component: <OperationTable isShow={props.isShow} />
     }
   ]
 
   emitter.removeAllListeners('自动推送设置-添加')
-
   emitter.addListener('自动推送设置-添加', () => {
     if (activeKey === '0') {
       emitter.emit('自动推送设置-添加-事件')
@@ -54,9 +54,8 @@ export default observer(function PushAudit(props: Props) {
       emitter.emit('自动推送设置-添加-手术')
     }
   })
-  
-  emitter.removeAllListeners('自动推送设置-刷新')
 
+  emitter.removeAllListeners('自动推送设置-刷新')
   emitter.addListener('自动推送设置-刷新', () => {
     if (activeKey === '0') {
       emitter.emit('自动推送设置-刷新-事件')
@@ -66,11 +65,12 @@ export default observer(function PushAudit(props: Props) {
       emitter.emit('自动推送设置-刷新-手术')
     }
   })
-  
+
   return (
     <Wrapper>
       <MainCon>
         <BaseTabs
+          defaultActiveKey={type}
           config={TABS_LIST_NURSE}
           onChange={(activeKey) => {
             setActiveKey(activeKey)

@@ -4,16 +4,16 @@ import { Button, message as Message, Modal, Icon } from 'antd'
 import { withRouter } from 'react-router-dom'
 import HealthProgandaService from 'src/modules/healthPropaganda/api/healthProgandaService'
 import qs from 'qs';
+import { appStore } from 'src/stores';
 
 const api = new HealthProgandaService();
-
 export interface Props { }
 
 export default withRouter(function HealthPropagandaView(props: any) {
   const { history, location } = props;
   const [data, setData] = useState(new Object() as any);
   const [match, setMatch] = useState(new Object() as any);
-
+  console.log(appStore, 'ppppp')
   useEffect(() => {
     let query = qs.parse(location.search.replace('?', ''));
     if (query.id) {
@@ -35,7 +35,7 @@ export default withRouter(function HealthPropagandaView(props: any) {
   return <Wrapper>
     <div className="topbar">
       <div className="position-left">
-        <Button className="back" onClick={() => history.goBack()} ><Icon type="double-left" className="icon-back" />返回</Button>
+        <Button className="back" onClick={() => appStore.history.push(`/setting/pushSetting?type=${appStore.queryObj.type}`)} ><Icon type="double-left" className="icon-back" />返回</Button>
       </div>
       <div className="base-info">
         <span className="title">{data.name}</span>
