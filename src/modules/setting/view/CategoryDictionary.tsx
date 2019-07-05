@@ -23,8 +23,7 @@ export default class CategoryDictionary extends Component {
     return (
       <Wrapper>
         <CategoryHeader setIsShow={this.setIsShow}/>
-       
-          <CategoryTable isShow={this.state.isShow} setNoShow={this.setNoShow}/>
+        <CategoryTable isShow={this.state.isShow} setNoShow={this.setNoShow}/>
       </Wrapper>
     )
   }

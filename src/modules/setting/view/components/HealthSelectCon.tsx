@@ -33,6 +33,7 @@ export default function SelectCon() {
 
   const add = () => {
     emitter.emit('自动推送设置-添加')
+    console.log(1111111111111)
   }
   return (
     <React.Fragment>

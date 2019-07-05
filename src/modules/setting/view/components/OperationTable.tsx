@@ -1,54 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Table, Input, InputNumber, Pagination, Tooltip, Button, Form, Modal, Select, Radio, message } from 'antd'
+import { Input, Pagination, Form, Modal, Select, Radio, message } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
 import { authStore, appStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 const { Option } = Select
-// import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
-const FormItem = Form.Item
 const EditableContext = React.createContext<any>({})
 const deptCode = authStore.selectedDeptCode
-
-class EditableCell extends React.Component<any> {
-  public getInput = () => {
-    if (this.props.inputType === 'number') {
-      return <InputNumber />
-    }
-    return <Input />
-  }
-
-  public render() {
-    const { editing, dataIndex, title, inputType, record, index, ...restProps } = this.props
-    return (
-      <EditableContext.Consumer>
-        {(form) => {
-          const { getFieldDecorator } = form
-          return (
-            <td {...restProps}>
-              {editing ? (
-                <FormItem style={{ margin: 0 }}>
-                  {getFieldDecorator(dataIndex, {
-                    rules: [
-                      {
-                        required: true,
-                        message: `Please Input ${title}!`
-                      }
-                    ],
-                    initialValue: record[dataIndex]
-                  })(this.getInput())}
-                </FormItem>
-              ) : (
-                restProps.children
-              )}
-            </td>
-          )
-        }}
-      </EditableContext.Consumer>
-    )
-  }
-}
 
 class EditableTable extends React.Component<any, any> {
   public constructor(props: any) {
@@ -72,7 +31,8 @@ class EditableTable extends React.Component<any, any> {
       loadingTable: false,
       total: 0,
       pageSize: 10,
-      pageIndex: 1 // 当前页数
+      pageIndex: 1 ,// 当前页数
+      confirmLoading: false,
     }
     this.columns = [
       {
@@ -100,19 +60,14 @@ class EditableTable extends React.Component<any, any> {
       {
         title: '推送宣教',
         dataIndex: 'educationName',
-        width: 300,
-        // render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
-        // overflow:'hidden',
-        // whiteSpace: 'nowrap',
-        // textOverflow:'ellipsis',
-        // cursor:'pointer',
+        width: 280,
         align: 'left',
         editable: true
       },
       {
         title: '推送类型',
         dataIndex: 'messageTypeName',
-        width: 140,
+        width: 120,
         align: 'left',
         editable: true
       },
@@ -220,7 +175,7 @@ class EditableTable extends React.Component<any, any> {
   //预览
   public preview = (record: any) => {
     let getEducationId = record.educationId
-    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}`)
+    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=2`)
   }
   
   public isEditing = (record: any) => record.key === this.state.editingKey
@@ -289,7 +244,7 @@ class EditableTable extends React.Component<any, any> {
     this.setState({ searchValue: value })
     let postData = {
       educationName: value,
-      wardCode: authStore.selectedDeptCode,
+      // wardCode: authStore.selectedDeptCode,
       messageType: ''
     }
     this.setState({ loading: true })
@@ -313,6 +268,7 @@ class EditableTable extends React.Component<any, any> {
       message.warning('保存前请将每一项信息填写完整')
       return
     }
+    this.setState({confirmLoading: true})
     let postData = {}
     // 修改入参
     if (this.state.type === 0) {
@@ -345,6 +301,7 @@ class EditableTable extends React.Component<any, any> {
     }
     service.healthyApiService.preservationPushType1(postData).then((res) => {
       if (res) {
+        this.setState({confirmLoading: false})
         message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
         this.getMealList(null, null)
         this.setState({ editingKey: false })
@@ -364,13 +321,6 @@ class EditableTable extends React.Component<any, any> {
   }
 
   public render() {
-    const options = this.state.data.map((d: any) => <Option key={d.value}>{d.text}</Option>)
-    const components = {
-      body: {
-        cell: EditableCell
-      }
-    }
-
     const columns = this.columns.map((col: any) => {
       if (!col.editable) {
         return col
@@ -421,6 +371,7 @@ class EditableTable extends React.Component<any, any> {
             onOk={this.handleOk.bind(this)}
             width='650px'
             okText='保存'
+            confirmLoading={this.state.confirmLoading}
             cancelText='返回'
             onCancel={() => {
               this.setState({ editingKey: false })
@@ -510,7 +461,6 @@ const Wrapper = styled.div`
 const PaginationBox = styled.div`
   clear: both;
   text-align: right;
-  /* padding-top: 10px; */
   padding-right: 19px;
 `
 const BigBox = styled.div`
