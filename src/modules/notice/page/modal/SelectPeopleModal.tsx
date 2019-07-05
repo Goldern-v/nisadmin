@@ -9,6 +9,9 @@ import { noticeService } from '../../serveices/NoticeService'
 import { observer } from 'mobx-react-lite'
 const { Search } = Input
 const Option = Select.Option
+
+import { CheckboxChangeEvent } from 'antd/lib/checkbox/index'
+
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => {}
@@ -16,6 +19,8 @@ export interface Props extends ModalComponentProps {
 
 export default observer(function SelectPeopleModal(props: Props) {
   let { visible, onCancel } = props
+
+  const [checkedUserList, setCheckedUserList] = useState([])
 
   const onSave = async () => {}
 
@@ -41,7 +46,7 @@ export default observer(function SelectPeopleModal(props: Props) {
           <div className='left-part scrollBox'>
             <Spin spinning={selectPeopleViewModel.modalLoading}>
               {selectPeopleViewModel.currentTreeData ? (
-                <CheckListCon />
+                <CheckListCon checkedUserList={checkedUserList} setCheckedUserList={setCheckedUserList} />
               ) : (
                 <div>
                   <Search
@@ -59,8 +64,6 @@ export default observer(function SelectPeopleModal(props: Props) {
                   </FileList>
                 </div>
               )}
-
-              {/* <CheckListCon /> */}
             </Spin>
           </div>
           <div className='right-part'>
@@ -68,7 +71,7 @@ export default observer(function SelectPeopleModal(props: Props) {
               <Select
                 mode='tags'
                 placeholder='...'
-                value={[{ key: '1qqq', label: <span>231312</span> }]}
+                value={checkedUserList}
                 labelInValue={true}
                 style={{ width: '100%' }}
                 open={false}
@@ -85,12 +88,28 @@ export default observer(function SelectPeopleModal(props: Props) {
     </Modal>
   )
 })
-const CheckListCon = observer(function() {
-  let optionsWithDisabled = [
-    { label: 'Apple', value: 'Apple' },
-    { label: 'Pear', value: 'Pear' },
-    { label: 'Orange', value: 'Orange', disabled: false }
-  ]
+const CheckListCon = observer(function(props: any) {
+  let { checkedUserList, setCheckedUserList } = props
+  const onCheck = (e: CheckboxChangeEvent, item: any) => {
+    console.log(e.target.checked, 'e.target.checked)')
+    if (e.target.checked) {
+      setCheckedUserList((prevList: any[]) => {
+        return [
+          ...prevList,
+          {
+            key: e.target.value,
+            userList: item.userList
+          }
+        ]
+      })
+    } else {
+      setCheckedUserList((prevList: any[]) => {
+        let index = prevList.findIndex((item: any) => item.key === e.target.value)
+        if (index != undefined) prevList.splice(index, 1)
+        return [...prevList]
+      })
+    }
+  }
   const Con = styled.div`
     .title {
       color: #333;
@@ -116,7 +135,7 @@ const CheckListCon = observer(function() {
       }
     }
     .scrollBox {
-      height: 380px;
+      height: 390px;
       box-sizing: content-box;
       padding-right: 10px;
       margin-right: -10px;
@@ -129,8 +148,10 @@ const CheckListCon = observer(function() {
         <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.currentTreeData!.parent}</span>
       </div>
       <div className='scrollBox'>
-        <Checkbox.Group defaultValue={['Apple']}>
-          <Checkbox value='C'>全选</Checkbox>
+        <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
+          <div className='check-row'>
+            <Checkbox value='C'>全选</Checkbox>
+          </div>
           {selectPeopleViewModel.currentTreeData!.list.map((item: any, index: number) => {
             let type = selectPeopleViewModel!.currentTreeData!.type
             let label =
@@ -141,7 +162,9 @@ const CheckListCon = observer(function() {
             `
             return (
               <div className='check-row' key={index}>
-                <Checkbox value='C'>{label}</Checkbox>
+                <Checkbox value={label} onChange={(e) => onCheck(e, item)}>
+                  {label}
+                </Checkbox>
                 {selectPeopleViewModel!.currentTreeData!.type !== 'userList' && (
                   <div>
                     <span style={{ padding: '0 4px' }}>|</span>
