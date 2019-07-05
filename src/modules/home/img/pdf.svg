@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>pdf</title>
+    <desc>Created with Sketch.</desc>
+    <g id="首页确定" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="菜单导航修改备份-2" transform="translate(-1107.000000, -567.000000)">
+            <g id="编组-3" transform="translate(1107.000000, 567.000000)">
+                <rect id="矩形" fill="#FFBAAC" x="0" y="0" width="24" height="24" rx="1.09090909"></rect>
+                <path d="M1.09090909,0 L17.4545455,0 L24,6 L24,22.9090909 C24,23.5115834 23.5115834,24 22.9090909,24 L6,24 L1.09090909,24 C0.488416637,24 7.3991786e-16,23.5115834 0,22.9090909 L0,18.5454545 L0,1.09090909 C-7.37840456e-17,0.488416637 0.488416637,-9.99546956e-16 1.09090909,0 Z" id="矩形" fill="#F96648"></path>
+                <text id="pdf" font-family="DIN-Black, DIN Black" font-size="7.63636364" font-weight="700" fill="#FFFFFF">
+                    <tspan x="4.90909091" y="15.0909091">PDF</tspan>
+                </text>
+                <path d="M24,6 L18.5454545,6 C17.9429621,6 17.4545455,5.51158336 17.4545455,4.90909091 L17.4545455,0 L24,6 Z" id="矩形" fill="#CE4D32"></path>
+            </g>
+        </g>
+    </g>
+</svg>

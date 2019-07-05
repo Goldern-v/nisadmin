@@ -138,7 +138,7 @@ export default class HomeApiServices extends BaseApiService {
   // 14.获取宣教字典列表
   public async getBriefMission (data: any) {
     const postData = {
-      deptCode: data.wardCode, // string 非必须参数
+      // deptCode: data.wardCode, // string 非必须参数（注释：允许各科室之间相互查询宣教）
       type: data.messageType, // string 必须参数
       name: data.educationName, // string 必须参数
     }

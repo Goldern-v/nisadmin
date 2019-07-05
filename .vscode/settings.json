@@ -8,6 +8,7 @@
   "prettier.jsxSingleQuote": true,
   "prettier.printWidth": 120,
   "prettier.semi": false,
-  "auto-close-tag.fullMode": true,
-  "auto-close-tag.SublimeText3Mode": false
+  "path-intellisense.mappings": {
+    "src": "${workspaceRoot}/src"
+  }
 }

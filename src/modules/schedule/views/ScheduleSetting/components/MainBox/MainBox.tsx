@@ -1077,7 +1077,7 @@ export default function MainBox(props: Props) {
       },
       onDoubleClick: (event: any) => {
         let selectedCellValue = event.target.value
-        let selectedCellName = event.target.name.replace(record.id || '', '')
+        let selectedCellName = event.target && event.target.name && event.target.name.replace(record.id || '', '')
         let selectedCellNameCode = selectedCellName + 'Code'
         let numberOfday = 1
         let diffDays = 0
@@ -1180,19 +1180,17 @@ export default function MainBox(props: Props) {
       <div className='left-box'>
         <BaseTable
           bordered
-          size='middle'
           onRow={onRow}
           columns={columns}
           dataSource={tableList}
           pagination={false}
-          surplusHeight={fullPage ? 100 : 180}
+          surplusHeight={fullPage ? 100 : 160}
           wrapperStyle={{
             padding: 0
           }}
           footer={() => {
             return footer
           }}
-          style={{ padding: 0 }}
           type={['spaceRow']}
           loading={loading}
         />

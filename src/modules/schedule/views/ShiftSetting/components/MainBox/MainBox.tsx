@@ -276,7 +276,7 @@ export default function MainBox() {
         columns={columns}
         dataSource={shiftList}
         pagination={false}
-        surplusHeight={230}
+        surplusHeight={180}
         type={['spaceRow']}
         loading={tableLoading}
       />

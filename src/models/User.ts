@@ -51,4 +51,5 @@ export default interface User {
   takeWorkTime: string
   title: string
   workYear: string
+  nearImageUrl: string //头像
 }

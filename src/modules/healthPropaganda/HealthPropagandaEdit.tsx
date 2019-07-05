@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 import BraftEditor from './editor/index.jsx'
 import Moment from 'moment'
@@ -221,18 +221,18 @@ export default withRouter(
       if (!params.deptCode || params.deptCode == '000000') publicUse = '1'
       else publicUse = '0'
 
-      content = content.split('');
+      content = content.split('')
 
       content = content.map((chat: string) => {
-        let newChart = chat;
-        let code = chat.charCodeAt(0);
+        let newChart = chat
+        let code = chat.charCodeAt(0)
         if (code == 160) {
           newChart = String.fromCharCode(32)
         }
-        return newChart;
-      });
+        return newChart
+      })
 
-      content = content.join('');
+      content = content.join('')
 
       api
         .save({
@@ -285,6 +285,20 @@ export default withRouter(
       return unit + 'px'
     }
 
+    useLayoutEffect(() => {
+      try {
+        setTimeout(() => {
+          let titleInputCon = document.querySelector('#title-input-con')
+          let bfContent = document.querySelector('.bf-content')
+          if (bfContent && titleInputCon) {
+            if (!bfContent.querySelector('#title-input-con')) {
+              bfContent.append(titleInputCon)
+            }
+          }
+        }, 100)
+      } catch (error) {}
+    })
+
     return (
       <Wrapper>
         {/* <div className="top">
@@ -293,6 +307,16 @@ export default withRouter(
       </div>
     </div> */}
         <div className={phoneView ? 'main phone-view' : 'main'}>
+          {/* <div>
+            <Input value={params.name} onChange={(e: any) => setParams({ ...params, name: e.target.value })} />
+          </div> */}
+          <TitleInputCon id='title-input-con'>
+            <Input
+              placeholder='请输入宣教名称'
+              value={params.name}
+              onChange={(e: any) => setParams({ ...params, name: e.target.value })}
+            />
+          </TitleInputCon>
           <BraftEditor
             controls={controls}
             value={editorState}
@@ -319,10 +343,10 @@ export default withRouter(
       </div> */}
         </div>
         <div className='bottom'>
-          <span className='title'>宣教名称:</span>
+          {/* <span className='title'>宣教名称:</span>
           <span>
             <Input value={params.name} onChange={(e: any) => setParams({ ...params, name: e.target.value })} />
-          </span>
+          </span> */}
           <span className='title'>科室权限:</span>
           <span>
             <Select
@@ -521,11 +545,15 @@ const Wrapper = styled.div`
       .bf-content {
         height: 100%;
         padding-bottom: 0;
+        position: relative;
         .public-DraftEditor-content {
           box-shadow: none;
           width: 100%;
           margin: 0;
           min-height: 100%;
+          /** 编辑器上边框 **/
+          padding-top: 100px;
+          box-sizing: border-box;
         }
       }
     }
@@ -574,5 +602,28 @@ const Wrapper = styled.div`
       margin-right: 15px;
       float: right;
     }
+  }
+`
+
+const TitleInputCon = styled.div`
+  position: absolute;
+  /* background: red; */
+  width: 688px;
+  height: 50px;
+  margin: 0 auto 0;
+  left: 0;
+  right: 0px;
+  z-index: 2;
+  padding-bottom: 20px;
+  border-bottom: 1px dotted #666;
+  top: 40px;
+  input {
+    line-height: 22px !important;
+    font-size: 22px !important;
+    font-weight: bold !important;
+    text-align: center;
+    border: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
   }
 `

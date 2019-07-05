@@ -121,10 +121,10 @@ export default observer(function BaseInfo() {
                 {
                   获得时间: `empName`,
                   资格名称: `birthday`
-                },
-                {
-                  资格证编号: `age`
                 }
+                // {
+                //   资格证编号: `age`
+                // }
               ],
               // fileData: [
               //   {

@@ -15,7 +15,7 @@ import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as WLPT } from '../images/物流平台.svg'
 import { ReactComponent as XTSZ } from '../images/系统设置.svg'
 import { Place } from 'src/components/common'
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
@@ -23,7 +23,7 @@ export interface Props extends RouteComponentProps {}
 const navList = [
   {
     name: '首页',
-    icon: <SY />,
+    // icon: <SY />,
     path: '/home'
   },
   {
@@ -33,7 +33,7 @@ const navList = [
   },
   {
     name: '护士排班',
-    icon: <HSPB />,
+    // icon: <HSPB />,
     path: '/scheduleHome'
   },
   {
@@ -66,11 +66,12 @@ const navList = [
     icon: <TJCX />,
     path: '/statistic'
   },
-  // {
-  //   name: '通知公告',
-  //   icon: <TZGG />,
-  //   path: '/notice'
-  // },
+  {
+    name: '通知公告',
+    icon: <TZGG />,
+    path: '/notice',
+    hidden: !appStore.isDev
+  },
   {
     name: '物流平台',
     icon: <WLPT />,
@@ -99,19 +100,25 @@ export default observer(function NavBar(props: Props) {
         <img src={require('../images/logo-white.png')} alt='' className='logo' />
         <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
       </LogoCon>
-      {navList.map((item) => (
-        <NavItem
-          onClick={toNavLink(item.path)}
-          active={item.path !== '' && location.pathname.indexOf(item.path) !== -1}
-          key={item.name}
-        >
-          {/* {item.icon} */}
-          {/* <ReactSVG src={item.icon} svgClassName='nav-icon' /> */}
-          <div className='nav-name'>{item.name}</div>
-        </NavItem>
-      ))}
+      {navList.map(
+        (item) =>
+          !item.hidden && (
+            <NavItem
+              onClick={toNavLink(item.path)}
+              active={item.path !== '' && location.pathname.indexOf(item.path) !== -1}
+              key={item.name}
+            >
+              {/* {item.icon} */}
+              {/* <ReactSVG src={item.icon} svgClassName='nav-icon' /> */}
+              <div className='nav-name'>{item.name}</div>
+            </NavItem>
+          )
+      )}
       <Place />
       <RightCon>
+        {authStore.user && authStore.user.nearImageUrl && (
+          <img src={authStore.user.nearImageUrl} alt='' className='headImg' />
+        )}
         <span className='name'>{authStore.user && authStore.user.empName}</span>
         <span className='line'>|</span>
         <span className='logout' onClick={service.authApiService.logout}>
@@ -199,5 +206,11 @@ const RightCon = styled.div`
     &:hover {
       font-weight: bold;
     }
+  }
+  .headImg {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
   }
 `

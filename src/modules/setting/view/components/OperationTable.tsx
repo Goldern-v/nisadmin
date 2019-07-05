@@ -1,54 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Table, Input, InputNumber, Pagination, Tooltip, Button, Form, Modal, Select, Radio, message } from 'antd'
+import { Input, Pagination, Form, Modal, Select, Radio, message } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 const { Option } = Select
-// import TableHeader from 'src/modules/setting/view/common/TableHeader.tsx'
-const FormItem = Form.Item
 const EditableContext = React.createContext<any>({})
 const deptCode = authStore.selectedDeptCode
-
-class EditableCell extends React.Component<any> {
-  public getInput = () => {
-    if (this.props.inputType === 'number') {
-      return <InputNumber />
-    }
-    return <Input />
-  }
-
-  public render() {
-    const { editing, dataIndex, title, inputType, record, index, ...restProps } = this.props
-    return (
-      <EditableContext.Consumer>
-        {(form) => {
-          const { getFieldDecorator } = form
-          return (
-            <td {...restProps}>
-              {editing ? (
-                <FormItem style={{ margin: 0 }}>
-                  {getFieldDecorator(dataIndex, {
-                    rules: [
-                      {
-                        required: true,
-                        message: `Please Input ${title}!`
-                      }
-                    ],
-                    initialValue: record[dataIndex]
-                  })(this.getInput())}
-                </FormItem>
-              ) : (
-                restProps.children
-              )}
-            </td>
-          )
-        }}
-      </EditableContext.Consumer>
-    )
-  }
-}
 
 class EditableTable extends React.Component<any, any> {
   public constructor(props: any) {
@@ -72,7 +31,8 @@ class EditableTable extends React.Component<any, any> {
       loadingTable: false,
       total: 0,
       pageSize: 10,
-      pageIndex: 1 // 当前页数
+      pageIndex: 1 ,// 当前页数
+      confirmLoading: false,
     }
     this.columns = [
       {
@@ -81,52 +41,47 @@ class EditableTable extends React.Component<any, any> {
         key: '1',
         render: (text: any, record: any, index: number) => index + 1,
         align: 'center',
-        width: 40
+        width: 60
       },
       {
         title: '手术',
         dataIndex: 'operation',
-        width: '10%',
+        width: 100,
         align: 'left',
         editable: true
       },
       {
         title: '时机',
         dataIndex: 'operationTiming',
-        width: '8%',
+        width: 60,
         align: 'center',
         editable: true
       },
       {
         title: '推送宣教',
         dataIndex: 'educationName',
-        width: '25%',
-        // render: (text:any) => <Tooltip placement='topLeft' title={text}>{text}</Tooltip>,
-        // overflow:'hidden',
-        // whiteSpace: 'nowrap',
-        // textOverflow:'ellipsis',
-        // cursor:'pointer',
+        width: 280,
         align: 'left',
         editable: true
       },
       {
         title: '推送类型',
         dataIndex: 'messageTypeName',
-        width: '12%',
+        width: 120,
         align: 'left',
         editable: true
       },
       {
         title: '创建人',
         dataIndex: 'operator',
-        width: '8%',
+        width: 100,
         align: 'center',
         editable: true
       },
       {
         title: '创建时间',
         dataIndex: 'createDateTime',
-        width: '18%',
+        width: 160,
         align: 'center',
         editable: true
       },
@@ -134,7 +89,7 @@ class EditableTable extends React.Component<any, any> {
         title: '操作',
         dataIndex: '操作',
         align: 'center',
-        width: 100,
+        width: 180,
         render: (text: any, record: any) => {
           return (
             <div>
@@ -149,6 +104,9 @@ class EditableTable extends React.Component<any, any> {
               </a>
               <a onClick={() => this.handleDelete(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
                 删除
+              </a>
+              <a onClick={() => this.preview(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
+                预览
               </a>
             </div>
           )
@@ -167,15 +125,14 @@ class EditableTable extends React.Component<any, any> {
     emitter.addListener('自动推送设置-刷新-手术', () => {
       this.getMealList(null, null)
     })
-    
   }
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
     if (value === 1) {
-      this.setState({missionId: undefined})
-      this.setState({operation: ''})
-      this.setState({messageType: ''})
-      this.setState({operationTiming: ''})
+      this.setState({ missionId: undefined })
+      this.setState({ operation: '' })
+      this.setState({ messageType: '' })
+      this.setState({ operationTiming: '' })
     }
     // 如果是修改则回显数据
     if (value === 0) {
@@ -213,6 +170,13 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
+  //预览
+  public preview = (record: any) => {
+    let getEducationId = record.educationId
+    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=2`)
+  }
+
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
   public getMealList = (current: any, pageSize: any) => {
@@ -279,7 +243,7 @@ class EditableTable extends React.Component<any, any> {
     this.setState({ searchValue: value })
     let postData = {
       educationName: value,
-      wardCode: authStore.selectedDeptCode,
+      // wardCode: authStore.selectedDeptCode,
       messageType: ''
     }
     this.setState({ loading: true })
@@ -303,6 +267,7 @@ class EditableTable extends React.Component<any, any> {
       message.warning('保存前请将每一项信息填写完整')
       return
     }
+    this.setState({confirmLoading: true})
     let postData = {}
     // 修改入参
     if (this.state.type === 0) {
@@ -335,6 +300,7 @@ class EditableTable extends React.Component<any, any> {
     }
     service.healthyApiService.preservationPushType1(postData).then((res) => {
       if (res) {
+        this.setState({confirmLoading: false})
         message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
         this.getMealList(null, null)
         this.setState({ editingKey: false })
@@ -354,13 +320,6 @@ class EditableTable extends React.Component<any, any> {
   }
 
   public render() {
-    const options = this.state.data.map((d: any) => <Option key={d.value}>{d.text}</Option>)
-    const components = {
-      body: {
-        cell: EditableCell
-      }
-    }
-
     const columns = this.columns.map((col: any) => {
       if (!col.editable) {
         return col
@@ -382,14 +341,15 @@ class EditableTable extends React.Component<any, any> {
           <BigBox>
             <BaseTable
               size='small'
-              components={components}
+              // components={components}
               bordered
               dataSource={this.state.data}
               columns={columns}
               rowClassName={() => 'editable-row'}
               // pagination={false}
               pagination={false}
-              scroll={{ y: 304 }}
+              // scroll={{ y: 304 }}
+              surplusHeight={280}
               loading={this.state.loadingTable}
             />
             <PaginationBox>
@@ -404,49 +364,63 @@ class EditableTable extends React.Component<any, any> {
               />
             </PaginationBox>
           </BigBox>
-
           <Modal
             title='推送设置'
             visible={this.state.editingKey}
             onOk={this.handleOk.bind(this)}
             width='650px'
             okText='保存'
+            confirmLoading={this.state.confirmLoading}
             cancelText='返回'
             onCancel={() => {
               this.setState({ editingKey: false })
             }}
           >
-          <div className="category" style={{marginTop: '30px'}}>
-            <SpanOne><span>宣</span>教:</SpanOne>
-            <Select
-              showSearch
-              value={this.state.missionId}
-              style={{ width: '72%'}}
-              defaultActiveFirstOption={false}
-              showArrow={false}
-              loading={this.state.loading}
-              filterOption={false}
-              onChange={this.searchChange.bind(this)}
-              onSearch={this.toSearch.bind(this)}
-              notFoundContent='没有你查找的内容'
-              placeholder='输入名称进行检索'
-            >
-              {this.state.children}
-            </Select>
-          </div>
-          <div className="category" style={{marginTop: '40px'}}>
-          <SpanOne>手术名称:</SpanOne>
-          <Input defaultValue="" style={{ width: '72%'}}
-            value={this.state.operation}
-            onChange={e => { this.setState({ operation: e.target.value }) }}/>
-          </div>
-          <div className="category" style={{marginTop: '40px'}}>
-          <SpanOne><span>时</span>机:</SpanOne>
-          <Radio.Group onChange={ e => { this.setState({operationTiming: e.target.value}) } } value={this.state.operationTiming}>
-            <Radio value='术前'>术前</Radio>
-            <Radio value='术后'>术后</Radio>
-          </Radio.Group>
-          </div>
+            <div className='category' style={{ marginTop: '30px' }}>
+              <SpanOne>
+                <span>宣</span>教:
+              </SpanOne>
+              <Select
+                showSearch
+                value={this.state.missionId}
+                style={{ width: '72%' }}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                loading={this.state.loading}
+                filterOption={false}
+                onChange={this.searchChange.bind(this)}
+                onSearch={this.toSearch.bind(this)}
+                notFoundContent='没有你查找的内容'
+                placeholder='输入名称进行检索'
+              >
+                {this.state.children}
+              </Select>
+            </div>
+            <div className='category' style={{ marginTop: '40px' }}>
+              <SpanOne>手术名称:</SpanOne>
+              <Input
+                defaultValue=''
+                style={{ width: '72%' }}
+                value={this.state.operation}
+                onChange={(e) => {
+                  this.setState({ operation: e.target.value })
+                }}
+              />
+            </div>
+            <div className='category' style={{ marginTop: '40px' }}>
+              <SpanOne>
+                <span>时</span>机:
+              </SpanOne>
+              <Radio.Group
+                onChange={(e) => {
+                  this.setState({ operationTiming: e.target.value })
+                }}
+                value={this.state.operationTiming}
+              >
+                <Radio value='术前'>术前</Radio>
+                <Radio value='术后'>术后</Radio>
+              </Radio.Group>
+            </div>
             <div className='category' style={{ marginTop: '40px', marginBottom: '30px' }}>
               <SpanOne>推送类型：</SpanOne>
               <Select
@@ -489,18 +463,17 @@ const Wrapper = styled.div`
     .ant-table-row td:nth-child(4) {
       padding-left: 20px !important;
     }
-    .ant-table-row td:nth-child(2){
-      padding-left:20px!important; 
+    .ant-table-row td:nth-child(2) {
+      padding-left: 20px !important;
     }
-    .ant-table-row td:nth-child(5){
-      padding-left:20px!important; 
+    .ant-table-row td:nth-child(5) {
+      padding-left: 20px !important;
     }
   }
 `
 const PaginationBox = styled.div`
   clear: both;
   text-align: right;
-  padding-top: 10px;
   padding-right: 19px;
 `
 const BigBox = styled.div`

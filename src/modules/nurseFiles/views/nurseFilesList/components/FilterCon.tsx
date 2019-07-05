@@ -90,10 +90,10 @@ export default observer(function FilterCon() {
         <div className='left'>
           选择：
           {Object.keys(FILTER_MAP).map(
-            (item) =>
+            (item: any) =>
               getFilterAdapter(item) &&
               getFilterAdapter(item) !== '全部' && (
-                <Tag closable onClose={(e: any) => onClose(e, item)}>
+                <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
                   {getFilterAdapter(item)}
                 </Tag>
               )
