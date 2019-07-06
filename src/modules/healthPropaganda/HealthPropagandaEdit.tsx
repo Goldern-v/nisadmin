@@ -139,6 +139,7 @@ export default withRouter(
           sessionData = JSON.parse(sessionData)
           let { content } = sessionData
           setEditorState(BraftEditor.createEditorState(content))
+          if(sessionData.name)newParams.name=sessionData.name;
         }
 
         if (authStore.user) {

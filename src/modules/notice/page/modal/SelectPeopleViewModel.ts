@@ -51,7 +51,12 @@ class SelectPeopleViewModel {
       if (this.stepState[0] == '默认科室') {
         return {
           parent: authStore.selectedDeptName,
-          list: (this as any).selectTreeData[0].data.userList,
+          list: (this as any).selectTreeData[0].data.userList.map((item: any) => ({
+            ...item,
+            userList: [item],
+            label: item.empName,
+            key: item.empNo
+          })),
           type: 'userList',
           dataLabel: 'empName'
         }
@@ -60,7 +65,16 @@ class SelectPeopleViewModel {
           data: [],
           dataLabel: ''
         }
-        return { parent: this.stepState[0], list: data, dataLabel, type: 'parentList' }
+        return {
+          parent: this.stepState[0],
+          list: data.map((item: any, index: number, arr: any[]) => ({
+            ...item,
+            label: dataLabel && `${item[dataLabel]}（${arr.length}）人`,
+            key: dataLabel && item[dataLabel]
+          })),
+          dataLabel,
+          type: 'parentList'
+        }
       }
     }
     if (this.stepState.length == 2) {
@@ -69,7 +83,16 @@ class SelectPeopleViewModel {
         dataLabel: ''
       }
       let userData: any = data.find((item: any) => item[dataLabel || ''] == this.stepState[1]) || {}
-      return { parent: userData[dataLabel || ''], list: userData.userList, type: 'userList', dataLabel: 'empName' }
+      return {
+        parent: userData[dataLabel || ''],
+        list: userData.userList.map((item: any) => ({
+          ...item,
+          label: item.empName,
+          key: item.empNo
+        })),
+        type: 'userList',
+        dataLabel: 'empName'
+      }
     }
   }
 
@@ -77,6 +100,7 @@ class SelectPeopleViewModel {
   initData() {
     this.modalLoading = true
     let ser = service.commonApiService
+    this.stepState = []
     return Promise.all([
       ser.defaultDeptUser(),
       ser.groupByDeptInDeptList(),
