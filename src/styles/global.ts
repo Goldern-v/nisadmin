@@ -49,6 +49,11 @@ const GlobalStyle = createGlobalStyle`
     background-color: #c2c2c2;
   }
 }
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+      color: #bfbfbf;
+      font-weight: normal;
+    }
 `
 
 export default GlobalStyle

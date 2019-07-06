@@ -4,7 +4,8 @@ import styled from 'styled-components'
 export const Place = styled.div`
   flex: 1;
 `
-export const ScrollBox = styled.ul`
+export const ScrollBox = styled.div`
+  overflow: auto;
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -20,6 +21,7 @@ export const ScrollBox = styled.ul`
   }
 `
 export const ScrollUl = styled.ul`
+  overflow: auto;
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
