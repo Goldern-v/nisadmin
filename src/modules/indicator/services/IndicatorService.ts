@@ -21,6 +21,17 @@ export default class IndicatorService extends BaseApiService {
       endDate
     })
   }
+  // 导出指标数据表格
+  public postExport(serviceName: any, beginDate: any, endDate: any) {
+    return this.post(
+      `/nursingIndex/${serviceName}`,
+      {
+        beginDate,
+        endDate
+      },
+      { responseType: 'blob' }
+    )
+  }
 }
 
 export const indicatorService = new IndicatorService()
