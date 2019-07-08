@@ -3,9 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Select, Button } from 'antd'
 import service from 'src/services/api'
 import DeptSelect from 'src/components/DeptSelect'
+// import { any } from 'prop-types'
 import emitter from 'src/libs/ev'
-//引入组件
-
 import { authStore } from 'src/stores'
 const Option = Select.Option
 
