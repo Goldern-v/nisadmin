@@ -18,13 +18,13 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0px;
     height: 100%;
+    font-size: 14px;
   }
   #root {
     height: 100%;
   }
   * {
     font-family: simsun,Times New Roman,Georgia,Serif !important ;
-    font-size: 14px;
   }
 
 
