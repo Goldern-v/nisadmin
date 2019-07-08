@@ -43,11 +43,11 @@ const LeftContent = styled.div`
 `
 
 const RightContent = styled.div`
-  margin-top:18px;
-  margin-bottom:32px;
+  margin-top:21px;
+  margin-bottom:19px;
   margin-left:25px;
   width:335px;
-  height:calc(100vh - 100px);
+  height:calc(100vh - 90px);
 `
 const TableContent = styled.div`
   width:100%;

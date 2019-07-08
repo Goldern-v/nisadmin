@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 //引入图标
-import { ReactComponent as TQBB } from '../img/病区白板.svg'
-import { ReactComponent as HSDA } from '../img/护士档案.svg'
-import { ReactComponent as HSPB } from '../img/护士排班.svg'
-import { ReactComponent as MGZB } from '../img/敏感指标.svg'
-import { ReactComponent as BLSJ } from '../img/不良事件.svg'
-import { ReactComponent as XYB } from '../img/下一步.svg'
+import { ReactComponent as TQBB } from '../images/病区白板.svg'
+import { ReactComponent as HSDA } from '../images/护士档案.svg'
+import { ReactComponent as HSPB } from '../images/护士排班.svg'
+import { ReactComponent as MGZB } from '../images/敏感指标.svg'
+import { ReactComponent as BLSJ } from '../images/不良事件.svg'
+import { ReactComponent as XYB } from '../images/下一步.svg'
 
 export default observer(function QuickButton () {
   const [count] = useState([{
@@ -36,7 +36,7 @@ export default observer(function QuickButton () {
   const renderSubMenu = () =>{
     return count.map((item) => {
       return (
-        <QuickMenu style={{background:`${item.background}`}}>
+        <QuickMenu className='button' style={{background:`${item.background}`}}>
           <WorldTitle>{item.title}</WorldTitle>
           <ReactSvg>{item.icon}</ReactSvg>
           <Btn>
@@ -57,30 +57,40 @@ export default observer(function QuickButton () {
   )
 })
 
-const Wrapper = styled.div`
-  height:110px;
-  margin-bottom:20px;
-  width:100%;
-  display:flex;
-  .cIekGw:nth-child(5){
-    margin-right:0!important;
-  }
-  .cIekGw:nth-child(3) .icon{
-    top:18!important;
-}
-`
 const QuickMenu = styled.div`
   position:relative;
   flex:1;
   height:100%;
   background:yellow;
   margin-right:25px;
+  &:hover{
+    cursor: pointer;
+  }
+  &:hover .iCmNRA{
+    opacity:1;
+  }
+  &:hover .iokEty{
+    opacity:1;
+  }
+`
+
+const Wrapper = styled.div`
+  height:110px;
+  margin-bottom:20px;
+  width:100%;
+  display:flex;
+  .button:nth-child(5){
+    margin-right:0!important;
+  }
+  .cIekGw:nth-child(3) .icon{
+    top:18!important;
+}
 `
 const WorldTitle = styled.div`
   position:absolute;
   top:16px;
   left:14px;
-  width:84px;
+  /* width:84px; */
   height:27px;
   font-size:21px;
   font-weight:600;
