@@ -2,18 +2,20 @@ import styled from 'styled-components'
 import React, { useState, useEffect, Fragment } from 'react'
 import { Select, Input, Button, Modal, message as Message } from 'antd'
 import BaseTable from 'src/components/BaseTable'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import { ColumnProps } from 'antd/lib/table'
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import HealthProgandaService from './api/healthProgandaService'
+import qs from 'qs'
 
 const api = new HealthProgandaService();
 
 const { Option } = Select;
 export interface Props extends RouteComponentProps { }
 
-export default withRouter(observer(function 健康宣教字典(props: Props) {
+export default observer(function 健康宣教字典(props: Props) {
+  const { history, location } = appStore;
   //导入弹窗相关
   const [fileName, setFileName] = useState('');
   const [uploadVisible, setUploadVisible] = useState(false);
@@ -101,6 +103,9 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   useEffect(() => {
     if (authStore.user) {
       let initQuery = { ...query, deptCode: authStore.user.deptCode };
+      let search: any = location.search;
+      if (search) search = qs.parse(search.replace('?', ''));
+      if (search.deptCode) initQuery.deptCode = search.deptCode;
       setQuery(initQuery);
       getTableData(initQuery);
     } else {
@@ -163,6 +168,8 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
   const getTableData = (newQuery?: any) => {
     let reqQuery = newQuery || { ...query };
     if (!reqQuery.deptCode) reqQuery.publicUse = '1';
+
+    history.replace(`${location.pathname}?deptCode=${reqQuery.deptCode}`);
     setDataLoading(true);
     api.getTableList(reqQuery).then(res => {
       setDataLoading(false);
@@ -226,12 +233,17 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
         if (res.code == 200) {
           setUploadVisible(false);
           let originString = res.data || '';
+
+          let missionName: any = fileName.split('.');
+          missionName.pop();
+
           window.sessionStorage.healthPropagandaEditData = JSON.stringify({
             type: 'upload',
+            name: missionName.join('.'),
             baseInfo: {},
-            content: originString.replace(/\n/g, '<br/>')
+            content: originString.replace(/\n/g, '<br/>').replace(/\r/g, '<br/>')
           })
-          props.history.push('/healthPropagandaEdit');
+          history.push('/healthPropagandaEdit');
           Message.success('宣教导入成功')
         } else {
           if (res.desc) Message.error(res.desc)
@@ -253,11 +265,11 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
 
   const handleCreateNew = () => {
     delete window.sessionStorage.healthPropagandaEditData;
-    props.history.push('/healthPropagandaEdit');
+    history.push('/healthPropagandaEdit');
   }
 
   const viewContent = (record: any) => {
-    props.history.push(`/setting/健康宣教字典详情?id=${record.missionId}`);
+    history.push(`/setting/健康宣教字典详情?id=${record.missionId}`);
   }
 
   const handleDeptSelect = (item: any) => {
@@ -329,7 +341,7 @@ export default withRouter(observer(function 健康宣教字典(props: Props) {
       </ModalWrapper>
     </Modal>
   </Wrapper>
-}))
+})
 
 const Wrapper = styled.div`
 width: 100%;

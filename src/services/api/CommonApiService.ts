@@ -9,7 +9,7 @@
  */
 
 import BaseApiService from './BaseApiService'
-
+type EntityType = 'mail'
 export default class CommonApiService extends BaseApiService {
   // 0.获取护理单元列表
   public async getUintList() {
@@ -53,5 +53,9 @@ export default class CommonApiService extends BaseApiService {
   /** 获取默认科室人员列表 */
   public defaultDeptUser(keyword?: String) {
     return this.post(`/user/defaultDeptUser`, { keyword })
+  }
+  /** 上传附件 */
+  public uploadAttachment(entityType: EntityType, file: any) {
+    return this.post(`/file/uploadAttachment/${entityType}`, file)
   }
 }

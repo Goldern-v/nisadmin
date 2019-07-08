@@ -1,6 +1,20 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, Icon, Checkbox, Spin } from 'antd'
+import {
+  Modal,
+  Input,
+  Button,
+  Radio,
+  DatePicker,
+  Select,
+  Row,
+  Col,
+  message,
+  Icon,
+  Checkbox,
+  Spin,
+  AutoComplete
+} from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { ScrollBox } from 'src/components/common'
 import { authStore } from 'src/stores'
@@ -11,24 +25,103 @@ const { Search } = Input
 const Option = Select.Option
 
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/index'
+import { CheckUserItem } from '../SentNoticeView'
+import service from 'src/services/api'
 
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
-  onOkCallBack?: () => {}
+  onOkCallBack?: (checkedUserList: CheckUserItem[]) => void
+  checkedUserList: CheckUserItem[]
 }
 
+interface User {
+  label?: string
+  key: string
+}
 export default observer(function SelectPeopleModal(props: Props) {
-  let { visible, onCancel } = props
+  let { visible, onCancel, onOkCallBack, onClose } = props
 
-  const [checkedUserList, setCheckedUserList] = useState([])
+  const [checkedUserList, setCheckedUserList]: any = useState([])
+  const [searchUserList, setSearchUserList]: any = useState([])
+  const [searchWord, setSearchWord]: any = useState('')
 
-  const onSave = async () => {}
+  const insertUser = (user: User | User[]) => {
+    if (user instanceof Array) {
+      let data = []
+      for (let i = 0; i < user.length; i++) {
+        if (!checkedUserList.find((item: any) => item.key === user[i].key)) data.push(user[i])
+      }
+      setCheckedUserList([...checkedUserList, ...data])
+    } else {
+      let _user = checkedUserList.find((item: any) => item.key === user.key)
+      if (!_user) {
+        setCheckedUserList([...checkedUserList, user])
+      }
+    }
+  }
+  const deleteUser = (user: User | User[]) => {
+    if (user instanceof Array) {
+      for (let i = 0; i < user.length; i++) {
+        let index = checkedUserList.findIndex((item: any) => item.key === user[i].key)
+        if (index > -1) {
+          checkedUserList.splice(index, 1)
+        }
+      }
+      setCheckedUserList([...checkedUserList])
+    } else {
+      let index = checkedUserList.findIndex((item: any) => item.key === user.key)
+      if (index > -1) {
+        checkedUserList.splice(index, 1)
+        setCheckedUserList([...checkedUserList])
+      }
+    }
+  }
+
+  const onSave = () => {
+    onOkCallBack && onOkCallBack(checkedUserList)
+    onClose()
+  }
+  const onDeselect = (key: any) => {
+    deleteUser(key)
+  }
 
   useLayoutEffect(() => {
     if (visible) {
       selectPeopleViewModel.initData()
+      setCheckedUserList(props.checkedUserList)
+      setSearchWord('')
     }
   }, [visible])
+
+  const handleSearch = (value: any) => {
+    setSearchWord(value)
+    value &&
+      service.commonApiService.searchUser(value).then((res) => {
+        setSearchUserList(
+          res.data.userList.map((item: any) => ({
+            ...item,
+            label: item.empName,
+            key: item.empNo,
+            value: item.empNo,
+            text: item.empName,
+            userList: [item]
+          }))
+        )
+      })
+  }
+
+  const onSelect = (ev: any) => {
+    let selectedUser = searchUserList.find((item: any) => item.key === ev)
+    setCheckedUserList((prevList: any[]) => {
+      let user = prevList.find((item: any) => item.key === ev)
+      if (!user) {
+        return [...prevList, selectedUser]
+      } else {
+        message.warning('已经添加过此分组或护士了')
+        return [...prevList]
+      }
+    })
+  }
 
   return (
     <Modal
@@ -46,14 +139,23 @@ export default observer(function SelectPeopleModal(props: Props) {
           <div className='left-part scrollBox'>
             <Spin spinning={selectPeopleViewModel.modalLoading}>
               {selectPeopleViewModel.currentTreeData ? (
-                <CheckListCon checkedUserList={checkedUserList} setCheckedUserList={setCheckedUserList} />
+                <CheckListCon
+                  checkedUserList={checkedUserList}
+                  setCheckedUserList={setCheckedUserList}
+                  insertUser={insertUser}
+                  deleteUser={deleteUser}
+                />
               ) : (
                 <div>
-                  <Search
-                    placeholder='请输入搜索关键字'
-                    onSearch={(value) => console.log(value)}
+                  <AutoComplete
+                    dataSource={searchUserList}
                     style={{ width: '100%' }}
-                  />
+                    onSelect={onSelect}
+                    onSearch={handleSearch}
+                    value={searchWord}
+                  >
+                    <Search placeholder='请输入搜索关键字' />
+                  </AutoComplete>
                   <FileList>
                     {selectPeopleViewModel.selectTreeData.map((item, index: any) => (
                       <div className='item-box' onClick={() => selectPeopleViewModel.pushStep(item.step)} key={index}>
@@ -75,12 +177,15 @@ export default observer(function SelectPeopleModal(props: Props) {
                 labelInValue={true}
                 style={{ width: '100%' }}
                 open={false}
+                onDeselect={onDeselect}
               />
             </SelectCon>
 
             <div className='footer-con'>
-              <Button>取消</Button>
-              <Button type='primary'>确认</Button>
+              <Button onClick={onClose}>取消</Button>
+              <Button type='primary' onClick={onSave}>
+                确认
+              </Button>
             </div>
           </div>
         </div>
@@ -89,25 +194,43 @@ export default observer(function SelectPeopleModal(props: Props) {
   )
 })
 const CheckListCon = observer(function(props: any) {
-  let { checkedUserList, setCheckedUserList } = props
+  let { checkedUserList, setCheckedUserList, insertUser, deleteUser } = props
+  let checkAll = false
+  let indeterminate = false
+  try {
+    let allKeys = selectPeopleViewModel.currentTreeData!.list.map((item: any) => {
+      return item.key
+    })
+    let checkedLabels = checkedUserList.map((item: any) => item.key)
+
+    checkAll = (() => {
+      for (let i = 0; i < allKeys.length; i++) {
+        if (checkedLabels.indexOf(allKeys[i]) == -1) return false
+      }
+      return true
+    })()
+    indeterminate = (() => {
+      if (checkAll) return false
+      for (let i = 0; i < allKeys.length; i++) {
+        if (checkedLabels.indexOf(allKeys[i]) > -1) return true
+      }
+      return false
+    })()
+  } catch (error) {}
+
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
-    console.log(e.target.checked, 'e.target.checked)')
     if (e.target.checked) {
-      setCheckedUserList((prevList: any[]) => {
-        return [
-          ...prevList,
-          {
-            key: e.target.value,
-            userList: item.userList
-          }
-        ]
-      })
+      insertUser(item)
     } else {
-      setCheckedUserList((prevList: any[]) => {
-        let index = prevList.findIndex((item: any) => item.key === e.target.value)
-        if (index != undefined) prevList.splice(index, 1)
-        return [...prevList]
-      })
+      deleteUser(item)
+    }
+  }
+  const onCheckAll = (e: CheckboxChangeEvent) => {
+    let users = selectPeopleViewModel.currentTreeData!.list
+    if (e.target.checked) {
+      insertUser(users)
+    } else {
+      deleteUser(users)
     }
   }
   const Con = styled.div`
@@ -141,29 +264,27 @@ const CheckListCon = observer(function(props: any) {
       margin-right: -10px;
     }
   `
+
   return (
     <Con>
       <div className='title' onClick={() => selectPeopleViewModel.popStep()}>
         <Icon type='left' />
         <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.currentTreeData!.parent}</span>
       </div>
+      {/* {JSON.stringify(checkedUserList)} */}
       <div className='scrollBox'>
+        <div className='check-row'>
+          <Checkbox checked={checkAll} indeterminate={indeterminate} onChange={(e) => onCheckAll(e)}>
+            全选
+          </Checkbox>
+        </div>
         <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
-          <div className='check-row'>
-            <Checkbox value='C'>全选</Checkbox>
-          </div>
           {selectPeopleViewModel.currentTreeData!.list.map((item: any, index: number) => {
             let type = selectPeopleViewModel!.currentTreeData!.type
-            let label =
-              type == 'userList'
-                ? item[selectPeopleViewModel!.currentTreeData!.dataLabel || '']
-                : `
-            ${item[selectPeopleViewModel!.currentTreeData!.dataLabel || '']}（${item.userList.length}人）
-            `
             return (
               <div className='check-row' key={index}>
-                <Checkbox value={label} onChange={(e) => onCheck(e, item)}>
-                  {label}
+                <Checkbox value={item.key} onChange={(e) => onCheck(e, item)}>
+                  {item.label}
                 </Checkbox>
                 {selectPeopleViewModel!.currentTreeData!.type !== 'userList' && (
                   <div>
