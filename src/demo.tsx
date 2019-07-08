@@ -9,18 +9,20 @@ export interface Props extends RouteComponentProps {}
 
 export default function demo() {
   const [count, setCount] = useState(0)
+  const [value, setValue] = useState([])
   useEffect(() => {
     console.log(count, setCount)
   })
   const upload: any = (file: File) => {
     console.log(file, 'file')
   }
-  const onChange: any = (file: File) => {
-    console.log(file, 'file')
+  const onChange: any = (files: any) => {
+    setValue(files)
+    console.log(files, 'file')
   }
   return (
     <Wrapper>
-      <MultipleImageUploader upload={upload} onChange={onChange} />
+      <MultipleImageUploader value={value} onChange={onChange} />
     </Wrapper>
   )
 }

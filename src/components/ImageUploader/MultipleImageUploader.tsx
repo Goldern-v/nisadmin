@@ -10,6 +10,7 @@ export interface Props {
   text?: string
   upload?: (files: FileList) => Promise<string[]>
   onChange: (value: string[]) => void
+  uploadOption?: any
 }
 
 export interface State {
@@ -26,7 +27,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
   }
 
   public static getDerivedStateFromProps(nextProps: Props) {
-    return nextProps.value ? { src: nextProps.value } : null
+    return nextProps.value ? { src: nextProps.value } : { src: [] }
   }
 
   public state: State = {
@@ -76,20 +77,34 @@ export default class MultipleImageUploader extends React.Component<Props, State>
     for (let i = 0; i < files.length; i++) {
       src.push((await this.getBase64(files[i])) || '')
     }
-    $input.value = ''
-    this.setState({ src: [...this.state.src, ...src], loading: true })
+
+    // $input.value = ''
     if (upload) {
+      this.setState({ src: [...this.state.src, ...src], loading: true })
       const value = await upload(files)
       this.setState({ loading: false })
       value && onChange([...(this.props.value || []), ...value])
     } else {
-      const promiseList = []
-      for (let i = 0; i < files.length; i++) {
-        promiseList.push(service.commonApiService.uploadFile(files[i]))
+      this.setState({ src: [...this.state.src, ...src], loading: true })
+      try {
+        const promiseList = []
+        for (let i = 0; i < files.length; i++) {
+          promiseList.push(service.commonApiService.uploadFile({ ...(this.props.uploadOption || {}), file: files[i] }))
+        }
+        let res = await Promise.all(promiseList)
+        let value = res.map((item: any) => item.data.path)
+        this.setState({ loading: false })
+        value && onChange([...(this.props.value || []), ...value])
+      } catch (error) {
+        console.log(error, 'errorerror')
       }
     }
   }
 
+  public deletetImg = (index: number) => {
+    this.props.value && this.props.value.splice(index, 1)
+    this.props.value && this.props.onChange && this.props.onChange([...this.props.value])
+  }
   public render() {
     const { tip, accept, text } = this.props
     const { loading, src } = this.state
@@ -99,6 +114,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
         {src &&
           src.map((item: string, index: number) => (
             <Inner key={index}>
+              <Icon type='close' title='删除图片' onClick={() => this.deletetImg(index)} />
               <Image src={item} />
             </Inner>
           ))}
@@ -134,9 +150,16 @@ const Inner = styled.div`
   overflow: hidden;
   float: left;
   margin: 5px;
-
+  position: relative;
   &:hover {
     border-color: ${(p) => p.theme.$mtc};
+  }
+  .anticon-close {
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    height: 10px;
+    width: 10px;
   }
 `
 

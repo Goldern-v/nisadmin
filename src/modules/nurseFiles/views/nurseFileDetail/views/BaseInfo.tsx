@@ -126,12 +126,18 @@ export default observer(function BaseInfo() {
                 //   资格证编号: `age`
                 // }
               ],
-              // fileData: [
-              //   {
-              //     附件1: info.urlImageOne,
-              //     附件2: 'bbb'
-              //   }
-              // ],
+              fileData: [
+                {
+                  个人头像: info.nearImageUrl
+                },
+                ...(info.zyzsUrl
+                  ? info.zyzsUrl.split(',').map((item: any, index: number) => {
+                      return {
+                        ['执业证书' + (index + 1)]: item
+                      }
+                    })
+                  : [])
+              ],
               allData: info
             })
           }
@@ -143,7 +149,7 @@ export default observer(function BaseInfo() {
         //   label: '修改',
         //   onClick: () => {
         //     editBaseInfoModal.show({
-        //       id: idData,
+        //       id: id,
         //       data: info
         //     })
         //   }
@@ -237,11 +243,13 @@ export default observer(function BaseInfo() {
         </InfoTable>
         <ZyzsCon>
           <span>执业证书图片：</span>
-          {info.zyzsUrl ? (
-            <Zimage src={info.zyzsUrl} alt='' />
-          ) : (
-            <img src={require('../../../images/证件空态度.png')} alt='' />
-          )}
+          <div className='img-con'>
+            {info.zyzsUrl ? (
+              info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+            ) : (
+              <img src={require('../../../images/证件空态度.png')} alt='' />
+            )}
+          </div>
         </ZyzsCon>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
@@ -295,14 +303,16 @@ const ZyzsCon = styled.div`
     left: 12px;
     top: 19px;
   }
+  .img-con {
+    margin: 15px 0 0 137px;
+  }
   img {
-    position: absolute;
+    float: left;
+    margin: 5px;
     width: 240px;
     height: 174px;
     border: 1px solid rgba(219, 224, 228, 1);
-    top: 20px;
-    left: 137px;
-    object-fit: cover;
+    object-fit: contain;
   }
 `
 

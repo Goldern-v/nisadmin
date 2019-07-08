@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -14,7 +14,7 @@ import EditFileListModal from '../modal/EditFileListModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { Modal, Button, Icon, Carousel } from 'antd'
 export interface Props extends RouteComponentProps {}
-export default observer(function FileList () {
+export default observer(function FileList() {
   const [visible, setVisible] = useState(false)
   const editFileListModal = createModal(EditFileListModal)
   const [pictureArr, setPictureArr] = useState([])
@@ -25,10 +25,7 @@ export default observer(function FileList () {
   //   }
   // ]
   const dataSource = []
-  const showModalPicture = (e: any, filterData: any) => {
-    setVisible(true)
-    setPictureArr(filterData)
-  }
+
   const handleOk = (e: any) => {
     setVisible(false)
   }
@@ -48,7 +45,7 @@ export default observer(function FileList () {
       title: '内容',
       dataIndex: 'content',
       key: '2',
-      width: 300,
+      width: 350,
       align: 'center'
     },
     {
@@ -62,7 +59,7 @@ export default observer(function FileList () {
       title: '状态',
       dataIndex: 'status',
       key: '4',
-      width: 150,
+      width: 120,
       align: 'center'
     },
     {
@@ -74,8 +71,7 @@ export default observer(function FileList () {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            {/* <span onClick={(e: any) => showModalPicture(e, row.filterData)}>查看</span> */}
-            {row.type < 7 && <Zimage text='查看' list={row.filterData.map((item: any) => item.path)} />}
+            {row.type < 7 && <Zimage text='查看' list={row.filterData} />}
             {row.type > 6 && row.isShow ? (
               <span
                 onClick={() => {
@@ -97,11 +93,13 @@ export default observer(function FileList () {
                     type: 'nurseAttachment',
                     title: '附件审核',
                     tableFormat: [],
-                    fileData: [
-                      {
-                        附件1: row.path
-                      }
-                    ],
+                    fileData: row.path
+                      ? row.path.split(',').map((item: any, index: number) => {
+                          return {
+                            ['附件' + (index + 1)]: item
+                          }
+                        })
+                      : [],
                     allData: row
                   })
                 }}
@@ -118,19 +116,17 @@ export default observer(function FileList () {
   const getTableData = () => {
     nurseFilesService.nurseAttachment(appStore.queryObj.empNo).then((res) => {
       let data: any = [
-        // {
-        //   content: '身份证',
-        //   number: res.data.filter((item: any) => item.type === '1').length,
-        //   status: '',
-        //   filterData: res.data.filter((item: any) => item.type === '1'),
-        //   fileName: '身份证',
-        //   type: '1'
-        // },
         {
           content: '学历毕业证复印件',
           number: res.data.filter((item: any) => item.type === '2').length,
           status: '',
-          filterData: res.data.filter((item: any) => item.type === '2'),
+          filterData: res.data
+            .filter((item: any) => item.type === '2')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '学历毕业证复印件',
           type: '2'
         },
@@ -138,7 +134,13 @@ export default observer(function FileList () {
           content: '执业证复印件',
           number: res.data.filter((item: any) => item.type === '3').length,
           status: '',
-          filterData: res.data.filter((item: any) => item.type === '3'),
+          filterData: res.data
+            .filter((item: any) => item.type === '3')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '执业证复印件',
           type: '3'
         },
@@ -146,7 +148,13 @@ export default observer(function FileList () {
           content: '资格证复印件',
           number: res.data.filter((item: any) => item.type === '4').length,
           status: '',
-          filterData: res.data.filter((item: any) => item.type === '4'),
+          filterData: res.data
+            .filter((item: any) => item.type === '4')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '资格证复印件',
           type: '4'
         },
@@ -154,7 +162,13 @@ export default observer(function FileList () {
           content: '职称聘用证明',
           number: res.data.filter((item: any) => item.type === '5').length,
           status: '',
-          filterData: res.data.filter((item: any) => item.type === '5'),
+          filterData: res.data
+            .filter((item: any) => item.type === '5')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '职称聘用证明',
           type: '5'
         },
@@ -162,7 +176,13 @@ export default observer(function FileList () {
           content: '层级晋级表',
           number: res.data.filter((item: any) => item.type === '6').length,
           status: '',
-          filterData: res.data.filter((item: any) => item.type === '6'),
+          filterData: res.data
+            .filter((item: any) => item.type === '6')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '层级晋级表',
           type: '6'
         },
@@ -172,7 +192,13 @@ export default observer(function FileList () {
           status:
             res.data.filter((item: any) => item.type === '7')[0] &&
             res.data.filter((item: any) => item.type === '7')[0].auditedStatusName,
-          filterData: res.data.filter((item: any) => item.type === '7'),
+          filterData: res.data
+            .filter((item: any) => item.type === '7')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '护理会诊人员资质认定表',
           statusColor:
             res.data.filter((item: any) => item.type === '7')[0] &&
@@ -203,7 +229,13 @@ export default observer(function FileList () {
           status:
             res.data.filter((item: any) => item.type === '8')[0] &&
             res.data.filter((item: any) => item.type === '8')[0].auditedStatusName,
-          filterData: res.data.filter((item: any) => item.type === '8'),
+          filterData: res.data
+            .filter((item: any) => item.type === '8')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '厚街医院护理人员执业准入资格备案表',
           statusColor:
             res.data.filter((item: any) => item.type === '8')[0] &&
@@ -234,7 +266,13 @@ export default observer(function FileList () {
           status:
             res.data.filter((item: any) => item.type === '9')[0] &&
             res.data.filter((item: any) => item.type === '9')[0].auditedStatusName,
-          filterData: res.data.filter((item: any) => item.type === '9'),
+          filterData: res.data
+            .filter((item: any) => item.type === '9')
+            .map((item: any) => item.path)
+            .reduce((prev: any, curr: any) => {
+              let arr = curr ? curr.split(',') : []
+              return [...prev, ...arr]
+            }, []),
           fileName: '高风险诊疗技术操作人员资质申请表',
           statusColor:
             res.data.filter((item: any) => item.type === '9')[0] &&
@@ -271,7 +309,7 @@ export default observer(function FileList () {
   const pictureDom = pictureArr.map((item: any, index: number) => {
     return (
       <div style={{ height: '300px' }} key={index}>
-        <img src={item.path} style={{ height: '200px', widht: '600px', margin: '0 auto' }} />
+        <img src={item.path} style={{ height: '200px', width: '600px', margin: '0 auto' }} />
       </div>
     )
   })
@@ -335,14 +373,5 @@ const ModalCon = styled.div`
   .ant-carousel .slick-slide h3 {
     color: yellow;
     background-color: yellow;
-  }
-`
-const DoCon = styled.div`
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-  color: ${(p) => p.theme.$mtc};
-  span {
-    cursor: pointer;
   }
 `

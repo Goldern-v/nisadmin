@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -14,7 +14,7 @@ import { Button } from 'antd'
 import Zimage from 'src/components/Zimage'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
-export default function SpecialCard () {
+export default function SpecialCard() {
   const editSpecialCardModal = createModal(EditSpecialCardModal)
   const btnList = [
     {
@@ -60,17 +60,17 @@ export default function SpecialCard () {
       title: '附件',
       dataIndex: 'fj',
       key: '5',
-      width: 150,
+      width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '6',
-      width: 140,
+      width: 120,
       align: 'center'
     },
     {
@@ -110,12 +110,13 @@ export default function SpecialCard () {
                       资格证编号: `specialQualificationNo`
                     }
                   ],
-                  fileData: [
-                    {
-                      附件1: row.urlImageOne
-                      // 附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
+                  fileData: row.urlImageOne
+                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
+                        return {
+                          ['附件' + (index + 1)]: item
+                        }
+                      })
+                    : [],
                   allData: row
                 })
               }}
@@ -155,13 +156,3 @@ export default function SpecialCard () {
   )
 }
 const Wrapper = styled.div``
-
-export const DoCon = styled.div`
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-  color: ${(p) => p.theme.$mtc};
-  span {
-    cursor: pointer;
-  }
-`

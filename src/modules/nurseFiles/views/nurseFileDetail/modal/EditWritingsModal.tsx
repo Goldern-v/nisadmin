@@ -15,7 +15,8 @@ import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
-const uploadCard = () => Promise.resolve('123')
+import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -30,32 +31,9 @@ const rules: Rules = {
   // professional: (val) => !!val || '请选择技术职称'
 }
 
-export default function EditWorkHistoryModal (props: Props) {
-  const [attachmentId, setAttachmentId] = useState('')
+export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
-  const uploadCard = async (file: any) => {
-    let obj: any = {
-      file,
-      empNo: appStore.queryObj.empNo,
-      type: '0'
-    }
-    if (authStore!.user!.post === '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
 
-    const [err, res] = await to(service.commonApiService.uploadFile(obj))
-    if (err) {
-      message.error(err.message)
-      return res || ''
-    }
-    if (res.data) {
-      let pathImg = `${res.data.path}`
-      setAttachmentId(res.data.id + ',')
-      return pathImg
-    }
-  }
   // const [topTitle, setTopTitle] = useState('修改著作译文论文')
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
@@ -66,9 +44,7 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: '',
-      attachmentId: attachmentId,
-      urlImageOne: ''
+      auditedStatus: ''
     }
     if (authStore!.user!.post === '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
@@ -82,7 +58,7 @@ export default function EditWorkHistoryModal (props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.publicDate && (value.publicDate = value.publicDate.format('YYYY-MM-DD'))
-    // value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.nursePaperExperienceAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -95,14 +71,12 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         publicDate: moment(data.publicDate),
         title: data.title,
         rank: data.rank,
         publication: data.publication,
-        // professional: data.professional,
-        urlImageOne: data.urlImageOne
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
       // refForm.current.setField('unit', 123)
     }
@@ -115,7 +89,7 @@ export default function EditWorkHistoryModal (props: Props) {
 
   return (
     <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
+      <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`发表日期`} name='publicDate'>
@@ -140,8 +114,8 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={``} name='urlImageOne'>
-              <ImageUploader upload={uploadCard} text='添加附件' />
+            <Form.Field label={`附件`} name='urlImageOne'>
+              <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>
         </Row>

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -15,7 +15,7 @@ import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 export interface Props extends RouteComponentProps {}
-export default observer(function Awards () {
+export default observer(function Awards() {
   const editAwardsModal = createModal(EditAwardsModal)
   const btnList = [
     {
@@ -72,10 +72,10 @@ export default observer(function Awards () {
       title: '附件',
       dataIndex: 'fj',
       key: 'fj',
-      width: 70,
+      width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
     {
@@ -126,12 +126,13 @@ export default observer(function Awards () {
                       批准机关: `approvalAuthority`
                     }
                   ],
-                  fileData: [
-                    {
-                      附件1: row.urlImageOne
-                      // 附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
+                  fileData: row.urlImageOne
+                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
+                        return {
+                          ['附件' + (index + 1)]: item
+                        }
+                      })
+                    : [],
                   allData: row
                 })
               }}
@@ -155,19 +156,17 @@ export default observer(function Awards () {
 
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} type={['spaceRow']} tip={'填表说明：登记2010年及以后时间所获得的省市级以上奖励，如为团体奖励，请注明排名情况，授奖级别是指省级（或市级）/一（二、三、优秀）等奖。批准机关指证书盖章单位名称。'}/>
+      <BaseTable
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={305}
+        type={['spaceRow']}
+        tip={
+          '填表说明：登记2010年及以后时间所获得的省市级以上奖励，如为团体奖励，请注明排名情况，授奖级别是指省级（或市级）/一（二、三、优秀）等奖。批准机关指证书盖章单位名称。'
+        }
+      />
       <editAwardsModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
 const Wrapper = styled.div``
-
-const DoCon = styled.div`
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-  color: ${(p) => p.theme.$mtc};
-  span {
-    cursor: pointer;
-  }
-`
