@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, SetStateAction, Dispatch } from 'react'
-import { Select, Button } from 'antd'
+import { Select, Button, message } from 'antd'
 import { RouteComponentProps } from 'react-router'
 import createModal from 'src/libs/createModal'
 import SelectPeopleModal from './modal/SelectPeopleModal'
@@ -43,17 +43,23 @@ export default function SentNoticeView() {
       postData.append('file', files[i])
       promiseList.push(service.commonApiService.uploadAttachment('mail', postData))
     }
-    Promise.all(promiseList).then((res) => {
-      setFileList([
-        ...fileList,
-        ...res.map(({ data: item }: any) => {
-          return {
-            ...item,
-            size: getFileSize(item.size)
-          }
-        })
-      ])
-    })
+    let hideLoading = message.loading('正在上传，请稍等')
+    Promise.all(promiseList)
+      .then((res) => {
+        setFileList([
+          ...fileList,
+          ...res.map(({ data: item }: any) => {
+            return {
+              ...item,
+              size: getFileSize(item.size)
+            }
+          })
+        ])
+        hideLoading()
+      })
+      .catch((e) => {
+        hideLoading()
+      })
     console.log(e, 'eeee')
   }
   return (
