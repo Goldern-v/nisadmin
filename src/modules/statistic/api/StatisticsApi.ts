@@ -201,7 +201,11 @@ class StatisticsApi extends BaseApiService {
       status: exportData
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/scheduling/countDeptCodeHolidays`, trancePostData)
+    if (exportData === false) {
+      return this.post(`/scheduling/countDeptCodeHolidays`, trancePostData, { responseType: 'blob' })
+    } else {
+      return this.post(`/scheduling/countDeptCodeHolidays`, trancePostData)
+    }
   }
   // 护士节假日排班表
   public async getTotalUser() {
@@ -245,7 +249,7 @@ class StatisticsApi extends BaseApiService {
       status: false
     }
     let trancePostData = this.stringify(postData)
-    return this.post(`/patientStatistics/exportExcel`, trancePostData)
+    return this.post(`/patientStatistics/exportExcel`, trancePostData, { responseType: 'blob' })
   }
 }
 

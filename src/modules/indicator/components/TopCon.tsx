@@ -19,7 +19,7 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
       <Button type='primary' style={{ marginRight: 10 }} onClick={() => props.refreshData()}>
         查询
       </Button>
-      <Button>导出excl</Button>
+      <Button onClick={() => props.refExport()}>导出excl</Button>
     </Wrapper>
   )
 })

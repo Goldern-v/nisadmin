@@ -6,7 +6,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import { appStore } from 'src/stores'
-import { Radio } from 'antd'
+import { Radio, message } from 'antd'
 
 import BaseChart from './components/BaseChart'
 import StatisticLeftList from './components/StatisticLeftList'
@@ -71,6 +71,7 @@ const ROUTE_LIST: any = [
     // keys: ['实际开放床位数', '实际配备护士数'],
     // time: '10:10', call: 4, waiting: 2, people: 2
     serviceName: 'nationalIndex/getBedNurseRatio',
+    exportName: 'nationalIndex/bedNurseRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -91,6 +92,7 @@ const ROUTE_LIST: any = [
     columns: 护患比统计.columns,
     dataSource: [] || 护患比统计.dataSource,
     serviceName: 'nationalIndex/getPatientNurseRatio',
+    exportName: 'nationalIndex/patientNurseRatio/export',
     surplusHeight: 280,
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
@@ -111,6 +113,7 @@ const ROUTE_LIST: any = [
     columns: 小时平均护理时数.columns,
     dataSource: [] || 小时平均护理时数.dataSource,
     serviceName: 'nationalIndex/getNursingHours',
+    exportName: 'nationalIndex/nursingHours/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -130,6 +133,7 @@ const ROUTE_LIST: any = [
     columns: 不同级别护士配置.columns,
     dataSource: [] || 不同级别护士配置.dataSource,
     serviceName: 'nationalIndex/getNurseAllocation',
+    exportName: 'nationalIndex/nurseAllocation/export',
     surplusHeight: 280,
     surplusWidth: 260,
 
@@ -149,6 +153,7 @@ const ROUTE_LIST: any = [
     columns: 护士离职率.columns,
     dataSource: [] || 护士离职率.dataSource,
     serviceName: 'nationalIndex/getNurseResignRatio',
+    exportName: 'nationalIndex/nurseResignRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -168,6 +173,7 @@ const ROUTE_LIST: any = [
     columns: 住院患者跌倒发生率.columns,
     dataSource: [] || 住院患者跌倒发生率.dataSource,
     serviceName: 'nationalIndex/getPatientFallRatio',
+    exportName: 'nationalIndex/patientFallRatio/export',
     // surplusWidth: 260
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
@@ -187,6 +193,7 @@ const ROUTE_LIST: any = [
     columns: 院内压疮发生率.columns,
     dataSource: [] || 院内压疮发生率.dataSource,
     serviceName: 'nationalIndex/getPuRatio',
+    exportName: 'nationalIndex/puRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -207,6 +214,7 @@ const ROUTE_LIST: any = [
     dataSource: [] || 住院患者身体约束率.dataSource,
     // surplusHeight:'400',
     serviceName: 'nationalIndex/getBrRatio',
+    exportName: 'nationalIndex/brRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -226,6 +234,7 @@ const ROUTE_LIST: any = [
     columns: 插管患者非计划拔管发生率.columns,
     dataSource: [] || 插管患者非计划拔管发生率.dataSource,
     serviceName: 'nationalIndex/getUexRatio',
+    exportName: 'nationalIndex/uexRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -245,6 +254,7 @@ const ROUTE_LIST: any = [
     columns: 导尿管相关尿路感染发生率.columns,
     dataSource: [] || 导尿管相关尿路感染发生率.dataSource,
     serviceName: 'nationalIndex/getCautiRatio',
+    exportName: 'nationalIndex/cautiRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -264,6 +274,7 @@ const ROUTE_LIST: any = [
     columns: 中心导管相关血流感染发生率.columns,
     dataSource: [] || 中心导管相关血流感染发生率.dataSource,
     serviceName: 'nationalIndex/getCrbsiRatio',
+    exportName: 'nationalIndex/crbsiRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -283,6 +294,7 @@ const ROUTE_LIST: any = [
     columns: 呼吸机相关性肺炎发生率.columns,
     dataSource: [] || 呼吸机相关性肺炎发生率.dataSource,
     serviceName: 'nationalIndex/getVapRatio',
+    exportName: 'nationalIndex/vapRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -302,6 +314,7 @@ const ROUTE_LIST: any = [
     columns: 产科护理质量数据.columns,
     dataSource: [] || 产科护理质量数据.dataSource,
     serviceName: 'nationalIndex/getObNursingQuqlity',
+    exportName: 'nationalIndex/obNursingQuqlity/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -319,6 +332,7 @@ const ROUTE_LIST: any = [
     columns: 高危药物静脉外渗率.columns,
     dataSource: [] || 高危药物静脉外渗率.dataSource,
     serviceName: 'cnqIndex/getHRDrugsExoRatio',
+    exportName: 'cnqIndex/hRDrugsExoRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -337,6 +351,7 @@ const ROUTE_LIST: any = [
     columns: 输血输液反应倒数.columns,
     dataSource: [] || 输血输液反应倒数.dataSource,
     serviceName: 'cnqIndex/getInfuReactCases',
+    exportName: 'cnqIndex/infuReactCases/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -355,6 +370,7 @@ const ROUTE_LIST: any = [
     columns: 非计划拔管发生率.columns,
     dataSource: [] || 非计划拔管发生率.dataSource,
     serviceName: 'cnqIndex/getUexRatio',
+    exportName: 'cnqIndex/uexRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -374,6 +390,7 @@ const ROUTE_LIST: any = [
     columns: 导管相关血液感染发生率.columns,
     dataSource: [] || 导管相关血液感染发生率.dataSource,
     serviceName: 'cnqIndex/getCrbsiRatio',
+    exportName: 'cnqIndex/crbsiRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -393,6 +410,7 @@ const ROUTE_LIST: any = [
     columns: 尿管相关泌尿系感染发生率.columns,
     dataSource: [] || 尿管相关泌尿系感染发生率.dataSource,
     serviceName: 'cnqIndex/getCautiRatio',
+    exportName: 'cnqIndex/cautiRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -412,6 +430,7 @@ const ROUTE_LIST: any = [
     columns: 手术相关肺部感染发生率.columns,
     dataSource: [] || 手术相关肺部感染发生率.dataSource,
     serviceName: 'cnqIndex/getSurPInfecRatio',
+    exportName: 'cnqIndex/surPInfecRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -431,6 +450,7 @@ const ROUTE_LIST: any = [
     columns: 患者入院前已有压疮统计.columns,
     dataSource: [] || 患者入院前已有压疮统计.dataSource,
     serviceName: 'cnqIndex/getPreAdmiPUCount',
+    exportName: 'cnqIndex/preAdmiPUCount/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -450,6 +470,7 @@ const ROUTE_LIST: any = [
     columns: 入院时压疮高风险患者评估率.columns,
     dataSource: [] || 入院时压疮高风险患者评估率.dataSource,
     serviceName: 'cnqIndex/getHRPUEsRatio',
+    exportName: 'cnqIndex/hRPUEsRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -469,6 +490,7 @@ const ROUTE_LIST: any = [
     columns: 住院压疮高风险压疮发生率.columns,
     dataSource: [] || 住院压疮高风险压疮发生率.dataSource,
     serviceName: 'cnqIndex/getHRPUAcciRatio',
+    exportName: 'cnqIndex/hRPUAcciRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -489,6 +511,7 @@ const ROUTE_LIST: any = [
     columns: 住院患者手术室压疮发生率.columns,
     dataSource: [] || 住院患者手术室压疮发生率.dataSource,
     serviceName: 'cnqIndex/getORPUAcciRatio',
+    exportName: 'cnqIndex/oRPUAcciRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -505,6 +528,7 @@ const ROUTE_LIST: any = [
     columns: 排便失禁患者失禁性皮炎发生率.columns,
     dataSource: [] || 排便失禁患者失禁性皮炎发生率.dataSource,
     serviceName: 'cnqIndex/getIADAcciRatio',
+    exportName: 'cnqIndex/iADAcciRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -524,6 +548,7 @@ const ROUTE_LIST: any = [
     columns: 跌倒坠床高风险患者评估率.columns,
     dataSource: [] || 跌倒坠床高风险患者评估率.dataSource,
     serviceName: 'cnqIndex/getHRFallEsRatio',
+    exportName: 'cnqIndex/hRFallEsRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -543,6 +568,7 @@ const ROUTE_LIST: any = [
     columns: 住院患者跌倒发生率2.columns,
     dataSource: [] || 住院患者跌倒发生率2.dataSource,
     serviceName: 'cnqIndex/getPatientFallAcciRatio',
+    exportName: 'cnqIndex/patientFallAcciRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -562,6 +588,8 @@ const ROUTE_LIST: any = [
     columns: 住院患者跌倒坠床伤害程度.columns,
     dataSource: [] || 住院患者跌倒坠床伤害程度.dataSource,
     serviceName: 'cnqIndex/getFallISS',
+    exportName: 'cnqIndex/fallISS/export',
+    surplusHeight: 280,
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -581,7 +609,7 @@ const ROUTE_LIST: any = [
     columns: 住院患者误吸高风险评估率.columns,
     dataSource: [] || 住院患者误吸高风险评估率.dataSource,
     serviceName: 'cnqIndex/getMisInhalEsRatio',
-
+    exportName: 'cnqIndex/misInhalEsRatio/export',
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
       wardName: '护理单元',
@@ -600,6 +628,7 @@ const ROUTE_LIST: any = [
     columns: 住院高风险患者误吸发生率.columns,
     dataSource: [] || 住院高风险患者误吸发生率.dataSource,
     serviceName: 'cnqIndex/getMisInhalAcciRatio',
+    exportName: 'cnqIndex/misInhalAcciRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -621,13 +650,15 @@ const ROUTE_LIST: any = [
     keys: ['住院高风险患者例数', '走失高风险住院患者评估阳性数'],
     gName: '护理单元',
     lineKey: '评估率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: 'cnqIndex/hRPLostESRatio/export'
   },
   {
     name: '患者走失发生率',
     columns: 患者走失发生率.columns,
     dataSource: [] || 患者走失发生率.dataSource,
     serviceName: 'cnqIndex/getPLostAcciRatio',
+    exportName: 'cnqIndex/pLostAcciRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -647,6 +678,7 @@ const ROUTE_LIST: any = [
     columns: 患者走失高风险患者评估率.columns,
     dataSource: [] || 患者走失高风险患者评估率.dataSource,
     serviceName: 'cnqIndex/getHRPLostESRatio',
+    exportName: 'cnqIndex/hRPLostESRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -666,6 +698,7 @@ const ROUTE_LIST: any = [
     columns: 患者足下垂的发生率.columns,
     dataSource: [] || 患者足下垂的发生率.dataSource,
     serviceName: 'cnqIndex/getPFDropAcciRatio',
+    exportName: 'cnqIndex/pFDropAcciRatio/export',
 
     legendData: [{ value: 'actualOpenBeds', symbol: 'square' }, { value: 'actualNurseCount', symbol: 'square' }],
     dictionary: {
@@ -687,7 +720,8 @@ const ROUTE_LIST: any = [
     keys: ['住新生儿总人数', '烧伤烫伤例数'],
     gName: '护理单元',
     lineKey: '发生率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '查对制度落实合格率',
@@ -696,7 +730,8 @@ const ROUTE_LIST: any = [
     keys: ['检查查对制度的总条款数', '查对制度不合格条款数'],
     gName: '护理单元',
     lineKey: '不合格率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '护理不良事件报告处理符合率',
@@ -705,7 +740,8 @@ const ROUTE_LIST: any = [
     keys: ['检查总次数', '不合格数'],
     gName: '护理单元',
     lineKey: '不合格率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '使用药物错误的发生率',
@@ -714,7 +750,8 @@ const ROUTE_LIST: any = [
     keys: ['急救设备器材及药品总件数', '急救设备器材及药品不合格件数'],
     gName: '护理单元',
     lineKey: '错误发生率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '急救设备器材及药品完好合格率',
@@ -723,7 +760,8 @@ const ROUTE_LIST: any = [
     keys: ['急救设备器材及药品总件数', '急救设备器材及药品不合格件数'],
     gName: '护理单元',
     lineKey: '不合格率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '无菌物品合格率',
@@ -732,7 +770,8 @@ const ROUTE_LIST: any = [
     keys: ['全院无菌物品总件数', '无菌物品合格总件数'],
     gName: '护理单元',
     lineKey: '合格率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '器械清洗合格率',
@@ -741,7 +780,8 @@ const ROUTE_LIST: any = [
     keys: ['CSSD清洗器械总件数', 'CSSD清洗器械合格件数'],
     gName: '护理单元',
     lineKey: '合格率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '包装合格率',
@@ -750,7 +790,8 @@ const ROUTE_LIST: any = [
     keys: ['CSSD灭菌包总件数', '合格灭菌器械包件数'],
     gName: '护理单元',
     lineKey: '合格率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   },
   {
     name: '湿包发生率',
@@ -759,7 +800,8 @@ const ROUTE_LIST: any = [
     keys: ['CSSD灭菌包总件数', '湿包件数'],
     gName: '护理单元',
     lineKey: '湿包率(%)',
-    serviceName: ''
+    serviceName: '',
+    exportName: ''
   }
 ]
 let widthCharGet: any = ''
@@ -818,6 +860,78 @@ export default function Indicator(props: Props) {
       }
     }
   }
+  //导出数据处理方法
+  const fileDownload = (res: any) => {
+    if (res) {
+      let filename = res.headers['content-disposition']
+        ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
+        : '导出文件'
+      // decodeURIComponent
+      // "attachment;filename=????2019-3-18-2019-3-24??.xls"
+      // "application/json"
+      let blob = new Blob([res.data], {
+        type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
+        // type: 'application/vnd.ms-excel;charset=utf-8'
+      })
+
+      if (res.data.type.indexOf('excel') > -1) {
+        // if (res) {
+        let a = document.createElement('a')
+        let href = window.URL.createObjectURL(blob) // 创建链接对象
+        a.href = href
+        a.download = filename // 自定义文件名
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(href)
+        document.body.removeChild(a) // 移除a元素
+      } else {
+        let reader = new FileReader()
+        reader.addEventListener('loadend', function(data: any) {
+          // reader.result 包含转化为类型数组的blob
+          message.error(`${reader.result}`)
+        })
+        reader.readAsText(blob)
+      }
+    }
+  }
+  //调用导出接口
+  const onExport = async () => {
+    let startDate = moment(topRef.current.picker.state.value[0]).format('YYYY-MM-DD')
+    let endDate = moment(topRef.current.picker.state.value[1]).format('YYYY-MM-DD')
+    setStartDate(startDate)
+    setEndDate(endDate)
+    let currentRouteName = props.match.params.name
+    let currentRoute = { ...ROUTE_LIST.find((item: any) => item.name === currentRouteName) }
+    if (currentRoute) {
+      if (
+        currentRoute!.name !== '新生儿烧伤烫伤发生率' &&
+        currentRoute!.name !== '查对制度落实合格率' &&
+        currentRoute!.name !== '护理不良事件报告处理符合率' &&
+        currentRoute!.name !== '使用药物错误的发生率' &&
+        currentRoute!.name !== '急救设备器材及药品完好合格率' &&
+        currentRoute!.name !== '无菌物品合格率' &&
+        currentRoute!.name !== '器械清洗合格率' &&
+        currentRoute!.name !== '包装合格率' &&
+        currentRoute!.name !== '湿包发生率'
+      ) {
+        setTemplateShow(true)
+        // setLoading(true)
+        const data = await indicatorService.getIndicatoeData(currentRoute!.exportName, startDate, endDate)
+        // setLoading(false)
+        console.log('data333333333', data)
+        fileDownload(data)
+        //除错
+        // if (currentRoute && data) {
+        //   currentRoute.dataSource = [...data]
+        //   let cacheTitle = currentRoute!.name + '统计'
+        //   setTitleSecond(cacheTitle)
+        //   setCurrentRoute(currentRoute)
+        // }
+      } else {
+        setTemplateShow(false)
+      }
+    }
+  }
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
   let ChartComponent = (currentRoute && currentRoute.chartComponent) || 护患比统计图
   return (
@@ -828,7 +942,7 @@ export default function Indicator(props: Props) {
       </LeftMenuCon>
 
       <MainCon>
-        <TopCon ref={topRef} refreshData={onload} />
+        <TopCon ref={topRef} refreshData={onload} refExport={onExport} />
         {templateShow ? (
           <MainScroll>
             {currentRoute && (
