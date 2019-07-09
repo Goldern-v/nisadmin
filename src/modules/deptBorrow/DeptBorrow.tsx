@@ -204,7 +204,7 @@ export default observer(function DeptBorrow(props: any) {
   const handleDetailViewClose = (reload: any) => {
 
     setViewOrAuditVisible(false)
-    if (reload===true) getTableData()
+    if (reload === true) getTableData()
   }
 
   const getTableData = (_query?: any) => {
