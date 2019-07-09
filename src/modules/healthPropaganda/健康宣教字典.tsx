@@ -8,6 +8,7 @@ import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import HealthProgandaService from './api/healthProgandaService'
 import qs from 'qs'
+import Moment from 'moment'
 
 const api = new HealthProgandaService();
 
@@ -237,10 +238,18 @@ export default observer(function 健康宣教字典(props: Props) {
           let missionName: any = fileName.split('.');
           missionName.pop();
 
+          let deptCode = query.deptCode;
+          let deptName = '公共';
+          for (let i = 0; i < deptList.length; i++) {
+            if (deptList[i].code == deptCode) deptName = deptList[i].name;
+          }
+
           window.sessionStorage.healthPropagandaEditData = JSON.stringify({
             type: 'upload',
             name: missionName.join('.'),
-            baseInfo: {},
+            // baseInfo: {},
+            deptCode,
+            deptName,
             content: originString.replace(/\n/g, '<br/>').replace(/\r/g, '<br/>')
           })
           history.push('/healthPropagandaEdit');
@@ -264,7 +273,21 @@ export default observer(function 健康宣教字典(props: Props) {
   }
 
   const handleCreateNew = () => {
-    delete window.sessionStorage.healthPropagandaEditData;
+    // delete window.sessionStorage.healthPropagandaEditData;
+    let deptCode = query.deptCode;
+    let deptName = '公共';
+    for (let i = 0; i < deptList.length; i++) {
+      if (deptList[i].code == deptCode) deptName = deptList[i].name;
+    }
+
+    window.sessionStorage.healthPropagandaEditData = JSON.stringify({
+      type: 'createNew',
+      name: '',
+      deptCode,
+      deptName,
+      // baseInfo: {},
+      content: ''
+    })
     history.push('/healthPropagandaEdit');
   }
 
@@ -323,7 +346,13 @@ export default observer(function 健康宣教字典(props: Props) {
         <BaseTable
           loading={dataLoading}
           columns={columns}
-          dataSource={tableData}
+          dataSource={tableData.sort((a: any, b: any) => {
+            let aTimeset = 0;
+            let bTimeset = 0;
+            if (a.creatDate) aTimeset = Number(Moment(a.creatDate).format('x'));
+            if (b.creatDate) bTimeset = Number(Moment(b.creatDate).format('x'));
+            return bTimeset - aTimeset
+          })}
           pagination={false}
           surplusHeight={205} />
       </div>
