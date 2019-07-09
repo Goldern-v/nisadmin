@@ -13,9 +13,11 @@ import ScheduleHomeView from 'src/modules/schedule/views/ScheduleHome/ScheduleHo
 import NurseSettingView from 'src/modules/schedule/views/NurseSetting/NurseSettingView' // 排班人员设置
 import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSettingView' // 排班人员设置
 import StatisticView from 'src/modules/statistic/StatisticView'
+import PersonnelSettingView from 'src/modules/schedule/views/PersonnelSetting/PersonnelSettingView' // 人员分组
+
 // import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
 // import WhiteShiftByMonthView from 'src/modules/statistic/views/whiteShiftByMonth/WhiteShiftByMonthView'
-// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView'
+// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView' 
 
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
@@ -72,9 +74,14 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '班次套餐设置', link: '' }
   ]),
+  setLayout('/personnelSetting', PersonnelSettingView, layouts.BreadcrumbLayout, [
+    { name: '排班管理', link: '/scheduleHome' },
+    { name: '人员分组', link: '' }
+  ]),
+
   // setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
   //   { name: '排班管理', link: '/scheduleHome' },
-  //   { name: '排班编辑', link: '' }
+  //   { name: '排班编辑', link: '' } 
   // ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.MainLayout),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),

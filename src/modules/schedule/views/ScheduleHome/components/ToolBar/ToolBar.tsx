@@ -179,6 +179,12 @@ export default function ToolBar() {
           排班套餐设置
         </Link>
       </LinkText>
+      <BreakLine>|</BreakLine>
+      <LinkText>
+        <Link to='/personnelSetting' style={{ color: '#747474' }}>
+          人员分组
+        </Link>
+      </LinkText>
     </Wrapper>
   )
 }

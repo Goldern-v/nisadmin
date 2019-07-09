@@ -73,7 +73,7 @@ class EditableTable extends React.Component<any, any> {
       },
       {
         title: '创建人',
-        dataIndex: 'operator',
+        dataIndex: 'operatorName',
         width: 100,
         align: 'center',
         editable: true
