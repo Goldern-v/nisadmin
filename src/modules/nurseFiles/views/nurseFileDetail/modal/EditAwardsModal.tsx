@@ -16,6 +16,7 @@ import ImageUploader from 'src/components/ImageUploader'
 import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
+import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -29,32 +30,9 @@ const rules: Rules = {
   awardlevel: (val) => !!val || '请填写授奖级别',
   approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditWorkHistoryModal (props: Props) {
-  const [attachmentId, setAttachmentId] = useState('')
+export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
-  const uploadCard = async (file: any) => {
-    let obj: any = {
-      file,
-      empNo: appStore.queryObj.empNo,
-      type: '0'
-    }
-    if (authStore!.user!.post == '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
 
-    const [err, res] = await to(service.commonApiService.uploadFile(obj))
-    if (err) {
-      message.error(err.message)
-      return res || ''
-    }
-    if (res.data) {
-      let pathImg = `${res.data.path}`
-      setAttachmentId(res.data.id + ',')
-      return pathImg
-    }
-  }
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
@@ -65,7 +43,6 @@ export default function EditWorkHistoryModal (props: Props) {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: '',
-      attachmentId: attachmentId,
       urlImageOne: ''
     }
     if (authStore!.user!.post == '护长') {
@@ -80,6 +57,7 @@ export default function EditWorkHistoryModal (props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.time && (value.startTime = value.time.format('YYYY-MM-DD'))
+    value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.nurseAwardWinningAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -92,14 +70,13 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         time: moment(data.time),
         awardWinningName: data.awardWinningName,
         rank: data.rank,
         awardlevel: data.awardlevel,
         approvalAuthority: data.approvalAuthority,
-        urlImageOne: data.urlImageOne
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
@@ -139,8 +116,8 @@ export default function EditWorkHistoryModal (props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={``} name='urlImageOne'>
-              <ImageUploader upload={uploadCard} text='添加附件' />
+            <Form.Field label={`附件`} name='urlImageOne'>
+              <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>
         </Row>

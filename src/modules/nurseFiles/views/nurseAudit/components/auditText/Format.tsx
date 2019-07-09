@@ -1,6 +1,7 @@
 import { globalModal } from 'src/global/globalModal'
 
 export default function Format(row: any, getTableData: any) {
+  console.log(row, 'rowrow')
   switch (row.typeName) {
     case '基本信息': {
       return globalModal.auditModal.show({
@@ -53,12 +54,18 @@ export default function Format(row: any, getTableData: any) {
           //   资格证编号: `age`
           // }
         ],
-        // fileData: [
-        //   {
-        //     附件1: info.urlImageOne,
-        //     附件2: 'bbb'
-        //   }
-        // ],
+        fileData: [
+          {
+            个人头像: row.nearImageUrl
+          },
+          ...(row.zyzsUrl
+            ? row.zyzsUrl.split(',').map((item: any, index: number) => {
+                return {
+                  ['执业证书' + (index + 1)]: item
+                }
+              })
+            : [])
+        ],
         allData: row
       })
     }
@@ -100,11 +107,13 @@ export default function Format(row: any, getTableData: any) {
             资格证编号: `specialQualificationNo`
           }
         ],
-        fileData: [
-          {
-            附件1: row.urlImageOne
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -126,12 +135,13 @@ export default function Format(row: any, getTableData: any) {
             学历: `education`
           }
         ],
-        fileData: [
-          {
-            毕业证: row.urlImageOne,
-            学位证: row.urlImageTwo
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -150,11 +160,13 @@ export default function Format(row: any, getTableData: any) {
             层级: `hierarchy`
           }
         ],
-        fileData: [
-          {
-            附件1: row.urlImageOne
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -174,11 +186,13 @@ export default function Format(row: any, getTableData: any) {
             培训内容: `trainingContent`
           }
         ],
-        fileData: [
-          {
-            附件1: row.urlImageOne
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -198,11 +212,13 @@ export default function Format(row: any, getTableData: any) {
             出版或刊登物: `publication`
           }
         ],
-        fileData: [
-          {
-            附件1: row.urlImageOne
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -225,11 +241,13 @@ export default function Format(row: any, getTableData: any) {
             批准机关: `approvalAuthority`
           }
         ],
-        fileData: [
-          {
-            附件1: row.urlImageOne
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -245,11 +263,13 @@ export default function Format(row: any, getTableData: any) {
             考核结果: `checkResult`
           }
         ],
-        fileData: [
-          {
-            附件1: row.urlImageOne
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -268,11 +288,13 @@ export default function Format(row: any, getTableData: any) {
             操作考核成绩_分: `technologyScore`
           }
         ],
-        fileData: [
-          {
-            附件1: row.urlImageOne
-          }
-        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }
@@ -314,11 +336,13 @@ export default function Format(row: any, getTableData: any) {
         type: 'nurseAttachment',
         title: '附件审核',
         tableFormat: [],
-        fileData: [
-          {
-            附件1: row.path
-          }
-        ],
+        fileData: row.path
+          ? row.path.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+          : [],
         allData: row
       })
     }

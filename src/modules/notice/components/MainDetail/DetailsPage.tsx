@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { Tooltip } from 'antd'
 import { DetailObj } from '../../type'
 import { authStore } from 'src/stores'
+import { getFileSize } from 'src/utils/file/file'
 export interface Props {
   data: DetailObj
 }
@@ -50,21 +51,26 @@ export default function DetailsPage(props: Props) {
         <Line />
         <TextCon>{data.content}</TextCon>
         <Line />
-        <FooterCon>
-          <div className='title'>
-            <span>附件（）</span>
-            <span className='down-all-text'>批量下载</span>
-          </div>
-          <FileCon>
-            <div className='file-box'>
-              <div className='file-inner'>
-                <img src='' alt='' className='type-img' />
-                <div className='file-name'>123213</div>
-                <div className='file-size'>12321</div>
-              </div>
+        {data.attachmentList && data.attachmentList.length && (
+          <FooterCon>
+            <div className='title'>
+              <img className='icon' src={require('./images/附件.png')} alt='' />
+              <span>附件（{data.attachmentList.length}）</span>
+              <span className='down-all-text'>批量下载</span>
             </div>
-          </FileCon>
-        </FooterCon>
+            <FileCon>
+              {data.attachmentList.map((item: any) => (
+                <div className='file-box'>
+                  <div className='file-inner'>
+                    <img src={require('../../images/img.png')} alt='' className='type-img' />
+                    <div className='file-name'>{item.name}</div>
+                    <div className='file-size'>{getFileSize(item.size)}</div>
+                  </div>
+                </div>
+              ))}
+            </FileCon>
+          </FooterCon>
+        )}
       </PageCon>
     </Wrapper>
   )
@@ -179,8 +185,18 @@ const FooterCon = styled.div`
       color: #333;
     }
     .down-all-text {
+      cursor: pointer;
       color: ${(p) => p.theme.$mtc};
+      &:hover {
+        font-weight: bold;
+      }
     }
+  }
+  .icon {
+    width: 15px;
+    margin-right: 4px;
+    position: relative;
+    top: -2px;
   }
 `
 

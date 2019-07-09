@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -15,7 +15,7 @@ import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit
 
 export interface Props extends RouteComponentProps {}
 
-export default observer(function WorkHistory () {
+export default observer(function WorkHistory() {
   const [getId, setGetId] = useState(0)
   const editWorkHistoryModal = createModal(EditWorkHistoryModal)
 
@@ -84,7 +84,7 @@ export default observer(function WorkHistory () {
       dataIndex: 'auditedStatusName',
       key: '',
       align: 'center',
-      width: 150
+      width: 120
       // render: (text: any, item: any, index: any) => {
       //   return <span>{item && auditedStatusEnum[item.auditedStatus]}</span>
       // }
@@ -170,13 +170,3 @@ export default observer(function WorkHistory () {
   )
 })
 const Wrapper = styled.div``
-
-const DoCon = styled.div`
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-  color: ${(p) => p.theme.$mtc};
-  span {
-    cursor: pointer;
-  }
-`

@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, SetStateAction, Dispatch } from 'react'
-import { Select, Button } from 'antd'
+import { Select, Button, message } from 'antd'
 import { RouteComponentProps } from 'react-router'
 import createModal from 'src/libs/createModal'
 import SelectPeopleModal from './modal/SelectPeopleModal'
 import { ChangeEvent } from 'react'
 import service from 'src/services/api'
 import { getFileSize } from 'src/utils/file/file'
+import { noticeService } from '../serveices/NoticeService'
+import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export interface CheckUserItem {
@@ -17,8 +19,11 @@ interface FileItem {
   name: string
   size: string
   type: string
+  id: string
 }
 export default function SentNoticeView() {
+  const [title, setTitle]: [string, Dispatch<SetStateAction<string>>] = useState('')
+  const [content, setContent]: [string, Dispatch<SetStateAction<string>>] = useState('')
   const [fileList, setFileList]: [FileItem[], Dispatch<SetStateAction<FileItem[]>>] = useState([] as FileItem[])
   const [checkedUserList, setCheckedUserList]: any = useState([])
   const selectPeopleModal = createModal(SelectPeopleModal)
@@ -43,25 +48,82 @@ export default function SentNoticeView() {
       postData.append('file', files[i])
       promiseList.push(service.commonApiService.uploadAttachment('mail', postData))
     }
-    Promise.all(promiseList).then((res) => {
-      setFileList([
-        ...fileList,
-        ...res.map(({ data: item }: any) => {
-          return {
-            ...item,
-            size: getFileSize(item.size)
-          }
-        })
-      ])
-    })
-    console.log(e, 'eeee')
+    let hideLoading = message.loading('正在上传，请稍等')
+    Promise.all(promiseList)
+      .then((res) => {
+        setFileList([
+          ...fileList,
+          ...res.map(({ data: item }: any) => {
+            return {
+              ...item,
+              size: getFileSize(item.size)
+            }
+          })
+        ])
+        hideLoading()
+      })
+      .catch((e) => {
+        hideLoading()
+      })
+  }
+
+  const sendMail = () => {
+    let hideLoading = message.loading('邮件正在发送中...')
+    noticeService
+      .sendMail({
+        mail: {
+          title,
+          content
+        },
+        empNos: checkedUserList.reduce((prev: any, current: any) => {
+          return [...prev, ...current.userList.map((item: any) => item.empNo)]
+        }, []),
+        fileIds: fileList.map((item) => item.id),
+        tempSave: false
+      })
+      .then((res) => {
+        hideLoading()
+        message.success('邮件发送成功！')
+        appStore.history.replace('/notice')
+      })
+      .catch(() => {
+        hideLoading()
+      })
+  }
+  const saveTemplateMail = () => {
+    let hideLoading = message.loading('邮件正在存草稿...')
+    noticeService
+      .sendMail({
+        mail: {
+          title,
+          content
+        },
+        empNos: checkedUserList.reduce((prev: any, current: any) => {
+          return [...prev, ...current.userList.map((item: any) => item.empNo)]
+        }, []),
+        fileIds: fileList.map((item) => item.id),
+        tempSave: true
+      })
+      .then((res) => {
+        hideLoading()
+        message.success('邮件存草稿成功！')
+      })
+      .catch(() => {
+        hideLoading()
+      })
   }
   return (
     <Wrapper>
       <InputBox>
         <div className='label'>主&nbsp;题</div>
         <div className='input-con'>
-          <input type='text' className='text-input' placeholder='请输入主题' />
+          <input
+            type='text'
+            className='text-input'
+            placeholder='请输入主题'
+            value={title}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          />
         </div>
       </InputBox>
       <InputBox>
@@ -102,10 +164,20 @@ export default function SentNoticeView() {
         </FilesBox>
       )}
       <input type='file' style={{ display: 'none' }} ref={fileInputRef} onChange={onFileChange} />
-      <Textarea className='scrollBox' placeholder='请输入邮件内容...' />
+      <Textarea
+        className='scrollBox'
+        placeholder='请输入邮件内容...'
+        value={content}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
+      />
       <FooterCon>
-        <Button type='primary'>发送</Button>
-        <Button>取消</Button>
+        <Button type='primary' style={{ marginRight: 15 }} onClick={sendMail}>
+          发 送
+        </Button>
+        <Button style={{ marginRight: 15 }} onClick={saveTemplateMail}>
+          存草稿
+        </Button>
+        <Button> 取 消 </Button>
       </FooterCon>
       <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
     </Wrapper>
@@ -213,7 +285,7 @@ const Textarea = styled.textarea`
   outline: 0;
   border: 0;
   resize: none;
-  padding: 15px;
+  padding: 15px 30px;
 `
 
 const FooterCon = styled.div`

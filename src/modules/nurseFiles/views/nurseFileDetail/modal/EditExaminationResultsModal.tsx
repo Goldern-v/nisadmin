@@ -15,6 +15,7 @@ import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
+import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -26,36 +27,9 @@ const rules: Rules = {
   year: (val) => !!val || '年度',
   checkResult: (val) => !!val || '考核结果'
 }
-export default function EditWorkHistoryModal (props: Props) {
-  const [attachmentId, setAttachmentId] = useState('')
+export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
-  const uploadCard = async (file: any) => {
-    let obj: any = {
-      file,
-      empNo: appStore.queryObj.empNo,
-      type: '0',
-      auditedStatus: ''
-    }
-    if (authStore!.user!.post === '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
-    // if (signShow === '修改') {
-    //   Object.assign(obj, { id: data.id })
-    // }
 
-    const [err, res] = await to(service.commonApiService.uploadFile(obj))
-    if (err) {
-      message.error(err.message)
-      return res || ''
-    }
-    if (res.data) {
-      let pathImg = `${res.data.path}`
-      setAttachmentId(res.data.id + ',')
-      return pathImg
-    }
-  }
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
@@ -72,9 +46,7 @@ export default function EditWorkHistoryModal (props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: auditedStatusShow,
-      attachmentId: attachmentId,
-      urlImageOne: ''
+      auditedStatus: auditedStatusShow
     }
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
@@ -84,6 +56,7 @@ export default function EditWorkHistoryModal (props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.year && (value.year = value.year.format('YYYY'))
+    value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.nurseYearCheckAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -96,12 +69,10 @@ export default function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      setAttachmentId(data.attachmentId)
-
       refForm!.current!.setFields({
         year: moment(data.year),
         checkResult: data.checkResult,
-        urlImageOne: data.urlImageOne
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
       // refForm.current.setField('unit', 123)
     }
@@ -134,7 +105,7 @@ export default function EditWorkHistoryModal (props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={``} name='urlImageOne'>
-              <ImageUploader upload={uploadCard} text='添加附件' />
+              <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>
         </Row>

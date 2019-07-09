@@ -1,0 +1,123 @@
+import styled from 'styled-components'
+import React, { useState, useEffect } from 'react'
+import { RouteComponentProps } from 'react-router'
+import LeftMenu from 'src/components/LeftMenu'
+import Null from 'src/components/null/Null'
+
+import { ReactComponent as RYGL } from './assets/icon_svg/人员管理.svg'
+import { ReactComponent as YNXXB } from './assets/icon_svg/院内学习班.svg'
+import { ReactComponent as JXJH } from './assets/icon_svg/教学计划.svg'
+import { ReactComponent as LXGL } from './assets/icon_svg/练习管理.svg'
+import { ReactComponent as KSGL } from './assets/icon_svg/考试管理.svg'
+import { ReactComponent as SPXX } from './assets/icon_svg/视频学习.svg'
+import { ReactComponent as TKGL } from './assets/icon_svg/题库管理.svg'
+import { ReactComponent as PXGL } from './assets/icon_svg/培训管理.svg'
+import { ReactComponent as JJSZ } from './assets/icon_svg/晋级设置.svg'
+
+export interface Props extends RouteComponentProps { }
+
+import 人员管理 from './人员管理'
+
+const LEFT_MENU_CONFIG = [
+  {
+    title: '人员管理',
+    icon: <RYGL />,
+    path: '/continuingEdu/人员管理',
+    component: 人员管理
+  },
+  {
+    title: '院内学习班',
+    icon: <YNXXB />,
+    path: '/continuingEdu/院内学习班',
+    component: Null
+  },
+  {
+    title: '教学计划',
+    icon: <JXJH />,
+    path: '/continuingEdu/教学计划',
+    component: Null
+  },
+  {
+    title: '练习管理',
+    icon: <LXGL />,
+    path: '/continuingEdu/练习管理',
+    component: Null
+  },
+  {
+    title: '考试管理',
+    icon: <KSGL />,
+    path: '/continuingEdu/考试管理',
+    component: Null
+  },
+  {
+    title: '视频学习',
+    icon: <SPXX />,
+    path: '/continuingEdu/视频学习',
+    component: Null
+  },
+  {
+    title: '题库管理',
+    icon: <TKGL />,
+    path: '/continuingEdu/题库管理',
+    component: Null
+  },
+  {
+    title: '培训管理',
+    icon: <PXGL />,
+    path: '/continuingEdu/培训管理',
+    component: Null
+  },
+  {
+    title: '晋级设置',
+    icon: <JJSZ />,
+    path: '/continuingEdu/晋级设置',
+    component: Null
+  },
+]
+
+export default function ContinuingEdu(props: Props) {
+  let currentRoutePath = props.match.url || ''
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
+  // 筛选目标对象
+  function getTargetObj(listDate: any, targetKey: string, targetName: string) {
+    let chooseRoute = listDate.find((item: any) => {
+      if (item.children) {
+        return item.children.find((item1: any) => item1[targetKey] === targetName)
+      } else {
+        return item[targetKey] === targetName
+      }
+    })
+    if (chooseRoute && chooseRoute.children) {
+      chooseRoute = chooseRoute.children.find((item1: any) => item1[targetKey] === targetName)
+    }
+    return chooseRoute
+  }
+  // let cacheSetHeadTitle = currentRoute && currentRoute.title
+  return <Wrapper>
+    <LeftWrapper>
+      <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="继续教育" />
+    </LeftWrapper>
+    <MainWrapper>
+      {currentRoute && currentRoute.component && (
+        <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+      )}
+    </MainWrapper>
+  </Wrapper>
+}
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`
+const LeftWrapper = styled.div`
+  #left-menu-con{
+    overflow-x: hidden;
+  }
+`
+const MainWrapper = styled.div`
+  position: absolute;
+  left: 200px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+`
