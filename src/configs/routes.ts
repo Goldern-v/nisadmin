@@ -17,7 +17,7 @@ import PersonnelSettingView from 'src/modules/schedule/views/PersonnelSetting/Pe
 
 // import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
 // import WhiteShiftByMonthView from 'src/modules/statistic/views/whiteShiftByMonth/WhiteShiftByMonthView'
-// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView' 
+// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView'
 
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
@@ -50,6 +50,8 @@ import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaE
 //不良事件列表和审核流程
 import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList'
 import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail'
+//培训考核
+import TrainingExamination from 'src/modules/trainingExamination/TrainingExamination'
 //科室借用
 import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
 
@@ -83,7 +85,7 @@ const routes: RouteItem[] = [
 
   // setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
   //   { name: '排班管理', link: '/scheduleHome' },
-  //   { name: '排班编辑', link: '' } 
+  //   { name: '排班编辑', link: '' }
   // ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.MainLayout),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
@@ -103,7 +105,8 @@ const routes: RouteItem[] = [
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/auditsManagement', AuditsManagementView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
-  setLayout('/test', testView, layouts.MainLayout),
+  // 培训考核
+  setLayout('/trainingExamination', TrainingExamination, layouts.MainLayout),
   setLayout('/notice', NoticeView, layouts.MainLayout),
   setLayout('/sentNotice', SentNoticeView, layouts.MainLayout),
   setLayout('/lmsDetails', LmsDetails, layouts.MainLayout),
