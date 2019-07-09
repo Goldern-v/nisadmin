@@ -15,6 +15,7 @@ import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
+import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -39,7 +40,7 @@ const uploadCard = () => Promise.resolve('123')
 //   phone: (val) => !!val || '',
 //   address: (val) => !!val || ''
 // }
-export default function EditWorkHistoryModal (props: Props) {
+export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
 
@@ -78,6 +79,7 @@ export default function EditWorkHistoryModal (props: Props) {
     if (err) return
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
     value.goWorkTime && (value.goWorkTime = value.goWorkTime.format('YYYY-MM-DD'))
+    value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
     nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -106,7 +108,7 @@ export default function EditWorkHistoryModal (props: Props) {
         phone: data.phone,
         address: data.address,
         nearImageUrl: data.nearImageUrl,
-        zyzsUrl: data.zyzsUrl,
+        zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : [],
         newTitle: data.newTitle,
         goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
       })
@@ -230,7 +232,8 @@ export default function EditWorkHistoryModal (props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`添加执业证书图片`} name='zyzsUrl'>
-              <ImageUploader upload={uploadCard} text='添加执业证书图片' />
+              {/* <ImageUploader upload={uploadCard} text='添加执业证书图片' /> */}
+              <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>
         </Row>

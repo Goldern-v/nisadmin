@@ -14,6 +14,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import { appStore, authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
+import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -34,83 +35,34 @@ const rules: Rules = {
 export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
-  const [pathImgGraduate, setPathImgGraduate] = useState('')
-  const [pathImgDegree, setPathImgDegree] = useState('')
-  const [attachmentId1, setAttachmentId1] = useState('')
-  const [attachmentId2, setAttachmentId2] = useState('')
-  const uploadCardGraduate = async (file: any) => {
-    const [err, res] = await to(nurseFilesService.uploadFileUserEducat(file))
-    if (err) {
-      message.error(err.message)
-      return res || ''
-    }
-    if (res.data) {
-      let pathImg = `${res.data.path}`
-      if (!data) {
-        data = {}
-      }
-      data.urlImageTwo = pathImg
 
-      setPathImgGraduate(pathImg)
-      setAttachmentId1(res.data.id)
-      return pathImg
-    }
+  const uploadOption = {
+    empNo: appStore.queryObj.empNo,
+    auditedStatus:
+      authStore!.user!.post === '护长'
+        ? 'waitAuditedNurse'
+        : authStore!.user!.post === '护理部'
+        ? 'waitAuditedDepartment'
+        : ''
   }
 
-  const uploadCardDegree = async (file: any) => {
-    const [err, res] = await to(nurseFilesService.uploadFileUserEducat(file))
-    if (err) {
-      message.error(err.message)
-      return res || ''
-    }
-    if (res.data) {
-      let pathImg = `${res.data.path}`
-      if (!data) {
-        data = {}
-      }
-      data.urlImageOne = pathImg
-
-      setPathImgDegree(pathImg)
-      setAttachmentId2(res.data.id)
-      return pathImg
-    }
-  }
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
 
   const onSave = async () => {
-    // let getPostData = loginViewModel.post
-    // let auditedStatusShow = 'waitAuditedDepartment'
-    // if (getPostData === '护士长') {
-    //   auditedStatusShow = 'waitAuditedNurse'
-    // } else if (getPostData === '护理部') {
-    //   auditedStatusShow = 'waitAuditedDepartment'
-    // }
-    const obj = {
-      empNo: nurseFileDetailViewModal.nurserInfo.empNo,
-      empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: '',
-      urlImageOne: pathImgDegree,
-      urlImageTwo: pathImgGraduate,
-      // 每个附件对应的id
-      fileIdz: '',
-      attachmentId: attachmentId1 + ',' + attachmentId2 + ','
-    }
-    if (authStore!.user!.post === '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
+    let obj = { ...uploadOption }
 
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
+
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
 
     value.readTime && (value.readTime = value.readTime.format('YYYY-MM-DD'))
+    value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.graduationTime && (value.graduationTime = value.graduationTime.format('YYYY-MM-DD'))
 
     nurseFilesService.userEducatAdd({ ...value, ...obj }).then((res: any) => {
@@ -125,17 +77,13 @@ export default function EditWorkHistoryModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      setAttachmentId1((data.attachmentId && data.attachmentId.split(',')[0]) || '')
-      setAttachmentId2((data.attachmentId && data.attachmentId.split(',')[1]) || '')
-
       refForm!.current!.setFields({
         readTime: moment(data.readTime),
         graduationTime: moment(data.graduationTime),
         graduationSchool: data.graduationSchool,
         readProfessional: data.readProfessional,
         education: data.education,
-        urlImageTwo: data.urlImageTwo,
-        urlImageOne: data.urlImageOne
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
 
       // refForm.current.setField('unit', 123)
@@ -179,13 +127,8 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`毕业证`} name='urlImageOne'>
-              <ImageUploader upload={uploadCardGraduate} text='添加毕业证' />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`学位证`} name='urlImageTwo'>
-              <ImageUploader upload={uploadCardDegree} text='添加学位证' />
+            <Form.Field label={`附件`} name='urlImageOne'>
+              <MultipleImageUploader text='添加图片' uploadOption={uploadOption} />
             </Form.Field>
           </Col>
         </Row>

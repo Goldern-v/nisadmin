@@ -47,6 +47,7 @@ export default function aduitModal(props: Props) {
     if (visible) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
       props.title ? setTitle(props.title) : setTitle('审核')
+      // console.log(props.fileData, 'props.fileDataprops.fileData')
       props.fileData ? setFileData(props.fileData) : setFileData([])
       setAgree('agree')
       setOpinion('')
@@ -75,6 +76,20 @@ export default function aduitModal(props: Props) {
             setNeedAudite(true)
           }
           setAuditStatus(data.auditedStatusName)
+          // if (props.fileData.length == 0 && (data.nearImageUrl || data.zyzsUrl)) {
+          setFileData([
+            {
+              个人头像: data.nearImageUrl
+            },
+            ...(data.zyzsUrl
+              ? data.zyzsUrl.split(',').map((item: any, index: number) => {
+                  return {
+                    ['执业证书' + (index + 1)]: item
+                  }
+                })
+              : [])
+          ])
+          // }
         })
       } else {
         /** 获取详情 */
@@ -97,6 +112,17 @@ export default function aduitModal(props: Props) {
             setNeedAudite(true)
           }
           setAuditStatus(data.auditedStatusName)
+          if (props.fileData.length == 0 && data.urlImageOne) {
+            setFileData(
+              data.urlImageOne
+                ? data.urlImageOne.split(',').map((item: any, index: number) => {
+                    return {
+                      ['附件' + (index + 1)]: item
+                    }
+                  })
+                : []
+            )
+          }
         })
       }
     }
@@ -154,13 +180,15 @@ export default function aduitModal(props: Props) {
               ))}
             </tbody>
           </InfoTable>
-
-          {fileData.map((obj: any, index: number) => (
-            <UploadCon key={index}>
-              {Object.keys(obj)[0] && <UploadItem label={Object.keys(obj)[0]} path={obj[Object.keys(obj)[0]]} />}
-              {Object.keys(obj)[1] && <UploadItem label={Object.keys(obj)[1]} path={obj[Object.keys(obj)[1]]} />}
-            </UploadCon>
-          ))}
+          <div style={{ margin: '10px 0', overflow: 'hidden' }}>
+            {/* {JSON.stringify(fileData)} */}
+            {fileData.map((obj: any, index: number) => (
+              <UploadCon key={index}>
+                {Object.keys(obj)[0] && <UploadItem label={Object.keys(obj)[0]} path={obj[Object.keys(obj)[0]]} />}
+                {/* {Object.keys(obj)[1] && <UploadItem label={Object.keys(obj)[1]} path={obj[Object.keys(obj)[1]]} />} */}
+              </UploadCon>
+            ))}
+          </div>
         </MainPart>
         <AduitCon>
           <TimeLineCon>
@@ -310,7 +338,7 @@ function UploadItem(props: any) {
       height: 150px;
       min-width: 180px;
       border: 1px solid rgba(219, 224, 228, 1);
-      top: 20px;
+      top: 0px;
       left: 80px;
       object-fit: cover;
     }
@@ -412,9 +440,11 @@ const Value = styled.div`
 `
 
 const UploadCon = styled.div`
-  height: 190px;
+  height: 150px;
   display: flex;
-  margin: 10px 0;
+  margin: 5px 0;
+  float: left;
+  width: 50%;
 `
 
 const ResultBox = styled.div`

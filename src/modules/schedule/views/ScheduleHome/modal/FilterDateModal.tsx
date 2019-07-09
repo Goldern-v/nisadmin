@@ -57,8 +57,8 @@ export default function FilterDateModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={80}>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='确定' forceRender width={400}>
+      <Form ref={refForm} rules={rules} labelWidth={40}>
         <Row>
           <Col span={24}>
             <Form.Field label={`日期`} name='date' required>

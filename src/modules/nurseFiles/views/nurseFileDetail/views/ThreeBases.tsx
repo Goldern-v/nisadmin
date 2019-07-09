@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -14,7 +14,7 @@ import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit
 import Zimage from 'src/components/Zimage'
 
 export interface Props extends RouteComponentProps {}
-export default observer(function ThreeBases () {
+export default observer(function ThreeBases() {
   const editThreeBasesModal = createModal(EditThreeBasesModal)
   const btnList = [
     {
@@ -46,14 +46,14 @@ export default observer(function ThreeBases () {
       title: '理论考核成绩(分)',
       dataIndex: 'theoryScore',
       key: '3',
-      width: 200,
+      width: 120,
       align: 'center'
     },
     {
       title: '操作考核成绩(分)',
       dataIndex: 'technologyScore',
       key: '4',
-      width: 200,
+      width: 120,
       align: 'center'
     },
     {
@@ -63,14 +63,14 @@ export default observer(function ThreeBases () {
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '61',
-      width: 150,
+      width: 120,
       align: 'center'
     },
     {
@@ -110,12 +110,13 @@ export default observer(function ThreeBases () {
                       操作考核成绩_分: `technologyScore`
                     }
                   ],
-                  fileData: [
-                    {
-                      附件1: row.urlImageOne
-                      // 附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
+                  fileData: row.urlImageOne
+                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
+                        return {
+                          ['附件' + (index + 1)]: item
+                        }
+                      })
+                    : [],
                   allData: row
                 })
               }}
@@ -140,19 +141,15 @@ export default observer(function ThreeBases () {
 
   return (
     <BaseLayout title='医院三基考核' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} type={['spaceRow', 'fixedWidth']} tip={'无需填写，由培训模块自动导入。'}/>
+      <BaseTable
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={305}
+        type={['spaceRow', 'fixedWidth']}
+        tip={'无需填写，由培训模块自动导入。'}
+      />
       <editThreeBasesModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
 const Wrapper = styled.div``
-
-const DoCon = styled.div`
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-  color: ${(p) => p.theme.$mtc};
-  span {
-    cursor: pointer;
-  }
-`

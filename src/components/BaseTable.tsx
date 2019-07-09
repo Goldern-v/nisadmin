@@ -284,5 +284,9 @@ export const DoCon = styled.div`
   color: ${(p) => p.theme.$mtc};
   span {
     cursor: pointer;
+    font-size: 12px;
+    &:hover {
+      font-weight: bold;
+    }
   }
 `

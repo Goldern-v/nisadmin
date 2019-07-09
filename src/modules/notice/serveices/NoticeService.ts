@@ -1,4 +1,16 @@
 import BaseApiService from 'src/services/api/BaseApiService'
+
+interface Mail {
+  mail: {
+    id?: number
+    title: string
+    content: string
+  }
+  empNos: string[]
+  fileIds: string[]
+  tempSave?: boolean /** true-存为草稿。 false-发送 */
+}
+
 export default class NoticeService extends BaseApiService {
   /** 邮件箱（收件、发件、草稿数量） */
   public getBoxSize() {
@@ -34,6 +46,11 @@ export default class NoticeService extends BaseApiService {
       })
     }
     return new Promise(() => {})
+  }
+
+  /** 发邮件 */
+  public sendMail(mail: Mail) {
+    return this.post(`/mail/send/save`, mail)
   }
 }
 

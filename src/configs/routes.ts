@@ -13,9 +13,11 @@ import ScheduleHomeView from 'src/modules/schedule/views/ScheduleHome/ScheduleHo
 import NurseSettingView from 'src/modules/schedule/views/NurseSetting/NurseSettingView' // 排班人员设置
 import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSettingView' // 排班人员设置
 import StatisticView from 'src/modules/statistic/StatisticView'
+import PersonnelSettingView from 'src/modules/schedule/views/PersonnelSetting/PersonnelSettingView' // 人员分组
+
 // import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
 // import WhiteShiftByMonthView from 'src/modules/statistic/views/whiteShiftByMonth/WhiteShiftByMonthView'
-// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView'
+// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView' 
 
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
@@ -48,6 +50,8 @@ import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaE
 //不良事件列表和审核流程
 import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList'
 import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail'
+//科室借用
+import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -72,9 +76,14 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '班次套餐设置', link: '' }
   ]),
+  setLayout('/personnelSetting', PersonnelSettingView, layouts.BreadcrumbLayout, [
+    { name: '排班管理', link: '/scheduleHome' },
+    { name: '人员分组', link: '' }
+  ]),
+
   // setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
   //   { name: '排班管理', link: '/scheduleHome' },
-  //   { name: '排班编辑', link: '' }
+  //   { name: '排班编辑', link: '' } 
   // ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.MainLayout),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
@@ -109,6 +118,10 @@ const routes: RouteItem[] = [
   setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
   setLayout('/badEventsNewList', BadEventsNewList, layouts.MainLayout),
   setLayout('/badEventsNewDetail/:id/:orderNo', BadEventsNewDetail, layouts.MainLayout),
+  setLayout('/deptBorrow', DeptBorrow, layouts.BreadcrumbLayout, [
+    { name: '排班管理', link: '/scheduleHome' },
+    { name: '科室借用', link: '' }
+  ]),
   {
     path: '/badEvents',
     redirect: '/badEvents/search'

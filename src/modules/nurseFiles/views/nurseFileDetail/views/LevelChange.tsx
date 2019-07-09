@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -13,7 +13,7 @@ import { globalModal } from 'src/global/globalModal'
 import Zimage from 'src/components/Zimage'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 export interface Props extends RouteComponentProps {}
-export default observer(function LevelChange () {
+export default observer(function LevelChange() {
   const editLevelChangeModal = createModal(EditLevelChangeModal)
   const btnList = [
     {
@@ -38,14 +38,14 @@ export default observer(function LevelChange () {
       title: '职称聘用时间',
       dataIndex: 'appointmentTime',
       key: '2',
-      width: 150,
+      width: 120,
       align: 'center'
     },
     {
       title: '取得职称',
       dataIndex: 'titleQualification',
       key: '3',
-      width: 100,
+      width: 120,
       align: 'center'
     },
     {
@@ -59,17 +59,17 @@ export default observer(function LevelChange () {
       title: '附件',
       dataIndex: 'fj',
       key: '5',
-      width: 120,
+      width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne && <Zimage text='查看' src={row.urlImageOne} />}</DoCon>
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: '7',
-      width: 150,
+      width: 120,
       align: 'center'
     },
     {
@@ -109,12 +109,13 @@ export default observer(function LevelChange () {
                       层级: `hierarchy`
                     }
                   ],
-                  fileData: [
-                    {
-                      附件1: row.urlImageOne
-                      // 附件2: require(`../../../images/证件空态度.png`)
-                    }
-                  ],
+                  fileData: row.urlImageOne
+                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
+                        return {
+                          ['附件' + (index + 1)]: item
+                        }
+                      })
+                    : [],
                   allData: row
                 })
               }}
@@ -137,19 +138,15 @@ export default observer(function LevelChange () {
   }, [])
   return (
     <BaseLayout title='职称及层级变动' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} type={['spaceRow', 'fixedWidth']} tip={'填写说明：记录2019年6月的职称及层级情况，以后凡是有职称或层级变动情况时随时更新信息。'}/>
+      <BaseTable
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={305}
+        type={['spaceRow', 'fixedWidth']}
+        tip={'填写说明：记录2019年6月的职称及层级情况，以后凡是有职称或层级变动情况时随时更新信息。'}
+      />
       <editLevelChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
 const Wrapper = styled.div``
-
-const DoCon = styled.div`
-  display: flex;
-  justify-content: space-around;
-  font-size: 12px;
-  color: ${(p) => p.theme.$mtc};
-  span {
-    cursor: pointer;
-  }
-`

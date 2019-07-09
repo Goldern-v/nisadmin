@@ -16,6 +16,7 @@ import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import { observer } from 'mobx-react-lite'
 import emitter from 'src/libs/ev'
+import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -29,53 +30,27 @@ const rules: Rules = {
   specialQualificationName: (val) => !!val || '资格名称',
   specialQualificationNo: (val) => !!val || '资格证编号'
 }
-export default observer(function EditWorkHistoryModal (props: Props) {
+export default observer(function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
-  // emitter.removeAllListeners('护士档案左侧信息')
-  // emitter.addListener('护士档案左侧信息', (getLeftData: any) => {
-  //   setTitle(getLeftData)
-  //   console.log('接受了信息', getLeftData)
-  // })
-  const uploadCard = async (file: any) => {
-    let obj: any = {
-      file,
-      empNo: appStore.queryObj.empNo,
-      type: '4',
-      auditedStatus: ''
-    }
-    if (authStore!.user!.post === '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
-    const [err, res] = await to(service.commonApiService.uploadFile(obj))
-    if (err) {
-      message.error(err.message)
-      return res || ''
-    }
-    if (res.data) {
-      let pathImg = `${res.data.path}`
-      setAttachmentId(res.data.id + ',')
-      return pathImg
-    }
+  const uploadOption = {
+    empNo: appStore.queryObj.empNo,
+    type: '4',
+    auditedStatus:
+      authStore!.user!.post === '护长'
+        ? 'waitAuditedNurse'
+        : authStore!.user!.post === '护理部'
+        ? 'waitAuditedDepartment'
+        : ''
   }
+
   let { visible, onCancel, onOk, data, signShow } = props
-  const [attachmentId, setAttachmentId] = useState('')
+
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
   const onSave = async () => {
-    let obj = {
-      empNo: nurseFileDetailViewModal.nurserInfo.empNo,
-      empName: nurseFileDetailViewModal.nurserInfo.empName,
-      attachmentId: attachmentId,
-      auditedStatus: ''
-    }
-    if (authStore!.user!.post === '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post === '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
+    let obj = { ...uploadOption }
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
@@ -84,6 +59,7 @@ export default observer(function EditWorkHistoryModal (props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.time && (value.time = value.time.format('YYYY-MM-DD'))
+    value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.nurseSpecialQualificationAdd({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -96,14 +72,12 @@ export default observer(function EditWorkHistoryModal (props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
-      setAttachmentId(data.attachmentId)
       refForm!.current!.setFields({
         time: moment(data.time),
         specialQualificationName: data.specialQualificationName,
         specialQualificationNo: data.specialQualificationNo,
-        urlImageOne: data.urlImageOne
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
-      // refForm.current.setField('unit', 123)
     }
     if (signShow === '修改') {
       setTitle('修改特殊资格证')
@@ -137,8 +111,8 @@ export default observer(function EditWorkHistoryModal (props: Props) {
             </Col>
 
             <Col span={24}>
-              <Form.Field label={``} name='urlImageOne'>
-                <ImageUploader upload={uploadCard} text='添加附件' />
+              <Form.Field label={`附件`} name='urlImageOne'>
+                <MultipleImageUploader text='添加图片' uploadOption={uploadOption} />
               </Form.Field>
             </Col>
           </Row>
