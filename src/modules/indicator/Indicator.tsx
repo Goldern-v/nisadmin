@@ -60,7 +60,7 @@ import 护患比统计图 from 'src/modules/indicator/chartView/护患比统计�
 import 无图 from 'src/modules/indicator/chartView/无图.tsx'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
-const widthChar = '400%'
+const widthChar = '200%'
 // surplusHeight: 280,
 // surplusWidth: 260,
 const ROUTE_LIST: any = [
@@ -862,36 +862,33 @@ export default function Indicator(props: Props) {
   }
   //导出数据处理方法
   const fileDownload = (res: any) => {
-    if (res) {
-      let filename = res.headers['content-disposition']
-        ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
-        : '导出文件'
-      // decodeURIComponent
-      // "attachment;filename=????2019-3-18-2019-3-24??.xls"
-      // "application/json"
-      let blob = new Blob([res.data], {
-        type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
-        // type: 'application/vnd.ms-excel;charset=utf-8'
-      })
+    let filename = res.headers['content-disposition']
+      ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
+      : '导出文件'
+    // decodeURIComponent
+    // "attachment;filename=????2019-3-18-2019-3-24??.xls"
+    // "application/json"
+    let blob = new Blob([res.data], {
+      type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
+    })
 
-      if (res.data.type.indexOf('excel') > -1) {
-        // if (res) {
-        let a = document.createElement('a')
-        let href = window.URL.createObjectURL(blob) // 创建链接对象
-        a.href = href
-        a.download = filename // 自定义文件名
-        document.body.appendChild(a)
-        a.click()
-        window.URL.revokeObjectURL(href)
-        document.body.removeChild(a) // 移除a元素
-      } else {
-        let reader = new FileReader()
-        reader.addEventListener('loadend', function(data: any) {
-          // reader.result 包含转化为类型数组的blob
-          message.error(`${reader.result}`)
-        })
-        reader.readAsText(blob)
-      }
+    // if (res.data.type.indexOf('excel') > -1) {
+    if (res.data) {
+      let a = document.createElement('a')
+      let href = window.URL.createObjectURL(blob) // 创建链接对象
+      a.href = href
+      a.download = filename // 自定义文件名
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(href)
+      document.body.removeChild(a) // 移除a元素
+    } else {
+      let reader = new FileReader()
+      reader.addEventListener('loadend', function(data: any) {
+        // reader.result 包含转化为类型数组的blob
+        message.error(`${reader.result}`)
+      })
+      reader.readAsText(blob)
     }
   }
   //调用导出接口
@@ -934,6 +931,9 @@ export default function Indicator(props: Props) {
   }
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
   let ChartComponent = (currentRoute && currentRoute.chartComponent) || 护患比统计图
+  const restClick = () => {
+    console.log(document.body.offsetHeight-200)
+  }
   return (
     <Wrapper>
       <LeftMenuCon>
@@ -943,6 +943,7 @@ export default function Indicator(props: Props) {
 
       <MainCon>
         <TopCon ref={topRef} refreshData={onload} refExport={onExport} />
+        {/* <div onClick={restClick}> testclick</div> */}
         {templateShow ? (
           <MainScroll>
             {currentRoute && (
