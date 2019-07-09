@@ -54,7 +54,8 @@ const navList = [
   {
     name: '培训考核',
     icon: <PXKH />,
-    path: '/test'
+    path: '/trainingExamination'
+    // trainingExamination
   },
   {
     name: '敏感指标',

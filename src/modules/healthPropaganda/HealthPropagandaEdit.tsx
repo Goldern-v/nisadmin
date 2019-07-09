@@ -134,18 +134,21 @@ export default withRouter(
       } else {
         let newParams: any = {}
         let sessionData = window.sessionStorage.healthPropagandaEditData
-        if (sessionData) {
-          //如果有导出word的内容
-          sessionData = JSON.parse(sessionData)
-          let { content } = sessionData
-          setEditorState(BraftEditor.createEditorState(content))
-          if(sessionData.name)newParams.name=sessionData.name;
-        }
 
         if (authStore.user) {
           let { deptCode, deptName } = authStore.user
           newParams.deptCode = deptCode
           newParams.deptName = deptName
+        }
+
+        if (sessionData) {
+          //如果有导出word的内容
+          sessionData = JSON.parse(sessionData)
+          let { content, name, deptCode, deptName } = sessionData
+          setEditorState(BraftEditor.createEditorState(content))
+          if (name) newParams.name = name;
+          if (deptCode) newParams.deptCode = deptCode;
+          if (deptName) newParams.deptName = deptName;
         }
 
         api.getTypeList().then((res) => {
@@ -297,7 +300,7 @@ export default withRouter(
             }
           }
         }, 100)
-      } catch (error) {}
+      } catch (error) { }
     })
 
     return (

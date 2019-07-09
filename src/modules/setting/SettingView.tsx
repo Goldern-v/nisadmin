@@ -20,7 +20,7 @@ import 绩效参数设置 from './view/绩效参数设置'
 import 节假日设置 from './view/节假日设置'
 import 物流角色设置 from './view/物流角色设置'
 import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
-import Preview from './view/components/Preview';
+import Preview from './view/components/Preview'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -64,18 +64,18 @@ const LEFT_MENU_CONFIG = [
         component: AutomaticPush
       }
     ]
-  }
+  },
   // {
   //   title: '护理评估设置',
   //   icon: <HLPGSZ />,
   //   path: '/setting/护理评估设置'
   // },
-  // {
-  //   title: '节假日设置',
-  //   icon: <JJRSZ />,
-  //   path: '/setting/节假日设置',
-  //   component: 节假日设置
-  // },
+  {
+    title: '节假日设置',
+    icon: <JJRSZ />,
+    path: '/setting/节假日设置',
+    component: 节假日设置
+  }
   // {
   //   title: '物流平台设置',
   //   icon: <WLPTSZ />,
