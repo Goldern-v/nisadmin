@@ -48,6 +48,8 @@ import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaE
 //不良事件列表和审核流程
 import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList'
 import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail'
+//科室借用
+import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -109,6 +111,10 @@ const routes: RouteItem[] = [
   setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
   setLayout('/badEventsNewList', BadEventsNewList, layouts.MainLayout),
   setLayout('/badEventsNewDetail/:id/:orderNo', BadEventsNewDetail, layouts.MainLayout),
+  setLayout('/deptBorrow', DeptBorrow, layouts.BreadcrumbLayout, [
+    { name: '排班管理', link: '/scheduleHome' },
+    { name: '科室借用', link: '' }
+  ]),
   {
     path: '/badEvents',
     redirect: '/badEvents/search'
