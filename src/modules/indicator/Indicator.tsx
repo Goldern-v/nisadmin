@@ -60,7 +60,7 @@ import 护患比统计图 from 'src/modules/indicator/chartView/护患比统计�
 import 无图 from 'src/modules/indicator/chartView/无图.tsx'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
-const widthChar = '200%'
+const widthChar = '280%'
 // surplusHeight: 280,
 // surplusWidth: 260,
 const ROUTE_LIST: any = [
