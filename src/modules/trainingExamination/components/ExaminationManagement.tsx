@@ -8,7 +8,7 @@ export default function BedSituation() {
   // })
   return (
     <Con>
-      <div>demo</div>
+      <div>题库管理</div>
     </Con>
   )
 }

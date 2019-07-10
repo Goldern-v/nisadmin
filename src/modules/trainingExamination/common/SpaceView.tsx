@@ -15,4 +15,6 @@ export default function noticeView() {
     </Wrapper>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  margin: 0 auto;
+`
