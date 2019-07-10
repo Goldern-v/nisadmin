@@ -8,11 +8,10 @@ export default function BedSituation() {
   // })
   return (
     <Con>
-      <div>demo</div>
+      <div>院内学习班</div>
     </Con>
   )
 }
-
 const Con = styled.div`
   height: 100%;
   width: 100%;

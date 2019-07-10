@@ -94,7 +94,7 @@ const ROUTE_LIST = [
   }
 ]
 
-export default observer(function NurseFileDetail (props: Props, context: any) {
+export default observer(function NurseFileDetail(props: Props, context: any) {
   nurseFileDetailViewModal.nurserInfo = appStore.queryObj
   // appStore.match.params.type
   let currentRouteType = props.match.params.type

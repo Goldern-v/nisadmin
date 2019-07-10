@@ -101,12 +101,16 @@ const routes: RouteItem[] = [
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
 
-  setLayout('/badEvents/alanysis/:type', BadEventEditorView, layouts.MainLayout),
+  setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/auditsManagement', AuditsManagementView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
   // 培训考核
-  setLayout('/trainingExamination', TrainingExamination, layouts.MainLayout),
+  setLayout('/trainingExamination/:type', TrainingExamination, layouts.MainLayout),
+  {
+    path: '/trainingExamination',
+    redirect: '/trainingExamination/人员管理'
+  },
   setLayout('/notice', NoticeView, layouts.MainLayout),
   setLayout('/sentNotice', SentNoticeView, layouts.MainLayout),
   setLayout('/lmsDetails', LmsDetails, layouts.MainLayout),
