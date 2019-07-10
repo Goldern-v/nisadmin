@@ -202,13 +202,14 @@ const Footer = styled.div`
 `
 
 const Info = styled.div`
+  box-sizing: border-box;
+  height: 40px;
+  line-height: 40px;
   display: flex;
   align-items: center;
   font-size: 15px;
-  margin: 10px 10px 0 10px;
-  height: 50px;
+  margin: 0 10px;
 `
-
 const InfoItem = styled.div`
   margin-right: 30px;
 `

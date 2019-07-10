@@ -75,9 +75,29 @@ export default function BaseChart(props: Props) {
           {/* <div style={{ padding: '10px auto' }}> */}
           <Legend position='top-left' offsetX={-10} />
           {/* </div> */}
-          <Axis dataKey={props.gName} label={{ offset: 12 }} />
-          <Axis dataKey='value' />
-
+          <Axis
+            dataKey={props.gName}
+            label={{ offset: 12 }}
+            grid={{
+              lineStyle: {
+                stroke: '#ffffff'
+                // lineWidth: '1',
+                // lineDash: [3, 3]
+              },
+              hideFirstLine: true
+            }}
+          />
+          <Axis
+            dataKey='value'
+            grid={{
+              lineStyle: {
+                stroke: '#ffffff'
+                // lineWidth: '1',
+                // lineDash: [3, 3]
+              },
+              hideFirstLine: true
+            }}
+          />
           {/* <Bar position={props.gName + '*value'} color='type' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} /> */}
           <Bar position='护理单元*value' color='type' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
 
