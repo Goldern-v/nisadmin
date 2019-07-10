@@ -29,11 +29,11 @@ const Wrapper = styled.div`
 `
 
 const MainBoxCon = styled.div`
-  /* margin-left: 220px; */
-  display: block !important;
-  /* flex-direction: column; */
-  height: 100%;
+
   background: #fff;
+  padding-bottom: 50px;
+  margin-bottom: -50px;
+  overflow: hidden;
   /* border: 1px solid red; */
 `
 
