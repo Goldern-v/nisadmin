@@ -24,7 +24,7 @@ export default class NursingRules extends Component<Props> {
     query: {
       name: '',
       pageIndex: 1,
-      pageSize: 10,
+      pageSize: 20,
       fileType: ''
     },
     dataTotal: 0,

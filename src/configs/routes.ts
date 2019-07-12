@@ -54,6 +54,9 @@ import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail'
 import TrainingExamination from 'src/modules/trainingExamination/TrainingExamination'
 //科室借用
 import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
+//继续教育
+import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEdu'
+import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Main'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -129,6 +132,16 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '科室借用', link: '' }
   ]),
+  setLayout('/continuingEdu/:pannelName', ContinuingEdu, layouts.MainLayout),
+  setLayout('/continuingEduEmpDetail/:pannelName', ContinuingEduEmpDetail, layouts.MainLayout),
+  {
+    path: '/continuingEdu',
+    redirect: '/continuingEdu/人员管理'
+  },
+  {
+    path: '/continuingEduEmpDetail',
+    redirect: '/continuingEduEmpDetail/baseinfo'
+  },
   {
     path: '/badEvents',
     redirect: '/badEvents/search'
