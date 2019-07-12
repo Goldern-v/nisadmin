@@ -6,7 +6,7 @@ export interface Props {
   text: string
 }
 
-export default function Zimage (props: Props | any) {
+export default function Zimage(props: Props | any) {
   let option = Object.assign(
     {
       backdrop: 'rgba(0,0,0, .8)'

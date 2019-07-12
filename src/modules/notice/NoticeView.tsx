@@ -6,10 +6,11 @@ import LeftMenu from './components/LeftMenu/LeftMenu'
 import InfoList from './components/InfoList/InfoList'
 import MainDetail from './components/MainDetail/MainDetail'
 import { noticeViewModel } from './NoticeViewModel'
+import EditCon from './components/EditCon/EditCon'
+import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
-export default function NoticeView() {
-  const [count, setCount] = useState(0)
+export default observer(function NoticeView() {
   useEffect(() => {
     noticeViewModel.init()
   }, [])
@@ -18,7 +19,8 @@ export default function NoticeView() {
       <LeftMenu />
       <InfoList />
       <MainDetail />
+      {noticeViewModel.isMenuEdit && <EditCon />}
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div``

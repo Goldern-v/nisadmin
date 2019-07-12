@@ -5,14 +5,19 @@ import DetailsPage from './DetailsPage'
 import { ScrollBox } from 'src/components/common'
 import { observer } from 'mobx-react-lite'
 import { noticeViewModel } from '../../NoticeViewModel'
+import { Spin } from 'src/vendors/antd'
 
 export default observer(function MainDetail() {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
   return (
-    <Wrapper>{noticeViewModel.detailObj.id ? <DetailsPage data={noticeViewModel.detailObj} /> : <NullBg />}</Wrapper>
+    <Wrapper>
+      {noticeViewModel.detailObj.id ? (
+        <Spin spinning={noticeViewModel.detailLoading}>
+          <DetailsPage data={noticeViewModel.detailObj} />
+        </Spin>
+      ) : (
+        <NullBg />
+      )}
+    </Wrapper>
   )
 })
 const NullBg = () => {

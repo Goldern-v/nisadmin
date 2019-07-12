@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Select } from 'antd'
+import InfiniteScroll from 'react-infinite-scroller'
 import MultipleImageUploader from './components/ImageUploader/MultipleImageUploader'
 
 const { Option } = Select
@@ -20,9 +21,25 @@ export default function demo() {
     setValue(files)
     console.log(files, 'file')
   }
+  const loadFunc = (a: any) => {
+    console.log(a, 'aaa')
+  }
   return (
     <Wrapper>
-      <MultipleImageUploader value={value} onChange={onChange} />
+      {/* <MultipleImageUploader value={value} onChange={onChange} /> */}
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={loadFunc}
+        hasMore={true || false}
+        loader={
+          <div className='loader' key={0}>
+            Loading ...
+          </div>
+        }
+        useWindow={true}
+      >
+        <div>1</div>
+      </InfiniteScroll>
     </Wrapper>
   )
 }

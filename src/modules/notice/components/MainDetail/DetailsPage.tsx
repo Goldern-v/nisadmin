@@ -1,29 +1,73 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Tooltip } from 'antd'
+import { Tooltip, message } from 'antd'
 import { DetailObj } from '../../type'
 import { authStore } from 'src/stores'
 import { getFileSize } from 'src/utils/file/file'
+import service from 'src/services/api'
+import { FileItem } from '../../page/SentNoticeView'
+import { noticeService } from '../../serveices/NoticeService'
+import { noticeViewModel } from '../../NoticeViewModel'
+import { globalModal } from 'src/global/globalModal'
 export interface Props {
   data: DetailObj
 }
 
 export default function DetailsPage(props: Props) {
   let { data } = props
+  const [collected, setCollected] = useState(data.collected)
+  const downFile = (path: string) => {
+    service.commonApiService.getFileAndDown(path)
+  }
+  const lotDown = (files: FileItem[]) => {
+    files.forEach((file) => {
+      service.commonApiService.getFileAndDown(file.path)
+    })
+  }
+  const removeMail = () => {
+    globalModal.confirm('确认删除', '确认删除该邮箱?').then((res) => {
+      if (!data.id) return
+      noticeService.removeMail(data.id).then((res) => {
+        message.success('删除邮件成功')
+        noticeViewModel.detailObj = {}
+        noticeViewModel.refreshCurrentListObj()
+      })
+    })
+  }
+  const collectMail = () => {
+    if (!data.id) return
+    collected
+      ? noticeService.revokeCollect(data.id).then((res) => {
+          message.success('取消收藏邮件成功')
+          setCollected(!collected)
+        })
+      : noticeService.collectMail(data.id).then((res) => {
+          message.success('收藏邮件成功')
+          setCollected(!collected)
+        })
+  }
   return (
     <Wrapper>
       <ToolCon>
         <Tooltip placement='bottom' title='删除'>
-          <div className='item-box'>
+          <div className='item-box' onClick={removeMail}>
             <img src={require('./images/删除.png')} alt='' />
           </div>
         </Tooltip>
-        <Tooltip placement='bottom' title='收藏'>
-          <div className='item-box'>
-            <img src={require('./images/收藏.png')} alt='' />
-          </div>
-        </Tooltip>
+        {collected ? (
+          <Tooltip placement='bottom' title='取消收藏'>
+            <div className='item-box' onClick={collectMail}>
+              <img src={require('./images/已收藏.png')} alt='' />
+            </div>
+          </Tooltip>
+        ) : (
+          <Tooltip placement='bottom' title='收藏'>
+            <div className='item-box' onClick={collectMail}>
+              <img src={require('./images/收藏.png')} alt='' />
+            </div>
+          </Tooltip>
+        )}
       </ToolCon>
       <HeadCon>{data.title}</HeadCon>
       <PageCon>
@@ -50,18 +94,20 @@ export default function DetailsPage(props: Props) {
 
         <Line />
         <TextCon>{data.content}</TextCon>
-        <Line />
-        {data.attachmentList && data.attachmentList.length && (
+        {data.attachmentList && data.attachmentList.length > 0 && (
           <FooterCon>
+            <Line />
             <div className='title'>
               <img className='icon' src={require('./images/附件.png')} alt='' />
-              <span>附件（{data.attachmentList.length}）</span>
-              <span className='down-all-text'>批量下载</span>
+              <span>附件({data.attachmentList.length})：</span>
+              <span className='down-all-text' onClick={() => data.attachmentList && lotDown(data.attachmentList)}>
+                批量下载
+              </span>
             </div>
             <FileCon>
-              {data.attachmentList.map((item: any) => (
-                <div className='file-box'>
-                  <div className='file-inner'>
+              {data.attachmentList.map((item: any, index: number) => (
+                <div className='file-box' key={index}>
+                  <div className='file-inner' onClick={() => downFile(item.path)}>
                     <img src={require('../../images/img.png')} alt='' className='type-img' />
                     <div className='file-name'>{item.name}</div>
                     <div className='file-size'>{getFileSize(item.size)}</div>
@@ -217,6 +263,7 @@ const FileCon = styled.div`
       flex-direction: column;
       text-align: center;
       padding: 10px;
+      cursor: pointer;
       .type-img {
         height: 44px;
         width: 44px;

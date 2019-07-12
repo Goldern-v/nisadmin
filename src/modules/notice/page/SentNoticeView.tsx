@@ -6,20 +6,24 @@ import createModal from 'src/libs/createModal'
 import SelectPeopleModal from './modal/SelectPeopleModal'
 import { ChangeEvent } from 'react'
 import service from 'src/services/api'
-import { getFileSize } from 'src/utils/file/file'
+import { getFileSize, getFileType } from 'src/utils/file/file'
 import { noticeService } from '../serveices/NoticeService'
 import { appStore } from 'src/stores'
+import Zimage from 'src/components/Zimage'
+import { FileType } from 'src/types/file'
 export interface Props extends RouteComponentProps {}
 
 export interface CheckUserItem {
   key: string
   userList: any[]
 }
-interface FileItem {
+export interface FileItem {
   name: string
   size: string
   type: string
   id: string
+  path: string
+  fileType?: FileType
 }
 export default function SentNoticeView() {
   const [title, setTitle]: [string, Dispatch<SetStateAction<string>>] = useState('')
@@ -56,7 +60,8 @@ export default function SentNoticeView() {
           ...res.map(({ data: item }: any) => {
             return {
               ...item,
-              size: getFileSize(item.size)
+              size: getFileSize(item.size),
+              fileType: getFileType(item.path)
             }
           })
         ])
@@ -129,7 +134,7 @@ export default function SentNoticeView() {
       <InputBox>
         <div className='label'>
           收件人
-          <img src={require('../images/添加.png')} alt='' className='add-icon' />
+          <img src={require('../images/添加.png')} alt='' className='add-icon' onClick={openSelectPeopleModal} />
         </div>
 
         <div className='input-con' onClick={openSelectPeopleModal}>
@@ -146,7 +151,7 @@ export default function SentNoticeView() {
       <InputBox style={fileList.length > 0 ? { border: 0 } : {}}>
         <div className='label'>
           附&nbsp;件
-          <img src={require('../images/添加.png')} alt='' className='add-icon' />
+          <img src={require('../images/添加.png')} alt='' className='add-icon' onClick={updateFile} />
         </div>
 
         <div className='input-con' onClick={updateFile} style={{ cursor: 'pointer' }} />
@@ -156,7 +161,12 @@ export default function SentNoticeView() {
         <FilesBox>
           {fileList.map((item: FileItem, index: number) => (
             <div className='file-box' key={index}>
-              <img src={require('../images/img.png')} className='type-img' alt='' />
+              {item.fileType == 'img' ? (
+                <Zimage src={item.path} className='type-img' alt='' />
+              ) : (
+                <img src={require('../images/img.png')} className='type-img' alt='' />
+              )}
+
               <div className='name'>{item.name}</div>
               <div className='size'>{item.size}</div>
             </div>
@@ -177,7 +187,7 @@ export default function SentNoticeView() {
         <Button style={{ marginRight: 15 }} onClick={saveTemplateMail}>
           存草稿
         </Button>
-        <Button> 取 消 </Button>
+        <Button onClick={() => appStore.history.push('/notice')}> 取 消 </Button>
       </FooterCon>
       <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
     </Wrapper>
@@ -231,6 +241,7 @@ const InputBox = styled.div`
     float: right;
     margin-top: 3px;
     margin-right: 13px;
+    cursor: pointer;
   }
   .ant-select-selection {
     min-height: 30px;

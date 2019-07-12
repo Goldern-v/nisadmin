@@ -2,6 +2,7 @@ export interface InfoListObj {
   totalCount: number
   pageSize: number
   pageIndex: number
+  lastPage: boolean
   list: InfoListItem[]
 }
 
@@ -28,6 +29,7 @@ export interface InfoListItem {
   /** 头像 */
   nearImageUrl: string
   readTime: boolean
+  showType?: '收' | '发'
 }
 
 export interface DetailObj {
@@ -40,7 +42,7 @@ export interface DetailObj {
   type?: string
   deleted?: boolean
   status?: string
-  attachmentList?: string[]
+  attachmentList?: any[]
   read?: boolean
   collected?: boolean
   nearImageUrl?: string
