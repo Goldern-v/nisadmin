@@ -44,8 +44,8 @@ const LEFT_MENU_CONFIG = [
       { title: '病区流转', path: '/statistic/病区流转' },
       { title: '在院患者病情统计表', path: '/statistic/在院患者病情统计表' },
       { title: '出院病人统计表', path: '/statistic/出院病人统计表' },
-      { title: '住院执行单统计表', path: '/statistic/护理人员统计' },
-      { title: '患者分布统计表', path: '/statistic/护理人员统计' }
+      { title: '住院执行单统计表', path: '/statistic/住院执行单统计表' },
+      { title: '患者分布统计表', path: '/statistic/患者分布统计表' }
     ]
   }
 ]

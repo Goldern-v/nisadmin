@@ -159,7 +159,7 @@ const Wrapper = styled.div`
     .ant-table-wrapper {
       th {
         box-sizing: border-box;
-        height: 30px !important;
+        height: 36px !important;
         font-size: 14px !important;
         font-weight: bold;
         padding: 0 !important;
