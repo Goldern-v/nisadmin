@@ -2,7 +2,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 
 interface Mail {
   mail: {
-    id?: number
+    id?: number | undefined
     title: string
     content: string
   }
@@ -47,12 +47,12 @@ export default class NoticeService extends BaseApiService {
   public getDetail(type: string, id: number) {
     if (type == '收件箱' || type == '我的收藏') {
       return this.get(`/mail/receive/detail/${id}`).then((res) => {
-        res.data.showType = '收'
+        res.data.showType = type == '收件箱' ? '收' : '藏'
         return res
       })
     } else if (type == '发件箱' || type == '草稿箱') {
       return this.get(`/mail/send/detail/${id}`).then((res) => {
-        res.data.showType = '发'
+        res.data.showType = type == '发件箱' ? '发' : '草'
         return res
       })
     }

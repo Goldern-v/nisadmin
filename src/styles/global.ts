@@ -63,6 +63,13 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       color: #bfbfbf;
       font-weight: normal;
     }
+
+.largeTip {
+  max-width: 800px !important;
+}    
+.ant-spin-nested-loading {
+  height: 100%;
+}
 `
 
 export default GlobalStyle

@@ -8,11 +8,13 @@ import MainDetail from './components/MainDetail/MainDetail'
 import { noticeViewModel } from './NoticeViewModel'
 import EditCon from './components/EditCon/EditCon'
 import { observer } from 'mobx-react-lite'
+import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function NoticeView() {
   useEffect(() => {
-    noticeViewModel.init()
+    noticeViewModel.init(appStore.queryObj.selectedMenu, appStore.queryObj.id)
+    appStore.history.replace('/notice')
   }, [])
   return (
     <Wrapper>

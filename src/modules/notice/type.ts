@@ -46,5 +46,8 @@ export interface DetailObj {
   read?: boolean
   collected?: boolean
   nearImageUrl?: string
-  showType?: '收' | '发'
+  showType?: '收' | '发' | '草' | '藏'
+  receiverList?: { empName: string }[]
+  readReceiverSize?: number
+  unreadReceiverSize?: number
 }

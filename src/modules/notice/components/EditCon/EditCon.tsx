@@ -7,6 +7,8 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
 import { noticeService } from '../../serveices/NoticeService'
 import { message } from 'antd/es'
+import { CheckboxChangeEvent } from 'src/vendors/antd'
+
 export interface Props extends RouteComponentProps {}
 
 export default observer(function EditCon() {
@@ -56,17 +58,49 @@ export default observer(function EditCon() {
         })
       })
   }
+  const CheckAll: ((e: CheckboxChangeEvent) => void) | undefined = (e) => {
+    if (e.target.checked) {
+      noticeViewModel.selectedMenuEditList = [...noticeViewModel.currentListObj.list]
+    } else {
+      noticeViewModel.selectedMenuEditList = []
+    }
+  }
+
+  let toolList: string[] = []
+  switch (noticeViewModel.selectedMenu) {
+    case '收件箱':
+      {
+        toolList = ['收藏', '已读', '未读']
+      }
+      break
+    case '发件箱':
+      {
+        toolList = ['收藏']
+      }
+      break
+    case '草稿箱':
+      {
+        toolList = []
+      }
+      break
+    case '我的收藏':
+      {
+        toolList = []
+      }
+      break
+  }
   return (
     <Wrapper>
-      <Checkbox>全选</Checkbox>
-
+      <Checkbox onChange={CheckAll}>全选</Checkbox>
       <div style={{ width: 30 }} />
       <span className='aside'>已选择{noticeViewModel.selectedMenuEditList.length}项</span>
       <div style={{ width: 40 }} />
       <Button onClick={lotDelete}>删除</Button>
-      <Button onClick={lotCollect}>收藏</Button>
-      <Button onClick={lotRead}>已读</Button>
-      <Button onClick={lotUnRead}>未读</Button>
+
+      {toolList.includes('收藏') && <Button onClick={lotCollect}>收藏</Button>}
+      {toolList.includes('已读') && <Button onClick={lotRead}>已读</Button>}
+      {toolList.includes('未读') && <Button onClick={lotUnRead}>未读</Button>}
+
       <Button onClick={() => noticeViewModel.initMenuEditList()}>取消</Button>
     </Wrapper>
   )

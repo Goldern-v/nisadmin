@@ -11,6 +11,8 @@ class NoticeViewModel {
   @observable public tempSaveSize: number = 0
   /** 收件箱数量 */
   @observable public receiveSize: number = 0
+  /** 收藏数量 */
+  @observable public collectSize: number = 0
   /** 是否有未读消息 */
   @observable public hadUnread: boolean = false
 
@@ -94,7 +96,7 @@ class NoticeViewModel {
   setDetailObj(menu: string, id: number) {
     this.detailObj.id = id
     this.detailLoading = true
-    noticeService.getDetail(menu, id).then((res) => {
+    noticeService.getDetail(menu, id).then((res: any) => {
       this.detailLoading = false
       this.detailObj = {}
       this.detailObj = res.data
@@ -153,17 +155,23 @@ class NoticeViewModel {
   }
   async initBoxSize() {
     let {
-      data: { hadUnread, receiveSize, sendSize, tempSaveSize }
+      data: { hadUnread, receiveSize, sendSize, tempSaveSize, collectSize }
     } = await noticeService.getBoxSize()
     this.hadUnread = hadUnread
     this.receiveSize = receiveSize
     this.sendSize = sendSize
     this.tempSaveSize = tempSaveSize
+    this.collectSize = collectSize
   }
-  init() {
+  initDetailObj() {
+    this.detailObj = {}
+  }
+  init(menu: string, id: any) {
     this.initBoxSize()
     this.initCurrentListObj()
-    this.setSelectedMenu('收件箱')
+    this.initDetailObj()
+    this.setSelectedMenu(menu || '收件箱')
+    menu && id && this.setDetailObj(menu, id)
   }
 }
 

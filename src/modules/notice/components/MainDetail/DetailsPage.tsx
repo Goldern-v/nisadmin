@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Tooltip, message } from 'antd'
 import { DetailObj } from '../../type'
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import service from 'src/services/api'
 import { FileItem } from '../../page/SentNoticeView'
@@ -48,27 +48,41 @@ export default function DetailsPage(props: Props) {
           setCollected(!collected)
         })
   }
+
+  const editMail = () => {
+    appStore.history.push(`/sentNotice?templateId=${data.id}`)
+  }
   return (
     <Wrapper>
       <ToolCon>
+        {data.showType == '草' && (
+          <Tooltip placement='bottom' title='编辑'>
+            <div className='item-box' onClick={editMail}>
+              <img src={require('./images/编辑.png')} alt='' />
+            </div>
+          </Tooltip>
+        )}
+
+        {data.showType != '草' &&
+          (collected ? (
+            <Tooltip placement='bottom' title='取消收藏'>
+              <div className='item-box' onClick={collectMail}>
+                <img src={require('./images/已收藏.png')} alt='' />
+              </div>
+            </Tooltip>
+          ) : (
+            <Tooltip placement='bottom' title='收藏'>
+              <div className='item-box' onClick={collectMail}>
+                <img src={require('./images/收藏.png')} alt='' />
+              </div>
+            </Tooltip>
+          ))}
+
         <Tooltip placement='bottom' title='删除'>
           <div className='item-box' onClick={removeMail}>
             <img src={require('./images/删除.png')} alt='' />
           </div>
         </Tooltip>
-        {collected ? (
-          <Tooltip placement='bottom' title='取消收藏'>
-            <div className='item-box' onClick={collectMail}>
-              <img src={require('./images/已收藏.png')} alt='' />
-            </div>
-          </Tooltip>
-        ) : (
-          <Tooltip placement='bottom' title='收藏'>
-            <div className='item-box' onClick={collectMail}>
-              <img src={require('./images/收藏.png')} alt='' />
-            </div>
-          </Tooltip>
-        )}
       </ToolCon>
       <HeadCon>{data.title || <span style={{ color: '#bfbfbf' }}>(暂无主题)</span>}</HeadCon>
       <PageCon>
@@ -91,7 +105,31 @@ export default function DetailsPage(props: Props) {
             <div className='aside'>{data.sendTime}</div>
           </div>
         </InfoCon>
-        {data.showType == '发' && <Aside>8人已读，90人未读</Aside>}
+
+        {data.showType == '发' && (
+          <Tooltip
+            overlayClassName={'largeTip'}
+            placement='bottom'
+            title={(data!.receiverList || []).map((item) => item.empName).join(',')}
+          >
+            <Aside style={{ cursor: 'pointer' }}>
+              发送给
+              {(data!.receiverList || []).slice(0, 12).map((item, index, arr) => {
+                return arr.length !== index + 1 ? (
+                  <span key={index}>{item.empName}，</span>
+                ) : (
+                  <span key={index}>{item.empName}</span>
+                )
+              })}
+              {(data!.receiverList || []).length > 12 && <span>...等{(data!.receiverList || []).length}人</span>}
+            </Aside>
+          </Tooltip>
+        )}
+        {data.showType == '发' && (
+          <Aside>
+            {data.readReceiverSize}人已读，{data.unreadReceiverSize}人未读
+          </Aside>
+        )}
 
         <Line />
         <TextCon>{data.content || <span style={{ color: '#bfbfbf' }}>(暂无内容)</span>}</TextCon>
