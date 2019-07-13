@@ -2,6 +2,7 @@ import { observable, computed, action } from 'mobx'
 import { noticeService } from './serveices/NoticeService'
 import { InfoListObj, DetailObj, InfoListItem } from './type'
 import { FileItem } from './page/SentNoticeView'
+import { isThursday } from 'date-fns'
 class NoticeViewModel {
   /** 基础数据 */
   /** 发件箱个数 */
@@ -10,7 +11,7 @@ class NoticeViewModel {
   @observable public tempSaveSize: number = 0
   /** 收件箱数量 */
   @observable public receiveSize: number = 0
-  /** 是否有未读邮件 */
+  /** 是否有未读消息 */
   @observable public hadUnread: boolean = false
 
   /** 编辑状态下选择的列表 */
@@ -86,6 +87,7 @@ class NoticeViewModel {
 
   /** 刷新列表数据 */
   refreshCurrentListObj() {
+    this.initBoxSize()
     this.setSelectedMenu(this.selectedMenu)
   }
   /** 取详情 */
@@ -139,7 +141,7 @@ class NoticeViewModel {
     this.selectedMenuEditList = []
     this.isMenuEdit = false
   }
-  /** 初始化邮件列表 */
+  /** 初始化消息列表 */
   initCurrentListObj() {
     this.currentListObj = {
       pageIndex: 0,
@@ -149,7 +151,7 @@ class NoticeViewModel {
       list: []
     }
   }
-  async init() {
+  async initBoxSize() {
     let {
       data: { hadUnread, receiveSize, sendSize, tempSaveSize }
     } = await noticeService.getBoxSize()
@@ -157,6 +159,10 @@ class NoticeViewModel {
     this.receiveSize = receiveSize
     this.sendSize = sendSize
     this.tempSaveSize = tempSaveSize
+  }
+  init() {
+    this.initBoxSize()
+    this.initCurrentListObj()
     this.setSelectedMenu('收件箱')
   }
 }

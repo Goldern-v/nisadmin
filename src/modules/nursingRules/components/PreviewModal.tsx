@@ -23,7 +23,7 @@ export default function PreviewModal(props: Props) {
         return <img src={url} width='100%' />
       case 'pdf':
         // return <object type="application/pdf" width="100%" style={{ height: `${pdfHeight}px` }} data={url} />
-        return <iframe src={url} width='100%' style={{ height: `${pdfHeight}px`, border: 'none' }} />
+        return <iframe src={url + '#toolbar=0'} width='100%' style={{ height: `${pdfHeight}px`, border: 'none' }} />
       default:
         return <div style={{ height: '300px', lineHeight: '300px', textAlign: 'center' }}>该文件格式不支持预览</div>
     }

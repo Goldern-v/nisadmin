@@ -12,7 +12,7 @@ interface Mail {
 }
 
 export default class NoticeService extends BaseApiService {
-  /** 邮件箱（收件、发件、草稿数量） */
+  /** 消息箱（收件、发件、草稿数量） */
   public getBoxSize() {
     return this.get(`/mail/boxSize`)
   }
@@ -59,25 +59,42 @@ export default class NoticeService extends BaseApiService {
     return new Promise(() => {})
   }
 
-  /** 发邮件 */
+  /** 发消息 */
   public sendMail(mail: Mail) {
     return this.post(`/mail/send/save`, mail)
   }
-  /** 收藏邮件 */
+  /** 收藏消息 */
   public collectMail(id: number) {
     return this.get(`/mail/receive/collect/${id}`)
   }
-  /** 取消收藏邮件 */
+  /** 取消收藏消息 */
   public revokeCollect(id: number) {
     return this.get(`/mail/receive/revokeCollect/${id}`)
   }
-  /** 删除邮件 */
+  /** 删除消息 */
   public removeMail(id: number) {
     return this.get(`/mail/receive/remove/${id}`)
   }
-  /** 读取邮件 */
+  /** 读取消息 */
   public readMail(id: number) {
     return this.get(`/mail/receive/read/${id}`)
+  }
+
+  /** 批量收藏 */
+  public collectAll(ids: number[]) {
+    return this.post(`/mail/receive/collect/all`, { ids })
+  }
+  /** 批量删除 */
+  public removeAll(ids: number[]) {
+    return this.post(`/mail/receive/remove/all`, { ids })
+  }
+  /** 批量已读 */
+  public readAll(ids: number[]) {
+    return this.post(`/mail/receive/read/all`, { ids })
+  }
+  /** 批量未读 */
+  public unreadAll(ids: number[]) {
+    return this.post(`/mail/receive/unread/all`, { ids })
   }
 }
 

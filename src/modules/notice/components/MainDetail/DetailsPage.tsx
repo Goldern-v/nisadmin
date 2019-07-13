@@ -4,12 +4,13 @@ import { RouteComponentProps } from 'react-router'
 import { Tooltip, message } from 'antd'
 import { DetailObj } from '../../type'
 import { authStore } from 'src/stores'
-import { getFileSize } from 'src/utils/file/file'
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import service from 'src/services/api'
 import { FileItem } from '../../page/SentNoticeView'
 import { noticeService } from '../../serveices/NoticeService'
 import { noticeViewModel } from '../../NoticeViewModel'
 import { globalModal } from 'src/global/globalModal'
+import Zimage from 'src/components/Zimage'
 export interface Props {
   data: DetailObj
 }
@@ -29,7 +30,7 @@ export default function DetailsPage(props: Props) {
     globalModal.confirm('确认删除', '确认删除该邮箱?').then((res) => {
       if (!data.id) return
       noticeService.removeMail(data.id).then((res) => {
-        message.success('删除邮件成功')
+        message.success('删除消息成功')
         noticeViewModel.detailObj = {}
         noticeViewModel.refreshCurrentListObj()
       })
@@ -39,11 +40,11 @@ export default function DetailsPage(props: Props) {
     if (!data.id) return
     collected
       ? noticeService.revokeCollect(data.id).then((res) => {
-          message.success('取消收藏邮件成功')
+          message.success('取消收藏消息成功')
           setCollected(!collected)
         })
       : noticeService.collectMail(data.id).then((res) => {
-          message.success('收藏邮件成功')
+          message.success('收藏消息成功')
           setCollected(!collected)
         })
   }
@@ -69,7 +70,7 @@ export default function DetailsPage(props: Props) {
           </Tooltip>
         )}
       </ToolCon>
-      <HeadCon>{data.title}</HeadCon>
+      <HeadCon>{data.title || <span style={{ color: '#bfbfbf' }}>(暂无主题)</span>}</HeadCon>
       <PageCon>
         <InfoCon>
           <img
@@ -93,7 +94,7 @@ export default function DetailsPage(props: Props) {
         {data.showType == '发' && <Aside>8人已读，90人未读</Aside>}
 
         <Line />
-        <TextCon>{data.content}</TextCon>
+        <TextCon>{data.content || <span style={{ color: '#bfbfbf' }}>(暂无内容)</span>}</TextCon>
         {data.attachmentList && data.attachmentList.length > 0 && (
           <FooterCon>
             <Line />
@@ -108,7 +109,11 @@ export default function DetailsPage(props: Props) {
               {data.attachmentList.map((item: any, index: number) => (
                 <div className='file-box' key={index}>
                   <div className='file-inner' onClick={() => downFile(item.path)}>
-                    <img src={require('../../images/img.png')} alt='' className='type-img' />
+                    {getFileType(item.path) == 'img' ? (
+                      <Zimage src={item.path} className='type-img' alt='' />
+                    ) : (
+                      <img src={getFilePrevImg(item.path)} className='type-img' alt='' />
+                    )}
                     <div className='file-name'>{item.name}</div>
                     <div className='file-size'>{getFileSize(item.size)}</div>
                   </div>
@@ -128,7 +133,7 @@ const Wrapper = styled.div`
 `
 
 const HeadCon = styled.div`
-  height: 30px;
+  min-height: 30px;
   display: flex;
   align-items: center;
   font-size: 20px;
@@ -252,6 +257,7 @@ const FileCon = styled.div`
   .file-box {
     width: 25%;
     float: left;
+    margin-left: 10px;
     .file-inner {
       height: 125px;
       background: rgba(246, 246, 246, 1);
@@ -262,16 +268,21 @@ const FileCon = styled.div`
       justify-content: center;
       flex-direction: column;
       text-align: center;
-      padding: 10px;
+      padding: 5px 10px;
       cursor: pointer;
       .type-img {
         height: 44px;
+        min-height: 44px;
         width: 44px;
       }
       .file-name {
         font-size: 13px;
         color: #333333;
-        margin: 5px 0;
+        margin: 5px 0 3px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
       }
       .file-size {
         font-size: 13px;

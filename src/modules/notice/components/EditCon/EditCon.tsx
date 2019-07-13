@@ -5,13 +5,56 @@ import { Checkbox, Button } from 'antd'
 import { noticeViewModel } from '../../NoticeViewModel'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
+import { noticeService } from '../../serveices/NoticeService'
+import { message } from 'antd/es'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function EditCon() {
+  let ids: number[] = noticeViewModel.selectedMenuEditList.map((item) => item.id)
   const lotDelete = () => {
     globalModal
-      .confirm('确认删除', `确认删除勾选的${noticeViewModel.selectedMenuEditList.length}项邮件?`)
-      .then((res) => {})
+      .confirm('确认删除', `确认删除勾选的${noticeViewModel.selectedMenuEditList.length}项消息?`)
+      .then((res) => {
+        noticeService.removeAll(ids).then((res) => {
+          message.success('删除成功')
+          noticeViewModel.refreshCurrentListObj()
+          noticeViewModel.initMenuEditList()
+        })
+      })
+  }
+  const lotCollect = () => {
+    globalModal
+      .confirm('确认收藏', `确认收藏勾选的${noticeViewModel.selectedMenuEditList.length}项消息?`)
+      .then((res) => {
+        noticeService.collectAll(ids).then((res) => {
+          message.success('收藏成功')
+          noticeViewModel.refreshCurrentListObj()
+          noticeViewModel.initMenuEditList()
+        })
+      })
+  }
+  const lotRead = () => {
+    globalModal
+      .confirm('确认标记已读', `确认标记勾选的${noticeViewModel.selectedMenuEditList.length}项消息为已读?`)
+      .then((res) => {
+        noticeService.readAll(ids).then((res) => {
+          message.success('标记已读成功')
+          noticeViewModel.refreshCurrentListObj()
+          noticeViewModel.initMenuEditList()
+        })
+      })
+  }
+
+  const lotUnRead = () => {
+    globalModal
+      .confirm('确认标记未读', `确认标记勾选的${noticeViewModel.selectedMenuEditList.length}项消息为未读?`)
+      .then((res) => {
+        noticeService.unreadAll(ids).then((res) => {
+          message.success('标记未读成功')
+          noticeViewModel.refreshCurrentListObj()
+          noticeViewModel.initMenuEditList()
+        })
+      })
   }
   return (
     <Wrapper>
@@ -21,9 +64,9 @@ export default observer(function EditCon() {
       <span className='aside'>已选择{noticeViewModel.selectedMenuEditList.length}项</span>
       <div style={{ width: 40 }} />
       <Button onClick={lotDelete}>删除</Button>
-      <Button>收藏</Button>
-      <Button>已读</Button>
-      <Button>未读</Button>
+      <Button onClick={lotCollect}>收藏</Button>
+      <Button onClick={lotRead}>已读</Button>
+      <Button onClick={lotUnRead}>未读</Button>
       <Button onClick={() => noticeViewModel.initMenuEditList()}>取消</Button>
     </Wrapper>
   )

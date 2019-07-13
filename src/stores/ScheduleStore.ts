@@ -111,4 +111,21 @@ export default class ScheduleStore {
       return [startWeekNumber, endWeekNumber]
     }
   }
+
+  hasExtraWord(str: string) {
+    let extraWord = ['待班', '备班', '加班', '二线']
+    let oriStr = extraWord.find((work: string) => str.includes(work))
+    if (oriStr) {
+      let effectiveTime = 0
+      if (str.indexOf('(') > -1 && str.indexOf('h)') > -1) {
+        effectiveTime = Number(str.substring(str.indexOf('(') + 1, str.indexOf('h)')))
+      }
+      return {
+        effectiveTime,
+        oriStr
+      }
+    } else {
+      return false
+    }
+  }
 }

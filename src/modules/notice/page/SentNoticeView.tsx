@@ -6,11 +6,12 @@ import createModal from 'src/libs/createModal'
 import SelectPeopleModal from './modal/SelectPeopleModal'
 import { ChangeEvent } from 'react'
 import service from 'src/services/api'
-import { getFileSize, getFileType } from 'src/utils/file/file'
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import { noticeService } from '../serveices/NoticeService'
 import { appStore } from 'src/stores'
 import Zimage from 'src/components/Zimage'
 import { FileType } from 'src/types/file'
+import { Icon } from 'src/vendors/antd'
 export interface Props extends RouteComponentProps {}
 
 export interface CheckUserItem {
@@ -73,7 +74,7 @@ export default function SentNoticeView() {
   }
 
   const sendMail = () => {
-    let hideLoading = message.loading('邮件正在发送中...')
+    let hideLoading = message.loading('消息正在发送中...', 0)
     noticeService
       .sendMail({
         mail: {
@@ -88,7 +89,7 @@ export default function SentNoticeView() {
       })
       .then((res) => {
         hideLoading()
-        message.success('邮件发送成功！')
+        message.success('消息发送成功！')
         appStore.history.replace('/notice')
       })
       .catch(() => {
@@ -96,7 +97,7 @@ export default function SentNoticeView() {
       })
   }
   const saveTemplateMail = () => {
-    let hideLoading = message.loading('邮件正在存草稿...')
+    let hideLoading = message.loading('消息正在存草稿...')
     noticeService
       .sendMail({
         mail: {
@@ -111,11 +112,15 @@ export default function SentNoticeView() {
       })
       .then((res) => {
         hideLoading()
-        message.success('邮件存草稿成功！')
+        message.success('消息存草稿成功！')
       })
       .catch(() => {
         hideLoading()
       })
+  }
+  const deleteFile = (index: number) => {
+    fileList.splice(index, 1)
+    setFileList([...fileList])
   }
   return (
     <Wrapper>
@@ -161,22 +166,23 @@ export default function SentNoticeView() {
         <FilesBox>
           {fileList.map((item: FileItem, index: number) => (
             <div className='file-box' key={index}>
-              {item.fileType == 'img' ? (
+              {getFileType(item.path) == 'img' ? (
                 <Zimage src={item.path} className='type-img' alt='' />
               ) : (
-                <img src={require('../images/img.png')} className='type-img' alt='' />
+                <img src={getFilePrevImg(item.path)} className='type-img' alt='' />
               )}
 
               <div className='name'>{item.name}</div>
               <div className='size'>{item.size}</div>
+              <Icon type='close' title='删除图片' onClick={() => deleteFile(index)} />
             </div>
           ))}
         </FilesBox>
       )}
-      <input type='file' style={{ display: 'none' }} ref={fileInputRef} onChange={onFileChange} />
+      <input type='file' style={{ display: 'none' }} ref={fileInputRef} onChange={onFileChange} multiple={true} />
       <Textarea
         className='scrollBox'
-        placeholder='请输入邮件内容...'
+        placeholder='请输入消息内容...'
         value={content}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
       />
@@ -285,6 +291,20 @@ const FilesBox = styled.div`
       margin: 0 0px 0 60px;
       font-size: 13px;
       color: #999;
+    }
+    &:hover {
+      .anticon-close {
+        display: block;
+      }
+    }
+    .anticon-close {
+      display: none;
+      position: absolute;
+      right: 10px;
+      top: 4px;
+      height: 8px;
+      width: 8px;
+      cursor: pointer;
     }
   }
 `

@@ -46,9 +46,31 @@ export const getFileType = (filePath: string): FileType => {
   var index = filePath.lastIndexOf('.')
   var ext = filePath.substr(index + 1)
   let imgExtList = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff']
+  let pdfExtList = ['pdf']
+  let excelExtList = ['xlsx', 'xls']
+  let wordExtList = ['docx', 'doc']
   if (imgExtList.includes(ext)) {
     return 'img'
+  } else if (pdfExtList.includes(ext)) {
+    return 'pdf'
+  } else if (excelExtList.includes(ext)) {
+    return 'excel'
+  } else if (wordExtList.includes(ext)) {
+    return 'word'
   } else {
     return 'other'
   }
+}
+
+/** 文件预览图 */
+export const getFilePrevImg = (filePath: string) => {
+  let fileType = getFileType(filePath)
+  return require(`./images/${fileType}.png`)
+  // if (fileType == 'img') {
+  //   return require('./images/img.png')
+  // } else if (fileType == 'pdf') {
+  //   return require('./images/pdf.png')
+  // }else if (fileType == 'excel') {
+  //   return require('./images/excel.png')
+  // }
 }

@@ -52,7 +52,9 @@ export default observer(function InfoList() {
                     item.showType == '收' &&
                       !item.read &&
                       noticeService.readMail(item.id).then((res) => {
-                        noticeViewModel.refreshCurrentListObj()
+                        item.read = true
+                        // noticeViewModel.currentListObj = JSON.parse(JSON.stringify(noticeViewModel.currentListObj))
+                        // noticeViewModel.refreshCurrentListObj()
                       })
                   }
                 }}

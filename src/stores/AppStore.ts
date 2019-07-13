@@ -10,6 +10,7 @@ export default class AppStore {
     window.onresize = () => {
       this.wih = document.body.offsetHeight
     }
+    console.log(process.env, 'processprocess')
   }
   @observable public isExpand: '1' | '0' = '1'
   @observable private appToken: string | null = null
@@ -24,6 +25,22 @@ export default class AppStore {
   /** 页面高度 */
   @observable public wih: number = document.body.offsetHeight
 
+  /** 医院id */
+  @observable public HOSPITAL_ID = process.env.REACT_APP_HOSPITAL_ID
+  /** 医院名称 */
+  @observable public HOSPITAL_Name = process.env.REACT_APP_HOSPITAL_NAME
+
+  /** url 参数 */
+  @computed
+  public get HOSPITAL_LOGO() {
+    if (this.HOSPITAL_ID == 'wh') {
+      return require('src/assets/images/武汉logo.png')
+    } else if (this.HOSPITAL_ID == 'hj') {
+      return require('src/assets/images/厚街logo.png')
+    } else {
+      return require('src/assets/images/厚街logo.png')
+    }
+  }
   /** url 参数 */
   @computed
   public get query() {

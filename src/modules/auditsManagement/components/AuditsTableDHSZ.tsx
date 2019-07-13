@@ -39,7 +39,7 @@ export default function AuditsTableDHSZ(props: Props) {
       title: '档案类型',
       dataIndex: 'typeName',
       key: '档案类型',
-      align: 'center',
+      align: 'center'
       // width: 100
     },
     {
@@ -98,7 +98,8 @@ export default function AuditsTableDHSZ(props: Props) {
   ]
 
   const onChange = (pagination: any) => {
-    console.log(pagination, 'pagination')
+    setSelectedRows([])
+    setSelectedRowKeys([])
     pagination.current && onload(pagination.current, searchText, pagination.pageSize)
   }
   const onload = (current: any, searchText: any, pageSize = 20) => {
