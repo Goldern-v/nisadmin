@@ -60,8 +60,8 @@ export default function AuditsTableDHSZ(props: Props) {
       title: '所在科室',
       dataIndex: 'deptName',
       key: '所在科室',
-      align: 'center',
-      width: 120
+      align: 'left',
+      width: 160
     },
 
     {
@@ -83,6 +83,9 @@ export default function AuditsTableDHSZ(props: Props) {
           justify-content: space-around;
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
+          :hover{
+            font-weight:bold;
+          }
         `
         return (
           <DoCon>

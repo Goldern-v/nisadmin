@@ -49,7 +49,7 @@ export default function ExamineTable() {
         <World>待我审核</World>
         <More>更多 ></More>
       </TableTitle>
-      <BaseTable columns={columns} surplusHeight={(appStore.wih - 395) / 2 + 395} />
+      <BaseTable columns={columns} surplusHeight={(appStore.wih - 365) / 2 + 365} />
     </Wrapper>
   )
 }
