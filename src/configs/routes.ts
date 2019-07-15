@@ -57,6 +57,7 @@ import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
 //继续教育
 import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEdu'
 import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Main'
+import QualityView from 'src/modules/quality/QualityView'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -134,6 +135,7 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/continuingEdu/:pannelName', ContinuingEdu, layouts.MainLayout),
   setLayout('/continuingEduEmpDetail/:pannelName', ContinuingEduEmpDetail, layouts.MainLayout),
+  setLayout('/quality/:name', QualityView, layouts.MainLayout),
   {
     path: '/continuingEdu',
     redirect: '/continuingEdu/人员管理'
@@ -157,6 +159,10 @@ const routes: RouteItem[] = [
   {
     path: '/setting',
     redirect: '/setting/typeDict'
+  },
+  {
+    path: '/quality',
+    redirect: '/quality/qualityControlRecord'
   },
   {
     path: '/',

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Input, Button, message as Message, Select, Modal, Pagination } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { authStore } from 'src/stores'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 
 import NewNursingRulesAddModal from './components/NewNursingRulesAddModal'
 import PreviewModal from './components/PreviewModal'
@@ -300,35 +300,34 @@ export default class NursingRules extends Component<Props> {
         title: '权限',
         dataIndex: 'deptName',
         key: 'deptName',
-        className: 'align-left',
-        align: 'left',
-        width: 150
+        align: 'center',
+        width: 120
       },
       {
         title: '上传时间',
         dataIndex: 'uploadTime',
         key: 'uploadTime',
         align: 'center',
-        width: 150
+        width: 180
       },
       {
         title: '操作',
         key: 'opetation',
         align: 'center',
-        width: 150,
+        width: 120,
         render: (text: string, record: any) => {
           return (
-            <div>
+            <DoCon>
               <span onClick={this.handlePreview.bind(this, record)} className='operate-text'>
                 预览
               </span>
-              <span onClick={this.handleDownload.bind(this, record)} className='operate-text'>
+              {/* <span onClick={this.handleDownload.bind(this, record)} className='operate-text'>
                 下载
-              </span>
+              </span> */}
               <span onClick={this.handleDelete.bind(this, record)} className='operate-text'>
                 删除
               </span>
-            </div>
+            </DoCon>
           )
         }
       }

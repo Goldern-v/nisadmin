@@ -6,32 +6,40 @@ export interface Props extends RouteComponentProps {}
 export default function demo() {
   const [count, setCount] = useState(0)
   const iframeRef = useRef<any>(null)
-
+  const [scroll, setScroll] = useState(true)
   useEffect(() => {
-    console.log(count, setCount)
-  })
+    if (scroll) {
+      setTimeout(() => {
+        setScroll(false)
+      }, 1000)
+    }
+  }, [])
   const onload = () => {
     let wid: any = iframeRef.current.contentWindow
-    console.log([wid.document.querySelector('embed')], 'iframeRef')
+    console.log(wid, 'wid')
+    wid.document.querySelector('#plugin').oncopy = () => alert(12321)
+    // console.log([wid.document.querySelector('embed')], 'iframeRef')
   }
   return (
-    <Wrapper>
+    <Wrapper onClick={() => alert(1)}>
       <iframe
         ref={iframeRef}
         src='/crNursing/nursingInstitution/20190701/20190701184652OLkTunpr.pdf#toolbar=0'
         onLoad={onload}
       />
-      {/* <div className='mask' /> */}
+      {/* <div className='mask' style={scroll ? { pointerEvents: 'none' } : {}} onWheel={() => setScroll(true)}>
+        {scroll + ''}
+      </div> */}
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   height: 500px;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   iframe {
     width: 100%;
-    height: calc(100% + 50px);
+    height: 5000px;
     /* margin-top: -50px; */
   }
   .mask {
@@ -44,7 +52,5 @@ const Wrapper = styled.div`
     right: 0;
     margin: auto;
     background: red;
-    pointer-events: none;
-    user-select: none;
   }
 `

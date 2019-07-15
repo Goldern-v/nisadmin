@@ -9,7 +9,7 @@ const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 export interface Props {
   config: any
-  menuTitle: string
+  menuTitle?: string
 }
 
 export default function LeftMenu(props: Props) {
