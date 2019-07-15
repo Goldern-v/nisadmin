@@ -105,6 +105,7 @@ class EditableTable extends React.Component<any, any> {
         }
       }
     ]
+
     /** 监听事件--- 控制添加弹窗的状态 */
     emitter.removeAllListeners('自动推送设置-添加-医嘱')
     emitter.addListener('自动推送设置-添加-医嘱', () => {
@@ -118,6 +119,7 @@ class EditableTable extends React.Component<any, any> {
       this.getMealList(null, null)
     })
   }
+
   // 删除
   public handleDelete = (record: any) => {
     Modal.confirm({
@@ -136,12 +138,13 @@ class EditableTable extends React.Component<any, any> {
     })
   }
 
-    //预览
-    public preview = (record: any) => {
-      let getEducationId = record.educationId
-      appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=1`)
-    }
+  //预览
+  public preview = (record: any) => {
+    let getEducationId = record.educationId
+    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=1`)
+  }
   
+  //添加和修改
   public getSelectData = (record: any, value: number) => {
     console.log(record, 'record')
     // 如果是添加 则清空数据
@@ -190,6 +193,8 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
+  //保存
   public handleOk() {
     if (!this.state.searchValue || !this.state.orderText || !this.state.messageType) {
       message.warning('保存前请将每一项信息填写完整')
@@ -244,6 +249,8 @@ class EditableTable extends React.Component<any, any> {
     let educationName = this.state.arrayData.filter((item: any) => item.missionId === value)[0].name
     this.setState({ searchValue: educationName })
   }
+
+  //实时查询
   public toSearch(value: any) {
     if (this.state.timeout) {
       clearTimeout(this.state.timeout)

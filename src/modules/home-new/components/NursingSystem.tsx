@@ -8,7 +8,7 @@ import { Button } from 'antd'
 //引入图标
 import { ReactComponent as HLZD } from '../images/护理制度.svg'
 // import { ReactComponent as EXCL } from '../images/excl.svg'
-// // import { ReactComponent as PDF } from '../images/pdf.png'
+// import { ReactComponent as PDF } from '../images/pdf.png'
 // import { ReactComponent as WORLD } from '../images/word.svg'
 // import { ReactComponent as OTHER } from '../images/其他.svg'
 // import { ReactComponent as PICTURE } from '../images/图片.svg'

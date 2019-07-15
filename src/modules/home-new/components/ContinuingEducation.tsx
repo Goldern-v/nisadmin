@@ -21,37 +21,7 @@ export default function ContinuingEducation () {
     type:'考试',
     content:'中国河南南阳市卧龙区八一路272号',
     time:'11:32'
-  }
-  // ,{
-  //   type:'考试',
-  //   content:'啦啦啦啦啦啦啦啦',
-  //   time:'11:32'
-  // },{
-  //   type:'考试',
-  //   content:'啦啦啦啦啦啦啦啦',
-  //   time:'11:32'
-  // },{
-  //   type:'考试',
-  //   content:'啦啦啦啦啦啦啦啦',
-  //   time:'11:32'
-  // },{
-  //   type:'考试',
-  //   content:'啦啦啦啦啦啦啦啦',
-  //   time:'11:32'
-  // },{
-  //   type:'考试',
-  //   content:'啦啦啦啦啦啦啦啦',
-  //   time:'11:32'
-  // },{
-  //   type:'考试',
-  //   content:'啦啦啦啦啦啦啦啦',
-  //   time:'11:32'
-  // },{
-  //   type:'考试',
-  //   content:'啦啦啦啦啦啦啦啦',
-  //   time:'11:32'
-  // }
-  ]) 
+  }]) 
 
   //封装函数
   const renderSubMenu = () =>{
