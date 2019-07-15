@@ -50,7 +50,8 @@ export default observer(function ViewOrAuditModal(props: Props) {
     auditedTime: { name: '审核时间', value: '', hide: true },
     detailTransferTo: { name: '拒绝原因', value: '', hide: true },
     schDeptTransferUser: { name: '借出人员列表', value: [] as any, hide: true },
-    empNameTransferFrom: { name: '借用人姓名', value: '', hide: true }
+    empNameTransferFrom: { name: '借用人姓名', value: '', hide: true },
+    nearImageUrlTransferFrom: { name: '借用人照片', value: '', hide: true }
   } as any);
 
   const modalClassName = () => {
@@ -58,7 +59,8 @@ export default observer(function ViewOrAuditModal(props: Props) {
     if (!visible) classList.push('hide');
     let user = authStore.user;
 
-    if (user && (user.post == '护长' || '护理部') && detailInfo.statusTransferFrom.value == '0') classList.push('auth');
+    // if (user && (user.post == '护长' || '护理部') && detailInfo.statusTransferFrom.value == '0') classList.push('auth');
+    if (user && (user.post == '护长') && detailInfo.statusTransferFrom.value == '0') classList.push('auth');
     // classList.push('auth');
     return classList.join(' ');
   }
@@ -279,7 +281,7 @@ export default observer(function ViewOrAuditModal(props: Props) {
       <div className="body">
         <div className="base-info">
           <span className="applicant">
-            <img src="" alt="" />
+            <img src={detailInfo.nearImageUrlTransferFrom.value} alt="" />
           </span>
           <span>
             <span className="title">{detailInfo.empNameTransferFrom.value}提出的借用申请</span><br />

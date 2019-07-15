@@ -18,7 +18,7 @@ export interface Props {
 
 const BG = require('../../../images/侧边背景.png')
 
-export default function LeftMenu (props: Props) {
+export default function LeftMenu(props: Props) {
   let history = appStore.history
   let {
     path,

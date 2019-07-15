@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 // import React from 'react'
 import SelectYear from 'src/modules/setting/view/common/SelectYear.tsx'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import settingViewModel from 'src/modules/setting/SettingViewModel.ts'
 import SettingApi from 'src/modules/setting/api/SettingApi.ts'
 import ModalAdd from 'src/modules/setting/view/components/ModalAdd.tsx'
 
 // import settingViewModel from '../../SettingViewModel'
 
-export default function BedSituation () {
+export default function BedSituation() {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
   //   console.log(count, setCount)
@@ -36,7 +36,7 @@ export default function BedSituation () {
   // }
   const addButtonClick = () => {
     console.log(666666)
-    SettingApi.getHolidayTable(settingViewModel.getSelectYear)
+    SettingApi.getHolidayTable(settingViewModel.getSelectYear).then((res) => {})
     setVisible(true)
   }
   return (

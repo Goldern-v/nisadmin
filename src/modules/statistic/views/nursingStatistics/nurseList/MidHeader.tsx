@@ -44,8 +44,6 @@ export default observer(function BedSituation() {
 })
 
 const Con = styled.div`
-  height: 100%;
-  width: 100%;
   .hospitalTitle {
     font-size: 17px;
     text-align: center;

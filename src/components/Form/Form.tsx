@@ -32,7 +32,7 @@ export default class Form<T extends Object = any> extends React.Component<Props<
     onSubmit: noop
   }
 
-  public constructor (props: Props<T>) {
+  public constructor(props: Props<T>) {
     super(props)
 
     this.state = {
@@ -41,7 +41,7 @@ export default class Form<T extends Object = any> extends React.Component<Props<
     }
   }
 
-  public componentDidMount () {
+  public componentDidMount() {
     const { defaultValues } = this.props
 
     if (defaultValues) {
@@ -149,7 +149,7 @@ export default class Form<T extends Object = any> extends React.Component<Props<
     this.cleanErrors()
   }
 
-  public render () {
+  public render() {
     const { className, labelWidth = 120, children } = this.props
 
     const context: FormContextValue = {

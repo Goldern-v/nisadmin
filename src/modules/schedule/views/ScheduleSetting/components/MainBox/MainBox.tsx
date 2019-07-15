@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button, Form, Input, InputNumber, message, Modal, Table, Tabs } from 'antd'
 import { scheduleStore } from 'src/stores'
+import SetExtraHoursModal from '../../../components/Modal/SetExtraHoursModal'
 
 // import { Link } from 'react-router-dom'
 
@@ -241,24 +242,32 @@ export default function MainBox(props: Props) {
         key.toLowerCase().indexOf('code') === -1
       ) {
         const element = record[key]
-        shift = list.find((s: any) => element === s.name)
-        if (!shift) {
-          shift = list.find(
-            (s: any) =>
-              record[key + 'Code'] === s.name ||
-              (record[key + 'Code'] === s.shiftType && record[key + 'Code'] != s.name)
-          )
-        }
-        if (shift) {
-          let num = !isNaN(Number(shift.effectiveTime)) ? Number(shift.effectiveTime) : 0
-          result += num
-          if (target && target.name && target.name === key + record.id) {
-            target.style.color = shift.nameColor || ''
+        const extraObj = scheduleStore.hasExtraWord(element)
+
+        if (extraObj) {
+          /** 额外工时 */
+          result += extraObj.effectiveTime
+        } else {
+          shift = list.find((s: any) => element === s.name)
+          if (!shift) {
+            shift = list.find(
+              (s: any) =>
+                record[key + 'Code'] === s.name ||
+                (record[key + 'Code'] === s.shiftType && record[key + 'Code'] != s.name)
+            )
+          }
+
+          if (shift) {
+            let num = !isNaN(Number(shift.effectiveTime)) ? Number(shift.effectiveTime) : 0
+            result += num
+            if (target && target.name && target.name === key + record.id) {
+              target.style.color = shift.nameColor || ''
+            }
           }
         }
       }
     }
-    record.thisWeekHour = result.toFixed(2)
+    record.thisWeekHour = result.toFixed(1)
 
     return result
   }
@@ -272,6 +281,13 @@ export default function MainBox(props: Props) {
         if (!e.currentTarget.value) {
           row[key + 'Code'] = ''
           record[key + 'Code'] = ''
+          row[key + 'Color'] = ''
+          record[key + 'Color'] = ''
+
+          // setTimeout(() => {
+          // tableUpdate(record, selectedRow, index)
+          updateTableUI()
+          // }, 100)
         }
         selectedCellObj = row
       }
@@ -279,7 +295,7 @@ export default function MainBox(props: Props) {
     let newResult = countWorkHours(record, e.currentTarget)
     let inputW = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCell.record.id}"]`)
     if (inputW) {
-      inputW.value = newResult || selectedRow.record.thisWeekHour
+      inputW.value = newResult.toFixed(1) || selectedRow.record.thisWeekHour
       selectedCellObj.thisWeekHour = newResult || selectedRow.record.thisWeekHour
     }
 
@@ -715,7 +731,6 @@ export default function MainBox(props: Props) {
   const getShiftList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res) => {
-      console.log('查找排班班次res', res)
       if (res && res.data) {
         setShiftList(res.data)
         shiftListData = JSON.parse(JSON.stringify(res.data))
@@ -956,7 +971,6 @@ export default function MainBox(props: Props) {
   }
 
   function statisticFooter(list: any) {
-    // console.log('统计', list)
     let workhour = 0
     let rangeNames = new Array()
     let rangeObj = new Object()
@@ -1029,7 +1043,7 @@ export default function MainBox(props: Props) {
           ) {
             s[key] = m[key]
             let input = selectedRow.target.querySelector(`[name="${key}${s.id}"]`)
-            console.log('input', key, key + s.id, s, input)
+
             if (input) {
               input.value = m[key]
               input.style.color = getShiftColor(m[key]) // m[key + 'Color']
@@ -1042,7 +1056,6 @@ export default function MainBox(props: Props) {
           inputW.value = selectedRow.record.thisWeekHour
           s.thisWeekHour = selectedRow.record.thisWeekHour
         }
-        console.log('inputW', inputW, selectedRow)
       }
     })
 
@@ -1081,7 +1094,6 @@ export default function MainBox(props: Props) {
         let selectedCellNameCode = selectedCellName + 'Code'
         let numberOfday = 1
         let diffDays = 0
-
         let clickedShift = shiftListData.filter((shift) => {
           if (
             (record[selectedCellNameCode] === '休假' ||
@@ -1094,81 +1106,96 @@ export default function MainBox(props: Props) {
           }
         })
 
-        if (!clickedShift || clickedShift.length === 0) {
-          return
-        }
-
-        let onChangeInputNumber = (value: any) => {
-          numberOfday = value
-        }
-
-        let updateTable = (n: any) => {
-          let weekday = JSON.parse(JSON.stringify(weekdayList))
-          let dayIndex = weekday.indexOf(selectedCellName)
-          let endIndex = dayIndex
-
-          for (let j = dayIndex, len = weekday.length; j < len; j++) {
-            if (
-              j != dayIndex &&
-              record[weekday[j]] &&
-              record[weekday[j]].length > 0 &&
-              ((record[selectedCellNameCode] === '' && record[selectedCellName] !== record[weekday[j] + 'Code']) ||
-                (record[selectedCellNameCode] && record[selectedCellNameCode] !== record[weekday[j] + 'Code']))
-            ) {
-              endIndex = j
-              break
-            }
-          }
-
-          if (endIndex == dayIndex && endIndex < weekday.length) {
-            endIndex = weekday.length
-          }
-
-          diffDays = endIndex - dayIndex
-
-          let subweekday = new Array()
-          if (dayIndex > -1) {
-            let color = getShiftColor(selectedCellValue) // record[record.key + 'Color']
-            subweekday = weekday.slice(dayIndex, endIndex) // dayIndex + n + 1
-
-            subweekday.map((key, i) => {
-              record[key] = selectedCellValue + (numberOfday + i)
-              record[key + 'Color'] = color
-              record[key + 'Code'] = selectedCellValue
-            })
-
-            // 表格数据更新
-
+        /** 设置额外工时排班 */
+        if (scheduleStore.hasExtraWord(selectedCellValue)) {
+          let refreshData = (newLabel: string) => {
             setTimeout(() => {
               tableUpdate(record, selectedRow, index)
               updateTableUI()
             }, 100)
           }
-        }
+          emitter.emit('打开设置额外工时弹框', {
+            obj: record,
+            key: selectedCellName,
+            label: selectedCellValue,
+            refreshData
+          })
+        } else if (clickedShift && clickedShift!.length !== 0) {
+          let onChangeInputNumber = (value: any) => {
+            numberOfday = value
+          }
 
-        let onOK = (value?: any) => {
-          updateTable(numberOfday)
-        }
+          let updateTable = (n: any) => {
+            let weekday =
+              scheduleStore.getWeeks().length == 1
+                ? JSON.parse(JSON.stringify(weekdayList.slice(0, 7)))
+                : JSON.parse(JSON.stringify(weekdayList))
+            let dayIndex = weekday.indexOf(selectedCellName)
+            let endIndex = dayIndex
 
-        let genContant = () => (
-          <div
-            style={{ textAlign: 'center' }}
-            onKeyUp={(e) => {
-              if (e.keyCode === 13) {
-                // 回车
-                onOK()
-                emitter.emit('关闭弹框')
+            for (let j = dayIndex, len = weekday.length; j < len; j++) {
+              if (
+                j != dayIndex &&
+                record[weekday[j]] &&
+                record[weekday[j]].length > 0 &&
+                ((record[selectedCellNameCode] === '' && record[selectedCellName] !== record[weekday[j] + 'Code']) ||
+                  (record[selectedCellNameCode] && record[selectedCellNameCode] !== record[weekday[j] + 'Code']))
+              ) {
+                endIndex = j
+                break
               }
-            }}
-          >
-            <Form layout={'inline'}>
-              <Form.Item label={selectedCellValue}>
-                <InputNumber defaultValue={1} min={1} size={'large'} autoFocus onChange={onChangeInputNumber} />
-              </Form.Item>
-            </Form>
-          </div>
-        )
-        emitter.emit('打开弹框', { index, record, event, contant: genContant(), onOK: onOK })
+            }
+
+            if (endIndex == dayIndex && endIndex < weekday.length) {
+              endIndex = weekday.length
+            }
+
+            diffDays = endIndex - dayIndex
+
+            let subweekday = new Array()
+            if (dayIndex > -1) {
+              let color = getShiftColor(selectedCellValue) // record[record.key + 'Color']
+              subweekday = weekday.slice(dayIndex, endIndex) // dayIndex + n + 1
+
+              subweekday.map((key, i) => {
+                record[key] = selectedCellValue + (numberOfday + i)
+                record[key + 'Color'] = color
+                record[key + 'Code'] = selectedCellValue
+              })
+
+              // 表格数据更新
+
+              setTimeout(() => {
+                tableUpdate(record, selectedRow, index)
+                updateTableUI()
+              }, 100)
+            }
+          }
+
+          let onOK = (value?: any) => {
+            updateTable(numberOfday)
+          }
+
+          let genContant = () => (
+            <div
+              style={{ textAlign: 'center' }}
+              onKeyUp={(e) => {
+                if (e.keyCode === 13) {
+                  // 回车
+                  onOK()
+                  emitter.emit('关闭弹框')
+                }
+              }}
+            >
+              <Form layout={'inline'}>
+                <Form.Item label={selectedCellValue}>
+                  <InputNumber defaultValue={1} min={1} size={'default'} autoFocus onChange={onChangeInputNumber} />
+                </Form.Item>
+              </Form>
+            </div>
+          )
+          emitter.emit('打开弹框', { index, record, event, contant: genContant(), onOK: onOK })
+        }
       }
     }
   }
@@ -1176,8 +1203,10 @@ export default function MainBox(props: Props) {
   return (
     <Wrapper>
       <ModalBox title={'设置班次计数'} />
+      <SetExtraHoursModal title={'设置额外工时'} />
 
       <div className='left-box'>
+        {/* {JSON.stringify(tableList)} */}
         <BaseTable
           bordered
           onRow={onRow}
@@ -1242,9 +1271,12 @@ export default function MainBox(props: Props) {
                         let newReocrd = selectedRowsArray[showIndex] || selectedRowsArray[0]
                         let record = selectedCell.record
                         let newReocrdId = newReocrd.id
-
-                        let index = (weekdayList.indexOf(key) + 1) % weekdayList.length
-                        let newKey = weekdayList[index]
+                        let weekdayLists =
+                          scheduleStore.getWeeks().length == 1
+                            ? JSON.parse(JSON.stringify(weekdayList.slice(0, 7)))
+                            : JSON.parse(JSON.stringify(weekdayList))
+                        let index = (weekdayLists.indexOf(key) + 1) % weekdayLists.length
+                        let newKey = weekdayLists[index]
 
                         if (newKey === 'mondayName_1') {
                           recordId = newReocrdId

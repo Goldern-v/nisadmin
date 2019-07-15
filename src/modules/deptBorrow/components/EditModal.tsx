@@ -93,7 +93,13 @@ export default observer(function DeptBorrow(props: Props) {
             }
           }
           let empNoTransferFrom = '';
-          if (authStore.user) empNoTransferFrom = authStore.user.empNo;
+          let empNameTransferFrom = '';
+          let nearImageUrlTransferFrom = ''
+          if (authStore.user) {
+            empNoTransferFrom = authStore.user.empNo;
+            empNameTransferFrom = authStore.user.empName;
+            nearImageUrlTransferFrom = authStore.user.nearImageUrl;
+          }
 
           let params: any = {
             deptCodeTransferTo,
@@ -104,8 +110,11 @@ export default observer(function DeptBorrow(props: Props) {
             daysTransferFrom,
             statusTransferFrom: '0', //状态：申请-0，借用中-1，结束-2，拒绝-3
             empNoTransferFrom,
+            nearImageUrlTransferFrom,
             numTransferFrom
           }
+
+          if (Object.keys(editParams).length > 0) params.empNameTransferFrom = empNameTransferFrom;
 
           if (editParams.id) params = Object.assign({}, editParams, params)
 

@@ -18,6 +18,7 @@ export const theme = {
   $margin: '20px',
   // 表格每行高度   height:${(p) => p.theme.$tableRowHeight};
   $tableRowHeight: '30px',
+  $tableThHeight: '36px',
   $headerHeight: '50px'
 }
 export type Theme = typeof theme

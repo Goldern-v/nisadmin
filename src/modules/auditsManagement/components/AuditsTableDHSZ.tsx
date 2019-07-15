@@ -20,7 +20,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
   const [total, setTotal] = useState(0)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(20)
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [loading, setLoading] = useState(false)
@@ -39,8 +39,8 @@ export default function AuditsTableDHSZ(props: Props) {
       title: '档案类型',
       dataIndex: 'typeName',
       key: '档案类型',
-      align: 'center',
-      width: 100
+      align: 'center'
+      // width: 100
     },
     {
       title: '当前状态',
@@ -60,8 +60,8 @@ export default function AuditsTableDHSZ(props: Props) {
       title: '所在科室',
       dataIndex: 'deptName',
       key: '所在科室',
-      align: 'center',
-      width: 120
+      align: 'left',
+      width: 160
     },
 
     {
@@ -83,6 +83,9 @@ export default function AuditsTableDHSZ(props: Props) {
           justify-content: space-around;
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
+          :hover{
+            font-weight:bold;
+          }
         `
         return (
           <DoCon>
@@ -98,10 +101,11 @@ export default function AuditsTableDHSZ(props: Props) {
   ]
 
   const onChange = (pagination: any) => {
-    console.log(pagination, 'pagination')
+    setSelectedRows([])
+    setSelectedRowKeys([])
     pagination.current && onload(pagination.current, searchText, pagination.pageSize)
   }
-  const onload = (current: any, searchText: any, pageSize = 10) => {
+  const onload = (current: any, searchText: any, pageSize = 20) => {
     setLoading(true)
     nurseFilesService.auditeStatusNurseInDept(type, current, pageSize, searchText).then((res) => {
       setLoading(false)

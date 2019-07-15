@@ -151,26 +151,23 @@ export default function ToolBar(props: Props) {
               key.toLowerCase().indexOf('color') === -1 &&
               key.toLowerCase().indexOf('code') === -1
             ) {
+              let extraObj = scheduleStore.hasExtraWord(element)
               let shift = element ? shiftListData.find((s: any) => element === s.name) : null
               let elementCode = nurse[key + 'Code']
-              // console.log('!!!!shift', shift, key, nurse[key],elementCode, nurse)
+              console.log(elementCode, key, nurse, 999)
+              // console.log(key, 'keykeykeykey')
+              // console.log(nurse, 'nursenursenurse')
               if (!shift) {
                 shift = element
                   ? shiftListData.find((s: any) => {
-                      // console.log('nurse-', nurse, 'key-', key, 's-', 's')
                       return (
                         nurse[key + 'Code'] === s.name ||
                         (nurse[key + 'Code'] === s.shiftType && nurse[key + 'Code'] != s.name)
                       )
                     })
                   : null
-                // if(!shift){
-                //   continue
-                // }
-                // console.log('===!!!!shift', shift, key, nurse[key], nurse)
               }
-              // console.log('shift-', shift, 'element-', element)
-              // console.log('startTime-', startTime, 'weekDayToNumber-', weekDayToNumber, 'key-', key)
+              console.log(shift, 'shiftshiftshift')
               postLine = {
                 id: {
                   userId: nurse.id || '',
@@ -187,7 +184,7 @@ export default function ToolBar(props: Props) {
                 remark: nurse.remark,
                 shiftType: shift ? shift.shiftType : '',
                 nameColor: shift ? shift.nameColor : '',
-                effectiveTime: shift ? shift.effectiveTime : '',
+                effectiveTime: extraObj ? extraObj.effectiveTime + '' : shift ? shift.effectiveTime : '',
                 deptCode: scheduleStore.getDeptCode()
               }
               // console.log(key, element, shift, postLine)

@@ -17,7 +17,7 @@ import PersonnelSettingView from 'src/modules/schedule/views/PersonnelSetting/Pe
 
 // import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
 // import WhiteShiftByMonthView from 'src/modules/statistic/views/whiteShiftByMonth/WhiteShiftByMonthView'
-// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView' 
+// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView'
 
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
@@ -50,8 +50,13 @@ import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaE
 //不良事件列表和审核流程
 import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList'
 import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail'
+//培训考核
+import TrainingExamination from 'src/modules/trainingExamination/TrainingExamination'
 //科室借用
 import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
+//继续教育
+import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEdu'
+import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Main'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -83,7 +88,7 @@ const routes: RouteItem[] = [
 
   // setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
   //   { name: '排班管理', link: '/scheduleHome' },
-  //   { name: '排班编辑', link: '' } 
+  //   { name: '排班编辑', link: '' }
   // ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.MainLayout),
   // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
@@ -99,11 +104,16 @@ const routes: RouteItem[] = [
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
 
-  setLayout('/badEvents/alanysis/:type', BadEventEditorView, layouts.MainLayout),
+  setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/auditsManagement', AuditsManagementView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
-  setLayout('/test', testView, layouts.MainLayout),
+  // 培训考核
+  setLayout('/trainingExamination/:type', TrainingExamination, layouts.MainLayout),
+  {
+    path: '/trainingExamination',
+    redirect: '/trainingExamination/人员管理'
+  },
   setLayout('/notice', NoticeView, layouts.MainLayout),
   setLayout('/sentNotice', SentNoticeView, layouts.MainLayout),
   setLayout('/lmsDetails', LmsDetails, layouts.MainLayout),
@@ -122,6 +132,16 @@ const routes: RouteItem[] = [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '科室借用', link: '' }
   ]),
+  setLayout('/continuingEdu/:pannelName', ContinuingEdu, layouts.MainLayout),
+  setLayout('/continuingEduEmpDetail/:pannelName', ContinuingEduEmpDetail, layouts.MainLayout),
+  {
+    path: '/continuingEdu',
+    redirect: '/continuingEdu/人员管理'
+  },
+  {
+    path: '/continuingEduEmpDetail',
+    redirect: '/continuingEduEmpDetail/baseinfo'
+  },
   {
     path: '/badEvents',
     redirect: '/badEvents/search'

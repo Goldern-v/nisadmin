@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router'
 import loginViewModel from './LoginViewModel'
 
 import service from 'src/services/api'
+import { appStore } from 'src/stores'
 
 export interface Props extends RouteComponentProps {}
 
@@ -47,7 +48,7 @@ export default function LoginView() {
             handleKeyUp(e)
           }}
         >
-          <img src={require('./img/logo.png')} alt='logo' className='BoxLogin' />
+          <img src={appStore.HOSPITAL_LOGO} alt='logo' className='BoxLogin' />
           <h1 className='Title'>护理质量管理系统</h1>
 
           <div className='TextItem'>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-import { Table, Input, Switch, message, Icon } from 'antd'
+import { Table, Input, Switch, message, Icon, Modal } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
@@ -120,9 +120,19 @@ export default function MainBox() {
           <DoCon>
             <span
               onClick={() => {
-                service.scheduleUserApiService.delete(row.id).then((res) => {
-                  message.success('删除成功')
-                  getUserList()
+                Modal.confirm({
+                  title: '删除确认',
+                  content: '确定要删除此排班人员吗？',
+                  okText: '确认',
+                  cancelText: '取消',
+                  centered: true,
+                  maskClosable: true,
+                  onOk: () => {
+                    service.scheduleUserApiService.delete(row.id).then((res) => {
+                      message.success('删除成功')
+                      getUserList()
+                    })
+                  }
                 })
               }}
             >
@@ -208,7 +218,7 @@ export default function MainBox() {
         columns={columns}
         dataSource={userList}
         pagination={false}
-        surplusHeight={275}
+        surplusHeight={185}
         loading={loading}
         moveRow={moveRow}
         type={['diagRow', 'spaceRow']}

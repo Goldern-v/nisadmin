@@ -14,7 +14,18 @@ export interface Props {
 }
 export default function BaseChart(props: Props) {
   let sourceData: any = []
+  const [hightAuto, setHightAuto] = useState(document.body.offsetHeight - 236)
+  useEffect(() => {
+    const onresize = () => {
+      let h = document.body.offsetHeight - 236
+      setHightAuto(h)
+    }
+    window.addEventListener('resize', onresize)
 
+    return () => {
+      window.removeEventListener('resize', onresize)
+    }
+  })
   // for (let i = 0; i < props.keys.length; i++) {
   //   let obj: any = {}
   //   for (let j = 0; j < props.dataSource.length; j++) {
@@ -58,13 +69,35 @@ export default function BaseChart(props: Props) {
     <Con>
       {/* <div>{props!.dataSource}</div> */}
       <ChartCon>
-        <Chart forceFit height={350} data={data} padding={[23, 50, 50]}>
+        <Chart forceFit height={hightAuto} data={data} padding={[23, 50, 50]}>
           <Coord type='rect' />
           <Tooltip />
-          <Legend position='top-left' offsetX={30} />
-          <Axis dataKey={props.gName} label={{ offset: 12 }} />
-          <Axis dataKey='value' />
-
+          {/* <div style={{ padding: '10px auto' }}> */}
+          <Legend position='top-left' offsetX={-10} />
+          {/* </div> */}
+          <Axis
+            dataKey={props.gName}
+            label={{ offset: 12 }}
+            grid={{
+              lineStyle: {
+                stroke: '#ffffff'
+                // lineWidth: '1',
+                // lineDash: [3, 3]
+              },
+              hideFirstLine: true
+            }}
+          />
+          <Axis
+            dataKey='value'
+            grid={{
+              lineStyle: {
+                stroke: '#ffffff'
+                // lineWidth: '1',
+                // lineDash: [3, 3]
+              },
+              hideFirstLine: true
+            }}
+          />
           {/* <Bar position={props.gName + '*value'} color='type' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} /> */}
           <Bar position='护理单元*value' color='type' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
 

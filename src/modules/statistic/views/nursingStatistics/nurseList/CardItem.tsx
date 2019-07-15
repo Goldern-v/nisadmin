@@ -14,7 +14,7 @@ enum TITLE_COLOR {
   '副主任护师' = '#F6201A',
   '主任护师' = '#EF8B46'
 }
-export default function CardItem (props: Props) {
+export default function CardItem(props: Props) {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
@@ -84,8 +84,11 @@ export default function CardItem (props: Props) {
 }
 
 const Wrapper = styled.div`
+  width: 100%;
+  /* height: 100%; */
   margin: 15px 10px;
   table {
+    /* width: 33.33%; */
     border-collapse: collapse;
     &,
     td,
@@ -93,7 +96,9 @@ const Wrapper = styled.div`
       border: 1px solid #454545ff;
     }
     td {
-      width: 30px;
+      box-sizing: border-box;
+      min-width: 30px;
+      max-width: 30px;
       height: 105px;
       text-align: center;
       vertical-align: middle;
