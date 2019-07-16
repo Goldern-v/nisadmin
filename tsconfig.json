@@ -23,7 +23,6 @@
     "noEmit": true
   },
   "include": [
-    "src",
-    "src/modules/indicator/views/插管患者非计划拔管发生率.ts"
+    "src"
   ]
 }

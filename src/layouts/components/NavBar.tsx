@@ -20,7 +20,7 @@ import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
 
-const navList = [
+const navList: any = [
   {
     name: '首页',
     // icon: <SY />,
@@ -46,15 +46,20 @@ const navList = [
     icon: <BLSJ />,
     path: '/badEventsNewList'
   },
+  {
+    name: '护理质量',
+    icon: <BLSJ />,
+    path: '/quality'
+  },
   // {
   //   name: '护理绩效',
   //   icon: <HLJX />,
   //   path: '/nursingPerformance'
   // },
   {
-    name: '培训考核',
+    name: '继续教育',
     icon: <PXKH />,
-    path: '/trainingExamination'
+    path: '/continuingEdu'
     // trainingExamination
   },
   {
@@ -70,14 +75,14 @@ const navList = [
   {
     name: '通知公告',
     icon: <TZGG />,
-    path: '/notice',
-    hidden: !appStore.isDev
+    path: '/notice'
+    // hidden: !appStore.isDev
   },
-  {
-    name: '物流平台',
-    icon: <WLPT />,
-    path: '/Lms'
-  },
+  // {
+  //   name: '物流平台',
+  //   icon: <WLPT />,
+  //   path: '/Lms'
+  // },
   {
     name: '护理制度',
     icon: <HSDA />,
@@ -102,7 +107,7 @@ export default observer(function NavBar(props: Props) {
         <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
       </LogoCon>
       {navList.map(
-        (item) =>
+        (item: any) =>
           !item.hidden && (
             <NavItem
               onClick={toNavLink(item.path)}

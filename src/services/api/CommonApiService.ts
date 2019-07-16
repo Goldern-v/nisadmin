@@ -9,6 +9,7 @@
  */
 
 import BaseApiService from './BaseApiService'
+import { fileDownload } from 'src/utils/file/file'
 type EntityType = 'mail'
 export default class CommonApiService extends BaseApiService {
   // 0.获取护理单元列表
@@ -57,5 +58,11 @@ export default class CommonApiService extends BaseApiService {
   /** 上传附件 */
   public uploadAttachment(entityType: EntityType, file: any) {
     return this.post(`/file/uploadAttachment/${entityType}`, file)
+  }
+  /** 下载文件并导出 */
+  public getFileAndDown(path: string) {
+    return this.get(path, { responseType: 'blob' }).then((res) => {
+      fileDownload(res)
+    })
   }
 }

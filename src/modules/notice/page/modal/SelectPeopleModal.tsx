@@ -27,6 +27,7 @@ const Option = Select.Option
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/index'
 import { CheckUserItem } from '../SentNoticeView'
 import service from 'src/services/api'
+import classNames from 'classnames'
 
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
@@ -45,6 +46,10 @@ export default observer(function SelectPeopleModal(props: Props) {
   const [searchUserList, setSearchUserList]: any = useState([])
   const [searchWord, setSearchWord]: any = useState('')
 
+  const inCheckedUser = (user: User) => {
+    return !!checkedUserList.find((item: any) => item.key === user.key)
+  }
+
   const insertUser = (user: User | User[]) => {
     if (user instanceof Array) {
       let data = []
@@ -59,6 +64,7 @@ export default observer(function SelectPeopleModal(props: Props) {
       }
     }
   }
+
   const deleteUser = (user: User | User[]) => {
     if (user instanceof Array) {
       for (let i = 0; i < user.length; i++) {
@@ -139,12 +145,22 @@ export default observer(function SelectPeopleModal(props: Props) {
           <div className='left-part scrollBox'>
             <Spin spinning={selectPeopleViewModel.modalLoading}>
               {selectPeopleViewModel.currentTreeData ? (
-                <CheckListCon
-                  checkedUserList={checkedUserList}
-                  setCheckedUserList={setCheckedUserList}
-                  insertUser={insertUser}
-                  deleteUser={deleteUser}
-                />
+                <ListCon>
+                  <div className='title' onClick={() => selectPeopleViewModel.popStep()}>
+                    <Icon type='left' />
+                    <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.currentTreeData!.parent}</span>
+                  </div>
+                  {/* {JSON.stringify(checkedUserList)} */}
+                  <div className='scrollBox'>
+                    <CheckListCon
+                      checkedUserList={checkedUserList}
+                      setCheckedUserList={setCheckedUserList}
+                      insertUser={insertUser}
+                      deleteUser={deleteUser}
+                      inCheckedUser={inCheckedUser}
+                    />
+                  </div>
+                </ListCon>
               ) : (
                 <div>
                   <AutoComplete
@@ -194,7 +210,7 @@ export default observer(function SelectPeopleModal(props: Props) {
   )
 })
 const CheckListCon = observer(function(props: any) {
-  let { checkedUserList, setCheckedUserList, insertUser, deleteUser } = props
+  let { checkedUserList, setCheckedUserList, insertUser, deleteUser, inCheckedUser } = props
   let checkAll = false
   let indeterminate = false
   try {
@@ -234,11 +250,6 @@ const CheckListCon = observer(function(props: any) {
     }
   }
   const Con = styled.div`
-    .title {
-      color: #333;
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
     .ant-checkbox-group {
       width: 100%;
     }
@@ -256,54 +267,47 @@ const CheckListCon = observer(function(props: any) {
       &:hover {
         font-weight: bold;
       }
-    }
-    .scrollBox {
-      height: 390px;
-      box-sizing: content-box;
-      padding-right: 10px;
-      margin-right: -10px;
+      &.inChecked {
+        color: #bfbfbf;
+        pointer-events: none;
+      }
     }
   `
 
   return (
     <Con>
-      <div className='title' onClick={() => selectPeopleViewModel.popStep()}>
-        <Icon type='left' />
-        <span style={{ paddingLeft: 5 }}>{selectPeopleViewModel.currentTreeData!.parent}</span>
+      <div className='check-row'>
+        <Checkbox checked={checkAll} indeterminate={indeterminate} onChange={(e) => onCheckAll(e)}>
+          全选
+        </Checkbox>
       </div>
-      {/* {JSON.stringify(checkedUserList)} */}
-      <div className='scrollBox'>
-        <div className='check-row'>
-          <Checkbox checked={checkAll} indeterminate={indeterminate} onChange={(e) => onCheckAll(e)}>
-            全选
-          </Checkbox>
-        </div>
-        <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
-          {selectPeopleViewModel.currentTreeData!.list.map((item: any, index: number) => {
-            let type = selectPeopleViewModel!.currentTreeData!.type
-            return (
-              <div className='check-row' key={index}>
-                <Checkbox value={item.key} onChange={(e) => onCheck(e, item)}>
-                  {item.label}
-                </Checkbox>
-                {selectPeopleViewModel!.currentTreeData!.type !== 'userList' && (
-                  <div>
-                    <span style={{ padding: '0 4px' }}>|</span>
-                    <span
-                      className='open'
-                      onClick={() =>
-                        selectPeopleViewModel.pushStep(item[selectPeopleViewModel!.currentTreeData!.dataLabel || ''])
-                      }
-                    >
-                      展开
-                    </span>
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </Checkbox.Group>
-      </div>
+      <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
+        {selectPeopleViewModel.currentTreeData!.list.map((item: any, index: number) => {
+          return (
+            <div className='check-row' key={index}>
+              <Checkbox value={item.key} onChange={(e) => onCheck(e, item)}>
+                {item.label}
+              </Checkbox>
+              {selectPeopleViewModel!.currentTreeData!.type !== 'userList' && (
+                <div>
+                  <span style={{ padding: '0 4px' }}>|</span>
+                  <span
+                    className={classNames({
+                      open: true,
+                      inChecked: inCheckedUser(item)
+                    })}
+                    onClick={() =>
+                      selectPeopleViewModel.pushStep(item[selectPeopleViewModel!.currentTreeData!.dataLabel || ''])
+                    }
+                  >
+                    展开
+                  </span>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </Checkbox.Group>
     </Con>
   )
 })
@@ -368,5 +372,19 @@ const FileList = styled.div`
       position: relative;
       top: -2px;
     }
+  }
+`
+
+const ListCon = styled.div`
+  .title {
+    color: #333;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .scrollBox {
+    height: 390px;
+    box-sizing: content-box;
+    padding-right: 10px;
+    margin-right: -10px;
   }
 `

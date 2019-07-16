@@ -44,7 +44,7 @@ export default function NoticeTable() {
         <More>更多 ></More>
         <Button>创建</Button>
       </TableTitle>
-      <BaseTable columns={columns} surplusHeight={(appStore.wih - 395) / 2 + 395} />
+      <BaseTable columns={columns} surplusHeight={(appStore.wih - 365) / 2 + 365} />
     </Wrapper>
   )
 }

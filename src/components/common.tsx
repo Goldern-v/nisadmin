@@ -1,5 +1,5 @@
+import * as React from 'react'
 import styled from 'styled-components'
-
 /* 用于弹性盒子占位用 */
 export const Place = styled.div`
   flex: 1;
@@ -36,3 +36,14 @@ export const ScrollUl = styled.ul`
     background-color: #c2c2c2;
   }
 `
+
+/** 滚动加载 */
+export const DownLoader = () => {
+  const Loader = styled.div`
+    text-align: center;
+    font-size: 12px;
+    color: #ddd;
+    margin: 5px 0;
+  `
+  return <Loader>正在加载中...</Loader>
+}

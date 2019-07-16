@@ -8,6 +8,7 @@ import { ReactComponent as HSPB } from '../images/护士排班.svg'
 import { ReactComponent as MGZB } from '../images/敏感指标.svg'
 import { ReactComponent as BLSJ } from '../images/不良事件.svg'
 import { ReactComponent as XYB } from '../images/下一步.svg'
+import { ReactComponent as TJCX } from '../images/统计查询.svg'
 
 export default observer(function QuickButton () {
   const [count] = useState([{
@@ -30,6 +31,10 @@ export default observer(function QuickButton () {
     title:'不良事件',
     icon:<BLSJ/>,
     background:'#337AB7'
+  },{
+    title:'统计查询',
+    icon:<TJCX/>,
+    background:'#33B7AA'
   }]) 
 
   //封装函数
@@ -75,11 +80,11 @@ const QuickMenu = styled.div`
 `
 
 const Wrapper = styled.div`
-  height:110px;
+  height:80px;
   margin-bottom:20px;
   width:100%;
   display:flex;
-  .button:nth-child(5){
+  .button:nth-child(6){
     margin-right:0!important;
   }
   .cIekGw:nth-child(3) .icon{
@@ -88,8 +93,8 @@ const Wrapper = styled.div`
 `
 const WorldTitle = styled.div`
   position:absolute;
-  top:16px;
-  left:14px;
+  top:10px;
+  left:10px;
   /* width:84px; */
   height:27px;
   font-size:21px;
@@ -100,12 +105,12 @@ const WorldTitle = styled.div`
 `
 const ReactSvg = styled.div`
   position:absolute;
-  top:21px;
-  right:18px;
+  top:10px;
+  right:10px;
 `
 const Btn = styled.div`
   width:100%;
-  height:30px;
+  height:25px;
   background:rgba(0,0,0,0.1);
   position:absolute;
   left:0;
@@ -116,7 +121,7 @@ const Content = styled.div`
   height:18px;
   /* background:red; */
   margin:auto;
-  margin-top:4px;
+  margin-top:1px;
 `
 const Span = styled.span`
   display:inline-block;

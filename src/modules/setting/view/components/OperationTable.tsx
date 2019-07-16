@@ -126,6 +126,8 @@ class EditableTable extends React.Component<any, any> {
       this.getMealList(null, null)
     })
   }
+
+  //添加和修改
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
     if (value === 1) {
@@ -153,6 +155,7 @@ class EditableTable extends React.Component<any, any> {
     })
     this.setState({ editingKey: true })
   }
+
   // 删除
   public handleDelete = (record: any) => {
     Modal.confirm({
@@ -235,6 +238,7 @@ class EditableTable extends React.Component<any, any> {
     this.setState({ editingKey: key })
   }
 
+  //实时查询
   public toSearch(value: any) {
     if (this.state.timeout) {
       clearTimeout(this.state.timeout)
@@ -262,6 +266,8 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
+  //保存
   public handleOk() {
     if (!this.state.operationTiming || !this.state.operation || !this.state.messageType || !this.state.searchValue) {
       message.warning('保存前请将每一项信息填写完整')

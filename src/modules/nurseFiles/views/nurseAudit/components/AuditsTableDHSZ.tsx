@@ -14,7 +14,7 @@ export interface Props {
   needAudit: boolean
 }
 
-export default function AuditsTableDHSZ (props: Props) {
+export default function AuditsTableDHSZ(props: Props) {
   let { type } = props
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
   const [tableData, setTableData] = useState([])
@@ -135,7 +135,7 @@ export default function AuditsTableDHSZ (props: Props) {
   }, [])
   return (
     <Wrapper>
-      <GroupPostBtn onClick={() => onload(current)} style={{ right: 120 }}>
+      <GroupPostBtn onClick={() => onload(current)} style={{ right: 130 }}>
         刷新
       </GroupPostBtn>
       {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>}
@@ -159,6 +159,6 @@ export default function AuditsTableDHSZ (props: Props) {
 const Wrapper = styled.div``
 const GroupPostBtn = styled(Button)`
   position: fixed !important;
-  top: 180px;
-  right: 20px;
+  top: 209px;
+  right: 30px;
 `

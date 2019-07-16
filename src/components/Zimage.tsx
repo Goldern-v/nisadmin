@@ -6,7 +6,7 @@ export interface Props {
   text: string
 }
 
-export default function Zimage (props: Props | any) {
+export default function Zimage(props: Props | any) {
   let option = Object.assign(
     {
       backdrop: 'rgba(0,0,0, .8)'
@@ -14,12 +14,18 @@ export default function Zimage (props: Props | any) {
     props
   )
   let imgRef = React.createRef<any>()
+  const stopPro = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation()
+    e.preventDefault()
+  }
   if (option.text) {
     if (option.list && option.list.length > 0) {
       return (
         <Wrapper
-          onClick={() => {
+          onClick={(e) => {
             imgRef.current && imgRef.current.cover.click()
+            e.stopPropagation()
+            e.preventDefault()
           }}
         >
           <Text>{option.text}</Text>
@@ -36,8 +42,10 @@ export default function Zimage (props: Props | any) {
     } else if (option.src) {
       return (
         <Wrapper
-          onClick={() => {
+          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             imgRef.current && imgRef.current.cover.click()
+            e.stopPropagation()
+            e.preventDefault()
           }}
         >
           <Text>{option.text}</Text>
@@ -48,7 +56,13 @@ export default function Zimage (props: Props | any) {
       return <React.Fragment />
     }
   } else {
-    return option.src ? <ReactZmage {...option} /> : <span />
+    return option.src ? (
+      <div onClick={stopPro}>
+        <ReactZmage {...option} />
+      </div>
+    ) : (
+      <span />
+    )
   }
 }
 const Wrapper = styled.div`

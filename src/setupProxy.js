@@ -32,9 +32,9 @@ module.exports = function(app) {
   app.use(
     proxy('/crNursing/nursingInstitution', {
       // target: 'http://120.25.105.45:9864',
-      target: 'http://120.197.141.41:9091',
+      target: 'http://120.197.141.41:9094',
       secure: false,
-      changeOrigin: true
+      changeOrigin: false
     })
   )
 }

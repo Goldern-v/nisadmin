@@ -229,7 +229,7 @@ export default function aduitModal(props: Props) {
                       rows={3}
                       style={{ width: 554 }}
                       value={opinion}
-                      onChange={(e) => setOpinion(e.target.value)}
+                      onChange={(e: any) => setOpinion(e.target.value)}
                     />
                   </div>
                 </div>

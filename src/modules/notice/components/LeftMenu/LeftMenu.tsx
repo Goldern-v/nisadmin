@@ -27,7 +27,7 @@ export default observer(function LeftMenu() {
     {
       icon: require('./images/收藏.png'),
       text: '我的收藏',
-      size: 0
+      size: noticeViewModel.collectSize
     }
   ]
 

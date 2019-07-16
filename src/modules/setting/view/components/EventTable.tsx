@@ -15,7 +15,6 @@ export interface Props {
 }
 export interface Props extends RouteComponentProps {}
 
-// const FormItem = Form.Item
 const EditableContext = React.createContext<any>({})
 
 class EditableTable extends React.Component<any, any> {
@@ -140,6 +139,8 @@ class EditableTable extends React.Component<any, any> {
       this.getMealList(null, null)
     })
   }
+
+  //添加和修改
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
     if (value === 1) {
@@ -228,6 +229,7 @@ class EditableTable extends React.Component<any, any> {
     let educationName = this.state.arrayData.filter((item: any) => item.missionId === value)[0].name
     this.setState({ searchValue: educationName })
   }
+
   //时时查询
   public toSearch(value: any) {
     let postData = {
@@ -252,6 +254,7 @@ class EditableTable extends React.Component<any, any> {
     })
   }
 
+  //保存
   public handleOk() {
     if (!this.state.searchValue || !this.state.patientId || !this.state.messageType) {
       message.warning('保存前请将每一项信息填写完整')
