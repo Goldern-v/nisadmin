@@ -53,6 +53,7 @@ const columns: any = [
     title: '感染率（例/千机械通气日）',
     dataIndex: 'infection_ratio',
     key: '感染率（例/千导管日）',
+    width: 200,
     align: 'center'
   }
 ]

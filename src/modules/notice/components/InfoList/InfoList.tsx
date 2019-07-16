@@ -7,7 +7,6 @@ import { noticeViewModel } from '../../NoticeViewModel'
 
 import { noticeService } from '../../serveices/NoticeService'
 import InfiniteScroll from 'react-infinite-scroller'
-
 import classNames from 'classnames'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { Spin } from 'src/vendors/antd'
