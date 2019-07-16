@@ -51,7 +51,7 @@ const tabShow = () => {
     return []
   }
 }
-export default observer(function NurseAudit () {
+export default observer(function NurseAudit() {
   return (
     <Wrapper>
       <TopCon />

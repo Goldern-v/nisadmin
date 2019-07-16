@@ -50,7 +50,7 @@ const tabShow = () => {
     return []
   }
 }
-export default observer(function NurseAudit () {
+export default observer(function NurseAudit() {
   return (
     <Wrapper>
       <MainCon>
@@ -68,7 +68,7 @@ const Wrapper = styled.div`
 
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 137px);
   align-items: stretch;
   display: flex;
   margin: 20px;

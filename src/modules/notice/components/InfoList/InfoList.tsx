@@ -21,7 +21,7 @@ export default observer(function InfoList() {
       <Head>
         <div className='title'>{noticeViewModel.selectedMenu}</div>
         <div className='btn' onClick={() => noticeViewModel.toggleMenuEdit()}>
-          {noticeViewModel.isMenuEdit ? '取消' : '编辑'}
+          {list.length > 0 && (noticeViewModel.isMenuEdit ? '取消' : '编辑')}
         </div>
       </Head>
       {/* {JSON.stringify(noticeViewModel.selectedMenuEditList)} */}
