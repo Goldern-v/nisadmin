@@ -14,9 +14,10 @@ import { ReactComponent as TKGL } from './assets/icon_svg/题库管理.svg'
 import { ReactComponent as PXGL } from './assets/icon_svg/培训管理.svg'
 import { ReactComponent as JJSZ } from './assets/icon_svg/晋级设置.svg'
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 import 人员管理 from './人员管理'
+import QuestionBankManagement from '../questionBankManagement/QuestionBankManagement'
 
 const LEFT_MENU_CONFIG = [
   {
@@ -58,8 +59,8 @@ const LEFT_MENU_CONFIG = [
   {
     title: '题库管理',
     icon: <TKGL />,
-    path: '/continuingEdu/题库管理',
-    component: Null
+    path: '/continuingEdu/questionBankManagement',
+    component: QuestionBankManagement
   },
   {
     title: '培训管理',
@@ -72,7 +73,7 @@ const LEFT_MENU_CONFIG = [
     icon: <JJSZ />,
     path: '/continuingEdu/晋级设置',
     component: Null
-  },
+  }
 ]
 
 export default function ContinuingEdu(props: Props) {
@@ -93,16 +94,18 @@ export default function ContinuingEdu(props: Props) {
     return chooseRoute
   }
   // let cacheSetHeadTitle = currentRoute && currentRoute.title
-  return <Wrapper>
-    <LeftWrapper>
-      <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="继续教育" />
-    </LeftWrapper>
-    <MainWrapper>
-      {currentRoute && currentRoute.component && (
-        <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-      )}
-    </MainWrapper>
-  </Wrapper>
+  return (
+    <Wrapper>
+      <LeftWrapper>
+        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle='继续教育' />
+      </LeftWrapper>
+      <MainWrapper>
+        {currentRoute && currentRoute.component && (
+          <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+        )}
+      </MainWrapper>
+    </Wrapper>
+  )
 }
 const Wrapper = styled.div`
   width: 100%;
@@ -110,7 +113,7 @@ const Wrapper = styled.div`
   position: relative;
 `
 const LeftWrapper = styled.div`
-  #left-menu-con{
+  #left-menu-con {
     overflow-x: hidden;
   }
 `

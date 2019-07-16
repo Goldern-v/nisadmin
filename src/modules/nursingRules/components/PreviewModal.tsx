@@ -3,6 +3,7 @@ import React from 'react'
 import { Modal, Button } from 'antd'
 
 import { ModalComponentProps } from 'src/libs/createModal'
+import PdfProtcetView from 'src/components/PdfProtcetView'
 
 export interface Props extends ModalComponentProps {
   name?: string
@@ -23,14 +24,14 @@ export default function PreviewModal(props: Props) {
         return <img src={url} width='100%' />
       case 'pdf':
         // return <object type="application/pdf" width="100%" style={{ height: `${pdfHeight}px` }} data={url} />
-        return <iframe src={url + '#toolbar=0'} width='100%' style={{ height: `${pdfHeight}px`, border: 'none' }} />
+        return <PdfProtcetView src={url} style={{ height: `${pdfHeight}px` }} />
       default:
         return <div style={{ height: '300px', lineHeight: '300px', textAlign: 'center' }}>该文件格式不支持预览</div>
     }
   }
   return (
     <Modal visible={visible} title={name} width={'900px'} centered onCancel={onClose} footer={null} onOk={onClose}>
-      {Content()}
+      {visible && Content()}
     </Modal>
   )
 }

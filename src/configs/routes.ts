@@ -55,7 +55,7 @@ import TrainingExamination from 'src/modules/trainingExamination/TrainingExamina
 //科室借用
 import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
 //继续教育
-import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEdu'
+import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEduView'
 import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Main'
 import QualityView from 'src/modules/quality/QualityView'
 

@@ -269,6 +269,9 @@ const Wrapper = styled.div`
     tr.drop-over-upward td {
       border-top: 2px dashed ${(p: any) => p.theme.$mtc};
     }
+    .ant-table-pagination.ant-pagination {
+      margin-bottom: 0px;
+    }
   }
 `
 
