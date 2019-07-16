@@ -21,8 +21,6 @@ export default observer(function BedSituation (props: Props) {
     emitter.addListener('touchState', () => {
       postNurseScheduling()
     })
-    console.log(appStore.match.params.name)
-    console.log(44444444444444444444444444)
     postNurseScheduling()
   }, [])
   // const postNurseScheduling = StatisticsApi.postNurseScheduling().then((res) => {
