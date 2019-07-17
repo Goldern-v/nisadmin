@@ -46,7 +46,7 @@ const TopHeader = styled.div`
     margin: 6px 0;
     height: 28px;
     line-height: 28px;
-    font-size: 30px;
+    font-size: 26px;
     font-weight: bold;
     .topHeaderButton {
       margin-right: 20px;

@@ -32,7 +32,9 @@ const Con = styled.div`
 `
 const HeaderCon = styled.div`
   height: 104px;
-  border-bottom: 1px solid gray;
+  /* background: rgba(255, 255, 255, 1); */
+  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); */
+  /* border-bottom: 1px solid gray; */
 `
 const MidCon = styled.div`
   flex: 1;
@@ -58,7 +60,8 @@ const MidLeftCon = styled.div`
   background-color: #fff;
   align-items: stretch;
   .QualityControlRecordDetailMidLeft__Con-sc-1yldaue-0 {
-    border-right: 1px solid gray;
+    border-right: 1px solid #e8f6f1;
+    /* #EEEEEE */
   }
 `
 const MidRightCon = styled.div`
