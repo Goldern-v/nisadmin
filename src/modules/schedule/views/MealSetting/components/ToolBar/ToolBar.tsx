@@ -13,14 +13,14 @@ import { Button, message, Modal, Form, Input, TreeSelect, Switch, Cascader } fro
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 // import moment from 'moment'
-import { scheduleStore } from 'src/stores'
+import { scheduleStore, appStore } from 'src/stores'
 
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-export default function ToolBar () {
+export default function ToolBar() {
   const [count, setCount] = useState(0)
 
   // Similar to componentDidMount and componentDidUpdate:
@@ -76,11 +76,10 @@ export default function ToolBar () {
           value: record.status != null ? record.status : true
         }
       }
-      console.log('编辑排班-', record)
       addMeal('编辑排班套餐')
     })
     //
-    console.log('初始化弹窗树', initalTreeData())
+    initalTreeData()
     //
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
@@ -110,29 +109,32 @@ export default function ToolBar () {
     shiftList = new Array()
     let deptCode = scheduleStore.getDeptCode()
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
-      console.log('获取排班列表', res)
       if (res && res.data) {
-        shiftList = res.data
-        console.log(shiftList)
+        shiftList = res.data.filter((item: any) => item.status)
         // 分类
-        shiftList.map((s: any, sIndex:any) => {
+        shiftList.map((s: any, sIndex: any) => {
           let shift = treeData.filter((t) => {
             if (t.title === s.shiftType) {
               if (!t.hasOwnProperty('children')) {
                 t.children = new Array()
               }
-              (t.children as any).push({ title: s.name, value: s.name, key: s.shiftType + s.name+sIndex, shiftType: s.shiftType, isLeaf: true })
+              ;(t.children as any).push({
+                title: s.name,
+                value: s.name,
+                key: s.shiftType + s.name + sIndex,
+                shiftType: s.shiftType,
+                isLeaf: true
+              })
               return t
             }
           })
           if (shift && shift.length > 0) {
-            console.log(shift)
           } else {
-            (treeData as any).push({
+            ;(treeData as any).push({
               title: s.shiftType,
               label: s.shiftType,
               value: s.shiftType,
-              key: s.shiftType+sIndex,
+              key: s.shiftType + sIndex,
               selectable: false,
               // disabled: true,
               isLeaf: false,
@@ -143,7 +145,7 @@ export default function ToolBar () {
                   value: s.name,
                   shiftType: s.shiftType,
                   isLeaf: true,
-                  key: s.shiftType + s.name+sIndex
+                  key: s.shiftType + s.name + sIndex
                 }
               ]
             })
@@ -151,93 +153,18 @@ export default function ToolBar () {
             // ;(treeExpandedKeys as any).push(s.shiftType)
           }
         })
-        console.log('分类', treeData)
       }
     })
   }
-
-  // const treeSelectCon = () => (
-  //   <TreeSelect
-  //     style={{ width: inputWidth }}
-  //     dropdownStyle={{ maxHeight: '400px', overflow: 'auto' }}
-  //     treeData={treeData}
-  //     searchPlaceholder='搜索'
-  //     placeholder='请选班'
-  //     allowClear
-  //     showSearch
-  //   />
-  // )
-
-  // const formItemLayout = {
-  //   labelCol: { span: 2, offset: 0 },
-  //   wrapperCol: { span: 1, offset: 0 }
-  // }
-
-  const handleAreaClick = (e: any, label: any, option: any) => {
-    e.stopPropagation()
-    console.log('clicked', label, option)
-  }
-
-  const displayRender = (labels: any, selectedOptions: any) =>
-    labels.map((label: any, i: any) => {
-      const option = selectedOptions[i]
-      if (i === labels.length - 1) {
-        return (
-          <span key={option.value}>
-            {label} (<a onClick={(e) => handleAreaClick(e, label, option)}>{option.code}</a>)
-          </span>
-        )
-      }
-      return <span key={option.value}>{label} / </span>
-    })
-
-  const onChange = (value: any) => {
-    console.log(value)
-  }
-
-  const options = [
-    {
-      value: 'zhejiang',
-      label: 'Zhejiang',
-      children: [
-        {
-          value: 'hangzhou',
-          label: 'Hangzhou',
-          children: [
-            {
-              value: 'xihu',
-              label: 'West Lake'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      value: 'jiangsu',
-      label: 'Jiangsu',
-      children: [
-        {
-          value: 'nanjing',
-          label: 'Nanjing',
-          children: [
-            {
-              value: 'zhonghuamen',
-              label: 'Zhong Hua Men'
-            }
-          ]
-        }
-      ]
-    }
-  ]
 
   let customizedForm: any = null
   const CustomizedForm = Form.create({
     // name: 'coordinated',
-    onFieldsChange (props: any, changedFields: any) {
+    onFieldsChange(props: any, changedFields: any) {
       // props = { ...props, ...changedFields }
       props.onChange(changedFields)
     },
-    mapPropsToFields (props: any) {
+    mapPropsToFields(props: any) {
       console.log('mapPropsToFields', props)
       return {
         id: Form.createFormField({
@@ -282,7 +209,7 @@ export default function ToolBar () {
         })
       }
     },
-    onValuesChange (_: any, values: any) {
+    onValuesChange(_: any, values: any) {
       console.log(values)
     }
   })((props: any) => {
@@ -301,60 +228,37 @@ export default function ToolBar () {
         <Form.Item label='星期一' style={FormFlexLayoutStyle()}>
           {getFieldDecorator('mondayName', {
             rules: [{ required: false, message: '' }]
-          })(
-            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
-          )}
+          })(<BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />)}
         </Form.Item>
         <Form.Item label='星期二' style={FormFlexLayoutStyle()}>
           {getFieldDecorator('tuesdayName', {
             rules: [{ required: false, message: '' }]
-          })(
-            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
-          )}
+          })(<BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />)}
         </Form.Item>
         <Form.Item label='星期三' style={FormFlexLayoutStyle()}>
           {getFieldDecorator('wednesdayName', {
             rules: [{ required: false, message: '' }]
-          })(
-            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
-          )}
+          })(<BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />)}
         </Form.Item>
         <Form.Item label='星期四' style={FormFlexLayoutStyle()}>
           {getFieldDecorator('thursdayName', {
             rules: [{ required: false, message: '' }]
-          })(
-            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
-          )}
+          })(<BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />)}
         </Form.Item>
         <Form.Item label='星期五' style={FormFlexLayoutStyle()}>
           {getFieldDecorator('fridayName', {
             rules: [{ required: false, message: '' }]
-          })(
-            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
-          )}
+          })(<BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />)}
         </Form.Item>
         <Form.Item label='星期六' style={FormFlexLayoutStyle()}>
           {getFieldDecorator('saturdayName', {
             rules: [{ required: false, message: '' }]
-          })(
-            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
-          )}
+          })(<BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />)}
         </Form.Item>
         <Form.Item label='星期日' style={FormFlexLayoutStyle()}>
           {getFieldDecorator('sundayName', {
             rules: [{ required: false, message: '' }]
-          })(
-            <BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />
-            // <TreeSelect
-            //   style={{ width: inputWidth }}
-            //   dropdownStyle={{ maxHeight: '400px', overflow: 'auto' }}
-            //   treeData={treeData}
-            //   searchPlaceholder='搜索'
-            //   placeholder='请选班'
-            //   allowClear
-            //   showSearch
-            // />
-          )}
+          })(<BaseTreeSelect style={{ width: inputWidth }} treeData={treeData} />)}
         </Form.Item>
         <Form.Item label='启用' style={FormFlexLayoutStyle('266px')}>
           {getFieldDecorator('status', { valuePropName: 'checked' })(<Switch />)}
@@ -506,8 +410,9 @@ export default function ToolBar () {
         // message.success('onCancel')
         // modalInfo.destroy()
       },
-      iconType: 'form',
+      icon: 'form',
       width: '500px',
+      maskClosable: true,
       content: (
         <div>
           <CustomizedForm {...fields} onChange={handleFormChange} />
@@ -529,12 +434,22 @@ export default function ToolBar () {
         onClick={() => {
           addMeal('添加排班套餐')
         }}
-        style={{ marginLeft: 5, marginRight: 5 }}
+        style={{ marginLeft: 3, marginRight: 3 }}
       >
         添加班次套餐
       </Button>
-      <Button onClick={save} style={{ marginLeft: 5, marginRight: 5 }}>
+      <Button onClick={save} style={{ marginLeft: 3, marginRight: 3 }}>
         保存
+      </Button>
+      <Button onClick={() => emitter.emit('更新班次套餐列表')} style={{ marginLeft: 3, marginRight: 3 }}>
+        刷新
+      </Button>
+      <Button
+        style={{ marginLeft: 3, marginRight: 3 }}
+        onClick={() => appStore.history.push('/scheduleHome')}
+        className='button-tools'
+      >
+        返回
       </Button>
     </Wrapper>
   )

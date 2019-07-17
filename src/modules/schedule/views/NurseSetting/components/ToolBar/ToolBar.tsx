@@ -8,6 +8,7 @@ import emitter from 'src/libs/ev'
 import { Button, message } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
+import { appStore } from 'src/stores'
 
 // import emitter from 'src/libs/ev'
 
@@ -31,7 +32,7 @@ export default function ToolBar() {
         onClick={(e: any) => {
           emitter.emit('添加排班人员')
         }}
-        style={{ marginLeft: 20, marginRight: 0 }}
+        style={{ marginLeft: 3, marginRight: 3 }}
       >
         添加
       </Button>
@@ -43,14 +44,7 @@ export default function ToolBar() {
       >
         删除
       </Button> */}
-      <Button
-        onClick={(e: any) => {
-          emitter.emit('刷新人员列表')
-        }}
-        style={{ marginLeft: 20, marginRight: 0 }}
-      >
-        刷新
-      </Button>
+
       <Button
         onClick={(e: any) => {
           // 获取选中人员
@@ -66,9 +60,24 @@ export default function ToolBar() {
             })
           })
         }}
-        style={{ marginLeft: 20, marginRight: 0 }}
+        style={{ marginLeft: 3, marginRight: 3 }}
       >
         保存
+      </Button>
+      <Button
+        onClick={(e: any) => {
+          emitter.emit('刷新人员列表')
+        }}
+        style={{ marginLeft: 3, marginRight: 3 }}
+      >
+        刷新
+      </Button>
+      <Button
+        style={{ marginLeft: 3, marginRight: 3 }}
+        onClick={() => appStore.history.push('/scheduleHome')}
+        className='button-tools'
+      >
+        返回
       </Button>
     </Wrapper>
   )

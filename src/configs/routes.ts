@@ -21,8 +21,9 @@ import PersonnelSettingView from 'src/modules/schedule/views/PersonnelSetting/Pe
 
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
+
 import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
-import NurseFileDetail from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
+import NurseFileDetailView from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
 import NurseAudit from 'src/modules/nurseFiles/views/nurseAudit/NurseAudit'
 
 import BadEventView from 'src/modules/badEvents/views/BadEventView'
@@ -58,6 +59,7 @@ import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
 import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEduView'
 import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Main'
 import QualityView from 'src/modules/quality/QualityView'
+import { nurseFileModule } from './routerConfig/nurseFileModule'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -99,9 +101,8 @@ const routes: RouteItem[] = [
   // 护理绩效
   setLayout('/nursingPerformance', NursingPerformance, layouts.MainLayout),
   // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
-  setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
-  setLayout('/nurseAudit', NurseAudit, layouts.MainLayout),
-  setLayout('/nurseFileDetail/:type', NurseFileDetail, layouts.MainLayout),
+  /** 档案模块 */
+  ...nurseFileModule,
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
 

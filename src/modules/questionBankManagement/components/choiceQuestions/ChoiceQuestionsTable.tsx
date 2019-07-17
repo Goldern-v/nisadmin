@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/es/table'
+import FooterBtnCon, { BtnList } from '../common/FooterBtnCon'
+import QuestionTemplate from './QuestionTemplate'
 interface Props {
   active: boolean
 }
@@ -30,7 +32,10 @@ export default function ChoiceQuestionsTable(props: Props) {
       title: '题目',
       dataIndex: '题目',
       key: '题目',
-      width: 400
+      width: 400,
+      render(record: any, text: string, index: number) {
+        return <QuestionTemplate />
+      }
     },
     {
       title: '类型',
@@ -74,6 +79,20 @@ export default function ChoiceQuestionsTable(props: Props) {
   const rowSelection = {
     onChange: (selectedRowKeys: any, selectedRows: any) => {}
   }
+  let btnList: BtnList[] = [
+    {
+      name: '添加标签',
+      onClick: () => {}
+    },
+    {
+      name: '删除标签',
+      onClick: () => {}
+    },
+    {
+      name: '删除题目',
+      onClick: () => {}
+    }
+  ]
   return (
     <Wrapper>
       <BaseTable
@@ -90,7 +109,10 @@ export default function ChoiceQuestionsTable(props: Props) {
           pageSize: pageSize
         }}
       />
+      <FooterBtnCon btnList={btnList} />
     </Wrapper>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  position: relative;
+`

@@ -15,7 +15,7 @@ interface Props {
   title: string
 }
 
-export default function ModalBox (props: Props) {
+export default function ModalBox(props: Props) {
   const [modalVisible, setModalVisible] = useState(false)
   const [contant, setContant] = useState('')
   const [configBox, setConfigBox] = useState(new Object() as any)
@@ -42,7 +42,6 @@ export default function ModalBox (props: Props) {
 
     emitter.addListener('打开弹框', (config: any) => {
       // setModalVisible(true)
-      console.log('打开弹框', config)
       setContant(config.contant)
       setConfigBox(config)
       if (config.width) {
@@ -54,8 +53,6 @@ export default function ModalBox (props: Props) {
     emitter.addListener('关闭弹框', () => {
       setModalVisible(false)
     })
-    //
-    console.log(modalVisible, setModalVisible)
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const open = () => {

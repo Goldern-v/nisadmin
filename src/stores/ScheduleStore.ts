@@ -113,6 +113,7 @@ export default class ScheduleStore {
   }
 
   hasExtraWord(str: string) {
+    console.log(str, 'strstrstr')
     let extraWord = ['待班', '备班', '加班', '二线']
     let oriStr = extraWord.find((work: string) => str.includes(work))
     if (oriStr) {
