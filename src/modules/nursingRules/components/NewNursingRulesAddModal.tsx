@@ -11,15 +11,20 @@ export interface Props {
   visible: boolean,
   onOk: any,
   onCancel: any,
-  fileTypeList: any
+  fileTypeList: any,
+  params?: any
 }
 
 export default function NewNursingRulesAddModal(props: Props) {
   const refForm = React.createRef<Form>();
-  const { visible, onOk, onCancel, fileTypeList } = props;
+  const { visible, onOk, onCancel, fileTypeList, params } = props;
   const [deptList, setDeptList] = useState(authStore.deptList);
-  const [deptCode, setDeptCode] = useState('公共');
+  const [deptCode, setDeptCode] = useState('000000');
   const [empNo, setEmpNo] = useState();
+  const [uploadLoading, setUploadLoading] = useState(false);
+
+  // let uploadAccept = 'image/png,image/gif,image/jpeg,application/msword,.doc,.docx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf';
+  let uploadAccept = '.pdf';
 
   const openImportFile = () => {
     let target = document.querySelector('.new-nursing-rules-add-modal .file-content') as HTMLElement;
@@ -58,7 +63,20 @@ export default function NewNursingRulesAddModal(props: Props) {
       let nameEL = document.querySelector('.new-nursing-rules-add-modal .file-name') as HTMLInputElement;
       if (nameEL && nameEL.value) nameEL.value = "";
 
-      if (refForm && refForm.current) refForm.current.clear()
+      setTimeout(() => {
+        if (refForm && refForm.current) refForm.current.clear(() => {
+          if (refForm && refForm.current && params instanceof Object) {
+            let keys = Object.keys(params);
+            if (keys.length > 0) {
+              refForm.current.setFields({
+                deptCode: params.deptCode,
+                institutionName: params.institutionName,
+                fileType: params.fileType
+              });
+            }
+          }
+        })
+      },100)
     }
   }, [visible])
 
@@ -77,40 +95,95 @@ export default function NewNursingRulesAddModal(props: Props) {
       if (!formData.fileType)
         return Message.error('未选择护理类型');
 
-      if (file && nameEl.value) {
-        let data = new FormData();
-        let publicUse = 0;
-        if (!formData.deptCode || formData.deptCode == '公共' || formData.deptCode == '000000')
-          publicUse = 1;
 
-        data.append('publicUse', publicUse.toString());
-        data.append('file', file);
-        data.append('empNo', empNo);
-
-        for (let x in formData) {
-          data.append(x, formData[x]);
-        }
+      if (!(file && nameEl.value))
+        return Message.error('未选择上传文件');
 
 
-        api.upload(data).then(res => {
-          Message.success('上传成功');
-          onOk();
-        }, err => {
-          Message.error('上传失败');
-        })
+      if (fileEL.value.split('.')[fileEL.value.split('.').length - 1] !== 'pdf')
+        return Message.error('文件上传类型为pdf');
+
+      let data = new FormData();
+      let publicUse = 0;
+      if (!formData.deptCode || formData.deptCode == '公共' || formData.deptCode == '000000')
+        publicUse = 1;
+
+      data.append('publicUse', publicUse.toString());
+      data.append('file', file);
+      data.append('empNo', empNo);
+
+      for (let x in formData) {
+        data.append(x, formData[x]);
+      }
+
+      setUploadLoading(true)
+
+      let successCallback = (res?: any) => {
+        Message.success('上传成功');
+
+        setUploadLoading(false)
+        onOk();
+      }
+
+      let failedCallback = (err?: any) => {
+        Message.error('上传失败');
+        setUploadLoading(false)
+      }
+
+      if (params && Object.keys(params).length > 0) {
+        api
+          .deleteFile({ id: params.id })
+          .then(res => {
+
+            if (res.code == '200') {
+              return api.upload(data)
+            } else {
+              return new Promise((resolve, reject) => {
+                reject('制度删除失败')
+              })
+            }
+          })
+          .then(res => {
+            successCallback(res)
+          })
+          .catch((e: any) => {
+            failedCallback(e)
+          })
       } else {
-        Message.error('未选择上传文件');
+        api.upload(data).then(res => {
+          successCallback(res)
+        }, err => {
+          failedCallback(err)
+        })
       }
 
     }
 
   }
 
+  const FileContent = () => {
+    if (visible) {
+      return <Input
+        type="file"
+        className="file-content"
+        accept={uploadAccept}
+        onChange={handleImportFileChange} />
+    } else
+      return ''
+  }
+
+  const handleCancel = () => {
+    if (uploadLoading) return
+
+    onCancel && onCancel()
+  }
+
   return <Modal
     className="new-nursing-rules-add-modal"
-    title='导入文件'
+    title={params?'制度修订':'导入文件'}
     onOk={handleOkBtn}
-    onCancel={onCancel}
+    confirmLoading={uploadLoading}
+    onCancel={handleCancel}
     visible={visible}>
     <ModalContent>
       <Form ref={refForm}>
@@ -159,11 +232,7 @@ export default function NewNursingRulesAddModal(props: Props) {
             <input readOnly className="ipt ant-input file-name" />
             <Button onClick={openImportFile} className="more">...</Button>
             <span style={{ display: 'none' }}>
-              <Input
-                type="file"
-                className="file-content"
-                accept="image/png,image/gif,image/jpeg,application/msword,.doc,.docx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf"
-                onChange={handleImportFileChange} />
+              {FileContent()}
             </span>
           </span>
         </div>

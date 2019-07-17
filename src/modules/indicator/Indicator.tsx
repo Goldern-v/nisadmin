@@ -808,7 +808,7 @@ let widthCharGet: any = ''
 export default function Indicator(props: Props) {
   let [showType, setShowType] = useState('详情')
   let [startDate, setStartDate] = useState('')
-  let [endDate, setEndDate] = useState('详情')
+  let [endDate, setEndDate] = useState('')
   let [loading, setLoading] = useState(false)
   let [currentRoute, setCurrentRoute]: [any, any] = useState(null)
   const [titleSecond, setTitleSecond] = useState('')

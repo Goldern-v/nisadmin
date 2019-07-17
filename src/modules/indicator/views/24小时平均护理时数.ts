@@ -61,6 +61,7 @@ const columns: any = [
     title: '每住院患者24小时平均护理时数',
     dataIndex: 'avgNurHPerPatient',
     key: '每住院患者24小时平均护理时数',
+    width: 110,
     align: 'center'
   }
 ]

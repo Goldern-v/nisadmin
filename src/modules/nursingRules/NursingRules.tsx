@@ -14,7 +14,7 @@ import createModal from 'src/libs/createModal'
 
 const api = new NursingRulesApiService()
 
-export interface Props {}
+export interface Props { }
 
 export default class NursingRules extends Component<Props> {
   state = {
@@ -32,6 +32,7 @@ export default class NursingRules extends Component<Props> {
       type: '',
       title: ''
     },
+    uploadParams: null as any,
     tableLoading: false,
     typeList: [] as any
   }
@@ -221,16 +222,16 @@ export default class NursingRules extends Component<Props> {
   }
 
   handleModalOk() {
-    this.setState({
-      newRuleModalgVisible: false
-    })
-    this.setTableData()
+    this.setState({newRuleModalgVisible: false})
+    this.setTableData();
+
+    setTimeout(()=>this.setState({uploadParams: null}),300)
   }
 
   handleModalCancel() {
-    this.setState({
-      newRuleModalgVisible: false
-    })
+    this.setState({newRuleModalgVisible: false})
+
+    setTimeout(()=>this.setState({uploadParams: null}),300)
   }
 
   bytesToSize(bytes: number) {
@@ -246,9 +247,21 @@ export default class NursingRules extends Component<Props> {
     this.setState({ query: { ...this.state.query, fileType } })
   }
 
+  reUpload(record: any) {
+    this.setState({
+      uploadParams: {
+        id: record.id,
+        institutionName: record.name,
+        deptCode: record.deptCode,
+        fileType: record.fileType,
+      },
+      newRuleModalgVisible: true
+    })
+  }
+
   render() {
     const PreviewModalWrapper = this.PreviewModalWrapper
-    const { query, data, dataTotal, newRuleModalgVisible, preview, tableLoading, typeList } = this.state
+    const { query, data, dataTotal, newRuleModalgVisible, preview, tableLoading, typeList, uploadParams } = this.state
     const rulesColumns: ColumnProps<any>[] = [
       {
         title: '序号',
@@ -324,6 +337,9 @@ export default class NursingRules extends Component<Props> {
               {/* <span onClick={this.handleDownload.bind(this, record)} className='operate-text'>
                 下载
               </span> */}
+              <span onClick={this.reUpload.bind(this, record)} className='operate-text'>
+                修订
+              </span>
               <span onClick={this.handleDelete.bind(this, record)} className='operate-text'>
                 删除
               </span>
@@ -407,6 +423,7 @@ export default class NursingRules extends Component<Props> {
         <NewNursingRulesAddModal
           fileTypeList={typeList}
           onOk={this.handleModalOk.bind(this)}
+          params={uploadParams}
           onCancel={this.handleModalCancel.bind(this)}
           visible={newRuleModalgVisible}
         />
