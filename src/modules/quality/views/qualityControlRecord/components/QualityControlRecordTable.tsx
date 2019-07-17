@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-
-export default function qualityControlRecordTable() {
+import store from 'src/stores'
+import { appStore } from 'src/stores'
+import { observer } from 'mobx-react-lite'
+import qs from 'qs'
+export default observer(function qualityControlRecordTable() {
   let [loading, setLoading] = useState(false)
   const columns: any[] = [
     {
@@ -14,44 +17,72 @@ export default function qualityControlRecordTable() {
       width: 50
     },
     {
-      title: '制度名称',
-      dataIndex: '',
+      title: '质控编号',
+      dataIndex: 'zkbh',
       key: '',
       width: 180,
       align: 'left'
     },
     {
-      title: '大小',
-      dataIndex: '',
+      title: '质控日期',
+      dataIndex: 'zkrq',
       key: '',
-      width: 100,
+      width: 120,
       align: 'center'
     },
     {
-      title: '格式',
-      dataIndex: '',
+      title: '质控病区',
+      dataIndex: 'zkbq',
       key: '',
-      width: 80,
+      width: 180,
+      align: 'center'
+    },
+    {
+      title: '质控表单',
+      dataIndex: 'zkbq',
+      key: '',
+      width: 180,
       align: 'center'
     },
 
     {
-      title: '上传人',
-      dataIndex: '',
-      key: '',
-      width: 80,
-      align: 'center'
-    },
-    {
-      title: '权限',
-      dataIndex: '',
+      title: '质控人员',
+      dataIndex: 'zkry',
       key: '',
       width: 100,
       align: 'center'
     },
     {
-      title: '上传时间',
-      dataIndex: '',
+      title: '床号',
+      dataIndex: 'ch',
+      key: '',
+      width: 80,
+      align: 'center'
+    },
+    {
+      title: '住院号',
+      dataIndex: 'zyh',
+      key: '',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '管床护士',
+      dataIndex: 'gchs',
+      key: '',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '质量结果',
+      dataIndex: 'zljg',
+      key: '',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '状态',
+      dataIndex: 'zt',
       key: '',
       width: 130,
       align: 'center'
@@ -65,15 +96,377 @@ export default function qualityControlRecordTable() {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            <span onClick={() => {}}>预览</span>
-            <span onClick={() => {}}>下载</span>
-            <span onClick={() => {}}>删除</span>
+            <span
+              onClick={() => {
+                onDoubleClick(row)
+              }}
+            >
+              查看
+            </span>
           </DoCon>
         )
       }
     }
   ]
-  const dataSource: any[] = []
+  const dataSource: any[] = [
+    {
+      key: 1,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111112',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 3,
+      zkbh: '111111111111113',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    },
+    {
+      key: 2,
+      zkbh: '111111111111111',
+      zkrq: '2019-07-01',
+      zkbq: '神经内科护理单元',
+      zkbd: '护理基础质量检查表',
+      zkry: '王萌萌',
+      ch: '33',
+      zyh: 'P3333333',
+      gchs: '王晓萌',
+      zljg: '60%',
+      zt: '待病区处理'
+    }
+  ]
+
+  const onDoubleClick = (record: any) => {
+    // appStore.history.push('/continuingEduEmpDetail')
+    appStore.history.push(`/qualityControlRecordDetail/${record.zkbh}`)
+    // store.appStore.history.push(`/quality/qualityControlRecord/${qs.stringify(record)}`)
+  }
   return (
     <Con>
       <TableScrollCon>
@@ -83,14 +476,20 @@ export default function qualityControlRecordTable() {
             loading={loading}
             dataSource={dataSource}
             columns={columns}
+            surplusWidth={160}
             // surplusHeight={currentRoute.surplusHeight || 250}
             // surplusWidth={currentRoute.surplusWidth || 0}
+            onRow={(record: any) => {
+              return {
+                onDoubleClick: () => onDoubleClick(record)
+              }
+            }}
           />
         </TableCon>
       </TableScrollCon>
     </Con>
   )
-}
+})
 
 const Con = styled.div`
   height: 100%;
@@ -98,7 +497,10 @@ const Con = styled.div`
 `
 const TableScrollCon = styled.div`
   width: 100%;
-  overflow-x: auto;
+  /* overflow-x: auto; */
 `
 
-const TableCon = styled.div``
+const TableCon = styled.div`
+  width: 100%;
+  /* margin-bottom:20px; */
+`

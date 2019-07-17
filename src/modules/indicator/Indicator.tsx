@@ -932,7 +932,7 @@ export default function Indicator(props: Props) {
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
   let ChartComponent = (currentRoute && currentRoute.chartComponent) || 护患比统计图
   const restClick = () => {
-    console.log(document.body.offsetHeight-200)
+    console.log(document.body.offsetHeight - 200)
   }
   return (
     <Wrapper>
