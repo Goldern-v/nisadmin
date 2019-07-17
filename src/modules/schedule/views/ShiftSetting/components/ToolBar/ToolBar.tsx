@@ -11,7 +11,7 @@ import { Button, message, Modal, Form, Input, AutoComplete, TimePicker, Switch }
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import moment from 'moment'
-import { scheduleStore, authStore } from 'src/stores'
+import { scheduleStore, authStore, appStore } from 'src/stores'
 
 // import emitter from 'src/libs/ev'
 
@@ -234,7 +234,7 @@ export default function ToolBar() {
 
   const handleFormChange = (changedFields: any) => {
     fields = { ...fields, ...changedFields }
-    console.log('handleFormChange', changedFields, customizedForm)
+    // console.log('handleFormChange', changedFields, customizedForm)
     // console.log('onFieldsChange', props, changedFields)
     // let diff = 0
     // let dateFormat = 'YYYY-MM-DD HH:mm:ss'
@@ -380,17 +380,24 @@ export default function ToolBar() {
           onClick={() => {
             addShift('添加排班')
           }}
-          style={{ marginLeft: 5, marginRight: 5 }}
+          style={{ marginLeft: 3, marginRight: 3 }}
         >
           添加班次
         </Button>
       )}
 
-      <Button onClick={() => emitter.emit('更新班次列表')} style={{ marginLeft: 5, marginRight: 5 }}>
+      <Button onClick={() => emitter.emit('更新班次列表')} style={{ marginLeft: 3, marginRight: 3 }}>
         刷新
       </Button>
-      <Button onClick={save} style={{ marginLeft: 5, marginRight: 5 }}>
+      <Button onClick={save} style={{ marginLeft: 3, marginRight: 3 }}>
         保存
+      </Button>
+      <Button
+        style={{ marginLeft: 3, marginRight: 3 }}
+        onClick={() => appStore.history.push('/scheduleHome')}
+        className='button-tools'
+      >
+        返回
       </Button>
     </Wrapper>
   )

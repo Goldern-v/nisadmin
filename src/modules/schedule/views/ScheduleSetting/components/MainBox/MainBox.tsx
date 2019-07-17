@@ -8,8 +8,13 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button, Form, Input, InputNumber, message, Modal, Table, Tabs } from 'antd'
-import { scheduleStore } from 'src/stores'
+import { scheduleStore, appStore } from 'src/stores'
 import SetExtraHoursModal from '../../../components/Modal/SetExtraHoursModal'
+import { backFill } from './utils/backFill'
+import { mergeDayObj } from './utils/mergeDayObj'
+import { setRecordObj } from './utils/setRecordObj'
+import { weekDays1, weekDays2 } from './utils/splitRecord'
+import classNames from 'classnames'
 
 // import { Link } from 'react-router-dom'
 
@@ -166,6 +171,7 @@ export default function MainBox(props: Props) {
   emitter.removeAllListeners('发布并更新排班列表')
   emitter.removeAllListeners('更新排班列表表格')
   emitter.removeAllListeners('更新复制上周排班')
+  emitter.removeAllListeners('根据班次code获取班次详情')
 
   emitter.addListener('获取编辑排班列表', (callback: any) => {
     selectedRowsArray.map((nurse) => {
@@ -229,44 +235,19 @@ export default function MainBox(props: Props) {
     updateTableUI()
   })
 
+  emitter.addListener('根据班次code获取班次详情', (code, callback) => {
+    let shiftItem = shiftList.find((item) => item.name == code)
+    callback(shiftItem)
+  })
+
   const countWorkHours = (record: any, target: any = null) => {
-    let list = JSON.parse(JSON.stringify(shiftListData))
-
     let result = 0
-    let shift: any = new Object()
     for (const key in record) {
-      if (
-        record.hasOwnProperty(key) &&
-        key.toLowerCase().indexOf('dayname') > -1 &&
-        key.toLowerCase().indexOf('color') === -1 &&
-        key.toLowerCase().indexOf('code') === -1
-      ) {
-        const element = record[key]
-        const extraObj = scheduleStore.hasExtraWord(element)
-
-        if (extraObj) {
-          /** 额外工时 */
-          result += extraObj.effectiveTime
-        } else {
-          shift = list.find((s: any) => element === s.name)
-          if (!shift) {
-            shift = list.find(
-              (s: any) =>
-                record[key + 'Code'] === s.name ||
-                (record[key + 'Code'] === s.shiftType && record[key + 'Code'] != s.name)
-            )
-          }
-
-          if (shift) {
-            let num = !isNaN(Number(shift.effectiveTime)) ? Number(shift.effectiveTime) : 0
-            result += num
-            if (target && target.name && target.name === key + record.id) {
-              target.style.color = shift.nameColor || ''
-            }
-          }
-        }
+      if (record.hasOwnProperty(key) && key.indexOf('EffectiveTime') > -1) {
+        result += Number(record[key]) || 0
       }
     }
+
     record.thisWeekHour = result.toFixed(1)
 
     return result
@@ -362,19 +343,36 @@ export default function MainBox(props: Props) {
     )
   }
 
-  const getTextColor = (text: string, record: any, colorName: string, key?: any) =>
-    record.showIndex ? (
-      <input
-        name={key + record.id}
-        onClick={(e) => onClickInputText(e, record, key)}
-        onChange={(e) => onChangeInputText(e, record, key)}
-        style={{ color: colorName }}
-        className={'table-input'}
-        defaultValue={text || ''}
-      />
+  const getTextColor = (text: string, record: any, colorName: string, key?: any) => {
+    let isOverTime
+    let shiftItem = shiftListData.find((item) => item.name == record[key + 'Code']) || {}
+    let effectiveTime = shiftItem.effectiveTime
+    if (record[key + 'EffectiveTime'] > effectiveTime) {
+      isOverTime = true
+    }
+    // console.log(shiftItem, record, key, record[key + 'EffectiveTime'], effectiveTime, '9765456789')
+    // console.log(shiftListData, 'shiftListData')
+    return record.showIndex ? (
+      <div
+        className={classNames({
+          'input-con': true,
+          isOverTime: isOverTime
+        })}
+      >
+        <input
+          name={key + record.id}
+          onClick={(e) => onClickInputText(e, record, key)}
+          onChange={(e) => onChangeInputText(e, record, key)}
+          style={{ color: colorName }}
+          className={'table-input'}
+          defaultValue={text || ''}
+          readOnly
+        />
+      </div>
     ) : (
       ''
     )
+  }
 
   const columns_1: any = [
     {
@@ -688,42 +686,11 @@ export default function MainBox(props: Props) {
   const getMealList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
     service.scheduleMealApiService.getMealListByCode(deptCode, 'true').then((res) => {
-      let oneUser = new Object()
       allUser = new Array()
-
       if (res && res.data) {
         tableData = res.data
-
-        let rowKeys = new Array()
-        tableData.map((item: any, index: number) => {
-          let oneObj: any = {}
-          let oneOb_1: any = {}
-          let oneObj_2: any = {}
-          for (let key in item) {
-            oneOb_1[key + '_1'] = item[key]
-            oneObj_2[key + '_2'] = item[key]
-          }
-          Object.assign(oneObj, item, oneOb_1, oneObj_2)
-          if (oneObj.status === true) {
-            rowKeys.push(oneObj.id)
-          } else {
-            oneObj.status = false
-          }
-          oneUser = new Object()
-          for (const key in data) {
-            if (data.hasOwnProperty(key) && oneObj.hasOwnProperty(key)) {
-              ;(oneUser as any)[key] = oneObj[key]
-            }
-            if (key === 'id') {
-              ;(oneUser as any).key = oneObj[key]
-            }
-          }
-          ;(allUser as any).push(oneUser)
-        })
-
-        setMealList(allUser)
-
-        tableData = JSON.parse(JSON.stringify(allUser))
+        allUser = tableData
+        setMealList(tableData)
       }
     })
   }
@@ -731,10 +698,9 @@ export default function MainBox(props: Props) {
   const getShiftList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res) => {
-      if (res && res.data) {
-        setShiftList(res.data)
-        shiftListData = JSON.parse(JSON.stringify(res.data))
-      }
+      let list = res.data.filter((m: any) => m.status)
+      setShiftList(list)
+      shiftListData = JSON.parse(JSON.stringify(list))
     })
   }
 
@@ -778,7 +744,7 @@ export default function MainBox(props: Props) {
         let scheduleList: any = new Array()
         scheduleList = res.data
         let schShiftUser = scheduleList.schShiftUser
-        if (res.data.schShiftUser[0] && res.data.schShiftUser[0].schStatus) {
+        if (appStore.isDev || (res.data.schShiftUser[0] && res.data.schShiftUser[0].schStatus)) {
           genDataTable(schShiftUser)
           scheduleStore.getWeeks().length == 2 ? setColumns(columns_2) : setColumns(columns_1)
           emitter.emit('设置页面标题', '编辑排班')
@@ -823,132 +789,20 @@ export default function MainBox(props: Props) {
     setTableLoading(true)
 
     schShiftUser.map((nurse: any, shcIndex: number) => {
-      let getRangeName = (range: any, i: number) => {
-        let result = ''
-        try {
-          result = range[i].rangeName ? range[i].rangeName : ''
-        } catch (error) {
-          return ''
-        }
-        return result
+      tr = {
+        id: nurse.id || shcIndex + 1 || '',
+        key: nurse.id || shcIndex + 1 || '',
+        showIndex: '' + (shcIndex + 1),
+        empNo: nurse.empNo || '',
+        empName: nurse.empName || '',
+        currentLevel: nurse.currentLevel || '',
+        title: nurse.title || '',
+        remark: nurse.remark || '',
+        thisWeekHour: nurse.thisWeekHour || '',
+        status: nurse.status
       }
 
-      let getRangeNameCode = (range: any, i: number) => {
-        let result = ''
-        try {
-          result = range[i].rangeNameCode ? range[i].rangeNameCode : ''
-        } catch (error) {
-          return ''
-        }
-        return result
-      }
-
-      let getNameColor = (range: any, i: number) => {
-        let result = ''
-        try {
-          result = range[i].nameColor ? range[i].nameColor : ''
-        } catch (error) {
-          return ''
-        }
-        return result
-      }
-
-      if (scheduleStore.getWeeks().length == 2) {
-        tr = {
-          id: nurse.id || shcIndex + 1 || '',
-          key: nurse.id || shcIndex + 1 || '',
-          showIndex: '' + (shcIndex + 1),
-          empNo: nurse.empNo || '',
-          empName: nurse.empName || '',
-          currentLevel: nurse.currentLevel || '',
-          title: nurse.title || '',
-
-          mondayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 0) : '',
-          tuesdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 1) : '',
-          wednesdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 2) : '',
-          thursdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 3) : '',
-          fridayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 4) : '',
-          saturdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 5) : '',
-          sundayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 6) : '',
-          mondayName_2: nurse.settingDtos ? getRangeName(nurse.settingDtos, 7) : '',
-          tuesdayName_2: nurse.settingDtos ? getRangeName(nurse.settingDtos, 8) : '',
-          wednesdayName_2: nurse.settingDtos ? getRangeName(nurse.settingDtos, 9) : '',
-          thursdayName_2: nurse.settingDtos ? getRangeName(nurse.settingDtos, 10) : '',
-          fridayName_2: nurse.settingDtos ? getRangeName(nurse.settingDtos, 11) : '',
-          saturdayName_2: nurse.settingDtos ? getRangeName(nurse.settingDtos, 12) : '',
-          sundayName_2: nurse.settingDtos ? getRangeName(nurse.settingDtos, 13) : '',
-
-          mondayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 0) : '',
-          tuesdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 1) : '',
-          wednesdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 2) : '',
-          thursdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 3) : '',
-          fridayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 4) : '',
-          saturdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 5) : '',
-          sundayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 6) : '',
-
-          mondayName_2Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 7) : '',
-          tuesdayName_2Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 8) : '',
-          wednesdayName_2Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 9) : '',
-          thursdayName_2Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 10) : '',
-          fridayName_2Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 11) : '',
-          saturdayName_2Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 12) : '',
-          sundayName_2Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 13) : '',
-
-          mondayName_1Code: getRangeNameCode(nurse.settingDtos, 0) || '',
-          tuesdayName_1Code: getRangeNameCode(nurse.settingDtos, 1) || '',
-          wednesdayName_1Code: getRangeNameCode(nurse.settingDtos, 2) || '',
-          thursdayName_1Code: getRangeNameCode(nurse.settingDtos, 3) || '',
-          fridayName_1Code: getRangeNameCode(nurse.settingDtos, 4) || '',
-          saturdayName_1Code: getRangeNameCode(nurse.settingDtos, 5) || '',
-          sundayName_1Code: getRangeNameCode(nurse.settingDtos, 6) || '',
-          mondayName_2Code: getRangeNameCode(nurse.settingDtos, 7) || '',
-          tuesdayName_2Code: getRangeNameCode(nurse.settingDtos, 8) || '',
-          wednesdayName_2Code: getRangeNameCode(nurse.settingDtos, 9) || '',
-          thursdayName_2Code: getRangeNameCode(nurse.settingDtos, 10) || '',
-          fridayName_2Code: getRangeNameCode(nurse.settingDtos, 11) || '',
-          saturdayName_2Code: getRangeNameCode(nurse.settingDtos, 12) || '',
-          sundayName_2Code: getRangeNameCode(nurse.settingDtos, 13) || '',
-          remark: nurse.remark || '',
-          thisWeekHour: nurse.thisWeekHour || '',
-          status: nurse.status // getStatus(nurse.status) || ''
-        }
-      } else {
-        tr = {
-          id: nurse.id || shcIndex + 1 || '',
-          key: nurse.id || shcIndex + 1 || '',
-          showIndex: '' + (shcIndex + 1),
-          empNo: nurse.empNo || '',
-          empName: nurse.empName || '',
-          currentLevel: nurse.currentLevel || '',
-          title: nurse.title || '',
-          mondayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 0) : '',
-          tuesdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 1) : '',
-          wednesdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 2) : '',
-          thursdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 3) : '',
-          fridayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 4) : '',
-          saturdayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 5) : '',
-          sundayName_1: nurse.settingDtos ? getRangeName(nurse.settingDtos, 6) : '',
-          mondayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 0) : '',
-          tuesdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 1) : '',
-          wednesdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 2) : '',
-          thursdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 3) : '',
-          fridayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 4) : '',
-          saturdayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 5) : '',
-          sundayName_1Color: nurse.settingDtos ? getNameColor(nurse.settingDtos, 6) : '',
-          //
-          mondayName_1Code: getRangeNameCode(nurse.settingDtos, 0) || '',
-          tuesdayName_1Code: getRangeNameCode(nurse.settingDtos, 1) || '',
-          wednesdayName_1Code: getRangeNameCode(nurse.settingDtos, 2) || '',
-          thursdayName_1Code: getRangeNameCode(nurse.settingDtos, 3) || '',
-          fridayName_1Code: getRangeNameCode(nurse.settingDtos, 4) || '',
-          saturdayName_1Code: getRangeNameCode(nurse.settingDtos, 5) || '',
-          sundayName_1Code: getRangeNameCode(nurse.settingDtos, 6) || '',
-          remark: nurse.remark || '',
-          thisWeekHour: nurse.thisWeekHour || '',
-          status: nurse.status // getStatus(nurse.status) || ''
-        }
-      }
-
+      Object.assign(tr, backFill(nurse.settingDtos, scheduleStore.getWeeks().length))
       let isPub = nurse.status === '1' ? true : false
       setIsPublished(isPub)
 
@@ -971,47 +825,17 @@ export default function MainBox(props: Props) {
   }
 
   function statisticFooter(list: any) {
-    let workhour = 0
-    let rangeNames = new Array()
-    let rangeObj = new Object()
     let remark = ''
 
     list.map((item: any) => {
-      if (item.thisWeekHour) {
-        workhour += !isNaN(Number(item.thisWeekHour)) ? Number(item.thisWeekHour) : 0
-      }
       if (!remark || remark === '空') {
         remark = item.remark
       }
-      for (const day of weekdayList) {
-        let element = (item as any)[day + 'Code'] || (item as any)[day]
-        if (element && element.length > 0) {
-          if (rangeNames.indexOf(element) === -1) {
-            ;(rangeObj as any)[element] = 1
-          } else {
-            ;(rangeObj as any)[element] += 1
-          }
-          rangeNames.push(element)
-        }
-      }
     })
-
-    let rangeSum = ''
-    for (const key in rangeObj) {
-      if (rangeObj.hasOwnProperty(key)) {
-        const element = (rangeObj as any)[key]
-        rangeSum += `${key}(${element})，`
-      }
-    }
-    rangeSum = rangeSum.trim()
-
-    let totle = `排班小计：${rangeSum}工时${Number(workhour).toFixed(2)}小时。`
 
     let result = () => {
       return (
         <span>
-          {/* {totle} */}
-          {/* <br /> */}
           排班备注：
           <Input.TextArea onChange={remarkChange} style={{ padding: '8px' }} defaultValue={remark} />
         </span>
@@ -1067,7 +891,7 @@ export default function MainBox(props: Props) {
   const onRow = (record: any, index: any) => {
     return {
       onClick: (event: any) => {
-        countWorkHours(record, event.currentTarget)
+        // countWorkHours(record, event.currentTarget)
         selectedRow = new Object({
           index: index,
           record: record,
@@ -1094,6 +918,8 @@ export default function MainBox(props: Props) {
         let selectedCellNameCode = selectedCellName + 'Code'
         let numberOfday = 1
         let diffDays = 0
+
+        // console.log(mergeDayObj(record, selectedCellName), selectedCellName, 'mergeDayObj')
         let clickedShift = shiftListData.filter((shift) => {
           if (
             (record[selectedCellNameCode] === '休假' ||
@@ -1105,19 +931,19 @@ export default function MainBox(props: Props) {
             return shift
           }
         })
-
+        console.log(selectedCellValue, 'selectedCellValue')
         /** 设置额外工时排班 */
-        if (scheduleStore.hasExtraWord(selectedCellValue)) {
-          let refreshData = (newLabel: string) => {
-            setTimeout(() => {
-              tableUpdate(record, selectedRow, index)
-              updateTableUI()
-            }, 100)
+        if (clickedShift && clickedShift!.length == 0) {
+          let refreshData = (obj: any) => {
+            let { EffectiveTime } = obj
+            setRecordObj(record, selectedCellName, 'EffectiveTime', EffectiveTime)
+            // setTimeout(() => {
+            tableUpdate(record, selectedRow, index)
+            updateTableUI()
+            // }, 100)
           }
-          emitter.emit('打开设置额外工时弹框', {
-            obj: record,
-            key: selectedCellName,
-            label: selectedCellValue,
+          emitter.emit('打开设置工时弹框', {
+            obj: mergeDayObj(record, selectedCellName),
             refreshData
           })
         } else if (clickedShift && clickedShift!.length !== 0) {
@@ -1195,6 +1021,19 @@ export default function MainBox(props: Props) {
             </div>
           )
           emitter.emit('打开弹框', { index, record, event, contant: genContant(), onOK: onOK })
+        } else {
+          let refreshData = (newLabel: string) => {
+            setTimeout(() => {
+              tableUpdate(record, selectedRow, index)
+              updateTableUI()
+            }, 100)
+          }
+          emitter.emit('打开设置工时弹框', {
+            obj: record,
+            key: selectedCellName,
+            label: selectedCellValue,
+            refreshData
+          })
         }
       }
     }
@@ -1203,7 +1042,7 @@ export default function MainBox(props: Props) {
   return (
     <Wrapper>
       <ModalBox title={'设置班次计数'} />
-      <SetExtraHoursModal title={'设置额外工时'} />
+      <SetExtraHoursModal title={'设置工时'} />
 
       <div className='left-box'>
         {/* {JSON.stringify(tableList)} */}
@@ -1228,7 +1067,7 @@ export default function MainBox(props: Props) {
       <div className='card-container'>
         <Tabs type='card'>
           <TabPane tab='可选班次' key='可选班次'>
-            <div style={{ height: wih - (fullPage ? 110 : 170) + 'px', overflow: 'auto' }}>
+            <div style={{ height: wih - (fullPage ? 110 : 170) + 'px', overflow: 'auto' }} className='scrollBox'>
               {shiftList.map((m, i) =>
                 m.status === true ? (
                   <Button
@@ -1238,33 +1077,44 @@ export default function MainBox(props: Props) {
                         let key = selectedCell.key
                         selectedCell.record[key] = m.name
                         selectedCell.record[key + 'Code'] = m.name
-                        let selectedCellObj: any = new Object()
+
+                        setRecordObj(selectedCell.record, key, 'Name', m.name)
+                        setRecordObj(selectedCell.record, key, 'Code', m.name)
+                        setRecordObj(selectedCell.record, key, 'EffectiveTime', m.effectiveTime)
+                        setRecordObj(selectedCell.record, key, 'Color', m.nameColor)
+
+                        // let selectedCellObj: any = new Object()
                         let input: any = null
                         selectedRowsArray.map((s) => {
                           if (s.id === selectedCell.record.id && key.indexOf('dayName') > -1) {
-                            s[key] = m.name + ''
-                            s[key + 'Code'] = m.name + ''
-                            selectedCell.target.value = m.name + '' || '!!!'
-                            selectedCell.target.style.color = m.nameColor + '' || ''
-                            selectedCellObj = s
-                            input = document.querySelector(`[name="${key}${s.id}"]`)
+                            // s[key] = m.name + ''
+                            // s[key + 'Code'] = m.name + ''
+
+                            // selectedCell.target.value = m.name + '' || '!!!'
+                            // selectedCell.target.style.color = m.nameColor + '' || ''
+
+                            setRecordObj(s, key, 'Name', m.name)
+                            setRecordObj(s, key, 'Code', m.name)
+                            setRecordObj(s, key, 'EffectiveTime', m.effectiveTime)
+                            setRecordObj(s, key, 'Color', m.nameColor)
+                            // selectedCellObj = s
+
+                            // input = document.querySelector(`[name="${key}${s.id}"]`)
                           }
                         })
 
-                        countWorkHours(selectedCellObj)
-                        let inputW = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
-                        if (inputW) {
-                          inputW.value = selectedCellObj.thisWeekHour
-                        }
+                        // countWorkHours(selectedCellObj)
+                        // let inputW = selectedRow.target.querySelector(`[name="thisWeekHour${selectedCellObj.id}"]`)
+                        // if (inputW) {
+                        //   inputW.value = selectedCellObj.thisWeekHour
+                        // }
 
-                        /** 设置修改状态 */
-                        setIsModified(true)
-                        let newList = JSON.parse(JSON.stringify(selectedRowsArray))
-                        setTableList(newList)
+                        // let newList = JSON.parse(JSON.stringify(selectedRowsArray))
+                        // setTableList(newList)
 
                         // 统计
-                        statisticFooter(newList)
-
+                        // statisticFooter(newList)
+                        updateTableUI()
                         // 交点向右侧元件转移  $rightNode
                         let showIndex = ~~selectedCell.record.showIndex || 0
                         let recordId = ~~selectedCell.record.id
@@ -1311,50 +1161,45 @@ export default function MainBox(props: Props) {
             </div>
           </TabPane>
           <TabPane tab='班次模版' key='班次模版'>
-            <div style={{ height: wih - 260 + 'px', overflow: 'auto' }}>
+            <div style={{ height: wih - (fullPage ? 110 : 170) + 'px', overflow: 'auto' }} className='scrollBox'>
               {mealList.map((m, i) =>
                 m.status === true || 1 ? (
                   <Button
                     style={{ minWidth: '45%', width: '45%', margin: '4px 4px' }}
                     onClick={(e: any) => {
                       if (selectedRow && selectedRow.record) {
-                        let inputs = selectedRow.target.querySelectorAll(`input[name*="${selectedRow.record.id}"]`)
+                        // let inputs = selectedRow.target.querySelectorAll(`input[name*="${selectedRow.record.id}"]`)
+                        let weekName = selectedCell.key
+                        let weekNum = weekName.split('_')[1]
+                        let weekDays = weekDays1
+                        if (weekNum == '1') {
+                          weekDays = weekDays1
+                        }
+                        if (weekNum == '2') {
+                          weekDays = weekDays2
+                        }
 
                         selectedRowsArray.map((s, k) => {
                           if (s.id === selectedCell.record.id) {
                             selectedRow.record = m
-                            for (let key in m) {
-                              if (
-                                m.hasOwnProperty(key) &&
-                                (key.indexOf('dayName') > -1 ||
-                                  key.indexOf('remark') > -1 ||
-                                  key.indexOf('thisWeekHour') > -1)
-                              ) {
-                                s[key] = m[key] || ''
-                                let input = selectedRow.target.querySelector(`[name="${key}${s.id}"]`)
-                                if (input) {
-                                  input.value = m[key] || ''
-                                  input.style.color = m[key + 'Color']
-                                }
-                              }
-                            }
-                            countWorkHours(selectedRow.record)
 
-                            let inputW = selectedRow.target.querySelector(
-                              `[name="thisWeekHour${selectedCell.record.id}"]`
-                            )
-                            if (inputW) {
-                              inputW.value = selectedRow.record.thisWeekHour
-                              s.thisWeekHour = selectedRow.record.thisWeekHour
-                            }
+                            weekDays.forEach((weekName: any) => {
+                              let weekKey = weekName.split('Name_')[0]
+                              console.log(weekKey, 'weekKey')
+                              setRecordObj(s, weekName, 'Name', m[weekKey + 'Name'])
+                              setRecordObj(s, weekName, 'Code', m[weekKey + 'NameCode'])
+                              setRecordObj(s, weekName, 'EffectiveTime', m[weekKey + 'EffectiveTime'])
+                              setRecordObj(s, weekName, 'Color', m[weekKey + 'NameColor'])
+                            })
                           }
                         })
 
-                        let newList = JSON.parse(JSON.stringify(selectedRowsArray))
+                        updateTableUI()
+                        // let newList = JSON.parse(JSON.stringify(selectedRowsArray))
                         // genEmptyTable(newList)
-                        setTableList(newList)
+                        // setTableList(newList)
                         // 统计
-                        statisticFooter(newList)
+                        // statisticFooter(newList)
                       }
                     }}
                     key={m.name + i}
@@ -1435,6 +1280,23 @@ const Wrapper = styled.div`
       outline: 1px solid green !important;
       background: yellow;
       color: black !important;
+    }
+  }
+
+  .input-con {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    &.isOverTime::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-width: 10px 10px 0 0;
+      border-style: solid;
+      border-color: #ffc615 transparent;
     }
   }
 

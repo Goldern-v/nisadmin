@@ -10,7 +10,6 @@ export default class AppStore {
     window.onresize = () => {
       this.wih = document.body.offsetHeight
     }
-    console.log(process.env, 'processprocess')
   }
   @observable public isExpand: '1' | '0' = '1'
   @observable private appToken: string | null = null

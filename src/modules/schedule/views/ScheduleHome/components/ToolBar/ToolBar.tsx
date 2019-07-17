@@ -4,14 +4,14 @@ import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
 
 import { Select, Button, message } from 'antd'
-import { authStore, scheduleStore } from 'src/stores'
+import { authStore, scheduleStore, appStore } from 'src/stores'
 import service from 'src/services/api'
 
 import emitter from 'src/libs/ev'
 import DeptSelect from 'src/components/DeptSelect'
 
 const Option = Select.Option
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 export default function ToolBar() {
   // 在react hooks 用 useState 定义 class component 里的 state 变量
@@ -117,7 +117,7 @@ export default function ToolBar() {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function (data: any) {
+      reader.addEventListener('loadend', function(data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })
@@ -185,12 +185,16 @@ export default function ToolBar() {
           排班套餐设置
         </Link>
       </LinkText>
-      <BreakLine>|</BreakLine>
-      <LinkText>
-        <Link to='/personnelSetting' style={{ color: '#747474' }}>
-          人员分组
-        </Link>
-      </LinkText>
+      {appStore.isDev && (
+        <React.Fragment>
+          <BreakLine>|</BreakLine>
+          <LinkText>
+            <Link to='/personnelSetting' style={{ color: '#747474' }}>
+              人员分组
+            </Link>
+          </LinkText>
+        </React.Fragment>
+      )}
     </Wrapper>
   )
 }

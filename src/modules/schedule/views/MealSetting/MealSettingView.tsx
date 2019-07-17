@@ -7,7 +7,7 @@ import MainBox from './components/MainBox/MainBox'
 
 export interface Props extends RouteComponentProps {}
 
-export default function MealSettingView () {
+export default function MealSettingView() {
   const [count, setCount] = useState(0)
   useEffect(() => {
     console.log(count, setCount)
@@ -29,12 +29,10 @@ const Wrapper = styled.div`
 `
 
 const MainBoxCon = styled.div`
-  /* margin-left: 220px; */
-  display: block !important;
-  /* flex-direction: column; */
-  height: 100%;
   background: #fff;
-  /* border: 1px solid red; */
+  padding-bottom: 50px;
+  margin-bottom: -50px;
+  overflow: hidden;
 `
 
 const ToolBarCon = styled.div`

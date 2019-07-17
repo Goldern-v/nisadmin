@@ -21,33 +21,30 @@ export default function SetExtraHoursModal(props: Props) {
   const [modalVisible, setModalVisible] = useState(false)
   const [boxWidth, setBoxWidth] = useState(400)
   const [inputValue, setInputValue] = useState(0)
+  const [shiftItem, setShiftItem]: any = useState({})
   const [config, setConfig] = useState<{
-    label: string
     obj: any
-    key: string
-    refreshData: (newLabel: string) => void
+    refreshData: (obj: any) => void
   }>({
-    label: '',
     obj: {},
-    key: '',
     refreshData: () => {}
   })
 
-  emitter.removeAllListeners('打开设置额外工时弹框')
-  emitter.removeAllListeners('关闭设置额外工时弹框')
+  emitter.removeAllListeners('打开设置工时弹框')
+  emitter.removeAllListeners('关闭设置工时弹框')
 
-  emitter.addListener('打开设置额外工时弹框', (config: any) => {
-    console.log(config, 'configconfig')
+  emitter.addListener('打开设置工时弹框', (config: any) => {
+    console.log(config, 'config')
     setConfig(config)
-    let str = config.label
-
-    let extraObj = scheduleStore.hasExtraWord(str)
-    extraObj && setInputValue(Number(extraObj!.effectiveTime))
-
+    setInputValue(config.obj.EffectiveTime)
+    emitter.emit('根据班次code获取班次详情', config.obj.Name, (shiftItem: any) => {
+      shiftItem = shiftItem || {}
+      setShiftItem(shiftItem)
+    })
     open()
   })
 
-  emitter.addListener('关闭设置额外工时弹框', () => {
+  emitter.addListener('关闭设置工时弹框', () => {
     setModalVisible(false)
   })
 
@@ -55,11 +52,11 @@ export default function SetExtraHoursModal(props: Props) {
     setModalVisible(true)
   }
   const onOK = () => {
-    let { obj, key, label, refreshData } = config
-    let newLabel = label.replace(/\(.*?\)/g, '') + `(${inputValue}h)`
-    obj[key] = newLabel
-    console.log(obj, 'obj')
-    refreshData(newLabel)
+    let { obj, refreshData } = config
+
+    refreshData({
+      EffectiveTime: inputValue
+    })
     setModalVisible(false)
   }
   return (
@@ -77,14 +74,18 @@ export default function SetExtraHoursModal(props: Props) {
         }}
       >
         <FormCon>
+          <Info>
+            {shiftItem.name}(默认{shiftItem.effectiveTime}小时)
+          </Info>
           <Form layout={'inline'}>
-            <Form.Item label='工时(小时)：'>
+            <Form.Item label='修改此班次工时：'>
               <InputNumber
                 size={'default'}
                 autoFocus
                 value={inputValue}
                 onChange={(value) => value !== undefined && setInputValue(value)}
               />
+              <span style={{ marginLeft: 10 }}>小时</span>
             </Form.Item>
           </Form>
         </FormCon>
@@ -103,4 +104,9 @@ const FormCon = styled.div`
   .ant-modal-body > .ant-row {
     display: inline-flex !important;
   }
+`
+
+const Info = styled.div`
+  text-align: center;
+  margin-bottom: 10px;
 `

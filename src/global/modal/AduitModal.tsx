@@ -24,7 +24,7 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 
-export default function aduitModal(props: Props) {
+export default function AduitModal(props: Props) {
   let { visible, onCancel } = props
   /** 表格数据 */
   let [spinning, setSpinning]: [any, any] = useState(false)

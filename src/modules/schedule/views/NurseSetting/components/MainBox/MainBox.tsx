@@ -218,7 +218,7 @@ export default function MainBox() {
         columns={columns}
         dataSource={userList}
         pagination={false}
-        surplusHeight={185}
+        surplusHeight={190}
         loading={loading}
         moveRow={moveRow}
         type={['diagRow', 'spaceRow']}

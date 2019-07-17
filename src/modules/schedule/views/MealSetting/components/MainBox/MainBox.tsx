@@ -8,242 +8,205 @@ import { Table, message, Popconfirm, Divider, Tag } from 'antd'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import emitter from 'src/libs/ev'
+import { Switch } from 'src/vendors/antd'
+import { globalModal } from 'src/global/globalModal'
 
 // import emitter from 'src/libs/ev'
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-const getTextColor = (text: string, record: any, colorName: string) =>
-  text && text.length > 0 ? (
-    <span>
-      <span color={colorName} key={text} style={{ color: colorName }}>
-        {text.toUpperCase()}
+export default function MainBox() {
+  const [mealList, setMealList] = useState(new Array())
+  const [tableLoading, setTableLoading] = useState(false)
+  const getTextColor = (text: string, record: any, colorName: string) =>
+    text && text.length > 0 ? (
+      <span>
+        <span color={colorName} key={text} style={{ color: colorName }}>
+          {text.toUpperCase()}
+        </span>
       </span>
-    </span>
-  ) : (
-    ''
-  )
+    ) : (
+      ''
+    )
 
-const columns = [
-  {
-    title: '序号',
-    dataIndex: 'index',
-    key: 'index',
-    width: 60,
-    render: (text: string, record: any, index: any) =>
-      record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
-  },
-  {
-    title: '班次套餐名',
-    dataIndex: 'name',
-    key: 'name',
-    width: '10%'
-  },
-  {
-    title: '周一',
-    dataIndex: 'mondayName',
-    key: 'mondayName',
-    width: '10%',
-    render: (text: string, record: any) => getTextColor(text, record, record.mondayNameColor)
-  },
-  {
-    title: '周二',
-    dataIndex: 'tuesdayName',
-    key: 'tuesdayName',
-    width: '10%',
-    render: (text: string, record: any) => getTextColor(text, record, record.tuesdayNameColor)
-  },
-  {
-    title: '周三',
-    dataIndex: 'wednesdayName',
-    key: 'wednesdayName',
-    width: '10%',
-    render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
-  },
-  {
-    title: '周四',
-    dataIndex: 'thursdayName',
-    key: 'thursdayName',
-    width: '10%',
-    render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
-  },
-  {
-    title: '周五',
-    dataIndex: 'fridayName',
-    key: 'fridayName',
-    width: '10%',
-    render: (text: string, record: any) => getTextColor(text, record, record.fridayNameColor)
-  },
-  {
-    title: '周六',
-    dataIndex: 'saturdayName',
-    key: 'saturdayName',
-    width: '10%',
-    render: (text: string, record: any) => getTextColor(text, record, record.saturdayNameColor)
-  },
-  {
-    title: '周日',
-    dataIndex: 'sundayName',
-    key: 'sundayName',
-    width: '10%',
-    render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor)
-  },
-  {
-    title: '操作',
-    dataIndex: 'title',
-    width: '12%',
-    key: 'title',
-    render: (text: string, record: any) =>
-      record.id ? (
-        <span>
-          <a
-            href='javascript:;'
+  const columns = [
+    {
+      title: '序号',
+      dataIndex: 'index',
+      key: 'index',
+      width: 60,
+      render: (text: string, record: any, index: any) =>
+        record.id ? <span style={{ width: '60px' }}>{index + 1}</span> : ''
+    },
+    {
+      title: '列入排班',
+      dataIndex: 'status',
+      key: '是否排班',
+      width: 100,
+      render: (text: any, record: any, index: any) =>
+        record.id ? (
+          <span>
+            <Switch
+              size='small'
+              onChange={(check: any) => {
+                record.status = check
+                setMealList([...mealList])
+              }}
+              checked={text}
+            />
+          </span>
+        ) : (
+          ''
+        )
+    },
+    {
+      title: '班次套餐名',
+      dataIndex: 'name',
+      key: 'name',
+      width: 100
+    },
+    {
+      title: '周一',
+      dataIndex: 'mondayName',
+      key: 'mondayName',
+      width: 100,
+      render: (text: string, record: any) => getTextColor(text, record, record.mondayNameColor)
+    },
+    {
+      title: '周二',
+      dataIndex: 'tuesdayName',
+      key: 'tuesdayName',
+      width: 100,
+      render: (text: string, record: any) => getTextColor(text, record, record.tuesdayNameColor)
+    },
+    {
+      title: '周三',
+      dataIndex: 'wednesdayName',
+      key: 'wednesdayName',
+      width: 100,
+      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
+    },
+    {
+      title: '周四',
+      dataIndex: 'thursdayName',
+      key: 'thursdayName',
+      width: 100,
+      render: (text: string, record: any) => getTextColor(text, record, record.thursdayNameColor)
+    },
+    {
+      title: '周五',
+      dataIndex: 'fridayName',
+      key: 'fridayName',
+      width: 100,
+      render: (text: string, record: any) => getTextColor(text, record, record.fridayNameColor)
+    },
+    {
+      title: '周六',
+      dataIndex: 'saturdayName',
+      key: 'saturdayName',
+      width: 100,
+      render: (text: string, record: any) => getTextColor(text, record, record.saturdayNameColor)
+    },
+    {
+      title: '周日',
+      dataIndex: 'sundayName',
+      key: 'sundayName',
+      width: 100,
+      render: (text: string, record: any) => getTextColor(text, record, record.sundayNameColor)
+    },
+    {
+      title: '操作',
+      dataIndex: 'title',
+      width: 100,
+      key: 'title',
+      render: (text: string, record: any) => (
+        <DoCon>
+          <span
             onClick={(e: any) => {
-              console.log('编辑e', e)
-              // message.success(`编辑${record.key}`)
               emitter.emit('弹窗编辑排班套餐', record)
             }}
           >
             编辑
-          </a>
-          <Divider type='vertical' />
-          <Popconfirm
-            title='确认要删除?'
-            onConfirm={() => {
-              service.scheduleMealApiService.delete(record.key).then((res) => {
-                emitter.emit('更新班次套餐列表')
+          </span>
+          <span
+            onClick={() => {
+              globalModal.confirm('确认删除', '确认删除该套餐？').then((res) => {
+                service.scheduleMealApiService.delete(record.key).then((res) => {
+                  emitter.emit('更新班次套餐列表')
+                })
+                message.success(`删除${record.name}成功`)
               })
-              message.success(`删除${record.key}`)
             }}
           >
-            <a href='javascript:;'>删除</a>
-          </Popconfirm>
-        </span>
-      ) : (
-        ''
+            删除
+          </span>
+        </DoCon>
       )
+    }
+  ]
+
+  let data = {
+    key: '',
+    id: '',
+    createTime: '',
+    deptCode: '',
+    name: '',
+    mondayName: '',
+    tuesdayName: '',
+    wednesdayName: '',
+    thursdayName: '',
+    fridayName: '',
+    saturdayName: '',
+    sundayName: '',
+    mondayNameColor: '',
+    tuesdayNameColor: '',
+    wednesdayNameColor: '',
+    thursdayNameColor: '',
+    fridayNameColor: '',
+    saturdayNameColor: '',
+    sundayNameColor: '',
+    status: ''
   }
-]
 
-let data = {
-  key: '',
-  id: '',
-  createTime: '',
-  deptCode: '',
-  name: '',
-  mondayName: '',
-  tuesdayName: '',
-  wednesdayName: '',
-  thursdayName: '',
-  fridayName: '',
-  saturdayName: '',
-  sundayName: '',
-  mondayNameColor: '',
-  tuesdayNameColor: '',
-  wednesdayNameColor: '',
-  thursdayNameColor: '',
-  fridayNameColor: '',
-  saturdayNameColor: '',
-  sundayNameColor: '',
-  status: ''
-}
+  let allUser = new Array()
 
-let allUser = new Array()
+  let tableData = new Array()
+  let selectedRowsArray = new Array()
 
-let tableData = new Array()
-let selectedRowsArray = new Array()
-
-// rowSelection objects indicates the need for row selection
-let rowSelection = {
-  onChange: (selectedRowKeys: any, selectedRows: any) => {
-    // selectedRowsArray = selectedRows
-    console.log(`onChange:selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
-  },
-  onSelect: (record: any, selected: any, selectedRows: any) => {
-    record.status = selected
-    selectedRowsArray.map((res: any) => {
-      if (res.id === record.id) {
-        res.status = selected
-      }
-    })
-    // selectedRowsArray
-    console.log('onSelect', record, selected, selectedRows)
-  },
-  onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-    if (selectedRows && selectedRows.length === 0) {
-      selectedRowsArray.map((res: any) => {
-        res.status = false
-        res.rangeShow = selected
-      })
-    } else {
-      selectedRows.map((res: any) => {
-        res.status = true
-        res.rangeShow = selected
-      })
-    }
-
-    if (changeRows) {
-      changeRows.map((record: any) => {
-        record.rangeShow = selected
-        record.status = selected
-      })
-    }
-
-    console.log('onSelectAll', selected, selectedRows, changeRows)
-  },
-  getCheckboxProps: (record: any) => ({
-    disabled: !record.id, // Column configuration not to be checked
-    defaultChecked: record.status === true,
-    name: record.key + ''
-  }),
-  hideDefaultSelections: true
-}
-
-export default function MainBox () {
-  const [count, setCount] = useState(0)
-  const [MealList, setMealList] = useState(new Array())
-
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     getMealList()
+  }, [])
+  emitter.removeAllListeners('获取选中班次套餐列表')
+  emitter.removeAllListeners('更新班次套餐列表')
 
-    emitter.removeAllListeners('获取选中班次套餐列表')
-    emitter.removeAllListeners('更新班次套餐列表')
+  emitter.addListener('获取选中班次套餐列表', (callback: any) => {
+    if (callback) {
+      callback(selectedRowsArray)
+    }
+  })
 
-    emitter.addListener('获取选中班次套餐列表', (callback: any) => {
-      if (callback) {
-        callback(selectedRowsArray)
-      }
-    })
-
-    emitter.addListener('更新班次套餐列表', () => {
-      getMealList()
-    })
-
-    //
-    console.log(count, setCount)
-  }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+  emitter.addListener('更新班次套餐列表', () => {
+    getMealList()
+  })
 
   const getMealList = () => {
     let deptCode = scheduleStore.getDeptCode() // '2508' ||
+    setTableLoading(true)
     service.scheduleMealApiService.getMealListByCode(deptCode, 'true').then((res) => {
-      console.log('查找排班班次套餐res', res, data)
+      setTableLoading(false)
       let oneUser = new Object()
       allUser = new Array()
       selectedRowsArray = new Array()
-      // columns
 
       if (res && res.data) {
         tableData = res.data
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {
-          console.log('oneObj', index, oneObj, oneObj.status)
           if (oneObj.status === true) {
-            console.log('tableDataindex', index)
             rowKeys.push(oneObj.id)
           } else {
             oneObj.status = false
@@ -251,55 +214,34 @@ export default function MainBox () {
           oneUser = new Object()
           for (const key in data) {
             if (data.hasOwnProperty(key) && oneObj.hasOwnProperty(key)) {
-              (oneUser as any)[key] = oneObj[key]
+              ;(oneUser as any)[key] = oneObj[key]
             }
             if (key === 'id') {
-              (oneUser as any).key = oneObj[key]
+              ;(oneUser as any).key = oneObj[key]
             }
           }
-          (allUser as any).push(oneUser)
+          ;(allUser as any).push(oneUser)
           selectedRowsArray.push(oneUser)
         })
 
-        // genEmptyTable(allUser)
         setMealList(allUser)
-        console.log('查找排班班次套餐', MealList, allUser, tableData, selectedRowsArray)
       }
     })
-  }
-
-  const genEmptyTable = (newList: any) => {
-    // 补空行
-    let diff = 10 - (newList.length % 10)
-    if (diff > 0) {
-      for (let j = 0; j < diff; j++) {
-        let newData = JSON.parse(JSON.stringify(data))
-        if (newData.hasOwnProperty('key')) {
-          newData.key = 'empty' + j
-        }
-        newList.push(newData)
-      }
-    }
   }
 
   return (
     <Wrapper>
       <BaseTable
-        bordered
-        size='small'
+        loading={tableLoading}
         columns={columns}
-        rowSelection={rowSelection}
-        dataSource={MealList}
+        dataSource={mealList}
         pagination={false}
-        surplusHeight={300}
+        surplusHeight={190}
       />
-      {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={MealList} /> */}
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
-  /* background: #eee; */
-  /* height: 100%; */
   padding: 0;
   width: 100%;
   table,
@@ -310,13 +252,4 @@ const Wrapper = styled.div`
     text-align: center !important;
     padding: 3px !important;
   }
-
-  /* 表格前端打勾样式 */
-  .ant-table-thead > tr > th.ant-table-selection-column,
-  .ant-table-tbody > tr > td.ant-table-selection-column,
-  .ant-table-thead > tr:first-child > th:first-child {
-    width: 60px !important;
-    max-width: 60px !important;
-  }
-
 `

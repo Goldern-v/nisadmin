@@ -8,7 +8,7 @@ import { TableProps } from 'antd/lib/table'
 import { DragDropContext } from 'react-dnd'
 
 import { components } from './diagTableUtils'
-
+import $ from 'jquery'
 import HTML5Backend from 'react-dnd-html5-backend'
 export interface Props extends TableProps<any> {
   // style?: any
@@ -49,10 +49,9 @@ export default function BaseTable(props: Props) {
     if (option.type.includes('spaceRow')) {
       /** 设置空行 */
       let spaceRowNumber = props.spaceRowNumber || 10
-      console.log(option.dataSource.length, 'option.dataSource.lengthoption.dataSource.length')
       if (option.dataSource.length < spaceRowNumber) {
         while (option.dataSource.length < spaceRowNumber) {
-          option.dataSource.push({ key: option.dataSource.length })
+          option.dataSource.push({ [option.rowKey || 'key']: option.dataSource.length })
         }
       }
     }
@@ -96,7 +95,7 @@ export default function BaseTable(props: Props) {
             tip.id = 'tip'
             tip.innerHTML = option.tip
             try {
-              tableRef!.current!.querySelector('.ant-table-body').append(tip)
+              $(tableRef!.current!.querySelector('.ant-table-body')).append($(tip))
             } catch (error) {}
           }
         }
@@ -107,7 +106,7 @@ export default function BaseTable(props: Props) {
         if (tableRef.current) {
           let footer = tableRef!.current!.querySelector('.ant-table-footer')
           if (footer) {
-            tableRef!.current!.querySelector('.ant-table-body').append(footer)
+            $(tableRef!.current!.querySelector('.ant-table-body')).append($(footer))
           }
         }
       }, 100)

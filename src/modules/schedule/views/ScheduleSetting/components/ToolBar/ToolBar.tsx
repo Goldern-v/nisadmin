@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button, DatePicker, Form, Icon, Input, message, Modal, Popconfirm, Switch, TreeSelect } from 'antd'
 import { scheduleStore, appStore } from 'src/stores'
+import { splitRecord } from '../MainBox/utils/splitRecord'
 
 const dateFormat = 'YYYY-MM-DD'
 const { WeekPicker } = DatePicker
@@ -28,7 +29,7 @@ export default function ToolBar(props: Props) {
   const [monthStart, setMonthStart] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
-    console.log('编辑排班getStartTime', scheduleStore.getStartTime())
+
     if (scheduleStore.getStartTime()) {
       return scheduleStore.getStartTime()
     }
@@ -36,7 +37,7 @@ export default function ToolBar(props: Props) {
   })
   const [defaultEndTime, setdefaultEndTime] = useState(() => {
     let date = new Date()
-    console.log('编辑排班getEndTime', scheduleStore.getEndTime())
+
     if (scheduleStore.getEndTime()) {
       setFormatMonth(`${moment(scheduleStore.getEndTime()).month() + 1}`)
       setFormatDay(`${moment(scheduleStore.getEndTime()).date()}`)
@@ -106,11 +107,11 @@ export default function ToolBar(props: Props) {
           value: record.status != null ? record.status : true
         }
       }
-      console.log('编辑排班-', record)
+
       addMeal('编辑排班套餐')
     })
     //
-    console.log('初始化弹窗树', initalTreeData())
+    initalTreeData()
     //
     if (!scheduleStore.getStartTime()) {
       onWeekChange(new Date())
@@ -126,6 +127,7 @@ export default function ToolBar(props: Props) {
 
     emitter.emit('获取编辑排班列表', (shiftData: any, shiftListData: any) => {
       // return console.log('获取编辑排班列表', shiftData, shiftListData, postData)
+
       let weekDayToNumber: any = {
         mondayName_1: 0,
         tuesdayName_1: 1,
@@ -143,76 +145,57 @@ export default function ToolBar(props: Props) {
         sundayName_2: 13
       }
       shiftData.map((nurse: any, index: any) => {
-        for (const key in nurse) {
-          if (nurse.hasOwnProperty(key)) {
-            let element = nurse[key]
-            if (
-              key.toLowerCase().indexOf('dayname') > -1 &&
-              key.toLowerCase().indexOf('color') === -1 &&
-              key.toLowerCase().indexOf('code') === -1
-            ) {
-              let extraObj = scheduleStore.hasExtraWord(element)
-              let shift = element ? shiftListData.find((s: any) => element === s.name) : null
-              let elementCode = nurse[key + 'Code']
-              console.log(elementCode, key, nurse, 999)
-              // console.log(key, 'keykeykeykey')
-              // console.log(nurse, 'nursenursenurse')
-              if (!shift) {
-                shift = element
-                  ? shiftListData.find((s: any) => {
-                      return (
-                        nurse[key + 'Code'] === s.name ||
-                        (nurse[key + 'Code'] === s.shiftType && nurse[key + 'Code'] != s.name)
-                      )
-                    })
-                  : null
-              }
-              console.log(shift, 'shiftshiftshift')
-              postLine = {
-                id: {
-                  userId: nurse.id || '',
-                  workDate: moment(startTime)
-                    .add('d', weekDayToNumber[key])
-                    .format(dateFormat)
-                },
-                rangeId: shift ? shift.id + '' : '',
-                status: isPublish ? '1' : '0',
-                thisWeekHour: nurse.thisWeekHour,
-                workTime: shift ? shift.workTime : '',
-                rangeName: element ? element : shift ? shift.name : '',
-                rangeNameCode: elementCode ? elementCode : '',
-                remark: nurse.remark,
-                shiftType: shift ? shift.shiftType : '',
-                nameColor: shift ? shift.nameColor : '',
-                effectiveTime: extraObj ? extraObj.effectiveTime + '' : shift ? shift.effectiveTime : '',
-                deptCode: scheduleStore.getDeptCode()
-              }
-              // console.log(key, element, shift, postLine)
-              postData.push(JSON.parse(JSON.stringify(postLine)))
+        console.log(splitRecord(nurse, scheduleStore.getWeeks().length), '4567890-')
+
+        splitRecord(nurse, scheduleStore.getWeeks().length).forEach((item: any) => {
+          emitter.emit('根据班次code获取班次详情', item.Name, (shiftItem: any) => {
+            shiftItem = shiftItem || {}
+
+            postLine = {
+              id: {
+                userId: nurse.id || '',
+                workDate: moment(startTime)
+                  .add('d', item.index)
+                  .format(dateFormat)
+              },
+              rangeId: shiftItem.id || '',
+              status: isPublish ? '1' : '0',
+              thisWeekHour: nurse.thisWeekHour,
+              workTime: shiftItem.workTime || '',
+              rangeName: item.Name || shiftItem.name,
+              rangeNameCode: item.Code || shiftItem.name,
+              remark: nurse.remark,
+              shiftType: shiftItem.shiftType || '',
+              nameColor: item.Color || shiftItem.nameColor || '',
+              effectiveTime: item.EffectiveTime != undefined ? item.EffectiveTime : shiftItem.effectiveTime,
+              deptCode: scheduleStore.getDeptCode()
             }
-          }
-        }
+            postData.push(JSON.parse(JSON.stringify(postLine)))
+          })
+        })
       })
-      console.log('获取编辑排班列表postData', postData)
-      let weekRange = {
-        startTime: scheduleStore.getStartTime(),
-        endTime: scheduleStore.getEndTime()
-      }
+
       emitter.emit('排班列表载入动画', true)
 
-      service.schedulingApiService.update(postData, weekRange).then((res) => {
-        console.log(res)
-        if (res && (res.desc || res.data.desc)) {
-          message.success(res.desc || res.data.desc)
-          if (isPublish) {
-            emitter.emit('发布并更新排班列表')
-            console.log('发布成功')
-          } else {
-            emitter.emit('更新排班列表表格')
-            console.log('暂存成功')
-          }
+      setTimeout(() => {
+        let weekRange = {
+          startTime: scheduleStore.getStartTime(),
+          endTime: scheduleStore.getEndTime()
         }
-      })
+
+        service.schedulingApiService.update(postData, weekRange).then((res) => {
+          if (res && (res.desc || res.data.desc)) {
+            message.success(res.desc || res.data.desc)
+            if (isPublish) {
+              emitter.emit('发布并更新排班列表')
+              console.log('发布成功')
+            } else {
+              emitter.emit('更新排班列表表格')
+              console.log('暂存成功')
+            }
+          }
+        })
+      }, 500)
     })
   }
 
@@ -223,10 +206,9 @@ export default function ToolBar(props: Props) {
     shiftList = new Array()
     let deptCode = scheduleStore.getDeptCode()
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res: any) => {
-      console.log('获取排班列表', res)
       if (res && res.data) {
         shiftList = res.data
-        console.log(shiftList)
+
         // 分类
         shiftList.map((s: any) => {
           let shift = treeData.filter((t) => {
@@ -239,7 +221,6 @@ export default function ToolBar(props: Props) {
             }
           })
           if (shift && shift.length > 0) {
-            console.log(shift)
           } else {
             ;(treeData as any).push({
               title: s.shiftType,
@@ -259,7 +240,6 @@ export default function ToolBar(props: Props) {
             })
           }
         })
-        console.log('分类', treeData)
       }
     })
   }
@@ -698,7 +678,7 @@ export default function ToolBar(props: Props) {
       <Input
         addonAfter={<Icon type='calendar' />}
         value={dateString}
-        style={{ width: weekLength == 1 ? 220 : 270 }}
+        style={{ width: weekLength == 1 ? 220 : 270, marginRight: 3 }}
         readOnly
       />
       <Button onClick={() => resetShift()} className='button-tools'>

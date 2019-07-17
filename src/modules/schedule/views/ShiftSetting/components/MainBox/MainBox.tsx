@@ -10,6 +10,8 @@ import { scheduleStore, authStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
+import { DoCon } from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
+import { globalModal } from 'src/global/globalModal'
 
 // import emitter from 'src/libs/ev'
 
@@ -55,7 +57,7 @@ export default function MainBox() {
       title: '列入排班',
       dataIndex: 'status',
       key: '是否排班',
-      width: 70,
+      width: 100,
       render: (text: any, record: any, index: any) =>
         record.id ? (
           <span>
@@ -77,7 +79,7 @@ export default function MainBox() {
       title: '班次名称',
       dataIndex: 'name',
       key: 'name',
-      width: 100
+      width: 150
       // render: (text: string, record: any) =>
       //   text.length > 0 ? (
       //     <span>
@@ -99,7 +101,7 @@ export default function MainBox() {
       title: '颜色标记',
       dataIndex: 'nameColor',
       key: 'nameColor',
-      width: 80,
+      width: 100,
       render: (text: string, record: any) =>
         text && text.length > 0 ? (
           <span>
@@ -127,7 +129,7 @@ export default function MainBox() {
       title: '上班时间',
       dataIndex: 'workTime',
       key: 'workTime',
-      width: 200
+      width: 250
     },
     {
       title: '工时(小时）',
@@ -142,37 +144,31 @@ export default function MainBox() {
     columns.push({
       title: '操作',
       dataIndex: 'title',
-      width: 120,
+      width: 100,
       key: 'title',
-      render: (text: string, record: any) =>
-        record.id ? (
-          <span>
-            <a
-              href='javascript:;'
-              onClick={(e: any) => {
-                console.log('编辑e', e)
-                // message.success(`编辑${record.key}`)
-                emitter.emit('弹窗编辑排班', record)
-              }}
-            >
-              编辑
-            </a>
-            <Divider type='vertical' />
-            <Popconfirm
-              title='确认要删除?'
-              onConfirm={() => {
+      render: (text: string, record: any) => (
+        <DoCon>
+          <span
+            onClick={(e: any) => {
+              emitter.emit('弹窗编辑排班', record)
+            }}
+          >
+            编辑
+          </span>
+          <span
+            onClick={() => {
+              globalModal.confirm('确认删除', '确认删除该套餐？').then((res) => {
                 service.scheduleShiftApiService.delete(record.key).then((res) => {
                   emitter.emit('更新班次列表')
                 })
-                message.success(`删除${record.key}`)
-              }}
-            >
-              <a href='javascript:;'>删除</a>
-            </Popconfirm>
+                message.success(`删除${record.name}成功`)
+              })
+            }}
+          >
+            删除
           </span>
-        ) : (
-          ''
-        )
+        </DoCon>
+      )
     })
   }
   let data = {
@@ -276,7 +272,7 @@ export default function MainBox() {
         columns={columns}
         dataSource={shiftList}
         pagination={false}
-        surplusHeight={180}
+        surplusHeight={190}
         type={['spaceRow']}
         loading={tableLoading}
       />
