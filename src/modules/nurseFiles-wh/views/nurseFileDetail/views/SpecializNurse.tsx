@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditPatentModal from '../modal/EditPatentModal'
+import EditSpecializNurseModal from '../modal/EditSpecializNurseModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function Patent() {
-  const editPatentModal = createModal(EditPatentModal)
+export default observer(function SpecializNurse() {
+  const editSpecializNurseModal = createModal(EditSpecializNurseModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editPatentModal.show({ signShow: '添加' })
+      onClick: () => editSpecializNurseModal.show({ signShow: '添加' })
     }
   ]
 
@@ -119,7 +119,7 @@ export default observer(function Patent() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editPatentModal.show({ data: row, signShow: '修改' })
+                  editSpecializNurseModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -184,7 +184,7 @@ export default observer(function Patent() {
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editPatentModal.Component getTableData={getTableData} />
+      <editSpecializNurseModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

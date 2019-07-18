@@ -31,7 +31,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditPatentModal(props: Props) {
+export default function EditSpecializNurseModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props

@@ -11,7 +11,7 @@ import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import Article from './views/Article'
 import PersonWinning from './views/PersonWinning'
-import Patent from './views/Patent'
+import SpecializNurse from './views/SpecializNurse'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -35,8 +35,8 @@ const ROUTE_LIST = [
   },
   {
     /** 吴敏处理 */
-    type: 'patent',
-    component: Patent,
+    type: 'SpecializNurse',
+    component: SpecializNurse,
     name: '专科护士'
   }
 ]
