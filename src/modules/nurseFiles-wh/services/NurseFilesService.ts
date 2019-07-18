@@ -306,18 +306,24 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/nurseWHGoScienceCourse/saveOrUpdate`, obj)
   }
 
-    /** jx-继续教育 */
-    public nurseWHContinueStudy(empNo: any) {
-      nurseFileDetailViewModal.pageSpinning = true
-      return this.get(`/nurseWHContinueStudy/findByEmpNo/${empNo}`).then((res) => {
-        nurseFileDetailViewModal.pageSpinning = false
-        return res
-      })
-    }
-     // jx-1 参与科研课题新增或更新(护士)
-    public async nurseWHContinueStudySaveOrUpdate(obj: any) {
-      return this.post(`/nurseWHContinueStudy/saveOrUpdate`, obj)
-    }
+  /** jx-继续教育 */
+  public nurseWHContinueStudy(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHContinueStudy/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+   // jx-1 参与科研课题新增或更新(护士)
+  public async nurseWHContinueStudySaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHContinueStudy/saveOrUpdate`, obj)
+  }
+
+  //获取全部科室单元
+  public async getDeptList() {
+    return this.get(`/user/nursingUnit/all`);
+  }
+  
   
   // 8-1护士获奖情况新增或更新(网页护长)
   public async nurseWHArticleSaveOrUpdate(obj: any) {

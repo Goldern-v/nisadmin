@@ -33,18 +33,26 @@ const rules: Rules = {
 }
 export default function EditToNewPostModal(props: Props) {
   const [title, setTitle] = useState('')
+  const [list, setList] = useState([])
+  const [type, setType] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
+  const onSelectChange = (value:any) => {
+    setType(value)
+  }
 
   const onSave = async () => {
+    let typeName: any = list.filter((item:any) => item.code === type)[0]
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: '',
-      urlImageOne: ''
+      urlImageOne: '',
+      newDeptCode: type,
+      newDeptName: typeName.name
     }
     if (authStore!.user!.post == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
@@ -85,6 +93,9 @@ export default function EditToNewPostModal(props: Props) {
       setTitle('修改转岗信息')
     } else if (signShow === '添加') {
       setTitle('添加转岗信息')
+      nurseFilesService.getDeptList().then((res: any) => {
+        setList(res.data.deptList)
+      })
     }
   }, [visible])
 
@@ -99,7 +110,18 @@ export default function EditToNewPostModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`现工作科室`} name='newDeptCode'>
-              <Input />
+            <Select
+                value={type}
+                onSelect={onSelectChange}
+                style={{ width: '72%', height: 40 }}
+                placeholder='选择现在科室'
+              >
+                {list.map((item: any) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
