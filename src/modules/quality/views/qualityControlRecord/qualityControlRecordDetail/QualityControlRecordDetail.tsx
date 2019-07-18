@@ -31,7 +31,7 @@ const Con = styled.div`
   background-color: #fff;
 `
 const HeaderCon = styled.div`
-  height: 104px;
+  height: 95px;
   /* background: rgba(255, 255, 255, 1); */
   /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); */
   /* border-bottom: 1px solid gray; */
@@ -52,21 +52,26 @@ const MidConScrollCon = styled.div`
 `
 const MidLeftCon = styled.div`
   box-sizing: border-box;
+  padding: 20px 153px;
   flex: 1;
   width: 0;
   min-height: 100%;
   /* height: auto; */
   /* border-right: 1px solid gray; */
-  background-color: #fff;
+  background-color: #eeeeee;
   align-items: stretch;
   .QualityControlRecordDetailMidLeft__Con-sc-1yldaue-0 {
-    border-right: 1px solid #e8f6f1;
+    /* border-right: 1px solid #e8f6f1; */
+    /* background-color: #eeeeee; */
     /* #EEEEEE */
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   }
 `
 const MidRightCon = styled.div`
-  width: 388px;
+  width: 317px;
   min-height: 100%;
   /* background-color: gray; */
   align-items: stretch;
+  background: rgba(247, 250, 250, 1);
 `
