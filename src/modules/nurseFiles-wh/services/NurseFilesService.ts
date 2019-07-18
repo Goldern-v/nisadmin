@@ -267,7 +267,7 @@ export default class NurseFilesService extends BaseApiService {
     })
   }
 
-  /** 专科护士 */
+  /** zk-专科护士 */
   public nurseWHSpecializNurse(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
     return this.get(`/nurseWHSpecializNurse/findByEmpNo/${empNo}`).then((res) => {
@@ -275,10 +275,22 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
-
-  // 8-1专科护士新增或更新(护士)
+  // zk-1专科护士新增或更新(护士)
   public async nurseWHSpecializNurseSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHSpecializNurse/saveOrUpdate`, obj)
+  }
+
+  /** zg-转岗 */
+  public nurseWHTransferPost(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHTransferPost/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  // zg-1转岗新增或更新(护士)
+  public async nurseWHTransferPostSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHTransferPost/saveOrUpdate`, obj)
   }
 
   // 8-1护士获奖情况新增或更新(网页护长)

@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditSpecializNurseModal from '../modal/EditSpecializNurseModal'
+import EditToNewPostModal from '../modal/EditToNewPostModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function SpecializNurse() {
-  const editSpecializNurseModal = createModal(EditSpecializNurseModal)
+export default observer(function PersonWinning() {
+  const editToNewPostModal = createModal(EditToNewPostModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editSpecializNurseModal.show({ signShow: '添加' })
+      onClick: () => editToNewPostModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,44 +35,30 @@ export default observer(function SpecializNurse() {
       width: 55
     },
     {
-      title: '专科护士名称',
-      dataIndex: 'nurseName',
-      key: 'nurseName',
-      width: 90,
+      title: '原工作科室',
+      dataIndex: 'oldDeptName',
+      key: 'oldDeptName',
+      width: 100,
       align: 'center'
     },
     {
-      title: '发证单位',
-      dataIndex: 'cardUnit',
-      key: 'cardUnit',
-      width: 90,
+      title: '现工作科室',
+      dataIndex: 'newDeptCode',
+      key: 'newDeptCode',
+      width: 100,
       align: 'center'
     },
     {
-      title: '证书编号',
-      dataIndex: 'cardNumber',
-      key: 'cardNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '专科护士级别',
-      dataIndex: 'nurseLevel',
-      key: 'nurseLevel',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '发证时间',
-      dataIndex: 'cardNumberDate',
-      key: 'cardNumberDate',
-      width: 90,
+      title: '转岗时间',
+      dataIndex: 'transferDate',
+      key: 'transferDate',
+      width: 110,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'urlImageOne',
-      key: 'urlImageOne',
+      dataIndex: 'fj',
+      key: 'fj',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -98,7 +84,7 @@ export default observer(function SpecializNurse() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editSpecializNurseModal.show({ data: row, signShow: '修改' })
+                  editToNewPostModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -112,19 +98,15 @@ export default observer(function SpecializNurse() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHSpecializNurse',
-                  title: '审核专科护士',
+                  type: 'nurseWHTransferPost',
+                  title: '审核转岗',
                   tableFormat: [
                     {
-                      专科护士名称: `nurseName`,
-                      发证单位: `cardUnit`
+                      原工作室: `oldDeptName`,
+                      现工作室: `newDeptCode`
                     },
                     {
-                      证书编号: `cardNumber`,
-                      专科护士级别: `nurseLevel`
-                    },
-                    {
-                      发证时间: `cardNumberDate`,
+                      转岗时间: `transferDate`,
                     }
                   ],
                   fileData: row.urlImageOne
@@ -147,9 +129,8 @@ export default observer(function SpecializNurse() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHSpecializNurse(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHTransferPost(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
-      // console.log(res.data,'000000000000')
     })
   }
   useEffect(() => {
@@ -157,9 +138,9 @@ export default observer(function SpecializNurse() {
   }, [])
 
   return (
-    <BaseLayout title='专科护士' btnList={btnList}>
+    <BaseLayout title='转岗' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editSpecializNurseModal.Component getTableData={getTableData} />
+      <editToNewPostModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
