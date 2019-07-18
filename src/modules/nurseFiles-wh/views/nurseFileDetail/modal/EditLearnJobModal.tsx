@@ -31,7 +31,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditArticleModal(props: Props) {
+export default function EditLearnJobModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
@@ -60,9 +60,10 @@ export default function EditArticleModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
+    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHArticleSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHLearnJob', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -77,15 +78,16 @@ export default function EditArticleModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          publicYear: moment(data.publicYear),
+          startDate: moment(data.startDate),
+          endDate: moment(data.endDate),
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
     }
     if (signShow === '修改') {
-      setTitle('修改所获奖励')
+      setTitle('修改学会任职')
     } else if (signShow === '添加') {
-      setTitle('添加所获奖励')
+      setTitle('添加学会任职')
     }
   }, [visible])
 
@@ -93,46 +95,34 @@ export default function EditArticleModal(props: Props) {
     <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
+          <Row gutter={12}>
+            <Col span={15}>
+              <Form.Field label={`时间`} name='startDate' required suffix='到'>
+                <DatePicker />
+              </Form.Field>
+            </Col>
+            <Col span={9}>
+              <Form.Field name='endDate' >
+                <DatePicker />
+              </Form.Field>
+            </Col>
+          </Row>
           <Col span={24}>
-            <Form.Field label={`发表年份`} name='publicYear'>
-              <YearPicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`杂志名称`} name='magazineName'>
+            <Form.Field label={`任职学会名称`} name='learnJobName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`文章名称`} name='articleName'>
+            <Form.Field label={`学会职位`} name='learnPosition'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`期刊号`} name='periodicalNumber'>
+            <Form.Field label={`学会级别`} name='learnLevel' >
               <Input />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`卷号`} name='volumeNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`起止页码`} name='pageNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`文章类别`} name='articleType'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`影响因子`} name='influencingFactors'>
-              <Input />
-            </Form.Field>
-          </Col>
+
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />

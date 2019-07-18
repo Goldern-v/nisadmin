@@ -31,7 +31,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditArticleModal(props: Props) {
+export default function EditPatentModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
@@ -60,9 +60,9 @@ export default function EditArticleModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
+    value.cardDate && (value.cardDate = value.cardDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHArticleSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHPatentSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -77,7 +77,7 @@ export default function EditArticleModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          publicYear: moment(data.publicYear),
+          cardDate: moment(data.cardDate),
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
@@ -94,45 +94,36 @@ export default function EditArticleModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`发表年份`} name='publicYear'>
-              <YearPicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`杂志名称`} name='magazineName'>
+            <Form.Field label={`专利名称`} name='patentName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`文章名称`} name='articleName'>
+            <Form.Field label={`专利号`} name='patentNumber' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`期刊号`} name='periodicalNumber'>
+            <Form.Field label={`发证单位`} name='cardUnit' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`卷号`} name='volumeNumber'>
+            <Form.Field label={`发证时间`} name='cardDate' required>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`专利类型`} name='patentType' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`起止页码`} name='pageNumber'>
+            <Form.Field label={`是否成果转化`} name='isResultTransfor' required>
               <Input />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`文章类别`} name='articleType'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`影响因子`} name='influencingFactors'>
-              <Input />
-            </Form.Field>
-          </Col>
+
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />
