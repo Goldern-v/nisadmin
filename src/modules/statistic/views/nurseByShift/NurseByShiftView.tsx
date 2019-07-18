@@ -11,10 +11,8 @@ import TableFirst from './components/TableFirst'
 import { Button } from 'antd'
 import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 export default function StatisticView() {
-  const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
   useEffect(() => {
-    console.log(count, setCount, shiftClass)
     // console.log(3333)
     // console.log(shiftClass)
   })

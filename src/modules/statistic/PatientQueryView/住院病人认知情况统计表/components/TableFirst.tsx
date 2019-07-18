@@ -10,7 +10,7 @@ export interface Props {
   showType: string
 }
 export default observer(function BedSituation (props: Props) {
-  // const [count, setCount] = useState(0)
+  // 
   const [bodyTable, setBodyTable] = useState([{}])
   const postNurseScheduling = () =>
     StatisticsApi.postNurseScheduling().then((res) => {

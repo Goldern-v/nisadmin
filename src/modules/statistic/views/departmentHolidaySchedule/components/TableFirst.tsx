@@ -8,7 +8,7 @@ import { authStore } from 'src/stores/index'
 import { observer } from 'mobx-react-lite'
 
 export default observer(function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   const [bodyTable, setBodyTable] = useState([])
   const postDepartmentHolidayScheduleMethod = () =>
     StatisticsApi.postDepartmentHolidaySchedule().then((res) => {

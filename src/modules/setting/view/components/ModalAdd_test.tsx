@@ -19,7 +19,7 @@ export default function BedSituation (props: Props) {
   const handleCancel = (e: any) => {
     setVisible(false)
   }
-  // const [count, setCount] = useState(0)
+  // 
   // useEffect(() => {
   //   
   // })

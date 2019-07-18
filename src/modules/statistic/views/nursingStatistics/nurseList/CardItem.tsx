@@ -15,10 +15,7 @@ enum TITLE_COLOR {
   '主任护师' = '#EF8B46'
 }
 export default function CardItem(props: Props) {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    
-  })
+  useEffect(() => {})
 
   const adapter = (list: any[] = []) => {
     if (!list) return [[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]]
@@ -47,8 +44,7 @@ export default function CardItem(props: Props) {
     })
     .sort((a: any, b: any) => b.titleScore - a.titleScore)
   let data = props.data && adapter(userSortList || [])
-  console.log(props, 'propspropsprops')
-  console.log(data, 'datadata')
+
   if (!data) return <div />
   return (
     <Wrapper>

@@ -4,20 +4,14 @@ import { Checkbox, Radio, Icon, Input, Row, Col } from 'antd'
 // import React, { useState, useEffect } from 'react'
 const { TextArea } = Input
 export default function qualityControlRecordDetailMidLeft() {
-  // const [count, setCount] = useState(0)
+  //
   // useEffect(() => {
-  //   
+  //
   // })
-  const titleBoxChange = (e: any) => {
-    console.log(`${e.target.checked}`)
-  }
-  const itemRadioChange = (e: any) => {
-    console.log(e.target.value)
-  }
+  const titleBoxChange = (e: any) => {}
+  const itemRadioChange = (e: any) => {}
   // 附件
-  const itemAttachmentCheck = () => {
-    console.log('附件')
-  }
+  const itemAttachmentCheck = () => {}
   return (
     <Con>
       <MessageBox>

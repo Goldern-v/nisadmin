@@ -15,7 +15,7 @@ const dateFormat = 'YYYY-MM-DD 00:00:00'
 const DataSet = require('@antv/data-set')
 
 export default observer(function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   const [totalBed, setTotalBed] = useState(100)
   const [useBed, setUseBed] = useState(30)
   // const [sourceData, setSourceData] = useState([
@@ -56,7 +56,7 @@ export default observer(function BedSituation () {
     if (authStore.selectedDeptCode && authStore.selectedDeptCode !== '8204') {
       HomeApi.bedInfo(postData)
         .then((res) => {
-          console.log('===BedSituation', res)
+    
           // {
           //     "code": "200",
           //     "desc": "操作成功",

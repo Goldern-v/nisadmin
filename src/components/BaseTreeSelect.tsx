@@ -19,10 +19,8 @@ export default React.forwardRef(function BaseTreeSelect(props: Props, ref: any) 
       props.onChange(newValue)
     }
     // onChange(newValue)
-    console.log('InputTextOnChange', e, e.target, e.target.value, value, props)
   }
   const CascaderOnChange = (newValue: any) => {
-    console.log('CascaderOnChange', newValue)
     if (props.hasOwnProperty('onChange') && newValue.length > 1) {
       props.onChange(newValue[1])
     }

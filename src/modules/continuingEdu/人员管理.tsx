@@ -14,14 +14,14 @@ import FilterCon from './components/FilterCon'
 
 const Option = Select.Option
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 export default observer(function 人员管理(props: Props) {
   const [query, setQuery] = useState({
     deptCode: '',
     page: 1,
     pageSize: 10
-  });
+  })
 
   const [queryFilter, setQueryFilter] = useState({
     Xl: '全部',
@@ -30,24 +30,26 @@ export default observer(function 人员管理(props: Props) {
     Zw: '全部'
   })
 
-  const [tableData, setTableData] = useState([] as any);
-  const [total, setTotal] = useState(0 as number);
-  const [dataLoading, setDataLoading] = useState(false);
-  const [filterConVisible, setFilterConVisible] = useState(true);
+  const [tableData, setTableData] = useState([] as any)
+  const [total, setTotal] = useState(0 as number)
+  const [dataLoading, setDataLoading] = useState(false)
+  const [filterConVisible, setFilterConVisible] = useState(true)
 
   useEffect(() => {
-    setTableData([{
-      empNo: '114145',
-      empName: '王大锤',
-      sexual: '男',
-      age: '24',
-      deptName: '神经内科单元',
-      zhiwu: '护士长',
-      level: 'N1',
-      xueli: '硕士',
-      jifen: 10086,
-      status: '在职'
-    }])
+    setTableData([
+      {
+        empNo: '114145',
+        empName: '王大锤',
+        sexual: '男',
+        age: '24',
+        deptName: '神经内科单元',
+        zhiwu: '护士长',
+        level: 'N1',
+        xueli: '硕士',
+        jifen: 10086,
+        status: '在职'
+      }
+    ])
     // console.log(query)
   }, [])
 
@@ -136,11 +138,14 @@ export default observer(function 人员管理(props: Props) {
       width: 60,
       align: 'center',
       render: (text: string, record: any) => {
-        return <span onClick={() => handleReview(record)} className="review">查看</span>
+        return (
+          <span onClick={() => handleReview(record)} className='review'>
+            查看
+          </span>
+        )
       }
-
-    },
-  ];
+    }
+  ]
 
   const handleReview = (record: any) => {
     appStore.history.push('/continuingEduEmpDetail')
@@ -149,35 +154,35 @@ export default observer(function 人员管理(props: Props) {
   const handleDeptChange = (deptCode: any) => {
     let newQuery = { ...query, deptCode }
 
-    if (!query.deptCode) getTableData(newQuery);
+    if (!query.deptCode) getTableData(newQuery)
 
     setQuery(newQuery)
   }
 
   const handleSearch = () => {
-    let newQuery = { ...query, page: 1 };
+    let newQuery = { ...query, page: 1 }
     getTableData(newQuery)
   }
 
   const getTableData = (other?: any) => {
-    let _query = Object.assign({}, query, other || {});
-    console.log(_query)
-    setDataLoading(true);
+    let _query = Object.assign({}, query, other || {})
+
+    setDataLoading(true)
     setTimeout(() => {
-      setDataLoading(false);
+      setDataLoading(false)
     }, 1000)
   }
 
   const handlePageChange = (page: number) => {
-    let newQuery = { ...query, page };
-    setQuery(newQuery);
-    getTableData(newQuery);
+    let newQuery = { ...query, page }
+    setQuery(newQuery)
+    getTableData(newQuery)
   }
 
   const handleSizeChange = (page: number, size: number) => {
-    let newQuery = { ...query, page: 1, size };
-    setQuery(newQuery);
-    getTableData(newQuery);
+    let newQuery = { ...query, page: 1, size }
+    setQuery(newQuery)
+    getTableData(newQuery)
   }
 
   const handleFilterConVisibleChange = (visible: boolean) => {
@@ -190,58 +195,63 @@ export default observer(function 人员管理(props: Props) {
   }
 
   const switchWrapperName = () => {
-    let classList = [] as any;
-    if (filterConVisible) classList.push('filter-con-visible');
-    return classList.join(' ');
+    let classList = [] as any
+    if (filterConVisible) classList.push('filter-con-visible')
+    return classList.join(' ')
   }
 
-  return <Wrapper className={switchWrapperName()}>
-    <CommonHeader title={'人员管理'}>
-      <span className="float-item title">科室:</span>
-      <span className="float-item">
-        <DeptSelect onChange={handleDeptChange} />
-      </span>
-      <span className="float-item title">片区:</span>
-      <span className="float-item">
-        <Select defaultValue="" className="dept-list">
-          <Option value="">全部</Option>
-        </Select>
-      </span>
-      <span className="float-item input-search">
-        <Input />
-      </span>
-      <span className="float-item">
-        <Button type="primary" onClick={handleSearch}>搜索</Button>
-      </span>
-    </CommonHeader>
-    <div className="main-contain">
-      <div className="filter-contain">
-        <FilterCon
-          filter={queryFilter}
-          isOpenFilter={filterConVisible}
-          onVisibleChange={handleFilterConVisibleChange}
-          filterAdapterChange={handleFilterAdapterChange} />
+  return (
+    <Wrapper className={switchWrapperName()}>
+      <CommonHeader title={'人员管理'}>
+        <span className='float-item title'>科室:</span>
+        <span className='float-item'>
+          <DeptSelect onChange={handleDeptChange} />
+        </span>
+        <span className='float-item title'>片区:</span>
+        <span className='float-item'>
+          <Select defaultValue='' className='dept-list'>
+            <Option value=''>全部</Option>
+          </Select>
+        </span>
+        <span className='float-item input-search'>
+          <Input />
+        </span>
+        <span className='float-item'>
+          <Button type='primary' onClick={handleSearch}>
+            搜索
+          </Button>
+        </span>
+      </CommonHeader>
+      <div className='main-contain'>
+        <div className='filter-contain'>
+          <FilterCon
+            filter={queryFilter}
+            isOpenFilter={filterConVisible}
+            onVisibleChange={handleFilterConVisibleChange}
+            filterAdapterChange={handleFilterAdapterChange}
+          />
+        </div>
+        <div className='table-contain'>
+          <BaseTable
+            loading={dataLoading}
+            columns={columns}
+            surplusHeight={queryFilter ? 420 : 130}
+            pagination={{
+              current: query.page,
+              total: total,
+              pageSize: query.pageSize,
+              pageSizeOptions: ['10', '20', '30'],
+              showSizeChanger: true,
+              onChange: handlePageChange,
+              onShowSizeChange: handleSizeChange
+            }}
+            // type={['spaceRow']}
+            dataSource={tableData}
+          />
+        </div>
       </div>
-      <div className="table-contain">
-        <BaseTable
- 
-          loading={dataLoading}
-          columns={columns}
-          surplusHeight={queryFilter ? 420 : 130}
-          pagination={{
-            current: query.page,
-            total: total,
-            pageSize: query.pageSize,
-            pageSizeOptions: ['10', '20', '30'],
-            showSizeChanger: true,
-            onChange: handlePageChange,
-            onShowSizeChange: handleSizeChange
-          }}
-          // type={['spaceRow']}
-          dataSource={tableData} />
-      </div>
-    </div>
-  </Wrapper>
+    </Wrapper>
+  )
 })
 
 const Wrapper = styled.div`

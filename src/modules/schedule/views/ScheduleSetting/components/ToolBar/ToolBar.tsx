@@ -189,10 +189,10 @@ export default function ToolBar(props: Props) {
             message.success(res.desc || res.data.desc)
             if (isPublish) {
               emitter.emit('发布并更新排班列表')
-              console.log('发布成功')
+           
             } else {
               emitter.emit('更新排班列表表格')
-              console.log('暂存成功')
+              
             }
           }
         })
@@ -270,7 +270,7 @@ export default function ToolBar(props: Props) {
       props.onChange(changedFields)
     },
     mapPropsToFields(props: any) {
-      console.log('mapPropsToFields', props)
+     
       return {
         id: Form.createFormField({
           ...props.id,
@@ -315,7 +315,7 @@ export default function ToolBar(props: Props) {
       }
     },
     onValuesChange(_: any, values: any) {
-      console.log(values)
+     
     }
   })((props: any) => {
     const { getFieldDecorator } = props.form
@@ -444,7 +444,7 @@ export default function ToolBar(props: Props) {
 
   const handleFormChange = (changedFields: any) => {
     fields = { ...fields, ...changedFields }
-    console.log('handleFormChange', changedFields, customizedForm)
+   
     // console.log('onFieldsChange', props, changedFields)
     //   let diff = 0
     //   // let dateFormat = 'YYYY-MM-DD HH:mm:ss'
@@ -508,7 +508,7 @@ export default function ToolBar(props: Props) {
   }
 
   const onOk = () => {
-    console.log('提交表单', fields, shiftList)
+    
     const postData = {
       id: fields.id.value, // 	Long 必须参数 班次套餐名称
       name: fields.mealName.value, // 	Long 必须参数 班次套餐名称
@@ -522,14 +522,14 @@ export default function ToolBar(props: Props) {
       sunday: getShiftIdByName(fields.sundayName.value) || '', // string 必须参数 班次套餐颜色
       status: fields.status.value || false // Boolean 必须参数 启用状态 true或者false
     }
-    console.log('提交表单postData', postData)
+    
     service.scheduleMealApiService.save(postData).then((res) => {
-      console.log('添加班次套餐成功')
+     
       emitter.emit('更新班次套餐列表')
-      console.log('添加班次套餐成功', res)
+      
       // 更新班次套餐列表
     })
-    console.log('onOk')
+    
   }
 
   let inputWidth = '250px'
@@ -640,13 +640,7 @@ export default function ToolBar(props: Props) {
       .startOf('week')
       .add('d', 6)
     setWeekValue(weekFirstDay)
-    console.log(
-      'WeekPicker',
-      weekFirstDay.format(dateFormat),
-      weekLastDay.format(dateFormat),
-      defaultEndTime,
-      dateString
-    )
+   
 
     setFormatMonth(`${weekLastDay.month() + 1}`)
     setFormatDay(`${weekLastDay.date()}`)

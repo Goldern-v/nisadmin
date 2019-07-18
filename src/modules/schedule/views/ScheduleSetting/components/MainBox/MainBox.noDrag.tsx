@@ -157,7 +157,7 @@ const bindInputElements = () => {
 }
 
 export default function MainBox () {
-  const [count, setCount] = useState(0)
+  
   const [footer, setFooter] = useState(()=>{return <span></span>})
   const [tableLoading, setTableLoading] = useState(true)
   // const [rowSelection, setRowSelection] = useState(new Object())

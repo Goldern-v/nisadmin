@@ -10,19 +10,15 @@ import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message, Select } from 'antd'
 import emitter from 'src/libs/ev'
 const { Option } = Select
-export default observer(function BedSituation () {
-  const [count, setCount] = useState(0)
+export default observer(function BedSituation() {
   const [typeGet, setTypeGet] = useState('出院')
   // const [getMethods, setGetMethods] = useState(() => null)
-  useEffect(() => {
-    
-  }, [])
+  useEffect(() => {}, [])
 
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
   }
-  function searchButtonClick () {
+  function searchButtonClick() {
     emitter.emit('住院病人认知情况统计表查询')
   }
   // 导出文件
@@ -36,7 +32,7 @@ export default observer(function BedSituation () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    console.log('fileDownload', res)
+
     // if (res.data.type.indexOf('excel') > -1) {
     if (res.data) {
       let a = document.createElement('a')
@@ -49,7 +45,7 @@ export default observer(function BedSituation () {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function (data: any) {
+      reader.addEventListener('loadend', function(data: any) {
         // reader.result 包含转化为类型数组的blob
         // message.error(`${reader.result}`)
       })
@@ -71,7 +67,6 @@ export default observer(function BedSituation () {
   const selectChange = (value: any) => {
     emitter.emit('住院病人认知情况统计表类型', value)
     setTypeGet(value)
-    console.log('value66666666666', value)
   }
   return (
     <Con>

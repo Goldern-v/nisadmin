@@ -11,12 +11,12 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
 }
 
 export default function HorizontalMenuLayout(props: Props) {
-  const [count, setCount] = useState(0)
+  
   const { payload } = props
   useEffect(() => {})
   let currentRouteType = props.match.params.type
   let currentRouteList: any[] = _.flattenDeep(props.payload.map((item) => (item.childrens ? item.childrens : item)))
-  console.log(currentRouteList, 'currentRouteList')
+
   let CurrentRouteComponent = currentRouteList.find((item) => item.type === currentRouteType).component || null
 
   return (

@@ -10,12 +10,9 @@ import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView() {
-  
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  useEffect(() => {
-    
-  })
+  useEffect(() => {})
 
   function checkClick() {
     // e.target.style.color = '#3FB593'
@@ -32,7 +29,6 @@ export default function LoginView() {
         res.data.user = {}
       }
       loginViewModel.user = res.data.user
-      console.log(loginViewModel.user)
     })
   }
   function handleKeyUp(e: any) {

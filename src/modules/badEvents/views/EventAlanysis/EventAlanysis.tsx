@@ -13,7 +13,7 @@ import CreateReportModal from 'src/modules/badEvents/views/modal/CreateReportMod
 import { badEventViewModal } from 'src/modules/badEvents/views/BadEventViewModal'
 
 export interface Props extends RouteComponentProps {}
-export default observer(function EventAlanysis (props: Props) {
+export default observer(function EventAlanysis(props: Props) {
   const createReportModal = createModal(CreateReportModal)
   let history = appStore.history
   const [btnList, setBtnList] = useState([
@@ -64,7 +64,6 @@ export default observer(function EventAlanysis (props: Props) {
       btnType: 'primary',
       style: { right: '10px', position: 'absolute' },
       onClick: () => {
-        console.log('创建')
         createReportModal.show({
           id: '0',
           type: 'create',
@@ -148,21 +147,17 @@ export default observer(function EventAlanysis (props: Props) {
         newList.push(newData)
       }
     }
-    console.log('genEmptyTable', newList)
   }
 
-  const [count, setCount] = useState(0)
   const [tableSource, setTableSource] = useState(dataSource)
 
   useEffect(() => {
-    
     badEventViewModal.reportTitle = '2019年 第二季度不良事件分析报告'
     genEmptyTable(dataSource)
     setTableSource(dataSource)
   }, [])
 
   let getTitle = () => {
-    console.log('getTitle')
     return (
       <TitleBox>
         <h1>东 莞 市 厚 街 医 院</h1>

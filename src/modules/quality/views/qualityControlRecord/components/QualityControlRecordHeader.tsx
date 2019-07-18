@@ -15,7 +15,6 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
   let endDate = moment()
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
   }
   return (
     <Wrapper>

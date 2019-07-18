@@ -29,7 +29,7 @@ export default async function() {
   let recentHtml: any = ''
   setInterval(async () => {
     recentHtml = await getHtml()
-    console.log(recentHtml, 'currentHtml')
+
     if (recentHtml != currentHtml) {
       try {
         openMessage()

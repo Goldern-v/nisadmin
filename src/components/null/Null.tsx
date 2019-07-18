@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 export interface Props {}
 
 export default function Null () {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
     
   })

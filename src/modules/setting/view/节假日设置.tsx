@@ -5,7 +5,7 @@ import TableModel from 'src/modules/setting/common/TableModel.tsx'
 import A节假日设置表 from './TableView/A节假日设置表'
 // import React, { useState, useEffect } from 'react'
 export default function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   // useEffect(() => {
   //   
   // })

@@ -5,7 +5,7 @@ import BackCon from '../components/BackCon'
 export interface Props extends RouteComponentProps {}
 
 export default function LmsDetails () {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
     
   })

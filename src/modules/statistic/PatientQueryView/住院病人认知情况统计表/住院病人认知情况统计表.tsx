@@ -5,7 +5,7 @@ import MidHeader from './components/MidHeader'
 import Table from './components/Table'
 // import React, { useState, useEffect } from 'react'
 export default function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   // useEffect(() => {
   //   
   // })

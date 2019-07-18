@@ -12,7 +12,7 @@ import createModal from 'src/libs/createModal'
 import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
-export default observer(function EventSearch (props: Props) {
+export default observer(function EventSearch(props: Props) {
   // const editAwardsModal = createModal(EditAwardsModal)
 
   const [btnList, setBtnList] = useState([
@@ -202,27 +202,22 @@ export default observer(function EventSearch (props: Props) {
         newList.push(newData)
       }
     }
-    console.log('genEmptyTable', newList)
   }
 
-  const [count, setCount] = useState(0)
   const [tableSource, setTableSource] = useState(dataSource)
 
   useEffect(() => {
-    
-
     // empty raw
     genEmptyTable(dataSource)
     setTableSource(dataSource)
 
     service.commonApiService.getUintList().then((res) => {
-      console.log('getUintList-res', res)
       if (res && res.data) {
         let newBTNlist = JSON.parse(JSON.stringify(btnList))
         let btn = btnList.find((b) => b.label.indexOf('科室') > -1)
         if (btn) {
           btn.options = res.data.deptList
-          console.log('getUintList-btn', btn)
+
           setBtnList(newBTNlist)
         }
       }

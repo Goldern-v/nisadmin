@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 // import SpaceShow from 'src/components/SpaceShow.tsx'
 export default function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   useEffect(() => {
     // 
   })

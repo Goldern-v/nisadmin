@@ -14,16 +14,11 @@ import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 // import SelectMonth from '../../common/SelectMonth'  //月份选择器
 export default function StatisticView() {
   const [showType, setShowType] = useState('按时数')
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    
-  })
+
+  useEffect(() => {})
   const selectShowType = (e: any) => {
     setShowType(e.target.value)
-    StatisticsApi.postNurseByMonth('白班', e.target.value).then((res) => {
-      console.log(res)
-    })
-    console.log(33)
+    StatisticsApi.postNurseByMonth('白班', e.target.value).then((res) => {})
   }
   return (
     <Con>

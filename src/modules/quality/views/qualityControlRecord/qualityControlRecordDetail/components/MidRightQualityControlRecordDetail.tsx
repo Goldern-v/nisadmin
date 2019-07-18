@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Steps } from 'antd'
 const { Step } = Steps
 export default function midRightQualityControlRecordDetail() {
-  // const [count, setCount] = useState(0)
+  // 
   // useEffect(() => {
   //   
   // })

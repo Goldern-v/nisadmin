@@ -16,12 +16,9 @@ import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function ToolBar() {
-  
-
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   return (
@@ -56,7 +53,6 @@ export default function ToolBar() {
               .filter((item: any) => item.empName)
             return service.scheduleUserApiService.save(list).then((res) => {
               message.success('保存排班人员设置成功')
-              console.log('保存排班人员', res)
             })
           })
         }}

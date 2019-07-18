@@ -40,7 +40,7 @@ export enum TITLE_COLOR {
 }
 
 export default function NurseCard (props: Props) {
-  const [count, setCount] = useState(0)
+  
 
   let { rowNum, data } = props
   let history = store.appStore.history

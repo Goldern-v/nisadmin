@@ -66,7 +66,7 @@ const getWeekDay_1 = (weekday: number) => {
   )
 }
 const getWeekDay_2 = (weekday: number) => {
-  console.log(scheduleStore.getStartTime(), 'scheduleStore.getStartTime()')
+  scheduleStore.getStartTime()
   let days = ['', '一', '二', '三', '四', '五', '六', '日', '一', '二', '三', '四', '五', '六', '日']
   let date = moment(scheduleStore.getStartTime())
     .add(weekday - 1, 'days')
@@ -338,17 +338,17 @@ export default function ScheduleTable() {
     let deptCode = scheduleStore.getDeptCode()
     let startTime = scheduleStore.getStartTime()
     let endTime = scheduleStore.getEndTime()
-    console.log(deptCode, startTime, endTime)
+   
     const postData = {
       deptCode: deptCode, // deptCode  科室编码
       startTime: startTime, // startTime 开始时间
       endTime: endTime // endTime   结束时间
     }
     service.schedulingApiService.newSchedule(postData).then((res) => {
-      console.log('新建成功', res)
+    
       emitter.emit('本周排班记录', res.data)
       if (res && res.data) {
-        console.log('postDataArray', res)
+       
         let userList = res.data.schShiftUser
         let postDataArray: any = new Array()
         let postLine: any = new Array()
@@ -381,7 +381,7 @@ export default function ScheduleTable() {
 
         service.schedulingApiService.update(postDataArray, weekRange).then((result: any) => {
           message.success(result.data.desc || '新建成功')
-          console.log('新建成功result', result)
+
           emitter.emit('禁止工具按钮', false)
         })
       }
@@ -391,7 +391,7 @@ export default function ScheduleTable() {
     let tr = {}
     let newList = new Array()
     scheduleData.schShiftUser.map((nurse: any, shcIndex: number) => {
-      console.log('nurse', shcIndex, nurse.empName, nurse)
+    
       let getRangeObj = (user: any, keyname: any, i: number) => {
         let result = ''
         try {
@@ -544,7 +544,7 @@ export default function ScheduleTable() {
   })
 
   function statisticFooter(list: any) {
-    console.log('统计', list)
+ 
     let workhour = 0
     let rangeNames = new Array()
     let rangeObj = new Object()
@@ -580,7 +580,7 @@ export default function ScheduleTable() {
     }
     rangeSum = rangeSum.trim()
 
-    console.log('统计', workhour, rangeNames, rangeObj)
+
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
     let totle = `排班小计：${rangeSum}工时${Number(workhour).toFixed(2)}小时。`
     // remark = `备注：${remark||'空'}`
@@ -625,7 +625,6 @@ export default function ScheduleTable() {
               pagination={false}
               surplusHeight={180}
               style={{ padding: 0 }}
-
             />
           </ScheduleTableCon>
         </ScheduleCon>

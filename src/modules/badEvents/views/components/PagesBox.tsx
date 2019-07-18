@@ -21,10 +21,8 @@ const pages = [P1, P2, P3, P4, P5]
 
 // const WARNNING_ICON = require('../../../images/注意.png')
 
-export default observer(function PagesBox () {
+export default observer(function PagesBox() {
   let history = store.appStore.history
-
-  console.log('history', history, history.location.pathname)
 
   return (
     <Wrapper>

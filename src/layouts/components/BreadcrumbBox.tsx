@@ -10,7 +10,7 @@ export interface Props {
 }
 
 export default function BreadcrumbBox (props: Props) {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {})
   // const handleClick = (e: any) => {
   //   console.log('click ', e) 排班管理 排班人员设置

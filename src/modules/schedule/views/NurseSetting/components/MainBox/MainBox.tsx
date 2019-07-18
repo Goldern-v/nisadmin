@@ -198,7 +198,7 @@ export default function MainBox() {
   /** 拖拽start */
 
   const moveRow = (dragIndex: number, hoverIndex: number) => {
-    console.log(dragIndex, hoverIndex, 'hoverIndexhoverIndexhoverIndex')
+
     const dragRow = userList[dragIndex]
     setUserList(
       update(userList, {

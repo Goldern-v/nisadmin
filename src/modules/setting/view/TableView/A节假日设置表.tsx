@@ -8,7 +8,7 @@ import SettingViewModel from 'src/modules/setting/SettingViewModel'
 import SettingApi from 'src/modules/setting/api/SettingApi.ts'
 export interface Props extends RouteComponentProps {}
 
-export default observer(function A节假日设置表 () {
+export default observer(function A节假日设置表() {
   // //模拟数据
   // let dataSource = [
   //   {
@@ -91,10 +91,10 @@ export default observer(function A节假日设置表 () {
   }, [])
   const deleteClick = (e: any, record: any, text: any) => {
     let deleteIndex = e.target.getAttribute('data-index')
-    console.log(e.target.getAttribute('data-text'))
+
     let deleteData = { name: record.name, holidaysDate: record.holidaysDate }
     // 后台删除数据
-    console.log(deleteData)
+
     SettingApi.getHolidayDelete(deleteData)
     let cacheTableDate = [...SettingViewModel.tableDate]
     cacheTableDate.splice(deleteIndex, 1)

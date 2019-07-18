@@ -13,7 +13,7 @@ export interface Props {
   showType: string
 }
 export default observer(function BedSituation (props: Props) {
-  // const [count, setCount] = useState(0)
+  // 
   const [bodyTable, setBodyTable] = useState([{}])
   const postNurseScheduling = () =>
     StatisticsApi.postNurseScheduling().then((res) => {
@@ -24,8 +24,7 @@ export default observer(function BedSituation (props: Props) {
     emitter.addListener('touchState', () => {
       postNurseScheduling()
     })
-    console.log(appStore.match.params.name)
-    console.log(44444444444444444444444444)
+   
     postNurseScheduling()
   }, [])
   // const postNurseScheduling = StatisticsApi.postNurseScheduling().then((res) => {

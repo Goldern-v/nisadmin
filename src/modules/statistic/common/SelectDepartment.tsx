@@ -10,26 +10,24 @@ import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 
-function handleChange (value: any) {
-  console.log(`selected ${value}`)
-  console.log(333)
+function handleChange(value: any) {
   statisticViewModel.deptName = value
   statisticViewModel.setTitle('护士休假统计')
-  console.log('getTitle', statisticViewModel.getTitle)
+
   // 设置统计页标题
   // emitter.emit('设置统计页标题', statisticViewModel.getTitle)
 }
 
-export default function SelectDepartment () {
-  // const [count, setCount] = useState(0)
+export default function SelectDepartment() {
+  //
   const [defaultValue, setDefaultValue] = useState(authStore.getUser().deptName || '')
   const [officeList, setOfficeList] = useState([])
   // useEffect(() => {
-  //   // 
+  //   //
   // })
   useEffect(() => {
     let deptName = authStore.getUser().deptName || ''
-    console.log('deptName', deptName, authStore.getUser())
+
     setDefaultValue(deptName)
     //
     statisticViewModel.deptName = deptName
@@ -52,7 +50,7 @@ export default function SelectDepartment () {
       }
     })
   }, [])
-  function optionClick (code: any) {
+  function optionClick(code: any) {
     statisticViewModel.setDeptCode(code)
   }
   return (

@@ -10,14 +10,14 @@ import spacePhoto from '../../../img/spacePhoto.svg'
 export interface Props {
   showType: string
 }
-export default observer(function BedSituation (props: Props) {
-  // const [count, setCount] = useState(0)
-  const [bodyTable, setBodyTable]:any = useState([])
+export default observer(function BedSituation(props: Props) {
+  //
+  const [bodyTable, setBodyTable]: any = useState([])
   const postNurseByMonthMethod = () =>
     StatisticsApi.postNurseByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {
       if (res.data) {
         let addLength = 8 - res.data.length
-        if (addLength > 0&& addLength !== 8) {
+        if (addLength > 0 && addLength !== 8) {
           for (let i = 0; i < addLength; i++) {
             res.data.push({ 序列: '' })
           }
@@ -32,12 +32,11 @@ export default observer(function BedSituation (props: Props) {
   }, [])
   emitter.removeAllListeners('护士白班统计')
   emitter.addListener('护士白班统计', () => {
-    console.log(555555555)
     if (statisticViewModel.hourTime === '按时数') {
       postNurseByMonthMethod()
     }
   })
-  function trClickChange (e: any) {
+  function trClickChange(e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
     allTr.forEach((item: any) => {

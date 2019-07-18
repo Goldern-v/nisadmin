@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import emitter from 'src/libs/ev'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 export default function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
   useEffect(() => {

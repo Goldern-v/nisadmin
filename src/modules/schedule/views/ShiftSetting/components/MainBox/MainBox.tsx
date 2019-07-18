@@ -37,7 +37,6 @@ export interface Props extends RouteComponentProps {}
 // }
 
 export default function MainBox() {
-  
   const [tableLoading, setTableLoading] = useState(false)
   const [shiftList, setShiftList] = useState(new Array())
 
@@ -206,7 +205,6 @@ export default function MainBox() {
       setColorMapCN(colorMapCN)
     })
     //
-    
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   emitter.removeAllListeners('获取选中班次列表')
@@ -226,7 +224,7 @@ export default function MainBox() {
     setTableLoading(true)
     service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res) => {
       setTableLoading(false)
-      console.log('查找排班班次res', res, data)
+
       let oneUser = new Object()
       allUser = new Array()
       selectedRowsArray = new Array()
@@ -237,9 +235,7 @@ export default function MainBox() {
 
         let rowKeys = new Array()
         tableData.map((oneObj: any, index: number) => {
-          console.log('oneObj', index, oneObj, oneObj.status)
           if (oneObj.status === true) {
-            console.log('tableDataindex', index)
             rowKeys.push(oneObj.id)
           } else {
             oneObj.status = false
@@ -259,7 +255,6 @@ export default function MainBox() {
 
         // genEmptyTable(allUser)
         setShiftList(allUser)
-        console.log('查找排班班次', shiftList, allUser, tableData, selectedRowsArray)
       }
     })
   }

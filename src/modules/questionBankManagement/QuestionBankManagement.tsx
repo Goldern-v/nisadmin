@@ -41,9 +41,7 @@ export default function QuestionBankManagement() {
     }
   ]
 
-  const onTabsChange = (activeKey: string) => {
-    console.log(activeKey)
-  }
+  const onTabsChange = (activeKey: string) => {}
   return (
     <Wrapper>
       <HeadCon>

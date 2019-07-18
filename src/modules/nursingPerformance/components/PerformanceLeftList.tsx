@@ -46,7 +46,7 @@ const leftListPatientQueryPath = [
 const addNPModal = createModal(AddNPModal)
 
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
     
     // console.log(store.appStore.history.location.pathname, 3333)
