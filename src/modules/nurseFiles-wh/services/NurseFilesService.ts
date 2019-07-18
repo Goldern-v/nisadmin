@@ -275,7 +275,7 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
-  // zk-1专科护士新增或更新(护士)
+  // zk-1 专科护士新增或更新(护士)
   public async nurseWHSpecializNurseSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHSpecializNurse/saveOrUpdate`, obj)
   }
@@ -288,9 +288,22 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
-  // zg-1转岗新增或更新(护士)
+  // zg-1 转岗新增或更新(护士)
   public async nurseWHTransferPostSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHTransferPost/saveOrUpdate`, obj)
+  }
+
+  /** cy-参与科研课题 */
+  public nurseWHGoScienceCourse(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHGoScienceCourse/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+   // cy-1 参与科研课题新增或更新(护士)
+  public async nurseWHGoScienceCourseSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHGoScienceCourse/saveOrUpdate`, obj)
   }
 
   // 8-1护士获奖情况新增或更新(网页护长)

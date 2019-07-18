@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditToNewPostModal from '../modal/EditToNewPostModal'
+import EditJoinScientificModal from '../modal/EditJoinScientificModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
-  const editToNewPostModal = createModal(EditToNewPostModal)
+  const editJoinScientificModal = createModal(EditJoinScientificModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editToNewPostModal.show({ signShow: '添加' })
+      onClick: () => editJoinScientificModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,24 +35,95 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '原工作科室',
-      dataIndex: 'oldDeptName',
-      key: 'oldDeptName',
-      width: 100,
+      title: '参与课题名称',
+      dataIndex: 'goName',
+      key: 'goName',
+      width: 120,
       align: 'center'
     },
     {
-      title: '现工作科室',
-      dataIndex: 'newDeptCode',
-      key: 'newDeptCode',
-      width: 100,
+      title: '课题主持人姓名',
+      dataIndex: 'hostName',
+      key: 'hostName',
+      width: 120,
       align: 'center'
     },
     {
-      title: '转岗时间',
-      dataIndex: 'transferDate',
-      key: 'transferDate',
-      width: 110,
+      title: '课题主持人工号',
+      dataIndex: 'hostNo',
+      key: 'hostNo',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '参与排名',
+      dataIndex: '',
+      key: '',
+      width: 120,
+      align: 'center'
+    },
+
+    {
+      title: '课题来源',
+      dataIndex: 'courseSource',
+      key: 'courseSource',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '课题级别',
+      dataIndex: 'courseLevel',
+      key: 'courseLevel',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '承担单位',
+      dataIndex: 'unit',
+      key: 'unit',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '课题批文号',
+      dataIndex: 'approvalNumber',
+      key: 'approvalNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '登记号',
+      dataIndex: 'registerNumber',
+      key: 'registerNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '开始时间',
+      dataIndex: 'startDate',
+      key: 'startDate',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'endDate',
+      key: 'endDate',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '完成情况',
+      dataIndex: 'courseCompletion',
+      key: 'courseCompletion',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '立项/结题/验收/鉴定时间',
+      dataIndex: 'completionDate',
+      key: 'completionDate',
+      width: 90,
       align: 'center'
     },
     {
@@ -84,7 +155,7 @@ export default observer(function PersonWinning() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editToNewPostModal.show({ data: row, signShow: '修改' })
+                  editJoinScientificModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -98,15 +169,35 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHTransferPost',
-                  title: '审核转岗信息',
+                  type: 'nurseWHGoScienceCourse',
+                  title: '审核参与信息',
                   tableFormat: [
                     {
-                      原工作室: `oldDeptName`,
-                      现工作室: `newDeptCode`
+                      参于课题名称: `goName`,
+                      课题主持人姓名: `hostName`
                     },
                     {
-                      转岗时间: `transferDate`,
+                      课题主持人工号: `hostNo`,
+                      参与排名: ``
+                    },
+                    {
+                      课题来源: `courseSource`,
+                      课题级别: `courseLevel`
+                    },
+                    {
+                      承担单位: `unit`,
+                      课题批文号: `approvalNumber`,
+                    },
+                    {
+                      登记号: `registerNumber`,
+                      完成情况: `courseCompletion`,
+                    },
+                    {
+                      开始时间: `startDate`,
+                      结束时间: `endDate`
+                    },
+                    {
+                      '立项/结题/验收/鉴定时间': `completionDate`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -129,7 +220,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHTransferPost(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHGoScienceCourse(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -138,9 +229,9 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='转岗' btnList={btnList}>
+    <BaseLayout title='参与科研课题' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editToNewPostModal.Component getTableData={getTableData} />
+      <editJoinScientificModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
