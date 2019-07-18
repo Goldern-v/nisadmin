@@ -8,18 +8,15 @@ import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button, message } from 'antd'
 import emitter from 'src/libs/ev'
 // import { observer } from 'mobx-react-lite'
-export default function BedSituation () {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+export default function BedSituation() {
+  useEffect(() => {})
 
   // const onChange = (value: string) => {
   //   // nurseFilesListViewModel.loadNursingList()
   //   console.log(value)
   // }
   // 查询
-  function searchButtonClick () {
+  function searchButtonClick() {
     emitter.emit('科室排班按班次')
   }
   // 导出文件
@@ -33,7 +30,7 @@ export default function BedSituation () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    console.log('fileDownload', res)
+
     if (res.data.type.indexOf('excel') > -1) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象
@@ -45,7 +42,7 @@ export default function BedSituation () {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function (data: any) {
+      reader.addEventListener('loadend', function(data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })

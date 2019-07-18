@@ -15,20 +15,19 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
   let endDate = moment()
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
   }
   return (
     <Wrapper>
-      <span>质控日期:</span>
-      <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220, margin: '0 10px' }} ref={ref} />
+      <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
+      <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220 }} ref={ref} />
 
-      <span style={{ margin: '0 10px 0 30px' }}>质控科室:</span>
+      <span style={{ margin: '0 3px 0 10px' }}>质控科室:</span>
       <DeptSelect onChange={onChange} />
 
-      <span style={{ margin: '0 10px 0 30px' }}>表单:</span>
+      <span style={{ margin: '0 3px 0 10px' }}>表单:</span>
       <DeptSelect onChange={onChange} />
 
-      <span style={{ margin: '0 10px 0 30px' }}>状态:</span>
+      <span style={{ margin: '0 3px 0 10px' }}>状态:</span>
       <DeptSelect onChange={onChange} />
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询

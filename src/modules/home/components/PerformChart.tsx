@@ -9,7 +9,7 @@ const dateFormat = 'YYYY-MM-DD 00:00:00'
 import { observer } from 'mobx-react-lite'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import BaseTable from 'src/components/BaseTable.tsx'
-export default observer(function PerformChart () {
+export default observer(function PerformChart() {
   const [dataSource, setDataSource] = useState([])
   useEffect(() => {
     const postData = {
@@ -24,7 +24,6 @@ export default observer(function PerformChart () {
     if (authStore.selectedDeptCode) {
       HomeApi.executeStatus(postData)
         .then((res) => {
-          console.log('===BedSituation', res)
           if (res.data) {
             let cacheData = res.data
             for (let i = 0; i < cacheData.length; i++) {
@@ -167,7 +166,7 @@ const Head = styled.div`
   }
 `
 const Mid = styled.div`
- .ant-table {
+  .ant-table {
     border: none;
   }
   .BaseTable__Wrapper-sc-18xwuv-0 {

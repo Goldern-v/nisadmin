@@ -45,8 +45,6 @@ function ModalAdd(props: Props) {
 
   function HolidayChange(value: any) {
     // SettingViewModel.holidayName = value
-    console.log(33333)
-    console.log(value)
   }
 
   return (

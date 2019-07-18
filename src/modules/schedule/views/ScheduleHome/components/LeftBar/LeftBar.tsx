@@ -85,7 +85,7 @@ export default function LeftBar(props: Props) {
         for (let i = startWeekNumber; i <= endWeekNumber; i++) {
           let w = res.data.find((item: any) => item.week == i)
           if (w) {
-            console.log(w, 'wwwww')
+   
             weekList.push(w)
           } else {
             weekList.push({
@@ -111,7 +111,7 @@ export default function LeftBar(props: Props) {
           weekList[i + 1] && weeks.push(weekList[i + 1])
           twoWeekList.push(weeks)
         }
-        console.log(twoWeekList, 'twoWeekListtwoWeekList')
+
         setTwoWeekList(twoWeekList)
       })
       .catch((err) => {

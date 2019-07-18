@@ -4,20 +4,14 @@ import { Checkbox, Radio, Icon, Input, Row, Col } from 'antd'
 // import React, { useState, useEffect } from 'react'
 const { TextArea } = Input
 export default function qualityControlRecordDetailMidLeft() {
-  // const [count, setCount] = useState(0)
+  //
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //
   // })
-  const titleBoxChange = (e: any) => {
-    console.log(`${e.target.checked}`)
-  }
-  const itemRadioChange = (e: any) => {
-    console.log(e.target.value)
-  }
+  const titleBoxChange = (e: any) => {}
+  const itemRadioChange = (e: any) => {}
   // 附件
-  const itemAttachmentCheck = () => {
-    console.log('附件')
-  }
+  const itemAttachmentCheck = () => {}
   return (
     <Con>
       <MessageBox>
@@ -150,6 +144,7 @@ const Con = styled.div`
   flex-direction: column;
 `
 const MessageBox = styled.div`
+  margin-top: 10px;
   height: 154px;
   line-height: 26px;
   padding: 10px 20px;
@@ -169,7 +164,7 @@ const QuestionCon = styled.div`
   margin-top: 10px;
   flex: 1;
   height: 0;
-  font-size: 15px;
+  font-size: 13px;
 
   .titleCon {
     height: 30px;
@@ -197,6 +192,12 @@ const QuestionCon = styled.div`
       .itemAttachmentCon {
         display: inline-block;
         cursor: pointer;
+      }
+      .ant-radio-disabled + span {
+        color: black;
+      }
+      .ant-radio-inner::after {
+        background-color: #00a680;
       }
     }
   }

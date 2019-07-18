@@ -62,7 +62,7 @@ const P5 = require('src/modules/badEvents/views/EventAlanysis/images/5.png')
 
 const pages = [P1, P2, P3, P4, P5]
 
-export default function BadEventEditorView (props: Props) {
+export default function BadEventEditorView(props: Props) {
   // nurseFileDetailViewModal.nurserInfo = appStore.queryObj
   let history = appStore.history
   const [editorState, setEditorState] = useState(new Object() as any)
@@ -76,7 +76,7 @@ export default function BadEventEditorView (props: Props) {
       setBreadcrumbItem('编辑分析报告')
     }
     //
-    console.log('BadEventEditorView:useEffect', props, props.match.params)
+
     //
     let html = `` // `<img src="${P1}" alt="" />`
     pages.map((p) => {
@@ -95,9 +95,7 @@ export default function BadEventEditorView (props: Props) {
     {
       label: '删除报告',
       type: 'button',
-      onClick: () => {
-        console.log('删除报告')
-      }
+      onClick: () => {}
     },
     {
       label: '保存',
@@ -105,8 +103,6 @@ export default function BadEventEditorView (props: Props) {
       onClick: () => {
         if (editorState) {
           message.success('保存报告')
-          console.log('保存报告', editorState)
-          console.log(editorState.toHTML())
         }
       }
     }
@@ -124,13 +120,11 @@ export default function BadEventEditorView (props: Props) {
 
   const handleEditorChange = (editorNewState: any) => {
     setEditorState(editorNewState)
-    console.log('handleEditorChange', editorNewState)
   }
 
   const setEditorHtml = (htmlString: string) => {
     let html = BraftEditor.createEditorState(htmlString)
     setEditorState(html)
-    console.log('handleEditorChange', html)
   }
 
   const controls: any[] = [

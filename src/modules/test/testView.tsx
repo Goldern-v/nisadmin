@@ -5,9 +5,9 @@ import Null from 'src/components/null/Null'
 export interface Props extends RouteComponentProps {}
 
 export default function noticeView () {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <Wrapper>

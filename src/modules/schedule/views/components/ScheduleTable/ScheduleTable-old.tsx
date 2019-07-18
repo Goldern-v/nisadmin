@@ -156,7 +156,6 @@ const tableData: TableData = {
 }
 
 export default function ScheduleTable() {
-  const [count, setCount] = useState(0)
   const [scheduleList, setscheduleList] = useState([
     [
       {
@@ -166,7 +165,6 @@ export default function ScheduleTable() {
     ]
   ])
   useEffect(() => {
-    console.log(count, setCount)
     setscheduleList([])
 
     emitter.removeAllListeners('清空排班记录')
@@ -177,13 +175,11 @@ export default function ScheduleTable() {
     })
 
     let eventEmitter = emitter.addListener('本周排班记录', (scheduleData) => {
-      console.log('接收:本周排班记录event', scheduleData, scheduleList)
       // schShiftUser
       let trobj = {}
       let newList = [[]]
       newList = []
       scheduleData.schShiftUser.map((nurse: any, shcIndex: number) => {
-        console.log('nurse', shcIndex, nurse.empName, nurse)
         let getRangeName = (range: any, i: number) => {
           let result = ''
           try {
@@ -217,7 +213,7 @@ export default function ScheduleTable() {
             tr.push({ key: key, value: value })
           }
         }
-        console.log('tr', tr, newList)
+
         newList.push(tr as any)
       })
       // 补空行
@@ -233,7 +229,7 @@ export default function ScheduleTable() {
       }
       setscheduleList(newList)
     })
-    console.log('eventEmitter', eventEmitter, eventEmitterClean)
+
   }, [])
   return (
     <Wrapper>

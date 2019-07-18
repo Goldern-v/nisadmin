@@ -23,8 +23,11 @@ export interface Props extends TableProps<any> {
   surplusWidth?: number
   tip?: string
   moveRow?: (dragIndex: number, hoverIndex: number) => void
+  /** 底部是否固定 */
+  fixedFooter?: boolean
 }
 
+let scrollTop = 0
 export default function BaseTable(props: Props) {
   let wih = windowHeight()
   let wiw = windowWidth()
@@ -38,7 +41,7 @@ export default function BaseTable(props: Props) {
     props
   )
   option.dataSource = option.dataSource.map((item: any, index: number) => {
-    return { ...item, key: index }
+    return Object.assign(item, { key: index })
   })
   if (props.surplusHeight) {
     option.scroll = { y: wih - props.surplusHeight }
@@ -102,11 +105,34 @@ export default function BaseTable(props: Props) {
             } catch (error) {}
           }
         }
+      }, 0)
+      setTimeout(() => {
+        if (option.tip && tableRef.current) {
+          let tip = tableRef!.current!.querySelector('#tip')
+          if (tip) {
+            tip.innerHTML = option.tip
+          } else {
+            tip = document.createElement('div')
+            tip.id = 'tip'
+            tip.innerHTML = option.tip
+            try {
+              $(tableRef!.current!.querySelector('.ant-table-body')).append($(tip))
+            } catch (error) {}
+          }
+        }
       }, 100)
     } catch (error) {}
     try {
       setTimeout(() => {
-        if (tableRef.current) {
+        if (tableRef.current && !option.fixedFooter) {
+          let footer = tableRef!.current!.querySelector('.ant-table-footer')
+          if (footer) {
+            $(tableRef!.current!.querySelector('.ant-table-body')).append($(footer))
+          }
+        }
+      }, 0)
+      setTimeout(() => {
+        if (tableRef.current && !option.fixedFooter) {
           let footer = tableRef!.current!.querySelector('.ant-table-footer')
           if (footer) {
             $(tableRef!.current!.querySelector('.ant-table-body')).append($(footer))
@@ -131,11 +157,44 @@ export default function BaseTable(props: Props) {
             }
           }
         }
+      }, 0)
+      setTimeout(() => {
+        if (tableRef.current && props.surplusHeight) {
+          let contentHeight = wih - props.surplusHeight + 'px'
+          let placeholder = tableRef!.current!.querySelector('.ant-table-placeholder')
+          let body = tableRef!.current!.querySelector('.ant-table-body')
+          if (placeholder) {
+            placeholder.style.height = contentHeight
+            if (body) {
+              body.style.height = 0
+            }
+          } else {
+            if (body) {
+              body.style.height = contentHeight
+            }
+          }
+        }
       }, 100)
+    } catch (error) {}
+    setTimeout(() => {
+      try {
+        tableRef!.current!.querySelector('.ant-table-body').onscroll = (e: any) => {
+          scrollTop = e.target.scrollTop
+        }
+        // scrollTop !== 0 && (tableRef!.current!.querySelector('.ant-table-body')!.scrollTop = scrollTop)
+      } catch (error) {}
+    }, 0)
+    try {
+      scrollTop !== 0 && (tableRef!.current!.querySelector('.ant-table-body')!.scrollTop = scrollTop)
     } catch (error) {}
   })
 
+  useEffect(() => {
+    scrollTop = 0
+  }, [])
+
   let TableComponent = option.type && option.type.includes('diagRow') ? DragDropContext(HTML5Backend)(Table) : Table
+
   return (
     <Wrapper style={option.wrapperStyle || {}} ref={tableRef} id='baseTable'>
       <TableComponent {...option} />
@@ -274,6 +333,12 @@ const Wrapper = styled.div`
     .ant-table-pagination.ant-pagination {
       margin: 11px 0 5px;
     }
+    /* .ant-table-footer {
+      display: none;
+    }
+    .ant-table-body .ant-table-footer {
+      display: block;
+    } */
   }
 `
 

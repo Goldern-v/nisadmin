@@ -33,7 +33,6 @@ export default function SelectCon() {
 
   const add = () => {
     emitter.emit('自动推送设置-添加')
-    console.log(1111111111111)
   }
   return (
     <React.Fragment>
@@ -44,13 +43,13 @@ export default function SelectCon() {
         <DeptSelect onChange={onChange} extraDept={[{ name: '公共', code: '*' }]} />
         <Button onClick={add}>添加</Button>
       </Wrapper>
-     </React.Fragment>
+    </React.Fragment>
   )
 }
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  height:60px;
+  height: 60px;
   /* font-size: #333; */
   /* margin-bottom: 15px; */
   /* margin-top: 25px; */
@@ -59,9 +58,9 @@ const Wrapper = styled.div`
   }
 `
 const Title = styled.div`
-  font-size:20px;
-  font-weight:600;
-  float:left;
+  font-size: 20px;
+  font-weight: 600;
+  float: left;
   /* margin-left: 20px; */
   font-weight: bold;
   color: #000;

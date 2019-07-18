@@ -10,15 +10,14 @@ import ModalAdd from 'src/modules/setting/view/components/ModalAdd.tsx'
 // import settingViewModel from '../../SettingViewModel'
 
 export default function BedSituation() {
-  // const [count, setCount] = useState(0)
+  //
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //
   // })
   const [visible, setVisible] = useState(false)
   const handleOk = () => {
     setVisible(false)
-    console.log(3333333)
-    console.log(settingViewModel.getHolidayAdd)
+
     let cacheAddHoliday = settingViewModel.getHolidayAdd
     let cacheTarget = [...settingViewModel.tableDate]
     cacheTarget = cacheTarget.concat(cacheAddHoliday)
@@ -35,7 +34,6 @@ export default function BedSituation() {
   //   nurseFilesListViewModel.loadNursingList()
   // }
   const addButtonClick = () => {
-    console.log(666666)
     SettingApi.getHolidayTable(settingViewModel.getSelectYear).then((res) => {})
     setVisible(true)
   }

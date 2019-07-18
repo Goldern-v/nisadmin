@@ -27,7 +27,6 @@ export default observer(function PatientDistribute() {
     }
     if (authStore.selectedDeptCode) {
       HomeApi.patientdistribute(postData).then((res) => {
-        console.log('====patientdistribute:', res)
         if (res.data) {
           let list = res.data
           let cacheSum = 0

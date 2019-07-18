@@ -37,7 +37,6 @@ export default function SetExtraHoursModal(props: Props) {
   emitter.removeAllListeners('关闭设置工时弹框')
 
   emitter.addListener('打开设置工时弹框', (config: any) => {
-    console.log(config, 'configconfig')
     setConfig(config)
     let str = config.label
 
@@ -58,7 +57,7 @@ export default function SetExtraHoursModal(props: Props) {
     let { obj, key, label, refreshData } = config
     let newLabel = label.replace(/\(.*?\)/g, '') + `(${inputValue}h)`
     obj[key] = newLabel
-    console.log(obj, 'obj')
+
     refreshData(newLabel)
     setModalVisible(false)
   }

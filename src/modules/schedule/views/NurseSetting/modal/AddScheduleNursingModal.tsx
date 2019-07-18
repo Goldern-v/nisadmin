@@ -36,7 +36,7 @@ export default function AddScheduleNursingModal(props: Props) {
     if (!refForm.current) return
 
     let [err, value] = await to(refForm.current.validateFields())
-    console.log(err, 'err')
+
     if (err) return
     value.deptName = authStore.selectedDeptName
     value.deptCode = authStore.selectedDeptCode

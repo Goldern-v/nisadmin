@@ -67,7 +67,7 @@ export default class Image extends React.Component {
   }
 
   onloadImage = (e) => {
-    console.log('onloadImage', e)
+ 
   }
 
   getBase64Image = (img) => {

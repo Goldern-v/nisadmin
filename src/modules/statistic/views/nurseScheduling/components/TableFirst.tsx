@@ -9,8 +9,8 @@ import { observer } from 'mobx-react-lite'
 export interface Props {
   showType: string
 }
-export default observer(function BedSituation (props: Props) {
-  // const [count, setCount] = useState(0)
+export default observer(function BedSituation(props: Props) {
+  //
   const [bodyTable, setBodyTable]: any = useState([])
   const postNurseScheduling = () =>
     StatisticsApi.postNurseScheduling().then((res) => {
@@ -29,14 +29,13 @@ export default observer(function BedSituation (props: Props) {
     emitter.addListener('touchState', () => {
       postNurseScheduling()
     })
-    console.log(appStore.match.params.name)
-    console.log(44444444444444444444444444)
+
     postNurseScheduling()
   }, [])
   // const postNurseScheduling = StatisticsApi.postNurseScheduling().then((res) => {
   //   setBodyTable(res.data)
   // })
-  function trClickChange (e: any) {
+  function trClickChange(e: any) {
     let parentNode = e.target.parentNode
     let allTr = parentNode.parentNode.querySelectorAll('tr')
     allTr.forEach((item: any) => {

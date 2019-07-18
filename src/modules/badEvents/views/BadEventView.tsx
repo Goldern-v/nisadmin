@@ -51,12 +51,11 @@ const ROUTE_LIST = [
   }
 ]
 
-export default function BadEventView (props: Props) {
+export default function BadEventView(props: Props) {
   // nurseFileDetailViewModal.nurserInfo = appStore.queryObj
 
   useEffect(() => {
     //
-    console.log('useEffect', props, props.match.params)
   }, [])
 
   let currentRouteType: any = props.match.params.type || 'search'

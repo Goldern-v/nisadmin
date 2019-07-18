@@ -4,6 +4,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import store from 'src/stores'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import PaginationCon from './PaginationCon'
 import qs from 'qs'
 export default observer(function qualityControlRecordTable() {
   let [loading, setLoading] = useState(false)
@@ -472,7 +473,7 @@ export default observer(function qualityControlRecordTable() {
       <TableScrollCon>
         <TableCon>
           <BaseTable
-            surplusHeight={205}
+            surplusHeight={235}
             loading={loading}
             dataSource={dataSource}
             columns={columns}

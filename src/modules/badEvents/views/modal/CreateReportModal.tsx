@@ -18,17 +18,15 @@ export interface Props extends ModalComponentProps {
   next: string
 }
 
-export default function CreateReportModal (props: Props) {
+export default function CreateReportModal(props: Props) {
   let { visible, onCancel, onClose } = props
   let refForm = React.createRef<Form>()
-  const onFieldChange = (value: any) => {
-    console.log('onFieldChange', value)
-  }
+  const onFieldChange = (value: any) => {}
   const onCreate = async () => {
     visible = false
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
-    console.log('onOk:value', value, refForm)
+
     badEventViewModal.reportTitle = `${(value as any).yearReport}年${(value as any).seasonReport}不良事件分析报告`
     // 2019年第二季度不良事件分析报告
     if (err) return
@@ -51,9 +49,7 @@ export default function CreateReportModal (props: Props) {
                 onSelect={() => {
                   ''
                 }}
-                onSearch={(value: any) => {
-                  console.log('value', value)
-                }}
+                onSearch={(value: any) => {}}
                 placeholder='年 度'
               />
             </Form.Field>

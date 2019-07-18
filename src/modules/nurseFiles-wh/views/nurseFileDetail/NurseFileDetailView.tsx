@@ -12,6 +12,8 @@ import { observer } from 'mobx-react-lite'
 import Article from './views/Article'
 import PersonWinning from './views/PersonWinning'
 import SpecializNurse from './views/SpecializNurse'
+import OnEducation from './views/OnEducation'
+import HostingScientific from './views/HostingScientific'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -38,6 +40,18 @@ const ROUTE_LIST = [
     type: 'SpecializNurse',
     component: SpecializNurse,
     name: '专科护士'
+  },
+  {
+    /** 方明处理 */
+    type: 'onEducation',
+    component: OnEducation,
+    name: '外出进修'
+  },
+  {
+    /** 方明处理 */
+    type: 'hostingScientific',
+    component: HostingScientific,
+    name: '主持科研课题'
   }
 ]
 

@@ -15,24 +15,24 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
   let endDate = moment()
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
   }
   return (
     <Wrapper>
-      <span>质控日期:</span>
-      <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220, margin: '0 10px' }} ref={ref} />
+      <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
+      <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220 }} ref={ref} />
 
-      <span style={{ margin: '0 10px 0 30px' }}>质控科室:</span>
+      <span style={{ margin: '0 3px 0 10px' }}>质控科室:</span>
       <DeptSelect onChange={onChange} />
 
-      <span style={{ margin: '0 10px 0 30px' }}>指控表单:</span>
+      <span style={{ margin: '0 3px 0 10px' }}>指控表单:</span>
       <DeptSelect onChange={onChange} />
 
-      <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
+      {/* onClick={() => props.refreshData() */}
+      <Button type='primary' style={{ marginLeft: 30 }} onClick={() => {}}>
         查询
       </Button>
-      <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
-        导出
+      <Button style={{ marginLeft: 10 }} onClick={() => {}}>
+        导出Excel
       </Button>
       {/* <Button onClick={() => props.refExport()}>导出excl</Button> */}
     </Wrapper>

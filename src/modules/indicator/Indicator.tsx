@@ -915,7 +915,7 @@ export default function Indicator(props: Props) {
         // setLoading(true)
         const data = await indicatorService.getIndicatoeData(currentRoute!.exportName, startDate, endDate)
         // setLoading(false)
-        console.log('data333333333', data)
+      
         fileDownload(data)
         //除错
         // if (currentRoute && data) {
@@ -932,7 +932,7 @@ export default function Indicator(props: Props) {
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
   let ChartComponent = (currentRoute && currentRoute.chartComponent) || 护患比统计图
   const restClick = () => {
-    console.log(document.body.offsetHeight - 200)
+  
   }
   return (
     <Wrapper>

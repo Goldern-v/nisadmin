@@ -11,7 +11,7 @@ export interface Props {
   showType: string
 }
 export default function BedSituation (props: Props) {
-  // const [count, setCount] = useState(0)
+  // 
   const [bodyTable, setBodyTable] = useState([{}])
   const postNurseByMonthMethod = () =>
     StatisticsApi.postNurseByMonth(statisticViewModel.whiteBlack, statisticViewModel.hourTime).then((res) => {

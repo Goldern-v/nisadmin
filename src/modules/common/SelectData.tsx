@@ -10,9 +10,9 @@ const dateFormat = 'YYYY年MM月DD日'
 
 // const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY']
 export default function SelectData () {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <SelectCon>

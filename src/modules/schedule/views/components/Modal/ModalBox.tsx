@@ -30,9 +30,7 @@ export default function ModalBox(props: Props) {
     setModalVisible(false)
   }
 
-  const afterClose = () => {
-    console.log('afterClose', contant)
-  }
+  const afterClose = () => {}
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {

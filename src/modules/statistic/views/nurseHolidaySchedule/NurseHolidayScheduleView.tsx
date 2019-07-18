@@ -12,9 +12,9 @@ import TableModel from '../../common/TableModel'
 // import SelectMonth from '../../common/SelectMonth'  //月份选择器
 export default function StatisticView() {
   const [showType, setShowType] = useState('按时数')
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <Con>

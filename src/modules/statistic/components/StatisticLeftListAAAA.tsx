@@ -41,9 +41,9 @@ const leftListPatientQueryPath = [
   { name: '患者分布统计表', path: '/statistic/护理人员统计' }
 ]
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
-    console.log(count, setCount)
+    
     // console.log(store.appStore.history.location.pathname, 3333)
   })
   // 左侧列表数据

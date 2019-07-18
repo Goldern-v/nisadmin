@@ -40,11 +40,8 @@ import NurseList from './views/nursingStatistics/nurseList/NurseList'
 import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
 
 export default function StatisticView() {
-  const [count, setCount] = useState(0)
   const [shiftClass, setShiftClass] = useState(new Array())
-  useEffect(() => {
-    console.log(count, setCount, shiftClass)
-  }, [])
+  useEffect(() => {}, [])
   // const getShiftClass = (shiftclass: any) => {
   //   setShiftClass(shiftClass)
   // }

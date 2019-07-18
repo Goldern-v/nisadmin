@@ -23,15 +23,14 @@ import { observer } from 'mobx-react-lite'
 //   console.log(`selected ${value}`)
 // }
 
-export default observer(function HomeView () {
+export default observer(function HomeView() {
   const [page, setPage] = useState(['本页'])
   useEffect(() => {})
   emitter.removeAllListeners('首页查询')
   emitter.addListener('首页查询', () => {
     setPage(['查询'])
-    console.log('5555555555555555555555 查询')
   })
-  console.log(page)
+
   return (
     <Wrapper>
       <SelectCon>

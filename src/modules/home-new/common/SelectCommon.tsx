@@ -9,14 +9,12 @@ import emitter from 'src/libs/ev'
 import { authStore } from 'src/stores'
 const Option = Select.Option
 
-function handleChange (value: any) {
-  console.log(`selected ${value}`, value)
-}
+function handleChange(value: any) {}
 
-export default function SelectCommon () {
+export default function SelectCommon() {
   const [officeList, setOfficeList] = useState([])
   // useEffect(() => {
-  //   // console.log(count, setCount)
+  //   //
   // })
 
   // function getDepartmentName () {
