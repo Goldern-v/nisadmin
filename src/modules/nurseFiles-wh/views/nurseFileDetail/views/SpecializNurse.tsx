@@ -157,7 +157,7 @@ export default observer(function SpecializNurse() {
   }, [])
 
   return (
-    <BaseLayout title='所获奖励' btnList={btnList}>
+    <BaseLayout title='专科护士' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
       <editSpecializNurseModal.Component getTableData={getTableData} />
     </BaseLayout>

@@ -61,7 +61,6 @@ export default function EditSpecializNurseModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.cardNumberDate && (value.cardNumberDate = value.cardNumberDate.format('YYYY-MM-DD'))
-    console.log(value,'999999999999999')
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.nurseWHSpecializNurseSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
