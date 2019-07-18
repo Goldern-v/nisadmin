@@ -4,17 +4,20 @@ import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
+import loginViewModel from 'src/modules/login/LoginViewModel'
+// 加附件
 import ImageUploader from 'src/components/ImageUploader'
-import { appStore, authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+import YearPicker from 'src/components/YearPicker'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -22,18 +25,20 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  startTime: (val) => !!val || '请选择开始时间',
-  endTime: (val) => !!val || '请选择结束时间',
-  trainingUnit: (val) => !!val || '请填写培训单位',
-  trainingContent: (val) => !!val || '请填写培训内容',
-  hours: (val) => !!val || '请填写学时/分'
+  // time: (val) => !!val || '请填写时间',
+  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
+  // rank: (val) => !!val || '请填写本人排名',
+  // awardlevel: (val) => !!val || '请填写授奖级别',
+  // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditWorkHistoryModal(props: Props) {
+export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
+
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
+
   const onSave = async () => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
@@ -52,10 +57,12 @@ export default function EditWorkHistoryModal(props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
-    value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
+    if (!Object.keys(value).length) {
+      return message.warning('数据不能为空')
+    }
+    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseContinuingEducationAdd({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHArticleSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -68,50 +75,65 @@ export default function EditWorkHistoryModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        startTime: moment(data.startTime),
-        endTime: moment(data.endTime),
-        trainingUnit: data.trainingUnit,
-        trainingContent: data.trainingContent,
-        hours: data.hours,
+        publicYear: moment(data.publicYear),
+        magazineName: data.magazineName,
+        articleName: data.articleName,
+        periodicalNumber: data.periodicalNumber,
+        volumeNumber: data.volumeNumber,
+        pageNumber: data.pageNumber,
+        articleType: data.articleType,
+        influencingFactors: data.influencingFactors,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
-      // refForm.current.setField('unit', 123)
     }
     if (signShow === '修改') {
-      setTitle('修改继续教育')
+      setTitle('修改所获奖励')
     } else if (signShow === '添加') {
-      setTitle('添加继续教育')
+      setTitle('添加所获奖励')
     }
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
-          <Row gutter={10}>
-            <Col span={15}>
-              <Form.Field label={`时间`} name='startTime' required suffix='到'>
-                <DatePicker />
-              </Form.Field>
-            </Col>
-            <Col span={9}>
-              <Form.Field name='endTime'>
-                <DatePicker />
-              </Form.Field>
-            </Col>
-          </Row>
           <Col span={24}>
-            <Form.Field label={`培训单位`} name='trainingUnit' required>
+            <Form.Field label={`发表年份`} name='publicYear'>
+              <YearPicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`杂志名称`} name='magazineName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`培训内容`} name='trainingContent' required>
+            <Form.Field label={`文章名称`} name='articleName' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学时`} name='hours' required>
+            <Form.Field label={`期刊号`} name='periodicalNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`卷号`} name='volumeNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`起止页码`} name='pageNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`文章类别`} name='articleType' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`影响因子`} name='influencingFactors' required>
               <Input />
             </Form.Field>
           </Col>

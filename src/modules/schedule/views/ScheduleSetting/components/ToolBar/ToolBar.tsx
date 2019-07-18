@@ -119,6 +119,8 @@ export default function ToolBar(props: Props) {
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const save = (e: any, isPublish: boolean = false) => {
+    // let hideLoading = message.loading('正在保存')
+    // emitter.emit('排班列表载入动画', true)
     let postData: any = new Array()
     let postLine: any = new Array()
     let startTime = scheduleStore.getStartTime()
@@ -145,8 +147,6 @@ export default function ToolBar(props: Props) {
         sundayName_2: 13
       }
       shiftData.map((nurse: any, index: any) => {
-        console.log(splitRecord(nurse, scheduleStore.getWeeks().length), '4567890-')
-
         splitRecord(nurse, scheduleStore.getWeeks().length).forEach((item: any) => {
           emitter.emit('根据班次code获取班次详情', item.Name, (shiftItem: any) => {
             shiftItem = shiftItem || {}
@@ -175,14 +175,12 @@ export default function ToolBar(props: Props) {
         })
       })
 
-      emitter.emit('排班列表载入动画', true)
-
       setTimeout(() => {
         let weekRange = {
           startTime: scheduleStore.getStartTime(),
           endTime: scheduleStore.getEndTime()
         }
-
+        // hideLoading()
         service.schedulingApiService.update(postData, weekRange).then((res) => {
           if (res && (res.desc || res.data.desc)) {
             message.success(res.desc || res.data.desc)
@@ -195,7 +193,7 @@ export default function ToolBar(props: Props) {
             }
           }
         })
-      }, 500)
+      }, 200)
     })
   }
 

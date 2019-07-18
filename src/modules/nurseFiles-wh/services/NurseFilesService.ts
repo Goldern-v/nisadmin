@@ -256,6 +256,20 @@ export default class NurseFilesService extends BaseApiService {
   public updateDeptCode(obj: any) {
     return this.post(`/nurseInformation/updateDeptCode`, obj)
   }
+
+  /** 武汉新增 */
+  /** 文章 */
+  public nurseWHArticle(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHArticle/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  // 8-1护士获奖情况新增或更新(网页护长)
+  public async nurseWHArticleSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHArticle/saveOrUpdate`, obj)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService()

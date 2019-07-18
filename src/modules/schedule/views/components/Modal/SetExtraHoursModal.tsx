@@ -10,7 +10,7 @@ import { Modal } from 'antd'
 //   title: string
 // }
 import emitter from 'src/libs/ev'
-import { Form, InputNumber } from 'src/vendors/antd'
+import { Form, InputNumber, message } from 'src/vendors/antd'
 import { scheduleStore } from 'src/stores'
 
 interface Props {
@@ -52,8 +52,11 @@ export default function SetExtraHoursModal(props: Props) {
     setModalVisible(true)
   }
   const onOK = () => {
-    let { obj, refreshData } = config
+    let { refreshData } = config
 
+    if (Number(inputValue) < shiftItem.effectiveTime) {
+      return message.error('设置工时不能低于默认工时')
+    }
     refreshData({
       EffectiveTime: inputValue
     })

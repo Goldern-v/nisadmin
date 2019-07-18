@@ -625,7 +625,7 @@ export default function ScheduleTable() {
               pagination={false}
               surplusHeight={180}
               style={{ padding: 0 }}
-              rowKey='empName'
+
             />
           </ScheduleTableCon>
         </ScheduleCon>

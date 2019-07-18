@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { notification } from 'antd'
 // 自动更新模块 2018-09-27
-import $ from 'axios'
+import $ from 'jquery'
 import { Icon, Button } from 'src/vendors/antd'
 
 const openMessage = () => {

@@ -3,25 +3,25 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { authStore, appStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
+
 import { globalModal } from 'src/global/globalModal'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import EditPatentModal from '../modal/EditPatentModal'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function EducationalExperience() {
-  const editContinuingEducationModal = createModal(EditContinuingEducationModal)
+export default observer(function Patent() {
+  const editPatentModal = createModal(EditPatentModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () =>
-        editContinuingEducationModal.show({
-          signShow: '添加'
-        })
+      onClick: () => editPatentModal.show({ signShow: '添加' })
     }
   ]
 
@@ -29,51 +29,72 @@ export default observer(function EducationalExperience() {
     {
       title: '序号',
       dataIndex: '1',
-      key: '1',
+      key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 60
+      width: 55
     },
     {
-      title: '开始时间',
-      dataIndex: 'startTime',
-      key: '2',
+      title: '发表年份',
+      dataIndex: 'publicYear',
+      key: 'publicYear',
       width: 120,
       align: 'center'
     },
     {
-      title: '结束时间',
-      dataIndex: 'startTime',
-      key: '3',
-      width: 120,
+      title: '杂志名称',
+      dataIndex: 'magazineName',
+      key: 'magazineName',
+      width: 90,
       align: 'center'
     },
     {
-      title: '培训单位',
-      dataIndex: 'trainingUnit',
-      key: '4',
-      width: 120,
+      title: '文章名称',
+      dataIndex: 'articleName',
+      key: 'articleName',
+      width: 90,
       align: 'center'
     },
     {
-      title: '培训内容',
-      dataIndex: 'trainingContent',
-      key: '5',
-      width: 120,
+      title: '期刊号',
+      dataIndex: 'periodicalNumber',
+      key: 'periodicalNumber',
+      width: 90,
       align: 'center'
     },
     {
-      title: '学时',
-      dataIndex: 'hours',
-      key: '6',
-      width: 80,
+      title: '卷号',
+      dataIndex: 'volumeNumber',
+      key: 'volumeNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '起止页码',
+      dataIndex: 'pageNumber',
+      key: 'pageNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '文章类别',
+      dataIndex: 'articleType',
+      key: 'articleType',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '影响因子',
+      dataIndex: 'influencingFactors',
+      key: 'influencingFactors',
+      width: 90,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
-      key: '7',
-      width: 100,
+      key: 'fj',
+      width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
@@ -82,14 +103,14 @@ export default observer(function EducationalExperience() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '8',
+      key: 'auditedStatusName',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '9',
-      key: '9',
+      dataIndex: '8',
+      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: number) => {
@@ -98,7 +119,7 @@ export default observer(function EducationalExperience() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editContinuingEducationModal.show({ data: row, signShow: '修改' })
+                  editPatentModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -112,16 +133,24 @@ export default observer(function EducationalExperience() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseContinuingEducation',
-                  title: '审核继续教育',
+                  type: 'nurseWHArticle',
+                  title: '审核文章',
                   tableFormat: [
                     {
-                      开始时间: `startTime`,
-                      结束时间: `startTime`
+                      发表年份: `publicYear`,
+                      杂志名称: `magazineName`
                     },
                     {
-                      培训单位: `trainingUnit`,
-                      培训内容: `trainingContent`
+                      文章名称: `articleName`,
+                      期刊号: `periodicalNumber`
+                    },
+                    {
+                      卷号: `volumeNumber`,
+                      起止页码: `pageNumber`
+                    },
+                    {
+                      文章类别: `articleType`,
+                      影响因子: `influencingFactors`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -144,23 +173,18 @@ export default observer(function EducationalExperience() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseContinuingEducation(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHArticle(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
   useEffect(() => {
     getTableData()
   }, [])
+
   return (
-    <BaseLayout title='继续教育' btnList={btnList}>
-      <BaseTable
-        dataSource={tableData}
-        columns={columns}
-        surplusHeight={305}
-        type={['spaceRow', 'fixedWidth']}
-        tip={'填写说明：仅登记院外进修情况（以人事科签订合同为准的进修记录）。'}
-      />
-      <editContinuingEducationModal.Component getTableData={getTableData} />
+    <BaseLayout title='所获奖励' btnList={btnList}>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
+      <editPatentModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

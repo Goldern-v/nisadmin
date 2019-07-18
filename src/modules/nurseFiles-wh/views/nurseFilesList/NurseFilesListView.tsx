@@ -11,10 +11,10 @@ import { ColumnProps } from 'antd/lib/table'
 import { theme } from 'src/styles/theme'
 
 import FilterCon from './components/FilterCon'
-import NurseCard from './components/NurseCard'
+
 import PaginationCon from './components/PaginationCon'
 import SelectCon from './components/SelectCon'
-import { nurseFilesService } from '../../services/NurseFilesService'
+
 import { nurseFilesListViewModel } from './NurseFilesListViewModel'
 
 export interface Props extends RouteComponentProps {}
@@ -179,7 +179,6 @@ export default observer(function NurseFilesListView() {
           }
         }}
         loading={nurseFilesListViewModel.listSpinning}
-        rowKey='empNo'
       />
       <PaginationCon rowNum={rowNum} />
     </Wrapper>

@@ -37,6 +37,9 @@ export default function BaseTable(props: Props) {
     },
     props
   )
+  option.dataSource = option.dataSource.map((item: any, index: number) => {
+    return { ...item, key: index }
+  })
   if (props.surplusHeight) {
     option.scroll = { y: wih - props.surplusHeight }
   }
@@ -269,7 +272,7 @@ const Wrapper = styled.div`
       border-top: 2px dashed ${(p: any) => p.theme.$mtc};
     }
     .ant-table-pagination.ant-pagination {
-      margin-bottom: 0px;
+      margin: 11px 0 5px;
     }
   }
 `
