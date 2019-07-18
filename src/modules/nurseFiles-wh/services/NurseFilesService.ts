@@ -349,6 +349,14 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseWHHostScienceCourseSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHHostScienceCourse/saveOrUpdate`, obj)
   }
+  /** 专利列表 */
+  public nurseWHPatent(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHPatent/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
   //7 科研课题成果
   //7-1 科研课题成果-列表(护长)
   public async nurseWHScienceResult(empNo: any) {
@@ -358,11 +366,26 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
-// 7-2 科研课题成果新增或更新(网页护长)
+  /** 专利更新 */
+  public async nurseWHPatentSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHPatent/saveOrUpdate`, obj)
+  }
+  /** 统一列表 */
+  public commonfindByEmpNoSubmit(type: string, empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  /** 统一更新 */
+  public async commonSaveOrUpdate(type: string, obj: any) {
+    return this.post(`/${type}/saveOrUpdate`, obj)
+  }
+  // 7-2 科研课题成果新增或更新(网页护长)
   public async nurseWHScienceResultSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHScienceResult/saveOrUpdate`, obj)
   }
- 
 }
 
 export const nurseFilesService = new NurseFilesService()

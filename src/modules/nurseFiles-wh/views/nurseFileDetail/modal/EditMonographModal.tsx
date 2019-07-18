@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
@@ -31,7 +31,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditPersonWinningModal(props: Props) {
+export default function EditMonographModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
@@ -60,9 +60,9 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.grantDate && (value.grantDate = value.grantDate.format('YYYY-MM-DD'))
+    value.pressDate && (value.pressDate = value.pressDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHScienceResultSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHMonograph', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -75,18 +75,17 @@ export default function EditPersonWinningModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        resultType: data.resultType,
-        resultName: data.resultName,
-        grantUnit: data.grantUnit,
-        grantDate: moment(data.grantDate),
-        winningName: data.winningName,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        ...data,
+        ...{
+          pressDate: moment(data.pressDate),
+          urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        }
       })
     }
     if (signShow === '修改') {
-      setTitle('修改科研课题成果')
+      setTitle('修改专著')
     } else if (signShow === '添加') {
-      setTitle('添加科研课题成果')
+      setTitle('添加专著')
     }
   }, [visible])
 
@@ -95,32 +94,27 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`获奖类别`} name='resultType' required>
+            <Form.Field label={`专著名称`} name='monographName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`成果名称`} name='resultName'>
+            <Form.Field label={`出版社名称`} name='pressName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`属于单位`} name='grantUnit' required>
+            <Form.Field label={`出版号`} name='pressNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授予时间`} name='grantDate' required>
+            <Form.Field label={`出版日期`} name='pressDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`奖励级别`} name='winningLevel' required>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级']} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`奖励名称`} name='winningName' required>
+            <Form.Field label={`参编`} name='participation'>
               <Input />
             </Form.Field>
           </Col>

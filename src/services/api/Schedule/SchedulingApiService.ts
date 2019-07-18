@@ -33,7 +33,7 @@ export default class SchedulingApiService extends BaseApiService {
   }
 
   // 2.对排班信息进行每周的新增或修改
-  public async update(data: any, weekRange: any) {
+  public async update(data: any, weekRange: any, deptCode: string) {
     const postData = {
       setting: data,
       // userId: data.userId, // userId  护士ID
@@ -46,7 +46,8 @@ export default class SchedulingApiService extends BaseApiService {
       //
       //
       endTime: weekRange.endTime,
-      startTime: weekRange.startTime
+      startTime: weekRange.startTime,
+      deptCode: deptCode
     }
     return this.post(`/scheduling/saveOrUpdate`, postData)
   }

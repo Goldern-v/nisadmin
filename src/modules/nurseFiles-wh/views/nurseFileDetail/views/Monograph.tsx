@@ -10,18 +10,18 @@ import createModal from 'src/libs/createModal'
 
 import { globalModal } from 'src/global/globalModal'
 import { authStore } from 'src/stores'
-import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
+import limitUtils from 'src/modules/nurseFiles-wh/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditHostingScientificModal from '../modal/EditHostingScientificModal'
+import EditMonographModal from '../modal/EditMonographModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function PersonWinning() {
-  const editHostingScientificModal = createModal(EditHostingScientificModal)
+export default observer(function Monograph() {
+  const editMonographModal = createModal(EditMonographModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editHostingScientificModal.show({ signShow: '添加' })
+      onClick: () => editMonographModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,79 +35,37 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '主持课题名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: '专著名称',
+      dataIndex: 'monographName',
+      key: 'monographName',
       width: 120,
       align: 'center'
     },
     {
-      title: '课题来源',
-      dataIndex: 'courseSource',
-      key: 'courseSource',
+      title: '出版社名称',
+      dataIndex: 'pressName',
+      key: 'pressName',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '出版号',
+      dataIndex: 'pressNumber',
+      key: 'pressNumber',
       width: 90,
       align: 'center'
     },
     {
-      title: '课题级别',
-      dataIndex: 'courseLevel',
-      key: 'courseLevel',
-      width: 90,
+      title: '出版日期',
+      dataIndex: 'pressDate',
+      key: 'pressDate',
+      width: 120,
       align: 'center'
     },
     {
-      title: '承担单位',
-      dataIndex: 'unit',
-      key: 'unit',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '课题批文号',
-      dataIndex: 'approvalNumber',
-      key: 'approvalNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '登记号',
-      dataIndex: 'registerNumber',
-      key: 'registerNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '开始时间',
-      dataIndex: 'startDate',
-      key: 'startDate',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
-      width: 90,
-      align: 'center'
-    },
-    // {
-    //   title: '起止年限',
-    //   dataIndex: 'winningYear',
-    //   key: 'winningYear',
-    //   width: 90,
-    //   align: 'center'
-    // },
-    {
-      title: '完成情况',
-      dataIndex: 'courseCompletion',
-      key: 'courseCompletion',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '立项/结题/验收/鉴定时间',
-      dataIndex: 'completionDate',
-      key: 'completionDate',
+      title: '参编',
+      dataIndex: 'participation',
+      key: 'participation',
       width: 90,
       align: 'center'
     },
@@ -140,7 +98,7 @@ export default observer(function PersonWinning() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editHostingScientificModal.show({ data: row, signShow: '修改' })
+                  editMonographModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -154,28 +112,19 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHHostScienceCourse',
-                  title: '审核主持科研课题',
+                  type: 'nurseWHMonograph',
+                  title: '审核专著',
                   tableFormat: [
                     {
-                      主持课题名称: `name`,
-                      课题来源: `courseSource`
+                      专著名称: `monographName`,
+                      出版社名称: `pressName`
                     },
                     {
-                      课题级别: `courseLevel`,
-                      承担单位: `unit`
+                      出版号: `pressNumber`,
+                      出版日期: `pressDate`
                     },
                     {
-                      课题批文号: `approvalNumber`,
-                      登记号: `registerNumber`
-                    },
-                    {
-                      开始时间: `startDate`,
-                      结束时间: `endDate`
-                    },
-                    {
-                      完成情况: `courseCompletion`,
-                      '立项/结题/验收/鉴定时间': `completionDate`
+                      参编: `participation`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -198,7 +147,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHHostScienceCourse(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHMonograph', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -207,9 +156,9 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='主持科研课题' btnList={btnList}>
+    <BaseLayout title='所获奖励' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editHostingScientificModal.Component getTableData={getTableData} />
+      <editMonographModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

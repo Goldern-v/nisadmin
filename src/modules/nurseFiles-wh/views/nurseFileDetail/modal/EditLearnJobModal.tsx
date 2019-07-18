@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
@@ -31,7 +31,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditPersonWinningModal(props: Props) {
+export default function EditLearnJobModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
@@ -60,9 +60,10 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.grantDate && (value.grantDate = value.grantDate.format('YYYY-MM-DD'))
+    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHScienceResultSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHLearnJob', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -75,18 +76,18 @@ export default function EditPersonWinningModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        resultType: data.resultType,
-        resultName: data.resultName,
-        grantUnit: data.grantUnit,
-        grantDate: moment(data.grantDate),
-        winningName: data.winningName,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        ...data,
+        ...{
+          startDate: moment(data.startDate),
+          endDate: moment(data.endDate),
+          urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        }
       })
     }
     if (signShow === '修改') {
-      setTitle('修改科研课题成果')
+      setTitle('修改学会任职')
     } else if (signShow === '添加') {
-      setTitle('添加科研课题成果')
+      setTitle('添加学会任职')
     }
   }, [visible])
 
@@ -94,36 +95,34 @@ export default function EditPersonWinningModal(props: Props) {
     <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
+          <Row gutter={12}>
+            <Col span={15}>
+              <Form.Field label={`时间`} name='startDate' required suffix='到'>
+                <DatePicker />
+              </Form.Field>
+            </Col>
+            <Col span={9}>
+              <Form.Field name='endDate' >
+                <DatePicker />
+              </Form.Field>
+            </Col>
+          </Row>
           <Col span={24}>
-            <Form.Field label={`获奖类别`} name='resultType' required>
+            <Form.Field label={`任职学会名称`} name='learnJobName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`成果名称`} name='resultName'>
+            <Form.Field label={`学会职位`} name='learnPosition'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`属于单位`} name='grantUnit' required>
+            <Form.Field label={`学会级别`} name='learnLevel' >
               <Input />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`授予时间`} name='grantDate' required>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`奖励级别`} name='winningLevel' required>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级']} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`奖励名称`} name='winningName' required>
-              <Input />
-            </Form.Field>
-          </Col>
+
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />

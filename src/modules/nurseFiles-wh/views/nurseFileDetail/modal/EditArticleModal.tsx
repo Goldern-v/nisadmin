@@ -75,15 +75,11 @@ export default function EditArticleModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        publicYear: moment(data.publicYear),
-        magazineName: data.magazineName,
-        articleName: data.articleName,
-        periodicalNumber: data.periodicalNumber,
-        volumeNumber: data.volumeNumber,
-        pageNumber: data.pageNumber,
-        articleType: data.articleType,
-        influencingFactors: data.influencingFactors,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        ...data,
+        ...{
+          publicYear: moment(data.publicYear),
+          urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        }
       })
     }
     if (signShow === '修改') {
@@ -103,37 +99,37 @@ export default function EditArticleModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`杂志名称`} name='magazineName' required>
+            <Form.Field label={`杂志名称`} name='magazineName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`文章名称`} name='articleName' required>
+            <Form.Field label={`文章名称`} name='articleName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`期刊号`} name='periodicalNumber' required>
+            <Form.Field label={`期刊号`} name='periodicalNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`卷号`} name='volumeNumber' required>
+            <Form.Field label={`卷号`} name='volumeNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`起止页码`} name='pageNumber' required>
+            <Form.Field label={`起止页码`} name='pageNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`文章类别`} name='articleType' required>
+            <Form.Field label={`文章类别`} name='articleType'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`影响因子`} name='influencingFactors' required>
+            <Form.Field label={`影响因子`} name='influencingFactors'>
               <Input />
             </Form.Field>
           </Col>

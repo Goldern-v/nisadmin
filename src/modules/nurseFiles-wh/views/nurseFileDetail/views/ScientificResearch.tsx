@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditOnEducationModal from '../modal/EditOnEducationModal'
+import EditScientificResearchModal from '../modal/EditScientificResearchModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function PersonWinning() {
-  const editOnEducationModal = createModal(EditOnEducationModal)
+export default observer(function scientificResearch() {
+  const editScientificResearchModal = createModal(EditScientificResearchModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editOnEducationModal.show({ signShow: '添加' })
+      onClick: () => editScientificResearchModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,44 +35,44 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '进修专业',
-      dataIndex: 'studyMajor',
-      key: 'studyMajor',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '进修单位',
-      dataIndex: 'unit',
-      key: 'unit',
+      title: '获奖类别',
+      dataIndex: 'resultType',
+      key: 'resultType',
       width: 90,
       align: 'center'
     },
     {
-      title: '进修单位所属地',
-      dataIndex: 'unitLocal',
-      key: 'unitLocal',
+      title: '成果名称',
+      dataIndex: 'resultName',
+      key: 'resultName',
       width: 90,
       align: 'center'
     },
     {
-      title: '进修开始时间',
-      dataIndex: 'startDate',
-      key: 'winningYear',
+      title: '属于单位',
+      dataIndex: 'grantUnit',
+      key: 'grantUnit',
       width: 90,
       align: 'center'
     },
     {
-      title: '进修结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
+      title: '授予时间',
+      dataIndex: 'grantDate',
+      key: 'grantDate',
       width: 90,
       align: 'center'
     },
     {
-      title: '进修时长',
-      dataIndex: 'studyHour',
-      key: 'studyHour',
+      title: '奖励级别',
+      dataIndex: 'winningLevel',
+      key: 'winningLevel',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '奖励名称',
+      dataIndex: 'winningName',
+      key: 'winningName',
       width: 90,
       align: 'center'
     },
@@ -105,7 +105,7 @@ export default observer(function PersonWinning() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editOnEducationModal.show({ data: row, signShow: '修改' })
+                  editScientificResearchModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -119,20 +119,20 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHOutStudy',
-                  title: '审核文章',
+                  type: 'nurseWHScienceResult',
+                  title: '审核科研课题成果',
                   tableFormat: [
                     {
-                      进修专业: `studyMajor`,
-                      进修单位: `unit`
+                      获奖类别: `resultType`,
+                      成果名称: `resultName`
                     },
                     {
-                      进修单位所属地: `unitLocal`,
-                      进修开始时间: `startDate`
+                      属于单位: `grantUnit`,
+                      授予时间: `grantDate`
                     },
                     {
-                      进修结束时间: `endDate`,
-                      进修时长: `studyHour`
+                      奖励级别: `winningLevel`,
+                      奖励名称: `winningName`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -155,7 +155,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHOutStudy(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHScienceResult(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -164,9 +164,9 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='外出进修' btnList={btnList}>
+    <BaseLayout title='科研课题成果' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editOnEducationModal.Component getTableData={getTableData} />
+      <editScientificResearchModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

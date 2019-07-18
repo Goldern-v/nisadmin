@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 
-import { scheduleStore } from 'src/stores'
+import { scheduleStore, authStore } from 'src/stores'
 
 import { Card, Table, Tag, message } from 'antd'
 const { Meta } = Card
@@ -103,12 +103,12 @@ const columns_1: any = [
   },
   {
     title: '层级',
-    dataIndex: 'currentLevel',
+    dataIndex: 'nurseHierarchy',
     width: '5%'
   },
   {
     title: '职称',
-    dataIndex: 'title',
+    dataIndex: 'newTitle',
     width: '8%'
   },
   {
@@ -190,12 +190,12 @@ const columns_2: any = [
   },
   {
     title: '层级',
-    dataIndex: 'currentLevel',
+    dataIndex: 'nurseHierarchy',
     width: '4%'
   },
   {
     title: '职称',
-    dataIndex: 'title',
+    dataIndex: 'newTitle',
     width: '5%'
   },
   {
@@ -338,17 +338,15 @@ export default function ScheduleTable() {
     let deptCode = scheduleStore.getDeptCode()
     let startTime = scheduleStore.getStartTime()
     let endTime = scheduleStore.getEndTime()
-   
+
     const postData = {
       deptCode: deptCode, // deptCode  科室编码
       startTime: startTime, // startTime 开始时间
       endTime: endTime // endTime   结束时间
     }
     service.schedulingApiService.newSchedule(postData).then((res) => {
-    
       emitter.emit('本周排班记录', res.data)
       if (res && res.data) {
-       
         let userList = res.data.schShiftUser
         let postDataArray: any = new Array()
         let postLine: any = new Array()
@@ -379,11 +377,13 @@ export default function ScheduleTable() {
           endTime: scheduleStore.getEndTime()
         }
 
-        service.schedulingApiService.update(postDataArray, weekRange).then((result: any) => {
-          message.success(result.data.desc || '新建成功')
+        service.schedulingApiService
+          .update(postDataArray, weekRange, authStore.selectedDeptCode)
+          .then((result: any) => {
+            message.success(result.data.desc || '新建成功')
 
-          emitter.emit('禁止工具按钮', false)
-        })
+            emitter.emit('禁止工具按钮', false)
+          })
       }
     })
   })
@@ -391,7 +391,6 @@ export default function ScheduleTable() {
     let tr = {}
     let newList = new Array()
     scheduleData.schShiftUser.map((nurse: any, shcIndex: number) => {
-    
       let getRangeObj = (user: any, keyname: any, i: number) => {
         let result = ''
         try {
@@ -420,6 +419,8 @@ export default function ScheduleTable() {
         empName: nurse.empName || '',
         currentLevel: nurse.currentLevel || '',
         title: nurse.title || '',
+        newTitle: nurse.newTitle || '',
+        nurseHierarchy: nurse.nurseHierarchy || '',
         rangeName1: getRangeObj(nurse.settingDtos, 'rangeName', 0) || '',
         rangeName2: getRangeObj(nurse.settingDtos, 'rangeName', 1) || '',
         rangeName3: getRangeObj(nurse.settingDtos, 'rangeName', 2) || '',
@@ -544,7 +545,6 @@ export default function ScheduleTable() {
   })
 
   function statisticFooter(list: any) {
- 
     let workhour = 0
     let rangeNames = new Array()
     let rangeObj = new Object()
@@ -579,7 +579,6 @@ export default function ScheduleTable() {
       }
     }
     rangeSum = rangeSum.trim()
-
 
     // 排班小计：A1(3) 、A2(2)、N1(2)、...............，工时40小时。
     let totle = `排班小计：${rangeSum}工时${Number(workhour).toFixed(2)}小时。`

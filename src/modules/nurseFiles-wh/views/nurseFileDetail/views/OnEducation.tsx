@@ -120,7 +120,7 @@ export default observer(function PersonWinning() {
                   getTableData: getTableData,
                   id: row.id,
                   type: 'nurseWHOutStudy',
-                  title: '审核文章',
+                  title: '审核外出进修',
                   tableFormat: [
                     {
                       进修专业: `studyMajor`,

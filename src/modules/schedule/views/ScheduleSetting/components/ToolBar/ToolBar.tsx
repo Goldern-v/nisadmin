@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button, DatePicker, Form, Icon, Input, message, Modal, Popconfirm, Switch, TreeSelect } from 'antd'
-import { scheduleStore, appStore } from 'src/stores'
+import { scheduleStore, appStore, authStore } from 'src/stores'
 import { splitRecord } from '../MainBox/utils/splitRecord'
 
 const dateFormat = 'YYYY-MM-DD'
@@ -158,6 +158,8 @@ export default function ToolBar(props: Props) {
                   .add('d', item.index)
                   .format(dateFormat)
               },
+              empNo: nurse.empNo || '',
+              empName: nurse.empName || '',
               newTitle: nurse.newTitle || '',
               sortValue: nurse.sortValue || '',
               nurseHierarchy: nurse.nurseHierarchy || '',
@@ -184,15 +186,13 @@ export default function ToolBar(props: Props) {
           endTime: scheduleStore.getEndTime()
         }
         // hideLoading()
-        service.schedulingApiService.update(postData, weekRange).then((res) => {
+        service.schedulingApiService.update(postData, weekRange, authStore.selectedDeptCode).then((res) => {
           if (res && (res.desc || res.data.desc)) {
             message.success(res.desc || res.data.desc)
             if (isPublish) {
               emitter.emit('发布并更新排班列表')
-           
             } else {
               emitter.emit('更新排班列表表格')
-              
             }
           }
         })
@@ -270,7 +270,6 @@ export default function ToolBar(props: Props) {
       props.onChange(changedFields)
     },
     mapPropsToFields(props: any) {
-     
       return {
         id: Form.createFormField({
           ...props.id,
@@ -314,9 +313,7 @@ export default function ToolBar(props: Props) {
         })
       }
     },
-    onValuesChange(_: any, values: any) {
-     
-    }
+    onValuesChange(_: any, values: any) {}
   })((props: any) => {
     const { getFieldDecorator } = props.form
     customizedForm = props.form
@@ -444,7 +441,7 @@ export default function ToolBar(props: Props) {
 
   const handleFormChange = (changedFields: any) => {
     fields = { ...fields, ...changedFields }
-   
+
     // console.log('onFieldsChange', props, changedFields)
     //   let diff = 0
     //   // let dateFormat = 'YYYY-MM-DD HH:mm:ss'
@@ -508,7 +505,6 @@ export default function ToolBar(props: Props) {
   }
 
   const onOk = () => {
-    
     const postData = {
       id: fields.id.value, // 	Long 必须参数 班次套餐名称
       name: fields.mealName.value, // 	Long 必须参数 班次套餐名称
@@ -522,14 +518,12 @@ export default function ToolBar(props: Props) {
       sunday: getShiftIdByName(fields.sundayName.value) || '', // string 必须参数 班次套餐颜色
       status: fields.status.value || false // Boolean 必须参数 启用状态 true或者false
     }
-    
+
     service.scheduleMealApiService.save(postData).then((res) => {
-     
       emitter.emit('更新班次套餐列表')
-      
+
       // 更新班次套餐列表
     })
-    
   }
 
   let inputWidth = '250px'
@@ -640,7 +634,6 @@ export default function ToolBar(props: Props) {
       .startOf('week')
       .add('d', 6)
     setWeekValue(weekFirstDay)
-   
 
     setFormatMonth(`${weekLastDay.month() + 1}`)
     setFormatDay(`${weekLastDay.date()}`)
