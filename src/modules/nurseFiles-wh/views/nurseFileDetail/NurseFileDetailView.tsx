@@ -24,6 +24,7 @@ import Patent from './views/Patent'
 import LearnJob from './views/LearnJob'
 import ScientificResearch from './views/ScientificResearch'
 import Monograph from './views/Monograph'
+import ContinuingEducation from './views/ContinuingEducation'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -64,12 +65,10 @@ const ROUTE_LIST = [
     name: '主持科研课题'
   },
   {
-    /** 方明处理 JoinScientific*/
     type: 'joinScientific',
     component: JoinScientific,
     name: '参与科研课题'
   },
-
   {
     /** 方明处理 */
     type: 'scientificResearch',
@@ -77,7 +76,7 @@ const ROUTE_LIST = [
     name: '科研课题成果'
   },
   {
-    type: 'ToNewPost',
+    type: 'toNewPost',
     component: ToNewPost,
     name: '转岗',
   },
@@ -110,6 +109,11 @@ const ROUTE_LIST = [
     type: 'monograph',
     component: Monograph,
     name: '专著'
+  },
+  {
+    type: 'continuingEducation',
+    component: ContinuingEducation,
+    name: '继续教育'
   }
 ]
 
