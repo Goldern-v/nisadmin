@@ -150,6 +150,7 @@ const Con = styled.div`
   flex-direction: column;
 `
 const MessageBox = styled.div`
+  margin-top: 10px;
   height: 154px;
   line-height: 26px;
   padding: 10px 20px;
@@ -169,7 +170,7 @@ const QuestionCon = styled.div`
   margin-top: 10px;
   flex: 1;
   height: 0;
-  font-size: 15px;
+  font-size: 13px;
 
   .titleCon {
     height: 30px;
@@ -197,6 +198,12 @@ const QuestionCon = styled.div`
       .itemAttachmentCon {
         display: inline-block;
         cursor: pointer;
+      }
+      .ant-radio-disabled + span {
+        color: black;
+      }
+      .ant-radio-inner::after {
+        background-color: #00a680;
       }
     }
   }
