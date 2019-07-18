@@ -22,6 +22,8 @@ export default function NewNursingRulesAddModal(props: Props) {
   const [deptCode, setDeptCode] = useState('000000');
   const [empNo, setEmpNo] = useState();
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [catalogList, setCatalogList] = useState([] as any);
+  const [acceptingNewParams, setAcceptingNewParams] = useState(false);
 
   // let uploadAccept = 'image/png,image/gif,image/jpeg,application/msword,.doc,.docx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf';
   let uploadAccept = '.pdf';
@@ -55,28 +57,41 @@ export default function NewNursingRulesAddModal(props: Props) {
     setDeptCode(code)
   }
 
-  useEffect((): void => {
+  useEffect(() => {
     if (deptList.length <= 0) setDeptList(authStore.deptList);
     if (authStore.getUser()) setEmpNo(authStore.getUser().empNo);
-
     if (visible) {
+
       let nameEL = document.querySelector('.new-nursing-rules-add-modal .file-name') as HTMLInputElement;
       if (nameEL && nameEL.value) nameEL.value = "";
 
       setTimeout(() => {
         if (refForm && refForm.current) refForm.current.clear(() => {
           if (refForm && refForm.current && params instanceof Object) {
+            if (params.id) setAcceptingNewParams(true);
+
             let keys = Object.keys(params);
             if (keys.length > 0) {
+
               refForm.current.setFields({
                 deptCode: params.deptCode,
                 institutionName: params.institutionName,
-                fileType: params.fileType
+                fileType: params.fileType,
+                catalog: params.catalog
               });
+
+              getCatalog(params.fileType);
+              
+              //防止在handleFormChange中把目录字段替换为空字符
+              new Promise((resolve) => setTimeout(() => resolve('ok'), 100))
+                .then(() => {
+                  setAcceptingNewParams(false)
+                })
+
             }
           }
         })
-      },100)
+      })
     }
   }, [visible])
 
@@ -93,8 +108,10 @@ export default function NewNursingRulesAddModal(props: Props) {
         return Message.error('未填写制度名称');
 
       if (!formData.fileType)
-        return Message.error('未选择护理类型');
+        return Message.error('未选择制度类型');
 
+      if (!formData.catalog)
+        return Message.error('未选择所属目录');
 
       if (!(file && nameEl.value))
         return Message.error('未选择上传文件');
@@ -131,24 +148,12 @@ export default function NewNursingRulesAddModal(props: Props) {
       }
 
       if (params && Object.keys(params).length > 0) {
-        api
-          .deleteFile({ id: params.id })
-          .then(res => {
-
-            if (res.code == '200') {
-              return api.upload(data)
-            } else {
-              return new Promise((resolve, reject) => {
-                reject('制度删除失败')
-              })
-            }
-          })
-          .then(res => {
-            successCallback(res)
-          })
-          .catch((e: any) => {
-            failedCallback(e)
-          })
+        data.append('id', params.id);
+        api.updateFile(data).then(res => {
+          successCallback(res)
+        }, err => {
+          failedCallback(err)
+        })
       } else {
         api.upload(data).then(res => {
           successCallback(res)
@@ -178,15 +183,32 @@ export default function NewNursingRulesAddModal(props: Props) {
     onCancel && onCancel()
   }
 
+  const handleFormChange = (key: string, value: string) => {
+    if (key === 'fileType') {
+      let current = refForm.current;
+      if (!acceptingNewParams && current) {
+        current.setField('catalog', '')
+        getCatalog(value)
+      }
+    }
+  }
+
+  const getCatalog = (type:string) => {
+    api.getCatalogByType(type).then(res => {
+      if (res.data instanceof Array) setCatalogList(res.data);
+    })
+  }
+
   return <Modal
     className="new-nursing-rules-add-modal"
-    title={params?'制度修订':'导入文件'}
+    title={params ? '制度修订' : '导入文件'}
     onOk={handleOkBtn}
+    centered
     confirmLoading={uploadLoading}
     onCancel={handleCancel}
     visible={visible}>
     <ModalContent>
-      <Form ref={refForm}>
+      <Form ref={refForm} onChange={handleFormChange}>
         <div className="row">
           <span className="label">制度名称:</span>
           <span className="content">
@@ -215,12 +237,24 @@ export default function NewNursingRulesAddModal(props: Props) {
           </span>
         </div>
         <div className="row">
-          <span className="label">护理类型:</span>
+          <span className="label">制度类型:</span>
           <div className="content">
             <div className="ipt">
               <Form.Field name="fileType">
                 <Select>
                   {fileTypeList.map((item: any) => <Select.Option value={item.type} key={item.id}>{item.type}</Select.Option>)}
+                </Select>
+              </Form.Field>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <span className="label">所属目录:</span>
+          <div className="content">
+            <div className="ipt">
+              <Form.Field name="catalog">
+                <Select>
+                  {catalogList.map((item: any) => <Select.Option value={item.name} key={item.id}>{item.name}</Select.Option>)}
                 </Select>
               </Form.Field>
             </div>

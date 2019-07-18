@@ -21,4 +21,20 @@ export default class NursingRulesApiService extends BaseApiService {
   public async getType() {
     return this.get('/nursingInstitution/getTypeDict');
   }
+
+  public async getCatalogByType(type: any) {
+    return this.post('/nursingInstitution/getCatalogByType', qs.stringify({ type }));
+  }
+
+  public async deleteCatalog(id: any) {
+    return this.get(`/nursingInstitution/deleteCatalog/${id}`);
+  }
+
+  public async saveOrUpdateCatalog(params: any) {
+    return this.post('/nursingInstitution/saveOrUpdateCatalog', params);
+  }
+  //护理制度修订
+  public async updateFile(params: any) {
+    return this.post('/nursingInstitution/updateFile', params);
+  }
 }
