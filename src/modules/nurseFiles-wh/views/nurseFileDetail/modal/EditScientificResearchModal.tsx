@@ -62,9 +62,8 @@ export default function EditPersonWinningModal(props: Props) {
     }
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
     value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
-    value.completionDate && (value.completionDate = value.completionDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHHostScienceCourseSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHOutStudySaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -77,23 +76,19 @@ export default function EditPersonWinningModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        name: data.name,
-        source: data.source,
-        level: data.level,
-        approvalNumber: data.approvalNumber,
-        registerNumber: data.registerNumber,
+        studyMajor: data.studyMajor,
+        unit: data.unit,
+        unitLocal: data.unitLocal,
         startDate: moment(data.startDate),
         endDate: moment(data.endDate),
-        completion: data.completion,
-        completionDate: moment(data.completionDate),
-        // completionDate: data.completionDate,
+        studyHour: data.studyHour,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改个人获奖')
+      setTitle('修改外出进修')
     } else if (signShow === '添加') {
-      setTitle('添加个人获奖')
+      setTitle('添加外出进修')
     }
   }, [visible])
 
@@ -102,48 +97,33 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`主持课题名称`} name='name' required>
+            <Form.Field label={`进修专业`} name='studyMajor' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题来源`} name='source'>
+            <Form.Field label={`进修单位`} name='unit'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题级别`} name='level' required>
+            <Form.Field label={`进修单位所属地`} name='unitLocal' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题批文号`} name='approvalNumber' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`登记号`} name='registerNumber' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`开始时间`} name='startDate' required>
+            <Form.Field label={`进修开始时间`} name='startDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`结束时间`} name='endDate' required>
+            <Form.Field label={`进修结束时间`} name='endDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`完成情况`} name='completion' required>
+            <Form.Field label={`进修时长`} name='studyHour' required>
               <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`立项/结题/验收/鉴定时间`} name='completionDate' required>
-              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>

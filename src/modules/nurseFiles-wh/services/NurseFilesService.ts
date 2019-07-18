@@ -324,6 +324,20 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseWHHostScienceCourseSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHHostScienceCourse/saveOrUpdate`, obj)
   }
+  //7 科研课题成果
+  //7-1 科研课题成果-列表(护长)
+  public async nurseWHScienceResult(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHScienceResult/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+// 7-2 科研课题成果新增或更新(网页护长)
+  public async nurseWHScienceResultSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHScienceResult/saveOrUpdate`, obj)
+  }
+ 
 }
 
 export const nurseFilesService = new NurseFilesService()
