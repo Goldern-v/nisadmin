@@ -15,6 +15,7 @@ import SpecializNurse from './views/SpecializNurse'
 import BaseInfo from './views/BaseInfo'
 import OnEducation from './views/OnEducation'
 import HostingScientific from './views/HostingScientific'
+import JoinScientific from './views/JoinScientific'
 import ToNewPost from './views/ToNewPost'
 import WorkHistory from './views/WorkHistory'
 import EducationalExperience from './views/EducationalExperience'
@@ -43,7 +44,7 @@ const ROUTE_LIST = [
   },
   {
     /** 吴敏处理 */
-    type: 'SpecializNurse',
+    type: 'specializNurse',
     component: SpecializNurse,
     name: '专科护士'
   },
@@ -60,15 +61,22 @@ const ROUTE_LIST = [
     name: '主持科研课题'
   },
   {
-    type: 'ToNewPost',
-    component: ToNewPost,
-    name: '转岗',
+    /** 方明处理 JoinScientific*/
+    type: 'joinScientific',
+    component: JoinScientific,
+    name: '参与科研课题'
   },
+
   {
     /** 方明处理 */
     type: 'scientificResearch',
     component: ScientificResearch,
     name: '科研课题成果'
+  },
+  {
+    type: 'ToNewPost',
+    component: ToNewPost,
+    name: '转岗',
   },
   {
     type: 'workHistory',

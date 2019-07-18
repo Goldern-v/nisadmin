@@ -113,7 +113,7 @@ export default observer(function SpecializNurse() {
                   getTableData: getTableData,
                   id: row.id,
                   type: 'nurseWHSpecializNurse',
-                  title: '审核专科护士',
+                  title: '审核专科护士信息',
                   tableFormat: [
                     {
                       专科护士名称: `nurseName`,
