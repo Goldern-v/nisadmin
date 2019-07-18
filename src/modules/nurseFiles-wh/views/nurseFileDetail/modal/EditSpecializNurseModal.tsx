@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message ,AutoComplete} from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
@@ -101,22 +101,22 @@ export default function EditSpecializNurseModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证单位`} name='cardUnit' required>
+            <Form.Field label={`发证单位`} name='cardUnit'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书编号`} name='cardNumber' required>
+            <Form.Field label={`证书编号`} name='cardNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专科护士级别`} name='nurseLevel' required>
-              <Input />
+            <Form.Field label={`专科护士级别`} name='nurseLevel'>
+            <AutoComplete dataSource={['国际','国家','省级','市级','院级']} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证时间`} name='cardNumberDate' required>
+            <Form.Field label={`发证时间`} name='cardNumberDate'>
               <DatePicker />
             </Form.Field>
           </Col>
