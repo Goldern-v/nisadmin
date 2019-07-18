@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Input, Button, message as Message, Select, Modal, Pagination } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { authStore } from 'src/stores'
+import { Link } from 'react-router-dom'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 
 import NewNursingRulesAddModal from './components/NewNursingRulesAddModal'
@@ -222,16 +223,16 @@ export default class NursingRules extends Component<Props> {
   }
 
   handleModalOk() {
-    this.setState({newRuleModalgVisible: false})
+    this.setState({ newRuleModalgVisible: false })
     this.setTableData();
 
-    setTimeout(()=>this.setState({uploadParams: null}),300)
+    setTimeout(() => this.setState({ uploadParams: null }), 300)
   }
 
   handleModalCancel() {
-    this.setState({newRuleModalgVisible: false})
+    this.setState({ newRuleModalgVisible: false })
 
-    setTimeout(()=>this.setState({uploadParams: null}),300)
+    setTimeout(() => this.setState({ uploadParams: null }), 300)
   }
 
   bytesToSize(bytes: number) {
@@ -254,6 +255,7 @@ export default class NursingRules extends Component<Props> {
         institutionName: record.name,
         deptCode: record.deptCode,
         fileType: record.fileType,
+        catalog: record.catalog,
       },
       newRuleModalgVisible: true
     })
@@ -289,11 +291,18 @@ export default class NursingRules extends Component<Props> {
         }
       },
       {
-        title: '大小',
-        dataIndex: 'sizeFile',
-        key: 'sizeFile',
+        title: '类型',
+        dataIndex: 'fileType',
+        key: 'fileType',
         align: 'center',
-        width: 80
+        width: 140
+      },
+      {
+        title: '目录',
+        dataIndex: 'catalog',
+        key: 'catalog',
+        align: 'center',
+        width: 140
       },
       {
         title: '格式',
@@ -307,21 +316,21 @@ export default class NursingRules extends Component<Props> {
         dataIndex: 'empName',
         key: 'empName',
         align: 'center',
-        width: 80
+        width: 70
       },
       {
         title: '权限',
         dataIndex: 'deptName',
         key: 'deptName',
         align: 'center',
-        width: 120
+        width: 150
       },
       {
         title: '上传时间',
         dataIndex: 'uploadTime',
         key: 'uploadTime',
         align: 'center',
-        width: 180
+        width: 150
       },
       {
         title: '操作',
@@ -354,7 +363,7 @@ export default class NursingRules extends Component<Props> {
         <div className='topbar'>
           <div className='title'>护理制度</div>
           <div className='float-right'>
-            <span className='type-label'>护理类型：</span>
+            <span className='type-label'>类型：</span>
             <span className='type-content'>
               <Select
                 defaultValue={query.fileType}
@@ -381,6 +390,11 @@ export default class NursingRules extends Component<Props> {
               查询
             </Button>
             <Button onClick={this.openNewRuleDialog}>新建</Button>
+            <span className="route-group">
+              <Link to="/nursingRulesTypeSetting">类型设置</Link>
+              <span> | </span>
+              <Link to="/nursingRulesTypeIndexSetting">类型目录设置</Link>
+            </span>
           </div>
         </div>
         <div className='main-contain'>
@@ -462,6 +476,10 @@ const Contain = styled.div`
       }
       button {
         margin-left: 15px;
+        vertical-align: middle;
+      }
+      .route-group{
+        margin-left:50px;
         vertical-align: middle;
       }
     }
