@@ -266,10 +266,49 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
+
+  /** 专科护士 */
+  public nurseWHSpecializNurse(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHSpecializNurse/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+
+  // 8-1专科护士新增或更新(护士)
+  public async nurseWHSpecializNurseSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHSpecializNurse/saveOrUpdate`, obj)
+  }
+
   // 8-1护士获奖情况新增或更新(网页护长)
   public async nurseWHArticleSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHArticle/saveOrUpdate`, obj)
   }
+  // 个人获奖
+  // 2-1 个人获奖-列表(护长)
+  public async nurseWHPersonWinning(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHPersonWinning/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  // 2-2 个人获奖新增或更新(护士)
+  public async nurseWHPersonWinningSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHPersonWinning/saveOrUpdate`, obj)
+  }
+  // //2-3 审核通过或不通过个人获奖(护长)(非 json)
+  // public nurseWHPersonWinningAuditeStatusNurse(status: string, pageIndex: number) {
+  //   let obj = {
+  //     status,
+  //     deptCode: authStore.selectedDeptCode,
+  //     empNo: appStore.queryObj.empNo,
+  //     pageIndex,
+  //     pageSize: 10
+  //   }
+  //   return this.post(`/nurseWHPersonWinning/auditeStatusNurse`, this.stringify(obj))
+  // }
 }
 
 export const nurseFilesService = new NurseFilesService()
