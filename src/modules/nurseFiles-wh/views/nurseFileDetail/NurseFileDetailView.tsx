@@ -16,6 +16,10 @@ import BaseInfo from './views/BaseInfo'
 import OnEducation from './views/OnEducation'
 import HostingScientific from './views/HostingScientific'
 import ToNewPost from './views/ToNewPost'
+import WorkHistory from './views/WorkHistory'
+import EducationalExperience from './views/EducationalExperience'
+import WorkRegistrationForm from './views/WorkRegistrationForm'
+import ScientificResearch from './views/ScientificResearch'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -58,7 +62,28 @@ const ROUTE_LIST = [
   {
     type: 'ToNewPost',
     component: ToNewPost,
-    name: '转岗'
+    name: '转岗',
+  },
+  {
+    /** 方明处理 */
+    type: 'scientificResearch',
+    component: ScientificResearch,
+    name: '科研课题成果'
+  },
+  {
+    type: 'workHistory',
+    component: WorkHistory,
+    name: '工作经历'
+  },
+  {
+    type: 'educationalExperience',
+    component: EducationalExperience,
+    name: '教育经历'
+  },
+  {
+    type: 'workRegistrationForm',
+    component: WorkRegistrationForm,
+    name: '在院工作情况'
   }
 ]
 

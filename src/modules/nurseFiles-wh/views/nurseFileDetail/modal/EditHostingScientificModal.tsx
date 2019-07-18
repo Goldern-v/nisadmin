@@ -60,10 +60,11 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
-    // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
+    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
+    value.completionDate && (value.completionDate = value.completionDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHPersonWinningSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHHostScienceCourseSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -76,11 +77,16 @@ export default function EditPersonWinningModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        // publicYear: moment(data.publicYear),
-        winningYear: moment(data.winningYear),
-        winningName: data.winningName,
-        winningType: data.winningType,
-        winningLevel: data.winningLevel,
+        name: data.name,
+        source: data.source,
+        level: data.level,
+        approvalNumber: data.approvalNumber,
+        registerNumber: data.registerNumber,
+        startDate: moment(data.startDate),
+        endDate: moment(data.endDate),
+        completion: data.completion,
+        completionDate: moment(data.completionDate),
+        // completionDate: data.completionDate,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -96,23 +102,48 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`获奖年份`} name='winningYear' required>
-              <YearPicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`获奖名称`} name='winningName'>
+            <Form.Field label={`主持课题名称`} name='name' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖类别`} name='winningType' required>
+            <Form.Field label={`课题来源`} name='source'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖级别`} name='winningLevel' required>
+            <Form.Field label={`课题级别`} name='level' required>
               <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`课题批文号`} name='approvalNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`登记号`} name='registerNumber' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`开始时间`} name='startDate' required>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`结束时间`} name='endDate' required>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`完成情况`} name='completion' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`立项/结题/验收/鉴定时间`} name='completionDate' required>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>

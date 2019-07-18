@@ -16,6 +16,7 @@ import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -144,6 +145,7 @@ export default function EditWorkHistoryModal(props: Props) {
                 <Option value='0'>男</Option>
                 <Option value='1'>女</Option>
               </Select>
+              {/* <AutoComplete dataSource={['男', '女']} /> */}
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -178,7 +180,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>{' '}
           <Col span={12}>
             <Form.Field label={`年龄`} name='age'>
-              <DatePicker />
+              <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -228,12 +230,12 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`护理年资`} name='nursingSeniority'>
-              <DatePicker />
+              <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`初始学历`} name='initialEducation'>
-              <DatePicker />
+              <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -274,7 +276,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`医院聘用技术职称时间`} name='employNewTiTleDate'>
-              <Input />
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -309,7 +311,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`取得层级时间`} name='nurseHierarchyDate'>
-              <Input />
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>

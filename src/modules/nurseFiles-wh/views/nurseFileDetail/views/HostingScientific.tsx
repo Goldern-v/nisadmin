@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditPersonWinningModal from '../modal/EditPersonWinningModal'
+import EditHostingScientificModal from '../modal/EditHostingScientificModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
-  const editPersonWinningModal = createModal(EditPersonWinningModal)
+  const editHostingScientificModal = createModal(EditHostingScientificModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editPersonWinningModal.show({ signShow: '添加' })
+      onClick: () => editHostingScientificModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,30 +35,79 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '获奖名称',
-      dataIndex: 'winningName',
-      key: 'winningName',
+      title: '主持课题名称',
+      dataIndex: 'name',
+      key: 'name',
       width: 120,
       align: 'center'
     },
     {
-      title: '获奖类别',
-      dataIndex: 'winningType',
-      key: 'winningType',
+      title: '课题来源',
+      dataIndex: 'source',
+      key: 'source',
       width: 90,
       align: 'center'
     },
     {
-      title: '获奖级别',
-      dataIndex: 'winningLevel',
-      key: 'winningLevel',
+      title: '课题级别',
+      dataIndex: 'level',
+      key: 'level',
       width: 90,
       align: 'center'
     },
     {
-      title: '获奖年份',
-      dataIndex: 'winningYear',
-      key: 'winningYear',
+      title: '承担单位',
+      dataIndex: 'unit',
+      key: 'unit',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '课题批文号',
+      dataIndex: 'approvalNumber',
+      key: 'approvalNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '登记号',
+      dataIndex: 'registerNumber',
+      key: 'registerNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '开始时间',
+      dataIndex: 'startDate',
+      key: 'startDate',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'endDate',
+      key: 'endDate',
+      width: 90,
+      align: 'center'
+    },
+    // {
+    //   title: '起止年限',
+    //   dataIndex: 'winningYear',
+    //   key: 'winningYear',
+    //   width: 90,
+    //   align: 'center'
+    // },
+    {
+      title: '完成情况',
+      dataIndex: 'completion',
+      key: 'completion',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '立项/结题/验收/鉴定时间',
+      dataIndex: 'completionDate',
+      key: 'completionDate',
       width: 90,
       align: 'center'
     },
@@ -91,7 +140,7 @@ export default observer(function PersonWinning() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editPersonWinningModal.show({ data: row, signShow: '修改' })
+                  editHostingScientificModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -105,16 +154,28 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHPersonWinning',
+                  type: 'nurseWHHostScienceCourse',
                   title: '审核文章',
                   tableFormat: [
                     {
-                      获奖名称: `winningName`,
-                      获奖类别: `winningType`
+                      主持课题名称: `name`,
+                      课题来源: `source`
                     },
                     {
-                      获奖级别: `winningLevel`,
-                      获奖年份: `winningYear`
+                      课题级别: `level`,
+                      承担单位: `unit`
+                    },
+                    {
+                      课题批文号: `approvalNumber`,
+                      登记号: `registerNumber`
+                    },
+                    {
+                      开始时间: `startDate`,
+                      结束时间: `endDate`
+                    },
+                    {
+                      完成情况: `completion`,
+                      '立项/结题/验收/鉴定时间': `completionDate`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -137,7 +198,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHPersonWinning(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHHostScienceCourse(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -146,9 +207,9 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='个人获奖' btnList={btnList}>
+    <BaseLayout title='主持科研课题' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editPersonWinningModal.Component getTableData={getTableData} />
+      <editHostingScientificModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

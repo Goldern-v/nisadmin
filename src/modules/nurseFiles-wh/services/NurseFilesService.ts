@@ -306,10 +306,50 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
-  // 2-2 个人获奖新增或更新(护士)
+  // 2-2 个人获奖新增或更新(网页护长)
   public async nurseWHPersonWinningSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHPersonWinning/saveOrUpdate`, obj)
   }
+  // 外出进修
+  // 4-1 外出进修-列表(护长)
+  public async nurseWHOutStudy(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHOutStudy/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  //4-2 外出进修新增或更新(网页护长)
+  public async nurseWHOutStudySaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHOutStudy/saveOrUpdate`, obj)
+  }
+  // 主持科研课题
+  // 5-1 主持科研课题-列表(护长)
+  public async nurseWHHostScienceCourse(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHHostScienceCourse/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  // 5-2 主持科研课题新增或更新(网页护长)
+  public async nurseWHHostScienceCourseSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHHostScienceCourse/saveOrUpdate`, obj)
+  }
+  //7 科研课题成果
+  //7-1 科研课题成果-列表(护长)
+  public async nurseWHScienceResult(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHScienceResult/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+// 7-2 科研课题成果新增或更新(网页护长)
+  public async nurseWHScienceResultSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHScienceResult/saveOrUpdate`, obj)
+  }
+ 
 }
 
 export const nurseFilesService = new NurseFilesService()

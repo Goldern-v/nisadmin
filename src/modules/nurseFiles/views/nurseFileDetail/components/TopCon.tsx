@@ -7,6 +7,7 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
 import DeptChangeModal from '../modal/DeptChangeModal'
+import LeaveModal from '../modal/LeaveModal'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import qs from 'qs'
 export interface Props extends RouteComponentProps {}
@@ -17,17 +18,25 @@ const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
 
 const WARNNING_ICON = require('../../../images/注意.png')
 
-export default observer(function TopCon () {
+export default observer(function TopCon() {
   const deptChangeModal = createModal(DeptChangeModal)
+  const leaveModal = createModal(LeaveModal)
   let history = store.appStore.history
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
 
+  const openLeaveModalModal = () => {
+    leaveModal.show({
+      info: appStore.queryObj,
+      callback: refreshNursingInfo
+    })
+  }
   const openDeptChangeModal = () => {
     deptChangeModal.show({
       info: appStore.queryObj,
       callback: refreshNursingInfo
     })
   }
+
   /** 更新护士信息 */
   const refreshNursingInfo = () => {
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
@@ -49,7 +58,9 @@ export default observer(function TopCon () {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-      <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn>
+      {appStore.isDev && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>}
+
+      <DeptChangeBtn2 onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn2>
       {nurseFileDetailViewModal.badgeTotal ? (
         <Tip>
           <img src={WARNNING_ICON} alt='' />
@@ -66,6 +77,7 @@ export default observer(function TopCon () {
         // <Tip>你没有待审核的信息</Tip>
       )}
       <deptChangeModal.Component />
+      <leaveModal.Component />
     </Wrapper>
   )
 })
@@ -136,7 +148,12 @@ const ClickSpan = styled.span`
   border-bottom: 1px solid #5472c4;
 `
 
-const DeptChangeBtn = styled(Button)`
+const DeptChangeBtn1 = styled(Button)`
+  position: absolute !important;
+  right: 120px;
+  top: 34px;
+`
+const DeptChangeBtn2 = styled(Button)`
   position: absolute !important;
   right: 20px;
   top: 34px;

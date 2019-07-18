@@ -12,7 +12,7 @@ const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
 
 const WARNNING_ICON = require('../../../images/注意.png')
 
-export default observer(function TopCon () {
+export default observer(function TopCon() {
   let history = store.appStore.history
   let query = store.appStore.query
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
