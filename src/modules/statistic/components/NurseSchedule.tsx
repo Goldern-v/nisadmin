@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 // import { string } from 'prop-types'
 
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  
   // let columns: Array<{
   //   title: string
   //   width?: number
@@ -14,7 +14,7 @@ export default function BedSituation () {
   // }>
 
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return <Con>ss</Con>
 }

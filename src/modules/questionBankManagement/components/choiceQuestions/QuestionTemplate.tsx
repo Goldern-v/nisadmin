@@ -4,9 +4,9 @@ import { RouteComponentProps } from 'react-router'
 export interface Props extends RouteComponentProps {}
 
 export default function QuestionTemplate() {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <Wrapper>

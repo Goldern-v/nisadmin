@@ -35,8 +35,7 @@ interface BtnType {
   onClick?: (e: any) => void
 }
 
-export default function BaseLayout (props: Props) {
-  const [count, setCount] = useState(0)
+export default function BaseLayout(props: Props) {
   const [monthStart, setMonthStart] = useState(() => {
     let date = new Date()
     let firstDay = date.setDate(1)
@@ -46,14 +45,12 @@ export default function BaseLayout (props: Props) {
     return new Date()
   })
 
-  useEffect(() => {
-    console.log(count, setCount, monthStart, setMonthStart, defaultEndTime, setdefaultEndTime)
-  }, [])
+  useEffect(() => {}, [])
   let { title, btnList } = props
   //
   let getInputElements = (item: BtnType, gindex: any) => {
     // switch (item.type) {
-    console.log('getInputElements', item)
+
     if (item.type === 'button') {
       return (
         <Button

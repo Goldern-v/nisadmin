@@ -22,7 +22,7 @@ import AddScheduleNursingModal from '../../modal/AddScheduleNursingModal'
 export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
-  const [count, setCount] = useState(0)
+  
   const [userList, setUserList] = useState(new Array())
   const [loading, setLoading] = useState(false)
 
@@ -40,7 +40,7 @@ export default function MainBox() {
       title: '列入排班',
       dataIndex: 'rangeShow',
       key: '是否排班',
-      width: 50,
+      width: 100,
       render: (text: any, record: any, index: any) =>
         record.id ? (
           <span>
@@ -149,7 +149,7 @@ export default function MainBox() {
     getUserList()
 
     //
-    console.log(count, setCount)
+    
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   emitter.removeAllListeners('获取选中人员列表')
@@ -198,7 +198,7 @@ export default function MainBox() {
   /** 拖拽start */
 
   const moveRow = (dragIndex: number, hoverIndex: number) => {
-    console.log(dragIndex, hoverIndex, 'hoverIndexhoverIndexhoverIndex')
+
     const dragRow = userList[dragIndex]
     setUserList(
       update(userList, {
@@ -218,10 +218,11 @@ export default function MainBox() {
         columns={columns}
         dataSource={userList}
         pagination={false}
-        surplusHeight={190}
+        surplusHeight={232}
         loading={loading}
         moveRow={moveRow}
         type={['diagRow', 'spaceRow']}
+        fixedFooter={true}
         footer={() => (
           <span>
             <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />

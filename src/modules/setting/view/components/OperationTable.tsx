@@ -31,8 +31,8 @@ class EditableTable extends React.Component<any, any> {
       loadingTable: false,
       total: 0,
       pageSize: 10,
-      pageIndex: 1 ,// 当前页数
-      confirmLoading: false,
+      pageIndex: 1, // 当前页数
+      confirmLoading: false
     }
     this.columns = [
       {
@@ -273,7 +273,7 @@ class EditableTable extends React.Component<any, any> {
       message.warning('保存前请将每一项信息填写完整')
       return
     }
-    this.setState({confirmLoading: true})
+    this.setState({ confirmLoading: true })
     let postData = {}
     // 修改入参
     if (this.state.type === 0) {
@@ -306,7 +306,7 @@ class EditableTable extends React.Component<any, any> {
     }
     service.healthyApiService.preservationPushType1(postData).then((res) => {
       if (res) {
-        this.setState({confirmLoading: false})
+        this.setState({ confirmLoading: false })
         message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
         this.getMealList(null, null)
         this.setState({ editingKey: false })
@@ -317,12 +317,10 @@ class EditableTable extends React.Component<any, any> {
   public onChangePagination(page: any, pageSize: any) {
     this.setState({ pageIndex: page })
     this.getMealList(page, pageSize)
-    console.log(page, pageSize, '11111')
   }
   public onShowSizeChange(current: any, size: any) {
     this.setState({ pageSize: size })
     this.getMealList(current, size)
-    console.log(current, size, '22222')
   }
 
   public render() {

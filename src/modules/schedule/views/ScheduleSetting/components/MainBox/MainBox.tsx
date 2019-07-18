@@ -194,7 +194,7 @@ export default function MainBox(props: Props) {
   emitter.addListener('同步排班人员', () => {
     confirm({
       title: '提示',
-      content: '刷新人员可能会丢失本周排班表，如未保存，请先保存后再刷新',
+      content: '同步排班人员可能会丢失本周排班表，如未保存，请先保存后再同步',
       onOk() {
         setTableLoading(true)
         getSchedule(true)
@@ -395,14 +395,14 @@ export default function MainBox(props: Props) {
     },
     {
       title: '层级',
-      dataIndex: 'currentLevel',
-      key: 'currentLevel',
+      dataIndex: 'nurseHierarchy',
+      key: 'nurseHierarchy',
       width: '5%'
     },
     {
       title: '职称',
-      dataIndex: 'title',
-      key: 'title',
+      dataIndex: 'newTitle',
+      key: 'newTitle',
       width: '8%'
     },
     {
@@ -499,14 +499,14 @@ export default function MainBox(props: Props) {
     },
     {
       title: '层级',
-      dataIndex: 'currentLevel',
-      key: 'currentLevel',
+      dataIndex: 'nurseHierarchy',
+      key: 'nurseHierarchy',
       width: '5%'
     },
     {
       title: '职称',
-      dataIndex: 'title',
-      key: 'title',
+      dataIndex: 'newTitle',
+      key: 'newTitle',
       width: '6%'
     },
     {
@@ -799,7 +799,10 @@ export default function MainBox(props: Props) {
         title: nurse.title || '',
         remark: nurse.remark || '',
         thisWeekHour: nurse.thisWeekHour || '',
-        status: nurse.status
+        status: nurse.status,
+        newTitle: nurse.newTitle || '',
+        sortValue: nurse.sortValue || '',
+        nurseHierarchy: nurse.nurseHierarchy || ''
       }
 
       Object.assign(tr, backFill(nurse.settingDtos, scheduleStore.getWeeks().length))
@@ -1263,11 +1266,11 @@ const Wrapper = styled.div`
   td {
     text-align: center !important;
     padding: 0px !important;
-    &:focus-within {
+    /* &:focus-within {
       outline: 1px solid green !important;
       background: yellow;
       color: black !important;
-    }
+    } */
   }
 
   .input-con {

@@ -10,14 +10,14 @@ import emitter from 'src/libs/ev'
 import { Button, message } from 'antd'
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation () {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
 
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
+  
   }
   function searchButtonClick () {
     emitter.emit('护士白班统计')
@@ -33,7 +33,7 @@ export default function BedSituation () {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
-    console.log('fileDownload', res)
+
     if (res.data.type.indexOf('excel') > -1) {
       let a = document.createElement('a')
       let href = window.URL.createObjectURL(blob) // 创建链接对象

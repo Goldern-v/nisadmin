@@ -26,7 +26,6 @@ export default observer(function SelectCon(props: any, context: any) {
     nurseFilesListViewModel.loadNursingList()
   }
   const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value, 'e.target.value')
     nurseFilesListViewModel.filterText = e.target.value
   }
 

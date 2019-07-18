@@ -10,7 +10,7 @@ import { Button } from 'antd'
 export interface Props {
   userTotal: number
 }
-export default observer(function BedSituation (props: Props) {
+export default observer(function BedSituation(props: Props) {
   const [byIndexInfo, setByIndexInfo]: any = useState({
     // 副护士长: 0,
     // 护士长: 0,
@@ -60,8 +60,7 @@ export default observer(function BedSituation (props: Props) {
           unitArr.splice(i, 1)
         }
       }
-      console.log('getArr666666666666666666666', getArr)
-      console.log('----------------------------------')
+
       setjobArr(unitArr)
       // let data = getArr.map((item: any) => {
       //   // if (item !== 'userTotal') {

@@ -14,11 +14,11 @@ import { DrawerLayoutAndroidBase } from 'react-native'
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
 let signData22: any = [{}]
-export default observer(function MissionToday () {
+export default observer(function MissionToday() {
   const [dataSource, setDataSource] = useState([])
   // let MidConRef: any = React.createRef()
   useEffect(() => {
-    // console.log(count, setCount)
+    //
     const postData = {
       wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
       startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
@@ -62,7 +62,6 @@ export default observer(function MissionToday () {
     if (authStore.selectedDeptCode) {
       HomeApi.todayTask(postData)
         .then((res) => {
-          console.log('===MissionToday', res)
           if (res.data) {
             let cacheData = res.data
             for (let i = 0; i < cacheData.length; i++) {

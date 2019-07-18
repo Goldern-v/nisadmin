@@ -25,7 +25,7 @@ export default function BaseChart(props: Props) {
       ...obj
     })
   }
-  console.log(sourceData, 'sourceData')
+
   const dv = new DataSet.View().source(sourceData)
   dv.transform({
     type: 'fold',
@@ -39,7 +39,6 @@ export default function BaseChart(props: Props) {
     return item
   })
   data = data.filter((item: any) => item.key !== '合计')
-  console.log(data, 'data')
 
   /** 字典项转换 */
 

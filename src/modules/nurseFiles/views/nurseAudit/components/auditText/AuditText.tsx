@@ -10,7 +10,7 @@ interface Props {
 
 export default function AuditText (props: Props) {
   let { row, getTableData } = props
-  const [count, setCount] = useState(0)
+  
 
   return props.needAudit ? (
     <Wrapper onClick={() => Format(row, getTableData)}>审核</Wrapper>

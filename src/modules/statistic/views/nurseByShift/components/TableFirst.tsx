@@ -7,7 +7,7 @@ import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { Button } from 'antd'
 
 export default function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   const [getShiftClass, setGetShiftClass] = useState(['A班', 'P班', 'N班', '休假', '进修学习', '其它'])
   const [getCheckboxItem, setGetCheckboxItem] = useState([])
   const [getTableList, setGetTableList]: any = useState([])
@@ -81,7 +81,7 @@ export default function BedSituation () {
   }, [])
   emitter.removeAllListeners('护士排班按班次')
   emitter.addListener('护士排班按班次', () => {
-    console.log(555555)
+    
     postNurseByShiftViewMethod()
   })
   function trClickChange (e: any) {

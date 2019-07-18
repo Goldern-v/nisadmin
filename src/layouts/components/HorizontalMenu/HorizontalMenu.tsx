@@ -36,12 +36,10 @@ const test = [
   }
 ]
 
-export default function HorizontalMenu (props: Props) {
-  const [count, setCount] = useState(0)
+export default function HorizontalMenu(props: Props) {
+  
   useEffect(() => {})
-  const handleClick = (e: any) => {
-    console.log('click ', e)
-  }
+  const handleClick = (e: any) => {}
   return (
     <Wrapper>
       <Menu

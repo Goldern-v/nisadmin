@@ -319,7 +319,7 @@ export default observer(function TableView() {
   const getTableData = (other?: any) => {
     other = other || {};
     let newQuey = Object.assign({}, other);
-    console.log('getTableData', newQuey)
+
     setLoading(true);
     setTimeout(() => {
       setLoading(false);

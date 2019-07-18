@@ -30,7 +30,7 @@ interface BtnType {
 // const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
 // const WARNNING_ICON = require('../../../images/注意.png')
 
-export default function TopCon (props: Props) {
+export default function TopCon(props: Props) {
   let history = store.appStore.history
 
   // console.log('history', history, history.location.pathname)
@@ -38,7 +38,7 @@ export default function TopCon (props: Props) {
   //
   let getInputElements = (item: BtnType, gindex: any) => {
     // switch (item.type) {
-    console.log('getInputElements', item)
+
     if (item.type === 'button') {
       return (
         <Button

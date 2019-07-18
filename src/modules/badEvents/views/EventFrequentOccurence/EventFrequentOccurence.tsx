@@ -12,7 +12,7 @@ import { Radio } from 'antd'
 import BaseChart from 'src/modules/indicator/components/BaseChart'
 import moment from 'moment'
 export interface Props extends RouteComponentProps {}
-export default observer(function EventReport (props: Props) {
+export default observer(function EventReport(props: Props) {
   // const editAwardsModal = createModal(EditAwardsModal)
   const [btnList, setBtnList] = useState([
     {
@@ -189,13 +189,11 @@ export default observer(function EventReport (props: Props) {
         newList.push(newData)
       }
     }
-    console.log('genEmptyTable', newList)
   }
 
-  const [count, setCount] = useState(0)
   let [showType, setShowType] = useState('详情')
   useEffect(() => {
-    // console.log(count, setCount)
+    //
     // genEmptyTable(dataSource)
     // setTableSource(dataSource)
   }, [])

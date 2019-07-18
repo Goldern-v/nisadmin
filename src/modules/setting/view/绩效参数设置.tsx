@@ -21,9 +21,9 @@ const TABS_LIST = [
   }
 ]
 export default function BedSituation () {
-  // const [count, setCount] = useState(0)
+  // 
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   return (
     // <div>

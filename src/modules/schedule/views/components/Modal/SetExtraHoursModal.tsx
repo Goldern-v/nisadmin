@@ -34,7 +34,6 @@ export default function SetExtraHoursModal(props: Props) {
   emitter.removeAllListeners('关闭设置工时弹框')
 
   emitter.addListener('打开设置工时弹框', (config: any) => {
-    console.log(config, 'config')
     setConfig(config)
     setInputValue(config.obj.EffectiveTime)
     emitter.emit('根据班次code获取班次详情', config.obj.Name, (shiftItem: any) => {

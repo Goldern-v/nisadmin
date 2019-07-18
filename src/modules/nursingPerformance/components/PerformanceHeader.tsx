@@ -7,15 +7,14 @@ import DeptSelect from 'src/components/DeptSelect'
 import { Button } from 'antd'
 // import { observer } from 'mobx-react-lite'
 
-export default function BedSituation () {
-  // const [count, setCount] = useState(0)
+export default function BedSituation() {
+  //
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //
   // })
 
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
   }
   return (
     <Con>

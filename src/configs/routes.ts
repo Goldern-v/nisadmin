@@ -45,6 +45,8 @@ import LmsDetails from 'src/modules/lms/views/LmsDetails'
 
 //护理制度
 import NursingRules from 'src/modules/nursingRules/NursingRules'
+import NursingRulesTypeIndexSetting from 'src/modules/nursingRules/NursingRulesTypeIndexSetting'
+import NursingRulesTypeSetting from 'src/modules/nursingRules/NursingRulesTypeSetting'
 //健康宣教
 //import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
 import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaEdit'
@@ -61,6 +63,8 @@ import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Ma
 // 护理质量
 import QualityView from 'src/modules/quality/QualityView'
 import QualityControlRecordDetail from 'src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail.tsx'
+import QualityAnalysisEdit from 'src/modules/quality/views/analysis/AnalysisEdit'
+import QualityAnalysisDetail from 'src/modules/quality/views/analysis/AnalysisDetail'
 import { nurseFileModule } from './routerConfig/nurseFileModule'
 
 const routes: RouteItem[] = [
@@ -127,6 +131,14 @@ const routes: RouteItem[] = [
   },
   setLayout('/setting/:name', SettingView, layouts.MainLayout),
   setLayout('/nursingRules', NursingRules, layouts.MainLayout),
+  setLayout('/nursingRulesTypeSetting', NursingRulesTypeSetting, layouts.BreadcrumbLayout, [
+    { name: '护理制度建设', link: '/nursingRules' },
+    { name: '类型设置', link: '' }
+  ]),
+  setLayout('/nursingRulesTypeIndexSetting', NursingRulesTypeIndexSetting, layouts.BreadcrumbLayout, [
+    { name: '护理制度建设', link: '/nursingRules' },
+    { name: '目录设置', link: '' }
+  ]),
   //setLayout('/healthPropagandaView/:id', HealthPropagandaView),
   setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
   setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
@@ -141,6 +153,21 @@ const routes: RouteItem[] = [
   // 护理质量
   setLayout('/quality/:name', QualityView, layouts.MainLayout),
   setLayout('/qualityControlRecordDetail/:type', QualityControlRecordDetail, layouts.MainLayout),
+  setLayout('/qualityAnalysisDetail/:id', QualityAnalysisDetail, layouts.BreadcrumbLayout, [
+    { name: '护理质量', link: '/quality' },
+    { name: '分析报告', link: '/quality/analysis' },
+    { name: '报告详情', link: '' }
+  ]),
+  setLayout('/qualityAnalysisEdit/:id', QualityAnalysisEdit, layouts.BreadcrumbLayout, [
+    { name: '护理质量', link: '/quality' },
+    { name: '分析报告', link: '/quality/analysis' },
+    { name: '编辑分析报告', link: '' }
+  ]),
+  setLayout('/qualityAnalysisEdit', QualityAnalysisEdit, layouts.BreadcrumbLayout, [
+    { name: '护理质量', link: '/quality' },
+    { name: '分析报告', link: '/quality/analysis' },
+    { name: '创建分析报告', link: '' }
+  ]),
   {
     path: '/continuingEdu',
     redirect: '/continuingEdu/人员管理'

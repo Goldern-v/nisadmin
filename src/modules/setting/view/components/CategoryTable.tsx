@@ -39,7 +39,7 @@ export default function AuditsTableDHSZ (props: Props) {
   }
 
   const handleDelete = (record:any) => {
-    console.log(record, '///')
+    
     Modal.confirm({
       title: '提示',
       content: '是否删除该推送宣教?',

@@ -40,7 +40,6 @@ export default function ToolBar() {
       }
       // 根据部门代码获取科室代码列表
       service.commonApiService.getUintList().then((res) => {
-        console.log('更新科室列表', res)
         if (!res) {
           return
         }
@@ -150,13 +149,11 @@ export default function ToolBar() {
           service.schedulingApiService
             .export(postData)
             .then((res) => {
-              console.log(res, '接收excel')
               fileDownload(res)
             })
             .catch((err) => {
               console.log(err, '接收excel:err')
             })
-          console.log(e)
         }}
       >
         导出Excel

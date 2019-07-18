@@ -9,14 +9,12 @@ import PerformanceMidInput from './components/PerformanceMidInput'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 import { authStore } from 'src/stores/index'
 import { observer } from 'mobx-react-lite'
-export default observer(function NursingPerformance (props: Props) {
-  // const [count, setCount] = useState(0)
+export default observer(function NursingPerformance(props: Props) {
+  //
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //
   // })
-  useEffect(() => {
-    console.log(props)
-  }, [props.match.params.name])
+  useEffect(() => {}, [props.match.params.name])
   let currentRouteName = props.match.params.name
   return (
     <Con>

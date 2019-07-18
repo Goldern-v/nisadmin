@@ -13,9 +13,9 @@ export interface Props {
 }
 
 export default function LeftMenu(props: Props) {
-  const [count, setCount] = useState(0)
+  
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   const handleSelect = (e: any) => {
     appStore.history.push(e.key)

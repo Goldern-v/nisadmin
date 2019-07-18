@@ -20,7 +20,7 @@ export interface Props {
 // const BG = require('../../../images/侧边背景.png')
 let type = ''
 
-export default function LeftMenu (props: Props) {
+export default function LeftMenu(props: Props) {
   let history = appStore.history
   // let {
   //   path,
@@ -57,7 +57,6 @@ export default function LeftMenu (props: Props) {
             className={isActive}
             key={'LI' + item.name + item.type}
             onClick={() => {
-              console.log(item.type)
               history.push({ pathname: '/badEvents/' + item.type, state: { type: item.type } })
               // history.push('/badEvents/' + item.type + `?${appStore.query}`)
             }}

@@ -146,7 +146,7 @@ class EditableTable extends React.Component<any, any> {
   
   //添加和修改
   public getSelectData = (record: any, value: number) => {
-    console.log(record, 'record')
+ 
     // 如果是添加 则清空数据
     if (value === 1) {
       this.setState({ missionId: undefined })
@@ -288,12 +288,12 @@ class EditableTable extends React.Component<any, any> {
   public onChangePagination(page: any, pageSize: any) {
     this.setState({ pageIndex: page })
     this.getMealList(page, pageSize)
-    console.log(page, pageSize, '11111')
+ 
   }
   public onShowSizeChange(current: any, size: any) {
     this.setState({ pageSize: size })
     this.getMealList(current, size)
-    console.log(current, size, '22222')
+ 
   }
 
   public render() {

@@ -21,12 +21,12 @@ import { scheduleStore, appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function ToolBar() {
-  const [count, setCount] = useState(0)
+  
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    console.log(count, setCount)
+    
 
     emitter.removeAllListeners('弹窗编辑排班套餐')
     emitter.removeAllListeners('获取排班列表')

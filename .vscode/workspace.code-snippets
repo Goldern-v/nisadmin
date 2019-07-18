@@ -70,8 +70,8 @@
       "export interface Props extends RouteComponentProps {} ",
       "",
       "export default function ${1:${TM_FILENAME_BASE}} () {",
-      "const [count, setCount] = useState(0)",
-      "useEffect(() => { console.log(count, setCount)})",
+      "",
+      "useEffect(() => { })",
       "return <Wrapper>{count}</Wrapper>",
       "}",
       "const Wrapper = styled.div``"

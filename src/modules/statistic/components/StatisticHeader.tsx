@@ -5,17 +5,13 @@ import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData.tsx'
 import { Button } from 'antd'
 // import { observer } from 'mobx-react-lite'
-export default function BedSituation () {
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    console.log(count, setCount)
-  })
+export default function BedSituation() {
+  useEffect(() => {})
 
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
-    console.log(value)
   }
-  function searchButtonClick () {}
+  function searchButtonClick() {}
   return (
     <Con>
       <DeptSelect onChange={onChange} />

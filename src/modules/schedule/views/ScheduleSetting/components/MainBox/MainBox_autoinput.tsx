@@ -41,8 +41,7 @@ const Option = AutoComplete.Option
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-export default function MainBox () {
-  const [count, setCount] = useState(0)
+export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(true)
   // const [rowSelection, setRowSelection] = useState(new Object())
   const [mealList, setMealList] = useState(new Array())
@@ -58,7 +57,7 @@ export default function MainBox () {
 
   const countWorkHours = (record: any, target: any = null) => {
     // shiftListData  effectiveTime
-    console.log('countWorkHours', record, shiftListData)
+
     let result = 0
     let shift: any = new Object()
     for (const key in record) {
@@ -473,23 +472,6 @@ export default function MainBox () {
     })
 
     //
-
-    //
-    console.log(
-      count,
-      setCount,
-      setTableList,
-      shiftList,
-      setShiftList,
-      shiftUserList,
-      setShiftUserList,
-      mealList,
-      setMealList,
-      shiftTableData,
-      setShiftTableData
-      // rowSelection,
-      // setRowSelection
-    )
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   const updateTableUI = (isEmpty: boolean = false, isPublish: boolean = false) => {
@@ -586,13 +568,13 @@ export default function MainBox () {
           oneUser = new Object()
           for (const key in data) {
             if (data.hasOwnProperty(key) && oneObj.hasOwnProperty(key)) {
-              (oneUser as any)[key] = oneObj[key]
+              ;(oneUser as any)[key] = oneObj[key]
             }
             if (key === 'id') {
-              (oneUser as any).key = oneObj[key]
+              ;(oneUser as any).key = oneObj[key]
             }
           }
-          (allUser as any).push(oneUser)
+          ;(allUser as any).push(oneUser)
           // selectedRowsArray.push(oneUser)
         })
 

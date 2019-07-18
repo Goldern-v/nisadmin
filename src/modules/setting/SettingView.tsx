@@ -114,10 +114,7 @@ export default function SettingView(props: Props) {
   // let currentType = appStore.match.params.type
   // let currentRoute = getCurrentRoute(currentType)
 
-  useEffect(() => {
-    console.log(props)
-    console.log(currentRoute)
-  }, [props.match.params.name])
+  useEffect(() => {}, [props.match.params.name])
   let currentRoutePath = props.match.url || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
