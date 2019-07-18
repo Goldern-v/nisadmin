@@ -164,7 +164,7 @@ export default observer(function Patent() {
   }, [])
 
   return (
-    <BaseLayout title='所获奖励' btnList={btnList}>
+    <BaseLayout title='专利' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
       <editPatentModal.Component getTableData={getTableData} />
     </BaseLayout>

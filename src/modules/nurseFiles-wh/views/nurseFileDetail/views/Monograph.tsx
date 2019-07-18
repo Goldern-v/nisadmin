@@ -156,7 +156,7 @@ export default observer(function Monograph() {
   }, [])
 
   return (
-    <BaseLayout title='所获奖励' btnList={btnList}>
+    <BaseLayout title='专著' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
       <editMonographModal.Component getTableData={getTableData} />
     </BaseLayout>

@@ -30,6 +30,10 @@ export default class CommonApiService extends BaseApiService {
   public dictInfo(code: string) {
     return this.post(`/dept/dictInfo`, this.stringify({ code }))
   }
+  /** 批量获取字典 */
+  public multiDictInfo(codeList: string[]) {
+    return this.post(`/dept/multiDictInfo`, this.stringify(codeList))
+  }
 
   /** 根据科室获取人员列表 */
   public groupByDeptInDeptList(deptCode?: string, keyword?: String) {

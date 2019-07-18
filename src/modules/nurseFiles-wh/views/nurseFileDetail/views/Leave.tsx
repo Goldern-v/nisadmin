@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles-wh/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditArticleModal from '../modal/EditArticleModal'
+import EditLeaveModal from '../modal/EditLeaveModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function Awards() {
-  const editArticleModal = createModal(EditArticleModal)
+export default observer(function Leave() {
+  const editLeaveModal = createModal(EditLeaveModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editArticleModal.show({ signShow: '添加' })
+      onClick: () => editLeaveModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,58 +35,51 @@ export default observer(function Awards() {
       width: 55
     },
     {
-      title: '发表年份',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
+      title: '职称',
+      dataIndex: 'title',
+      key: 'title',
       width: 120,
       align: 'center'
     },
     {
-      title: '杂志名称',
-      dataIndex: 'magazineName',
-      key: 'magazineName',
+      title: '学历',
+      dataIndex: 'education',
+      key: 'education',
       width: 90,
       align: 'center'
     },
     {
-      title: '文章名称',
-      dataIndex: 'articleName',
-      key: 'articleName',
+      title: '出生日期',
+      dataIndex: 'birthday',
+      key: 'birthday',
       width: 90,
       align: 'center'
     },
     {
-      title: '期刊号',
-      dataIndex: 'periodicalNumber',
-      key: 'periodicalNumber',
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age',
       width: 90,
       align: 'center'
     },
     {
-      title: '卷号',
-      dataIndex: 'volumeNumber',
-      key: 'volumeNumber',
+      title: '取得护士执业资格证书时间并从事护理岗位时间',
+      dataIndex: 'zyzsDate',
+      key: 'zyzsDate',
       width: 90,
       align: 'center'
     },
     {
-      title: '起止页码',
-      dataIndex: 'pageNumber',
-      key: 'pageNumber',
+      title: '离职时间',
+      dataIndex: 'leaveDate',
+      key: 'leaveDate',
       width: 90,
       align: 'center'
     },
     {
-      title: '文章类别',
-      dataIndex: 'articleType',
-      key: 'articleType',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '影响因子',
-      dataIndex: 'influencingFactors',
-      key: 'influencingFactors',
+      title: '层级',
+      dataIndex: 'hierarchy',
+      key: 'hierarchy',
       width: 90,
       align: 'center'
     },
@@ -119,7 +112,7 @@ export default observer(function Awards() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editArticleModal.show({ data: row, signShow: '修改' })
+                  editLeaveModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -133,24 +126,23 @@ export default observer(function Awards() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHArticle',
-                  title: '审核文章',
+                  type: 'nurseWHLeave',
+                  title: '审核离职',
                   tableFormat: [
                     {
-                      发表年份: `publicYear`,
-                      杂志名称: `magazineName`
+                      职称: `title`,
+                      学历: `education`
                     },
                     {
-                      文章名称: `articleName`,
-                      期刊号: `periodicalNumber`
+                      出生日期: `birthday`,
+                      年龄: `age`
                     },
                     {
-                      卷号: `volumeNumber`,
-                      起止页码: `pageNumber`
+                      取得护士执业资格证书时间并从事护理岗位时间: `zyzsDate`,
+                      离职时间: `leaveDate`
                     },
                     {
-                      文章类别: `articleType`,
-                      影响因子: `influencingFactors`
+                      层级: `hierarchy`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -173,7 +165,7 @@ export default observer(function Awards() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHArticle(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHLeave', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -182,9 +174,9 @@ export default observer(function Awards() {
   }, [])
 
   return (
-    <BaseLayout title='文章' btnList={btnList}>
+    <BaseLayout title='离职' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editArticleModal.Component getTableData={getTableData} />
+      <editLeaveModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

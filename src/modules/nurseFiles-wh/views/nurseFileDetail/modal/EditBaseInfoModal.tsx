@@ -24,23 +24,15 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const uploadCard = () => Promise.resolve('123')
-// const rules: Rules = {
-//   empName: (val) => !!val || '请填写姓名',
-//   empNo: (val) => !!val || '请填写工号',
-//   sex: (val) => !!val || '请填写性别',
-//   nation: (val) => !!val || '请填写民族',
-//   birthday: (val) => !!val || '请选择出生日期',
-//   age: (val) => !!val || '请填写年龄',
-//   nativePlace: (val) => !!val || '',
-//   post: (val) => !!val || '',
-//   goWorkTime: (val) => !!val || '',
-//   highestEducation: (val) => !!val || '最高学历',
-//   zyzsNumber: (val) => !!val || '',
-//   cardNumber: (val) => !!val || '',
-//   socialGroup: (val) => !!val || '社会团体职务',
-//   phone: (val) => !!val || '',
-//   address: (val) => !!val || ''
-// }
+const rules: Rules = {
+  cardNumber: (val: any) => {
+    if (val && val.length != 18) {
+      return '身份证格式不正确'
+    } else {
+      return true
+    }
+  }
+}
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
@@ -132,7 +124,7 @@ export default function EditWorkHistoryModal(props: Props) {
       okText='保存'
       forceRender
     >
-      <Form ref={refForm} labelWidth={200} onChange={onFieldChange} rules={{}}>
+      <Form ref={refForm} labelWidth={200} onChange={onFieldChange} rules={rules}>
         <Row>
           <Col span={12}>
             <Form.Field label={`姓名`} name='empName'>
@@ -270,7 +262,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`考取技术职称时间`} name='socialGroup'>
+            <Form.Field label={`考取技术职称时间`} name='winNewTiTleDate'>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -291,7 +283,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`转编时间`} name='conversionDate'>
-              <Input />
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -323,13 +315,16 @@ export default function EditWorkHistoryModal(props: Props) {
         <Row>
           <Col span={12}>
             <Form.Field label={`添加个人头像`} name='nearImageUrl'>
-              <ImageUploader upload={uploadCard} text='添加个人头像' tip={'近期免冠照片或近期工作照片'} />
+              <ImageUploader upload={uploadCard} text='添加个人头像' tip={'上传近照一寸彩色照片'} />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`添加执业证书图片`} name='zyzsUrl'>
               {/* <ImageUploader upload={uploadCard} text='添加执业证书图片' /> */}
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader
+                text='添加图片'
+                tip={'上传执业资格证书图片，从第一个卫生部盖章页至最末次延续注册盖章页至'}
+              />
             </Form.Field>
           </Col>
         </Row>

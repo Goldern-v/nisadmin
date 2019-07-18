@@ -23,6 +23,7 @@ import Patent from './views/Patent'
 import LearnJob from './views/LearnJob'
 import ScientificResearch from './views/ScientificResearch'
 import Monograph from './views/Monograph'
+import Leave from './views/Leave'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -65,7 +66,7 @@ const ROUTE_LIST = [
   {
     type: 'ToNewPost',
     component: ToNewPost,
-    name: '转岗',
+    name: '转岗'
   },
   {
     /** 方明处理 */
@@ -102,6 +103,11 @@ const ROUTE_LIST = [
     type: 'monograph',
     component: Monograph,
     name: '专著'
+  },
+  {
+    type: 'Leave',
+    component: Leave,
+    name: '离职'
   }
 ]
 
