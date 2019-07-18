@@ -86,7 +86,7 @@ export default function EditSpecializNurseModal(props: Props) {
     if (signShow === '修改') {
       setTitle('修改所获奖励')
     } else if (signShow === '添加') {
-      setTitle('添加所获奖励')
+      setTitle('添加专科护士信息')
     }
   }, [visible])
 
