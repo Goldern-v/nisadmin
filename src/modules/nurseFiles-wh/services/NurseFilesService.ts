@@ -266,6 +266,21 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
+
+  /** 专科护士 */
+  public nurseWHSpecializNurse(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHSpecializNurse/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+
+  // 8-1专科护士新增或更新(护士)
+  public async nurseWHSpecializNurseSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHSpecializNurse/saveOrUpdate`, obj)
+  }
+
   // 8-1护士获奖情况新增或更新(网页护长)
   public async nurseWHArticleSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHArticle/saveOrUpdate`, obj)

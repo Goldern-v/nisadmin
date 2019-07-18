@@ -35,65 +35,44 @@ export default observer(function SpecializNurse() {
       width: 55
     },
     {
-      title: '发表年份',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '杂志名称',
-      dataIndex: 'magazineName',
-      key: 'magazineName',
+      title: '专科护士名称',
+      dataIndex: 'nurseName',
+      key: 'nurseName',
       width: 90,
       align: 'center'
     },
     {
-      title: '文章名称',
-      dataIndex: 'articleName',
-      key: 'articleName',
+      title: '发证单位',
+      dataIndex: 'cardUnit',
+      key: 'cardUnit',
       width: 90,
       align: 'center'
     },
     {
-      title: '期刊号',
-      dataIndex: 'periodicalNumber',
-      key: 'periodicalNumber',
+      title: '证书编号',
+      dataIndex: 'cardNumber',
+      key: 'cardNumber',
       width: 90,
       align: 'center'
     },
     {
-      title: '卷号',
-      dataIndex: 'volumeNumber',
-      key: 'volumeNumber',
+      title: '专科护士级别',
+      dataIndex: 'nurseLevel',
+      key: 'nurseLevel',
       width: 90,
       align: 'center'
     },
     {
-      title: '起止页码',
-      dataIndex: 'pageNumber',
-      key: 'pageNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '文章类别',
-      dataIndex: 'articleType',
-      key: 'articleType',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '影响因子',
-      dataIndex: 'influencingFactors',
-      key: 'influencingFactors',
+      title: '发证时间',
+      dataIndex: 'cardNumberDate',
+      key: 'cardNumberDate',
       width: 90,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'fj',
-      key: 'fj',
+      dataIndex: 'urlImageOne',
+      key: 'urlImageOne',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -133,24 +112,19 @@ export default observer(function SpecializNurse() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHArticle',
-                  title: '审核文章',
+                  type: 'nurseWHSpecializNurse',
+                  title: '审核专科护士',
                   tableFormat: [
                     {
-                      发表年份: `publicYear`,
-                      杂志名称: `magazineName`
+                      专科护士名称: `nurseName`,
+                      发证单位: `cardUnit`
                     },
                     {
-                      文章名称: `articleName`,
-                      期刊号: `periodicalNumber`
+                      证书编号: `cardNumber`,
+                      专科护士级别: `nurseLevel`
                     },
                     {
-                      卷号: `volumeNumber`,
-                      起止页码: `pageNumber`
-                    },
-                    {
-                      文章类别: `articleType`,
-                      影响因子: `influencingFactors`
+                      发证时间: `cardNumberDate`,
                     }
                   ],
                   fileData: row.urlImageOne
@@ -173,8 +147,9 @@ export default observer(function SpecializNurse() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHArticle(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHSpecializNurse(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
+      // console.log(res.data,'000000000000')
     })
   }
   useEffect(() => {
