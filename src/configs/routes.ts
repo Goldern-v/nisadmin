@@ -58,7 +58,9 @@ import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
 //继续教育
 import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEduView'
 import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Main'
+// 护理质量
 import QualityView from 'src/modules/quality/QualityView'
+import QualityControlRecordDetail from 'src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail.tsx'
 import { nurseFileModule } from './routerConfig/nurseFileModule'
 
 const routes: RouteItem[] = [
@@ -136,7 +138,9 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/continuingEdu/:pannelName', ContinuingEdu, layouts.MainLayout),
   setLayout('/continuingEduEmpDetail/:pannelName', ContinuingEduEmpDetail, layouts.MainLayout),
+  // 护理质量
   setLayout('/quality/:name', QualityView, layouts.MainLayout),
+  setLayout('/qualityControlRecordDetail/:type', QualityControlRecordDetail, layouts.MainLayout),
   {
     path: '/continuingEdu',
     redirect: '/continuingEdu/人员管理'
@@ -165,6 +169,11 @@ const routes: RouteItem[] = [
     path: '/quality',
     redirect: '/quality/qualityControlRecord'
   },
+  // {
+  //   path: '/QualityControlRecordDetail',
+  //   redirect: '/QualityControlRecordDetail/baseInfo'
+  // },
+
   {
     path: '/',
     redirect: '/home'
