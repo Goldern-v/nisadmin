@@ -22,7 +22,6 @@ import AddScheduleNursingModal from '../../modal/AddScheduleNursingModal'
 export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
-  
   const [userList, setUserList] = useState(new Array())
   const [loading, setLoading] = useState(false)
 
@@ -40,7 +39,7 @@ export default function MainBox() {
       title: '列入排班',
       dataIndex: 'rangeShow',
       key: '是否排班',
-      width: 100,
+      width: 80,
       render: (text: any, record: any, index: any) =>
         record.id ? (
           <span>
@@ -61,7 +60,7 @@ export default function MainBox() {
     {
       title: '所在科室',
       dataIndex: 'deptName',
-      width: 120,
+      width: 180,
       key: 'deptName'
     },
     {
@@ -149,7 +148,6 @@ export default function MainBox() {
     getUserList()
 
     //
-    
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   emitter.removeAllListeners('获取选中人员列表')
@@ -198,7 +196,6 @@ export default function MainBox() {
   /** 拖拽start */
 
   const moveRow = (dragIndex: number, hoverIndex: number) => {
-
     const dragRow = userList[dragIndex]
     setUserList(
       update(userList, {

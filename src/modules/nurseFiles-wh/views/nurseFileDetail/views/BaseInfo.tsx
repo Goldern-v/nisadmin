@@ -3,7 +3,7 @@ import createModal from 'src/libs/createModal'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { appStore, authStore } from 'src/stores'
 import { sexEnum } from 'src/libs/enum/common'
 import { observer } from 'mobx-react-lite'
@@ -12,6 +12,7 @@ import { globalModal } from 'src/global/globalModal'
 import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { ScrollBox } from 'src/components/common'
 
 export interface Props extends RouteComponentProps {}
 export default observer(function BaseInfo() {
@@ -20,49 +21,8 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
-  // const btnList = [
-  //   {
-  //     label: '修改',
-  //     onClick: () => {
-  //       editBaseInfoModal.show({
-  //         id: idData,
-  //         data: info
-  //       })
-  //     }
-  //   },
-  //   {
-  //     label: '审核',
-  //     //
-
-  //     //
-  //     onClick: () => {
-  //       globalModal.auditModal.show({
-  //         id: idData,
-  //         type: 'nurseInformation',
-  //         // empNo: appStore.queryObj.empNo,
-  //         title: '审核基础信息',
-  //         tableFormat: [
-  //           {
-  //             获得时间: `empName`,
-  //             资格名称: `birthday`
-  //           },
-  //           {
-  //             资格证编号: `age`
-  //           }
-  //         ],
-  //         // fileData: [
-  //         //   {
-  //         //     附件1: info.urlImageOne,
-  //         //     附件2: 'bbb'
-  //         //   }
-  //         // ],
-  //         allData: info
-  //       })
-  //     }
-  //   }
-  // ]
   const limitsComponent = () => {
-    if (info.statusColor === '1') {
+    if (appStore.isDev || info.statusColor === '1') {
       return [
         {
           label: '修改',
@@ -84,47 +44,77 @@ export default observer(function BaseInfo() {
               // empNo: appStore.queryObj.empNo,
               title: '审核基础信息',
               tableFormat: [
-                //
                 {
-                  姓名: `empName`,
-                  工号: `empNo`
+                  姓名: 'empName',
+                  性别: 'sex'
                 },
                 {
-                  性别: `sex`,
-                  民族: `nation`
+                  民族: 'nation',
+                  籍贯: 'nativePlace'
                 },
                 {
-                  出生年月: `birthday`,
-                  年龄: `age`
+                  工号: 'empNo',
+                  身份证号: 'cardNumber'
                 },
                 {
-                  籍贯: `nativePlace`,
-                  职务: `job`
+                  政治面貌: 'politicsLook',
+                  出生年月: 'birthday'
                 },
                 {
-                  参加工作时间: `goWorkTime`,
-                  最高学历: `highestEducation`
+                  年龄: 'age',
+                  联系电话: 'phone'
                 },
                 {
-                  技术职称: `newTitle`,
-                  护士执业证书编号: `zyzsNumber`
+                  参加工作时间: 'takeWorkTime',
+                  参加工作年限: 'takeWorkYear'
                 },
                 {
-                  身份证号: `cardNumber`,
-                  社会团体职务: `socialGroup`
+                  来院工作时间: 'goHospitalWorkDate',
+                  来院工作年限: 'goHospitalWorkYear'
                 },
                 {
-                  联系电话: `phone`,
-                  家庭住址: `address`
+                  护士执业资格证书编号: 'zyzsNumber',
+                  取得执业资格证书时间: 'zyzsDate'
                 },
-                //
                 {
-                  获得时间: `empName`,
-                  资格名称: `birthday`
+                  取得执业资格证书并开始从事护理岗位时间: 'zyzsNursingPostDate',
+                  护士执业资格证书有效截止日期: 'zyzsEffectiveUpDate'
+                },
+                {
+                  护理年资: 'nursingSeniority',
+                  初始学历: 'initialEducation'
+                },
+                {
+                  最高学历: 'highestEducation',
+                  取得最高学历时间: 'highestEducationDate'
+                },
+                {
+                  最高学历学位: 'highestEducationDegree',
+                  职务: 'job'
+                },
+                {
+                  现职务任职起始时间: 'jobStartDate',
+                  考取技术职称时间: 'winNewTiTleDate'
+                },
+                {
+                  医院聘用技术职称时间: 'employNewTiTleDate',
+                  '技术职称（医院聘用为准）': 'newTitle'
+                },
+                {
+                  工作编制: 'workConversion',
+                  转编时间: 'conversionDate'
+                },
+                {
+                  院内工作地点: 'workAddress',
+                  工作护理单元: 'workDeptName'
+                },
+                {
+                  层级: 'nurseHierarchy',
+                  取得层级时间: 'nurseHierarchyDate'
+                },
+                {
+                  鞋码大小: 'shoeSize'
                 }
-                // {
-                //   资格证编号: `age`
-                // }
               ],
               fileData: [
                 {
@@ -165,33 +155,76 @@ export default observer(function BaseInfo() {
       setIdData(data.empNo)
       setId(data.id)
       setTableData([
+        // {
+        //   姓名: data.empName,
+        //   性别: data.sex
+        // },
         {
-          性别: sexEnum[data.sex],
-          民族: data.nation
+          民族: data.nation,
+          籍贯: data.nativePlace
         },
         {
-          出生年月: data.birthday,
-          年龄: data.age
+          工号: data.empNo,
+          身份证号: data.cardNumber
         },
         {
-          籍贯: data.nativePlace,
+          政治面貌: data.politicsLook,
+          出生年月: data.birthday
+        },
+        {
+          年龄: data.age,
+          联系电话: data.phone
+        },
+        {
+          参加工作时间: data.takeWorkTime,
+          参加工作年限: data.takeWorkYear
+        },
+        {
+          来院工作时间: data.goHospitalWorkDate,
+          来院工作年限: data.goHospitalWorkYear
+        },
+        {
+          护士执业资格证书编号: data.zyzsNumber,
+          取得执业资格证书时间: data.zyzsDate
+        },
+        {
+          取得执业资格证书并开始从事护理岗位时间: data.zyzsNursingPostDate,
+          护士执业资格证书有效截止日期: data.zyzsEffectiveUpDate
+        },
+        {
+          护理年资: data.nursingSeniority,
+          初始学历: data.initialEducation
+        },
+        {
+          最高学历: data.highestEducation,
+          取得最高学历时间: data.highestEducationDate
+        },
+        {
+          最高学历学位: data.highestEducationDegree,
           职务: data.job
         },
         {
-          参加工作时间: data.goWorkTime,
-          最高学历: data.highestEducation
+          现职务任职起始时间: data.jobStartDate,
+          考取技术职称时间: data.winNewTiTleDate
         },
         {
-          技术职称: data.newTitle,
-          护士执业证书编号: data.zyzsNumber
+          医院聘用技术职称时间: data.employNewTiTleDate,
+          '技术职称（医院聘用为准）': data.newTitle
         },
         {
-          身份证号: data.cardNumber,
-          社会团体职务: data.socialGroup
+          工作编制: data.workConversion,
+          转编时间: data.conversionDate
         },
         {
-          联系电话: data.phone,
-          家庭住址: data.address
+          院内工作地点: data.workAddress,
+          工作护理单元: data.workDeptName
+        },
+        {
+          层级: data.nurseHierarchy,
+          取得层级时间: data.nurseHierarchyDate
+        },
+        {
+          鞋码大小: data.shoeSize
         }
       ])
     })
@@ -203,9 +236,9 @@ export default observer(function BaseInfo() {
       <ScrollCon>
         <InfoTable>
           <colgroup>
-            <col width='120' />
+            <col width='200' />
             <col />
-            <col width='139' />
+            <col width='200' />
             <col />
             <col width='200' />
           </colgroup>
@@ -213,11 +246,11 @@ export default observer(function BaseInfo() {
             <tr>
               <td>姓名</td>
               <td>
-                <Value>{appStore.queryObj.empName}</Value>
+                <Value>{info.empName}</Value>
               </td>
-              <td>工号</td>
+              <td>性别</td>
               <td>
-                <Value>{appStore.queryObj.empNo}</Value>
+                <Value>{sexEnum[info.sex]}</Value>
               </td>
               <td rowSpan={5}>
                 {info && info.nearImageUrl ? (
@@ -316,7 +349,7 @@ const ZyzsCon = styled.div`
   }
 `
 
-const ScrollCon = styled.div`
+const ScrollCon = styled(ScrollBox)`
   overflow: auto;
   height: calc(100vh - 240px);
 `

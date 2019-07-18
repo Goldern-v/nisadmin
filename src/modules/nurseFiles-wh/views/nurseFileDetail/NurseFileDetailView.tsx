@@ -12,16 +12,17 @@ import { observer } from 'mobx-react-lite'
 import Article from './views/Article'
 import PersonWinning from './views/PersonWinning'
 import SpecializNurse from './views/SpecializNurse'
+import BaseInfo from './views/BaseInfo'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
 
 const ROUTE_LIST = [
-  // {
-  //   type: 'baseInfo',
-  //   component: BaseInfo,
-  //   name: '基本信息'
-  // },
+  {
+    type: 'baseInfo',
+    component: BaseInfo,
+    name: '基本信息'
+  },
   {
     type: 'article',
     component: Article,
