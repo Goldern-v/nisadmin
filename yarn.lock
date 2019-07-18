@@ -7248,8 +7248,13 @@ joi@^11.1.1:
 
 jquery@^3.4.1:
   version "3.4.1"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
+=======
   resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha1-cU8fjZ3eS9+lV2S6N+8hRjDYDvI=
+>>>>>>> ef115813346d3755457500bb37b3112f236b5b0d
 
 js-base64@^2.1.8:
   version "2.5.1"
@@ -9486,8 +9491,13 @@ pbkdf2@^3.0.3:
 
 pdfjs-dist@2.0.943:
   version "2.0.943"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.0.943.tgz#32fb9a2d863df5a1d89521a0b3cd900c16e7edde"
+  integrity sha512-iLhNcm4XceTHRaSU5o22ZGCm4YpuW5+rf4+BJFH/feBhMQLbCGBry+Jet8Q419QDI4qgARaIQzXuiNrsNWS8Yw==
+=======
   resolved "https://registry.npm.taobao.org/pdfjs-dist/download/pdfjs-dist-2.0.943.tgz#32fb9a2d863df5a1d89521a0b3cd900c16e7edde"
   integrity sha1-MvuaLYY99aHYlSGgs82QDBbn7d4=
+>>>>>>> ef115813346d3755457500bb37b3112f236b5b0d
   dependencies:
     node-ensure "^0.0.0"
     worker-loader "^2.0.0"
@@ -11075,8 +11085,13 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
 
 react-pdf@4.0.0:
   version "4.0.0"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-4.0.0.tgz#bbb788b5e0bc7e3ae32c2563f91ed9eebedb273e"
+  integrity sha512-7sdbjjdT9JVWhTrKG1yEKrU/oGV/uwM1Q6+y6ZtycO6Awfcj9jKLI1P44PCFO7GSy1F1LBjPY9YGWfG12xlKIw==
+=======
   resolved "https://registry.npm.taobao.org/react-pdf/download/react-pdf-4.0.0.tgz#bbb788b5e0bc7e3ae32c2563f91ed9eebedb273e"
   integrity sha1-u7eIteC8fjrjLCVj+R7Z7r7bJz4=
+>>>>>>> ef115813346d3755457500bb37b3112f236b5b0d
   dependencies:
     "@babel/runtime" "^7.0.0"
     lodash.once "^4.1.1"

@@ -21,12 +21,9 @@ import { scheduleStore, appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function ToolBar() {
-  
-
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    
 
     emitter.removeAllListeners('弹窗编辑排班套餐')
     emitter.removeAllListeners('获取排班列表')
@@ -49,7 +46,7 @@ export default function ToolBar() {
           value: record.name || ''
         },
         id: {
-          value: record.key || ''
+          value: record.id || ''
         },
         mondayName: {
           value: record.mondayName || ''

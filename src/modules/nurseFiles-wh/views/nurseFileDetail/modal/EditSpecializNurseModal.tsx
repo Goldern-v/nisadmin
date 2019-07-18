@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message ,AutoComplete} from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
@@ -60,9 +60,10 @@ export default function EditSpecializNurseModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
+    value.cardNumberDate && (value.cardNumberDate = value.cardNumberDate.format('YYYY-MM-DD'))
+    console.log(value,'999999999999999')
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHArticleSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHSpecializNurseSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -71,18 +72,15 @@ export default function EditSpecializNurseModal(props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (refForm.current && visible) refForm!.current!.clean()
+    if (refForm.current && visible) refForm!.current!.clean() 
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        publicYear: moment(data.publicYear),
-        magazineName: data.magazineName,
-        articleName: data.articleName,
-        periodicalNumber: data.periodicalNumber,
-        volumeNumber: data.volumeNumber,
-        pageNumber: data.pageNumber,
-        articleType: data.articleType,
-        influencingFactors: data.influencingFactors,
+        nurseName: data.nurseName,
+        cardUnit: data.cardUnit,
+        cardNumber: data.cardNumber,
+        nurseLevel: data.nurseLevel,
+        cardNumberDate: moment(data.cardNumberDate),
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -98,43 +96,28 @@ export default function EditSpecializNurseModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`发表年份`} name='publicYear'>
-              <YearPicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`杂志名称`} name='magazineName' required>
+            <Form.Field label={`专科护士名称`} name='nurseName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`文章名称`} name='articleName' required>
+            <Form.Field label={`发证单位`} name='cardUnit'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`期刊号`} name='periodicalNumber' required>
+            <Form.Field label={`证书编号`} name='cardNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`卷号`} name='volumeNumber' required>
-              <Input />
+            <Form.Field label={`专科护士级别`} name='nurseLevel'>
+            <AutoComplete dataSource={['国际','国家','省级','市级','院级']} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`起止页码`} name='pageNumber' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`文章类别`} name='articleType' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`影响因子`} name='influencingFactors' required>
-              <Input />
+            <Form.Field label={`发证时间`} name='cardNumberDate'>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
