@@ -21,6 +21,7 @@ import WorkRegistrationForm from './views/WorkRegistrationForm'
 import Patent from './views/Patent'
 import LearnJob from './views/LearnJob'
 import ScientificResearch from './views/ScientificResearch'
+import Monograph from './views/Monograph'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -90,6 +91,11 @@ const ROUTE_LIST = [
     type: 'learnJob',
     component: LearnJob,
     name: '学会任职'
+  },
+  {
+    type: 'monograph',
+    component: Monograph,
+    name: '专著'
   }
 ]
 

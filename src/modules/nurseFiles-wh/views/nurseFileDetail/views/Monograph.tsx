@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles-wh/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditPatentModal from '../modal/EditPatentModal'
+import EditMonographModal from '../modal/EditMonographModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function Patent() {
-  const editPatentModal = createModal(EditPatentModal)
+export default observer(function Monograph() {
+  const editMonographModal = createModal(EditMonographModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editPatentModal.show({ signShow: '添加' })
+      onClick: () => editMonographModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,44 +35,37 @@ export default observer(function Patent() {
       width: 55
     },
     {
-      title: '专利名称',
-      dataIndex: 'patentName',
-      key: 'patentName',
+      title: '专著名称',
+      dataIndex: 'monographName',
+      key: 'monographName',
       width: 120,
       align: 'center'
     },
     {
-      title: '专利号',
-      dataIndex: 'patentNumber',
-      key: 'patentNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '发证单位',
-      dataIndex: 'cardUnit',
-      key: 'cardUnit',
-      width: 200,
-      align: 'center'
-    },
-    {
-      title: '发证时间',
-      dataIndex: 'cardDate',
-      key: 'cardDate',
+      title: '出版社名称',
+      dataIndex: 'pressName',
+      key: 'pressName',
       width: 120,
       align: 'center'
     },
     {
-      title: '专利类型',
-      dataIndex: 'patentType',
-      key: 'patentType',
+      title: '出版号',
+      dataIndex: 'pressNumber',
+      key: 'pressNumber',
       width: 90,
       align: 'center'
     },
     {
-      title: '是否成果转化',
-      dataIndex: 'isResultTransfor',
-      key: 'isResultTransfor',
+      title: '出版日期',
+      dataIndex: 'pressDate',
+      key: 'pressDate',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '参编',
+      dataIndex: 'participation',
+      key: 'participation',
       width: 90,
       align: 'center'
     },
@@ -105,7 +98,7 @@ export default observer(function Patent() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editPatentModal.show({ data: row, signShow: '修改' })
+                  editMonographModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -119,20 +112,19 @@ export default observer(function Patent() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHPatent',
-                  title: '审核专利',
+                  type: 'nurseWHMonograph',
+                  title: '审核专著',
                   tableFormat: [
                     {
-                      专利名称: `patentName`,
-                      专利号: `patentNumber`
+                      专著名称: `monographName`,
+                      出版社名称: `pressName`
                     },
                     {
-                      发证单位: `cardUnit`,
-                      发证时间: `cardDate`
+                      出版号: `pressNumber`,
+                      出版日期: `pressDate`
                     },
                     {
-                      专利类型: `patentType`,
-                      是否成果转化: `isResultTransfor`
+                      参编: `participation`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -155,7 +147,7 @@ export default observer(function Patent() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHPatent(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHMonograph', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -166,7 +158,7 @@ export default observer(function Patent() {
   return (
     <BaseLayout title='所获奖励' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editPatentModal.Component getTableData={getTableData} />
+      <editMonographModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

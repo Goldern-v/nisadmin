@@ -113,15 +113,15 @@ export default observer(function LearnJob() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHArticle',
-                  title: '审核文章',
+                  type: 'nurseWHLearnJob',
+                  title: '审核学会任职',
                   tableFormat: [
                     {
-                      发表年份: `publicYear`,
-                      杂志名称: `magazineName`
+                      任职学会名称: `learnJobName`,
+                      学会职位: `learnPosition`
                     },
                     {
-                      文章名称: `articleName`,
+                      学会级别: `learnLevel`,
                       期刊号: `periodicalNumber`
                     },
                     {
@@ -129,8 +129,8 @@ export default observer(function LearnJob() {
                       起止页码: `pageNumber`
                     },
                     {
-                      文章类别: `articleType`,
-                      影响因子: `influencingFactors`
+                      起始时间: `startDate`,
+                      结束时间: `endDate`
                     }
                   ],
                   fileData: row.urlImageOne

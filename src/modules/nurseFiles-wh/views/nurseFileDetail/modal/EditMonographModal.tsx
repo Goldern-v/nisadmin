@@ -31,7 +31,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditPatentModal(props: Props) {
+export default function EditMonographModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
@@ -60,9 +60,9 @@ export default function EditPatentModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.cardDate && (value.cardDate = value.cardDate.format('YYYY-MM-DD'))
+    value.pressDate && (value.pressDate = value.pressDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHPatentSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHMonograph', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -77,15 +77,15 @@ export default function EditPatentModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          cardDate: moment(data.cardDate),
+          pressDate: moment(data.pressDate),
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
     }
     if (signShow === '修改') {
-      setTitle('修改专利')
+      setTitle('修改专著')
     } else if (signShow === '添加') {
-      setTitle('添加专利')
+      setTitle('添加专著')
     }
   }, [visible])
 
@@ -94,36 +94,30 @@ export default function EditPatentModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`专利名称`} name='patentName'>
+            <Form.Field label={`专著名称`} name='monographName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专利号`} name='patentNumber' required>
+            <Form.Field label={`出版社名称`} name='pressName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证单位`} name='cardUnit' required>
+            <Form.Field label={`出版号`} name='pressNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证时间`} name='cardDate' required>
+            <Form.Field label={`出版日期`} name='pressDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专利类型`} name='patentType' required>
+            <Form.Field label={`参编`} name='participation'>
               <Input />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`是否成果转化`} name='isResultTransfor' required>
-              <Input />
-            </Form.Field>
-          </Col>
-
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />
