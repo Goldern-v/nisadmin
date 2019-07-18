@@ -80,7 +80,7 @@ export default function ToolBar(props: Props) {
           value: record.name || ''
         },
         id: {
-          value: record.key || ''
+          value: record.id || ''
         },
         mondayName: {
           value: record.mondayName || ''

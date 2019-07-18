@@ -12,6 +12,7 @@ import { observer } from 'mobx-react-lite'
 import Article from './views/Article'
 import PersonWinning from './views/PersonWinning'
 import SpecializNurse from './views/SpecializNurse'
+import BaseInfo from './views/BaseInfo'
 import OnEducation from './views/OnEducation'
 import HostingScientific from './views/HostingScientific'
 export interface Props extends RouteComponentProps<{ type?: string }> {
@@ -19,11 +20,11 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
 }
 
 const ROUTE_LIST = [
-  // {
-  //   type: 'baseInfo',
-  //   component: BaseInfo,
-  //   name: '基本信息'
-  // },
+  {
+    type: 'baseInfo',
+    component: BaseInfo,
+    name: '基本信息'
+  },
   {
     type: 'article',
     component: Article,

@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
@@ -78,7 +78,16 @@ export default function EditWorkHistoryModal(props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
-    value.goWorkTime && (value.goWorkTime = value.goWorkTime.format('YYYY-MM-DD'))
+    value.goHospitalWorkDate && (value.goHospitalWorkDate = value.goHospitalWorkDate.format('YYYY-MM-DD'))
+    value.zyzsDate && (value.zyzsDate = value.zyzsDate.format('YYYY-MM-DD'))
+    value.zyzsNursingPostDate && (value.zyzsNursingPostDate = value.zyzsNursingPostDate.format('YYYY-MM-DD'))
+    value.takeWorkTime && (value.takeWorkTime = value.takeWorkTime.format('YYYY-MM-DD'))
+    value.jobStartDate && (value.jobStartDate = value.jobStartDate.format('YYYY-MM-DD'))
+    value.winNewTiTleDate && (value.winNewTiTleDate = value.winNewTiTleDate.format('YYYY-MM-DD'))
+    value.employNewTiTleDate && (value.employNewTiTleDate = value.employNewTiTleDate.format('YYYY-MM-DD'))
+    value.conversionDate && (value.conversionDate = value.conversionDate.format('YYYY-MM-DD'))
+    value.nurseHierarchyDate && (value.nurseHierarchyDate = value.nurseHierarchyDate.format('YYYY-MM-DD'))
+    value.highestEducationDate && (value.highestEducationDate = value.highestEducationDate.format('YYYY-MM-DD'))
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
     nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
@@ -93,26 +102,22 @@ export default function EditWorkHistoryModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        birthday: data.birthday ? moment(data.birthday) : null,
-        empName: data.empName,
-        empNo: data.empNo,
-        sex: data.sex,
-        job: data.job,
-        nation: data.nation,
-        age: data.age,
-        nativePlace: data.nativePlace,
-        highestEducation: data.highestEducation,
-        zyzsNumber: data.zyzsNumber,
-        cardNumber: data.cardNumber,
-        socialGroup: data.socialGroup,
-        phone: data.phone,
-        address: data.address,
-        nearImageUrl: data.nearImageUrl,
-        zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : [],
-        newTitle: data.newTitle,
-        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
+        ...data,
+        ...{
+          birthday: data.birthday ? moment(data.birthday) : null,
+          goHospitalWorkDate: data.goHospitalWorkDate ? moment(data.goHospitalWorkDate) : null,
+          zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
+          zyzsNursingPostDate: data.zyzsNursingPostDate ? moment(data.zyzsNursingPostDate) : null,
+          takeWorkTime: data.takeWorkTime ? moment(data.takeWorkTime) : null,
+          jobStartDate: data.jobStartDate ? moment(data.jobStartDate) : null,
+          winNewTiTleDate: data.winNewTiTleDate ? moment(data.winNewTiTleDate) : null,
+          employNewTiTleDate: data.employNewTiTleDate ? moment(data.employNewTiTleDate) : null,
+          conversionDate: data.conversionDate ? moment(data.conversionDate) : null,
+          nurseHierarchyDate: data.nurseHierarchyDate ? moment(data.nurseHierarchyDate) : null,
+          highestEducationDate: data.highestEducationDate ? moment(data.highestEducationDate) : null,
+          zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : []
+        }
       })
-      // refForm.current.setField('unit', 123)
     }
   }, [visible])
 
@@ -126,15 +131,10 @@ export default function EditWorkHistoryModal(props: Props) {
       okText='保存'
       forceRender
     >
-      <Form ref={refForm} labelWidth={140} onChange={onFieldChange} rules={{}}>
+      <Form ref={refForm} labelWidth={200} onChange={onFieldChange} rules={{}}>
         <Row>
           <Col span={12}>
             <Form.Field label={`姓名`} name='empName'>
-              <Input disabled />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`工号`} name='empNo'>
               <Input disabled />
             </Form.Field>
           </Col>
@@ -152,27 +152,87 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`出身年月`} name='birthday'>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`年龄`} name='age'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
             <Form.Field label={`籍贯`} name='nativePlace'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`职务`} name='job'>
+            <Form.Field label={`工号`} name='empNo'>
+              <Input disabled />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`身份证号`} name='cardNumber'>
               <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`政治面貌`} name='politicsLook'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`出生年月`} name='birthday'>
+              <DatePicker />
             </Form.Field>
           </Col>{' '}
           <Col span={12}>
-            <Form.Field label={`参加工作时间`} name='goWorkTime'>
+            <Form.Field label={`年龄`} name='age'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`联系电话`} name='phone'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`参加工作时间`} name='takeWorkTime'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`参加工作年限`} name='takeWorkYear'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`来院工作时间`} name='goHospitalWorkDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`来院工作年限`} name='goHospitalWorkYear'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`护士执业资格证书编号`} name='zyzsNumber'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`取得执业资格证书时间`} name='zyzsDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`取得执业资格证书并开始从事护理岗位时间`} name='zyzsNursingPostDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`护士执业资格证书有效截止日期`} name='zyzsEffectiveUpDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`护理年资`} name='nursingSeniority'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`初始学历`} name='initialEducation'>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -188,38 +248,72 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`技术职称`} name='newTitle'>
-              <Select>
-                <Option value='护士'>护士</Option>
-                <Option value='护师'>护师</Option>
-                <Option value='主管护师'>主管护师</Option>
-                <Option value='副主任护师'>副主任护师</Option>
-                <Option value='主任护师'>主任护师</Option>
-              </Select>
+            <Form.Field label={`取得最高学历时间`} name='highestEducationDate'>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`护士执业证书编号`} name='zyzsNumber'>
+            <Form.Field label={`最高学历学位`} name='highestEducationDegree'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`身份证号`} name='cardNumber'>
+            <Form.Field label={`职务`} name='job'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`社会团体职务`} name='socialGroup'>
+            <Form.Field label={`现职务任职起始时间`} name='jobStartDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`考取技术职称时间`} name='socialGroup'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`医院聘用技术职称时间`} name='employNewTiTleDate'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`联系电话`} name='phone'>
+            <Form.Field label={`技术职称（医院聘用为准）`} name='newTitle'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`家庭住址`} name='address'>
+            <Form.Field label={`工作编制`} name='workConversion'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`转编时间`} name='conversionDate'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`院内工作地点`} name='workAddress'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`工作护理单元`} name='workDeptName'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`层级`} name='nurseHierarchy'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`取得层级时间`} name='nurseHierarchyDate'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={`鞋码大小`} name='shoeSize'>
               <Input />
             </Form.Field>
           </Col>
