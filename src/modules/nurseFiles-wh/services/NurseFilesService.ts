@@ -332,6 +332,15 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
+  //7 科研课题成果
+  //7-1 科研课题成果-列表(护长)
+  public async nurseWHScienceResult(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHScienceResult/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
   /** 专利更新 */
   public async nurseWHPatentSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHPatent/saveOrUpdate`, obj)
@@ -347,6 +356,10 @@ export default class NurseFilesService extends BaseApiService {
   /** 统一更新 */
   public async commonSaveOrUpdate(type: string, obj: any) {
     return this.post(`/${type}/saveOrUpdate`, obj)
+  }
+  // 7-2 科研课题成果新增或更新(网页护长)
+  public async nurseWHScienceResultSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHScienceResult/saveOrUpdate`, obj)
   }
 }
 

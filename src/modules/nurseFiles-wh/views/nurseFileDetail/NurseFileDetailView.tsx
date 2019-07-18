@@ -20,6 +20,7 @@ import EducationalExperience from './views/EducationalExperience'
 import WorkRegistrationForm from './views/WorkRegistrationForm'
 import Patent from './views/Patent'
 import LearnJob from './views/LearnJob'
+import ScientificResearch from './views/ScientificResearch'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -58,6 +59,12 @@ const ROUTE_LIST = [
     type: 'hostingScientific',
     component: HostingScientific,
     name: '主持科研课题'
+  },
+  {
+    /** 方明处理 */
+    type: 'scientificResearch',
+    component: ScientificResearch,
+    name: '科研课题成果'
   },
   {
     type: 'workHistory',
