@@ -78,13 +78,14 @@ export default function EditPersonWinningModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         name: data.name,
-        source: data.source,
-        level: data.level,
+        courseSource: data.courseSource,
+        courseLevel: data.courseLevel,
+        unit: data.unit,
         approvalNumber: data.approvalNumber,
         registerNumber: data.registerNumber,
         startDate: moment(data.startDate),
         endDate: moment(data.endDate),
-        completion: data.completion,
+        courseCompletion: data.courseCompletion,
         completionDate: moment(data.completionDate),
         // completionDate: data.completionDate,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
@@ -107,12 +108,17 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题来源`} name='source'>
+            <Form.Field label={`课题来源`} name='courseSource'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题级别`} name='level' required>
+            <Form.Field label={`课题级别`} name='courseLevel' required>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`承担单位`} name='unit' required>
               <Input />
             </Form.Field>
           </Col>
@@ -137,7 +143,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`完成情况`} name='completion' required>
+            <Form.Field label={`完成情况`} name='courseCompletion' required>
               <Input />
             </Form.Field>
           </Col>

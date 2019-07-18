@@ -106,7 +106,7 @@ export default observer(function PersonWinning() {
                   getTableData: getTableData,
                   id: row.id,
                   type: 'nurseWHPersonWinning',
-                  title: '审核文章',
+                  title: '审核个人获奖',
                   tableFormat: [
                     {
                       获奖名称: `winningName`,

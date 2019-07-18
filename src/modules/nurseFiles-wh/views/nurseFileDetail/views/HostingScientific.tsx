@@ -43,15 +43,15 @@ export default observer(function PersonWinning() {
     },
     {
       title: '课题来源',
-      dataIndex: 'source',
-      key: 'source',
+      dataIndex: 'courseSource',
+      key: 'courseSource',
       width: 90,
       align: 'center'
     },
     {
       title: '课题级别',
-      dataIndex: 'level',
-      key: 'level',
+      dataIndex: 'courseLevel',
+      key: 'courseLevel',
       width: 90,
       align: 'center'
     },
@@ -99,8 +99,8 @@ export default observer(function PersonWinning() {
     // },
     {
       title: '完成情况',
-      dataIndex: 'completion',
-      key: 'completion',
+      dataIndex: 'courseCompletion',
+      key: 'courseCompletion',
       width: 90,
       align: 'center'
     },
@@ -155,14 +155,14 @@ export default observer(function PersonWinning() {
                   getTableData: getTableData,
                   id: row.id,
                   type: 'nurseWHHostScienceCourse',
-                  title: '审核文章',
+                  title: '审核主持科研课题',
                   tableFormat: [
                     {
                       主持课题名称: `name`,
-                      课题来源: `source`
+                      课题来源: `courseSource`
                     },
                     {
-                      课题级别: `level`,
+                      课题级别: `courseLevel`,
                       承担单位: `unit`
                     },
                     {
@@ -174,7 +174,7 @@ export default observer(function PersonWinning() {
                       结束时间: `endDate`
                     },
                     {
-                      完成情况: `completion`,
+                      完成情况: `courseCompletion`,
                       '立项/结题/验收/鉴定时间': `completionDate`
                     }
                   ],
