@@ -8,9 +8,11 @@ module.exports = function(app) {
       // target: 'http://192.168.1.20:8964',
       //广
       // target: 'http://192.168.2.144:8080',
-      target: 'http://120.25.105.45:9864',
-      //正式环境
+      // target: 'http://120.25.105.45:9864',
+      //厚街正式环境
       // target: 'http://120.197.141.41:9094',
+      //武汉正式环境
+      target: 'http://111.47.19.230:9091',
       secure: false,
       changeOrigin: true
     })

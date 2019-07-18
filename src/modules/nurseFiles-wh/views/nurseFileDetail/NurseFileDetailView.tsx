@@ -5,92 +5,39 @@ import _ from 'lodash'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import TopCon from './components/TopCon'
 import LeftMenu from './components/LeftMenu'
-import BaseInfo from './views/BaseInfo'
-import WorkHistory from './views/WorkHistory'
-import SpecialCard from './views/SpecialCard'
-import EducationalExperience from './views/EducationalExperience'
-import LevelChange from './views/LevelChange'
-import ContinuingEducation from './views/ContinuingEducation'
-import Writings from './views/Writings'
-import Awards from './views/Awards'
-import BadAction from './views/BadAction'
-import ThreeBases from './views/ThreeBases'
-import ExaminationResults from './views/ExaminationResults'
-import WorkRegistrationForm from './views/WorkRegistrationForm'
-import FileList from './views/FileList'
 import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { appStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
+import Article from './views/Article'
+import PersonWinning from './views/PersonWinning'
+import SpecializNurse from './views/SpecializNurse'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
 
 const ROUTE_LIST = [
-  {
-    type: 'baseInfo',
-    component: BaseInfo,
-    name: '基本信息'
-  },
-  {
-    type: 'workHistory',
-    component: WorkHistory,
-    name: '工作经历'
-  },
-  {
-    type: 'specialCard',
-    component: SpecialCard,
-    name: '特殊资格证'
-  },
-  {
-    type: 'educationalExperience',
-    component: EducationalExperience,
-    name: '教育经历'
-  },
-  {
-    type: 'levelChange',
-    component: LevelChange,
-    name: '职称及层级变动'
-  },
-  {
-    type: 'continuingEducation',
-    component: ContinuingEducation,
-    name: '继续教育'
-  },
-  {
-    type: 'writings',
-    component: Writings,
-    name: '著作译文论文'
-  },
-  {
-    type: 'awards',
-    component: Awards,
-    name: '所获奖励'
-  },
   // {
-  //   type: 'badAction',
-  //   component: BadAction,
-  //   name: '不良行为'
+  //   type: 'baseInfo',
+  //   component: BaseInfo,
+  //   name: '基本信息'
   // },
   {
-    type: 'examinationResults',
-    component: ExaminationResults,
-    name: '年度考核结果'
+    type: 'article',
+    component: Article,
+    name: '文章'
   },
   {
-    type: 'threeBases',
-    component: ThreeBases,
-    name: '医院三基考核'
+    /** 方明处理 */
+    type: 'personWinning',
+    component: PersonWinning,
+    name: '个人获奖'
   },
   {
-    type: 'workRegistrationForm',
-    component: WorkRegistrationForm,
-    name: '工作情况登记'
-  },
-  {
-    type: 'fileList',
-    component: FileList,
-    name: '附件'
+    /** 吴敏处理 */
+    type: 'SpecializNurse',
+    component: SpecializNurse,
+    name: '专科护士'
   }
 ]
 

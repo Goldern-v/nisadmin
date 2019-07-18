@@ -744,7 +744,7 @@ export default function MainBox(props: Props) {
         let scheduleList: any = new Array()
         scheduleList = res.data
         let schShiftUser = scheduleList.schShiftUser
-        if (appStore.isDev || (res.data.schShiftUser[0] && res.data.schShiftUser[0].schStatus)) {
+        if (res.data.schShiftUser[0] && res.data.schShiftUser[0].schStatus) {
           genDataTable(schShiftUser)
           scheduleStore.getWeeks().length == 2 ? setColumns(columns_2) : setColumns(columns_1)
           emitter.emit('设置页面标题', '编辑排班')
@@ -918,7 +918,7 @@ export default function MainBox(props: Props) {
         let selectedCellNameCode = selectedCellName + 'Code'
         let numberOfday = 1
         let diffDays = 0
-
+        // console.log(selectedCellValue, selectedCellName, record[selectedCellNameCode], 67890)
         // console.log(mergeDayObj(record, selectedCellName), selectedCellName, 'mergeDayObj')
         let clickedShift = shiftListData.filter((shift) => {
           if (
@@ -931,9 +931,9 @@ export default function MainBox(props: Props) {
             return shift
           }
         })
-        console.log(selectedCellValue, 'selectedCellValue')
+        // console.log(selectedCellValue, 'selectedCellValue')
         /** 设置额外工时排班 */
-        if (clickedShift && clickedShift!.length == 0) {
+        if (clickedShift && clickedShift!.length == 0 && record[selectedCellNameCode]) {
           let refreshData = (obj: any) => {
             let { EffectiveTime } = obj
             setRecordObj(record, selectedCellName, 'EffectiveTime', EffectiveTime)
@@ -1021,19 +1021,6 @@ export default function MainBox(props: Props) {
             </div>
           )
           emitter.emit('打开弹框', { index, record, event, contant: genContant(), onOK: onOK })
-        } else {
-          let refreshData = (newLabel: string) => {
-            setTimeout(() => {
-              tableUpdate(record, selectedRow, index)
-              updateTableUI()
-            }, 100)
-          }
-          emitter.emit('打开设置工时弹框', {
-            obj: record,
-            key: selectedCellName,
-            label: selectedCellValue,
-            refreshData
-          })
         }
       }
     }
@@ -1319,10 +1306,14 @@ const Wrapper = styled.div`
     background: #fafafa;
   }
 
-  .table-input:focus,
   .table-input:focus-within {
     outline: 0px solid green !important;
-    background: yellow;
+    background: yellow !important;
+    color: black !important;
+  }
+  .table-input:focus {
+    outline: 1px solid green !important;
+    background: yellow !important;
     color: black !important;
   }
 

@@ -224,7 +224,7 @@ export default observer(function 人员管理(props: Props) {
       </div>
       <div className="table-contain">
         <BaseTable
-          rowKey="empNo"
+ 
           loading={dataLoading}
           columns={columns}
           surplusHeight={queryFilter ? 420 : 130}

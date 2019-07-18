@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useRef } from 'react'
 import { RouteComponentProps } from 'react-router'
+import { DatePicker } from './vendors/antd'
+import YearPicker from './components/YearPicker'
 
 export interface Props extends RouteComponentProps {
   style: any
@@ -17,12 +19,7 @@ export default function demo(props: Props) {
   }
   return (
     <Wrapper style={props.style} onScroll={onScroll}>
-      {ifh}
-      <iframe
-        style={{ height: ifh + 'px' }}
-        scrolling='no'
-        src='/crNursing/nursingInstitution/20190701/20190701184652OLkTunpr.pdf'
-      />
+      <YearPicker />
     </Wrapper>
   )
 }

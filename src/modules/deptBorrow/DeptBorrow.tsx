@@ -9,20 +9,20 @@ import EditModal from './components/EditModal'
 import ViewOrAuditModal from './components/ViewOrAuditModal'
 import DeptBorrowService from './api/DeptBorrowService'
 
-const Option = Select.Option;
+const Option = Select.Option
 
-const api = new DeptBorrowService();
+const api = new DeptBorrowService()
 
 export default observer(function DeptBorrow(props: any) {
-  const [borrowList, setBorrowList] = useState([] as any);
-  const [detailData, setDetailData] = useState({} as any);
-  const [loading, setLoading] = useState(false);
+  const [borrowList, setBorrowList] = useState([] as any)
+  const [detailData, setDetailData] = useState({} as any)
+  const [loading, setLoading] = useState(false)
   const [query, setQuery] = useState({
     type: '我科借入',
     status: ''
-  });
-  const [editVisible, setEditVisible] = useState(false);
-  const [editParams, setEditParams] = useState({} as any);
+  })
+  const [editVisible, setEditVisible] = useState(false)
+  const [editParams, setEditParams] = useState({} as any)
 
   const [viewOrAuditVisible, setViewOrAuditVisible] = useState(false)
 
@@ -40,7 +40,7 @@ export default observer(function DeptBorrow(props: any) {
       className: 'dept-name',
       align: 'left',
       render: (text: string, record: any) => {
-        let deptName = query.type == '我科借出' ? record.deptNameTransferFrom : record.deptNameTransferTo;
+        let deptName = query.type == '我科借出' ? record.deptNameTransferFrom : record.deptNameTransferTo
 
         return <div title={deptName}>{deptName}</div>
       }
@@ -50,28 +50,28 @@ export default observer(function DeptBorrow(props: any) {
       key: 'numTransferFrom',
       dataIndex: 'numTransferFrom',
       align: 'center',
-      width: 80,
+      width: 80
     },
     {
       title: '开始日期',
       key: 'startDate',
       dataIndex: 'startDate',
       align: 'center',
-      width: 100,
+      width: 100
     },
     {
       title: '结束日期',
       key: 'endDate',
       dataIndex: 'endDate',
       align: 'center',
-      width: 100,
+      width: 100
     },
     {
       title: '借用天数',
       key: 'daysTransferFrom',
       dataIndex: 'daysTransferFrom',
       align: 'center',
-      width: 80,
+      width: 80
     },
     {
       title: '借用护士',
@@ -125,40 +125,47 @@ export default observer(function DeptBorrow(props: any) {
       width: 120,
       className: 'operate',
       render: (status: string, record: any) => {
-        let user = authStore.user;
+        let user = authStore.user
         if (!user) return ''
         if (record.empNoTransferFrom == user.empNo && status == '0') {
-          return <Fragment>
-            <span onClick={() => openEdit(record)}>修改</span>
-            <span onClick={() => handleDelete(record)}>删除</span>
-          </Fragment>
+          return (
+            <Fragment>
+              <span onClick={() => openEdit(record)}>修改</span>
+              <span onClick={() => handleDelete(record)}>删除</span>
+            </Fragment>
+          )
         }
         return <span onClick={() => handleReview(record)}>查看</span>
       }
-    },
-  ];
+    }
+  ]
 
   useEffect(() => {
-    getTableData();
-  }, []);
+    getTableData()
+  }, [])
 
   const rowClassName = (record: any) => {
     switch (record.status) {
-      case '申请': return 'apply-for';
-      case '已通过': return 'resolve';
-      case '已结束': return 'over';
-      case '已拒绝': return 'refuse';
-      default: return '';
+      case '申请':
+        return 'apply-for'
+      case '已通过':
+        return 'resolve'
+      case '已结束':
+        return 'over'
+      case '已拒绝':
+        return 'refuse'
+      default:
+        return ''
     }
   }
 
   const handleSearch = () => {
-    getTableData();
+    getTableData()
   }
 
   const openEdit = (record: any) => {
-    setEditParams(record);
-    setEditVisible(true);
+    setEditParams(record)
+    setEditVisible(true)
   }
   const handleDelete = (record: any) => {
     Modal.confirm({
@@ -169,29 +176,29 @@ export default observer(function DeptBorrow(props: any) {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        api.deleteBorrow(record.id).then(res => {
+        api.deleteBorrow(record.id).then((res) => {
           if (res.code == 200) {
-            Message.success('删除成功');
-            getTableData();
+            Message.success('删除成功')
+            getTableData()
           } else {
-            Message.error('删除失败');
+            Message.error('删除失败')
           }
         })
       }
     })
   }
   const handleReview = (record: any) => {
-    setDetailData(record);
+    setDetailData(record)
     setViewOrAuditVisible(true)
   }
 
   const handleEditSuccess = () => {
-    handleEditCancel();
-    getTableData();
+    handleEditCancel()
+    getTableData()
   }
   const handleEditCancel = () => {
-    setEditVisible(false);
-    setEditParams({});
+    setEditVisible(false)
+    setEditParams({})
   }
 
   const handleTypeChange = (type: any) => {
@@ -202,95 +209,89 @@ export default observer(function DeptBorrow(props: any) {
   }
 
   const handleDetailViewClose = (reload: any) => {
-
     setViewOrAuditVisible(false)
     if (reload === true) getTableData()
   }
 
   const getTableData = (_query?: any) => {
-    let reqQuery = Object.assign({}, query, _query || {});
-    setLoading(true);
-    console.log(reqQuery);
+    let reqQuery = Object.assign({}, query, _query || {})
+    setLoading(true)
+    console.log(reqQuery)
 
     let callback = (res: any) => {
       setBorrowList(res.data || [])
     }
 
-    let deptCode = '';
-    if (authStore.user) deptCode = authStore.user.deptCode;
+    let deptCode = ''
+    if (authStore.user) deptCode = authStore.user.deptCode
 
     let params = {
       deptCode,
-      statusTransferFrom: reqQuery.status,
+      statusTransferFrom: reqQuery.status
     }
 
-    if (reqQuery.type == '我科借入')
-      api.getBorrowIn(params).then(res => callback && callback(res));
-    else
-      api.getBorrowOut(params).then(res => callback && callback(res));
+    if (reqQuery.type == '我科借入') api.getBorrowIn(params).then((res) => callback && callback(res))
+    else api.getBorrowOut(params).then((res) => callback && callback(res))
 
     setTimeout(() => {
-      setLoading(false);
+      setLoading(false)
     }, 2000)
   }
 
-  return <Wrapper>
-    <div className="top">
-      <div className="topbar">
-        <div className="float-left">科室借用</div>
-        <div className="float-right">
-          <span className="item">
-            <span className="label">类型：</span>
-            <span className="cotent">
-              <Select onChange={handleTypeChange} defaultValue={query.type}>
-                <Option value="我科借出">我科借出</Option>
-                <Option value="我科借入">我科借入</Option>
-              </Select>
+  return (
+    <Wrapper>
+      <div className='top'>
+        <div className='topbar'>
+          <div className='float-left'>科室借用</div>
+          <div className='float-right'>
+            <span className='item'>
+              <span className='label'>类型：</span>
+              <span className='cotent'>
+                <Select onChange={handleTypeChange} defaultValue={query.type}>
+                  <Option value='我科借出'>我科借出</Option>
+                  <Option value='我科借入'>我科借入</Option>
+                </Select>
+              </span>
             </span>
-          </span>
-          <span className="item">
-            <span className="label">借用状态：</span>
-            <span className="cotent">
-              <Select onChange={(status: any) => setQuery({ ...query, status })} defaultValue={query.status}>
-                <Option value="">全部</Option>
-                <Option value="0">申请</Option>
-                <Option value="1">借用中</Option>
-                <Option value="2">已结束</Option>
-                <Option value="3">拒绝</Option>
-              </Select>
+            <span className='item'>
+              <span className='label'>借用状态：</span>
+              <span className='cotent'>
+                <Select onChange={(status: any) => setQuery({ ...query, status })} defaultValue={query.status}>
+                  <Option value=''>全部</Option>
+                  <Option value='0'>申请</Option>
+                  <Option value='1'>借用中</Option>
+                  <Option value='2'>已结束</Option>
+                  <Option value='3'>拒绝</Option>
+                </Select>
+              </span>
             </span>
-          </span>
-          <span className="item">
-            <Button type="primary" onClick={handleSearch}>查询</Button>
-          </span>
-          <span className="item">
-            <Button onClick={() => setEditVisible(true)}>添加借用申请</Button>
-          </span>
+            <span className='item'>
+              <Button type='primary' onClick={handleSearch}>
+                查询
+              </Button>
+            </span>
+            <span className='item'>
+              <Button onClick={() => setEditVisible(true)}>添加借用申请</Button>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-    <div className="main">
-      <div className="table-content">
-        <BaseTable
-          rowKey="id"
-          loading={loading}
-          columns={columns}
-          dataSource={borrowList}
-          rowClassName={rowClassName}
-          pagination={false}
-          surplusHeight={200} />
+      <div className='main'>
+        <div className='table-content'>
+          <BaseTable
+            loading={loading}
+            columns={columns}
+            dataSource={borrowList}
+            rowClassName={rowClassName}
+            pagination={false}
+            surplusHeight={200}
+          />
+        </div>
       </div>
-    </div>
-    <EditModal
-      visible={editVisible}
-      editParams={editParams}
-      onCancel={handleEditCancel}
-      onOk={handleEditSuccess} />
-    <ViewOrAuditModal
-      visible={viewOrAuditVisible}
-      data={detailData}
-      onCancel={handleDetailViewClose} />
-  </Wrapper>
+      <EditModal visible={editVisible} editParams={editParams} onCancel={handleEditCancel} onOk={handleEditSuccess} />
+      <ViewOrAuditModal visible={viewOrAuditVisible} data={detailData} onCancel={handleDetailViewClose} />
+    </Wrapper>
+  )
 })
 
 const Wrapper = styled.div`
@@ -300,99 +301,98 @@ const Wrapper = styled.div`
   padding-top: 80px;
   background: #fff;
 
-  .top{
+  .top {
     margin-top: -80px;
     padding: 10px 15px;
     height: 40px;
-    .nav{
+    .nav {
       margin-bottom: 5px;
     }
-    .topbar{
+    .topbar {
       overflow: hidden;
-      .float-left{
+      .float-left {
         float: left;
         font-size: 20px;
         line-height: 32px;
         font-weight: bold;
         color: #000;
       }
-      .float-right{
+      .float-right {
         float: right;
-        .item{
+        .item {
           margin-left: 10px;
         }
       }
     }
   }
 
-  .main{
+  .main {
     width: 100%;
     height: 100%;
     padding: 10px 0;
     padding-top: 0;
-    .table-content{
+    .table-content {
       height: 100%;
       background: #fff;
-      tr{
-        &.resolve{
-          td{
+      tr {
+        &.resolve {
+          td {
             color: blue;
           }
         }
-        &.over{
-          td{
-            background: rgba(0,0,0,0.02);
+        &.over {
+          td {
+            background: rgba(0, 0, 0, 0.02);
           }
-          :hover{
-            td{
+          :hover {
+            td {
               background: #cfe6dc;
             }
           }
         }
-        &.refuse{
-          td{
+        &.refuse {
+          td {
             color: red;
-            background: rgba(0,0,0,0.02);
+            background: rgba(0, 0, 0, 0.02);
           }
-          :hover{
-            td{
+          :hover {
+            td {
               background: #cfe6dc;
             }
           }
         }
       }
-      td{
-        &.margin-left{
-          padding-left: 10px!important;
-
+      td {
+        &.margin-left {
+          padding-left: 10px !important;
         }
-        &.dept-name{
+        &.dept-name {
           position: relative;
-          div{
+          div {
             position: absolute;
             top: 0;
             left: 10px;
             right: 10px;
             height: 30px;
-            overflow:hidden;
+            overflow: hidden;
             line-height: 30px;
-            text-overflow:ellipsis;
+            text-overflow: ellipsis;
             white-space: nowrap;
           }
         }
       }
-      td.operate{
-        span{
+      td.operate {
+        span {
           cursor: pointer;
-          color: #00A680;
-          :hover{
+          color: #00a680;
+          :hover {
             font-weight: bold;
           }
         }
-        span:first-of-type{
+        span:first-of-type {
           margin-right: 5px;
         }
-        span:last-of-type{
+        span:last-of-type {
           margin-right: 0;
         }
       }

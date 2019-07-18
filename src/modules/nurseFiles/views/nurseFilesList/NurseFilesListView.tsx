@@ -179,7 +179,6 @@ export default observer(function NurseFilesListView() {
           }
         }}
         loading={nurseFilesListViewModel.listSpinning}
-        rowKey='empNo'
       />
       <PaginationCon rowNum={rowNum} />
     </Wrapper>
