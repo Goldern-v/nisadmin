@@ -15,6 +15,7 @@ import SpecializNurse from './views/SpecializNurse'
 import BaseInfo from './views/BaseInfo'
 import OnEducation from './views/OnEducation'
 import HostingScientific from './views/HostingScientific'
+import ToNewPost from './views/ToNewPost'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -53,6 +54,11 @@ const ROUTE_LIST = [
     type: 'hostingScientific',
     component: HostingScientific,
     name: '主持科研课题'
+  },
+  {
+    type: 'ToNewPost',
+    component: ToNewPost,
+    name: '转岗'
   }
 ]
 

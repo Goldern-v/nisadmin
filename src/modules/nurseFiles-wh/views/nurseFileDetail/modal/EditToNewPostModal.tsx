@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message ,AutoComplete} from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
@@ -31,7 +31,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditSpecializNurseModal(props: Props) {
+export default function EditToNewPostModal(props: Props) {
   const [title, setTitle] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
@@ -60,9 +60,9 @@ export default function EditSpecializNurseModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.cardNumberDate && (value.cardNumberDate = value.cardNumberDate.format('YYYY-MM-DD'))
+    value.transferDate && (value.transferDate = value.transferDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHSpecializNurseSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHTransferPostSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -71,22 +71,20 @@ export default function EditSpecializNurseModal(props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (refForm.current && visible) refForm!.current!.clean() 
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        nurseName: data.nurseName,
-        cardUnit: data.cardUnit,
-        cardNumber: data.cardNumber,
-        nurseLevel: data.nurseLevel,
-        cardNumberDate: moment(data.cardNumberDate),
+        oldDeptName: data.oldDeptName,
+        newDeptCode: data.newDeptCode,
+        transferDate:moment(data.transferDate),
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改所获奖励')
+      setTitle('修改个人获奖')
     } else if (signShow === '添加') {
-      setTitle('添加所获奖励')
+      setTitle('添加个人获奖')
     }
   }, [visible])
 
@@ -95,27 +93,17 @@ export default function EditSpecializNurseModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`专科护士名称`} name='nurseName'>
+            <Form.Field label={`原工作科室`} name='oldDeptName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证单位`} name='cardUnit'>
+            <Form.Field label={`现工作科室`} name='newDeptCode'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`证书编号`} name='cardNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`专科护士级别`} name='nurseLevel'>
-            <AutoComplete dataSource={['国际','国家','省级','市级','院级']} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`发证时间`} name='cardNumberDate'>
+            <Form.Field label={`转岗时间`} name='transferDate'>
               <DatePicker />
             </Form.Field>
           </Col>
