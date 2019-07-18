@@ -162,7 +162,7 @@ export default observer(function LearnJob() {
   }, [])
 
   return (
-    <BaseLayout title='所获奖励' btnList={btnList}>
+    <BaseLayout title='学会任职' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
       <editLearnJobModal.Component getTableData={getTableData} />
     </BaseLayout>

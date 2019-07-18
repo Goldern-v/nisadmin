@@ -100,7 +100,7 @@ export default function qualityControlRecordDetailMidLeft() {
         <div className='notesCon'>
           <div className='notesLeftCon'>备注</div>
           <div className='notesRightCon'>
-            <TextArea rows={4} disabled value='今天是个好天气,' />
+            <TextArea rows={4} disabled value='今天是个好天气' />
           </div>
         </div>
         {/* // */}
@@ -121,10 +121,10 @@ export default function qualityControlRecordDetailMidLeft() {
                 <Col span={4}>
                   <Checkbox value='D'>沟通元素</Checkbox>
                 </Col>
-                <Col span={4}>
+                <Col span={5}>
                   <Checkbox value='E'>教育培训元素</Checkbox>
                 </Col>
-                <Col span={4}>
+                <Col span={3}>
                   <Checkbox value='F'>其它元素</Checkbox>
                 </Col>
               </Row>
@@ -145,11 +145,11 @@ const Con = styled.div`
 `
 const MessageBox = styled.div`
   margin-top: 10px;
-  height: 154px;
-  line-height: 26px;
+  height: 138px;
+  line-height: 24px;
   padding: 10px 20px;
   background-color: #f2f2f2;
-  font-size: 15px;
+  font-size: 12px;
   display: flex;
   .boxLeft {
     flex: 1;
@@ -164,7 +164,7 @@ const QuestionCon = styled.div`
   margin-top: 10px;
   flex: 1;
   height: 0;
-  font-size: 13px;
+  font-size: 12px;
 
   .titleCon {
     height: 30px;
@@ -173,10 +173,13 @@ const QuestionCon = styled.div`
     .titleLeftCon {
       flex: 1;
       width: 0;
+      font-size: 14px;
+      font-weight: bold;
     }
     .titleRightCon {
       width: 100px;
       text-align: right;
+      font-size: 12px;
     }
   }
   .itemCon {
@@ -189,6 +192,7 @@ const QuestionCon = styled.div`
     }
     .itemMidCon {
       margin-top: 5px;
+      font-size: 12px;
       .itemAttachmentCon {
         display: inline-block;
         cursor: pointer;
@@ -199,6 +203,9 @@ const QuestionCon = styled.div`
       .ant-radio-inner::after {
         background-color: #00a680;
       }
+      span {
+        font-size: 12px;
+      }
     }
   }
   .notesCon {
@@ -208,11 +215,18 @@ const QuestionCon = styled.div`
     display: flex;
     border-bottom: 0.5px dashed #bbbbbb;
     .notesLeftCon {
-      width: 50px;
+      width: 34px;
     }
     .notesRightCon {
       flex: 1;
       width: 0;
+      font-size: 12px;
+      textarea {
+        font-size: 12px;
+      }
+      .ant-input-disabled {
+        color: black;
+      }
     }
   }
 `
@@ -222,5 +236,10 @@ const QuestionBottomCon = styled.div`
   height: 70px;
   .questionBottomCheckbox {
     margin-top: 10px;
+    span {
+      padding-right: 0;
+      font-size: 12px;
+      color: black;
+    }
   }
 `

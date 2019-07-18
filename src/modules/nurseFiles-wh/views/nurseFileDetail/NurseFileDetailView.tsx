@@ -25,6 +25,7 @@ import LearnJob from './views/LearnJob'
 import ScientificResearch from './views/ScientificResearch'
 import Monograph from './views/Monograph'
 import ContinuingEducation from './views/ContinuingEducation'
+import Leave from './views/Leave'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -78,7 +79,7 @@ const ROUTE_LIST = [
   {
     type: 'toNewPost',
     component: ToNewPost,
-    name: '转岗',
+    name: '转岗'
   },
   {
     type: 'workHistory',
@@ -114,6 +115,11 @@ const ROUTE_LIST = [
     type: 'continuingEducation',
     component: ContinuingEducation,
     name: '继续教育'
+  },
+  {
+    type: 'Leave',
+    component: Leave,
+    name: '离职'
   }
 ]
 
