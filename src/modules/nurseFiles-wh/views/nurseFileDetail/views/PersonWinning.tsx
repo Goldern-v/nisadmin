@@ -35,58 +35,30 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '发表年份',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
+      title: '获奖名称',
+      dataIndex: 'winningName',
+      key: 'winningName',
       width: 120,
       align: 'center'
     },
     {
-      title: '杂志名称',
-      dataIndex: 'magazineName',
-      key: 'magazineName',
+      title: '获奖类别',
+      dataIndex: 'winningType',
+      key: 'winningType',
       width: 90,
       align: 'center'
     },
     {
-      title: '文章名称',
-      dataIndex: 'articleName',
-      key: 'articleName',
+      title: '获奖级别',
+      dataIndex: 'winningLevel',
+      key: 'winningLevel',
       width: 90,
       align: 'center'
     },
     {
-      title: '期刊号',
-      dataIndex: 'periodicalNumber',
-      key: 'periodicalNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '卷号',
-      dataIndex: 'volumeNumber',
-      key: 'volumeNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '起止页码',
-      dataIndex: 'pageNumber',
-      key: 'pageNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '文章类别',
-      dataIndex: 'articleType',
-      key: 'articleType',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '影响因子',
-      dataIndex: 'influencingFactors',
-      key: 'influencingFactors',
+      title: '获奖年份',
+      dataIndex: 'winningYear',
+      key: 'winningYear',
       width: 90,
       align: 'center'
     },
@@ -133,24 +105,16 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHArticle',
+                  type: 'nurseWHPersonWinning',
                   title: '审核文章',
                   tableFormat: [
                     {
-                      发表年份: `publicYear`,
-                      杂志名称: `magazineName`
+                      获奖名称: `winningName`,
+                      获奖类别: `winningType`
                     },
                     {
-                      文章名称: `articleName`,
-                      期刊号: `periodicalNumber`
-                    },
-                    {
-                      卷号: `volumeNumber`,
-                      起止页码: `pageNumber`
-                    },
-                    {
-                      文章类别: `articleType`,
-                      影响因子: `influencingFactors`
+                      获奖级别: `winningLevel`,
+                      获奖年份: `winningYear`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -173,7 +137,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHArticle(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHPersonWinning(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -182,7 +146,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='所获奖励' btnList={btnList}>
+    <BaseLayout title='个人获奖' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
       <editPersonWinningModal.Component getTableData={getTableData} />
     </BaseLayout>

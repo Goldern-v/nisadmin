@@ -60,9 +60,10 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
+    value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
+    // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHArticleSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHPersonWinningSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -75,21 +76,18 @@ export default function EditPersonWinningModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        publicYear: moment(data.publicYear),
-        magazineName: data.magazineName,
-        articleName: data.articleName,
-        periodicalNumber: data.periodicalNumber,
-        volumeNumber: data.volumeNumber,
-        pageNumber: data.pageNumber,
-        articleType: data.articleType,
-        influencingFactors: data.influencingFactors,
+        // publicYear: moment(data.publicYear),
+        winningYear: moment(data.winningYear),
+        winningName: data.winningName,
+        winningType: data.winningType,
+        winningLevel: data.winningLevel,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改所获奖励')
+      setTitle('修改个人获奖')
     } else if (signShow === '添加') {
-      setTitle('添加所获奖励')
+      setTitle('添加个人获奖')
     }
   }, [visible])
 
@@ -98,42 +96,22 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`发表年份`} name='publicYear'>
+            <Form.Field label={`获奖年份`} name='winningYear' required>
               <YearPicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`杂志名称`} name='magazineName' required>
+            <Form.Field label={`获奖名称`} name='winningName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`文章名称`} name='articleName' required>
+            <Form.Field label={`获奖类别`} name='winningType' required>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`期刊号`} name='periodicalNumber' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`卷号`} name='volumeNumber' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`起止页码`} name='pageNumber' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`文章类别`} name='articleType' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`影响因子`} name='influencingFactors' required>
+            <Form.Field label={`获奖级别`} name='winningLevel' required>
               <Input />
             </Form.Field>
           </Col>
