@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditPersonWinningModal from '../modal/EditPersonWinningModal'
+import EditOnEducationModal from '../modal/EditOnEducationModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
-  const editPersonWinningModal = createModal(EditPersonWinningModal)
+  const editOnEducationModal = createModal(EditOnEducationModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editPersonWinningModal.show({ signShow: '添加' })
+      onClick: () => editOnEducationModal.show({ signShow: '添加' })
     }
   ]
 
@@ -35,30 +35,44 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '获奖名称',
-      dataIndex: 'winningName',
-      key: 'winningName',
+      title: '进修专业',
+      dataIndex: 'studyMajor',
+      key: 'studyMajor',
       width: 120,
       align: 'center'
     },
     {
-      title: '获奖类别',
-      dataIndex: 'winningType',
-      key: 'winningType',
+      title: '进修单位',
+      dataIndex: 'unit',
+      key: 'unit',
       width: 90,
       align: 'center'
     },
     {
-      title: '获奖级别',
-      dataIndex: 'winningLevel',
-      key: 'winningLevel',
+      title: '进修单位所属地',
+      dataIndex: 'unitLocal',
+      key: 'unitLocal',
       width: 90,
       align: 'center'
     },
     {
-      title: '获奖年份',
-      dataIndex: 'winningYear',
+      title: '进修开始时间',
+      dataIndex: 'startDate',
       key: 'winningYear',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '进修结束时间',
+      dataIndex: 'endDate',
+      key: 'endDate',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '进修时长',
+      dataIndex: 'studyHour',
+      key: 'studyHour',
       width: 90,
       align: 'center'
     },
@@ -91,7 +105,7 @@ export default observer(function PersonWinning() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editPersonWinningModal.show({ data: row, signShow: '修改' })
+                  editOnEducationModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -105,16 +119,20 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHPersonWinning',
+                  type: 'nurseWHOutStudy',
                   title: '审核文章',
                   tableFormat: [
                     {
-                      获奖名称: `winningName`,
-                      获奖类别: `winningType`
+                      进修专业: `studyMajor`,
+                      进修单位: `unit`
                     },
                     {
-                      获奖级别: `winningLevel`,
-                      获奖年份: `winningYear`
+                      进修单位所属地: `unitLocal`,
+                      进修开始时间: `startDate`
+                    },
+                    {
+                      进修结束时间: `endDate`,
+                      进修时长: `studyHour`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -137,7 +155,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHPersonWinning(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHOutStudy(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
@@ -146,9 +164,9 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='个人获奖' btnList={btnList}>
+    <BaseLayout title='外出进修' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
-      <editPersonWinningModal.Component getTableData={getTableData} />
+      <editOnEducationModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
