@@ -48,7 +48,7 @@ const addNPModal = createModal(AddNPModal)
 export default function BedSituation () {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
     // console.log(store.appStore.history.location.pathname, 3333)
   })
   function leftLiClick (ev: any, path: string) {

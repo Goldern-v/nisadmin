@@ -209,7 +209,7 @@ export default observer(function EventSearch (props: Props) {
   const [tableSource, setTableSource] = useState(dataSource)
 
   useEffect(() => {
-    console.log(count, setCount)
+    
 
     // empty raw
     genEmptyTable(dataSource)

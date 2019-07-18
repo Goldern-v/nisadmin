@@ -158,6 +158,9 @@ export default function ToolBar(props: Props) {
                   .add('d', item.index)
                   .format(dateFormat)
               },
+              newTitle: nurse.newTitle || '',
+              sortValue: nurse.sortValue || '',
+              nurseHierarchy: nurse.nurseHierarchy || '',
               rangeId: shiftItem.id || '',
               status: isPublish ? '1' : '0',
               thisWeekHour: nurse.thisWeekHour,

@@ -13,7 +13,7 @@ import TableModel from '../../common/TableModel'
 export default function StatisticView() {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <Con>

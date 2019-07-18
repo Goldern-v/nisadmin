@@ -12,7 +12,7 @@ import { observer } from 'mobx-react-lite'
 export default observer(function NursingPerformance (props: Props) {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   useEffect(() => {
     console.log(props)

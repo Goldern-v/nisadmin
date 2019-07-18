@@ -21,7 +21,7 @@ export default function BedSituation (props: Props) {
   }
   // const [count, setCount] = useState(0)
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   return (
     <div>

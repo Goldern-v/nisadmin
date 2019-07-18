@@ -37,7 +37,7 @@ export interface Props extends RouteComponentProps {}
 // }
 
 export default function MainBox() {
-  const [count, setCount] = useState(0)
+  
   const [tableLoading, setTableLoading] = useState(false)
   const [shiftList, setShiftList] = useState(new Array())
 
@@ -206,7 +206,7 @@ export default function MainBox() {
       setColorMapCN(colorMapCN)
     })
     //
-    console.log(count, setCount)
+    
   }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   emitter.removeAllListeners('获取选中班次列表')

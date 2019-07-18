@@ -14,7 +14,7 @@ export default function SelectDepartment () {
   // const [count, setCount] = useState(0)
   const [officeList, setOfficeList] = useState([])
   // useEffect(() => {
-  //   // console.log(count, setCount)
+  //   // 
   // })
   useEffect(() => {
     service.homeDataApiServices.getListDepartment().then((res) => {

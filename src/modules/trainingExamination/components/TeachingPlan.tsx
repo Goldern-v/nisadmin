@@ -4,7 +4,7 @@ import React from 'react'
 export default function teachingPlan() {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   return (
     <Con>

@@ -5,7 +5,7 @@ const { Step } = Steps
 export default function midRightQualityControlRecordDetail() {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   return (
     <Con>

@@ -6,7 +6,7 @@ const { TextArea } = Input
 export default function qualityControlRecordDetailMidLeft() {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   const titleBoxChange = (e: any) => {
     console.log(`${e.target.checked}`)

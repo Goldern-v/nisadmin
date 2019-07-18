@@ -18,7 +18,7 @@ export default observer(function MissionToday () {
   const [dataSource, setDataSource] = useState([])
   // let MidConRef: any = React.createRef()
   useEffect(() => {
-    // console.log(count, setCount)
+    // 
     const postData = {
       wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
       startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00

@@ -15,7 +15,7 @@ export default observer(function BedSituation () {
   const [typeGet, setTypeGet] = useState('出院')
   // const [getMethods, setGetMethods] = useState(() => null)
   useEffect(() => {
-    console.log(count, setCount)
+    
   }, [])
 
   const onChange = (value: string) => {

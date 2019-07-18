@@ -10,7 +10,7 @@ export interface Props extends RouteComponentProps {}
 export default function ShiftSettingView() {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <Wrapper>

@@ -14,7 +14,7 @@ export default function BedSituation () {
   // }>
 
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return <Con>ss</Con>
 }

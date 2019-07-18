@@ -10,11 +10,11 @@ import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView() {
-  const [count, setCount] = useState(0)
+  
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
 
   function checkClick() {

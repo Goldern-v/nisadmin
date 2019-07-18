@@ -7,7 +7,7 @@ import A节假日设置表 from './TableView/A节假日设置表'
 export default function BedSituation () {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   return (
     <Con>

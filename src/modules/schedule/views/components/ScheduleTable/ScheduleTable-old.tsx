@@ -166,7 +166,7 @@ export default function ScheduleTable() {
     ]
   ])
   useEffect(() => {
-    console.log(count, setCount)
+    
     setscheduleList([])
 
     emitter.removeAllListeners('清空排班记录')

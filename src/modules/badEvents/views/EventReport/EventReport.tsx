@@ -185,7 +185,7 @@ export default observer(function EventReport (props: Props) {
   const [count, setCount] = useState(0)
   let [showType, setShowType] = useState('详情')
   useEffect(() => {
-    // console.log(count, setCount)
+    // 
     // genEmptyTable(dataSource)
     // setTableSource(dataSource)
   }, [])

@@ -12,7 +12,7 @@ import ModalAdd from 'src/modules/setting/view/components/ModalAdd.tsx'
 export default function BedSituation() {
   // const [count, setCount] = useState(0)
   // useEffect(() => {
-  //   console.log(count, setCount)
+  //   
   // })
   const [visible, setVisible] = useState(false)
   const handleOk = () => {

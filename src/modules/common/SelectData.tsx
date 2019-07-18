@@ -12,7 +12,7 @@ const dateFormat = 'YYYY年MM月DD日'
 export default function SelectData () {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <SelectCon>

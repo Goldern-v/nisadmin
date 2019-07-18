@@ -15,7 +15,7 @@ function handleChange (value: any) {
 export default function SelectCommon () {
   const [officeList, setOfficeList] = useState([])
   // useEffect(() => {
-  //   // console.log(count, setCount)
+  //   // 
   // })
 
   // function getDepartmentName () {

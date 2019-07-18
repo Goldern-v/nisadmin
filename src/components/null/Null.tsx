@@ -5,7 +5,7 @@ export interface Props {}
 export default function Null () {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return (
     <Wrapper>

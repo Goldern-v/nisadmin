@@ -11,7 +11,7 @@ export default function BedSituation () {
   const [count, setCount] = useState(0)
   // const [getMethods, setGetMethods] = useState(() => null)
   useEffect(() => {
-    console.log(count, setCount)
+    
   }, [])
 
   const onChange = (value: string) => {

@@ -56,7 +56,7 @@ const leftListPatientQueryPath4 = [
 export default function StatisticLeftList () {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
     // console.log(store.appStore.history.location.pathname, 3333)
   })
   // 左侧列表数据

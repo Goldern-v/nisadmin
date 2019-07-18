@@ -6,7 +6,7 @@ export interface Props extends RouteComponentProps {}
 export default function Schedule2View () {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
   return <Wrapper>22222{count}</Wrapper>
 }

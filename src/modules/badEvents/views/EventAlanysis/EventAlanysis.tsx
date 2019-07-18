@@ -155,7 +155,7 @@ export default observer(function EventAlanysis (props: Props) {
   const [tableSource, setTableSource] = useState(dataSource)
 
   useEffect(() => {
-    console.log(count, setCount)
+    
     badEventViewModal.reportTitle = '2019年 第二季度不良事件分析报告'
     genEmptyTable(dataSource)
     setTableSource(dataSource)

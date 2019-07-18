@@ -17,7 +17,7 @@ enum TITLE_COLOR {
 export default function CardItem(props: Props) {
   const [count, setCount] = useState(0)
   useEffect(() => {
-    console.log(count, setCount)
+    
   })
 
   const adapter = (list: any[] = []) => {
