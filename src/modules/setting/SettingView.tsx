@@ -15,12 +15,14 @@ import { ReactComponent as HLPGSZ } from './images/护理评估设置.svg'
 import { ReactComponent as JJRSZ } from './images/节假日设置.svg'
 import { ReactComponent as WLPTSZ } from './images/物流平台设置.svg'
 import { ReactComponent as JXCSSZ } from './images/绩效参数设置.svg'
+import { ReactComponent as KSPHSZ } from './images/科室偏好设置.svg'
 
 import 绩效参数设置 from './view/绩效参数设置'
 import 节假日设置 from './view/节假日设置'
 import 物流角色设置 from './view/物流角色设置'
 import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
 import Preview from './view/components/Preview'
+import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -75,7 +77,19 @@ const LEFT_MENU_CONFIG = [
     icon: <JJRSZ />,
     path: '/setting/节假日设置',
     component: 节假日设置
-  }
+  },
+  {
+    title: '科室偏好设置',
+    icon: <KSPHSZ />,
+    path: '/setting/科室文件共享',
+    children: [
+      {
+        title: '科室文件共享',
+        path: '/setting/科室文件共享',
+        component: DeptFileShare
+      }
+    ]
+  },
   // {
   //   title: '物流平台设置',
   //   icon: <WLPTSZ />,

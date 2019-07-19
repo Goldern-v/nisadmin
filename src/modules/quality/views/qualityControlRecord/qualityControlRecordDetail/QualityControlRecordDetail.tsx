@@ -3,7 +3,15 @@ import React, { useState, useEffect } from 'react'
 import QualityControlRecordDetailHeader from './components/QualityControlRecordDetailHeader'
 import QualityControlRecordDetailMidLeft from './components/QualityControlRecordDetailMidLeft'
 import MidRightQualityControlRecordDetail from './components/MidRightQualityControlRecordDetail'
+import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
+
 export default function qualityControlRecordDetail() {
+  let [detailData, setDetailData]: any = useState([])
+  useEffect(() => {
+    qualityControlRecordApi.qcItemInstanceGet().then((res) => {
+      setDetailData(res.data)
+    })
+  }, [])
   return (
     <Con>
       <HeaderCon>

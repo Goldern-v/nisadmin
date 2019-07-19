@@ -10,11 +10,11 @@ interface Props {
 
 export default observer(function PaginationCon(props: Props) {
   let { rowNum } = props
-  let totalCount = qualityControlRecordVM.totalCount
+  // let totalCount = qualityControlRecordVM.totalCount
   let onChange = (pageIndex: number, pageSize: number | undefined) => {
-    qualityControlRecordVM.pageIndex = pageIndex
-    qualityControlRecordVM.pageSize = pageSize || rowNum * 2
-    qualityControlRecordVM.loadNursingList()
+    // qualityControlRecordVM.pageIndex = pageIndex
+    // qualityControlRecordVM.pageSize = pageSize || rowNum * 2
+    // qualityControlRecordVM.loadNursingList()
   }
   let pageSizeOptions = ['10', '20', '30']
   return (
