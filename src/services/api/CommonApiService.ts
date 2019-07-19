@@ -8,6 +8,11 @@
  * 0.获取护理单元列表
  */
 
+/** 返回的字典项 */
+export interface DictItem {
+  code: string
+  name: string
+}
 import BaseApiService from './BaseApiService'
 import { fileDownload } from 'src/utils/file/file'
 type EntityType = 'mail'
@@ -32,7 +37,7 @@ export default class CommonApiService extends BaseApiService {
   }
   /** 批量获取字典 */
   public multiDictInfo(codeList: string[]) {
-    return this.post(`/dept/multiDictInfo`, this.stringify(codeList))
+    return this.post(`/dept/multiDictInfo`, codeList)
   }
 
   /** 根据科室获取人员列表 */

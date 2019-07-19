@@ -70,6 +70,32 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 .ant-spin-nested-loading {
   height: 100%;
 }
+
+/** modal 样式修改 */
+.ant-modal-wrap {
+.ant-modal {
+  padding-bottom: 0;
+}
+.ant-modal-body {
+  max-height: calc(70vh);
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 50px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background-color: #c2c2c2;
+  }
+ 
+}
+}
+
 `
 
 export default GlobalStyle

@@ -13,13 +13,14 @@ import './styles/iconfont.css'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import { LocaleProvider } from 'antd'
 import ComponentDidCatch from './components/ComponentDidCatch'
-
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 export interface Props {}
 
 export interface State {}
 
 export class App extends React.Component<Props, State> {
-  public render () {
+  public render() {
     return (
       <ComponentDidCatch>
         <LocaleProvider locale={zhCN}>
