@@ -4,12 +4,16 @@ import QualityControlRecordDetailHeader from './components/QualityControlRecordD
 import QualityControlRecordDetailMidLeft from './components/QualityControlRecordDetailMidLeft'
 import MidRightQualityControlRecordDetail from './components/MidRightQualityControlRecordDetail'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
-
+import { Spin } from 'antd'
 export default function qualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
+  let [loading, setLoading] = useState(false)
+
   useEffect(() => {
+    setLoading(true)
     qualityControlRecordApi.qcItemInstanceGet().then((res) => {
       setDetailData(res.data)
+      setLoading(false)
     })
   }, [])
   const testClick = () => {
@@ -25,8 +29,8 @@ export default function qualityControlRecordDetail() {
       <MidCon>
         <MidConScrollCon>
           <MidLeftCon>
-            <button onClick={testClick}>testtttt</button>
-            <QualityControlRecordDetailMidLeft />
+            <button onClick={testClick}>testClick</button>
+            <QualityControlRecordDetailMidLeft detailData={detailData} />
           </MidLeftCon>
           <MidRightCon>
             <MidRightQualityControlRecordDetail />

@@ -21,10 +21,10 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
       <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
       <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220 }} ref={ref} />
 
-      <span style={{ margin: '0 3px 0 10px' }}>质控科室:</span>
+      <span style={{ margin: '0 3px 0 26px' }}>质控科室:</span>
       <DeptSelect onChange={onChange} />
 
-      <span style={{ margin: '0 3px 0 10px' }}>指控表单:</span>
+      <span style={{ margin: '0 3px 0 26px' }}>指控表单:</span>
       <DeptSelect onChange={onChange} />
 
       {/* onClick={() => props.refreshData() */}
