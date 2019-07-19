@@ -12,15 +12,15 @@ export interface Props {
   visible: boolean,
   onOk: any,
   onCancel: any,
-  params?: any
+  params?: any,
+  catalogList?: any
 }
 
 export default function NewNursingRulesAddModal(props: Props) {
   const refForm = React.createRef<Form>();
-  const { visible, onOk, onCancel, params } = props;
+  const { visible, onOk, onCancel, params, catalogList } = props;
   const [empNo, setEmpNo] = useState();
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [catalogList, setCatalogList] = useState([] as any);
   const [acceptingNewParams, setAcceptingNewParams] = useState(false);
 
   // let uploadAccept = 'image/png,image/gif,image/jpeg,application/msword,.doc,.docx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf';
@@ -68,7 +68,8 @@ export default function NewNursingRulesAddModal(props: Props) {
 
               refForm.current.setFields({
                 deptCode: params.deptCode,
-                fileName: params.fileName
+                fileName: params.fileName,
+                catalog: params.catalog,
               });
 
               //防止在handleFormChange中把目录字段替换为空字符
@@ -97,6 +98,9 @@ export default function NewNursingRulesAddModal(props: Props) {
       if (!formData.fileName)
         return Message.error('未填写文件名称');
 
+      if (!formData.catalog)
+        return Message.error('未选择目录');
+
       if (!params.id) {
         if (!(file && nameEl.value))
           return Message.error('未选择上传文件');
@@ -112,15 +116,15 @@ export default function NewNursingRulesAddModal(props: Props) {
 
       setUploadLoading(true)
 
-      let successCallback = (res?: any,msg?:any) => {
-        Message.success(msg||'上传成功');
+      let successCallback = (res?: any, msg?: any) => {
+        Message.success(msg || '上传成功');
 
         setUploadLoading(false)
         onOk();
       }
 
-      let failedCallback = (err?: any,msg?:any) => {
-        Message.error(msg||'上传失败');
+      let failedCallback = (err?: any, msg?: any) => {
+        Message.error(msg || '上传失败');
         setUploadLoading(false)
       }
 
@@ -128,12 +132,13 @@ export default function NewNursingRulesAddModal(props: Props) {
         // data.append('id', params.id);
         api.update({
           id: params.id,
-          fileName: formData.fileName
+          fileName: formData.fileName,
+          catalog: formData.catalog
         }).then(res => {
           if (res.code == 200)
-            successCallback(null,'修改成功')
+            successCallback(null, '修改成功')
           else
-            failedCallback(null,'修改失败')
+            failedCallback(null, '修改失败')
         }, err => {
           failedCallback(err)
         })
@@ -190,6 +195,16 @@ export default function NewNursingRulesAddModal(props: Props) {
             </Form.Field>
           </span>
         </div>
+        <div className="row">
+          <span className="label">目录:</span>
+          <span className="content">
+            <Form.Field name="catalog">
+              <Select className="ipt">
+                {catalogList.map((item: any) => <Select.Option value={item.catalog} key={item.id}>{item.catalog}</Select.Option>)}
+              </Select>
+            </Form.Field>
+          </span>
+        </div>
         <div className="row" style={{ display: `${params.id ? 'none' : 'flex'}` }}>
           <span className="label">文件上传:</span>
           <span className="content">
@@ -216,7 +231,7 @@ const ModalContent = styled.div`
     }
     .content{
       .ipt{
-        width:260px;
+        width:260px!important;
       }
       input,button,.ant-select{
         vertical-align: middle;
