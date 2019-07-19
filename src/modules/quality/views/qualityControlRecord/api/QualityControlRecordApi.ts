@@ -45,8 +45,8 @@ export default class QualityControlRecordApi extends BaseApiService {
   }
   //质控记录单列表实例详情
   public async qcItemInstanceGet() {
-    let id = 2
-    return this.get(` /qcItem/instance/get/${id}`)
+    let id = 63
+    return this.get(`/qcItem/instance/get/${id}`)
   }
 }
 
