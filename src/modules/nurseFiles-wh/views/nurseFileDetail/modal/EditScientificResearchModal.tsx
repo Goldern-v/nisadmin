@@ -91,7 +91,7 @@ export default function EditPersonWinningModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
@@ -105,28 +105,28 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`属于单位`} name='grantUnit' required>
+            <Form.Field label={`属于单位`} name='grantUnit'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`授予时间`} name='grantDate' required>
+            <Form.Field label={`授予时间`} name='grantDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`奖励级别`} name='winningLevel' required>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级']} />
+            <Form.Field label={`奖励级别`} name='winningLevel'>
+              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`奖励名称`} name='winningName' required>
+            <Form.Field label={`奖励名称`} name='winningName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'上传获奖证书扫描件'} />
             </Form.Field>
           </Col>
         </Row>

@@ -56,7 +56,7 @@ export default function qualityControlRecordTable() {
       <TableScrollCon>
         <TableCon>
           <BaseTable
-            surplusHeight={255}
+            surplusHeight={305}
             loading={loading}
             dataSource={dataSource}
             columns={columns}

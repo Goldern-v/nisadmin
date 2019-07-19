@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message ,AutoComplete} from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
@@ -71,7 +71,7 @@ export default function EditSpecializNurseModal(props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (refForm.current && visible) refForm!.current!.clean() 
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
@@ -91,7 +91,7 @@ export default function EditSpecializNurseModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
@@ -111,7 +111,7 @@ export default function EditSpecializNurseModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`专科护士级别`} name='nurseLevel'>
-            <AutoComplete dataSource={['国际','国家','省级','市级','院级']} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -121,7 +121,7 @@ export default function EditSpecializNurseModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'上传专科护士证书扫描件'} />
             </Form.Field>
           </Col>
         </Row>

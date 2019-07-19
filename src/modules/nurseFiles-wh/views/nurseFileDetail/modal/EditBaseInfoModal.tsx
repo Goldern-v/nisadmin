@@ -123,6 +123,7 @@ export default function EditWorkHistoryModal(props: Props) {
       onOk={onSave}
       okText='保存'
       forceRender
+      centered
     >
       <Form ref={refForm} labelWidth={200} onChange={onFieldChange} rules={rules}>
         <Row>

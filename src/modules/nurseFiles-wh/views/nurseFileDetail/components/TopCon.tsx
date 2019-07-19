@@ -34,6 +34,10 @@ export default observer(function TopCon() {
       store.appStore.history.replace(store.appStore.match.url + '?' + qs.stringify(res.data))
     })
   }
+
+  useEffect(() => {
+    nurseFileDetailViewModal.init()
+  }, [])
   return (
     <Wrapper>
       <BreadcrumbCon>
@@ -140,6 +144,6 @@ const ClickSpan = styled.span`
 
 const DeptChangeBtn = styled(Button)`
   position: absolute !important;
-  right: 20px;
+  right: 15px;
   top: 34px;
 `

@@ -6,19 +6,27 @@ import QualityControlRecord from './views/qualityControlRecord/QualityControlRec
 import QueryStatistics from './views/queryStatistics/QueryStatistics'
 import Analysis from './views/analysis/Analysis'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
+
+import { ReactComponent as CXTJ } from './images/查询统计.svg'
+import { ReactComponent as FXBG } from './images/分析报告.svg'
+import { ReactComponent as ZKJL } from './images/质控记录.svg'
+
 const LEFT_MENU_CONFIG = [
   {
     title: '质控记录',
+    icon: <ZKJL />,
     path: '/quality/qualityControlRecord',
     component: QualityControlRecord
   },
   {
     title: '查询统计',
+    icon: <CXTJ />,
     path: '/quality/queryStatistics',
     component: QueryStatistics
   },
   {
     title: '分析报告',
+    icon: <FXBG />,
     path: '/quality/analysis',
     component: Analysis
   }

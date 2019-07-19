@@ -57,8 +57,8 @@ export default observer(function PersonWinning() {
     },
     {
       title: '参与排名',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'goRank',
+      key: 'goRank',
       width: 120,
       align: 'center'
     },
@@ -178,7 +178,7 @@ export default observer(function PersonWinning() {
                     },
                     {
                       课题主持人工号: `hostNo`,
-                      参与排名: ``
+                      参与排名: `goRank`
                     },
                     {
                       课题来源: `courseSource`,
@@ -230,7 +230,7 @@ export default observer(function PersonWinning() {
 
   return (
     <BaseLayout title='参与科研课题' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={265} surplusWidth={250} type={['spaceRow']} />
       <editJoinScientificModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

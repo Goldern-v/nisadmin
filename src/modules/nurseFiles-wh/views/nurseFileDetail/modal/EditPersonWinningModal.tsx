@@ -92,7 +92,7 @@ export default function EditPersonWinningModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
@@ -117,7 +117,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'获奖证书扫描件'} />
             </Form.Field>
           </Col>
         </Row>

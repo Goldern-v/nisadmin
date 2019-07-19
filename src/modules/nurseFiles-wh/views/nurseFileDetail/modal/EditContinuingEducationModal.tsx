@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -81,6 +82,7 @@ export default function EditPersonWinningModal(props: Props) {
         projectPerson: data.projectPerson,
         projectNumber: data.projectNumber,
         personTotal: data.personTotal,
+        projectName: data.projectName,
         projectLevel: data.projectLevel,
         schoolArea: data.schoolArea,
         personTitleArea: data.personTitleArea,
@@ -88,18 +90,18 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改个人获奖')
+      setTitle('修改继续教育')
     } else if (signShow === '添加') {
-      setTitle('添加继续教育信息')
+      setTitle('添加继续教育')
     }
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`年份`} name='year' required>
+            <Form.Field label={`年份`} name='year'>
               <YearPicker />
             </Form.Field>
           </Col>
@@ -109,7 +111,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`项目名称`} name=''>
+            <Form.Field label={`项目名称`} name='projectName'>
               <Input />
             </Form.Field>
           </Col>
@@ -119,8 +121,8 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`项目级别`} name=''>
-              <Input />
+            <Form.Field label={`项目级别`} name='projectLevel'>
+              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -129,7 +131,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学员总数`} name='projectLevel'>
+            <Form.Field label={`学员总数`} name=''>
               <Input />
             </Form.Field>
           </Col>
@@ -145,7 +147,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'审批报告盖章签字后的扫描件'} />
             </Form.Field>
           </Col>
         </Row>

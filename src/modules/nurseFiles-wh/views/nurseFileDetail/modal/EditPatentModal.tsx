@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -90,7 +91,7 @@ export default function EditPatentModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
@@ -99,34 +100,34 @@ export default function EditPatentModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专利号`} name='patentNumber' required>
+            <Form.Field label={`专利号`} name='patentNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证单位`} name='cardUnit' required>
+            <Form.Field label={`发证单位`} name='cardUnit'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`发证时间`} name='cardDate' required>
+            <Form.Field label={`发证时间`} name='cardDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专利类型`} name='patentType' required>
-              <Input />
+            <Form.Field label={`专利类型`} name='patentType'>
+              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`是否成果转化`} name='isResultTransfor' required>
+            <Form.Field label={`是否成果转化`} name='isResultTransfor'>
               <Input />
             </Form.Field>
           </Col>
 
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'上传专利证书扫描件'} />
             </Form.Field>
           </Col>
         </Row>
