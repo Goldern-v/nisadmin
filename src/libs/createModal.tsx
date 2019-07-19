@@ -49,22 +49,22 @@ interface WrapperState<I> {
 }
 
 /** 创建模态窗口 */
-export default function createModal<O = any, I extends ModalComponentProps<O> = any> (
+export default function createModal<O = any, I extends ModalComponentProps<O> = any>(
   OriginalComponent: ModalComponentType<O, I>
 ) {
   let instance: any = null
 
   return {
-    show (props?: ModalOwnProps<I>, callback?: ModalCallback<O>) {
+    show(props?: ModalOwnProps<I>, callback?: ModalCallback<O>) {
       if (instance) instance.show(props, callback)
     },
-    hide () {
+    hide() {
       if (instance) instance.hide()
     },
     Component: class extends React.Component<any, WrapperState<I>> {
       private callback?: ModalCallback<O>
 
-      public constructor (props: any) {
+      public constructor(props: any) {
         super(props)
 
         if (instance) {
@@ -126,7 +126,7 @@ export default function createModal<O = any, I extends ModalComponentProps<O> = 
       }
 
       // 渲染，传入状态和事件
-      public render () {
+      public render() {
         const { visible, input } = this.state
         const props: any = { ...this.props, visible, onHide: this.hide }
         return (

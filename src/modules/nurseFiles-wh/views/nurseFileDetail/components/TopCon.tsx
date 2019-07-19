@@ -34,6 +34,10 @@ export default observer(function TopCon() {
       store.appStore.history.replace(store.appStore.match.url + '?' + qs.stringify(res.data))
     })
   }
+
+  useEffect(() => {
+    nurseFileDetailViewModal.init()
+  }, [])
   return (
     <Wrapper>
       <BreadcrumbCon>

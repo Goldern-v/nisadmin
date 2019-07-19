@@ -53,8 +53,15 @@ export default function BaseTable(props: Props) {
   }
   try {
     if (option.type.includes('spaceRow')) {
+      /** 根据表格高度计算空白行 */
+
+      let defaultSpaceRow = 10
+      if (option.surplusHeight) {
+        defaultSpaceRow = (wih - option.surplusHeight) / 30 - 1
+      }
+
       /** 设置空行 */
-      let spaceRowNumber = props.spaceRowNumber || 10
+      let spaceRowNumber = props.spaceRowNumber || defaultSpaceRow
       if (option.dataSource.length < spaceRowNumber) {
         while (option.dataSource.length < spaceRowNumber) {
           option.dataSource.push({ [option.rowKey || 'key']: option.dataSource.length })
