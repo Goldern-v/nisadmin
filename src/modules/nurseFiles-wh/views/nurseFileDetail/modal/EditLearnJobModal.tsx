@@ -79,8 +79,8 @@ export default function EditLearnJobModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          startDate: moment(data.startDate),
-          endDate: moment(data.endDate),
+          startDate: data.startDate ? moment(data.startDate) : null,
+          endDate: data.endDate ? moment(data.endDate) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
@@ -120,7 +120,7 @@ export default function EditLearnJobModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`学会级别`} name='learnLevel'>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
 

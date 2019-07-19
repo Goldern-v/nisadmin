@@ -167,10 +167,12 @@ export default function EditWorkHistoryModal(props: Props) {
           <Col span={12}>
             <Form.Field label={`性别`} name='sex'>
               <Select>
-                <Option value='0'>男</Option>
-                <Option value='1'>女</Option>
+                {nurseFileDetailViewModal.getDict('性别').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
-              {/* <AutoComplete dataSource={['男', '女']} /> */}
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -272,17 +274,23 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`初始学历`} name='initialEducation'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('初始学历').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`最高学历`} name='highestEducation'>
               <Select>
-                <Option value='中专'>中专</Option>
-                <Option value='大专'>大专</Option>
-                <Option value='本科'>本科</Option>
-                <Option value='硕士'>硕士</Option>
-                <Option value='博士'>博士</Option>
+                {nurseFileDetailViewModal.getDict('最高学历类型').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Field>
           </Col>
@@ -298,7 +306,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`职务`} name='job'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('职务').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -318,12 +326,24 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`技术职称（医院聘用为准）`} name='newTitle'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('技术职称').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`工作编制`} name='workConversion'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('工作编制').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -333,7 +353,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`院内工作地点`} name='workAddress'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('院内工作地点').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -343,7 +363,13 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`层级`} name='nurseHierarchy'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('层级').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -368,7 +394,9 @@ export default function EditWorkHistoryModal(props: Props) {
               {/* <ImageUploader upload={uploadCard} text='添加执业证书图片' /> */}
               <MultipleImageUploader
                 text='添加图片'
-                tip={'上传执业资格证书图片，从第一个卫生部盖章页至最末次延续注册盖章页至'}
+                tip={
+                  '1.上传执业资格证书图片，从第一个卫生部盖章页至最末次延续注册盖章页; 2.上传最高学历毕业证书; 3.上传最高学历学位证书扫描件; 4.上传现考取的职称资格证书扫描件，封面页和有名称页共2页'
+                }
               />
             </Form.Field>
           </Col>

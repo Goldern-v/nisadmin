@@ -84,10 +84,10 @@ export default function EditJoinScientificModal(props: Props) {
         goRank: data.goRank,
         approvalNumber: data.approvalNumber,
         registerNumber: data.registerNumber,
-        startDate: moment(data.startDate),
-        endDate: moment(data.endDate),
+        startDate: data.startDate ? moment(data.startDate) : null,
+        endDate: data.endDate ? moment(data.endDate): null,
         completion: data.completion,
-        completionDate: moment(data.completionDate),
+        completionDate: data.completionDate ? moment(data.completionDate) : null,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -129,7 +129,7 @@ export default function EditJoinScientificModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`课题级别`} name='courseLevel'>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
+            <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

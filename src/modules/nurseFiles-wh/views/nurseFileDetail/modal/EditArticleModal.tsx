@@ -77,15 +77,15 @@ export default function EditArticleModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          publicYear: moment(data.publicYear),
+          publicYear: data.publicYear ? moment(data.publicYear) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
     }
     if (signShow === '修改') {
-      setTitle('修改所获奖励')
+      setTitle('修改文章')
     } else if (signShow === '添加') {
-      setTitle('添加所获奖励')
+      setTitle('添加文章')
     }
   }, [visible])
 

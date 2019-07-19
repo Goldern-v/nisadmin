@@ -77,7 +77,7 @@ export default function EditPersonWinningModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         // publicYear: moment(data.publicYear),
-        winningYear: moment(data.winningYear),
+        winningYear: data.winningYear ? moment(data.winningYear) : null,
         winningName: data.winningName,
         winningType: data.winningType,
         winningLevel: data.winningLevel,
