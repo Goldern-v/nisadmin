@@ -54,15 +54,15 @@ export default function CatalogEditModal(props: Props) {
 
           setEditLoading(true);
           api.saveOrUpdateCatalog(newParams).then(res => {
+            setEditLoading(false);
             let msg = '目录创建成功';
             if (params.id) msg = '目录修改成功'
 
             Message.success(msg)
             onOk();
+          },err=>{
+            setEditLoading(false);
           })
-            .finally(() => {
-              setEditLoading(false);
-            })
         }
       })
         .catch(e => {

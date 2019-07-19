@@ -51,10 +51,11 @@ export default observer(function NursingRulesTypeSetting() {
 
     setTableLoading(true);
     api.saveOrUpdateCatalog(newArr[index]).then(res => {
-      if (res.code == '200') Message.success('修改成功');
-    }).finally(() => {
       setTableLoading(false);
-    });
+      if (res.code == '200') Message.success('修改成功');
+    }, err => {
+      setTableLoading(false)
+    })
   }
 
   const handleOpenEdit = (record: any) => {
@@ -121,13 +122,13 @@ export default observer(function NursingRulesTypeSetting() {
   const getCatalog = () => {
     setTableLoading(true);
     api.getCatalogByType(type).then(res => {
+      setTableLoading(false);
       if (res.data instanceof Array) {
         setCatalog(res.data)
       }
+    }, err => {
+      setTableLoading(false);
     })
-      .finally(() => {
-        setTableLoading(false);
-      })
   }
 
   const handleAdd = () => {

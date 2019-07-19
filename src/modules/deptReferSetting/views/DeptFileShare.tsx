@@ -165,12 +165,14 @@ export default function DeptFileShare() {
 
     api.getList(query)
       .then(res => {
+        setTableLoading(false)
         if (res.data) {
           setDataTotal(res.data.totalCount || 0);
           setTableData(res.data.list);
         }
+      }, err => {
+        setTableLoading(false)
       })
-      .finally(() => setTableLoading(false))
   }
 
   return <Wrapper>

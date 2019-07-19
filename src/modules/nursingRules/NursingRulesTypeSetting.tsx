@@ -53,9 +53,9 @@ export default observer(function NursingRulesTypeSetting() {
     setTableLoading(true)
     api.getType()
       .then(res => {
+        setTableLoading(false)
         if (res.data instanceof Array) setTableData(res.data)
-      })
-      .finally(() => {
+      }, err => {
         setTableLoading(false)
       })
   }
