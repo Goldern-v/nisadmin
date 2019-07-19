@@ -148,12 +148,13 @@ export default observer(function ViewOrAuditModal(props: Props) {
     // return console.log(params)
 
     api.refuseBorrow(params).then(res => {
+      setRefuseLoading(false)
       if (res.code == 200) {
         Message.success('审核操作成功')
         setRefuseModalVisible(false)
         onCancel && onCancel(true);
       }
-    }).finally(() => {
+    },err=>{
       setRefuseLoading(false)
     })
   }
@@ -211,14 +212,15 @@ export default observer(function ViewOrAuditModal(props: Props) {
     setAllowLoading(true);
 
     api.allowBorrow(params).then(res => {
+      setRefuseLoading(false)
       if (res.code == 200) {
         Message.success('审核操作成功');
         setAllowModalVisible(false);
         onCancel && onCancel(true);
       }
-    }).finally(() => {
-      setAllowLoading(false);
-    });
+    },err=>{
+      setRefuseLoading(false)
+    })
   }
 
   const handleAllowCancel = () => {
