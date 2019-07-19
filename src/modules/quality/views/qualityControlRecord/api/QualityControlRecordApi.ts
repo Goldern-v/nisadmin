@@ -22,6 +22,32 @@ export default class QualityControlRecordApi extends BaseApiService {
     })
     return this.post(`/auditeNurseList/getByFormCodePC`, this.stringify(obj))
   }
+  // 质控表单字典
+  public async dictTemplate() {
+    return this.get(`/qcItem/dict/template`)
+  }
+  // 字典：质控表流程状态
+  public async dictChainNode() {
+    return this.get(`/qcItem/dict/chainNode`)
+  }
+  // 质控记录单列表
+  public async instanceGetPageByCondition() {
+    let postData = {
+      pageIndex: 1,
+      pageSize: 10,
+      wardCode: '',
+      qcCode: '',
+      nodeCode: '',
+      beginDate: '',
+      endDate: ''
+    }
+    return this.post(`/qcItem/instance/getPageByCondition`, postData)
+  }
+  //质控记录单列表实例详情
+  public async qcItemInstanceGet() {
+    let id = 63
+    return this.get(`/qcItem/instance/get/${id}`)
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()

@@ -144,6 +144,6 @@ const ClickSpan = styled.span`
 
 const DeptChangeBtn = styled(Button)`
   position: absolute !important;
-  right: 20px;
+  right: 15px;
   top: 34px;
 `

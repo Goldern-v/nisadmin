@@ -4,10 +4,15 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import store from 'src/stores'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import PaginationCon from './PaginationCon'
+// import PaginationCon from './PaginationCon'
 import qs from 'qs'
+import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
 export default observer(function qualityControlRecordTable() {
   let [loading, setLoading] = useState(false)
+  let [tableData, setTableData]: any = useState([])
+  let [total, setTotal] = useState(50)
+  let [current, setCurrent] = useState(1)
+  let [pageSize, setPageSize] = useState(10)
   const columns: any[] = [
     {
       title: '序号',
@@ -26,7 +31,7 @@ export default observer(function qualityControlRecordTable() {
     },
     {
       title: '质控日期',
-      dataIndex: 'zkrq',
+      dataIndex: 'followEvaluateDate',
       key: '',
       width: 120,
       align: 'center'
@@ -176,7 +181,9 @@ export default observer(function qualityControlRecordTable() {
       zt: '待病区处理'
     }
   ]
-
+  useEffect(() => {
+    qualityControlRecordApi.instanceGetPageByCondition().then((res) => {})
+  }, [])
   const onDoubleClick = (record: any) => {
     // appStore.history.push('/continuingEduEmpDetail')
     appStore.history.push(`/qualityControlRecordDetail/${record.zyh}`)
@@ -187,17 +194,24 @@ export default observer(function qualityControlRecordTable() {
       <TableScrollCon>
         <TableCon>
           <BaseTable
-            surplusHeight={235}
+            surplusHeight={205}
+            // surplusHeight={135}
             loading={loading}
             dataSource={dataSource}
             columns={columns}
             surplusWidth={160}
-            // surplusHeight={currentRoute.surplusHeight || 250}
-            // surplusWidth={currentRoute.surplusWidth || 0}
             onRow={(record: any) => {
               return {
                 onDoubleClick: () => onDoubleClick(record)
               }
+            }}
+            pagination={{
+              total: total,
+              current: current,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              pageSizeOptions: ['10', '15', '20'],
+              pageSize: pageSize
             }}
           />
         </TableCon>

@@ -5,22 +5,27 @@ import QualityControlRecordHeader from './components/QualityControlRecordHeader'
 import QualityControlRecordTable from './components/QualityControlRecordTable'
 import PaginationCon from './components/PaginationCon'
 import { Pagination } from 'antd'
+import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
 export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
 let rowNum: number = 5
 export default function QualityControlRecord() {
+  const testClick = () => {
+    qualityControlRecordApi.instanceGetPageByCondition()
+    console.log('5555555')
+  }
   return (
     <Wrapper>
       <HeaderCon>
         <QualityControlRecordHeader />
+        {/* <button onClick={testClick}>fffff</button> */}
       </HeaderCon>
       <MidCon>
         <QualityControlRecordTable />
       </MidCon>
-      <PaginationContent>
+      {/* <PaginationContent>
         <PaginationCon rowNum={rowNum} />
-      </PaginationContent>
-      {/* dfdfd */}
+      </PaginationContent> */}
     </Wrapper>
   )
 }
@@ -46,8 +51,8 @@ const MidCon = styled.div`
   /* padding: 20px; */
   /* padding-top: 10px; */
 `
-const PaginationContent = styled.div`
-  /* margin-top: 30px; */
-  /* height: 280px; */
-  padding: 15px 30px;
-`
+// const PaginationContent = styled.div`
+//   /* margin-top: 30px; */
+//   /* height: 280px; */
+//   padding: 15px 30px;
+// `

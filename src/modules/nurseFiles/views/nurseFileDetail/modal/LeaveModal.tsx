@@ -22,8 +22,9 @@ export interface Props extends ModalComponentProps {
   callback?: () => void
 }
 const rules: Rules = {
-  date: (val) => !!val || '请填写调动时间',
-  deptCodeNew: (val) => !!val || '请选择新科室'
+  empName: (val) => !!val || '请填写变动人员',
+  leaveDate: (val) => !!val || '请填写变动日期',
+  status: (val) => !!val || '请选择变动状态'
 }
 export default function LeaveModal(props: Props) {
   const [title, setTitle] = useState('人员变动')
@@ -37,10 +38,11 @@ export default function LeaveModal(props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-    value.date && (value.date = value.date.format('YYYY-MM-DD'))
-    nurseFilesService.updateDeptCode({ ...value }).then((res: any) => {
-      message.success('保存成功')
-      props.callback && props.callback()
+    value.leaveDate && (value.leaveDate = value.leaveDate.format('YYYY-MM-DD'))
+    nurseFilesService.updateNurseLeave({ ...value }).then((res: any) => {
+      message.success('操作成功')
+      appStore.history.push('/nurseFilesList')
+      // props.callback && props.callback()
       onCancel()
     })
   }
@@ -50,12 +52,11 @@ export default function LeaveModal(props: Props) {
     /** 如果是修改 */
     if (info && refForm.current && visible) {
       refForm!.current!.setFields({
-        date: moment(),
-        deptCodeOld: info.deptCode,
-        deptCodeNameOld: info.deptName,
-        deptCodeNew: '',
-        job: info.job,
-        empNo: info.empNo
+        empNo: info.empNo,
+        empName: info.empName,
+        leaveDate: null,
+        status: null,
+        remark: ''
       })
     }
   }, [visible])
@@ -70,12 +71,12 @@ export default function LeaveModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`日期`} name='date'>
+            <Form.Field label={`日期`} name='leaveDate' required>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`状态`} name='deptCodeNameOld'>
+            <Form.Field label={`状态`} name='status' required>
               <Radio.Group>
                 <Radio value={'离职'}>离职</Radio>
                 <Radio value={'退休'}>退休</Radio>
@@ -83,7 +84,7 @@ export default function LeaveModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`备注`} name='deptCodeNameOld'>
+            <Form.Field label={`备注`} name='remark'>
               <Input.TextArea rows={4} />
             </Form.Field>
           </Col>

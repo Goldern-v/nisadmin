@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { DatePicker } from './vendors/antd'
 import YearPicker from './components/YearPicker'
+import { formatIdCord } from './utils/idCard/idCard'
 
 export interface Props extends RouteComponentProps {
   style: any
@@ -10,7 +11,7 @@ export interface Props extends RouteComponentProps {
 
 export default function demo(props: Props) {
   const [ifh, setIfh] = useState(1000)
-
+  console.log(formatIdCord('44081119950313033x'))
   const onScroll = (e: any) => {
     e.persist()
     if (e.target.offsetHeight - e.target.scrollTop < 1000 && ifh - e.target.scrollTop < 1000) {

@@ -256,6 +256,10 @@ export default class NurseFilesService extends BaseApiService {
   public updateDeptCode(obj: any) {
     return this.post(`/nurseInformation/updateDeptCode`, obj)
   }
+  /** 离职/退休 */
+  public updateNurseLeave(obj: any) {
+    return this.post(`/nurseInformation/updateNurseLeave`, obj)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService()

@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -92,9 +93,9 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改个人获奖')
+      setTitle('修改主持课题名称')
     } else if (signShow === '添加') {
-      setTitle('添加个人获奖')
+      setTitle('添加主持课题名称')
     }
   }, [visible])
 
@@ -103,7 +104,7 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`主持课题名称`} name='name' required>
+            <Form.Field label={`主持课题名称`} name='name'>
               <Input />
             </Form.Field>
           </Col>
@@ -113,48 +114,48 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题级别`} name='courseLevel' required>
+            <Form.Field label={`课题级别`} name='courseLevel'>
+              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`承担单位`} name='unit'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`承担单位`} name='unit' required>
+            <Form.Field label={`课题批文号`} name='approvalNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课题批文号`} name='approvalNumber' required>
+            <Form.Field label={`登记号`} name='registerNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`登记号`} name='registerNumber' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`开始时间`} name='startDate' required>
+            <Form.Field label={`开始时间`} name='startDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`结束时间`} name='endDate' required>
+            <Form.Field label={`结束时间`} name='endDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`完成情况`} name='courseCompletion' required>
+            <Form.Field label={`完成情况`} name='courseCompletion'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`立项/结题/验收/鉴定时间`} name='completionDate' required>
+            <Form.Field label={`立项/结题/验收/鉴定时间`} name='completionDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'上传课题批文扫描件'} />
             </Form.Field>
           </Col>
         </Row>
