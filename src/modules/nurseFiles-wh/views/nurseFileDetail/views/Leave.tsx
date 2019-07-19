@@ -52,7 +52,7 @@ export default observer(function Leave() {
       title: '出生日期',
       dataIndex: 'birthday',
       key: 'birthday',
-      width: 90,
+      width: 120,
       align: 'center'
     },
     {
@@ -66,14 +66,14 @@ export default observer(function Leave() {
       title: '取得护士执业资格证书时间并从事护理岗位时间',
       dataIndex: 'zyzsDate',
       key: 'zyzsDate',
-      width: 90,
+      width: 200,
       align: 'center'
     },
     {
       title: '离职时间',
       dataIndex: 'leaveDate',
       key: 'leaveDate',
-      width: 90,
+      width: 120,
       align: 'center'
     },
     {

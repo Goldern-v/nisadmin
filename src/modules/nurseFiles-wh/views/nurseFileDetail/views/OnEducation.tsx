@@ -38,49 +38,49 @@ export default observer(function PersonWinning() {
       title: '进修专业',
       dataIndex: 'studyMajor',
       key: 'studyMajor',
-      width: 120,
+      width: 100,
       align: 'center'
     },
     {
       title: '进修单位',
       dataIndex: 'unit',
       key: 'unit',
-      width: 90,
+      width: 80,
       align: 'center'
     },
     {
       title: '进修单位所属地',
       dataIndex: 'unitLocal',
       key: 'unitLocal',
-      width: 90,
+      width: 110,
       align: 'center'
     },
     {
       title: '进修开始时间',
       dataIndex: 'startDate',
       key: 'winningYear',
-      width: 90,
+      width: 100,
       align: 'center'
     },
     {
       title: '进修结束时间',
       dataIndex: 'endDate',
       key: 'endDate',
-      width: 90,
+      width: 100,
       align: 'center'
     },
     {
       title: '进修时长',
       dataIndex: 'studyHour',
       key: 'studyHour',
-      width: 90,
+      width: 80,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
       key: 'fj',
-      width: 80,
+      width: 70,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>

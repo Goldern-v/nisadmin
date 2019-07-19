@@ -52,7 +52,7 @@ export default observer(function Patent() {
       title: '发证单位',
       dataIndex: 'cardUnit',
       key: 'cardUnit',
-      width: 200,
+      width: 120,
       align: 'center'
     },
     {
@@ -73,7 +73,7 @@ export default observer(function Patent() {
       title: '是否成果转化',
       dataIndex: 'isResultTransfor',
       key: 'isResultTransfor',
-      width: 90,
+      width: 110,
       align: 'center'
     },
     {

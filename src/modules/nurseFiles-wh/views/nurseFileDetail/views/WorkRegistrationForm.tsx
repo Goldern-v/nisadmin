@@ -37,42 +37,42 @@ export default observer(function WorkRegistrationForm() {
       title: '年度',
       dataIndex: 'year',
       key: '2',
-      width: 70,
+      width: 100,
       align: 'center'
     },
     {
       title: '夜班',
       dataIndex: 'nightShift',
       key: '3',
-      width: 70,
+      width: 80,
       align: 'center'
     },
     {
       title: '查房',
       dataIndex: 'checkOut',
       key: '4',
-      width: 70,
+      width: 80,
       align: 'center'
     },
     {
       title: '护理会诊',
       dataIndex: 'nursingConsultation',
       key: '5',
-      width: 90,
+      width: 80,
       align: 'center'
     },
     {
       title: '病例讨论',
       dataIndex: 'caseDiscussion',
       key: '6',
-      width: 90,
+      width: 80,
       align: 'center'
     },
     {
       title: '个案',
       dataIndex: 'individualCase',
       key: '61',
-      width: 70,
+      width: 80,
       align: 'center'
     },
     {
@@ -86,14 +86,14 @@ export default observer(function WorkRegistrationForm() {
       title: '带教',
       dataIndex: 'teaching',
       key: '带教',
-      width: 70,
+      width: 80,
       align: 'center'
     },
     {
       title: '证明人',
       dataIndex: 'witness',
       key: '6231',
-      width: 80,
+      width: 100,
       align: 'center'
     },
     {
@@ -101,13 +101,13 @@ export default observer(function WorkRegistrationForm() {
       dataIndex: 'auditedStatusName',
       key: '61231',
       align: 'center',
-      width: 120
+      width: 140
     },
     {
       title: '操作',
       dataIndex: '8',
       key: '8',
-      width: 120,
+      width: 110,
       align: 'center',
       render: (text: any, row: any, index: number) => {
         return (

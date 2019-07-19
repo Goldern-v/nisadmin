@@ -58,7 +58,7 @@ export default observer(function TopCon() {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-      {appStore.isDev && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>}
+      <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
 
       <DeptChangeBtn2 onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn2>
       {nurseFileDetailViewModal.badgeTotal ? (
