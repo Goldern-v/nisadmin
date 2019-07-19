@@ -26,7 +26,6 @@ export default function QualityControlRecord() {
       {/* <PaginationContent>
         <PaginationCon rowNum={rowNum} />
       </PaginationContent> */}
-      {/* dfdfd */}
     </Wrapper>
   )
 }
