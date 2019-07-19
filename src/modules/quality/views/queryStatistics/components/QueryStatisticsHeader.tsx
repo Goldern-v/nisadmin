@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router'
 import { observer } from 'mobx-react-lite'
 import { Button, DatePicker } from 'antd'
 import DeptSelect from 'src/components/DeptSelect'
-
+import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
 export interface Props extends RouteComponentProps {}
 
 export default React.forwardRef(function TopCon(props: any, ref: any) {
@@ -25,7 +25,8 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
       <DeptSelect onChange={onChange} />
 
       <span style={{ margin: '0 3px 0 26px' }}>指控表单:</span>
-      <DeptSelect onChange={onChange} />
+      {/* <DeptSelect onChange={onChange} /> */}
+      <FormSelect />
 
       {/* onClick={() => props.refreshData() */}
       <Button type='primary' style={{ marginLeft: 30 }} onClick={() => {}}>
