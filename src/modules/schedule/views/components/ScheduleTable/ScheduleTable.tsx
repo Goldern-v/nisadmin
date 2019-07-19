@@ -486,6 +486,8 @@ export default function ScheduleTable() {
         empName: nurse.empName || '',
         currentLevel: nurse.currentLevel || '',
         title: nurse.title || '',
+        newTitle: nurse.newTitle || '',
+        nurseHierarchy: nurse.nurseHierarchy || '',
         rangeName1: getRangeObj(nurse.settingDtos, 'rangeName', 0) || '',
         rangeName2: getRangeObj(nurse.settingDtos, 'rangeName', 1) || '',
         rangeName3: getRangeObj(nurse.settingDtos, 'rangeName', 2) || '',

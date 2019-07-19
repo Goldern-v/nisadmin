@@ -96,6 +96,12 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 }
 }
 
+.fullModal {
+  .ant-modal-body {
+    max-height: inherit !important;
+  }
+}
+
 `
 
 export default GlobalStyle

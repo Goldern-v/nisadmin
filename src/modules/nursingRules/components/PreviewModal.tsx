@@ -30,7 +30,16 @@ export default function PreviewModal(props: Props) {
     }
   }
   return (
-    <Modal visible={visible} title={name} width={'900px'} centered onCancel={onClose} footer={null} onOk={onClose}>
+    <Modal
+      visible={visible}
+      title={name}
+      width={'900px'}
+      centered
+      onCancel={onClose}
+      footer={null}
+      onOk={onClose}
+      wrapClassName='fullModal'
+    >
       {visible && Content()}
     </Modal>
   )

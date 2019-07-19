@@ -112,7 +112,7 @@ export default function AduitModal(props: Props) {
             setNeedAudite(true)
           }
           setAuditStatus(data.auditedStatusName)
-          if (props.fileData.length == 0 && data.urlImageOne) {
+          if ((!props.fileData || props.fileData.length == 0) && data.urlImageOne) {
             setFileData(
               data.urlImageOne
                 ? data.urlImageOne.split(',').map((item: any, index: number) => {
@@ -263,6 +263,7 @@ function TimeLineItem(props: any) {
         height: 100%;
         border: 1px solid rgba(204, 204, 204, 1);
         border-radius: 50%;
+        object-fit: cover;
       }
       .icon {
         position: absolute;
