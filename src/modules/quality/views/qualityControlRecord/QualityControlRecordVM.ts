@@ -3,48 +3,38 @@ import { qualityControlRecordApi, NurseQuery } from './api/QualityControlRecordA
 import { authStore } from 'src/stores'
 
 class QualityControlRecordVM {
+  @observable public formSelectCode = ''
+  @observable public formSelectList: any = []
+  @observable public stateSelectCode = ''
+  @observable public stateSelectList: any = []
+  @observable public deptName = ''
   public constructor() {
     /** 监听 */
-    reaction(
-      () => this.filterXl + this.filterZc + this.filterCj + this.filterZw,
-      () => {
-        this.loadNursingList()
-      }
-    )
+    reaction(() => {}, () => {})
   }
   /** 筛选条件 */
   @observable public filterText: string = ''
-  @observable public filterXl: string = '全部'
-  @observable public filterZc: string = '全部'
-  @observable public filterCj: string = '全部'
-  @observable public filterZw: string = '全部'
-  @observable public pageIndex: number = 1
-  @observable public pageSize: number = 10
-  @observable public totalCount: number = 0
-  @observable public listSpinning: boolean = false
-  @observable public nurseList: any = []
-  @observable public isOpenFilter: boolean = true
-
-  @action
-  public loadNursingList = () => {
-    // this.title = newTitle
-    let obj: NurseQuery = {
-      deptCode: authStore.selectedDeptCode /** 部门编码 */,
-      education: this.filterXl /** 学历 */,
-      title: this.filterZc /** 职称 */,
-      currentLevel: this.filterCj /** 能级、层级 */,
-      post: this.filterZw /**  职务  */,
-      pageIndex: this.pageIndex /**  当前页数 */,
-      pageSize: this.pageSize /**   每页页数 */,
-      empName: this.filterText /**   每页页数 */
+  @computed
+  public get getDefaultName() {
+    let formSelectList = [...this.stateSelectList]
+    if (!formSelectList[0]) {
+      formSelectList[0] = {}
     }
-    this.listSpinning = true
-    qualityControlRecordApi.getByFormCodePC(obj).then((res: any) => {
-      this.pageIndex = res.data.pageIndex
-      this.totalCount = res.data.totalCount
-      this.nurseList = res.data.list
-      this.listSpinning = false
-    })
+    if (!formSelectList[0].name) {
+      formSelectList[0].name = '一、基础护理质量评价表'
+    }
+    return formSelectList[0].name
+  }
+  @computed
+  public get getDefaultStateName() {
+    let formSelectList = [...this.formSelectList]
+    if (!formSelectList[0]) {
+      formSelectList[0] = {}
+    }
+    if (!formSelectList[0].name) {
+      formSelectList[0].name = '已提交'
+    }
+    return formSelectList[0].name
   }
 }
 
