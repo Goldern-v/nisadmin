@@ -7,6 +7,10 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 
+import NursingRulesApiService from './api/NursingRulesApiService'
+
+const api = new NursingRulesApiService();
+
 export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingRulesTypeSetting() {
@@ -22,8 +26,8 @@ export default observer(function NursingRulesTypeSetting() {
     },
     {
       title: '护理制度类型',
-      key: 'name',
-      dataIndex: 'name',
+      key: 'type',
+      dataIndex: 'type',
       align: 'left',
     },
     {
@@ -40,16 +44,25 @@ export default observer(function NursingRulesTypeSetting() {
     },
   ];
 
-  const [tableData, setTableData] = useState([
-    {
-      id: 1,
-      name: '护理汇编'
-    },
-    {
-      id: 2,
-      name: '护理规程'
-    }
-  ] as any);
+  const [tableData, setTableData] = useState([] as any);
+  const [tableLoading, setTableLoading] = useState(false);
+
+
+
+  const getTableData = () => {
+    setTableLoading(true)
+    api.getType()
+      .then(res => {
+        if (res.data instanceof Array) setTableData(res.data)
+      })
+      .finally(() => {
+        setTableLoading(false)
+      })
+  }
+
+  useEffect(() => {
+    getTableData()
+  }, [])
 
   return <Wrapper>
     <div className="topbar">
@@ -67,6 +80,7 @@ export default observer(function NursingRulesTypeSetting() {
     </div>
     <div className="main-contain">
       <BaseTable
+        loading={tableLoading}
         columns={columns}
         rowKey="id"
         surplusHeight={215}

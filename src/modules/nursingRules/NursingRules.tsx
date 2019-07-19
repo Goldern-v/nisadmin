@@ -124,7 +124,7 @@ export default class NursingRules extends Component<Props> {
 
     this.setState({
       preview: {
-        url: '/crNursing/nursingInstitution' + record.path,
+        url: '/crNursing/asset/nursingInstitution' + record.path,
         type: record.type,
         title: record.name
       }
