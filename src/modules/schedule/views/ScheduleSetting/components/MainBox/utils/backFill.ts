@@ -62,7 +62,7 @@ export function backFill(settingDtos: any[], weekNum: number) {
   for (let w = 1; w < weekNum + 1; w++) {
     for (let i = 0; i < weeks.length; i++) {
       for (let j = 0; j < keys.length; j++) {
-        obj[weeks[i] + 'Name' + '_' + w + keys[j].key] = keys[j].getValue(settingDtos, w * i)
+        obj[weeks[i] + 'Name' + '_' + w + keys[j].key] = keys[j].getValue(settingDtos, (w - 1) * 7 + i)
       }
     }
   }

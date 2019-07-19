@@ -135,7 +135,7 @@ export default function EditArticleModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'上传封面页、目录页、发表文章首页、封底扫描件'} />
             </Form.Field>
           </Col>
         </Row>
