@@ -39,10 +39,10 @@ export default function DeptFileShare() {
     pageIndex: 1
   } as any)
   useEffect(() => {
-    api.getCatalog().then(res=>{
-      if(res.data)setCatalogList(res.data);
+    api.getCatalog().then(res => {
+      if (res.data) setCatalogList(res.data);
     })
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (query.deptCode) getTableData()
@@ -133,7 +133,8 @@ export default function DeptFileShare() {
   const reUpload = (record: any) => {
     setEditParams({
       id: record.id,
-      fileName: record.fileName
+      fileName: record.fileName,
+      catalog: record.catalog||''
     })
     setEditVisible(true)
   }
