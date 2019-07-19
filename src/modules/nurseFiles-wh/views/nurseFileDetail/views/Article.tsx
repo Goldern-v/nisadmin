@@ -183,7 +183,7 @@ export default observer(function Awards() {
 
   return (
     <BaseLayout title='文章' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editArticleModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

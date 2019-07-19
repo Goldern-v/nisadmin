@@ -32,14 +32,14 @@ export default class NurseFilesService extends BaseApiService {
   // 1查找护士基本信息 护长
   public async nurseInformation(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
-    return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`).then((res) => {
+    return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`).then((res) => {
       nurseFileDetailViewModal.pageSpinning = false
       return res
     })
   }
   // 1-1护士基本信息信息更新
   public async saveOrUpdate(obj: any) {
-    return this.post(`/nurseInformation/saveOrUpdatePC`, obj)
+    return this.post(`/nurseWHInformation/saveOrUpdatePC`, obj)
   }
   // 2 查找护士工作经历 //护长
   public async nurseWorkExperience(empNo: any) {
@@ -301,7 +301,7 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
-   // cy-1 参与科研课题新增或更新(护士)
+  // cy-1 参与科研课题新增或更新(护士)
   public async nurseWHGoScienceCourseSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHGoScienceCourse/saveOrUpdate`, obj)
   }
