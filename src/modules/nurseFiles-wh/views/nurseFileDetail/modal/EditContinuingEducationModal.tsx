@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -89,9 +90,9 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改个人获奖')
+      setTitle('修改继续教育')
     } else if (signShow === '添加') {
-      setTitle('添加继续教育信息')
+      setTitle('添加继续教育')
     }
   }, [visible])
 
@@ -121,7 +122,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`项目级别`} name='projectLevel'>
-              <Input />
+              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -146,7 +147,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader text='添加图片' tip={'审批报告盖章签字后的扫描件'} />
             </Form.Field>
           </Col>
         </Row>

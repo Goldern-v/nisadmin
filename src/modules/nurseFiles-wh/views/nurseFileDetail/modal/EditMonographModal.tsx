@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -90,8 +91,8 @@ export default function EditMonographModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
+      <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`专著名称`} name='monographName'>
@@ -115,12 +116,15 @@ export default function EditMonographModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`参编`} name='participation'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('参编').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
+              <MultipleImageUploader
+                text='添加图片'
+                tip={'上传专著封面页、有自己参编名称一页，有出版号一页、目录页共四页的扫描件'}
+              />
             </Form.Field>
           </Col>
         </Row>

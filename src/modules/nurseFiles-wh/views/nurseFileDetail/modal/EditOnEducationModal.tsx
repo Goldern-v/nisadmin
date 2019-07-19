@@ -108,7 +108,11 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`进修单位所属地`} name='unitLocal' required>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('进修单位').map((item) => (
+                  <Select.Option value={item.code}>{item.name}</Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
