@@ -51,21 +51,21 @@ export default observer(function PersonWinning() {
       title: '项目名称',
       dataIndex: 'projectName',
       key: 'projectName',
-      width: 90,
+      width: 120,
       align: 'center'
     },
     {
       title: '项目号',
       dataIndex: 'projectNumber',
       key: 'projectNumber',
-      width: 90,
+      width: 100,
       align: 'center'
     },
     {
       title: '项目级别',
       dataIndex: 'projectLevel',
       key: 'projectLevel',
-      width: 90,
+      width: 100,
       align: 'center'
     },
     {
@@ -86,14 +86,14 @@ export default observer(function PersonWinning() {
       title: '学院分布区域',
       dataIndex: 'schoolArea',
       key: 'schoolArea',
-      width: 110,
+      width: 120,
       align: 'center'
     },
     {
       title: '学院职称分布',
       dataIndex: 'personTitleArea',
       key: 'personTitleArea',
-      width: 110,
+      width: 120,
       align: 'center'
     },
     {

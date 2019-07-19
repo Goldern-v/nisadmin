@@ -59,7 +59,7 @@ export default observer(function PersonWinning() {
       title: '参与排名',
       dataIndex: 'goRank',
       key: 'goRank',
-      width: 120,
+      width: 90,
       align: 'center'
     },
 
@@ -88,28 +88,28 @@ export default observer(function PersonWinning() {
       title: '课题批文号',
       dataIndex: 'approvalNumber',
       key: 'approvalNumber',
-      width: 90,
+      width: 110,
       align: 'center'
     },
     {
       title: '登记号',
       dataIndex: 'registerNumber',
       key: 'registerNumber',
-      width: 90,
+      width: 80,
       align: 'center'
     },
     {
       title: '开始时间',
       dataIndex: 'startDate',
       key: 'startDate',
-      width: 90,
+      width: 120,
       align: 'center'
     },
     {
       title: '结束时间',
       dataIndex: 'endDate',
       key: 'endDate',
-      width: 90,
+      width: 120,
       align: 'center'
     },
     {
@@ -123,7 +123,7 @@ export default observer(function PersonWinning() {
       title: '立项/结题/验收/鉴定时间',
       dataIndex: 'completionDate',
       key: 'completionDate',
-      width: 90,
+      width: 180,
       align: 'center'
     },
     {
@@ -140,14 +140,14 @@ export default observer(function PersonWinning() {
       title: '状态',
       dataIndex: 'auditedStatusName',
       key: 'auditedStatusName',
-      width: 120,
+      width: 140,
       align: 'center'
     },
     {
       title: '操作',
       dataIndex: '8',
       key: '8',
-      width: 100,
+      width: 110,
       align: 'center',
       render: (text: any, row: any, index: number) => {
         return (
@@ -230,7 +230,7 @@ export default observer(function PersonWinning() {
 
   return (
     <BaseLayout title='参与科研课题' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={265} surplusWidth={250} type={['spaceRow']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editJoinScientificModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

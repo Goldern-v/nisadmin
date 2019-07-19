@@ -84,8 +84,8 @@ const LEFT_MENU_CONFIG = [
     path: '/setting/科室文件共享',
     children: [
       {
-        title: '科室文件共享',
-        path: '/setting/科室文件共享',
+        title: '病区文件',
+        path: '/setting/病区文件',
         component: DeptFileShare
       }
     ]

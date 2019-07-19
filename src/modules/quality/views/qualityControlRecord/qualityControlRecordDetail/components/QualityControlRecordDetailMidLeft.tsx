@@ -1,22 +1,36 @@
 import styled from 'styled-components'
-import React from 'react'
-import { Checkbox, Radio, Icon, Input, Row, Col } from 'antd'
-// import React, { useState, useEffect } from 'react'
+// import React from 'react'
+import { Checkbox, Radio, Icon, Input, Row, Col, Spin } from 'antd'
+import React, { useState, useEffect } from 'react'
 const { TextArea } = Input
-export default function qualityControlRecordDetailMidLeft() {
+export interface Props {
+  detailData: any
+}
+export default function qualityControlRecordDetailMidLeft(props: Props) {
+  let [messageBoxData, setMessageBoxData]: any = useState({})
+  let [itemConData, setItemConData]: any = useState([])
+
   //
-  // useEffect(() => {
-  //
-  // })
+  const { detailData } = props
+  useEffect(() => {
+    if (detailData.master) {
+      setMessageBoxData(detailData.master)
+    }
+    if (detailData.itemGroupList) {
+      setItemConData(detailData.itemGroupList)
+    }
+  }, [props])
+
   const titleBoxChange = (e: any) => {}
   const itemRadioChange = (e: any) => {}
   // 附件
   const itemAttachmentCheck = () => {}
   return (
     <Con>
+      {/* <Spin spinning={false}> */}
       <MessageBox>
         <div className='boxLeft'>
-          <div>质控日期：2019-11-12</div>
+          <div>质控日期：{messageBoxData.evalDate}</div>
           <div>质控病区：神经内科护理单元</div>
           <div>床号：30床</div>
           <div>需要跟踪评价：是</div>
@@ -32,77 +46,46 @@ export default function qualityControlRecordDetailMidLeft() {
         </div>
       </MessageBox>
       <QuestionCon>
-        <div className='titleCon'>
-          <div className='titleLeftCon'>一、组织管理</div>
-          <div className='titleRightCon'>
-            <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
-          </div>
-        </div>
-        <div className='itemCon'>
-          <div className='itemTitleCon'>1-1 病区是否有护理部年度工作计划</div>
-          <div className='itemMidCon'>
-            <Radio.Group onChange={itemRadioChange} defaultValue={3} disabled buttonStyle='solid'>
-              <Radio value={1} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                是
-              </Radio>
-              <Radio value={2} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                否
-              </Radio>
-              <Radio value={3} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                不适用
-              </Radio>
-            </Radio.Group>
-            <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
-              <Icon type='paper-clip' /> 2
+        {itemConData.map((itemGroup: any, itemGroupIndex: number) => (
+          <QuestionItem>
+            <div className='titleCon'>
+              <div className='titleLeftCon'>{itemGroup.qcItemTypeName}</div>
+              <div className='titleRightCon'>
+                <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
+              </div>
             </div>
-          </div>
-        </div>
-        {/* <div className='itemCon'>
-          <div className='itemTitleCon'>1-2 病区是否有护理部年度工作计划</div>
-          <div className='itemMidCon'>
-            <Radio.Group onChange={itemRadioChange} defaultValue={3} disabled buttonStyle='solid'>
-              <Radio value={1} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                是
-              </Radio>
-              <Radio value={2} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                否
-              </Radio>
-              <Radio value={3} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                不适用
-              </Radio>
-            </Radio.Group>
-            <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
-              <Icon type='paper-clip' /> 2
-            </div>
-          </div>
-        </div>
+            {itemGroup.itemList.map((item: any, itemIndex: number) => (
+              <div className='itemCon'>
+                <div className='itemTitleCon'>
+                  {itemGroupIndex + 1}-{itemIndex + 1} {item.qcItemName}
+                </div>
+                <div className='itemMidCon'>
+                  <Radio.Group onChange={itemRadioChange} defaultValue={3} disabled buttonStyle='solid'>
+                    <Radio value={1} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                      是
+                    </Radio>
+                    <Radio value={2} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                      否
+                    </Radio>
+                    <Radio value={3} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                      不适用
+                    </Radio>
+                  </Radio.Group>
+                  <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
+                    <Icon type='paper-clip' /> 2
+                  </div>
+                </div>
+              </div>
+            ))}
 
-        <div className='itemCon'>
-          <div className='itemTitleCon'>1-3 病区是否有护理部年度工作计划</div>
-          <div className='itemMidCon'>
-            <Radio.Group onChange={itemRadioChange} defaultValue={3} disabled buttonStyle='solid'>
-              <Radio value={1} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                是
-              </Radio>
-              <Radio value={2} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                否
-              </Radio>
-              <Radio value={3} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                不适用
-              </Radio>
-            </Radio.Group>
-            <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
-              <Icon type='paper-clip' /> 2
+            <div className='notesCon'>
+              <div className='notesLeftCon'>备注</div>
+              <div className='notesRightCon'>
+                <TextArea rows={4} disabled value='今天是个好天气' />
+              </div>
             </div>
-          </div>
-        </div> */}
-        {/* // */}
-        <div className='notesCon'>
-          <div className='notesLeftCon'>备注</div>
-          <div className='notesRightCon'>
-            <TextArea rows={4} disabled value='今天是个好天气' />
-          </div>
-        </div>
+          </QuestionItem>
+        ))}
         {/* // */}
         <QuestionBottomCon>
           <div className='questionBottomTitle'>问题可能原因</div>
@@ -132,12 +115,13 @@ export default function qualityControlRecordDetailMidLeft() {
           </div>
         </QuestionBottomCon>
       </QuestionCon>
+      {/* </Spin> */}
     </Con>
   )
 }
 
 const Con = styled.div`
-  min-height: 100%;
+  /* height: 100%; */
   width: 100%;
   padding: 10px 20px;
   display: flex;
@@ -165,7 +149,8 @@ const QuestionCon = styled.div`
   flex: 1;
   height: 0;
   font-size: 12px;
-
+`
+const QuestionItem = styled.div`
   .titleCon {
     height: 30px;
     line-height: 30px;

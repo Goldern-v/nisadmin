@@ -41,7 +41,7 @@ export default observer(function StateSelect() {
   return (
     <Wrapper>
       {/* {qualityControlRecordVM.stateSelectCode + '33'} */}
-      <Select defaultValue={defaultFormValue} showSearch style={{ width: 200 }} onChange={onChange}>
+      <Select defaultValue={defaultFormValue} showSearch style={{ width: 150 }} onChange={onChange}>
         {listData.map((item: DeptType) => (
           <Select.Option key={item.code} value={item.code}>
             {item.name}

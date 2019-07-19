@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Button, Modal, message as Message } from 'antd'
-
+import { Button, Modal, message as Message, Select } from 'antd'
+import { Link } from 'react-router-dom'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import DeptSelect from 'src/components/DeptSelect'
@@ -17,6 +17,8 @@ const api = new DeptFielShareService();
 
 export interface Props extends RouteComponentProps { }
 
+const Option = Select.Option
+
 export default function DeptFileShare() {
   const [tableData, setTableData] = useState([] as any)
   const [dataTotal, setDataTotal] = useState(0 as number);
@@ -27,12 +29,20 @@ export default function DeptFileShare() {
 
   const PreviewModalWrapper = createModal(PreviewModal);
 
+  const [catalogList, setCatalogList] = useState([] as any)
+
   const [query, setQuery] = useState({
     deptCode: '',
     fileName: '',
+    catalog: '',
     pageSize: 20,
     pageIndex: 1
   } as any)
+  useEffect(() => {
+    api.getCatalog().then(res => {
+      if (res.data) setCatalogList(res.data);
+    })
+  }, []);
 
   useEffect(() => {
     if (query.deptCode) getTableData()
@@ -65,6 +75,13 @@ export default function DeptFileShare() {
           </div>
         )
       }
+    },
+    {
+      title: '目录',
+      dataIndex: 'catalog',
+      key: 'catalog',
+      align: 'center',
+      width: 180
     },
     {
       title: '上传日期',
@@ -116,7 +133,8 @@ export default function DeptFileShare() {
   const reUpload = (record: any) => {
     setEditParams({
       id: record.id,
-      fileName: record.fileName
+      fileName: record.fileName,
+      catalog: record.catalog||''
     })
     setEditVisible(true)
   }
@@ -178,7 +196,7 @@ export default function DeptFileShare() {
   return <Wrapper>
     <div className="topbar">
       <div className="float-left">
-        <div className="item title">科室文件共享</div>
+        <div className="item title">病区文件</div>
       </div>
       <div className="float-right">
         <div className="item">
@@ -186,6 +204,18 @@ export default function DeptFileShare() {
           <div className="content">
             <DeptSelect onChange={handleDeptChange} />
           </div>
+        </div>
+        <div className="item">
+          <div className="label">目录：</div>
+          <div className="content">
+            <Select value={query.catalog} onChange={(catalog: any) => setQuery({ ...query, catalog })}>
+              <Option value="">全部</Option>
+              {catalogList.map((item: any, index: number) => <Option value={item.catalog} key={item.id}>{item.catalog}</Option>)}
+            </Select>
+          </div>
+        </div>
+        <div className="item link">
+          <Link to="/deptFileShareCatalogSetting">目录设置</Link>
         </div>
         <div className="item">
           <Button onClick={() => getTableData()}>查询</Button>
@@ -212,7 +242,7 @@ export default function DeptFileShare() {
           current: query.pageIndex
         }} />
     </div>
-    <DeptFileEditModal visible={editVisible} params={editParams} onCancel={handleEditCancel} onOk={handleEditOk} />
+    <DeptFileEditModal visible={editVisible} params={editParams} catalogList={catalogList} onCancel={handleEditCancel} onOk={handleEditOk} />
     <PreviewModalWrapper.Component />
   </Wrapper>
 }
@@ -249,6 +279,9 @@ position:relative;
       &.title{
         font-size: 20px;
         font-weight: bold;
+      }
+      &.link{
+        margin-right: 50px;
       }
       &>div{
         display: inline-block;

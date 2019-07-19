@@ -22,13 +22,13 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
       <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
       <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220 }} ref={ref} />
 
-      <span style={{ margin: '0 3px 0 10px' }}>质控科室:</span>
+      <span style={{ margin: '0 3px 0 26px' }}>质控科室:</span>
       <DeptSelect onChange={onChange} />
 
-      <span style={{ margin: '0 3px 0 10px' }}>表单:</span>
+      <span style={{ margin: '0 3px 0 26px' }}>表单:</span>
       {/* <DeptSelect onChange={onChange} /> */}
       <FormSelect />
-      <span style={{ margin: '0 3px 0 10px' }}>状态:</span>
+      <span style={{ margin: '0 3px 0 26px' }}>状态:</span>
       <StateSelect />
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询

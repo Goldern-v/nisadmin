@@ -14,7 +14,16 @@ export default class NursingRulesApiService extends BaseApiService {
   public delete(id: any) {
     return this.get(`/deptShareFile/delete/${id}`);
   }
-  public getFileContent(id: any){
-    return this.post('/deptShareFile/getFileContent',qs.stringify({id}))
+  public getFileContent(id: any) {
+    return this.post('/deptShareFile/getFileContent', qs.stringify({ id }))
+  }
+  public getCatalog() {
+    return this.get('/deptShareFile/getAllCatalog')
+  }
+  public saveOrUpdateCatalog(params: any) {
+    return this.post('/deptShareFile/saveOrUpdateCatalog', params)
+  }
+  public deleteCatalog(id: any) {
+    return this.get(`/deptShareFile/deleteCatalog/${id}`)
   }
 }

@@ -51,7 +51,7 @@ export default observer(function EducationalExperience() {
       title: '毕业学校',
       dataIndex: 'graduationSchool',
       key: '4',
-      width: 120,
+      width: 140,
       align: 'center'
     },
     {
@@ -65,7 +65,7 @@ export default observer(function EducationalExperience() {
       title: '学历',
       dataIndex: 'education',
       key: '6',
-      width: 120,
+      width: 100,
       align: 'center'
     },
     {
