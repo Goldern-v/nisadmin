@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { formatAge } from 'src/utils/idCard/idCard'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -72,6 +73,19 @@ export default function EditLeaveModal(props: Props) {
     })
   }
 
+  /** 自动计算年龄 */
+  const computedAge = () => {
+    if (refForm.current) {
+      let birthday = refForm.current.getField('birthday')
+      if (birthday) {
+        let age = formatAge(birthday.format('YYYY-MM-DD'))
+        if (age > -1) {
+          refForm.current.setField('age', age)
+        }
+      }
+    }
+  }
+
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
@@ -79,9 +93,9 @@ export default function EditLeaveModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          birthday: moment(data.birthday),
-          zyzsDate: moment(data.zyzsDate),
-          leaveDate: moment(data.leaveDate),
+          birthday: data.birthday ? moment(data.birthday) : null,
+          zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
+          leaveDate: data.zyzsDate ? moment(data.leaveDate) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
@@ -108,7 +122,7 @@ export default function EditLeaveModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`出生日期`} name='birthday'>
+            <Form.Field label={`出生日期`} name='birthday' onValueChange={computedAge}>
               <DatePicker />
             </Form.Field>
           </Col>
