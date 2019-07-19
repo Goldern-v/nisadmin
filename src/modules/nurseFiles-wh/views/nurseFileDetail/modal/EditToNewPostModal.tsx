@@ -35,7 +35,7 @@ export default function EditToNewPostModal(props: Props) {
   const [title, setTitle] = useState('')
   const [list, setList] = useState([])
   const [type, setType] = useState('')
-
+  const [oldType, setOldType] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
@@ -43,17 +43,24 @@ export default function EditToNewPostModal(props: Props) {
   const onSelectChange = (value:any) => {
     setType(value)
   }
+  const onSelectChangeOld = (value:any) => {
+    setOldType(value)
+  }
 
   const onSave = async () => {
     let typeName: any = list.filter((item:any) => item.code === type)[0]
+    let oldTypeName: any = list.filter((item:any) => item.code === oldType)[0]
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: '',
       urlImageOne: '',
+      oldDeptCode: oldType,
+      oldDeptName: oldTypeName ? oldTypeName.name : '',
       newDeptCode: type,
-      newDeptName: typeName.name
+      newDeptName: typeName ? typeName.name : ''
     }
+    // console.log(obj,'obj')
     if (authStore!.user!.post == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
     } else if (authStore!.user!.post == '护理部') {
@@ -64,13 +71,14 @@ export default function EditToNewPostModal(props: Props) {
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
+    // console.log(value,'value')
     if (err) return
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
     value.transferDate && (value.transferDate = value.transferDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHTransferPostSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHTransferPostSaveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -84,7 +92,7 @@ export default function EditToNewPostModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         oldDeptName: data.oldDeptName,
-        newDeptCode: data.newDeptCode,
+        newDeptName: data.newDeptName,
         transferDate:moment(data.transferDate),
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
@@ -105,7 +113,17 @@ export default function EditToNewPostModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`原工作科室`} name='oldDeptName'>
-              <Input />
+            <Select
+                value={oldType}
+                onSelect={onSelectChangeOld}
+                placeholder='选择原工作科室'
+              >
+                {list.map((item: any) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -113,8 +131,7 @@ export default function EditToNewPostModal(props: Props) {
             <Select
                 value={type}
                 onSelect={onSelectChange}
-                style={{ width: '72%', height: 40 }}
-                placeholder='选择现在科室'
+                placeholder='选择现工作科室'
               >
                 {list.map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>

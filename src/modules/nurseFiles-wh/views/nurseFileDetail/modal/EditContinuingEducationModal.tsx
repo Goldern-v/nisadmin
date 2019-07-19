@@ -81,6 +81,7 @@ export default function EditPersonWinningModal(props: Props) {
         projectPerson: data.projectPerson,
         projectNumber: data.projectNumber,
         personTotal: data.personTotal,
+        projectName: data.projectName,
         projectLevel: data.projectLevel,
         schoolArea: data.schoolArea,
         personTitleArea: data.personTitleArea,
@@ -99,7 +100,7 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`年份`} name='year' required>
+            <Form.Field label={`年份`} name='year'>
               <YearPicker />
             </Form.Field>
           </Col>
@@ -109,7 +110,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`项目名称`} name=''>
+            <Form.Field label={`项目名称`} name='projectName'>
               <Input />
             </Form.Field>
           </Col>
@@ -119,7 +120,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`项目级别`} name=''>
+            <Form.Field label={`项目级别`} name='projectLevel'>
               <Input />
             </Form.Field>
           </Col>
@@ -129,7 +130,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学员总数`} name='projectLevel'>
+            <Form.Field label={`学员总数`} name=''>
               <Input />
             </Form.Field>
           </Col>

@@ -80,13 +80,13 @@ export default function EditJoinScientificModal(props: Props) {
         name: data.name,
         source: data.source,
         level: data.level,
+        goRank: data.goRank,
         approvalNumber: data.approvalNumber,
         registerNumber: data.registerNumber,
         startDate: moment(data.startDate),
         endDate: moment(data.endDate),
         completion: data.completion,
         completionDate: moment(data.completionDate),
-        // completionDate: data.completionDate,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -117,7 +117,7 @@ export default function EditJoinScientificModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`参与排名`} name=''>
+            <Form.Field label={`参与排名`} name='goRank'>
               <Input />
             </Form.Field>
           </Col>
