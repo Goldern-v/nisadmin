@@ -29,7 +29,7 @@ export default function qualityControlRecordDetail() {
       <MidCon>
         <MidConScrollCon>
           <MidLeftCon>
-            <button onClick={testClick}>testClick</button>
+            {/* <button onClick={testClick}>testClick</button> */}
             <QualityControlRecordDetailMidLeft detailData={detailData} />
           </MidLeftCon>
           <MidRightCon>
