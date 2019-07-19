@@ -134,7 +134,7 @@ export default function DeptFileShare() {
     setEditParams({
       id: record.id,
       fileName: record.fileName,
-      catalog: record.catalog||''
+      catalog: record.catalog || ''
     })
     setEditVisible(true)
   }
@@ -152,9 +152,10 @@ export default function DeptFileShare() {
       onOk: () => {
         api.delete(record.id)
           .then(res => {
-            if (res.code == 200)
+            if (res.code == 200) {
               Message.success('文件删除成功')
-            else
+              getTableData();
+            } else
               Message.error('文件删除失败')
           })
           .catch(err => {
