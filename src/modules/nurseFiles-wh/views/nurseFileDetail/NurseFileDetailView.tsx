@@ -26,6 +26,12 @@ import ScientificResearch from './views/ScientificResearch'
 import Monograph from './views/Monograph'
 import ContinuingEducation from './views/ContinuingEducation'
 import Leave from './views/Leave'
+import PositionChange from './views/PositionChange'
+import RankChange from './views/RankChange'
+import PostChange from './views/PostChange'
+import OrganizationChange from './views/OrganizationChange'
+import { ScrollBox } from 'src/components/common'
+
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -120,7 +126,28 @@ const ROUTE_LIST = [
     type: 'Leave',
     component: Leave,
     name: '离职'
-  }
+  },
+  {
+    type: 'PositionChange',
+    component: PositionChange,
+    name: '职称变动'
+  },
+  {
+    type: 'RankChange',
+    component: RankChange,
+    name: '层级变动'
+  },
+  {
+    type: 'PostChange',
+    component: PostChange,
+    name: '岗位变动'
+  },
+  {
+    type: 'OrganizationChange',
+    component: OrganizationChange,
+    name: '编制变动'
+  },
+
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
@@ -151,13 +178,14 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
-const LeftMenuCon = styled.div`
+const LeftMenuCon = styled(ScrollBox)`
   width: 160px;
   position: relative;
   z-index: 1;
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(228, 228, 228, 1);
+  overflow:auto;
 `
 const MainCon = styled.div`
   flex: 1;

@@ -192,7 +192,7 @@ export default observer(function PersonWinning() {
 
   return (
     <BaseLayout title='继续教育' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

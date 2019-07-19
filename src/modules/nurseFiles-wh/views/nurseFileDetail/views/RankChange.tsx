@@ -3,76 +3,63 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { authStore, appStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import EditEducationalExperienceModal from '../modal/EditEducationalExperienceModal'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+
 import { globalModal } from 'src/global/globalModal'
+import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import EditPersonWinningModal from '../modal/EditPersonWinningModal'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
-export default observer(function EducationalExperience() {
-  const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
+export default observer(function PersonWinning() {
+  const editPersonWinningModal = createModal(EditPersonWinningModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () =>
-        editEducationalExperienceModal.show({
-          signShow: '添加'
-        })
+      onClick: () => editPersonWinningModal.show({ signShow: '添加' })
     }
   ]
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
       dataIndex: '1',
-      key: '1',
+      key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 60
+      width: 55
     },
     {
-      title: '就读时间',
-      dataIndex: 'readTime',
-      key: '2',
+      title: '开始时间',
+      dataIndex: '',
+      key: '',
       width: 120,
       align: 'center'
     },
     {
-      title: '毕业时间',
-      dataIndex: 'graduationTime',
-      key: '3',
+      title: '结束时间',
+      dataIndex: '',
+      key: '',
       width: 120,
       align: 'center'
     },
     {
-      title: '毕业学校',
-      dataIndex: 'graduationSchool',
-      key: '4',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '专业',
-      dataIndex: 'readProfessional',
-      key: '5',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '学历',
-      dataIndex: 'education',
-      key: '6',
-      width: 120,
+      title: '现层级',
+      dataIndex: '',
+      key: '',
+      width: 100,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
-      key: '7',
-      width: 100,
+      key: 'fj',
+      width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
@@ -81,23 +68,23 @@ export default observer(function EducationalExperience() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '8',
+      key: 'auditedStatusName',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '9',
-      key: '9',
-      width: 100,
+      dataIndex: '8',
+      key: '8',
+      width: 90,
       align: 'center',
-      render: (text: any, row: any, index: any) => {
+      render: (text: any, row: any, index: number) => {
         return (
           <DoCon>
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editEducationalExperienceModal.show({ data: row, signShow: '修改' })
+                  editPersonWinningModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -105,24 +92,21 @@ export default observer(function EducationalExperience() {
             ) : (
               ''
             )}
+
             <span
               onClick={() => {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseMedicalEducation',
-                  title: '审核教育经历',
+                  type: 'nurseWHPersonWinning',
+                  title: '审核层级变动信息',
                   tableFormat: [
                     {
-                      就读时间: `readTime`,
-                      毕业时间: `graduationTime`
+                      开始时间: ``,
+                      结束时间: ``
                     },
                     {
-                      毕业学校: `graduationSchool`,
-                      专业: `readProfessional`
-                    },
-                    {
-                      学历: `education`
+                      现层级: ``,
                     }
                   ],
                   fileData: row.urlImageOne
@@ -143,28 +127,20 @@ export default observer(function EducationalExperience() {
       }
     }
   ]
-
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseMedicalEducation(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHPersonWinning(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
   useEffect(() => {
     getTableData()
   }, [])
+
   return (
-    <BaseLayout title='教育经历' btnList={btnList}>
-      <BaseTable
-        dataSource={tableData}
-        columns={columns}
-        surplusHeight={255}
-        type={['spaceRow']}
-        tip={
-          '填写说明：记录专业教育经历，从第一学历至最高学历逐一填写。照片上传务必上传彩色原图、照片内容与学历信息内容一致。'
-        }
-      />
-      <editEducationalExperienceModal.Component getTableData={getTableData} />
+    <BaseLayout title='层级变动' btnList={btnList}>
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
+      <editPersonWinningModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })
