@@ -96,7 +96,7 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>

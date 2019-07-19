@@ -13,15 +13,15 @@ import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import EditPersonWinningModal from '../modal/EditPersonWinningModal'
+import EditPostChangeModal from '../modal/EditPostChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
-  const editPersonWinningModal = createModal(EditPersonWinningModal)
+  const editPostChangeModal = createModal(EditPostChangeModal)
   const btnList = [
     {
       label: '添加',
-      onClick: () => editPersonWinningModal.show({ signShow: '添加' })
+      onClick: () => editPostChangeModal.show({ signShow: '添加' })
     }
   ]
 
@@ -49,7 +49,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '现层级',
+      title: '现岗位',
       dataIndex: '',
       key: '',
       width: 100,
@@ -84,7 +84,7 @@ export default observer(function PersonWinning() {
             {limitUtils(row) ? (
               <span
                 onClick={() => {
-                  editPersonWinningModal.show({ data: row, signShow: '修改' })
+                  editPostChangeModal.show({ data: row, signShow: '修改' })
                 }}
               >
                 修改
@@ -106,7 +106,7 @@ export default observer(function PersonWinning() {
                       结束时间: ``
                     },
                     {
-                      现层级: ``,
+                      现岗位: ``,
                     }
                   ],
                   fileData: row.urlImageOne
@@ -140,7 +140,7 @@ export default observer(function PersonWinning() {
   return (
     <BaseLayout title='岗位变动' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
-      <editPersonWinningModal.Component getTableData={getTableData} />
+      <editPostChangeModal.Component getTableData={getTableData} />
     </BaseLayout>
   )
 })

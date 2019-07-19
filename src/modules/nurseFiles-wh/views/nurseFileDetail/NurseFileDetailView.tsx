@@ -83,26 +83,6 @@ const ROUTE_LIST = [
     name: '科研课题成果'
   },
   {
-    type: 'toNewPost',
-    component: ToNewPost,
-    name: '转岗'
-  },
-  {
-    type: 'workHistory',
-    component: WorkHistory,
-    name: '工作经历'
-  },
-  {
-    type: 'educationalExperience',
-    component: EducationalExperience,
-    name: '教育经历'
-  },
-  {
-    type: 'workRegistrationForm',
-    component: WorkRegistrationForm,
-    name: '在院工作情况'
-  },
-  {
     type: 'patent',
     component: Patent,
     name: '专利'
@@ -126,6 +106,26 @@ const ROUTE_LIST = [
     type: 'Leave',
     component: Leave,
     name: '离职'
+  },
+  {
+    type: 'toNewPost',
+    component: ToNewPost,
+    name: '转岗'
+  },
+  {
+    type: 'workHistory',
+    component: WorkHistory,
+    name: '工作经历'
+  },
+  {
+    type: 'educationalExperience',
+    component: EducationalExperience,
+    name: '教育经历'
+  },
+  {
+    type: 'workRegistrationForm',
+    component: WorkRegistrationForm,
+    name: '在院工作情况'
   },
   {
     type: 'PositionChange',
