@@ -49,8 +49,8 @@ export default observer(function PersonWinning() {
     },
     {
       title: '项目名称',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'projectName',
+      key: 'projectName',
       width: 90,
       align: 'center'
     },
@@ -63,8 +63,8 @@ export default observer(function PersonWinning() {
     },
     {
       title: '项目级别',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'projectLevel',
+      key: 'projectLevel',
       width: 90,
       align: 'center'
     },
@@ -77,8 +77,8 @@ export default observer(function PersonWinning() {
     },
     {
       title: '学员总数',
-      dataIndex: 'projectLevel',
-      key: 'projectLevel',
+      dataIndex: '',
+      key: '',
       width: 90,
       align: 'center'
     },
@@ -147,15 +147,15 @@ export default observer(function PersonWinning() {
                       继续教育项目负责人: `projectPerson`
                     },
                     {
-                      项目名称: ``,
+                      项目名称: `projectName`,
                       项目号: `projectNumber`
                     },
                     {
-                      项目级别: ``,
+                      项目级别: `projectLevel`,
                       课时数: `personTotal`
                     },
                     {
-                      学员总数: `projectLevel`,
+                      学员总数: ``,
                       学院分布区域: `schoolArea`
                     },
                     {

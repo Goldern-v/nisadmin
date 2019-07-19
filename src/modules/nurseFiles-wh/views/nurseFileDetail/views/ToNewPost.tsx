@@ -43,8 +43,8 @@ export default observer(function PersonWinning() {
     },
     {
       title: '现工作科室',
-      dataIndex: 'newDeptCode',
-      key: 'newDeptCode',
+      dataIndex: 'newDeptName',
+      key: 'newDeptName',
       width: 100,
       align: 'center'
     },
@@ -103,7 +103,7 @@ export default observer(function PersonWinning() {
                   tableFormat: [
                     {
                       原工作室: `oldDeptName`,
-                      现工作室: `newDeptCode`
+                      现工作室: `newDeptName`
                     },
                     {
                       转岗时间: `transferDate`,

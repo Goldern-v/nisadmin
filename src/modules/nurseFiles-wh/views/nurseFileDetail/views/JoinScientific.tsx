@@ -57,8 +57,8 @@ export default observer(function PersonWinning() {
     },
     {
       title: '参与排名',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'goRank',
+      key: 'goRank',
       width: 120,
       align: 'center'
     },
@@ -178,7 +178,7 @@ export default observer(function PersonWinning() {
                     },
                     {
                       课题主持人工号: `hostNo`,
-                      参与排名: ``
+                      参与排名: `goRank`
                     },
                     {
                       课题来源: `courseSource`,
