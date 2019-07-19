@@ -31,28 +31,20 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-export default function EditToNewPostModal(props: Props) {
+export default function EditPersonWinningModal(props: Props) {
   const [title, setTitle] = useState('')
-  const [list, setList] = useState([])
-  const [type, setType] = useState('')
 
   let { visible, onCancel, onOk, data, signShow } = props
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
-  const onSelectChange = (value:any) => {
-    setType(value)
-  }
 
   const onSave = async () => {
-    let typeName: any = list.filter((item:any) => item.code === type)[0]
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: '',
-      urlImageOne: '',
-      newDeptCode: type,
-      newDeptName: typeName.name
+      urlImageOne: ''
     }
     if (authStore!.user!.post == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
@@ -68,9 +60,10 @@ export default function EditToNewPostModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.transferDate && (value.transferDate = value.transferDate.format('YYYY-MM-DD'))
+    value.year && (value.year = value.year.format('YYYY'))
+    // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHTransferPostSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHContinueStudySaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -83,19 +76,21 @@ export default function EditToNewPostModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        oldDeptName: data.oldDeptName,
-        newDeptCode: data.newDeptCode,
-        transferDate:moment(data.transferDate),
+        // publicYear: moment(data.publicYear),
+        year: moment(data.year),
+        projectPerson: data.projectPerson,
+        projectNumber: data.projectNumber,
+        personTotal: data.personTotal,
+        projectLevel: data.projectLevel,
+        schoolArea: data.schoolArea,
+        personTitleArea: data.personTitleArea,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改转岗信息')
+      setTitle('修改个人获奖')
     } else if (signShow === '添加') {
-      setTitle('添加转岗信息')
-      nurseFilesService.getDeptList().then((res: any) => {
-        setList(res.data.deptList)
-      })
+      setTitle('添加继续教育信息')
     }
   }, [visible])
 
@@ -104,29 +99,48 @@ export default function EditToNewPostModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`原工作科室`} name='oldDeptName'>
+            <Form.Field label={`年份`} name='year' required>
+              <YearPicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`继续教育项目负责人`} name='projectPerson'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现工作科室`} name='newDeptCode'>
-            <Select
-                value={type}
-                onSelect={onSelectChange}
-                style={{ width: '72%', height: 40 }}
-                placeholder='选择现在科室'
-              >
-                {list.map((item: any) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
+            <Form.Field label={`项目名称`} name=''>
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`转岗时间`} name='transferDate'>
-              <DatePicker />
+            <Form.Field label={`项目号`} name='projectNumber'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`项目级别`} name=''>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`课时数`} name='personTotal'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`学员总数`} name='projectLevel'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`学院分布区域`} name='schoolArea'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`学院职称分布`} name='personTitleArea'>
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
