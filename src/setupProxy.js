@@ -28,7 +28,7 @@ module.exports = function(app) {
     })
   )
   app.use(
-    proxy('/crNursing/asset/nursingInstitution', {
+    proxy('/crNursing/asset/', {
       // target: 'http://120.25.105.45:9864',
       target: 'http://120.197.141.41:9094',
       secure: false,
