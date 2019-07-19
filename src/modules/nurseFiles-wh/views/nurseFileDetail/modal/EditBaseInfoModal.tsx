@@ -17,6 +17,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { AutoComplete } from 'src/vendors/antd'
+import { formatIdCord, formatAge } from 'src/utils/idCard/idCard'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -90,6 +91,37 @@ export default function EditWorkHistoryModal(props: Props) {
     })
   }
 
+  /** 解析身份证赋值给出生日期，年龄 */
+  const computedIdCard = () => {
+    if (refForm.current) {
+      let cardNumber = refForm.current.getField('cardNumber')
+
+      if (cardNumber) {
+        let cardObj = formatIdCord(cardNumber)
+        if (cardObj.legal) {
+          let age = cardObj.age
+          let birthday = cardObj.birthday
+          if (age && age > -1) {
+            refForm.current.setField('age', age)
+          }
+          refForm.current.setField('birthday', moment(birthday))
+        }
+      }
+    }
+  }
+  /** 时间关联年数 */
+  const computedDateToYear = (dateKey: string, yearKey: string) => {
+    if (refForm.current) {
+      let date = refForm.current.getField(dateKey)
+      if (date) {
+        let year = formatAge(date.format('YYYY-MM-DD'))
+        if (year > -1) {
+          refForm.current.setField(yearKey, year)
+        }
+      }
+    }
+  }
+
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
@@ -157,7 +189,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`身份证号`} name='cardNumber'>
+            <Form.Field label={`身份证号`} name='cardNumber' onValueChange={computedIdCard}>
               <Input />
             </Form.Field>
           </Col>
@@ -182,7 +214,11 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`参加工作时间`} name='takeWorkTime'>
+            <Form.Field
+              label={`参加工作时间`}
+              name='takeWorkTime'
+              onValueChange={() => computedDateToYear('takeWorkTime', 'takeWorkYear')}
+            >
               <DatePicker />
             </Form.Field>
           </Col>
@@ -192,7 +228,11 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`来院工作时间`} name='goHospitalWorkDate'>
+            <Form.Field
+              label={`来院工作时间`}
+              name='goHospitalWorkDate'
+              onValueChange={() => computedDateToYear('goHospitalWorkDate', 'goHospitalWorkYear')}
+            >
               <DatePicker />
             </Form.Field>
           </Col>
@@ -212,7 +252,11 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`取得执业资格证书并开始从事护理岗位时间`} name='zyzsNursingPostDate'>
+            <Form.Field
+              label={`取得执业资格证书并开始从事护理岗位时间`}
+              name='zyzsNursingPostDate'
+              onValueChange={() => computedDateToYear('zyzsNursingPostDate', 'nursingSeniority')}
+            >
               <DatePicker />
             </Form.Field>
           </Col>

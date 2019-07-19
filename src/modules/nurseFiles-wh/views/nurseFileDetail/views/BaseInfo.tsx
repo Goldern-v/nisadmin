@@ -351,5 +351,5 @@ const ZyzsCon = styled.div`
 
 const ScrollCon = styled(ScrollBox)`
   overflow: auto;
-  height: calc(100vh - 240px);
+  height: calc(100vh - 190px);
 `
