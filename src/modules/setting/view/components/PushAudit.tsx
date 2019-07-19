@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite'
 import EventTable from './EventTable'
 import AdviseTable from './AdviseTable'
 import OperationTable from './OperationTable'
+import DiagnosisTable from './DiagnosisTable'
 import BaseTabs from 'src/components/BaseTabs'
 import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
 // import { Modal, Input, message, Popconfirm, Select } from 'antd'
@@ -41,6 +42,10 @@ export default observer(function PushAudit(props: Props) {
     {
       title: '手术',
       component: <OperationTable isShow={props.isShow} />
+    },
+    {
+      title: '诊断',
+      component: <DiagnosisTable isShow={props.isShow} />
     }
   ]
 
@@ -52,6 +57,8 @@ export default observer(function PushAudit(props: Props) {
       emitter.emit('自动推送设置-添加-医嘱')
     } else if (activeKey === '2') {
       emitter.emit('自动推送设置-添加-手术')
+    }else if (activeKey === '3') {
+      emitter.emit('自动推送设置-添加-诊断')
     }
   })
 
@@ -63,6 +70,8 @@ export default observer(function PushAudit(props: Props) {
       emitter.emit('自动推送设置-刷新-医嘱')
     } else if (activeKey === '2') {
       emitter.emit('自动推送设置-刷新-手术')
+    }else if (activeKey === '3') {
+      emitter.emit('自动推送设置-添加-诊断')
     }
   })
 

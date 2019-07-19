@@ -38,14 +38,14 @@ export default observer(function PersonWinning() {
       title: '原工作科室',
       dataIndex: 'oldDeptName',
       key: 'oldDeptName',
-      width: 100,
+      width: 130,
       align: 'center'
     },
     {
       title: '现工作科室',
       dataIndex: 'newDeptName',
       key: 'newDeptName',
-      width: 100,
+      width: 130,
       align: 'center'
     },
     {
