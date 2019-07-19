@@ -8,12 +8,12 @@ export interface Props {
 }
 
 export default function PdfProtcetView(props: Props) {
-  const [ifh, setIfh] = useState(1000)
+  const [ifh, setIfh] = useState(1500)
   let wrapper: any = React.useRef()
   const onScroll = (e: any) => {
     e.persist()
-    if (e.target.offsetHeight - e.target.scrollTop < 1000 && ifh - e.target.scrollTop < 1000) {
-      setIfh(ifh + 1000)
+    if (e.target.offsetHeight - e.target.scrollTop < 600 && ifh - e.target.scrollTop < 600) {
+      setIfh(ifh + 600)
     }
   }
   useLayoutEffect(() => {
