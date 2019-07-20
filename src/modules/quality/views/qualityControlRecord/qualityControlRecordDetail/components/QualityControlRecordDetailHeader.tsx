@@ -14,13 +14,17 @@ export default function qualityControlRecordDetailHeader() {
   return (
     <Con>
       <TopHeader>
-        <span style={{ cursor: 'pointer' }} onClick={qualityControlClick}>
-          当前位置；护理质量检查>
-        </span>{' '}
-        <span style={{ cursor: 'pointer' }} onClick={qualityControlClick}>
-          质控记录>
-        </span>{' '}
-        <span style={{ color: 'rgba(0,166,128,1)' }}>记录详情</span>
+        <div className='topHeaderClass'>
+          <span className='topHeaderSpan1' onClick={qualityControlClick}>
+            护理质量
+          </span>
+          <span style={{ margin: '0 8px' }}>/</span>
+          <span className='topHeaderSpan2' onClick={qualityControlClick}>
+            质控记录
+          </span>
+          <span style={{ margin: '0 8px' }}>/</span>
+          <span style={{ color: '#6767FF' }}>记录详情</span>
+        </div>
         <div className='topHeaderTitle'>
           20190129-SJNK-003 护理基础质量检查表
           <div className='topHeaderButton'>
@@ -40,19 +44,35 @@ const Con = styled.div`
   height: 100%;
   width: 100%;
   /* background: url(${BG}); */
-  background:linear-gradient(180deg,rgba(248,248,252,1) 0%,rgba(235,236,240,1) 100%);
+  /* background:linear-gradient(180deg,rgba(248,248,252,1) 0%,rgba(235,236,240,1) 100%); */
   padding-left: 20px;
-  border-bottom:1px solid #CBD5DD;
+  /* border-bottom: 1px solid #ddd; */
 `
 const TopHeader = styled.div`
-  height: 26px;
-  line-height: 26px;
+  /* height: 26px;
+  line-height: 26px; */
+  .topHeaderClass {
+    font-size: 14px;
+    margin-top: 13px;
+    color: #999;
+    .topHeaderSpan1 {
+      cursor: pointer;
+    }
+    .topHeaderSpan1:hover {
+      color: #00a680;
+    }
+    .topHeaderSpan2 {
+      cursor: pointer;
+    }
+    .topHeaderSpan2:hover {
+      color: #00a680;
+    }
+  }
   .topHeaderTitle {
-    margin: 6px 0;
-    height: 28px;
-    line-height: 28px;
-    font-size: 18px;
-    font-weight: bold;
+    margin-top: 2px;
+    font-size: 20px;
+    color: black;
+    /* font-weight: bold; */
     .topHeaderButton {
       margin-right: 20px;
       float: right;
@@ -61,6 +81,6 @@ const TopHeader = styled.div`
   .topHeaderStatus {
     height: 25px;
     line-height: 25px;
-    /* color: #6767ff; */
+    color: #999;
   }
 `

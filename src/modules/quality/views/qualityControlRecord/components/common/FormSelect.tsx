@@ -15,7 +15,7 @@ export interface DeptType {
 
 export default observer(function FormSelect() {
   const [listData, setListData] = useState([])
-  let [defaultFormValue, setDefaultFormValue]: any = useState(qualityControlRecordVM.getDefaultName)
+  let [defaultFormValue, setDefaultFormValue]: any = useState('全部')
   const onChange = (value: string) => {
     qualityControlRecordVM.formSelectCode = value
     // setDefaultFormValue(value)
@@ -31,11 +31,11 @@ export default observer(function FormSelect() {
       setListData(res.data)
       qualityControlRecordVM.formSelectList = res.data
       let cacheDefaultName: string
-      if (res.data[0]) {
-        cacheDefaultName = res.data[0].name
-        setDefaultFormValue(cacheDefaultName)
-        qualityControlRecordVM.formSelectCode = res.data[0].code
-      }
+      // if (res.data[0]) {
+      //   cacheDefaultName = res.data[0].name
+      //   // setDefaultFormValue(cacheDefaultName)
+      //   qualityControlRecordVM.formSelectCode = res.data[0].code
+      // }
     })
   }, [])
 
@@ -43,6 +43,9 @@ export default observer(function FormSelect() {
     <Wrapper>
       {/* {qualityControlRecordVM.formSelectCode + '33'} */}
       <Select defaultValue={defaultFormValue} showSearch style={{ width: 200 }} onChange={onChange}>
+        <Select.Option key='' value=''>
+          全部
+        </Select.Option>
         {listData.map((item: DeptType) => (
           <Select.Option key={item.code} value={item.code}>
             {item.name}

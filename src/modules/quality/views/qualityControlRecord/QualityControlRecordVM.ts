@@ -21,7 +21,7 @@ class QualityControlRecordVM {
       formSelectList[0] = {}
     }
     if (!formSelectList[0].name) {
-      formSelectList[0].name = '基础护理质量评价表'
+      formSelectList[0].name = ''
     }
     return formSelectList[0].name
   }
@@ -32,7 +32,7 @@ class QualityControlRecordVM {
       formSelectList[0] = {}
     }
     if (!formSelectList[0].name) {
-      formSelectList[0].name = '已提交'
+      formSelectList[0].name = ''
     }
     return formSelectList[0].name
   }

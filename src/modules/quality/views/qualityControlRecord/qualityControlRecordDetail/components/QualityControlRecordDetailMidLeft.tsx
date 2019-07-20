@@ -19,12 +19,16 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     if (detailData.itemGroupList) {
       setItemConData(detailData.itemGroupList)
     }
+    //接口没有数据？？？？
+    // const apiData: any = []
+    // setItemConData(apiData)
   }, [props])
 
   const titleBoxChange = (e: any) => {}
   const itemRadioChange = (e: any) => {}
   // 附件
   const itemAttachmentCheck = () => {}
+
   return (
     <Con>
       {/* <Spin spinning={false}> */}
@@ -71,6 +75,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       不适用
                     </Radio>
                   </Radio.Group>
+                  {}
                   <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
                     <Icon type='paper-clip' /> 2
                   </div>

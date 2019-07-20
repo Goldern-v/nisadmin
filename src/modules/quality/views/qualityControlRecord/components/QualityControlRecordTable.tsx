@@ -31,7 +31,8 @@ export default observer(function qualityControlRecordTable() {
     },
     {
       title: '质控日期',
-      dataIndex: 'followEvaluateDate',
+      // dataIndex: 'followEvaluateDate',
+      dataIndex: 'zkrq',
       key: '',
       width: 120,
       align: 'center'
@@ -131,7 +132,7 @@ export default observer(function qualityControlRecordTable() {
     {
       key: 2,
       zkbh: '111111111111112',
-      zkrq: '2019-07-01',
+      zkrq: '2019-07-02',
       zkbq: '神经内科护理单元',
       zkbd: '护理基础质量检查表',
       zkry: '王萌萌',
@@ -144,7 +145,7 @@ export default observer(function qualityControlRecordTable() {
     {
       key: 3,
       zkbh: '111111111111113',
-      zkrq: '2019-07-01',
+      zkrq: '2019-07-03',
       zkbq: '神经内科护理单元',
       zkbd: '护理基础质量检查表',
       zkry: '王萌萌',
@@ -157,7 +158,7 @@ export default observer(function qualityControlRecordTable() {
     {
       key: 2,
       zkbh: '111111111111111',
-      zkrq: '2019-07-01',
+      zkrq: '2019-07-04',
       zkbq: '神经内科护理单元',
       zkbd: '护理基础质量检查表',
       zkry: '王萌萌',
@@ -170,7 +171,7 @@ export default observer(function qualityControlRecordTable() {
     {
       key: 2,
       zkbh: '111111111111111',
-      zkrq: '2019-07-01',
+      zkrq: '2019-07-05',
       zkbq: '神经内科护理单元',
       zkbd: '护理基础质量检查表',
       zkry: '王萌萌',

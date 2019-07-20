@@ -10,7 +10,7 @@ export default function qualityControlRecordDetail() {
   let [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
+    // setLoading(true)
     qualityControlRecordApi.qcItemInstanceGet().then((res) => {
       setDetailData(res.data)
       setLoading(false)
@@ -28,6 +28,15 @@ export default function qualityControlRecordDetail() {
       </HeaderCon>
       <MidCon>
         <MidConScrollCon>
+          <SpinCon>
+            {loading ? (
+              <div className='LoadingCon'>
+                <Spin size='large' spinning={loading} className='SpinLoadingClass' />
+              </div>
+            ) : (
+              ''
+            )}
+          </SpinCon>
           <MidLeftCon>
             {/* <button onClick={testClick}>testClick</button> */}
             <QualityControlRecordDetailMidLeft detailData={detailData} />
@@ -50,7 +59,8 @@ const Con = styled.div`
 `
 const HeaderCon = styled.div`
   height: 95px;
-  /* background: rgba(255, 255, 255, 1); */
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
   /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); */
   /* border-bottom: 1px solid gray; */
 `
@@ -64,7 +74,9 @@ const MidConScrollCon = styled.div`
   display: flex;
   align-items: stretch;
   overflow: hidden;
-  /* background-color: #fff; */
+  position: relative;
+
+  /* background-color: #fff;
   /* height: 150%; */
   /* flex-basis: auto; */
 `
@@ -148,5 +160,23 @@ const MidRightCon = styled.div`
     box-shadow: inset 0 0 5px #ffffff;
     border-radius: 5px;
     background-color: #ffffff;
+  }
+`
+const SpinCon = styled.div`
+  .LoadingCon {
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.2);
+    .SpinLoadingClass {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 `
