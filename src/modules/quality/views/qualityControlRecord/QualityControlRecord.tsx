@@ -14,12 +14,12 @@ export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
 let rowNum: number = 5
 export default observer(function QualityControlRecord() {
-  let [allData,setAllData]:any = useState({})
+  let [allData, setAllData]: any = useState({})
   let [tableData, setTableData]: any = useState([])
   let [loading, setLoading] = useState(false)
-  useEffect(()=>{
+  useEffect(() => {
     testClick()
-  },[])
+  }, [])
   const testClick = () => {
     setLoading(true)
     let sendData = {
@@ -33,11 +33,16 @@ export default observer(function QualityControlRecord() {
       beginDate: '',
       endDate: ''
     }
-    qualityControlRecordApi.instanceGetPageByCondition(sendData).then((res: any) => {
-      setAllData(res.data)
-      setTableData(res.data.list)
-      setLoading(false)
-    })
+    qualityControlRecordApi
+      .instanceGetPageByCondition(sendData)
+      .then((res: any) => {
+        setAllData(res.data)
+        setTableData(res.data.list)
+        setLoading(false)
+      })
+      .catch((err: any) => {
+        setLoading(false)
+      })
     console.log('5555555')
   }
   return (
@@ -47,7 +52,7 @@ export default observer(function QualityControlRecord() {
         {/* <button onClick={testClick}>fffff</button> */}
       </HeaderCon>
       <MidCon>
-        <SpinCon>
+        {/* <SpinCon>
           {loading ? (
             <div className='LoadingCon'>
               <Spin size='large' spinning={loading} className='SpinLoadingClass' />
@@ -55,8 +60,8 @@ export default observer(function QualityControlRecord() {
           ) : (
             ''
           )}
-        </SpinCon>
-        <QualityControlRecordTable tableData={tableData} allData={allData}/>
+        </SpinCon> */}
+        <QualityControlRecordTable tableData={tableData} allData={allData} loadingGet={loading} />
       </MidCon>
       {/* <PaginationContent>
         <PaginationCon rowNum={rowNum} />
@@ -101,7 +106,7 @@ const SpinCon = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
     .SpinLoadingClass {
       position: absolute;
       top: 50%;

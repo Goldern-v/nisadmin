@@ -82,7 +82,8 @@ const MidConScrollCon = styled.div`
 `
 const MidLeftCon = styled.div`
   box-sizing: border-box;
-  padding: 20px 153px;
+  /* padding: 20px 153px; */
+  padding: 20px 0;
   flex: 1;
   width: 0;
   height: 100%;

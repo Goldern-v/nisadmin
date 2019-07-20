@@ -127,10 +127,12 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
 
 const Con = styled.div`
   /* height: 100%; */
-  width: 100%;
+  margin: 0 auto;
+  width: 760px;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
+  color: #000000;
 `
 const MessageBox = styled.div`
   margin-top: 10px;
