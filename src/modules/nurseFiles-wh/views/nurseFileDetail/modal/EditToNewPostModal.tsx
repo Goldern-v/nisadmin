@@ -40,16 +40,16 @@ export default function EditToNewPostModal(props: Props) {
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
-  const onSelectChange = (value:any) => {
+  const onSelectChange = (value: any) => {
     setType(value)
   }
-  const onSelectChangeOld = (value:any) => {
+  const onSelectChangeOld = (value: any) => {
     setOldType(value)
   }
 
   const onSave = async () => {
-    let typeName: any = list.filter((item:any) => item.code === type)[0]
-    let oldTypeName: any = list.filter((item:any) => item.code === oldType)[0]
+    let typeName: any = list.filter((item: any) => item.code === type)[0]
+    let oldTypeName: any = list.filter((item: any) => item.code === oldType)[0]
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
@@ -93,7 +93,7 @@ export default function EditToNewPostModal(props: Props) {
       refForm!.current!.setFields({
         oldDeptName: data.oldDeptName,
         newDeptName: data.newDeptName,
-        transferDate:moment(data.transferDate),
+        transferDate: data.transferDate ? moment(data.transferDate) : null,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -113,11 +113,7 @@ export default function EditToNewPostModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`原工作科室`} name='oldDeptName'>
-            <Select
-                value={oldType}
-                onSelect={onSelectChangeOld}
-                placeholder='选择原工作科室'
-              >
+              <Select value={oldType} onSelect={onSelectChangeOld} placeholder='选择原工作科室'>
                 {list.map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
@@ -128,11 +124,7 @@ export default function EditToNewPostModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`现工作科室`} name='newDeptCode'>
-            <Select
-                value={type}
-                onSelect={onSelectChange}
-                placeholder='选择现工作科室'
-              >
+              <Select value={type} onSelect={onSelectChange} placeholder='选择现工作科室'>
                 {list.map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}

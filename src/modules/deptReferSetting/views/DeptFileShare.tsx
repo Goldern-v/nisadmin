@@ -134,7 +134,7 @@ export default function DeptFileShare() {
     setEditParams({
       id: record.id,
       fileName: record.fileName,
-      catalog: record.catalog||''
+      catalog: record.catalog || ''
     })
     setEditVisible(true)
   }
@@ -152,9 +152,10 @@ export default function DeptFileShare() {
       onOk: () => {
         api.delete(record.id)
           .then(res => {
-            if (res.code == 200)
+            if (res.code == 200) {
               Message.success('文件删除成功')
-            else
+              getTableData();
+            } else
               Message.error('文件删除失败')
           })
           .catch(err => {
@@ -231,7 +232,8 @@ export default function DeptFileShare() {
         rowKey="id"
         dataSource={tableData}
         loading={tableLoading}
-        surplusHeight={230} pagination={{
+        surplusHeight={tableData.length>0?235:195} 
+        pagination={{
           pageSizeOptions: ['10', '20', '30', '40', '50'],
           onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
           onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
@@ -248,7 +250,7 @@ export default function DeptFileShare() {
 }
 const Wrapper = styled.div`
 position:relative;
-  padding-top: 55px;
+  padding-top: 65px;
   height: 100%;
   width: 100%;
 
@@ -259,7 +261,8 @@ position:relative;
     width: 100%;
     padding: 10px 15px;
     box-sizing: border-box;
-    height: 55px;
+    padding-top:18px;
+    height: 60px;
     overflow: hidden;
     .float-left{
       float:left;
@@ -278,7 +281,9 @@ position:relative;
       }
       &.title{
         font-size: 20px;
+        color: #000;
         font-weight: bold;
+        margin-left: 5px;
       }
       &.link{
         margin-right: 50px;

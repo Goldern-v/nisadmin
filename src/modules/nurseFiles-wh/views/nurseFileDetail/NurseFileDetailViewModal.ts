@@ -15,7 +15,8 @@ let dictList = {
   参编: 'participation',
   学历: 'education',
   层级: 'nurse_hierarchy',
-  完成情况: 'course_completion'
+  完成情况: 'course_completion',
+  性别: 'sex'
 }
 
 type DictList = typeof dictList

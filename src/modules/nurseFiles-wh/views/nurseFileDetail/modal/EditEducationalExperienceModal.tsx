@@ -78,8 +78,8 @@ export default function EditWorkHistoryModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        readTime: moment(data.readTime),
-        graduationTime: moment(data.graduationTime),
+        readTime: data.readTime ? moment(data.readTime) : null,
+        graduationTime: data.graduationTime ? moment(data.graduationTime) : null,
         graduationSchool: data.graduationSchool,
         readProfessional: data.readProfessional,
         education: data.education,

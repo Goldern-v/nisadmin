@@ -79,7 +79,7 @@ export default function EditSpecializNurseModal(props: Props) {
         cardUnit: data.cardUnit,
         cardNumber: data.cardNumber,
         nurseLevel: data.nurseLevel,
-        cardNumberDate: moment(data.cardNumberDate),
+        cardNumberDate: data.cardNumberDate ? moment(data.cardNumberDate) : null,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }

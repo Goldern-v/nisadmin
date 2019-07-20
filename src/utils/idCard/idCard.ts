@@ -20,20 +20,32 @@ interface IdCardFormat {
   age: number
 }
 
+export function formatAge(birthday: string) {
+  const age = moment().diff(moment(birthday), 'years')
+  return age
+}
+
 /** 解析身份证信息 */
-export function formatIdCord(idCardNumber: string): IdCardFormat {
+export function formatIdCord(idCardNumber: string): Partial<IdCardFormat> {
   const peopleIdentity = new Identity(idCardNumber)
   const birthday = peopleIdentity.birthday()
   const age = moment().diff(moment(birthday), 'years')
-  return {
-    legal: peopleIdentity.legal(),
-    birthday,
-    sex: peopleIdentity.gender(),
-    province: peopleIdentity.region().province(),
-    city: peopleIdentity.region().city(),
-    county: peopleIdentity.region().county(),
-    tree: peopleIdentity.region().tree(),
-    treeString: peopleIdentity.region().treeString(''),
-    age
+  const legal = idCardNumber.length == 18 && peopleIdentity.legal()
+  if (legal) {
+    return {
+      legal,
+      birthday,
+      sex: peopleIdentity.gender(),
+      province: peopleIdentity.region().province(),
+      city: peopleIdentity.region().city(),
+      county: peopleIdentity.region().county(),
+      tree: peopleIdentity.region().tree(),
+      treeString: peopleIdentity.region().treeString(''),
+      age
+    }
+  } else {
+    return {
+      legal
+    }
   }
 }
