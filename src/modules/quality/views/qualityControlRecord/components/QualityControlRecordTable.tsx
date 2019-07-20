@@ -7,15 +7,15 @@ import { observer } from 'mobx-react-lite'
 // import PaginationCon from './PaginationCon'
 import qs from 'qs'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
-export interface Props{
-  tableData:any,
-  allData:any
+export interface Props {
+  tableData: any
+  allData: any
 }
-export default observer(function qualityControlRecordTable(props:Props) {
-  const {allData,tableData} = props
+export default observer(function qualityControlRecordTable(props: Props) {
+  const { allData, tableData } = props
   // .list
   // const tableRowData:any[] = tableData.list
-  let [tableDataApi, setTableDataApi]:any[] = useState([])
+  let [tableDataApi, setTableDataApi]: any[] = useState([])
   let [loading, setLoading] = useState(false)
   let [total, setTotal] = useState(50)
   let [current, setCurrent] = useState(1)
@@ -72,7 +72,7 @@ export default observer(function qualityControlRecordTable(props:Props) {
     {
       title: '床号',
       // dataIndex: 'ch',
-      dataIndex: 'bedLable',
+      dataIndex: 'bedLabel',
       key: '',
       width: 80,
       align: 'center'
@@ -96,9 +96,9 @@ export default observer(function qualityControlRecordTable(props:Props) {
     {
       title: '质量结果',
       // dataIndex: 'zljg',
-      dataIndex: 'nextNodePendingName ',
+      dataIndex: 'nextNodePendingName',
       key: '',
-      width: 100,
+      width: 110,
       align: 'center'
     },
     {
@@ -232,7 +232,6 @@ export default observer(function qualityControlRecordTable(props:Props) {
               showQuickJumper: true,
               pageSizeOptions: ['10', '15', '20'],
               pageSize: allData.pageSize
-              
             }}
           />
         </TableCon>
