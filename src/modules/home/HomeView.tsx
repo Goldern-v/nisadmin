@@ -15,6 +15,7 @@ import PatientDistribute from './components/PatientDistribute/PatientDistribute'
 import emitter from 'src/libs/ev'
 import { authStore } from '../../stores/index'
 import { observer } from 'mobx-react-lite'
+import FullPageLoading from 'src/components/loading/FullPageLoading'
 // export interface Props extends RouteComponentProps {}
 
 // const Option = Select.Option

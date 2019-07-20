@@ -5,11 +5,16 @@ import React, { useState, useEffect } from 'react'
 import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
 
-export interface Props {
-  data: any[]
+interface BreadcrumbItem {
+  name: string
+  link?: string
 }
 
-export default function BreadcrumbBox(props: Props) {
+export interface Props {
+  data: BreadcrumbItem[]
+}
+
+export default function BaseBreadcrumb(props: Props) {
   useEffect(() => {})
   // const handleClick = (e: any) => {
   //   console.log('click ', e) 排班管理 排班人员设置
@@ -38,5 +43,4 @@ const Wrapper = styled.div``
 const BreadcrumbContainer = styled.div`
   position: relative;
   padding: 15px 20px 5px;
-  background: #fff;
 `

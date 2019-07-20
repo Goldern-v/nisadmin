@@ -68,6 +68,7 @@ import QualityAnalysisDetail from 'src/modules/quality/views/analysis/AnalysisDe
 import { nurseFileModule } from './routerConfig/nurseFileModule'
 //病区文件
 import DeptFileShareCatalogSetting from 'src/modules/deptReferSetting/views/DeptFileShareCatalogSetting'
+import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -175,6 +176,7 @@ const routes: RouteItem[] = [
     { name: '病区文件', link: '/setting/病区文件' },
     { name: '目录设置', link: '' }
   ]),
+  setLayout('/qualityAnalysisReport', QualityAnalysisReportView, layouts.MainLayout),
   {
     path: '/continuingEdu',
     redirect: '/continuingEdu/人员管理'

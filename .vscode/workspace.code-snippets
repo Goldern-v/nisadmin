@@ -66,13 +66,12 @@
     "body": [
       "import styled from 'styled-components'",
       "import React, { useState, useEffect } from 'react'",
-      "import { RouteComponentProps } from 'react-router'",
-      "export interface Props extends RouteComponentProps {} ",
+      "import { Button } from 'antd'",
+      "export interface Props {} ",
       "",
       "export default function ${1:${TM_FILENAME_BASE}} () {",
       "",
-      "useEffect(() => { })",
-      "return <Wrapper>{count}</Wrapper>",
+      "return <Wrapper>Wrapper</Wrapper>",
       "}",
       "const Wrapper = styled.div``"
     ]

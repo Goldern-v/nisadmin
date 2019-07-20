@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { DatePicker } from './vendors/antd'
 import YearPicker from './components/YearPicker'
 import { formatIdCord } from './utils/idCard/idCard'
+import FullPageLoading from './components/loading/FullPageLoading'
 
 export interface Props extends RouteComponentProps {
   style: any
@@ -20,7 +21,7 @@ export default function demo(props: Props) {
   }
   return (
     <Wrapper style={props.style} onScroll={onScroll}>
-      <YearPicker />
+      <FullPageLoading />
     </Wrapper>
   )
 }

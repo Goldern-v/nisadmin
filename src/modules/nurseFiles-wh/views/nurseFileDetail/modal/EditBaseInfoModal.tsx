@@ -82,6 +82,7 @@ export default function EditWorkHistoryModal(props: Props) {
     value.conversionDate && (value.conversionDate = value.conversionDate.format('YYYY-MM-DD'))
     value.nurseHierarchyDate && (value.nurseHierarchyDate = value.nurseHierarchyDate.format('YYYY-MM-DD'))
     value.highestEducationDate && (value.highestEducationDate = value.highestEducationDate.format('YYYY-MM-DD'))
+    value.zyzsEffectiveUpDate && (value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format('YYYY-MM-DD'))
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
     nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
@@ -140,6 +141,7 @@ export default function EditWorkHistoryModal(props: Props) {
           conversionDate: data.conversionDate ? moment(data.conversionDate) : null,
           nurseHierarchyDate: data.nurseHierarchyDate ? moment(data.nurseHierarchyDate) : null,
           highestEducationDate: data.highestEducationDate ? moment(data.highestEducationDate) : null,
+          zyzsEffectiveUpDate: data.zyzsEffectiveUpDate ? moment(data.zyzsEffectiveUpDate) : null,
           zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : []
         }
       })
@@ -394,9 +396,7 @@ export default function EditWorkHistoryModal(props: Props) {
               {/* <ImageUploader upload={uploadCard} text='添加执业证书图片' /> */}
               <MultipleImageUploader
                 text='添加图片'
-                tip={
-                  '1.上传执业资格证书图片，从第一个卫生部盖章页至最末次延续注册盖章页; 2.上传最高学历毕业证书; 3.上传最高学历学位证书扫描件; 4.上传现考取的职称资格证书扫描件，封面页和有名称页共2页'
-                }
+                tip={'1.上传执业资格证书图片，从第一个卫生部盖章页至最末次延续注册盖章页; '}
               />
             </Form.Field>
           </Col>
