@@ -5,15 +5,37 @@ import QualityControlRecordHeader from './components/QualityControlRecordHeader'
 import QualityControlRecordTable from './components/QualityControlRecordTable'
 import PaginationCon from './components/PaginationCon'
 import { Pagination, Spin } from 'antd'
+import { authStore, appStore } from 'src/stores'
+import { observer } from 'mobx-react-lite'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
+import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
+qualityControlRecordVM
 export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
 let rowNum: number = 5
-export default function QualityControlRecord() {
+export default observer(function QualityControlRecord() {
+  let [allData,setAllData]:any = useState({})
+  let [tableData, setTableData]: any = useState([])
   let [loading, setLoading] = useState(false)
+  useEffect(()=>{
+    testClick()
+  },[])
   const testClick = () => {
     setLoading(true)
-    qualityControlRecordApi.instanceGetPageByCondition().then((res: any) => {
+    let sendData = {
+      pageIndex: 1,
+      pageSize: 10,
+      // wardCode: authStore.selectedDeptCode,
+      // 暂时让其为空
+      wardCode: '',
+      qcCode: qualityControlRecordVM.formSelectCode,
+      nodeCode: qualityControlRecordVM.stateSelectCode,
+      beginDate: '',
+      endDate: ''
+    }
+    qualityControlRecordApi.instanceGetPageByCondition(sendData).then((res: any) => {
+      setAllData(res.data)
+      setTableData(res.data.list)
       setLoading(false)
     })
     console.log('5555555')
@@ -34,14 +56,14 @@ export default function QualityControlRecord() {
             ''
           )}
         </SpinCon>
-        <QualityControlRecordTable />
+        <QualityControlRecordTable tableData={tableData} allData={allData}/>
       </MidCon>
       {/* <PaginationContent>
         <PaginationCon rowNum={rowNum} />
       </PaginationContent> */}
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;

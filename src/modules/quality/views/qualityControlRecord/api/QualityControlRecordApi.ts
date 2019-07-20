@@ -31,15 +31,15 @@ export default class QualityControlRecordApi extends BaseApiService {
     return this.get(`/qcItem/dict/chainNode`)
   }
   // 质控记录单列表
-  public async instanceGetPageByCondition() {
+  public async instanceGetPageByCondition(getData:any) {
     let postData = {
-      pageIndex: 1,
-      pageSize: 10,
-      wardCode: '',
-      qcCode: '',
-      nodeCode: '',
-      beginDate: '',
-      endDate: ''
+      pageIndex: getData.pageIndex,
+      pageSize: getData.pageSize,
+      wardCode: getData.wardCode,
+      qcCode: getData.qcCode,
+      nodeCode: getData.nodeCode,
+      beginDate: getData.beginDate,
+      endDate: getData.endDate
     }
     return this.post(`/qcItem/instance/getPageByCondition`, postData)
   }
