@@ -64,6 +64,7 @@ export default function DetailsPage(props: Props) {
         )}
 
         {data.showType != '草' &&
+          data.showType != '发' &&
           (collected ? (
             <Tooltip placement='bottom' title='取消收藏'>
               <div className='item-box' onClick={collectMail}>

@@ -17,7 +17,7 @@ export default observer(function FormSelect() {
   const [listData, setListData] = useState([])
   let [defaultFormValue, setDefaultFormValue]: any = useState('全部')
   const onChange = (value: string) => {
-    qualityControlRecordVM.formSelectCode = value
+    qualityControlRecordVM.filterForm = value
     // setDefaultFormValue(value)
   }
   const formSelectMethod = () => {
@@ -42,7 +42,7 @@ export default observer(function FormSelect() {
   return (
     <Wrapper>
       {/* {qualityControlRecordVM.formSelectCode + '33'} */}
-      <Select defaultValue={defaultFormValue} showSearch style={{ width: 200 }} onChange={onChange}>
+      <Select value={qualityControlRecordVM.filterForm} showSearch style={{ width: 200 }} onChange={onChange}>
         <Select.Option key='' value=''>
           全部
         </Select.Option>

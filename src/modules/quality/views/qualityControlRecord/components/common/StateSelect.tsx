@@ -18,7 +18,7 @@ export default observer(function StateSelect() {
   // let [defaultFormValue, setDefaultFormValue]: any = useState(qualityControlRecordVM.getDefaultStateName)
   let [defaultFormValue, setDefaultFormValue]: any = useState('全部')
   const onChange = (value: string) => {
-    qualityControlRecordVM.stateSelectCode = value
+    qualityControlRecordVM.filterState = value
   }
   const formSelectMethod = () => {
     qualityControlRecordApi.dictChainNode().then((res: any) => {
@@ -30,7 +30,7 @@ export default observer(function StateSelect() {
     qualityControlRecordApi.dictChainNode().then((res: any) => {
       setListData(res.data)
       qualityControlRecordVM.stateSelectList = res.data
-      let cacheDefaultName: string
+
       // if (res.data[0]) {
       //   cacheDefaultName = res.data[0].name
       //   setDefaultFormValue(cacheDefaultName)
@@ -42,7 +42,7 @@ export default observer(function StateSelect() {
   return (
     <Wrapper>
       {/* {qualityControlRecordVM.stateSelectCode + '33'} */}
-      <Select defaultValue={defaultFormValue} showSearch style={{ width: 150 }} onChange={onChange}>
+      <Select value={qualityControlRecordVM.filterState} showSearch style={{ width: 150 }} onChange={onChange}>
         <Select.Option key='' value=''>
           全部
         </Select.Option>

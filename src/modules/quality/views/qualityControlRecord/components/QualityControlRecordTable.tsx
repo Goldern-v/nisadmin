@@ -39,16 +39,14 @@ export default observer(function qualityControlRecordTable(props: Props) {
     },
     {
       title: '质控日期',
-      dataIndex: 'followEvaluateDate',
-      // dataIndex: 'zkrq',
+      dataIndex: 'evalDate',
       key: '',
       width: 120,
       align: 'center'
     },
     {
       title: '质控病区',
-      // dataIndex: 'zkbq',
-      dataIndex: '',
+      dataIndex: 'wardName',
       key: '',
       width: 180,
       align: 'center'
@@ -96,16 +94,18 @@ export default observer(function qualityControlRecordTable(props: Props) {
     },
     {
       title: '质量结果',
-      // dataIndex: 'zljg',
-      dataIndex: 'nextNodePendingName',
+      dataIndex: 'evalRate',
       key: '',
       width: 110,
-      align: 'center'
+      align: 'center',
+      render(text: any) {
+        return typeof text == 'number' && text.toFixed(2) + '%'
+      }
     },
     {
       title: '状态',
       // dataIndex: 'zt',
-      dataIndex: '',
+      dataIndex: 'nextNodePendingName',
       key: '',
       width: 130,
       align: 'center'

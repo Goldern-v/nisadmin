@@ -18,6 +18,7 @@ export default observer(function QualityControlRecord() {
   let [tableData, setTableData]: any = useState([])
   let [loading, setLoading] = useState(false)
   useEffect(() => {
+    qualityControlRecordVM.init()
     getTableData()
   }, [])
   const getTableData = (obj?: any) => {
@@ -26,11 +27,11 @@ export default observer(function QualityControlRecord() {
     let sendData = {
       pageIndex: obj ? obj.current : 1,
       pageSize: obj ? obj.pageSize : 20,
-      wardCode: '',
-      qcCode: qualityControlRecordVM.formSelectCode,
-      nodeCode: qualityControlRecordVM.stateSelectCode,
-      beginDate: '',
-      endDate: ''
+      wardCode: authStore.selectedDeptCode,
+      qcCode: qualityControlRecordVM.filterForm,
+      nodeCode: qualityControlRecordVM.filterState,
+      beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
+      endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
     }
     qualityControlRecordApi
       .instanceGetPageByCondition(sendData)

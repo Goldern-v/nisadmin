@@ -8,9 +8,10 @@ import { Button, DatePicker } from 'antd'
 import DeptSelect from 'src/components/DeptSelect'
 import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
 import StateSelect from 'src/modules/quality/views/qualityControlRecord/components/common/StateSelect.tsx'
+import { qualityControlRecordVM } from '../QualityControlRecordVM'
 export interface Props extends RouteComponentProps {}
 
-export default React.forwardRef(function TopCon(props: any, ref: any) {
+export default observer(function TopCon(props: any) {
   let history = store.appStore.history
   let startDate = moment().subtract(1, 'M')
   let endDate = moment()
@@ -20,10 +21,14 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
   return (
     <Wrapper>
       <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
-      <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220 }} ref={ref} />
+      <DatePicker.RangePicker
+        value={qualityControlRecordVM.filterDate}
+        onChange={(value) => (qualityControlRecordVM.filterDate = value)}
+        style={{ width: 220 }}
+      />
 
       <span style={{ margin: '0 3px 0 26px' }}>质控科室:</span>
-      <DeptSelect onChange={onChange} extraDept={[{ name: '全院', code: '全院' }]} />
+      <DeptSelect onChange={onChange} />
 
       <span style={{ margin: '0 3px 0 26px' }}>表单:</span>
       {/* <DeptSelect onChange={onChange} /> */}
@@ -37,7 +42,6 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
     </Wrapper>
   )
 })
-
 const Wrapper = styled.div`
   height: 50px;
   /* background: rgba(248, 248, 248, 1);

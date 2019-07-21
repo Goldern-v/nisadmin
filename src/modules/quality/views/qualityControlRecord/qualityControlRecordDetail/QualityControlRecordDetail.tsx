@@ -13,6 +13,7 @@ export default function qualityControlRecordDetail() {
 
   useEffect(() => {
     let id = appStore.match.params.id
+    setLoading(true)
     qualityControlRecordApi.qcItemInstanceGet(id).then((res) => {
       setDetailData(res.data)
       setLoading(false)
@@ -29,7 +30,7 @@ export default function qualityControlRecordDetail() {
           <SpinCon>
             {loading ? (
               <div className='LoadingCon'>
-                <Spin size='large' spinning={loading} className='SpinLoadingClass' />
+                <Spin spinning={loading} className='SpinLoadingClass' />
               </div>
             ) : (
               ''
@@ -134,7 +135,7 @@ const SpinCon = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.2);
+
     .SpinLoadingClass {
       position: absolute;
       top: 50%;
