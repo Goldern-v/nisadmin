@@ -71,7 +71,8 @@ const TopHeader = styled.div`
   .topHeaderTitle {
     margin-top: 2px;
     font-size: 20px;
-    color: black;
+    font-weight: 500;
+    color: #000;
     /* font-weight: bold; */
     .topHeaderButton {
       margin-right: 20px;

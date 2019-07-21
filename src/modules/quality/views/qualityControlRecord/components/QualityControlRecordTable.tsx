@@ -10,13 +10,13 @@ import { qualityControlRecordApi } from 'src/modules/quality/views/qualityContro
 export interface Props {
   tableData: any
   allData: any
+  loadingGet: boolean
 }
 export default observer(function qualityControlRecordTable(props: Props) {
-  const { allData, tableData } = props
+  const { allData, tableData, loadingGet } = props
   // .list
   // const tableRowData:any[] = tableData.list
   let [tableDataApi, setTableDataApi]: any[] = useState([])
-  let [loading, setLoading] = useState(false)
   let [total, setTotal] = useState(50)
   let [current, setCurrent] = useState(1)
   let [pageSize, setPageSize] = useState(10)
@@ -216,7 +216,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
           <BaseTable
             surplusHeight={205}
             // surplusHeight={135}
-            loading={loading}
+            loading={loadingGet}
             dataSource={tableData}
             columns={columns}
             surplusWidth={160}
