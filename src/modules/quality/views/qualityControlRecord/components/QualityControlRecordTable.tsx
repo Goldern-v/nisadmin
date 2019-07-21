@@ -11,6 +11,7 @@ export interface Props {
   tableData: any
   allData: any
   loadingGet: boolean
+  getTableData: any
 }
 export default observer(function qualityControlRecordTable(props: Props) {
   const { allData, tableData, loadingGet } = props
@@ -130,73 +131,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       }
     }
   ]
-  const dataSource: any[] = [
-    {
-      key: 1,
-      zkbh: '111111111111111',
-      zkrq: '2019-07-01',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333331',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 2,
-      zkbh: '111111111111112',
-      zkrq: '2019-07-02',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333332',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 3,
-      zkbh: '111111111111113',
-      zkrq: '2019-07-03',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333333',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 2,
-      zkbh: '111111111111111',
-      zkrq: '2019-07-04',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333334',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 2,
-      zkbh: '111111111111111',
-      zkrq: '2019-07-05',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333335',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    }
-  ]
+
   useEffect(() => {
     // qualityControlRecordApi.instanceGetPageByCondition().then((res:any) => {
     //   let cacheData = res.data.list
@@ -206,8 +141,14 @@ export default observer(function qualityControlRecordTable(props: Props) {
   }, [])
   const onDoubleClick = (record: any) => {
     // appStore.history.push('/continuingEduEmpDetail')
-    appStore.history.push(`/qualityControlRecordDetail/${record.zyh}`)
+    appStore.history.push(`/qualityControlRecordDetail/${record.id}`)
     // store.appStore.history.push(`/quality/qualityControlRecord/${qs.stringify(record)}`)
+  }
+  const onChange = (e: any) => {
+    props.getTableData({
+      pageSize: e.pageSize,
+      current: e.current
+    })
   }
   return (
     <Con>
@@ -233,6 +174,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
               pageSizeOptions: ['10', '15', '20'],
               pageSize: allData.pageSize
             }}
+            onChange={onChange}
           />
         </TableCon>
       </TableScrollCon>

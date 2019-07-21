@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 
 export interface Props {
   data: any[]
+  style?: any
 }
 
 export default function BreadcrumbBox(props: Props) {
@@ -16,7 +17,7 @@ export default function BreadcrumbBox(props: Props) {
   // }
   return (
     <Wrapper>
-      <BreadcrumbContainer>
+      <BreadcrumbContainer style={props.style}>
         <Breadcrumb>
           {props && props.data ? (
             props.data.map((item) => (

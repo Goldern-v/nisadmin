@@ -9,24 +9,23 @@ import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
-qualityControlRecordVM
+
 export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
-let rowNum: number = 5
+
 export default observer(function QualityControlRecord() {
   let [allData, setAllData]: any = useState({})
   let [tableData, setTableData]: any = useState([])
   let [loading, setLoading] = useState(false)
   useEffect(() => {
-    testClick()
+    getTableData()
   }, [])
-  const testClick = () => {
+  const getTableData = (obj?: any) => {
+    console.log(obj, 'aaa')
     setLoading(true)
     let sendData = {
-      pageIndex: 1,
-      pageSize: 10,
-      // wardCode: authStore.selectedDeptCode,
-      // 暂时让其为空
+      pageIndex: obj ? obj.current : 1,
+      pageSize: obj ? obj.pageSize : 20,
       wardCode: '',
       qcCode: qualityControlRecordVM.formSelectCode,
       nodeCode: qualityControlRecordVM.stateSelectCode,
@@ -43,13 +42,12 @@ export default observer(function QualityControlRecord() {
       .catch((err: any) => {
         setLoading(false)
       })
-    console.log('5555555')
   }
   return (
     <Wrapper>
       <HeaderCon>
-        <QualityControlRecordHeader refreshData={testClick} />
-        {/* <button onClick={testClick}>fffff</button> */}
+        <QualityControlRecordHeader refreshData={getTableData} />
+        {/* <button onClick={getTableData}>fffff</button> */}
       </HeaderCon>
       <MidCon>
         {/* <SpinCon>
@@ -61,7 +59,12 @@ export default observer(function QualityControlRecord() {
             ''
           )}
         </SpinCon> */}
-        <QualityControlRecordTable tableData={tableData} allData={allData} loadingGet={loading} />
+        <QualityControlRecordTable
+          tableData={tableData}
+          allData={allData}
+          loadingGet={loading}
+          getTableData={getTableData}
+        />
       </MidCon>
       {/* <PaginationContent>
         <PaginationCon rowNum={rowNum} />

@@ -3,36 +3,44 @@ import React, { useState, useEffect } from 'react'
 import { appStore } from 'src/stores'
 const BG = require('../../../../images/顶部背景.png')
 import { Button } from 'antd'
-export default function qualityControlRecordDetailHeader() {
-  let sendPath = '111111111111111'
-  const qualityControlClick = () => {
-    appStore.history.push(`/quality/qualityControlRecord`)
-  }
+import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+
+interface Props {
+  detailData: any
+}
+
+export default function qualityControlRecordDetailHeader(props: Props) {
   const topHeaderBack = () => {
     appStore.history.push(`/quality/qualityControlRecord`)
   }
+  let master = props.detailData.master || {}
   return (
     <Con>
       <TopHeader>
-        <div className='topHeaderClass'>
-          <span className='topHeaderSpan1' onClick={qualityControlClick}>
-            护理质量
-          </span>
-          <span style={{ margin: '0 8px' }}>/</span>
-          <span className='topHeaderSpan2' onClick={qualityControlClick}>
-            质控记录
-          </span>
-          <span style={{ margin: '0 8px' }}>/</span>
-          <span style={{ color: '#6767FF' }}>记录详情</span>
-        </div>
+        <BreadcrumbBox
+          style={{
+            paddingLeft: 0,
+            paddingTop: 10,
+            paddingBottom: 2
+          }}
+          data={[
+            {
+              name: '质控记录',
+              link: '/quality/qualityControlRecord'
+            },
+            {
+              name: '记录详情'
+            }
+          ]}
+        />
         <div className='topHeaderTitle'>
-          20190129-SJNK-003 护理基础质量检查表
+          <div className='title'>{master.qcName}</div>
           <div className='topHeaderButton'>
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>
         <div className='topHeaderStatus'>
-          状态：<span style={{ color: '#6767ff' }}>护士长已评</span>
+          状态：<span style={{ color: '#6767ff' }}>{master.nextNodePendingName}</span>
         </div>
       </TopHeader>
     </Con>
@@ -47,6 +55,7 @@ const Con = styled.div`
   /* background:linear-gradient(180deg,rgba(248,248,252,1) 0%,rgba(235,236,240,1) 100%); */
   padding-left: 20px;
   /* border-bottom: 1px solid #ddd; */
+  position: relative;
 `
 const TopHeader = styled.div`
   /* height: 26px;
@@ -75,8 +84,13 @@ const TopHeader = styled.div`
     color: #000;
     /* font-weight: bold; */
     .topHeaderButton {
-      margin-right: 20px;
-      float: right;
+      position: absolute;
+      top: 45px;
+      right: 20px;
+    }
+    .title {
+      font-weight: bold;
+      min-height: 30px;
     }
   }
   .topHeaderStatus {

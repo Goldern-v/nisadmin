@@ -1,41 +1,15 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Steps } from 'antd'
-const { Step } = Steps
-export default function midRightQualityControlRecordDetail() {
-  //
-  // useEffect(() => {
-  //
-  // })
-  const apiData = [
-    {
-      title: '提交',
-      descriptionName: '王大丽',
-      descriptionTime: '2019-07-10 10:00',
-      descriptionMessage: '检查婴儿病区的设备是否良好，这是处理意见这是处理意见这是处理意见'
-    },
-    {
-      title: '病区处理',
-      descriptionName: '赵平',
-      descriptionTime: '2019-05-11 13:00',
-      descriptionMessage: '检查婴儿病区的设备是否良好，这是处理意见这是处理意见这是处理意见'
-    },
-    {
-      title: '护士长评价',
-      descriptionName: '胡柯菲',
-      descriptionTime: '2019-05-18 17:00',
-      descriptionMessage: '检查后，婴儿病区的设备良好。'
-    },
-    {
-      title: '护理部评价',
-      descriptionName: '',
-      descriptionTime: '',
-      descriptionMessage: '未完成'
-    }
-  ]
-  // const descriptionDom = (
+import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
+import { getWeekString } from 'src/utils/date/week'
 
-  // )
+interface Props {
+  detailData: any
+}
+export default function midRightQualityControlRecordDetail(props: Props) {
+  let { nodeDataList } = props.detailData
+
   return (
     <Con>
       <TopTitleCon>
@@ -43,24 +17,45 @@ export default function midRightQualityControlRecordDetail() {
         <div className='topTitle'>质控轨迹</div>
       </TopTitleCon>
 
-      <Steps direction='vertical' size='small' current={3}>
-        {apiData.map((item: any) => (
-          <Step
-            title={item.title}
-            description={
-              <DescriptionDom>
-                <div className='descriptionName'> {item.descriptionName}</div>
-                <div className='descriptionTime'>{item.descriptionTime}</div>
-                <div className='descriptionMessage'>{item.descriptionMessage}</div>
-              </DescriptionDom>
-            }
-          />
-        ))}
-
-        {/* <Step title='病区处理' description={descriptionDom} />
-        <Step title='护士长评价' description={descriptionDom} />
-        <Step title='护理部评价' description='未完成' /> */}
-      </Steps>
+      <BaseStepCon>
+        {nodeDataList &&
+          nodeDataList.map((item: any, index: number) => (
+            <BaseStepBox success={item.status == '1'} key={index}>
+              <StepBox>
+                {item.status == '1' ? (
+                  <React.Fragment>
+                    <div className='title'>{item.nodeName}</div>
+                    <div className='info'>{item.handlerName}</div>
+                    <div className='info'>
+                      {item.handleTime} ({getWeekString(item.handleTime)})
+                    </div>
+                    {item.nodeCode == 'dept_handle' && (
+                      <React.Fragment>
+                        {item.expand && (
+                          <div className='text-box'>
+                            <div className='text-box-title'>原因分析：</div>
+                            {item.expand}
+                          </div>
+                        )}
+                        {item.handleContent && (
+                          <div className='text-box'>
+                            <div className='text-box-title'>整改措施：</div>
+                            {item.handleContent}
+                          </div>
+                        )}
+                      </React.Fragment>
+                    )}
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <div className='title'>{item.nodeName}</div>
+                    <span className='nodo'>未完成</span>
+                  </React.Fragment>
+                )}
+              </StepBox>
+            </BaseStepBox>
+          ))}
+      </BaseStepCon>
     </Con>
   )
 }
@@ -69,7 +64,7 @@ const Con = styled.div`
   box-sizing: border-box;
   height: 100%;
   width: 100%;
-  padding: 19px 12px 19px 28px;
+  padding: 20px;
 
   .ant-steps-item-icon {
     /* width: 20px;
@@ -93,36 +88,44 @@ const Con = styled.div`
 const TopTitleCon = styled.div`
   margin-bottom: 16px;
   .topTitleIcon {
-    margin-left: -12px;
+    margin-left: -5px;
     display: inline-block;
     width: 6px;
     height: 12px;
     background: rgba(75, 176, 141, 1);
   }
   .topTitle {
-    margin-left: 16px;
+    margin-left: 10px;
     display: inline-block;
     font-size: 16px;
     color: #333333;
   }
 `
-const DescriptionDom = styled.div`
-  /* margin-right: 12px; */
-  .descriptionName {
-    /* margin-top: 5px; */
-    color: #687179;
+
+const StepBox = styled.div`
+  padding-bottom: 10px;
+  * {
     font-size: 12px;
   }
-  .descriptionTime {
-    color: #687179;
-    font-size: 12px;
+  .title {
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 5px;
   }
-  .descriptionMessage {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #e6eceb;
+  .info,
+  .date,
+  .nodo {
+    color: #687179;
+    margin-bottom: 3px;
+  }
+  .text-box {
+    color: 12px;
+    background: #e6eceb;
     border-radius: 2px;
-    color: #333333;
-    font-size: 12px;
+    padding: 10px 12px;
+    margin: 5px 0 0;
+    .text-box-title {
+      font-weight: bold;
+    }
   }
 `

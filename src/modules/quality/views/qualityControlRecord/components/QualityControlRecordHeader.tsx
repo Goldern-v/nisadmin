@@ -23,7 +23,7 @@ export default React.forwardRef(function TopCon(props: any, ref: any) {
       <DatePicker.RangePicker defaultValue={[startDate, endDate]} style={{ width: 220 }} ref={ref} />
 
       <span style={{ margin: '0 3px 0 26px' }}>质控科室:</span>
-      <DeptSelect onChange={onChange} />
+      <DeptSelect onChange={onChange} extraDept={[{ name: '全院', code: '全院' }]} />
 
       <span style={{ margin: '0 3px 0 26px' }}>表单:</span>
       {/* <DeptSelect onChange={onChange} /> */}

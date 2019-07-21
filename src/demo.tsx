@@ -5,6 +5,7 @@ import { DatePicker } from './vendors/antd'
 import YearPicker from './components/YearPicker'
 import { formatIdCord } from './utils/idCard/idCard'
 import FullPageLoading from './components/loading/FullPageLoading'
+import { BaseStepBox, BaseStepCon } from './components/BaseStep'
 
 export interface Props extends RouteComponentProps {
   style: any
@@ -21,7 +22,11 @@ export default function demo(props: Props) {
   }
   return (
     <Wrapper style={props.style} onScroll={onScroll}>
-      <FullPageLoading />
+      {/* <FullPageLoading /> */}
+      <BaseStepCon>
+        <BaseStepBox success={true}>1111</BaseStepBox>
+        <BaseStepBox success={false}>1111</BaseStepBox>
+      </BaseStepCon>
     </Wrapper>
   )
 }

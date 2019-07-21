@@ -155,7 +155,7 @@ const routes: RouteItem[] = [
   setLayout('/continuingEduEmpDetail/:pannelName', ContinuingEduEmpDetail, layouts.MainLayout),
   // 护理质量
   setLayout('/quality/:name', QualityView, layouts.MainLayout),
-  setLayout('/qualityControlRecordDetail/:type', QualityControlRecordDetail, layouts.MainLayout),
+  setLayout('/qualityControlRecordDetail/:id', QualityControlRecordDetail, layouts.MainLayout),
   setLayout('/qualityAnalysisDetail/:id', QualityAnalysisDetail, layouts.BreadcrumbLayout, [
     { name: '护理质量', link: '/quality' },
     { name: '分析报告', link: '/quality/analysis' },
