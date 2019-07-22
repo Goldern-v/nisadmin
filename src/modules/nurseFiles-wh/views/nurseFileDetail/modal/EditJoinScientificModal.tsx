@@ -65,7 +65,7 @@ export default function EditJoinScientificModal(props: Props) {
     value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.completionDate && (value.completionDate = value.completionDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHGoScienceCourseSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHGoScienceCourse', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -85,7 +85,7 @@ export default function EditJoinScientificModal(props: Props) {
         approvalNumber: data.approvalNumber,
         registerNumber: data.registerNumber,
         startDate: data.startDate ? moment(data.startDate) : null,
-        endDate: data.endDate ? moment(data.endDate): null,
+        endDate: data.endDate ? moment(data.endDate) : null,
         completion: data.completion,
         completionDate: data.completionDate ? moment(data.completionDate) : null,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
@@ -129,7 +129,7 @@ export default function EditJoinScientificModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`课题级别`} name='courseLevel'>
-            <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

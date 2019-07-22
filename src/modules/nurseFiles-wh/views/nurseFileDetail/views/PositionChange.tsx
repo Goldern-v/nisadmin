@@ -106,7 +106,7 @@ export default observer(function PersonWinning() {
                       结束时间: `endDate`
                     },
                     {
-                      现职称: `title`,
+                      现职称: `title`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -129,7 +129,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHTitle(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHTitle', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

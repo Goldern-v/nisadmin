@@ -124,7 +124,7 @@ export default observer(function SpecializNurse() {
                       专科护士级别: `nurseLevel`
                     },
                     {
-                      发证时间: `cardNumberDate`,
+                      发证时间: `cardNumberDate`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -147,7 +147,7 @@ export default observer(function SpecializNurse() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHSpecializNurse(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
       // console.log(res.data,'000000000000')
     })

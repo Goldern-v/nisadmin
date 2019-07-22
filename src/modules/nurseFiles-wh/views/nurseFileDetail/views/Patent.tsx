@@ -155,7 +155,7 @@ export default observer(function Patent() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHPatent(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHPatent', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

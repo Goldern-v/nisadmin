@@ -53,6 +53,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   z-index: 1;
+  .ant-calendar-range-picker-separator {
+    position: relative;
+    top: 5px;
+  }
 `
 const QualityControlCon = styled.div`
   /* margin-left: 30px; */

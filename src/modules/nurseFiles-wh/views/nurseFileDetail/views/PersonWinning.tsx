@@ -137,7 +137,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHPersonWinning(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHPersonWinning', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
