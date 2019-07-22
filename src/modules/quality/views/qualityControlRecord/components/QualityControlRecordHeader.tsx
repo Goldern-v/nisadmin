@@ -33,6 +33,7 @@ export default observer(function TopCon(props: any) {
       <span style={{ margin: '0 3px 0 26px' }}>表单:</span>
       {/* <DeptSelect onChange={onChange} /> */}
       <FormSelect />
+
       <span style={{ margin: '0 3px 0 26px' }}>状态:</span>
       <StateSelect />
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
@@ -55,6 +56,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   z-index: 1;
+  .ant-calendar-range-picker-separator {
+    position: relative;
+    top: 5px;
+  }
 `
 const QualityControlCon = styled.div`
   /* margin-left: 30px; */
