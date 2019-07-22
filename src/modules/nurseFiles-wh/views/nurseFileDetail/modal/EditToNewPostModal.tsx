@@ -78,7 +78,7 @@ export default function EditToNewPostModal(props: Props) {
     }
     value.transferDate && (value.transferDate = value.transferDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHTransferPostSaveOrUpdate({ ...value, ...obj }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHTransferPost', { ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')

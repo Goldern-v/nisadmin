@@ -186,11 +186,11 @@ export default observer(function PersonWinning() {
                     },
                     {
                       承担单位: `unit`,
-                      课题批文号: `approvalNumber`,
+                      课题批文号: `approvalNumber`
                     },
                     {
                       登记号: `registerNumber`,
-                      完成情况: `courseCompletion`,
+                      完成情况: `courseCompletion`
                     },
                     {
                       开始时间: `startDate`,
@@ -220,7 +220,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHGoScienceCourse(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHGoScienceCourse', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

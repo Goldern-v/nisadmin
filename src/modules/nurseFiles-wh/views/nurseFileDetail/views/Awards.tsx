@@ -146,10 +146,11 @@ export default observer(function Awards() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseAwardWinning(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseAwardWinning', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
+
   useEffect(() => {
     getTableData()
   }, [])

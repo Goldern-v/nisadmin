@@ -63,7 +63,7 @@ export default function EditPositionChangeModal(props: Props) {
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
     value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHTitleSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHSpecializNurse', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -95,7 +95,7 @@ export default function EditPositionChangeModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`开始时间`} name='startDate'>
-              <DatePicker />  
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>

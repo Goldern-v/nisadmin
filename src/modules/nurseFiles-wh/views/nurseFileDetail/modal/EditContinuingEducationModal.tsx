@@ -64,7 +64,7 @@ export default function EditPersonWinningModal(props: Props) {
     value.year && (value.year = value.year.format('YYYY'))
     // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHContinueStudySaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHContinueStudy', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')

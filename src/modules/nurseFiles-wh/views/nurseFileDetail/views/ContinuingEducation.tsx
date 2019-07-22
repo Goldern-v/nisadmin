@@ -159,7 +159,7 @@ export default observer(function PersonWinning() {
                       学院分布区域: `schoolArea`
                     },
                     {
-                      学院职称分布: `personTitleArea`,
+                      学院职称分布: `personTitleArea`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -182,7 +182,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHContinueStudy(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHContinueStudy', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
