@@ -28,7 +28,7 @@ import ContinuingEducation from './views/ContinuingEducation'
 import Leave from './views/Leave'
 import PositionChange from './views/PositionChange'
 import RankChange from './views/RankChange'
-import PostChange from './views/PostChange'
+// import PostChange from './views/PostChange'
 import OrganizationChange from './views/OrganizationChange'
 import { ScrollBox } from 'src/components/common'
 
@@ -137,11 +137,11 @@ const ROUTE_LIST = [
     component: RankChange,
     name: '层级变动'
   },
-  {
-    type: 'PostChange',
-    component: PostChange,
-    name: '岗位变动'
-  },
+  // {
+  //   type: 'PostChange',
+  //   component: PostChange,
+  //   name: '岗位变动'
+  // },
   {
     type: 'OrganizationChange',
     component: OrganizationChange,

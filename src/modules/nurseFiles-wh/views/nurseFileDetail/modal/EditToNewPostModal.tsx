@@ -54,7 +54,7 @@ export default function EditToNewPostModal(props: Props) {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
       auditedStatus: '',
-      urlImageOne: '',
+      // urlImageOne: '',
       oldDeptCode: oldType,
       oldDeptName: oldTypeName ? oldTypeName.name : '',
       newDeptCode: type,

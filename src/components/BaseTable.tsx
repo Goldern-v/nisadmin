@@ -244,6 +244,14 @@ const Wrapper = styled.div`
       .ant-table-align-center {
         /* padding: 8px 8px 14px 8px !important; */
       }
+
+      /* 操作字体大小设置 */
+      /* .kicUge span{
+        font-size: 13px !important;
+      }
+      .nbXOP {
+        font-size: 13px !important;
+      } */
     }
 
     .ant-table-small > .ant-table-content > .ant-table-body {
