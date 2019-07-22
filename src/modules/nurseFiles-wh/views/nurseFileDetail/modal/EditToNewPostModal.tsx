@@ -33,7 +33,7 @@ const rules: Rules = {
 }
 export default function EditToNewPostModal(props: Props) {
   const [title, setTitle] = useState('')
-  const [list, setList] = useState([])
+  const [list, setList]: any = useState([])
   const [type, setType] = useState('')
   const [oldType, setOldType] = useState('')
   let { visible, onCancel, onOk, data, signShow } = props
@@ -78,7 +78,7 @@ export default function EditToNewPostModal(props: Props) {
     }
     value.transferDate && (value.transferDate = value.transferDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHTransferPostSaveOrUpdate({ ...value, ...obj }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHTransferPost', { ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -101,9 +101,7 @@ export default function EditToNewPostModal(props: Props) {
       setTitle('修改转岗信息')
     } else if (signShow === '添加') {
       setTitle('添加转岗信息')
-      nurseFilesService.getDeptList().then((res: any) => {
-        setList(res.data.deptList)
-      })
+      setList(authStore.deptList)
     }
   }, [visible])
 

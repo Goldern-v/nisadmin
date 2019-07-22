@@ -106,7 +106,7 @@ export default observer(function PersonWinning() {
                       结束时间: `endDate`
                     },
                     {
-                      现编制: `workConversion`,
+                      现编制: `workConversion`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -129,7 +129,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHWorkConversion(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkConversion', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

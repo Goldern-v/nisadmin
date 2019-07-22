@@ -63,7 +63,7 @@ export default function EditOrganizationChangeModal(props: Props) {
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
     value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHWorkConversionSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHWorkConversion', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -83,9 +83,9 @@ export default function EditOrganizationChangeModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改所获奖励')
+      setTitle('修改编制变动')
     } else if (signShow === '添加') {
-      setTitle('添加编制变动信息')
+      setTitle('添加编制变动')
     }
   }, [visible])
 
@@ -95,12 +95,12 @@ export default function EditOrganizationChangeModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`开始时间`} name='startDate'>
-              <DatePicker /> 
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`结束时间`} name='endDate'>
-              <DatePicker /> 
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
