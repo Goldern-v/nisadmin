@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditJoinScientificModal from '../modal/EditJoinScientificModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editJoinScientificModal = createModal(EditJoinScientificModal)
@@ -166,49 +167,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHGoScienceCourse',
-                  title: '审核参与信息',
-                  tableFormat: [
-                    {
-                      参于课题名称: `goName`,
-                      课题主持人姓名: `hostName`
-                    },
-                    {
-                      课题主持人工号: `hostNo`,
-                      参与排名: `goRank`
-                    },
-                    {
-                      课题来源: `courseSource`,
-                      课题级别: `courseLevel`
-                    },
-                    {
-                      承担单位: `unit`,
-                      课题批文号: `approvalNumber`
-                    },
-                    {
-                      登记号: `registerNumber`,
-                      完成情况: `courseCompletion`
-                    },
-                    {
-                      开始时间: `startDate`,
-                      结束时间: `endDate`
-                    },
-                    {
-                      '立项/结题/验收/鉴定时间': `completionDate`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('参与科研课题', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

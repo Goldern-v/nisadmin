@@ -80,6 +80,7 @@ export default function EditPersonWinningModal(props: Props) {
         grantUnit: data.grantUnit,
         grantDate: data.grantDate ? moment(data.grantDate) : null,
         winningName: data.winningName,
+        winningLevel:data.winningLevel,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }

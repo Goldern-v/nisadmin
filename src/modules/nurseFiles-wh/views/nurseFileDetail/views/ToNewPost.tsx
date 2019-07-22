@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditToNewPostModal from '../modal/EditToNewPostModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editToNewPostModal = createModal(EditToNewPostModal)
@@ -95,29 +96,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHTransferPost',
-                  title: '审核转岗信息',
-                  tableFormat: [
-                    {
-                      原工作室: `oldDeptName`,
-                      现工作室: `newDeptName`
-                    },
-                    {
-                      转岗时间: `transferDate`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('转岗', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

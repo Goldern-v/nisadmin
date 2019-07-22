@@ -11,6 +11,7 @@ import EditWorkRegistrationFormModal from '../modal/EditWorkRegistrationFormModa
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function WorkRegistrationForm() {
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
@@ -125,35 +126,7 @@ export default observer(function WorkRegistrationForm() {
             )}
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseRegistrationWork',
-                  title: '审核工作情况登记',
-                  tableFormat: [
-                    {
-                      年度: `year`,
-                      夜班: `nightShift`
-                    },
-                    {
-                      查房: `checkOut`,
-                      护理会诊: `nursingConsultation`
-                    },
-                    {
-                      病例讨论: `caseDiscussion`,
-                      个案: `individualCase`
-                    },
-                    {
-                      小讲课: `lecture`,
-                      带教: `teaching`
-                    },
-                    {
-                      证明人: `witness`
-                    }
-                  ],
-                  // fileData: [{}],
-                  allData: row
-                })
+                openAuditModal('临床护理工作情况登记表', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

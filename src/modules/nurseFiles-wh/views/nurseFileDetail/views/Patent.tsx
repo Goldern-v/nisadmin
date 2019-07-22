@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditPatentModal from '../modal/EditPatentModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function Patent() {
   const editPatentModal = createModal(EditPatentModal)
@@ -116,34 +117,7 @@ export default observer(function Patent() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHPatent',
-                  title: '审核专利',
-                  tableFormat: [
-                    {
-                      专利名称: `patentName`,
-                      专利号: `patentNumber`
-                    },
-                    {
-                      发证单位: `cardUnit`,
-                      发证时间: `cardDate`
-                    },
-                    {
-                      专利类型: `patentType`,
-                      是否成果转化: `isResultTransfor`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('专利', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

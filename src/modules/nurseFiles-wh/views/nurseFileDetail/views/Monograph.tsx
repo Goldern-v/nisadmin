@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditMonographModal from '../modal/EditMonographModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function Monograph() {
   const editMonographModal = createModal(EditMonographModal)
@@ -109,33 +110,7 @@ export default observer(function Monograph() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHMonograph',
-                  title: '审核专著',
-                  tableFormat: [
-                    {
-                      专著名称: `monographName`,
-                      出版社名称: `pressName`
-                    },
-                    {
-                      出版号: `pressNumber`,
-                      出版日期: `pressDate`
-                    },
-                    {
-                      参编: `participation`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('专著', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

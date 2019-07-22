@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditSpecializNurseModal from '../modal/EditSpecializNurseModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function SpecializNurse() {
   const editSpecializNurseModal = createModal(EditSpecializNurseModal)
@@ -109,33 +110,7 @@ export default observer(function SpecializNurse() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHSpecializNurse',
-                  title: '审核专科护士信息',
-                  tableFormat: [
-                    {
-                      专科护士名称: `nurseName`,
-                      发证单位: `cardUnit`
-                    },
-                    {
-                      证书编号: `cardNumber`,
-                      专科护士级别: `nurseLevel`
-                    },
-                    {
-                      发证时间: `cardNumberDate`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('专科护士', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

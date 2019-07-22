@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditLearnJobModal from '../modal/EditLearnJobModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function LearnJob() {
   const editLearnJobModal = createModal(EditLearnJobModal)
@@ -110,38 +111,7 @@ export default observer(function LearnJob() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHLearnJob',
-                  title: '审核学会任职',
-                  tableFormat: [
-                    {
-                      任职学会名称: `learnJobName`,
-                      学会职位: `learnPosition`
-                    },
-                    {
-                      学会级别: `learnLevel`,
-                      期刊号: `periodicalNumber`
-                    },
-                    {
-                      卷号: `volumeNumber`,
-                      起止页码: `pageNumber`
-                    },
-                    {
-                      起始时间: `startDate`,
-                      结束时间: `endDate`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('学会任职', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

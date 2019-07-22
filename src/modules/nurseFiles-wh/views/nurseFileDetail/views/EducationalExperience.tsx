@@ -12,6 +12,7 @@ import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFiles
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience() {
   const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
@@ -107,33 +108,7 @@ export default observer(function EducationalExperience() {
             )}
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseMedicalEducation',
-                  title: '审核教育经历',
-                  tableFormat: [
-                    {
-                      就读时间: `readTime`,
-                      毕业时间: `graduationTime`
-                    },
-                    {
-                      毕业学校: `graduationSchool`,
-                      专业: `readProfessional`
-                    },
-                    {
-                      学历: `education`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('教育经历', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

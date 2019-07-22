@@ -12,6 +12,7 @@ import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFiles
 import { auditedStatusEnum } from 'src/libs/enum/common'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
+import { openAuditModal } from '../config/auditModalConfig';
 
 export interface Props extends RouteComponentProps {}
 
@@ -113,28 +114,7 @@ export default observer(function WorkHistory() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWorkExperience',
-                  title: '审核工作经历',
-                  tableFormat: [
-                    {
-                      起始时间: `startTime`,
-                      结束时间: `endTime`
-                    },
-                    {
-                      工作单位: `unit`,
-                      专业技术工作: 'professionalWork'
-                    },
-                    {
-                      技术职称: 'professional',
-                      职务: 'post'
-                    }
-                  ],
-
-                  allData: row
-                })
+                openAuditModal('工作经历', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

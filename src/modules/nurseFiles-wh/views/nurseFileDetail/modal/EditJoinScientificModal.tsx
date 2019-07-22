@@ -78,15 +78,18 @@ export default function EditJoinScientificModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        name: data.name,
-        source: data.source,
-        level: data.level,
+        goName: data.goName,
+        hostName: data.hostName,
+        hostNo: data.hostNo,
         goRank: data.goRank,
+        unit: data.unit,
+        courseSource: data.courseSource,
+        courseLevel: data.courseLevel,
         approvalNumber: data.approvalNumber,
         registerNumber: data.registerNumber,
         startDate: data.startDate ? moment(data.startDate) : null,
         endDate: data.endDate ? moment(data.endDate) : null,
-        completion: data.completion,
+        courseCompletion: data.courseCompletion,
         completionDate: data.completionDate ? moment(data.completionDate) : null,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })

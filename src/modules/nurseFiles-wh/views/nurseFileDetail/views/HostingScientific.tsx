@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditHostingScientificModal from '../modal/EditHostingScientificModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editHostingScientificModal = createModal(EditHostingScientificModal)
@@ -144,42 +145,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHHostScienceCourse',
-                  title: '审核主持科研课题',
-                  tableFormat: [
-                    {
-                      主持课题名称: `name`,
-                      课题来源: `courseSource`
-                    },
-                    {
-                      课题级别: `courseLevel`,
-                      承担单位: `unit`
-                    },
-                    {
-                      课题批文号: `approvalNumber`,
-                      登记号: `registerNumber`
-                    },
-                    {
-                      开始时间: `startDate`,
-                      结束时间: `endDate`
-                    },
-                    {
-                      完成情况: `courseCompletion`,
-                      '立项/结题/验收/鉴定时间': `completionDate`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('主持科研课题', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

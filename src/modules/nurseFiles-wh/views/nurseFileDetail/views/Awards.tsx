@@ -13,6 +13,7 @@ import { globalModal } from 'src/global/globalModal'
 import { authStore } from 'src/stores'
 import limitUtils from 'src/modules/nurseFiles-wh/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
+import { openAuditModal } from '../config/auditModalConfig'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards() {
@@ -108,33 +109,7 @@ export default observer(function Awards() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseAwardWinning',
-                  title: '审核所获奖励',
-                  tableFormat: [
-                    {
-                      时间: `time`,
-                      获奖_推广创新项目名称: `awardWinningName`
-                    },
-                    {
-                      本人排名: `rank`,
-                      授奖级别: `awardlevel`
-                    },
-                    {
-                      批准机关: `approvalAuthority`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('所获奖励', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

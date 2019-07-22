@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditOrganizationChangeModal from '../modal/EditOrganizationChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editOrganizationChangeModal = createModal(EditOrganizationChangeModal)
@@ -95,29 +96,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHWorkConversion',
-                  title: '审核编制变动信息',
-                  tableFormat: [
-                    {
-                      开始时间: `startDate`,
-                      结束时间: `endDate`
-                    },
-                    {
-                      现编制: `workConversion`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('编制变动', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

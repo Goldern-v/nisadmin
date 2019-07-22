@@ -14,6 +14,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editContinuingEducationModal = createModal(EditContinuingEducationModal)
@@ -136,41 +137,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHContinueStudy',
-                  title: '审核继续教育信息',
-                  tableFormat: [
-                    {
-                      年份: `year`,
-                      继续教育项目负责人: `projectPerson`
-                    },
-                    {
-                      项目名称: `projectName`,
-                      项目号: `projectNumber`
-                    },
-                    {
-                      项目级别: `projectLevel`,
-                      课时数: `courseHour`
-                    },
-                    {
-                      学员总数: `personTotal`,
-                      学院分布区域: `schoolArea`
-                    },
-                    {
-                      学院职称分布: `personTitleArea`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('继续教育', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

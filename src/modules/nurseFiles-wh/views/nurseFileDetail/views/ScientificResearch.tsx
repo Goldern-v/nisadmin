@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditScientificResearchModal from '../modal/EditScientificResearchModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function scientificResearch() {
   const editScientificResearchModal = createModal(EditScientificResearchModal)
@@ -116,34 +117,7 @@ export default observer(function scientificResearch() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHScienceResult',
-                  title: '审核科研课题成果',
-                  tableFormat: [
-                    {
-                      获奖类别: `resultType`,
-                      成果名称: `resultName`
-                    },
-                    {
-                      属于单位: `grantUnit`,
-                      授予时间: `grantDate`
-                    },
-                    {
-                      奖励级别: `winningLevel`,
-                      奖励名称: `winningName`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('科研课题成果', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

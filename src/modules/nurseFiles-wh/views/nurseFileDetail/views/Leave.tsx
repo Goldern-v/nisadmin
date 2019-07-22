@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditLeaveModal from '../modal/EditLeaveModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig';
 export interface Props extends RouteComponentProps {}
 export default observer(function Leave() {
   const editLeaveModal = createModal(EditLeaveModal)
@@ -123,37 +124,7 @@ export default observer(function Leave() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHLeave',
-                  title: '审核离职',
-                  tableFormat: [
-                    {
-                      职称: `title`,
-                      学历: `education`
-                    },
-                    {
-                      出生日期: `birthday`,
-                      年龄: `age`
-                    },
-                    {
-                      取得护士执业资格证书时间并从事护理岗位时间: `zyzsDate`,
-                      离职时间: `leaveDate`
-                    },
-                    {
-                      层级: `hierarchy`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('离职', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}
