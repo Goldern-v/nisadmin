@@ -37,6 +37,12 @@ export default observer(function QualityControlRecord() {
       .instanceGetPageByCondition(sendData)
       .then((res: any) => {
         setAllData(res.data)
+        if (res.data.list.length < 20) {
+          let len = 20 - res.data.list.length
+          for (let i = 0; i < len; i++) {
+            res.data.list.push([])
+          }
+        }
         setTableData(res.data.list)
         setLoading(false)
       })
