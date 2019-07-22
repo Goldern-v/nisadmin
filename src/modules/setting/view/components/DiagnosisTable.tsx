@@ -23,7 +23,7 @@ class EditableTable extends React.Component<any, any> {
       editingKey: false,
       selectData1: [],
       educationName: '',
-      orderText: '',
+      diagnosis: '',
       messageType: '',
       timeout: null,
       loading: false,
@@ -44,7 +44,7 @@ class EditableTable extends React.Component<any, any> {
       },
       {
         title: '诊断',
-        dataIndex: 'orderText',
+        dataIndex: 'diagnosis',
         width: '21%',
         align: 70,
         editable: true
@@ -130,7 +130,7 @@ class EditableTable extends React.Component<any, any> {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        service.healthyApiService.detelePushType2(record).then((res) => {
+        service.healthyApiService.deteleDiagnosis(record).then((res) => {
           this.getMealList(null, null)
           message.success('删除成功')
         })
@@ -141,7 +141,7 @@ class EditableTable extends React.Component<any, any> {
   //预览
   public preview = (record: any) => {
     let getEducationId = record.educationId
-    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=1`)
+    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=3`)
   }
   
   //添加和修改
@@ -150,14 +150,14 @@ class EditableTable extends React.Component<any, any> {
     // 如果是添加 则清空数据
     if (value === 1) {
       this.setState({ missionId: undefined })
-      this.setState({ orderText: '' })
+      this.setState({ diagnosis: '' })
       this.setState({ messageType: '' })
     }
     // 如果是修改则回显数据
     if (value === 0) {
       this.setState({ searchValue: record.educationName })
       this.setState({ missionId: record.educationName })
-      this.setState({ orderText: record.orderText })
+      this.setState({ diagnosis: record.diagnosis })
     }
     this.setState({ rowData: record })
     service.healthyApiService.getPushType().then((res) => {
@@ -178,7 +178,7 @@ class EditableTable extends React.Component<any, any> {
       pageIndex: current ? current : this.state.pageIndex,
       wardCode: authStore.selectedDeptCode // string 必须参数 科室编码
     }
-    service.healthyApiService.getPushList2(postData).then((res) => {
+    service.healthyApiService.getPushListDiagnosis(postData).then((res) => {
       this.setState({ loadingTable: false })
       this.setState({ total: res.data ? res.data.totalCount : 0 })
       if (res && res.data.list && Object.keys(res.data.list).length > 0) {
@@ -196,7 +196,7 @@ class EditableTable extends React.Component<any, any> {
 
   //保存
   public handleOk() {
-    if (!this.state.searchValue || !this.state.orderText || !this.state.messageType) {
+    if (!this.state.searchValue || !this.state.diagnosis || !this.state.messageType) {
       message.warning('保存前请将每一项信息填写完整')
       return
     }
@@ -212,7 +212,7 @@ class EditableTable extends React.Component<any, any> {
         createDateTime: this.state.rowData.createDateTime, // string 非必须参数
         operator: this.state.rowData.operator, // string 非必须参数
         messageType: this.state.messageType, // string 非必须参数
-        orderText: this.state.orderText // string 非必须参数
+        diagnosis: this.state.diagnosis // string 非必须参数
       }
     }
     // 新增入参
@@ -226,11 +226,13 @@ class EditableTable extends React.Component<any, any> {
         educationName: this.state.searchValue, // string 非必须参数
         messageType: this.state.messageType, // string 非必须参数
         operator: empNo, // 新增人
-        orderText: this.state.orderText // string 非必须参数
+        diagnosis: this.state.diagnosis // string 非必须参数
       }
     }
-    service.healthyApiService.preservationPushType2(postData).then((res) => {
+    console.log(postData,'diagnosis')
+    service.healthyApiService.preservationDiagnosis(postData).then((res) => {
       if (res) {
+        console.log(res)
         this.setState({confirmLoading: false})
         message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
         this.getMealList(null, null)
@@ -373,12 +375,12 @@ class EditableTable extends React.Component<any, any> {
               </Select>
             </div>
             <div className='category' style={{ marginTop: '40px' }}>
-              <SpanOne>医嘱内容：</SpanOne>
+              <SpanOne>诊断内容：</SpanOne>
               <Input
-                value={this.state.orderText}
+                value={this.state.diagnosis}
                 style={{ width: '72%' }}
                 onChange={(e) => {
-                  this.setState({ orderText: e.target.value })
+                  this.setState({ diagnosis: e.target.value })
                 }}
               />
             </div>

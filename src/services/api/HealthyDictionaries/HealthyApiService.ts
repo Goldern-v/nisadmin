@@ -125,7 +125,7 @@ export default class HomeApiServices extends BaseApiService {
     return this.post(`/educationSettingOrder/saveOrUpdate`, postData)
   }
 
-  // 13.自动推送医嘱类型列表)
+  // 13.自动推送医嘱类型列表
   public async getPushList2 (data: any) {
     const postData = {
       pageSize: data.pageSize,
@@ -144,4 +144,38 @@ export default class HomeApiServices extends BaseApiService {
     }
     return this.post(`/briefMission/getBriefMission`, postData)
   }
+
+  // 11.删除自动推送诊断类型
+  public async deteleDiagnosis (data: any) {
+    const getData = {
+      serialNo: data.serialNo, // 自动推送事件类型id
+    }
+    return this.get(`/educationSettingDiagnosis/delete/${getData.serialNo}`)
+  }
+  
+  // 12.保存自动推送诊断类型
+  public async preservationDiagnosis (data: any) {
+    const postData = {
+      serialNo: data.serialNo, // string 非必须参数
+      wardCode: data.wardCode, // string 必须参数
+      educationId: data.educationId, // string 必须参数
+      educationName: data.educationName, // string 必须参数
+      diagnosis: data.diagnosis, // string 必须参数
+      createDateTime: data.createDateTime, // string 非必须参数
+      operator: data.operator, // string 必须参数
+      messageType: data.messageType // string 必须参数
+    }
+    return this.post(`/educationSettingDiagnosis/saveOrUpdate`, postData)
+  }
+
+  // 13.自动推送诊断类型列表
+  public async getPushListDiagnosis (data: any) {
+    const postData = {
+      pageSize: data.pageSize,
+      pageIndex: data.pageIndex,
+      wardCode: data.wardCode, // string 必须参数 科室编码
+    }
+    return this.post(`/educationSettingDiagnosis/getEducationSettingDiagnosisList`, qs.stringify(postData))
+  }
+  
 }
