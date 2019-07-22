@@ -7,17 +7,17 @@ import { Link } from 'react-router-dom'
 
 export interface Props {
   data: any[]
+  style?: any
 }
 
-export default function BreadcrumbBox (props: Props) {
-  
+export default function BreadcrumbBox(props: Props) {
   useEffect(() => {})
   // const handleClick = (e: any) => {
   //   console.log('click ', e) 排班管理 排班人员设置
   // }
   return (
     <Wrapper>
-      <BreadcrumbContainer>
+      <BreadcrumbContainer style={props.style}>
         <Breadcrumb>
           {props && props.data ? (
             props.data.map((item) => (

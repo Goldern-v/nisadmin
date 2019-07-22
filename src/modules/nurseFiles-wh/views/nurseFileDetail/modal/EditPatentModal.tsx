@@ -78,7 +78,7 @@ export default function EditPatentModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          cardDate: moment(data.cardDate),
+          cardDate: data.cardDate ? moment(data.cardDate) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
@@ -116,7 +116,7 @@ export default function EditPatentModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`专利类型`} name='patentType'>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

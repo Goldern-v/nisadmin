@@ -66,6 +66,9 @@ import QualityControlRecordDetail from 'src/modules/quality/views/qualityControl
 import QualityAnalysisEdit from 'src/modules/quality/views/analysis/AnalysisEdit'
 import QualityAnalysisDetail from 'src/modules/quality/views/analysis/AnalysisDetail'
 import { nurseFileModule } from './routerConfig/nurseFileModule'
+//病区文件
+import DeptFileShareCatalogSetting from 'src/modules/deptReferSetting/views/DeptFileShareCatalogSetting'
+import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -152,7 +155,7 @@ const routes: RouteItem[] = [
   setLayout('/continuingEduEmpDetail/:pannelName', ContinuingEduEmpDetail, layouts.MainLayout),
   // 护理质量
   setLayout('/quality/:name', QualityView, layouts.MainLayout),
-  setLayout('/qualityControlRecordDetail/:type', QualityControlRecordDetail, layouts.MainLayout),
+  setLayout('/qualityControlRecordDetail/:id', QualityControlRecordDetail, layouts.MainLayout),
   setLayout('/qualityAnalysisDetail/:id', QualityAnalysisDetail, layouts.BreadcrumbLayout, [
     { name: '护理质量', link: '/quality' },
     { name: '分析报告', link: '/quality/analysis' },
@@ -168,6 +171,12 @@ const routes: RouteItem[] = [
     { name: '分析报告', link: '/quality/analysis' },
     { name: '创建分析报告', link: '' }
   ]),
+  setLayout('/deptFileShareCatalogSetting', DeptFileShareCatalogSetting, layouts.BreadcrumbLayout, [
+    { name: '系统设置', link: '/setting' },
+    { name: '病区文件', link: '/setting/病区文件' },
+    { name: '目录设置', link: '' }
+  ]),
+  setLayout('/qualityAnalysisReport', QualityAnalysisReportView, layouts.MainLayout),
   {
     path: '/continuingEdu',
     redirect: '/continuingEdu/人员管理'

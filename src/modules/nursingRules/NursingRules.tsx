@@ -24,7 +24,8 @@ export default class NursingRules extends Component<Props> {
       name: '',
       pageIndex: 1,
       pageSize: 20,
-      fileType: ''
+      fileType: '',
+      catalog: ''
     },
     dataTotal: 0,
     newRuleModalgVisible: false,
@@ -35,7 +36,8 @@ export default class NursingRules extends Component<Props> {
     },
     uploadParams: null as any,
     tableLoading: false,
-    typeList: [] as any
+    typeList: [] as any,
+    catalogList: [] as any
   }
   PreviewModalWrapper = createModal(PreviewModal)
   constructor(props: Props) {
@@ -245,7 +247,17 @@ export default class NursingRules extends Component<Props> {
   }
 
   handleFileTypeChange(fileType: any) {
-    this.setState({ query: { ...this.state.query, fileType } })
+
+    api.getCatalogByType(fileType).then(res => {
+      if (res.data) this.setState({ catalogList: res.data });
+    })
+
+    
+    this.setState({ query: { ...this.state.query, fileType, catalog: '' } });
+  }
+
+  handleCatalogChange(catalog: any) {
+    this.setState({ query: { ...this.state.query, catalog } })
   }
 
   reUpload(record: any) {
@@ -263,7 +275,7 @@ export default class NursingRules extends Component<Props> {
 
   render() {
     const PreviewModalWrapper = this.PreviewModalWrapper
-    const { query, data, dataTotal, newRuleModalgVisible, preview, tableLoading, typeList, uploadParams } = this.state
+    const { query, data, dataTotal, newRuleModalgVisible, preview, tableLoading, typeList, uploadParams, catalogList } = this.state
     const rulesColumns: ColumnProps<any>[] = [
       {
         title: '序号',
@@ -374,6 +386,21 @@ export default class NursingRules extends Component<Props> {
                 {typeList.map((item: any) => (
                   <Select.Option value={item.type} key={item.id}>
                     {item.type}
+                  </Select.Option>
+                ))}
+              </Select>
+            </span>
+            <span className='type-label'>目录：</span>
+            <span className='type-content'>
+              <Select
+                defaultValue={query.catalog}
+                value={query.catalog}
+                onChange={this.handleCatalogChange.bind(this)}
+              >
+                <Select.Option value=''>全部</Select.Option>
+                {catalogList.map((item: any) => (
+                  <Select.Option value={item.name} key={item.id}>
+                    {item.name}
                   </Select.Option>
                 ))}
               </Select>

@@ -71,6 +71,20 @@ export default function EditPersonWinningModal(props: Props) {
     })
   }
 
+  /** 自动关联进修时常 */
+  const computedStudyHour = () => {
+    if (refForm.current) {
+      let startDate = refForm.current.getField('startDate')
+      let endDate = refForm.current.getField('endDate')
+      if (startDate && endDate) {
+        let day = moment(endDate).diff(moment(startDate), 'd') + 1
+        if (day > 0) {
+          refForm.current.setField('studyHour', day)
+        }
+      }
+    }
+  }
+
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
@@ -79,8 +93,8 @@ export default function EditPersonWinningModal(props: Props) {
         studyMajor: data.studyMajor,
         unit: data.unit,
         unitLocal: data.unitLocal,
-        startDate: moment(data.startDate),
-        endDate: moment(data.endDate),
+        startDate: data.startDate ? moment(data.startDate) : null,
+        endDate: data.endDate ? moment(data.endDate) : null,
         studyHour: data.studyHour,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
@@ -93,11 +107,11 @@ export default function EditPersonWinningModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered> 
+    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`进修专业`} name='studyMajor' required>
+            <Form.Field label={`进修专业`} name='studyMajor'>
               <Input />
             </Form.Field>
           </Col>
@@ -107,26 +121,28 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修单位所属地`} name='unitLocal' required>
+            <Form.Field label={`进修单位所属地`} name='unitLocal'>
               <Select>
                 {nurseFileDetailViewModal.getDict('进修单位').map((item) => (
-                  <Select.Option value={item.code}>{item.name}</Select.Option>
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
                 ))}
               </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修开始时间`} name='startDate' required>
+            <Form.Field label={`进修开始时间`} name='startDate' onValueChange={computedStudyHour}>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修结束时间`} name='endDate' required>
+            <Form.Field label={`进修结束时间`} name='endDate' onValueChange={computedStudyHour}>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修时长`} name='studyHour' required>
+            <Form.Field label={`进修时长`} name='studyHour'>
               <Input />
             </Form.Field>
           </Col>

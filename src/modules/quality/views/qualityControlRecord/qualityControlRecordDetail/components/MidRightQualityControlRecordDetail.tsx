@@ -1,20 +1,61 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Steps } from 'antd'
-const { Step } = Steps
-export default function midRightQualityControlRecordDetail() {
-  //
-  // useEffect(() => {
-  //
-  // })
+import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
+import { getWeekString } from 'src/utils/date/week'
+
+interface Props {
+  detailData: any
+}
+export default function midRightQualityControlRecordDetail(props: Props) {
+  let { nodeDataList } = props.detailData
+
   return (
     <Con>
-      <Steps direction='vertical' current={3}>
-        <Step title='提交' description='王大丽、王大丽 22019-10-10 10:00）（周一）' />
-        <Step title='病区处理' description='王萌萌（神经内科）2019-10-10 10:00 （周一）' />
-        <Step title='护士长评价' description='王萌萌（神经内科）2019-10-10 10:00（周一）' />
-        <Step title='护理部评价' description='未完成' />
-      </Steps>
+      <TopTitleCon>
+        <div className='topTitleIcon' />
+        <div className='topTitle'>质控轨迹</div>
+      </TopTitleCon>
+
+      <BaseStepCon>
+        {nodeDataList &&
+          nodeDataList.map((item: any, index: number) => (
+            <BaseStepBox success={item.status == '1'} key={index}>
+              <StepBox>
+                {item.status == '1' ? (
+                  <React.Fragment>
+                    <div className='title'>{item.nodeName}</div>
+                    <div className='info'>{item.handlerName}</div>
+                    <div className='info'>
+                      {item.handleTime} ({getWeekString(item.handleTime)})
+                    </div>
+                    {item.nodeCode == 'dept_handle' && (
+                      <React.Fragment>
+                        {item.expand && (
+                          <div className='text-box'>
+                            <div className='text-box-title'>原因分析：</div>
+                            {item.expand}
+                          </div>
+                        )}
+                        {item.handleContent && (
+                          <div className='text-box'>
+                            <div className='text-box-title'>整改措施：</div>
+                            {item.handleContent}
+                          </div>
+                        )}
+                      </React.Fragment>
+                    )}
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <div className='title'>{item.nodeName}</div>
+                    <span className='nodo'>未完成</span>
+                  </React.Fragment>
+                )}
+              </StepBox>
+            </BaseStepBox>
+          ))}
+      </BaseStepCon>
     </Con>
   )
 }
@@ -23,8 +64,8 @@ const Con = styled.div`
   box-sizing: border-box;
   height: 100%;
   width: 100%;
-  padding: 10px 20px;
-  font-size: 12px;
+  padding: 20px;
+
   .ant-steps-item-icon {
     /* width: 20px;
     height: 20px;
@@ -42,5 +83,49 @@ const Con = styled.div`
     font-size: 13px;
     font-weight: 400;
     color: rgba(104, 113, 121, 1);
+  }
+`
+const TopTitleCon = styled.div`
+  margin-bottom: 16px;
+  .topTitleIcon {
+    margin-left: -5px;
+    display: inline-block;
+    width: 6px;
+    height: 12px;
+    background: rgba(75, 176, 141, 1);
+  }
+  .topTitle {
+    margin-left: 10px;
+    display: inline-block;
+    font-size: 16px;
+    color: #333333;
+  }
+`
+
+const StepBox = styled.div`
+  padding-bottom: 10px;
+  * {
+    font-size: 12px;
+  }
+  .title {
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .info,
+  .date,
+  .nodo {
+    color: #687179;
+    margin-bottom: 3px;
+  }
+  .text-box {
+    color: 12px;
+    background: #e6eceb;
+    border-radius: 2px;
+    padding: 10px 12px;
+    margin: 5px 0 0;
+    .text-box-title {
+      font-weight: bold;
+    }
   }
 `

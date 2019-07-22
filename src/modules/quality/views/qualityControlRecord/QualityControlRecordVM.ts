@@ -1,6 +1,7 @@
 import { observable, computed, action, reaction } from 'mobx'
 import { qualityControlRecordApi, NurseQuery } from './api/QualityControlRecordApi'
 import { authStore } from 'src/stores'
+import moment from 'moment'
 
 class QualityControlRecordVM {
   @observable public formSelectCode = ''
@@ -8,6 +9,12 @@ class QualityControlRecordVM {
   @observable public stateSelectCode = ''
   @observable public stateSelectList: any = []
   @observable public deptName = ''
+
+  /** 筛选条件 */
+  @observable public filterDate: any = [moment(moment().format('YYYY-MM') + '-01'), moment()]
+  @observable public filterForm: any = ''
+  @observable public filterState: any = ''
+
   public constructor() {
     /** 监听 */
     reaction(() => {}, () => {})
@@ -21,7 +28,7 @@ class QualityControlRecordVM {
       formSelectList[0] = {}
     }
     if (!formSelectList[0].name) {
-      formSelectList[0].name = '基础护理质量评价表'
+      formSelectList[0].name = ''
     }
     return formSelectList[0].name
   }
@@ -32,9 +39,15 @@ class QualityControlRecordVM {
       formSelectList[0] = {}
     }
     if (!formSelectList[0].name) {
-      formSelectList[0].name = '已提交'
+      formSelectList[0].name = ''
     }
     return formSelectList[0].name
+  }
+
+  init() {
+    this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
+    this.filterForm = ''
+    this.filterState = ''
   }
 }
 

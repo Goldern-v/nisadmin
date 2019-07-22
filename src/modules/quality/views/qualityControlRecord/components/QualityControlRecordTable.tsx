@@ -7,9 +7,17 @@ import { observer } from 'mobx-react-lite'
 // import PaginationCon from './PaginationCon'
 import qs from 'qs'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
-export default observer(function qualityControlRecordTable() {
-  let [loading, setLoading] = useState(false)
-  let [tableData, setTableData]: any = useState([])
+export interface Props {
+  tableData: any
+  allData: any
+  loadingGet: boolean
+  getTableData: any
+}
+export default observer(function qualityControlRecordTable(props: Props) {
+  const { allData, tableData, loadingGet } = props
+  // .list
+  // const tableRowData:any[] = tableData.list
+  let [tableDataApi, setTableDataApi]: any[] = useState([])
   let [total, setTotal] = useState(50)
   let [current, setCurrent] = useState(1)
   let [pageSize, setPageSize] = useState(10)
@@ -31,21 +39,22 @@ export default observer(function qualityControlRecordTable() {
     },
     {
       title: '质控日期',
-      dataIndex: 'followEvaluateDate',
+      dataIndex: 'evalDate',
       key: '',
       width: 120,
       align: 'center'
     },
     {
       title: '质控病区',
-      dataIndex: 'zkbq',
+      dataIndex: 'wardName',
       key: '',
       width: 180,
       align: 'center'
     },
     {
       title: '质控表单',
-      dataIndex: 'zkbq',
+      // dataIndex: 'zkbq',
+      dataIndex: 'qcName',
       key: '',
       width: 180,
       align: 'center'
@@ -53,42 +62,50 @@ export default observer(function qualityControlRecordTable() {
 
     {
       title: '质控人员',
-      dataIndex: 'zkry',
+      // dataIndex: 'zkry',
+      dataIndex: 'creatorName',
       key: '',
       width: 100,
       align: 'center'
     },
     {
       title: '床号',
-      dataIndex: 'ch',
+      // dataIndex: 'ch',
+      dataIndex: 'bedLabel',
       key: '',
       width: 80,
       align: 'center'
     },
     {
       title: '住院号',
-      dataIndex: 'zyh',
+      // dataIndex: 'zyh',
+      dataIndex: 'inpNo',
       key: '',
       width: 100,
       align: 'center'
     },
     {
       title: '管床护士',
-      dataIndex: 'gchs',
+      dataIndex: '',
+      // dataIndex: 'zkbq',
       key: '',
       width: 100,
       align: 'center'
     },
     {
       title: '质量结果',
-      dataIndex: 'zljg',
+      dataIndex: 'evalRate',
       key: '',
-      width: 100,
-      align: 'center'
+      width: 110,
+      align: 'center',
+      render(text: any) {
+        return typeof text == 'number' && text.toFixed(2) + '%'
+      }
     },
     {
       title: '状态',
-      dataIndex: 'zt',
+      // dataIndex: 'zt',
+      dataIndex: 'nextNodePendingName',
       key: '',
       width: 130,
       align: 'center'
@@ -114,80 +131,24 @@ export default observer(function qualityControlRecordTable() {
       }
     }
   ]
-  const dataSource: any[] = [
-    {
-      key: 1,
-      zkbh: '111111111111111',
-      zkrq: '2019-07-01',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333331',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 2,
-      zkbh: '111111111111112',
-      zkrq: '2019-07-01',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333332',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 3,
-      zkbh: '111111111111113',
-      zkrq: '2019-07-01',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333333',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 2,
-      zkbh: '111111111111111',
-      zkrq: '2019-07-01',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333334',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    },
-    {
-      key: 2,
-      zkbh: '111111111111111',
-      zkrq: '2019-07-01',
-      zkbq: '神经内科护理单元',
-      zkbd: '护理基础质量检查表',
-      zkry: '王萌萌',
-      ch: '33',
-      zyh: 'P3333335',
-      gchs: '王晓萌',
-      zljg: '60%',
-      zt: '待病区处理'
-    }
-  ]
+
   useEffect(() => {
-    qualityControlRecordApi.instanceGetPageByCondition().then((res) => {})
+    // qualityControlRecordApi.instanceGetPageByCondition().then((res:any) => {
+    //   let cacheData = res.data.list
+    //   // let cacheData1 = [...cacheData]
+    //   setTableDataApi(cacheData)
+    // })
   }, [])
   const onDoubleClick = (record: any) => {
     // appStore.history.push('/continuingEduEmpDetail')
-    appStore.history.push(`/qualityControlRecordDetail/${record.zyh}`)
+    appStore.history.push(`/qualityControlRecordDetail/${record.id}`)
     // store.appStore.history.push(`/quality/qualityControlRecord/${qs.stringify(record)}`)
+  }
+  const onChange = (e: any) => {
+    props.getTableData({
+      pageSize: e.pageSize,
+      current: e.current
+    })
   }
   return (
     <Con>
@@ -196,8 +157,8 @@ export default observer(function qualityControlRecordTable() {
           <BaseTable
             surplusHeight={205}
             // surplusHeight={135}
-            loading={loading}
-            dataSource={dataSource}
+            loading={loadingGet}
+            dataSource={tableData}
             columns={columns}
             surplusWidth={160}
             onRow={(record: any) => {
@@ -206,13 +167,14 @@ export default observer(function qualityControlRecordTable() {
               }
             }}
             pagination={{
-              total: total,
-              current: current,
+              total: allData.totalCount,
+              current: allData.pageIndex,
               showSizeChanger: true,
               showQuickJumper: true,
               pageSizeOptions: ['10', '15', '20'],
-              pageSize: pageSize
+              pageSize: allData.pageSize
             }}
+            onChange={onChange}
           />
         </TableCon>
       </TableScrollCon>

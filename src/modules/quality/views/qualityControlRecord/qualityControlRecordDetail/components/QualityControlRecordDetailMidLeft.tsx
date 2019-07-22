@@ -1,147 +1,193 @@
 import styled from 'styled-components'
-import React from 'react'
-import { Checkbox, Radio, Icon, Input, Row, Col } from 'antd'
-// import React, { useState, useEffect } from 'react'
+// import React from 'react'
+import { Checkbox, Radio, Icon, Input, Row, Col, Spin } from 'antd'
+import React, { useState, useEffect } from 'react'
+import Zimage from 'src/components/Zimage'
+import { CheckboxChangeEvent } from 'src/vendors/antd'
+import { cloneJson } from 'src/utils/json/clone'
 const { TextArea } = Input
-export default function qualityControlRecordDetailMidLeft() {
+export interface Props {
+  detailData: any
+}
+export default function qualityControlRecordDetailMidLeft(props: Props) {
+  let [messageBoxData, setMessageBoxData]: any = useState({})
+  let [itemConData, setItemConData]: any = useState([])
+  let [itemCount, setItemCount]: any = useState({})
+  let [userList, setUserList]: any = useState([])
+  let [bedNurseList, setBedNurseList]: any = useState([])
+  let [onlyReadError, setOnlyReadError]: any = useState(false)
+  let [causeList, setCauseList]: any = useState([])
+
   //
-  // useEffect(() => {
-  //
-  // })
-  const titleBoxChange = (e: any) => {}
+  const { detailData } = props
+  useEffect(() => {
+    if (detailData.master) {
+      setMessageBoxData(detailData.master)
+    }
+    if (detailData.itemGroupList) {
+      setItemConData(detailData.itemGroupList)
+    }
+    if (detailData.itemCount) {
+      setItemCount(detailData.itemCount)
+    }
+    if (detailData.userList) {
+      setUserList(detailData.userList)
+    }
+    if (detailData.bedNurseList) {
+      setBedNurseList(detailData.bedNurseList)
+    }
+    if (detailData.causeList) {
+      setCauseList(detailData.causeList)
+    }
+    //接口没有数据？？？？
+    // const apiData: any = []
+    // setItemConData(apiData)
+  }, [props])
+
+  const titleBoxChange = (e: CheckboxChangeEvent) => {
+    if (e.target.checked) {
+      setItemConData(
+        cloneJson(detailData.itemGroupList).filter((item: any) => {
+          let fl = item.itemList.filter((o: any) => {
+            return o.qcItemValue == '否'
+          })
+          if (fl.length == 0) {
+            return false
+          } else {
+            item.itemList = fl
+            return true
+          }
+        })
+      )
+      setOnlyReadError(true)
+    } else {
+      setItemConData(detailData.itemGroupList)
+      setOnlyReadError(false)
+    }
+  }
+
   const itemRadioChange = (e: any) => {}
   // 附件
   const itemAttachmentCheck = () => {}
+
   return (
     <Con>
+      {/* <Spin spinning={false}> */}
       <MessageBox>
         <div className='boxLeft'>
-          <div>质控日期：2019-11-12</div>
-          <div>质控病区：神经内科护理单元</div>
-          <div>床号：30床</div>
-          <div>需要跟踪评价：是</div>
-          <div>质控结果：是(30) 否(10) 不适用(20)</div>
+          <div>质控日期：{messageBoxData.evalDate}</div>
+          <div>质控病区：{messageBoxData.wardName}</div>
+          <div>床号：{messageBoxData.bedLabel}床</div>
+          <div>需要跟踪评价：{messageBoxData.nextNodePendingName}</div>
+          <div>
+            质控结果：是({itemCount.yesSize}) 否({itemCount.noSize}) 不适用({itemCount.inapplicableSize})
+          </div>
         </div>
 
         <div className='boxRight'>
-          <div>质控人：王大锤、王小萌</div>
-          <div>管床护士：王大锤(N2)</div>
-          <div>住院号：P3223</div>
-          <div>跟踪日期：2019-7-1</div>
-          <div>通过率：59%</div>
+          <div>
+            质控人：
+            {userList.map((item: any, index: number, arr: any) => (
+              <span key={index}>
+                {item.empName}
+                {index != arr.length - 1 ? '、' : ''}
+              </span>
+            ))}
+          </div>
+          <div>
+            管床护士：
+            {bedNurseList.map((item: any, index: number, arr: any) => (
+              <span key={index}>
+                {item.empName}
+                {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ''}
+                {index != arr.length - 1 ? '、' : ''}
+              </span>
+            ))}
+          </div>
+          <div>住院号：{messageBoxData.inpNo}</div>
+          <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
+          <div>通过率：{messageBoxData.evalRate && messageBoxData.evalRate.toFixed(2) + '%'}</div>
         </div>
       </MessageBox>
+      <OnlyReadError>
+        <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
+      </OnlyReadError>
       <QuestionCon>
-        <div className='titleCon'>
-          <div className='titleLeftCon'>一、组织管理</div>
-          <div className='titleRightCon'>
-            <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
-          </div>
-        </div>
-        <div className='itemCon'>
-          <div className='itemTitleCon'>1-1 病区是否有护理部年度工作计划</div>
-          <div className='itemMidCon'>
-            <Radio.Group onChange={itemRadioChange} defaultValue={3} disabled buttonStyle='solid'>
-              <Radio value={1} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                是
-              </Radio>
-              <Radio value={2} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                否
-              </Radio>
-              <Radio value={3} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                不适用
-              </Radio>
-            </Radio.Group>
-            <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
-              <Icon type='paper-clip' /> 2
+        {itemConData.map((itemGroup: any, itemGroupIndex: number) => (
+          <QuestionItem key={itemGroupIndex}>
+            <div className='titleCon'>
+              <div className='titleLeftCon'>{itemGroup.qcItemTypeName}</div>
             </div>
-          </div>
-        </div>
-        {/* <div className='itemCon'>
-          <div className='itemTitleCon'>1-2 病区是否有护理部年度工作计划</div>
-          <div className='itemMidCon'>
-            <Radio.Group onChange={itemRadioChange} defaultValue={3} disabled buttonStyle='solid'>
-              <Radio value={1} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                是
-              </Radio>
-              <Radio value={2} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                否
-              </Radio>
-              <Radio value={3} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                不适用
-              </Radio>
-            </Radio.Group>
-            <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
-              <Icon type='paper-clip' /> 2
-            </div>
-          </div>
-        </div>
+            {itemGroup.itemList.map((item: any, itemIndex: number) => (
+              <div className='itemCon' key={itemIndex}>
+                <div className='itemTitleCon'>
+                  {itemGroupIndex + 1}-{itemIndex + 1} {item.qcItemName}
+                </div>
+                <div className='itemMidCon'>
+                  <Radio.Group value={item.qcItemValue} disabled buttonStyle='solid'>
+                    <Radio value={'是'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                      是
+                    </Radio>
+                    <Radio value={'否'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                      否
+                    </Radio>
+                    <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                      不适用
+                    </Radio>
+                  </Radio.Group>
+                  {}
+                  <div className='itemAttachmentCon'>
+                    {item.attachUrls && (
+                      <Zimage
+                        text={
+                          <span>
+                            <Icon type='paper-clip' /> {item.attachUrls.split(',').length}
+                          </span>
+                        }
+                        list={item.attachUrls.split(',')}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
 
-        <div className='itemCon'>
-          <div className='itemTitleCon'>1-3 病区是否有护理部年度工作计划</div>
-          <div className='itemMidCon'>
-            <Radio.Group onChange={itemRadioChange} defaultValue={3} disabled buttonStyle='solid'>
-              <Radio value={1} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                是
-              </Radio>
-              <Radio value={2} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                否
-              </Radio>
-              <Radio value={3} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                不适用
-              </Radio>
-            </Radio.Group>
-            <div className='itemAttachmentCon' onClick={itemAttachmentCheck}>
-              <Icon type='paper-clip' /> 2
+            {!onlyReadError && (
+              <div className='notesCon'>
+                <div className='notesLeftCon'>备注</div>
+                <div className='notesRightCon'>
+                  <TextArea rows={4} readOnly value={itemGroup.remark} autosize />
+                </div>
+              </div>
+            )}
+          </QuestionItem>
+        ))}
+        {!onlyReadError && (
+          <QuestionBottomCon>
+            <div className='questionBottomTitle'>问题可能原因</div>
+            <div className='questionBottomCheckbox'>
+              {causeList.map((item: any, index: number) => (
+                <Checkbox disabled key={index} checked={item.checked}>
+                  {item.causeContent}
+                </Checkbox>
+              ))}
             </div>
-          </div>
-        </div> */}
-        {/* // */}
-        <div className='notesCon'>
-          <div className='notesLeftCon'>备注</div>
-          <div className='notesRightCon'>
-            <TextArea rows={4} disabled value='今天是个好天气' />
-          </div>
-        </div>
-        {/* // */}
-        <QuestionBottomCon>
-          <div className='questionBottomTitle'>问题可能原因</div>
-          <div className='questionBottomCheckbox'>
-            <Checkbox.Group style={{ width: '100%' }} disabled value={['A', 'C']}>
-              <Row>
-                <Col span={4}>
-                  <Checkbox value='A'>管理元素</Checkbox>
-                </Col>
-                <Col span={4}>
-                  <Checkbox value='B'>个人元素</Checkbox>
-                </Col>
-                <Col span={4}>
-                  <Checkbox value='C'>病人元素</Checkbox>
-                </Col>
-                <Col span={4}>
-                  <Checkbox value='D'>沟通元素</Checkbox>
-                </Col>
-                <Col span={5}>
-                  <Checkbox value='E'>教育培训元素</Checkbox>
-                </Col>
-                <Col span={3}>
-                  <Checkbox value='F'>其它元素</Checkbox>
-                </Col>
-              </Row>
-            </Checkbox.Group>
-          </div>
-        </QuestionBottomCon>
+          </QuestionBottomCon>
+        )}
       </QuestionCon>
+      {/* </Spin> */}
     </Con>
   )
 }
 
 const Con = styled.div`
-  min-height: 100%;
-  width: 100%;
+  /* height: 100%; */
+  margin: 0 auto;
+  width: 760px;
   padding: 10px 20px;
   display: flex;
   flex-direction: column;
+  color: #000000;
 `
 const MessageBox = styled.div`
   margin-top: 10px;
@@ -165,8 +211,10 @@ const QuestionCon = styled.div`
   flex: 1;
   height: 0;
   font-size: 12px;
-
+`
+const QuestionItem = styled.div`
   .titleCon {
+    margin: 5px 0 0;
     height: 30px;
     line-height: 30px;
     display: flex;
@@ -175,11 +223,6 @@ const QuestionCon = styled.div`
       width: 0;
       font-size: 14px;
       font-weight: bold;
-    }
-    .titleRightCon {
-      width: 100px;
-      text-align: right;
-      font-size: 12px;
     }
   }
   .itemCon {
@@ -196,6 +239,12 @@ const QuestionCon = styled.div`
       .itemAttachmentCon {
         display: inline-block;
         cursor: pointer;
+        span {
+          color: #333;
+          &:hover {
+            color: ${(p) => p.theme.$mtc};
+          }
+        }
       }
       .ant-radio-disabled + span {
         color: black;
@@ -210,7 +259,7 @@ const QuestionCon = styled.div`
   }
   .notesCon {
     box-sizing: border-box;
-    height: 116px;
+    min-height: 116px;
     padding: 10px 0;
     display: flex;
     border-bottom: 0.5px dashed #bbbbbb;
@@ -223,6 +272,8 @@ const QuestionCon = styled.div`
       font-size: 12px;
       textarea {
         font-size: 12px;
+        resize: none;
+        min-height: 90px !important;
       }
       .ant-input-disabled {
         color: black;
@@ -236,10 +287,21 @@ const QuestionBottomCon = styled.div`
   height: 70px;
   .questionBottomCheckbox {
     margin-top: 10px;
+    .ant-checkbox-wrapper {
+      margin-right: 15px;
+    }
     span {
       padding-right: 0;
       font-size: 12px;
       color: black;
     }
   }
+`
+
+const OnlyReadError = styled.div`
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: -35px;
+  position: relative;
+  z-index: 2;
 `

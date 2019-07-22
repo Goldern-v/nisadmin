@@ -78,7 +78,7 @@ export default function EditMonographModal(props: Props) {
       refForm!.current!.setFields({
         ...data,
         ...{
-          pressDate: moment(data.pressDate),
+          pressDate: data.pressDate ? moment(data.pressDate) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })

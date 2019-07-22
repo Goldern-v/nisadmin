@@ -78,7 +78,7 @@ export default function EditPersonWinningModal(props: Props) {
         resultType: data.resultType,
         resultName: data.resultName,
         grantUnit: data.grantUnit,
-        grantDate: moment(data.grantDate),
+        grantDate: data.grantDate ? moment(data.grantDate) : null,
         winningName: data.winningName,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
@@ -116,7 +116,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`奖励级别`} name='winningLevel'>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

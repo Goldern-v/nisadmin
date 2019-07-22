@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message ,AutoComplete} from 'antd'
+import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, AutoComplete } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
@@ -72,7 +72,7 @@ export default function EditPostChangeModal(props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (refForm.current && visible) refForm!.current!.clean() 
+    if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({

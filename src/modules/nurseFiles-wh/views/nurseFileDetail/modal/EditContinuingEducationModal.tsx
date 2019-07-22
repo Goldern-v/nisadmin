@@ -78,7 +78,7 @@ export default function EditPersonWinningModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         // publicYear: moment(data.publicYear),
-        year: moment(data.year),
+        year: data.year ? moment(data.year) : null,
         projectPerson: data.projectPerson,
         projectNumber: data.projectNumber,
         personTotal: data.personTotal,
@@ -123,7 +123,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`项目级别`} name='projectLevel'>
-              <AutoComplete dataSource={['国家级', '省级', '市级', '院级', '其他']} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
