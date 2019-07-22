@@ -106,7 +106,7 @@ export default observer(function PersonWinning() {
                       结束时间: `endDate`
                     },
                     {
-                      现层级: `nursehierarchy`,
+                      现层级: `nursehierarchy`
                     }
                   ],
                   fileData: row.urlImageOne
@@ -129,7 +129,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHHierarchy(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHHierarchy', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

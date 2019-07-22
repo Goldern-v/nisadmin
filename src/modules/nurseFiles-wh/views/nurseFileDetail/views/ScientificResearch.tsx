@@ -155,7 +155,7 @@ export default observer(function scientificResearch() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHScienceResult(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHScienceResult', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }
