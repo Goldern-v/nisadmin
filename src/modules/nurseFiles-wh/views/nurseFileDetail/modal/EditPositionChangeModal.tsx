@@ -60,9 +60,10 @@ export default function EditPositionChangeModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.cardNumberDate && (value.cardNumberDate = value.cardNumberDate.format('YYYY-MM-DD'))
+    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.nurseWHSpecializNurseSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.nurseWHTitleSaveOrUpdate({ ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -75,11 +76,9 @@ export default function EditPositionChangeModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        nurseName: data.nurseName,
-        cardUnit: data.cardUnit,
-        cardNumber: data.cardNumber,
-        nurseLevel: data.nurseLevel,
-        cardNumberDate: moment(data.cardNumberDate),
+        startDate: moment(data.startDate),
+        endDate: moment(data.endDate),
+        title: data.title,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -95,17 +94,17 @@ export default function EditPositionChangeModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`开始时间`} name=''>
-              <Input />
+            <Form.Field label={`开始时间`} name='startDate'>
+              <DatePicker />  
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`结束时间`} name=''>
-              <Input />
+            <Form.Field label={`结束时间`} name='endDate'>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现职称`} name=''>
+            <Form.Field label={`现职称`} name='title'>
               <Input />
             </Form.Field>
           </Col>

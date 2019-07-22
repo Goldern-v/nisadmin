@@ -36,22 +36,22 @@ export default observer(function PersonWinning() {
     },
     {
       title: '开始时间',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'startDate',
+      key: 'startDate',
       width: 120,
       align: 'center'
     },
     {
       title: '结束时间',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'endDate',
+      key: 'endDate',
       width: 120,
       align: 'center'
     },
     {
       title: '现编制',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'workConversion',
+      key: 'workConversion',
       width: 100,
       align: 'center'
     },
@@ -98,15 +98,15 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHPersonWinning',
+                  type: 'nurseWHWorkConversion',
                   title: '审核编制变动信息',
                   tableFormat: [
                     {
-                      开始时间: ``,
-                      结束时间: ``
+                      开始时间: `startDate`,
+                      结束时间: `endDate`
                     },
                     {
-                      现岗位: ``,
+                      现编制: `workConversion`,
                     }
                   ],
                   fileData: row.urlImageOne
@@ -129,7 +129,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHPersonWinning(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHWorkConversion(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

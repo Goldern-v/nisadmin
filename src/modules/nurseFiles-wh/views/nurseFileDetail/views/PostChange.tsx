@@ -36,15 +36,15 @@ export default observer(function PersonWinning() {
     },
     {
       title: '开始时间',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'startDate',
+      key: 'startDate',
       width: 120,
       align: 'center'
     },
     {
       title: '结束时间',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'endDate',
+      key: 'endDate',
       width: 120,
       align: 'center'
     },
@@ -102,8 +102,8 @@ export default observer(function PersonWinning() {
                   title: '审核岗位变动信息',
                   tableFormat: [
                     {
-                      开始时间: ``,
-                      结束时间: ``
+                      开始时间: `startDate`,
+                      结束时间: `endDate`
                     },
                     {
                       现岗位: ``,

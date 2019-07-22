@@ -36,22 +36,22 @@ export default observer(function PersonWinning() {
     },
     {
       title: '开始时间',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'startDate',
+      key: 'startDate',
       width: 120,
       align: 'center'
     },
     {
       title: '结束时间',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'endDate',
+      key: 'endDate',
       width: 120,
       align: 'center'
     },
     {
       title: '现层级',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'nursehierarchy',
+      key: 'nursehierarchy',
       width: 100,
       align: 'center'
     },
@@ -98,15 +98,15 @@ export default observer(function PersonWinning() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: 'nurseWHPersonWinning',
+                  type: 'nurseWHHierarchy',
                   title: '审核层级变动信息',
                   tableFormat: [
                     {
-                      开始时间: ``,
-                      结束时间: ``
+                      开始时间: `startDate`,
+                      结束时间: `endDate`
                     },
                     {
-                      现层级: ``,
+                      现层级: `nursehierarchy`,
                     }
                   ],
                   fileData: row.urlImageOne
@@ -129,7 +129,7 @@ export default observer(function PersonWinning() {
   ]
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWHPersonWinning(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.nurseWHHierarchy(appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

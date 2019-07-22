@@ -267,6 +267,7 @@ export default class NurseFilesService extends BaseApiService {
     })
   }
 
+
   /** zk-专科护士 */
   public nurseWHSpecializNurse(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
@@ -280,6 +281,7 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/nurseWHSpecializNurse/saveOrUpdate`, obj)
   }
 
+
   /** zg-转岗 */
   public nurseWHTransferPost(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
@@ -292,6 +294,11 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseWHTransferPostSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHTransferPost/saveOrUpdate`, obj)
   }
+  // zg-2 获取全部科室单元
+  public async getDeptList() {
+    return this.get(`/user/nursingUnit/all`);
+  }
+
 
   /** cy-参与科研课题 */
   public nurseWHGoScienceCourse(empNo: any) {
@@ -306,6 +313,7 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/nurseWHGoScienceCourse/saveOrUpdate`, obj)
   }
 
+
   /** jx-继续教育 */
   public nurseWHContinueStudy(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
@@ -319,12 +327,63 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/nurseWHContinueStudy/saveOrUpdate`, obj)
   }
 
-  //获取全部科室单元
-  public async getDeptList() {
-    return this.get(`/user/nursingUnit/all`);
+  
+  /** zc-职称变动 */
+  public nurseWHTitle(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHTitle/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+   // zc-1 职称变动新增或更新(护士)
+  public async nurseWHTitleSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHTitle/saveOrUpdate`, obj)
+  }
+
+
+  /** cj-层级变动 */
+  public nurseWHHierarchy(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHHierarchy/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+   // cj-1 层级变动新增或更新(护士)
+  public async nurseWHHierarchySaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHHierarchy/saveOrUpdate`, obj)
   }
   
   
+  /** gw-岗位变动 */
+  public lll(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/lll/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+   // gw-1 岗位变动新增或更新(护士)
+  public async lllSaveOrUpdate(obj: any) {
+    return this.post(`/lll/saveOrUpdate`, obj)
+  }
+ 
+  
+  /** bz-编制变动 */
+  public nurseWHWorkConversion(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/nurseWHWorkConversion/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  // bz-1 编制变动新增或更新(护士)
+  public async nurseWHWorkConversionSaveOrUpdate(obj: any) {
+    return this.post(`/nurseWHWorkConversion/saveOrUpdate`, obj)
+  }
+
+
   // 8-1护士获奖情况新增或更新(网页护长)
   public async nurseWHArticleSaveOrUpdate(obj: any) {
     return this.post(`/nurseWHArticle/saveOrUpdate`, obj)

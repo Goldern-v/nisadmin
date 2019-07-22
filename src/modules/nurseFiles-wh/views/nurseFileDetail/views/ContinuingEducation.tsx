@@ -70,15 +70,15 @@ export default observer(function PersonWinning() {
     },
     {
       title: '课时数',
-      dataIndex: 'personTotal',
-      key: 'personTotal',
+      dataIndex: 'courseHour',
+      key: 'courseHour',
       width: 90,
       align: 'center'
     },
     {
       title: '学员总数',
-      dataIndex: '',
-      key: '',
+      dataIndex: 'personTotal',
+      key: 'personTotal',
       width: 90,
       align: 'center'
     },
@@ -152,10 +152,10 @@ export default observer(function PersonWinning() {
                     },
                     {
                       项目级别: `projectLevel`,
-                      课时数: `personTotal`
+                      课时数: `courseHour`
                     },
                     {
-                      学员总数: ``,
+                      学员总数: `personTotal`,
                       学院分布区域: `schoolArea`
                     },
                     {

@@ -84,6 +84,7 @@ export default function EditPersonWinningModal(props: Props) {
         personTotal: data.personTotal,
         projectName: data.projectName,
         projectLevel: data.projectLevel,
+        courseHour:data.courseHour,
         schoolArea: data.schoolArea,
         personTitleArea: data.personTitleArea,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
@@ -126,12 +127,12 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`课时数`} name='personTotal'>
+            <Form.Field label={`课时数`} name='courseHour'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学员总数`} name=''>
+            <Form.Field label={`学员总数`} name='personTotal'>
               <Input />
             </Form.Field>
           </Col>
