@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditEducationalExperienceModal from '../modal/EditEducationalExperienceModal'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
@@ -146,7 +146,7 @@ export default observer(function EducationalExperience() {
 
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseMedicalEducation(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHMedicalEducation', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
     })
   }

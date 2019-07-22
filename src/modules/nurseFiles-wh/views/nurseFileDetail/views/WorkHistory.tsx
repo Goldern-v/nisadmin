@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditWorkHistoryModal from '../modal/EditWorkHistoryModal'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { auditedStatusEnum } from 'src/libs/enum/common'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
@@ -147,7 +147,7 @@ export default observer(function WorkHistory() {
 
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.nurseWorkExperience(appStore.queryObj.empNo).then((res) => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperience', appStore.queryObj.empNo).then((res) => {
       setTableData(res.data)
       // setGetId(res.data)
     })

@@ -15,6 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditArticleModal from '../modal/EditArticleModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards() {
   const editArticleModal = createModal(EditArticleModal)
@@ -130,38 +131,7 @@ export default observer(function Awards() {
 
             <span
               onClick={() => {
-                globalModal.auditModal.show({
-                  getTableData: getTableData,
-                  id: row.id,
-                  type: 'nurseWHArticle',
-                  title: '审核文章',
-                  tableFormat: [
-                    {
-                      发表年份: `publicYear`,
-                      杂志名称: `magazineName`
-                    },
-                    {
-                      文章名称: `articleName`,
-                      期刊号: `periodicalNumber`
-                    },
-                    {
-                      卷号: `volumeNumber`,
-                      起止页码: `pageNumber`
-                    },
-                    {
-                      文章类别: `articleType`,
-                      影响因子: `influencingFactors`
-                    }
-                  ],
-                  fileData: row.urlImageOne
-                    ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                        return {
-                          ['附件' + (index + 1)]: item
-                        }
-                      })
-                    : [],
-                  allData: row
-                })
+                openAuditModal('文章', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

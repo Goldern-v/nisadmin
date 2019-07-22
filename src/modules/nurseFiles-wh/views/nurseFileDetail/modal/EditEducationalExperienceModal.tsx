@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
@@ -65,7 +65,7 @@ export default function EditWorkHistoryModal(props: Props) {
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.graduationTime && (value.graduationTime = value.graduationTime.format('YYYY-MM-DD'))
 
-    nurseFilesService.userEducatAdd({ ...value, ...obj }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHMedicalEducation', { ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')

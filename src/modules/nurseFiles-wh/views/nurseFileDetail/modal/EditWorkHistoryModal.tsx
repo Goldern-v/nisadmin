@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
@@ -32,7 +32,7 @@ const rules: Rules = {
   professional: (val) => !!val || '请选择技术职称',
   post: (val) => !!val || '请选择职务'
 }
-export default function EditWorkHistoryModal (props: Props) {
+export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [title, setTitle] = useState('')
   let refForm = React.createRef<Form>()
@@ -63,7 +63,7 @@ export default function EditWorkHistoryModal (props: Props) {
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
 
-    nurseFilesService.nurseWorkExperienceAdd({ ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHWorkExperience', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
