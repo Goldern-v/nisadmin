@@ -17,6 +17,10 @@ export interface Report {
   updateTime: string
   checkDeptSize: string
   deductDeptSize: string
+  checkDeptDesc: ''
+  keyCheckItemDesc: string
+  followUpDeptDesc: string
+  suggestions: string
 }
 /** 追踪科室 */
 interface FollowUpDept {

@@ -5,7 +5,7 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewM
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
-import { LastImproveItem } from '../../types'
+import { LastImproveItem, Report } from '../../types'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -14,14 +14,14 @@ export interface Props {
 
 export default observer(function 追踪督导模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let textarea = data.textarea || []
+  let data: Report = qualityAnalysisReportViewModal.getSectionData(sectionId)
+  // let textarea = data.textarea || []
 
   return (
     <Wrapper>
       <div className='title'>{sectionTitle}</div>
-      <div className='text-box'> 3.1 护理部病区综合管理小组3月追踪以下科室的整改效果：</div>
-      <TextCon>{textarea}</TextCon>
+      <div className='text-box'> 3.1 {data.checkDeptDesc}</div>
+      <TextCon>{data.followUpDeptDesc}</TextCon>
       <div className='text-box'>3.2 科护士长督导以上科室问题整改。</div>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>

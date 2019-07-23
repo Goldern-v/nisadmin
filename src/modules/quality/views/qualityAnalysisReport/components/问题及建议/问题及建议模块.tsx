@@ -14,14 +14,13 @@ export interface Props {
 
 export default observer(function 问题及建议模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
+  let data: Report = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
-  let textarea = data.textarea || []
 
   return (
     <Wrapper>
       <OneLevelTitle text={`六、需提交护理部质量与安全组讨论的问题及建议`} />
-      <TextCon>{textarea}</TextCon>
+      <TextCon>{data.suggestions}</TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

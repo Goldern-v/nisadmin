@@ -124,6 +124,9 @@ class QualityAnalysisReportViewModal {
       })
     })
     this.sectionList[10].data.list = this.allData!.currentImproveItemList || []
+    this.sectionList[11].data = this.allData!.report || {}
+    this.sectionList[12].data = this.allData!.report || {}
+    this.sectionList[13].data = this.allData!.report || {}
   }
   async init() {
     await this.initData()
