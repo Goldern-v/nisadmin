@@ -61,7 +61,7 @@ export default function EditPositionChangeModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
-    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
+    // value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHTitle', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
@@ -77,8 +77,9 @@ export default function EditPositionChangeModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         startDate: moment(data.startDate),
-        endDate: moment(data.endDate),
-        title: data.title,
+        // endDate: moment(data.endDate),
+        titleOld: data.titleOld,
+        titleNew: data.titleNew,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -98,14 +99,31 @@ export default function EditPositionChangeModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`结束时间`} name='endDate'>
               <DatePicker />
             </Form.Field>
+          </Col> */}
+          <Col span={24}>
+            <Form.Field label={`原职称`} name='titleOld'>
+              <Select>
+                {nurseFileDetailViewModal.getDict('技术职称').map((item: any, index: number) => (
+                  <Select.Option value={item.code} key={index}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现职称`} name='title'>
-              <Input />
+            <Form.Field label={`现职称`} name='titleNew'>
+              <Select>
+                {nurseFileDetailViewModal.getDict('技术职称').map((item: any, index: number) => (
+                  <Select.Option value={item.code} key={index}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>

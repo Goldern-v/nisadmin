@@ -15,7 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditOrganizationChangeModal from '../modal/EditOrganizationChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editOrganizationChangeModal = createModal(EditOrganizationChangeModal)
@@ -42,17 +42,24 @@ export default observer(function PersonWinning() {
       width: 120,
       align: 'center'
     },
+    // {
+    //   title: '结束时间',
+    //   dataIndex: 'endDate',
+    //   key: 'endDate',
+    //   width: 120,
+    //   align: 'center'
+    // },
     {
-      title: '结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
-      width: 120,
+      title: '原编制',
+      dataIndex: 'workConversionOld',
+      key: 'workConversionOld',
+      width: 100,
       align: 'center'
     },
     {
       title: '现编制',
-      dataIndex: 'workConversion',
-      key: 'workConversion',
+      dataIndex: 'workConversionNew',
+      key: 'workConversionNew',
       width: 100,
       align: 'center'
     },

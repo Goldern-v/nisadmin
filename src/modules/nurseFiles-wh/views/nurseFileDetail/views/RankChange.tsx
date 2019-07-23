@@ -15,7 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditRankChangeModal from '../modal/EditRankChangeModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editRankChangeModal = createModal(EditRankChangeModal)
@@ -42,17 +42,24 @@ export default observer(function PersonWinning() {
       width: 120,
       align: 'center'
     },
+    // {
+    //   title: '结束时间',
+    //   dataIndex: 'endDate',
+    //   key: 'endDate',
+    //   width: 120,
+    //   align: 'center'
+    // },
     {
-      title: '结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
-      width: 120,
+      title: '原层级',
+      dataIndex: 'nursehierarchyOld',
+      key: 'nursehierarchyOld',
+      width: 100,
       align: 'center'
     },
     {
       title: '现层级',
-      dataIndex: 'nursehierarchy',
-      key: 'nursehierarchy',
+      dataIndex: 'nursehierarchyNew',
+      key: 'nursehierarchyNew',
       width: 100,
       align: 'center'
     },

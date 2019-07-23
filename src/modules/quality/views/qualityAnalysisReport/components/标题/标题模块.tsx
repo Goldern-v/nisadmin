@@ -10,7 +10,7 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function TitleSection(props: Props) {
+export default observer(function 标题模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let text = data ? data.text : ''

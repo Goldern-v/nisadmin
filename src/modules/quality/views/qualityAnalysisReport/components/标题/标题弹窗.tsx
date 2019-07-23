@@ -9,7 +9,7 @@ export interface Props {
   setData: any
 }
 
-export default function TitleModal(props: Props) {
+export default function 标题弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let text = data ? data.text : ''
 

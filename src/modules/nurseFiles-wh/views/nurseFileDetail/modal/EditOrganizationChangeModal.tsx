@@ -61,7 +61,7 @@ export default function EditOrganizationChangeModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
-    value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
+    // value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHWorkConversion', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
@@ -77,8 +77,9 @@ export default function EditOrganizationChangeModal(props: Props) {
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
         startDate: moment(data.startDate),
-        endDate: moment(data.endDate),
-        workConversion: data.workConversion,
+        // endDate: moment(data.endDate),
+        workConversionOld: data.workConversionOld,
+        workConversionNew: data.workConversionNew,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
@@ -98,14 +99,19 @@ export default function EditOrganizationChangeModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`结束时间`} name='endDate'>
               <DatePicker />
             </Form.Field>
+          </Col> */}
+          <Col span={24}>
+            <Form.Field label={`原编制`} name='workConversionOld'>
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('编制名称').map((item) => item.name)} />
+            </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现编制`} name='workConversion'>
-              <Input />
+            <Form.Field label={`现编制`} name='workConversionNew'>
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('编制名称').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

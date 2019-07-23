@@ -19,7 +19,7 @@ export default observer(function 本月质量检查亮点模块(props: Props) {
 
   return (
     <Wrapper>
-      <OneLevelTitle text={sectionTitle} />
+      <OneLevelTitle text={'三、本月质量检查亮点'} />
 
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
