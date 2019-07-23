@@ -9,18 +9,19 @@ import Moment from 'moment'
 
 import CreateAnalysisModal from './components/CreateAnalysisModal'
 
-const Option = Select.Option;
+const Option = Select.Option
 
-export default observer(function Analysis() { // 
-  const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
-  const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
-  const { history } = appStore;
+export default observer(function Analysis() {
+  //
+  const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
+  const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
+  const { history } = appStore
 
   const [query, setQuery] = useState({
     year: Moment(),
     formType: '',
     reportRecord: ''
-  });
+  })
 
   const [tableData, setTableData] = useState([
     {
@@ -39,7 +40,7 @@ export default observer(function Analysis() { //
       createDate: '2019年12月12日',
       status: '状态'
     }
-  ] as any);
+  ] as any)
 
   const [tableLoading, setTableLoading] = useState(false)
 
@@ -56,34 +57,34 @@ export default observer(function Analysis() { //
       key: 'time',
       dataIndex: 'time',
       width: 150,
-      align: 'center',
+      align: 'center'
     },
     {
       title: '分析表单',
       key: 'analisisForm',
       dataIndex: 'time',
-      align: 'left',
+      align: 'left'
     },
     {
       title: '创建人',
       key: 'creatorName',
       dataIndex: 'creatorName',
       width: 80,
-      align: 'center',
+      align: 'center'
     },
     {
       title: '创建时间',
       key: 'createDate',
       dataIndex: 'createDate',
       width: 150,
-      align: 'center',
+      align: 'center'
     },
     {
       title: '状态',
       key: 'status',
       dataIndex: 'status',
       width: 80,
-      align: 'center',
+      align: 'center'
     },
     {
       title: '状态',
@@ -91,25 +92,27 @@ export default observer(function Analysis() { //
       width: 150,
       align: 'center',
       render: (text: string, record: any) => {
-        return <DoCon>
-          <span onClick={() => handleReview(record)}>查看</span>
-        </DoCon>
+        return (
+          <DoCon>
+            <span onClick={() => handleReview(record)}>查看</span>
+          </DoCon>
+        )
       }
-    },
-  ];
+    }
+  ]
 
   const handlePanelChange = (value: any) => {
-    setYearPickerIsOpen(false);
+    setYearPickerIsOpen(false)
     setQuery({ ...query, year: value })
   }
 
   const handleOpenChange = (status: boolean) => {
-    setYearPickerIsOpen(status);
+    setYearPickerIsOpen(status)
   }
 
   const handleReview = (record: any) => {
     console.log(record)
-    history.push(`/qualityAnalysisDetail/${record.id}`)
+    history.push(`/qualityAnalysisReport/${record.id}`)
   }
 
   const handleSearch = () => {
@@ -126,7 +129,7 @@ export default observer(function Analysis() { //
   // }
 
   const handleCreateOk = (info: any) => {
-    if (info.recodeType) console.log(info);
+    if (info.recodeType) console.log(info)
 
     setCreateAnalysisVisible(false)
   }
@@ -136,103 +139,113 @@ export default observer(function Analysis() { //
   }
 
   const ReportRecordList = () => {
-    let year = query.year.format('YYYY');
+    let year = query.year.format('YYYY')
 
-    let options = [];
+    let options = []
     for (let i = 1; i <= 12; i++) {
-      let month = i;
-      options.push(<Option value={`${month}`} key={`month${month}`}>{`${year}年${month}月份`}</Option>);
+      let month = i
+      options.push(<Option value={`${month}`} key={`month${month}`}>{`${year}年${month}月份`}</Option>)
 
       if (month % 3 == 0) {
-        let season = month / 3;
+        let season = month / 3
         let seasonStr = ''
-        let monthGroup = [month - 2, month - 1, month];
+        let monthGroup = [month - 2, month - 1, month]
         switch (season) {
           case 1:
-            seasonStr = '一'; break;
+            seasonStr = '一'
+            break
           case 2:
-            seasonStr = '二'; break;
+            seasonStr = '二'
+            break
           case 3:
-            seasonStr = '三'; break;
+            seasonStr = '三'
+            break
           case 4:
-            seasonStr = '四'; break;
+            seasonStr = '四'
+            break
         }
 
-        options.push(<Option value={monthGroup.join(',')} key={`season${season}`}>{`${year}年 第${seasonStr}季度`}</Option>);
+        options.push(
+          <Option value={monthGroup.join(',')} key={`season${season}`}>{`${year}年 第${seasonStr}季度`}</Option>
+        )
       }
     }
 
     return options
   }
 
-  return <Wrapper>
-    <div className="topbar">
-      <div className="float-left">
-        <div className="item">
-          <div className="label">报告年度：</div>
-          <div className="content">
-            <DatePicker
-              value={query.year}
-              allowClear={false}
-              open={yearPickerIsOpen}
-              mode="year"
-              className="year-picker"
-              placeholder='选择年份'
-              format="YYYY"
-              onOpenChange={handleOpenChange}
-              onPanelChange={handlePanelChange}
-            />
+  return (
+    <Wrapper>
+      <div className='topbar'>
+        <div className='float-left'>
+          <div className='item'>
+            <div className='label'>报告年度：</div>
+            <div className='content'>
+              <DatePicker
+                value={query.year}
+                allowClear={false}
+                open={yearPickerIsOpen}
+                mode='year'
+                className='year-picker'
+                placeholder='选择年份'
+                format='YYYY'
+                onOpenChange={handleOpenChange}
+                onPanelChange={handlePanelChange}
+              />
+            </div>
+          </div>
+          <div className='item'>
+            <div className='label'>表单：</div>
+            <div className='content'>
+              <Select
+                value={query.formType}
+                defaultValue={query.formType}
+                onChange={(formType: any) => setQuery({ ...query, formType })}
+              >
+                <Option value=''>全部</Option>
+              </Select>
+            </div>
+          </div>
+          <div className='item'>
+            <div className='label'>报告记录：</div>
+            <div className='content'>
+              <Select
+                className='report-record'
+                value={query.reportRecord}
+                defaultValue={query.reportRecord}
+                onChange={(reportRecord: any) => setQuery({ ...query, reportRecord })}
+              >
+                <Option value=''>全部</Option>
+                {ReportRecordList()}
+              </Select>
+            </div>
+          </div>
+          <div className='item'>
+            <Button onClick={handleSearch}>查询</Button>
           </div>
         </div>
-        <div className="item">
-          <div className="label">表单：</div>
-          <div className="content">
-            <Select value={query.formType} defaultValue={query.formType} onChange={(formType: any) => setQuery({ ...query, formType })}>
-              <Option value="">全部</Option>
-            </Select>
-          </div>
-        </div>
-        <div className="item">
-          <div className="label">报告记录：</div>
-          <div className="content">
-            <Select
-              className="report-record"
-              value={query.reportRecord}
-              defaultValue={query.reportRecord}
-              onChange={(reportRecord: any) => setQuery({ ...query, reportRecord })}>
-              <Option value="">全部</Option>
-              {ReportRecordList()}
-            </Select>
-          </div>
-        </div>
-        <div className="item">
-          <Button onClick={handleSearch}>查询</Button>
+        <div className='float-right'>
+          <Button onClick={handleCreate} type='primary'>
+            创建
+          </Button>
         </div>
       </div>
-      <div className="float-right">
-        <Button onClick={handleCreate} type="primary">创建</Button>
+      <div className='main-contain'>
+        <BaseTable columns={columns} rowKey='id' dataSource={tableData} loading={tableLoading} surplusHeight={190} />
       </div>
-    </div>
-    <div className="main-contain">
-      <BaseTable
-        columns={columns}
-        rowKey="id"
-        dataSource={tableData}
-        loading={tableLoading}
-        surplusHeight={190} />
-    </div>
-    <CreateAnalysisModal visible={createAnalysisVisible} onOk={handleCreateOk} onCancel={handleCreateCancel} />
-  </Wrapper>
+      <CreateAnalysisModal visible={createAnalysisVisible} onOk={handleCreateOk} onCancel={handleCreateCancel} />
+    </Wrapper>
+  )
 })
 
 const Wrapper = styled.div`
-  position:relative;
+  position: relative;
   padding-top: 55px;
   height: 100%;
   width: 100%;
 
-  div.topbar{
-    position:absolute;
+  div.topbar {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -240,37 +253,36 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     height: 55px;
     overflow: hidden;
-    .float-left{
-      float:left;
+    .float-left {
+      float: left;
     }
 
-    .float-right{
-      float:right;
+    .float-right {
+      float: right;
     }
-    
-    .item{
+
+    .item {
       display: inline-block;
       margin-right: 10px;
       vertical-align: middle;
-      &>div{
+      & > div {
         display: inline-block;
         vertical-align: middle;
       }
-      .label{
-
+      .label {
       }
-      .content{
-        .year-picker{
+      .content {
+        .year-picker {
           width: 95px;
         }
-        .report-record{
+        .report-record {
           min-width: 140px;
         }
       }
     }
   }
 
-  .main-contain{
+  .main-contain {
     height: 100%;
     width: 100%;
     padding: 15px;

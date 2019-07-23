@@ -6,31 +6,44 @@ import { Button } from 'src/vendors/antd'
 import { qualityAnalysisReportViewModal } from './QualityAnalysisReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { ScrollBox } from 'src/components/common'
+import { Report } from './types'
+import printing from 'printing'
+import { useRef } from 'src/types/react'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
+  const pageRef: any = useRef<HTMLElement>()
   useEffect(() => {
     qualityAnalysisReportViewModal.init()
   }, [])
+  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  const onPrint = () => {
+    // console.log(pageRef, 'pageRef.current')
+    printing(pageRef.current, {
+      injectGlobalCss: true,
+      scanStyles: false
+    })
+  }
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/quality/analysis' }, { name: '目录设置', link: '' }]} />
-        <div className='title'>2019年3月份XXXXXXXX表单分析报告</div>
+        <BaseBreadcrumb data={[{ name: '分析报告', link: '/quality/analysis' }, { name: '报告详情', link: '' }]} />
+        <div className='title'>{report.reportName}</div>
         <div className='aside'>
-          <span>由王大锤创建，最后修改于2019-01-01 10:00:00</span>
-          <span>阅读 1000 赞 299</span>
+          <span>
+            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
+          </span>
         </div>
         <div className='tool-con'>
           <Button>删除</Button>
           <Button>预览</Button>
           <Button>发布</Button>
-          <Button>打印</Button>
+          <Button onClick={onPrint}>打印</Button>
           <Button>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>
-        <Page>
+        <Page ref={pageRef}>
           {qualityAnalysisReportViewModal.sectionList.map((item, index) => {
             if (item.sectionId) {
               let Components = qualityAnalysisReportViewModal.getSection(item.sectionId)
@@ -67,6 +80,7 @@ const HeadCon = styled.div`
     font-size: 20px;
     margin: 0 0 5px 20px;
     font-weight: bold;
+    min-height: 30px;
   }
   .aside {
     font-size: 12px;

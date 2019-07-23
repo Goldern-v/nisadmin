@@ -17,6 +17,7 @@ export interface Props extends ModalComponentProps {
     sectionId: string
     sectionTitle?: string
     modalTitle?: string
+    modalWidth?: any
     [p: string]: any
   }
 }
@@ -44,6 +45,8 @@ export default observer(function BaseModal(props: Props) {
       onOk={onSave}
       okText='保存'
       forceRender
+      width={(sectionData && sectionData.modalWidth) || 700}
+      centered
     >
       {Component && <Component {...props.sectionData} data={data} setData={setData} />}
     </Modal>

@@ -75,7 +75,7 @@ export default observer(function EditCon() {
       break
     case '发件箱':
       {
-        toolList = ['收藏']
+        toolList = []
       }
       break
     case '草稿箱':

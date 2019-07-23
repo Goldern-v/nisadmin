@@ -177,6 +177,7 @@ const routes: RouteItem[] = [
     { name: '目录设置', link: '' }
   ]),
   setLayout('/qualityAnalysisReport', QualityAnalysisReportView, layouts.MainLayout),
+  setLayout('/qualityAnalysisReport/:id', QualityAnalysisReportView, layouts.MainLayout),
   {
     path: '/continuingEdu',
     redirect: '/continuingEdu/人员管理'

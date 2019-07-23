@@ -4,53 +4,58 @@ import { RouteComponentProps } from 'react-router'
 import { Button, message as Message, Modal } from 'antd'
 // import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import { withRouter } from 'react-router-dom';
-export interface Props extends RouteComponentProps { }
+import { withRouter } from 'react-router-dom'
+export interface Props extends RouteComponentProps {}
 
-export default withRouter(observer(function AnalysisDetail(props: any) {
-  const { history, match } = props;
+export default withRouter(
+  observer(function AnalysisDetail(props: any) {
+    const { history, match } = props
 
-  const handlePublish = () => {
+    const handlePublish = () => {
+      let content = (
+        <div>
+          <div>您确定要发布《2019年3月份xxxxx报告》吗？</div>
+          <div>发布后将推送至护理部及护士长手机上。</div>
+        </div>
+      )
+      Modal.confirm({
+        title: '发布报告',
+        content,
+        okText: '确定',
+        okType: 'primary',
+        cancelText: '取消',
+        centered: true,
+        onOk: () => {
+          console.log('ok')
+        }
+      })
+    }
 
-    let content = <div>
-      <div>您确定要发布《2019年3月份xxxxx报告》吗？</div>
-      <div>发布后将推送至护理部及护士长手机上。</div>
-    </div>
-    Modal.confirm({
-      title: '发布报告',
-      content,
-      okText: '确定',
-      okType: 'primary',
-      cancelText: '取消',
-      centered: true,
-      onOk: () => {
-        console.log('ok')
-      }
-    })
-  }
+    const handleEdit = () => {
+      let id = ''
+      if (match.params.id) id = match.params.id
 
-  const handleEdit = () => {
-    let id = '';
-    if (match.params.id) id = match.params.id;
+      history.push(`/qualityAnalysisReport/${id}`)
+    }
 
-    history.push(`/qualityAnalysisEdit/${id}`)
-  }
-
-  return <Wrapper>
-    <div className="topbar">
-      <div className="title">2019年3月份XXXXXXXX表单分析报告</div>
-      <div className="sub">由王大锤创建，最后修改于2019-01-01 10:00:00</div>
-      <div className="btn-group">
-        <Button onClick={handleEdit}>编辑</Button>
-        <Button onClick={handlePublish}>发布</Button>
-        <Button>返回</Button>
-      </div>
-    </div>
-    <div className="main-contain">
-      <div className="page"></div>
-    </div>
-  </Wrapper>
-}))
+    return (
+      <Wrapper>
+        <div className='topbar'>
+          <div className='title'>2019年3月份XXXXXXXX表单分析报告</div>
+          <div className='sub'>由王大锤创建，最后修改于2019-01-01 10:00:00</div>
+          <div className='btn-group'>
+            <Button onClick={handleEdit}>编辑</Button>
+            <Button onClick={handlePublish}>发布</Button>
+            <Button>返回</Button>
+          </div>
+        </div>
+        <div className='main-contain'>
+          <div className='page' />
+        </div>
+      </Wrapper>
+    )
+  })
+)
 
 const Wrapper = styled.div`
   width: 100%;

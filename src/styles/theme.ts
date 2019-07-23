@@ -5,6 +5,8 @@ export const theme = {
   $mcc: '#F0944B',
   /** 深主题色 */
   $mtdc: '#1D9165',
+  /** 黄 明亮色 */
+  $mlc: '#fff8b1',
   /** 页面的padding */
   $mcp: '15px 15px',
   // padding: ${(p) => p.theme.$mcp};

@@ -5,15 +5,19 @@ import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
 
 import { sectionList } from './config/sectionList'
-import { sectionComponentObj } from './config/sectionComponentObj'
 
-export type sectionComponentId = keyof typeof sectionComponentObj
+import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
+import { AllData, DeptItem, DetailItem } from './types'
+
 export interface SectionListItem {
   sectionId?: string
-  sectionComponentId?: sectionComponentId
+
   sectionTitle?: string | undefined
   modalTitle?: string | undefined
   data?: any
+  modal?: any
+  section?: any
+  modalWidth?: any
 }
 
 interface ModalCase {
@@ -26,6 +30,7 @@ interface SectionCase {
   sectionId?: string
   sectionTitle?: string
   modalTitle?: string
+  modalWidth?: any
   data?: any
   modal?: any
   section?: any
@@ -34,13 +39,14 @@ interface SectionCase {
 class QualityAnalysisReportViewModal {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = sectionList
+  @observable public allData: Partial<AllData> = {}
 
   /** 返回组件实例 */
   @action
   getSection(sectionId: string): SectionCase | null {
     let obj = this.sectionList.find((item) => item.sectionId == sectionId)
-    if (obj && obj.sectionComponentId) {
-      return { ...sectionComponentObj[obj.sectionComponentId], ...obj }
+    if (obj) {
+      return obj
     } else {
       return null
     }
@@ -80,7 +86,47 @@ class QualityAnalysisReportViewModal {
     }
   }
 
-  init() {
+  /** 提取总数据 */
+  getDataInAllData(key: string) {
+    return this.allData[key] || {}
+  }
+
+  /** 数据初始化 */
+  async initData() {
+    let { data } = await qualityAnalysisReportService.getReport()
+    this.allData = data
+    this.sectionList[0].data.text = this.allData.report!.reportName || {}
+    this.sectionList[2].data.list = this.allData!.lastImproveItemList || []
+    this.sectionList[5].data.list = (this.allData!.typeCompareList || []).map((item: any) => {
+      return Object.assign(item, {
+        currentDeductScore: Number(item.currentDeductScore.toFixed(1)),
+        lastDeductScore: Number(item.lastDeductScore.toFixed(1))
+      })
+    })
+    this.sectionList[6].data.list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
+      return Object.assign(item, {
+        deductScore: Number(Number(item.deductScore).toFixed(1))
+      })
+    })
+    this.sectionList[7].data.list = (this.allData!.detailItemList || []).map((item: any) => {
+      return Object.assign(item, {
+        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
+      })
+    })
+    this.sectionList[8].data.list = (this.allData!.highlightItemList || []).map((item: any) => {
+      return Object.assign(item, {
+        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
+      })
+    })
+    this.sectionList[9].data.list = (this.allData!.keyItemList || []).map((item: any) => {
+      return Object.assign(item, {
+        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
+      })
+    })
+    this.sectionList[10].data.list = this.allData!.currentImproveItemList || []
+  }
+  async init() {
+    await this.initData()
     this.baseModal = createModal(BaseModal)
   }
 }
