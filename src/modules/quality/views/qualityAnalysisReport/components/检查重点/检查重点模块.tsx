@@ -14,14 +14,14 @@ export interface Props {
 
 export default observer(function 检查重点模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data: Report = qualityAnalysisReportViewModal.getSectionData(sectionId)
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   // let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
-  // let textarea = data.textarea || []
+  let report: Report = (data ? data.report : {}) || {}
 
   return (
     <Wrapper>
-      <OneLevelTitle text={`五、${data.indexInType == 12 ? 1 : data.indexInType + 1}月检查重点`} />
-      <TextCon>{data.keyCheckItemDesc}</TextCon>
+      <OneLevelTitle text={`五、${report.indexInType == 12 ? 1 : report.indexInType + 1}月检查重点`} />
+      <TextCon>{report.keyCheckItemDesc}</TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

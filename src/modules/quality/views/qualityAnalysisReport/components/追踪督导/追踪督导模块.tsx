@@ -14,14 +14,14 @@ export interface Props {
 
 export default observer(function 追踪督导模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data: Report = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  // let textarea = data.textarea || []
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
+  let report: Report = (data ? data.report : {}) || {}
 
   return (
     <Wrapper>
-      <div className='title'>{sectionTitle}</div>
-      <div className='text-box'> 3.1 {data.checkDeptDesc}</div>
-      <TextCon>{data.followUpDeptDesc}</TextCon>
+      <div className='title'>4.3.追踪督导</div>
+      <div className='text-box'> 3.1 {report.checkDeptDesc}</div>
+      <TextCon>{report.followUpDeptDesc}</TextCon>
       <div className='text-box'>3.2 科护士长督导以上科室问题整改。</div>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>

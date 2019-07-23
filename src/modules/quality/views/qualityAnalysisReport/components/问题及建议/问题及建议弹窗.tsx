@@ -7,25 +7,24 @@ import { Report } from '../../types'
 const { TextArea } = Input
 export interface Props {
   sectionId: string
-  data: Report
+  data: any
   setData: any
 }
 
 export default function 问题及建议弹窗(props: Props) {
   let { sectionId, setData, data } = props
-
+  let report: Report = (data ? data.report : {}) || {}
   const updateData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) {
       setData({
-        ...data,
-        suggestions: e.target.value
+        report: { ...report, suggestions: e.target.value }
       })
     }
   }
   useEffect(() => {}, [])
   return (
     <Wrapper>
-      <TextArea value={data.suggestions} onChange={updateData} autosize={true} />
+      <TextArea value={report.suggestions} onChange={updateData} autosize={true} />
     </Wrapper>
   )
 }

@@ -7,34 +7,32 @@ import { Report } from '../../types'
 const { TextArea } = Input
 export interface Props {
   sectionId: string
-  data: Report
+  data: any
   setData: any
 }
 
 export default function 追踪督导弹窗(props: Props) {
   let { sectionId, setData, data } = props
-
+  let report: Report = (data ? data.report : {}) || {}
   const updateData1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) {
       setData({
-        ...data,
-        checkDeptDesc: e.target.value
+        report: { ...report, checkDeptDesc: e.target.value }
       })
     }
   }
   const updateData2 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) {
       setData({
-        ...data,
-        followUpDeptDesc: e.target.value
+        report: { ...report, followUpDeptDesc: e.target.value }
       })
     }
   }
   useEffect(() => {}, [])
   return (
     <Wrapper>
-      <TextArea value={data.checkDeptDesc} onChange={updateData1} autosize={true} />
-      <TextArea value={data.followUpDeptDesc} onChange={updateData2} autosize={true} />
+      <TextArea value={report.checkDeptDesc} onChange={updateData1} autosize={true} />
+      <TextArea value={report.followUpDeptDesc} onChange={updateData2} autosize={true} />
     </Wrapper>
   )
 }

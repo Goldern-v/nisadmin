@@ -39,7 +39,9 @@ interface SectionCase {
 class QualityAnalysisReportViewModal {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = sectionList
-  @observable public allData: Partial<AllData> = {}
+  @observable public allData: Partial<AllData> = {
+    report: {}
+  }
 
   /** 返回组件实例 */
   @action
@@ -124,9 +126,10 @@ class QualityAnalysisReportViewModal {
       })
     })
     this.sectionList[10].data.list = this.allData!.currentImproveItemList || []
-    this.sectionList[11].data = this.allData!.report || {}
-    this.sectionList[12].data = this.allData!.report || {}
-    this.sectionList[13].data = this.allData!.report || {}
+
+    this.sectionList[11].data.report = data!.report || {}
+    this.sectionList[12].data.report = data!.report || {}
+    this.sectionList[13].data.report = data!.report || {}
   }
   async init() {
     await this.initData()

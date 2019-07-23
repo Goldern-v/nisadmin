@@ -7,26 +7,25 @@ import { Report } from '../../types'
 const { TextArea } = Input
 export interface Props {
   sectionId: string
-  data: Report
+  data: any
   setData: any
 }
 
 export default function 检查重点弹窗(props: Props) {
   let { sectionId, setData, data } = props
-  // let textarea = data ? data.textarea : ''
+  let report: Report = (data ? data.report : {}) || {}
 
   const updateData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) {
       setData({
-        ...data,
-        keyCheckItemDesc: e.target.value
+        report: { ...report, keyCheckItemDesc: e.target.value }
       })
     }
   }
   useEffect(() => {}, [])
   return (
     <Wrapper>
-      <TextArea value={data.keyCheckItemDesc} onChange={updateData} autosize={true} />
+      <TextArea value={report.keyCheckItemDesc} onChange={updateData} autosize={true} />
     </Wrapper>
   )
 }
