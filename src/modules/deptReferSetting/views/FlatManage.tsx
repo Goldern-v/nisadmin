@@ -114,7 +114,7 @@ export default function DeptFileShare() {
     let typeArr = record.path.split('.');
 
     PreviewModalWrapper.show({
-      url: `/crNursing/asset/deptShareFile${record.path}`,
+      url: `/crNursing/asset/flatManageSetting${record.path}`,
       type: typeArr[typeArr.length - 1],
       name: record.manageType
     });
@@ -174,9 +174,8 @@ export default function DeptFileShare() {
       .then(res => {
         setTableLoading(false)
         if (res.data) {
-          // setDataTotal(res.data.totalCount || 0);
-          // setTableData(res.data.list);
-          setTableData(res.data);
+          setDataTotal(res.data.totalCount || 0);
+          setTableData(res.data.list);
         }
       }, err => {
         setTableLoading(false)

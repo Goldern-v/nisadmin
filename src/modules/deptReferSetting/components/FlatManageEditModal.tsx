@@ -23,9 +23,6 @@ export default function NewNursingRulesAddModal(props: Props) {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [acceptingNewParams, setAcceptingNewParams] = useState(false);
 
-  // let uploadAccept = 'image/png,image/gif,image/jpeg,application/msword,.doc,.docx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf';
-  let uploadAccept = '.pdf';
-
   const openImportFile = () => {
     let target = document.querySelector('.new-nursing-rules-add-modal .file-content') as HTMLElement;
     target.click();
@@ -158,7 +155,6 @@ export default function NewNursingRulesAddModal(props: Props) {
       return <Input
         type="file"
         className="file-content"
-        // accept={uploadAccept}
         onChange={handleImportFileChange} />
     } else
       return ''
@@ -189,9 +185,9 @@ export default function NewNursingRulesAddModal(props: Props) {
           </span>
         </div>
         <div className="row" style={{ display: `${params.id ? 'none' : 'flex'}` }}>
-          <span className="label">文件上传:</span>
+          <span className="label">指标说明:</span>
           <span className="content">
-            <input readOnly className="ipt ant-input file-name" />
+            <input readOnly className="ipt ant-input file-name" placeholder="请上传说明文件" />
             <Button onClick={openImportFile} className="more">...</Button>
             <span style={{ display: 'none' }}>
               {FileContent()}
