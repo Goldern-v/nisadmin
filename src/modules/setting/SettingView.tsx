@@ -26,7 +26,7 @@ import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
 import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 const LEFT_MENU_CONFIG = [
   // {
@@ -84,11 +84,11 @@ const LEFT_MENU_CONFIG = [
     icon: <KSPHSZ />,
     path: '/setting/科室文件共享',
     children: [
-      //{
-      //  title: '扁平管理设置',
-      //  path: '/setting/扁平管理设置',
-      //  component: FlatManage
-      //},
+      {
+        title: '扁平管理设置',
+        path: '/setting/扁平管理设置',
+        component: FlatManage
+      },
       {
         title: '病区文件',
         path: '/setting/病区文件',
@@ -134,7 +134,7 @@ export default function SettingView(props: Props) {
   // let currentType = appStore.match.params.type
   // let currentRoute = getCurrentRoute(currentType)
 
-  useEffect(() => {}, [props.match.params.name])
+  useEffect(() => { }, [props.match.params.name])
   let currentRoutePath = props.match.url || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象

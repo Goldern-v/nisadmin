@@ -23,9 +23,6 @@ export default function NewNursingRulesAddModal(props: Props) {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [acceptingNewParams, setAcceptingNewParams] = useState(false);
 
-  // let uploadAccept = 'image/png,image/gif,image/jpeg,application/msword,.doc,.docx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/pdf';
-  let uploadAccept = '.pdf';
-
   const openImportFile = () => {
     let target = document.querySelector('.new-nursing-rules-add-modal .file-content') as HTMLElement;
     target.click();
@@ -158,7 +155,6 @@ export default function NewNursingRulesAddModal(props: Props) {
       return <Input
         type="file"
         className="file-content"
-        // accept={uploadAccept}
         onChange={handleImportFileChange} />
     } else
       return ''
