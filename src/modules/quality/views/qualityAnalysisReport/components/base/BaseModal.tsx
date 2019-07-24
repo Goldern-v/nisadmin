@@ -60,6 +60,88 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
+    } else if (sectionData.sectionId == '本月质量扣分科室排序') {
+      qualityAnalysisReportService.updateDeptItemList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data.map((item: any) => {
+            return Object.assign(item, {
+              deductScore: Number(Number(item.deductScore).toFixed(1))
+            })
+          })
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '本月主要质量问题') {
+      qualityAnalysisReportService.updateDetailItemList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data.map((item: any) => {
+            return Object.assign(item, {
+              totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
+            })
+          })
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '本月质量检查亮点') {
+      qualityAnalysisReportService.updateHighlightItemList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '重点问题') {
+      qualityAnalysisReportService.updateKeyItemList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '持续改进') {
+      qualityAnalysisReportService.updateCurrentImproveItemList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '追踪督导') {
+      qualityAnalysisReportService.updateFollowUpDeptDesc(data.report.followUpDeptDesc).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          report: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '检查重点') {
+      qualityAnalysisReportService.updateKeyCheckItemDesc(data.report.keyCheckItemDesc).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          report: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '问题及建议') {
+      qualityAnalysisReportService.updateSuggestions(data.report.suggestions).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          report: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '报告名称') {
+      // console.log(data, 'data')
+      // return
+      qualityAnalysisReportService.updateReportName(data.text).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          text: res.data.reportName
+        })
+        message.success('保存成功')
+        onCancel()
+      })
     }
     // qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
   }

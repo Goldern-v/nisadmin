@@ -26,8 +26,9 @@ export default observer(function 上月质量问题模块(props: Props) {
           <div className='label'>
             ({index + 1}){item.itemTypeName}(总扣分{item.totalDeductScore}分,共有{item.deductDeptSize}个扣分科室)
           </div>
-          <pre className='textarea'>{item.itemBadDesc}</pre>
-          {item.attachUrls && item.attachUrls.split(',').map((item) => <img className='img' src={item} alt='' />)}
+          <pre className='textarea'>{item.content}</pre>
+          {item.attachUrls &&
+            item.attachUrls.split(',').map((item, index) => <img className='img' src={item} alt='' key={index} />)}
         </div>
       ))}
 

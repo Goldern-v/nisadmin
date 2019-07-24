@@ -98,10 +98,10 @@ export default function EditToNewPostModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改转岗信息')
+      setTitle('修改岗位变动信息')
       setList(authStore.deptList)
     } else if (signShow === '添加') {
-      setTitle('添加转岗信息')
+      setTitle('添加岗位变动信息')
       setList(authStore.deptList)
     }
   }, [visible])
@@ -133,7 +133,18 @@ export default function EditToNewPostModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`转岗时间`} name='transferDate'>
+            <Form.Field label={`科室隶属部`} name='deptBeDepartment'>
+              <Select value={type} onSelect={onSelectChange} placeholder='选择现工作科室'>
+                {nurseFileDetailViewModal.getDict('科室隶属部').map((item: any) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`岗位变动时间`} name='transferDate'>
               <DatePicker />
             </Form.Field>
           </Col>

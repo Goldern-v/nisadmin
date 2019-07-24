@@ -68,10 +68,7 @@ export default observer(function BaseInfo() {
                   参加工作时间: 'takeWorkTime',
                   参加工作年限: 'takeWorkYear'
                 },
-                {
-                  来院工作时间: 'goHospitalWorkDate',
-                  来院工作年限: 'goHospitalWorkYear'
-                },
+
                 {
                   护士执业资格证书编号: 'zyzsNumber',
                   取得执业资格证书时间: 'zyzsDate'
@@ -81,7 +78,6 @@ export default observer(function BaseInfo() {
                   护士执业资格证书有效截止日期: 'zyzsEffectiveUpDate'
                 },
                 {
-                  护理年资: 'nursingSeniority',
                   初始学历: 'initialEducation'
                 },
                 {
@@ -93,25 +89,14 @@ export default observer(function BaseInfo() {
                   职务: 'job'
                 },
                 {
-                  现职务任职起始时间: 'jobStartDate',
-                  考取技术职称时间: 'winNewTiTleDate'
+                  现职务任职起始时间: 'jobStartDate'
                 },
-                {
-                  医院聘用技术职称时间: 'employNewTiTleDate',
-                  '技术职称（医院聘用为准）': 'newTitle'
-                },
-                {
-                  工作编制: 'workConversion',
-                  转编时间: 'conversionDate'
-                },
+
                 {
                   院内工作地点: 'workAddress',
                   工作护理单元: 'workDeptName'
                 },
-                {
-                  层级: 'nurseHierarchy',
-                  取得层级时间: 'nurseHierarchyDate'
-                },
+
                 {
                   鞋码大小: 'shoeSize'
                 }
@@ -155,10 +140,6 @@ export default observer(function BaseInfo() {
       setIdData(data.empNo)
       setId(data.id)
       setTableData([
-        // {
-        //   姓名: data.empName,
-        //   性别: data.sex
-        // },
         {
           民族: data.nation,
           籍贯: data.nativePlace
@@ -177,12 +158,9 @@ export default observer(function BaseInfo() {
         },
         {
           参加工作时间: data.takeWorkTime,
-          参加工作年限: data.takeWorkYear
+          来院工作时间: data.goHospitalWorkDate
         },
-        {
-          来院工作时间: data.goHospitalWorkDate,
-          来院工作年限: data.goHospitalWorkYear
-        },
+
         {
           护士执业资格证书编号: data.zyzsNumber,
           取得执业资格证书时间: data.zyzsDate
@@ -192,36 +170,20 @@ export default observer(function BaseInfo() {
           护士执业资格证书有效截止日期: data.zyzsEffectiveUpDate
         },
         {
-          护理年资: data.nursingSeniority,
-          初始学历: data.initialEducation
+          初始学历: data.initialEducation,
+          最高学历: data.highestEducation
         },
         {
-          最高学历: data.highestEducation,
-          取得最高学历时间: data.highestEducationDate
+          取得最高学历时间: data.highestEducationDate,
+          最高学历学位: data.highestEducationDegree
         },
         {
-          最高学历学位: data.highestEducationDegree,
-          职务: data.job
-        },
-        {
-          现职务任职起始时间: data.jobStartDate,
-          考取技术职称时间: data.winNewTiTleDate
-        },
-        {
-          医院聘用技术职称时间: data.employNewTiTleDate,
-          '技术职称（医院聘用为准）': data.newTitle
-        },
-        {
-          工作编制: data.workConversion,
-          转编时间: data.conversionDate
+          职务: data.job,
+          现职务任职起始时间: data.jobStartDate
         },
         {
           院内工作地点: data.workAddress,
-          工作护理单元: data.workDeptName
-        },
-        {
-          层级: data.nurseHierarchy,
-          取得层级时间: data.nurseHierarchyDate
+          工作护理单元: data.deptName
         },
         {
           鞋码大小: data.shoeSize
@@ -250,7 +212,7 @@ export default observer(function BaseInfo() {
               </td>
               <td>性别</td>
               <td>
-                <Value>{sexEnum[info.sex]}</Value>
+                <Value>{info.sex}</Value>
               </td>
               <td rowSpan={5}>
                 {info && info.nearImageUrl ? (

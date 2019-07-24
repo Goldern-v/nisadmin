@@ -61,6 +61,8 @@ export default function EditPositionChangeModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    value.winNewTiTleDate && (value.winNewTiTleDate = value.winNewTiTleDate.format('YYYY-MM-DD'))
+    value.employNewTiTleDate && (value.employNewTiTleDate = value.employNewTiTleDate.format('YYYY-MM-DD'))
     // value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHTitle', { ...obj, ...value }).then((res: any) => {
@@ -76,15 +78,16 @@ export default function EditPositionChangeModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        startDate: moment(data.startDate),
-        // endDate: moment(data.endDate),
+        startDate: data.startDate ? moment(data.startDate) : null,
+        winNewTiTleDate: data.winNewTiTleDate ? moment(data.winNewTiTleDate) : null,
+        employNewTiTleDate: data.employNewTiTleDate ? moment(data.employNewTiTleDate) : null,
         titleOld: data.titleOld,
         titleNew: data.titleNew,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改所获奖励')
+      setTitle('修改职称变动奖励')
     } else if (signShow === '添加') {
       setTitle('添加职称变动信息')
     }
@@ -124,6 +127,16 @@ export default function EditPositionChangeModal(props: Props) {
                   </Select.Option>
                 ))}
               </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`考取专业技术资格证时间`} name='winNewTiTleDate'>
+              <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`聘用专业技术资格证时间`} name='employNewTiTleDate'>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>

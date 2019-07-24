@@ -26,8 +26,9 @@ export default observer(function 本月质量检查亮点模块(props: Props) {
           <div className='label'>
             ({index + 1}){item.itemTypeName}
           </div>
-          <pre className='textarea'>{item.itemBadDesc}</pre>
-          {item.attachUrls && item.attachUrls.split(',').map((item) => <img className='img' src={item} alt='' />)}
+          <pre className='textarea'>{item.content}</pre>
+          {item.attachUrls &&
+            item.attachUrls.split(',').map((item, index) => <img className='img' src={item} alt='' key={index} />)}
         </div>
       ))}
 

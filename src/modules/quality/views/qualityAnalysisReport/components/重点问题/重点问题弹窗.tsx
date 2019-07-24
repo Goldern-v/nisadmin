@@ -67,12 +67,12 @@ export default function 重点问题弹窗(props: Props) {
               onChange={(e) => updateText(e, item, 'itemTypeName')}
             />
           </div>
-          <Input.TextArea value={item.itemBadDesc} autosize onChange={(e) => updateText(e, item, 'itemBadDesc')} />
+          <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
           <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} />
           <div style={{ overflow: 'hidden' }}>
             {item.attachUrls &&
               item.attachUrls.split(',').map((img, index: number) => (
-                <div className='img-con'>
+                <div className='img-con' key={index}>
                   <img className='img' src={img} alt='' />
                   <Icon type='close' className='close-btn' onClick={() => onDeleteImg(index, item)} />
                 </div>

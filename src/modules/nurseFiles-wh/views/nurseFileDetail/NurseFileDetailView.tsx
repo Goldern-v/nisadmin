@@ -100,18 +100,9 @@ const ROUTE_LIST = [
   {
     type: 'continuingEducation',
     component: ContinuingEducation,
-    name: '继续教育'
+    name: '医学学历教育'
   },
-  {
-    type: 'Leave',
-    component: Leave,
-    name: '离职'
-  },
-  {
-    type: 'toNewPost',
-    component: ToNewPost,
-    name: '转岗'
-  },
+
   {
     type: 'workHistory',
     component: WorkHistory,
@@ -126,6 +117,11 @@ const ROUTE_LIST = [
     type: 'workRegistrationForm',
     component: WorkRegistrationForm,
     name: '在院工作情况'
+  },
+  {
+    type: 'toNewPost',
+    component: ToNewPost,
+    name: '岗位变动'
   },
   {
     type: 'PositionChange',
@@ -148,6 +144,11 @@ const ROUTE_LIST = [
     name: '编制变动'
   },
 
+  {
+    type: 'Leave',
+    component: Leave,
+    name: '离职'
+  }
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
@@ -185,7 +186,7 @@ const LeftMenuCon = styled(ScrollBox)`
   background: rgba(248, 248, 248, 1);
   box-shadow: 3px 7px 7px 0px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(228, 228, 228, 1);
-  overflow:auto;
+  overflow: auto;
 `
 const MainCon = styled.div`
   flex: 1;

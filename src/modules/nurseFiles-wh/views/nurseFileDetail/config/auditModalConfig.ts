@@ -27,7 +27,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               影响因子: `influencingFactors`
             }
           ],
-            fileData: row.urlImageOne
+          fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
                 return {
                   ['附件' + (index + 1)]: item
@@ -58,28 +58,28 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               批准机关: `approvalAuthority`
             }
           ],
-            fileData: row.urlImageOne
-              ? row.urlImageOne.split(',').map((item: any, index: number) => {
-                  return {
-                    ['附件' + (index + 1)]: item
-                  }
-                })
-              : [],
-            allData: row
-          })
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+                return {
+                  ['附件' + (index + 1)]: item
+                }
+              })
+            : [],
+          allData: row
+        })
       }
       break
-    case '继续教育':
+    case '医学学历教育':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           type: 'nurseWHContinueStudy',
-          title: '审核继续教育信息',
+          title: '审核医学学历教育信息',
           tableFormat: [
             {
               年份: `year`,
-              继续教育项目负责人: `projectPerson`
+              医学学历教育项目负责人: `projectPerson`
             },
             {
               项目名称: `projectName`,
@@ -106,16 +106,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             : [],
           allData: row
         })
-
       }
       break
-    case '教育经历':
+    case '医学学历教育':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           type: 'nurseMedicalEducation',
-          title: '审核教育经历',
+          title: '审核医学学历教育',
           tableFormat: [
             {
               就读时间: `readTime`,
@@ -138,7 +137,6 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             : [],
           allData: row
         })
-
       }
       break
     case '主持科研课题':
@@ -384,7 +382,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-      case '专利':
+    case '专利':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
@@ -588,20 +586,20 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '转岗':
+    case '岗位变动':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           type: 'nurseWHTransferPost',
-          title: '审核转岗信息',
+          title: '审核岗位变动信息',
           tableFormat: [
             {
               原工作室: `oldDeptName`,
               现工作室: `newDeptName`
             },
             {
-              转岗时间: `transferDate`
+              岗位变动时间: `transferDate`
             }
           ],
           fileData: row.urlImageOne

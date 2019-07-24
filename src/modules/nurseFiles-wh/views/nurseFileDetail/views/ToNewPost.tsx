@@ -15,7 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditToNewPostModal from '../modal/EditToNewPostModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editToNewPostModal = createModal(EditToNewPostModal)
@@ -50,7 +50,14 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '转岗时间',
+      title: '科室隶属部',
+      dataIndex: 'deptBeDepartment',
+      key: 'deptBeDepartment',
+      width: 130,
+      align: 'center'
+    },
+    {
+      title: '岗位变动时间',
       dataIndex: 'transferDate',
       key: 'transferDate',
       width: 110,
@@ -96,7 +103,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                openAuditModal('转岗', row, getTableData)
+                openAuditModal('岗位变动', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}
@@ -117,7 +124,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='转岗' btnList={btnList}>
+    <BaseLayout title='岗位变动' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editToNewPostModal.Component getTableData={getTableData} />
     </BaseLayout>

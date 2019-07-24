@@ -63,26 +63,26 @@ export default function 本月主要质量问题弹窗(props: Props) {
             <Input
               type='text'
               value={item.itemTypeName}
-              style={{ width: 200 }}
+              style={{ width: 160 }}
               onChange={(e) => updateText(e, item, 'itemTypeName')}
             />
             (总扣分
             <Input
               type='text'
               value={item.totalDeductScore}
-              style={{ width: 80 }}
+              style={{ width: 70 }}
               onChange={(e) => updateNum(e, item, 'totalDeductScore')}
             />
             分,共有{' '}
             <Input
               type='text'
               value={item.deductDeptSize}
-              style={{ width: 80 }}
+              style={{ width: 70 }}
               onChange={(e) => updateNum(e, item, 'deductDeptSize')}
             />
             个扣分科室)
           </div>
-          <Input.TextArea value={item.itemBadDesc} autosize onChange={(e) => updateText(e, item, 'itemBadDesc')} />
+          <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
           <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} />
           <div style={{ overflow: 'hidden' }}>
             {item.attachUrls &&
@@ -123,8 +123,8 @@ const Wrapper = styled.div`
     position: relative;
     .delete-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 5px;
+      right: 5px;
       cursor: pointer;
     }
     .label {

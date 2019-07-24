@@ -31,15 +31,19 @@ export default function 追踪督导弹窗(props: Props) {
   useEffect(() => {}, [])
   return (
     <Wrapper>
-      <TextArea value={report.checkDeptDesc} onChange={updateData1} autosize={true} />
+      <div className='title'>科室：</div>
       <TextArea value={report.followUpDeptDesc} onChange={updateData2} autosize={true} />
     </Wrapper>
   )
 }
 const Wrapper = styled.div`
   textarea {
-    min-height: 200px !important;
+    min-height: 60px !important;
     resize: none;
     margin-bottom: 10px;
+  }
+  .title {
+    font-weight: bold;
+    margin-bottom: 4px;
   }
 `

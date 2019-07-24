@@ -64,6 +64,20 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
+      title: '考取专业技术资格证时间',
+      dataIndex: 'winNewTiTleDate',
+      key: 'winNewTiTleDate',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '聘用专业技术资格证时间',
+      dataIndex: 'employNewTiTleDate',
+      key: 'employNewTiTleDate',
+      width: 100,
+      align: 'center'
+    },
+    {
       title: '附件',
       dataIndex: 'fj',
       key: 'fj',

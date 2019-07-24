@@ -14,7 +14,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editContinuingEducationModal = createModal(EditContinuingEducationModal)
@@ -42,7 +42,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '继续教育项目负责人',
+      title: '医学学历教育项目负责人',
       dataIndex: 'projectPerson',
       key: 'projectPerson',
       width: 160,
@@ -137,7 +137,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                openAuditModal('继续教育', row, getTableData)
+                openAuditModal('医学学历教育', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}
@@ -158,7 +158,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='继续教育' btnList={btnList}>
+    <BaseLayout title='医学学历教育' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

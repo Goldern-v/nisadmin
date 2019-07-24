@@ -26,9 +26,9 @@ import 标题模块 from '../components/标题/标题模块'
 import 标题弹窗 from '../components/标题/标题弹窗'
 export const sectionList: SectionListItem[] = [
   {
-    sectionId: 'title',
-    sectionTitle: 'title',
-    modalTitle: '报告名称',
+    sectionId: '报告名称',
+    sectionTitle: '报告名称',
+    modalTitle: '编辑报告名称',
     data: {},
     section: 标题模块,
     modal: 标题弹窗

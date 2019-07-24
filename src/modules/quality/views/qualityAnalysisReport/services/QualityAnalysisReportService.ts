@@ -1,3 +1,4 @@
+import { appStore } from './../../../../../stores/index'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { qualityAnalysisReportViewModal } from '../QualityAnalysisReportViewModal'
 export default class QualityAnalysisReportService extends BaseApiService {
@@ -12,7 +13,8 @@ export default class QualityAnalysisReportService extends BaseApiService {
       groupRoleCode: 'QCR0017',
       reportName: '2019年度7月基础质控分析报告'
     }
-    return this.post(`/qcAnalysis/getReport`, obj)
+
+    return this.post(`/qcAnalysis/getReport`, appStore.queryObj)
   }
 
   /** 更新上月质量问题，持续改进效果评价 */
@@ -38,6 +40,79 @@ export default class QualityAnalysisReportService extends BaseApiService {
       itemList: itemList
     }
     return this.post(`/qcAnalysis/update/typeCompareList`, obj)
+  }
+  /** 更新本月质量扣分科室排序 */
+  public updateDeptItemList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcAnalysis/update/deptItemList`, obj)
+  }
+
+  /** 更新重点问题 */
+  public updateDetailItemList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcAnalysis/update/detailItemList`, obj)
+  }
+  /** 更新亮点问题 */
+  public updateHighlightItemList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcAnalysis/update/highlightItemList`, obj)
+  }
+  /** 更新重点问题 */
+  public updateKeyItemList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcAnalysis/update/keyItemList`, obj)
+  }
+  /** 更新持续改进问题 */
+  public updateCurrentImproveItemList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcAnalysis/update/currentImproveItemList`, obj)
+  }
+  /** 更新追踪科室 */
+  public updateFollowUpDeptDesc(followUpDeptDesc?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      followUpDeptDesc: followUpDeptDesc
+    }
+    return this.post(`/qcAnalysis/update/followUpDeptDesc`, obj)
+  }
+  /** 更新下个月重点检查 */
+  public updateKeyCheckItemDesc(keyCheckItemDesc?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      keyCheckItemDesc: keyCheckItemDesc
+    }
+    return this.post(`/qcAnalysis/update/keyCheckItemDesc`, obj)
+  }
+  /** 更新建议 */
+  public updateSuggestions(suggestions?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      suggestions: suggestions
+    }
+    return this.post(`/qcAnalysis/update/suggestions`, obj)
+  }
+  /** 更新报告名称 */
+  public updateReportName(reportName?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      reportName: reportName
+    }
+    return this.post(`/qcAnalysis/update/reportName`, obj)
   }
 }
 

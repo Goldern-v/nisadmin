@@ -1,3 +1,4 @@
+import { message } from 'src/vendors/antd'
 import { httpLoginToken } from 'src/libs/http/http'
 
 import { authStore, scheduleStore } from 'src/stores'
@@ -5,7 +6,7 @@ import { authStore, scheduleStore } from 'src/stores'
 import BaseApiService from './BaseApiService'
 
 export default class AuthApiService extends BaseApiService {
-  public login (username: string, password: string) {
+  public login(username: string, password: string) {
     return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password })).then((res) => {
       // console.log('登陆成功',res)
       let { adminNurse, authToken, user } = res.data
@@ -19,10 +20,13 @@ export default class AuthApiService extends BaseApiService {
       scheduleStore.setDepartmentValue('deptCode', user.deptCode)
       scheduleStore.setDepartmentValue('deptName', user.deptName)
       authStore.initUser()
+      if (user.roleManage != '1') {
+        return message.warn('你没有权限进入管理系统')
+      }
       window.location.href = '#/home'
     })
   }
-  public logout () {
+  public logout() {
     sessionStorage.removeItem('adminNurse')
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('user')

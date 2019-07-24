@@ -122,18 +122,9 @@ class QualityAnalysisReportViewModal {
         totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
       })
     })
-    this.sectionList[8].data.list = (this.allData!.highlightItemList || []).map((item: any) => {
-      return Object.assign(item, {
-        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
-      })
-    })
-    this.sectionList[9].data.list = (this.allData!.keyItemList || []).map((item: any) => {
-      return Object.assign(item, {
-        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
-      })
-    })
+    this.sectionList[8].data.list = this.allData!.highlightItemList || []
+    this.sectionList[9].data.list = this.allData!.keyItemList || []
     this.sectionList[10].data.list = this.allData!.currentImproveItemList || []
-
     this.sectionList[11].data.report = data!.report || {}
     this.sectionList[12].data.report = data!.report || {}
     this.sectionList[13].data.report = data!.report || {}

@@ -95,12 +95,12 @@ export default function EditPostChangeModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`开始时间`} name='startDate'>
-              <DatePicker /> 
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`结束时间`} name='endDate'>
-              <DatePicker /> 
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>

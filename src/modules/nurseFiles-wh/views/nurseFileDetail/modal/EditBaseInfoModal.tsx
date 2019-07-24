@@ -72,15 +72,11 @@ export default function EditWorkHistoryModal(props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
-    value.goHospitalWorkDate && (value.goHospitalWorkDate = value.goHospitalWorkDate.format('YYYY-MM-DD'))
     value.zyzsDate && (value.zyzsDate = value.zyzsDate.format('YYYY-MM-DD'))
     value.zyzsNursingPostDate && (value.zyzsNursingPostDate = value.zyzsNursingPostDate.format('YYYY-MM-DD'))
     value.takeWorkTime && (value.takeWorkTime = value.takeWorkTime.format('YYYY-MM-DD'))
+    value.goHospitalWorkDate && (value.goHospitalWorkDate = value.goHospitalWorkDate.format('YYYY-MM-DD'))
     value.jobStartDate && (value.jobStartDate = value.jobStartDate.format('YYYY-MM-DD'))
-    value.winNewTiTleDate && (value.winNewTiTleDate = value.winNewTiTleDate.format('YYYY-MM-DD'))
-    value.employNewTiTleDate && (value.employNewTiTleDate = value.employNewTiTleDate.format('YYYY-MM-DD'))
-    value.conversionDate && (value.conversionDate = value.conversionDate.format('YYYY-MM-DD'))
-    value.nurseHierarchyDate && (value.nurseHierarchyDate = value.nurseHierarchyDate.format('YYYY-MM-DD'))
     value.highestEducationDate && (value.highestEducationDate = value.highestEducationDate.format('YYYY-MM-DD'))
     value.zyzsEffectiveUpDate && (value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format('YYYY-MM-DD'))
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
@@ -122,6 +118,18 @@ export default function EditWorkHistoryModal(props: Props) {
       }
     }
   }
+  /** 修改科室 */
+  const changeDept = () => {
+    if (refForm.current) {
+      let name = refForm.current.getField('deptName')
+      if (name) {
+        let dept = authStore.deptList.find((item) => item.name == name)
+        if (dept) {
+          refForm.current.setField('deptCode', dept.code)
+        }
+      }
+    }
+  }
 
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
@@ -131,15 +139,11 @@ export default function EditWorkHistoryModal(props: Props) {
         ...data,
         ...{
           birthday: data.birthday ? moment(data.birthday) : null,
-          goHospitalWorkDate: data.goHospitalWorkDate ? moment(data.goHospitalWorkDate) : null,
           zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
           zyzsNursingPostDate: data.zyzsNursingPostDate ? moment(data.zyzsNursingPostDate) : null,
           takeWorkTime: data.takeWorkTime ? moment(data.takeWorkTime) : null,
+          goHospitalWorkDate: data.goHospitalWorkDate ? moment(data.goHospitalWorkDate) : null,
           jobStartDate: data.jobStartDate ? moment(data.jobStartDate) : null,
-          winNewTiTleDate: data.winNewTiTleDate ? moment(data.winNewTiTleDate) : null,
-          employNewTiTleDate: data.employNewTiTleDate ? moment(data.employNewTiTleDate) : null,
-          conversionDate: data.conversionDate ? moment(data.conversionDate) : null,
-          nurseHierarchyDate: data.nurseHierarchyDate ? moment(data.nurseHierarchyDate) : null,
           highestEducationDate: data.highestEducationDate ? moment(data.highestEducationDate) : null,
           zyzsEffectiveUpDate: data.zyzsEffectiveUpDate ? moment(data.zyzsEffectiveUpDate) : null,
           zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : []
@@ -218,31 +222,13 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field
-              label={`参加工作时间`}
-              name='takeWorkTime'
-              onValueChange={() => computedDateToYear('takeWorkTime', 'takeWorkYear')}
-            >
+            <Form.Field label={`参加工作时间`} name='takeWorkTime'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`参加工作年限`} name='takeWorkYear'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field
-              label={`来院工作时间`}
-              name='goHospitalWorkDate'
-              onValueChange={() => computedDateToYear('goHospitalWorkDate', 'goHospitalWorkYear')}
-            >
+            <Form.Field label={`来院工作时间`} name='goHospitalWorkDate'>
               <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`来院工作年限`} name='goHospitalWorkYear'>
-              <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -256,22 +242,13 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field
-              label={`取得执业资格证书并开始从事护理岗位时间`}
-              name='zyzsNursingPostDate'
-              onValueChange={() => computedDateToYear('zyzsNursingPostDate', 'nursingSeniority')}
-            >
+            <Form.Field label={`取得执业资格证书并开始从事护理岗位时间`} name='zyzsNursingPostDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
             <Form.Field label={`护士执业资格证书有效截止日期`} name='zyzsEffectiveUpDate'>
               <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`护理年资`} name='nursingSeniority'>
-              <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -303,7 +280,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`最高学历学位`} name='highestEducationDegree'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('学位').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -317,66 +294,19 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`考取技术职称时间`} name='winNewTiTleDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`医院聘用技术职称时间`} name='employNewTiTleDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`技术职称（医院聘用为准）`} name='newTitle'>
-              <Select>
-                {nurseFileDetailViewModal.getDict('技术职称').map((item) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`工作编制`} name='workConversion'>
-              <Select>
-                {nurseFileDetailViewModal.getDict('工作编制').map((item) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`转编时间`} name='conversionDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
             <Form.Field label={`院内工作地点`} name='workAddress'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('院内工作地点').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`工作护理单元`} name='workDeptName'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`层级`} name='nurseHierarchy'>
+            <Form.Field label={`工作护理单元`} name='deptName' onValueChange={changeDept}>
               <Select>
-                {nurseFileDetailViewModal.getDict('层级').map((item) => (
-                  <Select.Option value={item.code} key={item.code}>
+                {authStore.deptList.map((item) => (
+                  <Select.Option value={item.name} key={item.code}>
                     {item.name}
                   </Select.Option>
                 ))}
               </Select>
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-            <Form.Field label={`取得层级时间`} name='nurseHierarchyDate'>
-              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>

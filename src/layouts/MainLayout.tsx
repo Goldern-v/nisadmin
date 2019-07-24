@@ -3,7 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import Header from './components/Header'
 import NavBar from './components/NavBar'
 import RouterView, { RouteComponentProps } from 'src/components/RouterView'
-import store, { appStore } from 'src/stores'
+import store, { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import { observer } from 'mobx-react-lite'
 import AduitModal from '../global/modal/AduitModal'
@@ -39,6 +39,10 @@ export default observer(function MainLayout(props: Props) {
         }
       }
     })
+
+    if (!authStore.user || (authStore.user && authStore.user.roleManage != '1')) {
+      appStore.history.push('/login')
+    }
   }, [])
 
   useLayoutEffect(() => {

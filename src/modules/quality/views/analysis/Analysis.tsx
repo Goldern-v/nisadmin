@@ -10,19 +10,21 @@ import QualityAnalysisService from './api/QualityAnalysisService'
 
 import CreateAnalysisModal from './components/CreateAnalysisModal'
 import AnalysisCreateProgress from './components/AnalysisCreateProgress'
+import qs from 'qs'
 
-const api = new QualityAnalysisService();
-const Option = Select.Option;
+const api = new QualityAnalysisService()
+const Option = Select.Option
 
-export default observer(function Analysis() { // 
-  const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
-  const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
-  const [createClear, setCreateClear] = useState(true);
-  const { history } = appStore;
-  const [groupRoleList, setGroupRolelist] = useState([]);
+export default observer(function Analysis() {
+  //
+  const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
+  const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
+  const [createClear, setCreateClear] = useState(true)
+  const { history } = appStore
+  const [groupRoleList, setGroupRolelist] = useState([])
 
   //进度条相关
-  const [createProgressVisible, setCreateProgressVisible] = useState(false);
+  const [createProgressVisible, setCreateProgressVisible] = useState(false)
   const [createLoading, setCreateLoading] = useState('')
 
   const [query, setQuery] = useState({
@@ -33,23 +35,23 @@ export default observer(function Analysis() { //
     indexInType: '',
     status: '',
     groupRoleCode: ''
-  } as any);
+  } as any)
 
   useEffect(() => {
-    api.dictInfo().then(res => {
-      if (res.data instanceof Array) setGroupRolelist(res.data);
+    api.dictInfo().then((res) => {
+      if (res.data instanceof Array) setGroupRolelist(res.data)
     })
   }, [])
 
   useEffect(() => {
     getTableData()
-  }, [query]);
+  }, [query])
 
-  const [dataTotal, setDataTotal] = useState(0 as number);
+  const [dataTotal, setDataTotal] = useState(0 as number)
 
-  const [tableData, setTableData] = useState([] as any);
+  const [tableData, setTableData] = useState([] as any)
 
-  const [tableLoading, setTableLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -65,13 +67,14 @@ export default observer(function Analysis() { //
       dataIndex: 'reportName',
       className: 'align-left',
       align: 'left',
+      width: 400,
       render: (name: string) => <div title={name}>{name}</div>
     },
     {
       title: '报告年度',
       key: 'year',
       dataIndex: 'year',
-      width: 80,
+      width: 100,
       align: 'center',
       render: (year: string) => `${year}年`
     },
@@ -79,7 +82,7 @@ export default observer(function Analysis() { //
       title: '报告月份',
       key: 'indexInType',
       dataIndex: 'indexInType',
-      width: 70,
+      width: 100,
       align: 'center',
       render: (month: string) => `${month}月`
     },
@@ -88,34 +91,34 @@ export default observer(function Analysis() { //
       key: 'beginDate',
       dataIndex: 'beginDate',
       width: 100,
-      align: 'center',
+      align: 'center'
     },
     {
       title: '质控结束日期',
       key: 'endDate',
       dataIndex: 'endDate',
       width: 100,
-      align: 'center',
+      align: 'center'
     },
     {
       title: '创建人',
       key: 'creatorName',
       dataIndex: 'creatorName',
-      width: 80,
-      align: 'center',
+      width: 100,
+      align: 'center'
     },
     {
       title: '创建时间',
       key: 'createTime',
       dataIndex: 'createTime',
       width: 130,
-      align: 'center',
+      align: 'center'
     },
     {
       title: '状态',
       key: 'status',
       dataIndex: 'status',
-      width: 50,
+      width: 80,
       align: 'center',
       render: (status: string) => {
         switch (status) {
@@ -134,20 +137,22 @@ export default observer(function Analysis() { //
       width: 80,
       align: 'center',
       render: (text: string, record: any) => {
-        return <DoCon>
-          <span onClick={() => handleReview(record)}>查看</span>
-        </DoCon>
+        return (
+          <DoCon>
+            <span onClick={() => handleReview(record)}>查看</span>
+          </DoCon>
+        )
       }
-    },
-  ];
+    }
+  ]
 
   const handlePanelChange = (value: any) => {
-    setYearPickerIsOpen(false);
+    setYearPickerIsOpen(false)
     setQuery({ ...query, year: value })
   }
 
   const handleOpenChange = (status: boolean) => {
-    setYearPickerIsOpen(status);
+    setYearPickerIsOpen(status)
   }
 
   const handleYearClear = () => {
@@ -155,12 +160,22 @@ export default observer(function Analysis() { //
   }
 
   const handleReview = (record: any) => {
-    console.log(record)
-    history.push(`/qualityAnalysisReport/${record.id}`)
+    const obj = {
+      type: record.type,
+      year: record.year,
+      indexInType: record.indexInType,
+      beginDate: record.beginDate,
+      endDate: record.endDate,
+      groupRoleCode: record.groupRoleCode,
+      reportName: record.reportName
+    }
+
+    // console.log(record)
+    history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`)
   }
 
   const handleSearch = () => {
-    getTableData();
+    getTableData()
   }
 
   const handleCreate = () => {
@@ -169,37 +184,38 @@ export default observer(function Analysis() { //
   }
 
   const handleCreateOk = (params: any) => {
-    if (!params.reportName) return;
+    if (!params.reportName) return
 
-    setCreateClear(false);
+    setCreateClear(false)
     setCreateAnalysisVisible(false)
-    setCreateProgressVisible(true);
-    setCreateLoading('start');
+    setCreateProgressVisible(true)
+    setCreateLoading('start')
 
     let successCallback = () => {
-      setCreateLoading('done');
-      setCreateClear(true);
+      setCreateLoading('done')
+      setCreateClear(true)
       Message.success('创建成功', 2, () => {
-        setCreateProgressVisible(false);
-        setCreateClear(true);
-        setCreateLoading('');
+        setCreateProgressVisible(false)
+        setCreateClear(true)
+        setCreateLoading('')
 
-        getTableData();
+        getTableData()
       })
     }
 
     let failedCallback = (msg?: string) => {
-      setCreateLoading('failed');
+      setCreateLoading('failed')
 
       Message.error(msg || '创建失败', 2, () => {
-        setCreateProgressVisible(false);
+        setCreateProgressVisible(false)
         setCreateAnalysisVisible(true)
-        setCreateClear(true);
-        setCreateLoading('');
+        setCreateClear(true)
+        setCreateLoading('')
       })
     }
 
-    api.createReport({ ...params, type: 'month' })
+    api
+      .createReport({ ...params, type: 'month' })
       .then((res) => {
         if (res.code == 200) {
           successCallback()
@@ -218,137 +234,166 @@ export default observer(function Analysis() { //
 
   const getTableData = () => {
     setTableLoading(true)
-    let year = '';
-    if (query.year !== null) year = query.year.format('YYYY');
+    let year = ''
+    if (query.year !== null) year = query.year.format('YYYY')
 
     let reqQuery = {
       ...query,
       year
     }
-    api.getPage(reqQuery).then(res => {
-      setTableLoading(false);
+    api
+      .getPage(reqQuery)
+      .then((res) => {
+        setTableLoading(false)
 
-      if (res.data.totalPage)
-        setDataTotal(res.data.totalPage);
-      else
-        setDataTotal(0);
+        if (res.data.totalPage) setDataTotal(res.data.totalPage)
+        else setDataTotal(0)
 
-      if (res.data.list instanceof Array) setTableData(res.data.list.map((item: any, key: number) => {
-        return {
-          key,
-          ...item
-        }
-      }));
-    })
-      .catch(res => {
+        if (res.data.list instanceof Array)
+          setTableData(
+            res.data.list.map((item: any, key: number) => {
+              return {
+                key,
+                ...item
+              }
+            })
+          )
+      })
+      .catch((res) => {
         setTableLoading(false)
       })
   }
 
   const MonthList = () => {
-
-    let options = [];
+    let options = []
     for (let i = 12; i > 0; i--) {
-      let month = i;
-      options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>);
+      let month = i
+      options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>)
     }
 
     return options
   }
 
-  return <Wrapper>
-    <div className="topbar">
-      <div className="float-left">
-        <div className="item">
-          <div className="label">报告年度：</div>
-          <div className="content">
-            <DatePicker
-              value={query.year}
-              open={yearPickerIsOpen}
-              mode="year"
-              className="year-picker"
-              placeholder="全部"
-              format="YYYY"
-              onChange={handleYearClear}
-              onOpenChange={handleOpenChange}
-              onPanelChange={handlePanelChange}
-            />
+  return (
+    <Wrapper>
+      <div className='topbar'>
+        <div className='float-left'>
+          <div className='item'>
+            <div className='label'>报告年度：</div>
+            <div className='content'>
+              <DatePicker
+                style={{ width: 100 }}
+                value={query.year}
+                open={yearPickerIsOpen}
+                mode='year'
+                className='year-picker'
+                placeholder='全部'
+                format='YYYY'
+                onChange={handleYearClear}
+                onOpenChange={handleOpenChange}
+                onPanelChange={handlePanelChange}
+              />
+            </div>
+          </div>
+          <div className='item'>
+            <div className='label'>报告月份：</div>
+            <div className='content'>
+              <Select
+                style={{ width: 100 }}
+                className='month-select'
+                value={query.indexInType}
+                onChange={(month: any) => {
+                  setQuery({ ...query, indexInType: month })
+                }}
+              >
+                <Option value=''>全部</Option>
+                {MonthList()}
+              </Select>
+            </div>
+          </div>
+          <div className='item'>
+            <div className='label'>状态：</div>
+            <div className='content'>
+              <Select
+                style={{ width: 100 }}
+                value={query.status}
+                onChange={(status: any) => {
+                  setQuery({ ...query, status })
+                }}
+              >
+                <Option value=''>全部</Option>
+                <Option value='0'>保存</Option>
+                <Option value='1'>发布</Option>
+              </Select>
+            </div>
+          </div>
+          <div className='item'>
+            <div className='label'>表单：</div>
+            <div className='content'>
+              <Select
+                value={query.groupRoleCode}
+                onChange={(groupRoleCode: any) => {
+                  setQuery({ ...query, groupRoleCode })
+                }}
+                className='recode-type-select'
+              >
+                <Option value=''>全部</Option>
+                {groupRoleList.map((item: any) => (
+                  <Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+          <div className='item'>
+            <Button onClick={handleSearch}>查询</Button>
           </div>
         </div>
-        <div className="item">
-          <div className="label">报告月份：</div>
-          <div className="content">
-            <Select 
-              className="month-select"
-              value={query.indexInType} 
-              onChange={(month: any) => { setQuery({ ...query, indexInType: month }) }}>
-              <Option value="">全部</Option>
-              {MonthList()}
-            </Select>
-          </div>
-        </div>
-        <div className="item">
-          <div className="label">状态：</div>
-          <div className="content">
-            <Select value={query.status} onChange={(status: any) => { setQuery({ ...query, status }) }}>
-              <Option value="">全部</Option>
-              <Option value="0">保存</Option>
-              <Option value="1">发布</Option>
-            </Select>
-          </div>
-        </div>
-        <div className="item">
-          <div className="label">表单：</div>
-          <div className="content">
-            <Select value={query.groupRoleCode} onChange={(groupRoleCode: any) => { setQuery({ ...query, groupRoleCode }) }} className="recode-type-select">
-              <Option value="">全部</Option>
-              {groupRoleList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
-            </Select>
-          </div>
-        </div>
-        <div className="item">
-          <Button onClick={handleSearch}>查询</Button>
+        <div className='float-right'>
+          <Button onClick={handleCreate} type='primary'>
+            创建
+          </Button>
         </div>
       </div>
-      <div className="float-right">
-        <Button onClick={handleCreate} type="primary">创建</Button>
+      <div className='main-contain'>
+        <BaseTable
+          columns={columns}
+          dataSource={tableData}
+          loading={tableLoading}
+          surplusHeight={tableData.length > 0 ? 230 : 190}
+          pagination={{
+            pageSizeOptions: ['10', '20', '30', '40', '50'],
+            onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
+            onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
+            total: dataTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex
+          }}
+        />
       </div>
-    </div>
-    <div className="main-contain">
-      <BaseTable
-        columns={columns}
-        dataSource={tableData}
-        loading={tableLoading}
-        surplusHeight={tableData.length > 0 ? 230 : 190}
-        pagination={{
-          pageSizeOptions: ['10', '20', '30', '40', '50'],
-          onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
-          onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
-          total: dataTotal,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          pageSize: query.pageSize,
-          current: query.pageIndex
-        }} />
-    </div>
-    <AnalysisCreateProgress visible={createProgressVisible} loading={createLoading} />
-    <CreateAnalysisModal
-      allowClear={createClear}
-      visible={createAnalysisVisible}
-      onOk={handleCreateOk}
-      onCancel={handleCreateCancel}
-      groupRoleList={groupRoleList} />
-  </Wrapper>
+      <AnalysisCreateProgress visible={createProgressVisible} loading={createLoading} />
+      <CreateAnalysisModal
+        allowClear={createClear}
+        visible={createAnalysisVisible}
+        onOk={handleCreateOk}
+        onCancel={handleCreateCancel}
+        groupRoleList={groupRoleList}
+      />
+    </Wrapper>
+  )
 })
 
 const Wrapper = styled.div`
-  position:relative;
+  position: relative;
   padding-top: 55px;
   height: 100%;
   width: 100%;
 
-  div.topbar{
-    position:absolute;
+  div.topbar {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -356,53 +401,52 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     height: 55px;
     overflow: hidden;
-    .float-left{
-      float:left;
+    .float-left {
+      float: left;
     }
 
-    .float-right{
-      float:right;
+    .float-right {
+      float: right;
     }
-    
-    .item{
+
+    .item {
       display: inline-block;
       margin-right: 10px;
       vertical-align: middle;
-      &>div{
+      & > div {
         display: inline-block;
         vertical-align: middle;
       }
-      .label{
-
+      .label {
       }
-      .content{
-        .year-picker{
+      .content {
+        .year-picker {
           width: 75px;
         }
-        .recode-type-select{
+        .recode-type-select {
           min-width: 200px;
         }
-        .month-select{
+        .month-select {
           width: 72px;
         }
       }
     }
   }
 
-  .main-contain{
+  .main-contain {
     height: 100%;
     width: 100%;
     padding: 15px;
     padding-top: 0;
-    .align-left{
+    .align-left {
       position: relative;
-      >div{
+      > div {
         position: absolute;
         left: 5px;
         right: 5px;
         top: 5px;
         height: 30px;
-        overflow:hidden;
+        overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }

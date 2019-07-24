@@ -9,6 +9,7 @@ import { ScrollBox } from 'src/components/common'
 import { Report } from './types'
 import printing from 'printing'
 import { useRef } from 'src/types/react'
+import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
@@ -39,7 +40,7 @@ export default observer(function QualityAnalysisReportView() {
           <Button>预览</Button>
           <Button>发布</Button>
           <Button onClick={onPrint}>打印</Button>
-          <Button>返回</Button>
+          <Button onClick={() => appStore.history.push('/quality/analysis')}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>

@@ -71,7 +71,7 @@ export default observer(function TopCon() {
         )}
       </Name>
 
-      <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn>
+      {/* <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn> */}
 
       <deptChangeModal.Component />
     </Wrapper>

@@ -84,16 +84,16 @@ export default function EditPersonWinningModal(props: Props) {
         personTotal: data.personTotal,
         projectName: data.projectName,
         projectLevel: data.projectLevel,
-        courseHour:data.courseHour,
+        courseHour: data.courseHour,
         schoolArea: data.schoolArea,
         personTitleArea: data.personTitleArea,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改继续教育')
+      setTitle('修改医学学历教育')
     } else if (signShow === '添加') {
-      setTitle('添加继续教育')
+      setTitle('添加医学学历教育')
     }
   }, [visible])
 
@@ -107,7 +107,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`继续教育项目负责人`} name='projectPerson'>
+            <Form.Field label={`医学学历教育项目负责人`} name='projectPerson'>
               <Input />
             </Form.Field>
           </Col>

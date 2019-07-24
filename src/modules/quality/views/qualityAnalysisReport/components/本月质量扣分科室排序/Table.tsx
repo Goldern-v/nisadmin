@@ -30,7 +30,7 @@ export default function Table(props: Props) {
           </tr>
 
           {list.map((item, index) => (
-            <tr>
+            <tr key={index}>
               <td style={{ textAlign: 'left' }}>{item.wardName}</td>
               <td style={{ textAlign: 'left' }}>{item.itemBadDesc}</td>
               <td>{item.deductScore}</td>

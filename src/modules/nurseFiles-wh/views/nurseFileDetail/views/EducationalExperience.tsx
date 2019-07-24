@@ -12,7 +12,7 @@ import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFiles
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from 'src/modules/nurseFiles/views/nurseFileDetail/utils/limit.ts'
 import Zimage from 'src/components/Zimage'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience() {
   const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
