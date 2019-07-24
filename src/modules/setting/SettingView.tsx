@@ -23,6 +23,7 @@ import 物流角色设置 from './view/物流角色设置'
 import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
 import Preview from './view/components/Preview'
 import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
+import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -83,6 +84,11 @@ const LEFT_MENU_CONFIG = [
     icon: <KSPHSZ />,
     path: '/setting/科室文件共享',
     children: [
+      //{
+      //  title: '扁平管理设置',
+      //  path: '/setting/扁平管理设置',
+      //  component: FlatManage
+      //},
       {
         title: '病区文件',
         path: '/setting/病区文件',

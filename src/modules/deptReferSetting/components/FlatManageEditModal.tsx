@@ -4,22 +4,21 @@ import { Modal, Input, Select, Button, message as Message } from 'antd';
 import Form from 'src/components/Form'
 import { authStore } from 'src/stores'
 
-import DeptFielShareService from './../api/DeptFielShareService'
+import FlatManageService from './../api/FlatManageService'
 
-const api = new DeptFielShareService();
+const api = new FlatManageService();
 
 export interface Props {
   visible: boolean,
   onOk: any,
   onCancel: any,
   params?: any,
-  catalogList?: any
   deptCode: any
 }
 
 export default function NewNursingRulesAddModal(props: Props) {
   const refForm = React.createRef<Form>();
-  const { visible, onOk, onCancel, params, catalogList, deptCode } = props;
+  const { visible, onOk, onCancel, params, deptCode } = props;
   const [empNo, setEmpNo] = useState();
   const [uploadLoading, setUploadLoading] = useState(false);
   const [acceptingNewParams, setAcceptingNewParams] = useState(false);
@@ -42,12 +41,12 @@ export default function NewNursingRulesAddModal(props: Props) {
 
     let current = refForm.current;
     if (current) {
-      let fileName = current.getField('fileName');
-      if (!fileName) {
+      let manageType = current.getField('manageType');
+      if (!manageType) {
         let newName = fName.split('.');
         if (newName.length >= 2) newName.pop();
 
-        current.setField('fileName', newName.join('.'));
+        current.setField('manageType', newName.join('.'));
       }
     }
   }
@@ -69,8 +68,7 @@ export default function NewNursingRulesAddModal(props: Props) {
 
               refForm.current.setFields({
                 deptCode: params.deptCode,
-                fileName: params.fileName,
-                catalog: params.catalog,
+                manageType: params.manageType
               });
 
               //防止在handleFormChange中把目录字段替换为空字符
@@ -96,11 +94,8 @@ export default function NewNursingRulesAddModal(props: Props) {
       if (fileEL.files && fileEL.files.length > 0)
         file = fileEL.files[0]
 
-      if (!formData.fileName)
-        return Message.error('未填写文件名称');
-
-      if (!formData.catalog)
-        return Message.error('未选择目录');
+      if (!formData.manageType)
+        return Message.error('未填写管理类型');
 
       if (!params.id) {
         if (!(file && nameEl.value))
@@ -133,8 +128,7 @@ export default function NewNursingRulesAddModal(props: Props) {
         // data.append('id', params.id);
         api.update({
           id: params.id,
-          fileName: formData.fileName,
-          catalog: formData.catalog
+          manageType: formData.manageType
         }).then(res => {
           if (res.code == 200)
             successCallback(null, '修改成功')
@@ -178,7 +172,7 @@ export default function NewNursingRulesAddModal(props: Props) {
 
   return <Modal
     className="new-nursing-rules-add-modal"
-    title={params.id ? '修改文件名称' : '新建'}
+    title={params.id ? '修改管理类型' : '新建'}
     onOk={handleOkBtn}
     centered
     confirmLoading={uploadLoading}
@@ -187,20 +181,10 @@ export default function NewNursingRulesAddModal(props: Props) {
     <ModalContent>
       <Form ref={refForm}>
         <div className="row">
-          <span className="label">文件名称:</span>
+          <span className="label">管理类型:</span>
           <span className="content">
-            <Form.Field name="fileName">
+            <Form.Field name="manageType">
               <Input className="ipt" />
-            </Form.Field>
-          </span>
-        </div>
-        <div className="row">
-          <span className="label">目录:</span>
-          <span className="content">
-            <Form.Field name="catalog">
-              <Select className="ipt">
-                {catalogList.map((item: any) => <Select.Option value={item.catalog} key={item.id}>{item.catalog}</Select.Option>)}
-              </Select>
             </Form.Field>
           </span>
         </div>

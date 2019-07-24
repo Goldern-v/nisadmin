@@ -7,13 +7,13 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import DeptSelect from 'src/components/DeptSelect'
 
-import DeptFileEditModal from './../components/DeptFileEditModal'
+import FlatManageEditModal from './../components/FlatManageEditModal'
 import PreviewModal from './../components/PreviewModal'
 import createModal from 'src/libs/createModal'
 
-import DeptFielShareService from './../api/DeptFielShareService'
+import FlatManageService from './../api/FlatManageService'
 
-const api = new DeptFielShareService();
+const api = new FlatManageService();
 
 export interface Props extends RouteComponentProps { }
 
@@ -29,24 +29,18 @@ export default function DeptFileShare() {
 
   const PreviewModalWrapper = createModal(PreviewModal);
 
-  const [catalogList, setCatalogList] = useState([] as any)
-
   const [query, setQuery] = useState({
     deptCode: '',
-    fileName: '',
-    catalog: '',
+    // manageType: '',
     pageSize: 20,
     pageIndex: 1
   } as any)
-  // useEffect(() => {
+  useEffect(() => {
 
-  // }, []);
+  }, []);
 
   useEffect(() => {
-    if (query.deptCode) {
-      getTableData();
-    }
-
+    if (query.deptCode) getTableData()
   }, [query])
 
   const [tableLoading, setTableLoading] = useState(false)
@@ -64,39 +58,33 @@ export default function DeptFileShare() {
       }
     },
     {
-      title: '文件名称',
-      dataIndex: 'fileName',
-      key: 'fileName',
+      title: '管理类型',
+      dataIndex: 'manageType',
+      key: 'manageType',
       className: 'align-left',
       align: 'left',
       render: (text: string) => {
         return (
-          <div className='rule-name' title={text}>
+          <div className='elips' title={text}>
             {text}
           </div>
         )
       }
     },
     {
-      title: '目录',
-      dataIndex: 'catalog',
-      key: 'catalog',
-      align: 'center',
-      width: 180
-    },
-    {
-      title: '上传日期',
-      dataIndex: 'uploadTime',
-      key: 'uploadTime',
-      align: 'center',
-      width: 150
-    },
-    {
-      title: '上传人',
-      dataIndex: 'empName',
-      key: 'empName',
-      align: 'center',
-      width: 70
+      title: '管理指标说明文件',
+      dataIndex: 'fileName',
+      key: 'fileName',
+      className: 'align-left',
+      align: 'left',
+      // width: 150,
+      render: (text: string) => {
+        return (
+          <div className='elips' title={text}>
+            {text}
+          </div>
+        )
+      }
     },
     {
       title: '操作',
@@ -123,19 +111,18 @@ export default function DeptFileShare() {
 
   const handlePreview = (record: any) => {
 
-    let typeArr = record.originalFileName.split('.');
+    let typeArr = record.path.split('.');
 
     PreviewModalWrapper.show({
       url: `/crNursing/asset/deptShareFile${record.path}`,
       type: typeArr[typeArr.length - 1],
-      name: record.fileName
+      name: record.manageType
     });
   }
   const reUpload = (record: any) => {
     setEditParams({
       id: record.id,
-      fileName: record.fileName,
-      catalog: record.catalog || ''
+      manageType: record.manageType
     })
     setEditVisible(true)
   }
@@ -167,10 +154,7 @@ export default function DeptFileShare() {
   }
 
   const handleDeptChange = (deptCode: any) => {
-    setQuery({ ...query, deptCode, catalog: '' });
-    api.getCatalog({ deptCode }).then(res => {
-      if (res.data) setCatalogList(res.data);
-    })
+    setQuery({ ...query, deptCode });
   }
 
   const handleEditCancel = () => {
@@ -190,8 +174,9 @@ export default function DeptFileShare() {
       .then(res => {
         setTableLoading(false)
         if (res.data) {
-          setDataTotal(res.data.totalCount || 0);
-          setTableData(res.data.list);
+          // setDataTotal(res.data.totalCount || 0);
+          // setTableData(res.data.list);
+          setTableData(res.data);
         }
       }, err => {
         setTableLoading(false)
@@ -201,7 +186,7 @@ export default function DeptFileShare() {
   return <Wrapper>
     <div className="topbar">
       <div className="float-left">
-        <div className="item title">病区文件</div>
+        <div className="item title">扁平管理设置</div>
       </div>
       <div className="float-right">
         <div className="item">
@@ -209,18 +194,6 @@ export default function DeptFileShare() {
           <div className="content">
             <DeptSelect onChange={handleDeptChange} />
           </div>
-        </div>
-        <div className="item">
-          <div className="label">目录：</div>
-          <div className="content">
-            <Select value={query.catalog} onChange={(catalog: any) => setQuery({ ...query, catalog })}>
-              <Option value="">全部</Option>
-              {catalogList.map((item: any, index: number) => <Option value={item.catalog} key={item.id}>{item.catalog}</Option>)}
-            </Select>
-          </div>
-        </div>
-        <div className="item link">
-          <Link to="/deptFileShareCatalogSetting">目录设置</Link>
         </div>
         <div className="item">
           <Button onClick={() => getTableData()}>查询</Button>
@@ -248,12 +221,12 @@ export default function DeptFileShare() {
           current: query.pageIndex
         }} />
     </div>
-    <DeptFileEditModal
+    <FlatManageEditModal
       visible={editVisible}
       params={editParams}
+      onCancel={handleEditCancel}
       deptCode={query.deptCode}
-      catalogList={catalogList}
-      onCancel={handleEditCancel} onOk={handleEditOk} />
+      onOk={handleEditOk} />
     <PreviewModalWrapper.Component />
   </Wrapper>
 }
@@ -325,7 +298,7 @@ position:relative;
       &.align-left {
         padding-left: 15px !important;
       }
-      div.rule-name {
+      div.elips {
         position: absolute;
         left: 15px;
         right: 15px;
