@@ -65,7 +65,7 @@ export default observer(function Analysis() { //
       dataIndex: 'reportName',
       className: 'align-left',
       align: 'left',
-      render: (name: string) => <div>{name}</div>
+      render: (name: string) => <div title={name}>{name}</div>
     },
     {
       title: '报告年度',
@@ -278,7 +278,10 @@ export default observer(function Analysis() { //
         <div className="item">
           <div className="label">报告月份：</div>
           <div className="content">
-            <Select value={query.indexInType} onChange={(month: any) => { setQuery({ ...query, indexInType: month }) }}>
+            <Select 
+              className="month-select"
+              value={query.indexInType} 
+              onChange={(month: any) => { setQuery({ ...query, indexInType: month }) }}>
               <Option value="">全部</Option>
               {MonthList()}
             </Select>
@@ -374,10 +377,13 @@ const Wrapper = styled.div`
       }
       .content{
         .year-picker{
-          width: 95px;
+          width: 75px;
         }
         .recode-type-select{
-          min-width: 140px;
+          min-width: 200px;
+        }
+        .month-select{
+          width: 72px;
         }
       }
     }

@@ -34,6 +34,9 @@ export default function CreateAnalysisModal(props: Props) {
   const { visible, onCancel, onOk, groupRoleList, allowClear } = props;
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
 
+  const [beginDate, setBeginDate] = useState(null as any | null)
+  const [endDate, setEndDate] = useState(null as any | null)
+
   useEffect(() => {
     // if (!visible) setParams(initedParams)
     if (visible && allowClear) {
@@ -45,6 +48,9 @@ export default function CreateAnalysisModal(props: Props) {
         groupRoleCode: '',
         indexInType: ''
       });
+
+      setBeginDate(null);
+      setEndDate(null);
     }
   }, [visible])
 
@@ -100,8 +106,32 @@ export default function CreateAnalysisModal(props: Props) {
     return options
   }
 
+  const moreThanStart = (date: any) => {
+    if (!beginDate) return false
+
+    if (date.format('x') >= beginDate.format('x')) return false
+    return true
+  }
+
+  const lessThanEnd = (date: any) => {
+    if (!endDate) return false
+
+    if (date.format('x') < endDate.format('x')) return false
+    return true
+  }
+
   const handleFormChange = (key: any, val: any) => {
-    if (key == 'beginDate') setFormItem('year', val);
+    if (key == 'beginDate') {
+      setFormItem('year', val);
+      setBeginDate(val)
+      if (val == null)
+        setFormItem('indexInType', '');
+      else
+        setFormItem('indexInType', val.format('M'));
+    }
+
+    if (key == 'endDate') setEndDate(val)
+
     if (key !== 'reportName') setReportName();
   }
 
@@ -143,13 +173,13 @@ export default function CreateAnalysisModal(props: Props) {
           <Col span={5} className="label">质控日期：</Col>
           <Col span={9}>
             <Form.Field name="beginDate">
-              <DatePicker placeholder="开始时间" />
+              <DatePicker placeholder="开始时间" disabledDate={lessThanEnd} />
             </Form.Field>
           </Col>
           <Col span={1}>至</Col>
           <Col span={9}>
             <Form.Field name="endDate">
-              <DatePicker placeholder="结束时间" />
+              <DatePicker placeholder="结束时间" disabledDate={moreThanStart} />
             </Form.Field>
           </Col>
         </Row>
