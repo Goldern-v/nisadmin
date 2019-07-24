@@ -108,13 +108,13 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '医学学历教育':
+    case '教育经历':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           type: 'nurseMedicalEducation',
-          title: '审核医学学历教育',
+          title: '审核教育经历',
           tableFormat: [
             {
               就读时间: `readTime`,
