@@ -11,11 +11,12 @@ export interface Props {
   visible: boolean,
   params: any,
   onCancel: any,
-  onOk: any
+  onOk: any,
+  deptCode: any
 }
 
 export default function CatalogEditModal(props: Props) {
-  const { visible, params, onCancel, onOk } = props;
+  const { visible, params, onCancel, onOk, deptCode } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
 
@@ -54,6 +55,7 @@ export default function CatalogEditModal(props: Props) {
           let newParams = current.getFields();
           if (id) newParams.id = id
           newParams.orderNo = Number(newParams.orderNo);
+          newParams.deptCode = deptCode;
 
           setEditLoading(true);
           api.saveOrUpdateCatalog(newParams).then(res => {

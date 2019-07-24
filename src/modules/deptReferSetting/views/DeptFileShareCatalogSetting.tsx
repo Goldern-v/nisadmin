@@ -6,6 +6,7 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
+import DeptSelect from 'src/components/DeptSelect'
 import DeptFielShareService from './../api/DeptFielShareService'
 
 import CatalogEditModal from './../components/DeptFileShareCatalogEditModal'
@@ -24,9 +25,11 @@ export default observer(function NursingRulesTypeSetting() {
 
   const [editModalVisible, setEditModalVisible] = useState(false);
 
-  useEffect(() => {
-    getCatalog();
-  }, [])
+  const [deptCode, setDeptCode] = useState('');
+
+  // useEffect(() => {
+  //   getCatalog();
+  // }, [])
 
   const setOrderNo = (e: any, index: number, record: any) => {
     setEditIdx(-1);
@@ -106,9 +109,9 @@ export default observer(function NursingRulesTypeSetting() {
     },
   ];
 
-  const getCatalog = () => {
+  const getCatalog = (_deptCode?: any) => {
     setTableLoading(true);
-    api.getCatalog().then(res => {
+    api.getCatalog({ deptCode: _deptCode || deptCode }).then(res => {
       setTableLoading(false);
       if (res.data instanceof Array) {
         setCatalog(res.data)
@@ -136,6 +139,11 @@ export default observer(function NursingRulesTypeSetting() {
     handleCancel();
   }
 
+  const handleDeptChange = (deptCode: any) => {
+    setDeptCode(deptCode);
+    getCatalog(deptCode);
+  }
+
   return <Wrapper>
     <div className="topbar">
       <div className="float-left">
@@ -149,6 +157,7 @@ export default observer(function NursingRulesTypeSetting() {
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
       </div>
+      <div className="item dept-select"><DeptSelect onChange={handleDeptChange} /></div>
     </div>
     <div className="main-contain">
       <BaseTable
@@ -158,7 +167,7 @@ export default observer(function NursingRulesTypeSetting() {
         surplusHeight={215}
         dataSource={catalog} />
     </div>
-    <CatalogEditModal visible={editModalVisible} params={editParams} onCancel={handleCancel} onOk={handleOk} />
+    <CatalogEditModal visible={editModalVisible} params={editParams} onCancel={handleCancel} onOk={handleOk} deptCode={deptCode} />
   </Wrapper>
 })
 
@@ -201,6 +210,9 @@ div.topbar{
       .ant-select{ 
         min-width: 120px;
       }
+    }
+    &.dept-select{
+      display: none;
     }
     &>div{
       display: inline-block;
