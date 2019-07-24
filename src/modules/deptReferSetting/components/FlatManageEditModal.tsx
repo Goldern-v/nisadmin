@@ -185,9 +185,9 @@ export default function NewNursingRulesAddModal(props: Props) {
           </span>
         </div>
         <div className="row" style={{ display: `${params.id ? 'none' : 'flex'}` }}>
-          <span className="label">文件上传:</span>
+          <span className="label">指标说明:</span>
           <span className="content">
-            <input readOnly className="ipt ant-input file-name" />
+            <input readOnly className="ipt ant-input file-name" placeholder="请上传说明文件" />
             <Button onClick={openImportFile} className="more">...</Button>
             <span style={{ display: 'none' }}>
               {FileContent()}
