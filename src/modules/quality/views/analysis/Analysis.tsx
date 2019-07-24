@@ -198,7 +198,6 @@ export default observer(function Analysis() {
         setCreateProgressVisible(false)
         setCreateClear(true)
         setCreateLoading('')
-
         getTableData()
       })
     }
@@ -218,7 +217,8 @@ export default observer(function Analysis() {
       .createReport({ ...params, type: 'month' })
       .then((res) => {
         if (res.code == 200) {
-          successCallback()
+          appStore.history.push(`/qualityAnalysisReport?${qs.stringify(res.data.report)}`)
+          // successCallback()
         } else {
           failedCallback(res.desc || '')
         }
@@ -362,6 +362,11 @@ export default observer(function Analysis() {
           dataSource={tableData}
           loading={tableLoading}
           surplusHeight={tableData.length > 0 ? 230 : 190}
+          onRow={(record: any) => {
+            return {
+              onDoubleClick: () => handleReview(record)
+            }
+          }}
           pagination={{
             pageSizeOptions: ['10', '20', '30', '40', '50'],
             onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
@@ -374,7 +379,7 @@ export default observer(function Analysis() {
           }}
         />
       </div>
-      <AnalysisCreateProgress visible={createProgressVisible} loading={createLoading} />
+      {/* <AnalysisCreateProgress visible={createProgressVisible} loading={createLoading} /> */}
       <CreateAnalysisModal
         allowClear={createClear}
         visible={createAnalysisVisible}

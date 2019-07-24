@@ -16,7 +16,7 @@ export default observer(function 标题模块(props: Props) {
   let text = data ? data.text : ''
   useEffect(() => {})
   return (
-    <Wrapper>
+    <Wrapper className='page-title'>
       <div className='title'>{text}</div>
       <EditButton border={true} onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>
         编辑
@@ -33,6 +33,7 @@ const Wrapper = styled.div`
     font-size: 24px;
     font-weight: bold;
     margin-right: 60px;
+    color: #000;
   }
   button {
     position: absolute;

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
-import { Button } from 'src/vendors/antd'
+import { Button, message } from 'src/vendors/antd'
 import { qualityAnalysisReportViewModal } from './QualityAnalysisReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { ScrollBox } from 'src/components/common'
@@ -10,6 +10,8 @@ import { Report } from './types'
 import printing from 'printing'
 import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
+import { globalModal } from 'src/global/globalModal'
+import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
@@ -18,11 +20,45 @@ export default observer(function QualityAnalysisReportView() {
     qualityAnalysisReportViewModal.init()
   }, [])
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
-  const onPrint = () => {
-    // console.log(pageRef, 'pageRef.current')
-    printing(pageRef.current, {
+  const onPrint = (isPrint: boolean) => {
+    let printFun = isPrint ? printing : printing.preview
+
+    printFun(pageRef.current, {
       injectGlobalCss: true,
-      scanStyles: false
+      scanStyles: false,
+      css: `
+         .ant-btn {
+           display: none;
+         }
+         .print-page {
+           box-shadow: none;
+           -webkit-print-color-adjust: exact;
+           margin: 0 auto;
+         }
+         .page-title {
+           min-height: 20px;
+           padding: 0px 30px 20px;
+         }
+         table, img {
+           page-break-inside: avoid;
+         }
+         pre {
+          page-break-after: avoid;
+         }
+         * {
+           color: #000 !important;
+         }
+      `
+    })
+  }
+  const onDelete = () => {
+    globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
+      qualityAnalysisReportService.deleteReport().then((res) => {
+        message.success('删除成功')
+        setTimeout(() => {
+          appStore.history.push('/quality/analysis')
+        }, 500)
+      })
     })
   }
   return (
@@ -36,15 +72,15 @@ export default observer(function QualityAnalysisReportView() {
           </span>
         </div>
         <div className='tool-con'>
-          <Button>删除</Button>
-          <Button>预览</Button>
+          <Button onClick={onDelete}>删除</Button>
+          <Button onClick={() => onPrint(false)}>预览</Button>
           <Button>发布</Button>
-          <Button onClick={onPrint}>打印</Button>
+          <Button onClick={() => onPrint(true)}>打印</Button>
           <Button onClick={() => appStore.history.push('/quality/analysis')}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>
-        <Page ref={pageRef}>
+        <Page ref={pageRef} className='print-page'>
           {qualityAnalysisReportViewModal.sectionList.map((item, index) => {
             if (item.sectionId) {
               let Components = qualityAnalysisReportViewModal.getSection(item.sectionId)
