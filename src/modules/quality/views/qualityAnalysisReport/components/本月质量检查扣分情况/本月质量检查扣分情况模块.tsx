@@ -5,7 +5,7 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewM
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
-import { LastImproveItem } from '../../types'
+import { LastImproveItem, Report } from '../../types'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -15,12 +15,12 @@ export interface Props {
 export default observer(function 本月质量检查扣分情况模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let textarea = data.textarea || []
+  let report: Report = data ? data.report || {} : {}
 
   return (
     <Wrapper>
       <OneLevelTitle text={sectionTitle} />
-      <TextCon>{textarea}</TextCon>
+      <TextCon>{report.checkDeptDesc}</TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

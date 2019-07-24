@@ -289,7 +289,7 @@ const CheckListCon = observer(function(props: any) {
                 {item.label}
               </Checkbox>
               {selectPeopleViewModel!.currentTreeData!.type !== 'userList' && (
-                <div>
+                <div style={{ minWidth: 54 }}>
                   <span style={{ padding: '0 4px' }}>|</span>
                   <span
                     className={classNames({

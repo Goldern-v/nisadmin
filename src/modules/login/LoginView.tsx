@@ -45,7 +45,7 @@ export default function LoginView() {
           }}
         >
           <img src={appStore.HOSPITAL_LOGO} alt='logo' className='BoxLogin' />
-          <h1 className='Title'>护理质量管理系统</h1>
+          <h1 className='Title'>护理管理系统</h1>
 
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe648;</div>

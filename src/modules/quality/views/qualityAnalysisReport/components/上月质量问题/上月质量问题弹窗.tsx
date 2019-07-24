@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { Input, Radio, ColumnProps, AutoComplete } from 'src/vendors/antd'
+import { Input, Radio, ColumnProps, AutoComplete, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem } from '../../types'
@@ -57,15 +57,16 @@ export default function 上月质量问题弹窗(props: Props) {
       key: '评分',
       render(text: any, record: LastImproveItem, index: number) {
         return (
-          <AutoComplete
-            value={record.result}
-            dataSource={['A', 'B', 'C', 'D']}
-            className={'cell-input text-center'}
+          <Select
             onChange={(value) => {
               record.result = value + ''
               setData(cloneData)
             }}
-          />
+          >
+            <Select.Option value={'A'}>A</Select.Option>
+            <Select.Option value={'B'}>B</Select.Option>
+            <Select.Option value={'C'}>C</Select.Option>
+          </Select>
         )
       },
       width: 80
@@ -133,9 +134,12 @@ const Wrapper = styled.div`
     top: -13px;
     right: 0;
   }
-
+  .ant-select {
+    width: 100%;
+  }
   .cell-input input,
-  input.cell-input {
+  input.cell-input,
+  .ant-select-selection {
     width: 100%;
     height: 100%;
     border: 0;

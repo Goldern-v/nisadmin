@@ -7,6 +7,8 @@ import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewModal'
+import QualityAnalysisService from '../../../analysis/api/QualityAnalysisService'
+import { qualityAnalysisReportService } from '../../services/QualityAnalysisReportService'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -27,7 +29,39 @@ export default observer(function BaseModal(props: Props) {
   const [data, setData]: any = useState(null)
 
   const onSave = async () => {
-    qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
+    if (sectionData.sectionId == '上月质量问题') {
+      qualityAnalysisReportService.updateImproveItemCompareList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '本月质量检查扣分情况') {
+      qualityAnalysisReportService.updateCheckDeptDesc(data.report.checkDeptDesc).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          report: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '质量扣分比较') {
+      qualityAnalysisReportService.updateTypeCompareList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data.map((item: any) => {
+            return Object.assign(item, {
+              currentDeductScore: Number(item.currentDeductScore.toFixed(1)),
+              lastDeductScore: Number(item.lastDeductScore.toFixed(1)),
+              compareScore: Number(item.compareScore.toFixed(1)),
+              compareScorePercent: Number(item.compareScorePercent.toFixed(1))
+            })
+          })
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    }
+    // qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
   }
 
   useLayoutEffect(() => {

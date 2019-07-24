@@ -42,6 +42,8 @@ export interface TypeCompare {
   itemTypeName: string
   currentDeductScore: number | string
   lastDeductScore: number | string
+  compareScore: number | string
+  compareScorePercent: number | string
 }
 /** 扣分科室 */
 export interface DeptItem {

@@ -69,7 +69,7 @@ class SelectPeopleViewModel {
           parent: this.stepState[0],
           list: data.map((item: any, index: number, arr: any[]) => ({
             ...item,
-            label: dataLabel && `${item[dataLabel]}（${arr.length}）人`,
+            label: dataLabel && `${item[dataLabel]}（${item.userList.length}）人`,
             key: dataLabel && item[dataLabel]
           })),
           dataLabel,

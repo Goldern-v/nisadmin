@@ -25,8 +25,8 @@ export default function Table(props: Props) {
         <tbody>
           <tr className='header'>
             <td />
-            <td>{report.indexInType - 1}月(分)</td>
             <td>{report.indexInType}月(分)</td>
+            <td>{report.indexInType - 1}月(分)</td>
             <td>扣分增减(分)</td>
             <td>增减百分比(分)</td>
           </tr>
@@ -34,16 +34,37 @@ export default function Table(props: Props) {
           {list.map((item, index) => (
             <tr key={index}>
               <td>{item.itemTypeName}</td>
+              <td>{item.currentDeductScore}</td>
+              <td>{item.lastDeductScore}</td>
+
               <td>
-                {/* <img src={require('./images/less.png')} alt='' className='lm-arrow' /> */}
-                {item.lastDeductScore}
+                {item.compareScore == 0 ? (
+                  '持平'
+                ) : (
+                  <React.Fragment>
+                    {item.compareScore > 0 ? (
+                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                    ) : (
+                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                    )}
+                    {Math.abs(Number(item.compareScore))}
+                  </React.Fragment>
+                )}
               </td>
               <td>
-                {/* <img src={require('./images/more.png')} alt='' className='lm-arrow' /> */}
-                {item.currentDeductScore}
+                {item.compareScore == 0 ? (
+                  '持平'
+                ) : (
+                  <React.Fragment>
+                    {item.compareScorePercent > 0 ? (
+                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                    ) : (
+                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                    )}
+                    {Math.abs(Number(item.compareScorePercent))}%
+                  </React.Fragment>
+                )}
               </td>
-              <td>81.76%</td>
-              <td>42.48%</td>
             </tr>
           ))}
         </tbody>

@@ -22,7 +22,34 @@ export default function Chart(props: Props) {
   )
   // let measureList = [1, 2, 3, 4, 5, 6]
   let measureList = [5, 10, 15, 20, 25, 30]
-  let MaxNum = 30
+
+  if (largeNum <= 1) {
+    measureList = [0.2, 0.4, 0.6, 0.8, 1, 1.2]
+  } else if (largeNum <= 1.5) {
+    measureList = [0.3, 0.6, 0.9, 1.2, 1.5, 1.8]
+  } else if (largeNum <= 2) {
+    measureList = [0.4, 0.8, 1.2, 1.6, 2, 2.4]
+  } else if (largeNum <= 2.5) {
+    measureList = [0.5, 1, 1.5, 2, 2.5, 3]
+  } else if (largeNum <= 5) {
+    measureList = [1, 2, 3, 4, 5, 6]
+  } else if (largeNum <= 10) {
+    measureList = [2, 4, 6, 8, 10, 12]
+  } else if (largeNum <= 15) {
+    measureList = [3, 6, 9, 12, 15, 18]
+  } else if (largeNum <= 20) {
+    measureList = [4, 8, 12, 16, 20, 24]
+  } else if (largeNum <= 25) {
+    measureList = [5, 10, 15, 20, 25, 30]
+  } else if (largeNum <= 50) {
+    measureList = [10, 20, 30, 40, 50, 60]
+  } else if (largeNum <= 75) {
+    measureList = [15, 30, 45, 60, 75, 90]
+  } else if (largeNum <= 120) {
+    measureList = [20, 40, 60, 80, 120, 160]
+  }
+
+  let MaxNum = measureList[measureList.length - 1]
   return (
     <Wrapper>
       <div className='title'>{title}</div>

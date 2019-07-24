@@ -93,16 +93,23 @@ class QualityAnalysisReportViewModal {
     return this.allData[key] || {}
   }
 
+  get report() {
+    return this.getDataInAllData('report') || {}
+  }
+
   /** 数据初始化 */
   async initData() {
     let { data } = await qualityAnalysisReportService.getReport()
     this.allData = data
     this.sectionList[0].data.text = this.allData.report!.reportName || {}
     this.sectionList[2].data.list = this.allData!.lastImproveItemList || []
+    this.sectionList[4].data.report = this.allData!.report || {}
     this.sectionList[5].data.list = (this.allData!.typeCompareList || []).map((item: any) => {
       return Object.assign(item, {
         currentDeductScore: Number(item.currentDeductScore.toFixed(1)),
-        lastDeductScore: Number(item.lastDeductScore.toFixed(1))
+        lastDeductScore: Number(item.lastDeductScore.toFixed(1)),
+        compareScore: Number(item.compareScore.toFixed(1)),
+        compareScorePercent: Number(item.compareScorePercent.toFixed(1))
       })
     })
     this.sectionList[6].data.list = (this.allData!.deptItemList || []).map((item: DeptItem) => {

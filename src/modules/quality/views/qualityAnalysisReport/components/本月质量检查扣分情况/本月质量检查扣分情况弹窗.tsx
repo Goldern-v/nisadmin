@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { Input } from 'src/vendors/antd'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewModal'
+import { Report } from '../../types'
 const { TextArea } = Input
 export interface Props {
   sectionId: string
@@ -12,19 +13,22 @@ export interface Props {
 
 export default function 本月质量检查扣分情况弹窗(props: Props) {
   let { sectionId, setData, data } = props
-  let textarea = data ? data.textarea : ''
+  let report: Report = data ? data.report || {} : {}
 
   const updateData = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (setData) {
       setData({
-        textarea: e.target.value
+        report: {
+          ...report,
+          checkDeptDesc: e.target.value
+        }
       })
     }
   }
   useEffect(() => {}, [])
   return (
     <Wrapper>
-      <TextArea value={textarea} onChange={updateData} autosize={true} />
+      <TextArea value={report.checkDeptDesc} onChange={updateData} autosize={true} />
     </Wrapper>
   )
 }

@@ -21,7 +21,7 @@ export default class NurseFilesService extends BaseApiService {
         obj[key] = ''
       }
     })
-    return this.post(`/auditeNurseList/getByFormCodePC`, this.stringify(obj))
+    return this.post(`/auditeNurseListWH/getByFormCodePC`, this.stringify(obj))
   }
 
   // 查看护士首页信息
