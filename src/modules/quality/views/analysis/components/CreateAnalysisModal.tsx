@@ -1,79 +1,134 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Modal, Row, Col, Radio, Select, DatePicker } from 'antd'
+// import { RouteComponentProps } from 'react-router'
+import { Modal, Row, Col, Radio, Select, DatePicker, Input } from 'antd'
+import Form from 'src/components/Form'
+import { Rules } from 'src/components/Form/interfaces'
 // import { appStore } from 'src/stores'
 // import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
+import { setYear } from 'date-fns';
 
 const Option = Select.Option;
 
 export interface Props {
   visible: boolean,
   onOk: any,
-  onCancel: any
+  onCancel: any,
+  groupRoleList: any,
+  allowClear?: boolean
 }
 
 export default function CreateAnalysisModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
-  const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
-  const initedParams = {
-    year: Moment(),
-    month: Moment().format('M'),
-    recodeType: '月度报告',
-    formType: '',
+  const refForm = React.createRef<Form>();
+
+  const rules: Rules = {
+    reportName: (val) => !!val || '请填写报告名称',
+    groupRoleCode: (val) => !!val || '请选择质控表单',
+    year: (val) => !!val || '请选择年度',
+    indexInType: (val) => !!val || '请选择月份',
+    beginDate: (val) => !!val || '请选择开始时间',
+    endDate: (val) => !!val || '请选择结束时间'
   }
-  const [params, setParams] = useState(initedParams as any)
+
+  const { visible, onCancel, onOk, groupRoleList, allowClear } = props;
+  const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
 
   useEffect(() => {
-    if (!visible) setParams(initedParams)
+    // if (!visible) setParams(initedParams)
+    if (visible && allowClear) {
+      if (refForm.current) refForm.current.setFields({
+        year: null,
+        beginDate: null,
+        endDate: null,
+        reportName: '',
+        groupRoleCode: '',
+        indexInType: ''
+      });
+    }
   }, [visible])
 
   const handleOk = () => {
-    onOk(params)
-  }
+    let current = refForm.current;
+    if (current) {
+      let formData = current.getFields();
+      current.validateFields()
+        .then(res => {
+          let { reportName, groupRoleCode, year, beginDate, endDate, indexInType } = formData;
+          let params: any = {
+            reportName: reportName,
+            groupRoleCode: groupRoleCode,
+            year: year ? year.format('YYYY') : '',
+            beginDate: beginDate ? beginDate.format('YYYY-MM-DD') : '',
+            endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
+            indexInType
+          };
 
-  const handleOpenChange = (status: boolean) => {
-    setYearPickerIsOpen(status)
+          onOk && onOk(params)
+        })
+        .catch(e => {
+
+        })
+    }
   }
 
   const handlePanelChange = (value: any) => {
     setYearPickerIsOpen(false);
-    setParams({ ...params, year: value })
+    setFormItem('year', value);
   }
 
-  const RecordTypeList = () => {
-    let list = [];
-    // let year = params.year.format('YYYY')
+  const handleYearClear = () => {
+    setFormItem('year', null);
+  }
 
-    if (params.recodeType == '月度报告') {
-      for (let i = 1; i <= 12; i++) {
-        let month = i.toString();
-        list.push(<Option value={month} key={month}>{`${month}月`}</Option>)
-      }
-    } else {
-      for (let i = 1; i <= 4; i++) {
-        let month = i * 3 - 2;
-        let season = i;
-        let seasonStr = '';
-        switch (season) {
-          case 1:
-            seasonStr = '一'; break;
-          case 2:
-            seasonStr = '二'; break;
-          case 3:
-            seasonStr = '三'; break;
-          case 4:
-            seasonStr = '四'; break;
-        }
+  const handleOpenChange = (status: boolean) => {
+    setYearPickerIsOpen(status);
+  }
 
-        let monthGroup = [month, month + 1, month + 2];
+  const setFormItem = (key: any, value: any) => {
+    if (refForm.current) refForm.current.setField(key, value)
+  }
 
-        list.push(<Option value={monthGroup.join(',')} key={season}>{`第${seasonStr}季度`}</Option>)
-      }
+  const MonthList = () => {
+
+    let options = [];
+    for (let i = 12; i > 0; i--) {
+      let month = i;
+      options.push(<Option value={`${month}`} key={`month${month}`}>{`${month}月`}</Option>);
     }
 
-    return list;
+    return options
+  }
+
+  const handleFormChange = (key: any, val: any) => {
+    if (key == 'beginDate') setFormItem('year', val);
+    if (key !== 'reportName') setReportName();
+  }
+
+  const setReportName = () => {
+    let current = refForm.current;
+    if (current) {
+      let { year, indexInType, groupRoleCode } = current.getFields();
+      if (!year || !indexInType || !groupRoleCode) return;
+
+      let yearStr = year.format('YYYY');
+      let monthStr = indexInType;
+      let groupRoleName: any = '';
+
+      for (let i = 0; i < groupRoleList.length; i++) {
+        if (groupRoleList[i].code == groupRoleCode) groupRoleName = groupRoleList[i].name;
+      }
+
+      if (groupRoleName.split('、').length > 1) {
+        groupRoleName = groupRoleName.split('、');
+        groupRoleName.shift();
+        groupRoleName = groupRoleName.join('、')
+      }
+
+      let reportName = `${yearStr}年${monthStr}月${groupRoleName}分析报告`;
+
+      setFormItem('reportName', reportName);
+    }
   }
 
   return <Modal
@@ -83,55 +138,73 @@ export default function CreateAnalysisModal(props: Props) {
     onOk={handleOk}
     centered>
     <Wrapper>
-      <Row>
-        <Col span={5} className="label">类型：</Col>
-        <Col span={18}>
-          <Radio.Group
-            value={params.recodeType}
-            onChange={(e: any) => setParams({ ...params, recodeType: e.target.value, month: '' })}>
-            <Radio value="季度报告">季度报告</Radio>
-            <Radio value="月度报告">月度报告</Radio>
-          </Radio.Group>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={5} className="label">年度：</Col>
-        <Col span={18}>
-          <DatePicker
-            value={params.year}
-            allowClear={false}
-            open={yearPickerIsOpen}
-            mode="year"
-            className="year-picker"
-            placeholder='选择年份'
-            format="YYYY"
-            onOpenChange={handleOpenChange}
-            onPanelChange={handlePanelChange} />
-        </Col>
-      </Row>
-      {/* 质控表单 */}
-      <Row>
-        <Col span={5} className="label">
-          {params.recodeType == '月度报告' ? '月份：' : '季度：'}
-        </Col>
-        <Col span={18}>
-          <Select value={params.month} onChange={(month: any) => setParams({ ...params, month })}>
-            {RecordTypeList()}
-          </Select>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={5} className="label">质控表单：</Col>
-        <Col span={18}>
-          <Select value={params.formType} onChange={(formType: any) => setParams({ ...params, formType })}></Select>
-        </Col>
-      </Row>
+      <Form ref={refForm} onChange={handleFormChange} rules={rules}>
+        <Row>
+          <Col span={5} className="label">质控日期：</Col>
+          <Col span={9}>
+            <Form.Field name="beginDate">
+              <DatePicker placeholder="开始时间" />
+            </Form.Field>
+          </Col>
+          <Col span={1}>至</Col>
+          <Col span={9}>
+            <Form.Field name="endDate">
+              <DatePicker placeholder="结束时间" />
+            </Form.Field>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5} className="label">报告年度：</Col>
+          <Col span={19}>
+            <Form.Field name="year">
+              <DatePicker
+                open={yearPickerIsOpen}
+                mode="year"
+                className="year-picker"
+                placeholder="选择年度"
+                format="YYYY"
+                onChange={handleYearClear}
+                onOpenChange={handleOpenChange}
+                onPanelChange={handlePanelChange}
+              />
+            </Form.Field>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5} className="label">报告月份：</Col>
+          <Col span={19}>
+            <Form.Field name="indexInType">
+              <Select>
+                {MonthList()}
+              </Select>
+            </Form.Field>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5} className="label">质控表单：</Col>
+          <Col span={19}>
+            <Form.Field name="groupRoleCode">
+              <Select>
+                {groupRoleList.map((item: any) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+              </Select>
+            </Form.Field>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5} className="label">报告名称：</Col>
+          <Col span={19}>
+            <Form.Field name="reportName">
+              <Input />
+            </Form.Field>
+          </Col>
+        </Row>
+      </Form>
     </Wrapper>
   </Modal>
 }
 
 const Wrapper = styled.div`
-width: 80%;
+width: 90%;
 margin: 0 auto;
 .ant-col{
   line-height: 32px;
