@@ -83,6 +83,7 @@ export default function EditJoinScientificModal(props: Props) {
         hostNo: data.hostNo,
         goRank: data.goRank,
         unit: data.unit,
+        grantUnit: data.grantUnit,
         courseSource: data.courseSource,
         courseLevel: data.courseLevel,
         approvalNumber: data.approvalNumber,
@@ -151,6 +152,11 @@ export default function EditJoinScientificModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
+            <Form.Field label={`授予单位`} name='grantUnit'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
             <Form.Field label={`开始时间`} name='startDate'>
               <DatePicker />
             </Form.Field>
@@ -162,7 +168,7 @@ export default function EditJoinScientificModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`完成情况`} name='courseCompletion'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('完成情况').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

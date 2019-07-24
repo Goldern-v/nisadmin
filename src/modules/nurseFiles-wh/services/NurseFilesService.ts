@@ -26,7 +26,7 @@ export default class NurseFilesService extends BaseApiService {
 
   // 查看护士首页信息
   public async findByEmpNo(empNo: any) {
-    return this.get(`/auditeNurseFileIndex/findByEmpNo/${empNo}`)
+    return this.get(`/auditeNurseFileIndexWH/findByEmpNo/${empNo}`)
   }
   // getByEmpNoAudite
   // 1查找护士基本信息 护长
@@ -51,7 +51,7 @@ export default class NurseFilesService extends BaseApiService {
       pageIndex,
       pageSize: 10
     }
-    return this.post(`/auditeNurseFileIndex/findListAuditePC`, this.stringify(obj))
+    return this.post(`/auditeNurseFileIndexWH/findListAuditePC`, this.stringify(obj))
   }
 
   /** 审核科室列表 */
@@ -63,7 +63,7 @@ export default class NurseFilesService extends BaseApiService {
       searchText,
       pageSize
     }
-    return this.post(`/auditeNurseFileIndex/findListAuditePC`, this.stringify(obj))
+    return this.post(`/auditeNurseFileIndexWH/findListAuditePC`, this.stringify(obj))
   }
 
   /** 科室调动 */

@@ -27,10 +27,10 @@ export default observer(function TopCon(props: any) {
         style={{ width: 220 }}
       />
 
-      <span style={{ margin: '0 3px 0 26px' }}>质控科室:</span>
+      <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
       <DeptSelect onChange={onChange} />
 
-      <span style={{ margin: '0 3px 0 26px' }}>表单:</span>
+      <span style={{ margin: '0 3px 0 26px' }}>检查小组:</span>
       {/* <DeptSelect onChange={onChange} /> */}
       <FormSelect />
 

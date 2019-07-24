@@ -100,7 +100,7 @@ const ROUTE_LIST = [
   {
     type: 'continuingEducation',
     component: ContinuingEducation,
-    name: '医学学历教育'
+    name: '继续教育'
   },
 
   {
@@ -111,7 +111,7 @@ const ROUTE_LIST = [
   {
     type: 'educationalExperience',
     component: EducationalExperience,
-    name: '教育经历'
+    name: '医学学历教育'
   },
   {
     type: 'workRegistrationForm',

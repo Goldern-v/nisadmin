@@ -15,7 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditLeaveModal from '../modal/EditLeaveModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function Leave() {
   const editLeaveModal = createModal(EditLeaveModal)
@@ -146,7 +146,7 @@ export default observer(function Leave() {
 
   return (
     <BaseLayout title='离职' btnList={btnList}>
-      <BaseTable dataSource={tableData} columns={columns} surplusHeight={305} surplusWidth={250} type={['spaceRow']} />
+      <BaseTable dataSource={tableData} columns={columns} surplusHeight={270} surplusWidth={250} type={['spaceRow']} />
       <editLeaveModal.Component getTableData={getTableData} />
     </BaseLayout>
   )

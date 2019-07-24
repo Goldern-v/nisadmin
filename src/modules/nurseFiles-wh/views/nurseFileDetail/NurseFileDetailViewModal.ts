@@ -19,7 +19,10 @@ let dictList = {
   性别: 'sex',
   编制名称: 'work_conversion_old',
   科室隶属部: 'dept_be_department',
-  学位: 'degree'
+  学位: 'degree',
+  论文收录网站: 'Influencing_factors',
+  获奖类别: 'winning_type',
+  获奖级别: 'winning_level'
 }
 
 type DictList = typeof dictList

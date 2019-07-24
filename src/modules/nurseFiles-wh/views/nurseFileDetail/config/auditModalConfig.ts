@@ -24,7 +24,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               文章类别: `articleType`,
-              影响因子: `influencingFactors`
+              论文收录网站: `influencingFactors`
             }
           ],
           fileData: row.urlImageOne
@@ -69,17 +69,17 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '医学学历教育':
+    case '继续教育':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           type: 'nurseWHContinueStudy',
-          title: '审核医学学历教育信息',
+          title: '审核继续教育信息',
           tableFormat: [
             {
               年份: `year`,
-              医学学历教育项目负责人: `projectPerson`
+              继续教育项目负责人: `projectPerson`
             },
             {
               项目名称: `projectName`,
@@ -108,13 +108,13 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '教育经历':
+    case '医学学历教育':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
-          type: 'nurseMedicalEducation',
-          title: '审核教育经历',
+          type: 'nurseWHMedicalEducation',
+          title: '审核医学学历教育',
           tableFormat: [
             {
               就读时间: `readTime`,
@@ -160,10 +160,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               登记号: `registerNumber`
             },
             {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              授予单位: `grantUnit`,
+              开始时间: `startDate`
             },
             {
+              结束时间: `endDate`,
               完成情况: `courseCompletion`,
               '立项/结题/验收/鉴定时间': `completionDate`
             }
@@ -205,13 +206,14 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               登记号: `registerNumber`,
-              完成情况: `courseCompletion`
+              授予单位: `grantUnit`
             },
             {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              完成情况: `courseCompletion`,
+              开始时间: `startDate`
             },
             {
+              结束时间: `endDate`,
               '立项/结题/验收/鉴定时间': `completionDate`
             }
           ],
@@ -301,14 +303,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核专著',
           tableFormat: [
             {
-              专著名称: `monographName`,
-              出版社名称: `pressName`
+              年份: 'year',
+              专著名称: `monographName`
             },
             {
-              出版号: `pressNumber`,
-              出版日期: `pressDate`
+              出版社名称: `pressName`,
+              出版号: `pressNumber`
             },
             {
+              出版日期: `pressDate`,
               参编: `participation`
             }
           ],
@@ -618,7 +621,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
-          type: 'nurseWorkExperience',
+          type: 'nurseWHWorkExperience',
           title: '审核工作经历',
           tableFormat: [
             {

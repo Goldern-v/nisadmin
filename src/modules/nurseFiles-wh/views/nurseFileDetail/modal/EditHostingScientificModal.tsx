@@ -81,6 +81,7 @@ export default function EditPersonWinningModal(props: Props) {
         name: data.name,
         courseSource: data.courseSource,
         courseLevel: data.courseLevel,
+        grantUnit: data.grantUnit,
         unit: data.unit,
         approvalNumber: data.approvalNumber,
         registerNumber: data.registerNumber,
@@ -134,6 +135,11 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
+            <Form.Field label={`授予单位`} name='grantUnit'>
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
             <Form.Field label={`开始时间`} name='startDate'>
               <DatePicker />
             </Form.Field>
@@ -145,7 +151,7 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`完成情况`} name='courseCompletion'>
-              <Input />
+            <AutoComplete dataSource={nurseFileDetailViewModal.getDict('完成情况').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

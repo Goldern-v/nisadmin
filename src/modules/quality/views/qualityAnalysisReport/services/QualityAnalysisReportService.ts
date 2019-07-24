@@ -17,16 +17,10 @@ export default class QualityAnalysisReportService extends BaseApiService {
     return this.post(`/qcAnalysis/getReport`, appStore.queryObj)
   }
   public deleteReport(obj?: any) {
-    // obj = {
-    //   type: 'month',
-    //   year: '2019',
-    //   indexInType: 7,
-    //   beginDate: '2019-07-01',
-    //   endDate: '2019-07-31',
-    //   groupRoleCode: 'QCR0017',
-    //   reportName: '2019年度7月基础质控分析报告'
-    // }
     return this.post(`/qcAnalysis/deleteReport`, appStore.queryObj)
+  }
+  public publishReport(obj?: any) {
+    return this.post(`/qcAnalysis/publish`, appStore.queryObj)
   }
 
   /** 更新上月质量问题，持续改进效果评价 */

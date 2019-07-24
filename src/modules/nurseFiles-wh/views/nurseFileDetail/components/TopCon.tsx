@@ -7,7 +7,7 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
 import DeptChangeModal from '../modal/DeptChangeModal'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import qs from 'qs'
 export interface Props extends RouteComponentProps {}
 

@@ -35,13 +35,13 @@ export default observer(function PersonWinning() {
       align: 'center',
       width: 55
     },
-    {
-      title: '开始时间',
-      dataIndex: 'startDate',
-      key: 'startDate',
-      width: 120,
-      align: 'center'
-    },
+    // {
+    //   title: '开始时间',
+    //   dataIndex: 'startDate',
+    //   key: 'startDate',
+    //   width: 120,
+    //   align: 'center'
+    // },
     // {
     //   title: '结束时间',
     //   dataIndex: 'endDate',

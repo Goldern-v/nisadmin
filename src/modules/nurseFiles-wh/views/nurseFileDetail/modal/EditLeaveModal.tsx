@@ -113,12 +113,24 @@ export default function EditLeaveModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`职称`} name='title'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('技术职称').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`学历`} name='education'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('学历').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -143,7 +155,13 @@ export default function EditLeaveModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`层级`} name='hierarchy'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('层级').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
 

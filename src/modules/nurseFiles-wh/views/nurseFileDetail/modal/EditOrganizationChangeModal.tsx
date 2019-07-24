@@ -106,12 +106,12 @@ export default function EditOrganizationChangeModal(props: Props) {
           </Col> */}
           <Col span={24}>
             <Form.Field label={`原编制`} name='workConversionOld'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('编制名称').map((item) => item.name)} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('工作编制').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`现编制`} name='workConversionNew'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('编制名称').map((item) => item.name)} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('工作编制').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

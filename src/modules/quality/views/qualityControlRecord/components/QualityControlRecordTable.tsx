@@ -154,6 +154,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
     <Con>
       <TableScrollCon>
         <TableCon>
+          {/* {JSON.stringify(tableData)} */}
           <BaseTable
             surplusHeight={205}
             // surplusHeight={135}
@@ -163,7 +164,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
             surplusWidth={160}
             onRow={(record: any) => {
               return {
-                onDoubleClick: () => onDoubleClick(record)
+                onDoubleClick: () => record.id && onDoubleClick(record)
               }
             }}
             pagination={{

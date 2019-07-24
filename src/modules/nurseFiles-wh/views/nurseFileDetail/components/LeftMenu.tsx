@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores'
 import qs from 'qs'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import emitter from 'src/libs/ev'
+import { getTitle } from '../config/title'
 interface RouteType {
   type: string
   component: any
@@ -47,7 +48,7 @@ export default function LeftMenu(props: Props) {
     <Wrapper>
       {props.routeList.map((item: RouteType) => {
         let isActive: string = type === item.type ? 'active' : ''
-        let itemInfo: any = listInfo.find((info: any) => info.name === item.name)
+        let itemInfo: any = listInfo.find((info: any) => info.name === getTitle(item.name))
         let isBadge: any = itemInfo && itemInfo.statusColor === '1'
         return (
           <Li

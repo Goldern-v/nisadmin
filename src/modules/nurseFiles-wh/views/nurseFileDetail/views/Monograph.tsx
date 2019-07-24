@@ -15,7 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditMonographModal from '../modal/EditMonographModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function Monograph() {
   const editMonographModal = createModal(EditMonographModal)
@@ -34,6 +34,13 @@ export default observer(function Monograph() {
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 55
+    },
+    {
+      title: '年份',
+      dataIndex: 'year',
+      key: 'year',
+      width: 120,
+      align: 'center'
     },
     {
       title: '专著名称',

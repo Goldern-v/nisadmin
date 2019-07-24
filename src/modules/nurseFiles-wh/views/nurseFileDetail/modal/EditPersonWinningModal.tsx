@@ -18,6 +18,7 @@ import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -107,12 +108,12 @@ export default function EditPersonWinningModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`获奖类别`} name='winningType' required>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`获奖级别`} name='winningLevel' required>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖类别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

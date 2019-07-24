@@ -62,6 +62,7 @@ export default function EditMonographModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.pressDate && (value.pressDate = value.pressDate.format('YYYY-MM-DD'))
+    value.year && (value.year = value.year.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHMonograph', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
@@ -79,6 +80,7 @@ export default function EditMonographModal(props: Props) {
         ...data,
         ...{
           pressDate: data.pressDate ? moment(data.pressDate) : null,
+          year: data.year ? moment(data.year) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
@@ -94,6 +96,11 @@ export default function EditMonographModal(props: Props) {
     <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFieldChange}>
         <Row>
+          <Col span={24}>
+            <Form.Field label={`年份`} name='year'>
+              <YearPicker />
+            </Form.Field>
+          </Col>
           <Col span={24}>
             <Form.Field label={`专著名称`} name='monographName'>
               <Input />

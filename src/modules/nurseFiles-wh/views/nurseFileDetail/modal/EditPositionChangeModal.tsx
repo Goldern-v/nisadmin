@@ -60,7 +60,7 @@ export default function EditPositionChangeModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
+    // value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
     value.winNewTiTleDate && (value.winNewTiTleDate = value.winNewTiTleDate.format('YYYY-MM-DD'))
     value.employNewTiTleDate && (value.employNewTiTleDate = value.employNewTiTleDate.format('YYYY-MM-DD'))
     // value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
@@ -78,7 +78,7 @@ export default function EditPositionChangeModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        startDate: data.startDate ? moment(data.startDate) : null,
+        // startDate: data.startDate ? moment(data.startDate) : null,
         winNewTiTleDate: data.winNewTiTleDate ? moment(data.winNewTiTleDate) : null,
         employNewTiTleDate: data.employNewTiTleDate ? moment(data.employNewTiTleDate) : null,
         titleOld: data.titleOld,
@@ -97,11 +97,11 @@ export default function EditPositionChangeModal(props: Props) {
     <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`开始时间`} name='startDate'>
               <DatePicker />
             </Form.Field>
-          </Col>
+          </Col> */}
           {/* <Col span={24}>
             <Form.Field label={`结束时间`} name='endDate'>
               <DatePicker />

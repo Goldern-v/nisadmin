@@ -15,7 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditJoinScientificModal from '../modal/EditJoinScientificModal'
 import { nurseFilesService } from 'src/modules/nurseFiles-wh/services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editJoinScientificModal = createModal(EditJoinScientificModal)
@@ -97,6 +97,13 @@ export default observer(function PersonWinning() {
       dataIndex: 'registerNumber',
       key: 'registerNumber',
       width: 80,
+      align: 'center'
+    },
+    {
+      title: '授予单位',
+      dataIndex: 'grantUnit',
+      key: 'grantUnit',
+      width: 90,
       align: 'center'
     },
     {

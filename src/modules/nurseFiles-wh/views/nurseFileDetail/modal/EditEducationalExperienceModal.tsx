@@ -23,12 +23,6 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const rules: Rules = {
-  readTime: (val) => !!val || '请填写就读时间',
-  graduationTime: (val) => !!val || '请填写毕业时间',
-  graduationSchool: (val) => !!val || '请填写毕业学校',
-  readProfessional: (val) => !!val || '请填写专业',
-  education: (val) => !!val || '请填写学历'
-
   // urlImageTwo: (val) => !!val || '毕业证',
   // urlImageOne: (val) => !!val || '学位证'
 }
@@ -60,7 +54,9 @@ export default function EditWorkHistoryModal(props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-
+    if (!Object.keys(value).length) {
+      return message.warning('数据不能为空')
+    }
     value.readTime && (value.readTime = value.readTime.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.graduationTime && (value.graduationTime = value.graduationTime.format('YYYY-MM-DD'))
@@ -82,6 +78,7 @@ export default function EditWorkHistoryModal(props: Props) {
         graduationTime: data.graduationTime ? moment(data.graduationTime) : null,
         graduationSchool: data.graduationSchool,
         readProfessional: data.readProfessional,
+        degree: data.degree,
         education: data.education,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
@@ -89,9 +86,9 @@ export default function EditWorkHistoryModal(props: Props) {
       // refForm.current.setField('unit', 123)
     }
     if (signShow === '修改') {
-      setTitle('修改教育经历')
+      setTitle('修改医学学历教育')
     } else if (signShow === '添加') {
-      setTitle('添加教育经历')
+      setTitle('添加医学学历教育')
     }
   }, [visible])
 
@@ -101,7 +98,7 @@ export default function EditWorkHistoryModal(props: Props) {
         <Row>
           <Row gutter={10}>
             <Col span={15}>
-              <Form.Field label={`时间`} name='readTime' required suffix='到'>
+              <Form.Field label={`时间`} name='readTime' suffix='到'>
                 <DatePicker />
               </Form.Field>
             </Col>
@@ -112,18 +109,35 @@ export default function EditWorkHistoryModal(props: Props) {
             </Col>
           </Row>
           <Col span={24}>
-            <Form.Field label={`毕业学校`} name='graduationSchool' required>
+            <Form.Field label={`毕业学校`} name='graduationSchool'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专业`} name='readProfessional' required>
+            <Form.Field label={`专业`} name='readProfessional'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学历`} name='education' required>
-              <Input />
+            <Form.Field label={`学历`} name='education'>
+              <Select>
+                {nurseFileDetailViewModal.getDict('学历').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`学位`} name='degree'>
+              <Select>
+                {nurseFileDetailViewModal.getDict('学位').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>

@@ -85,10 +85,10 @@ export default observer(function Awards() {
       align: 'center'
     },
     {
-      title: '影响因子',
+      title: '论文收录网站',
       dataIndex: 'influencingFactors',
       key: 'influencingFactors',
-      width: 90,
+      width: 120,
       align: 'center'
     },
     {

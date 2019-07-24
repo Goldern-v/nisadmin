@@ -61,6 +61,16 @@ export default observer(function QualityAnalysisReportView() {
       })
     })
   }
+  const onPublish = () => {
+    globalModal.confirm('发布确认', '你确定要发布该报告吗？').then((res) => {
+      qualityAnalysisReportService.publishReport().then((res) => {
+        message.success('发布成功')
+        setTimeout(() => {
+          appStore.history.push('/quality/analysis')
+        }, 500)
+      })
+    })
+  }
   return (
     <Wrapper>
       <HeadCon>
@@ -74,7 +84,7 @@ export default observer(function QualityAnalysisReportView() {
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           <Button onClick={() => onPrint(false)}>预览</Button>
-          <Button>发布</Button>
+          <Button onClick={onPublish}>发布</Button>
           <Button onClick={() => onPrint(true)}>打印</Button>
           <Button onClick={() => appStore.history.push('/quality/analysis')}>返回</Button>
         </div>

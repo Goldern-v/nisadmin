@@ -15,6 +15,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
 import emitter from 'src/libs/ev'
+import YearPicker from 'src/components/YearPicker'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -59,6 +60,10 @@ export default function EditWorkHistoryModal(props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
+    if (!Object.keys(value).length) {
+      return message.warning('数据不能为空')
+    }
+    value.year && (value.year = value.year.format('YYYY'))
     nurseFilesService.commonSaveOrUpdate('nurseWHRegistrationWork', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -73,7 +78,7 @@ export default function EditWorkHistoryModal(props: Props) {
     //
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        year: data.year,
+        year: data.year ? moment(data.year) : null,
         nightShift: data.nightShift,
         checkOut: data.checkOut,
         professional: data.professional,
@@ -100,18 +105,7 @@ export default function EditWorkHistoryModal(props: Props) {
           <Row>
             <Col span={24}>
               <Form.Field label={`年度`} name='year'>
-                <Select>
-                  <Option value='2019'>2019</Option>
-                  <Option value='2018'>2018</Option>
-                  <Option value='2017'>2017</Option>
-                  <Option value='2016'>2016</Option>
-                  <Option value='2015'>2015</Option>
-                  <Option value='2014'>2014</Option>
-                  <Option value='2013'>2013</Option>
-                  <Option value='2012'>2012</Option>
-                  <Option value='2011'>2011</Option>
-                  <Option value='2010'>2010</Option>
-                </Select>
+                <YearPicker />
               </Form.Field>
             </Col>
           </Row>

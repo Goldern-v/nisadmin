@@ -117,7 +117,6 @@ const routes: RouteItem[] = [
 
   setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
-  setLayout('/auditsManagement', AuditsManagementView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
   // 培训考核
   setLayout('/trainingExamination/:type', TrainingExamination, layouts.MainLayout),

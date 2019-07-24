@@ -364,7 +364,7 @@ export default observer(function Analysis() {
           surplusHeight={tableData.length > 0 ? 230 : 190}
           onRow={(record: any) => {
             return {
-              onDoubleClick: () => handleReview(record)
+              onDoubleClick: () => record.reportName && handleReview(record)
             }
           }}
           pagination={{

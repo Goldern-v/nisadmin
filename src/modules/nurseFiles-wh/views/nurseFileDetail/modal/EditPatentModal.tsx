@@ -121,7 +121,10 @@ export default function EditPatentModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`是否成果转化`} name='isResultTransfor'>
-              <Input />
+              <Select>
+                <Select.Option value='是'>是</Select.Option>
+                <Select.Option value='否'>否</Select.Option>
+              </Select>
             </Form.Field>
           </Col>
 

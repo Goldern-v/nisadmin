@@ -140,7 +140,7 @@ const columns: ColumnProps<any>[] = [
     render(text: any, row: any) {
       return (
         <DoCon>
-          <span onClick={() => onDoubleClick(row)}>查看</span>
+          <span onClick={() => row.empName && onDoubleClick(row)}>查看</span>
         </DoCon>
       )
     }
@@ -175,7 +175,7 @@ export default observer(function NurseFilesListView() {
         type={['spaceRow']}
         onRow={(record: any) => {
           return {
-            onDoubleClick: () => onDoubleClick(record)
+            onDoubleClick: () => record.id && onDoubleClick(record)
           }
         }}
         loading={nurseFilesListViewModel.listSpinning}

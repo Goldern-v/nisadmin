@@ -35,13 +35,7 @@ export default observer(function PersonWinning() {
       align: 'center',
       width: 55
     },
-    {
-      title: '开始时间',
-      dataIndex: 'startDate',
-      key: 'startDate',
-      width: 120,
-      align: 'center'
-    },
+
     // {
     //   title: '结束时间',
     //   dataIndex: 'endDate',
@@ -50,17 +44,24 @@ export default observer(function PersonWinning() {
     //   align: 'center'
     // },
     {
-      title: '原层级',
+      title: '原层级名称',
       dataIndex: 'nursehierarchyOld',
       key: 'nursehierarchyOld',
       width: 100,
       align: 'center'
     },
     {
-      title: '现层级',
+      title: '现层级名称',
       dataIndex: 'nursehierarchyNew',
       key: 'nursehierarchyNew',
       width: 100,
+      align: 'center'
+    },
+    {
+      title: '现层级时间',
+      dataIndex: 'startDate',
+      key: 'startDate',
+      width: 120,
       align: 'center'
     },
     {

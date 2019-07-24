@@ -40,6 +40,7 @@ export default function EditToNewPostModal(props: Props) {
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
+
   const onSelectChange = (value: any) => {
     setType(value)
   }
@@ -134,7 +135,7 @@ export default function EditToNewPostModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`科室隶属部`} name='deptBeDepartment'>
-              <Select value={type} onSelect={onSelectChange} placeholder='选择现工作科室'>
+              <Select value={type} placeholder='选择现工作科室'>
                 {nurseFileDetailViewModal.getDict('科室隶属部').map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
