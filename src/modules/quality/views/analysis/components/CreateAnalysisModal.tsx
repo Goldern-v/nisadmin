@@ -6,8 +6,7 @@ import Form from 'src/components/Form'
 import { Rules } from 'src/components/Form/interfaces'
 // import { appStore } from 'src/stores'
 // import { observer } from 'mobx-react-lite'
-import Moment from 'moment'
-import { setYear } from 'date-fns';
+// import Moment from 'moment'
 
 const Option = Select.Option;
 
@@ -24,7 +23,7 @@ export default function CreateAnalysisModal(props: Props) {
 
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
-    groupRoleCode: (val) => !!val || '请选择质控表单',
+    groupRoleCode: (val) => !!val || '请选择质控组',
     year: (val) => !!val || '请选择年度',
     indexInType: (val) => !!val || '请选择月份',
     beginDate: (val) => !!val || '请选择开始时间',
@@ -211,7 +210,7 @@ export default function CreateAnalysisModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={5} className="label">质控表单：</Col>
+          <Col span={5} className="label">质控组：</Col>
           <Col span={19}>
             <Form.Field name="groupRoleCode">
               <Select>

@@ -2,8 +2,8 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs';
 
 export default class QualityAnalysisService extends BaseApiService {
-  public dictInfo() {
-    return this.get('/qcItem/dict/template');
+  public qcRoleCode() {
+    return this.get('/qcItem/dict/qcRoleCode');
   }
   public getPage(query: any) {
     return this.post('/qcAnalysis/getPage', query);

@@ -38,7 +38,7 @@ export default observer(function Analysis() {
   } as any)
 
   useEffect(() => {
-    api.dictInfo().then((res) => {
+    api.qcRoleCode().then((res) => {
       if (res.data instanceof Array) setGroupRolelist(res.data)
     })
   }, [])
@@ -328,7 +328,7 @@ export default observer(function Analysis() {
             </div>
           </div>
           <div className='item'>
-            <div className='label'>表单：</div>
+            <div className='label'>质控组：</div>
             <div className='content'>
               <Select
                 value={query.groupRoleCode}
