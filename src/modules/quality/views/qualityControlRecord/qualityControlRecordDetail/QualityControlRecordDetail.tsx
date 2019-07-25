@@ -11,19 +11,22 @@ export default function qualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
   let [loading, setLoading] = useState(false)
 
-  useEffect(() => {
+  const onload = () => {
     let id = appStore.match.params.id
     setLoading(true)
     qualityControlRecordApi.qcItemInstanceGet(id).then((res) => {
       setDetailData(res.data)
       setLoading(false)
     })
+  }
+  useEffect(() => {
+    onload()
   }, [])
 
   return (
     <Con>
       <HeaderCon>
-        <QualityControlRecordDetailHeader detailData={detailData} />
+        <QualityControlRecordDetailHeader detailData={detailData} onload={onload} />
       </HeaderCon>
       <MidCon>
         <MidConScrollCon>

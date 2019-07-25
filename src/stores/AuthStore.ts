@@ -77,6 +77,14 @@ export default class AuthStore {
       return ''
     }
   }
+  /** 是否是护理部 */
+  public get isDepartment() {
+    try {
+      return this!.user!.job === '护理部主任'
+    } catch (error) {
+      return ''
+    }
+  }
   /** 用户初始化 */
   @action
   public initUser() {

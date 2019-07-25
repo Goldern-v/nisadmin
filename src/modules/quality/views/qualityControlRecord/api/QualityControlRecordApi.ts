@@ -47,6 +47,10 @@ export default class QualityControlRecordApi extends BaseApiService {
   public async qcItemInstanceGet(id: string) {
     return this.get(`/qcItem/instance/get/${id}`)
   }
+  //质控记录单处理
+  public handleNode(obj: any) {
+    return this.post(`/qcItem/instance/handleNode`, obj)
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()

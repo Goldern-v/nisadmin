@@ -37,17 +37,17 @@ const navList: any = [
     path: '/scheduleHome'
   },
   {
-    name: '护士档案',
+    name: '档案管理',
     icon: <HSDA />,
     path: '/nurseFilesList'
   },
+  // {
+  //   name: '不良事件',
+  //   icon: <BLSJ />,
+  //   path: '/badEventsNewList'
+  // },
   {
-    name: '不良事件',
-    icon: <BLSJ />,
-    path: '/badEventsNewList'
-  },
-  {
-    name: '护理质量',
+    name: '质量管理',
     icon: <BLSJ />,
     path: '/quality'
   },
@@ -56,22 +56,22 @@ const navList: any = [
   //   icon: <HLJX />,
   //   path: '/nursingPerformance'
   // },
-  {
-    name: '继续教育',
-    icon: <PXKH />,
-    path: '/continuingEdu'
-    // trainingExamination
-  },
-  {
-    name: '敏感指标',
-    icon: <MGZB />,
-    path: '/indicator'
-  },
-  {
-    name: '统计查询',
-    icon: <TJCX />,
-    path: '/statistic'
-  },
+  // {
+  //   name: '继续教育',
+  //   icon: <PXKH />,
+  //   path: '/continuingEdu'
+  //   // trainingExamination
+  // },
+  // {
+  //   name: '敏感指标',
+  //   icon: <MGZB />,
+  //   path: '/indicator'
+  // },
+  // {
+  //   name: '统计查询',
+  //   icon: <TJCX />,
+  //   path: '/statistic'
+  // },
   {
     name: '通知公告',
     icon: <TZGG />,

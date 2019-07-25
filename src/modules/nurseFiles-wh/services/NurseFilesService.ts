@@ -86,6 +86,17 @@ export default class NurseFilesService extends BaseApiService {
   public async commonSaveOrUpdate(type: string, obj: any) {
     return this.post(`/${type}/saveOrUpdatePC`, obj)
   }
+  /** 待我审核 */
+  public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {
+    return this.post(`/auditeNurseFileIndexWH/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
+  }
+  /** 我已审核 */
+  public findNurseFileProcessedFlow(empNo: any, pageIndex: any, pageSize: any) {
+    return this.post(
+      `/auditeNurseFileIndexWH/findNurseFileProcessedFlow`,
+      this.stringify({ empNo, pageIndex, pageSize })
+    )
+  }
 }
 
 export const nurseFilesService = new NurseFilesService()

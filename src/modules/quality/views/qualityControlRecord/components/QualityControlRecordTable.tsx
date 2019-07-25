@@ -30,13 +30,13 @@ export default observer(function qualityControlRecordTable(props: Props) {
       align: 'center',
       width: 50
     },
-    {
-      title: '质控编号',
-      dataIndex: 'zkbh',
-      key: '',
-      width: 180,
-      align: 'left'
-    },
+    // {
+    //   title: '质控编号',
+    //   dataIndex: 'zkbh',
+    //   key: '',
+    //   width: 180,
+    //   align: 'left'
+    // },
     {
       title: '质控日期',
       dataIndex: 'evalDate',
@@ -48,7 +48,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '质控病区',
       dataIndex: 'wardName',
       key: '',
-      width: 180,
+      width: 120,
       align: 'center'
     },
     {
@@ -56,7 +56,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'zkbq',
       dataIndex: 'qcName',
       key: '',
-      width: 180,
+      width: 120,
       align: 'center'
     },
 
@@ -65,7 +65,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'zkry',
       dataIndex: 'creatorName',
       key: '',
-      width: 100,
+      width: 80,
       align: 'center'
     },
     {
@@ -73,7 +73,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'ch',
       dataIndex: 'bedLabel',
       key: '',
-      width: 80,
+      width: 70,
       align: 'center'
     },
     {
@@ -84,19 +84,19 @@ export default observer(function qualityControlRecordTable(props: Props) {
       width: 100,
       align: 'center'
     },
-    {
-      title: '管床护士',
-      dataIndex: '',
-      // dataIndex: 'zkbq',
-      key: '',
-      width: 100,
-      align: 'center'
-    },
+    // {
+    //   title: '管床护士',
+    //   dataIndex: '',
+    //   // dataIndex: 'zkbq',
+    //   key: '',
+    //   width: 100,
+    //   align: 'center'
+    // },
     {
       title: '质量结果',
       dataIndex: 'evalRate',
       key: '',
-      width: 110,
+      width: 90,
       align: 'center',
       render(text: any) {
         return typeof text == 'number' && text.toFixed(2) + '%'
@@ -161,7 +161,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
             loading={loadingGet}
             dataSource={tableData}
             columns={columns}
-            surplusWidth={160}
+            // surplusWidth={160}
             onRow={(record: any) => {
               return {
                 onDoubleClick: () => record.id && onDoubleClick(record)

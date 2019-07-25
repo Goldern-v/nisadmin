@@ -4,9 +4,13 @@ import { appStore } from 'src/stores'
 const BG = require('../../../../images/顶部背景.png')
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+import createModal from 'src/libs/createModal'
+import BqclModal from '../modal/BqclModal'
+import HlbModal from '../modal/HlbModal'
 
 interface Props {
   detailData: any
+  onload: any
 }
 
 export default function qualityControlRecordDetailHeader(props: Props) {
@@ -14,6 +18,58 @@ export default function qualityControlRecordDetailHeader(props: Props) {
     appStore.history.push(`/quality/qualityControlRecord`)
   }
   let master = props.detailData.master || {}
+  let nodeDataList = JSON.parse(JSON.stringify(props.detailData.nodeDataList || []))
+  nodeDataList.reverse()
+  let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
+  /** 当前 */
+  let currentNode = nodeDataList[currentNodeIndex] || {}
+  /** 下一个 */
+  let nextNode = nodeDataList[currentNodeIndex - 1] || {}
+
+  const bqclModal = createModal(BqclModal)
+  const hlbModal = createModal(HlbModal)
+
+  const onAduit = (nodeName: string) => {
+    switch (nodeName) {
+      case '病区处理':
+        bqclModal.show({
+          id: appStore.match.params.id,
+          nodeCode: nextNode.nodeCode,
+          onOkCallBack: props.onload
+        })
+        break
+      case '科护士长审核': {
+        hlbModal.show({
+          id: appStore.match.params.id,
+          nodeCode: nextNode.nodeCode,
+          title: '科护士长审核',
+          onOkCallBack: props.onload
+        })
+      }
+      case '护理部审核':
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: '护理部审核',
+            onOkCallBack: props.onload
+          })
+        }
+
+        break
+      case '追踪评价':
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: '追踪评价',
+            onOkCallBack: props.onload
+          })
+        }
+
+        break
+    }
+  }
   return (
     <Con>
       <TopHeader>
@@ -36,6 +92,11 @@ export default function qualityControlRecordDetailHeader(props: Props) {
         <div className='topHeaderTitle'>
           <div className='title'>{master.qcName}</div>
           <div className='topHeaderButton'>
+            {nextNode.nodeName && (
+              <Button onClick={() => onAduit(nextNode.nodeName)} type='primary' disabled={!nextNode.canHandle}>
+                {nextNode.nodeName}
+              </Button>
+            )}
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>
@@ -43,6 +104,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           状态：<span style={{ color: '#6767ff' }}>{master.nextNodePendingName}</span>
         </div>
       </TopHeader>
+      <bqclModal.Component />
+      <hlbModal.Component />
     </Con>
   )
 }
@@ -87,6 +150,9 @@ const TopHeader = styled.div`
       position: absolute;
       top: 45px;
       right: 20px;
+      button {
+        margin-left: 10px;
+      }
     }
     .title {
       font-weight: bold;

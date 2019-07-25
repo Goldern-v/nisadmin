@@ -74,4 +74,10 @@ export default class CommonApiService extends BaseApiService {
       fileDownload(res)
     })
   }
+  /** 根据工号获取完整信息 */
+  public getNurseInformation(empNo: any) {
+    return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`).then((res) => {
+      return res
+    })
+  }
 }

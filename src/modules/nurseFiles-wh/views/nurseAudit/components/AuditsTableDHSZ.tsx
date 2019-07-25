@@ -1,14 +1,16 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import windowHeight from 'src/hooks/windowHeight'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
-import store from 'src/stores'
+import { nurseFilesService } from '../../../services/NurseFilesService'
+import store, { appStore } from 'src/stores'
 import AuditText from './auditText/AuditText'
 import emitter from 'src/libs/ev'
 import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
+import { getTitle } from '../../nurseFileDetail/config/title'
+import { openAuditModal } from '../../nurseFileDetail/config/auditModalConfig'
 export interface Props {
   type: string
   needAudit: boolean
@@ -20,6 +22,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
   const [total, setTotal] = useState(0)
+  const [pageSize, setPageSize] = useState(20)
   const [selectedRows, setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [loading, setLoading] = useState(false)
@@ -35,37 +38,37 @@ export default function AuditsTableDHSZ(props: Props) {
     },
     {
       title: '档案类型',
-      dataIndex: 'typeName',
-      key: '档案类型',
+      dataIndex: 'message',
+      key: 'message',
       align: 'center',
       width: 100
     },
     {
       title: '当前状态',
-      dataIndex: 'statusName',
-      key: 'statusName',
+      dataIndex: 'statusDesc',
+      key: 'statusDesc',
       align: 'center',
       width: 120
     },
     {
       title: '提交人',
-      dataIndex: 'empName',
-      key: '提交人',
+      dataIndex: 'commiterName',
+      key: 'commiterName',
       align: 'center',
       width: 100
     },
     {
       title: '所在科室',
-      dataIndex: 'deptName',
-      key: '所在科室',
+      dataIndex: 'wardName',
+      key: 'wardName',
       align: 'center',
       width: 120
     },
 
     {
       title: '提交时间',
-      dataIndex: 'createTime',
-      key: '提交时间',
+      dataIndex: 'commitTime',
+      key: 'commitTime',
       width: 150,
       align: 'center'
     },
@@ -76,19 +79,19 @@ export default function AuditsTableDHSZ(props: Props) {
       width: 100,
       align: 'center',
       render: (text: any, row: any, c: any) => {
-        const DoCon = styled.div`
-          display: flex;
-          justify-content: space-around;
-          font-size: 12px;
-          color: ${(p) => p.theme.$mtc};
-        `
         return (
           <DoCon>
-            <AuditText
-              needAudit={props.needAudit}
-              row={row}
-              getTableData={() => emitter.emit('refreshNurseAuditTable')}
-            />
+            <span
+              onClick={() =>
+                openAuditModal(
+                  getTitle(row.othersMessage.entityName),
+                  { ...row.othersMessage, id: row.othersMessage.fileId },
+                  () => emitter.emit('refreshNurseAuditTable')
+                )
+              }
+            >
+              审核
+            </span>
           </DoCon>
         )
       }
@@ -96,15 +99,19 @@ export default function AuditsTableDHSZ(props: Props) {
   ]
 
   const onChange = (pagination: any) => {
-    pagination.current && onload(pagination.current)
+    pagination.current && onload(pagination.current, pagination.pageSize)
   }
-  const onload = (current: any) => {
+  const onload = (current: any, pageSize: any) => {
     setLoading(true)
-    nurseFilesService.auditeStatusNurse(type, current).then((res) => {
+    let getDateFun = props.needAudit
+      ? nurseFilesService.findNurseFilePendingFlow(appStore.queryObj.empNo, current, pageSize)
+      : nurseFilesService.findNurseFilePendingFlow(appStore.queryObj.empNo, current, pageSize)
+    getDateFun.then((res) => {
       setLoading(false)
-      setTableData(res.data.list)
+      setTableData(res.data)
       setTotal(res.data.totalCount)
       setCurrent(res.data.pageIndex)
+      setPageSize(res.data.pageSize)
     })
   }
   const rowSelection = {
@@ -127,28 +134,33 @@ export default function AuditsTableDHSZ(props: Props) {
   }
 
   useEffect(() => {
-    emitter.addListener('refreshNurseAuditTable', () => onload(current))
-    onload(current)
+    emitter.addListener('refreshNurseAuditTable', () => onload(current, pageSize))
+    onload(current, pageSize)
     return () => {
       emitter.removeAllListeners('refreshNurseAuditTable')
     }
   }, [])
   return (
     <Wrapper>
-      <GroupPostBtn onClick={() => onload(current)} style={{ right: 130 }}>
-        刷新
-      </GroupPostBtn>
-      {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>}
+      <GroupPostBtn onClick={() => onload(current, pageSize)}>刷新</GroupPostBtn>
+      {props.needAudit && (
+        <GroupPostBtn style={{ right: 110 }} onClick={openGroupModal}>
+          批量审核
+        </GroupPostBtn>
+      )}
 
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={420}
+        surplusHeight={320}
         type={['spaceRow']}
-        pagination={{
-          total: total,
-          current: current
-        }}
+        // pagination={{
+        //   current: current,
+        //   total: total,
+        //   pageSize: pageSize,
+        //   pageSizeOptions: ['10', '20', '30'],
+        //   showSizeChanger: true
+        // }}
         onChange={onChange}
         rowSelection={rowSelection}
         loading={loading}
@@ -159,6 +171,6 @@ export default function AuditsTableDHSZ(props: Props) {
 const Wrapper = styled.div``
 const GroupPostBtn = styled(Button)`
   position: fixed !important;
-  top: 209px;
+  top: 204px;
   right: 30px;
 `

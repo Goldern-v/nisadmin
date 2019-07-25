@@ -16,7 +16,7 @@ export const loginURL = '#/login'
 /**
  * 请求登陆成功拦截
  */
-export function onRequestLoginFilled (config: AxiosRequestConfig) {
+export function onRequestLoginFilled(config: AxiosRequestConfig) {
   config.headers.common['App-Token-Nursing'] = appStore.getAppToken()
   return config
 }
@@ -24,7 +24,7 @@ export function onRequestLoginFilled (config: AxiosRequestConfig) {
 /**
  * 请求成功拦截
  */
-export function onRequestFulfilled (config: AxiosRequestConfig) {
+export function onRequestFulfilled(config: AxiosRequestConfig) {
   config.headers.common['App-Token-Nursing'] = appStore.getAppToken()
   config.headers.common['Auth-Token-Nursing'] = authStore.getAuthToken()
   return config
@@ -33,7 +33,7 @@ export function onRequestFulfilled (config: AxiosRequestConfig) {
 /**
  * 请求失败拦截
  */
-export function onRequestRejected (error: Error) {
+export function onRequestRejected(error: Error) {
   return Promise.reject(error)
 }
 
@@ -48,7 +48,7 @@ enum StatusCode {
 /**
  * 响应成功拦截
  */
-export function onResponseFulfilled (response: AxiosResponse) {
+export function onResponseFulfilled(response: AxiosResponse) {
   let { code, desc, data } = response.data
   let status = code
   switch (status) {
@@ -58,7 +58,7 @@ export function onResponseFulfilled (response: AxiosResponse) {
     }
     case StatusCode.logout: {
       // message.destroy()
-      message.warning('登录超时，请重新登录')
+      // message.warning('登录超时，请重新登录')
       sessionStorage.setItem('adminNurse', '')
       sessionStorage.setItem('authToken', '')
       sessionStorage.setItem('user', '')
@@ -93,7 +93,7 @@ export function onResponseFulfilled (response: AxiosResponse) {
 /**
  * 响应失败拦截
  */
-export function onResponseRejected (error: Error) {
+export function onResponseRejected(error: Error) {
   // message.loading('服务器开小差了' + new ResponseError('服务器开小差了', (error as any).response), 5000)
   // return Promise.reject(new ResponseError('服务器开小差了', (error as any).response))
   // notification.error({

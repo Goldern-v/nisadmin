@@ -67,14 +67,14 @@ export default observer(function Analysis() {
       dataIndex: 'reportName',
       className: 'align-left',
       align: 'left',
-      width: 400,
+      width: 200,
       render: (name: string) => <div title={name}>{name}</div>
     },
     {
       title: '报告年度',
       key: 'year',
       dataIndex: 'year',
-      width: 100,
+      width: 90,
       align: 'center',
       render: (year: string) => `${year}年`
     },
@@ -82,7 +82,7 @@ export default observer(function Analysis() {
       title: '报告月份',
       key: 'indexInType',
       dataIndex: 'indexInType',
-      width: 100,
+      width: 90,
       align: 'center',
       render: (month: string) => `${month}月`
     },
@@ -90,28 +90,28 @@ export default observer(function Analysis() {
       title: '质控开始日期',
       key: 'beginDate',
       dataIndex: 'beginDate',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
       title: '质控结束日期',
       key: 'endDate',
       dataIndex: 'endDate',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
       title: '创建人',
       key: 'creatorName',
       dataIndex: 'creatorName',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
       title: '创建时间',
       key: 'createTime',
       dataIndex: 'createTime',
-      width: 130,
+      width: 120,
       align: 'center'
     },
     {

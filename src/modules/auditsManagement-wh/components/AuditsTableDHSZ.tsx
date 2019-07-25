@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import windowHeight from 'src/hooks/windowHeight'
 
-import store from 'src/stores'
+import store, { appStore } from 'src/stores'
 import AuditText from 'src/modules/nurseFiles/views/nurseAudit/components/auditText/AuditText'
 import emitter from 'src/libs/ev'
 import { Button } from 'antd'
@@ -12,6 +12,8 @@ import { globalModal } from 'src/global/globalModal'
 import { aMServices } from '../services/AMServices'
 import { openAuditModal } from 'src/modules/nurseFiles-wh/views/nurseFileDetail/config/auditModalConfig'
 import { getTitle } from 'src/modules/nurseFiles-wh/views/nurseFileDetail/config/title'
+import service from 'src/services/api'
+import qs from 'qs'
 export interface Props {
   type: string
   needAudit: boolean
@@ -94,15 +96,20 @@ export default function AuditsTableDHSZ(props: Props) {
         return (
           <DoCon>
             <span
-              onClick={() =>
-                openAuditModal(
-                  getTitle(row.othersMessage.entityName),
-                  { ...row.othersMessage, id: row.othersMessage.fileId },
-                  () => emitter.emit('refreshNurseAuditTable')
-                )
+              onClick={
+                () => {
+                  service.commonApiService.getNurseInformation(row.othersMessage.empNo).then((res) => {
+                    appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
+                  })
+                }
+                // openAuditModal(
+                //   getTitle(row.othersMessage.entityName),
+                //   { ...row.othersMessage, id: row.othersMessage.fileId },
+                //   () => emitter.emit('refreshNurseAuditTable')
+                // )
               }
             >
-              审核
+              {props.needAudit ? '审核' : '查看'}
             </span>
             {/* <AuditText
               needAudit={props.needAudit}
@@ -166,7 +173,7 @@ export default function AuditsTableDHSZ(props: Props) {
       {/* <GroupPostBtn onClick={() => onload(current)} style={{ right: 120 }}>
         刷新
       </GroupPostBtn>*/}
-      {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>}
+      {/* {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>} */}
       <BaseTable
         dataSource={tableData}
         columns={columns}
@@ -182,7 +189,7 @@ export default function AuditsTableDHSZ(props: Props) {
           pageSize: pageSize
         }}
         onChange={onChange}
-        rowSelection={rowSelection}
+        // rowSelection={rowSelection}
         loading={loading}
       />
     </Wrapper>

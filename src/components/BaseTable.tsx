@@ -40,9 +40,11 @@ export default function BaseTable(props: Props) {
     },
     props
   )
-  option.dataSource = option.dataSource.map((item: any, index: number) => {
-    return Object.assign(item, { key: index })
-  })
+  option.dataSource =
+    option.dataSource &&
+    option.dataSource.map((item: any, index: number) => {
+      return Object.assign(item, { key: index })
+    })
   if (props.surplusHeight) {
     option.scroll = { y: wih - props.surplusHeight }
   }

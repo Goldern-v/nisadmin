@@ -2,6 +2,88 @@ import { globalModal } from 'src/global/globalModal'
 
 export function openAuditModal(title: string, row: any, callBack: any) {
   switch (title) {
+    case '基本信息':
+      {
+        globalModal.auditModal.show({
+          empNo: row.empNo,
+          id: row.id,
+          type: 'nurseInformation',
+          getTableData: callBack,
+          title: '审核基础信息',
+          tableFormat: [
+            {
+              姓名: 'empName',
+              性别: 'sex'
+            },
+            {
+              民族: 'nation',
+              籍贯: 'nativePlace'
+            },
+            {
+              工号: 'empNo',
+              身份证号: 'cardNumber'
+            },
+            {
+              政治面貌: 'politicsLook',
+              出生年月: 'birthday'
+            },
+            {
+              年龄: 'age',
+              联系电话: 'phone'
+            },
+            {
+              参加工作时间: 'takeWorkTime',
+              参加工作年限: 'takeWorkYear'
+            },
+
+            {
+              护士执业资格证书编号: 'zyzsNumber',
+              取得执业资格证书时间: 'zyzsDate'
+            },
+            {
+              取得执业资格证书并开始从事护理岗位时间: 'zyzsNursingPostDate',
+              护士执业资格证书有效截止日期: 'zyzsEffectiveUpDate'
+            },
+            {
+              初始学历: 'initialEducation'
+            },
+            {
+              最高学历: 'highestEducation',
+              取得最高学历时间: 'highestEducationDate'
+            },
+            {
+              最高学历学位: 'highestEducationDegree',
+              职务: 'job'
+            },
+            {
+              现职务任职起始时间: 'jobStartDate'
+            },
+
+            {
+              院内工作地点: 'workAddress',
+              工作护理单元: 'workDeptName'
+            },
+
+            {
+              鞋码大小: 'shoeSize'
+            }
+          ],
+          fileData: [
+            {
+              个人头像: row.nearImageUrl
+            },
+            ...(row.zyzsUrl
+              ? row.zyzsUrl.split(',').map((item: any, index: number) => {
+                  return {
+                    ['执业证书' + (index + 1)]: item
+                  }
+                })
+              : [])
+          ],
+          allData: row
+        })
+      }
+      break
     case '文章':
       {
         globalModal.auditModal.show({
