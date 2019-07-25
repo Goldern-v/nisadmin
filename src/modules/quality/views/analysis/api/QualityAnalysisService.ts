@@ -1,14 +1,17 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-import qs from 'qs';
+import qs from 'qs'
 
 export default class QualityAnalysisService extends BaseApiService {
   public qcRoleCode() {
-    return this.get('/qcItem/dict/qcRoleCode');
+    return this.get('/qcItem/dict/qcRoleCode')
+  }
+  public qcRoleCodeSelf() {
+    return this.get('/qcItem/dict/qcRoleCodeSelf')
   }
   public getPage(query: any) {
-    return this.post('/qcAnalysis/getPage', query);
+    return this.post('/qcAnalysis/getPage', query)
   }
   public createReport(params: any) {
-    return this.post('/qcAnalysis/createReport', params);
+    return this.post('/qcAnalysis/createReport', params)
   }
 }

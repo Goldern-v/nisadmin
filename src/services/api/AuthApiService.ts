@@ -30,6 +30,7 @@ export default class AuthApiService extends BaseApiService {
     sessionStorage.removeItem('adminNurse')
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('user')
+    sessionStorage.removeItem('selectedDeptCode')
     authStore.delUser()
     window.location.href = '#/login'
   }

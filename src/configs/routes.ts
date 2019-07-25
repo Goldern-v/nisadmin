@@ -198,7 +198,7 @@ const routes: RouteItem[] = [
   },
   {
     path: '/setting',
-    redirect: '/setting/typeDict'
+    redirect: '/setting/扁平管理设置'
   },
   {
     path: '/quality',

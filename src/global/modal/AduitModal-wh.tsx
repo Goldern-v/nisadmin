@@ -52,7 +52,7 @@ export default function AduitModal(props: Props) {
       setAgree('agree')
       setOpinion('')
       setSpinning(true)
-      if (props.type === 'nurseInformation') {
+      if (props.type === 'nurseWHInformation') {
         modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
           setSpinning(false)
           let data = res.data

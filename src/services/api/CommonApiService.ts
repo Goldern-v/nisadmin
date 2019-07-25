@@ -80,4 +80,8 @@ export default class CommonApiService extends BaseApiService {
       return res
     })
   }
+  /** 获取全部科室列表 */
+  public getNursingUnitAll() {
+    return this.get(`/user/nursingUnit/all`)
+  }
 }

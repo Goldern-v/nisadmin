@@ -19,6 +19,7 @@ import createModal from 'src/libs/createModal'
 import GroupsEmpNoAduitModal from '../modal/GroupsEmpNoAduitModal'
 import { type } from 'os'
 import GroupsHlbModal from '../modal/GroupsHlbModal'
+import { message } from 'src/vendors/antd'
 export interface Props {
   showType: string
   keyword: string
@@ -107,11 +108,11 @@ export default observer(function AuditsTableDHSZ(props: Props) {
             <span
               onClick={() => {
                 if (showType == 'qc') {
-                  window.open(`crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
+                  window.open(`/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
                 } else if (showType == 'nurseFile') {
                   service.commonApiService.getNurseInformation(row.commiterNo).then((res) => {
                     // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-                    window.open(`crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
+                    window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
                   })
                 }
               }}
@@ -150,12 +151,33 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      setSelectedRows(selectedRows)
-      setSelectedRowKeys(selectedRowKeys)
+      if (
+        selectedRows.find((item: any) => {
+          return item.othersMessage.nextNodePendingName == '待病区处理'
+        })
+      ) {
+        message.warning('待病区处理的质量检查不能批量审核')
+      }
+      setSelectedRows(
+        selectedRows.filter((item: any) => {
+          return item.othersMessage.nextNodePendingName != '待病区处理'
+        })
+      )
+      setSelectedRowKeys(
+        selectedRows
+          .filter((item: any) => {
+            return item.othersMessage.nextNodePendingName != '待病区处理'
+          })
+          .map((item: any) => item.key)
+      )
     }
+    // }
   }
 
   const openGroupModal = () => {
+    if (selectedRows.length == 0) {
+      return message.warning('请至少勾选一条记录')
+    }
     if (showType == 'nurseFile') {
       groupsEmpNoAduitModal.show({
         selectedRows,
@@ -188,10 +210,12 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   return (
     <Wrapper>
-      {/* <GroupPostBtn onClick={() => onload(current)} style={{ right: 120 }}>
-        刷新
-      </GroupPostBtn>*/}
-      {props.needAudit && authStore.isDepartment && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>}
+      <GroupPostBtn onClick={() => onload(current, searchText, pageSize)}>刷新</GroupPostBtn>
+      {props.needAudit && authStore.isDepartment && (
+        <GroupPostBtn style={{ right: 110 }} onClick={openGroupModal}>
+          批量审核
+        </GroupPostBtn>
+      )}
       <BaseTable
         dataSource={tableData}
         columns={columns}
@@ -207,7 +231,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           pageSize: pageSize
         }}
         onChange={onChange}
-        rowSelection={authStore.isDepartment ? rowSelection : undefined}
+        rowSelection={rowSelection}
         loading={loading}
       />
       <groupsEmpNoAduitModal.Component />

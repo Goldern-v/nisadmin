@@ -32,7 +32,7 @@ class NurseFileDetailViewModal {
   @observable public badgeTotal: number = 0
   @observable public nurserInfo: any = {}
   @observable public pageSpinning: boolean = false
-
+  @observable public allDeptAll: { name: string; code: string }[] = []
   /**字典对象 */
   @observable public dict: { [P: string]: DictItem[] } = {}
 
@@ -40,9 +40,16 @@ class NurseFileDetailViewModal {
     service.commonApiService.multiDictInfo(Object.keys(reverseKeyValue(dictList))).then((res) => {
       this.dict = res.data
     })
+    service.commonApiService.getNursingUnitAll().then((res) => {
+      this.allDeptAll = res.data.deptList
+    })
   }
-  getDict(dictName: DictName): DictItem[] {
-    return this.dict[dictList[dictName]] || []
+  getDict(dictName: DictName | '全部科室'): DictItem[] {
+    if (dictName == '全部科室') {
+      return this.allDeptAll
+    } else {
+      return this.dict[dictList[dictName]] || []
+    }
   }
   init() {
     this.initDict()

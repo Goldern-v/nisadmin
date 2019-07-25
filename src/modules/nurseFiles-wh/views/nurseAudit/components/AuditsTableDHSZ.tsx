@@ -11,6 +11,7 @@ import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
 import { getTitle } from '../../nurseFileDetail/config/title'
 import { openAuditModal } from '../../nurseFileDetail/config/auditModalConfig'
+import { message } from 'src/vendors/antd'
 export interface Props {
   type: string
   needAudit: boolean
@@ -18,7 +19,7 @@ export interface Props {
 }
 
 export default function AuditsTableDHSZ(props: Props) {
-  let { type } = props
+  let { type, needAudit } = props
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
@@ -91,7 +92,7 @@ export default function AuditsTableDHSZ(props: Props) {
                 )
               }
             >
-              审核
+              {needAudit ? '审核' : '查看'}
             </span>
           </DoCon>
         )
@@ -124,6 +125,9 @@ export default function AuditsTableDHSZ(props: Props) {
   }
 
   const openGroupModal = () => {
+    if (selectedRows.length == 0) {
+      return message.warning('请至少勾选一条记录')
+    }
     globalModal.groupsAduitModal.show({
       selectedRows,
       getTableData: () => {

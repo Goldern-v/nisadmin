@@ -183,7 +183,13 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`民族`} name='nation'>
-              <Input />
+              <Select>
+                {nurseFileDetailViewModal.getDict('民族').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={12}>
