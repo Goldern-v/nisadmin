@@ -50,9 +50,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: 60px;
-  /* font-size: #333; */
-  /* margin-bottom: 15px; */
-  /* margin-top: 25px; */
   button {
     margin-left: 10px;
   }
