@@ -52,6 +52,10 @@ export default observer(function QualityAnalysisReportView() {
          * {
            color: #000 !important;
          }
+         .footer-title {
+           min-height: 0;
+           margin-bottom: 0;
+         }
       `
     })
   }

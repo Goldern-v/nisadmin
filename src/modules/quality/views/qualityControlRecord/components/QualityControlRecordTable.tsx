@@ -41,14 +41,14 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '质控日期',
       dataIndex: 'evalDate',
       key: '',
-      width: 120,
+      width: 110,
       align: 'center'
     },
     {
       title: '质控病区',
       dataIndex: 'wardName',
       key: '',
-      width: 120,
+      width: 110,
       align: 'center'
     },
     {
@@ -56,7 +56,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'zkbq',
       dataIndex: 'qcName',
       key: '',
-      width: 120,
+      width: 160,
       align: 'center'
     },
 
@@ -81,7 +81,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'zyh',
       dataIndex: 'inpNo',
       key: '',
-      width: 100,
+      width: 80,
       align: 'center'
     },
     // {
@@ -108,7 +108,14 @@ export default observer(function qualityControlRecordTable(props: Props) {
       dataIndex: 'nextNodePendingName',
       key: '',
       width: 130,
-      align: 'center'
+      align: 'center',
+      render(text: any, row: any) {
+        if (row.status == '1') {
+          return '已完成'
+        } else {
+          return text
+        }
+      }
     },
     {
       title: '操作',

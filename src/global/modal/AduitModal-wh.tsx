@@ -144,7 +144,7 @@ export default function AduitModal(props: Props) {
       flag: agreeStatus,
       detail: opinion
     }
-    props.getTableData && props.getTableData()
+    // props.getTableData && props.getTableData()
     // console.log(props.getTableData, '123213')
     // onCancel()
     modalService.auditeNurseFileIndex(props.type, postData).then((res) => {
