@@ -71,7 +71,7 @@ export default observer(function PushAudit(props: Props) {
     } else if (activeKey === '2') {
       emitter.emit('自动推送设置-刷新-手术')
     }else if (activeKey === '3') {
-      emitter.emit('自动推送设置-添加-诊断')
+      emitter.emit('自动推送设置-刷新-诊断')
     }
   })
 
