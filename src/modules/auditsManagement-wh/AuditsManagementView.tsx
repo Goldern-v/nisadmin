@@ -8,12 +8,14 @@ import { authStore, appStore } from 'src/stores'
 import NurseAudit from './NurseAudit'
 export interface Props extends RouteComponentProps {}
 
-export default function AuditsManagementView () {
+export default function AuditsManagementView() {
+  const [showType, setShowType] = useState('')
+  const [keyword, setKeyword] = useState('')
   return (
     <Wrapper>
-      <SelectCon />
+      <SelectCon showType={showType} setShowType={setShowType} keyword={keyword} setKeyword={setKeyword} />
       <ScrollCon>
-        <NurseAudit />
+        <NurseAudit showType={showType} keyword={keyword} />
       </ScrollCon>
     </Wrapper>
   )

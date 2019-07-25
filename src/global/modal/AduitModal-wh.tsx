@@ -8,7 +8,7 @@ const { TextArea } = Input
 import { Modal, Spin } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
-import { modalService } from '../services/ModalService'
+import { modalService } from '../services/ModalService-wh'
 import Zimage from 'src/components/Zimage'
 const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
 const defaultFile = require('../../modules/nurseFiles/images/证件空态度.png')

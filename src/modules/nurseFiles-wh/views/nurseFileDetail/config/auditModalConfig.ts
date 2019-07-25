@@ -7,7 +7,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           empNo: row.empNo,
           id: row.id,
-          type: 'nurseInformation',
+          type: 'nurseWHInformation',
           getTableData: callBack,
           title: '审核基础信息',
           tableFormat: [
@@ -450,10 +450,10 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           tableFormat: [
             {
               开始时间: `startDate`,
-              结束时间: `endDate`
+              原编制: `workConversionOld`
             },
             {
-              现编制: `workConversion`
+              现编制: `workConversionNew`
             }
           ],
           fileData: row.urlImageOne
@@ -536,11 +536,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核职称变动信息',
           tableFormat: [
             {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              原职称: `titleOld`,
+              现职称: `titleNew`
             },
             {
-              现职称: `title`
+              考取专业技术资格证时间: `winNewTiTleDate`,
+              聘用专业技术资格证时间: `employNewTiTleDate`
             }
           ],
           fileData: row.urlImageOne
@@ -554,20 +555,22 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
+
     case '岗位变动':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
-          type: 'nurseWHPersonWinning',
+          type: 'nurseWHTransferPost',
           title: '审核岗位变动信息',
           tableFormat: [
             {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              原工作科室: `oldDeptName`,
+              现工作科室: `newDeptName`
             },
             {
-              现岗位: ``
+              科室隶属部: `deptBeDepartment`,
+              岗位变动时间: `transferDate`
             }
           ],
           fileData: row.urlImageOne
@@ -590,11 +593,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核层级变动信息',
           tableFormat: [
             {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              原层级名称: `nursehierarchyOld`,
+              现层级名称: `nursehierarchyNew`
             },
             {
-              现层级: `nursehierarchy`
+              现层级时间: `startDate`
             }
           ],
           fileData: row.urlImageOne

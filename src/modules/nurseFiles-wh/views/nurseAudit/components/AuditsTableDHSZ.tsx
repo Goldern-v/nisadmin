@@ -14,6 +14,7 @@ import { openAuditModal } from '../../nurseFileDetail/config/auditModalConfig'
 export interface Props {
   type: string
   needAudit: boolean
+  active: boolean
 }
 
 export default function AuditsTableDHSZ(props: Props) {
@@ -105,7 +106,7 @@ export default function AuditsTableDHSZ(props: Props) {
     setLoading(true)
     let getDateFun = props.needAudit
       ? nurseFilesService.findNurseFilePendingFlow(appStore.queryObj.empNo, current, pageSize)
-      : nurseFilesService.findNurseFilePendingFlow(appStore.queryObj.empNo, current, pageSize)
+      : nurseFilesService.findNurseFileProcessedFlow(appStore.queryObj.empNo, current, pageSize)
     getDateFun.then((res) => {
       setLoading(false)
       setTableData(res.data)
@@ -134,12 +135,14 @@ export default function AuditsTableDHSZ(props: Props) {
   }
 
   useEffect(() => {
-    emitter.addListener('refreshNurseAuditTable', () => onload(current, pageSize))
-    onload(current, pageSize)
+    if (props.active) {
+      emitter.addListener('refreshNurseAuditTable', () => onload(current, pageSize))
+      onload(current, pageSize)
+    }
     return () => {
       emitter.removeAllListeners('refreshNurseAuditTable')
     }
-  }, [])
+  }, [props.active])
   return (
     <Wrapper>
       <GroupPostBtn onClick={() => onload(current, pageSize)}>刷新</GroupPostBtn>

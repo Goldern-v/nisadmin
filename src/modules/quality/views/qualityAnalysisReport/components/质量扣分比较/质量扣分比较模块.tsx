@@ -23,9 +23,13 @@ export default observer(function 质量扣分比较模块(props: Props) {
   useEffect(() => {})
   let title =
     report &&
-    `${moment(report.endDate).format('YYYY年')}${report.indexInType}月与${moment(report.beginDate).format(
-      'YYYY年'
-    )}${report.indexInType - 1}月护理质量扣分比较`
+    `${moment(report.endDate).format('YYYY年')}${report.indexInType}月与${
+      report.indexInType == 1
+        ? moment(report.beginDate)
+            .subtract(1, 'year')
+            .format('YYYY年')
+        : moment(report.beginDate).format('YYYY年')
+    }${report.indexInType == 1 ? 12 : report.indexInType - 1}月护理质量扣分比较`
   return (
     <Wrapper>
       <div className='title'>1.{title}</div>

@@ -7,10 +7,11 @@ import store, { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import { observer } from 'mobx-react-lite'
 import AduitModal from '../global/modal/AduitModal'
+import AduitModalWh from '../global/modal/AduitModal-wh'
 import createModal from 'src/libs/createModal'
 import { globalModal } from 'src/global/globalModal'
 import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
-import GroupsAduitModalWh from 'src/global/modal/AduitModal-wh'
+import GroupsAduitModalWh from 'src/global/modal/GroupsAduitModal-wh'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function MainLayout(props: Props) {
@@ -22,11 +23,11 @@ export default observer(function MainLayout(props: Props) {
   const groupsAduitModalRef: any = React.createRef()
 
   /** 审核模块区分 */
-  const aduitModal = createModal(AduitModal)
-
+  let aduitModal = createModal(AduitModal)
   let groupsAduitModal = createModal(GroupsAduitModal)
   if (appStore.HOSPITAL_ID == 'wh') {
     groupsAduitModal = createModal(GroupsAduitModalWh)
+    aduitModal = createModal(AduitModalWh)
   }
 
   useEffect(() => {

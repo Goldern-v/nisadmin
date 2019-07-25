@@ -15,7 +15,7 @@ export function BaseStepCon(props: any) {
 
 interface BoxProps {
   children: React.ReactNode
-  success: boolean
+  success: string | boolean
 }
 
 export function BaseStepBox(props: BoxProps) {
@@ -37,6 +37,9 @@ export function BaseStepBox(props: BoxProps) {
       justify-content: center;
       border-radius: 50%;
       z-index: 3;
+      &.fail-icon {
+        background: red;
+      }
       img {
         width: 12px;
       }
@@ -62,15 +65,25 @@ export function BaseStepBox(props: BoxProps) {
         background: ${(p) => p.theme.$mtc};
         z-index: 2;
       }
+      &.fail {
+        background: red;
+        z-index: 2;
+      }
     }
   `
   return (
     <Wrapper className='step-box'>
       <div className='box'>{props.children}</div>
       {success ? (
-        <div className='success-icon'>
-          <img src={require('./images/step-勾.png')} alt='' />
-        </div>
+        success == 'success' ? (
+          <div className='success-icon'>
+            <img src={require('./images/step-勾.png')} alt='' />
+          </div>
+        ) : (
+          <div className='success-icon fail-icon'>
+            <img src={require('./images/step-叉.png')} alt='' />
+          </div>
+        )
       ) : (
         <div className='unSuccess-icon' />
       )}
@@ -78,7 +91,8 @@ export function BaseStepBox(props: BoxProps) {
       <div
         className={classNames({
           line: true,
-          success: success
+          success: success == 'success',
+          fail: success == 'fail'
         })}
       />
     </Wrapper>
