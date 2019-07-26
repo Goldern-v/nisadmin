@@ -157,7 +157,7 @@ export default observer(function EducationalExperience() {
         dataSource={tableData}
         columns={columns}
         surplusHeight={305}
-        type={['spaceRow', 'fixedWidth']}
+        type={['fixedWidth']}
         tip={'填写说明：仅登记院外进修情况（以人事科签订合同为准的进修记录）。'}
       />
       <editContinuingEducationModal.Component getTableData={getTableData} />

@@ -145,7 +145,7 @@ export default observer(function ThreeBases() {
         dataSource={tableData}
         columns={columns}
         surplusHeight={305}
-        type={['spaceRow', 'fixedWidth']}
+        type={['fixedWidth']}
         tip={'无需填写，由培训模块自动导入。'}
       />
       <editThreeBasesModal.Component getTableData={getTableData} />

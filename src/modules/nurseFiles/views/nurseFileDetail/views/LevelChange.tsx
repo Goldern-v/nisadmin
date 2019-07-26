@@ -142,7 +142,7 @@ export default observer(function LevelChange() {
         dataSource={tableData}
         columns={columns}
         surplusHeight={305}
-        type={['spaceRow', 'fixedWidth']}
+        type={['fixedWidth']}
         tip={'填写说明：记录2019年6月的职称及层级情况，以后凡是有职称或层级变动情况时随时更新信息。'}
       />
       <editLevelChangeModal.Component getTableData={getTableData} />
