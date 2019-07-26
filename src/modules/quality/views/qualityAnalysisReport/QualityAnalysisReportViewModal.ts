@@ -106,20 +106,20 @@ class QualityAnalysisReportViewModal {
     this.sectionList[4].data.report = this.allData!.report || {}
     this.sectionList[5].data.list = (this.allData!.typeCompareList || []).map((item: any) => {
       return Object.assign(item, {
-        currentDeductScore: Number(item.currentDeductScore.toFixed(1)),
-        lastDeductScore: Number(item.lastDeductScore.toFixed(1)),
-        compareScore: Number(item.compareScore.toFixed(1)),
-        compareScorePercent: Number(item.compareScorePercent.toFixed(1))
+        currentDeductScore: Number(item.currentDeductScore.toFixed(2)),
+        lastDeductScore: Number(item.lastDeductScore.toFixed(2)),
+        compareScore: Number(item.compareScore.toFixed(2)),
+        compareScorePercent: Number(item.compareScorePercent.toFixed(2))
       })
     })
     this.sectionList[6].data.list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
       return Object.assign(item, {
-        deductScore: Number(Number(item.deductScore).toFixed(1))
+        deductScore: Number(Number(item.deductScore).toFixed(2))
       })
     })
     this.sectionList[7].data.list = (this.allData!.detailItemList || []).map((item: any) => {
       return Object.assign(item, {
-        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
+        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
       })
     })
     this.sectionList[8].data.list = this.allData!.highlightItemList || []

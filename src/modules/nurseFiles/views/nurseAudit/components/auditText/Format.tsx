@@ -43,15 +43,7 @@ export default function Format(row: any, getTableData: any) {
           {
             联系电话: `phone`,
             家庭住址: `address`
-          },
-          //
-          {
-            获得时间: `empName`,
-            资格名称: `birthday`
           }
-          // {
-          //   资格证编号: `age`
-          // }
         ],
         fileData: [
           {

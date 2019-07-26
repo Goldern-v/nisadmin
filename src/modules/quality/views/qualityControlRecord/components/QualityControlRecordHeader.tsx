@@ -9,15 +9,21 @@ import DeptSelect from 'src/components/DeptSelect'
 import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
 import StateSelect from 'src/modules/quality/views/qualityControlRecord/components/common/StateSelect.tsx'
 import { qualityControlRecordVM } from '../QualityControlRecordVM'
+import { qualityControlRecordApi } from '../api/QualityControlRecordApi'
+import { Select } from 'src/vendors/antd'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function TopCon(props: any) {
-  let history = store.appStore.history
-  let startDate = moment().subtract(1, 'M')
-  let endDate = moment()
+  const [selfDeptList, setSelfDeptList] = useState([])
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
   }
+  useEffect(() => {
+    qualityControlRecordApi.qcWardCodeList().then((res) => {
+      setSelfDeptList(res.data.deptList)
+      qualityControlRecordVM.filterDeptCode = res.data.defaultDept
+    })
+  }, [])
   return (
     <Wrapper>
       <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
@@ -28,7 +34,14 @@ export default observer(function TopCon(props: any) {
       />
 
       <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
-      <DeptSelect onChange={onChange} />
+      {/* <DeptSelect onChange={onChange} /> */}
+      <Select style={{ width: 200 }} value={qualityControlRecordVM.filterDeptCode}>
+        {selfDeptList.map((item: any) => (
+          <Select.Option value={item.code} key={item.code}>
+            {item.name}
+          </Select.Option>
+        ))}
+      </Select>
 
       <span style={{ margin: '0 3px 0 26px' }}>检查小组:</span>
       {/* <DeptSelect onChange={onChange} /> */}

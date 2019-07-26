@@ -121,7 +121,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             {itemGroup.itemList.map((item: any, itemIndex: number) => (
               <div className='itemCon' key={itemIndex}>
                 <div className='itemTitleCon'>
-                  {itemGroupIndex + 1}-{itemIndex + 1} {item.qcItemName}
+                  {item.itemShowCode} {item.qcItemName}
                 </div>
                 <div className='itemMidCon'>
                   <Radio.Group value={item.qcItemValue} disabled buttonStyle='solid'>
@@ -185,9 +185,12 @@ const Con = styled.div`
   margin: 0 auto;
   width: 760px;
   padding: 10px 20px;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   color: #000000;
+  background: #fff;
+
+  border: 1px solid #ddd;
 `
 const MessageBox = styled.div`
   margin-top: 10px;
@@ -208,9 +211,10 @@ const MessageBox = styled.div`
 `
 const QuestionCon = styled.div`
   margin-top: 10px;
-  flex: 1;
-  height: 0;
+  /* flex: 1;
+  height: 0; */
   font-size: 12px;
+  padding-bottom: 20px;
 `
 const QuestionItem = styled.div`
   .titleCon {
@@ -227,11 +231,13 @@ const QuestionItem = styled.div`
   }
   .itemCon {
     box-sizing: border-box;
-    height: 68px;
+    min-height: 60px;
+    padding: 4px 0;
     border-bottom: 0.5px dashed #bbbbbb;
     .itemTitleCon {
-      height: 28px;
-      line-height: 28px;
+      min-height: 28px;
+      line-height: 20px;
+      padding: 4px 0;
     }
     .itemMidCon {
       margin-top: 5px;

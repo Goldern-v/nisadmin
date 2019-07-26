@@ -38,14 +38,26 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           onOkCallBack: props.onload
         })
         break
-      case '科护士长审核': {
-        hlbModal.show({
-          id: appStore.match.params.id,
-          nodeCode: nextNode.nodeCode,
-          title: '科护士长审核',
-          onOkCallBack: props.onload
-        })
-      }
+      case '质控组长审核':
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: '质控组长审核',
+            onOkCallBack: props.onload
+          })
+        }
+        break
+      case '科护士长审核':
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: '科护士长审核',
+            onOkCallBack: props.onload
+          })
+        }
+        break
       case '护理部审核':
         {
           hlbModal.show({
