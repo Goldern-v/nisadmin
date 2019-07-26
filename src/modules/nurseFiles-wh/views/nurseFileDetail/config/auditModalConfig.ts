@@ -5,7 +5,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
     case '基本信息':
       {
         globalModal.auditModal.show({
-          empNo: row.empNo,
+          empNo: row.empNo || row.commiterNo,
           id: row.id,
           type: 'nurseWHInformation',
           getTableData: callBack,

@@ -13,12 +13,16 @@ export interface DeptType {
   name: string
 }
 
-export default observer(function StateSelect() {
+interface Props {
+  refreshData: any
+}
+export default observer(function StateSelect(props: Props) {
   const [listData, setListData] = useState([])
   // let [defaultFormValue, setDefaultFormValue]: any = useState(qualityControlRecordVM.getDefaultStateName)
   let [defaultFormValue, setDefaultFormValue]: any = useState('全部')
   const onChange = (value: string) => {
     qualityControlRecordVM.filterState = value
+    props.refreshData()
   }
   const formSelectMethod = () => {
     qualityControlRecordApi.dictChainNode().then((res: any) => {

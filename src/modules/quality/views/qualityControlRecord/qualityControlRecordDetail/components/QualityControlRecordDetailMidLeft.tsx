@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 import Zimage from 'src/components/Zimage'
 import { CheckboxChangeEvent } from 'src/vendors/antd'
 import { cloneJson } from 'src/utils/json/clone'
+import { numToChinese } from 'src/utils/number/numToChinese'
 const { TextArea } = Input
 export interface Props {
   detailData: any
@@ -77,7 +78,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
         <div className='boxLeft'>
           <div>质控日期：{messageBoxData.evalDate}</div>
           <div>质控病区：{messageBoxData.wardName}</div>
-          <div>床号：{messageBoxData.bedLabel}床</div>
+          <div>床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + '床'}</div>
           <div>需要跟踪评价：{messageBoxData.nextNodePendingName}</div>
           <div>
             质控结果：是({itemCount.yesSize}) 否({itemCount.noSize}) 不适用({itemCount.inapplicableSize})
@@ -116,7 +117,9 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
         {itemConData.map((itemGroup: any, itemGroupIndex: number) => (
           <QuestionItem key={itemGroupIndex}>
             <div className='titleCon'>
-              <div className='titleLeftCon'>{itemGroup.qcItemTypeName}</div>
+              <div className='titleLeftCon'>
+                {numToChinese(itemGroupIndex + 1)}、{itemGroup.qcItemTypeName}
+              </div>
             </div>
             {itemGroup.itemList.map((item: any, itemIndex: number) => (
               <div className='itemCon' key={itemIndex}>

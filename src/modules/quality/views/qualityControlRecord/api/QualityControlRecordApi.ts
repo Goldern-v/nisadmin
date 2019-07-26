@@ -55,6 +55,10 @@ export default class QualityControlRecordApi extends BaseApiService {
   public qcWardCodeList() {
     return this.get(`/qcItem/dict/qcWardCodeList`)
   }
+  /** 本人可以看质控组 */
+  public qcRoleCodeSelf() {
+    return this.get('/qcItem/dict/qcRoleCodeSelf')
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()

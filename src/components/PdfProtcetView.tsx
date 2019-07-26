@@ -12,7 +12,8 @@ export default function PdfProtcetView(props: Props) {
   let wrapper: any = React.useRef()
   const onScroll = (e: any) => {
     e.persist()
-    if (e.target.offsetHeight - e.target.scrollTop < 600 && ifh - e.target.scrollTop < 600) {
+    console.log(e.target.offsetHeight, e.target.scrollTop, ifh)
+    if (e.target.offsetHeight - e.target.scrollTop < 600 && ifh - e.target.scrollTop < 800) {
       setIfh(ifh + 600)
     }
   }

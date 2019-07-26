@@ -38,12 +38,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           onOkCallBack: props.onload
         })
         break
-      case '质控组长审核':
+      case '质控组组长审核':
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: '质控组长审核',
+            title: '质控组组长审核',
             onOkCallBack: props.onload
           })
         }

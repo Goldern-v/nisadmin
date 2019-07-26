@@ -138,9 +138,9 @@ export default function AduitModal(props: Props) {
     }
     let postData = {
       id: props.id,
-      empNo: props.allData.empNo,
-      empName: props.allData.empName,
-      saveStatus: props.allData.saveStatus,
+      empNo: props.allData.empNo || props.allData.commiterNo,
+      empName: props.allData.empName || props.allData.commiterName,
+      saveStatus: props.allData.saveStatus || props.allData.auditedEntityName,
       flag: agreeStatus,
       detail: opinion
     }

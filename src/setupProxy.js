@@ -8,8 +8,8 @@ module.exports = function(app) {
       // target: 'http://120.197.141.41:9094',
       // target: 'http://120.197.141.41:9091',
       //武汉正式环境
-      // target: 'http://111.47.19.230:9091',
-      target: 'http://192.168.28.10:8080',
+      target: 'http://111.47.19.230:9091',
+      // target: 'http://192.168.28.10:8080',
       secure: false,
       changeOrigin: true
     })
@@ -31,7 +31,8 @@ module.exports = function(app) {
   app.use(
     proxy('/crNursing/asset/', {
       // target: 'http://120.25.105.45:9864',
-      target: 'http://120.197.141.41:9094',
+      // target: 'http://120.197.141.41:9094',
+      target: 'http://111.47.19.230:9091',
       secure: false,
       changeOrigin: false
     })

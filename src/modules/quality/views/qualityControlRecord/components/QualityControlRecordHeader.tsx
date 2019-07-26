@@ -29,13 +29,23 @@ export default observer(function TopCon(props: any) {
       <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
       <DatePicker.RangePicker
         value={qualityControlRecordVM.filterDate}
-        onChange={(value) => (qualityControlRecordVM.filterDate = value)}
+        onChange={(value) => {
+          qualityControlRecordVM.filterDate = value
+          props.refreshData()
+        }}
         style={{ width: 220 }}
       />
 
       <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
       {/* <DeptSelect onChange={onChange} /> */}
-      <Select style={{ width: 200 }} value={qualityControlRecordVM.filterDeptCode}>
+      <Select
+        style={{ width: 200 }}
+        value={qualityControlRecordVM.filterDeptCode}
+        onChange={(value: any) => {
+          qualityControlRecordVM.filterDeptCode = value
+          props.refreshData()
+        }}
+      >
         {selfDeptList.map((item: any) => (
           <Select.Option value={item.code} key={item.code}>
             {item.name}
@@ -45,10 +55,10 @@ export default observer(function TopCon(props: any) {
 
       <span style={{ margin: '0 3px 0 26px' }}>检查小组:</span>
       {/* <DeptSelect onChange={onChange} /> */}
-      <FormSelect />
+      <FormSelect refreshData={props.refreshData} />
 
       <span style={{ margin: '0 3px 0 26px' }}>状态:</span>
-      <StateSelect />
+      <StateSelect refreshData={props.refreshData} />
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询
       </Button>

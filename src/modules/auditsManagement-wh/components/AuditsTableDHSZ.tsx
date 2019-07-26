@@ -110,7 +110,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
                 if (showType == 'qc') {
                   window.open(`/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
                 } else if (showType == 'nurseFile') {
-                  service.commonApiService.getNurseInformation(row.commiterNo).then((res) => {
+                  service.commonApiService.getNurseInformationWH(row.commiterNo).then((res) => {
                     // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
                     window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
                   })
@@ -211,7 +211,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   return (
     <Wrapper>
       <GroupPostBtn onClick={() => onload(current, searchText, pageSize)}>刷新</GroupPostBtn>
-      {props.needAudit && authStore.isDepartment && (
+      {props.needAudit && (
         <GroupPostBtn style={{ right: 110 }} onClick={openGroupModal}>
           批量审核
         </GroupPostBtn>
