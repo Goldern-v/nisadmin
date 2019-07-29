@@ -120,6 +120,33 @@ class EditableTable extends React.Component<any, any> {
     })
   }
 
+    //添加和修改
+    public getSelectData = (record: any, value: number) => {
+      // 如果是添加 则清空数据
+      if (value === 1) {
+        this.setState({ missionId: undefined })
+        this.setState({ orderText: '' })
+        this.setState({ messageType: '' })
+      }
+      // 如果是修改则回显数据
+      if (value === 0) {
+        this.setState({ searchValue: record.educationName })
+        this.setState({ missionId: record.educationName })
+        this.setState({ orderText: record.orderText })
+      }
+      this.setState({ rowData: record })
+      service.healthyApiService.getPushType().then((res) => {
+        if (res && res.data) {
+          this.setState({ selectData1: res.data })
+          // 如果是修改则回显数据
+          if (value === 0) {
+            this.setState({ messageType: record.messageType })
+          }
+        }
+      })
+      this.setState({ editingKey: true })
+    }
+  
   // 删除
   public handleDelete = (record: any) => {
     Modal.confirm({
@@ -144,33 +171,6 @@ class EditableTable extends React.Component<any, any> {
     appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=1`)
   }
   
-  //添加和修改
-  public getSelectData = (record: any, value: number) => {
- 
-    // 如果是添加 则清空数据
-    if (value === 1) {
-      this.setState({ missionId: undefined })
-      this.setState({ orderText: '' })
-      this.setState({ messageType: '' })
-    }
-    // 如果是修改则回显数据
-    if (value === 0) {
-      this.setState({ searchValue: record.educationName })
-      this.setState({ missionId: record.educationName })
-      this.setState({ orderText: record.orderText })
-    }
-    this.setState({ rowData: record })
-    service.healthyApiService.getPushType().then((res) => {
-      if (res && res.data) {
-        this.setState({ selectData1: res.data })
-        // 如果是修改则回显数据
-        if (value === 0) {
-          this.setState({ messageType: record.messageType })
-        }
-      }
-    })
-    this.setState({ editingKey: true })
-  }
   public getMealList = (current: any, pageSize: any) => {
     this.setState({ loadingTable: true })
     let postData = {

@@ -10,26 +10,26 @@ const Option = Select.Option
 export default function SelectCon() {
   const [visible, setVisible] = useState(false)
   const [searchText, setSearchText] = useState('')
-  const handleOk = () => {
-    setVisible(false)
-  }
+  // const handleOk = () => {
+  //   setVisible(false)
+  // }
 
-  const handleCancel = () => {
-    setVisible(false)
-  }
+  // const handleCancel = () => {
+  //   setVisible(false)
+  // }
 
   const onChange = (value: string) => {
     emitter.emit('refreshNurseAuditTable', searchText)
     emitter.emit('自动推送设置-刷新')
   }
-  const onChangeSearchText = (e: any) => {
-    setSearchText(e.target.value)
-  }
+  // const onChangeSearchText = (e: any) => {
+  //   setSearchText(e.target.value)
+  // }
 
-  const onSearch = () => {
-    emitter.emit('refreshNurseAuditTable', searchText)
-  }
-  const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {}
+  // const onSearch = () => {
+  //   emitter.emit('refreshNurseAuditTable', searchText)
+  // }
+  // const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {}
 
   const add = () => {
     emitter.emit('自动推送设置-添加')

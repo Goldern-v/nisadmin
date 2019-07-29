@@ -175,6 +175,7 @@ class EditableTable extends React.Component<any, any> {
     })
     this.setState({ editingKey: true })
   }
+  
   // 删除
   public handleDelete = (record: any) => {
     Modal.confirm({
