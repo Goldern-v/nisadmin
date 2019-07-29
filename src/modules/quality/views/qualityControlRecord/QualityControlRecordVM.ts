@@ -49,6 +49,8 @@ class QualityControlRecordVM {
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
     this.filterForm = ''
     this.filterState = ''
+
+    this.filterDeptCode = ''
   }
 }
 

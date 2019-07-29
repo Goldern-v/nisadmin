@@ -1,5 +1,5 @@
 import moment from 'moment'
-import store from 'src/stores'
+import store, { authStore } from 'src/stores'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
@@ -11,6 +11,7 @@ import StateSelect from 'src/modules/quality/views/qualityControlRecord/componen
 import { qualityControlRecordVM } from '../QualityControlRecordVM'
 import { qualityControlRecordApi } from '../api/QualityControlRecordApi'
 import { Select } from 'src/vendors/antd'
+
 export interface Props extends RouteComponentProps {}
 
 export default observer(function TopCon(props: any) {
@@ -21,7 +22,11 @@ export default observer(function TopCon(props: any) {
   useEffect(() => {
     qualityControlRecordApi.qcWardCodeList().then((res) => {
       setSelfDeptList(res.data.deptList)
-      qualityControlRecordVM.filterDeptCode = res.data.defaultDept
+      if (authStore.isDepartment) {
+        qualityControlRecordVM.filterDeptCode = '全院'
+      } else {
+        qualityControlRecordVM.filterDeptCode = res.data.defaultDept
+      }
     })
   }, [])
   return (

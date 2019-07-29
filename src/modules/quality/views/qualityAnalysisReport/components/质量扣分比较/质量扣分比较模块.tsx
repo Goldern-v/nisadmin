@@ -32,7 +32,7 @@ export default observer(function 质量扣分比较模块(props: Props) {
     }${report.indexInType == 1 ? 12 : report.indexInType - 1}月护理质量扣分比较`
   return (
     <Wrapper>
-      <div className='title'>1.{title}</div>
+      <div className='title'>2.1.{title}</div>
       <Table list={list} />
       <Chart list={list} title={title} />
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>

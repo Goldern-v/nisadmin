@@ -71,7 +71,7 @@ export function numToChinese(num: any) {
     unitPos++
   }
 
-  return chnStr + a
+  return (chnStr + a).replace('一十', '十')
 }
 
 // TransformToChinese(12339492835.99302)
