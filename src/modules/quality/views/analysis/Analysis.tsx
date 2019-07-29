@@ -22,6 +22,7 @@ export default observer(function Analysis() {
   const [createClear, setCreateClear] = useState(true)
   const { history } = appStore
   const [groupRoleList, setGroupRolelist] = useState([])
+  const [groupRoleListSelf, setGroupRolelistSelf] = useState([])
 
   //进度条相关
   const [createProgressVisible, setCreateProgressVisible] = useState(false)
@@ -40,6 +41,9 @@ export default observer(function Analysis() {
   useEffect(() => {
     api.qcRoleCode().then((res) => {
       if (res.data instanceof Array) setGroupRolelist(res.data)
+    })
+    api.qcRoleCodeSelf().then((res) => {
+      if (res.data instanceof Array) setGroupRolelistSelf(res.data)
     })
   }, [])
 
@@ -385,7 +389,7 @@ export default observer(function Analysis() {
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-        groupRoleList={groupRoleList}
+        groupRoleList={groupRoleListSelf}
       />
     </Wrapper>
   )

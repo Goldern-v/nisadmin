@@ -39,6 +39,10 @@ export default observer(function QualityAnalysisReportView() {
            min-height: 20px;
            padding: 0px 30px 20px;
          }
+         .page-title .title {
+           text-align: center;
+           margin-right: 0;
+         }
          table, img {
            page-break-inside: avoid;
          }
@@ -47,6 +51,10 @@ export default observer(function QualityAnalysisReportView() {
          }
          * {
            color: #000 !important;
+         }
+         .footer-title {
+           min-height: 0;
+           margin-bottom: 0;
          }
       `
     })

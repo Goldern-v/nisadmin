@@ -62,10 +62,10 @@ const columns: ColumnProps<any>[] = [
     dataIndex: 'sex',
     key: 'sex',
     width: 50,
-    align: 'center',
-    render(sex: any) {
-      return sex === '0' ? '男' : sex === '1' ? '女' : ''
-    }
+    align: 'center'
+    // render(sex: any) {
+    //   return sex === '0' ? '男' : sex === '1' ? '女' : ''
+    // }
   },
   {
     title: '年龄',

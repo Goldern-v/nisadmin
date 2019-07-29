@@ -67,6 +67,7 @@ export const sectionList: SectionListItem[] = [
     sectionId: '本月质量扣分科室排序',
     sectionTitle: '本月质量扣分科室排序',
     modalTitle: '编辑本月质量扣分科室排序',
+    modalWidth: 900,
     data: {},
     section: 本月质量扣分科室排序模块,
     modal: 本月质量扣分科室排序弹窗

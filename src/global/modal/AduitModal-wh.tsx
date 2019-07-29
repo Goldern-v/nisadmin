@@ -8,7 +8,7 @@ const { TextArea } = Input
 import { Modal, Spin } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
-import { modalService } from '../services/ModalService'
+import { modalService } from '../services/ModalService-wh'
 import Zimage from 'src/components/Zimage'
 const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
 const defaultFile = require('../../modules/nurseFiles/images/证件空态度.png')
@@ -52,7 +52,7 @@ export default function AduitModal(props: Props) {
       setAgree('agree')
       setOpinion('')
       setSpinning(true)
-      if (props.type === 'nurseInformation') {
+      if (props.type === 'nurseWHInformation') {
         modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
           setSpinning(false)
           let data = res.data
@@ -138,13 +138,13 @@ export default function AduitModal(props: Props) {
     }
     let postData = {
       id: props.id,
-      empNo: props.allData.empNo,
-      empName: props.allData.empName,
-      saveStatus: props.allData.saveStatus,
+      empNo: props.allData.empNo || props.allData.commiterNo,
+      empName: props.allData.empName || props.allData.commiterName,
+      saveStatus: props.allData.saveStatus || props.allData.auditedEntityName,
       flag: agreeStatus,
       detail: opinion
     }
-    props.getTableData && props.getTableData()
+    // props.getTableData && props.getTableData()
     // console.log(props.getTableData, '123213')
     // onCancel()
     modalService.auditeNurseFileIndex(props.type, postData).then((res) => {

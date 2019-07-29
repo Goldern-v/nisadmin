@@ -8,22 +8,34 @@ import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import AuditsTableDHSZ from './components/AuditsTableDHSZ'
 import BaseTabs from 'src/components/BaseTabs'
-const TABS_LIST_NURSE = [
-  {
-    title: '待我审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit />
-  },
-  {
-    title: '我已审核',
-    component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit={false} />
-  }
-]
 
-export default observer(function NurseAudit() {
+interface Props {
+  showType: any
+  keyword: any
+}
+
+export default observer(function NurseAudit(props: Props) {
+  const [activeKey, setActiveKey]: any = useState(0)
+  const TABS_LIST_NURSE = [
+    {
+      title: '待我审核',
+      component: (
+        <AuditsTableDHSZ showType={props.showType} keyword={props.keyword} needAudit active={activeKey == 0} />
+      ),
+      index: 0
+    },
+    {
+      title: '我已审核',
+      component: (
+        <AuditsTableDHSZ showType={props.showType} keyword={props.keyword} needAudit={false} active={activeKey == 1} />
+      ),
+      index: 1
+    }
+  ]
   return (
     <Wrapper>
       <MainCon>
-        <BaseTabs config={TABS_LIST_NURSE} />
+        <BaseTabs config={TABS_LIST_NURSE} onChange={(key) => setActiveKey(key)} />
       </MainCon>
     </Wrapper>
   )

@@ -20,7 +20,7 @@ export default function midRightQualityControlRecordDetail(props: Props) {
       <BaseStepCon>
         {nodeDataList &&
           nodeDataList.map((item: any, index: number) => (
-            <BaseStepBox success={item.status == '1'} key={index}>
+            <BaseStepBox success={item.status == '1' && (item.noPass ? 'fail' : 'success')} key={index}>
               <StepBox>
                 {item.status == '1' ? (
                   <React.Fragment>
@@ -37,13 +37,13 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                             {item.expand}
                           </div>
                         )}
-                        {item.handleContent && (
-                          <div className='text-box'>
-                            <div className='text-box-title'>整改措施：</div>
-                            {item.handleContent}
-                          </div>
-                        )}
                       </React.Fragment>
+                    )}
+                    {item.handleContent && (
+                      <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
+                        {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
+                        {item.handleContent}
+                      </div>
                     )}
                   </React.Fragment>
                 ) : (

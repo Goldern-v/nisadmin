@@ -80,4 +80,14 @@ export default class CommonApiService extends BaseApiService {
       return res
     })
   }
+  /** 根据工号获取完整信息-武汉 */
+  public getNurseInformationWH(empNo: any) {
+    return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`).then((res) => {
+      return res
+    })
+  }
+  /** 获取全部科室列表 */
+  public getNursingUnitAll() {
+    return this.get(`/user/nursingUnit/all`)
+  }
 }

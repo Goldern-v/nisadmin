@@ -27,7 +27,7 @@ export default observer(function QualityControlRecord() {
     let sendData = {
       pageIndex: obj ? obj.current : 1,
       pageSize: obj ? obj.pageSize : 20,
-      wardCode: authStore.selectedDeptCode,
+      wardCode: qualityControlRecordVM.filterDeptCode,
       qcCode: qualityControlRecordVM.filterForm,
       nodeCode: qualityControlRecordVM.filterState,
       beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),

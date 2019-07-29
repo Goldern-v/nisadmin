@@ -80,7 +80,7 @@ export default class AuthStore {
   /** 是否是护理部 */
   public get isDepartment() {
     try {
-      return this!.user!.job === '护理部主任'
+      return this!.user!.job === '护理部主任' || this.isAdmin
     } catch (error) {
       return ''
     }

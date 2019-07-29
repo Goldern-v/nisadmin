@@ -19,7 +19,7 @@ export default observer(function 问题及建议模块(props: Props) {
   return (
     <Wrapper>
       <OneLevelTitle text={`六、需提交护理部质量与安全组讨论的问题及建议`} />
-      <TextCon>{report.suggestions}</TextCon>
+      <TextCon className='footer-title'>{report.suggestions}</TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
@@ -43,6 +43,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
+    padding-right: 15px;
     padding-bottom: 2px;
     padding-top: 2px;
   }

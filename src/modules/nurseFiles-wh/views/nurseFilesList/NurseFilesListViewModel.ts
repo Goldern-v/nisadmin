@@ -1,7 +1,18 @@
 import { observable, computed, action, reaction } from 'mobx'
 import { nurseFilesService, NurseQuery } from '../../services/NurseFilesService'
 import { authStore } from 'src/stores'
+import { DictItem } from 'src/services/api/CommonApiService'
+import { reverseKeyValue } from 'src/utils/object/object'
+import service from 'src/services/api'
 
+let dictList = {
+  职务: 'job',
+  职称: 'new_title',
+  学历: 'education',
+  层级: 'nurse_hierarchy'
+}
+type DictList = typeof dictList
+type DictName = keyof DictList
 class NurseFilesListViewModel {
   public constructor() {
     /** 监听 */
@@ -24,7 +35,8 @@ class NurseFilesListViewModel {
   @observable public listSpinning: boolean = false
   @observable public nurseList: any = []
   @observable public isOpenFilter: boolean = true
-
+  /**字典对象 */
+  @observable public dict: { [P: string]: DictItem[] } = {}
   @action
   public loadNursingList = () => {
     // this.title = newTitle
@@ -45,6 +57,20 @@ class NurseFilesListViewModel {
       this.nurseList = res.data.list
       this.listSpinning = false
     })
+  }
+  initDict() {
+    service.commonApiService.multiDictInfo(Object.keys(reverseKeyValue(dictList))).then((res) => {
+      this.dict = res.data
+    })
+  }
+
+  getDict(dictName: DictName) {
+    let list = (this.dict[dictList[dictName]] || []).map((item) => item.name)
+    return ['全部', ...list]
+  }
+
+  init() {
+    this.initDict()
   }
 }
 

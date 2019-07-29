@@ -11,13 +11,15 @@ import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
 import { getTitle } from '../../nurseFileDetail/config/title'
 import { openAuditModal } from '../../nurseFileDetail/config/auditModalConfig'
+import { message } from 'src/vendors/antd'
 export interface Props {
   type: string
   needAudit: boolean
+  active: boolean
 }
 
 export default function AuditsTableDHSZ(props: Props) {
-  let { type } = props
+  let { type, needAudit } = props
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
@@ -90,7 +92,7 @@ export default function AuditsTableDHSZ(props: Props) {
                 )
               }
             >
-              审核
+              {needAudit ? '审核' : '查看'}
             </span>
           </DoCon>
         )
@@ -105,7 +107,7 @@ export default function AuditsTableDHSZ(props: Props) {
     setLoading(true)
     let getDateFun = props.needAudit
       ? nurseFilesService.findNurseFilePendingFlow(appStore.queryObj.empNo, current, pageSize)
-      : nurseFilesService.findNurseFilePendingFlow(appStore.queryObj.empNo, current, pageSize)
+      : nurseFilesService.findNurseFileProcessedFlow(appStore.queryObj.empNo, current, pageSize)
     getDateFun.then((res) => {
       setLoading(false)
       setTableData(res.data)
@@ -123,6 +125,9 @@ export default function AuditsTableDHSZ(props: Props) {
   }
 
   const openGroupModal = () => {
+    if (selectedRows.length == 0) {
+      return message.warning('请至少勾选一条记录')
+    }
     globalModal.groupsAduitModal.show({
       selectedRows,
       getTableData: () => {
@@ -134,12 +139,14 @@ export default function AuditsTableDHSZ(props: Props) {
   }
 
   useEffect(() => {
-    emitter.addListener('refreshNurseAuditTable', () => onload(current, pageSize))
-    onload(current, pageSize)
+    if (props.active) {
+      emitter.addListener('refreshNurseAuditTable', () => onload(current, pageSize))
+      onload(current, pageSize)
+    }
     return () => {
       emitter.removeAllListeners('refreshNurseAuditTable')
     }
-  }, [])
+  }, [props.active])
   return (
     <Wrapper>
       <GroupPostBtn onClick={() => onload(current, pageSize)}>刷新</GroupPostBtn>

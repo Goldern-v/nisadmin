@@ -50,10 +50,10 @@ export default observer(function BaseModal(props: Props) {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
             return Object.assign(item, {
-              currentDeductScore: Number(item.currentDeductScore.toFixed(1)),
-              lastDeductScore: Number(item.lastDeductScore.toFixed(1)),
-              compareScore: Number(item.compareScore.toFixed(1)),
-              compareScorePercent: Number(item.compareScorePercent.toFixed(1))
+              currentDeductScore: Number(item.currentDeductScore.toFixed(2)),
+              lastDeductScore: Number(item.lastDeductScore.toFixed(2)),
+              compareScore: Number(item.compareScore.toFixed(2)),
+              compareScorePercent: Number(item.compareScorePercent.toFixed(2))
             })
           })
         })
@@ -65,7 +65,7 @@ export default observer(function BaseModal(props: Props) {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
             return Object.assign(item, {
-              deductScore: Number(Number(item.deductScore).toFixed(1))
+              deductScore: Number(Number(item.deductScore).toFixed(2))
             })
           })
         })
@@ -77,7 +77,7 @@ export default observer(function BaseModal(props: Props) {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
             return Object.assign(item, {
-              totalDeductScore: Number(Number(item.totalDeductScore).toFixed(1))
+              totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
             })
           })
         })

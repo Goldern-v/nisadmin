@@ -13,12 +13,16 @@ export interface DeptType {
   name: string
 }
 
-export default observer(function FormSelect() {
+interface Props {
+  refreshData?: any
+}
+
+export default observer(function FormSelect(props: Props) {
   const [listData, setListData] = useState([])
   let [defaultFormValue, setDefaultFormValue]: any = useState('全部')
   const onChange = (value: string) => {
     qualityControlRecordVM.filterForm = value
-    // setDefaultFormValue(value)
+    props.refreshData()
   }
   const formSelectMethod = () => {
     qualityControlRecordApi.dictTemplate().then((res: any) => {
@@ -27,7 +31,7 @@ export default observer(function FormSelect() {
     })
   }
   useEffect(() => {
-    qualityControlRecordApi.dictTemplate().then((res: any) => {
+    qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
       setListData(res.data)
       qualityControlRecordVM.formSelectList = res.data
       let cacheDefaultName: string

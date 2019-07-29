@@ -20,7 +20,7 @@ import service from 'src/services/api'
 
 export interface Props extends RouteComponentProps {}
 
-const navList: any = [
+const navListWH: any = [
   {
     name: '首页',
     // icon: <SY />,
@@ -31,11 +31,11 @@ const navList: any = [
     icon: <SHGL />,
     path: '/auditsManagement'
   },
-  {
-    name: '护士排班',
-    // icon: <HSPB />,
-    path: '/scheduleHome'
-  },
+  // {
+  //   name: '护士排班',
+  //   // icon: <HSPB />,
+  //   path: '/scheduleHome'
+  // },
   {
     name: '档案管理',
     icon: <HSDA />,
@@ -94,6 +94,80 @@ const navList: any = [
     path: '/setting'
   }
 ]
+const navList: any = [
+  {
+    name: '首页',
+    // icon: <SY />,
+    path: '/home'
+  },
+  {
+    name: '审核管理',
+    icon: <SHGL />,
+    path: '/auditsManagement'
+  },
+  {
+    name: '护士排班',
+    // icon: <HSPB />,
+    path: '/scheduleHome'
+  },
+  {
+    name: '档案管理',
+    icon: <HSDA />,
+    path: '/nurseFilesList'
+  },
+  {
+    name: '不良事件',
+    icon: <BLSJ />,
+    path: '/badEventsNewList'
+  },
+  {
+    name: '质量管理',
+    icon: <BLSJ />,
+    path: '/quality'
+  },
+  // {
+  //   name: '护理绩效',
+  //   icon: <HLJX />,
+  //   path: '/nursingPerformance'
+  // },
+  // {
+  //   name: '继续教育',
+  //   icon: <PXKH />,
+  //   path: '/continuingEdu'
+  //   // trainingExamination
+  // },
+  {
+    name: '敏感指标',
+    icon: <MGZB />,
+    path: '/indicator'
+  },
+  {
+    name: '统计查询',
+    icon: <TJCX />,
+    path: '/statistic'
+  },
+  {
+    name: '通知公告',
+    icon: <TZGG />,
+    path: '/notice'
+    // hidden: !appStore.isDev
+  },
+  // {
+  //   name: '物流平台',
+  //   icon: <WLPT />,
+  //   path: '/Lms'
+  // },
+  {
+    name: '护理制度',
+    icon: <HSDA />,
+    path: '/nursingRules'
+  },
+  {
+    name: '系统设置',
+    icon: <XTSZ />,
+    path: '/setting'
+  }
+]
 
 export default observer(function NavBar(props: Props) {
   const toNavLink = (path: string) => {
@@ -115,7 +189,7 @@ export default observer(function NavBar(props: Props) {
           </React.Fragment>
         )}
       </LogoCon>
-      {navList.map(
+      {(appStore.HOSPITAL_ID == 'wh' ? navListWH : navList).map(
         (item: any) =>
           !item.hidden && (
             <NavItem

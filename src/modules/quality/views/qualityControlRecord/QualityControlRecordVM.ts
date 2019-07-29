@@ -14,6 +14,7 @@ class QualityControlRecordVM {
   @observable public filterDate: any = [moment(moment().format('YYYY-MM') + '-01'), moment()]
   @observable public filterForm: any = ''
   @observable public filterState: any = ''
+  @observable public filterDeptCode: any = ''
 
   public constructor() {
     /** 监听 */
@@ -48,6 +49,8 @@ class QualityControlRecordVM {
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
     this.filterForm = ''
     this.filterState = ''
+
+    this.filterDeptCode = ''
   }
 }
 

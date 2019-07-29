@@ -75,7 +75,7 @@ export default function ToolBar() {
         value: record.name || ''
       },
       id: {
-        value: record.key || ''
+        value: record.id || ''
       },
       type: {
         value: record.shiftType || ''

@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import windowHeight from 'src/hooks/windowHeight'
 
-import store, { appStore } from 'src/stores'
+import store, { appStore, authStore } from 'src/stores'
 import AuditText from 'src/modules/nurseFiles/views/nurseAudit/components/auditText/AuditText'
 import emitter from 'src/libs/ev'
 import { Button } from 'antd'
@@ -14,13 +14,21 @@ import { openAuditModal } from 'src/modules/nurseFiles-wh/views/nurseFileDetail/
 import { getTitle } from 'src/modules/nurseFiles-wh/views/nurseFileDetail/config/title'
 import service from 'src/services/api'
 import qs from 'qs'
+import { observer } from 'src/vendors/mobx-react-lite'
+import createModal from 'src/libs/createModal'
+import GroupsEmpNoAduitModal from '../modal/GroupsEmpNoAduitModal'
+import { type } from 'os'
+import GroupsHlbModal from '../modal/GroupsHlbModal'
+import { message } from 'src/vendors/antd'
 export interface Props {
-  type: string
+  showType: string
+  keyword: string
   needAudit: boolean
+  active: boolean
 }
 
-export default function AuditsTableDHSZ(props: Props) {
-  let { type } = props
+export default observer(function AuditsTableDHSZ(props: Props) {
+  let { showType, needAudit, active, keyword } = props
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
   const [tableData, setTableData] = useState([])
   const [current, setCurrent] = useState(1)
@@ -31,6 +39,8 @@ export default function AuditsTableDHSZ(props: Props) {
   const [loading, setLoading] = useState(false)
   const [searchText, setSearchText] = useState(false)
 
+  const groupsEmpNoAduitModal = createModal(GroupsEmpNoAduitModal)
+  const groupsHlbModal = createModal(GroupsHlbModal)
   const columns: any = [
     {
       title: '序号',
@@ -47,7 +57,7 @@ export default function AuditsTableDHSZ(props: Props) {
       align: 'center',
       width: 100,
       render(text: string, record: any) {
-        return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '质控单' : ''
+        return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '质量检查' : ''
       }
     },
     {
@@ -55,14 +65,14 @@ export default function AuditsTableDHSZ(props: Props) {
       dataIndex: 'message',
       key: 'message',
       align: 'center',
-      width: 300
+      width: 250
     },
     {
       title: '科室',
       dataIndex: 'wardName',
       key: 'wardName',
       align: 'center',
-      width: 100
+      width: 120
     },
     {
       title: '状态',
@@ -96,18 +106,16 @@ export default function AuditsTableDHSZ(props: Props) {
         return (
           <DoCon>
             <span
-              onClick={
-                () => {
-                  service.commonApiService.getNurseInformation(row.othersMessage.empNo).then((res) => {
-                    appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
+              onClick={() => {
+                if (showType == 'qc') {
+                  window.open(`/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
+                } else if (showType == 'nurseFile') {
+                  service.commonApiService.getNurseInformationWH(row.commiterNo).then((res) => {
+                    // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
+                    window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
                   })
                 }
-                // openAuditModal(
-                //   getTitle(row.othersMessage.entityName),
-                //   { ...row.othersMessage, id: row.othersMessage.fileId },
-                //   () => emitter.emit('refreshNurseAuditTable')
-                // )
-              }
+              }}
             >
               {props.needAudit ? '审核' : '查看'}
             </span>
@@ -130,8 +138,8 @@ export default function AuditsTableDHSZ(props: Props) {
   const onload = (current: any, searchText: any, pageSize = 20) => {
     setLoading(true)
     let getDataFun = props.needAudit
-      ? aMServices.pendingPage(current, pageSize)
-      : aMServices.solvedPage(current, pageSize)
+      ? aMServices.pendingPage(current, pageSize, showType, keyword)
+      : aMServices.solvedPage(current, pageSize, showType, keyword)
     getDataFun.then((res) => {
       setLoading(false)
       setTableData(res.data.list)
@@ -143,37 +151,71 @@ export default function AuditsTableDHSZ(props: Props) {
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      setSelectedRows(selectedRows)
-      setSelectedRowKeys(selectedRowKeys)
+      if (
+        selectedRows.find((item: any) => {
+          return item.othersMessage.nextNodePendingName == '待病区处理'
+        })
+      ) {
+        message.warning('待病区处理的质量检查不能批量审核')
+      }
+      setSelectedRows(
+        selectedRows.filter((item: any) => {
+          return item.othersMessage.nextNodePendingName != '待病区处理'
+        })
+      )
+      setSelectedRowKeys(
+        selectedRows
+          .filter((item: any) => {
+            return item.othersMessage.nextNodePendingName != '待病区处理'
+          })
+          .map((item: any) => item.key)
+      )
     }
+    // }
   }
 
   const openGroupModal = () => {
-    globalModal.groupsAduitModal.show({
-      selectedRows,
-      getTableData: () => {
-        setSelectedRows([])
-        setSelectedRowKeys([])
-        emitter.emit('refreshNurseAuditTable')
-      }
-    })
+    if (selectedRows.length == 0) {
+      return message.warning('请至少勾选一条记录')
+    }
+    if (showType == 'nurseFile') {
+      groupsEmpNoAduitModal.show({
+        selectedRows,
+        getTableData: () => {
+          setSelectedRows([])
+          setSelectedRowKeys([])
+          emitter.emit('refreshNurseAuditTable')
+        }
+      })
+    } else if (showType == 'qc') {
+      groupsHlbModal.show({
+        selectedRows,
+        getTableData: () => {
+          setSelectedRows([])
+          setSelectedRowKeys([])
+          emitter.emit('refreshNurseAuditTable')
+        }
+      })
+    }
   }
+
   emitter.removeAllListeners('refreshNurseAuditTable')
-  emitter.addListener('refreshNurseAuditTable', (searchText: any) => {
-    setSearchText(searchText)
+  emitter.addListener('refreshNurseAuditTable', () => {
     onload(current, searchText)
   })
 
   useEffect(() => {
-    onload(current, searchText, pageSize)
-  }, [])
+    showType && onload(current, searchText, pageSize)
+  }, [active, authStore.selectedDeptCode, showType])
 
   return (
     <Wrapper>
-      {/* <GroupPostBtn onClick={() => onload(current)} style={{ right: 120 }}>
-        刷新
-      </GroupPostBtn>*/}
-      {/* {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>} */}
+      <GroupPostBtn onClick={() => onload(current, searchText, pageSize)}>刷新</GroupPostBtn>
+      {props.needAudit && (
+        <GroupPostBtn style={{ right: 110 }} onClick={openGroupModal}>
+          批量审核
+        </GroupPostBtn>
+      )}
       <BaseTable
         dataSource={tableData}
         columns={columns}
@@ -185,16 +227,18 @@ export default function AuditsTableDHSZ(props: Props) {
           current: current,
           showSizeChanger: true,
           showQuickJumper: true,
-          pageSizeOptions: ['10', '15', '20'],
+          pageSizeOptions: ['20', '40', '80', '100'],
           pageSize: pageSize
         }}
         onChange={onChange}
-        // rowSelection={rowSelection}
+        rowSelection={rowSelection}
         loading={loading}
       />
+      <groupsEmpNoAduitModal.Component />
+      <groupsHlbModal.Component />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div``
 const GroupPostBtn = styled(Button)`
   position: fixed !important;

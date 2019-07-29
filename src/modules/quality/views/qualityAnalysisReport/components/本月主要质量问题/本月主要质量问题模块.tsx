@@ -19,7 +19,7 @@ export default observer(function 上月质量问题模块(props: Props) {
 
   return (
     <Wrapper>
-      <div className='title'>{'3.' + sectionTitle}</div>
+      <div className='title'>{'2.3.' + sectionTitle}</div>
 
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
@@ -57,6 +57,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
+    padding-right: 15px;
     padding-bottom: 20px;
     padding-top: 5px;
     .label {

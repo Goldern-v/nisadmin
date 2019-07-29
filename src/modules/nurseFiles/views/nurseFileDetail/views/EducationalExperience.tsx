@@ -159,7 +159,6 @@ export default observer(function EducationalExperience() {
         dataSource={tableData}
         columns={columns}
         surplusHeight={365}
-        type={['spaceRow']}
         tip={
           '填写说明：记录专业教育经历，从第一学历至最高学历逐一填写。照片上传务必上传彩色原图、照片内容与学历信息内容一致。'
         }

@@ -68,7 +68,7 @@ const HeaderCon = styled.div`
 `
 const MidCon = styled.div`
   flex: 1;
-  height: 0;
+  height: calc(100vh - 145px);
 `
 const MidConScrollCon = styled.div`
   height: 100%;
@@ -94,14 +94,7 @@ const MidLeftCon = styled(ScrollBox)`
   /* border-right: 1px solid gray; */
   background-color: #eeeeee;
   align-items: stretch;
-  .QualityControlRecordDetailMidLeft__Con-sc-1yldaue-0 {
-    /* ui的 */
-    /* background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); */
-    /* 空白的 */
-    background: #fff;
-    border: 1px solid #ddd;
-  }
+  
 `
 const MidRightCon = styled.div`
   width: 317px;
