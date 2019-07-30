@@ -32,16 +32,7 @@ export default class QualityControlRecordApi extends BaseApiService {
   }
   // 质控记录单列表
   public async instanceGetPageByCondition(getData: any) {
-    let postData = {
-      pageIndex: getData.pageIndex,
-      pageSize: getData.pageSize,
-      wardCode: getData.wardCode,
-      qcCode: getData.qcCode,
-      nodeCode: getData.nodeCode,
-      beginDate: getData.beginDate,
-      endDate: getData.endDate
-    }
-    return this.post(`/qcItem/instance/getPageByCondition`, postData)
+    return this.post(`/qcItem/instance/getPageByCondition`, getData)
   }
   //质控记录单列表实例详情
   public async qcItemInstanceGet(id: string) {

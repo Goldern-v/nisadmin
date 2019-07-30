@@ -29,7 +29,8 @@ export default observer(function QualityControlRecord() {
       pageIndex: obj ? obj.current : 1,
       pageSize: obj ? obj.pageSize : 20,
       wardCode: qualityControlRecordVM.filterDeptCode,
-      qcCode: qualityControlRecordVM.filterForm,
+      qcGroupRole: qualityControlRecordVM.filterForm,
+      type: qualityControlRecordVM.readWay,
       nodeCode: qualityControlRecordVM.filterState,
       beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
       endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')

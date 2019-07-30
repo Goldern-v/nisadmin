@@ -1,7 +1,7 @@
 import { message } from 'src/vendors/antd'
 import { httpLoginToken } from 'src/libs/http/http'
 
-import { authStore, scheduleStore } from 'src/stores'
+import { authStore, scheduleStore, appStore } from 'src/stores'
 
 import BaseApiService from './BaseApiService'
 
@@ -20,9 +20,12 @@ export default class AuthApiService extends BaseApiService {
       scheduleStore.setDepartmentValue('deptCode', user.deptCode)
       scheduleStore.setDepartmentValue('deptName', user.deptName)
       authStore.initUser()
-      if (user.roleManage != '1') {
-        return message.warn('你没有权限进入管理系统')
+      if (appStore.HOSPITAL_ID == 'wh') {
+        if (user.roleManage != '1') {
+          return message.warn('你没有权限进入管理系统')
+        }
       }
+
       window.location.href = '#/home'
     })
   }

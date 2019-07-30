@@ -10,11 +10,12 @@ import FormSelect from 'src/modules/quality/views/qualityControlRecord/component
 import StateSelect from 'src/modules/quality/views/qualityControlRecord/components/common/StateSelect.tsx'
 import { qualityControlRecordVM } from '../QualityControlRecordVM'
 import { qualityControlRecordApi } from '../api/QualityControlRecordApi'
-import { Select } from 'src/vendors/antd'
+import { Select, Radio } from 'src/vendors/antd'
 
 export interface Props extends RouteComponentProps {}
 
 export default observer(function TopCon(props: any) {
+  // const [readWay, setReadWay] = useState(1)
   return (
     <Wrapper>
       <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
@@ -27,27 +28,43 @@ export default observer(function TopCon(props: any) {
         style={{ width: 220 }}
       />
 
-      <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
-      {/* <DeptSelect onChange={onChange} /> */}
-      <Select
-        showSearch
-        style={{ width: 200 }}
-        value={qualityControlRecordVM.filterDeptCode}
-        onChange={(value: any) => {
-          qualityControlRecordVM.filterDeptCode = value
-          props.refreshData()
-        }}
-      >
-        {qualityControlRecordVM.filterDeptList.map((item: any) => (
-          <Select.Option value={item.code} key={item.code}>
-            {item.name}
-          </Select.Option>
-        ))}
-      </Select>
+      <div className='radio-con'>
+        <Radio.Group
+          name='radiogroup'
+          value={qualityControlRecordVM.readWay}
+          onChange={(e) => (qualityControlRecordVM.readWay = e.target.value)}
+        >
+          <Radio value={1}>按科室查看</Radio>
+          <Radio value={2}>按质控组查看</Radio>
+        </Radio.Group>
+      </div>
+      {qualityControlRecordVM.readWay == 1 && (
+        <React.Fragment>
+          <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
+          <Select
+            showSearch
+            style={{ width: 200 }}
+            value={qualityControlRecordVM.filterDeptCode}
+            onChange={(value: any) => {
+              qualityControlRecordVM.filterDeptCode = value
+              props.refreshData()
+            }}
+          >
+            {qualityControlRecordVM.filterDeptList.map((item: any) => (
+              <Select.Option value={item.code} key={item.code}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </React.Fragment>
+      )}
 
-      <span style={{ margin: '0 3px 0 26px' }}>检查小组:</span>
-      {/* <DeptSelect onChange={onChange} /> */}
-      <FormSelect refreshData={props.refreshData} />
+      {qualityControlRecordVM.readWay == 2 && (
+        <React.Fragment>
+          <span style={{ margin: '0 3px 0 26px' }}>检查小组:</span>
+          <FormSelect refreshData={props.refreshData} />
+        </React.Fragment>
+      )}
 
       <span style={{ margin: '0 3px 0 26px' }}>状态:</span>
       <StateSelect refreshData={props.refreshData} />
@@ -74,6 +91,17 @@ const Wrapper = styled.div`
   .ant-calendar-range-picker-separator {
     position: relative;
     top: 5px;
+  }
+  .radio-con {
+    background: #fff;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px 0 10px;
+    margin-left: 20px;
   }
 `
 const QualityControlCon = styled.div`

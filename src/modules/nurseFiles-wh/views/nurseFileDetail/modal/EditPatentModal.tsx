@@ -116,7 +116,14 @@ export default function EditPatentModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`专利类型`} name='patentType'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
+              {/* <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利类型').map((item) => item.name)} /> */}
+              <Select>
+                {nurseFileDetailViewModal.getDict('专利类型').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>

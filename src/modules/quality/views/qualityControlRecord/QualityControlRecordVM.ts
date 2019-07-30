@@ -13,11 +13,13 @@ class QualityControlRecordVM {
   @observable public filterForm: any = ''
   @observable public filterState: any = ''
   @observable public filterDeptCode: any = ''
+  @observable public readWay: any = 1
 
   async init() {
     this.filterForm = ''
     this.filterState = ''
     this.filterDeptCode = ''
+    this.readWay = 1
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
 
     await Promise.all([
@@ -29,7 +31,7 @@ class QualityControlRecordVM {
       }),
       qualityControlRecordApi.qcWardCodeList().then((res) => {
         if (authStore.isDepartment) {
-          this.filterDeptCode = ''
+          this.filterDeptCode = res.data.deptList[0] && res.data.deptList[0].code
         } else {
           this.filterDeptCode = res.data.defaultDept
         }

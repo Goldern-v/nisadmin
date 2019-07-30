@@ -40,9 +40,10 @@ export default observer(function MainLayout(props: Props) {
         }
       }
     })
-
-    if (!authStore.user || (authStore.user && authStore.user.roleManage != '1')) {
-      appStore.history.push('/login')
+    if (appStore.HOSPITAL_ID == 'wh') {
+      if (!authStore.user || (authStore.user && authStore.user.roleManage != '1')) {
+        appStore.history.push('/login')
+      }
     }
   }, [])
 

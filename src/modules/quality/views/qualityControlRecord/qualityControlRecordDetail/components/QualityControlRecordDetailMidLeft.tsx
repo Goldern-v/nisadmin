@@ -26,7 +26,11 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       setMessageBoxData(detailData.master)
     }
     if (detailData.itemGroupList) {
-      setItemConData(detailData.itemGroupList)
+      setItemConData(
+        detailData.itemGroupList.map((item: any, index: number) => {
+          return { ...item, index: numToChinese(index + 1) }
+        })
+      )
     }
     if (detailData.itemCount) {
       setItemCount(detailData.itemCount)
@@ -48,7 +52,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   const titleBoxChange = (e: CheckboxChangeEvent) => {
     if (e.target.checked) {
       setItemConData(
-        cloneJson(detailData.itemGroupList).filter((item: any) => {
+        cloneJson(itemConData).filter((item: any) => {
           let fl = item.itemList.filter((o: any) => {
             return o.qcItemValue == '否'
           })
@@ -62,7 +66,11 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       )
       setOnlyReadError(true)
     } else {
-      setItemConData(detailData.itemGroupList)
+      setItemConData(
+        detailData.itemGroupList.map((item: any, index: number) => {
+          return { ...item, index: numToChinese(index + 1) }
+        })
+      )
       setOnlyReadError(false)
     }
   }
@@ -118,7 +126,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <QuestionItem key={itemGroupIndex}>
             <div className='titleCon'>
               <div className='titleLeftCon'>
-                {numToChinese(itemGroupIndex + 1)}、{itemGroup.qcItemTypeName}
+                {itemGroup.index}、{itemGroup.qcItemTypeName}
               </div>
             </div>
             {itemGroup.itemList.map((item: any, itemIndex: number) => (
@@ -155,7 +163,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
               </div>
             ))}
 
-            {!onlyReadError && (
+            {((onlyReadError && itemGroup.remark) || !onlyReadError) && (
               <div className='notesCon'>
                 <div className='notesLeftCon'>备注</div>
                 <div className='notesRightCon'>

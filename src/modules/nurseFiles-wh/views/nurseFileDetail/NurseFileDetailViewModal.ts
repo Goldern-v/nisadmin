@@ -22,7 +22,8 @@ let dictList = {
   学位: 'degree',
   论文收录网站: 'Influencing_factors',
   获奖类别: 'winning_type',
-  获奖级别: 'winning_level'
+  获奖级别: 'winning_level',
+  专利类型: 'patent_type'
 }
 
 type DictList = typeof dictList

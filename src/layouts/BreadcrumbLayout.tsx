@@ -6,7 +6,7 @@ import RouterView, { RouteComponentProps } from 'src/components/RouterView'
 import BreadcrumbBox from './components/BreadcrumbBox'
 import _ from 'lodash'
 import { BreadcrumbItem } from 'src/types/breadcrumb'
-import store from 'src/stores'
+import store, { appStore, authStore } from 'src/stores'
 import createModal from 'src/libs/createModal'
 import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 import service from 'src/services/api'
@@ -36,6 +36,11 @@ export default function BreadcrumbLayout(props: Props) {
         }
       }
     })
+    if (appStore.HOSPITAL_ID == 'wh') {
+      if (!authStore.user || (authStore.user && authStore.user.roleManage != '1')) {
+        appStore.history.push('/login')
+      }
+    }
   }, [])
 
   useLayoutEffect(() => {
