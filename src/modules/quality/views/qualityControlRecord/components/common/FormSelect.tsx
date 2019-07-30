@@ -18,39 +18,18 @@ interface Props {
 }
 
 export default observer(function FormSelect(props: Props) {
-  const [listData, setListData] = useState([])
-  let [defaultFormValue, setDefaultFormValue]: any = useState('全部')
   const onChange = (value: string) => {
     qualityControlRecordVM.filterForm = value
     props.refreshData()
   }
-  const formSelectMethod = () => {
-    qualityControlRecordApi.dictTemplate().then((res: any) => {
-      setListData(res.data)
-      qualityControlRecordVM.formSelectList = res.data
-    })
-  }
-  useEffect(() => {
-    qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
-      setListData(res.data)
-      qualityControlRecordVM.formSelectList = res.data
-      let cacheDefaultName: string
-      // if (res.data[0]) {
-      //   cacheDefaultName = res.data[0].name
-      //   // setDefaultFormValue(cacheDefaultName)
-      //   qualityControlRecordVM.formSelectCode = res.data[0].code
-      // }
-    })
-  }, [])
 
   return (
     <Wrapper>
-      {/* {qualityControlRecordVM.formSelectCode + '33'} */}
       <Select value={qualityControlRecordVM.filterForm} showSearch style={{ width: 200 }} onChange={onChange}>
         <Select.Option key='' value=''>
           全部
         </Select.Option>
-        {listData.map((item: DeptType) => (
+        {qualityControlRecordVM.formSelectList.map((item: DeptType) => (
           <Select.Option key={item.code} value={item.code}>
             {item.name}
           </Select.Option>

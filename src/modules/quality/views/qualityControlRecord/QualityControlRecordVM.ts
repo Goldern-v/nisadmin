@@ -4,53 +4,38 @@ import { authStore } from 'src/stores'
 import moment from 'moment'
 
 class QualityControlRecordVM {
-  @observable public formSelectCode = ''
+  /** 筛选列表 */
   @observable public formSelectList: any = []
-  @observable public stateSelectCode = ''
   @observable public stateSelectList: any = []
-  @observable public deptName = ''
-
+  @observable public filterDeptList: any = []
   /** 筛选条件 */
   @observable public filterDate: any = [moment(moment().format('YYYY-MM') + '-01'), moment()]
   @observable public filterForm: any = ''
   @observable public filterState: any = ''
   @observable public filterDeptCode: any = ''
 
-  public constructor() {
-    /** 监听 */
-    reaction(() => {}, () => {})
-  }
-  /** 筛选条件 */
-  @observable public filterText: string = ''
-  @computed
-  public get getDefaultName() {
-    let formSelectList = [...this.formSelectList]
-    if (!formSelectList[0]) {
-      formSelectList[0] = {}
-    }
-    if (!formSelectList[0].name) {
-      formSelectList[0].name = ''
-    }
-    return formSelectList[0].name
-  }
-  @computed
-  public get getDefaultStateName() {
-    let formSelectList = [...this.stateSelectList]
-    if (!formSelectList[0]) {
-      formSelectList[0] = {}
-    }
-    if (!formSelectList[0].name) {
-      formSelectList[0].name = ''
-    }
-    return formSelectList[0].name
-  }
-
-  init() {
-    this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
+  async init() {
     this.filterForm = ''
     this.filterState = ''
-
     this.filterDeptCode = ''
+    this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
+
+    await Promise.all([
+      qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
+        this.formSelectList = res.data
+      }),
+      qualityControlRecordApi.dictChainNode().then((res: any) => {
+        this.stateSelectList = res.data
+      }),
+      qualityControlRecordApi.qcWardCodeList().then((res) => {
+        if (authStore.isDepartment) {
+          this.filterDeptCode = ''
+        } else {
+          this.filterDeptCode = res.data.defaultDept
+        }
+        this.filterDeptList = res.data.deptList
+      })
+    ])
   }
 }
 

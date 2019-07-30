@@ -194,13 +194,13 @@ export default function BaseTable(props: Props) {
       } catch (error) {}
     }, 0)
     try {
-      scrollTop !== 0 && (tableRef!.current!.querySelector('.ant-table-body')!.scrollTop = scrollTop)
+      tableRef!.current!.querySelector('.ant-table-body')!.scrollTop = scrollTop
     } catch (error) {}
   })
 
   useEffect(() => {
     scrollTop = 0
-  }, [])
+  }, [option.pagination && option.pagination.current])
 
   let TableComponent = option.type && option.type.includes('diagRow') ? DragDropContext(HTML5Backend)(Table) : Table
 

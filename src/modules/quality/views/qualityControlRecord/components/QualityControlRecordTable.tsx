@@ -26,7 +26,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '序号',
       dataIndex: '1',
       key: '1',
-      render: (text: any, record: any, index: number) => index + 1,
+      render: (text: any, record: any, index: number) => (allData.pageIndex - 1) * allData.pageSize + index + 1,
       align: 'center',
       width: 50
     },

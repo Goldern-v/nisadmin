@@ -7,6 +7,7 @@ import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
+import service from 'src/services/api'
 export interface Props extends FormComponentProps {
   visible: boolean
   handleOk: () => void
@@ -44,6 +45,7 @@ function AddNursingModal(props: Props) {
     handleCancel,
     form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
+  const [realDeptList, setRealDeptList] = useState([])
   const handleSubmit = (e: any) => {
     validateFields((err, value) => {
       if (err) {
@@ -56,6 +58,7 @@ function AddNursingModal(props: Props) {
       if (err) {
         return
       }
+
       if (value.birthday) value.birthday = value.birthday.format('YYYY-MM-DD')
       if (value.deptCode) value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
       nurseFilesService.saveOrUpdate(value).then((res) => {
@@ -68,12 +71,15 @@ function AddNursingModal(props: Props) {
 
   useEffect(() => {
     if (visible) {
+      // service.commonApiService.getNursingUnitAll().then((res) => {
+      //   setRealDeptList(res.deptList)
+      // })
       resetFields()
     }
   }, [visible])
 
   return (
-    <Modal title='添加护士' visible={visible} onOk={onSave} onCancel={handleCancel} okText='保存' forceRender>
+    <Modal title='添加护士' visible={visible} onOk={onSave} onCancel={handleCancel} okText='保存' centered>
       <Form>
         <Form.Item {...formItemLayout} label='姓名'>
           {getFieldDecorator('empName', {
@@ -90,9 +96,7 @@ function AddNursingModal(props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='身份证号'>
-          {getFieldDecorator('cardNumber', {
-            rules: [{ required: true, message: '身份证号不能为空' }]
-          })(<Input />)}
+          {getFieldDecorator('cardNumber')(<Input />)}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='出生年月'>
@@ -101,8 +105,7 @@ function AddNursingModal(props: Props) {
 
         <Form.Item {...formItemLayout} label='所属科室'>
           {getFieldDecorator('deptCode', {
-            initialValue: authStore.selectedDeptCode,
-            rules: [{ required: true, message: '所属科室不能为空' }]
+            initialValue: authStore.selectedDeptCode == '全院' ? '' : authStore.selectedDeptCode
           })(
             <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
               {authStore.deptList.map((item: any) => {
@@ -123,9 +126,7 @@ function AddNursingModal(props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='学历'>
-          {getFieldDecorator('highestEducation', {
-            rules: [{ required: true, message: '学历不能为空' }]
-          })(
+          {getFieldDecorator('highestEducation')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择学历'>
               {EDUCATION_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
@@ -137,9 +138,7 @@ function AddNursingModal(props: Props) {
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='职称'>
-          {getFieldDecorator('newTitle', {
-            rules: [{ required: true, message: '职称不能为空' }]
-          })(
+          {getFieldDecorator('newTitle')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
               {TITLE_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
@@ -150,9 +149,7 @@ function AddNursingModal(props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='层级'>
-          {getFieldDecorator('nurseHierarchy', {
-            rules: [{ required: true, message: '层级不能为空' }]
-          })(
+          {getFieldDecorator('nurseHierarchy')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
               {CURRENTLEVEL_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
@@ -163,9 +160,7 @@ function AddNursingModal(props: Props) {
           )}
         </Form.Item>
         <Form.Item {...formItemLayout} label='职务'>
-          {getFieldDecorator('job', {
-            rules: [{ required: true, message: '职务不能为空' }]
-          })(
+          {getFieldDecorator('job')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择职务'>
               {POST_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>

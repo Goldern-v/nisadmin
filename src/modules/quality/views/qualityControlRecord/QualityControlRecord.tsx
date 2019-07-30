@@ -18,11 +18,12 @@ export default observer(function QualityControlRecord() {
   let [tableData, setTableData]: any = useState([])
   let [loading, setLoading] = useState(false)
   useEffect(() => {
-    qualityControlRecordVM.init()
-    getTableData()
+    ;(async () => {
+      await qualityControlRecordVM.init()
+      getTableData()
+    })()
   }, [])
   const getTableData = (obj?: any) => {
-    console.log(obj, 'aaa')
     setLoading(true)
     let sendData = {
       pageIndex: obj ? obj.current : 1,

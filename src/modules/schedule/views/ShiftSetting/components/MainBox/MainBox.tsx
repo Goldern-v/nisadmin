@@ -157,7 +157,7 @@ export default function MainBox() {
           <span
             onClick={() => {
               globalModal.confirm('确认删除', '确认删除该套餐？').then((res) => {
-                service.scheduleShiftApiService.delete(record.key).then((res) => {
+                service.scheduleShiftApiService.delete(record.id).then((res) => {
                   emitter.emit('更新班次列表')
                 })
                 message.success(`删除${record.name}成功`)

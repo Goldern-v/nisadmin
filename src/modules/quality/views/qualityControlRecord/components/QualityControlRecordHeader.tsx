@@ -15,20 +15,6 @@ import { Select } from 'src/vendors/antd'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function TopCon(props: any) {
-  const [selfDeptList, setSelfDeptList] = useState([])
-  const onChange = (value: string) => {
-    // nurseFilesListViewModel.loadNursingList()
-  }
-  useEffect(() => {
-    qualityControlRecordApi.qcWardCodeList().then((res) => {
-      setSelfDeptList(res.data.deptList)
-      if (authStore.isDepartment) {
-        qualityControlRecordVM.filterDeptCode = '全院'
-      } else {
-        qualityControlRecordVM.filterDeptCode = res.data.defaultDept
-      }
-    })
-  }, [])
   return (
     <Wrapper>
       <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
@@ -44,6 +30,7 @@ export default observer(function TopCon(props: any) {
       <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
       {/* <DeptSelect onChange={onChange} /> */}
       <Select
+        showSearch
         style={{ width: 200 }}
         value={qualityControlRecordVM.filterDeptCode}
         onChange={(value: any) => {
@@ -51,7 +38,7 @@ export default observer(function TopCon(props: any) {
           props.refreshData()
         }}
       >
-        {selfDeptList.map((item: any) => (
+        {qualityControlRecordVM.filterDeptList.map((item: any) => (
           <Select.Option value={item.code} key={item.code}>
             {item.name}
           </Select.Option>
