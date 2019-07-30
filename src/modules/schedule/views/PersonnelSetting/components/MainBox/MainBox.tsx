@@ -5,11 +5,12 @@ import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
 import { Transfer, Modal ,Input ,message} from 'antd'
 import { calendarFormat } from 'moment';
-
 export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
   let [editingKey, setEditingKey] = useState(false)
+  // let [mockData, setMockData] = useState([])
+  // let [targetKeys, setTargetKeys] = useState([])
   const dataSource:any = [
     {
       key: '1',
@@ -20,6 +21,47 @@ export default function MainBox() {
       name: '脑科手术前期准备二组',
     },
   ];
+  
+  // useEffect(() => {
+  //   getMock()
+  // });
+  
+  // const getMock = () => {
+  //   let targetKeys1:any = [];
+  //   let mockData1:any = [];
+  //   for (let i = 0; i < 20; i++) {
+  //     const data = {
+  //       key: i.toString(),
+  //       title: `content${i + 1}`,
+  //       description: `description of content${i + 1}`,
+  //       chosen: Math.random() * 2 > 1,
+  //     };
+  //     if (data.chosen) {
+  //       targetKeys1.push(data.key);
+  //     }
+  //     mockData1.push(data);
+  //   }
+  //   setMockData(mockData1);
+  //   setTargetKeys(targetKeys1);
+  // };
+
+  // const handleChange = (targetKeys:any, direction:any, moveKeys:any) => {
+  //   console.log(targetKeys, direction, moveKeys);
+  //   setTargetKeys([]);
+  // };
+
+  // const renderItem = (item:any) => {
+  //   const customLabel = (
+  //     <span className="custom-item">
+  //       {item.title} - {item.description}
+  //     </span>
+  //   );
+  //   return {
+  //     label: customLabel, 
+  //     value: item.title, 
+  //   };
+  // };
+  //表格
   const columns: any = [
     {
       title: '序号',
@@ -51,10 +93,10 @@ export default function MainBox() {
           </Wrapper>
         )
       }
-
     }
   ]
 
+  //表格删除
   const handleDelete = (record: any) => {
     Modal.confirm({
       title: '提示',
@@ -78,16 +120,23 @@ export default function MainBox() {
   return (
     <Wrapper>
       <BaseTableBox>
-        <BaseTable columns={columns} surplusHeight={185} dataSource={dataSource}/> 
+        <BaseTable columns={columns} surplusHeight={190} dataSource={dataSource}/> 
       </BaseTableBox>
       <TransferBox>
         <TitleCon>本科室成员名单：</TitleCon>
         <Transfer className='transfer'
+        // dataSource={mockData}
         listStyle={{
           width: '46%',
           height:'calc(100vh - 187px)',
         }}
+        locale={{
+          itemUnit: '人', itemsUnit: '人', 
+        }}
         titles={['已选成员', '可选成员']}
+        // targetKeys={targetKeys}
+        // onChange={handleChange}
+        // render={renderItem}
         />
         <Modal
           className='modal'
@@ -125,9 +174,6 @@ const TransferBox = styled.div`
   flex:1;
   padding:15px;
   box-sizing:border-box;
-  .transfer .ant-transfer-list-header span{
-
-  }
 `
 const TitleCon = styled.div`
   height:35px;

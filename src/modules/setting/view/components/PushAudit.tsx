@@ -21,8 +21,8 @@ export interface Props {
 // import EventBar from './EventBar';
 import emitter from '../../../../libs/ev'
 export default observer(function PushAudit(props: Props) {
-  const [activeKey, setActiveKey] = useState('0')
   let type = appStore.queryObj.type || '0'
+  const [activeKey, setActiveKey] = useState(type)
   const TABS_LIST_NURSE = [
     {
       title: '事件',
@@ -48,7 +48,6 @@ export default observer(function PushAudit(props: Props) {
       component: <DiagnosisTable isShow={props.isShow} />
     }
   ]
-
   emitter.removeAllListeners('自动推送设置-添加')
   emitter.addListener('自动推送设置-添加', () => {
     if (activeKey === '0') {
