@@ -68,7 +68,7 @@ export default function NewNursingRulesAddModal(props: Props) {
             if (keys.length > 0) {
 
               refForm.current.setFields({
-                deptCode: params.deptCode,
+                // deptCode: params.deptCode,
                 fileName: params.fileName,
                 catalog: params.catalog,
               });
@@ -102,12 +102,12 @@ export default function NewNursingRulesAddModal(props: Props) {
       if (!formData.catalog)
         return Message.error('未选择目录');
 
-      if (!params.id) {
-        if (!(file && nameEl.value))
-          return Message.error('未选择上传文件');
+      // if (!params.id) {
+      if (!(file && nameEl.value))
+        return Message.error('未选择上传文件');
 
-        data.append('file', file);
-      }
+      data.append('file', file);
+      // }
 
       data.append('empNo', empNo);
 
@@ -129,22 +129,25 @@ export default function NewNursingRulesAddModal(props: Props) {
         setUploadLoading(false)
       }
 
+      data.append('deptCode', deptCode);
+
       if (params && Object.keys(params).length > 0) {
-        // data.append('id', params.id);
-        api.update({
-          id: params.id,
-          fileName: formData.fileName,
-          catalog: formData.catalog
-        }).then(res => {
-          if (res.code == 200)
-            successCallback(null, '修改成功')
-          else
-            failedCallback(null, '修改失败')
-        }, err => {
-          failedCallback(err)
-        })
+        Promise.all([
+          api.delete(params.id),
+          api.upload(data)
+        ])
+          .then(res => {
+            if (res[1].code == 200) {
+              successCallback('修改成功')
+            } else {
+              let msg = '修改失败';
+              if (res[1].desc) msg = res[1].desc;
+              failedCallback(null, msg)
+            }
+          }, err => {
+            failedCallback(err)
+          })
       } else {
-        data.append('deptCode', deptCode);
         api.upload(data).then(res => {
           if (res.code == 200)
             successCallback()
@@ -178,7 +181,7 @@ export default function NewNursingRulesAddModal(props: Props) {
 
   return <Modal
     className="new-nursing-rules-add-modal"
-    title={params.id ? '修改文件名称' : '新建'}
+    title={params.id ? '修改' : '新建'}
     onOk={handleOkBtn}
     centered
     confirmLoading={uploadLoading}
@@ -204,7 +207,8 @@ export default function NewNursingRulesAddModal(props: Props) {
             </Form.Field>
           </span>
         </div>
-        <div className="row" style={{ display: `${params.id ? 'none' : 'flex'}` }}>
+        {/* <div className="row" style={{ display: `${params.id ? 'none' : 'flex'}` }}> */}
+        <div className="row" >
           <span className="label">文件上传:</span>
           <span className="content">
             <input readOnly className="ipt ant-input file-name" placeholder="请上传文件" />
