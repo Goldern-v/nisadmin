@@ -41,15 +41,15 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '质控日期',
       dataIndex: 'evalDate',
       key: '',
-      width: 110,
+      width: 130,
       align: 'center'
     },
     {
       title: '质控病区',
       dataIndex: 'wardName',
       key: '',
-      width: 110,
-      align: 'center'
+      width: 160,
+      align: 'left'
     },
     {
       title: '质控表单',
@@ -57,7 +57,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       dataIndex: 'qcName',
       key: '',
       width: 160,
-      align: 'center'
+      align: 'left'
     },
 
     {
@@ -96,7 +96,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '质量结果',
       dataIndex: 'evalRate',
       key: '',
-      width: 90,
+      width: 80,
       align: 'center',
       render(text: any) {
         return typeof text == 'number' && text.toFixed(2) + '%'
@@ -107,7 +107,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'zt',
       dataIndex: 'currentHandledNodeName',
       key: '',
-      width: 130,
+      width: 100,
       align: 'center'
     },
     {

@@ -10,9 +10,16 @@ class SelectPeopleViewModel {
       label: authStore.selectedDeptName,
       data: []
     },
+
     {
       step: '按护理单元选择',
       label: '按护理单元选择',
+      data: [],
+      dataLabel: 'deptName'
+    },
+    {
+      step: '按片区选择',
+      label: '按片区选择',
       data: [],
       dataLabel: 'deptName'
     },
@@ -104,6 +111,7 @@ class SelectPeopleViewModel {
     return Promise.all([
       ser.defaultDeptUser(),
       ser.groupByDeptInDeptList(),
+      ser.groupByBigDeptInDeptList(),
       ser.groupByJobInDeptList(),
       ser.groupByTitleInDeptList(),
       ser.groupByLevelInDeptList()

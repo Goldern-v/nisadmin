@@ -28,16 +28,22 @@ export default observer(function TopCon(props: any) {
         style={{ width: 220 }}
       />
 
-      <div className='radio-con'>
-        <Radio.Group
-          name='radiogroup'
-          value={qualityControlRecordVM.readWay}
-          onChange={(e) => (qualityControlRecordVM.readWay = e.target.value)}
-        >
-          <Radio value={1}>按科室查看</Radio>
-          <Radio value={2}>按质控组查看</Radio>
-        </Radio.Group>
-      </div>
+      {qualityControlRecordVM.formSelectList.length >= 1 && (
+        <div className='radio-con'>
+          <Radio.Group
+            name='radiogroup'
+            value={qualityControlRecordVM.readWay}
+            onChange={(e) => {
+              qualityControlRecordVM.readWay = e.target.value
+              props.refreshData()
+            }}
+          >
+            <Radio value={1}>按科室查看</Radio>
+            <Radio value={2}>按质控组查看</Radio>
+          </Radio.Group>
+        </div>
+      )}
+
       {qualityControlRecordVM.readWay == 1 && (
         <React.Fragment>
           <span style={{ margin: '0 3px 0 26px' }}>科室:</span>

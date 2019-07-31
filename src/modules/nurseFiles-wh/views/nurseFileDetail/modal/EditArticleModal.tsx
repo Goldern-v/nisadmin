@@ -126,7 +126,7 @@ export default function EditArticleModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`文章类别`} name='articleType'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('文章类别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
