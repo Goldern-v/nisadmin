@@ -4,35 +4,53 @@ import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores/index'
 import BaseTable from 'src/components/BaseTable'
 import { Button } from 'antd'
-
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
 //引入图标
 import { ReactComponent as TZGG } from '../images/通知公告.svg'
 export interface Props extends RouteComponentProps {}
 
 export default function NoticeTable() {
+  const [loadingTable, setLoadingTable] = useState(false)
+  const [tableData, setTableData] = useState([])
+  const [pageIndex, setPageIndex] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
+  const [keyword, setKeyword] = useState('')
+
   const columns: any = [
     {
       title: '标题',
-      dataIndex: '标题',
-      key: '标题',
-      width: 65,
-      align: 'center'
+      dataIndex: 'title',
+      key: 'title',
+      width: 60,
+      align: 'left'
     },
     {
       title: '提取人',
-      dataIndex: '提取人',
-      key: '提取人',
-      width: 10,
-      align: 'center'
+      dataIndex: 'senderName',
+      key: 'senderName',
+      width: 12,
+      align: 'left'
     },
     {
       title: '时间',
-      dataIndex: '时间',
-      key: '时间',
-      width: 15,
-      align: 'center'
+      dataIndex: 'sendTime',
+      key: 'sendTime',
+      width: 18,
+      align: 'left'
     }
   ]
+
+  const getMealList = () => {
+    setLoadingTable(true)
+    HomeApi.getReceiveList(pageIndex, pageSize, keyword).then((res) => {
+      setLoadingTable(false)
+      setTableData(res.data.list)
+    })
+  }
+
+  useEffect(() => {
+   getMealList()
+  }, [])
 
   return (
     <Wrapper>
@@ -41,10 +59,15 @@ export default function NoticeTable() {
           <TZGG />
         </I>
         <World>通知公告</World>
-        <More>更多 ></More>
-        <Button>创建</Button>
+        <More onClick={() => {appStore.history.push('/notice')}}>更多 ></More>
+        <Button onClick={() => {appStore.history.push('/sentNotice')}}>创建</Button>
       </TableTitle>
-      <BaseTable columns={columns} surplusHeight={(appStore.wih - 365) / 2 + 365} />
+      <BaseTable 
+        dataSource={tableData} 
+        columns={columns} 
+        surplusHeight={(appStore.wih - 365) / 2 + 365} 
+        loading={loadingTable}
+        />
     </Wrapper>
   )
 }
@@ -55,7 +78,7 @@ const Wrapper = styled.div`
     padding: 0 !important;
     .ant-table-header-column {
       text-align: left;
-      padding-left: 20px;
+      padding-left: 10px;
       box-sizing: border-box;
       overflow: auto;
     }
@@ -99,7 +122,6 @@ const I = styled.span`
 const World = styled.span`
   display: inline-block;
   margin-left: 10px;
-  /* width: 64px; */
   font-size: 15px;
   font-weight: 900;
   color: rgba(51, 51, 51, 1);

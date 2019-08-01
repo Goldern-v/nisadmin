@@ -3,7 +3,6 @@ const proxy = require('http-proxy-middleware')
 module.exports = function(app) {
   app.use(
     proxy('/crNursing/api', {
-      // target: 'http://120.25.105.45:9864',
       //厚街正式环境
       // target: 'http://120.197.141.41:9094',
       // target: 'http://120.197.141.41:9091',
