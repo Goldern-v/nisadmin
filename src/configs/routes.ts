@@ -73,7 +73,7 @@ import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysis
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
-  setLayout('/home', HomeView, layouts.MainLayout),
+
   setLayout('/scheduleHome', ScheduleHomeView, layouts.MainLayout),
   // setLayout('/nurseSetting', NurseSettingView, layouts.MainLayout),
   setLayout('/nurseSetting', NurseSettingView, layouts.BreadcrumbLayout, [

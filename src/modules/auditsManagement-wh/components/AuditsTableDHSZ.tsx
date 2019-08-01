@@ -46,7 +46,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       title: '序号',
       dataIndex: '1',
       key: '1',
-      render: (text: any, record: any, index: number) => index + 1,
+      render: (text: any, record: any, index: number) => (current - 1) * pageSize + index + 1,
       align: 'center',
       width: 50
     },
@@ -55,7 +55,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       dataIndex: 'type',
       key: 'type',
       align: 'center',
-      width: 100,
+      width: 90,
       render(text: string, record: any) {
         return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '质量检查' : ''
       }
@@ -64,22 +64,22 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       title: '内容',
       dataIndex: 'message',
       key: 'message',
-      align: 'center',
+      align: 'left',
       width: 250
     },
     {
       title: '科室',
       dataIndex: 'wardName',
       key: 'wardName',
-      align: 'center',
-      width: 120
+      align: 'left',
+      width: 150
     },
     {
       title: '状态',
       dataIndex: 'statusDesc',
       key: 'statusDesc',
       align: 'center',
-      width: 120
+      width: 100
     },
 
     {
@@ -93,7 +93,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       title: '提交时间',
       dataIndex: 'commitTime',
       key: 'commitTime',
-      width: 150,
+      width: 130,
       align: 'center'
     },
     {

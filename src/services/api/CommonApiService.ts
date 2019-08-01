@@ -44,6 +44,10 @@ export default class CommonApiService extends BaseApiService {
   public groupByDeptInDeptList(deptCode?: string, keyword?: String) {
     return this.post(`/user/groupByDeptInDeptList`, { deptCode, keyword })
   }
+  /** 根据片区获取人员列表 */
+  public groupByBigDeptInDeptList() {
+    return this.post(`/user/groupByBigDeptInDeptList`, {})
+  }
   /** 根据职称获取人员列表 */
   public groupByTitleInDeptList(title?: string, keyword?: String) {
     return this.post(`/user/groupByTitleInDeptList`, { title, keyword })

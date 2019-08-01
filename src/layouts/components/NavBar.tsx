@@ -301,5 +301,6 @@ const RightCon = styled.div`
     width: 30px;
     border-radius: 50%;
     margin-right: 10px;
+    object-fit: cover;
   }
 `

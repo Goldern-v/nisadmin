@@ -18,17 +18,19 @@ export default observer(function QualityControlRecord() {
   let [tableData, setTableData]: any = useState([])
   let [loading, setLoading] = useState(false)
   useEffect(() => {
-    qualityControlRecordVM.init()
-    getTableData()
+    ;(async () => {
+      await qualityControlRecordVM.init()
+      getTableData()
+    })()
   }, [])
   const getTableData = (obj?: any) => {
-    console.log(obj, 'aaa')
     setLoading(true)
     let sendData = {
       pageIndex: obj ? obj.current : 1,
       pageSize: obj ? obj.pageSize : 20,
       wardCode: qualityControlRecordVM.filterDeptCode,
-      qcCode: qualityControlRecordVM.filterForm,
+      qcGroupRole: qualityControlRecordVM.filterForm,
+      type: qualityControlRecordVM.readWay,
       nodeCode: qualityControlRecordVM.filterState,
       beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
       endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
