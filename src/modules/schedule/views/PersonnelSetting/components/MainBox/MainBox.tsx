@@ -9,8 +9,8 @@ export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
   let [editingKey, setEditingKey] = useState(false)
-  // let [mockData, setMockData] = useState([])
-  // let [targetKeys, setTargetKeys] = useState([])
+  let [mockData, setMockData] = useState([])
+  let [targetKeys, setTargetKeys] = useState([])
   const dataSource:any = [
     {
       key: '1',
@@ -22,46 +22,46 @@ export default function MainBox() {
     },
   ];
   
-  // useEffect(() => {
-  //   getMock()
-  // });
+  useEffect(() => {
+    getMock()
+  },[]);
   
-  // const getMock = () => {
-  //   let targetKeys1:any = [];
-  //   let mockData1:any = [];
-  //   for (let i = 0; i < 20; i++) {
-  //     const data = {
-  //       key: i.toString(),
-  //       title: `content${i + 1}`,
-  //       description: `description of content${i + 1}`,
-  //       chosen: Math.random() * 2 > 1,
-  //     };
-  //     if (data.chosen) {
-  //       targetKeys1.push(data.key);
-  //     }
-  //     mockData1.push(data);
-  //   }
-  //   setMockData(mockData1);
-  //   setTargetKeys(targetKeys1);
-  // };
+  const getMock = () => {
+    let targetKeys1:any = [];
+    let mockData1:any = [];
+    for (let i = 0; i < 20; i++) {
+      const data = {
+        key: i.toString(),
+        title: `content${i + 1}`,
+        description: `description of content${i + 1}`,
+        chosen: Math.random() * 2 > 1,
+      };
+      if (data.chosen) {
+        targetKeys1.push(data.key);
+      }
+      mockData1.push(data);
+    }
+    setMockData(mockData1);
+    setTargetKeys(targetKeys1);
+  };
 
-  // const handleChange = (targetKeys:any, direction:any, moveKeys:any) => {
-  //   console.log(targetKeys, direction, moveKeys);
-  //   setTargetKeys([]);
-  // };
+  const handleChange = (targetKeys:any, direction:any, moveKeys:any) => {
+    console.log(targetKeys, direction, moveKeys);
+    setTargetKeys(targetKeys);
+  };
 
-  // const renderItem = (item:any) => {
-  //   const customLabel = (
-  //     <span className="custom-item">
-  //       {item.title} - {item.description}
-  //     </span>
-  //   );
-  //   return {
-  //     label: customLabel, 
-  //     value: item.title, 
-  //   };
-  // };
-  //表格
+  const renderItem = (item:any) => {
+    const customLabel = (
+      <span className="custom-item">
+        {item.title} - {item.description}
+      </span>
+    );
+    return {
+      label: customLabel, 
+      value: item.title, 
+    };
+  };
+  // 表格
   const columns: any = [
     {
       title: '序号',
@@ -124,8 +124,9 @@ export default function MainBox() {
       </BaseTableBox>
       <TransferBox>
         <TitleCon>本科室成员名单：</TitleCon>
-        <Transfer className='transfer'
-        // dataSource={mockData}
+        <Transfer 
+        className='transfer'
+        dataSource={mockData}
         listStyle={{
           width: '46%',
           height:'calc(100vh - 187px)',
@@ -134,9 +135,9 @@ export default function MainBox() {
           itemUnit: '人', itemsUnit: '人', 
         }}
         titles={['已选成员', '可选成员']}
-        // targetKeys={targetKeys}
-        // onChange={handleChange}
-        // render={renderItem}
+        targetKeys={targetKeys}
+        onChange={handleChange}
+        render={renderItem}
         />
         <Modal
           className='modal'
