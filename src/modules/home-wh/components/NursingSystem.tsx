@@ -45,6 +45,7 @@ export default function NursingSystem() {
         <Li>
           <Icon>{setIcon(item.type)}</Icon>
           <Content className='content'>{item.name}</Content>
+          <span>.{item.type}</span>
           <Time className='time'>{item.uploadTime}</Time>
         </Li>
       )
@@ -151,7 +152,7 @@ const Icon = styled.div`
 `
 const Content = styled.span`
   display: inline-block;
-  width: 155px;
+  width: 118px;
   font-size: 13px;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
