@@ -9,8 +9,8 @@ import service from 'src/services/api'
 import { scheduleStore, authStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
-import BaseTable from 'src/components/BaseTable'
-import { DoCon } from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+
 import { globalModal } from 'src/global/globalModal'
 
 // import emitter from 'src/libs/ev'

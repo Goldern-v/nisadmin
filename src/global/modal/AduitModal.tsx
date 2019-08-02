@@ -10,8 +10,8 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
 import { modalService } from '../services/ModalService'
 import Zimage from 'src/components/Zimage'
-const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
-const defaultFile = require('../../modules/nurseFiles/images/证件空态度.png')
+const defaultHead = require('../images/护士默认头像.png')
+const defaultFile = require('../images/证件空态度.png')
 const aduitSuccessIcon = require('../images/审核通过.png')
 export interface Props extends ModalComponentProps {
   allData?: any

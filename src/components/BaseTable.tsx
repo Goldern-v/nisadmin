@@ -48,15 +48,23 @@ export default function BaseTable(props: Props) {
   if (props.surplusHeight) {
     option.scroll = { y: wih - props.surplusHeight }
   }
+  if (props.pagination) {
+    let pagination = {
+      showSizeChanger: true,
+      showSizeshowQuickJumperChanger: true,
+      pageSizeOptions: ['10', '20', '30', '40', '50']
+    }
+    Object.assign(pagination, props.pagination)
+    Object.assign(props.pagination, pagination)
+  }
   if (props.surplusWidth) {
     option.scroll = option.scroll
       ? Object.assign(option.scroll, { x: wiw - props.surplusWidth })
       : { x: wiw - props.surplusWidth }
   }
   try {
-    if (option.type.includes('spaceRow')) {
+    if (option.type && option.type.includes('spaceRow')) {
       /** 根据表格高度计算空白行 */
-
       let defaultSpaceRow = 10
       if (option.surplusHeight) {
         defaultSpaceRow = (wih - option.surplusHeight) / 30 - 1
@@ -70,7 +78,7 @@ export default function BaseTable(props: Props) {
         }
       }
     }
-    if (option.type.includes('diagRow')) {
+    if (option.type && option.type.includes('diagRow')) {
       /** 拖拽 */
       option.components = components
       option.onRow = (record: any, index: any) => ({
@@ -78,13 +86,38 @@ export default function BaseTable(props: Props) {
         moveRow: option.moveRow
       })
     }
+    if (option.type && option.type.includes('index')) {
+      /** 序号 */
+      option.columns &&
+        (option.columns[0] || {}).title != '序号' &&
+        option.columns.unshift({
+          title: '序号',
+          dataIndex: '1',
+          key: '1',
+          render: (text: any, record: any, index: number) => {
+            let current = (option.pagination && option.pagination.current) || 0
+            let pageSize = (option.pagination && option.pagination.pageSize) || 0
+
+            if (current && pageSize) {
+              return (current - 1) * pageSize + index + 1
+            } else {
+              return index + 1
+            }
+          },
+          align: 'center',
+          width: 50
+        })
+    }
+
     // if (option.type.includes('fixedWidth')) {
     //   /** 设置宽度 */
     //   let totalWidth = option.columns.reduce((total: number, item: any) => total + (Number(item.width) || 0), 0)
     //   if (!option.style) option.style = {}
     //   option.style.width = totalWidth
     // }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error, '表格异常')
+  }
 
   let doCols: any = option.columns.filter((item: any) => item.title == '操作' || item.title == '附件')
 
@@ -376,4 +409,27 @@ export const DoCon = styled.div`
       font-weight: bold;
     }
   }
+`
+export const TableHeadCon = styled.div`
+  height: 50px;
+  font-size: 13px;
+  position: relative;
+  font-size: 13px;
+  color: #333333;
+  padding: 0 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: 1;
+`
+export const TabledCon = styled.div`
+  margin: 0px 15px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  border-radius: 5px;
 `

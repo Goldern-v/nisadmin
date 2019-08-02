@@ -39,7 +39,7 @@ const navListWH: any = [
   {
     name: '档案管理',
     icon: <HSDA />,
-    path: '/nurseFilesList'
+    path: '/nurseFile'
   },
   // {
   //   name: '不良事件',
@@ -113,7 +113,7 @@ const navList: any = [
   {
     name: '档案管理',
     icon: <HSDA />,
-    path: '/nurseFilesList'
+    path: '/nurseFile'
   },
   {
     name: '不良事件',

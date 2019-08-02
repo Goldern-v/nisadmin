@@ -14,9 +14,13 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
 import emitter from 'src/libs/ev'
-import { TITLE_LIST, POST_LIST } from 'src/modules/nurseFiles/views/nurseFilesList/modal/AddNursingModal'
-import { CURRENTLEVEL_LIST } from '../../../../nurseFiles/views/nurseFilesList/modal/AddNursingModal'
+
 import service from 'src/services/api'
+import {
+  TITLE_LIST,
+  POST_LIST,
+  CURRENTLEVEL_LIST
+} from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFilesList/modal/AddNursingModal'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   getTableData?: () => void
