@@ -3,43 +3,74 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores/index'
 import BaseTable from 'src/components/BaseTable'
-
+import HomeApi from 'src/modules/home/api/HomeApi.ts'
 //引入图标
 import { ReactComponent as DWSH } from '../images/待我审核.svg'
-
 export interface Props extends RouteComponentProps {}
 
 export default function ExamineTable() {
+  const [loadingTable, setLoadingTable] = useState(false)
+  const [tableData, setTableData] = useState([])
+  const [current, setCurrent] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [keyword, setKeyword] = useState('')
+
   const columns: any = [
     {
       title: '类型',
-      dataIndex: '类型',
-      key: '类型',
-      width: 10,
-      align: 'center'
+      dataIndex: 'type',
+      key: 'type',
+      width: 15,
+      align: 'left',
+      marginLeft:'20px',
+      render(text: string, record: any) {
+        return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '质量检查' : ''
+      }
     },
     {
       title: '内容',
-      dataIndex: '内容',
-      key: '内容',
-      width: 55,
-      align: 'center'
+      dataIndex: 'message',
+      key: 'message',
+      width: 45,
+      align: 'left'
     },
     {
       title: '提取人',
-      dataIndex: '提取人',
-      key: '提取人',
-      width: 10,
-      align: 'center'
+      dataIndex: 'commiterName',
+      key: 'commiterName',
+      width: 12,
+      align: 'left'
     },
     {
       title: '时间',
-      dataIndex: '时间',
-      key: '时间',
-      width: 15,
-      align: 'center'
+      dataIndex: 'commitTime',
+      key: 'commitTime',
+      width: 18,
+      align: 'left'
     }
   ]
+
+  const getMealList = () => {
+    //质量检查和档案管理各拿10条数据
+    let qualityCheck = HomeApi.pendingPage(current, pageSize, "qc", keyword)
+    let nurseFileCheck = HomeApi.pendingPage(current, pageSize, 'qc', keyword)
+    setLoadingTable(true)
+    Promise.all([qualityCheck, nurseFileCheck]).then(values => {
+      setLoadingTable(false)
+      let array = (values[0].data.list || []).concat(values[1].data.list || [])
+      //按照提交时间先后排序
+      array.length > 1 && array.sort((a:any, b:any) => {
+        return Date.parse(b.commitTime.replace(/-/g, '/')) - Date.parse(a.commitTime.replace(/-/g, '/'))
+      })
+      setTableData(array)
+      }).catch(() => {
+    })
+  }
+
+  useEffect(() => {
+   getMealList()
+  }, [])
+
   return (
     <Wrapper>
       <TableTitle>
@@ -47,9 +78,14 @@ export default function ExamineTable() {
           <DWSH />
         </I>
         <World>待我审核</World>
-        <More>更多 ></More>
+        <More onClick={() => {appStore.history.push('/auditsManagement')}}>更多 ></More>
       </TableTitle>
-      <BaseTable columns={columns} surplusHeight={(appStore.wih - 365) / 2 + 365} />
+      <BaseTable 
+        dataSource={tableData} 
+        columns={columns} 
+        surplusHeight={(appStore.wih - 365) / 2 + 365} 
+        loading={loadingTable}
+        />
     </Wrapper>
   )
 }
@@ -61,7 +97,7 @@ const Wrapper = styled.div`
     padding: 0 !important;
     .ant-table-header-column {
       text-align: left;
-      padding-left: 20px;
+      padding-left: 10px;
       box-sizing: border-box;
     }
     .ant-table-body {
@@ -92,7 +128,6 @@ const I = styled.span`
 const World = styled.span`
   display: inline-block;
   margin-left: 10px;
-  /* width: 64px; */
   font-size: 15px;
   font-weight: 900;
   color: rgba(51, 51, 51, 1);
