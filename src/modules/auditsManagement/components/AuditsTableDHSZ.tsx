@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseTable from 'src/components/BaseTable'
 import windowHeight from 'src/hooks/windowHeight'
-import { nurseFilesService } from 'src/modules/nurseFiles/services/NurseFilesService'
+
 import store from 'src/stores'
-import AuditText from 'src/modules/nurseFiles/views/nurseAudit/components/auditText/AuditText'
+
 import emitter from 'src/libs/ev'
 import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
+import AuditText from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAudit/components/auditText/AuditText'
+import { nurseFilesService } from 'src/modules/nurseFiles/view/nurseFiles-hj/services/NurseFilesService'
 export interface Props {
   type: string
   needAudit: boolean
@@ -83,8 +85,8 @@ export default function AuditsTableDHSZ(props: Props) {
           justify-content: space-around;
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
-          :hover{
-            font-weight:bold;
+          :hover {
+            font-weight: bold;
           }
         `
         return (

@@ -10,13 +10,15 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
 import { modalService } from '../services/ModalService-wh'
 import Zimage from 'src/components/Zimage'
-const defaultHead = require('../../modules/nurseFiles/images/护士默认头像.png')
-const defaultFile = require('../../modules/nurseFiles/images/证件空态度.png')
+import _ from 'lodash'
+const defaultHead = require('../images/护士默认头像.png')
+const defaultFile = require('../images/证件空态度.png')
 const aduitSuccessIcon = require('../images/审核通过.png')
 export interface Props extends ModalComponentProps {
   allData?: any
   tableFormat?: any
   fileData?: any
+  fileFormat?: any
   title?: string
   type: string
   id?: string
@@ -112,7 +114,33 @@ export default function AduitModal(props: Props) {
             setNeedAudite(true)
           }
           setAuditStatus(data.auditedStatusName)
-          if ((!props.fileData || props.fileData.length == 0) && data.urlImageOne) {
+
+          if (props.fileFormat) {
+            let fileNames = Object.keys(props.fileFormat)
+            let fileList = fileNames.map((item) => ({
+              name: item,
+              code: props.fileFormat[item]
+            }))
+
+            if (props.fileFormat) {
+              let fileNames = Object.keys(props.fileFormat)
+              let fileList = fileNames.map((item) => ({
+                name: item,
+                code: props.fileFormat[item]
+              }))
+              setFileData(
+                _.flattenDeep([
+                  fileList.map((fileItem) =>
+                    data[fileItem.code]
+                      ? data[fileItem.code]
+                          .split(',')
+                          .map((item: any, index: number) => ({ [fileItem.name + (index + 1)]: item }))
+                      : []
+                  )
+                ])
+              )
+            }
+          } else if ((!props.fileData || props.fileData.length == 0) && data.urlImageOne) {
             setFileData(
               data.urlImageOne
                 ? data.urlImageOne.split(',').map((item: any, index: number) => {

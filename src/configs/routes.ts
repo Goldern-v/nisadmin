@@ -22,9 +22,9 @@ import PersonnelSettingView from 'src/modules/schedule/views/PersonnelSetting/Pe
 import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
 import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
 
-import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
-import NurseFileDetailView from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
-import NurseAudit from 'src/modules/nurseFiles/views/nurseAudit/NurseAudit'
+// import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
+// import NurseFileDetailView from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
+// import NurseAudit from 'src/modules/nurseFiles/views/nurseAudit/NurseAudit'
 
 import BadEventView from 'src/modules/badEvents/views/BadEventView'
 import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
@@ -65,17 +65,18 @@ import QualityView from 'src/modules/quality/QualityView'
 import QualityControlRecordDetail from 'src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail.tsx'
 import QualityAnalysisEdit from 'src/modules/quality/views/analysis/AnalysisEdit'
 import QualityAnalysisDetail from 'src/modules/quality/views/analysis/AnalysisDetail'
-import { nurseFileModule } from './routerConfig/nurseFileModule'
+import { specialModule } from './routerConfig/specialModule'
 //病区文件
 import DeptFileShareCatalogSetting from 'src/modules/deptReferSetting/views/DeptFileShareCatalogSetting'
 import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView'
+import NurseFilesView from 'src/modules/nurseFiles/NurseFilesView'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
-
+  ...specialModule,
   setLayout('/scheduleHome', ScheduleHomeView, layouts.MainLayout),
-  // setLayout('/nurseSetting', NurseSettingView, layouts.MainLayout),
+
   setLayout('/nurseSetting', NurseSettingView, layouts.BreadcrumbLayout, [
     { name: '排班管理', link: '/scheduleHome' },
     { name: '排班人员设置', link: '' }
@@ -98,23 +99,13 @@ const routes: RouteItem[] = [
     { name: '人员分组', link: '' }
   ]),
 
-  // setLayout('/scheduleSetting', ScheduleSettingView, layouts.BreadcrumbLayout, [
-  //   { name: '排班管理', link: '/scheduleHome' },
-  //   { name: '排班编辑', link: '' }
-  // ]),
   setLayout('/scheduleSetting', ScheduleSettingView, layouts.MainLayout),
-  // setLayout('/statistic/护士排班统计（按班次）', NurseByShiftView, layouts.MainLayout),
-  // setLayout('/statistic/护士白班统计（按月份）', WhiteShiftByMonthView, layouts.MainLayout),
-  // setLayout('/statistic/护士夜班统计（按月份）', NeightShiftByMonthView, layouts.MainLayout),
+
   setLayout('/statistic/:name', StatisticView, layouts.MainLayout),
   // 护理绩效
   setLayout('/nursingPerformance', NursingPerformance, layouts.MainLayout),
-  // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
-  /** 档案模块 */
-  ...nurseFileModule,
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
-
   setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
@@ -141,7 +132,7 @@ const routes: RouteItem[] = [
     { name: '护理制度建设', link: '/nursingRules' },
     { name: '目录设置', link: '' }
   ]),
-  //setLayout('/healthPropagandaView/:id', HealthPropagandaView),
+
   setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
   setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
   setLayout('/badEventsNewList', BadEventsNewList, layouts.MainLayout),
@@ -176,6 +167,13 @@ const routes: RouteItem[] = [
     { name: '目录设置', link: '' }
   ]),
   setLayout('/qualityAnalysisReport', QualityAnalysisReportView, layouts.MainLayout),
+  /** 档案模块 */
+  setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
+
+  {
+    path: '/nurseFile',
+    redirect: '/nurseFile/onTheJob'
+  },
   {
     path: '/continuingEdu',
     redirect: '/continuingEdu/人员管理'
@@ -204,10 +202,6 @@ const routes: RouteItem[] = [
     path: '/quality',
     redirect: '/quality/qualityControlRecord'
   },
-  // {
-  //   path: '/QualityControlRecordDetail',
-  //   redirect: '/QualityControlRecordDetail/baseInfo'
-  // },
 
   {
     path: '/',

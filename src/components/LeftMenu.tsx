@@ -13,10 +13,7 @@ export interface Props {
 }
 
 export default function LeftMenu(props: Props) {
-  
-  useEffect(() => {
-    
-  })
+  useEffect(() => {})
   const handleSelect = (e: any) => {
     appStore.history.push(e.key)
     if (e.item.props.level === 1) {
@@ -134,7 +131,9 @@ const Wrapper = styled.div`
     width: 200px;
     border-right: 1px solid #cccccc;
     .ant-menu-inline {
-      width: calc(100% + 1px);
+      /* width: calc(100% + 0px); */
+      /* margin-right: -1px; */
+      border-right: 0;
     }
     ::-webkit-scrollbar {
       /*滚动条整体样式*/

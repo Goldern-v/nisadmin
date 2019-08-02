@@ -41,7 +41,7 @@ export default function SelectCon(props: Props) {
   useEffect(() => {
     service.commonApiService.dictInfo('audit_type').then((res) => {
       setShowTypeDict(res.data)
-      setShowType(res.data[0].code)
+      setShowType(res.data[0] ? res.data[0].code : '')
     })
   }, [])
   return (

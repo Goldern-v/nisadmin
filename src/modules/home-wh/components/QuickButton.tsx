@@ -22,7 +22,7 @@ export default observer(function QuickButton() {
       title: '护士档案',
       icon: <HSDA />,
       background: '#00A65A',
-      path: '/nurseFilesList'
+      path: '/nurseFile/onTheJob'
     },
     {
       title: '质量管理',

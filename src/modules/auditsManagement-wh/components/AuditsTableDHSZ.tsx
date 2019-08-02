@@ -5,13 +5,12 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import windowHeight from 'src/hooks/windowHeight'
 
 import store, { appStore, authStore } from 'src/stores'
-import AuditText from 'src/modules/nurseFiles/views/nurseAudit/components/auditText/AuditText'
+
 import emitter from 'src/libs/ev'
 import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
 import { aMServices } from '../services/AMServices'
-import { openAuditModal } from 'src/modules/nurseFiles-wh/views/nurseFileDetail/config/auditModalConfig'
-import { getTitle } from 'src/modules/nurseFiles-wh/views/nurseFileDetail/config/title'
+
 import service from 'src/services/api'
 import qs from 'qs'
 import { observer } from 'src/vendors/mobx-react-lite'

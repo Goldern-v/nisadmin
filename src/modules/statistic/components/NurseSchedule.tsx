@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react'
 // import { Table } from 'antd'
 // import { string } from 'prop-types'
 
-export default function BedSituation () {
-  
+export default function BedSituation() {
   // let columns: Array<{
   //   title: string
   //   width?: number
@@ -13,9 +12,7 @@ export default function BedSituation () {
   //   fixed?: string
   // }>
 
-  useEffect(() => {
-    
-  })
+  useEffect(() => {})
   return <Con>ss</Con>
 }
 
