@@ -17,12 +17,15 @@ import { ReactComponent as PICTURE } from '../images/图片.svg'
 export interface Props extends RouteComponentProps {}
 
 export default function NursingSystem() {
+  const [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
   const [pageIndex, setPageIndex] = useState(1)
   const [pageSize, setPageSize] = useState(10)
 
   const getMealList = () => {
+    setLoadingTable(true)
     HomeApi.getNursingSystem(pageIndex, pageSize).then((res) => {
+      setLoadingTable(false)
       setTableData(res.data.list)
     })
   }
@@ -42,6 +45,7 @@ export default function NursingSystem() {
         <Li>
           <Icon>{setIcon(item.type)}</Icon>
           <Content className='content'>{item.name}</Content>
+          <span>.{item.type}</span>
           <Time className='time'>{item.uploadTime}</Time>
         </Li>
       )
@@ -50,6 +54,7 @@ export default function NursingSystem() {
 
   return (
     <Wrapper>
+      <Spin className='loading' spinning={loadingTable}/>
       <Title>
         <I>
           <HLZD />
@@ -71,6 +76,14 @@ const Wrapper = styled.div`
   border-radius: 2px;
   border: 1px solid rgba(221, 221, 221, 1);
   box-sizing: border-box;
+  position: relative;
+  .loading{
+    position:absolute;
+    top: 50%; 
+    left:50%;
+    margin-left: -10px;
+    margin-top: -10px;
+  }
 `
 const Title = styled.div`
   border-bottom: 1px solid #ddd;
@@ -118,7 +131,7 @@ const Li = styled.li`
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
   list-style-type: none;
-  &:hover {
+  /* &:hover {
     cursor: pointer;
   }
   &:hover .content {
@@ -126,7 +139,7 @@ const Li = styled.li`
   }
   &:hover .time {
     color: #00a65a;
-  }
+  } */
 `
 const Icon = styled.div`
   display:inline-block;
@@ -139,7 +152,7 @@ const Icon = styled.div`
 `
 const Content = styled.span`
   display: inline-block;
-  width: 155px;
+  width: 118px;
   font-size: 13px;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
