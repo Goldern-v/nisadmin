@@ -7,26 +7,48 @@ import { getPageObj } from './config/getPageObj'
 import { statisticsViewModal } from './StatisticsViewModal'
 import { observer } from 'mobx-react-lite'
 import { toJS } from 'mobx'
+import TableCon from './components/TableCon'
+import { useRef } from 'src/types/react'
+import { statisticsService } from './services/StatisticsService'
+import { cloneJson } from 'src/utils/json/clone'
 export interface Props {}
 
 export default function Statistics() {
-  const [pageObj, setPageObj]: any = useState(null)
   let path = appStore.match.params.path
-  useEffect(() => {
-    statisticsViewModal.init().then((res) => {
-      setPageObj(getPageObj(path))
+  const [pageObj, setPageObj]: any = useState(null)
+  const [tableObj, setTableObj]: any = useState({})
+  const filterRef = useRef({})
+  const paginationRef = useRef({
+    pageIndex: 1,
+    pageSize: 20,
+    total: 1
+  })
+
+  const onload = (type: string = pageObj.type) => {
+    setTableObj({ ...cloneJson(tableObj), ...paginationRef.current })
+    statisticsService.getTableData(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
+      setTableObj(res.data)
     })
-  }, [])
+  }
+
+  useEffect(() => {
+    // statisticsViewModal.init().then((res) => {
+    let pageObj = getPageObj(path)
+    setPageObj(getPageObj(path))
+    onload(pageObj.type)
+    // })
+  }, [path])
 
   return (
     <Wrapper>
       {pageObj && (
         <React.Fragment>
           <HeadCon>
-            <div className='title'>标题{path}</div>
+            <div className='title'>{pageObj.title}</div>
             <Button>导出EXCEL</Button>
           </HeadCon>
-          <FilterCon pageObj={pageObj} />
+          <FilterCon pageObj={pageObj} onload={onload} filterRef={filterRef} />
+          <TableCon pageObj={pageObj} tableObj={tableObj} paginationRef={paginationRef} onload={onload} />
         </React.Fragment>
       )}
     </Wrapper>

@@ -45,8 +45,11 @@ export default function BaseTable(props: Props) {
     option.dataSource.map((item: any, index: number) => {
       return Object.assign(item, { key: index })
     })
-  if (props.surplusHeight) {
-    option.scroll = { y: wih - props.surplusHeight }
+  if (option.surplusHeight) {
+    if (props.pagination && (!props.dataSource || props.dataSource.length == 0)) {
+      option.surplusHeight = option.surplusHeight - 40
+    }
+    option.scroll = { y: wih - option.surplusHeight }
   }
   if (props.pagination) {
     let pagination = {
@@ -184,8 +187,8 @@ export default function BaseTable(props: Props) {
     } catch (error) {}
     try {
       setTimeout(() => {
-        if (tableRef.current && props.surplusHeight) {
-          let contentHeight = wih - props.surplusHeight + 'px'
+        if (tableRef.current && option.surplusHeight) {
+          let contentHeight = wih - option.surplusHeight + 'px'
           let placeholder = tableRef!.current!.querySelector('.ant-table-placeholder')
           let body = tableRef!.current!.querySelector('.ant-table-body')
           if (placeholder) {
@@ -201,8 +204,8 @@ export default function BaseTable(props: Props) {
         }
       }, 0)
       setTimeout(() => {
-        if (tableRef.current && props.surplusHeight) {
-          let contentHeight = wih - props.surplusHeight + 'px'
+        if (tableRef.current && option.surplusHeight) {
+          let contentHeight = wih - option.surplusHeight + 'px'
           let placeholder = tableRef!.current!.querySelector('.ant-table-placeholder')
           let body = tableRef!.current!.querySelector('.ant-table-body')
           if (placeholder) {

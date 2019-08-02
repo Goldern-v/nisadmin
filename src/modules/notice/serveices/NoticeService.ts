@@ -75,6 +75,10 @@ export default class NoticeService extends BaseApiService {
   public removeMail(id: number) {
     return this.get(`/mail/receive/remove/${id}`)
   }
+  /** 撤回消息 */
+  public revokeMail(id: number) {
+    return this.get(`/mail/send/revoke/${id}`)
+  }
   /** 读取消息 */
   public readMail(id: number) {
     return this.get(`/mail/receive/read/${id}`)

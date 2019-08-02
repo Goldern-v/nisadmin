@@ -34,8 +34,23 @@ const LEFT_MENU_CONFIG = [
         component: StatisticsView
       },
       {
-        title: '文章2',
-        path: '/nurseFile/article2',
+        title: '学会任职',
+        path: '/nurseFile/learnJob',
+        component: StatisticsView
+      },
+      {
+        title: '个人获奖',
+        path: '/nurseFile/personWinning',
+        component: StatisticsView
+      },
+      {
+        title: '外出进修',
+        path: '/nurseFile/onEducation',
+        component: StatisticsView
+      },
+      {
+        title: '专著',
+        path: '/nurseFile/monograph',
         component: StatisticsView
       }
     ]

@@ -11,6 +11,7 @@ import { noticeService } from '../../serveices/NoticeService'
 import { noticeViewModel } from '../../NoticeViewModel'
 import { globalModal } from 'src/global/globalModal'
 import Zimage from 'src/components/Zimage'
+import moment from 'moment'
 export interface Props {
   data: DetailObj
 }
@@ -18,6 +19,13 @@ export interface Props {
 export default function DetailsPage(props: Props) {
   let { data } = props
   const [collected, setCollected] = useState(data.collected)
+
+  /** 是否5分钟之内 */
+  let isFiveMin = false
+  if (moment().valueOf() - moment(data.sendTime).valueOf() < 1000 * 60 * 5) {
+    isFiveMin = true
+  }
+
   const downFile = (path: string) => {
     service.commonApiService.getFileAndDown(path)
   }
@@ -31,6 +39,16 @@ export default function DetailsPage(props: Props) {
       if (!data.id) return
       noticeService.removeMail(data.id).then((res) => {
         message.success('删除消息成功')
+        noticeViewModel.detailObj = {}
+        noticeViewModel.refreshCurrentListObj()
+      })
+    })
+  }
+  const revokeMail = () => {
+    globalModal.confirm('确认撤回', '确认撤回该邮箱?').then((res) => {
+      if (!data.id) return
+      noticeService.revokeMail(data.id).then((res) => {
+        message.success('撤回消息成功')
         noticeViewModel.detailObj = {}
         noticeViewModel.refreshCurrentListObj()
       })
@@ -59,6 +77,13 @@ export default function DetailsPage(props: Props) {
           <Tooltip placement='bottom' title='编辑'>
             <div className='item-box' onClick={editMail}>
               <img src={require('./images/编辑.png')} alt='' />
+            </div>
+          </Tooltip>
+        )}
+        {data.showType == '发' && isFiveMin && (
+          <Tooltip placement='bottom' title='撤销'>
+            <div className='item-box' onClick={revokeMail}>
+              <img src={require('./images/撤销.png')} alt='' />
             </div>
           </Tooltip>
         )}

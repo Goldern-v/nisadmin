@@ -109,7 +109,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
                 if (showType == 'qc') {
                   window.open(`/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
                 } else if (showType == 'nurseFile') {
-                  service.commonApiService.getNurseInformationWH(row.commiterNo).then((res) => {
+                  service.commonApiService.getNurseInformation(row.commiterNo).then((res) => {
                     // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
                     window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
                   })

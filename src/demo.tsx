@@ -1,36 +1,41 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useRef } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { DatePicker } from './vendors/antd'
+import { DatePicker, Button } from './vendors/antd'
 import YearPicker from './components/YearPicker'
 import { formatIdCord } from './utils/idCard/idCard'
 import FullPageLoading from './components/loading/FullPageLoading'
 import { BaseStepBox, BaseStepCon } from './components/BaseStep'
 import YearMonthRangePicker from './components/YearMonthRangePicker'
 import { numToChinese } from './utils/number/numToChinese'
+import YearRangePicker from './components/YearRangePicker'
 
 export interface Props extends RouteComponentProps {
   style: any
 }
 
 export default function demo(props: Props) {
-  const [ifh, setIfh] = useState(1000)
-  console.log(formatIdCord('44081119950313033x'))
-  const onScroll = (e: any) => {
-    e.persist()
-    if (e.target.offsetHeight - e.target.scrollTop < 1000 && ifh - e.target.scrollTop < 1000) {
-      setIfh(ifh + 1000)
-    }
-  }
+  const data = useRef(1000)
+  const [state, setState]: any = useState(1000)
+  console.log(data.current, 'render')
   return (
-    <Wrapper style={props.style} onScroll={onScroll}>
-      {/* <FullPageLoading /> */}
-      {/* <BaseStepCon>
-        <BaseStepBox success={true}>1111</BaseStepBox>
-        <BaseStepBox success={false}>1111</BaseStepBox>
-      </BaseStepCon> */}
-      {/* <YearMonthRangePicker /> */}
-      {/* {numToChinese(1)} */}
+    <Wrapper>
+      <Button
+        onClick={() => {
+          data.current = data.current + 1
+          console.log(data.current, 'click1')
+        }}
+      >
+        测试 {data.current}
+      </Button>
+      <Button
+        onClick={() => {
+          setState(state + 1)
+          console.log(data, 'click2')
+        }}
+      >
+        点击
+      </Button>
     </Wrapper>
   )
 }
