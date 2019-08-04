@@ -15,6 +15,10 @@ export default class StatisticsService extends BaseApiService {
   public getTableData(type: string, obj: any) {
     return this.post(`/${type}/count`, obj)
   }
+  /** 导出 */
+  public exportExcel(type: string, obj: any) {
+    return this.post(`/${type}/excel`, obj)
+  }
 }
 
 export const statisticsService = new StatisticsService()

@@ -6,6 +6,7 @@ export interface filterItem {
   type: filterType
   dataSource?: { name: string; code: string }[]
   name: string
+
   nameList?: string[]
 }
 
@@ -13,6 +14,7 @@ export interface PageObj {
   title: string
   filterList: filterItem[]
   tableList: ColumnProps<any>[]
+  detailPath?: string
   [p: string]: any
 }
 

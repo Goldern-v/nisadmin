@@ -13,10 +13,20 @@ export interface Props {
   tableObj: any
   paginationRef: any
   onload: any
+  tableLoading: boolean
 }
 export default function TableCon(props: Props) {
-  let { pageObj, tableObj, paginationRef, onload } = props
-
+  let { pageObj, tableObj, paginationRef, onload, tableLoading } = props
+  const toDetails = (record: any) => {
+    service.commonApiService.getNurseInformation(record.empNo).then((res) => {
+      // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
+      window.open(
+        `/crNursing/manage/#/nurseFileDetail/${pageObj.detailPath || appStore.match.params.path}?${qs.stringify(
+          res.data
+        )}`
+      )
+    })
+  }
   const columns: ColumnProps<any>[] = [
     {
       title: '科室',
@@ -77,18 +87,7 @@ export default function TableCon(props: Props) {
       render(text: string, record: any) {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                service.commonApiService.getNurseInformation(record.empNo).then((res) => {
-                  // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-                  window.open(
-                    `/crNursing/manage/#/nurseFileDetail/${appStore.match.params.path}?${qs.stringify(res.data)}`
-                  )
-                })
-              }}
-            >
-              操作
-            </span>
+            <span onClick={() => toDetails(record)}>操作</span>
           </DoCon>
         )
       }
@@ -113,6 +112,7 @@ export default function TableCon(props: Props) {
   return (
     <Wrapper>
       <BaseTable
+        loading={tableLoading}
         dataSource={tableObj.list}
         columns={columns}
         type={['index']}
@@ -127,6 +127,13 @@ export default function TableCon(props: Props) {
           pageSize: tableObj.pageSize
         }}
         onChange={onChange}
+        onRow={(record) => {
+          return {
+            onDoubleClick: (e: any) => {
+              toDetails(record)
+            }
+          }
+        }}
       />
     </Wrapper>
   )

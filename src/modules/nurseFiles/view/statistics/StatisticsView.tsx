@@ -11,13 +11,16 @@ import TableCon from './components/TableCon'
 import { useRef } from 'src/types/react'
 import { statisticsService } from './services/StatisticsService'
 import { cloneJson } from 'src/utils/json/clone'
+import { fileDownload } from 'src/utils/file/file'
 export interface Props {}
 
 export default function Statistics() {
   let path = appStore.match.params.path
   const [pageObj, setPageObj]: any = useState(null)
   const [tableObj, setTableObj]: any = useState({})
+  const [tableLoading, setTableLoading]: any = useState(false)
   const filterRef = useRef({})
+
   const paginationRef = useRef({
     pageIndex: 1,
     pageSize: 20,
@@ -26,8 +29,15 @@ export default function Statistics() {
 
   const onload = (type: string = pageObj.type) => {
     setTableObj({ ...cloneJson(tableObj), ...paginationRef.current })
+    setTableLoading(true)
     statisticsService.getTableData(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
+      setTableLoading(false)
       setTableObj(res.data)
+    })
+  }
+  const exportExcel = (type: string = pageObj.type) => {
+    statisticsService.exportExcel(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
+      fileDownload(res)
     })
   }
 
@@ -45,10 +55,16 @@ export default function Statistics() {
         <React.Fragment>
           <HeadCon>
             <div className='title'>{pageObj.title}</div>
-            <Button>导出EXCEL</Button>
+            <Button onClick={() => exportExcel()}>导出EXCEL</Button>
           </HeadCon>
           <FilterCon pageObj={pageObj} onload={onload} filterRef={filterRef} />
-          <TableCon pageObj={pageObj} tableObj={tableObj} paginationRef={paginationRef} onload={onload} />
+          <TableCon
+            pageObj={pageObj}
+            tableObj={tableObj}
+            paginationRef={paginationRef}
+            onload={onload}
+            tableLoading={tableLoading}
+          />
         </React.Fragment>
       )}
     </Wrapper>
