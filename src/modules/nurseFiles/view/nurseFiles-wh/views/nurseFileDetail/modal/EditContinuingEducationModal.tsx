@@ -106,11 +106,11 @@ export default function EditPersonWinningModal(props: Props) {
               <YearPicker />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`继续教育项目负责人`} name='projectPerson'>
               <Input />
             </Form.Field>
-          </Col>
+          </Col> */}
           <Col span={24}>
             <Form.Field label={`项目名称`} name='projectName'>
               <Input />

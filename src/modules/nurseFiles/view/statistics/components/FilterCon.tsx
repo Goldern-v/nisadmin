@@ -8,6 +8,7 @@ import YearRangePicker from 'src/components/YearRangePicker'
 import { to } from 'src/libs/fns'
 import moment from 'moment'
 import YearPicker from 'src/components/YearPicker'
+import YearMonthRangePicker from 'src/components/YearMonthRangePicker'
 const { RangePicker } = DatePicker
 export interface Props {
   pageObj: PageObj
@@ -69,6 +70,9 @@ export default function FilterCon(props: Props) {
       case 'yearPicker': {
         return <YearPicker />
       }
+      case 'yearMonthRangePicker': {
+        return <YearMonthRangePicker />
+      }
     }
   }
   useEffect(() => {
@@ -86,7 +90,7 @@ export default function FilterCon(props: Props) {
             </Col>
           ))}
           <Col span={6}>
-            <Button type='primary' style={{ marginLeft: 40 }} onClick={() => onload()}>
+            <Button type='primary' style={{ marginLeft: 40, marginBottom: 20 }} onClick={() => onload()}>
               查询
             </Button>
           </Col>

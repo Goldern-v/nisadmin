@@ -18,8 +18,8 @@ export const pageObj: PageObj = {
     },
     {
       label: '年份',
-      type: 'dateRangePicker',
-      name: 'dateRangePicker',
+      type: 'yearRangePicker',
+      name: 'yearRangePicker',
       nameList: ['yearStartDate', 'yearEndDate']
     },
 

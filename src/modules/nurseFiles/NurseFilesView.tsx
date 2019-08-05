@@ -65,7 +65,7 @@ const LEFT_MENU_CONFIG = [
       },
       {
         title: '外出进修',
-        path: '/nurseFile/onEducation',
+        path: '/nurseFile/outStudy',
         component: StatisticsView
       },
       {

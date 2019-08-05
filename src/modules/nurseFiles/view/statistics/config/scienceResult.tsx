@@ -31,22 +31,12 @@ export const pageObj: PageObj = {
       type: 'input',
       name: 'grantUnit'
     },
+
     {
-      label: '授予单位',
-      type: 'input',
-      name: 'grantUnit'
-    },
-    {
-      label: '授予开始时间',
+      label: '授予开始',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
-      nameList: ['startDateStart', 'startDateEnd']
-    },
-    {
-      label: '授予结束时间',
-      type: 'dateRangePicker',
-      name: 'dateRangePicker2',
-      nameList: ['endDateStart', 'endDateEnd']
+      nameList: ['grantStartDate', 'grantEndDate']
     },
 
     {

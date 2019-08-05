@@ -49,100 +49,59 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
       nameList: ['endDateStart', 'endDateEnd']
-    },
-
-    {
-      label: '文章名称',
-      type: 'input',
-      name: 'articleName'
-    },
-    {
-      label: '期刊号',
-      type: 'input',
-      name: 'periodicalNumber'
-    },
-    {
-      label: '文章类别',
-      type: 'select',
-      name: 'articleType',
-      dataSource: statisticsViewModal.getDict('文章类别')
     }
   ],
   tableList: [
     {
-      title: '发表年份',
-      dataIndex: 'publicYear',
-      key: 'publicYear',
+      title: '就读时间',
+      dataIndex: 'readTime',
+      key: '2',
       width: 120,
       align: 'center'
     },
     {
-      title: '杂志名称',
-      dataIndex: 'magazineName',
-      key: 'magazineName',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '文章名称',
-      dataIndex: 'articleName',
-      key: 'articleName',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '期刊号',
-      dataIndex: 'periodicalNumber',
-      key: 'periodicalNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '卷号',
-      dataIndex: 'volumeNumber',
-      key: 'volumeNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '起止页码',
-      dataIndex: 'pageNumber',
-      key: 'pageNumber',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '文章类别',
-      dataIndex: 'articleType',
-      key: 'articleType',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '论文收录网站',
-      dataIndex: 'influencingFactors',
-      key: 'influencingFactors',
+      title: '毕业时间',
+      dataIndex: 'graduationTime',
+      key: '3',
       width: 120,
       align: 'center'
     },
     {
-      title: '文章扫描件',
-      dataIndex: '文章扫描件',
-      key: '文章扫描件',
-      width: 80,
+      title: '毕业学校',
+      dataIndex: 'graduationSchool',
+      key: '4',
+      width: 140,
+      align: 'center'
+    },
+    {
+      title: '专业',
+      dataIndex: 'readProfessional',
+      key: '5',
+      width: 120,
+      align: 'center'
+    },
+    {
+      title: '学历',
+      dataIndex: 'education',
+      key: '6',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '学位',
+      dataIndex: 'degree',
+      key: 'degree',
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '附件',
+      dataIndex: 'fj',
+      key: '7',
+      width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
-      }
-    },
-    {
-      title: '网络下载件',
-      dataIndex: '网络下载件',
-      key: '网络下载件',
-      width: 80,
-      align: 'center',
-      render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageTwo ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     }
   ]

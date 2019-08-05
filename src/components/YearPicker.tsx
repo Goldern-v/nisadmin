@@ -37,6 +37,9 @@ export default function YearPicker(props: Props) {
         setIsOpen(false)
         onChange(v)
       }}
+      onChange={() => {
+        onChange && onChange(null)
+      }}
     />
   )
 }

@@ -20,22 +20,30 @@ export default function YearRangePicker(props: Props) {
 
   return (
     <DatePicker.RangePicker
-      value={time}
+      value={time || [null, null]}
       open={isOpen}
       mode={['year', 'year']}
       placeholder={['开始年份', '结束年份']}
       format='YYYY'
       onOpenChange={(status: boolean) => {
+        console.log(status, 'statusstatus')
         if (status) {
           setIsOpen(true)
         } else {
           setIsOpen(false)
         }
       }}
-      onPanelChange={(v: any) => {
+      onPanelChange={(v: any, mode: any) => {
+        console.log(v, 'vvv')
+        console.log(mode, 'mode')
         setTime(v)
+        // if (mode[0] && mode[1]) {
         setIsOpen(false)
-        onChange(v)
+        // }
+        onChange && onChange(v)
+      }}
+      onChange={() => {
+        onChange && onChange([null, null])
       }}
     />
   )

@@ -20,22 +20,7 @@ export default function demo(props: Props) {
   console.log(data.current, 'render')
   return (
     <Wrapper>
-      <Button
-        onClick={() => {
-          data.current = data.current + 1
-          console.log(data.current, 'click1')
-        }}
-      >
-        测试 {data.current}
-      </Button>
-      <Button
-        onClick={() => {
-          setState(state + 1)
-          console.log(data, 'click2')
-        }}
-      >
-        点击
-      </Button>
+      <YearRangePicker />
     </Wrapper>
   )
 }

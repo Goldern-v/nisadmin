@@ -37,6 +37,9 @@ export default function YearMonthRangePicker(props: Props) {
         setIsOpen(false)
         onChange && onChange(v)
       }}
+      onChange={() => {
+        onChange && onChange(null)
+      }}
     />
   )
 }

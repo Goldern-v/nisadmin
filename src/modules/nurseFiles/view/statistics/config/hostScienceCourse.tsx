@@ -7,7 +7,7 @@ import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
   title: '主持科研课题',
-  type: 'nurseWHGoScienceCourse',
+  type: 'nurseWHHostScienceCourse',
   detailPath: 'hostingScientific',
   filterList: [
     {
@@ -21,16 +21,7 @@ export const pageObj: PageObj = {
       type: 'input',
       name: 'goName'
     },
-    {
-      label: '课题来源',
-      type: 'input',
-      name: 'courseSource'
-    },
-    {
-      label: '课题主持人工号',
-      type: 'input',
-      name: 'hostNo'
-    },
+
     {
       label: '课题来源',
       type: 'input',
@@ -57,8 +48,9 @@ export const pageObj: PageObj = {
 
     {
       label: '完成情况',
-      type: 'input',
-      name: 'courseCompletion'
+      type: 'select',
+      name: 'courseCompletion',
+      dataSource: statisticsViewModal.getDict('完成情况')
     }
   ],
   tableList: [

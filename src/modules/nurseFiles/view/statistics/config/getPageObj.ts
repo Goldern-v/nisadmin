@@ -1,6 +1,12 @@
 import { ColumnProps } from 'src/vendors/antd'
 
-export type filterType = 'select' | 'input' | 'yearRangePicker' | 'dateRangePicker' | 'yearPicker'
+export type filterType =
+  | 'select'
+  | 'input'
+  | 'yearRangePicker'
+  | 'dateRangePicker'
+  | 'yearPicker'
+  | 'yearMonthRangePicker'
 export interface filterItem {
   label: string
   type: filterType

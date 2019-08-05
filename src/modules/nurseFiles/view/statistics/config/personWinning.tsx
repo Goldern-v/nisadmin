@@ -17,9 +17,9 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '获奖年份',
-      type: 'yearRangePicker',
-      name: 'yearRangePicker',
+      label: '获奖年月',
+      type: 'yearMonthRangePicker',
+      name: 'YearMonthRangePicker',
       nameList: ['winningYearStartDate', 'winningYearEndDate']
     },
     {
@@ -63,11 +63,21 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '获奖年份',
+      title: '获奖年月',
       dataIndex: 'winningYear',
       key: 'winningYear',
       width: 90,
       align: 'center'
+    },
+    {
+      title: '附件',
+      dataIndex: 'fj',
+      key: 'fj',
+      width: 80,
+      align: 'center',
+      render: (text: any, row: any, index: any) => {
+        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+      }
     }
   ]
 }

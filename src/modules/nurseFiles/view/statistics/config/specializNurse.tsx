@@ -7,7 +7,7 @@ import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
   title: '专科护士',
-  type: 'nurseWHPersonWinning',
+  type: 'nurseWHSpecializNurse',
   detailPath: '',
   filterList: [
     {

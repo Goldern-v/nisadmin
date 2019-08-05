@@ -12,6 +12,7 @@ import { useRef } from 'src/types/react'
 import { statisticsService } from './services/StatisticsService'
 import { cloneJson } from 'src/utils/json/clone'
 import { fileDownload } from 'src/utils/file/file'
+import { message } from 'src/vendors/antd'
 export interface Props {}
 
 export default function Statistics() {
@@ -37,23 +38,28 @@ export default function Statistics() {
   }
   const exportExcel = (type: string = pageObj.type) => {
     statisticsService.exportExcel(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
-      fileDownload(res)
+      let filename = res.headers['content-disposition']
+      if (filename) {
+        fileDownload(res)
+      } else {
+        message.warning('暂无记录')
+      }
     })
   }
 
   useEffect(() => {
-    if(statisticsViewModal.dict)
-    statisticsViewModal.init().then((res) => {
-      let pageObj = getPageObj(path)
-      filterRef.current = {}
-      paginationRef.current = {
-        pageIndex: 1,
-        pageSize: 20,
-        total: 1
-      }
-      setPageObj(getPageObj(path))
-      onload(pageObj.type)
-    })
+    if (statisticsViewModal.dict)
+      statisticsViewModal.init().then((res) => {
+        let pageObj = getPageObj(path)
+        filterRef.current = {}
+        paginationRef.current = {
+          pageIndex: 1,
+          pageSize: 20,
+          total: 1
+        }
+        setPageObj(getPageObj(path))
+        onload(pageObj.type)
+      })
   }, [path])
 
   return (

@@ -26,22 +26,6 @@ export const pageObj: PageObj = {
       label: '名称',
       type: 'input',
       name: 'projectName'
-    },
-    {
-      label: '继续教育项目负责人',
-      type: 'input',
-      name: 'projectPerson'
-    },
-    {
-      label: '项目号',
-      type: 'input',
-      name: 'projectNumber'
-    },
-    {
-      label: '项目级别',
-      type: 'select',
-      name: 'projectLevel',
-      dataSource: statisticsViewModal.getDict('级别')
     }
   ],
   tableList: [
@@ -52,13 +36,7 @@ export const pageObj: PageObj = {
       width: 90,
       align: 'center'
     },
-    {
-      title: '继续教育项目负责人',
-      dataIndex: 'projectPerson',
-      key: 'projectPerson',
-      width: 160,
-      align: 'center'
-    },
+
     {
       title: '项目名称',
       dataIndex: 'projectName',
@@ -66,20 +44,7 @@ export const pageObj: PageObj = {
       width: 120,
       align: 'center'
     },
-    {
-      title: '项目号',
-      dataIndex: 'projectNumber',
-      key: 'projectNumber',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '项目级别',
-      dataIndex: 'projectLevel',
-      key: 'projectLevel',
-      width: 100,
-      align: 'center'
-    },
+
     {
       title: '课时数',
       dataIndex: 'courseHour',

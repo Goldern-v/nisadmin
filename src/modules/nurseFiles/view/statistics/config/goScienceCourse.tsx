@@ -63,19 +63,9 @@ export const pageObj: PageObj = {
     },
     {
       label: '完成情况',
-      type: 'input',
-      name: 'courseCompletion'
-    },
-    {
-      label: '项目号',
-      type: 'input',
-      name: 'projectNumber'
-    },
-    {
-      label: '项目级别',
       type: 'select',
-      name: 'projectLevel',
-      dataSource: statisticsViewModal.getDict('级别')
+      name: 'courseCompletion',
+      dataSource: statisticsViewModal.getDict('完成情况')
     }
   ],
   tableList: [
