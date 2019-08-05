@@ -19,6 +19,9 @@ import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
 import { AutoComplete } from 'src/vendors/antd'
+
+const { MonthPicker, RangePicker, WeekPicker } = DatePicker
+
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -61,7 +64,7 @@ export default function EditPersonWinningModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-    value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
+    value.winningYear && (value.winningYear = value.winningYear.format('YYYY-MM'))
     // value.winningYear && (value.winningYear = value.winningYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHPersonWinning', { ...obj, ...value }).then((res: any) => {
@@ -97,8 +100,8 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`获奖年份`} name='winningYear' required>
-              <YearPicker />
+            <Form.Field label={`获奖年月`} name='winningYear'>
+              <MonthPicker />
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -107,12 +110,12 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖类别`} name='winningType' required>
+            <Form.Field label={`获奖类别`} name='winningType'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`获奖级别`} name='winningLevel' required>
+            <Form.Field label={`获奖级别`} name='winningLevel'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖类别').map((item) => item.name)} />
             </Form.Field>
           </Col>

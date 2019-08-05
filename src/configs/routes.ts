@@ -70,6 +70,7 @@ import { specialModule } from './routerConfig/specialModule'
 import DeptFileShareCatalogSetting from 'src/modules/deptReferSetting/views/DeptFileShareCatalogSetting'
 import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView'
 import NurseFilesView from 'src/modules/nurseFiles/NurseFilesView'
+import QualityAnalysisReportPoolView from 'src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView'
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -167,6 +168,7 @@ const routes: RouteItem[] = [
     { name: '目录设置', link: '' }
   ]),
   setLayout('/qualityAnalysisReport', QualityAnalysisReportView, layouts.MainLayout),
+  setLayout('/qualityAnalysisReportPool', QualityAnalysisReportPoolView, layouts.MainLayout),
   /** 档案模块 */
   setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
 

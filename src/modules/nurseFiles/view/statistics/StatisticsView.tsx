@@ -7,26 +7,77 @@ import { getPageObj } from './config/getPageObj'
 import { statisticsViewModal } from './StatisticsViewModal'
 import { observer } from 'mobx-react-lite'
 import { toJS } from 'mobx'
+import TableCon from './components/TableCon'
+import { useRef } from 'src/types/react'
+import { statisticsService } from './services/StatisticsService'
+import { cloneJson } from 'src/utils/json/clone'
+import { fileDownload } from 'src/utils/file/file'
+import { message } from 'src/vendors/antd'
 export interface Props {}
 
 export default function Statistics() {
-  const [pageObj, setPageObj]: any = useState(null)
   let path = appStore.match.params.path
-  useEffect(() => {
-    statisticsViewModal.init().then((res) => {
-      setPageObj(getPageObj(path))
+  const [pageObj, setPageObj]: any = useState(null)
+  const [tableObj, setTableObj]: any = useState({})
+  const [tableLoading, setTableLoading]: any = useState(false)
+  const filterRef = useRef({})
+
+  const paginationRef = useRef({
+    pageIndex: 1,
+    pageSize: 20,
+    total: 1
+  })
+
+  const onload = (type: string = pageObj.type) => {
+    setTableObj({ ...cloneJson(tableObj), ...paginationRef.current })
+    setTableLoading(true)
+    statisticsService.getTableData(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
+      setTableLoading(false)
+      setTableObj(res.data)
     })
-  }, [])
+  }
+  const exportExcel = (type: string = pageObj.type) => {
+    statisticsService.exportExcel(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
+      let filename = res.headers['content-disposition']
+      if (filename) {
+        fileDownload(res)
+      } else {
+        message.warning('暂无记录')
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (statisticsViewModal.dict)
+      statisticsViewModal.init().then((res) => {
+        let pageObj = getPageObj(path)
+        filterRef.current = {}
+        paginationRef.current = {
+          pageIndex: 1,
+          pageSize: 20,
+          total: 1
+        }
+        setPageObj(getPageObj(path))
+        onload(pageObj.type)
+      })
+  }, [path])
 
   return (
     <Wrapper>
       {pageObj && (
         <React.Fragment>
           <HeadCon>
-            <div className='title'>标题{path}</div>
-            <Button>导出EXCEL</Button>
+            <div className='title'>{pageObj.title}</div>
+            <Button onClick={() => exportExcel()}>导出EXCEL</Button>
           </HeadCon>
-          <FilterCon pageObj={pageObj} />
+          <FilterCon pageObj={pageObj} onload={onload} filterRef={filterRef} />
+          <TableCon
+            pageObj={pageObj}
+            tableObj={tableObj}
+            paginationRef={paginationRef}
+            onload={onload}
+            tableLoading={tableLoading}
+          />
         </React.Fragment>
       )}
     </Wrapper>

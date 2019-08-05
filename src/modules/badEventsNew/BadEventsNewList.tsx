@@ -29,7 +29,7 @@ export default observer(function BadEventNewList() {
     eventStatus: ''
   })
   //
-  const [warNameSelected, setWaeNameSelected] = useState('' as string);
+  const [warNameSelected, setWaeNameSelected] = useState('' as string)
   const [deptList, setDeptList] = useState([] as any)
   //列表数据
   const [data, setData] = useState([] as any)
@@ -159,12 +159,15 @@ export default observer(function BadEventNewList() {
   useEffect(() => {
     api.getDeptList('2').then((res) => {
       let data = res.data
-      if (data instanceof Array) setDeptList(data.map((item: any) => {
-        return {
-          name: item.deptName,
-          code: item.deptCode
-        }
-      }));
+      if (data instanceof Array)
+        setDeptList(
+          data.map((item: any) => {
+            return {
+              name: item.deptName,
+              code: item.deptCode
+            }
+          })
+        )
     })
 
     let deptCode = ''
@@ -175,14 +178,14 @@ export default observer(function BadEventNewList() {
       if (data instanceof Array) setEventTypeList(data.map((item: any) => item.name))
     })
 
-    let dateRange = defaultDateRange();
+    let dateRange = defaultDateRange()
     let newQuery = {
       ...query,
       dateBegin: dateRange[0].format('YYYY-MM-DD'),
       dateEnd: dateRange[1].format('YYYY-MM-DD')
     }
-    setQuery(newQuery);
-    getEventList(newQuery);
+    setQuery(newQuery)
+    getEventList(newQuery)
   }, [])
 
   // useEffect(() => {
@@ -197,7 +200,7 @@ export default observer(function BadEventNewList() {
       (res) => {
         setDataLoading(false)
         let data = res.data
-        if (data)
+        if (data && data.map)
           setData(
             data.map((item: any, idx: number) => {
               return {
@@ -235,10 +238,9 @@ export default observer(function BadEventNewList() {
   }
 
   const handleWarNameChange = (name: any) => {
+    if (name === undefined) name = ''
 
-    if (name === undefined) name = '';
-
-    setWaeNameSelected(name);
+    setWaeNameSelected(name)
 
     if (name == '')
       setQuery({
@@ -252,17 +254,16 @@ export default observer(function BadEventNewList() {
             ...query,
             wardCode: deptList[i].code
           })
-          break;
+          break
         }
       }
-
   }
 
   const defaultDateRange = () => {
-    let startDate = Moment(Moment().format('YYYY-MM-') + '01');
-    let ednDate = Moment(Moment().format('YYYY-MM-DD'));
+    let startDate = Moment(Moment().format('YYYY-MM-') + '01')
+    let ednDate = Moment(Moment().format('YYYY-MM-DD'))
 
-    return [startDate, ednDate] as [Moment.Moment, Moment.Moment];
+    return [startDate, ednDate] as [Moment.Moment, Moment.Moment]
   }
 
   return (
@@ -297,7 +298,13 @@ export default observer(function BadEventNewList() {
             <div className='float-item'>
               <div className='item-title'>事件分类:</div>
               <div className='item-content'>
-                <Select defaultValue='' value={query.eventType} onChange={(eventType: any) => { setQuery({ ...query, eventType }) }}>
+                <Select
+                  defaultValue=''
+                  value={query.eventType}
+                  onChange={(eventType: any) => {
+                    setQuery({ ...query, eventType })
+                  }}
+                >
                   <Select.Option value=''>全部</Select.Option>
                   {eventTypeList.map((item: any, idx: number) => {
                     return (
@@ -312,7 +319,13 @@ export default observer(function BadEventNewList() {
             <div className='float-item'>
               <div className='item-title'>状态:</div>
               <div className='item-content'>
-                <Select defaultValue='' value={query.eventStatus} onChange={(eventStatus: any) => { setQuery({ ...query, eventStatus }) }}>
+                <Select
+                  defaultValue=''
+                  value={query.eventStatus}
+                  onChange={(eventStatus: any) => {
+                    setQuery({ ...query, eventStatus })
+                  }}
+                >
                   <Select.Option value=''>全部</Select.Option>
                   {eventStatusList.map((item, idx) => {
                     return (
@@ -325,8 +338,12 @@ export default observer(function BadEventNewList() {
               </div>
             </div>
             <div className='float-item'>
-              <div className='item-title'></div>
-              <div className='item-content'><Button type='primary' onClick={handleSearch}>查询</Button></div>
+              <div className='item-title' />
+              <div className='item-content'>
+                <Button type='primary' onClick={handleSearch}>
+                  查询
+                </Button>
+              </div>
             </div>
           </div>
         </div>

@@ -15,6 +15,7 @@ export interface DictItem {
 }
 import BaseApiService from './BaseApiService'
 import { fileDownload } from 'src/utils/file/file'
+import { appStore } from 'src/stores'
 type EntityType = 'mail'
 export default class CommonApiService extends BaseApiService {
   // 0.获取护理单元列表
@@ -80,16 +81,18 @@ export default class CommonApiService extends BaseApiService {
   }
   /** 根据工号获取完整信息 */
   public getNurseInformation(empNo: any) {
-    return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`).then((res) => {
-      return res
-    })
+    if (appStore.HOSPITAL_ID == 'hj') {
+      return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`)
+    } else if (appStore.HOSPITAL_ID == 'wh') {
+      return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`)
+    } else {
+      return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`)
+    }
   }
   /** 根据工号获取完整信息-武汉 */
-  public getNurseInformationWH(empNo: any) {
-    return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`).then((res) => {
-      return res
-    })
-  }
+  // public getNurseInformationWH(empNo: any) {
+  //   return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`)
+  // }
   /** 获取全部科室列表 */
   public getNursingUnitAll() {
     return this.get(`/user/nursingUnit/all`)

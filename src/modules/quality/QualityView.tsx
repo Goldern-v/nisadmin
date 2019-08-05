@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'src/components/RouterView'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
 import QueryStatistics from './views/queryStatistics/QueryStatistics'
 import Analysis from './views/analysis/Analysis'
+import SummaryReport from './views/summaryReport/SummaryReport'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as CXTJ } from './images/查询统计.svg'
@@ -25,10 +26,16 @@ const LEFT_MENU_CONFIG = [
   //   component: QueryStatistics
   // },
   {
-    title: '分析报告',
+    title: '月度分析报告',
     icon: <FXBG />,
     path: '/quality/analysis',
     component: Analysis
+  },
+  {
+    title: '汇总报告',
+    icon: <FXBG />,
+    path: '/quality/summaryReport',
+    component: SummaryReport
   }
 ]
 

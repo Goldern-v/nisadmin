@@ -111,10 +111,10 @@ export default function DeptFileShare() {
 
   const handlePreview = (record: any) => {
 
-    let typeArr = record.path.split('.');
+    let typeArr = record.filePath.split('.');
 
     PreviewModalWrapper.show({
-      url: `/crNursing/asset/flatManageSetting${record.path}`,
+      url: `/crNursing/asset/flatManageSetting${record.filePath}`,
       type: typeArr[typeArr.length - 1],
       name: record.manageType
     });

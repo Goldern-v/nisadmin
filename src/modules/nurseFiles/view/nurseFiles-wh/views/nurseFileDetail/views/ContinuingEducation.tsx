@@ -41,13 +41,13 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    {
-      title: '继续教育项目负责人',
-      dataIndex: 'projectPerson',
-      key: 'projectPerson',
-      width: 160,
-      align: 'center'
-    },
+    // {
+    //   title: '继续教育项目负责人',
+    //   dataIndex: 'projectPerson',
+    //   key: 'projectPerson',
+    //   width: 160,
+    //   align: 'center'
+    // },
     {
       title: '项目名称',
       dataIndex: 'projectName',

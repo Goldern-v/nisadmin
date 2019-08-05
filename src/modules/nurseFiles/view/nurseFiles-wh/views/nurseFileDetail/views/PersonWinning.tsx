@@ -15,7 +15,7 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditPersonWinningModal from '../modal/EditPersonWinningModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editPersonWinningModal = createModal(EditPersonWinningModal)
@@ -57,7 +57,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '获奖年份',
+      title: '获奖年月',
       dataIndex: 'winningYear',
       key: 'winningYear',
       width: 90,

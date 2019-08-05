@@ -5,33 +5,73 @@ import { TableHeadCon } from 'src/components/BaseTable'
 import { Select } from 'src/vendors/antd'
 import { DatePicker } from 'antd'
 import { Place } from 'src/components/common'
+import { retiredRetireesViewModal } from '../RetiredRetireesViewModal'
+import { observer } from 'src/vendors/mobx-react-lite'
 
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker
 export interface Props {}
 
-export default function Head() {
+export default observer(function Head() {
   return (
     <Wrapper>
       <span>片区：</span>
-      <Select>
-        <Select.Option value='全部'>全部</Select.Option>
+      <Select
+        value={retiredRetireesViewModal.selectedBigDept}
+        onChange={(val: string) => {
+          retiredRetireesViewModal.selectedBigDept = val
+          retiredRetireesViewModal.onload()
+        }}
+      >
+        <Select.Option value=''>全部</Select.Option>
+        {retiredRetireesViewModal.bigDeptList.map((item: any, index: number) => (
+          <Select.Option value={item.deptCode} key={index}>
+            {item.deptName}
+          </Select.Option>
+        ))}
       </Select>
       <span>科室：</span>
-      <Select>
-        <Select.Option value='全部'>全部</Select.Option>
+      <Select
+        value={retiredRetireesViewModal.selectedDept}
+        onChange={(val: string) => {
+          retiredRetireesViewModal.selectedDept = val
+          retiredRetireesViewModal.onload()
+        }}
+      >
+        <Select.Option value=''>全院</Select.Option>
+        {retiredRetireesViewModal.deptList.map((item: any, index: number) => (
+          <Select.Option value={item.code} key={index}>
+            {item.name}
+          </Select.Option>
+        ))}
       </Select>
       <span>日期：</span>
-      <RangePicker />
+      <RangePicker
+        value={retiredRetireesViewModal.selectedDate}
+        onChange={(date) => {
+          retiredRetireesViewModal.selectedDate = date
+          retiredRetireesViewModal.onload()
+        }}
+      />
       <span>状态：</span>
-      <Select>
-        <Select.Option value='全部'>全部</Select.Option>
+      <Select
+        value={retiredRetireesViewModal.selectedStatus}
+        onChange={(val: string) => {
+          retiredRetireesViewModal.selectedStatus = val
+          retiredRetireesViewModal.onload()
+        }}
+      >
+        {retiredRetireesViewModal.stateList.map((item: any, index: number) => (
+          <Select.Option value={item} key={item}>
+            {item}
+          </Select.Option>
+        ))}
       </Select>
       <Place />
-      <Button>查询</Button>
-      <Button>导出</Button>
+      <Button onClick={() => retiredRetireesViewModal.onload()}>查询</Button>
+      <Button onClick={() => retiredRetireesViewModal.export()}>导出</Button>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled(TableHeadCon)`
   .ant-select {
     width: 200px;
