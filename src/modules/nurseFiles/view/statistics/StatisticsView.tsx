@@ -42,11 +42,17 @@ export default function Statistics() {
   }
 
   useEffect(() => {
-    // statisticsViewModal.init().then((res) => {
-    let pageObj = getPageObj(path)
-    setPageObj(getPageObj(path))
-    onload(pageObj.type)
-    // })
+    statisticsViewModal.init().then((res) => {
+      let pageObj = getPageObj(path)
+      filterRef.current = {}
+      paginationRef.current = {
+        pageIndex: 1,
+        pageSize: 20,
+        total: 1
+      }
+      setPageObj(getPageObj(path))
+      onload(pageObj.type)
+    })
   }, [path])
 
   return (

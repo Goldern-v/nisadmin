@@ -17,7 +17,7 @@ export default class StatisticsService extends BaseApiService {
   }
   /** 导出 */
   public exportExcel(type: string, obj: any) {
-    return this.post(`/${type}/excel`, obj)
+    return this.post(`/${type}/excel`, obj, { responseType: 'blob' })
   }
 }
 
