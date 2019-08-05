@@ -8,6 +8,7 @@ import FullPageLoading from './components/loading/FullPageLoading'
 import { BaseStepBox, BaseStepCon } from './components/BaseStep'
 import YearMonthRangePicker from './components/YearMonthRangePicker'
 import { numToChinese } from './utils/number/numToChinese'
+import { globalModal } from './global/globalModal';
 
 export interface Props extends RouteComponentProps {
   style: any
@@ -31,6 +32,11 @@ export default function demo(props: Props) {
       </BaseStepCon> */}
       {/* <YearMonthRangePicker /> */}
       {/* {numToChinese(1)} */}
+      {/* <span onClick={() => {
+        globalModal.confirm('1', '2').then(res => {
+          alert(1)
+        })
+      }}>111</span> */}
     </Wrapper>
   )
 }
