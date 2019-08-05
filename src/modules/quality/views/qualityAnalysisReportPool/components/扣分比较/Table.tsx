@@ -13,35 +13,56 @@ export default function Table(props: Props) {
   let { list } = props
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
 
+  let lastSum = list
+    .reduce((total: any, current: any) => {
+      return total + current.lastDeductScore
+    }, 0)
+    .toFixed(2)
+  let currentSum = list
+    .reduce((total: any, current: any) => {
+      return total + current.currentDeductScore
+    }, 0)
+    .toFixed(2)
+  let compareSum = Number(currentSum) - Number(lastSum)
+  let comparePercent =
+    lastSum == 0 && currentSum != 0 ? 100 : lastSum == 0 && currentSum == 0 ? 0 : (compareSum - lastSum) / lastSum
+
   return (
     <Wrapper>
       <table>
         <colgroup>
-          {/* <col width='30%' />
-          <col width='25%' />
-          <col width='25%' />
-          <col width='20%' /> */}
+          <col width='16%' />
+          <col width='9%' />
+          <col width='7%' />
+          <col width='10%' />
+          <col width='9%' />
+          <col width='7%' />
+          <col width='10%' />
+          <col width='11%' />
+          <col width='9%' />
+          <col width='12%' />
         </colgroup>
         <tbody>
           <tr className='header'>
             <td rowSpan={2}>项目</td>
-            <td colSpan={3}>2019年5月</td>
+            <td colSpan={3}>2019年{report.indexInType == 1 ? 12 : report.indexInType - 1}月</td>
             <td colSpan={3}>
               {moment(report.endDate).format('YYYY年')}
               {report.indexInType}月
             </td>
             <td colSpan={3}>
-              `${moment(report.endDate).format('YYYY年')}${report.indexInType}月与$
+              {moment(report.endDate).format('YYYY年')}
+              {report.indexInType}月与
               {report.indexInType == 1
                 ? moment(report.beginDate)
                     .subtract(1, 'year')
                     .format('YYYY年')
                 : moment(report.beginDate).format('YYYY年')}
-              ${report.indexInType == 1 ? 12 : report.indexInType - 1}
+              {report.indexInType == 1 ? 12 : report.indexInType - 1}
               比较
             </td>
           </tr>
-          <tr>
+          <tr className='header'>
             <td>扣分</td>
             <td>扣分科室</td>
             <td>占总分%</td>
@@ -55,17 +76,91 @@ export default function Table(props: Props) {
 
           {list.map((item, index) => (
             <tr key={index}>
-              <td style={{ textAlign: 'center' }}>{item.qcGroupName}</td>
-              <td style={{ textAlign: 'center' }}>{item.deductScore}</td>
-              <td>{item.deductDeptSize}</td>
-              <td>{item.scorePercent + '%'}</td>
+              <td>{item.qcGroupName}</td>
+              <td>{item.lastDeductScore}</td>
+              <td>{item.lastDeptSize}</td>
+              <td>{item.lastScorePercent + '%'}</td>
+              <td>{item.currentDeductScore}</td>
+              <td>{item.currentDeptSize}</td>
+              <td>{item.currentScorePercent + '%'}</td>
+
+              <td>
+                {item.compareScore == 0 ? (
+                  '持平'
+                ) : (
+                  <React.Fragment>
+                    {item.compareScore > 0 ? (
+                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                    ) : (
+                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                    )}
+                    {Math.abs(Number(item.compareScore))}
+                  </React.Fragment>
+                )}
+              </td>
+              <td>
+                {item.compareDeptSize == 0 ? (
+                  '持平'
+                ) : (
+                  <React.Fragment>
+                    {item.compareDeptSize > 0 ? (
+                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                    ) : (
+                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                    )}
+                    {Math.abs(Number(item.compareDeptSize))}
+                  </React.Fragment>
+                )}
+              </td>
+              <td>
+                {item.compareScorePercent == 0 ? (
+                  '持平'
+                ) : (
+                  <React.Fragment>
+                    {item.compareScorePercent > 0 ? (
+                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                    ) : (
+                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                    )}
+                    {Math.abs(Number(item.compareScorePercent)) + '%'}
+                  </React.Fragment>
+                )}
+              </td>
             </tr>
           ))}
           <tr>
-            <td>合计</td>
-            <td style={{ borderRight: 0 }}>2.57</td>
-            <td style={{ borderLeft: 0 }} />
-            <td>100%</td>
+            <td>总扣分</td>
+            <td colSpan={3}>{lastSum}</td>
+            <td colSpan={3}>{currentSum}</td>
+            <td colSpan={3}>
+              {compareSum == 0 ? (
+                '持平'
+              ) : (
+                <React.Fragment>
+                  {compareSum > 0 ? (
+                    <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                  ) : (
+                    <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                  )}
+                  {Math.abs(Number(compareSum))}
+                </React.Fragment>
+              )}
+              <div style={{ display: 'inline-block', width: 4 }} />
+              {comparePercent == 0 ? (
+                '(持平)'
+              ) : (
+                <React.Fragment>
+                  (
+                  <div style={{ display: 'inline-block', width: 2 }} />
+                  {comparePercent > 0 ? (
+                    <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                  ) : (
+                    <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                  )}
+                  {Math.abs(Number(comparePercent.toFixed(2))) + '%'})
+                </React.Fragment>
+              )}
+            </td>
           </tr>
         </tbody>
       </table>

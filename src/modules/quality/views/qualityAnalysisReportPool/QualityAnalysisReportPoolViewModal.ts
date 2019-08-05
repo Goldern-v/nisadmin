@@ -101,12 +101,12 @@ class QualityAnalysisReportViewModal {
   async initData() {
     let { data } = await qualityAnalysisReportPoolService.getReport()
     this.allData = data
-    this.sectionList[0].data.text = this.allData.report!.reportName || {}
-    this.sectionList[1].data.report = this.allData.report || {}
-    this.sectionList[2].data.report = this.allData.report || {}
-    this.sectionList[3].data.list = this.allData.highlightItemList || []
-    this.sectionList[4].data.list = this.allData.groupItemList || []
-    this.sectionList[5].data.list = this.allData.groupCompareList || []
+    this.getSectionData('报告名称')!.text = this.allData.report!.reportName || {}
+    this.getSectionData('查房内容')!.text = this.allData.report || {}
+    this.getSectionData('检查形式')!.text = this.allData.report || {}
+    this.getSectionData('亮点')!.list = this.allData.highlightItemList || []
+    this.getSectionData('本月总扣分')!.list = this.allData.groupItemList || []
+    this.getSectionData('扣分比较')!.list = this.allData.groupCompareList || []
   }
   async init() {
     await this.initData()

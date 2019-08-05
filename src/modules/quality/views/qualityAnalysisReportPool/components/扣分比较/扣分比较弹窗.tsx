@@ -17,6 +17,8 @@ export default function 扣分比较弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  let lastMonth = report.indexInType == 1 ? 12 : report.indexInType - 1
+  let currentMonth = report.indexInType
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -28,8 +30,8 @@ export default function 扣分比较弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '科室',
-      key: '科室',
+      title: '项目',
+      key: '项目',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -43,17 +45,17 @@ export default function 扣分比较弹窗(props: Props) {
           />
         )
       },
-      width: 200
+      width: 120
     },
     {
-      title: `扣分`,
-      key: '扣分',
+      title: `${lastMonth}月扣分`,
+      key: `${lastMonth}月扣分`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.lastDeductScore}
             onChange={(e) => {
               if (
                 !Number(e.target.value) &&
@@ -63,23 +65,23 @@ export default function 扣分比较弹窗(props: Props) {
                 return message.warning('只能输入数字')
               }
 
-              record.deductScore = e.target.value
+              record.lastDeductScore = e.target.value
               setData(cloneData)
             }}
           />
         )
       },
-      width: 150
+      width: 120
     },
     {
-      title: `扣分科室`,
-      key: '扣分科室',
+      title: `${lastMonth}月扣分科室`,
+      key: `${lastMonth}月扣分科室`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.deductDeptSize}
+            value={record.lastDeptSize}
             onChange={(e) => {
               if (
                 !Number(e.target.value) &&
@@ -89,13 +91,65 @@ export default function 扣分比较弹窗(props: Props) {
                 return message.warning('只能输入数字')
               }
 
-              record.deductDeptSize = e.target.value
+              record.lastDeptSize = e.target.value
               setData(cloneData)
             }}
           />
         )
       },
-      width: 150
+      width: 120
+    },
+    {
+      title: `${currentMonth}月扣分`,
+      key: `${currentMonth}月扣分`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.currentDeductScore}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+
+              record.currentDeductScore = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 120
+    },
+    {
+      title: `${currentMonth}月扣分科室`,
+      key: `${currentMonth}月扣分科室`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.currentDeptSize}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+
+              record.currentDeptSize = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 120
     },
 
     {

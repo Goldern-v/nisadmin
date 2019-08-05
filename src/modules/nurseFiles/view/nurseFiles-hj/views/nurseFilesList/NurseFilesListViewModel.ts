@@ -28,12 +28,12 @@ class NurseFilesListViewModel {
   @action
   public loadNursingList = () => {
     // this.title = newTitle
-    let obj: any = {
+    let obj: NurseQuery = {
       deptCode: authStore.selectedDeptCode /** 部门编码 */,
-      highestEducation: this.filterXl /** 学历 */,
-      newTitle: this.filterZc /** 职称 */,
-      nurseHierarchy: this.filterCj /** 能级、层级 */,
-      job: this.filterZw /**  职务  */,
+      education: this.filterXl /** 学历 */,
+      title: this.filterZc /** 职称 */,
+      currentLevel: this.filterCj /** 能级、层级 */,
+      post: this.filterZw /**  职务  */,
       pageIndex: this.pageIndex /**  当前页数 */,
       pageSize: this.pageSize /**   每页页数 */,
       empName: this.filterText /**   每页页数 */

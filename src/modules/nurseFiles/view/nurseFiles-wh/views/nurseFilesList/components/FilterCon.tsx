@@ -48,7 +48,7 @@ const getFilterAdapter = (label: string) => {
 /** 设置筛选条件适配器 */
 const setFilterAdapter = (label: string, value: string) => {
   switch (label) {
-    case '最高学历':
+    case '学历':
       {
         nurseFilesListViewModel.filterXl = value
       }

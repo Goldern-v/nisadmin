@@ -2,6 +2,7 @@ import service from 'src/services/api'
 import { observable, computed, action } from 'mobx'
 import { reverseKeyValue } from 'src/utils/object/object'
 import { DictItem } from 'src/services/api/CommonApiService'
+import { authStore } from 'src/stores'
 let dictList = {
   民族: 'nation',
   初始学历: 'initial_education',
@@ -44,14 +45,18 @@ class StatisticsViewModal {
     await service.commonApiService.multiDictInfo(Object.keys(reverseKeyValue(dictList))).then((res) => {
       this.dict = res.data
     })
-    await service.commonApiService.getNursingUnitAll().then((res) => {
-      this.allDeptAll = res.data.deptList
+    await service.commonApiService.getUintList().then((res) => {
+      if (authStore.post === '护理部' || authStore.isAdmin) {
+        this.allDeptAll = [{ name: '全院', code: '全院' }, ...res.data.deptList]
+      } else {
+        this.allDeptAll = res.data.deptList
+      }
     })
     this.hadData = true
   }
   getDict(dictName: DictName | '全部科室'): DictItem[] {
     if (dictName == '全部科室') {
-      return [{ name: '全院', code: '' }, ...this.allDeptAll]
+      return this.allDeptAll
     } else {
       return [{ name: '全部', code: '' }, ...(this.dict[dictList[dictName]] || [])]
     }

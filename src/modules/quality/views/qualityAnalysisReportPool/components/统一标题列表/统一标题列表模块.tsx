@@ -5,34 +5,24 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolV
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
-import { LastImproveItem, DetailItem } from '../../types'
+import { LastImproveItem, Report } from '../../types'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
   modalTitle?: string | undefined
 }
 
-export default observer(function 本月质量检查亮点模块(props: Props) {
+export default observer(function 检查形式模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let list: Partial<DetailItem>[] = data.list || []
+  let report: Report = data ? data.report || {} : {}
 
   return (
     <Wrapper>
-      <OneLevelTitle text={'三、本月质量检查亮点'} />
-
-      {list.map((item, index: number) => (
-        <div className='text-box' key={index}>
-          <div className='label'>
-            ({index + 1}){item.itemTypeName}
-          </div>
-          <pre className='textarea'>{item.content}</pre>
-          {item.attachUrls &&
-            item.attachUrls.split(',').map((item, index) => <img className='img' src={item} alt='' key={index} />)}
-        </div>
-      ))}
-
-      {/* <TextCon>{textarea}</TextCon> */}
+      <TextCon>
+        <span className='sup-title'>二、检查形式：</span>
+        {report.checkWayDesc}
+      </TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
@@ -40,15 +30,20 @@ export default observer(function 本月质量检查亮点模块(props: Props) {
 const Wrapper = styled.div`
   min-height: 60px;
   position: relative;
-  .title {
-    font-size: 16px;
+  .sup-title {
+    font-size: 14px;
     font-weight: bold;
-    margin-left: 50px;
-    margin-right: 50px;
+    color: #000;
   }
+  /* &:hover {
+    button {
+      display: block;
+    }
+  } */
   button {
+    /* display: none; */
     position: absolute;
-    top: 20px;
+    top: 0px;
     right: 20px;
   }
   .aside {
@@ -58,21 +53,8 @@ const Wrapper = styled.div`
   .text-box {
     padding-left: 65px;
     padding-right: 15px;
-    padding-bottom: 20px;
-    padding-top: 5px;
-    .label {
-      font-weight: bold;
-      padding-bottom: 5px;
-    }
-    .textarea {
-      white-space: pre-wrap;
-      margin-bottom: 10px;
-      padding-left: 22px;
-    }
-    .img {
-      width: 450px;
-      margin-bottom: 15px;
-    }
+    padding-bottom: 2px;
+    padding-top: 2px;
   }
 `
 

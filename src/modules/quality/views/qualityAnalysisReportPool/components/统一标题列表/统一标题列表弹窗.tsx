@@ -11,7 +11,7 @@ export interface Props {
   setData: any
 }
 
-export default function 本月质量检查扣分情况弹窗(props: Props) {
+export default function 亮点弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let report: Report = data ? data.report || {} : {}
 
@@ -20,7 +20,7 @@ export default function 本月质量检查扣分情况弹窗(props: Props) {
       setData({
         report: {
           ...report,
-          checkDeptDesc: e.target.value
+          checkWayDesc: e.target.value
         }
       })
     }
