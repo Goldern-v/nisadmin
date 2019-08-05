@@ -13,6 +13,16 @@ import 本月总扣分弹窗 from '../components/本月总扣分/本月总扣分
 import 本月总扣分模块 from '../components/本月总扣分/本月总扣分模块'
 import 扣分比较弹窗 from '../components/扣分比较/扣分比较弹窗'
 import 扣分比较模块 from '../components/扣分比较/扣分比较模块'
+import 病区质量考核前十弹窗 from '../components/病区质量考核前十/病区质量考核前十弹窗'
+import 病区质量考核前十模块 from '../components/病区质量考核前十/病区质量考核前十模块'
+import 病区质量扣分前十弹窗 from '../components/病区质量扣分前十/病区质量扣分前十弹窗'
+import 病区质量扣分前十模块 from '../components/病区质量扣分前十/病区质量扣分前十模块'
+import 特殊科室质量扣分弹窗 from '../components/特殊科室质量扣分/特殊科室质量扣分弹窗'
+import 特殊科室质量扣分模块 from '../components/特殊科室质量扣分/特殊科室质量扣分模块'
+import 特殊监护病房质量扣分弹窗 from '../components/特殊监护病房质量扣分/特殊监护病房质量扣分弹窗'
+import 特殊监护病房质量扣分模块 from '../components/特殊监护病房质量扣分/特殊监护病房质量扣分模块'
+import 门诊科室质量扣分弹窗 from '../components/门诊科室质量扣分/门诊科室质量扣分弹窗'
+import 门诊科室质量扣分模块 from '../components/门诊科室质量扣分/门诊科室质量扣分模块'
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -63,5 +73,50 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 扣分比较模块,
     modal: 扣分比较弹窗
+  },
+  {
+    sectionId: '病区质量考核前十',
+    sectionTitle: '病区质量考核前十',
+    modalTitle: '编辑病区质量考核前十的科室',
+    modalWidth: 800,
+    data: {},
+    section: 病区质量考核前十模块,
+    modal: 病区质量考核前十弹窗
+  },
+  {
+    sectionId: '病区质量扣分前十',
+    sectionTitle: '病区质量扣分前十',
+    modalTitle: '编辑病区质量扣分前十的科室',
+    modalWidth: 800,
+    data: {},
+    section: 病区质量扣分前十模块,
+    modal: 病区质量扣分前十弹窗
+  },
+  {
+    sectionId: '特殊科室质量扣分',
+    sectionTitle: '特殊科室质量扣分',
+    modalTitle: '编辑特殊科室质量扣分',
+    modalWidth: 800,
+    data: {},
+    section: 特殊科室质量扣分模块,
+    modal: 特殊科室质量扣分弹窗
+  },
+  {
+    sectionId: '特殊监护病房质量扣分',
+    sectionTitle: '特殊监护病房质量扣分',
+    modalTitle: '编辑特殊监护病房质量扣分',
+    modalWidth: 800,
+    data: {},
+    section: 特殊监护病房质量扣分模块,
+    modal: 特殊监护病房质量扣分弹窗
+  },
+  {
+    sectionId: '门诊科室质量扣分',
+    sectionTitle: '门诊科室质量扣分',
+    modalTitle: '编辑门诊科室质量扣分',
+    modalWidth: 800,
+    data: {},
+    section: 门诊科室质量扣分模块,
+    modal: 门诊科室质量扣分弹窗
   }
 ]

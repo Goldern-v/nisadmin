@@ -14,7 +14,7 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 病区质量考核前十模块(props: Props) {
+export default observer(function 门诊科室质量扣分模块(props: Props) {
   const { sectionId } = props;
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId);
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
@@ -36,7 +36,7 @@ export default observer(function 病区质量考核前十模块(props: Props) {
     const splitIdx = Math.ceil(data.list.length / 2);
     let col1 = [];
     let col2 = [];
-    let minSize = 10;
+    let minSize = 0;
     if (splitIdx * 2 > minSize) minSize = splitIdx * 2;
 
     for (let i = 0; i < minSize; i++) {
@@ -106,7 +106,7 @@ export default observer(function 病区质量考核前十模块(props: Props) {
   }
   return <Wrapper>
     <TextCon>
-      <span className='sup-title'>2. {Title()}病区质量扣分前十名的科室</span>
+      <span className='sup-title'>5. {Title()}门诊科室质量扣分排序</span>
     </TextCon>
     {TwoColTable()}
     <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>

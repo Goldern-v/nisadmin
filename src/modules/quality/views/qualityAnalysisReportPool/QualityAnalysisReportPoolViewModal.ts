@@ -107,6 +107,11 @@ class QualityAnalysisReportViewModal {
     this.sectionList[3].data.list = this.allData.highlightItemList || []
     this.sectionList[4].data.list = this.allData.groupItemList || []
     this.sectionList[5].data.list = this.allData.groupCompareList || []
+    this.sectionList[6].data.report = this.allData.report || {}
+    this.sectionList[7].data.list = this.allData.topRankDeptItemList || []
+    this.sectionList[8].data.list = this.allData.specialDeptItemList || []
+    this.sectionList[9].data.list = this.allData.icuDeptItemList || []
+    this.sectionList[10].data.list = this.allData.opdDeptItemList || []
   }
   async init() {
     await this.initData()
