@@ -11,6 +11,8 @@ import 亮点弹窗 from '../components/亮点/亮点弹窗'
 import 亮点模块 from '../components/亮点/亮点模块'
 import 本月总扣分弹窗 from '../components/本月总扣分/本月总扣分弹窗'
 import 本月总扣分模块 from '../components/本月总扣分/本月总扣分模块'
+import 扣分比较弹窗 from '../components/扣分比较/扣分比较弹窗'
+import 扣分比较模块 from '../components/扣分比较/扣分比较模块'
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -52,5 +54,14 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 本月总扣分模块,
     modal: 本月总扣分弹窗
+  },
+  {
+    sectionId: '扣分比较',
+    sectionTitle: '扣分比较',
+    modalTitle: '编辑扣分比较',
+    modalWidth: 800,
+    data: {},
+    section: 扣分比较模块,
+    modal: 扣分比较弹窗
   }
 ]

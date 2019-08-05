@@ -13,7 +13,7 @@ export interface Props {
   setData: any
 }
 
-export default function 本月总扣分弹窗(props: Props) {
+export default function 扣分比较弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')

@@ -42,6 +42,7 @@ export default function Statistics() {
   }
 
   useEffect(() => {
+    if(statisticsViewModal.dict)
     statisticsViewModal.init().then((res) => {
       let pageObj = getPageObj(path)
       filterRef.current = {}

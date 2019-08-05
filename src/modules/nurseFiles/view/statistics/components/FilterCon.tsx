@@ -71,7 +71,9 @@ export default function FilterCon(props: Props) {
       }
     }
   }
-
+  useEffect(() => {
+    refForm.current && refForm.current.clean()
+  }, [pageObj.title])
   return (
     <Wrapper id={'filterCon'}>
       <Form ref={refForm} labelWidth={100} onChange={onFieldChange}>

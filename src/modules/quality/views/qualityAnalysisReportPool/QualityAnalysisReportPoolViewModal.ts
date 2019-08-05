@@ -106,6 +106,7 @@ class QualityAnalysisReportViewModal {
     this.sectionList[2].data.report = this.allData.report || {}
     this.sectionList[3].data.list = this.allData.highlightItemList || []
     this.sectionList[4].data.list = this.allData.groupItemList || []
+    this.sectionList[5].data.list = this.allData.groupCompareList || []
   }
   async init() {
     await this.initData()

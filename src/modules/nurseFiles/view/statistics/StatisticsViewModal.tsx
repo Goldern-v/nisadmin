@@ -34,17 +34,20 @@ class StatisticsViewModal {
   @observable public badgeTotal: number = 0
   @observable public nurserInfo: any = {}
   @observable public pageSpinning: boolean = false
+  @observable public hadData: boolean = false
   @observable public allDeptAll: { name: string; code: string }[] = []
   /**字典对象 */
   @observable public dict: { [P: string]: DictItem[] } = {}
 
   async initDict() {
+    if (this.hadData) return
     await service.commonApiService.multiDictInfo(Object.keys(reverseKeyValue(dictList))).then((res) => {
       this.dict = res.data
     })
     await service.commonApiService.getNursingUnitAll().then((res) => {
       this.allDeptAll = res.data.deptList
     })
+    this.hadData = true
   }
   getDict(dictName: DictName | '全部科室'): DictItem[] {
     if (dictName == '全部科室') {
