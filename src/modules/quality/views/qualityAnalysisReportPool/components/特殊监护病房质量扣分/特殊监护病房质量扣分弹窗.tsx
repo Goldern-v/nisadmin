@@ -13,7 +13,7 @@ export interface Props {
   setData: any
 }
 
-export default function 病区质量扣分前十弹窗(props: Props) {
+export default function 特殊监护病房质量扣分弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')

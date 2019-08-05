@@ -4,15 +4,14 @@ import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores/index'
 import BaseTable from 'src/components/BaseTable'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
-//引入图标
 import { ReactComponent as DWSH } from '../images/待我审核.svg'
 export interface Props extends RouteComponentProps {}
 
 export default function ExamineTable() {
   const [loadingTable, setLoadingTable] = useState(false)
-  const [tableData, setTableData] = useState([])
-  const [current, setCurrent] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  const [tableData, setTableData] = useState([])//表格数据
+  const [current, setCurrent] = useState(1)//页码
+  const [pageSize, setPageSize] = useState(10)//条数
   const [keyword, setKeyword] = useState('')
 
   const columns: any = [
@@ -53,7 +52,7 @@ export default function ExamineTable() {
   const getMealList = () => {
     //质量检查和档案管理各拿10条数据
     let qualityCheck = HomeApi.pendingPage(current, pageSize, "qc", keyword)
-    let nurseFileCheck = HomeApi.pendingPage(current, pageSize, 'qc', keyword)
+    let nurseFileCheck = HomeApi.pendingPage(current, pageSize, 'nurseFile', keyword)
     setLoadingTable(true)
     Promise.all([qualityCheck, nurseFileCheck]).then(values => {
       setLoadingTable(false)

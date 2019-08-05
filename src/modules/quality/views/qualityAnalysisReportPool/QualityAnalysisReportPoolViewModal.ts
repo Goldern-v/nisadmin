@@ -107,6 +107,12 @@ class QualityAnalysisReportViewModal {
     this.getSectionData('亮点')!.list = this.allData.highlightItemList || []
     this.getSectionData('本月总扣分')!.list = this.allData.groupItemList || []
     this.getSectionData('扣分比较')!.list = this.allData.groupCompareList || []
+
+    this.sectionList[6].data.report = this.allData.report || {}
+    this.sectionList[7].data.list = this.allData.topRankDeptItemList || []
+    this.sectionList[8].data.list = this.allData.specialDeptItemList || []
+    this.sectionList[9].data.list = this.allData.icuDeptItemList || []
+    this.sectionList[10].data.list = this.allData.opdDeptItemList || []
   }
   async init() {
     await this.initData()

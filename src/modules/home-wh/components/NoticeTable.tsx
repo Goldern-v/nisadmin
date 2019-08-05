@@ -7,6 +7,10 @@ import { Button } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 //引入图标
 import { ReactComponent as TZGG } from '../images/通知公告.svg'
+import { ReactComponent as READ } from '../images/已读.svg'
+import { ReactComponent as NOREAD } from '../images/未读.svg'
+
+import Item from 'antd/lib/list/Item';
 export interface Props extends RouteComponentProps {}
 
 export default function NoticeTable() {
@@ -15,14 +19,36 @@ export default function NoticeTable() {
   const [pageIndex, setPageIndex] = useState(1)
   const [pageSize, setPageSize] = useState(20)
   const [keyword, setKeyword] = useState('')
+  // const column:any = [
+	// 	{
+	// 	{
+	// 		title: <div className={styles.tableTeCenter}>生效时间</div>,
+	// 		render: (val, item, index) => (
+	// 			<div>
+	// 				<span className={styles.tableTitle}>{item.effectStartDate ? formatTime(item.customerName,'Y-MM-dd') : '--'}</span>
+	// 				<span className={styles.tableTitle}>至</span>
+	// 				<span className={styles.tableTitle}>{item.effectEndDate ? formatTime(item.effectEndDate,'Y-MM-dd') : '--'}</span>
+	// 			</div>
+	// 		),
+	// 		className: styles.tableCell,
+  //   }
+  // ]
+
+  const setIcon = (read:any) => {
+    return read === true ? <READ /> : <NOREAD/>
+  }
 
   const columns: any = [
     {
       title: '标题',
-      dataIndex: 'title',
-      key: 'title',
       width: 60,
-      align: 'left'
+      align: 'left',
+      render: (text:any, record:any) => (
+        <span>
+          <i className='messageStatus'>{setIcon(record.read)}</i>
+          <i className='messageTitle'>{record.title}</i>
+        </span> 
+      ) 
     },
     {
       title: '提取人',
@@ -88,6 +114,15 @@ const Wrapper = styled.div`
     .ant-table-small{
       border-radius: 0 !important;
     }
+  }
+  .messageStatus{
+    display:inline-block;
+    margin-right:5px;
+    vertical-align:middle;
+    margin-top:5px;
+  }
+  .messageTitle{
+    vertical-align:middle;
   }
 `
 const TableTitle = styled.div`
