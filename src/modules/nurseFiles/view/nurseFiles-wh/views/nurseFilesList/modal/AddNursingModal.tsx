@@ -7,6 +7,7 @@ import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
 export interface Props extends FormComponentProps {
   visible: boolean
   handleOk: () => void
@@ -131,9 +132,9 @@ function AddNursingModal(props: Props) {
         <Form.Item {...formItemLayout} label='学历'>
           {getFieldDecorator('highestEducation')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择学历'>
-              {nurseFilesListViewModel.getDict('学历').map((item: string) => (
-                <Select.Option value={item} key={item}>
-                  {item}
+              {statisticsViewModal.getDict('学历').map((item: any) => (
+                <Select.Option value={item.code} key={item.code}>
+                  {item.name}
                 </Select.Option>
               ))}
             </Select>
@@ -143,9 +144,9 @@ function AddNursingModal(props: Props) {
         <Form.Item {...formItemLayout} label='职称'>
           {getFieldDecorator('newTitle')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
-              {nurseFilesListViewModel.getDict('职称').map((item: string) => (
-                <Select.Option value={item} key={item}>
-                  {item}
+              {statisticsViewModal.getDict('技术职称').map((item: any) => (
+                <Select.Option value={item.code} key={item.code}>
+                  {item.name}
                 </Select.Option>
               ))}
             </Select>
@@ -154,9 +155,9 @@ function AddNursingModal(props: Props) {
         <Form.Item {...formItemLayout} label='层级'>
           {getFieldDecorator('nurseHierarchy')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
-              {nurseFilesListViewModel.getDict('层级').map((item: string) => (
-                <Select.Option value={item} key={item}>
-                  {item}
+              {statisticsViewModal.getDict('层级').map((item: any) => (
+                <Select.Option value={item.code} key={item.code}>
+                  {item.name}
                 </Select.Option>
               ))}
             </Select>
@@ -165,9 +166,9 @@ function AddNursingModal(props: Props) {
         <Form.Item {...formItemLayout} label='职务'>
           {getFieldDecorator('job')(
             <Select showSearch style={{ width: '100%' }} placeholder='选择职务'>
-              {nurseFilesListViewModel.getDict('职务').map((item: string) => (
-                <Select.Option value={item} key={item}>
-                  {item}
+              {statisticsViewModal.getDict('职务').map((item: any) => (
+                <Select.Option value={item.code} key={item.code}>
+                  {item.name}
                 </Select.Option>
               ))}
             </Select>

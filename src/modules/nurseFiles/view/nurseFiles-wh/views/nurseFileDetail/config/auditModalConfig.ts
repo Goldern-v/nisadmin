@@ -359,7 +359,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               年龄: `age`
             },
             {
-              取得护士执业资格证书时间并从事护理岗位时间: `zyzsDate`,
+              取得护士执业证书时间并从事护理岗位时间: `zyzsDate`,
               离职时间: `leaveDate`
             },
             {

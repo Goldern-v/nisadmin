@@ -9,6 +9,7 @@ import { BaseStepBox, BaseStepCon } from './components/BaseStep'
 import YearMonthRangePicker from './components/YearMonthRangePicker'
 import { numToChinese } from './utils/number/numToChinese'
 import YearRangePicker from './components/YearRangePicker'
+import AgePicker from './components/AgeRangePicker'
 
 export interface Props extends RouteComponentProps {
   style: any
@@ -20,7 +21,7 @@ export default function demo(props: Props) {
   console.log(data.current, 'render')
   return (
     <Wrapper>
-      <YearRangePicker />
+      <AgePicker />
     </Wrapper>
   )
 }

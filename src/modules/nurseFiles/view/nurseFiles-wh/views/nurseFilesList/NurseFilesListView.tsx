@@ -27,14 +27,14 @@ const value = {
   theme: 'red'
 }
 const columns: ColumnProps<any>[] = [
-  {
-    title: '序号',
-    dataIndex: '1',
-    key: '1',
-    render: (text: any, row: any, index: number) => index + 1,
-    align: 'center',
-    width: 50
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: '1',
+  //   key: '1',
+  //   render: (text: any, row: any, index: number) => index + 1,
+  //   align: 'center',
+  //   width: 50
+  // },
   {
     title: '科室',
     dataIndex: 'deptName',
@@ -170,9 +170,9 @@ export default observer(function NurseFilesListView() {
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={nurseFilesListViewModel.isOpenFilter ? 415 : 270}
         surplusWidth={80}
-        type={['spaceRow']}
+        surplusHeight={425}
+        type={['index']}
         onRow={(record: any) => {
           return {
             onDoubleClick: () => record.id && onDoubleClick(record)

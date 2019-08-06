@@ -25,7 +25,9 @@ let dictList = {
   获奖类别: 'winning_type',
   获奖级别: 'winning_level',
   专利类型: 'patent_type',
-  文章类别: 'article_type'
+  文章类别: 'article_type',
+  政治面貌: 'politics_look',
+  鞋码大小: 'shoe_size'
 }
 
 type DictList = typeof dictList
@@ -47,11 +49,16 @@ class StatisticsViewModal {
     })
     await service.commonApiService.getUintList().then((res) => {
       if (authStore.post === '护理部' || authStore.isAdmin) {
-        this.allDeptAll = [{ name: '全院', code: '全院' }, ...res.data.deptList]
+        this.allDeptAll = [{ name: '全院', code: '' }, ...res.data.deptList]
+        authStore.selectedDeptCode = ''
       } else {
         this.allDeptAll = res.data.deptList
+        if ((authStore.selectedDeptCode = '')) {
+          authStore.selectedDeptCode = res.data.defaultDeptCode
+        }
       }
     })
+
     this.hadData = true
   }
   getDict(dictName: DictName | '全部科室'): DictItem[] {

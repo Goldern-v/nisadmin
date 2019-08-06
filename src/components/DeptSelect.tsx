@@ -40,11 +40,11 @@ export default observer(function DeptSelect(props: Props) {
       if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
         setHasAllDept(true)
         // if (!authStore.selectedDeptCode) {
-        authStore.selectedDeptCode = '全院'
+        authStore.selectedDeptCode = ''
         // }
       } else {
         setHasAllDept(false)
-        if (authStore.selectedDeptCode === '全院') {
+        if (authStore.selectedDeptCode === '') {
           authStore.selectedDeptCode = authStore.defaultDeptCode
         }
       }
@@ -70,7 +70,7 @@ export default observer(function DeptSelect(props: Props) {
         }
       >
         {hasAllDept && (
-          <Select.Option key={'全院'} value={'全院'}>
+          <Select.Option key={'全院'} value={''}>
             全院
           </Select.Option>
         )}

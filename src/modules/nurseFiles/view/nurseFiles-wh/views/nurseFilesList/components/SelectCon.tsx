@@ -25,14 +25,9 @@ export default observer(function SelectCon(props: any, context: any) {
   const onSearch = () => {
     nurseFilesListViewModel.loadNursingList()
   }
-  const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    nurseFilesListViewModel.filterText = e.target.value
-  }
 
   useEffect(() => {
-    return () => {
-      nurseFilesListViewModel.filterText = ''
-    }
+    return () => {}
   }, [])
 
   return (
@@ -40,17 +35,12 @@ export default observer(function SelectCon(props: any, context: any) {
       <Wrapper>
         <Title>护士档案</Title>
         <Place />
-        <span>科室：</span>
-        <DeptSelect onChange={onChange} />
-        <Input
-          placeholder='请输入搜索关键字'
-          value={nurseFilesListViewModel.filterText}
-          style={{ width: 160 }}
-          onChange={SearchByText}
-        />
-        <Button type='primary' onClick={onSearch}>
+        {/* <span>科室：</span>
+        <DeptSelect onChange={onChange} /> */}
+
+        {/* <Button type='primary' onClick={onSearch}>
           搜索
-        </Button>
+        </Button> */}
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
       </Wrapper>
       <AddNursingModal visible={visible} handleOk={handleOk} handleCancel={handleCancel} />

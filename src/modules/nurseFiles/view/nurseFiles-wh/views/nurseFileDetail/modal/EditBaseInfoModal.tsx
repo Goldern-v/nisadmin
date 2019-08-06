@@ -209,7 +209,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`政治面貌`} name='politicsLook'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('政治面貌').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -317,7 +317,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`鞋码大小`} name='shoeSize'>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('鞋码大小').map((item) => item.name)} />
             </Form.Field>
           </Col>
         </Row>

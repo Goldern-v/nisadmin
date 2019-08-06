@@ -64,7 +64,7 @@ export default observer(function Leave() {
       align: 'center'
     },
     {
-      title: '取得护士执业资格证书时间并从事护理岗位时间',
+      title: '取得护士执业证书时间并从事护理岗位时间',
       dataIndex: 'zyzsDate',
       key: 'zyzsDate',
       width: 200,
@@ -84,16 +84,7 @@ export default observer(function Leave() {
       width: 90,
       align: 'center'
     },
-    {
-      title: '附件',
-      dataIndex: 'fj',
-      key: 'fj',
-      width: 80,
-      align: 'center',
-      render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
-      }
-    },
+
     {
       title: '状态',
       dataIndex: 'auditedStatusName',

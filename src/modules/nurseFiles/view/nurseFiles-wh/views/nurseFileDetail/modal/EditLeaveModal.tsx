@@ -44,8 +44,8 @@ export default function EditLeaveModal(props: Props) {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: '',
-      urlImageOne: ''
+      auditedStatus: ''
+      // urlImageOne: ''
     }
     if (authStore!.user!.post == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
@@ -64,7 +64,7 @@ export default function EditLeaveModal(props: Props) {
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
     value.zyzsDate && (value.zyzsDate = value.zyzsDate.format('YYYY-MM-DD'))
     value.leaveDate && (value.leaveDate = value.leaveDate.format('YYYY-MM-DD'))
-    value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
+    // value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHLeave', { ...obj, ...value }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -95,8 +95,8 @@ export default function EditLeaveModal(props: Props) {
         ...{
           birthday: data.birthday ? moment(data.birthday) : null,
           zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
-          leaveDate: data.zyzsDate ? moment(data.leaveDate) : null,
-          urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+          leaveDate: data.zyzsDate ? moment(data.leaveDate) : null
+          // urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
     }
@@ -144,7 +144,7 @@ export default function EditLeaveModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`取得护士执业资格证书时间并从事护理岗位时间`} name='zyzsDate'>
+            <Form.Field label={`取得护士执业证书时间并从事护理岗位时间`} name='zyzsDate'>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -165,11 +165,11 @@ export default function EditLeaveModal(props: Props) {
             </Form.Field>
           </Col>
 
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     </Modal>
