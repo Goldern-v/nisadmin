@@ -73,6 +73,8 @@ export interface DetailItem {
   attachUrls: string
   highlightItem: string
   content: string
+  itemImproveDesc: string
+  childrenItemList: any[]
 }
 /** 检查亮点 */
 interface HighlightItem extends DetailItem {}

@@ -101,6 +101,13 @@ class QualityAnalysisReportViewModal {
   async initData() {
     let { data } = await qualityAnalysisReportPoolService.getReport()
     this.allData = data
+    /** 本月 */
+    let currentYear: any = this.allData!.report!.year
+    let currentMonth: any = this.allData!.report!.indexInType
+    /** 下月 */
+    let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
+    /** 上月 */
+    let lastMonth = currentMonth == 1 ? 12 : currentMonth - 1
     this.getSectionData('报告名称')!.text = this.allData.report!.reportName || {}
     this.getSectionData('查房内容')!.text = this.allData.report || {}
     this.getSectionData('检查形式')!.text = this.allData.report || {}
@@ -113,6 +120,22 @@ class QualityAnalysisReportViewModal {
     this.getSectionData('特殊科室质量扣分')!.list = this.allData.specialDeptItemList || []
     this.getSectionData('特殊监护病房质量扣分')!.list = this.allData.icuDeptItemList || []
     this.getSectionData('门诊科室质量扣分')!.list = this.allData.opdDeptItemList || []
+
+    this.getSectionData('4')!.text = `四、${currentMonth}月各组质量问题反馈`
+    this.getSectionData('6')!.text = `六、各组重点问题${currentMonth}月整改情况反馈`
+    this.getSectionData('7')!.text = `七、${currentYear}年${nextMonth}月护理质量工作重点`
+    for (let i = 0; i < 10; i++) {
+      this.getSectionData(`4_${i + 1}`)!.list = this.allData!.detailItemList![i]!.childrenItemList || []
+      this.getSectionData(`4_${i + 1}`)!.contentKey = 'content'
+    }
+    for (let i = 0; i < 10; i++) {
+      this.getSectionData(`5_${i + 1}`)!.list = this.allData!.improveItemList![i]!.childrenItemList || []
+      this.getSectionData(`5_${i + 1}`)!.contentKey = 'itemImproveDesc'
+    }
+    this.getSectionData(`6_1`)!.list = this.allData!.improveResultList || []
+    this.getSectionData(`6_1`)!.contentKey = 'itemImproveDesc'
+    this.getSectionData(`7_1`)!.list = this.allData!.keyItemList || []
+    this.getSectionData(`7_1`)!.contentKey = 'content'
   }
   async init() {
     await this.initData()

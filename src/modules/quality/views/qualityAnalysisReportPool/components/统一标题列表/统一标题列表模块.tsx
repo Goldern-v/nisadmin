@@ -5,7 +5,7 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolV
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
-import { LastImproveItem, Report } from '../../types'
+import { LastImproveItem, Report, DetailItem } from '../../types'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -15,20 +15,32 @@ export interface Props {
 export default observer(function 检查形式模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
+  let list: Partial<DetailItem>[] = data.list || []
   let report: Report = data ? data.report || {} : {}
-
+  let contentKey: any = data.contentKey || ''
   return (
     <Wrapper>
-      <TextCon>
-        <span className='sup-title'>二、检查形式：</span>
-        {report.checkWayDesc}
-      </TextCon>
+      {sectionTitle && (
+        <TextCon>
+          <span className='sup-title'>{sectionTitle}</span>
+        </TextCon>
+      )}
+
+      {list.map((item: any, index: number) => (
+        <div className='text-box' key={index}>
+          <pre className='textarea'>
+            <div className='index'>{index + 1}.</div>
+            <div className='content'>{item[contentKey]}</div>
+          </pre>
+        </div>
+      ))}
+      {list.length == 0 && <div className='null-text'>无</div>}
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
 })
 const Wrapper = styled.div`
-  min-height: 60px;
+  min-height: 40px;
   position: relative;
   .sup-title {
     font-size: 14px;
@@ -51,15 +63,28 @@ const Wrapper = styled.div`
     padding-left: 30px;
   }
   .text-box {
-    padding-left: 65px;
-    padding-right: 15px;
+    padding-left: 50px;
+    padding-right: 50px;
     padding-bottom: 2px;
     padding-top: 2px;
+  }
+  .textarea {
+    white-space: pre-wrap;
+    margin-bottom: 5px;
+    .index {
+      float: left;
+    }
+    .content {
+      margin-left: 25px;
+    }
+  }
+  .null-text {
+    margin-left: 75px;
   }
 `
 
 const TextCon = styled.pre`
   margin: 10px 50px;
-  min-height: 40px;
+  /* min-height: 40px; */
   white-space: pre-wrap;
 `

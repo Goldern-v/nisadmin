@@ -23,6 +23,9 @@ import 特殊监护病房质量扣分弹窗 from '../components/特殊监护病�
 import 特殊监护病房质量扣分模块 from '../components/特殊监护病房质量扣分/特殊监护病房质量扣分模块'
 import 门诊科室质量扣分弹窗 from '../components/门诊科室质量扣分/门诊科室质量扣分弹窗'
 import 门诊科室质量扣分模块 from '../components/门诊科室质量扣分/门诊科室质量扣分模块'
+import 一级标题模块 from '../components/一级标题/一级标题模块'
+import 统一标题列表模块 from '../components/统一标题列表/统一标题列表模块'
+import 统一标题列表弹窗 from '../components/统一标题列表/统一标题列表弹窗'
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -118,5 +121,221 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 门诊科室质量扣分模块,
     modal: 门诊科室质量扣分弹窗
+  },
+  {
+    sectionId: '4',
+    sectionTitle: '四、各组质量问题反馈',
+    data: {},
+    section: 一级标题模块
+  },
+  {
+    sectionId: '4_1',
+    sectionTitle: '(一) 基础护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑基础护理'
+  },
+  {
+    sectionId: '4_2',
+    sectionTitle: '(二) 重危患者护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑重危患者护理'
+  },
+  {
+    sectionId: '4_3',
+    sectionTitle: '(三) 消毒隔离',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑消毒隔离'
+  },
+  {
+    sectionId: '4_4',
+    sectionTitle: '(四) 护理安全',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑护理安全'
+  },
+  {
+    sectionId: '4_5',
+    sectionTitle: '(五) 专科护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑专科护理'
+  },
+  {
+    sectionId: '4_6',
+    sectionTitle: '(六) 病房综合质量',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑病房综合质量'
+  },
+  {
+    sectionId: '4_7',
+    sectionTitle: '(七) 护理文书',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑护理文书'
+  },
+  {
+    sectionId: '4_8',
+    sectionTitle: '(八) 特殊科室',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑特殊科室'
+  },
+  {
+    sectionId: '4_9',
+    sectionTitle: '(九) 门急诊检查',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑特殊科室'
+  },
+  {
+    sectionId: '4_10',
+    sectionTitle: '(十) 中医护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑中医护理'
+  },
+  {
+    sectionId: '4_11',
+    sectionTitle: '(十一) 静脉治疗',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑中医护理'
+  },
+  {
+    sectionId: '5',
+    sectionTitle: '五、各组下一步整改措施',
+    data: {},
+    section: 一级标题模块
+  },
+  {
+    sectionId: '5_1',
+    sectionTitle: '(一) 基础护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑基础护理'
+  },
+  {
+    sectionId: '5_2',
+    sectionTitle: '(二) 重危患者护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑重危患者护理'
+  },
+  {
+    sectionId: '5_3',
+    sectionTitle: '(三) 消毒隔离',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑消毒隔离'
+  },
+  {
+    sectionId: '5_4',
+    sectionTitle: '(四) 护理安全',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑护理安全'
+  },
+  {
+    sectionId: '5_5',
+    sectionTitle: '(五) 专科护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑专科护理'
+  },
+  {
+    sectionId: '5_6',
+    sectionTitle: '(六) 病房综合质量',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑病房综合质量'
+  },
+  {
+    sectionId: '5_7',
+    sectionTitle: '(七) 护理文书',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑护理文书'
+  },
+  {
+    sectionId: '5_8',
+    sectionTitle: '(八) 特殊科室',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑特殊科室'
+  },
+  {
+    sectionId: '5_9',
+    sectionTitle: '(九) 门急诊检查',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑特殊科室'
+  },
+  {
+    sectionId: '5_10',
+    sectionTitle: '(十) 中医护理',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑中医护理'
+  },
+  {
+    sectionId: '5_11',
+    sectionTitle: '(十一) 静脉治疗',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑中医护理'
+  },
+  {
+    sectionId: '6',
+    sectionTitle: '六、各组质量整改情况反馈',
+    data: {},
+    section: 一级标题模块
+  },
+  {
+    sectionId: '6_1',
+    sectionTitle: '',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑各组质量整改情况反馈'
+  },
+  {
+    sectionId: '7',
+    sectionTitle: '七、护理质量工作重点',
+    data: {},
+    section: 一级标题模块
+  },
+  {
+    sectionId: '7_1',
+    sectionTitle: '',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑护理质量工作重点'
   }
 ]

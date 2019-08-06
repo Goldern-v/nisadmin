@@ -15,15 +15,15 @@ export interface Props {
 }
 
 export default observer(function 特殊科室质量扣分模块(props: Props) {
-  const { sectionId } = props;
-  let data = qualityAnalysisReportViewModal.getSectionData(sectionId);
+  const { sectionId } = props
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
 
   let tableList = data.list || []
 
   const Title = () => {
-    let str = '';
-    if (!report.indexInType) return '';
+    let str = ''
+    if (!report.indexInType) return ''
     if (report.type == 'month') {
       str = `${report.indexInType}月`
     } else {
@@ -32,33 +32,37 @@ export default observer(function 特殊科室质量扣分模块(props: Props) {
     return str
   }
 
-  return <Wrapper>
-    <TextCon>
-      <span className='sup-title'>3. {Title()}特殊科室质量扣分排序</span>
-    </TextCon>
-    <table>
-      <colgroup>
-        <col width="50" />
-        <col />
-        <col width="80" />
-      </colgroup>
-      <tbody>
-        <tr>
-          <td>排序</td>
-          <td>科室</td>
-          <td>扣分</td>
-        </tr>
-        {tableList.map((item: any, idx: any) => {
-          return <tr key={idx}>
-            <td>{idx + 1}</td>
-            <td>{item.wardName}</td>
-            <td>{item.deductScore}</td>
+  return (
+    <Wrapper>
+      <TextCon>
+        <span className='sup-title'>3. {Title()}特殊科室质量扣分排序</span>
+      </TextCon>
+      <table>
+        <colgroup>
+          <col width='50' />
+          <col />
+          <col width='80' />
+        </colgroup>
+        <tbody>
+          <tr>
+            <td>排序</td>
+            <td>科室</td>
+            <td>扣分</td>
           </tr>
-        })}
-      </tbody>
-    </table>
-    <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
-  </Wrapper>
+          {tableList.map((item: any, idx: any) => {
+            return (
+              <tr key={idx}>
+                <td>{idx + 1}</td>
+                <td>{item.wardName}</td>
+                <td>{item.deductScore}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+      <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
+    </Wrapper>
+  )
 })
 
 const Wrapper = styled.div`
@@ -86,7 +90,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
-    padding-right: 15px;
+    padding-right: 50px;
     padding-bottom: 2px;
     padding-top: 2px;
   }

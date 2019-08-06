@@ -57,7 +57,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
-    padding-right: 15px;
+    padding-right: 50px;
     padding-bottom: 5px;
     padding-top: 5px;
     .label {

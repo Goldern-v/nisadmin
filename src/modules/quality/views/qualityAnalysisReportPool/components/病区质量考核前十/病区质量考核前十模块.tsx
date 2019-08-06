@@ -20,8 +20,8 @@ export default observer(function 病区质量考核前十模块(props: Props) {
   let report: Report = data ? data.report || {} : {}
 
   const Title = () => {
-    let str = '';
-    if (!report.indexInType) return '';
+    let str = ''
+    if (!report.indexInType) return ''
     if (report.type == 'month') {
       str = `${report.indexInType}月`
     } else {
@@ -74,7 +74,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
-    padding-right: 15px;
+    padding-right: 50px;
     padding-bottom: 2px;
     padding-top: 2px;
   }

@@ -43,7 +43,7 @@ const Wrapper = styled.div`
   }
   .text-box {
     padding-left: 65px;
-    padding-right: 15px;
+    padding-right: 50px;
     padding-bottom: 2px;
     padding-top: 2px;
   }
