@@ -34,53 +34,8 @@ const LEFT_MENU_CONFIG = [
         component: StatisticsView
       },
       {
-        title: '继续教育',
-        path: '/nurseFile/continueStudy',
-        component: StatisticsView
-      },
-      {
-        title: '参与科研课题',
-        path: '/nurseFile/goScienceCourse',
-        component: StatisticsView
-      },
-      {
-        title: '主持科研课题',
-        path: '/nurseFile/hostScienceCourse',
-        component: StatisticsView
-      },
-      {
-        title: '学会任职',
-        path: '/nurseFile/learnJob',
-        component: StatisticsView
-      },
-      {
-        title: '医学学历经历',
-        path: '/nurseFile/medicalEducation',
-        component: StatisticsView
-      },
-      {
-        title: '专著',
-        path: '/nurseFile/monograph',
-        component: StatisticsView
-      },
-      {
-        title: '外出进修',
-        path: '/nurseFile/outStudy',
-        component: StatisticsView
-      },
-      {
-        title: '专利',
-        path: '/nurseFile/patent',
-        component: StatisticsView
-      },
-      {
         title: '个人获奖',
         path: '/nurseFile/personWinning',
-        component: StatisticsView
-      },
-      {
-        title: '科研课题获奖',
-        path: '/nurseFile/scienceResult',
         component: StatisticsView
       },
       {
@@ -89,8 +44,54 @@ const LEFT_MENU_CONFIG = [
         component: StatisticsView
       },
       {
+        title: '外出进修',
+        path: '/nurseFile/outStudy',
+        component: StatisticsView
+      },
+      {
+        title: '主持科研课题',
+        path: '/nurseFile/hostScienceCourse',
+        component: StatisticsView
+      },
+      {
+        title: '参与科研课题',
+        path: '/nurseFile/goScienceCourse',
+        component: StatisticsView
+      },
+      {
+        title: '科研课题获奖',
+        path: '/nurseFile/scienceResult',
+        component: StatisticsView
+      },
+
+      {
+        title: '专利',
+        path: '/nurseFile/patent',
+        component: StatisticsView
+      },
+      {
+        title: '学会任职',
+        path: '/nurseFile/learnJob',
+        component: StatisticsView
+      },
+      {
+        title: '专著',
+        path: '/nurseFile/monograph',
+        component: StatisticsView
+      },
+      {
+        title: '举办继续教育培训班',
+        path: '/nurseFile/continueStudy',
+        component: StatisticsView
+      },
+      {
         title: '工作经历',
         path: '/nurseFile/workExperience',
+        component: StatisticsView
+      },
+      {
+        title: '医学学历教育',
+        path: '/nurseFile/medicalEducation',
         component: StatisticsView
       }
     ]

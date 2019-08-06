@@ -6,7 +6,7 @@ import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
-  title: '继续教育',
+  title: '举办继续教育培训班',
   type: 'nurseWHContinueStudy',
   detailPath: '',
   filterList: [

@@ -60,7 +60,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '成果名称',
+      title: '项目名称',
       dataIndex: 'resultName',
       key: 'resultName',
       width: 90,

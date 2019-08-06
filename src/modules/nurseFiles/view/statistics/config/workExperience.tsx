@@ -24,8 +24,9 @@ export const pageObj: PageObj = {
     },
     {
       label: '专业技术工作',
-      type: 'input',
-      name: 'professionalWork'
+      type: 'select',
+      name: 'professionalWork',
+      dataSource: statisticsViewModal.getDict('专业技术工作')
     },
 
     {
