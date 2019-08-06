@@ -146,7 +146,6 @@ class EditableTable extends React.Component<any, any> {
   
   //添加和修改
   public getSelectData = (record: any, value: number) => {
- 
     // 如果是添加 则清空数据
     if (value === 1) {
       this.setState({ missionId: undefined })
@@ -171,6 +170,7 @@ class EditableTable extends React.Component<any, any> {
     })
     this.setState({ editingKey: true })
   }
+
   public getMealList = (current: any, pageSize: any) => {
     this.setState({ loadingTable: true })
     let postData = {
@@ -240,9 +240,11 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
   public componentWillMount() {
     this.getMealList(null, null)
   }
+
   public searchChange(value: any) {
     if (!value) {
       return
@@ -280,6 +282,7 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+  
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
 

@@ -10,9 +10,6 @@ export interface Props {
   setNoShow: any
 }
 
-// import { aMServices } from '../services/AMServices'
-
-
 export default function AuditsTableDHSZ (props: Props) {
   let [opinion, setOpinion] = useState('')
   let [messageType, setMessageType] = useState('')
@@ -20,6 +17,8 @@ export default function AuditsTableDHSZ (props: Props) {
   let [selectData, setSelectData] = useState([])
   let [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
+
+  //保存
   const handleOk = () => {
     let data = {
       type: opinion,
@@ -38,8 +37,8 @@ export default function AuditsTableDHSZ (props: Props) {
     })
   }
 
+  //删除
   const handleDelete = (record:any) => {
-    
     Modal.confirm({
       title: '提示',
       content: '是否删除该推送宣教?',
@@ -121,7 +120,6 @@ export default function AuditsTableDHSZ (props: Props) {
           justify-content: space-around;
           font-size: 12px;
           color: ${(p) => p.theme.$mtc};
-          /* margin-left:10px */
         `
         return (
           <div>
@@ -182,11 +180,9 @@ const Wrapper = styled.div`
   .ant-table-body {
     .ant-table-row td:nth-child(2){
       padding-left:20px!important; 
-      /* box-sizing:border-box!important; */
     }    
     .ant-table-row td:nth-child(3){
       padding-left:20px!important; 
-      /* box-sizing:border-box!important; */
     }
   }
   .category {

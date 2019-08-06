@@ -182,6 +182,7 @@ class EditableTable extends React.Component<any, any> {
 
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
+
   public getMealList = (current: any, pageSize: any) => {
     this.setState({ loadingTable: true })
     let postData = {
@@ -202,9 +203,11 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
   public componentWillMount() {
     this.getMealList(null, null)
   }
+
   public searchChange(value: any) {
     if (!value) {
       return
@@ -213,6 +216,7 @@ class EditableTable extends React.Component<any, any> {
     let educationName = this.state.arrayData.filter((item: any) => item.missionId === value)[0].name
     this.setState({ searchValue: educationName })
   }
+  
   public save(form: any, key: any) {
     form.validateFields((error: any, row: any) => {
       if (error) {

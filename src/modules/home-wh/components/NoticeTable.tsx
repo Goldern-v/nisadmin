@@ -19,20 +19,6 @@ export default function NoticeTable() {
   const [pageIndex, setPageIndex] = useState(1)
   const [pageSize, setPageSize] = useState(20)
   const [keyword, setKeyword] = useState('')
-  // const column:any = [
-	// 	{
-	// 	{
-	// 		title: <div className={styles.tableTeCenter}>生效时间</div>,
-	// 		render: (val, item, index) => (
-	// 			<div>
-	// 				<span className={styles.tableTitle}>{item.effectStartDate ? formatTime(item.customerName,'Y-MM-dd') : '--'}</span>
-	// 				<span className={styles.tableTitle}>至</span>
-	// 				<span className={styles.tableTitle}>{item.effectEndDate ? formatTime(item.effectEndDate,'Y-MM-dd') : '--'}</span>
-	// 			</div>
-	// 		),
-	// 		className: styles.tableCell,
-  //   }
-  // ]
 
   const setIcon = (read:any) => {
     return read === true ? <READ /> : <NOREAD/>
