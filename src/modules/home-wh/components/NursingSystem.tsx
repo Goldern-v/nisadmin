@@ -35,8 +35,6 @@ export default function NursingSystem() {
     return type === 'pdf' ? <PDF /> : ( type === 'word' ? <WORLD /> : <EXCL/>)
   }
 
-
-
   useEffect(() => {
    getMealList()
   }, [])
@@ -109,7 +107,6 @@ const I = styled.span`
 const World = styled.span`
   display: inline-block;
   margin-left: 10px;
-  /* width:96px; */
   font-size: 15px;
   font-weight: 900;
   color: rgba(51, 51, 51, 1);
@@ -148,7 +145,6 @@ const Icon = styled.div`
   display:inline-block;
   width: 24px;
   height: 24px;
-  /* background:rgba(249,102,72,1); */
   border-radius: 1px 0px 0px 1px;
   margin-right: 8px;
   vertical-align: middle;

@@ -63,8 +63,8 @@ export default observer(function QuickButton() {
           <ReactSvg>{item.icon}</ReactSvg>
           <Btn>
             <Content>
-              <Span>进入查看</Span>
-              <I>
+              <Span className='opacityChange1'>进入查看</Span>
+              <I className='opacityChange2'>
                 <XYB />
               </I>
             </Content>
@@ -86,10 +86,10 @@ const QuickMenu = styled.div`
   &:hover {
     cursor: pointer;
   }
-  &:hover .iCmNRA {
+  &:hover .opacityChange1 {
     opacity: 1;
   }
-  &:hover .iokEty {
+  &:hover .opacityChange2 {
     opacity: 1;
   }
 `

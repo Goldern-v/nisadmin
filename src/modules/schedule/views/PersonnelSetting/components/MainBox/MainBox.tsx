@@ -115,14 +115,15 @@ export default function MainBox() {
   }
 
   //获取分组可选人员
-  const selectScheduler = () =>{
+  const selectScheduler = (record:any) =>{
     let deptCode = scheduleStore.getDeptCode() 
+    let id = record.id
     service.personnelSettingApiService.getScheduler(deptCode).then((res) => {
       let array:any = []
       res.data.length > 0 && res.data.map((item:any, i:any) => {
         array.push({
           key: i.toString(),
-          schSettingNurseGroupId: item.id,
+          schSettingNurseGroupId:id,
           empName: item.empName,
           empNo: item.empNo
         })
@@ -133,7 +134,7 @@ export default function MainBox() {
   //表格行操作
   const selectRow = (record: any) =>{
     selectedScheduler(record)
-    selectScheduler()
+    selectScheduler(record)
     setId(record.id)
   }
 
@@ -141,15 +142,15 @@ export default function MainBox() {
     getMealList()
   },[]);
 
-   // 新增或修改分组中的人员
-   const handleChange = (nextTargetKeys:any, direction:any, moveKeys:any) => {
-    setTargetKeys(nextTargetKeys);
-    let array = nextTargetKeys.map((item:any) => mockData.filter((v:any) => item === v.key)[0])
+  // 新增或修改分组中的人员
+  const handleChange = (nextTargetKeys:any, direction:any, moveKeys:any) => {
+    setTargetKeys(moveKeys);
+    let array = moveKeys.map((item:any) => mockData.filter((v:any) => item === v.key)[0])
     let params = {
       schSettingNurseGroupId: id,
       schSettingNurseGroupDetail: array
     }
-    console.log(params,'array')
+    console.log(moveKeys,'moveKeys',array)
     service.personnelSettingApiService.updateSavePersonnelSetting(params).then((res) => {
       message.success('操作成功！')
     }).catch(() =>{

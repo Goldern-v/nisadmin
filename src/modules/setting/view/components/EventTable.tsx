@@ -222,6 +222,7 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+
   public searchChange(value: any) {
     if (!value) {
       return
@@ -300,6 +301,7 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
+  
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
   public componentWillMount() {
