@@ -125,6 +125,66 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
     }
     return this.post(`/qcAnalysis/update/reportName`, obj)
   }
+  /** 更新病区质量考核前十 */
+  public updateNotDeductDeptDesc(notDeductDeptDesc: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let params = {
+      year,
+      type,
+      indexInType,
+      notDeductDeptDesc
+    }
+
+    return this.post(`/qcSummary/update/notDeductDeptDesc`, params)
+  }
+  /** 更新病区质量扣分前十 */
+  public updateTopRankDeptItemList(itemList: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let params = {
+      year,
+      type,
+      indexInType,
+      itemList
+    }
+
+    return this.post(`/qcSummary/update/topRankDeptItemList`, params)
+  }
+  /** 更新特殊科室质量扣分 */
+  public updateSpecialDeptItemList(itemList: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let params = {
+      year,
+      type,
+      indexInType,
+      itemList
+    }
+
+    return this.post(`/qcSummary/update/specialDeptItemList`, params)
+  }
+  /** 更新特殊监护病房质量扣分 */
+  public updateIcuDeptItemList(itemList: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let params = {
+      year,
+      type,
+      indexInType,
+      itemList
+    }
+
+    return this.post(`/qcSummary/update/icuDeptItemList`, params)
+  }
+  /** 更新门诊科室质量扣分 */
+  public updateOpdeptItemList(itemList: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let params = {
+      year,
+      type,
+      indexInType,
+      itemList
+    }
+
+    return this.post(`/qcSummary/update/opdDeptItemList`, params)
+  }
 }
 
 export const qualityAnalysisReportPoolService = new QualityAnalysisReportPoolService()

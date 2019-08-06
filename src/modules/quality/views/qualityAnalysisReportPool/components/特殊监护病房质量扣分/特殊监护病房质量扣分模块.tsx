@@ -49,7 +49,7 @@ export default observer(function 特殊监护病房质量扣分模块(props: Pro
           <td>扣分</td>
         </tr>
         {tableList.map((item: any, idx: any) => {
-          return <tr>
+          return <tr key={idx}>
             <td>{idx + 1}</td>
             <td>{item.wardName}</td>
             <td>{item.deductScore}</td>

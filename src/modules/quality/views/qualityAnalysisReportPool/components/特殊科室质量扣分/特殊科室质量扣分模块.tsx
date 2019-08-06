@@ -14,7 +14,7 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 病区质量考核前十模块(props: Props) {
+export default observer(function 特殊科室质量扣分模块(props: Props) {
   const { sectionId } = props;
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId);
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
@@ -49,7 +49,7 @@ export default observer(function 病区质量考核前十模块(props: Props) {
           <td>扣分</td>
         </tr>
         {tableList.map((item: any, idx: any) => {
-          return <tr>
+          return <tr key={idx}>
             <td>{idx + 1}</td>
             <td>{item.wardName}</td>
             <td>{item.deductScore}</td>
