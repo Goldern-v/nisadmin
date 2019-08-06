@@ -16,7 +16,8 @@ export interface Props {
 export default function 统一标题列表弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let list: DetailItem[] = cloneData.list
+  let list: DetailItem[] = cloneData ? cloneData.list : []
+  let contentKey: any = data ? data.contentKey : ''
 
   const addItem = () => {
     cloneData.list.push({})
@@ -56,10 +57,10 @@ export default function 统一标题列表弹窗(props: Props) {
         </Button>
       </div> */}
 
-      {list.map((item, index: number) => (
+      {list.map((item: any, index: number) => (
         <div className='text-box' key={index}>
           <div>{index + 1}</div>
-          <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
+          <Input.TextArea value={item[contentKey]} autosize onChange={(e) => updateText(e, item, contentKey)} />
           <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} />
         </div>
       ))}
