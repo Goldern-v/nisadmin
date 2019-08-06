@@ -32,7 +32,7 @@ export const getTimeString = (KnowTime: string) => {
   else if (milliseconds > 1000 * 60 * 60 * 24 * 3 && year == now.getFullYear()) {
       timeSpanStr = month + '-' + day + ' ' + hour + ':' + minute;
   } else {
-      timeSpanStr = year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+      timeSpanStr = year + '-' + month + '-' + day;
   }
   return timeSpanStr;
 }
