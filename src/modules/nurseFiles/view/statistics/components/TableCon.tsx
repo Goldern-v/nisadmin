@@ -87,7 +87,7 @@ export default function TableCon(props: Props) {
       render(text: string, record: any) {
         return (
           <DoCon>
-            <span onClick={() => toDetails(record)}>操作</span>
+            <span onClick={() => toDetails(record)}>查看</span>
           </DoCon>
         )
       }
