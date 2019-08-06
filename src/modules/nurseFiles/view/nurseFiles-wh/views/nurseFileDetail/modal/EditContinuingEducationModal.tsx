@@ -147,6 +147,11 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
+            <Form.Field label={`授予学分`} name='creditGranted'>
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('授予学分').map((item) => item.name)} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' tip={'审批报告盖章签字后的扫描件'} />
             </Form.Field>

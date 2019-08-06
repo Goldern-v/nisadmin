@@ -98,6 +98,13 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
+      title: '授予学分',
+      dataIndex: 'creditGranted',
+      key: 'creditGranted',
+      width: 90,
+      align: 'center'
+    },
+    {
       title: '附件',
       dataIndex: 'fj',
       key: 'fj',

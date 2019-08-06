@@ -79,7 +79,7 @@ const LEFT_MENU_CONFIG = [
         component: StatisticsView
       },
       {
-        title: '科研课题成果',
+        title: '科研课题获奖',
         path: '/nurseFile/scienceResult',
         component: StatisticsView
       },

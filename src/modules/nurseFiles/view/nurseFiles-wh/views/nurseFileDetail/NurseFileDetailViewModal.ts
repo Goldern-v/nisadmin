@@ -26,7 +26,9 @@ let dictList = {
   专利类型: 'patent_type',
   文章类别: 'article_type',
   政治面貌: 'politics_look',
-  鞋码大小: 'shoe_size'
+  鞋码大小: 'shoe_size',
+  授予学分: 'credit_granted',
+  专业技术工作: 'professional_work'
 }
 
 type DictList = typeof dictList

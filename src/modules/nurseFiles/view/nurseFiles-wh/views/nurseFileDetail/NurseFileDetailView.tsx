@@ -80,7 +80,7 @@ const ROUTE_LIST = [
     /** 方明处理 */
     type: 'scientificResearch',
     component: ScientificResearch,
-    name: '科研课题成果'
+    name: '科研课题获奖'
   },
   {
     type: 'patent',
@@ -100,7 +100,7 @@ const ROUTE_LIST = [
   {
     type: 'continuingEducation',
     component: ContinuingEducation,
-    name: '继续教育'
+    name: '举办继续教育培训班'
   },
 
   {

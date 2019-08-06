@@ -612,13 +612,13 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '科研课题成果':
+    case '科研课题获奖':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           type: 'nurseWHScienceResult',
-          title: '审核科研课题成果',
+          title: '审核科研课题获奖',
           tableFormat: [
             {
               获奖类别: `resultType`,

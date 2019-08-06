@@ -102,13 +102,7 @@ const columns: ColumnProps<any>[] = [
     width: 80,
     align: 'center'
   },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    key: 'status',
-    width: 70,
-    align: 'center'
-  },
+
   {
     title: '籍贯',
     dataIndex: 'nativePlace',
@@ -124,9 +118,33 @@ const columns: ColumnProps<any>[] = [
     align: 'center'
   },
   {
-    title: '执业证书编号',
-    dataIndex: 'zyzsNumber',
-    key: 'zyzsNumber',
+    title: '执业证书截至日期',
+    dataIndex: 'zyzsEffectiveUpDate',
+    key: 'zyzsEffectiveUpDate',
+    width: 120,
+    align: 'center'
+  },
+  {
+    title: '政治面貌',
+    dataIndex: 'politicsLook',
+    key: 'politicsLook',
+    width: 120,
+    align: 'center'
+  },
+  {
+    title: '来院工作年限',
+    dataIndex: 'goHospitalWorkYear',
+    key: 'goHospitalWorkYear',
+    width: 100,
+    align: 'center',
+    render(text: any, record: any) {
+      return (text || 0) + '年'
+    }
+  },
+  {
+    title: '鞋码',
+    dataIndex: 'shoeSize',
+    key: 'shoeSize',
     width: 120,
     align: 'center'
   },
@@ -175,7 +193,7 @@ export default observer(function NurseFilesListView() {
         type={['index']}
         onRow={(record: any) => {
           return {
-            onDoubleClick: () => record.id && onDoubleClick(record)
+            onDoubleClick: () => record.empNo && onDoubleClick(record)
           }
         }}
         loading={nurseFilesListViewModel.listSpinning}

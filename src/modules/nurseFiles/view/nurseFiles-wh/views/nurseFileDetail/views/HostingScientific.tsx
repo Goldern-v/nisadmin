@@ -71,19 +71,13 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '登记号',
+      title: '项目编号',
       dataIndex: 'registerNumber',
       key: 'registerNumber',
       width: 80,
       align: 'center'
     },
-    {
-      title: '授予单位',
-      dataIndex: 'grantUnit',
-      key: 'grantUnit',
-      width: 90,
-      align: 'center'
-    },
+
     {
       title: '开始时间',
       dataIndex: 'startDate',

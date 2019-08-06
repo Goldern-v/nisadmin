@@ -16,6 +16,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
 import emitter from 'src/libs/ev'
+import { AutoComplete } from 'src/vendors/antd'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -116,29 +117,17 @@ export default function EditWorkHistoryModal(props: Props) {
 
           <Col span={24}>
             <Form.Field label={`专业技术工作`} name='professionalWork' required>
-              <Input />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专业技术工作').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`技术职称`} name='professional' required>
-              <Select>
-                {TITLE_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('技术职称').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`职务`} name='post' required>
-              <Select>
-                {POST_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('职务').map((item) => item.name)} />
             </Form.Field>
           </Col>
         </Row>

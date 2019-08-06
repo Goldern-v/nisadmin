@@ -80,14 +80,14 @@ export default function EditPersonWinningModal(props: Props) {
         grantUnit: data.grantUnit,
         grantDate: data.grantDate ? moment(data.grantDate) : null,
         winningName: data.winningName,
-        winningLevel:data.winningLevel,
+        winningLevel: data.winningLevel,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
-      setTitle('修改科研课题成果')
+      setTitle('修改科研课题获奖')
     } else if (signShow === '添加') {
-      setTitle('添加科研课题成果')
+      setTitle('添加科研课题获奖')
     }
   }, [visible])
 
@@ -101,7 +101,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`成果名称`} name='resultName'>
+            <Form.Field label={`项目名称`} name='resultName'>
               <Input />
             </Form.Field>
           </Col>

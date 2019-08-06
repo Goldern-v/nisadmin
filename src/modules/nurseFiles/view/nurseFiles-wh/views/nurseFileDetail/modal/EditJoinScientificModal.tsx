@@ -147,12 +147,7 @@ export default function EditJoinScientificModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`登记号`} name='registerNumber'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`授予单位`} name='grantUnit'>
+            <Form.Field label={`项目编号`} name='registerNumber'>
               <Input />
             </Form.Field>
           </Col>
