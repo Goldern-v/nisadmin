@@ -6,16 +6,16 @@ import { ColumnProps } from 'antd/lib/table'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
-import summaryReportService from './api/summaryReportService'
+import { summaryReportService as api } from './api/SummaryReportService'
+import { numToChinese } from 'src/utils/number/numToChinese'
 
 import CreateSummaryReport from './components/CreateSummaryReport'
 
 import qs from 'qs'
 
-const api = new summaryReportService()
 const Option = Select.Option
 
-export default observer(function Analysis() {
+export default observer(function SummeryReportList() {
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
   const { history } = appStore
@@ -89,19 +89,8 @@ export default observer(function Analysis() {
       render: (text: string, item: any) => {
         if (item.type == 'month') {
           return `${text}月`
-        } else if (item.type == 'season') {
-          let seasonCn = ''
-          switch (item.indexInType) {
-            case '1':
-              seasonCn = '一'
-            case '2':
-              seasonCn = '二'
-            case '3':
-              seasonCn = '三'
-            case '4':
-              seasonCn = '四'
-          }
-          return `第${seasonCn}季度`
+        } else if (item.type == 'season' && item.indexInType) {
+          return `第${numToChinese(item.indexInType)}季度`
         } else {
           return ''
         }
@@ -170,11 +159,10 @@ export default observer(function Analysis() {
     const obj = {
       year: record.year,
       type: record.type,
-      indexInType: record.indexInType,
-      reportName: record.reportName
+      indexInType: record.indexInType
     }
 
-    // history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`)
+    history.push(`/qualityAnalysisReportPool?${qs.stringify(obj)}`)
   }
 
   const handleSearch = () => {

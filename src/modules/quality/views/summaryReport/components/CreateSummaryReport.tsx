@@ -1,13 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+// import { RouteComponentProps } from 'react-router'
 import { Modal, Row, Col, Radio, Select, DatePicker, Input, message as Message } from 'antd'
 // import { appStore } from 'src/stores'
 // import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
-import summaryReportService from './../api/summaryReportService'
-
-const api = new summaryReportService()
+import { summaryReportService as api } from '../api/SummaryReportService'
+import { numToChinese } from 'src/utils/number/numToChinese'
 
 const Option = Select.Option;
 
@@ -17,7 +16,7 @@ export interface Props {
   onCancel: any
 }
 
-export default function CreateAnalysisModal(props: Props) {
+export default function CreateSummearyReportModal(props: Props) {
   const { visible, onCancel, onOk } = props;
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
@@ -35,7 +34,8 @@ export default function CreateAnalysisModal(props: Props) {
 
   const handleOk = () => {
     // console.log(params);
-    if (!params.indexInType) return Message.error('未选择月份/季度');
+    if (!params.indexInType) return Message.error('未选择汇总月份/季度');
+    if (!params.reportName) return Message.error('未填写报告名称');
 
     setLoadingState(true);
     api.createReport({ ...params, year: params.year.format('YYYY') }).then(res => {
@@ -66,29 +66,29 @@ export default function CreateAnalysisModal(props: Props) {
     setParams(newParams);
   }
 
-  const RecordTypeList = () => {
-    let list = [];
+  const IndexInTypeOptions = () => {
+    let options = [];
     // let year = params.year.format('YYYY')
 
     if (params.type == 'month') {
       for (let i = 1; i <= 12; i++) {
         let month = i.toString();
-        list.push(<Option value={month} key={month}>{`${month}月`}</Option>)
+        options.push(<Option value={month} key={month}>{`${month}月`}</Option>)
       }
     } else {
       for (let i = 1; i <= 4; i++) {
         // let month = i * 3 - 2;
         let season = i;
-        let seasonStr = season2Cn(season);
+        let seasonStr = numToChinese(season);
 
         // let monthGroup = [month, month + 1, month + 2];
 
-        // list.push(<Option value={monthGroup.join(',')} key={season}>{`第${seasonStr}季度`}</Option>)
-        list.push(<Option value={season} key={season}>{`第${seasonStr}季度`}</Option>)
+        // options.push(<Option value={monthGroup.join(',')} key={season}>{`第${seasonStr}季度`}</Option>)
+        options.push(<Option value={season} key={season}>{`第${seasonStr}季度`}</Option>)
       }
     }
 
-    return list;
+    return options;
   }
 
   const setReportName = (pms: any) => {
@@ -102,7 +102,7 @@ export default function CreateAnalysisModal(props: Props) {
     if (pms.type == 'month')
       typeStr = `${pms.indexInType}月`
     else
-      typeStr = `第${season2Cn(pms.indexInType)}季度`
+      typeStr = `第${numToChinese(pms.indexInType)}季度`
 
     return `${year}年度${typeStr}质控汇总报告`
   }
@@ -124,21 +124,8 @@ export default function CreateAnalysisModal(props: Props) {
     setParams(newParams);
   }
 
-  const season2Cn = (season: number) => {
-    switch (season) {
-      case 1:
-        return '一';
-      case 2:
-        return '二';
-      case 3:
-        return '三';
-      case 4:
-        return '四';
-    }
-  }
-
   return <Modal
-    title="创建报告 "
+    title="创建报告"
     visible={visible}
     onCancel={onCancel}
     onOk={handleOk}
@@ -165,20 +152,19 @@ export default function CreateAnalysisModal(props: Props) {
             open={yearPickerIsOpen}
             mode="year"
             className="year-picker"
-            placeholder='选择年份'
+            placeholder="选择年份"
             format="YYYY"
             onOpenChange={handleOpenChange}
             onPanelChange={handlePanelChange} />
         </Col>
       </Row>
-      {/* 质控表单 */}
       <Row>
         <Col span={5} className="label">
           汇总{params.type == 'month' ? '月份：' : '季度：'}
         </Col>
         <Col span={18}>
           <Select value={params.indexInType} onChange={handleIndexInTypeChange}>
-            {RecordTypeList()}
+            {IndexInTypeOptions()}
           </Select>
         </Col>
       </Row>

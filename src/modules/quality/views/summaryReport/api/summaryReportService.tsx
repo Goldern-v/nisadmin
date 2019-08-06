@@ -1,7 +1,7 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-import qs from 'qs'
+// import qs from 'qs'
 
-export default class QualityAnalysisService extends BaseApiService {
+export default class SummaryReportService extends BaseApiService {
   public getPage(query: any) {
     return this.post('/qcSummary/getPage', query)
   }
@@ -9,3 +9,5 @@ export default class QualityAnalysisService extends BaseApiService {
     return this.post('/qcSummary/createReport', params)
   }
 }
+
+export const summaryReportService = new SummaryReportService();
