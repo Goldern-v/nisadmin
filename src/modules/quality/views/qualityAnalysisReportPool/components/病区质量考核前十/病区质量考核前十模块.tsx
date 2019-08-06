@@ -6,6 +6,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
 import { LastImproveItem, Report } from '../../types'
+import { numToChinese } from 'src/utils/number/numToChinese'
 
 export interface Props {
   sectionId: string
@@ -24,26 +25,21 @@ export default observer(function 病区质量考核前十模块(props: Props) {
     if (report.type == 'month') {
       str = `${report.indexInType}月`
     } else {
-      let seasonCn = '';
-      switch (report.indexInType) {
-        case 1:
-          seasonCn = '一'; break;
-        case 2:
-          seasonCn = '二'; break;
-        case 3:
-          seasonCn = '三'; break;
-        case 4:
-          seasonCn = '四'; break;
-      }
-      str = `第${seasonCn}季度`
+      str = `第${numToChinese(report.indexInType)}季度`
     }
     return str
+  }
+
+  const MainTitle = () => {
+    if (report.type && report.type !== 'month') return '本季度'
+
+    return '本月'
   }
 
   return (
     <Wrapper>
       <TextCon>
-        <span className='sup-title'>(四) 本月质量考核排序</span>
+        <span className='sup-title'>(四) {MainTitle()}质量考核排序</span>
         <br />
         <span className='sup-title'>1. {Title()}病区质量考核前十名的科室</span>
         <br />
