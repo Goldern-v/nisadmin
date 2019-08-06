@@ -108,11 +108,11 @@ class QualityAnalysisReportViewModal {
     this.getSectionData('本月总扣分')!.list = this.allData.groupItemList || []
     this.getSectionData('扣分比较')!.list = this.allData.groupCompareList || []
 
-    this.sectionList[6].data.report = this.allData.report || {}
-    this.sectionList[7].data.list = this.allData.topRankDeptItemList || []
-    this.sectionList[8].data.list = this.allData.specialDeptItemList || []
-    this.sectionList[9].data.list = this.allData.icuDeptItemList || []
-    this.sectionList[10].data.list = this.allData.opdDeptItemList || []
+    this.getSectionData('病区质量考核前十')!.report = this.allData.report || {}
+    this.getSectionData('病区质量扣分前十')!.list = this.allData.topRankDeptItemList || []
+    this.getSectionData('特殊科室质量扣分')!.list = this.allData.specialDeptItemList || []
+    this.getSectionData('特殊监护病房质量扣分')!.list = this.allData.icuDeptItemList || []
+    this.getSectionData('门诊科室质量扣分')!.list = this.allData.opdDeptItemList || []
   }
   async init() {
     await this.initData()

@@ -142,6 +142,76 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
+    } else if (sectionData.sectionId == '病区质量考核前十') {
+      qualityAnalysisReportPoolService.updateNotDeductDeptDesc(data.report.notDeductDeptDesc).then(res => {
+        if (res.code == 200) {
+          qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+            report: res.data
+          })
+          message.success('保存成功')
+          onCancel()
+        } else {
+          message.error('保存失败')
+        }
+      }, err => {
+        message.error('保存失败')
+      })
+    } else if (sectionData.sectionId == '病区质量扣分前十') {
+      qualityAnalysisReportPoolService.updateTopRankDeptItemList(data.list).then(res => {
+        if (res.code == 200) {
+          qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+            list: res.data
+          })
+          message.success('保存成功')
+          onCancel()
+        } else {
+          message.error('保存失败')
+        }
+      }, err => {
+        message.error('保存失败')
+      })
+    } else if (sectionData.sectionId == '特殊科室质量扣分') {
+      qualityAnalysisReportPoolService.updateSpecialDeptItemList(data.list).then(res => {
+        if (res.code == 200) {
+          qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+            list: res.data
+          })
+          message.success('保存成功')
+          onCancel()
+        } else {
+          message.error('保存失败')
+        }
+      }, err => {
+        message.error('保存失败')
+      })
+    } else if (sectionData.sectionId == '特殊监护病房质量扣分') {
+      qualityAnalysisReportPoolService.updateIcuDeptItemList(data.list).then(res => {
+        if (res.code == 200) {
+          qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+            list: res.data
+          })
+          message.success('保存成功')
+          onCancel()
+        } else {
+          message.error('保存失败')
+        }
+      }, err => {
+        message.error('保存失败')
+      })
+    } else if (sectionData.sectionId == '门诊科室质量扣分') {
+      qualityAnalysisReportPoolService.updateOpdeptItemList(data.list).then(res => {
+        if (res.code == 200) {
+          qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+            list: res.data
+          })
+          message.success('保存成功')
+          onCancel()
+        } else {
+          message.error('保存失败')
+        }
+      }, err => {
+        message.error('保存失败')
+      })
     }
     // qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
   }

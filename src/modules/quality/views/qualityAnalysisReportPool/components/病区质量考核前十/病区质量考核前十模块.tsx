@@ -20,6 +20,7 @@ export default observer(function 病区质量考核前十模块(props: Props) {
 
   const Title = () => {
     let str = '';
+    if (!report.indexInType) return '';
     if (report.type == 'month') {
       str = `${report.indexInType}月`
     } else {
