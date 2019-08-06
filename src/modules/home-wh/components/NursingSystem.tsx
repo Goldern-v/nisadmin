@@ -5,6 +5,7 @@ import { ScrollUl } from 'src/components/common'
 import { appStore } from 'src/stores/index'
 import { Spin } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import { getTimeString } from 'src/utils/date/timeCalculation'
 
 //引入图标
 import { ReactComponent as HLZD } from '../images/护理制度.svg'
@@ -34,6 +35,8 @@ export default function NursingSystem() {
     return type === 'pdf' ? <PDF /> : ( type === 'word' ? <WORLD /> : <EXCL/>)
   }
 
+
+
   useEffect(() => {
    getMealList()
   }, [])
@@ -46,7 +49,7 @@ export default function NursingSystem() {
           <Icon>{setIcon(item.type)}</Icon>
           <Content className='content'>{item.name}</Content>
           <span>.{item.type}</span>
-          <Time className='time'>{item.uploadTime}</Time>
+          <Time className='time'>{getTimeString(item.uploadTime)}</Time>
         </Li>
       )
     })
@@ -152,7 +155,7 @@ const Icon = styled.div`
 `
 const Content = styled.span`
   display: inline-block;
-  width: 118px;
+  max-width: 145px;
   font-size: 13px;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
