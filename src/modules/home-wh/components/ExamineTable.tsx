@@ -4,6 +4,9 @@ import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores/index'
 import BaseTable from 'src/components/BaseTable'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import service from 'src/services/api'
+import qs from 'qs'
+
 import { ReactComponent as DWSH } from '../images/待我审核.svg'
 export interface Props extends RouteComponentProps {}
 
@@ -70,6 +73,17 @@ export default function ExamineTable() {
    getMealList()
   }, [])
 
+  const selectRow = (record: any) =>{
+    console.log(record)
+    if (record.type == 'qc') {
+      window.open(`/crNursing/manage/#/qualityControlRecordDetail/${record.othersMessage.id}`)
+    } else if (record.type == 'nurseFile') {
+      service.commonApiService.getNurseInformation(record.commiterNo).then((res) => {
+        window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
+      })
+    }
+  }
+
   return (
     <Wrapper>
       <TableTitle>
@@ -84,6 +98,16 @@ export default function ExamineTable() {
         columns={columns} 
         surplusHeight={(appStore.wih - 365) / 2 + 365} 
         loading={loadingTable}
+        rowClassName={
+          (record) => {
+            return 'cursorPointer';
+          }
+        }
+        onRow={record => {
+          return {
+            onClick: (event:any) => {selectRow(record)},
+          };
+        }}
         />
     </Wrapper>
   )
@@ -106,6 +130,10 @@ const Wrapper = styled.div`
       border-radius: 0 !important;
     }
   }
+  .cursorPointer{
+    cursor: pointer;
+  }
+
 `
 const TableTitle = styled.div`
   box-shadow: 0px -1px 0px 0px rgba(245, 105, 84, 1);
