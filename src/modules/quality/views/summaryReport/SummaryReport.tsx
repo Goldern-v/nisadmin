@@ -173,10 +173,12 @@ export default observer(function SummeryReportList() {
     setCreateAnalysisVisible(true)
   }
 
-  const handleCreateOk = () => {
+  const handleCreateOk = (info: any) => {
     //汇总报告创建成功
+    let { type, year, indexInType } = info;
     getTableData();
     setCreateAnalysisVisible(false);
+    history.push(`/qualityAnalysisReportPool?${qs.stringify({ type, year, indexInType })}`)
   }
 
   const handleCreateCancel = () => {

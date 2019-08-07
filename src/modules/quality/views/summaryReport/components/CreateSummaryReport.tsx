@@ -41,7 +41,7 @@ export default function CreateSummearyReportModal(props: Props) {
     api.createReport({ ...params, year: params.year.format('YYYY') }).then(res => {
       if (res.code == 200) {
         Message.success('创建成功');
-        onOk && onOk();
+        onOk && onOk(res.data.report);
       } else {
         Message.success('创建失败');
       }

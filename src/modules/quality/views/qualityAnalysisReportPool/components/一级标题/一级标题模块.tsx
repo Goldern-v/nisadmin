@@ -12,10 +12,11 @@ export interface Props {
 
 export default observer(function 一级标题模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  useEffect(() => {})
+  useEffect(() => { })
   return (
-    <Wrapper className='page-title'>
-      <div className='sup-title'>{sectionTitle}</div>
+    // <Wrapper className='page-title'>
+    <Wrapper>
+      <span className='sup-title'>{sectionTitle}</span>
     </Wrapper>
   )
 })
