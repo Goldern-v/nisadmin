@@ -19,12 +19,12 @@ const LEFT_MENU_CONFIG = [
     path: '/quality/qualityControlRecord',
     component: QualityControlRecord
   },
-  // {
-  //   title: '查询统计',
-  //   icon: <CXTJ />,
-  //   path: '/quality/queryStatistics',
-  //   component: QueryStatistics
-  // },
+  {
+    title: '查询统计',
+    icon: <CXTJ />,
+    path: '/quality/queryStatistics',
+    component: QueryStatistics
+  },
   {
     title: '月度分析报告',
     icon: <FXBG />,
