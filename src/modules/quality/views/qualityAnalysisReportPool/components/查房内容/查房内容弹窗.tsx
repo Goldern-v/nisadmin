@@ -20,15 +20,15 @@ export default function 查房内容弹窗(props: Props) {
       setData({
         report: {
           ...report,
-          checkDeptDesc: e.target.value
+          checkWardDesc: e.target.value
         }
       })
     }
   }
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   return (
     <Wrapper>
-      <TextArea value={report.checkDeptDesc} onChange={updateData} autosize={true} />
+      <TextArea value={report.checkWardDesc} onChange={updateData} autosize={true} />
     </Wrapper>
   )
 }

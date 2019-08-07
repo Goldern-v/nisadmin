@@ -4,28 +4,13 @@ import { qualityAnalysisReportViewModal } from '../QualityAnalysisReportPoolView
 export default class QualityAnalysisReportPoolService extends BaseApiService {
   /** 获取分析报告 */
   public getReport(obj?: any) {
-    obj = {
-      type: 'month',
-      year: '2019',
-      indexInType: 8,
-      itemList: [
-        {
-          id: 1113,
-          qcGroupCode: 'QCR0017',
-          qcGroupName: '基础护理',
-          content: 'BI评分与患者实际情况相符：儿科二护理单元',
-          highlightItem: true
-        }
-      ]
-    }
-
     return this.post(`/qcSummary/getReport`, obj || appStore.queryObj)
   }
   public deleteReport(obj?: any) {
-    return this.post(`/qcAnalysis/deleteReport`, appStore.queryObj)
+    return this.post(`/qcSummary/deleteReport`, appStore.queryObj)
   }
   public publishReport(obj?: any) {
-    return this.post(`/qcAnalysis/publish`, appStore.queryObj)
+    return this.post(`/qcSummary/publish`, appStore.queryObj)
   }
 
   /** 更新上月质量问题，持续改进效果评价 */
@@ -60,31 +45,6 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
     }
     return this.post(`/qcAnalysis/update/deptItemList`, obj)
   }
-
-  /** 更新重点问题 */
-  public updateDetailItemList(itemList?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/update/detailItemList`, obj)
-  }
-  /** 更新亮点问题 */
-  public updateHighlightItemList(itemList?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/update/highlightItemList`, obj)
-  }
-  /** 更新重点问题 */
-  public updateKeyItemList(itemList?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/update/keyItemList`, obj)
-  }
   /** 更新持续改进问题 */
   public updateCurrentImproveItemList(itemList?: any) {
     let obj = {
@@ -117,13 +77,63 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
     }
     return this.post(`/qcAnalysis/update/suggestions`, obj)
   }
+
   /** 更新报告名称 */
   public updateReportName(reportName?: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let obj = {
+      year,
+      type,
+      indexInType,
+      reportName
+    }
+    return this.post(`/qcSummary/update/reportName`, obj)
+  }
+  /** 更新查房内容 */
+  public updateCheckWardDesc(checkWardDesc?: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let obj = {
+      year,
+      type,
+      indexInType,
+      checkWardDesc
+    }
+    return this.post(`/qcSummary/update/checkWardDesc`, obj)
+  }
+  /** 更新检查形式 */
+  public updateCheckWayDesc(checkWayDesc?: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let obj = {
+      year,
+      type,
+      indexInType,
+      checkWayDesc
+    }
+    return this.post(`/qcSummary/update/checkWayDesc`, obj)
+  }
+  /** 更新亮点 */
+  public updateHighlightItemList(itemList?: any) {
     let obj = {
       ...qualityAnalysisReportViewModal.report,
-      reportName: reportName
+      itemList: itemList
     }
-    return this.post(`/qcAnalysis/update/reportName`, obj)
+    return this.post(`/qcSummary/update/highlightItemList`, obj)
+  }
+  /** 更新本月总扣分 */
+  public updateGroupList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcSummary/update/groupItemList`, obj)
+  }
+  /** 更新扣分比较 */
+  public updateGroupCompareList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcSummary/update/groupCompareList`, obj)
   }
   /** 更新病区质量考核前十 */
   public updateNotDeductDeptDesc(notDeductDeptDesc: any) {
@@ -184,6 +194,36 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
     }
 
     return this.post(`/qcSummary/update/opdDeptItemList`, params)
+  }
+  /** 更新各组质量问题反馈 */
+  public updateDetailItemList(params?: any) {
+    return this.post(`/qcSummary/update/detailItemList`, params)
+  }
+  /** 更新各组下一步整改措施 */
+  public updateImproveItemList(params?: any) {
+    return this.post(`/qcSummary/update/improveItemList`, params)
+  }
+  /** 更新各组质量整改情况反馈*/
+  public updateImproveResultList(itemList?: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let params = {
+      year,
+      type,
+      indexInType,
+      itemList
+    }
+    return this.post(`/qcSummary/update/improveResultList`, params)
+  }
+  /** 护理质量工作重点*/
+  public updateKeyItemList(itemList?: any) {
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let params = {
+      year,
+      type,
+      indexInType,
+      itemList
+    }
+    return this.post(`/qcSummary/update/keyItemList`, params)
   }
 }
 

@@ -67,7 +67,7 @@ export default observer(function 病区质量考核前十模块(props: Props) {
           <col width="60" />
         </colgroup>
         <tbody>
-          <tr>
+          <tr className="header">
             <td>排序</td>
             <td>科室</td>
             <td>扣分</td>
@@ -88,7 +88,7 @@ export default observer(function 病区质量考核前十模块(props: Props) {
           <col width="60" />
         </colgroup>
         <tbody>
-          <tr>
+          <tr className="header">
             <td>排序</td>
             <td>科室</td>
             <td>扣分</td>
@@ -171,8 +171,7 @@ const Wrapper = styled.div`
     tr {
       width: 100%;
     }
-    .header,
-    .footer {
+    .header {
       td {
         background: #f0f0f0;
       }

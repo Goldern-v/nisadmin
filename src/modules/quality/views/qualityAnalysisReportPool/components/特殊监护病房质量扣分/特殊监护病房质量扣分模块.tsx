@@ -44,7 +44,7 @@ export default observer(function 特殊监护病房质量扣分模块(props: Pro
           <col width='80' />
         </colgroup>
         <tbody>
-          <tr>
+          <tr className="header">
             <td>排序</td>
             <td>科室</td>
             <td>扣分</td>

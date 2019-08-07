@@ -25,10 +25,10 @@ export default function 亮点弹窗(props: Props) {
       })
     }
   }
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   return (
     <Wrapper>
-      <TextArea value={report.checkDeptDesc} onChange={updateData} autosize={true} />
+      <TextArea value={report.checkWayDesc} onChange={updateData} autosize={true} />
     </Wrapper>
   )
 }

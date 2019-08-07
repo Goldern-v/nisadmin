@@ -45,7 +45,7 @@ const Wrapper = styled.div`
   .sup-title {
     font-size: 14px;
     font-weight: bold;
-    color: #000;
+    color: #5659ad;
   }
   /* &:hover {
     button {

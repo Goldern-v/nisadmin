@@ -14,12 +14,12 @@ export default observer(function 标题模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let text = data ? data.text : ''
-  useEffect(() => {})
+  useEffect(() => { })
   return (
     <Wrapper className='page-title'>
       <div className='title'>{text}</div>
       <EditButton border={true} onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>
-        编辑
+        编辑名称
       </EditButton>
     </Wrapper>
   )

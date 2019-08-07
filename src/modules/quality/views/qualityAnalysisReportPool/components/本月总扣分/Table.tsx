@@ -5,11 +5,12 @@ import { TypeCompare, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolViewModal'
 export interface Props {
-  list: DeptItem[]
+  list: DeptItem[],
+  totalSorce: number
 }
 
 export default function Table(props: Props) {
-  let { list } = props
+  let { list, totalSorce } = props
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
 
   return (
@@ -39,7 +40,7 @@ export default function Table(props: Props) {
           ))}
           <tr>
             <td>合计</td>
-            <td style={{ borderRight: 0 }}>2.57</td>
+            <td style={{ borderRight: 0 }}>{totalSorce}</td>
             <td style={{ borderLeft: 0 }} />
             <td>100%</td>
           </tr>

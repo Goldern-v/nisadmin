@@ -25,7 +25,7 @@ export default function Table(props: Props) {
     .toFixed(2)
   let compareSum = Number(currentSum) - Number(lastSum)
   let comparePercent =
-    lastSum == 0 && currentSum != 0 ? 100 : lastSum == 0 && currentSum == 0 ? 0 : (compareSum - lastSum) / lastSum
+    lastSum == 0 && currentSum != 0 ? 100 : lastSum == 0 && currentSum == 0 ? 0 : (currentSum - lastSum) / lastSum * 100
 
   return (
     <Wrapper>
@@ -55,8 +55,8 @@ export default function Table(props: Props) {
               {report.indexInType}月与
               {report.indexInType == 1
                 ? moment(report.beginDate)
-                    .subtract(1, 'year')
-                    .format('YYYY年')
+                  .subtract(1, 'year')
+                  .format('YYYY年')
                 : moment(report.beginDate).format('YYYY年')}
               {report.indexInType == 1 ? 12 : report.indexInType - 1}
               比较
@@ -88,43 +88,43 @@ export default function Table(props: Props) {
                 {item.compareScore == 0 ? (
                   '持平'
                 ) : (
-                  <React.Fragment>
-                    {item.compareScore > 0 ? (
-                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                    ) : (
-                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
-                    )}
-                    {Math.abs(Number(item.compareScore))}
-                  </React.Fragment>
-                )}
+                    <React.Fragment>
+                      {item.compareScore > 0 ? (
+                        <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                      ) : (
+                          <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                        )}
+                      {Math.abs(Number(item.compareScore))}
+                    </React.Fragment>
+                  )}
               </td>
               <td>
                 {item.compareDeptSize == 0 ? (
                   '持平'
                 ) : (
-                  <React.Fragment>
-                    {item.compareDeptSize > 0 ? (
-                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                    ) : (
-                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
-                    )}
-                    {Math.abs(Number(item.compareDeptSize))}
-                  </React.Fragment>
-                )}
+                    <React.Fragment>
+                      {item.compareDeptSize > 0 ? (
+                        <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                      ) : (
+                          <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                        )}
+                      {Math.abs(Number(item.compareDeptSize))}
+                    </React.Fragment>
+                  )}
               </td>
               <td>
                 {item.compareScorePercent == 0 ? (
                   '持平'
                 ) : (
-                  <React.Fragment>
-                    {item.compareScorePercent > 0 ? (
-                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                    ) : (
-                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
-                    )}
-                    {Math.abs(Number(item.compareScorePercent)) + '%'}
-                  </React.Fragment>
-                )}
+                    <React.Fragment>
+                      {item.compareScorePercent > 0 ? (
+                        <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                      ) : (
+                          <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                        )}
+                      {Math.abs(Number(item.compareScorePercent)) + '%'}
+                    </React.Fragment>
+                  )}
               </td>
             </tr>
           ))}
@@ -136,30 +136,30 @@ export default function Table(props: Props) {
               {compareSum == 0 ? (
                 '持平'
               ) : (
-                <React.Fragment>
-                  {compareSum > 0 ? (
-                    <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                  ) : (
-                    <img src={require('./images/less.png')} alt='' className='lm-arrow' />
-                  )}
-                  {Math.abs(Number(compareSum))}
-                </React.Fragment>
-              )}
+                  <React.Fragment>
+                    {compareSum > 0 ? (
+                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                    ) : (
+                        <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                      )}
+                    {Math.abs(Number(compareSum))}
+                  </React.Fragment>
+                )}
               <div style={{ display: 'inline-block', width: 4 }} />
               {comparePercent == 0 ? (
                 '(持平)'
               ) : (
-                <React.Fragment>
-                  (
+                  <React.Fragment>
+                    (
                   <div style={{ display: 'inline-block', width: 2 }} />
-                  {comparePercent > 0 ? (
-                    <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                  ) : (
-                    <img src={require('./images/less.png')} alt='' className='lm-arrow' />
-                  )}
-                  {Math.abs(Number(comparePercent.toFixed(2))) + '%'})
+                    {comparePercent > 0 ? (
+                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                    ) : (
+                        <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                      )}
+                    {Math.abs(Number(comparePercent.toFixed(2))) + '%'})
                 </React.Fragment>
-              )}
+                )}
             </td>
           </tr>
         </tbody>

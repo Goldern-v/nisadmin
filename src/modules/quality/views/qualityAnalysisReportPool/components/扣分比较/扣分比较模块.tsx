@@ -20,8 +20,9 @@ export default observer(function 扣分比较模块(props: Props) {
   let list = data ? data.list || [] : []
 
   useEffect(() => {})
-  let title =
-    report &&
+  let title = '';
+
+  if(report)title = report &&
     `${moment(report.endDate).format('YYYY年')}${report.indexInType}月与${
       report.indexInType == 1
         ? moment(report.beginDate)

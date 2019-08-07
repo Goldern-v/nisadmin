@@ -8,6 +8,7 @@ import { sectionList } from './config/sectionList'
 
 import { qualityAnalysisReportPoolService } from './services/QualityAnalysisReportPoolService'
 import { AllData, DeptItem, DetailItem } from './types'
+import qs from 'qs'
 
 export interface SectionListItem {
   sectionId?: string
@@ -98,8 +99,8 @@ class QualityAnalysisReportViewModal {
   }
 
   /** 数据初始化 */
-  async initData() {
-    let { data } = await qualityAnalysisReportPoolService.getReport()
+  async initData(query?: any) {
+    let { data } = await qualityAnalysisReportPoolService.getReport(query)
     this.allData = data
     /** 本月 */
     let currentYear: any = this.allData!.report!.year
@@ -109,8 +110,8 @@ class QualityAnalysisReportViewModal {
     /** 上月 */
     let lastMonth = currentMonth == 1 ? 12 : currentMonth - 1
     this.getSectionData('报告名称')!.text = this.allData.report!.reportName || {}
-    this.getSectionData('查房内容')!.text = this.allData.report || {}
-    this.getSectionData('检查形式')!.text = this.allData.report || {}
+    this.getSectionData('查房内容')!.report = this.allData.report || {}
+    this.getSectionData('检查形式')!.report = this.allData.report || {}
     this.getSectionData('亮点')!.list = this.allData.highlightItemList || []
     this.getSectionData('本月总扣分')!.list = this.allData.groupItemList || []
     this.getSectionData('扣分比较')!.list = this.allData.groupCompareList || []
@@ -125,20 +126,36 @@ class QualityAnalysisReportViewModal {
     this.getSectionData('6')!.text = `六、各组重点问题${currentMonth}月整改情况反馈`
     this.getSectionData('7')!.text = `七、${currentYear}年${nextMonth}月护理质量工作重点`
     for (let i = 0; i < 10; i++) {
-      this.getSectionData(`4_${i + 1}`)!.list = this.allData!.detailItemList![i]!.childrenItemList || []
+      let target = this.allData!.detailItemList![i];
+      this.getSectionData(`4_${i + 1}`)!.list = target!.childrenItemList || []
       this.getSectionData(`4_${i + 1}`)!.contentKey = 'content'
+      this.getSectionData(`4_${i + 1}`)!.baseInfo = {
+        year: target!.year,
+        type: target!.type,
+        indexInType: target!.indexInType,
+        qcGroupCode: target!.qcGroupCode,
+        qcGroupName: target!.qcGroupName,
+      }
     }
     for (let i = 0; i < 10; i++) {
-      this.getSectionData(`5_${i + 1}`)!.list = this.allData!.improveItemList![i]!.childrenItemList || []
+      let target = this.allData!.improveItemList![i];
+      this.getSectionData(`5_${i + 1}`)!.list = target!.childrenItemList || []
       this.getSectionData(`5_${i + 1}`)!.contentKey = 'itemImproveDesc'
+      this.getSectionData(`5_${i + 1}`)!.baseInfo = {
+        year: target!.year,
+        type: target!.type,
+        indexInType: target!.indexInType,
+        qcGroupCode: target!.qcGroupCode,
+        qcGroupName: target!.qcGroupName,
+      }
     }
     this.getSectionData(`6_1`)!.list = this.allData!.improveResultList || []
     this.getSectionData(`6_1`)!.contentKey = 'itemImproveDesc'
     this.getSectionData(`7_1`)!.list = this.allData!.keyItemList || []
     this.getSectionData(`7_1`)!.contentKey = 'content'
   }
-  async init() {
-    await this.initData()
+  async init(query?: any) {
+    await this.initData(query)
     this.baseModal = createModal(BaseModal)
   }
 }

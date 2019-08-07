@@ -72,14 +72,19 @@ export interface DetailItem {
   deductDeptSize: string | number
   attachUrls: string
   highlightItem: string
-  content: string
+  content: string,
+  year: number,
+  type: string,
+  indexInType: number,
+  qcGroupCode: string,
+  qcGroupName: string,
   itemImproveDesc: string
   childrenItemList: any[]
 }
 /** 检查亮点 */
-interface HighlightItem extends DetailItem {}
+interface HighlightItem extends DetailItem { }
 /** 重点问题 */
-interface keyItem extends DetailItem {}
+interface keyItem extends DetailItem { }
 
 /** 4.2、持续改进 5.1.检查重点 */
 export interface CurrentImproveItem {

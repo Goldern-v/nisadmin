@@ -66,7 +66,7 @@ export default observer(function 门诊科室质量扣分模块(props: Props) {
             <col width='60' />
           </colgroup>
           <tbody>
-            <tr>
+            <tr className="header">
               <td>排序</td>
               <td>科室</td>
               <td>扣分</td>
@@ -89,7 +89,7 @@ export default observer(function 门诊科室质量扣分模块(props: Props) {
             <col width='60' />
           </colgroup>
           <tbody>
-            <tr>
+            <tr className="header">
               <td>排序</td>
               <td>科室</td>
               <td>扣分</td>
