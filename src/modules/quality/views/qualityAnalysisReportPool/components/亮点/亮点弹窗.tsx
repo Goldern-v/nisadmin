@@ -16,7 +16,7 @@ export interface Props {
 export default function 亮点弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let list: DetailItem[] = cloneData.list
+  let list: DetailItem[] = cloneData.list || []
 
   const addItem = () => {
     cloneData.list.push({})
@@ -67,6 +67,7 @@ export default function 亮点弹窗(props: Props) {
               onChange={(e) => updateText(e, item, 'itemTypeName')}
             />
           </div> */}
+          <div>{index + 1}</div>
           <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
           <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} />
           <div style={{ overflow: 'hidden' }}>

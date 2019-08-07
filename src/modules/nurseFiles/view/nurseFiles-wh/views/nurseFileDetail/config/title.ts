@@ -11,7 +11,7 @@ let titleEC: any = {
   nurseWHPatent: '专利',
   nurseWHLearnJob: '学会任职',
   nurseWHMonograph: '专著',
-  nurseWHContinueStudy: '继续教育',
+  nurseWHContinueStudy: '举办继续教育培训班',
   nurseWHLeave: '离职',
   nurseWHTransferPost: '岗位变动',
   nurseWHTitle: '职称变动',

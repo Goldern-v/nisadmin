@@ -104,29 +104,41 @@ export default function EditWorkHistoryModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={9}>
-              <Form.Field name='endTime' required>
+              <Form.Field name='endTime'>
                 <DatePicker />
               </Form.Field>
             </Col>
           </Row>
+          <div
+            style={{
+              margin: '-10px 0px 10px 64px',
+              color: 'rgba(0,0,0,0.45)',
+              fontSize: 14,
+              position: 'relative',
+              top: -10,
+              textAlign: 'right'
+            }}
+          >
+            *如果结束时间为至今，则不需要选择时间
+          </div>
           <Col span={24}>
-            <Form.Field label={`工作单位`} name='unit' required>
+            <Form.Field label={`工作单位`} name='unit'>
               <Input />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`专业技术工作`} name='professionalWork' required>
+            <Form.Field label={`专业技术工作`} name='professionalWork'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专业技术工作').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`技术职称`} name='professional' required>
+            <Form.Field label={`技术职称`} name='professional'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('技术职称').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`职务`} name='post' required>
+            <Form.Field label={`职务`} name='post'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('职务').map((item) => item.name)} />
             </Form.Field>
           </Col>

@@ -12,7 +12,7 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { auditedStatusEnum } from 'src/libs/enum/common'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
 
 export interface Props extends RouteComponentProps {}
 
@@ -50,7 +50,14 @@ export default observer(function WorkHistory() {
       dataIndex: 'endTime',
       key: '3',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render(text: string, record: any) {
+        if (!text && record.startTime) {
+          return '至今'
+        } else {
+          return text
+        }
+      }
     },
     {
       title: '单位',

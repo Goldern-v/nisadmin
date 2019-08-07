@@ -144,7 +144,7 @@ export default observer(function PersonWinning() {
 
             <span
               onClick={() => {
-                openAuditModal('继续教育', row, getTableData)
+                openAuditModal('举办继续教育培训班', row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}
@@ -165,7 +165,7 @@ export default observer(function PersonWinning() {
   }, [])
 
   return (
-    <BaseLayout title='继续教育' btnList={btnList}>
+    <BaseLayout title='举办继续教育培训班' btnList={btnList}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editContinuingEducationModal.Component getTableData={getTableData} />
     </BaseLayout>

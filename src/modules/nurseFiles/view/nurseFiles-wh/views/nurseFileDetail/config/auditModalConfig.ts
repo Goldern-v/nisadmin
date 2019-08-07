@@ -155,13 +155,13 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '继续教育':
+    case '举办继续教育培训班':
       {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
           type: 'nurseWHContinueStudy',
-          title: '审核继续教育信息',
+          title: '审核举办继续教育培训班',
           tableFormat: [
             {
               年份: `year`,

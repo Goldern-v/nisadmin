@@ -5,6 +5,8 @@ import { DictItem } from 'src/services/api/CommonApiService'
 import { reverseKeyValue } from 'src/utils/object/object'
 import service from 'src/services/api'
 import { statisticsViewModal } from '../../../statistics/StatisticsViewModal'
+import { fileDownload } from 'src/utils/file/file'
+import { message } from 'src/vendors/antd'
 
 class NurseFilesListViewModel {
   /** 筛选条件 */
@@ -39,6 +41,26 @@ class NurseFilesListViewModel {
       })
   }
 
+  exportExcel() {
+    nurseFilesService
+      .countExcel({
+        ...this.postObj,
+        ...{ deptCode: authStore.selectedDeptCode },
+        ...{
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+          totalCount: this.totalCount
+        }
+      })
+      .then((res) => {
+        let filename = res.headers['content-disposition']
+        if (filename) {
+          fileDownload(res)
+        } else {
+          message.warning('暂无记录')
+        }
+      })
+  }
   init() {
     return statisticsViewModal.init()
   }

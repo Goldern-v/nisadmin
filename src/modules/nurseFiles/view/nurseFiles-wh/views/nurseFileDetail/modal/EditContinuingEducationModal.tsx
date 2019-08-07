@@ -91,9 +91,9 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改继续教育')
+      setTitle('修改举办继续教育培训班')
     } else if (signShow === '添加') {
-      setTitle('添加继续教育')
+      setTitle('添加举办继续教育培训班')
     }
   }, [visible])
 

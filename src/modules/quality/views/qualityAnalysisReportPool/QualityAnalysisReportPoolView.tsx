@@ -12,13 +12,13 @@ import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { qualityAnalysisReportPoolService } from './services/QualityAnalysisReportPoolService'
-import qs from 'qs';
-export interface Props extends RouteComponentProps { }
+import qs from 'qs'
+export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
   const pageRef: any = useRef<HTMLElement>()
   useEffect(() => {
-    let search = appStore.location.search;
+    let search = appStore.location.search
     let query = qs.parse(search.replace('?', ''))
 
     qualityAnalysisReportViewModal.init(query)
@@ -157,6 +157,7 @@ const HeadCon = styled.div`
 const Page = styled.div`
   width: 720px;
   margin: 20px auto 20px;
+  padding-bottom: 10px;
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;

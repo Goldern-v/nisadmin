@@ -156,7 +156,19 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
+            <Col span={6}>
+              <Form.Field label={'编制'} name={'workConversionNew'}>
+                <Select>
+                  {statisticsViewModal.getDict('工作编制').map((item, index) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
 
+            {/* <Col span={18} />
             <Col span={6}>
               <Button
                 type='primary'
@@ -164,8 +176,8 @@ export default observer(function FilterCon() {
                 onClick={() => nurseFilesListViewModel.loadNursingList()}
               >
                 查询
-              </Button>
-            </Col>
+              </Button> */}
+            {/* </Col> */}
           </Row>
         </Form>
       </Inner>

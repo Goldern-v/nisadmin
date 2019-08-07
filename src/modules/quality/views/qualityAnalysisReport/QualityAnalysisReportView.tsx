@@ -156,6 +156,10 @@ const Page = styled.div`
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  img {
+    max-width: 200px;
+    max-height: 200px;
+  }
 `
 
 const ScrollCon = styled(ScrollBox)`

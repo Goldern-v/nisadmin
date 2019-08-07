@@ -151,6 +151,7 @@ const Header = styled.div<{ required?: boolean; width: number; gutter: number }>
 const Container = styled.div`
   position: relative;
   flex: 1;
+  width: 0;
 
   .ant-select,
   .ant-input-number,

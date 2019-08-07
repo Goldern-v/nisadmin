@@ -41,6 +41,14 @@ export default observer(function SelectCon(props: any, context: any) {
         {/* <Button type='primary' onClick={onSearch}>
           搜索
         </Button> */}
+        <Button
+          type='primary'
+          // style={{ marginLeft: 40, marginBottom: 20 }}
+          onClick={() => nurseFilesListViewModel.loadNursingList()}
+        >
+          查询
+        </Button>
+        <Button onClick={() => nurseFilesListViewModel.exportExcel()}>导出EXCEL</Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
       </Wrapper>
       <AddNursingModal visible={visible} handleOk={handleOk} handleCancel={handleCancel} />

@@ -16,12 +16,16 @@ export interface NurseQuery {
 export default class NurseFilesService extends BaseApiService {
   // 获取护士列表
   public async getByFormCodePC(obj: any) {
-    Object.keys(obj).forEach((key: any) => {
-      if (obj[key] === '全部') {
-        obj[key] = ''
-      }
-    })
+    // Object.keys(obj).forEach((key: any) => {
+    //   if (obj[key] === '全部') {
+    //     obj[key] = ''
+    //   }
+    // })
     return this.post(`/auditeNurseListWH/getByFormCodePC`, obj)
+  }
+  // 导出护士列表
+  public async countExcel(obj: any) {
+    return this.post(`/auditeNurseListWH/countExcel`, obj)
   }
 
   // 查看护士首页信息

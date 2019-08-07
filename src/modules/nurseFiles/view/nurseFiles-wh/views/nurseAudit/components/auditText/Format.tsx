@@ -116,11 +116,11 @@ export default function Format(row: any, getTableData: any) {
         allData: row
       })
     }
-    case '继续教育': {
+    case '举办继续教育培训班': {
       return globalModal.auditModal.show({
         id: row.id,
         type: 'nurseMedicalEducation',
-        title: '审核继续教育',
+        title: '审核举办继续教育培训班',
         tableFormat: [
           {
             就读时间: `readTime`,
@@ -169,12 +169,12 @@ export default function Format(row: any, getTableData: any) {
         allData: row
       })
     }
-    case '继续教育': {
+    case '举办继续教育培训班': {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
         type: 'nurseContinuingEducation',
-        title: '审核继续教育',
+        title: '审核举办继续教育培训班',
         tableFormat: [
           {
             开始时间: `startTime`,
