@@ -5,47 +5,22 @@ import { ScrollUl } from 'src/components/common'
 import { appStore } from 'src/stores/index'
 import { Spin } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import { getTimeString } from 'src/utils/date/timeCalculation'
 
 //引入图标
 import { ReactComponent as HLZD } from '../images/护理制度.svg'
-import { ReactComponent as EXCL } from '../images/excl.svg'
-import { ReactComponent as PDF } from '../images/pdf.svg'
-import { ReactComponent as WORLD } from '../images/word.svg'
-import { ReactComponent as OTHER } from '../images/其他.svg'
-import { ReactComponent as PICTURE } from '../images/图片.svg'
 
 export interface Props extends RouteComponentProps {}
 
 export default function NursingSystem() {
   const [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
-  const [pageIndex, setPageIndex] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
-
-  const getMealList1 = () => {
-    setLoadingTable(true)
-    HomeApi.getNursingSystem(pageIndex, pageSize).then((res) => {
-      setLoadingTable(false)
-      setTableData(res.data.list)
-    })
-  }
 
   const getMealList = () => {
-    let qualityCheck = HomeApi.getCatalogByType("护理汇编")
-    let nurseFileCheck = HomeApi.getCatalogByType('护理规程')
     setLoadingTable(true)
-    Promise.all([qualityCheck, nurseFileCheck]).then(values => {
+    HomeApi.getCatalogByType('').then((res) => {
       setLoadingTable(false)
-      let array = (values[0].data || []).concat(values[1].data || [])
-      setTableData(array)
-      }).catch(() => {
+      setTableData(res.data)
     })
-  }
-
-
-  const setIcon = (type:any) => {
-    return type === 'pdf' ? <PDF /> : ( type === 'word' ? <WORLD /> : <EXCL/>)
   }
 
   useEffect(() => {
@@ -53,7 +28,6 @@ export default function NursingSystem() {
   }, [])
 
   const toDetails = (item:any) => {
-    // console.log(item,'item')
     appStore.history.push(`/nursingRules?catalog=${item.name}&type=${item.type}`)
   }
 
@@ -62,11 +36,8 @@ export default function NursingSystem() {
     return tableData.map((item: any,index:any) => {
       return (
         <Li key={index} onClick={() => toDetails(item)}>
-          {/* <Icon>{setIcon(item.type)}</Icon> */}
           <img src={require('../images/list.png')} alt="" className='img'/>
           <Content className='content'>{item.name}</Content>
-          {/* <span>.{item.type}</span>
-          <Time className='time'>{getTimeString(item.uploadTime)}</Time> */}
         </Li>
       )
     })
@@ -156,25 +127,13 @@ const Li = styled.li`
   &:hover .content {
     color: #00a65a;
   }
-  &:hover .time {
-    color: #00a65a;
-  }
   .img{
     width: 20px;
     height: 20px;
     border-radius: 1px 0px 0px 1px;
     margin-right: 8px;
     vertical-align: middle;
-
   }
-`
-const Icon = styled.div`
-  display:inline-block;
-  width: 24px;
-  height: 24px;
-  border-radius: 1px 0px 0px 1px;
-  margin-right: 8px;
-  vertical-align: middle;
 `
 const Content = styled.span`
   display: inline-block;
@@ -187,10 +146,4 @@ const Content = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-`
-const Time = styled.span`
-  float: right;
-  vertical-align: middle;
-  font-size: 12px;
-  margin-top: 3px;
 `
