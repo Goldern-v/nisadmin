@@ -91,6 +91,7 @@ export default function NoticeTable() {
         </Button>
       </TableTitle>
       <BaseTable
+        // rowKey={record => {return record.id}}
         dataSource={tableData}
         columns={columns}
         surplusHeight={(appStore.wih - 365) / 2 + 365}

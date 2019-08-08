@@ -1,7 +1,44 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
+import qs from 'qs';
+
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 class StatisticsApi extends BaseApiService {
+    /** 1、待我审核列表 */
+    public pendingPage(current?: number, pageSize?: number, showType?: string, keyword?: string) {
+      let data = {
+        pageIndex: current || 0, //页码，number
+        pageSize: pageSize || 10, //条数，number
+        type: showType, //类型（质量检查or档案管理），string
+        keyword,
+        wardCode: authStore.selectedDeptCode //科室，string
+      }
+      return this.post(`/flow/task/pendingPage`, data)
+    }
+  
+    /** 2、通知公告（收信箱） */
+    public getReceiveList(pageIndex: number, pageSize: number, keyword = '') {
+      let data = {
+        pageIndex: pageIndex || 0, //页码，number
+        pageSize: pageSize || 10, //条数，number
+        keyword,
+      }
+      return this.post(`/mail/receive/list`, data)
+    }
+  
+    /** 3、护理制度 */
+    public async getNursingSystem(pageIndex: number, pageSize: number) {
+      let data ={
+        pageIndex: pageIndex || 0, //页码，number
+        pageSize: pageSize || 10, //条数，number
+      }
+      return this.post('/nursingInstitution/getList', data);
+    }
+  
+    public async getCatalogByType(type: any) {
+      return this.post('/nursingInstitution/getCatalogByType', qs.stringify({ type }));
+    }
+  
   // 0.床位情况
   public async bedInfo (data: any) {
     const postData = {

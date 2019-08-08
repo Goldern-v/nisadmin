@@ -63,6 +63,7 @@ export default function NursingSystem() {
       return (
         <Li key={index} onClick={() => toDetails(item)}>
           {/* <Icon>{setIcon(item.type)}</Icon> */}
+          <img src={require('../images/list.png')} alt="" className='img'/>
           <Content className='content'>{item.name}</Content>
           {/* <span>.{item.type}</span>
           <Time className='time'>{getTimeString(item.uploadTime)}</Time> */}
@@ -157,6 +158,14 @@ const Li = styled.li`
   }
   &:hover .time {
     color: #00a65a;
+  }
+  .img{
+    width: 20px;
+    height: 20px;
+    border-radius: 1px 0px 0px 1px;
+    margin-right: 8px;
+    vertical-align: middle;
+
   }
 `
 const Icon = styled.div`
