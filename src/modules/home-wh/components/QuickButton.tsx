@@ -52,9 +52,10 @@ export default observer(function QuickButton() {
 
   //封装函数
   const renderSubMenu = () => {
-    return count.map((item: any) => {
+    return count.map((item: any,index:any) => {
       return (
         <QuickMenu
+          key={index}
           className='button'
           style={{ background: `${item.background}` }}
           onClick={() => appStore.history.push(item.path)}

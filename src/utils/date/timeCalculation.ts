@@ -11,7 +11,7 @@ export const getTimeString = (KnowTime: string) => {
   var minute = dateTime.getMinutes();
   var second = dateTime.getSeconds();
   var now = new Date();
-  var now_new = now.valueOf();  //typescript转换写法
+  var now_new = now.valueOf();  //ts转换写法
   var milliseconds = 0;
   var timeSpanStr;
 

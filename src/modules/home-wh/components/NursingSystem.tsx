@@ -41,9 +41,9 @@ export default function NursingSystem() {
 
   //封装函数
   const renderSubMenu = () => {
-    return tableData.map((item: any) => {
+    return tableData.map((item: any,index:any) => {
       return (
-        <Li>
+        <Li key={index}>
           <Icon>{setIcon(item.type)}</Icon>
           <Content className='content'>{item.name}</Content>
           <span>.{item.type}</span>
