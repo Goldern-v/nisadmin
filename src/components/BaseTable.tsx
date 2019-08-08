@@ -45,12 +45,12 @@ export default function BaseTable(props: Props) {
     option.dataSource.map((item: any, index: number) => {
       return Object.assign(item, { key: index })
     })
-  if (option.surplusHeight) {
-    if (props.pagination && (!props.dataSource || props.dataSource.length == 0)) {
-      option.surplusHeight = option.surplusHeight - 40
-    }
-    option.scroll = { y: wih - option.surplusHeight }
-  }
+  // if (option.surplusHeight) {
+  //   if (props.pagination && (!props.dataSource || props.dataSource.length == 0)) {
+  //     option.surplusHeight = option.surplusHeight - 40
+  //   }
+  //   option.scroll = { y: wih - option.surplusHeight }
+  // }
   if (props.pagination) {
     let pagination = {
       showSizeChanger: true,

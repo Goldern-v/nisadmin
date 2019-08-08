@@ -57,8 +57,8 @@ export default observer(function FilterCon() {
   return (
     <Wrapper>
       <Inner>
-        <Form ref={refForm} labelWidth={100} onChange={onFieldChange}>
-          <Row gutter={15}>
+        <Form ref={refForm} labelWidth={70} onChange={onFieldChange}>
+          <Row gutter={0}>
             <Col span={6}>
               <Form.Field label={'科室'} name={'deptCode'}>
                 <Select>
@@ -142,8 +142,14 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
             <Col span={6}>
-              <Form.Field label={'护士执业证书有效期'} name={'zyzsEffectiveUp'}>
-                <MonthTimeRangePicker />
+              <Form.Field label={'编制'} name={'workConversion'}>
+                <Select>
+                  {statisticsViewModal.getDict('工作编制').map((item, index) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Field>
             </Col>
             <Col span={6}>
@@ -157,15 +163,10 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
+
             <Col span={6}>
-              <Form.Field label={'编制'} name={'workConversion'}>
-                <Select>
-                  {statisticsViewModal.getDict('工作编制').map((item, index) => (
-                    <Select.Option value={item.code} key={index}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
+              <Form.Field label={'护士执业证书有效期'} name={'zyzsEffectiveUp'}>
+                <MonthTimeRangePicker />
               </Form.Field>
             </Col>
 
