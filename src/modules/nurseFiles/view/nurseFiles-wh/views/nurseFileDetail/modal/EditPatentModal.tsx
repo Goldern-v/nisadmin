@@ -100,6 +100,11 @@ export default function EditPatentModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
+            <Form.Field label={`专利排名`} name='patentLevel'>
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专利排名').map((item) => item.name)} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
             <Form.Field label={`专利号`} name='patentNumber'>
               <Input />
             </Form.Field>

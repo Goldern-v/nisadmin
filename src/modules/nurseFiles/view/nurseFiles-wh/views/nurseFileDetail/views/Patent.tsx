@@ -43,6 +43,13 @@ export default observer(function Patent() {
       align: 'center'
     },
     {
+      title: '专利排名',
+      dataIndex: 'patentLevel',
+      key: 'patentLevel',
+      width: 90,
+      align: 'center'
+    },
+    {
       title: '专利号',
       dataIndex: 'patentNumber',
       key: 'patentNumber',

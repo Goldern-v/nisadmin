@@ -11,9 +11,10 @@ import { ReactComponent as READ } from '../images/已读.svg'
 import { ReactComponent as NOREAD } from '../images/未读.svg'
 
 import Item from 'antd/lib/list/Item'
+import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
-export default function NoticeTable() {
+export default observer(function NoticeTable() {
   const [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
   const [pageIndex, setPageIndex] = useState(1)
@@ -28,6 +29,7 @@ export default function NoticeTable() {
     {
       title: '标题',
       width: 60,
+      key: 'title',
       align: 'left',
       render: (text: any, record: any) => (
         <span>
@@ -94,7 +96,7 @@ export default function NoticeTable() {
         // rowKey={record => {return record.id}}
         dataSource={tableData}
         columns={columns}
-        surplusHeight={(appStore.wih - 365) / 2 + 365}
+        surplusHeight={(appStore.wih - 300) / 2 + 300}
         loading={loadingTable}
         onRow={(record) => {
           return {
@@ -109,10 +111,10 @@ export default function NoticeTable() {
       />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
-  flex: 1;
-  background: #ccc;
+  /* flex: 1; */
+  /* background: #ccc; */
   #baseTable {
     padding: 0 !important;
     .ant-table-header-column {
@@ -136,7 +138,7 @@ const Wrapper = styled.div`
   }
   .messageTitle {
     vertical-align: middle;
-    font-style:normal;
+    font-style: normal;
   }
   .cursorPointer {
     cursor: pointer;

@@ -28,7 +28,8 @@ let dictList = {
   政治面貌: 'politics_look',
   鞋码大小: 'shoe_size',
   授予学分: 'credit_granted',
-  专业技术工作: 'professional_work'
+  专业技术工作: 'professional_work',
+  专利排名: 'patent_level'
 }
 
 type DictList = typeof dictList

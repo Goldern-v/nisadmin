@@ -16,7 +16,6 @@ export const pageObj: PageObj = {
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
-
     {
       label: '专利名称',
       type: 'input',
@@ -57,6 +56,13 @@ export const pageObj: PageObj = {
       dataIndex: 'patentName',
       key: 'patentName',
       width: 120,
+      align: 'center'
+    },
+    {
+      title: '专利排名',
+      dataIndex: 'patentLevel',
+      key: 'patentLevel',
+      width: 90,
       align: 'center'
     },
     {

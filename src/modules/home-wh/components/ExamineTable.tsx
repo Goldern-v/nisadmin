@@ -8,13 +8,14 @@ import service from 'src/services/api'
 import qs from 'qs'
 
 import { ReactComponent as DWSH } from '../images/待我审核.svg'
+import { observer } from 'src/vendors/mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
-export default function ExamineTable() {
+export default observer(function ExamineTable() {
   const [loadingTable, setLoadingTable] = useState(false)
-  const [tableData, setTableData] = useState([])//表格数据
-  const [current, setCurrent] = useState(1)//页码
-  const [pageSize, setPageSize] = useState(10)//条数
+  const [tableData, setTableData] = useState([]) //表格数据
+  const [current, setCurrent] = useState(1) //页码
+  const [pageSize, setPageSize] = useState(10) //条数
   const [keyword, setKeyword] = useState('')
 
   const columns: any = [
@@ -24,7 +25,7 @@ export default function ExamineTable() {
       key: 'type',
       width: 15,
       align: 'left',
-      marginLeft:'20px',
+      marginLeft: '20px',
       render(text: string, record: any) {
         return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '质量检查' : ''
       }
@@ -54,26 +55,28 @@ export default function ExamineTable() {
 
   const getMealList = () => {
     //质量检查和档案管理各拿10条数据
-    let qualityCheck = HomeApi.pendingPage(current, pageSize, "qc", keyword)
+    let qualityCheck = HomeApi.pendingPage(current, pageSize, 'qc', keyword)
     let nurseFileCheck = HomeApi.pendingPage(current, pageSize, 'nurseFile', keyword)
     setLoadingTable(true)
-    Promise.all([qualityCheck, nurseFileCheck]).then(values => {
-      setLoadingTable(false)
-      let array = (values[0].data.list || []).concat(values[1].data.list || [])
-      //按照提交时间先后排序
-      array.length > 1 && array.sort((a:any, b:any) => {
-        return Date.parse(b.commitTime.replace(/-/g, '/')) - Date.parse(a.commitTime.replace(/-/g, '/'))
+    Promise.all([qualityCheck, nurseFileCheck])
+      .then((values) => {
+        setLoadingTable(false)
+        let array = (values[0].data.list || []).concat(values[1].data.list || [])
+        //按照提交时间先后排序
+        array.length > 1 &&
+          array.sort((a: any, b: any) => {
+            return Date.parse(b.commitTime.replace(/-/g, '/')) - Date.parse(a.commitTime.replace(/-/g, '/'))
+          })
+        setTableData(array)
       })
-      setTableData(array)
-      }).catch(() => {
-    })
+      .catch(() => {})
   }
 
   useEffect(() => {
-   getMealList()
+    getMealList()
   }, [])
 
-  const selectRow = (record: any) =>{
+  const selectRow = (record: any) => {
     console.log(record)
     if (record.type == 'qc') {
       window.open(`/crNursing/manage/#/qualityControlRecordDetail/${record.othersMessage.id}`)
@@ -91,31 +94,37 @@ export default function ExamineTable() {
           <DWSH />
         </I>
         <World>待我审核</World>
-        <More onClick={() => {appStore.history.push('/auditsManagement')}}>更多 ></More>
+        <More
+          onClick={() => {
+            appStore.history.push('/auditsManagement')
+          }}
+        >
+          更多 >
+        </More>
       </TableTitle>
-      <BaseTable 
-        rowKey={record => {return record.key}}
-        dataSource={tableData} 
-        columns={columns} 
-        surplusHeight={(appStore.wih - 365) / 2 + 365} 
+      {/* {appStore.wih} */}
+      <BaseTable
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={(appStore.wih - 300) / 2 + 300}
         loading={loadingTable}
-        rowClassName={
-          (record) => {
-            return 'cursorPointer';
-          }
-        }
-        onRow={record => {
-          return {
-            onClick: (event:any) => {selectRow(record)},
-          };
+        rowClassName={(record) => {
+          return 'cursorPointer'
         }}
-        />
+        onRow={(record) => {
+          return {
+            onClick: (event: any) => {
+              selectRow(record)
+            }
+          }
+        }}
+      />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
-  flex: 1;
-  background: #ccc;
+  /* flex: 1; */
+  /* background: #ccc; */
   margin-bottom: 20px;
   #baseTable {
     padding: 0 !important;
@@ -127,14 +136,13 @@ const Wrapper = styled.div`
     .ant-table-body {
       border-radius: 0 !important;
     }
-    .ant-table-small{
+    .ant-table-small {
       border-radius: 0 !important;
     }
   }
-  .cursorPointer{
+  .cursorPointer {
     cursor: pointer;
   }
-
 `
 const TableTitle = styled.div`
   box-shadow: 0px -1px 0px 0px rgba(245, 105, 84, 1);
@@ -171,8 +179,8 @@ const More = styled.span`
   color: rgba(102, 102, 102, 1);
   line-height: 17px;
   margin-top: 15px;
-  &:hover{
+  &:hover {
     cursor: pointer;
-    color:#00A65A;
+    color: #00a65a;
   }
 `

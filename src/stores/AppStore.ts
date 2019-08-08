@@ -8,7 +8,7 @@ export default class AppStore {
     this.isExpand = (localStorage.getItem('isExpand') as any) || '1'
     this.appToken = '51e827c9-d80e-40a1-a95a-1edc257596e7'
     window.onresize = () => {
-      this.wih = document.body.offsetHeight
+      this.wih = window.innerHeight
     }
   }
   @observable public isExpand: '1' | '0' = '1'
@@ -22,7 +22,7 @@ export default class AppStore {
   @observable public match!: match<any>
   @observable public location!: H.Location<any>
   /** 页面高度 */
-  @observable public wih: number = document.body.offsetHeight
+  @observable public wih: number = window.innerHeight
 
   /** 医院id */
   @observable public HOSPITAL_ID = process.env.REACT_APP_HOSPITAL_ID

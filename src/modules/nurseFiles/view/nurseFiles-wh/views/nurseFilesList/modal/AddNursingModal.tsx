@@ -111,10 +111,17 @@ function AddNursingModal(props: Props) {
           {getFieldDecorator('deptCode', {
             initialValue: authStore.selectedDeptCode
           })(
-            <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
+            <Select
+              showSearch
+              style={{ width: '100%' }}
+              placeholder='选择所属科室'
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
               {authStore.deptList.map((item: any) => {
                 return (
-                  <Select.Option value={item.code} key={item}>
+                  <Select.Option value={item.code} key={item.name}>
                     {item.name}
                   </Select.Option>
                 )
