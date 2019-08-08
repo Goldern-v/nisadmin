@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Input, Button, message as Message, Select, Modal, Pagination } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { Link } from 'react-router-dom'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 
@@ -12,6 +12,7 @@ import PreviewModal from './components/PreviewModal'
 
 import NursingRulesApiService from './api/NursingRulesApiService'
 import createModal from 'src/libs/createModal'
+import qs from 'qs';
 
 const api = new NursingRulesApiService()
 
@@ -49,11 +50,39 @@ export default class NursingRules extends Component<Props> {
   }
 
   componentDidMount() {
-    api.getType().then((res) => {
-      if (res.data instanceof Array) this.setState({ typeList: res.data })
+    let query = qs.parse(appStore.location.search.replace('?', ''));
+
+    Promise.all([
+      api.getType(),
+      api.getCatalogByType('')
+    ]).then(res => {
+      let fileType = '';
+      if (res[1].data instanceof Array && query.catalog) {
+        let target = res[1].data.find((item: any) => {
+          return item.name == query.catalog
+        });
+        if (target) fileType = target.type
+      }
+
+      this.setState({
+        typeList: res[0].data || [],
+        catalogList: res[1].data || [],
+        query: {
+          ...this.state.query,
+          fileType
+        }
+      });
+    });
+
+    this.setState({
+      query: {
+        ...this.state.query,
+        ...query
+      }
+    }, () => {
+      this.setTableData()
     })
 
-    this.setTableData()
   }
 
   setTableData() {
@@ -252,12 +281,17 @@ export default class NursingRules extends Component<Props> {
       if (res.data) this.setState({ catalogList: res.data });
     })
 
-    
+
     this.setState({ query: { ...this.state.query, fileType, catalog: '' } });
   }
 
   handleCatalogChange(catalog: any) {
-    this.setState({ query: { ...this.state.query, catalog } })
+    let fileType = '';
+    let target = this.state.catalogList.find((item: any) => {
+      return item.name == catalog
+    });
+    if (target) fileType = target.type;
+    this.setState({ query: { ...this.state.query, catalog, fileType } })
   }
 
   reUpload(record: any) {
@@ -438,28 +472,10 @@ export default class NursingRules extends Component<Props> {
               pageSize: query.pageSize,
               current: query.pageIndex
             }}
-            spaceRowNumber={query.pageSize}
             loading={tableLoading}
             type={['spaceRow']}
             surplusHeight={215}
           />
-          {/* <div className="custom-pagination">
-          <Pagination
-            pageSizeOptions={['10', '20', '30', '40', '50']}
-            onShowSizeChange={this.handlePageSizeChange.bind(this)}
-            onChange={this.handlePageChange.bind(this)}
-            total={dataTotal}
-            showSizeChanger
-            showQuickJumper
-            pageSize={query.pageSize}
-            current={query.pageIndex} />
-        </div> */}
-          {/* <CustomPagination
-          onChange={this.handlePageChange.bind(this)}
-          onShowSizeChange={this.handlePageSizeChange.bind(this)}
-          page={query.pageIndex}
-          size={query.pageSize}
-          total={dataTotal} /> */}
         </div>
         <NewNursingRulesAddModal
           fileTypeList={typeList}

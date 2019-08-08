@@ -10,7 +10,7 @@ import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as READ } from '../images/已读.svg'
 import { ReactComponent as NOREAD } from '../images/未读.svg'
 
-import Item from 'antd/lib/list/Item';
+import Item from 'antd/lib/list/Item'
 export interface Props extends RouteComponentProps {}
 
 export default function NoticeTable() {
@@ -20,8 +20,8 @@ export default function NoticeTable() {
   const [pageSize, setPageSize] = useState(20)
   const [keyword, setKeyword] = useState('')
 
-  const setIcon = (read:any) => {
-    return read === true ? <READ /> : <NOREAD/>
+  const setIcon = (read: any) => {
+    return read === true ? <READ /> : <NOREAD />
   }
 
   const columns: any = [
@@ -29,12 +29,12 @@ export default function NoticeTable() {
       title: '标题',
       width: 60,
       align: 'left',
-      render: (text:any, record:any) => (
+      render: (text: any, record: any) => (
         <span>
           <i className='messageStatus'>{setIcon(record.read)}</i>
           <i className='messageTitle'>{record.title}</i>
-        </span> 
-      ) 
+        </span>
+      )
     },
     {
       title: '提取人',
@@ -61,8 +61,12 @@ export default function NoticeTable() {
   }
 
   useEffect(() => {
-   getMealList()
+    getMealList()
   }, [])
+
+  const selectRow = (record: any) => {
+    appStore.history.push(`/notice?selectedMenu=收件箱&id=${record.id}`)
+  }
 
   return (
     <Wrapper>
@@ -71,15 +75,37 @@ export default function NoticeTable() {
           <TZGG />
         </I>
         <World>通知公告</World>
-        <More onClick={() => {appStore.history.push('/notice')}}>更多 ></More>
-        <Button onClick={() => {appStore.history.push('/sentNotice')}}>创建</Button>
+        <More
+          onClick={() => {
+            appStore.history.push('/notice')
+          }}
+        >
+          更多 >
+        </More>
+        <Button
+          onClick={() => {
+            appStore.history.push('/sentNotice')
+          }}
+        >
+          创建
+        </Button>
       </TableTitle>
-      <BaseTable 
-        dataSource={tableData} 
-        columns={columns} 
-        surplusHeight={(appStore.wih - 365) / 2 + 365} 
+      <BaseTable
+        dataSource={tableData}
+        columns={columns}
+        surplusHeight={(appStore.wih - 365) / 2 + 365}
         loading={loadingTable}
-        />
+        onRow={(record) => {
+          return {
+            onClick: (event: any) => {
+              selectRow(record)
+            }
+          }
+        }}
+        rowClassName={(record) => {
+          return 'cursorPointer'
+        }}
+      />
     </Wrapper>
   )
 }
@@ -97,19 +123,22 @@ const Wrapper = styled.div`
     .ant-table-body {
       border-radius: 0 !important;
     }
-    .ant-table-small{
+    .ant-table-small {
       border-radius: 0 !important;
     }
   }
-  .messageStatus{
-    display:inline-block;
-    margin-right:5px;
-    vertical-align:middle;
-    margin-top:5px;
+  .messageStatus {
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    margin-top: 5px;
   }
-  .messageTitle{
-    vertical-align:middle;
+  .messageTitle {
+    vertical-align: middle;
     font-style:normal;
+  }
+  .cursorPointer {
+    cursor: pointer;
   }
 `
 const TableTitle = styled.div`
@@ -123,17 +152,17 @@ const TableTitle = styled.div`
   background: #fff;
   padding: 0 15px;
   box-sizing: border-box;
-  .ant-btn{
+  .ant-btn {
     width: 56px;
     height: 28px;
-    text-align:center;
+    text-align: center;
     background: rgba(248, 248, 248, 1);
     border-radius: 2px;
     border: 1px solid rgba(204, 204, 204, 1);
     float: right;
     margin-right: 20px;
     margin-top: 9px;
-    padding: 0px 10px!important;
+    padding: 0px 10px !important;
   }
 `
 const I = styled.span`
@@ -158,11 +187,9 @@ const More = styled.span`
   color: rgba(102, 102, 102, 1);
   line-height: 17px;
   margin-top: 15px;
-  &:hover{
+  &:hover {
     cursor: pointer;
-    color:#00A65A;
+    color: #00a65a;
   }
 `
-const MyButton = styled.button`
-  
-`
+const MyButton = styled.button``

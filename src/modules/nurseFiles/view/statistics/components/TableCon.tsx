@@ -105,7 +105,7 @@ export default function TableCon(props: Props) {
   let surplusHeight = 365
   let filterConEle = document.getElementById('filterCon')
   if (filterConEle) {
-    surplusHeight = filterConEle.offsetHeight + 240
+    surplusHeight = filterConEle.offsetHeight + 200
     console.log(surplusHeight, 'surplusHeight')
   }
 
@@ -117,7 +117,7 @@ export default function TableCon(props: Props) {
         columns={columns}
         type={['index']}
         surplusHeight={surplusHeight}
-        surplusWidth={335}
+        surplusWidth={300}
         wrapperStyle={{
           margin: 0
         }}

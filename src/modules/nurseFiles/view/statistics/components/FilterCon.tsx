@@ -80,7 +80,7 @@ export default function FilterCon(props: Props) {
   }, [pageObj.title])
   return (
     <Wrapper id={'filterCon'}>
-      <Form ref={refForm} labelWidth={100} onChange={onFieldChange}>
+      <Form ref={refForm} labelWidth={70} onChange={onFieldChange}>
         <Row>
           {pageObj.filterList.map((item, index) => (
             <Col span={6} key={index}>
