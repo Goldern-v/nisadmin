@@ -58,7 +58,7 @@ class RetiredRetireesViewModal {
       this.tableList = res.data.list
       this.pageIndex = res.data.pageIndex
       this.pageSize = res.data.pageSize
-      this.total = res.data.total
+      this.total = res.data.totalCount
       this.tableLoading = false
     })
   }

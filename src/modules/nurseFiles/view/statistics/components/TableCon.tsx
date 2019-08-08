@@ -123,7 +123,7 @@ export default function TableCon(props: Props) {
         }}
         pagination={{
           current: tableObj.pageIndex,
-          total: tableObj.totalPage,
+          total: tableObj.totalCount,
           pageSize: tableObj.pageSize
         }}
         onChange={onChange}

@@ -59,6 +59,9 @@ export default function BaseTable(props: Props) {
     }
     Object.assign(pagination, props.pagination)
     Object.assign(props.pagination, pagination)
+    if (props.pagination.total == 0) {
+      props.pagination.total = 1
+    }
   }
   if (props.surplusWidth) {
     option.scroll = option.scroll

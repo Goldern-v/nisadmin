@@ -74,7 +74,7 @@ export default observer(function Head() {
 })
 const Wrapper = styled(TableHeadCon)`
   .ant-select {
-    width: 200px;
+    width: 180px;
     margin-right: 20px;
   }
   .ant-calendar-picker {

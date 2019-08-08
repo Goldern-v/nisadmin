@@ -840,7 +840,12 @@ export default function MainBox(props: Props) {
       return (
         <span>
           排班备注：
-          <Input.TextArea onChange={remarkChange} style={{ padding: '8px' }} defaultValue={remark} />
+          <Input.TextArea
+            autosize
+            onChange={remarkChange}
+            style={{ padding: '8px', minHeight: '100px' }}
+            defaultValue={remark}
+          />
         </span>
       )
     }
