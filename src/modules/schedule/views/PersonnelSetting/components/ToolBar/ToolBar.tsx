@@ -11,6 +11,10 @@ export default function ToolBar() {
     emitter.emit('添加人员分组')
   }
 
+  const toNew = () => {
+    emitter.emit('刷新人员分组')
+  }
+
   return (
     <Wrapper>
       <Title>班次设置</Title>
@@ -19,7 +23,7 @@ export default function ToolBar() {
         添加分组
       </Button>
 
-      <Button style={{ marginLeft: 5, marginRight: 5 }}>保存</Button>
+      <Button onClick={toNew} style={{ marginLeft: 5, marginRight: 5 }}>刷新</Button>
     </Wrapper>
   )
 }

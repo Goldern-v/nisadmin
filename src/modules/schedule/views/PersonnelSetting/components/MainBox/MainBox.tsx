@@ -20,6 +20,8 @@ export default function MainBox() {
   const [groupName, setGroupName] = useState('')
   const [id, setId] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false)
+  const [lazyLoading, setLazyLoading] = useState(false)
+
   
   // 表格
   const columns: any = [
@@ -107,18 +109,22 @@ export default function MainBox() {
   }
 
   //获取分组已选人员
-  const selectedScheduler = (record: any) =>{
+  const selectedScheduler = (record?: any) =>{
     let id = record.id
+    setLazyLoading(true)
     service.personnelSettingApiService.getById(id).then((res) => {
+      setLazyLoading(false)
       setTargetKeys(res.data)
     })
   }
 
   //获取分组可选人员
-  const selectScheduler = (record:any) =>{
+  const selectScheduler = (record?:any) =>{
     let deptCode = scheduleStore.getDeptCode() 
     let id = record.id
+    setLazyLoading(true)
     service.personnelSettingApiService.getScheduler(deptCode).then((res) => {
+      setLazyLoading(false)
       let array:any = []
       res.data.length > 0 && res.data.map((item:any, i:any) => {
         array.push({
@@ -143,8 +149,8 @@ export default function MainBox() {
   },[]);
 
   // 新增或修改分组中的人员
-  const handleChange = (nextTargetKeys:any, direction:any, moveKeys:any) => {
-    setTargetKeys(moveKeys);
+  const handleChange = (targetKeys:any, direction:any, moveKeys:any) => {
+    setTargetKeys(targetKeys);
     let array = moveKeys.map((item:any) => mockData.filter((v:any) => item === v.key)[0])
     let params = {
       schSettingNurseGroupId: id,
@@ -180,19 +186,27 @@ export default function MainBox() {
   emitter.addListener('添加人员分组', () => {
     setEditingKey(true)
   })
+
+  /** 监听事件 --- 控制刷新状态*/
+  emitter.removeAllListeners('刷新人员分组')
+  emitter.addListener('刷新人员分组', () => {
+    getMealList()
+    setTargetKeys([])
+    setMockData([])
+  })
   
   return (
     <Wrapper>
       <BaseTableBox>
         <BaseTable 
           columns={columns} 
-          surplusHeight={190} 
+          surplusHeight={155} 
           dataSource={tableData} 
           loading={loadingTable}
           //行类名
           rowClassName={
             (record) => {
-              return 'cursorPointer';
+              return record.id === id ? 'background' : 'cursorPointer';
             }
           }
           //表格行点击事件
@@ -221,6 +235,7 @@ export default function MainBox() {
         onChange={handleChange}
         onSelectChange={handleSelectChange}
         render={renderItem}
+        lazy={lazyLoading}
         />
         <Modal
           className='modal'
@@ -254,6 +269,10 @@ const Wrapper = styled.div`
   display:flex;
   .cursorPointer{
     cursor: pointer;
+  }
+  .background{
+    cursor: pointer;
+    background:#d4e5dd !important
   }
 `
 const BaseTableBox = styled.div`
