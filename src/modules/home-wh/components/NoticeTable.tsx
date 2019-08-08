@@ -109,6 +109,7 @@ const Wrapper = styled.div`
   }
   .messageTitle{
     vertical-align:middle;
+    font-style:normal;
   }
 `
 const TableTitle = styled.div`

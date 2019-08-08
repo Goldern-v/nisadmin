@@ -1,6 +1,7 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
-// import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+import qs from 'qs';
+
 class StatisticsApi extends BaseApiService {
   /** 1、待我审核列表 */
   public pendingPage(current?: number, pageSize?: number, showType?: string, keyword?: string) {
@@ -33,6 +34,9 @@ class StatisticsApi extends BaseApiService {
     return this.post('/nursingInstitution/getList', data);
   }
 
+  public async getCatalogByType(type: any) {
+    return this.post('/nursingInstitution/getCatalogByType', qs.stringify({ type }));
+  }
 
 
 

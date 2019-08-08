@@ -23,13 +23,26 @@ export default function NursingSystem() {
   const [pageIndex, setPageIndex] = useState(1)
   const [pageSize, setPageSize] = useState(10)
 
-  const getMealList = () => {
+  const getMealList1 = () => {
     setLoadingTable(true)
     HomeApi.getNursingSystem(pageIndex, pageSize).then((res) => {
       setLoadingTable(false)
       setTableData(res.data.list)
     })
   }
+
+  const getMealList = () => {
+    let qualityCheck = HomeApi.getCatalogByType("护理汇编")
+    let nurseFileCheck = HomeApi.getCatalogByType('护理规程')
+    setLoadingTable(true)
+    Promise.all([qualityCheck, nurseFileCheck]).then(values => {
+      setLoadingTable(false)
+      let array = (values[0].data || []).concat(values[1].data || [])
+      setTableData(array)
+      }).catch(() => {
+    })
+  }
+
 
   const setIcon = (type:any) => {
     return type === 'pdf' ? <PDF /> : ( type === 'word' ? <WORLD /> : <EXCL/>)
@@ -44,10 +57,10 @@ export default function NursingSystem() {
     return tableData.map((item: any,index:any) => {
       return (
         <Li key={index}>
-          <Icon>{setIcon(item.type)}</Icon>
+          {/* <Icon>{setIcon(item.type)}</Icon> */}
           <Content className='content'>{item.name}</Content>
-          <span>.{item.type}</span>
-          <Time className='time'>{getTimeString(item.uploadTime)}</Time>
+          {/* <span>.{item.type}</span>
+          <Time className='time'>{getTimeString(item.uploadTime)}</Time> */}
         </Li>
       )
     })

@@ -94,6 +94,7 @@ export default function ExamineTable() {
         <More onClick={() => {appStore.history.push('/auditsManagement')}}>更多 ></More>
       </TableTitle>
       <BaseTable 
+        rowKey={record => {return record.key}}
         dataSource={tableData} 
         columns={columns} 
         surplusHeight={(appStore.wih - 365) / 2 + 365} 
