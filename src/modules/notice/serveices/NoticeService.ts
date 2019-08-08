@@ -72,8 +72,14 @@ export default class NoticeService extends BaseApiService {
     return this.get(`/mail/receive/revokeCollect/${id}`)
   }
   /** 删除消息 */
-  public removeMail(id: number) {
-    return this.get(`/mail/receive/remove/${id}`)
+  public removeMail(id: number, showType: any) {
+    if (showType == '收') {
+      return this.get(`/mail/receive/remove/${id}`)
+    } else if (showType == '发' || showType == '草') {
+      return this.get(`/mail/send/remove/${id}`)
+    } else {
+      return new Promise(() => {})
+    }
   }
   /** 撤回消息 */
   public revokeMail(id: number) {
@@ -85,12 +91,18 @@ export default class NoticeService extends BaseApiService {
   }
 
   /** 批量收藏 */
-  public collectAll(ids: number[]) {
-    return this.post(`/mail/receive/collect/all`, { ids })
+  public collectAll(ids: number[], cancel: boolean) {
+    return this.post(`/mail/receive/collect/all`, { ids, cancel })
   }
   /** 批量删除 */
-  public removeAll(ids: number[]) {
-    return this.post(`/mail/receive/remove/all`, { ids })
+  public removeAll(ids: number[], type: string) {
+    if (type == '收件箱') {
+      return this.post(`/mail/receive/remove/all`, { ids })
+    } else if (type == '发件箱' || type == '草稿箱') {
+      return this.post(`/mail/send/remove/all`, { ids })
+    } else {
+      return new Promise(() => {})
+    }
   }
   /** 批量已读 */
   public readAll(ids: number[]) {

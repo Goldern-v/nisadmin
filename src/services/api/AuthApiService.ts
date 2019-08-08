@@ -1,3 +1,4 @@
+import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
 import { message } from 'src/vendors/antd'
 import { httpLoginToken } from 'src/libs/http/http'
 
@@ -35,6 +36,7 @@ export default class AuthApiService extends BaseApiService {
     sessionStorage.removeItem('user')
     sessionStorage.removeItem('selectedDeptCode')
     authStore.delUser()
+    statisticsViewModal.hadData = false
     window.location.href = '#/login'
   }
 }

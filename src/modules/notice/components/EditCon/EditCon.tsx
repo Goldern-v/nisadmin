@@ -17,7 +17,7 @@ export default observer(function EditCon() {
     globalModal
       .confirm('确认删除', `确认删除勾选的${noticeViewModel.selectedMenuEditList.length}项消息?`)
       .then((res) => {
-        noticeService.removeAll(ids).then((res) => {
+        noticeService.removeAll(ids, noticeViewModel.selectedMenu).then((res) => {
           message.success('删除成功')
           noticeViewModel.refreshCurrentListObj()
           noticeViewModel.initMenuEditList()
@@ -28,8 +28,19 @@ export default observer(function EditCon() {
     globalModal
       .confirm('确认收藏', `确认收藏勾选的${noticeViewModel.selectedMenuEditList.length}项消息?`)
       .then((res) => {
-        noticeService.collectAll(ids).then((res) => {
+        noticeService.collectAll(ids, false).then((res) => {
           message.success('收藏成功')
+          noticeViewModel.refreshCurrentListObj()
+          noticeViewModel.initMenuEditList()
+        })
+      })
+  }
+  const lotCancelCollect = () => {
+    globalModal
+      .confirm('确认取消收藏', `确认取消收藏勾选的${noticeViewModel.selectedMenuEditList.length}项消息?`)
+      .then((res) => {
+        noticeService.collectAll(ids, true).then((res) => {
+          message.success('取消收藏收藏成功')
           noticeViewModel.refreshCurrentListObj()
           noticeViewModel.initMenuEditList()
         })
@@ -70,22 +81,22 @@ export default observer(function EditCon() {
   switch (noticeViewModel.selectedMenu) {
     case '收件箱':
       {
-        toolList = ['收藏', '已读', '未读']
+        toolList = ['收藏', '已读', '未读', '删除']
       }
       break
     case '发件箱':
       {
-        toolList = []
+        toolList = ['删除']
       }
       break
     case '草稿箱':
       {
-        toolList = []
+        toolList = ['删除']
       }
       break
     case '我的收藏':
       {
-        toolList = []
+        toolList = ['取消收藏']
       }
       break
   }
@@ -95,11 +106,13 @@ export default observer(function EditCon() {
       <div style={{ width: 30 }} />
       <span className='aside'>已选择{noticeViewModel.selectedMenuEditList.length}项</span>
       <div style={{ width: 40 }} />
-      <Button onClick={lotDelete}>删除</Button>
 
+      {toolList.includes('删除') && <Button onClick={lotDelete}>删除</Button>}
       {toolList.includes('收藏') && <Button onClick={lotCollect}>收藏</Button>}
       {toolList.includes('已读') && <Button onClick={lotRead}>已读</Button>}
       {toolList.includes('未读') && <Button onClick={lotUnRead}>未读</Button>}
+      {toolList.includes('未读') && <Button onClick={lotUnRead}>未读</Button>}
+      {toolList.includes('取消收藏') && <Button onClick={lotCancelCollect}>取消收藏</Button>}
 
       <Button onClick={() => noticeViewModel.initMenuEditList()}>取消</Button>
     </Wrapper>

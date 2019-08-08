@@ -157,7 +157,7 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
             <Col span={6}>
-              <Form.Field label={'编制'} name={'workConversionNew'}>
+              <Form.Field label={'编制'} name={'workConversion'}>
                 <Select>
                   {statisticsViewModal.getDict('工作编制').map((item, index) => (
                     <Select.Option value={item.code} key={index}>

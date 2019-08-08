@@ -26,18 +26,18 @@ export default function DetailsPage(props: Props) {
     isFiveMin = true
   }
 
-  const downFile = (path: string) => {
-    service.commonApiService.getFileAndDown(path)
+  const downFile = (path: string, name: string) => {
+    service.commonApiService.getFileAndDown(path, name)
   }
   const lotDown = (files: FileItem[]) => {
     files.forEach((file) => {
-      service.commonApiService.getFileAndDown(file.path)
+      service.commonApiService.getFileAndDown(file.path, file.name)
     })
   }
   const removeMail = () => {
     globalModal.confirm('确认删除', '确认删除该邮箱?').then((res) => {
       if (!data.id) return
-      noticeService.removeMail(data.id).then((res) => {
+      noticeService.removeMail(data.id, data.showType).then((res) => {
         message.success('删除消息成功')
         noticeViewModel.detailObj = {}
         noticeViewModel.refreshCurrentListObj()
@@ -60,10 +60,12 @@ export default function DetailsPage(props: Props) {
       ? noticeService.revokeCollect(data.id).then((res) => {
           message.success('取消收藏消息成功')
           setCollected(!collected)
+          noticeViewModel.refreshCurrentListObj()
         })
       : noticeService.collectMail(data.id).then((res) => {
           message.success('收藏消息成功')
           setCollected(!collected)
+          noticeViewModel.refreshCurrentListObj()
         })
   }
 
@@ -103,12 +105,13 @@ export default function DetailsPage(props: Props) {
               </div>
             </Tooltip>
           ))}
-
-        <Tooltip placement='bottom' title='删除'>
-          <div className='item-box' onClick={removeMail}>
-            <img src={require('./images/删除.png')} alt='' />
-          </div>
-        </Tooltip>
+        {data.showType != '藏' && (
+          <Tooltip placement='bottom' title='删除'>
+            <div className='item-box' onClick={removeMail}>
+              <img src={require('./images/删除.png')} alt='' />
+            </div>
+          </Tooltip>
+        )}
       </ToolCon>
       <HeadCon>{data.title || <span style={{ color: '#bfbfbf' }}>(暂无主题)</span>}</HeadCon>
       <PageCon>
@@ -172,7 +175,7 @@ export default function DetailsPage(props: Props) {
             <FileCon>
               {data.attachmentList.map((item: any, index: number) => (
                 <div className='file-box' key={index}>
-                  <div className='file-inner' onClick={() => downFile(item.path)}>
+                  <div className='file-inner' onClick={() => downFile(item.path, item.name)}>
                     {getFileType(item.path) == 'img' ? (
                       <Zimage src={item.path} className='type-img' alt='' />
                     ) : (

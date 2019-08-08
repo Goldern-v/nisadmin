@@ -54,7 +54,7 @@ class StatisticsViewModal {
         authStore.selectedDeptCode = ''
       } else {
         this.allDeptAll = res.data.deptList
-        if ((authStore.selectedDeptCode = '')) {
+        if (authStore.selectedDeptCode == '') {
           authStore.selectedDeptCode = res.data.defaultDeptCode
         }
       }

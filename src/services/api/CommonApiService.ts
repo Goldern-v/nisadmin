@@ -74,9 +74,9 @@ export default class CommonApiService extends BaseApiService {
     return this.post(`/file/uploadAttachment/${entityType}`, file)
   }
   /** 下载文件并导出 */
-  public getFileAndDown(path: string) {
+  public getFileAndDown(path: string, name?: string) {
     return this.get(path, { responseType: 'blob' }).then((res) => {
-      fileDownload(res)
+      fileDownload(res, name)
     })
   }
   /** 根据工号获取完整信息 */

@@ -20,8 +20,10 @@ export function getFileSize(fileByte: number | string) {
 }
 
 // 导出文件
-export const fileDownload = (res: any) => {
-  let filename = res.headers['content-disposition']
+export const fileDownload = (res: any, fileName?: string) => {
+  let filename = fileName
+    ? fileName
+    : res.headers['content-disposition']
     ? decodeURIComponent(res.headers['content-disposition'].replace('attachment;filename=', ''))
     : '导出文件'
   let blob = new Blob([res.data], {
