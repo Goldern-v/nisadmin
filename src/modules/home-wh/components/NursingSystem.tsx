@@ -52,11 +52,16 @@ export default function NursingSystem() {
    getMealList()
   }, [])
 
+  const toDetails = (item:any) => {
+    // console.log(item,'item')
+    appStore.history.push(`/nursingRules?catalog=${item.name}&type=${item.type}`)
+  }
+
   //封装函数
   const renderSubMenu = () => {
     return tableData.map((item: any,index:any) => {
       return (
-        <Li key={index}>
+        <Li key={index} onClick={() => toDetails(item)}>
           {/* <Icon>{setIcon(item.type)}</Icon> */}
           <Content className='content'>{item.name}</Content>
           {/* <span>.{item.type}</span>
@@ -144,7 +149,7 @@ const Li = styled.li`
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
   list-style-type: none;
-  /* &:hover {
+  &:hover {
     cursor: pointer;
   }
   &:hover .content {
@@ -152,7 +157,7 @@ const Li = styled.li`
   }
   &:hover .time {
     color: #00a65a;
-  } */
+  }
 `
 const Icon = styled.div`
   display:inline-block;
