@@ -41,6 +41,7 @@ export default observer(function FilterCon() {
       highestEducation: value.highestEducation,
       politicsLook: value.politicsLook,
       shoeSize: value.shoeSize,
+      workConversion: value.workConversion,
       ageStart: value.age ? value.age[0] : '',
       ageEnd: value.age ? value.age[1] : '',
       goHospitalWorkStartYear: value.goHospitalWork ? value.goHospitalWork[0] : '',

@@ -145,7 +145,14 @@ const columns: ColumnProps<any>[] = [
     title: '鞋码',
     dataIndex: 'shoeSize',
     key: 'shoeSize',
-    width: 120,
+    width: 80,
+    align: 'center'
+  },
+  {
+    title: '编制',
+    dataIndex: 'workConversion',
+    key: 'workConversion',
+    width: 100,
     align: 'center'
   },
   {
