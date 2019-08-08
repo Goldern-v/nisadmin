@@ -104,7 +104,8 @@ export default observer(function QueryStatistics(props: any) {
   return (
     <Wrapper>
       <HeaderCon>
-        <div className='item'>
+        <LeftIcon>
+          <div className='item'>
           <div className='label'>日期：</div>
           <div className='content'>
             <DatePicker.RangePicker
@@ -117,24 +118,27 @@ export default observer(function QueryStatistics(props: any) {
             />
           </div>
         </div>
-        <div className='item'>
+          <div className='item'>
           <div className='label'>质控科室：</div>
           <div className='content'>
             <DeptSelect onChange={deptOnChange}/>
           </div>
         </div>
-        <div className='item'>
+          <div className='item'>
           <div className='label'>质控表单：</div>
           <div className='content'> 
             <FormSelect refreshData={getTableData} />
           </div>
         </div>
-        <div className='item'>
-          <Button type='primary' onClick={handleSearch}>查询</Button>
+          <div className='item'>
+          <Button type='primary' className='statistics' onClick={handleSearch}>查询</Button>
         </div>
-        <div className='item'>
-          <Button onClick={() => {}}>导出Excel</Button>
-        </div>
+        </LeftIcon>
+        <RightIcon>
+          <div className='item'>
+            <Button className='excel' onClick={() => {}}>导出Excel</Button>
+          </div>
+        </RightIcon>
       </HeaderCon>
       <MidCon>
         <RadioCon>
@@ -149,7 +153,7 @@ export default observer(function QueryStatistics(props: any) {
         </Date>
         <TableCon>
           <BaseTable
-              surplusHeight={240}
+              surplusHeight={260}
               loading={loadingTable}
               dataSource={tableData}
               columns={columns}
@@ -160,7 +164,6 @@ export default observer(function QueryStatistics(props: any) {
   )
 })
 
-//样式
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
@@ -169,7 +172,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   .item {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 15px;
     vertical-align: middle;
     & > div {
       display: inline-block;
@@ -188,16 +191,38 @@ const Wrapper = styled.div`
         width: 72px;
       }
     }
+    .statistics{
+      border-color: #fff;
+    }
   }
 `
-const HeaderCon = styled.div`
-  height: 50px;
+const LeftIcon = styled.div`
+  height: 55px;
+  float:left;
   font-size: 13px;
   position: relative;
   font-size: 13px;
   color: #333333;
   padding: 0 0 0 15px;
   display: flex;
+  align-items: center;
+
+`
+
+const RightIcon = styled.div`
+  height: 55px;
+  float:right;
+  font-size: 13px;
+  position: relative;
+  font-size: 13px;
+  color: #333333;
+  padding: 0 0 0 15px;
+  display: flex;
+  align-items: center;
+`
+
+const HeaderCon = styled.div`
+  height: 55px;
   align-items: center;
 `
 const MidCon = styled.div`
@@ -208,14 +233,14 @@ const MidCon = styled.div`
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
   border-radius: 5px;
-  padding-top: 20px;
+  padding-top: 25px;
   display: flex;
   flex-direction: column;
   position: relative;
 `
 const RadioCon = styled.div`
   position: absolute;
-  top: 20px;
+  top: 30px;
   right: 20px;
 `
 const Title = styled.div`
@@ -228,6 +253,7 @@ const Date = styled.div`
   font-size: 13px;
   color: #333;
   text-align: center;
+  margin:8px 0 5px 0;
 `
 const TableCon = styled.div`
   flex: 1;
