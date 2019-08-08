@@ -64,7 +64,12 @@ export default function ExamineTable() {
       array.length > 1 && array.sort((a:any, b:any) => {
         return Date.parse(b.commitTime.replace(/-/g, '/')) - Date.parse(a.commitTime.replace(/-/g, '/'))
       })
-      setTableData(array)
+      let data:any = []
+      array.length && array.map((item:any, i:any) => {
+        item.key = i 
+        data.push(item)
+      })
+      setTableData(data)
       }).catch(() => {
     })
   }

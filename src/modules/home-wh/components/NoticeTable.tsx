@@ -10,8 +10,9 @@ import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as READ } from '../images/已读.svg'
 import { ReactComponent as NOREAD } from '../images/未读.svg'
 
-import Item from 'antd/lib/list/Item'
+// import Item from 'antd/lib/list/Item'
 export interface Props extends RouteComponentProps {}
+
 
 export default function NoticeTable() {
   const [loadingTable, setLoadingTable] = useState(false)
@@ -27,6 +28,8 @@ export default function NoticeTable() {
   const columns: any = [
     {
       title: '标题',
+      dataIndex: 'title',
+      key: 'title',
       width: 60,
       align: 'left',
       render: (text: any, record: any) => (
@@ -56,7 +59,12 @@ export default function NoticeTable() {
     setLoadingTable(true)
     HomeApi.getReceiveList(pageIndex, pageSize, keyword).then((res) => {
       setLoadingTable(false)
-      setTableData(res.data.list)
+      let array:any = []
+      res.data.list && res.data.list.length && res.data.list.map((item:any, i:any) => {
+        item.key = i 
+        array.push(item)
+      })
+      setTableData(array)
     })
   }
 
@@ -91,7 +99,7 @@ export default function NoticeTable() {
         </Button>
       </TableTitle>
       <BaseTable
-        // rowKey={record => {return record.id}}
+        rowKey={record => {return record.id}}
         dataSource={tableData}
         columns={columns}
         surplusHeight={(appStore.wih - 365) / 2 + 365}
