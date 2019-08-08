@@ -28,8 +28,9 @@ export default observer(function NoticeTable() {
   const columns: any = [
     {
       title: '标题',
-      width: 60,
+      dataIndex: 'title',
       key: 'title',
+      width: 60,
       align: 'left',
       render: (text: any, record: any) => (
         <span>
@@ -58,7 +59,14 @@ export default observer(function NoticeTable() {
     setLoadingTable(true)
     HomeApi.getReceiveList(pageIndex, pageSize, keyword).then((res) => {
       setLoadingTable(false)
-      setTableData(res.data.list)
+      let array: any = []
+      res.data.list &&
+        res.data.list.length &&
+        res.data.list.map((item: any, i: any) => {
+          item.key = i
+          array.push(item)
+        })
+      setTableData(array)
     })
   }
 
@@ -93,7 +101,9 @@ export default observer(function NoticeTable() {
         </Button>
       </TableTitle>
       <BaseTable
-        // rowKey={record => {return record.id}}
+        rowKey={(record) => {
+          return record.id
+        }}
         dataSource={tableData}
         columns={columns}
         surplusHeight={(appStore.wih - 300) / 2 + 300}
