@@ -7,6 +7,7 @@ import ExamineTable from './components/ExamineTable' //待我审核
 import NoticeTable from './components/NoticeTable' //通知公告
 import ContinuingEducation from './components/ContinuingEducation' //继续教育
 import NursingSystem from './components/NursingSystem' //护理制度
+import { authStore } from 'src/stores'
 
 export default observer(function HomeView() {
   return (
