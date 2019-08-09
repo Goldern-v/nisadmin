@@ -71,7 +71,7 @@ export default function AduitModal(props: Props) {
             }
           })
           setTableData(tableData)
-          setAuditeListDtos(data.auditeListDtos)
+          setAuditeListDtos(data.auditeListDtos || [])
           if (data.statusColor === '0') {
             setNeedAudite(false)
           } else if (data.statusColor === '1') {
@@ -95,7 +95,7 @@ export default function AduitModal(props: Props) {
         })
       } else {
         /** 获取详情 */
-        modalService.getByIdAudite(props.type, props.id).then((res) => {
+        modalService.getByIdAudite(props.type, props.id, props.empNo).then((res) => {
           setSpinning(false)
           let data = res.data
           let tableData = props.tableFormat.map((item: any) => {
@@ -107,7 +107,7 @@ export default function AduitModal(props: Props) {
             }
           })
           setTableData(tableData)
-          setAuditeListDtos(data.auditeListDtos)
+          setAuditeListDtos(data.auditeListDtos || [])
           if (data.statusColor === '0') {
             setNeedAudite(false)
           } else if (data.statusColor === '1') {

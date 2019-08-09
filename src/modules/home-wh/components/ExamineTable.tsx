@@ -9,6 +9,7 @@ import qs from 'qs'
 
 import { ReactComponent as DWSH } from '../images/待我审核.svg'
 import { observer } from 'src/vendors/mobx-react-lite'
+
 export interface Props extends RouteComponentProps {}
 
 export default observer(function ExamineTable() {

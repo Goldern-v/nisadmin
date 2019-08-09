@@ -40,6 +40,17 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   const groupsEmpNoAduitModal = createModal(GroupsEmpNoAduitModal)
   const groupsHlbModal = createModal(GroupsHlbModal)
+
+  const toDetails = (row: any) => {
+    if (showType == 'qc') {
+      window.open(`/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
+    } else if (showType == 'nurseFile') {
+      service.commonApiService.getNurseInformation(row.commiterNo).then((res) => {
+        // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
+        window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
+      })
+    }
+  }
   const columns: any = [
     {
       title: '序号',
@@ -104,20 +115,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       render: (text: any, row: any, c: any) => {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                if (showType == 'qc') {
-                  window.open(`/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
-                } else if (showType == 'nurseFile') {
-                  service.commonApiService.getNurseInformation(row.commiterNo).then((res) => {
-                    // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-                    window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
-                  })
-                }
-              }}
-            >
-              {props.needAudit ? '审核' : '查看'}
-            </span>
+            <span onClick={() => toDetails(row)}>{props.needAudit ? '审核' : '查看'}</span>
             {/* <AuditText
               needAudit={props.needAudit}
               row={row}
@@ -218,7 +216,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={280}
+        surplusHeight={240}
         // spaceRowNumber={10}
         // type={['spaceRow']}
         pagination={{
@@ -232,6 +230,11 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         onChange={onChange}
         rowSelection={rowSelection}
         loading={loading}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => toDetails(record)
+          }
+        }}
       />
       <groupsEmpNoAduitModal.Component />
       <groupsHlbModal.Component />

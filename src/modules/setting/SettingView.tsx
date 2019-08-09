@@ -26,7 +26,7 @@ import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
 import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG = [
   // {
@@ -95,7 +95,7 @@ const LEFT_MENU_CONFIG = [
         component: DeptFileShare
       }
     ]
-  },
+  }
   // {
   //   title: '物流平台设置',
   //   icon: <WLPTSZ />,
@@ -123,18 +123,28 @@ const LEFT_MENU_CONFIG = [
   //   component: 绩效参数设置
   // }
 ]
-
-// const getCurrentRoute = (type: string) => {
-//   return {
-//     title: type
-//   }
-// }
+const LEFT_MENU_CONFIG_WH = [
+  {
+    title: '科室偏好设置',
+    icon: <KSPHSZ />,
+    path: '/setting/科室文件共享',
+    children: [
+      {
+        title: '扁平管理设置',
+        path: '/setting/扁平管理设置',
+        component: FlatManage
+      },
+      {
+        title: '病区文件',
+        path: '/setting/病区文件',
+        component: DeptFileShare
+      }
+    ]
+  }
+]
 
 export default function SettingView(props: Props) {
-  // let currentType = appStore.match.params.type
-  // let currentRoute = getCurrentRoute(currentType)
-
-  useEffect(() => { }, [props.match.params.name])
+  useEffect(() => {}, [props.match.params.name])
   let currentRoutePath = props.match.url || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
@@ -156,7 +166,7 @@ export default function SettingView(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle='系统设置' />
+        <LeftMenu config={appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG} menuTitle='系统设置' />
       </LeftMenuCon>
       <MainCon>
         {/*

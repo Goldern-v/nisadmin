@@ -44,7 +44,7 @@ export default function EditWorkHistoryModal(props: Props) {
 
   const onFieldChange = () => {}
 
-  const onSave = async () => {
+  const onSave = async (sign: boolean) => {
     let obj = { ...uploadOption }
 
     if (signShow === '修改') {
@@ -61,7 +61,7 @@ export default function EditWorkHistoryModal(props: Props) {
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.graduationTime && (value.graduationTime = value.graduationTime.format('YYYY-MM-DD'))
 
-    nurseFilesService.commonSaveOrUpdate('nurseWHMedicalEducation', { ...value, ...obj }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHMedicalEducation', { ...value, ...obj, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -93,7 +93,24 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender centered>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      forceRender
+      centered
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+        </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+        </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+        </Button>
+      ]}
+    >
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row gutter={10}>

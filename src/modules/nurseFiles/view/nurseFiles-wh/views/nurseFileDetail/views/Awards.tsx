@@ -15,9 +15,17 @@ import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 import { openAuditModal } from '../config/auditModalConfig'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { isSelf } from './BaseInfo'
+import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function Awards() {
   const editAwardsModal = createModal(EditAwardsModal)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseAwardWinning', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   const btnList = [
     {
       label: '添加',
@@ -86,52 +94,15 @@ export default observer(function Awards() {
       width: 120,
       align: 'center'
     },
-    {
-      title: '操作',
-      dataIndex: '8',
-      key: '8',
-      width: 100,
-      align: 'center',
-      render: (text: any, row: any, index: number) => {
-        return (
-          <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editAwardsModal.show({ data: row, signShow: '修改' })
-                }}
-              >
-                修改
-              </span>
-            ) : (
-              ''
-            )}
-
-            <span
-              onClick={() => {
-                openAuditModal('所获奖励', row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseAwardWinning', editAwardsModal, getTableData)
   ]
-  const [tableData, setTableData] = useState([])
-  const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseAwardWinning', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-    })
-  }
 
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='所获奖励' btnList={btnList}>
+    <BaseLayout title='所获奖励' btnList={isSelf() ? btnList : []}>
       <BaseTable
         dataSource={tableData}
         columns={columns}

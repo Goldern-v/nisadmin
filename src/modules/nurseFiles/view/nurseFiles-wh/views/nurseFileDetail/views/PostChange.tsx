@@ -15,10 +15,18 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditPostChangeModal from '../modal/EditPostChangeModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
+import { isSelf } from './BaseInfo'
+import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editPostChangeModal = createModal(EditPostChangeModal)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHPersonWinning', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   const btnList = [
     {
       label: '添加',
@@ -73,51 +81,15 @@ export default observer(function PersonWinning() {
       width: 120,
       align: 'center'
     },
-    {
-      title: '操作',
-      dataIndex: '8',
-      key: '8',
-      width: 90,
-      align: 'center',
-      render: (text: any, row: any, index: number) => {
-        return (
-          <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editPostChangeModal.show({ data: row, signShow: '修改' })
-                }}
-              >
-                修改
-              </span>
-            ) : (
-              ''
-            )}
-
-            <span
-              onClick={() => {
-                openAuditModal('岗位变动', row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseWHPersonWinning', editPostChangeModal, getTableData)
   ]
-  const [tableData, setTableData] = useState([])
-  const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHPersonWinning', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-    })
-  }
+
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='岗位变动' btnList={btnList}>
+    <BaseLayout title='岗位变动' btnList={isSelf() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editPostChangeModal.Component getTableData={getTableData} />
     </BaseLayout>

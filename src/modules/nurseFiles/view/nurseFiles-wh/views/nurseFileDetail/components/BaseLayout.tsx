@@ -7,7 +7,7 @@ import { Button } from 'antd'
 export interface Props {
   children?: ReactNode
   title: string
-  btnList?: BtnType[]
+  btnList?: BtnType[] | any
 }
 
 interface BtnType {
@@ -22,6 +22,7 @@ export default function BaseLayout(props: Props) {
       <Head>
         <Title>{title}</Title>
         <Place />
+
         {btnList &&
           btnList.map((item: BtnType) => (
             <Button key={item.label} onClick={item.onClick}>

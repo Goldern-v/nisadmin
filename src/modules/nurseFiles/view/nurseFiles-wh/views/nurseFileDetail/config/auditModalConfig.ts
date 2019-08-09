@@ -88,6 +88,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
       {
         globalModal.auditModal.show({
           getTableData: callBack,
+          empNo: row.empNo || row.commiterNo,
           id: row.id,
           type: 'nurseWHArticle',
           title: '审核文章',
@@ -129,6 +130,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseAwardWinning',
           title: '审核所获奖励',
           tableFormat: [
@@ -160,6 +162,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHContinueStudy',
           title: '审核举办继续教育培训班',
           tableFormat: [
@@ -196,6 +199,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHMedicalEducation',
           title: '审核医学学历教育',
           tableFormat: [
@@ -227,6 +231,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHHostScienceCourse',
           title: '审核主持科研课题',
           tableFormat: [
@@ -268,6 +273,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHGoScienceCourse',
           title: '审核参与信息',
           tableFormat: [
@@ -316,6 +322,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHLearnJob',
           title: '审核学会任职',
           tableFormat: [
@@ -347,6 +354,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHLeave',
           title: '审核离职',
           tableFormat: [
@@ -382,6 +390,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHMonograph',
           title: '审核专著',
           tableFormat: [
@@ -414,6 +423,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHOutStudy',
           title: '审核外出进修',
           tableFormat: [
@@ -446,6 +456,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHWorkConversion',
           title: '审核编制变动信息',
           tableFormat: [
@@ -473,6 +484,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHPatent',
           title: '审核专利',
           tableFormat: [
@@ -505,6 +517,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHPersonWinning',
           title: '审核个人获奖',
           tableFormat: [
@@ -533,6 +546,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHTitle',
           title: '审核职称变动信息',
           tableFormat: [
@@ -562,6 +576,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHTransferPost',
           title: '审核岗位变动信息',
           tableFormat: [
@@ -590,6 +605,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHHierarchy',
           title: '审核层级变动信息',
           tableFormat: [
@@ -617,6 +633,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHScienceResult',
           title: '审核科研课题获奖',
           tableFormat: [
@@ -649,6 +666,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHSpecializNurse',
           title: '审核专科护士信息',
           tableFormat: [
@@ -680,6 +698,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHTransferPost',
           title: '审核岗位变动信息',
           tableFormat: [
@@ -707,6 +726,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseWHWorkExperience',
           title: '审核工作经历',
           tableFormat: [
@@ -733,6 +753,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         globalModal.auditModal.show({
           getTableData: callBack,
           id: row.id,
+          empNo: row.empNo || row.commiterNo,
           type: 'nurseRegistrationWork',
           title: '审核工作情况登记',
           tableFormat: [

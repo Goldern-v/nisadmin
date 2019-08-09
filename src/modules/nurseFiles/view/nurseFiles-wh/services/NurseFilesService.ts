@@ -1,6 +1,7 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { appStore, authStore } from 'src/stores'
 import { nurseFileDetailViewModal } from '../views/nurseFileDetail/NurseFileDetailViewModal'
+import { isSelf } from '../views/nurseFileDetail/views/BaseInfo'
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */
   empNo?: string /** 员工工号 */
@@ -32,6 +33,10 @@ export default class NurseFilesService extends BaseApiService {
   public async findByEmpNo(empNo: any) {
     return this.get(`/auditeNurseFileIndexWH/findByEmpNo/${empNo}`)
   }
+  // 查看护士首页信息 个人
+  public async findByEmpNoSelf(empNo: any) {
+    return this.get(`/nurseFileIndexWH/findByEmpNo/${empNo}/123456`)
+  }
   // getByEmpNoAudite
   // 1查找护士基本信息 护长
   public async nurseInformation(empNo: any) {
@@ -41,9 +46,18 @@ export default class NurseFilesService extends BaseApiService {
       return res
     })
   }
+  // 1查找护士基本信息 个人
+  public async nurseInformationSelf(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
+    console.log(this, 'thisthis')
+    return this.get(`/nurseWHInformation/findByEmpNo/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
   // 1-1护士基本信息信息更新
   public async saveOrUpdate(obj: any) {
-    return this.post(`/nurseWHInformation/saveOrUpdatePC`, obj)
+    return this.post(`/nurseWHInformation/saveOrUpdate`, obj)
   }
 
   /** 审核列表 */
@@ -81,14 +95,25 @@ export default class NurseFilesService extends BaseApiService {
   /** 统一列表 */
   public commonfindByEmpNoSubmit(type: string, empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true
-    return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then((res) => {
-      nurseFileDetailViewModal.pageSpinning = false
-      return res
-    })
+    if (isSelf()) {
+      return this.get(`/${type}/findByEmpNo/${empNo}`).then((res) => {
+        nurseFileDetailViewModal.pageSpinning = false
+        return res
+      })
+    } else {
+      return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then((res) => {
+        nurseFileDetailViewModal.pageSpinning = false
+        return res
+      })
+    }
   }
   /** 统一更新 */
   public async commonSaveOrUpdate(type: string, obj: any) {
-    return this.post(`/${type}/saveOrUpdatePC`, obj)
+    return this.post(`/${type}/saveOrUpdate`, obj)
+  }
+  /** 统一删除 */
+  public async commonDelById(type: string, id: any) {
+    return this.get(`/${type}/delById/${id}`)
   }
   /** 待我审核 */
   public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {

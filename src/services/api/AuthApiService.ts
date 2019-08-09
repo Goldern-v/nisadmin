@@ -22,9 +22,9 @@ export default class AuthApiService extends BaseApiService {
       scheduleStore.setDepartmentValue('deptName', user.deptName)
       authStore.initUser()
       if (appStore.HOSPITAL_ID == 'wh') {
-        if (user.roleManage != '1') {
-          return message.warn('你没有权限进入管理系统')
-        }
+        // if (user.roleManage != '1') {
+        //   return message.warn('你没有权限进入管理系统')
+        // }
       }
 
       window.location.href = '#/home'

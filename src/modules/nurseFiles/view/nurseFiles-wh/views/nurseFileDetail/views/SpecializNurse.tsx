@@ -15,10 +15,19 @@ import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditSpecializNurseModal from '../modal/EditSpecializNurseModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
+import { isSelf } from './BaseInfo'
+import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function SpecializNurse() {
   const editSpecializNurseModal = createModal(EditSpecializNurseModal)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+      // console.log(res.data,'000000000000')
+    })
+  }
   const btnList = [
     {
       label: '添加',
@@ -87,52 +96,15 @@ export default observer(function SpecializNurse() {
       width: 120,
       align: 'center'
     },
-    {
-      title: '操作',
-      dataIndex: '8',
-      key: '8',
-      width: 100,
-      align: 'center',
-      render: (text: any, row: any, index: number) => {
-        return (
-          <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editSpecializNurseModal.show({ data: row, signShow: '修改' })
-                }}
-              >
-                修改
-              </span>
-            ) : (
-              ''
-            )}
-
-            <span
-              onClick={() => {
-                openAuditModal('专科护士', row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseWHSpecializNurse', editSpecializNurseModal, getTableData)
   ]
-  const [tableData, setTableData] = useState([])
-  const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-      // console.log(res.data,'000000000000')
-    })
-  }
+
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='专科护士' btnList={btnList}>
+    <BaseLayout title='专科护士' btnList={isSelf() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editSpecializNurseModal.Component getTableData={getTableData} />
     </BaseLayout>

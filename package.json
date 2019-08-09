@@ -62,7 +62,8 @@
     "react-zmage": "0.7.5",
     "styled-components": "4.2.0",
     "tinymce": "5.0.4",
-    "viser-react": "2.4.5"
+    "viser-react": "2.4.5",
+    "xlsx": "^0.15.0"
   },
   "scripts": {
     "dev": "npm run start:hj",

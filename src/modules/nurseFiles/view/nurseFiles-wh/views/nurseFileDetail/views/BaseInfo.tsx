@@ -16,15 +16,21 @@ import { ScrollBox } from 'src/components/common'
 import { openAuditModal } from '../config/auditModalConfig'
 
 export interface Props extends RouteComponentProps {}
+/* 判断是否本人 */
+export const isSelf = () => {
+  return appStore.queryObj.empNo == authStore!.user!.empNo
+}
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal)
   let [tableData, setTableData]: [any, any] = useState([])
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
+
   const limitsComponent = () => {
-    if (appStore.isDev || info.statusColor === '1') {
-      return [
+    let btnList = []
+    if (isSelf()) {
+      btnList = [
         {
           label: '修改',
           onClick: () => {
@@ -35,108 +41,29 @@ export default observer(function BaseInfo() {
           }
         },
         {
-          label: '审核',
+          label: '查看',
           onClick: () => {
-            // globalModal.auditModal.show({
-            //   empNo: idData,
-            //   id: id,
-            //   type: 'nurseInformation',
-            //   getTableData: getTableData,
-            //   // empNo: appStore.queryObj.empNo,
-            //   title: '审核基础信息',
-            //   tableFormat: [
-            //     {
-            //       姓名: 'empName',
-            //       性别: 'sex'
-            //     },
-            //     {
-            //       民族: 'nation',
-            //       籍贯: 'nativePlace'
-            //     },
-            //     {
-            //       工号: 'empNo',
-            //       身份证号: 'cardNumber'
-            //     },
-            //     {
-            //       政治面貌: 'politicsLook',
-            //       出生年月: 'birthday'
-            //     },
-            //     {
-            //       年龄: 'age',
-            //       联系电话: 'phone'
-            //     },
-            //     {
-            //       参加工作时间: 'takeWorkTime',
-            //       参加工作年限: 'takeWorkYear'
-            //     },
-
-            //     {
-            //       护士执业资格证书编号: 'zyzsNumber',
-            //       取得执业资格证书时间: 'zyzsDate'
-            //     },
-            //     {
-            //       取得执业资格证书并开始从事护理岗位时间: 'zyzsNursingPostDate',
-            //       护士执业资格证书有效截止日期: 'zyzsEffectiveUpDate'
-            //     },
-            //     {
-            //       初始学历: 'initialEducation'
-            //     },
-            //     {
-            //       最高学历: 'highestEducation',
-            //       取得最高学历时间: 'highestEducationDate'
-            //     },
-            //     {
-            //       最高学历学位: 'highestEducationDegree',
-            //       职务: 'job'
-            //     },
-            //     {
-            //       现职务任职起始时间: 'jobStartDate'
-            //     },
-
-            //     {
-            //       院内工作地点: 'workAddress',
-            //       工作护理单元: 'workDeptName'
-            //     },
-
-            //     {
-            //       鞋码大小: 'shoeSize'
-            //     }
-            //   ],
-            //   fileData: [
-            //     {
-            //       个人头像: info.nearImageUrl
-            //     },
-            //     ...(info.zyzsUrl
-            //       ? info.zyzsUrl.split(',').map((item: any, index: number) => {
-            //           return {
-            //             ['执业证书' + (index + 1)]: item
-            //           }
-            //         })
-            //       : [])
-            //   ],
-            //   allData: info
-            // })
             openAuditModal('基本信息', info, getTableData)
           }
         }
       ]
     } else {
-      return [
-        // {
-        //   label: '修改',
-        //   onClick: () => {
-        //     editBaseInfoModal.show({
-        //       id: id,
-        //       data: info
-        //     })
-        //   }
-        // }
+      btnList = [
+        {
+          label: info.statusColor === '1' ? '审核' : '查看',
+          onClick: () => {
+            openAuditModal('基本信息', info, getTableData)
+          }
+        }
       ]
     }
+    return btnList
   }
 
-  const getTableData = () =>
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+  const getTableData = () => {
+    let fun = isSelf() ? nurseFilesService.nurseInformationSelf : nurseFilesService.nurseInformation
+
+    fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
       setInfo(data)
       setIdData(data.empNo)
@@ -192,6 +119,7 @@ export default observer(function BaseInfo() {
         }
       ])
     })
+  }
   useEffect(() => {
     getTableData()
   }, [appStore.queryObj])

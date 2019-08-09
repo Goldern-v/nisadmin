@@ -1,38 +1,47 @@
 // import * as React from 'react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import styled from 'styled-components'
 import { RouteComponentProps } from 'react-router'
 import loginViewModel from './LoginViewModel'
 
 import service from 'src/services/api'
 import { appStore } from 'src/stores'
+import { Button } from 'src/vendors/antd'
 
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  useEffect(() => {})
+  const [loginLoading, setLoginLoading] = useState(false)
 
+  let userRef: any = useRef<HTMLInputElement>()
+  let passwordRef: any = useRef<HTMLInputElement>()
+
+  useEffect(() => {})
+  useLayoutEffect(() => {
+    userRef.current.focus()
+    userRef.current.select()
+  }, [])
   function checkClick() {
     // e.target.style.color = '#3FB593'
   }
   function login() {
-    service.authApiService.login(username, password).then((res: any) => {
-      // console.log(res, 'res')
-      // if (!res) {
-      //   res = {}
-      // }
-      // if (!res.data) {
-      //   res.data = {}
-      // }
-      // if (!res.data.user) {
-      //   res.data.user = {}
-      // }
-      // loginViewModel.user = res.data.user
-    })
+    setLoginLoading(true)
+    service.authApiService
+      .login(username, password)
+      .then((res: any) => {})
+      .finally(() => {
+        setLoginLoading(false)
+      })
   }
-  function handleKeyUp(e: any) {
+
+  const userEnter = (e: any) => {
+    if (e.keyCode === 13) {
+      passwordRef.current.focus()
+    }
+  }
+  const passwordEnter = (e: any) => {
     if (e.keyCode === 13) {
       login()
     }
@@ -41,28 +50,42 @@ export default function LoginView() {
     <Wrapper>
       <BgImg>
         <BoxInput
-          onKeyUp={(e) => {
-            handleKeyUp(e)
-          }}
+        // onKeyUp={(e) => {
+        //   handleKeyUp(e)
+        // }}
         >
           <img src={appStore.HOSPITAL_LOGO} alt='logo' className='BoxLogin' />
           <h1 className='Title'>护理管理系统</h1>
 
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe648;</div>
-            <input onChange={(e) => setUsername(e.target.value)} type='text' placeholder='用户名' />
+            <input
+              onChange={(e) => setUsername(e.target.value)}
+              type='text'
+              placeholder='用户名'
+              onKeyDown={userEnter}
+              ref={userRef}
+            />
           </div>
           <div style={{ height: '2px' }} />
           <div className='TextItem'>
             <div className='iconfont NameIcon'>&#xe6cb;</div>
-            <input onChange={(e) => setPassword(e.target.value)} type='password' placeholder='密码' />
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              type='password'
+              placeholder='密码'
+              ref={passwordRef}
+              onKeyDown={passwordEnter}
+            />
           </div>
 
           <div className='CheckItem' onClick={checkClick}>
             <input type='checkbox' id='rememberCheckbox' />
             <label htmlFor='rememberCheckbox'>记住账号</label>
           </div>
-          <button onClick={login}>登陆系统</button>
+          <Button type='primary' onClick={login} block loading={loginLoading} style={{ marginTop: 20, height: 36 }}>
+            登陆系统
+          </Button>
         </BoxInput>
       </BgImg>
       <BottomContent>
@@ -211,7 +234,7 @@ const BoxInput = styled.div`
       transform-origin: center;
     }
   }
-  button {
+  /* button {
     border: 1px solid #dcdfe6;
     margin-top: 20px;
     padding: 9px 20px;
@@ -234,5 +257,5 @@ const BoxInput = styled.div`
   }
   button:active {
     background-color: #15a57b;
-  }
+  } */
 `

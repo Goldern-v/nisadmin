@@ -85,6 +85,14 @@ export default class AuthStore {
       return ''
     }
   }
+  /** 是否是护士长 */
+  public get isRoleManage() {
+    try {
+      return this!.user!.roleManage == '1'
+    } catch (error) {
+      return false
+    }
+  }
   /** 用户初始化 */
   @action
   public initUser() {

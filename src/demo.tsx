@@ -10,18 +10,27 @@ import YearMonthRangePicker from './components/YearMonthRangePicker'
 import { numToChinese } from './utils/number/numToChinese'
 import YearRangePicker from './components/YearRangePicker'
 import AgePicker from './components/AgeRangePicker'
+// import XLSX from 'xlsx'
+// import { downloadExl } from './excel'
 
 export interface Props extends RouteComponentProps {
   style: any
 }
 
 export default function demo(props: Props) {
-  const data = useRef(1000)
-  const [state, setState]: any = useState(1000)
-  console.log(data.current, 'render')
+  // var wb = XLSX.utils.book_new()
+  // var ws = XLSX.utils.aoa_to_sheet([['a', 'b'], [1, 2, 3]])
+  // XLSX.utils.book_append_sheet(wb, ws, 'SheetJS')
   return (
     <Wrapper>
-      <AgePicker />
+      <Button
+      // onClick={() => {
+      //   XLSX.writeFile(wb, 'SheetJS.xlsb', { compression: true })
+      //   // downloadExl([{ 姓名: '张三', 性别: '男' }, { 姓名: '李四', 性别: '男' }])
+      // }}
+      >
+        下载
+      </Button>
     </Wrapper>
   )
 }

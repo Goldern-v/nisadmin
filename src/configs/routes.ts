@@ -193,6 +193,10 @@ const routes: RouteItem[] = [
     redirect: '/nurseFileDetail/baseInfo'
   },
   {
+    path: '/selfNurseFile',
+    redirect: '/selfNurseFile/baseInfo'
+  },
+  {
     path: '/indicator',
     redirect: '/indicator/床护比统计'
   },

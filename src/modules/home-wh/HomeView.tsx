@@ -16,7 +16,7 @@ export default observer(function HomeView() {
       <LeftContent>
         <QuickButton />
         <TableContent>
-          <ExamineTable />
+          {authStore.isRoleManage && <ExamineTable />}
           <NoticeTable />
         </TableContent>
       </LeftContent>

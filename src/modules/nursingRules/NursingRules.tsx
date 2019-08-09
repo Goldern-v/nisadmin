@@ -12,11 +12,11 @@ import PreviewModal from './components/PreviewModal'
 
 import NursingRulesApiService from './api/NursingRulesApiService'
 import createModal from 'src/libs/createModal'
-import qs from 'qs';
+import qs from 'qs'
 
 const api = new NursingRulesApiService()
 
-export interface Props { }
+export interface Props {}
 
 export default class NursingRules extends Component<Props> {
   state = {
@@ -50,17 +50,14 @@ export default class NursingRules extends Component<Props> {
   }
 
   componentDidMount() {
-    let query = qs.parse(appStore.location.search.replace('?', ''));
+    let query = qs.parse(appStore.location.search.replace('?', ''))
 
-    Promise.all([
-      api.getType(),
-      api.getCatalogByType('')
-    ]).then(res => {
-      let fileType = '';
+    Promise.all([api.getType(), api.getCatalogByType('')]).then((res) => {
+      let fileType = ''
       if (res[1].data instanceof Array && query.catalog) {
         let target = res[1].data.find((item: any) => {
           return item.name == query.catalog
-        });
+        })
         if (target) fileType = target.type
       }
 
@@ -71,18 +68,20 @@ export default class NursingRules extends Component<Props> {
           ...this.state.query,
           fileType
         }
-      });
-    });
-
-    this.setState({
-      query: {
-        ...this.state.query,
-        ...query
-      }
-    }, () => {
-      this.setTableData()
+      })
     })
 
+    this.setState(
+      {
+        query: {
+          ...this.state.query,
+          ...query
+        }
+      },
+      () => {
+        this.setTableData()
+      }
+    )
   }
 
   setTableData() {
@@ -255,7 +254,7 @@ export default class NursingRules extends Component<Props> {
 
   handleModalOk() {
     this.setState({ newRuleModalgVisible: false })
-    this.setTableData();
+    this.setTableData()
 
     setTimeout(() => this.setState({ uploadParams: null }), 300)
   }
@@ -276,21 +275,19 @@ export default class NursingRules extends Component<Props> {
   }
 
   handleFileTypeChange(fileType: any) {
-
-    api.getCatalogByType(fileType).then(res => {
-      if (res.data) this.setState({ catalogList: res.data });
+    api.getCatalogByType(fileType).then((res) => {
+      if (res.data) this.setState({ catalogList: res.data })
     })
 
-
-    this.setState({ query: { ...this.state.query, fileType, catalog: '' } });
+    this.setState({ query: { ...this.state.query, fileType, catalog: '' } })
   }
 
   handleCatalogChange(catalog: any) {
-    let fileType = '';
+    let fileType = ''
     let target = this.state.catalogList.find((item: any) => {
       return item.name == catalog
-    });
-    if (target) fileType = target.type;
+    })
+    if (target) fileType = target.type
     this.setState({ query: { ...this.state.query, catalog, fileType } })
   }
 
@@ -301,7 +298,7 @@ export default class NursingRules extends Component<Props> {
         institutionName: record.name,
         deptCode: record.deptCode,
         fileType: record.fileType,
-        catalog: record.catalog,
+        catalog: record.catalog
       },
       newRuleModalgVisible: true
     })
@@ -309,7 +306,17 @@ export default class NursingRules extends Component<Props> {
 
   render() {
     const PreviewModalWrapper = this.PreviewModalWrapper
-    const { query, data, dataTotal, newRuleModalgVisible, preview, tableLoading, typeList, uploadParams, catalogList } = this.state
+    const {
+      query,
+      data,
+      dataTotal,
+      newRuleModalgVisible,
+      preview,
+      tableLoading,
+      typeList,
+      uploadParams,
+      catalogList
+    } = this.state
     const rulesColumns: ColumnProps<any>[] = [
       {
         title: '序号',
@@ -389,15 +396,19 @@ export default class NursingRules extends Component<Props> {
               <span onClick={this.handlePreview.bind(this, record)} className='operate-text'>
                 预览
               </span>
-              {/* <span onClick={this.handleDownload.bind(this, record)} className='operate-text'>
+              {authStore.isRoleManage && (
+                <React.Fragment>
+                  {/* <span onClick={this.handleDownload.bind(this, record)} className='operate-text'>
                 下载
               </span> */}
-              <span onClick={this.reUpload.bind(this, record)} className='operate-text'>
-                修订
-              </span>
-              <span onClick={this.handleDelete.bind(this, record)} className='operate-text'>
-                删除
-              </span>
+                  <span onClick={this.reUpload.bind(this, record)} className='operate-text'>
+                    修订
+                  </span>
+                  <span onClick={this.handleDelete.bind(this, record)} className='operate-text'>
+                    删除
+                  </span>
+                </React.Fragment>
+              )}
             </DoCon>
           )
         }
@@ -426,11 +437,7 @@ export default class NursingRules extends Component<Props> {
             </span>
             <span className='type-label'>目录：</span>
             <span className='type-content'>
-              <Select
-                defaultValue={query.catalog}
-                value={query.catalog}
-                onChange={this.handleCatalogChange.bind(this)}
-              >
+              <Select defaultValue={query.catalog} value={query.catalog} onChange={this.handleCatalogChange.bind(this)}>
                 <Select.Option value=''>全部</Select.Option>
                 {catalogList.map((item: any) => (
                   <Select.Option value={item.name} key={item.id}>
@@ -450,12 +457,18 @@ export default class NursingRules extends Component<Props> {
             <Button onClick={this.hadleSearch} type='primary'>
               查询
             </Button>
-            <Button onClick={this.openNewRuleDialog}>新建</Button>
-            <span className="route-group">
-              <Link to="/nursingRulesTypeSetting">类型设置</Link>
-              <span> | </span>
-              <Link to="/nursingRulesTypeIndexSetting">类型目录设置</Link>
-            </span>
+
+            {authStore.isRoleManage && (
+              <React.Fragment>
+                <Button onClick={this.openNewRuleDialog}>新建</Button>
+
+                <span className='route-group'>
+                  <Link to='/nursingRulesTypeSetting'>类型设置</Link>
+                  <span> | </span>
+                  <Link to='/nursingRulesTypeIndexSetting'>类型目录设置</Link>
+                </span>
+              </React.Fragment>
+            )}
           </div>
         </div>
         <div className='main-contain'>
@@ -521,8 +534,8 @@ const Contain = styled.div`
         margin-left: 15px;
         vertical-align: middle;
       }
-      .route-group{
-        margin-left:50px;
+      .route-group {
+        margin-left: 50px;
         vertical-align: middle;
       }
     }

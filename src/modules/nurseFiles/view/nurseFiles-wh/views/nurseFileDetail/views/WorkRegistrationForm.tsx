@@ -11,10 +11,18 @@ import EditWorkRegistrationFormModal from '../modal/EditWorkRegistrationFormModa
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
-import { openAuditModal } from '../config/auditModalConfig';
+import { openAuditModal } from '../config/auditModalConfig'
+import { isSelf } from './BaseInfo'
+import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function WorkRegistrationForm() {
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHRegistrationWork', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   const btnList = [
     {
       label: '添加',
@@ -104,50 +112,15 @@ export default observer(function WorkRegistrationForm() {
       align: 'center',
       width: 140
     },
-    {
-      title: '操作',
-      dataIndex: '8',
-      key: '8',
-      width: 110,
-      align: 'center',
-      render: (text: any, row: any, index: number) => {
-        return (
-          <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editWorkRegistrationFormModal.show({ data: row, signShow: '修改' })
-                }}
-              >
-                修改
-              </span>
-            ) : (
-              ''
-            )}
-            <span
-              onClick={() => {
-                openAuditModal('临床护理工作情况登记表', row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseWHRegistrationWork', editWorkRegistrationFormModal, getTableData)
   ]
-  const [tableData, setTableData] = useState([])
-  const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHRegistrationWork', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-    })
-  }
+
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='临床护理工作情况登记表' btnList={btnList}>
+    <BaseLayout title='临床护理工作情况登记表' btnList={isSelf() ? btnList : []}>
       <BaseTable
         dataSource={tableData}
         columns={columns}

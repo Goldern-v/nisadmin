@@ -39,7 +39,7 @@ export default function EditRankChangeModal(props: Props) {
 
   const onFieldChange = () => {}
 
-  const onSave = async () => {
+  const onSave = async (sign: boolean) => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
@@ -63,7 +63,7 @@ export default function EditRankChangeModal(props: Props) {
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
     // value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.commonSaveOrUpdate('nurseWHHierarchy', { ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHHierarchy', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -91,7 +91,24 @@ export default function EditRankChangeModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      forceRender
+      centered
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+        </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+        </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+        </Button>
+      ]}
+    >
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           {/* <Col span={24}>

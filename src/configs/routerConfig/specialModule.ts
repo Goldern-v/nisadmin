@@ -31,6 +31,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == 'hj') {
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
     setLayout('/nurseAudit', NurseAudit_wh, layouts.MainLayout),
     setLayout('/nurseFileDetail/:type', NurseFileDetailView_wh, layouts.MainLayout),
+    setLayout('/selfNurseFile/:type', NurseFileDetailView_wh, layouts.MainLayout),
     setLayout('/auditsManagement', AuditsManagementView_wh, layouts.MainLayout),
     setLayout('/home', HomeView_wh, layouts.MainLayout)
   ]

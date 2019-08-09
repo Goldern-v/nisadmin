@@ -16,9 +16,17 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditPersonWinningModal from '../modal/EditPersonWinningModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
+import { isSelf } from './BaseInfo'
+import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editPersonWinningModal = createModal(EditPersonWinningModal)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHPersonWinning', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   const btnList = [
     {
       label: '添加',
@@ -80,51 +88,15 @@ export default observer(function PersonWinning() {
       width: 120,
       align: 'center'
     },
-    {
-      title: '操作',
-      dataIndex: '8',
-      key: '8',
-      width: 100,
-      align: 'center',
-      render: (text: any, row: any, index: number) => {
-        return (
-          <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editPersonWinningModal.show({ data: row, signShow: '修改' })
-                }}
-              >
-                修改
-              </span>
-            ) : (
-              ''
-            )}
-
-            <span
-              onClick={() => {
-                openAuditModal('个人获奖', row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseWHPersonWinning', editPersonWinningModal, getTableData)
   ]
-  const [tableData, setTableData] = useState([])
-  const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHPersonWinning', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-    })
-  }
+
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='个人获奖' btnList={btnList}>
+    <BaseLayout title='个人获奖' btnList={isSelf() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editPersonWinningModal.Component getTableData={getTableData} />
     </BaseLayout>

@@ -6,7 +6,7 @@ import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import TopCon from './components/TopCon'
 import LeftMenu from './components/LeftMenu'
 import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import Article from './views/Article'
@@ -31,6 +31,8 @@ import RankChange from './views/RankChange'
 // import PostChange from './views/PostChange'
 import OrganizationChange from './views/OrganizationChange'
 import { ScrollBox } from 'src/components/common'
+import service from 'src/services/api'
+import qs from 'qs'
 
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
@@ -157,19 +159,31 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
 
+  useEffect(() => {
+    if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
+      service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {
+        appStore.history.replace(`${appStore.match.url}?${qs.stringify(res.data)}`)
+      })
+    }
+  }, [])
+
   return (
     <Wrapper>
-      <TopCon />
-      <MainCon>
-        <LeftMenuCon>
-          <LeftMenu routeList={ROUTE_LIST} />
-        </LeftMenuCon>
-        <DetailCon>
-          <Spin spinning={nurseFileDetailViewModal.pageSpinning}>
-            {CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}
-          </Spin>
-        </DetailCon>
-      </MainCon>
+      {appStore.queryObj.empNo && (
+        <React.Fragment>
+          <TopCon />
+          <MainCon>
+            <LeftMenuCon>
+              <LeftMenu routeList={ROUTE_LIST} />
+            </LeftMenuCon>
+            <DetailCon>
+              <Spin spinning={nurseFileDetailViewModal.pageSpinning}>
+                {CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}
+              </Spin>
+            </DetailCon>
+          </MainCon>
+        </React.Fragment>
+      )}
     </Wrapper>
   )
 })

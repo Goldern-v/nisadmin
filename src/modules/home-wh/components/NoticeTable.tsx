@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { appStore } from 'src/stores/index'
+import { appStore, authStore } from 'src/stores/index'
 import BaseTable from 'src/components/BaseTable'
 import { Button } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
@@ -106,7 +106,7 @@ export default observer(function NoticeTable() {
         }}
         dataSource={tableData}
         columns={columns}
-        surplusHeight={(appStore.wih - 300) / 2 + 300}
+        surplusHeight={authStore.isRoleManage ? (appStore.wih - 300) / 2 + 300 : 273}
         loading={loadingTable}
         onRow={(record) => {
           return {

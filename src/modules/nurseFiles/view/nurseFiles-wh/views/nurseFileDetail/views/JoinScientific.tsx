@@ -16,9 +16,17 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditJoinScientificModal from '../modal/EditJoinScientificModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { openAuditModal } from '../config/auditModalConfig'
+import { isSelf } from './BaseInfo'
+import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editJoinScientificModal = createModal(EditJoinScientificModal)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHGoScienceCourse', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   const btnList = [
     {
       label: '添加',
@@ -145,51 +153,15 @@ export default observer(function PersonWinning() {
       width: 140,
       align: 'center'
     },
-    {
-      title: '操作',
-      dataIndex: '8',
-      key: '8',
-      width: 110,
-      align: 'center',
-      render: (text: any, row: any, index: number) => {
-        return (
-          <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editJoinScientificModal.show({ data: row, signShow: '修改' })
-                }}
-              >
-                修改
-              </span>
-            ) : (
-              ''
-            )}
-
-            <span
-              onClick={() => {
-                openAuditModal('参与科研课题', row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseWHGoScienceCourse', editJoinScientificModal, getTableData)
   ]
-  const [tableData, setTableData] = useState([])
-  const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHGoScienceCourse', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-    })
-  }
+
   useEffect(() => {
     getTableData()
   }, [])
 
   return (
-    <BaseLayout title='参与科研课题' btnList={btnList}>
+    <BaseLayout title='参与科研课题' btnList={isSelf() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editJoinScientificModal.Component getTableData={getTableData} />
     </BaseLayout>

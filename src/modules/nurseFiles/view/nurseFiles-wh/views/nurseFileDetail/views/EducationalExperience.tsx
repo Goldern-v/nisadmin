@@ -13,9 +13,17 @@ import { globalModal } from 'src/global/globalModal'
 import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 import { openAuditModal } from '../config/auditModalConfig'
+import { isSelf } from './BaseInfo'
+import Do from '../components/Do';
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience() {
   const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
+  const [tableData, setTableData] = useState([])
+  const getTableData = () => {
+    nurseFilesService.commonfindByEmpNoSubmit('nurseWHMedicalEducation', appStore.queryObj.empNo).then((res) => {
+      setTableData(res.data)
+    })
+  }
   const btnList = [
     {
       label: '添加',
@@ -93,50 +101,14 @@ export default observer(function EducationalExperience() {
       width: 120,
       align: 'center'
     },
-    {
-      title: '操作',
-      dataIndex: '9',
-      key: '9',
-      width: 100,
-      align: 'center',
-      render: (text: any, row: any, index: any) => {
-        return (
-          <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editEducationalExperienceModal.show({ data: row, signShow: '修改' })
-                }}
-              >
-                修改
-              </span>
-            ) : (
-              ''
-            )}
-            <span
-              onClick={() => {
-                openAuditModal('医学学历教育', row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseWHMedicalEducation', editEducationalExperienceModal, getTableData)
   ]
 
-  const [tableData, setTableData] = useState([])
-  const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHMedicalEducation', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
-    })
-  }
   useEffect(() => {
     getTableData()
   }, [])
   return (
-    <BaseLayout title='医学学历教育' btnList={btnList}>
+    <BaseLayout title='医学学历教育' btnList={isSelf() ? btnList : []}>
       <BaseTable
         dataSource={tableData}
         columns={columns}

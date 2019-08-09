@@ -7,12 +7,20 @@ export default class ModalService extends BaseApiService {
     return this.post(`/${type}/auditeStatusNurse`, this.stringify(obj))
   }
   /** 获取详情 */
-  public getByIdAudite(type: string, id: any) {
-    return this.get(`/${type}/getByIdAudite/${id}`)
+  public getByIdAudite(type: string, id: any, empNo: any) {
+    if (empNo == authStore!.user!.empNo) {
+      return this.get(`/${type}/getById/${id}`)
+    } else {
+      return this.get(`/${type}/getByIdAudite/${id}`)
+    }
   }
   // 基本信息获取详情
   public getByIdAuditeDis(type: string, empNo: any) {
-    return this.get(`/${type}/findByEmpNoSubmit/${empNo}`)
+    if (empNo == authStore!.user!.empNo) {
+      return this.get(`/${type}/findByEmpNo/${empNo}`)
+    } else {
+      return this.get(`/${type}/findByEmpNoSubmit/${empNo}`)
+    }
   }
   // 审核通过与否
   public auditeNurseFileIndex(type: string, obj: any) {

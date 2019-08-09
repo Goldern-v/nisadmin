@@ -1,4 +1,6 @@
-export default function(row: any, limit: string = '') {
+import { isSelf } from '../views/BaseInfo'
+
+export default function limitUtils(row: any, limit: string = '') {
   if (limit === '附件审核') {
     if (row.statusColor === '0') {
       return false
@@ -7,6 +9,9 @@ export default function(row: any, limit: string = '') {
     } else {
       return false
     }
+  }
+  if (isSelf()) {
+    return false
   }
   if (row.statusColor === '0') {
     return false

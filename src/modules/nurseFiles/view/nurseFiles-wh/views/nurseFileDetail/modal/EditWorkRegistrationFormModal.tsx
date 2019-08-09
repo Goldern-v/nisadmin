@@ -41,7 +41,7 @@ export default function EditWorkHistoryModal(props: Props) {
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
-  const onSave = async () => {
+  const onSave = async (sign: boolean) => {
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
       empName: nurseFileDetailViewModal.nurserInfo.empName,
@@ -64,7 +64,7 @@ export default function EditWorkHistoryModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.year && (value.year = value.year.format('YYYY'))
-    nurseFilesService.commonSaveOrUpdate('nurseWHRegistrationWork', { ...obj, ...value }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHRegistrationWork', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -99,7 +99,24 @@ export default function EditWorkHistoryModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      forceRender
+      centered
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+        </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+        </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+        </Button>
+      ]}
+    >
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFieldChange}>
         <Row>
           <Row>

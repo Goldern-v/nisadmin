@@ -89,6 +89,10 @@ export default class CommonApiService extends BaseApiService {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`)
     }
   }
+  /** 武汉-普通护士 */
+  public findByEmpNo(empNo: any) {
+    return this.get(`/nurseWHInformation/findByEmpNo/${empNo}`)
+  }
   /** 根据工号获取完整信息-武汉 */
   // public getNurseInformationWH(empNo: any) {
   //   return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`)

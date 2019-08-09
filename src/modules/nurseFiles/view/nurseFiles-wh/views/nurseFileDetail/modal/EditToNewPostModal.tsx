@@ -48,7 +48,7 @@ export default function EditToNewPostModal(props: Props) {
     setOldType(value)
   }
 
-  const onSave = async () => {
+  const onSave = async (sign: boolean) => {
     let typeName: any = list.filter((item: any) => item.code === type)[0]
     let oldTypeName: any = list.filter((item: any) => item.code === oldType)[0]
     let obj = {
@@ -79,7 +79,7 @@ export default function EditToNewPostModal(props: Props) {
     }
     value.transferDate && (value.transferDate = value.transferDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.commonSaveOrUpdate('nurseWHTransferPost', { ...value, ...obj }).then((res: any) => {
+    nurseFilesService.commonSaveOrUpdate('nurseWHTransferPost', { ...value, ...obj, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -108,7 +108,24 @@ export default function EditToNewPostModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      forceRender
+      centered
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+        </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+        </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+        </Button>
+      ]}
+    >
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>

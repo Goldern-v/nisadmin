@@ -57,7 +57,7 @@ export default function EditWorkHistoryModal(props: Props) {
     }
   }
 
-  const onSave = async () => {
+  const onSave = async (sign: boolean) => {
     let obj = {
       id: id,
       auditedStatus: ''
@@ -80,7 +80,7 @@ export default function EditWorkHistoryModal(props: Props) {
     value.highestEducationDate && (value.highestEducationDate = value.highestEducationDate.format('YYYY-MM-DD'))
     value.zyzsEffectiveUpDate && (value.zyzsEffectiveUpDate = value.zyzsEffectiveUpDate.format('YYYY-MM-DD'))
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
-    nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
+    nurseFilesService.saveOrUpdate({ ...value, ...obj, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
@@ -158,10 +158,19 @@ export default function EditWorkHistoryModal(props: Props) {
       width={1000}
       visible={visible}
       onCancel={onCancel}
-      onOk={onSave}
-      okText='保存'
       forceRender
       centered
+      footer={[
+        <Button key='back' onClick={onCancel}>
+          关闭
+        </Button>,
+        <Button key='save' type='primary' onClick={() => onSave(false)}>
+          保存
+        </Button>,
+        <Button key='submit' type='primary' onClick={() => onSave(true)}>
+          提交审核
+        </Button>
+      ]}
     >
       <Form ref={refForm} labelWidth={200} onChange={onFieldChange} rules={rules}>
         <Row>
@@ -317,7 +326,13 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`鞋码大小`} name='shoeSize'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('鞋码大小').map((item) => item.name)} />
+              <Select>
+                {nurseFileDetailViewModal.getDict('鞋码大小').map((item) => (
+                  <Select.Option value={item.code} key={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
         </Row>
