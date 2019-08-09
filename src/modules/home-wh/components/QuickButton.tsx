@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { observer } from 'mobx-react-lite'
-//引入图标
 import { ReactComponent as TQBB } from '../images/病区白板.svg'
 import { ReactComponent as HSDA } from '../images/护士档案.svg'
 import { ReactComponent as HSPB } from '../images/护士排班.svg'
@@ -111,7 +110,6 @@ const WorldTitle = styled.div`
   position: absolute;
   top: 10px;
   left: 10px;
-  /* width:84px; */
   height: 27px;
   font-size: 21px;
   font-weight: 600;
@@ -135,7 +133,6 @@ const Btn = styled.div`
 const Content = styled.div`
   width: 75px;
   height: 18px;
-  /* background:red; */
   margin: auto;
   margin-top: 1px;
 `

@@ -5,13 +5,11 @@ import { appStore, authStore } from 'src/stores/index'
 import BaseTable from 'src/components/BaseTable'
 import { Button } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
-//引入图标
+import { observer } from 'mobx-react-lite'
 import { ReactComponent as TZGG } from '../images/通知公告.svg'
 import { ReactComponent as READ } from '../images/已读.svg'
 import { ReactComponent as NOREAD } from '../images/未读.svg'
 
-import Item from 'antd/lib/list/Item'
-import { observer } from 'mobx-react-lite'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function NoticeTable() {
@@ -123,8 +121,6 @@ export default observer(function NoticeTable() {
   )
 })
 const Wrapper = styled.div`
-  /* flex: 1; */
-  /* background: #ccc; */
   #baseTable {
     padding: 0 !important;
     .ant-table-header-column {
@@ -205,4 +201,3 @@ const More = styled.span`
     color: #00a65a;
   }
 `
-const MyButton = styled.button``

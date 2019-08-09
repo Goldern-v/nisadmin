@@ -6,9 +6,8 @@ import BaseTable from 'src/components/BaseTable'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import service from 'src/services/api'
 import qs from 'qs'
-
-import { ReactComponent as DWSH } from '../images/待我审核.svg'
 import { observer } from 'src/vendors/mobx-react-lite'
+import { ReactComponent as DWSH } from '../images/待我审核.svg'
 
 export interface Props extends RouteComponentProps {}
 
@@ -69,7 +68,6 @@ export default observer(function ExamineTable() {
             return Date.parse(b.commitTime.replace(/-/g, '/')) - Date.parse(a.commitTime.replace(/-/g, '/'))
           })
         setTableData(array)
-        // })
         let data: any = []
         array.length &&
           array.map((item: any, i: any) => {
@@ -86,7 +84,6 @@ export default observer(function ExamineTable() {
   }, [])
 
   const selectRow = (record: any) => {
-    console.log(record)
     if (record.type == 'qc') {
       window.open(`/crNursing/manage/#/qualityControlRecordDetail/${record.othersMessage.id}`)
     } else if (record.type == 'nurseFile') {
@@ -111,7 +108,6 @@ export default observer(function ExamineTable() {
           更多 >
         </More>
       </TableTitle>
-      {/* {appStore.wih} */}
       <BaseTable
         dataSource={tableData}
         columns={columns}
@@ -132,8 +128,6 @@ export default observer(function ExamineTable() {
   )
 })
 const Wrapper = styled.div`
-  /* flex: 1; */
-  /* background: #ccc; */
   margin-bottom: 20px;
   #baseTable {
     padding: 0 !important;

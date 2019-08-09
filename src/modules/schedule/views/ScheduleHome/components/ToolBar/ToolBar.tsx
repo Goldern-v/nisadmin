@@ -9,9 +9,12 @@ import service from 'src/services/api'
 
 import emitter from 'src/libs/ev'
 import DeptSelect from 'src/components/DeptSelect'
+import printing from 'printing'
+import Moment from 'moment'
+import { numToChinese } from 'src/utils/number/numToChinese'
 
 const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function ToolBar() {
   // 在react hooks 用 useState 定义 class component 里的 state 变量
@@ -116,12 +119,229 @@ export default function ToolBar() {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function(data: any) {
+      reader.addEventListener('loadend', function (data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })
       reader.readAsText(blob)
     }
+  }
+
+  const openPrint = () => {
+
+    const postData = {
+      deptCode: scheduleStore.getDeptCode() || '', // deptCode  科室编码
+      startTime: scheduleStore.getStartTime(), // startTime 开始时间（刚开始由后台传给前台）
+      endTime: scheduleStore.getEndTime() // endTime   结束时间（刚开始由后台传给前台）
+    }
+    service.schedulingApiService
+      .findShiftList(postData)
+      .then((res) => {
+        //渲染的时间跨度
+        let dateLength = (Number(Moment(postData.endTime).format('x')) - Number(Moment(postData.startTime).format('x')) + 86400000) / 86400000;
+
+        let render = res.data.schShiftUser;
+        let dateRow: any[] = [];
+
+        for (var i = 0; i < dateLength; i++) {
+          let timeset = Number(Moment(postData.startTime).format('x')) + i * 86400000;
+          let newMoment = Moment(timeset);
+
+          let date = newMoment.format('D');
+          let weekDay = newMoment.format('E');
+          dateRow.push({
+            date,
+            weekDay: numToChinese(weekDay)
+          });
+        }
+        // 列宽
+        //页面总宽度
+        let pageWidth = 700;
+        //姓名
+        let col1Width = 60;
+        //岗位级别
+        let col2Width = 60;
+        //工作年
+        let col3Width = 25;
+        //休假统计
+        let col4Width = 35;
+        //排版列总宽度
+        let othersWidth = pageWidth - col1Width - col2Width - col3Width - col4Width;
+
+        let cols = [col1Width, col2Width, col3Width].concat(dateRow.map(() => othersWidth / dateLength), [col4Width]);
+
+        let colgroup = `<colgroup>
+          ${cols.map((item: any) => `<col width="${item}">`).join('')}
+        </colgroup>
+        <colgroup></colgroup>`
+
+        let thead = '';
+        let tbody = '';
+        let tfoot = '';
+        //渲染表头
+        thead = `
+          <tr>
+            <td colspan="${dateLength + 4}" class="main-title">
+              ${Moment(postData.startTime).format('YYYY年M月')}${scheduleStore.getDeptName()}护士排班表
+            </td>
+          </tr>
+          <tr class="header-row">
+            <td rowspan="2">姓名</<td>
+            <td rowspan="2">岗位</<td>
+            <td rowspan="2">工作年</<td>
+            ${dateRow.map(((item: any) => `<td>${item.date}</td>`)).join('')}
+            <td rowspan="2">休假统计</<td>
+          </tr>
+          <tr class="header-row">
+            ${dateRow.map(((item: any) => `<td class="${item.weekDay == '六' || item.weekDay == '七' ? 'bg-gray' : ''}">${item.weekDay == '七' ? '日' : item.weekDay}</td>`)).join('')}
+          </tr>
+        `
+        //渲染主体
+        render.map((item: any) => {
+          let tr = '';
+          //姓名
+          tr += `<td colspan="1">${item.empName}</td>`;
+          //岗位级别
+          tr += `<td colspan="1">${item.newTitle}/${item.nurseHierarchy}</td>`;
+          //工作年
+          tr += `<td colspan="1"></td>`;
+          let groups = [];
+          //获取排班
+          for (let i = 0; i < dateLength; i++) {
+            let last = groups[groups.length - 1];
+            let target = item.settingDtos[i];
+            if (!target) {
+              groups.push({
+                rangeName: '',
+                col: 1
+              })
+              continue
+            }
+
+            if (!last) {
+              groups.push({
+                rangeName: target.rangeName,
+                col: 1
+              })
+            } else if (last.rangeName == target.rangeName) {
+              //合并部分相同的行
+              switch (target.rangeName) {
+                case '年假':
+                case '进修':
+                case '产假':
+                  last.col = last.col + 1; break;
+                default:
+                  groups.push({
+                    rangeName: target.rangeName,
+                    col: 1
+                  })
+              }
+            } else {
+              groups.push({
+                rangeName: target.rangeName,
+                col: 1
+              })
+            }
+          }
+          //组合排班信息
+          groups = groups.map((item1: any) => {
+            return `<td colspan="${item1.col}">${item1.rangeName || '/'}</td>`
+          })
+          tr += groups.join('');
+          //休假统计
+          tr += `<td colspan="1"></td>`;
+
+          tbody += `<tr>${tr}</tr>`;
+        });
+
+        //渲染其他信息
+        tfoot = `
+          <tr>
+            <td colspan="2" class="text-left">加班登记栏：</td>
+            <td colspan="1"></td>
+            <td colspan="${dateLength + 1}"></td>
+          </tr>
+          <tr>
+            <td colspan="${dateLength + 4}"> </td>
+          </tr>
+          <tr>
+            <td colspan="${dateLength + 4}"> </td>
+          </tr>
+          <tr>
+            <td colspan="${dateLength + 4}"> </td>
+          </tr>
+          <tr>
+            <td colspan="${dateLength + 4}" class="text-left">休假要求：</td>
+          </tr>
+          <tr>
+            <td colspan="${dateLength + 4}"> </td>
+          </tr>
+          <tr>
+            <td colspan="${dateLength + 4}"> </td>
+          </tr>
+        `
+
+        let table = `
+          <table>
+            ${colgroup}
+            <tbody>
+              ${thead}
+              ${tbody}
+              ${tfoot}
+            </tbody>
+          </table>
+        `
+        // 创建打印容器
+        let div = document.createElement('div');
+        let printId = `print${Math.random()}`;
+        div.id = printId;
+        div.innerHTML = `<div class="page-print">${table}</div>`
+        document.body.appendChild(div)
+        //调用打印函数
+        printing(document.getElementById(printId) as HTMLElement, {
+          injectGlobalCss: true,
+          scanStyles: false,
+          css: `
+            .page-print{
+              width: ${pageWidth}px;
+              margin: 0 auto;
+              padding: 30px 20px;
+              color:red;
+            }
+            table{
+              border-collapse: collapse;
+              border-color: #000;
+              width: 100%;
+            }
+            td,th{
+              text-align: center;
+              font-size: 14px;
+              color: #000;
+              padding: 0;
+              border: 1px #000 solid;
+            }
+            table td.main-title{
+              font-size: 20px!important;
+            }
+            table tr.header-row td{
+              font-size: 14px!important;
+            }
+            table td.text-left{
+              text-align: left;
+              padding-left: 10px;
+            }
+            table td.bg-gray{
+              background: #aaa;
+            }
+          `
+        })
+        //删除打印容器
+        document.body.removeChild(div)
+      })
+      .catch((err) => {
+        console.log(err, '接收excel:err')
+      })
+
   }
 
   return (
@@ -158,6 +378,10 @@ export default function ToolBar() {
       >
         导出Excel
       </Button>
+      <Button
+        style={{ marginLeft: 10, marginRight: 10 }}
+        disabled={buttonDisabled}
+        onClick={openPrint}>打印</Button>
       <div style={{ flex: 1 }} />
       <LinkText>
         <Link to='/deptBorrow' style={{ color: '#747474' }}>
