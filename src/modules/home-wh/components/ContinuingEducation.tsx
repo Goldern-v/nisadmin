@@ -2,8 +2,6 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { ScrollUl } from 'src/components/common'
-
-//引入图标
 import { ReactComponent as JXJY } from '../images/继续教育.svg'
 export interface Props extends RouteComponentProps {}
 
@@ -99,10 +97,10 @@ const More = styled.span`
   color: rgba(102, 102, 102, 1);
   line-height: 17px;
   margin-top: 15px;
-  &:hover {
+  /* &:hover {
     cursor: pointer;
     color: #00a65a;
-  }
+  } */
 `
 const Li = styled.li`
   padding: 7px 15px 7px 15px;

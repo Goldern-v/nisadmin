@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { authStore } from 'src/stores/index'
 import { Radio, DatePicker, Button} from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
@@ -16,6 +15,8 @@ export default observer(function QueryStatistics(props: any) {
   const [tableData, setTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
   const [showType, setShowType] = useState(false)
+  const [effect, setEffect] = useState(true)
+
 
   const columns: any[] = [
     {
@@ -65,22 +66,29 @@ export default observer(function QueryStatistics(props: any) {
   ]
 
   useEffect(() => {
+    setEffect(true)
     getTableData()
   }, [])
 
+  useLayoutEffect(() => {
+    setEffect(false)
+  }, [])
+
   const getTableData = (obj?: any) => {
-    let data = {
-      beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
-      endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
-      wardCode: qualityControlRecordVM.filterDeptCode,
-      qcGroupCode: qualityControlRecordVM.filterForm, //科室 string非必须
-      groupByDept: showType,//boolean  科室分组(true) 质控组分组(false) 
+    if(effect){
+      let data = {
+        beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
+        endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
+        wardCode: qualityControlRecordVM.filterDeptCode,
+        qcGroupCode: qualityControlRecordVM.filterForm, //科室 string非必须
+        groupByDept: showType,//boolean  科室分组(true) 质控组分组(false) 
+      }
+      setLoadingTable(true)
+      queryStatisticsServices.getEvalRateMenu(data).then((res) => {
+        setLoadingTable(false)
+        setTableData(res.data)
+      })
     }
-    setLoadingTable(true)
-    queryStatisticsServices.getEvalRateMenu(data).then((res) => {
-      setLoadingTable(false)
-      setTableData(res.data)
-    })
   }
 
   //质控科室
@@ -89,15 +97,9 @@ export default observer(function QueryStatistics(props: any) {
     getTableData()
   }
 
-  //查询刷新
-  const handleSearch = () => {
-    getTableData()
-  }
-
   //radio选择
   const radioChange = (e: any) => {
     setShowType(e.target.value)
-    console.log(showType)
     getTableData()
   }
 
@@ -131,7 +133,7 @@ export default observer(function QueryStatistics(props: any) {
           </div>
         </div>
           <div className='item'>
-          <Button type='primary' className='statistics' onClick={handleSearch}>查询</Button>
+          <Button type='primary' className='statistics' onClick={getTableData}>查询</Button>
         </div>
         </LeftIcon>
         <RightIcon>
@@ -206,7 +208,6 @@ const LeftIcon = styled.div`
   padding: 0 0 0 15px;
   display: flex;
   align-items: center;
-
 `
 
 const RightIcon = styled.div`

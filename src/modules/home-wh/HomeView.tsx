@@ -1,7 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import emitter from 'src/libs/ev'
-import { authStore } from '../../stores/index'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
 //引入组件
 import QuickButton from './components/QuickButton' //页面快捷键

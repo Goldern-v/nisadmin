@@ -5,8 +5,6 @@ import { ScrollUl } from 'src/components/common'
 import { appStore } from 'src/stores/index'
 import { Spin } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
-
-//引入图标
 import { ReactComponent as HLZD } from '../images/护理制度.svg'
 
 export interface Props extends RouteComponentProps {}
@@ -137,7 +135,7 @@ const Li = styled.li`
 `
 const Content = styled.span`
   display: inline-block;
-  max-width: 145px;
+  max-width: 250px;
   font-size: 13px;
   font-weight: 400;
   color: rgba(51, 51, 51, 1);
