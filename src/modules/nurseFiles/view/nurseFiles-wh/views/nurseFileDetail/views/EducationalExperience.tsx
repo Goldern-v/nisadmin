@@ -14,7 +14,7 @@ import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf } from './BaseInfo'
-import Do from '../components/Do';
+import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function EducationalExperience() {
   const editEducationalExperienceModal = createModal(EditEducationalExperienceModal)
@@ -64,7 +64,7 @@ export default observer(function EducationalExperience() {
       align: 'center'
     },
     {
-      title: '专业',
+      title: '就读专业',
       dataIndex: 'readProfessional',
       key: '5',
       width: 120,

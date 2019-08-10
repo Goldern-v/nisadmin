@@ -12,7 +12,7 @@ export const pageObj: PageObj = {
   filterList: [
     {
       label: '科室',
-      type: 'select',
+      type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },

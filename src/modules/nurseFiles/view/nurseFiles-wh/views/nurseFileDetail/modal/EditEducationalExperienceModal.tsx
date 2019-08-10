@@ -131,7 +131,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专业`} name='readProfessional'>
+            <Form.Field label={`就读专业`} name='readProfessional'>
               <Input />
             </Form.Field>
           </Col>

@@ -58,7 +58,7 @@ export default observer(function Leave() {
       align: 'center'
     },
     {
-      title: '出生日期',
+      title: '出生年月日',
       dataIndex: 'birthday',
       key: 'birthday',
       width: 120,
@@ -72,7 +72,7 @@ export default observer(function Leave() {
       align: 'center'
     },
     {
-      title: '取得护士执业证书时间并从事护理岗位时间',
+      title: '取得护士执业证书并从事护理岗位时间',
       dataIndex: 'zyzsDate',
       key: 'zyzsDate',
       width: 200,
@@ -89,6 +89,13 @@ export default observer(function Leave() {
       title: '层级',
       dataIndex: 'hierarchy',
       key: 'hierarchy',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '编制',
+      dataIndex: 'workConversion',
+      key: 'workConversion',
       width: 90,
       align: 'center'
     },

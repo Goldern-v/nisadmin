@@ -12,12 +12,12 @@ export const pageObj: PageObj = {
   filterList: [
     {
       label: '科室',
-      type: 'select',
+      type: 'multiplesSelect',
       dataSource: statisticsViewModal.getDict('全部科室'),
       name: 'deptCode'
     },
     {
-      label: '获奖年月',
+      label: '获奖时间',
       type: 'yearMonthRangePicker',
       name: 'YearMonthRangePicker',
       nameList: ['winningYearStartDate', 'winningYearEndDate']
@@ -63,7 +63,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '获奖年月',
+      title: '获奖时间',
       dataIndex: 'winningYear',
       key: 'winningYear',
       width: 90,

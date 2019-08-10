@@ -125,7 +125,7 @@ export default function EditPositionChangeModal(props: Props) {
             </Form.Field>
           </Col> */}
           <Col span={24}>
-            <Form.Field label={`原职称`} name='titleOld'>
+            <Form.Field label={`原职称名称`} name='titleOld'>
               <Select>
                 {nurseFileDetailViewModal.getDict('技术职称').map((item: any, index: number) => (
                   <Select.Option value={item.code} key={index}>
@@ -136,7 +136,7 @@ export default function EditPositionChangeModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现职称`} name='titleNew'>
+            <Form.Field label={`现职称名称`} name='titleNew'>
               <Select>
                 {nurseFileDetailViewModal.getDict('技术职称').map((item: any, index: number) => (
                   <Select.Option value={item.code} key={index}>
@@ -147,12 +147,12 @@ export default function EditPositionChangeModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`考取专业技术资格证时间`} name='winNewTiTleDate'>
+            <Form.Field label={`考取专业技术资格证书时间`} name='winNewTiTleDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`聘用专业技术资格证时间`} name='employNewTiTleDate'>
+            <Form.Field label={`聘用专业技术资格时间`} name='employNewTiTleDate'>
               <DatePicker />
             </Form.Field>
           </Col>

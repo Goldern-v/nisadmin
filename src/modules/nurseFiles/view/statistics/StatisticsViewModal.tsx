@@ -39,6 +39,7 @@ class StatisticsViewModal {
   @observable public nurserInfo: any = {}
   @observable public pageSpinning: boolean = false
   @observable public hadData: boolean = false
+  @observable public selectedDeptCode: string[] = []
   @observable public allDeptAll: { name: string; code: string }[] = []
   /**字典对象 */
   @observable public dict: { [P: string]: DictItem[] } = {}
@@ -50,13 +51,11 @@ class StatisticsViewModal {
     })
     await service.commonApiService.getUintList().then((res) => {
       if (authStore.post === '护理部' || authStore.isAdmin) {
-        this.allDeptAll = [{ name: '全院', code: '' }, ...res.data.deptList]
-        authStore.selectedDeptCode = ''
+        this.allDeptAll = [{ name: '全院', code: '全院' }, ...res.data.deptList]
+        this.selectedDeptCode = ['全院']
       } else {
         this.allDeptAll = res.data.deptList
-        if (authStore.selectedDeptCode == '') {
-          authStore.selectedDeptCode = res.data.defaultDeptCode
-        }
+        this.selectedDeptCode = [res.data.defaultDept]
       }
     })
 

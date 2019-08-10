@@ -8,6 +8,7 @@ import { openAuditModal } from '../config/auditModalConfig'
 import { globalModal } from 'src/global/globalModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import limitUtils from '../utils/limit'
+import { getTitle } from '../config/title'
 
 export interface Props {}
 
@@ -32,7 +33,7 @@ export default function(type: string, modal: any, getTableData: () => void): any
               </span>
               <span
                 onClick={() => {
-                  openAuditModal('专利', row, getTableData)
+                  openAuditModal(getTitle(type), row, getTableData)
                 }}
               >
                 查看
@@ -52,7 +53,7 @@ export default function(type: string, modal: any, getTableData: () => void): any
           ) : (
             <span
               onClick={() => {
-                openAuditModal('专利', row, getTableData)
+                openAuditModal(getTitle(type), row, getTableData)
               }}
             >
               {limitUtils(row) ? '审核' : '查看'}

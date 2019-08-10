@@ -19,6 +19,7 @@ import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
 import { formatAge } from 'src/utils/idCard/idCard'
+import SelectOrAutoInput from '../components/SelectOrAutoInput'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -89,7 +90,7 @@ export default function EditLeaveModal(props: Props) {
         ...{
           birthday: data.birthday ? moment(data.birthday) : null,
           zyzsDate: data.zyzsDate ? moment(data.zyzsDate) : null,
-          leaveDate: data.zyzsDate ? moment(data.leaveDate) : null
+          leaveDate: data.leaveDate ? moment(data.leaveDate) : null
           // urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
         }
       })
@@ -145,7 +146,7 @@ export default function EditLeaveModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`出生日期`} name='birthday' onValueChange={computedAge}>
+            <Form.Field label={`出生年月日`} name='birthday' onValueChange={computedAge}>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -155,7 +156,7 @@ export default function EditLeaveModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`取得护士执业证书时间并从事护理岗位时间`} name='zyzsDate'>
+            <Form.Field label={`取得护士执业证书并从事护理岗位时间`} name='zyzsDate'>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -173,6 +174,11 @@ export default function EditLeaveModal(props: Props) {
                   </Select.Option>
                 ))}
               </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`编制`} name='workConversion'>
+              <SelectOrAutoInput dict={'工作编制'} />
             </Form.Field>
           </Col>
 

@@ -2,6 +2,7 @@ import { ColumnProps } from 'src/vendors/antd'
 
 export type filterType =
   | 'select'
+  | 'multiplesSelect'
   | 'input'
   | 'yearRangePicker'
   | 'dateRangePicker'

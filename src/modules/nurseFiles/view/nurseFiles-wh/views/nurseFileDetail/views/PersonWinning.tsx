@@ -65,7 +65,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '获奖年月',
+      title: '获奖时间',
       dataIndex: 'winningYear',
       key: 'winningYear',
       width: 90,

@@ -112,23 +112,18 @@ export default function EditOrganizationChangeModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`开始时间`} name='startDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-          {/* <Col span={24}>
-            <Form.Field label={`结束时间`} name='endDate'>
-              <DatePicker />
-            </Form.Field>
-          </Col> */}
-          <Col span={24}>
-            <Form.Field label={`原编制`} name='workConversionOld'>
+            <Form.Field label={`原编制名称`} name='workConversionOld'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('工作编制').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现编制`} name='workConversionNew'>
+            <Form.Field label={`现编制名称`} name='workConversionNew'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('工作编制').map((item) => item.name)} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`现编制开始时间`} name='startDate'>
+              <DatePicker />
             </Form.Field>
           </Col>
           <Col span={24}>

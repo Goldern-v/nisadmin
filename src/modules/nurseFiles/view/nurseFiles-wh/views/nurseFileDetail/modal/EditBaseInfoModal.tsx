@@ -18,6 +18,7 @@ import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { AutoComplete } from 'src/vendors/antd'
 import { formatIdCord, formatAge } from 'src/utils/idCard/idCard'
+import SelectOrAutoInput from '../components/SelectOrAutoInput'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -218,7 +219,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`政治面貌`} name='politicsLook'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('政治面貌').map((item) => item.name)} />
+              <SelectOrAutoInput dict='政治面貌' />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -300,7 +301,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`职务`} name='job'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('职务').map((item) => item.name)} />
+              <SelectOrAutoInput dict='职务' />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -310,7 +311,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`院内工作地点`} name='workAddress'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('院内工作地点').map((item) => item.name)} />
+              <SelectOrAutoInput dict='院内工作地点' />
             </Form.Field>
           </Col>
           <Col span={12}>
@@ -326,13 +327,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`鞋码大小`} name='shoeSize'>
-              <Select>
-                {nurseFileDetailViewModal.getDict('鞋码大小').map((item) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
+              <SelectOrAutoInput dict='鞋码大小' />
             </Form.Field>
           </Col>
         </Row>

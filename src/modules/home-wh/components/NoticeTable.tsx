@@ -98,13 +98,14 @@ export default observer(function NoticeTable() {
           创建
         </Button>
       </TableTitle>
+
       <BaseTable
         rowKey={(record) => {
           return record.id
         }}
         dataSource={tableData}
         columns={columns}
-        surplusHeight={authStore.isRoleManage ? (appStore.wih - 300) / 2 + 300 : 273}
+        surplusHeight={authStore.isRoleManage ? (appStore.wih - 378) / 2 + 378 : 273}
         loading={loadingTable}
         onRow={(record) => {
           return {

@@ -26,7 +26,7 @@ class NurseFilesListViewModel {
     nurseFilesService
       .getByFormCodePC({
         ...this.postObj,
-        ...{ deptCode: authStore.selectedDeptCode },
+        ...{ deptCode: statisticsViewModal.selectedDeptCode },
         ...{
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
@@ -45,7 +45,7 @@ class NurseFilesListViewModel {
     nurseFilesService
       .countExcel({
         ...this.postObj,
-        ...{ deptCode: authStore.selectedDeptCode },
+        ...{ deptCode: statisticsViewModal.selectedDeptCode },
         ...{
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,

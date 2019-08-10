@@ -196,7 +196,7 @@ export default observer(function NurseFilesListView() {
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
         surplusWidth={80}
-        surplusHeight={385}
+        surplusHeight={425}
         type={['index']}
         onRow={(record: any) => {
           return {

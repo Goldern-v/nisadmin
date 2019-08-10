@@ -58,31 +58,31 @@ export default observer(function PersonWinning() {
     //   align: 'center'
     // },
     {
-      title: '原职称',
+      title: '原职称名称',
       dataIndex: 'titleOld',
       key: 'titleOld',
       width: 100,
       align: 'center'
     },
     {
-      title: '现职称',
+      title: '现职称名称',
       dataIndex: 'titleNew',
       key: 'titleNew',
       width: 100,
       align: 'center'
     },
     {
-      title: '考取专业技术资格证时间',
+      title: '考取专业技术资格证书时间',
       dataIndex: 'winNewTiTleDate',
       key: 'winNewTiTleDate',
-      width: 100,
+      width: 140,
       align: 'center'
     },
     {
-      title: '聘用专业技术资格证时间',
+      title: '聘用专业技术资格时间',
       dataIndex: 'employNewTiTleDate',
       key: 'employNewTiTleDate',
-      width: 100,
+      width: 140,
       align: 'center'
     },
     {

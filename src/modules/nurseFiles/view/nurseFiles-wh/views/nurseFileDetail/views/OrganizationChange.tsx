@@ -43,32 +43,26 @@ export default observer(function PersonWinning() {
       align: 'center',
       width: 55
     },
+
     {
-      title: '开始时间',
-      dataIndex: 'startDate',
-      key: 'startDate',
-      width: 120,
-      align: 'center'
-    },
-    // {
-    //   title: '结束时间',
-    //   dataIndex: 'endDate',
-    //   key: 'endDate',
-    //   width: 120,
-    //   align: 'center'
-    // },
-    {
-      title: '原编制',
+      title: '原编制名称',
       dataIndex: 'workConversionOld',
       key: 'workConversionOld',
       width: 100,
       align: 'center'
     },
     {
-      title: '现编制',
+      title: '现编制名称',
       dataIndex: 'workConversionNew',
       key: 'workConversionNew',
       width: 100,
+      align: 'center'
+    },
+    {
+      title: '现编制开始时间',
+      dataIndex: 'startDate',
+      key: 'startDate',
+      width: 120,
       align: 'center'
     },
     {

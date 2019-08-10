@@ -58,14 +58,14 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '科室隶属部',
+      title: '现科室隶属部门',
       dataIndex: 'deptBeDepartment',
       key: 'deptBeDepartment',
       width: 130,
       align: 'center'
     },
     {
-      title: '岗位变动时间',
+      title: '转岗时间',
       dataIndex: 'transferDate',
       key: 'transferDate',
       width: 110,

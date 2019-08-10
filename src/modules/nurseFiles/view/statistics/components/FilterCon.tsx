@@ -9,6 +9,8 @@ import { to } from 'src/libs/fns'
 import moment from 'moment'
 import YearPicker from 'src/components/YearPicker'
 import YearMonthRangePicker from 'src/components/YearMonthRangePicker'
+import { statisticsViewModal } from '../StatisticsViewModal'
+import { useLayoutEffect } from 'src/types/react'
 const { RangePicker } = DatePicker
 export interface Props {
   pageObj: PageObj
@@ -19,12 +21,22 @@ export interface Props {
 export default function FilterCon(props: Props) {
   let { pageObj, filterRef, onload } = props
   let refForm = React.createRef<Form>()
+  useLayoutEffect(() => {
+    console.log('aaa')
+    if (refForm.current) {
+      refForm.current.clean()
+      let form = refForm.current
+      form.setFields({
+        deptCode: statisticsViewModal.selectedDeptCode
+      })
+    }
+  }, [pageObj.title])
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())
     if (err) return
     let result: any = {}
     for (let item of pageObj.filterList) {
-      if (item.name && (item.type == 'input' || item.type == 'select')) {
+      if (item.name && (item.type == 'input' || item.type == 'select' || 'multiplesSelect')) {
         result[item.name] = value[item.name] || ''
       } else if (item.name && item.type == 'yearRangePicker' && item.nameList) {
         if (value[item.name]) {
@@ -40,8 +52,11 @@ export default function FilterCon(props: Props) {
         }
       }
     }
-    // console.log(result, 'resultresult')
+    
+    // if(value.deptCode.ind)
+    statisticsViewModal.selectedDeptCode = value.deptCode
     filterRef.current = result
+    onload()
   }
 
   const getComponent = (item: filterItem) => {
@@ -49,6 +64,18 @@ export default function FilterCon(props: Props) {
       case 'select': {
         return (
           <Select>
+            {item.dataSource &&
+              item.dataSource.map((item, index) => (
+                <Select.Option value={item.code} key={index}>
+                  {item.name}
+                </Select.Option>
+              ))}
+          </Select>
+        )
+      }
+      case 'multiplesSelect': {
+        return (
+          <Select mode='multiple'>
             {item.dataSource &&
               item.dataSource.map((item, index) => (
                 <Select.Option value={item.code} key={index}>
@@ -75,12 +102,12 @@ export default function FilterCon(props: Props) {
       }
     }
   }
-  useEffect(() => {
-    refForm.current && refForm.current.clean()
-  }, [pageObj.title])
+  // useEffect(() => {
+  //   refForm.current && refForm.current.clean()
+  // }, [pageObj.title])
   return (
     <Wrapper id={'filterCon'}>
-      <Form ref={refForm} labelWidth={70} onChange={onFieldChange}>
+      <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
         <Row>
           {pageObj.filterList.map((item, index) => (
             <Col span={6} key={index}>
@@ -105,4 +132,15 @@ const Wrapper = styled.div`
   min-height: 100px;
   margin-top: 10px;
   padding: 25px 30px 0 0;
+  .label {
+    margin-right: 6px;
+  }
+  .ant-select {
+    height: 26px;
+  }
+  .ant-select-selection--multiple {
+    padding-bottom: 1px;
+    height: 26px;
+    overflow: hidden;
+  }
 `

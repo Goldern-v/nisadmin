@@ -77,7 +77,7 @@ export class FormField extends React.Component<Props, State> {
     return (
       <Wrapper inline={inline} tip={tip}>
         {label !== undefined && (
-          <Header required={required} width={labelWidth} gutter={gutter}>
+          <Header required={required} width={labelWidth} gutter={gutter} className='label'>
             {label}
           </Header>
         )}

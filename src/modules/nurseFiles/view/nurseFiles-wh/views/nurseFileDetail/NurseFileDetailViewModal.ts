@@ -33,7 +33,7 @@ let dictList = {
 }
 
 type DictList = typeof dictList
-type DictName = keyof DictList
+export type DictName = keyof DictList
 
 class NurseFileDetailViewModal {
   @observable public badgeTotal: number = 0

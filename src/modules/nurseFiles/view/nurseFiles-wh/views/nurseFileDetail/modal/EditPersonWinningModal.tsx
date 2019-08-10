@@ -117,11 +117,6 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`获奖年月`} name='winningYear'>
-              <MonthPicker />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
             <Form.Field label={`获奖名称`} name='winningName'>
               <Input />
             </Form.Field>
@@ -136,6 +131,12 @@ export default function EditPersonWinningModal(props: Props) {
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖类别').map((item) => item.name)} />
             </Form.Field>
           </Col>
+          <Col span={24}>
+            <Form.Field label={`获奖时间`} name='winningYear'>
+              <MonthPicker />
+            </Form.Field>
+          </Col>
+
           <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' tip={'获奖证书扫描件'} />

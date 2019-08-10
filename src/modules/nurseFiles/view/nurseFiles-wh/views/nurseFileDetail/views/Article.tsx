@@ -116,7 +116,7 @@ export default observer(function Awards() {
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageTwo ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+        return <DoCon>{row.urlImageTwo ? <Zimage text='查看' list={row.urlImageTwo.split(',')} /> : ''}</DoCon>
       }
     },
     {

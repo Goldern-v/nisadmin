@@ -16,15 +16,15 @@ import { authStore } from 'src/stores'
 export default observer(function FilterCon() {
   let refForm = React.createRef<Form>()
   useLayoutEffect(() => {
-    console.log('time')
     if (refForm.current) {
       refForm.current.clean()
       let form = refForm.current
       nurseFilesListViewModel.init().then((res) => {
         form &&
           form.setFields({
-            deptCode: authStore.selectedDeptCode
+            deptCode: statisticsViewModal.selectedDeptCode
           })
+
         nurseFilesListViewModel.loadNursingList()
       })
     }
@@ -49,21 +49,21 @@ export default observer(function FilterCon() {
       zyzsEffectiveUpStartDate: value.zyzsEffectiveUp ? value.zyzsEffectiveUp[0] : '',
       zyzsEffectiveUpEndDate: value.zyzsEffectiveUp ? value.zyzsEffectiveUp[1] : ''
     }
-    authStore.selectedDeptCode = value.deptCode
-    console.log(postObj, 'valuevalue')
+    statisticsViewModal.selectedDeptCode = value.deptCode
     nurseFilesListViewModel.postObj = postObj
+    nurseFilesListViewModel.loadNursingList()
   }
 
   return (
     <Wrapper>
       <Inner>
-        <Form ref={refForm} labelWidth={70} onChange={onFieldChange}>
+        <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
           <Row gutter={0}>
             <Col span={6}>
               <Form.Field label={'科室'} name={'deptCode'}>
-                <Select>
+                <Select mode='multiple'>
                   {statisticsViewModal.getDict('全部科室').map((item, index) => (
-                    <Select.Option value={item.code} key={index}>
+                    <Select.Option value={item.code} key={item.code}>
                       {item.name}
                     </Select.Option>
                   ))}
@@ -194,4 +194,15 @@ const Inner = styled.div`
   padding: 25px 20px 0 10px;
   background: rgba(255, 255, 255, 1);
   box-shadow: ${(p) => p.theme.$shadow};
+  .label {
+    margin-right: 6px;
+  }
+  .ant-select {
+    height: 26px;
+  }
+  .ant-select-selection--multiple {
+    padding-bottom: 1px;
+    height: 26px;
+    overflow: hidden;
+  }
 `

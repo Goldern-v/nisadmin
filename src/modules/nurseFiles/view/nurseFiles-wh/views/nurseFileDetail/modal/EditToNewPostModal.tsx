@@ -151,7 +151,7 @@ export default function EditToNewPostModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`科室隶属部`} name='deptBeDepartment'>
+            <Form.Field label={`现科室隶属部门`} name='deptBeDepartment'>
               <Select value={type} placeholder='选择现工作科室'>
                 {nurseFileDetailViewModal.getDict('科室隶属部').map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
@@ -162,7 +162,7 @@ export default function EditToNewPostModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`岗位变动时间`} name='transferDate'>
+            <Form.Field label={`转岗时间`} name='transferDate'>
               <DatePicker />
             </Form.Field>
           </Col>

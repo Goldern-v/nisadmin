@@ -10,6 +10,7 @@ import YearMonthRangePicker from './components/YearMonthRangePicker'
 import { numToChinese } from './utils/number/numToChinese'
 import YearRangePicker from './components/YearRangePicker'
 import AgePicker from './components/AgeRangePicker'
+import Watermark from './components/Watermark'
 // import XLSX from 'xlsx'
 // import { downloadExl } from './excel'
 
@@ -23,14 +24,9 @@ export default function demo(props: Props) {
   // XLSX.utils.book_append_sheet(wb, ws, 'SheetJS')
   return (
     <Wrapper>
-      <Button
-      // onClick={() => {
-      //   XLSX.writeFile(wb, 'SheetJS.xlsb', { compression: true })
-      //   // downloadExl([{ 姓名: '张三', 性别: '男' }, { 姓名: '李四', 性别: '男' }])
-      // }}
-      >
-        下载
-      </Button>
+      <Watermark>
+        <div>1</div>
+      </Watermark>
     </Wrapper>
   )
 }
