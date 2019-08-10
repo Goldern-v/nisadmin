@@ -58,7 +58,7 @@ export default function Statistics() {
           total: 1
         }
         setPageObj(getPageObj(path))
-        onload(pageObj.type)
+        // onload(pageObj.type)
       })
   }, [path])
 

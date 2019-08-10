@@ -25,7 +25,7 @@ export default observer(function FilterCon() {
             deptCode: statisticsViewModal.selectedDeptCode
           })
 
-        nurseFilesListViewModel.loadNursingList()
+        // nurseFilesListViewModel.loadNursingList()
       })
     }
   }, [])

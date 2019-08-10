@@ -14,6 +14,7 @@ import limitUtils from '../utils/limit'
 import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf } from './BaseInfo'
 import Do from '../components/Do'
+import { getTitle } from '../config/title'
 export interface Props extends RouteComponentProps {}
 export default observer(function WorkRegistrationForm() {
   const editWorkRegistrationFormModal = createModal(EditWorkRegistrationFormModal)
@@ -112,7 +113,38 @@ export default observer(function WorkRegistrationForm() {
       align: 'center',
       width: 140
     },
-    Do('nurseWHRegistrationWork', editWorkRegistrationFormModal, getTableData)
+    {
+      title: '操作',
+      dataIndex: '操作',
+      key: '操作',
+      width: 120,
+      align: 'center',
+      render: (text: any, row: any, index: number) => {
+        return (
+          <DoCon>
+            {isSelf() ? (
+              <React.Fragment>
+                <span
+                  onClick={() => {
+                    openAuditModal(getTitle('nurseWHRegistrationWork'), row, getTableData)
+                  }}
+                >
+                  查看
+                </span>
+              </React.Fragment>
+            ) : (
+              <span
+                onClick={() => {
+                  openAuditModal(getTitle('nurseWHRegistrationWork'), row, getTableData)
+                }}
+              >
+                {limitUtils(row) ? '审核' : '查看'}
+              </span>
+            )}
+          </DoCon>
+        )
+      }
+    }
   ]
 
   useEffect(() => {
@@ -120,7 +152,7 @@ export default observer(function WorkRegistrationForm() {
   }, [])
 
   return (
-    <BaseLayout title='临床护理工作情况登记表' btnList={isSelf() ? btnList : []}>
+    <BaseLayout title='临床护理工作情况登记表' btnList={[]}>
       <BaseTable
         dataSource={tableData}
         columns={columns}
