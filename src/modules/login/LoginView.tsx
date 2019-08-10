@@ -28,12 +28,16 @@ export default function LoginView() {
   }
   function login() {
     setLoginLoading(true)
-    service.authApiService
-      .login(username, password)
-      .then((res: any) => {})
-      .finally(() => {
-        setLoginLoading(false)
-      })
+    console.log(
+      service.authApiService
+        .login(username, password)
+        .then(() => {
+          setLoginLoading(false)
+        })
+        .catch(() => {
+          setLoginLoading(false)
+        })
+    )
   }
 
   const userEnter = (e: any) => {

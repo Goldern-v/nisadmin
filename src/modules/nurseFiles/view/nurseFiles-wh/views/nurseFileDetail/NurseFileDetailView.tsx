@@ -204,7 +204,7 @@ const LeftMenuCon = styled(ScrollBox)`
 `
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 135px);
   align-items: stretch;
   display: flex;
 `

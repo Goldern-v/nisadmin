@@ -1,5 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { appStore, authStore } from 'src/stores'
+import { isSelf } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/views/BaseInfo'
 
 export default class ModalService extends BaseApiService {
   /** 审核 */
@@ -8,7 +9,7 @@ export default class ModalService extends BaseApiService {
   }
   /** 获取详情 */
   public getByIdAudite(type: string, id: any, empNo: any) {
-    if (empNo == authStore!.user!.empNo) {
+    if (isSelf()) {
       return this.get(`/${type}/getById/${id}`)
     } else {
       return this.get(`/${type}/getByIdAudite/${id}`)
@@ -16,7 +17,7 @@ export default class ModalService extends BaseApiService {
   }
   // 基本信息获取详情
   public getByIdAuditeDis(type: string, empNo: any) {
-    if (empNo == authStore!.user!.empNo) {
+    if (isSelf()) {
       return this.get(`/${type}/findByEmpNo/${empNo}`)
     } else {
       return this.get(`/${type}/findByEmpNoSubmit/${empNo}`)

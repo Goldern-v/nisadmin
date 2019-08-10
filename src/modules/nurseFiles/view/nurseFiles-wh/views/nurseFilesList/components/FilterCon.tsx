@@ -68,7 +68,7 @@ export default observer(function FilterCon() {
       <Inner>
         <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
           <Row gutter={0}>
-            <Col span={6}>
+            <Col span={6} style={{ marginBottom: -6 }}>
               <Form.Field label={'科室'} name={'deptCode'}>
                 <Select mode='multiple'>
                   {statisticsViewModal.getDict('全部科室').map((item, index) => (

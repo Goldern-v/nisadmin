@@ -22,7 +22,6 @@ export default function FilterCon(props: Props) {
   let { pageObj, filterRef, onload } = props
   let refForm = React.createRef<Form>()
   useLayoutEffect(() => {
-    console.log('aaa')
     if (refForm.current) {
       refForm.current.clean()
       let form = refForm.current
@@ -121,7 +120,7 @@ export default function FilterCon(props: Props) {
       <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
         <Row>
           {pageObj.filterList.map((item, index) => (
-            <Col span={6} key={index}>
+            <Col span={6} key={index} style={item.name == 'deptCode' ? { marginBottom: -6 } : {}}>
               <Form.Field label={item.label} name={item.name}>
                 {getComponent(item)}
               </Form.Field>
