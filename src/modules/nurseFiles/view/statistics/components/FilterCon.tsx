@@ -35,6 +35,16 @@ export default function FilterCon(props: Props) {
     let [err, value] = await to(form.validateFields())
     if (err) return
     let result: any = {}
+    if (value.deptCode.length > 1) {
+      if (value.deptCode[value.deptCode.length - 1] == '全院') {
+        value.deptCode = ['全院']
+        form.setField('deptCode', value.deptCode)
+      } else if (value.deptCode.includes('全院')) {
+        value.deptCode = value.deptCode.filter((item: any) => item != '全院')
+        form.setField('deptCode', value.deptCode)
+      }
+    }
+
     for (let item of pageObj.filterList) {
       if (item.name && (item.type == 'input' || item.type == 'select' || 'multiplesSelect')) {
         result[item.name] = value[item.name] || ''
@@ -52,9 +62,10 @@ export default function FilterCon(props: Props) {
         }
       }
     }
-    
-    // if(value.deptCode.ind)
+
     statisticsViewModal.selectedDeptCode = value.deptCode
+    result.deptCodes = result.deptCode
+    delete result.deptCode
     filterRef.current = result
     onload()
   }

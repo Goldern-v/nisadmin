@@ -127,7 +127,7 @@ export default function EditSpecializNurseModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`专科护士级别`} name='nurseLevel'>
+            <Form.Field label={`级别`} name='nurseLevel'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>

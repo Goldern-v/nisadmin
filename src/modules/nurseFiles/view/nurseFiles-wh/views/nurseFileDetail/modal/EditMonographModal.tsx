@@ -134,7 +134,7 @@ export default function EditMonographModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`参编`} name='participation'>
+            <Form.Field label={`著者`} name='participation'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('参编').map((item) => item.name)} />
             </Form.Field>
           </Col>

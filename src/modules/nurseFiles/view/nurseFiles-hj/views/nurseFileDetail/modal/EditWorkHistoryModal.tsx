@@ -109,7 +109,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Col>
           </Row>
           <Col span={24}>
-            <Form.Field label={`工作单位`} name='unit' required>
+            <Form.Field label={`单位`} name='unit' required>
               <Input />
             </Form.Field>
           </Col>

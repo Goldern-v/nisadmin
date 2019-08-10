@@ -79,7 +79,7 @@ export default observer(function Monograph() {
       align: 'center'
     },
     {
-      title: '参编',
+      title: '著者',
       dataIndex: 'participation',
       key: 'participation',
       width: 90,

@@ -50,7 +50,7 @@ export const pageObj: PageObj = {
       nameList: ['startDateStart', 'startDateEnd']
     },
     {
-      label: '结束时间',
+      label: '截止时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
       nameList: ['endDateStart', 'endDateEnd']
@@ -156,7 +156,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '立项/结题/验收/鉴定时间',
+      title: '时间',
       dataIndex: 'completionDate',
       key: 'completionDate',
       width: 180,

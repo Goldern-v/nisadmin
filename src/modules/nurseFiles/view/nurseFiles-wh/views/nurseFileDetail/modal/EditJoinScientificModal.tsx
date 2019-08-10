@@ -174,7 +174,7 @@ export default function EditJoinScientificModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`结束时间`} name='endDate'>
+            <Form.Field label={`截止时间`} name='endDate'>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -184,7 +184,7 @@ export default function EditJoinScientificModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`立项/结题/验收/鉴定时间`} name='completionDate'>
+            <Form.Field label={`时间`} name='completionDate'>
               <DatePicker />
             </Form.Field>
           </Col>

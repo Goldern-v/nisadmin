@@ -32,8 +32,17 @@ export default observer(function FilterCon() {
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())
     if (err) return
+    if (value.deptCode.length > 1) {
+      if (value.deptCode[value.deptCode.length - 1] == '全院') {
+        value.deptCode = ['全院']
+        form.setField('deptCode', value.deptCode)
+      } else if (value.deptCode.includes('全院')) {
+        value.deptCode = value.deptCode.filter((item: any) => item != '全院')
+        form.setField('deptCode', value.deptCode)
+      }
+    }
     let postObj = {
-      deptCode: value.deptCode,
+      deptCodes: value.deptCode,
       name: value.name,
       newTitle: value.newTitle,
       nurseHierarchy: value.nurseHierarchy,

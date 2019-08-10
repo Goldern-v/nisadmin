@@ -66,7 +66,7 @@ export default observer(function SpecializNurse() {
       align: 'center'
     },
     {
-      title: '专科护士级别',
+      title: '级别',
       dataIndex: 'nurseLevel',
       key: 'nurseLevel',
       width: 90,

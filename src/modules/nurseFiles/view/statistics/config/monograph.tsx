@@ -41,7 +41,7 @@ export const pageObj: PageObj = {
     },
 
     {
-      label: '参编',
+      label: '著者',
       type: 'select',
       name: 'participation',
       dataSource: statisticsViewModal.getDict('参编')
@@ -84,7 +84,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '参编',
+      title: '著者',
       dataIndex: 'participation',
       key: 'participation',
       width: 90,

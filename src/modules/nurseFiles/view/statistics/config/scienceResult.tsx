@@ -6,7 +6,7 @@ import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
-  title: '文章',
+  title: '科研课题获奖',
   type: 'nurseWHScienceResult',
   detailPath: '',
   filterList: [
@@ -17,7 +17,7 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '获奖类别',
+      label: '获奖类别(主持/参与排名)',
       type: 'input',
       name: 'resultType'
     },
@@ -67,7 +67,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '属于单位',
+      title: '授予单位',
       dataIndex: 'grantUnit',
       key: 'grantUnit',
       width: 90,
@@ -88,7 +88,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '奖励名称',
+      title: '奖励名称、等级',
       dataIndex: 'winningName',
       key: 'winningName',
       width: 90,

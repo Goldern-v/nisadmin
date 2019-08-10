@@ -108,7 +108,7 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`获奖类别`} name='resultType' required>
+            <Form.Field label={`获奖类别(主持/参与排名)`} name='resultType' required>
               <Input />
             </Form.Field>
           </Col>
@@ -118,7 +118,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`属于单位`} name='grantUnit'>
+            <Form.Field label={`授予单位`} name='grantUnit'>
               <Input />
             </Form.Field>
           </Col>
@@ -133,7 +133,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`奖励名称`} name='winningName'>
+            <Form.Field label={`奖励名称、等级`} name='winningName'>
               <Input />
             </Form.Field>
           </Col>

@@ -33,7 +33,7 @@ export const pageObj: PageObj = {
       name: 'cardNumber'
     },
     {
-      label: '专科护士级别',
+      label: '级别',
       type: 'select',
       name: 'nurseLevel',
       dataSource: statisticsViewModal.getDict('级别')
@@ -68,7 +68,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '专科护士级别',
+      title: '级别',
       dataIndex: 'nurseLevel',
       key: 'nurseLevel',
       width: 90,

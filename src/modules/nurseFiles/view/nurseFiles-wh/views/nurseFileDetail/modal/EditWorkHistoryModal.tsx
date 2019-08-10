@@ -25,14 +25,7 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {}
 }
 const uploadCard = () => Promise.resolve('123')
-const rules: Rules = {
-  startTime: (val) => !!val || '请选择开始时间',
-  endTime: (val) => !!val || '请选择结束时间',
-  unit: (val) => !!val || '请填写工作单位',
-  professionalWork: (val) => !!val || '请填写专业技术工作',
-  professional: (val) => !!val || '请选择技术职称',
-  post: (val) => !!val || '请选择职务'
-}
+const rules: Rules = {}
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props
   const [title, setTitle] = useState('')
@@ -55,6 +48,9 @@ export default function EditWorkHistoryModal(props: Props) {
 
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
+    if (!Object.keys(value).length) {
+      return message.warning('数据不能为空')
+    }
     value.startTime && (value.startTime = value.startTime.format('YYYY-MM-DD'))
     value.endTime && (value.endTime = value.endTime.format('YYYY-MM-DD'))
 
@@ -130,10 +126,10 @@ export default function EditWorkHistoryModal(props: Props) {
               textAlign: 'right'
             }}
           >
-            *如果结束时间为至今，则不需要选择时间
+            *空则为至今
           </div>
           <Col span={24}>
-            <Form.Field label={`工作单位`} name='unit'>
+            <Form.Field label={`单位`} name='unit'>
               <Input />
             </Form.Field>
           </Col>

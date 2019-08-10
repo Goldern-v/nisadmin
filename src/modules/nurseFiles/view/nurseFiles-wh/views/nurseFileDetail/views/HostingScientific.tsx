@@ -94,7 +94,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '结束时间',
+      title: '截止时间',
       dataIndex: 'endDate',
       key: 'endDate',
       width: 110,
@@ -108,7 +108,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '立项/结题/验收/鉴定时间',
+      title: '时间',
       dataIndex: 'completionDate',
       key: 'completionDate',
       width: 180,

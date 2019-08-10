@@ -252,9 +252,9 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               开始时间: `startDate`
             },
             {
-              结束时间: `endDate`,
+              截止时间: `endDate`,
               完成情况: `courseCompletion`,
-              '立项/结题/验收/鉴定时间': `completionDate`
+              时间: `completionDate`
             }
           ],
           fileData: row.urlImageOne
@@ -302,8 +302,8 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               开始时间: `startDate`
             },
             {
-              结束时间: `endDate`,
-              '立项/结题/验收/鉴定时间': `completionDate`
+              截止时间: `endDate`,
+              时间: `completionDate`
             }
           ],
           fileData: row.urlImageOne
@@ -404,7 +404,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               出版日期: `pressDate`,
-              参编: `participation`
+              著者: `participation`
             }
           ],
           fileData: row.urlImageOne
@@ -642,12 +642,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               成果名称: `resultName`
             },
             {
-              属于单位: `grantUnit`,
+              授予单位: `grantUnit`,
               授予时间: `grantDate`
             },
             {
               奖励级别: `winningLevel`,
-              奖励名称: `winningName`
+              '奖励名称、等级': `winningName`
             }
           ],
           fileData: row.urlImageOne
@@ -676,7 +676,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               证书编号: `cardNumber`,
-              专科护士级别: `nurseLevel`
+              级别: `nurseLevel`
             },
             {
               发证时间: `cardNumberDate`
@@ -735,7 +735,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               结束时间: `endTime`
             },
             {
-              工作单位: `unit`,
+              单位: `unit`,
               专业技术工作: 'professionalWork'
             },
             {

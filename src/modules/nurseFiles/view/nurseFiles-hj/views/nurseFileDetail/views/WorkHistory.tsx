@@ -124,7 +124,7 @@ export default observer(function WorkHistory() {
                       结束时间: `endTime`
                     },
                     {
-                      工作单位: `unit`,
+                      单位: `unit`,
                       专业技术工作: 'professionalWork'
                     },
                     {
