@@ -125,8 +125,8 @@ class QualityAnalysisReportViewModal {
     this.getSectionData('4')!.text = `四、${currentMonth}月各组质量问题反馈`
     this.getSectionData('6')!.text = `六、各组重点问题${currentMonth}月整改情况反馈`
     this.getSectionData('7')!.text = `七、${currentYear}年${nextMonth}月护理质量工作重点`
-    for (let i = 0; i < 10; i++) {
-      let target = this.allData!.detailItemList![i];
+    for (let i = 0; i < 11; i++) {
+      let target = this.allData!.detailItemList![i]
       this.getSectionData(`4_${i + 1}`)!.list = target!.childrenItemList || []
       this.getSectionData(`4_${i + 1}`)!.contentKey = 'content'
       this.getSectionData(`4_${i + 1}`)!.baseInfo = {
@@ -134,11 +134,11 @@ class QualityAnalysisReportViewModal {
         type: target!.type,
         indexInType: target!.indexInType,
         qcGroupCode: target!.qcGroupCode,
-        qcGroupName: target!.qcGroupName,
+        qcGroupName: target!.qcGroupName
       }
     }
-    for (let i = 0; i < 10; i++) {
-      let target = this.allData!.improveItemList![i];
+    for (let i = 0; i < 11; i++) {
+      let target = this.allData!.improveItemList![i]
       this.getSectionData(`5_${i + 1}`)!.list = target!.childrenItemList || []
       this.getSectionData(`5_${i + 1}`)!.contentKey = 'itemImproveDesc'
       this.getSectionData(`5_${i + 1}`)!.baseInfo = {
@@ -146,7 +146,7 @@ class QualityAnalysisReportViewModal {
         type: target!.type,
         indexInType: target!.indexInType,
         qcGroupCode: target!.qcGroupCode,
-        qcGroupName: target!.qcGroupName,
+        qcGroupName: target!.qcGroupName
       }
     }
     this.getSectionData(`6_1`)!.list = this.allData!.improveResultList || []

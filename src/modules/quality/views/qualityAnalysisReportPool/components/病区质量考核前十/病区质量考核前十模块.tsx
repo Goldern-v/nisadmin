@@ -41,7 +41,7 @@ export default observer(function 病区质量考核前十模块(props: Props) {
       <TextCon>
         <span className='sup-title'>(四) {MainTitle()}质量考核排序</span>
         <br />
-        <span className='sup-title'>1. {Title()}病区质量考核前十名的科室</span>
+        <span className='sup-title'>1. {Title()}病区质量考核未扣分的科室</span>
         <br />
         {report.notDeductDeptDesc}
       </TextCon>

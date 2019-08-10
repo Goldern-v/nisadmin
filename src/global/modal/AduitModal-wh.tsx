@@ -190,6 +190,7 @@ export default function AduitModal(props: Props) {
       onCancel={onCancel}
       okText={needAudite ? '审核' : '关闭'}
       forceRender
+      centered
       width={800}
     >
       <Spin spinning={spinning}>

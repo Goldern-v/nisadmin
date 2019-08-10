@@ -61,7 +61,7 @@ export default observer(function LearnJob() {
       title: '任职学会名称',
       dataIndex: 'learnJobName',
       key: 'learnJobName',
-      width: 140,
+      width: 200,
       align: 'center'
     },
     {

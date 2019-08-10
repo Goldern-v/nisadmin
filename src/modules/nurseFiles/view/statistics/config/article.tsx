@@ -63,7 +63,7 @@ export const pageObj: PageObj = {
       title: '文章名称',
       dataIndex: 'articleName',
       key: 'articleName',
-      width: 90,
+      width: 200,
       align: 'center'
     },
     {

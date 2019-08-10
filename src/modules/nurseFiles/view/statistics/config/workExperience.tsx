@@ -73,14 +73,14 @@ export const pageObj: PageObj = {
       title: '单位',
       dataIndex: 'unit',
       key: '4',
-      width: 100,
+      width: 200,
       align: 'center'
     },
     {
       title: '专业技术工作',
       dataIndex: 'professionalWork',
       key: '5',
-      width: 150,
+      width: 100,
       align: 'center'
     },
     {
