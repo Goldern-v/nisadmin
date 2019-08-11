@@ -20,7 +20,7 @@ export default observer(function 检查形式模块(props: Props) {
   return (
     <Wrapper>
       <TextCon>
-        <span className='sup-title'>二、检查形式：</span>
+        <div className='sup-title'>二、检查形式：</div>
         {report.checkWayDesc}
       </TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>

@@ -20,7 +20,7 @@ export const pageObj: PageObj = {
       label: '原工作科室',
       type: 'select',
       name: 'oldDeptName',
-      dataSource: statisticsViewModal.getDict('全部科室')
+      dataSource: statisticsViewModal.getDict('全部科室').filter((item) => item.name != '全院')
     },
     {
       label: '新工作科室',

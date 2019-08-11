@@ -71,7 +71,7 @@ class StatisticsViewModal {
     if (dictName == '完整科室') {
       return this.fullDeptAll
     } else {
-      return [{ name: '全部', code: '' }, ...(this.dict[dictList[dictName]] || [])]
+      return this.dict[dictList[dictName]] || []
     }
   }
   async init() {

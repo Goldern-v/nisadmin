@@ -18,7 +18,7 @@ export default function SelectOrAutoInput(props: Props) {
     )
   } else {
     return (
-      <Select onChange={(value: any) => onChange && onChange(value)}>
+      <Select onChange={(value: any) => onChange && onChange(value)} allowClear={true}>
         {list.map((item) => (
           <Select.Option value={item.name} key={item.code}>
             {item.name}

@@ -51,13 +51,13 @@ export default function FilterCon(props: Props) {
       } else if (item.name && item.type == 'yearRangePicker' && item.nameList) {
         if (value[item.name]) {
           for (let i = 0; i < item.nameList.length; i++) {
-            result[item.nameList[i]] = moment(value[item.name][i]).format('YYYY')
+            result[item.nameList[i]] = value[item.name][i] ? moment(value[item.name][i]).format('YYYY') : ''
           }
         }
       } else if (item.name && item.type == 'dateRangePicker' && item.nameList) {
         if (value[item.name]) {
           for (let i = 0; i < item.nameList.length; i++) {
-            result[item.nameList[i]] = moment(value[item.name][i]).format('YYYY-MM-DD')
+            result[item.nameList[i]] = value[item.name][i] ? moment(value[item.name][i]).format('YYYY-MM-DD') : ''
           }
         }
       }

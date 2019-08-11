@@ -70,7 +70,7 @@ export default observer(function FilterCon() {
           <Row gutter={0}>
             <Col span={6} style={{ marginBottom: -6 }}>
               <Form.Field label={'科室'} name={'deptCode'}>
-                <Select mode='multiple'>
+                <Select mode='multiple' allowClear={true}>
                   {statisticsViewModal.getDict('全部科室').map((item, index) => (
                     <Select.Option value={item.code} key={item.code}>
                       {item.name}
@@ -86,7 +86,7 @@ export default observer(function FilterCon() {
             </Col>
             <Col span={6}>
               <Form.Field label={'最高学历'} name={'highestEducation'}>
-                <Select>
+                <Select allowClear={true}>
                   {statisticsViewModal.getDict('学历').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -97,7 +97,7 @@ export default observer(function FilterCon() {
             </Col>
             <Col span={6}>
               <Form.Field label={'职称'} name={'newTitle'}>
-                <Select>
+                <Select allowClear={true}>
                   {statisticsViewModal.getDict('技术职称').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -108,7 +108,7 @@ export default observer(function FilterCon() {
             </Col>
             <Col span={6}>
               <Form.Field label={'层级'} name={'nurseHierarchy'}>
-                <Select>
+                <Select allowClear={true}>
                   {statisticsViewModal.getDict('层级').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -119,7 +119,7 @@ export default observer(function FilterCon() {
             </Col>
             <Col span={6}>
               <Form.Field label={'职务'} name={'job'}>
-                <Select>
+                <Select allowClear={true}>
                   {statisticsViewModal.getDict('职务').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -130,7 +130,7 @@ export default observer(function FilterCon() {
             </Col>
             <Col span={6}>
               <Form.Field label={'政治面貌'} name={'politicsLook'}>
-                <Select>
+                <Select allowClear={true}>
                   {statisticsViewModal.getDict('政治面貌').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -152,7 +152,7 @@ export default observer(function FilterCon() {
             </Col>
             <Col span={6}>
               <Form.Field label={'编制'} name={'workConversion'}>
-                <Select>
+                <Select allowClear={true}>
                   {statisticsViewModal.getDict('工作编制').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -163,7 +163,7 @@ export default observer(function FilterCon() {
             </Col>
             <Col span={6}>
               <Form.Field label={'鞋码大小'} name={'shoeSize'}>
-                <Select>
+                <Select allowClear={true}>
                   {statisticsViewModal.getDict('鞋码大小').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
