@@ -20,13 +20,13 @@ export const pageObj: PageObj = {
       label: '原编制名称',
       type: 'select',
       name: 'workConversionOld',
-      dataSource: statisticsViewModal.getDict('编制名称')
+      dataSource: statisticsViewModal.getDict('工作编制')
     },
     {
       label: '现编制名称',
       type: 'select',
       name: 'workConversionNew',
-      dataSource: statisticsViewModal.getDict('技术职称')
+      dataSource: statisticsViewModal.getDict('工作编制')
     },
     {
       label: '现编制开始时间',
