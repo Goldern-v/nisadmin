@@ -93,6 +93,26 @@ const LEFT_MENU_CONFIG = [
         title: '医学学历教育',
         path: '/nurseFile/medicalEducation',
         component: StatisticsView
+      },
+      {
+        title: '岗位变动',
+        path: '/nurseFile/transferPost',
+        component: StatisticsView
+      },
+      {
+        title: '职称变动',
+        path: '/nurseFile/title',
+        component: StatisticsView
+      },
+      {
+        title: '层级变动',
+        path: '/nurseFile/hierarchy',
+        component: StatisticsView
+      },
+      {
+        title: '编制变动',
+        path: '/nurseFile/workConversion',
+        component: StatisticsView
       }
     ]
   }

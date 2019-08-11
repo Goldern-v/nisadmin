@@ -11,6 +11,7 @@ import YearPicker from 'src/components/YearPicker'
 import YearMonthRangePicker from 'src/components/YearMonthRangePicker'
 import { statisticsViewModal } from '../StatisticsViewModal'
 import { useLayoutEffect } from 'src/types/react'
+import SelectOrAutoInput from '../../nurseFiles-wh/views/nurseFileDetail/components/SelectOrAutoInput'
 const { RangePicker } = DatePicker
 export interface Props {
   pageObj: PageObj
@@ -45,7 +46,7 @@ export default function FilterCon(props: Props) {
     }
 
     for (let item of pageObj.filterList) {
-      if (item.name && (item.type == 'input' || item.type == 'select' || 'multiplesSelect')) {
+      if (item.name && (item.type == 'input' || item.type == 'select' || item.type == 'multiplesSelect')) {
         result[item.name] = value[item.name] || ''
       } else if (item.name && item.type == 'yearRangePicker' && item.nameList) {
         if (value[item.name]) {
@@ -73,14 +74,15 @@ export default function FilterCon(props: Props) {
     switch (item.type) {
       case 'select': {
         return (
-          <Select>
-            {item.dataSource &&
-              item.dataSource.map((item, index) => (
-                <Select.Option value={item.code} key={index}>
-                  {item.name}
-                </Select.Option>
-              ))}
-          </Select>
+          <SelectOrAutoInput dictList={item.dataSource || []} />
+          // <Select>
+          //   {item.dataSource &&
+          //     item.dataSource.map((item, index) => (
+          //       <Select.Option value={item.code} key={index}>
+          //         {item.name}
+          //       </Select.Option>
+          //     ))}
+          // </Select>
         )
       }
       case 'multiplesSelect': {

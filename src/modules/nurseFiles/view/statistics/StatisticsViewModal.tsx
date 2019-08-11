@@ -41,6 +41,7 @@ class StatisticsViewModal {
   @observable public hadData: boolean = false
   @observable public selectedDeptCode: string[] = []
   @observable public allDeptAll: { name: string; code: string }[] = []
+  @observable public fullDeptAll: { name: string; code: string }[] = []
   /**字典对象 */
   @observable public dict: { [P: string]: DictItem[] } = {}
 
@@ -58,12 +59,17 @@ class StatisticsViewModal {
         this.selectedDeptCode = [res.data.defaultDept]
       }
     })
-
+    await service.commonApiService.getNursingUnitAll().then((res) => {
+      this.fullDeptAll = res.data.deptList
+    })
     this.hadData = true
   }
-  getDict(dictName: DictName | '全部科室'): DictItem[] {
+  getDict(dictName: DictName | '全部科室' | '完整科室'): DictItem[] {
     if (dictName == '全部科室') {
       return this.allDeptAll
+    }
+    if (dictName == '完整科室') {
+      return this.fullDeptAll
     } else {
       return [{ name: '全部', code: '' }, ...(this.dict[dictList[dictName]] || [])]
     }

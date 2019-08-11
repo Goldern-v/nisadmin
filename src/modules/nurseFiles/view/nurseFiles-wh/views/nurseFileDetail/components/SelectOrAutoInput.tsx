@@ -4,23 +4,22 @@ import { Button } from 'antd'
 import { nurseFileDetailViewModal, DictName } from '../NurseFileDetailViewModal'
 import { AutoComplete, Select } from 'src/vendors/antd'
 export interface Props {
-  dict: DictName | '全部科室'
+  dict?: DictName | '全部科室'
+  dictList?: any[]
   onChange?: any
 }
 
 export default function SelectOrAutoInput(props: Props) {
-  let { dict, onChange } = props
-  if (nurseFileDetailViewModal.getDict(dict).find((item: any) => item.name == '其他')) {
+  let { dict, dictList, onChange } = props
+  let list = dictList ? dictList : dict ? nurseFileDetailViewModal.getDict(dict) : []
+  if (list.find((item: any) => item.name == '其他')) {
     return (
-      <AutoComplete
-        dataSource={nurseFileDetailViewModal.getDict(dict).map((item) => item.name)}
-        onChange={(value: any) => onChange && onChange(value)}
-      />
+      <AutoComplete dataSource={list.map((item) => item.name)} onChange={(value: any) => onChange && onChange(value)} />
     )
   } else {
     return (
       <Select onChange={(value: any) => onChange && onChange(value)}>
-        {nurseFileDetailViewModal.getDict(dict).map((item) => (
+        {list.map((item) => (
           <Select.Option value={item.name} key={item.code}>
             {item.name}
           </Select.Option>
