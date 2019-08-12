@@ -10,6 +10,7 @@ import DeptChangeModal from '../modal/DeptChangeModal'
 
 import qs from 'qs'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import { isSelf } from '../views/BaseInfo'
 export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
@@ -43,9 +44,12 @@ export default observer(function TopCon() {
     <Wrapper>
       <BreadcrumbCon>
         <Breadcrumb>
-          <Breadcrumb.Item>
-            <A onClick={() => history.push('/nurseFile/onTheJob')}>护士档案</A>
-          </Breadcrumb.Item>
+          {!isSelf() && (
+            <Breadcrumb.Item>
+              <A onClick={() => history.push('/nurseFile/onTheJob')}>护士档案</A>
+            </Breadcrumb.Item>
+          )}
+
           <Breadcrumb.Item>档案详情</Breadcrumb.Item>
         </Breadcrumb>
       </BreadcrumbCon>

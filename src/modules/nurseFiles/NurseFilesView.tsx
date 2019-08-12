@@ -16,7 +16,22 @@ export interface Props extends RouteComponentProps {}
 
 const OnTheJobComponent = appStore.HOSPITAL_ID == 'wh' ? NurseFilesListView_wh : NurseFilesListView_hj
 
-const LEFT_MENU_CONFIG = [
+const LEFT_MENU_CONFIG_HJ = [
+  {
+    title: '在职护士档案',
+    path: '/nurseFile/onTheJob',
+    component: OnTheJobComponent,
+    icon: <ZZHSDA />
+  },
+  {
+    title: '离职/退休人员查询',
+    path: '/nurseFile/retiredRetirees',
+    component: RetiredRetirees,
+    icon: <TXHSCX />
+  }
+]
+
+const LEFT_MENU_CONFIG_WH = [
   {
     title: '在职护士档案',
     path: '/nurseFile/onTheJob',
@@ -125,7 +140,11 @@ const LEFT_MENU_CONFIG = [
 
 export default function NurseFilesView(props: Props) {
   let currentRoutePath = props.match.url || ''
-  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
+  let currentRoute = getTargetObj(
+    appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ,
+    'path',
+    currentRoutePath
+  )
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -141,11 +160,13 @@ export default function NurseFilesView(props: Props) {
     return chooseRoute
   }
 
-  console.log(currentRoute, 'currentRoute')
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle='系统设置' />
+        <LeftMenu
+          config={appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ}
+          menuTitle='系统设置'
+        />
       </LeftMenuCon>
       <MainCon>{currentRoute && currentRoute.component && <currentRoute.component />}</MainCon>
     </Wrapper>

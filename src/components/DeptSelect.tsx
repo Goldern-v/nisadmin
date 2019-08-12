@@ -35,16 +35,17 @@ export default observer(function DeptSelect(props: Props) {
   }
 
   useEffect(() => {
-    const hasAllDeptRouteList = ['/home', '/nurseFilesList', '/statistic/:name', '/auditsManagement', '/quality/:name']
+    const hasAllDeptRouteList = ['/home', '/nurseFile/:path', '/statistic/:name', '/auditsManagement', '/quality/:name']
     if (authStore.post === '护理部' || authStore.isAdmin) {
       if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
+        // alert(123)
         setHasAllDept(true)
         // if (!authStore.selectedDeptCode) {
-        authStore.selectedDeptCode = ''
+        authStore.selectedDeptCode = '全院'
         // }
       } else {
         setHasAllDept(false)
-        if (authStore.selectedDeptCode === '') {
+        if (authStore.selectedDeptCode === '全院') {
           authStore.selectedDeptCode = authStore.defaultDeptCode
         }
       }
@@ -70,7 +71,7 @@ export default observer(function DeptSelect(props: Props) {
         }
       >
         {hasAllDept && (
-          <Select.Option key={'全院'} value={''}>
+          <Select.Option key={'全院'} value={'全院'}>
             全院
           </Select.Option>
         )}

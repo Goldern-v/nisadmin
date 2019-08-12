@@ -19,6 +19,7 @@ export default observer(function LeftMenu() {
       text: '发件箱',
       size: noticeViewModel.sendSize
     },
+
     {
       icon: require('./images/草稿箱.png'),
       text: '草稿箱',
