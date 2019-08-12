@@ -5,44 +5,54 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { Spin } from 'antd'
 import qs from 'qs'
+import { empManageService } from './api/EmpManageService'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function BaseInfo() {
   const [loading, setLoading] = useState(false)
   const [sourceChange, setSourceChange] = useState(null as null | string)
-  const [baseInfo, setBaseInfo] = useState({
-    empName: '王大锤',
-    empCode: '114514',
-    sexual: '男',
-    age: '24',
-    source: '10',
-    points: '1000',
-    job: '教学小组组长',
-    title: '护士长',
-    highestEducation: '硕士',
-    nurseHierarchy: 'N3',
-    area: '院内片区',
-    deptName: '神经护理单元',
-    specialAllow: '特殊准入'
-  })
+  const [baseInfo, setBaseInfo] = useState({} as any)
+  const [query, setQuery] = useState({} as any)
 
   useEffect(() => {
     let search: any = appStore.location.search
     if (search) {
       search = qs.parse(search.replace('?', ''))
-      if (search.sourceChange && sourceChange !== search.sourceChange) getData()
+      if (
+        (search.sourceChange && sourceChange !== search.sourceChange) || !search.sourceChange
+      ) {
+        getData({ id: search.id || '' })
+      }
 
       setSourceChange(search.sourceChange)
     }
   }, [appStore.match])
 
-  const getData = () => {
+  const getData = (query: any) => {
     setLoading(true)
-
-    setTimeout(() => {
+    empManageService.getEmpDetail(query).then(res => {
+      let user = res.data.user;
+      let credit = res.data.credit;
+      setBaseInfo({
+        empName: user.empName,
+        empNo: user.empNo,
+        age: user.age,
+        source: credit.credit,
+        points: credit.rewardPoints,
+        sexual: user.sexual == 0 ? '男' : '女',
+        job: user.job,
+        title: user.title,
+        highestEducation: user.highestEducation,
+        nurseHierarchy: user.nurseHierarchy,
+        area: user.area,
+        deptName: user.deptName,
+        specialAllow: user.specialAdmittance,
+      })
       setLoading(false)
-    }, 1000)
+    }, err => {
+      setLoading(false)
+    })
   }
 
   return (
@@ -60,7 +70,7 @@ export default observer(function BaseInfo() {
               <td className='td-title'>姓名</td>
               <td className='td-content'>{baseInfo.empName}</td>
               <td className='td-title'>工号</td>
-              <td className='td-content'>{baseInfo.empCode}</td>
+              <td className='td-content'>{baseInfo.empNo}</td>
             </tr>
             <tr>
               <td className='td-title'>性别</td>

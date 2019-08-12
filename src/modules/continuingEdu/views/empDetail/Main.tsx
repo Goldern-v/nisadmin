@@ -54,15 +54,23 @@ const Routes_Config = [
 export default observer(function Main(props: any) {
   const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
   const [data, setData] = useState({
-    empCode: 12312,
-    empName: '王大锤',
-    nurseHierarchy: 'N3',
-    newTitle: '主管护师',
+    id: '',
+    empCode: '',
+    empName: '',
+    nurseHierarchy: '',
+    newTitle: '',
     deptCode: '',
-    deptName: '神经内科单元',
-    status: '在职'
-  })
+    deptName: '',
+    status: ''
+  } as any)
   // console.log(appStore.match.params.pannelName);
+
+  useEffect(() => {
+    let search: any = appStore.location.search;
+    let query = {} as any;
+    if (search) query = qs.parse(search.replace('?', ''));
+    setData({ ...data, ...query })
+  }, [])
 
   const targetComponent = () => {
     for (let i = 0; i < Routes_Config.length; i++) {
