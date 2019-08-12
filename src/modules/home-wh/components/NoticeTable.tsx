@@ -90,13 +90,15 @@ export default observer(function NoticeTable() {
         >
           更多 >
         </More>
-        <Button
-          onClick={() => {
-            appStore.history.push('/sentNotice')
-          }}
-        >
-          创建
-        </Button>
+        {authStore.isRoleManage && (
+          <Button
+            onClick={() => {
+              appStore.history.push('/sentNotice')
+            }}
+          >
+            创建
+          </Button>
+        )}
       </TableTitle>
 
       <BaseTable

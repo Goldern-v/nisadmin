@@ -54,14 +54,14 @@ export default observer(function scientificResearch() {
       title: '项目名称',
       dataIndex: 'resultName',
       key: 'resultName',
-      width: 90,
+      width: 210,
       align: 'center'
     },
     {
       title: '授予单位',
       dataIndex: 'grantUnit',
       key: 'grantUnit',
-      width: 90,
+      width: 150,
       align: 'center'
     },
     {
@@ -82,7 +82,7 @@ export default observer(function scientificResearch() {
       title: '奖励名称、等级',
       dataIndex: 'winningName',
       key: 'winningName',
-      width: 90,
+      width: 150,
       align: 'center'
     },
     {

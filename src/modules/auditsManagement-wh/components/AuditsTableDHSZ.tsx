@@ -19,6 +19,7 @@ import GroupsEmpNoAduitModal from '../modal/GroupsEmpNoAduitModal'
 import { type } from 'os'
 import GroupsHlbModal from '../modal/GroupsHlbModal'
 import { message } from 'src/vendors/antd'
+import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
 export interface Props {
   showType: string
   keyword: string
@@ -203,7 +204,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   useEffect(() => {
     showType && onload(current, searchText, pageSize)
-  }, [active, authStore.selectedDeptCode, showType])
+  }, [active, authStore.selectedDeptCode, showType, statisticsViewModal.selectedDeptCode])
 
   return (
     <Wrapper>

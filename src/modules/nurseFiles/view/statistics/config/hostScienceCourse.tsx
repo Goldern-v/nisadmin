@@ -58,14 +58,14 @@ export const pageObj: PageObj = {
       title: '主持课题名称',
       dataIndex: 'name',
       key: 'name',
-      width: 120,
+      width: 220,
       align: 'center'
     },
     {
       title: '课题来源',
       dataIndex: 'courseSource',
       key: 'courseSource',
-      width: 90,
+      width: 200,
       align: 'center'
     },
     {
@@ -79,14 +79,14 @@ export const pageObj: PageObj = {
       title: '承担单位',
       dataIndex: 'unit',
       key: 'unit',
-      width: 90,
+      width: 160,
       align: 'center'
     },
     {
       title: '课题批文号',
       dataIndex: 'approvalNumber',
       key: 'approvalNumber',
-      width: 100,
+      width: 170,
       align: 'center'
     },
     {

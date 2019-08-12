@@ -54,21 +54,21 @@ export default observer(function Monograph() {
       title: '专著名称',
       dataIndex: 'monographName',
       key: 'monographName',
-      width: 120,
+      width: 200,
       align: 'center'
     },
     {
       title: '出版社名称',
       dataIndex: 'pressName',
       key: 'pressName',
-      width: 120,
+      width: 200,
       align: 'center'
     },
     {
       title: '出版号',
       dataIndex: 'pressNumber',
       key: 'pressNumber',
-      width: 90,
+      width: 180,
       align: 'center'
     },
     {

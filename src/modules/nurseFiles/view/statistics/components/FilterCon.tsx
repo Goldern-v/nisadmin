@@ -107,6 +107,7 @@ export default function FilterCon(props: Props) {
           <Select
             mode='multiple'
             showSearch
+            allowClear
             filterOption={(input: any, option: any) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }

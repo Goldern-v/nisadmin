@@ -11,6 +11,7 @@ import { numToChinese } from './utils/number/numToChinese'
 import YearRangePicker from './components/YearRangePicker'
 import AgePicker from './components/AgeRangePicker'
 import Watermark from './components/Watermark'
+import MultipleDeptSelect from './components/MultipleDeptSelect'
 // import XLSX from 'xlsx'
 // import { downloadExl } from './excel'
 
@@ -24,9 +25,7 @@ export default function demo(props: Props) {
   // XLSX.utils.book_append_sheet(wb, ws, 'SheetJS')
   return (
     <Wrapper>
-      <Watermark>
-        <div>1</div>
-      </Watermark>
+      <MultipleDeptSelect />
     </Wrapper>
   )
 }

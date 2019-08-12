@@ -48,21 +48,21 @@ export default observer(function SpecializNurse() {
       title: '专科护士名称',
       dataIndex: 'nurseName',
       key: 'nurseName',
-      width: 90,
+      width: 170,
       align: 'center'
     },
     {
       title: '发证单位',
       dataIndex: 'cardUnit',
       key: 'cardUnit',
-      width: 90,
+      width: 180,
       align: 'center'
     },
     {
       title: '证书编号',
       dataIndex: 'cardNumber',
       key: 'cardNumber',
-      width: 90,
+      width: 150,
       align: 'center'
     },
     {

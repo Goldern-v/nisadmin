@@ -30,7 +30,6 @@ export default observer(function FilterCon() {
     }
   }, [])
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
-    console.log(name, 'name')
     let [err, value] = await to(form.validateFields())
     if (err) return
     if (value.deptCode.length > 1) {

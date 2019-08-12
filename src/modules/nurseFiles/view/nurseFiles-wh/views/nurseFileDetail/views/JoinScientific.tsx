@@ -47,7 +47,7 @@ export default observer(function PersonWinning() {
       title: '参与课题名称',
       dataIndex: 'goName',
       key: 'goName',
-      width: 120,
+      width: 200,
       align: 'center'
     },
     {
@@ -76,7 +76,7 @@ export default observer(function PersonWinning() {
       title: '课题来源',
       dataIndex: 'courseSource',
       key: 'courseSource',
-      width: 90,
+      width: 200,
       align: 'center'
     },
     {
@@ -90,14 +90,14 @@ export default observer(function PersonWinning() {
       title: '承担单位',
       dataIndex: 'unit',
       key: 'unit',
-      width: 90,
+      width: 150,
       align: 'center'
     },
     {
       title: '课题批文号',
       dataIndex: 'approvalNumber',
       key: 'approvalNumber',
-      width: 110,
+      width: 150,
       align: 'center'
     },
     {

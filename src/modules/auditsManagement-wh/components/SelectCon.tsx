@@ -6,6 +6,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import emitter from 'src/libs/ev'
 import store from 'src/stores'
 import service from 'src/services/api'
+import MultipleDeptSelect from 'src/components/MultipleDeptSelect'
 
 const Option = Select.Option
 interface Props {
@@ -51,7 +52,7 @@ export default function SelectCon(props: Props) {
         {/* <DeptSelect onChange={onChange} /> */}
         <Place />
         <span>科室：</span>
-        <DeptSelect onChange={() => {}} />
+        {showType == 'nurseFile' ? <MultipleDeptSelect /> : <DeptSelect onChange={() => {}} />}
         <span style={{ marginLeft: 20 }}>类型：</span>
         <Select value={showType} onChange={(value: any) => setShowType(value)}>
           {showTypeDict.map((item: any) => (

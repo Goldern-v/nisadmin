@@ -56,7 +56,7 @@ export const pageObj: PageObj = {
       title: '杂志名称',
       dataIndex: 'magazineName',
       key: 'magazineName',
-      width: 90,
+      width: 200,
       align: 'center'
     },
     {
@@ -70,14 +70,14 @@ export const pageObj: PageObj = {
       title: '期刊号',
       dataIndex: 'periodicalNumber',
       key: 'periodicalNumber',
-      width: 90,
+      width: 210,
       align: 'center'
     },
     {
       title: '卷号',
       dataIndex: 'volumeNumber',
       key: 'volumeNumber',
-      width: 90,
+      width: 200,
       align: 'center'
     },
     {

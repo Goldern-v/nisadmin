@@ -46,69 +46,41 @@ export default observer(function PersonWinning() {
       title: '年份',
       dataIndex: 'year',
       key: 'year',
-      width: 90,
-      align: 'center'
-    },
-    // {
-    //   title: '继续教育项目负责人',
-    //   dataIndex: 'projectPerson',
-    //   key: 'projectPerson',
-    //   width: 160,
-    //   align: 'center'
-    // },
-    {
-      title: '项目名称',
-      dataIndex: 'projectName',
-      key: 'projectName',
       width: 120,
       align: 'center'
     },
     {
-      title: '项目号',
-      dataIndex: 'projectNumber',
-      key: 'projectNumber',
-      width: 100,
+      title: '专著名称',
+      dataIndex: 'monographName',
+      key: 'monographName',
+      width: 200,
       align: 'center'
     },
     {
-      title: '项目级别',
-      dataIndex: 'projectLevel',
-      key: 'projectLevel',
-      width: 100,
+      title: '出版社名称',
+      dataIndex: 'pressName',
+      key: 'pressName',
+      width: 200,
       align: 'center'
     },
     {
-      title: '课时数',
-      dataIndex: 'courseHour',
-      key: 'courseHour',
-      width: 90,
+      title: '出版号',
+      dataIndex: 'pressNumber',
+      key: 'pressNumber',
+      width: 180,
       align: 'center'
     },
     {
-      title: '学员总数',
-      dataIndex: 'personTotal',
-      key: 'personTotal',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '学院分布区域',
-      dataIndex: 'schoolArea',
-      key: 'schoolArea',
+      title: '出版日期',
+      dataIndex: 'pressDate',
+      key: 'pressDate',
       width: 120,
       align: 'center'
     },
     {
-      title: '学院职称分布',
-      dataIndex: 'personTitleArea',
-      key: 'personTitleArea',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '授予学分',
-      dataIndex: 'creditGranted',
-      key: 'creditGranted',
+      title: '著者',
+      dataIndex: 'participation',
+      key: 'participation',
       width: 90,
       align: 'center'
     },

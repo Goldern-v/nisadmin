@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { Button } from 'antd'
 import { noticeViewModel } from '../../NoticeViewModel'
 import { observer } from 'mobx-react-lite'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function LeftMenu() {
@@ -41,6 +41,7 @@ export default observer(function LeftMenu() {
         onClick={() => {
           appStore.history.push('/sentNotice')
         }}
+        disabled={!authStore.isRoleManage}
       >
         新建通知
       </Button>

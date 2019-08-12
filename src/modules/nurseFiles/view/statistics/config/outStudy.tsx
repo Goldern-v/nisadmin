@@ -57,14 +57,14 @@ export const pageObj: PageObj = {
       title: '进修专业',
       dataIndex: 'studyMajor',
       key: 'studyMajor',
-      width: 100,
+      width: 200,
       align: 'center'
     },
     {
       title: '进修单位',
       dataIndex: 'unit',
       key: 'unit',
-      width: 80,
+      width: 210,
       align: 'center'
     },
     {

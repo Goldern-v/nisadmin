@@ -53,7 +53,7 @@ export const pageObj: PageObj = {
   ],
   tableList: [
     {
-      title: '获奖类别',
+      title: '获奖类别(主持/参与排名)',
       dataIndex: 'resultType',
       key: 'resultType',
       width: 90,
@@ -63,14 +63,14 @@ export const pageObj: PageObj = {
       title: '项目名称',
       dataIndex: 'resultName',
       key: 'resultName',
-      width: 90,
+      width: 210,
       align: 'center'
     },
     {
       title: '授予单位',
       dataIndex: 'grantUnit',
       key: 'grantUnit',
-      width: 90,
+      width: 150,
       align: 'center'
     },
     {
@@ -91,7 +91,7 @@ export const pageObj: PageObj = {
       title: '奖励名称、等级',
       dataIndex: 'winningName',
       key: 'winningName',
-      width: 90,
+      width: 150,
       align: 'center'
     },
     {

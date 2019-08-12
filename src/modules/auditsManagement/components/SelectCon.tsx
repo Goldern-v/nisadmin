@@ -7,7 +7,7 @@ import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 
-export default function SelectCon () {
+export default function SelectCon() {
   const [visible, setVisible] = useState(false)
   const [searchText, setSearchText] = useState('')
   const handleOk = () => {

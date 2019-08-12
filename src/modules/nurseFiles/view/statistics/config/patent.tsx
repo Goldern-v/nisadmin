@@ -55,7 +55,7 @@ export const pageObj: PageObj = {
       title: '专利名称',
       dataIndex: 'patentName',
       key: 'patentName',
-      width: 120,
+      width: 200,
       align: 'center'
     },
     {
@@ -69,14 +69,14 @@ export const pageObj: PageObj = {
       title: '专利号',
       dataIndex: 'patentNumber',
       key: 'patentNumber',
-      width: 90,
+      width: 150,
       align: 'center'
     },
     {
       title: '发证单位',
       dataIndex: 'cardUnit',
       key: 'cardUnit',
-      width: 120,
+      width: 200,
       align: 'center'
     },
     {
@@ -90,7 +90,7 @@ export const pageObj: PageObj = {
       title: '专利类型',
       dataIndex: 'patentType',
       key: 'patentType',
-      width: 90,
+      width: 120,
       align: 'center'
     },
     {

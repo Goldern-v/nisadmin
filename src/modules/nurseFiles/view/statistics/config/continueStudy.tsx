@@ -41,7 +41,7 @@ export const pageObj: PageObj = {
       title: '项目名称',
       dataIndex: 'projectName',
       key: 'projectName',
-      width: 120,
+      width: 210,
       align: 'center'
     },
 
@@ -63,14 +63,14 @@ export const pageObj: PageObj = {
       title: '学院分布区域',
       dataIndex: 'schoolArea',
       key: 'schoolArea',
-      width: 120,
+      width: 210,
       align: 'center'
     },
     {
       title: '学院职称分布',
       dataIndex: 'personTitleArea',
       key: 'personTitleArea',
-      width: 120,
+      width: 210,
       align: 'center'
     },
     {
