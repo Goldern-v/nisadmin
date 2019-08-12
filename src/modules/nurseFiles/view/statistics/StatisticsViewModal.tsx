@@ -51,9 +51,12 @@ class StatisticsViewModal {
       this.dict = res.data
     })
     await service.commonApiService.getUintList().then((res) => {
-      if (authStore.post === '护理部' || authStore.isAdmin) {
+      if (authStore.isDepartment) {
         this.allDeptAll = [{ name: '全院', code: '全院' }, ...res.data.deptList]
         this.selectedDeptCode = ['全院']
+      } else if (authStore.isSupervisorNurse) {
+        this.allDeptAll = [{ name: '全部', code: '全部' }, ...res.data.deptList]
+        this.selectedDeptCode = ['全部']
       } else {
         this.allDeptAll = res.data.deptList
         this.selectedDeptCode = [res.data.defaultDept]

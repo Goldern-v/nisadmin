@@ -51,6 +51,7 @@ export default interface User {
   takeWorkTime: string
   title: string
   workYear: string
+  roleManageCode: string
   nearImageUrl: string //头像
   roleManage: string //是否有权限进入管理系统
 }

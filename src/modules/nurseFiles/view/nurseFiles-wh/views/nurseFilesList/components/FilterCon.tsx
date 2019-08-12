@@ -30,19 +30,39 @@ export default observer(function FilterCon() {
     }
   }, [])
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
+    console.log(name, 'name')
     let [err, value] = await to(form.validateFields())
     if (err) return
     if (value.deptCode.length > 1) {
       if (value.deptCode[value.deptCode.length - 1] == '全院') {
         value.deptCode = ['全院']
         form.setField('deptCode', value.deptCode)
+        return
       } else if (value.deptCode.includes('全院')) {
         value.deptCode = value.deptCode.filter((item: any) => item != '全院')
         form.setField('deptCode', value.deptCode)
+        return
+      } else if (value.deptCode[value.deptCode.length - 1] == '全部') {
+        value.deptCode = ['全部']
+        form.setField('deptCode', value.deptCode)
+        return
+      } else if (value.deptCode.includes('全部')) {
+        value.deptCode = value.deptCode.filter((item: any) => item != '全部')
+        form.setField('deptCode', value.deptCode)
+        return
       }
     }
+    let deptCodes
+    if (value.deptCode.length == 1 && value.deptCode[0] == '全部') {
+      deptCodes = statisticsViewModal
+        .getDict('全部科室')
+        .map((item: any) => item.code)
+        .filter((item: any) => item != '全部')
+    } else {
+      deptCodes = value.deptCode
+    }
     let postObj = {
-      deptCodes: value.deptCode,
+      deptCodes: deptCodes,
       name: value.name,
       newTitle: value.newTitle,
       nurseHierarchy: value.nurseHierarchy,
@@ -70,7 +90,14 @@ export default observer(function FilterCon() {
           <Row gutter={0}>
             <Col span={6} style={{ marginBottom: -6 }}>
               <Form.Field label={'科室'} name={'deptCode'}>
-                <Select mode='multiple' allowClear={true}>
+                <Select
+                  mode='multiple'
+                  allowClear={true}
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
                   {statisticsViewModal.getDict('全部科室').map((item, index) => (
                     <Select.Option value={item.code} key={item.code}>
                       {item.name}

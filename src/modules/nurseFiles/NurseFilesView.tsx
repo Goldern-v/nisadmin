@@ -7,7 +7,9 @@ import NurseFilesListView_hj from './view/nurseFiles-hj/views/nurseFilesList/Nur
 import NurseFilesListView_wh from './view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
 import RetiredRetirees from './view/retiredRetirees/RetiredRetireesView'
 import StatisticsView from './view/statistics/StatisticsView'
-// import { ReactComponent as HLZDZD } from './images/护理诊断字典.svg'
+import { ReactComponent as ZZHSDA } from './images/护士档案.svg'
+import { ReactComponent as TXHSCX } from './images/退休护士查询.svg'
+import { ReactComponent as CXTJ } from './images/查询统计.svg'
 
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps {}
@@ -18,15 +20,18 @@ const LEFT_MENU_CONFIG = [
   {
     title: '在职护士档案',
     path: '/nurseFile/onTheJob',
-    component: OnTheJobComponent
+    component: OnTheJobComponent,
+    icon: <ZZHSDA />
   },
   {
     title: '离职/退休人员查询',
     path: '/nurseFile/retiredRetirees',
-    component: RetiredRetirees
+    component: RetiredRetirees,
+    icon: <TXHSCX />
   },
   {
     title: '查询统计',
+    icon: <CXTJ />,
     children: [
       {
         title: '文章',

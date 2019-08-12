@@ -39,9 +39,19 @@ export default function FilterCon(props: Props) {
       if (value.deptCode[value.deptCode.length - 1] == '全院') {
         value.deptCode = ['全院']
         form.setField('deptCode', value.deptCode)
+        return
       } else if (value.deptCode.includes('全院')) {
         value.deptCode = value.deptCode.filter((item: any) => item != '全院')
         form.setField('deptCode', value.deptCode)
+        return
+      } else if (value.deptCode[value.deptCode.length - 1] == '全部') {
+        value.deptCode = ['全部']
+        form.setField('deptCode', value.deptCode)
+        return
+      } else if (value.deptCode.includes('全部')) {
+        value.deptCode = value.deptCode.filter((item: any) => item != '全部')
+        form.setField('deptCode', value.deptCode)
+        return
       }
     }
 
@@ -64,7 +74,14 @@ export default function FilterCon(props: Props) {
     }
 
     statisticsViewModal.selectedDeptCode = value.deptCode
-    result.deptCodes = result.deptCode
+    if (result.deptCode.length == 1 && result.deptCode[0] == '全部') {
+      result.deptCodes = statisticsViewModal
+        .getDict('全部科室')
+        .map((item: any) => item.code)
+        .filter((item: any) => item != '全部')
+    } else {
+      result.deptCodes = result.deptCode
+    }
     delete result.deptCode
     filterRef.current = result
     onload()
@@ -87,7 +104,13 @@ export default function FilterCon(props: Props) {
       }
       case 'multiplesSelect': {
         return (
-          <Select mode='multiple'>
+          <Select
+            mode='multiple'
+            showSearch
+            filterOption={(input: any, option: any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+          >
             {item.dataSource &&
               item.dataSource.map((item, index) => (
                 <Select.Option value={item.code} key={index}>

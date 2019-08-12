@@ -29,6 +29,12 @@ export default function AuditsTableDHSZ(props: Props) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const toDetails = (row: any) => {
+    openAuditModal(getTitle(row.othersMessage.entityName), { ...row.othersMessage, id: row.othersMessage.fileId }, () =>
+      emitter.emit('refreshNurseAuditTable')
+    )
+  }
+
   const columns: any = [
     {
       title: '序号',
@@ -83,17 +89,7 @@ export default function AuditsTableDHSZ(props: Props) {
       render: (text: any, row: any, c: any) => {
         return (
           <DoCon>
-            <span
-              onClick={() =>
-                openAuditModal(
-                  getTitle(row.othersMessage.entityName),
-                  { ...row.othersMessage, id: row.othersMessage.fileId },
-                  () => emitter.emit('refreshNurseAuditTable')
-                )
-              }
-            >
-              {needAudit ? '审核' : '查看'}
-            </span>
+            <span onClick={() => toDetails(row)}>{needAudit ? '审核' : '查看'}</span>
           </DoCon>
         )
       }
@@ -168,6 +164,11 @@ export default function AuditsTableDHSZ(props: Props) {
         //   pageSizeOptions: ['10', '20', '30'],
         //   showSizeChanger: true
         // }}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => toDetails(record)
+          }
+        }}
         onChange={onChange}
         rowSelection={rowSelection}
         loading={loading}

@@ -216,7 +216,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={240}
+        surplusHeight={280}
         // spaceRowNumber={10}
         // type={['spaceRow']}
         pagination={{

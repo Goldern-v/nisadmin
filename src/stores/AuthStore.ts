@@ -80,7 +80,15 @@ export default class AuthStore {
   /** 是否是护理部 */
   public get isDepartment() {
     try {
-      return this!.user!.job === '护理部主任' || this.isAdmin
+      return this!.user!.roleManageCode === 'QCR0001' || this.isAdmin
+    } catch (error) {
+      return ''
+    }
+  }
+  /** 是否是科护士长 */
+  public get isSupervisorNurse() {
+    try {
+      return this!.user!.roleManageCode === 'QCR0003'
     } catch (error) {
       return ''
     }
