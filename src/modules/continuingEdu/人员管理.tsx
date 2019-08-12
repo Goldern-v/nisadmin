@@ -11,16 +11,24 @@ import { observer } from 'mobx-react-lite'
 import DeptSelect from 'src/components/DeptSelect'
 
 import FilterCon from './components/FilterCon'
+import { empManageService } from './views/empDetail/api/EmpManageService'
+import qs from 'qs'
 
 const Option = Select.Option
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function 人员管理(props: Props) {
   const [query, setQuery] = useState({
-    deptCode: '',
-    page: 1,
-    pageSize: 10
+    deptCode: '',//科室
+    area: '',//片区
+    pageIndex: 1,
+    pageSize: 15,
+    keyword: '',
+    education: '',//学历
+    title: '',//职称
+    currentLevel: '',//层级
+    job: ''//职务
   })
 
   const [queryFilter, setQueryFilter] = useState({
@@ -34,24 +42,6 @@ export default observer(function 人员管理(props: Props) {
   const [total, setTotal] = useState(0 as number)
   const [dataLoading, setDataLoading] = useState(false)
   const [filterConVisible, setFilterConVisible] = useState(true)
-
-  useEffect(() => {
-    setTableData([
-      {
-        empNo: '114145',
-        empName: '王大锤',
-        sexual: '男',
-        age: '24',
-        deptName: '神经内科单元',
-        zhiwu: '护士长',
-        level: 'N1',
-        xueli: '硕士',
-        jifen: 10086,
-        status: '在职'
-      }
-    ])
-    // console.log(query)
-  }, [])
 
   const columns: ColumnProps<any>[] = [
     {
@@ -77,10 +67,11 @@ export default observer(function 人员管理(props: Props) {
     },
     {
       title: '性别',
-      key: 'sexual',
-      dataIndex: 'sexual',
+      key: 'sex',
+      dataIndex: 'sex',
       width: 80,
-      align: 'center'
+      align: 'center',
+      render: (text: any) => text == 0 ? '女' : '男'
     },
     {
       title: '年龄',
@@ -99,29 +90,29 @@ export default observer(function 人员管理(props: Props) {
     },
     {
       title: '职务',
-      key: 'zhiwu',
-      dataIndex: 'zhiwu',
+      key: 'job',
+      dataIndex: 'job',
       width: 80,
       align: 'center'
     },
     {
       title: '层级',
-      key: 'level',
-      dataIndex: 'level',
+      key: 'nurseHierarchy',
+      dataIndex: 'nurseHierarchy',
       width: 50,
       align: 'center'
     },
     {
       title: '学历',
-      key: 'xueli',
-      dataIndex: 'xueli',
+      key: 'highestEducation',
+      dataIndex: 'highestEducation',
       width: 50,
       align: 'center'
     },
     {
       title: '积分',
-      key: 'jifen',
-      dataIndex: 'jifen',
+      key: 'studyRewardPoints',
+      dataIndex: 'studyRewardPoints',
       width: 50,
       align: 'center'
     },
@@ -147,40 +138,64 @@ export default observer(function 人员管理(props: Props) {
     }
   ]
 
+  useEffect(() => {
+    // empManageService.findAllAreas().then(res => {
+    //   console.log(res)
+    // })
+  }, [])
+
   const handleReview = (record: any) => {
-    appStore.history.push('/continuingEduEmpDetail')
+    let search = {
+      id: record.id,
+      empCode: record.empCode,
+      empName: record.empName,
+      newTitle: record.title,
+      nurseHierarchy: record.nurseHierarchy,
+      deptCode: record.deptCode,
+      deptName: record.deptName,
+      status: record.status
+    }
+    appStore.history.push(`/continuingEduEmpDetail?${qs.stringify(search)}`)
   }
 
   const handleDeptChange = (deptCode: any) => {
-    let newQuery = { ...query, deptCode }
-
-    if (!query.deptCode) getTableData(newQuery)
+    let newQuery = { ...query, deptCode, pageIndex: 1 }
 
     setQuery(newQuery)
+    getTableData(newQuery)
   }
 
   const handleSearch = () => {
-    let newQuery = { ...query, page: 1 }
+    let newQuery = { ...query, pageIndex: 1 }
     getTableData(newQuery)
   }
 
   const getTableData = (other?: any) => {
     let _query = Object.assign({}, query, other || {})
-
+    // console.log(_query)
     setDataLoading(true)
-    setTimeout(() => {
+    empManageService.getEmpList(_query).then(res => {
       setDataLoading(false)
-    }, 1000)
+      if (res.data) {
+        setTableData(res.data.list || []);
+        setTotal(res.data.totalCount || 0)
+      }
+    }, err => {
+      setDataLoading(false)
+    })
+    // setTimeout(() => {
+    //   setDataLoading(false)
+    // }, 1000)
   }
 
   const handlePageChange = (page: number) => {
-    let newQuery = { ...query, page }
+    let newQuery = { ...query, pageIndex: page }
     setQuery(newQuery)
     getTableData(newQuery)
   }
 
   const handleSizeChange = (page: number, size: number) => {
-    let newQuery = { ...query, page: 1, size }
+    let newQuery = { ...query, pageIndex: 1, size }
     setQuery(newQuery)
     getTableData(newQuery)
   }
@@ -192,12 +207,38 @@ export default observer(function 人员管理(props: Props) {
   const handleFilterAdapterChange = (name: any, value: any) => {
     // console.log(name, value)
     setQueryFilter({ ...queryFilter, [`${name}`]: value })
+    let newQuery = { ...query }
+    value = value == '全部' ? '' : value
+    switch (name) {
+      case 'Xl':
+        newQuery.education = value
+        break
+      case 'Zc':
+        newQuery.title = value
+        break
+      case 'Cj':
+        newQuery.currentLevel = value
+        break
+      case 'Zw':
+        newQuery.job = value
+        break
+    }
+    setQuery(newQuery)
+    getTableData(newQuery)
   }
 
   const switchWrapperName = () => {
     let classList = [] as any
     if (filterConVisible) classList.push('filter-con-visible')
     return classList.join(' ')
+  }
+
+  const handleSearchInputChange = (e: any) => {
+    if (e.target.value == query.keyword) return
+
+    let newQuery = { ...query, keyword: e.target.value, pageIndex: 1 }
+    setQuery(newQuery);
+    getTableData(newQuery);
   }
 
   return (
@@ -214,7 +255,7 @@ export default observer(function 人员管理(props: Props) {
           </Select>
         </span>
         <span className='float-item input-search'>
-          <Input />
+          <Input defaultValue={query.keyword} onBlur={handleSearchInputChange} />
         </span>
         <span className='float-item'>
           <Button type='primary' onClick={handleSearch}>
@@ -237,7 +278,7 @@ export default observer(function 人员管理(props: Props) {
             columns={columns}
             surplusHeight={queryFilter ? 420 : 130}
             pagination={{
-              current: query.page,
+              current: query.pageIndex,
               total: total,
               pageSize: query.pageSize,
               pageSizeOptions: ['10', '20', '30'],
