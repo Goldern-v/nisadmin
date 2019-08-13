@@ -102,7 +102,7 @@ export default function DeptFileShare() {
       title: '操作',
       key: 'opetation',
       align: 'center',
-      width: 120,
+      width: 140,
       render: (text: string, record: any) => {
         return (
           <DoCon>
@@ -114,6 +114,9 @@ export default function DeptFileShare() {
             </span>
             <span onClick={() => handleDelete(record)}>
               删除
+            </span>
+            <span onClick={() => handleDownload(record)}>
+              下载
             </span>
           </DoCon>
         )
@@ -139,6 +142,31 @@ export default function DeptFileShare() {
     })
     setEditVisible(true)
   }
+
+  const fileDownload = (res: any, record?: any) => {
+    let fileType: any = record.originalFileName.split('.');
+    fileType = fileType[fileType.length - 1];
+    let filename = [record.fileName, fileType].join('.');
+    // decodeURIComponent
+    // "attachment;filename=????2019-3-18-2019-3-24??.xls"
+    // "application/json"
+    let blob = new Blob([res.data], {
+      type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
+    })
+    // console.log('fileDownload', res)
+    // if (res.data.type && res.data.type.indexOf('excel') > -1) {
+    if (true) {
+      let a = document.createElement('a')
+      let href = window.URL.createObjectURL(blob) // 创建链接对象
+      a.href = href
+      a.download = filename // 自定义文件名
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(href)
+      document.body.removeChild(a) // 移除a元素
+    }
+  }
+
   const handleDelete = (record: any) => {
     let content = <div>
       <div>您确定要删除选中的记录吗？</div>
@@ -198,6 +226,12 @@ export default function DeptFileShare() {
       })
   }
 
+  const handleDownload = (record: any) => {
+    api.getFileContent(record.id).then(res => {
+      fileDownload(res, record)
+    })
+  }
+
   return <Wrapper>
     <div className="topbar">
       <div className="float-left">
@@ -236,7 +270,7 @@ export default function DeptFileShare() {
         rowKey="id"
         dataSource={tableData}
         loading={tableLoading}
-        surplusHeight={tableData.length > 0 ? 235 : 195}
+        surplusHeight={235}
         pagination={{
           pageSizeOptions: ['10', '20', '30', '40', '50'],
           onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
