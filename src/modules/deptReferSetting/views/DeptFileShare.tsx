@@ -15,7 +15,7 @@ import DeptFielShareService from './../api/DeptFielShareService'
 
 const api = new DeptFielShareService()
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option
 
@@ -74,6 +74,16 @@ export default function DeptFileShare() {
             {text}
           </div>
         )
+      }
+    },
+    {
+      title: '文件格式',
+      key: 'fileType',
+      align: 'center',
+      width: 80,
+      render: (text: string, record: any) => {
+        let typeArr = record.originalFileName.split('.')
+        return typeArr[typeArr.length - 1] || ''
       }
     },
     {
