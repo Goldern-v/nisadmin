@@ -4,7 +4,7 @@ import qs from 'qs';
 export default class EmpManageService extends BaseApiService {
   /** 继续教育人员列表 */
   public async getEmpList(query: any) {
-    return this.post('/educon/eduMasterData/getByFormCodePC', query);
+    return this.post('/educon/eduMasterData/getByFormCodePC', qs.stringify(query));
   }
   /**人员基本信息 */
   public async getEmpDetail(query: any) {
