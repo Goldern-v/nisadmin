@@ -72,6 +72,8 @@ import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysis
 import NurseFilesView from 'src/modules/nurseFiles/NurseFilesView'
 import QualityAnalysisReportPoolView from 'src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView'
 
+//病区管理
+import WardManagementView from 'src/modules/wardManagement/WardManagementView'
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -171,6 +173,7 @@ const routes: RouteItem[] = [
   setLayout('/qualityAnalysisReportPool', QualityAnalysisReportPoolView, layouts.MainLayout),
   /** 档案模块 */
   setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
+  setLayout('/wardManagement/:name', WardManagementView, layouts.MainLayout),
 
   {
     path: '/nurseFile',
@@ -203,6 +206,10 @@ const routes: RouteItem[] = [
   {
     path: '/setting',
     redirect: '/setting/扁平管理设置'
+  },
+  {
+    path: '/wardManagement',
+    redirect: '/wardManagement/扁平管理设置'
   },
   {
     path: '/quality',

@@ -4,6 +4,7 @@ import { Modal, Button } from 'antd'
 
 import { ModalComponentProps } from 'src/libs/createModal'
 import PdfProtcetView from 'src/components/PdfProtcetView'
+import Watermark from 'src/components/Watermark'
 
 export interface Props extends ModalComponentProps {
   name?: string
@@ -24,7 +25,11 @@ export default function PreviewModal(props: Props) {
         return <img src={url} width='100%' />
       case 'pdf':
         // return <object type="application/pdf" width="100%" style={{ height: `${pdfHeight}px` }} data={url} />
-        return <iframe src={url} style={{ height: `${pdfHeight}px`, width: '100%' }} />
+        return (
+          <Watermark>
+            <iframe src={url} style={{ height: `${pdfHeight}px`, width: '100%' }} />
+          </Watermark>
+        )
       default:
         return (
           <div style={{ height: '300px', lineHeight: '300px', textAlign: 'center' }}>

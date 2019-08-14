@@ -41,7 +41,7 @@ export default function Format(row: any, getTableData: any) {
             社会团体职务: `socialGroup`
           },
           {
-            联系电话: `phone`,
+            手机号: `phone`,
             家庭住址: `address`
           },
           //

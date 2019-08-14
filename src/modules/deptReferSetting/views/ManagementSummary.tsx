@@ -7,19 +7,21 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import DeptSelect from 'src/components/DeptSelect'
 
-import FlatManageEditModal from './../components/FlatManageEditModal'
-import PreviewModal from './../components/PreviewModal'
+import FlatManageEditModal from '../components/FlatManageEditModal'
+import PreviewModal from '../components/PreviewModal'
 import createModal from 'src/libs/createModal'
+import moment from 'moment'
+import ManagementSummaryService from '../api/ManagementSummaryService'
+import YearPicker from 'src/components/YearPicker'
+import { numberToArray } from 'src/utils/array/array'
 
-import FlatManageService from './../api/FlatManageService'
-
-const api = new FlatManageService()
+const api = new ManagementSummaryService()
 
 export interface Props extends RouteComponentProps {}
 
 const Option = Select.Option
 
-export default function DeptFileShare() {
+export default function ManagementSummary() {
   const [tableData, setTableData] = useState([] as any)
   const [dataTotal, setDataTotal] = useState(0 as number)
 
@@ -35,116 +37,65 @@ export default function DeptFileShare() {
     pageSize: 20,
     pageIndex: 1
   } as any)
-  useEffect(() => {}, [])
+
+  const [filterObj, setFilterObj] = useState({
+    year: moment(),
+    month: Number(moment().format('MM'))
+  })
 
   useEffect(() => {
     if (query.deptCode) getTableData()
-  }, [query])
+  }, [query, filterObj])
 
   const [tableLoading, setTableLoading] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
-      title: '序号',
-      dataIndex: 'key',
-      key: 'key',
-      width: 50,
-      align: 'center',
-      render: (text: string, record: any, index: number) => {
-        const { pageIndex, pageSize } = query
-        return (pageIndex - 1) * pageSize + index + 1
-      }
+      title: '质控内容',
+      dataIndex: 'typeName',
+      align: 'center'
     },
     {
-      title: '管理类型',
+      title: '检查者',
+      dataIndex: 'inspectorName',
+      align: 'center'
+    },
+    {
+      title: '时间（具体到日）',
+      dataIndex: 'checkDate',
+      align: 'center'
+    },
+    {
+      title: '存在问题',
+      dataIndex: 'problem',
+      align: 'center'
+    },
+    {
+      title: '责任人',
+      dataIndex: 'responsibleEmpName',
+      align: 'center'
+    },
+    {
+      title: '原因分析',
+      dataIndex: 'causeAnalysis',
+      align: 'center'
+    },
+    {
+      title: '整改措施',
+      dataIndex: 'measures',
+      align: 'center'
+    },
+    {
+      title: '扣分',
+      dataIndex: 'deduction',
+      align: 'center'
+    },
+    {
+      title: '总扣分',
       dataIndex: 'manageType',
-      key: 'manageType',
-      className: 'align-left',
-      align: 'left',
-      render: (text: string) => {
-        return (
-          <div className='elips' title={text}>
-            {text}
-          </div>
-        )
-      }
-    },
-    {
-      title: '管理指标说明文件',
-      dataIndex: 'fileName',
-      key: 'fileName',
-      className: 'align-left',
-      align: 'left',
-      // width: 150,
-      render: (text: string) => {
-        return (
-          <div className='elips' title={text}>
-            {text}
-          </div>
-        )
-      }
-    },
-    {
-      title: '操作',
-      key: 'opetation',
-      align: 'center',
-      width: 120,
-      render: (text: string, record: any) => {
-        return (
-          <DoCon>
-            <span onClick={() => handlePreview(record)}>预览</span>
-            <span onClick={() => reUpload(record)}>修改</span>
-            <span onClick={() => handleDelete(record)}>删除</span>
-          </DoCon>
-        )
-      }
+      align: 'center'
     }
   ]
-
-  const handlePreview = (record: any) => {
-    let typeArr = record.filePath.split('.')
-
-    PreviewModalWrapper.show({
-      url: `/crNursing/asset/flatManageSetting${record.filePath}`,
-      type: typeArr[typeArr.length - 1],
-      name: record.manageType
-    })
-  }
-  const reUpload = (record: any) => {
-    setEditParams({
-      id: record.id,
-      manageType: record.manageType
-    })
-    setEditVisible(true)
-  }
-  const handleDelete = (record: any) => {
-    let content = (
-      <div>
-        <div>您确定要删除选中的记录吗？</div>
-        <div>删除后将无法恢复。</div>
-      </div>
-    )
-    Modal.confirm({
-      title: '提示',
-      content,
-      okText: '确定',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk: () => {
-        api
-          .delete(record.id)
-          .then((res) => {
-            if (res.code == 200) {
-              Message.success('文件删除成功')
-              getTableData()
-            } else Message.error('文件删除失败')
-          })
-          .catch((err) => {
-            Message.error('文件删除失败')
-          })
-      }
-    })
-  }
 
   const handleDeptChange = (deptCode: any) => {
     setQuery({ ...query, deptCode })
@@ -163,12 +114,12 @@ export default function DeptFileShare() {
   const getTableData = () => {
     setTableLoading(true)
 
-    api.getList(query).then(
+    api.getList({ ...query, ...filterObj }).then(
       (res) => {
         setTableLoading(false)
         if (res.data) {
           setDataTotal(res.data.totalCount || 0)
-          setTableData(res.data.list)
+          setTableData(res.data)
         }
       },
       (err) => {
@@ -181,9 +132,35 @@ export default function DeptFileShare() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <div className='item title'>扁平管理设置</div>
+          <div className='item title'>扁平管理汇总</div>
         </div>
         <div className='float-right'>
+          <div className='item'>
+            <div className='label'>年度：</div>
+            <div className='content'>
+              <YearPicker
+                value={filterObj.year}
+                onChange={(value: any) => setFilterObj({ ...filterObj, year: value })}
+              />
+            </div>
+          </div>
+          <div className='item'>
+            <div className='label'>月份：</div>
+            <div className='content'>
+              <Select
+                style={{ width: 100 }}
+                value={filterObj.month}
+                onChange={(value: any) => setFilterObj({ ...filterObj, month: value })}
+              >
+                {numberToArray(11).map((item) => (
+                  <Select.Option value={item + 1} key={item}>
+                    {item + 1}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
@@ -192,11 +169,6 @@ export default function DeptFileShare() {
           </div>
           <div className='item'>
             <Button onClick={() => getTableData()}>查询</Button>
-          </div>
-          <div className='item'>
-            <Button type='primary' onClick={() => setEditVisible(true)}>
-              添加
-            </Button>
           </div>
         </div>
       </div>

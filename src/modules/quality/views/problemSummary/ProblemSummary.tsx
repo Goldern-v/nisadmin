@@ -70,9 +70,9 @@ export default observer(function ProblemSummary(props: any) {
                 value={filterObj.month}
                 onChange={(value: any) => setFilterObj({ ...filterObj, month: value })}
               >
-                {numberToArray(12).map((item) => (
-                  <Select.Option value={item || ''} key={item}>
-                    {item ? item + '月' : '全部'}
+                {numberToArray(11).map((item) => (
+                  <Select.Option value={item + 1} key={item}>
+                    {item + 1}
                   </Select.Option>
                 ))}
               </Select>

@@ -53,12 +53,7 @@ class NurseFilesListViewModel {
         }
       })
       .then((res) => {
-        let filename = res.headers['content-disposition']
-        if (filename) {
-          fileDownload(res)
-        } else {
-          message.warning('暂无记录')
-        }
+        fileDownload(res)
       })
   }
   init() {

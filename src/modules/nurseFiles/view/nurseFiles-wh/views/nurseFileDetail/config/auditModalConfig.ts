@@ -29,7 +29,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               年龄: 'age',
-              联系电话: 'phone'
+              手机号: 'phone'
             },
             {
               参加工作时间: 'takeWorkTime',
@@ -41,21 +41,19 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               取得执业资格证书时间: 'zyzsDate'
             },
             {
-              取得执业资格证书并开始从事护理岗位时间: 'zyzsNursingPostDate',
+              取得执业证书并开始从事护理岗位时间: 'zyzsNursingPostDate',
               护士执业资格证书有效截止日期: 'zyzsEffectiveUpDate'
             },
             {
-              初始学历: 'initialEducation'
+              初始学历: 'initialEducation',
+              最高学历: 'highestEducation'
             },
             {
-              最高学历: 'highestEducation',
-              取得最高学历时间: 'highestEducationDate'
+              取得最高学历时间: 'highestEducationDate',
+              最高学历学位: 'highestEducationDegree'
             },
             {
-              最高学历学位: 'highestEducationDegree',
-              职务: 'job'
-            },
-            {
+              职务: 'job',
               现职务任职起始时间: 'jobStartDate'
             },
 

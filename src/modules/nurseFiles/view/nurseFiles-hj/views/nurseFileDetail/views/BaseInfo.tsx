@@ -114,7 +114,7 @@ export default observer(function BaseInfo() {
                   社会团体职务: `socialGroup`
                 },
                 {
-                  联系电话: `phone`,
+                  手机号: `phone`,
                   家庭住址: `address`
                 }
               ],
@@ -182,7 +182,7 @@ export default observer(function BaseInfo() {
           社会团体职务: data.socialGroup
         },
         {
-          联系电话: data.phone,
+          手机号: data.phone,
           家庭住址: data.address
         }
       ])

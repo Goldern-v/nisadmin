@@ -365,7 +365,7 @@ export default observer(function Analysis() {
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
-          surplusHeight={tableData.length > 0 ? 230 : 190}
+          surplusHeight={230}
           onRow={(record: any) => {
             return {
               onDoubleClick: () => record.reportName && handleReview(record)

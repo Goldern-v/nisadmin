@@ -87,7 +87,7 @@ export default observer(function FilterCon() {
       <Inner>
         <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
           <Row gutter={0}>
-            <Col span={6} style={{ marginBottom: -6 }}>
+            <Col span={5} style={{ marginBottom: -6 }}>
               <Form.Field label={'科室'} name={'deptCode'}>
                 <Select
                   mode='multiple'
@@ -105,45 +105,13 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={6}>
-              <Form.Field label={'工号或姓名'} name={'name'}>
-                <Input />
+            <Col span={7} className='long'>
+              <Form.Field label={'来院工作时间'} name={'goHospitalWork'}>
+                <YearTimeRangePicker />
               </Form.Field>
             </Col>
-            <Col span={6}>
-              <Form.Field label={'最高学历'} name={'highestEducation'}>
-                <Select allowClear={true}>
-                  {statisticsViewModal.getDict('学历').map((item, index) => (
-                    <Select.Option value={item.code} key={index}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            <Col span={6}>
-              <Form.Field label={'职称'} name={'newTitle'}>
-                <Select allowClear={true}>
-                  {statisticsViewModal.getDict('技术职称').map((item, index) => (
-                    <Select.Option value={item.code} key={index}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            <Col span={6}>
-              <Form.Field label={'层级'} name={'nurseHierarchy'}>
-                <Select allowClear={true}>
-                  {statisticsViewModal.getDict('层级').map((item, index) => (
-                    <Select.Option value={item.code} key={index}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            <Col span={6}>
+
+            <Col span={4} className='short'>
               <Form.Field label={'职务'} name={'job'}>
                 <Select allowClear={true}>
                   {statisticsViewModal.getDict('职务').map((item, index) => (
@@ -154,7 +122,51 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
+              <Form.Field label={'最高学历'} name={'highestEducation'}>
+                <Select allowClear={true}>
+                  {statisticsViewModal.getDict('学历').map((item, index) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={4} className='long'>
+              <Form.Field label={'工号或姓名'} name={'name'}>
+                <Input />
+              </Form.Field>
+            </Col>
+
+            <Col span={5}>
+              <Form.Field label={'层级'} name={'nurseHierarchy'}>
+                <Select allowClear={true}>
+                  {statisticsViewModal.getDict('层级').map((item, index) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={7} className='long'>
+              <Form.Field label={'年龄'} name={'age'}>
+                <AgeRangePicker />
+              </Form.Field>
+            </Col>
+            <Col span={4} className='short'>
+              <Form.Field label={'职称'} name={'newTitle'}>
+                <Select allowClear={true}>
+                  {statisticsViewModal.getDict('技术职称').map((item, index) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={4}>
               <Form.Field label={'政治面貌'} name={'politicsLook'}>
                 <Select allowClear={true}>
                   {statisticsViewModal.getDict('政治面貌').map((item, index) => (
@@ -166,20 +178,10 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
 
-            <Col span={6}>
-              <Form.Field label={'年龄'} name={'age'}>
-                <AgeRangePicker />
-              </Form.Field>
-            </Col>
-            <Col span={6}>
-              <Form.Field label={'来院工作时间'} name={'goHospitalWork'}>
-                <YearTimeRangePicker />
-              </Form.Field>
-            </Col>
-            <Col span={6}>
-              <Form.Field label={'编制'} name={'workConversion'}>
+            <Col span={4} className='long'>
+              <Form.Field label={'院内工作地点'} name={'workAddress'}>
                 <Select allowClear={true}>
-                  {statisticsViewModal.getDict('工作编制').map((item, index) => (
+                  {statisticsViewModal.getDict('院内工作地点').map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
                     </Select.Option>
@@ -187,7 +189,7 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={6}>
+            <Col span={5}>
               <Form.Field label={'鞋码大小'} name={'shoeSize'}>
                 <Select allowClear={true}>
                   {statisticsViewModal.getDict('鞋码大小').map((item, index) => (
@@ -199,9 +201,20 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
 
-            <Col span={6}>
+            <Col span={7} className='long'>
               <Form.Field label={'护士执业证书有效期'} name={'zyzsEffectiveUp'}>
                 <MonthTimeRangePicker />
+              </Form.Field>
+            </Col>
+            <Col span={4} className='short'>
+              <Form.Field label={'编制'} name={'workConversion'}>
+                <Select allowClear={true}>
+                  {statisticsViewModal.getDict('工作编制').map((item, index) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Field>
             </Col>
 
@@ -239,5 +252,15 @@ const Inner = styled.div`
     padding-bottom: 1px;
     height: 26px;
     overflow: hidden;
+  }
+  .short {
+    .label {
+      width: 50px;
+    }
+  }
+  .long {
+    .label {
+      width: 100px;
+    }
   }
 `

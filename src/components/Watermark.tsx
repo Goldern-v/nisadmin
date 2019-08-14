@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
+import moment from 'moment'
 import { authStore } from 'src/stores'
 export interface Props {
   children: React.ReactNode
 }
 
-let list = ['5%', '50%', '80%']
+let list = ['5%', '45%', '80%']
 
 let markList: any[] = []
 
@@ -26,6 +27,8 @@ export default function Watermark(props: Props) {
       {markList.map((item: any, index: number) => (
         <div className='mark' key={index} style={item}>
           {authStore!.user!.empName + '_' + authStore!.user!.empNo}
+          <br />
+          {moment().format('YYYY-MM-DD')}
         </div>
       ))}
     </Wrapper>

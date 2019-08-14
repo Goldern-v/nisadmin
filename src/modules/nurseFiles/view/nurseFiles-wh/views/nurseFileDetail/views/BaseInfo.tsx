@@ -84,7 +84,7 @@ export default observer(function BaseInfo() {
         },
         {
           年龄: data.age,
-          联系电话: data.phone
+          手机号: data.phone
         },
         {
           参加工作时间: data.takeWorkTime,
@@ -96,7 +96,7 @@ export default observer(function BaseInfo() {
           取得执业资格证书时间: data.zyzsDate
         },
         {
-          取得执业资格证书并开始从事护理岗位时间: data.zyzsNursingPostDate,
+          取得执业证书并开始从事护理岗位时间: data.zyzsNursingPostDate,
           护士执业资格证书有效截止日期: data.zyzsEffectiveUpDate
         },
         {

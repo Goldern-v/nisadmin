@@ -215,7 +215,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`联系电话`} name='phone'>
+            <Form.Field label={`手机号`} name='phone'>
               <Input />
             </Form.Field>
           </Col>

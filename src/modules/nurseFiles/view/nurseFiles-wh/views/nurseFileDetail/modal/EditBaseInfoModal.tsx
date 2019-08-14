@@ -233,7 +233,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`联系电话`} name='phone'>
+            <Form.Field label={`手机号`} name='phone'>
               <Input />
             </Form.Field>
           </Col>
@@ -258,7 +258,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`取得执业资格证书并开始从事护理岗位时间`} name='zyzsNursingPostDate'>
+            <Form.Field label={`取得执业证书并开始从事护理岗位时间`} name='zyzsNursingPostDate'>
               <DatePicker />
             </Form.Field>
           </Col>

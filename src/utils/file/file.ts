@@ -23,8 +23,8 @@ export function getFileSize(fileByte: number | string) {
 // 导出文件
 export const fileDownload = (res: any, fileName?: string) => {
   /** 判断是否成功 */
-  if (res.headers['Cr-Download-Code'] == '300') {
-    return message.warn(res.headers['Cr-Download-Message'] || '暂无记录')
+  if (res.headers['cr-download-code'] == '300') {
+    return message.warn(res.headers['cr-download-message'] ? decodeURI(res.headers['cr-download-message']) : '暂无记录')
   }
 
   let filename = fileName

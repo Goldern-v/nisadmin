@@ -46,6 +46,7 @@ export default observer(function Head() {
       </Select>
       <span>日期：</span>
       <RangePicker
+        style={{ width: 250 }}
         value={retiredRetireesViewModal.selectedDate}
         onChange={(date) => {
           retiredRetireesViewModal.selectedDate = date
@@ -74,7 +75,7 @@ export default observer(function Head() {
 })
 const Wrapper = styled(TableHeadCon)`
   .ant-select {
-    width: 180px;
+    width: 150px;
     margin-right: 20px;
   }
   .ant-calendar-picker {

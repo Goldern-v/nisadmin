@@ -94,9 +94,9 @@ const navListWH: any = [
     path: '/nursingRules'
   },
   {
-    name: '系统设置',
+    name: '病区管理',
     icon: <XTSZ />,
-    path: '/setting'
+    path: '/wardManagement'
   }
 ]
 const navListWHSelft: any = [
@@ -173,9 +173,9 @@ const navListWHSelft: any = [
     path: '/nursingRules'
   },
   {
-    name: '系统设置',
+    name: '病区管理',
     icon: <XTSZ />,
-    path: '/setting'
+    path: '/wardManagement'
   }
 ]
 const navList: any = [

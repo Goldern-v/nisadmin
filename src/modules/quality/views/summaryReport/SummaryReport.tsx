@@ -64,7 +64,7 @@ export default observer(function SummeryReportList() {
       render: (type: string) => {
         switch (type) {
           case 'month':
-            return '月度报告';
+            return '月度报告'
           case 'season':
             return '季度报告'
           default:
@@ -175,9 +175,9 @@ export default observer(function SummeryReportList() {
 
   const handleCreateOk = (info: any) => {
     //汇总报告创建成功
-    let { type, year, indexInType } = info;
-    getTableData();
-    setCreateAnalysisVisible(false);
+    let { type, year, indexInType } = info
+    getTableData()
+    setCreateAnalysisVisible(false)
     history.push(`/qualityAnalysisReportPool?${qs.stringify({ type, year, indexInType })}`)
   }
 
@@ -285,7 +285,7 @@ export default observer(function SummeryReportList() {
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
-          surplusHeight={tableData.length > 0 ? 230 : 190}
+          surplusHeight={230}
           onRow={(record: any) => {
             return {
               onDoubleClick: () => record.reportName && handleReview(record)
@@ -308,7 +308,7 @@ export default observer(function SummeryReportList() {
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-      // groupRoleList={groupRoleListSelf}
+        // groupRoleList={groupRoleListSelf}
       />
     </Wrapper>
   )

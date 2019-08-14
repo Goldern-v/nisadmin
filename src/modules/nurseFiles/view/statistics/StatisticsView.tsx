@@ -38,12 +38,7 @@ export default function Statistics() {
   }
   const exportExcel = (type: string = pageObj.type) => {
     statisticsService.exportExcel(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
-      let filename = res.headers['content-disposition']
-      if (filename) {
-        fileDownload(res)
-      } else {
-        message.warning('暂无记录')
-      }
+      fileDownload(res)
     })
   }
 

@@ -156,6 +156,41 @@ const columns: ColumnProps<any>[] = [
     align: 'center'
   },
   {
+    title: '身份证号',
+    dataIndex: 'cardNumber',
+    key: 'cardNumber',
+    width: 160,
+    align: 'center'
+  },
+  {
+    title: '手机号',
+    dataIndex: 'phone',
+    key: 'phone',
+    width: 100,
+    align: 'center'
+  },
+  {
+    title: '取得执业证书并开始从事护理岗位时间',
+    dataIndex: 'zyzsNursingPostDate',
+    key: 'zyzsNursingPostDate',
+    width: 100,
+    align: 'center'
+  },
+  {
+    title: '现职务任职起始时间',
+    dataIndex: 'jobStartDate',
+    key: 'jobStartDate',
+    width: 100,
+    align: 'center'
+  },
+  {
+    title: '院内工作地点',
+    dataIndex: 'workAddress',
+    key: 'workAddress',
+    width: 100,
+    align: 'center'
+  },
+  {
     title: '操作',
     dataIndex: 'auditedStatusName',
     key: '6',
@@ -196,7 +231,7 @@ export default observer(function NurseFilesListView() {
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
         surplusWidth={80}
-        surplusHeight={425}
+        surplusHeight={430}
         type={['index']}
         pagination={{
           total: nurseFilesListViewModel.totalCount,
