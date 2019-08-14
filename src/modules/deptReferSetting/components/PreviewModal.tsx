@@ -16,7 +16,7 @@ export default function PreviewModal(props: Props) {
   console.log(url, 'urlurl')
   let pdfHeight = window.innerHeight * 0.8
 
-  const Content = function () {
+  const Content = function() {
     switch (type) {
       case 'jpg':
       case 'gif':
@@ -24,13 +24,26 @@ export default function PreviewModal(props: Props) {
         return <img src={url} width='100%' />
       case 'pdf':
         // return <object type="application/pdf" width="100%" style={{ height: `${pdfHeight}px` }} data={url} />
-        return <PdfProtcetView src={url} style={{ height: `${pdfHeight}px` }} />
+        return <iframe src={url} style={{ height: `${pdfHeight}px`, width: '100%' }} />
       default:
-        return <div style={{ height: '300px', lineHeight: '300px', textAlign: 'center' }}>该文件不支持预览，请在app内查看</div>
+        return (
+          <div style={{ height: '300px', lineHeight: '300px', textAlign: 'center' }}>
+            该文件不支持预览，请在app内查看
+          </div>
+        )
     }
   }
   return (
-    <Modal visible={visible} title={name} width={'900px'} centered onCancel={onClose} footer={null} onOk={onClose}>
+    <Modal
+      visible={visible}
+      title={name}
+      width={'900px'}
+      centered
+      onCancel={onClose}
+      footer={null}
+      onOk={onClose}
+      wrapClassName='fullModal'
+    >
       {visible && Content()}
     </Modal>
   )

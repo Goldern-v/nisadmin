@@ -6,6 +6,7 @@ import QualityControlRecord from './views/qualityControlRecord/QualityControlRec
 import QueryStatistics from './views/queryStatistics/QueryStatistics'
 import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
+import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as CXTJ } from './images/查询统计.svg'
@@ -19,23 +20,30 @@ const LEFT_MENU_CONFIG = [
     path: '/quality/qualityControlRecord',
     component: QualityControlRecord
   },
+
   {
-    title: '查询统计',
-    icon: <CXTJ />,
-    path: '/quality/queryStatistics',
-    component: QueryStatistics
-  },
-  {
-    title: '月度分析报告',
+    title: '三级质控月度报告',
     icon: <FXBG />,
     path: '/quality/analysis',
     component: Analysis
   },
   {
-    title: '汇总报告',
+    title: '三级质控汇总报告',
     icon: <FXBG />,
     path: '/quality/summaryReport',
     component: SummaryReport
+  },
+  {
+    title: '三级质控问题汇总',
+    icon: <FXBG />,
+    path: '/quality/problemSummary',
+    component: ProblemSummary
+  },
+  {
+    title: '查询统计',
+    icon: <CXTJ />,
+    path: '/quality/queryStatistics',
+    component: QueryStatistics
   }
 ]
 

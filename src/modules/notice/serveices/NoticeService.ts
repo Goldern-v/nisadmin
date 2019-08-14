@@ -2,7 +2,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 
 interface Mail {
   mail: {
-    id?: number | undefined
+    id?: number | string | undefined
     title: string
     content: string
   }

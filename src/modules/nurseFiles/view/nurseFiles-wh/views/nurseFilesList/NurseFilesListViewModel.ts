@@ -45,7 +45,7 @@ class NurseFilesListViewModel {
     nurseFilesService
       .countExcel({
         ...this.postObj,
-        ...{ deptCode: statisticsViewModal.selectedDeptCode },
+        // ...{ deptCode: statisticsViewModal.selectedDeptCode },
         ...{
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,

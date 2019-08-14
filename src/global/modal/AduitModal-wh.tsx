@@ -220,14 +220,17 @@ export default function AduitModal(props: Props) {
           </div>
         </MainPart>
         <AduitCon>
-          <TimeLineCon>
-            <div className='label'>审核过程：</div>
-            <LinCon>
-              {auditeListDtos.map((item: any, index: any, arr: any) => (
-                <TimeLineItem data={item} index={index} key={index} arr={arr} />
-              ))}
-            </LinCon>
-          </TimeLineCon>
+          {auditeListDtos.length > 0 && (
+            <TimeLineCon>
+              <div className='label'>审核过程：</div>
+              <LinCon>
+                {auditeListDtos.map((item: any, index: any, arr: any) => (
+                  <TimeLineItem data={item} index={index} key={index} arr={arr} />
+                ))}
+              </LinCon>
+            </TimeLineCon>
+          )}
+
           <FormCon>
             <div className='row'>
               <div className='key'>当前进度：</div>

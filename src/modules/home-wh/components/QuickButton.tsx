@@ -77,13 +77,14 @@ export default observer(function QuickButton() {
   ]
   //封装函数
   const renderSubMenu = () => {
-    return (authStore.isRoleManage ? blockList : blockListSelf).map((item: any, index: any) => {
+    return (authStore.isRoleManage ? blockList : blockListSelf).map((item: any, index: any, arr: any) => {
       return (
         <QuickMenu
           key={index}
           className='button'
           style={{ background: `${item.background}` }}
           onClick={() => appStore.history.push(item.path)}
+          isLast={arr.length - 1 == index}
         >
           <WorldTitle>{item.title}</WorldTitle>
           <ReactSvg>{item.icon}</ReactSvg>
@@ -103,12 +104,12 @@ export default observer(function QuickButton() {
   return <Wrapper>{renderSubMenu()}</Wrapper>
 })
 
-const QuickMenu = styled.div`
+const QuickMenu = styled.div<{ isLast: boolean }>`
   position: relative;
   flex: 1;
   height: 100%;
   background: yellow;
-  margin-right: 25px;
+  margin-right: ${(p) => (p.isLast ? '0' : '25px')};
   &:hover {
     cursor: pointer;
   }
@@ -125,6 +126,7 @@ const Wrapper = styled.div`
   margin-bottom: 20px;
   width: 100%;
   display: flex;
+
   .button:nth-child(6) {
     margin-right: 0 !important;
   }

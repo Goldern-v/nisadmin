@@ -31,23 +31,39 @@ export default observer(function LeftMenu() {
       size: noticeViewModel.collectSize
     }
   ]
+  let menuItemListSelf = [
+    {
+      icon: require('./images/收件箱.png'),
+      text: '收件箱',
+      size: noticeViewModel.receiveSize
+    },
+    {
+      icon: require('./images/收藏.png'),
+      text: '我的收藏',
+      size: noticeViewModel.collectSize
+    }
+  ]
 
   // type MenuItemList = typeof menuItemList
   return (
     <Wrapper>
-      <Button
-        type='primary'
-        icon='form'
-        style={{ width: 170, margin: '15px auto', display: 'block' }}
-        onClick={() => {
-          appStore.history.push('/sentNotice')
-        }}
-        disabled={!authStore.isRoleManage}
-      >
-        新建通知
-      </Button>
+      {authStore.isRoleManage ? (
+        <Button
+          type='primary'
+          icon='form'
+          style={{ width: 170, margin: '15px auto', display: 'block' }}
+          onClick={() => {
+            appStore.history.push('/sentNotice')
+          }}
+        >
+          新建通知
+        </Button>
+      ) : (
+        <div style={{ height: 20 }} />
+      )}
+
       <Title>文件夹</Title>
-      {menuItemList.map((item) => (
+      {(authStore.isRoleManage ? menuItemList : menuItemListSelf).map((item) => (
         <ItemBox
           className={noticeViewModel.selectedMenu === item.text ? 'active' : ''}
           onClick={() => noticeViewModel.setSelectedMenu(item.text)}

@@ -198,14 +198,25 @@ export default observer(function NurseFilesListView() {
         surplusWidth={80}
         surplusHeight={425}
         type={['index']}
+        pagination={{
+          total: nurseFilesListViewModel.totalCount,
+          pageSizeOptions: ['20', '40', '60', '80', '100'],
+          pageSize: nurseFilesListViewModel.pageSize,
+          current: nurseFilesListViewModel.pageIndex
+        }}
         onRow={(record: any) => {
           return {
             onDoubleClick: () => record.empNo && onDoubleClick(record)
           }
         }}
+        onChange={(pagination) => {
+          nurseFilesListViewModel.pageIndex = pagination.current || 1
+          nurseFilesListViewModel.pageSize = pagination.pageSize || 1
+          nurseFilesListViewModel.loadNursingList()
+        }}
         loading={nurseFilesListViewModel.listSpinning}
       />
-      <PaginationCon rowNum={rowNum} />
+      {/* <PaginationCon rowNum={rowNum} /> */}
     </Wrapper>
   )
 })

@@ -134,6 +134,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     pagination.current && onload(pagination.current, searchText, pagination.pageSize)
   }
   const onload = (current: any, searchText: any, pageSize = 20) => {
+    setCurrent(current)
     setLoading(true)
     let getDataFun = props.needAudit
       ? aMServices.pendingPage(current, pageSize, showType, keyword)

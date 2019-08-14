@@ -69,15 +69,22 @@ export default function DetailsPage(props: Props) {
         })
   }
 
-  const editMail = () => {
-    appStore.history.push(`/sentNotice?templateId=${data.id}`)
+  const editMail = (templateType: string) => {
+    appStore.history.push(`/sentNotice?templateId=${data.id}&templateType=${templateType}`)
   }
   return (
     <Wrapper>
       <ToolCon>
         {data.showType == '草' && (
           <Tooltip placement='bottom' title='编辑'>
-            <div className='item-box' onClick={editMail}>
+            <div className='item-box' onClick={() => editMail('草')}>
+              <img src={require('./images/编辑.png')} alt='' />
+            </div>
+          </Tooltip>
+        )}
+        {data.showType == '发' && (
+          <Tooltip placement='bottom' title='再次编辑'>
+            <div className='item-box' onClick={() => editMail('发')}>
               <img src={require('./images/编辑.png')} alt='' />
             </div>
           </Tooltip>

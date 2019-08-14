@@ -10,6 +10,7 @@ import { DragDropContext } from 'react-dnd'
 import { components } from './diagTableUtils'
 import $ from 'jquery'
 import HTML5Backend from 'react-dnd-html5-backend'
+import { observer } from 'src/vendors/mobx-react-lite'
 export interface Props extends TableProps<any> {
   // style?: any
   wrapperStyle?: any
@@ -28,7 +29,7 @@ export interface Props extends TableProps<any> {
 }
 
 let scrollTop = 0
-export default function BaseTable(props: Props) {
+export default observer(function BaseTable(props: Props) {
   let wih = windowHeight()
   let wiw = windowWidth()
   let tableRef: any = React.createRef()
@@ -40,6 +41,7 @@ export default function BaseTable(props: Props) {
     },
     props
   )
+
   option.dataSource =
     option.dataSource &&
     option.dataSource.map((item: any, index: number) => {
@@ -90,26 +92,40 @@ export default function BaseTable(props: Props) {
       })
     }
     if (option.type && option.type.includes('index')) {
-      /** 序号 */
-      option.columns &&
-        (option.columns[0] || {}).title != '序号' &&
-        option.columns.unshift({
-          title: '序号',
-          dataIndex: '1',
-          key: '1',
-          render: (text: any, record: any, index: number) => {
-            let current = (option.pagination && option.pagination.current) || 0
-            let pageSize = (option.pagination && option.pagination.pageSize) || 0
+      /** 自动序号 */
+      let current = (option.pagination && option.pagination.current) || 0
+      let pageSize = (option.pagination && option.pagination.pageSize) || 0
+      let render = ((current: any, pageSize: any) => {
+        return (text: any, record: any, index: number) => {
+          if (current && pageSize) {
+            return (current - 1) * pageSize + index + 1
+          } else {
+            return index + 1
+          }
+        }
+      })(current, pageSize)
 
-            if (current && pageSize) {
-              return (current - 1) * pageSize + index + 1
-            } else {
-              return index + 1
-            }
-          },
-          align: 'center',
-          width: 50
-        })
+      if (option.columns && option.columns[0]) {
+        if (option.columns[0].title == '序号') {
+          option.columns[0] = {
+            title: '序号',
+            dataIndex: '1',
+            key: '1',
+            render: render,
+            align: 'center',
+            width: 50
+          }
+        } else if (option.columns[0].title != '序号') {
+          option.columns.unshift({
+            title: '序号',
+            dataIndex: '1',
+            key: '1',
+            render: render,
+            align: 'center',
+            width: 50
+          })
+        }
+      }
     }
 
     // if (option.type.includes('fixedWidth')) {
@@ -245,8 +261,7 @@ export default function BaseTable(props: Props) {
       <TableComponent {...option} />
     </Wrapper>
   )
-}
-
+})
 const Wrapper = styled.div`
   &#baseTable {
     background: rgba(255, 255, 255, 1);

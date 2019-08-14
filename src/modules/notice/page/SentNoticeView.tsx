@@ -33,6 +33,7 @@ export default function SentNoticeView() {
   const [checkedUserList, setCheckedUserList]: any = useState([])
   const [pageLoading, setPageLoading]: any = useState(false)
   const [templateId, setTemplateId] = useState('')
+  const [templateType, setTemplateType] = useState('')
   const selectPeopleModal = createModal(SelectPeopleModal)
   const fileInputRef = React.createRef<HTMLInputElement>()
   const openSelectPeopleModal = () => {
@@ -81,7 +82,8 @@ export default function SentNoticeView() {
       .sendMail({
         mail: {
           title,
-          content
+          content,
+          id: templateType == '草' ? templateId : ''
         },
         empNos: checkedUserList.reduce((prev: any, current: any) => {
           return [...prev, ...current.userList.map((item: any) => item.empNo)]
@@ -137,6 +139,7 @@ export default function SentNoticeView() {
     if (appStore.queryObj.templateId) {
       setPageLoading(true)
       setTemplateId(appStore.queryObj.templateId)
+      setTemplateType(appStore.queryObj.templateType)
       noticeService.getDetail('草稿箱', appStore.queryObj.templateId).then((res: any) => {
         setPageLoading(false)
         setTitle(res.data.title)

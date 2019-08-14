@@ -23,10 +23,8 @@ export default observer(function PaginationCon(props: Props) {
         showSizeChanger
         showQuickJumper
         defaultCurrent={1}
-        total={totalCount}
-        pageSizeOptions={pageSizeOptions}
-        onChange={onChange}
-        onShowSizeChange={onChange}
+        total={nurseFilesListViewModel.totalCount}
+        pageSizeOptions={['20', '40', '60', '80', '100']}
         pageSize={nurseFilesListViewModel.pageSize}
       />
     </Wrapper>

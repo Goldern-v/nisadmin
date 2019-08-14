@@ -1,3 +1,4 @@
+import { message } from 'antd/es'
 import { FileType } from 'src/types/file'
 
 /**
@@ -21,6 +22,11 @@ export function getFileSize(fileByte: number | string) {
 
 // 导出文件
 export const fileDownload = (res: any, fileName?: string) => {
+  /** 判断是否成功 */
+  if (res.headers['Cr-Download-Code'] == '300') {
+    return message.warn(res.headers['Cr-Download-Message'] || '暂无记录')
+  }
+
   let filename = fileName
     ? fileName
     : res.headers['content-disposition']

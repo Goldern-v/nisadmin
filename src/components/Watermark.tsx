@@ -39,7 +39,7 @@ const Wrapper = styled.div`
     top: 0;
     right: 0;
     transform: rotate(45deg);
-    color: #ddd;
+    color: #999;
     display: inline-block;
     width: 0;
     white-space: nowrap;
