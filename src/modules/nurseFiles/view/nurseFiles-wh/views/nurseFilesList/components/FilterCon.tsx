@@ -68,6 +68,7 @@ export default observer(function FilterCon() {
       job: value.job,
       highestEducation: value.highestEducation,
       politicsLook: value.politicsLook,
+      workAddress: value.workAddress,
       shoeSize: value.shoeSize,
       workConversion: value.workConversion,
       ageStart: value.age ? value.age[0] : '',

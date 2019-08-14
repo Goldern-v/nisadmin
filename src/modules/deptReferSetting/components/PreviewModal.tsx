@@ -17,18 +17,22 @@ export default function PreviewModal(props: Props) {
   console.log(url, 'urlurl')
   let pdfHeight = window.innerHeight * 0.8
 
-  const Content = function () {
+  const Content = function() {
     switch (type) {
       case 'jpg':
       case 'gif':
       case 'jpeg':
-        return <img src={url} width='100%' />
+        return (
+          <Watermark>
+            <img src={url} width='100%' />
+          </Watermark>
+        )
       case 'pdf':
       case 'txt':
         // return <object type="application/pdf" width="100%" style={{ height: `${pdfHeight}px` }} data={url} />
         return (
           <Watermark>
-            <iframe src={url} style={{ height: `${pdfHeight}px`, width: '100%' }} />
+            <iframe src={url} style={{ height: `${pdfHeight}px`, width: '99%' }} />
           </Watermark>
         )
       default:
