@@ -16,19 +16,20 @@ export default function PreviewModal(props: Props) {
   console.log(url, 'urlurl')
   let pdfHeight = window.innerHeight * 0.8
 
-  const Content = function() {
+  const Content = function () {
     switch (type) {
       case 'jpg':
       case 'gif':
       case 'jpeg':
         return <img src={url} width='100%' />
       case 'pdf':
+      case 'txt':
         // return <object type="application/pdf" width="100%" style={{ height: `${pdfHeight}px` }} data={url} />
         return <iframe src={url} style={{ height: `${pdfHeight}px`, width: '100%' }} />
       default:
         return (
           <div style={{ height: '300px', lineHeight: '300px', textAlign: 'center' }}>
-            该文件不支持预览，请在app内查看
+            {`.${type} `}文件不支持预览，请在app内查看
           </div>
         )
     }
