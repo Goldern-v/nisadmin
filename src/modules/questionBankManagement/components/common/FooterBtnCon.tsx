@@ -14,8 +14,8 @@ interface Props {
 export default function FooterBtnCon(props: Props) {
   return (
     <Wrapper>
-      {props.btnList.map((item) => (
-        <Button onClick={item.onClick}>{item.name}</Button>
+      {props.btnList.map((item, idx) => (
+        <Button onClick={item.onClick} key={idx}>{item.name}</Button>
       ))}
     </Wrapper>
   )

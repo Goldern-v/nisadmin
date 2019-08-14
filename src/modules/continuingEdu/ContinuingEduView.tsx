@@ -14,10 +14,11 @@ import { ReactComponent as TKGL } from './assets/icon_svg/题库管理.svg'
 import { ReactComponent as PXGL } from './assets/icon_svg/培训管理.svg'
 import { ReactComponent as JJSZ } from './assets/icon_svg/晋级设置.svg'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 import 人员管理 from './人员管理'
 import QuestionBankManagement from '../questionBankManagement/QuestionBankManagement'
+import ChoiceQustionEdit from '../questionBankManagement/views/ChoiceQuestionEdit'
 
 const LEFT_MENU_CONFIG = [
   {
@@ -55,6 +56,12 @@ const LEFT_MENU_CONFIG = [
     icon: <SPXX />,
     path: '/continuingEdu/视频学习',
     component: Null
+  },
+  {
+    title: '选择题新建和编辑',
+    hide: true,
+    path: '/continuingEdu/choiceQustionEdit',
+    component: ChoiceQustionEdit
   },
   {
     title: '题库管理',

@@ -53,6 +53,7 @@ const Routes_Config = [
 
 export default observer(function Main(props: any) {
   const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
+  const { history } = appStore
   const [data, setData] = useState({
     id: '',
     empCode: '',
@@ -120,8 +121,8 @@ export default observer(function Main(props: any) {
         </span>
       </div>
       <div className="btn-group">
-        <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button>
-        <Button>返回</Button>
+        {/* <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button> */}
+        <Button onClick={() => history.replace('/continuingEdu/人员管理')}>返回</Button>
       </div>
     </div>
     <div className="main-contain">

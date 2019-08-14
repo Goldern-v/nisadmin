@@ -21,7 +21,7 @@ export interface Props extends RouteComponentProps { }
 export default observer(function 人员管理(props: Props) {
   const [query, setQuery] = useState({
     deptCode: '',//科室
-    area: '',//片区
+    // area: '',//片区
     pageIndex: 1,
     pageSize: 15,
     keyword: '',
@@ -155,7 +155,7 @@ export default observer(function 人员管理(props: Props) {
       deptName: record.deptName,
       status: record.status
     }
-    appStore.history.push(`/continuingEduEmpDetail?${qs.stringify(search)}`)
+    appStore.history.push(`/continuingEduEmpDetail/baseInfo?${qs.stringify(search)}`)
   }
 
   const handleDeptChange = (deptCode: any) => {
@@ -248,12 +248,12 @@ export default observer(function 人员管理(props: Props) {
         <span className='float-item'>
           <DeptSelect onChange={handleDeptChange} />
         </span>
-        <span className='float-item title'>片区:</span>
+        {/* <span className='float-item title'>片区:</span>
         <span className='float-item'>
           <Select defaultValue='' className='dept-list'>
             <Option value=''>全部</Option>
           </Select>
-        </span>
+        </span> */}
         <span className='float-item input-search'>
           <Input defaultValue={query.keyword} onBlur={handleSearchInputChange} />
         </span>

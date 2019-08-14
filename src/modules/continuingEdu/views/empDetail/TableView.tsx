@@ -85,7 +85,7 @@ export default observer(function TableView() {
               dateStr += `(${Moment(record.realEndTime).diff(Moment(record.realBeginTime), 'hours')}小时)`
               return <Fragment>
                 <div className="name">
-                  <span title={record.name}>{record.name}</span>
+                  <span title={record.itemName}>{record.itemName}</span>
                 </div>
                 <div className="time">
                   <span title={dateStr}>时间:{dateStr}</span>
@@ -155,9 +155,9 @@ export default observer(function TableView() {
             render: (text: string, record: any) => {
               return <Fragment>
                 <div className="name">
-                  <span title={record.name}>{record.name}</span>
+                  <span title={record.itemName}>{record.itemName}</span>
                 </div>
-                <div>
+                <div className="time">
                   <span title={record.realBeginTime}>{record.realBeginTime}</span>
                 </div>
               </Fragment>
@@ -209,7 +209,7 @@ export default observer(function TableView() {
             render: (text: string, record: any) => {
               return <Fragment>
                 <div className="name">
-                  <span title={record.name}>{record.name}</span>
+                  <span title={record.itemName}>{record.itemName}</span>
                 </div>
                 <div className="time">
                   <span title={record.beginTime}>时间:{record.beginTime}</span>
@@ -291,7 +291,7 @@ export default observer(function TableView() {
             render: (text: string, record: any) => {
               return <Fragment>
                 <div className="name">
-                  <span title={record.name}>{record.name}</span>
+                  <span title={record.itemName}>{record.itemName}</span>
                 </div>
                 <div className="time">
                   <span title={record.beginTime}>时间:{record.beginTime}</span>
@@ -308,7 +308,7 @@ export default observer(function TableView() {
             render: (text: string, record: any) => {
               let progress = 0;
               if (!isNaN(record.learningProgress)) progress = Number(record.learningProgress) * 100;
-              return `${progress}%`
+              return `${parseInt(progress.toString(), 10)}%`
             }
           },
           {
@@ -367,71 +367,58 @@ export default observer(function TableView() {
       setLoading(false);
     }
 
-    let errorCallback = function () {
+    let errorCallback = function (err?: any) {
       setLoading(false);
     }
 
     switch (pName) {
       case '积分记录':
         empManageService.getRewardPointsRecord(newQuey).then(res => {
-          successCallback(res.data.educonItems[0].list, res.data.rewardPoints, res.data.educonItems[0].totalCount)
-        }, err => errorCallback); break;
+          successCallback(res.data.page.list.map((item: any) => {
+            return { ...item, credit: item.rewardPoints }
+          }), res.data.rewardPoints, res.data.page.totalCount)
+        }, err => errorCallback(err)); break;
       case '学分记录':
         empManageService.getCreditRecord(newQuey).then(res => {
-          successCallback(res.data.educonItems[0].list, res.data.credits, res.data.educonItems[0].totalCount)
-        }, err => errorCallback); break;
+          successCallback(res.data.page.list, res.data.credits, res.data.page.totalCount)
+        }, err => errorCallback(err)); break;
       case '培训记录':
         empManageService.getTrainData(newQuey).then(res => {
-          let list = res.data.EduconTrainDatas.list;
+          let list = res.data.list;
 
           successCallback(list.map(((item: any, idx: number) => {
             return {
               ...item,
-              name: res.data.itemNames[idx] || '',
-              place: res.data.places[idx] || '',
               registration: item.registrationTime ? '已报名' : '未报名',
               signIn: item.signInTime ? '已签到' : '未签到'
             }
-          })), '', res.data.EduconTrainDatas.totalCount)
-        }, err => errorCallback); break;
+          })), '', res.data.totalCount)
+        }, err => errorCallback(err)); break;
       case '练习记录':
         empManageService.getExercisesData(newQuey).then(res => {
-          let list = res.data.educonExercisesDatas.list;
+          let list = res.data.list;
 
-          successCallback(list.map(((item: any, idx: number) => {
-            return {
-              ...item,
-              name: res.data.itemNames[idx] || ''
-            }
-          })), '', res.data.educonExercisesDatas.totalCount)
-        }, err => errorCallback); break;
+          successCallback(list, '', res.data.totalCount)
+        }, err => errorCallback(err)); break;
       case '考试记录':
         empManageService.getExamData(newQuey).then(res => {
-          let list = res.data.educonExamDatas.list;
+          let list = res.data.list;
 
           successCallback(list.map(((item: any, idx: number) => {
             return {
               ...item,
-              name: res.data.itemNames[idx] || '',
-              registration: res.data.educonTrainDatas.list[idx].registrationTime ? '已报名' : '未报名',
-              signIn: res.data.educonTrainDatas.list[idx].signInTime ? '已签到' : '未签到',
-              beginTime: res.data.beginTimes[idx] || '',
+              registration: item.registrationTime ? '已报名' : '未报名',
+              signIn: item.signInTime ? '已签到' : '未签到'
               // place: res.data.places[idx] || ''
             }
-          })), '', res.data.educonExamDatas.totalCount)
+          })), '', res.data.totalCount)
         }); break;
       case '视频学习':
         empManageService.getVideoLearnData(newQuey).then(res => {
-          let list = res.data.educonVideoLearnDatas.list;
+          let list = res.data.list;
 
-          successCallback(list.map(((item: any, idx: number) => {
-            return {
-              ...item,
-              name: res.data.itemNames[idx] || '',
-              beginTime: res.data.beginTimes[idx] || ''
-            }
-          })), '', res.data.educonVideoLearnDatas.totalCount)
-        }, err => errorCallback); break;
+          successCallback(list, '', res.data.totalCount)
+        }, err => errorCallback(err)); break;
     }
   }
 
