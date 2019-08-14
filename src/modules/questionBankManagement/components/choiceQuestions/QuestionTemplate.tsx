@@ -1,31 +1,47 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-export interface Props extends RouteComponentProps {}
+export interface Props {
+  data: any
+}
 
-export default function QuestionTemplate() {
-  
-  useEffect(() => {
-    
+export default function QuestionTemplate(props: Props) {
+  const { data } = props;
+  const { questionContent, choiceQuestionList, labelList } = data;
+  const choiceList = choiceQuestionList.concat().sort((a: any, b: any) => {
+    return a.serialNum - b.serialNum
   })
+
+  const Options = () => {
+    return choiceList.map((item: any, idx: number) => {
+      return <div className='option' key={idx}>{`${item.questionOption}. ${item.answerContent}`}</div>
+    })
+  }
+
+  const CorrectOptions = () => {
+    let correctArr: any[] = [];
+    correctArr = choiceList.filter((item: any) => item.right == true).map((item: any) => item.questionOption);
+
+    return correctArr.join('、')
+  }
+
+  const Labels = () => {
+    return labelList.filter((item: any) => item.hided == false).map((item: any, idx: number) => {
+      return <div className='label-box' key={idx}>
+        <span className='label-name'>{item.labelContent}</span>
+        <span>({item.questionCount || 0})</span>
+      </div>
+    });
+  }
+
   return (
     <Wrapper>
-      <div className='title'>
-        患者，女性，26岁，妊娠5个月。支气管扩张5年。今晨突然鲜血从口鼻涌出，随即烦躁不安， 极度呼吸困难，唇
-        指发绀。最关键的抢救措施是 ( ){' '}
-      </div>
-      <div className='option'>A. 胸腔穿刺抽气 </div>
-      <div className='option'>B. 立即鼻导管给氧 </div>
-      <div className='option'>C. 进行气管插管 </div>
-      <div className='option'>D. 立即清除血块，保持呼吸道通畅 </div>
-      <div className='option'>E. 注射呼吸兴奋剂 </div>
-      <div className='answer'>标准答案：A</div>
+      <div className='title'>{questionContent}</div>
+      {Options()}
+      <div className='answer'>标准答案：{CorrectOptions()}</div>
       <div className='label-con'>
         <span>标签：</span>
-        <div className='label-box'>
-          <span className='label-name'>产科</span>
-          <span>(12)</span>
-        </div>
+        {Labels()}
       </div>
     </Wrapper>
   )

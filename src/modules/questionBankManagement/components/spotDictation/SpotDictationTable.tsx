@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/es/table'
 interface Props {
-  active: boolean
+  model: any
 }
 export default function SpotDictationTable(props: Props) {
   const [pageSize, setPageSize] = useState(10)
@@ -65,7 +65,7 @@ export default function SpotDictationTable(props: Props) {
     }
   ]
   const rowSelection = {
-    onChange: (selectedRowKeys: any, selectedRows: any) => {}
+    onChange: (selectedRowKeys: any, selectedRows: any) => { }
   }
   return (
     <Wrapper>
