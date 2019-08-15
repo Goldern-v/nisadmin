@@ -68,11 +68,7 @@ export default function ManagementSummary() {
         return obj
       }
     },
-    {
-      title: 'id',
-      dataIndex: 'id',
-      align: 'center'
-    },
+
     {
       title: '检查者',
       dataIndex: 'inspectorName',
