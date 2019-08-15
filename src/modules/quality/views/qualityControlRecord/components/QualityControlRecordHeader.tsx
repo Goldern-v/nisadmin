@@ -27,17 +27,17 @@ export default observer(function TopCon(props: any) {
         }}
         style={{ width: 220 }}
       />
-      <span style={{ margin: '0 3px 0 26px' }}>类型:</span>
+      <span style={{ margin: '0 3px 0 20px' }}>类型:</span>
       <Select
         showSearch
-        style={{ width: 200 }}
-        value={qualityControlRecordVM.filterDeptCode}
+        style={{ width: 110 }}
+        value={qualityControlRecordVM.filterTypeCode}
         onChange={(value: any) => {
-          qualityControlRecordVM.filterDeptCode = value
+          qualityControlRecordVM.filterTypeCode = value
           props.refreshData()
         }}
       >
-        {qualityControlRecordVM.filterDeptList.map((item: any) => (
+        {qualityControlRecordVM.filterTypeList.map((item: any) => (
           <Select.Option value={item.code} key={item.code}>
             {item.name}
           </Select.Option>
@@ -62,10 +62,10 @@ export default observer(function TopCon(props: any) {
 
       {qualityControlRecordVM.readWay == 1 && (
         <React.Fragment>
-          <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
+          <span style={{ margin: '0 3px 0 20px' }}>科室:</span>
           <Select
             showSearch
-            style={{ width: 200 }}
+            style={{ width: 140 }}
             value={qualityControlRecordVM.filterDeptCode}
             onChange={(value: any) => {
               qualityControlRecordVM.filterDeptCode = value
@@ -83,12 +83,12 @@ export default observer(function TopCon(props: any) {
 
       {qualityControlRecordVM.readWay == 2 && (
         <React.Fragment>
-          <span style={{ margin: '0 3px 0 26px' }}>检查小组:</span>
+          <span style={{ margin: '0 3px 0 20px' }}>检查小组:</span>
           <FormSelect refreshData={props.refreshData} />
         </React.Fragment>
       )}
 
-      <span style={{ margin: '0 3px 0 26px' }}>状态:</span>
+      <span style={{ margin: '0 3px 0 20px' }}>状态:</span>
       <StateSelect refreshData={props.refreshData} />
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询

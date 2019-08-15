@@ -31,6 +31,7 @@ export default observer(function QualityControlRecord() {
       wardCode: qualityControlRecordVM.filterDeptCode,
       qcGroupRole: qualityControlRecordVM.filterForm,
       type: qualityControlRecordVM.readWay,
+      level: qualityControlRecordVM.filterTypeCode,
       nodeCode: qualityControlRecordVM.filterState,
       beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
       endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
