@@ -60,14 +60,14 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '学院分布区域',
+      title: '学员分布区域',
       dataIndex: 'schoolArea',
       key: 'schoolArea',
       width: 210,
       align: 'center'
     },
     {
-      title: '学院职称分布',
+      title: '学员职称分布',
       dataIndex: 'personTitleArea',
       key: 'personTitleArea',
       width: 210,

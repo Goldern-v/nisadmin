@@ -166,7 +166,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           tableFormat: [
             {
               年份: `year`,
-              学院职称分布: `personTitleArea`
+              学员职称分布: `personTitleArea`
             },
             {
               项目名称: `projectName`,
@@ -178,7 +178,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             {
               学员总数: `personTotal`,
-              学院分布区域: `schoolArea`
+              学员分布区域: `schoolArea`
             }
           ],
           fileData: row.urlImageOne

@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { Icon } from 'antd'
 import service from 'src/services/api'
+import tinyPic from 'src/utils/img/tinyPic'
 
 export interface Props {
   tip: string
@@ -89,7 +90,16 @@ export default class MultipleImageUploader extends React.Component<Props, State>
       try {
         const promiseList = []
         for (let i = 0; i < files.length; i++) {
-          promiseList.push(service.commonApiService.uploadFile({ ...(this.props.uploadOption || {}), file: files[i] }))
+          /** 图片压缩 */
+          let img = await tinyPic(files[i])
+          var fileObj = new File([img.img], files[i].name, { type: files[i].type, lastModified: Date.now() })
+          promiseList.push(
+            service.commonApiService.uploadFile({
+              ...(this.props.uploadOption || {}),
+              file: fileObj
+            })
+          )
+          // promiseList.push(service.commonApiService.uploadFile({ ...(this.props.uploadOption || {}), file: files[i] }))
         }
         let res = await Promise.all(promiseList)
         let value = res.map((item: any) => item.data.path)

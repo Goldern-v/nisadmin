@@ -154,12 +154,12 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学院分布区域`} name='schoolArea'>
+            <Form.Field label={`学员分布区域`} name='schoolArea'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学院职称分布`} name='personTitleArea'>
+            <Form.Field label={`学员职称分布`} name='personTitleArea'>
               <Input />
             </Form.Field>
           </Col>

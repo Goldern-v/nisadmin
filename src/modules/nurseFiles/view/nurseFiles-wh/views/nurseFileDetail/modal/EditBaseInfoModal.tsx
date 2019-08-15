@@ -19,6 +19,7 @@ import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUpl
 import { AutoComplete } from 'src/vendors/antd'
 import { formatIdCord, formatAge } from 'src/utils/idCard/idCard'
 import SelectOrAutoInput from '../components/SelectOrAutoInput'
+import tinyPic from 'src/utils/img/tinyPic'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   id?: number
@@ -42,8 +43,10 @@ export default function EditWorkHistoryModal(props: Props) {
   const onFieldChange = () => {}
 
   const uploadCard = async (file: any) => {
+    let img = await tinyPic(file)
+    var fileObj = new File([img.img], file.name, { type: file.type, lastModified: Date.now() })
     let obj: any = {
-      file,
+      file: fileObj,
       empNo: appStore.queryObj.empNo,
       type: '0'
     }

@@ -42,10 +42,10 @@ export default observer(function QuickButton() {
       path: '/nursingRules'
     },
     {
-      title: '系统设置',
+      title: '病区管理',
       icon: <TJCX />,
       background: '#33B7AA',
-      path: '/setting/扁平管理设置'
+      path: '/wardManagement'
     }
   ]
 
@@ -69,10 +69,10 @@ export default observer(function QuickButton() {
       path: '/nursingRules'
     },
     {
-      title: '系统设置',
+      title: '病区管理',
       icon: <TJCX />,
       background: '#33B7AA',
-      path: '/setting/扁平管理设置'
+      path: '/wardManagement'
     }
   ]
   //封装函数

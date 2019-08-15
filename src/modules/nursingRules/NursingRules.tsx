@@ -396,7 +396,7 @@ export default class NursingRules extends Component<Props> {
               <span onClick={this.handlePreview.bind(this, record)} className='operate-text'>
                 预览
               </span>
-              {authStore.isRoleManage && (
+              {(authStore.isDepartment || authStore.isSupervisorNurse) && (
                 <React.Fragment>
                   {/* <span onClick={this.handleDownload.bind(this, record)} className='operate-text'>
                 下载
@@ -458,7 +458,7 @@ export default class NursingRules extends Component<Props> {
               查询
             </Button>
 
-            {authStore.isRoleManage && (
+            {(authStore.isDepartment || authStore.isSupervisorNurse) && (
               <React.Fragment>
                 <Button onClick={this.openNewRuleDialog}>新建</Button>
 

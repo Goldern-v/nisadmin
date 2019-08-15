@@ -6,6 +6,7 @@ import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import AddNursingModal from '../modal/AddNursingModal'
 import DeptSelect from 'src/components/DeptSelect'
 import { observer } from 'mobx-react-lite'
+import { authStore } from 'src/stores';
 
 const Option = Select.Option
 
@@ -49,7 +50,10 @@ export default observer(function SelectCon(props: any, context: any) {
           查询
         </Button>
         <Button onClick={() => nurseFilesListViewModel.exportExcel()}>导出EXCEL</Button>
-        <Button onClick={() => setVisible(true)}>+添加护士</Button>
+        {
+          authStore.isAdmin &&  <Button onClick={() => setVisible(true)}>+添加护士</Button>
+        }
+       
       </Wrapper>
       <AddNursingModal visible={visible} handleOk={handleOk} handleCancel={handleCancel} />
     </React.Fragment>
