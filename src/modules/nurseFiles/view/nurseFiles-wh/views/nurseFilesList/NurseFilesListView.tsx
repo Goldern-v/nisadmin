@@ -118,12 +118,20 @@ const columns: ColumnProps<any>[] = [
     align: 'center'
   },
   {
+    title: '护士执业资格证书编号',
+    dataIndex: 'zyzsNumber',
+    key: 'zyzsNumber',
+    width: 150,
+    align: 'center'
+  },
+  {
     title: '执业证书截至日期',
     dataIndex: 'zyzsEffectiveUpDate',
     key: 'zyzsEffectiveUpDate',
     width: 120,
     align: 'center'
   },
+
   {
     title: '政治面貌',
     dataIndex: 'politicsLook',
