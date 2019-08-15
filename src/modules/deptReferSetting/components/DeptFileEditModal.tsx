@@ -102,12 +102,12 @@ export default function NewNursingRulesAddModal(props: Props) {
       if (!formData.catalog)
         return Message.error('未选择目录');
 
-      // if (!params.id) {
-      if (!(file && nameEl.value))
-        return Message.error('未选择上传文件');
+      if (!params.id) {
+        if (!(file && nameEl.value))
+          return Message.error('未选择上传文件');
+      }
 
       data.append('file', file);
-      // }
 
       data.append('empNo', empNo);
 
@@ -132,22 +132,44 @@ export default function NewNursingRulesAddModal(props: Props) {
       data.append('deptCode', deptCode);
 
       if (params && Object.keys(params).length > 0) {
-        Promise.all([
-          api.delete(params.id),
-          api.upload(data)
-        ])
-          .then(res => {
-            if (res[1].code == 200) {
-              successCallback('修改成功')
+        //判断是否有文件名选择是重新上传还是修改
+        if (nameEl.value) {
+          //重新上传
+          Promise.all([
+            api.delete(params.id),
+            api.upload(data)
+          ])
+            .then(res => {
+              if (res[1].code == 200) {
+                successCallback(null, '修改成功')
+              } else {
+                let msg = '修改失败';
+                if (res[1].desc) msg = res[1].desc;
+                failedCallback(null, msg)
+              }
+            }, err => {
+              failedCallback(err)
+            })
+        } else {
+          //修改
+          api.update({
+            id: params.id,
+            fileName: formData.fileName,
+            catalog: formData.catalog
+          }).then(res => {
+            if (res.code == 200) {
+              successCallback(null, '修改成功')
             } else {
               let msg = '修改失败';
-              if (res[1].desc) msg = res[1].desc;
+              if (res.desc) msg = res.desc;
               failedCallback(null, msg)
             }
           }, err => {
             failedCallback(err)
           })
+        }
       } else {
+        //新建
         api.upload(data).then(res => {
           if (res.code == 200)
             successCallback()
