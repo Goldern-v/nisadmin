@@ -27,6 +27,22 @@ export default observer(function TopCon(props: any) {
         }}
         style={{ width: 220 }}
       />
+      <span style={{ margin: '0 3px 0 26px' }}>类型:</span>
+      <Select
+        showSearch
+        style={{ width: 200 }}
+        value={qualityControlRecordVM.filterDeptCode}
+        onChange={(value: any) => {
+          qualityControlRecordVM.filterDeptCode = value
+          props.refreshData()
+        }}
+      >
+        {qualityControlRecordVM.filterDeptList.map((item: any) => (
+          <Select.Option value={item.code} key={item.code}>
+            {item.name}
+          </Select.Option>
+        ))}
+      </Select>
 
       {qualityControlRecordVM.formSelectList.length >= 1 && (
         <div className='radio-con'>

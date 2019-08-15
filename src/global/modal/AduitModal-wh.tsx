@@ -45,6 +45,9 @@ export default function AduitModal(props: Props) {
   let [auditeListDtos, setAuditeListDtos]: [any, any] = useState([])
   /** 是否需要当前用户审核 */
   let [needAudite, setNeedAudite]: [any, any] = useState(false)
+
+  let [resData, setResData]: any = useState('')
+
   useEffect(() => {
     if (visible) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
@@ -58,6 +61,7 @@ export default function AduitModal(props: Props) {
         modalService.getByIdAuditeDis(props.type, props.empNo).then((res) => {
           setSpinning(false)
           let data = res.data
+          setResData(data)
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
             if (!keys[1]) keys[1] = ''
@@ -98,6 +102,7 @@ export default function AduitModal(props: Props) {
         modalService.getByIdAudite(props.type, props.id, props.empNo).then((res) => {
           setSpinning(false)
           let data = res.data
+          setResData(data)
           let tableData = props.tableFormat.map((item: any) => {
             let keys = Object.keys(item)
             if (!keys[1]) keys[1] = ''
@@ -238,6 +243,14 @@ export default function AduitModal(props: Props) {
                 <div className='status'>{auditStatus}</div>
               </div>
             </div>
+            {auditeListDtos.length == 0 && (
+              <div className='row'>
+                <div className='key' style={{ padding: 0 }}>
+                  审核意见：
+                </div>
+                <div className='vale'>{resData.detail}</div>
+              </div>
+            )}
 
             {needAudite && (
               <React.Fragment>
