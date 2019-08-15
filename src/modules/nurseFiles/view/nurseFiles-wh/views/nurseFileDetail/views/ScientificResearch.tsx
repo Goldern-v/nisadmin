@@ -44,7 +44,7 @@ export default observer(function scientificResearch() {
       width: 55
     },
     {
-      title: '获奖类别(主持/参与排名)',
+      title: '主持/参与排名',
       dataIndex: 'resultType',
       key: 'resultType',
       width: 90,

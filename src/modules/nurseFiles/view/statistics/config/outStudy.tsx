@@ -47,7 +47,7 @@ export const pageObj: PageObj = {
       nameList: ['cardNumberStartDate', 'cardNumberEndDate']
     },
     {
-      label: '进修时长',
+      label: '进修时长(天)',
       type: 'input',
       name: 'cardUnit'
     }
@@ -89,7 +89,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '进修时长',
+      title: '进修时长(天)',
       dataIndex: 'studyHour',
       key: 'studyHour',
       width: 80,

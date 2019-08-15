@@ -53,6 +53,24 @@ export default function ManagementSummary() {
     {
       title: '质控内容',
       dataIndex: 'typeName',
+      align: 'center',
+      render(value, row, index) {
+        const obj: any = {
+          children: value,
+          props: {}
+        }
+        if (row.rowSpan) {
+          obj.props.rowSpan = row.rowSpan
+        } else {
+          obj.props.rowSpan = 0
+          obj.props.colSpan = 0
+        }
+        return obj
+      }
+    },
+    {
+      title: 'id',
+      dataIndex: 'id',
       align: 'center'
     },
     {
@@ -92,8 +110,21 @@ export default function ManagementSummary() {
     },
     {
       title: '总扣分',
-      dataIndex: 'manageType',
-      align: 'center'
+      dataIndex: 'totalDeduction',
+      align: 'center',
+      render(value, row, index) {
+        const obj: any = {
+          children: value,
+          props: {}
+        }
+        if (row.rowSpan) {
+          obj.props.rowSpan = row.rowSpan
+        } else {
+          obj.props.rowSpan = 0
+          obj.props.colSpan = 0
+        }
+        return obj
+      }
     }
   ]
 
@@ -111,6 +142,23 @@ export default function ManagementSummary() {
     handleEditCancel()
   }
 
+  const formatData = (list: any[]) => {
+    let result: any[] = []
+    for (let i = 0; i < list.length; i++) {
+      let obj = list[i]
+      let { typeName, totalDeduction, typeId } = obj
+
+      for (let j = 0; j < obj.list.length; j++) {
+        if (j == 0) {
+          result.push({ ...obj.list[0], ...{ rowSpan: obj.list.length, typeName, totalDeduction, typeId } })
+        } else {
+          result.push(obj.list[j])
+        }
+      }
+    }
+    return result
+  }
+
   const getTableData = () => {
     setTableLoading(true)
 
@@ -118,8 +166,9 @@ export default function ManagementSummary() {
       (res) => {
         setTableLoading(false)
         if (res.data) {
-          setDataTotal(res.data.totalCount || 0)
-          setTableData(res.data)
+          setDataTotal(res.data.totalPage * 100)
+          console.log(formatData(res.data.list), 'formatData(res.data.list)')
+          setTableData(formatData(res.data.list))
         }
       },
       (err) => {
@@ -180,13 +229,11 @@ export default function ManagementSummary() {
           loading={tableLoading}
           surplusHeight={235}
           pagination={{
-            pageSizeOptions: ['10', '20', '30', '40', '50'],
-            onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
             onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
             total: dataTotal,
-            showSizeChanger: true,
+            showSizeChanger: false,
             showQuickJumper: true,
-            pageSize: query.pageSize,
+            pageSize: 100,
             current: query.pageIndex
           }}
         />

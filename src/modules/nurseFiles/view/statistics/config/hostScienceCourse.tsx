@@ -17,7 +17,7 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '主持课题名称',
+      label: '主持科研课题',
       type: 'input',
       name: 'goName'
     },
@@ -55,7 +55,7 @@ export const pageObj: PageObj = {
   ],
   tableList: [
     {
-      title: '主持课题名称',
+      title: '主持科研课题',
       dataIndex: 'name',
       key: 'name',
       width: 220,

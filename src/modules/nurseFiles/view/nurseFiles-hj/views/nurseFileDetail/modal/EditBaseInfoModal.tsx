@@ -232,8 +232,8 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`添加执业证书图片`} name='zyzsUrl'>
-              {/* <ImageUploader upload={uploadCard} text='添加执业证书图片' /> */}
+            <Form.Field label={`添加护士执业证书`} name='zyzsUrl'>
+              {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>

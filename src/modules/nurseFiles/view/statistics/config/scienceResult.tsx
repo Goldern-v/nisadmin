@@ -17,7 +17,7 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '获奖类别(主持/参与排名)',
+      label: '主持/参与排名',
       type: 'input',
       name: 'resultType'
     },
@@ -53,7 +53,7 @@ export const pageObj: PageObj = {
   ],
   tableList: [
     {
-      title: '获奖类别(主持/参与排名)',
+      title: '主持/参与排名',
       dataIndex: 'resultType',
       key: 'resultType',
       width: 90,

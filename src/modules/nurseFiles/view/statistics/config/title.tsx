@@ -29,13 +29,13 @@ export const pageObj: PageObj = {
       dataSource: statisticsViewModal.getDict('技术职称')
     },
     {
-      label: '考取专业技术资格证时间',
+      label: '考取专业资格证书时间',
       type: 'dateRangePicker',
       name: 'winNewTiTleDate',
       nameList: ['winNewTiTleStartDate', 'winNewTiTleEndDate']
     },
     {
-      label: '聘用专业技术资格证时间',
+      label: '聘用专业技术资格时间',
       type: 'dateRangePicker',
       name: 'employNewTiTleDate',
       nameList: ['employNewTiTleStartDate', 'employNewTiTleEndDate']

@@ -234,7 +234,7 @@ export default observer(function BaseInfo() {
           </tbody>
         </InfoTable>
         <ZyzsCon>
-          <span>执业证书图片：</span>
+          <span>护士执业证书：</span>
           <div className='img-con'>
             {info.zyzsUrl ? (
               info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)

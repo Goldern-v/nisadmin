@@ -50,38 +50,59 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '专著名称',
-      dataIndex: 'monographName',
-      key: 'monographName',
-      width: 200,
+      title: '项目名称',
+      dataIndex: 'projectName',
+      key: 'projectName',
+      width: 150,
       align: 'center'
     },
     {
-      title: '出版社名称',
-      dataIndex: 'pressName',
-      key: 'pressName',
-      width: 200,
+      title: '项目号',
+      dataIndex: 'projectNumber',
+      key: 'projectNumber',
+      width: 100,
       align: 'center'
     },
     {
-      title: '出版号',
-      dataIndex: 'pressNumber',
-      key: 'pressNumber',
-      width: 180,
-      align: 'center'
-    },
-    {
-      title: '出版日期',
-      dataIndex: 'pressDate',
-      key: 'pressDate',
+      title: '项目级别',
+      dataIndex: 'projectLevel',
+      key: 'projectLevel',
       width: 120,
       align: 'center'
     },
     {
-      title: '著者',
-      dataIndex: 'participation',
-      key: 'participation',
+      title: '课时数',
+      dataIndex: 'courseHour',
+      key: 'courseHour',
       width: 90,
+      align: 'center'
+    },
+    {
+      title: '学员总数',
+      dataIndex: 'personTotal',
+      key: 'personTotal',
+      width: 110,
+      align: 'center'
+    },
+    {
+      title: '学员分布区域',
+      dataIndex: 'schoolArea',
+      key: 'schoolArea',
+      width: 110,
+      align: 'center'
+    },
+    {
+      title: '学员职称分布',
+      dataIndex: 'personTitleArea',
+      key: 'personTitleArea',
+      width: 110,
+      align: 'center'
+    },
+    {
+      title: '授予学分',
+      dataIndex: 'creditGranted',
+      key: 'creditGranted',
+      width: 110,
       align: 'center'
     },
     {

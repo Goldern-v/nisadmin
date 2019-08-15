@@ -58,7 +58,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '现科室隶属部门',
+      title: '现现科室隶属部门门',
       dataIndex: 'deptBeDepartment',
       key: 'deptBeDepartment',
       width: 130,

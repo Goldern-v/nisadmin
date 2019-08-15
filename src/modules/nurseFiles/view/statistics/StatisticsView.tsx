@@ -63,7 +63,7 @@ export default function Statistics() {
         <React.Fragment>
           <HeadCon>
             <div className='title'>{pageObj.title}</div>
-            <Button onClick={() => exportExcel()}>导出EXCEL</Button>
+            <Button onClick={() => exportExcel()}>导出</Button>
           </HeadCon>
           <FilterCon pageObj={pageObj} onload={onload} filterRef={filterRef} />
           <TableCon

@@ -151,9 +151,9 @@ export default function EditToNewPostModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现科室隶属部门`} name='deptBeDepartment'>
+            <Form.Field label={`现现科室隶属部门门`} name='deptBeDepartment'>
               <Select value={type} placeholder='选择现工作科室'>
-                {nurseFileDetailViewModal.getDict('科室隶属部').map((item: any) => (
+                {nurseFileDetailViewModal.getDict('现科室隶属部门').map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
                   </Select.Option>

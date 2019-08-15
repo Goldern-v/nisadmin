@@ -29,10 +29,10 @@ export const pageObj: PageObj = {
       dataSource: statisticsViewModal.getDict('完整科室')
     },
     {
-      label: '科室隶属部',
+      label: '现科室隶属部门',
       type: 'select',
       name: 'deptBeDepartment',
-      dataSource: statisticsViewModal.getDict('科室隶属部')
+      dataSource: statisticsViewModal.getDict('现科室隶属部门')
     },
     {
       label: '转岗时间',
@@ -57,7 +57,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '现科室隶属部门',
+      title: '现现科室隶属部门门',
       dataIndex: 'deptBeDepartment',
       key: 'deptBeDepartment',
       width: 130,

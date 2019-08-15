@@ -23,7 +23,7 @@ export const pageObj: PageObj = {
       nameList: ['winningYearStartDate', 'winningYearEndDate']
     },
     {
-      label: '获奖名称',
+      label: '奖项名称',
       type: 'input',
       name: 'winningName'
     },
@@ -42,7 +42,7 @@ export const pageObj: PageObj = {
   ],
   tableList: [
     {
-      title: '获奖名称',
+      title: '奖项名称',
       dataIndex: 'winningName',
       key: 'winningName',
       width: 120,

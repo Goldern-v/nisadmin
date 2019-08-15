@@ -94,9 +94,9 @@ export default function EditPersonWinningModal(props: Props) {
       })
     }
     if (signShow === '修改') {
-      setTitle('修改主持课题名称')
+      setTitle('修改主持科研课题')
     } else if (signShow === '添加') {
-      setTitle('添加主持课题名称')
+      setTitle('添加主持科研课题')
     }
   }, [visible])
 
@@ -122,7 +122,7 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`主持课题名称`} name='name'>
+            <Form.Field label={`主持科研课题`} name='name'>
               <Input />
             </Form.Field>
           </Col>

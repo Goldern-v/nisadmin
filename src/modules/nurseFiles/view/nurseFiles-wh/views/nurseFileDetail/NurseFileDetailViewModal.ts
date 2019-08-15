@@ -18,7 +18,7 @@ let dictList = {
   完成情况: 'course_completion',
   性别: 'sex',
   编制名称: 'work_conversion_old',
-  科室隶属部: 'dept_be_department',
+  现科室隶属部门: 'dept_be_department',
   学位: 'degree',
   论文收录网站: 'Influencing_factors',
   获奖类别: 'winning_type',

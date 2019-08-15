@@ -44,7 +44,7 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '主持课题名称',
+      title: '主持科研课题',
       dataIndex: 'name',
       key: 'name',
       width: 220,

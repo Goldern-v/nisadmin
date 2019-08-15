@@ -92,12 +92,12 @@ export default observer(function BaseInfo() {
         },
 
         {
-          护士执业资格证书编号: data.zyzsNumber,
-          取得执业资格证书时间: data.zyzsDate
+          护士执业证书编号: data.zyzsNumber,
+          取得护士执业证书时间: data.zyzsDate
         },
         {
-          取得执业证书并开始从事护理岗位时间: data.zyzsNursingPostDate,
-          护士执业资格证书有效截止日期: data.zyzsEffectiveUpDate
+          取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
+          护士执业证书有效截止日期: data.zyzsEffectiveUpDate
         },
         {
           初始学历: data.initialEducation,
@@ -168,7 +168,7 @@ export default observer(function BaseInfo() {
           </tbody>
         </InfoTable>
         <ZyzsCon>
-          <span>执业证书图片：</span>
+          <span>护士执业证书：</span>
           <div className='img-con'>
             {info.zyzsUrl ? (
               info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
@@ -216,7 +216,8 @@ const Value = styled.div`
 `
 
 const ZyzsCon = styled.div`
-  height: 220px;
+  min-height: 220px;
+  overflow: hidden;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
   border: 1px solid rgba(219, 224, 228, 1);

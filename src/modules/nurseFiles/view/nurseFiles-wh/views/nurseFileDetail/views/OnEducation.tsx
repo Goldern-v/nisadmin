@@ -79,7 +79,7 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
     {
-      title: '进修时长',
+      title: '进修时长(天)',
       dataIndex: 'studyHour',
       key: 'studyHour',
       width: 80,

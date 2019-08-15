@@ -12,7 +12,8 @@ export default class ManagementSummaryService extends BaseApiService {
     const postObj = {
       deptCode: obj.deptCode,
       startDate,
-      endDate
+      endDate,
+      pageIndex: obj.pageIndex
     }
     return this.post(`/flatManageInstance/getInstanceListByYMD`, postObj)
   }

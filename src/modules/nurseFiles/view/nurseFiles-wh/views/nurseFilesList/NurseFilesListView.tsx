@@ -118,7 +118,7 @@ const columns: ColumnProps<any>[] = [
     align: 'center'
   },
   {
-    title: '护士执业资格证书编号',
+    title: '护士执业证书编号',
     dataIndex: 'zyzsNumber',
     key: 'zyzsNumber',
     width: 150,
@@ -178,7 +178,7 @@ const columns: ColumnProps<any>[] = [
     align: 'center'
   },
   {
-    title: '取得执业证书并开始从事护理岗位时间',
+    title: '取得执业证书并从事护理岗位时间',
     dataIndex: 'zyzsNursingPostDate',
     key: 'zyzsNursingPostDate',
     width: 100,

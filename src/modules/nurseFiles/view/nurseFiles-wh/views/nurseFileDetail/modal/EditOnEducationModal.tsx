@@ -159,7 +159,7 @@ export default function EditPersonWinningModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`进修时长`} name='studyHour'>
+            <Form.Field label={`进修时长(天)`} name='studyHour'>
               <Input />
             </Form.Field>
           </Col>

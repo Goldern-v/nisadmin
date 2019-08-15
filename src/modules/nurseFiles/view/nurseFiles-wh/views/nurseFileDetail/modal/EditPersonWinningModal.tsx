@@ -117,18 +117,18 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`获奖名称`} name='winningName'>
+            <Form.Field label={`奖项名称`} name='winningName'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`获奖类别`} name='winningType'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖级别').map((item) => item.name)} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖类别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`获奖级别`} name='winningLevel'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖类别').map((item) => item.name)} />
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('获奖级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>

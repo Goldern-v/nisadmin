@@ -115,7 +115,7 @@ export default function EditLearnJobModal(props: Props) {
         <Row>
           <Row gutter={12}>
             <Col span={15}>
-              <Form.Field label={`时间`} name='startDate' required suffix='到'>
+              <Form.Field label={`任期时间`} name='startDate' required suffix='到'>
                 <DatePicker />
               </Form.Field>
             </Col>

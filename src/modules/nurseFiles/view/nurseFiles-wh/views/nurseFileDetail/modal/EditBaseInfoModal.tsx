@@ -251,22 +251,22 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`护士执业资格证书编号`} name='zyzsNumber'>
+            <Form.Field label={`护士执业证书编号`} name='zyzsNumber'>
               <Input />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`取得执业资格证书时间`} name='zyzsDate'>
+            <Form.Field label={`取得护士执业证书时间`} name='zyzsDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`取得执业证书并开始从事护理岗位时间`} name='zyzsNursingPostDate'>
+            <Form.Field label={`取得执业证书并从事护理岗位时间`} name='zyzsNursingPostDate'>
               <DatePicker />
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`护士执业资格证书有效截止日期`} name='zyzsEffectiveUpDate'>
+            <Form.Field label={`护士执业证书有效截止日期`} name='zyzsEffectiveUpDate'>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -341,11 +341,11 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`添加执业证书图片`} name='zyzsUrl'>
-              {/* <ImageUploader upload={uploadCard} text='添加执业证书图片' /> */}
+            <Form.Field label={`添加护士执业证书`} name='zyzsUrl'>
+              {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
               <MultipleImageUploader
                 text='添加图片'
-                tip={'1.上传执业资格证书图片，从第一个卫生部盖章页至最末次延续注册盖章页; '}
+                tip={'1.上传护士执业证书，从第一个卫生部盖章页至最末次延续注册盖章页; '}
               />
             </Form.Field>
           </Col>

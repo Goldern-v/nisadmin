@@ -44,7 +44,7 @@ export default observer(function PersonWinning() {
       width: 55
     },
     {
-      title: '获奖名称',
+      title: '奖项名称',
       dataIndex: 'winningName',
       key: 'winningName',
       width: 120,

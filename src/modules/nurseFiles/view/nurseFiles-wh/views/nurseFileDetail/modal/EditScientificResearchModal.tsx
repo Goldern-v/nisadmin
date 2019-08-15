@@ -108,7 +108,7 @@ export default function EditPersonWinningModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`获奖类别(主持/参与排名)`} name='resultType' required>
+            <Form.Field label={`主持/参与排名`} name='resultType' required>
               <Input />
             </Form.Field>
           </Col>
