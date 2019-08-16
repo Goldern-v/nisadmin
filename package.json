@@ -60,7 +60,7 @@
     "react-router": "5.0.0",
     "react-router-dom": "5.0.0",
     "react-scripts": "2.1.8",
-    "react-zmage": "0.7.5",
+    "react-zmage": "0.8.4",
     "styled-components": "4.2.0",
     "tinymce": "5.0.4",
     "viser-react": "2.4.5",
