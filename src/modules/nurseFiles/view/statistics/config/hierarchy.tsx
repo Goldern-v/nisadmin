@@ -29,7 +29,7 @@ export const pageObj: PageObj = {
       dataSource: statisticsViewModal.getDict('层级')
     },
     {
-      label: '现层级时间开始时间',
+      label: '现层级开始时间',
       type: 'dateRangePicker',
       name: 'startDate',
       nameList: ['startDateStart', 'startDateEnd']
@@ -51,7 +51,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '现层级时间开始时间',
+      title: '现层级开始时间',
       dataIndex: 'startDate',
       key: 'startDate',
       width: 120,

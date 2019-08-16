@@ -102,6 +102,13 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   }
 }
 
+/* 放大图片组件 放大效果*/
+/* 
+  #zmageImage.zooming__wGVSq {
+    min-height: 1440px;
+    min-width: 1440px
+  } */
+
 `
 
 export default GlobalStyle

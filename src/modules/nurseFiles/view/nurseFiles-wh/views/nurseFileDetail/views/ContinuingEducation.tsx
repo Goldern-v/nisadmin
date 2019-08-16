@@ -46,30 +46,18 @@ export default observer(function PersonWinning() {
       title: '年份',
       dataIndex: 'year',
       key: 'year',
-      width: 120,
+      width: 90,
       align: 'center'
     },
+
     {
       title: '项目名称',
       dataIndex: 'projectName',
       key: 'projectName',
-      width: 150,
+      width: 210,
       align: 'center'
     },
-    {
-      title: '项目号',
-      dataIndex: 'projectNumber',
-      key: 'projectNumber',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '项目级别',
-      dataIndex: 'projectLevel',
-      key: 'projectLevel',
-      width: 120,
-      align: 'center'
-    },
+
     {
       title: '课时数',
       dataIndex: 'courseHour',
@@ -81,28 +69,21 @@ export default observer(function PersonWinning() {
       title: '学员总数',
       dataIndex: 'personTotal',
       key: 'personTotal',
-      width: 110,
+      width: 90,
       align: 'center'
     },
     {
       title: '学员分布区域',
       dataIndex: 'schoolArea',
       key: 'schoolArea',
-      width: 110,
+      width: 210,
       align: 'center'
     },
     {
       title: '学员职称分布',
       dataIndex: 'personTitleArea',
       key: 'personTitleArea',
-      width: 110,
-      align: 'center'
-    },
-    {
-      title: '授予学分',
-      dataIndex: 'creditGranted',
-      key: 'creditGranted',
-      width: 110,
+      width: 210,
       align: 'center'
     },
     {

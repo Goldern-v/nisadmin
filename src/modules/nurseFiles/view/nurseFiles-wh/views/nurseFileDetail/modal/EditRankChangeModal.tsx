@@ -139,7 +139,7 @@ export default function EditRankChangeModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现层级时间开始时间`} name='startDate'>
+            <Form.Field label={`现层级开始时间`} name='startDate'>
               <DatePicker />
             </Form.Field>
           </Col>

@@ -609,7 +609,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               现层级名称: `nursehierarchyNew`
             },
             {
-              现层级时间开始时间: `startDate`
+              现层级开始时间: `startDate`
             }
           ],
           fileData: row.urlImageOne

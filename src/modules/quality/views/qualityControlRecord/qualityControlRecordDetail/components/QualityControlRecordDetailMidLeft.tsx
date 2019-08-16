@@ -87,7 +87,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <div>质控日期：{messageBoxData.evalDate}</div>
           <div>质控病区：{messageBoxData.wardName}</div>
           <div>床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + '床'}</div>
-          <div>需要跟踪评价：{messageBoxData.nextNodePendingName}</div>
+          <div>需要跟踪评价：{messageBoxData.followEvaluate ? '是' : '否'}</div>
           <div>
             质控结果：是({itemCount.yesSize}) 否({itemCount.noSize}) 不适用({itemCount.inapplicableSize})
           </div>
