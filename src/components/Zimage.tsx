@@ -23,8 +23,7 @@ export default function Zimage(props: Props | any) {
       return (
         <Wrapper
           onClick={(e) => {
-            console.log(imgRef, 'imgRefimgRefimgRef')
-            imgRef.current && imgRef.current.coverRef.current.click()
+            imgRef.current && imgRef.current.cover.click()
             e.stopPropagation()
             e.preventDefault()
           }}
@@ -44,7 +43,7 @@ export default function Zimage(props: Props | any) {
       return (
         <Wrapper
           onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            imgRef.current && imgRef.current.coverRef.current.click()
+            imgRef.current && imgRef.current.cover.click()
             e.stopPropagation()
             e.preventDefault()
           }}
