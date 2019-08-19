@@ -5,14 +5,16 @@ import service from 'src/services/api'
 class SelectPeopleViewModel {
   @observable modalLoading: boolean = false
   /** 选择的片区 */
-  @observable selectedBigDept: boolean = false
+  @observable selectedBigDeptCode: any = ''
+  @observable selectedBigDeptName: any = ''
 
   @observable public selectTreeDataAll = [
     {
       step: '按片区选择',
       label: '按片区选择',
       data: [],
-      dataLabel: '片区筛选'
+      dataLabel: 'deptName',
+      stepLabel: 'deptCode'
     },
     {
       step: '默认科室',
@@ -78,6 +80,7 @@ class SelectPeopleViewModel {
 
   @observable public currentData: any = {}
   async pushStep(step: string) {
+    this.modalLoading = true
     let ser = service.commonApiService
     if (this.stepState.indexOf(step) == -1) {
       this.currentData = {}
@@ -91,34 +94,59 @@ class SelectPeopleViewModel {
           }
         } else if (this.stepState[0] == '按护理单元选择') {
           this.currentData = {
-            list: (await ser.groupByDeptInDeptList()).data
+            list: (await ser.groupByDeptInDeptList(this.selectedBigDeptCode)).data
           }
         } else if (this.stepState[0] == '按职务选择') {
           this.currentData = {
-            list: (await ser.groupByJobInDeptList()).data
+            list: (await ser.groupByJobInDeptList(this.selectedBigDeptCode)).data
           }
         } else if (this.stepState[0] == '按职称选择') {
           this.currentData = {
-            list: (await ser.groupByTitleInDeptList()).data
+            list: (await ser.groupByTitleInDeptList(this.selectedBigDeptCode)).data
           }
         } else if (this.stepState[0] == '按层级选择') {
           this.currentData = {
-            list: (await ser.groupByLevelInDeptList()).data
+            list: (await ser.groupByLevelInDeptList(this.selectedBigDeptCode)).data
           }
         }
       } else if (this.stepState.length == 2) {
-        if (this.stepState[1] == '片区筛选') {
-        } else {
+        if (this.stepState[0] == '按片区选择') {
+          this.selectedBigDeptCode = this.stepState[1].split('-')[0]
+          this.selectedBigDeptName = this.stepState[1].split('-')[1]
+          this.stepState = []
+        } else if (this.stepState[0] == '按护理单元选择') {
+          this.currentData = {
+            list: (await ser.groupByDeptInDeptList(this.selectedBigDeptCode)).data
+          }
+        } else if (this.stepState[0] == '按职务选择') {
+          this.currentData = {
+            list: (await ser.groupByJobInDeptList(this.selectedBigDeptCode)).data
+          }
+        } else if (this.stepState[0] == '按职称选择') {
+          this.currentData = {
+            list: (await ser.groupByTitleInDeptList(this.selectedBigDeptCode)).data
+          }
+        } else if (this.stepState[0] == '按层级选择') {
+          this.currentData = {
+            list: (await ser.groupByLevelInDeptList(this.selectedBigDeptCode)).data
+          }
         }
       }
     }
+    this.modalLoading = false
   }
   popStep() {
-    this.stepState.pop()
+    if (this.stepState.length == 0) {
+      this.pushStep('按片区选择')
+      this.selectedBigDeptCode = ''
+      this.selectedBigDeptName = ''
+    } else {
+      this.stepState.pop()
+    }
   }
 
-  @computed get selectTreeData() {
-    return this.selectedBigDept ? this.selectTreeHasBigDept : this.selectTreeDataAll
+  @computed get selectTreeData(): any {
+    return this.selectedBigDeptCode ? this.selectTreeHasBigDept : this.selectTreeDataAll
   }
   @computed get currentTreeData() {
     if (this.stepState.length == 1) {
@@ -135,8 +163,9 @@ class SelectPeopleViewModel {
           dataLabel: 'empName'
         }
       } else {
-        let { dataLabel } = this.selectTreeData.find((item) => item.step == this.stepState[0]) || {
-          dataLabel: ''
+        let { dataLabel, stepLabel } = this.selectTreeData.find((item: any) => item.step == this.stepState[0]) || {
+          dataLabel: '',
+          stepLabel: ''
         }
         return {
           parent: this.stepState[0],
@@ -146,19 +175,20 @@ class SelectPeopleViewModel {
             key: dataLabel && item[dataLabel]
           })),
           dataLabel,
+          stepLabel,
           type: 'parentList'
         }
       }
     }
     if (this.stepState.length == 2) {
-      let { dataLabel } = this.selectTreeData.find((item) => item.step == this.stepState[0]) || {
+      let { dataLabel } = this.selectTreeData.find((item: any) => item.step == this.stepState[0]) || {
         dataLabel: ''
       }
       let userData: any =
         (this.currentData.list || []).find((item: any) => item[dataLabel || ''] == this.stepState[1]) || {}
       return {
         parent: userData[dataLabel || ''],
-        list: userData.userList.map((item: any) => ({
+        list: (userData.userList || []).map((item: any) => ({
           ...item,
           label: item.empName,
           key: item.empNo
@@ -174,6 +204,9 @@ class SelectPeopleViewModel {
     // this.modalLoading = true
     let ser = service.commonApiService
     this.stepState = []
+    this.selectedBigDeptCode = ''
+    this.selectedBigDeptName = ''
+    this.currentData = {}
     // return Promise.all([
     //   ser.groupByBigDeptInDeptList(),
     //   ser.defaultDeptUser(),

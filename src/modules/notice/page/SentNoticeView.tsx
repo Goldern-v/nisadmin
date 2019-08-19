@@ -35,8 +35,8 @@ export default function SentNoticeView() {
   const [pageLoading, setPageLoading]: any = useState(false)
   const [templateId, setTemplateId] = useState('')
   const [templateType, setTemplateType] = useState('')
-  // const selectPeopleModal = createModal(appStore.HOSPITAL_ID == 'wh' ? SelectPeopleModal_wh : SelectPeopleModal)
-  const selectPeopleModal = createModal(SelectPeopleModal)
+  const selectPeopleModal = createModal(appStore.HOSPITAL_ID == 'wh' ? SelectPeopleModal_wh : SelectPeopleModal)
+  // const selectPeopleModal = createModal(SelectPeopleModal)
   const fileInputRef = React.createRef<HTMLInputElement>()
   const openSelectPeopleModal = () => {
     selectPeopleModal.show({
