@@ -125,6 +125,7 @@ export default observer(function BaseTable(props: Props) {
             width: 50
           })
         }
+        option.type.includes('fixedIndex') && (option.columns[0].fixed = 'left')
       }
     }
 
@@ -407,6 +408,21 @@ const Wrapper = styled.div`
     .ant-table-body .ant-table-footer {
       display: block;
     } */
+
+    .ant-table-fixed-left {
+      bottom: 8px;
+      .ant-table-header {
+        /* margin-bottom: 0 !important; */
+        margin-bottom: 9px !important;
+      }
+      table {
+        width: auto;
+        table-layout: auto;
+      }
+      .ant-table-body-outer {
+        margin-top: -9px !important;
+      }
+    }
   }
 `
 

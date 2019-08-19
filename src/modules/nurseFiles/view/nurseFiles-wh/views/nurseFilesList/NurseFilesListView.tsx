@@ -240,7 +240,7 @@ export default observer(function NurseFilesListView() {
         columns={columns}
         surplusWidth={80}
         surplusHeight={430}
-        type={['index']}
+        type={['index', 'fixedIndex']}
         pagination={{
           total: nurseFilesListViewModel.totalCount,
           pageSizeOptions: ['20', '40', '60', '80', '100'],

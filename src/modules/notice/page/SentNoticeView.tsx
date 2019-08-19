@@ -4,6 +4,7 @@ import { Select, Button, message } from 'antd'
 import { RouteComponentProps } from 'react-router'
 import createModal from 'src/libs/createModal'
 import SelectPeopleModal from './modal/SelectPeopleModal'
+import SelectPeopleModal_wh from './modal-wh/SelectPeopleModal'
 import { ChangeEvent } from 'react'
 import service from 'src/services/api'
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
@@ -34,6 +35,7 @@ export default function SentNoticeView() {
   const [pageLoading, setPageLoading]: any = useState(false)
   const [templateId, setTemplateId] = useState('')
   const [templateType, setTemplateType] = useState('')
+  // const selectPeopleModal = createModal(appStore.HOSPITAL_ID == 'wh' ? SelectPeopleModal_wh : SelectPeopleModal)
   const selectPeopleModal = createModal(SelectPeopleModal)
   const fileInputRef = React.createRef<HTMLInputElement>()
   const openSelectPeopleModal = () => {

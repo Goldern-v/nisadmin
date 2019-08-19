@@ -105,7 +105,8 @@ export default observer(function qualityControlRecordTable(props: Props) {
     {
       title: '状态',
       // dataIndex: 'zt',
-      dataIndex: 'currentHandledNodeName',
+      // dataIndex: 'currentHandledNodeName',
+      dataIndex: 'nextNodePendingName',
       key: '',
       width: 100,
       align: 'center'

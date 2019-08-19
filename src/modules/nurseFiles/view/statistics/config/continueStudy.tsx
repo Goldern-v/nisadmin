@@ -7,7 +7,7 @@ import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
   title: '举办继续教育培训班',
-  type: 'nurseWHContinueStudy',
+  type: 'continuingEducation',
   detailPath: '',
   filterList: [
     {

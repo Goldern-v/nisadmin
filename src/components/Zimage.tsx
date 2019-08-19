@@ -23,12 +23,21 @@ export default function Zimage(props: Props | any) {
       return (
         <Wrapper
           onClick={(e) => {
-            imgRef.current && imgRef.current.cover.click()
+            e.stopPropagation()
+            e.preventDefault()
+          }}
+          onDoubleClick={(e) => {
             e.stopPropagation()
             e.preventDefault()
           }}
         >
-          <Text>{option.text}</Text>
+          <Text
+            onClick={() => {
+              imgRef.current && imgRef.current.cover.click()
+            }}
+          >
+            {option.text}
+          </Text>
 
           <ReactZmage
             {...option}

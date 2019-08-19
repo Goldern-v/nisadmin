@@ -6,6 +6,12 @@ class SelectPeopleViewModel {
   @observable modalLoading: boolean = false
   @observable public selectTreeData = [
     {
+      step: '按片区选择',
+      label: '按片区选择',
+      data: [],
+      dataLabel: 'deptName'
+    },
+    {
       step: '默认科室',
       label: authStore.selectedDeptName,
       data: []
@@ -17,12 +23,7 @@ class SelectPeopleViewModel {
       data: [],
       dataLabel: 'deptName'
     },
-    {
-      step: '按片区选择',
-      label: '按片区选择',
-      data: [],
-      dataLabel: 'deptName'
-    },
+
     {
       step: '按职务选择',
       label: '按职务选择',
@@ -109,9 +110,9 @@ class SelectPeopleViewModel {
     let ser = service.commonApiService
     this.stepState = []
     return Promise.all([
+      ser.groupByBigDeptInDeptList(),
       ser.defaultDeptUser(),
       ser.groupByDeptInDeptList(),
-      ser.groupByBigDeptInDeptList(),
       ser.groupByJobInDeptList(),
       ser.groupByTitleInDeptList(),
       ser.groupByLevelInDeptList()

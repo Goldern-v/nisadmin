@@ -57,7 +57,7 @@ export const pageObj: PageObj = {
       align: 'center'
     },
     {
-      title: '现科室隶属部门门',
+      title: '现科室隶属部门',
       dataIndex: 'deptBeDepartment',
       key: 'deptBeDepartment',
       width: 130,
