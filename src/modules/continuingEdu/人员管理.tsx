@@ -110,9 +110,16 @@ export default observer(function 人员管理(props: Props) {
       align: 'center'
     },
     {
+      title: '学分',
+      key: 'credit',
+      dataIndex: 'credit',
+      width: 50,
+      align: 'center'
+    },
+    {
       title: '积分',
-      key: 'studyRewardPoints',
-      dataIndex: 'studyRewardPoints',
+      key: 'rewardPoints',
+      dataIndex: 'rewardPoints',
       width: 50,
       align: 'center'
     },
@@ -146,8 +153,7 @@ export default observer(function 人员管理(props: Props) {
 
   const handleReview = (record: any) => {
     let search = {
-      id: record.id,
-      empCode: record.empCode,
+      empNo: record.empNo,
       empName: record.empName,
       newTitle: record.title,
       nurseHierarchy: record.nurseHierarchy,

@@ -331,7 +331,7 @@ export default observer(function TableView() {
     if (newPannelName && pannelName !== newPannelName) {
       setPannelName(newPannelName);
       getTableData({
-        id: search.id,
+        empNo: search.empNo,
         pageIndex: 1,
         pageSize: 15
       }, newPannelName)

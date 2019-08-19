@@ -22,7 +22,7 @@ export default observer(function BaseInfo() {
       if (
         (search.sourceChange && sourceChange !== search.sourceChange) || !search.sourceChange
       ) {
-        getData({ id: search.id || '' })
+        getData({ empNo: search.empNo || '' })
       }
 
       setSourceChange(search.sourceChange)
@@ -32,22 +32,10 @@ export default observer(function BaseInfo() {
   const getData = (query: any) => {
     setLoading(true)
     empManageService.getEmpDetail(query).then(res => {
-      let user = res.data.user;
-      let credit = res.data.credit;
+      let user = res.data;
       setBaseInfo({
-        empName: user.empName,
-        empNo: user.empNo,
-        age: user.age,
-        source: credit.credit,
-        points: credit.rewardPoints,
+        ...user,
         sexual: user.sexual == 0 ? '男' : '女',
-        job: user.job,
-        title: user.title,
-        highestEducation: user.highestEducation,
-        nurseHierarchy: user.nurseHierarchy,
-        area: user.area,
-        deptName: user.deptName,
-        specialAllow: user.specialAdmittance,
       })
       setLoading(false)
     }, err => {
@@ -80,9 +68,9 @@ export default observer(function BaseInfo() {
             </tr>
             <tr>
               <td className='td-title'>学分</td>
-              <td className='td-content'>{baseInfo.source}</td>
+              <td className='td-content'>{baseInfo.credit}</td>
               <td className='td-title'>积分</td>
-              <td className='td-content'>{baseInfo.points}</td>
+              <td className='td-content'>{baseInfo.rewardPoints}</td>
             </tr>
             <tr>
               <td className='td-title'>职务</td>
@@ -123,7 +111,7 @@ export default observer(function BaseInfo() {
             <tr>
               <td className='td-title'>特殊准入</td>
               <td className='td-content' colSpan={3}>
-                {baseInfo.specialAllow}
+                {baseInfo.specialAdmittance}
               </td>
             </tr>
           </tbody>

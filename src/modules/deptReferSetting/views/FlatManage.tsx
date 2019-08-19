@@ -15,7 +15,7 @@ import FlatManageService from './../api/FlatManageService'
 
 const api = new FlatManageService()
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option
 
@@ -35,7 +35,7 @@ export default function DeptFileShare() {
     pageSize: 20,
     pageIndex: 1
   } as any)
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
 
   useEffect(() => {
     if (query.deptCode) getTableData()
@@ -82,6 +82,16 @@ export default function DeptFileShare() {
             {text}
           </div>
         )
+      }
+    },
+    {
+      title: '文件类型',
+      dataIndex: 'fileType',
+      key: 'fileType',
+      align: 'center',
+      render: (text: string, record: any) => {
+        let typeArr = record.filePath.split('.');
+        return typeArr[typeArr.length - 1] || ''
       }
     },
     {
