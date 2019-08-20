@@ -142,7 +142,7 @@ export default function DetailsPage(props: Props) {
           </div>
         </InfoCon>
 
-        {data.showType == '发' && (
+        {(data.showType == '发' || data.showType == '草') && (
           <Tooltip
             overlayClassName={'largeTip'}
             placement='bottom'

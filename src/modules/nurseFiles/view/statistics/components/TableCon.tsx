@@ -115,7 +115,7 @@ export default function TableCon(props: Props) {
         loading={tableLoading}
         dataSource={tableObj.list}
         columns={columns}
-        type={['index']}
+        type={['index', 'fixedIndex']}
         surplusHeight={surplusHeight}
         surplusWidth={300}
         wrapperStyle={{

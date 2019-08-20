@@ -421,6 +421,15 @@ const Wrapper = styled.div`
       }
       .ant-table-body-outer {
         margin-top: -9px !important;
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 8px;
+          background: #fff;
+          bottom: 0;
+        }
       }
     }
   }
