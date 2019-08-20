@@ -1,3 +1,4 @@
+import { fileDownload } from './../../../utils/file/file'
 import { format } from 'date-fns'
 import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs'
@@ -16,5 +17,21 @@ export default class ManagementSummaryService extends BaseApiService {
       pageIndex: obj.pageIndex
     }
     return this.post(`/flatManageInstance/getInstanceListByYMD`, postObj)
+  }
+  public totalExcel(obj: any) {
+    let startDate = `${obj.year.format('YYYY')}-${obj.month < 10 ? '0' + obj.month : obj.month}-01`
+    let endDate = moment(startDate)
+      .add('M', 1)
+      .subtract(1, 'd')
+      .format('YYYY-MM-DD')
+    const postObj = {
+      deptCode: obj.deptCode,
+      startDate,
+      endDate,
+      pageIndex: obj.pageIndex
+    }
+    return this.post(`/flatManageInstance/totalExcel`, postObj, { responseType: 'blob' }).then((res) => {
+      fileDownload(res)
+    })
   }
 }

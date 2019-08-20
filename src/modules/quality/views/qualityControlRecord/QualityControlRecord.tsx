@@ -14,13 +14,15 @@ export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
 
 export default observer(function QualityControlRecord() {
-  let [allData, setAllData]: any = useState({})
-  let [tableData, setTableData]: any = useState([])
   let [loading, setLoading] = useState(false)
   useEffect(() => {
     ;(async () => {
-      await qualityControlRecordVM.init()
-      getTableData()
+      if (appStore.queryObj.noRefresh) {
+        appStore.history.replace('/quality/qualityControlRecord')
+      } else {
+        await qualityControlRecordVM.init()
+        getTableData()
+      }
     })()
   }, [])
   const getTableData = (obj?: any) => {
@@ -38,14 +40,14 @@ export default observer(function QualityControlRecord() {
     qualityControlRecordApi
       .instanceGetPageByCondition(sendData)
       .then((res: any) => {
-        setAllData(res.data)
+        qualityControlRecordVM.allData = res.data
         // if (res.data.list.length < 20) {
         //   let len = 20 - res.data.list.length
         //   for (let i = 0; i < len; i++) {
         //     res.data.list.push([])
         //   }
         // }
-        setTableData(res.data.list)
+        // setTableData(res.data.list)
         setLoading(false)
       })
       .catch((err: any) => {
@@ -69,8 +71,8 @@ export default observer(function QualityControlRecord() {
           )}
         </SpinCon> */}
         <QualityControlRecordTable
-          tableData={tableData}
-          allData={allData}
+          tableData={qualityControlRecordVM.allData.list || []}
+          allData={qualityControlRecordVM.allData}
           loadingGet={loading}
           getTableData={getTableData}
         />

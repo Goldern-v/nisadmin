@@ -14,6 +14,7 @@ class QualityControlRecordVM {
   @observable public filterState: any = ''
   @observable public filterDeptCode: any = ''
   @observable public readWay: any = 1
+  @observable public allData: any = {}
 
   async init() {
     this.filterForm = ''
@@ -21,7 +22,7 @@ class QualityControlRecordVM {
     this.filterDeptCode = ''
     this.readWay = 1
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
-
+    this.allData = {}
     await Promise.all([
       qualityControlRecordApi.qcRoleCodeSelf().then((res: any) => {
         this.formSelectList = res.data

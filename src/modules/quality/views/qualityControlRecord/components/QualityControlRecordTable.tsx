@@ -17,10 +17,6 @@ export default observer(function qualityControlRecordTable(props: Props) {
   const { allData, tableData, loadingGet } = props
   // .list
   // const tableRowData:any[] = tableData.list
-  let [tableDataApi, setTableDataApi]: any[] = useState([])
-  let [total, setTotal] = useState(50)
-  let [current, setCurrent] = useState(1)
-  let [pageSize, setPageSize] = useState(10)
   const columns: any[] = [
     {
       title: '序号',
@@ -156,6 +152,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       <TableScrollCon>
         <TableCon>
           {/* {JSON.stringify(tableData)} */}
+          {/* {allData.pageIndex} */}
           <BaseTable
             surplusHeight={205}
             // surplusHeight={135}

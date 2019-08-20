@@ -15,7 +15,7 @@ interface Props {
 
 export default function qualityControlRecordDetailHeader(props: Props) {
   const topHeaderBack = () => {
-    appStore.history.push(`/quality/qualityControlRecord`)
+    appStore.history.push(`/quality/qualityControlRecord?noRefresh=1`)
   }
   let master = props.detailData.master || {}
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.nodeDataList || []))

@@ -173,6 +173,10 @@ export default function ManagementSummary() {
     )
   }
 
+  const exportExcel = () => {
+    api.totalExcel({ ...query, ...filterObj })
+  }
+
   return (
     <Wrapper>
       <div className='topbar'>
@@ -214,6 +218,9 @@ export default function ManagementSummary() {
           </div>
           <div className='item'>
             <Button onClick={() => getTableData()}>查询</Button>
+          </div>
+          <div className='item'>
+            <Button onClick={() => exportExcel()}>导出</Button>
           </div>
         </div>
       </div>
