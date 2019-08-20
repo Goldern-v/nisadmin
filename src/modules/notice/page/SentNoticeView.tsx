@@ -189,10 +189,11 @@ export default function SentNoticeView() {
     }
   }, [])
 
+  let hasContent = !!(title + content + fileList + checkedUserList)
   return (
     <Spin spinning={pageLoading}>
       <Wrapper>
-        {JSON.stringify(checkedUserList)}
+        {/* {JSON.stringify(checkedUserList)} */}
         <InputBox>
           <div className='label'>主&nbsp;题</div>
           <div className='input-con'>
@@ -257,10 +258,10 @@ export default function SentNoticeView() {
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
         />
         <FooterCon>
-          <Button type='primary' style={{ marginRight: 15 }} onClick={sendMail}>
+          <Button type='primary' style={{ marginRight: 15 }} onClick={sendMail} disabled={!hasContent}>
             发 送
           </Button>
-          <Button style={{ marginRight: 15 }} onClick={saveTemplateMail}>
+          <Button style={{ marginRight: 15 }} onClick={saveTemplateMail} disabled={!hasContent}>
             存草稿
           </Button>
           <Button onClick={onBack}> 取 消 </Button>
