@@ -35,7 +35,7 @@ export default function 质量扣分比较弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.itemTypeName}
+            value={record.itemTypeName || ''}
             onChange={(e) => {
               record.itemTypeName = e.target.value
               setData(cloneData)
@@ -120,10 +120,9 @@ export default function 质量扣分比较弹窗(props: Props) {
   const addItem = () => {
     cloneData.list.push({
       id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      itemTypeName: '',
+      currentDeductScore: '',
+      lastDeductScore: ''
     })
     setData(cloneData)
   }

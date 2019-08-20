@@ -106,8 +106,8 @@ class QualityAnalysisReportViewModal {
     this.sectionList[4].data.report = this.allData!.report || {}
     this.sectionList[5].data.list = (this.allData!.typeCompareList || []).map((item: any) => {
       return Object.assign(item, {
-        currentDeductScore: Number(item.currentDeductScore.toFixed(2)),
-        lastDeductScore: Number(item.lastDeductScore.toFixed(2)),
+        currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
+        lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
         compareScore: Number(item.compareScore.toFixed(2)),
         compareScorePercent: Number(item.compareScorePercent.toFixed(2))
       })
