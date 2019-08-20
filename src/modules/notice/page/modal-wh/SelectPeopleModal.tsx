@@ -130,20 +130,22 @@ export default observer(function SelectPeopleModal(props: Props) {
     })
   }
 
+  const onClean = () => {
+    setCheckedUserList([])
+  }
   return (
     <Modal
       title='选择联系人'
       visible={visible}
       onCancel={onCancel}
       onOk={onSave}
-      okText='保存'
       forceRender
       width={800}
       footer={null}
       // centered
     >
       <Wrapper>
-        {/* {toJS(selectPeopleViewModel.stepState)}123 */}
+        {toJS(selectPeopleViewModel.stepState)}123
         <div className='main-con'>
           <div className='left-part scrollBox'>
             <Spin spinning={selectPeopleViewModel.modalLoading}>
@@ -218,6 +220,7 @@ export default observer(function SelectPeopleModal(props: Props) {
 
             <div className='footer-con'>
               <Button onClick={onClose}>取消</Button>
+              <Button onClick={onClean}>重置</Button>
               <Button type='primary' onClick={onSave}>
                 确认
               </Button>
@@ -369,7 +372,7 @@ const Wrapper = styled.div`
     right: 20px;
     bottom: 10px;
     button {
-      margin-left: 20px;
+      margin-left: 15px;
     }
   }
 `

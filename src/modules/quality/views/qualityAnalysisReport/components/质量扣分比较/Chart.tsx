@@ -131,7 +131,7 @@ export default function Chart(props: Props) {
           <tr className='score'>
             <td style={{ whiteSpace: 'nowrap' }}>
               <span className='block type-2' />
-              {report.indexInType == 1 ? 12 : report.indexInType}月{' '}
+              {report.indexInType == 1 ? 12 : report.indexInType - 1}月{' '}
             </td>
             {filterList.map((item, index) => (
               <td key={index}>{item.lastDeductScore}</td>

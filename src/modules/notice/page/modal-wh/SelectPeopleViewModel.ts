@@ -191,7 +191,8 @@ class SelectPeopleViewModel {
         list: (userData.userList || []).map((item: any) => ({
           ...item,
           label: item.empName,
-          key: item.empNo
+          key: item.empNo,
+          userList: [item]
         })),
         type: 'userList',
         dataLabel: 'empName'

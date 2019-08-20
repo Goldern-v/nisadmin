@@ -89,7 +89,7 @@ export default function DetailsPage(props: Props) {
             </div>
           </Tooltip>
         )}
-        {data.showType == '发' && isFiveMin && (
+        {data.showType == '发' && (
           <Tooltip placement='bottom' title='撤销'>
             <div className='item-box' onClick={revokeMail}>
               <img src={require('./images/撤销.png')} alt='' />
@@ -331,7 +331,9 @@ const FileCon = styled.div`
   .file-box {
     width: 25%;
     float: left;
-    margin-left: 10px;
+    padding-left: 8px;
+    padding-bottom: 8px;
+
     .file-inner {
       height: 125px;
       background: rgba(246, 246, 246, 1);

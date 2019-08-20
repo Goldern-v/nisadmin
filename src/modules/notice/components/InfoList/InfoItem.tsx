@@ -26,7 +26,10 @@ export default observer(function InfoItem(props: Props) {
         <img src={data.nearImageUrl || require('src/assets/images/护士默认头像.png')} className='head-img' alt='' />
         <TextCon>
           <div className='title'>{data.title || <span style={{ color: '#bfbfbf' }}>(暂无主题)</span>}</div>
-          <div className='aside'>{data.content || <span style={{ color: '#bfbfbf' }}>(暂无内容)</span>}</div>
+          <div className='aside'>
+            <span className='name'>{data.senderName} </span>
+            {data.content || <span style={{ color: '#bfbfbf' }}>(暂无内容)</span>}
+          </div>
         </TextCon>
         {data.showType == '收' && !data.read && <div className='red-point' />}
         {data.hadAttachment && <img src={require('../../images/附件.png')} alt='' className='hasFile-icon' />}

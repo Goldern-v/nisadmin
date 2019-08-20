@@ -13,6 +13,10 @@ import { appStore } from 'src/stores'
 import Zimage from 'src/components/Zimage'
 import { FileType } from 'src/types/file'
 import { Icon, Spin } from 'src/vendors/antd'
+interface User {
+  label?: string
+  key: string
+}
 export interface Props extends RouteComponentProps {}
 
 export interface CheckUserItem {
@@ -108,7 +112,7 @@ export default function SentNoticeView() {
     noticeService
       .sendMail({
         mail: {
-          id,
+          id: templateType == '草' ? templateId : '',
           title,
           content
         },
@@ -135,6 +139,24 @@ export default function SentNoticeView() {
     templateId
       ? appStore.history.push(`/notice?selectedMenu=草稿箱&id=${templateId}`)
       : appStore.history.push('/notice')
+  }
+
+  const onDeselect = (user: User | User[]) => {
+    if (user instanceof Array) {
+      for (let i = 0; i < user.length; i++) {
+        let index = checkedUserList.findIndex((item: any) => item.key === user[i].key)
+        if (index > -1) {
+          checkedUserList.splice(index, 1)
+        }
+      }
+      setCheckedUserList([...checkedUserList])
+    } else {
+      let index = checkedUserList.findIndex((item: any) => item.key === user.key)
+      if (index > -1) {
+        checkedUserList.splice(index, 1)
+        setCheckedUserList([...checkedUserList])
+      }
+    }
   }
 
   useEffect(() => {
@@ -166,9 +188,11 @@ export default function SentNoticeView() {
       })
     }
   }, [])
+
   return (
     <Spin spinning={pageLoading}>
       <Wrapper>
+        {JSON.stringify(checkedUserList)}
         <InputBox>
           <div className='label'>主&nbsp;题</div>
           <div className='input-con'>
@@ -195,6 +219,7 @@ export default function SentNoticeView() {
               labelInValue={true}
               style={{ width: '100%' }}
               open={false}
+              onDeselect={onDeselect}
             />
           </div>
         </InputBox>
@@ -297,16 +322,46 @@ const InputBox = styled.div`
   }
   .ant-select-selection {
     min-height: 30px;
+    max-height: 200px;
+    overflow: auto;
     padding: 8px 0;
     border: 0;
     outline: none;
     box-shadow: none !important;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background-color: #eaeaea;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 50px;
+      background-color: #eaeaea;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      background-color: #c2c2c2;
+    }
   }
 `
 const FilesBox = styled.div`
-  padding: 0 30px 20px;
+  padding: 12px 30px 12px;
+  margin-top: -12px;
   border-bottom: 1px solid #ddd;
-  overflow: hidden;
+  overflow: auto;
+  max-height: 200px;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 50px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background-color: #c2c2c2;
+  }
   .file-box {
     width: 260px;
     height: 65px;
@@ -314,6 +369,7 @@ const FilesBox = styled.div`
     border-radius: 2px;
     float: left;
     margin-right: 8px;
+    margin-bottom: 8px;
     padding: 10px 12px;
     position: relative;
     .type-img {

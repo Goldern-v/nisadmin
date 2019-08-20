@@ -107,11 +107,10 @@ export default observer(function EditCon() {
       <span className='aside'>已选择{noticeViewModel.selectedMenuEditList.length}项</span>
       <div style={{ width: 40 }} />
 
-      {toolList.includes('删除') && <Button onClick={lotDelete}>删除</Button>}
       {toolList.includes('收藏') && <Button onClick={lotCollect}>收藏</Button>}
       {toolList.includes('已读') && <Button onClick={lotRead}>已读</Button>}
       {toolList.includes('未读') && <Button onClick={lotUnRead}>未读</Button>}
-      {toolList.includes('未读') && <Button onClick={lotUnRead}>未读</Button>}
+      {toolList.includes('删除') && <Button onClick={lotDelete}>删除</Button>}
       {toolList.includes('取消收藏') && <Button onClick={lotCancelCollect}>取消收藏</Button>}
 
       <Button onClick={() => noticeViewModel.initMenuEditList()}>取消</Button>
