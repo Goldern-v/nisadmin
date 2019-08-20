@@ -142,10 +142,10 @@ export default observer(function SelectPeopleModal(props: Props) {
       forceRender
       width={800}
       footer={null}
-      // centered
+      centered
     >
       <Wrapper>
-        {toJS(selectPeopleViewModel.stepState)}123
+        {/* {toJS(selectPeopleViewModel.stepState)}123 */}
         <div className='main-con'>
           <div className='left-part scrollBox'>
             <Spin spinning={selectPeopleViewModel.modalLoading}>
@@ -175,6 +175,7 @@ export default observer(function SelectPeopleModal(props: Props) {
                       style={{
                         color: '#333',
                         marginBottom: '10px',
+                        marginLeft: '-3px',
                         cursor: 'pointer'
                       }}
                     >
@@ -407,6 +408,7 @@ const ListCon = styled.div`
   .title {
     color: #333;
     margin-bottom: 10px;
+    margin-left: -3px;
     cursor: pointer;
   }
   .scrollBox {

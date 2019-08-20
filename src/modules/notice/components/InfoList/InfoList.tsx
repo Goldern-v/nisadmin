@@ -68,10 +68,10 @@ export default observer(function InfoList() {
 })
 const Wrapper = styled.div`
   position: fixed;
-  left: 200px;
+  left: 180px;
   top: 50px;
   bottom: 0;
-  width: 350px;
+  width: 300px;
   background: #ffffff;
   border-right: 1px solid #ddd;
 `

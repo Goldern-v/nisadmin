@@ -51,7 +51,7 @@ const NullBg = () => {
 
 const Wrapper = styled(ScrollBox)`
   position: fixed;
-  left: 550px;
+  left: 480px;
   top: 50px;
   bottom: 0;
   right: 0;

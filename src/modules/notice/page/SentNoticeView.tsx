@@ -125,7 +125,9 @@ export default function SentNoticeView() {
       .then((res) => {
         hideLoading()
         message.success('消息存草稿成功！')
-        res.data && res.data.id && setTemplateId(res.data.id)
+        appStore.history.push(`/notice?selectedMenu=草稿箱`)
+        // appStore.history.push(`/notice?selectedMenu=草稿箱&id=${res.data.id}`)
+        // res.data && res.data.id && setTemplateId(res.data.id)
       })
       .catch(() => {
         hideLoading()
@@ -189,10 +191,11 @@ export default function SentNoticeView() {
     }
   }, [])
 
+  let hasContent = !!(title + content + fileList + checkedUserList)
   return (
     <Spin spinning={pageLoading}>
       <Wrapper>
-        {JSON.stringify(checkedUserList)}
+        {/* {JSON.stringify(checkedUserList)} */}
         <InputBox>
           <div className='label'>主&nbsp;题</div>
           <div className='input-con'>
@@ -257,10 +260,10 @@ export default function SentNoticeView() {
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
         />
         <FooterCon>
-          <Button type='primary' style={{ marginRight: 15 }} onClick={sendMail}>
+          <Button type='primary' style={{ marginRight: 15 }} onClick={sendMail} disabled={!hasContent}>
             发 送
           </Button>
-          <Button style={{ marginRight: 15 }} onClick={saveTemplateMail}>
+          <Button style={{ marginRight: 15 }} onClick={saveTemplateMail} disabled={!hasContent}>
             存草稿
           </Button>
           <Button onClick={onBack}> 取 消 </Button>
@@ -322,7 +325,7 @@ const InputBox = styled.div`
   }
   .ant-select-selection {
     min-height: 30px;
-    max-height: 200px;
+    max-height: 120px;
     overflow: auto;
     padding: 8px 0;
     border: 0;
@@ -348,7 +351,7 @@ const FilesBox = styled.div`
   margin-top: -12px;
   border-bottom: 1px solid #ddd;
   overflow: auto;
-  max-height: 200px;
+  max-height: 120px;
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
