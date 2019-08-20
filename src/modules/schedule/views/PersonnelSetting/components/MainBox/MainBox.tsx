@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
 import { Transfer, Modal, Input, message } from 'antd'
+import { ScrollBox } from 'src/components/common'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
