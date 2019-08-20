@@ -72,6 +72,7 @@ const Wrapper = styled.div`
     .img {
       width: 450px;
       margin-bottom: 15px;
+      margin-left: 15px;
     }
   }
 `

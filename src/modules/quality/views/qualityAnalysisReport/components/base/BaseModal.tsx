@@ -50,10 +50,10 @@ export default observer(function BaseModal(props: Props) {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
             return Object.assign(item, {
-              currentDeductScore: Number(item.currentDeductScore.toFixed(2)),
-              lastDeductScore: Number(item.lastDeductScore.toFixed(2)),
-              compareScore: Number(item.compareScore.toFixed(2)),
-              compareScorePercent: Number(item.compareScorePercent.toFixed(2))
+              currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
+              lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
+              compareScore: Number((item.compareScore || 0).toFixed(2)),
+              compareScorePercent: Number((item.compareScorePercent || 0).toFixed(2))
             })
           })
         })
