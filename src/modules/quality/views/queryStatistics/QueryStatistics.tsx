@@ -17,7 +17,6 @@ export default observer(function QueryStatistics(props: any) {
   const [showType, setShowType] = useState(false)
   const [effect, setEffect] = useState(true)
 
-
   const columns: any[] = [
     {
       title: '序号',
@@ -133,8 +132,8 @@ export default observer(function QueryStatistics(props: any) {
           </div>
         </div>
           <div className='item'>
-          <Button type='primary' className='statistics' onClick={getTableData}>查询</Button>
-        </div>
+            <Button type='primary' className='statistics' onClick={getTableData}>查询</Button>
+          </div>
         </LeftIcon>
         <RightIcon>
           <div className='item'>

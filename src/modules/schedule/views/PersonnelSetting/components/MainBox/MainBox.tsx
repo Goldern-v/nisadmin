@@ -3,15 +3,14 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
-import { Transfer, Modal ,Input ,message} from 'antd'
+import { Transfer, Modal ,Input ,message } from 'antd'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 import { Record } from '_immutable@4.0.0-rc.12@immutable';
-// import { calendarFormat } from 'moment';
 export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
-  let [loadingTable, setLoadingTable] = useState(false)
+  const [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
   const [editingKey, setEditingKey] = useState(false)
   const [mockData, setMockData] = useState([])
@@ -21,7 +20,6 @@ export default function MainBox() {
   const [id, setId] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false)
   const [lazyLoading, setLazyLoading] = useState(false)
-
   
   // 表格
   const columns: any = [
@@ -115,9 +113,39 @@ export default function MainBox() {
     service.personnelSettingApiService.getById(id).then((res) => {
       setLazyLoading(false)
       setTargetKeys(res.data)
+      console.log("targetKeys:",res.data)
     })
   }
 
+  TODO://获取分组可选人员(修改代码)
+  const selectSchedulers = (record?:any) =>{
+    let deptCode = scheduleStore.getDeptCode() 
+    let id = record.id
+    let targetKeysArr: any = []
+    let mockDataArr: any = []
+    setLazyLoading(true)
+    service.personnelSettingApiService.getScheduler(deptCode).then((res) => {
+      setLazyLoading(false)
+      let array:any = {}
+      res.data.length > 0 && res.data.map((item:any, i:any) => {
+        array = {
+          key: i.toString(),
+          chosen: Math.random() * 2 > 1,
+          schSettingNurseGroupId:id,
+          empName: item.empName,
+          empNo: item.empNo
+        }  
+        if (array.chosen) {
+          targetKeysArr.push(array.key)
+        }
+        mockDataArr.push(array)
+      })
+      console.log("array:",array)
+      setMockData(mockDataArr)
+      setTargetKeys(targetKeysArr)  
+    })
+  }
+  
   //获取分组可选人员
   const selectScheduler = (record?:any) =>{
     let deptCode = scheduleStore.getDeptCode() 
@@ -137,6 +165,8 @@ export default function MainBox() {
       setMockData(array)
     })
   }
+  
+
   //表格行操作
   const selectRow = (record: any) =>{
     selectedScheduler(record)
@@ -167,6 +197,7 @@ export default function MainBox() {
   const  handleSelectChange = (sourceSelectedKeys:any, targetSelectedKeys:any) => {
     let array:any = [...sourceSelectedKeys, ...targetSelectedKeys];
     setSelectedKeys(array);
+    console.log('setSelectedKeys:',selectedKeys)
   };
 
   const renderItem = (item:any) => {
@@ -180,6 +211,7 @@ export default function MainBox() {
       value: item.empName, 
     };
   };
+
 
   /** 监听事件 --- 控制添加弹窗的状态*/
   emitter.removeAllListeners('添加人员分组')
@@ -203,13 +235,11 @@ export default function MainBox() {
           surplusHeight={155} 
           dataSource={tableData} 
           loading={loadingTable}
-          //行类名
           rowClassName={
             (record) => {
               return record.id === id ? 'background' : 'cursorPointer';
             }
           }
-          //表格行点击事件
           onRow={record => {
             return {
               onClick: (event:any) => {selectRow(record)},
@@ -220,22 +250,22 @@ export default function MainBox() {
       <TransferBox>
         <TitleCon>本科室成员名单：</TitleCon>
         <Transfer 
-        className='transfer'
-        dataSource={mockData}
-        listStyle={{
-          width: '46%',
-          height:'calc(100vh - 187px)',
-        }}
-        locale={{
-          itemUnit: '人', itemsUnit: '人', 
-        }}
-        titles={['可选成员', '已选成员']}
-        selectedKeys={selectedKeys}
-        targetKeys={targetKeys}
-        onChange={handleChange}
-        onSelectChange={handleSelectChange}
-        render={renderItem}
-        lazy={lazyLoading}
+          className='transfer'
+          dataSource={mockData}
+          listStyle={{
+            width: '46%',
+            height:'calc(100vh - 187px)',
+          }}
+          locale={{
+            itemUnit: '人', itemsUnit: '人', 
+          }}
+          titles={['可选成员', '已选成员']}
+          selectedKeys={selectedKeys}
+          targetKeys={targetKeys}
+          onChange={handleChange}
+          onSelectChange={handleSelectChange}
+          render={renderItem}
+          lazy={lazyLoading}
         />
         <Modal
           className='modal'
