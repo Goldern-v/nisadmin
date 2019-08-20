@@ -1,4 +1,3 @@
-import { authStore } from 'src/stores/index'
 import BaseApiService from 'src/services/api/BaseApiService'
 class queryStatisticsServices extends BaseApiService {
   //1、质控表单
