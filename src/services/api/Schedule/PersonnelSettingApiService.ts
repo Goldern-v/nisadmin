@@ -39,22 +39,8 @@ export default class PersonnelSettingApiService extends BaseApiService {
     return this.get(`/schSettingNurseGroup/getBySettingNurseGroupId/${getData.id}`)
   }
   
-  // //6、新增或修改分组中的人员
-  // public async updateSavePersonnelSetting (data: any) {
-  //   const postData = {
-  //     schSettingNurseGroupId:data.schSettingNurseGroupId,  //number
-  //     schSettingNurseGroupDetails:[{
-  //       schSettingNurseGroupId:data.schSettingNurseGroupId,  //number
-  //       empName:data.empName,  //string
-  //       empNo:data.empNo,  //string
-  //     }]
-  //   }
-  //   return this.post(`/schSettingNurseGroup/saveSettingNurseGroupDetail`, postData)
-  // }
-
   //6、新增或修改分组中的人员
   public async updateSavePersonnelSetting (data: any) {
-    console.log(data,'data')
     const postData = {
       schSettingNurseGroupId: data.schSettingNurseGroupId,  // 分组ID
       schSettingNurseGroupDetails: data.schSettingNurseGroupDetail // 已选数据

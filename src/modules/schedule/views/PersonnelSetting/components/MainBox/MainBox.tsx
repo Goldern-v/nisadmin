@@ -6,16 +6,15 @@ import BaseTable from 'src/components/BaseTable'
 import { Transfer, Modal, Input, message } from 'antd'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
-import { Record } from '_immutable@4.0.0-rc.12@immutable'
 export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
   const [loadingTable, setLoadingTable] = useState(false)
-  const [tableData, setTableData] = useState([])
+  const [tableData, setTableData] = useState([] as any[])
   const [editingKey, setEditingKey] = useState(false)
-  const [mockData, setMockData] = useState([])
-  const [targetKeys, setTargetKeys] = useState([])
-  const [selectedKeys, setSelectedKeys] = useState([])
+  const [mockData, setMockData] = useState([] as any[])
+  const [targetKeys, setTargetKeys] = useState([] as any[])
+  const [selectedKeys, setSelectedKeys] = useState([] as any[])
   const [groupName, setGroupName] = useState('')
   const [id, setId] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false)
@@ -100,6 +99,8 @@ export default function MainBox() {
       onOk: () => {
         service.personnelSettingApiService.deletePersonnelSetting(record).then((res) => {
           getMealList()
+          setMockData([])
+          setTargetKeys([])           
           message.success('删除成功')
         })
       }
@@ -107,43 +108,19 @@ export default function MainBox() {
   }
 
   //获取分组已选人员
-  const selectedScheduler = (record?: any) => {
+  const selectedScheduler = (record?: any) =>{
     let id = record.id
     setLazyLoading(true)
     service.personnelSettingApiService.getById(id).then((res) => {
       setLazyLoading(false)
-      setTargetKeys(res.data)
-      console.log('targetKeys:', res.data)
-    })
-  }
-
-  //获取分组可选人员(修改代码)
-  const selectSchedulers = (record?: any) => {
-    let deptCode = scheduleStore.getDeptCode()
-    let id = record.id
-    let targetKeysArr: any = []
-    let mockDataArr: any = []
-    setLazyLoading(true)
-    service.personnelSettingApiService.getScheduler(deptCode).then((res) => {
-      setLazyLoading(false)
-      let array: any = {}
-      res.data.length > 0 &&
-        res.data.map((item: any, i: any) => {
-          array = {
-            key: i.toString(),
-            chosen: Math.random() * 2 > 1,
-            schSettingNurseGroupId: id,
-            empName: item.empName,
-            empNo: item.empNo
-          }
-          if (array.chosen) {
-            targetKeysArr.push(array.key)
-          }
-          mockDataArr.push(array)
-        })
-      console.log('array:', array)
-      setMockData(mockDataArr)
-      setTargetKeys(targetKeysArr)
+      let array:any = []
+      res.data.length > 0 && res.data.map((item:any, i:any) => {
+        let data:any = mockData.filter((o:any) => o.empNo === item.empNo)
+        if (data && data.length > 0) {
+          array.push(data[0].key)
+        }
+      })
+      setTargetKeys(array)
     })
   }
 
@@ -180,14 +157,13 @@ export default function MainBox() {
   }, [])
 
   // 新增或修改分组中的人员
-  const handleChange = (targetKeys: any, direction: any, moveKeys: any) => {
-    setTargetKeys(targetKeys)
-    let array = moveKeys.map((item: any) => mockData.filter((v: any) => item === v.key)[0])
+  const handleChange = (nexTargetKeys: any, direction: any, moveKeys: any) => {
+    setTargetKeys(nexTargetKeys)
+    let array = nexTargetKeys.map((item: any) => mockData.filter((v: any) => item === v.key)[0])
     let params = {
       schSettingNurseGroupId: id,
       schSettingNurseGroupDetail: array
     }
-    console.log(moveKeys, 'moveKeys', array)
     service.personnelSettingApiService
       .updateSavePersonnelSetting(params)
       .then((res) => {
@@ -201,7 +177,6 @@ export default function MainBox() {
   const handleSelectChange = (sourceSelectedKeys: any, targetSelectedKeys: any) => {
     let array: any = [...sourceSelectedKeys, ...targetSelectedKeys]
     setSelectedKeys(array)
-    console.log('setSelectedKeys:', selectedKeys)
   }
 
   const renderItem = (item: any) => {
@@ -222,8 +197,8 @@ export default function MainBox() {
   emitter.removeAllListeners('刷新人员分组')
   emitter.addListener('刷新人员分组', () => {
     getMealList()
-    setTargetKeys([])
     setMockData([])
+    setTargetKeys([])
   })
 
   return (
@@ -231,7 +206,7 @@ export default function MainBox() {
       <BaseTableBox>
         <BaseTable
           columns={columns}
-          surplusHeight={155}
+          surplusHeight={195}
           dataSource={tableData}
           loading={loadingTable}
           rowClassName={(record) => {
