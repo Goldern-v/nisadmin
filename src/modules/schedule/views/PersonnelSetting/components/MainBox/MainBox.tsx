@@ -11,11 +11,11 @@ export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
   const [loadingTable, setLoadingTable] = useState(false)
-  const [tableData, setTableData] = useState([])
+  const [tableData, setTableData] = useState([] as any[])
   const [editingKey, setEditingKey] = useState(false)
-  const [mockData, setMockData] = useState([])
-  const [targetKeys, setTargetKeys] = useState([])
-  const [selectedKeys, setSelectedKeys] = useState([])
+  const [mockData, setMockData] = useState([] as any[])
+  const [targetKeys, setTargetKeys] = useState([] as any[])
+  const [selectedKeys, setSelectedKeys] = useState([] as any[])
   const [groupName, setGroupName] = useState('')
   const [id, setId] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false)
@@ -117,8 +117,7 @@ export default function MainBox() {
     })
   }
 
-  TODO://获取分组可选人员(修改代码)
-  const selectSchedulers = (record?:any) =>{
+  const selectScheduler = (record?:any) =>{
     let deptCode = scheduleStore.getDeptCode() 
     let id = record.id
     let targetKeysArr: any = []
@@ -145,9 +144,9 @@ export default function MainBox() {
       setTargetKeys(targetKeysArr)  
     })
   }
-  
+
   //获取分组可选人员
-  const selectScheduler = (record?:any) =>{
+  const selectSchedulerq = (record?:any) =>{
     let deptCode = scheduleStore.getDeptCode() 
     let id = record.id
     setLazyLoading(true)
