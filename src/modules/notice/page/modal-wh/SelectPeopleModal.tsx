@@ -142,7 +142,7 @@ export default observer(function SelectPeopleModal(props: Props) {
       forceRender
       width={800}
       footer={null}
-      // centered
+      centered
     >
       <Wrapper>
         {/* {toJS(selectPeopleViewModel.stepState)}123 */}

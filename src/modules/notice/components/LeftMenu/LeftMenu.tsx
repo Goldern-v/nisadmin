@@ -81,7 +81,7 @@ const Wrapper = styled.div`
   left: 0;
   top: 50px;
   bottom: 0px;
-  width: 200px;
+  width: 180px;
   background: #fafafa;
   border-right: 1px solid #dddddd;
 `

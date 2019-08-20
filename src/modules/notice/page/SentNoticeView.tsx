@@ -125,7 +125,9 @@ export default function SentNoticeView() {
       .then((res) => {
         hideLoading()
         message.success('消息存草稿成功！')
-        res.data && res.data.id && setTemplateId(res.data.id)
+        appStore.history.push(`/notice?selectedMenu=草稿箱`)
+        // appStore.history.push(`/notice?selectedMenu=草稿箱&id=${res.data.id}`)
+        // res.data && res.data.id && setTemplateId(res.data.id)
       })
       .catch(() => {
         hideLoading()
@@ -323,7 +325,7 @@ const InputBox = styled.div`
   }
   .ant-select-selection {
     min-height: 30px;
-    max-height: 200px;
+    max-height: 120px;
     overflow: auto;
     padding: 8px 0;
     border: 0;
@@ -349,7 +351,7 @@ const FilesBox = styled.div`
   margin-top: -12px;
   border-bottom: 1px solid #ddd;
   overflow: auto;
-  max-height: 200px;
+  max-height: 120px;
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
