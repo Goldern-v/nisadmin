@@ -14,6 +14,7 @@ import FilterDateModal from '../../modal/FilterDateModal'
 import { set } from 'lodash'
 import { inflateSync } from 'zlib'
 import { Place } from 'src/components/common'
+import { observer } from 'mobx-react-lite'
 
 moment.locale('zh-cn')
 
@@ -26,7 +27,7 @@ const ItemMenu = Menu.Item
 // let rangePickerDefaultValue = new Array()
 interface Props {}
 
-export default function LeftBar(props: Props) {
+export default observer(function LeftBar(props: Props) {
   /** 开始时间 结束时间*/
   let [[startDate, endDate], setDate] = useState([
     scheduleStore.getWeekStartTime() ||
@@ -63,6 +64,12 @@ export default function LeftBar(props: Props) {
     updateWeekList(startDate, endDate)
   }, [startDate, endDate])
 
+  useEffect(() => {
+    if (selectedWeek.length > 0) {
+      handleItem(selectedWeek)
+    }
+  }, [scheduleStore.selectedGroupId])
+
   emitter.removeAllListeners('初始化周排班列表')
   emitter.addListener('初始化周排班列表', () => updateWeekList(startDate, endDate))
 
@@ -85,7 +92,6 @@ export default function LeftBar(props: Props) {
         for (let i = startWeekNumber; i <= endWeekNumber; i++) {
           let w = res.data.find((item: any) => item.week == i)
           if (w) {
-   
             weekList.push(w)
           } else {
             weekList.push({
@@ -120,7 +126,7 @@ export default function LeftBar(props: Props) {
   }
 
   // 处理周点击
-  function handleItem(items: any, i: string) {
+  function handleItem(items: any) {
     setSelectedWeek(items)
     // emitter.emit('动画载入表格中')
     // if (Number(time.status) === -1) {
@@ -133,7 +139,8 @@ export default function LeftBar(props: Props) {
     const postData = {
       deptCode: scheduleStore.getDeptCode(),
       startTime: items[0].mondy,
-      endTime: items[1] ? items[1].sundy : items[0].sundy
+      endTime: items[1] ? items[1].sundy : items[0].sundy,
+      nurseGroup: scheduleStore.selectedGroupId
     }
     service.schedulingApiService
       .findShiftList(postData)
@@ -209,7 +216,7 @@ export default function LeftBar(props: Props) {
             date = `${format(items[0].mondy)} - ${format(items[1].sundy)}`
           }
           return (
-            <ListItem onClick={(e) => handleItem(items, `${index}`)} key={index} active={items === selectedWeek}>
+            <ListItem onClick={(e) => handleItem(items)} key={index} active={items === selectedWeek}>
               <CircleCon color={status} />
               <span>{text}</span>
               <Place />
@@ -221,7 +228,7 @@ export default function LeftBar(props: Props) {
       <filterDateModal.Component />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   height: 100%;
   display: flex;

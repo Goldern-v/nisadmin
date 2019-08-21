@@ -8,6 +8,7 @@ import { RouteComponentProps } from 'react-router'
 import { Button, DatePicker, Form, Icon, Input, message, Modal, Popconfirm, Switch, TreeSelect } from 'antd'
 import { scheduleStore, appStore, authStore } from 'src/stores'
 import { splitRecord } from '../MainBox/utils/splitRecord'
+import { Select } from 'src/vendors/antd'
 
 const dateFormat = 'YYYY-MM-DD'
 const { WeekPicker } = DatePicker
@@ -669,6 +670,18 @@ export default function ToolBar(props: Props) {
         style={{ width: weekLength == 1 ? 220 : 270, marginRight: 3 }}
         readOnly
       />
+      <span style={{ marginLeft: 10 }}>分组：</span>
+      <Select
+        style={{ width: 150, marginRight: 5 }}
+        value={scheduleStore.selectedGroupId}
+        onChange={(value: any) => (scheduleStore.selectedGroupId = value)}
+      >
+        {scheduleStore.groupList.map((item) => (
+          <Select.Option value={item.id} key={item.id}>
+            {item.groupName}
+          </Select.Option>
+        ))}
+      </Select>
       <Button onClick={() => resetShift()} className='button-tools'>
         重置排班
       </Button>
@@ -716,7 +729,7 @@ const Wrapper = styled.div`
   padding: 0 20px 15px 20px;
   display: inline-flex;
   width: 100%;
-  align-items: flex-end;
+  align-items: center;
   margin-top: 5px;
 
   .button-tools {

@@ -27,7 +27,8 @@ export default class SchedulingApiService extends BaseApiService {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间
-      endTime: data.endTime // endTime   结束时间
+      endTime: data.endTime, // endTime   结束时间
+      nurseGroup: data.nurseGroup
     }
     return this.post(`/scheduling/findSaveOrUpdateTemplate`, postData)
   }
@@ -120,7 +121,8 @@ export default class SchedulingApiService extends BaseApiService {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
-      endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
+      endTime: data.endTime, // endTime   结束时间（刚开始由后台传给前台）
+      nurseGroup: data.nurseGroup
     }
     return this.post(`/scheduling/findBylist`, postData)
   }
@@ -129,7 +131,8 @@ export default class SchedulingApiService extends BaseApiService {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       startTime: data.startTime, // startTime 开始时间（刚开始由后台传给前台）
-      endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
+      endTime: data.endTime, // endTime   结束时间（刚开始由后台传给前台）
+      nurseGroup: data.nurseGroup
     }
     return this.post(`/scheduling/findSysnNurse`, postData)
   }
@@ -168,5 +171,9 @@ export default class SchedulingApiService extends BaseApiService {
   // 12.科室排班统计（按班次）（非json传参）
   public copyPrevSettingRange(data: any) {
     return this.post(`/scheduling/copyPrevSettingRange`, data)
+  }
+  // 12.科室排班统计（按班次）（非json传参）
+  public getGroupByDeptCode(deptCode: any) {
+    return this.get(`/schSettingNurseGroup/getByDeptCode/${deptCode}`)
   }
 }

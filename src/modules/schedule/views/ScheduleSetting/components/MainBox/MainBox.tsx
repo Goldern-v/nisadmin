@@ -15,6 +15,7 @@ import { mergeDayObj } from './utils/mergeDayObj'
 import { setRecordObj } from './utils/setRecordObj'
 import { weekDays1, weekDays2 } from './utils/splitRecord'
 import classNames from 'classnames'
+import { observer } from 'mobx-react-lite'
 
 // import { Link } from 'react-router-dom'
 
@@ -133,7 +134,7 @@ interface Props {
   fullPage?: boolean
 }
 
-export default function MainBox(props: Props) {
+export default observer(function MainBox(props: Props) {
   let { fullPage } = props
   const [footer, setFooter] = useState(() => {
     return <span />
@@ -155,12 +156,16 @@ export default function MainBox(props: Props) {
     getMealList()
     getShiftList()
     getShiftUserList()
-    getSchedule()
+    // getSchedule()
 
     setFooter(() => {
       return <span>排班小计: 空</span>
     })
   }, [])
+
+  useEffect(() => {
+    getSchedule()
+  }, [scheduleStore.selectedGroupId])
 
   emitter.removeAllListeners('排班列表载入动画')
   emitter.removeAllListeners('获取编辑排班列表')
@@ -732,7 +737,8 @@ export default function MainBox(props: Props) {
     const postData = {
       deptCode: deptCode, // deptCode  科室编码 // "门诊护理"
       startTime: startTime, // startTime 开始时间（刚开始由后台传给前台）
-      endTime: endTime // endTime   结束时间（刚开始由后台传给前台）
+      endTime: endTime, // endTime   结束时间（刚开始由后台传给前台）
+      nurseGroup: scheduleStore.selectedGroupId
     }
     setLoading(true)
     let serv: any = isReset
@@ -767,7 +773,8 @@ export default function MainBox(props: Props) {
     const postData = {
       deptCode: deptCode, // deptCode  科室编码
       startTime: startTime, // startTime 开始时间
-      endTime: endTime // endTime   结束时间
+      endTime: endTime, // endTime   结束时间
+      nurseGroup: scheduleStore.selectedGroupId
     }
 
     service.schedulingApiService.newSchedule(postData).then((res) => {
@@ -1211,7 +1218,7 @@ export default function MainBox(props: Props) {
       </div>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   display: flex;
   padding: 0 20px 0px 20px;

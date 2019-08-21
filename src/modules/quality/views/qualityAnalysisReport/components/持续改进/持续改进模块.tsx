@@ -70,7 +70,7 @@ const Wrapper = styled.div`
       padding-left: 22px;
     }
     .img {
-      width: 450px;
+      /* width: 450px; */
       margin-bottom: 15px;
       margin-left: 15px;
     }
