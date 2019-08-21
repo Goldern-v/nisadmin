@@ -120,7 +120,7 @@ export default observer(function Table() {
         loading={retiredRetireesViewModal.tableLoading}
         dataSource={retiredRetireesViewModal.tableList}
         columns={columns}
-        type={['index']}
+        type={['index', 'fixedIndex']}
         surplusHeight={180}
         surplusWidth={300}
         pagination={{

@@ -91,6 +91,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <div>
             质控结果：是({itemCount.yesSize}) 否({itemCount.noSize}) 不适用({itemCount.inapplicableSize})
           </div>
+          {messageBoxData.hasArchiveItem && <div>是否归档：{messageBoxData.archive ? '是' : '否'}</div>}
         </div>
 
         <div className='boxRight'>
@@ -205,7 +206,7 @@ const Con = styled.div`
 `
 const MessageBox = styled.div`
   margin-top: 10px;
-  height: 138px;
+  min-height: 138px;
   line-height: 24px;
   padding: 10px 20px;
   background-color: #f2f2f2;

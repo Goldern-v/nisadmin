@@ -17,7 +17,7 @@ export default observer(function QualityControlRecord() {
   let [loading, setLoading] = useState(false)
   useEffect(() => {
     ;(async () => {
-      if (appStore.queryObj.noRefresh) {
+      if (appStore.queryObj.noRefresh && qualityControlRecordVM.allData.list.length > 0) {
         appStore.history.replace('/quality/qualityControlRecord')
       } else {
         await qualityControlRecordVM.init()
