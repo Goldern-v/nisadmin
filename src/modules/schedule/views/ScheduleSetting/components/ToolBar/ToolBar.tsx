@@ -9,6 +9,7 @@ import { Button, DatePicker, Form, Icon, Input, message, Modal, Popconfirm, Swit
 import { scheduleStore, appStore, authStore } from 'src/stores'
 import { splitRecord } from '../MainBox/utils/splitRecord'
 import { Select } from 'src/vendors/antd'
+import { observer } from 'mobx-react-lite'
 
 const dateFormat = 'YYYY-MM-DD'
 const { WeekPicker } = DatePicker
@@ -18,7 +19,7 @@ interface Props {
   setFullPage: any
 }
 
-export default function ToolBar(props: Props) {
+export default observer(function ToolBar(props: Props) {
   const { fullPage, setFullPage } = props
   const [pageTitle, setPageTitle] = useState('编辑排班')
   const [formatDay, setFormatDay] = useState('七')
@@ -722,7 +723,7 @@ export default function ToolBar(props: Props) {
       </Button>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   /* background: #eee; */
   height: 100%;

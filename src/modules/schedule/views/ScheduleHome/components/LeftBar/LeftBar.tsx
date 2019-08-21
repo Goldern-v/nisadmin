@@ -61,8 +61,8 @@ export default observer(function LeftBar(props: Props) {
   const filterDateModal = createModal(FilterDateModal)
 
   useEffect(() => {
-    updateWeekList(startDate, endDate)
-  }, [startDate, endDate])
+    authStore.selectedDeptCode && authStore.selectedDeptCode != '全院' && updateWeekList(startDate, endDate)
+  }, [startDate, endDate, authStore.selectedDeptCode])
 
   useEffect(() => {
     if (selectedWeek.length > 0) {
