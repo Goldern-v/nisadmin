@@ -111,20 +111,19 @@ export default function MainBox() {
   }
 
   //获取分组已选人员
-  const selectedScheduler = (record?: any) =>{
+  const selectedScheduler = (record?: any, arrayData?:any) =>{
     let id = record.id
     setLoadingTransfer(true)
     service.personnelSettingApiService.getById(id).then((res) => {
       setLoadingTransfer(false)
       let array:any = []
       res.data.length > 0 && res.data.map((item:any, i:any) => {
-        let data:any = mockData.filter((o:any) => `${o.empNo} + ${o.empName}` === `${item.empNo} + ${item.empName}`)
+        let data:any = arrayData.filter((o:any) => `${o.empNo} + ${o.empName}` === `${item.empNo} + ${item.empName}`)
         if (data && data.length > 0) {
           array.push(data[0].key)
         }
       })
       setTargetKeys(array)
-      console.log('111:',res,array)
     })
   }
 
@@ -140,20 +139,20 @@ export default function MainBox() {
         res.data.map((item: any, i: any) => {
           array.push({
             key: i.toString(),
+            sortValue: i.toString(),
             schSettingNurseGroupId: id,
             empName: item.empName,
             empNo: item.empNo
           })
         })
       setMockData(array)
-      console.log('000:',res,array)
+      selectedScheduler(record, array)
     })
   }
 
   //表格行操作
   const selectRow = async (record: any) => {
     await selectScheduler(record)
-    await selectedScheduler(record)
     setId(record.id)
   }
 
@@ -207,6 +206,7 @@ export default function MainBox() {
   /** 监听事件 --- 控制刷新状态*/
   emitter.removeAllListeners('刷新人员分组')
   emitter.addListener('刷新人员分组', () => {
+    setId('') // 清除表格选中背景色
     getMealList()
     setMockData([])
     setTargetKeys([])
