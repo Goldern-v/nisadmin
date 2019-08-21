@@ -139,6 +139,7 @@ export default function MainBox() {
         res.data.map((item: any, i: any) => {
           array.push({
             key: i.toString(),
+            sortValue: i.toString(),
             schSettingNurseGroupId: id,
             empName: item.empName,
             empNo: item.empNo
