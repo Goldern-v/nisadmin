@@ -16,7 +16,7 @@ export default class ScheduleStore {
       wardName: ''
     }
   }
-  @observable public groupList: any[] = []
+  @observable public groupList: any[] = sessionStorage.groupList ? JSON.parse(sessionStorage.groupList) : []
   @observable public selectedGroupId: any = ''
   @observable private weekStartTime: string
   @observable private weekEndTime: string
@@ -86,6 +86,11 @@ export default class ScheduleStore {
   @action
   public setDepartmentValue = (key: string, value: string) => {
     this.department[key] = value
+  }
+  @action
+  public setGroupList = (value: any[]) => {
+    this.groupList = value
+    sessionStorage.groupList = JSON.stringify(value)
   }
 
   @action

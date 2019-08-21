@@ -65,7 +65,7 @@ export default observer(function ToolBar() {
 
   useEffect(() => {
     service.schedulingApiService.getGroupByDeptCode(scheduleStore.getDeptCode()).then((res) => {
-      scheduleStore.groupList = [{ groupName: '全部', id: '' }, ...res.data]
+      scheduleStore.setGroupList([{ groupName: '全部', id: '' }, ...res.data])
     })
   }, [scheduleStore.getDeptCode()])
 
