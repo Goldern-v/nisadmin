@@ -36,9 +36,6 @@ const Wrapper = styled.div`
   display: inline-flex;
   width: 100%;
   align-items: flex-end;
-  /* form.Item {
-    width: '250px';
-  } */
 `
 const Title = styled.div`
   font-size: 20px;

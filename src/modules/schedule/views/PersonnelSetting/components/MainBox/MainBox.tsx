@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import emitter from 'src/libs/ev'
 import BaseTable from 'src/components/BaseTable'
-import { Transfer, Modal, Input, message } from 'antd'
-import { ScrollBox } from 'src/components/common'
+import { Transfer, Modal, Input, message, Spin } from 'antd'
 import service from 'src/services/api'
 import { scheduleStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
@@ -19,7 +18,8 @@ export default function MainBox() {
   const [groupName, setGroupName] = useState('')
   const [id, setId] = useState('')
   const [confirmLoading, setConfirmLoading] = useState(false)
-  const [lazyLoading, setLazyLoading] = useState(false)
+  const [effect, setEffect] = useState(true)
+  const [loadingTransfer, setLoadingTransfer] = useState(false)
 
   // 表格
   const columns: any = [
@@ -58,12 +58,14 @@ export default function MainBox() {
 
   //获取人员分组列表
   const getMealList = () => {
-    setLoadingTable(true)
-    let deptCode = scheduleStore.getDeptCode()
-    service.personnelSettingApiService.getByDeptCode(deptCode).then((res) => {
-      setLoadingTable(false)
-      setTableData(res.data)
-    })
+    if(effect){
+      setLoadingTable(true)
+      let deptCode = scheduleStore.getDeptCode()
+      service.personnelSettingApiService.getByDeptCode(deptCode).then((res) => {
+        setLoadingTable(false)
+        setTableData(res.data)
+      })
+    }
   }
 
   //保存
@@ -111,17 +113,18 @@ export default function MainBox() {
   //获取分组已选人员
   const selectedScheduler = (record?: any) =>{
     let id = record.id
-    setLazyLoading(true)
+    setLoadingTransfer(true)
     service.personnelSettingApiService.getById(id).then((res) => {
-      setLazyLoading(false)
+      setLoadingTransfer(false)
       let array:any = []
       res.data.length > 0 && res.data.map((item:any, i:any) => {
-        let data:any = mockData.filter((o:any) => o.empNo === item.empNo)
+        let data:any = mockData.filter((o:any) => `${o.empNo} + ${o.empName}` === `${item.empNo} + ${item.empName}`)
         if (data && data.length > 0) {
           array.push(data[0].key)
         }
       })
       setTargetKeys(array)
+      console.log('111:',res,array)
     })
   }
 
@@ -129,9 +132,9 @@ export default function MainBox() {
   const selectScheduler = (record?: any) => {
     let deptCode = scheduleStore.getDeptCode()
     let id = record.id
-    setLazyLoading(true)
+    setLoadingTransfer(true)
     service.personnelSettingApiService.getScheduler(deptCode).then((res) => {
-      setLazyLoading(false)
+      setLoadingTransfer(false)
       let array: any = []
       res.data.length > 0 &&
         res.data.map((item: any, i: any) => {
@@ -143,18 +146,24 @@ export default function MainBox() {
           })
         })
       setMockData(array)
+      console.log('000:',res,array)
     })
   }
 
   //表格行操作
-  const selectRow = (record: any) => {
-    selectedScheduler(record)
-    selectScheduler(record)
+  const selectRow = async (record: any) => {
+    await selectScheduler(record)
+    await selectedScheduler(record)
     setId(record.id)
   }
 
   useEffect(() => {
+    setEffect(true)
     getMealList()
+  }, [])
+
+  useLayoutEffect(() => {
+    setEffect(false)
   }, [])
 
   // 新增或修改分组中的人员
@@ -168,6 +177,7 @@ export default function MainBox() {
     service.personnelSettingApiService
       .updateSavePersonnelSetting(params)
       .then((res) => {
+        getMealList()
         message.success('操作成功！')
       })
       .catch(() => {
@@ -207,7 +217,7 @@ export default function MainBox() {
       <BaseTableBox>
         <BaseTable
           columns={columns}
-          surplusHeight={195}
+          surplusHeight={190}
           dataSource={tableData}
           loading={loadingTable}
           rowClassName={(record) => {
@@ -224,25 +234,27 @@ export default function MainBox() {
       </BaseTableBox>
       <TransferBox>
         <TitleCon>本科室成员名单：</TitleCon>
-        <Transfer
-          className='transfer'
-          dataSource={mockData}
-          listStyle={{
-            width: '46%',
-            height: 'calc(100vh - 187px)'
-          }}
-          locale={{
-            itemUnit: '人',
-            itemsUnit: '人'
-          }}
-          titles={['可选成员', '已选成员']}
-          selectedKeys={selectedKeys}
-          targetKeys={targetKeys}
-          onChange={handleChange}
-          onSelectChange={handleSelectChange}
-          render={renderItem}
-          lazy={lazyLoading}
-        />
+        <Spin className='loading' spinning={loadingTransfer}>
+          <Transfer
+            className='transfer'
+            dataSource={mockData}
+            listStyle={{
+              width: '46%',
+              height: 'calc(100vh - 187px)'
+            }}
+            locale={{
+              itemUnit: '人',
+              itemsUnit: '人'
+            }}
+            titles={['可选成员', '已选成员']}
+            selectedKeys={selectedKeys}
+            targetKeys={targetKeys}
+            onChange={handleChange}
+            onSelectChange={handleSelectChange}
+            render={renderItem}
+            lazy={false}
+          />
+        </Spin>
         <Modal
           className='modal'
           centered={true}
@@ -288,6 +300,32 @@ const TransferBox = styled.div`
   flex: 1;
   padding: 15px;
   box-sizing: border-box;
+  position: relative;
+  height: calc(100vh - 187px);
+  .loading{
+    position:absolute;
+    top: 50%; 
+    left:50%;
+    margin-left: -10px;
+    margin-top: -10px;
+  }
+  .transfer{
+    .ant-transfer-list-content{
+      &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: #eaeaea;
+      }
+      &::-webkit-scrollbar-track {
+        border-radius: 50px;
+        background-color: #eaeaea;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 50px;
+        background-color: #c2c2c2;
+      }
+    } 
+  }
 `
 const TitleCon = styled.div`
   height: 35px;
