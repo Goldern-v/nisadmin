@@ -22,6 +22,9 @@ export default class QualityAnalysisReportService extends BaseApiService {
   public publishReport(obj?: any) {
     return this.post(`/qcAnalysis/publish`, appStore.queryObj)
   }
+  public cancelPublishReport(obj?: any) {
+    return this.post(`/qcAnalysis/cancelPublish`, appStore.queryObj)
+  }
 
   /** 更新上月质量问题，持续改进效果评价 */
   public updateImproveItemCompareList(itemList?: any) {

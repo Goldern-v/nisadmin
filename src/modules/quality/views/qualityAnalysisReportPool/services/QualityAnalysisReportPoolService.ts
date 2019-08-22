@@ -12,6 +12,9 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   public publishReport(obj?: any) {
     return this.post(`/qcSummary/publish`, appStore.queryObj)
   }
+  public cancelPublishReport(obj?: any) {
+    return this.post(`/qcSummary/cancelPublish`, appStore.queryObj)
+  }
 
   /** 更新上月质量问题，持续改进效果评价 */
   public updateImproveItemCompareList(itemList?: any) {
@@ -80,7 +83,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
 
   /** 更新报告名称 */
   public updateReportName(reportName?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let obj = {
       year,
       type,
@@ -91,7 +94,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新查房内容 */
   public updateCheckWardDesc(checkWardDesc?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let obj = {
       year,
       type,
@@ -102,7 +105,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新检查形式 */
   public updateCheckWayDesc(checkWayDesc?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let obj = {
       year,
       type,
@@ -137,7 +140,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新病区质量考核前十 */
   public updateNotDeductDeptDesc(notDeductDeptDesc: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let params = {
       year,
       type,
@@ -149,7 +152,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新病区质量扣分前十 */
   public updateTopRankDeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let params = {
       year,
       type,
@@ -161,7 +164,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新特殊科室质量扣分 */
   public updateSpecialDeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let params = {
       year,
       type,
@@ -173,7 +176,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新特殊监护病房质量扣分 */
   public updateIcuDeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let params = {
       year,
       type,
@@ -185,7 +188,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新门诊科室质量扣分 */
   public updateOpdeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let params = {
       year,
       type,
@@ -205,7 +208,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 更新各组质量整改情况反馈*/
   public updateImproveResultList(itemList?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let params = {
       year,
       type,
@@ -216,7 +219,7 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
   }
   /** 护理质量工作重点*/
   public updateKeyItemList(itemList?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report;
+    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
     let params = {
       year,
       type,

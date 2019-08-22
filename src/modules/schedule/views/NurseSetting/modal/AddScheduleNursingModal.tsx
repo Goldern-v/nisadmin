@@ -101,7 +101,14 @@ export default function AddScheduleNursingModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`层级`} name='nurseHierarchy'>
-              <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
+              <Select
+                showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                style={{ width: '100%' }}
+                placeholder='选择层级'
+              >
                 {CURRENTLEVEL_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>
                     {item}

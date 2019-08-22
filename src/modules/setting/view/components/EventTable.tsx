@@ -175,7 +175,7 @@ class EditableTable extends React.Component<any, any> {
     })
     this.setState({ editingKey: true })
   }
-  
+
   // 删除
   public handleDelete = (record: any) => {
     Modal.confirm({
@@ -262,7 +262,7 @@ class EditableTable extends React.Component<any, any> {
       message.warning('保存前请将每一项信息填写完整')
       return
     }
-    this.setState({confirmLoading: true})
+    this.setState({ confirmLoading: true })
     let postData = {}
     let eventName = this.state.selectData2.filter((item: any) => item.eventCode === this.state.patientId)[0].eventName
     // 修改入参
@@ -294,14 +294,14 @@ class EditableTable extends React.Component<any, any> {
     }
     service.healthyApiService.preservationAutomatic(postData).then((res) => {
       if (res) {
-        this.setState({confirmLoading: false})
+        this.setState({ confirmLoading: false })
         message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
         this.getMealList(null, null)
         this.setState({ editingKey: false })
       }
     })
   }
-  
+
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
   public componentWillMount() {
@@ -382,6 +382,9 @@ class EditableTable extends React.Component<any, any> {
               </SpanOne>
               <Select
                 showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 value={this.state.missionId}
                 style={{ width: '72%' }}
                 // dropdownStyle={{height:'50px'}}
@@ -389,7 +392,6 @@ class EditableTable extends React.Component<any, any> {
                 defaultActiveFirstOption={false}
                 showArrow={false}
                 loading={this.state.loading}
-                filterOption={false}
                 onChange={this.searchChange.bind(this)}
                 onSearch={this.toSearch.bind(this)}
                 notFoundContent='没有你查找的内容'
@@ -401,8 +403,11 @@ class EditableTable extends React.Component<any, any> {
               <SpanOne>事件类型：</SpanOne>
               <Select
                 value={this.state.patientId}
-                onChange={(value) => this.setState({ patientId: value })}
+                onChange={(value: any) => this.setState({ patientId: value })}
                 showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 style={{ width: '72%' }}
                 placeholder='选择类型'
               >
@@ -417,8 +422,11 @@ class EditableTable extends React.Component<any, any> {
               <SpanOne>推送类型：</SpanOne>
               <Select
                 value={this.state.messageType}
-                onChange={(value) => this.setState({ messageType: value })}
+                onChange={(value: any) => this.setState({ messageType: value })}
                 showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 style={{ width: '72%', height: 40 }}
                 placeholder='选择类型'
               >

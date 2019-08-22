@@ -8,41 +8,41 @@ import Moment from 'moment'
 
 import UserCheckModal from './UserCheckModal'
 
-const api = new badEventsNewService();
+const api = new badEventsNewService()
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
 export interface Props {
-  visible: boolean, //审核窗口显示
-  onOk: any, //审核操作完成回调
-  paramMap?: any, //不良事件表单数据
-  status: string, //当前不良事件状态
-  onCancel: any, //窗口关闭回调
-  eventCode: string, //不良事件类型代码
-  reportDept: any, //上报人科室名称代码
-  id: any, //不良事件id
+  visible: boolean //审核窗口显示
+  onOk: any //审核操作完成回调
+  paramMap?: any //不良事件表单数据
+  status: string //当前不良事件状态
+  onCancel: any //窗口关闭回调
+  eventCode: string //不良事件类型代码
+  reportDept: any //上报人科室名称代码
+  id: any //不良事件id
 }
 
 export default observer(function AduitModal(props: Props) {
   // console.log(authStore.user)
-  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept } = props;
+  const { visible, onOk, onCancel, status, paramMap, id, eventCode, reportDept } = props
   //用于操作和提交的不良事件表单数据
-  let initFormMap: any = {};
-  const [formMap, setFormMap] = useState(initFormMap);
+  let initFormMap: any = {}
+  const [formMap, setFormMap] = useState(initFormMap)
   //审核时除表单以外其他的提交数据
-  let initInstance: any = {};
-  const [instance, setInstance] = useState(initInstance);
+  let initInstance: any = {}
+  const [instance, setInstance] = useState(initInstance)
   //验证用户弹窗显示
-  const [userCheckVisible, setUserCheckVisible] = useState(false);
+  const [userCheckVisible, setUserCheckVisible] = useState(false)
 
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false)
 
   //转发科室列表
-  const [dealerDepts, setDealerDepts] = useState([] as any);
+  const [dealerDepts, setDealerDepts] = useState([] as any)
 
   useEffect(() => {
     if (visible) {
-      let user = authStore.user;
+      let user = authStore.user
       if (user)
         setInstance({
           instanceId: id,
@@ -53,20 +53,20 @@ export default observer(function AduitModal(props: Props) {
           operatorEmpNo: user.empNo,
           operateDate: Moment().format('YYYY-MM-DD'),
           operatorPW: '',
-          isAllowNext: "1",
+          isAllowNext: '1',
           departmentCode: '',
           departmentName: '',
           sac: ''
-        });
+        })
 
-      let newMap: any = {};
+      let newMap: any = {}
       switch (status) {
         case '1':
           newMap[`${eventCode}_department_code`] = reportDept.code
           newMap[`${eventCode}_department_name`] = reportDept.name
           newMap[`${eventCode}_shjg_option`] = '转发'
           newMap[`${eventCode}_th_explain`] = ''
-          if (dealerDepts.length <= 0) getDealerDepts();
+          if (dealerDepts.length <= 0) getDealerDepts()
           break
         case '2':
           newMap[`${eventCode}_shcdpd_option`] = '轻度'
@@ -83,33 +83,36 @@ export default observer(function AduitModal(props: Props) {
           break
       }
 
-      setFormMap({ ...paramMap, ...newMap });
+      setFormMap({ ...paramMap, ...newMap })
     }
-  }, [visible]);
+  }, [visible])
 
   const getDealerDepts = () => {
-    api.getDeptList().then(res => {
-      let data = res.data;
-      if (data instanceof Array) setDealerDepts(data.map((item: any) => {
-        return {
-          name: item.deptName,
-          value: item.deptCode
-        }
-      }))
+    api.getDeptList().then((res) => {
+      let data = res.data
+      if (data instanceof Array)
+        setDealerDepts(
+          data.map((item: any) => {
+            return {
+              name: item.deptName,
+              value: item.deptCode
+            }
+          })
+        )
     })
   }
 
   const handleDeptChange = (name: any) => {
-    let department_code = '';
-    let department_name = name;
+    let department_code = ''
+    let department_name = name
 
     if (department_name == reportDept.name) {
-      department_code = reportDept.code;
+      department_code = reportDept.code
     } else {
       for (let i = 0; i < dealerDepts.length; i++) {
         if (dealerDepts[i].name == department_name) {
-          department_code = dealerDepts[i].value;
-          break;
+          department_code = dealerDepts[i].value
+          break
         }
       }
     }
@@ -124,16 +127,16 @@ export default observer(function AduitModal(props: Props) {
   const handleOkBtn = () => {
     // console.log(formMap);
     //check formMap
-    setUserCheckVisible(true);
+    setUserCheckVisible(true)
   }
   const handleUserCheckOk = (userAudit: any) => {
-    auditFormSubmit(userAudit);
-    setUserCheckVisible(false);
+    auditFormSubmit(userAudit)
+    setUserCheckVisible(false)
   }
 
   const auditFormSubmit = (userAudit: any) => {
-    let params = {} as any;
-    setConfirmLoading(true);
+    let params = {} as any
+    setConfirmLoading(true)
     params = {
       ...instance,
       paramMap: { ...formMap },
@@ -148,32 +151,31 @@ export default observer(function AduitModal(props: Props) {
     switch (params.operatorStatus) {
       case '1':
         if (formMap[`${eventCode}_shjg_option`] === '退回') {
-          params.isAllowNext = "0";
-          params.paramMap[`${eventCode}_department_code`] = '';
-          params.paramMap[`${eventCode}_department_name`] = '';
-          params.departmentCode = '';
-          params.departmentName = '';
-
+          params.isAllowNext = '0'
+          params.paramMap[`${eventCode}_department_code`] = ''
+          params.paramMap[`${eventCode}_department_name`] = ''
+          params.departmentCode = ''
+          params.departmentName = ''
         } else {
-          params.paramMap[`${eventCode}_th_explain`] = '';
+          params.paramMap[`${eventCode}_th_explain`] = ''
         }
         break
     }
 
     api
       .aduit(params)
-      .then(res => {
-        setConfirmLoading(false);
+      .then((res) => {
+        setConfirmLoading(false)
         if (res.code == 200) {
-          onOk();
-          Message.success('操作成功');
+          onOk()
+          Message.success('操作成功')
         } else {
-          if (res.desc) Message.error(res.desc);
+          if (res.desc) Message.error(res.desc)
         }
       })
       .catch(() => {
-        setConfirmLoading(false);
-        Message.error('审核请求发送失败');
+        setConfirmLoading(false)
+        Message.error('审核请求发送失败')
       })
   }
   const AduitPannelTitle = () => {
@@ -205,156 +207,183 @@ export default observer(function AduitModal(props: Props) {
   const AduitPannelContent = () => {
     switch (status) {
       case '1':
-        return <div className="form1">
-          <Radio.Group
-            className="radio-group"
-            value={formMap[`${eventCode}_shjg_option`]}
-            onChange={e => setFormMap({ ...formMap, [`${eventCode}_shjg_option`]: e.target.value })}>
-            <Row>
-              <Col span={6} className="item-label">审核结果：</Col>
-              <Col span={4}>
-                <Radio value={'退回'}></Radio>
-                <span>退回</span>
-              </Col>
-              <Col span={14}>
-                <Input
-                  value={formMap[`${eventCode}_th_explain`]}
-                  className="input-item"
-                  disabled={formMap[`${eventCode}_shjg_option`] == '转发'}
-                  onChange={e => setFormMap({ ...formMap, [`${eventCode}_th_explain`]: e.target.value })} />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={6}></Col>
-              <Col span={4}>
-                <Radio value={'转发'}></Radio>
-                <span>转发</span>
-              </Col>
-              <Col span={14}>
-                <Select
-                  className="input-item dept-select"
-                  defaultValue={formMap[`${eventCode}_department_name`]}
-                  value={formMap[`${eventCode}_department_name`]}
-                  onChange={handleDeptChange}
-                  showSearch>
-                  {dealerDepts.map((item: any, idx: number) => {
-                    return <Select.Option value={item.name} key={idx}>{item.name}</Select.Option>
-                  })}
-                </Select>
-              </Col>
-            </Row>
-          </Radio.Group>
-        </div>
+        return (
+          <div className='form1'>
+            <Radio.Group
+              className='radio-group'
+              value={formMap[`${eventCode}_shjg_option`]}
+              onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_shjg_option`]: e.target.value })}
+            >
+              <Row>
+                <Col span={6} className='item-label'>
+                  审核结果：
+                </Col>
+                <Col span={4}>
+                  <Radio value={'退回'} />
+                  <span>退回</span>
+                </Col>
+                <Col span={14}>
+                  <Input
+                    value={formMap[`${eventCode}_th_explain`]}
+                    className='input-item'
+                    disabled={formMap[`${eventCode}_shjg_option`] == '转发'}
+                    onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_th_explain`]: e.target.value })}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={6} />
+                <Col span={4}>
+                  <Radio value={'转发'} />
+                  <span>转发</span>
+                </Col>
+                <Col span={14}>
+                  <Select
+                    className='input-item dept-select'
+                    defaultValue={formMap[`${eventCode}_department_name`]}
+                    value={formMap[`${eventCode}_department_name`]}
+                    onChange={handleDeptChange}
+                    showSearch
+                    filterOption={(input: any, option: any) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {dealerDepts.map((item: any, idx: number) => {
+                      return (
+                        <Select.Option value={item.name} key={idx}>
+                          {item.name}
+                        </Select.Option>
+                      )
+                    })}
+                  </Select>
+                </Col>
+              </Row>
+            </Radio.Group>
+          </div>
+        )
       case '2':
-        return <div className="form2">
-          <Row>
-            <span className="select-item">
-              <span className="item-label">伤害程度判定:</span>
-              <span className="item-content">
-                <Select
-                  defaultValue="轻度"
-                  value={formMap[`${eventCode}_shcdpd_option`]}
-                  onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_shcdpd_option`]: val })}>
-                  <Select.Option value="轻度">轻度</Select.Option>
-                  <Select.Option value="中度">中度</Select.Option>
-                  <Select.Option value="高度">高度</Select.Option>
-                </Select>
+        return (
+          <div className='form2'>
+            <Row>
+              <span className='select-item'>
+                <span className='item-label'>伤害程度判定:</span>
+                <span className='item-content'>
+                  <Select
+                    defaultValue='轻度'
+                    value={formMap[`${eventCode}_shcdpd_option`]}
+                    onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_shcdpd_option`]: val })}
+                  >
+                    <Select.Option value='轻度'>轻度</Select.Option>
+                    <Select.Option value='中度'>中度</Select.Option>
+                    <Select.Option value='高度'>高度</Select.Option>
+                  </Select>
+                </span>
               </span>
-            </span>
-            <span className="select-item">
-              <span className="item-label">SAC:</span>
-              <span className="item-content">
-                <Select
-                  defaultValue="1"
-                  value={formMap[`${eventCode}_sac_option`]}
-                  onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_sac_option`]: val })}>
-                  <Select.Option value="1级">1级</Select.Option>
-                  <Select.Option value="2级">2级</Select.Option>
-                  <Select.Option value="3级">3级</Select.Option>
-                  <Select.Option value="4级">4级</Select.Option>
-                </Select>
+              <span className='select-item'>
+                <span className='item-label'>SAC:</span>
+                <span className='item-content'>
+                  <Select
+                    defaultValue='1'
+                    value={formMap[`${eventCode}_sac_option`]}
+                    onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_sac_option`]: val })}
+                  >
+                    <Select.Option value='1级'>1级</Select.Option>
+                    <Select.Option value='2级'>2级</Select.Option>
+                    <Select.Option value='3级'>3级</Select.Option>
+                    <Select.Option value='4级'>4级</Select.Option>
+                  </Select>
+                </span>
               </span>
-            </span>
-            <span className="select-item">
-              <span className="item-label">RCA需求分析:</span>
-              <span className="item-content">
-                <Select
-                  defaultValue="0"
-                  value={formMap[`${eventCode}_rca_option`]}
-                  onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_rca_option`]: val })}>
-                  <Select.Option value="不需要">不需要</Select.Option>
-                  <Select.Option value="需要">需要</Select.Option>
-                </Select>
+              <span className='select-item'>
+                <span className='item-label'>RCA需求分析:</span>
+                <span className='item-content'>
+                  <Select
+                    defaultValue='0'
+                    value={formMap[`${eventCode}_rca_option`]}
+                    onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_rca_option`]: val })}
+                  >
+                    <Select.Option value='不需要'>不需要</Select.Option>
+                    <Select.Option value='需要'>需要</Select.Option>
+                  </Select>
+                </span>
               </span>
-            </span>
-            <span className="select-item">
-              <span className="item-label">提交质量安全管委会:</span>
-              <span className="item-content">
-                <Select
-                  defaultValue="不提交"
-                  value={formMap[`${eventCode}_tjzlanwyh_option`]}
-                  onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_tjzlanwyh_option`]: val })}>
-                  <Select.Option value="不提交">不提交</Select.Option>
-                  <Select.Option value="提交">提交</Select.Option>
-                </Select>
+              <span className='select-item'>
+                <span className='item-label'>提交质量安全管委会:</span>
+                <span className='item-content'>
+                  <Select
+                    defaultValue='不提交'
+                    value={formMap[`${eventCode}_tjzlanwyh_option`]}
+                    onChange={(val: any) => setFormMap({ ...formMap, [`${eventCode}_tjzlanwyh_option`]: val })}
+                  >
+                    <Select.Option value='不提交'>不提交</Select.Option>
+                    <Select.Option value='提交'>提交</Select.Option>
+                  </Select>
+                </span>
               </span>
-            </span>
-          </Row>
-          <Row>
-            <Col span={2}>审核意见：</Col>
-            <Col span={22}>
-              <TextArea
-                rows={8}
-                value={formMap[`${eventCode}_shyj_explain`]}
-                onChange={e => setFormMap({ ...formMap, [`${eventCode}_shyj_explain`]: e.target.value })} />
-            </Col>
-          </Row>
-        </div>
+            </Row>
+            <Row>
+              <Col span={2}>审核意见：</Col>
+              <Col span={22}>
+                <TextArea
+                  rows={8}
+                  value={formMap[`${eventCode}_shyj_explain`]}
+                  onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_shyj_explain`]: e.target.value })}
+                />
+              </Col>
+            </Row>
+          </div>
+        )
       case '3':
-        return <div>
-          <Row>
-            <Col span={2}>总结意见：</Col>
-            <Col span={22}>
-              <TextArea
-                rows={8}
-                value={formMap[`${eventCode}_zkk_zjyj_explain`]}
-                onChange={e => setFormMap({ ...formMap, [`${eventCode}_zkk_zjyj_explain`]: e.target.value })} />
-            </Col>
-          </Row>
-        </div>
+        return (
+          <div>
+            <Row>
+              <Col span={2}>总结意见：</Col>
+              <Col span={22}>
+                <TextArea
+                  rows={8}
+                  value={formMap[`${eventCode}_zkk_zjyj_explain`]}
+                  onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_zkk_zjyj_explain`]: e.target.value })}
+                />
+              </Col>
+            </Row>
+          </div>
+        )
       case '4':
-        return <div>
-          <Row>
-            <Col span={2}>审核意见：</Col>
-            <Col span={22}>
-              <TextArea
-                rows={8}
-                value={formMap[`${eventCode}_wyh_zjyj_explain`]}
-                onChange={e => setFormMap({ ...formMap, [`${eventCode}_wyh_zjyj_explain`]: e.target.value })} />
-            </Col>
-          </Row>
-        </div>
+        return (
+          <div>
+            <Row>
+              <Col span={2}>审核意见：</Col>
+              <Col span={22}>
+                <TextArea
+                  rows={8}
+                  value={formMap[`${eventCode}_wyh_zjyj_explain`]}
+                  onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_wyh_zjyj_explain`]: e.target.value })}
+                />
+              </Col>
+            </Row>
+          </div>
+        )
       default:
         return <span>未知审核流程</span>
     }
   }
 
-  return <Fragment>
-    <Modal
-      className="badevent-audit-modal"
-      title={AduitPannelTitle()}
-      width={ModalWidth()}
-      onOk={handleOkBtn}
-      confirmLoading={confirmLoading}
-      onCancel={onCancel}
-      visible={visible}>
-      <Wrapper>{AduitPannelContent()}</Wrapper>
-    </Modal>
-    <UserCheckModal
-      visible={userCheckVisible}
-      onCancel={() => setUserCheckVisible(false)}
-      onOk={handleUserCheckOk} />
-  </Fragment>
+  return (
+    <Fragment>
+      <Modal
+        className='badevent-audit-modal'
+        title={AduitPannelTitle()}
+        width={ModalWidth()}
+        onOk={handleOkBtn}
+        confirmLoading={confirmLoading}
+        onCancel={onCancel}
+        visible={visible}
+      >
+        <Wrapper>{AduitPannelContent()}</Wrapper>
+      </Modal>
+      <UserCheckModal visible={userCheckVisible} onCancel={() => setUserCheckVisible(false)} onOk={handleUserCheckOk} />
+    </Fragment>
+  )
 })
 
 const Wrapper = styled.div`

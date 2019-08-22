@@ -25,7 +25,15 @@ export default observer(function FormSelect(props: Props) {
 
   return (
     <Wrapper>
-      <Select value={qualityControlRecordVM.filterForm} showSearch style={{ width: 200 }} onChange={onChange}>
+      <Select
+        value={qualityControlRecordVM.filterForm}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        style={{ width: 200 }}
+        onChange={onChange}
+      >
         <Select.Option key='' value=''>
           全部
         </Select.Option>

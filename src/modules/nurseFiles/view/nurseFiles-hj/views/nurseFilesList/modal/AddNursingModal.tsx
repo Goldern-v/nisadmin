@@ -114,7 +114,14 @@ function AddNursingModal(props: Props) {
           {getFieldDecorator('deptCode', {
             initialValue: authStore.selectedDeptCode == '全院' ? '' : authStore.selectedDeptCode
           })(
-            <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
+            <Select
+              showSearch
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              style={{ width: '100%' }}
+              placeholder='选择所属科室'
+            >
               {authStore.deptList.map((item: any) => {
                 return (
                   <Select.Option value={item.code} key={item}>
@@ -134,7 +141,14 @@ function AddNursingModal(props: Props) {
 
         <Form.Item {...formItemLayout} label='学历'>
           {getFieldDecorator('highestEducation')(
-            <Select showSearch style={{ width: '100%' }} placeholder='选择学历'>
+            <Select
+              showSearch
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              style={{ width: '100%' }}
+              placeholder='选择学历'
+            >
               {EDUCATION_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
                   {item}
@@ -146,7 +160,14 @@ function AddNursingModal(props: Props) {
 
         <Form.Item {...formItemLayout} label='职称'>
           {getFieldDecorator('newTitle')(
-            <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
+            <Select
+              showSearch
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              style={{ width: '100%' }}
+              placeholder='选择所属科室'
+            >
               {TITLE_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
                   {item}
@@ -157,7 +178,14 @@ function AddNursingModal(props: Props) {
         </Form.Item>
         <Form.Item {...formItemLayout} label='层级'>
           {getFieldDecorator('nurseHierarchy')(
-            <Select showSearch style={{ width: '100%' }} placeholder='选择层级'>
+            <Select
+              showSearch
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              style={{ width: '100%' }}
+              placeholder='选择层级'
+            >
               {CURRENTLEVEL_LIST.map((item: string) => (
                 <Select.Option value={item} key={item}>
                   {item}

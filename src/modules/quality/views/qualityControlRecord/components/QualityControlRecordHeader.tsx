@@ -49,6 +49,9 @@ export default observer(function TopCon(props: any) {
           <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
           <Select
             showSearch
+            filterOption={(input: any, option: any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
             style={{ width: 200 }}
             value={qualityControlRecordVM.filterDeptCode}
             onChange={(value: any) => {

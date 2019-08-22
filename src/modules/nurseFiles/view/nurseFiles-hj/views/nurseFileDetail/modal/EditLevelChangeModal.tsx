@@ -115,7 +115,14 @@ export default function EditWorkHistoryModal(props: Props) {
             </Col>
             <Col span={24}>
               <Form.Field label={`职称`} name='titleQualification' required>
-                <Select showSearch style={{ width: '100%' }} placeholder='选择所属科室'>
+                <Select
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                  style={{ width: '100%' }}
+                  placeholder='选择所属科室'
+                >
                   {TITLE_LIST.map((item: string) => (
                     <Select.Option value={item} key={item}>
                       {item}

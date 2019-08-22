@@ -24,7 +24,15 @@ export default observer(function StateSelect(props: Props) {
 
   return (
     <Wrapper>
-      <Select value={qualityControlRecordVM.filterState} showSearch style={{ width: 150 }} onChange={onChange}>
+      <Select
+        value={qualityControlRecordVM.filterState}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        style={{ width: 150 }}
+        onChange={onChange}
+      >
         <Select.Option key='' value=''>
           全部
         </Select.Option>

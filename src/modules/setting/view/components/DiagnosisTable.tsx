@@ -30,8 +30,8 @@ class EditableTable extends React.Component<any, any> {
       loadingTable: false,
       total: 0,
       pageSize: 10,
-      pageIndex: 1 ,// 当前页数
-      confirmLoading: false,
+      pageIndex: 1, // 当前页数
+      confirmLoading: false
     }
     this.columns = [
       {
@@ -143,7 +143,7 @@ class EditableTable extends React.Component<any, any> {
     let getEducationId = record.educationId
     appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=3`)
   }
-  
+
   //添加和修改
   public getSelectData = (record: any, value: number) => {
     // 如果是添加 则清空数据
@@ -200,7 +200,7 @@ class EditableTable extends React.Component<any, any> {
       message.warning('保存前请将每一项信息填写完整')
       return
     }
-    this.setState({confirmLoading: true})
+    this.setState({ confirmLoading: true })
     let postData = {}
     // 修改入参
     if (this.state.type === 0) {
@@ -229,11 +229,11 @@ class EditableTable extends React.Component<any, any> {
         diagnosis: this.state.diagnosis // string 非必须参数
       }
     }
-    console.log(postData,'diagnosis')
+    console.log(postData, 'diagnosis')
     service.healthyApiService.preservationDiagnosis(postData).then((res) => {
       if (res) {
         console.log(res)
-        this.setState({confirmLoading: false})
+        this.setState({ confirmLoading: false })
         message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
         this.getMealList(null, null)
         this.setState({ editingKey: false })
@@ -282,7 +282,7 @@ class EditableTable extends React.Component<any, any> {
       }
     })
   }
-  
+
   public isEditing = (record: any) => record.key === this.state.editingKey
   public columns: any = []
 
@@ -293,12 +293,10 @@ class EditableTable extends React.Component<any, any> {
   public onChangePagination(page: any, pageSize: any) {
     this.setState({ pageIndex: page })
     this.getMealList(page, pageSize)
- 
   }
   public onShowSizeChange(current: any, size: any) {
     this.setState({ pageSize: size })
     this.getMealList(current, size)
- 
   }
 
   public render() {
@@ -363,13 +361,15 @@ class EditableTable extends React.Component<any, any> {
               </SpanOne>
               <Select
                 showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 value={this.state.missionId}
                 style={{ width: '72%' }}
                 placeholder='输入名称进行检索'
                 defaultActiveFirstOption={false}
                 showArrow={false}
                 loading={this.state.loading}
-                filterOption={false}
                 onChange={this.searchChange.bind(this)}
                 onSearch={this.toSearch.bind(this)}
                 notFoundContent='没有你查找的内容'
@@ -394,6 +394,9 @@ class EditableTable extends React.Component<any, any> {
                 value={this.state.messageType}
                 onChange={(value: any) => this.setState({ messageType: value })}
                 showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 style={{ width: '72%' }}
                 placeholder='选择类型'
               >

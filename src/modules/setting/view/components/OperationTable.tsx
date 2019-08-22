@@ -216,7 +216,7 @@ class EditableTable extends React.Component<any, any> {
     let educationName = this.state.arrayData.filter((item: any) => item.missionId === value)[0].name
     this.setState({ searchValue: educationName })
   }
-  
+
   public save(form: any, key: any) {
     form.validateFields((error: any, row: any) => {
       if (error) {
@@ -390,12 +390,14 @@ class EditableTable extends React.Component<any, any> {
               </SpanOne>
               <Select
                 showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 value={this.state.missionId}
                 style={{ width: '72%' }}
                 defaultActiveFirstOption={false}
                 showArrow={false}
                 loading={this.state.loading}
-                filterOption={false}
                 onChange={this.searchChange.bind(this)}
                 onSearch={this.toSearch.bind(this)}
                 notFoundContent='没有你查找的内容'
@@ -433,8 +435,11 @@ class EditableTable extends React.Component<any, any> {
               <SpanOne>推送类型：</SpanOne>
               <Select
                 value={this.state.messageType}
-                onChange={(value) => this.setState({ messageType: value })}
+                onChange={(value: any) => this.setState({ messageType: value })}
                 showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 style={{ width: '72%' }}
                 placeholder='选择类型'
               >

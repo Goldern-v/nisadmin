@@ -83,6 +83,16 @@ export default observer(function QualityAnalysisReportView() {
       })
     })
   }
+  const onCancelPublish = () => {
+    globalModal.confirm('撤销发布确认', '你确定要撤销发布该报告吗？').then((res) => {
+      qualityAnalysisReportPoolService.cancelPublishReport().then((res) => {
+        message.success('撤销成功')
+        setTimeout(() => {
+          appStore.history.push('/quality/summaryReport')
+        }, 500)
+      })
+    })
+  }
   return (
     <Wrapper>
       <HeadCon>
@@ -95,8 +105,12 @@ export default observer(function QualityAnalysisReportView() {
         </div>
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
-          <Button onClick={() => onPrint(false)}>预览</Button>
-          <Button onClick={onPublish}>发布</Button>
+          {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
+          {report.status == '1' ? (
+            <Button onClick={onCancelPublish}>撤销</Button>
+          ) : (
+            <Button onClick={onPublish}>发布</Button>
+          )}
           <Button onClick={() => onPrint(true)}>打印</Button>
           <Button onClick={() => appStore.history.push('/quality/summaryReport')}>返回</Button>
         </div>

@@ -77,7 +77,14 @@ export default function DeptChangeModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`新科室`} name='deptCodeNew' required>
-              <Select showSearch style={{ width: '100%' }} placeholder='选择新科室'>
+              <Select
+                showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                style={{ width: '100%' }}
+                placeholder='选择新科室'
+              >
                 {authStore.deptList.map((item: any) => {
                   return (
                     <Select.Option value={item.code} key={item}>
@@ -90,7 +97,14 @@ export default function DeptChangeModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`职务`} name='job'>
-              <Select showSearch style={{ width: '100%' }} placeholder='选择职务'>
+              <Select
+                showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                style={{ width: '100%' }}
+                placeholder='选择职务'
+              >
                 {POST_LIST.map((item: string) => (
                   <Select.Option value={item} key={item}>
                     {item}

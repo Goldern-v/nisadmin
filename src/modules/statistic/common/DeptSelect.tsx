@@ -15,7 +15,7 @@ export interface DeptType {
   name: string
 }
 
-export default observer(function DeptSelect (props: Props) {
+export default observer(function DeptSelect(props: Props) {
   let defaultValue = authStore.selectedDeptCode || authStore.defaultDeptCode
   let deptList = authStore.deptList
   const onChange = (value: string) => {
@@ -27,7 +27,15 @@ export default observer(function DeptSelect (props: Props) {
   }, [])
   return (
     <Wrapper>
-      <Select defaultValue={defaultValue} showSearch style={{ width: 200 }} onChange={onChange}>
+      <Select
+        defaultValue={defaultValue}
+        showSearch
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        style={{ width: 200 }}
+        onChange={onChange}
+      >
         {deptList.map((item: DeptType) => (
           <Select.Option key={item.code} value={item.code}>
             {item.name}
