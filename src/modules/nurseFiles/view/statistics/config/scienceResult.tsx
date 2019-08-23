@@ -8,7 +8,7 @@ import Zimage from 'src/components/Zimage'
 export const pageObj: PageObj = {
   title: '科研课题获奖',
   type: 'nurseWHScienceResult',
-  detailPath: '',
+  detailPath: 'scientificResearch',
   filterList: [
     {
       label: '科室',

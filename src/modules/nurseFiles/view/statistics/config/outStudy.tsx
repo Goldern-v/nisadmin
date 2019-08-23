@@ -8,7 +8,7 @@ import Zimage from 'src/components/Zimage'
 export const pageObj: PageObj = {
   title: '外出进修',
   type: 'nurseWHOutStudy',
-  detailPath: '',
+  detailPath: 'onEducation',
   filterList: [
     {
       label: '科室',

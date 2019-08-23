@@ -244,12 +244,25 @@ export default function AduitModal(props: Props) {
               </div>
             </div>
             {auditeListDtos.length == 0 && (
-              <div className='row'>
-                <div className='key' style={{ padding: 0 }}>
-                  审核意见：
+              <React.Fragment>
+                {resData.auditedEmpName && (
+                  <div className='row'>
+                    <div className='key' style={{ padding: 0 }}>
+                      审核人：
+                    </div>
+                    <div className='vale'>
+                      {resData.auditedEmpName}（{resData.auditedEmpRole}）
+                    </div>
+                  </div>
+                )}
+
+                <div className='row'>
+                  <div className='key' style={{ padding: 0 }}>
+                    审核意见：
+                  </div>
+                  <div className='vale'>{resData.detail}</div>
                 </div>
-                <div className='vale'>{resData.detail}</div>
-              </div>
+              </React.Fragment>
             )}
 
             {needAudite && (
