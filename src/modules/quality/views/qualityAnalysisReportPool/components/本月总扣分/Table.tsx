@@ -5,7 +5,7 @@ import { TypeCompare, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolViewModal'
 export interface Props {
-  list: DeptItem[],
+  list: DeptItem[]
   totalSorce: number
 }
 
@@ -24,7 +24,7 @@ export default function Table(props: Props) {
         </colgroup>
         <tbody>
           <tr className='header'>
-            <td>科室</td>
+            <td>质控组</td>
             <td>扣分</td>
             <td>扣分科室</td>
             <td>占总扣分%</td>

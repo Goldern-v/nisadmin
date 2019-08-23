@@ -28,7 +28,7 @@ export default function 本月总扣分弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '科室',
+      title: '质控组',
       key: '科室',
       render(text: any, record: DeptItem, index: number) {
         return (
