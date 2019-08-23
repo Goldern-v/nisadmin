@@ -20,11 +20,12 @@ export default function CreateSummearyReportModal(props: Props) {
   const { visible, onCancel, onOk } = props;
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
   const [loadingState, setLoadingState] = useState(false);
+  let nowMoment = Moment();
   const initedParams = {
-    year: Moment(),
-    indexInType: '',
+    year: nowMoment,
+    indexInType: nowMoment.format('M'),
     type: 'month',
-    reportName: ''
+    reportName: `${nowMoment.format('YYYY')}年度${nowMoment.format('M')}月质控汇总报告`
   }
   const [params, setParams] = useState(initedParams as any)
 
@@ -42,12 +43,9 @@ export default function CreateSummearyReportModal(props: Props) {
       if (res.code == 200) {
         Message.success('创建成功');
         onOk && onOk(res.data.report);
-      } else {
-        Message.success('创建失败');
       }
       setLoadingState(false);
     }, err => {
-      Message.success('创建失败');
       setLoadingState(false);
     })
   }

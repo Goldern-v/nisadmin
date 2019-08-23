@@ -191,7 +191,7 @@ export default observer(function Analysis() {
     if (!params.reportName) return
 
     setCreateClear(false)
-    setCreateAnalysisVisible(false)
+    // setCreateAnalysisVisible(false)
     setCreateProgressVisible(true)
     setCreateLoading('start')
 
@@ -207,14 +207,12 @@ export default observer(function Analysis() {
     }
 
     let failedCallback = (msg?: string) => {
-      setCreateLoading('failed')
+      // setCreateLoading('failed')
 
-      Message.error(msg || '创建失败', 2, () => {
-        setCreateProgressVisible(false)
-        setCreateAnalysisVisible(true)
-        setCreateClear(true)
-        setCreateLoading('')
-      })
+      setCreateProgressVisible(false)
+      // setCreateAnalysisVisible(true)
+      setCreateClear(true)
+      setCreateLoading('')
     }
 
     api
@@ -390,6 +388,7 @@ export default observer(function Analysis() {
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
         groupRoleList={groupRoleListSelf}
+        loading={!!(createLoading == 'start')}
       />
     </Wrapper>
   )
