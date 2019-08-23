@@ -99,6 +99,14 @@ const navListWH: any = [
     path: '/wardManagement'
   }
 ]
+
+if (appStore.isDev) {
+  navListWH.push({
+    name: '护理人员管理',
+    icon: <XTSZ />,
+    path: '/personnelManagement'
+  })
+}
 const navListWHSelft: any = [
   {
     name: '首页',

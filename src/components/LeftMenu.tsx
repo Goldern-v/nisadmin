@@ -84,7 +84,8 @@ export default function LeftMenu(props: Props) {
     setOpenKeys([openKeys[openKeys.length - 1]])
   }
 
-  let path = appStore.match.url
+  // let path = appStore.match.url
+  let path = appStore.location.pathname
   let [defaultOpenKeys, defaultSelectedKeys] = getOpenKeyByPath(props.config, path, []) || [[], []]
   const [openKeys, setOpenKeys] = useState(() => {
     return defaultOpenKeys

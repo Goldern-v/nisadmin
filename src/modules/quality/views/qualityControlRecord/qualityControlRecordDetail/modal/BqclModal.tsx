@@ -17,7 +17,8 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  publicDate: (val) => !!val || '请填写发表日期'
+  expend: (val) => !!val || '请填写原因分析',
+  handleContent: (val) => !!val || '请填写整改措施'
 }
 
 export default function BqclModal(props: Props) {
@@ -60,16 +61,16 @@ export default function BqclModal(props: Props) {
 
   return (
     <Modal title={'病区处理'} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} labelWidth={80}>
+      <Form ref={refForm} labelWidth={80} rules={rules}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`原因分析`} name='expend'>
+            <Form.Field label={`原因分析`} name='expend' required>
               <Input.TextArea />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`整改措施`} name='handleContent'>
+            <Form.Field label={`整改措施`} name='handleContent' required>
               <Input.TextArea />
             </Form.Field>
           </Col>

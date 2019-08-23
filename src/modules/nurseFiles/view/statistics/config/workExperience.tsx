@@ -22,25 +22,25 @@ export const pageObj: PageObj = {
       type: 'input',
       name: 'unit'
     },
-    {
-      label: '专业技术工作',
-      type: 'select',
-      name: 'professionalWork',
-      dataSource: statisticsViewModal.getDict('专业技术工作')
-    },
+    // {
+    //   label: '专业技术工作',
+    //   type: 'select',
+    //   name: 'professionalWork',
+    //   dataSource: statisticsViewModal.getDict('专业技术工作')
+    // },
 
-    {
-      label: '技术职称',
-      type: 'select',
-      name: 'professional',
-      dataSource: statisticsViewModal.getDict('技术职称')
-    },
-    {
-      label: '职务',
-      type: 'select',
-      name: 'post',
-      dataSource: statisticsViewModal.getDict('职务')
-    },
+    // {
+    //   label: '技术职称',
+    //   type: 'select',
+    //   name: 'professional',
+    //   dataSource: statisticsViewModal.getDict('技术职称')
+    // },
+    // {
+    //   label: '职务',
+    //   type: 'select',
+    //   name: 'post',
+    //   dataSource: statisticsViewModal.getDict('职务')
+    // },
     {
       label: '开始时间',
       type: 'dateRangePicker',
@@ -59,43 +59,43 @@ export const pageObj: PageObj = {
       title: '开始年月',
       dataIndex: 'startTime',
       key: '2',
-      width: 100,
+      width: 120,
       align: 'center'
     },
     {
       title: '结束年月',
       dataIndex: 'endTime',
       key: '3',
-      width: 100,
+      width: 120,
       align: 'center'
     },
     {
       title: '单位',
       dataIndex: 'unit',
       key: '4',
-      width: 200,
-      align: 'center'
-    },
-    {
-      title: '专业技术工作',
-      dataIndex: 'professionalWork',
-      key: '5',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '技术职称',
-      dataIndex: 'professional',
-      key: 'professional',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '职务',
-      dataIndex: 'post',
-      key: 'post',
-      width: 100,
+      width: 250,
       align: 'center'
     }
+    // {
+    //   title: '专业技术工作',
+    //   dataIndex: 'professionalWork',
+    //   key: '5',
+    //   width: 100,
+    //   align: 'center'
+    // },
+    // {
+    //   title: '技术职称',
+    //   dataIndex: 'professional',
+    //   key: 'professional',
+    //   width: 100,
+    //   align: 'center'
+    // },
+    // {
+    //   title: '职务',
+    //   dataIndex: 'post',
+    //   key: 'post',
+    //   width: 100,
+    //   align: 'center'
+    // }
   ]
 }

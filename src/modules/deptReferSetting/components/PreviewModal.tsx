@@ -14,7 +14,7 @@ export interface Props extends ModalComponentProps {
 
 export default function PreviewModal(props: Props) {
   let { visible, url, type, name, onClose } = props
-  console.log(url, 'urlurl')
+
   let pdfHeight = window.innerHeight * 0.8
 
   const Content = function() {

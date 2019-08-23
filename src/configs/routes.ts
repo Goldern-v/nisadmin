@@ -74,6 +74,7 @@ import QualityAnalysisReportPoolView from 'src/modules/quality/views/qualityAnal
 
 //病区管理
 import WardManagementView from 'src/modules/wardManagement/WardManagementView'
+import PersonnelManagementView from 'src/modules/personnelManagement/PersonnelManagementView'
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -174,6 +175,8 @@ const routes: RouteItem[] = [
   /** 档案模块 */
   setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
   setLayout('/wardManagement/:name', WardManagementView, layouts.MainLayout),
+
+  setLayout('/personnelManagement', PersonnelManagementView, layouts.MainLayout),
 
   {
     path: '/nurseFile',

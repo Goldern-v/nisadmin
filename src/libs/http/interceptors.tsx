@@ -67,7 +67,7 @@ export function onResponseFulfilled(response: AxiosResponse) {
         //   modal.destroy()
         // }, 10 * 1000)
       } else {
-        message.error({ desc } || '未知异常')
+        message.error(desc || '未知异常')
       }
       // console.log(desc, desc.indexOf('\n'), 'desc')
 

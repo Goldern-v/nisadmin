@@ -58,7 +58,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
 
             {
-              工作护理单元: 'workDeptName',
+              工作护理单元: 'deptName',
               鞋码大小: 'shoeSize'
             }
           ],
@@ -730,13 +730,13 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               '结束时间(空则为至今)': `endTime`
             },
             {
-              单位: `unit`,
-              专业技术工作: 'professionalWork'
-            },
-            {
-              技术职称: 'professional',
-              职务: 'post'
+              单位: `unit`
+              // 专业技术工作: 'professionalWork'
             }
+            // {
+            //   技术职称: 'professional',
+            //   职务: 'post'
+            // }
           ],
 
           allData: row
