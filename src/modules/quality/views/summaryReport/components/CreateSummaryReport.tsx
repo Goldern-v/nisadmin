@@ -43,12 +43,9 @@ export default function CreateSummearyReportModal(props: Props) {
       if (res.code == 200) {
         Message.success('创建成功');
         onOk && onOk(res.data.report);
-      } else {
-        Message.success('创建失败');
       }
       setLoadingState(false);
     }, err => {
-      Message.success('创建失败');
       setLoadingState(false);
     })
   }
