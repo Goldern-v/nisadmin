@@ -1,7 +1,7 @@
 import { observable, computed, action } from 'mobx'
 import { questionBankManageService } from '../api/QuestionBankManageService'
 
-class QuestionBankManageModel {
+export default class QuestionBankManageModel {
   //查询参数
   @observable query: any = {
     bankType: '医院题库',
@@ -26,6 +26,7 @@ class QuestionBankManageModel {
       this.setTableTotal(total)
       this.setTableLoading(false);
     }
+    this.setTableData([]);
     this.setTableLoading(true);
     questionBankManageService.getQuestionBankList(this.query).then(res => {
       // switch (this.query.choiceType) {

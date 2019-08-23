@@ -45,6 +45,7 @@ export default function LabelsDelete(props: Props) {
     onOk={handleOk}
     onCancel={handleCancel}
     title="删除标签"
+    centered
     confirmLoading={loading}>
     <Wrapper>
       <div className="row title">在选中的{questionIds.length}个题目中，将删除以下标签：</div>

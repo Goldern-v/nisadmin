@@ -33,7 +33,9 @@ export default function LabelsAppend(props: Props) {
   }
 
   const handleSelect = (label: any) => {
-    if (labelsEdit.filter((item: any) => item.id == label.id).length <= 0) {
+    if (!label.labelContent) return
+
+    if (labelsEdit.filter((item: any) => item.labelContent == label.labelContent).length <= 0) {
       setLabelsEdit(labelsEdit.concat([label]))
     } else {
       Message.warning('已存在该标签')
@@ -43,7 +45,7 @@ export default function LabelsAppend(props: Props) {
   const LableList = () => {
     return labelsEdit.map((item: any, idx: number) => <Tag
       closable
-      key={item.id}
+      key={idx}
       color="red"
       onClose={() => {
         labelsEdit.splice(idx, 1)
@@ -59,6 +61,7 @@ export default function LabelsAppend(props: Props) {
     onOk={handleOk}
     onCancel={handleCancel}
     title="添加标签"
+    centered
     confirmLoading={loading}>
     <Wrapper>
       <div className="row">为选中的{questionIds.length}个题目添加标签：</div>

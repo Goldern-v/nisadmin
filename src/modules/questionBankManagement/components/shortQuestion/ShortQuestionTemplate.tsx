@@ -5,28 +5,12 @@ export interface Props {
   data: any
 }
 
-export default function QuestionTemplate(props: Props) {
+export default function ShortQuestionTemplate(props: Props) {
   const { data } = props;
-  const { questionContent, choiceQuestionList, labelList } = data;
-  const choiceList = (choiceQuestionList || []).concat().sort((a: any, b: any) => {
-    return a.serialNum - b.serialNum
-  })
-
-  const Options = () => {
-    return choiceList.map((item: any, idx: number) => {
-      return <div className='option' key={idx}>{`${item.questionOption}. ${item.answerContent}`}</div>
-    })
-  }
-
-  const CorrectOptions = () => {
-    let correctArr: any[] = [];
-    correctArr = (choiceList || []).filter((item: any) => item.right == true).map((item: any) => item.questionOption);
-
-    return correctArr.join('、')
-  }
+  const { questionContent, answerContent, questionLabels } = data;
 
   const Labels = () => {
-    return (labelList || []).filter((item: any) => item.hided == false).map((item: any, idx: number) => {
+    return (questionLabels || []).filter((item: any) => item.hided == false).map((item: any, idx: number) => {
       return <div className='label-box' key={idx}>
         <span className='label-name'>{item.labelContent}</span>
         <span>({item.questionCount || 0})</span>
@@ -36,9 +20,8 @@ export default function QuestionTemplate(props: Props) {
 
   return (
     <Wrapper>
-      <div className='title'>{questionContent}</div>
-      {Options()}
-      <div className='answer'>标准答案：{CorrectOptions()}</div>
+      <div className='title'>{questionContent || ''}</div>
+      <div className='answer'>标准答案：{answerContent || ''}</div>
       <div className='label-con'>
         <span>标签：</span>
         {Labels()}
