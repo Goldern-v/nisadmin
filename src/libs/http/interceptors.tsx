@@ -1,8 +1,10 @@
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message, notification } from 'antd'
 // import commonConfig from '../../configs/common'
 import ResponseError from './ResponseError'
 import { authStore, appStore } from 'src/stores'
+import { Modal } from 'src/vendors/antd'
 
 message.config({
   maxCount: 1
@@ -53,7 +55,22 @@ export function onResponseFulfilled(response: AxiosResponse) {
   let status = code
   switch (status) {
     case StatusCode.error: {
-      message.error(desc || '未知异常')
+      // alert(12)
+      if (desc.indexOf('\n') > -1) {
+        const modal = Modal.error({
+          title: '警告',
+          content: <pre style={{ whiteSpace: 'pre-wrap' }}>{desc}</pre>,
+          width: 600,
+          mask: false
+        })
+        // setTimeout(() => {
+        //   modal.destroy()
+        // }, 10 * 1000)
+      } else {
+        message.error(<pre>{desc}</pre> || '未知异常')
+      }
+      // console.log(desc, desc.indexOf('\n'), 'desc')
+
       return Promise.reject(response.data.desc || desc)
     }
     case StatusCode.logout: {

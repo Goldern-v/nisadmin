@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useRef } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { DatePicker, Button } from './vendors/antd'
+import { DatePicker, Button, message } from './vendors/antd'
 import YearPicker from './components/YearPicker'
 import { formatIdCord } from './utils/idCard/idCard'
 import FullPageLoading from './components/loading/FullPageLoading'
@@ -23,9 +23,13 @@ export default function demo(props: Props) {
   // var wb = XLSX.utils.book_new()
   // var ws = XLSX.utils.aoa_to_sheet([['a', 'b'], [1, 2, 3]])
   // XLSX.utils.book_append_sheet(wb, ws, 'SheetJS')
+  const onClick = () => {
+    message.error(<pre>123 \\\\n 123 \n 123</pre>)
+  }
   return (
     <Wrapper>
       <MultipleDeptSelect />
+      <Button onClick={onClick}>测试</Button>
     </Wrapper>
   )
 }
