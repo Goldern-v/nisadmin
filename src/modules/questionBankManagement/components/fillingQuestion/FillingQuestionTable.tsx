@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/es/table'
 import FooterBtnCon, { BtnList } from '../common/FooterBtnCon'
@@ -8,9 +7,9 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { Modal, message as Message } from 'antd'
 
-import QuestionTemplate from './QuestionTemplate'
 import LabelsAppend from './../common/LabelsAppend';
 import LabelsDelete from './../common/LabelsDelete';
+import FillingQuestionTemplate from './FillingQuestionTemplate'
 
 import { questionBankManageService } from './../../api/QuestionBankManageService'
 interface Props {
@@ -111,15 +110,9 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
       dataIndex: '题目',
       key: '题目',
       render(text: any, record: string, index: number) {
-        return <QuestionTemplate data={record} />
+        return <FillingQuestionTemplate data={record} />
+        return ''
       }
-    },
-    {
-      title: '类型',
-      dataIndex: 'choiceType',
-      key: 'choiceType',
-      align: 'center',
-      width: 60
     },
     {
       title: '出题次数',
@@ -169,7 +162,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
       Message.warning('系统题库无法修改')
       return
     }
-    history.push(`/continuingEdu/choiceQuestionEdit?id=${record.id}`)
+    history.push(`/continuingEdu/fillingQuestionEdit?id=${record.id}`)
   }
 
   const handleDeleteQuestion = (record: any) => {
@@ -223,9 +216,9 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
 
         let labels: any[] = [];
         for (let i = 0; i < rows.length; i++) {
-          let labelList = rows[i].labelList;
-          for (let j = 0; j < labelList.length; j++) {
-            let label = labelList[j];
+          let questionLabels = rows[i].questionLabels;
+          for (let j = 0; j < questionLabels.length; j++) {
+            let label = questionLabels[j];
             if (labels.filter((item: any) => item.id == label.id).length <= 0) {
               labels.push({
                 id: label.id,
@@ -254,9 +247,9 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
 
         let labels: any[] = [];
         for (let i = 0; i < rows.length; i++) {
-          let labelList = rows[i].labelList;
-          for (let j = 0; j < labelList.length; j++) {
-            let label = labelList[j];
+          let questionLabels = rows[i].questionLabels;
+          for (let j = 0; j < questionLabels.length; j++) {
+            let label = questionLabels[j];
             if (labels.filter((item: any) => item.id == label.id).length <= 0) {
               labels.push({
                 id: label.id,

@@ -19,6 +19,12 @@ export interface Props extends RouteComponentProps { }
 import 人员管理 from './人员管理'
 import QuestionBankManagement from '../questionBankManagement/QuestionBankManagement'
 import ChoiceQustionEdit from '../questionBankManagement/views/ChoiceQuestionEdit'
+import FillingQuestionEdit from '../questionBankManagement/views/FillingQuestionEdit'
+import ShortQuestionEdit from '../questionBankManagement/views/ShortQuestionEdit'
+import LabelQuestionBank from '../questionBankManagement/views/LabelQuestionBank'
+import UploadRecordQuestionBank from '../questionBankManagement/views/UploadRecordQuestionBank'
+import UploadQuestionBank from '../questionBankManagement/views/UploadQuestionBank'
+import WrongQuestionBank from '../questionBankManagement/views/WrongQuestionBank'
 
 const LEFT_MENU_CONFIG = [
   {
@@ -60,8 +66,44 @@ const LEFT_MENU_CONFIG = [
   {
     title: '选择题新建和编辑',
     hide: true,
-    path: '/continuingEdu/choiceQustionEdit',
+    path: '/continuingEdu/choiceQuestionEdit',
     component: ChoiceQustionEdit
+  },
+  {
+    title: '填空题新建和编辑',
+    hide: true,
+    path: '/continuingEdu/fillingQuestionEdit',
+    component: FillingQuestionEdit
+  },
+  {
+    title: '问答题新建和编辑',
+    hide: true,
+    path: '/continuingEdu/shortQuestionEdit',
+    component: ShortQuestionEdit
+  },
+  {
+    title: '标签题库',
+    hide: true,
+    path: '/continuingEdu/labelQuestionBank',
+    component: LabelQuestionBank
+  },
+  {
+    title: '导入题库',
+    hide: true,
+    path: '/continuingEdu/uploadRecordQuestionBank',
+    component: UploadRecordQuestionBank
+  },
+  {
+    title: '上传新题库',
+    hide: true,
+    path: '/continuingEdu/uploadQuestionBank',
+    component: UploadQuestionBank
+  },
+  {
+    title: '错题反馈',
+    hide: true,
+    path: '/continuingEdu/wrongQuestionBank',
+    component: WrongQuestionBank
   },
   {
     title: '题库管理',

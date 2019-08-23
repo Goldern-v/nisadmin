@@ -23,8 +23,8 @@ export default observer(function ChoiceQuestionEdit() {
     id: '',
     questionContent: '', //题目内容
     annotation: '', //注解
-    choiceQuestionList: [] as any, //答案序列
-    labelList: [] as any //标签列表
+    answerContent: '',//答案
+    questionLabels: [] as any //标签列表
   })
 
   useEffect(() => {
@@ -35,21 +35,13 @@ export default observer(function ChoiceQuestionEdit() {
     setPageLoading(true)
     questionBankManageService.getQuestionById(id).then(res => {
       let data = res.data;
-      let choiceQuestionList = data.choiceQuestionList
-        .sort((a: any, b: any) => a.serialNum - b.serialNum)
-        .map((item: any) => {
-          return {
-            answerContent: item.answerContent,
-            right: item.right
-          }
-        });
 
       let newEditModel = {
         id: data.id,
         questionContent: data.questionContent,
         annotation: data.annotation,
-        choiceQuestionList,
-        labelList: data.labelList
+        questionLabels: data.questionLabels,
+        answerContent: data.answerContent
       }
       setEditModel(newEditModel);
       setPageLoading(false)
@@ -58,69 +50,25 @@ export default observer(function ChoiceQuestionEdit() {
 
   const replaceRoute = (route: string) => history.replace(route);
 
-  const handleChoiceDelete = (idx: number) => {
-    let newNodel = { ...editModel };
-    newNodel.choiceQuestionList.splice(idx, 1);
-
-    setEditModel(newNodel);
-  }
-
-  const addChoice = () => {
-    let newNodel = { ...editModel };
-    newNodel.choiceQuestionList.push({
-      answerContent: "",
-      right: false
-    });
-    setEditModel(newNodel);
-  }
-
-  const handleToogleRight = (item: any, idx: number) => {
-    let newNodel = { ...editModel };
-    newNodel.choiceQuestionList.splice(idx, 1, { ...item, right: !item.right })
-
-    setEditModel(newNodel);
-  }
-
-  const handleAnswerContentChange = (e: any, item: any, idx: number) => {
-    let answerContent = e.target.value;
-    let newNodel = { ...editModel };
-    newNodel.choiceQuestionList.splice(idx, 1, { ...item, answerContent })
-
-    setEditModel(newNodel);
-  }
-
-  const handleChoiceMove = (idx: number, up: boolean) => {
-    let newNodel = { ...editModel };
-    let { choiceQuestionList } = newNodel
-    let switchIdx = idx - 1;
-    if (up) switchIdx = idx + 1;
-    let item = { ...choiceQuestionList[idx] };
-    let swithItem = { ...choiceQuestionList[switchIdx] };
-    choiceQuestionList[idx] = swithItem;
-    choiceQuestionList[switchIdx] = item;
-
-    setEditModel(newNodel);
-  }
-
   const handleLabelSelected = (label: any) => {
     let newNodel = { ...editModel };
-    let { labelList } = newNodel;
+    let { questionLabels } = newNodel;
     if (!label.labelContent) return
 
-    let sameItems = labelList.filter((item: any) => item.labelContent == label.labelContent);
+    let sameItems = questionLabels.filter((item: any) => item.labelContent == label.labelContent);
     if (sameItems.length > 0) {
       Message.warning('已存在该标签')
       return;
     }
-    labelList.push(label)
+    questionLabels.push(label)
 
     setEditModel(newNodel);
   }
 
   const handleTagDelete = (idx: number) => {
     let newNodel = { ...editModel };
-    let { labelList } = newNodel;
-    labelList.splice(idx, 1);
+    let { questionLabels } = newNodel;
+    questionLabels.splice(idx, 1);
 
     setEditModel(newNodel);
   }
@@ -128,17 +76,10 @@ export default observer(function ChoiceQuestionEdit() {
   const handleSave = () => {
     let params = { ...editModel, bankName: '医院题库' };
 
-    params.choiceQuestionList = params.choiceQuestionList.map((item: any, idx: number) => {
-      return {
-        ...item,
-        questionOption: String.fromCharCode(65 + idx)
-      }
-    });
-
     if (!params.id) delete params.id;
 
     setPageLoading(true)
-    questionBankManageService.saveOrUpdateChoiceQuestion(params).then(res => {
+    questionBankManageService.saveOrUpdateFillingQuestion(params).then(res => {
       console.log(res)
       Message.success('保存成功')
       setPageLoading(false)
@@ -154,11 +95,11 @@ export default observer(function ChoiceQuestionEdit() {
         <span> > </span>
         <Link to="/continuingEdu/questionBankManagement?choiceType=选择题">题库管理</Link>
         <span> > </span>
-        <span>选择题维护</span>
+        <span>填空题维护</span>
       </NavCon>
       <div className="topbar">
         <div className="left">
-          <div className="title">{editType == 'new' ? '创建题目-选择题' : '修改题目'}</div>
+          <div className="title">{editType == 'new' ? '创建题目-填空题' : '修改题目'}</div>
         </div>
         <div className="right">
           <Button className="item" onClick={handleSave} disabled={pageLoading}>保存</Button>
@@ -177,38 +118,26 @@ export default observer(function ChoiceQuestionEdit() {
               autosize={{ minRows: 2 }}
               value={editModel.questionContent}
               onChange={(e) => setEditModel({ ...editModel, questionContent: e.target.value })} />
+            <div className="sub-text">
+              <div>请在填空处用双井号##标记，例：间羟胺为##类药，又名是##，每支注射液规格##。</div>
+              <div>则显示为：间羟胺为______类药，又名是______，每支注射液规格______。</div>
+            </div>
           </div>
         </div>
       </div>
-      {/* 选项 */}
+      {/* 答案 */}
       <div className="contain-item">
         <div className="item-box">
-          <div className="label">选项:</div>
+          <div className="label">答案:</div>
           <div className="content">
-            {editModel.choiceQuestionList.map((item: any, idx: any) => {
-              return <div className="choiceItem" key={idx}>
-                <span className="idx">{String.fromCharCode(65 + idx)}.</span>
-                <TextArea
-                  style={{ width: '400px' }}
-                  autosize={{ minRows: 1 }}
-                  value={item.answerContent}
-                  className="answerContent"
-                  onChange={(e) => handleAnswerContentChange(e, item, idx)} />
-                <Checkbox checked={item.right} onClick={() => handleToogleRight(item, idx)} />
-                <Button size="small" disabled={idx <= 0} onClick={() => handleChoiceMove(idx, false)}>上移</Button>
-                <Button size="small" disabled={idx >= editModel.choiceQuestionList.length - 1} onClick={() => handleChoiceMove(idx, true)}>下移</Button>
-                <Button size="small" disabled={editModel.choiceQuestionList.length <= 1} onClick={() => handleChoiceDelete(idx)}>删除</Button>
-              </div>
-            })}
-            <div className="choiceItem">
-              <span className="idx">  </span>
-              <Button type="dashed" style={{ width: '400px' }} onClick={addChoice}>新增</Button>
-            </div>
-            <div className="choiceItem">
-              <span>
-                <Checkbox checked={true} />
-              </span>
-              <span>选项允许随机</span>
+            <TextArea
+              style={{ width: '700px' }}
+              autosize={{ minRows: 2 }}
+              value={editModel.answerContent}
+              onChange={(e) => setEditModel({ ...editModel, answerContent: e.target.value })} />
+            <div className="sub-text">
+              <div>一行对应一个【空】标准答案某个【空】</div>
+              <div>有多个标准答案的，用竖线|分隔</div>
             </div>
           </div>
         </div>
@@ -222,7 +151,7 @@ export default observer(function ChoiceQuestionEdit() {
               <LabelSelect onSelect={handleLabelSelected} />
             </div>
             <div className="label-list" style={{ width: '700px' }}>
-              {editModel.labelList.map((item: any, idx: number) => <Tag
+              {editModel.questionLabels.map((item: any, idx: number) => <Tag
                 key={idx}
                 closable
                 color="red"
@@ -308,22 +237,10 @@ const Wrapper = styled.div`
       .content{
         flex:1
       }
-      .choiceItem{
-        margin-bottom: 5px;
-        .idx{
-          min-width:14px;
-          display: inline-block;
-        }
-        &>*{
-          vertical-align: top;
-          margin-right:10px;
-        }
-        &>span{
-          line-height: 30px;
-        }
-        &>.ant-checkbox-wrapper,&>.ant-btn-sm{
-          margin-top: 5px;
-        }
+      .sub-text{
+        color: #999;
+        font-size: 12px;
+        margin-top: 10px;
       }
       .label-list{
         min-height: 50px;

@@ -2,10 +2,16 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Place } from 'src/components/common'
-import { Radio, Input, Button } from 'src/vendors/antd'
+import { Radio, Input, Button, Modal } from 'src/vendors/antd'
 import BaseTabs from './components/common/BaseTabs'
+
 import ChoiceQuestionsTable from './components/choiceQuestions/ChoiceQuestionsTable'
-import SpotDictationTable from './components/spotDictation/SpotDictationTable'
+import FillingQuestionTable from './components/fillingQuestion/FillingQuestionTable'
+import ShortQuestionTable from './components/shortQuestion/ShortQuestionTable'
+import LabelTable from './components/labels/LabelTable'
+import UploadRecordTable from './components/uploadRecord/UploadRecordTable'
+import RecycleTable from './components/recycle/RecycleTable'
+
 import { questionBankManageModel } from './model/QuestionBankManageModel'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -15,7 +21,7 @@ export interface Props extends RouteComponentProps { }
 
 export default observer(function QuestionBankManagement() {
   let { bankType, searchingContent } = questionBankManageModel.query;
-  let { location } = appStore;
+  let { location, history } = appStore;
   const [activeKey, setActiveKey] = useState('0');
   const [menuNum, setMenuNum] = useState({} as any);
 
@@ -41,6 +47,7 @@ export default observer(function QuestionBankManagement() {
   }, []);
 
   useEffect(() => {
+    if (questionBankManageModel.tableData.length == 0 && questionBankManageModel.tableLoading) return
     questionBankManageService.getCountMenu().then(res => {
       setMenuNum(res.data)
     })
@@ -57,31 +64,31 @@ export default observer(function QuestionBankManagement() {
       title: `填空题(${menuNum['填空题'] || '-'})`,
       orginTitle: '填空题',
       size: '',
-      component: <SpotDictationTable model={questionBankManageModel} />
+      component: <FillingQuestionTable model={questionBankManageModel} />
     },
     {
       title: `问答题(${menuNum['问答题'] || '-'})`,
       orginTitle: '问答题',
       size: '',
-      component: null
+      component: <ShortQuestionTable model={questionBankManageModel} />
     },
     {
       title: `标签查看(${menuNum['标签查看'] || '-'})`,
       orginTitle: '标签查看',
       size: '',
-      component: null
+      component: <LabelTable model={questionBankManageModel} />
     },
     {
       title: `导入记录(${menuNum['导入记录'] || '-'})`,
       orginTitle: '导入记录',
       size: '',
-      component: null
+      component: <UploadRecordTable model={questionBankManageModel} />
     },
     {
       title: `回收站(${menuNum['回收站'] || '-'})`,
       orginTitle: '回收站',
       size: '',
-      component: null
+      component: <RecycleTable model={questionBankManageModel} />
     },
     {
       title: `错题反馈(${menuNum['错题反馈'] || '-'})`,
@@ -104,6 +111,11 @@ export default observer(function QuestionBankManagement() {
   const onTabsChange = (activeKey: string) => {
     setActiveKey(activeKey);
     let choiceType = TAB_CONFIG[Number(activeKey)].orginTitle;
+    //如果是错题反馈直接跳转路由
+    if (choiceType == '错题反馈') {
+      history.push('/continuingEdu/wrongQuestionBank');
+      return
+    }
 
     let newQuery = {
       ...questionBankManageModel.query,
@@ -121,7 +133,7 @@ export default observer(function QuestionBankManagement() {
     if (search) query = qs.parse(search.replace('?', ''));
     query.choiceType = choiceType
 
-    appStore.history.replace(`${url}?${qs.stringify(query)}`);
+    history.replace(`${url}?${qs.stringify(query)}`);
   }
 
   const handleSearchInputBlur = (e: any) => {
@@ -144,6 +156,43 @@ export default observer(function QuestionBankManagement() {
     questionBankManageModel.getList();
   }
 
+  const handleOpenCreate = () => {
+    let createType = '选择题';
+    let modalContent = <div style={{ marginTop: '30px' }}>
+      <Radio.Group onChange={(e) => createType = e.target.value} defaultValue={createType}>
+        <Radio value={'选择题'}>选择题</Radio>
+        <Radio value={'填空题'}>填空题</Radio>
+        <Radio value={'问答题'}>问答题</Radio>
+      </Radio.Group>
+    </div>;
+
+    Modal.confirm({
+      title: '新建',
+      centered: true,
+      content: modalContent,
+      onOk: () => {
+        let route = ''
+        switch (createType) {
+          case '选择题':
+            route = '/continuingEdu/choiceQuestionEdit'
+            break
+          case '填空题':
+            route = '/continuingEdu/fillingQuestionEdit'
+            break
+          case '问答题':
+            route = '/continuingEdu/shortQuestionEdit'
+            break
+        }
+
+        history.push(route)
+      }
+    })
+  }
+
+  const handleUpload = () => {
+    history.push('/continuingEdu/uploadQuestionBank')
+  }
+
   return (
     <Wrapper>
       <HeadCon>
@@ -157,10 +206,14 @@ export default observer(function QuestionBankManagement() {
             <Radio value={'医院题库'}>医院题库</Radio>
           </Radio.Group>
         </SelectBox>
-        <Input style={{ width: 200 }} placeholder='输入题目进行搜索' allowClear defaultValue={searchingContent} onBlur={handleSearchInputBlur} />
+        <Input
+          style={{ width: 200 }}
+          placeholder='输入名称进行搜索'
+          allowClear defaultValue={searchingContent}
+          onBlur={handleSearchInputBlur} />
         <Button onClick={handleSearchBtnClick}>查询</Button>
-        <Button>添加</Button>
-        <Button>导入</Button>
+        <Button onClick={handleOpenCreate}>创建</Button>
+        <Button onClick={handleUpload}>导入</Button>
       </HeadCon>
 
       <BaseTabs config={TAB_CONFIG} onChange={onTabsChange} activeKey={activeKey} />
