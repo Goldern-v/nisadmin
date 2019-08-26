@@ -105,7 +105,10 @@ export default observer(function qualityControlRecordTable(props: Props) {
       dataIndex: 'nextNodePendingName',
       key: '',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render(text: any, row: any) {
+        return row.status == '1' ? '已完成' : text
+      }
     },
     {
       title: '操作',

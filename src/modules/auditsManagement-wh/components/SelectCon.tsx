@@ -51,9 +51,8 @@ export default function SelectCon(props: Props) {
         <Title>审核管理</Title>
         {/* <DeptSelect onChange={onChange} /> */}
         <Place />
-        <span>科室：</span>
-        {showType == 'nurseFile' ? <MultipleDeptSelect /> : <DeptSelect onChange={() => {}} />}
-        <span style={{ marginLeft: 20 }}>类型：</span>
+
+        <span>类型：</span>
         <Select value={showType} onChange={(value: any) => setShowType(value)}>
           {showTypeDict.map((item: any) => (
             <Select.Option value={item.code} key={item.code}>
@@ -61,8 +60,12 @@ export default function SelectCon(props: Props) {
             </Select.Option>
           ))}
         </Select>
+
+        <span style={{ marginLeft: 20 }}>科室：</span>
+        {showType == 'nurseFile' ? <MultipleDeptSelect /> : <DeptSelect onChange={() => {}} />}
+
         <Input
-          placeholder='输入要搜索的关键字，包括提交人，标题，审核意见'
+          placeholder='输入要搜索的关键字，包括科室，提交人'
           style={{ width: 360 }}
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}

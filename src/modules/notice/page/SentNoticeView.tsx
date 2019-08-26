@@ -65,7 +65,7 @@ export default function SentNoticeView() {
     let hideLoading = message.loading('正在上传，请稍等')
     Promise.all(promiseList)
       .then((res) => {
-        setFileList([
+        let list: any = [
           ...fileList,
           ...res.map(({ data: item }: any) => {
             return {
@@ -74,7 +74,11 @@ export default function SentNoticeView() {
               fileType: getFileType(item.path)
             }
           })
-        ])
+        ]
+        setFileList(list)
+        if (!title && list[0] && list[0].name) {
+          setTitle(list[0].name.split('.')[0])
+        }
         hideLoading()
       })
       .catch((e) => {

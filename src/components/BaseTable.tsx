@@ -42,11 +42,17 @@ export default observer(function BaseTable(props: Props) {
     props
   )
 
+  option.columns =
+    option.columns &&
+    option.columns.map((item: any, index: number) => {
+      return Object.assign(item, { key: index, dataIndex: item.dataIndex || 'dataIndex' + index })
+    })
   option.dataSource =
     option.dataSource &&
     option.dataSource.map((item: any, index: number) => {
       return Object.assign(item, { key: index })
     })
+
   if (option.surplusHeight) {
     option.scroll = { y: wih - option.surplusHeight }
   }
