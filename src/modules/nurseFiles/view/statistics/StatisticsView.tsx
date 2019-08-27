@@ -80,6 +80,19 @@ export default function Statistics() {
 }
 const Wrapper = styled.div`
   padding: 15px 15px 0;
+  /** fix table bug*/
+  .ant-table-body-outer {
+    margin-top: -9px !important;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 8px;
+      background: #fff;
+      bottom: 0;
+    }
+  }
 `
 
 const HeadCon = styled.div`

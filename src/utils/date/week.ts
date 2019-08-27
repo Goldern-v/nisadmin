@@ -7,3 +7,10 @@ export const getWeekString = (data: string) => {
     return ''
   }
 }
+export const getWeekString2 = (data: string) => {
+  if (moment(data).isoWeekday() >= 0) {
+    return '周' + weekdays[moment(data).isoWeekday()]
+  } else {
+    return ''
+  }
+}

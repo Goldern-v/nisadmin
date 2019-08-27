@@ -3,43 +3,64 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
+import { createContextMenu } from './ContextMenu'
+import Cell from './Cell'
+import { sheetViewModal } from '../../viewModal/SheetViewModal'
+import moment from 'moment'
+import { getWeekString, getWeekString2 } from 'src/utils/date/week'
 export interface Props {}
 
 export default function ArrangeSheet() {
+  let contextMenu = createContextMenu()
   let columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      render: (text: string, row: any, index: number) => index + 1
+      render: (text: string, row: any, index: number) => index + 1,
+      fixed: 'left',
+      width: 80
     },
     {
-      title: '工号'
+      title: '工号',
+      dataIndex: '工号',
+      width: 80,
+      fixed: 'left'
     },
     {
-      title: '姓名'
+      title: '姓名',
+      dataIndex: '姓名',
+      width: 80,
+      fixed: 'left'
     },
     {
-      title: '层级'
+      title: '层级',
+      dataIndex: '层级',
+      width: 80,
+      fixed: 'left'
     },
     {
-      title: '职称'
+      title: '职称',
+      dataIndex: '职称',
+      width: 80,
+      fixed: 'left'
     },
-    {
-      title: (text: string, row: any, index: number) => {
-        return (
-          <div>
-            <div>08-23</div>
-            <div>周一</div>
-          </div>
-        )
+    ...sheetViewModal.dateList.map((date, index) => {
+      return {
+        title: <Th date={date} />,
+        width: 80,
+        render(text: any, record: any) {
+          return <Cell contextMenu={contextMenu} dataSource={record} index={index} />
+        }
       }
-    },
+    }),
     {
       title: (
         <div>
           <div>工时小计</div>
           <div>（小时）</div>
         </div>
-      )
+      ),
+      width: 80
+      // fixed: 'right'
     },
     {
       title: (
@@ -47,7 +68,9 @@ export default function ArrangeSheet() {
           <div>夜小时数</div>
           <div>（小时）</div>
         </div>
-      )
+      ),
+      width: 80
+      // fixed: 'right'
     },
     {
       title: (
@@ -55,19 +78,54 @@ export default function ArrangeSheet() {
           <div>累计结余</div>
           <div>（小时）</div>
         </div>
-      )
+      ),
+      width: 80
+      // fixed: 'right'
     }
   ]
   return (
     <Wrapper>
       <BaseTable
         columns={columns}
-        // dataSource={[{}]}
+        dataSource={sheetViewModal.sheetTableData}
         footer={() => {
           return <div>排班备注：</div>
         }}
       />
+      <contextMenu.Component />
     </Wrapper>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  /** fix table scroll bug */
+  div.ant-table-body {
+    background: #fafafa;
+  }
+  tbody.ant-table-tbody {
+    background: #fff;
+  }
+  .ant-table-footer {
+    border: 0 !important;
+  }
+`
+
+function Th(props: { date: string }) {
+  let date = props.date
+  const Con = styled.div`
+    text-align: center;
+    padding: 5px 0;
+    &.red-text {
+      color: red;
+    }
+  `
+  return (
+    <Con
+      className={
+        getWeekString2(date).indexOf('六') > -1 || getWeekString(date).indexOf('日') > -1 ? 'red-text' : undefined
+      }
+    >
+      <div>{moment(date).format('MM-DD')}</div>
+      <div>{getWeekString2(date)}</div>
+    </Con>
+  )
+}

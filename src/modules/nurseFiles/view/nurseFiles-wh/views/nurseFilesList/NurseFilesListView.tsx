@@ -267,6 +267,20 @@ const Wrapper = styled.div`
   padding: 15px 15px 0;
   /* 全局背景色 */
   background-color: ${(p) => p.theme.$bgBody};
+
+  /** fix table bug*/
+  .ant-table-body-outer {
+    margin-top: -9px !important;
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 8px;
+      background: #fff;
+      bottom: 0;
+    }
+  }
 `
 const NurseCardCon = styled.div`
   margin: 10px -10px;

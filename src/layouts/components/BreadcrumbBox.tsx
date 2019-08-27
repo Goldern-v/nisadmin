@@ -5,8 +5,12 @@ import React, { useState, useEffect } from 'react'
 import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
 
+interface Item {
+  link?: string
+  name: string
+}
 export interface Props {
-  data: any[]
+  data: Item[]
   style?: any
 }
 

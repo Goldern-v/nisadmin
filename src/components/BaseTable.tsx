@@ -415,7 +415,8 @@ const Wrapper = styled.div`
       display: block;
     } */
 
-    .ant-table-fixed-left {
+    .ant-table-fixed-left,
+    .ant-table-fixed-right {
       bottom: 8px;
       .ant-table-header {
         /* margin-bottom: 0 !important; */
@@ -425,7 +426,7 @@ const Wrapper = styled.div`
         width: auto;
         table-layout: auto;
       }
-      .ant-table-body-outer {
+      /* .ant-table-body-outer {
         margin-top: -9px !important;
         position: relative;
         &::after {
@@ -436,7 +437,7 @@ const Wrapper = styled.div`
           background: #fff;
           bottom: 0;
         }
-      }
+      } */
     }
   }
 `

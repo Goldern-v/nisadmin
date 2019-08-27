@@ -75,6 +75,7 @@ import QualityAnalysisReportPoolView from 'src/modules/quality/views/qualityAnal
 //病区管理
 import WardManagementView from 'src/modules/wardManagement/WardManagementView'
 import PersonnelManagementView from 'src/modules/personnelManagement/PersonnelManagementView'
+import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -176,8 +177,10 @@ const routes: RouteItem[] = [
   setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
   setLayout('/wardManagement/:name', WardManagementView, layouts.MainLayout),
 
-  setLayout('/personnelManagement', PersonnelManagementView, layouts.MainLayout),
+  /** 编辑排班 */
+  setLayout('/personnelManagement/EditArrangePage', EditArrangePage, layouts.MainLayout),
 
+  setLayout('/personnelManagement', PersonnelManagementView, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'
