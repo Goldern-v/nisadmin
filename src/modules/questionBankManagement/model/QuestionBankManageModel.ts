@@ -19,7 +19,7 @@ export default class QuestionBankManageModel {
 
   @action
   getList() {
-    console.log({ ...this.query })
+    // console.log({ ...this.query })
     //questionBankManageService
     const successCallback = (list: any, total: number) => {
       this.setTableData(list)

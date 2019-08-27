@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
+import WrapPre from './../common/WrapPre'
 export interface Props {
   data: any
 }
@@ -26,7 +27,7 @@ export default function FillingQuestionTemplate(props: Props) {
   const FormatQustionContent = () => {
     let formatContent = ''
     if (questionContent) formatContent = questionContent.replace(/##/g, '____')
-    return formatContent
+    return <WrapPre>{formatContent}</WrapPre>
   }
 
   return (

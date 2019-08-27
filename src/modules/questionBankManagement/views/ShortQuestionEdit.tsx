@@ -76,11 +76,14 @@ export default observer(function ChoiceQuestionEdit() {
   const handleSave = () => {
     let params = { ...editModel, bankName: '医院题库' };
 
+    if (search.id) params.id = search.id;
+
     if (!params.id) delete params.id;
 
     setPageLoading(true)
     questionBankManageService.saveOrUpdateShortQuestion(params).then(res => {
-      console.log(res)
+      if (res.data) replaceRoute(`${location.pathname}?id=${res.data.id}`)
+
       Message.success('保存成功')
       setPageLoading(false)
     }, err => {

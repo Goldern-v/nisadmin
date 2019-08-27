@@ -24,9 +24,9 @@ class UploadQuestionBankModel extends QuestionBankManageModel {
     delete query.bankType;
 
     const successCallback = (list: any, total: number) => {
+      this.setTableLoading(false);
       this.setTableData(list)
       this.setTableTotal(total)
-      this.setTableLoading(false);
     }
 
     this.setTableData([]);

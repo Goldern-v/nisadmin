@@ -6,7 +6,7 @@ import FooterBtnCon, { BtnList } from '../common/FooterBtnCon'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { Modal, message as Message } from 'antd'
-import qs from 'qs'
+import WrapPre from './../common/WrapPre'
 
 import { questionBankManageService } from '../../api/QuestionBankManageService'
 interface Props {
@@ -45,7 +45,9 @@ export default observer(function RecycleTable(props: Props) {
         let content = record.questionContent || '';
         if (record.questionType == '填空题') content = content.replace(/##/g, '____')
 
-        return <span className="question-content">【{record.questionType || ''}】{content}</span>
+        return <WrapPre>
+          <span className="question-content">【{record.questionType || ''}】{content}</span>
+        </WrapPre>
       }
     },
     {

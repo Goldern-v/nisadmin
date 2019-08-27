@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import WrapPre from './../common/WrapPre'
 export interface Props {
   data: any
 }
@@ -36,7 +36,9 @@ export default function QuestionTemplate(props: Props) {
 
   return (
     <Wrapper>
-      <div className='title'>{questionContent}</div>
+      <div className='title'>
+        <WrapPre>{questionContent}</WrapPre>
+      </div>
       {Options()}
       <div className='answer'>标准答案：{CorrectOptions()}</div>
       <div className='label-con'>

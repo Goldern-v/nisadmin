@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import WrapPre from './../common/WrapPre'
 export interface Props {
   data: any
 }
@@ -20,8 +20,12 @@ export default function ShortQuestionTemplate(props: Props) {
 
   return (
     <Wrapper>
-      <div className='title'>{questionContent || ''}</div>
-      <div className='answer'>标准答案：{answerContent || ''}</div>
+      <div className='title'>
+        <WrapPre>{questionContent || ''}</WrapPre>
+      </div>
+      <div className='answer'>
+        <WrapPre>标准答案：{answerContent || ''}</WrapPre>
+      </div>
       <div className='label-con'>
         <span>标签：</span>
         {Labels()}

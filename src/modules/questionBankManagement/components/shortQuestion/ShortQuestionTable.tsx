@@ -11,6 +11,7 @@ import { Modal, message as Message } from 'antd'
 import LabelsAppend from './../common/LabelsAppend';
 import LabelsDelete from './../common/LabelsDelete';
 import ShortQuestionTemplate from './ShortQuestionTemplate'
+import WrapPre from './../common/WrapPre'
 
 import { questionBankManageService } from './../../api/QuestionBankManageService'
 interface Props {
@@ -112,7 +113,6 @@ export default observer(function ShortQuestionTable(props: Props) {
       key: '题目',
       render(text: any, record: string, index: number) {
         return <ShortQuestionTemplate data={record} />
-        return ''
       }
     },
     {
@@ -120,20 +120,23 @@ export default observer(function ShortQuestionTable(props: Props) {
       dataIndex: 'appearTimes',
       key: 'appearTimes',
       align: 'center',
-      width: 60
+      width: 70
     },
     {
       title: '选错次数',
       dataIndex: 'wrongTimes',
       key: 'wrongTimes',
       align: 'center',
-      width: 60
+      width: 70
     },
     {
       title: '注解',
       dataIndex: 'annotation',
       key: 'annotation',
-      width: 150
+      width: 150,
+      render: (text: string) => {
+        return <WrapPre>{text || ''}</WrapPre>
+      }
     },
     {
       title: '操作',

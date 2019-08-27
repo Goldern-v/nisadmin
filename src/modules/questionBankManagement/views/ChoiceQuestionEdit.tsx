@@ -135,11 +135,14 @@ export default observer(function ChoiceQuestionEdit() {
       }
     });
 
+    if (search.id) params.id = search.id;
+
     if (!params.id) delete params.id;
 
     setPageLoading(true)
     questionBankManageService.saveOrUpdateChoiceQuestion(params).then(res => {
-      console.log(res)
+      if (res.data) replaceRoute(`${location.pathname}?id=${res.data.id}`)
+
       Message.success('保存成功')
       setPageLoading(false)
     }, err => {
