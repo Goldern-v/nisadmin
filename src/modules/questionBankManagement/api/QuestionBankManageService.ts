@@ -15,8 +15,10 @@ export default class QuestionBankManageService extends BaseApiService {
     return this.post('/questionChange/deleteLabelByQuestionId', params);
   }
   /**题库管理--第一次获取菜单栏包含的内容数量 */
-  public getCountMenu() {
-    return this.get('/questionBankManage/getCountMenu');
+  public getCountMenu(query?: any) {
+    return this.get('/questionBankManage/getCountMenu', {
+      params: query || { status: '', id: '' }
+    });
   }
   /**题目--删除题目 */
   public deleteQuestion(params: any) {
@@ -76,7 +78,7 @@ export default class QuestionBankManageService extends BaseApiService {
   }
   /**导入题库模板下载路径 */
   public getUploadQuestionBankTemplate() {
-    return this.get('/questionBankManage/getTemplate');
+    return this.get('/questionBankManage/getTemplate', { responseType: 'blob' });
   }
   /**回收站--题目复原 */
   public recoverRecord(params: any) {

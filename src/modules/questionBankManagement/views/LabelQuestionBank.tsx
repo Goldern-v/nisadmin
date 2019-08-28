@@ -48,8 +48,13 @@ export default observer(function LabelQuestionBank() {
   }, []);
 
   useEffect(() => {
+    let search: any = location.search.replace('?', '');
+    search = qs.parse(search);
     if (labelQuestionBankModel.tableData.length == 0 && labelQuestionBankModel.tableLoading) return
-    questionBankManageService.getCountMenu().then(res => {
+    questionBankManageService.getCountMenu({
+      status: '标签查看',
+      id: search.id
+    }).then(res => {
       setMenuNum(res.data)
     })
   }, [labelQuestionBankModel.tableData])

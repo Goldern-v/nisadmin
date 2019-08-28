@@ -24,7 +24,8 @@ export default observer(function ChoiceQuestionEdit() {
     questionContent: '', //题目内容
     annotation: '', //注解
     choiceQuestionList: [] as any, //答案序列
-    labelList: [] as any //标签列表
+    labelList: [] as any, //标签列表
+    random: false
   })
 
   useEffect(() => {
@@ -49,7 +50,8 @@ export default observer(function ChoiceQuestionEdit() {
         questionContent: data.questionContent,
         annotation: data.annotation,
         choiceQuestionList,
-        labelList: data.labelList
+        labelList: data.labelList,
+        random: data.random || false
       }
       setEditModel(newEditModel);
       setPageLoading(false)
@@ -207,11 +209,11 @@ export default observer(function ChoiceQuestionEdit() {
               <span className="idx">  </span>
               <Button type="dashed" style={{ width: '400px' }} onClick={addChoice}>新增</Button>
             </div>
-            <div className="choiceItem">
+            <div className="choiceItem" onClick={() => setEditModel({ ...editModel, random: !editModel.random })}>
               <span>
-                <Checkbox checked={true} />
+                <Checkbox checked={editModel.random} />
               </span>
-              <span>选项允许随机</span>
+              <span style={{ cursor: 'pointer' }}>选项允许随机</span>
             </div>
           </div>
         </div>
