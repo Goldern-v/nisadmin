@@ -15,7 +15,7 @@ import { numToChinese } from 'src/utils/number/numToChinese'
 import { observer } from 'src/vendors/mobx-react-lite'
 
 const Option = Select.Option
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function ToolBar() {
   // 在react hooks 用 useState 定义 class component 里的 state 变量
@@ -126,7 +126,7 @@ export default observer(function ToolBar() {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function(data: any) {
+      reader.addEventListener('loadend', function (data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })
@@ -165,6 +165,8 @@ export default observer(function ToolBar() {
         // 列宽
         //页面总宽度
         let pageWidth = 700
+        //如果排班超过1周 横向显示
+        if (dateRow.length > 7) pageWidth = 1100
         //姓名
         let col1Width = 60
         //岗位级别
@@ -186,6 +188,8 @@ export default observer(function ToolBar() {
         let thead = ''
         let tbody = ''
         let tfoot = ''
+        //排班备注
+        let remark = `<div>排班备注：</div>`;
         //渲染表头
         thead = `
           <tr>
@@ -202,25 +206,27 @@ export default observer(function ToolBar() {
           </tr>
           <tr class="header-row">
             ${dateRow
-              .map(
-                (item: any) =>
-                  `<td class="${item.weekDay == '六' || item.weekDay == '七' ? 'bg-gray' : ''}">${
-                    item.weekDay == '七' ? '日' : item.weekDay
-                  }</td>`
-              )
-              .join('')}
+            .map(
+              (item: any) =>
+                `<td class="${item.weekDay == '六' || item.weekDay == '七' ? 'bg-gray' : ''}">${
+                item.weekDay == '七' ? '日' : item.weekDay
+                }</td>`
+            )
+            .join('')}
           </tr>
         `
         //渲染主体
         render.map((item: any) => {
           let tr = ''
           //姓名
-          tr += `<td colspan="1">${item.empName}</td>`
+          tr += `<td colspan="0">${item.empName}</td>`
           //岗位级别
-          tr += `<td colspan="1">${item.newTitle}/${item.nurseHierarchy}</td>`
+          tr += `<td colspan="0">${item.newTitle}/${item.nurseHierarchy}</td>`
           //工作年
-          tr += `<td colspan="1"></td>`
+          tr += `<td colspan="0"></td>`
           let groups = []
+          //备注
+          if (item.remark) remark = `<div>排班备注：${item.remark}</div>`;
           //获取排班
           for (let i = 0; i < dateLength; i++) {
             let last = groups[groups.length - 1]
@@ -265,7 +271,7 @@ export default observer(function ToolBar() {
           })
           tr += groups.join('')
           //休假统计
-          tr += `<td colspan="1"></td>`
+          tr += `<td colspan="0"></td>`
 
           tbody += `<tr>${tr}</tr>`
         })
@@ -274,7 +280,7 @@ export default observer(function ToolBar() {
         tfoot = `
           <tr>
             <td colspan="2" class="text-left">加班登记栏：</td>
-            <td colspan="1"></td>
+            <td colspan="0"></td>
             <td colspan="${dateLength + 1}"></td>
           </tr>
           <tr>
@@ -296,7 +302,7 @@ export default observer(function ToolBar() {
             <td colspan="${dateLength + 4}"> </td>
           </tr>
         `
-
+        //表格html结构
         let table = `
           <table>
             ${colgroup}
@@ -311,45 +317,68 @@ export default observer(function ToolBar() {
         let div = document.createElement('div')
         let printId = `print${Math.random()}`
         div.id = printId
-        div.innerHTML = `<div class="page-print">${table}</div>`
-        document.body.appendChild(div)
+        div.innerHTML = `<div class="page-print">
+          ${table}
+          ${remark}
+        </div>`
+        document.body.appendChild(div);
+        //单周打印样式
+        let defaultPrintCss = `
+          .page-print{
+            width: ${pageWidth}px;
+            margin: 0 auto;
+            padding: 30px 30px;
+          }
+          table{
+            border-collapse: collapse;
+            border-color: #000;
+            width: 100%;
+          }
+          td,th{
+            text-align: center;
+            font-size: 14px;
+            color: #000;
+            padding: 0;
+            border: 1px #000 solid;
+          }
+          table td.main-title{
+            font-size: 20px!important;
+          }
+          table tr.header-row td{
+            font-size: 14px!important;
+          }
+          table td.text-left{
+            text-align: left;
+            padding-left: 10px;
+          }
+          table td.bg-gray{
+            background: #aaa;
+          }
+          @page{
+            size: A4 portrait;
+            margin:0.0cm;
+          }
+          .header,.footer{
+            display:none;
+          }
+        `
+        //横向排版额外打印样式
+        if (dateRow.length > 7) defaultPrintCss += `
+          @page { 
+            size: A4 landscape; 
+          }
+          td{
+            line-height: 12px;
+            font-size: 12px;
+            height: 24px!important;
+          }
+        `
+
         //调用打印函数
         printing(document.getElementById(printId) as HTMLElement, {
           injectGlobalCss: true,
           scanStyles: false,
-          css: `
-            .page-print{
-              width: ${pageWidth}px;
-              margin: 0 auto;
-              padding: 30px 20px;
-              color:red;
-            }
-            table{
-              border-collapse: collapse;
-              border-color: #000;
-              width: 100%;
-            }
-            td,th{
-              text-align: center;
-              font-size: 14px;
-              color: #000;
-              padding: 0;
-              border: 1px #000 solid;
-            }
-            table td.main-title{
-              font-size: 20px!important;
-            }
-            table tr.header-row td{
-              font-size: 14px!important;
-            }
-            table td.text-left{
-              text-align: left;
-              padding-left: 10px;
-            }
-            table td.bg-gray{
-              background: #aaa;
-            }
-          `
+          css: defaultPrintCss
         })
         //删除打印容器
         document.body.removeChild(div)
