@@ -269,5 +269,18 @@
       "`",
       ""
     ]
+  },
+  "service": {
+    "scope": "typescriptreact",
+    "prefix": "service",
+    "body": [
+      "import BaseApiService from 'src/services/api/BaseApiService'",
+      "export default class ${TM_FILENAME_BASE} extends BaseApiService {",
+      "public getBoxSize() {",
+      "return this.get(`/mail/boxSize`)",
+      "}",
+      "}",
+      "export const ${TM_FILENAME_BASE} = new ${TM_FILENAME_BASE}()"
+    ]
   }
 }

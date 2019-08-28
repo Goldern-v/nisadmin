@@ -7,6 +7,7 @@ export interface MenuListItem {
   icon?: string
   label?: string
   type?: 'text' | 'line'
+  children?: MenuListItem[]
   onClick: () => void
 }
 

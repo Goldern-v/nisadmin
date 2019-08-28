@@ -26,7 +26,8 @@ export default observer(function QualityAnalysisReportView() {
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
-
+    let title = document.title
+    document.title = report.reportName
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -62,6 +63,9 @@ export default observer(function QualityAnalysisReportView() {
          }
       `
     })
+    setTimeout(() => {
+      document.title = title
+    }, 500)
   }
   const onDelete = () => {
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {

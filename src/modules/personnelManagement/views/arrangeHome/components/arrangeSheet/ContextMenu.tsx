@@ -37,21 +37,28 @@ export default function ContextMenu(props: Props) {
     <div ref={elRef}>
       {show && (
         <Wrapper x={x} y={y}>
-          {menuList &&
-            menuList.map((item, index) => {
-              if (item.type == 'text') {
-                return (
-                  <div className='text-item' key={index} onClick={(event) => onItemClick(item, event)}>
-                    {item.label}
-                  </div>
-                )
-              } else {
-                return <div className='line-item' key={index} />
-              }
-            })}
+          {renderItem(menuList)}
         </Wrapper>
       )}
     </div>
+  )
+}
+
+function renderItem(menuList: MenuListItem[]) {
+  return (
+    menuList &&
+    menuList.map((item, index) => {
+      if (item.type == 'text') {
+        return (
+          <div className='text-item' key={index}>
+            {item.label}
+            {item.children && <div className='children-con'>{item.children && renderItem(item.children)}</div>}
+          </div>
+        )
+      } else {
+        return <div className='line-item' key={index} />
+      }
+    })
   )
 }
 
@@ -85,7 +92,6 @@ const Wrapper = styled.div<{ x: number; y: number }>`
   z-index: 998;
   width: 160px;
   max-height: 500px;
-  overflow: auto;
   border: 1px solid #d1e5e0;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.04), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
   background: #fff;
@@ -97,12 +103,31 @@ const Wrapper = styled.div<{ x: number; y: number }>`
     cursor: pointer;
     color: #486a62;
     font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     padding: 0 10px;
+    position: relative;
     &:hover {
       background: #e4f1f0;
+      > .children-con {
+        display: block;
+      }
+    }
+    .children-con {
+      display: none;
+      position: absolute;
+      left: 155px;
+      top: 0;
+      width: 160px;
+      max-height: 500px;
+      border: 1px solid #d1e5e0;
+      box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.04), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+      background: #fff;
+      padding: 0 0;
+      > .text-item:hover {
+        background: #e4f1f0;
+        > .children-con {
+          display: block;
+        }
+      }
     }
   }
   .line-item {

@@ -138,35 +138,35 @@ export const sectionList: SectionListItem[] = [
   },
   {
     sectionId: '4_2',
-    sectionTitle: '(二) 重危患者护理',
+    sectionTitle: '(二) 中医特殊护理',
     data: {},
     section: 统一标题列表模块,
     modal: 统一标题列表弹窗,
-    modalTitle: '编辑重危患者护理'
+    modalTitle: '编辑中医特殊护理'
   },
   {
     sectionId: '4_3',
-    sectionTitle: '(三) 消毒隔离',
+    sectionTitle: '(三) 文件书写',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑文件书写'
+  },
+  {
+    sectionId: '4_4',
+    sectionTitle: '(四) 消毒隔离',
     data: {},
     section: 统一标题列表模块,
     modal: 统一标题列表弹窗,
     modalTitle: '编辑消毒隔离'
   },
   {
-    sectionId: '4_4',
-    sectionTitle: '(四) 护理安全',
-    data: {},
-    section: 统一标题列表模块,
-    modal: 统一标题列表弹窗,
-    modalTitle: '编辑护理安全'
-  },
-  {
     sectionId: '4_5',
-    sectionTitle: '(五) 专科护理',
+    sectionTitle: '(五) 病区综合管理',
     data: {},
     section: 统一标题列表模块,
     modal: 统一标题列表弹窗,
-    modalTitle: '编辑专科护理'
+    modalTitle: '编辑病区综合管理'
   },
   {
     sectionId: '4_6',
@@ -232,35 +232,35 @@ export const sectionList: SectionListItem[] = [
   },
   {
     sectionId: '5_2',
-    sectionTitle: '(二) 重危患者护理',
+    sectionTitle: '(二) 中医特殊护理',
     data: {},
     section: 统一标题列表模块,
     modal: 统一标题列表弹窗,
-    modalTitle: '编辑重危患者护理'
+    modalTitle: '编辑中医特殊护理'
   },
   {
     sectionId: '5_3',
-    sectionTitle: '(三) 消毒隔离',
+    sectionTitle: '(三) 文件书写',
+    data: {},
+    section: 统一标题列表模块,
+    modal: 统一标题列表弹窗,
+    modalTitle: '编辑文件书写'
+  },
+  {
+    sectionId: '5_4',
+    sectionTitle: '(四) 消毒隔离',
     data: {},
     section: 统一标题列表模块,
     modal: 统一标题列表弹窗,
     modalTitle: '编辑消毒隔离'
   },
   {
-    sectionId: '5_4',
-    sectionTitle: '(四) 护理安全',
-    data: {},
-    section: 统一标题列表模块,
-    modal: 统一标题列表弹窗,
-    modalTitle: '编辑护理安全'
-  },
-  {
     sectionId: '5_5',
-    sectionTitle: '(五) 专科护理',
+    sectionTitle: '(五) 病区综合管理',
     data: {},
     section: 统一标题列表模块,
     modal: 统一标题列表弹窗,
-    modalTitle: '编辑专科护理'
+    modalTitle: '编辑病区综合管理'
   },
   {
     sectionId: '5_6',

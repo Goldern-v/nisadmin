@@ -426,7 +426,7 @@ const Wrapper = styled.div`
         width: auto;
         table-layout: auto;
       }
-      /* .ant-table-body-outer {
+      .ant-table-body-outer {
         margin-top: -9px !important;
         position: relative;
         &::after {
@@ -437,7 +437,7 @@ const Wrapper = styled.div`
           background: #fff;
           bottom: 0;
         }
-      } */
+      }
     }
   }
 `

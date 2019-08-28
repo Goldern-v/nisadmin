@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { ContextMenu } from '../../types/contextMenu'
+import { observer } from 'src/vendors/mobx-react-lite'
 
 export interface Props {
   contextMenu: ContextMenu
@@ -9,7 +10,7 @@ export interface Props {
   index: number
 }
 
-export default function Cell(props: Props) {
+export default observer(function Cell(props: Props) {
   let { contextMenu, dataSource, index } = props
   const onContextMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     let { x, y, width, height } = (event as any).target.getBoundingClientRect()
@@ -19,9 +20,50 @@ export default function Cell(props: Props) {
           icon: '',
           label: '追加排班',
           type: 'text',
-          onClick: () => {
-            alert(123)
-          }
+          children: [
+            {
+              label: '追加排班2',
+              type: 'text',
+              children: [
+                {
+                  label: '追加排班2',
+                  type: 'text'
+                },
+                {
+                  label: '追加排班2',
+                  type: 'text'
+                },
+                {
+                  label: '追加排班2',
+                  type: 'text'
+                },
+                {
+                  label: '追加排班2',
+                  type: 'text'
+                }
+              ]
+            },
+            {
+              label: '追加排班2',
+              type: 'text',
+              children: [
+                {
+                  label: '追加排班2',
+                  type: 'text'
+                }
+              ]
+            },
+            {
+              label: '追加排班2',
+              type: 'text',
+              children: [
+                {
+                  label: '追加排班2',
+                  type: 'text'
+                }
+              ]
+            }
+          ]
         },
         {
           type: 'line'
@@ -53,16 +95,20 @@ export default function Cell(props: Props) {
     event.preventDefault()
   }
 
-  return <Wrapper onContextMenu={onContextMenu}>{formatCell(dataSource, index)}</Wrapper>
-}
+  let cellConfig = {
+    isTwoDaysAgo: false,
+    isExpectedScheduling: false,
+    isAddScheduling: false,
+    isAddWordTime: false,
+    isReduceWordTime: false
+  }
 
+  return <Wrapper onContextMenu={onContextMenu}>{formatCell(dataSource, index)}</Wrapper>
+})
 function formatCell(dataSource: any, index: number) {
-  if (dataSource.list[index]) {
-    if (dataSource.list[index].length == 1) {
-      return dataSource.list[index][0].name
-    } else if (dataSource.list.length == 2) {
-      return dataSource.list[index][0].name + '/' + dataSource.list[index][1].name
-    }
+  let td = dataSource.settingDtos[index]
+  if (td) {
+    return td.rangeName
   }
   return ''
 }

@@ -8,40 +8,46 @@ import Cell from './Cell'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import moment from 'moment'
 import { getWeekString, getWeekString2 } from 'src/utils/date/week'
+import { observer } from 'mobx-react-lite'
 export interface Props {}
 
-export default function ArrangeSheet() {
+export default observer(function ArrangeSheet() {
   let contextMenu = createContextMenu()
   let columns: ColumnProps<any>[] = [
     {
       title: '序号',
       render: (text: string, row: any, index: number) => index + 1,
       fixed: 'left',
-      width: 80
+      width: 80,
+      align: 'center'
     },
     {
       title: '工号',
-      dataIndex: '工号',
+      dataIndex: 'empNo',
       width: 80,
-      fixed: 'left'
+      fixed: 'left',
+      align: 'center'
     },
     {
       title: '姓名',
-      dataIndex: '姓名',
+      dataIndex: 'empName',
       width: 80,
-      fixed: 'left'
+      fixed: 'left',
+      align: 'center'
     },
     {
       title: '层级',
-      dataIndex: '层级',
+      dataIndex: 'nurseHierarchy',
       width: 80,
-      fixed: 'left'
+      fixed: 'left',
+      align: 'center'
     },
     {
       title: '职称',
-      dataIndex: '职称',
+      dataIndex: 'newTitle',
       width: 80,
-      fixed: 'left'
+      fixed: 'left',
+      align: 'center'
     },
     ...sheetViewModal.dateList.map((date, index) => {
       return {
@@ -86,6 +92,8 @@ export default function ArrangeSheet() {
   return (
     <Wrapper>
       <BaseTable
+        surplusHeight={200}
+        surplusWidth={200}
         columns={columns}
         dataSource={sheetViewModal.sheetTableData}
         footer={() => {
@@ -95,7 +103,7 @@ export default function ArrangeSheet() {
       <contextMenu.Component />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   /** fix table scroll bug */
   div.ant-table-body {
