@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { Place } from 'src/components/common'
+import { arrangeService } from '../../../services/ArrangeService'
+import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 export interface Props {}
 
 export default function TopPart() {
@@ -22,6 +24,7 @@ export default function TopPart() {
       <div className='contain'>
         <div className='title'>编辑排班</div>
         <Place />
+        <Button onClick={sheetViewModal.saveSheetTableData}>暂存</Button>
         <Button>重置排班</Button>
       </div>
     </Wrapper>

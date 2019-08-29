@@ -18,11 +18,12 @@ export default observer(function 检查形式模块(props: Props) {
   let list: Partial<DetailItem>[] = data.list || []
   let report: Report = data ? data.report || {} : {}
   let contentKey: any = data.contentKey || ''
+  let baseInfo = data ? data.baseInfo : {}
   return (
     <Wrapper>
       {sectionTitle && (
         <TextCon>
-          <span className='sup-title'>{sectionTitle}</span>
+          <span className='sup-title'>{baseInfo && baseInfo.qcGroupName}</span>
         </TextCon>
       )}
 

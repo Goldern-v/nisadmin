@@ -9,6 +9,7 @@ import { sectionList } from './config/sectionList'
 import { qualityAnalysisReportPoolService } from './services/QualityAnalysisReportPoolService'
 import { AllData, DeptItem, DetailItem } from './types'
 import qs from 'qs'
+import { numToChinese } from 'src/utils/number/numToChinese'
 
 export interface SectionListItem {
   sectionId?: string
@@ -134,7 +135,7 @@ class QualityAnalysisReportViewModal {
         type: target!.type,
         indexInType: target!.indexInType,
         qcGroupCode: target!.qcGroupCode,
-        qcGroupName: target!.qcGroupName
+        qcGroupName: `（${numToChinese(i + 1)}）${target!.qcGroupName}`
       }
     }
     for (let i = 0; i < 11; i++) {
@@ -146,7 +147,7 @@ class QualityAnalysisReportViewModal {
         type: target!.type,
         indexInType: target!.indexInType,
         qcGroupCode: target!.qcGroupCode,
-        qcGroupName: target!.qcGroupName
+        qcGroupName: `（${numToChinese(i + 1)}）${target!.qcGroupName}`
       }
     }
     this.getSectionData(`6_1`)!.list = this.allData!.improveResultList || []

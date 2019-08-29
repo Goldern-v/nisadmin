@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { ContextMenu } from '../../types/contextMenu'
 import { observer } from 'src/vendors/mobx-react-lite'
+import { sheetViewModal } from '../../viewModal/SheetViewModal'
+import { dateDiff } from 'src/utils/date/dateDiff'
+import monnet from 'src/vendors/moment'
+import classNames from 'classnames'
 
 export interface Props {
   contextMenu: ContextMenu
@@ -95,28 +99,47 @@ export default observer(function Cell(props: Props) {
     event.preventDefault()
   }
 
+  let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : null
+
+  // console.log(cellObj.workDate, 'cellObj.workDate')
   let cellConfig = {
-    isTwoDaysAgo: false,
+    isTwoDaysAgo: dateDiff(cellObj.workDate, monnet().format('YYYY-MM-DD')) > 2,
     isExpectedScheduling: false,
     isAddScheduling: false,
     isAddWordTime: false,
-    isReduceWordTime: false
+    isReduceWordTime: false,
+    isSelected: sheetViewModal.selectedCell == cellObj
   }
 
-  return <Wrapper onContextMenu={onContextMenu}>{formatCell(dataSource, index)}</Wrapper>
+  const onClick = () => {
+    sheetViewModal.selectedCell = cellObj
+  }
+  return (
+    <Wrapper onContextMenu={onContextMenu} onClick={onClick} className={classNames(cellConfig)}>
+      {formatCell(cellObj)}
+    </Wrapper>
+  )
 })
-function formatCell(dataSource: any, index: number) {
-  let td = dataSource.settingDtos[index]
-  if (td) {
-    return td.rangeName
+function formatCell(cellObj: any) {
+  const Con = styled.span<{ color: string }>`
+    color: ${(p) => p.color};
+  `
+  if (cellObj) {
+    return <Con color={cellObj.nameColor}>{cellObj.rangeName}</Con>
   }
   return ''
 }
 
 const Wrapper = styled.div`
-  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 -8px;
+  &.isSelected {
+    background: #fff8b1;
+  }
+  &.isTwoDaysAgo {
+    background: #f8f8f8;
+  }
 `

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Button } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -9,9 +9,15 @@ import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import moment from 'moment'
 import { getWeekString, getWeekString2 } from 'src/utils/date/week'
 import { observer } from 'mobx-react-lite'
-export interface Props {}
+import classNames from 'classnames'
+export interface Props {
+  /** 编辑模式 */
+  isEdit: boolean
+  surplusHeight: number
+}
 
-export default observer(function ArrangeSheet() {
+export default observer(function ArrangeSheet(props: Props) {
+  let { isEdit, surplusHeight } = props
   let contextMenu = createContextMenu()
   let columns: ColumnProps<any>[] = [
     {
@@ -89,12 +95,24 @@ export default observer(function ArrangeSheet() {
       // fixed: 'right'
     }
   ]
+
+  useLayoutEffect(() => {
+    try {
+      ;(document as any)
+        .getElementById('baseTable')!
+        .querySelector('.ant-table-fixed-left .ant-table-body-inner table.ant-table-fixed')!.style.marginBottom =
+        (document as any).getElementById('baseTable')!.querySelector('.ant-table-footer')!.offsetHeight + 'px'
+    } catch (error) {
+      console.log('同步备注滚动报错')
+    }
+  })
   return (
-    <Wrapper>
+    <Wrapper className={classNames({ isEdit })}>
       <BaseTable
-        surplusHeight={200}
+        surplusHeight={surplusHeight}
         surplusWidth={200}
         columns={columns}
+        // fixedFooter={true}
         dataSource={sheetViewModal.sheetTableData}
         footer={() => {
           return <div>排班备注：</div>
@@ -107,13 +125,20 @@ export default observer(function ArrangeSheet() {
 const Wrapper = styled.div`
   /** fix table scroll bug */
   div.ant-table-body {
-    background: #fafafa;
+    background: #fafafa !important;
   }
   tbody.ant-table-tbody {
     background: #fff;
   }
   .ant-table-footer {
     border: 0 !important;
+  }
+  &.isEdit {
+    .ant-table-fixed-left {
+      td {
+        background: #f8f8f8 !important;
+      }
+    }
   }
 `
 

@@ -2,9 +2,11 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import BaseTabs from 'src/components/BaseTabs'
+import { observer } from 'mobx-react-lite'
+import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 export interface Props {}
 
-export default function FlightMenu() {
+export default observer(function FlightMenu() {
   return (
     <Wrapper>
       <BaseTabs
@@ -12,76 +14,94 @@ export default function FlightMenu() {
           {
             title: '可选班次',
             index: '0',
-            component: <MenuCon />
+            component: <MenuCon dataSource={sheetViewModal.arrangeMenu} />
           },
           {
             title: '班次套餐',
             index: '1',
-            component: <MenuCon2 />
+            component: <MealCon dataSource={sheetViewModal.arrangeMeal} />
           }
         ]}
       />
     </Wrapper>
   )
-}
-
-function MenuCon() {
+})
+function MenuCon(props: { dataSource: any[] }) {
   const Contain = styled.div`
     padding: 5px;
     .menu-box {
       width: 50%;
       float: left;
       padding: 5px;
-      .box-inner {
-        height: 30px;
-        padding: 5px;
-      }
     }
   `
+  const BoxInner = styled.div<{ color: string }>`
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #d9d9d9;
+    color: ${(p) => p.color};
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+    border-radius: 2px;
+  `
+  const onClick = (item: any) => {
+    if (sheetViewModal.selectedCell) {
+      sheetViewModal.selectedCell!.rangeName = item.name
+      sheetViewModal.selectedCell!.nameColor = item.nameColor
+      sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime
+      sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime
+      sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
+      sheetViewModal.selectedCell!.shiftType = item.shiftType
+      sheetViewModal.selectedCell = sheetViewModal.getNextCell()
+    }
+  }
   return (
     <Contain>
-      <div className='menu-box'>
-        <div className='box-inner'>班次一</div>
-      </div>
-      <div className='menu-box'>
-        <div className='box-inner'>班次二</div>
-      </div>
-      <div className='menu-box'>
-        <div className='box-inner'>班次三</div>
-      </div>
-      <div className='menu-box'>
-        <div className='box-inner'>班次四</div>
-      </div>
+      {props.dataSource.map((item, index) => (
+        <div className='menu-box' key={index}>
+          <BoxInner color={item.nameColor} onClick={() => onClick(item)}>
+            {item.name}
+          </BoxInner>
+        </div>
+      ))}
     </Contain>
   )
 }
-function MenuCon2() {
+function MealCon(props: { dataSource: any[] }) {
   const Contain = styled.div`
     padding: 5px;
     .menu-box {
       width: 50%;
       float: left;
       padding: 5px;
-      .box-inner {
-        height: 30px;
-        padding: 5px;
-      }
     }
   `
+  const BoxInner = styled.div`
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #d9d9d9;
+    color: ${(p) => p.color};
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+    border-radius: 2px;
+  `
+  const onClick = (item: any) => {
+    if (sheetViewModal.selectedCell) {
+    }
+  }
   return (
     <Contain>
-      <div className='menu-box'>
-        <div className='box-inner'>班次一12</div>
-      </div>
-      <div className='menu-box'>
-        <div className='box-inner'>班次二</div>
-      </div>
-      <div className='menu-box'>
-        <div className='box-inner'>班次三</div>
-      </div>
-      <div className='menu-box'>
-        <div className='box-inner'>班次四</div>
-      </div>
+      {props.dataSource.map((item, index) => (
+        <div className='menu-box' key={index}>
+          <BoxInner onClick={() => onClick(item)}>{item.name}</BoxInner>
+        </div>
+      ))}
     </Contain>
   )
 }

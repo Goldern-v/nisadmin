@@ -29,7 +29,6 @@ export default observer(function BaseModal(props: Props) {
   const [data, setData]: any = useState(null)
 
   const onSave = async () => {
-
     // } else if (sectionData.sectionId == '本月质量检查扣分情况') {
     //   qualityAnalysisReportPoolService.updateCheckDeptDesc(data.report.checkDeptDesc).then((res) => {
     //     qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
@@ -125,7 +124,7 @@ export default observer(function BaseModal(props: Props) {
     //     message.success('保存成功')
     //     onCancel()
     //   })
-    // } else 
+    // } else
     if (sectionData.sectionId == '报告名称') {
       qualityAnalysisReportPoolService.updateReportName(data.text).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
@@ -159,7 +158,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '本月总扣分') {
-      qualityAnalysisReportPoolService.updateGroupList(data.list).then(res => {
+      qualityAnalysisReportPoolService.updateGroupList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data
         })
@@ -167,7 +166,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '扣分比较') {
-      qualityAnalysisReportPoolService.updateGroupCompareList(data.list).then(res => {
+      qualityAnalysisReportPoolService.updateGroupCompareList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data
         })
@@ -175,7 +174,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '病区质量考核前十') {
-      qualityAnalysisReportPoolService.updateNotDeductDeptDesc(data.report.notDeductDeptDesc).then(res => {
+      qualityAnalysisReportPoolService.updateNotDeductDeptDesc(data.report.notDeductDeptDesc).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           report: res.data
         })
@@ -183,7 +182,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '病区质量扣分前十') {
-      qualityAnalysisReportPoolService.updateTopRankDeptItemList(data.list).then(res => {
+      qualityAnalysisReportPoolService.updateTopRankDeptItemList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data
         })
@@ -191,7 +190,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '特殊科室质量扣分') {
-      qualityAnalysisReportPoolService.updateSpecialDeptItemList(data.list).then(res => {
+      qualityAnalysisReportPoolService.updateSpecialDeptItemList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data
         })
@@ -199,7 +198,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '特殊监护病房质量扣分') {
-      qualityAnalysisReportPoolService.updateIcuDeptItemList(data.list).then(res => {
+      qualityAnalysisReportPoolService.updateIcuDeptItemList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data
         })
@@ -207,7 +206,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '门诊科室质量扣分') {
-      qualityAnalysisReportPoolService.updateOpdeptItemList(data.list).then(res => {
+      qualityAnalysisReportPoolService.updateOpdeptItemList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data
         })
@@ -215,12 +214,12 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (/^4_\d*$/.test(sectionData.sectionId)) {
-      let { year, type, indexInType, qcGroupName, qcGroupCode } = data.baseInfo;
-      let contentKey = data.contentKey;
+      let { year, type, indexInType, qcGroupName, qcGroupCode } = data.baseInfo
+      let contentKey = data.contentKey
       let childrenItemList = data.list.map((item: any) => {
-        let childQcGroupName = item.qcGroupName || qcGroupName;
-        let childQcGroupCode = item.qcGroupCode || qcGroupCode;
-        let highlightItem = item.highlightItem || 'true';
+        let childQcGroupName = item.qcGroupName || qcGroupName
+        let childQcGroupCode = item.qcGroupCode || qcGroupCode
+        let highlightItem = item.highlightItem || 'true'
 
         let newItem: any = {
           qcGroupName: childQcGroupName,
@@ -231,7 +230,7 @@ export default observer(function BaseModal(props: Props) {
         if (item.id) newItem.id = item.id
 
         return newItem
-      });
+      })
       let params = {
         year,
         type,
@@ -241,7 +240,7 @@ export default observer(function BaseModal(props: Props) {
         childrenItemList
       }
 
-      qualityAnalysisReportPoolService.updateDetailItemList(params).then(res => {
+      qualityAnalysisReportPoolService.updateDetailItemList(params).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.childrenItemList || []
         })
@@ -249,12 +248,12 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (/^5_\d*$/.test(sectionData.sectionId)) {
-      let { year, type, indexInType, qcGroupName, qcGroupCode } = data.baseInfo;
-      let contentKey = data.contentKey;
+      let { year, type, indexInType, qcGroupName, qcGroupCode } = data.baseInfo
+      let contentKey = data.contentKey
       let childrenItemList = data.list.map((item: any) => {
-        let childQcGroupName = item.qcGroupName || qcGroupName;
-        let childQcGroupCode = item.qcGroupCode || qcGroupCode;
-        let highlightItem = item.highlightItem || 'true';
+        let childQcGroupName = item.qcGroupName || qcGroupName
+        let childQcGroupCode = item.qcGroupCode || qcGroupCode
+        let highlightItem = item.highlightItem || 'true'
 
         let newItem: any = {
           qcGroupName: childQcGroupName,
@@ -267,7 +266,7 @@ export default observer(function BaseModal(props: Props) {
         if (item.id) newItem.id = item.id
 
         return newItem
-      });
+      })
       let params = {
         year,
         type,
@@ -277,7 +276,7 @@ export default observer(function BaseModal(props: Props) {
         childrenItemList
       }
 
-      qualityAnalysisReportPoolService.updateImproveItemList(params).then(res => {
+      qualityAnalysisReportPoolService.updateImproveItemList(params).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data.childrenItemList || []
         })
@@ -285,7 +284,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '6_1') {
-      let contentKey = data.contentKey;
+      let contentKey = data.contentKey
       let newList = data.list.map((item: any) => {
         let newItem: any = {
           qcGroupName: item.qcGroupName || '',
@@ -299,7 +298,7 @@ export default observer(function BaseModal(props: Props) {
         return newItem
       })
 
-      qualityAnalysisReportPoolService.updateImproveResultList(newList).then(res => {
+      qualityAnalysisReportPoolService.updateImproveResultList(newList).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data || []
         })
@@ -307,7 +306,7 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '7_1') {
-      let contentKey = data.contentKey;
+      let contentKey = data.contentKey
       let newList = data.list.map((item: any) => {
         let newItem: any = {
           qcGroupName: item.qcGroupName || '',
@@ -320,7 +319,7 @@ export default observer(function BaseModal(props: Props) {
         return newItem
       })
 
-      qualityAnalysisReportPoolService.updateKeyItemList(newList).then(res => {
+      qualityAnalysisReportPoolService.updateKeyItemList(newList).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
           list: res.data || []
         })
@@ -338,9 +337,15 @@ export default observer(function BaseModal(props: Props) {
     }
   }, [visible])
 
+  let title: any = ''
+  if (sectionData && sectionData.data && sectionData.data.baseInfo && sectionData.data.baseInfo.qcGroupName) {
+    title = '编辑' + sectionData.data.baseInfo.qcGroupName
+  } else if (sectionData) {
+    title = sectionData.modalTitle
+  }
   return (
     <Modal
-      title={sectionData && sectionData.modalTitle}
+      title={title || ''}
       visible={visible}
       onCancel={onCancel}
       onOk={onSave}
