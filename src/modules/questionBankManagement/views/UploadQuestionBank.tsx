@@ -38,8 +38,30 @@ export default observer(function QuestionBankManagement() {
 
   const handleDownload = () => {
     questionBankManageService.getUploadQuestionBankTemplate().then(res => {
-      console.log(res)
+      fileDownload(res, { fileName: '题库上传模板' })
     })
+  }
+
+  const fileDownload = (res: any, record?: any) => {
+    let filename = record.fileName;
+    // decodeURIComponent
+    // "attachment;filename=????2019-3-18-2019-3-24??.xls"
+    // "application/json"
+    let blob = new Blob([res.data], {
+      type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
+    })
+    // console.log('fileDownload', res)
+    // if (res.data.type && res.data.type.indexOf('excel') > -1) {
+    if (true) {
+      let a = document.createElement('a')
+      let href = window.URL.createObjectURL(blob) // 创建链接对象
+      a.href = href
+      a.download = filename // 自定义文件名
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(href)
+      document.body.removeChild(a) // 移除a元素
+    }
   }
 
   return (

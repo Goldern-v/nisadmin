@@ -48,8 +48,13 @@ export default observer(function QuestionBankManagement() {
   }, []);
 
   useEffect(() => {
+    let search: any = location.search.replace('?', '');
+    search = qs.parse(search);
     if (uploadQuestionBankModel.tableData.length == 0 && uploadQuestionBankModel.tableLoading) return
-    questionBankManageService.getCountMenu().then(res => {
+    questionBankManageService.getCountMenu({
+      status: '导入记录',
+      id: search.id
+    }).then(res => {
       setMenuNum(res.data)
     })
   }, [uploadQuestionBankModel.tableData])
