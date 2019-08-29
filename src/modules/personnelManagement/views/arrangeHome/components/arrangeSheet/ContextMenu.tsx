@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect, useRef } from 'react'
 import { Button } from 'antd'
 import { Options, MenuList, MenuListItem } from '../../types/contextMenu'
+import classNames from 'classnames'
 
 export interface Props {
   menuList: MenuList
@@ -29,7 +30,7 @@ export default function ContextMenu(props: Props) {
   }, [])
 
   const onItemClick = (item: MenuListItem, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    item.onClick && item.onClick()
+    item.onClick && item.onClick(item)
     setShow(false)
   }
 
@@ -37,22 +38,28 @@ export default function ContextMenu(props: Props) {
     <div ref={elRef}>
       {show && (
         <Wrapper x={x} y={y}>
-          {renderItem(menuList)}
+          {renderItem(menuList, onItemClick)}
         </Wrapper>
       )}
     </div>
   )
 }
 
-function renderItem(menuList: MenuListItem[]) {
+function renderItem(menuList: MenuListItem[], onItemClick: any) {
   return (
     menuList &&
     menuList.map((item, index) => {
       if (item.type == 'text') {
         return (
-          <div className='text-item' key={index}>
+          <div
+            className={classNames({ 'text-item': true, disabled: item.disabled })}
+            key={index}
+            onClick={() => onItemClick(item)}
+          >
             {item.label}
-            {item.children && <div className='children-con'>{item.children && renderItem(item.children)}</div>}
+            {item.children && (
+              <div className='children-con'>{item.children && renderItem(item.children, onItemClick)}</div>
+            )}
           </div>
         )
       } else {
@@ -63,25 +70,30 @@ function renderItem(menuList: MenuListItem[]) {
 }
 
 export function createContextMenu() {
-  const [menuList, SetMenuList]: any = useState([])
-  const [options, SetOptions] = useState({
-    x: 0,
-    y: 0
-  })
-  const [show, setShow] = useState(false)
-
+  let _setShow: any = null
+  let _setMenuList: any = null
+  let _setOptions: any = null
   return {
     Component: () => {
+      const [menuList, setMenuList]: any = useState([])
+      const [options, setOptions] = useState({
+        x: 0,
+        y: 0
+      })
+      const [show, setShow] = useState(false)
+
+      _setShow = setShow
+      _setMenuList = setMenuList
+      _setOptions = setOptions
       return <ContextMenu menuList={menuList} options={options} show={show} setShow={setShow} />
     },
     show(menuList: MenuList, options: Options) {
-      setShow(true)
-      SetMenuList(menuList)
-      SetOptions(options)
-      console.log('show')
+      _setShow && _setShow(true)
+      _setShow && _setMenuList(menuList)
+      _setShow && _setOptions(options)
     },
     close() {
-      setShow(false)
+      _setShow(false)
     }
   }
 }
@@ -105,6 +117,11 @@ const Wrapper = styled.div<{ x: number; y: number }>`
     font-size: 14px;
     padding: 0 10px;
     position: relative;
+    &.disabled {
+      background: #f8f8f8;
+      color: #ddd;
+      pointer-events: none;
+    }
     &:hover {
       background: #e4f1f0;
       > .children-con {
@@ -132,5 +149,18 @@ const Wrapper = styled.div<{ x: number; y: number }>`
   }
   .line-item {
     border-top: 1px solid #ddd;
+  }
+
+  .symbol-con {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    .symbol-icon {
+      width: 40px;
+    }
+    .symbol-aside {
+      width: 0;
+      flex: 1;
+    }
   }
 `

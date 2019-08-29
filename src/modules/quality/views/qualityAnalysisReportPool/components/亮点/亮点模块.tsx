@@ -19,7 +19,7 @@ export default observer(function 亮点模块(props: Props) {
 
   return (
     <Wrapper>
-      <div className={'sup-title'}>三、本月质量检查结果反馈</div>
+      <div className={'sup-title'}>三、质量检查结果反馈</div>
       <div className={'sup-title'}>(一) 亮点</div>
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>

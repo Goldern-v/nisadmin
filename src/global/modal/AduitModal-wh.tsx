@@ -240,21 +240,22 @@ export default function AduitModal(props: Props) {
             <div className='row'>
               <div className='key'>当前进度：</div>
               <div className='vale'>
-                <div className='status'>{auditStatus}</div>
+                <div className='status'>
+                  {auditeListDtos.length == 0 && resData.auditedEmpRole}
+                  {auditStatus}
+                </div>
               </div>
             </div>
             {auditeListDtos.length == 0 && (
               <React.Fragment>
-                {resData.auditedEmpName && (
+                {/* {resData.auditedEmpRole && (
                   <div className='row'>
                     <div className='key' style={{ padding: 0 }}>
                       审核人：
                     </div>
-                    <div className='vale'>
-                      {resData.auditedEmpName}（{resData.auditedEmpRole}）
-                    </div>
+                    <div className='vale'>{resData.auditedEmpRole}</div>
                   </div>
-                )}
+                )} */}
 
                 <div className='row'>
                   <div className='key' style={{ padding: 0 }}>

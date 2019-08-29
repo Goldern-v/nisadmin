@@ -12,11 +12,12 @@ export interface Props {
 
 export default observer(function 一级标题模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  useEffect(() => { })
+  let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
+  useEffect(() => {})
   return (
     // <Wrapper className='page-title'>
     <Wrapper>
-      <span className='sup-title'>{sectionTitle}</span>
+      <span className='sup-title'>{data.text || sectionTitle}</span>
     </Wrapper>
   )
 })

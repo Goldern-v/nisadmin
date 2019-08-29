@@ -1,22 +1,32 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button } from 'antd'
 import { ContextMenu } from '../../types/contextMenu'
-import { observer } from 'src/vendors/mobx-react-lite'
+import { observer, toJS } from 'src/vendors/mobx-react-lite'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { dateDiff } from 'src/utils/date/dateDiff'
 import monnet from 'src/vendors/moment'
 import classNames from 'classnames'
+import { type } from 'os'
+import { SymbolItem } from '../../types/Sheet'
 
 export interface Props {
   contextMenu: ContextMenu
+  editEffectiveTimeModal: any
   dataSource: any
   index: number
 }
 
 export default observer(function Cell(props: Props) {
-  let { contextMenu, dataSource, index } = props
+  let { contextMenu, dataSource, index, editEffectiveTimeModal } = props
+  let modalRef = useRef(editEffectiveTimeModal)
+  let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : null
+  let cellConfig = sheetViewModal.analyseCell(cellObj)
+
   const onContextMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    sheetViewModal.selectedCell = cellObj
+    let hasArrange = !!(sheetViewModal.selectedCell && sheetViewModal.selectedCell.rangeName)
+
     let { x, y, width, height } = (event as any).target.getBoundingClientRect()
     contextMenu.show(
       [
@@ -74,21 +84,42 @@ export default observer(function Cell(props: Props) {
         },
         {
           icon: '',
-          label: '增加工时',
+          label: '修改工时',
           type: 'text',
-          onClick: () => {}
-        },
-        {
-          icon: '',
-          label: '减少工时',
-          type: 'text',
-          onClick: () => {}
+          onClick: () => {
+            editEffectiveTimeModal.show({
+              data: sheetViewModal.selectedCell,
+              onOkCallBack(value: any) {
+                sheetViewModal.selectedCell.effectiveTime = value.effectiveTime
+                sheetViewModal.selectedCell.detail = value.detail
+              }
+            })
+          }
         },
         {
           icon: '',
           label: '休假计数',
           type: 'text',
           onClick: () => {}
+        },
+        {
+          icon: '',
+          label: '符号',
+          type: 'text',
+          disabled: !hasArrange,
+          children: sheetViewModal.schSymbolList.map((item) => ({
+            type: 'text',
+            dataSource: item,
+            label: (
+              <div className='symbol-con'>
+                <div className='symbol-icon'>{item.symbol}</div>
+                <div className='symbol-aside'>{item.detail}</div>
+              </div>
+            ),
+            onClick: (item: any) => {
+              sheetViewModal.selectedCell.addSymbols = item.dataSource.symbol
+            }
+          }))
         }
       ],
       {
@@ -97,18 +128,6 @@ export default observer(function Cell(props: Props) {
       }
     )
     event.preventDefault()
-  }
-
-  let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : null
-
-  // console.log(cellObj.workDate, 'cellObj.workDate')
-  let cellConfig = {
-    isTwoDaysAgo: dateDiff(cellObj.workDate, monnet().format('YYYY-MM-DD')) > 2,
-    isExpectedScheduling: false,
-    isAddScheduling: false,
-    isAddWordTime: false,
-    isReduceWordTime: false,
-    isSelected: sheetViewModal.selectedCell == cellObj
   }
 
   const onClick = () => {
@@ -125,7 +144,12 @@ function formatCell(cellObj: any) {
     color: ${(p) => p.color};
   `
   if (cellObj) {
-    return <Con color={cellObj.nameColor}>{cellObj.rangeName}</Con>
+    return (
+      <Con color={cellObj.nameColor}>
+        {cellObj.addSymbols}
+        {cellObj.rangeName}
+      </Con>
+    )
   }
   return ''
 }

@@ -12,8 +12,9 @@ module.exports = function(app) {
       // target: 'http://111.47.19.230:9091',
       // target: 'http://192.168.2.75:8080',
       //武汉测试
-      // target: 'http://111.47.19.230:9093',
-      target: 'http://192.168.2.144:8062',
+      target: 'http://111.47.19.230:9093',
+      // target: 'http://192.168.2.144:8062',
+      // target: 'http://120.25.105.45:9866',
       secure: false,
       changeOrigin: true
     })

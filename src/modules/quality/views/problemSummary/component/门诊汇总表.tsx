@@ -9,7 +9,9 @@ export interface Props {
 
 export default function 门诊汇总表(props: Props) {
   const { dataSource, loadingTable } = props
-
+  let opdDeptList = dataSource.filter((item: any) => {
+    return item.opdDept
+  })
   return (
     <Wrapper>
       <table>
