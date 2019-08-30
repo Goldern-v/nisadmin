@@ -82,6 +82,7 @@ export default function createModal<O = any, I extends ModalComponentProps<O> = 
       // 显示，将传入参数作为当前实例的内部状态
       public show = (input: any, callback: ModalCallback<O>) => {
         this.setState({ visible: true, loading: false, input })
+
         this.callback = callback
       }
 

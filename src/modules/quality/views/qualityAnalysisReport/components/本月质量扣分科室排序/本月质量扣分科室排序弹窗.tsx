@@ -132,7 +132,7 @@ export default function 本月质量扣分科室排序弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={cloneData.list.filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20

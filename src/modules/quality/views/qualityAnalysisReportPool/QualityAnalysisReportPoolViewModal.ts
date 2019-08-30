@@ -152,6 +152,7 @@ class QualityAnalysisReportViewModal {
     }
     this.getSectionData(`6_1`)!.list = this.allData!.improveResultList || []
     this.getSectionData(`6_1`)!.contentKey = 'itemImproveDesc'
+
     this.getSectionData(`7_1`)!.list = this.allData!.keyItemList || []
     this.getSectionData(`7_1`)!.contentKey = 'content'
   }

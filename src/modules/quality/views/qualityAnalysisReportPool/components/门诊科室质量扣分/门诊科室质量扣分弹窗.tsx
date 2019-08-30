@@ -102,7 +102,7 @@ export default function 门诊科室质量扣分弹窗(props: Props) {
     })
     setData(cloneData)
   }
-  useEffect(() => { }, [])
+  useEffect(() => {}, [])
   return (
     <Wrapper>
       <div className='button-con'>
@@ -113,7 +113,7 @@ export default function 门诊科室质量扣分弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={cloneData.list.filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20

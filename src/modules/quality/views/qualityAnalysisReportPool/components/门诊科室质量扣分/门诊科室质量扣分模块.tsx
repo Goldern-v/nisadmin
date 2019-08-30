@@ -66,7 +66,7 @@ export default observer(function 门诊科室质量扣分模块(props: Props) {
             <col width='60' />
           </colgroup>
           <tbody>
-            <tr className="header">
+            <tr className='header'>
               <td>排序</td>
               <td>科室</td>
               <td>扣分</td>
@@ -89,7 +89,7 @@ export default observer(function 门诊科室质量扣分模块(props: Props) {
             <col width='60' />
           </colgroup>
           <tbody>
-            <tr className="header">
+            <tr className='header'>
               <td>排序</td>
               <td>科室</td>
               <td>扣分</td>
@@ -111,7 +111,7 @@ export default observer(function 门诊科室质量扣分模块(props: Props) {
   return (
     <Wrapper>
       <TextCon>
-        <span className='sup-title'>5. {Title()}门诊科室质量扣分排序</span>
+        <span className='sup-title'>5. {Title()}门诊治疗扣分排序</span>
       </TextCon>
       {TwoColTable()}
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>

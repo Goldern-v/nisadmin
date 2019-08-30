@@ -36,6 +36,13 @@ export default class ArrangeService extends BaseApiService {
     }
     return this.post(`schMealSetting/getByDeptCode`, this.stringify(obj))
   }
+  /** 获取符号列表 */
+  public getSchSymbol(obj?: any) {
+    obj = {
+      // deptCode: authStore.selectedDeptCode
+    }
+    return this.post(`/schSymbol/listByDeptCode`, obj)
+  }
 }
 
 export const arrangeService = new ArrangeService()

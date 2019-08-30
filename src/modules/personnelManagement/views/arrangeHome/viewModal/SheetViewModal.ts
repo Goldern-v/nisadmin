@@ -1,16 +1,19 @@
+import { SymbolItem, ArrangeItem } from './../types/Sheet'
 import { observable, computed, action } from 'mobx'
 import { selectViewModal } from './SelectViewModal'
 import { dateDiff } from 'src/utils/date/dateDiff'
 import moment from 'moment'
 import { arrangeService } from '../services/ArrangeService'
+import monnet from 'src/vendors/moment'
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   @observable public sheetTableData: any = []
   @observable public remark: string = ''
   @observable public arrangeMenu = []
   @observable public arrangeMeal = []
+  @observable public schSymbolList: SymbolItem[] = []
   /** 选中的格子 */
-  @observable public selectedCell: any = {}
+  @observable public selectedCell: ArrangeItem = {}
   @observable public allCell: any[] = []
   /** 时间段 */
   @computed
@@ -50,11 +53,42 @@ class SheetViewModal {
     }
   }
 
+  getSelectCellList(canEdit: boolean) {
+    let list: any[] = []
+    if (this.selectedCell) {
+      let userId = this.selectedCell.userId
+      list = this.allCell.filter((item) => {
+        return item.userId == userId && (canEdit ? this.analyseCell(item).isTwoDaysAgo == false : true)
+      })
+    }
+    return list
+  }
+
+  /** 解析cellobj 获取额外信息 */
+  analyseCell(cellObj: any) {
+    const cellConfig = {
+      isTwoDaysAgo: dateDiff(cellObj && cellObj.workDate, monnet().format('YYYY-MM-DD')) > 2,
+      isExpectedScheduling: false,
+      isAddScheduling: false,
+      isAddWordTime: false,
+      isReduceWordTime: false,
+      isSelected: this.selectedCell == cellObj
+    }
+    return cellConfig
+  }
+
   getSheetTableData() {
+    if (localStorage.sheetTableData_dev) {
+      this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
+      this.allCell = this.getAllCell()
+      return
+    }
+
     arrangeService.findCreateOrUpdate().then((res) => {
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark
       this.allCell = this.getAllCell()
+      localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
     })
   }
   getArrangeMenu() {
@@ -67,6 +101,11 @@ class SheetViewModal {
       this.arrangeMeal = res.data
     })
   }
+  getSchSymbol() {
+    arrangeService.getSchSymbol().then((res) => {
+      this.schSymbolList = res.data
+    })
+  }
 
   saveSheetTableData() {
     arrangeService.saveOrUpdate()
@@ -76,6 +115,7 @@ class SheetViewModal {
     this.getSheetTableData()
     this.getArrangeMenu()
     this.getArrangeMeal()
+    this.getSchSymbol()
   }
 }
 

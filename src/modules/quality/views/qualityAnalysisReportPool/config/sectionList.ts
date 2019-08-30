@@ -116,7 +116,7 @@ export const sectionList: SectionListItem[] = [
   {
     sectionId: '门诊科室质量扣分',
     sectionTitle: '门诊科室质量扣分',
-    modalTitle: '编辑门诊科室质量扣分',
+    modalTitle: '编辑门诊治疗扣分排序',
     modalWidth: 800,
     data: {},
     section: 门诊科室质量扣分模块,

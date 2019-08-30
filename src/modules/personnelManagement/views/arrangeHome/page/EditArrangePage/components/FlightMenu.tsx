@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import BaseTabs from 'src/components/BaseTabs'
 import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 export interface Props {}
 
@@ -53,8 +54,9 @@ function MenuCon(props: { dataSource: any[] }) {
       sheetViewModal.selectedCell!.nameColor = item.nameColor
       sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime
       sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime
-      sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
       sheetViewModal.selectedCell!.shiftType = item.shiftType
+      sheetViewModal.selectedCell!.settings = null
+      // sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
       sheetViewModal.selectedCell = sheetViewModal.getNextCell()
     }
   }
@@ -70,6 +72,7 @@ function MenuCon(props: { dataSource: any[] }) {
     </Contain>
   )
 }
+
 function MealCon(props: { dataSource: any[] }) {
   const Contain = styled.div`
     padding: 5px;
@@ -92,9 +95,33 @@ function MealCon(props: { dataSource: any[] }) {
     border-radius: 2px;
   `
   const onClick = (item: any) => {
+    /** 套餐同步 */
     if (sheetViewModal.selectedCell) {
+      let list = sheetViewModal.getSelectCellList(true)
+      for (let i = 0; i < list.length; i++) {
+        let weekNum = moment(list[i].workDate).isoWeekday()
+        let mealObj = getMealData(weekNum, item)
+        list[i]!.rangeName = mealObj.name
+        list[i]!.nameColor = mealObj.nameColor
+        list[i]!.effectiveTime = mealObj.effectiveTime
+        list[i]!.effectiveTimeOld = mealObj.effectiveTime
+        list[i]!.shiftType = mealObj.shiftType
+      }
     }
   }
+  /** 格式化 */
+  const getMealData = (weekNum: number, mealObj: any) => {
+    let days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+    let keys = ['Name', 'NameColor', 'EffectiveTime', 'ShiftType']
+    let _keys = ['name', 'nameColor', 'effectiveTime', 'shiftType']
+    let obj: any = {}
+
+    for (let i = 0; i < keys.length; i++) {
+      obj[_keys[i]] = mealObj[days[weekNum - 1] + keys[i]]
+    }
+    return obj
+  }
+
   return (
     <Contain>
       {props.dataSource.map((item, index) => (

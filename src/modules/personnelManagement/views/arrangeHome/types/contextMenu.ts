@@ -7,8 +7,9 @@ export interface MenuListItem {
   icon?: string
   label?: string
   type?: 'text' | 'line'
+  disabled?: boolean
   children?: MenuListItem[]
-  onClick: () => void
+  onClick: (selectedItem: any) => void
 }
 
 export type MenuList = MenuListItem[]

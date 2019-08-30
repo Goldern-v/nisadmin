@@ -9,7 +9,12 @@ export interface Props {
 
 export default function 门诊汇总表(props: Props) {
   const { dataSource, loadingTable } = props
-
+  let opdDeptList = dataSource.filter((item: any) => {
+    return item.opdDept
+  })
+  let noOpdDeptList = dataSource.filter((item: any) => {
+    return !item.opdDept
+  })
   return (
     <Wrapper>
       <table>
@@ -44,28 +49,20 @@ export default function 门诊汇总表(props: Props) {
             <td>院感公卫（8分）</td>
             <td>护理质量（30分）</td>
           </tr>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-            <td>4</td>
-          </tr>
+          {opdDeptList.map((item, index) => (
+            <tr key={index}>
+              <td>{item.wardName}</td>
+              <td />
+              <td />
+              <td />
+              <td />
+              <td>{item.score}</td>
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+
           <tr>
             <td className='title'>医技科室</td>
             <td>危急值及岗位职责（20分）</td>
@@ -77,8 +74,8 @@ export default function 门诊汇总表(props: Props) {
             <td />
           </tr>
 
-          {['放射科', '检验科', '超声影像', '心功能', '输血科', '病理科'].map((item) => (
-            <tr>
+          {['放射科', '检验科', '超声影像', '心功能', '输血科', '病理科'].map((item, index) => (
+            <tr key={index}>
               <td>{item}</td>
               <td />
               <td />
@@ -111,6 +108,19 @@ export default function 门诊汇总表(props: Props) {
             <td>合 计（100分）</td>
             <td />
           </tr>
+          {opdDeptList.map((item, index) => (
+            <tr key={index}>
+              <td>{item.wardName}</td>
+              <td />
+              <td>{item.convertDeductScore}</td>
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
         </tbody>
       </table>
     </Wrapper>

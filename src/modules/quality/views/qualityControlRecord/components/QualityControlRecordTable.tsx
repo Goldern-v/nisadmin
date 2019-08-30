@@ -52,7 +52,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'zkbq',
       dataIndex: 'qcName',
       key: '',
-      width: 160,
+      width: 150,
       align: 'left'
     },
 
@@ -104,7 +104,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'currentHandledNodeName',
       dataIndex: 'nextNodePendingName',
       key: '',
-      width: 100,
+      width: 110,
       align: 'center',
       render(text: any, row: any) {
         return row.status == '1' ? '已完成' : text
