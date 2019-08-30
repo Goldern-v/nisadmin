@@ -8,8 +8,8 @@ export default class NursingRulesApiService extends BaseApiService {
   public upload(form: any) {
     return this.post(`/flatManageSetting/saveSetting`, form);
   }
-  public update(params: any) {
-    return this.post(`/flatManageSetting/updateManageType`, qs.stringify(params));
+  public update(form: any) {
+    return this.post(`/flatManageSetting/updateSetting`, form);
   }
   public delete(id: string) {
     return this.post(`/flatManageSetting/deleteById`, qs.stringify({ id }));
