@@ -11,6 +11,7 @@ import YearPicker from 'src/components/YearPicker'
 import { numberToArray } from 'src/utils/array/array'
 import moment from 'moment'
 import { problemSummaryServices } from './services/ProblemSummaryServices'
+import { ScrollBox } from 'src/components/common'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function ProblemSummary(props: any) {
@@ -200,7 +201,7 @@ const HeaderCon = styled.div`
   height: 55px;
   align-items: center;
 `
-const MidCon = styled.div`
+const MidCon = styled(ScrollBox)`
   box-sizing: border-box;
   flex: 1;
   height: 0;

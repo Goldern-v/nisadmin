@@ -137,7 +137,7 @@ export default function 质量扣分比较弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={cloneData.list.filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20

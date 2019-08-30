@@ -6,6 +6,7 @@ export interface ArrangeItem {
   shiftType?: string
   addSymbols?: string
   detail?: string
+  settings?: ArrangeItem | null
   [p: string]: any
 }
 

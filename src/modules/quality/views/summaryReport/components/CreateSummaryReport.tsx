@@ -25,7 +25,7 @@ export default function CreateSummearyReportModal(props: Props) {
     year: nowMoment,
     indexInType: nowMoment.format('M'),
     type: 'month',
-    reportName: `${nowMoment.format('YYYY')}年度${nowMoment.format('M')}月质控汇总报告`
+    reportName: `${nowMoment.format('YYYY')}年${nowMoment.format('M')}月护理质量检查反馈`
   }
   const [params, setParams] = useState(initedParams as any)
 

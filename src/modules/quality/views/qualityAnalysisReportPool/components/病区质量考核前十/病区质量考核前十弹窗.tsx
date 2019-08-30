@@ -25,7 +25,7 @@ export default function 病区质量考核前十弹窗(props: Props) {
       })
     }
   }
-  useEffect(() => { }, [])
+  useEffect(() => {}, [])
   return (
     <Wrapper>
       <TextArea value={report.notDeductDeptDesc} onChange={updateData} autosize={true} />

@@ -8,22 +8,30 @@ import { dateDiff } from 'src/utils/date/dateDiff'
 import monnet from 'src/vendors/moment'
 import classNames from 'classnames'
 import { type } from 'os'
-import { SymbolItem } from '../../types/Sheet'
+import { SymbolItem, ArrangeItem } from '../../types/Sheet'
+import { getAddArrangeMenuList } from './cellClickEvent'
+import { message } from 'src/vendors/antd'
+import { cloneJson } from 'src/utils/json/clone'
 
 export interface Props {
   contextMenu: ContextMenu
   editEffectiveTimeModal: any
+  editVacationCountModal: any
   dataSource: any
   index: number
 }
 
 export default observer(function Cell(props: Props) {
-  let { contextMenu, dataSource, index, editEffectiveTimeModal } = props
-  let modalRef = useRef(editEffectiveTimeModal)
+  let { contextMenu, dataSource, index, editEffectiveTimeModal, editVacationCountModal } = props
+
+  const [copyRow, setCopyRow]: any = useState([])
+
   let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : null
   let cellConfig = sheetViewModal.analyseCell(cellObj)
 
   const onContextMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.preventDefault()
+    if (cellConfig.isTwoDaysAgo) return
     sheetViewModal.selectedCell = cellObj
     let hasArrange = !!(sheetViewModal.selectedCell && sheetViewModal.selectedCell.rangeName)
 
@@ -32,52 +40,10 @@ export default observer(function Cell(props: Props) {
       [
         {
           icon: '',
+          disabled: sheetViewModal.selectedCell.rangeName && sheetViewModal.selectedCell.settings,
           label: '追加排班',
           type: 'text',
-          children: [
-            {
-              label: '追加排班2',
-              type: 'text',
-              children: [
-                {
-                  label: '追加排班2',
-                  type: 'text'
-                },
-                {
-                  label: '追加排班2',
-                  type: 'text'
-                },
-                {
-                  label: '追加排班2',
-                  type: 'text'
-                },
-                {
-                  label: '追加排班2',
-                  type: 'text'
-                }
-              ]
-            },
-            {
-              label: '追加排班2',
-              type: 'text',
-              children: [
-                {
-                  label: '追加排班2',
-                  type: 'text'
-                }
-              ]
-            },
-            {
-              label: '追加排班2',
-              type: 'text',
-              children: [
-                {
-                  label: '追加排班2',
-                  type: 'text'
-                }
-              ]
-            }
-          ]
+          children: getAddArrangeMenuList(sheetViewModal.arrangeMenu, sheetViewModal.selectedCell)
         },
         {
           type: 'line'
@@ -98,9 +64,32 @@ export default observer(function Cell(props: Props) {
         },
         {
           icon: '',
+          disabled: sheetViewModal.selectedCell.shiftType != '休假',
           label: '休假计数',
           type: 'text',
-          onClick: () => {}
+          onClick: () => {
+            editVacationCountModal.show({
+              data: sheetViewModal.selectedCell,
+              onOkCallBack(num: any) {
+                // debugger
+                let list = sheetViewModal.getSelectCellList(true)
+                let index = list.indexOf(sheetViewModal.selectedCell)
+                // debugger
+                if (index > -1) {
+                  for (let i = Math.min(list.length - index, num) - 1; i >= index; i--) {
+                    list[i].rangeName =
+                      (sheetViewModal.selectedCell.rangeName || '').replace(/\d+/g, '') + (i - index + 1).toString()
+                    list[i].nameColor = sheetViewModal.selectedCell.nameColor
+                    list[i].effectiveTime = sheetViewModal.selectedCell.effectiveTime
+                    list[i].effectiveTimeOld = sheetViewModal.selectedCell.effectiveTimeOld
+                    list[i].shiftType = sheetViewModal.selectedCell.shiftType
+                    list[i].settings = null
+                  }
+                }
+                sheetViewModal.selectedCell
+              }
+            })
+          }
         },
         {
           icon: '',
@@ -120,6 +109,41 @@ export default observer(function Cell(props: Props) {
               sheetViewModal.selectedCell.addSymbols = item.dataSource.symbol
             }
           }))
+        },
+        {
+          icon: '',
+          label: '复制行',
+          type: 'text',
+          onClick() {
+            setCopyRow(sheetViewModal.getSelectCellList(true))
+            message.success('复制成功')
+          }
+        },
+        {
+          icon: '',
+          label: '剪切行',
+          type: 'text',
+          onClick() {
+            let list = sheetViewModal.getSelectCellList(true)
+            console.log(list, copyRow, '999')
+            if (list.length && copyRow.length) {
+              for (let i = 0; i < list.length; i++) {
+                list[i].rangeName = copyRow[i].rangeName
+                list[i].nameColor = copyRow[i].nameColor
+                list[i].effectiveTime = copyRow[i].effectiveTime
+                list[i].effectiveTimeOld = copyRow[i].effectiveTimeOld
+                list[i].shiftType = copyRow[i].shiftType
+                list[i].settings = cloneJson(copyRow[i].settings)
+              }
+            } else {
+              message.warning('请先复制行')
+            }
+          }
+        },
+        {
+          icon: '',
+          label: '黏贴行',
+          type: 'text'
         }
       ],
       {
@@ -127,10 +151,10 @@ export default observer(function Cell(props: Props) {
         y: y + height / 2
       }
     )
-    event.preventDefault()
   }
 
   const onClick = () => {
+    if (cellConfig.isTwoDaysAgo) return
     sheetViewModal.selectedCell = cellObj
   }
   return (
@@ -139,16 +163,27 @@ export default observer(function Cell(props: Props) {
     </Wrapper>
   )
 })
-function formatCell(cellObj: any) {
-  const Con = styled.span<{ color: string }>`
+function formatCell(cellObj: ArrangeItem) {
+  const Con = styled.span<{ color: string | undefined }>`
     color: ${(p) => p.color};
   `
   if (cellObj) {
     return (
-      <Con color={cellObj.nameColor}>
-        {cellObj.addSymbols}
-        {cellObj.rangeName}
-      </Con>
+      <React.Fragment>
+        <Con color={cellObj.nameColor}>
+          {cellObj.addSymbols}
+          {cellObj.rangeName}
+        </Con>
+        {cellObj.settings && (
+          <React.Fragment>
+            <span>/</span>
+            <Con color={cellObj.settings.nameColor}>
+              {cellObj.settings.addSymbols}
+              {cellObj.settings.rangeName}
+            </Con>
+          </React.Fragment>
+        )}
+      </React.Fragment>
     )
   }
   return ''

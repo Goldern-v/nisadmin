@@ -55,6 +55,7 @@ function MenuCon(props: { dataSource: any[] }) {
       sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime
       sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime
       sheetViewModal.selectedCell!.shiftType = item.shiftType
+      sheetViewModal.selectedCell!.settings = null
       // sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
       sheetViewModal.selectedCell = sheetViewModal.getNextCell()
     }

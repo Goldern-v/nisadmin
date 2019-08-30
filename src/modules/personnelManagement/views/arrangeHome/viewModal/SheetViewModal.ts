@@ -78,9 +78,9 @@ class SheetViewModal {
   }
 
   getSheetTableData() {
-    if (localStorage.sheetTableData_dev && localStorage.allCell_dev) {
+    if (localStorage.sheetTableData_dev) {
       this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
-      this.allCell = JSON.parse(localStorage.allCell_dev)
+      this.allCell = this.getAllCell()
       return
     }
 
@@ -89,7 +89,6 @@ class SheetViewModal {
       this.remark = res.data.remark
       this.allCell = this.getAllCell()
       localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
-      localStorage.allCell_dev = JSON.stringify(this.allCell)
     })
   }
   getArrangeMenu() {

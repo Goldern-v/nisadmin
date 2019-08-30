@@ -12,6 +12,7 @@ import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
 import createModal from 'src/libs/createModal'
 import EditEffectiveTimeModal from '../../modal/EditEffectiveTimeModal'
+import EditVacationCountModal from '../../modal/EditVacationCountModal'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean
@@ -22,6 +23,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let { isEdit, surplusHeight } = props
   let contextMenu = createContextMenu()
   let editEffectiveTimeModal = createModal(EditEffectiveTimeModal)
+  let editVacationCountModal = createModal(EditVacationCountModal)
   let columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -67,6 +69,7 @@ export default observer(function ArrangeSheet(props: Props) {
             <Cell
               contextMenu={contextMenu}
               editEffectiveTimeModal={editEffectiveTimeModal}
+              editVacationCountModal={editVacationCountModal}
               dataSource={record}
               index={index}
             />
@@ -119,7 +122,6 @@ export default observer(function ArrangeSheet(props: Props) {
 
   return (
     <Wrapper className={classNames({ isEdit })}>
-      <div onClick={() => editEffectiveTimeModal.show()}>测试</div>
       <BaseTable
         surplusHeight={surplusHeight}
         surplusWidth={200}
@@ -132,6 +134,7 @@ export default observer(function ArrangeSheet(props: Props) {
       />
       <contextMenu.Component />
       <editEffectiveTimeModal.Component />
+      <editVacationCountModal.Component />
     </Wrapper>
   )
 })
