@@ -1,8 +1,8 @@
 export interface ArrangeItem {
   rangeName?: string
   nameColor?: string
-  effectiveTime?: string
-  effectiveTimeOld?: string
+  effectiveTime?: number | null
+  effectiveTimeOld?: number | null
   shiftType?: string
   addSymbols?: string
   detail?: string
