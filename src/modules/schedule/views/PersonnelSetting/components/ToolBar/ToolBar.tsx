@@ -30,6 +30,7 @@ export default function ToolBar() {
     </Wrapper>
   )
 }
+
 const Wrapper = styled.div`
   height: auto;
   padding: 0 20px 20px 20px;
