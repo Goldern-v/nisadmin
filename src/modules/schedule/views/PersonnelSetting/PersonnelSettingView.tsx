@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-//引入组件
-import ToolBar from './components/ToolBar/ToolBar'
-import MainBox from './components/MainBox/MainBox'
+import ToolBar from './components/ToolBar/ToolBar'//头部
+import MainBox from './components/MainBox/MainBox'//主页面
 
 export interface Props extends RouteComponentProps {}
 

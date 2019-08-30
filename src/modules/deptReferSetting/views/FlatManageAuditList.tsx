@@ -104,10 +104,8 @@ export default function ManagementSummary() {
       dataIndex: 'status',
       align: 'center',
       render: (status: string, record: any) => {
-        if (status == '2') return '已审核'
-        if (status == '1') return '待审核'
-        // if (status == '2') return <span className="status2" onClick={() => handleDetailView(record, 'detail')}>已审核</span>
-        // if (status == '1') return <span className="status1" onClick={() => handleDetailView(record, 'audit')}>待审核</span>
+        if (status == '2') return <span className="status2" onClick={() => handleDetailView(record, 'detail')}>已审核</span>
+        if (status == '1') return <span className="status1" onClick={() => handleDetailView(record, 'audit')}>待审核</span>
         return '-'
       }
     },
@@ -226,7 +224,7 @@ export default function ManagementSummary() {
               </Select>
             </div>
           </div>
-          {/* <div className='item'>
+          <div className='item'>
             <div className='label'>审核状态：</div>
             <div className='content'>
               <Select
@@ -239,7 +237,7 @@ export default function ManagementSummary() {
                 <Select.Option value={"2"}>已审核</Select.Option>
               </Select>
             </div>
-          </div> */}
+          </div>
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>

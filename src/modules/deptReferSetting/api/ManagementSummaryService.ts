@@ -14,6 +14,7 @@ export default class ManagementSummaryService extends BaseApiService {
       deptCode: obj.deptCode,
       startDate,
       endDate,
+      status: obj.status,
       pageIndex: obj.pageIndex
     }
     return this.post(`/flatManageInstance/getInstanceListByYMD`, postObj)
@@ -28,10 +29,17 @@ export default class ManagementSummaryService extends BaseApiService {
       deptCode: obj.deptCode,
       startDate,
       endDate,
+      status: obj.status,
       pageIndex: obj.pageIndex
     }
     return this.post(`/flatManageInstance/totalExcel`, postObj, { responseType: 'blob' }).then((res) => {
       fileDownload(res)
     })
   }
+  /**审核质量问题 */
+  public audit(id: string) {
+    return this.get(`/flatManageInstance/audit/${id}`)
+  }
 }
+
+export const managementSummaryService = new ManagementSummaryService();

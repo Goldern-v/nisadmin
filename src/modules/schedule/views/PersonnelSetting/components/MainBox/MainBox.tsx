@@ -283,6 +283,7 @@ export default function MainBox() {
     </Wrapper>
   )
 }
+
 const Wrapper = styled.div`
   display: flex;
   .cursorPointer {
