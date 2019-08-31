@@ -30,13 +30,20 @@ export default function NewNursingRulesAddModal(props: Props) {
   const handleAudit = () => {
     if (!id) return
 
-    setLoading(true)
-    managementSummaryService.audit(id).then(res => {
-      setLoading(false)
-      Message.success('审核成功');
-      onOk && onOk();
-    }, err => {
-      setLoading(false)
+    Modal.confirm({
+      content: '您确认要审核通过吗？通过后数据将不能再修改。',
+      title: '审核确认',
+      centered: true,
+      onOk: () => {
+        setLoading(true)
+        managementSummaryService.audit(id).then(res => {
+          setLoading(false)
+          Message.success('审核成功');
+          onOk && onOk();
+        }, err => {
+          setLoading(false)
+        })
+      }
     })
   }
 
