@@ -16,7 +16,7 @@ import qs from 'qs'
 
 const api = new NursingRulesApiService()
 
-export interface Props {}
+export interface Props { }
 
 export default class NursingRules extends Component<Props> {
   state = {
@@ -279,7 +279,7 @@ export default class NursingRules extends Component<Props> {
       if (res.data) this.setState({ catalogList: res.data })
     })
 
-    this.setState({ query: { ...this.state.query, fileType, catalog: '' } })
+    this.setState({ query: { ...this.state.query, fileType, catalog: '' } }, () => this.setTableData())
   }
 
   handleCatalogChange(catalog: any) {
@@ -288,7 +288,7 @@ export default class NursingRules extends Component<Props> {
       return item.name == catalog
     })
     if (target) fileType = target.type
-    this.setState({ query: { ...this.state.query, catalog, fileType } })
+    this.setState({ query: { ...this.state.query, catalog, fileType } }, () => this.setTableData())
   }
 
   reUpload(record: any) {
@@ -451,6 +451,7 @@ export default class NursingRules extends Component<Props> {
                 value={query.name}
                 placeholder='输入名称进行检索'
                 ref='searchInput'
+                onBlur={this.hadleSearch.bind(this)}
                 onChange={this.handleSearchChange}
               />
             </span>

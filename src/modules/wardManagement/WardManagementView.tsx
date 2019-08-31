@@ -17,17 +17,34 @@ import { ReactComponent as KSPHSZ } from './images/科室偏好设置.svg'
 import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
 import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
 import ManagementSummary from '../deptReferSetting/views/ManagementSummary'
+import FlatManageProblemList from '../deptReferSetting/views/FlatManageProblemList'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 const LEFT_MENU_CONFIG_HJ: any = []
 const LEFT_MENU_CONFIG_WH = [
   {
-    title: '扁平管理设置',
-    path: '/wardManagement/扁平管理设置',
+    title: '扁平管理',
     component: FlatManage,
-    icon: <KSPHSZ />
+    icon: <KSPHSZ />,
+    children: [
+      {
+        title: '扁平管理设置',
+        path: '/wardManagement/扁平管理设置',
+        component: FlatManage
+      },
+      // {
+      //   title: '扁平管理问题查看',
+      //   path: '/wardManagement/扁平管理问题查看',
+      //   component: FlatManageProblemList
+      // },
+      {
+        title: '扁平管理汇总',
+        path: '/wardManagement/扁平管理汇总',
+        component: ManagementSummary
+      }
+    ]
   },
   {
     title: '病区文件',
@@ -35,16 +52,11 @@ const LEFT_MENU_CONFIG_WH = [
     component: DeptFileShare,
     icon: <KSPHSZ />
   },
-  {
-    title: '扁平管理汇总',
-    path: '/wardManagement/扁平管理汇总',
-    component: ManagementSummary,
-    icon: <JKXJZD />
-  }
+
 ]
 
 export default function WardManagementView(props: Props) {
-  useEffect(() => {}, [props.match.params.name])
+  useEffect(() => { }, [props.match.params.name])
   let currentRoutePath = props.match.url || ''
   let currentRoute = getTargetObj(
     appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ,

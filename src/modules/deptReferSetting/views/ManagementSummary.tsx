@@ -197,10 +197,10 @@ export default function ManagementSummary() {
   return (
     <Wrapper>
       <div className='topbar'>
-        <div className='float-left'>
+        {/* <div className='float-left'>
           <div className='item title'>扁平管理汇总</div>
-        </div>
-        <div className='float-right'>
+        </div> */}
+        <div className='float-left'>
           <div className='item'>
             <div className='label'>年度：</div>
             <div className='content'>
@@ -261,11 +261,6 @@ export default function ManagementSummary() {
           dataSource={tableData}
           loading={tableLoading}
           surplusHeight={235}
-          onRow={record => {
-            return {
-              onDoubleClick: (e: any) => handleDetailView(record, record.status == '1' ? 'audit' : 'detail')
-            };
-          }}
           pagination={{
             onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
             total: dataTotal,
@@ -368,14 +363,9 @@ const Wrapper = styled.div`
   }
 
   .status1{
-    // background: rgba(0, 153, 255, 1);
-    // color: #fff;
-    cursor: pointer;
-    color: rgba(0, 153, 255, 1);
+    // color: rgba(0, 153, 255, 1);
   }
   .status2{
-    // background: rgba(102, 204, 153, 1);
-    cursor: pointer;
-    color: rgba(102, 204, 153, 1);
+    // color: rgba(102, 204, 153, 1);
   }
 `

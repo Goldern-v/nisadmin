@@ -190,10 +190,10 @@ export default function DeptFileShare() {
   return (
     <Wrapper>
       <div className='topbar'>
-        <div className='float-left'>
+        {/* <div className='float-left'>
           <div className='item title'>扁平管理设置</div>
-        </div>
-        <div className='float-right'>
+        </div> */}
+        <div className='float-left'>
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
