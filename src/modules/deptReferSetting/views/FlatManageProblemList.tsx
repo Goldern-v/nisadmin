@@ -429,6 +429,7 @@ const Wrapper = styled.div`
     padding-top: 0;
     td {
       position: relative;
+      word-break: break-all;
       &.align-left {
         padding-left: 15px !important;
       }
