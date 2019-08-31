@@ -38,7 +38,7 @@ const LEFT_MENU_CONFIG_WH = [
         title: '扁平管理问题查看',
         path: '/wardManagement/扁平管理问题查看',
         component: FlatManageProblemList,
-        hide: true
+        // hide: true
       },
       {
         title: '扁平管理汇总',

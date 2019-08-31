@@ -12,7 +12,7 @@ export default class FlatManageProblemService extends BaseApiService {
   }
   /**审核质量问题 */
   public audit(id: string) {
-    return this.get(`/flatManageInstance/audit/${id}`)
+    return this.post(`/flatManageInstance/audit`, qs.stringify({ id, remark: '' }))
   }
   /**获取护士列表 */
   public getNurses(query: any) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { Modal, Input, Select, Button, message as Message, Row, Col, Spin } from 'antd';
 import { authStore } from 'src/stores'
-import { managementSummaryService } from './../api/ManagementSummaryService'
+import { flatManageProblemService } from './../api/FlatManageProblemService'
 
 export interface Props {
   visible: boolean,
@@ -36,7 +36,7 @@ export default function NewNursingRulesAddModal(props: Props) {
       centered: true,
       onOk: () => {
         setLoading(true)
-        managementSummaryService.audit(id).then(res => {
+        flatManageProblemService.audit(id).then(res => {
           setLoading(false)
           Message.success('审核成功');
           onOk && onOk();
