@@ -76,6 +76,15 @@ import QualityAnalysisReportPoolView from 'src/modules/quality/views/qualityAnal
 import WardManagementView from 'src/modules/wardManagement/WardManagementView'
 import PersonnelManagementView from 'src/modules/personnelManagement/PersonnelManagementView'
 import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
+
+//新排班
+//科室借用
+import DeptBorrowNew from 'src/modules/personnelManagement/views/arrangeHome/page/deptBorrow/DeptBorrow'
+import NurseSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/NurseSetting/NurseSettingView'
+import ShiftSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView'
+import MealSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/MealSetting/MealSettingView'
+import PersonnelSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView'
+
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -179,6 +188,16 @@ const routes: RouteItem[] = [
 
   /** 编辑排班 */
   setLayout('/personnelManagement/EditArrangePage', EditArrangePage, layouts.MainLayout),
+  /** 科室借用 */
+  setLayout('/personnelManagement/DeptBorrow', DeptBorrowNew, layouts.MainLayout),
+  /** 排班人员设置 */
+  setLayout('/personnelManagement/nurseSetting', NurseSettingViewNew, layouts.MainLayout),
+  /** 班次设置 */
+  setLayout('/personnelManagement/ShiftSettingView', ShiftSettingViewNew, layouts.MainLayout),
+  /** 排班套餐 */
+  setLayout('/personnelManagement/mealSetting', MealSettingViewNew, layouts.MainLayout),
+  /** 人员分组 */
+  setLayout('/personnelManagement/personnelSetting', PersonnelSettingViewNew, layouts.MainLayout),
 
   setLayout('/personnelManagement', PersonnelManagementView, layouts.MainLayout),
   {

@@ -116,12 +116,15 @@ export default observer(function ArrangeSheet(props: Props) {
         .getElementById('baseTable')!
         .querySelector('.ant-table-fixed-left .ant-table-body-inner table.ant-table-fixed')!.style.marginBottom =
         (document as any).getElementById('baseTable')!.querySelector('.ant-table-footer')!.offsetHeight + 'px'
-      ;(document as any).querySelector('.ant-table-body')!.onscroll = (e: any) => {
-        console.log(e, 'eee')
-      }
     } catch (error) {
       console.log('同步备注滚动报错')
     }
+    try {
+      ;(document as any).querySelector('.ant-table-body')!.addEventListener('scroll', (e: any) => {
+        console.log(e.target.scrollLeft, 'eee')
+        ;(document as any).querySelector('.remark-con.real')!.style.marginLeft = e.target.scrollLeft + 'px'
+      })
+    } catch (error) {}
   })
 
   let remark = sheetViewModal.remark
@@ -194,6 +197,10 @@ const Wrapper = styled.div`
   }
   .remark-con {
     margin-top: -10px;
+    width: 100%;
+    textarea {
+      resize: none;
+    }
     .remark-title {
       margin-bottom: 5px;
     }
@@ -207,7 +214,6 @@ const Wrapper = styled.div`
     &.real {
       position: absolute;
       left: 0;
-      right: 0;
       z-index: 10;
       padding: 10px;
     }

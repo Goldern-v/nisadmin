@@ -90,6 +90,9 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
+          type: 'line'
+        },
+        {
           icon: require('../../images/符号.png'),
           label: '符号',
           type: 'text',
@@ -109,6 +112,10 @@ export default observer(function Cell(props: Props) {
               }
             })),
             {
+              type: 'line'
+            },
+            {
+              icon: require('../../images/删除.png'),
               type: 'text',
               label: '清除符号',
               onClick: (item: any) => {
@@ -116,6 +123,9 @@ export default observer(function Cell(props: Props) {
               }
             }
           ]
+        },
+        {
+          type: 'line'
         },
         {
           icon: require('../../images/复制行.png'),
@@ -145,6 +155,10 @@ export default observer(function Cell(props: Props) {
             let copyRow = sheetViewModal.copyRow
             copyRowClick(list, copyRow, false)
           }
+        },
+
+        {
+          type: 'line'
         },
         {
           icon: require('../../images/删除.png'),
