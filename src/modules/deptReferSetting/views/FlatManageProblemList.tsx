@@ -76,7 +76,7 @@ export default observer(function FlatManageProblemList() {
     title: '检查日期',
     dataIndex: 'checkDate',
     align: 'center',
-    width: 120
+    width: 100
   },
   {
     title: '科室',
@@ -111,6 +111,10 @@ export default observer(function FlatManageProblemList() {
     title: '原因分析',
     dataIndex: 'causeAnalysis',
     align: 'left'
+  }, {
+    title: '整改措施',
+    dataIndex: 'measures',
+    align: 'left'
   },
   {
     title: '状态',
@@ -135,9 +139,9 @@ export default observer(function FlatManageProblemList() {
       //审核权限
       let auditAuth = !!(postAuth && record.status == '1') as boolean;
       //编辑权限
-      let editAuth = !!((postAuth || autherAuth) && record.status == '1') as boolean;
+      let editAuth = !!(autherAuth && record.status == '1') as boolean;
       //删除权限
-      let deleteAuth = !!(postAuth || autherAuth) as boolean;
+      let deleteAuth = !!(autherAuth && record.status == '1') as boolean;
 
       return (
         <DoCon>
@@ -283,11 +287,13 @@ export default observer(function FlatManageProblemList() {
             <div className='label'>检查日期：</div>
             <div className='content'>
               <DatePicker
+                allowClear={false}
                 value={moment(query.checkDateStart)}
                 onChange={(value: any) => setQuery({ ...query, checkDateStart: value.format('YYYY-MM-DD'), pageIndex: 1 })}
               />
               <span> - </span>
               <DatePicker
+                allowClear={false}
                 value={moment(query.checkDateEnd)}
                 onChange={(value: any) => setQuery({ ...query, checkDateEnd: value.format('YYYY-MM-DD'), pageIndex: 1 })}
               />

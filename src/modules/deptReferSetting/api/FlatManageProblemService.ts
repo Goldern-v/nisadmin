@@ -11,8 +11,8 @@ export default class FlatManageProblemService extends BaseApiService {
     return this.post(`/flatManageInstance/getMangeTypeList`, qs.stringify(query));
   }
   /**审核质量问题 */
-  public audit(id: string) {
-    return this.post(`/flatManageInstance/audit`, qs.stringify({ id, remark: '' }))
+  public audit(id: string, remark?: string) {
+    return this.post(`/flatManageInstance/audit`, qs.stringify({ id, remark: remark || '' }))
   }
   /**获取护士列表 */
   public getNurses(query: any) {

@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import DeptSelect from 'src/components/DeptSelect'
+import { authStore } from 'src/stores'
+import { observer } from 'mobx-react-lite'
 
 import FlatManageEditModal from './../components/FlatManageEditModal'
 import PreviewModal from './../components/PreviewModal'
@@ -19,7 +21,7 @@ export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option
 
-export default function DeptFileShare() {
+export default observer(function DeptFileShare() {
   const [tableData, setTableData] = useState([] as any)
   const [dataTotal, setDataTotal] = useState(0 as number)
 
@@ -35,6 +37,7 @@ export default function DeptFileShare() {
     pageSize: 20,
     pageIndex: 1
   } as any)
+
   useEffect(() => { }, [])
 
   useEffect(() => {
@@ -103,8 +106,10 @@ export default function DeptFileShare() {
         return (
           <DoCon>
             <span onClick={() => handlePreview(record)}>预览</span>
-            <span onClick={() => reUpload(record)}>修改</span>
-            <span onClick={() => handleDelete(record)}>删除</span>
+            <span onClick={() => reUpload(record)} style={{ display: postAuth ? 'inline' : 'none' }}>修改</span>
+            <span style={{ display: postAuth ? 'none' : 'inline', color: "#aaa" }}>修改</span>
+            <span onClick={() => handleDelete(record)} style={{ display: postAuth ? 'inline' : 'none' }}>删除</span>
+            <span style={{ display: postAuth ? 'none' : 'inline', color: "#aaa" }}>删除</span>
           </DoCon>
         )
       }
@@ -186,6 +191,8 @@ export default function DeptFileShare() {
       }
     )
   }
+  //是否为护长
+  const postAuth = !!(authStore.getUser().post == '护长') as boolean;
 
   return (
     <Wrapper>
@@ -204,7 +211,7 @@ export default function DeptFileShare() {
             <Button onClick={() => getTableData()}>查询</Button>
           </div>
           <div className='item'>
-            <Button type='primary' onClick={() => setEditVisible(true)}>
+            <Button type='primary' onClick={() => setEditVisible(true)} disabled={!postAuth}>
               添加
             </Button>
           </div>
@@ -239,7 +246,7 @@ export default function DeptFileShare() {
       <PreviewModalWrapper.Component />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   position: relative;
   padding-top: 65px;

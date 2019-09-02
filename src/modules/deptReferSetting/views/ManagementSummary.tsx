@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Button, Modal, message as Message, Select } from 'antd'
+import { Button, Modal, message as Message, Select, DatePicker } from 'antd'
 import { Link } from 'react-router-dom'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
@@ -66,27 +66,31 @@ export default function ManagementSummary() {
           obj.props.colSpan = 0
         }
         return obj
-      }
+      },
+      width: 100
     },
 
     {
       title: '检查者',
       dataIndex: 'inspectorName',
-      align: 'center'
+      align: 'center',
+      width: 70
     },
     {
-      title: '时间（具体到日）',
+      title: '检查日期',
       dataIndex: 'checkDate',
-      align: 'center'
-    },
-    {
-      title: '存在问题',
-      dataIndex: 'problem',
-      align: 'center'
+      align: 'center',
+      width: 100
     },
     {
       title: '责任人',
       dataIndex: 'responsibleEmpName',
+      align: 'center',
+      width: 70
+    },
+    {
+      title: '存在问题',
+      dataIndex: 'problem',
       align: 'center'
     },
     {
@@ -109,12 +113,14 @@ export default function ManagementSummary() {
         // if (status == '2') return <span className="status2" onClick={() => handleDetailView(record, 'detail')}>已审核</span>
         // if (status == '1') return <span className="status1" onClick={() => handleDetailView(record, 'audit')}>待审核</span>
         return '-'
-      }
+      },
+      width: 70
     },
     {
       title: '扣分',
       dataIndex: 'deduction',
-      align: 'center'
+      align: 'center',
+      width: 70
     },
     {
       title: '总扣分',
@@ -132,7 +138,8 @@ export default function ManagementSummary() {
           obj.props.colSpan = 0
         }
         return obj
-      }
+      },
+      width: 70
     }
   ]
 
@@ -191,7 +198,49 @@ export default function ManagementSummary() {
   }
 
   const exportExcel = () => {
-    api.totalExcel({ ...query, ...filterObj })
+    let startDate = moment(`${filterObj.year.format('YYYY')}-${filterObj.month < 10 ? '0' + filterObj.month : filterObj.month}-01`);
+
+    let endDate = moment(moment(startDate)
+      .add('M', 1)
+      .subtract(1, 'd')
+      .format('YYYY-MM-DD'));
+
+    let exportContent = <div>
+      <br />
+      <DatePicker
+        allowClear={false}
+        defaultValue={startDate || null}
+        style={{ width: '120px' }}
+        onChange={(date) => startDate = date} />
+      <span> - </span>
+      <DatePicker
+        allowClear={false}
+        defaultValue={endDate || null}
+        style={{ width: '120px' }}
+        onChange={(date) => endDate = date} />
+    </div>
+
+    Modal.confirm({
+      title: '导出时间范围选择:',
+      content: exportContent,
+      onOk: () => {
+        //请求参数
+        let params = {
+          ...query,
+          ...filterObj,
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD')
+        } as any
+
+        delete params.pageSize
+        delete params.year
+        delete params.month
+
+        //文件名称
+        let fileName = `扁平管理汇总(${startDate.format('YYYY-MM-DD')}-${endDate.format('YYYY-MM-DD')})`
+        api.totalExcel(params, fileName)
+      }
+    })
   }
 
   return (

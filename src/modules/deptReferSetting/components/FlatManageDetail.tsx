@@ -30,13 +30,27 @@ export default function NewNursingRulesAddModal(props: Props) {
   const handleAudit = () => {
     if (!id) return
 
+    let remark = ''
+
+    let auditContent = <div>
+      <div>您确认要审核通过吗？通过后数据将不能再修改。</div>
+      <br />
+      <div>
+        <span>备注：</span>
+        <Input
+          style={{ width: '260px' }}
+          defaultValue={remark}
+          onChange={(e: any) => remark = e.target.value} />
+      </div>
+    </div>
+
     Modal.confirm({
-      content: '您确认要审核通过吗？通过后数据将不能再修改。',
+      content: auditContent,
       title: '审核确认',
       centered: true,
       onOk: () => {
         setLoading(true)
-        flatManageProblemService.audit(id).then(res => {
+        flatManageProblemService.audit(id, remark).then(res => {
           setLoading(false)
           Message.success('审核成功');
           onOk && onOk();
