@@ -15,6 +15,9 @@ class SheetViewModal {
   /** 选中的格子 */
   @observable public selectedCell: ArrangeItem = {}
   @observable public allCell: any[] = []
+
+  /** 复制行 */
+  @observable public copyRow: any[] = []
   /** 时间段 */
   @computed
   public get dateList() {
@@ -65,13 +68,14 @@ class SheetViewModal {
   }
 
   /** 解析cellobj 获取额外信息 */
-  analyseCell(cellObj: any) {
+  analyseCell(cellObj: ArrangeItem) {
     const cellConfig = {
       isTwoDaysAgo: dateDiff(cellObj && cellObj.workDate, monnet().format('YYYY-MM-DD')) > 2,
-      isExpectedScheduling: false,
-      isAddScheduling: false,
-      isAddWordTime: false,
-      isReduceWordTime: false,
+      isExpectedScheduling: cellObj.statusType == '1',
+      isAddWordTime:
+        cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
+      isReduceWordTime:
+        cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld > cellObj.effectiveTime,
       isSelected: this.selectedCell == cellObj
     }
     return cellConfig

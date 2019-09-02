@@ -34,6 +34,10 @@ export default function ContextMenu(props: Props) {
     setShow(false)
   }
 
+  let max_y = window.innerHeight
+  if (max_y - y < 300) {
+    y = max_y - 300
+  }
   return (
     <div ref={elRef}>
       {show && (

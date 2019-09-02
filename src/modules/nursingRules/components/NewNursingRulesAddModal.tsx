@@ -81,7 +81,7 @@ export default function NewNursingRulesAddModal(props: Props) {
               });
 
               getCatalog(params.fileType);
-              
+
               //防止在handleFormChange中把目录字段替换为空字符
               new Promise((resolve) => setTimeout(() => resolve('ok'), 100))
                 .then(() => {
@@ -143,7 +143,6 @@ export default function NewNursingRulesAddModal(props: Props) {
       }
 
       let failedCallback = (err?: any) => {
-        Message.error('上传失败');
         setUploadLoading(false)
       }
 
@@ -193,7 +192,7 @@ export default function NewNursingRulesAddModal(props: Props) {
     }
   }
 
-  const getCatalog = (type:string) => {
+  const getCatalog = (type: string) => {
     api.getCatalogByType(type).then(res => {
       if (res.data instanceof Array) setCatalogList(res.data);
     })

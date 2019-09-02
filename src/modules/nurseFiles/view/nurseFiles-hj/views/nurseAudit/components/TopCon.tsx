@@ -21,7 +21,7 @@ export default observer(function TopCon() {
       <BreadcrumbCon>
         <Breadcrumb>
           <Breadcrumb.Item>
-            <A onClick={() => history.push('/nurseFilesList')}>护士档案</A>
+            <A onClick={() => history.push('/nurseFile/onTheJob')}>护士档案</A>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             <A onClick={() => history.push(`/nurseFileDetail/baseInfo?${query}`)}>档案详情</A>

@@ -64,7 +64,6 @@ export default function NewNursingRulesAddModal(props: Props) {
             if (keys.length > 0) {
 
               refForm.current.setFields({
-                deptCode: params.deptCode,
                 manageType: params.manageType
               });
 
@@ -84,10 +83,14 @@ export default function NewNursingRulesAddModal(props: Props) {
   const handleOkBtn = () => {
     if (refForm && refForm.current) {
       let formData = refForm.current.getFields();
+      console.log(formData)
       let fileEL = document.querySelector('.new-nursing-rules-add-modal .file-content') as HTMLInputElement;
       let nameEl = document.querySelector('.new-nursing-rules-add-modal .file-name') as HTMLInputElement;
       let file: any;
+      //新建对象
       let data = new FormData();
+      //修改对象
+      let updateData = new FormData();
       if (fileEL.files && fileEL.files.length > 0)
         file = fileEL.files[0]
 
@@ -99,34 +102,36 @@ export default function NewNursingRulesAddModal(props: Props) {
           return Message.error('未选择上传文件');
 
         data.append('file', file);
+      } else {
+        //修改时如果有重新上传文件 则加入文件
+        if (nameEl.value) updateData.append('file', file);
       }
-
+      //添加固定字段
       data.append('empNo', empNo);
+      data.append('deptCode', deptCode);
+
+      updateData.append('id', params.id);
 
       for (let x in formData) {
         data.append(x, formData[x]);
+        updateData.append(x, formData[x]);
       }
 
-      setUploadLoading(true)
 
       let successCallback = (res?: any, msg?: any) => {
         Message.success(msg || '上传成功');
-
         setUploadLoading(false)
         onOk();
       }
 
       let failedCallback = (err?: any, msg?: any) => {
-        Message.error(msg || '上传失败');
         setUploadLoading(false)
       }
 
+      setUploadLoading(true)
+
       if (params && Object.keys(params).length > 0) {
-        // data.append('id', params.id);
-        api.update({
-          id: params.id,
-          manageType: formData.manageType
-        }).then(res => {
+        api.update(updateData).then(res => {
           if (res.code == 200)
             successCallback(null, '修改成功')
           else
@@ -135,7 +140,6 @@ export default function NewNursingRulesAddModal(props: Props) {
           failedCallback(err)
         })
       } else {
-        data.append('deptCode', deptCode);
         api.upload(data).then(res => {
           if (res.code == 200)
             successCallback()
@@ -184,7 +188,8 @@ export default function NewNursingRulesAddModal(props: Props) {
             </Form.Field>
           </span>
         </div>
-        <div className="row" style={{ display: `${params.id ? 'none' : 'flex'}` }}>
+        {/* <div className="row" style={{ display: `${params.id ? 'none' : 'flex'}` }}> */}
+        <div className="row">
           <span className="label">指标说明:</span>
           <span className="content">
             <input readOnly className="ipt ant-input file-name" placeholder="请上传说明文件" />

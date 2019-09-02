@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Button } from 'antd'
 import BaseTable from 'src/components/BaseTable'
-import { ColumnProps } from 'src/vendors/antd'
+import { ColumnProps, Input } from 'src/vendors/antd'
 import { createContextMenu } from './ContextMenu'
 import Cell from './Cell'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
@@ -120,6 +120,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }
   })
 
+  let remark = sheetViewModal.remark
   return (
     <Wrapper className={classNames({ isEdit })}>
       <BaseTable
@@ -129,7 +130,26 @@ export default observer(function ArrangeSheet(props: Props) {
         // fixedFooter={true}
         dataSource={sheetViewModal.sheetTableData}
         footer={() => {
-          return <div>排班备注：</div>
+          return (
+            <React.Fragment>
+              <div className={'remark-con real'}>
+                <div className='remark-title'>排班备注：</div>
+                <Input.TextArea
+                  readOnly={!isEdit}
+                  defaultValue={remark}
+                  autosize={!isEdit}
+                  onBlur={(e) => {
+                    sheetViewModal.remark = e.target.value
+                  }}
+                  style={{ minHeight: 100 }}
+                />
+              </div>
+              <div className={'remark-con space'}>
+                <div className='remark-title'>排班备注：</div>
+                <Input.TextArea value={remark} autosize={!isEdit} style={{ minHeight: 100 }} />
+              </div>
+            </React.Fragment>
+          )
         }}
       />
       <contextMenu.Component />
@@ -148,12 +168,37 @@ const Wrapper = styled.div`
   }
   .ant-table-footer {
     border: 0 !important;
+    background: #fafafa !important;
+    z-index: 10;
+    position: absolute;
+    left: 0;
+    right: 0;
   }
   &.isEdit {
     .ant-table-fixed-left {
       td {
         background: #f8f8f8 !important;
       }
+    }
+  }
+  .remark-con {
+    margin-top: -10px;
+    .remark-title {
+      margin-bottom: 5px;
+    }
+    &.space {
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      padding: 0 0 10px;
+    }
+    &.real {
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      padding: 10px;
     }
   }
 `

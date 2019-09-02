@@ -41,7 +41,7 @@ export default function LeaveModal(props: Props) {
     value.leaveDate && (value.leaveDate = value.leaveDate.format('YYYY-MM-DD'))
     nurseFilesService.updateNurseLeave({ ...value }).then((res: any) => {
       message.success('操作成功')
-      appStore.history.push('/nurseFilesList')
+      appStore.history.push('/nurseFile/onTheJob')
       // props.callback && props.callback()
       onCancel()
     })

@@ -9,7 +9,7 @@ import monnet from 'src/vendors/moment'
 import classNames from 'classnames'
 import { type } from 'os'
 import { SymbolItem, ArrangeItem } from '../../types/Sheet'
-import { getAddArrangeMenuList } from './cellClickEvent'
+import { getAddArrangeMenuList, copyRowClick, cleanCell, cleanCellList } from './cellClickEvent'
 import { message } from 'src/vendors/antd'
 import { cloneJson } from 'src/utils/json/clone'
 
@@ -23,9 +23,6 @@ export interface Props {
 
 export default observer(function Cell(props: Props) {
   let { contextMenu, dataSource, index, editEffectiveTimeModal, editVacationCountModal } = props
-
-  const [copyRow, setCopyRow]: any = useState([])
-
   let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : null
   let cellConfig = sheetViewModal.analyseCell(cellObj)
 
@@ -96,26 +93,35 @@ export default observer(function Cell(props: Props) {
           label: '符号',
           type: 'text',
           disabled: !hasArrange,
-          children: sheetViewModal.schSymbolList.map((item) => ({
-            type: 'text',
-            dataSource: item,
-            label: (
-              <div className='symbol-con'>
-                <div className='symbol-icon'>{item.symbol}</div>
-                <div className='symbol-aside'>{item.detail}</div>
-              </div>
-            ),
-            onClick: (item: any) => {
-              sheetViewModal.selectedCell.addSymbols = item.dataSource.symbol
+          children: [
+            ...sheetViewModal.schSymbolList.map((item) => ({
+              type: 'text',
+              dataSource: item,
+              label: (
+                <div className='symbol-con'>
+                  <div className='symbol-icon'>{item.symbol}</div>
+                  <div className='symbol-aside'>{item.detail}</div>
+                </div>
+              ),
+              onClick: (item: any) => {
+                sheetViewModal.selectedCell.addSymbols = item.dataSource.symbol
+              }
+            })),
+            {
+              type: 'text',
+              label: '清除符号',
+              onClick: (item: any) => {
+                sheetViewModal.selectedCell.addSymbols = ''
+              }
             }
-          }))
+          ]
         },
         {
           icon: '',
           label: '复制行',
           type: 'text',
           onClick() {
-            setCopyRow(sheetViewModal.getSelectCellList(true))
+            sheetViewModal.copyRow = sheetViewModal.getSelectCellList(true)
             message.success('复制成功')
           }
         },
@@ -125,25 +131,36 @@ export default observer(function Cell(props: Props) {
           type: 'text',
           onClick() {
             let list = sheetViewModal.getSelectCellList(true)
-            console.log(list, copyRow, '999')
-            if (list.length && copyRow.length) {
-              for (let i = 0; i < list.length; i++) {
-                list[i].rangeName = copyRow[i].rangeName
-                list[i].nameColor = copyRow[i].nameColor
-                list[i].effectiveTime = copyRow[i].effectiveTime
-                list[i].effectiveTimeOld = copyRow[i].effectiveTimeOld
-                list[i].shiftType = copyRow[i].shiftType
-                list[i].settings = cloneJson(copyRow[i].settings)
-              }
-            } else {
-              message.warning('请先复制行')
-            }
+            let copyRow = sheetViewModal.copyRow
+            copyRowClick(list, copyRow, true)
           }
         },
         {
           icon: '',
           label: '黏贴行',
-          type: 'text'
+          type: 'text',
+          onClick() {
+            let list = sheetViewModal.getSelectCellList(true)
+            let copyRow = sheetViewModal.copyRow
+            copyRowClick(list, copyRow, false)
+          }
+        },
+        {
+          icon: '',
+          label: '清除格子',
+          type: 'text',
+          onClick() {
+            cleanCell(sheetViewModal.selectedCell)
+          }
+        },
+        {
+          icon: '',
+          label: '清除行',
+          type: 'text',
+          onClick() {
+            let list = sheetViewModal.getSelectCellList(true)
+            cleanCellList(list)
+          }
         }
       ],
       {
@@ -159,6 +176,10 @@ export default observer(function Cell(props: Props) {
   }
   return (
     <Wrapper onContextMenu={onContextMenu} onClick={onClick} className={classNames(cellConfig)}>
+      {cellConfig.isAddWordTime && <div className='sj add' />}
+      {cellConfig.isReduceWordTime && <div className='sj reduce' />}
+      {cellConfig.isExpectedScheduling && <img className='expect' src={require('../../images/期望排班.png')} alt='' />}
+
       {formatCell(cellObj)}
     </Wrapper>
   )
@@ -195,10 +216,34 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 -8px;
+  position: relative;
   &.isSelected {
     background: #fff8b1;
   }
   &.isTwoDaysAgo {
     background: #f8f8f8;
+  }
+  .sj {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-width: 10px 10px 0 0;
+    border-style: solid;
+    border-color: transparent transparent;
+    &.add {
+      border-color: #e55b00 transparent !important;
+    }
+    &.reduce {
+      border-color: #53c5ac transparent !important;
+    }
+  }
+  .expect {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    height: 10px;
+    width: 10px;
   }
 `

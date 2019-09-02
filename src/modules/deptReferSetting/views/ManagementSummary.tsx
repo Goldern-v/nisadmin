@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Button, Modal, message as Message, Select } from 'antd'
+import { Button, Modal, message as Message, Select, DatePicker } from 'antd'
 import { Link } from 'react-router-dom'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import DeptSelect from 'src/components/DeptSelect'
 
-import FlatManageEditModal from '../components/FlatManageEditModal'
-import PreviewModal from '../components/PreviewModal'
+// import FlatManageEditModal from '../components/FlatManageEditModal'
+import FlatManageDetail from '../components/FlatManageDetail'
 import createModal from 'src/libs/createModal'
 import moment from 'moment'
 import ManagementSummaryService from '../api/ManagementSummaryService'
@@ -17,7 +17,7 @@ import { numberToArray } from 'src/utils/array/array'
 
 const api = new ManagementSummaryService()
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option
 
@@ -25,11 +25,10 @@ export default function ManagementSummary() {
   const [tableData, setTableData] = useState([] as any)
   const [dataTotal, setDataTotal] = useState(0 as number)
 
-  const [editParams, setEditParams] = useState({} as any)
-
-  const [editVisible, setEditVisible] = useState(false)
-
-  const PreviewModalWrapper = createModal(PreviewModal)
+  // const [editParams, setEditParams] = useState({} as any)
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [detailViewType, setDetailViewType] = useState('detail')
+  const [detailData, setDetailData] = useState({} as any);
 
   const [query, setQuery] = useState({
     deptCode: '',
@@ -40,7 +39,8 @@ export default function ManagementSummary() {
 
   const [filterObj, setFilterObj] = useState({
     year: moment(),
-    month: Number(moment().format('MM'))
+    month: Number(moment().format('MM')),
+    status: ''
   })
 
   useEffect(() => {
@@ -66,27 +66,31 @@ export default function ManagementSummary() {
           obj.props.colSpan = 0
         }
         return obj
-      }
+      },
+      width: 100
     },
 
     {
       title: '检查者',
       dataIndex: 'inspectorName',
-      align: 'center'
+      align: 'center',
+      width: 70
     },
     {
-      title: '时间（具体到日）',
+      title: '检查日期',
       dataIndex: 'checkDate',
-      align: 'center'
-    },
-    {
-      title: '存在问题',
-      dataIndex: 'problem',
-      align: 'center'
+      align: 'center',
+      width: 100
     },
     {
       title: '责任人',
       dataIndex: 'responsibleEmpName',
+      align: 'center',
+      width: 70
+    },
+    {
+      title: '存在问题',
+      dataIndex: 'problem',
       align: 'center'
     },
     {
@@ -100,9 +104,23 @@ export default function ManagementSummary() {
       align: 'center'
     },
     {
+      title: '审核状态',
+      dataIndex: 'status',
+      align: 'center',
+      render: (status: string, record: any) => {
+        if (status == '2') return '已审核'
+        if (status == '1') return '待审核'
+        // if (status == '2') return <span className="status2" onClick={() => handleDetailView(record, 'detail')}>已审核</span>
+        // if (status == '1') return <span className="status1" onClick={() => handleDetailView(record, 'audit')}>待审核</span>
+        return '-'
+      },
+      width: 70
+    },
+    {
       title: '扣分',
       dataIndex: 'deduction',
-      align: 'center'
+      align: 'center',
+      width: 70
     },
     {
       title: '总扣分',
@@ -120,7 +138,8 @@ export default function ManagementSummary() {
           obj.props.colSpan = 0
         }
         return obj
-      }
+      },
+      width: 70
     }
   ]
 
@@ -128,14 +147,19 @@ export default function ManagementSummary() {
     setQuery({ ...query, deptCode })
   }
 
-  const handleEditCancel = () => {
-    setEditVisible(false)
-    setEditParams({})
+  const handleDetailCancel = () => {
+    setDetailVisible(false)
   }
 
-  const handleEditOk = () => {
+  const handleDetailView = (record: any, detailViewType: string) => {
+    setDetailData(record)
+    setDetailViewType(detailViewType)
+    setDetailVisible(true)
+  }
+
+  const handleDetailOk = () => {
     getTableData()
-    handleEditCancel()
+    handleDetailCancel()
   }
 
   const formatData = (list: any[]) => {
@@ -174,16 +198,65 @@ export default function ManagementSummary() {
   }
 
   const exportExcel = () => {
-    api.totalExcel({ ...query, ...filterObj })
+    let startDate = moment(`${filterObj.year.format('YYYY')}-${filterObj.month < 10 ? '0' + filterObj.month : filterObj.month}-01`);
+
+    let endDate = moment(startDate)
+
+    let exportContent = <div>
+      <br />
+      <DatePicker.MonthPicker
+        allowClear={false}
+        defaultValue={startDate || null}
+        style={{ width: '120px' }}
+        onChange={(date) => startDate = date} />
+      <span> - </span>
+      <DatePicker.MonthPicker
+        allowClear={false}
+        defaultValue={endDate || null}
+        style={{ width: '120px' }}
+        onChange={(date) => endDate = date} />
+    </div>
+
+    Modal.confirm({
+      title: '导出时间范围选择:',
+      content: exportContent,
+      onOk: () => {
+        //请求参数
+        let params = {
+          ...query,
+          ...filterObj,
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: moment(endDate)
+            .add('M', 1)
+            .subtract(1, 'd')
+            .format('YYYY-MM-DD')
+        } as any
+
+        delete params.pageSize
+        delete params.year
+        delete params.month
+
+        //文件名称
+        let startMonth = startDate.format('YYYY-MM')
+        let endMonth = endDate.format('YYYY-MM')
+
+        let monthString = `${startMonth}至${endMonth}`
+        if (startMonth == endMonth) monthString = startMonth
+
+        let fileName = `扁平管理汇总(${monthString})`
+
+        api.totalExcel(params, fileName)
+      }
+    })
   }
 
   return (
     <Wrapper>
       <div className='topbar'>
-        <div className='float-left'>
+        {/* <div className='float-left'>
           <div className='item title'>扁平管理汇总</div>
-        </div>
-        <div className='float-right'>
+        </div> */}
+        <div className='float-left'>
           <div className='item'>
             <div className='label'>年度：</div>
             <div className='content'>
@@ -209,7 +282,20 @@ export default function ManagementSummary() {
               </Select>
             </div>
           </div>
-
+          {/* <div className='item'>
+            <div className='label'>审核状态：</div>
+            <div className='content'>
+              <Select
+                style={{ width: 100 }}
+                value={filterObj.status}
+                onChange={(value: any) => setFilterObj({ ...filterObj, status: value })}
+              >
+                <Select.Option value={""}>全部</Select.Option>
+                <Select.Option value={"1"}>待审核</Select.Option>
+                <Select.Option value={"2"}>已审核</Select.Option>
+              </Select>
+            </div>
+          </div> */}
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
@@ -241,14 +327,13 @@ export default function ManagementSummary() {
           }}
         />
       </div>
-      <FlatManageEditModal
-        visible={editVisible}
-        params={editParams}
-        onCancel={handleEditCancel}
-        deptCode={query.deptCode}
-        onOk={handleEditOk}
+      <FlatManageDetail
+        visible={detailVisible}
+        onCancel={handleDetailCancel}
+        onOk={handleDetailOk}
+        viewType={detailViewType}
+        data={detailData}
       />
-      <PreviewModalWrapper.Component />
     </Wrapper>
   )
 }
@@ -331,5 +416,12 @@ const Wrapper = styled.div`
         white-space: nowrap;
       }
     }
+  }
+
+  .status1{
+    // color: rgba(0, 153, 255, 1);
+  }
+  .status2{
+    // color: rgba(102, 204, 153, 1);
   }
 `
