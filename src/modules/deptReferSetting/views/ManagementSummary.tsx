@@ -36,10 +36,16 @@ export default function ManagementSummary() {
     pageSize: 20,
     pageIndex: 1
   } as any)
+  //初始化时间范围
+  let startDate = `${moment().format('YYYY-MM')}-01`;
+  let endDate = moment(startDate)
+    .add('M', 1)
+    .subtract(1, 'd')
+    .format('YYYY-MM-DD')
 
   const [filterObj, setFilterObj] = useState({
-    year: moment(),
-    month: Number(moment().format('MM')),
+    startDate,
+    endDate,
     status: ''
   })
 
@@ -198,56 +204,26 @@ export default function ManagementSummary() {
   }
 
   const exportExcel = () => {
-    let startDate = moment(`${filterObj.year.format('YYYY')}-${filterObj.month < 10 ? '0' + filterObj.month : filterObj.month}-01`);
+    let params = { ...query, ...filterObj };
+    //文件名称
+    let startMonth = moment(filterObj.startDate).format('YYYY-MM')
+    let endMonth = moment(filterObj.endDate).format('YYYY-MM')
 
-    let endDate = moment(startDate)
+    let monthString = `${startMonth}至${endMonth}`
+    if (startMonth == endMonth) monthString = startMonth
 
-    let exportContent = <div>
-      <br />
-      <DatePicker.MonthPicker
-        allowClear={false}
-        defaultValue={startDate || null}
-        style={{ width: '120px' }}
-        onChange={(date) => startDate = date} />
-      <span> - </span>
-      <DatePicker.MonthPicker
-        allowClear={false}
-        defaultValue={endDate || null}
-        style={{ width: '120px' }}
-        onChange={(date) => endDate = date} />
-    </div>
+    let fileName = `扁平管理汇总(${monthString})`
 
-    Modal.confirm({
-      title: '导出时间范围选择:',
-      content: exportContent,
-      onOk: () => {
-        //请求参数
-        let params = {
-          ...query,
-          ...filterObj,
-          startDate: startDate.format('YYYY-MM-DD'),
-          endDate: moment(endDate)
-            .add('M', 1)
-            .subtract(1, 'd')
-            .format('YYYY-MM-DD')
-        } as any
+    api.totalExcel(params, fileName)
+  }
 
-        delete params.pageSize
-        delete params.year
-        delete params.month
+  const handleEndDateChange = (date: any) => {
+    let endDate = moment(`${moment(date).format('YYYY-MM')}-01`)
+      .add('M', 1)
+      .subtract(1, 'd')
+      .format('YYYY-MM-DD')
 
-        //文件名称
-        let startMonth = startDate.format('YYYY-MM')
-        let endMonth = endDate.format('YYYY-MM')
-
-        let monthString = `${startMonth}至${endMonth}`
-        if (startMonth == endMonth) monthString = startMonth
-
-        let fileName = `扁平管理汇总(${monthString})`
-
-        api.totalExcel(params, fileName)
-      }
-    })
+    setFilterObj({ ...filterObj, endDate });
   }
 
   return (
@@ -258,28 +234,19 @@ export default function ManagementSummary() {
         </div> */}
         <div className='float-left'>
           <div className='item'>
-            <div className='label'>年度：</div>
+            <div className='label'>汇总时间：</div>
             <div className='content'>
-              <YearPicker
-                value={filterObj.year}
-                onChange={(value: any) => setFilterObj({ ...filterObj, year: value })}
-              />
-            </div>
-          </div>
-          <div className='item'>
-            <div className='label'>月份：</div>
-            <div className='content'>
-              <Select
-                style={{ width: 100 }}
-                value={filterObj.month}
-                onChange={(value: any) => setFilterObj({ ...filterObj, month: value })}
-              >
-                {numberToArray(11).map((item) => (
-                  <Select.Option value={item + 1} key={item}>
-                    {item + 1}
-                  </Select.Option>
-                ))}
-              </Select>
+              <DatePicker.MonthPicker
+                allowClear={false}
+                defaultValue={moment(filterObj.startDate) || null}
+                style={{ width: '100px' }}
+                onChange={(date) => setFilterObj({ ...filterObj, startDate: date.format('YYYY-MM-DD') })} />
+              <span> - </span>
+              <DatePicker.MonthPicker
+                allowClear={false}
+                defaultValue={moment(filterObj.endDate) || null}
+                style={{ width: '100px' }}
+                onChange={(date) => handleEndDateChange(date)} />
             </div>
           </div>
           {/* <div className='item'>

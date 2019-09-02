@@ -49,16 +49,6 @@ export default observer(function FlatManageProblemList() {
   } as any)
 
   useEffect(() => {
-    flatManageProblemService.getTypeList({
-      deptCode: authStore.selectedDeptCode
-    }).then(res => {
-      if (res.data) {
-        setTypeList(res.data)
-      }
-    })
-  }, [])
-
-  useEffect(() => {
     if (query.deptCode) getTableData()
   }, [query])
 
@@ -271,6 +261,15 @@ export default observer(function FlatManageProblemList() {
     getTableData();
   }
 
+  const handleDeptChange = (deptCode: string) => {
+    setQuery({ ...query, deptCode, pageIndex: 1, typeId: '' });
+    flatManageProblemService.getTypeList({ deptCode }).then(res => {
+      if (res.data) {
+        setTypeList(res.data)
+      }
+    })
+  }
+
   return (
     <Wrapper>
       <div className='topbar'>
@@ -279,21 +278,25 @@ export default observer(function FlatManageProblemList() {
         </div> */}
         <div className='float-left'>
           <div className='item'>
-            <div className='label'>审核状态：</div>
+            <div className='label'>科室：</div>
             <div className='content'>
-              <DeptSelect onChange={(deptCode) => setQuery({ ...query, deptCode: deptCode, pageIndex: 1 })} />
+              <div className="dept-select">
+                <DeptSelect onChange={(deptCode) => handleDeptChange(deptCode)} />
+              </div>
             </div>
           </div>
           <div className='item'>
             <div className='label'>检查日期：</div>
             <div className='content'>
               <DatePicker
+                style={{ width: 110 }}
                 allowClear={false}
                 value={moment(query.checkDateStart)}
                 onChange={(value: any) => setQuery({ ...query, checkDateStart: value.format('YYYY-MM-DD'), pageIndex: 1 })}
               />
               <span> - </span>
               <DatePicker
+                style={{ width: 110 }}
                 allowClear={false}
                 value={moment(query.checkDateEnd)}
                 onChange={(value: any) => setQuery({ ...query, checkDateEnd: value.format('YYYY-MM-DD'), pageIndex: 1 })}
@@ -304,7 +307,7 @@ export default observer(function FlatManageProblemList() {
             <div className='label'>管理类型：</div>
             <div className='content'>
               <Select
-                style={{ width: 150 }}
+                style={{ width: 120 }}
                 value={query.typeId}
                 onChange={(value: any) => setQuery({ ...query, typeId: value, pageIndex: 1 })}
               >
@@ -317,7 +320,7 @@ export default observer(function FlatManageProblemList() {
             <div className='label'>审核状态：</div>
             <div className='content'>
               <Select
-                style={{ width: 100 }}
+                style={{ width: 90 }}
                 value={query.status}
                 onChange={(value: any) => setQuery({ ...query, status: value, pageIndex: 1 })}
               >
@@ -395,7 +398,7 @@ const Wrapper = styled.div`
 
     .item {
       display: inline-block;
-      margin-right: 10px;
+      margin-right: 4px;
       vertical-align: middle;
       :last-of-type {
         margin-right: 0;
@@ -416,6 +419,11 @@ const Wrapper = styled.div`
       .label {
       }
       .content {
+        .dept-select{
+          .ant-select{
+            width: 160px!important;
+          }
+        }
         .ant-calendar-picker{
           width: 120px;
         }
