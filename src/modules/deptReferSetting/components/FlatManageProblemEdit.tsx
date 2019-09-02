@@ -115,6 +115,14 @@ export default observer(function NewNursingRulesAddModal(props: Props) {
     onCancel && onCancel()
   }
 
+  const handleCFormChange = (key: any, value: any) => {
+    if (key == 'deduction') {
+      if (value.replace('-').length !== value.length) {
+        refForm.current && refForm.current.setField(key, value.replace(/-/, ''));
+      }
+    }
+  }
+
   return <Modal
     className="new-nursing-rules-add-modal"
     title={params.id ? '修改问题' : '新建问题'}
@@ -124,7 +132,7 @@ export default observer(function NewNursingRulesAddModal(props: Props) {
     onCancel={handleCancel}
     visible={visible}>
     <ModalContent>
-      <Form ref={refForm} rules={rules}>
+      <Form ref={refForm} rules={rules} onChange={handleCFormChange}>
         <div className="row">
           <span className="label">检查日期:</span>
           <span className="content">

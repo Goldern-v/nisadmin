@@ -5,19 +5,19 @@ import qs from 'qs'
 import moment from 'moment'
 export default class ManagementSummaryService extends BaseApiService {
   public getList(obj: any) {
-    let startDate = `${obj.year.format('YYYY')}-${obj.month < 10 ? '0' + obj.month : obj.month}-01`
-    let endDate = moment(startDate)
-      .add('M', 1)
-      .subtract(1, 'd')
-      .format('YYYY-MM-DD')
-    const postObj = {
-      deptCode: obj.deptCode,
-      startDate,
-      endDate,
-      status: obj.status,
-      pageIndex: obj.pageIndex
-    }
-    return this.post(`/flatManageInstance/getInstanceListByYMD`, postObj)
+    // let startDate = `${obj.year.format('YYYY')}-${obj.month < 10 ? '0' + obj.month : obj.month}-01`
+    // let endDate = moment(startDate)
+    //   .add('M', 1)
+    //   .subtract(1, 'd')
+    //   .format('YYYY-MM-DD')
+    // const postObj = {
+    //   deptCode: obj.deptCode,
+    //   startDate,
+    //   endDate,
+    //   status: obj.status,
+    //   pageIndex: obj.pageIndex
+    // }
+    return this.post(`/flatManageInstance/getInstanceListByYMD`, obj)
   }
   public totalExcel(obj: any, fileName?: string) {
     // let startDate = `${obj.year.format('YYYY')}-${obj.month < 10 ? '0' + obj.month : obj.month}-01`
