@@ -43,6 +43,24 @@ export default class ArrangeService extends BaseApiService {
     }
     return this.post(`/schSymbol/listByDeptCode`, obj)
   }
+  // 按科室查找人员分组列表
+  public getByDeptCode (obj: any) {
+    obj = {
+      deptCode: authStore.selectedDeptCode, // number 
+    }
+    return this.get(`/schSettingNurseGroup/getByDeptCode/${obj.deptCode}`)
+  }
+  // 导出护士排班
+  public async export (data: any) {
+    const postData = {
+      deptCode: data.deptCode, // deptCode  科室编码
+      stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
+      endTime: data.endTime // endTime   结束时间（刚开始由后台传给前台）
+    }
+    return this.post(`/scheduling/export`, postData, { responseType: 'blob' })
+  }
+  
+  
 }
 
 export const arrangeService = new ArrangeService()
