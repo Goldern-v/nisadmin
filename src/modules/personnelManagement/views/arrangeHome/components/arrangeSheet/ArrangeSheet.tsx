@@ -29,41 +29,41 @@ export default observer(function ArrangeSheet(props: Props) {
       title: '序号',
       render: (text: string, row: any, index: number) => index + 1,
       fixed: 'left',
-      width: 80,
+      width: 40,
       align: 'center'
     },
     {
       title: '工号',
       dataIndex: 'empNo',
-      width: 80,
+      width: 50,
       fixed: 'left',
       align: 'center'
     },
     {
       title: '姓名',
       dataIndex: 'empName',
-      width: 80,
+      width: 50,
       fixed: 'left',
       align: 'center'
     },
     {
       title: '层级',
       dataIndex: 'nurseHierarchy',
-      width: 80,
+      width: 40,
       fixed: 'left',
       align: 'center'
     },
     {
       title: '职称',
       dataIndex: 'newTitle',
-      width: 80,
+      width: 70,
       fixed: 'left',
       align: 'center'
     },
     ...sheetViewModal.dateList.map((date, index) => {
       return {
         title: <Th date={date} />,
-        width: 80,
+        width: 70,
         render(text: any, record: any) {
           return (
             <Cell
@@ -72,6 +72,7 @@ export default observer(function ArrangeSheet(props: Props) {
               editVacationCountModal={editVacationCountModal}
               dataSource={record}
               index={index}
+              isEdit={isEdit}
             />
           )
         }
@@ -115,6 +116,9 @@ export default observer(function ArrangeSheet(props: Props) {
         .getElementById('baseTable')!
         .querySelector('.ant-table-fixed-left .ant-table-body-inner table.ant-table-fixed')!.style.marginBottom =
         (document as any).getElementById('baseTable')!.querySelector('.ant-table-footer')!.offsetHeight + 'px'
+      ;(document as any).querySelector('.ant-table-body')!.onscroll = (e: any) => {
+        console.log(e, 'eee')
+      }
     } catch (error) {
       console.log('同步备注滚动报错')
     }
@@ -159,6 +163,13 @@ export default observer(function ArrangeSheet(props: Props) {
   )
 })
 const Wrapper = styled.div`
+  #baseTable {
+    .ant-table-body td,
+    .ant-table-tbody td {
+      padding: 0 2px !important;
+      font-size: 12px !important;
+    }
+  }
   /** fix table scroll bug */
   div.ant-table-body {
     background: #fafafa !important;

@@ -19,6 +19,7 @@ export interface Props {
   editVacationCountModal: any
   dataSource: any
   index: number
+  isEdit: boolean
 }
 
 export default observer(function Cell(props: Props) {
@@ -36,7 +37,7 @@ export default observer(function Cell(props: Props) {
     contextMenu.show(
       [
         {
-          icon: '',
+          icon: require('../../images/追加排班.png'),
           disabled: sheetViewModal.selectedCell.rangeName && sheetViewModal.selectedCell.settings,
           label: '追加排班',
           type: 'text',
@@ -46,7 +47,7 @@ export default observer(function Cell(props: Props) {
           type: 'line'
         },
         {
-          icon: '',
+          icon: require('../../images/增加工时.png'),
           label: '修改工时',
           type: 'text',
           onClick: () => {
@@ -60,7 +61,7 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
-          icon: '',
+          icon: require('../../images/休假计数.png'),
           disabled: sheetViewModal.selectedCell.shiftType != '休假',
           label: '休假计数',
           type: 'text',
@@ -89,7 +90,7 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
-          icon: '',
+          icon: require('../../images/符号.png'),
           label: '符号',
           type: 'text',
           disabled: !hasArrange,
@@ -117,7 +118,7 @@ export default observer(function Cell(props: Props) {
           ]
         },
         {
-          icon: '',
+          icon: require('../../images/复制行.png'),
           label: '复制行',
           type: 'text',
           onClick() {
@@ -126,7 +127,7 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
-          icon: '',
+          icon: require('../../images/剪切行.png'),
           label: '剪切行',
           type: 'text',
           onClick() {
@@ -136,8 +137,8 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
-          icon: '',
-          label: '黏贴行',
+          icon: require('../../images/粘贴行.png'),
+          label: '粘贴行',
           type: 'text',
           onClick() {
             let list = sheetViewModal.getSelectCellList(true)
@@ -146,7 +147,7 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
-          icon: '',
+          icon: require('../../images/删除.png'),
           label: '清除格子',
           type: 'text',
           onClick() {
@@ -154,7 +155,7 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
-          icon: '',
+          icon: require('../../images/删除.png'),
           label: '清除行',
           type: 'text',
           onClick() {
@@ -215,7 +216,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 -8px;
+  margin: 0 -2px;
   position: relative;
   &.isSelected {
     background: #fff8b1;
