@@ -52,6 +52,10 @@ export default class QuestionBankManageService extends BaseApiService {
   public hideOrShowLabelByLabelIdList(params: any) {
     return this.post('/questionLabel/hideOrShowLabelByLabelIdList', params);
   }
+  /**标签查看--新建标签 */
+  public createQuestionLabel(params: any) {
+    return this.post('/questionLabel/createQuestionLabel', params);
+  }
   /**标签查看--根据标签id查看题目 */
   public getQuestionsByLabelId(query: any) {
     return this.post('/questionLabel/getQuestionsByLabelId', query);
