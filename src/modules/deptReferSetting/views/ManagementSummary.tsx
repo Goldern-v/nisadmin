@@ -200,20 +200,17 @@ export default function ManagementSummary() {
   const exportExcel = () => {
     let startDate = moment(`${filterObj.year.format('YYYY')}-${filterObj.month < 10 ? '0' + filterObj.month : filterObj.month}-01`);
 
-    let endDate = moment(moment(startDate)
-      .add('M', 1)
-      .subtract(1, 'd')
-      .format('YYYY-MM-DD'));
+    let endDate = moment(startDate)
 
     let exportContent = <div>
       <br />
-      <DatePicker
+      <DatePicker.MonthPicker
         allowClear={false}
         defaultValue={startDate || null}
         style={{ width: '120px' }}
         onChange={(date) => startDate = date} />
       <span> - </span>
-      <DatePicker
+      <DatePicker.MonthPicker
         allowClear={false}
         defaultValue={endDate || null}
         style={{ width: '120px' }}
@@ -229,7 +226,10 @@ export default function ManagementSummary() {
           ...query,
           ...filterObj,
           startDate: startDate.format('YYYY-MM-DD'),
-          endDate: endDate.format('YYYY-MM-DD')
+          endDate: moment(endDate)
+            .add('M', 1)
+            .subtract(1, 'd')
+            .format('YYYY-MM-DD')
         } as any
 
         delete params.pageSize
@@ -237,7 +237,14 @@ export default function ManagementSummary() {
         delete params.month
 
         //文件名称
-        let fileName = `扁平管理汇总(${startDate.format('YYYY-MM-DD')}-${endDate.format('YYYY-MM-DD')})`
+        let startMonth = startDate.format('YYYY-MM')
+        let endMonth = endDate.format('YYYY-MM')
+
+        let monthString = `${startMonth}至${endMonth}`
+        if (startMonth == endMonth) monthString = startMonth
+
+        let fileName = `扁平管理汇总(${monthString})`
+
         api.totalExcel(params, fileName)
       }
     })
