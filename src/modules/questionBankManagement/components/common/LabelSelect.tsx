@@ -6,11 +6,12 @@ import { questionBankManageService } from './../../api/QuestionBankManageService
 const Option = Select.Option;
 
 export interface Props {
-  onSelect?: any
+  onSelect?: any,
+  inputSelected?: boolean
 }
 
 export default function LabelsAppend(props: Props) {
-  const { onSelect } = props
+  const { onSelect, inputSelected } = props
   const [query, setQuery] = useState({
     bankType: '',
     choiceType: '标签查看',
@@ -103,7 +104,7 @@ export default function LabelsAppend(props: Props) {
   }
 
   const handleBlur = () => {
-    if (selecting) handleChange({
+    if (selecting && inputSelected) handleChange({
       key: '',
       label: query.searchingContent
     })

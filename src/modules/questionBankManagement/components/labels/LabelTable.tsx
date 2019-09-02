@@ -207,6 +207,18 @@ export default observer(function LabelTable(props: Props) {
           visible: true
         })
       }
+    },
+    {
+      name: '新建标签',
+      onClick: () => {
+        setLabelEditCfg({
+          label: {
+            id: '',
+            labelContent: ''
+          },
+          visible: true
+        })
+      }
     }
   ]
   return (

@@ -68,7 +68,7 @@ export default observer(function FlatManageProblemList() {
     title: '序号',
     dataIndex: 'key',
     key: 'key',
-    width: 50,
+    width: 30,
     align: 'center',
     render: (text: string, record: any, index: number) => index + 1
   },
@@ -76,13 +76,13 @@ export default observer(function FlatManageProblemList() {
     title: '检查日期',
     dataIndex: 'checkDate',
     align: 'center',
-    width: 100
+    width: 90
   },
   {
     title: '科室',
     dataIndex: 'wardName',
     align: 'left',
-    width: 180
+    width: 130
   },
   {
     title: '检查者',
@@ -100,7 +100,7 @@ export default observer(function FlatManageProblemList() {
     title: '类型',
     dataIndex: 'typeName',
     align: 'left',
-    width: 150
+    width: 90
   },
   {
     title: '存在问题',
@@ -130,7 +130,7 @@ export default observer(function FlatManageProblemList() {
     title: '操作',
     key: 'opetation',
     align: 'center',
-    width: 150,
+    width: 80,
     render: (text: string, record: any) => {
       //护长
       let postAuth = !!(authStore.getUser().post == '护长') as boolean;
@@ -144,20 +144,21 @@ export default observer(function FlatManageProblemList() {
       let deleteAuth = !!(autherAuth && record.status == '1') as boolean;
 
       return (
-        <DoCon>
+        <div className="operation">
           <span onClick={() => handleDetailView(record, 'detail')}>查看</span>
           {/* 护长可审核 */}
-          <span className={auditAuth ? '' : 'disabed'} onClick={() => {
+          <span className={auditAuth ? '' : 'disabled'} onClick={() => {
             if (auditAuth) handleDetailView(record, 'audit')
           }}>审核</span>
           {/* 未审核状态护长或创建人可修改 */}
-          <span className={editAuth ? '' : 'disabed'} onClick={() => {
+          <br />
+          <span className={editAuth ? '' : 'disabled'} onClick={() => {
             if (editAuth) handleEdit(record)
           }}>修改</span>
-          <span className={deleteAuth ? '' : 'disabed'} onClick={() => {
+          <span className={deleteAuth ? '' : 'disabled'} onClick={() => {
             if (deleteAuth) handleDelete(record)
           }}>删除</span>
-        </DoCon>
+        </div>
       )
     }
   }]
@@ -450,13 +451,27 @@ const Wrapper = styled.div`
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-    }
-  }
-  span.disabed{
-    color: #aaa;
-    cursor: default;
-    :hover{
-      font-weight: normal;
+      .operation{
+        span{
+          color:#00A680;
+          cursor: pointer;
+          margin: 1px 0;
+          display: inline-block;
+          :hover{
+            font-weight:bold;
+          }
+          &.disabled{
+            color: #aaa;
+            cursor: default;
+            :hover{
+              font-weight:normal;
+            }
+          }
+          &:nth-of-type(2n-1){
+            margin-right: 5px;
+          }
+        }
+      }
     }
   }
   .status1{

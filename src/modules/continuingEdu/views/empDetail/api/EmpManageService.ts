@@ -8,7 +8,7 @@ export default class EmpManageService extends BaseApiService {
   }
   /**人员基本信息 */
   public async getEmpDetail(query: any) {
-    return this.post('/educon/eduMasterData/getBaseInformation', query);
+    return this.post('/educon/eduMasterData/getBaseInformation', qs.stringify(query));
   }
   /**学分记录 */
   public async getCreditRecord(query: any) {

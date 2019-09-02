@@ -35,17 +35,37 @@ export default function LabelTableEdit(props: Props) {
       newLabelName: labelEdit.labelContent
     }
 
+    if (!labelEdit.labelContent.trim()) {
+      Message.warning('未填写标签名称');
+      return
+    }
+
+    let successMsg = params.labelId ? '修改成功' : '创建成功'
+
     setLoading(true)
 
-    questionBankManageService
-      .changeLabelName(params)
-      .then(res => {
-        Message.success('修改成功');
-        setLoading(false)
-        onCancel && onCancel({ reload: true });
-      }, err => {
-        setLoading(false)
-      })
+    if (params.labelId)
+      questionBankManageService
+        .changeLabelName(params)
+        .then(res => {
+          Message.success(successMsg);
+          setLoading(false)
+          onCancel && onCancel({ reload: true });
+        }, err => {
+          setLoading(false)
+        })
+    else
+      questionBankManageService
+        .createQuestionLabel({
+          newLabelName: params.newLabelName
+        })
+        .then(res => {
+          Message.success(successMsg);
+          setLoading(false)
+          onCancel && onCancel({ reload: true });
+        }, err => {
+          setLoading(false)
+        })
   }
 
   const handleCancel = () => {
@@ -57,12 +77,13 @@ export default function LabelTableEdit(props: Props) {
     onOk={handleOk}
     centered
     onCancel={handleCancel}
-    title="修改标签"
+    title={label.id ? '修改标签' : '新建标签'}
     confirmLoading={loading}>
     <Wrapper>
-      <div>标签"{label.labelContent}"</div>
-      <div>修改为:</div>
-      <div>
+      <div style={{ display: label.id ? 'block' : 'none' }}>标签"{label.labelContent}"</div>
+      <div style={{ display: label.id ? 'block' : 'none' }}>修改为:</div>
+      <div style={{ textAlign: label.id ? 'left' : 'center' }}>
+        <span style={{ display: label.id ? 'none' : 'inline' }}>标签名称：</span>
         <Input
           value={labelEdit.labelContent}
           style={{ width: '300px' }}
