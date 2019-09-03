@@ -1,6 +1,6 @@
 import { observable, computed, action } from 'mobx'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
-
+let timer: any = null
 /** 用于存放筛选条件等基础数据 */
 class SelectViewModal {
   @observable public params: any = {
@@ -17,15 +17,9 @@ class SelectViewModal {
   @action
   public setParams = (type: any, value: any) => {
     this.params[type] = value
-    setTimeout(() => {
-      if (
-        this.params.startTime &&
-        this.params.endTime &&
-        this.params.deptCode
-        //  && this.params.group
-      ) {
-        sheetViewModal.getSheetTableData()
-      }
+    timer && clearTimeout(timer)
+    timer = setTimeout(() => {
+      sheetViewModal.init()
     }, 100)
   }
 }

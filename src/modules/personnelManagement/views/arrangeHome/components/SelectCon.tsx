@@ -60,9 +60,9 @@ export default observer(function SelectCon() {
   // 日期变化函数
   const dateChange = (dates: any, dateString: any) => {
     if (dates && dates[0] && dates[1]) {
-      let isOk = dates[1]._d.getTime() - dates[0]._d.getTime() > 2678400000
+      let isOk = dates[1]._d.getTime() - dates[0]._d.getTime() > 2592000000
       if (isOk) {
-        dates[1]._d = new Date(dates[0]._d.getTime() + 2678400000)
+        dates[1]._d = new Date(dates[0]._d.getTime() + 2592000000)
         message.warning('日期范围不能超过31天！')
       }
       setDate(dates)

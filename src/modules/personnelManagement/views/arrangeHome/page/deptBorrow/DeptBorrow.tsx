@@ -315,7 +315,7 @@ const Wrapper = styled.div`
 
   .top {
     margin-top: -80px;
-    // padding: 10px 15px;
+    /* // padding: 10px 15px; */
     height: 68px;
     .nav {
       margin-bottom: 5px;
