@@ -7,7 +7,7 @@ class SelectViewModal {
     startTime: null, // 开始时间
     endTime: null, // 截止时间
     deptCode: null, // 科室
-    group: null, // 分组
+    group: null // 分组
   }
 
   @computed
@@ -18,8 +18,15 @@ class SelectViewModal {
   public setParams = (type: any, value: any) => {
     this.params[type] = value
     setTimeout(() => {
-      sheetViewModal.init()
-    }, 500)
+      if (
+        this.params.startTime &&
+        this.params.endTime &&
+        this.params.deptCode
+        //  && this.params.group
+      ) {
+        sheetViewModal.getSheetTableData()
+      }
+    }, 100)
   }
 }
 

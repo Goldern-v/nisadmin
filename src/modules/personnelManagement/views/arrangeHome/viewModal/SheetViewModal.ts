@@ -9,6 +9,7 @@ import { message } from 'src/vendors/antd'
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   @observable public sheetTableData: any = []
+  @observable public dateList: string[] = []
   @observable public remark: string = ''
   @observable public arrangeMenu = []
   @observable public arrangeMeal = []
@@ -16,15 +17,13 @@ class SheetViewModal {
   /** 选中的格子 */
   @observable public selectedCell: ArrangeItem = {}
   @observable public allCell: any[] = []
-
   /** 加载状态 */
   @observable public tableLoading: boolean = false
 
   /** 复制行 */
   @observable public copyRow: any[] = []
   /** 时间段 */
-  @computed
-  public get dateList() {
+  getDateList() {
     let days = []
     let dayDiff = dateDiff(selectViewModal.params.startTime, selectViewModal.params.endTime)
     if (dayDiff >= 0) {
@@ -36,6 +35,7 @@ class SheetViewModal {
         )
       }
     }
+
     return days
   }
 
@@ -75,7 +75,7 @@ class SheetViewModal {
   analyseCell(cellObj: ArrangeItem) {
     const cellConfig = {
       isTwoDaysAgo: dateDiff(cellObj && cellObj.workDate, monnet().format('YYYY-MM-DD')) > 2,
-      isExpectedScheduling: cellObj.statusType == '1',
+      isExpectedScheduling: !!(cellObj && cellObj.settings),
       isAddWordTime:
         cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
       isReduceWordTime:
@@ -86,13 +86,15 @@ class SheetViewModal {
   }
 
   getSheetTableData() {
-    if (localStorage.sheetTableData_dev) {
-      this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
-      this.allCell = this.getAllCell()
-      return
-    }
-    
+    // if (localStorage.sheetTableData_dev) {
+    //   this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
+    //   this.allCell = this.getAllCell()
+    //   return
+    // }
+    this.tableLoading = true
     arrangeService.findCreateOrUpdate().then((res) => {
+      this.tableLoading = false
+      this.dateList = this.getDateList()
       this.tableLoading = false
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark

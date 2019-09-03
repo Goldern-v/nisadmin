@@ -85,7 +85,7 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 80
+      width: 70
       // fixed: 'right'
     },
     {
@@ -95,7 +95,7 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 80
+      width: 70
       // fixed: 'right'
     },
     {
@@ -105,7 +105,7 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 80
+      width: 70
       // fixed: 'right'
     }
   ]
@@ -125,6 +125,15 @@ export default observer(function ArrangeSheet(props: Props) {
         ;(document as any).querySelector('.remark-con.real')!.style.marginLeft = e.target.scrollLeft + 'px'
       })
     } catch (error) {}
+    try {
+      if (
+        (document as any).querySelector('.ant-table-body').scrollWidth ==
+        (document as any).querySelector('.ant-table-body').clientWidth
+      ) {
+        ;(document as any).querySelector('#baseTable').style.width =
+          (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
+      }
+    } catch (error) {}
   })
 
   let remark = sheetViewModal.remark
@@ -133,7 +142,7 @@ export default observer(function ArrangeSheet(props: Props) {
       <BaseTable
         loading={sheetViewModal.tableLoading}
         surplusHeight={surplusHeight}
-        surplusWidth={200}
+        // surplusWidth={240}
         columns={columns}
         // fixedFooter={true}
         dataSource={sheetViewModal.sheetTableData}
@@ -167,6 +176,7 @@ export default observer(function ArrangeSheet(props: Props) {
   )
 })
 const Wrapper = styled.div`
+  background: #fff;
   #baseTable {
     .ant-table-body td,
     .ant-table-tbody td {
