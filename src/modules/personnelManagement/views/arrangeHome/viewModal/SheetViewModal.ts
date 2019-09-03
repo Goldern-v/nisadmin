@@ -26,11 +26,11 @@ class SheetViewModal {
   @computed
   public get dateList() {
     let days = []
-    let dayDiff = dateDiff(selectViewModal.startTime, selectViewModal.endTime)
+    let dayDiff = dateDiff(selectViewModal.params.startTime, selectViewModal.params.endTime)
     if (dayDiff >= 0) {
       for (let i = 0; i <= dayDiff; i++) {
         days.push(
-          moment(selectViewModal.startTime)
+          moment(selectViewModal.params.startTime)
             .add(i, 'd')
             .format('YYYY-MM-DD')
         )
@@ -86,12 +86,12 @@ class SheetViewModal {
   }
 
   getSheetTableData() {
-    // if (localStorage.sheetTableData_dev) {
-    //   this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
-    //   this.allCell = this.getAllCell()
-    //   return
-    // }
-    this.tableLoading = true
+    if (localStorage.sheetTableData_dev) {
+      this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
+      this.allCell = this.getAllCell()
+      return
+    }
+    
     arrangeService.findCreateOrUpdate().then((res) => {
       this.tableLoading = false
       this.sheetTableData = res.data.setting
