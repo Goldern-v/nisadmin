@@ -21,9 +21,11 @@ export interface Props {
 
 export default observer(function ArrangeSheet(props: Props) {
   let { isEdit, surplusHeight } = props
+  const [surplusWidth, setSurplusWidth]: any = useState(false)
   let contextMenu = createContextMenu()
   let editEffectiveTimeModal = createModal(EditEffectiveTimeModal)
   let editVacationCountModal = createModal(EditVacationCountModal)
+
   let columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -132,6 +134,10 @@ export default observer(function ArrangeSheet(props: Props) {
       ) {
         ;(document as any).querySelector('#baseTable').style.width =
           (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
+        setSurplusWidth(false)
+      } else {
+        ;(document as any).querySelector('#baseTable').style.width = '100%'
+        setSurplusWidth(240)
       }
     } catch (error) {}
   })
@@ -142,7 +148,7 @@ export default observer(function ArrangeSheet(props: Props) {
       <BaseTable
         loading={sheetViewModal.tableLoading}
         surplusHeight={surplusHeight}
-        // surplusWidth={240}
+        surplusWidth={surplusWidth}
         columns={columns}
         // fixedFooter={true}
         dataSource={sheetViewModal.sheetTableData}

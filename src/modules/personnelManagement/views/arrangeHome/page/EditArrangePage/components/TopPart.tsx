@@ -85,7 +85,11 @@ export default observer(function TopPart() {
           <div className='label data'>日期：</div>
           <div className='content'>
             <DatePicker.RangePicker
-              // value={[selectViewModal.params.startTime,selectViewModal.params.endTime]}
+              value={
+                selectViewModal.params.startTime
+                  ? [moment(selectViewModal.params.startTime), moment(selectViewModal.params.endTime)]
+                  : undefined
+              }
               disabled
               style={{ width: 200 }}
             />

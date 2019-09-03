@@ -47,7 +47,7 @@ export default class ArrangeService extends BaseApiService {
   // 按科室查找人员分组列表
   public getByDeptCode(obj: any) {
     obj = {
-      deptCode: selectViewModal.params.deptCode, // number 
+      deptCode: selectViewModal.params.deptCode // number
     }
     return this.get(`/schSettingNurseGroup/getByDeptCode/${obj.deptCode}`)
   }
@@ -76,9 +76,9 @@ export default class ArrangeService extends BaseApiService {
     obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
-      // ids: ids
+      ids: sheetViewModal.sheetTableData.map((item: any) => item.id)
     }
-    return this.post(`/copyPrevSettingRange`, obj)
+    return this.post(`/scheduling/copyPrevSettingRange`, obj)
   }
 }
 

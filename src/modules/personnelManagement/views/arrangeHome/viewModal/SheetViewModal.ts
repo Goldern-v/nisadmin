@@ -72,10 +72,11 @@ class SheetViewModal {
   }
 
   /** 解析cellobj 获取额外信息 */
-  analyseCell(cellObj: ArrangeItem) {
+  analyseCell(cellObj: ArrangeItem): any {
+    if (!cellObj) return {}
     const cellConfig = {
       isTwoDaysAgo: dateDiff(cellObj && cellObj.workDate, monnet().format('YYYY-MM-DD')) > 2,
-      isExpectedScheduling: !!(cellObj && cellObj.settings),
+      isExpectedScheduling: cellObj.statusType == '1',
       isAddWordTime:
         cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
       isReduceWordTime:
