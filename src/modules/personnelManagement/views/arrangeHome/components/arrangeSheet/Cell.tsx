@@ -10,7 +10,7 @@ import classNames from 'classnames'
 import { type } from 'os'
 import { SymbolItem, ArrangeItem } from '../../types/Sheet'
 import { getAddArrangeMenuList, copyRowClick, cleanCell, cleanCellList } from './cellClickEvent'
-import { message } from 'src/vendors/antd'
+import { message, Popover } from 'src/vendors/antd'
 import { cloneJson } from 'src/utils/json/clone'
 
 export interface Props {
@@ -24,8 +24,11 @@ export interface Props {
 
 export default observer(function Cell(props: Props) {
   let { contextMenu, dataSource, index, editEffectiveTimeModal, editVacationCountModal } = props
+
+  const [hoverShow, setHoverShow] = useState(false)
+
   let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : null
-  let cellConfig = sheetViewModal.analyseCell(cellObj)
+  let [cellConfig, setCellConfig] = useState(sheetViewModal.analyseCell(cellObj))
 
   const onContextMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault()
@@ -56,6 +59,8 @@ export default observer(function Cell(props: Props) {
               onOkCallBack(value: any) {
                 sheetViewModal.selectedCell.effectiveTime = value.effectiveTime
                 sheetViewModal.selectedCell.detail = value.detail
+                console.log(sheetViewModal.analyseCell(cellObj), 'sheetViewModal.analyseCell(cellObj)')
+                setCellConfig(sheetViewModal.analyseCell(cellObj))
               }
             })
           }
@@ -90,6 +95,9 @@ export default observer(function Cell(props: Props) {
           }
         },
         {
+          type: 'line'
+        },
+        {
           icon: require('../../images/符号.png'),
           label: '符号',
           type: 'text',
@@ -105,17 +113,29 @@ export default observer(function Cell(props: Props) {
                 </div>
               ),
               onClick: (item: any) => {
-                sheetViewModal.selectedCell.addSymbols = item.dataSource.symbol
+                sheetViewModal.selectedCell.addSymbols = [
+                  {
+                    symbol: item.dataSource.symbol,
+                    detail: item.dataSource.detail
+                  }
+                ]
               }
             })),
             {
+              type: 'line'
+            },
+            {
+              icon: require('../../images/删除.png'),
               type: 'text',
               label: '清除符号',
               onClick: (item: any) => {
-                sheetViewModal.selectedCell.addSymbols = ''
+                sheetViewModal.selectedCell.addSymbols = null
               }
             }
           ]
+        },
+        {
+          type: 'line'
         },
         {
           icon: require('../../images/复制行.png'),
@@ -146,6 +166,10 @@ export default observer(function Cell(props: Props) {
             copyRowClick(list, copyRow, false)
           }
         },
+
+        {
+          type: 'line'
+        },
         {
           icon: require('../../images/删除.png'),
           label: '清除格子',
@@ -175,14 +199,41 @@ export default observer(function Cell(props: Props) {
     if (cellConfig.isTwoDaysAgo) return
     sheetViewModal.selectedCell = cellObj
   }
+  const onVisibleChange = (visible: boolean) => {
+    if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime) {
+      return setHoverShow(visible)
+    } else {
+      return setHoverShow(false)
+    }
+  }
+  const content = (
+    <div>
+      <div>
+        {cellObj.effectiveTimeOld > cellObj.effectiveTime ? '减少' : '增加'}了
+        {Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld)}工时
+      </div>
+      <div>备注:{cellObj.detail}</div>
+    </div>
+  )
   return (
-    <Wrapper onContextMenu={onContextMenu} onClick={onClick} className={classNames(cellConfig)}>
-      {cellConfig.isAddWordTime && <div className='sj add' />}
-      {cellConfig.isReduceWordTime && <div className='sj reduce' />}
-      {cellConfig.isExpectedScheduling && <img className='expect' src={require('../../images/期望排班.png')} alt='' />}
+    <Popover
+      content={content}
+      title='调整工时'
+      trigger='hover'
+      placement='rightTop'
+      visible={hoverShow}
+      onVisibleChange={onVisibleChange}
+    >
+      <Wrapper onContextMenu={onContextMenu} onClick={onClick} className={classNames(cellConfig)}>
+        {cellConfig.isAddWordTime && <div className='sj add' />}
+        {cellConfig.isReduceWordTime && <div className='sj reduce' />}
+        {cellConfig.isExpectedScheduling && (
+          <img className='expect' src={require('../../images/期望排班.png')} alt='' />
+        )}
 
-      {formatCell(cellObj)}
-    </Wrapper>
+        {formatCell(cellObj)}
+      </Wrapper>
+    </Popover>
   )
 })
 function formatCell(cellObj: ArrangeItem) {
@@ -193,15 +244,15 @@ function formatCell(cellObj: ArrangeItem) {
     return (
       <React.Fragment>
         <Con color={cellObj.nameColor}>
-          {cellObj.addSymbols}
+          <span style={{ color: '#333' }}>{cellObj.addSymbols && cellObj.addSymbols[0]!.symbol}</span>
           {cellObj.rangeName}
         </Con>
         {cellObj.settings && (
           <React.Fragment>
             <span>/</span>
-            <Con color={cellObj.settings.nameColor}>
-              {cellObj.settings.addSymbols}
-              {cellObj.settings.rangeName}
+            <Con color={cellObj.settings[0].nameColor}>
+              {/* {cellObj.settings[0].addSymbols} */}
+              {cellObj.settings[0].rangeName}
             </Con>
           </React.Fragment>
         )}

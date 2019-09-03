@@ -24,13 +24,15 @@ export function getAddArrangeMenuList(list: ArrangeItem[], selectedCellObj: Arra
         dataSource: obj[keys[i]][j],
         onClick(item: any) {
           if (selectedCellObj!.rangeName) {
-            selectedCellObj.settings = {
-              rangeName: item.dataSource.name,
-              nameColor: item.dataSource.nameColor,
-              effectiveTime: item.dataSource.effectiveTime,
-              effectiveTimeOld: item.dataSource.effectiveTime,
-              shiftType: item.dataSource.shiftType
-            }
+            selectedCellObj.settings = [
+              {
+                rangeName: item.dataSource.name,
+                nameColor: item.dataSource.nameColor,
+                effectiveTime: item.dataSource.effectiveTime,
+                effectiveTimeOld: item.dataSource.effectiveTime,
+                shiftType: item.dataSource.shiftType
+              }
+            ]
           } else {
             selectedCellObj!.rangeName = item.dataSource.name
             selectedCellObj!.nameColor = item.dataSource.nameColor

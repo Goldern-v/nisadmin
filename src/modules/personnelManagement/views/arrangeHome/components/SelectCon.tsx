@@ -37,7 +37,7 @@ export default observer(function SelectCon() {
     if (d < 10) {
       d = "0" + d;
     }
-    return y + "-" + m + "-" + d
+    return y + '-' + m + '-' + d
   }
   // 获取星期日
   let getSunday = () => {
@@ -55,7 +55,7 @@ export default observer(function SelectCon() {
     if (d < 10) {
       d = "0" + d;
     }
-    return y + "-" + m + "-" + d;
+    return y + '-' + m + '-' + d
   }
   // 日期变化函数
   const dateChange = (dates: any, dateString: any) => {
@@ -174,7 +174,9 @@ export default observer(function SelectCon() {
           </Button>
         </div>
         <div className='item'>
-          <Button className='statistics getExcel' onClick={exportExcel}>导出Excel</Button>
+          <Button className='statistics getExcel' onClick={exportExcel}>
+            导出Excel
+          </Button>
         </div>
       </LeftIcon>
       <RightIcon>
@@ -184,7 +186,6 @@ export default observer(function SelectCon() {
         <span> | </span>
         <span>排班套餐设置</span>
       </RightIcon>
-
     </Wrapper>
   )
 })
@@ -206,12 +207,12 @@ const Wrapper = styled.div`
   }
 `
 const LeftIcon = styled.div`
-  float:left;
+  float: left;
   font-size: 13px;
-  .getExcel{
+  .getExcel {
     margin-right: 0;
   }
-  .data{
+  .data {
     margin-left: 10px;
   }
 `
@@ -219,12 +220,12 @@ const LeftIcon = styled.div`
 const RightIcon = styled.div`
   float: right;
   font-size: 13px;
-  height:32px;
+  height: 32px;
   vertical-align: middle;
   margin-top: 5px;
   margin-right: 5px;
-  span{
+  span {
     cursor: pointer;
-    color: #00A680;
+    color: #00a680;
   }
 `

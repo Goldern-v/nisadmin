@@ -18,6 +18,7 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       setting: sheetViewModal.sheetTableData,
+      remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode
     }
     return this.post(`/scheduling/saveOrUpdate`, obj)

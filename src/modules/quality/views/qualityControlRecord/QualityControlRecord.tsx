@@ -34,6 +34,7 @@ export default observer(function QualityControlRecord() {
       qcGroupRole: qualityControlRecordVM.filterForm,
       type: qualityControlRecordVM.readWay,
       nodeCode: qualityControlRecordVM.filterState,
+      level: qualityControlRecordVM.level,
       beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
       endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')
     }

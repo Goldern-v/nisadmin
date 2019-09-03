@@ -30,8 +30,7 @@ export default function ContextMenu(props: Props) {
   }, [])
 
   const onItemClick = (item: MenuListItem, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    item.onClick && item.onClick(item)
-    setShow(false)
+    item.onClick && (item.onClick(item), setShow(false))
   }
 
   let max_y = window.innerHeight
@@ -60,7 +59,9 @@ function renderItem(menuList: MenuListItem[], onItemClick: any) {
             key={index}
             onClick={() => onItemClick(item)}
           >
+            {item.icon && <img src={item.icon} alt='' className='icon' />}
             {item.label}
+            {item.children && <img src={require('../../images/展开二级.png')} alt='' className='more' />}
             {item.children && (
               <div className='children-con'>{item.children && renderItem(item.children, onItemClick)}</div>
             )}
@@ -112,7 +113,19 @@ const Wrapper = styled.div<{ x: number; y: number }>`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.04), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
   background: #fff;
   padding: 10px 0;
-
+  .icon {
+    height: 14px;
+    margin-right: 14px;
+    position: relative;
+    top: -2px;
+  }
+  .more {
+    height: 12px;
+    margin-left: 10px;
+    position: relative;
+    top: 9px;
+    float: right;
+  }
   .text-item {
     height: 30px;
     line-height: 30px;
@@ -160,7 +173,7 @@ const Wrapper = styled.div<{ x: number; y: number }>`
     width: 100%;
     height: 100%;
     .symbol-icon {
-      width: 40px;
+      width: 30px;
     }
     .symbol-aside {
       width: 0;

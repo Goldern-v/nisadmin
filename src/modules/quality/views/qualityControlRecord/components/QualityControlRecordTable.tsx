@@ -20,8 +20,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
   const columns: any[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
+      dataIndex: '',
       render: (text: any, record: any, index: number) => (allData.pageIndex - 1) * allData.pageSize + index + 1,
       align: 'center',
       width: 50
@@ -29,21 +28,21 @@ export default observer(function qualityControlRecordTable(props: Props) {
     // {
     //   title: '质控编号',
     //   dataIndex: 'zkbh',
-    //   key: '',
+    //
     //   width: 180,
     //   align: 'left'
     // },
     {
       title: '质控日期',
       dataIndex: 'evalDate',
-      key: '',
+
       width: 130,
       align: 'center'
     },
     {
       title: '质控病区',
       dataIndex: 'wardName',
-      key: '',
+
       width: 160,
       align: 'left'
     },
@@ -51,7 +50,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '质控表单',
       // dataIndex: 'zkbq',
       dataIndex: 'qcName',
-      key: '',
+
       width: 150,
       align: 'left'
     },
@@ -60,7 +59,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '质控人员',
       // dataIndex: 'zkry',
       dataIndex: 'creatorName',
-      key: '',
+
       width: 80,
       align: 'center'
     },
@@ -68,7 +67,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '床号',
       // dataIndex: 'ch',
       dataIndex: 'bedLabel',
-      key: '',
+
       width: 70,
       align: 'center'
     },
@@ -76,7 +75,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       title: '住院号',
       // dataIndex: 'zyh',
       dataIndex: 'inpNo',
-      key: '',
+
       width: 80,
       align: 'center'
     },
@@ -84,14 +83,14 @@ export default observer(function qualityControlRecordTable(props: Props) {
     //   title: '管床护士',
     //   dataIndex: '',
     //   // dataIndex: 'zkbq',
-    //   key: '',
+    //
     //   width: 100,
     //   align: 'center'
     // },
     {
       title: '质量结果',
       dataIndex: 'evalRate',
-      key: '',
+
       width: 80,
       align: 'center',
       render(text: any) {
@@ -103,7 +102,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       // dataIndex: 'zt',
       // dataIndex: 'currentHandledNodeName',
       dataIndex: 'nextNodePendingName',
-      key: '',
+
       width: 110,
       align: 'center',
       render(text: any, row: any) {
@@ -113,7 +112,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
     {
       title: '操作',
       dataIndex: '',
-      key: '',
+
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {

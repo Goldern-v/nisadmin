@@ -25,6 +25,7 @@ class ProblemSummaryServices extends BaseApiService {
       year: obj.year.format('YYYY'),
       indexInType: obj.month
     }
+    console.log(obj, 'obj')
 
     if (obj.type == '住院' && obj.sheet == '明细表') {
       return this.post(`/qcTurnOver/getDenDetailList`, postData).then((res) => {
@@ -47,7 +48,7 @@ class ProblemSummaryServices extends BaseApiService {
         setPageObj({
           title: `${postData.year}年${postData.indexInType}月病区质量考核汇总表`,
           component: 病区汇总表,
-          dataSource: []
+          dataSource: res.data
         })
       })
     } else if (obj.type == '门诊' && obj.sheet == '明细表') {
@@ -55,7 +56,7 @@ class ProblemSummaryServices extends BaseApiService {
         setPageObj({
           title: `${postData.year}年${postData.indexInType}月门诊质量考核明细表`,
           component: 门诊明细表,
-          dataSource: []
+          dataSource: res.data
         })
       })
     }

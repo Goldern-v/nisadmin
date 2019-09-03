@@ -8,11 +8,22 @@ class QualityControlRecordVM {
   @observable public formSelectList: any = []
   @observable public stateSelectList: any = []
   @observable public filterDeptList: any = []
+  @observable public filterLevelList: any = [
+    {
+      code: 2,
+      name: '二级质控'
+    },
+    {
+      code: 3,
+      name: '三级质控'
+    }
+  ]
   /** 筛选条件 */
   @observable public filterDate: any = [moment(moment().format('YYYY-MM') + '-01'), moment()]
   @observable public filterForm: any = ''
   @observable public filterState: any = ''
   @observable public filterDeptCode: any = ''
+  @observable public level: any = 2
   @observable public readWay: any = 1
   @observable public allData: any = {}
 

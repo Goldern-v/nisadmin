@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Radio, DatePicker, Button} from 'antd'
+import { Radio, DatePicker, Button } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM'
 import DeptSelect from 'src/components/DeptSelect'
 import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
 import queryStatisticsServices from './services/queryStatisticsServices'
+import { fileDownload } from 'src/utils/file/file'
 
 export interface Props extends RouteComponentProps {}
 
@@ -20,8 +21,8 @@ export default observer(function QueryStatistics(props: any) {
   const columns: any[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
+      dataIndex: '',
+      key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 50
@@ -74,13 +75,13 @@ export default observer(function QueryStatistics(props: any) {
   }, [])
 
   const getTableData = (obj?: any) => {
-    if(effect){
+    if (effect) {
       let data = {
         beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
         endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
         wardCode: qualityControlRecordVM.filterDeptCode,
         qcGroupCode: qualityControlRecordVM.filterForm, //科室 string非必须
-        groupByDept: showType,//boolean  科室分组(true) 质控组分组(false) 
+        groupByDept: showType //boolean  科室分组(true) 质控组分组(false)
       }
       setLoadingTable(true)
       queryStatisticsServices.getEvalRateMenu(data).then((res) => {
@@ -102,42 +103,64 @@ export default observer(function QueryStatistics(props: any) {
     getTableData()
   }
 
+  const exportExcel = () => {
+    let data = {
+      beginDate: qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD'),
+      endDate: qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD'),
+      wardCode: qualityControlRecordVM.filterDeptCode,
+      qcGroupCode: qualityControlRecordVM.filterForm, //科室 string非必须
+      groupByDept: showType //boolean  科室分组(true) 质控组分组(false)
+    }
+    queryStatisticsServices.exportExcel(data).then((res) => {
+      fileDownload(res)
+    })
+  }
+
   return (
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
           <div className='item'>
-          <div className='label'>日期：</div>
-          <div className='content'>
-            <DatePicker.RangePicker
-              value={qualityControlRecordVM.filterDate}
-              onChange={(value) => {
-                qualityControlRecordVM.filterDate = value
-                getTableData()
-              }}
-              style={{ width: 220 }}
-            />
+            <div className='label'>日期：</div>
+            <div className='content'>
+              <DatePicker.RangePicker
+                value={qualityControlRecordVM.filterDate}
+                onChange={(value) => {
+                  qualityControlRecordVM.filterDate = value
+                  getTableData()
+                }}
+                style={{ width: 220 }}
+              />
+            </div>
           </div>
-        </div>
           <div className='item'>
-          <div className='label'>质控科室：</div>
-          <div className='content'>
-            <DeptSelect onChange={deptOnChange}/>
+            <div className='label'>质控科室：</div>
+            <div className='content'>
+              <DeptSelect onChange={deptOnChange} />
+            </div>
           </div>
-        </div>
           <div className='item'>
-          <div className='label'>质控表单：</div>
-          <div className='content'> 
-            <FormSelect refreshData={getTableData} />
+            <div className='label'>质控表单：</div>
+            <div className='content'>
+              <FormSelect refreshData={getTableData} />
+            </div>
           </div>
-        </div>
           <div className='item'>
-            <Button type='primary' className='statistics' onClick={getTableData}>查询</Button>
+            <Button type='primary' className='statistics' onClick={getTableData}>
+              查询
+            </Button>
           </div>
         </LeftIcon>
         <RightIcon>
           <div className='item'>
-            <Button className='excel' onClick={() => {}}>导出Excel</Button>
+            <Button
+              className='excel'
+              onClick={() => {
+                exportExcel()
+              }}
+            >
+              导出Excel
+            </Button>
           </div>
         </RightIcon>
       </HeaderCon>
@@ -150,15 +173,11 @@ export default observer(function QueryStatistics(props: any) {
         </RadioCon>
         <Title>医院质量检查表单统计表</Title>
         <Date>
-          日期：{qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD')} 至 {qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')}
+          日期：{qualityControlRecordVM.filterDate[0].format('YYYY-MM-DD')} 至{' '}
+          {qualityControlRecordVM.filterDate[1].format('YYYY-MM-DD')}
         </Date>
         <TableCon>
-          <BaseTable
-              surplusHeight={260}
-              loading={loadingTable}
-              dataSource={tableData}
-              columns={columns}
-            />
+          <BaseTable surplusHeight={260} loading={loadingTable} dataSource={tableData} columns={columns} />
         </TableCon>
       </MidCon>
     </Wrapper>
@@ -192,14 +211,14 @@ const Wrapper = styled.div`
         width: 72px;
       }
     }
-    .statistics{
+    .statistics {
       border-color: #fff;
     }
   }
 `
 const LeftIcon = styled.div`
   height: 55px;
-  float:left;
+  float: left;
   font-size: 13px;
   position: relative;
   font-size: 13px;
@@ -211,7 +230,7 @@ const LeftIcon = styled.div`
 
 const RightIcon = styled.div`
   height: 55px;
-  float:right;
+  float: right;
   font-size: 13px;
   position: relative;
   font-size: 13px;
@@ -253,7 +272,7 @@ const Date = styled.div`
   font-size: 13px;
   color: #333;
   text-align: center;
-  margin:8px 0 5px 0;
+  margin: 8px 0 5px 0;
 `
 const TableCon = styled.div`
   flex: 1;

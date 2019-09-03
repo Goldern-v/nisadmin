@@ -16,6 +16,9 @@ class SheetViewModal {
   @observable public selectedCell: ArrangeItem = {}
   @observable public allCell: any[] = []
 
+  /** 加载状态 */
+  @observable public tableLoading: boolean = false
+
   /** 复制行 */
   @observable public copyRow: any[] = []
   /** 时间段 */
@@ -89,6 +92,7 @@ class SheetViewModal {
     }
     
     arrangeService.findCreateOrUpdate().then((res) => {
+      this.tableLoading = false
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark
       this.allCell = this.getAllCell()
@@ -112,7 +116,9 @@ class SheetViewModal {
   }
 
   saveSheetTableData() {
+    this.tableLoading = false
     arrangeService.saveOrUpdate()
+    this.getSheetTableData()
   }
 
   init() {
