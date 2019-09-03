@@ -18,6 +18,7 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.startTime,
       endTime: selectViewModal.endTime,
       setting: sheetViewModal.sheetTableData,
+      remark: sheetViewModal.remark,
       deptCode: authStore.selectedDeptCode
     }
     return this.post(`/scheduling/saveOrUpdate`, obj)
@@ -44,14 +45,14 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/schSymbol/listByDeptCode`, obj)
   }
   // 按科室查找人员分组列表
-  public getByDeptCode (obj: any) {
+  public getByDeptCode(obj: any) {
     obj = {
-      deptCode: authStore.selectedDeptCode, // number 
+      deptCode: authStore.selectedDeptCode // number
     }
     return this.get(`/schSettingNurseGroup/getByDeptCode/${obj.deptCode}`)
   }
   // 导出护士排班
-  public async export (data: any) {
+  public async export(data: any) {
     const postData = {
       deptCode: data.deptCode, // deptCode  科室编码
       stratTime: data.stratTime, // stratTime 开始时间（刚开始由后台传给前台）
@@ -59,8 +60,6 @@ export default class ArrangeService extends BaseApiService {
     }
     return this.post(`/scheduling/export`, postData, { responseType: 'blob' })
   }
-  
-  
 }
 
 export const arrangeService = new ArrangeService()

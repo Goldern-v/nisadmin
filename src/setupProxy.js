@@ -12,8 +12,8 @@ module.exports = function(app) {
       // target: 'http://nurse.cr-health.com:34001',
       // target: 'http://192.168.2.75:8080',
       //武汉测试
-      target: 'http://nurse.cr-health.com:34002',
-      // target: 'http://192.168.2.144:8062',
+      // target: 'http://nurse.cr-health.com:34002',
+      target: 'http://192.168.2.144:8062',
       // target: 'http://192.168.2.144:8062',
       secure: false,
       changeOrigin: true

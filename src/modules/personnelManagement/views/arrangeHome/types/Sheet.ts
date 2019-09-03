@@ -4,7 +4,7 @@ export interface ArrangeItem {
   effectiveTime?: number | null
   effectiveTimeOld?: number | null
   shiftType?: string
-  addSymbols?: string
+  addSymbols?: { symbol: string; detail: string }[] | null
   detail?: string
   settings?: ArrangeItem | null
   [p: string]: any

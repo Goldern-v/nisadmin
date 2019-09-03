@@ -30,8 +30,7 @@ export default function ContextMenu(props: Props) {
   }, [])
 
   const onItemClick = (item: MenuListItem, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    item.onClick && item.onClick(item)
-    setShow(false)
+    item.onClick && (item.onClick(item), setShow(false))
   }
 
   let max_y = window.innerHeight

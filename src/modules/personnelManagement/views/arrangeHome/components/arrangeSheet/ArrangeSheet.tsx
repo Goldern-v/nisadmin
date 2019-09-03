@@ -131,6 +131,7 @@ export default observer(function ArrangeSheet(props: Props) {
   return (
     <Wrapper className={classNames({ isEdit })}>
       <BaseTable
+        loading={sheetViewModal.tableLoading}
         surplusHeight={surplusHeight}
         surplusWidth={200}
         columns={columns}
