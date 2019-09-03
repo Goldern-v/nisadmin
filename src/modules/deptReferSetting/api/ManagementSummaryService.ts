@@ -10,14 +10,14 @@ export default class ManagementSummaryService extends BaseApiService {
     //   .add('M', 1)
     //   .subtract(1, 'd')
     //   .format('YYYY-MM-DD')
-    // const postObj = {
-    //   deptCode: obj.deptCode,
-    //   startDate,
-    //   endDate,
-    //   status: obj.status,
-    //   pageIndex: obj.pageIndex
-    // }
-    return this.post(`/flatManageInstance/getInstanceListByYMD`, obj)
+    const postObj = {
+      deptCode: obj.deptCode,
+      startDate: obj.startDate,
+      endDate: obj.endDate,
+      status: obj.status,
+      pageIndex: obj.pageIndex
+    }
+    return this.post(`/flatManageInstance/getInstanceListByYMD`, postObj)
   }
   public totalExcel(obj: any, fileName?: string) {
     // let startDate = `${obj.year.format('YYYY')}-${obj.month < 10 ? '0' + obj.month : obj.month}-01`
@@ -25,14 +25,14 @@ export default class ManagementSummaryService extends BaseApiService {
     //   .add('M', 1)
     //   .subtract(1, 'd')
     //   .format('YYYY-MM-DD')
-    // const postObj = {
-    //   deptCode: obj.deptCode,
-    //   startDate,
-    //   endDate,
-    //   status: obj.status,
-    //   pageIndex: obj.pageIndex
-    // }
-    return this.post(`/flatManageInstance/totalExcel`, obj, { responseType: 'blob' }).then((res) => {
+    const postObj = {
+      deptCode: obj.deptCode,
+      startDate: obj.startDate,
+      endDate: obj.endDate,
+      status: obj.status,
+      pageIndex: obj.pageIndex
+    }
+    return this.post(`/flatManageInstance/totalExcel`, postObj, { responseType: 'blob' }).then((res) => {
       fileDownload(res, fileName)
     })
   }
