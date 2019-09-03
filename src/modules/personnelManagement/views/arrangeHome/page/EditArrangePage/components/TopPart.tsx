@@ -1,20 +1,32 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, DatePicker, Modal } from 'antd'
+import { Button, DatePicker, Modal, message } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { Place } from 'src/components/common'
+import { observer } from 'mobx-react-lite'
 import { arrangeService } from '../../../services/ArrangeService'
 import { sheetViewModal } from '../../../viewModal/SheetViewModal'
+import { selectViewModal } from '../../../viewModal/SelectViewModal'
+
 import { appStore } from 'src/stores'
+import emitter from 'src/libs/ev'
+
+import moment from 'moment'
+
 
 export interface Props {}
 
-export default function TopPart() {
+export default observer(function TopPart() {
+  //期望排班
+  const handleExpect = () => {
+    emitter.emit('期望排班设置')
+  }
+
   //重置排班
   const handleReset = () => {
     Modal.confirm({
       title: '提示',
-      content: '确认要重置排班吗？复制后本页数据将会被清空',
+      content: '确认要重置排班吗？重制后本页数据将会被清空',
       okText: '确定',
       okType: 'danger',
       cancelText: '取消',
@@ -34,11 +46,15 @@ export default function TopPart() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
+        arrangeService.copyPrevSettingRange().then((res) => {
+          sheetViewModal.init()
+          message.success('复制成功')
+        })
       }
     })
   }
 
-  //复制排班
+  //推送排班
   const handlePush = () => {
     Modal.confirm({
       title: '提示',
@@ -72,24 +88,26 @@ export default function TopPart() {
           <div className='label data'>日期：</div>
           <div className='content'>
             <DatePicker.RangePicker
+              // value={[selectViewModal.params.startTime,selectViewModal.params.endTime]}
+              disabled
               style={{ width: 200 }}
             />
           </div>
         </div>
         <div className='item'>
-          <Button>查询</Button>
+          <Button onClick={() => sheetViewModal.init()}>查询</Button>
         </div>
         <div className='item'>
           <Button onClick={handleReset}>重置排班</Button>
         </div>
         <div className='item'>
-          <Button>期望排班</Button>
+          <Button onClick={handleExpect}>期望排班</Button>
         </div>
         <div className='item'>
           <Button onClick={handleCopy}>复制排班</Button>
         </div>
         <div className='item'>
-          <Button>刷新排班人员</Button>
+          <Button onClick={() => sheetViewModal.init()}>刷新排班人员</Button>
         </div>
         <div className='item'>
           <Button onClick={sheetViewModal.saveSheetTableData}>暂存</Button>
@@ -110,7 +128,7 @@ export default function TopPart() {
       </div>
     </Wrapper>
   )
-}
+})
 
 const Wrapper = styled.div`
   .contain {

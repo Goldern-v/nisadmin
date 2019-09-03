@@ -22,11 +22,11 @@ class SheetViewModal {
   @computed
   public get dateList() {
     let days = []
-    let dayDiff = dateDiff(selectViewModal.startTime, selectViewModal.endTime)
+    let dayDiff = dateDiff(selectViewModal.params.startTime, selectViewModal.params.endTime)
     if (dayDiff >= 0) {
       for (let i = 0; i <= dayDiff; i++) {
         days.push(
-          moment(selectViewModal.startTime)
+          moment(selectViewModal.params.startTime)
             .add(i, 'd')
             .format('YYYY-MM-DD')
         )
@@ -87,7 +87,7 @@ class SheetViewModal {
       this.allCell = this.getAllCell()
       return
     }
-
+    
     arrangeService.findCreateOrUpdate().then((res) => {
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark
