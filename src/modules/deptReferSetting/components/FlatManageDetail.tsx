@@ -15,7 +15,7 @@ export interface Props {
 export default function NewNursingRulesAddModal(props: Props) {
   const { visible, onOk, onCancel, viewType, data } = props
 
-  const { checkDate, inspectorName, problem, responsibleEmpName, deduction, causeAnalysis, measures, id } = data;
+  const { checkDate, inspectorName, problem, responsibleEmpName, deduction, causeAnalysis, measures, id, remark, status } = data;
 
   const [loading, setLoading] = useState(false)
 
@@ -93,6 +93,10 @@ export default function NewNursingRulesAddModal(props: Props) {
       <Row>
         <Col span={labelSpan}>整改措施:</Col>
         <Col span={contentSpan}>{measures || ''}</Col>
+      </Row>
+      <Row style={{ display: remark ? 'block' : 'none' }}>
+        <Col span={labelSpan}>备注:</Col>
+        <Col span={contentSpan} >{remark || ''}</Col>
       </Row>
     </div>
 

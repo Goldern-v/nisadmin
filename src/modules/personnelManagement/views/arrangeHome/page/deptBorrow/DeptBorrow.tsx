@@ -243,7 +243,7 @@ export default observer(function DeptBorrow(props: any) {
     <Wrapper>
       <div className='top'>
         <div className='topbar'>
-          {/* <BreadcrumbBox
+          <BreadcrumbBox
             data={[
               {
                 name: '排班管理',
@@ -253,7 +253,7 @@ export default observer(function DeptBorrow(props: any) {
                 name: '科室借用'
               }
             ]}
-          /> */}
+          />
           <div className='float-left'>科室借用</div>
           <div className='float-right'>
             <span className='item'>
@@ -296,7 +296,7 @@ export default observer(function DeptBorrow(props: any) {
             dataSource={borrowList}
             rowClassName={rowClassName}
             pagination={false}
-            surplusHeight={200}
+            surplusHeight={190}
           />
         </div>
       </div>
@@ -315,8 +315,8 @@ const Wrapper = styled.div`
 
   .top {
     margin-top: -80px;
-    padding: 10px 15px;
-    height: 40px;
+    // padding: 10px 15px;
+    height: 68px;
     .nav {
       margin-bottom: 5px;
     }
@@ -328,9 +328,11 @@ const Wrapper = styled.div`
         line-height: 32px;
         font-weight: bold;
         color: #000;
+        margin-left: 15px;
       }
       .float-right {
         float: right;
+        margin-right: 15px;
         .item {
           margin-left: 10px;
         }

@@ -152,10 +152,9 @@ export default observer(function DeptFileShare() {
             if (res.code == 200) {
               Message.success('文件删除成功')
               getTableData()
-            } else Message.error('文件删除失败')
-          })
-          .catch((err) => {
-            Message.error('文件删除失败')
+            }
+          }, err => {
+
           })
       }
     })
