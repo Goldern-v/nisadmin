@@ -33,12 +33,12 @@ const LEFT_MENU_CONFIG = [
     path: '/quality/summaryReport',
     component: SummaryReport
   },
-  // {
-  //   title: '三级质控问题汇总',
-  //   icon: <FXBG />,
-  //   path: '/quality/problemSummary',
-  //   component: ProblemSummary
-  // },
+  {
+    title: '三级质控问题汇总',
+    icon: <FXBG />,
+    path: '/quality/problemSummary',
+    component: ProblemSummary
+  },
   {
     title: '查询统计',
     icon: <CXTJ />,

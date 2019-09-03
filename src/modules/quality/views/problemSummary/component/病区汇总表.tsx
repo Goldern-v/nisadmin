@@ -14,20 +14,24 @@ export default function 病区汇总表(props: Props) {
       title: '',
       dataIndex: 'wardName',
       width: 150,
+      key: '11',
       align: 'left'
     },
     {
       title: '医疗质量（60分）',
+      key: '22',
       children: [
         {
           title: <div className='full-title'>结构质量</div>,
-
+          key: '33',
           children: [
             {
               title: '',
+              key: '44',
               children: [
                 {
                   title: '7分',
+                  key: '66',
                   dataIndex: ''
                 }
               ]
@@ -36,12 +40,13 @@ export default function 病区汇总表(props: Props) {
         },
         {
           title: '结果质量',
+          key: '55',
           dataIndex: '',
 
           children: [
             {
               title: '归档病历质量',
-
+              key: '77',
               children: [
                 {
                   title: '5分',
@@ -51,10 +56,11 @@ export default function 病区汇总表(props: Props) {
             },
             {
               title: '结果核心制度考核',
-
+              key: '88',
               children: [
                 {
                   title: '10分',
+                  key: '99',
                   dataIndex: '2'
                 }
               ]
@@ -63,24 +69,26 @@ export default function 病区汇总表(props: Props) {
         },
         {
           title: '医疗专项管理',
-
+          key: '1010',
           children: [
             {
               title: '院感公卫',
-
+              key: '1111',
               children: [
                 {
                   title: '8分',
+                  key: '1212',
                   dataIndex: '3'
                 }
               ]
             },
             {
               title: '输血',
-
+              key: '1313',
               children: [
                 {
                   title: '5分',
+                  key: '1414',
                   dataIndex: '4'
                 }
               ]
@@ -88,10 +96,11 @@ export default function 病区汇总表(props: Props) {
 
             {
               title: '药学',
-
+              key: '1515',
               children: [
                 {
                   title: '15分',
+                  key: '1616',
                   dataIndex: '5'
                 }
               ]
@@ -100,16 +109,17 @@ export default function 病区汇总表(props: Props) {
         },
         {
           title: <div className='full-title'>环节核心制度考核</div>,
-
+          key: '1717',
           children: [
             {
               rowSpan: 1,
               title: '',
-
+              key: '1818',
               children: [
                 {
                   rowSpan: 1,
                   title: '10分',
+                  key: '1919',
                   dataIndex: '6'
                 }
               ]
@@ -120,23 +130,29 @@ export default function 病区汇总表(props: Props) {
     },
     {
       title: '护理质量 20分',
-      dataIndex: '7',
+      key: '2020',
+      dataIndex: 'score',
+      align: 'center',
       width: 100
     },
     {
       title: '标准化 20分',
+      key: '2121',
       dataIndex: '8'
     },
     {
       title: '其他',
+      key: '2222',
       dataIndex: '9'
     },
     {
       title: '总分',
+      key: '2323',
       dataIndex: '10'
     },
     {
       title: '排名',
+      key: '2424',
       dataIndex: '11'
     }
   ]
