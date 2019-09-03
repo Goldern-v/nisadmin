@@ -29,6 +29,7 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                     <div className='info'>
                       {item.handleTime} ({getWeekString(item.handleTime)})
                     </div>
+                    {/* 三级质控 */}
                     {item.nodeCode == 'dept_handle' && (
                       <React.Fragment>
                         {item.expand && (
@@ -37,13 +38,29 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                             {item.expand}
                           </div>
                         )}
+                        {item.handleContent && (
+                          <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
+                            {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
+                            {item.handleContent}
+                          </div>
+                        )}
                       </React.Fragment>
                     )}
-                    {item.handleContent && (
-                      <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
-                        {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
-                        {item.handleContent}
-                      </div>
+                    {/* 二级质控 */}
+                    {item.nodeCode == 'big_dept_handle' && (
+                      <React.Fragment>
+                        {item.measureGroupList &&
+                          item.measureGroupList.map((item: any) => (
+                            <div className='text-box'>
+                              <div className='text-box-title'>{item.itemName}：</div>
+                              <div>
+                                {item.measureList.map((item: any) => (
+                                  <span>{item.measureName};</span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                      </React.Fragment>
                     )}
                   </React.Fragment>
                 ) : (
