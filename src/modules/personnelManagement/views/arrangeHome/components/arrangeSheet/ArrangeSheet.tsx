@@ -136,7 +136,7 @@ export default observer(function ArrangeSheet(props: Props) {
           (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
         setSurplusWidth(false)
       } else {
-        ;(document as any).querySelector('#baseTable').style.width = '100%'
+        ;(document as any).querySelector('#baseTable').style.width = 'auto'
         setSurplusWidth(240)
       }
     } catch (error) {}
