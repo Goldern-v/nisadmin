@@ -5,6 +5,7 @@ import { dateDiff } from 'src/utils/date/dateDiff'
 import moment from 'moment'
 import { arrangeService } from '../services/ArrangeService'
 import monnet from 'src/vendors/moment'
+import { message } from 'src/vendors/antd'
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   @observable public sheetTableData: any = []
@@ -116,9 +117,11 @@ class SheetViewModal {
   }
 
   saveSheetTableData() {
-    this.tableLoading = false
-    arrangeService.saveOrUpdate()
-    this.getSheetTableData()
+    this.tableLoading = true
+    arrangeService.saveOrUpdate().then((res) => {
+      message.success('保存成功')
+      this.getSheetTableData()
+    })
   }
 
   init() {

@@ -19,8 +19,7 @@ export default function TopPart() {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk: () => {
-      }
+      onOk: () => {}
     })
   }
 
@@ -33,8 +32,7 @@ export default function TopPart() {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk: () => {
-      }
+      onOk: () => {}
     })
   }
 
@@ -47,8 +45,7 @@ export default function TopPart() {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk: () => {
-      }
+      onOk: () => {}
     })
   }
 
@@ -71,9 +68,7 @@ export default function TopPart() {
         <div className='item'>
           <div className='label data'>日期：</div>
           <div className='content'>
-            <DatePicker.RangePicker
-              style={{ width: 200 }}
-            />
+            <DatePicker.RangePicker style={{ width: 200 }} />
           </div>
         </div>
         <div className='item'>
@@ -92,19 +87,19 @@ export default function TopPart() {
           <Button>刷新排班人员</Button>
         </div>
         <div className='item'>
-          <Button onClick={sheetViewModal.saveSheetTableData}>暂存</Button>
+          <Button onClick={() => sheetViewModal.saveSheetTableData()}>暂存</Button>
         </div>
         <div className='item'>
-        <Button onClick={handlePush}>推送排班</Button>
+          <Button onClick={handlePush}>推送排班</Button>
         </div>
         <div className='item'>
-          <Button 
-          className='statistics' 
-          onClick={() => {
+          <Button
+            className='statistics'
+            onClick={() => {
               appStore.history.push('personnelManagement/arrangeHome')
-          }}
+            }}
           >
-          返回
+            返回
           </Button>
         </div>
       </div>
@@ -119,18 +114,18 @@ const Wrapper = styled.div`
     height: 70px;
     padding: 10px 20px;
     line-height: 70px;
-    .title{
+    .title {
       font-size: 20px;
       margin-left: 10px;
     }
     .item {
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: middle;
-    & > div {
       display: inline-block;
+      margin-right: 10px;
       vertical-align: middle;
+      & > div {
+        display: inline-block;
+        vertical-align: middle;
+      }
     }
-  }
   }
 `
