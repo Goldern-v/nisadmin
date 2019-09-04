@@ -72,23 +72,22 @@ export default observer(function SelectCon() {
     }
   }
 
+
   // 科室
   const handleChange = (value: any) => {
     setDeptCode(value)
     selectViewModal.setParams('deptCode', value)
-  }
-
-  // 分组变化数据
-  const groupChange = (value: any) => {
-    setGroup(value)
-    selectViewModal.setParams('group', value)
+    let obj = {
+      deptCode: value
+    }
+    arrangeService.getByDeptCode(obj).then((res) => {
+      setGroupList(res.data)
+    })
   }
 
   // 分组数据
-  const handleGroupChange = () => {
-    arrangeService.getByDeptCode(deptCode).then((res) => {
-      setGroupList(res.data)
-    })
+  const handleGroupChange = (value: any) => {
+    selectViewModal.setParams('group', value)
   }
 
   // 导出Excel
@@ -161,7 +160,7 @@ export default observer(function SelectCon() {
         <div className='item'>
           <div className='label'>分组：</div>
           <div className='content'>
-            <Select value={group} onChange={groupChange} showSearch style={{ width: 170 }}>
+            <Select value={group} onChange={handleGroupChange} showSearch style={{ width: 170 }}>
               <Select.Option key='' value=''>
                 全部
               </Select.Option>

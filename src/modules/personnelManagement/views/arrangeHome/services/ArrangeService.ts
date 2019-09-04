@@ -48,7 +48,7 @@ export default class ArrangeService extends BaseApiService {
   // 按科室查找人员分组列表
   public getByDeptCode(obj: any) {
     obj = {
-      deptCode: selectViewModal.params.deptCode // number
+      deptCode: obj.deptCode // number
     }
     return this.get(`/schSettingNurseGroup/getByDeptCode/${obj.deptCode}`)
   }
