@@ -57,7 +57,7 @@ export default function ExpectSettingModal(props: Props) {
     },
     {
       title: '操作',
-      dataIndex: 'cz',
+      dataIndex: '操作',
       key: '8',
       width: 100,
       align: 'center',
@@ -74,11 +74,11 @@ export default function ExpectSettingModal(props: Props) {
           </DoCon>
         )
       }
-    }  
+    }
   ]
 
-  const getMealList = () =>{
-    if(effect){
+  const getMealList = () => {
+    if (effect) {
       let obj = {
         startTime: selectViewModal.params.startTime,
         endTime: selectViewModal.params.endTime,
@@ -101,7 +101,7 @@ export default function ExpectSettingModal(props: Props) {
             array.push(data)
           })
         setTableData(array)
-      })    
+      })
     }
   }
 
@@ -114,35 +114,30 @@ export default function ExpectSettingModal(props: Props) {
     setEffect(false)
   }, [])
 
-  const handleOk = () =>{
-  }
+  const handleOk = () => {}
   return (
     <Wrapper>
-        <Modal
-          className='modal'
-          title='期望排班'
-          width='800px'
-          okText='全部填入'
-          cancelText='返回'
-          onOk={handleOk}
-          visible={visible} 
-          onCancel={onCancel}
-          forceRender
-        >
-          <BaseTable
-            dataSource={tableData}
-            columns={columns}
-            loading={loadingTable}
-          />
-        </Modal>
+      <Modal
+        className='modal'
+        title='期望排班'
+        width='800px'
+        okText='全部填入'
+        cancelText='返回'
+        onOk={handleOk}
+        visible={visible}
+        onCancel={onCancel}
+        forceRender
+      >
+        <BaseTable dataSource={tableData} columns={columns} loading={loadingTable} wrapperStyle={{ padding: 0 }} />
+      </Modal>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
- #baseTable{
-   padding:0px 0px !important;
- }
+  #baseTable {
+    padding: 0px 0px !important;
+  }
 `
 const TitleCon = styled.div`
   height: 35px;

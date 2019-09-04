@@ -29,6 +29,8 @@ export default function EditArrangePage() {
 }
 const Wrapper = styled.div`
   background: #fff;
+  padding-bottom: 14px;
+  margin-bottom: -14px;
   .contain {
     display: flex;
     padding: 0 10px;

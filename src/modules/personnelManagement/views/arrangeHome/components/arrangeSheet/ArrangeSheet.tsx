@@ -140,6 +140,10 @@ export default observer(function ArrangeSheet(props: Props) {
         setSurplusWidth(240)
       }
     } catch (error) {}
+    try {
+      let remark = sheetViewModal.remark
+      ;(document as any).querySelector('.remark-con.real textarea').value = remark
+    } catch (error) {}
   })
 
   let remark = sheetViewModal.remark
