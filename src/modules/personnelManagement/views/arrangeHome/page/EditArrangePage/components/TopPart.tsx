@@ -81,7 +81,9 @@ export default observer(function TopPart() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        arrangeService.findSysnNurse()
+        arrangeService.findSysnNurse().then((res) => {
+          message.success('操作成功')
+        })
       }
     })
   }

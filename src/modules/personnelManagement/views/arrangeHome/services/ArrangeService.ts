@@ -97,8 +97,8 @@ export default class ArrangeService extends BaseApiService {
   //同步排班人员
   public findSysnNurse() {
     const postData = {
-      startDate: selectViewModal.params.startTime,
-      endDate: selectViewModal.params.endTime,
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
       deptCode: selectViewModal.params.deptCode,
       nurseGroup: selectViewModal.params.group
     }
