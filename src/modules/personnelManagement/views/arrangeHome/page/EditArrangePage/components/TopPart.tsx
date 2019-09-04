@@ -7,7 +7,8 @@ import { observer } from 'mobx-react-lite'
 import { arrangeService } from '../../../services/ArrangeService'
 import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 import { selectViewModal } from '../../../viewModal/SelectViewModal'
-
+import ExpectSettingModal from '../../../modal/ExpectSettingModal'
+import createModal from 'src/libs/createModal'
 import { appStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 
@@ -16,14 +17,9 @@ import moment from 'moment'
 export interface Props {}
 
 export default observer(function TopPart() {
-
   const [date, setDate] = useState([] as any[])
   const [isInit, setIsInit] = useState(true)
-
-  //期望排班
-  const handleExpect = () => {
-    emitter.emit('期望排班设置')
-  }
+  let expectSettingModal = createModal(ExpectSettingModal)
 
   //重置排班
   const handleReset = () => {
@@ -65,7 +61,12 @@ export default observer(function TopPart() {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk: () => {}
+      onOk: () => {
+        arrangeService.push().then((res) => {
+          message.success('推送成功')
+          sheetViewModal.getSheetTableData()
+        })
+      }
     })
   }
 
@@ -116,7 +117,7 @@ export default observer(function TopPart() {
           <Button onClick={handleReset}>重置排班</Button>
         </div>
         <div className='item'>
-          <Button onClick={handleExpect}>期望排班</Button>
+          <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
         </div>
         <div className='item'>
           <Button onClick={handleCopy}>复制排班</Button>
@@ -141,6 +142,7 @@ export default observer(function TopPart() {
           </Button>
         </div>
       </div>
+      <expectSettingModal.Component />
     </Wrapper>
   )
 })

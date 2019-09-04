@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import ArrangeSheet from '../../components/arrangeSheet/ArrangeSheet'
 import TopPart from './components/TopPart'
-import ExpectSetting from './components/ExpectSetting'
 import FlightMenu from './components/FlightMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { DatePicker, Modal } from 'antd'
@@ -17,7 +16,6 @@ export default function EditArrangePage() {
   return (
     <Wrapper>
       <TopPart />
-      <ExpectSetting />
       <div className='contain'>
         <div className='left-part'>
           <ArrangeSheet isEdit={true} surplusHeight={232} />

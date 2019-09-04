@@ -3,17 +3,27 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal, Input } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import emitter from 'src/libs/ev'
-import { arrangeService } from '../../../services/ArrangeService'
-import { selectViewModal } from '../../../viewModal/SelectViewModal';
+import { arrangeService } from '../services/ArrangeService'
+import { selectViewModal } from '../viewModal/SelectViewModal'
+import { ModalComponentProps } from 'src/libs/createModal'
 
+export interface Props extends ModalComponentProps {
+  id: string
+}
 
 export interface Props {}
 
-export default function ExpectSetting() {
-  const [editingKey, setEditingKey] = useState(false)
+export default function ExpectSettingModal(props: Props) {
+  // const [editingKey, setEditingKey] = useState(false)
   const [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
   const [effect, setEffect] = useState(true)
+  let { visible, onCancel } = props
+
+  const onFieldChange = () => {}
+  const onOk = () => {
+    onCancel()
+  }
 
   const columns: any = [
     {
@@ -104,28 +114,20 @@ export default function ExpectSetting() {
     setEffect(false)
   }, [])
 
-  /** 监听事件 --- 控制添加弹窗的状态*/
-  emitter.removeAllListeners('期望排班设置')
-  emitter.addListener('期望排班设置', () => {
-    setEditingKey(true)
-  })
-
   const handleOk = () =>{
   }
   return (
     <Wrapper>
         <Modal
           className='modal'
-          centered={true}
           title='期望排班'
           width='800px'
           okText='全部填入'
           cancelText='返回'
-          visible={editingKey}
-          onCancel={() => {
-            setEditingKey(false)
-          }}
           onOk={handleOk}
+          visible={visible} 
+          onCancel={onCancel}
+          forceRender
         >
           <BaseTable
             dataSource={tableData}
