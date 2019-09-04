@@ -73,7 +73,7 @@ export default observer(function ExpectSettingModal(props: Props) {
           let status = 0 /** 0-未填入 1-已经填入 2-休假 */
           let cellObj = sheetViewModal.getCellObj(record.userId, record.startDate)
           if (cellObj) {
-            if ((cellObj.rangeName = record.rangeName && cellObj.shiftType == '1')) {
+            if (cellObj.rangeName == record.rangeName && cellObj.shiftType == '1') {
               status = 1
             }
             if (cellObj.shiftType == '休假') {
@@ -95,6 +95,9 @@ export default observer(function ExpectSettingModal(props: Props) {
   useEffect(() => {}, [])
 
   const handleOk = () => {
+    sheetViewModal.expectList.forEach((record: any) => {
+      enter(record)
+    })
     onCancel()
   }
 
@@ -107,8 +110,8 @@ export default observer(function ExpectSettingModal(props: Props) {
       cellObj!.effectiveTimeOld = record.effectiveTime
       cellObj!.shiftType = '1'
     }
-    // setLoadingTable(true)
-    // setTimeout(() => setLoadingTable(false), 100)
+    setLoadingTable(true)
+    setTimeout(() => setLoadingTable(false), 100)
   }
   return (
     <Wrapper>
@@ -123,11 +126,7 @@ export default observer(function ExpectSettingModal(props: Props) {
         onCancel={onCancel}
         forceRender
       >
-        <BaseTable
-          dataSource={sheetViewModal.expectList.map((item: any) => item)}
-          columns={columns}
-          wrapperStyle={{ padding: 0 }}
-        />
+        <BaseTable dataSource={sheetViewModal.expectList} columns={columns} wrapperStyle={{ padding: 0 }} />
       </Modal>
     </Wrapper>
   )
