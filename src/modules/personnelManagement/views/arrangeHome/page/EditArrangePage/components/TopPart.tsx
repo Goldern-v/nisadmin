@@ -17,6 +17,10 @@ import moment from 'moment'
 export interface Props {}
 
 export default observer(function TopPart() {
+
+  const [date, setDate] = useState([] as any[])
+  const [isInit, setIsInit] = useState(true)
+
   //期望排班
   const handleExpect = () => {
     emitter.emit('期望排班设置')
@@ -64,10 +68,24 @@ export default observer(function TopPart() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
+        arrangeService.push().then((res) => {
+          sheetViewModal.init()
+          message.success('推送成功')
+        })
       }
     })
   }
 
+  let handleStatusChange = () => {
+    setDate([moment(appStore.queryObj.startTime), moment(appStore.queryObj.endTime)])
+    setIsInit(false)
+  }
+  useEffect(() => {
+    if (isInit) {
+      handleStatusChange()
+    }
+  }); 
+  
   return (
     <Wrapper>
       <BreadcrumbBox
@@ -88,7 +106,7 @@ export default observer(function TopPart() {
           <div className='label data'>日期：</div>
           <div className='content'>
             <DatePicker.RangePicker
-              // value={[selectViewModal.params.startTime,selectViewModal.params.endTime]}
+              value={date}
               disabled
               style={{ width: 200 }}
             />

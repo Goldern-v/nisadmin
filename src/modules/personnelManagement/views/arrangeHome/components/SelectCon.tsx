@@ -62,7 +62,7 @@ export default observer(function SelectCon() {
     if (dates && dates[0] && dates[1]) {
       let isOk = (dates[1]._d.getTime() - dates[0]._d.getTime()) > 2678400000
       if (isOk) {
-        dates[1]._d = new Date(dates[0]._d.getTime() + 2678400000)
+        dates[1]._d = new Date(dates[0]._d.getTime() + 2592000000)
         message.warning('日期范围不能超过31天！')
       }
       setDate(dates)
@@ -167,7 +167,7 @@ export default observer(function SelectCon() {
           <Button
             className='statistics'
             onClick={() => {
-              appStore.history.push('/personnelManagement/EditArrangePage')
+              appStore.history.push(`/personnelManagement/EditArrangePage?startTime=${moment(date[0]._d).format('YYYY-MM-DD')}&&endTime=${moment(date[1]._d).format('YYYY-MM-DD')}`)
             }}
           >
             编辑排班

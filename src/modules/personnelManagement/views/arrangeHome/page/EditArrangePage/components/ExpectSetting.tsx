@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal, Input } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import emitter from 'src/libs/ev'
@@ -13,7 +13,7 @@ export default function ExpectSetting() {
   const [editingKey, setEditingKey] = useState(false)
   const [loadingTable, setLoadingTable] = useState(false)
   const [tableData, setTableData] = useState([])
-
+  const [effect, setEffect] = useState(true)
 
   const columns: any = [
     {
@@ -68,30 +68,36 @@ export default function ExpectSetting() {
   ]
 
   const getMealList = () =>{
-    let obj = {
-      startTime: selectViewModal.params.startTime,
-      endTime: selectViewModal.params.endTime,
-      deptCode: selectViewModal.params.deptCode
+    if(effect){
+      let obj = {
+        startTime: selectViewModal.params.startTime,
+        endTime: selectViewModal.params.endTime,
+        deptCode: selectViewModal.params.deptCode
+      }
+      setLoadingTable(true)
+      arrangeService.getByDeptCodeAndDate(obj).then((res) => {
+        setLoadingTable(false)
+        let array: any = []
+        res.data &&
+          res.data.length &&
+          res.data.map((item: any, i: any) => {
+            item.key = i
+            array.push(item.schExpects)[0]
+          })
+        setTableData(array)
+        console.log(array,"res.data.schExpects")
+      })
     }
-    setLoadingTable(true)
-    arrangeService.getByDeptCodeAndDate(obj).then((res) => {
-      setLoadingTable(false)
-      let array: any = []
-      res.data.schExpects &&
-        res.data.schExpects.length &&
-        res.data.schExpects.map((item: any, i: any) => {
-          item.key = i
-          array.push(item)
-        })
-      setTableData(array)
-    })
   }
 
   useEffect(() => {
+    setEffect(true)
     getMealList()
   }, [])
 
-
+  useLayoutEffect(() => {
+    setEffect(false)
+  }, [])
 
   /** 监听事件 --- 控制添加弹窗的状态*/
   emitter.removeAllListeners('期望排班设置')
@@ -115,7 +121,6 @@ export default function ExpectSetting() {
             setEditingKey(false)
           }}
           onOk={handleOk}
-          // confirmLoading={confirmLoading}
         >
           <BaseTable
             dataSource={tableData}

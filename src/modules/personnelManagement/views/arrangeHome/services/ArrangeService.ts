@@ -8,7 +8,8 @@ export default class ArrangeService extends BaseApiService {
     obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
-      deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode,
+      nurseGroup: selectViewModal.params.group
     }
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
@@ -80,6 +81,20 @@ export default class ArrangeService extends BaseApiService {
     }
     return this.post(`/copyPrevSettingRange`, obj)
   }
+
+  //推送排班
+  public push(obj?: any) {
+    obj = {
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      setting: sheetViewModal.sheetTableData,
+      remark: sheetViewModal.remark,
+      deptCode: selectViewModal.params.deptCode,
+      status: "1"
+    }
+    return this.post(`/scheduling/saveOrUpdate`, obj)
+  }
+  
 }
 
 export const arrangeService = new ArrangeService()
