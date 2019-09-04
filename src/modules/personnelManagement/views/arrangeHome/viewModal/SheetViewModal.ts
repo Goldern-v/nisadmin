@@ -87,11 +87,11 @@ class SheetViewModal {
   }
 
   getSheetTableData() {
-    // if (localStorage.sheetTableData_dev) {
-    //   this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
-    //   this.allCell = this.getAllCell()
-    //   return
-    // }
+    if (localStorage.sheetTableData_dev) {
+      this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
+      this.allCell = this.getAllCell()
+      return
+    }
     this.tableLoading = true
     arrangeService.findCreateOrUpdate().then((res) => {
       this.tableLoading = false

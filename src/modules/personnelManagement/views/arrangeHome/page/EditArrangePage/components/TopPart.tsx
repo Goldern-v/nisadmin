@@ -16,6 +16,10 @@ import moment from 'moment'
 export interface Props {}
 
 export default observer(function TopPart() {
+
+  const [date, setDate] = useState([] as any[])
+  const [isInit, setIsInit] = useState(true)
+
   //期望排班
   const handleExpect = () => {
     emitter.emit('期望排班设置')
@@ -65,6 +69,16 @@ export default observer(function TopPart() {
     })
   }
 
+  let handleStatusChange = () => {
+    setDate([moment(appStore.queryObj.startTime), moment(appStore.queryObj.endTime)])
+    setIsInit(false)
+  }
+  useEffect(() => {
+    if (isInit) {
+      handleStatusChange()
+    }
+  }); 
+  
   return (
     <Wrapper>
       <BreadcrumbBox
