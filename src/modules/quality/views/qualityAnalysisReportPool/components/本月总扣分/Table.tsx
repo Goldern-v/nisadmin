@@ -33,14 +33,14 @@ export default function Table(props: Props) {
           {list.map((item, index) => (
             <tr key={index}>
               <td style={{ textAlign: 'center' }}>{item.qcGroupName}</td>
-              <td style={{ textAlign: 'center' }}>{item.deductScore}</td>
+              <td style={{ textAlign: 'center' }}>{Number(item.deductScore).toFixed(2)}</td>
               <td>{item.deductDeptSize}</td>
               <td>{item.scorePercent + '%'}</td>
             </tr>
           ))}
           <tr>
             <td>合计</td>
-            <td style={{ borderRight: 0 }}>{totalSorce}</td>
+            <td style={{ borderRight: 0 }}>{Number(totalSorce).toFixed(2)}</td>
             <td style={{ borderLeft: 0 }} />
             <td>100%</td>
           </tr>
