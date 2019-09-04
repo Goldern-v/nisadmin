@@ -81,12 +81,17 @@ export default function ExpectSetting() {
         res.data &&
           res.data.length &&
           res.data.map((item: any, i: any) => {
-            item.key = i
-            array.push(item.schExpects)[0]
+            let data = {
+              key: i + 'abc',
+              startDate: item.schExpects[0] ? item.schExpects[0].startDate : '',
+              rangeName: item.schExpects[0] ? item.schExpects[0].rangeName : '',
+              shiftType: item.schExpects[0] ? item.schExpects[0].shiftType : '',
+              detail: item.schExpects[0] ? item.schExpects[0].detail : ''
+            }
+            array.push(data)
           })
         setTableData(array)
-        console.log(array,"res.data.schExpects")
-      })
+      })    
     }
   }
 
@@ -133,6 +138,9 @@ export default function ExpectSetting() {
 }
 
 const Wrapper = styled.div`
+ #baseTable{
+   padding:0px 0px !important;
+ }
 `
 const TitleCon = styled.div`
   height: 35px;
