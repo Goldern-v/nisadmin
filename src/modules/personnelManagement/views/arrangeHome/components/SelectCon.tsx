@@ -72,7 +72,6 @@ export default observer(function SelectCon() {
     }
   }
 
-
   // 科室
   const handleChange = (value: any) => {
     setDeptCode(value)
@@ -87,6 +86,7 @@ export default observer(function SelectCon() {
 
   // 分组数据
   const handleGroupChange = (value: any) => {
+    setGroup(value)
     selectViewModal.setParams('group', value)
   }
 
