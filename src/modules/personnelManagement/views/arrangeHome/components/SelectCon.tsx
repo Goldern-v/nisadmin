@@ -179,11 +179,7 @@ export default observer(function SelectCon() {
           <Button
             className='statistics'
             onClick={() => {
-              appStore.history.push(
-                `/personnelManagement/EditArrangePage?startTime=${moment(date[0]._d).format(
-                  'YYYY-MM-DD'
-                )}&&endTime=${moment(date[1]._d).format('YYYY-MM-DD')}`
-              )
+              appStore.history.push(`/personnelManagement/EditArrangePage`)
             }}
           >
             编辑排班

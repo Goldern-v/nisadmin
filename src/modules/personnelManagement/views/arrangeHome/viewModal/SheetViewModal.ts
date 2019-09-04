@@ -43,12 +43,17 @@ class SheetViewModal {
     return days
   }
 
-  getAllCell() {
+  getAllCell(canEdit: boolean) {
     let cellList = []
     for (let i = 0; i < this.sheetTableData.length; i++) {
       for (let j = 0; j < this.sheetTableData[i]!.settingDtos.length; j++) {
         cellList.push(this.sheetTableData[i].settingDtos[j])
       }
+    }
+    if (canEdit) {
+      cellList = cellList.filter((item) => {
+        return !this.analyseCell(item).isTwoDaysAgo
+      })
     }
     return cellList
   }
@@ -92,7 +97,7 @@ class SheetViewModal {
 
   /** 重置排班 */
   cleanAllCell() {
-    let allCell = this.getAllCell()
+    let allCell = this.getAllCell(true)
     for (let cell of allCell) {
       cleanCell(cell)
     }
@@ -111,7 +116,7 @@ class SheetViewModal {
       this.tableLoading = false
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark
-      this.allCell = this.getAllCell()
+      this.allCell = this.getAllCell(true)
       localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
     })
   }

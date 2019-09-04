@@ -210,16 +210,20 @@ export default observer(function Cell(props: Props) {
   const content = (
     <div>
       <div>
-        {cellObj.effectiveTimeOld > cellObj.effectiveTime ? '减少' : '增加'}了
-        {Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld)}工时
+        备注:
+        {cellObj.detail && <span>{cellObj.detail}</span>}
+        {!cellObj.detail && <span style={{ color: '#999' }}>无</span>}
       </div>
-      <div>备注:{cellObj.detail}</div>
     </div>
   )
   return (
     <Popover
       content={content}
-      title='调整工时'
+      title={
+        cellObj.effectiveTimeOld > cellObj.effectiveTime
+          ? '减少'
+          : '增加' + '了' + Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) + '工时'
+      }
       trigger='hover'
       placement='rightTop'
       visible={hoverShow}
