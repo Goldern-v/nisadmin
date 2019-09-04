@@ -57,6 +57,12 @@ export default function ManagementSummary() {
 
   const columns: ColumnProps<any>[] = [
     {
+      title: '序号',
+      width: 50,
+      align: 'center',
+      render: (text: string, record: any, idx: number) => idx + 1
+    },
+    {
       title: '质控内容',
       dataIndex: 'typeName',
       align: 'center',
@@ -193,7 +199,7 @@ export default function ManagementSummary() {
         setTableLoading(false)
         if (res.data) {
           setDataTotal(res.data.totalPage * 100)
-          console.log(formatData(res.data.list), 'formatData(res.data.list)')
+          // console.log(formatData(res.data.list), 'formatData(res.data.list)')
           setTableData(formatData(res.data.list))
         }
       },

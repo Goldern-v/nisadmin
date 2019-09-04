@@ -50,7 +50,7 @@ export default function EditEffectiveTimeModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={80}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`工时`} name='effectiveTime' required labelWidth={50}>
+            <Form.Field label={`总工时`} name='effectiveTime' required labelWidth={50}>
               <InputNumber />
             </Form.Field>
           </Col>

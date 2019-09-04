@@ -11,7 +11,7 @@ import { scheduleStore } from 'src/stores'
 import { arrangeService } from '../services/ArrangeService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 
-export interface Props { }
+export interface Props {}
 
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true)
@@ -23,44 +23,44 @@ export default observer(function SelectCon() {
   /** 日期*/
   // 获取星期一
   let getMonday = () => {
-    let today: any = new Date();
-    let weekday = today.getDay();
-    let dd = new Date(1000 * 60 * 60 * 24 * (1 - weekday) + today.getTime());
-    let y = dd.getFullYear();
-    let m: any = dd.getMonth() + 1; //获取当前月份的日期
+    let today: any = new Date()
+    let weekday = today.getDay()
+    let dd = new Date(1000 * 60 * 60 * 24 * (1 - weekday) + today.getTime())
+    let y = dd.getFullYear()
+    let m: any = dd.getMonth() + 1 //获取当前月份的日期
     m = parseInt(m, 10)
     if (m < 10) {
-      m = "0" + m;
+      m = '0' + m
     }
-    let d: any = dd.getDate();
+    let d: any = dd.getDate()
     d = parseInt(d, 10)
     if (d < 10) {
-      d = "0" + d;
+      d = '0' + d
     }
     return y + '-' + m + '-' + d
   }
   // 获取星期日
   let getSunday = () => {
-    var today = new Date();
-    var weekday = today.getDay();
-    var dd = new Date(1000 * 60 * 60 * 24 * (7 - weekday) + today.getTime());
-    var y = dd.getFullYear();
-    var m: any = dd.getMonth() + 1;//获取当前月份的日期
-    m = parseInt(m, 10);
+    var today = new Date()
+    var weekday = today.getDay()
+    var dd = new Date(1000 * 60 * 60 * 24 * (7 - weekday) + today.getTime())
+    var y = dd.getFullYear()
+    var m: any = dd.getMonth() + 1 //获取当前月份的日期
+    m = parseInt(m, 10)
     if (m < 10) {
-      m = "0" + m;
+      m = '0' + m
     }
-    var d: any = dd.getDate();
-    d = parseInt(d, 10);
+    var d: any = dd.getDate()
+    d = parseInt(d, 10)
     if (d < 10) {
-      d = "0" + d;
+      d = '0' + d
     }
     return y + '-' + m + '-' + d
   }
   // 日期变化函数
   const dateChange = (dates: any, dateString: any) => {
     if (dates && dates[0] && dates[1]) {
-      let isOk = (dates[1]._d.getTime() - dates[0]._d.getTime()) > 2678400000
+      let isOk = dates[1]._d.getTime() - dates[0]._d.getTime() > 2592000000
       if (isOk) {
         dates[1]._d = new Date(dates[0]._d.getTime() + 2592000000)
         message.warning('日期范围不能超过31天！')
@@ -71,7 +71,6 @@ export default observer(function SelectCon() {
       selectViewModal.setParams('endTime', moment(dates[1]._d).format('YYYY-MM-DD'))
     }
   }
-
 
   // 科室
   const handleChange = (value: any) => {
@@ -97,7 +96,7 @@ export default observer(function SelectCon() {
     let data = {
       deptCode: scheduleStore.getDeptCode(),
       startTime: moment(date[0]._d).format('YYYY-MM-DD'),
-      endTime: moment(date[1]._d).format('YYYY-MM-DD'),
+      endTime: moment(date[1]._d).format('YYYY-MM-DD')
     }
     arrangeService.export(data).then((res) => {
       fileDownload(res)
@@ -115,8 +114,11 @@ export default observer(function SelectCon() {
     if (isInit) {
       handleStatusChange()
     }
-  });
+  })
 
+  const toPath = (path: string) => {
+    appStore.history.push(path)
+  }
 
   return (
     <Wrapper>
@@ -126,9 +128,23 @@ export default observer(function SelectCon() {
           <div className='content'>
             <DatePicker.RangePicker
               ranges={{
-                '本月': [moment().startOf('month'), moment().endOf('month')],
-                '上月': [moment().month(moment().month() - 1).startOf('month'), moment().month(moment().month() - 1).endOf('month')],
-                '下月': [moment().month(moment().month() + 1).startOf('month'), moment().month(moment().month() + 1).endOf('month')],
+                本月: [moment().startOf('month'), moment().endOf('month')],
+                上月: [
+                  moment()
+                    .month(moment().month() - 1)
+                    .startOf('month'),
+                  moment()
+                    .month(moment().month() - 1)
+                    .endOf('month')
+                ],
+                下月: [
+                  moment()
+                    .month(moment().month() + 1)
+                    .startOf('month'),
+                  moment()
+                    .month(moment().month() + 1)
+                    .endOf('month')
+                ]
               }}
               style={{ width: 200 }}
               value={date}
@@ -145,13 +161,10 @@ export default observer(function SelectCon() {
         <div className='item'>
           <div className='label'>分组：</div>
           <div className='content'>
-            <Select
-              value={group}
-              onChange={groupChange}
-              showSearch
-              style={{ width: 170 }}
-            >
-              <Select.Option key='' value=''>全部</Select.Option>
+            <Select value={group} onChange={groupChange} showSearch style={{ width: 170 }}>
+              <Select.Option key='' value=''>
+                全部
+              </Select.Option>
               {groupList.map((item: any) => (
                 <Select.Option value={item.id} key={item.id}>
                   {item.groupName}
@@ -161,7 +174,9 @@ export default observer(function SelectCon() {
           </div>
         </div>
         <div className='item'>
-          <Button onClick={() => sheetViewModal.init()} className='statistics'>查询</Button>
+          <Button onClick={() => sheetViewModal.getSheetTableData()} className='statistics'>
+            查询
+          </Button>
         </div>
         <div className='item'>
           <Button
@@ -179,13 +194,17 @@ export default observer(function SelectCon() {
           </Button>
         </div>
       </LeftIcon>
-      <RightIcon>
-        <span>排班人员设置</span>
+      {/* <RightIcon>
+        <span onClick={() => toPath('/personnelManagement/DeptBorrow')}>科室借用</span>
         <span> | </span>
-        <span>班次设置</span>
+        <span onClick={() => toPath('/personnelManagement/personnelSetting')}>人员分组</span>
         <span> | </span>
-        <span>排班套餐设置</span>
-      </RightIcon>
+        <span onClick={() => toPath('/personnelManagement/nurseSetting')}>排班人员设置</span>
+        <span> | </span>
+        <span onClick={() => toPath('/personnelManagement/ShiftSettingView')}>班次设置</span>
+        <span> | </span>
+        <span onClick={() => toPath('/personnelManagement/mealSetting')}>排班套餐设置</span>
+      </RightIcon> */}
     </Wrapper>
   )
 })

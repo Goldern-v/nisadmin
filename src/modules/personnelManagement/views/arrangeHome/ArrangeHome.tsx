@@ -9,9 +9,6 @@ import { observer } from 'src/vendors/mobx-react-lite'
 export interface Props {}
 
 export default observer(function ArrangeHome() {
-  useEffect(() => {
-    sheetViewModal.init()
-  }, [])
   return (
     <Wrapper>
       <SelectCon />

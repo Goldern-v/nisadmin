@@ -13,7 +13,6 @@ import emitter from 'src/libs/ev'
 
 import moment from 'moment'
 
-
 export interface Props {}
 
 export default observer(function TopPart() {
@@ -35,8 +34,7 @@ export default observer(function TopPart() {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk: () => {
-      }
+      onOk: () => {}
     })
   }
 
@@ -67,12 +65,7 @@ export default observer(function TopPart() {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk: () => {
-        arrangeService.push().then((res) => {
-          sheetViewModal.init()
-          message.success('推送成功')
-        })
-      }
+      onOk: () => {}
     })
   }
 
@@ -106,7 +99,11 @@ export default observer(function TopPart() {
           <div className='label data'>日期：</div>
           <div className='content'>
             <DatePicker.RangePicker
-              value={date}
+              value={
+                selectViewModal.params.startTime
+                  ? [moment(selectViewModal.params.startTime), moment(selectViewModal.params.endTime)]
+                  : undefined
+              }
               disabled
               style={{ width: 200 }}
             />
@@ -128,19 +125,19 @@ export default observer(function TopPart() {
           <Button onClick={() => sheetViewModal.init()}>刷新排班人员</Button>
         </div>
         <div className='item'>
-          <Button onClick={sheetViewModal.saveSheetTableData}>暂存</Button>
+          <Button onClick={() => sheetViewModal.saveSheetTableData()}>暂存</Button>
         </div>
         <div className='item'>
-        <Button onClick={handlePush}>推送排班</Button>
+          <Button onClick={handlePush}>推送排班</Button>
         </div>
         <div className='item'>
-          <Button 
-          className='statistics' 
-          onClick={() => {
+          <Button
+            className='statistics'
+            onClick={() => {
               appStore.history.push('personnelManagement/arrangeHome')
-          }}
+            }}
           >
-          返回
+            返回
           </Button>
         </div>
       </div>
@@ -155,18 +152,18 @@ const Wrapper = styled.div`
     height: 70px;
     padding: 10px 20px;
     line-height: 70px;
-    .title{
+    .title {
       font-size: 20px;
       margin-left: 10px;
     }
     .item {
-    display: inline-block;
-    margin-right: 10px;
-    vertical-align: middle;
-    & > div {
       display: inline-block;
+      margin-right: 10px;
       vertical-align: middle;
+      & > div {
+        display: inline-block;
+        vertical-align: middle;
+      }
     }
-  }
   }
 `

@@ -21,9 +21,11 @@ export interface Props {
 
 export default observer(function ArrangeSheet(props: Props) {
   let { isEdit, surplusHeight } = props
+  const [surplusWidth, setSurplusWidth]: any = useState(false)
   let contextMenu = createContextMenu()
   let editEffectiveTimeModal = createModal(EditEffectiveTimeModal)
   let editVacationCountModal = createModal(EditVacationCountModal)
+
   let columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -85,7 +87,7 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 80
+      width: 70
       // fixed: 'right'
     },
     {
@@ -95,7 +97,7 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 80
+      width: 70
       // fixed: 'right'
     },
     {
@@ -105,7 +107,7 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 80
+      width: 70
       // fixed: 'right'
     }
   ]
@@ -125,6 +127,19 @@ export default observer(function ArrangeSheet(props: Props) {
         ;(document as any).querySelector('.remark-con.real')!.style.marginLeft = e.target.scrollLeft + 'px'
       })
     } catch (error) {}
+    try {
+      if (
+        (document as any).querySelector('.ant-table-body').scrollWidth ==
+        (document as any).querySelector('.ant-table-body').clientWidth
+      ) {
+        ;(document as any).querySelector('#baseTable').style.width =
+          (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
+        setSurplusWidth(false)
+      } else {
+        ;(document as any).querySelector('#baseTable').style.width = 'auto'
+        setSurplusWidth(240)
+      }
+    } catch (error) {}
   })
 
   let remark = sheetViewModal.remark
@@ -133,7 +148,7 @@ export default observer(function ArrangeSheet(props: Props) {
       <BaseTable
         loading={sheetViewModal.tableLoading}
         surplusHeight={surplusHeight}
-        surplusWidth={200}
+        surplusWidth={surplusWidth}
         columns={columns}
         // fixedFooter={true}
         dataSource={sheetViewModal.sheetTableData}
@@ -167,6 +182,7 @@ export default observer(function ArrangeSheet(props: Props) {
   )
 })
 const Wrapper = styled.div`
+  background: #fff;
   #baseTable {
     .ant-table-body td,
     .ant-table-tbody td {

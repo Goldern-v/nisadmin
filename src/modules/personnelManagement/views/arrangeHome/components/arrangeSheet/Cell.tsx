@@ -23,14 +23,15 @@ export interface Props {
 }
 
 export default observer(function Cell(props: Props) {
-  let { contextMenu, dataSource, index, editEffectiveTimeModal, editVacationCountModal } = props
+  let { contextMenu, dataSource, index, editEffectiveTimeModal, editVacationCountModal, isEdit } = props
 
   const [hoverShow, setHoverShow] = useState(false)
 
-  let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : null
-  let [cellConfig, setCellConfig] = useState(sheetViewModal.analyseCell(cellObj))
+  let cellObj = index < dataSource.settingDtos.length ? dataSource.settingDtos[index] : {}
+  let cellConfig = sheetViewModal.analyseCell(cellObj)
 
   const onContextMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!isEdit) return
     event.preventDefault()
     if (cellConfig.isTwoDaysAgo) return
     sheetViewModal.selectedCell = cellObj
@@ -59,8 +60,7 @@ export default observer(function Cell(props: Props) {
               onOkCallBack(value: any) {
                 sheetViewModal.selectedCell.effectiveTime = value.effectiveTime
                 sheetViewModal.selectedCell.detail = value.detail
-                console.log(sheetViewModal.analyseCell(cellObj), 'sheetViewModal.analyseCell(cellObj)')
-                setCellConfig(sheetViewModal.analyseCell(cellObj))
+                // setCellConfig(sheetViewModal.analyseCell(cellObj))
               }
             })
           }
@@ -196,6 +196,7 @@ export default observer(function Cell(props: Props) {
   }
 
   const onClick = () => {
+    if (!isEdit) return
     if (cellConfig.isTwoDaysAgo) return
     sheetViewModal.selectedCell = cellObj
   }
