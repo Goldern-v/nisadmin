@@ -4,7 +4,7 @@ let timer: any = null
 /** 用于存放筛选条件等基础数据 */
 class SelectViewModal {
   constructor() {
-    if (!this.params.startTime) {
+    if (!this.params.startTime && sessionStorage.arrangeParams) {
       this.params = JSON.parse(sessionStorage.arrangeParams)
     }
   }
@@ -28,7 +28,7 @@ class SelectViewModal {
 
     timer && clearTimeout(timer)
     timer = setTimeout(() => {
-      sheetViewModal.init()
+      sheetViewModal.getSheetTableData()
     }, 100)
   }
 }

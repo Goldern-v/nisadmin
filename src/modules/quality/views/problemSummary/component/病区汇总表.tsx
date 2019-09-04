@@ -159,7 +159,7 @@ export default function 病区汇总表(props: Props) {
 
   return (
     <Wrapper>
-      <BaseTable surplusHeight={260} loading={loadingTable} dataSource={dataSource} columns={columns} />
+      <BaseTable surplusHeight={360} loading={loadingTable} dataSource={dataSource} columns={columns} />
     </Wrapper>
   )
 }

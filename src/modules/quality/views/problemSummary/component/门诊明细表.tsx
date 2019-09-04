@@ -44,7 +44,7 @@ export default function 门诊明细表(props: Props) {
 
   return (
     <Wrapper>
-      <BaseTable surplusHeight={260} loading={loadingTable} dataSource={dataSource} columns={columns} />
+      <BaseTable surplusHeight={240} loading={loadingTable} dataSource={dataSource} columns={columns} />
     </Wrapper>
   )
 }

@@ -203,8 +203,7 @@ const HeaderCon = styled.div`
 `
 const MidCon = styled(ScrollBox)`
   box-sizing: border-box;
-  flex: 1;
-  height: 0;
+  height: calc(100vh - 55px);
   margin: 0 15px 5px 15px;
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
@@ -216,8 +215,8 @@ const MidCon = styled(ScrollBox)`
 `
 const RadioCon = styled.div`
   position: absolute;
-  top: 30px;
-  right: 20px;
+  top: 20px;
+  right: 16px;
 `
 const Title = styled.div`
   font-size: 20px;
