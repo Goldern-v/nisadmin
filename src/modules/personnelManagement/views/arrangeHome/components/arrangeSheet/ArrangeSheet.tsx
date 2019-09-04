@@ -87,8 +87,9 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 70
-      // fixed: 'right'
+      width: 70,
+      dataIndex: 'thisWeekHour',
+      align: 'center'
     },
     {
       title: (
@@ -98,7 +99,6 @@ export default observer(function ArrangeSheet(props: Props) {
         </div>
       ),
       width: 70
-      // fixed: 'right'
     },
     {
       title: (
