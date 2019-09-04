@@ -420,7 +420,7 @@ export default function ToolBar() {
 const Wrapper = styled.div`
   /* background: #eee; */
   height: auto;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 10px 20px;
   display: inline-flex;
   width: 100%;
   align-items: flex-end;

@@ -8,10 +8,7 @@ import MainBox from './components/MainBox/MainBox'
 export interface Props extends RouteComponentProps {}
 
 export default function ShiftSettingView() {
-  
-  useEffect(() => {
-    
-  })
+  useEffect(() => {})
   return (
     <Wrapper>
       <ToolBarCon>
@@ -34,11 +31,10 @@ const MainBoxCon = styled.div`
   /* flex-direction: column; */
   /* height: 100%; */
   background: #fff;
-  position: fixed;
+  position: absolute;
   top: 120px;
   bottom: 0;
-  left: 0;
-  right: 0;
+  /* width: 100%; */
   /* border: 1px solid red; */
 `
 
