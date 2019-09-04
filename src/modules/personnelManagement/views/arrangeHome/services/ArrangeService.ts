@@ -90,11 +90,20 @@ export default class ArrangeService extends BaseApiService {
       setting: sheetViewModal.sheetTableData,
       remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode,
-      status: "1"
+      status: '1'
     }
     return this.post(`/scheduling/saveOrUpdate`, obj)
   }
-  
+  //同步排班人员
+  public findSysnNurse() {
+    const postData = {
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      deptCode: selectViewModal.params.deptCode,
+      nurseGroup: selectViewModal.params.group
+    }
+    return this.post(`/scheduling/findSysnNurse`, postData)
+  }
 }
 
 export const arrangeService = new ArrangeService()

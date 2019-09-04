@@ -34,8 +34,9 @@ const Wrapper = styled.div`
     padding: 0 10px;
   }
   .left-part {
-    width: 0;
-    flex: 1;
+    /* width: 0; */
+    /* flex: 1; */
+    max-width: calc(100vw - 220px);
     margin: -15px;
   }
   .right-part {

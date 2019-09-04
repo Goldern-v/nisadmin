@@ -6,6 +6,7 @@ import moment from 'moment'
 import { arrangeService } from '../services/ArrangeService'
 import monnet from 'src/vendors/moment'
 import { message } from 'src/vendors/antd'
+import { cleanCell } from '../components/arrangeSheet/cellClickEvent'
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   @observable public sheetTableData: any = []
@@ -25,7 +26,10 @@ class SheetViewModal {
   /** 时间段 */
   getDateList() {
     let days = []
-    let dayDiff = dateDiff(selectViewModal.params.startTime, selectViewModal.params.endTime)
+    let dayDiff =
+      selectViewModal.params.startTime && selectViewModal.params.endTime
+        ? dateDiff(selectViewModal.params.startTime, selectViewModal.params.endTime)
+        : 0
     if (dayDiff >= 0) {
       for (let i = 0; i <= dayDiff; i++) {
         days.push(
@@ -39,12 +43,17 @@ class SheetViewModal {
     return days
   }
 
-  getAllCell() {
+  getAllCell(canEdit: boolean) {
     let cellList = []
     for (let i = 0; i < this.sheetTableData.length; i++) {
       for (let j = 0; j < this.sheetTableData[i]!.settingDtos.length; j++) {
         cellList.push(this.sheetTableData[i].settingDtos[j])
       }
+    }
+    if (canEdit) {
+      cellList = cellList.filter((item) => {
+        return !this.analyseCell(item).isTwoDaysAgo
+      })
     }
     return cellList
   }
@@ -86,12 +95,20 @@ class SheetViewModal {
     return cellConfig
   }
 
-  getSheetTableData() {
-    if (localStorage.sheetTableData_dev) {
-      this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
-      this.allCell = this.getAllCell()
-      return
+  /** 重置排班 */
+  cleanAllCell() {
+    let allCell = this.getAllCell(true)
+    for (let cell of allCell) {
+      cleanCell(cell)
     }
+  }
+
+  getSheetTableData() {
+    // if (localStorage.sheetTableData_dev) {
+    //   this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
+    //   this.allCell = this.getAllCell()
+    //   return
+    // }
     this.tableLoading = true
     arrangeService.findCreateOrUpdate().then((res) => {
       this.tableLoading = false
@@ -99,10 +116,11 @@ class SheetViewModal {
       this.tableLoading = false
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark
-      this.allCell = this.getAllCell()
+      this.allCell = this.getAllCell(true)
       localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
     })
   }
+
   getArrangeMenu() {
     arrangeService.getArrangeMenu().then((res) => {
       this.arrangeMenu = res.data

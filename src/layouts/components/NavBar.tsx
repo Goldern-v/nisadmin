@@ -258,6 +258,11 @@ const navList: any = [
     name: '系统设置',
     icon: <XTSZ />,
     path: '/setting'
+  },
+  {
+    name: '护理人员管理',
+    icon: <XTSZ />,
+    path: '/personnelManagement'
   }
 ]
 

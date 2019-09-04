@@ -1,3 +1,4 @@
+import { type } from 'os'
 import { observable, computed, action } from 'mobx'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 let timer: any = null
@@ -9,11 +10,12 @@ class SelectViewModal {
     }
   }
 
-  @observable public params: any = {
-    startTime: null, // 开始时间
-    endTime: null, // 截止时间
+  @observable public params = {
+    startTime: '', // 开始时间
+    endTime: '', // 截止时间
     deptCode: null, // 科室
-    group: null // 分组
+    group: '', // 分组
+    groupList: [] // 分组
   }
 
   @computed
@@ -22,7 +24,7 @@ class SelectViewModal {
   }
   @action
   public setParams = (type: any, value: any) => {
-    this.params[type] = value
+    ;(this.params as any)[type] = value
 
     sessionStorage.arrangeParams = JSON.stringify(this.params)
 

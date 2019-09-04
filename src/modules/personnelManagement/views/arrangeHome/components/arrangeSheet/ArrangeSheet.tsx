@@ -87,8 +87,9 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 70
-      // fixed: 'right'
+      width: 70,
+      dataIndex: 'thisWeekHour',
+      align: 'center'
     },
     {
       title: (
@@ -98,7 +99,6 @@ export default observer(function ArrangeSheet(props: Props) {
         </div>
       ),
       width: 70
-      // fixed: 'right'
     },
     {
       title: (
@@ -190,6 +190,9 @@ const Wrapper = styled.div`
       font-size: 12px !important;
     }
   }
+  .ant-table-fixed-left {
+    box-shadow: none;
+  }
   /** fix table scroll bug */
   div.ant-table-body {
     background: #fafafa !important;
@@ -204,6 +207,9 @@ const Wrapper = styled.div`
     position: absolute;
     left: 0;
     right: 0;
+  }
+  .ant-table-body-outer::after {
+    background: #fafafa !important;
   }
   &.isEdit {
     .ant-table-fixed-left {
