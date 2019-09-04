@@ -73,18 +73,17 @@ export default observer(function TopPart() {
     })
   }
 
-
   //同步排班
   const findSysnNurse = () => {
     Modal.confirm({
-      title: '提示',
-      content: '确定需要刷新排班人员信息吗？',
+      title: '确定需要同步排班人员信息吗？',
+      content: '同步排班人员前请确保已经暂存,未暂存的数据会丢失。',
       okText: '确定',
       okType: 'danger',
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        arrangeService.findSysnNurse().then((res) => {
+        sheetViewModal.findSysnNurse().then((res) => {
           message.success('操作成功')
         })
       }
@@ -163,7 +162,7 @@ export default observer(function TopPart() {
           <Button onClick={handleCopy}>复制排班</Button>
         </div>
         <div className='item'>
-          <Button onClick={findSysnNurse}>刷新排班人员</Button>
+          <Button onClick={findSysnNurse}>同步排班人员</Button>
         </div>
         <div className='item'>
           <Button onClick={() => sheetViewModal.saveSheetTableData()}>暂存</Button>
@@ -175,7 +174,7 @@ export default observer(function TopPart() {
           <Button
             className='statistics'
             onClick={() => {
-              appStore.history.push('personnelManagement/arrangeHome')
+              appStore.history.push('/personnelManagement/arrangeHome?noRefresh=1')
             }}
           >
             返回

@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal, Input } from 'antd'
-import BaseTable from 'src/components/BaseTable'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
 import emitter from 'src/libs/ev'
 import { arrangeService } from '../services/ArrangeService'
 import { selectViewModal } from '../viewModal/SelectViewModal'
 import { ModalComponentProps } from 'src/libs/createModal'
+import { sheetViewModal } from '../viewModal/SheetViewModal'
+import { observer } from 'mobx-react-lite'
 
 export interface Props extends ModalComponentProps {
   id: string
@@ -13,11 +15,9 @@ export interface Props extends ModalComponentProps {
 
 export interface Props {}
 
-export default function ExpectSettingModal(props: Props) {
+export default observer(function ExpectSettingModal(props: Props) {
   // const [editingKey, setEditingKey] = useState(false)
   const [loadingTable, setLoadingTable] = useState(false)
-  const [tableData, setTableData] = useState([])
-  const [effect, setEffect] = useState(true)
   let { visible, onCancel } = props
 
   const onFieldChange = () => {}
@@ -35,17 +35,24 @@ export default function ExpectSettingModal(props: Props) {
       marginLeft: '20px'
     },
     {
+      title: '护士',
+      dataIndex: 'empName',
+      key: 'empName',
+      width: 100,
+      align: 'center'
+    },
+    {
       title: '内容',
       dataIndex: 'rangeName',
       key: 'rangeName',
-      width: 150,
+      width: 120,
       align: 'center'
     },
     {
       title: '期望班次',
       dataIndex: 'shiftType',
       key: 'shiftType',
-      width: 150,
+      width: 100,
       align: 'center'
     },
     {
@@ -61,60 +68,48 @@ export default function ExpectSettingModal(props: Props) {
       key: '8',
       width: 100,
       align: 'center',
-      render: (a: any, b: any, c: any) => {
-        const DoCon = styled.div`
-          display: flex;
-          justify-content: space-around;
-          font-size: 12px;
-          color: ${(p) => p.theme.$mtc};
-        `
-        return (
-          <DoCon>
-            <span>填入</span>
-          </DoCon>
-        )
+      render: (a: any, record: any, c: any) => {
+        {
+          let status = 0 /** 0-未填入 1-已经填入 2-休假 */
+          let cellObj = sheetViewModal.getCellObj(record.userId, record.startDate)
+          if (cellObj) {
+            if ((cellObj.rangeName = record.rangeName && cellObj.shiftType == '1')) {
+              status = 1
+            }
+            if (cellObj.shiftType == '休假') {
+              status = 2
+            }
+            return (
+              <DoCon>
+                {status == 0 && <span onClick={() => enter(record)}>填入</span>}
+                {status == 1 && <span onClick={() => enter(record)}>重新填入</span>}
+                {status == 2 && <span onClick={() => enter(record)}>已请假</span>}
+              </DoCon>
+            )
+          }
+        }
       }
     }
   ]
 
-  const getMealList = () => {
-    if (effect) {
-      let obj = {
-        startTime: selectViewModal.params.startTime,
-        endTime: selectViewModal.params.endTime,
-        deptCode: selectViewModal.params.deptCode
-      }
-      setLoadingTable(true)
-      arrangeService.getByDeptCodeAndDate(obj).then((res) => {
-        setLoadingTable(false)
-        let array: any = []
-        res.data &&
-          res.data.length &&
-          res.data.map((item: any, i: any) => {
-            let data = {
-              key: i + 'abc',
-              startDate: item.schExpects[0] ? item.schExpects[0].startDate : '',
-              rangeName: item.schExpects[0] ? item.schExpects[0].rangeName : '',
-              shiftType: item.schExpects[0] ? item.schExpects[0].shiftType : '',
-              detail: item.schExpects[0] ? item.schExpects[0].detail : ''
-            }
-            array.push(data)
-          })
-        setTableData(array)
-      })
-    }
+  useEffect(() => {}, [])
+
+  const handleOk = () => {
+    onCancel()
   }
 
-  useEffect(() => {
-    setEffect(true)
-    getMealList()
-  }, [])
-
-  useLayoutEffect(() => {
-    setEffect(false)
-  }, [])
-
-  const handleOk = () => {}
+  const enter = (record: any) => {
+    let cellObj = sheetViewModal.getCellObj(record.userId, record.startDate)
+    if (cellObj) {
+      cellObj!.rangeName = record.rangeName
+      cellObj!.nameColor = record.nameColor
+      cellObj!.effectiveTime = record.effectiveTime
+      cellObj!.effectiveTimeOld = record.effectiveTime
+      cellObj!.shiftType = '1'
+    }
+    // setLoadingTable(true)
+    // setTimeout(() => setLoadingTable(false), 100)
+  }
   return (
     <Wrapper>
       <Modal
@@ -128,12 +123,15 @@ export default function ExpectSettingModal(props: Props) {
         onCancel={onCancel}
         forceRender
       >
-        <BaseTable dataSource={tableData} columns={columns} loading={loadingTable} wrapperStyle={{ padding: 0 }} />
+        <BaseTable
+          dataSource={sheetViewModal.expectList.map((item: any) => item)}
+          columns={columns}
+          wrapperStyle={{ padding: 0 }}
+        />
       </Modal>
     </Wrapper>
   )
-}
-
+})
 const Wrapper = styled.div`
   #baseTable {
     padding: 0px 0px !important;

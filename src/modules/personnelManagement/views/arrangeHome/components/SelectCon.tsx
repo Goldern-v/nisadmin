@@ -15,7 +15,13 @@ export interface Props {}
 
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true)
-  const [date, setDate] = useState([] as any[])
+  const [date, setDate]: any = useState(() => {
+    if (selectViewModal.params.startTime && selectViewModal.params.endTime) {
+      return [moment(selectViewModal.params.startTime), moment(selectViewModal.params.endTime)]
+    } else {
+      return []
+    }
+  })
   const [deptCode, setDeptCode] = useState()
 
   /** 日期*/
@@ -64,7 +70,7 @@ export default observer(function SelectCon() {
         message.warning('日期范围不能超过31天！')
       }
       setDate(dates)
-      console.log(date)
+      console.log(dates, 'dates')
       selectViewModal.setParams('startTime', moment(dates[0]._d).format('YYYY-MM-DD'))
       selectViewModal.setParams('endTime', moment(dates[1]._d).format('YYYY-MM-DD'))
     }
@@ -90,9 +96,9 @@ export default observer(function SelectCon() {
   // 导出Excel
   const exportExcel = () => {
     let data = {
-      deptCode: scheduleStore.getDeptCode(),
-      startTime: moment(date[0]._d).format('YYYY-MM-DD'),
-      endTime: moment(date[1]._d).format('YYYY-MM-DD')
+      deptCode: selectViewModal.params.deptCode,
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime
     }
     arrangeService.export(data).then((res) => {
       fileDownload(res)
@@ -108,10 +114,14 @@ export default observer(function SelectCon() {
   }
 
   useEffect(() => {
-    if (isInit) {
-      handleStatusChange()
+    if (appStore.queryObj.noRefresh == '1') {
+      appStore.history.replace('/personnelManagement/arrangeHome')
+    } else {
+      if (isInit) {
+        handleStatusChange()
+      }
     }
-  })
+  }, [])
 
   const toPath = (path: string) => {
     appStore.history.push(path)

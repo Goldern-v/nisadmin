@@ -10,6 +10,8 @@ import { cleanCell } from '../components/arrangeSheet/cellClickEvent'
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   @observable public sheetTableData: any = []
+  /** 期望排班 */
+  @observable public expectList: any = []
   @observable public dateList: string[] = []
   @observable public remark: string = ''
   @observable public arrangeMenu = []
@@ -103,6 +105,14 @@ class SheetViewModal {
     }
   }
 
+  /** 根据工号和时间获取排班格子 */
+  getCellObj(userId: number, date: string) {
+    let allCell = this.getAllCell(true)
+    return allCell.find((item) => {
+      return item.userId == userId && item.workDate == date
+    })
+  }
+
   getSheetTableData() {
     // if (localStorage.sheetTableData_dev) {
     //   this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
@@ -110,14 +120,26 @@ class SheetViewModal {
     //   return
     // }
     this.tableLoading = true
-    arrangeService.findCreateOrUpdate().then((res) => {
+    return arrangeService.findCreateOrUpdate().then((res) => {
       this.tableLoading = false
       this.dateList = this.getDateList()
       this.tableLoading = false
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark
       this.allCell = this.getAllCell(true)
-      localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
+      // localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
+    })
+  }
+  /** 同步排班人员数据 */
+  findSysnNurse() {
+    this.tableLoading = true
+    return arrangeService.findSysnNurse().then((res) => {
+      this.tableLoading = false
+      this.dateList = this.getDateList()
+      this.tableLoading = false
+      this.sheetTableData = res.data.setting
+      this.remark = res.data.remark
+      this.allCell = this.getAllCell(true)
     })
   }
 
@@ -136,6 +158,11 @@ class SheetViewModal {
       this.schSymbolList = res.data
     })
   }
+  getExpectList() {
+    return arrangeService.getByDeptCodeAndDate().then((res) => {
+      this.expectList = res.data
+    })
+  }
 
   saveSheetTableData() {
     this.tableLoading = true
@@ -146,6 +173,7 @@ class SheetViewModal {
   }
 
   init() {
+    this.getExpectList()
     this.getSheetTableData()
     this.getArrangeMenu()
     this.getArrangeMeal()

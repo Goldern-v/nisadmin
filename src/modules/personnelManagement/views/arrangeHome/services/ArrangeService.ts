@@ -69,7 +69,7 @@ export default class ArrangeService extends BaseApiService {
       endDate: selectViewModal.params.endTime,
       deptCode: selectViewModal.params.deptCode
     }
-    return this.post(`/schExpect/getByDeptCodeAndDate`, obj)
+    return this.post(`/schExpect/getByDeptCodeAndDatePC`, obj)
   }
 
   //复制排班

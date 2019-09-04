@@ -34,7 +34,7 @@ export function getAddArrangeMenuList(list: ArrangeItem[], selectedCellObj: Arra
               }
             ]
             selectedCellObj!.effectiveTime = selectedCellObj!.effectiveTime + item.dataSource.effectiveTime
-            selectedCellObj!.effectiveTimeOld = selectedCellObj!.effectiveTimeOld + item.dataSource.effectiveTime
+            selectedCellObj!.effectiveTimeOld = selectedCellObj!.effectiveTimeOld + item.dataSource.effectiveTimeOld
           } else {
             selectedCellObj!.rangeName = item.dataSource.name
             selectedCellObj!.nameColor = item.dataSource.nameColor

@@ -29,11 +29,11 @@ export default function EditArrangePage() {
 }
 const Wrapper = styled.div`
   background: #fff;
-  padding-bottom: 14px;
-  margin-bottom: -14px;
+  padding-bottom: 16px;
+  margin-bottom: -20px;
   .contain {
     display: flex;
-    padding: 0 10px;
+    padding: 0 20px;
   }
   .left-part {
     /* width: 0; */
