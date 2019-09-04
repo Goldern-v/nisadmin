@@ -90,6 +90,23 @@ export default observer(function TopPart() {
     })
   }
 
+  //同步排班
+  const findSysnNurse = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定需要刷新排班人员信息吗？',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      onOk: () => {
+        arrangeService.findSysnNurse().then((res) => {
+          message.success('操作成功')
+        })
+      }
+    })
+  }
+
   let handleStatusChange = () => {
     setDate([moment(appStore.queryObj.startTime), moment(appStore.queryObj.endTime)])
     setIsInit(false)
