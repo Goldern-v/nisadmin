@@ -70,7 +70,6 @@ export default observer(function SelectCon() {
         message.warning('日期范围不能超过31天！')
       }
       setDate(dates)
-      console.log(dates, 'dates')
       selectViewModal.setParams('startTime', moment(dates[0]._d).format('YYYY-MM-DD'))
       selectViewModal.setParams('endTime', moment(dates[1]._d).format('YYYY-MM-DD'))
     }
