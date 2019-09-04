@@ -26,7 +26,10 @@ class SheetViewModal {
   /** 时间段 */
   getDateList() {
     let days = []
-    let dayDiff = dateDiff(selectViewModal.params.startTime, selectViewModal.params.endTime)
+    let dayDiff =
+      selectViewModal.params.startTime && selectViewModal.params.endTime
+        ? dateDiff(selectViewModal.params.startTime, selectViewModal.params.endTime)
+        : 0
     if (dayDiff >= 0) {
       for (let i = 0; i <= dayDiff; i++) {
         days.push(

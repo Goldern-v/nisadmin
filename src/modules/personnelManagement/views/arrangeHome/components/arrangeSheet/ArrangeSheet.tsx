@@ -190,6 +190,9 @@ const Wrapper = styled.div`
       font-size: 12px !important;
     }
   }
+  .ant-table-fixed-left {
+    box-shadow: none;
+  }
   /** fix table scroll bug */
   div.ant-table-body {
     background: #fafafa !important;

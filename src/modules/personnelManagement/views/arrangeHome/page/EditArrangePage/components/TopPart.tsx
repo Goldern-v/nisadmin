@@ -12,6 +12,7 @@ import { appStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 
 import moment from 'moment'
+import { Select } from 'src/vendors/antd'
 
 export interface Props {}
 
@@ -70,9 +71,28 @@ export default observer(function TopPart() {
     })
   }
 
+  //同步排班
+  const findSysnNurse = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定需要刷新排班人员信息吗？',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      onOk: () => {
+        arrangeService.findSysnNurse()
+      }
+    })
+  }
+
   let handleStatusChange = () => {
     setDate([moment(appStore.queryObj.startTime), moment(appStore.queryObj.endTime)])
     setIsInit(false)
+  }
+  // 分组数据
+  const handleGroupChange = (value: any) => {
+    selectViewModal.setParams('group', value)
   }
   useEffect(() => {
     if (isInit) {
@@ -94,8 +114,8 @@ export default observer(function TopPart() {
         ]}
       />
       <div className='contain'>
-        <div className='title'>编辑排班</div>
-        <Place />
+        {/* <div className='title'>编辑排班</div> */}
+        {/* <Place /> */}
         <div className='item'>
           <div className='label data'>日期：</div>
           <div className='content'>
@@ -111,6 +131,21 @@ export default observer(function TopPart() {
           </div>
         </div>
         <div className='item'>
+          <div className='label'>分组：</div>
+          <div className='content'>
+            <Select value={selectViewModal.params.group} onChange={handleGroupChange} showSearch style={{ width: 170 }}>
+              <Select.Option key='全部' value=''>
+                全部
+              </Select.Option>
+              {selectViewModal.params.groupList.map((item: any) => (
+                <Select.Option value={item.id} key={item.id}>
+                  {item.groupName}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+        <div className='item'>
           <Button onClick={() => sheetViewModal.init()}>查询</Button>
         </div>
         <div className='item'>
@@ -123,7 +158,7 @@ export default observer(function TopPart() {
           <Button onClick={handleCopy}>复制排班</Button>
         </div>
         <div className='item'>
-          <Button onClick={() => sheetViewModal.init()}>刷新排班人员</Button>
+          <Button onClick={findSysnNurse}>刷新排班人员</Button>
         </div>
         <div className='item'>
           <Button onClick={() => sheetViewModal.saveSheetTableData()}>暂存</Button>

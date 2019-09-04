@@ -17,8 +17,6 @@ export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true)
   const [date, setDate] = useState([] as any[])
   const [deptCode, setDeptCode] = useState()
-  const [group, setGroup] = useState('')
-  const [groupList, setGroupList] = useState([])
 
   /** 日期*/
   // 获取星期一
@@ -80,13 +78,12 @@ export default observer(function SelectCon() {
       deptCode: value
     }
     arrangeService.getByDeptCode(obj).then((res) => {
-      setGroupList(res.data)
+      selectViewModal.params.groupList = res.data
     })
   }
 
   // 分组数据
   const handleGroupChange = (value: any) => {
-    setGroup(value)
     selectViewModal.setParams('group', value)
   }
 
@@ -106,6 +103,7 @@ export default observer(function SelectCon() {
     setDate([moment(getMonday(), 'YYYY-MM-DD'), moment(getSunday(), 'YYYY-MM-DD')])
     selectViewModal.setParams('startTime', moment(getMonday(), 'YYYY-MM-DD').format('YYYY-MM-DD'))
     selectViewModal.setParams('endTime', moment(getSunday(), 'YYYY-MM-DD').format('YYYY-MM-DD'))
+    selectViewModal.setParams('group', '')
     setIsInit(false)
   }
 
@@ -160,11 +158,11 @@ export default observer(function SelectCon() {
         <div className='item'>
           <div className='label'>分组：</div>
           <div className='content'>
-            <Select value={group} onChange={handleGroupChange} showSearch style={{ width: 170 }}>
-              <Select.Option key='' value=''>
+            <Select value={selectViewModal.params.group} onChange={handleGroupChange} showSearch style={{ width: 170 }}>
+              <Select.Option key='全部' value=''>
                 全部
               </Select.Option>
-              {groupList.map((item: any) => (
+              {selectViewModal.params.groupList.map((item: any) => (
                 <Select.Option value={item.id} key={item.id}>
                   {item.groupName}
                 </Select.Option>
@@ -181,7 +179,11 @@ export default observer(function SelectCon() {
           <Button
             className='statistics'
             onClick={() => {
-              appStore.history.push(`/personnelManagement/EditArrangePage?startTime=${moment(date[0]._d).format('YYYY-MM-DD')}&&endTime=${moment(date[1]._d).format('YYYY-MM-DD')}`)
+              appStore.history.push(
+                `/personnelManagement/EditArrangePage?startTime=${moment(date[0]._d).format(
+                  'YYYY-MM-DD'
+                )}&&endTime=${moment(date[1]._d).format('YYYY-MM-DD')}`
+              )
             }}
           >
             编辑排班
