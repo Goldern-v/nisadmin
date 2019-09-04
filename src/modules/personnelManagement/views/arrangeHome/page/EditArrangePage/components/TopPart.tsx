@@ -16,7 +16,6 @@ import moment from 'moment'
 export interface Props {}
 
 export default observer(function TopPart() {
-
   const [date, setDate] = useState([] as any[])
   const [isInit, setIsInit] = useState(true)
 
@@ -34,7 +33,9 @@ export default observer(function TopPart() {
       okType: 'danger',
       cancelText: '取消',
       centered: true,
-      onOk: () => {}
+      onOk: () => {
+        sheetViewModal.cleanAllCell()
+      }
     })
   }
 
@@ -77,8 +78,8 @@ export default observer(function TopPart() {
     if (isInit) {
       handleStatusChange()
     }
-  }); 
-  
+  })
+
   return (
     <Wrapper>
       <BreadcrumbBox

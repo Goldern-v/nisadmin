@@ -6,6 +6,7 @@ import moment from 'moment'
 import { arrangeService } from '../services/ArrangeService'
 import monnet from 'src/vendors/moment'
 import { message } from 'src/vendors/antd'
+import { cleanCell } from '../components/arrangeSheet/cellClickEvent'
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   @observable public sheetTableData: any = []
@@ -86,12 +87,20 @@ class SheetViewModal {
     return cellConfig
   }
 
-  getSheetTableData() {
-    if (localStorage.sheetTableData_dev) {
-      this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
-      this.allCell = this.getAllCell()
-      return
+  /** 重置排班 */
+  cleanAllCell() {
+    let allCell = this.getAllCell()
+    for (let cell of allCell) {
+      cleanCell(cell)
     }
+  }
+
+  getSheetTableData() {
+    // if (localStorage.sheetTableData_dev) {
+    //   this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
+    //   this.allCell = this.getAllCell()
+    //   return
+    // }
     this.tableLoading = true
     arrangeService.findCreateOrUpdate().then((res) => {
       this.tableLoading = false
@@ -103,6 +112,7 @@ class SheetViewModal {
       localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
     })
   }
+
   getArrangeMenu() {
     arrangeService.getArrangeMenu().then((res) => {
       this.arrangeMenu = res.data
