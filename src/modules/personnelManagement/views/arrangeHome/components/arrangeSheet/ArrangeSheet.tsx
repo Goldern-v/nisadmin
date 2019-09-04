@@ -208,6 +208,9 @@ const Wrapper = styled.div`
     left: 0;
     right: 0;
   }
+  .ant-table-body-outer::after {
+    background: #fafafa !important;
+  }
   &.isEdit {
     .ant-table-fixed-left {
       td {
