@@ -57,6 +57,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].effectiveTime = copyRow[i].effectiveTime
       list[i].effectiveTimeOld = copyRow[i].effectiveTimeOld
       list[i].shiftType = copyRow[i].shiftType
+      list[i].addSymbols = copyRow[i].addSymbols
       list[i].settings = cloneJson(copyRow[i].settings)
 
       if (isClean) {
@@ -67,6 +68,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].effectiveTimeOld = null
         copyRow[i].shiftType = ''
         copyRow[i].settings = null
+        copyRow[i].addSymbols = null
       }
     }
     if (isClean) {
@@ -84,6 +86,8 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.effectiveTimeOld = null
   cellObj.shiftType = ''
   cellObj.settings = null
+  cellObj.addSymbols = null
+  cellObj.statusType = '0'
 }
 
 export function cleanCellList(cellList: ArrangeItem[]) {

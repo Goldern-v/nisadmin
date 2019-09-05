@@ -18,6 +18,26 @@ class ProblemSummaryServices extends BaseApiService {
       fileDownload(res)
     })
   }
+  public groupDeptScoreExcel(obj: any) {
+    let postData = {
+      type: 'month',
+      year: obj.year.format('YYYY'),
+      indexInType: obj.month
+    }
+    return this.post(`/qcTurnOver/import/groupDeptScoreExcel`, postData, { responseType: 'blob' }).then((res) => {
+      fileDownload(res)
+    })
+  }
+  public deptScoreExcel(obj: any) {
+    let postData = {
+      type: 'month',
+      year: obj.year.format('YYYY'),
+      indexInType: obj.month
+    }
+    return this.post(`/qcTurnOver/import/deptScoreExcel`, postData, { responseType: 'blob' }).then((res) => {
+      fileDownload(res)
+    })
+  }
 
   getTableData(obj: any, setPageObj: any) {
     let postData = {

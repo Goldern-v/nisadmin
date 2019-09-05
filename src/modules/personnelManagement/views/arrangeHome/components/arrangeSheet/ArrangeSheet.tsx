@@ -13,6 +13,9 @@ import classNames from 'classnames'
 import createModal from 'src/libs/createModal'
 import EditEffectiveTimeModal from '../../modal/EditEffectiveTimeModal'
 import EditVacationCountModal from '../../modal/EditVacationCountModal'
+import { ArrangeItem } from '../../types/Sheet'
+import TotalCell from './TotalCell'
+import NightHourCell from './NightHourCell'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean
@@ -88,8 +91,10 @@ export default observer(function ArrangeSheet(props: Props) {
         </div>
       ),
       width: 70,
-      dataIndex: 'thisWeekHour',
-      align: 'center'
+      align: 'center',
+      render(text: string, record: any) {
+        return <TotalCell id={record.id} />
+      }
     },
     {
       title: (
@@ -98,7 +103,10 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 70
+      width: 70,
+      render(text: string, record: any) {
+        return <NightHourCell id={record.id} />
+      }
     },
     {
       title: (

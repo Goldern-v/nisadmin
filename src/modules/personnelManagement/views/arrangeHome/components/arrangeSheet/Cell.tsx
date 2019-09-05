@@ -230,12 +230,13 @@ export default observer(function Cell(props: Props) {
       onVisibleChange={onVisibleChange}
     >
       <Wrapper onContextMenu={onContextMenu} onClick={onClick} className={classNames(cellConfig)}>
-        {cellConfig.isAddWordTime && <div className='sj add' />}
-        {cellConfig.isReduceWordTime && <div className='sj reduce' />}
-        {cellConfig.isExpectedScheduling && (
+        {cellConfig.isAddWordTime ? <div className='sj add' /> : ''}
+        {cellConfig.isReduceWordTime ? <div className='sj reduce' /> : ''}
+        {cellConfig.isExpectedScheduling ? (
           <img className='expect' src={require('../../images/期望排班.png')} alt='' />
+        ) : (
+          ''
         )}
-
         {formatCell(cellObj)}
         <span style={{ display: 'none' }}>{JSON.stringify(cellObj)}</span>
       </Wrapper>

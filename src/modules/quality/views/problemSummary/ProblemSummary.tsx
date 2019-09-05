@@ -110,10 +110,30 @@ export default observer(function ProblemSummary(props: any) {
             <Button
               className='excel'
               onClick={() => {
+                problemSummaryServices.groupDeptScoreExcel(filterObj)
+              }}
+            >
+              导出质量考核明细表
+            </Button>
+          </div>
+          <div className='item'>
+            <Button
+              className='excel'
+              onClick={() => {
+                problemSummaryServices.deptScoreExcel(filterObj)
+              }}
+            >
+              导出质量考核汇总表
+            </Button>
+          </div>
+          <div className='item'>
+            <Button
+              className='excel'
+              onClick={() => {
                 problemSummaryServices.turnOverExcel(filterObj)
               }}
             >
-              导出Excel
+              导出全部Excel
             </Button>
           </div>
         </RightIcon>
