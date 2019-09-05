@@ -12,7 +12,7 @@ export default observer(function ArrangeHome() {
   return (
     <Wrapper>
       <SelectCon />
-      <ArrangeSheet isEdit={false} surplusHeight={186} />
+      <ArrangeSheet isEdit={false} surplusHeight={175} />
     </Wrapper>
   )
 })

@@ -12,7 +12,7 @@ import { arrangeService } from '../services/ArrangeService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 import { printModal } from '../viewModal/PrintModal'
 
-export interface Props { }
+export interface Props {}
 
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true)
@@ -227,10 +227,10 @@ export default observer(function SelectCon() {
 
 const Wrapper = styled.div`
   height: 50px;
-  padding-top: 9px;
+  padding-top: 15px;
   box-sizing: border-box;
   background: #fff;
-  border-bottom: 1px solid #ccc;
+  /* border-bottom: 1px solid #ccc; */
   .item {
     display: inline-block;
     margin-right: 10px;

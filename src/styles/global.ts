@@ -27,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0px;
     height: 100%;
-    font-size: 14px;
+    font-size: 13px;
   }
   #root {
     height: 100%;
@@ -108,7 +108,15 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     min-height: 1440px;
     min-width: 1440px
   } */
-
+  .ant-popover-title,
+  .ant-popover-inner-content {
+    font-size: 12px;
+  }
+  body {
+    .ant-select, .ant-btn, .ant-calendar-range-picker-input, .ant-select-dropdown-menu-item {
+      font-size: 13px;
+    }
+  }  
 `
 
 export default GlobalStyle

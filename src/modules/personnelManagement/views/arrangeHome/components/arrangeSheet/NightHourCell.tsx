@@ -29,5 +29,6 @@ const Wrapper = styled.div`
     border-radius: 0;
     outline: none;
     box-shadow: none !important;
+    font-size: 12px;
   }
 `

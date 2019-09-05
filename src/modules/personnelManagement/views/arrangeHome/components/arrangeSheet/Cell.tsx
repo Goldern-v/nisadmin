@@ -220,9 +220,10 @@ export default observer(function Cell(props: Props) {
     <Popover
       content={content}
       title={
-        cellObj.effectiveTimeOld > cellObj.effectiveTime
-          ? '减少'
-          : '增加' + '了' + Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) + '工时'
+        (cellObj.effectiveTimeOld > cellObj.effectiveTime ? '减少' : '增加') +
+        '了' +
+        Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
+        '工时'
       }
       trigger='hover'
       placement='rightTop'
@@ -276,6 +277,7 @@ const Wrapper = styled.div`
   justify-content: center;
   margin: 0 -2px;
   position: relative;
+  word-break: break-all;
   &.isSelected {
     background: #fff8b1;
   }

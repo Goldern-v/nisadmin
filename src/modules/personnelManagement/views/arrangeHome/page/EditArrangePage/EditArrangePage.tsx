@@ -18,7 +18,7 @@ export default function EditArrangePage() {
       <TopPart />
       <div className='contain'>
         <div className='left-part'>
-          <ArrangeSheet isEdit={true} surplusHeight={232} />
+          <ArrangeSheet isEdit={true} surplusHeight={205} />
         </div>
         <div className='right-part'>
           <FlightMenu />
@@ -30,7 +30,8 @@ export default function EditArrangePage() {
 const Wrapper = styled.div`
   background: #fff;
   padding-bottom: 16px;
-  margin-bottom: -20px;
+  margin-bottom: -30px;
+  overflow: hidden;
   .contain {
     display: flex;
     padding: 0 20px;
@@ -49,6 +50,6 @@ const Wrapper = styled.div`
     overflow: hidden;
   }
   .ant-tabs-content {
-    height: calc(100vh - 220px);
+    height: calc(100vh - 203px);
   }
 `

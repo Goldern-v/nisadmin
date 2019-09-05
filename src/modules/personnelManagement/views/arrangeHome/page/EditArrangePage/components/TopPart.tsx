@@ -190,9 +190,9 @@ const Wrapper = styled.div`
   .contain {
     display: flex;
     align-items: flex-end;
-    height: 70px;
-    padding: 10px 20px;
-    line-height: 70px;
+    height: 55px;
+    padding: 0px 20px;
+    line-height: 60px;
     .title {
       font-size: 20px;
       margin-left: 10px;

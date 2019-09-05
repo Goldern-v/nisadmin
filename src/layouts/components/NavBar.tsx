@@ -197,11 +197,11 @@ const navList: any = [
     icon: <SHGL />,
     path: '/auditsManagement'
   },
-  {
-    name: '护士排班',
-    // icon: <HSPB />,
-    path: '/scheduleHome'
-  },
+  // {
+  //   name: '护士排班',
+  //   // icon: <HSPB />,
+  //   path: '/scheduleHome'
+  // },
   {
     name: '档案管理',
     icon: <HSDA />,

@@ -194,15 +194,17 @@ export default observer(function ArrangeSheet(props: Props) {
   )
 })
 const Wrapper = styled.div`
-  background: #f0f0f0;
+  background: #fff;
   #baseTable {
-    margin: 10px;
-
-    border-radius: 5px;
+    /* margin: 10px;
+    border-radius: 5px; */
     .ant-table-body td,
     .ant-table-tbody td {
       padding: 0 2px !important;
       font-size: 12px !important;
+    }
+    td {
+      word-break: break-all;
     }
   }
   .ant-table-column-title {
