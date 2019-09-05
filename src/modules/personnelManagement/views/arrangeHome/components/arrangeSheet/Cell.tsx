@@ -38,7 +38,7 @@ export default observer(function Cell(props: Props) {
     let hasArrange = !!(sheetViewModal.selectedCell && sheetViewModal.selectedCell.rangeName)
 
     let { left: x, top: y, width, height } = (event as any).target.getBoundingClientRect()
-    console.log(event.target, x, y, width, height, 'width, height ')
+    // console.log(event.target, x, y, width, height, 'width, height ')
     contextMenu.show(
       [
         {
@@ -80,7 +80,8 @@ export default observer(function Cell(props: Props) {
                 let index = list.indexOf(sheetViewModal.selectedCell)
                 // debugger
                 if (index > -1) {
-                  for (let i = Math.min(list.length - index, num) - 1; i >= index; i--) {
+                  for (let i = list.length - 1; i >= index; i--) {
+                    if (!list[i]) break
                     list[i].rangeName =
                       (sheetViewModal.selectedCell.rangeName || '').replace(/\d+/g, '') + (i - index + 1).toString()
                     list[i].nameColor = sheetViewModal.selectedCell.nameColor
@@ -90,7 +91,6 @@ export default observer(function Cell(props: Props) {
                     list[i].settings = null
                   }
                 }
-                sheetViewModal.selectedCell
               }
             })
           }
