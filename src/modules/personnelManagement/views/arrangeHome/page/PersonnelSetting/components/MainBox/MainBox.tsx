@@ -239,7 +239,7 @@ export default function MainBox() {
             className='transfer'
             dataSource={mockData}
             listStyle={{
-              width: '46%',
+              width: 'calc(24vw - 26px)',
               height: 'calc(100vh - 187px)'
             }}
             locale={{
@@ -299,10 +299,13 @@ const BaseTableBox = styled.div`
 `
 const TransferBox = styled.div`
   flex: 1;
-  padding: 15px;
+  padding: 15px 0 15px 15px;
   box-sizing: border-box;
   position: relative;
   height: calc(100vh - 187px);
+  .ant-transfer-list{
+    width: calc(50vw - 26px) !important;
+  }
   .loading{
     position:absolute;
     top: 50%; 

@@ -239,7 +239,7 @@ export default function MainBox() {
             className='transfer'
             dataSource={mockData}
             listStyle={{
-              width: '46%',
+              width: 'calc(24vw - 26px)',
               height: 'calc(100vh - 187px)'
             }}
             locale={{
