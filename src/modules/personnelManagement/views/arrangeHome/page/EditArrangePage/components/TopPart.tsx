@@ -65,10 +65,7 @@ export default observer(function TopPart() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        arrangeService.push().then((res) => {
-          message.success('推送成功')
-          sheetViewModal.getSheetTableData()
-        })
+        sheetViewModal.saveSheetTableData('1')
       }
     })
   }
@@ -165,7 +162,7 @@ export default observer(function TopPart() {
           <Button onClick={findSysnNurse}>同步排班人员</Button>
         </div>
         <div className='item'>
-          <Button onClick={() => sheetViewModal.saveSheetTableData()}>暂存</Button>
+          <Button onClick={() => sheetViewModal.saveSheetTableData('0')}>暂存</Button>
         </div>
         <div className='item'>
           <Button onClick={handlePush}>推送排班</Button>

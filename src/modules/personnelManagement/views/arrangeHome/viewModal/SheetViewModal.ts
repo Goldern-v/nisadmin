@@ -164,10 +164,11 @@ class SheetViewModal {
     })
   }
 
-  saveSheetTableData() {
+  saveSheetTableData(status: '0' | '1') {
     this.tableLoading = true
-    arrangeService.saveOrUpdate().then((res) => {
-      message.success('保存成功')
+    return arrangeService.saveOrUpdate(status).then((res) => {
+      if (status == '0') message.success('保存成功')
+      if (status == '1') message.success('推送成功')
       this.getSheetTableData()
     })
   }

@@ -206,6 +206,9 @@ const Wrapper = styled.div`
     td {
       word-break: break-all;
     }
+    .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+      background: none;
+    }
   }
   .ant-table-column-title {
     font-size: 13px !important;

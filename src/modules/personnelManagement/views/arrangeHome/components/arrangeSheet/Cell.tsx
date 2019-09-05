@@ -37,7 +37,8 @@ export default observer(function Cell(props: Props) {
     sheetViewModal.selectedCell = cellObj
     let hasArrange = !!(sheetViewModal.selectedCell && sheetViewModal.selectedCell.rangeName)
 
-    let { x, y, width, height } = (event as any).target.getBoundingClientRect()
+    let { left: x, top: y, width, height } = (event as any).target.getBoundingClientRect()
+    console.log(event.target, x, y, width, height, 'width, height ')
     contextMenu.show(
       [
         {
@@ -279,7 +280,7 @@ const Wrapper = styled.div`
   position: relative;
   word-break: break-all;
   &.isSelected {
-    background: #fff8b1;
+    background: #ffe36c;
   }
   &.isTwoDaysAgo {
     background: #f8f8f8;

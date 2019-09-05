@@ -7,6 +7,23 @@ import moment from 'moment'
 import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 export interface Props {}
 
+const BoxInner = styled.div<{ color?: string }>`
+  height: 30px;
+  padding: 5px;
+  border: 1px solid #d9d9d9;
+  color: ${(p) => p.color || '#666'};
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  border-radius: 2px;
+  &:hover {
+    cursor: pointer;
+    border-color: ${(p) => p.theme.$mtc};
+  }
+`
+
 export default observer(function FlightMenu() {
   return (
     <Wrapper>
@@ -35,18 +52,6 @@ function MenuCon(props: { dataSource: any[] }) {
       float: left;
       padding: 5px;
     }
-  `
-  const BoxInner = styled.div<{ color: string }>`
-    height: 30px;
-    padding: 5px;
-    border: 1px solid #d9d9d9;
-    color: ${(p) => p.color};
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-    border-radius: 2px;
   `
   const onClick = (item: any) => {
     if (sheetViewModal.selectedCell) {
@@ -82,18 +87,7 @@ function MealCon(props: { dataSource: any[] }) {
       padding: 5px;
     }
   `
-  const BoxInner = styled.div`
-    height: 30px;
-    padding: 5px;
-    border: 1px solid #d9d9d9;
-    color: ${(p) => p.color};
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-    border-radius: 2px;
-  `
+
   const onClick = (item: any) => {
     /** 套餐同步 */
     if (sheetViewModal.selectedCell) {

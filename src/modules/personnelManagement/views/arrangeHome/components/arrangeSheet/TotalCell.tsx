@@ -18,7 +18,7 @@ export default observer(function TotalCell(props: Props) {
   }
 
   let total = list.reduce((total: any, current: ArrangeItem) => {
-    return total + current.effectiveTime
+    return total + Number(current.effectiveTime)
   }, 0)
   return <Wrapper>{total}</Wrapper>
 })

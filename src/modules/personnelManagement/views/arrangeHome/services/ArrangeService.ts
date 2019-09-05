@@ -14,13 +14,14 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
   /** 保存排班信息 */
-  public saveOrUpdate(obj?: any) {
-    obj = {
+  public saveOrUpdate(status: '0' | '1') {
+    let obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       setting: sheetViewModal.sheetTableData,
       remark: sheetViewModal.remark,
-      deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode,
+      status
     }
     return this.post(`/scheduling/saveOrUpdate`, obj)
   }

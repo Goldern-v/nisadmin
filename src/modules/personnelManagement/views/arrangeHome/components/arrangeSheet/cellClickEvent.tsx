@@ -72,7 +72,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       }
     }
     if (isClean) {
-      copyRow.splice(0, copyRow.splice.length)
+      copyRow.splice(0, copyRow.length)
     }
   } else {
     message.warning('请先复制行')

@@ -288,7 +288,7 @@ const Wrapper = styled.div`
       th {
         box-sizing: border-box;
         height: 36px !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: bold;
         padding: 0 !important;
       }
