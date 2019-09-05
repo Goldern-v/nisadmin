@@ -1,13 +1,21 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Input, Pagination, Form, Modal, Select, Radio, message } from 'antd'
+import React from 'react'
+import { ColumnProps } from 'antd/lib/table'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import * as ReactDOM from 'react-dom'
+import { Form, Button, Modal, Select, Pagination, message, Tooltip } from 'antd'
 import BaseTable from 'src/components/BaseTable'
+import { authStore, appStore } from 'src/stores/index'
 import service from 'src/services/api'
-import { authStore, appStore } from 'src/stores'
+import props from 'src/modules/healthPropaganda/editor/configs/props'
 import emitter from 'src/libs/ev'
 const { Option } = Select
+export interface Props {
+  placeholder: any
+}
+export interface Props extends RouteComponentProps {}
+
 const EditableContext = React.createContext<any>({})
-const deptCode = authStore.selectedDeptCode
 
 class EditableTable extends React.Component<any, any> {
   public constructor(props: any) {
@@ -19,20 +27,21 @@ class EditableTable extends React.Component<any, any> {
       type: 0, // 0-修改 1-新增
       searchValue: '',
       missionId: undefined,
-      rowData: {},
+      rowData: [],
       editingKey: false,
-      selectData: [],
-      operationTiming: '',
+      selectData1: [],
+      selectData2: [],
       educationName: '',
+      administrationName: '',
       messageType: '',
-      operation: '',
       timeout: null,
       loading: false,
       loadingTable: false,
       total: 0,
       pageSize: 10,
+      confirmLoading: false,
       pageIndex: 1, // 当前页数
-      confirmLoading: false
+      getEducationId: ''
     }
     this.columns = [
       {
@@ -44,30 +53,23 @@ class EditableTable extends React.Component<any, any> {
         width: 60
       },
       {
-        title: '手术',
-        dataIndex: 'operation',
-        width: 100,
+        title: '途径',
+        dataIndex: 'administrationName',
+        width: 180,
         align: 'left',
-        editable: true
-      },
-      {
-        title: '时机',
-        dataIndex: 'operationTiming',
-        width: 60,
-        align: 'center',
         editable: true
       },
       {
         title: '推送宣教',
         dataIndex: 'educationName',
-        width: 280,
+        width: 250,
         align: 'left',
         editable: true
       },
       {
         title: '推送类型',
         dataIndex: 'messageTypeName',
-        width: 120,
+        width: 110,
         align: 'left',
         editable: true
       },
@@ -89,10 +91,10 @@ class EditableTable extends React.Component<any, any> {
         title: '操作',
         dataIndex: '操作',
         align: 'center',
-        width: 180,
+        width: 170,
         render: (text: any, record: any) => {
           return (
-            <div>
+            <Wrapper>
               <a
                 style={{ fontSize: '13px' }}
                 onClick={() => {
@@ -108,21 +110,22 @@ class EditableTable extends React.Component<any, any> {
               <a onClick={() => this.preview(record)} style={{ marginLeft: '15px', fontSize: '13px' }}>
                 预览
               </a>
-            </div>
+            </Wrapper>
           )
         }
       }
     ]
-    /** 监听事件 */
-    emitter.removeAllListeners('自动推送设置-添加-手术')
-    emitter.addListener('自动推送设置-添加-手术', () => {
+
+    /** 监听事件 --- 控制添加弹窗的状态*/
+    emitter.removeAllListeners('自动推送设置-添加-途径')
+    emitter.addListener('自动推送设置-添加-途径', () => {
       this.setState({ type: 1 })
       this.getSelectData({}, 1)
     })
 
     /** 监听事件 --- 控制刷新列表数据*/
-    emitter.removeAllListeners('自动推送设置-刷新-手术')
-    emitter.addListener('自动推送设置-刷新-手术', () => {
+    emitter.removeAllListeners('自动推送设置-刷新-途径')
+    emitter.addListener('自动推送设置-刷新-途径', () => {
       this.getMealList(null, null)
     })
   }
@@ -132,24 +135,30 @@ class EditableTable extends React.Component<any, any> {
     // 如果是添加 则清空数据
     if (value === 1) {
       this.setState({ missionId: undefined })
-      this.setState({ operation: '' })
+      this.setState({ administrationName: '' })
       this.setState({ messageType: '' })
-      this.setState({ operationTiming: '' })
     }
     // 如果是修改则回显数据
     if (value === 0) {
-      this.setState({ missionId: record.educationName })
       this.setState({ searchValue: record.educationName })
-      this.setState({ operation: record.operation })
-      this.setState({ operationTiming: record.operationTiming })
+      this.setState({ missionId: record.educationName })
     }
     this.setState({ rowData: record })
     service.healthyApiService.getPushType().then((res) => {
       if (res && res.data) {
-        this.setState({ selectData: res.data })
+        this.setState({ selectData1: res.data })
         // 如果是修改则回显数据
         if (value === 0) {
           this.setState({ messageType: record.messageType })
+        }
+      }
+    })
+    service.healthyApiService.getChannelType().then((res) => {
+      if (res && res.data) {
+        this.setState({ selectData2: res.data })
+        // 如果是修改则回显数据
+        if (value === 0) {
+          this.setState({ administrationName: record.administrationName })
         }
       }
     })
@@ -166,7 +175,7 @@ class EditableTable extends React.Component<any, any> {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        service.healthyApiService.detelePushType1(record).then((res) => {
+        service.healthyApiService.deleteChannel(record).then((res) => {
           this.getMealList(null, null)
           message.success('删除成功')
         })
@@ -177,11 +186,8 @@ class EditableTable extends React.Component<any, any> {
   //预览
   public preview = (record: any) => {
     let getEducationId = record.educationId
-    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=2`)
+    appStore.history.push(`/setting/自动推送字典详情?id=${getEducationId}&type=4`)
   }
-
-  public isEditing = (record: any) => record.key === this.state.editingKey
-  public columns: any = []
 
   public getMealList = (current: any, pageSize: any) => {
     this.setState({ loadingTable: true })
@@ -190,7 +196,7 @@ class EditableTable extends React.Component<any, any> {
       pageIndex: current ? current : this.state.pageIndex,
       wardCode: authStore.selectedDeptCode // string 必须参数 科室编码
     }
-    service.healthyApiService.getPushList1(postData).then((res) => {
+    service.healthyApiService.getPushListChannel(postData).then((res) => {
       this.setState({ loadingTable: false })
       this.setState({ total: res.data ? res.data.totalCount : 0 })
       if (res.data && res.data.list && Object.keys(res.data.list).length > 0) {
@@ -200,12 +206,10 @@ class EditableTable extends React.Component<any, any> {
           array.push(item)
         })
         this.setState({ data: array })
+      } else {
+        this.setState({ data: [] })
       }
     })
-  }
-
-  public componentWillMount() {
-    this.getMealList(null, null)
   }
 
   public searchChange(value: any) {
@@ -217,41 +221,10 @@ class EditableTable extends React.Component<any, any> {
     this.setState({ searchValue: educationName })
   }
 
-  public save(form: any, key: any) {
-    form.validateFields((error: any, row: any) => {
-      if (error) {
-        return
-      }
-      const newData = [...this.state.data]
-      const index = newData.findIndex((item) => key === item.key)
-      if (index > -1) {
-        const item = newData[index]
-        newData.splice(index, 1, {
-          ...item,
-          ...row
-        })
-        this.setState({ data: newData, editingKey: '' })
-      } else {
-        newData.push(row)
-        this.setState({ data: newData, editingKey: '' })
-      }
-    })
-  }
-
-  public edit(key: any) {
-    this.setState({ editingKey: key })
-  }
-
-  //实时查询
+  //时时查询
   public toSearch(value: any) {
-    if (this.state.timeout) {
-      clearTimeout(this.state.timeout)
-      this.setState({ timeout: null })
-    }
-    this.setState({ searchValue: value })
     let postData = {
       educationName: value,
-      // wardCode: authStore.selectedDeptCode,
       messageType: ''
     }
     this.setState({ loading: true })
@@ -263,22 +236,26 @@ class EditableTable extends React.Component<any, any> {
           array.push(<Option key={item.missionId}>{item.name}</Option>)
         })
         this.setState({ loading: false })
-        this.setState({ timeout: setTimeout(this.setState({ children: array }), 300) })
+        this.setState({ children: array })
       } else {
         this.setState({ loading: false })
-        this.setState({ timeout: setTimeout(this.setState({ children: [] }), 300) })
+        this.setState({ children: [] })
       }
     })
   }
 
   //保存
   public handleOk() {
-    if (!this.state.operationTiming || !this.state.operation || !this.state.messageType || !this.state.searchValue) {
+    if (!this.state.searchValue || !this.state.administrationName || !this.state.messageType) {
       message.warning('保存前请将每一项信息填写完整')
       return
     }
     this.setState({ confirmLoading: true })
     let postData = {}
+    let administrationName = this.state.selectData2.filter((item: any) => item.administrationName === this.state.administrationName)[0].administrationName
+    let administrationCode = this.state.selectData2.filter((item: any) => item.administrationName === this.state.administrationName)[0].administrationCode
+    let barcodeClass = this.state.selectData2.filter((item: any) => item.administrationName === this.state.administrationName)[0].barcodeClass
+
     // 修改入参
     if (this.state.type === 0) {
       postData = {
@@ -286,11 +263,12 @@ class EditableTable extends React.Component<any, any> {
         wardCode: this.state.rowData.wardCode, // string 非必须参数
         educationId: this.state.rowData.educationId, // string 非必须参数
         educationName: this.state.searchValue, // string 非必须参数
-        operationTiming: this.state.operationTiming, // string 非必须参数(手术时机)
         createDateTime: this.state.rowData.createDateTime, // string 非必须参数
         operator: this.state.rowData.operator, // string 非必须参数
         messageType: this.state.messageType, // string 非必须参数
-        operation: this.state.operation // string 非必须参数
+        administrationName: administrationName, // string 非必须参数
+        administrationCode: administrationCode,
+        barcodeClass: barcodeClass,
       }
     }
     // 新增入参
@@ -301,14 +279,15 @@ class EditableTable extends React.Component<any, any> {
         serialNo: '', // string 非必须参数
         wardCode: authStore.selectedDeptCode, // string 非必须参数
         educationId: this.state.missionId, // string 非必须参数
-        operationTiming: this.state.operationTiming, // string 非必须参数(手术时机)
         educationName: this.state.searchValue, // string 非必须参数
         messageType: this.state.messageType, // string 非必须参数
-        operator: empNo,
-        operation: this.state.operation // string 非必须参数
+        administrationName: administrationName, // string 非必须参数
+        administrationCode: administrationCode,
+        barcodeClass: barcodeClass,
+        operator: empNo
       }
     }
-    service.healthyApiService.preservationPushType1(postData).then((res) => {
+    service.healthyApiService.preservationChannel(postData).then((res) => {
       if (res) {
         this.setState({ confirmLoading: false })
         message.success(this.state.type === 0 ? '修改成功！' : '新增成功！')
@@ -318,6 +297,14 @@ class EditableTable extends React.Component<any, any> {
     })
   }
 
+  public isEditing = (record: any) => record.key === this.state.editingKey
+  public columns: any = []
+  public componentWillMount() {
+    this.getMealList(null, null)
+  }
+  public edit(key: any) {
+    this.setState({ editingKey: key })
+  }
   public onChangePagination(page: any, pageSize: any) {
     this.setState({ pageIndex: page })
     this.getMealList(page, pageSize)
@@ -343,21 +330,19 @@ class EditableTable extends React.Component<any, any> {
         })
       }
     })
+
     return (
       <Wrapper>
         <EditableContext.Provider value={this.props.form}>
           <BigBox>
             <BaseTable
               size='small'
-              // components={components}
               bordered
               dataSource={this.state.data}
               columns={columns}
-              rowClassName={() => 'editable-row'}
-              // pagination={false}
-              pagination={false}
-              // scroll={{ y: 304 }}
               surplusHeight={280}
+              rowClassName={() => 'editable-row'}
+              pagination={false}
               loading={this.state.loadingTable}
             />
             <PaginationBox>
@@ -373,6 +358,8 @@ class EditableTable extends React.Component<any, any> {
             </PaginationBox>
           </BigBox>
           <Modal
+            className='modal'
+            centered={true}
             title='推送设置'
             visible={this.state.editingKey}
             onOk={this.handleOk.bind(this)}
@@ -395,41 +382,35 @@ class EditableTable extends React.Component<any, any> {
                 }
                 value={this.state.missionId}
                 style={{ width: '72%' }}
+                placeholder='输入名称进行检索'
                 defaultActiveFirstOption={false}
                 showArrow={false}
                 loading={this.state.loading}
                 onChange={this.searchChange.bind(this)}
                 onSearch={this.toSearch.bind(this)}
                 notFoundContent='没有你查找的内容'
-                placeholder='输入名称进行检索'
               >
                 {this.state.children}
               </Select>
             </div>
             <div className='category' style={{ marginTop: '40px' }}>
-              <SpanOne>手术名称:</SpanOne>
-              <Input
-                defaultValue=''
+              <SpanOne>途径类型：</SpanOne>
+              <Select
+                value={this.state.administrationName}
+                onChange={(value: any) => this.setState({ administrationName: value })}
+                showSearch
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
                 style={{ width: '72%' }}
-                value={this.state.operation}
-                onChange={(e) => {
-                  this.setState({ operation: e.target.value })
-                }}
-              />
-            </div>
-            <div className='category' style={{ marginTop: '40px' }}>
-              <SpanOne>
-                <span>时</span>机:
-              </SpanOne>
-              <Radio.Group
-                onChange={(e) => {
-                  this.setState({ operationTiming: e.target.value })
-                }}
-                value={this.state.operationTiming}
+                placeholder='选择类型'
               >
-                <Radio value='术前'>术前</Radio>
-                <Radio value='术后'>术后</Radio>
-              </Radio.Group>
+                {this.state.selectData2.map((item: any) => (
+                  <Select.Option value={item.administrationName} key={item.administrationName}>
+                    {item.administrationName}
+                  </Select.Option>
+                ))}
+              </Select>
             </div>
             <div className='category' style={{ marginTop: '40px', marginBottom: '30px' }}>
               <SpanOne>推送类型：</SpanOne>
@@ -440,10 +421,10 @@ class EditableTable extends React.Component<any, any> {
                 filterOption={(input: any, option: any) =>
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
-                style={{ width: '72%' }}
+                style={{ width: '72%', height: 40 }}
                 placeholder='选择类型'
               >
-                {this.state.selectData.map((item: any) => (
+                {this.state.selectData1.map((item: any) => (
                   <Select.Option value={item.messageCode} key={item.messageCode}>
                     {item.messageName}
                   </Select.Option>
@@ -473,13 +454,13 @@ const SpanTwo = styled.span`
 `
 const Wrapper = styled.div`
   .ant-table-body {
-    .ant-table-row td:nth-child(4) {
-      padding-left: 20px !important;
-    }
     .ant-table-row td:nth-child(2) {
       padding-left: 20px !important;
     }
-    .ant-table-row td:nth-child(5) {
+    .ant-table-row td:nth-child(3) {
+      padding-left: 20px !important;
+    }
+    .ant-table-row td:nth-child(4) {
       padding-left: 20px !important;
     }
   }
@@ -494,4 +475,5 @@ const BigBox = styled.div`
 `
 
 const EditableFormTable = Form.create()(EditableTable) as any
+
 export default EditableFormTable

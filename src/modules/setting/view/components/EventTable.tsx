@@ -47,8 +47,8 @@ class EditableTable extends React.Component<any, any> {
     this.columns = [
       {
         title: '序号',
-        dataIndex: '1',
-        key: '1',
+        dataIndex: 'key',
+        key: 'key',
         render: (text: any, record: any, index: number) => index + 1,
         align: 'center',
         width: 60

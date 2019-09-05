@@ -177,5 +177,45 @@ export default class HomeApiServices extends BaseApiService {
     }
     return this.post(`/educationSettingDiagnosis/getEducationSettingDiagnosisList`, qs.stringify(postData))
   }
+
+  // 14.自动推送途径类型列表
+  public async getPushListChannel (data: any) {
+    const postData = {
+      pageSize: data.pageSize,
+      pageIndex: data.pageIndex,
+      wardCode: data.wardCode, // string 必须参数 科室编码
+    }
+    return this.post(`educationSettingWay/getEducationSettingWayList`, qs.stringify(postData))
+  }
+
+  // 15.删除自动推送途径
+  public async deleteChannel (data: any) {
+    const getData = {
+      serialNo: data.serialNo, // 自动推送事件类型id
+    }
+    return this.get(`/educationSettingWay/delete/${getData.serialNo}`)
+  }
+
+  // 16.保存自动推送途径
+  public async preservationChannel (data: any) {
+    const postData = {
+      serialNo: data.serialNo, // string 非必须参数
+      wardCode: data.wardCode, // string 必须参数
+      educationId: data.educationId, // string 必须参数
+      educationName: data.educationName, // string 必须参数
+      createDateTime: data.createDateTime, // string 非必须参数
+      operator: data.operator, // string 必须参数
+      messageType: data.messageType, // string 必须参数
+      administrationName: data.administrationName,
+      administrationCode: data.administrationCode,
+      barcodeClass: data.barcodeClass
+    }
+    return this.post(`/educationSettingWay/saveOrUpdate`, postData)
+  }
+
+    // 6.获取途径类型列表（下拉列表）
+    public async getChannelType () {
+      return this.get(`/briefMission/getAdministrationDict`)
+    }
   
 }
