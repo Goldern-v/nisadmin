@@ -112,4 +112,5 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   font-size: 20px;
+  font-weight: bold;
 `

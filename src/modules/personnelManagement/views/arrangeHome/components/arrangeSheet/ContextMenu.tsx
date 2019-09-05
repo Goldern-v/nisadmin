@@ -135,9 +135,12 @@ const Wrapper = styled.div<{ x: number; y: number }>`
     padding: 0 10px;
     position: relative;
     &.disabled {
-      background: #f8f8f8;
-      color: #ddd;
+      /* background: #f8f8f8; */
+      color: #aaa;
       pointer-events: none;
+      img {
+        opacity: 0.6;
+      }
     }
     &:hover {
       background: #e4f1f0;

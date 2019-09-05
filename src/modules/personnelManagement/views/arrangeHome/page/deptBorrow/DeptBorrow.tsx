@@ -327,7 +327,6 @@ const Wrapper = styled.div`
         font-size: 20px;
         line-height: 32px;
         font-weight: bold;
-        color: #000;
         margin-left: 15px;
       }
       .float-right {

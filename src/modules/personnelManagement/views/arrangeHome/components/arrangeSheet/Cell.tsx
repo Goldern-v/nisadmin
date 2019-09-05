@@ -51,7 +51,7 @@ export default observer(function Cell(props: Props) {
           type: 'line'
         },
         {
-          icon: require('../../images/增加工时.png'),
+          icon: require('../../images/修改工时.png'),
           label: '修改工时',
           type: 'text',
           onClick: () => {

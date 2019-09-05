@@ -503,4 +503,5 @@ const FormFlexLayoutStyle = (offset: string = '60px') => ({
 
 const Title = styled.div`
   font-size: 20px;
+  font-weight: bold;
 `

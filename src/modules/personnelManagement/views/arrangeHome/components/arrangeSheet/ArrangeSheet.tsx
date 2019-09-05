@@ -194,13 +194,20 @@ export default observer(function ArrangeSheet(props: Props) {
   )
 })
 const Wrapper = styled.div`
-  background: #fff;
+  background: #f0f0f0;
   #baseTable {
+    margin: 10px;
+
+    border-radius: 5px;
     .ant-table-body td,
     .ant-table-tbody td {
       padding: 0 2px !important;
       font-size: 12px !important;
     }
+  }
+  .ant-table-column-title {
+    font-size: 13px !important;
+    line-height: 1.3;
   }
   .ant-table-fixed-left {
     box-shadow: none;
@@ -260,6 +267,8 @@ function Th(props: { date: string }) {
   const Con = styled.div`
     text-align: center;
     padding: 5px 0;
+    font-size: 13px;
+    line-height: 1.3;
     &.red-text {
       color: red;
     }
