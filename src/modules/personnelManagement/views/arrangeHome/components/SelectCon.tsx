@@ -10,8 +10,9 @@ import moment from 'moment'
 import { scheduleStore } from 'src/stores'
 import { arrangeService } from '../services/ArrangeService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
+import { printModal } from '../viewModal/PrintModal'
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true)
@@ -126,6 +127,10 @@ export default observer(function SelectCon() {
     appStore.history.push(path)
   }
 
+  const toPrint = () => {
+    printModal.printArrange()
+  }
+
   return (
     <Wrapper>
       <LeftIcon>
@@ -197,6 +202,11 @@ export default observer(function SelectCon() {
         <div className='item'>
           <Button className='statistics getExcel' onClick={exportExcel}>
             导出Excel
+          </Button>
+        </div>
+        <div className='item'>
+          <Button className='statistics getExcel' disabled={sheetViewModal.tableLoading} onClick={toPrint}>
+            打印
           </Button>
         </div>
       </LeftIcon>
