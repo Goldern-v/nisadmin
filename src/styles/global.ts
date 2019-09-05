@@ -113,7 +113,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     font-size: 12px;
   }
   body {
-    .ant-select, .ant-btn, .ant-calendar-range-picker-input, .ant-select-dropdown-menu-item {
+    .ant-select, .ant-btn, .ant-calendar-range-picker-input, .ant-select-dropdown-menu-item, .ant-modal-body, .ant-tabs {
       font-size: 13px;
     }
   }  

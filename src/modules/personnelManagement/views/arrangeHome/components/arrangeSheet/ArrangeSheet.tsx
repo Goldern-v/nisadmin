@@ -131,7 +131,6 @@ export default observer(function ArrangeSheet(props: Props) {
     }
     try {
       ;(document as any).querySelector('.ant-table-body')!.addEventListener('scroll', (e: any) => {
-        console.log(e.target.scrollLeft, 'eee')
         ;(document as any).querySelector('.remark-con.real')!.style.marginLeft = e.target.scrollLeft + 'px'
       })
     } catch (error) {}
@@ -206,7 +205,8 @@ const Wrapper = styled.div`
     td {
       word-break: break-all;
     }
-    .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
+    .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
+    .ant-table-row-hover > td {
       background: none;
     }
   }

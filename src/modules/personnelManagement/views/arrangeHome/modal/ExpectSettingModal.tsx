@@ -126,6 +126,7 @@ export default observer(function ExpectSettingModal(props: Props) {
         visible={visible}
         onCancel={onCancel}
         forceRender
+        centered
       >
         <BaseTable dataSource={sheetViewModal.expectList} columns={columns} wrapperStyle={{ padding: 0 }} />
       </Modal>

@@ -136,5 +136,6 @@ const Wrapper = styled.div`
   }
   .ant-tabs-tab {
     width: 50%;
+    text-align: center;
   }
 `
