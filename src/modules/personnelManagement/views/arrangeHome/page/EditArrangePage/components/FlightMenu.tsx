@@ -61,6 +61,7 @@ function MenuCon(props: { dataSource: any[] }) {
       sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime
       sheetViewModal.selectedCell!.shiftType = item.shiftType
       sheetViewModal.selectedCell!.settings = null
+      sheetViewModal.selectedCell!.statusType = ''
       // sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
       sheetViewModal.selectedCell = sheetViewModal.getNextCell()
     }
@@ -100,6 +101,7 @@ function MealCon(props: { dataSource: any[] }) {
         list[i]!.effectiveTime = mealObj.effectiveTime
         list[i]!.effectiveTimeOld = mealObj.effectiveTime
         list[i]!.shiftType = mealObj.shiftType
+        list[i]!.statusType = ''
       }
     }
   }

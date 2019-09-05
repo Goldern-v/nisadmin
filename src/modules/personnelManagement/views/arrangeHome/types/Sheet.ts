@@ -7,6 +7,7 @@ export interface ArrangeItem {
   addSymbols?: { symbol: string; detail: string }[] | null
   detail?: string
   settings?: ArrangeItem | null
+  statusType?: string
   [p: string]: any
 }
 
