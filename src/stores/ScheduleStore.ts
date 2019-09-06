@@ -10,8 +10,8 @@ export default class ScheduleStore {
     this.weekEndTime = sessionStorage.scheduleWeekEndTime || ''
     this.selectedWeekIndex = '0'
     this.department = {
-      deptCode: authStore.selectedDeptCode || authStore.getUser().deptCode,
-      deptName: authStore.getUser().deptName,
+      deptCode: authStore.selectedDeptCode || (authStore.getUser() && authStore.getUser().deptCode),
+      deptName: authStore.getUser() && authStore.getUser().deptName,
       wardCode: '',
       wardName: ''
     }

@@ -20,13 +20,13 @@ function handleChange(value: any) {
 
 export default function SelectDepartment() {
   //
-  const [defaultValue, setDefaultValue] = useState(authStore.getUser().deptName || '')
+  const [defaultValue, setDefaultValue] = useState((authStore.getUser() && authStore.getUser()).deptName || '')
   const [officeList, setOfficeList] = useState([])
   // useEffect(() => {
   //   //
   // })
   useEffect(() => {
-    let deptName = authStore.getUser().deptName || ''
+    let deptName = (authStore.getUser() && authStore.getUser()).deptName || ''
 
     setDefaultValue(deptName)
     //
