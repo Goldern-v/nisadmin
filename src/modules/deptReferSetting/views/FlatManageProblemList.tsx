@@ -19,6 +19,7 @@ export default observer(function FlatManageProblemList() {
   const [tableData, setTableData] = useState([] as any)
   const [dataTotal, setDataTotal] = useState(0 as number)
   const [typeList, setTypeList] = useState([] as any)
+  const [selectedKey, setSelectedKey] = useState([] as any)
   //详情弹窗参数
   const [detailCfg, setDetailCfg] = useState({
     visible: false,
@@ -206,6 +207,7 @@ export default observer(function FlatManageProblemList() {
       (res) => {
         setTableLoading(false)
         if (res.data) {
+          setSelectedKey([])
           setTableData(res.data.list)
           setDataTotal(res.data.totalCount)
         }
@@ -285,6 +287,58 @@ export default observer(function FlatManageProblemList() {
     flatManageProblemService.getTypeList({ deptCode }).then((res) => {
       if (res.data) {
         setTypeList(res.data)
+      }
+    })
+  }
+
+  const rowSelection = {
+    columnWidth: 40,
+    selectedRowKeys: selectedKey,
+    onChange: (a: any, b: any) => {
+      setSelectedKey(a)
+    }
+  }
+
+  const handleAudit = () => {
+    let auditRows = tableData.filter((item: any) => {
+      if (selectedKey.indexOf(item.id) >= 0 && item.status == 1) return true
+
+      return false
+    })
+
+    if (auditRows.length <= 0) {
+      Message.warning('未勾选待审核问题')
+      return
+    }
+
+    let ids = auditRows.map((item: any) => item.id).join(',');
+
+    let remark = '';
+
+    let auditContent = <div>
+      <div>您确认要审核通过吗？通过后数据将不能再修改。</div>
+      {/* <br />
+      <div>
+        <span>备注：</span>
+        <Input
+          style={{ width: '260px' }}
+          defaultValue={remark}
+          onChange={(e: any) => remark = e.target.value} />
+      </div> */}
+    </div>
+
+    Modal.confirm({
+      content: auditContent,
+      title: '审核确认',
+      centered: true,
+      onOk: () => {
+        setTableLoading(true)
+        flatManageProblemService.batchAudit(ids, remark).then(res => {
+          setTableLoading(false)
+          Message.success('审核成功')
+        }, err => {
+          setTableLoading(false)
+        })
       }
     })
   }
@@ -369,6 +423,7 @@ export default observer(function FlatManageProblemList() {
         <BaseTable
           columns={columns}
           rowKey='id'
+          // rowSelection={rowSelection}
           dataSource={tableData}
           loading={tableLoading}
           surplusHeight={235}
@@ -386,6 +441,9 @@ export default observer(function FlatManageProblemList() {
             current: query.pageIndex
           }}
         />
+        {/* <div className="table-btn-group">
+          <Button onClick={handleAudit} disabled={authStore.post !== '护长'}>批量审核</Button>
+        </div> */}
       </div>
       <FlatManageDetail
         visible={detailCfg.visible}
@@ -474,6 +532,7 @@ const Wrapper = styled.div`
     width: 100%;
     padding: 15px;
     padding-top: 0;
+    position: relative;
     td {
       position: relative;
       word-break: break-all;
@@ -511,6 +570,16 @@ const Wrapper = styled.div`
             margin-right: 5px;
           }
         }
+      }
+    }
+    .table-btn-group{
+      position: absolute;
+      bottom: 24px;
+      height: 30px;
+      display: inline-block;
+      left: 20px;
+      &>*{
+        margin-left: 12px;
       }
     }
   }

@@ -34,14 +34,14 @@ export default function NewNursingRulesAddModal(props: Props) {
 
     let auditContent = <div>
       <div>您确认要审核通过吗？通过后数据将不能再修改。</div>
-      <br />
+      {/* <br />
       <div>
         <span>备注：</span>
         <Input
           style={{ width: '260px' }}
           defaultValue={remark}
           onChange={(e: any) => remark = e.target.value} />
-      </div>
+      </div> */}
     </div>
 
     Modal.confirm({
