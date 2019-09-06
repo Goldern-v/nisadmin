@@ -94,10 +94,10 @@ export default function NewNursingRulesAddModal(props: Props) {
         <Col span={labelSpan}>整改措施:</Col>
         <Col span={contentSpan}>{measures || ''}</Col>
       </Row>
-      <Row style={{ display: remark ? 'block' : 'none' }}>
+      {/* <Row style={{ display: remark ? 'block' : 'none' }}>
         <Col span={labelSpan}>备注:</Col>
         <Col span={contentSpan} >{remark || ''}</Col>
-      </Row>
+      </Row> */}
     </div>
 
     if (loading) {
