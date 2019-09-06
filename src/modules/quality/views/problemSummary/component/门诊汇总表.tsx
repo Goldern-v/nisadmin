@@ -108,7 +108,7 @@ export default function 门诊汇总表(props: Props) {
             <td>合 计（100分）</td>
             <td />
           </tr>
-          {opdDeptList.map((item, index) => (
+          {noOpdDeptList.map((item, index) => (
             <tr key={index}>
               <td>{item.wardName}</td>
               <td />
