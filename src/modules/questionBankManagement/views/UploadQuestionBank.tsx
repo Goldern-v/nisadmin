@@ -7,7 +7,7 @@ import NavCon from './../components/common/NavCon'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { questionBankManageService } from './../api/QuestionBankManageService'
-import qs from 'qs';
+// import qs from 'qs';
 
 export default observer(function QuestionBankManagement() {
   let { location, history } = appStore;
@@ -64,6 +64,12 @@ export default observer(function QuestionBankManagement() {
     }
   }
 
+  const FileInput = () => {
+    if (!loading) return <input type="file" style={{ display: 'none' }} ref={fileRef} onChange={handleFileChange} accept=".xls" />
+
+    return <span style={{ display: 'none' }}></span>
+  }
+
   return (
     <Wrapper>
       <div className="header">
@@ -96,7 +102,7 @@ export default observer(function QuestionBankManagement() {
             </span>
           </div>
         </div>
-        <input type="file" style={{ display: 'none' }} ref={fileRef} onChange={handleFileChange} accept=".xls" />
+        {FileInput()}
         {/* 载入遮罩层 */}
         <div className="loading-mask" style={{ display: loading ? 'block' : 'none' }}>
           <Spin />
