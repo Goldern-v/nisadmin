@@ -85,9 +85,9 @@ export default class NurseFilesService extends BaseApiService {
 
     trancePostData.append('type', '2')
 
-    if (authStore!.user!.post == '护长') {
+    if ((authStore.user && authStore.user.post) == '护长') {
       trancePostData.append('auditedStatus', 'waitAuditedNurse')
-    } else if (authStore!.user!.post == '护理部') {
+    } else if ((authStore.user && authStore.user.post) == '护理部') {
       trancePostData.append('auditedStatus', 'waitAuditedDepartment')
     }
 
