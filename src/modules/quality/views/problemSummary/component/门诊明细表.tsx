@@ -38,7 +38,10 @@ export default function 门诊明细表(props: Props) {
       title: '科室扣分',
       dataIndex: 'convertDeductScore',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render(text: any, record: any) {
+        return Number(text).toFixed(2)
+      }
     }
   ]
 
