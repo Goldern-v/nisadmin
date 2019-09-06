@@ -18,8 +18,8 @@ const BoxInner = styled.div<{ color?: string }>`
   justify-content: center;
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
   border-radius: 2px;
+  cursor: pointer;
   &:hover {
-    cursor: pointer;
     border-color: ${(p) => p.theme.$mtc};
   }
 `
