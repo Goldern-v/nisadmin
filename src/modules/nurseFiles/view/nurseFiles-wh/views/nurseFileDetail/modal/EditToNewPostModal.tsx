@@ -49,34 +49,29 @@ export default function EditToNewPostModal(props: Props) {
   }
 
   const onSave = async (sign: boolean) => {
-    let typeName: any = list.filter((item: any) => item.code === type)[0]
-    let oldTypeName: any = list.filter((item: any) => item.code === oldType)[0]
     let obj = {
       empNo: nurseFileDetailViewModal.nurserInfo.empNo,
-      empName: nurseFileDetailViewModal.nurserInfo.empName,
-      auditedStatus: '',
-      // urlImageOne: '',
-      oldDeptCode: oldType,
-      oldDeptName: oldTypeName ? oldTypeName.name : '',
-      newDeptCode: type,
-      newDeptName: typeName ? typeName.name : ''
+      empName: nurseFileDetailViewModal.nurserInfo.empName
     }
-    // console.log(obj,'obj')
-    if ((authStore.user && authStore.user.post) == '护长') {
-      obj.auditedStatus = 'waitAuditedNurse'
-    } else if ((authStore.user && authStore.user.post) == '护理部') {
-      obj.auditedStatus = 'waitAuditedDepartment'
-    }
+
     if (signShow === '修改') {
       Object.assign(obj, { id: data.id })
     }
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
-    // console.log(value,'value')
     if (err) return
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
+
+    /** 补全科室名称 */
+    value.newDeptName = (nurseFileDetailViewModal
+      .getDict('全部科室')
+      .find((item) => item.code == value.newDeptCode) || { name: '' })!.name
+    value.oldDeptName = (nurseFileDetailViewModal
+      .getDict('全部科室')
+      .find((item) => item.code == value.oldDeptCode) || { name: '' })!.name
+
     value.transferDate && (value.transferDate = value.transferDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHTransferPost', { ...value, ...obj, sign }).then((res: any) => {
@@ -92,8 +87,9 @@ export default function EditToNewPostModal(props: Props) {
     /** 如果是修改 */
     if (data && refForm.current && visible) {
       refForm!.current!.setFields({
-        oldDeptName: data.oldDeptName,
-        newDeptName: data.newDeptName,
+        oldDeptCode: data.oldDeptCode,
+        newDeptCode: data.newDeptCode,
+        deptBeDepartment: data.deptBeDepartment,
         transferDate: data.transferDate ? moment(data.transferDate) : null,
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
@@ -129,8 +125,8 @@ export default function EditToNewPostModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`原工作科室`} name='oldDeptName'>
-              <Select value={oldType} onSelect={onSelectChangeOld} placeholder='选择原工作科室'>
+            <Form.Field label={`原工作科室`} name='oldDeptCode'>
+              <Select placeholder='选择原工作科室'>
                 {list.map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
@@ -140,8 +136,8 @@ export default function EditToNewPostModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现工作科室`} name='newDeptName'>
-              <Select value={type} onSelect={onSelectChange} placeholder='选择现工作科室'>
+            <Form.Field label={`现工作科室`} name='newDeptCode'>
+              <Select placeholder='选择现工作科室'>
                 {nurseFileDetailViewModal.getDict('全部科室').map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}
@@ -152,7 +148,7 @@ export default function EditToNewPostModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`现科室隶属部门`} name='deptBeDepartment'>
-              <Select value={type} placeholder='选择现工作科室'>
+              <Select placeholder='选择现工作科室'>
                 {nurseFileDetailViewModal.getDict('现科室隶属部门').map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
                     {item.name}

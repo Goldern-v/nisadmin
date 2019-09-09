@@ -37,7 +37,7 @@ export default observer(function PersonWinning() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
+      dataIndex: '序号',
       key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
