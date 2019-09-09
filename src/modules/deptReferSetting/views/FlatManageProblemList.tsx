@@ -60,7 +60,7 @@ export default observer(function FlatManageProblemList() {
       title: '序号',
       dataIndex: 'key',
       key: 'key',
-      width: 30,
+      width: 50,
       align: 'center',
       render: (text: string, record: any, index: number) => index + 1
     },
