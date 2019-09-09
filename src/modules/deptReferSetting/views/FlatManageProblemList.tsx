@@ -346,131 +346,158 @@ export default observer(function FlatManageProblemList() {
 
   return (
     <Wrapper>
-      <div className='topbar'>
-        {/* <div className='float-left'>
+      <div>
+        <div className='topbar'>
+          {/* <div className='float-left'>
           <div className='item title'>扁平管理汇总</div>
         </div> */}
-        <div className='float-left'>
-          <div className='item'>
-            <div className='label'>科室：</div>
-            <div className='content'>
-              <div className='dept-select'>
-                <DeptSelect onChange={(deptCode) => handleDeptChange(deptCode)} />
+          <div className='float-left'>
+            <div className='item'>
+              <div className='label'>科室：</div>
+              <div className='content'>
+                <div className='dept-select'>
+                  <DeptSelect onChange={(deptCode) => handleDeptChange(deptCode)} />
+                </div>
               </div>
             </div>
-          </div>
-          <div className='item'>
-            <div className='label'>检查日期：</div>
-            <div className='content'>
-              <DatePicker
-                style={{ width: 110 }}
-                allowClear={false}
-                value={moment(query.checkDateStart)}
-                onChange={(value: any) =>
-                  setQuery({ ...query, checkDateStart: value.format('YYYY-MM-DD'), pageIndex: 1 })
-                }
-              />
-              <span> - </span>
-              <DatePicker
-                style={{ width: 110 }}
-                allowClear={false}
-                value={moment(query.checkDateEnd)}
-                onChange={(value: any) =>
-                  setQuery({ ...query, checkDateEnd: value.format('YYYY-MM-DD'), pageIndex: 1 })
-                }
-              />
+            <div className='item'>
+              <div className='label'>检查日期：</div>
+              <div className='content'>
+                <DatePicker
+                  style={{ width: 110 }}
+                  allowClear={false}
+                  value={moment(query.checkDateStart)}
+                  onChange={(value: any) =>
+                    setQuery({ ...query, checkDateStart: value.format('YYYY-MM-DD'), pageIndex: 1 })
+                  }
+                />
+                <span> - </span>
+                <DatePicker
+                  style={{ width: 110 }}
+                  allowClear={false}
+                  value={moment(query.checkDateEnd)}
+                  onChange={(value: any) =>
+                    setQuery({ ...query, checkDateEnd: value.format('YYYY-MM-DD'), pageIndex: 1 })
+                  }
+                />
+              </div>
             </div>
-          </div>
-          <div className='item'>
-            <div className='label'>管理类型：</div>
-            <div className='content'>
-              <Select
-                style={{ width: 120 }}
-                value={query.typeId}
-                onChange={(value: any) => setQuery({ ...query, typeId: value, pageIndex: 1 })}
-              >
-                <Option value={''}>全部</Option>
-                {typeList.map((item: any) => (
-                  <Option value={item.id} key={item.id}>
-                    {item.manageType}
-                  </Option>
-                ))}
-              </Select>
+            <div className='item'>
+              <div className='label'>管理类型：</div>
+              <div className='content'>
+                <Select
+                  style={{ width: 120 }}
+                  value={query.typeId}
+                  onChange={(value: any) => setQuery({ ...query, typeId: value, pageIndex: 1 })}
+                >
+                  <Option value={''}>全部</Option>
+                  {typeList.map((item: any) => (
+                    <Option value={item.id} key={item.id}>
+                      {item.manageType}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
             </div>
-          </div>
-          <div className='item'>
-            <div className='label'>审核状态：</div>
-            <div className='content'>
-              <Select
-                style={{ width: 90 }}
-                value={query.status}
-                onChange={(value: any) => setQuery({ ...query, status: value, pageIndex: 1 })}
-              >
-                <Option value={''}>全部</Option>
-                <Option value={'1'}>待审核</Option>
-                <Option value={'2'}>已审核</Option>
-              </Select>
+            <div className='item'>
+              <div className='label'>审核状态：</div>
+              <div className='content'>
+                <Select
+                  style={{ width: 90 }}
+                  value={query.status}
+                  onChange={(value: any) => setQuery({ ...query, status: value, pageIndex: 1 })}
+                >
+                  <Option value={''}>全部</Option>
+                  <Option value={'1'}>待审核</Option>
+                  <Option value={'2'}>已审核</Option>
+                </Select>
+              </div>
             </div>
-          </div>
-          <div className='item'>
-            <Button onClick={() => getTableData()}>查询</Button>
-          </div>
-          <div className='item'>
-            <Button onClick={createNew}>新建</Button>
+            <div className='item'>
+              <Button onClick={() => getTableData()}>查询</Button>
+            </div>
+            <div className='item'>
+              <Button onClick={createNew}>新建</Button>
+            </div>
+            <div className="item">
+              <Button onClick={handleAudit} disabled={authStore.post !== '护长'}>批量审核</Button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className='main-contain'>
-        <BaseTable
-          columns={columns}
-          rowKey='id'
-          rowSelection={rowSelection}
-          dataSource={tableData}
-          loading={tableLoading}
-          surplusHeight={235}
-          onRow={(record) => {
-            return {
-              onDoubleClick: (e: any) => handleDetailView(record)
-            }
-          }}
-          pagination={{
-            onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
-            total: dataTotal,
-            showSizeChanger: false,
-            showQuickJumper: true,
-            pageSize: query.pageSize,
-            current: query.pageIndex
-          }}
-        />
-        <div className="table-btn-group">
+        <div className='main-contain'>
+          <BaseTable
+            columns={columns}
+            rowKey='id'
+            rowSelection={rowSelection}
+            dataSource={tableData}
+            loading={tableLoading}
+            surplusHeight={235}
+            onRow={(record) => {
+              return {
+                onDoubleClick: (e: any) => handleDetailView(record)
+              }
+            }}
+            pagination={{
+              onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
+              total: dataTotal,
+              showSizeChanger: false,
+              showQuickJumper: true,
+              pageSize: query.pageSize,
+              current: query.pageIndex
+            }}
+          />
+          {/* <div className="table-btn-group">
           <Button onClick={handleAudit} disabled={authStore.post !== '护长'}>批量审核</Button>
+        </div> */}
         </div>
-      </div>
-      <FlatManageDetail
-        visible={detailCfg.visible}
-        onCancel={handleDetailCancel}
-        onOk={handleDetailOk}
-        viewType={detailCfg.viewType}
-        data={detailCfg.data}
-      />
-      <FlatManageProblemEdit
-        visible={editCfg.visible}
-        params={editCfg.params}
-        onCancel={handleEditCancel}
-        onOk={handleEditOk}
-      />
+        <FlatManageDetail
+          visible={detailCfg.visible}
+          onCancel={handleDetailCancel}
+          onOk={handleDetailOk}
+          viewType={detailCfg.viewType}
+          data={detailCfg.data}
+        />
+        <FlatManageProblemEdit
+          visible={editCfg.visible}
+          params={editCfg.params}
+          onCancel={handleEditCancel}
+          onOk={handleEditOk}
+        /></div>
     </Wrapper>
   )
 })
 
+const mainPannelWidth = 1116;
+
 const Wrapper = styled.div`
-  position: relative;
-  padding-top: 65px;
-  height: 100%;
   width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background-color: #c2c2c2;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 50px;
+    background-color: #eaeaea;
+  }
+  &>div{
+    padding-top: 65px;
+    height: 100%;
+    width: 100%;
+    min-width: ${mainPannelWidth}px;
+  }
 
   div.topbar {
     position: absolute;
+    min-width: ${mainPannelWidth}px;
     top: 0;
     left: 0;
     width: 100%;
