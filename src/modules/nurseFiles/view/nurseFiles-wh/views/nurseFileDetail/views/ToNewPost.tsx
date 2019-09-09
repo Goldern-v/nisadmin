@@ -71,16 +71,16 @@ export default observer(function PersonWinning() {
       width: 110,
       align: 'center'
     },
-    {
-      title: '附件',
-      dataIndex: 'fj',
-      key: 'fj',
-      width: 80,
-      align: 'center',
-      render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
-      }
-    },
+    // {
+    //   title: '附件',
+    //   dataIndex: 'fj',
+    //   key: 'fj',
+    //   width: 80,
+    //   align: 'center',
+    //   render: (text: any, row: any, index: any) => {
+    //     return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+    //   }
+    // },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',

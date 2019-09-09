@@ -241,7 +241,7 @@ export default function AduitModal(props: Props) {
               <div className='key'>当前进度：</div>
               <div className='vale'>
                 <div className='status'>
-                  {auditeListDtos.length == 0 && resData.auditedEmpRole}
+                  {/* {auditeListDtos.length == 0 && resData.auditedEmpRole} */}
                   {auditStatus}
                 </div>
               </div>

@@ -90,8 +90,8 @@ export default function EditToNewPostModal(props: Props) {
         oldDeptCode: data.oldDeptCode,
         newDeptCode: data.newDeptCode,
         deptBeDepartment: data.deptBeDepartment,
-        transferDate: data.transferDate ? moment(data.transferDate) : null,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        transferDate: data.transferDate ? moment(data.transferDate) : null
+        // urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       })
     }
     if (signShow === '修改') {
@@ -162,11 +162,11 @@ export default function EditToNewPostModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`附件`} name='urlImageOne'>
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     </Modal>
