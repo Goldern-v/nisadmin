@@ -336,6 +336,7 @@ export default observer(function FlatManageProblemList() {
         flatManageProblemService.batchAudit(ids, remark).then(res => {
           setTableLoading(false)
           Message.success('审核成功')
+          getTableData()
         }, err => {
           setTableLoading(false)
         })
@@ -423,7 +424,7 @@ export default observer(function FlatManageProblemList() {
         <BaseTable
           columns={columns}
           rowKey='id'
-          // rowSelection={rowSelection}
+          rowSelection={rowSelection}
           dataSource={tableData}
           loading={tableLoading}
           surplusHeight={235}
@@ -441,9 +442,9 @@ export default observer(function FlatManageProblemList() {
             current: query.pageIndex
           }}
         />
-        {/* <div className="table-btn-group">
+        <div className="table-btn-group">
           <Button onClick={handleAudit} disabled={authStore.post !== '护长'}>批量审核</Button>
-        </div> */}
+        </div>
       </div>
       <FlatManageDetail
         visible={detailCfg.visible}
