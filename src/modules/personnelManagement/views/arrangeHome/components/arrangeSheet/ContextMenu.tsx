@@ -34,8 +34,8 @@ export default function ContextMenu(props: Props) {
   }
 
   let max_y = window.innerHeight
-  if (max_y - y < 300) {
-    y = max_y - 300
+  if (max_y - y < 310) {
+    y = max_y - 310
   }
   return (
     <div ref={elRef}>
@@ -107,12 +107,12 @@ const Wrapper = styled.div<{ x: number; y: number }>`
   left: ${(p) => p.x}px;
   top: ${(p) => p.y}px;
   z-index: 998;
-  width: 160px;
+  width: 150px;
   max-height: 500px;
   border: 1px solid #d1e5e0;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.04), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
   background: #fff;
-  padding: 10px 0;
+  padding: 5px 0;
   .icon {
     height: 14px;
     margin-right: 14px;
@@ -127,11 +127,11 @@ const Wrapper = styled.div<{ x: number; y: number }>`
     float: right;
   }
   .text-item {
-    height: 30px;
-    line-height: 30px;
+    height: 26px;
+    line-height: 26px;
     cursor: pointer;
     color: #486a62;
-    font-size: 14px;
+    font-size: 13px;
     padding: 0 10px;
     position: relative;
     &.disabled {

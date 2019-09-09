@@ -78,6 +78,19 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
     message.warning('请先复制行')
   }
 }
+export function copyCellClick(cell: any, copyCell: any) {
+  if (copyCell) {
+    cell.rangeName = copyCell.rangeName
+    cell.nameColor = copyCell.nameColor
+    cell.effectiveTime = copyCell.effectiveTime
+    cell.effectiveTimeOld = copyCell.effectiveTimeOld
+    cell.shiftType = copyCell.shiftType
+    cell.addSymbols = copyCell.addSymbols
+    cell.settings = cloneJson(copyCell.settings)
+  } else {
+    message.warning('请先复制格')
+  }
+}
 
 export function cleanCell(cellObj: ArrangeItem) {
   cellObj.rangeName = ''

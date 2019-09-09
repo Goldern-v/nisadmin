@@ -44,7 +44,7 @@ export default observer(function 特殊科室质量扣分模块(props: Props) {
           <col width='80' />
         </colgroup>
         <tbody>
-          <tr className="header">
+          <tr className='header'>
             <td>排序</td>
             <td>科室</td>
             <td>扣分</td>
@@ -54,7 +54,7 @@ export default observer(function 特殊科室质量扣分模块(props: Props) {
               <tr key={idx}>
                 <td>{idx + 1}</td>
                 <td>{item.wardName}</td>
-                <td>{item.deductScore}</td>
+                <td>{Number(item.deductScore).toFixed(2)}</td>
               </tr>
             )
           })}

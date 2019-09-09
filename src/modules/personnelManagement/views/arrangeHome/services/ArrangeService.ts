@@ -27,14 +27,16 @@ export default class ArrangeService extends BaseApiService {
   /** 获取排班班次 */
   public getArrangeMenu(obj?: any) {
     obj = {
-      deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode,
+      status: true
     }
     return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(obj))
   }
   /** 获取排班班次套餐 */
   public getArrangeMeal(obj?: any) {
     obj = {
-      deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode,
+      status: true
     }
     return this.post(`schMealSetting/getByDeptCode`, this.stringify(obj))
   }

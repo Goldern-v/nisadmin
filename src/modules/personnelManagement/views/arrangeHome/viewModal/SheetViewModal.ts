@@ -25,6 +25,7 @@ class SheetViewModal {
 
   /** 复制行 */
   @observable public copyRow: any[] = []
+  @observable public copyCell: any = null
   /** 时间段 */
   getDateList() {
     let days = []

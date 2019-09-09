@@ -9,7 +9,7 @@ import monnet from 'src/vendors/moment'
 import classNames from 'classnames'
 import { type } from 'os'
 import { SymbolItem, ArrangeItem } from '../../types/Sheet'
-import { getAddArrangeMenuList, copyRowClick, cleanCell, cleanCellList } from './cellClickEvent'
+import { getAddArrangeMenuList, copyRowClick, cleanCell, cleanCellList, copyCellClick } from './cellClickEvent'
 import { message, Popover } from 'src/vendors/antd'
 import { cloneJson } from 'src/utils/json/clone'
 
@@ -140,6 +140,23 @@ export default observer(function Cell(props: Props) {
         },
         {
           icon: require('../../images/复制行.png'),
+          label: '复制格',
+          type: 'text',
+          onClick() {
+            sheetViewModal.copyCell = sheetViewModal.selectedCell
+            message.success('复制成功')
+          }
+        },
+        {
+          icon: require('../../images/粘贴行.png'),
+          label: '粘贴格',
+          type: 'text',
+          onClick() {
+            copyCellClick(sheetViewModal.selectedCell, sheetViewModal.copyCell)
+          }
+        },
+        {
+          icon: require('../../images/复制行.png'),
           label: '复制行',
           type: 'text',
           onClick() {
@@ -147,6 +164,7 @@ export default observer(function Cell(props: Props) {
             message.success('复制成功')
           }
         },
+
         {
           icon: require('../../images/剪切行.png'),
           label: '剪切行',
