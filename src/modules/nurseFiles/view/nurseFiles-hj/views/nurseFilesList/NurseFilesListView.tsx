@@ -29,8 +29,8 @@ const value = {
 const columns: ColumnProps<any>[] = [
   {
     title: '序号',
-    dataIndex: '1',
-    key: '1',
+    dataIndex: '',
+    key: '',
     render: (text: any, row: any, index: number) => index + 1,
     align: 'center',
     width: 50

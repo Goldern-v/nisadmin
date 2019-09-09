@@ -50,7 +50,7 @@ export default observer(function BaseTable(props: Props) {
   option.dataSource =
     option.dataSource &&
     option.dataSource.map((item: any, index: number) => {
-      return Object.assign(item, { key: index })
+      return Object.assign(item, { key: 'key' + index })
     })
 
   if (option.surplusHeight) {
