@@ -113,8 +113,11 @@ export default observer(function TopPart() {
             name: '编辑排班'
           }
         ]}
+        style={{
+          padding: '5px 15px 0'
+        }}
       />
-      <div className='contain'>
+      <div className='head-contain'>
         {/* <div className='title'>编辑排班</div> */}
         {/* <Place /> */}
         <div className='item'>
@@ -127,7 +130,7 @@ export default observer(function TopPart() {
                   : undefined
               }
               disabled
-              style={{ width: 200 }}
+              style={{ width: 230 }}
             />
           </div>
         </div>
@@ -184,12 +187,11 @@ export default observer(function TopPart() {
 })
 
 const Wrapper = styled.div`
-  .contain {
+  .head-contain {
     display: flex;
     align-items: flex-end;
-    height: 55px;
-    padding: 0px 20px;
-    line-height: 60px;
+    height: 45px;
+    padding: 5px 0 10px 20px;
     .title {
       font-size: 20px;
       margin-left: 10px;
@@ -203,5 +205,19 @@ const Wrapper = styled.div`
         vertical-align: middle;
       }
     }
+  }
+  button,
+  select,
+  .ant-calendar-picker,
+  .ant-input,
+  .ant-select,
+  .ant-select-selection--single {
+    height: 28px;
+  }
+  .ant-select-selection__rendered {
+    line-height: 27px;
+  }
+  .ant-input {
+    line-height: 1.3;
   }
 `

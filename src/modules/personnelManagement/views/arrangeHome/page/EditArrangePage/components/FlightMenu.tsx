@@ -134,8 +134,12 @@ const Wrapper = styled.div`
   .ant-tabs-nav {
     width: 100%;
   }
+  .ant-tabs-nav-container {
+    height: 36px !important;
+  }
   .ant-tabs-tab {
     width: 50%;
     text-align: center;
+    height: 36px !important;
   }
 `

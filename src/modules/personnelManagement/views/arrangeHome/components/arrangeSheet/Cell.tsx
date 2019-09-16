@@ -290,11 +290,12 @@ function formatCell(cellObj: ArrangeItem) {
 }
 
 const Wrapper = styled.div`
-  height: 100%;
+  height: calc(100% + 2px);
+  width: calc(100% + 6px);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 -2px;
+  margin: -1px -3px;
   position: relative;
   word-break: break-all;
   &.isSelected {
