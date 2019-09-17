@@ -32,7 +32,17 @@ export default function EjkhszModal(props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
+    let renderList = selectList.reduce((total: any[], current: any) => {
+      let list = current.measureList.filter((item: any) => item.checked)
+      if (list.length) {
+        total.push({ ...current, measureList: list })
+      }
+      return total
+    }, [])
 
+    if (renderList.length != selectList.length) {
+      return message.warning('存在未填的选项，请检查')
+    }
     qualityControlRecordApi
       .handleNode({
         id: props.id,
@@ -41,13 +51,7 @@ export default function EjkhszModal(props: Props) {
         nodeCode: props.nodeCode,
         handleContent: '',
         noPass: value.noPass,
-        measureGroupList: selectList.reduce((total: any[], current: any) => {
-          let list = current.measureList.filter((item: any) => item.checked)
-          if (list.length) {
-            total.push({ ...current, measureList: list })
-          }
-          return total
-        }, [])
+        measureGroupList: renderList
       })
       .then((res) => {
         message.success('操作成功')
@@ -112,7 +116,7 @@ export default function EjkhszModal(props: Props) {
             {selectList.length > 0
               ? selectList.map((item: any, index: number) => (
                   <div key={index}>
-                    <div className='title'>{index + 1 + ',' + item.itemName}</div>
+                    <div className='title'>{index + 1 + '.' + item.itemName}</div>
                     {item.measureList.map((m: any) => (
                       <div key={m.measureCode}>
                         <Checkbox

@@ -303,6 +303,9 @@ const Wrapper = styled.div`
   }
   &.isTwoDaysAgo {
     background: #f8f8f8;
+    height: 100%;
+    width: auto;
+    margin: 0 -2px;
   }
   .sj {
     position: absolute;
