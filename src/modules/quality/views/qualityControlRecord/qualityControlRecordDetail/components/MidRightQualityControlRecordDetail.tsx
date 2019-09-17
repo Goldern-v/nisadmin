@@ -50,12 +50,12 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                     {item.nodeCode == 'big_dept_handle' && (
                       <React.Fragment>
                         {item.measureGroupList &&
-                          item.measureGroupList.map((item: any) => (
-                            <div className='text-box'>
+                          item.measureGroupList.map((item: any, index: number) => (
+                            <div className='text-box' key={index}>
                               <div className='text-box-title'>{item.itemName}：</div>
                               <div>
-                                {item.measureList.map((item: any) => (
-                                  <span>{item.measureName};</span>
+                                {item.measureList.map((item: any, index: number) => (
+                                  <span key={index}>{item.measureName};</span>
                                 ))}
                               </div>
                             </div>
