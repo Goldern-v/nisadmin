@@ -41,7 +41,7 @@ export default function EjkhszModal(props: Props) {
     }, [])
 
     if (renderList.length != selectList.length) {
-      return message.warning('存在未填的选项，请检查')
+      return message.warning('请填完所有选项')
     }
     qualityControlRecordApi
       .handleNode({
@@ -119,15 +119,39 @@ export default function EjkhszModal(props: Props) {
                     <div className='title'>{index + 1 + '.' + item.itemName}</div>
                     {item.measureList.map((m: any) => (
                       <div key={m.measureCode}>
-                        <Checkbox
-                          onChange={() => {
-                            m.checked = !m.checked
-                            setSelectList([...selectList])
-                          }}
-                          checked={m.checked}
-                        >
-                          {m.measureName}
-                        </Checkbox>
+                        {m.canUpdate ? (
+                          <Checkbox
+                            onChange={() => {
+                              m.checked = !m.checked
+                              setSelectList([...selectList])
+                            }}
+                            checked={m.checked}
+                          >
+                            其他{' '}
+                            {
+                              <input
+                                type='text'
+                                onChange={(e) => {
+                                  m.checked = true
+                                  m.measureName = e.target.value
+                                  setSelectList([...selectList])
+                                }}
+                                value={m.measureName}
+                                className='other-input'
+                              />
+                            }
+                          </Checkbox>
+                        ) : (
+                          <Checkbox
+                            onChange={() => {
+                              m.checked = !m.checked
+                              setSelectList([...selectList])
+                            }}
+                            checked={m.checked}
+                          >
+                            {m.measureName}
+                          </Checkbox>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -152,5 +176,11 @@ const Wrapper = styled.div`
     font-size: 14px;
     text-align: center;
     padding-top: 10px;
+  }
+  .other-input {
+    border: 0;
+    border-bottom: 1px solid #000;
+    width: 475px;
+    outline: none;
   }
 `
