@@ -24,7 +24,9 @@ export default observer(function 本月质量扣分科室排序模块(props: Pro
 
   return (
     <Wrapper>
-      <div className='title'>2.3.{sectionTitle}</div>
+      <div className='title'>
+        2.{report.groupRoleCode == 'QCR0010' ? '3' : '2'}.{sectionTitle}
+      </div>
       <Table list={list} />
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>

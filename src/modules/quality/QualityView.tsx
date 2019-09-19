@@ -12,13 +12,31 @@ export interface Props extends RouteComponentProps<{ name?: string }> {}
 import { ReactComponent as CXTJ } from './images/查询统计.svg'
 import { ReactComponent as FXBG } from './images/分析报告.svg'
 import { ReactComponent as ZKJL } from './images/质控记录.svg'
+import { appStore } from 'src/stores'
+import RecordView from './views/checkWard/view/record/RecordView'
+import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 
-const LEFT_MENU_CONFIG = [
+const LEFT_MENU_CONFIG: any = [
   {
     title: '质控记录',
     icon: <ZKJL />,
-    path: '/quality/qualityControlRecord',
-    component: QualityControlRecord
+    children: [
+      // {
+      //   title: '一级质控',
+      //   path: '/quality/qualityControlRecord/1',
+      //   component: { ...QualityControlRecord }
+      // },
+      {
+        title: '二级质控',
+        path: '/quality/qualityControlRecord/2',
+        component: { ...QualityControlRecord }
+      },
+      {
+        title: '三级质控',
+        path: '/quality/qualityControlRecord/3',
+        component: { ...QualityControlRecord }
+      }
+    ]
   },
 
   {
@@ -47,9 +65,28 @@ const LEFT_MENU_CONFIG = [
   }
 ]
 
+if (appStore.isDev) {
+  LEFT_MENU_CONFIG.push({
+    title: '护理查房',
+    icon: <ZKJL />,
+    children: [
+      {
+        title: '查房记录',
+        path: '/quality/checkWard/record',
+        component: RecordView
+      },
+      {
+        title: '查房计划表',
+        path: '/quality/checkWard/schedule',
+        component: ScheduleView
+      }
+    ]
+  })
+}
+
 export default function QualityView(props: Props) {
-  useEffect(() => {}, [props.match.params.name])
-  let currentRoutePath = props.match.url || ''
+  useEffect(() => {}, [props.history.location.pathname])
+  let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {

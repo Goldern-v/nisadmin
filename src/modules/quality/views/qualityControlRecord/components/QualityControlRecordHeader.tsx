@@ -28,7 +28,7 @@ export default observer(function TopCon(props: any) {
         style={{ width: 220 }}
       />
 
-      <span style={{ margin: '0 3px 0 15px' }}>类型:</span>
+      {/* <span style={{ margin: '0 3px 0 15px' }}>类型:</span>
       <Select
         style={{ width: 100 }}
         value={qualityControlRecordVM.level}
@@ -37,10 +37,14 @@ export default observer(function TopCon(props: any) {
           props.refreshData()
         }}
       >
-        {qualityControlRecordVM.filterLevelList.map((item: any) => {
-          return <Select.Option value={item.code}>{item.name}</Select.Option>
+        {qualityControlRecordVM.filterLevelList.map((item: any, index: number) => {
+          return (
+            <Select.Option value={item.code} key={index}>
+              {item.name}
+            </Select.Option>
+          )
         })}
-      </Select>
+      </Select> */}
 
       {qualityControlRecordVM.formSelectList.length >= 1 && qualityControlRecordVM.level != 2 && (
         <div className='radio-con'>

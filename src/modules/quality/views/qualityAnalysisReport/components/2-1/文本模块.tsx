@@ -17,13 +17,18 @@ export default observer(function 文本模块(props: Props) {
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = data ? data.report || {} : {}
 
-  return (
-    <Wrapper>
-      <div className='title'>2.1.{report.archiveDesc}</div>
-      {/* <TextCon>{report.archiveDesc}</TextCon> */}
-      <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
-    </Wrapper>
-  )
+  if (report.groupRoleCode == 'QCR0010') {
+    /** 文件书写 */
+    return (
+      <Wrapper>
+        <div className='title'>2.1.{report.archiveDesc}</div>
+        {/* <TextCon>{report.archiveDesc}</TextCon> */}
+        <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
+      </Wrapper>
+    )
+  } else {
+    return <div />
+  }
 })
 const Wrapper = styled.div`
   min-height: 60px;

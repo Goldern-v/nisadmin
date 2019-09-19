@@ -27,11 +27,12 @@ class QualityControlRecordVM {
   @observable public readWay: any = 1
   @observable public allData: any = {}
 
-  async init() {
+  async init(level: string) {
     this.filterForm = ''
     this.filterState = ''
     this.filterDeptCode = ''
     this.readWay = 1
+    this.level = Number(level)
     this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
     this.allData = {}
     await Promise.all([
