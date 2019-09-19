@@ -58,7 +58,7 @@ export const getFileType = (filePath: string): FileType => {
   let pdfExtList = ['pdf']
   let excelExtList = ['xlsx', 'xls']
   let wordExtList = ['docx', 'doc']
-  let videoExtList = ['mp4']
+  let videoExtList = ['avi', 'rmvb', 'rm', 'asf', 'divx', 'mpg', 'mpeg', 'mpe', 'wmv', 'mp4', 'mkv', 'vob']
   if (imgExtList.includes(ext)) {
     return 'img'
   } else if (pdfExtList.includes(ext)) {

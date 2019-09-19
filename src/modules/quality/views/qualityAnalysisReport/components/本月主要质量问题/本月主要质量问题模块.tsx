@@ -5,7 +5,7 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewM
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
-import { LastImproveItem, DetailItem } from '../../types'
+import { LastImproveItem, DetailItem, Report } from '../../types'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -16,10 +16,12 @@ export default observer(function 上月质量问题模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let list: Partial<DetailItem>[] = data.list || []
-
+  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   return (
     <Wrapper>
-      <div className='title'>{'2.4.' + sectionTitle}</div>
+      <div className='title'>
+        2.{report.groupRoleCode == 'QCR0010' ? '4' : '3'}.{sectionTitle}
+      </div>
 
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
