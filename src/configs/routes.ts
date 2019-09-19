@@ -225,7 +225,7 @@ const routes: RouteItem[] = [
   },
   {
     path: '/quality',
-    redirect: '/quality/qualityControlRecord'
+    redirect: '/quality/qualityControlRecord/3'
   },
 
   {
