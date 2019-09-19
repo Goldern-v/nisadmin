@@ -15,14 +15,14 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
   }
   th{
-    height: 36px !important;
-    font-size: 14px !important;
+    /* height: 36px !important; */
+    /* font-size: 14px !important; */
   }
   td {
-        box-sizing: border-box;
-        padding: 0 8px;
-        font-size: 13px !important;
-        height: ${(p) => p.theme.$tableRowHeight} !important;
+        /* box-sizing: border-box; */
+        /* padding: 0 8px; */
+        /* font-size: 13px !important; */
+        /* height: ${(p) => p.theme.$tableRowHeight} !important; */
       }
   body {
     margin: 0px;

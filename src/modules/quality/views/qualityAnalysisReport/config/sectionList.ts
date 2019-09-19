@@ -24,6 +24,8 @@ import 问题及建议弹窗 from '../components/问题及建议/问题及建议
 import 问题及建议模块 from '../components/问题及建议/问题及建议模块'
 import 标题模块 from '../components/标题/标题模块'
 import 标题弹窗 from '../components/标题/标题弹窗'
+import 文本弹窗 from '../components/2-1/文本弹窗'
+import 文本模块 from '../components/2-1/文本模块'
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -54,6 +56,14 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 本月质量检查扣分情况模块,
     modal: 本月质量检查扣分情况弹窗
+  },
+  {
+    sectionId: '2-1',
+    sectionTitle: '2-1',
+    modalTitle: '编辑',
+    data: {},
+    section: 文本模块,
+    modal: 文本弹窗
   },
   {
     sectionId: '质量扣分比较',

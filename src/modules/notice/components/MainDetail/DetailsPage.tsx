@@ -12,6 +12,8 @@ import { noticeViewModel } from '../../NoticeViewModel'
 import { globalModal } from 'src/global/globalModal'
 import Zimage from 'src/components/Zimage'
 import moment from 'moment'
+import createModal from 'src/libs/createModal'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
 export interface Props {
   data: DetailObj
 }
@@ -20,6 +22,7 @@ export default function DetailsPage(props: Props) {
   let { data } = props
   const [collected, setCollected] = useState(data.collected)
 
+  const previewModal = createModal(PreviewModal)
   /** 是否5分钟之内 */
   let isFiveMin = false
   if (moment().valueOf() - moment(data.sendTime).valueOf() < 1000 * 60 * 5) {
@@ -71,6 +74,14 @@ export default function DetailsPage(props: Props) {
 
   const editMail = (templateType: string) => {
     appStore.history.push(`/sentNotice?templateId=${data.id}&templateType=${templateType}`)
+  }
+
+  const onPreView = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, file: any) => {
+    previewModal.show({
+      title: file.name,
+      path: file.path
+    })
+    e.stopPropagation()
   }
   return (
     <Wrapper>
@@ -186,7 +197,12 @@ export default function DetailsPage(props: Props) {
                     {getFileType(item.path) == 'img' ? (
                       <Zimage src={item.path} className='type-img' alt='' />
                     ) : (
-                      <img src={getFilePrevImg(item.path)} className='type-img' alt='' />
+                      <img
+                        src={getFilePrevImg(item.path)}
+                        className='type-img'
+                        alt=''
+                        onClick={(e) => onPreView(e, item)}
+                      />
                     )}
                     <div className='file-name'>{item.name}</div>
                     <div className='file-size'>{getFileSize(item.size)}</div>
@@ -197,6 +213,7 @@ export default function DetailsPage(props: Props) {
           </FooterCon>
         )}
       </PageCon>
+      <previewModal.Component />
     </Wrapper>
   )
 }

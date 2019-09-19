@@ -77,6 +77,8 @@ import WardManagementView from 'src/modules/wardManagement/WardManagementView'
 import PersonnelManagementView from 'src/modules/personnelManagement/PersonnelManagementView'
 import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
 
+//健康宣教报告
+import HealthEducationReportView from 'src/modules/healthEducationReport/QualityAnalysisReportView'
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -182,6 +184,9 @@ const routes: RouteItem[] = [
   setLayout('/personnelManagement/EditArrangePage', EditArrangePage, layouts.MainLayout),
 
   setLayout('/personnelManagement', PersonnelManagementView, layouts.MainLayout),
+
+  /** 健康宣教报告 */
+  setLayout('/healthEducationReport', HealthEducationReportView, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'
