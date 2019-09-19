@@ -43,7 +43,7 @@ export default observer(function EducationalExperience() {
     },
     {
       title: '结束时间',
-      dataIndex: 'startTime',
+      dataIndex: 'endTime',
       key: '3',
       width: 120,
       align: 'center'

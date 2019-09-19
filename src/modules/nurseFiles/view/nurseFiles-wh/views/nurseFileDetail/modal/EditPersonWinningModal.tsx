@@ -50,9 +50,9 @@ export default function EditPersonWinningModal(props: Props) {
       auditedStatus: '',
       urlImageOne: ''
     }
-    if (authStore!.user!.post == '护长') {
+    if ((authStore.user && authStore.user.post) == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if ((authStore.user && authStore.user.post) == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {

@@ -14,11 +14,11 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
   /** 保存排班信息 */
-  public saveOrUpdate(obj?: any) {
-    obj = {
+  public saveOrUpdate(status: '0' | '1') {
+    let obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
-      setting: sheetViewModal.sheetTableData,
+      setting: sheetViewModal.sheetTableData.map((item: any) => ({ ...item, status })),
       remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode
     }
@@ -27,14 +27,16 @@ export default class ArrangeService extends BaseApiService {
   /** 获取排班班次 */
   public getArrangeMenu(obj?: any) {
     obj = {
-      deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode,
+      status: true
     }
     return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(obj))
   }
   /** 获取排班班次套餐 */
   public getArrangeMeal(obj?: any) {
     obj = {
-      deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode,
+      status: true
     }
     return this.post(`schMealSetting/getByDeptCode`, this.stringify(obj))
   }

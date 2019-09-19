@@ -60,9 +60,13 @@ export default function SentNoticeView() {
     for (let i = 0; i < files.length; i++) {
       let postData = new FormData()
       postData.append('file', files[i])
-      promiseList.push(service.commonApiService.uploadAttachment('mail', postData))
+      promiseList.push(
+        service.commonApiService.uploadAttachment('mail', postData, (a: any, b: any, c: any) => {
+          console.log(a, b, c)
+        })
+      )
     }
-    let hideLoading = message.loading('正在上传，请稍等')
+    let hideLoading = message.loading('正在上传，请稍等', 0)
     Promise.all(promiseList)
       .then((res) => {
         let list: any = [

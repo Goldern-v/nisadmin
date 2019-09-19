@@ -26,8 +26,8 @@ const rules: Rules = {
   startTime: (val) => !!val || '请选择开始时间',
   endTime: (val) => !!val || '请选择结束时间',
   trainingUnit: (val) => !!val || '请填写培训单位',
-  trainingContent: (val) => !!val || '请填写培训内容',
-  hours: (val) => !!val || '请填写学时/分'
+  trainingContent: (val) => !!val || '请填写培训内容'
+  // hours: (val) => !!val || '请填写学时/分'
 }
 export default function EditWorkHistoryModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -42,9 +42,9 @@ export default function EditWorkHistoryModal(props: Props) {
       auditedStatus: '',
       urlImageOne: ''
     }
-    if (authStore!.user!.post == '护长') {
+    if ((authStore.user && authStore.user.post) == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if ((authStore.user && authStore.user.post) == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
     if (signShow === '修改') {
@@ -112,7 +112,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`学时`} name='hours' required>
+            <Form.Field label={`学时`} name='hours'>
               <Input />
             </Form.Field>
           </Col>

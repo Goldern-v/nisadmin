@@ -9,7 +9,7 @@ import monnet from 'src/vendors/moment'
 import classNames from 'classnames'
 import { type } from 'os'
 import { SymbolItem, ArrangeItem } from '../../types/Sheet'
-import { getAddArrangeMenuList, copyRowClick, cleanCell, cleanCellList } from './cellClickEvent'
+import { getAddArrangeMenuList, copyRowClick, cleanCell, cleanCellList, copyCellClick } from './cellClickEvent'
 import { message, Popover } from 'src/vendors/antd'
 import { cloneJson } from 'src/utils/json/clone'
 
@@ -37,7 +37,8 @@ export default observer(function Cell(props: Props) {
     sheetViewModal.selectedCell = cellObj
     let hasArrange = !!(sheetViewModal.selectedCell && sheetViewModal.selectedCell.rangeName)
 
-    let { x, y, width, height } = (event as any).target.getBoundingClientRect()
+    let { left: x, top: y, width, height } = (event as any).target.getBoundingClientRect()
+    // console.log(event.target, x, y, width, height, 'width, height ')
     contextMenu.show(
       [
         {
@@ -79,7 +80,8 @@ export default observer(function Cell(props: Props) {
                 let index = list.indexOf(sheetViewModal.selectedCell)
                 // debugger
                 if (index > -1) {
-                  for (let i = Math.min(list.length - index, num) - 1; i >= index; i--) {
+                  for (let i = list.length - 1; i >= index; i--) {
+                    if (!list[i]) break
                     list[i].rangeName =
                       (sheetViewModal.selectedCell.rangeName || '').replace(/\d+/g, '') + (i - index + 1).toString()
                     list[i].nameColor = sheetViewModal.selectedCell.nameColor
@@ -89,7 +91,6 @@ export default observer(function Cell(props: Props) {
                     list[i].settings = null
                   }
                 }
-                sheetViewModal.selectedCell
               }
             })
           }
@@ -139,6 +140,23 @@ export default observer(function Cell(props: Props) {
         },
         {
           icon: require('../../images/复制行.png'),
+          label: '复制格',
+          type: 'text',
+          onClick() {
+            sheetViewModal.copyCell = sheetViewModal.selectedCell
+            message.success('复制成功')
+          }
+        },
+        {
+          icon: require('../../images/粘贴行.png'),
+          label: '粘贴格',
+          type: 'text',
+          onClick() {
+            copyCellClick(sheetViewModal.selectedCell, sheetViewModal.copyCell)
+          }
+        },
+        {
+          icon: require('../../images/复制行.png'),
           label: '复制行',
           type: 'text',
           onClick() {
@@ -146,6 +164,7 @@ export default observer(function Cell(props: Props) {
             message.success('复制成功')
           }
         },
+
         {
           icon: require('../../images/剪切行.png'),
           label: '剪切行',
@@ -271,18 +290,22 @@ function formatCell(cellObj: ArrangeItem) {
 }
 
 const Wrapper = styled.div`
-  height: 100%;
+  height: calc(100% + 2px);
+  width: calc(100% + 6px);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 -2px;
+  margin: -1px -3px;
   position: relative;
   word-break: break-all;
   &.isSelected {
-    background: #fff8b1;
+    background: #ffe36c;
   }
   &.isTwoDaysAgo {
     background: #f8f8f8;
+    height: 100%;
+    width: auto;
+    margin: 0 -2px;
   }
   .sj {
     position: absolute;

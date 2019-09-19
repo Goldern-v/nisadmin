@@ -42,6 +42,10 @@ export default class QualityAnalysisReportService extends BaseApiService {
     }
     return this.post(`/qcAnalysis/update/checkDeptDesc`, obj)
   }
+  /** 更新2-1 */
+  public updateReport(report?: any) {
+    return this.post(`/qcAnalysis/update/report`, report)
+  }
   /** 更新质量扣分比 */
   public updateTypeCompareList(itemList?: any) {
     let obj = {

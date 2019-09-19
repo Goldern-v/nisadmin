@@ -66,9 +66,9 @@ export default function EditWorkHistoryModal(props: Props) {
       id: id,
       auditedStatus: ''
     }
-    if (authStore!.user!.post == '护长') {
+    if ((authStore.user && authStore.user.post) == '护长') {
       obj.auditedStatus = 'waitAuditedNurse'
-    } else if (authStore!.user!.post == '护理部') {
+    } else if ((authStore.user && authStore.user.post) == '护理部') {
       obj.auditedStatus = 'waitAuditedDepartment'
     }
 

@@ -16,7 +16,7 @@ import qs from 'qs'
 
 const api = new NursingRulesApiService()
 
-export interface Props { }
+export interface Props {}
 
 export default class NursingRules extends Component<Props> {
   state = {
@@ -487,7 +487,7 @@ export default class NursingRules extends Component<Props> {
               current: query.pageIndex
             }}
             loading={tableLoading}
-            type={['spaceRow']}
+            // type={['spaceRow']}
             surplusHeight={215}
           />
         </div>

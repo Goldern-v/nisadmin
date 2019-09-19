@@ -241,7 +241,7 @@ export default function AduitModal(props: Props) {
               <div className='key'>当前进度：</div>
               <div className='vale'>
                 <div className='status'>
-                  {auditeListDtos.length == 0 && resData.auditedEmpRole}
+                  {auditeListDtos.length == 0 && resData.completeStatus == 'fail' && resData.auditedEmpRole}
                   {auditStatus}
                 </div>
               </div>
@@ -295,7 +295,7 @@ export default function AduitModal(props: Props) {
                 <div className='row' style={{ paddingTop: '2px' }}>
                   <div className='key'>审核人：</div>
                   <div className='vale'>
-                    <div className='block'>{authStore.user!.empName}</div>
+                    <div className='block'>{authStore.user && authStore.user.empName}</div>
                   </div>
                 </div>
               </React.Fragment>

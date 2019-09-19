@@ -33,9 +33,9 @@ export default function EditWorkHistoryModal(props: Props) {
   const uploadOption = {
     empNo: appStore.queryObj.empNo,
     auditedStatus:
-      authStore!.user!.post === '护长'
+      (authStore.user && authStore.user.post) === '护长'
         ? 'waitAuditedNurse'
-        : authStore!.user!.post === '护理部'
+        : (authStore.user && authStore.user.post) === '护理部'
         ? 'waitAuditedDepartment'
         : ''
   }

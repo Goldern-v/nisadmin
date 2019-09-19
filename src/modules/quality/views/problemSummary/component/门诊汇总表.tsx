@@ -56,7 +56,7 @@ export default function 门诊汇总表(props: Props) {
               <td />
               <td />
               <td />
-              <td>{item.score}</td>
+              <td>{Number(item.score).toFixed(2)}</td>
               <td />
               <td />
               <td />
@@ -108,11 +108,11 @@ export default function 门诊汇总表(props: Props) {
             <td>合 计（100分）</td>
             <td />
           </tr>
-          {opdDeptList.map((item, index) => (
+          {noOpdDeptList.map((item, index) => (
             <tr key={index}>
               <td>{item.wardName}</td>
               <td />
-              <td>{item.convertDeductScore}</td>
+              <td>{Number(item.convertDeductScore).toFixed(2)}</td>
               <td />
               <td />
               <td />

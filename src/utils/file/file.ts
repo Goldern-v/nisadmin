@@ -51,12 +51,14 @@ export const fileDownload = (res: any, fileName?: string) => {
  */
 
 export const getFileType = (filePath: string): FileType => {
+  if (!filePath) return 'other'
   var index = filePath.lastIndexOf('.')
   var ext = filePath.substr(index + 1)
   let imgExtList = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff']
   let pdfExtList = ['pdf']
   let excelExtList = ['xlsx', 'xls']
   let wordExtList = ['docx', 'doc']
+  let videoExtList = ['mp4']
   if (imgExtList.includes(ext)) {
     return 'img'
   } else if (pdfExtList.includes(ext)) {
@@ -65,6 +67,8 @@ export const getFileType = (filePath: string): FileType => {
     return 'excel'
   } else if (wordExtList.includes(ext)) {
     return 'word'
+  } else if (videoExtList.includes(ext)) {
+    return 'video'
   } else {
     return 'other'
   }

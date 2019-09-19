@@ -46,6 +46,7 @@ export default function EditVacationCountModal(props: Props) {
       onOk={onSave}
       okText='保存'
       forceRender
+      centered
     >
       <Wrapper>
         <div className='title'>{arrangeName}</div>

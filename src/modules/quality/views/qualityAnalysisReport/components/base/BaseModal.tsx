@@ -45,6 +45,14 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
+    } else if (sectionData.sectionId == '2-1') {
+      qualityAnalysisReportService.updateReport(data.report).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          report: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
     } else if (sectionData.sectionId == '质量扣分比较') {
       qualityAnalysisReportService.updateTypeCompareList(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {

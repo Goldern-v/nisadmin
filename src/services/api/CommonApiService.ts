@@ -71,8 +71,11 @@ export default class CommonApiService extends BaseApiService {
     return this.post(`/user/defaultDeptUser`, { keyword })
   }
   /** 上传附件 */
-  public uploadAttachment(entityType: EntityType, file: any) {
-    return this.post(`/file/uploadAttachment/${entityType}`, file)
+  public uploadAttachment(entityType: EntityType, file: any, onUploadProgress?: any) {
+    return this.post(`/file/uploadAttachment/${entityType}`, file, {
+      timeout: 0,
+      onUploadProgress: onUploadProgress || (() => {})
+    })
   }
   /** 下载文件并导出 */
   public getFileAndDown(path: string, name?: string) {

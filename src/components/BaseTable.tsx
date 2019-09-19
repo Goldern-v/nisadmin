@@ -50,7 +50,7 @@ export default observer(function BaseTable(props: Props) {
   option.dataSource =
     option.dataSource &&
     option.dataSource.map((item: any, index: number) => {
-      return Object.assign(item, { key: index })
+      return Object.assign(item, { key: 'key' + index })
     })
 
   if (option.surplusHeight) {
@@ -288,7 +288,7 @@ const Wrapper = styled.div`
       th {
         box-sizing: border-box;
         height: 36px !important;
-        font-size: 14px !important;
+        font-size: 13px !important;
         font-weight: bold;
         padding: 0 !important;
       }

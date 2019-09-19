@@ -7,6 +7,7 @@ import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import createModal from 'src/libs/createModal'
 import BqclModal from '../modal/BqclModal'
 import HlbModal from '../modal/HlbModal'
+import EjkhszModal from '../modal/EjkhszModal'
 
 interface Props {
   detailData: any
@@ -28,8 +29,18 @@ export default function qualityControlRecordDetailHeader(props: Props) {
 
   const bqclModal = createModal(BqclModal)
   const hlbModal = createModal(HlbModal)
+  const ejkhszModal = createModal(EjkhszModal)
 
   const onAduit = (nodeName: string) => {
+    if (master.qcLevel == '2' && nodeName == '科护士长审核') {
+      return ejkhszModal.show({
+        id: appStore.match.params.id,
+        qcLevel: master.qcLevel,
+        nodeCode: nextNode.nodeCode,
+        title: '科护士长审核',
+        onOkCallBack: props.onload
+      })
+    }
     switch (nodeName) {
       case '病区处理':
         bqclModal.show({
@@ -118,6 +129,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       </TopHeader>
       <bqclModal.Component />
       <hlbModal.Component />
+      <ejkhszModal.Component />
     </Con>
   )
 }

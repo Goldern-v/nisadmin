@@ -26,7 +26,7 @@ export default function Watermark(props: Props) {
       {props.children}
       {markList.map((item: any, index: number) => (
         <div className='mark' key={index} style={item}>
-          {authStore!.user!.empName + '_' + authStore!.user!.empNo}
+          {authStore.user && authStore.user.empName + '_' + authStore.user && authStore.user.empNo}
           <br />
           {moment().format('YYYY-MM-DD')}
         </div>

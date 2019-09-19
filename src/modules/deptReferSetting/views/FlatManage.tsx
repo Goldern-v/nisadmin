@@ -191,7 +191,7 @@ export default observer(function DeptFileShare() {
     )
   }
   //是否为护长
-  const postAuth = !!(authStore.getUser().post == '护长') as boolean;
+  const postAuth = !!(authStore.post == '护长') as boolean;
 
   return (
     <Wrapper>

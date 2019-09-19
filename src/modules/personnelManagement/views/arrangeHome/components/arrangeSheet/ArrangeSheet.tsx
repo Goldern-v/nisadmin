@@ -105,7 +105,7 @@ export default observer(function ArrangeSheet(props: Props) {
       ),
       width: 70,
       render(text: string, record: any) {
-        return <NightHourCell id={record.id} />
+        return <NightHourCell id={record.id} isEdit={isEdit} />
       }
     },
     {
@@ -131,7 +131,6 @@ export default observer(function ArrangeSheet(props: Props) {
     }
     try {
       ;(document as any).querySelector('.ant-table-body')!.addEventListener('scroll', (e: any) => {
-        console.log(e.target.scrollLeft, 'eee')
         ;(document as any).querySelector('.remark-con.real')!.style.marginLeft = e.target.scrollLeft + 'px'
       })
     } catch (error) {}
@@ -202,9 +201,17 @@ const Wrapper = styled.div`
     .ant-table-tbody td {
       padding: 0 2px !important;
       font-size: 12px !important;
+      height: 25px !important;
     }
     td {
       word-break: break-all;
+    }
+    .ant-table-column-title {
+      font-size: 12px !important;
+    }
+    .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
+    .ant-table-row-hover > td {
+      background: none;
     }
   }
   .ant-table-column-title {
@@ -247,6 +254,7 @@ const Wrapper = styled.div`
     }
     .remark-title {
       margin-bottom: 5px;
+      font-size: 12px;
     }
     &.space {
       position: relative;
@@ -268,8 +276,8 @@ function Th(props: { date: string }) {
   let date = props.date
   const Con = styled.div`
     text-align: center;
-    padding: 5px 0;
-    font-size: 13px;
+    padding: 0px 0;
+    font-size: 12px;
     line-height: 1.3;
     &.red-text {
       color: red;

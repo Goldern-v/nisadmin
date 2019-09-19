@@ -157,7 +157,7 @@ export default observer(function SelectCon() {
                     .endOf('month')
                 ]
               }}
-              style={{ width: 200 }}
+              style={{ width: 220 }}
               value={date}
               onChange={dateChange}
             />
@@ -172,7 +172,7 @@ export default observer(function SelectCon() {
         <div className='item'>
           <div className='label'>分组：</div>
           <div className='content'>
-            <Select value={selectViewModal.params.group} onChange={handleGroupChange} showSearch style={{ width: 170 }}>
+            <Select value={selectViewModal.params.group} onChange={handleGroupChange} showSearch style={{ width: 150 }}>
               <Select.Option key='全部' value=''>
                 全部
               </Select.Option>
@@ -226,7 +226,7 @@ export default observer(function SelectCon() {
 })
 
 const Wrapper = styled.div`
-  height: 50px;
+  height: 40px;
   padding-top: 15px;
   box-sizing: border-box;
   background: #fff;
@@ -249,6 +249,20 @@ const LeftIcon = styled.div`
   }
   .data {
     margin-left: 10px;
+  }
+  button,
+  select,
+  .ant-calendar-picker,
+  .ant-input,
+  .ant-select,
+  .ant-select-selection--single {
+    height: 28px;
+  }
+  .ant-select-selection__rendered {
+    line-height: 27px;
+  }
+  .ant-input {
+    line-height: 1.3;
   }
 `
 

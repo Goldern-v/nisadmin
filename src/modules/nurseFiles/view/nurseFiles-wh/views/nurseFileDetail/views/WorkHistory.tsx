@@ -39,7 +39,7 @@ export default observer(function WorkHistory() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
+      dataIndex: '',
       key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',

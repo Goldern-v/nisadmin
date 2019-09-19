@@ -1,1 +1,1 @@
-export type FileType = 'img' | 'pdf' | 'word' | 'excel' | 'other'
+export type FileType = 'img' | 'pdf' | 'word' | 'excel' | 'video' | 'other'

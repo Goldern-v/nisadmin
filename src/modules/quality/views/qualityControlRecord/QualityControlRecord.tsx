@@ -17,12 +17,15 @@ export default observer(function QualityControlRecord() {
   let [loading, setLoading] = useState(false)
   useEffect(() => {
     ;(async () => {
-      if (appStore.queryObj.noRefresh && qualityControlRecordVM.allData.list.length > 0) {
-        appStore.history.replace('/quality/qualityControlRecord')
+      if (
+        (appStore.queryObj.noRefresh && qualityControlRecordVM.allData && qualityControlRecordVM.allData,
+        length && qualityControlRecordVM.allData.list.length > 0)
+      ) {
       } else {
         await qualityControlRecordVM.init()
         getTableData()
       }
+      appStore.history.replace('/quality/qualityControlRecord')
     })()
   }, [])
   const getTableData = (obj?: any) => {

@@ -72,10 +72,23 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       }
     }
     if (isClean) {
-      copyRow.splice(0, copyRow.splice.length)
+      copyRow.splice(0, copyRow.length)
     }
   } else {
     message.warning('请先复制行')
+  }
+}
+export function copyCellClick(cell: any, copyCell: any) {
+  if (copyCell) {
+    cell.rangeName = copyCell.rangeName
+    cell.nameColor = copyCell.nameColor
+    cell.effectiveTime = copyCell.effectiveTime
+    cell.effectiveTimeOld = copyCell.effectiveTimeOld
+    cell.shiftType = copyCell.shiftType
+    cell.addSymbols = copyCell.addSymbols
+    cell.settings = cloneJson(copyCell.settings)
+  } else {
+    message.warning('请先复制格')
   }
 }
 

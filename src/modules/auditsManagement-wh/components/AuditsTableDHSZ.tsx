@@ -55,8 +55,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const columns: any = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
+      dataIndex: '',
+      key: '',
       render: (text: any, record: any, index: number) => (current - 1) * pageSize + index + 1,
       align: 'center',
       width: 50

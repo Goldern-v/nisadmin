@@ -7,6 +7,23 @@ import moment from 'moment'
 import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 export interface Props {}
 
+const BoxInner = styled.div<{ color?: string }>`
+  height: 30px;
+  padding: 5px;
+  border: 1px solid #d9d9d9;
+  color: ${(p) => p.color || '#666'};
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  border-radius: 2px;
+  cursor: pointer;
+  &:hover {
+    border-color: ${(p) => p.theme.$mtc};
+  }
+`
+
 export default observer(function FlightMenu() {
   return (
     <Wrapper>
@@ -36,18 +53,6 @@ function MenuCon(props: { dataSource: any[] }) {
       padding: 5px;
     }
   `
-  const BoxInner = styled.div<{ color: string }>`
-    height: 30px;
-    padding: 5px;
-    border: 1px solid #d9d9d9;
-    color: ${(p) => p.color};
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-    border-radius: 2px;
-  `
   const onClick = (item: any) => {
     if (sheetViewModal.selectedCell) {
       sheetViewModal.selectedCell!.rangeName = item.name
@@ -56,6 +61,7 @@ function MenuCon(props: { dataSource: any[] }) {
       sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime
       sheetViewModal.selectedCell!.shiftType = item.shiftType
       sheetViewModal.selectedCell!.settings = null
+      sheetViewModal.selectedCell!.statusType = ''
       // sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
       sheetViewModal.selectedCell = sheetViewModal.getNextCell()
     }
@@ -82,18 +88,7 @@ function MealCon(props: { dataSource: any[] }) {
       padding: 5px;
     }
   `
-  const BoxInner = styled.div`
-    height: 30px;
-    padding: 5px;
-    border: 1px solid #d9d9d9;
-    color: ${(p) => p.color};
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-    border-radius: 2px;
-  `
+
   const onClick = (item: any) => {
     /** 套餐同步 */
     if (sheetViewModal.selectedCell) {
@@ -106,6 +101,7 @@ function MealCon(props: { dataSource: any[] }) {
         list[i]!.effectiveTime = mealObj.effectiveTime
         list[i]!.effectiveTimeOld = mealObj.effectiveTime
         list[i]!.shiftType = mealObj.shiftType
+        list[i]!.statusType = ''
       }
     }
   }
@@ -138,7 +134,12 @@ const Wrapper = styled.div`
   .ant-tabs-nav {
     width: 100%;
   }
+  .ant-tabs-nav-container {
+    height: 36px !important;
+  }
   .ant-tabs-tab {
     width: 50%;
+    text-align: center;
+    height: 36px !important;
   }
 `

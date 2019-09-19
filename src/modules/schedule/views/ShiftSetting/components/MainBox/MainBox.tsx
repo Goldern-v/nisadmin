@@ -138,7 +138,8 @@ export default function MainBox() {
     }
   ]
 
-  let promise = authStore!.user!.post == '护理部' || authStore!.user!.empName == '管理员'
+  let promise =
+    (authStore.user && authStore.user.post) == '护理部' || (authStore.user && authStore.user.empName) == '管理员'
   if (promise) {
     columns.push({
       title: '操作',

@@ -25,6 +25,7 @@ class SheetViewModal {
 
   /** 复制行 */
   @observable public copyRow: any[] = []
+  @observable public copyCell: any = null
   /** 时间段 */
   getDateList() {
     let days = []
@@ -86,7 +87,7 @@ class SheetViewModal {
   analyseCell(cellObj: ArrangeItem): any {
     if (!cellObj) return {}
     const cellConfig = {
-      isTwoDaysAgo: dateDiff(cellObj && cellObj.workDate, monnet().format('YYYY-MM-DD')) > 2,
+      isTwoDaysAgo: cellObj ? moment().isoWeeks() - moment(cellObj && cellObj.workDate).isoWeeks() > 1 : false,
       isExpectedScheduling: cellObj.statusType == '1',
       isAddWordTime:
         cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
@@ -164,10 +165,11 @@ class SheetViewModal {
     })
   }
 
-  saveSheetTableData() {
+  saveSheetTableData(status: '0' | '1') {
     this.tableLoading = true
-    arrangeService.saveOrUpdate().then((res) => {
-      message.success('保存成功')
+    return arrangeService.saveOrUpdate(status).then((res) => {
+      if (status == '0') message.success('保存成功')
+      if (status == '1') message.success('推送成功')
       this.getSheetTableData()
     })
   }

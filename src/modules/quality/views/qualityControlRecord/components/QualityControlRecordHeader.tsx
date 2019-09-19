@@ -18,7 +18,7 @@ export default observer(function TopCon(props: any) {
   // const [readWay, setReadWay] = useState(1)
   return (
     <Wrapper>
-      <span style={{ margin: '0 3px 0 0' }}>质控日期:</span>
+      <span style={{ margin: '0 3px 0 0' }}>日期:</span>
       <DatePicker.RangePicker
         value={qualityControlRecordVM.filterDate}
         onChange={(value) => {
@@ -28,7 +28,7 @@ export default observer(function TopCon(props: any) {
         style={{ width: 220 }}
       />
 
-      <span style={{ margin: '0 3px 0 26px' }}>类型:</span>
+      <span style={{ margin: '0 3px 0 15px' }}>类型:</span>
       <Select
         style={{ width: 100 }}
         value={qualityControlRecordVM.level}
@@ -60,7 +60,7 @@ export default observer(function TopCon(props: any) {
 
       {(qualityControlRecordVM.readWay == 1 || qualityControlRecordVM.level == 2) && (
         <React.Fragment>
-          <span style={{ margin: '0 3px 0 26px' }}>科室:</span>
+          <span style={{ margin: '0 3px 0 15px' }}>科室:</span>
           <Select
             showSearch
             filterOption={(input: any, option: any) =>
@@ -84,12 +84,12 @@ export default observer(function TopCon(props: any) {
 
       {qualityControlRecordVM.readWay == 2 && (
         <React.Fragment>
-          <span style={{ margin: '0 3px 0 26px' }}>检查小组:</span>
+          <span style={{ margin: '0 3px 0 15px' }}>检查小组:</span>
           <FormSelect refreshData={props.refreshData} />
         </React.Fragment>
       )}
 
-      <span style={{ margin: '0 3px 0 26px' }}>状态:</span>
+      <span style={{ margin: '0 3px 0 15px' }}>状态:</span>
       <StateSelect refreshData={props.refreshData} />
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询
@@ -124,7 +124,7 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
     padding: 0 4px 0 10px;
-    margin-left: 20px;
+    margin-left: 15px;
   }
 `
 const QualityControlCon = styled.div`

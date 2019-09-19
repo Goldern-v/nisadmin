@@ -76,7 +76,7 @@ export default observer(function 门诊科室质量扣分模块(props: Props) {
                 <tr key={item.idx}>
                   <td>{item.idx + 1}</td>
                   <td>{item.wardName || ''}</td>
-                  <td>{item.deductScore}</td>
+                  <td>{Number(item.deductScore).toFixed(2)}</td>
                 </tr>
               )
             })}
@@ -99,7 +99,7 @@ export default observer(function 门诊科室质量扣分模块(props: Props) {
                 <tr key={item.idx}>
                   <td>{item.idx + 1}</td>
                   <td>{item.wardName || ''}</td>
-                  <td>{item.deductScore}</td>
+                  <td>{Number(item.deductScore).toFixed(2)}</td>
                 </tr>
               )
             })}

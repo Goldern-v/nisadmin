@@ -133,7 +133,10 @@ export default function 病区汇总表(props: Props) {
       key: '2020',
       dataIndex: 'score',
       align: 'center',
-      width: 100
+      width: 100,
+      render(text: any, record: any) {
+        return Number(text).toFixed(2)
+      }
     },
     {
       title: '标准化 20分',

@@ -13,7 +13,6 @@ export interface Props {
 }
 
 export default function LeftMenu(props: Props) {
-  useEffect(() => {})
   const handleSelect = (e: any) => {
     appStore.history.push(e.key)
     if (e.item.props.level === 1) {

@@ -16,7 +16,6 @@ export default function PersonnelManagementView() {
     {
       title: '排班管理',
       path: '/personnelManagement',
-
       children: [
         {
           title: '护士排班',

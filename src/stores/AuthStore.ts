@@ -53,7 +53,7 @@ export default class AuthStore {
   @computed
   public get post() {
     try {
-      return this!.user!.post
+      return this.user && this.user.post
     } catch (error) {
       return ''
     }
@@ -72,7 +72,7 @@ export default class AuthStore {
   /** 是否是管理员 */
   public get isAdmin() {
     try {
-      return this!.user!.superuser
+      return this.user && this.user.superuser
     } catch (error) {
       return ''
     }
@@ -80,7 +80,7 @@ export default class AuthStore {
   /** 是否是护理部 */
   public get isDepartment() {
     try {
-      return this!.user!.roleManageCode === 'QCR0001' || this.isAdmin
+      return (this.user && this.user.roleManageCode) === 'QCR0001' || this.isAdmin
     } catch (error) {
       return ''
     }
@@ -88,7 +88,7 @@ export default class AuthStore {
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
     try {
-      return this!.user!.roleManageCode === 'QCR0003'
+      return this.user && this.user.roleManageCode === 'QCR0003'
     } catch (error) {
       return ''
     }
@@ -96,7 +96,7 @@ export default class AuthStore {
   /** 是否是护士长 */
   public get isRoleManage() {
     try {
-      return this!.user!.roleManage == '1'
+      return this.user && this.user.roleManage == '1'
     } catch (error) {
       return false
     }
@@ -104,7 +104,7 @@ export default class AuthStore {
   /** 用户初始化 */
   @action
   public initUser() {
-    this.user = JSON.parse(sessionStorage.getItem('user') || '[]')
+    this.user = JSON.parse(sessionStorage.getItem('user') || '{}')
     this.authToken = sessionStorage.getItem('authToken') || ''
     this.adminNurse = sessionStorage.getItem('adminNurse') || ''
     this.defaultDeptCode = this.user && this.user.deptCode

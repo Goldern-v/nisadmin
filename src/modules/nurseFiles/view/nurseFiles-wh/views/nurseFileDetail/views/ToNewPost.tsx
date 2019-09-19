@@ -37,7 +37,7 @@ export default observer(function PersonWinning() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
+      dataIndex: '序号',
       key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
@@ -71,16 +71,16 @@ export default observer(function PersonWinning() {
       width: 110,
       align: 'center'
     },
-    {
-      title: '附件',
-      dataIndex: 'fj',
-      key: 'fj',
-      width: 80,
-      align: 'center',
-      render: (text: any, row: any, index: any) => {
-        return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
-      }
-    },
+    // {
+    //   title: '附件',
+    //   dataIndex: 'fj',
+    //   key: 'fj',
+    //   width: 80,
+    //   align: 'center',
+    //   render: (text: any, row: any, index: any) => {
+    //     return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+    //   }
+    // },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',

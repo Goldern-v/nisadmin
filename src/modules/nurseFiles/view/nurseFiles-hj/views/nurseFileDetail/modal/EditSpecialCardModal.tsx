@@ -36,9 +36,9 @@ export default observer(function EditWorkHistoryModal(props: Props) {
     empNo: appStore.queryObj.empNo,
     type: '4',
     auditedStatus:
-      authStore!.user!.post === '护长'
+      (authStore.user && authStore.user.post) === '护长'
         ? 'waitAuditedNurse'
-        : authStore!.user!.post === '护理部'
+        : (authStore.user && authStore.user.post) === '护理部'
         ? 'waitAuditedDepartment'
         : ''
   }

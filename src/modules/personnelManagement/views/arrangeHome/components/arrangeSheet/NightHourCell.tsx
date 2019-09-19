@@ -7,6 +7,7 @@ import { ArrangeItem } from '../../types/Sheet'
 import { Input } from 'src/vendors/antd'
 export interface Props {
   id: any
+  isEdit: boolean
 }
 
 export default observer(function NightHourCell(props: Props) {
@@ -17,7 +18,11 @@ export default observer(function NightHourCell(props: Props) {
 
   return (
     <Wrapper>
-      <Input value={user.settingNightHour} onChange={(e) => (user.settingNightHour = e.target.value)} />
+      <Input
+        readOnly={!props.isEdit}
+        value={user.settingNightHour}
+        onChange={(e) => (user.settingNightHour = e.target.value)}
+      />
     </Wrapper>
   )
 })
@@ -30,5 +35,6 @@ const Wrapper = styled.div`
     outline: none;
     box-shadow: none !important;
     font-size: 12px;
+    height: 25px;
   }
 `
