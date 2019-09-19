@@ -7,6 +7,7 @@ import NurseFilesListView_hj from './view/nurseFiles-hj/views/nurseFilesList/Nur
 import NurseFilesListView_wh from './view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
 import RetiredRetirees from './view/retiredRetirees/RetiredRetireesView'
 import StatisticsView from './view/statistics/StatisticsView'
+import StatisticsViews from './view/statistics-hj/StatisticsView'
 import { ReactComponent as ZZHSDA } from './images/护士档案.svg'
 import { ReactComponent as TXHSCX } from './images/退休护士查询.svg'
 import { ReactComponent as CXTJ } from './images/查询统计.svg'
@@ -28,6 +29,62 @@ const LEFT_MENU_CONFIG_HJ = [
     path: '/nurseFile/retiredRetirees',
     component: RetiredRetirees,
     icon: <TXHSCX />
+  },
+  {
+    title: '查询统计',
+    icon: <CXTJ />,
+    children: [
+      {
+        title: '工作经历',
+        path: '/nurseFile/workExperience',
+        component: StatisticsViews
+      },
+      {
+        title: '特殊资格证',
+        path: '/nurseFile/specialQualification',
+        component: StatisticsViews
+      },
+      {
+        title: '教育经历',
+        path: '/nurseFile/medicalEducation',
+        component: StatisticsViews
+      },
+      {
+        title: '职称及层级变动',
+        path: '/nurseFile/professionalAndLevelChange',
+        component: StatisticsViews
+      },
+      {
+        title: '继续教育',
+        path: '/nurseFile/continuingEducation',
+        component: StatisticsViews
+      },
+      {
+        title: '著作译文论文',
+        path: '/nurseFile/paperExperience',
+        component: StatisticsViews
+      },
+      {
+        title: '所获奖励',
+        path: '/nurseFile/awardWinning',
+        component: StatisticsViews
+      },
+      {
+        title: '年度考核结果',
+        path: '/nurseFile/yearCheck',
+        component: StatisticsViews
+      },
+      {
+        title: '医院三基考核',
+        path: '/nurseFile/hospitalsThreeBase',
+        component: StatisticsViews
+      },
+      {
+        title: '工作情况登记',
+        path: '/nurseFile/registrationWork',
+        component: StatisticsViews
+      }
+    ]
   }
 ]
 
