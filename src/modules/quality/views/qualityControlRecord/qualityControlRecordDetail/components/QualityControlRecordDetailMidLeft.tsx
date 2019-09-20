@@ -174,6 +174,13 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             )}
           </QuestionItem>
         ))}
+        {detailData.fillItemList && (
+          <div style={{ margin: '15px 0 0' }}>
+            {detailData.fillItemList.map((item: any) => {
+              return item.itemContent.replace('%s', item.itemValue) + '  '
+            })}
+          </div>
+        )}
         {!onlyReadError && (
           <QuestionBottomCon>
             <div className='questionBottomTitle'>问题可能原因</div>
