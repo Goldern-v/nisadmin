@@ -123,6 +123,13 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
         <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
       </OnlyReadError>
       <QuestionCon>
+        {detailData.fillItemList && (
+          <div style={{ margin: '15px 0 0', fontSize: 14, fontWeight: 'bold' }}>
+            {detailData.fillItemList.map((item: any) => {
+              return item.itemContent.replace('%s', item.itemValue) + '  '
+            })}
+          </div>
+        )}
         {itemConData.map((itemGroup: any, itemGroupIndex: number) => (
           <QuestionItem key={itemGroupIndex}>
             <div className='titleCon'>
@@ -174,13 +181,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             )}
           </QuestionItem>
         ))}
-        {detailData.fillItemList && (
-          <div style={{ margin: '15px 0 0' }}>
-            {detailData.fillItemList.map((item: any) => {
-              return item.itemContent.replace('%s', item.itemValue) + '  '
-            })}
-          </div>
-        )}
+
         {!onlyReadError && (
           <QuestionBottomCon>
             <div className='questionBottomTitle'>问题可能原因</div>
