@@ -8,7 +8,7 @@ import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as CXTJ } from './images/查询统计.svg'
 import { ReactComponent as FXBG } from './images/分析报告.svg'
@@ -39,36 +39,47 @@ const LEFT_MENU_CONFIG: any = [
       }
     ]
   },
+  {
+    title: '质控分析报告',
+    icon: <FXBG />,
+    children: [
+      {
+        title: '三级质控月度报告',
+        icon: <FXBG />,
+        path: '/quality/analysis',
+        component: Analysis
+      },
+      {
+        title: '三级质控汇总报告',
+        icon: <FXBG />,
+        path: '/quality/summaryReport',
+        component: SummaryReport
+      },
+      {
+        title: '三级质控问题汇总',
+        icon: <FXBG />,
+        path: '/quality/problemSummary',
+        component: ProblemSummary
+      },
+      {
+        title: '二级质控分析报告',
+        icon: <FXBG />,
+        path: '/quality/workSummaryReportList',
+        component: WorkSummaryReportList
+      }
+    ]
+  },
 
-  {
-    title: '三级质控月度报告',
-    icon: <FXBG />,
-    path: '/quality/analysis',
-    component: Analysis
-  },
-  {
-    title: '三级质控汇总报告',
-    icon: <FXBG />,
-    path: '/quality/summaryReport',
-    component: SummaryReport
-  },
-  {
-    title: '三级质控问题汇总',
-    icon: <FXBG />,
-    path: '/quality/problemSummary',
-    component: ProblemSummary
-  },
-  {
-    title: '二级质控分析报告',
-    icon: <FXBG />,
-    path: '/quality/workSummaryReportList',
-    component: WorkSummaryReportList
-  },
   {
     title: '查询统计',
     icon: <CXTJ />,
-    path: '/quality/queryStatistics',
-    component: QueryStatistics
+    children: [
+      {
+        title: '查询统计',
+        path: '/quality/queryStatistics',
+        component: QueryStatistics
+      }
+    ]
   }
 ]
 
