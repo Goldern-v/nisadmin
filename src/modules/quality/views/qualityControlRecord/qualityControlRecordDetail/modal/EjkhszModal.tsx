@@ -33,7 +33,7 @@ export default function EjkhszModal(props: Props) {
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
     let renderList = selectList.reduce((total: any[], current: any) => {
-      let list = current.measureList.filter((item: any) => item.checked)
+      let list = current.measureList.filter((item: any) => item.checked && item.measureName)
       if (list.length) {
         total.push({ ...current, measureList: list })
       }

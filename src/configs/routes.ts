@@ -47,6 +47,11 @@ import LmsDetails from 'src/modules/lms/views/LmsDetails'
 import NursingRules from 'src/modules/nursingRules/NursingRules'
 import NursingRulesTypeIndexSetting from 'src/modules/nursingRules/NursingRulesTypeIndexSetting'
 import NursingRulesTypeSetting from 'src/modules/nursingRules/NursingRulesTypeSetting'
+//护理制度 改版
+import NursingRulesNew from 'src/modules/nursingRulesNew/NursingRulesNew'
+import NursingRulesNewDetail from 'src/modules/nursingRulesNew/views/NursingRulesNewDetail'
+import NursingRulesPdfPreview from 'src/modules/nursingRulesNew/views/NursingRulesPdfPreview'
+import NursingRulesNewEdit from 'src/modules/nursingRulesNew/views/NursingRulesNewEdit'
 //健康宣教
 //import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
 import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaEdit'
@@ -71,6 +76,7 @@ import DeptFileShareCatalogSetting from 'src/modules/deptReferSetting/views/Dept
 import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView'
 import NurseFilesView from 'src/modules/nurseFiles/NurseFilesView'
 import QualityAnalysisReportPoolView from 'src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView'
+import WorkSummaryReportView from 'src/modules/quality/views/workSummaryReport/WorkSummaryReportView'
 
 //病区管理
 import WardManagementView from 'src/modules/wardManagement/WardManagementView'
@@ -140,7 +146,10 @@ const routes: RouteItem[] = [
     { name: '护理制度建设', link: '/nursingRules' },
     { name: '目录设置', link: '' }
   ]),
-
+  setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
+  setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
+  setLayout('/nursingRulesPdfPreview', NursingRulesPdfPreview, layouts.MainLayout),
+  setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout),
   setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
   setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
   setLayout('/badEventsNewList', BadEventsNewList, layouts.MainLayout),
@@ -176,6 +185,7 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/qualityAnalysisReport', QualityAnalysisReportView, layouts.MainLayout),
   setLayout('/qualityAnalysisReportPool', QualityAnalysisReportPoolView, layouts.MainLayout),
+  setLayout('/workSummaryReportView', WorkSummaryReportView, layouts.MainLayout),
   /** 档案模块 */
   setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
   setLayout('/wardManagement/:name', WardManagementView, layouts.MainLayout),
