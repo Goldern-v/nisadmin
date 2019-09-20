@@ -52,7 +52,7 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                         {item.measureGroupList &&
                           item.measureGroupList.map((item: any, index: number) => (
                             <div className='text-box' key={index}>
-                              <div className='text-box-title'>{item.itemName}：</div>
+                              <div className='text-box-title'>{index + 1 + '、' + item.itemName}：</div>
                               <div>
                                 {item.measureList.map((item: any, index: number) => (
                                   <span key={index}>{item.measureName};</span>
