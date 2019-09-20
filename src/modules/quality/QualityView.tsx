@@ -6,8 +6,9 @@ import QualityControlRecord from './views/qualityControlRecord/QualityControlRec
 import QueryStatistics from './views/queryStatistics/QueryStatistics'
 import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
+import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as CXTJ } from './images/查询统计.svg'
 import { ReactComponent as FXBG } from './images/分析报告.svg'
@@ -56,6 +57,12 @@ const LEFT_MENU_CONFIG: any = [
     icon: <FXBG />,
     path: '/quality/problemSummary',
     component: ProblemSummary
+  },
+  {
+    title: '二级质控分析报告',
+    icon: <FXBG />,
+    path: '/quality/workSummaryReportList',
+    component: WorkSummaryReportList
   },
   {
     title: '查询统计',
