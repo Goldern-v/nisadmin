@@ -9,11 +9,11 @@ import DeptSelect from 'src/components/DeptSelect'
 
 // import FlatManageEditModal from '../components/FlatManageEditModal'
 import FlatManageDetail from '../components/FlatManageDetail'
-import createModal from 'src/libs/createModal'
+// import createModal from 'src/libs/createModal'
 import moment from 'moment'
 import ManagementSummaryService from '../api/ManagementSummaryService'
-import YearPicker from 'src/components/YearPicker'
-import { numberToArray } from 'src/utils/array/array'
+// import YearPicker from 'src/components/YearPicker'
+// import { numberToArray } from 'src/utils/array/array'
 
 const api = new ManagementSummaryService()
 
@@ -30,12 +30,7 @@ export default function ManagementSummary() {
   const [detailViewType, setDetailViewType] = useState('detail')
   const [detailData, setDetailData] = useState({} as any);
 
-  const [query, setQuery] = useState({
-    deptCode: '',
-    // manageType: '',
-    pageSize: 20,
-    pageIndex: 1
-  } as any)
+
   //初始化时间范围
   let startDate = `${moment().format('YYYY-MM')}-01`;
   let endDate = moment(startDate)
@@ -43,15 +38,19 @@ export default function ManagementSummary() {
     .subtract(1, 'd')
     .format('YYYY-MM-DD')
 
-  const [filterObj, setFilterObj] = useState({
+  const [query, setQuery] = useState({
+    deptCode: '',
+    // manageType: '',
+    pageSize: 20,
+    pageIndex: 1,
     startDate,
     endDate,
     status: ''
-  })
+  } as any)
 
   useEffect(() => {
     if (query.deptCode) getTableData()
-  }, [query, filterObj])
+  }, [query])
 
   const [tableLoading, setTableLoading] = useState(false)
 
@@ -60,7 +59,7 @@ export default function ManagementSummary() {
       title: '序号',
       width: 50,
       align: 'center',
-      render: (text: string, record: any, idx: number) => idx + 1
+      render: (text: string, record: any, idx: number) => (query.pageIndex - 1) * query.pageSize + (idx + 1)
     },
     {
       title: '质控内容',
@@ -156,7 +155,7 @@ export default function ManagementSummary() {
   ]
 
   const handleDeptChange = (deptCode: any) => {
-    setQuery({ ...query, deptCode })
+    setQuery({ ...query, deptCode, pageIndex: 1 })
   }
 
   const handleDetailCancel = () => {
@@ -194,7 +193,7 @@ export default function ManagementSummary() {
   const getTableData = () => {
     setTableLoading(true)
 
-    api.getList({ ...query, ...filterObj }).then(
+    api.getList(query).then(
       (res) => {
         setTableLoading(false)
         if (res.data) {
@@ -210,10 +209,10 @@ export default function ManagementSummary() {
   }
 
   const exportExcel = () => {
-    let params = { ...query, ...filterObj };
+    let params = { ...query };
     //文件名称
-    let startMonth = moment(filterObj.startDate).format('YYYY-MM')
-    let endMonth = moment(filterObj.endDate).format('YYYY-MM')
+    let startMonth = moment(query.startDate).format('YYYY-MM')
+    let endMonth = moment(query.endDate).format('YYYY-MM')
 
     let monthString = `${startMonth}至${endMonth}`
     if (startMonth == endMonth) monthString = startMonth
@@ -229,7 +228,7 @@ export default function ManagementSummary() {
       .subtract(1, 'd')
       .format('YYYY-MM-DD')
 
-    setFilterObj({ ...filterObj, endDate });
+    setQuery({ ...query, endDate, pageIndex: 1 });
   }
 
   return (
@@ -244,13 +243,13 @@ export default function ManagementSummary() {
             <div className='content'>
               <DatePicker.MonthPicker
                 allowClear={false}
-                defaultValue={moment(filterObj.startDate) || null}
+                defaultValue={moment(query.startDate) || null}
                 style={{ width: '100px' }}
-                onChange={(date) => setFilterObj({ ...filterObj, startDate: date.format('YYYY-MM-DD') })} />
+                onChange={(date) => setQuery({ ...query, startDate: date.format('YYYY-MM-DD'), pageIndex: 1 })} />
               <span> - </span>
               <DatePicker.MonthPicker
                 allowClear={false}
-                defaultValue={moment(filterObj.endDate) || null}
+                defaultValue={moment(query.endDate) || null}
                 style={{ width: '100px' }}
                 onChange={(date) => handleEndDateChange(date)} />
             </div>
@@ -260,8 +259,8 @@ export default function ManagementSummary() {
             <div className='content'>
               <Select
                 style={{ width: 100 }}
-                value={filterObj.status}
-                onChange={(value: any) => setFilterObj({ ...filterObj, status: value })}
+                value={query.status}
+                onChange={(value: any) => setQuery({ ...query, status: value })}
               >
                 <Select.Option value={""}>全部</Select.Option>
                 <Select.Option value={"1"}>待审核</Select.Option>

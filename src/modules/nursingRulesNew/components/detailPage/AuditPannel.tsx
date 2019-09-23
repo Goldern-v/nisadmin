@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Row, Col } from 'antd'
-import GroupAuditModal from './GroupAuditModal'
+import GroupAuditModal from './../GroupAuditModal'
 export interface Props { }
 
 export default function AuditPannel() {

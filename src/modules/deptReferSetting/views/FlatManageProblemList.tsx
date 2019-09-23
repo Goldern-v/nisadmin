@@ -44,7 +44,7 @@ export default observer(function FlatManageProblemList() {
     checkDateStart: moment(defaultStartDate).format('YYYY-MM-DD'),
     checkDateEnd: moment(defaultEndDate).format('YYYY-MM-DD'),
     typeId: '',
-    pageSize: 15,
+    pageSize: 20,
     pageIndex: 1,
     status
   } as any)
@@ -62,7 +62,7 @@ export default observer(function FlatManageProblemList() {
       key: 'key',
       width: 50,
       align: 'center',
-      render: (text: string, record: any, index: number) => index + 1
+      render: (text: string, record: any, index: number) => (query.pageIndex - 1) * query.pageSize + (index + 1)
     },
     {
       title: '检查日期',

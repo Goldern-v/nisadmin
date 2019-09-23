@@ -4,10 +4,10 @@ import { Button, Tabs, Modal } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Link } from 'react-router-dom'
 
-import IndexPannel from './../components/IndexPannel'
-import FavorPannel from './../components/FavorPannel'
-import RepairPannel from './../components/RepairPannel'
-import AuditPannel from './../components/AuditPannel'
+import IndexPannel from './../components/detailPage/IndexPannel'
+import FavorPannel from './../components/detailPage/FavorPannel'
+import RepairPannel from './../components/detailPage/RepairPannel'
+import AuditPannel from './../components/detailPage/AuditPannel'
 
 const { TabPane } = Tabs;
 

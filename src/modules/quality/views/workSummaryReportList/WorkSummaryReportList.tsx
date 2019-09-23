@@ -32,10 +32,10 @@ export default observer(function WorkSummaryReportList() {
   } as any)
 
   useEffect(() => {
-    api.qcRoleCode().then((res) => {
+    api.qcBigDeptList().then((res) => {
       if (res.data instanceof Array) setGroupRolelist(res.data)
     })
-    api.qcRoleCodeSelf().then((res) => {
+    api.qcBigDeptListSelf().then((res) => {
       if (res.data instanceof Array) setGroupRolelistSelf(res.data)
     })
   }, [])
@@ -284,7 +284,7 @@ export default observer(function WorkSummaryReportList() {
             </div>
           </div>
           <div className='item'>
-            <div className='label'>质控组：</div>
+            <div className='label'>片区：</div>
             <div className='content'>
               <Select
                 value={query.groupRoleCode}

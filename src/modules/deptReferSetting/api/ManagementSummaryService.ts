@@ -15,6 +15,7 @@ export default class ManagementSummaryService extends BaseApiService {
       startDate: obj.startDate,
       endDate: obj.endDate,
       status: obj.status,
+      pageSize: obj.pageSize,
       pageIndex: obj.pageIndex
     }
     return this.post(`/flatManageInstance/getInstanceListByYMD`, postObj)
@@ -30,7 +31,8 @@ export default class ManagementSummaryService extends BaseApiService {
       startDate: obj.startDate,
       endDate: obj.endDate,
       status: obj.status,
-      pageIndex: obj.pageIndex
+      // pageIndex: obj.pageIndex
+      pageIndex: 1
     }
     return this.post(`/flatManageInstance/totalExcel`, postObj, { responseType: 'blob' }).then((res) => {
       fileDownload(res, fileName)

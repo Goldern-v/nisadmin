@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
 import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
-import GroupAuditModal from './../components/GroupAuditModal'
+import GroupAuditModal from '../components/GroupAuditModal'
 export interface Props { }
 
-export default function NursingRulesPdfPreview() {
+export default function NursingRulesPagePreview() {
   const ruleName = '书籍名称'
   const chapterName = '章节名称'
 
