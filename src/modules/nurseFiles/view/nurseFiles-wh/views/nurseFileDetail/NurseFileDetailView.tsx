@@ -33,6 +33,7 @@ import OrganizationChange from './views/OrganizationChange'
 import { ScrollBox } from 'src/components/common'
 import service from 'src/services/api'
 import qs from 'qs'
+import { nurseFilesService } from '../../services/NurseFilesService'
 
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
@@ -154,17 +155,20 @@ const ROUTE_LIST = [
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
-  nurseFileDetailViewModal.nurserInfo = appStore.queryObj
   // appStore.match.params.type
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
 
   useEffect(() => {
-    if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
-      service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {
-        appStore.history.replace(`${appStore.match.url}?${qs.stringify(res.data)}`)
-      })
-    }
+    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+      nurseFileDetailViewModal.nurserInfo = res.data
+
+      if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
+        service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {
+          appStore.history.replace(`${appStore.match.url}?${qs.stringify(res.data)}`)
+        })
+      }
+    })
   }, [])
 
   return (

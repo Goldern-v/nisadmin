@@ -22,6 +22,7 @@ import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { appStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
+import { nurseFilesService } from '../../services/NurseFilesService'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -95,10 +96,15 @@ const ROUTE_LIST = [
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
-  nurseFileDetailViewModal.nurserInfo = appStore.queryObj
   // appStore.match.params.type
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
+
+  useEffect(() => {
+    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+      nurseFileDetailViewModal.nurserInfo = res.data
+    })
+  }, [])
 
   return (
     <Wrapper>

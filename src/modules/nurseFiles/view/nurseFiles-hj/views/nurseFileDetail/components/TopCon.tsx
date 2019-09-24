@@ -41,7 +41,7 @@ export default observer(function TopCon() {
   /** 更新护士信息 */
   const refreshNursingInfo = () => {
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-      store.appStore.history.replace(store.appStore.match.url + '?' + qs.stringify(res.data))
+      store.appStore.history.replace(store.appStore.match.url + '?empNo=' + res.data.empNo)
     })
   }
   return (

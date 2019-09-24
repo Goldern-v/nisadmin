@@ -148,7 +148,7 @@ const columns: ColumnProps<any>[] = [
 ]
 
 const onDoubleClick = (record: any) => {
-  store.appStore.history.push(`/nurseFileDetail/baseInfo?${qs.stringify(record)}`)
+  store.appStore.history.push(`/nurseFileDetail/baseInfo?empNo=${record.empNo}`)
 }
 
 export default observer(function NurseFilesListView() {

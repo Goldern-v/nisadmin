@@ -17,7 +17,7 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  expend: (val) => !!val || '请填写原因分析',
+  expand: (val) => !!val || '请填写原因分析',
   handleContent: (val) => !!val || '请填写整改措施'
 }
 
@@ -39,7 +39,7 @@ export default function BqclModal(props: Props) {
         // password: '',
         nodeCode: props.nodeCode,
         handleContent: value.handleContent,
-        expend: value.expend
+        expand: value.expand
       })
       .then((res) => {
         message.success('操作成功')
@@ -64,7 +64,7 @@ export default function BqclModal(props: Props) {
       <Form ref={refForm} labelWidth={80} rules={rules}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`原因分析`} name='expend' required>
+            <Form.Field label={`原因分析`} name='expand' required>
               <Input.TextArea />
             </Form.Field>
           </Col>
