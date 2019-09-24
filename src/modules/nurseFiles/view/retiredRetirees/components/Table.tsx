@@ -16,7 +16,7 @@ export default observer(function Table() {
   const toDetails = (record: any) => {
     service.commonApiService.getNurseInformation(record.empNo).then((res) => {
       // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-      window.open(`/crNursing/manage/#/nurseFileDetail/${appStore.match.params.path}?${qs.stringify(res.data)}`)
+      window.open(`/crNursing/manage/#/nurseFileDetail/Leave?empNo=${res.data.empNo}`)
     })
   }
   const columns: ColumnProps<any>[] = [
@@ -43,63 +43,68 @@ export default observer(function Table() {
       width: 100
     },
     {
-      title: '性别',
-      dataIndex: 'sex',
-      width: 80,
-      render(text: any, row: any) {
-        return sexToChina(text)
-      }
+      title: '职称',
+      dataIndex: 'title',
+      key: 'title',
+      width: 120,
+      align: 'center'
     },
-
+    {
+      title: '学历',
+      dataIndex: 'education',
+      key: 'education',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '出生年月日',
+      dataIndex: 'birthday',
+      key: 'birthday',
+      width: 120,
+      align: 'center'
+    },
     {
       title: '年龄',
       dataIndex: 'age',
-      width: 80
+      key: 'age',
+      width: 90,
+      align: 'center'
     },
     {
-      title: '职称',
-      dataIndex: 'newTitle',
-      width: 100,
+      title: '取得护士执业证书并从事护理岗位时间',
+      dataIndex: 'zyzsDate',
+      key: 'zyzsDate',
+      width: 200,
+      align: 'center'
+    },
+    {
+      title: '离职时间',
+      dataIndex: 'leaveDate',
+      key: 'leaveDate',
+      width: 120,
       align: 'center'
     },
     {
       title: '层级',
-      dataIndex: 'nurseHierarchy',
-      width: 100,
+      dataIndex: 'hierarchy',
+      key: 'hierarchy',
+      width: 90,
       align: 'center'
     },
     {
-      title: '职务',
-      dataIndex: 'job',
-      width: 100,
+      title: '编制',
+      dataIndex: 'workConversion',
+      key: 'workConversion',
+      width: 90,
       align: 'center'
     },
-    {
-      title: '最高学历',
-      dataIndex: 'highestEducation',
-      width: 100
-    },
+
     {
       title: '状态',
-      dataIndex: 'status',
-      width: 80
-    },
-    {
-      title: '籍贯',
-      dataIndex: 'nativePlace',
-      width: 100,
-      align: 'left'
-    },
-    {
-      title: '民族',
-      dataIndex: 'nation',
-      width: 80
-    },
-    {
-      title: '执业证书编号',
-      dataIndex: 'zyzsNumber',
-      width: 100,
-      align: 'left'
+      dataIndex: 'auditedStatusName',
+      key: 'auditedStatusName',
+      width: 120,
+      align: 'center'
     },
     {
       title: '操作',
@@ -108,7 +113,7 @@ export default observer(function Table() {
       render(text: string, record: any) {
         return (
           <DoCon>
-            <span onClick={() => toDetails(record)}>操作</span>
+            <span onClick={() => toDetails(record)}>查看</span>
           </DoCon>
         )
       }
