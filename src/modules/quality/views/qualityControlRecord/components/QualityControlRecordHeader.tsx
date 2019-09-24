@@ -11,13 +11,16 @@ import StateSelect from 'src/modules/quality/views/qualityControlRecord/componen
 import { qualityControlRecordVM } from '../QualityControlRecordVM'
 import { qualityControlRecordApi } from '../api/QualityControlRecordApi'
 import { Select, Radio } from 'src/vendors/antd'
-
+import { PageTitle, Place } from 'src/components/common'
+import { numToChinese } from 'src/utils/number/numToChinese'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function TopCon(props: any) {
   // const [readWay, setReadWay] = useState(1)
   return (
     <Wrapper>
+      <PageTitle>{numToChinese(qualityControlRecordVM.level)}级质控</PageTitle>
+      <Place />
       <span style={{ margin: '0 3px 0 0' }}>日期:</span>
       <DatePicker.RangePicker
         value={qualityControlRecordVM.filterDate}
@@ -111,7 +114,7 @@ const Wrapper = styled.div`
   position: relative;
   font-size: 13px;
   color: #333333;
-  padding: 0 0 0 15px;
+  padding: 0 15px 0 15px;
   display: flex;
   align-items: center;
   z-index: 1;
