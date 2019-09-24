@@ -44,15 +44,15 @@ export default observer(function Table() {
     },
     {
       title: '职称',
-      dataIndex: 'title',
-      key: 'title',
+      dataIndex: 'newTitle',
+      key: 'newTitle',
       width: 120,
       align: 'center'
     },
     {
       title: '学历',
-      dataIndex: 'education',
-      key: 'education',
+      dataIndex: 'highestEducation',
+      key: 'highestEducation',
       width: 90,
       align: 'center'
     },
@@ -86,8 +86,8 @@ export default observer(function Table() {
     },
     {
       title: '层级',
-      dataIndex: 'hierarchy',
-      key: 'hierarchy',
+      dataIndex: 'nurseHierarchy',
+      key: 'nurseHierarchy',
       width: 90,
       align: 'center'
     },
@@ -101,8 +101,8 @@ export default observer(function Table() {
 
     {
       title: '状态',
-      dataIndex: 'auditedStatusName',
-      key: 'auditedStatusName',
+      dataIndex: 'status',
+      key: 'status',
       width: 120,
       align: 'center'
     },
