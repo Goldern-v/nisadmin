@@ -6,7 +6,7 @@ export default class WorkSummaryReportListService extends BaseApiService {
     return this.get('/dept/bigDeptList')
   }
   public qcBigDeptListSelf() {
-    return this.get('/dept/bigDeptList')
+    return this.get('/qcItem/dict/bigDeptListSelf')
   }
   public getPage(query: any) {
     return this.post('/qcAnalysis2L/getPage', query)

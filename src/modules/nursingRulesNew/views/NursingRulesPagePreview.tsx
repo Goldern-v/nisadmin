@@ -4,9 +4,12 @@ import { Button } from 'antd'
 import { Link } from 'react-router-dom'
 import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
 import GroupAuditModal from '../components/GroupAuditModal'
+import PdfViewer from './../components/PdfViewer'
+import { observer } from 'mobx-react-lite'
+
 export interface Props { }
 
-export default function NursingRulesPagePreview() {
+export default observer(function NursingRulesPagePreview(props: Props) {
   const ruleName = '书籍名称'
   const chapterName = '章节名称'
 
@@ -85,6 +88,22 @@ export default function NursingRulesPagePreview() {
     setAuditCfg({ ...auditCfg, visible: false })
   }
 
+  const ViewContent = () => {
+    let type = 'pdf'
+    let url = "/crNursing/asset/nursingInstitution/20190719/20190719145927ehEfyv1r.pdf"
+
+    switch (type) {
+      case 'jpg':
+      case 'gif':
+      case 'jpeg':
+        return <img src={url} width='100%' />
+      case 'pdf':
+        return <PdfViewer file={url} width={698} />
+      default:
+        return <div style={{ height: '500px', lineHeight: '500px', textAlign: 'center' }}>该文件格式不支持预览</div>
+    }
+  }
+
   return <Wrapper>
     <div className="topbar">
       <NavCon>
@@ -99,7 +118,7 @@ export default function NursingRulesPagePreview() {
       </div>
     </div>
     <div className="main-contain">
-      <div className="audit-content">
+      <div className="audit-content" style={{ display: 'block' }}>
         <TopTitleCon>
           <div className='topTitleIcon' />
           <div className='topTitle'>审核过程</div>
@@ -132,10 +151,8 @@ export default function NursingRulesPagePreview() {
           {rightControl.map((item: any, idx: number) => <div className="item" onClick={() => item.onClick()} key={idx}>{item.name}</div>)}
         </div>
         <div className="scroll-warpper">
-          <div className="pdf-content">
-            <div className="preview-frame">
-              <iframe src="/crNursing/asset/nursingInstitution/20190718/201907181417354v8sKZ3s.pdf#toolbar=0" />
-            </div>
+          <div className="page-content">
+            {ViewContent()}
           </div>
           <div className="page-info">第1页/共3页</div>
         </div>
@@ -143,7 +160,8 @@ export default function NursingRulesPagePreview() {
     </div>
     <GroupAuditModal visible={auditCfg.visible} defaultParams={auditCfg.params} onOk={handleAuditOk} onCancel={handleAuditCancel} title="审核" />
   </Wrapper>
-}
+})
+
 const scrollBarStyle = `
 ::-webkit-scrollbar {
   width: 8px;
@@ -197,36 +215,26 @@ const Wrapper = styled.div`
       overflow: auto;
       ${scrollBarStyle}
 
-      .pdf-content{
+      .page-content{
         width: 700px;
         margin: 0 auto;
-        // height: 800px;
-        position: absolute;
-        top: 15px;
-        bottom: 45px;
-        left: 50%;
-        transform: translate(-350px);
         background: #fff;
         border: 1px solid #ddd;
-      }
-    
-      .preview-frame{
-        height: 100%;
-        iframe{
+        border-bottom: 0;
+        min-height: 500px;
+        position: relative;
+        img{
           width: 100%;
-          height: 100%;
-          border: 0;
         }
       }
-
       .page-info{
-        position: absolute;
-        width: 100%;
+        width: 700px;
+        margin: 0 auto;
+        background: #fff;
+        border:1px solid #ddd;
+        border-top: 0;
+        padding: 10px 0;
         text-align:center;
-        left: 0;
-        bottom: 5px;
-        height: 30px;
-        line-height: 30px;
       }
     }
     .left-control{

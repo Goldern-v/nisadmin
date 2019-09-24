@@ -1,22 +1,22 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button,Row,Col } from 'antd'
+import { Button, Row, Col } from 'antd'
 export interface Props { }
 
 export default function IndexPannel() {
 
   return <Wrapper>
     <Row>
-      <Col span="24"><div className="h1">主标题</div></Col>
+      <Col span={24}><div className="h1">主标题</div></Col>
     </Row>
     <Row className="split">
-      <Col span="8">
+      <Col span={8}>
         <div className="h2">副标题</div>
       </Col>
-      <Col span="8">
+      <Col span={8}>
         <div className="h2">副标题</div>
       </Col>
-      <Col span="8">
+      <Col span={8}>
         <div className="h2">副标题</div>
       </Col>
     </Row>

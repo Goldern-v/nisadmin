@@ -76,10 +76,10 @@ export default observer(function nursingRulesNew() {
     <div className='topbar'>
       <div className='title'>护理制度</div>
       <div className='float-right'>
-        <span className='type-label'>类型：</span>
+        <span className='type-label'></span>
         <span className='type-content'>
         </span>
-        <span className='search-input'>
+        <span className='search-input' style={{ width: '200px' }}>
           <Input
             value={query.keywords}
             placeholder='输入名称进行检索' />

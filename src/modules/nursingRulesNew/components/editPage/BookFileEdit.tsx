@@ -17,6 +17,26 @@ export default observer(function BookFileEdit() {
     editPageModel.setBaseParams({ ...baseParams, cover: data })
   }
 
+  const FileList = () => {
+    let fileList = [...baseParams.fileList];
+
+    fileList.sort((prev, next) => {
+      return parseInt(prev.name) - parseInt(next.name)
+    })
+
+    return fileList.map((item: any, idx: number) => <div className="file-item" key={idx}>
+      <div className="file-icon">
+        <span className="icon"></span>
+      </div>
+      <div className="file-info">
+        <div className="title">{item.name}</div>
+        <div className="file-size">{editPageModel.formatFileSize(item.size)}</div>
+        <div className="success">上传完成</div>
+      </div>
+      <div className="delete">删除</div>
+    </div>)
+  }
+
   return <Wrapper>
     <div className="row">
       <div className="label">书籍封面：</div>
@@ -49,26 +69,15 @@ export default observer(function BookFileEdit() {
       </div>
     </div>
     <div className="file-list">
-      {baseParams.fileList.map((item: any, idx: number) => <div className="file-item" key={idx}>
-        <div className="file-icon">
-          <span className="icon"></span>
-        </div>
-        <div className="file-info">
-          <div className="title">{item.name}</div>
-          <div className="file-size">{editPageModel.formatFileSize(item.size)}</div>
-          <div className="success">上传完成</div>
-        </div>
-        <div className="delete">删除</div>
-      </div>)}
-
+      {FileList()}
     </div>
   </Wrapper>
 })
 
 
 const easeIn = keyframes`
-  from {left:20px;}
-  to {left:0;}
+  from {left:20px;top:5px;}
+  to {left:0;top:0;}
 `
 
 const Wrapper = styled.div`
@@ -102,7 +111,7 @@ const Wrapper = styled.div`
       position: relative;
       margin-right: 10px;
       margin-bottom: 10px;
-      animation: ${easeIn} .5s;
+      animation: ${easeIn} .3s;
       .file-icon{
         width: 60px;
         height: 60px;
