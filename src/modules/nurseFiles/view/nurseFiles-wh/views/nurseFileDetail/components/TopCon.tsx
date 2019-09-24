@@ -23,7 +23,6 @@ export default observer(function TopCon() {
   const deptChangeModal = createModal(DeptChangeModal)
   let history = store.appStore.history
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
-
   const openDeptChangeModal = () => {
     deptChangeModal.show({
       info: appStore.queryObj,
