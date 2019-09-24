@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Row, Col } from 'antd'
-import GroupAuditModal from './GroupAuditModal'
+import GroupAuditModal from './../GroupAuditModal'
 export interface Props { }
 
 export default function AuditPannel() {
@@ -39,8 +39,8 @@ export default function AuditPannel() {
       </Col>
     </Row>
     <div className="audit-btn-group">
-      <Button onClick={() => handleAudit(true)}>全部通过</Button>
-      <Button onClick={() => handleAudit(false)}>全部拒绝</Button>
+      <Button onClick={() => handleAudit(true)} type="primary" ghost>全部通过</Button>
+      <Button onClick={() => handleAudit(false)} type="danger" ghost>全部拒绝</Button>
     </div>
     <GroupAuditModal visible={auditCfg.visible} defaultParams={auditCfg.params} onOk={handleAuditOk} onCancel={handleAuditCancel} />
   </Wrapper>

@@ -58,7 +58,7 @@ export default observer(function GroupAuditModal(props: Props) {
 
   return <Modal
     centered
-    title={title || '"批量审核"'}
+    title={title || '批量审核'}
     confirmLoading={loading}
     onOk={handleOk}
     onCancel={handleCancel}
