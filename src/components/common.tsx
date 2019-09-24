@@ -47,3 +47,10 @@ export const DownLoader = () => {
   `
   return <Loader>正在加载中...</Loader>
 }
+
+/* 页面标题 */
+export const PageTitle = styled.div`
+  font-size: 20px;
+  color: #333;
+  font-weight: bold;
+`

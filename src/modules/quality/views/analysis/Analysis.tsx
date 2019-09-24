@@ -11,6 +11,7 @@ import QualityAnalysisService from './api/QualityAnalysisService'
 import CreateAnalysisModal from './components/CreateAnalysisModal'
 import AnalysisCreateProgress from './components/AnalysisCreateProgress'
 import qs from 'qs'
+import { PageTitle } from 'src/components/common'
 
 const api = new QualityAnalysisService()
 const Option = Select.Option
@@ -280,6 +281,9 @@ export default observer(function Analysis() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
+          <PageTitle>三级质控月度报告</PageTitle>
+        </div>
+        <div className='float-right'>
           <div className='item'>
             <div className='label'>报告年度：</div>
             <div className='content'>
@@ -351,11 +355,12 @@ export default observer(function Analysis() {
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>
-        </div>
-        <div className='float-right'>
-          <Button onClick={handleCreate} type='primary'>
-            创建
-          </Button>
+          <div className='item'>
+            {' '}
+            <Button onClick={handleCreate} type='primary'>
+              创建
+            </Button>{' '}
+          </div>
         </div>
       </div>
       <div className='main-contain'>
@@ -405,7 +410,7 @@ const Wrapper = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 5px 10px 15px;
     box-sizing: border-box;
     height: 55px;
     overflow: hidden;
