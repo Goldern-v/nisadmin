@@ -3,22 +3,45 @@ import React, { useState, useEffect } from 'react'
 import { Button, Tabs, Modal } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Link } from 'react-router-dom'
+import { appStore, authStore } from 'src/stores'
+import { detailPageModel } from './../models/detailPageModel'
+import { nursingRulesApiService } from './../api/nursingRulesNewService'
+import qs from 'qs'
 
 import IndexPannel from './../components/detailPage/IndexPannel'
 import FavorPannel from './../components/detailPage/FavorPannel'
 import RepairPannel from './../components/detailPage/RepairPannel'
 import AuditPannel from './../components/detailPage/AuditPannel'
 
+import BookCover from './../components/BookCover'
+
 const { TabPane } = Tabs;
 
 export interface Props { }
 
 export default observer(function NursingRulesNewDetail() {
-  let ruleName = '书籍名称'
+  const { history, location } = appStore
+  const { baseInfo, indexList } = detailPageModel
+  const search = qs.parse(location.search.replace('?', ''))
+  //启用和删除权限 上传者和护理部
+  let uploaderAuth = !!(baseInfo.upLoaderEmpNo == authStore.getUser().empNo) as boolean
+  let absoluteAuth = authStore.isDepartment as boolean
+  let auth = !!(uploaderAuth || absoluteAuth) as boolean
+
+  const indexSize = () => {
+    let size = 0;
+    for (let i = 0; i < indexList.length; i++) {
+      for (let j = 0; j < indexList[i].childrenList.length; j++) {
+        size++
+      }
+    }
+
+    return size
+  }
 
   let tabsCfg = [
     {
-      name: '目录',
+      name: `目录(共${indexSize()}章)`,
       component: <IndexPannel />
     },
     {
@@ -28,12 +51,13 @@ export default observer(function NursingRulesNewDetail() {
     {
       name: '修订记录',
       component: <RepairPannel />
-    },
-    {
-      name: '待审核章节',
-      component: <AuditPannel />
     }
   ]
+
+  if (auth) tabsCfg.push({
+    name: '待审核章节',
+    component: <AuditPannel />
+  })
 
   const TabPannels = () => {
     return tabsCfg.map((item: any, idx: number) => {
@@ -41,8 +65,8 @@ export default observer(function NursingRulesNewDetail() {
     })
   }
 
-  const handleTabChange = (info: any) => {
-    console.log(info)
+  const handleTabChange = (tab: any) => {
+    history.replace(`${location.pathname}?${qs.stringify({ ...search, tab })}`)
   }
 
   const handleEnable = (enable: boolean) => {
@@ -70,52 +94,83 @@ export default observer(function NursingRulesNewDetail() {
     })
   }
 
+  const handleEdit = () => {
+    history.push(`nursingRulesNewEdit?${qs.stringify({ bookId: baseInfo.bookId })}`)
+  }
+
+  const handleRepair = () => {
+    nursingRulesApiService.getTaskCode({
+      taskType: 2,
+      bookId: baseInfo.bookId
+    }).then(res => {
+      if (res.data) history.push(`nursingRulesNewEdit?${qs.stringify({
+        taskCode: res.data.taskCode,
+        bookId: res.data.bookId
+      })}`)
+    })
+  }
+
+  useEffect(() => {
+    detailPageModel.inited(search)
+  }, [])
+
+  const SettingBtn = () => {
+    let btnText = '设为无效'
+
+    if (baseInfo.enabled == '2') {
+      btnText = '启用'
+    } else if (baseInfo.enabled != '1') {
+      auth = false
+    }
+
+    return <Button type={btnText == '设为无效' ? 'danger' : 'default'} disabled={!auth} ghost onClick={() => handleEnable(!auth)}>{btnText}</Button>
+  }
+
   return <Wrapper>
     <div className="topbar">
       <NavCon>
         <Link to="/nursingRulesNew">护理制度</Link>
         <span> > </span>
-        <span>{ruleName}</span>
+        <span>{baseInfo.bookName || '书籍详情'}</span>
       </NavCon>
     </div>
     <div className="main-contain">
       <div className="top-pannel">
         <div className="btn-group">
-          <Button>编辑</Button>
-          <Button>修订</Button>
-          <Button type="danger" ghost onClick={() => handleEnable(false)}>设为无效</Button>
-          <Button type="danger" ghost onClick={() => handleEnable(true)} style={{ display: 'none' }}>设为无效</Button>
+          <Button onClick={handleEdit}>编辑</Button>
+          <Button onClick={handleRepair}>修订</Button>
+          {SettingBtn()}
           <Button type="danger" ghost onClick={handleDelete}>删除</Button>
           <Button>返回</Button>
         </div>
         <div className="base-info">
           <div className="left">
-            <img src="" alt="" className="book-img" />
+            <BookCover src={baseInfo.coverPath} name={baseInfo.coverPath ? '' : baseInfo.bookName} />
           </div>
           <div className="right">
-            <div className="main-title">书籍名称</div>
+            <div className="main-title">{baseInfo.bookName}</div>
             <div className="update-info">
-              <span className="icon"></span>
+              <span className="icon">
+                <img src={require('./../assets/上传@2x.png')} alt="" />
+              </span>
               <span>上传:</span>
-              <span>2019-08-14</span>
-              <span>王大锤</span>
+              <span>{baseInfo.upLoadTime}</span>
+              <span>{baseInfo.upLoaderEmpName}</span>
             </div>
             <div className="audit-info">
-              <span className="icon"></span>
+              <span className="icon">
+                <img src={require('./../assets/审核@2x.png')} alt="" />
+              </span>
               <span>审核:</span>
-              <span>2019-08-14</span>
-              <span>王大锤</span>
+              <span>{baseInfo.auditorEmpName}</span>
+              <span>{baseInfo.auditTime}</span>
             </div>
-            <div className="desc">
-              这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;
-              这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;
-              这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;这是此书简介;
-            </div>
+            <div className="desc">{baseInfo.bookBrief}</div>
           </div>
         </div>
       </div>
       <div className="tab-pannels">
-        <Tabs defaultActiveKey="3" onChange={handleTabChange}>{TabPannels()}</Tabs>
+        <Tabs defaultActiveKey={search.tab || '0'} onChange={handleTabChange}>{TabPannels()}</Tabs>
       </div>
     </div>
   </Wrapper>
@@ -149,7 +204,7 @@ const Wrapper = styled.div`
       position: absolute;
       top:0;
       right:10px;
-
+      z-index: 2;
       .ant-btn{
         margin-left: 8px;
       }
@@ -159,11 +214,13 @@ const Wrapper = styled.div`
       padding: 0 10px;
       display: flex;
       height: 180px;
+      position: relative;
+      z-index: 1;
       .left{
         width: 140px;
         height: 180px;
         background: #ddd;
-        margin-right: 10px;
+        margin-right: 15px;
       }
       .right{
         flex:1;
@@ -173,10 +230,21 @@ const Wrapper = styled.div`
         .main-title{
           font-size: 24px;
           color: #000;
+          min-height: 36px;
           font-weight: bold;
         }
         .update-info,.audit-info{
           color: #999;
+          &>span{
+            vertical-align: middle;
+            margin-right:5px;
+            img{
+              width: 12px;
+              height: 12px;
+              position: relative;
+              top: -2px;
+            }
+          }
         }
         .desc{
           height: 90px;
@@ -187,6 +255,8 @@ const Wrapper = styled.div`
       }
     }
     .tab-pannels{
+      position: relative;
+      z-index: 1;
       .ant-tabs-nav-scroll{
         margin-left: 10px;
       }

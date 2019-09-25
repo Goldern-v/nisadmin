@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import tinyPic from 'src/utils/img/tinyPic'
+import BookCover from './../BookCover'
 
 export interface Props {
   data: any,
@@ -15,7 +16,11 @@ export default function CoverPreview(props: Props) {
   let fileRef = React.createRef<HTMLInputElement>()
   const accept = 'image/jpg, image/jpeg, image/png, image/bmp'
 
-  if (Object.prototype.toString.call(data) !== '[object String]') src = window.URL.createObjectURL(data)
+  if (Object.prototype.toString.call(data) !== '[object String]') {
+    src = window.URL.createObjectURL(data)
+  } else {
+    src = data
+  }
 
   const handleUpload = () => {
     if (fileRef.current) fileRef.current.click()
@@ -32,23 +37,13 @@ export default function CoverPreview(props: Props) {
   }
 
   return <Wrapper className={className} onClick={handleUpload} title="点击上传">
-    <img src={src} />
+    <BookCover src={src} />
     <input ref={fileRef} type="file" accept={accept} onChange={handleFileChange} />
   </Wrapper>
 }
 const Wrapper = styled.div`
-  width: 140px;
-  height: 180px;
-  overflow: hidden;
-  position: relative;
   cursor: pointer;
-  background: #eee;
-  img{
-    height: 100%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
-  }
+  display: inline-block;
   input{
     display:none;
   }

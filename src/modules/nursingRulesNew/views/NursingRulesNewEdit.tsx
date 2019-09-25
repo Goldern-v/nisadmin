@@ -1,26 +1,79 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, Fragment } from 'react'
-import { Button, Steps } from 'antd'
+import { Button, Steps, message as Message, Spin } from 'antd'
 const Step = Steps.Step
 import { Link } from 'react-router-dom'
+import { appStore } from 'src/stores'
+import qs from 'qs'
 import { observer } from 'mobx-react-lite'
 import { editPageModel } from './../models/editPageModel'
 import BookFileEdit from './../components/editPage/BookFileEdit'
 import BookIndexEdit from './../components/editPage/BookIndexEdit'
 import BookPreview from './../components/editPage/BookPreview'
+import { nursingRulesApiService } from './../api/nursingRulesNewService'
 
 export interface Props { }
 
 export default observer(function NursingRulesNewEdit() {
-  const title = '新建书籍'
+  const { history, location } = appStore
+
+  const search = qs.parse(location.search.replace('?', ''))
+
+  const { taskName, baseParams, loading, baseInfo, baseLoading } = editPageModel
 
   const [step, setStep] = useState(0)
-  const [loading, setLoading] = useState(false);
 
-  const { baseParams } = editPageModel;
-
+  //完成第一步
   const toStep1 = () => {
-    setStep(1)
+    if (!baseParams.bookName) {
+      Message.warning('书籍名称不能为空')
+      return
+    }
+
+    let { bookId, taskCode } = baseInfo
+
+    let params = { ...baseParams, bookId, taskCode } as any
+
+    let callback = (res?: any) => {
+      editPageModel.setBaseLoading(false)
+      if (res) {
+        //跳转下一页
+        setStep(1)
+
+        let data = res.data
+
+        if (data && data.id) {
+          //更新url
+          let newQuery = {
+            bookId: data.id
+          }
+          history.replace(`${location.pathname}?${qs.stringify(newQuery)}`)
+          //编辑类型 改为 修改书籍
+          editPageModel.setBaseInfo({
+            taskType: '',
+            taskCode: '',
+            bookId: data.id
+          })
+          //修改封面参数
+          editPageModel.setBaseParams({ ...baseParams, cover: data.coverPath })
+          //重新获取上传文件列表
+          editPageModel.getFileList()
+        }
+      }
+    }
+
+    editPageModel.setBaseLoading(true)
+
+    if (baseInfo.taskType == '2') {
+      //修订
+      nursingRulesApiService.revBook(params).then(res => callback(res), err => callback())
+    } else if (baseInfo.taskType == '1') {
+      //新建
+      nursingRulesApiService.addBook(params).then(res => callback(res), err => callback())
+    } else {
+      //编辑
+      nursingRulesApiService.updateBookInfo(params).then(res => callback(res), err => callback())
+    }
   }
 
   const StepBtns = () => {
@@ -31,12 +84,12 @@ export default observer(function NursingRulesNewEdit() {
       </Fragment>
       ,
       <Fragment>
-        <Button disabled={loading}>上一步</Button>
+        <Button disabled={loading} onClick={() => setStep(0)}>上一步</Button>
         <Button disabled={loading}>下一步</Button>
       </Fragment>
       ,
       <Fragment>
-        <Button disabled={loading}>上一步</Button>
+        <Button disabled={loading} onClick={() => setStep(1)}>上一步</Button>
         <Button disabled={loading}>提交审核</Button>
       </Fragment>
     ]
@@ -58,7 +111,7 @@ export default observer(function NursingRulesNewEdit() {
   }
 
   useEffect(() => {
-    editPageModel.inited();
+    editPageModel.inited(search);
   }, [])
 
   return <Wrapper>
@@ -66,9 +119,9 @@ export default observer(function NursingRulesNewEdit() {
       <NavCon>
         <Link to="/nursingRulesNew">护理制度</Link>
         <span> > </span>
-        <span>{title}</span>
+        <span>{taskName}</span>
       </NavCon>
-      <div className="edit-title">{title}</div>
+      <div className="edit-title">{taskName}</div>
     </div>
     <div className="step-pannel">
       <Steps current={step}>
@@ -77,7 +130,12 @@ export default observer(function NursingRulesNewEdit() {
         <Step title="完成" />
       </Steps>
     </div>
-    <div className="content-pannel">{StepPannel()}</div>
+    <div className="content-pannel">
+      {StepPannel()}
+      <div className="mask" style={{ display: baseLoading ? 'block' : 'none' }}>
+        <Spin />
+      </div>
+    </div>
     {StepBtns()}
   </Wrapper>
 })
@@ -125,6 +183,24 @@ const Wrapper = styled.div`
     overflow:auto;
     border-top: 1px solid #eee;
     ${scrollBarStyle}
+    .mask{
+      text-align: center;
+      background: rgba(255,255,255,0.5);
+      border-radius: 4px;
+      margin-bottom: 20px;
+      position: fixed;
+      top: 104px;
+      left: 0;
+      width: 100%;
+      bottom: 0;
+      span.ant-spin-dot.ant-spin-dot-spin {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -14px;
+        margin-top: -14px;
+      }
+    }
   }
 `
 const BtnGroup = styled.div`

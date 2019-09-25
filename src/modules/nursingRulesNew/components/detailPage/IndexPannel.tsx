@@ -1,25 +1,15 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Row, Col } from 'antd'
+import IndexList from './../IndexList'
+import { detailPageModel } from './../../models/detailPageModel'
 export interface Props { }
 
 export default function IndexPannel() {
+  const { indexList } = detailPageModel
 
   return <Wrapper>
-    <Row>
-      <Col span={24}><div className="h1">主标题</div></Col>
-    </Row>
-    <Row className="split">
-      <Col span={8}>
-        <div className="h2">副标题</div>
-      </Col>
-      <Col span={8}>
-        <div className="h2">副标题</div>
-      </Col>
-      <Col span={8}>
-        <div className="h2">副标题</div>
-      </Col>
-    </Row>
+    <IndexList indexList={indexList} />
   </Wrapper>
 }
 const Wrapper = styled.div`

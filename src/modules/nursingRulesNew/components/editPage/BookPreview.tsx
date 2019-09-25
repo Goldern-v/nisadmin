@@ -3,26 +3,47 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { editPageModel } from './../../models/editPageModel'
 import { observer } from 'mobx-react-lite'
+import { getFileSize } from 'src/utils/file/file'
 export interface Props { }
 
 export default observer(function BookPreview() {
+  const { indexParams, baseParams, fileList } = editPageModel
+
+  const totalSize = () => {
+    let size = 0;
+    for (let i = 0; i < fileList.length; i++) {
+      size += parseInt(fileList[i].fileSize.toString())
+    }
+    return getFileSize(size)
+  }
+
+  const indexSize = () => {
+    let size = 0;
+    for (let i = 0; i < indexParams.length; i++) {
+      for (let j = 0; j < indexParams[i].childrenList.length; j++) {
+        size++
+      }
+    }
+
+    return size
+  }
 
   return <Wrapper>
     <div className="row">
       <div className="label">书籍名称：</div>
-      <div className="content">书籍名称</div>
+      <div className="content">{baseParams.bookName}</div>
     </div>
     <div className="row">
       <div className="label">文件数：</div>
-      <div className="content">共120个文件,总大小为300MB</div>
+      <div className="content">共{fileList.length}个文件,总大小为{totalSize()}</div>
     </div>
     <div className="row">
       <div className="label">章节数：</div>
-      <div className="content">12章</div>
+      <div className="content">{indexSize()}章</div>
     </div>
     <div className="row">
       <div className="label">书籍介绍：</div>
-      <div className="content">书籍介绍</div>
+      <div className="content">{baseParams.bookBrief}</div>
     </div>
   </Wrapper>
 })

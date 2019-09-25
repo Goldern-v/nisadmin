@@ -1,15 +1,26 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, message as Message } from 'antd'
 import { Link } from 'react-router-dom'
+import { appStore } from 'src/stores'
 import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
 import GroupAuditModal from '../components/GroupAuditModal'
 import PdfViewer from './../components/PdfViewer'
 import { observer } from 'mobx-react-lite'
 
+import { ReactComponent as SYZ } from './../assets/上一章.svg'
+import { ReactComponent as ML } from './../assets/目录.svg'
+import { ReactComponent as SC } from './../assets/收藏.svg'
+import { ReactComponent as YSC } from './../assets/已收藏.svg'
+import { ReactComponent as XYZ } from './../assets/下一章.svg'
+
+//内容面板宽度
+const contentWidth = 740
+
 export interface Props { }
 
 export default observer(function NursingRulesPagePreview(props: Props) {
+  const { history } = appStore;
   const ruleName = '书籍名称'
   const chapterName = '章节名称'
 
@@ -23,28 +34,31 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   const leftControl = [
     {
       name: '目录',
-      icon: '',
+      icon: <ML className="active index" />,
       onClick: () => {
-
+        history.push('/NursingRulesNewDetail')
       }
     },
     {
       name: '收藏',
-      icon: '',
+      icon: (() => {
+        return <SC className="active" />
+        return <YSC />
+      })(),
       onClick: () => {
-
+        Message.success('收藏成功')
       }
     },
     {
       name: '上一章',
-      icon: '',
+      icon: <SYZ className="active" />,
       onClick: () => {
 
       }
     },
     {
       name: '下一章',
-      icon: '',
+      icon: <XYZ className="active" />,
       onClick: () => {
         console.log('下一章')
       }
@@ -98,7 +112,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       case 'jpeg':
         return <img src={url} width='100%' />
       case 'pdf':
-        return <PdfViewer file={url} width={698} />
+        return <PdfViewer file={url} width={contentWidth - 2} />
       default:
         return <div style={{ height: '500px', lineHeight: '500px', textAlign: 'center' }}>该文件格式不支持预览</div>
     }
@@ -142,7 +156,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         <div className="left-control">
           {leftControl.map((item: any, idx: number) => {
             return <div className="item" onClick={() => item.onClick()} key={idx}>
-              <div className="icon"></div>
+              <div className="icon">{item.icon}</div>
               <div className="text">{item.name}</div>
             </div>
           })}
@@ -216,7 +230,7 @@ const Wrapper = styled.div`
       ${scrollBarStyle}
 
       .page-content{
-        width: 700px;
+        width: ${contentWidth}px;
         margin: 0 auto;
         background: #fff;
         border: 1px solid #ddd;
@@ -228,7 +242,7 @@ const Wrapper = styled.div`
         }
       }
       .page-info{
-        width: 700px;
+        width: ${contentWidth}px;
         margin: 0 auto;
         background: #fff;
         border:1px solid #ddd;
@@ -241,29 +255,52 @@ const Wrapper = styled.div`
       position: absolute;
       left: 50%;
       top: 15px;
-      width: 100px;
+      width: 80px;
       background: #fff;
       transform: translate(-464px);
       border: 1px solid #ddd;
       .item{
         width: 100%;
-        height: 98px;
+        height: 78px;
         border-bottom: 1px solid #ddd;
         cursor: pointer;
         overflow: hidden;
         &:last-of-type{
           border-bottom: none;
         }
+        .text{
+          transition: all .5s;
+        }
+        .icon{
+          height: 25px;
+          width: 25px;
+          margin: 12px auto 8px;
+          svg{
+            width: 100%;
+            height: 100%;
+            g,path{
+              transition: all .3s;
+            }
+          }
+        }
         :hover{
           .text{
             color:#00A680;
           }
-        }
-        .icon{
-          height: 50px;
-          width: 50px;
-          background: #ddd;
-          margin: 10px auto 8px;
+          .icon{
+            svg.active{
+              g{
+                opacity: 1;
+              }
+              path{
+                stroke:#00A680;
+              }
+              &.index path{
+                stroke:#00A680;
+                fill:#00A680;
+              }
+            }
+          }
         }
         .text{
           font-size: 16px;
@@ -275,9 +312,9 @@ const Wrapper = styled.div`
       position: absolute;
       right: 50%;
       top: 15px;
-      width: 100px;
+      width: 80px;
       background: #fff;
-      transform: translate(460px);
+      transform: translate(456px);
       border: 1px solid #ddd;
       .item{
         width: 100%;
@@ -287,11 +324,20 @@ const Wrapper = styled.div`
         cursor: pointer;
         text-align: center;
         font-size: 16px;
+        transition: all .3s;
         &:last-of-type{
           border-bottom: none;
         }
+        .disabled{
+          background: rgba(0,0,0,0.05);
+          color: #aaa;
+          cursor: not-allowed;
+        }
         :hover{
           color:#00A680;
+          &.disabled{
+            color: #aaa;
+          }
         }
       }
     }
