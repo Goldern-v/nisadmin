@@ -17,6 +17,7 @@ import { appStore } from 'src/stores'
 import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
+import WritingForm from './views/writingForm/WritingForm'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -72,9 +73,14 @@ const LEFT_MENU_CONFIG: any = [
     icon: <CXTJ />,
     children: [
       {
-        title: '查询统计',
+        title: '检查表单统计表',
         path: '/quality/queryStatistics',
         component: QueryStatistics
+      },
+      {
+        title: '文件书写统计表',
+        path: '/quality/writingForm',
+        component: WritingForm
       }
     ]
   }
