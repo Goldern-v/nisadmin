@@ -203,6 +203,6 @@ const Title = styled.div`
 `
 
 const TableCon = styled.div`
-  width: 700px;
+  /* width: 700px; */
   margin: 0 auto;
 `
