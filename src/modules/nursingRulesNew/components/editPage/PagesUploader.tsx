@@ -1,8 +1,9 @@
 import styled, { keyframes } from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Progress } from 'antd'
+import { Button, Progress, Modal, message as Message } from 'antd'
 import { editPageModel } from './../../models/editPageModel'
 import { observer } from 'mobx-react-lite'
+import { getFileSize } from 'src/utils/file/file'
 export interface Props { }
 
 export default observer(function PagesUploader() {
@@ -12,7 +13,7 @@ export default observer(function PagesUploader() {
   let [progressVisible, setProgressVisible] = useState(false);
 
 
-  const { baseParams, uploadLoading } = editPageModel;
+  const { fileList, uploadLoading } = editPageModel;
   const accept = 'image/*,.pdf'
 
 
@@ -39,7 +40,7 @@ export default observer(function PagesUploader() {
 
   useEffect(() => {
     // console.log(baseParams)
-  }, [baseParams])
+  }, [fileList])
 
   const uploadFiles = (files: File[], idx?: number) => {
     let _uploadIdx = idx || 0;
@@ -54,32 +55,27 @@ export default observer(function PagesUploader() {
       editPageModel.setUploadLoading(true)
     }
 
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('ok')
-      }, 2000)
-    })
-      .then(() => {
-        let newParams = { ...baseParams }
+    editPageModel.uploadFile(files[_uploadIdx], (res: any) => {
+      if (res && res.data) {
+        let data = res.data
+        let newList = [...fileList]
 
-        let sameItem = newParams.fileList.find((item: any) => item.name == files[_uploadIdx].name)
+        let sameItem = newList.find((item: any) => item.fileName == data.fileName)
 
         if (sameItem) {
-          let replaceIdx = newParams.fileList.indexOf(sameItem)
+          let replaceIdx = newList.indexOf(sameItem)
 
-          newParams.fileList[replaceIdx] = files[_uploadIdx]
+          newList[replaceIdx] = data
         } else {
-          newParams.fileList.push(files[_uploadIdx])
+          newList.push(data)
         }
 
-        editPageModel.setBaseParams(newParams)
+        editPageModel.setFileList(newList)
+      }
 
-        _uploadIdx++
-        uploadFiles(files, _uploadIdx)
-      }, err => {
-        _uploadIdx++
-        uploadFiles(files, _uploadIdx)
-      })
+      _uploadIdx++
+      uploadFiles(files, _uploadIdx)
+    })
   }
 
   const FileInput = () => {
@@ -92,18 +88,24 @@ export default observer(function PagesUploader() {
 
   const totalSize = () => {
     let size = 0;
-    for (let i = 0; i < baseParams.fileList.length; i++) {
-      size += baseParams.fileList[i].size
+    for (let i = 0; i < fileList.length; i++) {
+      size += parseInt(fileList[i].fileSize.toString())
     }
 
-    return editPageModel.formatFileSize(size)
+    return getFileSize(size)
   }
 
   const deleteAllFile = () => {
-    let newParams = { ...editPageModel.baseParams }
-    newParams.fileList = []
-
-    editPageModel.setBaseParams(newParams);
+    Modal.confirm({
+      title: '删除文件',
+      content: '是否删除全部已上传文件?',
+      centered: true,
+      onOk: () => {
+        editPageModel.deletAllFile((success: boolean) => {
+          if (success) Message.success('删除成功')
+        })
+      }
+    })
   }
 
   const precent = parseInt((uploadIdx / files.length * 10000).toString()) / 100
@@ -117,8 +119,8 @@ export default observer(function PagesUploader() {
       </Button>
       <span
         className="info"
-        style={{ display: uploadLoading || baseParams.fileList.length > 0 ? 'inline-block' : 'none' }}>
-        (已上传{baseParams.fileList.length}个文件，共{totalSize()})
+        style={{ display: uploadLoading || fileList.length > 0 ? 'inline-block' : 'none' }}>
+        (已上传{fileList.length}个文件，共{totalSize()})
       </span>
       <span
         className="progress"
@@ -128,7 +130,7 @@ export default observer(function PagesUploader() {
       <Button
         onClick={deleteAllFile}
         disabled={uploadLoading}
-        style={{ display: !uploadLoading && baseParams.fileList.length > 0 ? 'inline-block' : 'none' }}>
+        style={{ display: !uploadLoading && fileList.length > 0 ? 'inline-block' : 'none' }}>
         清空上传文件
       </Button>
       {FileInput()}

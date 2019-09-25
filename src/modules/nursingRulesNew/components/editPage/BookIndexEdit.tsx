@@ -1,16 +1,59 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Button, Row, Col } from 'antd'
 import { editPageModel } from './../../models/editPageModel'
 import { observer } from 'mobx-react-lite'
+import { nursingRulesApiService } from './../../api/nursingRulesNewService'
+import IndexList from './../IndexList'
 export interface Props { }
 
 export default observer(function BookIndexEdit() {
   let fileRef = React.createRef<HTMLInputElement>()
-  let { indexParams } = editPageModel;
+  let { indexParams, baseInfo } = editPageModel;
 
   const handleUpload = () => {
     if (fileRef.current) fileRef.current.click();
+  }
+
+  const handleDownload = () => {
+    nursingRulesApiService.getCatalogTemplate().then(res => {
+      fileDownload(res, { fileName: '目录上传模板' })
+    })
+  }
+
+  const fileDownload = (res: any, record?: any) => {
+    let filename = record.fileName
+    // decodeURIComponent
+    // "attachment;filename=????2019-3-18-2019-3-24??.xls"
+    // "application/json"
+    let blob = new Blob([res.data], {
+      type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
+    })
+    // console.log('fileDownload', res)
+    // if (res.data.type && res.data.type.indexOf('excel') > -1) {
+    if (true) {
+      let a = document.createElement('a')
+      let href = window.URL.createObjectURL(blob) // 创建链接对象
+      a.href = href
+      a.download = filename // 自定义文件名
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(href)
+      document.body.removeChild(a) // 移除a元素
+    }
+  }
+
+  const handleChange = (e: any) => {
+    let files = e.target.files
+
+    if (files.length > 0) {
+      nursingRulesApiService.updateBookInfo({
+        bookId: baseInfo.bookId,
+        catalog: files[0]
+      }).then(res => {
+        editPageModel.getIndex()
+      })
+    }
   }
 
   return <Wrapper>
@@ -18,26 +61,11 @@ export default observer(function BookIndexEdit() {
       <div className="label">目录上传：</div>
       <div className="content">
         <Button onClick={handleUpload}>点击上传</Button>
-        <span className="tips"> (需要按照目录模板格式，点击此处<span className="template-download">下载</span>目录模板)</span>
-        <input ref={fileRef} type="file" accept=".xls" />
+        <span className="tips"> (需要按照目录模板格式，点击此处<span className="template-download" onClick={handleDownload}>下载</span>目录模板)</span>
+        <input ref={fileRef} type="file" accept=".xls" onChange={handleChange} />
       </div>
     </div>
-    <div className="index-list">
-      <Row>
-        <Col span={24}><div className="h1">主标题</div></Col>
-      </Row>
-      <Row className="split">
-        <Col span={8}>
-          <div className="h2">副标题</div>
-        </Col>
-        <Col span={8}>
-          <div className="h2">副标题</div>
-        </Col>
-        <Col span={8}>
-          <div className="h2">副标题</div>
-        </Col>
-      </Row>
-    </div>
+    <IndexList indexList={indexParams} />
   </Wrapper>
 })
 
@@ -58,24 +86,6 @@ const Wrapper = styled.div`
     }
     .content{
       flex: 1;
-    }
-  }
-  .index-list{
-    padding: 10px;
-    .h1{
-      font-size: 16px;
-      font-weight: bold;
-      color: #000;
-    }
-    .h2{
-      padding-right: 8px;
-      line-height: 30px;
-    }
-    .ant-row{
-      margin-bottom: 8px;
-      &.split{
-        border-bottom: 1px solid #ddd;
-      }
     }
   }
   .tips{

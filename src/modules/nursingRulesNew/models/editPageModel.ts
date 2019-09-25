@@ -1,69 +1,223 @@
 import { action, observable, computed } from 'mobx'
+import { nursingRulesApiService } from './../api/nursingRulesNewService'
 
 export interface BaseParams {
   cover: string | File,
-  fileList: any[],
-  title: string,
-  desc: string
+  bookName: string,
+  bookBrief: string
+}
+
+export interface FileItem {
+  fileName: string,
+  filePath: string,
+  fileSize: string | number
 }
 
 export class EditPageModel {
-  @observable id = ''
-  @observable editType = 'new' //new 新建 upadte 修改 repair 修订
+  // @observable id = ''
+  // @observable taskType = '1' //new 新建 upadte 修改 repair 修订
+  @observable baseInfo = {
+    bookId: '',
+    taskType: '',
+    taskCode: '',
+  }
   //基本信息
   @observable baseParams: BaseParams = {
-    cover: '' as any,
-    fileList: [] as any[],
-    title: '',
-    desc: ''
+    cover: '',
+    bookName: '',
+    bookBrief: ''
   }
+  //上传文件列表
+  @observable fileList = [] as FileItem[]
+  //目录列表
+  //基本接口请求状态
+  @observable baseLoading = false
   //上传状态
   @observable uploadLoading = false
-  //目录信息
-  @observable indexParams = {
+  //总请求状态
+  @computed get loading() {
+    return this.baseLoading || this.uploadLoading
   }
+  //目录信息
+  @observable indexParams = [] as any[]
   //预览信息
   @observable previewInfo = {
 
   }
-
-  @action public inited() {
-    this.baseParams = {
-      cover: '' as any,
-      fileList: [] as any[],
-      title: '',
-      desc: ''
+  //编辑类型名称
+  @computed get taskName() {
+    switch (this.baseInfo.taskType) {
+      case '1':
+        return '新建书籍'
+      case '2':
+        return '修订书籍'
+      default:
+        return '编辑书籍'
     }
+  }
+
+  //初始化model
+  @action public inited(newInfo?: any) {
+    this.setBaseInfo({ ...this.baseInfo, ...newInfo })
+
+    this.setBaseLoading(false)
+    this.setUploadLoading(false)
+
+    this.setBaseParams({
+      cover: '',
+      bookName: '',
+      bookBrief: ''
+    })
+    //获取书籍信息
+    this.getBookData()
+    //获取上传文件列表
+    this.getFileList()
+    //获取目录
+    this.getIndex()
+  }
+
+  @action public setBaseInfo(baseInfo: any) {
+    this.baseInfo = { ...baseInfo }
   }
 
   @action public setBaseParams(newParams: BaseParams) {
     this.baseParams = { ...newParams }
   }
 
+  @action public setIndexParams(newIndex: any[]) {
+    this.indexParams = [...newIndex]
+  }
+
   @action public setUploadLoading = (loading: boolean) => {
     this.uploadLoading = loading
   }
 
-  @action public formatFileSize = (limit: number) => {
-    var size = "";
-    if (limit < 0.1 * 1024) { //如果小于0.1KB转化成B  
-      size = limit.toFixed(2) + "B";
-    } else if (limit < 0.1 * 1024 * 1024) {//如果小于0.1MB转化成KB  
-      size = (limit / 1024).toFixed(2) + "KB";
-    } else if (limit < 0.1 * 1024 * 1024 * 1024) { //如果小于0.1GB转化成MB  
-      size = (limit / (1024 * 1024)).toFixed(2) + "MB";
-    } else { //其他转化成GB  
-      size = (limit / (1024 * 1024 * 1024)).toFixed(2) + "GB";
+  @action public setBaseLoading = (loading: boolean) => {
+    this.baseLoading = loading
+  }
+
+  @action public setFileList = (newList: FileItem[]) => {
+    this.fileList = newList
+  }
+
+  @action public getBookData = () => {
+    let { bookId } = this.baseInfo
+    if (bookId) nursingRulesApiService.getBookInfo(bookId).then(res => {
+
+      this.setBaseParams({
+        cover: res.data.coverPath,
+        bookName: res.data.bookName,
+        bookBrief: res.data.bookBrief
+      })
+    })
+  }
+
+  //获取文件列表
+  @action public getFileList = () => {
+
+    let callback = (res: any) => {
+      if (res.data) this.setFileList([...res.data])
     }
 
-    var sizestr = size + "";
-    var len = sizestr.indexOf("\.");
-    var dec = sizestr.substr(len + 1, 2);
-    if (dec == "00") {//当小数点后为00时 去掉小数部分  
-      return sizestr.substring(0, len) + sizestr.substr(len + 3, 2);
+    if (this.baseInfo.taskCode) {
+      nursingRulesApiService
+        .getTaskBodyFileList(this.baseInfo.taskCode)
+        .then(res => callback(res))
+    } else {
+      nursingRulesApiService
+        .getBookBodyFileList(this.baseInfo.bookId)
+        .then(res => callback(res))
     }
-    return sizestr;
   }
+
+  //获取目录信息
+  @action public getIndex = () => {
+    nursingRulesApiService
+      .getAllBookCataLog(this.baseInfo.bookId).
+      then(res => {
+        this.setIndexParams(res.data)
+      })
+  }
+
+  //上传page文件
+  @action public uploadFile = (file: File, callback: Function) => {
+    if (this.baseInfo.taskCode) {
+      //上传临时文件夹
+      nursingRulesApiService
+        .upLoadTaskBodyFile({
+          taskCode: this.baseInfo.taskCode,
+          bodyFile: file
+        })
+        .then(res => callback(res), err => callback())
+    } else {
+      //上传正式文件夹
+      nursingRulesApiService
+        .upLoadBookBodyFile({
+          bookId: this.baseInfo.bookId,
+          bodyFile: file
+        })
+        .then(res => callback(res), err => callback())
+    }
+  }
+
+  //删除上传文件
+  @action public deletFile = (item: FileItem, _callback?: Function) => {
+    let { fileName } = item
+    let idx = this.fileList.indexOf(item)
+    let { taskCode, bookId } = this.baseInfo
+
+    let callback = (res?: any) => {
+      this.setBaseLoading(false)
+      if (res && res.code == 200) {
+        let newFileList = [...this.fileList]
+
+        newFileList.splice(idx, 1)
+
+        this.setFileList(newFileList)
+        _callback && _callback(true)
+      } else {
+        _callback && _callback(false)
+      }
+    }
+
+    this.setBaseLoading(true)
+    if (taskCode) {
+      nursingRulesApiService
+        .deleteTaskBodyFile({ taskCode, fileName })
+        .then(res => callback(res), err => callback())
+    } else {
+      nursingRulesApiService
+        .deleteBookBodyFile({ bookId, fileName })
+        .then(res => callback(res), err => callback())
+    }
+  }
+
+  //全部删除上传文件
+  @action public deletAllFile = (_callback?: Function) => {
+    let { taskCode, bookId } = this.baseInfo
+
+    let callback = (res?: any) => {
+      this.setUploadLoading(false)
+      if (res && res.code == 200) {
+        this.setFileList([])
+        _callback && _callback(true)
+      } else {
+        _callback && _callback(false)
+      }
+    }
+
+    this.setUploadLoading(true)
+    if (taskCode) {
+      nursingRulesApiService
+        .deleteTaskAllBodyFiles(taskCode)
+        .then(res => callback(res), err => callback())
+    } else {
+      nursingRulesApiService
+        .deleteBookAllBodyFiles(bookId)
+        .then(res => callback(res), err => callback())
+    }
+  }
+
 }
 
 export const editPageModel = new EditPageModel();

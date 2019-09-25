@@ -1,8 +1,9 @@
 import styled, { keyframes } from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input } from 'antd'
-import { editPageModel } from './../../models/editPageModel'
+import { Button, Input, Modal, message as Message } from 'antd'
+import { editPageModel, FileItem } from './../../models/editPageModel'
 import { observer } from 'mobx-react-lite'
+import { getFilePrevImg, getFileSize } from 'src/utils/file/file'
 
 import CoverPreview from './CoverPreview'
 import PagesUploader from './PagesUploader'
@@ -12,28 +13,44 @@ export interface Props { }
 const TextArea = Input.TextArea
 
 export default observer(function BookFileEdit() {
-  const { baseParams } = editPageModel;
+  const { baseParams, fileList, loading, uploadLoading } = editPageModel;
   const handleCoverChange = (data: any) => {
     editPageModel.setBaseParams({ ...baseParams, cover: data })
   }
 
-  const FileList = () => {
-    let fileList = [...baseParams.fileList];
-
-    fileList.sort((prev, next) => {
-      return parseInt(prev.name) - parseInt(next.name)
+  const handleDelete = (item: FileItem) => {
+    Modal.confirm({
+      centered: true,
+      title: '删除文件',
+      content: `是否删除 ${item.fileName}`,
+      onOk: () => {
+        editPageModel.deletFile(item, (success: boolean) => {
+          if (success) Message.success('删除成功')
+        })
+      }
     })
 
-    return fileList.map((item: any, idx: number) => <div className="file-item" key={idx}>
+  }
+
+  const FileList = () => {
+    let viewFileList = [...fileList];
+
+    viewFileList.sort((prev: any, next: any) => {
+      return parseInt(prev.fileName) - parseInt(next.fileName)
+    })
+
+    return viewFileList.map((item: any, idx: number) => <div className="file-item" key={idx}>
       <div className="file-icon">
-        <span className="icon"></span>
+        <span className="icon">
+          <img src={getFilePrevImg(item.fileName)} />
+        </span>
       </div>
       <div className="file-info">
-        <div className="title">{item.name}</div>
-        <div className="file-size">{editPageModel.formatFileSize(item.size)}</div>
+        <div className="book-name">{item.fileName}</div>
+        <div className="file-size">{getFileSize(item.fileSize)}</div>
         <div className="success">上传完成</div>
       </div>
-      <div className="delete">删除</div>
+      <div className="delete" onClick={() => handleDelete(item)}>删除</div>
     </div>)
   }
 
@@ -41,19 +58,22 @@ export default observer(function BookFileEdit() {
     <div className="row">
       <div className="label">书籍封面：</div>
       <div className="content">
-        <CoverPreview data={editPageModel.baseParams.cover} onChange={handleCoverChange} />
+        <CoverPreview data={baseParams.cover} onChange={handleCoverChange} />
       </div>
     </div>
     <div className="row">
       <div className="label">*书籍名称：</div>
       <div className="content">
-        <TextArea autosize value={baseParams.title} onChange={(e: any) => editPageModel.setBaseParams({ ...baseParams, title: e.target.value })} />
+        <TextArea
+          autosize
+          value={baseParams.bookName}
+          onChange={(e: any) => editPageModel.setBaseParams({ ...baseParams, bookName: e.target.value })} />
       </div>
     </div>
     <div className="row">
       <div className="label">书籍介绍：</div>
       <div className="content">
-        <TextArea autosize={{ minRows: 3 }} value={baseParams.desc} onChange={(e: any) => editPageModel.setBaseParams({ ...baseParams, desc: e.target.value })} />
+        <TextArea autosize={{ minRows: 3 }} value={baseParams.bookBrief} onChange={(e: any) => editPageModel.setBaseParams({ ...baseParams, bookBrief: e.target.value })} />
       </div>
     </div>
     <div className="row">
@@ -116,6 +136,7 @@ const Wrapper = styled.div`
         width: 60px;
         height: 60px;
         float: left;
+        margin-right: 5px;
         position: relative;
         .icon{
           display: inline-block;
@@ -126,6 +147,11 @@ const Wrapper = styled.div`
           width: 50px;
           height: 50px;
           background: #ddd;
+
+          img{
+            width: 100%;
+            height: 100%;
+          }
         }
       }
       .file-info{
@@ -141,7 +167,7 @@ const Wrapper = styled.div`
         float: left;
         min-width: 50px;
       }
-      .title{
+      .book-name{
         float: left;
         display: inline-block;
         width: 175px;
