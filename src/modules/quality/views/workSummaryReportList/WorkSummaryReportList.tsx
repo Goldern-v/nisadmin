@@ -235,7 +235,7 @@ export default observer(function WorkSummaryReportList() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>三级质控问题汇总</PageTitle>
+          <PageTitle>二级质控分析报告</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>

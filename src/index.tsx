@@ -9,4 +9,6 @@ import { appStore } from './stores'
 !appStore.isDev && autoUpdate()
 ReactDOM.render(<App />, document.getElementById('root'))
 
+let preLoader: any = document!.getElementById('pre-loader')
+preLoader.parentNode.removeChild(preLoader)
 // registerServiceWorker()
