@@ -30,10 +30,10 @@ class RetiredRetireesViewModal {
   async initData() {
     await Promise.all([
       service.commonApiService.getBigDeptListSelfList().then((res) => {
-        this.bigDeptList = res.data
+        this.bigDeptList = res.data || []
       }),
       service.commonApiService.getNursingUnitSelf().then((res) => {
-        this.deptList = res.data.deptList
+        this.deptList = res.data.deptList || []
         // this.selectedDept = res.data.defaultDept
       })
     ])
@@ -68,13 +68,13 @@ class RetiredRetireesViewModal {
     if (bigDeptCode == '') {
       await service.commonApiService.getNursingUnitSelf().then((res) => {
         /** 默认全部 */
-        this.deptList = res.data.deptList
+        this.deptList = res.data.deptList || []
         this.selectedDept = ''
       })
     } else {
       await service.commonApiService.groupByDeptInDeptList(bigDeptCode).then((res) => {
         /** 默认全部 */
-        this.deptList = res.data.map((item: any) => ({ name: item.deptName, code: item.deptCode }))
+        this.deptList = (res.data || []).map((item: any) => ({ name: item.deptName, code: item.deptCode }))
         this.selectedDept = ''
       })
     }

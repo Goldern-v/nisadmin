@@ -37,7 +37,10 @@ export default observer(function Head() {
           retiredRetireesViewModal.onload()
         }}
       >
-        <Select.Option value=''>全院</Select.Option>
+        {!retiredRetireesViewModal.deptList.find((item: any) => item.code == '') && (
+          <Select.Option value=''>全部</Select.Option>
+        )}
+
         {retiredRetireesViewModal.deptList.map((item: any, index: number) => (
           <Select.Option value={item.code} key={index}>
             {item.name}
