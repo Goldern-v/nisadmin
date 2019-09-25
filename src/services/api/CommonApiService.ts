@@ -40,9 +40,13 @@ export default class CommonApiService extends BaseApiService {
   public multiDictInfo(codeList: string[]) {
     return this.post(`/dept/multiDictInfo`, codeList)
   }
-  /** 根据片区获取人员列表 */
+  /** 全部片区 */
   public groupByBigDeptInDeptList() {
-    return this.post(`/user/groupByBigDeptInDeptList`, {})
+    return this.post(`/user/groupByBigDeptInDeptList`)
+  }
+  /** 本人有权限的片区 */
+  public getBigDeptListSelfList() {
+    return this.get(`/qcItem/dict/bigDeptListSelf`)
   }
 
   /** 根据科室获取人员列表 */
@@ -104,5 +108,9 @@ export default class CommonApiService extends BaseApiService {
   /** 获取全部科室列表 */
   public getNursingUnitAll() {
     return this.get(`/user/nursingUnit/all`)
+  }
+  /** 本人有权限的科室列表 */
+  public getNursingUnitSelf() {
+    return this.get(`/qcItem/dict/qcWardCodeList`)
   }
 }

@@ -19,13 +19,13 @@ export default observer(function Head() {
         value={retiredRetireesViewModal.selectedBigDept}
         onChange={(val: string) => {
           retiredRetireesViewModal.selectedBigDept = val
-          retiredRetireesViewModal.onload()
+          retiredRetireesViewModal.onChangeBigDept(val)
         }}
       >
         <Select.Option value=''>全部</Select.Option>
         {retiredRetireesViewModal.bigDeptList.map((item: any, index: number) => (
-          <Select.Option value={item.deptCode} key={index}>
-            {item.deptName}
+          <Select.Option value={item.code} key={index}>
+            {item.name}
           </Select.Option>
         ))}
       </Select>
@@ -68,7 +68,9 @@ export default observer(function Head() {
         ))}
       </Select>
       <Place />
-      <Button onClick={() => retiredRetireesViewModal.onload()}>查询</Button>
+      <Button onClick={() => retiredRetireesViewModal.onload()} type='primary'>
+        查询
+      </Button>
       <Button onClick={() => retiredRetireesViewModal.export()}>导出</Button>
     </Wrapper>
   )

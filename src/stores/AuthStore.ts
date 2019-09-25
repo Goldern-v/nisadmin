@@ -68,6 +68,16 @@ export default class AuthStore {
       return ''
     }
   }
+  @computed
+  public get defaultDeptName() {
+    try {
+      let dept = this.deptList.find((dept: any) => dept.code == this.defaultDeptCode)
+      if (dept) localStorage.defaultDeptCode = dept.name
+      return dept ? dept.name : localStorage.defaultDeptCode
+    } catch (error) {
+      return ''
+    }
+  }
 
   /** 是否是管理员 */
   public get isAdmin() {
