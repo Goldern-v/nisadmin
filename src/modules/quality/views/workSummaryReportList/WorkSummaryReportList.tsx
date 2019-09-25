@@ -298,7 +298,7 @@ export default observer(function WorkSummaryReportList() {
                 className='recode-type-select'
               >
                 <Option value=''>全部</Option>
-                {groupRoleList.map((item: any) => (
+                {groupRoleListSelf.map((item: any) => (
                   <Option value={item.code} key={item.code}>
                     {item.name}
                   </Option>
