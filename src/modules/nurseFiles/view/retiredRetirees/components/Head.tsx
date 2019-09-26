@@ -30,19 +30,38 @@ export default observer(function Head() {
         ))}
       </Select>
       <span>科室：</span>
+
       <Select
+        mode='multiple'
+        showSearch
+        allowClear
+        style={{ width: 200 }}
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
         value={retiredRetireesViewModal.selectedDept}
-        onChange={(val: string) => {
-          retiredRetireesViewModal.selectedDept = val
+        onChange={(value: any) => {
+          if (value.length > 1) {
+            if (value[value.length - 1] == '全院') {
+              value = ['全院']
+            } else if (value.includes('全院')) {
+              value = value.filter((item: any) => item != '全院')
+            } else if (value[value.length - 1] == '全部') {
+              value = ['全部']
+            } else if (value.includes('全部')) {
+              value = value.filter((item: any) => item != '全部')
+            }
+          }
+          retiredRetireesViewModal.selectedDept = value
           retiredRetireesViewModal.onload()
         }}
       >
         {!retiredRetireesViewModal.deptList.find((item: any) => item.code == '') && (
-          <Select.Option value=''>全部</Select.Option>
+          <Select.Option value='全部'>全部</Select.Option>
         )}
 
         {retiredRetireesViewModal.deptList.map((item: any, index: number) => (
-          <Select.Option value={item.code} key={index}>
+          <Select.Option value={item.code || '全部'} key={index}>
             {item.name}
           </Select.Option>
         ))}
@@ -88,5 +107,13 @@ const Wrapper = styled(TableHeadCon)`
   }
   button {
     margin-left: 10px;
+  }
+  .ant-select {
+    height: 26px;
+  }
+  .ant-select-selection--multiple {
+    padding-bottom: 1px;
+    height: 26px;
+    overflow: hidden;
   }
 `
