@@ -5,7 +5,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import moment, { duration } from 'moment'
+import Moment, { duration } from 'moment'
 import { PageTitle } from 'src/components/common'
 import WorkSummaryReportListService from './api/WorkSummaryReportListService'
 
@@ -15,7 +15,7 @@ import qs from 'qs'
 const api = new WorkSummaryReportListService()
 const Option = Select.Option
 
-export default observer(function WorkSummaryReportList() {
+export default observer(function HealthEducationReportList() {
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
   const { history } = appStore
@@ -23,11 +23,11 @@ export default observer(function WorkSummaryReportList() {
   const [groupRoleListSelf, setGroupRolelistSelf] = useState([])
 
   const [query, setQuery] = useState({
-    year: moment() as null | moment.Moment,
+    year: Moment() as null | Moment.Moment,
     pageIndex: 1,
     pageSize: 20,
     type: 'month',
-    indexInType: moment().month() + 1,
+    indexInType: '',
     status: '',
     groupRoleCode: ''
   } as any)
@@ -78,21 +78,21 @@ export default observer(function WorkSummaryReportList() {
     },
     {
       title: '报告月份',
-      key: 'indexInType',
-      dataIndex: 'indexInType',
+      key: 'month',
+      dataIndex: 'month',
       width: 90,
       align: 'center',
       render: (month: string) => `${month}月`
     },
     {
-      title: '质控开始日期',
+      title: '开始日期',
       key: 'beginDate',
       dataIndex: 'beginDate',
       width: 90,
       align: 'center'
     },
     {
-      title: '质控结束日期',
+      title: '结束日期',
       key: 'endDate',
       dataIndex: 'endDate',
       width: 90,
@@ -107,8 +107,8 @@ export default observer(function WorkSummaryReportList() {
     },
     {
       title: '创建时间',
-      key: 'createTime',
-      dataIndex: 'createTime',
+      key: 'createDate',
+      dataIndex: 'createDate',
       width: 120,
       align: 'center'
     },
@@ -161,15 +161,12 @@ export default observer(function WorkSummaryReportList() {
     const obj = {
       type: record.type,
       year: record.year,
-      indexInType: record.indexInType,
-      beginDate: record.beginDate,
-      endDate: record.endDate,
-      groupRoleCode: record.groupRoleCode,
-      reportName: record.reportName
+      month: record.month,
+      id: record.id
     }
 
     // console.log(record)
-    history.push(`/workSummaryReportView?${qs.stringify(obj)}`)
+    history.push(`/healthEducationReport?${qs.stringify(obj)}`)
   }
 
   const handleSearch = () => {
@@ -235,7 +232,7 @@ export default observer(function WorkSummaryReportList() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>二级质控分析报告</PageTitle>
+          <PageTitle>健康宣教月度报告</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>

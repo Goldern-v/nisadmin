@@ -17,7 +17,6 @@ export interface Props {
 export default observer(function 数据统计模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   let list = data ? data.list || [] : []
 
   useEffect(() => {})
@@ -27,7 +26,11 @@ export default observer(function 数据统计模块(props: Props) {
       <div className='title'>
         3、数据统计：按时间和科室两个维度提取推送数据，推送数据包括新增患者数、推送患者数、阅读人数、推送课程量、阅读课程量、阅读率、评价率
       </div>
-      <ChartCon />
+      <ChartCon label='新增患者数' dataKey='新增患者数' data={list} />
+      <ChartCon label='阅读人数' dataKey='阅读人数' data={list} />
+      <ChartCon label='推送课程量' dataKey='推送课程量' data={list} />
+      <ChartCon label='阅读课程量' dataKey='阅读课程量' data={list} />
+      <ChartCon label='阅读率' dataKey='阅读率' data={list} />
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

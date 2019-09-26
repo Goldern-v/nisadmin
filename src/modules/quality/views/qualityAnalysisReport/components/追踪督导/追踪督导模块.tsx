@@ -17,6 +17,9 @@ export default observer(function 追踪督导模块(props: Props) {
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = (data ? data.report : {}) || {}
 
+  if (!report.followUpDeptDesc) {
+    return <div />
+  }
   return (
     <Wrapper>
       <div className='title'>4.3.追踪督导</div>

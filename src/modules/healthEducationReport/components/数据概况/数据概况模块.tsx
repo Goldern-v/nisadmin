@@ -17,15 +17,14 @@ export interface Props {
 export default observer(function 数据概况模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
-  let list = data ? data.list || [] : []
+  let obj = data ? data.obj || {} : {}
 
   useEffect(() => {})
 
   return (
     <Wrapper>
       <div className='title'>1、数据概况：总结全院的总阅读率/新增阅读量、总推送量等，如下图</div>
-      <Table list={list} />
+      <Table obj={obj} />
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

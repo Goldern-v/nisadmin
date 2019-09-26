@@ -16,7 +16,6 @@ export interface Props {
 export default observer(function 数据分析模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   let list = data ? data.list || [] : []
 
   useEffect(() => {})

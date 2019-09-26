@@ -5,7 +5,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import Moment, { duration } from 'moment'
+import moment, { duration } from 'moment'
 import QualityAnalysisService from './api/QualityAnalysisService'
 
 import CreateAnalysisModal from './components/CreateAnalysisModal'
@@ -30,11 +30,11 @@ export default observer(function Analysis() {
   const [createLoading, setCreateLoading] = useState('')
 
   const [query, setQuery] = useState({
-    year: Moment() as null | Moment.Moment,
+    year: moment() as null | moment.Moment,
     pageIndex: 1,
     pageSize: 20,
     type: 'month',
-    indexInType: '',
+    indexInType: moment().month() + 1,
     status: '',
     groupRoleCode: ''
   } as any)
