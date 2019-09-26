@@ -4,7 +4,7 @@ class WritingFormService extends BaseApiService {
     return this.post(`/qcItem/count/docWrite`, obj)
   }
   public exportExcel(obj: { beginDate: string; endDate: string; wardCode: string }) {
-    return this.post(`/qcItem/count/docWrite/export`, obj, { responseType: 'blob' })
+    return this.post(`/qcItem/count/docWriteExport`, obj, { responseType: 'blob' })
   }
 }
 
