@@ -124,11 +124,15 @@ export default class NursingRulesApiService extends BaseApiService {
 
   /**获取书籍的全部书籍目录 */
   public getAllBookCataLog(bookId: string) {
-    return this.post(`/hospitalBookshelf/getAllBookCataLog`, qs.stringify({ bookId }));
+    return this.post(`/hospitalBookshelf/getAllBookCataLogTree`, qs.stringify({ bookId }));
   }
   /**获取书籍的修订记录 */
   public getRevisions(bookId: string) {
     return this.post(`/hospitalBookshelf/getRevisions`, qs.stringify({ bookId }));
+  }
+  /**获取收藏的书籍目录 */
+  public getCollections(bookId: string) {
+    return this.get(`/hospitalBookshelf/getCollections?${qs.stringify({ bookId })}`);
   }
 }
 

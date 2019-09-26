@@ -197,7 +197,7 @@ export class EditPageModel {
     let { taskCode, bookId } = this.baseInfo
 
     let callback = (res?: any) => {
-      this.setUploadLoading(false)
+      this.setBaseLoading(false)
       if (res && res.code == 200) {
         this.setFileList([])
         _callback && _callback(true)
@@ -206,7 +206,7 @@ export class EditPageModel {
       }
     }
 
-    this.setUploadLoading(true)
+    this.setBaseLoading(true)
     if (taskCode) {
       nursingRulesApiService
         .deleteTaskAllBodyFiles(taskCode)
