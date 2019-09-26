@@ -36,11 +36,11 @@ export default observer(function nursingRulesNew() {
   const getTableData = () => {
     setLoading(true)
     nursingRulesApiService.getBookListByParam(query).then(res => {
+
+      setLoading(false)
       setTableData(res.data.list)
       setDataTotal(res.data.totalCount || 0)
-    })
-
-    setLoading(false)
+    }, () => setLoading(false))
   }
 
   const settingChange = (record: any) => {

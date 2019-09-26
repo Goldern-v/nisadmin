@@ -3,11 +3,12 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { Row, Col } from 'antd'
 export interface Props {
   indexList: any[],
-  onItemClick?: Function
+  onItemClick?: Function,
+  itemClass?: string
 }
 
 export default function IndexList(props: Props) {
-  const { indexList, onItemClick } = props
+  const { indexList, onItemClick, itemClass } = props
 
   const handleClick = (item: any) => {
     onItemClick && onItemClick(item)
@@ -33,7 +34,7 @@ export default function IndexList(props: Props) {
         {childen.map((item1: any, idx1: number) =>
           <Row className="split" key={`${idx} ${idx1}`}>
             {item1.map((item2: any, idx2: number) =>
-              <Col span={8} key={`${idx} ${idx1} ${idx2}`} onClick={() => handleClick(item2)}>
+              <Col span={8} key={`${idx} ${idx1} ${idx2}`} onClick={() => handleClick(item2)} className={itemClass || ''}>
                 <div className="h2">{`${item2.name}`}</div>
               </Col>)}
           </Row>)}

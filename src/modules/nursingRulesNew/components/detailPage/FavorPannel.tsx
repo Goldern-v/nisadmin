@@ -1,12 +1,15 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Row, Col } from 'antd'
+import { appStore } from 'src/stores'
+import qs from 'qs'
 import { observer } from 'mobx-react-lite'
 import { detailPageModel } from './../../models/detailPageModel'
 export interface Props { }
 
 export default observer(function FavorPannel() {
-  const { favorList } = detailPageModel
+  const { favorList, baseInfo } = detailPageModel
+  const { history } = appStore
 
   let formatList = () => {
     let list = [] as any;
@@ -23,7 +26,12 @@ export default observer(function FavorPannel() {
   }
 
   const handleItemClick = (item: any) => {
-    console.log(item)
+    history.push(`nursingRulesPagePreview?${qs.stringify({
+      bookId: baseInfo.bookId,
+      nodeNum: item.nodeNum,
+      bookName: baseInfo.bookName,
+      viewType: 'favor'
+    })}`)
   }
 
   return <Wrapper>
@@ -37,6 +45,7 @@ export default observer(function FavorPannel() {
             <div className="h2">{`${item1.nodeNum} ${item1.nodeName}`}</div>
           </Col>)}
       </Row>)}
+    <div className="nope">{favorList.length <= 0 ? '暂无收藏' : ''}</div>
   </Wrapper>
 })
 

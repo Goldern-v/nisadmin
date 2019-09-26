@@ -2,11 +2,13 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, message as Message } from 'antd'
 import { Link } from 'react-router-dom'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
 import GroupAuditModal from '../components/GroupAuditModal'
+import { nursingRulesApiService } from './../api/nursingRulesNewService'
 import PdfViewer from './../components/PdfViewer'
 import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 import qs from 'qs'
 
 import { ReactComponent as SYZ } from './../assets/上一章.svg'
@@ -15,8 +17,9 @@ import { ReactComponent as SC } from './../assets/收藏.svg'
 import { ReactComponent as YSC } from './../assets/已收藏.svg'
 import { ReactComponent as XYZ } from './../assets/下一章.svg'
 
-//内容面板宽度
+//内容面板宽度和高度
 const contentWidth = 740
+const contentHeight = 1043
 
 export interface Props { }
 
@@ -30,6 +33,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   const [chapter, setChapter] = useState('' as any)
   const [pageUrl, setPageUrl] = useState('' as string)
 
+  const [auditInfo, setAuditInfo] = useState({} as any)
+
   const bookName = search.bookName || ''
   const chapterName = chapter.name || ''
 
@@ -38,35 +43,81 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   }, [])
 
   const initedIndex = () => {
-    if (!search.bookId) Message.error('未知书籍id')
+    if (!search.bookId) {
+      Message.error('未知书籍id')
+      return
+    }
 
-    let newIndexList: any[] = []
+    setLoading(true)
 
-    setIndexList(newIndexList)
+    const callback = (newList?: any[]) => {
+      setLoading(false)
+      if (!newList) return
 
-    if (search.nodeNum) {
-      let newChapter = findChapter(search.nodeNum)
+      setIndexList(newList)
 
-      if (newChapter) {
-        setChapter(newChapter)
+      if (search.nodeNum) {
+        let newChapter = findChapter(search.nodeNum, newList)
 
-        if (search.pageUrl) {
-          let url = findUrl(newChapter, search.pageUrl)
+        if (newChapter) {
+          setChapter(newChapter)
 
-          if (url) {
-            setPageUrl(search.pageUrl)
+          if (search.pageUrl) {
+            let url = findUrl(newChapter, search.pageUrl)
+
+            if (url) {
+              setPageUrl(search.pageUrl)
+            } else {
+              if (newChapter.urls) setPageUrl(newChapter.urls[0])
+            }
           } else {
-            if (newChapter.urls) setPageUrl(search.pageUrl)
+            if (newChapter.urls) setPageUrl(newChapter.urls[0])
           }
         } else {
-
+          initChapterAndPage(newList)
         }
+
       } else {
-        initChapterAndPage(newIndexList)
+        initChapterAndPage(newList)
       }
+    }
+
+    if (viewType == 'favor') {
+      nursingRulesApiService.getCollections(search.bookId).then(res => {
+        callback([{
+          childrenList: res.data.map((item: any) => {
+            return {
+              ...item,
+              name: item.nodeName
+            }
+          })
+        }])
+      }, err => callback())
+    } else if (viewType == 'audit') {
+      Promise.all([
+        nursingRulesApiService.getToAuditChapters(search.bookId),
+        nursingRulesApiService.getBookInfo(search.bookId)
+      ])
+        .then(res => {
+          callback([{
+            childrenList: res[0].data.filter((item: any) => {
+              return item.urls && item.urls.length > 0
+            }).map((item: any) => {
+              return {
+                ...item,
+                name: item.nodeName
+              }
+            })
+          }])
+
+          setAuditInfo(res[1].data)
+        }, err => callback())
+
 
     } else {
-      initChapterAndPage(newIndexList)
+      nursingRulesApiService
+        .getBookCataLog(search.bookId)
+        .then(res => callback(res.data), err => callback())
     }
   }
 
@@ -97,10 +148,10 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
   }
 
-  const findChapter = (nodeNum: any) => {
+  const findChapter = (nodeNum: any, indexList: any) => {
     for (let i = 0; i < indexList.length; i++) {
       if (indexList[i].childrenList) {
-        let target = indexList.childrenList.find((item: any) => item.nudeNum == nodeNum)
+        let target = indexList[i].childrenList.find((item: any) => item.nodeNum == nodeNum)
         if (target) return target
       }
     }
@@ -142,8 +193,30 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
         return <SC className="active" />
       })(),
-      onClick: () => {
-        Message.success('收藏成功')
+      onClick(chapter: any, indexList: any) {
+        if (chapter.inCollection) {
+          nursingRulesApiService
+            .cancelCollection(chapter.collectionId)
+            .then(res => {
+              Message.success('已取消收藏')
+              chapter.inCollection = 0
+              chapter.collectionId = null
+              setChapter({ ...chapter })
+            })
+        } else {
+          nursingRulesApiService.addCollection({
+            nodeNum: chapter.nodeNum,
+            bookId: search.bookId
+          })
+            .then(res => {
+              Message.success('已收藏')
+              if (res.data) {
+                chapter.inCollection = 1
+                chapter.collectionId = res.data.id
+                setChapter({ ...chapter })
+              }
+            })
+        }
       }
     },
     {
@@ -164,7 +237,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         }
 
         if ((!idx1 && idx1 !== 0) || (!idx2 && idx2 !== 0)) {
-          Message.warning('已是开始章节')
+          Message.warning('缺失章节信息')
           return
         }
 
@@ -184,7 +257,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           setChapter(newChapter)
           if (newChapter.urls) setPageUrl(newChapter.urls[0])
         } else {
-          Message.warning('已是开始章节')
+          Message.warning('已是第一章')
         }
 
       }
@@ -207,7 +280,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         }
 
         if ((!idx1 && idx1 !== 0) || (!idx2 && idx2 !== 0)) {
-          Message.warning('已是最后章节')
+          Message.warning('缺失章节信息')
           return
         }
         if (indexList[idx1] && indexList[idx1].childrenList[idx2 + 1]) {
@@ -297,6 +370,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
 
   const handleAuditOk = () => {
+    setTimeout(() => history.goBack(), 1000)
     handleAuditCancel();
   }
 
@@ -305,9 +379,10 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   }
 
   const ViewContent = () => {
-    let type = 'pdf'
-    let url = pageUrl
-    if (!pageUrl) return <div style={{ height: '500px', lineHeight: '500px', textAlign: 'center' }}>未知页面</div>
+    if (!pageUrl) return <div style={{ height: `${contentHeight}px`, lineHeight: `${contentHeight}px`, textAlign: 'center' }}>暂无页面</div>
+    let pageUrlArr = pageUrl.split('.')
+    let type = pageUrlArr[pageUrlArr.length - 1]
+    let url = `crNursing/asset${pageUrl}`
 
     switch (type) {
       case 'jpg':
@@ -317,8 +392,15 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       case 'pdf':
         return <PdfViewer file={url} width={contentWidth - 2} />
       default:
-        return <div style={{ height: '500px', lineHeight: '500px', textAlign: 'center' }}>该文件格式不支持预览</div>
+        return <div style={{ height: `${contentHeight}px`, lineHeight: `${contentHeight}px`, textAlign: 'center' }}>该文件格式不支持预览</div>
     }
+  }
+
+  const overTime = () => {
+    if (!auditInfo.upLoadTime) return 0
+    let time = Number(moment().format('x')) - Number(moment(auditInfo.upLoadTime).format('x'))
+    time = time / (1000 * 60 * 60)
+    return parseInt(time.toString())
   }
 
   return <Wrapper>
@@ -326,16 +408,21 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       <NavCon>
         <Link to="/nursingRulesNew">护理制度</Link>
         <span> > </span>
-        <Link to="/nursingRulesNewDetail">{bookName || '书籍名称'}</Link>
+        <a onClick={() => history.goBack()}>{bookName || '书籍名称'}</a>
         <span> > </span>
         <span>{chapterName || '章节名称'}</span>
       </NavCon>
       <div className="fl-right">
-        <Button onClick={() => handleAudit(true)} type="primary">审核</Button>
+        <Button
+          onClick={() => handleAudit(true)}
+          type="primary"
+          disabled={loading && !(!!authStore.isDepartment)}
+          style={{ display: viewType == 'audit' ? 'block' : 'none' }}>审核</Button>
+        <Button onClick={() => history.goBack()}>返回</Button>
       </div>
     </div>
     <div className="main-contain">
-      <div className="audit-content" style={{ display: 'block' }}>
+      <div className="audit-content" style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
         <TopTitleCon>
           <div className='topTitleIcon' />
           <div className='topTitle'>审核过程</div>
@@ -344,13 +431,13 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           <BaseStepBox success={'success'}>
             <StepBox>
               <div className="title">提交书籍</div>
-              <div>王大锤 2019-08-19 12:00</div>
+              <div>{`${auditInfo.upLoaderEmpName || ''} ${auditInfo.upLoadTime || ''}`}</div>
             </StepBox>
           </BaseStepBox>
           <BaseStepBox success={''}>
             <StepBox>
               <div className="title">护理部审核</div>
-              <div>审核中 耗时10小时</div>
+              <div>审核中 耗时{overTime()}小时</div>
             </StepBox>
           </BaseStepBox>
         </BaseStepCon>
@@ -358,13 +445,13 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       <div className="preview-content">
         <div className="left-control" style={{ display: viewType == '' ? 'block' : 'none' }}>
           {leftControl.map((item: any, idx: number) => {
-            return <div className="item" onClick={() => item.onClick()} key={idx}>
+            return <div className="item" onClick={() => item.onClick(chapter, indexList)} key={idx}>
               <div className="icon">{item.icon}</div>
               <div className="text">{item.name}</div>
             </div>
           })}
         </div>
-        <div className="right-control">
+        <div className="right-control" >
           {rightControl.map((item: any, idx: number) => <div className={['item', item.disabled ? 'disabled' : ''].join(' ')} onClick={() => item.onClick()} key={idx}>{item.name}</div>)}
         </div>
         <div className="scroll-warpper">
@@ -377,7 +464,14 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         </div>
       </div>
     </div>
-    <GroupAuditModal visible={auditCfg.visible} defaultParams={auditCfg.params} onOk={handleAuditOk} onCancel={handleAuditCancel} title="审核" />
+    <GroupAuditModal
+      visible={auditCfg.visible}
+      defaultParams={auditCfg.params}
+      onOk={handleAuditOk}
+      onCancel={handleAuditCancel}
+      bookId={search.bookId}
+      nodeNums={[search.nodeNum]}
+      title="审核" />
   </Wrapper>
 })
 
@@ -406,6 +500,10 @@ const Wrapper = styled.div`
     .fl-right{
       float: right;
       margin-top: -4px;
+      &>*{
+        float:left;
+        margin-left: 10px;
+      }
     }
   }
   .main-contain{
@@ -440,7 +538,7 @@ const Wrapper = styled.div`
         background: #fff;
         border: 1px solid #ddd;
         border-bottom: 0;
-        min-height: 500px;
+        min-height: ${contentHeight}px;
         position: relative;
         img{
           width: 100%;

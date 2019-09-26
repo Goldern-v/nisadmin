@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, Row, Col, Radio, Input } from 'antd'
+import { Button, Modal, Row, Col, Radio, Input, message as Message } from 'antd'
 
 const RadioGroup = Radio.Group
 const TextArea = Input.TextArea
+import { nursingRulesApiService } from './../api/nursingRulesNewService'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
@@ -13,11 +14,13 @@ export interface Props {
   defaultParams: any,
   onOk: Function,
   onCancel: Function
-  title?: string
+  title?: string,
+  bookId?: string
+  nodeNums?: any[]
 }
 
 export default observer(function GroupAuditModal(props: Props) {
-  const { visible, defaultParams, title, onCancel, onOk } = props;
+  const { visible, defaultParams, title, onCancel, onOk, nodeNums, bookId } = props;
   const [loading, setLoading] = useState(false)
   const auditTime = moment().format('YYYY-MM-DD');
   const baseParams = {
@@ -42,14 +45,27 @@ export default observer(function GroupAuditModal(props: Props) {
   }, [visible])
 
   const handleOk = () => {
+    if (!bookId) return
+    if (!nodeNums || nodeNums.length <= 0) {
+      Message.error('缺失待审核章节')
+      return
+    }
+
     let reqParams = {
       ...params,
-      auditTime,
-      auditUserNo: authStore.getUser().empNo,
-      auditUserName: authStore.getUser().empName,
-      ids: []
+      nodeNums,
+      bookId
     }
-    console.log(reqParams)
+    setLoading(true)
+    nursingRulesApiService.auditChapters({
+      nodeNums,
+      bookId
+    })
+      .then(res => {
+        setLoading(false)
+        Message.success('审核成功')
+        onOk && onOk()
+      }, () => setLoading(false))
   }
 
   const handleCancel = () => {

@@ -73,7 +73,7 @@ export class EditPageModel {
     //获取上传文件列表
     this.getFileList()
     //获取目录
-    this.getIndex()
+    if (this.baseInfo.bookId && !this.baseInfo.taskCode) this.getIndex()
   }
 
   @action public setBaseInfo(baseInfo: any) {

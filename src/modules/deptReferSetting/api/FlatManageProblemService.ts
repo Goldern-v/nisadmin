@@ -30,6 +30,10 @@ export default class FlatManageProblemService extends BaseApiService {
   public delete(id: string) {
     return this.get(`/flatManageInstance/delete/${id}`);
   }
+  /**取消审核 */
+  public cancelAudit(id: string) {
+    return this.post('/flatManageInstance/cancelAudit', qs.stringify({ id }));
+  }
 }
 
 export const flatManageProblemService = new FlatManageProblemService()

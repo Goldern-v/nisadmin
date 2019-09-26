@@ -24,7 +24,7 @@ export default function PdfViewer(props: Props) {
     setPages(pageArr)
   }
 
-  const noData = <div className="message">未知文件</div>
+  const noData = <div className="message">暂无文件</div>
 
   const loading = <div className="message">文件载入中</div>
 
@@ -32,7 +32,10 @@ export default function PdfViewer(props: Props) {
 
   return <Wrapper>
     <Document file={file} onLoadSuccess={handleSuccess} noData={noData} loading={loading} error={error}>
-      {pages.map((item: number, idx: number) => <Page pageNumber={idx + 1} width={width} key={idx} />)}
+      {pages.map((item: number, idx: number) => <Page
+        pageNumber={idx + 1}
+        width={width} key={idx}
+        loading={<div className="page-loading"> </div>} />)}
     </Document>
   </Wrapper>
 }
