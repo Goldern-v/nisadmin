@@ -58,7 +58,7 @@ export default observer(function PagesUploader() {
     editPageModel.uploadFile(files[_uploadIdx], (res: any) => {
       if (res && res.data) {
         let data = res.data
-        let newList = [...fileList]
+        let newList = [...editPageModel.fileList]
 
         let sameItem = newList.find((item: any) => item.fileName == data.fileName)
 

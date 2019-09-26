@@ -95,7 +95,9 @@ export default observer(function NursingRulesNewDetail() {
   }
 
   const handleEdit = () => {
-    history.push(`nursingRulesNewEdit?${qs.stringify({ bookId: baseInfo.bookId })}`)
+    let bookId = baseInfo.bookId
+    console.log(bookId)
+    history.push(`nursingRulesNewEdit?${qs.stringify({ bookId })}`)
   }
 
   const handleRepair = () => {
@@ -105,7 +107,7 @@ export default observer(function NursingRulesNewDetail() {
     }).then(res => {
       if (res.data) history.push(`nursingRulesNewEdit?${qs.stringify({
         taskCode: res.data.taskCode,
-        bookId: res.data.bookId
+        bookId: baseInfo.bookId
       })}`)
     })
   }
@@ -141,7 +143,7 @@ export default observer(function NursingRulesNewDetail() {
           <Button onClick={handleRepair}>修订</Button>
           {SettingBtn()}
           <Button type="danger" ghost onClick={handleDelete}>删除</Button>
-          <Button>返回</Button>
+          <Button onClick={() => history.goBack()}>返回</Button>
         </div>
         <div className="base-info">
           <div className="left">

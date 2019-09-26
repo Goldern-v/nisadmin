@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { DatePicker, Select, Button, message as Message } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment, { duration } from 'moment'
 import { PageTitle } from 'src/components/common'
@@ -310,7 +310,7 @@ export default observer(function WorkSummaryReportList() {
             <Button onClick={handleSearch}>查询</Button>
           </div>
           <div className='item'>
-            <Button onClick={handleCreate} type='primary'>
+            <Button onClick={handleCreate} type='primary' disabled={!(!!authStore.isSupervisorNurse)}>
               创建
             </Button>
           </div>

@@ -16,13 +16,15 @@ export default function IndexList(props: Props) {
   return <Wrapper className="index-list">
     {indexList.map((item0: any, idx: number) => {
       let childen = [] as any
-      for (let i = 0; i < item0.childrenList.length; i++) {
-        if (i % 3 == 0) {
-          childen.push([item0.childrenList[i]])
-        } else {
-          childen[childen.length - 1].push(item0.childrenList[i])
+
+      if (item0.childrenList)
+        for (let i = 0; i < item0.childrenList.length; i++) {
+          if (i % 3 == 0) {
+            childen.push([item0.childrenList[i]])
+          } else {
+            childen[childen.length - 1].push(item0.childrenList[i])
+          }
         }
-      }
 
       return <Fragment key={idx}>
         <Row >
@@ -32,7 +34,7 @@ export default function IndexList(props: Props) {
           <Row className="split" key={`${idx} ${idx1}`}>
             {item1.map((item2: any, idx2: number) =>
               <Col span={8} key={`${idx} ${idx1} ${idx2}`} onClick={() => handleClick(item2)}>
-                <div className="h2">{`${item0.nodeNum}.${item2.nodeNum} ${item2.name}`}</div>
+                <div className="h2">{`${item2.name}`}</div>
               </Col>)}
           </Row>)}
       </Fragment>

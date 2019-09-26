@@ -26,7 +26,7 @@ export default observer(function NursingRulesNewEdit() {
   //完成第一步
   const toStep1 = () => {
     if (!baseParams.bookName) {
-      Message.warning('书籍名称不能为空')
+      Message.error('书籍名称不能为空')
       return
     }
 
@@ -43,6 +43,10 @@ export default observer(function NursingRulesNewEdit() {
         let data = res.data
 
         if (data && data.id) {
+          //提示成功
+          let msgType = '新建'
+          if (baseInfo.taskType == '2') msgType = '修订'
+          Message.warning(`书籍${msgType}成功，请及时提交审核`)
           //更新url
           let newQuery = {
             bookId: data.id
@@ -58,6 +62,8 @@ export default observer(function NursingRulesNewEdit() {
           editPageModel.setBaseParams({ ...baseParams, cover: data.coverPath })
           //重新获取上传文件列表
           editPageModel.getFileList()
+        } else {
+          Message.warning('基本信息及上传文件修改成功，请及时提交审核')
         }
       }
     }
@@ -75,6 +81,10 @@ export default observer(function NursingRulesNewEdit() {
       nursingRulesApiService.updateBookInfo(params).then(res => callback(res), err => callback())
     }
   }
+  //提交审核
+  const handleSendAudit = () => {
+
+  }
 
   const StepBtns = () => {
     let stepBtnList = [
@@ -85,12 +95,12 @@ export default observer(function NursingRulesNewEdit() {
       ,
       <Fragment>
         <Button disabled={loading} onClick={() => setStep(0)}>上一步</Button>
-        <Button disabled={loading}>下一步</Button>
+        <Button disabled={loading} onClick={() => setStep(2)}>下一步</Button>
       </Fragment>
       ,
       <Fragment>
         <Button disabled={loading} onClick={() => setStep(1)}>上一步</Button>
-        <Button disabled={loading}>提交审核</Button>
+        <Button disabled={loading} onClick={handleSendAudit}>提交审核</Button>
       </Fragment>
     ]
 
@@ -121,7 +131,10 @@ export default observer(function NursingRulesNewEdit() {
         <span> > </span>
         <span>{taskName}</span>
       </NavCon>
-      <div className="edit-title">{taskName}</div>
+      <div className="edit-title">
+        {taskName}
+        <Button className="cancel" onClick={() => history.goBack()}>取消</Button>
+      </div>
     </div>
     <div className="step-pannel">
       <Steps current={step}>
@@ -167,6 +180,9 @@ const Wrapper = styled.div`
       font-size: 20px;
       color: #000;
       font-weight: bold;
+      .cancel{
+        float: right;
+      }
     }
   }
   .step-pannel{

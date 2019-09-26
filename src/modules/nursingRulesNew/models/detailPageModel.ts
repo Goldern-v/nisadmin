@@ -42,6 +42,8 @@ export class DetailPageModel {
     this.getIndexAudited()
 
     this.getRepairList()
+
+    this.getFavorlist()
   }
   //获取基本信息
   @action public getBaseInfo = () => {
@@ -50,7 +52,7 @@ export class DetailPageModel {
       .then(res => {
         this.baseLoading = false
         if (res.data) {
-          let newBaseInfo = { ...this.defautInfo } as any;
+          let newBaseInfo = { ...this.baseInfo } as any;
 
           for (let x in this.baseInfo) {
             if (Object.keys(res.data).indexOf(x) >= 0) newBaseInfo[x] = res.data[x]
@@ -77,6 +79,13 @@ export class DetailPageModel {
       .then(res => {
         if (res.data) this.repairList = res.data
         else this.repairList = []
+      })
+  }
+  //获取收藏记录
+  @action public getFavorlist = () => {
+    nursingRulesApiService.getCollections(this.baseInfo.bookId)
+      .then(res => {
+        this.favorList = res.data
       })
   }
 }
