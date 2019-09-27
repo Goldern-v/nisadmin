@@ -24,12 +24,12 @@ export default function ChartCon(props: Props) {
           .replace('月', '-')
           .replace('日', '')
       ).format('MM-DD'),
-      推送量: item.push,
-      阅读量: item.reading,
-      推送课程数: item.pushClass,
-      在院患者数: item.inPatients,
-      推送人数: item.pushNum,
-      阅读人数: item.readingNum
+      推送量: Number(item.push),
+      阅读量: Number(item.reading),
+      推送课程数: Number(item.pushClass),
+      在院患者数: Number(item.inPatients),
+      推送人数: Number(item.pushNum),
+      阅读人数: Number(item.readingNum)
     }
   })
 

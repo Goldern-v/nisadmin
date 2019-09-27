@@ -203,7 +203,7 @@ export default observer(function FilterCon() {
             </Col>
 
             <Col span={7} className='long'>
-              <Form.Field label={'护士执业证书有效期'} name={'zyzsEffectiveUp'}>
+              <Form.Field label={'执业证书有效期'} name={'zyzsEffectiveUp'}>
                 <MonthTimeRangePicker />
               </Form.Field>
             </Col>

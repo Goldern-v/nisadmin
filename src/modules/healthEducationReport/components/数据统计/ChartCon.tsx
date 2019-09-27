@@ -17,12 +17,12 @@ export default function ChartCon(props: Props) {
   let { label, dataKey } = props
   const data = props.data
     .filter((item) => item.type == dataKey)
-    .map((item) => ({ 科室: item.wardName, 数量: item.typeValue }))
+    .map((item) => ({ 科室: item.wardName, 数量: Number(item.typeValue) }))
     .filter((item, index) => index < 12)
   const scale = [
     {
       dataKey: '数量',
-      tickInterval: 20
+      min: 0
     }
   ]
   return (

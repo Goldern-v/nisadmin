@@ -7,55 +7,52 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewM
 import { Chart, Tooltip, Axis, Bar, Legend, Line, Point, SmoothLine } from 'viser-react'
 const DataSet = require('@antv/data-set')
 
-export interface Props {}
+export interface Props {
+  list: any[]
+}
 
 export default function ChartCon(props: Props) {
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
-  const sourceData = [
-    {
-      name: 'London',
-      'Jan.': 18.9,
-      'Feb.': 28.8,
-      'Mar.': 39.3,
-      'Apr.': 81.4,
-      May: 47,
-      'Jun.': 20.3,
-      'Jul.': 24,
-      'Aug.': 35.6
-    },
-    {
-      name: 'Berlin',
-      'Jan.': 12.4,
-      'Feb.': 23.2,
-      'Mar.': 34.5,
-      'Apr.': 99.7,
-      May: 52.6,
-      'Jun.': 35.5,
-      'Jul.': 37.4,
-      'Aug.': 42.4
-    }
-  ]
+  let { list } = props
+
+  let tslList = list.filter((item) => item.itemType == '推送量')
+  let ydlList = list.filter((item) => item.itemType == '阅读量')
+  let tslObj: any = { name: '推送量' }
+  let ydlObj: any = { name: '阅读量' }
+  for (let i = 0; i < tslList.length; i++) {
+    tslObj[tslList[i].time] = Number(tslList[i].typeValue)
+  }
+  for (let i = 0; i < tslList.length; i++) {
+    ydlObj[ydlList[i].time] = Number(tslList[i].typeValue)
+  }
+  const sourceData = [tslObj, ydlObj]
 
   const dv = new DataSet.View().source(sourceData)
   dv.transform({
     type: 'fold',
-    fields: ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.'],
+    fields: tslList.map((item) => item.time),
     key: '月份',
-    value: '月均降雨量'
+    value: '数量'
   })
+  const scale = [
+    {
+      dataKey: '数量',
+      min: 0
+    }
+  ]
 
   const data = dv.rows
-  console.log(data, 'data')
   return (
     <Wrapper>
-      <div className='chart-name'>本月新增患者数</div>
-      <Chart forceFit height={400} data={data} padding={[20, 20, 50, 20]}>
-        <Tooltip />
-        <Axis />
-        <Legend />
-        <Bar position='月份*月均降雨量' color='name' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
-        <SmoothLine position='月份*月均降雨量' color='#fdae6b' size={3} />
-      </Chart>
+      <div className='chart-name'>宣教分析</div>
+      {list.length && (
+        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 20]} scale={scale}>
+          <Tooltip />
+          <Axis />
+          <Legend />
+          <Bar position='月份*数量' color='name' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
+          {/* <SmoothLine position='月份*月均降雨量' color='#fdae6b' size={3} /> */}
+        </Chart>
+      )}
     </Wrapper>
   )
 }

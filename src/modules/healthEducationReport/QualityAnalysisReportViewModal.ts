@@ -102,9 +102,11 @@ class QualityAnalysisReportViewModal {
     let { data } = await qualityAnalysisReportService.getReport()
     this.allData = data
     // this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
-    this.getSectionData(`数据概况`).obj = this.allData.overview
-    this.getSectionData(`数据分析`).list = this.allData.graphs
-    this.getSectionData(`数据统计`).list = this.allData.barChart
+    this.getSectionData(`数据概况`).obj = this.allData.overview || {}
+    this.getSectionData(`数据分析`).list = this.allData.graphs || []
+    this.getSectionData(`数据统计`).list = this.allData.barChart || []
+    this.getSectionData(`月度趋势`).list = this.allData.trendMap || []
+    this.getSectionData(`科室排名`).list = this.allData.deptTopTenId || []
   }
   async init() {
     await this.initData()

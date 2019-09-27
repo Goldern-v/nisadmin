@@ -20,7 +20,6 @@ export interface Props {
 export default observer(function 月度趋势模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   let list = data ? data.list || [] : []
 
   useEffect(() => {})
@@ -30,16 +29,16 @@ export default observer(function 月度趋势模块(props: Props) {
       <div className='title'>4、按月度分析百分率的趋势图</div>
       <div className='chart-part'>
         <div className='chart-con'>
-          <ChartCon1 />
+          <ChartCon1 list={list} />
         </div>
         <div className='chart-con'>
-          <ChartCon2 />
+          <ChartCon2 list={list} />
         </div>
         <div className='chart-con'>
-          <ChartCon3 />
+          <ChartCon3 list={list} />
         </div>
         <div className='chart-con'>
-          <ChartCon4 />
+          <ChartCon4 list={list} />
         </div>
       </div>
 

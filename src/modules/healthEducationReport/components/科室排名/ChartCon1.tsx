@@ -7,34 +7,33 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewM
 import { Chart, Tooltip, Axis, Bar, Legend, Line, Point, SmoothLine, Coord } from 'viser-react'
 const DataSet = require('@antv/data-set')
 
-export interface Props {}
+export interface Props {
+  label: string
+  dataKey: string
+  list: any[]
+}
 
 export default function ChartCon(props: Props) {
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
-  const sourceData = [
-    { country: '中国', population: 131744 },
-    { country: '印度', population: 104970 },
-    { country: '美国', population: 29034 },
-    { country: '印尼', population: 23489 },
-    { country: '巴西', population: 18203 }
-  ]
+  let { label, dataKey } = props
+  let list = props.list.filter((item, index) => item.type == dataKey).filter((item, index) => index < 10)
+  const sourceData = list.map((item) => ({ 科室: item.wardName, 数量: Number(item.typeValue) }))
 
   const dv = new DataSet.View().source(sourceData)
   dv.transform({
     type: 'sort',
     callback(a: any, b: any) {
-      return a.population - b.population > 0
+      return a.数量 - b.数量 > 0
     }
   })
   const data = dv.rows
   return (
     <Wrapper>
-      <div className='chart-name'>推送量</div>
-      <Chart forceFit height={400} data={data} padding={[20, 20, 50, 20]}>
+      <div className='chart-name'>{label}</div>
+      <Chart forceFit height={400} data={data} padding={[20, 20, 50, 100]}>
         <Coord type='rect' direction='LB' />
         <Tooltip />
-        <Axis dataKey='country' label={{ offset: 12 }} />
-        <Bar position='country*population' />
+        <Axis dataKey='科室' label={{ offset: 12 }} />
+        <Bar position='科室*数量' />
       </Chart>
     </Wrapper>
   )

@@ -30,13 +30,13 @@ export default observer(function 科室排名模块(props: Props) {
       <div className='title'>5、月度TOP10科室排名</div>
       <div className='chart-part'>
         <div className='chart-con'>
-          <ChartCon1 />
+          <ChartCon1 list={list} dataKey='推送量' label='推送量' />
         </div>
         <div className='chart-con'>
-          <ChartCon2 />
+          <ChartCon1 list={list} dataKey='阅读率' label='阅读率' />
         </div>
         <div className='chart-con'>
-          <ChartCon3 />
+          <ChartCon1 list={list} dataKey='新增患者量' label='新增患者量' />
         </div>
         <div className='chart-con'>
           <ChartCon4 />

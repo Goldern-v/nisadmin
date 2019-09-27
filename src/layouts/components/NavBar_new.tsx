@@ -21,8 +21,8 @@ import { Menu, Dropdown } from 'src/vendors/antd'
 import { navConfig, navConfigItem } from './navConfig_hj'
 export interface Props extends RouteComponentProps {}
 
-function MenuCon(props: { list: navConfigItem[] }) {
-  let { list } = props
+function MenuCon(props: { list: navConfigItem[]; style?: React.CSSProperties | undefined }) {
+  let { list, style } = props
   const Wrapper = styled.div`
     min-width: 158px;
     padding: 8px 0;
@@ -55,11 +55,11 @@ function MenuCon(props: { list: navConfigItem[] }) {
     }
   `
   return (
-    <Wrapper>
+    <Wrapper style={style || {}}>
       <Menu>
         {list.map((item, index) => (
           <Menu.Item>
-            <img src={require('../images/测试.png')} alt='' className='icon' />
+            <img src={item.icon} alt='' className='icon' />
             {item.name}
           </Menu.Item>
         ))}
@@ -91,7 +91,10 @@ export default observer(function NavBar(props: Props) {
       {navConfig.map(
         (item, index: number) =>
           !item.hidden && (
-            <Dropdown overlay={item.children ? <MenuCon list={item.children} /> : <div />} key={index}>
+            <Dropdown
+              overlay={item.children ? <MenuCon list={item.children} style={item.menuStyle} /> : <div />}
+              key={index}
+            >
               <NavItem
                 onClick={toNavLink(item.path)}
                 active={
