@@ -461,7 +461,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           {rightControl.map((item: any, idx: number) => <div className={['item', item.disabled ? 'disabled' : ''].join(' ')} onClick={() => item.onClick()} key={idx}>{item.name}</div>)}
         </div>
         <div className="scroll-warpper">
-          <div ref={viewTop}></div>
+          <div ref={viewTop} className="scroll-top"></div>
           <div className="page-content">
             {ViewContent()}
           </div>
@@ -527,12 +527,16 @@ const Wrapper = styled.div`
       width:100%;
       z-index: 1;
       background: rgba(255,255,255,0.5);
-        .ant-spin-dot-spin{
-          position: absolute;
-          top: 50%;
-          left: 50%
-        }
+      .ant-spin-dot-spin{
+        position: absolute;
+        top: 50%;
+        left: 50%
       }
+    }
+    .scroll-top{
+      position: relative;
+      top: -15px;
+    }
   }
   .audit-content{
     float: right;
