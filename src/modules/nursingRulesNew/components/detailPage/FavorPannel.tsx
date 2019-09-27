@@ -55,7 +55,10 @@ export default observer(function FavorPannel() {
       <Row className="split" key={idx}>
         {item.map((item1: any, idx1: number) =>
           <Col span={8} key={`${idx} ${idx1}`} >
-            <div className="h2" onClick={() => handleItemClick(item1)}>{`${item1.nodeName}`}</div>
+            <div className="h2" onClick={() => handleItemClick(item1)}>
+              <span>{item1.nodeName}</span>
+              {/* <span className="version">{`(${item1.version})`}</span> */}
+            </div>
             <Icon type="close" title="取消收藏" onClick={() => handleCancelCollect(item1)} />
           </Col>)}
       </Row>)}
@@ -99,5 +102,8 @@ const Wrapper = styled.div`
         }
       }
     }
+  }
+  .version{
+    color:#999;
   }
 `

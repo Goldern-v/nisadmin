@@ -14,7 +14,8 @@ export class DetailPageModel {
     auditorEmpName: '',
     auditTime: '',
     status: '',
-    enabled: 1
+    enabled: 1,
+    currentVersion: ''
   }
   //基本信息
   @observable public baseInfo = { ...this.defautInfo }

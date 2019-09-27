@@ -24,16 +24,15 @@ export default function BookCover(props: Props) {
   </Wrapper>
 }
 
-const coverWidth = '140px'
+const coverWidth = '125px'
 const Wrapper = styled.div`
   position: relative;
   display: inline-block;
   .book-box{
     width: ${coverWidth};
-    height: 180px;
+    height: 178px;
     overflow: hidden;
     position: relative;
-    background: #eee;
     .book-name{
       position: relative;
       font-size:18px;
@@ -54,7 +53,7 @@ const Wrapper = styled.div`
         left: 50%;
         transform: translate(-50%);
         background-image: url(${bgImg});
-        background-size: 140px 180px;
+        background-size: 125px 178px;
         background-position: 50% 50%;
       }
       &.cover{

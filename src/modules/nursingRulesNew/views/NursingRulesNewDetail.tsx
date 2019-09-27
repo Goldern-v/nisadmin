@@ -171,13 +171,16 @@ export default observer(function NursingRulesNewDetail() {
             <BookCover src={baseInfo.coverPath ? `/crNursing/asset${baseInfo.coverPath}` : ''} name={baseInfo.coverPath ? '' : baseInfo.bookName} />
           </div>
           <div className="right">
-            <div className="main-title">{baseInfo.bookName}</div>
+            <div className="main-title">
+              <span>{baseInfo.bookName}</span>
+              {/* <span className="version">{baseInfo.currentVersion ? `(${baseInfo.currentVersion})` : ''}</span> */}
+            </div>
             <div className="update-info">
               <span className="icon">
                 <img src={require('./../assets/上传@2x.png')} alt="" />
               </span>
               <span>上传:</span>
-              <span>{baseInfo.upLoadTime}</span>
+              <span>{baseInfo.upLoadTime.split(' ')[0]}</span>
               <span>{baseInfo.upLoaderEmpName}</span>
             </div>
             <div className="audit-info">
@@ -185,7 +188,7 @@ export default observer(function NursingRulesNewDetail() {
                 <img src={require('./../assets/审核@2x.png')} alt="" />
               </span>
               <span>审核:</span>
-              <span>{baseInfo.auditTime}</span>
+              <span>{baseInfo.auditTime.split(' ')[0]}</span>
               <span>{baseInfo.auditorEmpName}</span>
             </div>
             <div className="desc">{baseInfo.bookBrief}</div>
@@ -238,14 +241,13 @@ const Wrapper = styled.div`
     .base-info{
       padding: 0 10px;
       display: flex;
-      height: 180px;
+      height: 178px;
       position: relative;
       z-index: 1;
       .left{
-        width: 140px;
-        height: 180px;
-        background: #ddd;
-        margin-right: 15px;
+        width: 125px;
+        height: 178px;
+        margin-right: 30px;
       }
       .right{
         flex:1;
@@ -257,6 +259,9 @@ const Wrapper = styled.div`
           color: #000;
           min-height: 36px;
           font-weight: bold;
+          .version{
+            color: #999;
+          }
         }
         .update-info,.audit-info{
           color: #999;

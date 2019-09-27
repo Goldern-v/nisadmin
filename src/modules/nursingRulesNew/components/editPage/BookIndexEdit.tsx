@@ -47,14 +47,18 @@ export default observer(function BookIndexEdit() {
     let files = e.target.files
 
     if (files.length > 0) {
+      editPageModel.setBaseLoading(true)
       nursingRulesApiService.updateBookInfo({
         bookId: baseInfo.bookId,
         catalog: files[0]
       }).then(res => {
+        editPageModel.setBaseLoading(false)
+
         editPageModel.getIndex(() => {
           Message.success('目录上传成功')
         })
-      })
+
+      }, () => editPageModel.setBaseLoading(false))
     }
   }
 

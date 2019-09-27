@@ -18,7 +18,7 @@ export default observer(function RepairPannel() {
             <img src={require('./../../assets/上传@2x.png')} alt="" />
           </span>
           <span>上传:</span>
-          <span>{item.upLoadTime}</span>
+          <span>{item.upLoadTime.split(' ')[0]}</span>
           <span>{item.upLoaderEmpName}</span>
         </div>
         <div className="sub-item">
@@ -26,7 +26,7 @@ export default observer(function RepairPannel() {
             <img src={require('./../../assets/审核@2x.png')} alt="" />
           </span>
           <span>审核:</span>
-          <span>{item.auditTime}</span>
+          <span>{item.auditTime.split(' ')[0]}</span>
           <span>{item.auditorEmpName}</span>
         </div>
       </div>
@@ -60,6 +60,10 @@ const Wrapper = styled.div`
     width: 12px;
     position: relative;
     top: -2px;
+    img{
+      width: 100%;
+      width: 100%;
+    }
   }
   .nope{
     font-size: 14px;

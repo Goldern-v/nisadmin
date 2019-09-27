@@ -75,7 +75,7 @@ export class EditPageModel {
     //获取上传文件列表
     this.getFileList()
     //获取目录
-    if (this.baseInfo.bookId) this.getIndex()
+    this.getIndex()
   }
 
   @action public setBaseInfo(baseInfo: any) {
@@ -135,7 +135,8 @@ export class EditPageModel {
 
   //获取目录信息
   @action public getIndex = (success?: Function) => {
-    nursingRulesApiService
+    this.setIndexParams([])
+    if (!this.baseInfo.taskType) nursingRulesApiService
       .getAllBookCataLog(this.baseInfo.bookId).
       then(res => {
         success && success()
