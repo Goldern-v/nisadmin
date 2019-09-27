@@ -147,7 +147,7 @@ export default observer(function NursingRulesNewDetail() {
         </div>
         <div className="base-info">
           <div className="left">
-            <BookCover src={baseInfo.coverPath} name={baseInfo.coverPath ? '' : baseInfo.bookName} />
+            <BookCover src={baseInfo.coverPath ? `/crNursing/asset${baseInfo.coverPath}` : ''} name={baseInfo.coverPath ? '' : baseInfo.bookName} />
           </div>
           <div className="right">
             <div className="main-title">{baseInfo.bookName}</div>

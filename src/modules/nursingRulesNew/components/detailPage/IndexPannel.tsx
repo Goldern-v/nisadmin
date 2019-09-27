@@ -1,16 +1,27 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Row, Col } from 'antd'
+import { appStore } from 'src/stores'
 import IndexList from './../IndexList'
 import { observer } from 'mobx-react-lite'
+import qs from 'qs'
 import { detailPageModel } from './../../models/detailPageModel'
 export interface Props { }
 
 export default observer(function IndexPannel() {
-  const { indexList } = detailPageModel
+  const { indexList, baseInfo } = detailPageModel
+  const { history } = appStore
+
+  const handleItemClick = (item: any) => {
+    history.push(`nursingRulesPagePreview?${qs.stringify({
+      bookId: baseInfo.bookId,
+      nodeNum: item.nodeNum,
+      bookName: baseInfo.bookName,
+    })}`)
+  }
 
   return <Wrapper>
-    <IndexList indexList={indexList} />
+    <IndexList indexList={indexList} onItemClick={handleItemClick} itemClass="active-item" />
+    <div className="nope">{indexList.length <= 0 ? '暂无目录' : ''}</div>
   </Wrapper>
 })
 
@@ -31,5 +42,16 @@ const Wrapper = styled.div`
     &.split{
       border-bottom: 1px solid #ddd;
     }
+  }
+  .active-item{
+    cursor: pointer;
+    :hover{
+      color: #00A680;
+    }
+  }
+  .nope{
+    font-size: 14px;
+    line-height: 200px;
+    text-align: center;
   }
 `

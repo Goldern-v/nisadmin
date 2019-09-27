@@ -51,6 +51,7 @@ export default function Table(props: Props) {
             <tr key={`${idx} ${idx1}`}>
               <td
                 rowSpan={item.children.length}
+                className="dept-name"
                 style={{ textAlign: 'center', display: idx1 == 0 ? 'table-cell' : 'none' }}>
                 {item1.wardName}
               </td>
@@ -88,11 +89,14 @@ const Wrapper = styled.div`
     }
     td {
       height: 30px;
-      text-align: center;
+      text-align: left;
       align-items: center;
       font-size: 14px;
       color: #000;
       border: 1px #cccccc solid;
+      &.dept-name{
+        text-align: center;
+      }
     }
   }
   .lm-arrow {

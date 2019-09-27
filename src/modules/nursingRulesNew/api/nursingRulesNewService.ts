@@ -134,6 +134,27 @@ export default class NursingRulesApiService extends BaseApiService {
   public getCollections(bookId: string) {
     return this.get(`/hospitalBookshelf/getCollections?${qs.stringify({ bookId })}`);
   }
+
+  /**收藏目录 */
+  public addCollection(params: any) {
+    return this.post(`/hospitalBookshelf/addCollection`, qs.stringify(params));
+  }
+  /**取消收藏 */
+  public cancelCollection(collectionId: string) {
+    return this.post(`/hospitalBookshelf/cancelCollection`, qs.stringify({ collectionId }));
+  }
+  /**提交审核 */
+  public submitToAudit(bookId: string) {
+    return this.post(`/hospitalBookshelf/submitToAudit`, qs.stringify({ bookId }));
+  }
+  /**获取待审核章节 */
+  public getToAuditChapters(bookId: string) {
+    return this.post(`/hospitalBookshelf/getToAuditChapters`, qs.stringify({ bookId }));
+  }
+  /**章节审核 */
+  public auditChapters(params: any) {
+    return this.post(`/hospitalBookshelf/auditChapters`, params);
+  }
 }
 
 export const nursingRulesApiService = new NursingRulesApiService()

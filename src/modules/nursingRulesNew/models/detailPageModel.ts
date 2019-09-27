@@ -44,6 +44,8 @@ export class DetailPageModel {
     this.getRepairList()
 
     this.getFavorlist()
+
+    this.getAuditList()
   }
   //获取基本信息
   @action public getBaseInfo = () => {
@@ -68,7 +70,12 @@ export class DetailPageModel {
   @action public getIndexAudited = () => {
     nursingRulesApiService.getBookCataLog(this.baseInfo.bookId)
       .then(res => {
-        if (res.data) this.indexList = res.data
+        if (res.data) this.indexList = res.data.map((item: any) => {
+          return {
+            ...item,
+            childrenList: item.childrenList || []
+          }
+        })
         else this.indexList = []
       })
   }
@@ -85,7 +92,19 @@ export class DetailPageModel {
   @action public getFavorlist = () => {
     nursingRulesApiService.getCollections(this.baseInfo.bookId)
       .then(res => {
-        this.favorList = res.data
+        if (res.data) this.favorList = res.data
+        else this.favorList = []
+
+      })
+  }
+  //获取待审核章节
+  @action public getAuditList = () => {
+    nursingRulesApiService.getToAuditChapters(this.baseInfo.bookId)
+      .then(res => {
+        if (res.data) this.auditList = res.data.filter((item: any) => {
+          return item.urls && item.urls.length > 0
+        })
+        else this.auditList = []
       })
   }
 }

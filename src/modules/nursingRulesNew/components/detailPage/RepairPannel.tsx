@@ -63,7 +63,12 @@ const Wrapper = styled.div`
   }
   .nope{
     font-size: 14px;
-    line-height: 36px;
+    line-height: 200px;
+    text-align: center;
+  }
+  .nope{
+    font-size: 14px;
+    line-height: 200px;
     text-align: center;
   }
 `

@@ -83,7 +83,13 @@ export default observer(function NursingRulesNewEdit() {
   }
   //提交审核
   const handleSendAudit = () => {
-
+    nursingRulesApiService
+      .submitToAudit(baseInfo.bookId)
+      .then(res => {
+        Message.success('提交审核成功', 1, () => {
+          history.goBack()
+        })
+      })
   }
 
   const StepBtns = () => {
