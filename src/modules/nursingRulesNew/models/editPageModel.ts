@@ -16,11 +16,13 @@ export interface FileItem {
 export class EditPageModel {
   // @observable id = ''
   // @observable taskType = '1' //new 新建 upadte 修改 repair 修订
-  @observable baseInfo = {
+  private defaultInfo = {
     bookId: '',
     taskType: '',
     taskCode: '',
   }
+
+  @observable baseInfo = { ...this.defaultInfo }
   //基本信息
   @observable baseParams: BaseParams = {
     cover: '',
@@ -58,7 +60,7 @@ export class EditPageModel {
 
   //初始化model
   @action public inited(newInfo?: any) {
-    this.setBaseInfo({ ...this.baseInfo, ...newInfo })
+    this.setBaseInfo({ ...this.defaultInfo, ...newInfo })
 
     this.setBaseLoading(false)
     this.setUploadLoading(false)
@@ -73,7 +75,7 @@ export class EditPageModel {
     //获取上传文件列表
     this.getFileList()
     //获取目录
-    if (this.baseInfo.bookId && !this.baseInfo.taskCode) this.getIndex()
+    if (this.baseInfo.bookId) this.getIndex()
   }
 
   @action public setBaseInfo(baseInfo: any) {
@@ -102,14 +104,16 @@ export class EditPageModel {
 
   @action public getBookData = () => {
     let { bookId } = this.baseInfo
-    if (bookId) nursingRulesApiService.getBookInfo(bookId).then(res => {
-
+    if (!bookId) return
+    this.setBaseLoading(true)
+    nursingRulesApiService.getBookInfo(bookId).then(res => {
+      this.setBaseLoading(false)
       this.setBaseParams({
         cover: res.data.coverPath,
         bookName: res.data.bookName,
         bookBrief: res.data.bookBrief
       })
-    })
+    }, () => this.setBaseLoading(false))
   }
 
   //获取文件列表
@@ -118,7 +122,6 @@ export class EditPageModel {
     let callback = (res: any) => {
       if (res.data) this.setFileList([...res.data])
     }
-
     if (this.baseInfo.taskCode) {
       nursingRulesApiService
         .getTaskBodyFileList(this.baseInfo.taskCode)
@@ -131,10 +134,11 @@ export class EditPageModel {
   }
 
   //获取目录信息
-  @action public getIndex = () => {
+  @action public getIndex = (success?: Function) => {
     nursingRulesApiService
       .getAllBookCataLog(this.baseInfo.bookId).
       then(res => {
+        success && success()
         this.setIndexParams(res.data)
       })
   }

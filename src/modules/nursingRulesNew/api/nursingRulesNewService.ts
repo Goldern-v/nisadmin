@@ -155,6 +155,14 @@ export default class NursingRulesApiService extends BaseApiService {
   public auditChapters(params: any) {
     return this.post(`/hospitalBookshelf/auditChapters`, params);
   }
+  /**书籍设为无效或启用 */
+  public changeBookAvailability(params: any) {
+    return this.post(`/hospitalBookshelf/changeBookAvailability`, qs.stringify(params));
+  }
+  /**删除书籍 */
+  public deleteBook(bookId: string) {
+    return this.post(`/hospitalBookshelf/deleteBook`, qs.stringify({ bookId }));
+  }
 }
 
 export const nursingRulesApiService = new NursingRulesApiService()

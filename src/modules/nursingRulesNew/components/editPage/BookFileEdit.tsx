@@ -58,7 +58,7 @@ export default observer(function BookFileEdit() {
     <div className="row">
       <div className="label">书籍封面：</div>
       <div className="content">
-        <CoverPreview data={baseParams.cover} onChange={handleCoverChange} />
+        <CoverPreview data={baseParams.cover ? `/crNursing/asset/${baseParams.cover}` : ''} onChange={handleCoverChange} />
       </div>
     </div>
     <div className="row">

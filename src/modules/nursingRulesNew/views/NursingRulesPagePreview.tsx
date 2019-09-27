@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, message as Message } from 'antd'
+import { Button, message as Message, Spin } from 'antd'
 import { Link } from 'react-router-dom'
 import { appStore, authStore } from 'src/stores'
 import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
@@ -18,7 +18,7 @@ import { ReactComponent as YSC } from './../assets/已收藏.svg'
 import { ReactComponent as XYZ } from './../assets/下一章.svg'
 
 //内容面板宽度和高度
-const contentWidth = 740
+const contentWidth = 780
 const contentHeight = 1043
 
 export interface Props { }
@@ -27,6 +27,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   const { history, location } = appStore;
   const search = qs.parse(location.search.replace('?', ''))
   const viewType = search.viewType || ''
+  const viewTop = React.createRef<HTMLDivElement>()
 
   const [loading, setLoading] = useState(false)
   const [indexList, setIndexList] = useState([] as any)
@@ -127,6 +128,9 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       nodeNum: chapter.nodeNum,
       pageUrl
     })}`)
+
+    if (viewTop.current) viewTop.current.scrollIntoView()
+
   }, [pageUrl, chapter])
 
   //初始化章节和预览路径
@@ -182,11 +186,11 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       name: '目录',
       icon: <ML className="active index" />,
       onClick: () => {
-        history.push('/NursingRulesNewDetail')
+        history.goBack()
       }
     },
     {
-      name: '收藏',
+      name: chapter.collectionId ? '取消收藏' : '收藏',
       icon: (() => {
         if (chapter.inCollection)
           return <YSC />
@@ -416,7 +420,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         <Button
           onClick={() => handleAudit(true)}
           type="primary"
-          disabled={loading && !(!!authStore.isDepartment)}
+          disabled={loading || !(!!authStore.isDepartment)}
           style={{ display: viewType == 'audit' ? 'block' : 'none' }}>审核</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </div>
@@ -443,6 +447,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         </BaseStepCon>
       </div>
       <div className="preview-content">
+        <Spin spinning={loading} className="main-loading">
+        </Spin>
         <div className="left-control" style={{ display: viewType == '' ? 'block' : 'none' }}>
           {leftControl.map((item: any, idx: number) => {
             return <div className="item" onClick={() => item.onClick(chapter, indexList)} key={idx}>
@@ -455,6 +461,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           {rightControl.map((item: any, idx: number) => <div className={['item', item.disabled ? 'disabled' : ''].join(' ')} onClick={() => item.onClick()} key={idx}>{item.name}</div>)}
         </div>
         <div className="scroll-warpper">
+          <div ref={viewTop}></div>
           <div className="page-content">
             {ViewContent()}
           </div>
@@ -512,6 +519,20 @@ const Wrapper = styled.div`
     right: 0;
     top: 94px;
     bottom: 0;
+    .main-loading{
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width:100%;
+      z-index: 1;
+      background: rgba(255,255,255,0.5);
+        .ant-spin-dot-spin{
+          position: absolute;
+          top: 50%;
+          left: 50%
+        }
+      }
   }
   .audit-content{
     float: right;
@@ -560,7 +581,7 @@ const Wrapper = styled.div`
       top: 15px;
       width: 80px;
       background: #fff;
-      transform: translate(-464px);
+      transform: translate(-486px);
       border: 1px solid #ddd;
       .item{
         width: 100%;
@@ -606,7 +627,7 @@ const Wrapper = styled.div`
           }
         }
         .text{
-          font-size: 16px;
+          font-size: 14px;
           text-align: center;
         }
       }
@@ -617,7 +638,7 @@ const Wrapper = styled.div`
       top: 15px;
       width: 80px;
       background: #fff;
-      transform: translate(456px);
+      transform: translate(478px);
       border: 1px solid #ddd;
       .item{
         width: 100%;
@@ -626,7 +647,7 @@ const Wrapper = styled.div`
         border-bottom: 1px solid #ddd;
         cursor: pointer;
         text-align: center;
-        font-size: 16px;
+        font-size: 14px;
         transition: all .3s;
         &:last-of-type{
           border-bottom: none;

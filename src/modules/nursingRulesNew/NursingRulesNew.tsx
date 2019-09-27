@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, Modal } from 'antd'
+import { Button, Input, Modal, message as Message } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { appStore, authStore } from 'src/stores'
 import { nursingRulesApiService } from './api/nursingRulesNewService'
@@ -45,13 +45,24 @@ export default observer(function nursingRulesNew() {
 
   const settingChange = (record: any) => {
     let content = "确定把该书籍设为无效吗？设为无效后将不能再查看该书籍内容"
-    if (record.enabled == 2) content = "确定启用该书籍吗"
+    if (record.enabled == -1) content = "确定启用该书籍吗"
+    let enabled = record.enabled == 1 ? -1 : 1
+
     Modal.confirm({
       centered: true,
       title: '提示',
       content: content,
       onOk: () => {
-
+        setLoading(true)
+        nursingRulesApiService.changeBookAvailability({
+          bookId: record.id,
+          enabled
+        })
+          .then(res => {
+            setLoading(false)
+            Message.success('设置成功')
+            getTableData()
+          }, err => setLoading(false))
       }
     })
   }
@@ -62,7 +73,11 @@ export default observer(function nursingRulesNew() {
       title: '提示',
       content: '确定删除该书籍吗？删除后数据无法恢复',
       onOk: () => {
-
+        setLoading(true)
+        nursingRulesApiService.deleteBook(record.id).then(res => {
+          Message.success('删除成功')
+          getTableData()
+        }, err => setLoading(false))
       }
     })
   }
@@ -107,7 +122,7 @@ export default observer(function nursingRulesNew() {
       align: 'center',
       render: (text: string, record: any) => {
         if (record.status == 1) return <span >提交</span>
-        if (record.enabled == 2) return <span style={{ color: 'red' }}>无效</span>
+        if (record.enabled == -1) return <span style={{ color: 'red' }}>无效</span>
 
         return <span style={{ color: 'blue' }}>发布</span>
       }
@@ -124,10 +139,10 @@ export default observer(function nursingRulesNew() {
         let className = 'disable'
         let settingText = '设为无效'
 
-        // if (auth) className = ''
-        if (record.enabled == 2) settingText = '启用'
+        if (auth) className = ''
+        if (record.enabled == -1) settingText = '启用'
 
-        let settingSpan = <span className={className} onClick={() => {
+        let settingSpan = <span className={'enabled' + className} onClick={() => {
           if (!auth) return
           settingChange(record)
         }}>{settingText}</span>
@@ -172,7 +187,9 @@ export default observer(function nursingRulesNew() {
         </span>
         <span className='search-input' style={{ width: '200px' }}>
           <Input
-            value={query.bookName}
+            defaultValue={query.bookName}
+            allowClear
+            onBlur={(e: any) => setQuery({ ...query, bookName: e.target.value })}
             placeholder='输入名称进行检索' />
         </span>
         <Button onClick={() => getTableData()}>查询</Button>
@@ -273,6 +290,11 @@ height: 100%;
       :hover{
         font-weight: normal;
       }
+    }
+    span.enabled{
+      display: inline-block;
+      width: 52px;
+      text-align: center;
     }
   }
   .operate-text {

@@ -14,7 +14,7 @@ export class DetailPageModel {
     auditorEmpName: '',
     auditTime: '',
     status: '',
-    enabled: ''
+    enabled: 1
   }
   //基本信息
   @observable public baseInfo = { ...this.defautInfo }
@@ -105,6 +105,19 @@ export class DetailPageModel {
           return item.urls && item.urls.length > 0
         })
         else this.auditList = []
+      })
+  }
+  //设置启用和无效
+  @action public setEnabled = (newEnabled: number) => {
+    this.baseInfo.enabled = newEnabled
+  }
+  //取消收藏
+  @action public cancelFavor = (collectionId: string, success: Function) => {
+    nursingRulesApiService
+      .cancelCollection(collectionId)
+      .then(res => {
+        this.getFavorlist()
+        success && success()
       })
   }
 }

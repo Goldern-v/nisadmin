@@ -36,6 +36,7 @@ export default observer(function AuditPannel() {
     handleAuditCancel();
     detailPageModel.getAuditList()
     detailPageModel.getIndexAudited()
+    detailPageModel.getBaseInfo()
   }
 
   const handleAuditCancel = () => {
