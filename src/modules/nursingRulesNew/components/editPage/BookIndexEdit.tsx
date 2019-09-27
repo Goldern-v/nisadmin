@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, Fragment } from 'react'
-import { Button, Row, Col } from 'antd'
+import { Button, Row, Col, message as Message } from 'antd'
 import { editPageModel } from './../../models/editPageModel'
 import { observer } from 'mobx-react-lite'
 import { nursingRulesApiService } from './../../api/nursingRulesNewService'
@@ -51,7 +51,9 @@ export default observer(function BookIndexEdit() {
         bookId: baseInfo.bookId,
         catalog: files[0]
       }).then(res => {
-        editPageModel.getIndex()
+        editPageModel.getIndex(() => {
+          Message.success('目录上传成功')
+        })
       })
     }
   }
@@ -60,9 +62,9 @@ export default observer(function BookIndexEdit() {
     <div className="row">
       <div className="label">目录上传：</div>
       <div className="content">
-        <Button onClick={handleUpload}>点击上传</Button>
+        <Button onClick={handleUpload}>{indexParams.length > 0 ? '重新上传' : '点击上传'}</Button>
         <span className="tips"> (需要按照目录模板格式，点击此处<span className="template-download" onClick={handleDownload}>下载</span>目录模板)</span>
-        <input ref={fileRef} type="file" accept=".xls" onChange={handleChange} />
+        <input ref={fileRef} type="file" accept=".xls,.xlsx" onChange={handleChange} />
       </div>
     </div>
     <IndexList indexList={indexParams} />

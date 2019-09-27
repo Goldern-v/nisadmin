@@ -19,9 +19,11 @@ export default observer(function IndexPannel() {
     })}`)
   }
 
+  const viewList = indexList.filter((item: any) => item.childrenList && item.childrenList.length > 0)
+
   return <Wrapper>
-    <IndexList indexList={indexList} onItemClick={handleItemClick} itemClass="active-item" />
-    <div className="nope">{indexList.length <= 0 ? '暂无目录' : ''}</div>
+    <IndexList indexList={viewList} onItemClick={handleItemClick} itemClass="active-item" />
+    <div className="nope">{viewList.length <= 0 ? '暂无目录' : ''}</div>
   </Wrapper>
 })
 

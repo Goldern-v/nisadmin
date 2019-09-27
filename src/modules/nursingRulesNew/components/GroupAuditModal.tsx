@@ -52,15 +52,13 @@ export default observer(function GroupAuditModal(props: Props) {
     }
 
     let reqParams = {
-      ...params,
+      remark: params.remark,
+      auditResult: params.audit ? 1 : -1,
       nodeNums,
       bookId
     }
     setLoading(true)
-    nursingRulesApiService.auditChapters({
-      nodeNums,
-      bookId
-    })
+    nursingRulesApiService.auditChapters(reqParams)
       .then(res => {
         setLoading(false)
         Message.success('审核成功')

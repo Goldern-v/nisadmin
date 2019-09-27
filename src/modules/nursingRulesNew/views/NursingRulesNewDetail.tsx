@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Tabs, Modal } from 'antd'
+import { Button, Tabs, Modal, message as Message, Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { Link } from 'react-router-dom'
 import { appStore, authStore } from 'src/stores'
@@ -21,10 +21,11 @@ export interface Props { }
 
 export default observer(function NursingRulesNewDetail() {
   const { history, location } = appStore
-  const { baseInfo, indexList } = detailPageModel
+  const { baseInfo, indexList, baseLoading, auditList, favorList } = detailPageModel
   const search = qs.parse(location.search.replace('?', ''))
+
   //启用和删除权限 上传者和护理部
-  let uploaderAuth = !!(baseInfo.upLoaderEmpNo == authStore.getUser().empNo) as boolean
+  let uploaderAuth = !!(baseInfo.upLoaderEmpNo == (authStore.getUser() && authStore.getUser().empNo)) as boolean
   let absoluteAuth = authStore.isDepartment as boolean
   let auth = !!(uploaderAuth || absoluteAuth) as boolean
 
@@ -45,7 +46,7 @@ export default observer(function NursingRulesNewDetail() {
       component: <IndexPannel />
     },
     {
-      name: '我的收藏',
+      name: `我的收藏(共${favorList.length}章)`,
       component: <FavorPannel />
     },
     {
@@ -55,7 +56,7 @@ export default observer(function NursingRulesNewDetail() {
   ]
 
   if (auth) tabsCfg.push({
-    name: '待审核章节',
+    name: `待审核章节(共${auditList.length}章)`,
     component: <AuditPannel />
   })
 
@@ -69,16 +70,26 @@ export default observer(function NursingRulesNewDetail() {
     history.replace(`${location.pathname}?${qs.stringify({ ...search, tab })}`)
   }
 
-  const handleEnable = (enable: boolean) => {
+  const handleEnable = (enabled: number) => {
     let content = "确定把该书籍设为无效吗？设为无效后将不能再查看该书籍内容"
 
-    if (enable) content = "确定启用该书籍吗"
+    if (enabled == -1) content = "确定启用该书籍吗"
+
+    let newEabled = baseInfo.enabled == 1 ? -1 : 1
     Modal.confirm({
       title: "提示",
       content,
       centered: true,
       onOk: () => {
-        console.log('enable')
+        nursingRulesApiService
+          .changeBookAvailability({
+            bookId: baseInfo.bookId,
+            enabled: newEabled
+          })
+          .then(res => {
+            Message.success('设置成功')
+            detailPageModel.setEnabled(newEabled)
+          })
       }
     })
   }
@@ -89,14 +100,17 @@ export default observer(function NursingRulesNewDetail() {
       content: "确定删除该书籍吗？删除后数据无法恢复",
       centered: true,
       onOk: () => {
-        console.log('delete')
+        nursingRulesApiService.deleteBook(baseInfo.bookId).then(res => {
+          Message.success('删除成功', 2, () => {
+            history.replace('nursingRulesNew')
+          })
+        })
       }
     })
   }
 
   const handleEdit = () => {
     let bookId = baseInfo.bookId
-    console.log(bookId)
     history.push(`nursingRulesNewEdit?${qs.stringify({ bookId })}`)
   }
 
@@ -107,25 +121,32 @@ export default observer(function NursingRulesNewDetail() {
     }).then(res => {
       if (res.data) history.push(`nursingRulesNewEdit?${qs.stringify({
         taskCode: res.data.taskCode,
-        bookId: baseInfo.bookId
+        bookId: baseInfo.bookId,
+        taskType: 2
       })}`)
     })
   }
 
   useEffect(() => {
-    detailPageModel.inited(search)
+    detailPageModel.inited({
+      ...search,
+      bookId: search.bookId || ''
+    })
   }, [])
 
   const SettingBtn = () => {
+
     let btnText = '设为无效'
 
-    if (baseInfo.enabled == '2') {
-      btnText = '启用'
-    } else if (baseInfo.enabled != '1') {
-      auth = false
-    }
+    if (baseInfo.enabled == -1) btnText = '启用'
 
-    return <Button type={btnText == '设为无效' ? 'danger' : 'default'} disabled={!auth} ghost onClick={() => handleEnable(!auth)}>{btnText}</Button>
+    return <Button
+      type={btnText == '设为无效' ? 'danger' : 'primary'}
+      disabled={!auth || baseLoading}
+      ghost
+      onClick={() => handleEnable(baseInfo.enabled)}>
+      {btnText}
+    </Button>
   }
 
   return <Wrapper>
@@ -142,7 +163,7 @@ export default observer(function NursingRulesNewDetail() {
           <Button onClick={handleEdit}>编辑</Button>
           <Button onClick={handleRepair}>修订</Button>
           {SettingBtn()}
-          <Button type="danger" ghost onClick={handleDelete}>删除</Button>
+          <Button type="danger" ghost disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
         <div className="base-info">
@@ -164,15 +185,17 @@ export default observer(function NursingRulesNewDetail() {
                 <img src={require('./../assets/审核@2x.png')} alt="" />
               </span>
               <span>审核:</span>
-              <span>{baseInfo.auditorEmpName}</span>
               <span>{baseInfo.auditTime}</span>
+              <span>{baseInfo.auditorEmpName}</span>
             </div>
             <div className="desc">{baseInfo.bookBrief}</div>
           </div>
         </div>
       </div>
       <div className="tab-pannels">
-        <Tabs defaultActiveKey={search.tab || '0'} onChange={handleTabChange}>{TabPannels()}</Tabs>
+        <Spin spinning={baseLoading}>
+          <Tabs defaultActiveKey={search.tab || '0'} onChange={handleTabChange}>{TabPannels()}</Tabs>
+        </Spin>
       </div>
     </div>
   </Wrapper>

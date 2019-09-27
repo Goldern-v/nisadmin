@@ -119,7 +119,7 @@ export default class NursingRulesApiService extends BaseApiService {
 
   /**获取书籍的当前修订版本信息 */
   public getBookInfo(bookId: string) {
-    return this.post(`/hospitalBookshelf/getBookVersion?bookId=${bookId}`, { bookId });
+    return this.post(`/hospitalBookshelf/getBookVersion?bookId=${bookId}`);
   }
 
   /**获取书籍的全部书籍目录 */
@@ -132,7 +132,7 @@ export default class NursingRulesApiService extends BaseApiService {
   }
   /**获取收藏的书籍目录 */
   public getCollections(bookId: string) {
-    return this.get(`/hospitalBookshelf/getCollections?${qs.stringify({ bookId })}`);
+    return this.post(`/hospitalBookshelf/getCollections`, qs.stringify({ bookId }));
   }
 
   /**收藏目录 */
@@ -154,6 +154,14 @@ export default class NursingRulesApiService extends BaseApiService {
   /**章节审核 */
   public auditChapters(params: any) {
     return this.post(`/hospitalBookshelf/auditChapters`, params);
+  }
+  /**书籍设为无效或启用 */
+  public changeBookAvailability(params: any) {
+    return this.post(`/hospitalBookshelf/changeBookAvailability`, qs.stringify(params));
+  }
+  /**删除书籍 */
+  public deleteBook(bookId: string) {
+    return this.post(`/hospitalBookshelf/deleteBook`, qs.stringify({ bookId }));
   }
 }
 

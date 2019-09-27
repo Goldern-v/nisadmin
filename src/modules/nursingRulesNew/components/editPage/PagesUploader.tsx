@@ -8,9 +8,9 @@ export interface Props { }
 
 export default observer(function PagesUploader() {
   let [fileElVisible, setFileElVisible] = useState(false)
-  let [files, setFiles] = useState([] as any);
-  let [uploadIdx, setUploaddIdx] = useState(0);
-  let [progressVisible, setProgressVisible] = useState(false);
+  let [files, setFiles] = useState([] as any)
+  let [uploadIdx, setUploaddIdx] = useState(0)
+  let [progressVisible, setProgressVisible] = useState(false)
 
 
   const { fileList, uploadLoading } = editPageModel;
@@ -42,12 +42,27 @@ export default observer(function PagesUploader() {
     // console.log(baseParams)
   }, [fileList])
 
-  const uploadFiles = (files: File[], idx?: number) => {
-    let _uploadIdx = idx || 0;
-    setUploaddIdx(_uploadIdx);
+  const uploadFiles = (files: File[], idx?: number, errors?: any[]) => {
+    let _uploadIdx = idx || 0
+    let _errors: any[] = errors || []
+    setUploaddIdx(_uploadIdx)
 
     if (_uploadIdx >= files.length) {
       editPageModel.setUploadLoading(false)
+      if (_errors.length > 0) {
+        let content = <div>
+          <span>以下文件上传失败:</span>
+          <br />
+          <span>{_errors.join(', ')}</span>
+        </div>
+        Modal.error({
+          centered: true,
+          title: '提示',
+          content: content
+        })
+      } else {
+        Message.success('上传成功')
+      }
       return
     }
 
@@ -69,12 +84,13 @@ export default observer(function PagesUploader() {
         } else {
           newList.push(data)
         }
-
         editPageModel.setFileList(newList)
+      } else {
+        _errors.push(files[_uploadIdx].name)
       }
 
       _uploadIdx++
-      uploadFiles(files, _uploadIdx)
+      uploadFiles(files, _uploadIdx, _errors)
     })
   }
 
