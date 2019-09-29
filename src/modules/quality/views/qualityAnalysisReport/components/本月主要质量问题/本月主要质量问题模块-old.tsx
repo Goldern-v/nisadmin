@@ -28,23 +28,9 @@ export default observer(function 上月质量问题模块(props: Props) {
           <div className='label'>
             ({index + 1}){item.itemTypeName}(总扣分{item.totalDeductScore}分,共有{item.deductDeptSize}个扣分科室)
           </div>
-          {item.detailList &&
-            item.detailList.map((item: any, index: number) => {
-              return (
-                <div key={index}>
-                  <pre className='textarea'>{index + 1 + '.' + item.content}</pre>
-                  <div className='img-con'>
-                    {item.attachList &&
-                      item.attachList.map((item: any, index: number) => (
-                        <div className='img-box' key={index}>
-                          <img className='img' src={item.attachUrl} alt='' key={index} />
-                          <aside>({item.wardName})</aside>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              )
-            })}
+          <pre className='textarea'>{item.content}</pre>
+          {item.attachUrls &&
+            item.attachUrls.split(',').map((item, index) => <img className='img' src={item} alt='' key={index} />)}
         </div>
       ))}
 
@@ -84,15 +70,6 @@ const Wrapper = styled.div`
       white-space: pre-wrap;
       margin-bottom: 10px;
       padding-left: 22px;
-    }
-    .img-box {
-      display: inline-block;
-      aside {
-        text-align: center;
-        padding-left: 15px;
-        position: relative;
-        top: -10px;
-      }
     }
     .img {
       /* width: 450px; */

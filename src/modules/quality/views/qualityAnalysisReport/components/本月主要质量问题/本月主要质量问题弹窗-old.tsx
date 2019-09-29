@@ -23,20 +23,14 @@ export default function 本月主要质量问题弹窗(props: Props) {
     setData(cloneData)
   }
   const deleteItem = (index: number) => {
-    globalModal.confirm('删除确认', '你确认要删除该记录吗？').then((res) => {
-      cloneData.list.splice(index, 1)
-      setData(cloneData)
-    })
+    cloneData.list.splice(index, 1)
+    setData(cloneData)
   }
-  const deleteDetail = (index: number, detailList: any[]) => {
-    globalModal.confirm('删除确认', '你确认要删除该记录吗？').then((res) => {
-      detailList.splice(index, 1)
-      setData(cloneData)
-    })
-  }
-  const onDeleteImg = (index: number, arr: any[]) => {
+  const onDeleteImg = (index: number, item: DetailItem) => {
     globalModal.confirm('删除确认', '你确认要删除该图片吗？').then((res) => {
-      arr.splice(index, 1)
+      let list = item.attachUrls.split(',')
+      list.splice(index, 1)
+      item.attachUrls = list.join(',')
       setData(cloneData)
     })
   }
@@ -53,10 +47,6 @@ export default function 本月主要质量问题弹窗(props: Props) {
     setData(cloneData)
   }
 
-  const addDetail = (detailList: any) => {
-    detailList.push({})
-    setData(cloneData)
-  }
   useEffect(() => {}, [])
   return (
     <Wrapper>
@@ -92,28 +82,17 @@ export default function 本月主要质量问题弹窗(props: Props) {
             />
             个扣分科室)
           </div>
+          <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
           <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} />
-          {item.detailList &&
-            item.detailList.map((item: any, index: number, arr) => (
-              <div className='detail-con' key={index}>
-                <Icon type='close' className='detail-delete-btn' onClick={() => deleteDetail(index, arr)} />
-                <span className='index'>{index + 1 + '.'}</span>
-                <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
-                <div style={{ overflow: 'hidden', paddingLeft: 20 }}>
-                  {item.attachList &&
-                    item.attachList.map((item: any, index: number, arr: any) => (
-                      <div className='img-con' key={index}>
-                        <img className='img' src={item.attachUrl} alt='' />
-                        <Icon type='close' className='close-btn' onClick={() => onDeleteImg(index, arr)} />
-                        <aside>({item.wardName})</aside>
-                      </div>
-                    ))}
+          <div style={{ overflow: 'hidden' }}>
+            {item.attachUrls &&
+              item.attachUrls.split(',').map((img, index: number) => (
+                <div className='img-con'>
+                  <img className='img' src={img} alt='' />
+                  <Icon type='close' className='close-btn' onClick={() => onDeleteImg(index, item)} />
                 </div>
-              </div>
-            ))}
-          <Button type='dashed' className='add-btn' onClick={() => addDetail(item.detailList)}>
-            添加
-          </Button>
+              ))}
+          </div>
         </div>
       ))}
 
@@ -142,15 +121,6 @@ const Wrapper = styled.div`
     border-radius: 2px;
     border: 1px solid #ddd;
     position: relative;
-    .detail-con {
-      position: relative;
-    }
-    .detail-delete-btn {
-      position: absolute;
-      top: 10px;
-      right: -5px;
-      cursor: pointer;
-    }
     .delete-btn {
       position: absolute;
       top: 5px;
@@ -168,29 +138,20 @@ const Wrapper = styled.div`
     textarea {
       margin-top: 10px;
       resize: none;
-      min-height: 50px;
-      margin-left: 20px;
-      display: block;
-      width: calc(100% - 35px);
+      min-height: 80px;
       &:focus {
         background: ${(p) => p.theme.$mlc};
       }
     }
-    .index {
-      display: block;
-      height: 0;
-      position: relative;
-      top: 10px;
-    }
     .img-con {
       float: left;
       width: 100px;
-      height: 120px;
+      height: 100px;
       position: relative;
       margin: 15px 5px 5px;
       img {
-        width: 100px;
-        height: 100px;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         padding: 5px;
       }
