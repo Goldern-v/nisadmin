@@ -26,129 +26,41 @@ export interface Props extends ModalComponentProps {
 export default observer(function BaseModal(props: Props) {
   let { visible, onCancel, Component, sectionData } = props
   const [data, setData]: any = useState(null)
+  const [btnLoading, setBtnLoading]: any = useState(false)
 
   const onSave = async () => {
-    if (sectionData.sectionId == '上月质量问题') {
-      qualityAnalysisReportService.updateImproveItemCompareList(data.list).then((res) => {
+    setBtnLoading(true)
+    if (sectionData.sectionId == '数据概况') {
+      qualityAnalysisReportService.updateOverview(data.obj).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          list: res.data
+          obj: res.data
         })
         message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '本月质量检查扣分情况') {
-      qualityAnalysisReportService.updateCheckDeptDesc(data.report.checkDeptDesc).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          report: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '2-1') {
-      qualityAnalysisReportService.updateCheckDeptDesc(data.report.archiveDesc).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          report: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '质量扣分比较') {
-      qualityAnalysisReportService.updateTypeCompareList(data.list).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          list: res.data.map((item: any) => {
-            return Object.assign(item, {
-              currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
-              lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
-              compareScore: Number((item.compareScore || 0).toFixed(2)),
-              compareScorePercent: Number((item.compareScorePercent || 0).toFixed(2))
-            })
-          })
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '本月质量扣分科室排序') {
-      qualityAnalysisReportService.updateDeptItemList(data.list).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          list: res.data.map((item: any) => {
-            return Object.assign(item, {
-              deductScore: Number(Number(item.deductScore).toFixed(2))
-            })
-          })
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '本月主要质量问题') {
-      qualityAnalysisReportService.updateDetailItemList(data.list).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          list: res.data.map((item: any) => {
-            return Object.assign(item, {
-              totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
-            })
-          })
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '本月质量检查亮点') {
-      qualityAnalysisReportService.updateHighlightItemList(data.list).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '重点问题') {
-      qualityAnalysisReportService.updateKeyItemList(data.list).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '持续改进') {
-      qualityAnalysisReportService.updateCurrentImproveItemList(data.list).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '追踪督导') {
-      qualityAnalysisReportService.updateFollowUpDeptDesc(data.report.followUpDeptDesc).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          report: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '检查重点') {
-      qualityAnalysisReportService.updateKeyCheckItemDesc(data.report.keyCheckItemDesc).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          report: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '问题及建议') {
-      qualityAnalysisReportService.updateSuggestions(data.report.suggestions).then((res) => {
-        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          report: res.data
-        })
-        message.success('保存成功')
+        setBtnLoading(false)
         onCancel()
       })
     } else if (sectionData.sectionId == '报告名称') {
-      // console.log(data, 'data')
-      // return
-      qualityAnalysisReportService.updateReportName(data.text).then((res) => {
+      qualityAnalysisReportService
+        .updateReport({ ...qualityAnalysisReportViewModal.getDataInAllData('instance'), title: data.text })
+        .then((res) => {
+          qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+            text: res.data.title
+          })
+          message.success('保存成功')
+          setBtnLoading(false)
+          onCancel()
+        })
+    } else if (sectionData.sectionId == '数据分析') {
+      qualityAnalysisReportService.updateGraphs(data.list).then((res) => {
         qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
-          text: res.data.reportName
+          list: res.data
         })
         message.success('保存成功')
+        setBtnLoading(false)
         onCancel()
       })
+    } else {
+      setBtnLoading(false)
     }
     // qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
   }
@@ -170,6 +82,14 @@ export default observer(function BaseModal(props: Props) {
       forceRender
       width={(sectionData && sectionData.modalWidth) || 700}
       centered
+      footer={
+        <React.Fragment>
+          <Button onClick={onCancel}>取消</Button>
+          <Button onClick={onSave} loading={btnLoading} type='primary'>
+            保存
+          </Button>
+        </React.Fragment>
+      }
     >
       {Component && <Component {...props.sectionData} data={data} setData={setData} />}
     </Modal>

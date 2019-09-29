@@ -19,11 +19,11 @@ export default observer(function QualityAnalysisReportView() {
   useEffect(() => {
     qualityAnalysisReportViewModal.init()
   }, [])
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  let instance: any = qualityAnalysisReportViewModal.getDataInAllData('instance')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
     let title = document.title
-    document.title = report.reportName
+    document.title = instance.title
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -99,16 +99,16 @@ export default observer(function QualityAnalysisReportView() {
         <BaseBreadcrumb
           data={[{ name: '分析报告', link: '/setting/healthEducationReportList' }, { name: '报告详情', link: '' }]}
         />
-        <div className='title'>{report.reportName}</div>
+        <div className='title'>{instance.title}</div>
         <div className='aside'>
           <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
+            由{instance.creatorName}创建{instance.updateTime && <span>，最后修改于{instance.updateTime}</span>}
           </span>
         </div>
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' ? (
+          {instance.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
             <Button onClick={onPublish}>发布</Button>

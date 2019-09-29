@@ -61,6 +61,7 @@ export default observer(function ProblemSummary(props: any) {
             <div className='label'>年度：</div>
             <div className='content'>
               <YearPicker
+                style={{ width: 100 }}
                 value={filterObj.year}
                 onChange={(value: any) => setFilterObj({ ...filterObj, year: value })}
               />
