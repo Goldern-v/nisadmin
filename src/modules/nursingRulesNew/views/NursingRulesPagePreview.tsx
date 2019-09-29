@@ -39,9 +39,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   const bookName = search.bookName || ''
   const chapterName = chapter.name || ''
 
-  useEffect(() => {
-    initedIndex()
-  }, [])
+  useEffect(() => initedIndex(), [])
 
   const initedIndex = () => {
     if (!search.bookId) {
@@ -64,26 +62,20 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           setChapter(newChapter)
 
           if (search.pageUrl) {
-            let url = findUrl(newChapter, search.pageUrl)
-
-            if (url) {
+            if (hasUrl(newChapter, search.pageUrl))
               setPageUrl(search.pageUrl)
-            } else {
+            else
               if (newChapter.urls) setPageUrl(newChapter.urls[0])
-            }
-          } else {
+          } else
             if (newChapter.urls) setPageUrl(newChapter.urls[0])
-          }
-        } else {
+        } else
           initChapterAndPage(newList)
-        }
 
-      } else {
+      } else
         initChapterAndPage(newList)
-      }
     }
 
-    if (viewType == 'favor') {
+    if (viewType == 'favor')
       nursingRulesApiService.getCollections(search.bookId).then(res => {
         callback([{
           childrenList: res.data.map((item: any) => {
@@ -94,7 +86,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           })
         }])
       }, err => callback())
-    } else if (viewType == 'audit') {
+    else if (viewType == 'audit')
       Promise.all([
         nursingRulesApiService.getToAuditChapters(search.bookId),
         nursingRulesApiService.getBookInfo(search.bookId)
@@ -103,23 +95,15 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           callback([{
             childrenList: res[0].data.filter((item: any) => {
               return item.urls && item.urls.length > 0
-            }).map((item: any) => {
-              return {
-                ...item,
-                name: item.nodeName
-              }
             })
           }])
 
           setAuditInfo(res[1].data)
         }, err => callback())
-
-
-    } else {
+    else
       nursingRulesApiService
         .getBookCataLog(search.bookId)
         .then(res => callback(res.data), err => callback())
-    }
   }
 
   useEffect(() => {
@@ -133,7 +117,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
   }, [pageUrl, chapter])
 
-  //初始化章节和预览路径
+  //初始化章节和预览路径为第一章第一节第一页
   const initChapterAndPage = (indexList: any[]) => {
     let newChapter
     let pageUrl
@@ -141,15 +125,12 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     if (indexList.length > 0) {
       if (indexList[0].childrenList && indexList[0].childrenList.length > 0) {
         newChapter = indexList[0].childrenList[0]
-        if (newChapter.urls && newChapter.urls.length > 0) {
-          pageUrl = newChapter.urls[0]
-        }
+        if (newChapter.urls && newChapter.urls.length > 0) pageUrl = newChapter.urls[0]
       }
     }
 
     if (newChapter) setChapter(newChapter)
     if (pageUrl) setPageUrl(pageUrl)
-
   }
 
   const findChapter = (nodeNum: any, indexList: any) => {
@@ -163,15 +144,14 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     return null
   }
 
-  const findUrl = (chapter: any, pageUrl: string) => {
-    let url = ''
+  const hasUrl = (chapter: any, url: string): boolean => {
 
     if (chapter.urls) {
-      let target = chapter.urls.find((item: string) => search.pageUrl == item)
-      if (target) url = target
+      let target = chapter.urls.find((item: string) => url == item)
+      if (target) return true
     }
 
-    return url
+    return false
   }
 
   const [auditCfg, setAuditCfg] = useState({
@@ -198,7 +178,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         return <SC className="active" />
       })(),
       onClick(chapter: any, indexList: any) {
-        if (chapter.inCollection) {
+        if (chapter.inCollection)
           nursingRulesApiService
             .cancelCollection(chapter.collectionId)
             .then(res => {
@@ -207,7 +187,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
               chapter.collectionId = null
               setChapter({ ...chapter })
             })
-        } else {
+        else
           nursingRulesApiService.addCollection({
             nodeNum: chapter.nodeNum,
             bookId: search.bookId
@@ -220,7 +200,6 @@ export default observer(function NursingRulesPagePreview(props: Props) {
                 setChapter({ ...chapter })
               }
             })
-        }
       }
     },
     {
@@ -383,7 +362,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   }
 
   const ViewContent = () => {
-    if (!pageUrl) return <div style={{ height: `${contentHeight}px`, lineHeight: `${contentHeight}px`, textAlign: 'center' }}>暂无页面</div>
+    if (!pageUrl) return <div className="content-message" >暂无页面</div>
     let pageUrlArr = pageUrl.split('.')
     let type = pageUrlArr[pageUrlArr.length - 1]
     let url = `crNursing/asset${pageUrl}`
@@ -392,19 +371,25 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       case 'jpg':
       case 'gif':
       case 'jpeg':
+      case 'png':
         return <img src={url} width='100%' />
       case 'pdf':
         return <PdfViewer file={url} width={contentWidth - 2} />
       default:
-        return <div style={{ height: `${contentHeight}px`, lineHeight: `${contentHeight}px`, textAlign: 'center' }}>该文件格式不支持预览</div>
+        return <div className="content-message" >该文件格式不支持预览</div>
     }
   }
 
   const overTime = () => {
-    if (!auditInfo.upLoadTime) return 0
-    let time = Number(moment().format('x')) - Number(moment(auditInfo.upLoadTime).format('x'))
-    time = time / (1000 * 60 * 60)
-    return parseInt(time.toString())
+    if (!auditInfo.upLoadTime) return '...小时'
+    let time = moment().diff(moment(auditInfo.upLoadTime), 'minute')
+
+    let minutes = time % 60 ? `${time % 60}分钟` : ''
+    time = parseInt((time / (24 * 60)).toString())
+    let hours = time % 24 ? `${time % 24}小时` : ''
+    let days = time / 24 ? `${time / 24}天` : ''
+    if (!hours && !minutes && !days) return '0小时'
+    return days + hours + minutes
   }
 
   return <Wrapper>
@@ -441,7 +426,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           <BaseStepBox success={''}>
             <StepBox>
               <div className="title">护理部审核</div>
-              <div>审核中 耗时{overTime()}小时</div>
+              <div>审核中 耗时{overTime()}</div>
             </StepBox>
           </BaseStepBox>
         </BaseStepCon>
@@ -450,15 +435,22 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         <Spin spinning={loading} className="main-loading">
         </Spin>
         <div className="left-control" style={{ display: viewType == '' ? 'block' : 'none' }}>
-          {leftControl.map((item: any, idx: number) => {
-            return <div className="item" onClick={() => item.onClick(chapter, indexList)} key={idx}>
+          {leftControl.map((item: any, idx: number) =>
+            <div className="item" onClick={() => item.onClick(chapter, indexList)} key={idx}>
               <div className="icon">{item.icon}</div>
               <div className="text">{item.name}</div>
             </div>
-          })}
+          )}
         </div>
         <div className="right-control" >
-          {rightControl.map((item: any, idx: number) => <div className={['item', item.disabled ? 'disabled' : ''].join(' ')} onClick={() => item.onClick()} key={idx}>{item.name}</div>)}
+          {rightControl.map((item: any, idx: number) =>
+            <div
+              className={['item', item.disabled ? 'disabled' : ''].join(' ')}
+              onClick={() => item.onClick()}
+              key={idx}>
+              {item.name}
+            </div>
+          )}
         </div>
         <div className="scroll-warpper">
           <div ref={viewTop} className="scroll-top"></div>
@@ -483,18 +475,18 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 })
 
 const scrollBarStyle = `
-::-webkit-scrollbar {
-  width: 8px;
-  height: 10px;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
-  background: rgba(0,0,0,0.1);
-}
-::-webkit-scrollbar-track {
-  background-color: #ddd;
-}
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.1);
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #ddd;
+  }
 `
 
 const Wrapper = styled.div`
@@ -567,6 +559,13 @@ const Wrapper = styled.div`
         position: relative;
         img{
           width: 100%;
+        }
+        .content-message{
+          width: ${contentWidth}px;
+          height: ${contentHeight}px;
+          line-height: ${contentHeight * 0.6}px;
+          text-align: center;
+          font-size: 14px;
         }
       }
       .page-info{

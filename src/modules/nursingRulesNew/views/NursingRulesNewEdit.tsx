@@ -63,7 +63,7 @@ export default observer(function NursingRulesNewEdit() {
           //重新获取上传文件列表
           editPageModel.getFileList()
         } else {
-          Message.warning('基本信息及上传文件修改成功，请及时提交审核')
+          Message.warning('书籍修改成功，请及时提交审核')
         }
       }
     }

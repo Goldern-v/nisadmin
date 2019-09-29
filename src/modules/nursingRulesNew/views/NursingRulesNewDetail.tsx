@@ -21,7 +21,7 @@ export interface Props { }
 
 export default observer(function NursingRulesNewDetail() {
   const { history, location } = appStore
-  const { baseInfo, indexList, baseLoading, auditList, favorList } = detailPageModel
+  const { baseInfo, indexList, baseLoading, auditList, currentVersionFavorList } = detailPageModel
   const search = qs.parse(location.search.replace('?', ''))
 
   //启用和删除权限 上传者和护理部
@@ -31,11 +31,8 @@ export default observer(function NursingRulesNewDetail() {
 
   const indexSize = () => {
     let size = 0;
-    for (let i = 0; i < indexList.length; i++) {
-      for (let j = 0; j < indexList[i].childrenList.length; j++) {
-        size++
-      }
-    }
+    for (let i = 0; i < indexList.length; i++)
+      for (let j = 0; j < indexList[i].childrenList.length; j++)size++
 
     return size
   }
@@ -46,7 +43,7 @@ export default observer(function NursingRulesNewDetail() {
       component: <IndexPannel />
     },
     {
-      name: `我的收藏(共${favorList.length}章)`,
+      name: `我的收藏(共${currentVersionFavorList.length}章)`,
       component: <FavorPannel />
     },
     {
@@ -173,14 +170,13 @@ export default observer(function NursingRulesNewDetail() {
           <div className="right">
             <div className="main-title">
               <span>{baseInfo.bookName}</span>
-              {/* <span className="version">{baseInfo.currentVersion ? `(${baseInfo.currentVersion})` : ''}</span> */}
             </div>
             <div className="update-info">
               <span className="icon">
                 <img src={require('./../assets/上传@2x.png')} alt="" />
               </span>
               <span>上传:</span>
-              <span>{baseInfo.upLoadTime.split(' ')[0]}</span>
+              <span>{baseInfo.upLoadTime && baseInfo.upLoadTime.split(' ')[0]}</span>
               <span>{baseInfo.upLoaderEmpName}</span>
             </div>
             <div className="audit-info">
@@ -188,7 +184,7 @@ export default observer(function NursingRulesNewDetail() {
                 <img src={require('./../assets/审核@2x.png')} alt="" />
               </span>
               <span>审核:</span>
-              <span>{baseInfo.auditTime.split(' ')[0]}</span>
+              <span>{baseInfo.auditTime && baseInfo.auditTime.split(' ')[0]}</span>
               <span>{baseInfo.auditorEmpName}</span>
             </div>
             <div className="desc">{baseInfo.bookBrief}</div>
@@ -261,6 +257,8 @@ const Wrapper = styled.div`
           font-weight: bold;
           .version{
             color: #999;
+            font-size: 12px;
+            font-weight: normal;
           }
         }
         .update-info,.audit-info{
