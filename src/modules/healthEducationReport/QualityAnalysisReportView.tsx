@@ -68,7 +68,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.deleteReport().then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/setting/healthEducationReportList')
         }, 500)
       })
     })
@@ -78,7 +78,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.publishReport().then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/setting/healthEducationReportList')
         }, 500)
       })
     })
@@ -88,7 +88,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.cancelPublishReport().then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/setting/healthEducationReportList')
         }, 500)
       })
     })
@@ -96,7 +96,9 @@ export default observer(function QualityAnalysisReportView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/quality/analysis' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb
+          data={[{ name: '分析报告', link: '/setting/healthEducationReportList' }, { name: '报告详情', link: '' }]}
+        />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>
@@ -113,7 +115,7 @@ export default observer(function QualityAnalysisReportView() {
           )}
 
           <Button onClick={() => onPrint(true)}>打印</Button>
-          <Button onClick={() => appStore.history.push('/quality/analysis')}>返回</Button>
+          <Button onClick={() => appStore.history.push('/setting/healthEducationReportList')}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>

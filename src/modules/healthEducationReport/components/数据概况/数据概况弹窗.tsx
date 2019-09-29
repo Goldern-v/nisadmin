@@ -16,20 +16,93 @@ export interface Props {
 export default function 数据概况弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
-  const columns: ColumnProps<any>[] = [
+
+  const tableDate = [
     {
-      title: '序号',
-      key: 'index',
-      render(text: any, record: any, index: number) {
-        return index + 1
-      },
-      width: 50,
-      align: 'center'
+      name1: 'readingRate',
+      value1: '',
+      label: '总阅读率',
+      name2: 'addReadingRate',
+      value2: '',
+      labe2: '新增阅读率'
     },
     {
-      title: '科室',
-      key: '科室',
+      name1: 'totalPush',
+      value1: '',
+      label: '总推送量',
+      name2: 'addPush',
+      value2: '',
+      labe2: '新增推送量'
+    },
+    {
+      name1: 'totalReading',
+      value1: '',
+      label: '总阅读量',
+      name2: 'addReading',
+      value2: '',
+      labe2: '新增阅读量'
+    },
+    {
+      name1: '',
+      value1: '',
+      label: '总疑问量',
+      name2: '',
+      value2: '',
+      labe2: '新增疑问量'
+    },
+    {
+      name1: 'totalQuestion',
+      value1: '',
+      label: '总答疑量',
+      name2: '',
+      value2: 'addQuestion',
+      labe2: '新增答疑量'
+    },
+    {
+      name1: 'readingCoverRate',
+      value1: '',
+      label: '总阅读覆盖率',
+      name2: 'addReadingCoverRate',
+      value2: '',
+      labe2: '新增阅读覆盖率'
+    },
+    {
+      name1: 'totalInPatients',
+      value1: '',
+      label: '总在院患者数',
+      name2: 'addInPatients',
+      value2: '',
+      labe2: '新增在院患者数'
+    },
+    {
+      name1: 'totalReadNum',
+      value1: '',
+      label: '总阅读人数',
+      name2: 'addReadNum',
+      value2: '',
+      labe2: '新增阅读人数'
+    },
+    {
+      name1: '',
+      value1: '',
+      label: '总推送人数',
+      name2: '',
+      value2: '',
+      labe2: '新增推送人数'
+    },
+    {
+      name1: 'totalPushNum',
+      value1: '',
+      label: '总患者数',
+      name2: 'addPushNum',
+      value2: '',
+      labe2: '新增患者数'
+    }
+  ]
+
+  const columns: ColumnProps<any>[] = [
+    {
+      title: '名称',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -46,26 +119,7 @@ export default function 数据概况弹窗(props: Props) {
       width: 200
     },
     {
-      title: `问题`,
-      key: '问题',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.itemBadDesc}
-            onChange={(e) => {
-              record.itemBadDesc = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 300
-    },
-    {
-      title: `扣分`,
-      key: '扣分',
+      title: `数据`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -89,25 +143,47 @@ export default function 数据概况弹窗(props: Props) {
       },
       width: 100
     },
-
     {
-      title: '操作',
-      key: '操作',
-      width: 80,
-      render(text: any, record: any, index: number) {
+      title: '名称',
+      render(text: any, record: DeptItem, index: number) {
         return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
+          <input
+            type='text'
+            className='cell-input'
+            value={record.wardName}
+            onChange={(e) => {
+              record.wardName = e.target.value
+              setData(cloneData)
+            }}
+          />
         )
-      }
+      },
+      width: 200
+    },
+    {
+      title: `数据`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.deductScore}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+
+              record.deductScore = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
     }
   ]
 

@@ -9,8 +9,8 @@ export interface Props extends NativeButtonProps {
 
 export default function EditButton(props: Props) {
   let btnDisabled = () => {
-    if (!qualityAnalysisReportViewModal.allData.report) return true
-    if (qualityAnalysisReportViewModal.allData.report.status == '1') return true
+    if (!qualityAnalysisReportViewModal.allData.instance) return true
+    if (qualityAnalysisReportViewModal.allData.instance.status == '1') return true
     return false
   }
   return <ButtonStyl {...props} icon={'edit'} border={props.border ? 1 : 0} disabled={btnDisabled()} />

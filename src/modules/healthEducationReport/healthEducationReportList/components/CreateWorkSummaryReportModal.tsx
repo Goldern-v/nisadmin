@@ -66,10 +66,10 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
         .then((res) => {
           let { reportName, year, beginDate, endDate, indexInType } = formData
           let params: any = {
-            reportName: reportName,
+            title: reportName,
             year: year ? year.format('YYYY') : '',
-            beginDate: beginDate ? beginDate.format('YYYY-MM-DD') + ' 00:00:00' : '',
-            endDate: endDate ? endDate.format('YYYY-MM-DD') + ' 23:59:59' : '',
+            beginDate: beginDate ? beginDate.format('YYYY-MM-DD 00:00:00') : '',
+            endDate: endDate ? endDate.format('YYYY-MM-DD 23:59:59') : '',
             month: indexInType
           }
 

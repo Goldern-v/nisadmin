@@ -61,8 +61,8 @@ export default observer(function HealthEducationReportList() {
     },
     {
       title: '报告名称',
-      key: 'reportName',
-      dataIndex: 'reportName',
+      key: 'title',
+      dataIndex: 'title',
       className: 'align-left',
       align: 'left',
       width: 200,
