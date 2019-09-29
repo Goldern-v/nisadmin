@@ -18,6 +18,7 @@ export default function ChartCon(props: Props) {
   const data = props.data
     .filter((item) => item.type == dataKey)
     .map((item) => ({ 科室: item.wardName, 数量: Number(item.typeValue) }))
+    .sort((a: any, b: any) => b.数量 - a.数量)
     .filter((item, index) => index < 12)
   const scale = [
     {

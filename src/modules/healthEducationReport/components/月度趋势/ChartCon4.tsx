@@ -45,7 +45,7 @@ export default function ChartCon(props: Props) {
     <Wrapper>
       <div className='chart-name'>满意度回收分析</div>
       {list.length && (
-        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 20]} scale={scale}>
+        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 30]} scale={scale}>
           <Tooltip />
           <Axis />
           <Legend />

@@ -12,7 +12,7 @@ export interface Props {
 }
 
 export default function ChartCon(props: Props) {
-  let { list } = props
+  let list = [...props.list].sort((a: any, b: any) => Number(a.time.replace('-', '')) - Number(b.time.replace('-', '')))
 
   let tslList = list.filter((item) => item.itemType == '推送量')
   let ydlList = list.filter((item) => item.itemType == '阅读量')
@@ -22,7 +22,7 @@ export default function ChartCon(props: Props) {
     tslObj[tslList[i].time] = Number(tslList[i].typeValue)
   }
   for (let i = 0; i < tslList.length; i++) {
-    ydlObj[ydlList[i].time] = Number(tslList[i].typeValue)
+    ydlObj[ydlList[i].time] = Number(ydlList[i].typeValue)
   }
   const sourceData = [tslObj, ydlObj]
 
@@ -45,7 +45,7 @@ export default function ChartCon(props: Props) {
     <Wrapper>
       <div className='chart-name'>宣教分析</div>
       {list.length && (
-        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 20]} scale={scale}>
+        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 30]} scale={scale}>
           <Tooltip />
           <Axis />
           <Legend />

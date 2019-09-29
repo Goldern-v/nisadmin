@@ -13,10 +13,33 @@ export interface Props {
   setData: any
 }
 
+function getSortValue(key: string) {
+  const valueMap: any = {
+    宣教分析: 10000000,
+    患者增长分析: 20000000,
+    制作课程趋势: 30000000,
+    满意度回收分析: 40000000,
+
+    推送量: 1000000,
+    阅读量: 2000000,
+    新增患者量: 1000000,
+    阅读患者量: 2000000,
+    制作课程趋势量: 1000000
+  }
+  return valueMap[key] || 0
+}
+
 export default function 月度趋势弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  let tableData = cloneData.list.sort((a: any, b: any) => {
+    return (
+      getSortValue(a.type) +
+      getSortValue(a.itemType) +
+      Number(a.time.replace('-', '')) -
+      (getSortValue(b.type) + getSortValue(b.itemType) + Number(b.time.replace('-', '')))
+    )
+  })
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -28,86 +51,36 @@ export default function 月度趋势弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '科室',
-      key: '科室',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.wardName}
-            onChange={(e) => {
-              record.wardName = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 200
+      title: '模块',
+      dataIndex: 'type',
+      width: 100
     },
     {
-      title: `问题`,
-      key: '问题',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.itemBadDesc}
-            onChange={(e) => {
-              record.itemBadDesc = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 300
+      title: '名称',
+      dataIndex: 'itemType',
+      width: 100
     },
     {
-      title: `扣分`,
-      key: '扣分',
-      render(text: any, record: DeptItem, index: number) {
+      title: '月份',
+      dataIndex: 'time',
+      width: 100
+    },
+    {
+      title: `数量`,
+      render(text: any, record: any, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.typeValue}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
+              record.typeValue = e.target.value
               setData(cloneData)
             }}
           />
         )
       },
       width: 100
-    },
-
-    {
-      title: '操作',
-      key: '操作',
-      width: 80,
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
-        )
-      }
     }
   ]
 
@@ -132,7 +105,7 @@ export default function 月度趋势弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={tableData}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20
@@ -155,12 +128,13 @@ const Wrapper = styled.div`
 
   .cell-input input,
   input.cell-input {
-    width: 100%;
+    width: calc(100% + 16px);
     height: 100%;
     border: 0;
     outline: none;
     background: transparent;
     padding: 0 5px;
+    margin: 0 -8px;
     border-radius: 0;
     &:focus {
       background: ${(p) => p.theme.$mlc};
@@ -168,7 +142,7 @@ const Wrapper = styled.div`
   }
 
   td {
-    padding: 0 !important;
+    /* padding: 0 !important; */
   }
   input {
     text-align: center;

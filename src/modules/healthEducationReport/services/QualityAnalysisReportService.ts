@@ -37,6 +37,30 @@ export default class QualityAnalysisReportService extends BaseApiService {
     }
     return this.post(`/missionReportInstance/update/graphs`, obj)
   }
+  /** 更新数据统计 */
+  public updateBarChart(barChartList?: any) {
+    let obj = {
+      reportId: appStore.queryObj.id,
+      barChartList
+    }
+    return this.post(`/missionReportInstance/update/barChart`, obj)
+  }
+  /** 更新数据趋势 */
+  public updateTrendMap(trendMapList?: any) {
+    let obj = {
+      reportId: appStore.queryObj.id,
+      trendMapList
+    }
+    return this.post(`/missionReportInstance/update/trendMap`, obj)
+  }
+  /** 更新top10 */
+  public updateDtt(dttList?: any) {
+    let obj = {
+      reportId: appStore.queryObj.id,
+      dttList
+    }
+    return this.post(`/missionReportInstance/update/dtt`, obj)
+  }
 }
 
 export const qualityAnalysisReportService = new QualityAnalysisReportService()

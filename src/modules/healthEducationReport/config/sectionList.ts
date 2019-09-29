@@ -42,6 +42,7 @@ export const sectionList: SectionListItem[] = [
     sectionId: '数据统计',
     sectionTitle: '数据统计',
     modalTitle: '编辑数据统计',
+    modalWidth: 800,
     data: {},
     section: 数据统计模块,
     modal: 数据统计弹窗

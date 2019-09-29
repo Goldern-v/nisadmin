@@ -59,6 +59,33 @@ export default observer(function BaseModal(props: Props) {
         setBtnLoading(false)
         onCancel()
       })
+    } else if (sectionData.sectionId == '数据统计') {
+      qualityAnalysisReportService.updateBarChart(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        setBtnLoading(false)
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '月度趋势') {
+      qualityAnalysisReportService.updateTrendMap(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        setBtnLoading(false)
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '科室排名') {
+      qualityAnalysisReportService.updateDtt(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        setBtnLoading(false)
+        onCancel()
+      })
     } else {
       setBtnLoading(false)
     }
