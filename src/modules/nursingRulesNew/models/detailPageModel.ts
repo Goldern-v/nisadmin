@@ -2,7 +2,7 @@ import { action, observable, computed } from 'mobx'
 import { nursingRulesApiService } from './../api/nursingRulesNewService'
 
 export class DetailPageModel {
-  private defautInfo = {
+  public defautInfo = {
     bookId: '',
     coverPath: '',
     bookName: '',
@@ -18,7 +18,7 @@ export class DetailPageModel {
     currentVersion: ''
   }
   //基本信息
-  @observable public baseInfo = { ...this.defautInfo }
+  @observable public baseInfo = { ...this.defautInfo } as any
 
   @observable baseLoading = false as boolean
   //目录
@@ -29,6 +29,10 @@ export class DetailPageModel {
   @observable public repairList = [] as any
   //待审核目录
   @observable public auditList = [] as any
+  //当前版本书籍收藏列表
+  @computed get currentVersionFavorList() {
+    return this.favorList.filter((item: any) => item.version == this.baseInfo.currentVersion)
+  }
 
   @action public inited(query: any) {
     this.indexList = []

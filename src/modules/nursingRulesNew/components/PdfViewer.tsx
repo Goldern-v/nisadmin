@@ -43,7 +43,7 @@ const Wrapper = styled.div`
   .message{
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 30%;
     transform: translate(-50%,-50%);
     font-size: 14px;
   }

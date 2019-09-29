@@ -8,17 +8,21 @@ import { detailPageModel } from './../../models/detailPageModel'
 export interface Props { }
 
 export default observer(function FavorPannel() {
-  const { favorList, baseInfo } = detailPageModel
+  const { currentVersionFavorList, baseInfo } = detailPageModel
   const { history } = appStore
 
   let formatList = () => {
-    let list = [] as any;
+    let sortList = [...currentVersionFavorList]
 
-    for (let i = 0; i < favorList.length; i++) {
+    sortList.sort((a, b) => a.nodeNum - b.nodeNum)
+
+    let list: any[] = []
+
+    for (let i = 0; i < sortList.length; i++) {
       if (i % 3 == 0) {
-        list.push([favorList[i]])
+        list.push([sortList[i]])
       } else {
-        list[list.length - 1].push(favorList[i])
+        list[list.length - 1].push(sortList[i])
       }
     }
 
@@ -57,12 +61,13 @@ export default observer(function FavorPannel() {
           <Col span={8} key={`${idx} ${idx1}`} >
             <div className="h2" onClick={() => handleItemClick(item1)}>
               <span>{item1.nodeName}</span>
-              {/* <span className="version">{`(${item1.version})`}</span> */}
             </div>
-            <Icon type="close" title="取消收藏" onClick={() => handleCancelCollect(item1)} />
+            <div className="cancel-favor" onClick={() => handleCancelCollect(item1)} title="取消收藏">
+              <Icon type="close" />
+            </div>
           </Col>)}
       </Row>)}
-    <div className="nope">{favorList.length <= 0 ? '暂无收藏' : ''}</div>
+    <div className="nope">{currentVersionFavorList.length <= 0 ? '暂无收藏' : ''}</div>
   </Wrapper>
 })
 
@@ -85,22 +90,28 @@ const Wrapper = styled.div`
     }
     .ant-col{
       cursor: pointer;
-      position: reltive;
-      &>i{
-        display:none;
+      position: relative;
+      .cancel-favor{
         position: absolute;
-        right: 12px;
-        top: 8px;
+        display:none;
+        right: 0;
+        top: 0;
+        height: 30px;
+        width: 30px;
+        text-align: center;
+        line-height: 30px;
         :hover{
-          color: red;
+          &>i{
+            color: red;
+          }
         }
       }
       :hover{
-        color: #00A680;
-        &>i{
-          display: inline;
+          color: #00A680;
+          .cancel-favor{
+            display: block;
+          }
         }
-      }
     }
   }
   .version{

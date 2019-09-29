@@ -17,10 +17,10 @@ export default function BookCover(props: Props) {
     <div className="book-box">
       <img src={src} title={title} className="content" />
       <div className="book-name">{name}</div>
-      <img src={require('./../assets/封面阴影.png')} className="cover" alt="" />
+      <img src={require('./../assets/封面阴影.png')} className="cover" />
     </div>
     <img src={require('./../assets/侧边厚度.png')} className="cover-right" />
-    <img src={require('./../assets/🎵.png')} className="shadow" />
+    <img src={require('./../assets/底边阴影.png')} className="shadow" />
   </Wrapper>
 }
 
