@@ -65,7 +65,9 @@ export default observer(function TopCon() {
             <span>
               {' '}
               注意：{empName}有{nurseFileDetailViewModal.badgeTotal}条未审核信息，点击
-              <ClickSpan onClick={() => appStore.history.push(`/nurseAudit?${appStore.query}`)}>这里</ClickSpan>
+              <ClickSpan onClick={() => appStore.history.push(`/nurseAudit?empNo=${appStore.queryObj.empNo}`)}>
+                这里
+              </ClickSpan>
               进行审核
             </span>
           </Tip>
