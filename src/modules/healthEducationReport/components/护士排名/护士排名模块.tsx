@@ -6,9 +6,6 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 
 import ChartCon1 from './ChartCon1'
-import ChartCon2 from './ChartCon2'
-import ChartCon3 from './ChartCon3'
-import ChartCon4 from './ChartCon4'
 import { Report } from '../../types'
 import moment from 'moment'
 export interface Props {
@@ -17,7 +14,7 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 科室排名模块(props: Props) {
+export default observer(function 护士排名模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
@@ -27,18 +24,14 @@ export default observer(function 科室排名模块(props: Props) {
 
   return (
     <Wrapper>
-      <div className='title'>5、月度TOP10科室排名</div>
+      <div className='title'>6、月度TOP10护士排名</div>
       <div className='chart-part'>
         <div className='chart-con'>
-          <ChartCon1 list={list} dataKey='推送量' label='推送量' />
+          <ChartCon1 list={list} dataKey='推送前十' label='推送量' />
         </div>
         <div className='chart-con'>
-          <ChartCon1 list={list} dataKey='阅读率' label='阅读率' />
+          <ChartCon1 list={list} dataKey='阅读前十' label='阅读量' />
         </div>
-        <div className='chart-con'>
-          <ChartCon1 list={list} dataKey='新增患者' label='新增患者量' />
-        </div>
-        <div className='chart-con'>{/* <ChartCon4 /> */}</div>
       </div>
 
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>

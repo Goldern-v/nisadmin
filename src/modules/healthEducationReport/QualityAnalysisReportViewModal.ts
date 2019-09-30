@@ -107,6 +107,7 @@ class QualityAnalysisReportViewModal {
     this.getSectionData(`数据统计`).list = this.allData.barChart || []
     this.getSectionData(`月度趋势`).list = this.allData.trendMap || []
     this.getSectionData(`科室排名`).list = this.allData.deptTopTenId || []
+    this.getSectionData(`护士排名`).list = this.allData.empTopTenId || []
   }
   async init() {
     await this.initData()

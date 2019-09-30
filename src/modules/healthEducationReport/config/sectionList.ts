@@ -13,6 +13,8 @@ import 月度趋势弹窗 from '../components/月度趋势/月度趋势弹窗'
 import 月度趋势模块 from '../components/月度趋势/月度趋势模块'
 import 科室排名模块 from '../components/科室排名/科室排名模块'
 import 科室排名弹窗 from '../components/科室排名/科室排名弹窗'
+import 护士排名弹窗 from '../components/护士排名/护士排名弹窗'
+import 护士排名模块 from '../components/护士排名/护士排名模块'
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -62,5 +64,13 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 科室排名模块,
     modal: 科室排名弹窗
+  },
+  {
+    sectionId: '护士排名',
+    sectionTitle: '护士排名',
+    modalTitle: '编辑护士排名',
+    data: {},
+    section: 护士排名模块,
+    modal: 护士排名弹窗
   }
 ]

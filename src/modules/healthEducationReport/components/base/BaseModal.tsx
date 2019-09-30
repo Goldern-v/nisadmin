@@ -86,6 +86,15 @@ export default observer(function BaseModal(props: Props) {
         setBtnLoading(false)
         onCancel()
       })
+    } else if (sectionData.sectionId == '护士排名') {
+      qualityAnalysisReportService.updateEtt(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        setBtnLoading(false)
+        onCancel()
+      })
     } else {
       setBtnLoading(false)
     }
@@ -94,6 +103,7 @@ export default observer(function BaseModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
+      setBtnLoading(false)
       let data = qualityAnalysisReportViewModal.getSectionData(sectionData.sectionId)
       setData(data)
     }

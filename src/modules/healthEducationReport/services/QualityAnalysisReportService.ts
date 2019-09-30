@@ -53,13 +53,21 @@ export default class QualityAnalysisReportService extends BaseApiService {
     }
     return this.post(`/missionReportInstance/update/trendMap`, obj)
   }
-  /** 更新top10 */
+  /** 更新科室top10 */
   public updateDtt(dttList?: any) {
     let obj = {
       reportId: appStore.queryObj.id,
       dttList
     }
     return this.post(`/missionReportInstance/update/dtt`, obj)
+  }
+  /** 更新护士top10 */
+  public updateEtt(ettList?: any) {
+    let obj = {
+      reportId: appStore.queryObj.id,
+      ettList
+    }
+    return this.post(`/missionReportInstance/update/ett`, obj)
   }
 }
 
