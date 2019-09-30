@@ -1,11 +1,8 @@
 const path = require('path')
 const { override, fixBabelImports, addLessLoader, addBabelPlugin } = require('customize-cra')
-const addSvgLoader = (loaderOptions = {}) => (config) => {
-  config.module.rules.push({
-    test: /\.svg$/,
-    use: ['@svgr/webpack']
-  })
-  console.log(config)
+const otherLoader = (loaderOptions = {}) => (config) => {
+  //解决Critical dependency: require function is used in a way in which dependencies cannot be statically extracted的问题
+  config.module.unknownContextCritical = false
   return config
 }
 module.exports = override(
@@ -18,6 +15,6 @@ module.exports = override(
   addLessLoader({
     javascriptEnabled: true,
     modifyVars: { '@primary-color': '#00A680' }
-  })
-  // addSvgLoader()
+  }),
+  otherLoader()
 )

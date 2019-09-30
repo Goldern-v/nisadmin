@@ -7,13 +7,13 @@ export default class QualityAnalysisReportService extends BaseApiService {
     return this.post(`/missionReportInstance/getReport`, { id: appStore.queryObj.id })
   }
   public deleteReport(obj?: any) {
-    return this.post(`/qcAnalysis/deleteReport`, appStore.queryObj)
+    return this.get(`/missionReportInstance/deleteReport?id=${appStore.queryObj.id}`)
   }
   public publishReport(obj?: any) {
-    return this.post(`/qcAnalysis/publish`, appStore.queryObj)
+    return this.get(`/missionReportInstance/publish?id=${appStore.queryObj.id}`)
   }
   public cancelPublishReport(obj?: any) {
-    return this.post(`/qcAnalysis/cancelPublish`, appStore.queryObj)
+    return this.get(`/missionReportInstance/cancelPublish?id=${appStore.queryObj.id}`)
   }
 
   /** 更新报告名称 */

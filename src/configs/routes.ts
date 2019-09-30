@@ -26,8 +26,8 @@ import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/Sche
 // import NurseFileDetailView from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
 // import NurseAudit from 'src/modules/nurseFiles/views/nurseAudit/NurseAudit'
 
-import BadEventView from 'src/modules/badEvents/views/BadEventView'
-import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
+// import BadEventView from 'src/modules/badEvents/views/BadEventView'
+// import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
 // import { BadEventConfig } from 'src/modules/badEvents/views/config/badEventConfig'
 
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
@@ -120,8 +120,8 @@ const routes: RouteItem[] = [
   setLayout('/nursingPerformance', NursingPerformance, layouts.MainLayout),
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
-  setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
-  setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
+  // setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
+  // setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
   // 培训考核
   setLayout('/trainingExamination/:type', TrainingExamination, layouts.MainLayout),
