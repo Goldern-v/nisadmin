@@ -19,11 +19,21 @@ export default observer(function IndexPannel() {
     })}`)
   }
 
-  const viewList = indexList.filter((item: any) => item.childrenList && item.childrenList.length > 0)
+  const handleParentItemClick = (item: any) => {
+    history.push(`nursingRulesPagePreview?${qs.stringify({
+      bookId: baseInfo.bookId,
+      nodeNum: item.nodeNum,
+      bookName: baseInfo.bookName,
+    })}`)
+  }
 
   return <Wrapper>
-    <IndexList indexList={viewList} onItemClick={handleItemClick} itemClass="active-item" />
-    <div className="nope">{viewList.length <= 0 ? '暂无目录' : ''}</div>
+    <IndexList
+      indexList={indexList}
+      onItemClick={handleItemClick}
+      onParentItemClick={handleParentItemClick}
+      itemClass="active-item" />
+    <div className="nope">{indexList.length <= 0 ? '暂无目录' : ''}</div>
   </Wrapper>
 })
 
@@ -34,6 +44,10 @@ const Wrapper = styled.div`
     font-size: 16px;
     font-weight: bold;
     color: #000;
+    cursor: pointer;
+    :hover{
+      color: #00A680;
+    }
   }
   .h2{
     padding-right: 8px;

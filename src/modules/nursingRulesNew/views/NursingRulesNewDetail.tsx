@@ -32,7 +32,10 @@ export default observer(function NursingRulesNewDetail() {
   const indexSize = () => {
     let size = 0;
     for (let i = 0; i < indexList.length; i++)
-      for (let j = 0; j < indexList[i].childrenList.length; j++)size++
+      if (indexList[i].childrenList && indexList[i].childrenList.length == 0)
+        size++
+      else
+        for (let j = 0; j < indexList[i].childrenList.length; j++)size++
 
     return size
   }

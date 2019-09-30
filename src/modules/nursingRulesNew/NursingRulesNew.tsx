@@ -121,10 +121,12 @@ export default observer(function nursingRulesNew() {
       key: 'status',
       align: 'center',
       render: (text: string, record: any) => {
-        if (record.status == 1) return <span >提交</span>
-        if (record.enabled == -1) return <span style={{ color: 'red' }}>无效</span>
+        let desc = record.statusDesc
+        if (desc == '提交') return <span >{desc}</span>
+        if (desc == '无效') return <span style={{ color: 'red' }}>{desc}</span>
+        if (desc == '发布') return <span style={{ color: 'blue' }}>{desc}</span>
 
-        return <span style={{ color: 'blue' }}>发布</span>
+        return <span >-</span>
       }
     },
     {

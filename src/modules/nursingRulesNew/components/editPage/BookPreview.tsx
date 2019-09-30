@@ -20,9 +20,12 @@ export default observer(function BookPreview() {
   const indexSize = () => {
     let size = 0;
     for (let i = 0; i < indexParams.length; i++) {
-      for (let j = 0; j < indexParams[i].childrenList.length; j++) {
+      if (!indexParams[i].childrenList)
         size++
-      }
+      else
+        for (let j = 0; j < indexParams[i].childrenList.length; j++) {
+          size++
+        }
     }
 
     return size

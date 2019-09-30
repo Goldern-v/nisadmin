@@ -4,11 +4,13 @@ import { Row, Col } from 'antd'
 export interface Props {
   indexList: any[],
   onItemClick?: Function,
-  itemClass?: string
+  onParentItemClick?: Function,
+  itemClass?: string,
+  parentItemClass?: string
 }
 
 export default function IndexList(props: Props) {
-  const { indexList, onItemClick, itemClass } = props
+  const { indexList, onItemClick, itemClass, onParentItemClick, parentItemClass } = props
 
   const handleClick = (item: any) => {
     onItemClick && onItemClick(item)
@@ -29,7 +31,14 @@ export default function IndexList(props: Props) {
 
       return <Fragment key={idx}>
         <Row >
-          <Col span={24}><div className="h1">{item0.name}</div></Col>
+          <Col
+            span={24}
+            onClick={() => onParentItemClick && onParentItemClick(item0)}>
+            <div
+              className={['h1', parentItemClass].join(' ')}>
+              {item0.name}
+            </div>
+          </Col>
         </Row>
         {childen.map((item1: any, idx1: number) =>
           <Row className="split" key={`${idx} ${idx1}`}>

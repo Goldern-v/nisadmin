@@ -92,11 +92,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         nursingRulesApiService.getBookInfo(search.bookId)
       ])
         .then(res => {
-          callback([{
-            childrenList: res[0].data.filter((item: any) => {
-              return item.urls && item.urls.length > 0
-            })
-          }])
+          callback(res[0].data)
 
           setAuditInfo(res[1].data)
         }, err => callback())
@@ -135,8 +131,11 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
   const findChapter = (nodeNum: any, indexList: any) => {
     for (let i = 0; i < indexList.length; i++) {
+      let target
+      if (indexList[i].nodeNum == nodeNum) return indexList[i]
+
       if (indexList[i].childrenList) {
-        let target = indexList[i].childrenList.find((item: any) => item.nodeNum == nodeNum)
+        target = indexList[i].childrenList.find((item: any) => item.nodeNum == nodeNum)
         if (target) return target
       }
     }
@@ -209,30 +208,45 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         let idx1
         let idx2
         let newChapter
+
         for (let i = 0; i < indexList.length; i++) {
-          if (indexList[i].childrenList)
-            for (let j = 0; j < indexList[i].childrenList.length; j++) {
-              if (indexList[i].childrenList[j].nodeNum == chapter.nodeNum) {
+          let parent = indexList[i]
+          if (parent.childrenList)
+            for (let j = 0; j < parent.childrenList.length; j++) {
+              if (parent.childrenList[j].nodeNum == chapter.nodeNum) {
                 idx1 = i
                 idx2 = j
               }
             }
+          else
+            if (parent.nodeNum == chapter.nodeNum) idx1 = i
         }
 
-        if ((!idx1 && idx1 !== 0) || (!idx2 && idx2 !== 0)) {
+        if (!idx1 && idx1 !== 0) {
           Message.warning('缺失章节信息')
           return
         }
 
-        if (indexList[idx1] && indexList[idx1].childrenList[idx2 - 1]) {
-          newChapter = indexList[idx1].childrenList[idx2 - 1]
+        if (indexList[idx1] && idx2 !== undefined) {
+          //如果还有子章节
+          idx2--
+          let target = indexList[idx1].childrenList[idx2]
+          if (target)
+            newChapter = indexList[idx1].childrenList[idx2]
         }
 
         if (!newChapter) {
+          //没有子章节 父章节序号往前进
           idx1--
-          if (indexList[idx1] && indexList[idx1].childrenList) {
-            let idx2 = indexList[idx1].childrenList.length - 1
-            newChapter = indexList[idx1].childrenList[idx2]
+          if (indexList[idx1]) {
+            let childrenList = indexList[idx1].childrenList
+            //如果子节点取最后一个子节点
+            if (childrenList && childrenList >= 0) {
+              newChapter = childrenList[childrenList.length - 1]
+            } else {
+              //否则取自己
+              newChapter = indexList[idx1]
+            }
           }
         }
 
@@ -253,28 +267,43 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         let idx2
         let newChapter
         for (let i = 0; i < indexList.length; i++) {
-          if (indexList[i].childrenList)
-            for (let j = 0; j < indexList[i].childrenList.length; j++) {
-              if (indexList[i].childrenList[j].nodeNum == chapter.nodeNum) {
+          let parent = indexList[i]
+          if (parent.childrenList)
+            for (let j = 0; j < parent.childrenList.length; j++) {
+              if (parent.childrenList[j].nodeNum == chapter.nodeNum) {
                 idx1 = i
                 idx2 = j
               }
             }
+          else
+            if (parent.nodeNum == chapter.nodeNum) idx1 = i
         }
 
-        if ((!idx1 && idx1 !== 0) || (!idx2 && idx2 !== 0)) {
+        if (!idx1 && idx1 !== 0) {
           Message.warning('缺失章节信息')
           return
         }
-        if (indexList[idx1] && indexList[idx1].childrenList[idx2 + 1]) {
-          newChapter = indexList[idx1].childrenList[idx2 + 1]
+
+        if (indexList[idx1] && idx2 !== undefined) {
+          //如果还有子章节
+          idx2++
+          let target = indexList[idx1].childrenList[idx2]
+          if (target)
+            newChapter = indexList[idx1].childrenList[idx2]
         }
 
         if (!newChapter) {
+          //没有子章节 父章节序号往前进
           idx1++
-          idx2 = 0
-          if (indexList[idx1] && indexList[idx1].childrenList[idx2]) {
-            newChapter = indexList[idx1].childrenList[idx2]
+          if (indexList[idx1]) {
+            let childrenList = indexList[idx1].childrenList
+            //如果子节点取第一个子节点
+            if (childrenList && childrenList >= 0) {
+              newChapter = childrenList[0]
+            } else {
+              //否则取自己
+              newChapter = indexList[idx1]
+            }
           }
         }
 
