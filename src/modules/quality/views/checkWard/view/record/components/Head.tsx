@@ -8,28 +8,23 @@ import { Place } from 'src/components/common'
 import { recordViewModal } from '../RecordViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker
+const { RangePicker } = DatePicker
 export interface Props {}
 
 export default observer(function Head() {
   return (
     <Wrapper>
-      <span>片区：</span>
-      <Select
-        value={recordViewModal.selectedBigDept}
-        onChange={(val: string) => {
-          recordViewModal.selectedBigDept = val
+      <span>查房日期：</span>
+      <RangePicker
+        style={{ width: 250 }}
+        value={recordViewModal.selectedDate}
+        onChange={(date) => {
+          recordViewModal.selectedDate = date
           recordViewModal.onload()
         }}
-      >
-        <Select.Option value=''>全部</Select.Option>
-        {recordViewModal.bigDeptList.map((item: any, index: number) => (
-          <Select.Option value={item.deptCode} key={index}>
-            {item.deptName}
-          </Select.Option>
-        ))}
-      </Select>
-      <span>科室：</span>
+      />
+
+      <span>查房科室：</span>
       <Select
         value={recordViewModal.selectedDept}
         onChange={(val: string) => {
@@ -44,32 +39,41 @@ export default observer(function Head() {
           </Select.Option>
         ))}
       </Select>
-      <span>日期：</span>
-      <RangePicker
-        style={{ width: 250 }}
-        value={recordViewModal.selectedDate}
-        onChange={(date) => {
-          recordViewModal.selectedDate = date
-          recordViewModal.onload()
-        }}
-      />
-      <span>状态：</span>
+
+      <span>类型：</span>
       <Select
-        value={recordViewModal.selectedStatus}
+        value={recordViewModal.selectedWardRound}
         onChange={(val: string) => {
-          recordViewModal.selectedStatus = val
+          recordViewModal.selectedWardRound = val
           recordViewModal.onload()
         }}
       >
-        {recordViewModal.stateList.map((item: any, index: number) => (
-          <Select.Option value={item} key={item}>
-            {item}
+        <Select.Option value=''>全部</Select.Option>
+        {recordViewModal.WardRoundList.map((item: any, index: number) => (
+          <Select.Option value={item.code} key={index}>
+            {item.name}
+          </Select.Option>
+        ))}
+      </Select>
+
+      <span>状态：</span>
+      <Select
+        value={recordViewModal.selectedCheckState}
+        onChange={(val: string) => {
+          recordViewModal.selectedCheckState = val
+          recordViewModal.onload()
+        }}
+      >
+        <Select.Option value=''>全部</Select.Option>
+        {recordViewModal.checkStateList.map((item: any, index: number) => (
+          <Select.Option value={item.code} key={item.code}>
+            {item.name}
           </Select.Option>
         ))}
       </Select>
       <Place />
+
       <Button onClick={() => recordViewModal.onload()}>查询</Button>
-      <Button onClick={() => recordViewModal.export()}>导出</Button>
     </Wrapper>
   )
 })

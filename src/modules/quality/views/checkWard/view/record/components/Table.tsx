@@ -13,93 +13,78 @@ import qs from 'qs'
 export interface Props {}
 
 export default observer(function Table() {
+
   const toDetails = (record: any) => {
-    service.commonApiService.getNurseInformation(record.empNo).then((res) => {
-      // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-      window.open(`/crNursing/manage/#/nurseFileDetail/${appStore.match.params.path}?${qs.stringify(res.data)}`)
-    })
+    appStore.history.push(`/qualityScheduleRecordDetails/${record.id}`)
   }
+
   const columns: ColumnProps<any>[] = [
     {
-      title: '片区',
-      dataIndex: 'bigDept',
+      title: '查房编号',
+      dataIndex: 'srCode',
+      width: 170,
+      align: 'center'
+    },
+    {
+      title: '查房日期',
+      dataIndex: 'srDate',
       width: 100,
-      align: 'left'
+      align: 'center'
     },
     {
-      title: '科室',
-      dataIndex: 'deptName',
-      width: 150,
-      align: 'left'
+      title: '检查病区',
+      dataIndex: 'wardName',
+      width: 160
     },
     {
-      title: '员工号',
-      dataIndex: 'empNo',
-      width: 100
+      title: '查房类型',
+      dataIndex: 'type',
+      width: 140,
+      align: 'center'
     },
     {
-      title: '姓名',
-      dataIndex: 'empName',
-      width: 100
+      title: '检查人员',
+      dataIndex: 'srName',
+      width: 90,
+      align: 'center'
     },
     {
-      title: '性别',
-      dataIndex: 'sex',
-      width: 80,
-      render(text: any, row: any) {
-        return sexToChina(text)
+      title: '护士在岗情况',
+      dataIndex: 'nurseStatus',
+      width: 100,
+      align: 'center',
+      render (status: string) {
+        return status == '0' ?  '无问题' : <span style={{ color: 'red' }}>有问题</span>
       }
     },
-
     {
-      title: '年龄',
-      dataIndex: 'age',
-      width: 80
-    },
-    {
-      title: '职称',
-      dataIndex: 'newTitle',
+      title: '病人情况',
+      dataIndex: 'patientStatus',
       width: 100,
-      align: 'center'
-    },
-    {
-      title: '层级',
-      dataIndex: 'nurseHierarchy',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '职务',
-      dataIndex: 'job',
-      width: 100,
-      align: 'center'
-    },
-    {
-      title: '最高学历',
-      dataIndex: 'highestEducation',
-      width: 100
+      align: 'center',
+      render (status: string) {
+        return status == '0' ?  '无问题' : <span style={{ color: 'red' }}>有问题</span>
+      }
     },
     {
       title: '状态',
       dataIndex: 'status',
-      width: 80
-    },
-    {
-      title: '籍贯',
-      dataIndex: 'nativePlace',
-      width: 100,
-      align: 'left'
-    },
-    {
-      title: '民族',
-      dataIndex: 'nation',
-      width: 80
-    },
-    {
-      title: '执业证书编号',
-      dataIndex: 'zyzsNumber',
-      width: 100,
-      align: 'left'
+      width: 140,
+      align: 'center',
+      render (status: string) {
+        switch (status) {
+          case '1':
+            return '暂存'
+          case '2':
+            return '待质控组长审核'
+          case '3':
+            return '待护理部审核'
+          case '4':
+            return '护理部已评'
+          default:
+            return ''
+        }
+      }
     },
     {
       title: '操作',
@@ -108,7 +93,7 @@ export default observer(function Table() {
       render(text: string, record: any) {
         return (
           <DoCon>
-            <span onClick={() => toDetails(record)}>操作</span>
+            <span onClick={() => toDetails(record)}>查看</span>
           </DoCon>
         )
       }
@@ -121,7 +106,7 @@ export default observer(function Table() {
         dataSource={recordViewModal.tableList}
         columns={columns}
         type={['index', 'fixedIndex']}
-        surplusHeight={180}
+        surplusHeight={220}
         surplusWidth={300}
         pagination={{
           current: recordViewModal.pageIndex,

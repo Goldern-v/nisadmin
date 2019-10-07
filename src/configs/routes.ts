@@ -71,6 +71,9 @@ import QualityControlRecordDetail from 'src/modules/quality/views/qualityControl
 import QualityAnalysisEdit from 'src/modules/quality/views/analysis/AnalysisEdit'
 import QualityAnalysisDetail from 'src/modules/quality/views/analysis/AnalysisDetail'
 import { specialModule } from './routerConfig/specialModule'
+import DetailsView from 'src/modules/quality/views/checkWard/view/details/DetailsView'
+import ImportView from 'src/modules/quality/views/checkWard/view/import/ImportView'
+
 //病区文件
 import DeptFileShareCatalogSetting from 'src/modules/deptReferSetting/views/DeptFileShareCatalogSetting'
 import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView'
@@ -163,6 +166,9 @@ const routes: RouteItem[] = [
   // 护理质量
   setLayout('/quality/:name', QualityView, layouts.MainLayout),
   setLayout('/qualityControlRecordDetail/:id', QualityControlRecordDetail, layouts.MainLayout),
+  setLayout('/qualityScheduleRecordDetails/:id',DetailsView, layouts.MainLayout),
+  setLayout('/qualityScheduleImport',ImportView, layouts.MainLayout),
+
   setLayout('/qualityAnalysisDetail/:id', QualityAnalysisDetail, layouts.BreadcrumbLayout, [
     { name: '护理质量', link: '/quality' },
     { name: '分析报告', link: '/quality/analysis' },

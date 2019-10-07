@@ -1,60 +1,57 @@
-import { fileDownload } from 'src/utils/file/file'
-import { format } from 'date-fns'
-import { observable, computed, action } from 'mobx'
+import { observable, computed } from 'mobx'
 import { checkWardService } from '../../services/CheckWardService'
-import monnet from 'src/vendors/moment'
 import { crrentMonth } from 'src/utils/moment/crrentMonth'
 import service from 'src/services/api'
 
 class RecordViewModal {
-  @observable public bigDeptList = []
+  @observable public selectedWardRound = '' //查房类型
+  @observable public WardRoundList = []
+  @observable public selectedCheckState = '' //查房状态
+  @observable public checkStateList = []
+  @observable public selectedDept = '' //科室
   @observable public deptList = []
-  @observable public stateList = ['离职', '退休', '离职+退休']
-
-  @observable public selectedBigDept = ''
-  @observable public selectedDept = ''
-  @observable public selectedDate: any = crrentMonth()
-  @observable public selectedStatus = '离职'
-  @observable public tableList = []
-
-  @observable public tableLoading = false
+  @observable public selectedDate: any = crrentMonth() // 查房日期
+  @observable public tableList = [] // 表格内容
+  @observable public tableLoading = false 
   @observable public pageIndex: any = 1
   @observable public pageSize: any = 20
   @observable public total: any = 0
 
-  export() {
-    checkWardService.excelNurseLeave(this.postObj).then((res) => {
-      fileDownload(res)
-    })
-  }
   async initData() {
     await Promise.all([
-      service.commonApiService.groupByBigDeptInDeptList().then((res) => {
-        this.bigDeptList = res.data
-      }),
+      //科室
       service.commonApiService.getNursingUnitAll().then((res) => {
         this.deptList = res.data.deptList
-        // this.selectedDept = res.data.defaultDept
-      })
+      }),
+      //查房类型
+      checkWardService.dictInfo().then((res) => {
+        this.WardRoundList = res.data
+      }),
+      //查房状态
+      checkWardService.dictStatus().then((res) => {
+        this.checkStateList = res.data
+      })     
     ])
   }
 
   @computed
   get postObj() {
+    let stateName = this.checkStateList.filter((item: any) => item.code === this.selectedCheckState)
+    // let state = this.checkStateList.filter(item => item[0].code === this.form.state)/
     return {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
-      deptCode: this.selectedDept,
-      bigDept: this.selectedBigDept,
-      leaveStartDate: this.selectedDate[0].format('YYYY-MM-DD'),
-      leaveEndDate: this.selectedDate[1].format('YYYY-MM-DD'),
-      statusType: this.selectedStatus.split('+')
+      wardCode: this.selectedDept,
+      type: this.selectedWardRound,
+      status: this.selectedCheckState,
+      beginDate: this.selectedDate[0].format('YYYY-MM-DD'),
+      endDate: this.selectedDate[1].format('YYYY-MM-DD'),
     }
   }
 
   onload() {
     this.tableLoading = true
-    checkWardService.countNurseLeave(this.postObj).then((res) => {
+    checkWardService.getPage(this.postObj).then((res) => {
       this.tableList = res.data.list
       this.pageIndex = res.data.pageIndex
       this.pageSize = res.data.pageSize

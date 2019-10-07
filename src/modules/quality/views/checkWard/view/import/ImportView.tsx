@@ -1,54 +1,21 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
-import Left from './components/Left'
-import Right from './components/Right'
+import Body from './components/Body'
+
 import { ScrollBox } from 'src/components/common'
-import { checkWardService } from '../../services/CheckWardService'
-import { appStore } from 'src/stores';
-import { Spin } from 'antd'
 
-export default function DetailsView() {
-  const [detailData, setDetailData]: any = useState([])
-  const [loading, setLoading] = useState(false)
+export interface Props {}
 
-  const onload = () => {
-    let id = appStore.match.params.id
-    setLoading(true)
-    checkWardService.getDetail(id).then((res) => {
-      setLoading(false)
-      setDetailData(res.data)
-      console.log(res.data,detailData,'00000000000000')
-    })
-  }
-
-  useEffect(() => {
-    onload()
-  }, [])
-
-
+export default function ImportView() {
   return (
     <Wrapper>
       <HeaderCon>
-        <Header detailData={detailData} onload={onload}/>
+        <Header />
       </HeaderCon>
       <MidCon>
         <MidConScrollCon>
-          <SpinCon>
-            {loading ? (
-              <div className='LoadingCon'>
-                <Spin spinning={loading} className='SpinLoadingClass' />
-              </div>
-            ) : (
-              ''
-            )}
-          </SpinCon>
-          <MidLeftCon>
-            <Left detailData={detailData} />
-          </MidLeftCon>
-          <MidRightCon>
-            <Right detailData={detailData} />
-          </MidRightCon>
+          <Body />
         </MidConScrollCon>
       </MidCon>
     </Wrapper>
@@ -62,7 +29,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 const HeaderCon = styled.div`
-  height: 95px;
+  height: 76px;
   background-color: #fff;
   border-bottom: 1px solid #ddd;
 `

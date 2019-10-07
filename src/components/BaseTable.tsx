@@ -124,8 +124,8 @@ export default observer(function BaseTable(props: Props) {
         } else if (option.columns[0].title != '序号') {
           option.columns.unshift({
             title: '序号',
-            dataIndex: '1',
-            key: '1',
+            dataIndex: '0',
+            key: '0',
             render: render,
             align: 'center',
             width: 50
