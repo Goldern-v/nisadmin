@@ -9,6 +9,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
 import queryStatisticsServices from './services/queryStatisticsServices'
 import { fileDownload } from 'src/utils/file/file'
+import { PageTitle } from 'src/components/common'
 
 export interface Props extends RouteComponentProps {}
 
@@ -120,6 +121,9 @@ export default observer(function QueryStatistics(props: any) {
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
+          <PageTitle>医院质量检查表单统计表</PageTitle>
+        </LeftIcon>
+        <RightIcon>
           <div className='item'>
             <div className='label'>日期：</div>
             <div className='content'>
@@ -150,8 +154,6 @@ export default observer(function QueryStatistics(props: any) {
               查询
             </Button>
           </div>
-        </LeftIcon>
-        <RightIcon>
           <div className='item'>
             <Button
               className='excel'

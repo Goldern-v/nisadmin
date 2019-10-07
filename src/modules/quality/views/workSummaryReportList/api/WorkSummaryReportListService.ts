@@ -2,11 +2,11 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import qs from 'qs'
 
 export default class WorkSummaryReportListService extends BaseApiService {
-  public qcRoleCode() {
-    return this.get('/qcItem/dict/qcRoleCode')
+  public qcBigDeptList() {
+    return this.get('/dept/bigDeptList')
   }
-  public qcRoleCodeSelf() {
-    return this.get('/qcItem/dict/qcRoleCodeSelf')
+  public qcBigDeptListSelf() {
+    return this.get('/qcItem/dict/bigDeptListSelf')
   }
   public getPage(query: any) {
     return this.post('/qcAnalysis2L/getPage', query)

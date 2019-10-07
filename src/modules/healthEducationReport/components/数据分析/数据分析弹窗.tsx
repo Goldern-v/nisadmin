@@ -16,99 +16,58 @@ export interface Props {
 export default function 数据分析弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+
+  let dataMap = [
+    {
+      name: 'push',
+      label: '推送量'
+    },
+    {
+      name: 'reading',
+      label: '阅读量'
+    },
+    {
+      name: 'pushClass',
+      label: '推送课程数'
+    },
+    {
+      name: 'inPatients',
+      label: '在院患者数'
+    },
+    {
+      name: 'pushNum',
+      label: '推送人数'
+    },
+    {
+      name: 'readingNum',
+      label: '阅读人数'
+    }
+  ]
+  let tableData = [...cloneData.list].reverse()
   const columns: ColumnProps<any>[] = [
     {
-      title: '序号',
-      key: 'index',
-      render(text: any, record: any, index: number) {
-        return index + 1
-      },
-      width: 50,
-      align: 'center'
+      title: '日期',
+      width: 120,
+      align: 'center',
+      dataIndex: 'showDate'
     },
-    {
-      title: '科室',
-      key: '科室',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.wardName}
-            onChange={(e) => {
-              record.wardName = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 200
-    },
-    {
-      title: `问题`,
-      key: '问题',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.itemBadDesc}
-            onChange={(e) => {
-              record.itemBadDesc = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 300
-    },
-    {
-      title: `扣分`,
-      key: '扣分',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.deductScore}
-            onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-
-    {
-      title: '操作',
-      key: '操作',
-      width: 80,
+    ...dataMap.map((item: any) => ({
+      title: item.label,
       render(text: any, record: any, index: number) {
         return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
+          <input
+            type='text'
+            className='cell-input'
+            value={record[item.name]}
+            onChange={(e) => {
+              record[item.name] = e.target.value
+              setData(cloneData)
+            }}
+          />
         )
-      }
-    }
+      },
+      width: 80
+    }))
   ]
 
   const addItem = () => {
@@ -132,7 +91,7 @@ export default function 数据分析弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={tableData}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20

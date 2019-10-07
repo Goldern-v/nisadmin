@@ -33,6 +33,7 @@ import OrganizationChange from './views/OrganizationChange'
 import { ScrollBox } from 'src/components/common'
 import service from 'src/services/api'
 import qs from 'qs'
+import { nurseFilesService } from '../../services/NurseFilesService'
 
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
@@ -154,7 +155,6 @@ const ROUTE_LIST = [
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
-  nurseFileDetailViewModal.nurserInfo = appStore.queryObj
   // appStore.match.params.type
   let currentRouteType = props.match.params.type
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
@@ -162,10 +162,19 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
   useEffect(() => {
     if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
       service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {
-        appStore.history.replace(`${appStore.match.url}?${qs.stringify(res.data)}`)
+        appStore.history.replace(`${appStore.match.url}?empNo=${res.data.empNo}`)
       })
     }
-  }, [])
+    if (appStore.match.url.indexOf('selfNurseFile') > -1 && appStore.queryObj.empNo) {
+      nurseFilesService.nurseInformationSelf(appStore.queryObj.empNo).then((res) => {
+        nurseFileDetailViewModal.nurserInfo = res.data
+      })
+    } else if (appStore.queryObj.empNo) {
+      nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+        nurseFileDetailViewModal.nurserInfo = res.data
+      })
+    }
+  }, [appStore.queryObj.empNo])
 
   return (
     <Wrapper>

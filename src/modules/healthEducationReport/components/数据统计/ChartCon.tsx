@@ -7,41 +7,28 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewM
 import { Chart, Tooltip, Axis, Bar, Legend, Line, Point } from 'viser-react'
 const DataSet = require('@antv/data-set')
 
-export interface Props {}
+export interface Props {
+  label: string
+  dataKey: string
+  data: any[]
+}
 
 export default function ChartCon(props: Props) {
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
-  const data = [
-    { 科室: '1951 年', 数量: 38 },
-    { 科室: '1952 年', 数量: 52 },
-    { 科室: '1956 年', 数量: 61 },
-    { 科室: '1957 年', 数量: 145 },
-    { 科室: '1958 年', 数量: 48 },
-    { 科室: '1959 年', 数量: 38 },
-
-    { 科室: '1969 年', 数量: 38 },
-    { 科室: '1970 年', 数量: 38 },
-    { 科室: '1971 年', 数量: 38 },
-    { 科室: '1972 年', 数量: 52 },
-    { 科室: '1973 年', 数量: 61 },
-    { 科室: '1974 年', 数量: 145 },
-    { 科室: '1975 年', 数量: 48 },
-    { 科室: '1976 年', 数量: 38 },
-    { 科室: '1977 年', 数量: 38 },
-    { 科室: '1978 年', 数量: 38 },
-    { 科室: '1979 年', 数量: 38 },
-
-    { 科室: '2000 年', 数量: 38 }
-  ]
+  let { label, dataKey } = props
+  const data = props.data
+    .filter((item) => item.type == dataKey)
+    .map((item) => ({ 科室: item.wardName, 数量: Number(item.typeValue) }))
+    .sort((a: any, b: any) => b.数量 - a.数量)
+    .filter((item, index) => index < 12)
   const scale = [
     {
       dataKey: '数量',
-      tickInterval: 20
+      min: 0
     }
   ]
   return (
     <Wrapper>
-      <div className='chart-name'>本月新增患者数</div>
+      <div className='chart-name'>{label}</div>
       <Chart forceFit height={400} data={data} scale={scale} padding={[20, 20, 50, 20]}>
         <Tooltip />
         <Axis />

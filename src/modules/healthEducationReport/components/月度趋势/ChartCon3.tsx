@@ -4,49 +4,55 @@ import { Button } from 'antd'
 import { TypeCompare, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewModal'
-import { Chart, Tooltip, Axis, Bar, Legend, Line, Point } from 'viser-react'
+import { Chart, Tooltip, Axis, Bar, Legend, Line, Point, SmoothLine } from 'viser-react'
 const DataSet = require('@antv/data-set')
 
-export interface Props {}
+export interface Props {
+  list: any[]
+}
 
 export default function ChartCon(props: Props) {
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
-  const data = [
-    { 科室: '1951 年', 数量: 38 },
-    { 科室: '1952 年', 数量: 52 },
-    { 科室: '1956 年', 数量: 61 },
-    { 科室: '1957 年', 数量: 145 },
-    { 科室: '1958 年', 数量: 48 },
-    { 科室: '1959 年', 数量: 38 },
+  let { list } = props
 
-    { 科室: '1969 年', 数量: 38 },
-    { 科室: '1970 年', 数量: 38 },
-    { 科室: '1971 年', 数量: 38 },
-    { 科室: '1972 年', 数量: 52 },
-    { 科室: '1973 年', 数量: 61 },
-    { 科室: '1974 年', 数量: 145 },
-    { 科室: '1975 年', 数量: 48 },
-    { 科室: '1976 年', 数量: 38 },
-    { 科室: '1977 年', 数量: 38 },
-    { 科室: '1978 年', 数量: 38 },
-    { 科室: '1979 年', 数量: 38 },
+  let tslList = list.filter((item) => item.itemType == '制作课程趋势量')
+  let ydlList = list.filter((item) => item.itemType == '阅读患者量')
+  let tslObj: any = { name: '制作课程趋势量' }
+  // let ydlObj: any = { name: '阅读患者量' }
+  for (let i = 0; i < tslList.length; i++) {
+    tslObj[tslList[i].time] = Number(tslList[i].typeValue)
+  }
+  // for (let i = 0; i < tslList.length; i++) {
+  //   ydlObj[ydlList[i].time] = Number(tslList[i].typeValue)
+  // }
+  const sourceData = [tslObj]
 
-    { 科室: '2000 年', 数量: 38 }
-  ]
+  const dv = new DataSet.View().source(sourceData)
+  dv.transform({
+    type: 'fold',
+    fields: tslList.map((item) => item.time),
+    key: '月份',
+    value: '数量'
+  })
   const scale = [
     {
       dataKey: '数量',
-      tickInterval: 20
+      min: 0
     }
   ]
+
+  const data = dv.rows
   return (
     <Wrapper>
-      <div className='chart-name'>本月新增患者数</div>
-      <Chart forceFit height={400} data={data} scale={scale} padding={[20, 20, 50, 20]}>
-        <Tooltip />
-        <Axis />
-        <Bar position='科室*数量' />
-      </Chart>
+      <div className='chart-name'>制作课程趋势</div>
+      {list.length && (
+        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 30]} scale={scale}>
+          <Tooltip />
+          <Axis />
+          <Legend />
+          {/* <Bar position='月份*数量' color='name' adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} /> */}
+          <SmoothLine position='月份*数量' color='#fdae6b' size={3} />
+        </Chart>
+      )}
     </Wrapper>
   )
 }

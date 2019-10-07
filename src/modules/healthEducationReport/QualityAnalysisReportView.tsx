@@ -19,11 +19,11 @@ export default observer(function QualityAnalysisReportView() {
   useEffect(() => {
     qualityAnalysisReportViewModal.init()
   }, [])
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  let instance: any = qualityAnalysisReportViewModal.getDataInAllData('instance')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
     let title = document.title
-    document.title = report.reportName
+    document.title = instance.title
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -68,7 +68,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.deleteReport().then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/setting/healthEducationReportList')
         }, 500)
       })
     })
@@ -78,7 +78,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.publishReport().then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/setting/healthEducationReportList')
         }, 500)
       })
     })
@@ -88,7 +88,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.cancelPublishReport().then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/setting/healthEducationReportList')
         }, 500)
       })
     })
@@ -96,24 +96,26 @@ export default observer(function QualityAnalysisReportView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/quality/analysis' }, { name: '报告详情', link: '' }]} />
-        <div className='title'>{report.reportName}</div>
+        <BaseBreadcrumb
+          data={[{ name: '分析报告', link: '/setting/healthEducationReportList' }, { name: '报告详情', link: '' }]}
+        />
+        <div className='title'>{instance.title}</div>
         <div className='aside'>
           <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
+            由{instance.creatorName}创建{instance.updateTime && <span>，最后修改于{instance.updateTime}</span>}
           </span>
         </div>
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' ? (
+          {instance.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
             <Button onClick={onPublish}>发布</Button>
           )}
 
           <Button onClick={() => onPrint(true)}>打印</Button>
-          <Button onClick={() => appStore.history.push('/quality/analysis')}>返回</Button>
+          <Button onClick={() => appStore.history.push('/setting/healthEducationReportList')}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>

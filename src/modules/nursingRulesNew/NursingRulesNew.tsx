@@ -1,20 +1,24 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input } from 'antd'
+import { Button, Input, Modal, message as Message } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { appStore, authStore } from 'src/stores'
+import { nursingRulesApiService } from './api/nursingRulesNewService'
 import { ColumnProps } from 'antd/lib/table'
 import { observer } from 'mobx-react-lite'
+import qs from 'qs'
 export interface Props { }
 
 export default observer(function nursingRulesNew() {
+  const { history } = appStore
   let [query, setQuery] = useState({
-    keywords: '',
+    bookName: '',
     pageSize: 20,
     pageIndex: 1
   })
 
   const [dataTotal, setDataTotal] = useState(0)
-  const [tableData, setTableLoading] = useState([{ name: '书籍名称' }] as any)
+  const [tableData, setTableData] = useState([] as any[])
   const [loading, setLoading] = useState(false)
 
   const handlePageSizeChange = (current: number, size: number) => {
@@ -25,66 +29,173 @@ export default observer(function nursingRulesNew() {
     setQuery({ ...query, pageIndex: current })
   }
 
+  useEffect(() => {
+    getTableData()
+  }, [query])
+
+  const getTableData = () => {
+    setLoading(true)
+    nursingRulesApiService.getBookListByParam(query).then(res => {
+
+      setLoading(false)
+      setTableData(res.data.list)
+      setDataTotal(res.data.totalCount || 0)
+    }, () => setLoading(false))
+  }
+
+  const settingChange = (record: any) => {
+    let content = "确定把该书籍设为无效吗？设为无效后将不能再查看该书籍内容"
+    if (record.enabled == -1) content = "确定启用该书籍吗"
+    let enabled = record.enabled == 1 ? -1 : 1
+
+    Modal.confirm({
+      centered: true,
+      title: '提示',
+      content: content,
+      onOk: () => {
+        setLoading(true)
+        nursingRulesApiService.changeBookAvailability({
+          bookId: record.id,
+          enabled
+        })
+          .then(res => {
+            setLoading(false)
+            Message.success('设置成功')
+            getTableData()
+          }, err => setLoading(false))
+      }
+    })
+  }
+
+  const deleteBook = (record: any) => {
+    Modal.confirm({
+      centered: true,
+      title: '提示',
+      content: '确定删除该书籍吗？删除后数据无法恢复',
+      onOk: () => {
+        setLoading(true)
+        nursingRulesApiService.deleteBook(record.id).then(res => {
+          Message.success('删除成功')
+          getTableData()
+        }, err => setLoading(false))
+      }
+    })
+  }
+
+  const handleDetailView = (bookId: string) => {
+    history.push(`nursingRulesNewDetail?${qs.stringify({ bookId })}`)
+  }
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
       key: 'idx',
-      render: (text: any, record: any, idx) => idx + 1,
+      render: (text: any, record: any, idx) =>
+        (query.pageIndex - 1) * query.pageSize + (idx + 1),
       width: 80,
       align: 'center'
     },
     {
       title: '书籍名称',
-      key: 'name',
-      dataIndex: 'name',
+      key: 'bookName',
+      dataIndex: 'bookName',
       align: 'left',
       render: (text: string) => <div className='rule-name' title={text}>{text}</div>
     },
     {
       title: '上传人',
       width: 80,
-      key: 'updateName'
+      key: 'upLoaderEmpName',
+      dataIndex: 'upLoaderEmpName',
     },
     {
       title: '上传时间',
       width: 150,
-      key: 'updateTime'
+      key: 'upLoadTime',
+      dataIndex: 'upLoadTime',
+      align: 'center',
     },
     {
       title: '状态',
       width: 80,
       key: 'status',
+      align: 'center',
+      render: (text: string, record: any) => {
+        let desc = record.statusDesc
+        if (desc == '提交') return <span >{desc}</span>
+        if (desc == '无效') return <span style={{ color: 'red' }}>{desc}</span>
+        if (desc == '发布') return <span style={{ color: 'blue' }}>{desc}</span>
+
+        return <span >-</span>
+      }
     },
     {
       title: '操作',
       width: 150,
       key: 'operation',
       render: (text: any, record: any) => {
+        let uploaderAuth = !!(record.upLoaderEmpNo == authStore.getUser().empNo) as boolean
+        let absoluteAuth = authStore.isDepartment as boolean
+        let auth = !!(uploaderAuth || absoluteAuth) as boolean
+
+        let className = 'disable'
+        let settingText = '设为无效'
+
+        if (auth) className = ''
+        if (record.enabled == -1) settingText = '启用'
+
+        let settingSpan = <span className={'enabled' + className} onClick={() => {
+          if (!auth) return
+          settingChange(record)
+        }}>{settingText}</span>
+
+        let deleteSpan = <span className={className} onClick={() => {
+          if (!auth) return
+          deleteBook(record)
+        }}>删除</span>
+
         return <DoCon>
-          <span>查看</span>
-          <span>设为无效</span>
-          <span>删除</span>
+          <span onClick={() => handleDetailView(record.id)}>查看</span>
+          {settingSpan}
+          {deleteSpan}
         </DoCon>
       }
     },
 
   ]
 
-  //authStore.isDepartment || authStore.isSupervisorNurse
+  // authStore.isDepartment || authStore.isSupervisorNurse
+
+  const handleCreate = () => {
+    nursingRulesApiService
+      .getTaskCode({ taskType: 1 })
+      .then(res => {
+        if (res.data) {
+          let newSearch = {
+            taskType: res.data.taskType,
+            taskCode: res.data.taskCode
+          }
+          if (res.data) history.push(`/nursingRulesNewEdit?${qs.stringify(newSearch)}`)
+        }
+      })
+  }
 
   return <Wrapper>
     <div className='topbar'>
       <div className='title'>护理制度</div>
       <div className='float-right'>
-        <span className='type-label'>类型：</span>
+        <span className='type-label'></span>
         <span className='type-content'>
         </span>
-        <span className='search-input'>
+        <span className='search-input' style={{ width: '200px' }}>
           <Input
-            value={query.keywords}
+            defaultValue={query.bookName}
+            allowClear
+            onBlur={(e: any) => setQuery({ ...query, bookName: e.target.value })}
             placeholder='输入名称进行检索' />
         </span>
-        <Button type='primary'>查询</Button>
+        <Button onClick={() => getTableData()}>查询</Button>
+        <Button type='primary' onClick={handleCreate}>新建</Button>
       </div>
       <div className="main-contain">
         <BaseTable columns={columns}
@@ -174,6 +285,18 @@ height: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+    span.disable {
+      color: #999;
+      cursor: default;
+      :hover{
+        font-weight: normal;
+      }
+    }
+    span.enabled{
+      display: inline-block;
+      width: 52px;
+      text-align: center;
     }
   }
   .operate-text {

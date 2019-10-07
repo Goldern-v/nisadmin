@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { DatePicker, Select, Button, message as Message } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import Moment, { duration } from 'moment'
+import moment, { duration } from 'moment'
+import { PageTitle } from 'src/components/common'
 import WorkSummaryReportListService from './api/WorkSummaryReportListService'
 
 import CreateWorkSummaryReportModal from './components/CreateWorkSummaryReportModal'
@@ -22,20 +23,20 @@ export default observer(function WorkSummaryReportList() {
   const [groupRoleListSelf, setGroupRolelistSelf] = useState([])
 
   const [query, setQuery] = useState({
-    year: Moment() as null | Moment.Moment,
+    year: moment() as null | moment.Moment,
     pageIndex: 1,
     pageSize: 20,
     type: 'month',
-    indexInType: '',
+    indexInType: moment().month() + 1,
     status: '',
     groupRoleCode: ''
   } as any)
 
   useEffect(() => {
-    api.qcRoleCode().then((res) => {
+    api.qcBigDeptList().then((res) => {
       if (res.data instanceof Array) setGroupRolelist(res.data)
     })
-    api.qcRoleCodeSelf().then((res) => {
+    api.qcBigDeptListSelf().then((res) => {
       if (res.data instanceof Array) setGroupRolelistSelf(res.data)
     })
   }, [])
@@ -234,6 +235,9 @@ export default observer(function WorkSummaryReportList() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
+          <PageTitle>二级质控分析报告</PageTitle>
+        </div>
+        <div className='float-right'>
           <div className='item'>
             <div className='label'>报告年度：</div>
             <div className='content'>
@@ -284,7 +288,7 @@ export default observer(function WorkSummaryReportList() {
             </div>
           </div>
           <div className='item'>
-            <div className='label'>质控组：</div>
+            <div className='label'>片区：</div>
             <div className='content'>
               <Select
                 value={query.groupRoleCode}
@@ -294,7 +298,7 @@ export default observer(function WorkSummaryReportList() {
                 className='recode-type-select'
               >
                 <Option value=''>全部</Option>
-                {groupRoleList.map((item: any) => (
+                {groupRoleListSelf.map((item: any) => (
                   <Option value={item.code} key={item.code}>
                     {item.name}
                   </Option>
@@ -305,11 +309,11 @@ export default observer(function WorkSummaryReportList() {
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>
-        </div>
-        <div className='float-right'>
-          <Button onClick={handleCreate} type='primary'>
-            创建
-          </Button>
+          <div className='item'>
+            <Button onClick={handleCreate} type='primary' disabled={!(!!authStore.isSupervisorNurse)}>
+              创建
+            </Button>
+          </div>
         </div>
       </div>
       <div className='main-contain'>
@@ -356,7 +360,8 @@ const Wrapper = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 5px 10px 15px;
+    margin-right: -15px;
     box-sizing: border-box;
     height: 55px;
     overflow: hidden;

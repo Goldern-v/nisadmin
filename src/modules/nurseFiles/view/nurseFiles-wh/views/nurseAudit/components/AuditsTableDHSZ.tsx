@@ -38,8 +38,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const columns: any = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
+      dataIndex: '',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 50
@@ -83,7 +82,6 @@ export default function AuditsTableDHSZ(props: Props) {
     {
       title: '操作',
       dataIndex: 'cz',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, c: any) => {
@@ -156,7 +154,7 @@ export default function AuditsTableDHSZ(props: Props) {
         dataSource={tableData}
         columns={columns}
         surplusHeight={320}
-        type={['spaceRow']}
+        type={[]}
         // pagination={{
         //   current: current,
         //   total: total,

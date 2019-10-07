@@ -16,7 +16,29 @@ export interface Props {
 export default function 数据统计弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  let list = cloneData.list
+
+  let deptList: any = []
+  for (let i = 0; i < list.length; i++) {
+    if (!deptList.includes(list[i].wardName)) {
+      deptList.push(list[i].wardName)
+    }
+  }
+
+  let tableData = []
+
+  for (let i = 0; i < deptList.length; i++) {
+    tableData.push({
+      wardName: deptList[i],
+      新增患者数: list.find((item: any) => item.wardName == deptList[i] && item.type == '新增患者数'),
+      阅读人数: list.find((item: any) => item.wardName == deptList[i] && item.type == '阅读人数'),
+      推送课程量: list.find((item: any) => item.wardName == deptList[i] && item.type == '推送课程量'),
+      阅读课程量: list.find((item: any) => item.wardName == deptList[i] && item.type == '阅读课程量'),
+      阅读率: list.find((item: any) => item.wardName == deptList[i] && item.type == '阅读率')
+    })
+  }
+
+  const dataIndexList = ['新增患者数', '阅读人数', '推送课程量', '阅读课程量', '阅读率']
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -29,86 +51,27 @@ export default function 数据统计弹窗(props: Props) {
     },
     {
       title: '科室',
-      key: '科室',
+      dataIndex: 'wardName',
+      width: 120
+    },
+    ...dataIndexList.map((item: any) => ({
+      title: item,
+      dataIndex: item,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.wardName}
+            value={text.typeValue}
             onChange={(e) => {
-              record.wardName = e.target.value
+              text.typeValue = e.target.value
               setData(cloneData)
             }}
           />
         )
       },
-      width: 200
-    },
-    {
-      title: `问题`,
-      key: '问题',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.itemBadDesc}
-            onChange={(e) => {
-              record.itemBadDesc = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 300
-    },
-    {
-      title: `扣分`,
-      key: '扣分',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.deductScore}
-            onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-
-    {
-      title: '操作',
-      key: '操作',
-      width: 80,
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
-        )
-      }
-    }
+      width: 80
+    }))
   ]
 
   const addItem = () => {
@@ -132,7 +95,7 @@ export default function 数据统计弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={tableData}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20

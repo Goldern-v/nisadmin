@@ -15,73 +15,107 @@ export interface Props {
 
 export default function 数据概况弹窗(props: Props) {
   let { sectionId, setData, data } = props
-  let cloneData: any = cloneJson(data || { list: [] })
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  let cloneData: any = cloneJson(data || { obj: {} })
+
+  const tableDate = [
+    {
+      name1: 'readingRate',
+      value1: cloneData.obj.readingRate,
+      label1: '总阅读率',
+      name2: 'addReadingRate',
+      value2: cloneData.obj.addReadingRate,
+      label2: '新增阅读率'
+    },
+    {
+      name1: 'totalPush',
+      value1: cloneData.obj.totalPush,
+      label1: '总推送量',
+      name2: 'addPush',
+      value2: cloneData.obj.addPush,
+      label2: '新增推送量'
+    },
+    {
+      name1: 'totalReading',
+      value1: cloneData.obj.totalReading,
+      label1: '总阅读量',
+      name2: 'addReading',
+      value2: cloneData.obj.addReading,
+      label2: '新增阅读量'
+    },
+    {
+      name1: 'totalQuestion',
+      value1: cloneData.obj.totalQuestion,
+      label1: '总疑问量',
+      name2: 'addQuestion',
+      value2: cloneData.obj.addQuestion,
+      label2: '新增疑问量'
+    },
+    {
+      name1: 'totalAnswer',
+      value1: cloneData.obj.totalAnswer,
+      label1: '总答疑量',
+      name2: 'addAnswer',
+      value2: cloneData.obj.addAnswer,
+      label2: '新增答疑量'
+    },
+    {
+      name1: 'readingCoverRate',
+      value1: cloneData.obj.readingCoverRate,
+      label1: '总阅读覆盖率',
+      name2: 'addReadingCoverRate',
+      value2: cloneData.obj.addReadingCoverRate,
+      label2: '新增阅读覆盖率'
+    },
+    {
+      name1: 'totalInPatients',
+      value1: cloneData.obj.totalInPatients,
+      label1: '总在院患者数',
+      name2: 'addInPatients',
+      value2: cloneData.obj.addInPatients,
+      label2: '新增在院患者数'
+    },
+    {
+      name1: 'totalReadNum',
+      value1: cloneData.obj.totalReadNum,
+      label1: '总阅读人数',
+      name2: 'addReadNum',
+      value2: cloneData.obj.addReadNum,
+      label2: '新增阅读人数'
+    },
+    {
+      name1: 'totalPushNum',
+      value1: cloneData.obj.totalPushNum,
+      label1: '总推送人数',
+      name2: 'addPushNum',
+      value2: cloneData.obj.addPushNum,
+      label2: '新增推送人数'
+    },
+    {
+      name1: 'totalPatientsNum',
+      value1: cloneData.obj.totalPatientsNum,
+      label1: '总患者数',
+      name2: 'addPatientsNum',
+      value2: cloneData.obj.addPatientsNum,
+      label2: '新增患者数'
+    }
+  ]
+
   const columns: ColumnProps<any>[] = [
     {
-      title: '序号',
-      key: 'index',
+      title: '名称',
+      dataIndex: 'label1',
+      width: 100
+    },
+    {
+      title: `数据`,
       render(text: any, record: any, index: number) {
-        return index + 1
-      },
-      width: 50,
-      align: 'center'
-    },
-    {
-      title: '科室',
-      key: '科室',
-      render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.wardName}
+            value={record.value1}
             onChange={(e) => {
-              record.wardName = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 200
-    },
-    {
-      title: `问题`,
-      key: '问题',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.itemBadDesc}
-            onChange={(e) => {
-              record.itemBadDesc = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 300
-    },
-    {
-      title: `扣分`,
-      key: '扣分',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.deductScore}
-            onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
+              cloneData.obj[record.name1] = e.target.value
               setData(cloneData)
             }}
           />
@@ -89,25 +123,27 @@ export default function 数据概况弹窗(props: Props) {
       },
       width: 100
     },
-
     {
-      title: '操作',
-      key: '操作',
-      width: 80,
+      title: '名称',
+      dataIndex: 'label2',
+      width: 100
+    },
+    {
+      title: `数据`,
       render(text: any, record: any, index: number) {
         return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
+          <input
+            type='text'
+            className='cell-input'
+            value={record.value2}
+            onChange={(e) => {
+              cloneData.obj[record.name2] = e.target.value
+              setData(cloneData)
+            }}
+          />
         )
-      }
+      },
+      width: 100
     }
   ]
 
@@ -132,7 +168,7 @@ export default function 数据概况弹窗(props: Props) {
 
       <BaseTable
         columns={columns}
-        dataSource={(cloneData.list || []).filter((item: TypeCompare) => item.itemTypeName != '总扣分')}
+        dataSource={tableDate}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20
@@ -155,12 +191,13 @@ const Wrapper = styled.div`
 
   .cell-input input,
   input.cell-input {
-    width: 100%;
+    width: calc(100% + 16px);
     height: 100%;
     border: 0;
     outline: none;
     background: transparent;
     padding: 0 5px;
+    margin: 0 -8px;
     border-radius: 0;
     &:focus {
       background: ${(p) => p.theme.$mlc};
@@ -168,7 +205,7 @@ const Wrapper = styled.div`
   }
 
   td {
-    padding: 0 !important;
+    /* padding: 0 !important; */
   }
   input {
     text-align: center;

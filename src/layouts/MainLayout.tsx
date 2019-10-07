@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import Header from './components/Header'
 import NavBar from './components/NavBar'
+import NavBarNew from './components/NavBar_new'
 import RouterView, { RouteComponentProps } from 'src/components/RouterView'
 import store, { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
@@ -55,6 +56,7 @@ export default observer(function MainLayout(props: Props) {
   return (
     <Wrapper>
       {/* <Header /> */}
+      {/* {appStore.isDev ? <NavBarNew {...props} /> : <NavBar {...props} />} */}
       <NavBar {...props} />
       {/* {store.authStore.selectedDeptName} */}
       <RouterViewCon>

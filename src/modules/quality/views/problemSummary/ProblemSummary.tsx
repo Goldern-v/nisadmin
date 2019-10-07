@@ -11,7 +11,7 @@ import YearPicker from 'src/components/YearPicker'
 import { numberToArray } from 'src/utils/array/array'
 import moment from 'moment'
 import { problemSummaryServices } from './services/ProblemSummaryServices'
-import { ScrollBox } from 'src/components/common'
+import { ScrollBox, PageTitle } from 'src/components/common'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function ProblemSummary(props: any) {
@@ -54,10 +54,14 @@ export default observer(function ProblemSummary(props: any) {
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
+          <PageTitle>三级质控问题汇总</PageTitle>
+        </LeftIcon>
+        <RightIcon>
           <div className='item'>
             <div className='label'>年度：</div>
             <div className='content'>
               <YearPicker
+                style={{ width: 100 }}
                 value={filterObj.year}
                 onChange={(value: any) => setFilterObj({ ...filterObj, year: value })}
               />
@@ -104,8 +108,6 @@ export default observer(function ProblemSummary(props: any) {
               查询
             </Button>
           </div>
-        </LeftIcon>
-        <RightIcon>
           <div className='item'>
             <Button
               className='excel'
@@ -194,32 +196,31 @@ const Wrapper = styled.div`
   }
 `
 const LeftIcon = styled.div`
-  height: 55px;
   float: left;
   font-size: 13px;
   position: relative;
   font-size: 13px;
   color: #333333;
-  padding: 0 0 0 15px;
   display: flex;
   align-items: center;
 `
 
 const RightIcon = styled.div`
-  height: 55px;
   float: right;
   font-size: 13px;
   position: relative;
   font-size: 13px;
   color: #333333;
-  padding: 0 0 0 15px;
   display: flex;
   align-items: center;
+  margin-right: -15px;
 `
 
 const HeaderCon = styled.div`
   height: 55px;
-  align-items: center;
+  padding: 10px 15px;
+  box-sizing: border-box;
+  overflow: hidden;
 `
 const MidCon = styled(ScrollBox)`
   box-sizing: border-box;

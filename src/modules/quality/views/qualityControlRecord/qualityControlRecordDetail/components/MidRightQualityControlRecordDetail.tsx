@@ -29,15 +29,21 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                     <div className='info'>
                       {item.handleTime} ({getWeekString(item.handleTime)})
                     </div>
+                    {item.handleContent && item.nodeCode != 'dept_handle' && (
+                      <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
+                        {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
+                        {item.handleContent}
+                      </div>
+                    )}
                     {/* 三级质控 */}
                     {item.nodeCode == 'dept_handle' && (
                       <React.Fragment>
-                        {item.expand && (
+                        {
                           <div className='text-box'>
                             <div className='text-box-title'>原因分析：</div>
                             {item.expand}
                           </div>
-                        )}
+                        }
                         {item.handleContent && (
                           <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
                             {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}

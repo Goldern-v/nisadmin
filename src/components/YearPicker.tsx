@@ -7,6 +7,7 @@ import { DatePicker } from 'src/vendors/antd'
 export interface Props {
   value?: any
   onChange?: any
+  style?: any
 }
 
 export default function YearPicker(props: Props) {
@@ -20,6 +21,7 @@ export default function YearPicker(props: Props) {
 
   return (
     <DatePicker
+      style={props.style || {}}
       value={time}
       open={isOpen}
       mode='year'

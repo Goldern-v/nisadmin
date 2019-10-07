@@ -88,7 +88,7 @@ export default observer(function ExamineTable() {
       window.open(`/crNursing/manage/#/qualityControlRecordDetail/${record.othersMessage.id}`)
     } else if (record.type == 'nurseFile') {
       service.commonApiService.getNurseInformation(record.commiterNo).then((res) => {
-        window.open(`/crNursing/manage/#/nurseAudit?${qs.stringify(res.data)}`)
+        window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`)
       })
     }
   }

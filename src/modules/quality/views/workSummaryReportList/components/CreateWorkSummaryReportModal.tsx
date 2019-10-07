@@ -25,7 +25,7 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
 
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
-    groupRoleCode: (val) => !!val || '请选择质控组',
+    groupRoleCode: (val) => !!val || '请选择片区',
     year: (val) => !!val || '请选择年度',
     indexInType: (val) => !!val || '请选择月份',
     beginDate: (val) => !!val || '请选择开始时间',
@@ -250,7 +250,7 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
           </Row>
           <Row>
             <Col span={5} className='label'>
-              质控组：
+              片区：
             </Col>
             <Col span={19}>
               <Form.Field name='groupRoleCode'>

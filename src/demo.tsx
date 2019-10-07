@@ -28,8 +28,14 @@ export default function demo(props: Props) {
   }
   return (
     <Wrapper>
-      <MultipleDeptSelect />
-      <Button onClick={onClick}>测试</Button>
+      <div>
+        <input id='myCar' list='cars' />
+        <datalist id='cars'>
+          <option value='BMW' />
+          <option value='Ford' />
+          <option value='Volvo' />
+        </datalist>
+      </div>
     </Wrapper>
   )
 }

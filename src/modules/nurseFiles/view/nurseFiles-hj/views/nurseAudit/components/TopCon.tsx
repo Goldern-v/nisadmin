@@ -2,8 +2,9 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Breadcrumb } from 'antd'
-import store from 'src/stores'
+import store, { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { nurseFilesService } from '../../../services/NurseFilesService'
 export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
@@ -15,7 +16,15 @@ const WARNNING_ICON = require('../../../images/注意.png')
 export default observer(function TopCon() {
   let history = store.appStore.history
   let query = store.appStore.query
-  let { empName, post, deptName, nurseHierarchy, nearImageUrl } = store.appStore.queryObj
+  const [queryObj, setQueryObj]: any = useState({})
+  let { empName, post, deptName, nurseHierarchy, nearImageUrl } = queryObj
+  useEffect(() => {
+    if (appStore.queryObj.empNo) {
+      nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+        setQueryObj(res.data)
+      })
+    }
+  }, [])
   return (
     <Wrapper>
       <BreadcrumbCon>

@@ -26,8 +26,8 @@ import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/Sche
 // import NurseFileDetailView from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
 // import NurseAudit from 'src/modules/nurseFiles/views/nurseAudit/NurseAudit'
 
-import BadEventView from 'src/modules/badEvents/views/BadEventView'
-import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
+// import BadEventView from 'src/modules/badEvents/views/BadEventView'
+// import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
 // import { BadEventConfig } from 'src/modules/badEvents/views/config/badEventConfig'
 
 import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
@@ -50,7 +50,7 @@ import NursingRulesTypeSetting from 'src/modules/nursingRules/NursingRulesTypeSe
 //护理制度 改版
 import NursingRulesNew from 'src/modules/nursingRulesNew/NursingRulesNew'
 import NursingRulesNewDetail from 'src/modules/nursingRulesNew/views/NursingRulesNewDetail'
-import NursingRulesPdfPreview from 'src/modules/nursingRulesNew/views/NursingRulesPdfPreview'
+import NursingRulesPagePreview from 'src/modules/nursingRulesNew/views/NursingRulesPagePreview'
 import NursingRulesNewEdit from 'src/modules/nursingRulesNew/views/NursingRulesNewEdit'
 //健康宣教
 //import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
@@ -123,8 +123,8 @@ const routes: RouteItem[] = [
   setLayout('/nursingPerformance', NursingPerformance, layouts.MainLayout),
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
   setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
-  setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
-  setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
+  // setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
+  // setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
   // 培训考核
   setLayout('/trainingExamination/:type', TrainingExamination, layouts.MainLayout),
@@ -151,7 +151,7 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
   setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
-  setLayout('/nursingRulesPdfPreview', NursingRulesPdfPreview, layouts.MainLayout),
+  setLayout('/NursingRulesPagePreview', NursingRulesPagePreview, layouts.MainLayout),
   setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout),
   setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
   setLayout('/healthPropagandaEdit', HealthPropagandaEdit),

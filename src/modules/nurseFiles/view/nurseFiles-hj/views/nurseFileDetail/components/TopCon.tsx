@@ -41,7 +41,7 @@ export default observer(function TopCon() {
   /** 更新护士信息 */
   const refreshNursingInfo = () => {
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-      store.appStore.history.replace(store.appStore.match.url + '?' + qs.stringify(res.data))
+      store.appStore.history.replace(store.appStore.match.url + '?empNo=' + res.data.empNo)
     })
   }
   return (
@@ -69,7 +69,9 @@ export default observer(function TopCon() {
           <span>
             {' '}
             注意：{empName}有{nurseFileDetailViewModal.badgeTotal}条未审核信息，点击
-            <ClickSpan onClick={() => appStore.history.push(`/nurseAudit?${appStore.query}`)}>这里</ClickSpan>
+            <ClickSpan onClick={() => appStore.history.push(`/nurseAudit?empNo=${appStore.queryObj.empNo}`)}>
+              这里
+            </ClickSpan>
             进行审核
           </span>
         </Tip>

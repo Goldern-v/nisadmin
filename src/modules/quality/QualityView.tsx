@@ -16,6 +16,8 @@ import { ReactComponent as ZKJL } from './images/质控记录.svg'
 import { appStore } from 'src/stores'
 import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
+import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
+import WritingForm from './views/writingForm/WritingForm'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -45,25 +47,21 @@ const LEFT_MENU_CONFIG: any = [
     children: [
       {
         title: '三级质控月度报告',
-        icon: <FXBG />,
         path: '/quality/analysis',
         component: Analysis
       },
       {
         title: '三级质控汇总报告',
-        icon: <FXBG />,
         path: '/quality/summaryReport',
         component: SummaryReport
       },
       {
         title: '三级质控问题汇总',
-        icon: <FXBG />,
         path: '/quality/problemSummary',
         component: ProblemSummary
       },
       {
         title: '二级质控分析报告',
-        icon: <FXBG />,
         path: '/quality/workSummaryReportList',
         component: WorkSummaryReportList
       }
@@ -75,9 +73,14 @@ const LEFT_MENU_CONFIG: any = [
     icon: <CXTJ />,
     children: [
       {
-        title: '查询统计',
+        title: '检查表单统计表',
         path: '/quality/queryStatistics',
         component: QueryStatistics
+      },
+      {
+        title: '文件书写统计表',
+        path: '/quality/writingForm',
+        component: WritingForm
       }
     ]
   }
@@ -97,6 +100,11 @@ if (appStore.isDev) {
         title: '查房计划表',
         path: '/quality/checkWard/schedule',
         component: ScheduleView
+      },
+      {
+        title: '查房统计报告',
+        path: '/quality/checkWard/checkWardReportView',
+        component: CheckWardReportView
       }
     ]
   })

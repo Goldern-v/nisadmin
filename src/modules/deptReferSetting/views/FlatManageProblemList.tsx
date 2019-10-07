@@ -44,7 +44,7 @@ export default observer(function FlatManageProblemList() {
     checkDateStart: moment(defaultStartDate).format('YYYY-MM-DD'),
     checkDateEnd: moment(defaultEndDate).format('YYYY-MM-DD'),
     typeId: '',
-    pageSize: 15,
+    pageSize: 20,
     pageIndex: 1,
     status
   } as any)
@@ -62,7 +62,7 @@ export default observer(function FlatManageProblemList() {
       key: 'key',
       width: 50,
       align: 'center',
-      render: (text: string, record: any, index: number) => index + 1
+      render: (text: string, record: any, index: number) => (query.pageIndex - 1) * query.pageSize + (index + 1)
     },
     {
       title: '检查日期',
@@ -115,6 +115,7 @@ export default observer(function FlatManageProblemList() {
       align: 'center',
       width: 60,
       render: (status: string, record: any) => {
+        if (status == '3') return <span className='status2'>已撤销</span>
         if (status == '2') return <span className='status2'>已审核</span>
         if (status == '1') return <span className='status1'>待审核</span>
         return '-'
@@ -127,29 +128,43 @@ export default observer(function FlatManageProblemList() {
       width: 80,
       render: (text: string, record: any) => {
         //护长
-        let postAuth = !!(authStore.post == '护长') as boolean
+        let postAuth = !!(authStore.isRoleManage && authStore.defaultDeptCode == record.wardCode) as boolean
         //作者
         let autherAuth = !!(record.inspectorEmpNo == (authStore.getUser() && authStore.getUser().empNo)) as boolean
         //审核权限
-        let auditAuth = !!(postAuth && record.status == '1') as boolean
+        let auditAuth = !!(postAuth && record.status != '2') as boolean
         //编辑权限
-        let editAuth = !!(autherAuth && record.status == '1') as boolean
+        let editAuth = !!(autherAuth && record.status != '2') as boolean
         //删除权限
-        let deleteAuth = !!(autherAuth && record.status == '1') as boolean
+        let deleteAuth = !!(autherAuth && record.status != '2') as boolean
+        //撤销审核权限
+        let cancelAuth = !!(record.auditEmpNo == (authStore.getUser() && authStore.getUser().empNo))
+
+        let auditSpan = <span
+          className={auditAuth ? '' : 'disabled'}
+          onClick={() => {
+            if (auditAuth) handleDetailView(record, 'audit')
+          }}
+        >
+          审核
+        </span>
+
+        if (record.status == '2') auditSpan = <span
+          className={cancelAuth ? '' : 'disabled'}
+          onClick={() => {
+            if (cancelAuth) handleCancelAudit(record)
+          }}
+        >
+          撤销
+        </span>
 
         return (
           <div className='operation'>
             <span onClick={() => handleDetailView(record, 'detail')}>查看</span>
             {/* 护长可审核 */}
-            <span
-              className={auditAuth ? '' : 'disabled'}
-              onClick={() => {
-                if (auditAuth) handleDetailView(record, 'audit')
-              }}
-            >
-              审核
-            </span>
+
             {/* 未审核状态护长或创建人可修改 */}
+            {auditSpan}
             <br />
             <span
               className={editAuth ? '' : 'disabled'}
@@ -181,9 +196,9 @@ export default observer(function FlatManageProblemList() {
     if (!detailViewType) {
       detailViewType = 'detail'
       //护长
-      let postAuth = !!(authStore.post == '护长') as boolean
+      let postAuth = !!(authStore.isRoleManage && authStore.selectedDeptCode == record.wardCode) as boolean
       //审核权限
-      let auditAuth = !!(postAuth && record.status == '1') as boolean
+      let auditAuth = !!(postAuth && record.status != '2') as boolean
       if (auditAuth) detailViewType = 'audit'
     }
 
@@ -192,6 +207,24 @@ export default observer(function FlatManageProblemList() {
       data: record,
       viewType: detailViewType,
       visible: true
+    })
+  }
+
+  const handleCancelAudit = (record: any) => {
+    Modal.confirm({
+      content: '是否撤销审核',
+      title: '提示',
+      centered: true,
+      onOk: () => {
+        setTableLoading(true)
+        flatManageProblemService.cancelAudit(record.id).then(res => {
+          setTableLoading(false)
+          Message.success('撤销审核成功')
+          getTableData()
+        }, err => {
+          setTableLoading(false)
+        })
+      }
     })
   }
 

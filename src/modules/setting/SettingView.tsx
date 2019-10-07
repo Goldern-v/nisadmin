@@ -24,6 +24,7 @@ import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
 import Preview from './view/components/Preview'
 import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
 import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
+import HealthEducationReportList from '../healthEducationReport/healthEducationReportList/HealthEducationReportList'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -65,6 +66,11 @@ const LEFT_MENU_CONFIG = [
         title: '自动推送设置',
         path: '/setting/pushSetting',
         component: AutomaticPush
+      },
+      {
+        title: '健康宣教月度报告',
+        path: '/setting/healthEducationReportList',
+        component: HealthEducationReportList
       }
     ]
   },
