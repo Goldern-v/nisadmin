@@ -91,7 +91,7 @@ const navListWH: any = [
   {
     name: '护理制度',
     icon: <HSDA />,
-    path: '/nursingRules'
+    path: '/nursingRulesNew'
   },
   {
     name: '病区管理',
@@ -178,7 +178,7 @@ const navListWHSelft: any = [
   {
     name: '护理制度',
     icon: <HSDA />,
-    path: '/nursingRules'
+    path: '/nursingRulesNew'
   },
   {
     name: '病区管理',
@@ -252,7 +252,7 @@ const navList: any = [
   {
     name: '护理制度',
     icon: <HSDA />,
-    path: '/nursingRules'
+    path: '/nursingRulesNew'
   },
   {
     name: '系统设置',

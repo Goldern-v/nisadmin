@@ -5,12 +5,6 @@ import qs from 'qs';
 
 
 export default class CheckWardService extends BaseApiService {
-  public countNurseLeave(obj: any) {
-    return this.post(`/nurseInformation/countNurseLeave`, obj)
-  }
-  public excelNurseLeave(obj: any) {
-    return this.post(`/nurseInformation/excelNurseLeave`, obj, { responseType: 'blob' })
-  }
 
   //查房计划表模版下载
   public searchRoomDownload() {
@@ -64,7 +58,7 @@ export default class CheckWardService extends BaseApiService {
       time: scheduleViewModal.selectedYear.format('YYYY'),
       searchRoomType:scheduleViewModal.selectedWardRound
     }
-    return this.post(`/searchRoom/export/${obj}`)
+    return this.post(`/searchRoom/export`, obj, { responseType: 'blob' })
   }
   
   //查询查房计划上传资料记录
