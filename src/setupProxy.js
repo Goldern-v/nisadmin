@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     proxy('/crNursing/api', {
       // target: 'http://120.25.105.45:9865',
-      // target: 'http://120.25.105.45:9866',
+      target: 'http://120.25.105.45:9866',
       //厚街正式环境
       // target: 'http://120.197.141.41:9094',
       // target: 'http://120.197.141.41:9091',

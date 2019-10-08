@@ -54,12 +54,12 @@ export default observer(function MainLayout(props: Props) {
   })
 
   return (
-    <Wrapper>
+    <Wrapper className='MainLayoutWrapper'>
       {/* <Header /> */}
       {/* {appStore.isDev ? <NavBarNew {...props} /> : <NavBar {...props} />} */}
       <NavBar {...props} />
       {/* {store.authStore.selectedDeptName} */}
-      <RouterViewCon>
+      <RouterViewCon className='MainLayoutRouterViewCon'>
         <RouterView routes={props.routes} />
       </RouterViewCon>
       <aduitModal.Component ref={aduitModalRef} />

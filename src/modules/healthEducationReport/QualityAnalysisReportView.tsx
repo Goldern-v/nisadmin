@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
-import { Button, message } from 'src/vendors/antd'
+import { Button, message, Spin } from 'src/vendors/antd'
 import { qualityAnalysisReportViewModal } from './QualityAnalysisReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { ScrollBox } from 'src/components/common'
@@ -12,6 +12,8 @@ import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
+import { addCSS } from 'src/utils/css/css'
+import $ from 'jquery'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
@@ -24,43 +26,61 @@ export default observer(function QualityAnalysisReportView() {
     let printFun = isPrint ? printing : printing.preview
     let title = document.title
     document.title = instance.title
-    printFun(pageRef.current, {
-      injectGlobalCss: true,
-      scanStyles: false,
-      css: `
-         .ant-btn {
-           display: none;
-         }
-         .print-page {
-           box-shadow: none;
-           -webkit-print-color-adjust: exact;
-           margin: 0 auto;
-         }
-         .page-title {
-           min-height: 20px;
-           padding: 0px 30px 20px;
-         }
-         .page-title .title {
-           text-align: center;
-           margin-right: 0;
-         }
-         table, img {
-           page-break-inside: avoid;
-         }
-         pre {
-          page-break-after: avoid;
-         }
-         * {
-           color: #000 !important;
-         }
-         .footer-title {
-           min-height: 0;
-           margin-bottom: 0;
-         }
+
+    addCSS(
+      window,
       `
-    })
+    .ant-btn {
+      display: none;
+    }
+    .print-page {
+      box-shadow: none;
+      -webkit-print-color-adjust: exact;
+      margin: 0 auto;
+    }
+    .page-title {
+      min-height: 20px;
+      padding: 0px 30px 20px;
+    }
+    .page-title .title {
+      text-align: center;
+      margin-right: 0;
+    }
+    table, img {
+      page-break-inside: avoid;
+    }
+    pre {
+     page-break-after: avoid;
+    }
+    * {
+      color: #000 !important;
+    }
+    .footer-title {
+      min-height: 0;
+      margin-bottom: 0;
+    }
+    .NavBar, .healthEducationHeadCon {
+      display: none !important;
+    }
+    #root {
+      width: 920px;
+    }
+    .healthEducationScrollCon {
+      height: 100%;
+    }
+    .MainLayoutRouterViewCon, .healthEducationScrollCon {
+      overflow: visible;
+    }
+    .MainLayoutWrapper  {
+      position: static;
+    }
+    `,
+      'healthEducationStyle'
+    )
+    window.print()
     setTimeout(() => {
       document.title = title
+      $('#healthEducationStyle').remove()
     }, 500)
   }
   const onDelete = () => {
@@ -95,50 +115,52 @@ export default observer(function QualityAnalysisReportView() {
   }
   return (
     <Wrapper>
-      <HeadCon>
-        <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/setting/healthEducationReportList' }, { name: '报告详情', link: '' }]}
-        />
-        <div className='title'>{instance.title}</div>
-        <div className='aside'>
-          <span>
-            由{instance.creatorName}创建{instance.updateTime && <span>，最后修改于{instance.updateTime}</span>}
-          </span>
-        </div>
-        <div className='tool-con'>
-          <Button onClick={onDelete}>删除</Button>
-          {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {instance.status == '1' ? (
-            <Button onClick={onCancelPublish}>撤销</Button>
-          ) : (
-            <Button onClick={onPublish}>发布</Button>
-          )}
+      <Spin spinning={qualityAnalysisReportViewModal.pageLoading}>
+        <HeadCon className='healthEducationHeadCon'>
+          <BaseBreadcrumb
+            data={[{ name: '分析报告', link: '/setting/healthEducationReportList' }, { name: '报告详情', link: '' }]}
+          />
+          <div className='title'>{instance.title}</div>
+          <div className='aside'>
+            <span>
+              由{instance.creatorName}创建{instance.updateTime && <span>，最后修改于{instance.updateTime}</span>}
+            </span>
+          </div>
+          <div className='tool-con'>
+            <Button onClick={onDelete}>删除</Button>
+            {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
+            {instance.status == '1' ? (
+              <Button onClick={onCancelPublish}>撤销</Button>
+            ) : (
+              <Button onClick={onPublish}>发布</Button>
+            )}
 
-          <Button onClick={() => onPrint(true)}>打印</Button>
-          <Button onClick={() => appStore.history.push('/setting/healthEducationReportList')}>返回</Button>
-        </div>
-      </HeadCon>
-      <ScrollCon>
-        <Page ref={pageRef} className='print-page'>
-          <div className='hospital-name'>东莞市厚街医院</div>
-          {qualityAnalysisReportViewModal.sectionList.map((item, index) => {
-            if (item.sectionId) {
-              let Components = qualityAnalysisReportViewModal.getSection(item.sectionId)
-              if (Components && Components.section) {
-                return (
-                  <Components.section
-                    key={index}
-                    sectionId={item.sectionId}
-                    modalTitle={item.modalTitle}
-                    sectionTitle={item.sectionTitle}
-                  />
-                )
+            <Button onClick={() => onPrint(true)}>打印</Button>
+            <Button onClick={() => appStore.history.push('/setting/healthEducationReportList')}>返回</Button>
+          </div>
+        </HeadCon>
+        <ScrollCon className='healthEducationScrollCon'>
+          <Page ref={pageRef} className='print-page'>
+            <div className='hospital-name'>东莞市厚街医院</div>
+            {qualityAnalysisReportViewModal.sectionList.map((item, index) => {
+              if (item.sectionId) {
+                let Components = qualityAnalysisReportViewModal.getSection(item.sectionId)
+                if (Components && Components.section) {
+                  return (
+                    <Components.section
+                      key={index}
+                      sectionId={item.sectionId}
+                      modalTitle={item.modalTitle}
+                      sectionTitle={item.sectionTitle}
+                    />
+                  )
+                }
               }
-            }
-          })}
-        </Page>
-        {qualityAnalysisReportViewModal.baseModal && <qualityAnalysisReportViewModal.baseModal.Component />}
-      </ScrollCon>
+            })}
+          </Page>
+          {qualityAnalysisReportViewModal.baseModal && <qualityAnalysisReportViewModal.baseModal.Component />}
+        </ScrollCon>
+      </Spin>
     </Wrapper>
   )
 })

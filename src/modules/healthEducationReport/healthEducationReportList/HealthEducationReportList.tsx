@@ -284,7 +284,7 @@ export default observer(function HealthEducationReportList() {
               </Select>
             </div>
           </div>
-          <div className='item'>
+          {/* <div className='item'>
             <div className='label'>片区：</div>
             <div className='content'>
               <Select
@@ -302,7 +302,7 @@ export default observer(function HealthEducationReportList() {
                 ))}
               </Select>
             </div>
-          </div>
+          </div> */}
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>
@@ -321,7 +321,7 @@ export default observer(function HealthEducationReportList() {
           surplusHeight={230}
           onRow={(record: any) => {
             return {
-              onDoubleClick: () => record.reportName && handleReview(record)
+              onDoubleClick: () => handleReview(record)
             }
           }}
           pagination={{

@@ -39,6 +39,7 @@ interface SectionCase {
 class QualityAnalysisReportViewModal {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = sectionList
+  @observable public pageLoading: boolean = false
   @observable public allData: Partial<AllData> = {
     report: {}
   }
@@ -99,7 +100,9 @@ class QualityAnalysisReportViewModal {
 
   /** 数据初始化 */
   async initData() {
+    this.pageLoading = true
     let { data } = await qualityAnalysisReportService.getReport()
+    this.pageLoading = false
     this.allData = data
     this.getSectionData(`报告名称`).text = this.allData.instance!.title || ''
     this.getSectionData(`数据概况`).obj = this.allData.overview || {}

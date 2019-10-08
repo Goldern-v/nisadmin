@@ -37,9 +37,9 @@ export default observer(function 月度趋势模块(props: Props) {
         <div className='chart-con'>
           <ChartCon3 list={list} />
         </div>
-        <div className='chart-con'>
+        {/* <div className='chart-con'>
           <ChartCon4 list={list} />
-        </div>
+        </div> */}
       </div>
 
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>

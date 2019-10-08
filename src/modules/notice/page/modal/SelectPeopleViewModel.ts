@@ -59,7 +59,7 @@ class SelectPeopleViewModel {
       if (this.stepState[0] == '默认科室') {
         return {
           parent: authStore.selectedDeptName,
-          list: (this as any).selectTreeData[0].data.userList.map((item: any) => ({
+          list: ((this as any).selectTreeData[1].data.userList || []).map((item: any) => ({
             ...item,
             userList: [item],
             label: item.empName,
