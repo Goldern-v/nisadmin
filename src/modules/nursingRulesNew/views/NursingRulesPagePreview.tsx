@@ -394,7 +394,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     if (!pageUrl) return <div className="content-message" >暂无页面</div>
     let pageUrlArr = pageUrl.split('.')
     let type = pageUrlArr[pageUrlArr.length - 1]
-    let url = `crNursing/asset${pageUrl}`
+    let url = `/crNursing/asset${pageUrl}`
 
     switch (type) {
       case 'jpg':
