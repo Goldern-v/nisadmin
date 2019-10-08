@@ -272,7 +272,7 @@ export default observer(function NavBar(props: Props) {
   }
   let { location } = props
   return (
-    <Wrapper>
+    <Wrapper className='NavBar'>
       <LogoCon>
         {appStore.HOSPITAL_ID == 'wh' ? (
           <React.Fragment>
