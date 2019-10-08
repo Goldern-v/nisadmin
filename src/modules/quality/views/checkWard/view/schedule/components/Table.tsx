@@ -162,14 +162,14 @@ export default observer(function Table() {
   ]
   return (
     <Wrapper>
-      <Title>护理{scheduleViewModal.tableName}计划表</Title>
+      <Title>{scheduleViewModal.tableTime}护理{scheduleViewModal.tableName}计划表</Title>
       {/* <Time>日期：{scheduleViewModal.tableTime}</Time> */}
       <BaseTable
         loading={scheduleViewModal.tableLoading}
         dataSource={scheduleViewModal.tableList}
         columns={columns}
         type={['spaceRow']}
-        surplusHeight={250}
+        surplusHeight={230}
         surplusWidth={300}
         onChange={() => {
           scheduleViewModal.onload()

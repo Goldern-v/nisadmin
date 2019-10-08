@@ -8,7 +8,9 @@ import { scheduleViewModal } from '../ScheduleViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore } from 'src/stores';
 import YearPicker from 'src/components/YearPicker'
-import { checkWardService } from '../../../services/CheckWardService';
+import { checkWardService } from '../../../services/CheckWardService'
+import { PageTitle } from 'src/components/common'
+
 export interface Props {}
 
 export default observer(function Head() {
@@ -32,41 +34,47 @@ export default observer(function Head() {
   }
   return (
     <Wrapper>
-      <span>年度：</span>
-      <YearPicker
-        value={scheduleViewModal.selectedYear}
-        onChange={(year: any) => {
-          scheduleViewModal.selectedYear = year
-          scheduleViewModal.onload()
-        }}
-      />
+      <LeftIcon>
+          <PageTitle>查房计划表</PageTitle>
+      </LeftIcon>
+      <RightIcon>
+        <span>年度：</span>
+        <YearPicker
+          value={scheduleViewModal.selectedYear}
+          onChange={(year: any) => {
+            scheduleViewModal.selectedYear = year
+            scheduleViewModal.onload()
+          }}
+        />
 
-      <span>类型：</span>
-      <Select
-        value={scheduleViewModal.selectedWardRound}
-        onChange={(val: string) => {
-          scheduleViewModal.selectedWardRound = val
-          scheduleViewModal.onload()
-        }}
-      >
-        <Select.Option value=''>全部</Select.Option>
-        {scheduleViewModal.WardRoundList.map((item: any, index: number) => (
-          <Select.Option value={item.code} key={index}>
-            {item.name}
-          </Select.Option>
-        ))}
-      </Select>
+        <span>类型：</span>
+        <Select
+          value={scheduleViewModal.selectedWardRound}
+          onChange={(val: string) => {
+            scheduleViewModal.selectedWardRound = val
+            scheduleViewModal.onload()
+          }}
+        >
+          {scheduleViewModal.WardRoundList.map((item: any, index: number) => (
+            <Select.Option value={item.code} key={index}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
 
-      <Button onClick={() => scheduleViewModal.onload()} className='checkButton'>查询</Button>
-      <Button onClick={() => {appStore.history.push(`/qualityScheduleImport`)}}>导入</Button>
-      <Button onClick={() => scheduleViewModal.export()}>导出Excel</Button>
-  
-      <Place />
-      <Button onClick={handlePush}>推送查房计划</Button>
+        <Button onClick={() => scheduleViewModal.onload()} className='checkButton'>查询</Button>
+        <Button onClick={() => {appStore.history.push(`/qualityScheduleImport`)}}>导入</Button>
+        <Button onClick={() => scheduleViewModal.export()}>导出Excel</Button>
+    
+        <Place />
+        <Button onClick={handlePush}>推送查房计划</Button>
+      </RightIcon>
+
     </Wrapper>
   )
 })
 const Wrapper = styled(TableHeadCon)`
+
   .ant-select {
     width: 150px;
     margin-right: 20px;
@@ -80,4 +88,27 @@ const Wrapper = styled(TableHeadCon)`
   .checkButton {
     margin-left: 0px;
   }
+`
+const LeftIcon = styled.div`
+  height: 55px;
+  float: left;
+  font-size: 13px;
+  position: relative;
+  font-size: 13px;
+  color: #333333;
+  padding: 0 0 0 15px;
+  display: flex;
+  align-items: center;
+`
+
+const RightIcon = styled.div`
+  height: 55px;
+  float: right;
+  font-size: 13px;
+  position: relative;
+  font-size: 13px;
+  color: #333333;
+  padding: 0 0 0 15px;
+  display: flex;
+  align-items: center;
 `

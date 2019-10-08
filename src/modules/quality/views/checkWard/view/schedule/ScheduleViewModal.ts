@@ -5,7 +5,7 @@ import { checkWardService } from '../../services/CheckWardService'
 import moment from 'moment'
 
 class ScheduleViewModal {
-  @observable public selectedWardRound = '' //类型
+  @observable public selectedWardRound = '特殊时段查房' //类型
   @observable public WardRoundList = []
   @observable public selectedYear =  moment() //日期
   @observable public tableList = []
@@ -17,7 +17,7 @@ class ScheduleViewModal {
 
   //导出Excel
   export() {
-    checkWardService.excelNurseLeave(this.postObj).then((res) => {
+    checkWardService.exportSearchRoom().then((res) => {
       fileDownload(res)
     })
   }
@@ -29,14 +29,6 @@ class ScheduleViewModal {
         this.WardRoundList = res.data
       }),
     ])
-  }
-
-  @computed
-  get postObj() {
-    return {
-      
-      
-    }
   }
 
   onload() {

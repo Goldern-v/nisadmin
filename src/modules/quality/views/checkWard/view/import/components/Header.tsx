@@ -9,6 +9,7 @@ const BG = require('../../../../../images/顶部背景.png')
 
 export default function Header() {
 
+  //模版下载
   const roomDownload = () => {
     checkWardService.searchRoomDownload().then((res) => {
       fileDownload(res)
