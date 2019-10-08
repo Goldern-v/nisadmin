@@ -66,12 +66,12 @@ const LEFT_MENU_CONFIG = [
         title: '自动推送设置',
         path: '/setting/pushSetting',
         component: AutomaticPush
-      },
-      {
-        title: '健康宣教月度报告',
-        path: '/setting/healthEducationReportList',
-        component: HealthEducationReportList
       }
+      // {
+      //   title: '健康宣教月度报告',
+      //   path: '/setting/healthEducationReportList',
+      //   component: HealthEducationReportList
+      // }
     ]
   },
   // {

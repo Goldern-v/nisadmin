@@ -87,7 +87,7 @@ class SheetViewModal {
   analyseCell(cellObj: ArrangeItem): any {
     if (!cellObj) return {}
     const cellConfig = {
-      isTwoDaysAgo: cellObj ? moment().isoWeeks() - moment(cellObj && cellObj.workDate).isoWeeks() > 1 : false,
+      isTwoDaysAgo: false && cellObj ? moment().isoWeeks() - moment(cellObj && cellObj.workDate).isoWeeks() > 1 : false,
       isExpectedScheduling: cellObj.statusType == '1',
       isAddWordTime:
         cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
