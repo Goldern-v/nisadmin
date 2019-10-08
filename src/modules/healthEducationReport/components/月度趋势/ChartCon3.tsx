@@ -45,7 +45,7 @@ export default function ChartCon(props: Props) {
     <Wrapper>
       <div className='chart-name'>制作课程趋势</div>
       {list.length && (
-        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 30]} scale={scale}>
+        <Chart forceFit height={400} data={data} padding={[20, 20, 80, 40]} scale={scale}>
           <Tooltip />
           <Axis />
           <Legend />

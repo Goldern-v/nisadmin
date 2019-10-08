@@ -6,8 +6,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 
 import ChartCon1 from './ChartCon1'
-import ChartCon2 from './ChartCon2'
-import ChartCon3 from './ChartCon3'
+
 import ChartCon4 from './ChartCon4'
 import { Report } from '../../types'
 import moment from 'moment'
