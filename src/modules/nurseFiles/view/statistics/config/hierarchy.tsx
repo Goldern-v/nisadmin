@@ -6,7 +6,7 @@ import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
 
 export const pageObj: PageObj = {
-  title: '层级统计',
+  title: '层级变动',
   type: 'nurseWHHierarchy',
   detailPath: 'RankChange',
   filterList: [
@@ -40,28 +40,28 @@ export const pageObj: PageObj = {
       title: '原层级名称',
       dataIndex: 'nursehierarchyOld',
       key: 'nursehierarchyOld',
-      width: 100,
+      width: 110,
       align: 'center'
     },
     {
       title: '现层级名称',
       dataIndex: 'nursehierarchyNew',
       key: 'nursehierarchyNew',
-      width: 100,
+      width: 110,
       align: 'center'
     },
     {
       title: '现层级开始时间',
       dataIndex: 'startDate',
       key: 'startDate',
-      width: 120,
+      width: 130,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
       key: 'fj',
-      width: 80,
+      width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>

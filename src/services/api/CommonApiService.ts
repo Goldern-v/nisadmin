@@ -42,7 +42,7 @@ export default class CommonApiService extends BaseApiService {
   }
   /** 全部片区 */
   public groupByBigDeptInDeptList() {
-    return this.post(`/user/groupByBigDeptInDeptList`)
+    return this.post(`/user/groupByBigDeptInDeptList`, {})
   }
   /** 本人有权限的片区 */
   public getBigDeptListSelfList() {

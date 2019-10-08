@@ -108,6 +108,16 @@ export default function TableCon(props: Props) {
     surplusHeight = filterConEle.offsetHeight + 220
     console.log(surplusHeight, 'surplusHeight')
   }
+  // 如果是层级变动
+  if (appStore.match.url == '/nurseFile/hierarchy') {
+    columns.splice(7, 1)
+    columns.splice(5, 1)
+  }
+  // 如果是职称变动
+  if (appStore.match.url == '/nurseFile/title') {
+    columns.splice(7, 1)
+    columns.splice(6, 1)
+  }
 
   return (
     <Wrapper>
