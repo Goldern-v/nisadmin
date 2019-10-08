@@ -136,15 +136,16 @@ export default function AuditsTableDHSZ(props: Props) {
   }, [])
   return (
     <Wrapper>
-      <GroupPostBtn onClick={() => onload(current)} style={{ right: 130 }}>
-        刷新
-      </GroupPostBtn>
-      {props.needAudit && <GroupPostBtn onClick={openGroupModal}>批量审核</GroupPostBtn>}
-
+      {props.needAudit && (
+        <GroupPostBtn onClick={openGroupModal} style={{ right: 105 }}>
+          批量审核
+        </GroupPostBtn>
+      )}
+      <GroupPostBtn onClick={() => onload(current)}>刷新</GroupPostBtn>
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={420}
+        surplusHeight={370}
         pagination={{
           total: total,
           current: current
