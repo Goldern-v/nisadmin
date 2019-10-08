@@ -17,8 +17,14 @@ export default observer(function Table() {
   const toDetails = (record: any) => {
     // appStore.history.push(`/qualityScheduleRecordDetails`)
   }
-
-
+  const isWeekEnd = (record: any) => {
+    let date = record ? record.substring(5) : ''
+    if (('天一二三四五六'.charAt(new Date(record).getDate()) == '天') || ('天一二三四五六'.charAt(new Date(record).getDate()) == '六')) {
+      return new Date(record) < new Date() ? <div className="redColorOld">{ date }</div> : <div className="redColor">{ date }</div>
+    } else {
+      return new Date(record) < new Date() ? <div className="blackColorOld">{ date }</div> : <div>{ date }</div>
+    }
+  }
   
   const columns: ColumnProps<any>[] = [
     {
@@ -35,69 +41,113 @@ export default observer(function Table() {
     },
     {
       title: '时间',
-      dataIndex: '',
+      dataIndex: 'time0',
       colSpan: 11,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间1',
-      dataIndex: '',
+      dataIndex: 'time1',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间2',
-      dataIndex: '',
+      dataIndex: 'time2',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间3',
-      dataIndex: '',
+      dataIndex: 'time3',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间4',
-      dataIndex: '',
+      dataIndex: 'time4',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间5',
-      dataIndex: '',
+      dataIndex: 'time5',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间6',
-      dataIndex: '',
+      dataIndex: 'time6',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间7',
-      dataIndex: '',
+      dataIndex: 'time7',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间8',
-      dataIndex: '',
+      dataIndex: 'time8',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间9',
-      dataIndex: '',
+      dataIndex: 'time9',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '时间10',
-      dataIndex: '',
+      dataIndex: 'time10',
       colSpan: 0,
-      width: 50
+      width: 50,
+      align: 'center',
+      render (record: any) {
+        return isWeekEnd(record)
+      }
     },
     {
       title: '备注',
@@ -108,7 +158,8 @@ export default observer(function Table() {
       title: '状态',
       dataIndex: '',
       width: 100,
-      render (status: string) {
+      align: 'center',
+      render (status: any) {
         return status == '1' ?  '已推送' : '未推送'
       }
     }  
@@ -122,7 +173,7 @@ export default observer(function Table() {
         dataSource={scheduleViewModal.tableList}
         columns={columns}
         type={['index', 'fixedIndex']}
-        surplusHeight={220}
+        surplusHeight={260}
         surplusWidth={300}
         onRow={(record) => {
           return {
@@ -140,6 +191,25 @@ export default observer(function Table() {
 })
 const Wrapper = styled(TabledCon)`
   overflow: hidden;
+  .redColor {
+    color: red;
+    line-height: 29px;
+  }
+  .redColorOld {
+    color: red;
+    height: 100%;
+    width: 100%;
+    background: #ccc;
+    line-height: 29px;
+  }
+  .blackColorOld {
+    height: 100%;
+    background: #ccc;
+    line-height: 29px;
+  }
+  td {
+    padding: 0 !important;
+  }
 `
 const Title = styled.div`
   font-size: 20px;

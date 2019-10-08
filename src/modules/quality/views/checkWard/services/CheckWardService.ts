@@ -66,8 +66,8 @@ export default class CheckWardService extends BaseApiService {
   }
   
   //查询查房计划上传资料记录
-  public listSearchRoomImport(obj?: any){
-    return this.post(`/searchRoom/listSearchRoomImport/${obj}`)
+  public listSearchRoomImport(){
+    return this.post(`/searchRoom/listSearchRoomImport`)
   }
 }
 
