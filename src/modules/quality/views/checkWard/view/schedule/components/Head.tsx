@@ -1,15 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal } from 'antd'
+import { Button, Modal, DatePicker, message } from 'antd'
 import { TableHeadCon } from 'src/components/BaseTable'
 import { Select } from 'src/vendors/antd'
-import { DatePicker } from 'antd'
 import { Place } from 'src/components/common'
 import { scheduleViewModal } from '../ScheduleViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore } from 'src/stores';
 import YearPicker from 'src/components/YearPicker'
-import CheckWardService from '../../../services/CheckWardService';
+import { checkWardService } from '../../../services/CheckWardService';
 
 const { RangePicker } = DatePicker
 export interface Props {}
@@ -24,10 +23,11 @@ export default observer(function Head() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        // checkWardService.pushSearchRoom().then((res) => {
-
-        // })
-    
+        let params:any = scheduleViewModal.tableData
+        params.status = 1
+        checkWardService.pushSearchRoom(params).then((res) => {
+          message.success('推送成功！')
+        })
       }
     })
   }

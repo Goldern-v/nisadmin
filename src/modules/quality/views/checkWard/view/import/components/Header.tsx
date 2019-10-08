@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { appStore } from 'src/stores'
-const BG = require('../../../../../images/顶部背景.png')
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { checkWardService } from '../../../services/CheckWardService'
 import { fileDownload } from 'src/utils/file/file'
+const BG = require('../../../../../images/顶部背景.png')
 
 export default function Header() {
 

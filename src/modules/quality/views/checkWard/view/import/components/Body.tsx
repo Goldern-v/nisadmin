@@ -1,13 +1,18 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { appStore } from 'src/stores'
-import { Button, message, Spin } from 'antd';
+import { Button, message, Spin, Icon, Modal } from 'antd';
 import { checkWardService } from '../../../services/CheckWardService';
 const BG = require('../../../../../images/顶部背景.png')
+const imoprtSuccess = require('../../../images/imoprtSuccess.png')
+const importError = require('../../../images/importError.png')
+const goto = require('../../../images/goto.png')
 
 export default function Body() {
   let fileRef = React.createRef<any>();
   let [loading, setLoading] = useState(false);
+  let [total, setTotal] = useState(0); // 导入的总条数
+  let [type, setType] = useState(1); // 1-导入前 2 -导入中 3-导入成功 4-导入失败
 
 
   const importPlan = () => {
@@ -16,19 +21,58 @@ export default function Body() {
     }
   }
 
+  // 导入查房统计模块
+  const toImport = (files: any) => {
+    setType(2)
+    let form = new FormData()
+    form.set('upfile', files[0])
+    setLoading(true)
+    console.log(form, 'form', files)
+    checkWardService.importSearchRoom(form).then(res => {
+      message.success('查房计划上传成功')
+      setType(3)
+      setTotal(res.data || 0)
+      setLoading(false)
+    }, err => {
+      setType(4)
+      setLoading(false)
+    })
+  }
+
+  // 查询查房计划上传资料记录
   const handleFileChange = (e: any) => {
     let files = e.target.files;
+    console.log(files, 'filesfilesfiles')
     if (files.length > 0) {
-      let form = new FormData()
-      form.set('upfile', files[0])
-      setLoading(true)
-      checkWardService.importSearchRoom(form).then(res => {
-        console.log(form,'form0000000000')
-
-        message.success('查房计划上传成功')
-        setLoading(false)
-      }, err => {
-        setLoading(false)
+      let name = files[0].name
+      checkWardService.listSearchRoomImport().then(res => {
+        let isTips = false
+        if (res.data && res.data.length > 0) {
+          for(let i = 0; i < res.data.length; i++) {
+            if (res.data[i].name === name) {
+              isTips = true
+            }
+            break
+          }
+          if (isTips) {
+            Modal.confirm({
+              title: '提示',
+              content: '已存在该文件的上传记录，将会覆盖之前计划内容，是否继续？',
+              okText: '确认',
+              cancelText: '取消',
+              centered: true,
+              maskClosable: true,
+              onOk: () => toImport(files),
+              onCancel: () => {
+                e.target.files = ''
+              }
+            })
+          } else {
+            toImport(files)
+          }
+        } else {
+          toImport(files)
+        }
       })
     }
   }
@@ -44,11 +88,30 @@ export default function Body() {
     <Wapper>
       <Content>
         <MainBox>
-          <img src={require('../../../images/pushPlan.png')} className='img1'/>
-          <div className='button'>
-            <Button type="primary" onClick={importPlan}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  上传查房计划  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>
-            <img src={require('../../../images/import.png')} className='img2'/>
-          </div>
+          {
+            type === 1 ? <div>
+              <img src={require('../../../images/pushPlan.png')} className='img1'/>
+              <div className='button'>
+                <Button type="primary" onClick={importPlan}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  上传查房计划  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+                <img src={require('../../../images/import.png')} className='img2'/>
+              </div>
+            </div> : (
+              type ===  2 ? <div>
+                <Icon type="loading"></Icon>
+                <div>正在上传中，请稍后……</div>
+              </div> : (
+                type === 3 ? <div>
+                  <img src={imoprtSuccess} className='img3'/>
+                  <div>导入成功，共导入{total}条查房计划。</div>
+                </div> : <div>
+                  <img src={importError} className='img4'/>
+                  <div>导入失败，请重新上传文件</div>
+                  <Button type="primary" onClick={importPlan}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  上传查房计划  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+                  <Button type="primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  返回  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+                </div>
+              )
+            )
+          }
         </MainBox>
         <Warning>
           <div className='content'>

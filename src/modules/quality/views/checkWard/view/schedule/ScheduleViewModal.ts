@@ -9,6 +9,7 @@ class ScheduleViewModal {
   @observable public WardRoundList = []
   @observable public selectedYear =  moment() //日期
   @observable public tableList = []
+  @observable public tableData = [] // 暂存的数据
   @observable public tableName = '' //表格名称
   @observable public tableTime = '' //表格时间
   @observable public tableLoading = false
@@ -41,8 +42,18 @@ class ScheduleViewModal {
     this.tableLoading = true
     checkWardService.listSearchRoom().then((res) => {
       this.tableName = res.data.searchRoomType
+      this.tableData = res.data
       this.tableTime = res.data.time
-      this.tableList = res.data.searchRooms
+      let array:any = []
+      res.data.searchRooms.map((item:any) => {
+        item.searchRooms.map((o:any, i:any) => {
+          let time:any = o.searchRoomDateRemark ? (Number(o.searchRoomDateRemark.substring(5, 10)) ? o.searchRoomDateRemark.substring(5, 10) : o.searchRoomDateRemark.substring(5, 9)) : ''
+          let year:any = o.searchRoomDateRemark ? o.searchRoomDateRemark.substring(0, 5) : ''
+          item[`time${i}`] = year + time
+        })
+        array.push(item)
+      })
+      this.tableList = array
       this.tableLoading = false
     })
   }
