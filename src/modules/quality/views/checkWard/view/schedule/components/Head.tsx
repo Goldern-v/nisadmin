@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, DatePicker, message } from 'antd'
+import { Button, Modal, message } from 'antd'
 import { TableHeadCon } from 'src/components/BaseTable'
 import { Select } from 'src/vendors/antd'
 import { Place } from 'src/components/common'
@@ -9,8 +9,6 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import { appStore } from 'src/stores';
 import YearPicker from 'src/components/YearPicker'
 import { checkWardService } from '../../../services/CheckWardService';
-
-const { RangePicker } = DatePicker
 export interface Props {}
 
 export default observer(function Head() {
@@ -28,6 +26,7 @@ export default observer(function Head() {
         checkWardService.pushSearchRoom(params).then((res) => {
           message.success('推送成功！')
         })
+        scheduleViewModal.onload()
       }
     })
   }
@@ -52,8 +51,8 @@ export default observer(function Head() {
       >
         <Select.Option value=''>全部</Select.Option>
         {scheduleViewModal.WardRoundList.map((item: any, index: number) => (
-          <Select.Option value={item.deptCode} key={index}>
-            {item.deptName}
+          <Select.Option value={item.code} key={index}>
+            {item.name}
           </Select.Option>
         ))}
       </Select>

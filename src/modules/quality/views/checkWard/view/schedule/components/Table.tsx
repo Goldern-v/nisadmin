@@ -1,10 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
-import { ColumnProps } from 'src/vendors/antd'
+import { ColumnProps, Input } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
-import { qualityAnalysisReportViewModal } from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportViewModal'
 import { scheduleViewModal } from '../ScheduleViewModal'
 import { sexToChina } from 'src/utils/transform/sexToChina'
 import service from 'src/services/api'
@@ -14,9 +12,7 @@ export interface Props {}
 
 export default observer(function Table() {
 
-  const toDetails = (record: any) => {
-    // appStore.history.push(`/qualityScheduleRecordDetails`)
-  }
+  //判断日期（周末为红，过去时间底色置灰）
   const isWeekEnd = (record: any) => {
     let date = record ? record.substring(5) : ''
     if (('天一二三四五六'.charAt(new Date(record).getDate()) == '天') || ('天一二三四五六'.charAt(new Date(record).getDate()) == '六')) {
@@ -156,7 +152,7 @@ export default observer(function Table() {
     },  
     {
       title: '状态',
-      dataIndex: '',
+      dataIndex: 'status',
       width: 100,
       align: 'center',
       render (status: any) {
@@ -167,24 +163,18 @@ export default observer(function Table() {
   return (
     <Wrapper>
       <Title>护理{scheduleViewModal.tableName}计划表</Title>
-      <Time>日期：{scheduleViewModal.tableTime}</Time>
+      {/* <Time>日期：{scheduleViewModal.tableTime}</Time> */}
       <BaseTable
         loading={scheduleViewModal.tableLoading}
         dataSource={scheduleViewModal.tableList}
         columns={columns}
-        type={['index', 'fixedIndex']}
-        surplusHeight={260}
+        type={['spaceRow']}
+        surplusHeight={250}
         surplusWidth={300}
-        onRow={(record) => {
-          return {
-            onDoubleClick: (e: any) => {
-              toDetails(record)
-            }
-          }
-        }}
         onChange={() => {
           scheduleViewModal.onload()
         }}
+        tip={scheduleViewModal.tableRemark}
       />
     </Wrapper>
   )
@@ -216,7 +206,7 @@ const Title = styled.div`
   color: #333;
   font-weight: bold;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 15px;
 `
 const Time = styled.div`
   font-size: 16px;

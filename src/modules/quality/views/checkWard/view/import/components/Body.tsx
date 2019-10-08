@@ -14,7 +14,7 @@ export default function Body() {
   let [total, setTotal] = useState(0); // 导入的总条数
   let [type, setType] = useState(1); // 1-导入前 2 -导入中 3-导入成功 4-导入失败
 
-
+  //上传查房计划
   const importPlan = () => {
     if (fileRef.current) {
       fileRef.current.click();
@@ -92,22 +92,42 @@ export default function Body() {
             type === 1 ? <div>
               <img src={require('../../../images/pushPlan.png')} className='img1'/>
               <div className='button'>
-                <Button type="primary" onClick={importPlan}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  上传查房计划  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+                <Button type="primary" onClick={importPlan}><span className='leftMargin'></span>上传查房计划<span className='rightMargin'></span></Button>
                 <img src={require('../../../images/import.png')} className='img2'/>
               </div>
             </div> : (
               type ===  2 ? <div>
-                <Icon type="loading"></Icon>
-                <div>正在上传中，请稍后……</div>
+                <Icon type="loading" style={{ fontSize: 100, margin: '75px 117px 30px 117px', color: '#00A680' }}></Icon>
+                <div className='worldContent'>正在上传中，请稍后……</div>
               </div> : (
                 type === 3 ? <div>
                   <img src={imoprtSuccess} className='img3'/>
-                  <div>导入成功，共导入{total}条查房计划。</div>
+                  <div className='worldContent'>导入成功，共导入{total}条查房计划。</div>
+                  <div className='button button1'>
+                    <Button type="primary" onClick={importPlan}>
+                      <span className='leftMargin'></span>推送查房计划<span className='rightMargin'></span>
+                    </Button>
+                    <img src={require('../../../images/goto.png')} className='img2 img0'/>
+                  </div>
+                  <div className='button'>
+                    <Button onClick={() => {appStore.history.push(`/quality/checkWard/schedule`)}}>
+                      <span className='leftMargin1'></span>返回<span className='rightMargin1'></span>
+                    </Button>
+                  </div>
                 </div> : <div>
                   <img src={importError} className='img4'/>
-                  <div>导入失败，请重新上传文件</div>
-                  <Button type="primary" onClick={importPlan}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  上传查房计划  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>
-                  <Button type="primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  返回  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+                  <div className='worldContent'>导入失败，请重新上传文件</div>
+                  <div className='button button1'>
+                    <Button type="primary" onClick={importPlan}>
+                      <span className='leftMargin'></span>上传查房计划<span className='rightMargin'></span>
+                    </Button>
+                    <img src={require('../../../images/import.png')} className='img2'/>
+                  </div>
+                  <div className='button'>
+                    <Button onClick={() => {appStore.history.push(`/quality/checkWard/schedule`)}}>
+                      <span className='leftMargin1'></span>返回<span className='rightMargin1'></span>
+                    </Button>
+                  </div>
                 </div>
               )
             )
@@ -122,7 +142,7 @@ export default function Body() {
         </Warning>
           {FileInput()}
           {/* 载入遮罩层 */}
-          <div className="loading-mask" style={{ display: loading ? 'block' : 'none' }}>
+          <div className="loading-mask" style={{ display: loading ? 'none' : 'none' }}>
             <Spin />
           </div>
       </Content>
@@ -153,7 +173,7 @@ const MainBox = styled.div`
   height: 315px;
   border: 1px dashed #ccc;
   background: #fff;
-  .img1{
+  .img1,.img3,.img4{
     margin: 55px 0 25px 107px;
   }
   .button{
@@ -163,7 +183,9 @@ const MainBox = styled.div`
       position: absolute;
       top: 7px;
       left: 110px;
-
+    }
+    .img0{
+      top: 8px !important;
     }
   }
   .content{
@@ -172,6 +194,29 @@ const MainBox = styled.div`
   .explain{
     margin-left: 39px;
   }
+  .worldContent{
+    text-align: center;
+  }
+  .button1{
+    margin: 30px 0 10px 0;
+  }
+  .img4,.img3{
+    margin-top: 30px !important;
+    margin-bottom: 5px !important;
+  }
+  .leftMargin{
+    width: 45px;
+  }
+  .rightMargin{
+    width: 20px;
+  }
+  .leftMargin1{
+    width: 59px;
+  }
+  .rightMargin1{
+    width: 59px;
+  }
+
 `
 const Warning = styled.div` 
   width: 580px;

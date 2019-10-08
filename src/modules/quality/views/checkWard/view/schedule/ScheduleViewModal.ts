@@ -12,6 +12,7 @@ class ScheduleViewModal {
   @observable public tableData = [] // 暂存的数据
   @observable public tableName = '' //表格名称
   @observable public tableTime = '' //表格时间
+  @observable public tableRemark = '' //表格说明
   @observable public tableLoading = false
 
   //导出Excel
@@ -44,6 +45,7 @@ class ScheduleViewModal {
       this.tableName = res.data.searchRoomType
       this.tableData = res.data
       this.tableTime = res.data.time
+      this.tableRemark = res.data.allRemark
       let array:any = []
       res.data.searchRooms.map((item:any) => {
         item.searchRooms.map((o:any, i:any) => {

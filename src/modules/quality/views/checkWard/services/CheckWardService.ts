@@ -32,7 +32,8 @@ export default class CheckWardService extends BaseApiService {
   //查询查房计划表
   public listSearchRoom(obj?: any) {
     obj = {
-      time: scheduleViewModal.selectedYear.format('YYYY')
+      time: scheduleViewModal.selectedYear.format('YYYY'),
+      searchRoomType:scheduleViewModal.selectedWardRound
     }
     return this.post(`/searchRoom/listSearchRoom`,obj)
   }
@@ -46,9 +47,6 @@ export default class CheckWardService extends BaseApiService {
   public getDetail(id: any){
     return this.get(`/srRecord/detail/${id}`)
   }
-
-
-
   
   //推送查房计划
   public pushSearchRoom(obj: any){
@@ -62,6 +60,10 @@ export default class CheckWardService extends BaseApiService {
 
   //导出查房统计模块
   public exportSearchRoom(obj?: any){
+    obj = {
+      time: scheduleViewModal.selectedYear.format('YYYY'),
+      searchRoomType:scheduleViewModal.selectedWardRound
+    }
     return this.post(`/searchRoom/export/${obj}`)
   }
   
