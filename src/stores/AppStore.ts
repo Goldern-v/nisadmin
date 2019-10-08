@@ -3,6 +3,13 @@ import * as H from 'history'
 import { match } from 'react-router'
 import qs from 'qs'
 
+interface FullLoadingBarObj {
+  /** 预计加载完成毫秒数 */
+  duration: number
+  /** 描述 */
+  aside: string
+}
+
 export default class AppStore {
   public constructor() {
     this.isExpand = (localStorage.getItem('isExpand') as any) || '1'
@@ -28,6 +35,8 @@ export default class AppStore {
   @observable public HOSPITAL_ID = process.env.REACT_APP_HOSPITAL_ID
   /** 医院名称 */
   @observable public HOSPITAL_Name = process.env.REACT_APP_HOSPITAL_NAME
+  /** 全局进度条 */
+  @observable public fullLoadingBarObj: FullLoadingBarObj | null = null
 
   /** url 参数 */
   @computed
@@ -68,5 +77,14 @@ export default class AppStore {
   @action
   public getAppToken = () => {
     return this.appToken
+  }
+
+  /** 打开全局进度条 */
+  openFullLoadingBar(option: FullLoadingBarObj) {
+    this.fullLoadingBarObj = option
+  }
+  /** 关闭全局进度条 */
+  closeFullLoadingBar() {
+    this.fullLoadingBarObj = null
   }
 }

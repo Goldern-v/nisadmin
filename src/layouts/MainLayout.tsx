@@ -13,6 +13,7 @@ import createModal from 'src/libs/createModal'
 import { globalModal } from 'src/global/globalModal'
 import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 import GroupsAduitModalWh from 'src/global/modal/GroupsAduitModal-wh'
+import FullPageLoading from 'src/components/loading/FullPageLoading'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function MainLayout(props: Props) {
@@ -64,6 +65,7 @@ export default observer(function MainLayout(props: Props) {
       </RouterViewCon>
       <aduitModal.Component ref={aduitModalRef} />
       <groupsAduitModal.Component ref={groupsAduitModalRef} />
+      {appStore.fullLoadingBarObj && <FullPageLoading />}
     </Wrapper>
   )
 })
