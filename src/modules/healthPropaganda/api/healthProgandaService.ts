@@ -33,3 +33,5 @@ export default class HealthProagandaService extends BaseApiService {
     return this.post(`/briefMission/getContentByMissionIds`, qs.stringify({ ids: id }))
   }
 }
+
+export const healthProagandaService = new HealthProagandaService()

@@ -7,7 +7,7 @@ import qs from 'qs'
 
 const api = new HealthProgandaService()
 
-export interface Props {}
+export interface Props { }
 
 export default withRouter(function HealthPropagandaView(props: any) {
   const { history, location } = props
@@ -65,7 +65,7 @@ export default withRouter(function HealthPropagandaView(props: any) {
         <div className='base-info'>
           <span className='title'>{data.name}</span>
           <span className='sub'>
-            <Button onClick={() => history.push(`/healthPropagandaEdit/${match.id}`)}>编辑</Button>
+            <Button onClick={() => history.push(`/healthPropagandaEditNew/${match.id}`)}>编辑</Button>
             <Button onClick={handleDelete}>删除</Button>
           </span>
         </div>
@@ -169,11 +169,14 @@ const Wrapper = styled.div`
   }
 
   .main-contain {
-    height: 100%;
-    width: 100%;
     overflow: auto;
     background: #eee;
     padding: 10px 0;
+    position: fixed;
+    left: 200px;
+    top: 101px;
+    right: 0;
+    bottom: 0;
     .content {
       width: 720px;
       margin: 0 auto;

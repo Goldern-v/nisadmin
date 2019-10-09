@@ -252,7 +252,7 @@ export default observer(function 健康宣教字典(props: Props) {
             deptName,
             content: originString.replace(/\n/g, '<br/>').replace(/\r/g, '<br/>')
           })
-          history.push('/healthPropagandaEdit');
+          history.push('/healthPropagandaEditNew');
           Message.success('宣教导入成功')
         } else {
           if (res.desc) Message.error(res.desc)
@@ -288,7 +288,7 @@ export default observer(function 健康宣教字典(props: Props) {
       // baseInfo: {},
       content: ''
     })
-    history.push('/healthPropagandaEdit');
+    history.push('/healthPropagandaEditNew');
   }
 
   const viewContent = (record: any) => {
