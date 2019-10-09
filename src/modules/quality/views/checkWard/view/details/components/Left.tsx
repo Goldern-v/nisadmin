@@ -10,98 +10,121 @@ interface Props {
 }
 
 export default function Left(props: Props) {
-  let record = props.detailData.record
-  let detailData:any = {
-    master:[],
-    itemGroupList:[],
-    itemCount:[],
-    userList:[],
-    bedNurseList:[],
-    causeList:[]
-  }
-
-  let [messageBoxData, setMessageBoxData]: any = useState({})
-  let [itemConData, setItemConData]: any = useState([])
-  let [itemCount, setItemCount]: any = useState({})
-  let [userList, setUserList]: any = useState([])
-  let [bedNurseList, setBedNurseList]: any = useState([])
-  let [onlyReadError, setOnlyReadError]: any = useState(false)
-  let [causeList, setCauseList]: any = useState([])
-
-  useEffect(() => {
-    if (detailData.master) {
-      setMessageBoxData(detailData.master)
-    }
-    if (detailData.itemGroupList) {
-      setItemConData(
-        detailData.itemGroupList.map((item: any, index: number) => {
-          return { ...item, index: numToChinese(index + 1) }
-        })
-      )
-    }
-    if (detailData.itemCount) {
-      setItemCount(detailData.itemCount)
-    }
-    if (detailData.userList) {
-      setUserList(detailData.userList)
-    }
-    if (detailData.bedNurseList) {
-      setBedNurseList(detailData.bedNurseList)
-    }
-    if (detailData.causeList) {
-      setCauseList(detailData.causeList)
-    }
-  }, [])
+  const { detailData } = props
+  let messageBoxData = detailData.record || {}
+  let pageItem = detailData.pageItem || {}
+  let attachment = detailData.attachment || []
 
   return (
     <Wrapper>
       <MessageBox>
         <div className='boxLeft'>
-          <div>查房时间：2019-11-12</div>
-          <div>查检病区：神经内科护理单元</div>
+          <div>查房时间：{messageBoxData.srDate}</div>
+          <div>查检病区：{messageBoxData.wardName}</div>
         </div>
         <div className='boxRight'>
-          <div>检查者：王大锤 王小蒙</div>
-          <div>状态：待质控组长审核</div>
+          <div>检查者：{messageBoxData.srName}</div>
+          <div>状态：{messageBoxData.nextNodePendingName}</div>
         </div>
       </MessageBox>
       <ContentCon>
-      {itemConData.map((itemGroup: any, itemGroupIndex: number) => (
-          <QuestionItem key={itemGroupIndex}>
+        <QuestionItem>
+            {/* -------值班人员 */}
             <div className='titleCon'>
-              <div className='titleLeftCon'>
-                {itemGroup.index}、{itemGroup.qcItemTypeName}
+              <div className='titleLeftCon'>一、值班人员</div>
+            </div>
+            <div className='itemCon'>值班人员：{messageBoxData.onDutyEmpName}</div>
+
+            {/* -------护士在岗情况 */} 
+            <div className='titleCon'>
+              <div className='titleLeftCon'>二、护士在岗情况</div>
+            </div>
+            <div className='itemCon'>
+              <div className='itemQuestionCon'>
+                {/* 选择项 */}
+                <Radio.Group value={pageItem.nurseStatus} disabled buttonStyle='solid'>
+                  <span className='problemPro'>有无问题：</span>
+                  <Radio value={'0'} style={{ marginLeft: '15px', marginRight: '25px' }}>
+                    无问题
+                  </Radio>
+                  <Radio value={'1'} style={{ marginLeft: '15px', marginRight: '25px' }}>
+                    有问题
+                  </Radio>
+                </Radio.Group>
+                {/* //问题详情+附件 */}
+                {pageItem.nurseStatus == '1' && (
+                  <div>
+                    <div className='notesCon'>
+                      <div className='notesLeftCon'>问题详情</div>
+                      <div className='notesRightCon'>
+                        <TextArea rows={4} readOnly value={pageItem.nurseProblem} autosize disabled/>
+                      </div>
+                    </div>
+                    <div className='fujian'>
+                      <span className='problemPro'>附件：</span>
+                      {attachment.map((item: any, itemIndex: number) => (
+                        <div className='imgCon' key={itemIndex}>
+                          <Zimage
+                          text={
+                            <span style={{ fontSize: '13px'}}>
+                              <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{item.path.split(',').length}
+                            </span>
+                          }
+                          list={item.path.split(',')}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-            {itemGroup.itemList.map((item: any, itemIndex: number) => (
-              <div className='itemCon' key={itemIndex}>
-                <div className='itemQuestionCon'>
-                  <Radio.Group value="有问题" disabled buttonStyle='solid'>
-                    <Radio value={'无问题'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                      无问题
-                    </Radio>
-                    <Radio value={'无问题'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-                      无问题
-                    </Radio>
-                  </Radio.Group>
-                  {}
-                  <div className='itemAttachmentCon'>
-                    {item.attachUrls && (
-                      <Zimage
-                        text={
-                          <span>
-                            <Icon type='paper-clip' /> {item.attachUrls.split(',').length}
-                          </span>
-                        }
-                        list={item.attachUrls.split(',')}
-                      />
-                    )}
+
+            {/* -------病人情况 */} 
+            <div className='titleCon'>
+              <div className='titleLeftCon'>三、病人情况</div>
+            </div>
+            <div className='itemCon itemCon1'>
+              <div className='itemQuestionCon'>
+                {/* 选择项 */}
+                <Radio.Group value={pageItem.patientStatus} disabled buttonStyle='solid'>
+                <span className='problemPro'>有无问题：</span>
+                  <Radio value={'0'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                    无问题
+                  </Radio>
+                  <Radio value={'1'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                    有问题
+                  </Radio>
+                </Radio.Group>
+                {/* //问题详情+附件 */}
+                {pageItem.nurseStatus == '1' && (
+                  <div>
+                    <div className='notesCon'>
+                      <div className='notesLeftCon'>问题详情</div>
+                      <div className='notesRightCon'>
+                        <TextArea rows={4} readOnly value={pageItem.patientProblem} autosize disabled/>
+                      </div>
+                    </div>
+                    <div className='fujian'>
+                      <span className='problemPro'>附件：</span>
+                      {attachment.map((item: any, itemIndex: number) => (
+                        <div className='imgCon' key={itemIndex}>
+                          <Zimage
+                          text={
+                            <span style={{ fontSize: '13px'}}>
+                              <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{item.path.split(',').length}
+                            </span>
+                          }
+                          list={item.path.split(',')}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-            ))}
+            </div>
           </QuestionItem>
-        ))}
       </ContentCon>
     </Wrapper>
   )
@@ -114,6 +137,12 @@ const Wrapper = styled.div`
   color: #000000;
   background: #fff;
   border: 1px solid #ddd;
+  .imgCon{
+    display: inline-block;
+  }
+  .fujian{
+    margin-bottom: 10px;
+  }
 `
 const MessageBox = styled.div`
   margin-top: 10px;
@@ -139,7 +168,7 @@ const ContentCon = styled.div`
 `
 const QuestionItem = styled.div`
   .titleCon {
-    margin: 5px 0 0;
+    margin: 10px 0 0 0;
     height: 30px;
     line-height: 30px;
     display: flex;
@@ -152,12 +181,15 @@ const QuestionItem = styled.div`
   }
   .itemCon {
     box-sizing: border-box;
-    min-height: 60px;
+    min-height: 40px;
     padding: 4px 0;
     border-bottom: 0.5px dashed #bbbbbb;
     .itemQuestionCon {
       margin-top: 5px;
       font-size: 12px;
+      .problemPro{
+        color: #000;
+      }
       .itemAttachmentCon {
         display: inline-block;
         cursor: pointer;
@@ -179,14 +211,16 @@ const QuestionItem = styled.div`
       }
     }
   }
+  .itemCon1{
+    border-bottom: none !important;
+  }
   .notesCon {
     box-sizing: border-box;
     min-height: 116px;
     padding: 10px 0;
     display: flex;
-    border-bottom: 0.5px dashed #bbbbbb;
     .notesLeftCon {
-      width: 34px;
+      width: 68px;
     }
     .notesRightCon {
       flex: 1;

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { appStore } from 'src/stores'
 import { Button, message, Spin, Icon, Modal } from 'antd';
 import { checkWardService } from '../../../services/CheckWardService';
+import { scheduleViewModal } from '../../schedule/ScheduleViewModal';
 const BG = require('../../../../../images/顶部背景.png')
 const imoprtSuccess = require('../../../images/imoprtSuccess.png')
 const importError = require('../../../images/importError.png')
@@ -11,6 +12,8 @@ const goto = require('../../../images/goto.png')
 export default function Body() {
   let fileRef = React.createRef<any>();
   let [loading, setLoading] = useState(false);
+  let [searchRoomType, setSearchRoomType] = useState('');
+  let [time, setTime] = useState('');
   let [total, setTotal] = useState(0); // 导入的总条数
   let [type, setType] = useState(1); // 1-导入前 2 -导入中 3-导入成功 4-导入失败
 
@@ -30,8 +33,11 @@ export default function Body() {
     console.log(form, 'form', files)
     checkWardService.importSearchRoom(form).then(res => {
       message.success('查房计划上传成功')
+      // scheduleViewModal.onload()
       setType(3)
-      setTotal(res.data || 0)
+      setTotal(res.data.num || 0)
+      setSearchRoomType(res.data.searchRoomType)
+      setTime(res.data.time)
       setLoading(false)
     }, err => {
       setType(4)
@@ -42,18 +48,19 @@ export default function Body() {
   // 查询查房计划上传资料记录
   const handleFileChange = (e: any) => {
     let files = e.target.files;
-    console.log(files, 'filesfilesfiles')
     if (files.length > 0) {
       let name = files[0].name
       checkWardService.listSearchRoomImport().then(res => {
         let isTips = false
         if (res.data && res.data.length > 0) {
           for(let i = 0; i < res.data.length; i++) {
-            if (res.data[i].name === name) {
+            console.log(res.data[i].name, name)
+            if (res.data[i].name == name) {
               isTips = true
+              break
             }
-            break
           }
+          console.log(isTips, res.data, name)
           if (isTips) {
             Modal.confirm({
               title: '提示',
@@ -63,9 +70,6 @@ export default function Body() {
               centered: true,
               maskClosable: true,
               onOk: () => toImport(files),
-              onCancel: () => {
-                e.target.files = ''
-              }
             })
           } else {
             toImport(files)
@@ -76,6 +80,32 @@ export default function Body() {
       })
     }
   }
+
+  //推送查房计划表
+  const pushPlan = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定需要推送查房计划表信息吗?',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      onOk: () => {
+        scheduleViewModal.statusAll && scheduleViewModal.statusAll.map(((item: any) => {
+          item.status = 1
+        }))
+        // let param = {
+        //   time: time,
+        //   type: searchRoomType
+        // }
+        let params = {...scheduleViewModal.tableData, ...{ searchRooms: scheduleViewModal.statusAll }}
+        checkWardService.pushSearchRoom(params).then((res) => {
+          message.success('推送成功！')
+        })
+      }
+    })
+  }
+
 
   const FileInput = () => {
     if (!loading) return <input type="file" style={{ display: 'none' }} ref={fileRef} onChange={handleFileChange} accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -104,7 +134,7 @@ export default function Body() {
                   <img src={imoprtSuccess} className='img3'/>
                   <div className='worldContent'>导入成功，共导入{total}条查房计划。</div>
                   <div className='button button1'>
-                    <Button type="primary" onClick={importPlan}>
+                    <Button type="primary" onClick={pushPlan}>
                       <span className='leftMargin'></span>推送查房计划<span className='rightMargin'></span>
                     </Button>
                     <img src={require('../../../images/goto.png')} className='img2 img0'/>
@@ -142,9 +172,9 @@ export default function Body() {
         </Warning>
           {FileInput()}
           {/* 载入遮罩层 */}
-          <div className="loading-mask" style={{ display: loading ? 'none' : 'none' }}>
+          {/* <div className="loading-mask" style={{ display: loading ? 'none' : 'none' }}>
             <Spin />
-          </div>
+          </div> */}
       </Content>
     </Wapper>
   )

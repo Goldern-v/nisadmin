@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import Header from './components/Header'
 import Left from './components/Left'
 import Right from './components/Right'
@@ -11,21 +11,28 @@ import { Spin } from 'antd'
 export default function DetailsView() {
   const [detailData, setDetailData]: any = useState([])
   const [loading, setLoading] = useState(false)
+  const [effect, setEffect] = useState(true)
 
   const onload = () => {
+    if(effect){
     let id = appStore.match.params.id
     setLoading(true)
     checkWardService.getDetail(id).then((res) => {
-      setLoading(false)
       setDetailData(res.data)
-      console.log(res.data,detailData,'00000000000000')
+      setLoading(false)
+      console.log(res.data)
     })
+  }
   }
 
   useEffect(() => {
+    setEffect(true)
     onload()
   }, [])
 
+  useLayoutEffect(() => {
+    setEffect(false)
+  }, [])
 
   return (
     <Wrapper>

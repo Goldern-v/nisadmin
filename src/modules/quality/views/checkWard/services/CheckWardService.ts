@@ -5,7 +5,25 @@ import qs from 'qs';
 
 
 export default class CheckWardService extends BaseApiService {
+  
+  /**  1-查房记录  */
+  //根据参数获取查房记录列表（PC）
+  public getPage(obj: any){
+    return this.post(`/srRecord/getPage`,obj)
+  }
 
+  //获取查房记录详情
+  public getDetail(id: any){
+    return this.get(`/srRecord/detail/${id}`)
+  }
+
+  //处理节点
+  public handleNode(obj: any) {
+    return this.post(`/srRecord/handleNode`, obj)
+  }
+
+  
+  /**  2-查房计划表  */
   //查房计划表模版下载
   public searchRoomDownload() {
     return this.post(`/searchRoom/download`, { responseType: 'blob' })
@@ -31,16 +49,6 @@ export default class CheckWardService extends BaseApiService {
     }
     return this.post(`/searchRoom/listSearchRoom`,obj)
   }
-
-  //根据参数获取查房记录列表（PC）
-  public getPage(obj: any){
-    return this.post(`/srRecord/getPage`,obj)
-  }
-
-  //获取查房记录详情
-  public getDetail(id: any){
-    return this.get(`/srRecord/detail/${id}`)
-  }
   
   //推送查房计划
   public pushSearchRoom(obj: any){
@@ -65,6 +73,17 @@ export default class CheckWardService extends BaseApiService {
   public listSearchRoomImport(){
     return this.post(`/searchRoom/listSearchRoomImport`)
   }
+
+  /**  3-查房报告  */
+  public searchRoomTotal(obj?:any){
+    obj = {
+      startDate: "2019-10-01",
+      endDate: "2019-10-31"
+    }
+    return this.post(`/searchRoom/searchRoomTotal`, obj)
+  }
+
+  
 }
 
 export const checkWardService = new CheckWardService()

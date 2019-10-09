@@ -156,7 +156,7 @@ export default observer(function Table() {
       width: 100,
       align: 'center',
       render (status: any) {
-        return status == '1' ?  '已推送' : '未推送'
+        return status == '1' ? '已推送' : status == '0' ? '未推送' : ''
       }
     }  
   ]
@@ -189,12 +189,12 @@ const Wrapper = styled(TabledCon)`
     color: red;
     height: 100%;
     width: 100%;
-    background: #ccc;
+    background: #F2F2F2;
     line-height: 29px;
   }
   .blackColorOld {
     height: 100%;
-    background: #ccc;
+    background: #F2F2F2;
     line-height: 29px;
   }
   td {

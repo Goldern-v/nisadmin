@@ -4,6 +4,7 @@ import { appStore } from 'src/stores'
 const BG = require('../../../../../images/顶部背景.png')
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+import HlbModal from '../modal/HlbModal'
 import createModal from 'src/libs/createModal'
 
 interface Props {
@@ -11,23 +12,54 @@ interface Props {
   onload: any
 }
 
-
 export default function Header(props: Props) {
-  // let Title = props.detailData.record
+  let Title = props.detailData.record || {}
+  //头部目前审核状态
+  const titleStatus = () => {
+    switch (Title.status) {
+      case '1':
+        return '暂存'
+      case '2':
+        return '待质控组长审核'
+      case '3':
+        return '待护理部审核'
+      case '4':
+        return '护理部已评'
+      default:
+        return ''
+    }
+  }
+  const hlbModal = createModal(HlbModal)
 
-  useEffect(() => {
-    console.log(props.detailData)
-  }, [])
+  let nodeDataList = JSON.parse(JSON.stringify(props.detailData.srNodeList || []))
+  nodeDataList.reverse()
+  let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
+  /** 当前 */
+  let currentNode = nodeDataList[currentNodeIndex] || {}
+  /** 下一个 */
+  let nextNode = nodeDataList[currentNodeIndex - 1] || {}
 
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
     switch (nodeName) {
-      case '质控组长审核':
+      case '"质控组组长审核"':
       {
+        hlbModal.show({
+          id: appStore.match.params.id,
+          nodeCode: nextNode.nodeCode,
+          title: '"质控组组长审核"',
+          onOkCallBack: props.onload
+        })
       }
       break
       case '护理部评价':
       {
+        hlbModal.show({
+          id: appStore.match.params.id,
+          nodeCode: nextNode.nodeCode,
+          title: '护理部评价',
+          onOkCallBack: props.onload
+        })
       }
       break
     }
@@ -57,20 +89,21 @@ export default function Header(props: Props) {
           ]}
         />
         <div className='topHeaderTitle'>
-          <div className='title'> 护理中夜班查房记录表</div>
+          <div className='title'>{Title.srCode}护理{Title.type}查房记录表</div>
           <div className='topHeaderButton'>
-            {/* {nextNode.nodeName && (
-              <Button onClick={() => onAduit(nextNode.nodeName)} type='primary' disabled={!nextNode.canHandle}>
+            {nextNode.nodeName && (
+              <Button onClick={() => onRole(nextNode.nodeName)} type='primary' disabled={!nextNode.appointUser}>
                 {nextNode.nodeName}
               </Button>
-            )} */}
+            )}
             <Button onClick={() => {appStore.history.push(`/quality/checkWard/record`)}}>返回</Button>
           </div>
         </div>
         <div className='topHeaderStatus'>
-          状态：<span style={{ color: '#6767ff' }}>待质控组长审核</span>
+          状态：<span style={{ color: '#6767ff' }}>{titleStatus()}</span>
         </div>
       </TopHeader>
+      <hlbModal.Component />
     </Con>
   )
 }

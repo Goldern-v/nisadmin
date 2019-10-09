@@ -14,6 +14,7 @@ import { PageTitle } from 'src/components/common'
 export interface Props {}
 
 export default observer(function Head() {
+  //推送查房计划
   const handlePush = () => {
     Modal.confirm({
       title: '提示',
@@ -23,8 +24,10 @@ export default observer(function Head() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        let params:any = scheduleViewModal.tableData
-        params.status = 1
+        scheduleViewModal.statusAll && scheduleViewModal.statusAll.map(((item: any) => {
+          item.status = 1
+        }))
+        let params:any = { ...scheduleViewModal.tableData, ...{ searchRooms: scheduleViewModal.statusAll }}
         checkWardService.pushSearchRoom(params).then((res) => {
           message.success('推送成功！')
         })
@@ -32,6 +35,7 @@ export default observer(function Head() {
       }
     })
   }
+
   return (
     <Wrapper>
       <LeftIcon>
@@ -74,7 +78,7 @@ export default observer(function Head() {
   )
 })
 const Wrapper = styled(TableHeadCon)`
-
+  justify-content: space-between;
   .ant-select {
     width: 150px;
     margin-right: 20px;
@@ -91,7 +95,6 @@ const Wrapper = styled(TableHeadCon)`
 `
 const LeftIcon = styled.div`
   height: 55px;
-  float: left;
   font-size: 13px;
   position: relative;
   font-size: 13px;
@@ -103,7 +106,6 @@ const LeftIcon = styled.div`
 
 const RightIcon = styled.div`
   height: 55px;
-  float: right;
   font-size: 13px;
   position: relative;
   font-size: 13px;
