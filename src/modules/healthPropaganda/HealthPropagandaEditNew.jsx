@@ -13,7 +13,7 @@ CKEditor.editorUrl = '/ckeditor.js'
 const Option = Select.Option
 
 export default observer(function HealthPropagandaEditNew(props) {
-  const { history, match } = props
+  const { history, match, location } = props
   const [editorData, setEditorData] = useState('')
   const [typeList, setTypeList] = useState([])
   const [editorLoading, setEditorLaoding] = useState(false)
@@ -139,10 +139,26 @@ export default observer(function HealthPropagandaEditNew(props) {
   }
 
   const editorContentReady = (content) => {
-    if (content) setTimeout(() => {
-      setEditorData(content)
-      setEditorLaoding(false)
-    }, 1000)
+    // console.log(document.querySelectorAll('iframe.cke_reset'))
+    const findEditorEl = () => {
+
+      if (/healthPropagandaEditNew/.test(location.pathname))
+        setTimeout(() => {
+          if (document.querySelectorAll('iframe.cke_reset').length > 0) {
+            setEditorData(content)
+            setEditorLaoding(false)
+          } else {
+            findEditorEl()
+          }
+        }, 500)
+    }
+    if (content) findEditorEl()
+
+    // setTimeout(() => {
+    //   console.log(document.querySelectorAll('iframe.cke_reset'))
+    // setEditorData(content)
+    // setEditorLaoding(false)
+    // }, 1000)
   }
 
   const handleDeptSelect = (code) => {
