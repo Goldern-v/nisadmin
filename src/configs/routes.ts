@@ -88,6 +88,8 @@ import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/p
 
 //健康宣教报告
 import HealthEducationReportView from 'src/modules/healthEducationReport/QualityAnalysisReportView'
+//健康宣教编辑改版
+import HealthPropagandaEditNew from 'src/modules/healthPropaganda/HealthPropagandaEditNew'
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -153,8 +155,10 @@ const routes: RouteItem[] = [
   setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
   setLayout('/NursingRulesPagePreview', NursingRulesPagePreview, layouts.MainLayout),
   setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout),
-  setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
-  setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
+  setLayout('/healthPropagandaEditNew/:id', HealthPropagandaEditNew),
+  setLayout('/healthPropagandaEditNew', HealthPropagandaEditNew),
+  // setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
+  // setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
   setLayout('/badEventsNewList', BadEventsNewList, layouts.MainLayout),
   setLayout('/badEventsNewDetail/:id/:orderNo', BadEventsNewDetail, layouts.MainLayout),
   setLayout('/deptBorrow', DeptBorrow, layouts.BreadcrumbLayout, [
@@ -166,8 +170,8 @@ const routes: RouteItem[] = [
   // 护理质量
   setLayout('/quality/:name', QualityView, layouts.MainLayout),
   setLayout('/qualityControlRecordDetail/:id', QualityControlRecordDetail, layouts.MainLayout),
-  setLayout('/qualityScheduleRecordDetails/:id',DetailsView, layouts.MainLayout),
-  setLayout('/qualityScheduleImport',ImportView, layouts.MainLayout),
+  setLayout('/qualityScheduleRecordDetails/:id', DetailsView, layouts.MainLayout),
+  setLayout('/qualityScheduleImport', ImportView, layouts.MainLayout),
 
   setLayout('/qualityAnalysisDetail/:id', QualityAnalysisDetail, layouts.BreadcrumbLayout, [
     { name: '护理质量', link: '/quality' },

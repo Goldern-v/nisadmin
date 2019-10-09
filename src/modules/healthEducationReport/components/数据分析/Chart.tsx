@@ -52,7 +52,7 @@ export default function ChartCon(props: Props) {
 
   return (
     <Wrapper>
-      <Chart forceFit height={400} data={data} scale={scale} padding={[50, 20, 50, 30]}>
+      <Chart forceFit height={400} data={data} scale={scale} padding={[50, 20, 50, 40]}>
         <Tooltip />
         <Axis />
         <Legend position='top' />

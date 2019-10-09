@@ -43,11 +43,11 @@ class QualityControlRecordVM {
         this.stateSelectList = res.data
       }),
       qualityControlRecordApi.qcWardCodeList().then((res) => {
-        if (authStore.isDepartment) {
-          this.filterDeptCode = res.data.deptList[0] && res.data.deptList[0].code
-        } else {
-          this.filterDeptCode = res.data.defaultDept
-        }
+        // if (authStore.isDepartment || authStore.isSupervisorNurse) {
+        this.filterDeptCode = res.data.deptList[0] && res.data.deptList[0].code
+        // } else {
+        //   this.filterDeptCode = res.data.defaultDept
+        // }
         this.filterDeptList = res.data.deptList
       })
     ])

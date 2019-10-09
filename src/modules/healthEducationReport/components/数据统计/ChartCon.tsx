@@ -29,7 +29,7 @@ export default function ChartCon(props: Props) {
   return (
     <Wrapper>
       <div className='chart-name'>{label}</div>
-      <Chart forceFit height={400} data={data} scale={scale} padding={[20, 20, 50, 20]}>
+      <Chart forceFit height={400} data={data} scale={scale} padding={[20, 20, 50, 40]}>
         <Tooltip />
         <Axis />
         <Bar position='科室*数量' />

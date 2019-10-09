@@ -1,14 +1,42 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
+import { observer } from 'src/vendors/mobx-react-lite'
+import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps {}
 
-export default function FullPageLoading() {
-  useEffect(() => {})
+export default observer(function FullPageLoading() {
+  const [progress, setProgress] = useState('0%')
+  useEffect(() => {
+    /** 模拟进度 */
+    let duration = appStore.fullLoadingBarObj!.duration
+    setTimeout(() => {
+      setProgress('51%')
+    }, duration * 0.1)
+    setTimeout(() => {
+      setProgress('73%')
+    }, duration * 0.3)
+    setTimeout(() => {
+      setProgress('85%')
+    }, duration * 0.5)
+    setTimeout(() => {
+      setProgress('92%')
+    }, duration * 0.7)
+    setTimeout(() => {
+      setProgress('95%')
+    }, duration * 0.9)
+    setTimeout(() => {
+      setProgress('99%')
+    }, duration * 1)
+  }, [])
   return (
     <Wrapper>
+      <div className='text-con'>
+        <div className='title'>{progress || '0%'}</div>
+        <div className='aside'>{appStore.fullLoadingBarObj!.aside}</div>
+      </div>
       <div className='inner'>
-        <div className='container'>
+        <div className='container' style={{ width: progress || 0 }}>
           <ul>
             <li> </li>
             <li> </li>
@@ -21,13 +49,14 @@ export default function FullPageLoading() {
       </div>
     </Wrapper>
   )
-}
+})
 
-const BAR_WIDTH = '420px'
-const BAR_WIDTH_INNER = '400px'
+const BAR_WIDTH = '737px'
+// const BAR_WIDTH_INNER = progress
 const BAR_HEIGHT = '40px'
 const DEEP_COLOR = '#00A680'
 const LIGHT_COLOR = '#0EB690'
+const BG_COLOR = '#323335'
 const Wrapper = styled.div`
   position: fixed;
   left: 0;
@@ -37,13 +66,31 @@ const Wrapper = styled.div`
   background: rgba(0, 0, 0, 0.65);
   z-index: 1000;
   h3 {
-    font-family: 'Open sans';
     color: #fff;
     font-size: 200%;
     text-align: center;
     text-shadow: 2px 1px 6px #111;
   }
-
+  div.text-con {
+    position: absolute;
+    margin: auto;
+    padding-bottom: 150px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    color: #fff;
+    text-align: center;
+    height: 160px;
+    box-sizing: content-box;
+    .title {
+      font-size: 90px;
+      line-height: 90px;
+    }
+    .aside {
+      font-size: 20px;
+    }
+  }
   div.inner {
     width: ${BAR_WIDTH};
     position: absolute;
@@ -53,6 +100,7 @@ const Wrapper = styled.div`
     bottom: 0;
     top: 0;
     height: ${BAR_HEIGHT};
+    background: ${BG_COLOR};
   }
 /* 
   div.impress {
@@ -78,13 +126,15 @@ const Wrapper = styled.div`
   /*** set div as container ***/
   div.container {
     position: relative;
-    top: 11px;
-    left: 11px;
-    width: ${BAR_WIDTH_INNER};
-    height: 20px;
+    /* top: 11px;
+    left: 11px; */
+    left: 0;
+    height: ${BAR_HEIGHT};
     overflow: hidden;
     z-index: 10000;
     box-shadow: inset 0px 1px 3px #ddd;
+    width: 0;
+    transition: width 0.5s;
   }
 
   div.container:before {
@@ -101,7 +151,7 @@ const Wrapper = styled.div`
   ul {
     position: relative;
     width: 200%;
-    height: 20px;
+    height: ${BAR_HEIGHT};
     margin: 0;
     padding: 0;
     list-style: none;

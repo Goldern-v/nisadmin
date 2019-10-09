@@ -72,13 +72,27 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
             endDate: endDate ? endDate.format('YYYY-MM-DD 23:59:59') : '',
             month: indexInType
           }
-
+          setLoading(true)
+          onCancel()
+          appStore.openFullLoadingBar({
+            duration: 10000,
+            aside: '正在生成月度分析报告…'
+          })
           return workSummaryReportListService.createReport(params)
         })
         .then((res) => {
-          if (res.code == 200) appStore.history.push(`/workSummaryReportView?${qs.stringify(res.data.report)}`)
+          appStore.closeFullLoadingBar()
+          setLoading(false)
+          if (res.code == 200)
+            appStore.history.push(
+              `/healthEducationReport?year=${res.data.instance.year}&month=${res.data.instance.month}&id=${
+                res.data.instance.id
+              }`
+            )
         })
-        .catch((e) => {})
+        .catch((e) => {
+          setLoading(false)
+        })
     }
   }
 

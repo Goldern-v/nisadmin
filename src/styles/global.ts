@@ -10,6 +10,9 @@ const GlobalStyle = createGlobalStyle`
   {
     box-sizing: border-box;
   }
+  .cke_screen_reader_only{
+    top: 0;
+  }
 
   html {
     height: 100%;
