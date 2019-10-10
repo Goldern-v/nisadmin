@@ -20,16 +20,18 @@ export default function 片区团队建设活动附件弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
 
-  let list: any[] = cloneData.list.map((item: any) => {
+  let list: any[] = []
+
+  if (cloneData && cloneData.list) list = cloneData.list.map((item: any) => {
     return {
-      path: item.attachUrl,
-      id: item.attachId,
-      fileName: item.fileName
+      path: item.attachUrl || '',
+      id: item.attachId || '',
+      fileName: item.fileName || ''
     }
   }) || []
 
   const handleUploadChange = (payload: any) => {
-    console.log(payload)
+    // console.log(payload)
     let newData = payload.map((item: any) => {
       return {
         attachUrl: item.path,
@@ -41,7 +43,7 @@ export default function 片区团队建设活动附件弹窗(props: Props) {
     setData({ list: newData })
   }
 
-  useEffect(() => { }, [])
+  // useEffect(() => { }, [])
   return (
     <Wrapper>
       <MultipleImageUploader text='添加图片' onChange={handleUploadChange} tip="" value={list} />
