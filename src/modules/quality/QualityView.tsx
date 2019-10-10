@@ -17,6 +17,7 @@ import { appStore } from 'src/stores'
 import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
+import ReportView from './views/checkWard/view/report1/ReportView'
 import WritingForm from './views/writingForm/WritingForm'
 
 const LEFT_MENU_CONFIG: any = [
@@ -105,7 +106,12 @@ if (appStore.isDev) {
         title: '查房统计报告',
         path: '/quality/checkWard/checkWardReportView',
         component: CheckWardReportView
-      }
+      },
+      // {
+      //   title: '查房统计报告1',
+      //   path: '/quality/checkWard/reportView',
+      //   component: ReportView
+      // }
     ]
   })
 }

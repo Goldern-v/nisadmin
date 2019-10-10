@@ -5,7 +5,7 @@ import { TableHeadCon } from 'src/components/BaseTable'
 import { Select } from 'src/vendors/antd'
 import { DatePicker } from 'antd'
 import { Place } from 'src/components/common'
-import { recordViewModal } from '../RecordViewModal'
+import { reportViewModal } from '../ReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { PageTitle } from 'src/components/common'
 
@@ -22,23 +22,23 @@ export default observer(function Head() {
       <span>查房日期：</span>
       <RangePicker
         style={{ width: 250 }}
-        value={recordViewModal.selectedDate}
+        value={reportViewModal.selectedDate}
         onChange={(date) => {
-          recordViewModal.selectedDate = date
-          recordViewModal.onload()
+          reportViewModal.selectedDate = date
+          reportViewModal.onload()
         }}
       />
 
       <span>查房科室：</span>
       <Select
-        value={recordViewModal.selectedDept}
+        value={reportViewModal.selectedDept}
         onChange={(val: string) => {
-          recordViewModal.selectedDept = val
-          recordViewModal.onload()
+          reportViewModal.selectedDept = val
+          reportViewModal.onload()
         }}
       >
         <Select.Option value=''>全院</Select.Option>
-        {recordViewModal.deptList.map((item: any, index: number) => (
+        {reportViewModal.deptList.map((item: any, index: number) => (
           <Select.Option value={item.code} key={index}>
             {item.name}
           </Select.Option>
@@ -47,14 +47,14 @@ export default observer(function Head() {
 
       <span>类型：</span>
       <Select
-        value={recordViewModal.selectedWardRound}
+        value={reportViewModal.selectedWardRound}
         onChange={(val: string) => {
-          recordViewModal.selectedWardRound = val
-          recordViewModal.onload()
+          reportViewModal.selectedWardRound = val
+          reportViewModal.onload()
         }}
       >
         <Select.Option value=''>全部</Select.Option>
-        {recordViewModal.WardRoundList.map((item: any, index: number) => (
+        {reportViewModal.WardRoundList.map((item: any, index: number) => (
           <Select.Option value={item.code} key={index}>
             {item.name}
           </Select.Option>
@@ -63,14 +63,14 @@ export default observer(function Head() {
 
       <span>状态：</span>
       <Select
-        value={recordViewModal.selectedCheckState}
+        value={reportViewModal.selectedCheckState}
         onChange={(val: string) => {
-          recordViewModal.selectedCheckState = val
-          recordViewModal.onload()
+          reportViewModal.selectedCheckState = val
+          reportViewModal.onload()
         }}
       >
         <Select.Option value=''>全部</Select.Option>
-        {recordViewModal.checkStateList.map((item: any, index: number) => (
+        {reportViewModal.checkStateList.map((item: any, index: number) => (
           <Select.Option value={item.code} key={item.code}>
             {item.name}
           </Select.Option>
@@ -78,7 +78,7 @@ export default observer(function Head() {
       </Select>
       <Place />
 
-      <Button onClick={() => recordViewModal.onload()} className='checkButton'>查询</Button>
+      <Button onClick={() => reportViewModal.onload()} className='checkButton'>查询</Button>
       </RightIcon>
     </Wrapper>
   )
