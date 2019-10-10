@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { Document, Page } from 'react-pdf'
+import Watermark from 'src/components/Watermark'
 
 export interface Props {
   file: string
@@ -32,10 +33,13 @@ export default function PdfViewer(props: Props) {
 
   return <Wrapper>
     <Document file={file} onLoadSuccess={handleSuccess} noData={noData} loading={loading} error={error}>
-      {pages.map((item: number, idx: number) => <Page
-        pageNumber={idx + 1}
-        width={width} key={idx}
-        loading={<div className="page-loading"> </div>} />)}
+      {pages.map((item: number, idx: number) =>
+        <Watermark key={idx}>
+          <Page
+            pageNumber={idx + 1}
+            width={width}
+            loading={<div className="page-loading"> </div>} />
+        </Watermark>)}
     </Document>
   </Wrapper>
 }

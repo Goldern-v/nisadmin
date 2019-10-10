@@ -9,6 +9,7 @@ import { nursingRulesApiService } from './../api/nursingRulesNewService'
 import PdfViewer from './../components/PdfViewer'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
+import Watermark from 'src/components/Watermark'
 import qs from 'qs'
 
 import { ReactComponent as SYZ } from './../assets/上一章.svg'
@@ -401,7 +402,9 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       case 'gif':
       case 'jpeg':
       case 'png':
-        return <img src={url} width='100%' />
+        return <Watermark>
+          <img src={url} width='100%' />
+        </Watermark>
       case 'pdf':
         return <PdfViewer file={url} width={contentWidth - 2} />
       default:
