@@ -8,70 +8,7 @@ interface Props {
 }
 
 export default function Right(props: Props) {
-  //假数据
-  let nodeDataList = [
-    {
-      appointUser: false,
-      chainCode: "sr_record",
-      evalDate: "2019-09-28 12:00",
-      expand: "",
-      handleContent: "",
-      handleTime: null,
-      handlerName: "",
-      handlerNo: "",
-      nodeCode: "nursing_department_had_eval",
-      nodeIndexNo: 4,
-      nodeName: "护理部评价",
-      srRecordId: 18,
-      status: "0",
-    },
-    {
-      appointUser: false,
-      canHandle: false,
-      canUpdate: true,
-      chainCode: "",
-      evalDate: null,
-      expand: "",
-      handleContent: "",
-      handleTime: "2019-09-18 10:56",
-      handlerName: "管理员",
-      handlerNo: "ADMIN",
-      measureGroupList: [],
-      nearImageUrl: "",
-      noPass: false,
-      nodeCode: "commit",
-      nodeIndexNo: null,
-      nodeName: "提交",
-      qcItemType: "",
-      qcItemTypeIndexNo: null,
-      qcItemTypeName: "",
-      qcMasterId: 1455,
-      status: "1"
-    },
-    {
-      appointUser: false,
-      canHandle: true,
-      canUpdate: false,
-      chainCode: "two_level_quality_control",
-      evalDate: 1568775180000,
-      expand: "",
-      handleContent: "",
-      handleTime: null,
-      handlerName: "",
-      handlerNo: "",
-      measureGroupList: null,
-      nearImageUrl: "",
-      noPass: false,
-      nodeCode: "big_dept_handle",
-      nodeIndexNo: 2,
-      nodeName: "科护士长审核",
-      qcItemType: "",
-      qcItemTypeIndexNo: null,
-      qcItemTypeName: "",
-      qcMasterId: 1455,
-      status: "0",
-    }
-  ]
+  let nodeDataList = props.detailData.srNodeList || []
 
   return (
     <Wrapper>

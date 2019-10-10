@@ -92,7 +92,7 @@ export default observer(function HealthPropagandaEditNew(props) {
             setTypeList(data1)
             if (!tpType) {
               for (let i = 0; i < data1.length; i++) {
-                if (newParams.type == data1[i]) {
+                if (newParams.type === data1[i]) {
                   tpType = data1[i].messageType
                   tpName = data1[i].messageTypeName
                   break
@@ -162,7 +162,7 @@ export default observer(function HealthPropagandaEditNew(props) {
   }
 
   const handleDeptSelect = (code) => {
-    if (code == '000000') {
+    if (code === '000000') {
       setParams({
         ...params,
         deptCode: code,
@@ -170,12 +170,14 @@ export default observer(function HealthPropagandaEditNew(props) {
       })
     } else {
       authStore.deptList.map((item) => {
-        if (item.code == code)
+        if (item.code === code) {
           setParams({
             ...params,
             deptCode: code,
             deptName: item.name
           })
+        }
+        return item.code
       })
     }
   }
@@ -183,7 +185,7 @@ export default observer(function HealthPropagandaEditNew(props) {
   const handleTypeChange = (type) => {
     for (let i = 0; i < typeList.length; i++) {
       let item = typeList[i]
-      if (type == item.type) {
+      if (type === item.type) {
         let { messageType, messageTypeName } = item
         setParams({ ...params, type, templateCode: messageType, templateName: messageTypeName })
         break
@@ -194,9 +196,9 @@ export default observer(function HealthPropagandaEditNew(props) {
   const saveEdit = () => {
     let content = editorData
 
-    if (content == '' || content == '<p></p>') return Message.error('请输入宣教内容')
+    if (content === '' || content === '<p></p>') return Message.error('请输入宣教内容')
     if (!params.deptCode) return Message.error('请选择科室')
-    if (params.name == '') return Message.error('请输入宣教名称')
+    if (params.name === '') return Message.error('请输入宣教名称')
 
     let creatDate = Moment().format('YYYY-MM-DD HH:mm:ss')
     // let creatorName = params.creatorName;
@@ -217,7 +219,7 @@ export default observer(function HealthPropagandaEditNew(props) {
     }
 
     let publicUse = params.publicUse
-    if (!params.deptCode || params.deptCode == '000000') publicUse = '1'
+    if (!params.deptCode || params.deptCode === '000000') publicUse = '1'
     else publicUse = '0'
 
     content = content.split('')
@@ -225,7 +227,7 @@ export default observer(function HealthPropagandaEditNew(props) {
     content = content.map((chat) => {
       let newChart = chat
       let code = chat.charCodeAt(0)
-      if (code == 160) {
+      if (code === 160) {
         newChart = String.fromCharCode(32)
       }
       return newChart
@@ -243,7 +245,7 @@ export default observer(function HealthPropagandaEditNew(props) {
         publicUse
       })
       .then((res) => {
-        if (res.code == '200') {
+        if (res.code === '200') {
           Message.success('健康宣教保存成功')
           setTimeout(() => history.goBack(), 1000)
         } else {

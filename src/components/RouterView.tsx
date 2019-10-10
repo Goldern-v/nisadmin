@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Redirect, Route, RouteComponentProps as RouteProps, Switch } from 'react-router'
+import { Redirect, Route, RouteComponentProps as RouteProps, Switch } from 'react-router-dom'
 
 export interface RouteComponentProps<P = {}> extends RouteProps<P> {
   routes?: RouteItem[]

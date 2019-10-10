@@ -20,7 +20,6 @@ export default function DetailsView() {
     checkWardService.getDetail(id).then((res) => {
       setDetailData(res.data)
       setLoading(false)
-      console.log(res.data)
     })
   }
   }
