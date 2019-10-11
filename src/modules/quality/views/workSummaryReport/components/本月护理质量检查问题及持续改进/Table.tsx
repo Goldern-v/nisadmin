@@ -55,7 +55,7 @@ export default function Table(props: Props) {
                 style={{ textAlign: 'center', display: idx1 == 0 ? 'table-cell' : 'none' }}>
                 {item1.wardName}
               </td>
-              <td style={{ textAlign: 'center' }}>{item1.content}</td>
+              <td>{item1.content}</td>
               <td>{item1.improveContent}</td>
             </tr>
           ))}
@@ -80,6 +80,12 @@ const Wrapper = styled.div`
     table-layout: fixed;
     tr {
       width: 100%;
+      td{
+        word-break: break-all;
+      }
+    }
+    .header td{
+      text-align: center;
     }
     .header,
     .footer {
