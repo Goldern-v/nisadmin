@@ -94,12 +94,12 @@ export default function Body() {
         scheduleViewModal.statusAll && scheduleViewModal.statusAll.map(((item: any) => {
           item.status = 1
         }))
-        // let param = {
-        //   time: time,
-        //   type: searchRoomType
-        // }
-        let params = {...scheduleViewModal.tableData, ...{ searchRooms: scheduleViewModal.statusAll }}
-        checkWardService.pushSearchRoom(params).then((res) => {
+        let params = {
+          time: time,
+          type: searchRoomType
+        }
+        // let params = {...scheduleViewModal.tableData, ...{ searchRooms: scheduleViewModal.statusAll }}
+        checkWardService.pushPlan(params).then((res) => {
           message.success('推送成功！')
         })
       }

@@ -18,11 +18,14 @@ export default observer(function 本月查房详情模块(props: Props) {
   let data = checkWardReportViewModal.getSectionData(sectionId)
   let list: Partial<DetailItem>[] = data.list || []
   let report: Report = checkWardReportViewModal.getDataInAllData('report')
+  let allData = checkWardReportViewModal.dataList || []
+
   return (
     <Wrapper>
       <OneLevelTitle text='二、本月查房详情' />
       <div className='text-box'>
-        <div>**年**月特殊时段查房共**次，中夜班查房共**次。</div>
+        {/* {allData.map((item: any, index: number) => (
+        ))} */}
         <div className='aside'>肿瘤一：护士着装不规范护士着装不规范护士着装不规范护士着装不规范</div>
         <ImgCon />
       </div>

@@ -1,13 +1,12 @@
 import { observable, computed, action } from 'mobx'
 import React from 'react'
-
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
-
 import { sectionList } from './config/sectionList'
-
 import { checkWardReportService } from './services/CheckWardReportService'
 import { AllData, DeptItem, DetailItem } from './types'
+import { crrentMonth } from 'src/utils/moment/crrentMonth'
+import { checkWardService } from '../../services/CheckWardService'
 
 export interface SectionListItem {
   sectionId?: string
@@ -42,6 +41,35 @@ class CheckWardReportViewModal {
   @observable public allData: Partial<AllData> = {
     report: {}
   }
+  @observable public selectedDate: any = crrentMonth() // 查房日期
+  @observable public dataList = [] // 报告内容
+  @observable public year = '' // 报告年份
+  @observable public month = '' // 报告月份
+  @observable public searchRoom1 = '' // 特查房次数
+  @observable public searchRoom2 = '' // 夜查房次数
+  @observable public pageLoading = false 
+
+
+  @computed
+  get postObj() {
+    return {
+      startDate: this.selectedDate[0].format('YYYY-MM-DD'),
+      endDate: this.selectedDate[1].format('YYYY-MM-DD'),
+    }
+  }
+
+  onload() {
+    this.pageLoading = true
+    checkWardService.searchRoomTotal(this.postObj).then((res) => {
+      this.dataList = res.data.srRecordList
+      this.year = res.data.year
+      this.month = res.data.month
+      this.searchRoom1 = res.data.searchRoom1
+      this.searchRoom2 = res.data.searchRoom2
+      this.pageLoading = false
+    })
+  }
+
 
   /** 返回组件实例 */
   @action
@@ -99,39 +127,40 @@ class CheckWardReportViewModal {
 
   /** 数据初始化 */
   async initData() {
-    let { data } = await checkWardReportService.getReport()
+    let { data } = await checkWardService.searchRoomTotal(this.postObj)
     this.allData = data
-    this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
-    this.getSectionData(`上月质量问题`).list = this.allData!.lastImproveItemList || []
-    this.getSectionData(`2-1`).report = this.allData!.report || {}
-    this.getSectionData(`本月质量检查扣分情况`).report = this.allData!.report || {}
-    this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any) => {
-      return Object.assign(item, {
-        currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
-        lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
-        compareScore: Number(item.compareScore.toFixed(2)),
-        compareScorePercent: Number(item.compareScorePercent.toFixed(2))
-      })
-    })
-    this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
-      return Object.assign(item, {
-        deductScore: Number(Number(item.deductScore).toFixed(2))
-      })
-    })
-    this.getSectionData(`本月主要质量问题`).list = (this.allData!.detailItemList || []).map((item: any) => {
-      return Object.assign(item, {
-        totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
-      })
-    })
-    this.getSectionData(`本月质量检查亮点`).list = this.allData!.highlightItemList || []
-    this.getSectionData(`重点问题`).list = this.allData!.keyItemList || []
-    this.getSectionData(`持续改进`).list = this.allData!.currentImproveItemList || []
-    this.getSectionData(`追踪督导`).report = data!.report || {}
-    this.getSectionData(`检查重点`).report = data!.report || {}
-    this.getSectionData(`问题及建议`).report = data!.report || {}
+    // this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
+    // this.getSectionData(`上月质量问题`).list = this.allData!.lastImproveItemList || []
+    // this.getSectionData(`2-1`).report = this.allData!.report || {}
+    // this.getSectionData(`本月质量检查扣分情况`).report = this.allData!.report || {}
+    // this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any) => {
+    //   return Object.assign(item, {
+    //     currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
+    //     lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
+    //     compareScore: Number(item.compareScore.toFixed(2)),
+    //     compareScorePercent: Number(item.compareScorePercent.toFixed(2))
+    //   })
+    // })
+    // this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
+    //   return Object.assign(item, {
+    //     deductScore: Number(Number(item.deductScore).toFixed(2))
+    //   })
+    // })
+    // this.getSectionData(`本月主要质量问题`).list = (this.allData!.detailItemList || []).map((item: any) => {
+    //   return Object.assign(item, {
+    //     totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
+    //   })
+    // })
+    // this.getSectionData(`本月质量检查亮点`).list = this.allData!.highlightItemList || []
+    // this.getSectionData(`重点问题`).list = this.allData!.keyItemList || []
+    // this.getSectionData(`持续改进`).list = this.allData!.currentImproveItemList || []
+    // this.getSectionData(`追踪督导`).report = data!.report || {}
+    // this.getSectionData(`检查重点`).report = data!.report || {}
+    // this.getSectionData(`问题及建议`).report = data!.report || {}
   }
   async init() {
     await this.initData()
+    this.onload()
     this.baseModal = createModal(BaseModal)
   }
 }

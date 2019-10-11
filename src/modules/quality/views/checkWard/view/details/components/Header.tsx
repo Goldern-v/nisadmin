@@ -29,20 +29,19 @@ export default function Header(props: Props) {
         return ''
     }
   }
+
+  //弹窗
   const hlbModal = createModal(HlbModal)
 
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.srNodeList || []))
-  nodeDataList.reverse()
   let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
-  /** 当前 */
-  let currentNode = nodeDataList[currentNodeIndex] || {}
   /** 下一个 */
-  let nextNode = nodeDataList[currentNodeIndex - 1] || {}
+  let nextNode = nodeDataList[currentNodeIndex + 1] || {}
 
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
     switch (nodeName) {
-      case '"质控组组长审核"':
+      case '质控组组长审核':
       {
         hlbModal.show({
           id: appStore.match.params.id,
@@ -92,7 +91,7 @@ export default function Header(props: Props) {
           <div className='title'>{Title.srCode}护理{Title.type}查房记录表</div>
           <div className='topHeaderButton'>
             {nextNode.nodeName && (
-              <Button onClick={() => onRole(nextNode.nodeName)} type='primary' disabled={!nextNode.appointUser}>
+              <Button onClick={() => onRole(nextNode.nodeName)} type='primary' disabled={!nextNode.canHandle}>
                 {nextNode.nodeName}
               </Button>
             )}

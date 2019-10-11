@@ -97,7 +97,7 @@ export default function Left(props: Props) {
                   </Radio>
                 </Radio.Group>
                 {/* //问题详情+附件 */}
-                {pageItem.nurseStatus == '1' && (
+                {pageItem.patientStatus == '1' && (
                   <div>
                     <div className='notesCon'>
                       <div className='notesLeftCon'>问题详情</div>
