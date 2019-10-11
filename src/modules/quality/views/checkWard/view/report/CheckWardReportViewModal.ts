@@ -47,6 +47,9 @@ class CheckWardReportViewModal {
   @observable public month = '' // 报告月份
   @observable public searchRoom1 = '' // 特查房次数
   @observable public searchRoom2 = '' // 夜查房次数
+  @observable public record = '' // 附件
+  @observable public attachmentList = '' // 详情
+
   @observable public pageLoading = false 
 
 
@@ -67,6 +70,16 @@ class CheckWardReportViewModal {
       this.searchRoom1 = res.data.searchRoom1
       this.searchRoom2 = res.data.searchRoom2
       this.pageLoading = false
+      let array:any = []
+      let array1:any = []
+      res.data.srRecordList && res.data.srRecordList.map((item:any) => {
+        let record:any = item.record
+        let attachmentList:any = item.attachmentList
+        array.push(record)
+        array1.push(attachmentList)
+      })
+      this.record = array
+      this.attachmentList = array1
     })
   }
 

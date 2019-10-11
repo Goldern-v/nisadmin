@@ -8,7 +8,7 @@ interface Props {
   detailData: any
 }
 export default function midRightQualityControlRecordDetail(props: Props) {
-  let { nodeDataList } = props.detailData.srNodeList
+  let { nodeDataList } = props.detailData
 
   return (
     <Con>
