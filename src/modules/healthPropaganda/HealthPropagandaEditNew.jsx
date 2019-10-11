@@ -4,6 +4,7 @@ import { Button, Spin, Select, message as Message, Modal, Icon, Input } from 'an
 import Moment from 'moment'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import TemplatesPannel from './components/TemplatesPannel'
 import { healthProagandaService } from './api/healthProgandaService'
 
 import CKEditor from 'ckeditor4-react'
@@ -17,6 +18,8 @@ export default observer(function HealthPropagandaEditNew(props) {
   const [editorData, setEditorData] = useState('')
   const [typeList, setTypeList] = useState([])
   const [editorLoading, setEditorLaoding] = useState(false)
+
+  const editorRef = React.createRef()
 
   const [params, setParams] = useState({
     missionId: '', //宣教id (修改用)
@@ -267,11 +270,17 @@ export default observer(function HealthPropagandaEditNew(props) {
     })
   }
 
+  const handleHtmlInsert = (html) => {
+    let current = editorRef.current
+    if (current) current.editor.insertHtml(html)
+  }
+
   return <Wrapper>
     <Button className='back' onClick={() => history.goBack()}>
       <Icon type='double-left' className='icon-back' />
       返回
-      </Button>
+    </Button>
+    <TemplatesPannel onSelect={handleHtmlInsert} />
     <div className="editor-warpper">
       <div className="editor-contain">
         <Spin spinning={editorLoading}>
@@ -280,6 +289,7 @@ export default observer(function HealthPropagandaEditNew(props) {
             onChange={(e) => setParams({ ...params, name: e.target.value })} />
           <div className="hr"></div>
           <CKEditor
+            ref={editorRef}
             data={editorData}
             onChange={handleEditorChange}
             config={{
