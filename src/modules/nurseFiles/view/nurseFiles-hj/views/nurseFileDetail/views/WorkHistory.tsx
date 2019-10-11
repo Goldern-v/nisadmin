@@ -31,8 +31,6 @@ export default observer(function WorkHistory() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -40,49 +38,42 @@ export default observer(function WorkHistory() {
     {
       title: '开始年月',
       dataIndex: 'startTime',
-      key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '结束年月',
       dataIndex: 'endTime',
-      key: '3',
       width: 100,
       align: 'center'
     },
     {
       title: '单位',
       dataIndex: 'unit',
-      key: '4',
       width: 200,
       align: 'center'
     },
     {
       title: '专业技术工作',
       dataIndex: 'professionalWork',
-      key: '5',
       width: 100,
       align: 'center'
     },
     {
       title: '技术职称',
       dataIndex: 'professional',
-      key: 'professional',
       width: 100,
       align: 'center'
     },
     {
       title: '职务',
       dataIndex: 'post',
-      key: 'post',
       width: 100,
       align: 'center'
     },
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '',
       align: 'center',
       width: 120
       // render: (text: any, item: any, index: any) => {
@@ -91,8 +82,6 @@ export default observer(function WorkHistory() {
     },
     {
       title: '操作',
-      dataIndex: '8',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {

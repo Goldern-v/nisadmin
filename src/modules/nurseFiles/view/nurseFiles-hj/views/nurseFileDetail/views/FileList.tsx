@@ -35,8 +35,6 @@ export default observer(function FileList() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -44,28 +42,23 @@ export default observer(function FileList() {
     {
       title: '内容',
       dataIndex: 'content',
-      key: '2',
       width: 350,
       align: 'center'
     },
     {
       title: '文件数',
       dataIndex: 'number',
-      key: '3',
       width: 120,
       align: 'center'
     },
     {
       title: '状态',
       dataIndex: 'status',
-      key: '4',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '8',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {

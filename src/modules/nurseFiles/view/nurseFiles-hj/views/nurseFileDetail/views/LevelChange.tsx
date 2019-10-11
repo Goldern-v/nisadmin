@@ -28,8 +28,6 @@ export default observer(function LevelChange() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -37,28 +35,24 @@ export default observer(function LevelChange() {
     {
       title: '职称聘用时间',
       dataIndex: 'appointmentTime',
-      key: '2',
       width: 120,
       align: 'center'
     },
     {
       title: '取得职称',
       dataIndex: 'titleQualification',
-      key: '3',
       width: 120,
       align: 'center'
     },
     {
       title: '层级',
       dataIndex: 'hierarchy',
-      key: '4',
       width: 100,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
-      key: '5',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -68,14 +62,12 @@ export default observer(function LevelChange() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '7',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
       dataIndex: '8',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {

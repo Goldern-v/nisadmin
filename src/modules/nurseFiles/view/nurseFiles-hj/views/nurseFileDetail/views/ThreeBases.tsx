@@ -29,8 +29,6 @@ export default observer(function ThreeBases() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -38,28 +36,23 @@ export default observer(function ThreeBases() {
     {
       title: '年度',
       dataIndex: 'year',
-      key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '理论考核成绩(分)',
       dataIndex: 'theoryScore',
-      key: '3',
       width: 120,
       align: 'center'
     },
     {
       title: '操作考核成绩(分)',
       dataIndex: 'technologyScore',
-      key: '4',
       width: 120,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'fj',
-      key: '5',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -69,14 +62,11 @@ export default observer(function ThreeBases() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '61',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: 'cz',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: number) => {
