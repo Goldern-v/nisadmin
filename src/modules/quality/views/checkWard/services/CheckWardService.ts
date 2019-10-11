@@ -29,6 +29,15 @@ export default class CheckWardService extends BaseApiService {
     return this.post(`/searchRoom/download`, { responseType: 'blob' })
   }
 
+  //导出查房统计模块
+  public exportSearchRoom(obj?: any){
+    obj = {
+      time: scheduleViewModal.selectedYear.format('YYYY'),
+      searchRoomType:scheduleViewModal.selectedWardRound
+    }
+    return this.post(`/searchRoom/export`, obj, { responseType: 'blob' })
+  }
+  
   //获取查房类型
   public dictInfo(code?: any) {
     code = 'search_room_type'
@@ -65,14 +74,6 @@ export default class CheckWardService extends BaseApiService {
     return this.post(`/searchRoom/import`,formData)
   }
 
-  //导出查房统计模块
-  public exportSearchRoom(obj?: any){
-    obj = {
-      time: scheduleViewModal.selectedYear.format('YYYY'),
-      searchRoomType:scheduleViewModal.selectedWardRound
-    }
-    return this.post(`/searchRoom/export`, obj, { responseType: 'blob' })
-  }
   
   //查询查房计划上传资料记录
   public listSearchRoomImport(){

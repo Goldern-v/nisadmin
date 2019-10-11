@@ -31,7 +31,7 @@ export default function Table(props: Props) {
             <tr key={index}>
               <td style={{ textAlign: 'center' }}>{item.wardName}</td>
               <td style={{ textAlign: 'center' }}>{item.badEventType}</td>
-              <td>{item.content}</td>
+              <td className="align-left">{item.content}</td>
             </tr>
           ))}
         </tbody>
@@ -62,6 +62,9 @@ const Wrapper = styled.div`
       font-size: 14px;
       color: #000;
       border: 1px #cccccc solid;
+      &.align-left{
+        text-align: left;
+      }
     }
   }
   .lm-arrow {
