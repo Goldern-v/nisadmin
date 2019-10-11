@@ -68,6 +68,8 @@ export default observer(function QualityAnalysisReportView() {
          .img-group{
            margin-top: 0 !important;
          }
+         table { page-break-inside:auto }
+         tr{ page-break-inside:avoid; page-break-after:auto }
       `
     })
     setTimeout(() => {

@@ -33,8 +33,7 @@ export default function 本月护理质量检查问题及持续改进弹窗(prop
       key: '科室',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
+          <Input
             className='cell-input'
             value={record.wardName}
             onChange={(e) => {
@@ -51,8 +50,8 @@ export default function 本月护理质量检查问题及持续改进弹窗(prop
       key: '问题',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
+          <Input.TextArea
+            autosize
             className='cell-input'
             value={record.content}
             onChange={(e) => {
@@ -69,8 +68,8 @@ export default function 本月护理质量检查问题及持续改进弹窗(prop
       key: '持续改进',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
+          <Input.TextArea
+            autosize
             className='cell-input'
             value={record.improveContent}
             onChange={(e) => {
@@ -122,6 +121,7 @@ export default function 本月护理质量检查问题及持续改进弹窗(prop
       </div>
 
       <BaseTable
+        surplusHeight={400}
         columns={columns}
         dataSource={cloneData.list || []}
         wrapperStyle={{
@@ -144,25 +144,22 @@ const Wrapper = styled.div`
     right: 0;
   }
 
-  .cell-input input,
-  input.cell-input {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    outline: none;
-    background: transparent;
-    padding: 0 5px;
-    border-radius: 0;
-    &:focus {
-      background: ${(p) => p.theme.$mlc};
-    }
-  }
-
   td {
-    padding: 0 !important;
+    padding: 10px!important;
+  }
+  textarea{
+    resize: none;
+    border: none;
+    outline: none;
   }
   input {
     text-align: center;
+    border: none;
+    outline: none;
+    :hover{
+      outline: none;
+      border: none;
+    }
   }
 `
 
