@@ -16,7 +16,7 @@ export default observer(function Head() {
   return (
     <Wrapper>
       <LeftIcon>
-          <PageTitle>查房计划表</PageTitle>
+          <PageTitle>护理查询分析报告</PageTitle>
       </LeftIcon>
       <RightIcon>
       <span>查房日期：</span>
@@ -29,56 +29,9 @@ export default observer(function Head() {
         }}
       />
 
-      <span>查房科室：</span>
-      <Select
-        value={reportViewModal.selectedDept}
-        onChange={(val: string) => {
-          reportViewModal.selectedDept = val
-          reportViewModal.onload()
-        }}
-      >
-        <Select.Option value=''>全院</Select.Option>
-        {reportViewModal.deptList.map((item: any, index: number) => (
-          <Select.Option value={item.code} key={index}>
-            {item.name}
-          </Select.Option>
-        ))}
-      </Select>
-
-      <span>类型：</span>
-      <Select
-        value={reportViewModal.selectedWardRound}
-        onChange={(val: string) => {
-          reportViewModal.selectedWardRound = val
-          reportViewModal.onload()
-        }}
-      >
-        <Select.Option value=''>全部</Select.Option>
-        {reportViewModal.WardRoundList.map((item: any, index: number) => (
-          <Select.Option value={item.code} key={index}>
-            {item.name}
-          </Select.Option>
-        ))}
-      </Select>
-
-      <span>状态：</span>
-      <Select
-        value={reportViewModal.selectedCheckState}
-        onChange={(val: string) => {
-          reportViewModal.selectedCheckState = val
-          reportViewModal.onload()
-        }}
-      >
-        <Select.Option value=''>全部</Select.Option>
-        {reportViewModal.checkStateList.map((item: any, index: number) => (
-          <Select.Option value={item.code} key={item.code}>
-            {item.name}
-          </Select.Option>
-        ))}
-      </Select>
       <Place />
-
-      <Button onClick={() => reportViewModal.onload()} className='checkButton'>查询</Button>
+      <Button onClick={() => reportViewModal.onload()} className='checkButton' >查询</Button>
+      <Button>打印</Button>
       </RightIcon>
     </Wrapper>
   )

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
-import { Button, message, DatePicker } from 'src/vendors/antd'
+import { Button, message, DatePicker, Spin } from 'src/vendors/antd'
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker
 import { checkWardReportViewModal } from './CheckWardReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
@@ -102,13 +102,13 @@ export default observer(function CheckWardReportView() {
           <span className='label'>查房日期：</span>
           <RangePicker
             style={{ width: 250 }}
-            // value={recordViewModal.selectedDate}
+            value={checkWardReportViewModal.selectedDate}
             onChange={(date) => {
-              // recordViewModal.selectedDate = date
-              // recordViewModal.onload()
+              checkWardReportViewModal.selectedDate = date
+              checkWardReportViewModal.onload()
             }}
           />
-          <Button type='primary'>查询</Button>
+          <Button type='primary' onClick={() => checkWardReportViewModal.onload()}>查询</Button>
           <Button onClick={() => onPrint(true)}>打印</Button>
         </div>
       </HeadCon>
@@ -129,12 +129,16 @@ export default observer(function CheckWardReportView() {
               }
             }
           })}
+        <div className="example">
+          <Spin spinning={checkWardReportViewModal.pageLoading} size="large"></Spin>
+        </div>
         </Page>
         {checkWardReportViewModal.baseModal && <checkWardReportViewModal.baseModal.Component />}
       </ScrollCon>
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   * {
     font-size: 14px;
@@ -168,6 +172,7 @@ const Page = styled.div`
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  position: relative;
   img {
     max-width: 200px;
     max-height: 200px;
@@ -176,4 +181,15 @@ const Page = styled.div`
 
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
+  .example {
+    position:absolute;
+    left: 0;
+    top: 0;
+    /* background: rgba(0, 0, 0, 0.05); */
+    width: 100%;
+    height: 100%;
+    display:flex; 
+    align-items:center; 
+    justify-content:center
+  }
 `

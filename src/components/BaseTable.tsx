@@ -160,7 +160,7 @@ export default observer(function BaseTable(props: Props) {
   useLayoutEffect(() => {
     try {
       setTimeout(() => {
-        if (option.tip && tableRef.current) {
+        if (option.tip !== undefined && tableRef.current) {
           let tip = tableRef!.current!.querySelector('#tip')
           if (tip) {
             tip.innerHTML = option.tip
@@ -175,7 +175,7 @@ export default observer(function BaseTable(props: Props) {
         }
       }, 0)
       setTimeout(() => {
-        if (option.tip && tableRef.current) {
+        if (option.tip !== undefined && tableRef.current) {
           let tip = tableRef!.current!.querySelector('#tip')
           if (tip) {
             tip.innerHTML = option.tip

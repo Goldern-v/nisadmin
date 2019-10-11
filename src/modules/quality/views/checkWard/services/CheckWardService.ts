@@ -55,6 +55,11 @@ export default class CheckWardService extends BaseApiService {
     return this.post(`/searchRoom/pushSearchRoom`,obj)
   }
 
+  //推送查房计划
+  public pushPlan(obj: any){
+    return this.post(`/searchRoom/pushSearchRoomImport`,obj)
+  }
+  
   //导入查房统计模块
   public importSearchRoom(formData: any){
     return this.post(`/searchRoom/import`,formData)
@@ -76,10 +81,6 @@ export default class CheckWardService extends BaseApiService {
 
   /**  3-查房报告  */
   public searchRoomTotal(obj?:any){
-    obj = {
-      startDate: "2019-10-01",
-      endDate: "2019-10-31"
-    }
     return this.post(`/searchRoom/searchRoomTotal`, obj)
   }
 
