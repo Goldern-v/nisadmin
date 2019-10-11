@@ -205,11 +205,11 @@ export default observer(function BaseInfo() {
             <tr>
               <td>姓名</td>
               <td>
-                <Value>{appStore.queryObj.empName}</Value>
+                <Value>{nurseFileDetailViewModal.nurserInfo.empName}</Value>
               </td>
               <td>工号</td>
               <td>
-                <Value>{appStore.queryObj.empNo}</Value>
+                <Value>{nurseFileDetailViewModal.nurserInfo.empNo}</Value>
               </td>
               <td rowSpan={5}>
                 {info && info.nearImageUrl ? (
