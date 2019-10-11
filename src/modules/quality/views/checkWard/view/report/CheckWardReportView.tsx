@@ -13,6 +13,8 @@ import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { checkWardReportService } from './services/CheckWardReportService'
+import moment from 'moment'
+
 export interface Props extends RouteComponentProps {}
 
 export default observer(function CheckWardReportView() {
@@ -101,6 +103,25 @@ export default observer(function CheckWardReportView() {
         <div className='tool-con'>
           <span className='label'>查房日期：</span>
           <RangePicker
+            ranges={{
+              本月: [moment().startOf('month'), moment().endOf('month')],
+              上月: [
+                moment()
+                  .month(moment().month() - 1)
+                  .startOf('month'),
+                moment()
+                  .month(moment().month() - 1)
+                  .endOf('month')
+              ],
+              下月: [
+                moment()
+                  .month(moment().month() + 1)
+                  .startOf('month'),
+                moment()
+                  .month(moment().month() + 1)
+                  .endOf('month')
+              ]
+            }}
             style={{ width: 250 }}
             value={checkWardReportViewModal.selectedDate}
             onChange={(date) => {
@@ -129,9 +150,11 @@ export default observer(function CheckWardReportView() {
               }
             }
           })}
-        <div className="example">
-          <Spin spinning={checkWardReportViewModal.pageLoading} size="large"></Spin>
-        </div>
+        {checkWardReportViewModal.pageLoading &&
+          <div className="example">
+            <Spin spinning={checkWardReportViewModal.pageLoading} size="large"></Spin>
+          </div>
+        }
         </Page>
         {checkWardReportViewModal.baseModal && <checkWardReportViewModal.baseModal.Component />}
       </ScrollCon>
@@ -185,7 +208,7 @@ const ScrollCon = styled(ScrollBox)`
     position:absolute;
     left: 0;
     top: 0;
-    /* background: rgba(0, 0, 0, 0.05); */
+    background: rgba(0, 0, 0, 0.15);
     width: 100%;
     height: 100%;
     display:flex; 

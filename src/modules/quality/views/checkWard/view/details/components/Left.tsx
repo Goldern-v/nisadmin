@@ -64,14 +64,16 @@ export default function Left(props: Props) {
                       <span className='problemPro'>附件：</span>
                       {attachment.map((item: any, itemIndex: number) => (
                         <div className='imgCon' key={itemIndex}>
-                          <Zimage
-                          text={
-                            <span style={{ fontSize: '13px'}}>
-                              <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{item.path.split(',').length}
-                            </span>
+                          {item.type && item.type == '0' &&
+                            <Zimage
+                            text={
+                              <span style={{ fontSize: '13px'}}>
+                                <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{itemIndex + 1}
+                              </span>
+                            }
+                            list={item.path.split(',')}
+                            />
                           }
-                          list={item.path.split(',')}
-                          />
                         </div>
                       ))}
                     </div>
@@ -109,14 +111,16 @@ export default function Left(props: Props) {
                       <span className='problemPro'>附件：</span>
                       {attachment.map((item: any, itemIndex: number) => (
                         <div className='imgCon' key={itemIndex}>
-                          <Zimage
-                          text={
-                            <span style={{ fontSize: '13px'}}>
-                              <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{item.path.split(',').length}
-                            </span>
+                          {item.type && item.type == '1' &&
+                            <Zimage
+                            text={
+                              <span style={{ fontSize: '13px'}}>
+                                <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{itemIndex + 1}
+                              </span>
+                            }
+                            list={item.path.split(',')}
+                            />
                           }
-                          list={item.path.split(',')}
-                          />
                         </div>
                       ))}
                     </div>
@@ -139,6 +143,7 @@ const Wrapper = styled.div`
   border: 1px solid #ddd;
   .imgCon{
     display: inline-block;
+    margin-right: 6px;
   }
   .fujian{
     margin-bottom: 10px;

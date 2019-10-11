@@ -5,7 +5,7 @@ import { checkWardService } from '../../services/CheckWardService'
 import moment from 'moment'
 
 class ScheduleViewModal {
-  @observable public selectedWardRound = '特殊时段查房' //类型
+  @observable public selectedWardRound = '中夜班查房' //类型
   @observable public WardRoundList = []
   @observable public selectedYear =  moment() //日期
   @observable public tableList = []
