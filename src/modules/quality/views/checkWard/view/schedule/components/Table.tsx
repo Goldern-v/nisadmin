@@ -23,13 +23,13 @@ export default observer(function Table() {
     {
       title: '工号',
       dataIndex: 'empNo',
-      width: 100,
+      width: 70,
       align: 'center'
     },
     {
       title: '姓名',
       dataIndex: 'empName',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
@@ -145,7 +145,7 @@ export default observer(function Table() {
     {
       title: '备注',
       dataIndex: 'remark',
-      width: 250
+      width: 290
     },  
     {
       title: '状态',

@@ -76,10 +76,6 @@ export default function Header(props: Props) {
           }}
           data={[
             {
-              name: '护理质量检查',
-              link: '/quality'
-            },
-            {
               name: '查房记录',
               link: '/quality/checkWard/record'
             },

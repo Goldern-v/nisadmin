@@ -27,10 +27,6 @@ export default function Header() {
           }}
           data={[
             {
-              name: '护理质量',
-              link: '/quality'
-            },
-            {
               name: '查房计划表',
               link: '/quality/checkWard/schedule'
             },
