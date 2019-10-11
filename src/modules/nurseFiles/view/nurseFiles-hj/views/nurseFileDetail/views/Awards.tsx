@@ -28,8 +28,6 @@ export default observer(function Awards() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 55
@@ -37,42 +35,35 @@ export default observer(function Awards() {
     {
       title: '时间',
       dataIndex: 'time',
-      key: '时间',
       width: 120,
       align: 'center'
     },
     {
       title: '获奖/推广创新项目名称',
       dataIndex: 'awardWinningName',
-      key: '3',
       width: 220,
       align: 'center'
     },
     {
       title: '本人排名',
       dataIndex: 'rank',
-      key: '本人排名',
       width: 90,
       align: 'center'
     },
     {
       title: '授奖级别',
       dataIndex: 'awardlevel',
-      key: '授奖级别',
       width: 90,
       align: 'center'
     },
     {
       title: '批准机关',
       dataIndex: 'approvalAuthority',
-      key: 'approvalAuthority',
       width: 90,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'fj',
-      key: 'fj',
       width: 80,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -82,14 +73,11 @@ export default observer(function Awards() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: 'auditedStatusName',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '8',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: number) => {

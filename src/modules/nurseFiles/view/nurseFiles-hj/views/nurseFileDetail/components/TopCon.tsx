@@ -27,13 +27,13 @@ export default observer(function TopCon() {
 
   const openLeaveModalModal = () => {
     leaveModal.show({
-      info: appStore.queryObj,
+      info: nurseFileDetailViewModal.nurserInfo,
       callback: refreshNursingInfo
     })
   }
   const openDeptChangeModal = () => {
     deptChangeModal.show({
-      info: appStore.queryObj,
+      info: nurseFileDetailViewModal.nurserInfo,
       callback: refreshNursingInfo
     })
   }

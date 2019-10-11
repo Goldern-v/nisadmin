@@ -27,8 +27,6 @@ export default observer(function EducationalExperience() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -36,42 +34,35 @@ export default observer(function EducationalExperience() {
     {
       title: '就读时间',
       dataIndex: 'readTime',
-      key: '2',
       width: 120,
       align: 'center'
     },
     {
       title: '毕业时间',
       dataIndex: 'graduationTime',
-      key: '3',
       width: 120,
       align: 'center'
     },
     {
       title: '毕业学校',
       dataIndex: 'graduationSchool',
-      key: '4',
       width: 120,
       align: 'center'
     },
     {
       title: '专业',
       dataIndex: 'readProfessional',
-      key: '5',
       width: 120,
       align: 'center'
     },
     {
       title: '学历',
       dataIndex: 'education',
-      key: '6',
       width: 120,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'fj',
-      key: '7',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -81,14 +72,11 @@ export default observer(function EducationalExperience() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '8',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '9',
-      key: '9',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {

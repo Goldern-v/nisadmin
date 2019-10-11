@@ -27,8 +27,6 @@ export default observer(function ExaminationResults() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -36,21 +34,17 @@ export default observer(function ExaminationResults() {
     {
       title: '年度',
       dataIndex: 'year',
-      key: '2',
       width: 200,
       align: 'center'
     },
     {
       title: '考核结果',
       dataIndex: 'checkResult',
-      key: '3',
       width: 200,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'fj',
-      key: '5',
       width: 200,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -60,14 +54,11 @@ export default observer(function ExaminationResults() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '61',
       width: 200,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: '8',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: number) => {

@@ -28,8 +28,6 @@ export default function SpecialCard() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, row: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -38,28 +36,24 @@ export default function SpecialCard() {
     {
       title: '获得时间',
       dataIndex: 'time',
-      key: '2',
       width: 100,
       align: 'center'
     },
     {
       title: '资格名称',
       dataIndex: 'specialQualificationName',
-      key: '3',
       width: 150,
       align: 'center'
     },
     {
       title: '资格证编号',
       dataIndex: 'specialQualificationNo',
-      key: '4',
       width: 160,
       align: 'center'
     },
     {
       title: '附件',
       dataIndex: 'fj',
-      key: '5',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -69,14 +63,11 @@ export default function SpecialCard() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '6',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: 'cz',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: any) => {

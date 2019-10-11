@@ -28,8 +28,6 @@ export default observer(function Writings() {
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
-      dataIndex: '1',
-      key: '1',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 60
@@ -38,35 +36,29 @@ export default observer(function Writings() {
     {
       title: '发表日期',
       dataIndex: 'publicDate',
-      key: '2',
       width: 140,
       align: 'center'
     },
     {
       title: '题目',
       dataIndex: 'title',
-      key: '3',
       width: 150,
       align: 'center'
     },
     {
       title: '本人排名',
       dataIndex: 'rank',
-      key: '4',
       width: 100,
       align: 'center'
     },
     {
       title: '出版或刊登物',
       dataIndex: 'publication',
-      key: '5',
       width: 150,
       align: 'center'
     },
     {
       title: '附件',
-      dataIndex: 'fj',
-      key: '6',
       width: 120,
       align: 'center',
       render: (text: any, row: any, index: any) => {
@@ -76,14 +68,11 @@ export default observer(function Writings() {
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
-      key: '61',
       width: 120,
       align: 'center'
     },
     {
       title: '操作',
-      dataIndex: 'cz',
-      key: '8',
       width: 100,
       align: 'center',
       render: (text: any, row: any, index: number) => {
