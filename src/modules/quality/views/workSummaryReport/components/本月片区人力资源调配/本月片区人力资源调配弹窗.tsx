@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { Input, Radio, ColumnProps, AutoComplete, message } from 'src/vendors/antd'
+import { Input, Radio, ColumnProps, AutoComplete, message, DatePicker } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
+import moment from 'moment'
 import { LastImproveItem, Report, TypeCompare, DeptItem } from '../../types'
 import { workSummaryReportViewModal } from '../../WorkSummaryReportViewModal'
 
@@ -69,12 +70,12 @@ export default function 本月片区人力资源调配弹窗(props: Props) {
       key: '调配时间',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
+          <DatePicker
             className='cell-input'
-            value={record.allocationDate}
-            onChange={(e) => {
-              record.allocationDate = e.target.value
+            value={record.allocationDate ? moment(record.allocationDate) : undefined}
+            onChange={(val) => {
+              let newDate = val.format('YYYY-MM-DD')
+              record.allocationDate = newDate || ''
               setData(cloneData)
             }}
           />
@@ -193,6 +194,15 @@ const Wrapper = styled.div`
     border-radius: 0;
     &:focus {
       background: ${(p) => p.theme.$mlc};
+    }
+  }
+
+  .ant-calendar-picker{
+    width: 100%;
+    line-height: 29px;
+    height: 29px;
+    input{
+      height: 29px;
     }
   }
 

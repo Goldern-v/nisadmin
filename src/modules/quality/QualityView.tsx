@@ -8,7 +8,7 @@ import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as CXTJ } from './images/查询统计.svg'
 import { ReactComponent as FXBG } from './images/分析报告.svg'
@@ -62,7 +62,7 @@ const LEFT_MENU_CONFIG: any = [
         component: ProblemSummary
       },
       {
-        title: '二级质控分析报告',
+        title: '二级质控月度报告',
         path: '/quality/workSummaryReportList',
         component: WorkSummaryReportList
       }
@@ -117,7 +117,7 @@ if (appStore.isDev) {
 }
 
 export default function QualityView(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname])
+  useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
