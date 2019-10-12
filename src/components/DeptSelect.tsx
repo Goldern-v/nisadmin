@@ -8,6 +8,7 @@ import { authStore, appStore } from 'src/stores'
 export interface Props {
   onChange: (value: string) => void
   extraDept?: any[]
+  style?: any
 }
 
 export interface DeptType {
@@ -64,7 +65,7 @@ export default observer(function DeptSelect(props: Props) {
       <Select
         value={defaultValue}
         showSearch
-        style={{ width: 200 }}
+        style={Object.assign({ width: 200 }, props.style)}
         onChange={onChange}
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

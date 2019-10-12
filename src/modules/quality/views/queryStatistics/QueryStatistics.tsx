@@ -129,18 +129,21 @@ export default observer(function QueryStatistics(props: any) {
             <div className='content'>
               <DatePicker.RangePicker
                 value={qualityControlRecordVM.filterDate}
+                allowClear={false}
                 onChange={(value) => {
-                  qualityControlRecordVM.filterDate = value
-                  getTableData()
+                  if (value) {
+                    qualityControlRecordVM.filterDate = value
+                    getTableData()
+                  }
                 }}
-                style={{ width: 220 }}
+                style={{ width: 200 }}
               />
             </div>
           </div>
           <div className='item'>
             <div className='label'>质控科室：</div>
             <div className='content'>
-              <DeptSelect onChange={deptOnChange} />
+              <DeptSelect onChange={deptOnChange} style={{ width: 160 }} />
             </div>
           </div>
           <div className='item'>

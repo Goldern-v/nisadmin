@@ -23,6 +23,7 @@ export default observer(function TopCon(props: any) {
       <Place />
       <span style={{ margin: '0 3px 0 0' }}>日期:</span>
       <DatePicker.RangePicker
+        allowClear={false}
         value={qualityControlRecordVM.filterDate}
         onChange={(value) => {
           qualityControlRecordVM.filterDate = value

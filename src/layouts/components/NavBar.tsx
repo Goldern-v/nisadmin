@@ -213,6 +213,11 @@ const navList: any = [
     path: '/badEventsNewList'
   },
   {
+    name: '不良事件分析报告',
+    icon: <BLSJ />,
+    path: '/badEvents/alanysis/1/1'
+  },
+  {
     name: '质量管理',
     icon: <BLSJ />,
     path: '/quality'

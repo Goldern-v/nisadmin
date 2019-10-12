@@ -114,6 +114,7 @@ export default observer(function WritingForm(props: any) {
             <div className='label'>日期：</div>
             <div className='content'>
               <DatePicker.RangePicker
+                allowClear={false}
                 value={qualityControlRecordVM.filterDate}
                 onChange={(value) => {
                   qualityControlRecordVM.filterDate = value

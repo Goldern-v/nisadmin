@@ -31,7 +31,7 @@ export default observer(function FormSelect(props: Props) {
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
-        style={{ width: 200 }}
+        style={{ width: 180 }}
         onChange={onChange}
       >
         <Select.Option key='' value=''>
