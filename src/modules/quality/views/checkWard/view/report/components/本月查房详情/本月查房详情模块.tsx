@@ -20,7 +20,7 @@ export default observer(function 本月查房详情模块(props: Props) {
   let report: Report = checkWardReportViewModal.getDataInAllData('report')
   let dataList = checkWardReportViewModal.dataList || []
 
-
+  
   return (
     <Wrapper>
       <OneLevelTitle text='二、本月查房详情' />
@@ -30,7 +30,10 @@ export default observer(function 本月查房详情模块(props: Props) {
             {item.record.type && item.record.type == '特殊时段查房' &&
               <div className='aside'>
                 <div className='title'>
-                  {k+1}、{item.record.wardName}：{item.record.nurseStatus && item.record.patientStatus == '0' ? '护士及患者未检查到问题' : (item.record.nurseStatus && item.record.patientStatus == '1' ? '护士及患者都检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ? '护士检查到问题' : '患者检查到问题'))}
+                {k+1}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ? 
+                  '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ? 
+                  `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ? 
+                  `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
                 </div>
                 <div>
                   {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
@@ -51,7 +54,10 @@ export default observer(function 本月查房详情模块(props: Props) {
             {item.record.type && item.record.type == '中夜班查房' &&
               <div className='aside'>
                 <div className='title'>
-                  {k+1}、{item.record.wardName}：{item.record.nurseStatus && item.record.patientStatus == '0' ? '护士及患者未检查到问题' : item.record.nurseStatus == '1' ? '护士检查到问题' : '患者检查到问题'}
+                  {k+1}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ? 
+                  '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ? 
+                  `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ? 
+                  `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
                 </div>
                 <div>
                   {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (

@@ -32,6 +32,14 @@ class ScheduleViewModal {
     ])
   }
 
+  // 过滤日期数据
+  setTime(val: any) {
+    if (Number(val.substring(5, 10))) return val.substring(5, 10)
+    if (Number(val.substring(5, 9))) return val.substring(5, 9)
+    if (Number(val.substring(5, 8))) return val.substring(5, 8)
+    return ''
+  }
+
   onload() {
     this.tableLoading = true
     checkWardService.listSearchRoom().then((res) => {
@@ -43,7 +51,7 @@ class ScheduleViewModal {
       let array:any = []
       res.data.searchRooms && res.data.searchRooms.map((item:any) => {
         item.searchRooms.map((o:any, i:any) => {
-          let time:any = o.searchRoomDateRemark ? (Number(o.searchRoomDateRemark.substring(5, 10)) ? o.searchRoomDateRemark.substring(5, 10) : o.searchRoomDateRemark.substring(5, 9)) : ''
+          let time: any = o.searchRoomDateRemark ? this.setTime(o.searchRoomDateRemark) : ''
           let year:any = o.searchRoomDateRemark ? o.searchRoomDateRemark.substring(0, 5) : ''
           item[`time${i}`] = year + time
         })
