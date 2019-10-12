@@ -10,7 +10,8 @@ import service from 'src/services/api'
 
 import CKEditor from 'ckeditor4-react'
 
-CKEditor.editorUrl = '/ckeditor/ckeditor.js'
+// CKEditor.editorUrl = `${window.location.origin}${window.location.pathname}/ckeditor/ckeditor.js`
+CKEditor.editorUrl = `ckeditor/ckeditor.js`
 
 const Option = Select.Option
 
