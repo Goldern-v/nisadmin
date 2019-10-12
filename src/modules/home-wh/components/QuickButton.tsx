@@ -39,7 +39,7 @@ export default observer(function QuickButton() {
       title: '护理制度',
       icon: <BLSJ />,
       background: '#337AB7',
-      path: '/nursingRules'
+      path: '/nursingRulesNew'
     },
     {
       title: '病区管理',
