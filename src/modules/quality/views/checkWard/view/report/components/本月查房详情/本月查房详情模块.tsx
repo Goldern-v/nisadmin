@@ -18,43 +18,88 @@ export default observer(function 本月查房详情模块(props: Props) {
   let data = checkWardReportViewModal.getSectionData(sectionId)
   let list: Partial<DetailItem>[] = data.list || []
   let report: Report = checkWardReportViewModal.getDataInAllData('report')
-  let allData = checkWardReportViewModal.dataList || []
+  let record = checkWardReportViewModal.record || []
+  let attachmentList = checkWardReportViewModal.attachmentList || []
+  let dataList = checkWardReportViewModal.dataList || []
+
 
   return (
     <Wrapper>
       <OneLevelTitle text='二、本月查房详情' />
-      <div className='text-box'>
-        {/* {allData.map((item: any, index: number) => (
-        ))} */}
-        <div className='aside'>肿瘤一：护士着装不规范护士着装不规范护士着装不规范护士着装不规范</div>
-        <ImgCon />
+      <div className='text-box'>一、特殊时段查房
+        {dataList.map((item:any,k:any) => (
+          <div key={k}>
+            {item.record.type && item.record.type == '特殊时段查房' &&
+              <div className='aside'>
+                <div className='title'>
+                  {k+1}、{item.record.wardName}：{item.record.nurseStatus && item.record.patientStatus == '0' ? '护士及患者未检查到问题' : item.record.nurseStatus == '1' ? '护士检查到问题' : '患者检查到问题'}
+                </div>
+                <div>
+                  {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
+                    <span>
+                      {o.path &&
+                      o.path.split(',').map((o: any, k: number) => <img className='img' src={o} alt='' key={a} />)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            }
+          </div>
+        ))}
       </div>
-      {/* <EditButton onClick={() => checkWardReportViewModal!.openEditModal(sectionId)}>编辑</EditButton> */}
+      <div className='text-box'>二、中夜班查房
+        {dataList.map((item:any,k:any) => (
+          <div key={k}>
+            {item.record.type && item.record.type == '中夜班查房' &&
+              <div className='aside'>
+                <div className='title'>
+                  {k+1}、{item.record.wardName}：{item.record.nurseStatus && item.record.patientStatus == '0' ? '护士及患者未检查到问题' : item.record.nurseStatus == '1' ? '护士检查到问题' : '患者检查到问题'}
+                </div>
+                <div>
+                  {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
+                    <span>
+                      {o.path &&
+                      o.path.split(',').map((o: any, k: number) => <img className='img' src={o} alt='' key={a} />)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            }
+          </div>
+        ))}
+      </div>
+      <ImgCon />
     </Wrapper>
   )
 })
 const Wrapper = styled.div`
   min-height: 60px;
   position: relative;
-  .title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-left: 50px;
-    margin-right: 50px;
-  }
   button {
     position: absolute;
     top: 20px;
     right: 20px;
   }
   .aside {
-    font-weight: bold;
     padding-left: 30px;
+    margin-bottom: 15px;
   }
   .text-box {
     padding-left: 65px;
     padding-right: 15px;
     padding-bottom: 20px;
     padding-top: 5px;
+    font-size: 15px;
+    font-weight: bold;
   }
+  .img {
+    margin: 5px 0 15px 20px;
+    display: inline-block;
+    width: 100px;
+    height:100px;
+  }
+  .title {
+    margin-top:5px;
+  }
+
 `

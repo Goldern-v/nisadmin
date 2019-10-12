@@ -13,6 +13,9 @@ import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { checkWardReportService } from './services/CheckWardReportService'
+import moment from 'moment'
+import YearPicker from 'src/components/YearPicker'
+
 export interface Props extends RouteComponentProps {}
 
 export default observer(function CheckWardReportView() {
@@ -64,43 +67,38 @@ export default observer(function CheckWardReportView() {
       document.title = title
     }, 500)
   }
-  const onDelete = () => {
-    globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      checkWardReportService.deleteReport().then((res: any) => {
-        message.success('删除成功')
-        setTimeout(() => {
-          appStore.history.push('/quality/analysis')
-        }, 500)
-      })
-    })
-  }
-  const onPublish = () => {
-    globalModal.confirm('发布确认', '你确定要发布该报告吗？').then((res) => {
-      checkWardReportService.publishReport().then((res: any) => {
-        message.success('发布成功')
-        setTimeout(() => {
-          appStore.history.push('/quality/analysis')
-        }, 500)
-      })
-    })
-  }
-  const onCancelPublish = () => {
-    globalModal.confirm('撤销发布确认', '你确定要撤销发布该报告吗？').then((res) => {
-      checkWardReportService.cancelPublishReport().then((res: any) => {
-        message.success('撤销成功')
-        setTimeout(() => {
-          appStore.history.push('/quality/analysis')
-        }, 500)
-      })
-    })
-  }
   return (
     <Wrapper>
       <HeadCon>
         <div className='title'>护理查询分析报告</div>
         <div className='tool-con'>
+          {/* <span className='label'>年度：</span>
+          <YearPicker
+            style={{ width: 100 }}
+          />
+
+          <span className='label'>月份：</span> */}
           <span className='label'>查房日期：</span>
           <RangePicker
+            ranges={{
+              本月: [moment().startOf('month'), moment().endOf('month')],
+              上月: [
+                moment()
+                  .month(moment().month() - 1)
+                  .startOf('month'),
+                moment()
+                  .month(moment().month() - 1)
+                  .endOf('month')
+              ],
+              下月: [
+                moment()
+                  .month(moment().month() + 1)
+                  .startOf('month'),
+                moment()
+                  .month(moment().month() + 1)
+                  .endOf('month')
+              ]
+            }}
             style={{ width: 250 }}
             value={checkWardReportViewModal.selectedDate}
             onChange={(date) => {
@@ -129,11 +127,10 @@ export default observer(function CheckWardReportView() {
               }
             }
           })}
-        <div className="example">
-          <Spin spinning={checkWardReportViewModal.pageLoading} size="large"></Spin>
-        </div>
+          <div className="example">
+            <Spin spinning={checkWardReportViewModal.pageLoading} size="large"></Spin>
+          </div>
         </Page>
-        {checkWardReportViewModal.baseModal && <checkWardReportViewModal.baseModal.Component />}
       </ScrollCon>
     </Wrapper>
   )
@@ -168,7 +165,7 @@ const HeadCon = styled.div`
 `
 const Page = styled.div`
   width: 720px;
-  margin: 20px auto 20px;
+  margin: 20px auto 0px;
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -180,12 +177,11 @@ const Page = styled.div`
 `
 
 const ScrollCon = styled(ScrollBox)`
-  height: calc(100vh - 150px);
+  height: calc(100vh - 50px);
   .example {
     position:absolute;
     left: 0;
     top: 0;
-    /* background: rgba(0, 0, 0, 0.05); */
     width: 100%;
     height: 100%;
     display:flex; 

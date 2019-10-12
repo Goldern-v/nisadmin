@@ -4,10 +4,7 @@ import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps, Input } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { scheduleViewModal } from '../ScheduleViewModal'
-import { sexToChina } from 'src/utils/transform/sexToChina'
-import service from 'src/services/api'
 import { appStore } from 'src/stores'
-import qs from 'qs'
 export interface Props {}
 
 export default observer(function Table() {
@@ -26,13 +23,13 @@ export default observer(function Table() {
     {
       title: '工号',
       dataIndex: 'empNo',
-      width: 100,
+      width: 70,
       align: 'center'
     },
     {
       title: '姓名',
       dataIndex: 'empName',
-      width: 100,
+      width: 90,
       align: 'center'
     },
     {
@@ -148,7 +145,7 @@ export default observer(function Table() {
     {
       title: '备注',
       dataIndex: 'remark',
-      width: 250
+      width: 290
     },  
     {
       title: '状态',

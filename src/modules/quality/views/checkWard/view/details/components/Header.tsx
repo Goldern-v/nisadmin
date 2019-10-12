@@ -34,9 +34,10 @@ export default function Header(props: Props) {
   const hlbModal = createModal(HlbModal)
 
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.srNodeList || []))
+  nodeDataList.reverse()
   let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
   /** 下一个 */
-  let nextNode = nodeDataList[currentNodeIndex + 1] || {}
+  let nextNode = nodeDataList[currentNodeIndex - 1] || {}
 
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
@@ -51,12 +52,12 @@ export default function Header(props: Props) {
         })
       }
       break
-      case '护理部评价':
+      case '护理部审核':
       {
         hlbModal.show({
           id: appStore.match.params.id,
           nodeCode: nextNode.nodeCode,
-          title: '护理部评价',
+          title: '护理部审核',
           onOkCallBack: props.onload
         })
       }
@@ -74,10 +75,6 @@ export default function Header(props: Props) {
             paddingBottom: 2
           }}
           data={[
-            {
-              name: '护理质量检查',
-              link: '/quality'
-            },
             {
               name: '查房记录',
               link: '/quality/checkWard/record'

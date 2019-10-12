@@ -47,8 +47,8 @@ class CheckWardReportViewModal {
   @observable public month = '' // 报告月份
   @observable public searchRoom1 = '' // 特查房次数
   @observable public searchRoom2 = '' // 夜查房次数
-  @observable public record = '' // 附件
-  @observable public attachmentList = '' // 详情
+  @observable public record = [] // 附件
+  @observable public attachmentList = [] // 详情
 
   @observable public pageLoading = false 
 

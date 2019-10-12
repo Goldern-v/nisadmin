@@ -115,7 +115,7 @@ export default function Body() {
 
 
   return (
-    <Wapper>
+    <Wrapper>
       <Content>
         <MainBox>
           {
@@ -171,16 +171,12 @@ export default function Body() {
           </div>
         </Warning>
           {FileInput()}
-          {/* 载入遮罩层 */}
-          {/* <div className="loading-mask" style={{ display: loading ? 'none' : 'none' }}>
-            <Spin />
-          </div> */}
       </Content>
-    </Wapper>
+    </Wrapper>
   )
 }
 
-const Wapper = styled.div` 
+const Wrapper = styled.div` 
   box-sizing:border-box;
   height: 100%;
   width: 100%;
@@ -192,7 +188,10 @@ const Content = styled.div`
   height: 100%;
   width: 100%;
   position: relative;
+  min-width: 700px;
+  overflow: auto;
 `
+
 const MainBox = styled.div` 
   position: absolute;
   top: 65px;

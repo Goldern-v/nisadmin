@@ -26,7 +26,7 @@ export default class CheckWardService extends BaseApiService {
   /**  2-查房计划表  */
   //查房计划表模版下载
   public searchRoomDownload() {
-    return this.post(`/searchRoom/download`, { responseType: 'blob' })
+    return this.post(`/searchRoom/download`,null, { responseType: 'blob' })
   }
 
   //导出查房统计模块

@@ -13,7 +13,7 @@ import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { qualityAnalysisReportPoolService } from './services/QualityAnalysisReportPoolService'
 import qs from 'qs'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function QualityAnalysisReportView() {
   const pageRef: any = useRef<HTMLElement>()
@@ -61,6 +61,8 @@ export default observer(function QualityAnalysisReportView() {
            min-height: 0;
            margin-bottom: 0;
          }
+         table { page-break-inside:auto }
+         tr{ page-break-inside:avoid; page-break-after:auto }
       `
     })
     setTimeout(() => {
@@ -113,8 +115,8 @@ export default observer(function QualityAnalysisReportView() {
           {report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
-            <Button onClick={onPublish}>发布</Button>
-          )}
+              <Button onClick={onPublish}>发布</Button>
+            )}
           <Button onClick={() => onPrint(true)}>打印</Button>
           <Button onClick={() => appStore.history.push('/quality/summaryReport')}>返回</Button>
         </div>

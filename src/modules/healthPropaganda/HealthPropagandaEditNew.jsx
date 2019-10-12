@@ -9,7 +9,7 @@ import { healthProagandaService } from './api/healthProgandaService'
 
 import CKEditor from 'ckeditor4-react'
 
-CKEditor.editorUrl = '/ckeditor.js'
+CKEditor.editorUrl = '/ckeditor/ckeditor.js'
 
 const Option = Select.Option
 
@@ -294,6 +294,8 @@ export default observer(function HealthPropagandaEditNew(props) {
             onChange={handleEditorChange}
             config={{
               extraPlugins: 'stylesheetparser,colorbutton,colordialog',
+              removePlugins: 'easyimage,cloudservices',
+              filebrowserUploadUrl: '/ckeditorUpload?type=File',
               height: 600,
               title: ''
             }}

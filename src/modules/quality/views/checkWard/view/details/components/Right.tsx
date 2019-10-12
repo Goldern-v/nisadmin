@@ -28,20 +28,11 @@ export default function Right(props: Props) {
                     <div className='info'>
                       {item.handleTime} ({getWeekString(item.handleTime)})
                     </div>
-                    {item.nodeCode == 'big_dept_handle' && (
-                      <React.Fragment>
-                        {item.measureGroupList &&
-                          item.measureGroupList.map((item: any, index: number) => (
-                            <div className='text-box' key={index}>
-                              <div className='text-box-title'>{index + 1 + '、' + item.itemName}：</div>
-                              <div>
-                                {item.measureList.map((item: any, index: number) => (
-                                  <span key={index}>{item.measureName};</span>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                      </React.Fragment>
+                    {item.handleContent && (
+                      <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
+                        <div className='text-box-title'>处理意见：</div>
+                        <div className='text-box-content'>{item.handleContent}</div>
+                      </div>
                     )}
                   </React.Fragment>
                 ) : (
@@ -118,6 +109,9 @@ const StepBox = styled.div`
     margin: 5px 0 0;
     .text-box-title {
       font-weight: bold;
+    }
+    .text-box-content{
+      text-indent: 2em;
     }
   }
 `
