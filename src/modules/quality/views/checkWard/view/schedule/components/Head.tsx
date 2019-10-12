@@ -66,7 +66,7 @@ export default observer(function Head() {
           ))}
         </Select>
 
-        <Button onClick={() => scheduleViewModal.onload()} className='checkButton'>查询</Button>
+        <Button type='primary' onClick={() => scheduleViewModal.onload()} className='checkButton'>查询</Button>
         <Button onClick={() => {appStore.history.push(`/qualityScheduleImport`)}}>导入</Button>
         <Button onClick={() => scheduleViewModal.export()}>导出Excel</Button>
     

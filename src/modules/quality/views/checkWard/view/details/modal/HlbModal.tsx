@@ -1,6 +1,5 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import React, { useState, useLayoutEffect } from 'react'
+import { Modal, Input, Radio, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
@@ -77,4 +76,3 @@ export default function HlbModal(props: Props) {
     </Modal>
   )
 }
-const Wrapper = styled.div``

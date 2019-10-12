@@ -1,13 +1,11 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { appStore } from 'src/stores'
 import { Button, message, Spin, Icon, Modal } from 'antd';
 import { checkWardService } from '../../../services/CheckWardService';
 import { scheduleViewModal } from '../../schedule/ScheduleViewModal';
-const BG = require('../../../../../images/顶部背景.png')
 const imoprtSuccess = require('../../../images/imoprtSuccess.png')
 const importError = require('../../../images/importError.png')
-const goto = require('../../../images/goto.png')
 
 export default function Body() {
   let fileRef = React.createRef<any>();
@@ -33,7 +31,7 @@ export default function Body() {
     console.log(form, 'form', files)
     checkWardService.importSearchRoom(form).then(res => {
       message.success('查房计划上传成功')
-      // scheduleViewModal.onload()
+      scheduleViewModal.onload()
       setType(3)
       setTotal(res.data.num || 0)
       setSearchRoomType(res.data.searchRoomType)
@@ -98,7 +96,6 @@ export default function Body() {
           time: time,
           type: searchRoomType
         }
-        // let params = {...scheduleViewModal.tableData, ...{ searchRooms: scheduleViewModal.statusAll }}
         checkWardService.pushPlan(params).then((res) => {
           message.success('推送成功！')
         })

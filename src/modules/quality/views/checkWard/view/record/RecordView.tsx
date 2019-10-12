@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Head from './components/Head'
 import Table from './components/Table'
 import { recordViewModal } from './RecordViewModal'

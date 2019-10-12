@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { numToChinese } from 'src/utils/number/numToChinese';
+import React from 'react'
 import Zimage from 'src/components/Zimage'
-import { Checkbox, Radio, Icon, Input, Row, Col, Spin } from 'antd'
+import { Radio, Icon, Input } from 'antd'
 const { TextArea } = Input
 
 interface Props {
@@ -241,28 +240,4 @@ const QuestionItem = styled.div`
       }
     }
   }
-`
-const QuestionBottomCon = styled.div`
-  box-sizing: border-box;
-  padding: 10px 0;
-  height: 70px;
-  .questionBottomCheckbox {
-    margin-top: 10px;
-    .ant-checkbox-wrapper {
-      margin-right: 15px;
-    }
-    span {
-      padding-right: 0;
-      font-size: 12px;
-      color: black;
-    }
-  }
-`
-
-const OnlyReadError = styled.div`
-  text-align: right;
-  margin-top: 10px;
-  margin-bottom: -35px;
-  position: relative;
-  z-index: 2;
 `

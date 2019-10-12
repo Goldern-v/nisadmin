@@ -34,7 +34,7 @@ export default observer(function 本月查房详情模块(props: Props) {
                 </div>
                 <div>
                   {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
-                    <span>
+                    <span key={a}>
                       {o.path &&
                       o.path.split(',').map((o: any, k: number) => <img className='img' src={o} alt='' key={a} />)}
                     </span>
@@ -55,7 +55,7 @@ export default observer(function 本月查房详情模块(props: Props) {
                 </div>
                 <div>
                   {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
-                    <span>
+                    <span key={a}>
                       {o.path &&
                       o.path.split(',').map((o: any, k: number) => <img className='img' src={o} alt='' key={a} />)}
                     </span>

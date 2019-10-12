@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { appStore } from 'src/stores'
-const BG = require('../../../../../images/顶部背景.png')
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import HlbModal from '../modal/HlbModal'
@@ -13,7 +12,9 @@ interface Props {
 }
 
 export default function Header(props: Props) {
+  //接口头部数据
   let Title = props.detailData.record || {}
+
   //头部目前审核状态
   const titleStatus = () => {
     switch (Title.status) {
@@ -35,8 +36,9 @@ export default function Header(props: Props) {
 
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.srNodeList || []))
   nodeDataList.reverse()
+  //当前下标
   let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
-  /** 下一个 */
+  //下一个审核阶段
   let nextNode = nodeDataList[currentNodeIndex - 1] || {}
 
   //根据当前状态和角色显示按钮名称

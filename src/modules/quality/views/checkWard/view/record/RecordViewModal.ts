@@ -36,8 +36,6 @@ class RecordViewModal {
 
   @computed
   get postObj() {
-    let stateName = this.checkStateList.filter((item: any) => item.code === this.selectedCheckState)
-    // let state = this.checkStateList.filter(item => item[0].code === this.form.state)/
     return {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,

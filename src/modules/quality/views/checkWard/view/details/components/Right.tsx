@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
 import { getWeekString } from 'src/utils/date/week'
 

@@ -3,9 +3,7 @@ import React from 'react'
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
 import { sectionList } from './config/sectionList'
-import { checkWardReportService } from './services/CheckWardReportService'
 import { AllData, DeptItem, DetailItem } from './types'
-import { crrentMonth } from 'src/utils/moment/crrentMonth'
 import { checkWardService } from '../../services/CheckWardService'
 import moment from 'moment'
 
@@ -132,34 +130,6 @@ class CheckWardReportViewModal {
   async initData() {
     let { data } = await checkWardService.searchRoomTotal(this.postObj)
     this.allData = data
-    // this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
-    // this.getSectionData(`上月质量问题`).list = this.allData!.lastImproveItemList || []
-    // this.getSectionData(`2-1`).report = this.allData!.report || {}
-    // this.getSectionData(`本月质量检查扣分情况`).report = this.allData!.report || {}
-    // this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any) => {
-    //   return Object.assign(item, {
-    //     currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
-    //     lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
-    //     compareScore: Number(item.compareScore.toFixed(2)),
-    //     compareScorePercent: Number(item.compareScorePercent.toFixed(2))
-    //   })
-    // })
-    // this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
-    //   return Object.assign(item, {
-    //     deductScore: Number(Number(item.deductScore).toFixed(2))
-    //   })
-    // })
-    // this.getSectionData(`本月主要质量问题`).list = (this.allData!.detailItemList || []).map((item: any) => {
-    //   return Object.assign(item, {
-    //     totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
-    //   })
-    // })
-    // this.getSectionData(`本月质量检查亮点`).list = this.allData!.highlightItemList || []
-    // this.getSectionData(`重点问题`).list = this.allData!.keyItemList || []
-    // this.getSectionData(`持续改进`).list = this.allData!.currentImproveItemList || []
-    // this.getSectionData(`追踪督导`).report = data!.report || {}
-    // this.getSectionData(`检查重点`).report = data!.report || {}
-    // this.getSectionData(`问题及建议`).report = data!.report || {}
   }
   async init() {
     await this.initData()
