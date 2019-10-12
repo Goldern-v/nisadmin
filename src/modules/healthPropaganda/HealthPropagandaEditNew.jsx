@@ -2,10 +2,11 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Spin, Select, message as Message, Modal, Icon, Input } from 'antd'
 import Moment from 'moment'
-import { authStore } from 'src/stores'
+import store, { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import TemplatesPannel from './components/TemplatesPannel'
 import { healthProagandaService } from './api/healthProgandaService'
+import service from 'src/services/api'
 
 import CKEditor from 'ckeditor4-react'
 
@@ -41,8 +42,26 @@ export default observer(function HealthPropagandaEditNew(props) {
   }
 
   useEffect(() => {
+    initAuth()
     initData()
   }, [])
+
+  const initAuth = () => {
+    service.homeDataApiServices.getListDepartment().then((res) => {
+      if (res && res.data && res.data.deptList) {
+        store.authStore.deptList = res.data.deptList || []
+        if (!store.authStore.defaultDeptCode) {
+          store.authStore.defaultDeptCode = store.authStore.deptList[0].code
+          store.authStore.selectedDeptCode = store.authStore.deptList[0].code
+        }
+      }
+    })
+    if (appStore.HOSPITAL_ID == 'wh') {
+      if (!authStore.user || (authStore.user && authStore.user.roleManage != '1')) {
+        // appStore.history.push('/login')
+      }
+    }
+  }
 
   const initData = () => {
     if (match.params.id) {

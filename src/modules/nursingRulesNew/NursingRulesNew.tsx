@@ -200,6 +200,11 @@ export default observer(function nursingRulesNew() {
       <div className="main-contain">
         <BaseTable columns={columns}
           dataSource={tableData}
+          onRow={record => {
+            return {
+              onDoubleClick: () => handleDetailView(record.id)
+            }
+          }}
           pagination={{
             pageSizeOptions: ['10', '20', '30', '40', '50'],
             onShowSizeChange: handlePageSizeChange,

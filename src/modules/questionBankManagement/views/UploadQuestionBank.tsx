@@ -50,6 +50,7 @@ export default observer(function QuestionBankManagement() {
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     })
+    console.log(res.data.type)
     // console.log('fileDownload', res)
     // if (res.data.type && res.data.type.indexOf('excel') > -1) {
     if (true) {

@@ -17,12 +17,18 @@ export default observer(function BookIndexEdit() {
 
   const handleDownload = () => {
     nursingRulesApiService.getCatalogTemplate().then(res => {
-      fileDownload(res, { fileName: '目录上传模板' })
+      fileDownload(res, { fileName: '书籍目录上传模板.xlsx' })
     })
   }
 
   const fileDownload = (res: any, record?: any) => {
     let filename = record.fileName
+    let resExtra = res.headers['content-disposition'].split(';');
+    for (let i = 0; i < resExtra.length; i++) {
+      if (/filename/.test(resExtra[i])) {
+        if (resExtra[i].split('=')[1]) filename = decodeURIComponent(resExtra[i].split('=')[1])
+      }
+    }
     // decodeURIComponent
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
     // "application/json"
