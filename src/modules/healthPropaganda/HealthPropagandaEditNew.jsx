@@ -57,8 +57,8 @@ export default observer(function HealthPropagandaEditNew(props) {
         }
       }
     })
-    if (appStore.HOSPITAL_ID == 'wh') {
-      if (!authStore.user || (authStore.user && authStore.user.roleManage != '1')) {
+    if (appStore.HOSPITAL_ID === 'wh') {
+      if (!authStore.user || (authStore.user && authStore.user.roleManage !== '1')) {
         // appStore.history.push('/login')
       }
     }
