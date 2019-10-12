@@ -7,6 +7,7 @@ import { checkWardReportService } from './services/CheckWardReportService'
 import { AllData, DeptItem, DetailItem } from './types'
 import { crrentMonth } from 'src/utils/moment/crrentMonth'
 import { checkWardService } from '../../services/CheckWardService'
+import moment from 'moment'
 
 export interface SectionListItem {
   sectionId?: string
@@ -41,23 +42,22 @@ class CheckWardReportViewModal {
   @observable public allData: Partial<AllData> = {
     report: {}
   }
-  @observable public selectedDate: any = crrentMonth() // 查房日期
+  @observable public selectedYear: any = moment() // 查房年份
+  @observable public selectedMonth: any = Number(moment().format('MM')) // 查房月份
   @observable public dataList = [] // 报告内容
   @observable public year = '' // 报告年份
   @observable public month = '' // 报告月份
   @observable public searchRoom1 = '' // 特查房次数
   @observable public searchRoom2 = '' // 夜查房次数
-  @observable public record = [] // 附件
-  @observable public attachmentList = [] // 详情
-
   @observable public pageLoading = false 
 
 
   @computed
   get postObj() {
+    let dataTime = (new Date(moment(this.selectedYear).year(),this.selectedMonth,0)).getDate()
     return {
-      startDate: this.selectedDate[0].format('YYYY-MM-DD'),
-      endDate: this.selectedDate[1].format('YYYY-MM-DD'),
+      startDate: `${moment(this.selectedYear).year()}-${this.selectedMonth}-01`,
+      endDate: `${moment(this.selectedYear).year()}-${this.selectedMonth}-${dataTime}`,
     }
   }
 
@@ -70,16 +70,6 @@ class CheckWardReportViewModal {
       this.searchRoom1 = res.data.searchRoom1
       this.searchRoom2 = res.data.searchRoom2
       this.pageLoading = false
-      let array:any = []
-      let array1:any = []
-      res.data.srRecordList && res.data.srRecordList.map((item:any) => {
-        let record:any = item.record
-        let attachmentList:any = item.attachmentList
-        array.push(record)
-        array1.push(attachmentList)
-      })
-      this.record = array
-      this.attachmentList = array1
     })
   }
 

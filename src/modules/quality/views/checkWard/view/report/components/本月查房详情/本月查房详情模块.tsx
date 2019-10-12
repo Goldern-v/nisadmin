@@ -18,8 +18,6 @@ export default observer(function 本月查房详情模块(props: Props) {
   let data = checkWardReportViewModal.getSectionData(sectionId)
   let list: Partial<DetailItem>[] = data.list || []
   let report: Report = checkWardReportViewModal.getDataInAllData('report')
-  let record = checkWardReportViewModal.record || []
-  let attachmentList = checkWardReportViewModal.attachmentList || []
   let dataList = checkWardReportViewModal.dataList || []
 
 
@@ -32,7 +30,7 @@ export default observer(function 本月查房详情模块(props: Props) {
             {item.record.type && item.record.type == '特殊时段查房' &&
               <div className='aside'>
                 <div className='title'>
-                  {k+1}、{item.record.wardName}：{item.record.nurseStatus && item.record.patientStatus == '0' ? '护士及患者未检查到问题' : item.record.nurseStatus == '1' ? '护士检查到问题' : '患者检查到问题'}
+                  {k+1}、{item.record.wardName}：{item.record.nurseStatus && item.record.patientStatus == '0' ? '护士及患者未检查到问题' : (item.record.nurseStatus && item.record.patientStatus == '1' ? '护士及患者都检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ? '护士检查到问题' : '患者检查到问题'))}
                 </div>
                 <div>
                   {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (

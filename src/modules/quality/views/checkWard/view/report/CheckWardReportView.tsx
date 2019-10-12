@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
-import { Button, message, DatePicker, Spin } from 'src/vendors/antd'
+import { Button, message, DatePicker, Spin, Select } from 'src/vendors/antd'
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker
 import { checkWardReportViewModal } from './CheckWardReportViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
@@ -15,6 +14,7 @@ import { globalModal } from 'src/global/globalModal'
 import { checkWardReportService } from './services/CheckWardReportService'
 import moment from 'moment'
 import YearPicker from 'src/components/YearPicker'
+import { numberToArray } from 'src/utils/array/array'
 
 export interface Props extends RouteComponentProps {}
 
@@ -72,40 +72,32 @@ export default observer(function CheckWardReportView() {
       <HeadCon>
         <div className='title'>护理查询分析报告</div>
         <div className='tool-con'>
-          {/* <span className='label'>年度：</span>
+          <span className='label'>年度：</span>
           <YearPicker
-            style={{ width: 100 }}
-          />
-
-          <span className='label'>月份：</span> */}
-          <span className='label'>查房日期：</span>
-          <RangePicker
-            ranges={{
-              本月: [moment().startOf('month'), moment().endOf('month')],
-              上月: [
-                moment()
-                  .month(moment().month() - 1)
-                  .startOf('month'),
-                moment()
-                  .month(moment().month() - 1)
-                  .endOf('month')
-              ],
-              下月: [
-                moment()
-                  .month(moment().month() + 1)
-                  .startOf('month'),
-                moment()
-                  .month(moment().month() + 1)
-                  .endOf('month')
-              ]
-            }}
-            style={{ width: 250 }}
-            value={checkWardReportViewModal.selectedDate}
-            onChange={(date) => {
-              checkWardReportViewModal.selectedDate = date
+            style={{ width: '100px', marginRight: '15px'}}
+            value={checkWardReportViewModal.selectedYear}
+            onChange={(date:any) => {
+              checkWardReportViewModal.selectedYear = date
               checkWardReportViewModal.onload()
             }}
           />
+
+          <span className='label'>月份：</span>
+          <Select
+            style={{ width: '100px', marginRight: '5px' }}
+            value={checkWardReportViewModal.selectedMonth}
+            onChange={(date:any) => {
+              checkWardReportViewModal.selectedMonth = date
+              checkWardReportViewModal.onload()
+            }}
+              >
+            {numberToArray(11).map((item) => (
+              <Select.Option value={item + 1} key={item}>
+                {item + 1}
+              </Select.Option>
+            ))}
+          </Select>
+
           <Button type='primary' onClick={() => checkWardReportViewModal.onload()}>查询</Button>
           <Button onClick={() => onPrint(true)}>打印</Button>
         </div>
