@@ -145,20 +145,44 @@ const Wrapper = styled.div`
   }
 
   td {
-    padding: 10px!important;
+    padding: 0!important;
   }
   textarea{
     resize: none;
     border: none;
     outline: none;
+    background: none;
+    box-shadow: none;
+    :hover{
+      outline: none;
+      border: none;
+      background: none;
+      box-shadow: none;
+    }
+    :focus{
+      outline: none;
+      border: none;
+      background: ${(p) => p.theme.$mlc};
+      box-shadow: none;
+    }
   }
   input {
     text-align: center;
     border: none;
     outline: none;
+    background: none;
+    box-shadow: none;
     :hover{
       outline: none;
       border: none;
+      background: none;
+      box-shadow: none;
+    }
+    :focus{
+      outline: none;
+      border: none;
+      background: ${(p) => p.theme.$mlc};
+      box-shadow: none;
     }
   }
 `
