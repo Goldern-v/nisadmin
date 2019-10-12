@@ -35,7 +35,13 @@ class StatisticsApi extends BaseApiService {
   }
 
   public async getCatalogByType(type: any) {
-    return this.post('/nursingInstitution/getCatalogByType', qs.stringify({ type }));
+    // /hospitalBookshelf/getBookListByParam
+    // return this.post('/nursingInstitution/getCatalogByType', qs.stringify({ type }));
+    return this.post('/hospitalBookshelf/getBookListByParam', {
+      bookName: "",
+      pageIndex: 1,
+      pageSize: 100,
+    });
   }
 
 

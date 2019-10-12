@@ -7,7 +7,7 @@ import { Spin } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import { ReactComponent as HLZD } from '../images/护理制度.svg'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function NursingSystem() {
   const [loadingTable, setLoadingTable] = useState(false)
@@ -17,25 +17,26 @@ export default function NursingSystem() {
     setLoadingTable(true)
     HomeApi.getCatalogByType('').then((res) => {
       setLoadingTable(false)
-      setTableData(res.data)
+      console.log(res.data.list)
+      setTableData(res.data.list)
     })
   }
 
   useEffect(() => {
-   getMealList()
+    getMealList()
   }, [])
 
-  const toDetails = (item:any) => {
-    appStore.history.push(`/nursingRules?catalog=${item.name}&type=${item.type}`)
+  const toDetails = (item: any) => {
+    appStore.history.push(`/nursingRulesNewDetail?bookId=${item.id}`)
   }
 
   //封装函数
   const renderSubMenu = () => {
-    return tableData.map((item: any,index:any) => {
+    return tableData.map((item: any, index: any) => {
       return (
         <Li key={index} onClick={() => toDetails(item)}>
-          <img src={require('../images/list.png')} alt="" className='img'/>
-          <Content className='content'>{item.name}</Content>
+          <img src={require('../images/list.png')} alt="" className='img' />
+          <Content className='content'>{item.bookName}</Content>
         </Li>
       )
     })
@@ -43,13 +44,13 @@ export default function NursingSystem() {
 
   return (
     <Wrapper>
-      <Spin className='loading' spinning={loadingTable}/>
+      <Spin className='loading' spinning={loadingTable} />
       <Title>
         <I>
           <HLZD />
         </I>
         <World>护理制度</World>
-        <More onClick={() => {appStore.history.push('/nursingRules')}}>更多 ></More>
+        <More onClick={() => { appStore.history.push('/nursingRulesNew') }}>更多 ></More>
       </Title>
       <Ul>{renderSubMenu()}</Ul>
     </Wrapper>
