@@ -51,5 +51,19 @@ const Wrapper = styled.div`
   }
   .ant-tabs-content {
     height: calc(100vh - 172px);
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background-color: #eaeaea;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 50px;
+      background-color: #eaeaea;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 50px;
+      background-color: #c2c2c2;
+    }
   }
 `
