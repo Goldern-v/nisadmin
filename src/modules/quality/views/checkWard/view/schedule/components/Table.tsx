@@ -5,6 +5,7 @@ import { ColumnProps, Input } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { scheduleViewModal } from '../ScheduleViewModal'
 import { appStore } from 'src/stores'
+import moment from 'moment'
 export interface Props {}
 
 export default observer(function Table() {
@@ -12,7 +13,8 @@ export default observer(function Table() {
   //判断日期（周末为红，过去时间底色置灰）
   const isWeekEnd = (record: any) => {
     let date = record ? record.substring(5) : ''
-    if (('天一二三四五六'.charAt(new Date(record).getDate()) == '天') || ('天一二三四五六'.charAt(new Date(record).getDate()) == '六')) {
+    let time = moment(record).format('d')
+    if (time == '0' || time == '6') {
       return new Date(record) < new Date() ? <div className="redColorOld">{ date }</div> : <div className="redColor">{ date }</div>
     } else {
       return new Date(record) < new Date() ? <div className="blackColorOld">{ date }</div> : <div>{ date }</div>

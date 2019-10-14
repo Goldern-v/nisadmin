@@ -10,7 +10,8 @@ import service from 'src/services/api'
 
 import CKEditor from 'ckeditor4-react'
 
-CKEditor.editorUrl = '/ckeditor/ckeditor.js'
+// CKEditor.editorUrl = `${window.location.origin}${window.location.pathname}/ckeditor/ckeditor.js`
+CKEditor.editorUrl = `ckeditor/ckeditor.js`
 
 const Option = Select.Option
 
@@ -56,8 +57,8 @@ export default observer(function HealthPropagandaEditNew(props) {
         }
       }
     })
-    if (appStore.HOSPITAL_ID == 'wh') {
-      if (!authStore.user || (authStore.user && authStore.user.roleManage != '1')) {
+    if (appStore.HOSPITAL_ID === 'wh') {
+      if (!authStore.user || (authStore.user && authStore.user.roleManage !== '1')) {
         // appStore.history.push('/login')
       }
     }

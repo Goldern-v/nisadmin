@@ -17,6 +17,8 @@ export default observer(function nursingRulesNew() {
     pageIndex: 1
   })
 
+  const absoluteAuth = (authStore.isDepartment || authStore.isSupervisorNurse) as boolean
+
   const [dataTotal, setDataTotal] = useState(0)
   const [tableData, setTableData] = useState([] as any[])
   const [loading, setLoading] = useState(false)
@@ -135,7 +137,7 @@ export default observer(function nursingRulesNew() {
       key: 'operation',
       render: (text: any, record: any) => {
         let uploaderAuth = !!(record.upLoaderEmpNo == authStore.getUser().empNo) as boolean
-        let absoluteAuth = authStore.isDepartment as boolean
+
         let auth = !!(uploaderAuth || absoluteAuth) as boolean
 
         let className = 'disable'
@@ -144,7 +146,7 @@ export default observer(function nursingRulesNew() {
         if (auth) className = ''
         if (record.enabled == -1) settingText = '启用'
 
-        let settingSpan = <span className={'enabled' + className} onClick={() => {
+        let settingSpan = <span className={className} onClick={() => {
           if (!auth) return
           settingChange(record)
         }}>{settingText}</span>
@@ -163,8 +165,6 @@ export default observer(function nursingRulesNew() {
     },
 
   ]
-
-  // authStore.isDepartment || authStore.isSupervisorNurse
 
   const handleCreate = () => {
     nursingRulesApiService
@@ -195,7 +195,7 @@ export default observer(function nursingRulesNew() {
             placeholder='输入名称进行检索' />
         </span>
         <Button onClick={() => getTableData()}>查询</Button>
-        <Button type='primary' onClick={handleCreate}>新建</Button>
+        <Button type='primary' disabled={!absoluteAuth} onClick={handleCreate}>新建</Button>
       </div>
       <div className="main-contain">
         <BaseTable columns={columns}

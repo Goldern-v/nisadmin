@@ -26,7 +26,7 @@ export default observer(function NursingRulesNewDetail() {
 
   //启用和删除权限 上传者和护理部
   let uploaderAuth = !!(baseInfo.upLoaderEmpNo == (authStore.getUser() && authStore.getUser().empNo)) as boolean
-  let absoluteAuth = authStore.isDepartment as boolean
+  let absoluteAuth = (authStore.isDepartment || authStore.isSupervisorNurse) as boolean
   let auth = !!(uploaderAuth || absoluteAuth) as boolean
 
   const indexSize = () => {
@@ -160,8 +160,8 @@ export default observer(function NursingRulesNewDetail() {
     <div className="main-contain">
       <div className="top-pannel">
         <div className="btn-group">
-          <Button onClick={handleEdit}>编辑</Button>
-          <Button onClick={handleRepair}>修订</Button>
+          <Button onClick={handleEdit} disabled={!auth}>编辑</Button>
+          <Button onClick={handleRepair} disabled={!auth}>修订</Button>
           {SettingBtn()}
           <Button type="danger" ghost disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
           <Button onClick={() => history.goBack()}>返回</Button>

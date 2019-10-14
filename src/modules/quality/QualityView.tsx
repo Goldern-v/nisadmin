@@ -86,7 +86,6 @@ const LEFT_MENU_CONFIG: any = [
   }
 ]
 
-if (appStore.isDev) {
   LEFT_MENU_CONFIG.push({
     title: '护理查房',
     icon: <ZKJL />,
@@ -108,7 +107,6 @@ if (appStore.isDev) {
       }
     ]
   })
-}
 
 export default function QualityView(props: Props) {
   useEffect(() => { }, [props.history.location.pathname])
