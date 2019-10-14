@@ -70,6 +70,8 @@ export class EditPageModel {
       bookName: '',
       bookBrief: ''
     })
+
+    this.setFileList([])
     //获取书籍信息
     this.getBookData()
     //获取上传文件列表
