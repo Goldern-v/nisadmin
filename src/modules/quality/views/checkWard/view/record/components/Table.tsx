@@ -18,13 +18,13 @@ export default observer(function Table() {
     {
       title: '查房编号',
       dataIndex: 'srCode',
-      width: 170,
+      width: 150,
       align: 'center'
     },
     {
       title: '查房日期',
       dataIndex: 'srDate',
-      width: 100,
+      width: 140,
       align: 'center'
     },
     {
@@ -35,7 +35,7 @@ export default observer(function Table() {
     {
       title: '查房类型',
       dataIndex: 'type',
-      width: 140,
+      width: 130,
       align: 'center'
     },
     {
@@ -65,7 +65,7 @@ export default observer(function Table() {
     {
       title: '状态',
       dataIndex: 'status',
-      width: 140,
+      width: 130,
       align: 'center',
       render (status: string) {
         switch (status) {
