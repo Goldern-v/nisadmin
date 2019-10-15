@@ -70,13 +70,11 @@ export default observer(function Table() {
       render (status: string) {
         switch (status) {
           case '1':
-            return '暂存'
+            return '提交'
           case '2':
-            return '待质控组长审核'
+            return '待病区处理'
           case '3':
             return '待护理部审核'
-          case '4':
-            return '护理部已评'
           default:
             return ''
         }

@@ -19,13 +19,11 @@ export default function Header(props: Props) {
   const titleStatus = () => {
     switch (Title.status) {
       case '1':
-        return '暂存'
+        return '提交'
       case '2':
-        return '待质控组长审核'
+        return '待病区处理'
       case '3':
         return '待护理部审核'
-      case '4':
-        return '护理部已评'
       default:
         return ''
     }
@@ -44,12 +42,12 @@ export default function Header(props: Props) {
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
     switch (nodeName) {
-      case '质控组组长审核':
+      case '病区处理':
       {
         hlbModal.show({
           id: appStore.match.params.id,
           nodeCode: nextNode.nodeCode,
-          title: '"质控组组长审核"',
+          title: '"病区处理"',
           onOkCallBack: props.onload
         })
       }
