@@ -32,7 +32,7 @@ export default function Header(props: Props) {
   //弹窗
   const hlbModal = createModal(HlbModal)
 
-  let nodeDataList = JSON.parse(JSON.stringify(props.detailData.srNodeList || []))
+  let nodeDataList = JSON.parse(JSON.stringify(props.detailData.handlenodeDto || []))
   nodeDataList.reverse()
   //当前下标
   let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0

@@ -9,6 +9,68 @@ import moment from 'moment'
 export interface Props {}
 
 export default observer(function Table() {
+  const [columns, setColumns] = useState([])
+  const initConfigData = (length: any = 11) => {
+    let index = length + 4
+    let array: any = []
+    for (let i = 0; i < index; i++) {
+      let data = {
+        title: `时间`,
+        dataIndex: `time${i - 2}`,
+        width: 50,
+        colSpan: i === 2 ? length : 0,
+        render: (record: any) => {
+          return isWeekEnd(record)
+        },
+        align: 'center'
+      }
+      switch (i) {
+        case 0:
+          data.title = '工号'
+          data.dataIndex = 'empNo'
+          data.width = 100
+          data.render = (record: any) => {
+            return record
+          }
+          delete data.colSpan
+          break
+        case 1:
+          data.title = '姓名'
+          data.dataIndex = 'empName'
+          data.width = 100
+          data.render = (record: any) => {
+            return record
+          }
+          data.colSpan = 1
+          break
+        case index - 2:
+          data.title = '备注'
+          data.dataIndex = 'remark'
+          data.width = 250
+          data.render = (record: any) => {
+            return record
+          }
+          data.colSpan = 1
+          break
+        case index - 1:
+          data.title = '状态'
+          data.dataIndex = 'status'
+          data.width = 100
+          data.render = (record: any): any => {
+            return record == "1" ? "已推送" : (record == "0" ? "未推送" : "")
+          }
+          data.colSpan = 1
+          break
+        default:
+      }
+      array.push(data)
+    }
+    setColumns(array)
+  }
+
+  useEffect(() => {
+    initConfigData(scheduleViewModal.tableTimeAll.length)
+  });
 
   //判断日期（周末为红，过去时间底色置灰）
   const isWeekEnd = (record: any) => {
@@ -20,145 +82,7 @@ export default observer(function Table() {
       return new Date(record) < new Date() ? <div className="blackColorOld">{ date }</div> : <div>{ date }</div>
     }
   }
-  
-  const columns: ColumnProps<any>[] = [
-    {
-      title: '工号',
-      dataIndex: 'empNo',
-      width: 70,
-      align: 'center'
-    },
-    {
-      title: '姓名',
-      dataIndex: 'empName',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '时间',
-      dataIndex: 'time0',
-      colSpan: 11,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间1',
-      dataIndex: 'time1',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间2',
-      dataIndex: 'time2',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间3',
-      dataIndex: 'time3',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间4',
-      dataIndex: 'time4',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间5',
-      dataIndex: 'time5',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间6',
-      dataIndex: 'time6',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间7',
-      dataIndex: 'time7',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间8',
-      dataIndex: 'time8',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间9',
-      dataIndex: 'time9',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '时间10',
-      dataIndex: 'time10',
-      colSpan: 0,
-      width: 50,
-      align: 'center',
-      render (record: any) {
-        return isWeekEnd(record)
-      }
-    },
-    {
-      title: '备注',
-      dataIndex: 'remark',
-      width: 290
-    },  
-    {
-      title: '状态',
-      dataIndex: 'status',
-      width: 100,
-      align: 'center',
-      render (status: any) {
-        return status == '1' ? '已推送' : status == '0' ? '未推送' : ''
-      }
-    }  
-  ]
+
   return (
     <Wrapper>
       <Title>{scheduleViewModal.tableTime}护理{scheduleViewModal.tableName}计划表</Title>

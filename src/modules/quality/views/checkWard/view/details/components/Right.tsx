@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function Right(props: Props) {
-  let nodeDataList = props.detailData.srNodeList || []
+  let nodeDataList = props.detailData.handlenodeDto || []
 
   return (
     <Wrapper>
@@ -28,6 +28,12 @@ export default function Right(props: Props) {
                     <div className='info'>
                       {item.handleTime} ({getWeekString(item.handleTime)})
                     </div>
+                    {item.expand && (
+                      <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
+                        <div className='text-box-title'>原因分析：</div>
+                        <div className='text-box-content'>{item.expand}</div>
+                      </div>
+                    )}
                     {item.handleContent && (
                       <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
                         <div className='text-box-title'>处理意见：</div>

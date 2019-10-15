@@ -13,6 +13,7 @@ export default function Left(props: Props) {
   let messageBoxData = detailData.record || {}
   let pageItem = detailData.pageItem || {}
   let attachment = detailData.attachment || []
+  let srUserDataList = detailData.srUserDataList || []
 
   return (
     <Wrapper>
@@ -32,7 +33,11 @@ export default function Left(props: Props) {
             <div className='titleCon'>
               <div className='titleLeftCon'>一、值班人员</div>
             </div>
-            <div className='itemCon'>值班人员：{messageBoxData.onDutyEmpName}</div>
+            <div className='itemCon'>值班人员：
+              {srUserDataList.map((item:any,k:any) => (
+                <span key={k}>{item.empName}</span>
+              ))}
+            </div>
 
             {/* -------护士在岗情况 */} 
             <div className='titleCon'>
