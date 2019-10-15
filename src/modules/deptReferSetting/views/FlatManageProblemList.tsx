@@ -128,7 +128,7 @@ export default observer(function FlatManageProblemList() {
       width: 80,
       render: (text: string, record: any) => {
         //护长
-        let postAuth = !!(authStore.isRoleManage && authStore.defaultDeptCode == record.wardCode) as boolean
+        let postAuth = !!(authStore.isRoleManage && authStore.selectedDeptCode == record.wardCode) as boolean
         //作者
         let autherAuth = !!(record.inspectorEmpNo == (authStore.getUser() && authStore.getUser().empNo)) as boolean
         //审核权限
