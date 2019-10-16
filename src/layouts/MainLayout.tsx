@@ -14,6 +14,7 @@ import { globalModal } from 'src/global/globalModal'
 import GroupsAduitModal from 'src/global/modal/GroupsAduitModal'
 import GroupsAduitModalWh from 'src/global/modal/GroupsAduitModal-wh'
 import FullPageLoading from 'src/components/loading/FullPageLoading'
+import SignModal from 'src/global/modal/SignModal'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function MainLayout(props: Props) {
@@ -27,6 +28,7 @@ export default observer(function MainLayout(props: Props) {
   /** 审核模块区分 */
   let aduitModal = createModal(AduitModal)
   let groupsAduitModal = createModal(GroupsAduitModal)
+  let signModal = createModal(SignModal)
   if (appStore.HOSPITAL_ID == 'wh') {
     groupsAduitModal = createModal(GroupsAduitModalWh)
     aduitModal = createModal(AduitModalWh)
@@ -52,6 +54,7 @@ export default observer(function MainLayout(props: Props) {
   useLayoutEffect(() => {
     globalModal.auditModal = aduitModalRef.current
     globalModal.groupsAduitModal = groupsAduitModalRef.current
+    globalModal.signModal = signModal
   })
 
   return (
@@ -65,6 +68,7 @@ export default observer(function MainLayout(props: Props) {
       </RouterViewCon>
       <aduitModal.Component ref={aduitModalRef} />
       <groupsAduitModal.Component ref={groupsAduitModalRef} />
+      <signModal.Component />
       {appStore.fullLoadingBarObj && <FullPageLoading />}
     </Wrapper>
   )

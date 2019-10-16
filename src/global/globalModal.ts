@@ -4,6 +4,7 @@ class GlobalModal {
   public constructor() {}
   public auditModal: any = null
   public groupsAduitModal: any = null
+  public signModal: any = null
   /** 对话弹窗 */
   public confirm = (title: string, content: string) => {
     let resolveFun: any = null
