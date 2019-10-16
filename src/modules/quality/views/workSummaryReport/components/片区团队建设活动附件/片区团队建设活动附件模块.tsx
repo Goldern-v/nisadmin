@@ -22,7 +22,9 @@ export default observer(function 片区团队建设活动附件模块(props: Pro
       <TextCon>
         <div className="img-group">
           {list.map((item, index: number) => (
-            <img src={item.attachUrl} alt="" className="img" key={index} />
+            <div className="img-contain">
+              <img src={item.attachUrl} alt="" className="img" key={index} />
+            </div>
           ))}
         </div>
       </TextCon>
@@ -30,6 +32,7 @@ export default observer(function 片区团队建设活动附件模块(props: Pro
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   min-height: 60px;
   position: relative;
@@ -53,12 +56,27 @@ const Wrapper = styled.div`
   .img-group{
     margin-top: 30px;
   }
-  .img {
+  .img-contain{
     width: 305px;
     height: 200px;
     margin-bottom: 10px;
+    float: left;
+    position: relative;
+    page-break-inside: avoid;
     &:nth-of-type(2n-1){
       margin-right: 10px;
+    }
+    /* .img {
+      max-width: 100%;
+      max-height: 100%;
+      position: absolute;
+      left:50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+    } */
+    .img {
+      width: 100%;
+      height: 100%;
     }
   }
 `

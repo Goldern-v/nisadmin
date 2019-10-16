@@ -45,9 +45,8 @@ export default class CheckWardService extends BaseApiService {
   }
 
   //获取查房状态
-  public dictStatus(code?: any) {
-    code = 'sr_record_status'
-    return this.post(`/dept/dictInfo`,qs.stringify({ code }))
+  public dictStatus() {
+    return this.get(`/user/nursingUnit`)
   }
   
   //查询查房计划表

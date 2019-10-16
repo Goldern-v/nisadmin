@@ -12,6 +12,7 @@ class RecordViewModal {
   @observable public deptList = []
   @observable public selectedDate: any = crrentMonth() // 查房日期
   @observable public tableList = [] // 表格内容
+  @observable public problem = [] // 问题详情
   @observable public tableLoading = false 
   @observable public pageIndex: any = 1
   @observable public pageSize: any = 20
@@ -29,7 +30,7 @@ class RecordViewModal {
       }),
       //查房状态
       checkWardService.dictStatus().then((res) => {
-        this.checkStateList = res.data
+        this.checkStateList = res.data.deptList
       })     
     ])
   }
@@ -43,17 +44,24 @@ class RecordViewModal {
       type: this.selectedWardRound,
       status: this.selectedCheckState,
       beginDate: `${this.selectedDate[0].format('YYYY-MM-DD')} 00:00`,
-      endDate: `${this.selectedDate[1].format('YYYY-MM-DD')} 00:00`,
+      endDate: `${this.selectedDate[1].format('YYYY-MM-DD')} 23:59`,
     }
   }
 
   onload() {
     this.tableLoading = true
     checkWardService.getPage(this.postObj).then((res) => {
-      this.tableList = res.data.list
-      this.pageIndex = res.data.pageIndex
-      this.pageSize = res.data.pageSize
-      this.total = res.data.totalCount
+      let array:any = []
+      res.data.page.list.length > 0 && res.data.page.list.map((item:any, index:any) => {
+        item.nurseProblem =  res.data.srPageItemlist[index].nurseProblem
+        item.patientProblem =  res.data.srPageItemlist[index].patientProblem
+        array.push(item)
+      })
+      this.tableList = array
+      this.pageIndex = res.data.page.pageIndex
+      this.pageSize = res.data.page.pageSize
+      this.total = res.data.page.totalCount
+      this.problem = res.data.srPageItemlist
       this.tableLoading = false
     })
   }

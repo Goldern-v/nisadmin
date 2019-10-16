@@ -23,6 +23,8 @@ export default function Header(props: Props) {
       case '2':
         return '待病区处理'
       case '3':
+        return '待科护士长审核'
+      case '4':
         return '待护理部审核'
       default:
         return ''
@@ -52,6 +54,16 @@ export default function Header(props: Props) {
         })
       }
       break
+      case '科护士长审核':
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: '科护士长审核',
+            onOkCallBack: props.onload
+          })
+        }
+        break  
       case '护理部审核':
       {
         hlbModal.show({
@@ -85,7 +97,7 @@ export default function Header(props: Props) {
           ]}
         />
         <div className='topHeaderTitle'>
-          <div className='title'>{Title.srCode}护理{Title.type}查房记录表</div>
+          <div className='title'>护理{Title.type}查房记录表</div>
           <div className='topHeaderButton'>
             {nextNode.nodeName && (
               <Button onClick={() => onRole(nextNode.nodeName)} type='primary' disabled={!nextNode.canHandle}>
