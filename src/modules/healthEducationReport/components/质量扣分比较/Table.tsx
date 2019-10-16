@@ -47,7 +47,7 @@ export default function Table(props: Props) {
                     ) : (
                       <img src={require('./images/less.png')} alt='' className='lm-arrow' />
                     )}
-                    {Math.abs(Number(item.compareScore))}
+                    {Math.abs(Number(Number(item.compareScore).toFixed(2)))}
                   </React.Fragment>
                 )}
               </td>
@@ -61,7 +61,7 @@ export default function Table(props: Props) {
                     ) : (
                       <img src={require('./images/less.png')} alt='' className='lm-arrow' />
                     )}
-                    {Math.abs(Number(item.compareScorePercent))}%
+                    {Math.abs(Number(Number(item.compareScorePercent).toFixed(2)))}%
                   </React.Fragment>
                 )}
               </td>
