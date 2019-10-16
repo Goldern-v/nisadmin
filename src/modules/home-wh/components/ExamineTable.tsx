@@ -111,7 +111,7 @@ export default observer(function ExamineTable() {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={(appStore.wih - 378) / 2 + 378}
+        surplusHeight={(appStore.wih - 275) / 2 + 275}
         loading={loadingTable}
         rowClassName={(record) => {
           return 'cursorPointer'

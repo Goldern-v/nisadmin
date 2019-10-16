@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Breadcrumb, Button } from 'antd'
-import store, { appStore } from 'src/stores'
+import store, { appStore, authStore } from 'src/stores'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
@@ -23,16 +23,20 @@ export default observer(function TopCon() {
   const deptChangeModal = createModal(DeptChangeModal)
   let history = store.appStore.history
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
+  console.log(nurseFileDetailViewModal.nurserInfo.deptName, 'nurseFileDetailViewModal.nurserInfo')
   const openDeptChangeModal = () => {
     deptChangeModal.show({
-      info: appStore.queryObj,
+      info: nurseFileDetailViewModal.nurserInfo,
       callback: refreshNursingInfo
     })
   }
   /** 更新护士信息 */
   const refreshNursingInfo = () => {
     nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-      store.appStore.history.replace(store.appStore.match.url + '?empNo=' + res.data.empNo)
+      nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+        nurseFileDetailViewModal.nurserInfo = res.data
+        store.appStore.history.replace(store.appStore.match.url + '?empNo=' + res.data.empNo)
+      })
     })
   }
 
@@ -76,8 +80,9 @@ export default observer(function TopCon() {
           // <Tip>你没有待审核的信息</Tip>
         )}
       </Name>
-
-      {/* <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn> */}
+      {authStore.isRoleManage && !isSelf() && (
+        <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn>
+      )}
 
       <deptChangeModal.Component />
     </Wrapper>

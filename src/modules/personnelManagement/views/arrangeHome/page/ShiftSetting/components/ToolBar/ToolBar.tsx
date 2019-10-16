@@ -372,7 +372,9 @@ export default function ToolBar() {
 
   // {/* <ModalBox title={'添加排班/编辑排班'} /> */}
   let promise =
-    (authStore.user && authStore.user.post) == '护理部' || (authStore.user && authStore.user.empName) == '管理员'
+    appStore.HOSPITAL_ID == 'wh'
+      ? authStore.isRoleManage
+      : (authStore.user && authStore.user.post) == '护理部' || (authStore.user && authStore.user.empName) == '管理员'
   return (
     <div>
       <BreadcrumbBox

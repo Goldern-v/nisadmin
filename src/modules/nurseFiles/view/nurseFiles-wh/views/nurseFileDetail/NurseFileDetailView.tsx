@@ -166,10 +166,12 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
       })
     }
     if (appStore.match.url.indexOf('selfNurseFile') > -1 && appStore.queryObj.empNo) {
+      nurseFileDetailViewModal.nurserInfo = {}
       nurseFilesService.nurseInformationSelf(appStore.queryObj.empNo).then((res) => {
         nurseFileDetailViewModal.nurserInfo = res.data
       })
     } else if (appStore.queryObj.empNo) {
+      nurseFileDetailViewModal.nurserInfo = {}
       nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
         nurseFileDetailViewModal.nurserInfo = res.data
       })

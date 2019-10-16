@@ -43,10 +43,10 @@ class NurseFilesListViewModel {
   }
 
   exportExcel() {
-    appStore.openFullLoadingBar({
-      aside: '正在下载',
-      duration: 10000
-    })
+    // appStore.openFullLoadingBar({
+    //   aside: '正在下载',
+    //   duration: 10000
+    // })
     nurseFilesService
       .countExcel({
         ...this.postObj,
@@ -58,7 +58,7 @@ class NurseFilesListViewModel {
         }
       })
       .then((res) => {
-        appStore.closeFullLoadingBar()
+        // appStore.closeFullLoadingBar()
         fileDownload(res)
       })
   }

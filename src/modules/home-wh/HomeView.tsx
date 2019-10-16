@@ -13,7 +13,7 @@ export default observer(function HomeView() {
   return (
     <Wrapper>
       <LeftContent>
-        <QuickButton />
+        {/* <QuickButton /> */}
         <TableContent>
           {authStore.isRoleManage && <ExamineTable />}
           <NoticeTable />
@@ -41,10 +41,10 @@ const LeftContent = styled.div`
 
 const RightContent = styled.div`
   margin-top: 21px;
-  margin-bottom: 16px;
+  margin-bottom: 13px;
   margin-left: 20px;
   width: 335px;
-  height: calc(100vh - 88px);
+  height: calc(100vh - 84px);
 `
 const TableContent = styled.div`
   width: 100%;

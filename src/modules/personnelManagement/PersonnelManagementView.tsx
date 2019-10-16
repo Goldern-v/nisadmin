@@ -8,6 +8,8 @@ import NurseSettingViewNew from 'src/modules/personnelManagement/views/arrangeHo
 import ShiftSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView'
 import MealSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/MealSetting/MealSettingView'
 import PersonnelSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView'
+import { appStore } from 'src/stores'
+import PersonnelSecondment from './views/arrangeHome/page/personnelSecondment/PersonnelSecondment'
 
 export interface Props {}
 
@@ -22,11 +24,18 @@ export default function PersonnelManagementView() {
           path: '/personnelManagement/arrangeHome',
           component: ArrangeHome
         },
-        {
-          title: '科室借用',
-          path: '/personnelManagement/DeptBorrowNew',
-          component: DeptBorrowNew
-        },
+        appStore.HOSPITAL_ID == 'wh'
+          ? {
+              title: '临时人员借调',
+              path: '/personnelManagement/DeptBorrowNew',
+              component: PersonnelSecondment,
+              style: { background: '#fff' }
+            }
+          : {
+              title: '科室借用',
+              path: '/personnelManagement/DeptBorrowNew',
+              component: DeptBorrowNew
+            },
         {
           title: '人员分组',
           path: '/personnelManagement/PersonnelSettingViewNew',

@@ -27,7 +27,8 @@ export default observer(function WorkSummaryReportList() {
     pageIndex: 1,
     pageSize: 20,
     type: 'month',
-    indexInType: moment().month() + 1,
+    // indexInType: moment().month() + 1,
+    indexInType: '',
     status: '',
     groupRoleCode: ''
   } as any)

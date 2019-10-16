@@ -61,8 +61,8 @@ const Wrapper = styled.div`
   }
 `
 
-const TextCon = styled.pre`
+const TextCon = styled.div`
   margin: 10px 50px;
   min-height: 40px;
-  white-space: pre-wrap;
+  word-break: break-all;
 `
