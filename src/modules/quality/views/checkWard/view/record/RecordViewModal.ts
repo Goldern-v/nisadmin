@@ -30,7 +30,7 @@ class RecordViewModal {
       }),
       //查房状态
       checkWardService.dictStatus().then((res) => {
-        this.checkStateList = res.data
+        this.checkStateList = res.data.deptList
       })     
     ])
   }
