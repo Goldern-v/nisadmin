@@ -43,6 +43,11 @@ class ScheduleViewModal {
     if (Number(val.substring(5, 8))) return val.substring(5, 8)
     return ''
   }
+  // 过滤日期数据
+  setTimes(val: any) {
+    return val.substring(5)
+  }
+  
 
   onload() {
     this.tableLoading = true
@@ -57,9 +62,9 @@ class ScheduleViewModal {
         this.tableLength = item.searchRooms.length
         this.tableTimeAll = item.searchRooms
         item.searchRooms.map((o:any, i:any) => {
-          let time: any = o.searchRoomDateRemark ? this.setTime(o.searchRoomDateRemark) : ''
+          let time: any = o.searchRoomDateRemark ? this.setTimes(o.searchRoomDateRemark) : ''
           let year:any = o.searchRoomDateRemark ? o.searchRoomDateRemark.substring(0, 5) : ''
-          item[`time${i}`] = year + time
+          item[`time${i}`] =  o.searchRoomDateRemark || ''
         })
         array.push(item)
       })
