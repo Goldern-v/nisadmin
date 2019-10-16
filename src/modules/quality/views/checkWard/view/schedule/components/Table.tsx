@@ -17,7 +17,7 @@ export default observer(function Table() {
       let data = {
         title: `时间`,
         dataIndex: `time${i - 2}`,
-        width: 50,
+        width: 90,
         colSpan: i === 2 ? length : 0,
         render: (record: any) => {
           return isWeekEnd(record)
@@ -72,14 +72,37 @@ export default observer(function Table() {
     initConfigData(scheduleViewModal.tableTimeAll.length)
   });
 
+    // 过滤日期数据
+    const setTime = (val: any) => {
+      if (Number(val.substring(5, 10))) return val.substring(5, 10)
+      if (Number(val.substring(5, 9))) return val.substring(5, 9)
+      if (Number(val.substring(5, 8))) return val.substring(5, 8)
+      return ''
+    }
+  
   //判断日期（周末为红，过去时间底色置灰）
   const isWeekEnd = (record: any) => {
-    let date = record ? record.substring(5) : ''
-    let time = moment(record).format('d')
+    let day: any = record ? setTime(record) : ''
+    let year: any = record ? record.substring(0, 5) : ''
+    let text = record ? record.substring(5) : ''
+    let date = year + day
+    let time = moment(date).format('d')
     if (time == '0' || time == '6') {
-      return new Date(record) < new Date() ? <div className="redColorOld">{ date }</div> : <div className="redColor">{ date }</div>
+      return new Date(date) < new Date() ? <div className="redColorOld">{text}</div> : <div className="redColor">{text}</div>
     } else {
-      return new Date(record) < new Date() ? <div className="blackColorOld">{ date }</div> : <div>{ date }</div>
+      return new Date(date) < new Date() ? <div className="blackColorOld">{text}</div> : <div>{text}</div>
+    }
+  }
+  
+  // 处理文字换行函数
+  const setTextTr = (val: any) => {
+    if (val) {
+      let string = ''
+      let data = val.split('\n')
+      data.map((item: any) => (
+        string += `<p className='remark'>${item}</p>`
+      ))
+      return string
     }
   }
 
@@ -97,7 +120,7 @@ export default observer(function Table() {
         onChange={() => {
           scheduleViewModal.onload()
         }}
-        tip={scheduleViewModal.tableRemark}
+        tip={setTextTr(scheduleViewModal.tableRemark)}
       />
     </Wrapper>
   )
@@ -122,6 +145,9 @@ const Wrapper = styled(TabledCon)`
   }
   td {
     padding: 0 !important;
+  }
+  #tip{
+    line-height:12px;
   }
 `
 const Title = styled.div`
