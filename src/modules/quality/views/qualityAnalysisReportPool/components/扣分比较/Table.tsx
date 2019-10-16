@@ -86,7 +86,7 @@ export default function Table(props: Props) {
               <td>{item.lastScorePercent + '%'}</td>
               <td>{Number(item.currentDeductScore).toFixed(2)}</td>
               <td>{item.currentDeptSize}</td>
-              <td>{item.currentScorePercent + '%'}</td>
+              <td>{Number(item.currentScorePercent).toFixed(2) + '%'}</td>
 
               <td>
                 {item.compareScore == 0 ? (
@@ -98,7 +98,7 @@ export default function Table(props: Props) {
                     ) : (
                       <img src={require('./images/less.png')} alt='' className='lm-arrow' />
                     )}
-                    {Math.abs(Number(item.compareScore))}
+                    {Math.abs(Number(item.compareScore)).toFixed(2)}
                   </React.Fragment>
                 )}
               </td>
@@ -126,7 +126,7 @@ export default function Table(props: Props) {
                     ) : (
                       <img src={require('./images/less.png')} alt='' className='lm-arrow' />
                     )}
-                    {Math.abs(Number(item.compareScorePercent)) + '%'}
+                    {Math.abs(Number(item.compareScorePercent)).toFixed(2) + '%'}
                   </React.Fragment>
                 )}
               </td>
@@ -146,7 +146,7 @@ export default function Table(props: Props) {
                   ) : (
                     <img src={require('./images/less.png')} alt='' className='lm-arrow' />
                   )}
-                  {Math.abs(Number(compareSum))}
+                  {Math.abs(Number(compareSum)).toFixed(2)}
                 </React.Fragment>
               )}
               <div style={{ display: 'inline-block', width: 4 }} />
@@ -161,7 +161,7 @@ export default function Table(props: Props) {
                   ) : (
                     <img src={require('./images/less.png')} alt='' className='lm-arrow' />
                   )}
-                  {Math.abs(Number(comparePercent.toFixed(2))) + '%'})
+                  {Math.abs(Number(comparePercent.toFixed(2))).toFixed(2) + '%'})
                 </React.Fragment>
               )}
             </td>
