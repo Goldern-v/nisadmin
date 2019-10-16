@@ -75,7 +75,7 @@ export default function SelectCon(props: Props) {
         )}
 
         <span style={{ marginLeft: 20 }}>类型：</span>
-        <Select value={showType} onChange={(value: any) => setShowType(value)} style={{ width: 100 }}>
+        <Select value={showType} onChange={(value: any) => setShowType(value)} style={{ minWidth: 150 }}>
           {showTypeDict.map((item: any) => (
             <Select.Option value={item.code} key={item.code}>
               {item.name}
