@@ -38,7 +38,9 @@ export default function Header() {
         <div className='topHeaderTitle'>
           <div className='title'>导入查房计划</div>
           <div className='topHeaderButton'>
-            <Button onClick={roomDownload}>查房计划模版下载</Button>
+            {/* <Button onClick={roomDownload}>查房计划模版下载</Button> */}
+            <Button onClick={roomDownload}>中夜班模版下载</Button>
+            <Button onClick={roomDownload}>特殊模版下载</Button>
             <Button onClick={() => {appStore.history.push(`/quality/checkWard/schedule`)}}>返回</Button>
           </div>
         </div>

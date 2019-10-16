@@ -1,7 +1,6 @@
 import { observable, computed } from 'mobx'
 import { checkWardService } from '../../services/CheckWardService'
 import { crrentMonth } from 'src/utils/moment/crrentMonth'
-import service from 'src/services/api'
 
 class RecordViewModal {
   @observable public selectedWardRound = '' //查房类型
@@ -21,7 +20,7 @@ class RecordViewModal {
   async initData() {
     await Promise.all([
       //科室
-      service.commonApiService.getNursingUnitAll().then((res) => {
+      checkWardService.getNursingUnitAll().then((res) => {
         this.deptList = res.data.deptList
       }),
       //查房类型
@@ -30,7 +29,7 @@ class RecordViewModal {
       }),
       //查房状态
       checkWardService.dictStatus().then((res) => {
-        this.checkStateList = res.data.deptList
+        this.checkStateList = res.data
       })     
     ])
   }

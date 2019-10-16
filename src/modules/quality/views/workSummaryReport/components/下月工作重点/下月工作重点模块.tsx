@@ -22,9 +22,9 @@ export default observer(function 下月工作重点模块(props: Props) {
       <div className={'sup-title'}>四、下月工作重点</div>
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
-          <pre className='textarea'>
+          <div className='textarea'>
             {index + 1}. {item.content}
-          </pre>
+          </div>
           {item.attachUrls &&
             item.attachUrls.split(',').map((item, index) => <img className='img' src={item} alt='' key={index} />)}
         </div>
@@ -64,7 +64,7 @@ const Wrapper = styled.div`
       padding-bottom: 5px;
     }
     .textarea {
-      white-space: pre-wrap;
+      word-break: break-all;
       margin-bottom: 5px;
     }
     .img {
@@ -75,8 +75,8 @@ const Wrapper = styled.div`
   }
 `
 
-const TextCon = styled.pre`
+const TextCon = styled.div`
   margin: 10px 50px;
   min-height: 40px;
-  white-space: pre-wrap;
+  word-break: break-all;
 `

@@ -43,16 +43,18 @@ class CheckWardReportViewModal {
   @observable public selectedYear: any = moment() // 查房年份
   @observable public selectedMonth: any = Number(moment().format('MM')) // 查房月份
   @observable public dataList = [] // 报告内容
+  @observable public specialData = [] // 特殊时段查房数据
+  @observable public nightData = [] // 中夜班查房
   @observable public year = '' // 报告年份
   @observable public month = '' // 报告月份
   @observable public searchRoom1 = '' // 特查房次数
   @observable public searchRoom2 = '' // 夜查房次数
-  @observable public pageLoading = false 
+  @observable public pageLoading = false
 
 
   @computed
   get postObj() {
-    let dataTime = (new Date(moment(this.selectedYear).year(),this.selectedMonth,0)).getDate()
+    let dataTime = (new Date(moment(this.selectedYear).year(), this.selectedMonth, 0)).getDate()
     return {
       startDate: `${moment(this.selectedYear).year()}-${this.selectedMonth}-01`,
       endDate: `${moment(this.selectedYear).year()}-${this.selectedMonth}-${dataTime}`,
@@ -62,7 +64,18 @@ class CheckWardReportViewModal {
   onload() {
     this.pageLoading = true
     checkWardService.searchRoomTotal(this.postObj).then((res) => {
-      this.dataList = res.data.srRecordList
+      let specialData: any = []
+      let nightData: any = []
+      this.dataList = res.data.srRecordList.map((item: any) => {
+        if (item.record.type == '特殊时段查房') {
+          specialData.push(item)
+        }
+        if (item.record.type == '中夜班查房') {
+          nightData.push(item)
+        }
+      })
+      this.specialData = specialData
+      this.nightData = nightData
       this.year = res.data.year
       this.month = res.data.month
       this.searchRoom1 = res.data.searchRoom1

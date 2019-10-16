@@ -24,7 +24,7 @@ export default observer(function Table() {
     {
       title: '检查病区',
       dataIndex: 'wardName',
-      width: 160
+      width: 120
     },
     {
       title: '查房类型',
@@ -35,13 +35,13 @@ export default observer(function Table() {
     {
       title: '检查人员',
       dataIndex: 'srName',
-      width: 90,
+      width: 70,
       align: 'center'
     },
     {
       title: '护士在岗情况',
       dataIndex: 'nurseStatus',
-      width: 200,
+      width: 245,
       align: 'left',
       render (status: string, record: any) {
         return status == '0' ?  '无问题' : <span style={{ color: 'red' }}>有问题({record.nurseProblem})</span>
@@ -50,7 +50,7 @@ export default observer(function Table() {
     {
       title: '病人情况',
       dataIndex: 'patientStatus',
-      width: 200,
+      width: 245,
       align: 'left',
       render (status: string, record: any) {
         return status == '0' ?  '无问题' : <span style={{ color: 'red' }}>有问题({record.patientProblem})</span>
@@ -59,7 +59,7 @@ export default observer(function Table() {
     {
       title: '状态',
       dataIndex: 'status',
-      width: 130,
+      width: 110,
       align: 'center',
       render (status: string) {
         switch (status) {
@@ -68,6 +68,8 @@ export default observer(function Table() {
           case '2':
             return '待病区处理'
           case '3':
+            return '待科护士长审核'
+          case '4':
             return '待护理部审核'
           default:
             return ''
