@@ -28,6 +28,7 @@ const rules: Rules = {
 }
 export default function DeptChangeModal(props: Props) {
   const [title, setTitle] = useState('科室调动')
+  const [deptList, setDeptList]: any = useState([])
 
   let { visible, onCancel, onOk, info } = props
   let refForm = React.createRef<Form>()
@@ -50,6 +51,9 @@ export default function DeptChangeModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (info && refForm.current && visible) {
+      service.commonApiService.deptInbigDeptListSelf().then((res) => {
+        setDeptList(res.data)
+      })
       refForm!.current!.setFields({
         date: moment(),
         deptCodeOld: info.deptCode,
@@ -85,7 +89,7 @@ export default function DeptChangeModal(props: Props) {
                 style={{ width: '100%' }}
                 placeholder='选择新科室'
               >
-                {authStore.deptList.map((item: any) => {
+                {deptList.map((item: any) => {
                   return (
                     <Select.Option value={item.code} key={item}>
                       {item.name}

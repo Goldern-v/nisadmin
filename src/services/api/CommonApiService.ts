@@ -113,4 +113,8 @@ export default class CommonApiService extends BaseApiService {
   public getNursingUnitSelf() {
     return this.get(`/qcItem/dict/qcWardCodeList`)
   }
+  /** 本人所属片区的科室列表 */
+  public deptInbigDeptListSelf() {
+    return this.get(`/qcItem/dict/deptInbigDeptListSelf`)
+  }
 }

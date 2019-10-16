@@ -44,7 +44,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const groupsHlbModal = createModal(GroupsHlbModal)
 
   const toDetails = (row: any) => {
-    if (showType == 'qc') {
+    if (showType == 'qc' || showType == 'qcTwoLevel') {
       window.open(`/crNursing/manage/#/qualityControlRecordDetail/${row.othersMessage.id}`)
     } else if (showType == 'nurseFile') {
       service.commonApiService.getNurseInformation(row.commiterNo).then((res) => {
@@ -60,7 +60,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       key: '',
       render: (text: any, record: any, index: number) => (current - 1) * pageSize + index + 1,
       align: 'center',
-      width: 50
+      width: 40
     },
     {
       title: '类型',
@@ -69,7 +69,13 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       align: 'center',
       width: 90,
       render(text: string, record: any) {
-        return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '质量检查' : ''
+        return text == 'nurseFile'
+          ? '护士档案'
+          : text == 'qc'
+          ? '三级质量检查'
+          : text == 'qcTwoLevel'
+          ? '二级质量检查'
+          : ''
       }
     },
     {
@@ -187,7 +193,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           emitter.emit('refreshNurseAuditTable')
         }
       })
-    } else if (showType == 'qc') {
+    } else if (showType == 'qc' || showType == '"qcTwoLevel"') {
       groupsHlbModal.show({
         selectedRows,
         getTableData: () => {
