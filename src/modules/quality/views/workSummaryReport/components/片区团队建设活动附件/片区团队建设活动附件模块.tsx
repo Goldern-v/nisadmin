@@ -18,18 +18,31 @@ export default observer(function 片区团队建设活动附件模块(props: Pro
   let list: any[] = data.list || []
 
   return (
-    <Wrapper>
-      <TextCon>
-        <div className="img-group">
+    // <Wrapper>
+    //   <TextCon>
+    //     <div className="img-group">
+    //       {list.map((item, index: number) => (
+    //         <div className="img-contain">
+    //           <img src={item.attachUrl} alt="" className="img" key={index} />
+    //         </div>
+    //       ))}
+    //     </div>
+    //   </TextCon>
+    //   <EditButton onClick={() => workSummaryReportViewModal!.openEditModal(sectionId)}>附件编辑</EditButton>
+    // </Wrapper>
+    <React.Fragment>
+      <Wrapper>
+        <div className="hidden"></div>
+        <div>
           {list.map((item, index: number) => (
-            <div className="img-contain">
-              <img src={item.attachUrl} alt="" className="img" key={index} />
+            <div className="img-contain" key={index}>
+              <img src={item.attachUrl} alt="" className="img" />
             </div>
           ))}
         </div>
-      </TextCon>
-      <EditButton onClick={() => workSummaryReportViewModal!.openEditModal(sectionId)}>附件编辑</EditButton>
-    </Wrapper>
+        <EditButton onClick={() => workSummaryReportViewModal!.openEditModal(sectionId)}>附件编辑</EditButton>
+      </Wrapper>
+    </React.Fragment>
   )
 })
 
@@ -44,17 +57,14 @@ const Wrapper = styled.div`
     color: #000;
     margin-bottom: 5px;
   }
+  .hidden{
+    height:30px;
+    width: 100%;
+  }
   button {
     position: absolute;
     top: 0px;
     right: 20px;
-  }
-  .aside {
-    font-weight: bold;
-    padding-left: 30px;
-  }
-  .img-group{
-    margin-top: 30px;
   }
   .img-contain{
     width: 305px;
@@ -65,6 +75,7 @@ const Wrapper = styled.div`
     page-break-inside: avoid;
     &:nth-of-type(2n-1){
       margin-right: 10px;
+      margin-left: 50px;
     }
     /* .img {
       max-width: 100%;
@@ -79,10 +90,4 @@ const Wrapper = styled.div`
       height: 100%;
     }
   }
-`
-
-const TextCon = styled.pre`
-  margin: 10px 50px;
-  min-height: 40px;
-  white-space: pre-wrap;
 `
