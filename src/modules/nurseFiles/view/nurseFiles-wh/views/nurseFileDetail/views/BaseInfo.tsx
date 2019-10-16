@@ -63,7 +63,7 @@ export default observer(function BaseInfo() {
 
   const getTableData = () => {
     let fun = isSelf() ? nurseFilesService.nurseInformationSelf : nurseFilesService.nurseInformation
-
+    setInfo({})
     fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
       setInfo(data)

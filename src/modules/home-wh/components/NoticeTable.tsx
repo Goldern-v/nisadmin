@@ -107,7 +107,7 @@ export default observer(function NoticeTable() {
         }}
         dataSource={tableData}
         columns={columns}
-        surplusHeight={authStore.isRoleManage ? (appStore.wih - 378) / 2 + 378 : 273}
+        surplusHeight={(appStore.wih - 275) / 2 + 275}
         loading={loadingTable}
         onRow={(record) => {
           return {

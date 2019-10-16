@@ -37,7 +37,9 @@ export default function LeftMenuPage(props: Props) {
   return (
     <Wrapper>
       <LeftMenuCon>{currentRoute && currentRoute.component && <LeftMenu config={leftMenuConfig} />}</LeftMenuCon>
-      <MainCon>{currentRoute && currentRoute.component && <currentRoute.component />}</MainCon>
+      <MainCon style={currentRoute && currentRoute.style ? currentRoute.style : {}}>
+        {currentRoute && currentRoute.component && <currentRoute.component />}
+      </MainCon>
     </Wrapper>
   )
 }
