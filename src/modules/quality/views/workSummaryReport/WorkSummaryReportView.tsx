@@ -36,7 +36,7 @@ export default observer(function QualityAnalysisReportView() {
       injectGlobalCss: true,
       scanStyles: false,
       css: `
-         .ant-btn {
+         .ant-btn,.hidden {
            display: none;
          }
          .print-page {
