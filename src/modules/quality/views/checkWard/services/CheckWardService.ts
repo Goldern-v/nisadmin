@@ -37,6 +37,11 @@ export default class CheckWardService extends BaseApiService {
     }
     return this.post(`/searchRoom/export`, obj, { responseType: 'blob' })
   }
+
+  //获取查房科室
+  public getNursingUnitAll() {
+    return this.get(`/user/nursingUnit`)
+  }
   
   //获取查房类型
   public dictInfo(code?: any) {
@@ -45,8 +50,9 @@ export default class CheckWardService extends BaseApiService {
   }
 
   //获取查房状态
-  public dictStatus() {
-    return this.get(`/user/nursingUnit`)
+  public dictStatus(code?: any) {
+    code = 'sr_record_status'
+    return this.post(`/dept/dictInfo`,qs.stringify({ code }))
   }
   
   //查询查房计划表

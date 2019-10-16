@@ -4,6 +4,7 @@ import { appStore } from 'src/stores'
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import HlbModal from '../modal/HlbModal'
+import BqclModal from '../modal/BqclModal'
 import createModal from 'src/libs/createModal'
 
 interface Props {
@@ -33,6 +34,7 @@ export default function Header(props: Props) {
 
   //弹窗
   const hlbModal = createModal(HlbModal)
+  const bqclModal = createModal(BqclModal)
 
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.handlenodeDto || []))
   nodeDataList.reverse()
@@ -46,10 +48,9 @@ export default function Header(props: Props) {
     switch (nodeName) {
       case '病区处理':
       {
-        hlbModal.show({
+        bqclModal.show({
           id: appStore.match.params.id,
           nodeCode: nextNode.nodeCode,
-          title: '"病区处理"',
           onOkCallBack: props.onload
         })
       }
@@ -112,6 +113,7 @@ export default function Header(props: Props) {
         </div>
       </TopHeader>
       <hlbModal.Component />
+      <bqclModal.Component />
     </Con>
   )
 }

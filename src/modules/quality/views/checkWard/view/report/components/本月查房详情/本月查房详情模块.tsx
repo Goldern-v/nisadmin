@@ -19,58 +19,61 @@ export default observer(function 本月查房详情模块(props: Props) {
   let list: Partial<DetailItem>[] = data.list || []
   let report: Report = checkWardReportViewModal.getDataInAllData('report')
   let dataList = checkWardReportViewModal.dataList || []
+  let specialData = checkWardReportViewModal.specialData || []
+  let nightData = checkWardReportViewModal.nightData || []
+  let key1 = 0
+  let key2 = 0
 
-  
   return (
     <Wrapper>
       <OneLevelTitle text='二、本月查房详情' />
-      <div className='text-box'>一、特殊时段查房
-        {dataList.map((item:any,k:any) => (
-          <div key={k}>
-            {item.record.type && item.record.type == '特殊时段查房' &&
-              <div className='aside'>
-                <div className='title'>
-                {k+1}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ? 
-                  '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ? 
-                  `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ? 
-                  `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
-                </div>
-                <div>
-                  {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
-                    <span key={a}>
-                      {o.path &&
-                      o.path.split(',').map((o: any, k: number) => <img className='img' src={o} alt='' key={a} />)}
-                    </span>
-                  ))}
-                </div>
+      <div className='text-box'>1、特殊时段查房
+        {specialData.map((item: any, a: number = 0) => (
+        <div key={a}>
+          {
+            <div className='aside'>
+              <div className='title'>
+                {`(${a + 1})`}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ?
+                  '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ?
+                    `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ?
+                      `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
               </div>
-            }
-          </div>
-        ))}
+              <div>
+                {item.attachmentList.length > 0 && item.attachmentList.map((o: any, b: number) => (
+                  <span key={b}>
+                    {o.path &&
+                      o.path.split(',').map((p: any, c: number) => <img className='img' src={p} alt='' key={c} />)}
+                  </span>
+                ))}
+              </div>
+            </div>
+          }
+        </div>
+      ))}
       </div>
-      <div className='text-box'>二、中夜班查房
-        {dataList.map((item:any,k:any) => (
-          <div key={k}>
-            {item.record.type && item.record.type == '中夜班查房' &&
-              <div className='aside'>
-                <div className='title'>
-                  {k+1}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ? 
-                  '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ? 
-                  `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ? 
-                  `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
-                </div>
-                <div>
-                  {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
-                    <span key={a}>
-                      {o.path &&
-                      o.path.split(',').map((o: any, k: number) => <img className='img' src={o} alt='' key={a} />)}
-                    </span>
-                  ))}
-                </div>
+      <div className='text-box'>2、中夜班查房
+        {nightData.map((item: any, k: any) => (
+        <div key={k}>
+          {
+            <div className='aside'>
+              <div className='title'>
+                {`(${k + 1})`}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ?
+                  '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ?
+                    `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ?
+                      `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
               </div>
-            }
-          </div>
-        ))}
+              <div>
+                {item.attachmentList.length > 0 && item.attachmentList.map((o: any, a: number) => (
+                  <span key={a}>
+                    {o.path &&
+                      o.path.split(',').map((o: any, k: number) => <img className='img' src={o} alt='' key={a} />)}
+                  </span>
+                ))}
+              </div>
+            </div>
+          }
+        </div>
+      ))}
       </div>
       <ImgCon />
     </Wrapper>

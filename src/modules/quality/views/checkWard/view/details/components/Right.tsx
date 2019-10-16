@@ -36,7 +36,7 @@ export default function Right(props: Props) {
                     )}
                     {item.handleContent && (
                       <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
-                        <div className='text-box-title'>处理意见：</div>
+                        <div className='text-box-title'>整改措施：</div>
                         <div className='text-box-content'>{item.handleContent}</div>
                       </div>
                     )}
