@@ -12,6 +12,9 @@ import BaseTabs from 'src/components/BaseTabs'
 interface Props {
   showType: any
   keyword: any
+  needAudit: any
+  setNeedAudit: any
+  selectedDate: any
 }
 
 export default observer(function NurseAudit(props: Props) {
@@ -20,14 +23,26 @@ export default observer(function NurseAudit(props: Props) {
     {
       title: '待我审核',
       component: (
-        <AuditsTableDHSZ showType={props.showType} keyword={props.keyword} needAudit active={activeKey == 0} />
+        <AuditsTableDHSZ
+          showType={props.showType}
+          keyword={props.keyword}
+          needAudit
+          active={activeKey == 0}
+          selectedDate={props.selectedDate}
+        />
       ),
       index: 0
     },
     {
       title: '我已审核',
       component: (
-        <AuditsTableDHSZ showType={props.showType} keyword={props.keyword} needAudit={false} active={activeKey == 1} />
+        <AuditsTableDHSZ
+          showType={props.showType}
+          keyword={props.keyword}
+          needAudit={false}
+          active={activeKey == 1}
+          selectedDate={props.selectedDate}
+        />
       ),
       index: 1
     }
@@ -35,7 +50,18 @@ export default observer(function NurseAudit(props: Props) {
   return (
     <Wrapper>
       <MainCon>
-        <BaseTabs config={TABS_LIST_NURSE} onChange={(key) => setActiveKey(key)} />
+        <BaseTabs
+          config={TABS_LIST_NURSE}
+          onChange={(key: any) => {
+            setActiveKey(key)
+            if (key == 0) {
+              props.setNeedAudit(true)
+            }
+            if (key == 1) {
+              props.setNeedAudit(false)
+            }
+          }}
+        />
       </MainCon>
     </Wrapper>
   )

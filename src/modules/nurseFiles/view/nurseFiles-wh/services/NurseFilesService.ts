@@ -26,7 +26,12 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 导出护士列表
   public async countExcel(obj: any) {
-    return this.post(`/auditeNurseListWH/countExcel`, obj, { responseType: 'blob' })
+    return this.post(`/auditeNurseListWH/countExcel`, obj, {
+      responseType: 'blob',
+      onDownloadProgress: (progressEvent) => {
+        console.log(progressEvent, 'progressEvent')
+      }
+    })
   }
 
   // 查看护士首页信息

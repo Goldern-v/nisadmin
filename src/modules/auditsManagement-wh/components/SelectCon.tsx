@@ -7,6 +7,7 @@ import emitter from 'src/libs/ev'
 import store from 'src/stores'
 import service from 'src/services/api'
 import MultipleDeptSelect from 'src/components/MultipleDeptSelect'
+import { DatePicker } from 'src/vendors/antd'
 
 const Option = Select.Option
 interface Props {
@@ -14,6 +15,10 @@ interface Props {
   setShowType: any
   keyword: any
   setKeyword: any
+  needAudit: any
+  setNeedAudit: any
+  selectedDate: any
+  setSelectedDate: any
 }
 export default function SelectCon(props: Props) {
   const [visible, setVisible] = useState(false)
@@ -51,9 +56,26 @@ export default function SelectCon(props: Props) {
         <Title>审核管理</Title>
         {/* <DeptSelect onChange={onChange} /> */}
         <Place />
+        {!props.needAudit && (
+          <React.Fragment>
+            <span>时间：</span>
+            <DatePicker.RangePicker
+              style={{ width: 220 }}
+              value={props.selectedDate}
+              onChange={(value) => {
+                props.setSelectedDate(value)
+                setTimeout(() => {
+                  onSearch()
+                }, 100)
+                // qualityControlRecordVM.filterDate = value
+                // props.refreshData()
+              }}
+            />
+          </React.Fragment>
+        )}
 
-        <span>类型：</span>
-        <Select value={showType} onChange={(value: any) => setShowType(value)}>
+        <span style={{ marginLeft: 20 }}>类型：</span>
+        <Select value={showType} onChange={(value: any) => setShowType(value)} style={{ width: 100 }}>
           {showTypeDict.map((item: any) => (
             <Select.Option value={item.code} key={item.code}>
               {item.name}
@@ -65,12 +87,13 @@ export default function SelectCon(props: Props) {
         {showType == 'nurseFile' ? <MultipleDeptSelect /> : <DeptSelect onChange={() => {}} />}
 
         <Input
+          style={{ marginLeft: 20, width: 360 }}
           placeholder='输入要搜索的关键字，包括科室，提交人'
-          style={{ width: 360 }}
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
-        <Button type='primary' onClick={onSearch}>
+
+        <Button type='primary' onClick={onSearch} style={{ marginLeft: 20 }}>
           搜索
         </Button>
         {/* <Button onClick={() => setVisible(true)}>+添加护士</Button> */}
@@ -81,11 +104,8 @@ export default function SelectCon(props: Props) {
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  font-size: #333;
-  input,
-  button {
-    margin-left: 10px;
-  }
+  color: #333;
+  height: 32px;
 `
 const Title = styled.div`
   font-size: 20px;

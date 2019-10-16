@@ -5,9 +5,10 @@ import qs from 'qs'
 
 interface FullLoadingBarObj {
   /** 预计加载完成毫秒数 */
-  duration: number
+  duration?: number
   /** 描述 */
   aside: string
+  progress?: string
 }
 
 export default class AppStore {
@@ -85,6 +86,15 @@ export default class AppStore {
   }
   /** 关闭全局进度条 */
   closeFullLoadingBar() {
-    this.fullLoadingBarObj = null
+    return new Promise((resolve, reject) => {
+      this.openFullLoadingBar({
+        aside: this.fullLoadingBarObj ? this.fullLoadingBarObj.aside : '',
+        progress: '100%'
+      })
+      setTimeout(() => {
+        this.fullLoadingBarObj = null
+        resolve()
+      }, 200)
+    })
   }
 }

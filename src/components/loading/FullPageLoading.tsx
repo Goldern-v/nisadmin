@@ -10,33 +10,35 @@ export default observer(function FullPageLoading() {
   useEffect(() => {
     /** 模拟进度 */
     let duration = appStore.fullLoadingBarObj!.duration
-    setTimeout(() => {
-      setProgress('51%')
-    }, duration * 0.1)
-    setTimeout(() => {
-      setProgress('73%')
-    }, duration * 0.3)
-    setTimeout(() => {
-      setProgress('85%')
-    }, duration * 0.5)
-    setTimeout(() => {
-      setProgress('92%')
-    }, duration * 0.7)
-    setTimeout(() => {
-      setProgress('95%')
-    }, duration * 0.9)
-    setTimeout(() => {
-      setProgress('99%')
-    }, duration * 1)
+    if (duration) {
+      setTimeout(() => {
+        setProgress('51%')
+      }, duration * 0.1)
+      setTimeout(() => {
+        setProgress('73%')
+      }, duration * 0.3)
+      setTimeout(() => {
+        setProgress('85%')
+      }, duration * 0.5)
+      setTimeout(() => {
+        setProgress('92%')
+      }, duration * 0.7)
+      setTimeout(() => {
+        setProgress('95%')
+      }, duration * 0.9)
+      setTimeout(() => {
+        setProgress('99%')
+      }, duration * 1)
+    }
   }, [])
   return (
     <Wrapper>
       <div className='text-con'>
-        <div className='title'>{progress || '0%'}</div>
+        <div className='title'>{appStore.fullLoadingBarObj!.progress || progress || '0%'}</div>
         <div className='aside'>{appStore.fullLoadingBarObj!.aside}</div>
       </div>
       <div className='inner'>
-        <div className='container' style={{ width: progress || 0 }}>
+        <div className='container' style={{ width: appStore.fullLoadingBarObj!.progress || progress || 0 }}>
           <ul>
             <li> </li>
             <li> </li>

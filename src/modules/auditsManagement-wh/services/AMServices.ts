@@ -26,7 +26,7 @@ export default class AMServices extends BaseApiService {
     return this.post(`/flow/task/pendingPage`, obj)
   }
   /** 已审核列表 */
-  public solvedPage(current?: number, pageSize?: number, showType?: string, keyword?: string) {
+  public solvedPage(current?: number, pageSize?: number, showType?: string, keyword?: string, selectedDate?: any) {
     let deptCodes
     if (statisticsViewModal.selectedDeptCode.length == 1 && statisticsViewModal.selectedDeptCode[0] == '全部') {
       deptCodes = statisticsViewModal
@@ -37,13 +37,17 @@ export default class AMServices extends BaseApiService {
       deptCodes = statisticsViewModal.selectedDeptCode
     }
 
-    let obj = {
+    let obj: any = {
       pageIndex: current || 0,
       pageSize: pageSize || 10,
       type: showType,
       keyword,
       wardCode: authStore.selectedDeptCode,
       deptCodes: deptCodes
+    }
+    if (selectedDate) {
+      obj.startDate = selectedDate[0] ? selectedDate[0].format('YYYY-MM-DD') : ''
+      obj.endDate = selectedDate[1] ? selectedDate[1].format('YYYY-MM-DD') : ''
     }
     return this.post(`/flow/task/solvedPage`, obj)
   }

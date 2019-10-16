@@ -25,6 +25,7 @@ export interface Props {
   keyword: string
   needAudit: boolean
   active: boolean
+  selectedDate: any
 }
 
 export default observer(function AuditsTableDHSZ(props: Props) {
@@ -131,14 +132,14 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const onChange = (pagination: any) => {
     setSelectedRows([])
     setSelectedRowKeys([])
-    pagination.current && onload(pagination.current, searchText, pagination.pageSize)
+    pagination.current && onload(pagination.current, searchText, props.selectedDate, pagination.pageSize)
   }
-  const onload = (current: any, searchText: any, pageSize = 20) => {
+  const onload = (current: any, searchText: any, selectedDate: any, pageSize = 20) => {
     setCurrent(current)
     setLoading(true)
     let getDataFun = props.needAudit
       ? aMServices.pendingPage(current, pageSize, showType, keyword)
-      : aMServices.solvedPage(current, pageSize, showType, keyword)
+      : aMServices.solvedPage(current, pageSize, showType, keyword, selectedDate)
     getDataFun.then((res) => {
       setLoading(false)
       setTableData(res.data.list)
@@ -200,7 +201,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   emitter.removeAllListeners('refreshNurseAuditTable')
   emitter.addListener('refreshNurseAuditTable', () => {
-    onload(current, searchText)
+    onload(current, searchText, props.selectedDate)
   })
 
   useEffect(() => {

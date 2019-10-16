@@ -1,3 +1,4 @@
+import { appStore } from 'src/stores/index'
 import { observable, computed, action, reaction } from 'mobx'
 import { nurseFilesService, NurseQuery } from '../../services/NurseFilesService'
 import { authStore } from 'src/stores'
@@ -42,6 +43,10 @@ class NurseFilesListViewModel {
   }
 
   exportExcel() {
+    appStore.openFullLoadingBar({
+      aside: '正在下载',
+      duration: 10000
+    })
     nurseFilesService
       .countExcel({
         ...this.postObj,
@@ -53,6 +58,7 @@ class NurseFilesListViewModel {
         }
       })
       .then((res) => {
+        appStore.closeFullLoadingBar()
         fileDownload(res)
       })
   }

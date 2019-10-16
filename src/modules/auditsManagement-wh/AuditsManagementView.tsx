@@ -6,16 +6,34 @@ import BaseTabs from 'src/components/BaseTabs'
 
 import { authStore, appStore } from 'src/stores'
 import NurseAudit from './NurseAudit'
+import { getCurrentMonth } from 'src/utils/date/currentMonth'
 export interface Props extends RouteComponentProps {}
 
 export default function AuditsManagementView() {
   const [showType, setShowType] = useState('')
+  const [needAudit, setNeedAudit] = useState(true)
+  const [selectedDate, setSelectedDate] = useState(getCurrentMonth())
   const [keyword, setKeyword] = useState('')
   return (
     <Wrapper>
-      <SelectCon showType={showType} setShowType={setShowType} keyword={keyword} setKeyword={setKeyword} />
+      <SelectCon
+        showType={showType}
+        setShowType={setShowType}
+        keyword={keyword}
+        setKeyword={setKeyword}
+        needAudit={needAudit}
+        setNeedAudit={setNeedAudit}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
       <ScrollCon>
-        <NurseAudit showType={showType} keyword={keyword} />
+        <NurseAudit
+          showType={showType}
+          keyword={keyword}
+          needAudit={needAudit}
+          setNeedAudit={setNeedAudit}
+          selectedDate={selectedDate}
+        />
       </ScrollCon>
     </Wrapper>
   )
