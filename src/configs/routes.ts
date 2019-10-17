@@ -261,7 +261,8 @@ const routes: RouteItem[] = [
   // },
 
   {
-    path: '/'
+    path: '/',
+    redirect: '/home'
   }
 ]
 

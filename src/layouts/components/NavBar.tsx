@@ -12,8 +12,6 @@ import { navConfig as navConfig_whSelf } from './navConfig_whSelf'
 const toNavLink = (path: string | undefined) => {
   return path ? () => appStore.history.push(path) : () => {}
 }
-const realNavConfig =
-  appStore.HOSPITAL_ID == 'wh' ? (authStore.isRoleManage ? navConfig_wh : navConfig_whSelf) : navConfig
 
 export interface Props extends RouteComponentProps {}
 
@@ -70,6 +68,9 @@ const MenuCon = observer(function(props: { list: navConfigItem[]; style?: React.
 })
 
 export default observer(function NavBar(props: Props) {
+  const realNavConfig =
+    appStore.HOSPITAL_ID == 'wh' ? (authStore.isRoleManage ? navConfig_wh : navConfig_whSelf) : navConfig
+
   let { location } = props
   return (
     <Wrapper>
