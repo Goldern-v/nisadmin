@@ -68,6 +68,7 @@ import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Ma
 // 护理质量
 import QualityView from 'src/modules/quality/QualityView'
 import QualityControlRecordDetail from 'src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail.tsx'
+import qualityControlRecordEdit from 'src/modules/quality/views/qualityControlRecord/qualityControlRecordEdit/QualityControlRecordEdit'
 import QualityAnalysisEdit from 'src/modules/quality/views/analysis/AnalysisEdit'
 import QualityAnalysisDetail from 'src/modules/quality/views/analysis/AnalysisDetail'
 import { specialModule } from './routerConfig/specialModule'
@@ -175,6 +176,7 @@ const routes: RouteItem[] = [
   // 护理质量
   setLayout('/quality/:name', QualityView, layouts.MainLayout),
   setLayout('/qualityControlRecordDetail/:id', QualityControlRecordDetail, layouts.MainLayout),
+  setLayout('/qualityControlRecordEdit', qualityControlRecordEdit, layouts.MainLayout),
   setLayout('/qualityScheduleRecordDetails/:id', DetailsView, layouts.MainLayout),
   setLayout('/qualityScheduleImport', ImportView, layouts.MainLayout),
 

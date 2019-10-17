@@ -1,13 +1,15 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 const BG = require('../../../../images/顶部背景.png')
-import { Button } from 'antd'
+import { Button, message, Modal } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import createModal from 'src/libs/createModal'
 import BqclModal from '../modal/BqclModal'
 import HlbModal from '../modal/HlbModal'
 import EjkhszModal from '../modal/EjkhszModal'
+import { qualityControlRecordApi } from './../../api/QualityControlRecordApi'
+import qs from 'qs'
 
 interface Props {
   detailData: any
@@ -20,13 +22,14 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       props.detailData.master.qcLevel == '3'
         ? `/qcThree?noRefresh=1`
         : props.detailData.master.qcLevel == '2'
-        ? `/qcTwo?noRefresh=1`
-        : `/qcThree?noRefresh=1`
+          ? `/qcTwo?noRefresh=1`
+          : `/qcThree?noRefresh=1`
     )
   }
   let master = props.detailData.master || {}
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.nodeDataList || []))
   nodeDataList.reverse()
+  let [deleteLoading, setDeleteLoading] = useState(false)
   let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
   /** 当前 */
   let currentNode = nodeDataList[currentNodeIndex] || {}
@@ -99,6 +102,43 @@ export default function qualityControlRecordDetailHeader(props: Props) {
         break
     }
   }
+
+  const handleEdit = () => {
+    if (!master.id || !master.qcCode) {
+      message.error('缺少质控编码或ID')
+      return
+    }
+
+    appStore.history.push(`/qualityControlRecordEdit?${qs.stringify({
+      qcCode: master.qcCode,
+      id: master.id
+    })}`)
+  }
+
+  const handleDelete = () => {
+    if (!master.id) {
+      message.error('缺少质控ID')
+      return
+    }
+
+    Modal.confirm({
+      title: '提示',
+      content: '是否删除该评价表?',
+      onOk: () => {
+        setDeleteLoading(true)
+        qualityControlRecordApi
+          .formDelete(master.id)
+          .then(res => {
+            message.success('删除成功!', 1, () => {
+              setDeleteLoading(false)
+              appStore.history.goBack()
+            })
+          }, () => setDeleteLoading(false))
+      }
+    })
+
+  }
+
   return (
     <Con>
       <TopHeader>
@@ -126,6 +166,15 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 {nextNode.nodeName}
               </Button>
             )}
+            {
+              master &&
+              master.status == '-1' &&
+              master.creatorNo == (authStore.user && authStore.user.empNo) &&
+              <React.Fragment>
+                <Button onClick={handleEdit} disabled={deleteLoading}>编辑</Button>
+                <Button onClick={handleDelete} type="danger" ghost disabled={deleteLoading}>删除</Button>
+              </React.Fragment>
+            }
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>

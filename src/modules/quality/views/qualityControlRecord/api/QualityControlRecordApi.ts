@@ -54,6 +54,34 @@ export default class QualityControlRecordApi extends BaseApiService {
   public getMeasureList(qcMasterId: string) {
     return this.get(`/qcItem/dict/getMeasureList/${qcMasterId}`)
   }
+  /**获取质控表单类型列表 */
+  public formTemplateList(query: { level: number, templateName: string }) {
+    return this.post(`/qcItem/template/findList`, query)
+  }
+  /**获取质控表单模板详情 */
+  public formTemplateDetail(qcCode: string | number) {
+    return this.get(`/qcItem/template/detail/${qcCode}`)
+  }
+  /**获取质控表单关联科室 */
+  public formTemplateDeptList(qcCode: string | number) {
+    return this.get(`/qcItem/template/dept/${qcCode}`)
+  }
+  /**保存评价单实例 */
+  public formSave(params: any) {
+    return this.post('/qcItem/instance/save', params)
+  }
+  /**获取质控人员 */
+  public getUserByRoles(roleCodes: any[]) {
+    return this.post('/user/getUserByRoles', { roleCodes })
+  }
+  /**获取管床护士 */
+  public getBedNurseList(deptCode: string) {
+    return this.get(`/auditeNurseListWH/getByFormCode/` + deptCode)
+  }
+  /**删除评价单 */
+  public formDelete(id: string) {
+    return this.post(`/qcItem/instance/delete`, { id })
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()
