@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router'
 import { Table, message, Popconfirm, Divider, Tag, Switch } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
-import { scheduleStore, authStore } from 'src/stores'
+import { scheduleStore, authStore, appStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
@@ -139,7 +139,10 @@ export default function MainBox() {
   ]
 
   let promise =
-    (authStore.user && authStore.user.post) == '护理部' || (authStore.user && authStore!.user.empName) == '管理员'
+    appStore.HOSPITAL_ID == 'wh'
+      ? authStore.isRoleManage
+      : (authStore.user && authStore.user.post) == '护理部' || (authStore.user && authStore.user.empName) == '管理员'
+
   if (promise) {
     columns.push({
       title: '操作',
