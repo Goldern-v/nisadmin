@@ -16,7 +16,7 @@ export default observer(function Head() {
   return (
     <Wrapper>
       <LeftIcon>
-          <PageTitle>查房计划表</PageTitle>
+          <PageTitle>查房记录</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>查房日期：</span>
