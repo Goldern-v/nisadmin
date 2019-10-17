@@ -1,6 +1,6 @@
 import { action, observable, computed } from 'mobx'
 import { qualityControlRecordApi } from './../../api/QualityControlRecordApi'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import moment from 'moment'
 import qs from 'qs'
 
@@ -63,8 +63,8 @@ class QualityControlRecordEditModel {
     evalDate: false,
     userList: false,
     wardCode: false,
-    bedNurseList: false,
-    bedLabel: false,
+    // bedNurseList: false,
+    // bedLabel: false,
     inpNo: false
   } as any
 
@@ -104,7 +104,16 @@ class QualityControlRecordEditModel {
       }
 
       if (this.master[x] instanceof Array) {
-        this.master[x] = []
+        if (x == 'userList') {
+          if (authStore.user) {
+            this.master[x] = [{
+              empName: authStore.user.empName,
+              empNo: authStore.user.empNo,
+            }]
+          }
+        } else {
+          this.master[x] = []
+        }
       } else if (x == 'followEvaluate') {
         this.master[x] = false
       } else if (x == 'evalDate') {

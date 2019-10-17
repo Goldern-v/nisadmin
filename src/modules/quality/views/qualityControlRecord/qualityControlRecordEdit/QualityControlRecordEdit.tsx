@@ -40,9 +40,20 @@ export default observer(function QualityControlRecordEdit() {
   const handleNext = () => {
     let masterErr = false
     let itemListErr = false
+    let errMsg = ''
 
     for (let x in master) {
-      if (master[x] instanceof Array) {
+      if (x == 'inpNo') {
+        //床号必须为7位整数
+        if (master[x].length > 0) {
+          let inpNo = Number(master[x])
+          if (isNaN(inpNo) || master[x].length !== 7) {
+            qcModel.setMasterErrObj(x, true)
+            masterErr = true
+            errMsg = '住院号必须为7位数字'
+          }
+        }
+      } else if (master[x] instanceof Array) {
         if (master[x].length <= 0) {
           if (Object.keys(masterErrObj).indexOf(x) >= 0) {
 
@@ -77,7 +88,7 @@ export default observer(function QualityControlRecordEdit() {
       Modal.warning({
         centered: true,
         title: '提示',
-        content: '项目未填写',
+        content: errMsg || '项目未填写',
         onOk: () => {
           if (masterErr) {
             let masterArea = document.getElementById('masterArea')
@@ -128,8 +139,6 @@ export default observer(function QualityControlRecordEdit() {
         }
       })
   }
-
-  console.log(baseInfo.qcLevel)
 
   return <Wrapper>
     <TopPannel>
