@@ -95,7 +95,8 @@ export default observer(function FormPannel() {
       <div className="item">
         <div className="label">质控人:</div>
         <div className={checkClass('userList')}>
-          <Select
+          {/* <Select
+            disabled
             showSearch
             placeholder="请选择质控人"
             onChange={(val: any) => {
@@ -107,7 +108,8 @@ export default observer(function FormPannel() {
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }>
             {userList.map((item: any, idx: number) => <Option key={idx} value={item.empNo}>{item.empName}</Option>)}
-          </Select>
+          </Select> */}
+          <Input disabled value={(userList.length > 0 && userList[0].empName) || ''} />
         </div>
       </div>
       <div className="item">
