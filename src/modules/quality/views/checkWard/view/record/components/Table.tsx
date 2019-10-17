@@ -21,15 +21,15 @@ export default observer(function Table() {
       align: 'center'
     },
     {
-      title: '检查病区',
-      dataIndex: 'wardName',
-      width: 120
-    },
-    {
       title: '查房类型',
       dataIndex: 'type',
       width: 130,
       align: 'center'
+    },
+    {
+      title: '检查病区',
+      dataIndex: 'wardName',
+      width: 120
     },
     {
       title: '检查人员',
@@ -65,11 +65,11 @@ export default observer(function Table() {
           case '1':
             return '提交'
           case '2':
-            return '待病区处理'
+            return '病区处理'
           case '3':
-            return '待科护士长审核'
+            return '科护士长审核'
           case '4':
-            return '待护理部审核'
+            return '已完成'
           default:
             return ''
         }
