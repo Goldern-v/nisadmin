@@ -12,6 +12,8 @@ import AgeRangePicker from 'src/components/AgeRangePicker'
 import YearTimeRangePicker from 'src/components/YearTimeRangePicker'
 import MonthTimeRangePicker from 'src/components/MonthTimeRangePicker'
 import { authStore } from 'src/stores'
+import emitter from 'src/libs/ev'
+import { cleanObj } from 'src/utils/object/cleanObj'
 
 export default observer(function FilterCon() {
   let refForm = React.createRef<Form>()
@@ -28,6 +30,29 @@ export default observer(function FilterCon() {
         // nurseFilesListViewModel.loadNursingList()
       })
     }
+    emitter.removeAllListeners('nurseFileResize')
+    emitter.addListener('nurseFileResize', () => {
+      if (refForm.current) {
+        ;(async () => {
+          let form: any = refForm.current
+          let [err, value] = await to(form.validateFields())
+          let nullObj = cleanObj(value)
+          // console.log(
+          //   Object.assign(nullObj, {
+          //     deptCode: statisticsViewModal.selectedDeptCode
+          //   }),
+          //   value,
+          //   nullObj,
+          //   '123'
+          // )
+          form.setFields(
+            Object.assign(nullObj, {
+              deptCode: statisticsViewModal.selectedDeptCode
+            })
+          )
+        })()
+      }
+    })
   }, [])
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())

@@ -7,6 +7,7 @@ import AddNursingModal from '../modal/AddNursingModal'
 import DeptSelect from 'src/components/DeptSelect'
 import { observer } from 'mobx-react-lite'
 import { authStore } from 'src/stores'
+import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 
@@ -42,6 +43,13 @@ export default observer(function SelectCon(props: any, context: any) {
         {/* <Button type='primary' onClick={onSearch}>
           搜索
         </Button> */}
+        <Button
+          onClick={() => {
+            emitter.emit('nurseFileResize')
+          }}
+        >
+          重置
+        </Button>
         <Button
           type='primary'
           // style={{ marginLeft: 40, marginBottom: 20 }}
