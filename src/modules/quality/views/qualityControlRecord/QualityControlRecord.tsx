@@ -10,13 +10,13 @@ import { observer } from 'mobx-react-lite'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
 
 export default observer(function QualityControlRecord() {
   let [loading, setLoading] = useState(false)
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       if (
         appStore.queryObj.noRefresh &&
         qualityControlRecordVM.allData &&
@@ -24,11 +24,11 @@ export default observer(function QualityControlRecord() {
         qualityControlRecordVM.allData.list.length > 0
       ) {
       } else {
-        let level = appStore.history.location.pathname.indexOf('qcThree')
+        let level = appStore.history.location.pathname.indexOf('qcThree') >= 0
           ? 3
-          : appStore.history.location.pathname.indexOf('qcTwo')
-          ? 2
-          : 3
+          : appStore.history.location.pathname.indexOf('qcTwo') >= 0
+            ? 2
+            : 3
         await qualityControlRecordVM.init(level)
         getTableData()
       }

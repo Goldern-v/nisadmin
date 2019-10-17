@@ -1,17 +1,21 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 import service from 'src/services/api'
 import tinyPic from 'src/utils/img/tinyPic'
+import Zimage from 'src/components/Zimage'
 
 export interface Props {
   tip: string
   accept: string
   value?: string[]
+  ids?: string[],
   text?: string
   upload?: (files: FileList) => Promise<string[]>
-  onChange: (value: string[]) => void
-  uploadOption?: any
+  onChange: (value: string[], ids?: string[]) => void
+  uploadOption?: any,
+  sizeLimited?: number,
+  preview?: boolean
 }
 
 export interface State {
@@ -24,7 +28,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
     accept: 'image/jpg, image/jpeg, image/png, image/bmp',
     tip: '支持jpg、jpeg、png、bmp格式的图片',
     text: '上传图片',
-    onChange: () => {}
+    onChange: () => { }
   }
 
   public static getDerivedStateFromProps(nextProps: Props) {
@@ -63,15 +67,31 @@ export default class MultipleImageUploader extends React.Component<Props, State>
   }
 
   private onOpen = () => {
-    this.open()
+    let sizeLimited = this.props.sizeLimited
+    if (sizeLimited || sizeLimited === 0) {
+      if (this.props.value && this.props.value.length >= sizeLimited) {
+        message.error(`上传不能超过${sizeLimited}张图片`)
+      } else {
+        this.open()
+      }
+    } else {
+      this.open()
+    }
   }
 
   private onChange = async (e: Event) => {
-    const { upload, onChange } = this.props
+    const { upload, onChange, sizeLimited, value } = this.props
     const $input = e.target as HTMLInputElement
 
     const files = ($input.files && $input.files) || null
     if (!files) return
+    if (sizeLimited || sizeLimited === 0) {
+      let valueLength = value && value.length || 0
+      if (files.length + valueLength > sizeLimited) {
+        message.error(`上传不能超过${sizeLimited}张图片`)
+        return
+      }
+    }
 
     const src = []
 
@@ -84,7 +104,9 @@ export default class MultipleImageUploader extends React.Component<Props, State>
       this.setState({ src: [...this.state.src, ...src], loading: true })
       const value = await upload(files)
       this.setState({ loading: false })
-      value && onChange([...(this.props.value || []), ...value])
+      value && onChange(
+        [...(this.props.value || []), ...value]
+      )
     } else {
       this.setState({ src: [...this.state.src, ...src], loading: true })
       try {
@@ -103,8 +125,12 @@ export default class MultipleImageUploader extends React.Component<Props, State>
         }
         let res = await Promise.all(promiseList)
         let value = res.map((item: any) => item.data.path)
+        let ids = res.map((item: any) => item.data.id)
         this.setState({ loading: false })
-        value && onChange([...(this.props.value || []), ...value])
+        value && onChange(
+          [...(this.props.value || []), ...value],
+          [...(this.props.ids || []), ...ids]
+        )
       } catch (error) {
         console.log(error, 'errorerror')
       }
@@ -113,22 +139,41 @@ export default class MultipleImageUploader extends React.Component<Props, State>
 
   public deletetImg = (index: number) => {
     this.props.value && this.props.value.splice(index, 1)
-    this.props.value && this.props.onChange && this.props.onChange([...this.props.value])
+    this.props.ids && this.props.ids.splice(index, 1)
+    this.props.value && this.props.onChange && this.props.onChange(
+      [...this.props.value],
+      this.props.ids && [...this.props.ids]
+    )
   }
   public render() {
-    const { tip, accept, text } = this.props
+    const { tip, accept, text, preview } = this.props
     const { loading, src } = this.state
     return (
       <Wrapper>
         {/* {JSON.stringify(src)} */}
-        {src &&
+        {!preview && src &&
           src.map((item: string, index: number) => (
-            <Inner key={index}>
+            <Inner key={index} className="inner">
               <Icon type='close' title='删除图片' onClick={() => this.deletetImg(index)} />
               <Image src={item} />
             </Inner>
           ))}
-        <Inner onClick={this.onOpen}>
+        {preview && src && src.map((item: string, index: number) => (
+          <Zimage
+            key={index}
+            text={
+              <Inner className="inner">
+                <Icon type='close' title='删除图片' onClick={(e) => {
+                  e.stopPropagation()
+                  this.deletetImg(index)
+                }} />
+                <Image src={item} />
+              </Inner>
+            }
+            list={[item]}
+          />
+        ))}
+        <Inner onClick={this.onOpen} className="inner">
           <OriginalInput ref={this.refInput} type='file' accept={accept} multiple={true} />
           <React.Fragment>
             <StyledIcon type={loading ? 'loading' : 'plus'} />
@@ -136,7 +181,7 @@ export default class MultipleImageUploader extends React.Component<Props, State>
           </React.Fragment>
         </Inner>
         <div style={{ clear: 'both' }} />
-        {tip && <Tip>{tip}</Tip>}
+        {tip && <Tip className="tip">{tip}</Tip>}
       </Wrapper>
     )
   }
@@ -170,6 +215,7 @@ const Inner = styled.div`
     top: 2px;
     height: 10px;
     width: 10px;
+    color: #666;
   }
 `
 
@@ -178,7 +224,8 @@ const OriginalInput = styled.input`
 `
 
 const Image = styled.img`
-  width: 100%;
+  width: 100%!important;
+  height: auto!important;
 `
 
 const StyledIcon = styled(Icon)`
