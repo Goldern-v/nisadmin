@@ -16,7 +16,13 @@ interface Props {
 
 export default function qualityControlRecordDetailHeader(props: Props) {
   const topHeaderBack = () => {
-    appStore.history.push(`/quality/qualityControlRecord/${props.detailData.master.qcLevel}?noRefresh=1`)
+    appStore.history.push(
+      props.detailData.master.qcLevel == '3'
+        ? `/qcThree?noRefresh=1`
+        : props.detailData.master.qcLevel == '2'
+        ? `/qcTwo?noRefresh=1`
+        : `/qcThree?noRefresh=1`
+    )
   }
   let master = props.detailData.master || {}
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.nodeDataList || []))
@@ -105,7 +111,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           data={[
             {
               name: '质控记录',
-              link: '/quality/qualityControlRecord'
+              link: master.qcLevel == '3' ? '/qcThree' : master.qcLevel == '2' ? '/qcTwo' : '3'
             },
             {
               name: '记录详情'
