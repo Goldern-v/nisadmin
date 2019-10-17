@@ -10,25 +10,19 @@ import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryRepo
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CXTJ } from './images/查询统计.svg'
-import { ReactComponent as FXBG } from './images/分析报告.svg'
-import { ReactComponent as ZKJL } from './images/质控记录.svg'
-import { appStore } from 'src/stores'
-import RecordView from './views/checkWard/view/record/RecordView'
-import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
-import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
-import WritingForm from './views/writingForm/WritingForm'
+import { ReactComponent as EJZK } from './images/icon/二级质控.svg'
+import { ReactComponent as YDBG } from './images/icon/二级质控月度报告.svg'
 
 const LEFT_MENU_CONFIG: any = [
   {
     title: '二级质控记录',
     path: '/qcTwo',
-    icon: <ZKJL />,
+    icon: <EJZK />,
     component: { ...QualityControlRecord }
   },
   {
     title: '二级质控月度报告',
-    icon: <FXBG />,
+    icon: <YDBG />,
     path: '/qcTwo/workSummaryReportList',
     component: WorkSummaryReportList
   }

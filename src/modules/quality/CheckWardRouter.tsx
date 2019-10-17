@@ -2,37 +2,33 @@ import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
-import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
-import QueryStatistics from './views/queryStatistics/QueryStatistics'
-import Analysis from './views/analysis/Analysis'
-import SummaryReport from './views/summaryReport/SummaryReport'
-import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
-import ProblemSummary from './views/problemSummary/ProblemSummary'
+
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CXTJ } from './images/查询统计.svg'
-import { ReactComponent as FXBG } from './images/分析报告.svg'
-import { ReactComponent as ZKJL } from './images/质控记录.svg'
-import { appStore } from 'src/stores'
+import { ReactComponent as CFJL } from './images/icon/查房记录.svg'
+import { ReactComponent as CFJHB } from './images/icon/查房计划表.svg'
+import { ReactComponent as CFJHBG } from './images/icon/查房计划报告.svg'
 import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
-import WritingForm from './views/writingForm/WritingForm'
 
 const LEFT_MENU_CONFIG: any = [
   {
     title: '查房记录',
     path: '/checkWard',
+    icon: <CFJL />,
     component: RecordView
   },
   {
     title: '查房计划表',
     path: '/checkWard/schedule',
+    icon: <CFJHB />,
     component: ScheduleView
   },
   {
     title: '查房统计报告',
     path: '/checkWard/checkWardReportView',
+    icon: <CFJHBG />,
     component: CheckWardReportView
   }
 ]

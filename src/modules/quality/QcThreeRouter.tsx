@@ -10,37 +10,33 @@ import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryRepo
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CXTJ } from './images/查询统计.svg'
-import { ReactComponent as FXBG } from './images/分析报告.svg'
-import { ReactComponent as ZKJL } from './images/质控记录.svg'
-import { appStore } from 'src/stores'
-import RecordView from './views/checkWard/view/record/RecordView'
-import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
-import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
-import WritingForm from './views/writingForm/WritingForm'
+import { ReactComponent as SJZK } from './images/icon/三级质控.svg'
+import { ReactComponent as YDBG } from './images/icon/三级质控月度报告.svg'
+import { ReactComponent as HZBG } from './images/icon/三级质控汇总报告.svg'
+import { ReactComponent as WTBG } from './images/icon/三级质控问题汇总.svg'
 
 const LEFT_MENU_CONFIG: any = [
   {
     title: '三级质控记录',
-    icon: <ZKJL />,
+    icon: <SJZK />,
     path: '/qcThree',
     component: { ...QualityControlRecord }
   },
   {
     title: '三级质控月度报告',
-    icon: <FXBG />,
+    icon: <YDBG />,
     path: '/qcThree/analysis',
     component: Analysis
   },
   {
     title: '三级质控汇总报告',
-    icon: <FXBG />,
+    icon: <HZBG />,
     path: '/qcThree/summaryReport',
     component: SummaryReport
   },
   {
     title: '三级质控问题汇总',
-    icon: <FXBG />,
+    icon: <WTBG />,
     path: '/qcThree/problemSummary',
     component: ProblemSummary
   }

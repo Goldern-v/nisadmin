@@ -10,24 +10,22 @@ import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryRepo
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CXTJ } from './images/查询统计.svg'
-import { ReactComponent as FXBG } from './images/分析报告.svg'
-import { ReactComponent as ZKJL } from './images/质控记录.svg'
-import { appStore } from 'src/stores'
-import RecordView from './views/checkWard/view/record/RecordView'
-import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
-import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
+import { ReactComponent as JCTJ } from './images/icon/检查表单统计表.svg'
+import { ReactComponent as WJSX } from './images/icon/文件书写统计表.svg'
+
 import WritingForm from './views/writingForm/WritingForm'
 
 const LEFT_MENU_CONFIG: any = [
   {
     title: '检查表单统计表',
     path: '/queryStatistics',
+    icon: <JCTJ />,
     component: QueryStatistics
   },
   {
     title: '文件书写统计表',
     path: '/queryStatistics/writingForm',
+    icon: <WJSX />,
     component: WritingForm
   }
 ]
