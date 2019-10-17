@@ -1,10 +1,10 @@
 import moment from 'moment'
-import store, { authStore } from 'src/stores'
+import store, { authStore, appStore } from 'src/stores'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { observer } from 'mobx-react-lite'
-import { Button, DatePicker } from 'antd'
+import { Button, DatePicker, Modal, message } from 'antd'
 import DeptSelect from 'src/components/DeptSelect'
 import FormSelect from 'src/modules/quality/views/qualityControlRecord/components/common/FormSelect.tsx'
 import StateSelect from 'src/modules/quality/views/qualityControlRecord/components/common/StateSelect.tsx'
@@ -13,10 +13,21 @@ import { qualityControlRecordApi } from '../api/QualityControlRecordApi'
 import { Select, Radio } from 'src/vendors/antd'
 import { PageTitle, Place } from 'src/components/common'
 import { numToChinese } from 'src/utils/number/numToChinese'
-export interface Props extends RouteComponentProps {}
+import FormCreateModal from './common/FormCreateModal'
+
+export interface Props extends RouteComponentProps { }
+
+const Option = Select.Option
 
 export default observer(function TopCon(props: any) {
   // const [readWay, setReadWay] = useState(1)
+  const [formCreateVisible, setFormCreateVisible] = useState(false)
+
+  const handleCreate = () => {
+    setFormCreateVisible(true)
+  }
+
+
   return (
     <Wrapper>
       <PageTitle>{numToChinese(qualityControlRecordVM.level)}级质控</PageTitle>
@@ -102,7 +113,19 @@ export default observer(function TopCon(props: any) {
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询
       </Button>
+      {(qualityControlRecordVM.level == 2) && (
+        <Button
+          onClick={handleCreate}
+          style={{ marginLeft: 10 }}
+          disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}>
+          新建
+        </Button>
+      )}
       {/* <Button onClick={() => props.refExport()}>导出excl</Button> */}
+      <FormCreateModal
+        onCancel={() => setFormCreateVisible(false)}
+        visible={formCreateVisible}
+        level={qualityControlRecordVM.level} />
     </Wrapper>
   )
 })

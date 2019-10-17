@@ -1,4 +1,3 @@
-import { type } from 'os'
 import { observable, computed, action } from 'mobx'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 let timer: any = null

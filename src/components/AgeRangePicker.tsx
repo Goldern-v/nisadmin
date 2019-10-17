@@ -23,6 +23,7 @@ export default function AgeRangePicker(props: Props) {
   return (
     <Wrapper>
       <Select
+        allowClear={true}
         value={ages && ages[0]}
         onChange={(value: any) => {
           setAges([value, ages[1]])
@@ -37,6 +38,7 @@ export default function AgeRangePicker(props: Props) {
       </Select>
       <div className={'split'}>-</div>
       <Select
+        allowClear={true}
         value={ages && ages[1]}
         onChange={(value: any) => {
           onChange && onChange([ages[0], value])

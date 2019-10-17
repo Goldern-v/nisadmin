@@ -62,7 +62,9 @@ class NurseFilesListViewModel {
           console.log(progressEvent, 'progressEvent')
           appStore.openFullLoadingBar({
             aside: '正在下载数据，请稍候',
-            progress: `${Number(Math.min(progressEvent.loaded / (progressEvent.total || 1), 1) * 100).toFixed(0)}%`
+            progress: `${Number(Math.min(progressEvent.loaded / (progressEvent.total * 10000 || 1), 1) * 100).toFixed(
+              0
+            )}%`
           })
         }
       )
