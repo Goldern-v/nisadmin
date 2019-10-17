@@ -115,20 +115,13 @@ class SheetViewModal {
   }
 
   getSheetTableData() {
-    // if (localStorage.sheetTableData_dev) {
-    //   this.sheetTableData = JSON.parse(localStorage.sheetTableData_dev)
-    //   this.allCell = this.getAllCell()
-    //   return
-    // }
     this.tableLoading = true
     return arrangeService.findCreateOrUpdate().then((res) => {
       this.tableLoading = false
       this.dateList = this.getDateList()
-      this.tableLoading = false
       this.sheetTableData = res.data.setting
       this.remark = res.data.remark
       this.allCell = this.getAllCell(true)
-      // localStorage.sheetTableData_dev = JSON.stringify(this.sheetTableData)
     })
   }
   /** 同步排班人员数据 */
