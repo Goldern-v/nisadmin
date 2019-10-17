@@ -72,7 +72,7 @@ export default function Left(props: Props) {
                             <Zimage
                             text={
                               <span style={{ fontSize: '13px'}}>
-                                <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{itemIndex + 1}
+                                <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{item.path.split(',').length}
                               </span>
                             }
                             list={item.path.split(',')}
@@ -119,7 +119,7 @@ export default function Left(props: Props) {
                             <Zimage
                             text={
                               <span style={{ fontSize: '13px'}}>
-                                <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{itemIndex + 1}
+                                <Icon type='paper-clip' style={{ fontSize: '13px'}}/>{item.path.split(',').length}
                               </span>
                             }
                             list={item.path.split(',')}
