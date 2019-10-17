@@ -272,7 +272,8 @@ class QualityControlRecordEditModel {
 
   //设置master基本信息错误状态
   @action public setMasterErrObj = (key: string, state: boolean) => {
-    this.masterErrObj[key] = state
+    if (Object.keys(this.masterErrObj).indexOf(key) >= 0)
+      this.masterErrObj[key] = state
   }
 
   //设置itemList错误状态

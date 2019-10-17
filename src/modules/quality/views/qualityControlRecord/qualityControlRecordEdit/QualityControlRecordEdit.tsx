@@ -124,20 +124,29 @@ export default observer(function QualityControlRecordEdit() {
   }
 
   const handleSubmit = () => {
-    globalModal
-      .signModal
-      .show({
-        title: '账号密码验证',
-        onCallBack: (empNo: string, password: string) => {
-          if (empNo && password) {
-            qcModel.formSubmit({ empNo, password }, () => {
-              message.success('提交成功', 2, () => history.goBack())
-            })
-          } else {
-            message.error('请完整填写账号和密码')
-          }
-        }
-      })
+    if (master.followEvaluate) {
+      if (!master.followEvaluateDate) {
+        message.error('请填写追踪日期')
+        return
+      }
+    }
+    qcModel.formSubmit({ empNo: '', password: '' }, () => {
+      message.success('提交成功', 2, () => history.goBack())
+    })
+    // globalModal
+    //   .signModal
+    //   .show({
+    //     title: '账号密码验证',
+    //     onCallBack: (empNo: string, password: string) => {
+    //       if (empNo && password) {
+    //         qcModel.formSubmit({ empNo, password }, () => {
+    //           message.success('提交成功', 2, () => history.goBack())
+    //         })
+    //       } else {
+    //         message.error('请完整填写账号和密码')
+    //       }
+    //     }
+    //   })
   }
 
   return <Wrapper>
@@ -185,7 +194,7 @@ export default observer(function QualityControlRecordEdit() {
         <Spin spinning={loading}>
           <div className="main-content">
             {step === 1 && <FormPannel />}
-            {step === 2 && <PreviewPannel />}
+            {step === 2 && <PreviewPannel setpChange={(step) => setStep(step)} />}
           </div>
         </Spin>
       </div>

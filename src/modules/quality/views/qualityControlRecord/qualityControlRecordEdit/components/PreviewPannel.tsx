@@ -6,9 +6,12 @@ import { Switch, DatePicker, Progress } from 'antd'
 import moment from 'moment'
 import { numToChinese } from 'src/utils/number/numToChinese'
 
-export interface Props { }
+export interface Props {
+  setpChange?: (step: number) => void
+}
 
-export default observer(function PreviewPannel() {
+export default observer(function PreviewPannel(props: Props) {
+  const { setpChange } = props
   const { master, baseInfo, itemGroupList } = qcModel
 
   const result = (() => {
@@ -24,7 +27,6 @@ export default observer(function PreviewPannel() {
 
       if (itemList) for (let j = 0; j < itemList.length; j++) {
         let item = itemList[j]
-        total++
         switch (item.qcItemValue) {
           case '是':
             shi++
@@ -38,6 +40,8 @@ export default observer(function PreviewPannel() {
         }
       }
     }
+
+    total = shi + fou
 
     if (total) rate = parseInt((shi / total * 10000).toString()) / 100
 
@@ -55,12 +59,17 @@ export default observer(function PreviewPannel() {
 
     let total = 0
     let shi = 0
+    let fou = 0
 
     for (let i = 0; i < itemList.length; i++) {
       let item = itemList[i]
       total++
       if (item.qcItemValue == '是') shi++
+
+      if (item.qcItemValue == '否') fou++
     }
+
+    total = shi + fou
 
     if (!total) return 100
 
@@ -72,6 +81,15 @@ export default observer(function PreviewPannel() {
   const strokeColor = (itemGroup: any) => {
     if (itemGroupRate(itemGroup) < 100) return '#EBA65B'
     return '#00a680'
+  }
+
+  const handleItmeGroupClick = (itemGroup: any, idx: number) => {
+    setpChange && setpChange(1)
+
+    setTimeout(() => {
+      let target = document.getElementById(`itemGroupItem${idx}`)
+      if (target) target.scrollIntoView()
+    }, 500)
   }
 
   return <Wrapper>
@@ -111,7 +129,10 @@ export default observer(function PreviewPannel() {
         <div className="right">通过率</div>
       </div>
       {itemGroupList.map((itemGroup: any, itemGroupIdx: number) =>
-        <div className="item" key={itemGroupIdx}>
+        <div
+          className="item"
+          key={itemGroupIdx}
+          onClick={() => handleItmeGroupClick(itemGroup, itemGroupIdx)}>
           <div className="title">{`${numToChinese(itemGroupIdx + 1)}、${itemGroup.qcItemTypeName}`}</div>
           <div className="rate">
             <Progress
@@ -182,6 +203,10 @@ const Wrapper = styled.div`
       font-size: 14px;
       line-height: 30px;
       border-bottom: 1px dashed #ddd;
+      cursor: pointer;
+      :hover{
+        background: rgba(0,0,0,0.02);
+      }
       &:last-of-type{
         border-bottom: none;
       }

@@ -139,6 +139,11 @@ export default function qualityControlRecordDetailHeader(props: Props) {
 
   }
 
+  const statusText = () => {
+    if (!master.nextNodePendingName && master.status == '-1') return '待提交'
+    return master.status == '1' ? '已完成' : master.nextNodePendingName
+  }
+
   return (
     <Con>
       <TopHeader>
@@ -179,7 +184,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           </div>
         </div>
         <div className='topHeaderStatus'>
-          状态：<span style={{ color: '#6767ff' }}>{master.status == '1' ? '已完成' : master.nextNodePendingName}</span>
+          状态：<span style={{ color: '#6767ff' }}>{statusText()}</span>
         </div>
       </TopHeader>
       <bqclModal.Component />

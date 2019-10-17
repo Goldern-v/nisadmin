@@ -106,6 +106,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       width: 110,
       align: 'center',
       render(text: any, row: any) {
+        if (!text && row.status == '-1') return '待提交'
         return row.status == '1' ? '已完成' : text
       }
     },

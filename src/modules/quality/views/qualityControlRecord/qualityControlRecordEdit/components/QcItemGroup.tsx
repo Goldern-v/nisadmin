@@ -59,7 +59,7 @@ export default observer(function QcItemGroup(props: Props) {
   }
 
   return <QuestionItem>
-    <div className='titleCon'>
+    <div className='titleCon' id={`itemGroupItem${index}`}>
       <div className='titleLeftCon'>
         {`${numToChinese(index + 1)}、${itemGroup.qcItemTypeName}`}
         <div className="fl-right">

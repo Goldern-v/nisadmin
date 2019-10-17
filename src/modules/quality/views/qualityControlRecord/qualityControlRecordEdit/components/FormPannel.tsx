@@ -54,7 +54,7 @@ export default observer(function FormPannel() {
 
       if (target) newItem = target
 
-      newBedNurseList = [newItem]
+      if (newItem.empName) newBedNurseList = [newItem]
     } else {
       for (let i = 0; i < empNameGroup.length; i++) {
         let empName = empNameGroup[i]
