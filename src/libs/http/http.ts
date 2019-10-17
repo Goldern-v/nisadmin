@@ -9,6 +9,8 @@ import {
   onResponseRejected
 } from './interceptors'
 
+axios.defaults.timeout = 0
+
 /** 带token */
 const http = axios.create(axiosConfig)
 http.interceptors.request.use(onRequestFulfilled, onRequestRejected)

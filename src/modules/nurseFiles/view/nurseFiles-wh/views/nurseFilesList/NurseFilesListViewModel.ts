@@ -43,23 +43,35 @@ class NurseFilesListViewModel {
   }
 
   exportExcel() {
-    // appStore.openFullLoadingBar({
-    //   aside: '正在下载',
-    //   duration: 10000
-    // })
+    appStore.openFullLoadingBar({
+      aside: '正在打包数据，请稍候',
+      progress: '0%'
+    })
     nurseFilesService
-      .countExcel({
-        ...this.postObj,
-        // ...{ deptCode: statisticsViewModal.selectedDeptCode },
-        ...{
-          pageIndex: this.pageIndex,
-          pageSize: this.pageSize,
-          totalCount: this.totalCount
+      .countExcel(
+        {
+          ...this.postObj,
+          // ...{ deptCode: statisticsViewModal.selectedDeptCode },
+          ...{
+            pageIndex: this.pageIndex,
+            pageSize: this.pageSize,
+            totalCount: this.totalCount
+          }
+        },
+        (progressEvent: any) => {
+          console.log(progressEvent, 'progressEvent')
+          appStore.openFullLoadingBar({
+            aside: '正在下载数据，请稍候',
+            progress: `${Number(Math.min(progressEvent.loaded / (progressEvent.total || 1), 1) * 100).toFixed(0)}%`
+          })
         }
-      })
+      )
       .then((res) => {
-        // appStore.closeFullLoadingBar()
+        appStore.closeFullLoadingBar('下载完成')
         fileDownload(res)
+      })
+      .catch(() => {
+        appStore.closeFullLoadingBarInFail('下载失败')
       })
   }
   init() {

@@ -25,12 +25,10 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/auditeNurseListWH/getByFormCodePC`, obj)
   }
   // 导出护士列表
-  public async countExcel(obj: any) {
+  public async countExcel(obj: any, onDownloadProgress: (progressEvent: any) => void) {
     return this.post(`/auditeNurseListWH/countExcel`, obj, {
       responseType: 'blob',
-      onDownloadProgress: (progressEvent) => {
-        console.log(progressEvent, 'progressEvent')
-      }
+      onDownloadProgress: onDownloadProgress
     })
   }
 

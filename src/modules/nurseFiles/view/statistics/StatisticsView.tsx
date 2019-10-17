@@ -37,9 +37,25 @@ export default function Statistics() {
     })
   }
   const exportExcel = (type: string = pageObj.type) => {
-    statisticsService.exportExcel(type, { ...filterRef.current, ...paginationRef.current }).then((res) => {
-      fileDownload(res)
+    appStore.openFullLoadingBar({
+      aside: '正在打包数据，请稍候',
+      progress: '0%'
     })
+    statisticsService
+      .exportExcel(type, { ...filterRef.current, ...paginationRef.current }, (progressEvent: any) => {
+        console.log(progressEvent, 'progressEvent')
+        appStore.openFullLoadingBar({
+          aside: '正在下载数据，请稍候',
+          progress: `${Number(Math.min(progressEvent.loaded / (progressEvent.total || 1), 1) * 100).toFixed(0)}%`
+        })
+      })
+      .then((res) => {
+        appStore.closeFullLoadingBar('下载完成')
+        fileDownload(res)
+      })
+      .catch(() => {
+        appStore.closeFullLoadingBarInFail('下载失败')
+      })
   }
 
   useEffect(() => {

@@ -85,11 +85,24 @@ export default class AppStore {
     this.fullLoadingBarObj = option
   }
   /** 关闭全局进度条 */
-  closeFullLoadingBar() {
+  closeFullLoadingBar(okText?: string) {
     return new Promise((resolve, reject) => {
       this.openFullLoadingBar({
-        aside: this.fullLoadingBarObj ? this.fullLoadingBarObj.aside : '',
+        aside: okText || (this.fullLoadingBarObj ? this.fullLoadingBarObj.aside : ''),
         progress: '100%'
+      })
+      setTimeout(() => {
+        this.fullLoadingBarObj = null
+        resolve()
+      }, 200)
+    })
+  }
+  /** 关闭全局进度条 */
+  closeFullLoadingBarInFail(failText?: string) {
+    return new Promise((resolve, reject) => {
+      this.openFullLoadingBar({
+        aside: failText || '出现错误',
+        progress: '0%'
       })
       setTimeout(() => {
         this.fullLoadingBarObj = null
