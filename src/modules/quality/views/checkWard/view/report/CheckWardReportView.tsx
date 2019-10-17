@@ -70,7 +70,7 @@ export default observer(function CheckWardReportView() {
   return (
     <Wrapper>
       <HeadCon>
-        <div className='title'>护理查询分析报告</div>
+        <div className='title'>查房统计报告</div>
         <div className='tool-con'>
           <span className='label'>年度：</span>
           <YearPicker
