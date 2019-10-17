@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { ScrollUl } from 'src/components/common'
-import { ReactComponent as JXJY } from '../images/继续教育.svg'
+import { ReactComponent as JXJY } from '../images/icon/继续教育.svg'
 export interface Props extends RouteComponentProps {}
 
 export default function ContinuingEducation() {
@@ -52,24 +52,25 @@ export default function ContinuingEducation() {
 }
 const Wrapper = styled.div`
   width: 335px;
-  height: calc(50vh - 55px);
-  margin-bottom: 20px;
+  height: calc(50vh - 47px);
+  margin-bottom: 15px;
   width: 335px;
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0px -1px 0px 0px rgba(51, 122, 183, 1);
+  /* box-shadow: 0px -1px 0px 0px rgba(51, 122, 183, 1); */
   border-radius: 2px;
   border: 1px solid rgba(221, 221, 221, 1);
   box-sizing: border-box;
 `
 const Title = styled.div`
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
   width: 335px;
   height: 45px;
   padding: 0 15px;
   box-sizing: border-box;
+  background: #7bbc9b;
 `
 const Ul = styled(ScrollUl)`
-  height: calc(50vh - 102px);
+  height: calc(50vh - 95px);
   width: 335px;
   overflow: auto;
   padding-inline-start: 0 !important;
@@ -85,7 +86,7 @@ const World = styled.span`
   width: 96px;
   font-size: 15px;
   font-weight: 900;
-  color: rgba(51, 51, 51, 1);
+  color: #fff;
   vertical-align: middle;
   margin-bottom: -9px;
 `
@@ -94,7 +95,7 @@ const More = styled.span`
   height: 17px;
   font-size: 12px;
   font-weight: 400;
-  color: rgba(102, 102, 102, 1);
+  color: #fff;
   line-height: 17px;
   margin-top: 15px;
   /* &:hover {

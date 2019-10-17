@@ -140,7 +140,7 @@ export default observer(function ArrangeSheet(props: Props) {
         (document as any).querySelector('.ant-table-body').clientWidth
       ) {
         ;(document as any).querySelector('#baseTable').style.width =
-          (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
+          (sheetViewModal.dateList.length + 3) * 70 + 250 + 5 + 'px'
         setSurplusWidth(false)
       } else {
         ;(document as any).querySelector('#baseTable').style.width = 'auto'

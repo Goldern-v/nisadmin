@@ -2,282 +2,77 @@ import styled from 'styled-components'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { observer } from 'mobx-react-lite'
-import { ReactComponent as SY } from '../images/首页.svg'
-import { ReactComponent as SHGL } from '../images/审核管理.svg'
-import { ReactComponent as HSPB } from '../images/护士排班.svg'
-import { ReactComponent as HSDA } from '../images/护士档案.svg'
-import { ReactComponent as BLSJ } from '../images/不良事件.svg'
-import { ReactComponent as HLJX } from '../images/护理绩效.svg'
-import { ReactComponent as PXKH } from '../images/培训考核.svg'
-import { ReactComponent as MGZB } from '../images/敏感指标.svg'
-import { ReactComponent as TJCX } from '../images/统计查询.svg'
-import { ReactComponent as TZGG } from '../images/通知公告.svg'
-import { ReactComponent as WLPT } from '../images/物流平台.svg'
-import { ReactComponent as XTSZ } from '../images/系统设置.svg'
 import { Place } from 'src/components/common'
 import { authStore, appStore } from 'src/stores'
 import service from 'src/services/api'
+import { Menu, Dropdown } from 'src/vendors/antd'
+import { navConfig, navConfigItem } from './navConfig_hj'
+import { navConfig as navConfig_wh } from './navConfig_wh'
+import { navConfig as navConfig_whSelf } from './navConfig_whSelf'
+const toNavLink = (path: string | undefined) => {
+  return path ? () => appStore.history.push(path) : () => {}
+}
+const realNavConfig =
+  appStore.HOSPITAL_ID == 'wh' ? (authStore.isRoleManage ? navConfig_wh : navConfig_whSelf) : navConfig
 
 export interface Props extends RouteComponentProps {}
 
-const navListWH: any = [
-  {
-    name: '首页',
-    // icon: <SY />,
-    path: '/home'
-  },
-  {
-    name: '审核管理',
-    icon: <SHGL />,
-    path: '/auditsManagement'
-  },
-  // {
-  //   name: '护士排班',
-  //   // icon: <HSPB />,
-  //   path: '/scheduleHome'
-  // },
-  {
-    name: '档案管理',
-    icon: <HSDA />,
-    path: '/nurseFile'
-  },
-  {
-    name: '我的档案',
-    icon: <HSDA />,
-    path: '/selfNurseFile'
-  },
-  // {
-  //   name: '不良事件',
-  //   icon: <BLSJ />,
-  //   path: '/badEventsNewList'
-  // },
-  {
-    name: '质量管理',
-    icon: <BLSJ />,
-    path: '/quality'
-  },
-  // {
-  //   name: '护理绩效',
-  //   icon: <HLJX />,
-  //   path: '/nursingPerformance'
-  // },
-  // {
-  //   name: '继续教育',
-  //   icon: <PXKH />,
-  //   path: '/continuingEdu'
-  //   // trainingExamination
-  // },
-  // {
-  //   name: '敏感指标',
-  //   icon: <MGZB />,
-  //   path: '/indicator'
-  // },
-  // {
-  //   name: '统计查询',
-  //   icon: <TJCX />,
-  //   path: '/statistic'
-  // },
-  {
-    name: '通知公告',
-    icon: <TZGG />,
-    path: '/notice'
-    // hidden: !appStore.isDev
-  },
-  // {
-  //   name: '物流平台',
-  //   icon: <WLPT />,
-  //   path: '/Lms'
-  // },
-  {
-    name: '护理制度',
-    icon: <HSDA />,
-    path: '/nursingRulesNew'
-  },
-  {
-    name: '病区管理',
-    icon: <XTSZ />,
-    path: '/wardManagement'
-  }
-]
+const MenuCon = observer(function(props: { list: navConfigItem[]; style?: React.CSSProperties | undefined }) {
+  let { list, style } = props
+  const Wrapper = styled.div`
+    min-width: 158px;
+    padding: 8px 0;
+    position: relative;
+    top: -4px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    border: 1px solid rgba(203, 213, 221, 1);
+    .ant-menu-vertical {
+      border: 0;
+    }
+    .ant-menu-item {
+      height: 35px !important;
+      margin: 0 !important;
+      display: flex;
+      align-items: center;
+      color: #333333 !important;
+      font-size: 13px !important;
+      white-space: nowrap;
 
-if (appStore.isDev) {
-  navListWH.push({
-    name: '护理人员管理',
-    icon: <XTSZ />,
-    path: '/personnelManagement'
-  })
-}
-const navListWHSelft: any = [
-  {
-    name: '首页',
-    // icon: <SY />,
-    path: '/home'
-  },
-  // {
-  //   name: '审核管理',
-  //   icon: <SHGL />,
-  //   path: '/auditsManagement'
-  // },
-  // {
-  //   name: '护士排班',
-  //   // icon: <HSPB />,
-  //   path: '/scheduleHome'
-  // },
-  // {
-  //   name: '档案管理',
-  //   icon: <HSDA />,
-  //   path: '/nurseFile'
-  // },
-  {
-    name: '我的档案',
-    icon: <HSDA />,
-    path: '/selfNurseFile'
-  },
-  // {
-  //   name: '不良事件',
-  //   icon: <BLSJ />,
-  //   path: '/badEventsNewList'
-  // },
-  // {
-  //   name: '质量管理',
-  //   icon: <BLSJ />,
-  //   path: '/quality'
-  // },
-  // {
-  //   name: '护理绩效',
-  //   icon: <HLJX />,
-  //   path: '/nursingPerformance'
-  // },
-  // {
-  //   name: '继续教育',
-  //   icon: <PXKH />,
-  //   path: '/continuingEdu'
-  //   // trainingExamination
-  // },
-  // {
-  //   name: '敏感指标',
-  //   icon: <MGZB />,
-  //   path: '/indicator'
-  // },
-  // {
-  //   name: '统计查询',
-  //   icon: <TJCX />,
-  //   path: '/statistic'
-  // },
-  {
-    name: '通知公告',
-    icon: <TZGG />,
-    path: '/notice'
-    // hidden: !appStore.isDev
-  },
-  // {
-  //   name: '物流平台',
-  //   icon: <WLPT />,
-  //   path: '/Lms'
-  // },
-  {
-    name: '护理制度',
-    icon: <HSDA />,
-    path: '/nursingRulesNew'
-  },
-  {
-    name: '病区管理',
-    icon: <XTSZ />,
-    path: '/wardManagement'
-  }
-]
-const navList: any = [
-  {
-    name: '首页',
-    // icon: <SY />,
-    path: '/home'
-  },
-  {
-    name: '审核管理',
-    icon: <SHGL />,
-    path: '/auditsManagement'
-  },
-  // {
-  //   name: '护士排班',
-  //   // icon: <HSPB />,
-  //   path: '/scheduleHome'
-  // },
-  {
-    name: '档案管理',
-    icon: <HSDA />,
-    path: '/nurseFile'
-  },
-  {
-    name: '不良事件',
-    icon: <BLSJ />,
-    path: '/badEventsNewList'
-  },
-  {
-    name: '不良事件分析报告',
-    icon: <BLSJ />,
-    path: '/badEvents/alanysis/1/1'
-  },
-  {
-    name: '质量管理',
-    icon: <BLSJ />,
-    path: '/quality'
-  },
-  // {
-  //   name: '护理绩效',
-  //   icon: <HLJX />,
-  //   path: '/nursingPerformance'
-  // },
-  // {
-  //   name: '继续教育',
-  //   icon: <PXKH />,
-  //   path: '/continuingEdu'
-  //   // trainingExamination
-  // },
-  {
-    name: '敏感指标',
-    icon: <MGZB />,
-    path: '/indicator'
-  },
-  {
-    name: '统计查询',
-    icon: <TJCX />,
-    path: '/statistic'
-  },
-  {
-    name: '通知公告',
-    icon: <TZGG />,
-    path: '/notice'
-    // hidden: !appStore.isDev
-  },
-  // {
-  //   name: '物流平台',
-  //   icon: <WLPT />,
-  //   path: '/Lms'
-  // },
-  {
-    name: '护理制度',
-    icon: <HSDA />,
-    path: '/nursingRulesNew'
-  },
-  {
-    name: '系统设置',
-    icon: <XTSZ />,
-    path: '/setting'
-  },
-  {
-    name: '护理人员管理',
-    icon: <XTSZ />,
-    path: '/personnelManagement'
-  }
-]
+      &:hover,
+      &.active {
+        font-weight: bold;
+        background: #f8f8fa;
+      }
+      .icon {
+        height: 14px;
+        margin-right: 12px;
+      }
+    }
+  `
+  return (
+    <Wrapper style={style || {}}>
+      <Menu>
+        {list.map((item, index) => (
+          <Menu.Item
+            key={index}
+            onClick={toNavLink(item.path)}
+            className={appStore.location.pathname.indexOf(item.path || '') > -1 ? 'active' : ''}
+          >
+            <img src={item.icon} alt='' className='icon' />
+            {item.name}
+          </Menu.Item>
+        ))}
+      </Menu>
+    </Wrapper>
+  )
+})
 
 export default observer(function NavBar(props: Props) {
-  const toNavLink = (path: string) => {
-    return () => props.history.push(path)
-  }
   let { location } = props
   return (
-    <Wrapper className='NavBar'>
+    <Wrapper>
       <LogoCon>
         {appStore.HOSPITAL_ID == 'wh' ? (
           <React.Fragment>
@@ -291,23 +86,27 @@ export default observer(function NavBar(props: Props) {
           </React.Fragment>
         )}
       </LogoCon>
-      {(appStore.HOSPITAL_ID == 'wh'
-        ? authStore.user && authStore.user.roleManage == '1'
-          ? navListWH
-          : navListWHSelft
-        : navList
-      ).map(
-        (item: any) =>
+      {realNavConfig.map(
+        (item, index: number) =>
           !item.hidden && (
-            <NavItem
-              onClick={toNavLink(item.path)}
-              active={item.path !== '' && location.pathname.indexOf(item.path) !== -1}
-              key={item.name}
+            <Dropdown
+              overlay={item.children ? <MenuCon list={item.children} style={item.menuStyle} /> : <div />}
+              key={index}
             >
-              {/* {item.icon} */}
-              {/* <ReactSVG src={item.icon} svgClassName='nav-icon' /> */}
-              <div className='nav-name'>{item.name}</div>
-            </NavItem>
+              <NavItem
+                onClick={toNavLink(item.path)}
+                active={
+                  (item.path !== '' && (item.path && location.pathname.indexOf(item.path) !== -1)) ||
+                  (item.children &&
+                    item.children.some((item: any) => !!(item.path && location.pathname.indexOf(item.path) !== -1)))
+                }
+                key={item.name}
+              >
+                {/* {item.icon} */}
+                {/* <ReactSVG src={item.icon} svgClassName='nav-icon' /> */}
+                <div className='nav-name'>{item.name}</div>
+              </NavItem>
+            </Dropdown>
           )
       )}
       <Place />

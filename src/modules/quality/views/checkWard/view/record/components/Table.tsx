@@ -9,16 +9,15 @@ import { appStore } from 'src/stores'
 export interface Props {}
 
 export default observer(function Table() {
-
   const toDetails = (record: any) => {
     appStore.history.push(`/qualityScheduleRecordDetails/${record.id}`)
   }
 
-  const columns:any = [
+  const columns: any = [
     {
       title: '查房日期',
       dataIndex: 'srDate',
-      width: 120,
+      width: 140,
       align: 'center'
     },
     {
@@ -29,39 +28,39 @@ export default observer(function Table() {
     {
       title: '查房类型',
       dataIndex: 'type',
-      width: 100,
+      width: 130,
       align: 'center'
     },
     {
       title: '检查人员',
       dataIndex: 'srName',
-      width: 70,
+      width: 100,
       align: 'center'
     },
     {
       title: '护士在岗情况',
       dataIndex: 'nurseStatus',
-      width: 245,
+      width: 260,
       align: 'left',
-      render (status: string, record: any) {
-        return status == '0' ?  '无问题' : <span style={{ color: 'red' }}>有问题({record.nurseProblem})</span>
+      render(status: string, record: any) {
+        return status == '0' ? '无问题' : <span style={{ color: 'red' }}>有问题({record.nurseProblem})</span>
       }
     },
     {
       title: '病人情况',
       dataIndex: 'patientStatus',
-      width: 245,
+      width: 260,
       align: 'left',
-      render (status: string, record: any) {
-        return status == '0' ?  '无问题' : <span style={{ color: 'red' }}>有问题({record.patientProblem})</span>
+      render(status: string, record: any) {
+        return status == '0' ? '无问题' : <span style={{ color: 'red' }}>有问题({record.patientProblem})</span>
       }
     },
     {
       title: '状态',
       dataIndex: 'status',
-      width: 110,
+      width: 120,
       align: 'center',
-      render (status: string) {
+      render(status: string) {
         switch (status) {
           case '1':
             return '提交'

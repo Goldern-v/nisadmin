@@ -33,18 +33,18 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `
 const LeftContent = styled.div`
-  margin-top: 20px;
-  margin-bottom: 32px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   width: calc(100vw - 360px);
   height: calc(100vh - 102px);
 `
 
 const RightContent = styled.div`
-  margin-top: 21px;
-  margin-bottom: 13px;
-  margin-left: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 15px;
   width: 335px;
-  height: calc(100vh - 84px);
+  height: calc(100vh - 80px);
 `
 const TableContent = styled.div`
   width: 100%;

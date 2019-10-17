@@ -23,12 +23,8 @@ export const navConfig: navConfigItem[] = [
     path: '/nurseFile'
   },
   {
-    name: '不良事件',
-    path: '/badEventsNewList'
-  },
-  {
-    name: '不良事件分析报告',
-    path: '/badEvents/alanysis/1/1'
+    name: '我的档案',
+    path: '/selfNurseFile'
   },
   {
     name: '质量管理',
@@ -56,7 +52,7 @@ export const navConfig: navConfigItem[] = [
       {
         name: '查询统计',
         path: '/queryStatistics',
-        icon: require('../images/menu-icon/护理查房@2x.png')
+        icon: require('../images/menu-icon/查询统计@2x.png')
       },
       {
         name: '护理查房',
@@ -64,14 +60,6 @@ export const navConfig: navConfigItem[] = [
         icon: require('../images/menu-icon/护理查房@2x.png')
       }
     ]
-  },
-  {
-    name: '敏感指标',
-    path: '/indicator'
-  },
-  {
-    name: '统计查询',
-    path: '/statistic'
   },
   {
     name: '通知公告',
@@ -82,8 +70,8 @@ export const navConfig: navConfigItem[] = [
     path: '/nursingRulesNew'
   },
   {
-    name: '系统设置',
-    path: '/setting'
+    name: '病区管理',
+    path: '/wardManagement'
   },
   {
     name: '护理人员管理',

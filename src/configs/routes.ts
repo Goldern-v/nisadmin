@@ -90,6 +90,11 @@ import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/p
 import HealthEducationReportView from 'src/modules/healthEducationReport/QualityAnalysisReportView'
 //健康宣教编辑改版
 import HealthPropagandaEditNew from 'src/modules/healthPropaganda/HealthPropagandaEditNew'
+import QcOneRouter from 'src/modules/quality/QcOneRouter'
+import QcTwoRouter from 'src/modules/quality/QcTwoRouter'
+import QcThreeRouter from 'src/modules/quality/QcThreeRouter'
+import CheckWardRouter from 'src/modules/quality/CheckWardRouter'
+import QueryStatisticsRouter from 'src/modules/quality/QueryStatisticsRouter'
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -207,6 +212,13 @@ const routes: RouteItem[] = [
 
   /** 健康宣教报告 */
   setLayout('/healthEducationReport', HealthEducationReportView, layouts.MainLayout),
+
+  /** 一级查房 */
+  setLayout('/qcOne', QcOneRouter, layouts.MainLayout),
+  setLayout('/qcTwo', QcTwoRouter, layouts.MainLayout),
+  setLayout('/qcThree', QcThreeRouter, layouts.MainLayout),
+  setLayout('/checkWard', CheckWardRouter, layouts.MainLayout),
+  setLayout('/queryStatistics', QueryStatisticsRouter, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'
@@ -243,10 +255,10 @@ const routes: RouteItem[] = [
     path: '/wardManagement',
     redirect: '/wardManagement/扁平管理设置'
   },
-  {
-    path: '/quality',
-    redirect: '/quality/qualityControlRecord/3'
-  },
+  // {
+  //   path: '/quality',
+  //   redirect: '/quality/qualityControlRecord/3'
+  // },
 
   {
     path: '/',

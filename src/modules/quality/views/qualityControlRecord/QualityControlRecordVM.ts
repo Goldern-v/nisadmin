@@ -27,7 +27,7 @@ class QualityControlRecordVM {
   @observable public readWay: any = 1
   @observable public allData: any = {}
 
-  async init(level: string) {
+  async init(level: number) {
     this.filterForm = ''
     this.filterState = ''
     this.filterDeptCode = ''

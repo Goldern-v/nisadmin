@@ -84,7 +84,8 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        {showType == 'nurseFile' ? <MultipleDeptSelect /> : <DeptSelect onChange={() => {}} />}
+        <MultipleDeptSelect />
+        {/* {showType == 'nurseFile' ? <MultipleDeptSelect /> : <DeptSelect onChange={() => {}} />} */}
 
         <Input
           style={{ marginLeft: 20, width: 360 }}

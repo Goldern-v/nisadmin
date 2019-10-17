@@ -6,7 +6,7 @@ import BaseTable from 'src/components/BaseTable'
 import { Button } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import { observer } from 'mobx-react-lite'
-import { ReactComponent as TZGG } from '../images/通知公告.svg'
+import { ReactComponent as TZGG } from '../images/icon/通知公告.svg'
 import { ReactComponent as READ } from '../images/已读.svg'
 import { ReactComponent as NOREAD } from '../images/未读.svg'
 
@@ -107,7 +107,7 @@ export default observer(function NoticeTable() {
         }}
         dataSource={tableData}
         columns={columns}
-        surplusHeight={(appStore.wih - 275) / 2 + 275}
+        surplusHeight={authStore.isRoleManage ? (appStore.wih - 262) / 2 + 262 : 163}
         loading={loadingTable}
         onRow={(record) => {
           return {
@@ -154,14 +154,14 @@ const Wrapper = styled.div`
   }
 `
 const TableTitle = styled.div`
-  box-shadow: 0px -1px 0px 0px rgba(0, 166, 128, 1);
+  /* box-shadow: 0px -1px 0px 0px rgba(0, 166, 128, 1); */
   border-radius: 2px 2px 0 0;
   border: 1px solid rgba(221, 221, 221, 1);
   border-bottom: none;
   box-sizing: border-box;
   height: 45px;
   width: 100%;
-  background: #fff;
+  background: #5e87b0;
   padding: 0 15px;
   box-sizing: border-box;
   .ant-btn {
@@ -187,7 +187,7 @@ const World = styled.span`
   margin-left: 10px;
   font-size: 15px;
   font-weight: 900;
-  color: rgba(51, 51, 51, 1);
+  color: #fff;
   vertical-align: middle;
   margin-bottom: -9px;
 `
@@ -196,7 +196,7 @@ const More = styled.span`
   height: 17px;
   font-size: 12px;
   font-weight: 400;
-  color: rgba(102, 102, 102, 1);
+  color: #fff;
   line-height: 17px;
   margin-top: 15px;
   &:hover {

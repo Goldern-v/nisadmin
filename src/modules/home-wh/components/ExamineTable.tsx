@@ -7,7 +7,7 @@ import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import service from 'src/services/api'
 import qs from 'qs'
 import { observer } from 'src/vendors/mobx-react-lite'
-import { ReactComponent as DWSH } from '../images/待我审核.svg'
+import { ReactComponent as DWSH } from '../images/icon/待我审核.svg'
 
 export interface Props extends RouteComponentProps {}
 
@@ -111,7 +111,7 @@ export default observer(function ExamineTable() {
       <BaseTable
         dataSource={tableData}
         columns={columns}
-        surplusHeight={(appStore.wih - 275) / 2 + 275}
+        surplusHeight={(appStore.wih - 262) / 2 + 262}
         loading={loadingTable}
         rowClassName={(record) => {
           return 'cursorPointer'
@@ -128,7 +128,7 @@ export default observer(function ExamineTable() {
   )
 })
 const Wrapper = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   #baseTable {
     padding: 0 !important;
     .ant-table-header-column {
@@ -148,14 +148,14 @@ const Wrapper = styled.div`
   }
 `
 const TableTitle = styled.div`
-  box-shadow: 0px -1px 0px 0px rgba(245, 105, 84, 1);
+  /* box-shadow: 0px -1px 0px 0px rgba(245, 105, 84, 1); */
   border-radius: 2px 2px 0 0;
   border: 1px solid rgba(221, 221, 221, 1);
   border-bottom: none;
   box-sizing: border-box;
   height: 45px;
   width: 100%;
-  background: #fff;
+  background: #5e87b0;
   padding: 0 15px;
   box-sizing: border-box;
 `
@@ -169,7 +169,7 @@ const World = styled.span`
   margin-left: 10px;
   font-size: 15px;
   font-weight: 900;
-  color: rgba(51, 51, 51, 1);
+  color: #fff;
   vertical-align: middle;
   margin-bottom: -9px;
   vertical-align: middle;
@@ -179,7 +179,7 @@ const More = styled.span`
   height: 17px;
   font-size: 12px;
   font-weight: 400;
-  color: rgba(102, 102, 102, 1);
+  color: #fff;
   line-height: 17px;
   margin-top: 15px;
   &:hover {

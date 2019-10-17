@@ -24,7 +24,11 @@ export default observer(function QualityControlRecord() {
         qualityControlRecordVM.allData.list.length > 0
       ) {
       } else {
-        let level = appStore.history.location.pathname.substr(-1, 1)
+        let level = appStore.history.location.pathname.indexOf('qcThree')
+          ? 3
+          : appStore.history.location.pathname.indexOf('qcTwo')
+          ? 2
+          : 3
         await qualityControlRecordVM.init(level)
         getTableData()
       }

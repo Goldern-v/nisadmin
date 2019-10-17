@@ -20,7 +20,7 @@ export default class AMServices extends BaseApiService {
       pageSize: pageSize || 10,
       type: showType,
       keyword,
-      wardCode: authStore.selectedDeptCode,
+      // wardCode: authStore.selectedDeptCode,
       deptCodes: deptCodes
     }
     return this.post(`/flow/task/pendingPage`, obj)

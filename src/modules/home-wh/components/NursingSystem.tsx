@@ -5,9 +5,9 @@ import { ScrollUl } from 'src/components/common'
 import { appStore } from 'src/stores/index'
 import { Spin } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import { ReactComponent as HLZD } from '../images/护理制度.svg'
+import { ReactComponent as HLZD } from '../images/icon/护理制度.svg'
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 export default function NursingSystem() {
   const [loadingTable, setLoadingTable] = useState(false)
@@ -35,7 +35,7 @@ export default function NursingSystem() {
     return tableData.map((item: any, index: any) => {
       return (
         <Li key={index} onClick={() => toDetails(item)}>
-          <img src={require('../images/list.png')} alt="" className='img' />
+          <img src={require('../images/list.png')} alt='' className='img' />
           <Content className='content'>{item.bookName}</Content>
         </Li>
       )
@@ -50,7 +50,13 @@ export default function NursingSystem() {
           <HLZD />
         </I>
         <World>护理制度</World>
-        <More onClick={() => { appStore.history.push('/nursingRulesNew') }}>更多 ></More>
+        <More
+          onClick={() => {
+            appStore.history.push('/nursingRulesNew')
+          }}
+        >
+          更多 >
+        </More>
       </Title>
       <Ul>{renderSubMenu()}</Ul>
     </Wrapper>
@@ -60,30 +66,31 @@ export default function NursingSystem() {
 const Wrapper = styled.div`
   background: red;
   width: 335px;
-  height: calc(50vh - 55px);
+  height: calc(50vh - 47px);
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0px -1px 0px 0px rgba(243, 156, 18, 1);
+  /* box-shadow: 0px -1px 0px 0px rgba(243, 156, 18, 1); */
   border-radius: 2px;
   border: 1px solid rgba(221, 221, 221, 1);
   box-sizing: border-box;
   position: relative;
-  .loading{
-    position:absolute;
-    top: 50%; 
-    left:50%;
+  .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
     margin-left: -10px;
     margin-top: -10px;
   }
 `
 const Title = styled.div`
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
   width: 335px;
   height: 45px;
   padding: 0 15px;
   box-sizing: border-box;
+  background: #7bbc9b;
 `
 const Ul = styled(ScrollUl)`
-  height: calc(50vh - 102px);
+  height: calc(50vh - 95px);
   width: 335px;
   overflow: auto;
   padding-inline-start: 0 !important;
@@ -98,7 +105,7 @@ const World = styled.span`
   margin-left: 10px;
   font-size: 15px;
   font-weight: 900;
-  color: rgba(51, 51, 51, 1);
+  color: #fff;
   vertical-align: middle;
   margin-bottom: -9px;
 `
@@ -107,7 +114,7 @@ const More = styled.span`
   height: 17px;
   font-size: 12px;
   font-weight: 400;
-  color: rgba(102, 102, 102, 1);
+  color: #fff;
   line-height: 17px;
   margin-top: 15px;
   &:hover {
@@ -126,7 +133,7 @@ const Li = styled.li`
   &:hover .content {
     color: #00a65a;
   }
-  .img{
+  .img {
     width: 20px;
     height: 20px;
     border-radius: 1px 0px 0px 1px;
