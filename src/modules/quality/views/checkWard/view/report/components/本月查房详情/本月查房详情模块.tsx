@@ -33,7 +33,7 @@ export default observer(function 本月查房详情模块(props: Props) {
           {
             <div className='aside'>
               <div className='title'>
-                {`(${a + 1})`}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ?
+                {`(${a + 1})`}{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ?
                   '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ?
                     `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ?
                       `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
@@ -57,7 +57,7 @@ export default observer(function 本月查房详情模块(props: Props) {
           {
             <div className='aside'>
               <div className='title'>
-                {`(${k + 1})`}、{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ?
+                {`(${k + 1})`}{item.record.wardName}：{item.record.nurseStatus == '0' && item.record.patientStatus == '0' ?
                   '护士及患者未检查到问题' : (item.record.nurseStatus == '1' && item.record.patientStatus == '1' ?
                     `${item.srPageItem.nurseProblem}；${item.srPageItem.patientProblem}` : (item.record.nurseStatus == '1' && item.record.patientStatus == '0' ?
                       `${item.srPageItem.nurseProblem}` : `${item.srPageItem.patientProblem}`))}
