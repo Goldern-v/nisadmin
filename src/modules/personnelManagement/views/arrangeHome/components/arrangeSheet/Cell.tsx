@@ -271,15 +271,17 @@ function formatCell(cellObj: ArrangeItem) {
     return (
       <React.Fragment>
         <Con color={cellObj.nameColor}>
-          <span style={{ color: '#333' }}>{cellObj.addSymbols && cellObj.addSymbols[0]!.symbol}</span>
+          <span style={{ color: '#333' }}>
+            {cellObj.addSymbols && cellObj.addSymbols.length && cellObj.addSymbols[0]!.symbol}
+          </span>
           {cellObj.rangeName}
         </Con>
         {cellObj.settings && (
           <React.Fragment>
             <span>/</span>
-            <Con color={cellObj.settings[0].nameColor}>
+            <Con color={cellObj.settings.length && cellObj.settings[0].nameColor}>
               {/* {cellObj.settings[0].addSymbols} */}
-              {cellObj.settings[0].rangeName}
+              {cellObj.settings.length && cellObj.settings[0].rangeName}
             </Con>
           </React.Fragment>
         )}

@@ -81,7 +81,7 @@ const DeptFileShareCatalogSetting = lazy(() => import('src/modules/deptReferSett
 const QualityAnalysisReportView = lazy(() =>
   import('src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView')
 )
-// const NurseFilesView = lazy(() => import('src/modules/nurseFiles/NurseFilesView')
+const NurseFilesView = lazy(() => import('src/modules/nurseFiles/NurseFilesView'))
 const QualityAnalysisReportPoolView = lazy(() =>
   import('src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView')
 )
@@ -211,7 +211,7 @@ const routes: RouteItem[] = [
   setLayout('/qualityAnalysisReportPool', QualityAnalysisReportPoolView, layouts.MainLayout),
   setLayout('/workSummaryReportView', WorkSummaryReportView, layouts.MainLayout),
   /** 档案模块 */
-  // setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
+  setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
   setLayout('/wardManagement/:name', WardManagementView, layouts.MainLayout),
 
   /** 编辑排班 */

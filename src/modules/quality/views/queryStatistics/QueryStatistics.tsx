@@ -252,7 +252,7 @@ const HeaderCon = styled.div`
 const MidCon = styled.div`
   box-sizing: border-box;
   flex: 1;
-  height: 0;
+  /* height: 0; */
   margin: 0 15px 5px 15px;
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;

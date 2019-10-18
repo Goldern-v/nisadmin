@@ -67,13 +67,13 @@ const MenuCon = observer(function(props: { list: navConfigItem[]; style?: React.
   )
 })
 
-export default observer(function NavBar(props: Props) {
+export default observer(function NavBar(props: any) {
   const realNavConfig =
     appStore.HOSPITAL_ID == 'wh' ? (authStore.isRoleManage ? navConfig_wh : navConfig_whSelf) : navConfig
 
-  let { location } = props
+  let location = appStore.location
   return (
-    <Wrapper>
+    <Wrapper style={props.style || {}}>
       <LogoCon>
         {appStore.HOSPITAL_ID == 'wh' ? (
           <React.Fragment>

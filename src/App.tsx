@@ -14,14 +14,15 @@ import zhCN from 'antd/lib/locale-provider/zh_CN'
 import { LocaleProvider } from 'antd'
 import ComponentDidCatch from './components/ComponentDidCatch'
 import moment from 'moment'
-
+import 'antd/dist/antd.less'
 import 'moment/locale/zh-cn'
+import NavBar from './layouts/components/NavBar'
 
 moment.locale('zh-cn')
 export interface Props {}
 
 export interface State {}
-
+const NavBar2: any = NavBar
 export class App extends React.Component<Props, State> {
   public render() {
     return (
@@ -30,8 +31,8 @@ export class App extends React.Component<Props, State> {
           <ThemeProvider theme={theme}>
             <Wrapper>
               <Inner>
-                {/* <Suspense fallback={<div>Loading...</div>} maxDuration={1000}> */}
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<NavBar2 style={{ position: 'fixed', top: -1, left: 0, right: 0 }} />}>
+                  {/* <Suspense fallback={<div>Loading...</div>}> */}
                   <Router>
                     <RouterView routes={routes} />
                   </Router>
