@@ -127,10 +127,14 @@ export default function MainBox() {
                   centered: true,
                   maskClosable: true,
                   onOk: () => {
-                    service.scheduleUserApiService.delete(row.id).then((res) => {
-                      message.success('删除成功')
-                      getUserList()
-                    })
+                    if (!row.empNo) {
+                      service.scheduleUserApiService.delete(row.id).then((res) => {
+                        message.success('删除成功')
+                        getUserList()
+                      })
+                    } else {
+                      message.warning('只有工号为空的护士才能删除')
+                    }
                   }
                 })
               }}

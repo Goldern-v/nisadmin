@@ -8,97 +8,101 @@ import { setLayout } from 'src/utils/route/route-utils'
 import layouts from 'src/layouts'
 import demo from 'src/demo'
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
-// import { scheduleHorizontalMenuConfig } from 'src/modules/schedule/config/scheduleHorizontalMenuConfig'
+const ScheduleHomeView = lazy(() => import('src/modules/schedule/views/ScheduleHome/ScheduleHomeView'))
+const NurseSettingView = lazy(() => import('src/modules/schedule/views/NurseSetting/NurseSettingView')) // 排班人员设置
+const ShiftSettingView = lazy(() => import('src/modules/schedule/views/ShiftSetting/ShiftSettingView')) // 排班人员设置
+const StatisticView = lazy(() => import('src/modules/statistic/StatisticView'))
+const PersonnelSettingView = lazy(() => import('src/modules/schedule/views/PersonnelSetting/PersonnelSettingView')) // 人员分组
 
-import ScheduleHomeView from 'src/modules/schedule/views/ScheduleHome/ScheduleHomeView'
-import NurseSettingView from 'src/modules/schedule/views/NurseSetting/NurseSettingView' // 排班人员设置
-import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSettingView' // 排班人员设置
-import StatisticView from 'src/modules/statistic/StatisticView'
-import PersonnelSettingView from 'src/modules/schedule/views/PersonnelSetting/PersonnelSettingView' // 人员分组
+// const NurseByShiftView = lazy(() => import('src/modules/statistic/views/nurseByShift/NurseByShiftView'))
+// const WhiteShiftByMonthView = lazy(() => import('src/modules/statistic/views/whiteShiftByMonth/WhiteShiftByMonthView'))
+// const NeightShiftByMonthView = lazy(() => import('src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView'))
 
-// import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
-// import WhiteShiftByMonthView from 'src/modules/statistic/views/whiteShiftByMonth/WhiteShiftByMonthView'
-// import NeightShiftByMonthView from 'src/modules/statistic/views/neightShiftByMonth/NeightShiftByMonthView'
+const MealSettingView = lazy(() => import('src/modules/schedule/views/MealSetting/MealSettingView'))
+const ScheduleSettingView = lazy(() => import('src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'))
 
-import MealSettingView from 'src/modules/schedule/views/MealSetting/MealSettingView'
-import ScheduleSettingView from 'src/modules/schedule/views/ScheduleSetting/ScheduleSettingView'
+// const NurseFilesListView = lazy(() => import('src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'))
+// const NurseFileDetailView = lazy(() => import('src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'))
+// const NurseAudit = lazy(() => import('src/modules/nurseFiles/views/nurseAudit/NurseAudit'
 
-// import NurseFilesListView from 'src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'
-// import NurseFileDetailView from 'src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'
-// import NurseAudit from 'src/modules/nurseFiles/views/nurseAudit/NurseAudit'
+const BadEventView = lazy(() => import('src/modules/badEvents/views/BadEventView'))
+const BadEventEditorView = lazy(() => import('src/modules/badEvents/views/BadEventEditorView'))
 
-import BadEventView from 'src/modules/badEvents/views/BadEventView'
-import BadEventEditorView from 'src/modules/badEvents/views/BadEventEditorView'
-import { BadEventConfig } from 'src/modules/badEvents/views/config/badEventConfig'
-
-import { scheduleHorizontalMenuConfig } from 'src/modules/schedule-test/config/scheduleHorizontalMenuConfig'
-import Indicator from 'src/modules/indicator/Indicator'
-import SettingView from 'src/modules/setting/SettingView'
-import AuditsManagementView from 'src/modules/auditsManagement/AuditsManagementView'
+const Indicator = lazy(() => import('src/modules/indicator/Indicator'))
+const SettingView = lazy(() => import('src/modules/setting/SettingView'))
+const AuditsManagementView = lazy(() => import('src/modules/auditsManagement/AuditsManagementView'))
 
 // 护理绩效
-import NursingPerformance from 'src/modules/nursingPerformance/NursingPerformance'
-import LmsView from 'src/modules/lms/LmsView'
-import testView from 'src/modules/test/testView'
-import NoticeView from 'src/modules/notice/NoticeView'
-import SentNoticeView from 'src/modules/notice/page/SentNoticeView'
-import LmsDetails from 'src/modules/lms/views/LmsDetails'
+const NursingPerformance = lazy(() => import('src/modules/nursingPerformance/NursingPerformance'))
+const LmsView = lazy(() => import('src/modules/lms/LmsView'))
+const testView = lazy(() => import('src/modules/test/testView'))
+const NoticeView = lazy(() => import('src/modules/notice/NoticeView'))
+const SentNoticeView = lazy(() => import('src/modules/notice/page/SentNoticeView'))
+const LmsDetails = lazy(() => import('src/modules/lms/views/LmsDetails'))
 
 //护理制度
-import NursingRules from 'src/modules/nursingRules/NursingRules'
-import NursingRulesTypeIndexSetting from 'src/modules/nursingRules/NursingRulesTypeIndexSetting'
-import NursingRulesTypeSetting from 'src/modules/nursingRules/NursingRulesTypeSetting'
+const NursingRules = lazy(() => import('src/modules/nursingRules/NursingRules'))
+const NursingRulesTypeIndexSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeIndexSetting'))
+const NursingRulesTypeSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeSetting'))
 //护理制度 改版
-import NursingRulesNew from 'src/modules/nursingRulesNew/NursingRulesNew'
-import NursingRulesNewDetail from 'src/modules/nursingRulesNew/views/NursingRulesNewDetail'
-import NursingRulesPagePreview from 'src/modules/nursingRulesNew/views/NursingRulesPagePreview'
-import NursingRulesNewEdit from 'src/modules/nursingRulesNew/views/NursingRulesNewEdit'
+const NursingRulesNew = lazy(() => import('src/modules/nursingRulesNew/NursingRulesNew'))
+const NursingRulesNewDetail = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesNewDetail'))
+const NursingRulesPagePreview = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesPagePreview'))
+const NursingRulesNewEdit = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesNewEdit'))
 //健康宣教
-//import HealthPropagandaView from 'src/modules/healthPropaganda/HealthPropagandaView'
-import HealthPropagandaEdit from 'src/modules/healthPropaganda/HealthPropagandaEdit'
+//const HealthPropagandaView = lazy(() => import('src/modules/healthPropaganda/HealthPropagandaView'))
+const HealthPropagandaEdit = lazy(() => import('src/modules/healthPropaganda/HealthPropagandaEdit'))
 //不良事件列表和审核流程
-import BadEventsNewList from 'src/modules/badEventsNew/BadEventsNewList'
-import BadEventsNewDetail from 'src/modules/badEventsNew/BadEventsNewDetail'
+const BadEventsNewList = lazy(() => import('src/modules/badEventsNew/BadEventsNewList'))
+const BadEventsNewDetail = lazy(() => import('src/modules/badEventsNew/BadEventsNewDetail'))
 //培训考核
-import TrainingExamination from 'src/modules/trainingExamination/TrainingExamination'
+const TrainingExamination = lazy(() => import('src/modules/trainingExamination/TrainingExamination'))
 //科室借用
-import DeptBorrow from 'src/modules/deptBorrow/DeptBorrow'
+const DeptBorrow = lazy(() => import('src/modules/deptBorrow/DeptBorrow'))
 //继续教育
-import ContinuingEdu from 'src/modules/continuingEdu/ContinuingEduView'
-import ContinuingEduEmpDetail from 'src/modules/continuingEdu/views/empDetail/Main'
+const ContinuingEdu = lazy(() => import('src/modules/continuingEdu/ContinuingEduView'))
+const ContinuingEduEmpDetail = lazy(() => import('src/modules/continuingEdu/views/empDetail/Main'))
 // 护理质量
-import QualityView from 'src/modules/quality/QualityView'
-import QualityControlRecordDetail from 'src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail.tsx'
-import qualityControlRecordEdit from 'src/modules/quality/views/qualityControlRecord/qualityControlRecordEdit/QualityControlRecordEdit'
-import QualityAnalysisEdit from 'src/modules/quality/views/analysis/AnalysisEdit'
-import QualityAnalysisDetail from 'src/modules/quality/views/analysis/AnalysisDetail'
+const QualityView = lazy(() => import('src/modules/quality/QualityView'))
+const QualityControlRecordDetail = lazy(() =>
+  import('src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail.tsx')
+)
+const qualityControlRecordEdit = lazy(() =>
+  import('src/modules/quality/views/qualityControlRecord/qualityControlRecordEdit/QualityControlRecordEdit')
+)
+const QualityAnalysisEdit = lazy(() => import('src/modules/quality/views/analysis/AnalysisEdit'))
+const QualityAnalysisDetail = lazy(() => import('src/modules/quality/views/analysis/AnalysisDetail'))
 import { specialModule } from './routerConfig/specialModule'
-import DetailsView from 'src/modules/quality/views/checkWard/view/details/DetailsView'
-import ImportView from 'src/modules/quality/views/checkWard/view/import/ImportView'
+const DetailsView = lazy(() => import('src/modules/quality/views/checkWard/view/details/DetailsView'))
+const ImportView = lazy(() => import('src/modules/quality/views/checkWard/view/import/ImportView'))
 
 //病区文件
-import DeptFileShareCatalogSetting from 'src/modules/deptReferSetting/views/DeptFileShareCatalogSetting'
-import QualityAnalysisReportView from 'src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView'
-import NurseFilesView from 'src/modules/nurseFiles/NurseFilesView'
-import QualityAnalysisReportPoolView from 'src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView'
-import WorkSummaryReportView from 'src/modules/quality/views/workSummaryReport/WorkSummaryReportView'
+const DeptFileShareCatalogSetting = lazy(() => import('src/modules/deptReferSetting/views/DeptFileShareCatalogSetting'))
+const QualityAnalysisReportView = lazy(() =>
+  import('src/modules/quality/views/qualityAnalysisReport/QualityAnalysisReportView')
+)
+// const NurseFilesView = lazy(() => import('src/modules/nurseFiles/NurseFilesView')
+const QualityAnalysisReportPoolView = lazy(() =>
+  import('src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView')
+)
+const WorkSummaryReportView = lazy(() => import('src/modules/quality/views/workSummaryReport/WorkSummaryReportView'))
 
 //病区管理
-import WardManagementView from 'src/modules/wardManagement/WardManagementView'
-import PersonnelManagementView from 'src/modules/personnelManagement/PersonnelManagementView'
-// import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
+const WardManagementView = lazy(() => import('src/modules/wardManagement/WardManagementView'))
+const PersonnelManagementView = lazy(() => import('src/modules/personnelManagement/PersonnelManagementView'))
+// const EditArrangePage = lazy(() => import('src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
 const EditArrangePage = lazy(() =>
   import('src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage')
 )
 //健康宣教报告
-import HealthEducationReportView from 'src/modules/healthEducationReport/QualityAnalysisReportView'
+const HealthEducationReportView = lazy(() => import('src/modules/healthEducationReport/QualityAnalysisReportView'))
 //健康宣教编辑改版
-import HealthPropagandaEditNew from 'src/modules/healthPropaganda/HealthPropagandaEditNew'
-import QcOneRouter from 'src/modules/quality/QcOneRouter'
-import QcTwoRouter from 'src/modules/quality/QcTwoRouter'
-import QcThreeRouter from 'src/modules/quality/QcThreeRouter'
-import CheckWardRouter from 'src/modules/quality/CheckWardRouter'
-import QueryStatisticsRouter from 'src/modules/quality/QueryStatisticsRouter'
+const HealthPropagandaEditNew = lazy(() => import('src/modules/healthPropaganda/HealthPropagandaEditNew'))
+const QcOneRouter = lazy(() => import('src/modules/quality/QcOneRouter'))
+const QcTwoRouter = lazy(() => import('src/modules/quality/QcTwoRouter'))
+const QcThreeRouter = lazy(() => import('src/modules/quality/QcThreeRouter'))
+const CheckWardRouter = lazy(() => import('src/modules/quality/CheckWardRouter'))
+const QueryStatisticsRouter = lazy(() => import('src/modules/quality/QueryStatisticsRouter'))
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -133,7 +137,7 @@ const routes: RouteItem[] = [
   // 护理绩效
   setLayout('/nursingPerformance', NursingPerformance, layouts.MainLayout),
   setLayout('/indicator/:name', Indicator, layouts.MainLayout),
-  setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
+  // setLayout('/schedule/:type', layouts.HorizontalMenuLayout, null, scheduleHorizontalMenuConfig),
   setLayout('/badEvents/alanysis/:type/:name', BadEventEditorView, layouts.MainLayout),
   setLayout('/badEvents/:type', BadEventView, layouts.MainLayout),
   setLayout('/Lms', LmsView, layouts.MainLayout),
@@ -162,7 +166,7 @@ const routes: RouteItem[] = [
   ]),
   setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
   setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
-  setLayout('/NursingRulesPagePreview', NursingRulesPagePreview, layouts.MainLayout),
+  setLayout('/NursingRulesPagePreView', NursingRulesPagePreview, layouts.MainLayout),
   setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout),
   setLayout('/healthPropagandaEditNew/:id', HealthPropagandaEditNew),
   setLayout('/healthPropagandaEditNew', HealthPropagandaEditNew),
@@ -207,7 +211,7 @@ const routes: RouteItem[] = [
   setLayout('/qualityAnalysisReportPool', QualityAnalysisReportPoolView, layouts.MainLayout),
   setLayout('/workSummaryReportView', WorkSummaryReportView, layouts.MainLayout),
   /** 档案模块 */
-  setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
+  // setLayout('/nurseFile/:path', NurseFilesView, layouts.MainLayout),
   setLayout('/wardManagement/:name', WardManagementView, layouts.MainLayout),
 
   /** 编辑排班 */
