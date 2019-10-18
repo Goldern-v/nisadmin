@@ -15,14 +15,12 @@ export interface Props {
 
 export default observer(function 本月查房详情模块(props: Props) {
   let { sectionId, sectionTitle } = props
-  let data = checkWardReportViewModal.getSectionData(sectionId)
-  let list: Partial<DetailItem>[] = data.list || []
-  let report: Report = checkWardReportViewModal.getDataInAllData('report')
-  let dataList = checkWardReportViewModal.dataList || []
+  // let data = checkWardReportViewModal.getSectionData(sectionId)
+  // let list: Partial<DetailItem>[] = data.list || []
+  // let report: Report = checkWardReportViewModal.getDataInAllData('report')
+  // let dataList = checkWardReportViewModal.dataList || []
   let specialData = checkWardReportViewModal.specialData || []
   let nightData = checkWardReportViewModal.nightData || []
-  let key1 = 0
-  let key2 = 0
 
   return (
     <Wrapper>

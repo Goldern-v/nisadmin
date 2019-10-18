@@ -18,9 +18,6 @@ export default observer(function 标题模块(props: Props) {
   return (
     <Wrapper className='page-title'>
       <div className='title'>{checkWardReportViewModal.year}年{checkWardReportViewModal.month}月中夜班及特殊时段查房汇总表{text}</div>
-      {/* <EditButton border={true} onClick={() => checkWardReportViewModal.openEditModal(sectionId)}>
-        编辑
-      </EditButton> */}
     </Wrapper>
   )
 })

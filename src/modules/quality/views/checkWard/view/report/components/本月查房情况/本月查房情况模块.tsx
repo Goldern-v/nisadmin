@@ -21,8 +21,6 @@ export default observer(function 本月查房情况模块(props: Props) {
     <Wrapper>
       <OneLevelTitle text='一、本月查房情况' />
       <div className='text-box'>{checkWardReportViewModal.year}年{checkWardReportViewModal.month}月特殊时段查房共{checkWardReportViewModal.searchRoom2 || '0'}次，中夜班查房共{checkWardReportViewModal.searchRoom1 || '0'}次。</div>
-      {/* <TextCon>{textarea}</TextCon> */}
-      {/* <EditButton onClick={() => checkWardReportViewModal!.openEditModal(sectionId)}>编辑</EditButton> */}
     </Wrapper>
   )
 })
