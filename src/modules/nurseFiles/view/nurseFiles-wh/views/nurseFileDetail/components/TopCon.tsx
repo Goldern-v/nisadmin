@@ -11,7 +11,7 @@ import DeptChangeModal from '../modal/DeptChangeModal'
 import qs from 'qs'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { isSelf } from '../views/BaseInfo'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const BG = require('../../../images/顶部背景.png')
 
@@ -76,15 +76,15 @@ export default observer(function TopCon() {
             </span>
           </Tip>
         ) : (
-          <Tip />
-          // <Tip>你没有待审核的信息</Tip>
-        )}
+            <Tip />
+            // <Tip>你没有待审核的信息</Tip>
+          )}
       </Name>
       {authStore.isRoleManage && !isSelf() && (
-        <DeptChangeBtn onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn>
+        <DeptChangeBtn onClick={() => openDeptChangeModal()}>片区内调动</DeptChangeBtn>
       )}
 
-      <deptChangeModal.Component />
+      <deptChangeModal.Component title="片区内调动" />
     </Wrapper>
   )
 })

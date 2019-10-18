@@ -19,7 +19,8 @@ import emitter from 'src/libs/ev'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  info: any
+  info: any,
+  title?: string
   callback?: () => void
 }
 const rules: Rules = {
@@ -27,13 +28,12 @@ const rules: Rules = {
   deptCodeNew: (val) => !!val || '请选择新科室'
 }
 export default function DeptChangeModal(props: Props) {
-  const [title, setTitle] = useState('科室调动')
   const [deptList, setDeptList]: any = useState([])
 
-  let { visible, onCancel, onOk, info } = props
+  let { visible, onCancel, onOk, info, title } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => {}
+  const onFieldChange = () => { }
 
   const onSave = async () => {
     if (!refForm.current) return
@@ -66,7 +66,7 @@ export default function DeptChangeModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
+    <Modal title={title || '科室调动'} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>

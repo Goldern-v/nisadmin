@@ -23,6 +23,7 @@ export default observer(function QualityControlRecord() {
         qualityControlRecordVM.allData.list &&
         qualityControlRecordVM.allData.list.length > 0
       ) {
+        getTableData()
       } else {
         let level = appStore.history.location.pathname.indexOf('qcThree') >= 0
           ? 3

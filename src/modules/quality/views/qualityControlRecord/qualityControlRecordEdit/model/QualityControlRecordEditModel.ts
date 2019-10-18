@@ -232,7 +232,9 @@ class QualityControlRecordEditModel {
   @action private getUserList = () => {
     this.userList = []
     qualityControlRecordApi
-      .getUserByRoles([this.baseInfo.qcGroupRoles]).then(res => {
+      .getUserByRoles(
+        this.baseInfo.qcGroupRoles.split(',')
+      ).then(res => {
         if (res.data && res.data.userList) this.userList = res.data.userList
       })
   }
