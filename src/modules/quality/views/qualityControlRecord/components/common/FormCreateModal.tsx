@@ -38,7 +38,7 @@ export default observer(function FormCreateModal(props: Props) {
     if (visible) setActiveIdx(-1)
   }, [visible])
 
-  const handleOk = () => {
+  const handleOk = (activeIdx: number) => {
     if (activeIdx < 0) {
       message.warning('未选择表单')
       return
@@ -58,7 +58,7 @@ export default observer(function FormCreateModal(props: Props) {
     visible={visible}
     centered
     bodyStyle={{ padding: '0' }}
-    onOk={handleOk}
+    onOk={() => handleOk(activeIdx)}
     okText="创建"
     onCancel={() => onCancel && onCancel()}
     title={title || '新建评价表'}>
@@ -72,7 +72,11 @@ export default observer(function FormCreateModal(props: Props) {
       </div>
       <ContentArea className="content-area">
         {filterList.map((item: any, idx: number) =>
-          <div key={idx} className={activeIdx == idx ? 'qc-item active' : 'qc-item'} onClick={() => setActiveIdx(idx)}>
+          <div
+            key={idx}
+            className={activeIdx == idx ? 'qc-item active' : 'qc-item'}
+            onClick={() => setActiveIdx(idx)}
+            onDoubleClick={() => handleOk(idx)}>
             <div className="icon">
               <img src={require('./../../assets/报告单@3x.png')} alt="" />
             </div>

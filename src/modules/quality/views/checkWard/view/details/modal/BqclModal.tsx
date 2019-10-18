@@ -17,8 +17,8 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  expand: (val) => val.replace(/\s+/g,"").length > 0 ? val : '请填写原因分析',
-  handleContent: (val) => val.replace(/\s+/g,"").length > 0 ? val : '请填写整改措施'
+  expand: (val) => !!val.replace(/\s+/g,"").length || '请填写原因分析',
+  handleContent: (val) => !!val.replace(/\s+/g,"").length || '请填写整改措施'
 }
 
 export default function BqclModal(props: Props) {

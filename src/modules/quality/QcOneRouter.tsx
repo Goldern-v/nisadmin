@@ -8,7 +8,7 @@ import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as CXTJ } from './images/CXTJ.svg'
 import { ReactComponent as FXBG } from './images/FXBG.svg'
@@ -18,6 +18,7 @@ import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
 import WritingForm from './views/writingForm/WritingForm'
+import NursingWorkPlainList from './views/nursingWorkPlain/NursingWorkPlainList'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -83,6 +84,17 @@ const LEFT_MENU_CONFIG: any = [
         component: WritingForm
       }
     ]
+  },
+  {
+    title: '一级质控报告',
+    icon: <FXBG />,
+    children: [
+      {
+        title: '护理工作计划',
+        path: '/qcOne/nursingWorkPlainList',
+        component: NursingWorkPlainList
+      }
+    ]
   }
 ]
 
@@ -109,7 +121,7 @@ LEFT_MENU_CONFIG.push({
 })
 
 export default function QcOneRouter(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname])
+  useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象

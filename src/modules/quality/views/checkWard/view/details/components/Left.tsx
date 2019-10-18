@@ -34,9 +34,9 @@ export default function Left(props: Props) {
             <div className='titleLeftCon'>一、值班人员</div>
           </div>
           <div className='itemCon'>值班人员：
-              {srUserDataList.map((item: any, k: any) => (
-            <span key={k}>{item.empName}</span>
-          ))}
+              {/* {srUserDataList.map((item: any, k: any) => ( */}
+            <span>{messageBoxData.onDutyEmpName}</span>
+          {/* ))} */}
           </div>
 
           {/* -------护士在岗情况 */}
