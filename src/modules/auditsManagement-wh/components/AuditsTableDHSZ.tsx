@@ -49,7 +49,11 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     } else if (showType == 'nurseFile') {
       service.commonApiService.getNurseInformation(row.commiterNo).then((res) => {
         // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-        window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`)
+        if (needAudit) {
+          window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`)
+        } else {
+          window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}&needAudit=false`)
+        }
       })
     }
   }

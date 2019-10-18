@@ -5,9 +5,9 @@ import { RouteComponentProps } from 'src/components/RouterView'
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CFJL } from './images/icon/查房记录.svg'
-import { ReactComponent as CFJHB } from './images/icon/查房计划表.svg'
-import { ReactComponent as CFJHBG } from './images/icon/查房计划报告.svg'
+import { ReactComponent as CFJL } from './images/icon/CFJL.svg'
+import { ReactComponent as CFJHB } from './images/icon/CFJHB.svg'
+import { ReactComponent as CFJHBG } from './images/icon/CFJHBG.svg'
 import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'

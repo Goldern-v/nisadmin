@@ -12,6 +12,7 @@ import YearRangePicker from './components/YearRangePicker'
 import AgePicker from './components/AgeRangePicker'
 import Watermark from './components/Watermark'
 import MultipleDeptSelect from './components/MultipleDeptSelect'
+import aaa, { ReactComponent as SSS } from 'src/assets/aaa.svg'
 // import XLSX from 'xlsx'
 // import { downloadExl } from './excel'
 
@@ -28,6 +29,8 @@ export default function demo(props: Props) {
   }
   return (
     <Wrapper>
+      <SSS />
+      {/* <img src={aaa} alt='' /> */}
       <div>
         <input id='myCar' list='cars' />
         <datalist id='cars'>

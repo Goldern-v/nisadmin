@@ -4,17 +4,17 @@ import { RouteComponentProps } from 'react-router'
 import LeftMenu from 'src/components/LeftMenu'
 import Null from 'src/components/null/Null'
 
-import { ReactComponent as RYGL } from './assets/icon_svg/人员管理.svg'
-import { ReactComponent as YNXXB } from './assets/icon_svg/院内学习班.svg'
-import { ReactComponent as JXJH } from './assets/icon_svg/教学计划.svg'
-import { ReactComponent as LXGL } from './assets/icon_svg/练习管理.svg'
-import { ReactComponent as KSGL } from './assets/icon_svg/考试管理.svg'
-import { ReactComponent as SPXX } from './assets/icon_svg/视频学习.svg'
-import { ReactComponent as TKGL } from './assets/icon_svg/题库管理.svg'
-import { ReactComponent as PXGL } from './assets/icon_svg/培训管理.svg'
-import { ReactComponent as JJSZ } from './assets/icon_svg/晋级设置.svg'
+import { ReactComponent as RYGL } from './assets/icon_svg/RYGL.svg'
+import { ReactComponent as YNXXB } from './assets/icon_svg/YNXXB.svg'
+import { ReactComponent as JXJH } from './assets/icon_svg/JXJH.svg'
+import { ReactComponent as LXGL } from './assets/icon_svg/LXGL.svg'
+import { ReactComponent as KSGL } from './assets/icon_svg/KSGL.svg'
+import { ReactComponent as SPXX } from './assets/icon_svg/SPXX.svg'
+import { ReactComponent as TKGL } from './assets/icon_svg/TKGL.svg'
+import { ReactComponent as PXGL } from './assets/icon_svg/PXGL.svg'
+import { ReactComponent as JJSZ } from './assets/icon_svg/JJGL.svg'
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 import 人员管理 from './人员管理'
 import QuestionBankManagement from '../questionBankManagement/QuestionBankManagement'

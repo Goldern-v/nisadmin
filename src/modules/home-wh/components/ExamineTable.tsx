@@ -5,9 +5,8 @@ import { appStore } from 'src/stores/index'
 import BaseTable from 'src/components/BaseTable'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import service from 'src/services/api'
-import qs from 'qs'
 import { observer } from 'src/vendors/mobx-react-lite'
-import { ReactComponent as DWSH } from '../images/icon/待我审核.svg'
+import { ReactComponent as DWSH } from '../images/icon/DWSH.svg'
 
 export interface Props extends RouteComponentProps {}
 

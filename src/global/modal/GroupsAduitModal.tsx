@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Input, message } from 'antd'
-import { ReactComponent as AgreeIcon } from '../images/默认勾选.svg'
+import { ReactComponent as AgreeIcon } from '../images/morengouxuan.svg'
 import { authStore } from 'src/stores'
 const { TextArea } = Input
 import { Modal } from 'antd'
@@ -13,7 +13,7 @@ export interface Props extends ModalComponentProps {
   getTableData?: any
 }
 
-export default function GroupsAduitModal (props: Props) {
+export default function GroupsAduitModal(props: Props) {
   let { visible, onCancel, selectedRows } = props
 
   /** 评估结果 */

@@ -10,9 +10,9 @@ import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryRepo
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CXTJ } from './images/查询统计.svg'
-import { ReactComponent as FXBG } from './images/分析报告.svg'
-import { ReactComponent as ZKJL } from './images/质控记录.svg'
+import { ReactComponent as CXTJ } from './images/CXTJ.svg'
+import { ReactComponent as FXBG } from './images/FXBG.svg'
+import { ReactComponent as ZKJL } from './images/ZKJL.svg'
 import { appStore } from 'src/stores'
 import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'

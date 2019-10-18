@@ -14,9 +14,9 @@ import service from 'src/services/api'
 import { Link } from 'react-router-dom'
 import BaseTable from 'src/components/BaseTable'
 // import { Link } from 'react-router-dom'
-moment.locale('zh-cn', {
-  weekdays: '日_一_二_三_四_五_六'.split('_')
-})
+// moment.locale('zh-cn', {
+//   weekdays: '日_一_二_三_四_五_六'.split('_')
+// })
 
 const dateFormat = 'YYYY-MM-DD'
 

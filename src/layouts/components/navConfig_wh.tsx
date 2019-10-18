@@ -30,12 +30,12 @@ export const navConfig: navConfigItem[] = [
     name: '质量管理',
     children: [
       {
-        name: '三级质量',
+        name: '三级质控',
         path: '/qcThree',
         icon: require('../images/menu-icon/三级质控@2x.png')
       },
       {
-        name: '二级质量',
+        name: '二级质控',
         path: '/qcTwo',
         icon: require('../images/menu-icon/二级质控@2x.png')
       },

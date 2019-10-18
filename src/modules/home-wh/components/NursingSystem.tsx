@@ -5,7 +5,7 @@ import { ScrollUl } from 'src/components/common'
 import { appStore } from 'src/stores/index'
 import { Spin } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import { ReactComponent as HLZD } from '../images/icon/护理制度.svg'
+import { ReactComponent as HLZD } from '../images/icon/HLZD.svg'
 
 export interface Props extends RouteComponentProps {}
 

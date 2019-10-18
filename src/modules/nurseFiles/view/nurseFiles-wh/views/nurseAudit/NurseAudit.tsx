@@ -11,17 +11,17 @@ import AuditsTableDHSZ from './components/AuditsTableDHSZ'
 import BaseTabs from 'src/components/BaseTabs'
 
 export default observer(function NurseAudit() {
-  const [activeKey, setActiveKey]: any = useState(0)
+  const [activeKey, setActiveKey]: any = useState(appStore.queryObj.needAudit == 'false' ? '1' : '0')
   const TABS_LIST_NURSE = [
     {
       title: '待我审核',
       component: <AuditsTableDHSZ type='waitAuditedNurse' needAudit active={activeKey == 0} />,
-      index: 0
+      index: '0'
     },
     {
       title: '我已审核',
       component: <AuditsTableDHSZ type='auditedFailNurse' needAudit={false} active={activeKey == 1} />,
-      index: 1
+      index: '1'
     }
   ]
 
@@ -29,7 +29,7 @@ export default observer(function NurseAudit() {
     <Wrapper>
       <TopCon />
       <MainCon>
-        <BaseTabs config={TABS_LIST_NURSE} onChange={(key) => setActiveKey(key)} />
+        <BaseTabs config={TABS_LIST_NURSE} onChange={(key) => setActiveKey(key)} defaultActiveKey={activeKey} />
       </MainCon>
     </Wrapper>
   )

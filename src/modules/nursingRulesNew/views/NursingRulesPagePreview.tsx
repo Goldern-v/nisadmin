@@ -12,20 +12,20 @@ import moment from 'moment'
 import Watermark from 'src/components/Watermark'
 import qs from 'qs'
 
-import { ReactComponent as SYZ } from './../assets/上一章.svg'
-import { ReactComponent as ML } from './../assets/目录.svg'
-import { ReactComponent as SC } from './../assets/收藏.svg'
-import { ReactComponent as YSC } from './../assets/已收藏.svg'
-import { ReactComponent as XYZ } from './../assets/下一章.svg'
+import { ReactComponent as SYZ } from './../assets/SYZ.svg'
+import { ReactComponent as ML } from './../assets/ML.svg'
+import { ReactComponent as SC } from './../assets/SC.svg'
+import { ReactComponent as YSC } from './../assets/YSC.svg'
+import { ReactComponent as XYZ } from './../assets/XYZ.svg'
 
 //内容面板宽度和高度
 const contentWidth = 780
 const contentHeight = 1043
 
-export interface Props { }
+export interface Props {}
 
 export default observer(function NursingRulesPagePreview(props: Props) {
-  const { history, location } = appStore;
+  const { history, location } = appStore
   const search = qs.parse(location.search.replace('?', ''))
   const viewType = search.viewType || ''
   const viewTop = React.createRef<HTMLDivElement>()
@@ -63,55 +63,55 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           setChapter(newChapter)
 
           if (search.pageUrl) {
-            if (hasUrl(newChapter, search.pageUrl))
-              setPageUrl(search.pageUrl)
-            else
-              if (newChapter.urls) setPageUrl(newChapter.urls[0])
-          } else
-            if (newChapter.urls) setPageUrl(newChapter.urls[0])
-        } else
-          initChapterAndPage(newList)
-
-      } else
-        initChapterAndPage(newList)
+            if (hasUrl(newChapter, search.pageUrl)) setPageUrl(search.pageUrl)
+            else if (newChapter.urls) setPageUrl(newChapter.urls[0])
+          } else if (newChapter.urls) setPageUrl(newChapter.urls[0])
+        } else initChapterAndPage(newList)
+      } else initChapterAndPage(newList)
     }
 
     if (viewType == 'favor')
-      nursingRulesApiService.getCollections(search.bookId).then(res => {
-        callback([{
-          childrenList: res.data.map((item: any) => {
-            return {
-              ...item,
-              name: item.nodeName
+      nursingRulesApiService.getCollections(search.bookId).then(
+        (res) => {
+          callback([
+            {
+              childrenList: res.data.map((item: any) => {
+                return {
+                  ...item,
+                  name: item.nodeName
+                }
+              })
             }
-          })
-        }])
-      }, err => callback())
+          ])
+        },
+        (err) => callback()
+      )
     else if (viewType == 'audit')
       Promise.all([
         nursingRulesApiService.getToAuditChapters(search.bookId),
         nursingRulesApiService.getBookInfo(search.bookId)
-      ])
-        .then(res => {
+      ]).then(
+        (res) => {
           callback(res[0].data)
 
           setAuditInfo(res[1].data)
-        }, err => callback())
-    else
-      nursingRulesApiService
-        .getBookCataLog(search.bookId)
-        .then(res => callback(res.data), err => callback())
+        },
+        (err) => callback()
+      )
+    else nursingRulesApiService.getBookCataLog(search.bookId).then((res) => callback(res.data), (err) => callback())
   }
 
   useEffect(() => {
-    if (chapter && pageUrl) history.replace(`${location.pathname}?${qs.stringify({
-      ...search,
-      nodeNum: chapter.nodeNum,
-      pageUrl
-    })}`)
+    if (chapter && pageUrl)
+      history.replace(
+        `${location.pathname}?${qs.stringify({
+          ...search,
+          nodeNum: chapter.nodeNum,
+          pageUrl
+        })}`
+      )
 
     if (viewTop.current) viewTop.current.scrollIntoView()
-
   }, [pageUrl, chapter])
 
   //初始化章节和预览路径为第一章第一节第一页
@@ -145,7 +145,6 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   }
 
   const hasUrl = (chapter: any, url: string): boolean => {
-
     if (chapter.urls) {
       let target = chapter.urls.find((item: string) => url == item)
       if (target) return true
@@ -157,14 +156,14 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   const [auditCfg, setAuditCfg] = useState({
     visible: false,
     params: {
-      audit: true,
+      audit: true
     }
   })
 
   const leftControl = [
     {
       name: '目录',
-      icon: <ML className="active index" />,
+      icon: <ML className='active index' />,
       onClick: () => {
         history.goBack()
       }
@@ -172,27 +171,25 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     {
       name: chapter.collectionId ? '取消收藏' : '收藏',
       icon: (() => {
-        if (chapter.inCollection)
-          return <YSC />
+        if (chapter.inCollection) return <YSC />
 
-        return <SC className="active" />
+        return <SC className='active' />
       })(),
       onClick(chapter: any, indexList: any) {
         if (chapter.inCollection)
-          nursingRulesApiService
-            .cancelCollection(chapter.collectionId)
-            .then(res => {
-              Message.success('已取消收藏')
-              chapter.inCollection = 0
-              chapter.collectionId = null
-              setChapter({ ...chapter })
-            })
-        else
-          nursingRulesApiService.addCollection({
-            nodeNum: chapter.nodeNum,
-            bookId: search.bookId
+          nursingRulesApiService.cancelCollection(chapter.collectionId).then((res) => {
+            Message.success('已取消收藏')
+            chapter.inCollection = 0
+            chapter.collectionId = null
+            setChapter({ ...chapter })
           })
-            .then(res => {
+        else
+          nursingRulesApiService
+            .addCollection({
+              nodeNum: chapter.nodeNum,
+              bookId: search.bookId
+            })
+            .then((res) => {
               Message.success('已收藏')
               if (res.data) {
                 chapter.inCollection = 1
@@ -204,7 +201,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     },
     {
       name: '上一章',
-      icon: <SYZ className="active" />,
+      icon: <SYZ className='active' />,
       onClick: () => {
         let idx1
         let idx2
@@ -219,8 +216,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
                 idx2 = j
               }
             }
-          else
-            if (parent.nodeNum == chapter.nodeNum) idx1 = i
+          else if (parent.nodeNum == chapter.nodeNum) idx1 = i
         }
 
         if (!idx1 && idx1 !== 0) {
@@ -232,8 +228,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           //如果还有子章节
           idx2--
           let target = indexList[idx1].childrenList[idx2]
-          if (target)
-            newChapter = indexList[idx1].childrenList[idx2]
+          if (target) newChapter = indexList[idx1].childrenList[idx2]
         }
 
         if (!newChapter) {
@@ -257,12 +252,11 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         } else {
           Message.warning('已是第一章')
         }
-
       }
     },
     {
       name: '下一章',
-      icon: <XYZ className="active" />,
+      icon: <XYZ className='active' />,
       onClick: () => {
         let idx1
         let idx2
@@ -276,8 +270,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
                 idx2 = j
               }
             }
-          else
-            if (parent.nodeNum == chapter.nodeNum) idx1 = i
+          else if (parent.nodeNum == chapter.nodeNum) idx1 = i
         }
 
         if (!idx1 && idx1 !== 0) {
@@ -289,8 +282,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           //如果还有子章节
           idx2++
           let target = indexList[idx1].childrenList[idx2]
-          if (target)
-            newChapter = indexList[idx1].childrenList[idx2]
+          if (target) newChapter = indexList[idx1].childrenList[idx2]
         }
 
         if (!newChapter) {
@@ -345,7 +337,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
         setPageUrl(chapter.urls[0])
       }
-    }, {
+    },
+    {
       name: '上一页',
       disabled: prevDisabled,
       onClick: () => {
@@ -355,7 +348,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         idx--
         setPageUrl(chapter.urls[idx])
       }
-    }, {
+    },
+    {
       name: '下一页',
       disabled: nextDisabled,
       onClick: () => {
@@ -365,7 +359,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         idx++
         setPageUrl(chapter.urls[idx])
       }
-    }, {
+    },
+    {
       name: '末页',
       disabled: nextDisabled,
       onClick: () => {
@@ -381,10 +376,9 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     setAuditCfg({ ...auditCfg, params: { audit: audit }, visible: true })
   }
 
-
   const handleAuditOk = () => {
     setTimeout(() => history.goBack(), 1000)
-    handleAuditCancel();
+    handleAuditCancel()
   }
 
   const handleAuditCancel = () => {
@@ -392,7 +386,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   }
 
   const ViewContent = () => {
-    if (!pageUrl) return <div className="content-message" >暂无页面</div>
+    if (!pageUrl) return <div className='content-message'>暂无页面</div>
     let pageUrlArr = pageUrl.split('.')
     let type = pageUrlArr[pageUrlArr.length - 1]
     let url = `/crNursing/asset${pageUrl}`
@@ -402,13 +396,15 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       case 'gif':
       case 'jpeg':
       case 'png':
-        return <Watermark>
-          <img src={url} width='100%' />
-        </Watermark>
+        return (
+          <Watermark>
+            <img src={url} width='100%' />
+          </Watermark>
+        )
       case 'pdf':
         return <PdfViewer file={url} width={contentWidth - 2} />
       default:
-        return <div className="content-message" >该文件格式不支持预览</div>
+        return <div className='content-message'>该文件格式不支持预览</div>
     }
   }
 
@@ -424,86 +420,91 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     return days + hours + minutes
   }
 
-  return <Wrapper>
-    <div className="topbar">
-      <NavCon>
-        <Link to="/nursingRulesNew">护理制度</Link>
-        <span> > </span>
-        <a onClick={() => history.goBack()}>{bookName || '书籍名称'}</a>
-        <span> > </span>
-        <span>{chapterName || '章节名称'}</span>
-      </NavCon>
-      <div className="fl-right">
-        <Button
-          onClick={() => handleAudit(true)}
-          type="primary"
-          disabled={loading || !(!!authStore.isDepartment)}
-          style={{ display: viewType == 'audit' ? 'block' : 'none' }}>审核</Button>
-        <Button onClick={() => history.goBack()}>返回</Button>
-      </div>
-    </div>
-    <div className="main-contain">
-      <div className="audit-content" style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
-        <TopTitleCon>
-          <div className='topTitleIcon' />
-          <div className='topTitle'>审核过程</div>
-        </TopTitleCon>
-        <BaseStepCon>
-          <BaseStepBox success={'success'}>
-            <StepBox>
-              <div className="title">提交书籍</div>
-              <div>{`${auditInfo.upLoaderEmpName || ''} ${auditInfo.upLoadTime || ''}`}</div>
-            </StepBox>
-          </BaseStepBox>
-          <BaseStepBox success={''}>
-            <StepBox>
-              <div className="title">护理部审核</div>
-              <div>审核中 耗时{overTime()}</div>
-            </StepBox>
-          </BaseStepBox>
-        </BaseStepCon>
-      </div>
-      <div className="preview-content">
-        <Spin spinning={loading} className="main-loading">
-        </Spin>
-        <div className="left-control" style={{ display: viewType == '' ? 'block' : 'none' }}>
-          {leftControl.map((item: any, idx: number) =>
-            <div className="item" onClick={() => item.onClick(chapter, indexList)} key={idx}>
-              <div className="icon">{item.icon}</div>
-              <div className="text">{item.name}</div>
-            </div>
-          )}
+  return (
+    <Wrapper>
+      <div className='topbar'>
+        <NavCon>
+          <Link to='/nursingRulesNew'>护理制度</Link>
+          <span> > </span>
+          <a onClick={() => history.goBack()}>{bookName || '书籍名称'}</a>
+          <span> > </span>
+          <span>{chapterName || '章节名称'}</span>
+        </NavCon>
+        <div className='fl-right'>
+          <Button
+            onClick={() => handleAudit(true)}
+            type='primary'
+            disabled={loading || !!!authStore.isDepartment}
+            style={{ display: viewType == 'audit' ? 'block' : 'none' }}
+          >
+            审核
+          </Button>
+          <Button onClick={() => history.goBack()}>返回</Button>
         </div>
-        <div className="right-control" >
-          {rightControl.map((item: any, idx: number) =>
-            <div
-              className={['item', item.disabled ? 'disabled' : ''].join(' ')}
-              onClick={() => item.onClick()}
-              key={idx}>
-              {item.name}
-            </div>
-          )}
+      </div>
+      <div className='main-contain'>
+        <div className='audit-content' style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
+          <TopTitleCon>
+            <div className='topTitleIcon' />
+            <div className='topTitle'>审核过程</div>
+          </TopTitleCon>
+          <BaseStepCon>
+            <BaseStepBox success={'success'}>
+              <StepBox>
+                <div className='title'>提交书籍</div>
+                <div>{`${auditInfo.upLoaderEmpName || ''} ${auditInfo.upLoadTime || ''}`}</div>
+              </StepBox>
+            </BaseStepBox>
+            <BaseStepBox success={''}>
+              <StepBox>
+                <div className='title'>护理部审核</div>
+                <div>审核中 耗时{overTime()}</div>
+              </StepBox>
+            </BaseStepBox>
+          </BaseStepCon>
         </div>
-        <div className="scroll-warpper">
-          <div ref={viewTop} className="scroll-top"></div>
-          <div className="page-content">
-            {ViewContent()}
+        <div className='preview-content'>
+          <Spin spinning={loading} className='main-loading' />
+          <div className='left-control' style={{ display: viewType == '' ? 'block' : 'none' }}>
+            {leftControl.map((item: any, idx: number) => (
+              <div className='item' onClick={() => item.onClick(chapter, indexList)} key={idx}>
+                <div className='icon'>{item.icon}</div>
+                <div className='text'>{item.name}</div>
+              </div>
+            ))}
           </div>
-          <div className="page-info">
-            {`第${(chapter.urls && chapter.urls.length && chapter.urls.indexOf(pageUrl) + 1) || 0}页/共${chapter.urls && chapter.urls.length || 0}页`}
+          <div className='right-control'>
+            {rightControl.map((item: any, idx: number) => (
+              <div
+                className={['item', item.disabled ? 'disabled' : ''].join(' ')}
+                onClick={() => item.onClick()}
+                key={idx}
+              >
+                {item.name}
+              </div>
+            ))}
+          </div>
+          <div className='scroll-warpper'>
+            <div ref={viewTop} className='scroll-top' />
+            <div className='page-content'>{ViewContent()}</div>
+            <div className='page-info'>
+              {`第${(chapter.urls && chapter.urls.length && chapter.urls.indexOf(pageUrl) + 1) ||
+                0}页/共${(chapter.urls && chapter.urls.length) || 0}页`}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <GroupAuditModal
-      visible={auditCfg.visible}
-      defaultParams={auditCfg.params}
-      onOk={handleAuditOk}
-      onCancel={handleAuditCancel}
-      bookId={search.bookId}
-      nodeNums={[search.nodeNum]}
-      title="审核" />
-  </Wrapper>
+      <GroupAuditModal
+        visible={auditCfg.visible}
+        defaultParams={auditCfg.params}
+        onOk={handleAuditOk}
+        onCancel={handleAuditCancel}
+        bookId={search.bookId}
+        nodeNums={[search.nodeNum]}
+        title='审核'
+      />
+    </Wrapper>
+  )
 })
 
 const scrollBarStyle = `
@@ -523,46 +524,46 @@ const scrollBarStyle = `
 
 const Wrapper = styled.div`
   height: 100%;
-  width:100%;
-  .topbar{
+  width: 100%;
+  .topbar {
     padding: 10px;
     background: #fff;
     border-bottom: 1px solid #ddd;
-    .fl-right{
+    .fl-right {
       float: right;
       margin-top: -4px;
-      &>*{
-        float:left;
+      & > * {
+        float: left;
         margin-left: 10px;
       }
     }
   }
-  .main-contain{
+  .main-contain {
     position: fixed;
     left: 0;
     right: 0;
     top: 94px;
     bottom: 0;
-    .main-loading{
+    .main-loading {
       position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
-      width:100%;
+      width: 100%;
       z-index: 1;
-      background: rgba(255,255,255,0.5);
-      .ant-spin-dot-spin{
+      background: rgba(255, 255, 255, 0.5);
+      .ant-spin-dot-spin {
         position: absolute;
         top: 50%;
-        left: 50%
+        left: 50%;
       }
     }
-    .scroll-top{
+    .scroll-top {
       position: relative;
       top: -15px;
     }
   }
-  .audit-content{
+  .audit-content {
     float: right;
     width: 260px;
     background: #fff;
@@ -570,18 +571,18 @@ const Wrapper = styled.div`
     height: 100%;
     padding: 20px;
   }
-  .preview-content{
-    overflow:hidden;
+  .preview-content {
+    overflow: hidden;
     height: 100%;
     position: relative;
-    .scroll-warpper{
+    .scroll-warpper {
       width: 100%;
       height: 100%;
       padding: 15px 0;
       overflow: auto;
       ${scrollBarStyle}
 
-      .page-content{
+      .page-content {
         width: ${contentWidth}px;
         margin: 0 auto;
         background: #fff;
@@ -589,10 +590,10 @@ const Wrapper = styled.div`
         border-bottom: 0;
         min-height: ${contentHeight}px;
         position: relative;
-        img{
+        img {
           width: 100%;
         }
-        .content-message{
+        .content-message {
           width: ${contentWidth}px;
           height: ${contentHeight}px;
           line-height: ${contentHeight * 0.6}px;
@@ -600,17 +601,17 @@ const Wrapper = styled.div`
           font-size: 14px;
         }
       }
-      .page-info{
+      .page-info {
         width: ${contentWidth}px;
         margin: 0 auto;
         background: #fff;
-        border:1px solid #ddd;
+        border: 1px solid #ddd;
         border-top: 0;
         padding: 10px 0;
-        text-align:center;
+        text-align: center;
       }
     }
-    .left-control{
+    .left-control {
       position: absolute;
       left: 50%;
       top: 15px;
@@ -618,56 +619,57 @@ const Wrapper = styled.div`
       background: #fff;
       transform: translate(-486px);
       border: 1px solid #ddd;
-      .item{
+      .item {
         width: 100%;
         height: 78px;
         border-bottom: 1px solid #ddd;
         cursor: pointer;
         overflow: hidden;
-        &:last-of-type{
+        &:last-of-type {
           border-bottom: none;
         }
-        .text{
-          transition: all .5s;
+        .text {
+          transition: all 0.5s;
         }
-        .icon{
+        .icon {
           height: 25px;
           width: 25px;
           margin: 12px auto 8px;
-          svg{
+          svg {
             width: 100%;
             height: 100%;
-            g,path{
-              transition: all .3s;
+            g,
+            path {
+              transition: all 0.3s;
             }
           }
         }
-        :hover{
-          .text{
-            color:#00A680;
+        :hover {
+          .text {
+            color: #00a680;
           }
-          .icon{
-            svg.active{
-              g{
+          .icon {
+            svg.active {
+              g {
                 opacity: 1;
               }
-              path{
-                stroke:#00A680;
+              path {
+                stroke: #00a680;
               }
-              &.index path{
-                stroke:#00A680;
-                fill:#00A680;
+              &.index path {
+                stroke: #00a680;
+                fill: #00a680;
               }
             }
           }
         }
-        .text{
+        .text {
           font-size: 14px;
           text-align: center;
         }
       }
     }
-    .right-control{
+    .right-control {
       position: absolute;
       right: 50%;
       top: 15px;
@@ -675,7 +677,7 @@ const Wrapper = styled.div`
       background: #fff;
       transform: translate(478px);
       border: 1px solid #ddd;
-      .item{
+      .item {
         width: 100%;
         height: 40px;
         line-height: 40px;
@@ -683,18 +685,18 @@ const Wrapper = styled.div`
         cursor: pointer;
         text-align: center;
         font-size: 14px;
-        transition: all .3s;
-        &:last-of-type{
+        transition: all 0.3s;
+        &:last-of-type {
           border-bottom: none;
         }
-        &.disabled{
-          background: rgba(0,0,0,0.05);
+        &.disabled {
+          background: rgba(0, 0, 0, 0.05);
           color: #aaa;
           cursor: not-allowed;
         }
-        :hover{
-          color:#00A680;
-          &.disabled{
+        :hover {
+          color: #00a680;
+          &.disabled {
             color: #aaa;
           }
         }
@@ -704,16 +706,16 @@ const Wrapper = styled.div`
 `
 
 const NavCon = styled.div`
-  display:inline-block;
+  display: inline-block;
   line-height: 24px;
-  a{
+  a {
     color: #666;
-    :hover{
+    :hover {
       color: #333;
     }
   }
-  span{
-    color: #888
+  span {
+    color: #888;
   }
 `
 
@@ -732,7 +734,7 @@ const TopTitleCon = styled.div`
     font-size: 16px;
     color: #333333;
   }
-  `
+`
 
 const StepBox = styled.div`
   padding-bottom: 10px;

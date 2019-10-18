@@ -8,11 +8,11 @@ import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CXTJ } from './images/查询统计.svg'
-import { ReactComponent as FXBG } from './images/分析报告.svg'
-import { ReactComponent as ZKJL } from './images/质控记录.svg'
+import { ReactComponent as CXTJ } from './images/CXTJ.svg'
+import { ReactComponent as FXBG } from './images/FXBG.svg'
+import { ReactComponent as ZKJL } from './images/ZKJL.svg'
 import { appStore } from 'src/stores'
 import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
@@ -86,30 +86,30 @@ const LEFT_MENU_CONFIG: any = [
   }
 ]
 
-  LEFT_MENU_CONFIG.push({
-    title: '护理查房',
-    icon: <ZKJL />,
-    children: [
-      {
-        title: '查房记录',
-        path: '/quality/checkWard/record',
-        component: RecordView
-      },
-      {
-        title: '查房计划表',
-        path: '/quality/checkWard/schedule',
-        component: ScheduleView
-      },
-      {
-        title: '查房统计报告',
-        path: '/quality/checkWard/checkWardReportView',
-        component: CheckWardReportView
-      }
-    ]
-  })
+LEFT_MENU_CONFIG.push({
+  title: '护理查房',
+  icon: <ZKJL />,
+  children: [
+    {
+      title: '查房记录',
+      path: '/quality/checkWard/record',
+      component: RecordView
+    },
+    {
+      title: '查房计划表',
+      path: '/quality/checkWard/schedule',
+      component: ScheduleView
+    },
+    {
+      title: '查房统计报告',
+      path: '/quality/checkWard/checkWardReportView',
+      component: CheckWardReportView
+    }
+  ]
+})
 
 export default function QualityView(props: Props) {
-  useEffect(() => { }, [props.history.location.pathname])
+  useEffect(() => {}, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象

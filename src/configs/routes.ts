@@ -1,3 +1,4 @@
+import React, { lazy } from 'react'
 // import ViewHome from '../views/ViewHome'
 // import ViewLogin from '../views/ViewLogin'
 // import ViewUsers from '../views/ViewUsers'
@@ -8,7 +9,7 @@ import layouts from 'src/layouts'
 import demo from 'src/demo'
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
 // import { scheduleHorizontalMenuConfig } from 'src/modules/schedule/config/scheduleHorizontalMenuConfig'
-import HomeView from 'src/modules/home/HomeView'
+
 import ScheduleHomeView from 'src/modules/schedule/views/ScheduleHome/ScheduleHomeView'
 import NurseSettingView from 'src/modules/schedule/views/NurseSetting/NurseSettingView' // 排班人员设置
 import ShiftSettingView from 'src/modules/schedule/views/ShiftSetting/ShiftSettingView' // 排班人员设置
@@ -85,8 +86,10 @@ import WorkSummaryReportView from 'src/modules/quality/views/workSummaryReport/W
 //病区管理
 import WardManagementView from 'src/modules/wardManagement/WardManagementView'
 import PersonnelManagementView from 'src/modules/personnelManagement/PersonnelManagementView'
-import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
-
+// import EditArrangePage from 'src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
+const EditArrangePage = lazy(() =>
+  import('src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage')
+)
 //健康宣教报告
 import HealthEducationReportView from 'src/modules/healthEducationReport/QualityAnalysisReportView'
 //健康宣教编辑改版

@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { ReactComponent as HLMGZL } from './images/护理敏感质量.svg'
-import { ReactComponent as LCHL } from './images/临床护理.svg'
-import { ReactComponent as ZKHL } from './images/专科护理.svg'
-import { ReactComponent as HLGZZL } from './images/护理工作质量.svg'
+import { ReactComponent as HLMGZL } from './images/HLMGZL.svg'
+import { ReactComponent as LCHL } from './images/LCHL.svg'
+import { ReactComponent as ZKHL } from './images/ZKHL.svg'
+import { ReactComponent as HLGZZL } from './images/HLGZZL.svg'
 
 export const LEFT_MENU = [
   {

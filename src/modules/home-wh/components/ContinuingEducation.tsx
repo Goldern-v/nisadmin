@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { ScrollUl } from 'src/components/common'
-import { ReactComponent as JXJY } from '../images/icon/继续教育.svg'
+import { ReactComponent as JXJY } from '../images/icon/JXJY.svg'
 export interface Props extends RouteComponentProps {}
 
 export default function ContinuingEducation() {

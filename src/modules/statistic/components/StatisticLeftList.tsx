@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import LeftMenu from 'src/components/LeftMenu'
-import { ReactComponent as PBTJ } from '../img/排班统计.svg'
-import { ReactComponent as HLRYTJ } from '../img/护理人员统计.svg'
-import { ReactComponent as HZCXTJ } from '../img/患者查询统计.svg'
+import { ReactComponent as PBTJ } from '../img/PBTJ.svg'
+import { ReactComponent as HLRYTJ } from '../img/HLRYTJ.svg'
+import { ReactComponent as HZCXTJ } from '../img/HZCXTJ.svg'
 // 左侧列表数据
 const LEFT_MENU_CONFIG = [
   {
@@ -50,10 +50,7 @@ const LEFT_MENU_CONFIG = [
   }
 ]
 export default function BedSituation() {
-  
-  useEffect(() => {
-    
-  })
+  useEffect(() => {})
   return (
     <Con>
       <LeftMenu config={LEFT_MENU_CONFIG} menuTitle='统计查询' />

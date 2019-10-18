@@ -10,8 +10,8 @@ import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryRepo
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as JCTJ } from './images/icon/检查表单统计表.svg'
-import { ReactComponent as WJSX } from './images/icon/文件书写统计表.svg'
+import { ReactComponent as JCTJ } from './images/icon/JCTJ.svg'
+import { ReactComponent as WJSX } from './images/icon/WJSX.svg'
 
 import WritingForm from './views/writingForm/WritingForm'
 

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { Suspense } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { HashRouter as Router } from 'react-router-dom'
 import { hot } from 'react-hot-loader'
@@ -14,7 +14,10 @@ import zhCN from 'antd/lib/locale-provider/zh_CN'
 import { LocaleProvider } from 'antd'
 import ComponentDidCatch from './components/ComponentDidCatch'
 import moment from 'moment'
+
 import 'moment/locale/zh-cn'
+
+moment.locale('zh-cn')
 export interface Props {}
 
 export interface State {}
@@ -27,9 +30,12 @@ export class App extends React.Component<Props, State> {
           <ThemeProvider theme={theme}>
             <Wrapper>
               <Inner>
-                <Router>
-                  <RouterView routes={routes} />
-                </Router>
+                {/* <Suspense fallback={<div>Loading...</div>} maxDuration={1000}> */}
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Router>
+                    <RouterView routes={routes} />
+                  </Router>
+                </Suspense>
               </Inner>
               <GlobalStyle />
             </Wrapper>

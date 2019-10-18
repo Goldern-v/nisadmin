@@ -6,9 +6,9 @@ import BaseTable from 'src/components/BaseTable'
 import { Button } from 'antd'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
 import { observer } from 'mobx-react-lite'
-import { ReactComponent as TZGG } from '../images/icon/通知公告.svg'
-import { ReactComponent as READ } from '../images/已读.svg'
-import { ReactComponent as NOREAD } from '../images/未读.svg'
+import { ReactComponent as TZGG } from '../images/icon/TZGG.svg'
+import { ReactComponent as READ } from '../images/YD.svg'
+import { ReactComponent as NOREAD } from '../images/WD.svg'
 
 export interface Props extends RouteComponentProps {}
 

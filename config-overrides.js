@@ -5,6 +5,7 @@ const otherLoader = (loaderOptions = {}) => (config) => {
   config.module.unknownContextCritical = false
   return config
 }
+
 module.exports = override(
   addBabelPlugin('babel-plugin-styled-components'),
   fixBabelImports('import', {

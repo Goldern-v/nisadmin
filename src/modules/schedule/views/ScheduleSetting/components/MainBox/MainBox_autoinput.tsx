@@ -17,9 +17,9 @@ import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
 
 import moment from 'moment'
 // import { Link } from 'react-router-dom'
-moment.locale('zh-cn', {
-  weekdays: '日_一_二_三_四_五_六'.split('_')
-})
+// moment.locale('zh-cn', {
+//   weekdays: '日_一_二_三_四_五_六'.split('_')
+// })
 
 let weekdayList = [
   'mondayName',

@@ -23,9 +23,9 @@ const confirm = Modal.confirm
 // import { authStore, scheduleStore } from 'src/stores'
 // import ButtonGroup from 'antd/lib/button/button-group'
 // import { Link } from 'react-router-dom'
-moment.locale('zh-cn', {
-  weekdays: '日_一_二_三_四_五_六'.split('_')
-})
+// moment.locale('zh-cn', {
+//   weekdays: '日_一_二_三_四_五_六'.split('_')
+// })
 
 let weekdayList = [
   'mondayName_1',

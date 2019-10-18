@@ -10,8 +10,8 @@ import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryRepo
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as EJZK } from './images/icon/二级质控.svg'
-import { ReactComponent as YDBG } from './images/icon/二级质控月度报告.svg'
+import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
+import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 
 const LEFT_MENU_CONFIG: any = [
   {

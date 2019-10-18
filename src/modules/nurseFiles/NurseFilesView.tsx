@@ -8,9 +8,9 @@ import NurseFilesListView_wh from './view/nurseFiles-wh/views/nurseFilesList/Nur
 import RetiredRetirees from './view/retiredRetirees/RetiredRetireesView'
 import StatisticsView from './view/statistics/StatisticsView'
 import StatisticsViews from './view/statistics-hj/StatisticsView'
-import { ReactComponent as ZZHSDA } from './images/护士档案.svg'
-import { ReactComponent as TXHSCX } from './images/退休护士查询.svg'
-import { ReactComponent as CXTJ } from './images/查询统计.svg'
+import { ReactComponent as ZZHSDA } from './images/ZZHSDA.svg'
+import { ReactComponent as TXHSCX } from './images/TXHSCX.svg'
+import { ReactComponent as CXTJ } from './images/CXTJ.svg'
 
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps {}
@@ -29,7 +29,7 @@ const LEFT_MENU_CONFIG_HJ = [
     path: '/nurseFile/retiredRetirees',
     component: RetiredRetirees,
     icon: <TXHSCX />
-  },
+  }
   // {
   //   title: '查询统计',
   //   icon: <CXTJ />,

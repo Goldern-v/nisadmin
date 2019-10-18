@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Icon, Button, Row, Col, Modal, Input, Checkbox, message as Message } from 'antd'
-import { ReactComponent as YJS } from './../assets/已结束.svg'
-import { ReactComponent as YSQ } from './../assets/已申请.svg'
-import { ReactComponent as YJJ } from './../assets/已拒绝.svg'
-import { ReactComponent as YTG } from './../assets/已通过.svg'
+import { ReactComponent as YJS } from '../assets/yijiesu.svg'
+import { ReactComponent as YSQ } from '../assets/yishenqing.svg'
+import { ReactComponent as YJJ } from '../assets/yijujue.svg'
+import { ReactComponent as YTG } from '../assets/yitongguo.svg'
 
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 
 import DeptBorrowService from './../api/DeptBorrowService'
 
-const api = new DeptBorrowService();
+const api = new DeptBorrowService()
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
 export interface Props {
-  visible?: boolean,
-  data: any,
+  visible?: boolean
+  data: any
   onCancel: any
 }
 
 export default observer(function ViewOrAuditModal(props: Props) {
-  const { visible, onCancel, data } = props;
+  const { visible, onCancel, data } = props
   //拒绝申请相关
-  const [refuseModalVisible, setRefuseModalVisible] = useState(false);
-  const [refuseLoading, setRefuseLoading] = useState(false);
-  const [refuseReason, setRefuseReason] = useState('' as string);
+  const [refuseModalVisible, setRefuseModalVisible] = useState(false)
+  const [refuseLoading, setRefuseLoading] = useState(false)
+  const [refuseReason, setRefuseReason] = useState('' as string)
   //同意申请相关
-  const [allowModalVisible, setAllowModalVisible] = useState(false);
-  const [allowList, setAllowList] = useState([] as any);
-  const [allowLoading, setAllowLoading] = useState(false);
-  const [deptEmpList, setDeptEmpList] = useState([] as any);
+  const [allowModalVisible, setAllowModalVisible] = useState(false)
+  const [allowList, setAllowList] = useState([] as any)
+  const [allowLoading, setAllowLoading] = useState(false)
+  const [deptEmpList, setDeptEmpList] = useState([] as any)
 
   const [detailInfo, setDetailInfo] = useState({
     createTime: { name: '申请日期', value: '' },
@@ -52,17 +52,17 @@ export default observer(function ViewOrAuditModal(props: Props) {
     schDeptTransferUser: { name: '借出人员列表', value: [] as any, hide: true },
     empNameTransferFrom: { name: '借用人姓名', value: '', hide: true },
     nearImageUrlTransferFrom: { name: '借用人照片', value: '', hide: true }
-  } as any);
+  } as any)
 
   const modalClassName = () => {
-    let classList = [] as any;
-    if (!visible) classList.push('hide');
-    let user = authStore.user;
+    let classList = [] as any
+    if (!visible) classList.push('hide')
+    let user = authStore.user
 
     // if (user && (user.post == '护长' || '护理部') && detailInfo.statusTransferFrom.value == '0') classList.push('auth');
-    if (user && (user.post == '护长') && detailInfo.statusTransferFrom.value == '0') classList.push('auth');
+    if (user && user.post == '护长' && detailInfo.statusTransferFrom.value == '0') classList.push('auth')
     // classList.push('auth');
-    return classList.join(' ');
+    return classList.join(' ')
   }
 
   const statusTransferFromIcon = (): any => {
@@ -83,17 +83,17 @@ export default observer(function ViewOrAuditModal(props: Props) {
   useEffect(() => {
     if (visible) {
       let newInfo: any = {}
-      Object.keys(detailInfo).map(((key: any) => {
-        let item = detailInfo[key];
-        let val: any = '';
-        if (item.value instanceof Array) val = [];
-        let hide = item.hide;
+      Object.keys(detailInfo).map((key: any) => {
+        let item = detailInfo[key]
+        let val: any = ''
+        if (item.value instanceof Array) val = []
+        let hide = item.hide
         newInfo[key] = {
           name: item.name,
           value: val,
           hide
         }
-      }))
+      })
 
       for (let x in data) {
         if (newInfo[x]) newInfo[x].value = data[x]
@@ -105,34 +105,33 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
   useEffect(() => {
     if (allowModalVisible) {
-      api.getDeptEmpList(detailInfo.deptCodeTransferTo.value).then(res => {
-        if (res.data instanceof Array) setDeptEmpList(res.data);
+      api.getDeptEmpList(detailInfo.deptCodeTransferTo.value).then((res) => {
+        if (res.data instanceof Array) setDeptEmpList(res.data)
       })
     }
   }, [allowModalVisible])
 
   //拒绝申请相关
   const openRefuse = () => {
-    setRefuseModalVisible(true);
-    setRefuseReason('');
+    setRefuseModalVisible(true)
+    setRefuseReason('')
     //
   }
 
   //同意申请相关
   const openAllow = () => {
-    setAllowModalVisible(true);
+    setAllowModalVisible(true)
     setAllowList([])
     //getNurseList
-
   }
   const handleRefuse = () => {
-    if (!refuseReason) return Message.warning('请输入拒绝原因');
-    let auditedEmpName = '';
-    let auditedEmpNo = '';
+    if (!refuseReason) return Message.warning('请输入拒绝原因')
+    let auditedEmpName = ''
+    let auditedEmpNo = ''
 
     if (authStore.user) {
-      auditedEmpName = authStore.user.empName;
-      auditedEmpNo = authStore.user.empNo;
+      auditedEmpName = authStore.user.empName
+      auditedEmpNo = authStore.user.empNo
     }
 
     let params: any = {
@@ -147,38 +146,38 @@ export default observer(function ViewOrAuditModal(props: Props) {
 
     // return console.log(params)
 
-    api.refuseBorrow(params).then(res => {
-      setRefuseLoading(false)
-      if (res.code == 200) {
-        Message.success('审核操作成功')
-        setRefuseModalVisible(false)
-        onCancel && onCancel(true);
+    api.refuseBorrow(params).then(
+      (res) => {
+        setRefuseLoading(false)
+        if (res.code == 200) {
+          Message.success('审核操作成功')
+          setRefuseModalVisible(false)
+          onCancel && onCancel(true)
+        }
+      },
+      (err) => {
+        setRefuseLoading(false)
       }
-    },err=>{
-      setRefuseLoading(false)
-    })
+    )
   }
 
   const handleRefuseCancel = () => {
-    if (!refuseLoading)
-      setRefuseModalVisible(false)
+    if (!refuseLoading) setRefuseModalVisible(false)
   }
 
   const handleEmpSelectedChange = (newList: any) => {
-    let limit = Number(detailInfo.numTransferFrom.value);
+    let limit = Number(detailInfo.numTransferFrom.value)
 
-    if (newList.length > limit)
-      Message.warning(`最多选择${limit}人`)
-    else
-      setAllowList(newList)
+    if (newList.length > limit) Message.warning(`最多选择${limit}人`)
+    else setAllowList(newList)
   }
 
   const handleAllow = () => {
-    let auditedEmpName = '';
-    let auditedEmpNo = '';
+    let auditedEmpName = ''
+    let auditedEmpNo = ''
     if (authStore.user) {
-      auditedEmpName = authStore.user.empName;
-      auditedEmpNo = authStore.user.empNo;
+      auditedEmpName = authStore.user.empName
+      auditedEmpNo = authStore.user.empNo
     }
     let params: any = {
       schDeptTransfer: {
@@ -190,9 +189,9 @@ export default observer(function ViewOrAuditModal(props: Props) {
       schDeptTransferUser: allowList.map((_empNo: string) => {
         let target: any = deptEmpList.filter((item: any) => {
           return item.empNo == _empNo
-        });
+        })
         if (target[0]) {
-          const { empNo, empName, id, deptCode, nearImageUrl } = target[0];
+          const { empNo, empName, id, deptCode, nearImageUrl } = target[0]
           return {
             empNo,
             empName,
@@ -203,158 +202,197 @@ export default observer(function ViewOrAuditModal(props: Props) {
         } else {
           return {} as any
         }
-
       })
-    };
+    }
 
     if (params.schDeptTransferUser.length <= 0) return Message.warn('至少选择一名借出人员')
     //return console.log(params)
-    setAllowLoading(true);
+    setAllowLoading(true)
 
-    api.allowBorrow(params).then(res => {
-      setRefuseLoading(false)
-      if (res.code == 200) {
-        Message.success('审核操作成功');
-        setAllowModalVisible(false);
-        onCancel && onCancel(true);
+    api.allowBorrow(params).then(
+      (res) => {
+        setRefuseLoading(false)
+        if (res.code == 200) {
+          Message.success('审核操作成功')
+          setAllowModalVisible(false)
+          onCancel && onCancel(true)
+        }
+      },
+      (err) => {
+        setRefuseLoading(false)
       }
-    },err=>{
-      setRefuseLoading(false)
-    })
+    )
   }
 
   const handleAllowCancel = () => {
-    if (!allowLoading)
-      setAllowModalVisible(false)
+    if (!allowLoading) setAllowModalVisible(false)
   }
 
   const StatusPannel = () => {
-    let status = detailInfo.statusTransferFrom.value;
-    if (status == '0' || detailInfo.auditedEmpName.value == '') return '';
+    let status = detailInfo.statusTransferFrom.value
+    if (status == '0' || detailInfo.auditedEmpName.value == '') return ''
 
-    let statusText = '通过';
-    let detailNode: any;
+    let statusText = '通过'
+    let detailNode: any
     if (status !== '3') {
-
-      detailNode = <Row className="row-item borrow-out-people">
-        <Col span={5} className="label">借出护士：</Col>
-        <Col span={19}>
-          {detailInfo.schDeptTransferUser.value.map((item: any) => {
-            return <span className="borrow-out-item" key={item.empNo}>
-              <span className="item-img">
-                <img src={item.nearImageUrl} alt="" />
-              </span>
-              <br />
-              <span className="item-name">{item.empName}</span>
-            </span>
-          })}
-        </Col>
-      </Row>
+      detailNode = (
+        <Row className='row-item borrow-out-people'>
+          <Col span={5} className='label'>
+            借出护士：
+          </Col>
+          <Col span={19}>
+            {detailInfo.schDeptTransferUser.value.map((item: any) => {
+              return (
+                <span className='borrow-out-item' key={item.empNo}>
+                  <span className='item-img'>
+                    <img src={item.nearImageUrl} alt='' />
+                  </span>
+                  <br />
+                  <span className='item-name'>{item.empName}</span>
+                </span>
+              )
+            })}
+          </Col>
+        </Row>
+      )
     } else {
       statusText = '不通过'
-      detailNode = <Row className="row-item">
-        <Col span={5} className="label">拒绝说明：</Col>
-        <Col span={19}>{detailInfo.detailTransferTo.value}</Col>
-      </Row>
+      detailNode = (
+        <Row className='row-item'>
+          <Col span={5} className='label'>
+            拒绝说明：
+          </Col>
+          <Col span={19}>{detailInfo.detailTransferTo.value}</Col>
+        </Row>
+      )
     }
 
-    return <div className="statusTransferFrom-info">
-      <Row className="row-item">
-        <Col span={5} className="label">审核状态：</Col>
-        <Col span={19}>{statusText}</Col>
-      </Row>
-      {detailNode}
-      <Row className="row-item">
-        <Col span={5} className="label">审核人：</Col>
-        <Col span={19}>{detailInfo.auditedEmpName.value}  {detailInfo.auditedTime.value}</Col>
-      </Row>
-    </div>
+    return (
+      <div className='statusTransferFrom-info'>
+        <Row className='row-item'>
+          <Col span={5} className='label'>
+            审核状态：
+          </Col>
+          <Col span={19}>{statusText}</Col>
+        </Row>
+        {detailNode}
+        <Row className='row-item'>
+          <Col span={5} className='label'>
+            审核人：
+          </Col>
+          <Col span={19}>
+            {detailInfo.auditedEmpName.value} {detailInfo.auditedTime.value}
+          </Col>
+        </Row>
+      </div>
+    )
   }
 
-  return <Wrapper className={modalClassName()}>
-    <div className="mask" onClick={onCancel} />
-    <div className="modal">
-      <div className="header">
-        <span className="title">借用详情</span>
-        <div className="float-right" onClick={onCancel}>
-          <Icon type="close" />
+  return (
+    <Wrapper className={modalClassName()}>
+      <div className='mask' onClick={onCancel} />
+      <div className='modal'>
+        <div className='header'>
+          <span className='title'>借用详情</span>
+          <div className='float-right' onClick={onCancel}>
+            <Icon type='close' />
+          </div>
         </div>
-      </div>
-      <div className="body">
-        <div className="base-info">
-          <span className="applicant">
-            <img src={detailInfo.nearImageUrlTransferFrom.value} alt="" />
-          </span>
-          <span>
-            <span className="title">{detailInfo.empNameTransferFrom.value}提出的借用申请</span><br />
-            <span className="statusTransferFrom">申请</span>
-          </span>
-          <span className="statusTransferFrom-icon">{statusTransferFromIcon()}</span>
-        </div>
-        <div className="detail-info">
-          {Object.keys(detailInfo).map((key: string) => {
-            if (detailInfo[key].hide) return ''
-            let val = detailInfo[key].value;
-            if (key == 'daysTransferFrom') val += '天';
-            return <Row key={key} className="row-item">
-              <Col span={5} className="label">{detailInfo[key].name}：</Col>
-              <Col span={19}>{val}</Col>
-            </Row>
-          })}
-        </div>
-        {StatusPannel()}
-      </div>
-      <div className="footer">
-        <Button className="refuse" onClick={openRefuse}>拒绝</Button>
-        <Button type="primary" onClick={openAllow}>同意</Button>
-      </div>
-    </div>
-    <Modal
-      title="拒绝申请"
-      visible={refuseModalVisible}
-      onOk={handleRefuse}
-      centered
-      onCancel={handleRefuseCancel}
-      confirmLoading={refuseLoading}>
-      <RefuseWrapper>
-        <div className="refuse-title">请输入拒绝原因</div>
-        <TextArea autosize={{ minRows: 6 }} value={refuseReason} onChange={(e: any) => setRefuseReason(e.target.value)} />
-      </RefuseWrapper>
-    </Modal>
-    <Modal
-      title="同意申请"
-      visible={allowModalVisible}
-      onCancel={handleAllowCancel}
-      onOk={handleAllow}
-      centered
-      confirmLoading={allowLoading}>
-      <AllowWrapper>
-        <div className="allow-title">请选择{detailInfo.numTransferFrom.value}名借出人员：</div>
-        <div className="borrow-out-select">
-          <Checkbox.Group value={allowList} onChange={handleEmpSelectedChange}>
-            {deptEmpList.map((item: any) => {
-              return <Checkbox value={item.empNo} key={item.empNo}><span className="empName">{item.empName}</span></Checkbox>
+        <div className='body'>
+          <div className='base-info'>
+            <span className='applicant'>
+              <img src={detailInfo.nearImageUrlTransferFrom.value} alt='' />
+            </span>
+            <span>
+              <span className='title'>{detailInfo.empNameTransferFrom.value}提出的借用申请</span>
+              <br />
+              <span className='statusTransferFrom'>申请</span>
+            </span>
+            <span className='statusTransferFrom-icon'>{statusTransferFromIcon()}</span>
+          </div>
+          <div className='detail-info'>
+            {Object.keys(detailInfo).map((key: string) => {
+              if (detailInfo[key].hide) return ''
+              let val = detailInfo[key].value
+              if (key == 'daysTransferFrom') val += '天'
+              return (
+                <Row key={key} className='row-item'>
+                  <Col span={5} className='label'>
+                    {detailInfo[key].name}：
+                  </Col>
+                  <Col span={19}>{val}</Col>
+                </Row>
+              )
             })}
-          </Checkbox.Group>
+          </div>
+          {StatusPannel()}
         </div>
-      </AllowWrapper>
-    </Modal>
-  </Wrapper>
+        <div className='footer'>
+          <Button className='refuse' onClick={openRefuse}>
+            拒绝
+          </Button>
+          <Button type='primary' onClick={openAllow}>
+            同意
+          </Button>
+        </div>
+      </div>
+      <Modal
+        title='拒绝申请'
+        visible={refuseModalVisible}
+        onOk={handleRefuse}
+        centered
+        onCancel={handleRefuseCancel}
+        confirmLoading={refuseLoading}
+      >
+        <RefuseWrapper>
+          <div className='refuse-title'>请输入拒绝原因</div>
+          <TextArea
+            autosize={{ minRows: 6 }}
+            value={refuseReason}
+            onChange={(e: any) => setRefuseReason(e.target.value)}
+          />
+        </RefuseWrapper>
+      </Modal>
+      <Modal
+        title='同意申请'
+        visible={allowModalVisible}
+        onCancel={handleAllowCancel}
+        onOk={handleAllow}
+        centered
+        confirmLoading={allowLoading}
+      >
+        <AllowWrapper>
+          <div className='allow-title'>请选择{detailInfo.numTransferFrom.value}名借出人员：</div>
+          <div className='borrow-out-select'>
+            <Checkbox.Group value={allowList} onChange={handleEmpSelectedChange}>
+              {deptEmpList.map((item: any) => {
+                return (
+                  <Checkbox value={item.empNo} key={item.empNo}>
+                    <span className='empName'>{item.empName}</span>
+                  </Checkbox>
+                )
+              })}
+            </Checkbox.Group>
+          </div>
+        </AllowWrapper>
+      </Modal>
+    </Wrapper>
+  )
 })
 
-const defaultNurseImg = require('./../assets/护士默认头像.png');
+const defaultNurseImg = require('./../assets/护士默认头像.png')
 
 const Wrapper = styled.div`
-  .mask{
+  .mask {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     top: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 2;
   }
-  .modal{
+  .modal {
     position: fixed;
     right: 0;
     top: 0;
@@ -362,30 +400,30 @@ const Wrapper = styled.div`
     width: 380px;
     z-index: 3;
     background: #fff;
-    transition: right .2s .1s;
+    transition: right 0.2s 0.1s;
     border-left: 1px solid #ddd;
     padding-top: 40px;
-    .header{
+    .header {
       height: 40px;
       line-height: 40px;
       border-bottom: 1px solid #ddd;
       margin-top: -40px;
-      .title{
+      .title {
         font-size: 18px;
         color: #000;
         margin-left: 15px;
       }
-      .float-right{
+      .float-right {
         float: right;
         width: 40px;
         text-align: center;
         cursor: pointer;
-        :hover{
-          color: #00A680;
+        :hover {
+          color: #00a680;
         }
       }
     }
-    .body{
+    .body {
       height: 100%;
       overflow-y: auto;
       ::-webkit-scrollbar {
@@ -406,24 +444,24 @@ const Wrapper = styled.div`
         // border-radius: 5px;
         background-color: rgba(0, 0, 0, 0.1);
       }
-      
-      .row-item{
+
+      .row-item {
         margin-bottom: 10px;
-        :last-of-type{
+        :last-of-type {
           margin-bottom: 0px;
         }
-        .label{
+        .label {
           color: #888;
           text-align: right;
         }
       }
 
-      .base-info{
+      .base-info {
         padding: 10px 15px;
         position: relative;
-        >span{
+        > span {
           display: inline-block;
-          &.applicant{
+          &.applicant {
             width: 50px;
             height: 50px;
             vertical-align: top;
@@ -433,7 +471,7 @@ const Wrapper = styled.div`
             background-position: -10px -9px;
             background-size: 140%;
             overflow: hidden;
-            img{
+            img {
               width: 52px;
               height: 52px;
               position: relative;
@@ -441,40 +479,40 @@ const Wrapper = styled.div`
               top: -1px;
             }
           }
-          .title{
+          .title {
             font-size: 20px;
             color: #000;
             font-weight: bold;
           }
         }
-        .statusTransferFrom-icon{
+        .statusTransferFrom-icon {
           position: absolute;
           right: 6px;
           top: 0px;
-          text tspan{
-            font-size: 28px!important
+          text tspan {
+            font-size: 28px !important;
           }
         }
       }
-      .detail-info{
+      .detail-info {
         padding: 10px 15px;
         border-top: 1px solid #eee;
         color: #000;
       }
-      .statusTransferFrom-info{
+      .statusTransferFrom-info {
         padding: 10px 15px;
         border-top: 1px solid #eee;
-        .borrow-out-people{
-          .label{
+        .borrow-out-people {
+          .label {
             position: relative;
             top: 5px;
           }
         }
-        .borrow-out-item{
+        .borrow-out-item {
           display: inline-block;
           text-align: center;
           margin-right: 10px;
-          .item-img{
+          .item-img {
             display: inline-block;
             width: 40px;
             height: 40px;
@@ -483,7 +521,7 @@ const Wrapper = styled.div`
             background-image: url(${defaultNurseImg});
             background-size: 100%;
             overflow: hidden;
-            img{
+            img {
               width: 42px;
               height: 42px;
               position: relative;
@@ -494,52 +532,52 @@ const Wrapper = styled.div`
         }
       }
     }
-    
-    .footer{
+
+    .footer {
       display: none;
       height: 40px;
       line-height: 40px;
       border-top: 1px solid #ddd;
       margin-bottom: -40px;
       text-align: center;
-      .refuse{
-        margin-right:20px;
+      .refuse {
+        margin-right: 20px;
       }
     }
   }
-  
-  &.auth{
-    .modal{
+
+  &.auth {
+    .modal {
       padding-bottom: 40px;
-      .footer{
+      .footer {
         display: block;
       }
     }
   }
-  &.hide{
-    .mask{
+  &.hide {
+    .mask {
       display: none;
     }
-    .modal{
+    .modal {
       right: -380px;
     }
   }
 `
 
 const RefuseWrapper = styled.div`
-  .refuse-title{
+  .refuse-title {
     margin-bottom: 10px;
   }
 `
 
 const AllowWrapper = styled.div`
-  .allow-title{
+  .allow-title {
     margin-bottom: 10px;
   }
-  .borrow-out-select .ant-checkbox-group .ant-checkbox-wrapper{
+  .borrow-out-select .ant-checkbox-group .ant-checkbox-wrapper {
     margin-right: 4px;
     margin-left: 4px;
-    span.empName{
+    span.empName {
       width: 50px;
       display: inline-block;
     }

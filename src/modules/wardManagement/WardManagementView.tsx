@@ -6,13 +6,7 @@ import { appStore } from 'src/stores'
 
 import wardManagementViewModel from './WardManagementViewModel'
 
-import { ReactComponent as HLZDZD } from './images/护理诊断字典.svg'
-import { ReactComponent as JKXJZD } from './images/健康宣教字典.svg'
-import { ReactComponent as HLPGSZ } from './images/护理评估设置.svg'
-import { ReactComponent as JJRSZ } from './images/节假日设置.svg'
-import { ReactComponent as WLPTSZ } from './images/物流平台设置.svg'
-import { ReactComponent as JXCSSZ } from './images/绩效参数设置.svg'
-import { ReactComponent as KSPHSZ } from './images/科室偏好设置.svg'
+import { ReactComponent as KSPHSZ } from './images/KSPHSZ.svg'
 
 import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
 import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
@@ -20,7 +14,7 @@ import ManagementSummary from '../deptReferSetting/views/ManagementSummary'
 import FlatManageProblemList from '../deptReferSetting/views/FlatManageProblemList'
 // 引入类别字典设置页面
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 const LEFT_MENU_CONFIG_HJ: any = []
 const LEFT_MENU_CONFIG_WH = [
@@ -37,7 +31,7 @@ const LEFT_MENU_CONFIG_WH = [
       {
         title: '扁平管理问题查看',
         path: '/wardManagement/扁平管理问题查看',
-        component: FlatManageProblemList,
+        component: FlatManageProblemList
         // hide: true
       },
       {
@@ -52,12 +46,11 @@ const LEFT_MENU_CONFIG_WH = [
     path: '/wardManagement/病区文件',
     component: DeptFileShare,
     icon: <KSPHSZ />
-  },
-
+  }
 ]
 
 export default function WardManagementView(props: Props) {
-  useEffect(() => { }, [props.match.params.name])
+  useEffect(() => {}, [props.match.params.name])
   let currentRoutePath = props.match.url || ''
   let currentRoute = getTargetObj(
     appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ,

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Input, message } from 'antd'
-import { ReactComponent as AgreeIcon } from 'src/global/images/默认勾选.svg'
+import { ReactComponent as AgreeIcon } from 'src/global/images/morengouxuan.svg'
 import { authStore } from 'src/stores'
 const { TextArea } = Input
 import { Modal } from 'antd'
