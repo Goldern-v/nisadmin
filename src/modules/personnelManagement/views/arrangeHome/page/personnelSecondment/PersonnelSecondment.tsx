@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { Place } from 'src/components/common'
 import BaseTable from 'src/components/BaseTable'
-import { ColumnProps } from 'src/vendors/antd'
+import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
 import createModal from 'src/libs/createModal'
 import PersonelSecondModal from './modal/PersonelSecondModal'
 import { personelSecondServices } from './service/PersonelSecondServices'
@@ -12,30 +12,58 @@ import { appStore, authStore } from 'src/stores'
 export interface Props {}
 
 export default function PersonnelSecondment() {
+  const [dataSource, setDataSource] = useState([])
   const personelSecondModal = createModal(PersonelSecondModal)
+  const [pageOptions, setPageOptions]: any = useState({
+    pageIndex: 1,
+    pageSize: 20,
+    total: 0
+  })
   const columns: ColumnProps<any>[] = [
     {
       title: '借出科室',
+      dataIndex: 'deptNameTransferTo',
       width: 300
     },
     {
-      title: '借出护士'
+      title: '借出护士',
+      dataIndex: 'empNameTransferTo',
+      width: 100,
+      align: 'center'
     },
     {
       title: '借出日期',
-      width: 250
+      dataIndex: 'startDate',
+      width: 250,
+      align: 'center'
     },
     {
       title: '借出说明',
-      width: 300
+      dataIndex: 'detailTransferTo',
+      width: 400
+    },
+    {
+      title: '操作人',
+      dataIndex: 'empName',
+      width: 100,
+      align: 'center'
     }
   ]
 
-  useEffect(() => {}, [])
-
   const getData = () => {
-    personelSecondServices.getByDeptCode(authStore.selectedDeptCode)
+    personelSecondServices.getByDeptCode({ ...pageOptions, deptCode: authStore.selectedDeptCode }).then((res) => {
+      setDataSource(res.data.list)
+    })
   }
+
+  useCallback(() => {
+    getData()
+  }, [pageOptions.pageIndex, pageOptions.pageSize])
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
     <Wrapper>
       <div>
@@ -56,7 +84,24 @@ export default function PersonnelSecondment() {
         <Place />
         <Button onClick={() => personelSecondModal.show()}>人员借出</Button>
       </Head>
-      <BaseTable columns={columns} dataSource={[]} surplusHeight={190} type={['index']} />
+      <BaseTable
+        columns={columns}
+        dataSource={dataSource}
+        surplusHeight={210}
+        type={['index']}
+        pagination={{
+          current: pageOptions.pageIndex,
+          pageSize: pageOptions.pageSize,
+          total: pageOptions.total
+        }}
+        onChange={(pagination: PaginationConfig) => {
+          setPageOptions({
+            pageIndex: pagination.current,
+            pageSize: pagination.pageSize,
+            total: pagination.total
+          })
+        }}
+      />
       <personelSecondModal.Component />
     </Wrapper>
   )

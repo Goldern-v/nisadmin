@@ -7,7 +7,10 @@ import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { Checkbox } from 'src/vendors/antd'
 import service from 'src/services/api'
+import moment from 'moment'
 import { authStore } from 'src/stores'
+import { personelSecondServices } from '../service/PersonelSecondServices'
+import { globalModal } from 'src/global/globalModal'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -17,7 +20,10 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  publicDate: (val) => !!val || '请填写发表日期'
+  deptCodeTransferTo: (val) => !!val || '请选择借出科室',
+  empNoTransferTo: (val) => !!val || '请选择借出护士',
+  startDate: (val) => !!val || '请选择借出时间'
+  // detailTransferTo: (val) => !!val || '请输入借出说明'
 }
 
 export default function PersonelSecondModal(props: Props) {
@@ -33,13 +39,21 @@ export default function PersonelSecondModal(props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
-
+    let data: any = { ...value }
+    data.empNo = authStore!.user!.empNo
+    data.deptCode = authStore.selectedDeptCode || authStore.defaultDeptCode
+    data.deptName = authStore.selectedDeptCode ? authStore.selectedDeptName : authStore.defaultDeptName
+    data.empNameTransferTo = (nurseList.find((item: any) => item.empNo == data.empNoTransferTo) as any)!.empName
+    data.deptNameTransferTo = (deptList.find((item: any) => item.code == data.deptCodeTransferTo) as any)!.name
+    data.startDate = moment(data.startDate).format('YYYY-MM-DD')
     /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
+    globalModal.confirm('确定要保存吗？', '保存后会立即将该护士借出。').then((res) => {
+      personelSecondServices.saveOrUpdate(data).then((res: any) => {
+        message.success('保存成功')
+        props.onOkCallBack && props.onOkCallBack()
+        onCancel()
+      })
+    })
   }
 
   useLayoutEffect(() => {
@@ -47,17 +61,20 @@ export default function PersonelSecondModal(props: Props) {
     /** 如果是修改 */
     if (refForm.current && visible) {
       setModalLoading(true)
-      Promise.all([service.commonApiService.getNursingUnitAll(), service.commonApiService.defaultDeptUser()]).then(
-        (res) => {
-          setModalLoading(false)
-          setDeptList(res[0].data.deptList)
-          setNurseList(res[1].data.userList)
-        }
-      )
+      Promise.all([
+        service.commonApiService.getNursingUnitAll(),
+        personelSecondServices.getNursingByDeptCode(authStore.selectedDeptCode)
+      ]).then((res) => {
+        setModalLoading(false)
+        setDeptList(res[0].data.deptList)
+        setNurseList(res[1].data)
+      })
       /** 表单数据初始化 */
       refForm!.current!.setFields({
-        publicDate: '',
-        title: ''
+        deptCodeTransferTo: '',
+        empNoTransferTo: '',
+        startDate: moment(),
+        detailTransferTo: ''
       })
     }
   }, [visible])
@@ -68,7 +85,7 @@ export default function PersonelSecondModal(props: Props) {
         <Form ref={refForm} rules={rules} labelWidth={80}>
           <Row>
             <Col span={24}>
-              <Form.Field label={`借出科室`} name='publicDate' required>
+              <Form.Field label={`借出科室`} name='deptCodeTransferTo' required>
                 <Select>
                   {deptList.map((item: any, index: number) => (
                     <Select.Option value={item.code} key={index}>
@@ -80,25 +97,23 @@ export default function PersonelSecondModal(props: Props) {
             </Col>
 
             <Col span={24}>
-              <Form.Field label={`借出护士`} name='title' required>
-                <Checkbox.Group style={{ width: '100%' }}>
-                  <Row>
-                    {nurseList.map((item: any, index: number) => (
-                      <Col span={8}>
-                        <Checkbox value={item.empNo}>{item.empName}</Checkbox>
-                      </Col>
-                    ))}
-                  </Row>
-                </Checkbox.Group>
+              <Form.Field label={`借出护士`} name='empNoTransferTo' required>
+                <Select>
+                  {nurseList.map((item: any, index: number) => (
+                    <Select.Option value={item.empNo} key={index}>
+                      {item.empName}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`借出日期`} name='title' required>
+              <Form.Field label={`借出日期`} name='startDate' required>
                 <DatePicker />
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`借出说明`} name='title' required>
+              <Form.Field label={`借出说明`} name='detailTransferTo'>
                 <Input.TextArea />
               </Form.Field>
             </Col>

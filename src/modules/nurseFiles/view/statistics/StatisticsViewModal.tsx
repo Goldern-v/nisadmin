@@ -80,6 +80,16 @@ class StatisticsViewModal {
   async init() {
     await this.initDict()
   }
+
+  reSetDept() {
+    if (authStore.isDepartment) {
+      return ['全院']
+    } else if (authStore.isSupervisorNurse) {
+      return ['全部']
+    } else {
+      return [authStore.defaultDeptCode]
+    }
+  }
 }
 
 export const statisticsViewModal = new StatisticsViewModal()

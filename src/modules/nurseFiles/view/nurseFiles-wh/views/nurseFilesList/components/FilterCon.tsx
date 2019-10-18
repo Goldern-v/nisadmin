@@ -40,9 +40,10 @@ export default observer(function FilterCon() {
           let form: any = refForm.current
           let [err, value] = await to(form.validateFields())
           let nullObj = cleanObj(value)
+          statisticsViewModal.reSetDept()
           form.setFields(
             Object.assign(nullObj, {
-              deptCode: statisticsViewModal.selectedDeptCode
+              deptCode: statisticsViewModal.reSetDept()
             })
           )
         })()

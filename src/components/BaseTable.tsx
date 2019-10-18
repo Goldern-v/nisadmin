@@ -28,6 +28,11 @@ export interface Props extends TableProps<any> {
   fixedFooter?: boolean
 }
 
+export interface PageOptions {
+  pageIndex: number
+  pageSize?: number
+}
+
 let scrollTop = 0
 export default observer(function BaseTable(props: Props) {
   let wih = windowHeight()
