@@ -30,6 +30,9 @@ export default observer(function FilterCon() {
         // nurseFilesListViewModel.loadNursingList()
       })
     }
+  }, [])
+
+  useEffect(() => {
     emitter.removeAllListeners('nurseFileResize')
     emitter.addListener('nurseFileResize', () => {
       if (refForm.current) {
@@ -37,14 +40,6 @@ export default observer(function FilterCon() {
           let form: any = refForm.current
           let [err, value] = await to(form.validateFields())
           let nullObj = cleanObj(value)
-          // console.log(
-          //   Object.assign(nullObj, {
-          //     deptCode: statisticsViewModal.selectedDeptCode
-          //   }),
-          //   value,
-          //   nullObj,
-          //   '123'
-          // )
           form.setFields(
             Object.assign(nullObj, {
               deptCode: statisticsViewModal.selectedDeptCode
@@ -53,7 +48,7 @@ export default observer(function FilterCon() {
         })()
       }
     })
-  }, [])
+  })
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())
     if (err) return
