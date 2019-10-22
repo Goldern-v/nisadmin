@@ -61,10 +61,12 @@ export default observer(function Table() {
       width: 120,
       align: 'center',
       render(status: string, record: any) {
-        if(status == '3'){
+        if(status == '2'){
+          return '病区处理'
+        } else if(status == '3'){
+          return '科护士长审核'
+        }else if(status == '4'){
           return '护理部审核'
-        } else if(status == '4'){
-          return '已完成'
         } else if(record.patientStatus == '0' && record.nurseStatus == '0'){
           return '科护士长审核'
         } else {
