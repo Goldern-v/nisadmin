@@ -34,7 +34,7 @@ export default observer(function Analysis() {
     pageIndex: 1,
     pageSize: 20,
     type: 'month',
-    indexInType: moment().month() + 1,
+    indexInType: moment().month() + 1 + '',
     status: '',
     groupRoleCode: ''
   } as any)
@@ -46,6 +46,20 @@ export default observer(function Analysis() {
     api.qcRoleCodeSelf().then((res) => {
       if (res.data instanceof Array) setGroupRolelistSelf(res.data)
     })
+
+    if (sessionStorage.qcThreeTableOptions) {
+      let qcThreeTableOptions = JSON.parse(sessionStorage.qcThreeTableOptions)
+      setQuery({
+        year: moment(qcThreeTableOptions.year + '-01-01'),
+        pageIndex: 1,
+        pageSize: 20,
+        type: 'month',
+        indexInType: qcThreeTableOptions.indexInType + '',
+        status: '',
+        groupRoleCode: ''
+      })
+      sessionStorage.qcThreeTableOptions = ''
+    }
   }, [])
 
   useEffect(() => {
@@ -174,7 +188,8 @@ export default observer(function Analysis() {
       groupRoleCode: record.groupRoleCode,
       reportName: record.reportName
     }
-
+    // 存储-详情跳转后数据回填
+    sessionStorage.qcThreeTableOptions = JSON.stringify(obj)
     // console.log(record)
     history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`)
   }

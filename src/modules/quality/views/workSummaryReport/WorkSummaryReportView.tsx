@@ -13,7 +13,7 @@ import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { workSummaryReportService } from './services/WorkSummaryReportService'
 import qs from 'qs'
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
   const pageRef: any = useRef<HTMLElement>()
@@ -81,7 +81,7 @@ export default observer(function QualityAnalysisReportView() {
       workSummaryReportService.deleteReport().then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/quality/workSummaryReportList')
+          appStore.history.push('/qcTwo/workSummaryReportList')
         }, 500)
       })
     })
@@ -91,7 +91,7 @@ export default observer(function QualityAnalysisReportView() {
       workSummaryReportService.publishReport().then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/quality/workSummaryReportList')
+          appStore.history.push('/qcTwo/workSummaryReportList')
         }, 500)
       })
     })
@@ -101,7 +101,7 @@ export default observer(function QualityAnalysisReportView() {
       workSummaryReportService.cancelPublishReport().then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/quality/workSummaryReportList')
+          appStore.history.push('/qcTwo/workSummaryReportList')
         }, 500)
       })
     })
@@ -109,7 +109,9 @@ export default observer(function QualityAnalysisReportView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/quality/workSummaryReportList' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb
+          data={[{ name: '分析报告', link: '/qcTwo/workSummaryReportList' }, { name: '报告详情', link: '' }]}
+        />
         <div className='title'>{reportName}</div>
         <div className='aside'>
           <span>
@@ -122,10 +124,10 @@ export default observer(function QualityAnalysisReportView() {
           {report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
-              <Button onClick={onPublish}>发布</Button>
-            )}
+            <Button onClick={onPublish}>发布</Button>
+          )}
           <Button onClick={() => onPrint(true)}>打印</Button>
-          <Button onClick={() => appStore.history.push('/quality/workSummaryReportList')}>返回</Button>
+          <Button onClick={() => appStore.history.push('/qcTwo/workSummaryReportList')}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>

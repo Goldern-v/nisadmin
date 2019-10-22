@@ -168,7 +168,8 @@ export default observer(function WorkSummaryReportList() {
       groupRoleCode: record.groupRoleCode,
       reportName: record.reportName
     }
-
+    // 存储-详情跳转后数据回填
+    sessionStorage.qcThreeTableOptions = JSON.stringify(obj)
     // console.log(record)
     history.push(`/workSummaryReportView?${qs.stringify(obj)}`)
   }
@@ -311,7 +312,7 @@ export default observer(function WorkSummaryReportList() {
             <Button onClick={handleSearch}>查询</Button>
           </div>
           <div className='item'>
-            <Button onClick={handleCreate} type='primary' disabled={!(!!authStore.isSupervisorNurse)}>
+            <Button onClick={handleCreate} type='primary' disabled={!!!authStore.isSupervisorNurse}>
               创建
             </Button>
           </div>

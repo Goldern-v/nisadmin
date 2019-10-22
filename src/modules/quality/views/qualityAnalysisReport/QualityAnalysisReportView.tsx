@@ -12,7 +12,7 @@ import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
   const pageRef: any = useRef<HTMLElement>()
@@ -70,7 +70,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.deleteReport().then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/qcThree/analysis')
         }, 500)
       })
     })
@@ -80,7 +80,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.publishReport().then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/qcThree/analysis')
         }, 500)
       })
     })
@@ -90,7 +90,7 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.cancelPublishReport().then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/quality/analysis')
+          appStore.history.push('/qcThree/analysis')
         }, 500)
       })
     })
@@ -98,7 +98,7 @@ export default observer(function QualityAnalysisReportView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/quality/analysis' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb data={[{ name: '分析报告', link: '/qcThree/analysis' }, { name: '报告详情', link: '' }]} />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>
@@ -111,11 +111,11 @@ export default observer(function QualityAnalysisReportView() {
           {report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
-              <Button onClick={onPublish}>发布</Button>
-            )}
+            <Button onClick={onPublish}>发布</Button>
+          )}
 
           <Button onClick={() => onPrint(true)}>打印</Button>
-          <Button onClick={() => appStore.history.push('/quality/analysis')}>返回</Button>
+          <Button onClick={() => appStore.history.push(`/qcThree/analysis`)}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>

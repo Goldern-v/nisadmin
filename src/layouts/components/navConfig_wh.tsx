@@ -40,7 +40,7 @@ export const navConfig: navConfigItem[] = [
         icon: require('../images/menu-icon/二级质控@2x.png')
       },
       {
-        name: '一级质量',
+        name: '一级质控',
         path: '/qcOne/followUpRecord',
         icon: require('../images/menu-icon/一级质控@2x.png')
       },

@@ -117,6 +117,26 @@ export default observer(function ArrangeSheet(props: Props) {
       ),
       width: 70
       // fixed: 'right'
+    },
+    {
+      title: (
+        <div>
+          <div>公休结余</div>
+          <div>（小时）</div>
+        </div>
+      ),
+      width: 70
+      // fixed: 'right'
+    },
+    {
+      title: (
+        <div>
+          <div>节休结余</div>
+          <div>（小时）</div>
+        </div>
+      ),
+      width: 70
+      // fixed: 'right'
     }
   ]
 
@@ -140,38 +160,12 @@ export default observer(function ArrangeSheet(props: Props) {
         (document as any).querySelector('.ant-table-body').clientWidth
       ) {
         ;(document as any).querySelector('#baseTable').style.width =
-          (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
+          (sheetViewModal.dateList.length + 5) * 70 + 250 + 10 + 'px'
         setSurplusWidth(false)
       } else {
         ;(document as any).querySelector('#baseTable').style.width = 'auto'
         setSurplusWidth(240)
       }
-      // setTimeout(() => {
-      //   if (
-      //     (document as any).querySelector('.ant-table-body').scrollWidth ==
-      //     (document as any).querySelector('.ant-table-body').clientWidth
-      //   ) {
-      //     ;(document as any).querySelector('#baseTable').style.width =
-      //       (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
-      //     setSurplusWidth(false)
-      //   } else {
-      //     ;(document as any).querySelector('#baseTable').style.width = 'auto'
-      //     setSurplusWidth(240)
-      //   }
-      // }, 200)
-      // setTimeout(() => {
-      //   if (
-      //     (document as any).querySelector('.ant-table-body').scrollWidth ==
-      //     (document as any).querySelector('.ant-table-body').clientWidth
-      //   ) {
-      //     ;(document as any).querySelector('#baseTable').style.width =
-      //       (sheetViewModal.dateList.length + 3) * 70 + 250 + 10 + 'px'
-      //     setSurplusWidth(false)
-      //   } else {
-      //     ;(document as any).querySelector('#baseTable').style.width = 'auto'
-      //     setSurplusWidth(240)
-      //   }
-      // }, 1000)
     } catch (error) {}
     try {
       let remark = sheetViewModal.remark

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
@@ -9,11 +9,21 @@ import { appStore } from 'src/stores'
 import BaseTabs from 'src/components/BaseTabs'
 import Table from './components/Table'
 import Form from 'src/components/Form'
+import { observer } from 'mobx-react-lite'
 export interface Props {}
 
-export default function SafetyHazardsDetail() {
+export default observer(function SafetyHazardsDetail() {
   const [activeKey, setActiveKey] = useState('1')
   const refForm = React.createRef<Form>()
+
+  useLayoutEffect(() => {
+    /** 编辑 or 新建 */
+    if (appStore.queryObj.id) {
+    } else {
+      refForm.current!.setFields({})
+    }
+  }, [])
+
   return (
     <Wrapper>
       <BreadcrumbBox
@@ -36,7 +46,7 @@ export default function SafetyHazardsDetail() {
       <Line />
       <PageHeader style={{ marginTop: 10 }}>
         <span className='label'>排查日期:</span>
-        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} />
+        <DatePicker format='YYYY-MM-DD HH:mm' allowClear={false} style={{ width: 220 }} />
         <span className='label'>科室:</span>
         <DeptSelect onChange={() => {}} />
       </PageHeader>
@@ -69,7 +79,7 @@ export default function SafetyHazardsDetail() {
       </FormCon>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div``
 
 const Line = styled.div`

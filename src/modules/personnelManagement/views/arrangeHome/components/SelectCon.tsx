@@ -160,6 +160,7 @@ export default observer(function SelectCon() {
               style={{ width: 220 }}
               value={date}
               onChange={dateChange}
+              allowClear={false}
             />
           </div>
         </div>

@@ -16,6 +16,22 @@ export default class QcOneService extends BaseApiService {
   public qcPatientVisitDelete(id: any) {
     return this.get(`/qcPatientVisit/delete/${id}`)
   }
+
+  /** 安全隐患 */
+  public qcSafetyCheckGetPage(obj: PageObj) {
+    return this.post(`/qcSafetyCheck/getPage`, obj)
+  }
+  public qcSafetyCheckSaveOrUpdate(obj: any) {
+    return this.post(`/qcSafetyCheck/saveOrUpdate`, obj)
+  }
+  public qcSafetyCheckDelete(id: any) {
+    return this.get(`/qcSafetyCheck/delete/${id}`)
+  }
+
+  /** 人力资源 */
+  public qcHrAllocationGetPage(obj: PageObj) {
+    return this.post(`/qcHrAllocation/getPage`, obj)
+  }
 }
 
 export const qcOneService = new QcOneService()

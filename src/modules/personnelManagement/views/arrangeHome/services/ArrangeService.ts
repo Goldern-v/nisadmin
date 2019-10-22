@@ -2,6 +2,7 @@ import { authStore } from 'src/stores'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 import { selectViewModal } from '../viewModal/SelectViewModal'
+import moment from 'moment'
 export default class ArrangeService extends BaseApiService {
   /** 获取排班信息 */
   public findCreateOrUpdate(obj?: any) {
@@ -9,7 +10,13 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       deptCode: selectViewModal.params.deptCode,
-      nurseGroup: selectViewModal.params.group
+      nurseGroup: selectViewModal.params.group,
+      startTimeWeek: moment(selectViewModal.params.startTime)
+        .weekday(1)
+        .format('YYYY-MM-DD'),
+      endTimeWeek: moment(selectViewModal.params.endTime)
+        .weekday(7)
+        .format('YYYY-MM-DD')
     }
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
