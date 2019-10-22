@@ -86,12 +86,12 @@ export default function MainBox() {
         return text
       }
     },
-    {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
-      width: 35
-    },
+    // {
+    //   title: '年龄',
+    //   dataIndex: 'age',
+    //   key: 'age',
+    //   width: 35
+    // },
     {
       title: '职称',
       dataIndex: 'newTitle',

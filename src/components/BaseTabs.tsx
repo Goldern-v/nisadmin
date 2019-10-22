@@ -2,8 +2,15 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
+
+interface ConfigItem {
+  component?: React.ReactNode
+  title: string
+  index?: string | number
+  [p: string]: any
+}
 export interface Props {
-  config: any[]
+  config: ConfigItem[]
   onChange?: (activeKey: string) => void
   defaultActiveKey?: any
 }
@@ -14,7 +21,7 @@ export default function BaseTabs(props: Props) {
       <Tabs type='card' defaultActiveKey={props.defaultActiveKey || '0'} onChange={props.onChange}>
         {props.config.map((item: any, index: number) => {
           return (
-            <TabPane tab={item.title} key={index.toString()}>
+            <TabPane tab={item.title} key={(item.index || index).toString()}>
               {item.component}
             </TabPane>
           )

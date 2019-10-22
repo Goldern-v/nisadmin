@@ -13,6 +13,7 @@ export interface Props {}
 
 export default function PersonnelSecondment() {
   const [dataSource, setDataSource] = useState([])
+  const [pageLoading, setPageLoading] = useState(false)
   const personelSecondModal = createModal(PersonelSecondModal)
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
@@ -51,8 +52,10 @@ export default function PersonnelSecondment() {
   ]
 
   const getData = () => {
+    setPageLoading(true)
     personelSecondServices.getByDeptCode({ ...pageOptions, deptCode: authStore.selectedDeptCode }).then((res) => {
       setDataSource(res.data.list)
+      setPageLoading(false)
     })
   }
 
@@ -82,12 +85,16 @@ export default function PersonnelSecondment() {
       <Head>
         <div className='title'>临时人员借调</div>
         <Place />
-        <Button onClick={() => personelSecondModal.show()}>人员借出</Button>
+        <Button onClick={() => personelSecondModal.show({ onOkCallBack: getData })}>人员借出</Button>
+        <Button onClick={() => getData()} style={{ marginLeft: 10 }}>
+          刷新
+        </Button>
       </Head>
       <BaseTable
+        loading={pageLoading}
         columns={columns}
         dataSource={dataSource}
-        surplusHeight={210}
+        surplusHeight={220}
         type={['index']}
         pagination={{
           current: pageOptions.pageIndex,

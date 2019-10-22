@@ -151,9 +151,9 @@ const Wrapper = styled.div<{ x: number; y: number }>`
     .children-con {
       display: none;
       position: absolute;
-      left: 155px;
+      left: 148px;
       top: 0;
-      width: 160px;
+      width: 150px;
       max-height: 500px;
       border: 1px solid #d1e5e0;
       box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.04), 0 2px 4px 0 rgba(0, 0, 0, 0.12);

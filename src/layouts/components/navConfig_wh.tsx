@@ -39,16 +39,16 @@ export const navConfig: navConfigItem[] = [
         path: '/qcTwo',
         icon: require('../images/menu-icon/二级质控@2x.png')
       },
-      // {
-      //   name: '一级质量',
-      //   path: '/qcOne',
-      //   icon: require('../images/menu-icon/一级质控@2x.png')
-      // },
-      // {
-      //   name: '病区登记本',
-      //   path: '',
-      //   icon: require('../images/menu-icon/病区登记本@2x.png')
-      // },
+      {
+        name: '一级质量',
+        path: '/qcOne/followUpRecord',
+        icon: require('../images/menu-icon/一级质控@2x.png')
+      },
+      {
+        name: '病区登记本',
+        path: '/wardRegister',
+        icon: require('../images/menu-icon/病区登记本@2x.png')
+      },
       {
         name: '查询统计',
         path: '/queryStatistics',

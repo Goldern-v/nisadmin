@@ -21,6 +21,9 @@ import {
   POST_LIST,
   CURRENTLEVEL_LIST
 } from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFilesList/modal/AddNursingModal'
+import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
+import { Spin } from 'src/vendors/antd'
+import { DictItem } from 'src/services/api/CommonApiService'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   getTableData?: () => void
@@ -31,7 +34,11 @@ const rules: Rules = {
 }
 export default function AddScheduleNursingModal(props: Props) {
   let { visible, onCancel, onOk, getTableData } = props
-  const [title, setTitle] = useState('')
+  const [title, setTitle]: any = useState('')
+  const [titleList, setTitleList]: any = useState([])
+  const [postList, setPostList]: any = useState([])
+  const [levelList, setLevelList]: any = useState([])
+  const [modalLoading, setModalLoading]: any = useState(false)
   let refForm = React.createRef<Form>()
 
   const onFieldChange = () => {}
@@ -61,79 +68,88 @@ export default function AddScheduleNursingModal(props: Props) {
         nurseHierarchy: '',
         job: ''
       })
+      setTitle('添加排班人员')
+      setModalLoading(true)
+      statisticsViewModal.initDict().then((res) => {
+        setTitleList(statisticsViewModal.getDict('技术职称'))
+        setPostList(statisticsViewModal.getDict('职务'))
+        setLevelList(statisticsViewModal.getDict('层级'))
+        setModalLoading(false)
+      })
       // refForm.current.setField('unit', 123)
     }
-    setTitle('添加排班人员')
   }, [visible])
 
   return (
     <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender width={480}>
-      <Form ref={refForm} labelWidth={60} onChange={onFieldChange} rules={rules}>
-        <Row>
-          <Col span={24}>
-            <Form.Field label={`姓名`} name='empName' required>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`姓别`} name='sex'>
-              <Select>
-                <Select.Option value='0' key={0}>
-                  男
-                </Select.Option>
-                <Select.Option value='1' key={1}>
-                  女
-                </Select.Option>
-              </Select>
-            </Form.Field>
-          </Col>
+      <Spin spinning={modalLoading}>
+        <Form ref={refForm} labelWidth={60} onChange={onFieldChange} rules={rules}>
+          <Row>
+            <Col span={24}>
+              <Form.Field label={`姓名`} name='empName' required>
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`姓别`} name='sex'>
+                <Select>
+                  <Select.Option value='0' key={0}>
+                    男
+                  </Select.Option>
+                  <Select.Option value='1' key={1}>
+                    女
+                  </Select.Option>
+                </Select>
+              </Form.Field>
+            </Col>
 
-          <Col span={24}>
-            <Form.Field label={`职称`} name='newTitle'>
-              <Select>
-                {TITLE_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`层级`} name='nurseHierarchy'>
-              <Select
-                showSearch
-                filterOption={(input: any, option: any) =>
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-                style={{ width: '100%' }}
-                placeholder='选择层级'
-              >
-                {CURRENTLEVEL_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`职务`} name='job'>
-              <Select>
-                {POST_LIST.map((item: string) => (
-                  <Select.Option value={item} key={item}>
-                    {item}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
-      <Aside>
-        <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />
-        注：只能添加没有工号的进修人员，有工号的正式人员请联系管理员进行添加
-      </Aside>
+            <Col span={24}>
+              <Form.Field label={`职称`} name='newTitle'>
+                <Select>
+                  {titleList.map((item: DictItem) => (
+                    <Select.Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`层级`} name='nurseHierarchy'>
+                <Select
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                  style={{ width: '100%' }}
+                  placeholder='选择层级'
+                >
+                  {levelList.map((item: DictItem) => (
+                    <Select.Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`职务`} name='job'>
+                <Select>
+                  {postList.map((item: DictItem) => (
+                    <Select.Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+        <Aside>
+          <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />
+          注：只能添加没有工号的进修人员，有工号的正式人员请联系管理员进行添加
+        </Aside>
+      </Spin>
     </Modal>
   )
 }

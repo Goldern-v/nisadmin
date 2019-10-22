@@ -73,6 +73,9 @@ const qualityControlRecordEdit = lazy(() =>
 const QualityAnalysisEdit = lazy(() => import('src/modules/quality/views/analysis/AnalysisEdit'))
 const QualityAnalysisDetail = lazy(() => import('src/modules/quality/views/analysis/AnalysisDetail'))
 import { specialModule } from './routerConfig/specialModule'
+const SafetyHazardsDetail = lazy(() => import('src/modules/quality/views/qcOne/page/safetyHazards/SafetyHazardsDetail'))
+const HandoverRegisterSet = lazy(() => import('src/modules/WardRegister/page/HandoverRegister/HandoverRegisterSet'))
+const WardRegisterRouter = lazy(() => import('src/modules/WardRegister/WardRegisterRouter'))
 const DetailsView = lazy(() => import('src/modules/quality/views/checkWard/view/details/DetailsView'))
 const ImportView = lazy(() => import('src/modules/quality/views/checkWard/view/import/ImportView'))
 
@@ -223,11 +226,18 @@ const routes: RouteItem[] = [
   setLayout('/healthEducationReport', HealthEducationReportView, layouts.MainLayout),
 
   /** 一级查房 */
+  setLayout('/qcOne/safetyHazardsDetail', SafetyHazardsDetail, layouts.MainLayout, {
+    style: { background: '#fff' }
+  }),
   setLayout('/qcOne', QcOneRouter, layouts.MainLayout),
   setLayout('/qcTwo', QcTwoRouter, layouts.MainLayout),
   setLayout('/qcThree', QcThreeRouter, layouts.MainLayout),
   setLayout('/checkWard', CheckWardRouter, layouts.MainLayout),
   setLayout('/queryStatistics', QueryStatisticsRouter, layouts.MainLayout),
+  setLayout('/wardRegister/handoverRegisterSet', HandoverRegisterSet, layouts.MainLayout, {
+    style: { background: '#fff' }
+  }),
+  setLayout('/wardRegister', WardRegisterRouter, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'

@@ -8,7 +8,7 @@ import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as CXTJ } from './images/CXTJ.svg'
 import { ReactComponent as FXBG } from './images/FXBG.svg'
@@ -19,69 +19,29 @@ import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
 import WritingForm from './views/writingForm/WritingForm'
 import NursingWorkPlainList from './views/nursingWorkPlain/NursingWorkPlainList'
+import FollowUpRecord from './views/qcOne/page/followUpRecord/FollowUpRecord'
+import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
+import HumanResource from './views/qcOne/page/humanResource/HumanResource'
 
 const LEFT_MENU_CONFIG: any = [
   {
-    title: '质控记录',
+    title: '一级质控记录',
     icon: <ZKJL />,
     children: [
-      // {
-      //   title: '一级质控',
-      //   path: '/quality/qualityControlRecord/1',
-      //   component: { ...QualityControlRecord }
-      // },
       {
-        title: '二级质控',
-        path: '/quality/qualityControlRecord/2',
-        component: { ...QualityControlRecord }
+        title: '人力资源调配',
+        path: '/qcOne/humanResource',
+        component: HumanResource
       },
       {
-        title: '三级质控',
-        path: '/quality/qualityControlRecord/3',
-        component: { ...QualityControlRecord }
-      }
-    ]
-  },
-  {
-    title: '质控分析报告',
-    icon: <FXBG />,
-    children: [
-      {
-        title: '三级质控月度报告',
-        path: '/quality/analysis',
-        component: Analysis
+        title: '安全隐患排查表',
+        path: '/qcOne/safetyHazards',
+        component: SafetyHazards
       },
       {
-        title: '三级质控汇总报告',
-        path: '/quality/summaryReport',
-        component: SummaryReport
-      },
-      {
-        title: '三级质控问题汇总',
-        path: '/quality/problemSummary',
-        component: ProblemSummary
-      },
-      {
-        title: '二级质控月度报告',
-        path: '/quality/workSummaryReportList',
-        component: WorkSummaryReportList
-      }
-    ]
-  },
-
-  {
-    title: '查询统计',
-    icon: <CXTJ />,
-    children: [
-      {
-        title: '检查表单统计表',
-        path: '/quality/queryStatistics',
-        component: QueryStatistics
-      },
-      {
-        title: '文件书写统计表',
-        path: '/quality/writingForm',
-        component: WritingForm
+        title: '患者随访记录',
+        path: '/qcOne/followUpRecord',
+        component: FollowUpRecord
       }
     ]
   },
@@ -98,30 +58,8 @@ const LEFT_MENU_CONFIG: any = [
   }
 ]
 
-LEFT_MENU_CONFIG.push({
-  title: '护理查房',
-  icon: <ZKJL />,
-  children: [
-    {
-      title: '查房记录',
-      path: '/quality/checkWard/record',
-      component: RecordView
-    },
-    {
-      title: '查房计划表',
-      path: '/quality/checkWard/schedule',
-      component: ScheduleView
-    },
-    {
-      title: '查房统计报告',
-      path: '/quality/checkWard/checkWardReportView',
-      component: CheckWardReportView
-    }
-  ]
-})
-
 export default function QcOneRouter(props: Props) {
-  useEffect(() => { }, [props.history.location.pathname])
+  useEffect(() => {}, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象

@@ -17,6 +17,7 @@ import SignModal from 'src/global/modal/SignModal'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function MainLayout(props: Props) {
+  const { payload } = props
   /** 数据初始化 */
   store.appStore.history = props.history
   store.appStore.match = props.match
@@ -57,7 +58,7 @@ export default observer(function MainLayout(props: Props) {
   })
 
   return (
-    <Wrapper className='MainLayoutWrapper'>
+    <Wrapper className='MainLayoutWrapper' style={(payload && payload.style) || {}}>
       {/* <Header /> */}
       {/* {appStore.isDev ? <NavBarNew {...props} /> : <NavBar {...props} />} */}
       <NavBar {...props} />

@@ -272,11 +272,11 @@ function formatCell(cellObj: ArrangeItem) {
       <React.Fragment>
         <Con color={cellObj.nameColor}>
           <span style={{ color: '#333' }}>
-            {cellObj.addSymbols && cellObj.addSymbols.length && cellObj.addSymbols[0]!.symbol}
+            {(cellObj.addSymbols && cellObj.addSymbols.length && cellObj.addSymbols[0]!.symbol) || ''}
           </span>
           {cellObj.rangeName}
         </Con>
-        {cellObj.settings && (
+        {(cellObj.settings && cellObj.settings.length && (
           <React.Fragment>
             <span>/</span>
             <Con color={cellObj.settings.length && cellObj.settings[0].nameColor}>
@@ -284,7 +284,8 @@ function formatCell(cellObj: ArrangeItem) {
               {cellObj.settings.length && cellObj.settings[0].rangeName}
             </Con>
           </React.Fragment>
-        )}
+        )) ||
+          ''}
       </React.Fragment>
     )
   }

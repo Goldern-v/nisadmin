@@ -57,3 +57,29 @@ export const PageTitle = styled.div`
     display: none;
   }
 `
+
+/* 页面头部 */
+export const PageHeader = styled.div`
+  height: 50px;
+  font-size: 13px;
+  position: relative;
+  font-size: 13px;
+  color: #333333;
+  padding: 0 15px 0 15px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  > span.label {
+    margin-left: 15px;
+    margin-right: 10px;
+  }
+  > button:first-of-type {
+    margin-left: 20px;
+  }
+  > button {
+    margin-left: 10px;
+  }
+  > .ant-select {
+    min-width: 100px;
+  }
+`

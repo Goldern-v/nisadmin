@@ -15,7 +15,7 @@ import { globalModal } from 'src/global/globalModal'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
-  onOkCallBack?: () => {}
+  onOkCallBack?: () => void
 }
 
 /** 设置规则 */
@@ -72,7 +72,7 @@ export default function PersonelSecondModal(props: Props) {
       /** 表单数据初始化 */
       refForm!.current!.setFields({
         deptCodeTransferTo: '',
-        empNoTransferTo: '',
+        empNoTransferTo: null,
         startDate: moment(),
         detailTransferTo: ''
       })
@@ -100,7 +100,7 @@ export default function PersonelSecondModal(props: Props) {
               <Form.Field label={`借出护士`} name='empNoTransferTo' required>
                 <Select>
                   {nurseList.map((item: any, index: number) => (
-                    <Select.Option value={item.empNo} key={index}>
+                    <Select.Option value={item.empNo} key={item.empNo + index + item.empName + index}>
                       {item.empName}
                     </Select.Option>
                   ))}

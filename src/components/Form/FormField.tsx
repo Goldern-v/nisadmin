@@ -10,7 +10,7 @@ export interface OwnProps {
   label?: React.ReactNode
   labelWidth?: number
   gutter?: number
-  suffix?: string
+  suffix?: string | React.ReactNode
   required?: boolean
   name?: string
   tip?: boolean

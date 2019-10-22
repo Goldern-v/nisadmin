@@ -1,18 +1,8 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { DatePicker, Button, message } from './vendors/antd'
-import YearPicker from './components/YearPicker'
-import { formatIdCord } from './utils/idCard/idCard'
-import FullPageLoading from './components/loading/FullPageLoading'
-import { BaseStepBox, BaseStepCon } from './components/BaseStep'
-import YearMonthRangePicker from './components/YearMonthRangePicker'
-import { numToChinese } from './utils/number/numToChinese'
-import YearRangePicker from './components/YearRangePicker'
-import AgePicker from './components/AgeRangePicker'
-import Watermark from './components/Watermark'
-import MultipleDeptSelect from './components/MultipleDeptSelect'
-import aaa, { ReactComponent as SSS } from 'src/assets/aaa.svg'
+import Demo1 from './demo1'
 // import XLSX from 'xlsx'
 // import { downloadExl } from './excel'
 
@@ -24,12 +14,17 @@ export default function demo(props: Props) {
   // var wb = XLSX.utils.book_new()
   // var ws = XLSX.utils.aoa_to_sheet([['a', 'b'], [1, 2, 3]])
   // XLSX.utils.book_append_sheet(wb, ws, 'SheetJS')
+  const ref: any = React.createRef()
+
   const onClick = () => {
     message.error(<pre>123 \\\\n 123 \n 123</pre>)
   }
+  useLayoutEffect(() => {
+    console.log(ref, 'refref')
+  }, [])
   return (
     <Wrapper>
-      <SSS />
+      <Demo1 ref={ref} />
       {/* <img src={aaa} alt='' /> */}
       <div>
         <input id='myCar' list='cars' />

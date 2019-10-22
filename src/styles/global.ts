@@ -120,6 +120,31 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       font-size: 13px;
     }
   }  
+
+  .ant-drawer-wrapper-body {
+    &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 50px;
+    background-color: #eaeaea;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 50px;
+    background-color: #c2c2c2;
+  }
+  }
+  .ant-btn.ant-btn-danger {
+    background: #ff4d4f;
+    border-color: #ff4d4f;
+    color: #fff;
+    &:hover {
+      background: #ff7875;
+      border-color: #ff7875;   
+    }
+  }
 `
 
 export default GlobalStyle

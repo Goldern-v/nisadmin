@@ -8,7 +8,7 @@ import emitter from 'src/libs/ev'
 import { Button, message } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 
 // import emitter from 'src/libs/ev'
@@ -45,7 +45,7 @@ export default function ToolBar() {
           }}
           style={{ marginLeft: 3, marginRight: 3 }}
         >
-          添加实习护士
+          {appStore.HOSPITAL_ID == 'wh' ? '添加' : appStore.HOSPITAL_ID == 'hj' ? '添加实习护士' : '添加实习护士'}
         </Button>
         {/* <Button
         onClick={(e: any) => {

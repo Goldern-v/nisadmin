@@ -4,7 +4,12 @@ import { RouteItem } from 'src/components/RouterView'
  * 路由方法
  */
 
-export function setLayout (path: string, view: any, layout?: any, data?: any): RouteItem {
+interface payload {
+  style: React.CSSProperties
+  [p: string]: any
+}
+
+export function setLayout(path: string, view: any, layout?: any, data?: payload | any): RouteItem {
   let router: RouteItem
   if (layout) {
     router = {
@@ -30,6 +35,6 @@ export function setLayout (path: string, view: any, layout?: any, data?: any): R
 /**
  * 路由方法2
  */
-export function setRouteItem () {
+export function setRouteItem() {
   //
 }
