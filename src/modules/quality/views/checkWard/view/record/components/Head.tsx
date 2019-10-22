@@ -27,6 +27,7 @@ export default observer(function Head() {
             recordViewModal.selectedDate = date
             recordViewModal.onload()
           }}
+          allowClear={false}
         />
 
         <span>查房科室：</span>
@@ -39,7 +40,7 @@ export default observer(function Head() {
         >
           <Select.Option value=''>全院</Select.Option>
           {recordViewModal.deptList.map((item: any, index: number) => (
-            <Select.Option value={item.code} key={index}>
+            <Select.Option value={item.name} key={index}>
               {item.name}
             </Select.Option>
           ))}
@@ -72,7 +73,7 @@ export default observer(function Head() {
           <Select.Option value=''>全部</Select.Option>
           {recordViewModal.checkStateList.map((item: any, index: number) => (
             <Select.Option value={item.code} key={item.code}>
-              {item.name}
+              {item.code}
             </Select.Option>
           ))}
         </Select>

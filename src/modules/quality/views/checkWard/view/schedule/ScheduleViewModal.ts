@@ -55,7 +55,7 @@ class ScheduleViewModal {
       this.tableName = res.data.searchRoomType
       this.tableData = res.data
       this.tableTime = res.data.time
-      this.tableRemark = res.data.allRemark
+      this.tableRemark = res.data.allRemark || ''
       this.statusAll = res.data.searchRooms
       let array:any = []
       res.data.searchRooms && res.data.searchRooms.map((item:any) => {

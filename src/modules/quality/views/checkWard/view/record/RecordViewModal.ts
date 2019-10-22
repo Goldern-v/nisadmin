@@ -6,6 +6,7 @@ class RecordViewModal {
   @observable public selectedWardRound = '' //查房类型
   @observable public WardRoundList = []
   @observable public selectedCheckState = '' //查房状态
+  // @observable public selectedCheckStateCode = '' //查房状态名称
   @observable public checkStateList = []
   @observable public selectedDept = '' //科室
   @observable public deptList = []
@@ -36,18 +37,21 @@ class RecordViewModal {
 
   @computed
   get postObj() {
+    let data:any = this.checkStateList.find((item:any) => item.code === this.selectedCheckState)
     return {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       wardCode: this.selectedDept,
       type: this.selectedWardRound,
-      status: this.selectedCheckState,
+      status: data ? data.name : '',
       beginDate: `${this.selectedDate[0].format('YYYY-MM-DD')} 00:00`,
       endDate: `${this.selectedDate[1].format('YYYY-MM-DD')} 23:59`,
     }
   }
 
   onload() {
+    let data:any = this.checkStateList.find((item:any) => item.code === this.selectedCheckState)
+    let code:any = data ? data.code : ''
     this.tableLoading = true
     checkWardService.getPage(this.postObj).then((res) => {
       let array:any = []
@@ -56,6 +60,12 @@ class RecordViewModal {
         item.patientProblem =  res.data.srPageItemlist[index].patientProblem
         array.push(item)
       })
+      if (code === '科护士长审核') {
+        array = array.filter((item:any) => item.patientStatus == '0' && item.nurseStatus == '0')
+      }
+      if (code === '病区处理') {
+        array = array.filter((item:any) => item.patientStatus !== '0' || item.nurseStatus !== '0')
+      }
       this.tableList = array
       this.pageIndex = res.data.page.pageIndex
       this.pageSize = res.data.page.pageSize

@@ -22,11 +22,11 @@ export default function Header(props: Props) {
       case '1':
         return '提交'
       case '2':
-        return '待病区处理'
+        return '病区处理'
       case '3':
-        return '待科护士长审核'
+        return '科护士长审核'
       case '4':
-        return '待护理部审核'
+        return '护理部审核'
       default:
         return ''
     }

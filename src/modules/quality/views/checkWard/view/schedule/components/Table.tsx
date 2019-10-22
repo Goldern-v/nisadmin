@@ -103,6 +103,8 @@ export default observer(function Table() {
         string += `<p className='remark'>${item}</p>`
       ))
       return string
+    } else {
+      return ''
     }
   }
 
