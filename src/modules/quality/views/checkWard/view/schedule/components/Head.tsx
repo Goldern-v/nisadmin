@@ -49,6 +49,7 @@ export default observer(function Head() {
             scheduleViewModal.selectedYear = year
             scheduleViewModal.onload()
           }}
+          allowClear={false}
         />
 
         <span>类型：</span>

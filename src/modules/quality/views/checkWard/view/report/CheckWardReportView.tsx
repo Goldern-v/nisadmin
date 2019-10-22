@@ -26,8 +26,8 @@ export default observer(function CheckWardReportView() {
   let report: Report = checkWardReportViewModal.getDataInAllData('report')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
-    let title = document.title
-    document.title = report.reportName
+    // let title = document.title
+    // document.title = report.reportName
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -63,9 +63,9 @@ export default observer(function CheckWardReportView() {
          }
       `
     })
-    setTimeout(() => {
-      document.title = title
-    }, 500)
+    // setTimeout(() => {
+    //   document.title = title
+    // }, 500)
   }
   return (
     <Wrapper>
@@ -80,6 +80,7 @@ export default observer(function CheckWardReportView() {
               checkWardReportViewModal.selectedYear = date
               checkWardReportViewModal.onload()
             }}
+            allowClear={false}
           />
 
           <span className='label'>月份：</span>

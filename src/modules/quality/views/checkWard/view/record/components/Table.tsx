@@ -60,18 +60,15 @@ export default observer(function Table() {
       dataIndex: 'status',
       width: 120,
       align: 'center',
-      render(status: string) {
-        switch (status) {
-          case '1':
-            return '提交'
-          case '2':
-            return '病区处理'
-          case '3':
-            return '科护士长审核'
-          case '4':
-            return '已完成'
-          default:
-            return ''
+      render(status: string, record: any) {
+        if(status == '3'){
+          return '护理部审核'
+        } else if(status == '4'){
+          return '已完成'
+        } else if(record.patientStatus == '0' && record.nurseStatus == '0'){
+          return '科护士长审核'
+        } else {
+          return '病区处理'
         }
       }
     },
