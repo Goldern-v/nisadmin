@@ -32,7 +32,7 @@ export default observer(function Head() {
     recordViewModal.selectedWardRoundText = val
     recordViewModal.onload()
   }
-  const options = recordViewModal.selectedWardRoundArray.map((d: any) => <Select.Option key={d.name}>{setColorRed(d.name)}</Select.Option>);
+  const options = recordViewModal.selectedWardRoundArray.map((d: any) => <Select.Option key={d.name} value={d.code}>{setColorRed(d.name)}</Select.Option>);
   return (
     <Wrapper>
       <LeftIcon>
@@ -86,15 +86,20 @@ export default observer(function Head() {
           value={recordViewModal.selectedCheckState}
           onChange={(val: string) => {
             recordViewModal.selectedCheckState = val
+            recordViewModal.pageIndex = 1
             recordViewModal.onload()
           }}
         >
-          <Select.Option value=''>全部</Select.Option>
-          {recordViewModal.checkStateList.map((item: any, index: number) => (
+            <Select.Option value=''>全部</Select.Option>
+            <Select.Option value='1'>待病区处理</Select.Option>
+            <Select.Option value='1,2'>待科护士长审核</Select.Option>
+            <Select.Option value='3'>待护理部审核</Select.Option>
+            <Select.Option value='4'>已完成</Select.Option>
+          {/* {recordViewModal.checkStateList.map((item: any, index: number) => (
             <Select.Option value={item.code} key={item.code}>
               {item.code}
             </Select.Option>
-          ))}
+          ))} */}
         </Select>
         <Place />
 
