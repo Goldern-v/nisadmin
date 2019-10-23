@@ -85,7 +85,14 @@ export default class AppStore {
 
   /** 打开全局进度条 */
   openFullLoadingBar(option: FullLoadingBarObj) {
-    this.fullLoadingBarObj = option
+    return new Promise((resolve, reject) => {
+      if (this.fullLoadingBarObj) {
+        reject()
+      } else {
+        this.fullLoadingBarObj = option
+        resolve()
+      }
+    })
   }
   /** 关闭全局进度条 */
   closeFullLoadingBar(okText?: string) {
