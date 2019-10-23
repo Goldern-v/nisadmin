@@ -43,6 +43,9 @@ class NurseFilesListViewModel {
   }
 
   exportExcel() {
+    if (appStore.fullLoadingBarObj) {
+      return message.warning('只能同时下载一个文件')
+    }
     appStore.openFullLoadingBar({
       aside: '正在打包数据，请稍候',
       progress: '0%'

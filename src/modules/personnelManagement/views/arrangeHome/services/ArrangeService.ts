@@ -23,10 +23,10 @@ export default class ArrangeService extends BaseApiService {
       remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode,
       startTimeWeek: moment(selectViewModal.params.startTime)
-        .weekday(1)
+        .weekday(0)
         .format('YYYY-MM-DD'),
       endTimeWeek: moment(selectViewModal.params.endTime)
-        .weekday(7)
+        .weekday(6)
         .format('YYYY-MM-DD')
     }
     return this.post(`/scheduling/saveOrUpdate`, obj)
