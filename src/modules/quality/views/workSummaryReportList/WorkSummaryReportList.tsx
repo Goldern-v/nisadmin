@@ -168,8 +168,7 @@ export default observer(function WorkSummaryReportList() {
       groupRoleCode: record.groupRoleCode,
       reportName: record.reportName
     }
-    // 存储-详情跳转后数据回填
-    sessionStorage.qcThreeTableOptions = JSON.stringify(obj)
+
     // console.log(record)
     history.push(`/workSummaryReportView?${qs.stringify(obj)}`)
   }

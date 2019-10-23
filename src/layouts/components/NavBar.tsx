@@ -54,6 +54,7 @@ const MenuCon = observer(function(props: { list: navConfigItem[]; style?: React.
       <Menu>
         {list.map((item, index) => (
           <Menu.Item
+            style={item.hidden ? { display: 'none' } : {}}
             key={index}
             onClick={toNavLink(item.path)}
             className={appStore.location.pathname.indexOf(item.path || '') > -1 ? 'active' : ''}

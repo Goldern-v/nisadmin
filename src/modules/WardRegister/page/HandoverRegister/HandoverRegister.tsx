@@ -4,9 +4,12 @@ import { Button } from 'antd'
 import HeadCon from '../../components/HeadCon/HeadCon'
 import BaseTable from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
+import { wardRegisterService } from '../../services/WardRegisterService'
+import { authStore } from 'src/stores'
+import { observer } from 'mobx-react-lite'
 export interface Props {}
 
-export default function HandoverRegister() {
+export default observer(function HandoverRegister() {
   const dataSource: any[] = []
   const columns: ColumnProps<any>[] = [
     {
@@ -91,6 +94,15 @@ export default function HandoverRegister() {
       }
     }
   ]
+
+  useEffect(() => {
+    wardRegisterService
+      .getList({
+        wardCode: authStore.selectedDeptCode,
+        recordCode: 'qc_register_handover'
+      })
+      .then((res) => {})
+  }, [])
   return (
     <Wrapper>
       <HeadCon
@@ -103,7 +115,7 @@ export default function HandoverRegister() {
       </TableCon>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div``
 const TableCon = styled.div``
 

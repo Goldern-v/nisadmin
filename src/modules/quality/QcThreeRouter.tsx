@@ -8,42 +8,49 @@ import Analysis from './views/analysis/Analysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import ProblemSummary from './views/problemSummary/ProblemSummary'
+import { Provider, KeepAlive } from 'react-keep-alive'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as SJZK } from './images/icon/SJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG.svg'
 import { ReactComponent as HZBG } from './images/icon/HZBG.svg'
 import { ReactComponent as WTBG } from './images/icon/WTBG.svg'
-
-const LEFT_MENU_CONFIG: any = [
-  {
-    title: '三级质控记录',
-    icon: <SJZK />,
-    path: '/qcThree',
-    component: { ...QualityControlRecord }
-  },
-  {
-    title: '三级质控月度报告',
-    icon: <YDBG />,
-    path: '/qcThree/analysis',
-    component: Analysis
-  },
-  {
-    title: '三级质控汇总报告',
-    icon: <HZBG />,
-    path: '/qcThree/summaryReport',
-    component: SummaryReport
-  },
-  {
-    title: '三级质控问题汇总',
-    icon: <WTBG />,
-    path: '/qcThree/problemSummary',
-    component: ProblemSummary
-  }
-]
+import { appStore } from 'src/stores'
 
 export default function QcThreeRouter(props: Props) {
   useEffect(() => {}, [props.history.location.pathname])
+  const LEFT_MENU_CONFIG: any = [
+    {
+      title: '三级质控记录',
+      icon: <SJZK />,
+      path: '/qcThree',
+      component: { ...QualityControlRecord },
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    },
+    {
+      title: '三级质控月度报告',
+      icon: <YDBG />,
+      path: '/qcThree/analysis',
+      component: Analysis,
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    },
+    {
+      title: '三级质控汇总报告',
+      icon: <HZBG />,
+      path: '/qcThree/summaryReport',
+      component: SummaryReport,
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    },
+    {
+      title: '三级质控问题汇总',
+      icon: <WTBG />,
+      path: '/qcThree/problemSummary',
+      component: ProblemSummary
+    }
+  ]
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
@@ -67,9 +74,15 @@ export default function QcThreeRouter(props: Props) {
         <LeftMenu config={LEFT_MENU_CONFIG} />
       </LeftMenuCon>
       <MainCon>
-        {currentRoute && currentRoute.component && (
-          <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-        )}
+        {currentRoute &&
+          currentRoute.component &&
+          (currentRoute.keepAlive ? (
+            <KeepAlive name={currentRoute.path} disabled={currentRoute.disabledKeepAlive}>
+              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+            </KeepAlive>
+          ) : (
+            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+          ))}
       </MainCon>
     </Wrapper>
   )

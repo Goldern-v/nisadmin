@@ -1,10 +1,15 @@
+import { DictItem } from './../../../../services/api/CommonApiService'
+import { authStore } from 'src/stores'
+import service from 'src/services/api'
+import User from 'src/models/User'
 import { observable, computed, action } from 'mobx'
 import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
 
 class QcOneSelectViewModal {
   @observable public startDate = getCurrentMonthNow()[0]
   @observable public endDate = getCurrentMonthNow()[1]
-
+  /** 当前科室护士列表 */
+  @observable public nurseList: DictItem[] = []
   @observable public wtzlList = [
     {
       code: '护理方面',
@@ -41,6 +46,12 @@ class QcOneSelectViewModal {
         this.endDate = date[1] || null
       }
     }
+  }
+
+  initNurseList() {
+    service.commonApiService.userDictInfo(authStore.selectedDeptCode).then((res) => {
+      this.nurseList = res.data
+    })
   }
 }
 

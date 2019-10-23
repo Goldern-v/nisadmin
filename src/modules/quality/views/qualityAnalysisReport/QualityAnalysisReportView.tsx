@@ -115,7 +115,7 @@ export default observer(function QualityAnalysisReportView() {
           )}
 
           <Button onClick={() => onPrint(true)}>打印</Button>
-          <Button onClick={() => appStore.history.push(`/qcThree/analysis`)}>返回</Button>
+          <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>

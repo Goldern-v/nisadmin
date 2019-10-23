@@ -117,4 +117,9 @@ export default class CommonApiService extends BaseApiService {
   public deptInbigDeptListSelf() {
     return this.get(`/qcItem/dict/deptInbigDeptListSelf`)
   }
+
+  /** 根据科室获取科室全部护士 */
+  public userDictInfo(wardCode: string) {
+    return this.get(`/user/userDictInfo/${wardCode}`)
+  }
 }

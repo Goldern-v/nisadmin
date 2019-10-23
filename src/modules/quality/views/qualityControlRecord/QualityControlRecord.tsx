@@ -10,31 +10,42 @@ import { observer } from 'mobx-react-lite'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
 
 export default observer(function QualityControlRecord() {
   let [loading, setLoading] = useState(false)
   useEffect(() => {
-    ; (async () => {
-      if (
-        appStore.queryObj.noRefresh &&
-        qualityControlRecordVM.allData &&
-        qualityControlRecordVM.allData.list &&
-        qualityControlRecordVM.allData.list.length > 0
-      ) {
-        getTableData()
-      } else {
-        let level = appStore.history.location.pathname.indexOf('qcThree') >= 0
-          ? 3
-          : appStore.history.location.pathname.indexOf('qcTwo') >= 0
-            ? 2
-            : 3
-        await qualityControlRecordVM.init(level)
-        getTableData()
-      }
-      appStore.history.replace(appStore.history.location.pathname)
-    })()
+    let level =
+      appStore.history.location.pathname.indexOf('qcThree') >= 0
+        ? 3
+        : appStore.history.location.pathname.indexOf('qcTwo') >= 0
+        ? 2
+        : 3
+    qualityControlRecordVM.init(level).then((res) => {
+      getTableData()
+    })
+
+    // ;(async () => {
+    //   if (
+    //     appStore.queryObj.noRefresh &&
+    //     qualityControlRecordVM.allData &&
+    //     qualityControlRecordVM.allData.list &&
+    //     qualityControlRecordVM.allData.list.length > 0
+    //   ) {
+    //     getTableData()
+    //   } else {
+    //     let level =
+    //       appStore.history.location.pathname.indexOf('qcThree') >= 0
+    //         ? 3
+    //         : appStore.history.location.pathname.indexOf('qcTwo') >= 0
+    //         ? 2
+    //         : 3
+    //     await qualityControlRecordVM.init(level)
+    //     getTableData()
+    //   }
+    //   // appStore.history.replace(appStore.history.location.pathname)
+    // })()
   }, [])
   const getTableData = (obj?: any) => {
     setLoading(true)

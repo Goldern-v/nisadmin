@@ -17,7 +17,7 @@ import moment from 'moment'
 import 'antd/dist/antd.less'
 import 'moment/locale/zh-cn'
 import NavBar from './layouts/components/NavBar'
-
+import { Provider as KeepAliveProvider } from 'react-keep-alive'
 moment.locale('zh-cn')
 export interface Props {}
 
@@ -29,17 +29,19 @@ export class App extends React.Component<Props, State> {
       <ComponentDidCatch>
         <LocaleProvider locale={zhCN}>
           <ThemeProvider theme={theme}>
-            <Wrapper>
-              <Inner>
-                <Suspense fallback={<NavBar2 style={{ position: 'fixed', top: -1, left: 0, right: 0 }} />}>
-                  {/* <Suspense fallback={<div>Loading...</div>}> */}
-                  <Router>
-                    <RouterView routes={routes} />
-                  </Router>
-                </Suspense>
-              </Inner>
-              <GlobalStyle />
-            </Wrapper>
+            <KeepAliveProvider max={1}>
+              <Wrapper>
+                <Inner>
+                  <Suspense fallback={<NavBar2 style={{ position: 'fixed', top: -1, left: 0, right: 0 }} />}>
+                    {/* <Suspense fallback={<div>Loading...</div>}> */}
+                    <Router>
+                      <RouterView routes={routes} />
+                    </Router>
+                  </Suspense>
+                </Inner>
+                <GlobalStyle />
+              </Wrapper>
+            </KeepAliveProvider>
           </ThemeProvider>
         </LocaleProvider>
       </ComponentDidCatch>

@@ -2,7 +2,9 @@ import styled from 'styled-components'
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { DatePicker, Button, message } from './vendors/antd'
+import { Provider, KeepAlive } from 'react-keep-alive'
 import Demo1 from './demo1'
+import { authStore, appStore } from './stores'
 // import XLSX from 'xlsx'
 // import { downloadExl } from './excel'
 
@@ -24,7 +26,10 @@ export default function demo(props: Props) {
   }, [])
   return (
     <Wrapper>
-      <Demo1 ref={ref} />
+      <KeepAlive name='Test' disabled={(appStore.history && appStore.history.action) !== 'POP'}>
+        <Demo1 />
+      </KeepAlive>
+
       {/* <img src={aaa} alt='' /> */}
       <div>
         <input id='myCar' list='cars' />

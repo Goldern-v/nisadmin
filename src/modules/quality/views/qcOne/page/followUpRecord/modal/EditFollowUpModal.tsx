@@ -148,7 +148,10 @@ export default function EditFollowUpModal(props: Props) {
     <Modal
       title={title}
       visible={visible}
-      onCancel={onCancel}
+      onCancel={() => {
+        setShowDraWer(false)
+        onCancel()
+      }}
       onOk={onSave}
       okText='保存'
       forceRender
@@ -231,7 +234,7 @@ export default function EditFollowUpModal(props: Props) {
             <Form.Field
               label={`随访护士`}
               name='participantsList'
-              suffix={<MoreBox onClick={() => !canEdit && setShowDraWer(!showDraWer)} />}
+              suffix={<MoreBox onClick={() => canEdit && setShowDraWer(!showDraWer)} />}
             >
               <Select
                 disabled={!canEdit}

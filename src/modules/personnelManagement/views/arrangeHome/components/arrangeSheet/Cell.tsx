@@ -339,6 +339,13 @@ const Wrapper = styled.div`
   word-break: break-all;
   &.isSelected {
     background: #ffe36c;
+    cursor: pointer;
+  }
+  &.isReduceWordTime {
+    cursor: pointer;
+  }
+  &.isAddWordTime {
+    cursor: pointer;
   }
   &.isTwoDaysAgo {
     background: #f8f8f8;

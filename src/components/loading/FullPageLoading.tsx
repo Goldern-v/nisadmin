@@ -7,6 +7,7 @@ export interface Props extends RouteComponentProps {}
 
 export default observer(function FullPageLoading() {
   const [progress, setProgress] = useState('0%')
+  const [fullPage, setFullPage] = useState(true)
   useEffect(() => {
     /** 模拟进度 */
     let duration = appStore.fullLoadingBarObj!.duration
@@ -33,22 +34,45 @@ export default observer(function FullPageLoading() {
   }, [])
   return (
     <Wrapper>
-      <div className='text-con'>
-        <div className='title'>{appStore.fullLoadingBarObj!.progress || progress || '0%'}</div>
-        <div className='aside'>{appStore.fullLoadingBarObj!.aside}</div>
-      </div>
-      <div className='inner'>
-        <div className='container' style={{ width: appStore.fullLoadingBarObj!.progress || progress || 0 }}>
-          <ul>
-            <li> </li>
-            <li> </li>
-            <li> </li>
-            <li> </li>
-            <li> </li>
-            <li> </li>
-          </ul>
+      {fullPage ? (
+        <div>
+          <div className='text-con'>
+            <div className='title'>{appStore.fullLoadingBarObj!.progress || progress || '0%'}</div>
+            <div className='aside'>{appStore.fullLoadingBarObj!.aside}</div>
+          </div>
+          <div className='inner'>
+            <div className='container' style={{ width: appStore.fullLoadingBarObj!.progress || progress || 0 }}>
+              <ul>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>
+          <div className='text-con'>
+            <div className='title'>{appStore.fullLoadingBarObj!.progress || progress || '0%'}</div>
+            <div className='aside'>{appStore.fullLoadingBarObj!.aside}</div>
+          </div>
+          <div className='s-inner'>
+            <div className='container' style={{ width: appStore.fullLoadingBarObj!.progress || progress || 0 }}>
+              <ul>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+                <li> </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </Wrapper>
   )
 })
@@ -94,6 +118,17 @@ const Wrapper = styled.div`
     }
   }
   div.inner {
+    width: ${BAR_WIDTH};
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    height: ${BAR_HEIGHT};
+    background: ${BG_COLOR};
+  }
+  div.s-inner {
     width: ${BAR_WIDTH};
     position: absolute;
     margin: auto;

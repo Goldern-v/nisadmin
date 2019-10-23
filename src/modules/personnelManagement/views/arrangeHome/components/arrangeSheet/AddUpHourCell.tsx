@@ -8,7 +8,7 @@ export interface Props {
   id: any
 }
 
-export default observer(function NightHourCell(props: Props) {
+export default observer(function AddUpHourCell(props: Props) {
   let list = []
   let user = sheetViewModal.sheetTableData.find((item: any) => {
     return item.id == props.id
