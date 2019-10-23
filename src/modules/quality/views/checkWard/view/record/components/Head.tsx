@@ -10,13 +10,33 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import { PageTitle } from 'src/components/common'
 
 const { RangePicker } = DatePicker
-export interface Props {}
+export interface Props { }
 
 export default observer(function Head() {
+  const handleSearch: any = (val: any) => {
+    recordViewModal.selectedWardRoundText = val
+    let data: any = recordViewModal.deptList.filter((item: any) => item.name.indexOf(val) > -1)
+    recordViewModal.selectedWardRoundArray = data || []
+  }
+
+  const setColorRed: any = (val: any) => {
+    let array: any = val.split('')
+    return array.map((item: any, i: any) => {
+      let isRed = recordViewModal.selectedWardRoundText.indexOf(item) > -1
+      return isRed ? <span key={i} style={{ color: 'red' }}>{item}</span> : <span key={i}>{item}</span>
+    })
+  }
+
+  const handleChange: any = (val: any) => {
+    recordViewModal.selectedDept = val === '全院' ? '' : val
+    recordViewModal.selectedWardRoundText = val
+    recordViewModal.onload()
+  }
+  const options = recordViewModal.selectedWardRoundArray.map((d: any) => <Select.Option key={d.name} value={d.code}>{setColorRed(d.name)}</Select.Option>);
   return (
     <Wrapper>
       <LeftIcon>
-          <PageTitle>查房记录</PageTitle>
+        <PageTitle>查房记录</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>查房日期：</span>
@@ -32,18 +52,17 @@ export default observer(function Head() {
 
         <span>查房科室：</span>
         <Select
-          value={recordViewModal.selectedDept}
-          onChange={(val: string) => {
-            recordViewModal.selectedDept = val
-            recordViewModal.onload()
-          }}
+          showSearch
+          value={recordViewModal.selectedWardRoundText}
+          placeholder="请输入要查询的科室"
+          defaultActiveFirstOption={false}
+          showArrow={false}
+          filterOption={false}
+          onSearch={handleSearch}
+          onChange={handleChange}
+          notFoundContent={null}
         >
-          <Select.Option value=''>全院</Select.Option>
-          {recordViewModal.deptList.map((item: any, index: number) => (
-            <Select.Option value={item.name} key={index}>
-              {item.name}
-            </Select.Option>
-          ))}
+          {options}
         </Select>
 
         <span>类型：</span>
@@ -67,15 +86,20 @@ export default observer(function Head() {
           value={recordViewModal.selectedCheckState}
           onChange={(val: string) => {
             recordViewModal.selectedCheckState = val
+            recordViewModal.pageIndex = 1
             recordViewModal.onload()
           }}
         >
-          <Select.Option value=''>全部</Select.Option>
-          {recordViewModal.checkStateList.map((item: any, index: number) => (
+            <Select.Option value=''>全部</Select.Option>
+            <Select.Option value='1'>待病区处理</Select.Option>
+            <Select.Option value='1,2'>待科护士长审核</Select.Option>
+            <Select.Option value='3'>待护理部审核</Select.Option>
+            <Select.Option value='4'>已完成</Select.Option>
+          {/* {recordViewModal.checkStateList.map((item: any, index: number) => (
             <Select.Option value={item.code} key={item.code}>
               {item.code}
             </Select.Option>
-          ))}
+          ))} */}
         </Select>
         <Place />
 
@@ -98,6 +122,9 @@ const Wrapper = styled(TableHeadCon)`
   }
   .checkButton {
     margin-left: 0px;
+  }
+  .ant-select-selection-selected-value span {
+    color: #000 !important;
   }
 
 `
