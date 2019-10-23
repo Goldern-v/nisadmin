@@ -10,14 +10,9 @@ import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryRepo
 import ProblemSummary from './views/problemSummary/ProblemSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 
-import { ReactComponent as CXTJ } from './images/CXTJ.svg'
-import { ReactComponent as FXBG } from './images/FXBG.svg'
-import { ReactComponent as ZKJL } from './images/ZKJL.svg'
+import { ReactComponent as YIBG } from './images/icon/YJBG.svg'
+import { ReactComponent as YJJL } from './images/icon/YJJL.svg'
 import { appStore } from 'src/stores'
-import RecordView from './views/checkWard/view/record/RecordView'
-import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
-import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
-import WritingForm from './views/writingForm/WritingForm'
 import NursingWorkPlainList from './views/nursingWorkPlain/NursingWorkPlainList'
 import FollowUpRecord from './views/qcOne/page/followUpRecord/FollowUpRecord'
 import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
@@ -26,7 +21,7 @@ import HumanResource from './views/qcOne/page/humanResource/HumanResource'
 const LEFT_MENU_CONFIG: any = [
   {
     title: '一级质控记录',
-    icon: <ZKJL />,
+    icon: <YJJL />,
     children: [
       {
         title: '人力资源调配',
@@ -47,7 +42,7 @@ const LEFT_MENU_CONFIG: any = [
   },
   {
     title: '一级质控报告',
-    icon: <FXBG />,
+    icon: <YIBG />,
     children: [
       {
         title: '护理工作计划',

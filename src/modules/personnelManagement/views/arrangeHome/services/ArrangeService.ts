@@ -10,13 +10,7 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       deptCode: selectViewModal.params.deptCode,
-      nurseGroup: selectViewModal.params.group,
-      startTimeWeek: moment(selectViewModal.params.startTime)
-        .weekday(1)
-        .format('YYYY-MM-DD'),
-      endTimeWeek: moment(selectViewModal.params.endTime)
-        .weekday(7)
-        .format('YYYY-MM-DD')
+      nurseGroup: selectViewModal.params.group
     }
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
@@ -27,7 +21,13 @@ export default class ArrangeService extends BaseApiService {
       endTime: selectViewModal.params.endTime,
       setting: sheetViewModal.sheetTableData.map((item: any) => ({ ...item, status })),
       remark: sheetViewModal.remark,
-      deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode,
+      startTimeWeek: moment(selectViewModal.params.startTime)
+        .weekday(1)
+        .format('YYYY-MM-DD'),
+      endTimeWeek: moment(selectViewModal.params.endTime)
+        .weekday(7)
+        .format('YYYY-MM-DD')
     }
     return this.post(`/scheduling/saveOrUpdate`, obj)
   }

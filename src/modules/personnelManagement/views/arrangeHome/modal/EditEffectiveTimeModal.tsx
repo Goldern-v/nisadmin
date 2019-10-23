@@ -48,7 +48,7 @@ export default function EditEffectiveTimeModal(props: Props) {
   return (
     <Modal
       title={'修改工时'}
-      width={350}
+      width={400}
       visible={visible}
       onCancel={onCancel}
       onOk={onSave}
@@ -56,16 +56,16 @@ export default function EditEffectiveTimeModal(props: Props) {
       centered
       forceRender
     >
-      <Form ref={refForm} rules={rules} labelWidth={80}>
+      <Form ref={refForm} rules={rules} labelWidth={70}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`总工时`} name='effectiveTime' required labelWidth={50}>
+            <Form.Field label={`总工时`} name='effectiveTime' required>
               <InputNumber />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`备注`} name='detail' labelWidth={50}>
+            <Form.Field label={`备注`} name='detail'>
               <Input.TextArea />
             </Form.Field>
           </Col>

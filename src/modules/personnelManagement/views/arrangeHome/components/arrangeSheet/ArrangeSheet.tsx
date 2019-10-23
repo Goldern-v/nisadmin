@@ -13,9 +13,12 @@ import classNames from 'classnames'
 import createModal from 'src/libs/createModal'
 import EditEffectiveTimeModal from '../../modal/EditEffectiveTimeModal'
 import EditVacationCountModal from '../../modal/EditVacationCountModal'
+import EditVacationCountModal_wh from '../../modal/EditEffectiveTimeModal_wh'
 import { ArrangeItem } from '../../types/Sheet'
 import TotalCell from './TotalCell'
 import NightHourCell from './NightHourCell'
+import { appStore } from 'src/stores'
+import update from 'immutability-helper'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean
@@ -26,7 +29,11 @@ export default observer(function ArrangeSheet(props: Props) {
   let { isEdit, surplusHeight } = props
   const [surplusWidth, setSurplusWidth]: any = useState(false)
   let contextMenu = createContextMenu()
-  let editEffectiveTimeModal = createModal(EditEffectiveTimeModal)
+  /** 修改工时 or 加减班 */
+
+  let editEffectiveTimeModal = createModal(
+    appStore.HOSPITAL_ID == 'wh' ? EditVacationCountModal_wh : EditEffectiveTimeModal
+  )
   let editVacationCountModal = createModal(EditVacationCountModal)
 
   let columns: ColumnProps<any>[] = [
@@ -204,6 +211,13 @@ export default observer(function ArrangeSheet(props: Props) {
               </div>
             </React.Fragment>
           )
+        }}
+        type={['diagRow']}
+        moveRow={(dragIndex: number, hoverIndex: number) => {
+          const dragRow = sheetViewModal.sheetTableData[dragIndex]
+          sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
+            $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+          })
         }}
       />
       <contextMenu.Component />

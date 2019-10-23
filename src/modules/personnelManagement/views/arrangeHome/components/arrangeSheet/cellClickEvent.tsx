@@ -4,6 +4,7 @@ import { ArrangeItem } from '../../types/Sheet'
 import _ from 'lodash'
 import { cloneJson } from 'src/utils/json/clone'
 import { message } from 'src/vendors/antd'
+import { appStore } from 'src/stores'
 export function getAddArrangeMenuList(list: ArrangeItem[], selectedCellObj: ArrangeItem) {
   let obj = _.groupBy(list, 'shiftType')
   let keys = Object.keys(obj)
@@ -60,6 +61,10 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].addSymbols = copyRow[i].addSymbols
       list[i].settings = cloneJson(copyRow[i].settings)
 
+      if (appStore.HOSPITAL_ID == 'wh') {
+        list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs)
+      }
+
       if (isClean) {
         /** 清空复制行 */
         copyRow[i].rangeName = ''
@@ -67,8 +72,12 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].effectiveTime = null
         copyRow[i].effectiveTimeOld = null
         copyRow[i].shiftType = ''
-        copyRow[i].settings = null
-        copyRow[i].addSymbols = null
+        copyRow[i].settings = []
+        copyRow[i].addSymbols = []
+
+        if (appStore.HOSPITAL_ID == 'wh') {
+          copyRow[i].schAddOrSubs = []
+        }
       }
     }
     if (isClean) {
@@ -78,7 +87,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
     message.warning('请先复制行')
   }
 }
-export function copyCellClick(cell: any, copyCell: any) {
+export function copyCellClick(cell: ArrangeItem, copyCell: any) {
   if (copyCell) {
     cell.rangeName = copyCell.rangeName
     cell.nameColor = copyCell.nameColor
@@ -87,6 +96,10 @@ export function copyCellClick(cell: any, copyCell: any) {
     cell.shiftType = copyCell.shiftType
     cell.addSymbols = copyCell.addSymbols
     cell.settings = cloneJson(copyCell.settings)
+
+    if (appStore.HOSPITAL_ID == 'wh') {
+      cell.schAddOrSubs = cell.schAddOrSubs
+    }
   } else {
     message.warning('请先复制格')
   }
@@ -98,9 +111,13 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.effectiveTime = null
   cellObj.effectiveTimeOld = null
   cellObj.shiftType = ''
-  cellObj.settings = null
-  cellObj.addSymbols = null
+  cellObj.settings = []
+  cellObj.addSymbols = []
   cellObj.statusType = '0'
+
+  if (appStore.HOSPITAL_ID == 'wh') {
+    cellObj.schAddOrSubs = []
+  }
 }
 
 export function cleanCellList(cellList: ArrangeItem[]) {

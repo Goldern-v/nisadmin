@@ -11,6 +11,9 @@ interface FullLoadingBarObj {
   progress?: string
 }
 
+type hisIds = 'hj' | 'wh'
+type HisAdapterMap = { [p in hisIds]?: any }
+
 export default class AppStore {
   public constructor() {
     this.isExpand = (localStorage.getItem('isExpand') as any) || '1'
@@ -33,7 +36,7 @@ export default class AppStore {
   @observable public wih: number = window.innerHeight
 
   /** 医院id */
-  @observable public HOSPITAL_ID = process.env.REACT_APP_HOSPITAL_ID
+  @observable public HOSPITAL_ID: hisIds = process.env.REACT_APP_HOSPITAL_ID as hisIds
   /** 医院名称 */
   @observable public HOSPITAL_Name = process.env.REACT_APP_HOSPITAL_NAME
   /** 全局进度条 */
@@ -109,5 +112,12 @@ export default class AppStore {
         resolve()
       }, 200)
     })
+  }
+
+  /** 医院适配器 用于区分医院适配不同的操作 */
+  hisAdapter(hisAdapterMap: HisAdapterMap) {
+    if (hisAdapterMap[this.HOSPITAL_ID] !== undefined) return hisAdapterMap[this.HOSPITAL_ID]
+    if (hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds])
+      return hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds]
   }
 }

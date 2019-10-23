@@ -1,3 +1,9 @@
+interface SchAddOrSubItem {
+  startDate: string
+  endDate: string
+  statusType: string
+}
+
 export interface ArrangeItem {
   rangeName?: string
   nameColor?: string
@@ -8,6 +14,8 @@ export interface ArrangeItem {
   detail?: string
   settings?: ArrangeItem | null
   statusType?: string
+  /** 武汉加减班 */
+  schAddOrSubs?: Partial<SchAddOrSubItem>[]
   [p: string]: any
 }
 

@@ -12,6 +12,7 @@ import { SymbolItem, ArrangeItem } from '../../types/Sheet'
 import { getAddArrangeMenuList, copyRowClick, cleanCell, cleanCellList, copyCellClick } from './cellClickEvent'
 import { message, Popover } from 'src/vendors/antd'
 import { cloneJson } from 'src/utils/json/clone'
+import { appStore } from 'src/stores'
 
 export interface Props {
   contextMenu: ContextMenu
@@ -51,21 +52,43 @@ export default observer(function Cell(props: Props) {
         {
           type: 'line'
         },
-        {
-          icon: require('../../images/修改工时.png'),
-          label: '修改工时',
-          type: 'text',
-          onClick: () => {
-            editEffectiveTimeModal.show({
-              data: sheetViewModal.selectedCell,
-              onOkCallBack(value: any) {
-                sheetViewModal.selectedCell.effectiveTime = value.effectiveTime
-                sheetViewModal.selectedCell.detail = value.detail
-                // setCellConfig(sheetViewModal.analyseCell(cellObj))
+        appStore.HOSPITAL_ID == 'wh'
+          ? {
+              icon: require('../../images/修改工时.png'),
+              label: '加/减班',
+              type: 'text',
+              onClick: () => {
+                editEffectiveTimeModal.show({
+                  data: sheetViewModal.selectedCell,
+                  onOkCallBack(data: any) {
+                    sheetViewModal.selectedCell.detail = data.detail
+                    sheetViewModal.selectedCell.effectiveTime = data.effectiveTime
+                    sheetViewModal.selectedCell.schAddOrSubs = [
+                      {
+                        startDate: data.startDate,
+                        endDate: data.endDate,
+                        statusType: data.statusType
+                      }
+                    ]
+                  }
+                })
               }
-            })
-          }
-        },
+            }
+          : {
+              icon: require('../../images/修改工时.png'),
+              label: '修改工时',
+              type: 'text',
+              onClick: () => {
+                editEffectiveTimeModal.show({
+                  data: sheetViewModal.selectedCell,
+                  onOkCallBack(value: any) {
+                    sheetViewModal.selectedCell.effectiveTime = value.effectiveTime
+                    sheetViewModal.selectedCell.detail = value.detail
+                    // setCellConfig(sheetViewModal.analyseCell(cellObj))
+                  }
+                })
+              }
+            },
         {
           icon: require('../../images/休假计数.png'),
           disabled: sheetViewModal.selectedCell.shiftType != '休假',
@@ -235,21 +258,34 @@ export default observer(function Cell(props: Props) {
       </div>
     </div>
   )
+
+  const title = appStore.hisAdapter({
+    hj:
+      (cellObj.effectiveTimeOld > cellObj.effectiveTime ? '减少' : '增加') +
+      '了' +
+      Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
+      '工时',
+    wh:
+      (cellObj.schAddOrSubs && cellObj.schAddOrSubs[0] && cellObj.schAddOrSubs[0].statusType == '1' ? '加班' : '减班') +
+      '：' +
+      (cellObj.effectiveTime - cellObj.effectiveTimeOld).toFixed(2) +
+      'h' +
+      ',' +
+      `现：${cellObj.effectiveTime}h,` +
+      `原：${cellObj.effectiveTimeOld}h`
+  })
+
   return (
     <Popover
       content={content}
-      title={
-        (cellObj.effectiveTimeOld > cellObj.effectiveTime ? '减少' : '增加') +
-        '了' +
-        Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
-        '工时'
-      }
+      title={title}
       trigger='hover'
       placement='rightTop'
       visible={hoverShow}
       onVisibleChange={onVisibleChange}
     >
       <Wrapper onContextMenu={onContextMenu} onClick={onClick} className={classNames(cellConfig)}>
+        {appStore.isDev && <span style={{ display: 'none' }}>{JSON.stringify(cellConfig)}</span>}
         {cellConfig.isAddWordTime ? <div className='sj add' /> : ''}
         {cellConfig.isReduceWordTime ? <div className='sj reduce' /> : ''}
         {cellConfig.isExpectedScheduling ? (

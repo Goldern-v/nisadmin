@@ -1,3 +1,4 @@
+import { appStore } from './../../../../../stores/index'
 import { SymbolItem, ArrangeItem } from './../types/Sheet'
 import { observable, computed, action } from 'mobx'
 import { selectViewModal } from './SelectViewModal'
@@ -86,13 +87,18 @@ class SheetViewModal {
   /** 解析cellobj 获取额外信息 */
   analyseCell(cellObj: ArrangeItem): any {
     if (!cellObj) return {}
+
     const cellConfig = {
       isTwoDaysAgo: false && cellObj ? moment().isoWeeks() - moment(cellObj && cellObj.workDate).isoWeeks() > 1 : false,
       isExpectedScheduling: cellObj.statusType == '1',
-      isAddWordTime:
-        cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
-      isReduceWordTime:
-        cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld > cellObj.effectiveTime,
+      isAddWordTime: appStore.hisAdapter({
+        hj: cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
+        wh: (cellObj.schAddOrSubs && cellObj.schAddOrSubs[0] && cellObj.schAddOrSubs[0].statusType) == '1'
+      }),
+      isReduceWordTime: appStore.hisAdapter({
+        hj: cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld > cellObj.effectiveTime,
+        wh: (cellObj.schAddOrSubs && cellObj.schAddOrSubs[0] && cellObj.schAddOrSubs[0].statusType) == '2'
+      }),
       isSelected: this.selectedCell == cellObj
     }
     return cellConfig
