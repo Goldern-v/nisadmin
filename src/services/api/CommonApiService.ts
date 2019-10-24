@@ -75,7 +75,7 @@ export default class CommonApiService extends BaseApiService {
     return this.post(`/user/defaultDeptUser`, { keyword })
   }
   /** 上传附件 */
-  public uploadAttachment(entityType: EntityType, file: any, onUploadProgress?: any) {
+  public uploadAttachment(entityType: EntityType|string, file: any, onUploadProgress?: any) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
       onUploadProgress: onUploadProgress || (() => {})
