@@ -117,8 +117,9 @@ export default class AppStore {
 
   /** 医院适配器 用于区分医院适配不同的操作 */
   hisAdapter(hisAdapterMap: HisAdapterMap) {
-    if (hisAdapterMap[this.HOSPITAL_ID] !== undefined) return hisAdapterMap[this.HOSPITAL_ID]
+    if (hisAdapterMap[this.HOSPITAL_ID] !== undefined) return hisAdapterMap[this.HOSPITAL_ID]()
     if (hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds])
-      return hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds]
+      return hisAdapterMap[Object.keys(hisAdapterMap)[0] as hisIds]()
+    return ''
   }
 }

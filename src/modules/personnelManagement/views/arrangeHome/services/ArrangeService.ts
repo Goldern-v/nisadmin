@@ -10,7 +10,13 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       deptCode: selectViewModal.params.deptCode,
-      nurseGroup: selectViewModal.params.group
+      nurseGroup: selectViewModal.params.group,
+      startTimeWeek: moment(selectViewModal.params.startTime)
+        .weekday(0)
+        .format('YYYY-MM-DD'),
+      endTimeWeek: moment(selectViewModal.params.endTime)
+        .weekday(6)
+        .format('YYYY-MM-DD')
     }
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
