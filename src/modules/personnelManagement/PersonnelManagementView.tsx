@@ -10,6 +10,8 @@ import MealSettingViewNew from 'src/modules/personnelManagement/views/arrangeHom
 import PersonnelSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView'
 import { appStore } from 'src/stores'
 import PersonnelSecondment from './views/arrangeHome/page/personnelSecondment/PersonnelSecondment'
+import AddSubClass from './views/arrangeHome/page/addSubClass/AddSubClass'
+import HolidaysList from './views/arrangeHome/page/HolidaysList/HolidaysList'
 
 export interface Props {}
 
@@ -57,6 +59,16 @@ export default function PersonnelManagementView() {
           title: '排班套餐设置',
           path: '/personnelManagement/MealSettingViewNew',
           component: MealSettingViewNew
+        },
+        {
+          title: '加减班列表查询',
+          path: '/personnelManagement/addSubClass',
+          component: AddSubClass
+        },
+        {
+          title: '假请列表查询',
+          path: '/personnelManagement/holidaysList',
+          component: HolidaysList
         }
       ]
     }

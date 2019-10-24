@@ -3,6 +3,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 import { selectViewModal } from '../viewModal/SelectViewModal'
 import moment from 'moment'
+import { PageObj } from 'src/modules/nurseFiles/view/statistics/config/getPageObj'
 export default class ArrangeService extends BaseApiService {
   /** 获取排班信息 */
   public findCreateOrUpdate(obj?: any) {
@@ -118,6 +119,11 @@ export default class ArrangeService extends BaseApiService {
       nurseGroup: selectViewModal.params.group
     }
     return this.post(`/scheduling/findSysnNurse`, postData)
+  }
+
+  //加减班查询
+  public findBylist(obj: PageObj) {
+    return this.post(`/schAddOrSub/findBylist`, obj)
   }
 }
 
