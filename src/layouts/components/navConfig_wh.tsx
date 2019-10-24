@@ -77,7 +77,7 @@ export const navConfig: navConfigItem[] = [
     path: '/wardManagement'
   },
   {
-    name: '护理人员管理',
+    name: '排班管理',
     path: '/personnelManagement'
   }
 ]

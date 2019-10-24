@@ -41,7 +41,7 @@ const Wrapper = styled.div`
   }
   button {
     position: absolute;
-    top: -5px;
+    top: -20px;
     right: 20px;
   }
   .aside {

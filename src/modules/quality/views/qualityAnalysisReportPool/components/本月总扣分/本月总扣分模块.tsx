@@ -18,12 +18,12 @@ export default observer(function 本月总扣分模块(props: Props) {
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  let totalSorce = 0;
+  let totalSorce = 0
   for (let i = 0; i < list.length; i++) {
-    totalSorce += list[i].deductScore || 0;
+    totalSorce += list[i].deductScore || 0
   }
 
-  useEffect(() => { })
+  useEffect(() => {})
 
   return (
     <Wrapper>
@@ -46,7 +46,7 @@ const Wrapper = styled.div`
   }
   button {
     position: absolute;
-    top: 0px;
+    top: -3px;
     right: 20px;
   }
 `
