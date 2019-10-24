@@ -9,6 +9,7 @@ import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
+import { useKeepAliveEffect } from 'react-keep-alive'
 
 export interface Props extends RouteComponentProps {}
 /** 一行的列数 */
@@ -47,6 +48,13 @@ export default observer(function QualityControlRecord() {
     //   // appStore.history.replace(appStore.history.location.pathname)
     // })()
   }, [])
+
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getTableData()
+    }
+    return () => {}
+  })
   const getTableData = (obj?: any) => {
     setLoading(true)
     let sendData = {

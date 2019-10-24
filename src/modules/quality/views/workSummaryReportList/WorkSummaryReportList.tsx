@@ -11,6 +11,7 @@ import WorkSummaryReportListService from './api/WorkSummaryReportListService'
 
 import CreateWorkSummaryReportModal from './components/CreateWorkSummaryReportModal'
 import qs from 'qs'
+import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 
 const api = new WorkSummaryReportListService()
 const Option = Select.Option
@@ -45,6 +46,13 @@ export default observer(function WorkSummaryReportList() {
   useEffect(() => {
     getTableData()
   }, [query])
+
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getTableData()
+    }
+    return () => {}
+  })
 
   const [dataTotal, setDataTotal] = useState(0 as number)
 

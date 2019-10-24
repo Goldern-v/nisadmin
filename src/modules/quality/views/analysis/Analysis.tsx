@@ -12,6 +12,7 @@ import CreateAnalysisModal from './components/CreateAnalysisModal'
 import AnalysisCreateProgress from './components/AnalysisCreateProgress'
 import qs from 'qs'
 import { PageTitle } from 'src/components/common'
+import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 
 const api = new QualityAnalysisService()
 const Option = Select.Option
@@ -51,6 +52,13 @@ export default observer(function Analysis() {
   useEffect(() => {
     getTableData()
   }, [query])
+
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getTableData()
+    }
+    return () => {}
+  })
 
   const [dataTotal, setDataTotal] = useState(0 as number)
 

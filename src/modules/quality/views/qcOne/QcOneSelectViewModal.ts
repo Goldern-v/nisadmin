@@ -4,10 +4,11 @@ import service from 'src/services/api'
 import User from 'src/models/User'
 import { observable, computed, action } from 'mobx'
 import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import moment from 'moment'
 
 class QcOneSelectViewModal {
-  @observable public startDate = getCurrentMonthNow()[0]
-  @observable public endDate = getCurrentMonthNow()[1]
+  @observable public startDate: string = getCurrentMonthNow()[0].format('YYYY-MM-DD')
+  @observable public endDate: string = getCurrentMonthNow()[1].format('YYYY-MM-DD')
   /** 当前科室护士列表 */
   @observable public nurseList: DictItem[] = []
   @observable public wtzlList = [
@@ -40,10 +41,10 @@ class QcOneSelectViewModal {
   /** 时间控件处理 */
   getDateOptions(): any {
     return {
-      value: [this.startDate, this.endDate],
+      value: [this.startDate ? moment(this.startDate) : null, this.endDate ? moment(this.endDate) : null],
       onChange: (date: any[]) => {
-        this.startDate = date[0] || null
-        this.endDate = date[1] || null
+        this.startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+        this.endDate = date[1] ? moment(date[0]).format('YYYY-MM-DD') : ''
       }
     }
   }

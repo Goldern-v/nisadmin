@@ -11,35 +11,58 @@ import { useCallback } from 'src/types/react'
 import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
 import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
+import { DictItem } from 'src/services/api/CommonApiService'
 export interface Props {}
 export default observer(function HumanResource() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
+  const [selectedDp, setSelectedDp] = useState('')
+  const dpList = [
+    {
+      code: '',
+      name: '全部'
+    },
+    {
+      code: '1',
+      name: '调出'
+    },
+    {
+      code: '2',
+      name: '调入'
+    }
+  ]
+
   const columns: ColumnProps<any>[] = [
     {
-      title: '姓名'
+      title: '姓名',
+      align: 'center',
+      dataIndex: 'empName',
+      width: 150
     },
     {
-      title: '调配方式'
+      title: '原科室',
+      dataIndex: 'deptCodeNameOld',
+      width: 250
     },
     {
-      title: '科室'
+      title: '调往科室',
+      dataIndex: 'deptNameNew',
+      width: 250
     },
     {
-      title: '开始时间'
-    },
-    {
-      title: '结束时间'
-    },
-    {
-      title: '事由'
-    },
-    {
-      title: '创建人'
-    },
-    {
-      title: '创建时间'
+      title: '开始时间',
+      align: 'center',
+      dataIndex: 'startDate',
+      width: 200
     }
+    // {
+    //   title: '创建人',
+    //   dataIndex: 'creatorName'
+    // },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'creatorTime'
+    // }
   ]
 
   const [pageOptions, setPageOptions]: any = useState({
@@ -49,20 +72,28 @@ export default observer(function HumanResource() {
   })
   const getData = () => {
     setPageLoading(true)
-    qcOneService.qcHrAllocationGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {
-      setDataSource(res.data.list)
-      setPageLoading(false)
-    })
+    qcOneService
+      .qcNurseTransferGetPage({
+        ...pageOptions,
+        wardCode: authStore.selectedDeptCode,
+        startDate: qcOneSelectViewModal.startDate,
+        endDate: qcOneSelectViewModal.endDate,
+        type: selectedDp
+      })
+      .then((res) => {
+        setDataSource(res.data.list)
+        setPageLoading(false)
+      })
   }
 
   const onDetail = (record: any) => {}
-  useCallback(() => {
-    getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize])
-
   useEffect(() => {
     getData()
-  }, [])
+  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, selectedDp, qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+
+  // useEffect(() => {
+  //   getData()
+  // }, [])
   return (
     <Wrapper>
       <PageHeader>
@@ -73,7 +104,13 @@ export default observer(function HumanResource() {
         <span className='label'>科室:</span>
         <DeptSelect onChange={() => {}} />
         <span className='label'>调配方式:</span>
-        <Select>{/* <Select.Option>123</Select.Option> */}</Select>
+        <Select onChange={(value: string) => setSelectedDp(value)} value={selectedDp}>
+          {dpList.map((item: DictItem, index: number) => (
+            <Select.Option value={item.code} key={index}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
         <Button onClick={() => getData()}>查询</Button>
         <Button type='primary' onClick={() => {}}>
           添加
