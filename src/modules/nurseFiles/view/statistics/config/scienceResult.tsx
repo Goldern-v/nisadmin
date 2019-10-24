@@ -33,7 +33,7 @@ export const pageObj: PageObj = {
     },
 
     {
-      label: '授予开始',
+      label: '授予时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
       nameList: ['grantStartDate', 'grantEndDate']

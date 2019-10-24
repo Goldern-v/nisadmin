@@ -7,7 +7,7 @@ export interface Props extends RouteComponentProps {}
 
 export default observer(function FullPageLoading() {
   const [progress, setProgress] = useState('0%')
-  const [fullPage, setFullPage] = useState(false)
+  const [fullPage, setFullPage] = useState(appStore.fullLoadingBarObj!.isFullpage || false)
   useEffect(() => {
     /** 模拟进度 */
     let duration = appStore.fullLoadingBarObj!.duration

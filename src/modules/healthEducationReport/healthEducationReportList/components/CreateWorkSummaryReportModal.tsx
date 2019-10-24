@@ -76,7 +76,8 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
           onCancel()
           appStore.openFullLoadingBar({
             duration: 10000,
-            aside: '正在生成月度分析报告…'
+            aside: '正在生成月度分析报告…',
+            isFullpage: true
           })
           return workSummaryReportListService.createReport(params)
         })

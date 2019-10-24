@@ -9,6 +9,7 @@ interface FullLoadingBarObj {
   /** 描述 */
   aside: string
   progress?: string
+  isFullpage?: boolean
 }
 
 type hisIds = 'hj' | 'wh'
@@ -85,14 +86,7 @@ export default class AppStore {
 
   /** 打开全局进度条 */
   openFullLoadingBar(option: FullLoadingBarObj) {
-    return new Promise((resolve, reject) => {
-      if (this.fullLoadingBarObj) {
-        reject()
-      } else {
-        this.fullLoadingBarObj = option
-        resolve()
-      }
-    })
+    this.fullLoadingBarObj = option
   }
   /** 关闭全局进度条 */
   closeFullLoadingBar(okText?: string) {

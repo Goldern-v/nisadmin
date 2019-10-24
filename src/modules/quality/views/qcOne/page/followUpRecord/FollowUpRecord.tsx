@@ -67,7 +67,7 @@ export default observer(function FollowUpRecord() {
     },
     {
       title: '家访参加人员',
-      dataIndex: 'participantsList',
+      dataIndex: 'empNames',
       width: 150
     },
     {

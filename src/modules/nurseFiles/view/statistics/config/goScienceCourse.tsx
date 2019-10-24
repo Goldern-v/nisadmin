@@ -50,7 +50,7 @@ export const pageObj: PageObj = {
       nameList: ['startDateStart', 'startDateEnd']
     },
     {
-      label: '截止时间',
+      label: '结束时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
       nameList: ['endDateStart', 'endDateEnd']
