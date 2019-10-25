@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, message, Select, Drawer, DatePicker, Checkbox } from 'antd'
+import { Button, Input, message, Select, Drawer, DatePicker, Checkbox, Spin } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -147,6 +147,8 @@ export default observer(function NurseMeetingRecordEdit() {
               if (res.data.nurseMeeting[x]) newNurseMeeting[x] = res.data.nurseMeeting[x]
             }
 
+            console.log(newNurseMeeting)
+
             setNurseMeeting(newNurseMeeting)
           }
         }
@@ -208,167 +210,169 @@ export default observer(function NurseMeetingRecordEdit() {
     </TopPannel>
     <MainPannel>
       <MainContent className="main-contain">
-        <div className="form-pannel">
-          <table>
-            <colgroup>
-              <col width='10%' />
-              <col width='40%' />
-              <col width='10%' />
-              <col width='40%' />
-            </colgroup>
-            <tbody>
-              <tr>
-                <td className="label">会议日期</td>
-                <td className="content">
-                  <DatePicker
-                    value={
-                      nurseMeeting.meetingDay && nurseMeeting.meetingTime ?
-                        moment(`${nurseMeeting.meetingDay} ${nurseMeeting.meetingTime}`) :
-                        undefined
-                    }
-                    onChange={(newTime) => {
-                      setNurseMeeting({
-                        ...nurseMeeting,
-                        meetingDay: newTime.format('YYYY-MM-DD'),
-                        meetingTime: newTime.format('HH:mm')
-                      })
-                    }}
-                    format="YYYY-MM-DD HH:mm"
-                    allowClear={false}
-                    showTime />
-                </td>
-                <td className="label">会议种类</td>
-                <td>
-                  <Select
-                    value={nurseMeeting.meetingType}
-                    onChange={(meetingType: string) =>
-                      setNurseMeeting({ ...nurseMeeting, meetingType })
-                    }>
-                    <Option value="QCWMT001">周会</Option>
-                    <Option value="QCWMT002">月会</Option>
-                  </Select>
-                </td>
-              </tr>
-              <tr>
-                <td className="label">科室</td>
-                <td>
-                  <Input value={wardName} disabled />
-                </td>
-                <td className="label">会议地点</td>
-                <td>
-                  <Input.TextArea
-                    placeholder="请输入"
-                    value={nurseMeeting.meetingLocation}
-                    autosize
-                    onChange={(e: any) =>
-                      setNurseMeeting({ ...nurseMeeting, meetingLocation: e.target.value })
-                    } />
-                </td>
-              </tr>
-              <tr>
-                <td className="label">会议主持</td>
-                <td>
-                  <Select
-                    showSearch
-                    mode="tags"
-                    value={comperes.split('、').filter((str: string) => str)}
-                    onChange={(arr: any[]) => setComperes(arr.join('、'))}
-                    placeholder="请输入"
-                    filterOption={(input: string, option: any) =>
-                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
-                    {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
-                  </Select>
-                </td>
-                <td className="label">记录人</td>
-                <td>
-                  <Select
-                    showSearch
-                    mode="tags"
-                    value={recorders.split('、').filter((str: string) => str)}
-                    onChange={(arr: any[]) => setRecorders(arr.join('、'))}
-                    placeholder="请输入"
-                    filterOption={(input: string, option: any) =>
-                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
-                    {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
-                  </Select>
-                </td>
-              </tr>
-              <tr>
-                <td className="label">到会人员</td>
-                <td colSpan={3}>
-                  <Select
-                    className="attendees-select"
-                    showSearch
-                    mode="tags"
-                    value={attendees.split('、').filter((str: string) => str)}
-                    onChange={(arr: any[]) => setAttendees(arr.join('、'))}
-                    placeholder="请输入"
-                    filterOption={(input: string, option: any) =>
-                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
-                    {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
-                  </Select>
-                  <Button
-                    size="small"
-                    className="more-btn"
-                    onClick={handleDrawerShow}>
-                    ...
+        <Spin spinning={loading}>
+          <div className="form-pannel">
+            <table>
+              <colgroup>
+                <col width='10%' />
+                <col width='40%' />
+                <col width='10%' />
+                <col width='40%' />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td className="label">会议日期</td>
+                  <td className="content">
+                    <DatePicker
+                      value={
+                        nurseMeeting.meetingDay && nurseMeeting.meetingTime ?
+                          moment(`${nurseMeeting.meetingDay} ${nurseMeeting.meetingTime}`) :
+                          undefined
+                      }
+                      onChange={(newTime) => {
+                        setNurseMeeting({
+                          ...nurseMeeting,
+                          meetingDay: newTime.format('YYYY-MM-DD'),
+                          meetingTime: newTime.format('HH:mm')
+                        })
+                      }}
+                      format="YYYY-MM-DD HH:mm"
+                      allowClear={false}
+                      showTime />
+                  </td>
+                  <td className="label">会议种类</td>
+                  <td>
+                    <Select
+                      value={nurseMeeting.meetingType}
+                      onChange={(meetingType: string) =>
+                        setNurseMeeting({ ...nurseMeeting, meetingType })
+                      }>
+                      <Option value="QCWMT001">周会</Option>
+                      <Option value="QCWMT002">月会</Option>
+                    </Select>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">科室</td>
+                  <td>
+                    <Input value={wardName} disabled />
+                  </td>
+                  <td className="label">会议地点</td>
+                  <td>
+                    <Input.TextArea
+                      placeholder="请输入"
+                      value={nurseMeeting.meetingLocation}
+                      autosize
+                      onChange={(e: any) =>
+                        setNurseMeeting({ ...nurseMeeting, meetingLocation: e.target.value })
+                      } />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">会议主持</td>
+                  <td>
+                    <Select
+                      showSearch
+                      mode="tags"
+                      value={comperes.split('、').filter((str: string) => str)}
+                      onChange={(arr: any[]) => setComperes(arr.join('、'))}
+                      placeholder="请输入"
+                      filterOption={(input: string, option: any) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }>
+                      {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
+                    </Select>
+                  </td>
+                  <td className="label">记录人</td>
+                  <td>
+                    <Select
+                      showSearch
+                      mode="tags"
+                      value={recorders.split('、').filter((str: string) => str)}
+                      onChange={(arr: any[]) => setRecorders(arr.join('、'))}
+                      placeholder="请输入"
+                      filterOption={(input: string, option: any) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }>
+                      {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
+                    </Select>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">到会人员</td>
+                  <td colSpan={3}>
+                    <Select
+                      className="attendees-select"
+                      showSearch
+                      mode="tags"
+                      value={attendees.split('、').filter((str: string) => str)}
+                      onChange={(arr: any[]) => setAttendees(arr.join('、'))}
+                      placeholder="请输入"
+                      filterOption={(input: string, option: any) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }>
+                      {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
+                    </Select>
+                    <Button
+                      size="small"
+                      className="more-btn"
+                      onClick={handleDrawerShow}>
+                      ...
                   </Button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="default-pannel">
-          <div className="title">一、会议传达</div>
-          <div className="content">
-            <Input.TextArea
-              value={nurseMeeting.meetingConveyed}
-              autosize={{ minRows: 5 }}
-              onChange={(e: any) =>
-                setNurseMeeting({ ...nurseMeeting, meetingConveyed: e.target.value })
-              } />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-        <div className="default-pannel">
-          <div className="title">二、工作中问题及整改</div>
-          <div className="content">
-            <Input.TextArea
-              value={nurseMeeting.problemRectification}
-              autosize={{ minRows: 5 }}
-              onChange={(e: any) =>
-                setNurseMeeting({ ...nurseMeeting, problemRectification: e.target.value })
-              } />
+          <div className="default-pannel">
+            <div className="title">一、会议传达</div>
+            <div className="content">
+              <Input.TextArea
+                value={nurseMeeting.meetingConveyed}
+                autosize={{ minRows: 5 }}
+                onChange={(e: any) =>
+                  setNurseMeeting({ ...nurseMeeting, meetingConveyed: e.target.value })
+                } />
+            </div>
           </div>
-        </div>
-        <div className="default-pannel">
-          <div className="title">三、护士发言</div>
-          <div className="content">
-            <Input.TextArea
-              value={nurseMeeting.nurseStatement}
-              autosize={{ minRows: 5 }}
-              onChange={(e: any) =>
-                setNurseMeeting({ ...nurseMeeting, nurseStatement: e.target.value })
-              } />
+          <div className="default-pannel">
+            <div className="title">二、工作中问题及整改</div>
+            <div className="content">
+              <Input.TextArea
+                value={nurseMeeting.problemRectification}
+                autosize={{ minRows: 5 }}
+                onChange={(e: any) =>
+                  setNurseMeeting({ ...nurseMeeting, problemRectification: e.target.value })
+                } />
+            </div>
           </div>
-        </div>
-        <div className="default-pannel">
-          <div className="title">四、附件上传</div>
-          <div className="content">
-            <MultipleImageUploader upload={(files) => {
-              let reqList = [] as any
-              for (let i = 0; i < files.length; i++) {
-                let form = new FormData()
-                form.set('file', files[i])
-                reqList.push(commonApi.uploadAttachment('qcNurseMeeting', form))
-              }
+          <div className="default-pannel">
+            <div className="title">三、护士发言</div>
+            <div className="content">
+              <Input.TextArea
+                value={nurseMeeting.nurseStatement}
+                autosize={{ minRows: 5 }}
+                onChange={(e: any) =>
+                  setNurseMeeting({ ...nurseMeeting, nurseStatement: e.target.value })
+                } />
+            </div>
+          </div>
+          <div className="default-pannel">
+            <div className="title">四、附件上传</div>
+            <div className="content">
+              <MultipleImageUploader upload={(files) => {
+                let reqList = [] as any
+                for (let i = 0; i < files.length; i++) {
+                  let form = new FormData()
+                  form.set('file', files[i])
+                  reqList.push(commonApi.uploadAttachment('qcNurseMeeting', form))
+                }
 
-              return Promise.all(reqList)
-            }} ids={ids} value={urls} onChange={handleFileChange} />
+                return Promise.all(reqList)
+              }} ids={ids} value={urls} onChange={handleFileChange} />
+            </div>
           </div>
-        </div>
+        </Spin>
       </MainContent>
     </MainPannel>
     <Drawer

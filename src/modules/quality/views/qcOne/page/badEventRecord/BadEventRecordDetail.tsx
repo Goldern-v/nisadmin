@@ -301,7 +301,7 @@ const MessageBox = styled.div`
     padding: 0;
     &>div{
       padding: 3px 0;
-
+      padding-right: 10px;
     }
   }
   .boxRight {

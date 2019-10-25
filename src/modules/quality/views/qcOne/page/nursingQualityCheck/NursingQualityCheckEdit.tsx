@@ -92,7 +92,13 @@ export default observer(function NursingQualityCheckEdit() {
           <Select
             style={{ width: '100px' }}
             value={record.result}
-            onChange={(result: any) => handleRecordChange({ ...record, result, description: '' }, idx)}>
+            onChange={(result: any) => {
+              handleRecordChange({ ...record, result, description: '' }, idx)
+              let descriptionIpt =
+                document.querySelector(`.description-${idx}`) as HTMLInputElement
+
+              if (descriptionIpt) descriptionIpt.value = ''
+            }}>
             {resultList.map((item: any, resultIdx: number) =>
               <Option key={resultIdx} value={item.code}>{item.name}</Option>
             )}
@@ -108,10 +114,11 @@ export default observer(function NursingQualityCheckEdit() {
         return <EditCon>
           <Input.TextArea
             autosize
+            className={`description-${idx}`}
             style={{ width: '100%', resize: 'none' }}
-            value={text}
+            defaultValue={text}
             disabled={record.result == '无问题'}
-            onChange={(e: any) =>
+            onBlur={(e: any) =>
               handleRecordChange({ ...record, description: e.target.value }, idx)} />
         </EditCon>
       }
@@ -131,18 +138,30 @@ export default observer(function NursingQualityCheckEdit() {
           <span style={{ marginLeft: '15px', color: '#999' }}>选中一个扣1分</span>
         </div>
 
-        let content = record.checkItemList
-          .map((item: any, itemIdx: number) =>
-            <PopItemCon key={`pop-${idx}-${itemIdx}`}>
-              <Checkbox checked={item.checked} onChange={(e: any) => {
-                let newRecord = { ...record }
-                newRecord.checkItemList[itemIdx].checked = e.target.checked
-                handleRecordChange(newRecord, idx)
-              }}>
-                <span className="pop-item-content">{`${itemIdx + 1}.${item.itemName}`}</span>
-              </Checkbox>
-            </PopItemCon>
-          )
+        let content = <div
+          style={{
+            height: '100px',
+            color: '#999',
+            textAlign: 'center',
+            lineHeight: '100px'
+          }}>
+          无考核项目
+        </div>
+
+        if (record.checkItemList && record.checkItemList.length > 0) {
+          content = record.checkItemList
+            .map((item: any, itemIdx: number) =>
+              <PopItemCon key={`pop-${idx}-${itemIdx}`}>
+                <Checkbox checked={item.checked} onChange={(e: any) => {
+                  let newRecord = { ...record }
+                  newRecord.checkItemList[itemIdx].checked = e.target.checked
+                  handleRecordChange(newRecord, idx)
+                }}>
+                  <span className="pop-item-content">{`${itemIdx + 1}.${item.itemName}`}</span>
+                </Checkbox>
+              </PopItemCon>
+            )
+        }
 
         return <Popover
           placement='right'
@@ -157,11 +176,11 @@ export default observer(function NursingQualityCheckEdit() {
       dataIndex: 'type',
       key: 'type',
       title: '质控类别',
-      width: 120,
+      width: 150,
       render: (text: string, record: any, idx: number) => {
         return <EditCon>
           <Select
-            style={{ width: '100px' }}
+            style={{ width: '130px' }}
             value={record.type}
             onChange={(type: any) => handleRecordChange({ ...record, type }, idx)}>
             {typeList.map((item: any, typeIdx: number) =>
@@ -296,13 +315,13 @@ export default observer(function NursingQualityCheckEdit() {
               link: '/qcOne/nursingQualityCheck'
             },
             {
-              name: search.id ? '修改记录' : '新建记录'
+              name: search.type == 'edit' ? '修改记录' : '新建记录'
             },
           ]}
         />
         <div className="topHeaderTitle">
           <div className="title">
-            {search.id ? '修改' : '新建'}病区质量检查记录
+            {search.type == 'edit' ? '修改' : '新建'}病区质量检查记录
           </div>
           <div className='topHeaderButton'>
             <Button onClick={handleSave} disabled={loading} type="primary">保存</Button>

@@ -57,7 +57,7 @@ export default observer(function Analysis() {
     if ((appStore.history && appStore.history.action) === 'POP') {
       getTableData()
     }
-    return () => {}
+    return () => { }
   })
 
   const [dataTotal, setDataTotal] = useState(0 as number)
@@ -228,6 +228,11 @@ export default observer(function Analysis() {
       .createReport({ ...params, type: 'month' })
       .then((res) => {
         if (res.code == 200) {
+          handleCreateCancel()
+          setCreateProgressVisible(false)
+          // setCreateAnalysisVisible(true)
+          setCreateClear(true)
+          setCreateLoading('')
           appStore.history.push(`/qualityAnalysisReport?${qs.stringify(res.data.report)}`)
           // successCallback()
         } else {

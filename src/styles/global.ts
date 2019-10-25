@@ -145,6 +145,9 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       border-color: #ff7875;   
     }
   }
+  .ant-btn.ant-btn-danger.ant-btn-background-ghost{
+    color: #f5222d;
+  }
 `
 
 export default GlobalStyle

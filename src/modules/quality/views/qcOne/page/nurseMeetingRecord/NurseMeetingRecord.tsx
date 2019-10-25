@@ -25,7 +25,8 @@ export default observer(function NurseMeetingRecord() {
     wardCode: '',
     pageIndex: 1,
     pageSize: 15,
-    problemType: 'week',
+    problemType: 'QCWMT001',
+    type: '1',
     startDate: qcOneSelectViewModal.startDate,
     endDate: qcOneSelectViewModal.endDate,
   })
@@ -35,7 +36,7 @@ export default observer(function NurseMeetingRecord() {
 
   const columns: ColumnProps<any>[] = [
     {
-      dataIndex: 'meetingDay',
+      dataIndex: 'meetingDate',
       title: '日期',
       align: 'center',
       width: 120,
@@ -44,7 +45,7 @@ export default observer(function NurseMeetingRecord() {
       dataIndex: 'meetingType',
       title: '分类',
       align: 'center',
-      width: 80,
+      width: 60,
       render: (meetingType: string) => {
         switch (meetingType) {
           case 'QCWMT001':
@@ -68,16 +69,16 @@ export default observer(function NurseMeetingRecord() {
       }
     },
     {
-      dataIndex: 'compereName',
+      dataIndex: 'comperes',
       title: '会议主持',
       align: 'center',
-      width: 80,
+      width: 80
     },
     {
-      // dataIndex: 'compereName',
+      dataIndex: 'recorders',
       title: '记录人',
       align: 'center',
-      width: 80,
+      width: 80
     },
     {
       dataIndex: 'creatorName',
@@ -89,7 +90,7 @@ export default observer(function NurseMeetingRecord() {
       dataIndex: 'createTime',
       title: '创建时间',
       align: 'center',
-      width: 150,
+      width: 120,
     },
     {
       title: '状态',
@@ -147,6 +148,9 @@ export default observer(function NurseMeetingRecord() {
           setTableData(res.data.pages.map((item: any) => {
             return {
               ...item.nurseMeeting,
+              comperes: item.comperes.map((item: any) => item.empName).join('、'),
+              attendees: item.attendees.map((item: any) => item.empName).join('、'),
+              recorders: item.recorders.map((item: any) => item.empName).join('、'),
               readReceiverSize: item.readReceiverSize,
               unreadReceiverSize: item.unreadReceiverSize
             }
@@ -218,8 +222,8 @@ export default observer(function NurseMeetingRecord() {
           style={{ width: 80 }}
           onChange={(problemType: string) => setQuery({ ...query, problemType })}
           value={query.problemType}>
-          <Option value="week">周会</Option>
-          <Option value="month">月会</Option>
+          <Option value="QCWMT001">周会</Option>
+          <Option value="QCWMT002">月会</Option>
         </Select>
         <Button onClick={handleSearch}>查询</Button>
         {
@@ -249,6 +253,9 @@ export default observer(function NurseMeetingRecord() {
 })
 
 const TableWrapper = styled(TabledCon)`
+td{
+  word-break: break-all;
+}
 `
 
 const HeaderCon = styled(TableHeadCon)`

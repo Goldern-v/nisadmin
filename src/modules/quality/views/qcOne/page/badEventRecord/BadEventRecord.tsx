@@ -37,7 +37,7 @@ export default observer(function BadEventRecord() {
 
   const columns: ColumnProps<any>[] = [
     {
-      dataIndex: 'eventDay',
+      dataIndex: 'eventDate',
       title: '发生时间',
       align: 'center',
       width: 120,
@@ -48,16 +48,21 @@ export default observer(function BadEventRecord() {
       width: 80
     },
     {
-      dataIndex: 'problemType',
+      dataIndex: 'eventType',
       title: '事件种类',
       align: 'center',
-      width: 120
+      width: 120,
+      render: (code: string) => {
+        let target = typeList.find((item: any) => item.code == code)
+        if (target) return target.name
+        return ''
+      }
     },
     {
-      dataIndex: 'partyName',
+      dataIndex: 'briefCourseEvent',
       title: '当事人',
       align: 'center',
-      width: 80
+      width: 120
     },
     {
       dataIndex: 'briefCourseEvent',
@@ -78,15 +83,15 @@ export default observer(function BadEventRecord() {
       width: 80
     },
     {
-      dataIndex: 'createDate',
+      dataIndex: 'createTime',
       title: '创建时间',
       align: 'center',
-      width: 150
+      width: 120
     },
     {
       title: '操作',
       align: 'center',
-      width: 150,
+      width: 90,
       render: (text: string, record: string, idx: number) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看详情</span>
@@ -118,7 +123,7 @@ export default observer(function BadEventRecord() {
           setTableData(res.data.pages.map((item: any) => {
             return {
               ...item.badEvent,
-              parties: item.parties || []
+              parties: item.parties.map((item: any) => item.empName || '').join('、')
             }
           }))
         }
@@ -219,6 +224,9 @@ export default observer(function BadEventRecord() {
 })
 
 const TableWrapper = styled(TabledCon)`
+td{
+  word-break: break-all;
+}
 `
 
 const HeaderCon = styled(TableHeadCon)`
