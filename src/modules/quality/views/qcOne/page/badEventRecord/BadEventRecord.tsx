@@ -7,7 +7,7 @@ import { ColumnProps } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import { crrentMonth } from 'src/utils/moment/crrentMonth'
+import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 export interface Props { }
 
 
@@ -18,7 +18,6 @@ const RangePicker = DatePicker.RangePicker
 export default observer(function BadEventRecord() {
   const { history } = appStore
   const auth = authStore.isRoleManage
-  const [dateRange, setDateRange] = useState(crrentMonth() as any)
 
   const [query, setQuery] = useState({
     wardCode: '',
@@ -26,8 +25,8 @@ export default observer(function BadEventRecord() {
     pageSize: 15,
     problemType: '',
     type: '1',
-    startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
-    endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
+    startDate: qcOneSelectViewModal.startDate,
+    endDate: qcOneSelectViewModal.endDate,
   })
 
   const [tableData, setTableData] = useState([] as any[])
@@ -96,11 +95,6 @@ export default observer(function BadEventRecord() {
     }
   ]
 
-
-  const handleRangeChange = (range: any) => {
-    setDateRange(range)
-  }
-
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
@@ -150,15 +144,20 @@ export default observer(function BadEventRecord() {
   }, [])
 
   useEffect(() => {
-    if (query.wardCode && dateRange) {
+    if (
+      query.wardCode &&
+      qcOneSelectViewModal.startDate &&
+      qcOneSelectViewModal.endDate
+    ) {
       setQuery({
         ...query,
-        startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
-        endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
+        startDate: qcOneSelectViewModal.startDate,
+        endDate: qcOneSelectViewModal.endDate,
         pageIndex: 1
       })
     }
-  }, [dateRange])
+
+  }, [qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
 
   useEffect(() => {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
@@ -173,9 +172,7 @@ export default observer(function BadEventRecord() {
         <span>日期:</span>
         <RangePicker
           style={{ width: 220 }}
-          format="YYYY-MM-DD"
-          value={dateRange}
-          onChange={handleRangeChange}
+          {...qcOneSelectViewModal.getDateOptions()}
           allowClear={false} />
         <span>科室:</span>
         <DeptSelect
@@ -192,7 +189,7 @@ export default observer(function BadEventRecord() {
         <Button onClick={handleSearch}>搜索</Button>
         {auth && <Button
           type="primary"
-          onClick={() => history.push('/badEventRecordEdit')}>新建</Button>}
+          onClick={() => history.push('/badEventRecordEdit')}>添加</Button>}
         <Button>导出</Button>
       </RightIcon>
     </HeaderCon>

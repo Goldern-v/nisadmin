@@ -305,7 +305,7 @@ export default observer(function NursingQualityCheckEdit() {
             {search.id ? '修改' : '新建'}病区质量检查记录
           </div>
           <div className='topHeaderButton'>
-            <Button onClick={handleSave} disabled={loading}>保存</Button>
+            <Button onClick={handleSave} disabled={loading} type="primary">保存</Button>
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
         </div>

@@ -44,7 +44,7 @@ class QcOneSelectViewModal {
       value: [this.startDate ? moment(this.startDate) : null, this.endDate ? moment(this.endDate) : null],
       onChange: (date: any[]) => {
         this.startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
-        this.endDate = date[1] ? moment(date[0]).format('YYYY-MM-DD') : ''
+        this.endDate = date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
       }
     }
   }
