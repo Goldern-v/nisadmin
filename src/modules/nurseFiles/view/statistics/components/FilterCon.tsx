@@ -64,6 +64,12 @@ export default function FilterCon(props: Props) {
             result[item.nameList[i]] = value[item.name][i] ? moment(value[item.name][i]).format('YYYY') : ''
           }
         }
+      } else if (item.name && item.type == 'yearMonthRangePicker' && item.nameList) {
+        if (value[item.name]) {
+          for (let i = 0; i < item.nameList.length; i++) {
+            result[item.nameList[i]] = value[item.name][i] ? moment(value[item.name][i]).format('YYYY-MM') : ''
+          }
+        }
       } else if (item.name && item.type == 'dateRangePicker' && item.nameList) {
         if (value[item.name]) {
           for (let i = 0; i < item.nameList.length; i++) {

@@ -106,7 +106,6 @@ export default function TableCon(props: Props) {
   let filterConEle = document.getElementById('filterCon')
   if (filterConEle) {
     surplusHeight = filterConEle.offsetHeight + 220
-    console.log(surplusHeight, 'surplusHeight')
   }
   // 如果是层级变动
   if (appStore.match.url == '/nurseFile/hierarchy') {
