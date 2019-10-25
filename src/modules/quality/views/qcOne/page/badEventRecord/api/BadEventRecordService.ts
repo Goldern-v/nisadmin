@@ -18,7 +18,7 @@ export default class BadEventRecordService extends BaseApiService {
 
   /**新建编辑 */
   public saveOrUpdate(query: any) {
-    return this.post('/qcWorkSchedule/saveOrUpdate', query)
+    return this.post('/qcBadEvent/saveOrUpdate', query)
   }
 
   /**编辑详情接口 */

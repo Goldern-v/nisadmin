@@ -31,6 +31,7 @@ export default observer(function NursingQualityCheck() {
 
   const [tableData, setTableData] = useState([] as any)
   const [nurseList, setNurseList] = useState([] as any)
+  const [rangeList, setRngeList] = useState([] as any)
   const [loading, setLoading] = useState(false)
 
   const [query, setQuery] = useState({
@@ -38,6 +39,7 @@ export default observer(function NursingQualityCheck() {
     empNo: '',
     pageIndex: 1,
     pageSize: 15,
+    range: '',
     startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
     endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
   })
@@ -63,8 +65,7 @@ export default observer(function NursingQualityCheck() {
       width: 150,
     },
     {
-      // dataIndex: '班次',
-      key: '班次',
+      dataIndex: 'range',
       title: '班次',
       width: 80,
       align: 'center',
@@ -213,19 +214,32 @@ export default observer(function NursingQualityCheck() {
 
   const handleWardCodeChange = (wardCode: string) => {
     commonApi
-      .groupByDeptInDeptList('', wardCode)
+      .userDictInfo(wardCode)
       .then(res => {
         // console.log(res)
         if (res.data && res.data instanceof Array) {
-          let target = res.data.find((item: any) => item.deptCode == wardCode)
-          if (target && target.userList) setNurseList(target.userList)
+          setNurseList(res.data.map((item: any) => {
+            return {
+              empName: item.name,
+              empNo: item.code
+            }
+          }))
         }
       })
 
     nursingQualityCheckService
       .getRangeByDeptCode(wardCode)
       .then(res => {
-        console.log('range', res)
+        if (res.data) {
+          let newRangeList = [] as any[]
+          for (let i = 0; i < res.data.length; i++) {
+            let item = res.data[i]
+
+            let target = newRangeList.find((item1: any) => item1.name == item.name)
+            if (!target) newRangeList.push(item)
+          }
+          setRngeList(newRangeList)
+        }
       })
 
 
@@ -305,6 +319,20 @@ export default observer(function NursingQualityCheck() {
           <Option value={''}>全部</Option>
           {nurseList.map((item: any, idx: number) =>
             <Option key={idx} value={item.empNo}>{item.empName}</Option>
+          )}
+        </Select>
+        <span>班次:</span>
+        <Select
+          style={{ width: '120px' }}
+          showSearch
+          filterOption={(input: string, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          onChange={(range: string) => setQuery({ ...query, range })}
+          value={query.range}>
+          <Option value={''}>全部</Option>
+          {rangeList.map((item: any, idx: number) =>
+            <Option key={idx} value={item.name}>{item.name}</Option>
           )}
         </Select>
         <Button onClick={handleSearch}>查询</Button>

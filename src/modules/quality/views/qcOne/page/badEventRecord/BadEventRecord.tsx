@@ -24,9 +24,10 @@ export default observer(function BadEventRecord() {
     wardCode: '',
     pageIndex: 1,
     pageSize: 15,
-    eventType: '',
-    startDate: `${dateRange[0].format('YYYY-MM-DD')} 00:00`,
-    endDate: `${dateRange[1].format('YYYY-MM-DD')} 23:59`,
+    problemType: '',
+    type: '1',
+    startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
+    endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
   })
 
   const [tableData, setTableData] = useState([] as any[])
@@ -43,12 +44,12 @@ export default observer(function BadEventRecord() {
       width: 120,
     },
     {
-      dataIndex: 'wardCode',
+      dataIndex: 'wardName',
       title: '发生科室',
       width: 80
     },
     {
-      dataIndex: 'eventType',
+      dataIndex: 'problemType',
       title: '事件种类',
       align: 'center',
       width: 120
@@ -120,7 +121,12 @@ export default observer(function BadEventRecord() {
         setLoading(false)
         if (res.data) {
           setDataTotal(res.data.totalCount)
-          setTableData(res.data.list)
+          setTableData(res.data.pages.map((item: any) => {
+            return {
+              ...item.badEvent,
+              parties: item.parties || []
+            }
+          }))
         }
       }, () => setLoading(false))
   }
@@ -136,7 +142,7 @@ export default observer(function BadEventRecord() {
   }
 
   const handleDetail = (record: any) => {
-    history.push(`/badEventRecord?id=${record.id}`)
+    history.push(`/badEventRecordDetail?id=${record.id}`)
   }
 
   useEffect(() => {
@@ -147,8 +153,8 @@ export default observer(function BadEventRecord() {
     if (query.wardCode && dateRange) {
       setQuery({
         ...query,
-        startDate: `${dateRange[0].format('YYYY-MM-DD')} 00:00`,
-        endDate: `${dateRange[1].format('YYYY-MM-DD')} 23:59`,
+        startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
+        endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
         pageIndex: 1
       })
     }
@@ -176,8 +182,8 @@ export default observer(function BadEventRecord() {
           onChange={(wardCode) => setQuery({ ...query, wardCode })} />
         <span>事件种类:</span>
         <Select
-          value={query.eventType}
-          onChange={(eventType: any) => setQuery({ ...query, eventType })}>
+          value={query.problemType}
+          onChange={(problemType: any) => setQuery({ ...query, problemType })}>
           <Option value={''}>全部</Option>
           {typeList.map((item: any) =>
             <Option value={item.code} key={item.code}>{item.name}</Option>

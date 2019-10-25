@@ -9,7 +9,6 @@ import { ScrollBox } from 'src/components/common'
 import Zimage from 'src/components/Zimage'
 
 import { badEventRecordService } from './api/BadEventRecordService'
-import Item from 'antd/lib/list/Item'
 
 export interface Props { }
 
@@ -22,7 +21,7 @@ export default observer(function BadEventRecordDetail() {
 
   const [badEvent, setBadEvent] = useState({} as any)
   const [parties, setParties] = useState([] as any[])
-  const [attachmentList, setAttachmentList] = useState([] as any[])
+  const [attachs, setAttachs] = useState([] as any[])
   const [typeList, setTypeList] = useState([] as any[])
 
   const getDetail = () => {
@@ -30,12 +29,13 @@ export default observer(function BadEventRecordDetail() {
     badEventRecordService
       .getDetail(search.id, wardCode)
       .then(res => {
+        setLoading(false)
         if (res.data) {
           if (res.data.badEvent) setBadEvent(res.data.badEvent)
 
           if (res.data.parties) setParties(res.data.parties.map((item: any) => item.empName))
 
-          if (res.data.attachmentList) setAttachmentList(res.data.attachmentList)
+          if (res.data.attachs) setAttachs(res.data.attachs)
         }
       }, () => setLoading(false))
   }
@@ -74,9 +74,13 @@ export default observer(function BadEventRecordDetail() {
     })
   }
 
+  const handleEdit = () => {
+    history.push(`/badEventRecordEdit?id=${search.id}`)
+  }
+
   useEffect(() => {
-    // getDetail()
-    // getTypeList()
+    getDetail()
+    getTypeList()
   }, [])
 
   return <Wrapper>
@@ -108,8 +112,8 @@ export default observer(function BadEventRecordDetail() {
           </div>
           <div className='topHeaderButton'>
             {auth && <React.Fragment>
-              <Button disabled={loading} type="primary" ghost>编辑</Button>
-              <Button disabled={loading} type="danger" ghost onClick={handleDelete}>删除</Button>
+              <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>
+              <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(badEvent)}>删除</Button>
             </React.Fragment>}
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
@@ -144,14 +148,14 @@ export default observer(function BadEventRecordDetail() {
             <Zimage
               text={
                 <React.Fragment>
-                  {attachmentList.map((item: any) =>
+                  {attachs.map((item: any) =>
                     <div className="img-view-item" key={item.id}>
                       <img
                         src={item.path} />
                     </div>) || <span></span>}
                 </React.Fragment>
               }
-              list={[attachmentList.map((item: any) => item.path)]} />
+              list={attachs.map((item: any) => item.path)} />
           </div>
         </div>
       </MainContent>

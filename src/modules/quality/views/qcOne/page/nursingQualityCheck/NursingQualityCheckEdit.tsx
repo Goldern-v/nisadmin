@@ -43,8 +43,7 @@ export default observer(function NursingQualityCheckEdit() {
       render: (text: string, record: any, idx: number) => idx + 1
     },
     {
-      // dataIndex: '班次',
-      key: '班次',
+      dataIndex: 'range',
       title: '班次',
       align: "center",
       className: 'base-info',
@@ -52,7 +51,6 @@ export default observer(function NursingQualityCheckEdit() {
     },
     {
       dataIndex: 'empName',
-      key: 'empName',
       title: '姓名',
       align: "center",
       className: 'base-info',
