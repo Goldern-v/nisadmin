@@ -111,11 +111,13 @@ export default observer(function HumanResource() {
             </Select.Option>
           ))}
         </Select>
-        <Button onClick={() => getData()}>查询</Button>
-        <Button type='primary' onClick={() => {}}>
+        <Button type='primary' onClick={() => getData()}>
+          查询
+        </Button>
+        {/* <Button type='primary' onClick={() => {}}>
           添加
         </Button>
-        <Button>导出</Button>
+        <Button>导出</Button> */}
       </PageHeader>
       <BaseTable
         loading={pageLoading}

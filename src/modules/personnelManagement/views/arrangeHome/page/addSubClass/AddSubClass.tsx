@@ -91,7 +91,7 @@ export default observer(function AddSubClass() {
         endDate: date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
       })
       .then((res) => {
-        setDataSource(res.data)
+        setDataSource(res.data.list)
         setPageLoading(false)
       })
   }
