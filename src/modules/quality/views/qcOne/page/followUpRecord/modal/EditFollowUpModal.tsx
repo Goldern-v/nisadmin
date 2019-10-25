@@ -220,7 +220,7 @@ export default function EditFollowUpModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`疾病诊断`} name='title'>
+            <Form.Field label={`疾病诊断`} name='diagnosis'>
               <Input placeholder='请输入诊断' disabled={!canEdit} />
             </Form.Field>
           </Col>

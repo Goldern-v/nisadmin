@@ -142,7 +142,7 @@ export default observer(function ArrangeSheet(props: Props) {
       title: (
         <div>
           <div>公休结余</div>
-          <div>（小时）</div>
+          <div>（天）</div>
         </div>
       ),
       width: 70,
@@ -154,7 +154,7 @@ export default observer(function ArrangeSheet(props: Props) {
       title: (
         <div>
           <div>节休结余</div>
-          <div>（小时）</div>
+          <div>（天）</div>
         </div>
       ),
       width: 70,

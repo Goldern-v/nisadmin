@@ -40,6 +40,7 @@ export default observer(function FollowUpRecord() {
     },
     {
       title: '疾病诊断',
+      dataIndex: 'diagnosis',
       width: 150
     },
     {
