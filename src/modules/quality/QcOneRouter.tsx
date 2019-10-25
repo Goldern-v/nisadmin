@@ -14,6 +14,10 @@ import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
 import HumanResource from './views/qcOne/page/humanResource/HumanResource'
 import NursingReportList from './views/qcOne/report/NursingReportList/NursingReportList'
 import NursingReportDetailView from './views/qcOne/report/NursingReportDetail/NursingReportDetailView'
+import NursingWorkPlainList from './views/qcOne/page/nursingWorkPlain/NursingWorkPlainList'
+import NursingQualityCheck from './views/qcOne/page/nursingQualityCheck/NursingQualityCheck'
+import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeetingRecord'
+import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
 
 const LEFT_MENU_CONFIG: any = [
   {
