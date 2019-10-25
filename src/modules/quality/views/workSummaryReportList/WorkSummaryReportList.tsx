@@ -51,7 +51,7 @@ export default observer(function WorkSummaryReportList() {
     if ((appStore.history && appStore.history.action) === 'POP') {
       getTableData()
     }
-    return () => {}
+    return () => { }
   })
 
   const [dataTotal, setDataTotal] = useState(0 as number)
@@ -191,7 +191,8 @@ export default observer(function WorkSummaryReportList() {
   }
 
   const handleCreateOk = () => {
-    getTableData()
+    // getTableData()
+    setCreateAnalysisVisible(false)
   }
 
   const handleCreateCancel = () => {
@@ -319,7 +320,10 @@ export default observer(function WorkSummaryReportList() {
             <Button onClick={handleSearch}>查询</Button>
           </div>
           <div className='item'>
-            <Button onClick={handleCreate} type='primary' disabled={!!!authStore.isSupervisorNurse}>
+            <Button
+              onClick={handleCreate} type='primary'
+              disabled={!!!authStore.isSupervisorNurse}
+            >
               创建
             </Button>
           </div>

@@ -46,14 +46,6 @@ export default observer(function NursingQualityCheck() {
   })
 
   const columns: ColumnProps<any>[] = [
-    // {
-    //   key: 'index',
-    //   title: '序号',
-    //   width: 70,
-    //   align: 'center',
-    //   render: (text: string, record: any, idx: number) =>
-    //     (query.pageIndex - 1) * query.pageSize + idx + 1
-    // },
     {
       dataIndex: 'wardName',
       title: '科室',
@@ -63,7 +55,7 @@ export default observer(function NursingQualityCheck() {
       dataIndex: 'recordDate',
       title: '日期',
       align: 'center',
-      width: 150,
+      width: 100,
     },
     {
       dataIndex: 'range',
@@ -143,7 +135,18 @@ export default observer(function NursingQualityCheck() {
           <div style={{ width: '180px', height: '130px' }}></div>
         </Spin>
 
-        if (record.checkItemList) content = record.checkItemList
+        if (record.checkItemList) content =
+          <div
+            style={{
+              height: '100px',
+              color: '#999',
+              textAlign: 'center',
+              lineHeight: '100px'
+            }}>
+            无考核项目
+          </div>
+
+        if (record.checkItemList && record.checkItemList.length > 0) content = record.checkItemList
           .map((item: any, itemIdx: number) =>
             <PopItemCon key={`pop-${itemIdx}`}>
               <Checkbox checked={item.checked} >
@@ -246,7 +249,7 @@ export default observer(function NursingQualityCheck() {
     let createDate = moment()
     Modal.confirm({
       centered: true,
-      title: '病区护理质量检查',
+      title: '新建病区护理质量检查记录',
       content: <CreateWrapper>
         <span className="label">请选择检查日期:</span>
         <span style={{

@@ -22,26 +22,26 @@ const LEFT_MENU_CONFIG: any = [
     title: '一级质控记录',
     icon: <YJJL />,
     children: [
-      // {
-      //   title: '护理工作计划',
-      //   path: '/qcOne/nursingWorkPlainList',
-      //   component: NursingWorkPlainList
-      // },
-      // {
-      //   title: '病区质量检查',
-      //   path: '/qcOne/nursingQualityCheck',
-      //   component: NursingQualityCheck
-      // },
-      // {
-      //   title: '护士会议记录',
-      //   path: '/qcOne/nurseMeetingRecord',
-      //   component: NurseMeetingRecord
-      // },
-      // {
-      //   title: '不良事件记录',
-      //   path: '/qcOne/badEventRecord',
-      //   component: BadEventRecord
-      // },
+      {
+        title: '护理工作计划',
+        path: '/qcOne/nursingWorkPlainList',
+        component: NursingWorkPlainList
+      },
+      {
+        title: '病区质量检查',
+        path: '/qcOne/nursingQualityCheck',
+        component: NursingQualityCheck
+      },
+      {
+        title: '护士会议记录',
+        path: '/qcOne/nurseMeetingRecord',
+        component: NurseMeetingRecord
+      },
+      {
+        title: '不良事件记录',
+        path: '/qcOne/badEventRecord',
+        component: BadEventRecord
+      },
       {
         title: '人力资源调配',
         path: '/qcOne/humanResource',

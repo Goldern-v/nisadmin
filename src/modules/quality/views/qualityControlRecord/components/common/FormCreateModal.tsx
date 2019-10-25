@@ -58,7 +58,10 @@ export default observer(function FormCreateModal(props: Props) {
     visible={visible}
     centered
     bodyStyle={{ padding: '0' }}
-    onOk={() => handleOk(activeIdx)}
+    onOk={() => {
+      handleOk(activeIdx)
+      onOk && onOk()
+    }}
     okText="创建"
     onCancel={() => onCancel && onCancel()}
     title={title || '新建评价表'}>
@@ -76,7 +79,10 @@ export default observer(function FormCreateModal(props: Props) {
             key={idx}
             className={activeIdx == idx ? 'qc-item active' : 'qc-item'}
             onClick={() => setActiveIdx(idx)}
-            onDoubleClick={() => handleOk(idx)}>
+            onDoubleClick={() => {
+              onOk && onOk()
+              handleOk(idx)
+            }}>
             <div className="icon">
               <img src={require('./../../assets/报告单@3x.png')} alt="" />
             </div>

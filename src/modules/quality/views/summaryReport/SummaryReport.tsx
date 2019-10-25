@@ -36,7 +36,7 @@ export default observer(function SummeryReportList() {
     if ((appStore.history && appStore.history.action) === 'POP') {
       getTableData()
     }
-    return () => {}
+    return () => { }
   })
   const [dataTotal, setDataTotal] = useState(0 as number)
 
@@ -317,7 +317,7 @@ export default observer(function SummeryReportList() {
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-        // groupRoleList={groupRoleListSelf}
+      // groupRoleList={groupRoleListSelf}
       />
     </Wrapper>
   )
