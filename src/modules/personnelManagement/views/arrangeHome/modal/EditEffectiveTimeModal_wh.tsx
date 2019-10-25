@@ -120,7 +120,7 @@ export default function EditEffectiveTimeModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`总工时`} name='effectiveTime' required>
+            <Form.Field label={`工时`} name='effectiveTime' required>
               <InputNumber readOnly={true} />
             </Form.Field>
           </Col>

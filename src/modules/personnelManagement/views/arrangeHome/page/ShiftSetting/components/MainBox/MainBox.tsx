@@ -12,6 +12,8 @@ import emitter from 'src/libs/ev'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 
 import { globalModal } from 'src/global/globalModal'
+import createModal from 'src/libs/createModal'
+import AddShiftModal from '../../modal/AddShiftModal'
 
 // import emitter from 'src/libs/ev'
 
@@ -43,6 +45,8 @@ export default function MainBox() {
   /** 颜色 */
   const [colorMap, setColorMap]: [any, any] = useState({})
   const [colorMapCN, setColorMapCN]: [any, any] = useState({})
+
+  const addShiftModal = createModal(AddShiftModal)
 
   const columns = [
     {
@@ -153,7 +157,13 @@ export default function MainBox() {
         <DoCon>
           <span
             onClick={(e: any) => {
-              emitter.emit('弹窗编辑排班', record)
+              addShiftModal.show({
+                editData: record,
+                onOkCallBack: () => {
+                  getShiftList()
+                }
+              })
+              // emitter.emit('弹窗编辑排班', record)
             }}
           >
             编辑
@@ -276,6 +286,7 @@ export default function MainBox() {
         loading={tableLoading}
       />
       {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
+      <addShiftModal.Component />
     </Wrapper>
   )
 }

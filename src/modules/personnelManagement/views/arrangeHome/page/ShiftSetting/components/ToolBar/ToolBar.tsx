@@ -13,6 +13,9 @@ import service from 'src/services/api'
 import moment from 'moment'
 import { scheduleStore, authStore, appStore } from 'src/stores'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
+import createModal from 'src/libs/createModal'
+import AddShiftModal from '../../modal/AddShiftModal'
+import DeptSelect from 'src/modules/statistic/common/DeptSelect'
 
 // import emitter from 'src/libs/ev'
 
@@ -20,6 +23,8 @@ import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 export interface Props extends RouteComponentProps {}
 
 export default function ToolBar() {
+  const addShiftModal = createModal(AddShiftModal)
+
   let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
   // let bangci = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
   let dataSourceColor = ['red', 'green', 'blue', 'yellow', 'black', 'gray']
@@ -184,7 +189,7 @@ export default function ToolBar() {
             <AutoComplete
               style={{ width: inputWidth }}
               dataSource={bangci}
-              placeholder='A班'
+              placeholder=''
               // filterOption={(inputValue: any, option: any) =>
               //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
               //   bangci.indexOf(inputValue.toUpperCase()) > -1
@@ -264,7 +269,7 @@ export default function ToolBar() {
       value: ''
     },
     type: {
-      value: 'A班'
+      value: ''
     },
     // startTime: {
     //   value: moment(new Date(), 'HH:mm:ss')
@@ -324,7 +329,7 @@ export default function ToolBar() {
           value: ''
         },
         type: {
-          value: 'A班'
+          value: ''
         },
         workTime: {
           value: '8:00 - 16:00'
@@ -392,31 +397,51 @@ export default function ToolBar() {
       <Wrapper>
         <Title>班次设置</Title>
         <div style={{ flex: 1 }} />
-        {promise && (
+        <DeptSelect
+          onChange={() => {
+            emitter.emit('更新班次列表')
+          }}
+        />
+        {/* {promise && (
           <Button
             onClick={() => {
               addShift('添加排班')
             }}
-            style={{ marginLeft: 3, marginRight: 3 }}
+            style={{ marginLeft: 6, marginRight: 3 }}
           >
             添加班次
+          </Button>
+        )} */}
+        {promise && (
+          <Button
+            onClick={() => {
+              addShiftModal.show({
+                onOkCallBack: () => {
+                  emitter.emit('更新班次列表')
+                }
+              })
+            }}
+            style={{ marginLeft: 6, marginRight: 3 }}
+          >
+            添加新班次
           </Button>
         )}
 
         <Button onClick={() => emitter.emit('更新班次列表')} style={{ marginLeft: 3, marginRight: 3 }}>
           刷新
         </Button>
-        <Button onClick={save} style={{ marginLeft: 3, marginRight: 3 }}>
+        <Button type='primary' onClick={save} style={{ marginLeft: 3, marginRight: 3 }}>
           保存
         </Button>
-        <Button
+        {/* <Button
           style={{ marginLeft: 3, marginRight: 3 }}
           onClick={() => appStore.history.push('/personnelManagement/arrangeHome')}
           className='button-tools'
         >
           返回
-        </Button>
+        </Button> */}
       </Wrapper>
+      <addShiftModal.Component />
     </div>
   )
 }

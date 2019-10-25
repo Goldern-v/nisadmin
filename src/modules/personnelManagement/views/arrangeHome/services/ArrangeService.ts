@@ -125,6 +125,24 @@ export default class ArrangeService extends BaseApiService {
   public findBylist(obj: PageObj) {
     return this.post(`/schAddOrSub/findBylist`, obj)
   }
+
+  //假期查询
+  public schHolidaysWHFindBylist(obj: PageObj) {
+    return this.post(`/schHolidaysWH/findBylist`, obj)
+  }
+  //假期新增
+  public schHolidaysWHSaveOrUpdate(obj: any) {
+    return this.post(`/schHolidaysWH/saveOrUpdate`, obj)
+  }
+  //假期删除
+  public schHolidaysWHDelete(id: any) {
+    return this.get(`/schHolidaysWH/delete${id}`)
+  }
+
+  //新增保存班次
+  public schShiftSettingSaveOrUpdate(obj: any) {
+    return this.post(`/schShiftSetting/saveOrUpdate`, obj)
+  }
 }
 
 export const arrangeService = new ArrangeService()

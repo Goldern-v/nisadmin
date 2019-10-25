@@ -33,7 +33,9 @@ export default function FilterCon(props: Props) {
   }, [pageObj.title])
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields())
+
     if (err) return
+
     let result: any = {}
     if (value.deptCode.length > 1) {
       if (value.deptCode[value.deptCode.length - 1] == '全院') {
@@ -89,7 +91,9 @@ export default function FilterCon(props: Props) {
       result.deptCodes = result.deptCode
     }
     delete result.deptCode
+    if (value.empNo) result.empNo = value.empNo
     filterRef.current = result
+
     onload()
   }
 
@@ -158,6 +162,11 @@ export default function FilterCon(props: Props) {
               </Form.Field>
             </Col>
           ))}
+          <Col span={6}>
+            <Form.Field label={'工号或姓名'} name={'empNo'}>
+              <Input />
+            </Form.Field>
+          </Col>
           <Col span={6}>
             <Button type='primary' style={{ marginLeft: 40, marginBottom: 20 }} onClick={() => onload()}>
               查询

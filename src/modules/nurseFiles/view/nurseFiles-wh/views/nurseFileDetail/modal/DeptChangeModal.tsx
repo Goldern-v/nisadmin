@@ -59,6 +59,7 @@ export default function DeptChangeModal(props: Props) {
         deptCodeOld: info.deptCode,
         deptCodeNameOld: info.deptName,
         deptCodeNew: '',
+        remark: '',
         job: info.job,
         empNo: info.empNo
       })

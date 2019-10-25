@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as YIBG } from './images/icon/YJBG.svg'
 import { ReactComponent as YJJL } from './images/icon/YJJL.svg'
@@ -12,10 +12,8 @@ import { appStore } from 'src/stores'
 import FollowUpRecord from './views/qcOne/page/followUpRecord/FollowUpRecord'
 import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
 import HumanResource from './views/qcOne/page/humanResource/HumanResource'
-import NursingWorkPlainList from './views/qcOne/page/nursingWorkPlain/NursingWorkPlainList'
-import NursingQualityCheck from './views/qcOne/page/nursingQualityCheck/NursingQualityCheck'
-import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeetingRecord'
-import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
+import NursingReportList from './views/qcOne/report/NursingReportList/NursingReportList'
+import NursingReportDetailView from './views/qcOne/report/NursingReportDetail/NursingReportDetailView'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -61,21 +59,24 @@ const LEFT_MENU_CONFIG: any = [
       }
     ]
   },
-  // {
-  //   title: '一级质控报告',
-  //   icon: <YIBG />,
-  //   children: [
-  //     {
-  //       title: '护理工作计划',
-  //       path: '/qcOne/nursingWorkPlainList',
-  //       component: NursingWorkPlainList
-  //     }
-  //   ]
-  // }
+  {
+    title: '护理工作报表',
+    icon: <YIBG />,
+    path: '/qcOne/nursingReportList',
+    component: NursingReportList,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+  },
+  {
+    title: '护理工作报表详情',
+    icon: <YIBG />,
+    path: '/qcOne/nursingReportDetail',
+    component: NursingReportDetailView
+  }
 ]
 
 export default function QcOneRouter(props: Props) {
-  useEffect(() => { }, [props.history.location.pathname])
+  useEffect(() => {}, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
@@ -106,8 +107,8 @@ export default function QcOneRouter(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-            ))}
+            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+          ))}
       </MainCon>
     </Wrapper>
   )

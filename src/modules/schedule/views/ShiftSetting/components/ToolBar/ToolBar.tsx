@@ -183,7 +183,7 @@ export default function ToolBar() {
             <AutoComplete
               style={{ width: inputWidth }}
               dataSource={bangci}
-              placeholder='A班'
+              placeholder=''
               // filterOption={(inputValue: any, option: any) =>
               //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
               //   bangci.indexOf(inputValue.toUpperCase()) > -1
