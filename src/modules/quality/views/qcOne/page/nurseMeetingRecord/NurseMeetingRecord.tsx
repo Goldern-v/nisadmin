@@ -10,6 +10,7 @@ export interface Props { }
 
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 
 import { nurseMeetingRecordService } from './api/NurseMeetingRecordService'
 
@@ -18,7 +19,6 @@ const Option = Select.Option
 
 export default observer(function NurseMeetingRecord() {
   const { history } = appStore
-  const [dateRange, setDateRange] = useState(crrentMonth() as any)
   const auth = authStore.isRoleManage
 
   const [query, setQuery] = useState({
@@ -26,8 +26,8 @@ export default observer(function NurseMeetingRecord() {
     pageIndex: 1,
     pageSize: 15,
     problemType: 'week',
-    startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
-    endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
+    startDate: qcOneSelectViewModal.startDate,
+    endDate: qcOneSelectViewModal.endDate,
   })
 
   const [tableData, setTableData] = useState([] as any)
@@ -129,11 +129,6 @@ export default observer(function NurseMeetingRecord() {
 
   const [dataTotal, setDataTotal] = useState(0)
 
-
-  const handleRangeChange = (range: any) => {
-    setDateRange(range)
-  }
-
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
@@ -186,15 +181,20 @@ export default observer(function NurseMeetingRecord() {
   }
 
   useEffect(() => {
-    if (query.wardCode && dateRange) {
+    if (
+      query.wardCode &&
+      qcOneSelectViewModal.startDate &&
+      qcOneSelectViewModal.endDate
+    ) {
       setQuery({
         ...query,
-        startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
-        endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
+        startDate: qcOneSelectViewModal.startDate,
+        endDate: qcOneSelectViewModal.endDate,
         pageIndex: 1
       })
     }
-  }, [dateRange])
+
+  }, [qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
 
   useEffect(() => {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
@@ -209,9 +209,7 @@ export default observer(function NurseMeetingRecord() {
         <span>日期:</span>
         <RangePicker
           style={{ width: 220 }}
-          format="YYYY-MM-DD"
-          value={dateRange}
-          onChange={handleRangeChange}
+          {...qcOneSelectViewModal.getDateOptions()}
           allowClear={false} />
         <span>科室:</span>
         <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
@@ -226,7 +224,7 @@ export default observer(function NurseMeetingRecord() {
         <Button onClick={handleSearch}>查询</Button>
         {
           auth &&
-          <Button type="primary" onClick={() => history.push('/nurseMeetingRecordEdit')}>新建</Button>
+          <Button type="primary" onClick={() => history.push('/nurseMeetingRecordEdit')}>添加</Button>
         }
       </RightIcon>
     </HeaderCon>

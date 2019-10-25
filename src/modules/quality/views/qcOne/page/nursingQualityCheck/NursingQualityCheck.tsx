@@ -5,9 +5,11 @@ import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps, Spin } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
-import { crrentMonth } from 'src/utils/moment/crrentMonth'
+
 import moment from 'moment'
 import qs from 'qs'
+
+import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 
 import service from 'src/services/api'
 const commonApi = service.commonApiService
@@ -26,7 +28,6 @@ const RangePicker = DatePicker.RangePicker
 
 export default observer(function NursingQualityCheck() {
   const { history } = appStore
-  const [dateRange, setDateRange] = useState(crrentMonth() as any)
   const auth = authStore.isRoleManage
 
   const [tableData, setTableData] = useState([] as any)
@@ -40,8 +41,8 @@ export default observer(function NursingQualityCheck() {
     pageIndex: 1,
     pageSize: 15,
     range: '',
-    startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
-    endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
+    startDate: qcOneSelectViewModal.startDate,
+    endDate: qcOneSelectViewModal.endDate,
   })
 
   const columns: ColumnProps<any>[] = [
@@ -180,11 +181,6 @@ export default observer(function NursingQualityCheck() {
 
   const [dataTotal, setDataTotal] = useState(0)
 
-
-  const handleRangeChange = (range: any) => {
-    setDateRange(range)
-  }
-
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
   }
@@ -278,15 +274,20 @@ export default observer(function NursingQualityCheck() {
   }
 
   useEffect(() => {
-    if (query.wardCode && dateRange) {
+    if (
+      query.wardCode &&
+      qcOneSelectViewModal.startDate &&
+      qcOneSelectViewModal.endDate
+    ) {
       setQuery({
         ...query,
-        startDate: `${dateRange[0].format('YYYY-MM-DD')}`,
-        endDate: `${dateRange[1].format('YYYY-MM-DD')}`,
+        startDate: qcOneSelectViewModal.startDate,
+        endDate: qcOneSelectViewModal.endDate,
         pageIndex: 1
       })
     }
-  }, [dateRange])
+
+  }, [qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
 
   useEffect(() => {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
@@ -301,9 +302,7 @@ export default observer(function NursingQualityCheck() {
         <span>日期:</span>
         <RangePicker
           style={{ width: 220 }}
-          format="YYYY-MM-DD"
-          value={dateRange}
-          onChange={handleRangeChange}
+          {...qcOneSelectViewModal.getDateOptions()}
           allowClear={false} />
         <span>科室:</span>
         <DeptSelect onChange={handleWardCodeChange} />
@@ -336,7 +335,7 @@ export default observer(function NursingQualityCheck() {
           )}
         </Select>
         <Button onClick={handleSearch}>查询</Button>
-        <Button type="primary" onClick={handleCreate}>新建</Button>
+        <Button type="primary" onClick={handleCreate}>添加</Button>
         <Button>导出</Button>
       </RightIcon>
     </HeaderCon>
