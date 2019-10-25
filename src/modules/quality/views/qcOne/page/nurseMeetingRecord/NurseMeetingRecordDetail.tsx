@@ -181,7 +181,7 @@ export default observer(function NurseMeetingRecordDetail() {
                       </div>) || <span></span>}
                   </React.Fragment>
                 }
-                list={[attachmentList.map((item: any) => item.path)]} />
+                list={attachmentList.map((item: any) => item.path)} />
             </div>
           </div>
         </Spin>

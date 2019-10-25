@@ -155,11 +155,15 @@ export default observer(function NurseMeetingRecordEdit() {
 
   useEffect(() => {
     commonApi
-      .groupByDeptInDeptList('', wardCode)
+      .userDictInfo(wardCode)
       .then(res => {
         if (res.data && res.data instanceof Array) {
-          let target = res.data.find((item: any) => item.deptCode == wardCode)
-          if (target && target.userList) setNurseList(target.userList)
+          setNurseList(res.data.map((item: any) => {
+            return {
+              empName: item.name,
+              empNo: item.code
+            }
+          }))
         }
       })
 

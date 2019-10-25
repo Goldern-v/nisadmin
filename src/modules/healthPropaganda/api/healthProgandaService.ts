@@ -17,7 +17,7 @@ export default class HealthProagandaService extends BaseApiService {
 
   //获取科室单元
   public async getDeptList() {
-    return this.get(`/user/nursingUnit/all`);
+    return this.post(`/briefMission/getBriefMissionDept`);
   }
   //新建和保存
   public async save(data: any) {

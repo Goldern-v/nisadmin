@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, DatePicker, Input } from 'antd'
+import { Button, Select, DatePicker, Input, message } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -33,8 +33,8 @@ export default observer(function BadEventRecordEdit() {
     creatorNo: '',
     creatorName: '',
     createTime: '',
-    eventDay: '',
-    eventTime: '',
+    eventDay: moment().format('YYYY-MM-DD'),
+    eventTime: moment().format('HH:mm'),
     eventType: '',
     briefCourseEvent: '',
     result: '',
@@ -54,6 +54,15 @@ export default observer(function BadEventRecordEdit() {
       })
     }
 
+    setLoading(true)
+    badEventRecordService
+      .saveOrUpdate(params)
+      .then(res => {
+        message.success('保存成功', 1, () => {
+          setLoading(false)
+          history.goBack()
+        })
+      }, () => setLoading(false))
     console.log(params)
   }
 
@@ -103,18 +112,22 @@ export default observer(function BadEventRecordEdit() {
   }
 
   useEffect(() => {
-    // commonApi
-    //   .groupByDeptInDeptList('', wardCode)
-    //   .then(res => {
-    //     if (res.data && res.data instanceof Array) {
-    //       let target = res.data.find((item: any) => item.deptCode == wardCode)
-    //       if (target && target.userList) setNurseList(target.userList)
-    //     }
-    //   })
+    commonApi
+      .userDictInfo(wardCode)
+      .then(res => {
+        if (res.data && res.data instanceof Array) {
+          setNurseList(res.data.map((item: any) => {
+            return {
+              empName: item.name,
+              empNo: item.code
+            }
+          }))
+        }
+      })
 
-    //   getTypeList()
+    getTypeList()
 
-    // if(search.id)getDetail()
+    if (search.id) getDetail()
   }, [])
 
   return <Wrapper>
