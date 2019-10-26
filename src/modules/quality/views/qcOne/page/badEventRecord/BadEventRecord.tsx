@@ -40,7 +40,7 @@ export default observer(function BadEventRecord() {
       dataIndex: 'eventDate',
       title: '发生时间',
       align: 'center',
-      width: 120,
+      width: 150,
     },
     {
       dataIndex: 'wardName',
@@ -86,7 +86,7 @@ export default observer(function BadEventRecord() {
       dataIndex: 'createTime',
       title: '创建时间',
       align: 'center',
-      width: 120
+      width: 150
     },
     {
       title: '操作',
