@@ -240,7 +240,9 @@ export default observer(function NurseMeetingRecord() {
         surplusWidth={200}
         dataSource={tableData}
         onRow={(record: any) => {
-          ondblclick = () => handleDetail(record)
+          return {
+            onDoubleClick: () => handleDetail(record)
+          }
         }}
         pagination={{
           current: query.pageIndex,
