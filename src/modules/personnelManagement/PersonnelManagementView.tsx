@@ -8,8 +8,11 @@ import NurseSettingViewNew from 'src/modules/personnelManagement/views/arrangeHo
 import ShiftSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView'
 import MealSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/MealSetting/MealSettingView'
 import PersonnelSettingViewNew from 'src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import PersonnelSecondment from './views/arrangeHome/page/personnelSecondment/PersonnelSecondment'
+import AddSubClass from './views/arrangeHome/page/addSubClass/AddSubClass'
+import HolidaysList from './views/arrangeHome/page/HolidaysList/HolidaysList'
+import BalanceInit from './views/arrangeHome/page/BalanceInit/BalanceInit'
 
 export interface Props {}
 
@@ -57,6 +60,22 @@ export default function PersonnelManagementView() {
           title: '排班套餐设置',
           path: '/personnelManagement/MealSettingViewNew',
           component: MealSettingViewNew
+        },
+        {
+          title: '加减班列表查询',
+          path: '/personnelManagement/addSubClass',
+          component: AddSubClass
+        },
+        {
+          title: '请假列表查询',
+          path: '/personnelManagement/holidaysList',
+          component: HolidaysList
+        },
+        {
+          title: '结余数据初始化',
+          path: '/personnelManagement/balanceInit',
+          component: BalanceInit,
+          hide: !authStore.isAdmin
         }
       ]
     }

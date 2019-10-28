@@ -28,7 +28,6 @@ export default observer(function TopPart() {
       title: '提示',
       content: '确认要重置排班吗？重制后本页数据将会被清空',
       okText: '确定',
-      okType: 'danger',
       cancelText: '取消',
       centered: true,
       onOk: () => {
@@ -150,7 +149,9 @@ export default observer(function TopPart() {
           </div>
         </div>
         <div className='item'>
-          <Button onClick={() => sheetViewModal.init()}>查询</Button>
+          <Button type='primary' onClick={() => sheetViewModal.init()}>
+            查询
+          </Button>
         </div>
         <div className='item'>
           <Button onClick={handleReset}>重置排班</Button>
@@ -165,7 +166,9 @@ export default observer(function TopPart() {
           <Button onClick={findSysnNurse}>同步排班人员</Button>
         </div>
         <div className='item'>
-          <Button onClick={() => sheetViewModal.saveSheetTableData('0')}>暂存</Button>
+          <Button type='primary' onClick={() => sheetViewModal.saveSheetTableData('0')}>
+            暂存
+          </Button>
         </div>
         <div className='item'>
           <Button onClick={handlePush}>推送排班</Button>

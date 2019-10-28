@@ -20,37 +20,37 @@ export const pageObj: PageObj = {
     {
       label: '进修专业',
       type: 'input',
-      name: 'nurseName'
+      name: 'studyMajor'
     },
     {
       label: '进修单位',
       type: 'input',
-      name: 'cardUnit'
+      name: 'unit'
     },
 
     {
       label: '进修单位所属地',
       type: 'select',
-      name: 'nurseLevel',
+      name: 'unitLocal',
       dataSource: statisticsViewModal.getDict('进修单位')
     },
     {
       label: '进修开始时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker',
-      nameList: ['cardNumberStartDate', 'cardNumberEndDate']
+      nameList: ['startDateStart', 'startDateEnd']
     },
     {
       label: '进修结束时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker',
-      nameList: ['cardNumberStartDate', 'cardNumberEndDate']
-    },
-    {
-      label: '进修时长(天)',
-      type: 'input',
-      name: 'cardUnit'
+      nameList: ['endDateStart', 'endDateEnd']
     }
+    // {
+    //   label: '进修时长(天)',
+    //   type: 'input',
+    //   name: 'cardUnit'
+    // }
   ],
   tableList: [
     {

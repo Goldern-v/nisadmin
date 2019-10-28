@@ -92,12 +92,12 @@ class SheetViewModal {
       isTwoDaysAgo: false && cellObj ? moment().isoWeeks() - moment(cellObj && cellObj.workDate).isoWeeks() > 1 : false,
       isExpectedScheduling: cellObj.statusType == '1',
       isAddWordTime: appStore.hisAdapter({
-        hj: cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
-        wh: (cellObj.schAddOrSubs && cellObj.schAddOrSubs[0] && cellObj.schAddOrSubs[0].statusType) == '1'
+        hj: () => cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
+        wh: () => (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length && cellObj.schAddOrSubs[0].statusType) == '1'
       }),
       isReduceWordTime: appStore.hisAdapter({
-        hj: cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld > cellObj.effectiveTime,
-        wh: (cellObj.schAddOrSubs && cellObj.schAddOrSubs[0] && cellObj.schAddOrSubs[0].statusType) == '2'
+        hj: () => cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld > cellObj.effectiveTime,
+        wh: () => (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length && cellObj.schAddOrSubs[0].statusType) == '2'
       }),
       isSelected: this.selectedCell == cellObj
     }
@@ -125,7 +125,7 @@ class SheetViewModal {
     return arrangeService.findCreateOrUpdate().then((res) => {
       this.tableLoading = false
       this.dateList = this.getDateList()
-      this.sheetTableData = res.data.setting
+      this.sheetTableData = this.handleSheetTableData(res.data.setting)
       this.remark = res.data.remark
       this.allCell = this.getAllCell(true)
     })
@@ -137,7 +137,7 @@ class SheetViewModal {
       this.tableLoading = false
       this.dateList = this.getDateList()
       this.tableLoading = false
-      this.sheetTableData = res.data.setting
+      this.sheetTableData = this.handleSheetTableData(res.data.setting)
       this.remark = res.data.remark
       this.allCell = this.getAllCell(true)
     })
@@ -171,6 +171,24 @@ class SheetViewModal {
       if (status == '1') message.success('推送成功')
       this.getSheetTableData()
     })
+  }
+  /** 处理后台过来的表格数据，增加一些计算结果 */
+  handleSheetTableData(sheetTableData: any) {
+    for (let i = 0; i < sheetTableData.length; i++) {
+      /** 当前结余，公休，节修时间, 用于推导实际时间 */
+      let current_balanceHour = 0
+      let current_holidayHour = 0
+      let current_publicHour = 0
+      for (let j = 0; j < sheetTableData[i].settingDtos.length; j++) {
+        current_balanceHour += sheetTableData[i].settingDtos[j].effectiveTime || 0
+        current_holidayHour += sheetTableData[i].settingDtos[j].rangeName == '节休' ? 1 : 0
+        current_publicHour += sheetTableData[i].settingDtos[j].rangeName == '公休' ? 1 : 0
+      }
+      sheetTableData[i].current_balanceHour = current_balanceHour
+      sheetTableData[i].current_holidayHour = current_holidayHour
+      sheetTableData[i].current_publicHour = current_publicHour
+    }
+    return sheetTableData
   }
 
   init() {

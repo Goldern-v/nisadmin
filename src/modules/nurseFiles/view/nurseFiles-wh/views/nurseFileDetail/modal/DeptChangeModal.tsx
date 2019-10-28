@@ -19,7 +19,7 @@ import emitter from 'src/libs/ev'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
-  info: any,
+  info: any
   title?: string
   callback?: () => void
 }
@@ -33,7 +33,7 @@ export default function DeptChangeModal(props: Props) {
   let { visible, onCancel, onOk, info, title } = props
   let refForm = React.createRef<Form>()
 
-  const onFieldChange = () => { }
+  const onFieldChange = () => {}
 
   const onSave = async () => {
     if (!refForm.current) return
@@ -59,6 +59,7 @@ export default function DeptChangeModal(props: Props) {
         deptCodeOld: info.deptCode,
         deptCodeNameOld: info.deptName,
         deptCodeNew: '',
+        remark: '',
         job: info.job,
         empNo: info.empNo
       })
@@ -66,7 +67,15 @@ export default function DeptChangeModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal title={title || '科室调动'} visible={visible} onOk={onSave} onCancel={onCancel} okText='保存' forceRender centered>
+    <Modal
+      title={title || '科室调动'}
+      visible={visible}
+      onOk={onSave}
+      onCancel={onCancel}
+      okText='保存'
+      forceRender
+      centered
+    >
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
@@ -115,6 +124,11 @@ export default function DeptChangeModal(props: Props) {
                   </Select.Option>
                 ))}
               </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`备注`} name='remark'>
+              <Input.TextArea />
             </Form.Field>
           </Col>
         </Row>

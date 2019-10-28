@@ -8,9 +8,8 @@ import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
 import { summaryReportService as api } from './api/SummaryReportService'
 import { numToChinese } from 'src/utils/number/numToChinese'
-
 import CreateSummaryReport from './components/CreateSummaryReport'
-
+import { useKeepAliveEffect } from 'react-keep-alive'
 import qs from 'qs'
 import { PageTitle } from 'src/components/common'
 
@@ -33,6 +32,12 @@ export default observer(function SummeryReportList() {
     getTableData()
   }, [query])
 
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getTableData()
+    }
+    return () => { }
+  })
   const [dataTotal, setDataTotal] = useState(0 as number)
 
   const [tableData, setTableData] = useState([] as any)
@@ -312,7 +317,7 @@ export default observer(function SummeryReportList() {
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-        // groupRoleList={groupRoleListSelf}
+      // groupRoleList={groupRoleListSelf}
       />
     </Wrapper>
   )

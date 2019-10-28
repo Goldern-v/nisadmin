@@ -64,9 +64,9 @@ export default observer(function DeptSelect(props: Props) {
     <Wrapper>
       <Select
         value={defaultValue}
-        showSearch
         style={Object.assign({ width: 200 }, props.style)}
         onChange={onChange}
+        showSearch
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }

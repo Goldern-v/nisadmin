@@ -37,13 +37,13 @@ export const pageObj: PageObj = {
       label: '任期开始时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
-      nameList: ['publicYearStartDate', 'publicYearEndDate']
+      nameList: ['startDateStart', 'startDateEnd']
     },
     {
       label: '任期结束时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker2',
-      nameList: ['publicYearStartDate', 'publicYearEndDate']
+      nameList: ['endDateStart', 'endDateEnd']
     }
   ],
   tableList: [

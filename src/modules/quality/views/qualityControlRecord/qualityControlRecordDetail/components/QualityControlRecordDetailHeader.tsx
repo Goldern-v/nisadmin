@@ -18,13 +18,14 @@ interface Props {
 
 export default function qualityControlRecordDetailHeader(props: Props) {
   const topHeaderBack = () => {
-    appStore.history.push(
-      props.detailData.master.qcLevel == '3'
-        ? `/qcThree?noRefresh=1`
-        : props.detailData.master.qcLevel == '2'
-          ? `/qcTwo?noRefresh=1`
-          : `/qcThree?noRefresh=1`
-    )
+    // appStore.history.push(
+    //   props.detailData.master.qcLevel == '3'
+    //     ? `/qcThree?noRefresh=1`
+    //     : props.detailData.master.qcLevel == '2'
+    //       ? `/qcTwo?noRefresh=1`
+    //       : `/qcThree?noRefresh=1`
+    // )
+    appStore.history.goBack()
   }
   let master = props.detailData.master || {}
   let nodeDataList = JSON.parse(JSON.stringify(props.detailData.nodeDataList || []))
@@ -109,10 +110,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       return
     }
 
-    appStore.history.push(`/qualityControlRecordEdit?${qs.stringify({
-      qcCode: master.qcCode,
-      id: master.id
-    })}`)
+    appStore.history.push(
+      `/qualityControlRecordEdit?${qs.stringify({
+        qcCode: master.qcCode,
+        id: master.id
+      })}`
+    )
   }
 
   const handleDelete = () => {
@@ -126,17 +129,17 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       content: '是否删除该评价表?',
       onOk: () => {
         setDeleteLoading(true)
-        qualityControlRecordApi
-          .formDelete(master.id)
-          .then(res => {
+        qualityControlRecordApi.formDelete(master.id).then(
+          (res) => {
             message.success('删除成功!', 1, () => {
               setDeleteLoading(false)
               appStore.history.goBack()
             })
-          }, () => setDeleteLoading(false))
+          },
+          () => setDeleteLoading(false)
+        )
       }
     })
-
   }
 
   const statusText = () => {
@@ -171,15 +174,16 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 {nextNode.nodeName}
               </Button>
             )}
-            {
-              master &&
-              master.status == '-1' &&
-              master.creatorNo == (authStore.user && authStore.user.empNo) &&
+            {master && master.status == '-1' && master.creatorNo == (authStore.user && authStore.user.empNo) && (
               <React.Fragment>
-                <Button onClick={handleEdit} disabled={deleteLoading}>编辑</Button>
-                <Button onClick={handleDelete} type="danger" ghost disabled={deleteLoading}>删除</Button>
+                <Button onClick={handleEdit} disabled={deleteLoading}>
+                  编辑
+                </Button>
+                <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
+                  删除
+                </Button>
               </React.Fragment>
-            }
+            )}
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>

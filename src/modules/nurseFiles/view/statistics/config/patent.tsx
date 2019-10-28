@@ -32,17 +32,12 @@ export const pageObj: PageObj = {
       name: 'cardUnit'
     },
     {
-      label: '发证开始时间',
+      label: '发证时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
-      nameList: ['startDateStart', 'startDateEnd']
+      nameList: ['cardStartDate', 'cardEndDate']
     },
-    {
-      label: '发证结束时间',
-      type: 'dateRangePicker',
-      name: 'dateRangePicker2',
-      nameList: ['endDateStart', 'endDateEnd']
-    },
+
     {
       label: '专利类型',
       type: 'select',

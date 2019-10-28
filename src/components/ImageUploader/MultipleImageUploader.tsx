@@ -12,7 +12,7 @@ export interface Props {
   ids?: string[],
   text?: string
   upload?: (files: FileList) => Promise<string[]>
-  onChange: (value: string[], ids?: string[]) => void
+  onChange: (value: string[], ids?: string[], defaultValue?: string[]) => void
   uploadOption?: any,
   sizeLimited?: number,
   preview?: boolean
@@ -104,8 +104,13 @@ export default class MultipleImageUploader extends React.Component<Props, State>
       this.setState({ src: [...this.state.src, ...src], loading: true })
       const value = await upload(files)
       this.setState({ loading: false })
+      let ids = value.map((item: any) => item.data.id)
+      let defaultValue = value.map((item: any) => item.data.path)
+
       value && onChange(
-        [...(this.props.value || []), ...value]
+        [...(this.props.value || []), ...value],
+        [...(this.props.ids || []), ...ids],
+        [...(this.props.value || []), ...defaultValue]
       )
     } else {
       this.setState({ src: [...this.state.src, ...src], loading: true })

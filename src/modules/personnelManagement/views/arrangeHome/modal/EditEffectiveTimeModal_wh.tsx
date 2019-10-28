@@ -56,7 +56,7 @@ export default function EditEffectiveTimeModal(props: Props) {
     if (refForm.current && visible) {
       /** 表单数据初始化 */
       refForm!.current!.setFields({
-        effectiveTime: data.effectiveTime,
+        effectiveTime: Math.abs((data.effectiveTime || 0) - (data.effectiveTimeOld || 0)),
         detail: data.detail,
         startDate_1: moment(data.workDate),
         startDate_2:
@@ -120,7 +120,7 @@ export default function EditEffectiveTimeModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`总工时`} name='effectiveTime' required>
+            <Form.Field label={`工时`} name='effectiveTime' required>
               <InputNumber readOnly={true} />
             </Form.Field>
           </Col>

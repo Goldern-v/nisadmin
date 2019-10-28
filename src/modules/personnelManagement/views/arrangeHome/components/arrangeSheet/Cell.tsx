@@ -62,12 +62,22 @@ export default observer(function Cell(props: Props) {
                   data: sheetViewModal.selectedCell,
                   onOkCallBack(data: any) {
                     sheetViewModal.selectedCell.detail = data.detail
-                    sheetViewModal.selectedCell.effectiveTime = data.effectiveTime
+                    if (data.statusType == '1') {
+                      /** 加班 */
+                      sheetViewModal.selectedCell.effectiveTime = Number(
+                        Number(data.effectiveTime) + Number(sheetViewModal.selectedCell.effectiveTimeOld)
+                      )
+                    } else if (data.statusType == '2') {
+                      /** 减班 */
+                      sheetViewModal.selectedCell.effectiveTime =
+                        Number(sheetViewModal.selectedCell.effectiveTimeOld) - Number(Number(data.effectiveTime))
+                    }
                     sheetViewModal.selectedCell.schAddOrSubs = [
                       {
                         startDate: data.startDate,
                         endDate: data.endDate,
-                        statusType: data.statusType
+                        statusType: data.statusType,
+                        hour: Number(data.effectiveTime)
                       }
                     ]
                   }
@@ -260,19 +270,27 @@ export default observer(function Cell(props: Props) {
   )
 
   const title = appStore.hisAdapter({
-    hj:
-      (cellObj.effectiveTimeOld > cellObj.effectiveTime ? '减少' : '增加') +
-      '了' +
-      Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
-      '工时',
-    wh:
-      (cellObj.schAddOrSubs && cellObj.schAddOrSubs[0] && cellObj.schAddOrSubs[0].statusType == '1' ? '加班' : '减班') +
-      '：' +
-      (cellObj.effectiveTime - cellObj.effectiveTimeOld).toFixed(2) +
-      'h' +
-      ',' +
-      `现：${cellObj.effectiveTime}h,` +
-      `原：${cellObj.effectiveTimeOld}h`
+    hj: () => {
+      return (
+        (cellObj.effectiveTimeOld > cellObj.effectiveTime ? '减少' : '增加') +
+        '了' +
+        Math.abs(cellObj.effectiveTime - cellObj.effectiveTimeOld) +
+        '工时'
+      )
+    },
+    wh: () => {
+      return (
+        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length && cellObj.schAddOrSubs[0].statusType == '1'
+          ? '加班'
+          : '减班') +
+        '：' +
+        (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length ? cellObj.schAddOrSubs[0].hour : 0) +
+        'h' +
+        ',' +
+        `现：${cellObj.effectiveTime}h,` +
+        `原：${cellObj.effectiveTimeOld}h`
+      )
+    }
   })
 
   return (
@@ -339,6 +357,13 @@ const Wrapper = styled.div`
   word-break: break-all;
   &.isSelected {
     background: #ffe36c;
+    cursor: pointer;
+  }
+  &.isReduceWordTime {
+    cursor: pointer;
+  }
+  &.isAddWordTime {
+    cursor: pointer;
   }
   &.isTwoDaysAgo {
     background: #f8f8f8;

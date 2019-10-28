@@ -2,6 +2,7 @@ interface SchAddOrSubItem {
   startDate: string
   endDate: string
   statusType: string
+  hour: number
 }
 
 export interface ArrangeItem {

@@ -27,10 +27,13 @@ export default class QcOneService extends BaseApiService {
   public qcSafetyCheckDelete(id: any) {
     return this.get(`/qcSafetyCheck/delete/${id}`)
   }
+  public qcSafetyGetDetail(id: any) {
+    return this.get(`/qcSafetyCheck/getDetail/${id}`)
+  }
 
   /** 人力资源 */
-  public qcHrAllocationGetPage(obj: PageObj) {
-    return this.post(`/qcHrAllocation/getPage`, obj)
+  public qcNurseTransferGetPage(obj: PageObj) {
+    return this.post(`/nurseTransfer/getPage`, obj)
   }
 }
 

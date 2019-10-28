@@ -11,11 +11,15 @@ import EditFollowUpModal from './modal/EditFollowUpModal'
 import { qcOneService } from '../../services/QcOneService'
 import { useCallback } from 'src/types/react'
 import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
+import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
+import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 export interface Props {}
 
-export default function FollowUpRecord() {
+export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
+  const [selectedNurse, setSelectedNurse] = useState('')
   const columns: ColumnProps<any>[] = [
     {
       title: '日期',
@@ -36,6 +40,7 @@ export default function FollowUpRecord() {
     },
     {
       title: '疾病诊断',
+      dataIndex: 'diagnosis',
       width: 150
     },
     {
@@ -63,7 +68,7 @@ export default function FollowUpRecord() {
     },
     {
       title: '家访参加人员',
-      dataIndex: 'participantsList',
+      dataIndex: 'empNames',
       width: 150
     },
     {
@@ -99,10 +104,18 @@ export default function FollowUpRecord() {
   })
   const getData = () => {
     setPageLoading(true)
-    qcOneService.qcPatientVisitGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {
-      setDataSource(res.data.list)
-      setPageLoading(false)
-    })
+    qcOneService
+      .qcPatientVisitGetPage({
+        ...pageOptions,
+        wardCode: authStore.selectedDeptCode,
+        empNames: selectedNurse,
+        startDate: qcOneSelectViewModal.startDate ? moment(qcOneSelectViewModal.startDate).format('YYYY-MM-DD') : '',
+        endDate: qcOneSelectViewModal.endDate ? moment(qcOneSelectViewModal.endDate).format('YYYY-MM-DD') : ''
+      })
+      .then((res) => {
+        setDataSource(res.data.list)
+        setPageLoading(false)
+      })
   }
 
   const onDetail = (record: any) =>
@@ -110,13 +123,16 @@ export default function FollowUpRecord() {
       onOkCallBack: getData,
       data: record
     })
-  useCallback(() => {
-    getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize])
+
+  useEffect(() => {
+    // getData()
+    // qcOneSelectViewModal.initNurseList()
+  }, [])
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [pageOptions.pageIndex, pageOptions.pageSize, selectedNurse, authStore.selectedDeptCode, qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+
   // qcOneService
   return (
     <Wrapper>
@@ -124,11 +140,31 @@ export default function FollowUpRecord() {
         <PageTitle>患者随访记录</PageTitle>
         <Place />
         <span className='label'>日期:</span>
-        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} />
+        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} />
         <span className='label'>科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect
+          onChange={() => {
+            qcOneSelectViewModal.initNurseList()
+          }}
+        />
         <span className='label'>护士:</span>
-        <Select>{/* <Select.Option>123</Select.Option> */}</Select>
+        <Select
+          value={selectedNurse}
+          onChange={(nurse: any) => {
+            setSelectedNurse(nurse)
+          }}
+          showSearch
+          filterOption={(input: any, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+        >
+          <Select.Option value={''}>全部</Select.Option>
+          {qcOneSelectViewModal.nurseList.map((item, index) => (
+            <Select.Option value={item.code} key={index}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
         <Button onClick={() => getData()}>查询</Button>
         <Button
           type='primary'
@@ -170,5 +206,5 @@ export default function FollowUpRecord() {
       <editFollowUpModal.Component />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div``

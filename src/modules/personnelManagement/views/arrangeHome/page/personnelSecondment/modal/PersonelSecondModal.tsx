@@ -66,7 +66,7 @@ export default function PersonelSecondModal(props: Props) {
         personelSecondServices.getNursingByDeptCode(authStore.selectedDeptCode)
       ]).then((res) => {
         setModalLoading(false)
-        setDeptList(res[0].data.deptList)
+        setDeptList(res[0].data.deptList.filter((item: any) => item.code !== authStore.selectedDeptCode))
         setNurseList(res[1].data)
       })
       /** 表单数据初始化 */
@@ -86,7 +86,12 @@ export default function PersonelSecondModal(props: Props) {
           <Row>
             <Col span={24}>
               <Form.Field label={`借出科室`} name='deptCodeTransferTo' required>
-                <Select>
+                <Select
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
                   {deptList.map((item: any, index: number) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -98,7 +103,12 @@ export default function PersonelSecondModal(props: Props) {
 
             <Col span={24}>
               <Form.Field label={`借出护士`} name='empNoTransferTo' required>
-                <Select>
+                <Select
+                  showSearch
+                  filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
                   {nurseList.map((item: any, index: number) => (
                     <Select.Option value={item.empNo} key={item.empNo + index + item.empName + index}>
                       {item.empName}

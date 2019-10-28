@@ -75,7 +75,7 @@ export default class CommonApiService extends BaseApiService {
     return this.post(`/user/defaultDeptUser`, { keyword })
   }
   /** 上传附件 */
-  public uploadAttachment(entityType: EntityType, file: any, onUploadProgress?: any) {
+  public uploadAttachment(entityType: EntityType|string, file: any, onUploadProgress?: any) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
       onUploadProgress: onUploadProgress || (() => {})
@@ -116,5 +116,10 @@ export default class CommonApiService extends BaseApiService {
   /** 本人所属片区的科室列表 */
   public deptInbigDeptListSelf() {
     return this.get(`/qcItem/dict/deptInbigDeptListSelf`)
+  }
+
+  /** 根据科室获取科室全部护士 */
+  public userDictInfo(wardCode: string) {
+    return this.get(`/user/userDictInfo/${wardCode}`)
   }
 }

@@ -52,7 +52,7 @@ export default function EditFollowUpModal(props: Props) {
     data.recordDate = data.admissionDate ? moment(data.recordDate).format('YYYY-MM-DD HH:mm') : ''
     data.admissionDate = data.admissionDate ? moment(data.admissionDate).format('YYYY-MM-DD') : ''
     data.dischargeDate = data.dischargeDate ? moment(data.dischargeDate).format('YYYY-MM-DD') : ''
-    data.participantsList = selectedNurse.map((item: selectedNurseItem) => item.value)
+    // data.participantsList = selectedNurse.map((item: selectedNurseItem) => item.value)
     data.wardCode = authStore.selectedDeptCode
     data.wardName = authStore.selectedDeptName
     qcOneService.qcPatientVisitSaveOrUpdate(Object.assign({}, props.data || {}, data)).then((res: any) => {
@@ -68,20 +68,28 @@ export default function EditFollowUpModal(props: Props) {
     } else {
       setSelectedNurse([...selectedNurse, { label: nurse.empName, value: nurse, key: nurse.empNo }])
       if (refForm.current) {
-        refForm.current.setField('participantsList', [
-          ...selectedNurse,
-          { label: nurse.empName, value: nurse, key: nurse.empNo }
-        ])
+        // refForm.current.setField('participantsList', [
+        //   ...selectedNurse,
+        //   { label: nurse.empName, value: nurse, key: nurse.empNo }
+        // ])
+        let empNames =
+          refForm.current.getField('empNames') + (refForm.current.getField('empNames') ? '、' : '') + nurse.empName
+        refForm.current.setField('empNames', empNames)
       }
     }
   }
-  const delNurse = (nurse?: User, empNo?: string) => {
-    let index = selectedNurse.findIndex((item: selectedNurseItem) => item.value.empNo == (nurse ? nurse.empNo : empNo))
+  const delNurse = (nurse: User) => {
+    let index = selectedNurse.findIndex((item: selectedNurseItem) => item.value.empNo == nurse.empNo)
     if (index !== -1) {
       selectedNurse.splice(index, 1)
       setSelectedNurse([...selectedNurse])
       if (refForm.current) {
-        refForm.current.setField('participantsList', [...selectedNurse])
+        // refForm.current.setField('participantsList', [...selectedNurse])
+        let empNames = refForm.current.getField('empNames').replace(new RegExp(nurse!.empName, 'gm'), '')
+        empNames = empNames.replace(new RegExp('、、', 'gm'), '、')
+        if (empNames[0] == '、') empNames = empNames.slice(1)
+        if (empNames[empNames.length - 1] == '、') empNames = empNames.slice(0, empNames.length - 1)
+        refForm.current.setField('empNames', empNames)
       }
     }
   }
@@ -98,49 +106,65 @@ export default function EditFollowUpModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (refForm.current && visible) {
+      let form = refForm.current
       setModalLoading(true)
-      service.commonApiService.defaultDeptUser().then((res) => {
-        setNurseList(res.data.userList)
+      service.commonApiService.userDictInfo(authStore.selectedDeptCode).then((res) => {
+        let nurseList = res.data.map((item: any) => ({ empNo: item.code, empName: item.name }))
+        setNurseList(nurseList)
         setModalLoading(false)
-      })
 
-      if (data) {
-        setTitle('编辑随访记录')
-        /** 表单数据初始化 */
-        refForm!.current!.setFields({
-          recordDate: data.recordDate ? moment(data.recordDate) : null,
-          patientName: data.patientName,
-          address: data.address,
-          contactInformation: data.contactInformation,
-          admissionDate: data.admissionDate ? moment(data.admissionDate) : null,
-          dischargeDate: data.dischargeDate ? moment(data.dischargeDate) : null,
-          accessContent: data.accessContent,
-          feedBack: data.feedBack,
-          participantsList: data.participantsList
-            ? data.participantsList.map((item: any) => ({ key: item.empNo, label: item.empName }))
-            : []
-        })
-        setSelectedNurse(
-          data.participantsList
-            ? data.participantsList.map((item: any) => ({ key: item.empNo, label: item.empName, value: item }))
-            : []
-        )
-      } else {
-        setTitle('创建随访记录')
-        /** 表单数据初始化 */
-        refForm!.current!.setFields({
-          recordDate: moment(),
-          patientName: '',
-          address: '',
-          contactInformation: '',
-          admissionDate: null,
-          dischargeDate: null,
-          accessContent: '',
-          feedBack: '',
-          participantsList: []
-        })
-        setSelectedNurse([])
-      }
+        if (data) {
+          setTitle('编辑随访记录')
+          /** 表单数据初始化 */
+          form.setFields({
+            recordDate: data.recordDate ? moment(data.recordDate) : null,
+            patientName: data.patientName,
+            address: data.address,
+            contactInformation: data.contactInformation,
+            admissionDate: data.admissionDate ? moment(data.admissionDate) : null,
+            dischargeDate: data.dischargeDate ? moment(data.dischargeDate) : null,
+            accessContent: data.accessContent,
+            feedBack: data.feedBack,
+            empNames: data.empNames
+            // participantsList: data.participantsList
+            //   ? data.participantsList.map((item: any) => ({ key: item.empNo, label: item.empName }))
+            //   : []
+          })
+          // setSelectedNurse(
+          //   data.participantsList
+          //     ? data.participantsList.map((item: any) => ({ key: item.empNo, label: item.empName, value: item }))
+          //     : []
+          // )
+          setSelectedNurse([])
+          if (data.empNames) {
+            let _nurseList: any = []
+            data.empNames.split('、').forEach((name: string) => {
+              let nurse = nurseList.find((item: User) => item.empName == name)
+              console.log(nurse, 'nurse')
+              if (nurse) {
+                _nurseList.push(nurse)
+              }
+            })
+            setSelectedNurse(_nurseList.map((item: any) => ({ key: item.empNo, label: item.empName, value: item })))
+          }
+        } else {
+          setTitle('创建随访记录')
+          /** 表单数据初始化 */
+          form.setFields({
+            recordDate: moment(),
+            patientName: '',
+            address: '',
+            contactInformation: '',
+            admissionDate: null,
+            dischargeDate: null,
+            accessContent: '',
+            feedBack: '',
+            // participantsList: []
+            empNames: ''
+          })
+          setSelectedNurse([])
+        }
+      })
     }
   }, [visible])
 
@@ -148,7 +172,10 @@ export default function EditFollowUpModal(props: Props) {
     <Modal
       title={title}
       visible={visible}
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel()
+        setShowDraWer(false)
+      }}
       onOk={onSave}
       okText='保存'
       forceRender
@@ -193,7 +220,7 @@ export default function EditFollowUpModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`疾病诊断`} name='title'>
+            <Form.Field label={`疾病诊断`} name='diagnosis'>
               <Input placeholder='请输入诊断' disabled={!canEdit} />
             </Form.Field>
           </Col>
@@ -227,11 +254,11 @@ export default function EditFollowUpModal(props: Props) {
               <Input placeholder='请输入反馈意见' disabled={!canEdit} />
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field
               label={`随访护士`}
               name='participantsList'
-              suffix={<MoreBox onClick={() => !canEdit && setShowDraWer(!showDraWer)} />}
+              suffix={<MoreBox onClick={() => canEdit && setShowDraWer(!showDraWer)} />}
             >
               <Select
                 disabled={!canEdit}
@@ -243,6 +270,15 @@ export default function EditFollowUpModal(props: Props) {
                   delNurse(undefined, value.key)
                 }}
               />
+            </Form.Field>
+          </Col> */}
+          <Col span={24}>
+            <Form.Field
+              label={`随访护士`}
+              name='empNames'
+              suffix={<MoreBox onClick={() => canEdit && setShowDraWer(!showDraWer)} />}
+            >
+              <Input />
             </Form.Field>
           </Col>
         </Row>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { appStore } from 'src/stores'
 
 export interface navConfigItem {
   name: string
@@ -42,12 +43,14 @@ export const navConfig: navConfigItem[] = [
       {
         name: '一级质控',
         path: '/qcOne/followUpRecord',
-        icon: require('../images/menu-icon/一级质控@2x.png')
+        icon: require('../images/menu-icon/一级质控@2x.png'),
+        hidden: !appStore.isDev
       },
       {
         name: '病区登记本',
         path: '/wardRegister',
-        icon: require('../images/menu-icon/病区登记本@2x.png')
+        icon: require('../images/menu-icon/病区登记本@2x.png'),
+        hidden: !appStore.isDev
       },
       {
         name: '查询统计',
@@ -74,7 +77,8 @@ export const navConfig: navConfigItem[] = [
     path: '/wardManagement'
   },
   {
-    name: '护理人员管理',
-    path: '/personnelManagement'
+    name: '排班管理',
+    path: '/personnelManagement',
+    hidden: !appStore.isDev
   }
 ]

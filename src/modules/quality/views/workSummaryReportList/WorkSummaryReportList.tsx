@@ -11,6 +11,7 @@ import WorkSummaryReportListService from './api/WorkSummaryReportListService'
 
 import CreateWorkSummaryReportModal from './components/CreateWorkSummaryReportModal'
 import qs from 'qs'
+import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 
 const api = new WorkSummaryReportListService()
 const Option = Select.Option
@@ -45,6 +46,13 @@ export default observer(function WorkSummaryReportList() {
   useEffect(() => {
     getTableData()
   }, [query])
+
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getTableData()
+    }
+    return () => { }
+  })
 
   const [dataTotal, setDataTotal] = useState(0 as number)
 
@@ -168,8 +176,7 @@ export default observer(function WorkSummaryReportList() {
       groupRoleCode: record.groupRoleCode,
       reportName: record.reportName
     }
-    // 存储-详情跳转后数据回填
-    sessionStorage.qcThreeTableOptions = JSON.stringify(obj)
+
     // console.log(record)
     history.push(`/workSummaryReportView?${qs.stringify(obj)}`)
   }
@@ -184,7 +191,8 @@ export default observer(function WorkSummaryReportList() {
   }
 
   const handleCreateOk = () => {
-    getTableData()
+    // getTableData()
+    setCreateAnalysisVisible(false)
   }
 
   const handleCreateCancel = () => {
@@ -312,7 +320,10 @@ export default observer(function WorkSummaryReportList() {
             <Button onClick={handleSearch}>查询</Button>
           </div>
           <div className='item'>
-            <Button onClick={handleCreate} type='primary' disabled={!!!authStore.isSupervisorNurse}>
+            <Button
+              onClick={handleCreate} type='primary'
+              disabled={!!!authStore.isSupervisorNurse}
+            >
               创建
             </Button>
           </div>

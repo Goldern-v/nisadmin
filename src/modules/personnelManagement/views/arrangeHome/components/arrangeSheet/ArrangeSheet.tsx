@@ -19,6 +19,10 @@ import TotalCell from './TotalCell'
 import NightHourCell from './NightHourCell'
 import { appStore } from 'src/stores'
 import update from 'immutability-helper'
+import AddUpHourCell from './AddUpHourCell'
+import BalanceHour from './BalanceHour'
+import PublicHour from './PublicHour'
+import HolidayHour from './HolidayHour'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean
@@ -72,6 +76,13 @@ export default observer(function ArrangeSheet(props: Props) {
       fixed: 'left',
       align: 'center'
     },
+    {
+      title: '年限',
+      dataIndex: 'year',
+      width: 70,
+      fixed: 'left',
+      align: 'center'
+    },
     ...sheetViewModal.dateList.map((date, index) => {
       return {
         title: <Th date={date} />,
@@ -111,8 +122,9 @@ export default observer(function ArrangeSheet(props: Props) {
         </div>
       ),
       width: 70,
+      align: 'center',
       render(text: string, record: any) {
-        return <NightHourCell id={record.id} isEdit={isEdit} />
+        return <NightHourCell id={record.id} />
       }
     },
     {
@@ -122,28 +134,37 @@ export default observer(function ArrangeSheet(props: Props) {
           <div>（小时）</div>
         </div>
       ),
-      width: 70
-      // fixed: 'right'
+      width: 70,
+      align: 'center',
+      render(text: string, record: any) {
+        return <BalanceHour id={record.id} />
+      }
     },
     {
       title: (
         <div>
           <div>公休结余</div>
-          <div>（小时）</div>
+          <div>（天）</div>
         </div>
       ),
-      width: 70
-      // fixed: 'right'
+      width: 70,
+      align: 'center',
+      render(text: string, record: any) {
+        return <PublicHour id={record.id} />
+      }
     },
     {
       title: (
         <div>
           <div>节休结余</div>
-          <div>（小时）</div>
+          <div>（天）</div>
         </div>
       ),
-      width: 70
-      // fixed: 'right'
+      width: 70,
+      align: 'center',
+      render(text: string, record: any) {
+        return <HolidayHour id={record.id} />
+      }
     }
   ]
 
@@ -167,7 +188,7 @@ export default observer(function ArrangeSheet(props: Props) {
         (document as any).querySelector('.ant-table-body').clientWidth
       ) {
         ;(document as any).querySelector('#baseTable').style.width =
-          (sheetViewModal.dateList.length + 5) * 70 + 250 + 10 + 'px'
+          (sheetViewModal.dateList.length + 6) * 70 + 250 + 10 + 'px'
         setSurplusWidth(false)
       } else {
         ;(document as any).querySelector('#baseTable').style.width = 'auto'
@@ -239,6 +260,9 @@ const Wrapper = styled.div`
     }
     td {
       word-break: break-all;
+    }
+    tr {
+      cursor: auto !important;
     }
     .ant-table-column-title {
       font-size: 12px !important;

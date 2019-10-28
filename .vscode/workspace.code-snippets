@@ -343,10 +343,12 @@
       "import BaseTable from 'src/components/BaseTable'",
       "import { qcOneService } from '../../services/QcOneService'",
       "import { useCallback } from 'src/types/react'",
-      "import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'",
+      "import { DoCon } from 'src/components/BaseTable'",
+      "import { observer } from 'mobx-react-lite'",
+      "import { DictItem } from 'src/services/api/CommonApiService'",
       "export interface Props {}",
 
-      "export default function FollowUpRecord() {",
+      "export default observer(function FollowUpRecord() {",
       "const [dataSource, setDataSource] = useState([])",
       "const [pageLoading, setPageLoading] = useState(false)",
       "const columns: ColumnProps<any>[] = [",
@@ -399,13 +401,10 @@
       "}",
       "",
       "const onDetail = (record: any) => {}",
-      "useCallback(() => {",
+      "useEffect(() => {",
       "getData()",
       "}, [pageOptions.pageIndex, pageOptions.pageSize])",
       "",
-      "useEffect(() => {",
-      "getData()",
-      "}, [])",
       "return (",
       "<Wrapper>",
       "<PageHeader>",
@@ -450,7 +449,7 @@
       "/>",
       "</Wrapper>",
       ")",
-      "}",
+      "})",
       "const Wrapper = styled.div``"
     ]
   }

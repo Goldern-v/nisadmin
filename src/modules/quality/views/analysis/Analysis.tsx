@@ -12,6 +12,7 @@ import CreateAnalysisModal from './components/CreateAnalysisModal'
 import AnalysisCreateProgress from './components/AnalysisCreateProgress'
 import qs from 'qs'
 import { PageTitle } from 'src/components/common'
+import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 
 const api = new QualityAnalysisService()
 const Option = Select.Option
@@ -46,25 +47,18 @@ export default observer(function Analysis() {
     api.qcRoleCodeSelf().then((res) => {
       if (res.data instanceof Array) setGroupRolelistSelf(res.data)
     })
-
-    if (sessionStorage.qcThreeTableOptions) {
-      let qcThreeTableOptions = JSON.parse(sessionStorage.qcThreeTableOptions)
-      setQuery({
-        year: moment(qcThreeTableOptions.year + '-01-01'),
-        pageIndex: 1,
-        pageSize: 20,
-        type: 'month',
-        indexInType: qcThreeTableOptions.indexInType + '',
-        status: '',
-        groupRoleCode: ''
-      })
-      sessionStorage.qcThreeTableOptions = ''
-    }
   }, [])
 
   useEffect(() => {
     getTableData()
   }, [query])
+
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getTableData()
+    }
+    return () => { }
+  })
 
   const [dataTotal, setDataTotal] = useState(0 as number)
 
@@ -188,8 +182,7 @@ export default observer(function Analysis() {
       groupRoleCode: record.groupRoleCode,
       reportName: record.reportName
     }
-    // 存储-详情跳转后数据回填
-    sessionStorage.qcThreeTableOptions = JSON.stringify(obj)
+
     // console.log(record)
     history.push(`/qualityAnalysisReport?${qs.stringify(obj)}`)
   }
@@ -235,6 +228,11 @@ export default observer(function Analysis() {
       .createReport({ ...params, type: 'month' })
       .then((res) => {
         if (res.code == 200) {
+          handleCreateCancel()
+          setCreateProgressVisible(false)
+          // setCreateAnalysisVisible(true)
+          setCreateClear(true)
+          setCreateLoading('')
           appStore.history.push(`/qualityAnalysisReport?${qs.stringify(res.data.report)}`)
           // successCallback()
         } else {

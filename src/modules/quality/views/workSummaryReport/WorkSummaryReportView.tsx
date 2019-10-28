@@ -127,7 +127,7 @@ export default observer(function QualityAnalysisReportView() {
             <Button onClick={onPublish}>发布</Button>
           )}
           <Button onClick={() => onPrint(true)}>打印</Button>
-          <Button onClick={() => appStore.history.push('/qcTwo/workSummaryReportList')}>返回</Button>
+          <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>

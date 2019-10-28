@@ -9,6 +9,7 @@ import createModal from 'src/libs/createModal'
 import PersonelSecondModal from './modal/PersonelSecondModal'
 import { personelSecondServices } from './service/PersonelSecondServices'
 import { appStore, authStore } from 'src/stores'
+import DeptSelect from 'src/components/DeptSelect'
 export interface Props {}
 
 export default function PersonnelSecondment() {
@@ -22,9 +23,14 @@ export default function PersonnelSecondment() {
   })
   const columns: ColumnProps<any>[] = [
     {
-      title: '借出科室',
+      title: '新科室',
       dataIndex: 'deptNameTransferTo',
-      width: 300
+      width: 150
+    },
+    {
+      title: '原科室',
+      dataIndex: 'deptName',
+      width: 150
     },
     {
       title: '借出护士',
@@ -35,13 +41,13 @@ export default function PersonnelSecondment() {
     {
       title: '借出日期',
       dataIndex: 'startDate',
-      width: 250,
+      width: 120,
       align: 'center'
     },
     {
       title: '借出说明',
       dataIndex: 'detailTransferTo',
-      width: 400
+      width: 300
     },
     {
       title: '操作人',
@@ -85,7 +91,14 @@ export default function PersonnelSecondment() {
       <Head>
         <div className='title'>临时人员借调</div>
         <Place />
-        <Button onClick={() => personelSecondModal.show({ onOkCallBack: getData })}>人员借出</Button>
+        <DeptSelect
+          onChange={() => {
+            getData()
+          }}
+        />
+        <Button onClick={() => personelSecondModal.show({ onOkCallBack: getData })} style={{ marginLeft: 10 }}>
+          人员借出
+        </Button>
         <Button onClick={() => getData()} style={{ marginLeft: 10 }}>
           刷新
         </Button>

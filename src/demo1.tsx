@@ -1,28 +1,22 @@
-import * as React from 'react'
 import styled from 'styled-components'
-
+import React, { useState, useEffect } from 'react'
+import { Button } from 'antd'
+import { useKeepAliveEffect } from 'react-keep-alive'
 export interface Props {}
 
-export interface State {}
-
-export default class Demo1 extends React.Component<Props, State> {
-  public static defaultProps: Partial<Props> = {}
-
-  public constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      a: 1
+export default function demo1() {
+  const [text, setText] = React.useState('')
+  useKeepAliveEffect(() => {
+    console.log('mounted')
+    return () => {
+      console.log('unmounted')
     }
-  }
-
-  public a() {}
-
-  public render() {
-    const {} = this.props
-
-    return <Wrapper>demo1</Wrapper>
-  }
+  })
+  return (
+    <Wrapper>
+      <input type='text' value={text} onChange={(e) => setText(e.target.value)} />
+      {text}
+    </Wrapper>
+  )
 }
-
 const Wrapper = styled.div``

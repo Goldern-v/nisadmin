@@ -63,6 +63,7 @@ export default observer(function BaseTable(props: Props) {
   }
   if (props.pagination) {
     let pagination = {
+      showTotal: (total: number) => `共 ${total} 条`,
       showSizeChanger: true,
       showSizeshowQuickJumperChanger: true,
       pageSizeOptions: ['10', '20', '30', '40', '50']

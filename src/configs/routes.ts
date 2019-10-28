@@ -106,6 +106,16 @@ const QcTwoRouter = lazy(() => import('src/modules/quality/QcTwoRouter'))
 const QcThreeRouter = lazy(() => import('src/modules/quality/QcThreeRouter'))
 const CheckWardRouter = lazy(() => import('src/modules/quality/CheckWardRouter'))
 const QueryStatisticsRouter = lazy(() => import('src/modules/quality/QueryStatisticsRouter'))
+//一级质控报告
+const NursingQualityCheckEdit = lazy(() => import('src/modules/quality/views/qcOne/page/nursingQualityCheck/NursingQualityCheckEdit'))
+const NurseMeetingRecordEdit = lazy(() => import('src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordEdit'))
+const NurseMeetingRecordDetail = lazy(() => import('src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordDetail'))
+const BadEventRecordEdit = lazy(() => import('src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordEdit'))
+const BadEventRecordDetail = lazy(() => import('src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordDetail'))
+
+const StarRatingReportEdit = lazy(() => import('src/modules/quality/views/qcOne/report/StarRatingReport/StarRatingReportEdit'))
+
+
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -234,10 +244,17 @@ const routes: RouteItem[] = [
   setLayout('/qcThree', QcThreeRouter, layouts.MainLayout),
   setLayout('/checkWard', CheckWardRouter, layouts.MainLayout),
   setLayout('/queryStatistics', QueryStatisticsRouter, layouts.MainLayout),
+  /**一级质控 */
   setLayout('/wardRegister/handoverRegisterSet', HandoverRegisterSet, layouts.MainLayout, {
     style: { background: '#fff' }
   }),
   setLayout('/wardRegister', WardRegisterRouter, layouts.MainLayout),
+  setLayout('/nursingQualityCheckEdit', NursingQualityCheckEdit, layouts.MainLayout),
+  setLayout('/nurseMeetingRecordEdit', NurseMeetingRecordEdit, layouts.MainLayout),
+  setLayout('/nurseMeetingRecordDetail', NurseMeetingRecordDetail, layouts.MainLayout),
+  setLayout('/badEventRecordEdit', BadEventRecordEdit, layouts.MainLayout),
+  setLayout('/badEventRecordDetail', BadEventRecordDetail, layouts.MainLayout),
+  setLayout('/starRatingReportEdit', StarRatingReportEdit, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'

@@ -80,6 +80,7 @@ export default observer(function CreateWorkSummaryReportModal(props: Props) {
 
           return workSummaryReportListService.createReport(params)
         }).then(res => {
+          onOk && onOk()
           if (res.code == 200) appStore.history.push(`/workSummaryReportView?${qs.stringify(res.data.report)}`)
         })
         .catch((e) => { })

@@ -3,6 +3,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 import { selectViewModal } from '../viewModal/SelectViewModal'
 import moment from 'moment'
+import { PageObj } from 'src/modules/nurseFiles/view/statistics/config/getPageObj'
 export default class ArrangeService extends BaseApiService {
   /** 获取排班信息 */
   public findCreateOrUpdate(obj?: any) {
@@ -10,7 +11,13 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       deptCode: selectViewModal.params.deptCode,
-      nurseGroup: selectViewModal.params.group
+      nurseGroup: selectViewModal.params.group,
+      startTimeWeek: moment(selectViewModal.params.startTime)
+        .weekday(0)
+        .format('YYYY-MM-DD'),
+      endTimeWeek: moment(selectViewModal.params.endTime)
+        .weekday(6)
+        .format('YYYY-MM-DD')
     }
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
@@ -19,14 +26,14 @@ export default class ArrangeService extends BaseApiService {
     let obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
-      setting: sheetViewModal.sheetTableData.map((item: any) => ({ ...item, status })),
+      setting: sheetViewModal.sheetTableData.map((item: any, index: number) => ({ ...item, status, sortValue: index })),
       remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode,
       startTimeWeek: moment(selectViewModal.params.startTime)
-        .weekday(1)
+        .weekday(0)
         .format('YYYY-MM-DD'),
       endTimeWeek: moment(selectViewModal.params.endTime)
-        .weekday(7)
+        .weekday(6)
         .format('YYYY-MM-DD')
     }
     return this.post(`/scheduling/saveOrUpdate`, obj)
@@ -112,6 +119,29 @@ export default class ArrangeService extends BaseApiService {
       nurseGroup: selectViewModal.params.group
     }
     return this.post(`/scheduling/findSysnNurse`, postData)
+  }
+
+  //加减班查询
+  public findBylist(obj: PageObj) {
+    return this.post(`/schAddOrSub/findBylist`, obj)
+  }
+
+  //假期查询
+  public schHolidaysWHFindBylist(obj: PageObj) {
+    return this.post(`/schHolidaysWH/findBylist`, obj)
+  }
+  //假期新增
+  public schHolidaysWHSaveOrUpdate(obj: any) {
+    return this.post(`/schHolidaysWH/saveOrUpdate`, obj)
+  }
+  //假期删除
+  public schHolidaysWHDelete(id: any) {
+    return this.get(`/schHolidaysWH/delete${id}`)
+  }
+
+  //新增保存班次
+  public schShiftSettingSaveOrUpdate(obj: any) {
+    return this.post(`/schShiftSetting/saveOrUpdate`, obj)
   }
 }
 

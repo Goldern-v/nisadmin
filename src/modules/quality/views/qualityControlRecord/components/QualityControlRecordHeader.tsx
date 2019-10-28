@@ -124,6 +124,10 @@ export default observer(function TopCon(props: any) {
       {/* <Button onClick={() => props.refExport()}>导出excl</Button> */}
       <FormCreateModal
         onCancel={() => setFormCreateVisible(false)}
+        onOk={() => {
+          console.log(123)
+          setFormCreateVisible(false)
+        }}
         visible={formCreateVisible}
         level={qualityControlRecordVM.level} />
     </Wrapper>
