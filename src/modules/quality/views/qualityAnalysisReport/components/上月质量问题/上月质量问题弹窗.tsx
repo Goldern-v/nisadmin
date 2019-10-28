@@ -54,11 +54,11 @@ export default function 上月质量问题弹窗(props: Props) {
     },
     {
       title: '评分',
-      key: '评分',
       render(text: any, record: LastImproveItem, index: number) {
         return (
           <Select
-            onChange={(value) => {
+            value={record.result}
+            onChange={(value: any) => {
               record.result = value + ''
               setData(cloneData)
             }}

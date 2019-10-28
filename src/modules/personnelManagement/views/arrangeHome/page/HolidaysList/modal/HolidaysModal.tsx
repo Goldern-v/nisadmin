@@ -8,6 +8,7 @@ import { Rules } from 'src/components/Form/interfaces'
 import YearPicker from 'src/components/YearPicker'
 import moment from 'moment'
 import { arrangeService } from '../../../services/ArrangeService'
+import { dateDiff } from 'src/utils/date/dateDiff'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
@@ -46,6 +47,17 @@ export default function HolidaysModal(props: Props) {
     })
   }
 
+  const onFormChange = (name: string, value: any, form: Form<any>) => {
+    if (name == 'startDate' || name == 'endDate') {
+      if (form.getField('startDate') && form.getField('endDate')) {
+        let s = form.getField('startDate').format('YYYY-MM-DD')
+        let e = form.getField('endDate').format('YYYY-MM-DD')
+        let days = dateDiff(s, e) + 1
+        form.setField('days', days)
+      }
+    }
+  }
+
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
@@ -66,7 +78,7 @@ export default function HolidaysModal(props: Props) {
 
   return (
     <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={80}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFormChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`年份`} name='year' required>
@@ -86,6 +98,11 @@ export default function HolidaysModal(props: Props) {
           <Col span={24}>
             <Form.Field label={`结束时间`} name='endDate' required>
               <DatePicker />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`天数`} name='days'>
+              <Input readOnly={true} />
             </Form.Field>
           </Col>
           <Col span={24}>

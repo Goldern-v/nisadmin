@@ -44,6 +44,11 @@ export default observer(function HolidaysList() {
       align: 'center'
     },
     {
+      title: '天数',
+      dataIndex: 'days',
+      align: 'center'
+    },
+    {
       title: '备注',
       dataIndex: 'remark'
     },
@@ -103,7 +108,7 @@ export default observer(function HolidaysList() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>假期列表查询</PageTitle>
+        <PageTitle>节假日查询</PageTitle>
         <Place />
         <span className='label'>年份:</span>
         <YearPicker value={year} onChange={(value: any) => setYear(value)} />
