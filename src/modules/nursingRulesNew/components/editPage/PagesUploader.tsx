@@ -150,6 +150,11 @@ export default observer(function PagesUploader() {
         清空上传文件
       </Button>
       {FileInput()}
+      <span
+        className="tips"
+        style={{ display: fileList.length <= 0 ? 'inline-block' : 'none' }}>
+        (请将书籍每一页拆分好，并设置文件名称为页码数字，文件目前只支持pdf和图片格式)
+      </span>
     </div>
   </Wrapper>
 })

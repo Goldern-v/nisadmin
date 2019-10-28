@@ -151,6 +151,7 @@ export default observer(function BadEventRecordDetail() {
                   {attachs.map((item: any) =>
                     <div className="img-view-item" key={item.id}>
                       <img
+                        style={{ opacity: 1 }}
                         src={item.path} />
                     </div>) || <span></span>}
                 </React.Fragment>

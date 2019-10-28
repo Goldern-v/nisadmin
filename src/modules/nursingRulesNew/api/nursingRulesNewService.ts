@@ -8,8 +8,8 @@ export default class NursingRulesApiService extends BaseApiService {
   }
 
   /**获取任务码（书籍新增、书籍版本修订时用 */
-  // taskType 任务类型（1-代表新增书籍；2代表修订书籍版本）
-  // bookId 书籍Id（当taskType=2时，此项不能为空）
+  // taskType 任务类型（1-代表新增书籍；2-代表修改书籍;3代表修订书籍版本）
+  // bookId 书籍Id（当taskType=2|3时，此项不能为空）
   public getTaskCode(params: any) {
     return this.post('/hospitalBookshelf/generateTaskCode', qs.stringify(params));
   }
@@ -48,7 +48,7 @@ export default class NursingRulesApiService extends BaseApiService {
     return this.post('/hospitalBookshelf/upLoadTaskBodyFile', formData);
   }
 
-  /**新建书籍 */
+  /**新建书籍 废弃 2019-10-25 17:51  */
   public addBook(params: any) {
     let formData = new FormData();
     for (let x in params) {
@@ -61,7 +61,7 @@ export default class NursingRulesApiService extends BaseApiService {
     return this.post('/hospitalBookshelf/addBook', formData);
   }
 
-  /**修订书籍 */
+  /**修订书籍  废弃 2019-10-25 17:51 */
   public revBook(params: any) {
     let formData = new FormData();
     for (let x in params) {
@@ -74,7 +74,7 @@ export default class NursingRulesApiService extends BaseApiService {
     return this.post('/hospitalBookshelf/revBook', formData);
   }
 
-  /**修改书籍信息 */
+  /**修改书籍信息 废弃 2019-10-25 17:51 */
   public updateBookInfo(params: any) {
     let formData = new FormData();
     for (let x in params) {
@@ -144,8 +144,8 @@ export default class NursingRulesApiService extends BaseApiService {
     return this.post(`/hospitalBookshelf/cancelCollection`, qs.stringify({ collectionId }));
   }
   /**提交审核 */
-  public submitToAudit(bookId: string) {
-    return this.post(`/hospitalBookshelf/submitToAudit`, qs.stringify({ bookId }));
+  public submitToAudit(taskCode: string) {
+    return this.post(`/hospitalBookshelf/submitToAudit`, qs.stringify({ taskCode }));
   }
   /**获取待审核章节 */
   public getToAuditChapters(bookId: string) {
@@ -162,6 +162,30 @@ export default class NursingRulesApiService extends BaseApiService {
   /**删除书籍 */
   public deleteBook(bookId: string) {
     return this.post(`/hospitalBookshelf/deleteBook`, qs.stringify({ bookId }));
+  }
+  /**根据tackCode获取书籍目录信息（pc端） */
+  public getTaskCataLogTree(taskCode: string) {
+    return this.post(`/hospitalBookshelf/getTaskCataLogTree`, qs.stringify({ taskCode }));
+  }
+  /**修改书籍信息 （书籍名、书籍简介、书籍封面）（pc端） */
+  public updateTaskBookInfo(params: any) {
+    let formData = new FormData();
+    for (let x in params) {
+      if (x == 'cover') {
+        if (Object.prototype.toString.call(params[x]) !== '[object String]') formData.append('coverFile', params[x])
+      } else {
+        formData.append(x, params[x])
+      }
+    }
+    return this.post(`/hospitalBookshelf/updateTaskBookInfo`, formData);
+  }
+  /**上传书籍目录(pc端) */
+  public upLoadTaskCataLog(params: any) {
+    let formData = new FormData();
+    for (let x in params) {
+      formData.append(x, params[x])
+    }
+    return this.post(`/hospitalBookshelf/upLoadTaskCataLog`, formData);
   }
 }
 

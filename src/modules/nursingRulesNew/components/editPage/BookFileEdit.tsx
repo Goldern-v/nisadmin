@@ -48,9 +48,8 @@ export default observer(function BookFileEdit() {
       <div className="file-info">
         <div className="book-name">{item.fileName}</div>
         <div className="file-size">{getFileSize(item.fileSize)}</div>
-        <div className="success">上传完成</div>
       </div>
-      <div className="delete" onClick={() => handleDelete(item)}>删除</div>
+      <div className="delete" onClick={() => handleDelete(item)}>X</div>
     </div>)
   }
 
@@ -76,6 +75,7 @@ export default observer(function BookFileEdit() {
       <div className="content">
         <TextArea
           autosize
+          placeholder="请输入书籍名称"
           value={baseParams.bookName}
           onChange={(e: any) => editPageModel.setBaseParams({ ...baseParams, bookName: e.target.value })} />
       </div>
@@ -83,19 +83,17 @@ export default observer(function BookFileEdit() {
     <div className="row">
       <div className="label">书籍介绍：</div>
       <div className="content">
-        <TextArea autosize={{ minRows: 3 }} value={baseParams.bookBrief} onChange={(e: any) => editPageModel.setBaseParams({ ...baseParams, bookBrief: e.target.value })} />
+        <TextArea
+          placeholder="请输入书籍介绍"
+          autosize={{ minRows: 3 }}
+          value={baseParams.bookBrief}
+          onChange={(e: any) => editPageModel.setBaseParams({ ...baseParams, bookBrief: e.target.value })} />
       </div>
     </div>
     <div className="row">
       <div className="label">书籍上传：</div>
       <div className="content">
         <PagesUploader />
-      </div>
-    </div>
-    <div className="row">
-      <div className="label"></div>
-      <div className="content">
-        <div className="tips">(请将书籍每一页拆分好，并设置文件名称为页码数字，文件目前只支持pdf和图片格式)</div>
       </div>
     </div>
     <div className="file-list">
@@ -131,12 +129,12 @@ const Wrapper = styled.div`
  }
   .file-list{
     padding: 0 10px;
+    padding-left: 90px;
     .file-item{
       float: left;
-      border: 1px solid #1890ff;
-      border-radius: 5px;
+      border-radius: 2px;
       width: 280px;
-      background: rgba(0,0,255,0.02);
+      background: rgba(246,246,246,1);
       overflow: hidden;
       position: relative;
       margin-right: 10px;
@@ -154,8 +152,8 @@ const Wrapper = styled.div`
           top: 50%;
           left: 50%;
           transform: translate(-50%,-50%);
-          width: 50px;
-          height: 50px;
+          width: 44px;
+          height: 44px;
           background: #ddd;
 
           img{
@@ -168,8 +166,11 @@ const Wrapper = styled.div`
         overflow: hidden;
         position: relative;
         &>div{
-          height: 30px;
-          line-height: 30px;
+          &:first-of-type{
+            margin-top: 6px;
+          }
+          height: 24px;
+          line-height: 24px;
         }
       }
       .file-size{
@@ -195,16 +196,14 @@ const Wrapper = styled.div`
       }
       .delete{
         position: absolute;
-        height: 30px;
-        line-height: 30px;
+        height: 28px;
+        width: 30px;
         right: 10px;
         top: 0;
-        color: #1890ff;
+        color: #999;
         cursor: pointer;
-        :hover{
-          color: red;
-          font-weight: bold;
-        }
+        text-align: center;
+        line-height: 28px;
       }
     }
   }

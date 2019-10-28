@@ -37,11 +37,11 @@ export default observer(function BookPreview() {
       <div className="content">{baseParams.bookName}</div>
     </div>
     <div className="row">
-      <div className="label">文件数：</div>
+      <div className="label label-sp3">文件数：</div>
       <div className="content">共{fileList.length}个文件,总大小为{totalSize()}</div>
     </div>
     <div className="row">
-      <div className="label">章节数：</div>
+      <div className="label label-sp3">章节数：</div>
       <div className="content">{indexSize()}章</div>
     </div>
     <div className="row">
@@ -66,6 +66,9 @@ padding: 10px;
     text-align: left;
     margin-left: 10px;
     margin-right: 10px;
+    &.label-sp3{
+      letter-spacing: 5px;
+    }
   }
   .content{
     flex: 1;

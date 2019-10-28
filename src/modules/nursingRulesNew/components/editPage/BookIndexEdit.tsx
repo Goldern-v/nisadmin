@@ -54,9 +54,9 @@ export default observer(function BookIndexEdit() {
 
     if (files.length > 0) {
       editPageModel.setBaseLoading(true)
-      nursingRulesApiService.updateBookInfo({
-        bookId: baseInfo.bookId,
-        catalog: files[0]
+      nursingRulesApiService.upLoadTaskCataLog({
+        taskCode: baseInfo.taskCode,
+        cataLog: files[0]
       }).then(res => {
         editPageModel.setBaseLoading(false)
 

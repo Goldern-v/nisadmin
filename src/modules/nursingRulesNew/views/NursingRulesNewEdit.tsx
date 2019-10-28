@@ -30,69 +30,91 @@ export default observer(function NursingRulesNewEdit() {
       return
     }
 
-    let { bookId, taskCode } = baseInfo
+    // let { bookId, taskCode, taskType } = baseInfo
 
-    let params = { ...baseParams, bookId, taskCode } as any
+    // let params = { ...baseParams, bookId, taskCode } as any
 
-    let callback = (res?: any) => {
-      editPageModel.setBaseLoading(false)
-      if (res) {
-        //跳转下一页
-        setStep(1)
+    setStep(1)
 
-        let data = res.data
+    // let callback = (res?: any) => {
+    //   editPageModel.setBaseLoading(false)
+    //   if (res) {
+    //     //跳转下一页
+    //     setStep(1)
 
-        if (data && data.id) {
-          //提示成功
-          let msgType = '新建'
-          if (baseInfo.taskType == '2') msgType = '修订'
-          Message.warning(`书籍${msgType}成功，请及时提交审核`)
-          //更新url
-          let newQuery = {
-            bookId: data.id
-          }
-          history.replace(`${location.pathname}?${qs.stringify(newQuery)}`)
-          //编辑类型 改为 修改书籍
-          editPageModel.setBaseInfo({
-            taskType: '',
-            taskCode: '',
-            bookId: data.id
-          })
-          //修改封面参数
-          editPageModel.setBaseParams({ ...baseParams, cover: data.coverPath })
-          //重新获取上传文件列表
-          editPageModel.getFileList()
-        } else {
-          Message.warning('书籍修改成功，请及时提交审核')
-        }
-      }
-    }
+    //     let data = res.data
 
-    editPageModel.setBaseLoading(true)
+    //     if (data && data.id) {
+    //       //提示成功
+    //       let msgType = '新建'
+    //       if (baseInfo.taskType == '2') msgType = '修改'
+    //       if (baseInfo.taskType == '3') msgType = '修订'
+    //       Message.warning(`书籍${msgType}成功，请及时提交审核`)
+    //       //更新url
+    //       let newQuery = {
+    //         bookId: data.id
+    //       }
+    //       history.replace(`${location.pathname}?${qs.stringify(newQuery)}`)
+    //       //编辑类型 改为 修改书籍
+    //       editPageModel.setBaseInfo({
+    //         taskType: '',
+    //         taskCode: '',
+    //         bookId: data.id
+    //       })
+    //       //修改封面参数
+    //       editPageModel.setBaseParams({ ...baseParams, cover: data.coverPath })
+    //       //重新获取上传文件列表
+    //       editPageModel.getFileList()
+    //     } else {
+    //       Message.warning('书籍修改成功，请及时提交审核')
+    //     }
+    //   }
+    // }
 
-    if (baseInfo.taskType == '2') {
-      //修订
-      nursingRulesApiService.revBook(params).then(res => callback(res), err => callback())
-    } else if (baseInfo.taskType == '1') {
-      //新建
-      nursingRulesApiService.addBook(params).then(res => callback(res), err => callback())
-    } else {
-      //编辑
-      nursingRulesApiService.updateBookInfo(params).then(res => callback(res), err => callback())
-    }
+    // editPageModel.setBaseLoading(true)
+
+    // if (baseInfo.taskType == '2') {
+    //   //修订
+    //   nursingRulesApiService.revBook(params).then(res => callback(res), err => callback())
+    // } else if (baseInfo.taskType == '1') {
+    //   //新建
+    //   nursingRulesApiService.addBook(params).then(res => callback(res), err => callback())
+    // } else {
+    //   //编辑
+    //   nursingRulesApiService.updateBookInfo(params).then(res => callback(res), err => callback())
+    // }
   }
   //提交审核
   const handleSendAudit = () => {
     editPageModel.setBaseLoading(true)
-    nursingRulesApiService
-      .submitToAudit(baseInfo.bookId)
-      .then(res => {
-        editPageModel.setBaseLoading(false)
+    // nursingRulesApiService
+    //   .submitToAudit(baseInfo.bookId)
+    //   .then(res => {
+    // editPageModel.setBaseLoading(false)
 
+    // Message.success('提交审核成功', 0.5, () => {
+    //   history.goBack()
+    // })
+    //   }, () => editPageModel.setBaseLoading(false))
+
+    let { bookId, taskCode, taskType } = baseInfo
+
+    let params = { ...baseParams, taskCode } as any
+
+    nursingRulesApiService
+      .updateTaskBookInfo(params)
+      .then(res => {
+        if (res.code == '200')
+          return nursingRulesApiService
+            .submitToAudit(taskCode)
+      })
+      .then(res => {
         Message.success('提交审核成功', 0.5, () => {
+          editPageModel.setBaseLoading(false)
           history.goBack()
         })
-      }, () => editPageModel.setBaseLoading(false))
+      })
+      .catch(() => editPageModel.setBaseLoading(false))
   }
 
   const StepBtns = () => {
@@ -232,9 +254,10 @@ const BtnGroup = styled.div`
   position: fixed;
   bottom: 0;
   padding: 5px 10px;
-  border-top: 1px solid #ddd;
+  /* border-top: 1px solid #ddd; */
+  background:rgba(247,247,247,1);
   width: 100%;
-  background: #fff;
+  /* background: #fff; */
   .ant-btn{
     margin-right: 10px;
   }
