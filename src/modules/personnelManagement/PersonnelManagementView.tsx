@@ -67,7 +67,7 @@ export default function PersonnelManagementView() {
           component: AddSubClass
         },
         {
-          title: '请假列表查询',
+          title: '假期列表查询',
           path: '/personnelManagement/holidaysList',
           component: HolidaysList
         },

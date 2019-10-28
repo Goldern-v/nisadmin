@@ -61,6 +61,22 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
+    } else if (sectionData.sectionId == '不良事件') {
+      qualityAnalysisReportPoolService.updateBadEventList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
+    } else if (sectionData.sectionId == '人力资源调配') {
+      qualityAnalysisReportPoolService.updateHrAllocationList(data.list).then((res) => {
+        qualityAnalysisReportViewModal.setSectionData(sectionData.sectionId, {
+          list: res.data
+        })
+        message.success('保存成功')
+        onCancel()
+      })
     }
   }
 

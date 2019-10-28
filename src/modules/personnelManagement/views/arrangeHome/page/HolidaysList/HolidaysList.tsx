@@ -103,7 +103,7 @@ export default observer(function HolidaysList() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>请假列表查询</PageTitle>
+        <PageTitle>假期列表查询</PageTitle>
         <Place />
         <span className='label'>年份:</span>
         <YearPicker value={year} onChange={(value: any) => setYear(value)} />

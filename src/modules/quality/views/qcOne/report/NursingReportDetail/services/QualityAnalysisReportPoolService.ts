@@ -52,6 +52,22 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
     }
     return this.post(`/qcAnalysis/wn/update/nurseMeetingList`, obj)
   }
+  /** 更新不良事件 */
+  public updateBadEventList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcAnalysis/wn/update/badEventList`, obj)
+  }
+  /** 更新人力资源调配 */
+  public updateHrAllocationList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
+    }
+    return this.post(`/qcAnalysis/wn/update/hrAllocationList`, obj)
+  }
 }
 
 export const qualityAnalysisReportPoolService = new QualityAnalysisReportPoolService()

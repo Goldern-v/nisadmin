@@ -284,7 +284,7 @@ export default observer(function NursingReportList() {
           columns={columns}
           dataSource={tableData}
           loading={tableLoading}
-          surplusHeight={230}
+          surplusHeight={220}
           onRow={(record: any) => {
             return {
               onDoubleClick: () => record.reportName && handleReview(record)
@@ -315,7 +315,7 @@ export default observer(function NursingReportList() {
 
 const Wrapper = styled.div`
   position: relative;
-  padding-top: 55px;
+  padding-top: 50px;
   height: 100%;
   width: 100%;
 
@@ -326,7 +326,7 @@ const Wrapper = styled.div`
     width: 100%;
     padding: 10px 5px 10px 15px;
     box-sizing: border-box;
-    height: 55px;
+    height: 50px;
     overflow: hidden;
     .float-left {
       float: left;

@@ -74,12 +74,6 @@ const LEFT_MENU_CONFIG: any = [
     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   },
   {
-    title: '护理工作报表详情',
-    icon: <YIBG />,
-    path: '/qcOne/nursingReportDetail',
-    component: NursingReportDetailView
-  },
-  {
     title: '星级考核评价',
     icon: <YIBG />,
     path: '/qcOne/starRatingReport',

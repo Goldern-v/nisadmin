@@ -42,7 +42,7 @@ export const navConfig: navConfigItem[] = [
       },
       {
         name: '一级质控',
-        path: '/qcOne/followUpRecord',
+        path: '/qcOne/nursingWorkPlainList',
         icon: require('../images/menu-icon/一级质控@2x.png'),
         hidden: !appStore.isDev
       },
