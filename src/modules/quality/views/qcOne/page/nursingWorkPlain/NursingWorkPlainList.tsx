@@ -278,6 +278,9 @@ export default observer(function NursingWorkPlainList() {
 })
 
 const TableWrapper = styled(TabledCon)`
+td{
+  word-break: break-all;
+}
 `
 
 const HeaderCon = styled(TableHeadCon)`

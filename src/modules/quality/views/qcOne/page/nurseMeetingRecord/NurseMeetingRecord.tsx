@@ -39,7 +39,7 @@ export default observer(function NurseMeetingRecord() {
       dataIndex: 'meetingDate',
       title: '日期',
       align: 'center',
-      width: 120,
+      width: 150,
     },
     {
       dataIndex: 'meetingType',
@@ -72,13 +72,13 @@ export default observer(function NurseMeetingRecord() {
       dataIndex: 'comperes',
       title: '会议主持',
       align: 'center',
-      width: 80
+      width: 100
     },
     {
       dataIndex: 'recorders',
       title: '记录人',
       align: 'center',
-      width: 80
+      width: 100
     },
     {
       dataIndex: 'creatorName',
@@ -90,7 +90,7 @@ export default observer(function NurseMeetingRecord() {
       dataIndex: 'createTime',
       title: '创建时间',
       align: 'center',
-      width: 120,
+      width: 150,
     },
     {
       title: '状态',
@@ -106,7 +106,7 @@ export default observer(function NurseMeetingRecord() {
     {
       title: '操作',
       align: 'center',
-      width: 100,
+      width: 80,
       render: (text: string, record: any, idx: number) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
@@ -239,6 +239,11 @@ export default observer(function NurseMeetingRecord() {
         surplusHeight={225}
         surplusWidth={200}
         dataSource={tableData}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => handleDetail(record)
+          }
+        }}
         pagination={{
           current: query.pageIndex,
           pageSize: query.pageSize,

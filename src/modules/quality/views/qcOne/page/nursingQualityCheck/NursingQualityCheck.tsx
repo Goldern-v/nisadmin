@@ -386,6 +386,9 @@ const CreateWrapper = styled.div`
 `
 
 const TableWrapper = styled(TabledCon)`
+td{
+  word-break: break-all;
+}
 `
 
 const HeaderCon = styled(TableHeadCon)`
