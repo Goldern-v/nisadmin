@@ -23,12 +23,12 @@ export default observer(function Head() {
     let array: any = val.split('')
     return array.map((item: any, i: any) => {
       let isRed = recordViewModal.selectedWardRoundText.indexOf(item) > -1
-      return isRed ? <span key={i} style={{ color: 'red' }}>{item}</span> : <span key={i}>{item}</span>
+      return isRed ? <span key={i}>{item}</span> : <span key={i}>{item}</span>
     })
   }
 
   const handleChange: any = (val: any) => {
-    recordViewModal.selectedDept = val === '全院' ? '' : val
+    recordViewModal.selectedDept = val === '全院' ? '' : ( val === '全部' ? recordViewModal.string : val)
     recordViewModal.selectedWardRoundText = val
     recordViewModal.onload()
   }
@@ -53,7 +53,7 @@ export default observer(function Head() {
         <span>查房科室：</span>
         <Select
           showSearch
-          value={recordViewModal.selectedWardRoundText}
+          value={recordViewModal.selectedDept}
           placeholder="请输入要查询的科室"
           defaultActiveFirstOption={false}
           showArrow={false}

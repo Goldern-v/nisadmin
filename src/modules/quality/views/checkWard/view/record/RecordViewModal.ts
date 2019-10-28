@@ -1,10 +1,12 @@
 import { observable, computed } from 'mobx'
 import { checkWardService } from '../../services/CheckWardService'
 import { crrentMonth } from 'src/utils/moment/crrentMonth'
+import { authStore } from 'src/stores'
+import { any } from 'prop-types';
 
 class RecordViewModal {
   @observable public selectedWardRound = '' //查房类型
-  @observable public selectedWardRoundText = '全院' //查房类型文字
+  @observable public selectedWardRoundText = '' //查房类型文字
   @observable public selectedWardRoundArray = [] //查房类型过滤数据
   @observable public WardRoundList = []
   @observable public selectedCheckState = '' //查房状态
@@ -19,19 +21,41 @@ class RecordViewModal {
   @observable public pageIndex: any = 1
   @observable public pageSize: any = 20
   @observable public total: any = 0
+  @observable public string = ''
 
   async initData() {
     await Promise.all([
       //科室
       checkWardService.getNursingUnitAll().then((res) => {
         let array = res.data.deptList
-        
-        array.unshift({
-          code: '', name: '全院'
+        array.map((item:any, index:any) => {
+          console.log(index,array.length,'this.stringthis.string')
+          if(index == array.length - 1) {
+            this.string += item.code
+          } else {
+            this.string += item.code + ","
+          }
         })
+
+        console.log(this.string,'this.stringthis.string')
+        this.selectedDept = res.data.defaultDept
+        if (authStore.isDepartment) {
+          array.unshift({
+            code: '', name: '全院'
+          })  
+          this.selectedDept = ''
+        }else if (authStore.isSupervisorNurse) {
+          array.unshift({
+            code:this.string, name: '全部'
+          })  
+          this.selectedDept = this.string
+        } else {
+          this.selectedDept = res.data.defaultDept
+        }
         this.deptList = array.slice()
         this.selectedWardRoundArray = array.slice()
       }),
+
       //查房类型
       checkWardService.dictInfo().then((res) => {
         this.WardRoundList = res.data
