@@ -110,11 +110,6 @@ export default observer(function NursingRulesNewDetail() {
   }
 
   const handleEdit = () => {
-    let bookId = baseInfo.bookId
-    history.push(`nursingRulesNewEdit?${qs.stringify({ bookId })}`)
-  }
-
-  const handleRepair = () => {
     nursingRulesApiService.getTaskCode({
       taskType: 2,
       bookId: baseInfo.bookId
@@ -123,6 +118,19 @@ export default observer(function NursingRulesNewDetail() {
         taskCode: res.data.taskCode,
         bookId: baseInfo.bookId,
         taskType: 2
+      })}`)
+    })
+  }
+
+  const handleRepair = () => {
+    nursingRulesApiService.getTaskCode({
+      taskType: 3,
+      bookId: baseInfo.bookId
+    }).then(res => {
+      if (res.data) history.push(`nursingRulesNewEdit?${qs.stringify({
+        taskCode: res.data.taskCode,
+        bookId: baseInfo.bookId,
+        taskType: 3
       })}`)
     })
   }
@@ -158,13 +166,13 @@ export default observer(function NursingRulesNewDetail() {
     </div>
     <div className="main-contain">
       <div className="top-pannel">
-        <div className="btn-group">
+        {/* <div className="btn-group">
           <Button onClick={handleEdit} disabled={!auth}>编辑</Button>
           <Button onClick={handleRepair} disabled={!auth}>修订</Button>
           {SettingBtn()}
           <Button type="danger" disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
           <Button onClick={() => history.goBack()}>返回</Button>
-        </div>
+        </div> */}
         <div className="base-info">
           <div className="left">
             <BookCover src={baseInfo.coverPath ? `/crNursing/asset${baseInfo.coverPath}` : ''} name={baseInfo.coverPath ? '' : baseInfo.bookName} />
@@ -178,18 +186,31 @@ export default observer(function NursingRulesNewDetail() {
                 <img src={require('./../assets/上传@2x.png')} alt="" />
               </span>
               <span>上传:</span>
-              <span>{baseInfo.upLoadTime && baseInfo.upLoadTime.split(' ')[0]}</span>
-              <span>{baseInfo.upLoaderEmpName}</span>
+              <span className="sc-content">{baseInfo.upLoadTime && baseInfo.upLoadTime.split(' ')[0]}</span>
+              <span className="sc-content">{baseInfo.upLoaderEmpName}</span>
             </div>
             <div className="audit-info">
               <span className="icon">
                 <img src={require('./../assets/审核@2x.png')} alt="" />
               </span>
               <span>审核:</span>
-              <span>{baseInfo.auditTime && baseInfo.auditTime.split(' ')[0]}</span>
-              <span>{baseInfo.auditorEmpName}</span>
+              <span className="sc-content">{baseInfo.auditTime && baseInfo.auditTime.split(' ')[0]}</span>
+              <span className="sc-content">{baseInfo.auditorEmpName}</span>
             </div>
-            <div className="desc">{baseInfo.bookBrief}</div>
+            <div className="desc">
+              <span className="icon">
+                <img src={require('./../assets/简介@2x.png')} alt="" />
+              </span>
+              <span>简介:</span>
+              <span className="desc-content">{baseInfo.bookBrief}</span>
+            </div>
+            <div className="btn-group">
+              <Button onClick={handleEdit} disabled={!auth}>编辑</Button>
+              <Button onClick={handleRepair} disabled={!auth}>修订</Button>
+              {SettingBtn()}
+              <Button type="danger" disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
+              <Button onClick={() => history.goBack()}>返回</Button>
+            </div>
           </div>
         </div>
       </div>
@@ -227,10 +248,14 @@ const Wrapper = styled.div`
   .main-contain{
     position: relative;
     .btn-group{
-      position: absolute;
+      /* position: absolute;
       top:0;
       right:10px;
+      z-index: 2; */
+      position: absolute;
+      left: 155px;
       z-index: 2;
+      bottom: 0;
       .ant-btn{
         margin-left: 8px;
       }
@@ -264,10 +289,16 @@ const Wrapper = styled.div`
           }
         }
         .update-info,.audit-info{
-          color: #999;
+          color: #333;
+          display: inline-block;
+          margin-right: 10px;
+          min-width: 180px;
           &>span{
             vertical-align: middle;
             margin-right:5px;
+            &.sc-content{
+              color: #999;
+            }
             img{
               width: 12px;
               height: 12px;
@@ -277,10 +308,29 @@ const Wrapper = styled.div`
           }
         }
         .desc{
-          height: 90px;
+          height: 66px;
           margin: 0;
-          overflow-y: auto;
-          ${scrollBarStyle}
+          position: relative;
+          &>span{
+            vertical-align: top;
+            margin-right:5px;
+            img{
+              width: 12px;
+              height: 12px;
+              position: relative;
+              top: -2px;
+            }
+          }
+          .desc-content{
+            overflow-y: auto;
+            position: absolute;
+            color: #999;
+            ${scrollBarStyle}
+            top: 0;
+            left: 58px;
+            right: 0;
+            bottom: 0;
+          }
         }
       }
     }
