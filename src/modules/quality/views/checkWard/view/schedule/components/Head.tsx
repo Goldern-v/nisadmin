@@ -10,6 +10,7 @@ import { appStore } from 'src/stores';
 import YearPicker from 'src/components/YearPicker'
 import { checkWardService } from '../../../services/CheckWardService'
 import { PageTitle } from 'src/components/common'
+import { authStore } from 'src/stores'
 
 export interface Props {}
 
@@ -66,13 +67,12 @@ export default observer(function Head() {
             </Select.Option>
           ))}
         </Select>
-
         <Button type='primary' onClick={() => scheduleViewModal.onload()} className='checkButton'>查询</Button>
-        <Button onClick={() => {appStore.history.push(`/qualityScheduleImport`)}}>导入</Button>
-        <Button onClick={() => scheduleViewModal.export()}>导出Excel</Button>
+        {authStore.isDepartment &&  <Button onClick={() => {appStore.history.push(`/qualityScheduleImport`)}}>导入</Button>}
+        {authStore.isDepartment && <Button onClick={() => scheduleViewModal.export()}>导出Excel</Button>}
     
-        <Place />
-        <Button onClick={handlePush}>推送查房计划</Button>
+        {authStore.isDepartment &&  <Place />}
+        {authStore.isDepartment &&  <Button onClick={handlePush}>推送查房计划</Button>}     
       </RightIcon>
 
     </Wrapper>

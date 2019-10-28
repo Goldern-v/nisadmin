@@ -25,6 +25,7 @@ class RecordViewModal {
       //科室
       checkWardService.getNursingUnitAll().then((res) => {
         let array = res.data.deptList
+        
         array.unshift({
           code: '', name: '全院'
         })
