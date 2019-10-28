@@ -131,7 +131,7 @@ export default observer(function HumanResource() {
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
-        surplusHeight={200}
+        surplusHeight={220}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,

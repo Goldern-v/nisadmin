@@ -485,7 +485,7 @@ export const TableHeadCon = styled.div`
 `
 export const TabledCon = styled.div`
   margin: 0px 15px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); */
   background-color: #fff;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 `

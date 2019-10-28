@@ -10,7 +10,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import { PageTitle } from 'src/components/common'
 
 const { RangePicker } = DatePicker
-export interface Props { }
+export interface Props {}
 
 export default observer(function Head() {
   const handleSearch: any = (val: any) => {
@@ -28,11 +28,15 @@ export default observer(function Head() {
   }
 
   const handleChange: any = (val: any) => {
-    recordViewModal.selectedDept = val === '全院' ? '' : ( val === '全部' ? recordViewModal.string : val)
+    recordViewModal.selectedDept = val === '全院' ? '' : val === '全部' ? recordViewModal.string : val
     recordViewModal.selectedWardRoundText = val
     recordViewModal.onload()
   }
-  const options = recordViewModal.selectedWardRoundArray.map((d: any) => <Select.Option key={d.name} value={d.code}>{setColorRed(d.name)}</Select.Option>);
+  const options = recordViewModal.selectedWardRoundArray.map((d: any) => (
+    <Select.Option key={d.name} value={d.code}>
+      {setColorRed(d.name)}
+    </Select.Option>
+  ))
   return (
     <Wrapper>
       <LeftIcon>
@@ -54,7 +58,7 @@ export default observer(function Head() {
         <Select
           showSearch
           value={recordViewModal.selectedDept}
-          placeholder="请输入要查询的科室"
+          placeholder='请输入要查询的科室'
           defaultActiveFirstOption={false}
           showArrow={false}
           filterOption={false}
@@ -90,11 +94,11 @@ export default observer(function Head() {
             recordViewModal.onload()
           }}
         >
-            <Select.Option value=''>全部</Select.Option>
-            <Select.Option value='1'>待病区处理</Select.Option>
-            <Select.Option value='1,2'>待科护士长审核</Select.Option>
-            <Select.Option value='3'>待护理部审核</Select.Option>
-            <Select.Option value='4'>已完成</Select.Option>
+          <Select.Option value=''>全部</Select.Option>
+          <Select.Option value='1'>待病区处理</Select.Option>
+          <Select.Option value='1,2'>待科护士长审核</Select.Option>
+          <Select.Option value='3'>待护理部审核</Select.Option>
+          <Select.Option value='4'>已完成</Select.Option>
           {/* {recordViewModal.checkStateList.map((item: any, index: number) => (
             <Select.Option value={item.code} key={item.code}>
               {item.code}
@@ -103,7 +107,9 @@ export default observer(function Head() {
         </Select>
         <Place />
 
-        <Button type='primary' onClick={() => recordViewModal.onload()} className='checkButton'>查询</Button>
+        <Button type='primary' onClick={() => recordViewModal.onload()} className='checkButton'>
+          查询
+        </Button>
       </RightIcon>
     </Wrapper>
   )
@@ -126,7 +132,6 @@ const Wrapper = styled(TableHeadCon)`
   .ant-select-selection-selected-value span {
     color: #000 !important;
   }
-
 `
 const LeftIcon = styled.div`
   height: 55px;
@@ -134,7 +139,7 @@ const LeftIcon = styled.div`
   position: relative;
   font-size: 13px;
   color: #333333;
-  padding: 0 0 0 15px;
+  padding: 0;
   display: flex;
   align-items: center;
 `

@@ -186,7 +186,7 @@ export default observer(function FollowUpRecord() {
         wrapperStyle={{ margin: '0 15px' }}
         type={['index', 'fixedIndex']}
         surplusWidth={200}
-        surplusHeight={200}
+        surplusHeight={220}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,

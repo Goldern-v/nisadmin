@@ -6,7 +6,7 @@ import { Select } from 'src/vendors/antd'
 import { Place } from 'src/components/common'
 import { scheduleViewModal } from '../ScheduleViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
-import { appStore } from 'src/stores';
+import { appStore } from 'src/stores'
 import YearPicker from 'src/components/YearPicker'
 import { checkWardService } from '../../../services/CheckWardService'
 import { PageTitle } from 'src/components/common'
@@ -25,10 +25,11 @@ export default observer(function Head() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        scheduleViewModal.statusAll && scheduleViewModal.statusAll.map(((item: any) => {
-          item.status = 1
-        }))
-        let params:any = { ...scheduleViewModal.tableData, ...{ searchRooms: scheduleViewModal.statusAll }}
+        scheduleViewModal.statusAll &&
+          scheduleViewModal.statusAll.map((item: any) => {
+            item.status = 1
+          })
+        let params: any = { ...scheduleViewModal.tableData, ...{ searchRooms: scheduleViewModal.statusAll } }
         checkWardService.pushSearchRoom(params).then((res) => {
           message.success('推送成功！')
         })
@@ -40,7 +41,7 @@ export default observer(function Head() {
   return (
     <Wrapper>
       <LeftIcon>
-          <PageTitle>查房计划表</PageTitle>
+        <PageTitle>查房计划表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年度：</span>
@@ -67,14 +68,23 @@ export default observer(function Head() {
             </Select.Option>
           ))}
         </Select>
-        <Button type='primary' onClick={() => scheduleViewModal.onload()} className='checkButton'>查询</Button>
-        {authStore.isDepartment &&  <Button onClick={() => {appStore.history.push(`/qualityScheduleImport`)}}>导入</Button>}
+        <Button type='primary' onClick={() => scheduleViewModal.onload()} className='checkButton'>
+          查询
+        </Button>
+        {authStore.isDepartment && (
+          <Button
+            onClick={() => {
+              appStore.history.push(`/qualityScheduleImport`)
+            }}
+          >
+            导入
+          </Button>
+        )}
         {authStore.isDepartment && <Button onClick={() => scheduleViewModal.export()}>导出Excel</Button>}
-    
-        {authStore.isDepartment &&  <Place />}
-        {authStore.isDepartment &&  <Button onClick={handlePush}>推送查房计划</Button>}     
-      </RightIcon>
 
+        {authStore.isDepartment && <Place />}
+        {authStore.isDepartment && <Button onClick={handlePush}>推送查房计划</Button>}
+      </RightIcon>
     </Wrapper>
   )
 })
@@ -100,7 +110,7 @@ const LeftIcon = styled.div`
   position: relative;
   font-size: 13px;
   color: #333333;
-  padding: 0 0 0 15px;
+  padding: 0;
   display: flex;
   align-items: center;
 `
