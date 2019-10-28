@@ -175,8 +175,8 @@ export default observer(function QualityControlRecordEdit() {
           </div>
           <div className='topHeaderButton'>
             {step === 1 && !loading && <React.Fragment>
-              <Button onClick={() => qcModel.setAllQcItemValue('是')} ghost type="primary">全是</Button>
-              <Button onClick={() => qcModel.setAllQcItemValue('否')} ghost type="danger">全否</Button>
+              <Button onClick={() => qcModel.setAllQcItemValue('是')} type="primary">全是</Button>
+              <Button onClick={() => qcModel.setAllQcItemValue('否')} type="danger">全否</Button>
               <Button onClick={handleCache}>暂存</Button>
               <Button onClick={handleNext}>下一步</Button>
             </React.Fragment>}

@@ -113,6 +113,9 @@ const NurseMeetingRecordDetail = lazy(() => import('src/modules/quality/views/qc
 const BadEventRecordEdit = lazy(() => import('src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordEdit'))
 const BadEventRecordDetail = lazy(() => import('src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordDetail'))
 
+const StarRatingReportEdit = lazy(() => import('src/modules/quality/views/qcOne/report/StarRatingReport/StarRatingReportEdit'))
+
+
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -251,6 +254,7 @@ const routes: RouteItem[] = [
   setLayout('/nurseMeetingRecordDetail', NurseMeetingRecordDetail, layouts.MainLayout),
   setLayout('/badEventRecordEdit', BadEventRecordEdit, layouts.MainLayout),
   setLayout('/badEventRecordDetail', BadEventRecordDetail, layouts.MainLayout),
+  setLayout('/starRatingReportEdit', StarRatingReportEdit, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'

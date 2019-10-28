@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, DatePicker, Input, message } from 'antd'
+import { Button, Select, DatePicker, Input, message, Spin } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -166,110 +166,112 @@ export default observer(function BadEventRecordEdit() {
     </TopPannel>
     <MainPannel>
       <MainContent className="main-contain">
-        <div className="form-pannel">
-          <table>
-            <colgroup>
-              <col width='10%' />
-              <col width='40%' />
-              <col width='10%' />
-              <col width='40%' />
-            </colgroup>
-            <tbody>
-              <tr>
-                <td className="label">发生时间</td>
-                <td className="content">
-                  <DatePicker
-                    format="YYYY-MM-DD HH:mm"
-                    value={
-                      badEvent.eventDay && badEvent.eventTime ?
-                        moment(`${badEvent.eventDay} ${badEvent.eventTime}`) :
-                        undefined
-                    }
-                    onChange={(newTime) => {
-                      setBadEvent({
-                        ...badEvent,
-                        eventDay: newTime.format('YYYY-MM-DD'),
-                        eventTime: newTime.format('HH:mm')
-                      })
-                    }}
-                    allowClear={false}
-                    showTime />
-                </td>
-                <td className="label">发生科室</td>
-                <td>
-                  <Input value={wardName} disabled />
-                </td>
-              </tr>
-              <tr>
-                <td className="label">事件种类</td>
-                <td className="content">
-                  <Select
-                    placeholder="请选择"
-                    value={badEvent.eventType}
-                    onChange={(eventType: any) => setBadEvent({ ...badEvent, eventType })}>
-                    {typeList.map((item: any) =>
-                      <Option value={item.code} key={item.code}>{item.name}</Option>
-                    )}
-                  </Select>
-                </td>
-                <td className="label">当事人</td>
-                <td className="content">
-                  <Select
-                    showSearch
-                    mode="tags"
-                    value={parties}
-                    onChange={(arr: any[]) => setParties(arr)}
-                    placeholder="请输入"
-                    filterOption={(input: string, option: any) =>
-                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
-                    {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
-                  </Select>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <Spin spinning={loading}>
+          <div className="form-pannel">
+            <table>
+              <colgroup>
+                <col width='10%' />
+                <col width='40%' />
+                <col width='10%' />
+                <col width='40%' />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td className="label">发生时间</td>
+                  <td className="content">
+                    <DatePicker
+                      format="YYYY-MM-DD HH:mm"
+                      value={
+                        badEvent.eventDay && badEvent.eventTime ?
+                          moment(`${badEvent.eventDay} ${badEvent.eventTime}`) :
+                          undefined
+                      }
+                      onChange={(newTime) => {
+                        setBadEvent({
+                          ...badEvent,
+                          eventDay: newTime.format('YYYY-MM-DD'),
+                          eventTime: newTime.format('HH:mm')
+                        })
+                      }}
+                      allowClear={false}
+                      showTime />
+                  </td>
+                  <td className="label">发生科室</td>
+                  <td>
+                    <Input value={wardName} disabled />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="label">事件种类</td>
+                  <td className="content">
+                    <Select
+                      placeholder="请选择"
+                      value={badEvent.eventType}
+                      onChange={(eventType: any) => setBadEvent({ ...badEvent, eventType })}>
+                      {typeList.map((item: any) =>
+                        <Option value={item.code} key={item.code}>{item.name}</Option>
+                      )}
+                    </Select>
+                  </td>
+                  <td className="label">当事人</td>
+                  <td className="content">
+                    <Select
+                      showSearch
+                      mode="tags"
+                      value={parties}
+                      onChange={(arr: any[]) => setParties(arr)}
+                      placeholder="请输入"
+                      filterOption={(input: string, option: any) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }>
+                      {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
+                    </Select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div className="default-pannel">
-          <div className="title">一、事件简要经过</div>
-          <div className="content">
-            <Input.TextArea
-              value={badEvent.briefCourseEvent}
-              autosize={{ minRows: 5 }}
-              onChange={(e: any) =>
-                setBadEvent({ ...badEvent, briefCourseEvent: e.target.value })
-              }
-            />
+          <div className="default-pannel">
+            <div className="title">一、事件简要经过</div>
+            <div className="content">
+              <Input.TextArea
+                value={badEvent.briefCourseEvent}
+                autosize={{ minRows: 5 }}
+                onChange={(e: any) =>
+                  setBadEvent({ ...badEvent, briefCourseEvent: e.target.value })
+                }
+              />
+            </div>
           </div>
-        </div>
-        <div className="default-pannel">
-          <div className="title">二、后果</div>
-          <div className="content">
-            <Input.TextArea
-              value={badEvent.result}
-              autosize={{ minRows: 5 }}
-              onChange={(e: any) =>
-                setBadEvent({ ...badEvent, result: e.target.value })
-              }
-            />
+          <div className="default-pannel">
+            <div className="title">二、后果</div>
+            <div className="content">
+              <Input.TextArea
+                value={badEvent.result}
+                autosize={{ minRows: 5 }}
+                onChange={(e: any) =>
+                  setBadEvent({ ...badEvent, result: e.target.value })
+                }
+              />
+            </div>
           </div>
-        </div>
-        <div className="default-pannel">
-          <div className="title">三、附件</div>
-          <div className="content">
-            <MultipleImageUploader upload={(files) => {
-              let reqList = [] as any
-              for (let i = 0; i < files.length; i++) {
-                let form = new FormData()
-                form.set('file', files[i])
-                reqList.push(commonApi.uploadAttachment('qcBadEvent', form))
-              }
+          <div className="default-pannel">
+            <div className="title">三、附件</div>
+            <div className="content">
+              <MultipleImageUploader upload={(files) => {
+                let reqList = [] as any
+                for (let i = 0; i < files.length; i++) {
+                  let form = new FormData()
+                  form.set('file', files[i])
+                  reqList.push(commonApi.uploadAttachment('qcBadEvent', form))
+                }
 
-              return Promise.all(reqList)
-            }} ids={ids} value={urls} onChange={handleFileChange} />
+                return Promise.all(reqList)
+              }} ids={ids} value={urls} onChange={handleFileChange} />
+            </div>
           </div>
-        </div>
+        </Spin>
       </MainContent>
     </MainPannel>
   </Wrapper>
