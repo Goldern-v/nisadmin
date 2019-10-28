@@ -19,7 +19,7 @@ export interface Props extends ModalComponentProps {
 /** 设置规则 */
 const rules: Rules = {
   year: (val) => !!val || '请选择年份',
-  name: (val) => !!val || '请填写假期名称',
+  name: (val) => !!val || '请填写节假日名称',
   startDate: (val) => !!val || '请填写开始日期',
   endDate: (val) => !!val || '请填写结束日期'
 }
@@ -86,7 +86,7 @@ export default function HolidaysModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`假期名称`} name='name' required>
+            <Form.Field label={`节假日名称`} name='name' required>
               <Input />
             </Form.Field>
           </Col>

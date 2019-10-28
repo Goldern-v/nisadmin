@@ -49,9 +49,9 @@ export default observer(function MainLayout(props: Props) {
         // appStore.history.push('/login')
       }
     }
-    if (appStore.queryObj.isDev) {
-      appStore.isDev = true
-    }
+    // if (appStore.queryObj.isDev) {
+    //   appStore.isDev = true
+    // }
   }, [])
 
   useLayoutEffect(() => {

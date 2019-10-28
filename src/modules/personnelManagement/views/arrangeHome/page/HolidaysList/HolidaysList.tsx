@@ -29,7 +29,7 @@ export default observer(function HolidaysList() {
       align: 'center'
     },
     {
-      title: '假期名称',
+      title: '节假日名称',
       dataIndex: 'name',
       align: 'center'
     },

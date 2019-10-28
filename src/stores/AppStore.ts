@@ -27,7 +27,8 @@ export default class AppStore {
   @observable private appToken: string | null = null
 
   /** 开发环境 true-开发  false-生产*/
-  @observable public isDev: boolean = process.env.NODE_ENV === 'development'
+  @observable public isDev: boolean =
+    process.env.NODE_ENV === 'development' || window.location.port == '34001' || window.location.port == '9093'
 
   /** 路由控制器 */
   @observable public history!: H.History
