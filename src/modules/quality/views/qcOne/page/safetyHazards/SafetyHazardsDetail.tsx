@@ -3,7 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { PageHeader, PageTitle, Place, ScrollBox } from 'src/components/common'
-import { DatePicker, Row, Col, Select, Input, TimePicker, message, Spin } from 'src/vendors/antd'
+import { DatePicker, Row, Col, Select, Input, TimePicker, message, Spin, AutoComplete } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import BaseTabs from 'src/components/BaseTabs'
@@ -21,7 +21,28 @@ export interface Props {}
 export default observer(function SafetyHazardsDetail() {
   const [pageLoading, setPageLoading] = useState(false)
   const [oldData, setOldData] = useState(null)
-  const [wardList, setWardList]: any = useState([])
+  const [wardList, setWardList]: any = useState([
+    {
+      code: '总务处',
+      name: '总务处'
+    },
+    {
+      code: '设备科',
+      name: '设备科'
+    },
+    {
+      code: '药学部',
+      name: '药学部'
+    },
+    {
+      code: '其他',
+      name: '其他'
+    },
+    {
+      code: '无',
+      name: '无'
+    }
+  ])
   const [recordDate, setRecordDate]: any = useState(moment())
   const [safetyCheckList, setSafetyCheckList] = useState([{}, {}, {}, {}, {}])
   const refForm = React.createRef<Form>()
@@ -35,9 +56,7 @@ export default observer(function SafetyHazardsDetail() {
     obj.wardCode = authStore.selectedDeptCode
     obj.wardName = authStore.selectedDeptName
     obj.assistWardCode = value.assistWardCode
-    obj.assistWardName = wardList.find((item: any) => item.code == value.assistWardCode)
-      ? wardList.find((item: any) => item.code == value.assistWardCode)!.name
-      : ''
+    obj.assistWardName = obj.assistWardCode
     obj.contentWithBigDept = value.contentWithBigDept
     obj.contentWithNd = value.contentWithNd
     obj.suggetions = value.suggetions
@@ -60,38 +79,38 @@ export default observer(function SafetyHazardsDetail() {
   useLayoutEffect(() => {
     setPageLoading(true)
     let form = refForm.current
-    service.commonApiService.getNursingUnitAll().then((res) => {
-      setWardList(res.data.deptList)
+    // service.commonApiService.getNursingUnitAll().then((res) => {
+    //   setWardList(res.data.deptList)
 
-      /** 编辑 or 新建 */
-      if (appStore.queryObj.id) {
-        qcOneService.qcSafetyGetDetail(appStore.queryObj.id).then((res) => {
-          form!.setFields({
-            assistWardCode: res.data.assistWardCode,
-            // assistWardName: res.data.assistWardName,
-            contentWithBigDept: res.data.contentWithBigDept,
-            contentWithNd: res.data.contentWithNd,
-            suggetions: res.data.suggetions
-          })
-          while (res.data.safetyCheckList.length <= 5) {
-            res.data.safetyCheckList.push({})
-          }
-          setOldData(res.data)
-          setRecordDate(res.data.recordDate ? moment(res.data.recordDate) : null)
-          setSafetyCheckList(res.data.safetyCheckList)
-          setPageLoading(false)
-        })
-      } else {
+    /** 编辑 or 新建 */
+    if (appStore.queryObj.id) {
+      qcOneService.qcSafetyGetDetail(appStore.queryObj.id).then((res) => {
         form!.setFields({
-          assistWardCode: '',
-          // assistWardName: '',
-          contentWithBigDept: '',
-          contentWithNd: '',
-          suggetions: ''
+          assistWardCode: res.data.assistWardCode,
+          // assistWardName: res.data.assistWardName,
+          contentWithBigDept: res.data.contentWithBigDept,
+          contentWithNd: res.data.contentWithNd,
+          suggetions: res.data.suggetions
         })
+        while (res.data.safetyCheckList.length <= 5) {
+          res.data.safetyCheckList.push({})
+        }
+        setOldData(res.data)
+        setRecordDate(res.data.recordDate ? moment(res.data.recordDate) : null)
+        setSafetyCheckList(res.data.safetyCheckList)
         setPageLoading(false)
-      }
-    })
+      })
+    } else {
+      form!.setFields({
+        assistWardCode: '',
+        // assistWardName: '',
+        contentWithBigDept: '',
+        contentWithNd: '',
+        suggetions: ''
+      })
+      setPageLoading(false)
+    }
+    // })
   }, [])
 
   return (
@@ -152,28 +171,22 @@ export default observer(function SafetyHazardsDetail() {
             <Form ref={refForm} labelWidth={150}>
               <Row>
                 <Col span={24}>
-                  <Form.Field label={`需协助科室`} name='assistWardCode' required>
-                    <Select>
-                      {wardList.map((item: DictItem, index: number) => (
-                        <Select.Option value={item.code} key={index}>
-                          {item.name}
-                        </Select.Option>
-                      ))}
-                    </Select>
+                  <Form.Field label={`需协助科室`} name='assistWardCode'>
+                    <AutoComplete dataSource={wardList.map((item: any) => item.name)} />
                   </Form.Field>
                 </Col>
                 <Col span={24}>
-                  <Form.Field label={`需大科协调的问题`} name='contentWithBigDept' required>
+                  <Form.Field label={`需大科协调的问题`} name='contentWithBigDept'>
                     <Input.TextArea />
                   </Form.Field>
                 </Col>
                 <Col span={24}>
-                  <Form.Field label={`需护理部协调的问题`} name='contentWithNd' required>
+                  <Form.Field label={`需护理部协调的问题`} name='contentWithNd'>
                     <Input.TextArea />
                   </Form.Field>
                 </Col>
                 <Col span={24}>
-                  <Form.Field label={`查新及建议`} name='suggetions' required>
+                  <Form.Field label={`查新及建议`} name='suggetions'>
                     <Input.TextArea />
                   </Form.Field>
                 </Col>

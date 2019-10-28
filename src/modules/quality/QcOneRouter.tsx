@@ -59,7 +59,7 @@ const LEFT_MENU_CONFIG: any = [
         disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
-        title: '患者随访记录',
+        title: '季度家庭随访表',
         path: '/qcOne/followUpRecord',
         component: FollowUpRecord
       }

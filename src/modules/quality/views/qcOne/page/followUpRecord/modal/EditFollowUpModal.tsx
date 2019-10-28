@@ -12,6 +12,7 @@ import User from 'src/models/User'
 import moment from 'moment'
 import { qcOneService } from '../../../services/QcOneService'
 import { globalModal } from 'src/global/globalModal'
+import { DictItem } from 'src/services/api/CommonApiService'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
@@ -29,6 +30,25 @@ interface selectedNurseItem {
   key: string
   value: User
 }
+
+export const jdList: any = [
+  {
+    code: 1,
+    name: '第一季度'
+  },
+  {
+    code: 2,
+    name: '第二季度'
+  },
+  {
+    code: 3,
+    name: '第三季度'
+  },
+  {
+    code: 4,
+    name: '第四季度'
+  }
+]
 export default function EditFollowUpModal(props: Props) {
   const [title, setTitle] = useState('创建/编辑随访记录')
   const [showDraWer, setShowDraWer] = useState(false)
@@ -36,6 +56,7 @@ export default function EditFollowUpModal(props: Props) {
   const [modalLoading, setModalLoading] = useState(false)
   const [selectedNurse, setSelectedNurse]: any = useState([])
   let { visible, onCancel, data } = props
+
   let refForm = React.createRef<Form>()
   const canEdit: boolean = data
     ? authStore.isRoleManage || authStore.user!.empNo === data.creatorNo
@@ -59,7 +80,7 @@ export default function EditFollowUpModal(props: Props) {
       message.success('保存成功')
       props.onOkCallBack && props.onOkCallBack()
       setShowDraWer(false)
-      onCancel()
+      setTimeout(onCancel)
     })
   }
 
@@ -120,6 +141,7 @@ export default function EditFollowUpModal(props: Props) {
             recordDate: data.recordDate ? moment(data.recordDate) : null,
             patientName: data.patientName,
             address: data.address,
+            quarter: data.quarter,
             diagnosis: data.diagnosis,
             contactInformation: data.contactInformation,
             admissionDate: data.admissionDate ? moment(data.admissionDate) : null,
@@ -153,6 +175,7 @@ export default function EditFollowUpModal(props: Props) {
           /** 表单数据初始化 */
           form.setFields({
             recordDate: moment(),
+            quarter: '',
             patientName: '',
             address: '',
             contactInformation: '',
@@ -212,7 +235,18 @@ export default function EditFollowUpModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`随访日期`} name='recordDate'>
-              <DatePicker format='YYYY-MM-DD HH:mm' disabled={!canEdit} />
+              <DatePicker disabled={!canEdit} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`季度`} name='quarter'>
+              <Select placeholder='请选择季度'>
+                {jdList.map((item: DictItem, index: number) => (
+                  <Select.Option value={item.code} key={index}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
 
@@ -221,6 +255,7 @@ export default function EditFollowUpModal(props: Props) {
               <Input placeholder='请输入患者姓名' disabled={!canEdit} />
             </Form.Field>
           </Col>
+
           <Col span={24}>
             <Form.Field label={`疾病诊断`} name='diagnosis'>
               <Input placeholder='请输入诊断' disabled={!canEdit} />

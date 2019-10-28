@@ -136,7 +136,7 @@ export default class ArrangeService extends BaseApiService {
   }
   //假期删除
   public schHolidaysWHDelete(id: any) {
-    return this.get(`/schHolidaysWH/delete${id}`)
+    return this.get(`/schHolidaysWH/delete/${id}`)
   }
 
   //新增保存班次

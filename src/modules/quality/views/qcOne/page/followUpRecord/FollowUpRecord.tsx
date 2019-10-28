@@ -7,30 +7,40 @@ import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import createModal from 'src/libs/createModal'
-import EditFollowUpModal from './modal/EditFollowUpModal'
+import EditFollowUpModal, { jdList } from './modal/EditFollowUpModal'
 import { qcOneService } from '../../services/QcOneService'
 import { useCallback } from 'src/types/react'
 import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView'
 import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
+import { numToChinese } from 'src/utils/number/numToChinese'
 export interface Props {}
 
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
-  const [selectedNurse, setSelectedNurse] = useState('')
+  const [selectedJd, setselectedJd] = useState('')
   const columns: ColumnProps<any>[] = [
     {
       title: '日期',
       dataIndex: 'recordDate',
       align: 'center',
-      width: 150
+      width: 100
+    },
+    {
+      title: '季度',
+      dataIndex: 'quarter',
+      align: 'center',
+      width: 100,
+      render(text: any, record: any, index: number) {
+        return text ? `第${numToChinese(text)}季度` : ''
+      }
     },
     {
       title: '科室',
       dataIndex: 'wardName',
-      width: 200
+      width: 150
     },
     {
       title: '患者姓名',
@@ -108,7 +118,7 @@ export default observer(function FollowUpRecord() {
       .qcPatientVisitGetPage({
         ...pageOptions,
         wardCode: authStore.selectedDeptCode,
-        empNames: selectedNurse,
+        quarter: selectedJd,
         startDate: qcOneSelectViewModal.startDate ? moment(qcOneSelectViewModal.startDate).format('YYYY-MM-DD') : '',
         endDate: qcOneSelectViewModal.endDate ? moment(qcOneSelectViewModal.endDate).format('YYYY-MM-DD') : ''
       })
@@ -131,13 +141,13 @@ export default observer(function FollowUpRecord() {
 
   useEffect(() => {
     getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize, selectedNurse, authStore.selectedDeptCode, qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  }, [pageOptions.pageIndex, pageOptions.pageSize, selectedJd, authStore.selectedDeptCode, qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
 
   // qcOneService
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>患者随访记录</PageTitle>
+        <PageTitle>季度家庭随访表</PageTitle>
         <Place />
         <span className='label'>日期:</span>
         <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} />
@@ -147,11 +157,11 @@ export default observer(function FollowUpRecord() {
             qcOneSelectViewModal.initNurseList()
           }}
         />
-        <span className='label'>护士:</span>
+        <span className='label'>季度:</span>
         <Select
-          value={selectedNurse}
+          value={selectedJd}
           onChange={(nurse: any) => {
-            setSelectedNurse(nurse)
+            setselectedJd(nurse)
           }}
           showSearch
           filterOption={(input: any, option: any) =>
@@ -159,7 +169,7 @@ export default observer(function FollowUpRecord() {
           }
         >
           <Select.Option value={''}>全部</Select.Option>
-          {qcOneSelectViewModal.nurseList.map((item, index) => (
+          {jdList.map((item: any, index: any) => (
             <Select.Option value={item.code} key={index}>
               {item.name}
             </Select.Option>

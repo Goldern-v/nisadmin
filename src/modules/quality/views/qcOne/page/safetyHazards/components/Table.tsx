@@ -81,7 +81,8 @@ export default observer(function Table(props: Props) {
                   </Select>
                 </td>
                 <td>
-                  <Input
+                  <Input.TextArea
+                    autosize={true}
                     className='noborder-input'
                     disabled={!canEdit(row)}
                     value={row.content}
@@ -92,7 +93,8 @@ export default observer(function Table(props: Props) {
                   />
                 </td>
                 <td>
-                  <Input
+                  <Input.TextArea
+                    autosize={true}
                     className='noborder-input'
                     disabled={!canEdit(row)}
                     value={row.cause}
@@ -103,7 +105,8 @@ export default observer(function Table(props: Props) {
                   />
                 </td>
                 <td>
-                  <Input
+                  <Input.TextArea
+                    autosize={true}
                     className='noborder-input'
                     disabled={!canEdit(row)}
                     value={row.measure}
@@ -156,5 +159,6 @@ const TableCon = styled.table`
   .noborder-input {
     width: 100%;
     border: 0;
+    resize: none;
   }
 `
