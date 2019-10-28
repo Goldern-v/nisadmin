@@ -97,7 +97,7 @@ export default observer(function HandoverRegister() {
 
   useEffect(() => {
     wardRegisterService
-      .getList({
+      .getPage({
         wardCode: authStore.selectedDeptCode,
         recordCode: 'qc_register_handover'
       })

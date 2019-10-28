@@ -50,10 +50,11 @@ export default function 本月质量扣分科室排序弹窗(props: Props) {
       key: '问题',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
+          <Input.TextArea
             className='cell-input'
             value={record.itemBadDesc}
+            style={{ resize: 'none', border: 0 }}
+            autosize={true}
             onChange={(e) => {
               record.itemBadDesc = e.target.value
               setData(cloneData)
@@ -154,6 +155,7 @@ const Wrapper = styled.div`
   }
 
   .cell-input input,
+  textarea.cell-input,
   input.cell-input {
     width: 100%;
     height: 100%;

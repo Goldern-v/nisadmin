@@ -120,6 +120,7 @@ export default function EditFollowUpModal(props: Props) {
             recordDate: data.recordDate ? moment(data.recordDate) : null,
             patientName: data.patientName,
             address: data.address,
+            diagnosis: data.diagnosis,
             contactInformation: data.contactInformation,
             admissionDate: data.admissionDate ? moment(data.admissionDate) : null,
             dischargeDate: data.dischargeDate ? moment(data.dischargeDate) : null,
@@ -159,6 +160,7 @@ export default function EditFollowUpModal(props: Props) {
             dischargeDate: null,
             accessContent: '',
             feedBack: '',
+            diagnosis: '',
             // participantsList: []
             empNames: ''
           })
