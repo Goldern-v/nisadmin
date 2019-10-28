@@ -83,3 +83,8 @@ export const PageHeader = styled.div`
     min-width: 100px;
   }
 `
+
+export const Pre = styled.pre`
+  white-space: pre-wrap;
+  text-align: left;
+`

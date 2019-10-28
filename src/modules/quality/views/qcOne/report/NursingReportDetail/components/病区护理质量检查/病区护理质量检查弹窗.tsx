@@ -34,9 +34,9 @@ export default function 病区护理质量检查弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.wardName}
+            value={record.type}
             onChange={(e) => {
-              record.wardName = e.target.value
+              record.type = e.target.value
               setData(cloneData)
             }}
           />
@@ -51,9 +51,16 @@ export default function 病区护理质量检查弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.itemBadDesc}
+            value={record.wrongSize}
             onChange={(e) => {
-              record.itemBadDesc = e.target.value
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+              record.wrongSize = e.target.value
               setData(cloneData)
             }}
           />
@@ -68,7 +75,7 @@ export default function 病区护理质量检查弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.description}
             onChange={(e) => {
               if (
                 !Number(e.target.value) &&
@@ -78,13 +85,13 @@ export default function 病区护理质量检查弹窗(props: Props) {
                 return message.warning('只能输入数字')
               }
 
-              record.deductScore = e.target.value
+              record.description = e.target.value
               setData(cloneData)
             }}
           />
         )
       },
-      width: 100
+      width: 200
     },
     {
       title: `合格率`,
@@ -93,7 +100,7 @@ export default function 病区护理质量检查弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.passRate}
             onChange={(e) => {
               if (
                 !Number(e.target.value) &&
@@ -103,7 +110,7 @@ export default function 病区护理质量检查弹窗(props: Props) {
                 return message.warning('只能输入数字')
               }
 
-              record.deductScore = e.target.value
+              record.passRate = e.target.value
               setData(cloneData)
             }}
           />

@@ -7,11 +7,11 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
 import DeptChangeModal from '../modal/DeptChangeModal'
-
+import LeaveModal from '../modal/LeaveModal'
 import qs from 'qs'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { isSelf } from '../views/BaseInfo'
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
 
@@ -21,9 +21,15 @@ const WARNNING_ICON = require('../../../images/注意.png')
 
 export default observer(function TopCon() {
   const deptChangeModal = createModal(DeptChangeModal)
+  const leaveModal = createModal(LeaveModal)
   let history = store.appStore.history
   let { empName, post, deptName, nurseHierarchy, nearImageUrl } = nurseFileDetailViewModal.nurserInfo
-  console.log(nurseFileDetailViewModal.nurserInfo.deptName, 'nurseFileDetailViewModal.nurserInfo')
+  const openLeaveModalModal = () => {
+    leaveModal.show({
+      info: nurseFileDetailViewModal.nurserInfo,
+      callback: refreshNursingInfo
+    })
+  }
   const openDeptChangeModal = () => {
     deptChangeModal.show({
       info: nurseFileDetailViewModal.nurserInfo,
@@ -76,15 +82,19 @@ export default observer(function TopCon() {
             </span>
           </Tip>
         ) : (
-            <Tip />
-            // <Tip>你没有待审核的信息</Tip>
-          )}
+          <Tip />
+          // <Tip>你没有待审核的信息</Tip>
+        )}
       </Name>
       {authStore.isRoleManage && !isSelf() && (
-        <DeptChangeBtn onClick={() => openDeptChangeModal()}>片区内调动</DeptChangeBtn>
+        <React.Fragment>
+          <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
+          <DeptChangeBtn onClick={() => openDeptChangeModal()}>片区内调动</DeptChangeBtn>
+        </React.Fragment>
       )}
 
-      <deptChangeModal.Component title="片区内调动" />
+      <deptChangeModal.Component title='片区内调动' />
+      <leaveModal.Component title='离职/退休' />
     </Wrapper>
   )
 })
@@ -156,5 +166,11 @@ const ClickSpan = styled.span`
 const DeptChangeBtn = styled(Button)`
   position: absolute !important;
   right: 15px;
+  top: 34px;
+`
+
+const DeptChangeBtn1 = styled(Button)`
+  position: absolute !important;
+  right: 120px;
   top: 34px;
 `

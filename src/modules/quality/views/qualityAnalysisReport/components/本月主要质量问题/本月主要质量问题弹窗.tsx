@@ -19,7 +19,9 @@ export default function 本月主要质量问题弹窗(props: Props) {
   let list: DetailItem[] = cloneData.list
 
   const addItem = () => {
-    cloneData.list.push({})
+    cloneData.list.push({
+      detailList: []
+    })
     setData(cloneData)
   }
   const deleteItem = (index: number) => {
@@ -188,6 +190,9 @@ const Wrapper = styled.div`
       height: 120px;
       position: relative;
       margin: 15px 5px 5px;
+      aside {
+        white-space: nowrap;
+      }
       img {
         width: 100px;
         height: 100px;

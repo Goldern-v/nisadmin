@@ -44,7 +44,7 @@ export const sectionList: SectionListItem[] = [
     sectionId: '护士会议记录',
     sectionTitle: '护士会议记录',
     modalTitle: '编辑护士会议记录',
-    modalWidth: 800,
+    modalWidth: 600,
     data: {},
     section: 护士会议记录模块,
     modal: 护士会议记录弹窗

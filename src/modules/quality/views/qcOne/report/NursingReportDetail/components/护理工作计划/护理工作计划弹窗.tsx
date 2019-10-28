@@ -6,6 +6,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem, DetailItem } from '../../types'
 import { globalModal } from 'src/global/globalModal'
+import { numToChinese } from 'src/utils/number/numToChinese'
 
 export interface Props {
   sectionId: string
@@ -59,17 +60,13 @@ export default function 护理工作计划弹窗(props: Props) {
       {list.map((item, index: number) => (
         <div className='text-box' key={index}>
           <div className='label'>
-            ({index + 1})
-            <Input
-              type='text'
-              value={item.itemTypeName}
-              style={{ width: 200 }}
-              onChange={(e) => updateText(e, item, 'itemTypeName')}
-            />
+            {/* ({index + 1}) */}
+            {/* <Input type='text' value={item.itemTypeName} style={{ width: 200 }} readOnly={true} /> */}
+            {item.type == '1' ? '月重点' : `第${numToChinese(item.indexInType)}周`}
           </div>
           <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
-          <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} />
-          <div style={{ overflow: 'hidden' }}>
+          {/* <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} /> */}
+          {/* <div style={{ overflow: 'hidden' }}>
             {item.attachUrls &&
               item.attachUrls.split(',').map((img, index: number) => (
                 <div className='img-con' key={index}>
@@ -77,13 +74,13 @@ export default function 护理工作计划弹窗(props: Props) {
                   <Icon type='close' className='close-btn' onClick={() => onDeleteImg(index, item)} />
                 </div>
               ))}
-          </div>
+          </div> */}
         </div>
       ))}
 
-      <Button type='dashed' className='add-btn' onClick={addItem}>
+      {/* <Button type='dashed' className='add-btn' onClick={addItem}>
         添加
-      </Button>
+      </Button> */}
     </Wrapper>
   )
 }

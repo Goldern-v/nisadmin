@@ -26,7 +26,7 @@ export default function Table(props: Props) {
           {tableList.map((item: any, index: number) => {
             if (item.type == '1')
               return (
-                <tr>
+                <tr key={index}>
                   <td rowSpan={tableList.length}>{item.month}月</td>
                   <td>月重点</td>
                   <td>
