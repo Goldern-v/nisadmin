@@ -50,19 +50,19 @@ export default function CoverPreview(props: Props) {
   </Wrapper>
 }
 const Wrapper = styled.span`
-  cursor: pointer;
   display: inline-block;
   input{
     display:none;
   }
   .advice{
-    position: relative;
-    left: 13px;
-    top: -5px;
+    position: absolute;
+    left: 218px;
+    top: 123px;
     color: #999;
   }
 `
 const BooPreview = styled.div`
+  cursor: pointer;
   width:97px;
   height:137px;
   background:rgba(245,245,245,1);
@@ -83,6 +83,7 @@ const BooPreview = styled.div`
   }
 `
 const UpLoadWrapper = styled.div`
+  cursor: pointer;
   width:97px;
   height:137px;
   background:rgba(245,245,245,1);

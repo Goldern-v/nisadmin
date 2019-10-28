@@ -416,7 +416,7 @@ const LeftIcon = styled.div`
   position: relative;
   font-size: 13px;
   color: #333333;
-  padding: 0 0 0 15px;
+  /* padding: 0 0 0 15px; */
   display: flex;
   align-items: center;
 `
