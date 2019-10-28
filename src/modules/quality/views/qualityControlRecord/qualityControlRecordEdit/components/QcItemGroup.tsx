@@ -63,8 +63,8 @@ export default observer(function QcItemGroup(props: Props) {
       <div className='titleLeftCon'>
         {`${numToChinese(index + 1)}、${itemGroup.qcItemTypeName}`}
         <div className="fl-right">
-          <Button ghost type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>
-          <Button ghost type="danger" size="small" onClick={() => setAllQcItemValue('否')}>全否</Button>
+          <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>
+          <Button type="danger" size="small" onClick={() => setAllQcItemValue('否')}>全否</Button>
         </div>
       </div>
     </div>

@@ -143,7 +143,6 @@ export default observer(function NursingRulesNewDetail() {
     return <Button
       type={btnText == '设为无效' ? 'danger' : 'primary'}
       disabled={!auth || baseLoading}
-      ghost
       onClick={() => handleEnable(baseInfo.enabled)}>
       {btnText}
     </Button>
@@ -163,7 +162,7 @@ export default observer(function NursingRulesNewDetail() {
           <Button onClick={handleEdit} disabled={!auth}>编辑</Button>
           <Button onClick={handleRepair} disabled={!auth}>修订</Button>
           {SettingBtn()}
-          <Button type="danger" ghost disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
+          <Button type="danger" disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
         <div className="base-info">

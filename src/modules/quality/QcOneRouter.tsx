@@ -19,6 +19,8 @@ import NursingQualityCheck from './views/qcOne/page/nursingQualityCheck/NursingQ
 import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeetingRecord'
 import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
 
+import StarRatingReport from './views/qcOne/report/StarRatingReport/StarRatingReport'
+
 const LEFT_MENU_CONFIG: any = [
   {
     title: '一级质控记录',
@@ -76,6 +78,12 @@ const LEFT_MENU_CONFIG: any = [
     icon: <YIBG />,
     path: '/qcOne/nursingReportDetail',
     component: NursingReportDetailView
+  },
+  {
+    title: '星级考核评价',
+    icon: <YIBG />,
+    path: '/qcOne/starRatingReport',
+    component: StarRatingReport
   }
 ]
 
