@@ -52,9 +52,11 @@ export class EditPageModel {
       case '1':
         return '新建书籍'
       case '2':
+        return '编辑书籍'
+      case '3':
         return '修订书籍'
       default:
-        return '编辑书籍'
+        return ''
     }
   }
 
@@ -138,8 +140,8 @@ export class EditPageModel {
   //获取目录信息
   @action public getIndex = (success?: Function) => {
     this.setIndexParams([])
-    if (!this.baseInfo.taskType) nursingRulesApiService
-      .getAllBookCataLog(this.baseInfo.bookId).
+    if (this.baseInfo.taskCode) nursingRulesApiService
+      .getTaskCataLogTree(this.baseInfo.taskCode).
       then(res => {
         success && success()
         this.setIndexParams(res.data)

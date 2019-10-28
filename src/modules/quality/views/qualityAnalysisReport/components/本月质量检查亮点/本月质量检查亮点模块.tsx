@@ -21,7 +21,7 @@ export default observer(function 本月质量检查亮点模块(props: Props) {
     <Wrapper>
       <OneLevelTitle text={'三、本月质量检查亮点'} />
 
-      {list.map((item, index: number) => (
+      {/* {list.map((item, index: number) => (
         <div className='text-box' key={index}>
           <div className='label'>
             ({index + 1}){item.itemTypeName}
@@ -29,6 +29,30 @@ export default observer(function 本月质量检查亮点模块(props: Props) {
           <pre className='textarea'>{item.content}</pre>
           {item.attachUrls &&
             item.attachUrls.split(',').map((item, index) => <img className='img' src={item} alt='' key={index} />)}
+        </div>
+      ))} */}
+      {list.map((item, index: number) => (
+        <div className='text-box' key={index}>
+          <div className='label'>
+            ({index + 1}){item.itemTypeName}
+          </div>
+          {item.detailList &&
+            item.detailList.map((item: any, index: number) => {
+              return (
+                <div key={index}>
+                  <pre className='textarea'>{index + 1 + '.' + item.content}</pre>
+                  <div className='img-con'>
+                    {item.attachList &&
+                      item.attachList.map((item: any, index: number) => (
+                        <div className='img-box' key={index}>
+                          <img className='img' src={item.attachUrl} alt='' key={index} />
+                          <aside>({item.wardName})</aside>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )
+            })}
         </div>
       ))}
 
@@ -54,6 +78,7 @@ const Wrapper = styled.div`
   .aside {
     font-weight: bold;
     padding-left: 30px;
+    white-space: nowrap;
   }
   .text-box {
     padding-left: 65px;
@@ -69,16 +94,20 @@ const Wrapper = styled.div`
       margin-bottom: 10px;
       padding-left: 22px;
     }
+    .img-box {
+      display: inline-block;
+      aside {
+        text-align: center;
+        padding-left: 15px;
+        position: relative;
+        top: -10px;
+        white-space: nowrap;
+      }
+    }
     .img {
       /* width: 450px; */
       margin-bottom: 15px;
       margin-left: 15px;
     }
   }
-`
-
-const TextCon = styled.pre`
-  margin: 10px 50px;
-  min-height: 40px;
-  white-space: pre-wrap;
 `

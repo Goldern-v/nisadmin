@@ -16,217 +16,57 @@ export default class QualityAnalysisReportPoolService extends BaseApiService {
     return this.post(`/qcAnalysis/wn/cancelPublish`, appStore.queryObj)
   }
 
-  /** 更新上月质量问题，持续改进效果评价 */
-  public updateImproveItemCompareList(itemList?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/update/improveItemCompareList`, obj)
-  }
-  /** 更新检查科室描述语 */
-  public updateCheckDeptDesc(checkDeptDesc?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      checkDeptDesc: checkDeptDesc
-    }
-    return this.post(`/qcAnalysis/update/checkDeptDesc`, obj)
-  }
-  /** 更新质量扣分比 */
-  public updateTypeCompareList(itemList?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/update/typeCompareList`, obj)
-  }
-  /** 更新本月质量扣分科室排序 */
-  public updateDeptItemList(itemList?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/update/deptItemList`, obj)
-  }
-  /** 更新持续改进问题 */
-  public updateCurrentImproveItemList(itemList?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      itemList: itemList
-    }
-    return this.post(`/qcAnalysis/update/currentImproveItemList`, obj)
-  }
-  /** 更新追踪科室 */
-  public updateFollowUpDeptDesc(followUpDeptDesc?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      followUpDeptDesc: followUpDeptDesc
-    }
-    return this.post(`/qcAnalysis/update/followUpDeptDesc`, obj)
-  }
-  /** 更新下个月重点检查 */
-  public updateKeyCheckItemDesc(keyCheckItemDesc?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      keyCheckItemDesc: keyCheckItemDesc
-    }
-    return this.post(`/qcAnalysis/update/keyCheckItemDesc`, obj)
-  }
-  /** 更新建议 */
-  public updateSuggestions(suggestions?: any) {
-    let obj = {
-      ...qualityAnalysisReportViewModal.report,
-      suggestions: suggestions
-    }
-    return this.post(`/qcAnalysis/update/suggestions`, obj)
-  }
-
   /** 更新报告名称 */
   public updateReportName(reportName?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
+    let { year, month, wardCode } = qualityAnalysisReportViewModal.report
     let obj = {
       year,
-      type,
-      indexInType,
+      month,
+      wardCode,
       reportName
     }
-    return this.post(`/qcSummary/update/reportName`, obj)
+    return this.post(`/qcAnalysis/wn/update/report`, obj)
   }
-  /** 更新查房内容 */
-  public updateCheckWardDesc(checkWardDesc?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let obj = {
-      year,
-      type,
-      indexInType,
-      checkWardDesc
-    }
-    return this.post(`/qcSummary/update/checkWardDesc`, obj)
-  }
-  /** 更新检查形式 */
-  public updateCheckWayDesc(checkWayDesc?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let obj = {
-      year,
-      type,
-      indexInType,
-      checkWayDesc
-    }
-    return this.post(`/qcSummary/update/checkWayDesc`, obj)
-  }
-  /** 更新亮点 */
-  public updateHighlightItemList(itemList?: any) {
+
+  /** 更新护理工作计划 */
+  public updateWorkScheduleList(itemList?: any) {
     let obj = {
       ...qualityAnalysisReportViewModal.report,
       itemList: itemList
     }
-    return this.post(`/qcSummary/update/highlightItemList`, obj)
+    return this.post(`/qcAnalysis/wn/update/workScheduleList`, obj)
   }
-  /** 更新本月总扣分 */
-  public updateGroupList(itemList?: any) {
+  /** 更新病区检查 */
+  public updateWardCheckList(itemList?: any) {
     let obj = {
       ...qualityAnalysisReportViewModal.report,
       itemList: itemList
     }
-    return this.post(`/qcSummary/update/groupItemList`, obj)
+    return this.post(`/qcAnalysis/wn/update/wardCheckList`, obj)
   }
-  /** 更新扣分比较 */
-  public updateGroupCompareList(itemList?: any) {
+  /** 更新护士会议 */
+  public updateNurseMeetingList(itemList?: any) {
     let obj = {
       ...qualityAnalysisReportViewModal.report,
       itemList: itemList
     }
-    return this.post(`/qcSummary/update/groupCompareList`, obj)
+    return this.post(`/qcAnalysis/wn/update/nurseMeetingList`, obj)
   }
-  /** 更新病区质量考核前十 */
-  public updateNotDeductDeptDesc(notDeductDeptDesc: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let params = {
-      year,
-      type,
-      indexInType,
-      notDeductDeptDesc
+  /** 更新不良事件 */
+  public updateBadEventList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
     }
-
-    return this.post(`/qcSummary/update/notDeductDeptDesc`, params)
+    return this.post(`/qcAnalysis/wn/update/badEventList`, obj)
   }
-  /** 更新病区质量扣分前十 */
-  public updateTopRankDeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let params = {
-      year,
-      type,
-      indexInType,
-      itemList
+  /** 更新人力资源调配 */
+  public updateHrAllocationList(itemList?: any) {
+    let obj = {
+      ...qualityAnalysisReportViewModal.report,
+      itemList: itemList
     }
-
-    return this.post(`/qcSummary/update/topRankDeptItemList`, params)
-  }
-  /** 更新特殊科室质量扣分 */
-  public updateSpecialDeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let params = {
-      year,
-      type,
-      indexInType,
-      itemList
-    }
-
-    return this.post(`/qcSummary/update/specialDeptItemList`, params)
-  }
-  /** 更新特殊监护病房质量扣分 */
-  public updateIcuDeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let params = {
-      year,
-      type,
-      indexInType,
-      itemList
-    }
-
-    return this.post(`/qcSummary/update/icuDeptItemList`, params)
-  }
-  /** 更新门诊科室质量扣分 */
-  public updateOpdeptItemList(itemList: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let params = {
-      year,
-      type,
-      indexInType,
-      itemList
-    }
-
-    return this.post(`/qcSummary/update/opdDeptItemList`, params)
-  }
-  /** 更新各组质量问题反馈 */
-  public updateDetailItemList(params?: any) {
-    return this.post(`/qcSummary/update/detailItemList`, params)
-  }
-  /** 更新各组下一步整改措施 */
-  public updateImproveItemList(params?: any) {
-    return this.post(`/qcSummary/update/improveItemList`, params)
-  }
-  /** 更新各组质量整改情况反馈*/
-  public updateImproveResultList(itemList?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let params = {
-      year,
-      type,
-      indexInType,
-      itemList
-    }
-    return this.post(`/qcSummary/update/improveResultList`, params)
-  }
-  /** 护理质量工作重点*/
-  public updateKeyItemList(itemList?: any) {
-    let { year, type, indexInType } = qualityAnalysisReportViewModal.report
-    let params = {
-      year,
-      type,
-      indexInType,
-      itemList
-    }
-    return this.post(`/qcSummary/update/keyItemList`, params)
+    return this.post(`/qcAnalysis/wn/update/hrAllocationList`, obj)
   }
 }
 

@@ -28,15 +28,15 @@ export default function 人力资源调配弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '质控类别',
+      title: '调配方式',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.wardName}
+            value={record.typeName}
             onChange={(e) => {
-              record.wardName = e.target.value
+              record.typeName = e.target.value
               setData(cloneData)
             }}
           />
@@ -45,15 +45,15 @@ export default function 人力资源调配弹窗(props: Props) {
       width: 100
     },
     {
-      title: `检查数`,
+      title: `姓名`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.itemBadDesc}
+            value={record.empName}
             onChange={(e) => {
-              record.itemBadDesc = e.target.value
+              record.empName = e.target.value
               setData(cloneData)
             }}
           />
@@ -62,23 +62,15 @@ export default function 人力资源调配弹窗(props: Props) {
       width: 100
     },
     {
-      title: `问题详情`,
+      title: `科室`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.anotherWardName}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
+              record.anotherWardName = e.target.value
               setData(cloneData)
             }}
           />
@@ -87,23 +79,32 @@ export default function 人力资源调配弹窗(props: Props) {
       width: 100
     },
     {
-      title: `合格率`,
+      title: `起止时间`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.duration}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
+              record.duration = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
+    {
+      title: `事由`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.remark}
+            onChange={(e) => {
+              record.remark = e.target.value
               setData(cloneData)
             }}
           />

@@ -3,12 +3,12 @@ import moment from 'moment'
 export function getCurrentMonth(month?: number) {
   let firstDate = moment(
     moment()
-      .month(month ? month - 1 : moment().months())
+      .month(month ? month - 1 : moment().month())
       .format('YYYY-MM-01')
   )
   let _firstDate = moment(
     moment()
-      .month(month ? month - 1 : moment().months())
+      .month(month ? month - 1 : moment().month())
       .format('YYYY-MM-01')
   )
   let lastDate = _firstDate.add(1, 'M').subtract(1, 'd')

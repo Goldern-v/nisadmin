@@ -19,7 +19,7 @@ export default observer(function 标题模块(props: Props) {
     <Wrapper className='page-title'>
       <div className='title'>{text}</div>
       <EditButton border={true} onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>
-        编辑名称 {sectionId}
+        编辑名称
       </EditButton>
     </Wrapper>
   )

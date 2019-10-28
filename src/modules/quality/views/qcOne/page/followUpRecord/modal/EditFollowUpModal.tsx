@@ -278,7 +278,7 @@ export default function EditFollowUpModal(props: Props) {
               name='empNames'
               suffix={<MoreBox onClick={() => canEdit && setShowDraWer(!showDraWer)} />}
             >
-              <Input />
+              <Input.TextArea autosize={true} style={{ resize: 'none' }} />
             </Form.Field>
           </Col>
         </Row>

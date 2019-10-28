@@ -16,11 +16,11 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
+          <col width='14%' />
+          <col width='12%' />
+          <col width='21%' />
           <col width='15%' />
-          <col width='15%' />
-          <col width='15%' />
-          <col width='15%' />
-          <col width='35%' />
+          <col width='33%' />
         </colgroup>
         <tbody>
           <tr className='header'>
@@ -33,10 +33,11 @@ export default function Table(props: Props) {
 
           {list.map((item, index) => (
             <tr key={index}>
-              <td style={{ textAlign: 'left' }}>{item.wardName}</td>
-              <td style={{ textAlign: 'left' }}>{item.itemBadDesc}</td>
-              <td>{item.deductScore}</td>
-              <td>{index + 1}</td>
+              <td>{item.typeName}</td>
+              <td style={{ textAlign: 'center' }}>{item.empName}</td>
+              <td>{item.anotherWardName}</td>
+              <td style={{ textAlign: 'center' }}>{item.duration}</td>
+              <td>{item.remark}</td>
             </tr>
           ))}
         </tbody>

@@ -19,18 +19,26 @@ export default function 本月质量检查亮点弹窗(props: Props) {
   let list: DetailItem[] = cloneData.list
 
   const addItem = () => {
-    cloneData.list.push({})
+    cloneData.list.push({
+      detailList: []
+    })
     setData(cloneData)
   }
   const deleteItem = (index: number) => {
-    cloneData.list.splice(index, 1)
-    setData(cloneData)
+    globalModal.confirm('删除确认', '你确认要删除该记录吗？').then((res) => {
+      cloneData.list.splice(index, 1)
+      setData(cloneData)
+    })
   }
-  const onDeleteImg = (index: number, item: DetailItem) => {
+  const deleteDetail = (index: number, detailList: any[]) => {
+    globalModal.confirm('删除确认', '你确认要删除该记录吗？').then((res) => {
+      detailList.splice(index, 1)
+      setData(cloneData)
+    })
+  }
+  const onDeleteImg = (index: number, arr: any[]) => {
     globalModal.confirm('删除确认', '你确认要删除该图片吗？').then((res) => {
-      let list = item.attachUrls.split(',')
-      list.splice(index, 1)
-      item.attachUrls = list.join(',')
+      arr.splice(index, 1)
       setData(cloneData)
     })
   }
@@ -47,7 +55,10 @@ export default function 本月质量检查亮点弹窗(props: Props) {
     setData(cloneData)
   }
 
-  useEffect(() => {}, [])
+  const addDetail = (detailList: any) => {
+    detailList.push({})
+    setData(cloneData)
+  }
   return (
     <Wrapper>
       {/* <div className='button-con'>
@@ -56,7 +67,7 @@ export default function 本月质量检查亮点弹窗(props: Props) {
         </Button>
       </div> */}
 
-      {list.map((item, index: number) => (
+      {/* {list.map((item, index: number) => (
         <div className='text-box' key={index}>
           <div className='label'>
             ({index + 1})
@@ -78,6 +89,42 @@ export default function 本月质量检查亮点弹窗(props: Props) {
                 </div>
               ))}
           </div>
+        </div>
+      ))} */}
+
+      {list.map((item, index: number) => (
+        <div className='text-box' key={index}>
+          <div className='label'>
+            ({index + 1})
+            <Input
+              type='text'
+              value={item.itemTypeName}
+              style={{ width: 160 }}
+              onChange={(e) => updateText(e, item, 'itemTypeName')}
+            />
+          </div>
+          <Icon type='close' className='delete-btn' onClick={() => deleteItem(index)} />
+          {item.detailList &&
+            item.detailList.map((item: any, index: number, arr) => (
+              <div className='detail-con' key={index}>
+                <Icon type='close' className='detail-delete-btn' onClick={() => deleteDetail(index, arr)} />
+                <span className='index'>{index + 1 + '.'}</span>
+                <Input.TextArea value={item.content} autosize onChange={(e) => updateText(e, item, 'content')} />
+                <div style={{ overflow: 'hidden', paddingLeft: 20 }}>
+                  {item.attachList &&
+                    item.attachList.map((item: any, index: number, arr: any) => (
+                      <div className='img-con' key={index}>
+                        <img className='img' src={item.attachUrl} alt='' />
+                        <Icon type='close' className='close-btn' onClick={() => onDeleteImg(index, arr)} />
+                        <aside>({item.wardName})</aside>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ))}
+          <Button type='dashed' className='add-btn' onClick={() => addDetail(item.detailList)}>
+            添加
+          </Button>
         </div>
       ))}
 
@@ -106,10 +153,19 @@ const Wrapper = styled.div`
     border-radius: 2px;
     border: 1px solid #ddd;
     position: relative;
-    .delete-btn {
+    .detail-con {
+      position: relative;
+    }
+    .detail-delete-btn {
       position: absolute;
       top: 10px;
-      right: 10px;
+      right: -5px;
+      cursor: pointer;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
       cursor: pointer;
     }
     .label {
@@ -123,21 +179,34 @@ const Wrapper = styled.div`
     textarea {
       margin-top: 10px;
       resize: none;
-      min-height: 80px;
+      min-height: 50px;
+      margin-left: 20px;
+      display: block;
+      width: calc(100% - 35px);
       &:focus {
         background: ${(p) => p.theme.$mlc};
       }
     }
+    .index {
+      display: block;
+      height: 0;
+      position: relative;
+      top: 10px;
+    }
     .img-con {
       float: left;
       width: 100px;
-      height: 100px;
+      height: 120px;
       position: relative;
       margin: 15px 5px 5px;
+      aside {
+        white-space: nowrap;
+      }
       img {
-        width: 100%;
-        height: 100%;
+        width: 100px;
+        height: 100px;
         object-fit: cover;
+        padding: 5px;
       }
       .close-btn {
         position: absolute;
@@ -154,5 +223,4 @@ const Wrapper = styled.div`
     margin: 10px auto 0;
   }
 `
-
 const HeadCon = styled.div``

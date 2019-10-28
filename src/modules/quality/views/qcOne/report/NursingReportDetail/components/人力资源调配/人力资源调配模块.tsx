@@ -5,7 +5,6 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolV
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 import Table from './Table'
-import Chart from './Chart'
 import { Report } from '../../types'
 import moment from 'moment'
 import OneLevelTitle from '../common/OneLevelTitle'

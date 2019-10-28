@@ -25,19 +25,32 @@ export default observer(function AddSubClass() {
     },
     {
       title: '护士工号',
+      width: 100,
       dataIndex: 'empNo',
       align: 'center'
     },
     {
       title: '护士姓名',
+      width: 100,
       dataIndex: 'empName',
       align: 'center'
     },
     {
-      title: '加班日期',
-      dataIndex: 'workDate',
-      align: 'center'
+      title: '类型',
+      dataIndex: 'statusType',
+      align: 'center',
+      width: 100,
+      render(text: string, record: any, index: number) {
+        return text == '1' ? '加班' : '减班'
+      }
     },
+    {
+      title: '加/减班日期',
+      dataIndex: 'workDate',
+      align: 'center',
+      width: 120
+    },
+
     {
       title: '开始时间',
       dataIndex: 'startDate',
@@ -54,6 +67,7 @@ export default observer(function AddSubClass() {
     },
     {
       title: '合计小时数',
+      width: 100,
       dataIndex: 'hour',
       align: 'center'
     }

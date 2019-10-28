@@ -58,13 +58,14 @@ class QualityAnalysisReportViewModal {
 
   /** 打开弹窗 */
   @action
-  openEditModal(sectionId: string) {
+  openEditModal(sectionId: string, index?: any) {
     let obj = this.getSection(sectionId)
     this.baseModal &&
       obj &&
       this.baseModal.show({
         Component: obj.modal,
-        sectionData: this.getSection(sectionId)
+        sectionData: this.getSection(sectionId),
+        index
       })
   }
 
@@ -114,6 +115,8 @@ class QualityAnalysisReportViewModal {
     this.getSectionData('护理工作计划')!.list = this.allData.workScheduleList || []
     this.getSectionData('病区护理质量检查')!.list = this.allData.wardCheckList || []
     this.getSectionData('护士会议记录')!.list = this.allData.nurseMeetingList || []
+    this.getSectionData('不良事件')!.list = this.allData.badEventList || []
+    this.getSectionData('人力资源调配')!.list = this.allData.hrAllocationList || []
     // this.getSectionData('检查形式')!.report = this.allData.report || {}
     // this.getSectionData('护理工作计划')!.list = []
   }

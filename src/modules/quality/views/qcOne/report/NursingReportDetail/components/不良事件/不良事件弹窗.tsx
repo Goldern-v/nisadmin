@@ -28,13 +28,13 @@ export default function 不良事件弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '质控类别',
+      title: '时间',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.wardName}
+            value={record.eventDate}
             onChange={(e) => {
               record.wardName = e.target.value
               setData(cloneData)
@@ -45,15 +45,15 @@ export default function 不良事件弹窗(props: Props) {
       width: 100
     },
     {
-      title: `检查数`,
+      title: `当事人`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.itemBadDesc}
+            value={record.eventEmpNames}
             onChange={(e) => {
-              record.itemBadDesc = e.target.value
+              record.eventEmpNames = e.target.value
               setData(cloneData)
             }}
           />
@@ -62,23 +62,15 @@ export default function 不良事件弹窗(props: Props) {
       width: 100
     },
     {
-      title: `问题详情`,
+      title: `事情种类`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.eventType}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
+              record.eventType = e.target.value
               setData(cloneData)
             }}
           />
@@ -87,23 +79,32 @@ export default function 不良事件弹窗(props: Props) {
       width: 100
     },
     {
-      title: `合格率`,
+      title: `事情简要经过`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.deductScore}
+            value={record.briefCourseEvent}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
-
-              record.deductScore = e.target.value
+              record.briefCourseEvent = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
+    {
+      title: `后果`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.result}
+            onChange={(e) => {
+              record.result = e.target.value
               setData(cloneData)
             }}
           />

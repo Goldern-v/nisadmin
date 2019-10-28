@@ -1,12 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
+import { Pre } from 'src/components/common'
 export interface Props {
-  tableList: any[]
+  tableObj: any
 }
 
 export default function Table(props: Props) {
-  const { tableList } = props
+  const { tableObj } = props
   return (
     <Wrapper>
       <table>
@@ -18,33 +19,40 @@ export default function Table(props: Props) {
         </colgroup>
         <tbody>
           <tr>
-            <td>会议名称</td>
-            <td colSpan={3} />
+            <td>会议类型</td>
+            <td colSpan={3}>
+              {tableObj.meetingType == 'QCWMT001' ? '周会' : tableObj.meetingType == 'QCWMT002' ? '月会' : ''}
+            </td>
           </tr>
           <tr>
             <td>会议时间</td>
-            <td />
+            <td>{tableObj.meetingDate}</td>
             <td>会议地点</td>
-            <td />
+            <td>{tableObj.meetingLocation}</td>
           </tr>
           <tr>
             <td>会议主持</td>
-            <td />
+            <td>{tableObj.compereEmpNames}</td>
             <td>记录人</td>
-            <td />
+            <td>{tableObj.recorderEmpNames}</td>
           </tr>
           <tr>
             <td>到会人</td>
-            <td colSpan={3} />
+            <td colSpan={3}>
+              <Pre>{tableObj.attendeeEmpNames}</Pre>
+            </td>
           </tr>
           <tr>
             <td>查看人员</td>
-            <td colSpan={3} />
+            <td colSpan={3}>
+              <Pre>{tableObj.viewedEmpNames}</Pre>
+            </td>
           </tr>
           <tr>
             <td>会议签名</td>
             <td colSpan={3} className='text-left'>
-              (每人浏览内容后签名)
+              {/* (每人浏览内容后签名) */}
+              <Pre>{tableObj.signedEmpNames || '(每人浏览内容后签名)'}</Pre>
             </td>
           </tr>
           <tr>
@@ -54,20 +62,20 @@ export default function Table(props: Props) {
             </td>
           </tr>
           <tr>
-            <td colSpan={3} className='text-left'>
-              一、传到会议
+            <td colSpan={3}>
+              <Pre>{tableObj.meetingConveyed}</Pre>
             </td>
           </tr>
-          <tr>
-            <td colSpan={3} />
-          </tr>
+
           <tr>
             <td colSpan={3} className='text-left'>
               二、工作中问题及整改
             </td>
           </tr>
           <tr>
-            <td colSpan={3} />
+            <td colSpan={3}>
+              <Pre>{tableObj.problemRectification}</Pre>
+            </td>
           </tr>
           <tr>
             <td colSpan={3} className='text-left'>
@@ -75,7 +83,9 @@ export default function Table(props: Props) {
             </td>
           </tr>
           <tr>
-            <td colSpan={3} />
+            <td colSpan={3}>
+              <Pre>{tableObj.nurseStatement}</Pre>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -106,8 +116,4 @@ const Wrapper = styled.div`
   .text-left {
     text-align: left;
   }
-`
-
-const Pre = styled.pre`
-  white-space: pre-wrap;
 `

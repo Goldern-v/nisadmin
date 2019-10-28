@@ -22,10 +22,15 @@ export default observer(function 护士会议记录模块(props: Props) {
     <Wrapper>
       <OneLevelTitle text='三、护士会议记录' />
       {list.map((item: any, index: number) => {
-        return <Table tableList={item} key={index} />
+        return (
+          <div className='form-con'>
+            <Table tableObj={item} key={index} />
+            <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId, index)}>
+              编辑
+            </EditButton>
+          </div>
+        )
       })}
-
-      <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
 })
@@ -45,7 +50,7 @@ const Wrapper = styled.div`
   button {
     /* display: none; */
     position: absolute;
-    top: -28px;
+    top: -32px;
     right: 20px;
   }
   .aside {
@@ -57,6 +62,10 @@ const Wrapper = styled.div`
     padding-right: 50px;
     padding-bottom: 2px;
     padding-top: 2px;
+  }
+  .form-con {
+    position: relative;
+    margin-bottom: 35px;
   }
 `
 

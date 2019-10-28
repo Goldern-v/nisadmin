@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import { TypeCompare, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolViewModal'
+import { Pre } from 'src/components/common'
 export interface Props {
   list: DeptItem[]
 }
@@ -16,10 +17,10 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
+          <col width='20%' />
+          <col width='20%' />
           <col width='15%' />
-          <col width='15%' />
-          <col width='15%' />
-          <col width='35%' />
+          <col width='25%' />
           <col width='15%' />
         </colgroup>
         <tbody>
@@ -33,10 +34,14 @@ export default function Table(props: Props) {
 
           {list.map((item, index) => (
             <tr key={index}>
-              <td style={{ textAlign: 'left' }}>{item.wardName}</td>
-              <td style={{ textAlign: 'left' }}>{item.itemBadDesc}</td>
-              <td>{item.deductScore}</td>
-              <td>{index + 1}</td>
+              <td>{item.eventDate}</td>
+              <td>{item.eventEmpNames}</td>
+              <td>{item.eventType}</td>
+              <td>
+                {/* <Pre>{item.briefCourseEvent}</Pre> */}
+                {item.briefCourseEvent}
+              </td>
+              <td>{item.result}</td>
             </tr>
           ))}
         </tbody>
