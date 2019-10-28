@@ -186,7 +186,7 @@ export default observer(function SelectCon() {
           </div>
         </div>
         <div className='item'>
-          <Button onClick={() => sheetViewModal.getSheetTableData()} className='statistics'>
+          <Button type='primary' onClick={() => sheetViewModal.getSheetTableData()} className='statistics'>
             查询
           </Button>
         </div>

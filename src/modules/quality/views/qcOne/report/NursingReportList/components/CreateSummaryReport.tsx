@@ -7,6 +7,8 @@ import { Modal, Row, Col, Radio, Select, DatePicker, Input, message as Message }
 import Moment from 'moment'
 import { summaryReportService as api } from '../api/SummaryReportService'
 import { numToChinese } from 'src/utils/number/numToChinese'
+import { authStore } from 'src/stores'
+import { getCurrentMonth } from 'src/utils/date/currentMonth'
 
 const Option = Select.Option
 
@@ -25,7 +27,7 @@ export default function CreateSummearyReportModal(props: Props) {
     year: nowMoment,
     indexInType: nowMoment.format('M'),
     type: 'month',
-    reportName: `${nowMoment.format('YYYY')}年${nowMoment.format('M')}月护理质量检查反馈`
+    reportName: `${nowMoment.format('YYYY')}年${nowMoment.format('M')}月${authStore.selectedDeptName}护理工作报表`
   }
   const [params, setParams] = useState(initedParams as any)
 
@@ -39,18 +41,27 @@ export default function CreateSummearyReportModal(props: Props) {
     if (!params.reportName) return Message.error('未填写报告名称')
 
     setLoadingState(true)
-    api.createReport({ ...params, year: params.year.format('YYYY') }).then(
-      (res) => {
-        if (res.code == 200) {
-          Message.success('创建成功')
-          onOk && onOk(res.data.report)
+    api
+      .createReport({
+        year: params.year.format('YYYY'),
+        month: params.indexInType,
+        reportName: params.reportName,
+        wardCode: authStore.selectedDeptCode,
+        beginDate: getCurrentMonth(params.indexInType)[0].format('YYYY-MM-DD'),
+        endDate: getCurrentMonth(params.indexInType)[1].format('YYYY-MM-DD')
+      })
+      .then(
+        (res) => {
+          if (res.code == 200) {
+            Message.success('创建成功')
+            onOk && onOk(res.data.report)
+          }
+          setLoadingState(false)
+        },
+        (err) => {
+          setLoadingState(false)
         }
-        setLoadingState(false)
-      },
-      (err) => {
-        setLoadingState(false)
-      }
-    )
+      )
   }
 
   const handleOpenChange = (status: boolean) => {
@@ -103,7 +114,7 @@ export default function CreateSummearyReportModal(props: Props) {
     if (pms.type == 'month') typeStr = `${pms.indexInType}月`
     else typeStr = `第${numToChinese(pms.indexInType)}季度`
 
-    return `${year}年${pms.indexInType}月护理质量检查反馈`
+    return `${year}年${pms.indexInType}月${authStore.selectedDeptName}护理工作报表`
   }
 
   const handleTypeChange = (e: any) => {
@@ -135,17 +146,6 @@ export default function CreateSummearyReportModal(props: Props) {
       <Wrapper>
         <Row>
           <Col span={5} className='label'>
-            汇总类型：
-          </Col>
-          <Col span={18}>
-            <Radio.Group value={params.type} onChange={handleTypeChange}>
-              <Radio value='month'>月度汇总</Radio>
-              {/* <Radio value="season">季度汇总</Radio> */}
-            </Radio.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={5} className='label'>
             报告年度：
           </Col>
           <Col span={18}>
@@ -164,7 +164,7 @@ export default function CreateSummearyReportModal(props: Props) {
         </Row>
         <Row>
           <Col span={5} className='label'>
-            汇总{params.type == 'month' ? '月份：' : '季度：'}
+            汇总月份：
           </Col>
           <Col span={18}>
             <Select value={params.indexInType} onChange={handleIndexInTypeChange}>

@@ -5,6 +5,7 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolV
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 import Table from './Table'
+import Chart from './Chart'
 import { Report } from '../../types'
 import moment from 'moment'
 import OneLevelTitle from '../common/OneLevelTitle'
@@ -14,7 +15,7 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 病区护理质量检查模块(props: Props) {
+export default observer(function 人力资源调配模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
@@ -24,7 +25,7 @@ export default observer(function 病区护理质量检查模块(props: Props) {
 
   return (
     <Wrapper>
-      <OneLevelTitle text='二、病区护理质量检查' />
+      <OneLevelTitle text='五、人力资源调配' />
       <Table list={list} />
       <EditButton onClick={() => qualityAnalysisReportViewModal.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>

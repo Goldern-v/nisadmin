@@ -62,17 +62,24 @@ export default observer(function Cell(props: Props) {
                   data: sheetViewModal.selectedCell,
                   onOkCallBack(data: any) {
                     sheetViewModal.selectedCell.detail = data.detail
-                    ;(sheetViewModal.selectedCell.effectiveTime = Number(
-                      Number(data.effectiveTime) + Number(sheetViewModal.selectedCell.effectiveTimeOld)
-                    )),
-                      (sheetViewModal.selectedCell.schAddOrSubs = [
-                        {
-                          startDate: data.startDate,
-                          endDate: data.endDate,
-                          statusType: data.statusType,
-                          hour: Number(data.effectiveTime)
-                        }
-                      ])
+                    if (data.statusType == '1') {
+                      /** 加班 */
+                      sheetViewModal.selectedCell.effectiveTime = Number(
+                        Number(data.effectiveTime) + Number(sheetViewModal.selectedCell.effectiveTimeOld)
+                      )
+                    } else if (data.statusType == '2') {
+                      /** 减班 */
+                      sheetViewModal.selectedCell.effectiveTime =
+                        Number(sheetViewModal.selectedCell.effectiveTimeOld) - Number(Number(data.effectiveTime))
+                    }
+                    sheetViewModal.selectedCell.schAddOrSubs = [
+                      {
+                        startDate: data.startDate,
+                        endDate: data.endDate,
+                        statusType: data.statusType,
+                        hour: Number(data.effectiveTime)
+                      }
+                    ]
                   }
                 })
               }

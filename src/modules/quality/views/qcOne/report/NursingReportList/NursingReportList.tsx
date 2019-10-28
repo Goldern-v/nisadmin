@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { DatePicker, Select, Button, message as Message } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
 import { summaryReportService as api } from './api/SummaryReportService'
@@ -12,6 +12,8 @@ import CreateSummaryReport from './components/CreateSummaryReport'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import qs from 'qs'
 import { PageTitle } from 'src/components/common'
+import DeptSelect from 'src/components/DeptSelect'
+import { numberToArray } from 'src/utils/array/array'
 
 const Option = Select.Option
 
@@ -22,15 +24,15 @@ export default observer(function NursingReportList() {
 
   const [query, setQuery] = useState({
     year: Moment() as null | Moment.Moment,
+    month: Number(Moment().format('MM')),
     pageIndex: 1,
     pageSize: 20,
-    type: 'month',
     status: ''
   } as any)
 
   useEffect(() => {
     getTableData()
-  }, [query])
+  }, [query, authStore.selectedDeptCode])
 
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP') {
@@ -61,23 +63,7 @@ export default observer(function NursingReportList() {
       width: 200,
       render: (name: string) => <div title={name}>{name}</div>
     },
-    {
-      title: '汇总类型',
-      key: 'type',
-      dataIndex: 'type',
-      width: 90,
-      align: 'center',
-      render: (type: string) => {
-        switch (type) {
-          case 'month':
-            return '月度报告'
-          case 'season':
-            return '季度报告'
-          default:
-            return ''
-        }
-      }
-    },
+
     {
       title: '报告年度',
       key: 'year',
@@ -87,19 +73,13 @@ export default observer(function NursingReportList() {
       render: (year: string) => `${year}年`
     },
     {
-      title: query.type == 'month' ? '汇总月份' : '汇总季度',
-      key: 'indexInType',
-      dataIndex: 'indexInType',
+      title: '汇总月份',
+      key: 'month',
+      dataIndex: 'month',
       width: 90,
       align: 'center',
       render: (text: string, item: any) => {
-        if (item.type == 'month') {
-          return `${text}月`
-        } else if (item.type == 'season' && item.indexInType) {
-          return `第${numToChinese(item.indexInType)}季度`
-        } else {
-          return ''
-        }
+        return text ? `${text}月` : ''
       }
     },
     {
@@ -164,11 +144,11 @@ export default observer(function NursingReportList() {
   const handleReview = (record: any) => {
     const obj = {
       year: record.year,
-      type: record.type,
-      indexInType: record.indexInType
+      month: record.month,
+      wardCode: authStore.selectedDeptCode
     }
 
-    history.push(`/qualityAnalysisReportPool?${qs.stringify(obj)}`)
+    history.push(`/qcOne/nursingReportDetail?${qs.stringify(obj)}`)
   }
 
   const handleSearch = () => {
@@ -181,10 +161,11 @@ export default observer(function NursingReportList() {
 
   const handleCreateOk = (info: any) => {
     //汇总报告创建成功
-    let { type, year, indexInType } = info
+    let { year, month } = info
     getTableData()
     setCreateAnalysisVisible(false)
-    history.push(`/qualityAnalysisReportPool?${qs.stringify({ type, year, indexInType })}`)
+    history.push(`/qcOne/nursingReportDetail?${qs.stringify({ year, month, wardCode: authStore.selectedDeptCode })}`)
+    setCreateAnalysisVisible(false)
   }
 
   const handleCreateCancel = () => {
@@ -198,7 +179,8 @@ export default observer(function NursingReportList() {
 
     let reqQuery = {
       ...query,
-      year
+      year,
+      wardCode: authStore.selectedDeptCode
     }
     api
       .getPage(reqQuery)
@@ -227,9 +209,15 @@ export default observer(function NursingReportList() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>三级质控汇总报告</PageTitle>
+          <PageTitle>病区护理工作报表</PageTitle>
         </div>
         <div className='float-right'>
+          <div className='item'>
+            <div className='label'>科室：</div>
+            <div className='content'>
+              <DeptSelect onChange={() => {}} />
+            </div>
+          </div>
           <div className='item'>
             <div className='label'>报告年度：</div>
             <div className='content'>
@@ -249,17 +237,19 @@ export default observer(function NursingReportList() {
             </div>
           </div>
           <div className='item'>
-            <div className='label'>汇总类型：</div>
+            <div className='label'>月份：</div>
             <div className='content'>
               <Select
                 style={{ width: 100 }}
-                value={query.type}
-                onChange={(type: any) => {
-                  setQuery({ ...query, type })
-                }}
+                value={query.month}
+                onChange={(value: any) => setQuery({ ...query, month: value })}
               >
-                <Option value='month'>月度报告</Option>
-                {/* <Option value='season'>季度报告</Option> */}
+                <Select.Option value={''}>全部</Select.Option>
+                {numberToArray(11).map((item) => (
+                  <Select.Option value={item + 1} key={item}>
+                    {item + 1}月
+                  </Select.Option>
+                ))}
               </Select>
             </div>
           </div>

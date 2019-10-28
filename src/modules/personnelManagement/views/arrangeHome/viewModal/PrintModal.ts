@@ -7,10 +7,9 @@ import printing from 'printing'
 
 class PrintModal {
   public printArrange(params?: any, nurseGroup?: any, remark?: string, deptName?: string) {
-
-    params = params || selectViewModal.params;
-    nurseGroup = nurseGroup || sheetViewModal.sheetTableData;
-    deptName = deptName || scheduleStore.getDeptName();
+    params = params || selectViewModal.params
+    nurseGroup = nurseGroup || sheetViewModal.sheetTableData
+    deptName = deptName || scheduleStore.getDeptName()
     remark = sheetViewModal.remark || ''
     if (!params) return
     if (!nurseGroup || nurseGroup.length <= 0) return
@@ -25,11 +24,12 @@ class PrintModal {
 
     //组织渲染数据
     //总时间跨度
-    let dateLength = (Number(moment(params.endTime).format('x')) - Number(moment(params.startTime).format('x')) + 86400000) / 86400000
+    let dateLength =
+      (Number(moment(params.endTime).format('x')) - Number(moment(params.startTime).format('x')) + 86400000) / 86400000
 
     //表头组 最多31天一组表头
-    let dateRowGroup = [] as any;
-    let appendIdx = -1;
+    let dateRowGroup = [] as any
+    let appendIdx = -1
     for (var i = 0; i < dateLength; i++) {
       let timeset = Number(moment(params.startTime).format('x')) + i * 86400000
       let newMoment = moment(timeset)
@@ -37,7 +37,7 @@ class PrintModal {
       let weekDay = newMoment.format('E')
 
       if (i % 31 == 0) {
-        appendIdx++;
+        appendIdx++
         dateRowGroup.push([] as any)
       }
 
@@ -51,27 +51,27 @@ class PrintModal {
     //排班的护士列表及其排班内容
     let NurseGroup = [...nurseGroup]
     //排班备注固定模块
-    let remarkEl = `<pre>排班备注：${remark}</pre>`;
+    let remarkEl = `<pre>排班备注：${remark}</pre>`
     // 列宽
     //页面总宽度
     let pageWidth = 720
     //页面高度 超过换页
-    let pageHeight = 1090;
+    let pageHeight = 1090
     //td计算用高度 和打印样式保持一致
-    let tdHeight = 30;
+    let tdHeight = 30
 
     //如果总排班超过1周 横向显示
     if (dateLength > 7) {
-      pageWidth = 1100;
-      pageHeight = 760;
-      tdHeight = 24;
+      pageWidth = 1100
+      pageHeight = 760
+      tdHeight = 24
     }
     //td指定样式
     let tdStyle = (other?: string) => {
       return `height:${tdHeight}px!important;padding:0!important;${other || ''}`
-    };
+    }
     let tdEl = (option?: any) => {
-      option = option || {};
+      option = option || {}
       return `<td 
         class="${option.class || ''}"
         style="${tdStyle(option.style || '')}"
@@ -94,8 +94,8 @@ class PrintModal {
 
     //根据护士列表和表头组动态插入表格和计算分页
     for (let i = 0; i < dateRowGroup.length; i++) {
-      let dateRow = dateRowGroup[i];
-      let pageNo = 0;
+      let dateRow = dateRowGroup[i]
+      let pageNo = 0
       let tableId = ''
       //计算每列宽度
       let cols = [col1Width, col2Width, col3Width].concat(dateRow.map(() => othersWidth / dateLength), [col4Width])
@@ -110,26 +110,27 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        colSpan: dateRow.length + 4,
-        class: 'main-title',
-        content: `${dateRow[0].moment.format('YYYY年M月')}${deptName}护士排班表`
-      })}
+            colSpan: dateRow.length + 4,
+            class: 'main-title',
+            content: `${dateRow[0].moment.format('YYYY年M月')}${deptName}护士排班表`
+          })}
         </tr>
         <tr class="header-row">
           ${tdEl({ content: '姓名', rowSpan: 2 })}
           ${tdEl({ content: '岗位', rowSpan: 2 })}
           ${tdEl({ content: '工作年', rowSpan: 2 })}
-          ${dateRow.map((item: any) => tdEl({ content: item.date, })).join('')}
+          ${dateRow.map((item: any) => tdEl({ content: item.date })).join('')}
           ${tdEl({ content: '休假统计', rowSpan: 2 })}
         </tr>
         <tr class="header-row">
           ${dateRow
-          .map(
-            (item: any) => tdEl({
-              class: item.weekDay == '六' || item.weekDay == '七' ? 'bg-gray' : '',
-              content: item.weekDay == '七' ? '日' : item.weekDay
-            }))
-          .join('')}
+            .map((item: any) =>
+              tdEl({
+                class: item.weekDay == '六' || item.weekDay == '七' ? 'bg-gray' : '',
+                content: item.weekDay == '七' ? '日' : item.weekDay
+              })
+            )
+            .join('')}
         </tr>
       `
       //表格底部模板
@@ -159,11 +160,11 @@ class PrintModal {
           </tr>
         `
       for (let j = 0; j < NurseGroup.length; j++) {
-        let insertClass = 'insert-start';
+        let insertClass = 'insert-start'
         let nurse = NurseGroup[j]
-        let nowPageEl = document.getElementById(tableId);
+        let nowPageEl = document.getElementById(tableId)
         if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight)
-        let nextPage = !!(nowPageEl && (nowPageEl.offsetHeight > pageHeight))
+        let nextPage = !!(nowPageEl && nowPageEl.offsetHeight > pageHeight)
 
         if (j == 0 || nextPage) {
           tableId = `table-${i}-${pageNo}`
@@ -194,18 +195,18 @@ class PrintModal {
             printContent.appendChild(onePage)
           }
 
-          pageNo++;
+          pageNo++
         }
         //拼装行
-        let tr = '';
+        let tr = ''
         //姓名
         tr += tdEl({ content: nurse.empName })
         //岗位级别
         tr += tdEl({ content: `${nurse.newTitle}/${nurse.nurseHierarchy}` })
         //工作年
-        tr += tdEl()
+        tr += tdEl({ content: nurse.year || '' })
         //排班列
-        let groups = [] as any;
+        let groups = [] as any
         for (let k = 0; k < dateRow.length; k++) {
           let dateItem = dateRow[k]
           let last = groups[groups.length - 1]
@@ -267,7 +268,7 @@ class PrintModal {
         //休假统计
         tr += tdEl()
         //动态插入行
-        let newTr = document.createElement('tr');
+        let newTr = document.createElement('tr')
         newTr.innerHTML = tr
 
         let targetTable = document.querySelector(`#${tableId} tbody`)
@@ -277,7 +278,6 @@ class PrintModal {
           if (prevEls) {
             let prevEl = prevEls[prevEls.length - 1]
             targetTable.insertBefore(newTr, prevEl)
-
           }
         }
       }
@@ -336,7 +336,8 @@ class PrintModal {
     }
   `
     //横向排版额外打印样式
-    if (dateLength > 7) defaultPrintCss += `
+    if (dateLength > 7)
+      defaultPrintCss += `
       @page { 
         size: A4 landscape; 
       }
@@ -353,9 +354,7 @@ class PrintModal {
     })
     //删除打印容器
     document.body.removeChild(div)
-
   }
 }
 
 export const printModal = new PrintModal()
-

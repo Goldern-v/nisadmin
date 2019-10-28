@@ -3,11 +3,11 @@ import BaseApiService from 'src/services/api/BaseApiService'
 
 export default class SummaryReportService extends BaseApiService {
   public getPage(query: any) {
-    return this.post('/qcSummary/getPage', query)
+    return this.post('/qcAnalysis/wn/getPage', query)
   }
   public createReport(params: any) {
-    return this.post('/qcSummary/createReport', params)
+    return this.post('/qcAnalysis/wn/createReport', params)
   }
 }
 
-export const summaryReportService = new SummaryReportService();
+export const summaryReportService = new SummaryReportService()

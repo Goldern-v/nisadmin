@@ -54,6 +54,12 @@ export default observer(function HumanResource() {
       align: 'center',
       dataIndex: 'startDate',
       width: 200
+    },
+    {
+      title: '事由',
+      align: 'center',
+      dataIndex: 'remark',
+      width: 200
     }
     // {
     //   title: '创建人',

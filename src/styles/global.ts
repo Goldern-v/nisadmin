@@ -147,6 +147,9 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   }
   .ant-btn.ant-btn-danger.ant-btn-background-ghost{
     color: #f5222d;
+    &:hover{
+      color: #fff;
+    }
   }
 `
 

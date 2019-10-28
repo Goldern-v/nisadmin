@@ -4,16 +4,16 @@ import { qualityAnalysisReportViewModal } from '../QualityAnalysisReportPoolView
 export default class QualityAnalysisReportPoolService extends BaseApiService {
   /** 获取分析报告 */
   public getReport(obj?: any) {
-    return this.post(`/qcSummary/getReport`, obj || appStore.queryObj)
+    return this.post(`/qcAnalysis/wn/getReport`, obj || appStore.queryObj)
   }
   public deleteReport(obj?: any) {
-    return this.post(`/qcSummary/deleteReport`, appStore.queryObj)
+    return this.post(`/qcAnalysis/wn/deleteReport`, appStore.queryObj)
   }
   public publishReport(obj?: any) {
-    return this.post(`/qcSummary/publish`, appStore.queryObj)
+    return this.post(`/qcAnalysis/wn/publish`, appStore.queryObj)
   }
   public cancelPublishReport(obj?: any) {
-    return this.post(`/qcSummary/cancelPublish`, appStore.queryObj)
+    return this.post(`/qcAnalysis/wn/cancelPublish`, appStore.queryObj)
   }
 
   /** 更新上月质量问题，持续改进效果评价 */

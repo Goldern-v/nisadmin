@@ -13,16 +13,18 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 护理工作计划模块(props: Props) {
+export default observer(function 护士会议记录模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let list = data.list || []
-  let report: Report = data ? data.report || {} : {}
-  console.log(data.list, 'datadata')
+  let list = data ? data.list || [] : []
+
   return (
     <Wrapper>
-      <OneLevelTitle text='一、护理工作计划' />
-      <Table tableList={list} />
+      <OneLevelTitle text='三、护士会议记录' />
+      {list.map((item: any, index: number) => {
+        return <Table tableList={item} key={index} />
+      })}
+
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
@@ -43,7 +45,7 @@ const Wrapper = styled.div`
   button {
     /* display: none; */
     position: absolute;
-    top: -5px;
+    top: -28px;
     right: 20px;
   }
   .aside {

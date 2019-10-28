@@ -16,30 +16,31 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
-          <col width='25%' />
           <col width='15%' />
-          <col width='45%' />
           <col width='15%' />
+          <col width='15%' />
+          <col width='15%' />
+          <col width='35%' />
         </colgroup>
         <tbody>
           <tr className='header'>
-            <td>质控类别</td>
-            <td>检查数</td>
-            <td>问题详情</td>
-            <td>合格率</td>
+            <td>调配方式</td>
+            <td>姓名</td>
+            <td>科室</td>
+            <td>起止时间</td>
+            <td>事由</td>
           </tr>
 
           {list.map((item, index) => (
             <tr key={index}>
-              <td style={{ textAlign: 'left' }}>{item.type}</td>
-              <td>{item.wrongSize}</td>
-              <td style={{ textAlign: 'left' }}>{item.description}</td>
-              <td>{item.passRate}%</td>
+              <td style={{ textAlign: 'left' }}>{item.wardName}</td>
+              <td style={{ textAlign: 'left' }}>{item.itemBadDesc}</td>
+              <td>{item.deductScore}</td>
+              <td>{index + 1}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className='aside'>例：8月每天检查基础护理，检查出有问题的是3条。合格率=（1-3/31*60）*100%</div>
     </Wrapper>
   )
 }
@@ -66,7 +67,6 @@ const Wrapper = styled.div`
       font-size: 14px;
       color: #000;
       border: 1px #cccccc solid;
-      padding: 4px;
     }
   }
   .lm-arrow {

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
+import { numToChinese } from 'src/utils/number/numToChinese'
 export interface Props {
   tableList: any[]
 }
@@ -21,19 +22,24 @@ export default function Table(props: Props) {
             <td className='td-title'>分类</td>
             <td className='td-title'>内容</td>
           </tr>
-          <tr>
-            <td rowSpan={tableList.length}>8月</td>
-            <td className='td-title'>月重点</td>
-            <td>
-              <Pre>1111</Pre>
-            </td>
-          </tr>
+
           {tableList.map((item: any, index: number) => {
-            if (index == 0) return null
+            if (item.type == '1')
+              return (
+                <tr>
+                  <td rowSpan={tableList.length}>{item.month}月</td>
+                  <td>月重点</td>
+                  <td>
+                    <Pre>{item.content}</Pre>
+                  </td>
+                </tr>
+              )
             return (
               <tr key={index}>
-                <td>{item.a}</td>
-                <td>{item.b}</td>
+                <td>第{numToChinese(item.indexInType)}周</td>
+                <td>
+                  <Pre>{item.content}</Pre>
+                </td>
               </tr>
             )
           })}
@@ -67,4 +73,6 @@ const Wrapper = styled.div`
 
 const Pre = styled.pre`
   white-space: pre-wrap;
+  text-align: left;
+  padding: 2px 4px;
 `

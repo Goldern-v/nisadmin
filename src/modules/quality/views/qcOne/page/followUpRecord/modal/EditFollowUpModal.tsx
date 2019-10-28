@@ -173,8 +173,8 @@ export default function EditFollowUpModal(props: Props) {
       title={title}
       visible={visible}
       onCancel={() => {
-        setShowDraWer(false)
         onCancel()
+        setShowDraWer(false)
       }}
       onOk={onSave}
       okText='保存'

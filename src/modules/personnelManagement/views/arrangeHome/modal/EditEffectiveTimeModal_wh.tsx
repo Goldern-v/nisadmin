@@ -56,7 +56,7 @@ export default function EditEffectiveTimeModal(props: Props) {
     if (refForm.current && visible) {
       /** 表单数据初始化 */
       refForm!.current!.setFields({
-        effectiveTime: data.effectiveTime,
+        effectiveTime: Math.abs((data.effectiveTime || 0) - (data.effectiveTimeOld || 0)),
         detail: data.detail,
         startDate_1: moment(data.workDate),
         startDate_2:

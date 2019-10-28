@@ -64,7 +64,7 @@ const LEFT_MENU_CONFIG: any = [
     ]
   },
   {
-    title: '护理工作报表',
+    title: '病区护理工作报表',
     icon: <YIBG />,
     path: '/qcOne/nursingReportList',
     component: NursingReportList,

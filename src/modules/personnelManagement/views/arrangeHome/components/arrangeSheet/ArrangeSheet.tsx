@@ -20,6 +20,9 @@ import NightHourCell from './NightHourCell'
 import { appStore } from 'src/stores'
 import update from 'immutability-helper'
 import AddUpHourCell from './AddUpHourCell'
+import BalanceHour from './BalanceHour'
+import PublicHour from './PublicHour'
+import HolidayHour from './HolidayHour'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean
@@ -133,10 +136,9 @@ export default observer(function ArrangeSheet(props: Props) {
       ),
       width: 70,
       align: 'center',
-      dataIndex: 'balanceHour'
-      // render(text: string, record: any) {
-      //   return <AddUpHourCell id={record.id} />
-      // }
+      render(text: string, record: any) {
+        return <BalanceHour id={record.id} />
+      }
     },
     {
       title: (
@@ -147,8 +149,9 @@ export default observer(function ArrangeSheet(props: Props) {
       ),
       width: 70,
       align: 'center',
-      dataIndex: 'publicHour'
-      // fixed: 'right'
+      render(text: string, record: any) {
+        return <PublicHour id={record.id} />
+      }
     },
     {
       title: (
@@ -159,8 +162,9 @@ export default observer(function ArrangeSheet(props: Props) {
       ),
       width: 70,
       align: 'center',
-      dataIndex: 'holidayHour'
-      // fixed: 'right'
+      render(text: string, record: any) {
+        return <HolidayHour id={record.id} />
+      }
     }
   ]
 
