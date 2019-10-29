@@ -1,8 +1,9 @@
+import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import { observable, computed, action } from 'mobx'
 import moment from 'moment'
 class WardRegisterViewModal {
-  @observable public startDate = ''
-  @observable public endDate = ''
+  @observable public startDate: string = getCurrentMonthNow()[0].format('YYYY-MM-DD')
+  @observable public endDate: string = getCurrentMonthNow()[1].format('YYYY-MM-DD')
   @observable public classes = ''
 
   /** 时间控件处理 */

@@ -3,33 +3,44 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import HeadCon from '../../components/HeadCon/HeadCon'
 import BaseTable from 'src/components/BaseTable'
-import { ColumnProps } from 'src/vendors/antd'
+import { ColumnProps, PaginationConfig, AutoComplete } from 'src/vendors/antd'
 import { wardRegisterService } from '../../services/WardRegisterService'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { wardRegisterViewModal } from '../../WardRegisterViewModal'
 export interface Props {}
 
 export default observer(function HandoverRegister() {
-  const dataSource: any[] = []
-  const columns: ColumnProps<any>[] = [
+  const [dataSource, setDataSource] = useState([])
+  const [itemConfigList, setItemConfigList] = useState([])
+  const [pageOptions, setPageOptions]: any = useState({
+    pageIndex: 1,
+    pageSize: 20,
+    total: 0
+  })
+  const [total, setTotal] = useState(0)
+  const updateDataSource = () => {
+    setDataSource([...dataSource])
+  }
+  const columns: ColumnProps<any>[] | any = [
     {
       title() {
         return (
           <LineCon>
             <TextCon>
-              <Text x='20%' y='80%' deg='0'>
+              <Text x='20%' y='75%' deg='0'>
                 日期
               </Text>
-              <Text x='65%' y='75%' deg='18'>
+              <Text x='65%' y='77%' deg='22'>
                 班次
               </Text>
-              <Text x='80%' y='60%' deg='21'>
+              <Text x='80%' y='62%' deg='21'>
                 质量
               </Text>
               <Text x='83%' y='35%' deg='12'>
                 基数
               </Text>
-              <Text x='85%' y='8%' deg='0'>
+              <Text x='82%' y='8%' deg='0'>
                 物品
               </Text>
             </TextCon>
@@ -43,38 +54,75 @@ export default observer(function HandoverRegister() {
           </LineCon>
         )
       },
+      dataIndex: 'recordDate',
+      align: 'center',
       colSpan: 2,
-      render(text: string, record: any, index: number) {
-        return ''
-      }
+      width: 107,
+      fixed: 'left'
     },
     {
       title: '头部',
       colSpan: 0,
-      render(text: string, record: any, index: number) {
-        return ''
-      }
+      width: 73,
+      dataIndex: 'range',
+      align: 'center',
+      fixed: 'left'
     },
-    {
-      title: '选项1',
-      render(text: string, record: any, index: number) {
-        return (
-          <ThBox>
-            <div className='title'>1111</div>
-          </ThBox>
-        )
+    ...itemConfigList.map((item: any) => {
+      if (item.checkSize) {
+        return {
+          title(text: string, record: any, index: number) {
+            return (
+              <ThBox>
+                <div className='title'>
+                  <span className='title-text'>{item.itemCode}</span>
+                </div>
+                <div className='aside'>{item.checkSize}</div>
+              </ThBox>
+            )
+          },
+          align: 'center',
+          dataIndex: item.itemCode,
+          render(text: string, record: any, index: number) {
+            return (
+              <AutoComplete
+                value={text}
+                onChange={(value) => {
+                  record[item.itemCode] = value
+                  updateDataSource()
+                }}
+              />
+            )
+          }
+        }
+      } else {
+        return {
+          title(text: string, record: any, index: number) {
+            return (
+              <ThBox>
+                <div className='title'>
+                  <span className='title-text'>{item.itemCode}</span>
+                </div>
+              </ThBox>
+            )
+          },
+          align: 'center',
+          dataIndex: item.itemCode,
+          render(text: string, record: any, index: number) {
+            return (
+              <AutoComplete
+                value={text}
+                onChange={(value) => {
+                  record[item.itemCode] = value
+                  updateDataSource()
+                }}
+              />
+            )
+          }
+        }
       }
-    },
-    {
-      title(text: string, record: any, index: number) {
-        return (
-          <ThBox>
-            <div className='title'>111</div>
-            <div className='aside'>1</div>
-          </ThBox>
-        )
-      }
-    },
+    }),
+
     {
       title: '备注',
       render(text: string, record: any, index: number) {
@@ -95,14 +143,25 @@ export default observer(function HandoverRegister() {
     }
   ]
 
-  useEffect(() => {
+  const onLoad = () => {
     wardRegisterService
       .getPage({
         wardCode: authStore.selectedDeptCode,
-        recordCode: 'qc_register_handover'
+        recordCode: 'qc_register_handover',
+        startDate: wardRegisterViewModal.startDate,
+        endDate: wardRegisterViewModal.endDate,
+        ...pageOptions
       })
-      .then((res) => {})
-  }, [])
+      .then((res) => {
+        setTotal(res.data.page.total)
+        setDataSource(res.data.page.list)
+        setItemConfigList(res.data.itemConfigList)
+      })
+  }
+
+  useEffect(() => {
+    onLoad()
+  }, [pageOptions, authStore.selectedDeptCode, wardRegisterViewModal.startDate, wardRegisterViewModal.endDate])
   return (
     <Wrapper>
       <HeadCon
@@ -111,13 +170,54 @@ export default observer(function HandoverRegister() {
         setPageUrl={'/wardRegister/handoverRegisterSet'}
       />
       <TableCon>
-        <BaseTable dataSource={dataSource} columns={columns} />
+        <BaseTable
+          dataSource={dataSource}
+          columns={columns}
+          surplusWidth={200}
+          surplusHeight={300}
+          pagination={{
+            current: pageOptions.pageIndex,
+            pageSize: pageOptions.pageSize,
+            total: total
+          }}
+          onChange={(pagination: PaginationConfig) => {
+            setPageOptions({
+              pageIndex: pagination.current,
+              pageSize: pagination.pageSize
+            })
+          }}
+        />
       </TableCon>
     </Wrapper>
   )
 })
 const Wrapper = styled.div``
-const TableCon = styled.div``
+const TableCon = styled.div`
+  .ant-table-header-column {
+    height: 100%;
+    > div {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .ant-table-column-title {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ant-select {
+    margin: 0 -8px;
+    border-radius: 0;
+    input {
+      border: 0;
+      border-radius: 0;
+    }
+  }
+`
 
 const ThBox = styled.div`
   height: 100%;
@@ -130,6 +230,7 @@ const ThBox = styled.div`
     align-items: center;
     justify-content: center;
     padding: 4px;
+    display: flex;
   }
   .aside {
     height: 30px;
@@ -171,5 +272,6 @@ const Text = styled.div<{ x: string; y: string; deg: string }>`
   position: absolute;
   left: ${(p) => p.x};
   top: ${(p) => p.y};
+  white-space: nowrap;
   transform: rotate(${(p) => p.deg}deg);
 `

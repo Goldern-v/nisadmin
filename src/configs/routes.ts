@@ -73,6 +73,7 @@ const qualityControlRecordEdit = lazy(() =>
 const QualityAnalysisEdit = lazy(() => import('src/modules/quality/views/analysis/AnalysisEdit'))
 const QualityAnalysisDetail = lazy(() => import('src/modules/quality/views/analysis/AnalysisDetail'))
 import { specialModule } from './routerConfig/specialModule'
+import NursingReportDetailView from 'src/modules/quality/views/qcOne/report/NursingReportDetail/NursingReportDetailView'
 const SafetyHazardsDetail = lazy(() => import('src/modules/quality/views/qcOne/page/safetyHazards/SafetyHazardsDetail'))
 const HandoverRegisterSet = lazy(() => import('src/modules/WardRegister/page/HandoverRegister/HandoverRegisterSet'))
 const WardRegisterRouter = lazy(() => import('src/modules/WardRegister/WardRegisterRouter'))
@@ -107,14 +108,23 @@ const QcThreeRouter = lazy(() => import('src/modules/quality/QcThreeRouter'))
 const CheckWardRouter = lazy(() => import('src/modules/quality/CheckWardRouter'))
 const QueryStatisticsRouter = lazy(() => import('src/modules/quality/QueryStatisticsRouter'))
 //一级质控报告
-const NursingQualityCheckEdit = lazy(() => import('src/modules/quality/views/qcOne/page/nursingQualityCheck/NursingQualityCheckEdit'))
-const NurseMeetingRecordEdit = lazy(() => import('src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordEdit'))
-const NurseMeetingRecordDetail = lazy(() => import('src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordDetail'))
+const NursingQualityCheckEdit = lazy(() =>
+  import('src/modules/quality/views/qcOne/page/nursingQualityCheck/NursingQualityCheckEdit')
+)
+const NurseMeetingRecordEdit = lazy(() =>
+  import('src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordEdit')
+)
+const NurseMeetingRecordDetail = lazy(() =>
+  import('src/modules/quality/views/qcOne/page/nurseMeetingRecord/NurseMeetingRecordDetail')
+)
 const BadEventRecordEdit = lazy(() => import('src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordEdit'))
-const BadEventRecordDetail = lazy(() => import('src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordDetail'))
+const BadEventRecordDetail = lazy(() =>
+  import('src/modules/quality/views/qcOne/page/badEventRecord/BadEventRecordDetail')
+)
 
-const StarRatingReportEdit = lazy(() => import('src/modules/quality/views/qcOne/report/StarRatingReport/StarRatingReportEdit'))
-
+const StarRatingReportEdit = lazy(() =>
+  import('src/modules/quality/views/qcOne/report/StarRatingReport/StarRatingReportEdit')
+)
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -239,6 +249,7 @@ const routes: RouteItem[] = [
   setLayout('/qcOne/safetyHazardsDetail', SafetyHazardsDetail, layouts.MainLayout, {
     style: { background: '#fff' }
   }),
+  setLayout('/qcOne/nursingReportDetail', NursingReportDetailView, layouts.MainLayout),
   setLayout('/qcOne', QcOneRouter, layouts.MainLayout),
   setLayout('/qcTwo', QcTwoRouter, layouts.MainLayout),
   setLayout('/qcThree', QcThreeRouter, layouts.MainLayout),

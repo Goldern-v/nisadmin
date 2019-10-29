@@ -21,9 +21,9 @@ export default observer(function FollowUpRecord() {
   const [selectedProblemType, setSelectedProblemType] = useState('')
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
-    pageSize: 20,
-    total: 0
+    pageSize: 20
   })
+  const [total, setTotal]: any = useState(0)
   const problemList = [
     {
       code: '',
@@ -197,6 +197,7 @@ export default observer(function FollowUpRecord() {
         problemType: selectedProblemType
       })
       .then((res) => {
+        setTotal(res.data.total)
         setDataSource(
           (res.data.list as any[]).reduce((total: any, current: any, rowIndex: number, array: any[]) => {
             total.push(
@@ -262,13 +263,12 @@ export default observer(function FollowUpRecord() {
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
-          total: pageOptions.total
+          total: total
         }}
         onChange={(pagination: PaginationConfig) => {
           setPageOptions({
             pageIndex: pagination.current,
-            pageSize: pagination.pageSize,
-            total: pagination.total
+            pageSize: pagination.pageSize
           })
         }}
         onRow={(record: any) => {

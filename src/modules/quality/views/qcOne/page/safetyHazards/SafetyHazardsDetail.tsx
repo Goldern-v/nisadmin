@@ -209,4 +209,7 @@ const Line = styled.div`
 const FormCon = styled.div`
   margin: 20px 30px;
   width: 700px;
+  .label {
+    justify-content: flex-start;
+  }
 `

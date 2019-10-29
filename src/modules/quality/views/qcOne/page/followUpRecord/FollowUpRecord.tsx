@@ -109,9 +109,9 @@ export default observer(function FollowUpRecord() {
 
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
-    pageSize: 20,
-    total: 0
+    pageSize: 20
   })
+  const [total, setTotal]: any = useState(0)
   const getData = () => {
     setPageLoading(true)
     qcOneService
@@ -123,6 +123,7 @@ export default observer(function FollowUpRecord() {
         endDate: qcOneSelectViewModal.endDate ? moment(qcOneSelectViewModal.endDate).format('YYYY-MM-DD') : ''
       })
       .then((res) => {
+        setTotal(res.data.total)
         setDataSource(res.data.list)
         setPageLoading(false)
       })
@@ -200,13 +201,12 @@ export default observer(function FollowUpRecord() {
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
-          total: pageOptions.total
+          total: total
         }}
         onChange={(pagination: PaginationConfig) => {
           setPageOptions({
             pageIndex: pagination.current,
-            pageSize: pagination.pageSize,
-            total: pagination.total
+            pageSize: pagination.pageSize
           })
         }}
         onRow={(record: any) => {

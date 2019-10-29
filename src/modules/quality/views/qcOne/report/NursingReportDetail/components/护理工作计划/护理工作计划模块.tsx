@@ -18,7 +18,6 @@ export default observer(function 护理工作计划模块(props: Props) {
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let list = data.list || []
   let report: Report = data ? data.report || {} : {}
-  console.log(data.list, 'datadata')
   return (
     <Wrapper>
       <OneLevelTitle text='一、护理工作计划' />
