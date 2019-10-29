@@ -20,11 +20,13 @@ export default observer(function IndexPannel() {
   }
 
   const handleParentItemClick = (item: any) => {
-    history.push(`nursingRulesPagePreview?${qs.stringify({
-      bookId: baseInfo.bookId,
-      nodeNum: item.nodeNum,
-      bookName: baseInfo.bookName,
-    })}`)
+    // console.log(item)
+    if (item.urls.length > 0)
+      history.push(`nursingRulesPagePreview?${qs.stringify({
+        bookId: baseInfo.bookId,
+        nodeNum: item.nodeNum,
+        bookName: baseInfo.bookName,
+      })}`)
   }
 
   return <Wrapper>
@@ -44,9 +46,9 @@ const Wrapper = styled.div`
     font-size: 16px;
     font-weight: bold;
     color: #000;
-    cursor: pointer;
-    :hover{
+    &.has-urls:hover{
       color: #00A680;
+      cursor: pointer;
     }
   }
   .h2{
