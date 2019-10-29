@@ -346,8 +346,8 @@ export default observer(function NursingQualityCheck() {
             title="质控内容设置">
             设置
           </Button>
-          <Button>导出</Button>
         </React.Fragment>}
+        <Button>导出</Button>
       </RightIcon>
     </HeaderCon>
     <TableWrapper>
