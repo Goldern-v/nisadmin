@@ -13,6 +13,7 @@ import { ColumnProps } from 'src/vendors/antd'
 
 import service from 'src/services/api'
 import { nursingQualityCheckService } from './api/NursingQualityCheckService'
+import { qcCheckContentSettingService } from './api/QcCheckContentSettingService'
 import moment from 'moment'
 const commonApi = service.commonApiService
 
@@ -85,7 +86,7 @@ export default observer(function NursingQualityCheckEdit() {
             value={record.content}
             onChange={(content: any) => handleRecordChange({ ...record, content }, idx)}>
             {contentList.map((item: any, contentIdx: number) =>
-              <Option key={contentIdx} value={item.code}>{item.name}</Option>
+              <Option key={contentIdx} value={item.name}>{item.name}</Option>
             )}
           </Select>
         </EditCon>
@@ -316,13 +317,21 @@ export default observer(function NursingQualityCheckEdit() {
 
   const getContentList = () => {
     //一级质控病区质控内容
-    nursingQualityCheckService.getDict({
-      groupCode: 'qc',
-      dictCode: 'qc_ward_check_content'
-    })
+    qcCheckContentSettingService
+      .getList(wardCode)
       .then(res => {
-        if (res.data) setContentList(res.data)
+        if (res.data) setContentList(res.data.map((item: any) => {
+          return {
+            code: item.itemCode,
+            name: item.itemName
+          }
+        }))
       })
+    // nursingQualityCheckService.getDict({
+    //   groupCode: 'qc',
+    //   dictCode: 'qc_ward_check_content'
+    // })
+
   }
 
   const getResultist = () => {

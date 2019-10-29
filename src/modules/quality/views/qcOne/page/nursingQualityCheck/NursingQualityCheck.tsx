@@ -339,8 +339,15 @@ export default observer(function NursingQualityCheck() {
           )}
         </Select>
         <Button onClick={handleSearch}>查询</Button>
-        <Button type="primary" onClick={handleCreate}>添加</Button>
-        <Button>导出</Button>
+        {auth && <React.Fragment>
+          <Button type="primary" onClick={handleCreate}>添加</Button>
+          <Button
+            onClick={() => history.push('/qcCheckContentSetting')}
+            title="质控内容设置">
+            设置
+          </Button>
+          <Button>导出</Button>
+        </React.Fragment>}
       </RightIcon>
     </HeaderCon>
     <TableWrapper>
