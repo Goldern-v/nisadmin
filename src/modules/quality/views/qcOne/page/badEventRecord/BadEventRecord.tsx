@@ -45,7 +45,7 @@ export default observer(function BadEventRecord() {
     {
       dataIndex: 'wardName',
       title: '发生科室',
-      width: 80
+      width: 150
     },
     {
       dataIndex: 'eventType',
@@ -59,7 +59,7 @@ export default observer(function BadEventRecord() {
       }
     },
     {
-      dataIndex: 'briefCourseEvent',
+      dataIndex: 'parties',
       title: '当事人',
       align: 'center',
       width: 120
@@ -92,6 +92,7 @@ export default observer(function BadEventRecord() {
       title: '操作',
       align: 'center',
       width: 90,
+      fixed: 'right',
       render: (text: string, record: string, idx: number) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看详情</span>
@@ -191,7 +192,7 @@ export default observer(function BadEventRecord() {
             <Option value={item.code} key={item.code}>{item.name}</Option>
           )}
         </Select>
-        <Button onClick={handleSearch}>搜索</Button>
+        <Button onClick={handleSearch}>查询</Button>
         {auth && <Button
           type="primary"
           onClick={() => history.push('/badEventRecordEdit')}>添加</Button>}

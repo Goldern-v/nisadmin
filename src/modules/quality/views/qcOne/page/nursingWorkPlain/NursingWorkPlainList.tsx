@@ -69,7 +69,7 @@ export default observer(function NursingWorkPlainList() {
       key: 'month',
       title: '月份',
       align: 'center',
-      width: 150,
+      width: 100,
       render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
     },
     {
@@ -95,14 +95,14 @@ export default observer(function NursingWorkPlainList() {
       dataIndex: 'creatorName',
       key: 'creatorName',
       title: '创建人',
-      align: 'left',
+      align: 'center',
       width: 80
     },
     {
       dataIndex: 'createTime',
       key: 'createTime',
       title: '创建时间',
-      width: 120
+      width: 130
     },
   ]
 

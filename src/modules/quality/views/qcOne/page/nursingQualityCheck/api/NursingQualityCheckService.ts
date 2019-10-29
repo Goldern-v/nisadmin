@@ -61,6 +61,15 @@ export default class NursingQualityCheckService extends BaseApiService {
     })
   }
   // /schShiftSetting/getByDeptCode
+
+  /**获取科室某天值班人员 */
+  public getNurse(query: any) {
+    return this.post('/schShiftSetting/getListByDate', {
+      wardCode: query.wardCode,
+      startDate: query.reportDate,
+      endDate: query.reportDate
+    })
+  }
 }
 
 export const nursingQualityCheckService = new NursingQualityCheckService()

@@ -211,6 +211,11 @@ export default observer(function NursingWorkPlainList() {
     </HeaderCon>
     <TableWrapper>
       <BaseTable
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => handleEdit(record)
+          }
+        }}
         surplusHeight={225}
         dataSource={tableData}
         loading={loading}

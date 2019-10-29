@@ -6,7 +6,8 @@ import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs'
 import { ScrollBox } from 'src/components/common'
-import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+// import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+import MultiFileUploader, { FileItem } from 'src/components/MultiFileUploader'
 
 import { nurseMeetingRecordService } from './api/NurseMeetingRecordService'
 import service from 'src/services/api'
@@ -47,8 +48,9 @@ export default observer(function NurseMeetingRecordEdit() {
   const [comperes, setComperes] = useState('')
   const [recorders, setRecorders] = useState('')
   const [attendees, setAttendees] = useState('')
-  const [urls, setUrls] = useState([] as any)
-  const [ids, setIds] = useState([] as any)
+  const [files, setFiles] = useState([] as FileItem[])
+  // const [urls, setUrls] = useState([] as any)
+  // const [ids, setIds] = useState([] as any)
 
   const handleSave = () => {
     let params = {
@@ -68,7 +70,7 @@ export default observer(function NurseMeetingRecordEdit() {
           empName: str
         }
       }),
-      fileIds: ids
+      fileIds: files.map((item: any) => item.id)
     }
 
     setLoading(true)
@@ -107,9 +109,10 @@ export default observer(function NurseMeetingRecordEdit() {
     setAttendees(arr.join('、'))
   }
 
-  const handleFileChange = (resList: any, ids: any, urls: any) => {
-    setUrls(urls)
-    setIds(ids)
+  const handleFileChange = (newList: FileItem[]) => {
+    setFiles(newList)
+    // setUrls(urls)
+    // setIds(ids)
   }
 
   const initData = () => {
@@ -121,9 +124,10 @@ export default observer(function NurseMeetingRecordEdit() {
           setLoading(false)
 
           if (res.data.attachs) {
-            let attachs = res.data.attachs
-            setUrls(attachs.map((item: any) => item.path))
-            setIds(attachs.map((item: any) => item.id))
+            let attachs: FileItem[] = res.data.attachs
+            setFiles(attachs)
+            // setUrls(attachs.map((item: any) => item.path))
+            // setIds(attachs.map((item: any) => item.id))
           }
 
           if (res.data.attendees) {
@@ -359,8 +363,8 @@ export default observer(function NurseMeetingRecordEdit() {
           </div>
           <div className="default-pannel">
             <div className="title">四、附件上传</div>
-            <div className="content">
-              <MultipleImageUploader upload={(files) => {
+            <div className="content" style={{ paddingBottom: '20px' }}>
+              {/* <MultipleImageUploader upload={(files) => {
                 let reqList = [] as any
                 for (let i = 0; i < files.length; i++) {
                   let form = new FormData()
@@ -369,7 +373,8 @@ export default observer(function NurseMeetingRecordEdit() {
                 }
 
                 return Promise.all(reqList)
-              }} ids={ids} value={urls} onChange={handleFileChange} />
+              }} ids={ids} value={urls} onChange={handleFileChange} /> */}
+              <MultiFileUploader type='qcNurseMeeting' data={files} onChange={handleFileChange} />
             </div>
           </div>
         </Spin>

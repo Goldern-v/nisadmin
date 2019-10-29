@@ -6,10 +6,11 @@ import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs'
 import { ScrollBox } from 'src/components/common'
-import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+// import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import service from 'src/services/api'
 import { badEventRecordService } from './api/BadEventRecordService'
 import moment from 'moment'
+import MultiFileUploader, { FileItem } from 'src/components/MultiFileUploader'
 const commonApi = service.commonApiService
 
 export interface Props { }
@@ -23,8 +24,9 @@ export default observer(function BadEventRecordEdit() {
   const [loading, setLoading] = useState(false)
 
   const [nurseList, setNurseList] = useState([] as any)
-  const [urls, setUrls] = useState([] as any)
-  const [ids, setIds] = useState([] as any)
+  const [files, setFiles] = useState([] as FileItem[])
+  // const [urls, setUrls] = useState([] as any)
+  // const [ids, setIds] = useState([] as any)
   const [typeList, setTypeList] = useState([] as any[])
 
   const [badEvent, setBadEvent] = useState({
@@ -46,7 +48,7 @@ export default observer(function BadEventRecordEdit() {
     let params = {
       badEvent,
       wardCode,
-      fileIds: ids,
+      fileIds: files.map((item: any) => item.id),
       parties: parties.map((name: string) => {
         return {
           empName: name
@@ -66,9 +68,10 @@ export default observer(function BadEventRecordEdit() {
     console.log(params)
   }
 
-  const handleFileChange = (resList: any, ids: any, urls: any) => {
-    setUrls(urls)
-    setIds(ids)
+  const handleFileChange = (newList: any) => {
+    setFiles(newList)
+    // setUrls(urls)
+    // setIds(ids)
   }
 
   const getTypeList = () => {
@@ -87,8 +90,9 @@ export default observer(function BadEventRecordEdit() {
       if (res.data) {
         if (res.data.attachs) {
           let attachs = res.data.attachs
-          setUrls(attachs.map((item: any) => item.path))
-          setIds(attachs.map((item: any) => item.id))
+          setFiles(attachs)
+          // setUrls(attachs.map((item: any) => item.path))
+          // setIds(attachs.map((item: any) => item.id))
         }
 
         if (res.data.parties) {
@@ -259,7 +263,7 @@ export default observer(function BadEventRecordEdit() {
           <div className="default-pannel">
             <div className="title">三、附件</div>
             <div className="content">
-              <MultipleImageUploader upload={(files) => {
+              {/* <MultipleImageUploader upload={(files) => {
                 let reqList = [] as any
                 for (let i = 0; i < files.length; i++) {
                   let form = new FormData()
@@ -268,7 +272,8 @@ export default observer(function BadEventRecordEdit() {
                 }
 
                 return Promise.all(reqList)
-              }} ids={ids} value={urls} onChange={handleFileChange} />
+              }} ids={ids} value={urls} onChange={handleFileChange} /> */}
+              <MultiFileUploader type='qcNurseMeeting' data={files} onChange={handleFileChange} />
             </div>
           </div>
         </Spin>

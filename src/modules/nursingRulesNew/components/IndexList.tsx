@@ -35,7 +35,12 @@ export default function IndexList(props: Props) {
             span={24}
             onClick={() => onParentItemClick && onParentItemClick(item0)}>
             <div
-              className={['h1', parentItemClass].join(' ')}>
+              className={[
+                'h1',
+                item0.urls && item0.urls.length > 0 ? 'has-urls' : '',
+                childen.length > 0 ? 'has-children' : '',
+                parentItemClass
+              ].join(' ')}>
               {item0.name}
             </div>
           </Col>
