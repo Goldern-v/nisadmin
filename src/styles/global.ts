@@ -140,9 +140,10 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     background: #ff4d4f;
     border-color: #ff4d4f;
     color: #fff;
-    &:hover {
+    &:hover,&:focus {
       background: #ff7875;
       border-color: #ff7875;   
+      color: #fff;
     }
   }
   .ant-btn.ant-btn-danger.ant-btn-background-ghost{
