@@ -76,8 +76,8 @@ class RecordViewModal {
       wardCode: this.selectedDept,
       type: this.selectedWardRound,
       status: this.selectedCheckState,
-      beginDate: `${this.selectedDate[0].format('YYYY-MM-DD')} 00:00`,
-      endDate: `${this.selectedDate[1].format('YYYY-MM-DD')} 23:59`,
+      beginDate: this.selectedDate[0].format('YYYY-MM-DD'),
+      endDate: this.selectedDate[1].format('YYYY-MM-DD'),
     }
   }
 
