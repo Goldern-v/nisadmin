@@ -92,6 +92,7 @@ export default observer(function BadEventRecord() {
       title: '操作',
       align: 'center',
       width: 90,
+      fixed: 'right',
       render: (text: string, record: string, idx: number) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看详情</span>

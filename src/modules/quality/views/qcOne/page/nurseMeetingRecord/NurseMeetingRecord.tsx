@@ -61,10 +61,13 @@ export default observer(function NurseMeetingRecord() {
       title: '主题',
       width: 230,
       render: (text: string, record: any, indx: number) => {
+        let text1 = record.meetingConveyed || ''
+        let text2 = record.problemRectification || ''
+        let text3 = record.nurseStatement || ''
         return <React.Fragment>
-          <div>会议传达：{record.meetingConveyed || ''}</div>
-          <div>问题及整改：{record.problemRectification || ''}</div>
-          <div>护士发言：{record.nurseStatement || ''}</div>
+          <div className="ellips" title={text1}>会议传达：{text1}</div>
+          <div className="ellips" title={text2}>问题及整改：{text2}</div>
+          <div className="ellips" title={text3}>护士发言：{text3}</div>
         </React.Fragment>
       }
     },
@@ -107,6 +110,7 @@ export default observer(function NurseMeetingRecord() {
       title: '操作',
       align: 'center',
       width: 80,
+      fixed: 'right',
       render: (text: string, record: any, idx: number) => {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
@@ -260,6 +264,12 @@ export default observer(function NurseMeetingRecord() {
 const TableWrapper = styled(TabledCon)`
 td{
   word-break: break-all;
+}
+.ellips{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  height: 19px;
 }
 `
 

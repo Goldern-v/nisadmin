@@ -7,6 +7,10 @@ import { observer } from 'mobx-react-lite'
 import qs from 'qs'
 import { ScrollBox } from 'src/components/common'
 import Zimage from 'src/components/Zimage'
+import createModal from 'src/libs/createModal'
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import service from 'src/services/api'
 
 import { badEventRecordService } from './api/BadEventRecordService'
 
@@ -18,6 +22,7 @@ export default observer(function BadEventRecordDetail() {
   let wardCode = authStore.selectedDeptCode
   let search = qs.parse(location.search.replace('?', ''))
   const [loading, setLoading] = useState(false)
+  const previewModal = createModal(PreviewModal)
 
   const [badEvent, setBadEvent] = useState({} as any)
   const [parties, setParties] = useState([] as any[])
@@ -76,6 +81,18 @@ export default observer(function BadEventRecordDetail() {
 
   const handleEdit = () => {
     history.push(`/badEventRecordEdit?id=${search.id}`)
+  }
+
+  const onPreView = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, file: any) => {
+    previewModal.show({
+      title: file.name,
+      path: file.path
+    })
+    e.stopPropagation()
+  }
+
+  const downFile = (path: string, name: string) => {
+    service.commonApiService.getFileAndDown(path, name)
   }
 
   useEffect(() => {
@@ -145,7 +162,28 @@ export default observer(function BadEventRecordDetail() {
         <div className="default-pannel">
           <div className="title">三、附件</div>
           <div className="content">
-            <Zimage
+            <FileCon>
+              {attachs.map((item: any, index: number) => (
+                <div className='file-box' key={index}>
+                  <div className='file-inner' onClick={() => downFile(item.path, item.name)}>
+                    {getFileType(item.path) == 'img' ? (
+                      <Zimage src={item.path} className='type-img' alt='' />
+                    ) : (
+                        <img
+                          src={getFilePrevImg(item.path)}
+                          className='type-img'
+                          alt=''
+                          onClick={(e) => onPreView(e, item)}
+                        />
+                      )}
+                    <div className='file-name'>{item.name}</div>
+                    <div className='file-size'>{getFileSize(item.size)}</div>
+                  </div>
+                </div>
+              ))}
+            </FileCon>
+            <previewModal.Component />
+            {/* <Zimage
               text={
                 <React.Fragment>
                   {attachs.map((item: any) =>
@@ -156,7 +194,7 @@ export default observer(function BadEventRecordDetail() {
                     </div>) || <span></span>}
                 </React.Fragment>
               }
-              list={attachs.map((item: any) => item.path)} />
+              list={attachs.map((item: any) => item.path)} /> */}
           </div>
         </div>
       </MainContent>
@@ -314,3 +352,46 @@ const MessageBox = styled.div`
     }
   }
   `
+
+const FileCon = styled.div`
+overflow: hidden;
+.file-box {
+  width: 25%;
+  float: left;
+  padding-left: 8px;
+  padding-bottom: 8px;
+
+  .file-inner {
+    word-break: break-all;
+    height: 125px;
+    background: rgba(246, 246, 246, 1);
+    border-radius: 2px;
+    border: 1px dotted rgba(0, 166, 128, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 5px 10px;
+    cursor: pointer;
+    .type-img {
+      height: 44px;
+      min-height: 44px;
+      width: 44px;
+    }
+    .file-name {
+      font-size: 13px;
+      color: #333333;
+      margin: 5px 0 3px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+    .file-size {
+      font-size: 13px;
+      color: #999;
+    }
+  }
+}
+`

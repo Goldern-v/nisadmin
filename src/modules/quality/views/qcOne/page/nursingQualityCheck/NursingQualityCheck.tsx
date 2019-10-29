@@ -124,6 +124,7 @@ export default observer(function NursingQualityCheck() {
     {
       key: 'operate',
       title: '操作',
+      fixed: 'right',
       width: 130,
       render: (text: string, record: any, idx: number) => {
         const title = <div>
@@ -258,7 +259,7 @@ export default observer(function NursingQualityCheck() {
           <DatePicker
             allowClear={false}
             format="YYYY-MM-DD"
-            value={createDate}
+            defaultValue={createDate}
             onChange={(newDate) => createDate = newDate} />
         </span>
       </CreateWrapper>,

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, message, Select, Popover, Checkbox, Spin } from 'antd'
+import { Button, Input, message, Select, Popover, Checkbox, Spin, Modal } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 
 import { appStore, authStore } from 'src/stores'
@@ -25,6 +25,16 @@ export default observer(function NursingQualityCheckEdit() {
   let wardCode = authStore.selectedDeptCode
   let wardName = authStore.selectedDeptName
   let search = qs.parse(location.search.replace('?', ''))
+
+  const [nurseList, setNurseList] = useState([] as any[])
+
+  const [starRatting, setStarRatting] = useState({
+    N0: [] as any[],
+    N1: [] as any[],
+    N2: [] as any[],
+    N3: [] as any[],
+    N4: [] as any[]
+  } as any)
 
   const [loading, setLoading] = useState(false)
 
@@ -72,7 +82,6 @@ export default observer(function NursingQualityCheckEdit() {
       render: (text: string, record: any, idx: number) => {
         return <EditCon>
           <Select
-            style={{ width: '130px' }}
             value={record.content}
             onChange={(content: any) => handleRecordChange({ ...record, content }, idx)}>
             {contentList.map((item: any, contentIdx: number) =>
@@ -90,7 +99,6 @@ export default observer(function NursingQualityCheckEdit() {
       render: (text: string, record: any, idx: number) => {
         return <EditCon>
           <Select
-            style={{ width: '100px' }}
             value={record.result}
             onChange={(result: any) => {
               handleRecordChange({ ...record, result, description: '' }, idx)
@@ -180,7 +188,6 @@ export default observer(function NursingQualityCheckEdit() {
       render: (text: string, record: any, idx: number) => {
         return <EditCon>
           <Select
-            style={{ width: '130px' }}
             value={record.type}
             onChange={(type: any) => handleRecordChange({ ...record, type }, idx)}>
             {typeList.map((item: any, typeIdx: number) =>
@@ -190,6 +197,22 @@ export default observer(function NursingQualityCheckEdit() {
         </EditCon>
       }
     },
+    {
+      title: '操作',
+      width: 60,
+      align: 'center',
+      render: (text: string, record: any, idx: number) => {
+        return <span
+          style={{ color: 'red', cursor: 'pointer' }}
+          onClick={() => {
+            let newList = [...editData]
+            newList.splice(idx, 1)
+            setEditData(newList)
+          }}>
+          删除
+        </span>
+      }
+    }
   ]
 
   useEffect(() => {
@@ -199,10 +222,42 @@ export default observer(function NursingQualityCheckEdit() {
       createEditData()
     }
 
+    getStarRatting()
+    getNurseList()
     getTypeList()
     getContentList()
     getResultist()
   }, [])
+
+  const getStarRatting = () => {
+    let reqArr = [] as any[];
+
+    for (let x in starRatting) {
+      reqArr.push(nursingQualityCheckService.getDict2({
+        groupCode: 'qc',
+        dictCode: 'qc_ward_check_item',
+        templateCode: x
+      }))
+    }
+
+    Promise
+      .all(reqArr)
+      .then(res => {
+        let newStarRatting = { ...starRatting }
+        for (let i = 0; i < res.length; i++) {
+          if (newStarRatting[`N${i}`])
+            newStarRatting[`N${i}`] = res[i].data.map((item: any) => {
+              return {
+                itemName: item.name,
+                itemCode: item.code,
+                checked: false
+              }
+            })
+        }
+
+        setStarRatting(newStarRatting)
+      })
+  }
 
   const getEditData = () => {
     setLoading(true)
@@ -219,6 +274,15 @@ export default observer(function NursingQualityCheckEdit() {
           }))
         }
       })
+  }
+
+  const getNurseList = () => {
+    nursingQualityCheckService.getNurse({
+      reportDate: search.date,
+      wardCode
+    }).then(res => {
+      if (res.data) setNurseList(res.data)
+    })
   }
 
   const createEditData = () => {
@@ -296,6 +360,53 @@ export default observer(function NursingQualityCheckEdit() {
       }, () => setLoading(false))
   }
 
+  const handleAdd = () => {
+    let target = null as any;
+
+    Modal.confirm({
+      title: '添加护士',
+      centered: true,
+      content: <Select
+        style={{ width: '270px', marginTop: '15px' }}
+        onChange={(idx: any) => {
+          target = nurseList[idx]
+        }}
+        showSearch
+        filterOption={(input: string, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+        {nurseList.map(
+          (item: any, idx: number) =>
+            <Option
+              key={item.empNo}
+              value={idx}>
+              {`${item.empName} ${item.rangeName}`}
+            </Option>
+        )}
+      </Select>,
+      onOk: () => {
+        if (target) {
+          let newList = [...editData]
+          newList.push({
+            empName: target.empName,
+            empNo: target.empNo,
+            range: target.rangeName,
+            wardCode: target.deptCode,
+            wardName: target.deptName,
+            currentLevel: target.nurseHierarchy,
+            recordDate: search.date,
+            type: '',
+            content: '',
+            result: '无问题',
+            checkItemList: starRatting[target.nurseHierarchy] || []
+          })
+
+          setEditData(newList)
+        }
+      }
+    })
+
+  }
+
   return <Wrapper>
     <TopPannel>
       <TopHeader>
@@ -340,13 +451,27 @@ export default observer(function NursingQualityCheckEdit() {
           <BaseTable
             dataSource={editData}
             columns={columns}
-            surplusHeight={300}
+            surplusHeight={330}
             loading={loading} />
+          <Button onClick={handleAdd}>新增</Button>
         </MainContent>
       </div>
     </MainPannel>
   </Wrapper>
 })
+
+const defaultInputStyle = `
+  border: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+`
+
+const activeInputStyle = `
+  outline: none;
+  border: none;
+  box-shadow: none;
+`
 
 const PopItemCon = styled.div`
   margin-bottom: 5px;
@@ -365,7 +490,7 @@ const PopItemCon = styled.div`
 `
 
 const EditCon = styled.div`
-  margin: 5px 0;
+  margin: 0;
 `
 
 const Wrapper = styled.div`
@@ -381,6 +506,38 @@ const Wrapper = styled.div`
   }
   .main-content{
     /* min-height: 400px; */
+  }
+  td{
+    margin: 0;
+    padding: 0!important;
+    .ant-select{
+    width: 100%;
+  }
+  .ant-input{
+      resize: none;
+      ${defaultInputStyle}
+      :hover{
+        ${activeInputStyle}
+          background: ${(p) => p.theme.$mlc};
+      }
+      :focus{
+        ${activeInputStyle}
+          background: ${(p) => p.theme.$mlc};
+      }
+    }
+    .ant-select-selection{
+      ${defaultInputStyle}
+    }
+
+    .ant-select-open,.ant-select-focused{
+      .ant-select-selection{
+        ${activeInputStyle}
+        &:focus{
+          ${activeInputStyle}
+          background: ${(p) => p.theme.$mlc};
+        }
+      }
+    }
   }
 `
 const MainContent = styled.div`
