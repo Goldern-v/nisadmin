@@ -58,7 +58,7 @@ export const navConfig: navConfigItem[] = [
         icon: require('../images/menu-icon/查询统计@2x.png')
       },
       {
-        name: '护理查房',
+        name: '特殊时段查房',
         path: '/checkWard',
         icon: require('../images/menu-icon/护理查房@2x.png')
       }

@@ -12,6 +12,7 @@ import RemindTable from './components/RemindTable'
 import createModal from 'src/libs/createModal'
 import EditGoodsModal from './modal/EditGoodsModal'
 import EditHandoverModal from './modal/EditHandoverModal'
+import emitter from 'src/libs/ev'
 export interface Props {}
 
 export default function HandoverRegisterSet() {
@@ -37,8 +38,22 @@ export default function HandoverRegisterSet() {
         <Place />
         {activeKey == '1' && (
           <React.Fragment>
-            <Button onClick={() => editGoodsModal.show({})}>添加</Button>
-            <Button>保存</Button>
+            {/* <Button onClick={() => editGoodsModal.show({})}>添加</Button> */}
+            <Button
+              onClick={() => {
+                emitter.emit('addRegisterItemRow')
+              }}
+            >
+              添加
+            </Button>
+            <Button
+              type='primary'
+              onClick={() => {
+                emitter.emit('saveRegisterItem')
+              }}
+            >
+              保存
+            </Button>
           </React.Fragment>
         )}
         {activeKey == '2' && (

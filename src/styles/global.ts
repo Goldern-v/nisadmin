@@ -119,6 +119,24 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     .ant-select, .ant-btn, .ant-calendar-range-picker-input, .ant-select-dropdown-menu-item, .ant-modal-body, .ant-tabs {
       font-size: 13px;
     }
+    .ant-select-dropdown {
+      min-width: 50px;
+      * {
+        &::-webkit-scrollbar {
+         width: 4px;
+         height: 8px;
+        background-color: #eaeaea;
+          }
+        &::-webkit-scrollbar-track {
+         border-radius: 50px;
+         background-color: #eaeaea;
+        }
+       &::-webkit-scrollbar-thumb {
+       border-radius: 50px;
+        background-color: #c2c2c2;
+      }
+      }
+    }
   }  
 
   .ant-drawer-wrapper-body {

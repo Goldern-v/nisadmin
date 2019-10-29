@@ -70,13 +70,13 @@ export default observer(function CheckWardReportView() {
   return (
     <Wrapper>
       <HeadCon>
-        <div className='title'>查房统计报告</div>
+        <div className='title'>特殊时段查房统计报告</div>
         <div className='tool-con'>
           <span className='label'>年度：</span>
           <YearPicker
-            style={{ width: '100px', marginRight: '15px'}}
+            style={{ width: '100px', marginRight: '15px' }}
             value={checkWardReportViewModal.selectedYear}
-            onChange={(date:any) => {
+            onChange={(date: any) => {
               checkWardReportViewModal.selectedYear = date
               checkWardReportViewModal.onload()
             }}
@@ -87,11 +87,11 @@ export default observer(function CheckWardReportView() {
           <Select
             style={{ width: '100px', marginRight: '5px' }}
             value={checkWardReportViewModal.selectedMonth}
-            onChange={(date:any) => {
+            onChange={(date: any) => {
               checkWardReportViewModal.selectedMonth = date
               checkWardReportViewModal.onload()
             }}
-              >
+          >
             {numberToArray(11).map((item) => (
               <Select.Option value={item + 1} key={item}>
                 {item + 1}
@@ -99,7 +99,9 @@ export default observer(function CheckWardReportView() {
             ))}
           </Select>
 
-          <Button type='primary' onClick={() => checkWardReportViewModal.onload()}>查询</Button>
+          <Button type='primary' onClick={() => checkWardReportViewModal.onload()}>
+            查询
+          </Button>
           <Button onClick={() => onPrint(true)}>打印</Button>
         </div>
       </HeadCon>
@@ -120,8 +122,8 @@ export default observer(function CheckWardReportView() {
               }
             }
           })}
-          <div className="example">
-            <Spin spinning={checkWardReportViewModal.pageLoading} size="large"></Spin>
+          <div className='example'>
+            <Spin spinning={checkWardReportViewModal.pageLoading} size='large' />
           </div>
         </Page>
       </ScrollCon>
@@ -172,13 +174,13 @@ const Page = styled.div`
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 50px);
   .example {
-    position:absolute;
+    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    display:flex; 
-    align-items:center; 
-    justify-content:center
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `

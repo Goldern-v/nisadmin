@@ -36,7 +36,7 @@ export default function 不良事件弹窗(props: Props) {
             className='cell-input'
             value={record.eventDate}
             onChange={(e) => {
-              record.wardName = e.target.value
+              record.eventDate = e.target.value
               setData(cloneData)
             }}
           />

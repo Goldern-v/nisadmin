@@ -143,6 +143,15 @@ export default class ArrangeService extends BaseApiService {
   public schShiftSettingSaveOrUpdate(obj: any) {
     return this.post(`/schShiftSetting/saveOrUpdate`, obj)
   }
+
+  //结余数据列表
+  public schHourInstanceGetByDeptCode(deptCode: any) {
+    return this.get(`/schHourInstance/getByDeptCode/${deptCode}`)
+  }
+  //结余数据列表保存
+  public schHourInstanceSaveOrUpdate(lists: any) {
+    return this.post(`/schHourInstance/saveOrUpdate`, { lists })
+  }
 }
 
 export const arrangeService = new ArrangeService()

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig } from 'src/vendors/antd'
+import { DatePicker, Select, ColumnProps, PaginationConfig, Input, message } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
@@ -11,41 +11,98 @@ import { useCallback } from 'src/types/react'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
+import { arrangeService } from '../../services/ArrangeService'
 export interface Props {}
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
+  const updateDataSource = () => {
+    setDataSource([...dataSource])
+  }
   const columns: ColumnProps<any>[] = [
     {
-      title: '日期',
-      dataIndex: 'recordDate',
-      render(text: string, record: any, index: number) {
-        return text ? text.split(' ')[0] : ''
+      title: '科室',
+      dataIndex: 'deptName',
+      width: 130
+    },
+    {
+      title: '姓名',
+      dataIndex: 'empName',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '累计结余(小时)',
+      dataIndex: 'balanceHour',
+      align: 'center',
+      className: 'input-cell',
+      width: 100,
+      render(text: any, record: any, index: any) {
+        return (
+          <Input
+            value={text}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+              record.balanceHour = e.target.value
+              updateDataSource()
+            }}
+          />
+        )
       }
     },
     {
-      title: '时间'
-    },
-    {
-      title: '问题种类'
-    },
-    {
-      title: '详情'
-    },
-    {
-      title: '创建人'
-    },
-    {
-      title: '创建时间'
-    },
-    {
-      title: '操作',
+      title: '公休结余(天数)',
+      dataIndex: 'publicHour',
+      align: 'center',
       width: 100,
-      render(text: any, record: any, index: number) {
+      className: 'input-cell',
+      render(text: any, record: any, index: any) {
         return (
-          <DoCon>
-            <span onClick={() => onDetail(record)}>查看详情</span>
-          </DoCon>
+          <Input
+            value={text}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+              record.publicHour = e.target.value
+              updateDataSource()
+            }}
+          />
+        )
+      }
+    },
+    {
+      title: '节休结余(天数)',
+      dataIndex: 'holidayHour',
+      align: 'center',
+      width: 100,
+      className: 'input-cell',
+      render(text: any, record: any, index: any) {
+        return (
+          <Input
+            value={text}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+              record.holidayHour = e.target.value
+              updateDataSource()
+            }}
+          />
         )
       }
     }
@@ -58,6 +115,10 @@ export default observer(function FollowUpRecord() {
   })
   const getData = () => {
     setPageLoading(true)
+    arrangeService.schHourInstanceGetByDeptCode(authStore.selectedDeptCode).then((res) => {
+      setDataSource(res.data)
+      setPageLoading(false)
+    })
     // qcOneService.qcSafetyCheckGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {
     //   setDataSource(res.data.list)
     //   setPageLoading(false)
@@ -67,50 +128,52 @@ export default observer(function FollowUpRecord() {
   const onDetail = (record: any) => {}
   useEffect(() => {
     getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize])
+  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode])
 
   return (
     <Wrapper>
       <PageHeader>
         <PageTitle>结余数据初始化</PageTitle>
         <Place />
-        <span className='label'>日期:</span>
-        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} />
+
         <span className='label'>科室:</span>
         <DeptSelect onChange={() => {}} />
-        <span className='label'>护士:</span>
-        <Select>{/* <Select.Option>123</Select.Option> */}</Select>
         <Button onClick={() => getData()}>查询</Button>
-        <Button type='primary' onClick={() => {}}>
-          添加
+        <Button
+          type='primary'
+          onClick={() => {
+            arrangeService.schHourInstanceSaveOrUpdate(dataSource).then((res) => {
+              message.success('保存成功')
+              getData()
+            })
+          }}
+        >
+          保存
         </Button>
-        <Button>导出</Button>
       </PageHeader>
       <BaseTable
         loading={pageLoading}
         dataSource={dataSource}
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
-        type={['index', 'fixedIndex']}
-        surplusWidth={200}
-        surplusHeight={200}
-        pagination={{
-          current: pageOptions.pageIndex,
-          pageSize: pageOptions.pageSize,
-          total: pageOptions.total
-        }}
-        onChange={(pagination: PaginationConfig) => {
-          setPageOptions({
-            pageIndex: pagination.current,
-            pageSize: pagination.pageSize,
-            total: pagination.total
-          })
-        }}
-        onRow={(record: any) => {
-          return { onDoubleClick: () => onDetail(record) }
-        }}
+        type={['index']}
+        surplusHeight={180}
       />
     </Wrapper>
   )
 })
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  .input-cell {
+    padding: 0 !important;
+    input {
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      outline: none;
+      text-align: center;
+      &:focus {
+        background: ${(p) => p.theme.$mlc};
+      }
+    }
+  }
+`

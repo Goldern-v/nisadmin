@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import HeadCon from '../../components/HeadCon/HeadCon'
 import BaseTable from 'src/components/BaseTable'
-import { ColumnProps, PaginationConfig, AutoComplete } from 'src/vendors/antd'
+import { ColumnProps, PaginationConfig, AutoComplete, message } from 'src/vendors/antd'
 import { wardRegisterService } from '../../services/WardRegisterService'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -11,8 +11,10 @@ import { wardRegisterViewModal } from '../../WardRegisterViewModal'
 export interface Props {}
 
 export default observer(function HandoverRegister() {
+  const [oldData, setOldData]: any = useState({})
   const [dataSource, setDataSource] = useState([])
   const [itemConfigList, setItemConfigList] = useState([])
+  const [pageLoading, setPageLoading] = useState(false)
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
@@ -86,6 +88,7 @@ export default observer(function HandoverRegister() {
           render(text: string, record: any, index: number) {
             return (
               <AutoComplete
+                dataSource={(item.options || '').split(';')}
                 value={text}
                 onChange={(value) => {
                   record[item.itemCode] = value
@@ -111,6 +114,7 @@ export default observer(function HandoverRegister() {
           render(text: string, record: any, index: number) {
             return (
               <AutoComplete
+                dataSource={(item.options || '').split(';')}
                 value={text}
                 onChange={(value) => {
                   record[item.itemCode] = value
@@ -125,25 +129,33 @@ export default observer(function HandoverRegister() {
 
     {
       title: '备注',
+      width: 100,
       render(text: string, record: any, index: number) {
         return ''
       }
     },
     {
       title: '交班者签名',
+      width: 80,
+      dataIndex: 'signerName',
+      align: 'center',
       render(text: string, record: any, index: number) {
-        return ''
+        return text
       }
     },
     {
       title: '接班者签名',
+      width: 80,
+      dataIndex: 'auditorName',
+      align: 'center',
       render(text: string, record: any, index: number) {
-        return ''
+        return text
       }
     }
   ]
 
   const onLoad = () => {
+    setPageLoading(true)
     wardRegisterService
       .getPage({
         wardCode: authStore.selectedDeptCode,
@@ -156,6 +168,22 @@ export default observer(function HandoverRegister() {
         setTotal(res.data.page.total)
         setDataSource(res.data.page.list)
         setItemConfigList(res.data.itemConfigList)
+        setOldData(res.data)
+        setPageLoading(false)
+      })
+  }
+
+  const onSave = () => {
+    wardRegisterService
+      .saveAndSignAll({
+        itemConfigList: oldData.itemConfigList,
+        itemDataList: dataSource,
+        wardCode: authStore.selectedDeptCode,
+        recordCode: 'qc_register_handover'
+      })
+      .then((res) => {
+        message.success('保存成功')
+        onLoad()
       })
   }
 
@@ -168,12 +196,34 @@ export default observer(function HandoverRegister() {
         pageTitle='物品交接登记本'
         setPageTitle='物品交接登记本设置'
         setPageUrl={'/wardRegister/handoverRegisterSet'}
+        btnList={[
+          {
+            name: '查询',
+            type: 'primary',
+            onClick: () => {
+              onLoad()
+            }
+          },
+          {
+            name: '保存',
+            type: 'primary',
+            onClick: () => {
+              onSave()
+            }
+          },
+          {
+            name: '导出',
+            onClick: () => {},
+            type: ''
+          }
+        ]}
       />
       <TableCon>
         <BaseTable
+          loading={pageLoading}
           dataSource={dataSource}
           columns={columns}
-          surplusWidth={200}
+          surplusWidth={190}
           surplusHeight={300}
           pagination={{
             current: pageOptions.pageIndex,
@@ -193,6 +243,7 @@ export default observer(function HandoverRegister() {
 })
 const Wrapper = styled.div``
 const TableCon = styled.div`
+  padding: 0 15px;
   .ant-table-header-column {
     height: 100%;
     > div {
@@ -215,6 +266,14 @@ const TableCon = styled.div`
     input {
       border: 0;
       border-radius: 0;
+      text-align: center;
+    }
+  }
+  .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
+  .ant-table-row-hover {
+    background: #fff !important;
+    > td {
+      background: #fff !important;
     }
   }
 `

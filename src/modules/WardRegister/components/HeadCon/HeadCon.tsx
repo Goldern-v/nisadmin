@@ -10,10 +10,11 @@ export interface Props {
   pageTitle: string
   setPageTitle: string
   setPageUrl: string
+  btnList: any[]
 }
 
 export default function HeadCon(props: Props) {
-  const { pageTitle, setPageTitle, setPageUrl } = props
+  const { pageTitle, setPageTitle, setPageUrl, btnList } = props
   return (
     <Wrapper>
       <PageHeader>
@@ -25,9 +26,13 @@ export default function HeadCon(props: Props) {
         <DeptSelect onChange={() => {}} />
         <span className='label'>班次:</span>
         <Select>{/* <Select.Option>123</Select.Option> */}</Select>
-        <Button>查询</Button>
-        <Button>保存</Button>
-        <Button>导出</Button>
+        {btnList &&
+          btnList.map((item: any, index: number) => (
+            <Button onClick={item.onClick} type={item.type} key={index}>
+              {item.name}
+            </Button>
+          ))}
+
         <Button onClick={() => appStore.history.push(setPageUrl)}>{setPageTitle}</Button>
       </PageHeader>
     </Wrapper>
