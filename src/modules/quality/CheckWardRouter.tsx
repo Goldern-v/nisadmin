@@ -14,19 +14,19 @@ import CheckWardReportView from './views/checkWard/view/report/CheckWardReportVi
 
 const LEFT_MENU_CONFIG: any = [
   {
-    title: '查房记录',
+    title: '特殊时段查房记录',
     path: '/checkWard',
     icon: <CFJL />,
     component: RecordView
   },
   {
-    title: '查房计划表',
+    title: '特殊时段计划表',
     path: '/checkWard/schedule',
     icon: <CFJHB />,
     component: ScheduleView
   },
   {
-    title: '查房统计报告',
+    title: '特殊时段查房统计报告',
     path: '/checkWard/checkWardReportView',
     icon: <CFJHBG />,
     component: CheckWardReportView

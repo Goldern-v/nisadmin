@@ -41,7 +41,7 @@ export default observer(function Head() {
   return (
     <Wrapper>
       <LeftIcon>
-        <PageTitle>查房计划表</PageTitle>
+        <PageTitle>特殊时段计划表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年度：</span>

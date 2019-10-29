@@ -40,7 +40,7 @@ export default observer(function Head() {
   return (
     <Wrapper>
       <LeftIcon>
-        <PageTitle>查房记录</PageTitle>
+        <PageTitle>特殊时段查房记录</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>查房日期：</span>
