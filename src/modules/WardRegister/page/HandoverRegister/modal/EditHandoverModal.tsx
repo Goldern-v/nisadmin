@@ -26,6 +26,7 @@ export default function EditHandoverModal(props: Props) {
   const [title, setTitle] = useState('添加交接班次')
   const [shiftList, setShiftList] = useState([])
   const [arrangeList, setArrangeList] = useState([])
+  const [selectedArrangeList, setSelectedArrangeList] = useState([])
   let { visible, onCancel } = props
   let refForm = React.createRef<Form>()
 
@@ -58,6 +59,13 @@ export default function EditHandoverModal(props: Props) {
     ])
   }
 
+  const onFormChange = (name: string, value: string) => {
+    if (name == 'itemCode') {
+      let list: any = arrangeList.filter((item: any) => item.shiftType == value)
+      setSelectedArrangeList(list)
+    }
+  }
+
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
@@ -75,7 +83,7 @@ export default function EditHandoverModal(props: Props) {
 
   return (
     <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Form ref={refForm} rules={rules} labelWidth={80}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFormChange}>
         <Row>
           <Col span={24}>
             <Form.Field label={`科室`} name='wardName' required>
@@ -84,8 +92,8 @@ export default function EditHandoverModal(props: Props) {
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`班次名称`} name='itemCode'>
-              <Select>
+            <Form.Field label={`班次名称`} name='itemCode' required>
+              <Select placeholder='请选择班次'>
                 {shiftList.map((item: DictItem) =>
                   item.name !== '休假' ? (
                     <Select.Option value={item.code} key={item.code}>
@@ -100,8 +108,8 @@ export default function EditHandoverModal(props: Props) {
             <Form.Field label={`任务提醒`} name='vsRange'>
               <Checkbox.Group style={{ width: '100%' }}>
                 <Row>
-                  {arrangeList.map((item: any) => (
-                    <Col span={4} key={item.name}>
+                  {selectedArrangeList.map((item: any) => (
+                    <Col span={6} key={item.name}>
                       <Checkbox value={item.name}>{item.name}</Checkbox>
                     </Col>
                   ))}

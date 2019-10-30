@@ -139,6 +139,57 @@ export default observer(function SelectCon() {
           <div className='content'>
             <DatePicker.RangePicker
               ranges={{
+                本周: [moment().startOf('week'), moment().endOf('week')],
+                上周: () => {
+                  /** 判断是否是一周 */
+                  let weeks = date[0].week()
+                  if (
+                    date[0].format('YYYY-MM-DD') == date[0].startOf('week').format('YYYY-MM-DD') ||
+                    date[1].format('YYYY-MM-DD') == date[0].endOf('week').format('YYYY-MM-DD')
+                  ) {
+                    return [
+                      moment()
+                        .week(weeks - 1)
+                        .startOf('week'),
+                      moment()
+                        .week(weeks - 1)
+                        .endOf('week')
+                    ]
+                  }
+                  return [
+                    moment()
+                      .week(moment().week() - 1)
+                      .startOf('week'),
+                    moment()
+                      .week(moment().week() - 1)
+                      .endOf('week')
+                  ]
+                },
+                下周: () => {
+                  /** 判断是否是一周 */
+                  let weeks = date[0].week()
+                  if (
+                    date[0].format('YYYY-MM-DD') == date[0].startOf('week').format('YYYY-MM-DD') ||
+                    date[1].format('YYYY-MM-DD') == date[0].endOf('week').format('YYYY-MM-DD')
+                  ) {
+                    return [
+                      moment()
+                        .week(weeks + 1)
+                        .startOf('week'),
+                      moment()
+                        .week(weeks + 1)
+                        .endOf('week')
+                    ]
+                  }
+                  return [
+                    moment()
+                      .week(moment().week() + 1)
+                      .startOf('week'),
+                    moment()
+                      .week(moment().week() + 1)
+                      .endOf('week')
+                  ]
+                },
                 本月: [moment().startOf('month'), moment().endOf('month')],
                 上月: [
                   moment()
