@@ -114,8 +114,8 @@ export default observer(function NurseMeetingRecord() {
       fixed: 'right',
       render: (text: string, record: any, idx: number) => {
         let editable = false
-        let creatorNo = record.creatorNo
-        let empNo = authStore.user && authStore.user.empNo
+        let creatorNo = record.creatorNo.toLowerCase()
+        let empNo = authStore.user && authStore.user.empNo.toLowerCase()
         if (empNo && empNo == creatorNo) editable = true
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>

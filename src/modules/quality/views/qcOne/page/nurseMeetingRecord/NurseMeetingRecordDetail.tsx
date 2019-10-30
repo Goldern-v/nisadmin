@@ -43,7 +43,7 @@ export default observer(function NurseMeetingRecordDetail() {
     if (!nurseMeeting.creatorNo) return false
     if (!authStore.user) return false
 
-    if (nurseMeeting.creatorNo !== authStore.user.empNo) return false
+    if (nurseMeeting.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
 
     return true
   }
@@ -95,9 +95,9 @@ export default observer(function NurseMeetingRecordDetail() {
   }
 
   const ReadBtn = () => {
-    let target = unreceiverList.find((item: any) => item.empNo == (authStore.user && authStore.user.empNo))
+    let target = unreceiverList.find((item: any) => item.empNo.toLowerCase() == (authStore.user && authStore.user.empNo.toLowerCase()))
 
-    if (!target || auth)
+    if (!target)
       return <span></span>
     else
       return <Button disabled={loading} type="primary" ghost onClick={handleRead}>我已查看</Button>

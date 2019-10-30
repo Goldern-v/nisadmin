@@ -35,7 +35,7 @@ export default observer(function BadEventRecordDetail() {
     if (!badEvent.creatorNo) return false
     if (!authStore.user) return false
 
-    if (badEvent.creatorNo !== authStore.user.empNo) return false
+    if (badEvent.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
 
     return true
   }
