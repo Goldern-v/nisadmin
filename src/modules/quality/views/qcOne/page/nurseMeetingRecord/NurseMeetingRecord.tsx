@@ -26,7 +26,7 @@ export default observer(function NurseMeetingRecord() {
     wardCode: '',
     pageIndex: 1,
     pageSize: 15,
-    problemType: 'QCWMT001',
+    problemType: '',
     type: '1',
     startDate: qcOneSelectViewModal.startDate,
     endDate: qcOneSelectViewModal.endDate,
@@ -120,7 +120,7 @@ export default observer(function NurseMeetingRecord() {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
           {editable && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
-          {!editable && <span style={{ width: '20px' }}></span>}
+          {!editable && <span style={{ width: '20px', cursor: 'default' }}></span>}
         </DoCon>
       }
     }
@@ -232,6 +232,7 @@ export default observer(function NurseMeetingRecord() {
           style={{ width: 80 }}
           onChange={(problemType: string) => setQuery({ ...query, problemType })}
           value={query.problemType}>
+          <Option value="">全部</Option>
           <Option value="QCWMT001">周会</Option>
           <Option value="QCWMT002">月会</Option>
         </Select>
