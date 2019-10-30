@@ -28,6 +28,7 @@ class RecordViewModal {
       //科室
       checkWardService.getNursingUnitAll().then((res) => {
         let array = res.data.deptList
+        // console.log(array,'array')
         array.map((item:any, index:any) => {
           console.log(index,array.length,'this.stringthis.string')
           if(index == array.length - 1) {
@@ -36,8 +37,7 @@ class RecordViewModal {
             this.string += item.code + ","
           }
         })
-
-        console.log(this.string,'this.stringthis.string')
+        // console.log(this.string,'this.stringthis.string')
         this.selectedDept = res.data.defaultDept
         if (authStore.isDepartment) {
           array.unshift({
@@ -86,6 +86,7 @@ class RecordViewModal {
     // let code: any = data ? data.code : ''
     this.tableLoading = true
     checkWardService.getPage(this.postObj).then((res) => {
+      this.string = ''
       let array: any = []
       res.data.page.list.length > 0 && res.data.page.list.map((item: any, index: any) => {
         item.nurseProblem = res.data.srPageItemlist[index].nurseProblem
