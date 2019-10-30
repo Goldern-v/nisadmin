@@ -20,6 +20,7 @@ const Option = Select.Option
 export default observer(function NurseMeetingRecord() {
   const { history } = appStore
   const auth = authStore.isRoleManage
+  const sameWard = authStore.defaultDeptCode == authStore.selectedDeptCode
 
   const [query, setQuery] = useState({
     wardCode: '',
@@ -112,9 +113,14 @@ export default observer(function NurseMeetingRecord() {
       width: 80,
       fixed: 'right',
       render: (text: string, record: any, idx: number) => {
+        let editable = false
+        let creatorNo = record.creatorNo
+        let empNo = authStore.user && authStore.user.empNo
+        if (empNo && empNo == creatorNo) editable = true
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
-          {auth && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
+          {editable && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
+          {!editable && <span style={{ width: '20px' }}></span>}
         </DoCon>
       }
     }
@@ -231,7 +237,7 @@ export default observer(function NurseMeetingRecord() {
         </Select>
         <Button onClick={handleSearch}>查询</Button>
         {
-          auth &&
+          sameWard &&
           <Button type="primary" onClick={() => history.push('/nurseMeetingRecordEdit')}>添加</Button>
         }
       </RightIcon>
