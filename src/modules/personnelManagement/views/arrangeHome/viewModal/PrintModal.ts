@@ -58,13 +58,13 @@ class PrintModal {
     //页面高度 超过换页
     let pageHeight = 1090
     //td计算用高度 和打印样式保持一致
-    let tdHeight = 30
+    let tdHeight = 24
 
     //如果总排班超过1周 横向显示
     if (dateLength > 7) {
       pageWidth = 1100
       pageHeight = 760
-      tdHeight = 24
+      tdHeight = 20
     }
     //td指定样式
     let tdStyle = (other?: string) => {
@@ -309,7 +309,7 @@ class PrintModal {
     }
     td,th{
       text-align: center;
-      font-size: 14px;
+      font-size: 12px;
       color: #000;
       padding: 0;
       border: 1px #000 solid;
@@ -318,7 +318,7 @@ class PrintModal {
       font-size: 20px!important;
     }
     table tr.header-row td{
-      font-size: 14px!important;
+      font-size: 12px!important;
     }
     table td.text-left{
       text-align: left;
@@ -347,7 +347,7 @@ class PrintModal {
       }
     `
     //调用打印函数
-    printing(document.getElementById(printId) as HTMLElement, {
+    printing.preview(document.getElementById(printId) as HTMLElement, {
       injectGlobalCss: true,
       scanStyles: false,
       css: defaultPrintCss
