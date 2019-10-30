@@ -123,12 +123,17 @@ export default observer(function TopPart() {
           <div className='label data'>日期：</div>
           <div className='content'>
             <DatePicker.RangePicker
+              allowClear={false}
               value={
                 selectViewModal.params.startTime
                   ? [moment(selectViewModal.params.startTime), moment(selectViewModal.params.endTime)]
                   : undefined
               }
-              disabled
+              onChange={(value: any) => {
+                selectViewModal.params.startTime = value[0].format('YYYY-MM-DD')
+                selectViewModal.params.endTime = value[1].format('YYYY-MM-DD')
+                sheetViewModal.getSheetTableData()
+              }}
               style={{ width: 230 }}
             />
           </div>

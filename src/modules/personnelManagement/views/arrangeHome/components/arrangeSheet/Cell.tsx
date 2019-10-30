@@ -44,7 +44,10 @@ export default observer(function Cell(props: Props) {
       [
         {
           icon: require('../../images/追加排班.png'),
-          disabled: sheetViewModal.selectedCell.rangeName && sheetViewModal.selectedCell.settings,
+          disabled:
+            sheetViewModal.selectedCell.rangeName &&
+            sheetViewModal.selectedCell.settings &&
+            sheetViewModal.selectedCell.settings.length,
           label: '追加排班',
           type: 'text',
           children: getAddArrangeMenuList(sheetViewModal.arrangeMenu, sheetViewModal.selectedCell)

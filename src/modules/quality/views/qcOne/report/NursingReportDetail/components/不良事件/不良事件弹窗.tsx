@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { Input, Radio, ColumnProps, AutoComplete, message } from 'src/vendors/antd'
+import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem, Report, TypeCompare, DeptItem } from '../../types'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportPoolViewModal'
+import { EventTypeList } from './Table'
+import { DictItem } from 'src/services/api/CommonApiService'
 
 export interface Props {
   sectionId: string
@@ -63,27 +65,42 @@ export default function 不良事件弹窗(props: Props) {
     },
     {
       title: `事情种类`,
+      className: 'cell-input',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
-            className='cell-input'
+          <Select
             value={record.eventType}
-            onChange={(e) => {
-              record.eventType = e.target.value
+            onChange={(value: any) => {
+              record.eventType = value
               setData(cloneData)
             }}
-          />
+          >
+            {EventTypeList.map((item: DictItem) => (
+              <Select.Option key={item.code} value={item.code}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
+          // <input
+          //   type='text'
+          //   className='cell-input'
+          //   value={record.eventType}
+          //   onChange={(e) => {
+          //     record.eventType = e.target.value
+          //     setData(cloneData)
+          //   }}
+          // />
         )
       },
       width: 100
     },
     {
       title: `事情简要经过`,
+      className: 'cell-input',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
+          <Input.TextArea
+            autosize={true}
             className='cell-input'
             value={record.briefCourseEvent}
             onChange={(e) => {
@@ -97,10 +114,11 @@ export default function 不良事件弹窗(props: Props) {
     },
     {
       title: `后果`,
+      className: 'cell-input',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <input
-            type='text'
+          <Input.TextArea
+            autosize={true}
             className='cell-input'
             value={record.result}
             onChange={(e) => {
@@ -175,8 +193,33 @@ const Wrapper = styled.div`
     top: -13px;
     right: 0;
   }
-
+  .cell-input {
+    padding: 0 !important;
+    outline: none;
+    .ant-select-selection__rendered {
+      margin: 0 !important;
+      box-shadow: none;
+    }
+    .ant-select {
+      width: 100%;
+      box-shadow: none;
+    }
+    textarea {
+      box-shadow: none;
+      width: 100%;
+      height: 100%;
+      resize: none;
+      border: 0;
+      outline: none;
+      border-radius: 0;
+      padding: 4px !important;
+      &:focus {
+        background: ${(p) => p.theme.$mlc};
+      }
+    }
+  }
   .cell-input input,
+  .cell-input .ant-select-selection,
   input.cell-input {
     width: 100%;
     height: 100%;

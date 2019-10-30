@@ -34,42 +34,50 @@ export default function PersonnelManagementView() {
               title: '临时人员借调',
               path: '/personnelManagement/DeptBorrowNew',
               component: PersonnelSecondment,
-              style: { background: '#fff' }
+              style: { background: '#fff' },
+              hide: !authStore.isRoleManage
             }
           : {
               title: '科室借用',
               path: '/personnelManagement/DeptBorrowNew',
-              component: DeptBorrowNew
+              component: DeptBorrowNew,
+              hide: !authStore.isRoleManage
             },
         {
           title: '人员分组',
           path: '/personnelManagement/PersonnelSettingViewNew',
-          component: PersonnelSettingViewNew
+          component: PersonnelSettingViewNew,
+          hide: !authStore.isRoleManage
         },
         {
           title: '排班人员设置',
           path: '/personnelManagement/NurseSettingViewNew',
-          component: NurseSettingViewNew
+          component: NurseSettingViewNew,
+          hide: !authStore.isRoleManage
         },
         {
           title: '班次设置',
           path: '/personnelManagement/ShiftSettingViewNew',
-          component: ShiftSettingViewNew
+          component: ShiftSettingViewNew,
+          hide: !authStore.isRoleManage
         },
         {
           title: '排班套餐设置',
           path: '/personnelManagement/MealSettingViewNew',
-          component: MealSettingViewNew
+          component: MealSettingViewNew,
+          hide: !authStore.isRoleManage
         },
         {
           title: '加减班列表查询',
           path: '/personnelManagement/addSubClass',
-          component: AddSubClass
+          component: AddSubClass,
+          hide: !authStore.isRoleManage
         },
         {
           title: '节假日查询',
           path: '/personnelManagement/holidaysList',
-          component: HolidaysList
+          component: HolidaysList,
+          hide: !authStore.isRoleManage
         },
         {
           title: '结余数据初始化',

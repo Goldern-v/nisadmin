@@ -53,7 +53,7 @@ export const sectionList: SectionListItem[] = [
     sectionId: '不良事件',
     sectionTitle: '不良事件',
     modalTitle: '编辑不良事件',
-    modalWidth: 800,
+    modalWidth: 1000,
     data: {},
     section: 不良事件模块,
     modal: 不良事件弹窗

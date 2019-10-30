@@ -3,11 +3,14 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import HeadCon from '../../components/HeadCon/HeadCon'
 import BaseTable from 'src/components/BaseTable'
-import { ColumnProps, PaginationConfig, AutoComplete, message } from 'src/vendors/antd'
+import { ColumnProps, PaginationConfig, AutoComplete, message, Input } from 'src/vendors/antd'
 import { wardRegisterService } from '../../services/WardRegisterService'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { wardRegisterViewModal } from '../../WardRegisterViewModal'
+import { globalModal } from 'src/global/globalModal'
+import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFilesList/NurseFilesListView'
+import { arrangeService } from 'src/modules/personnelManagement/views/arrangeHome/services/ArrangeService'
 export interface Props {}
 
 export default observer(function HandoverRegister() {
@@ -129,9 +132,20 @@ export default observer(function HandoverRegister() {
 
     {
       title: '备注',
-      width: 100,
+      width: 150,
+      dataIndex: 'description',
+      className: 'input-cell',
       render(text: string, record: any, index: number) {
-        return ''
+        return (
+          <Input.TextArea
+            autosize={true}
+            value={text}
+            onChange={(e) => {
+              record.description = e.target.value
+              updateDataSource()
+            }}
+          />
+        )
       }
     },
     {
@@ -149,7 +163,24 @@ export default observer(function HandoverRegister() {
       dataIndex: 'auditorName',
       align: 'center',
       render(text: string, record: any, index: number) {
-        return text
+        return (
+          text || (
+            <DoCon>
+              <span
+                onClick={() => {
+                  globalModal.confirm('交班签名确认', '你确定交班签名吗？').then((res) => {
+                    wardRegisterService.auditAll([record.id]).then((res) => {
+                      message.success('接班签名成功')
+                      onLoad()
+                    })
+                  })
+                }}
+              >
+                签名
+              </span>
+            </DoCon>
+          )
+        )
       }
     }
   ]
@@ -268,6 +299,17 @@ const TableCon = styled.div`
       border-radius: 0;
       text-align: center;
     }
+  }
+  .input-cell {
+    padding: 0;
+  }
+  textarea {
+    border: 0;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    outline: none;
+    resize: none;
   }
   .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
   .ant-table-row-hover {

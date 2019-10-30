@@ -4,7 +4,7 @@ import { selectViewModal } from '../viewModal/SelectViewModal'
 import { observer } from 'mobx-react-lite'
 import { DatePicker, Button, Select, message } from 'src/vendors/antd'
 import { fileDownload } from 'src/utils/file/file'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import DeptSelect from 'src/components/DeptSelect'
 import moment from 'moment'
 import { scheduleStore } from 'src/stores'
@@ -190,16 +190,19 @@ export default observer(function SelectCon() {
             查询
           </Button>
         </div>
-        <div className='item'>
-          <Button
-            className='statistics'
-            onClick={() => {
-              appStore.history.push(`/personnelManagement/EditArrangePage`)
-            }}
-          >
-            编辑排班
-          </Button>
-        </div>
+        {authStore.isRoleManage && (
+          <div className='item'>
+            <Button
+              className='statistics'
+              onClick={() => {
+                appStore.history.push(`/personnelManagement/EditArrangePage`)
+              }}
+            >
+              编辑排班
+            </Button>
+          </div>
+        )}
+
         <div className='item'>
           <Button className='statistics getExcel' onClick={exportExcel}>
             导出Excel

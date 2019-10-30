@@ -6,6 +6,10 @@ import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { Checkbox } from 'src/vendors/antd'
+import { authStore } from 'src/stores'
+import service from 'src/services/api'
+import { DictItem } from 'src/services/api/CommonApiService'
+import { arrangeService } from 'src/modules/personnelManagement/views/arrangeHome/services/ArrangeService'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -15,12 +19,13 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  publicDate: (val) => !!val || '请填写发表日期'
+  itemCode: (val) => !!val || '请填写班次名称'
 }
 
 export default function EditHandoverModal(props: Props) {
-  const [title, setTitle] = useState('')
-
+  const [title, setTitle] = useState('添加交接班次')
+  const [shiftList, setShiftList] = useState([])
+  const [arrangeList, setArrangeList] = useState([])
   let { visible, onCancel } = props
   let refForm = React.createRef<Form>()
 
@@ -28,6 +33,11 @@ export default function EditHandoverModal(props: Props) {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
     if (err) return
+    let data: any = {}
+    data.wardCode = authStore.selectedDeptCode
+    data.recordCode = 'qc_register_handover'
+    data.itemCode = value.itemCode
+    data.vsRange = value.vsRange.join(';')
 
     /** 保存接口 */
     // service(value).then((res: any) => {
@@ -37,14 +47,28 @@ export default function EditHandoverModal(props: Props) {
     // })
   }
 
+  const initData = () => {
+    return Promise.all([
+      service.commonApiService.multiDictInfo(['sch_range_shift_type']).then((res) => {
+        setShiftList(res.data.sch_range_shift_type)
+      }),
+      arrangeService.getArrangeMenu().then((res) => {
+        setArrangeList(res.data)
+      })
+    ])
+  }
+
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (refForm.current && visible) {
-      /** 表单数据初始化 */
-      refForm!.current!.setFields({
-        publicDate: '',
-        title: ''
+      let form = refForm.current
+      initData().then((res) => {
+        /** 表单数据初始化 */
+        form.setFields({
+          wardName: authStore.selectedDeptName,
+          title: ''
+        })
       })
     }
   }, [visible])
@@ -54,50 +78,33 @@ export default function EditHandoverModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={80}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`科室`} name='publicDate' required>
-              <Input />
+            <Form.Field label={`科室`} name='wardName' required>
+              <Input readOnly />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`班次名称`} name='title'>
-              <Input placeholder='请输入班次名称' />
+            <Form.Field label={`班次名称`} name='itemCode'>
+              <Select>
+                {shiftList.map((item: DictItem) =>
+                  item.name !== '休假' ? (
+                    <Select.Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ) : null
+                )}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`任务提醒`} name='title'>
+            <Form.Field label={`任务提醒`} name='vsRange'>
               <Checkbox.Group style={{ width: '100%' }}>
                 <Row>
-                  <Col span={4}>
-                    <Checkbox value='A'>A</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='B'>B</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='C'>C</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='D'>D</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='E'>E</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='C'>C</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='D'>D</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='E'>E</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='D'>D</Checkbox>
-                  </Col>
-                  <Col span={4}>
-                    <Checkbox value='E'>E</Checkbox>
-                  </Col>
+                  {arrangeList.map((item: any) => (
+                    <Col span={4} key={item.name}>
+                      <Checkbox value={item.name}>{item.name}</Checkbox>
+                    </Col>
+                  ))}
                 </Row>
               </Checkbox.Group>
             </Form.Field>

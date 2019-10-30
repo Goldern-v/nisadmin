@@ -58,8 +58,8 @@ export default observer(function QualityControlRecord() {
   const getTableData = (obj?: any) => {
     setLoading(true)
     let sendData = {
-      pageIndex: obj ? obj.current : 1,
-      pageSize: obj ? obj.pageSize : 20,
+      pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
+      pageSize: obj ? obj.pageSize : qualityControlRecordVM.allData.pageSize || 20,
       wardCode: qualityControlRecordVM.filterDeptCode,
       qcGroupRole: qualityControlRecordVM.filterForm,
       type: qualityControlRecordVM.readWay,

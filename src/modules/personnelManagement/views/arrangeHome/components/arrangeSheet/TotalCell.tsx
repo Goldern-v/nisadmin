@@ -20,6 +20,6 @@ export default observer(function TotalCell(props: Props) {
   let total = list.reduce((total: any, current: ArrangeItem) => {
     return total + Number(current.effectiveTime)
   }, 0)
-  return <Wrapper>{total}</Wrapper>
+  return <Wrapper>{Number(total).toFixed(2)}</Wrapper>
 })
 const Wrapper = styled.div``

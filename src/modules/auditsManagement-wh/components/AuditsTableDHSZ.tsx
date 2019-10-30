@@ -55,6 +55,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}&needAudit=false`)
         }
       })
+    } else if (showType == 'sr') {
+      window.open(`/crNursing/manage/#/qualityScheduleRecordDetails/${row.othersMessage.id}`)
     }
   }
   const columns: any = [
@@ -73,7 +75,15 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       align: 'center',
       width: 90,
       render(text: string, record: any) {
-        return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '三级质控' : text == 'qcTwoLevel' ? '二级质控' : ''
+        return text == 'nurseFile'
+          ? '护士档案'
+          : text == 'qc'
+          ? '三级质控'
+          : text == 'qcTwoLevel'
+          ? '二级质控'
+          : text == 'sr'
+          ? '特殊时段查房'
+          : ''
       }
     },
     {

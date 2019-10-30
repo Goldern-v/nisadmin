@@ -23,6 +23,7 @@ import AddUpHourCell from './AddUpHourCell'
 import BalanceHour from './BalanceHour'
 import PublicHour from './PublicHour'
 import HolidayHour from './HolidayHour'
+import $ from 'jquery'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean
@@ -183,22 +184,39 @@ export default observer(function ArrangeSheet(props: Props) {
       })
     } catch (error) {}
     try {
-      if (
-        (document as any).querySelector('.ant-table-body').scrollWidth ==
-        (document as any).querySelector('.ant-table-body').clientWidth
-      ) {
-        ;(document as any).querySelector('#baseTable').style.width =
-          (sheetViewModal.dateList.length + 6) * 70 + 250 + 10 + 'px'
-        setSurplusWidth(false)
-      } else {
-        ;(document as any).querySelector('#baseTable').style.width = 'auto'
-        setSurplusWidth(240)
-      }
+      // if (
+      //   (document as any).querySelector('.ant-table-body').scrollWidth ==
+      //   (document as any).querySelector('.ant-table-body').clientWidth
+      // ) {
+      //   ;(document as any).querySelector('#baseTable').style.width =
+      //     (sheetViewModal.dateList.length + 6) * 70 + 250 + 10 + 'px'
+      //   setSurplusWidth(false)
+      // } else {
+      //   ;(document as any).querySelector('#baseTable').style.width = 'auto'
+      //   setSurplusWidth(240)
+      // }
+      setTimeout(() => {
+        if (
+          (document as any).querySelector('.ant-table-body').scrollWidth ==
+          (document as any).querySelector('.ant-table-body').clientWidth
+        ) {
+          /** noscorll */
+          ;(document as any).querySelector('#baseTable').style.width =
+            (sheetViewModal.dateList.length + 6) * 70 + 250 + 10 + 'px'
+          setSurplusWidth(false)
+        } else {
+          ;(document as any).querySelector('#baseTable').style.width = 'auto'
+          setSurplusWidth(isEdit ? 300 : 240)
+        }
+      }, 10)
     } catch (error) {}
     try {
       let remark = sheetViewModal.remark
       ;(document as any).querySelector('.remark-con.real textarea').value = remark
     } catch (error) {}
+    // try {
+    //   $('.ant-table-body tr').attr('draggable', 'false')
+    // } catch (error) {}
   })
 
   let remark = sheetViewModal.remark
@@ -233,12 +251,35 @@ export default observer(function ArrangeSheet(props: Props) {
             </React.Fragment>
           )
         }}
-        type={['diagRow']}
+        type={isEdit ? ['diagRow'] : []}
         moveRow={(dragIndex: number, hoverIndex: number) => {
-          const dragRow = sheetViewModal.sheetTableData[dragIndex]
-          sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
-            $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-          })
+          try {
+            let pc = (document as any).querySelector('.drop-over-downward,  .drop-over-upward').offsetParent
+              .offsetParent.className
+
+            if (pc == 'ant-table-body') {
+              /** min */
+              const dragRow = sheetViewModal.sheetTableData[dragIndex]
+              const hoverRow = sheetViewModal.sheetTableData[hoverIndex]
+              let dragRow_settingDtos = dragRow.settingDtos
+              let hoverRow_settingDtos = hoverRow.settingDtos
+              dragRow.settingDtos = hoverRow_settingDtos
+              hoverRow.settingDtos = dragRow_settingDtos
+            } else if (pc == 'ant-table-body-outer') {
+              /** left */
+              const dragRow = sheetViewModal.sheetTableData[dragIndex]
+              const hoverRow = sheetViewModal.sheetTableData[hoverIndex]
+              let dragRow_settingDtos = dragRow.settingDtos
+              let hoverRow_settingDtos = hoverRow.settingDtos
+              dragRow.settingDtos = hoverRow_settingDtos
+              hoverRow.settingDtos = dragRow_settingDtos
+              // sheetViewModal.sheetTableData[dragIndex] = hoverRow
+              // sheetViewModal.sheetTableData[hoverIndex] = dragRow
+              sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
+                $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+              })
+            }
+          } catch (error) {}
         }}
       />
       <contextMenu.Component />
@@ -261,9 +302,9 @@ const Wrapper = styled.div`
     td {
       word-break: break-all;
     }
-    tr {
+    /* tr {
       cursor: auto !important;
-    }
+    } */
     .ant-table-column-title {
       font-size: 12px !important;
     }
@@ -326,6 +367,14 @@ const Wrapper = styled.div`
       left: 0;
       z-index: 10;
       padding: 10px;
+    }
+  }
+  &.isEdit {
+    .ant-table-body {
+      tr {
+        cursor: auto !important;
+        /* pointer-events: none; */
+      }
     }
   }
 `

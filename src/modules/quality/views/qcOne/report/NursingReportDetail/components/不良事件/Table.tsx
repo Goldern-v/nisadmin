@@ -9,6 +9,49 @@ export interface Props {
   list: DeptItem[]
 }
 
+export const EventTypeList = [
+  {
+    code: 'QCWET001',
+    name: '压疮不良事件'
+  },
+  {
+    code: 'QCWET002',
+    name: '给药/治疗错误不良事件'
+  },
+  {
+    code: 'QCWET003',
+    name: '操作不当不良事件'
+  },
+  {
+    code: 'QCWET004',
+    name: '跌倒/坠床不良事件'
+  },
+  {
+    code: 'QCWET005',
+    name: '非计划性拔管不良事件'
+  },
+  {
+    code: 'QCWET006',
+    name: '输液/输血渗透不良事件'
+  },
+  {
+    code: 'QCWET007',
+    name: '烫伤不良事件'
+  },
+  {
+    code: 'QCWET008',
+    name: '走失不良事件'
+  },
+  {
+    code: 'QCWET009',
+    name: '自杀'
+  }
+]
+
+const getEventTypeNameByCode = (code: string) => {
+  let obj = EventTypeList.find((item: any) => item.code == code)
+  return obj ? obj.name : ''
+}
 export default function Table(props: Props) {
   let { list } = props
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report') || {}
@@ -36,7 +79,7 @@ export default function Table(props: Props) {
             <tr key={index}>
               <td>{item.eventDate}</td>
               <td>{item.eventEmpNames}</td>
-              <td>{item.eventType}</td>
+              <td>{getEventTypeNameByCode(item.eventType)}</td>
               <td>
                 {/* <Pre>{item.briefCourseEvent}</Pre> */}
                 {item.briefCourseEvent}

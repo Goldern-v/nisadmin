@@ -6,10 +6,11 @@ import TopPart from './components/TopPart'
 import FlightMenu from './components/FlightMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { DatePicker, Modal } from 'antd'
+import { observer } from 'src/vendors/mobx-react-lite'
 
 export interface Props {}
 
-export default function EditArrangePage() {
+export default observer(function EditArrangePage() {
   useEffect(() => {
     sheetViewModal.init()
   }, [])
@@ -26,7 +27,7 @@ export default function EditArrangePage() {
       </div>
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   background: #fff;
   padding-bottom: 15px;

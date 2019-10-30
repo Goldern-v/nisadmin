@@ -19,7 +19,7 @@ export default observer(function BalanceHour(props: Props) {
   for (let j = 0; j < user.settingDtos.length; j++) {
     real_balanceHour += user.settingDtos[j].effectiveTime
   }
-  return <Wrapper>{user.balanceHour + real_balanceHour - user.current_balanceHour}</Wrapper>
+  return <Wrapper>{Number(user.balanceHour + real_balanceHour - user.current_balanceHour).toFixed(2)}</Wrapper>
 })
 const Wrapper = styled.div`
   margin: 0 -2px;

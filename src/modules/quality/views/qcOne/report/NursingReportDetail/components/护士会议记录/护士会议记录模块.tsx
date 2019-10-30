@@ -23,8 +23,8 @@ export default observer(function 护士会议记录模块(props: Props) {
       <OneLevelTitle text='三、护士会议记录' />
       {list.map((item: any, index: number) => {
         return (
-          <div className='form-con'>
-            <Table tableObj={item} key={index} />
+          <div className='form-con' key={index}>
+            <Table tableObj={item} />
             <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId, index)}>
               编辑
             </EditButton>
