@@ -24,6 +24,7 @@ export default observer(function NurseMeetingRecordDetail() {
   const [loading, setLoading] = useState(true)
   const previewModal = createModal(PreviewModal)
 
+
   const [isRead, setIsRead] = useState(true)
   const [nurseMeeting, setNurseMeeting] = useState({} as any)
   const [attendees, setAttendees] = useState([] as any[])
@@ -36,6 +37,16 @@ export default observer(function NurseMeetingRecordDetail() {
   useEffect(() => {
     if (search.id) getDetail()
   }, [])
+
+  //是否有编辑权限
+  const editable = () => {
+    if (!nurseMeeting.creatorNo) return false
+    if (!authStore.user) return false
+
+    if (nurseMeeting.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
+
+    return true
+  }
 
   const getDetail = () => {
     setLoading(true)
@@ -84,9 +95,9 @@ export default observer(function NurseMeetingRecordDetail() {
   }
 
   const ReadBtn = () => {
-    let target = unreceiverList.find((item: any) => item.empNo == (authStore.user && authStore.user.empNo))
+    let target = unreceiverList.find((item: any) => item.empNo.toLowerCase() == (authStore.user && authStore.user.empNo.toLowerCase()))
 
-    if (!target || auth)
+    if (!target)
       return <span></span>
     else
       return <Button disabled={loading} type="primary" ghost onClick={handleRead}>我已查看</Button>
@@ -136,7 +147,7 @@ export default observer(function NurseMeetingRecordDetail() {
             {nurseMeeting.meetingDay} 会议记录详情
           </div>
           <div className='topHeaderButton'>
-            {auth && <React.Fragment>
+            {editable() && <React.Fragment>
               <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>
               <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>
             </React.Fragment>}

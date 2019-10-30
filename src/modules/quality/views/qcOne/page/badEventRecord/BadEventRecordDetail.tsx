@@ -19,6 +19,7 @@ export interface Props { }
 export default observer(function BadEventRecordDetail() {
   let { location, history } = appStore
   const auth = authStore.isRoleManage
+
   let wardCode = authStore.selectedDeptCode
   let search = qs.parse(location.search.replace('?', ''))
   const [loading, setLoading] = useState(false)
@@ -28,6 +29,16 @@ export default observer(function BadEventRecordDetail() {
   const [parties, setParties] = useState([] as any[])
   const [attachs, setAttachs] = useState([] as any[])
   const [typeList, setTypeList] = useState([] as any[])
+
+  //是否有编辑权限
+  const editable = () => {
+    if (!badEvent.creatorNo) return false
+    if (!authStore.user) return false
+
+    if (badEvent.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
+
+    return true
+  }
 
   const getDetail = () => {
     setLoading(true)
@@ -128,7 +139,7 @@ export default observer(function BadEventRecordDetail() {
             {badEvent.eventDay} 不良事件详情
           </div>
           <div className='topHeaderButton'>
-            {auth && <React.Fragment>
+            {editable() && <React.Fragment>
               <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>
               <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(badEvent)}>删除</Button>
             </React.Fragment>}
@@ -256,7 +267,7 @@ const MainContent = styled.div`
 `
 
 const MainPannel = styled(ScrollBox)`
-  height: calc(100vh - 120px);
+  height: calc(100vh - 122px);
   padding: 20px 0;
 `
 const TopPannel = styled.div` 

@@ -17,13 +17,13 @@ export default observer(function Table() {
     {
       title: '查房日期',
       dataIndex: 'srDate',
-      width: 140,
+      width: 120,
       align: 'center'
     },
     {
       title: '查房类型',
       dataIndex: 'type',
-      width: 130,
+      width: 110,
       align: 'center'
     },
     {
@@ -34,13 +34,13 @@ export default observer(function Table() {
     {
       title: '检查人员',
       dataIndex: 'srName',
-      width: 100,
+      width: 80,
       align: 'center'
     },
     {
       title: '护士在岗情况',
       dataIndex: 'nurseStatus',
-      width: 260,
+      width: 250,
       align: 'left',
       render(status: string, record: any) {
         return status == '0' ? '无问题' : <span style={{ color: 'red' }}>有问题({record.nurseProblem})</span>
@@ -49,7 +49,7 @@ export default observer(function Table() {
     {
       title: '病人情况',
       dataIndex: 'patientStatus',
-      width: 260,
+      width: 250,
       align: 'left',
       render(status: string, record: any) {
         return status == '0' ? '无问题' : <span style={{ color: 'red' }}>有问题({record.patientProblem})</span>
@@ -58,7 +58,7 @@ export default observer(function Table() {
     {
       title: '状态',
       dataIndex: 'nextNodePendingName',
-      width: 120,
+      width: 110,
       align: 'center',
       render( nextNodePendingName: any, record: any) {
         if(record.finish){

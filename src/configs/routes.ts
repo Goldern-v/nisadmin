@@ -126,6 +126,10 @@ const StarRatingReportEdit = lazy(() =>
   import('src/modules/quality/views/qcOne/report/StarRatingReport/StarRatingReportEdit')
 )
 
+const QcCheckContentSetting = lazy(() =>
+  import('src/modules/quality/views/qcOne/page/nursingQualityCheck/QcCheckContentSetting.tsx')
+)
+
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -266,6 +270,10 @@ const routes: RouteItem[] = [
   setLayout('/badEventRecordEdit', BadEventRecordEdit, layouts.MainLayout),
   setLayout('/badEventRecordDetail', BadEventRecordDetail, layouts.MainLayout),
   setLayout('/starRatingReportEdit', StarRatingReportEdit, layouts.MainLayout),
+  setLayout('/qcCheckContentSetting', QcCheckContentSetting, layouts.BreadcrumbLayout, [
+    { name: '一级质控', link: '/qcOne' },
+    { name: '病区质量检查', link: '/qcOne/nursingQualityCheck' }
+  ]),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'

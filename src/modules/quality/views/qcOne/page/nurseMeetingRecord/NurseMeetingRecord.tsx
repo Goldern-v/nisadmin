@@ -20,12 +20,13 @@ const Option = Select.Option
 export default observer(function NurseMeetingRecord() {
   const { history } = appStore
   const auth = authStore.isRoleManage
+  const sameWard = authStore.defaultDeptCode == authStore.selectedDeptCode
 
   const [query, setQuery] = useState({
     wardCode: '',
     pageIndex: 1,
     pageSize: 15,
-    problemType: 'QCWMT001',
+    problemType: '',
     type: '1',
     startDate: qcOneSelectViewModal.startDate,
     endDate: qcOneSelectViewModal.endDate,
@@ -112,9 +113,14 @@ export default observer(function NurseMeetingRecord() {
       width: 80,
       fixed: 'right',
       render: (text: string, record: any, idx: number) => {
+        let editable = false
+        let creatorNo = record.creatorNo.toLowerCase()
+        let empNo = authStore.user && authStore.user.empNo.toLowerCase()
+        if (empNo && empNo == creatorNo) editable = true
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
-          {auth && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
+          {editable && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
+          {!editable && <span style={{ width: '20px', cursor: 'default' }}></span>}
         </DoCon>
       }
     }
@@ -226,12 +232,13 @@ export default observer(function NurseMeetingRecord() {
           style={{ width: 80 }}
           onChange={(problemType: string) => setQuery({ ...query, problemType })}
           value={query.problemType}>
+          <Option value="">全部</Option>
           <Option value="QCWMT001">周会</Option>
           <Option value="QCWMT002">月会</Option>
         </Select>
         <Button onClick={handleSearch}>查询</Button>
         {
-          auth &&
+          sameWard &&
           <Button type="primary" onClick={() => history.push('/nurseMeetingRecordEdit')}>添加</Button>
         }
       </RightIcon>

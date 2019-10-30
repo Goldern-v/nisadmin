@@ -17,7 +17,10 @@ const RangePicker = DatePicker.RangePicker
 
 export default observer(function BadEventRecord() {
   const { history } = appStore
+  //是否护长
   const auth = authStore.isRoleManage
+  //是否查看本科科室
+  const sameWard = authStore.defaultDeptCode == authStore.selectedDeptCode
 
   const [query, setQuery] = useState({
     wardCode: '',
@@ -193,7 +196,7 @@ export default observer(function BadEventRecord() {
           )}
         </Select>
         <Button onClick={handleSearch}>查询</Button>
-        {auth && <Button
+        {sameWard && <Button
           type="primary"
           onClick={() => history.push('/badEventRecordEdit')}>添加</Button>}
         <Button>导出</Button>
