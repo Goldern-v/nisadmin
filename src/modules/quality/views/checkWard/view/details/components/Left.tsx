@@ -21,6 +21,7 @@ export default function Left(props: Props) {
         <div className='boxLeft'>
           <div>查房时间：{messageBoxData.srDate}</div>
           <div>查检病区：{messageBoxData.wardName}</div>
+          <div>查房类型：{messageBoxData.type}</div>
         </div>
         <div className='boxRight'>
           <div>检查者：{messageBoxData.srName}</div>
