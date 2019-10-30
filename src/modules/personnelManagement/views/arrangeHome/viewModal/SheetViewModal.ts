@@ -142,6 +142,18 @@ class SheetViewModal {
       this.allCell = this.getAllCell(true)
     })
   }
+  /** 同步排班人员数据 */
+  handleCopy() {
+    this.tableLoading = true
+    return arrangeService.copyPrevSettingRange().then((res) => {
+      this.tableLoading = false
+      this.dateList = this.getDateList()
+      this.tableLoading = false
+      this.sheetTableData = this.handleSheetTableData(res.data.setting)
+      this.remark = res.data.remark
+      this.allCell = this.getAllCell(true)
+    })
+  }
 
   getArrangeMenu() {
     arrangeService.getArrangeMenu().then((res) => {

@@ -46,10 +46,12 @@ export default observer(function TopPart() {
       cancelText: '取消',
       centered: true,
       onOk: () => {
-        arrangeService.copyPrevSettingRange().then((res) => {
-          sheetViewModal.init()
-          message.success('复制成功')
-        })
+        sheetViewModal.handleCopy()
+        // arrangeService.copyPrevSettingRange().then((res) => {
+        //   // sheetViewModal.init()
+        //   sheetViewModal.sheetTableData == res.data
+        //   message.success('复制成功')
+        // })
       }
     })
   }

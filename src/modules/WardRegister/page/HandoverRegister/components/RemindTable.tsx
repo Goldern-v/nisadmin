@@ -9,9 +9,12 @@ import { authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 import { globalModal } from 'src/global/globalModal'
 import update from 'immutability-helper'
-export interface Props {}
+export interface Props {
+  editHandoverModal: any
+}
 
-export default function RemindTable() {
+export default function RemindTable(props: Props) {
+  const { editHandoverModal } = props
   const [oldData, setOldData]: any = useState({})
   const [dataSource, setDataSource]: any[] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
@@ -24,7 +27,7 @@ export default function RemindTable() {
     },
     {
       title: '关联任务提醒',
-      dataIndex: 'width',
+      dataIndex: 'vsRange',
       width: 100
     },
     {
@@ -35,8 +38,8 @@ export default function RemindTable() {
           <DoCon>
             <span
               onClick={() => {
-                globalModal.confirm('删除确认', '你确定删除该配置项吗？').then((res) => {
-                  delRow(index)
+                editHandoverModal.show({
+                  oldData: record
                 })
               }}
             >
@@ -46,6 +49,8 @@ export default function RemindTable() {
               onClick={() => {
                 globalModal.confirm('删除确认', '你确定删除该配置项吗？').then((res) => {
                   delRow(index)
+                  message.success('删除成功')
+                  onSave()
                 })
               }}
             >
@@ -71,17 +76,13 @@ export default function RemindTable() {
   }
 
   useEffect(() => {
-    emitter.removeAllListeners('addRegisterItemRow')
-    emitter.removeAllListeners('saveRegisterItem')
-    emitter.addListener('addRegisterItemRow', () => {
-      addRow()
+    emitter.removeAllListeners('saveRemind')
+    emitter.addListener('saveRemind', (newObj: any) => {
+      onSave(newObj)
     })
-    emitter.addListener('saveRegisterItem', () => {
-      onSave()
-    })
+
     return () => {
-      emitter.removeAllListeners('addRegisterItemRow')
-      emitter.removeAllListeners('saveRegisterItem')
+      emitter.removeAllListeners('saveRemind')
     }
   })
 
@@ -95,12 +96,16 @@ export default function RemindTable() {
         setOldData(res.data)
       })
   }
-  const onSave = () => {
+  const onSave = (newObj?: any) => {
     setPageLoading(true)
-    wardRegisterService.qcRegisterItemSaveOrUpdate(Object.assign({}, oldData, { itemList: dataSource })).then((res) => {
-      message.success('保存成功')
-      onLoad()
-    })
+    wardRegisterService
+      .qcRegisterRangeSaveOrUpdate(
+        Object.assign({}, oldData, { itemList: newObj ? [...dataSource, newObj] : dataSource })
+      )
+      .then((res) => {
+        message.success('保存成功')
+        onLoad()
+      })
   }
 
   useEffect(() => {

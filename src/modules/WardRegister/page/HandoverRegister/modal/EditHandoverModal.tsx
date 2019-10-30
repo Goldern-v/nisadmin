@@ -10,6 +10,7 @@ import { authStore } from 'src/stores'
 import service from 'src/services/api'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { arrangeService } from 'src/modules/personnelManagement/views/arrangeHome/services/ArrangeService'
+import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -27,6 +28,7 @@ export default function EditHandoverModal(props: Props) {
   const [shiftList, setShiftList] = useState([])
   const [arrangeList, setArrangeList] = useState([])
   const [selectedArrangeList, setSelectedArrangeList] = useState([])
+  const [oldData, setOldData] = useState([])
   let { visible, onCancel } = props
   let refForm = React.createRef<Form>()
 
@@ -39,7 +41,9 @@ export default function EditHandoverModal(props: Props) {
     data.recordCode = 'qc_register_handover'
     data.itemCode = value.itemCode
     data.vsRange = value.vsRange.join(';')
-
+    // console.log(data, 'da')
+    emitter.emit('saveRemind', data)
+    onCancel()
     /** 保存接口 */
     // service(value).then((res: any) => {
     //   message.success('保存成功')
@@ -59,10 +63,11 @@ export default function EditHandoverModal(props: Props) {
     ])
   }
 
-  const onFormChange = (name: string, value: string) => {
+  const onFormChange = (name: string, value: string, form: Form<any>) => {
     if (name == 'itemCode') {
       let list: any = arrangeList.filter((item: any) => item.shiftType == value)
       setSelectedArrangeList(list)
+      form!.setField('vsRange', [])
     }
   }
 

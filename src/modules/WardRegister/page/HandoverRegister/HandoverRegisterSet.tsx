@@ -74,7 +74,7 @@ export default function HandoverRegisterSet() {
             },
             {
               title: '交班班次与提醒设置',
-              component: <RemindTable />,
+              component: <RemindTable editHandoverModal={editHandoverModal} />,
               index: '2'
             }
           ]}
