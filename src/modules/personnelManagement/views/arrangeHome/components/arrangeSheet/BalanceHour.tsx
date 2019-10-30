@@ -17,7 +17,7 @@ export default observer(function BalanceHour(props: Props) {
   /** 计算总工时 */
   let real_balanceHour = 0
   for (let j = 0; j < user.settingDtos.length; j++) {
-    real_balanceHour += user.settingDtos[j].effectiveTime
+    real_balanceHour += Number(user.settingDtos[j].effectiveTime)
   }
   return <Wrapper>{Number(user.balanceHour + real_balanceHour - user.current_balanceHour).toFixed(2)}</Wrapper>
 })

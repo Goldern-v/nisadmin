@@ -180,7 +180,7 @@ class SheetViewModal {
       let current_holidayHour = 0
       let current_publicHour = 0
       for (let j = 0; j < sheetTableData[i].settingDtos.length; j++) {
-        current_balanceHour += sheetTableData[i].settingDtos[j].effectiveTime || 0
+        current_balanceHour += Number(sheetTableData[i].settingDtos[j].effectiveTime) || 0
         current_holidayHour += sheetTableData[i].settingDtos[j].rangeName == '节休' ? 1 : 0
         current_publicHour += sheetTableData[i].settingDtos[j].rangeName == '公休' ? 1 : 0
       }
