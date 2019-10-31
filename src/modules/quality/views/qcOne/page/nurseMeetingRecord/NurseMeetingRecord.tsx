@@ -6,6 +6,7 @@ import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTa
 import { ColumnProps, message } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import { crrentMonth } from 'src/utils/moment/crrentMonth'
+import { useKeepAliveEffect } from 'react-keep-alive'
 export interface Props { }
 
 import { appStore, authStore } from 'src/stores'
@@ -214,6 +215,13 @@ export default observer(function NurseMeetingRecord() {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
   }, [query])
 
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getList(query)
+    }
+    return () => { }
+  })
+
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
@@ -236,7 +244,7 @@ export default observer(function NurseMeetingRecord() {
           <Option value="QCWMT001">周会</Option>
           <Option value="QCWMT002">月会</Option>
         </Select>
-        <Button onClick={handleSearch}>查询</Button>
+        <Button onClick={handleSearch} type="primary">查询</Button>
         {
           sameWard &&
           <Button type="primary" onClick={() => history.push('/nurseMeetingRecordEdit')}>添加</Button>

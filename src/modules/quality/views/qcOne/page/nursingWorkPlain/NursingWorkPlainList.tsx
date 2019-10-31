@@ -7,8 +7,10 @@ import { ColumnProps } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import YearPicker from 'src/components/YearPicker'
 import moment from 'moment'
+import { appStore } from 'src/stores'
 import { nursingWorkPlainService, ListQuery } from './api/NursingWorkPlainService'
 import { numToChinese } from 'src/utils/number/numToChinese'
+import { useKeepAliveEffect } from 'react-keep-alive'
 
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -211,6 +213,13 @@ export default observer(function NursingWorkPlainList() {
     if (query.wardCode) getList(query)
   }, [query])
 
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getList(query)
+    }
+    return () => { }
+  })
+
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
@@ -248,7 +257,7 @@ export default observer(function NursingWorkPlainList() {
         </Select>
         <span>科室:</span>
         <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
-        <Button onClick={handleSearch}>查询</Button>
+        <Button onClick={handleSearch} type="primary">查询</Button>
         {auth && <Button type="primary" onClick={handleCreate}>添加</Button>}
         <Button >导出</Button>
       </RightIcon>

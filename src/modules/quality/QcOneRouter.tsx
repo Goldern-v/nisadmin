@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as YIBG } from './images/icon/YJBG.svg'
 import { ReactComponent as YJJL } from './images/icon/YJJL.svg'
@@ -29,22 +29,30 @@ const LEFT_MENU_CONFIG: any = [
       {
         title: '护理工作计划',
         path: '/qcOne/nursingWorkPlainList',
-        component: NursingWorkPlainList
+        component: NursingWorkPlainList,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '病区质量检查',
         path: '/qcOne/nursingQualityCheck',
-        component: NursingQualityCheck
+        component: NursingQualityCheck,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '护士会议记录',
         path: '/qcOne/nurseMeetingRecord',
-        component: NurseMeetingRecord
+        component: NurseMeetingRecord,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '不良事件记录',
         path: '/qcOne/badEventRecord',
-        component: BadEventRecord
+        component: BadEventRecord,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '人力资源调配',
@@ -74,15 +82,17 @@ const LEFT_MENU_CONFIG: any = [
     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   },
   {
-    title: '星级考核评价',
+    title: '星级考核报表',
     icon: <YIBG />,
     path: '/qcOne/starRatingReport',
-    component: StarRatingReport
+    component: StarRatingReport,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   }
 ]
 
 export default function QcOneRouter(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname])
+  useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
@@ -113,8 +123,8 @@ export default function QcOneRouter(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-          ))}
+              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+            ))}
       </MainCon>
     </Wrapper>
   )

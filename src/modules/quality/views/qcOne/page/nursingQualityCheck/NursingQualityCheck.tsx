@@ -21,6 +21,7 @@ import { nursingQualityCheckService } from './api/NursingQualityCheckService'
 
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { useKeepAliveEffect } from 'react-keep-alive'
 
 export interface Props { }
 
@@ -297,6 +298,13 @@ export default observer(function NursingQualityCheck() {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
   }, [query])
 
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getList(query)
+    }
+    return () => { }
+  })
+
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
@@ -338,7 +346,7 @@ export default observer(function NursingQualityCheck() {
             <Option key={idx} value={item.name}>{item.name}</Option>
           )}
         </Select>
-        <Button onClick={handleSearch}>查询</Button>
+        <Button onClick={handleSearch} type="primary">查询</Button>
         {auth && <React.Fragment>
           <Button type="primary" onClick={handleCreate}>添加</Button>
           <Button
