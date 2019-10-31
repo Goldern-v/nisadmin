@@ -142,6 +142,36 @@ export default function qualityControlRecordDetailHeader(props: Props) {
     })
   }
 
+  const handleCancel = () => {
+    if (!master.id) {
+      message.error('缺少质控ID')
+      return
+    }
+
+    // console.log(currentNode)
+
+    Modal.confirm({
+      title: '提示',
+      content: '是否撤销该评价表?',
+      onOk: () => {
+        setDeleteLoading(true)
+        qualityControlRecordApi.revokeHandleForNode({
+          id: master.id,
+          nodeCode: currentNode.nodeCode
+        }).then(
+          (res) => {
+            message.success('撤销成功!', 1, () => {
+              setDeleteLoading(false)
+              appStore.history.goBack()
+            })
+          },
+          () => setDeleteLoading(false)
+        )
+      }
+    })
+
+  }
+
   const statusText = () => {
     if (!master.nextNodePendingName && master.status == '-1') return '待提交'
     return master.status == '1' ? '已完成' : master.nextNodePendingName
@@ -174,13 +204,23 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 {nextNode.nodeName}
               </Button>
             )}
-            {master && master.status == '-1' && master.creatorNo == (authStore.user && authStore.user.empNo) && (
+            {master && master.qcLevel == '2' && master.status == '-1' && master.creatorNo == (authStore.user && authStore.user.empNo) && (
               <React.Fragment>
                 <Button onClick={handleEdit} disabled={deleteLoading}>
                   编辑
                 </Button>
                 <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
                   删除
+                </Button>
+              </React.Fragment>
+            )}
+            {master && master.qcLevel == '2' && master.canUpdate && master.creatorNo == (authStore.user && authStore.user.empNo) && (
+              <React.Fragment>
+                <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
+                  删除
+                </Button>
+                <Button onClick={handleCancel} type='danger' ghost disabled={deleteLoading}>
+                  撤销
                 </Button>
               </React.Fragment>
             )}

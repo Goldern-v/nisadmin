@@ -82,6 +82,11 @@ export default class QualityControlRecordApi extends BaseApiService {
   public formDelete(id: string) {
     return this.post(`/qcItem/instance/delete`, { id })
   }
+
+  /**撤销评价单 */
+  public revokeHandleForNode(params: any) {
+    return this.post(`/qcItem/instance/revokeHandleForNode`, params)
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()
