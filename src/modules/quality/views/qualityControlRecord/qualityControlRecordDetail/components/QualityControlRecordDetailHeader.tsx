@@ -204,7 +204,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 {nextNode.nodeName}
               </Button>
             )}
-            {master && master.status == '-1' && master.creatorNo == (authStore.user && authStore.user.empNo) && (
+            {master && master.qcLevel == '2' && master.status == '-1' && master.creatorNo == (authStore.user && authStore.user.empNo) && (
               <React.Fragment>
                 <Button onClick={handleEdit} disabled={deleteLoading}>
                   编辑
@@ -214,7 +214,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 </Button>
               </React.Fragment>
             )}
-            {master && master.canUpdate && master.creatorNo == (authStore.user && authStore.user.empNo) && (
+            {master && master.qcLevel == '2' && master.canUpdate && master.creatorNo == (authStore.user && authStore.user.empNo) && (
               <React.Fragment>
                 <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
                   删除
