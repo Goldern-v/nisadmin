@@ -45,6 +45,14 @@ export default observer(function HumanResource() {
       width: 250
     },
     {
+      title: '调配方式',
+      dataIndex: 'type',
+      width: 120,
+      render(text: any, record: any, index: number) {
+        return text == '1' ? '调出' : text == '2' ? '调入' : ''
+      }
+    },
+    {
       title: '调往科室',
       dataIndex: 'deptNameNew',
       width: 250

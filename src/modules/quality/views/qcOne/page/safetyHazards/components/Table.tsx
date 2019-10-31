@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { Select, Input } from 'src/vendors/antd'
+import { Select, Input, AutoComplete } from 'src/vendors/antd'
 import { qcOneSelectViewModal } from '../../../QcOneSelectViewModal'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { observer } from 'src/vendors/mobx-react-lite'
@@ -59,10 +59,11 @@ export default observer(function Table(props: Props) {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
-                  <Select
-                    className='noborder-select'
+                  <AutoComplete
+                    className='noborder-input'
                     value={row.problemType}
                     allowClear={true}
+                    dataSource={qcOneSelectViewModal.wtzlList.map((item: DictItem, index: number) => item.name)}
                     onChange={(value: any) => {
                       row.problemType = value
                       if (row.problemType == '无' || row.problemType == '') {
@@ -73,12 +74,12 @@ export default observer(function Table(props: Props) {
                       updateData()
                     }}
                   >
-                    {qcOneSelectViewModal.wtzlList.map((item: DictItem, index: number) => (
+                    {/* {qcOneSelectViewModal.wtzlList.map((item: DictItem, index: number) => (
                       <Select.Option value={item.code} key={index}>
                         {item.name}
                       </Select.Option>
-                    ))}
-                  </Select>
+                    ))} */}
+                  </AutoComplete>
                 </td>
                 <td>
                   <Input.TextArea
@@ -156,7 +157,8 @@ const TableCon = styled.table`
       border: 0;
     }
   }
-  .noborder-input {
+  .noborder-input,
+  .noborder-input input {
     width: 100%;
     border: 0;
     resize: none;

@@ -20,7 +20,7 @@ export interface Props {}
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
-  const [selectedJd, setselectedJd] = useState('')
+  const [selectedJd, setselectedJd]: any = useState('')
   const columns: ColumnProps<any>[] = [
     {
       title: '日期',
@@ -113,14 +113,44 @@ export default observer(function FollowUpRecord() {
   })
   const [total, setTotal]: any = useState(0)
   const getData = () => {
+    let _startDate = ''
+    let _endDate = ''
+    if (selectedJd == 1) {
+      _startDate = moment().format('YYYY-01-01')
+      _endDate = moment()
+        .month(2)
+        .endOf('month')
+        .format('YYYY-MM-DD')
+    } else if (selectedJd == 2) {
+      _startDate = moment().format('YYYY-04-01')
+      _endDate = moment()
+        .month(5)
+        .endOf('month')
+        .format('YYYY-MM-DD')
+    } else if (selectedJd == 3) {
+      _startDate = moment().format('YYYY-07-01')
+      _endDate = moment()
+        .month(8)
+        .endOf('month')
+        .format('YYYY-MM-DD')
+    } else if (selectedJd == 4) {
+      _startDate = moment().format('YYYY-10-01')
+      _endDate = moment()
+        .month(11)
+        .endOf('month')
+        .format('YYYY-MM-DD')
+    }
     setPageLoading(true)
     qcOneService
       .qcPatientVisitGetPage({
         ...pageOptions,
         wardCode: authStore.selectedDeptCode,
-        quarter: selectedJd,
-        startDate: qcOneSelectViewModal.startDate ? moment(qcOneSelectViewModal.startDate).format('YYYY-MM-DD') : '',
-        endDate: qcOneSelectViewModal.endDate ? moment(qcOneSelectViewModal.endDate).format('YYYY-MM-DD') : ''
+        // quarter: selectedJd,
+        startDate:
+          _startDate ||
+          (qcOneSelectViewModal.startDate ? moment(qcOneSelectViewModal.startDate).format('YYYY-MM-DD') : ''),
+        endDate:
+          _endDate || (qcOneSelectViewModal.endDate ? moment(qcOneSelectViewModal.endDate).format('YYYY-MM-DD') : '')
       })
       .then((res) => {
         setTotal(res.data.total)
@@ -164,10 +194,6 @@ export default observer(function FollowUpRecord() {
           onChange={(nurse: any) => {
             setselectedJd(nurse)
           }}
-          showSearch
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
         >
           <Select.Option value={''}>全部</Select.Option>
           {jdList.map((item: any, index: any) => (
@@ -176,7 +202,9 @@ export default observer(function FollowUpRecord() {
             </Select.Option>
           ))}
         </Select>
-        <Button onClick={() => getData()}>查询</Button>
+        <Button type='primary' onClick={() => getData()}>
+          查询
+        </Button>
         <Button
           type='primary'
           onClick={() =>

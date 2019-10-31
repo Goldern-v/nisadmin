@@ -15,6 +15,7 @@ import { scheduleStore, authStore, appStore } from 'src/stores'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import createModal from 'src/libs/createModal'
 import AddShiftModal from '../../modal/AddShiftModal'
+import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
 import DeptSelect from 'src/modules/statistic/common/DeptSelect'
 
 // import emitter from 'src/libs/ev'
@@ -23,7 +24,12 @@ import DeptSelect from 'src/modules/statistic/common/DeptSelect'
 export interface Props extends RouteComponentProps {}
 
 export default function ToolBar() {
-  const addShiftModal = createModal(AddShiftModal)
+  const addShiftModal = createModal(
+    appStore.hisAdapter({
+      hj: () => AddShiftModal,
+      wh: () => AddShiftModal_wh
+    })
+  )
 
   let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
   // let bangci = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']

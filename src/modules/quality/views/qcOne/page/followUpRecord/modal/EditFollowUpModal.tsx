@@ -23,7 +23,7 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  publicDate: (val) => !!val || '请填写发表日期'
+  recordDate: (val) => !!val || '请填写随访日期'
 }
 
 interface selectedNurseItem {
@@ -123,6 +123,20 @@ export default function EditFollowUpModal(props: Props) {
     }
   }
 
+  const onFormChange = (name: string, value: any, form: Form<any>) => {
+    if (name == 'recordDate' && value) {
+      let months = value.month()
+      if (months >= 0 && months < 3) {
+        form.setField('quarter', 1)
+      } else if (months >= 3 && months < 6) {
+        form.setField('quarter', 2)
+      } else if (months >= 6 && months < 9) {
+        form.setField('quarter', 3)
+      } else if (months >= 9 && months < 12) {
+        form.setField('quarter', 4)
+      }
+    }
+  }
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
@@ -175,7 +189,7 @@ export default function EditFollowUpModal(props: Props) {
           /** 表单数据初始化 */
           form.setFields({
             recordDate: moment(),
-            quarter: '',
+            // quarter: '',
             patientName: '',
             address: '',
             contactInformation: '',
@@ -231,11 +245,11 @@ export default function EditFollowUpModal(props: Props) {
         </React.Fragment>
       }
     >
-      <Form ref={refForm} rules={{}} labelWidth={80}>
+      <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFormChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`随访日期`} name='recordDate'>
-              <DatePicker disabled={!canEdit} />
+            <Form.Field label={`随访日期`} name='recordDate' required>
+              <DatePicker disabled={!canEdit} allowClear={false} />
             </Form.Field>
           </Col>
           <Col span={24}>

@@ -7,7 +7,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as YIBG } from './images/icon/YJBG.svg'
 import { ReactComponent as YJJL } from './images/icon/YJJL.svg'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 
 import FollowUpRecord from './views/qcOne/page/followUpRecord/FollowUpRecord'
 import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
@@ -71,13 +71,15 @@ const LEFT_MENU_CONFIG: any = [
     path: '/qcOne/nursingReportList',
     component: NursingReportList,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP',
+    hide: !authStore.isRoleManage
   },
   {
     title: '星级考核评价',
     icon: <YIBG />,
     path: '/qcOne/starRatingReport',
-    component: StarRatingReport
+    component: StarRatingReport,
+    hide: !authStore.isRoleManage
   }
 ]
 

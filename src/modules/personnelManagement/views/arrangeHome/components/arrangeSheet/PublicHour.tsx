@@ -17,10 +17,10 @@ export default observer(function PublicHour(props: Props) {
 
   /** 计算总公修 */
   let real_publicHour = 0
-  for (let j = 0; j < user.settingDtos.length; j++) {
+  for (let j = 0; j < (user.settingDtos || []).length; j++) {
     real_publicHour += user.settingDtos[j].rangeName == '公休' ? 1 : 0
   }
-  return <Wrapper>{user.publicHour - real_publicHour + user.current_publicHour}</Wrapper>
+  return <Wrapper>{Number(user.publicHour) - Number(real_publicHour) + Number(user.current_publicHour)}</Wrapper>
 })
 const Wrapper = styled.div`
   margin: 0 -2px;

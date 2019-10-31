@@ -256,7 +256,7 @@ export default observer(function ArrangeSheet(props: Props) {
             </React.Fragment>
           )
         }}
-        type={isEdit ? ['diagRow'] : []}
+        type={isEdit && !sheetViewModal.isPush ? ['diagRow'] : []}
         moveRow={(dragIndex: number, hoverIndex: number) => {
           try {
             let pc = (document as any).querySelector('.drop-over-downward,  .drop-over-upward').offsetParent
@@ -274,15 +274,21 @@ export default observer(function ArrangeSheet(props: Props) {
               /** left */
               const dragRow = sheetViewModal.sheetTableData[dragIndex]
               const hoverRow = sheetViewModal.sheetTableData[hoverIndex]
-              let dragRow_settingDtos = dragRow.settingDtos
-              let hoverRow_settingDtos = hoverRow.settingDtos
-              dragRow.settingDtos = hoverRow_settingDtos
-              hoverRow.settingDtos = dragRow_settingDtos
+              let keys = Object.keys(dragRow).filter((item: any) => item !== 'settingDtos')
+              let copyObj: any = {}
+              keys.forEach((item: any) => (copyObj[item] = dragRow[item]))
+              keys.forEach((item: any) => (dragRow[item] = hoverRow[item]))
+              keys.forEach((item: any) => (hoverRow[item] = copyObj[item]))
+
+              // let dragRow_settingDtos = dragRow.settingDtos
+              // let hoverRow_settingDtos = hoverRow.settingDtos
+              // dragRow.settingDtos = hoverRow_settingDtos
+              // hoverRow.settingDtos = dragRow_settingDtos
               // sheetViewModal.sheetTableData[dragIndex] = hoverRow
               // sheetViewModal.sheetTableData[hoverIndex] = dragRow
-              sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
-                $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-              })
+              // sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
+              //   $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+              // })
             }
           } catch (error) {}
         }}

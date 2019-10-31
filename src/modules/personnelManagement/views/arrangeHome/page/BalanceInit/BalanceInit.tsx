@@ -42,13 +42,13 @@ export default observer(function FollowUpRecord() {
           <Input
             value={text}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
+              // if (
+              //   !Number(e.target.value) &&
+              //   Number(e.target.value) !== 0 &&
+              //   e.target.value[e.target.value.length - 1] !== '.'
+              // ) {
+              //   return message.warning('只能输入数字')
+              // }
               record.balanceHour = e.target.value
               updateDataSource()
             }}
@@ -67,13 +67,13 @@ export default observer(function FollowUpRecord() {
           <Input
             value={text}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
+              // if (
+              //   !Number(e.target.value) &&
+              //   Number(e.target.value) !== 0 &&
+              //   e.target.value[e.target.value.length - 1] !== '.'
+              // ) {
+              //   return message.warning('只能输入数字')
+              // }
               record.publicHour = e.target.value
               updateDataSource()
             }}
@@ -92,13 +92,13 @@ export default observer(function FollowUpRecord() {
           <Input
             value={text}
             onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
+              // if (
+              //   !Number(e.target.value) &&
+              //   Number(e.target.value) !== 0 &&
+              //   e.target.value[e.target.value.length - 1] !== '.'
+              // ) {
+              //   return message.warning('只能输入数字')
+              // }
               record.holidayHour = e.target.value
               updateDataSource()
             }}
@@ -142,10 +142,20 @@ export default observer(function FollowUpRecord() {
         <Button
           type='primary'
           onClick={() => {
-            arrangeService.schHourInstanceSaveOrUpdate(dataSource).then((res) => {
-              message.success('保存成功')
-              getData()
-            })
+            setPageLoading(true)
+            arrangeService
+              .schHourInstanceSaveOrUpdate(
+                dataSource.map((item: any) => {
+                  if (!Number(item.holidayHour)) item.holidayHour = 0
+                  if (!Number(item.publicHour)) item.publicHour = 0
+                  if (!Number(item.balanceHour)) item.balanceHour = 0
+                  return item
+                })
+              )
+              .then((res) => {
+                message.success('保存成功')
+                getData()
+              })
           }}
         >
           保存

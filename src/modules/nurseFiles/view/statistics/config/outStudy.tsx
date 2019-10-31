@@ -43,7 +43,7 @@ export const pageObj: PageObj = {
     {
       label: '进修结束时间',
       type: 'dateRangePicker',
-      name: 'dateRangePicker',
+      name: 'dateRangePicker1',
       nameList: ['endDateStart', 'endDateEnd']
     }
     // {

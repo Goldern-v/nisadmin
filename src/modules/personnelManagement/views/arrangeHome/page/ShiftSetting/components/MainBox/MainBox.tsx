@@ -14,6 +14,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { globalModal } from 'src/global/globalModal'
 import createModal from 'src/libs/createModal'
 import AddShiftModal from '../../modal/AddShiftModal'
+import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
 
 // import emitter from 'src/libs/ev'
 
@@ -46,8 +47,12 @@ export default function MainBox() {
   const [colorMap, setColorMap]: [any, any] = useState({})
   const [colorMapCN, setColorMapCN]: [any, any] = useState({})
 
-  const addShiftModal = createModal(AddShiftModal)
-
+  const addShiftModal = createModal(
+    appStore.hisAdapter({
+      hj: () => AddShiftModal,
+      wh: () => AddShiftModal_wh
+    })
+  )
   const columns = [
     {
       title: '序号',

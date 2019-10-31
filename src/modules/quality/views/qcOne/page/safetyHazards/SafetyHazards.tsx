@@ -229,6 +229,7 @@ export default observer(function FollowUpRecord() {
     }
     return () => {}
   })
+
   return (
     <Wrapper>
       <PageHeader>
@@ -246,7 +247,9 @@ export default observer(function FollowUpRecord() {
             </Select.Option>
           ))}
         </Select>
-        <Button onClick={() => getData()}>查询</Button>
+        <Button type='primary' onClick={() => getData()}>
+          查询
+        </Button>
         <Button type='primary' onClick={() => onDetail()}>
           添加
         </Button>

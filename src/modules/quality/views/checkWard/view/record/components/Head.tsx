@@ -71,6 +71,7 @@ export default observer(function Head() {
 
         <span>类型：</span>
         <Select
+          style={{ width: 120 }}
           value={recordViewModal.selectedWardRound}
           onChange={(val: string) => {
             recordViewModal.selectedWardRound = val
@@ -87,6 +88,7 @@ export default observer(function Head() {
 
         <span>状态：</span>
         <Select
+          style={{ width: 120 }}
           value={recordViewModal.selectedCheckState}
           onChange={(val: string) => {
             recordViewModal.selectedCheckState = val

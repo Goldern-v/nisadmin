@@ -16,7 +16,7 @@ export default observer(function HolidayHour(props: Props) {
     }) || {}
   /** 计算总节修 */
   let real_holidayHour = 0
-  for (let j = 0; j < user.settingDtos.length; j++) {
+  for (let j = 0; j < (user.settingDtos || []).length; j++) {
     real_holidayHour += user.settingDtos[j].rangeName == '节休' ? 1 : 0
   }
   return <Wrapper>{user.holidayHour - real_holidayHour + user.current_holidayHour}</Wrapper>
