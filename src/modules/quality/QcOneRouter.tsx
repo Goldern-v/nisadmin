@@ -29,22 +29,30 @@ const LEFT_MENU_CONFIG: any = [
       {
         title: '护理工作计划',
         path: '/qcOne/nursingWorkPlainList',
-        component: NursingWorkPlainList
+        component: NursingWorkPlainList,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '病区质量检查',
         path: '/qcOne/nursingQualityCheck',
-        component: NursingQualityCheck
+        component: NursingQualityCheck,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '护士会议记录',
         path: '/qcOne/nurseMeetingRecord',
-        component: NurseMeetingRecord
+        component: NurseMeetingRecord,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '不良事件记录',
         path: '/qcOne/badEventRecord',
-        component: BadEventRecord
+        component: BadEventRecord,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '人力资源调配',
@@ -75,11 +83,12 @@ const LEFT_MENU_CONFIG: any = [
     hide: !authStore.isRoleManage
   },
   {
-    title: '星级考核评价',
+    title: '星级考核报表',
     icon: <YIBG />,
     path: '/qcOne/starRatingReport',
     component: StarRatingReport,
-    hide: !authStore.isRoleManage
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   }
 ]
 

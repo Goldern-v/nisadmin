@@ -7,6 +7,7 @@ import { ColumnProps } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { useKeepAliveEffect } from 'react-keep-alive'
 import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 export interface Props { }
 
@@ -172,6 +173,13 @@ export default observer(function BadEventRecord() {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
   }, [query])
 
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getList(query)
+    }
+    return () => { }
+  })
+
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
@@ -195,7 +203,7 @@ export default observer(function BadEventRecord() {
             <Option value={item.code} key={item.code}>{item.name}</Option>
           )}
         </Select>
-        <Button onClick={handleSearch}>查询</Button>
+        <Button onClick={handleSearch} type="primary">查询</Button>
         {sameWard && <Button
           type="primary"
           onClick={() => history.push('/badEventRecordEdit')}>添加</Button>}

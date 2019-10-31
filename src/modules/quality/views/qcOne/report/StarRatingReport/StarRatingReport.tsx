@@ -13,6 +13,7 @@ import { numToChinese } from 'src/utils/number/numToChinese'
 
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { useKeepAliveEffect } from 'react-keep-alive'
 
 import ReportCreateModal from './components/ReportCreateModal'
 
@@ -167,10 +168,17 @@ export default observer(function NursingWorkPlainList() {
     if (query.wardCode) getList(query)
   }, [query])
 
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      getList(query)
+    }
+    return () => { }
+  })
+
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>星级考核评价</PageTitle>
+        <PageTitle>星级考核报表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -204,7 +212,7 @@ export default observer(function NursingWorkPlainList() {
         </Select>
         <span>科室:</span>
         <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
-        <Button onClick={handleSearch}>查询</Button>
+        <Button onClick={handleSearch} type="primary">查询</Button>
         {auth && <Button type="primary" onClick={handleCreate}>添加</Button>}
         {/* <Button >导出</Button> */}
       </RightIcon>
