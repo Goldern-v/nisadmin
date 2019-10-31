@@ -12,13 +12,14 @@ export interface Props {
   setPageTitle: string
   setPageUrl: string
   btnList: any[]
+  recordCode: string
 }
 
 export default observer(function HeadCon(props: Props) {
-  const { pageTitle, setPageTitle, setPageUrl, btnList } = props
+  const { pageTitle, setPageTitle, setPageUrl, btnList, recordCode } = props
 
   useEffect(() => {
-    wardRegisterViewModal.init()
+    wardRegisterViewModal.init(recordCode)
   }, [authStore.selectedDeptCode])
 
   return (

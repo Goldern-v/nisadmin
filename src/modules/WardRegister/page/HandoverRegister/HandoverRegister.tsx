@@ -229,6 +229,7 @@ export default observer(function HandoverRegister() {
   return (
     <Wrapper>
       <HeadCon
+        recordCode='qc_register_handover'
         pageTitle='物品交接登记本'
         setPageTitle='物品交接登记本设置'
         setPageUrl={'/wardRegister/handoverRegisterSet'}

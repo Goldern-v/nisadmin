@@ -35,6 +35,10 @@ export default class WardRegisterService extends BaseApiService {
   public qcRegisterRangeSaveOrUpdate(obj: any) {
     return this.post(`/qcRegisterRange/saveOrUpdate`, obj)
   }
+  /** 获取时间段 */
+  public qcRegisterItemGetRevisionList(obj: any) {
+    return this.post(`/qcRegisterItem/getRevisionList`, obj)
+  }
 }
 
 export const wardRegisterService = new WardRegisterService()
