@@ -1,10 +1,12 @@
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import { observable, computed, action } from 'mobx'
 import moment from 'moment'
+import service from 'src/services/api'
 class WardRegisterViewModal {
   @observable public startDate: string = getCurrentMonthNow()[0].format('YYYY-MM-DD')
   @observable public endDate: string = getCurrentMonthNow()[1].format('YYYY-MM-DD')
-  @observable public classes = ''
+  @observable public classesList = []
+  @observable public selectedClasses = ''
 
   /** 时间控件处理 */
   getDateOptions(): any {
@@ -15,6 +17,12 @@ class WardRegisterViewModal {
         this.endDate = date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
       }
     }
+  }
+
+  init() {
+    service.commonApiService.multiDictInfo(['sch_range_shift_type']).then((res) => {
+      this.classesList = res.data.sch_range_shift_type.filter((item: any) => item.name !== '休假')
+    })
   }
 }
 

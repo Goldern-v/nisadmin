@@ -145,13 +145,13 @@ const ROUTE_LIST = [
     type: 'OrganizationChange',
     component: OrganizationChange,
     name: '编制变动'
-  },
-
-  {
-    type: 'Leave',
-    component: Leave,
-    name: '离职'
   }
+
+  // {
+  //   type: 'Leave',
+  //   component: Leave,
+  //   name: '离职'
+  // }
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {

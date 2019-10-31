@@ -11,6 +11,7 @@ import { wardRegisterViewModal } from '../../WardRegisterViewModal'
 import { globalModal } from 'src/global/globalModal'
 import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFilesList/NurseFilesListView'
 import { arrangeService } from 'src/modules/personnelManagement/views/arrangeHome/services/ArrangeService'
+import service from 'src/services/api'
 export interface Props {}
 
 export default observer(function HandoverRegister() {
@@ -18,6 +19,7 @@ export default observer(function HandoverRegister() {
   const [dataSource, setDataSource] = useState([])
   const [itemConfigList, setItemConfigList] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
+  const [shiftList, setShiftList] = useState([])
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
@@ -193,6 +195,7 @@ export default observer(function HandoverRegister() {
         recordCode: 'qc_register_handover',
         startDate: wardRegisterViewModal.startDate,
         endDate: wardRegisterViewModal.endDate,
+        range: wardRegisterViewModal.selectedClasses,
         ...pageOptions
       })
       .then((res) => {
@@ -218,9 +221,11 @@ export default observer(function HandoverRegister() {
       })
   }
 
+  const onInit = () => {}
+
   useEffect(() => {
     onLoad()
-  }, [pageOptions, authStore.selectedDeptCode, wardRegisterViewModal.startDate, wardRegisterViewModal.endDate])
+  }, [pageOptions, authStore.selectedDeptCode, wardRegisterViewModal.startDate, wardRegisterViewModal.endDate, wardRegisterViewModal.selectedClasses])
   return (
     <Wrapper>
       <HeadCon

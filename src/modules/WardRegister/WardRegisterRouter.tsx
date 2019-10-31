@@ -16,6 +16,7 @@ export default function WardRegisterRouter() {
       component: HandoverRegister
     }
   ]
+
   return (
     <Wrapper>
       <LeftMenuPage leftMenuConfig={leftMenuConfig} />
