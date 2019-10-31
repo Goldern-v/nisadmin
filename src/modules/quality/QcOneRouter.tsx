@@ -20,6 +20,7 @@ import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeeti
 import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
 
 import StarRatingReport from './views/qcOne/report/StarRatingReport/StarRatingReport'
+import BadEventReport from './views/qcOne/report/BadEventReport/BadEventReport'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -89,7 +90,15 @@ const LEFT_MENU_CONFIG: any = [
     component: StarRatingReport,
     keepAlive: true,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-  }
+  },
+  // {
+  //   title: '不良事件报告',
+  //   icon: <YIBG />,
+  //   path: '/qcOne/badEventReport',
+  //   component: BadEventReport,
+  //   keepAlive: true,
+  //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+  // }
 ]
 
 export default function QcOneRouter(props: Props) {
