@@ -109,7 +109,7 @@ export default function Header(props: Props) {
           </div>
         </div>
         <div className='topHeaderStatus'>
-          状态：<span style={{ color: '#6767ff' }}>{titleStatus()}</span>
+          状态：<span style={{ color: '#6767ff' }}>{Title.nextNodePendingName}</span>
         </div>
       </TopHeader>
       <hlbModal.Component />
