@@ -39,6 +39,7 @@ export default observer(function BadEventRecordEdit() {
     eventTime: moment().format('HH:mm'),
     eventType: '',
     briefCourseEvent: '',
+    wardCode,
     result: '',
   } as any)
 
@@ -46,8 +47,10 @@ export default observer(function BadEventRecordEdit() {
 
   const handleSave = () => {
     let params = {
-      badEvent,
-      wardCode,
+      badEvent: {
+        ...badEvent,
+        wardCode
+      },
       fileIds: files.map((item: any) => item.id),
       parties: parties.map((name: string) => {
         return {
@@ -65,7 +68,7 @@ export default observer(function BadEventRecordEdit() {
           history.goBack()
         })
       }, () => setLoading(false))
-    console.log(params)
+    // console.log(params)
   }
 
   const handleFileChange = (newList: any) => {
