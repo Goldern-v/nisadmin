@@ -60,7 +60,7 @@ export default class BadEventReportService extends BaseApiService {
       wardCode,
       reportName
     }
-    return this.post('/qcAnalysis/sr/update/report', query)
+    return this.post('/qcAnalysis/be/update/report', query)
   }
 
   /** 更新星级考核 */
