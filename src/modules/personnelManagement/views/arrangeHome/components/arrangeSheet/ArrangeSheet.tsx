@@ -202,15 +202,15 @@ export default observer(function ArrangeSheet(props: Props) {
       // }
       setTimeout(() => {
         if (
-          (document as any).querySelector('.ant-table-body').scrollWidth ==
-          (document as any).querySelector('.ant-table-body').clientWidth
+          (document as any).querySelector('#arrangeSheet .ant-table-body').scrollWidth ==
+          (document as any).querySelector('#arrangeSheet .ant-table-body').clientWidth
         ) {
           /** noscorll */
-          ;(document as any).querySelector('#baseTable').style.width =
+          ;(document as any).querySelector('#arrangeSheet #baseTable').style.width =
             (sheetViewModal.dateList.length + appStore.hisAdapter({ hj: () => 3, wh: () => 6 })) * 70 + 250 + 10 + 'px'
           setSurplusWidth(false)
         } else {
-          ;(document as any).querySelector('#baseTable').style.width = 'auto'
+          ;(document as any).querySelector('#arrangeSheet #baseTable').style.width = 'auto'
           setSurplusWidth(isEdit ? 300 : 240)
         }
       }, 10)
@@ -226,7 +226,7 @@ export default observer(function ArrangeSheet(props: Props) {
 
   let remark = sheetViewModal.remark
   return (
-    <Wrapper className={classNames({ isEdit })}>
+    <Wrapper className={classNames({ isEdit })} id='arrangeSheet'>
       <BaseTable
         loading={sheetViewModal.tableLoading}
         surplusHeight={surplusHeight}

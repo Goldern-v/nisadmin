@@ -201,6 +201,7 @@ export default function MainBox() {
 
   const moveRow = (dragIndex: number, hoverIndex: number) => {
     const dragRow = userList[dragIndex]
+    if (!dragRow) return
     setUserList(
       update(userList, {
         $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]

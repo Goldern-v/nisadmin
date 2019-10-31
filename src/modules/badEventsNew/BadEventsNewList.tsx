@@ -404,10 +404,10 @@ const Wrapper = styled.div`
     
     .ant-calendar-picker-input{
       padding-left: 0;
-      .ant-calendar-range-picker-separator{
+      /* .ant-calendar-range-picker-separator{
         position: relative;
         top: 5px;
-      }
+      } */
     }
     .query{
       margin-top: 5px;

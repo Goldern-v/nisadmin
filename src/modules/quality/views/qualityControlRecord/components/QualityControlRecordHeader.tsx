@@ -15,7 +15,7 @@ import { PageTitle, Place } from 'src/components/common'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import FormCreateModal from './common/FormCreateModal'
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const Option = Select.Option
 
@@ -26,7 +26,6 @@ export default observer(function TopCon(props: any) {
   const handleCreate = () => {
     setFormCreateVisible(true)
   }
-
 
   return (
     <Wrapper>
@@ -113,11 +112,12 @@ export default observer(function TopCon(props: any) {
       <Button type='primary' style={{ marginLeft: 10 }} onClick={() => props.refreshData()}>
         查询
       </Button>
-      {(qualityControlRecordVM.level == 2) && (
+      {qualityControlRecordVM.level == 2 && (
         <Button
           onClick={handleCreate}
           style={{ marginLeft: 10 }}
-          disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}>
+          disabled={!(authStore.isDepartment || authStore.isSupervisorNurse)}
+        >
           新建
         </Button>
       )}
@@ -129,7 +129,8 @@ export default observer(function TopCon(props: any) {
           setFormCreateVisible(false)
         }}
         visible={formCreateVisible}
-        level={qualityControlRecordVM.level} />
+        level={qualityControlRecordVM.level}
+      />
     </Wrapper>
   )
 })
@@ -146,10 +147,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   z-index: 1;
-  .ant-calendar-range-picker-separator {
+  /* .ant-calendar-range-picker-separator {
     position: relative;
     top: 5px;
-  }
+  } */
   .radio-con {
     background: #fff;
     border: 1px solid #ddd;

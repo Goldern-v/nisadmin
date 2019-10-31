@@ -75,7 +75,7 @@ export default function AddShiftModal(props: Props) {
             name: '',
             shiftType: '',
             workTime: '8:00 - 16:00',
-            effectiveTime: '8',
+            effectiveTime: '0',
             nameColor: '',
             status: true
           })
@@ -84,10 +84,16 @@ export default function AddShiftModal(props: Props) {
     }
   }, [visible])
 
+  const onFormChange = (name: string, value: any, form: Form<any>) => {
+    if (name == 'shiftType' && value == '休假') {
+      form.setField('workTime', '')
+      form.setField('effectiveTime', '')
+    }
+  }
   return (
     <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
       <Spin spinning={modalLoading}>
-        <Form ref={refForm} rules={rules} labelWidth={80}>
+        <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFormChange}>
           <Row>
             <Col span={24}>
               <Form.Field label={`班次名称`} name='name' required>

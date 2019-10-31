@@ -7,6 +7,7 @@ import { Table, message, Popconfirm, Divider, Tag, Switch } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
 import { scheduleStore, authStore, appStore } from 'src/stores'
+import update from 'immutability-helper'
 
 import emitter from 'src/libs/ev'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
@@ -15,6 +16,7 @@ import { globalModal } from 'src/global/globalModal'
 import createModal from 'src/libs/createModal'
 import AddShiftModal from '../../modal/AddShiftModal'
 import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
+import { Icon } from 'src/vendors/antd'
 
 // import emitter from 'src/libs/ev'
 
@@ -278,6 +280,15 @@ export default function MainBox() {
     })
   }
 
+  const moveRow = (dragIndex: number, hoverIndex: number) => {
+    const dragRow = shiftList[dragIndex]
+    if (!dragRow) return
+    setShiftList(
+      update(shiftList, {
+        $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+      })
+    )
+  }
   return (
     <Wrapper>
       <BaseTable
@@ -286,9 +297,17 @@ export default function MainBox() {
         columns={columns}
         dataSource={shiftList}
         pagination={false}
-        surplusHeight={190}
-        type={['spaceRow']}
+        surplusHeight={232}
+        fixedFooter={true}
+        moveRow={moveRow}
+        type={['diagRow', 'spaceRow']}
         loading={tableLoading}
+        footer={() => (
+          <span>
+            <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />
+            可以通过拖拽排序,修改数据后需保存
+          </span>
+        )}
       />
       {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
       <addShiftModal.Component />

@@ -37,12 +37,12 @@ export default observer(function HumanResource() {
       title: '姓名',
       align: 'center',
       dataIndex: 'empName',
-      width: 150
+      width: 120
     },
     {
       title: '原科室',
       dataIndex: 'deptCodeNameOld',
-      width: 250
+      width: 180
     },
     {
       title: '调配方式',
@@ -55,19 +55,19 @@ export default observer(function HumanResource() {
     {
       title: '调往科室',
       dataIndex: 'deptNameNew',
-      width: 250
+      width: 180
     },
     {
       title: '开始时间',
       align: 'center',
       dataIndex: 'startDate',
-      width: 200
+      width: 150
     },
     {
       title: '事由',
       align: 'center',
       dataIndex: 'remark',
-      width: 200
+      width: 180
     }
     // {
     //   title: '创建人',
