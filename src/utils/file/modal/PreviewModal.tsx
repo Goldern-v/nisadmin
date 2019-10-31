@@ -38,7 +38,16 @@ export default function PreviewModal(props: Props) {
   }, [visible])
 
   return (
-    <Modal width={900} title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='确定' forceRender>
+    <Modal
+      width={900}
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      onOk={onSave}
+      okText='确定'
+      forceRender
+      centered
+    >
       <Wrapper>
         {getFileType(path) == 'video' ? (
           <div className='video-con'>{visible && <video src={path} ref={refVideo} controls />}</div>

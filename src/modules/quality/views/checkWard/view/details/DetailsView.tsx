@@ -5,7 +5,7 @@ import Left from './components/Left'
 import Right from './components/Right'
 import { ScrollBox } from 'src/components/common'
 import { checkWardService } from '../../services/CheckWardService'
-import { appStore } from 'src/stores';
+import { appStore } from 'src/stores'
 import { Spin } from 'antd'
 
 export default function DetailsView() {
@@ -14,14 +14,14 @@ export default function DetailsView() {
   const [effect, setEffect] = useState(true)
 
   const onload = () => {
-    if(effect){
-    let id = appStore.match.params.id
-    setLoading(true)
-    checkWardService.getDetail(id).then((res) => {
-      setDetailData(res.data)
-      setLoading(false)
-    })
-  }
+    if (effect) {
+      let id = appStore.match.params.id
+      setLoading(true)
+      checkWardService.getDetail(id).then((res) => {
+        setDetailData(res.data)
+        setLoading(false)
+      })
+    }
   }
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function DetailsView() {
   return (
     <Wrapper>
       <HeaderCon>
-        <Header detailData={detailData} onload={onload}/>
+        <Header detailData={detailData} onload={onload} />
       </HeaderCon>
       <MidCon>
         <MidConScrollCon>
@@ -136,4 +136,3 @@ const SpinCon = styled.div`
     }
   }
 `
-

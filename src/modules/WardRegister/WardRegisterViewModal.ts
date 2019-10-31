@@ -9,7 +9,13 @@ class WardRegisterViewModal {
   @observable public classesList = []
   @observable public selectedClasses = ''
   /** 时间段区间 */
-  @observable public revisionList = []
+  @observable public revisionList: any[] = []
+
+  @observable public selectedRevisionIndex: any = ''
+
+  get selectedRevision() {
+    return this.selectedRevisionIndex !== '' ? this.revisionList[this.selectedRevisionIndex] : null
+  }
 
   /** 时间控件处理 */
   getDateOptions(): any {
@@ -33,7 +39,19 @@ class WardRegisterViewModal {
       })
       .then((res) => {
         this.revisionList = res.data
+        this.selectedRevisionIndex = this.revisionList.length - 1
+        this.endDate = moment().format('YYYY-MM-DD')
+        this.startDate = this.selectedRevision.beginDate
       })
+  }
+
+  onRevisionIndexChange(index: number) {
+    if (index == 0) {
+      this.endDate = this.revisionList[index].endDate
+      // this.startDate = moment(this.endDate)
+    } else if (index == this.revisionList.length - 1) {
+    } else {
+    }
   }
 }
 

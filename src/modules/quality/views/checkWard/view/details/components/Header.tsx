@@ -47,14 +47,14 @@ export default function Header(props: Props) {
   const onRole = (nodeName: string) => {
     switch (nodeName) {
       case '病区处理':
-      {
-        bqclModal.show({
-          id: appStore.match.params.id,
-          nodeCode: nextNode.nodeCode,
-          onOkCallBack: props.onload
-        })
-      }
-      break
+        {
+          bqclModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            onOkCallBack: props.onload
+          })
+        }
+        break
       case '科护士长审核':
         {
           hlbModal.show({
@@ -64,17 +64,17 @@ export default function Header(props: Props) {
             onOkCallBack: props.onload
           })
         }
-        break  
+        break
       case '护理部审核':
-      {
-        hlbModal.show({
-          id: appStore.match.params.id,
-          nodeCode: nextNode.nodeCode,
-          title: '护理部审核',
-          onOkCallBack: props.onload
-        })
-      }
-      break
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: '护理部审核',
+            onOkCallBack: props.onload
+          })
+        }
+        break
     }
   }
 
@@ -90,7 +90,7 @@ export default function Header(props: Props) {
           data={[
             {
               name: '查房记录',
-              link: '/quality/checkWard/record'
+              link: '/checkWard'
             },
             {
               name: '记录详情'
@@ -105,7 +105,13 @@ export default function Header(props: Props) {
                 {nextNode.nodeName}
               </Button>
             )}
-            <Button onClick={() => {appStore.history.push(`/quality/checkWard/record`)}}>返回</Button>
+            <Button
+              onClick={() => {
+                appStore.history.goBack()
+              }}
+            >
+              返回
+            </Button>
           </div>
         </div>
         <div className='topHeaderStatus'>
@@ -118,8 +124,8 @@ export default function Header(props: Props) {
   )
 }
 
-const Con = styled.div` 
-  box-sizing:border-box;
+const Con = styled.div`
+  box-sizing: border-box;
   height: 100%;
   width: 100%;
   padding-left: 20px;

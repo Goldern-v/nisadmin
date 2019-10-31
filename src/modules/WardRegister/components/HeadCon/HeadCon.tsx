@@ -21,11 +21,24 @@ export default observer(function HeadCon(props: Props) {
   useEffect(() => {
     wardRegisterViewModal.init(recordCode)
   }, [authStore.selectedDeptCode])
-
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>{pageTitle}</PageTitle>
+        <span className='label'>时间段:</span>
+        <Select
+          style={{ width: 120 }}
+          value={wardRegisterViewModal.selectedRevisionIndex}
+          onChange={(value: any) => {
+            wardRegisterViewModal.selectedRevisionIndex = value
+          }}
+        >
+          {wardRegisterViewModal.revisionList.map((item: any, index: number) => (
+            <Select.Option value={index} key={index}>
+              {item.beginDate} - {item.endDate}
+            </Select.Option>
+          ))}
+        </Select>
+        {/* <PageTitle>{pageTitle}</PageTitle> */}
         <Place />
         <span className='label'>日期:</span>
         <DatePicker.RangePicker {...wardRegisterViewModal.getDateOptions()} allowClear={false} style={{ width: 220 }} />

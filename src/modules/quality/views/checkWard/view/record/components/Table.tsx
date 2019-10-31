@@ -5,10 +5,18 @@ import { ColumnProps } from 'src/vendors/antd'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { recordViewModal } from '../RecordViewModal'
 import { appStore } from 'src/stores'
+import { useKeepAliveEffect } from 'react-keep-alive'
 
 export interface Props {}
 
 export default observer(function Table() {
+  useKeepAliveEffect(() => {
+    if ((appStore.history && appStore.history.action) === 'POP') {
+      recordViewModal.onload()
+    }
+    return () => {}
+  })
+
   const toDetails = (record: any) => {
     appStore.history.push(`/qualityScheduleRecordDetails/${record.id}`)
   }
@@ -60,8 +68,8 @@ export default observer(function Table() {
       dataIndex: 'nextNodePendingName',
       width: 110,
       align: 'center',
-      render( nextNodePendingName: any, record: any) {
-        if(record.finish){
+      render(nextNodePendingName: any, record: any) {
+        if (record.finish) {
           return '已完成'
         } else {
           return nextNodePendingName
