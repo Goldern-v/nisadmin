@@ -250,7 +250,7 @@ export default observer(function TopPart() {
           </Button>
         </div>
         <div className='item'>
-          <Button onClick={handlePush}>推送排班</Button>
+          <Button onClick={handlePush}>推送排班({sheetViewModal.isPush ? '已推送' : '未推送'})</Button>
         </div>
         <div className='item'>
           <Button

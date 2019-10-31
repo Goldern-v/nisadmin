@@ -137,6 +137,10 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       }
       }
     }
+    .ant-calendar-range-picker-separator {
+      height: 10px;
+      vertical-align: middle;
+    }
   }  
 
   .ant-drawer-wrapper-body {
@@ -154,6 +158,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     background-color: #c2c2c2;
   }
   }
+  
   .ant-btn.ant-btn-danger {
     background: #ff4d4f;
     border-color: #ff4d4f;
@@ -163,6 +168,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       border-color: #ff7875;   
       color: #fff;
     }
+   
   }
   .ant-btn.ant-btn-danger.ant-btn-background-ghost{
     color: #f5222d;
