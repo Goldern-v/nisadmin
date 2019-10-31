@@ -300,7 +300,7 @@ export default observer(function NursingQualityCheck() {
 
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP') {
-      getList(query)
+      if (query.wardCode && query.endDate && query.startDate) getList(query)
     }
     return () => { }
   })
