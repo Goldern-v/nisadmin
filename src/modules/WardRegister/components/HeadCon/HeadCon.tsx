@@ -7,6 +7,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import { wardRegisterViewModal } from '../../WardRegisterViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
+import moment from 'moment'
 export interface Props {
   pageTitle: string
   setPageTitle: string
@@ -21,6 +22,11 @@ export default observer(function HeadCon(props: Props) {
   useEffect(() => {
     wardRegisterViewModal.init(recordCode)
   }, [authStore.selectedDeptCode])
+
+  const disabledDate = (current: moment.Moment | undefined) => {
+    return
+  }
+
   return (
     <Wrapper>
       <PageHeader>
@@ -30,6 +36,7 @@ export default observer(function HeadCon(props: Props) {
           value={wardRegisterViewModal.selectedRevisionIndex}
           onChange={(value: any) => {
             wardRegisterViewModal.selectedRevisionIndex = value
+            wardRegisterViewModal.onRevisionIndexChange(value)
           }}
         >
           {wardRegisterViewModal.revisionList.map((item: any, index: number) => (
@@ -41,7 +48,12 @@ export default observer(function HeadCon(props: Props) {
         {/* <PageTitle>{pageTitle}</PageTitle> */}
         <Place />
         <span className='label'>日期:</span>
-        <DatePicker.RangePicker {...wardRegisterViewModal.getDateOptions()} allowClear={false} style={{ width: 220 }} />
+        <DatePicker.RangePicker
+          {...wardRegisterViewModal.getDateOptions()}
+          allowClear={false}
+          style={{ width: 220 }}
+          disabledDate={disabledDate}
+        />
         <span className='label'>科室:</span>
         <DeptSelect onChange={() => {}} />
         <span className='label'>班次:</span>

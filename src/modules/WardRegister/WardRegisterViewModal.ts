@@ -48,9 +48,15 @@ class WardRegisterViewModal {
   onRevisionIndexChange(index: number) {
     if (index == 0) {
       this.endDate = this.revisionList[index].endDate
-      // this.startDate = moment(this.endDate)
+      this.startDate = moment(this.endDate)
+        .subtract(1, 'M')
+        .format('YYYY-MM-DD')
     } else if (index == this.revisionList.length - 1) {
+      this.endDate = moment().format('YYYY-MM-DD')
+      this.startDate = this.revisionList[index].beginDate
     } else {
+      this.startDate = this.revisionList[index].beginDate
+      this.endDate = this.revisionList[index].endDate
     }
   }
 }
