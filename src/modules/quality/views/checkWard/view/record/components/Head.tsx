@@ -118,10 +118,10 @@ const Wrapper = styled(TableHeadCon)`
   justify-content: space-between;
   .ant-select {
     width: 150px;
-    margin-right: 20px;
+    margin-right: 15px;
   }
   .ant-calendar-picker {
-    margin-right: 20px;
+    margin-right: 15px;
   }
   button {
     margin-left: 10px;
