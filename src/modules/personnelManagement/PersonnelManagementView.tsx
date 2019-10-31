@@ -71,19 +71,19 @@ export default function PersonnelManagementView() {
           title: '加减班列表查询',
           path: '/personnelManagement/addSubClass',
           component: AddSubClass,
-          hide: !authStore.isRoleManage
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != 'wh'
         },
         {
           title: '节假日查询',
           path: '/personnelManagement/holidaysList',
           component: HolidaysList,
-          hide: !authStore.isRoleManage
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != 'wh'
         },
         {
           title: '结余数据初始化',
           path: '/personnelManagement/balanceInit',
           component: BalanceInit,
-          hide: !authStore.isAdmin
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != 'wh'
         }
       ]
     }

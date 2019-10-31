@@ -95,6 +95,9 @@ export default function RemindTable(props: Props) {
         setDataSource(res.data.itemList)
         setOldData(res.data)
       })
+      .catch(() => {
+        setPageLoading(false)
+      })
   }
   const onSave = (newObj?: any) => {
     setPageLoading(true)

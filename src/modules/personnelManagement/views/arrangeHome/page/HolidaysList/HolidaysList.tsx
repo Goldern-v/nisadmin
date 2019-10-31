@@ -112,7 +112,7 @@ export default observer(function HolidaysList() {
         <Place />
         <span className='label'>年份:</span>
         <YearPicker value={year} onChange={(value: any) => setYear(value)} />
-        <span className='label'>假请名称:</span>
+        <span className='label'>节假日名称:</span>
         <Input value={searchWord} onChange={(e) => setSearchWord(e.target.value)} style={{ width: 120 }} />
         <span className='label'>日期:</span>
         <DatePicker.RangePicker

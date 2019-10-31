@@ -30,5 +30,10 @@ export const navConfig: navConfigItem[] = [
   {
     name: '病区管理',
     path: '/wardManagement'
+  },
+  {
+    name: '排班管理',
+    path: '/personnelManagement'
+    // hidden: !appStore.isDev
   }
 ]

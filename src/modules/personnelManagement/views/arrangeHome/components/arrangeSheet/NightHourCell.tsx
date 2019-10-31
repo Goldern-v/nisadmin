@@ -22,6 +22,6 @@ export default observer(function NightHourCell(props: Props) {
     .reduce((total: any, current: ArrangeItem) => {
       return total + Number(current.effectiveTime)
     }, 0)
-  return <Wrapper>{Number(total).toFixed(2)}</Wrapper>
+  return <Wrapper>{Number(total).toFixed(1)}</Wrapper>
 })
 const Wrapper = styled.div``

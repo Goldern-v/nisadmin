@@ -127,47 +127,52 @@ export default observer(function ArrangeSheet(props: Props) {
       render(text: string, record: any) {
         return <NightHourCell id={record.id} />
       }
-    },
-    {
-      title: (
-        <div>
-          <div>累计结余</div>
-          <div>（小时）</div>
-        </div>
-      ),
-      width: 70,
-      align: 'center',
-      render(text: string, record: any) {
-        return <BalanceHour id={record.id} />
-      }
-    },
-    {
-      title: (
-        <div>
-          <div>公休结余</div>
-          <div>（天）</div>
-        </div>
-      ),
-      width: 70,
-      align: 'center',
-      render(text: string, record: any) {
-        return <PublicHour id={record.id} />
-      }
-    },
-    {
-      title: (
-        <div>
-          <div>节休结余</div>
-          <div>（天）</div>
-        </div>
-      ),
-      width: 70,
-      align: 'center',
-      render(text: string, record: any) {
-        return <HolidayHour id={record.id} />
-      }
     }
   ]
+
+  if (appStore.HOSPITAL_ID == 'wh') {
+    columns.push(
+      {
+        title: (
+          <div>
+            <div>累计结余</div>
+            <div>（小时）</div>
+          </div>
+        ),
+        width: 70,
+        align: 'center',
+        render(text: string, record: any) {
+          return <BalanceHour id={record.id} />
+        }
+      },
+      {
+        title: (
+          <div>
+            <div>公休结余</div>
+            <div>（天）</div>
+          </div>
+        ),
+        width: 70,
+        align: 'center',
+        render(text: string, record: any) {
+          return <PublicHour id={record.id} />
+        }
+      },
+      {
+        title: (
+          <div>
+            <div>节休结余</div>
+            <div>（天）</div>
+          </div>
+        ),
+        width: 70,
+        align: 'center',
+        render(text: string, record: any) {
+          return <HolidayHour id={record.id} />
+        }
+      }
+    )
+  }
 
   useLayoutEffect(() => {
     try {
@@ -202,7 +207,7 @@ export default observer(function ArrangeSheet(props: Props) {
         ) {
           /** noscorll */
           ;(document as any).querySelector('#baseTable').style.width =
-            (sheetViewModal.dateList.length + 6) * 70 + 250 + 10 + 'px'
+            (sheetViewModal.dateList.length + appStore.hisAdapter({ hj: () => 3, wh: () => 6 })) * 70 + 250 + 10 + 'px'
           setSurplusWidth(false)
         } else {
           ;(document as any).querySelector('#baseTable').style.width = 'auto'

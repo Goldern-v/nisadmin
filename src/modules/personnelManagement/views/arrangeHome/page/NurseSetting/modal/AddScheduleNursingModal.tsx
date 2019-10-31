@@ -32,6 +32,7 @@ const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   empName: (val) => !!val || '请选择姓名'
 }
+const TYPE_LIST = ['实习', '进修']
 export default function AddScheduleNursingModal(props: Props) {
   let { visible, onCancel, onOk, getTableData } = props
   const [title, setTitle]: any = useState('')
@@ -103,46 +104,67 @@ export default function AddScheduleNursingModal(props: Props) {
               </Form.Field>
             </Col>
 
-            <Col span={24}>
-              <Form.Field label={`职称`} name='newTitle'>
-                <Select>
-                  {titleList.map((item: DictItem) => (
-                    <Select.Option value={item.code} key={item.code}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`层级`} name='nurseHierarchy'>
-                <Select
-                  showSearch
-                  filterOption={(input: any, option: any) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                  style={{ width: '100%' }}
-                  placeholder='选择层级'
-                >
-                  {levelList.map((item: DictItem) => (
-                    <Select.Option value={item.code} key={item.code}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`职务`} name='job'>
-                <Select>
-                  {postList.map((item: DictItem) => (
-                    <Select.Option value={item.code} key={item.code}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
+            {appStore.hisAdapter({
+              hj: () => (
+                <React.Fragment>
+                  <Col span={24}>
+                    <Form.Field label={`职称`} name='newTitle'>
+                      <Select>
+                        {TITLE_LIST.map((item: string) => (
+                          <Select.Option value={item} key={item}>
+                            {item}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`层级`} name='nurseHierarchy'>
+                      <Select
+                        showSearch
+                        filterOption={(input: any, option: any) =>
+                          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        style={{ width: '100%' }}
+                        placeholder='选择层级'
+                      >
+                        {CURRENTLEVEL_LIST.map((item: string) => (
+                          <Select.Option value={item} key={item}>
+                            {item}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`职务`} name='job'>
+                      <Select>
+                        {POST_LIST.map((item: string) => (
+                          <Select.Option value={item} key={item}>
+                            {item}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              ),
+              wh: () => (
+                <React.Fragment>
+                  <Col span={24}>
+                    <Form.Field label={`类型`} name='job'>
+                      <Select>
+                        {TYPE_LIST.map((item: string) => (
+                          <Select.Option value={item} key={item}>
+                            {item}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              )
+            })}
           </Row>
         </Form>
         <Aside>

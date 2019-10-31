@@ -16,6 +16,7 @@ const Option = Select.Option
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => {}
+  oldData?: any
 }
 
 /** 设置规则 */
@@ -42,7 +43,13 @@ export default function EditHandoverModal(props: Props) {
     data.itemCode = value.itemCode
     data.vsRange = value.vsRange.join(';')
     // console.log(data, 'da')
-    emitter.emit('saveRemind', data)
+    if (props.oldData) {
+      Object.assign(props.oldData, data)
+      emitter.emit('saveRemind')
+    } else {
+      emitter.emit('saveRemind', data)
+    }
+    message.success('保存成功')
     onCancel()
     /** 保存接口 */
     // service(value).then((res: any) => {
@@ -77,11 +84,21 @@ export default function EditHandoverModal(props: Props) {
     if (refForm.current && visible) {
       let form = refForm.current
       initData().then((res) => {
-        /** 表单数据初始化 */
-        form.setFields({
-          wardName: authStore.selectedDeptName,
-          title: ''
-        })
+        if (props.oldData) {
+          /** 表单数据初始化 */
+          form.setFields({
+            wardName: authStore.selectedDeptName,
+            itemCode: props.oldData.itemCode,
+            vsRange: props.oldData.vsRange ? props.oldData.vsRange.split(';') : []
+          })
+        } else {
+          /** 表单数据初始化 */
+          form.setFields({
+            wardName: authStore.selectedDeptName,
+            itemCode: '',
+            vsRange: []
+          })
+        }
       })
     }
   }, [visible])
