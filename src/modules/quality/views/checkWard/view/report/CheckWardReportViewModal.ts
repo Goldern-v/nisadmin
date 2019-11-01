@@ -68,10 +68,14 @@ class CheckWardReportViewModal {
       let nightData: any = []
       this.dataList = res.data.srRecordList.map((item: any) => {
         if (item.record.type == '特殊时段查房') {
-          specialData.push(item)
+          if (item.record.nurseStatus == '1' || item.record.patientStatus == '1'){
+            specialData.push(item)
+          }
         }
         if (item.record.type == '中夜班查房') {
-          nightData.push(item)
+          if (item.record.nurseStatus == '1' || item.record.patientStatus == '1'){
+            nightData.push(item)
+          }
         }
       })
       this.specialData = specialData
