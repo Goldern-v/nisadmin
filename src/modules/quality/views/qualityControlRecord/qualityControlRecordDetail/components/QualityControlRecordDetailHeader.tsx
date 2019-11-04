@@ -155,21 +155,22 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       content: '是否撤销该评价表?',
       onOk: () => {
         setDeleteLoading(true)
-        qualityControlRecordApi.revokeHandleForNode({
-          id: master.id,
-          nodeCode: currentNode.nodeCode
-        }).then(
-          (res) => {
-            message.success('撤销成功!', 1, () => {
-              setDeleteLoading(false)
-              appStore.history.goBack()
-            })
-          },
-          () => setDeleteLoading(false)
-        )
+        qualityControlRecordApi
+          .revokeHandleForNode({
+            id: master.id,
+            nodeCode: currentNode.nodeCode
+          })
+          .then(
+            (res) => {
+              message.success('撤销成功!', 1, () => {
+                setDeleteLoading(false)
+                appStore.history.goBack()
+              })
+            },
+            () => setDeleteLoading(false)
+          )
       }
     })
-
   }
 
   const statusText = () => {
@@ -204,26 +205,32 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 {nextNode.nodeName}
               </Button>
             )}
-            {master && master.qcLevel == '2' && master.status == '-1' && master.creatorNo == (authStore.user && authStore.user.empNo) && (
-              <React.Fragment>
-                <Button onClick={handleEdit} disabled={deleteLoading}>
-                  编辑
-                </Button>
-                <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
-                  删除
-                </Button>
-              </React.Fragment>
-            )}
-            {master && master.qcLevel == '2' && master.canUpdate && master.creatorNo == (authStore.user && authStore.user.empNo) && (
-              <React.Fragment>
-                <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
-                  删除
-                </Button>
-                <Button onClick={handleCancel} type='danger' ghost disabled={deleteLoading}>
-                  撤销
-                </Button>
-              </React.Fragment>
-            )}
+            {master &&
+              master.qcLevel == '2' &&
+              master.status == '-1' &&
+              master.creatorNo == (authStore.user && authStore.user.empNo) && (
+                <React.Fragment>
+                  <Button onClick={handleEdit} disabled={deleteLoading}>
+                    编辑
+                  </Button>
+                  <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
+                    删除
+                  </Button>
+                </React.Fragment>
+              )}
+            {master &&
+              master.qcLevel == '2' &&
+              master.canUpdate &&
+              master.creatorNo == (authStore.user && authStore.user.empNo) && (
+                <React.Fragment>
+                  <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
+                    删除
+                  </Button>
+                  <Button onClick={handleCancel} type='danger' ghost disabled={deleteLoading}>
+                    撤销
+                  </Button>
+                </React.Fragment>
+              )}
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>
