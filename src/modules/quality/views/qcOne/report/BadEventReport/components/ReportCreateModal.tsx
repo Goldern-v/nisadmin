@@ -73,7 +73,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
         if (res.data) {
           message.success('创建成功', 1, () => {
             setLoading(false)
-            history.push(`/starRatingReportEdit?${qs.stringify({ ...params })}`)
+            history.push(`/badEventReport?${qs.stringify({ ...params })}`)
             onOk && onOk()
           })
         }

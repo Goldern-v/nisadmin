@@ -133,7 +133,11 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           (res) => {
             message.success('删除成功!', 1, () => {
               setDeleteLoading(false)
-              appStore.history.goBack()
+              if (history.length <= 1) {
+                window.close()
+              } else {
+                appStore.history.goBack()
+              }
             })
           },
           () => setDeleteLoading(false)
@@ -164,7 +168,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
             (res) => {
               message.success('撤销成功!', 1, () => {
                 setDeleteLoading(false)
-                appStore.history.goBack()
+
+                if (history.length <= 1) {
+                  window.close()
+                } else {
+                  appStore.history.goBack()
+                }
               })
             },
             () => setDeleteLoading(false)

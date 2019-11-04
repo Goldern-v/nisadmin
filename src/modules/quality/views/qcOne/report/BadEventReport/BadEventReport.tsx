@@ -157,7 +157,7 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const handleEdit = (record: any) => {
-    history.push(`/starRatingReportEdit?${qs.stringify({
+    history.push(`/badEventReportEdit?${qs.stringify({
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
@@ -170,7 +170,7 @@ export default observer(function NursingWorkPlainList() {
 
   useKeepAliveEffect(() => {
     if ((appStore.history && appStore.history.action) === 'POP') {
-      getList(query)
+      if (query.wardCode) getList(query)
     }
     return () => { }
   })

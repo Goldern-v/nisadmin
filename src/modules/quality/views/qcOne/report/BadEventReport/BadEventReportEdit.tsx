@@ -15,7 +15,7 @@ import { badEventReportService } from './api/BadEventReportService'
 import qs from 'qs'
 export interface Props extends RouteComponentProps { }
 
-export default observer(function StarRatingReportEdit() {
+export default observer(function badEventReportEdit() {
   const pageRef: any = useRef<HTMLElement>()
   useEffect(() => {
     let search = appStore.location.search
@@ -81,7 +81,7 @@ export default observer(function StarRatingReportEdit() {
       badEventReportService.delete(qs.parse(appStore.query)).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/qcOne/starRatingReport')
+          appStore.history.push('/qcOne/badEventReport')
         }, 500)
       })
     })
@@ -91,7 +91,7 @@ export default observer(function StarRatingReportEdit() {
       badEventReportService.publish(qs.parse(appStore.query)).then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/qcOne/starRatingReport')
+          appStore.history.push('/qcOne/badEventReport')
         }, 500)
       })
     })
@@ -101,7 +101,7 @@ export default observer(function StarRatingReportEdit() {
       badEventReportService.cancelPublish(qs.parse(appStore.query)).then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/qcOne/starRatingReport')
+          appStore.history.push('/qcOne/badEventReport')
         }, 500)
       })
     })
@@ -110,7 +110,7 @@ export default observer(function StarRatingReportEdit() {
     <Wrapper>
       <HeadCon>
         <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/qcOne/starRatingReport' }, { name: '报告详情', link: '' }]}
+          data={[{ name: '分析报告', link: '/qcOne/badEventReport' }, { name: '报告详情', link: '' }]}
         />
         <div className='title'>{reportName}</div>
         <div className='aside'>
