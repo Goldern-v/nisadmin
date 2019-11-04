@@ -19,22 +19,25 @@ export interface Props {
 }
 
 export default function ExportNurseFile(props: Props) {
+  const [baseInfo, setBaseInfo]: any = useState({})
   const getData = () => {
-    Promise.all([nurseFilesService.nurseInformation(props.empNo)])
+    Promise.all([nurseFilesService.nurseInformation(props.empNo).then((res) => setBaseInfo(res.data))])
   }
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    getData()
+  }, [])
 
   return (
     <Wrapper>
       <PrintPage>
-        <OnePage />
+        <OnePage baseInfo={baseInfo} />
       </PrintPage>
       <PrintPage pageIndex={2}>
         <TwoPage />
       </PrintPage>
       <PrintPage pageIndex={3}>
-        <BaseInfo />
+        <BaseInfo baseInfo={baseInfo} />
       </PrintPage>
       <PrintPage pageIndex={4}>
         <LevelChange />

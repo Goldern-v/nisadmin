@@ -1,14 +1,27 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+import User from 'src/models/User'
+import { sexEnum } from 'src/libs/enum/common'
+export interface Props {
+  baseInfo: User | any
+}
 
-export default function BaseInfo() {
+export default function BaseInfo(props: Props) {
+  const { baseInfo } = props
+  const [rowNum, setRowNum] = useState(0)
+  useLayoutEffect(() => {
+    let pageHeight = document.querySelector('.nurseFilePrintPage')!.clientHeight
+    let tableHeight = document.querySelector('#baseInfoTable')!.clientHeight
+    let surplusHeight = pageHeight - tableHeight - 60 - 80
+    let rowNum = Math.floor(surplusHeight / 29)
+    setRowNum(rowNum)
+  }, [baseInfo])
   return (
     <Wrapper>
-      <table>
+      <table id='baseInfoTable'>
         <colgroup>
           <col width='20%' />
           <col width='15%' />
@@ -24,34 +37,36 @@ export default function BaseInfo() {
         </tr>
         <tr>
           <td>姓名</td>
-          <td />
+          <td>{baseInfo.empName}</td>
           <td>性别</td>
-          <td colSpan={2} />
-          <td rowSpan={5}>近期免冠照片</td>
+          <td colSpan={2}>{sexEnum[baseInfo.sex]}</td>
+          <td rowSpan={5}>
+            {baseInfo.nearImageUrl ? <img src={baseInfo.nearImageUrl} alt='' className='nearImage' /> : '近期免冠照片'}
+          </td>
         </tr>
         <tr>
           <td>出生年月</td>
-          <td />
+          <td>{baseInfo.birthday}</td>
           <td>民族</td>
-          <td colSpan={2} />
+          <td colSpan={2}>{baseInfo.nation}</td>
         </tr>
         <tr>
           <td>籍贯</td>
-          <td />
+          <td>{baseInfo.nativePlace}</td>
           <td>职务</td>
-          <td colSpan={2} />
+          <td colSpan={2}>{baseInfo.job}</td>
         </tr>
         <tr>
           <td>参加工作时间</td>
-          <td />
+          <td>{baseInfo.goWorkTime}</td>
           <td>最高学历</td>
-          <td colSpan={2} />
+          <td colSpan={2}>{baseInfo.highestEducation}</td>
         </tr>
         <tr>
           <td>技术职称</td>
-          <td />
+          <td>{baseInfo.newTitle}</td>
           <td>护士职业证书编号</td>
-          <td colSpan={2} />
+          <td colSpan={2}>{baseInfo.zyzsNumber}</td>
         </tr>
         <tr>
           <td>特殊岗位资格证</td>
@@ -61,19 +76,19 @@ export default function BaseInfo() {
         </tr>
         <tr>
           <td>身份证号码</td>
-          <td colSpan={2} />
+          <td colSpan={2}>{baseInfo.cardNumber}</td>
           <td>
             社会团
             <br />
             体职务
           </td>
-          <td colSpan={2} />
+          <td colSpan={2}>{baseInfo.socialGroup}</td>
         </tr>
         <tr>
           <td>家庭住址</td>
-          <td colSpan={3} />
+          <td colSpan={3}>{baseInfo.address}</td>
           <td>联系电话</td>
-          <td />
+          <td>{baseInfo.phone}</td>
         </tr>
       </table>
       <table className='table-1'>
@@ -94,7 +109,8 @@ export default function BaseInfo() {
           <td>专业技术工作</td>
           <td>技术职称及职务</td>
         </tr>
-        {numberToArray(0, 17).map(() => (
+
+        {numberToArray(1, rowNum).map(() => (
           <tr>
             <td />
             <td />
@@ -132,5 +148,11 @@ const Wrapper = styled.div`
   .aside {
     margin-top: 30px;
     font-size: 16px;
+  }
+  .nearImage {
+    width: 130px;
+    margin: auto;
+    display: block;
+    object-fit: contain;
   }
 `

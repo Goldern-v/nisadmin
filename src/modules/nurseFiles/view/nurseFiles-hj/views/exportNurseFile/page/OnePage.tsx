@@ -2,20 +2,24 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
-export interface Props {}
+import User from 'src/models/User'
+export interface Props {
+  baseInfo: User
+}
 
-export default function OnePage() {
+export default function OnePage(props: Props) {
+  const { baseInfo } = props
   return (
     <Wrapper>
       <div className='title-1 title'>东莞市厚街医院</div>
       <div className='title-2 title'>护理人员信息档案</div>
       <div className='input-con'>
         <div className='label'>姓&nbsp;&nbsp;名：</div>
-        <div className='input' />
+        <div className='input'>{baseInfo.empName}</div>
       </div>
       <div className='input-con'>
-        <div className='label'>姓&nbsp;&nbsp;名：</div>
-        <div className='input' />
+        <div className='label'>科&nbsp;&nbsp;室：</div>
+        <div className='input'>{baseInfo.deptName}</div>
       </div>
       <div className='aside'>东莞市厚街医院</div>
     </Wrapper>
@@ -47,8 +51,9 @@ const Wrapper = styled.div`
   .input {
     display: inline-block;
     width: 220px;
-    height: 25px;
+    height: 30px;
     border-bottom: 1px solid #000;
+    font-size: 20px;
   }
   .aside {
     font-size: 20px;

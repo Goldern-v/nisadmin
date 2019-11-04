@@ -52,6 +52,7 @@ export default interface User {
   title: string
   workYear: string
   roleManageCode: string
+  nativePlace: string
   nearImageUrl: string //头像
   roleManage: string //是否有权限进入管理系统
 }

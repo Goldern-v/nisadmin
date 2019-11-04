@@ -8,7 +8,7 @@ interface Props {
 
 export default function PrintPage(props: Props) {
   return (
-    <Wrapper>
+    <Wrapper className='nurseFilePrintPage'>
       {props.children}
       {props.pageIndex && <Footer>{props.pageIndex}</Footer>}
     </Wrapper>
