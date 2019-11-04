@@ -7,21 +7,22 @@ import User from 'src/models/User'
 import { sexEnum } from 'src/libs/enum/common'
 export interface Props {
   baseInfo: User | any
+  experienceList: any[]
 }
 
 export default function BaseInfo(props: Props) {
-  const { baseInfo } = props
+  const { baseInfo, experienceList } = props
   const [rowNum, setRowNum] = useState(0)
   useLayoutEffect(() => {
     let pageHeight = document.querySelector('.nurseFilePrintPage')!.clientHeight
     let tableHeight = document.querySelector('#baseInfoTable')!.clientHeight
-    let surplusHeight = pageHeight - tableHeight - 60 - 80
+    let surplusHeight = pageHeight - tableHeight
     let rowNum = Math.floor(surplusHeight / 29)
     setRowNum(rowNum)
-  }, [baseInfo])
+  }, [baseInfo, experienceList])
   return (
-    <Wrapper>
-      <table id='baseInfoTable'>
+    <Wrapper id='baseInfoTable'>
+      <table>
         <colgroup>
           <col width='20%' />
           <col width='15%' />
@@ -109,6 +110,19 @@ export default function BaseInfo(props: Props) {
           <td>专业技术工作</td>
           <td>技术职称及职务</td>
         </tr>
+
+        {experienceList.map((item: any) => (
+          <tr>
+            <td>
+              {item.startTime} - {item.endTime || '至今'}
+            </td>
+            <td>{item.unit}</td>
+            <td>{item.professionalWork}</td>
+            <td>
+              {item.professional} {item.post}
+            </td>
+          </tr>
+        ))}
 
         {numberToArray(1, rowNum).map(() => (
           <tr>

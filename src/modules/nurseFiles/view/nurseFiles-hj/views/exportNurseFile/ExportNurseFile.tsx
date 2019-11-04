@@ -19,9 +19,15 @@ export interface Props {
 }
 
 export default function ExportNurseFile(props: Props) {
+  /** 基本信息 */
   const [baseInfo, setBaseInfo]: any = useState({})
+  /** 工作经历 */
+  const [experienceList, setExperienceList]: any = useState([])
   const getData = () => {
-    Promise.all([nurseFilesService.nurseInformation(props.empNo).then((res) => setBaseInfo(res.data))])
+    Promise.all([
+      nurseFilesService.nurseInformation(props.empNo).then((res) => setBaseInfo(res.data)),
+      nurseFilesService.nurseWorkExperience(props.empNo).then((res) => setExperienceList(res.data))
+    ])
   }
 
   useEffect(() => {
@@ -37,7 +43,7 @@ export default function ExportNurseFile(props: Props) {
         <TwoPage />
       </PrintPage>
       <PrintPage pageIndex={3}>
-        <BaseInfo baseInfo={baseInfo} />
+        <BaseInfo baseInfo={baseInfo} experienceList={experienceList} />
       </PrintPage>
       <PrintPage pageIndex={4}>
         <LevelChange />
