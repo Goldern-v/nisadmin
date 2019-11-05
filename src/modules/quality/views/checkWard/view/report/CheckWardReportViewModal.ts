@@ -4,6 +4,7 @@ import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
 import { sectionList } from './config/sectionList'
 import { AllData, DeptItem, DetailItem } from './types'
+import { appStore } from 'src/stores'
 import { checkWardService } from '../../services/CheckWardService'
 import moment from 'moment'
 
@@ -68,12 +69,12 @@ class CheckWardReportViewModal {
       let nightData: any = []
       this.dataList = res.data.srRecordList.map((item: any) => {
         if (item.record.type == '特殊时段查房') {
-          if (item.record.nurseStatus == '1' || item.record.patientStatus == '1'){
+          if (item.record.nurseStatus == '1' || item.record.patientStatus == '1') {
             specialData.push(item)
           }
         }
         if (item.record.type == '中夜班查房') {
-          if (item.record.nurseStatus == '1' || item.record.patientStatus == '1'){
+          if (item.record.nurseStatus == '1' || item.record.patientStatus == '1') {
             nightData.push(item)
           }
         }
@@ -86,6 +87,11 @@ class CheckWardReportViewModal {
       this.searchRoom2 = res.data.searchRoom2
       this.pageLoading = false
     })
+  }
+
+  @action
+  public setPageLoading(loading: boolean) {
+    this.pageLoading = loading
   }
 
 

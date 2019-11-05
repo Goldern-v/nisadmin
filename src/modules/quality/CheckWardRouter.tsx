@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as CFJL } from './images/icon/CFJL.svg'
 import { ReactComponent as CFJHB } from './images/icon/CFJHB.svg'
@@ -12,6 +12,7 @@ import RecordView from './views/checkWard/view/record/RecordView'
 import ScheduleView from './views/checkWard/view/schedule/ScheduleView'
 import CheckWardReportView from './views/checkWard/view/report/CheckWardReportView'
 import { appStore } from 'src/stores'
+import CheckWardReportList from './views/checkWard/view/reportList/CheckWardReportList'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -28,16 +29,26 @@ const LEFT_MENU_CONFIG: any = [
     icon: <CFJHB />,
     component: ScheduleView
   },
+  // {
+  //   title: '特殊时段查房统计报告',
+  //   path: '/checkWard/checkWardReportView',
+  //   icon: <CFJHBG />,
+  //   component: CheckWardReportView
+  // },
   {
     title: '特殊时段查房统计报告',
-    path: '/checkWard/checkWardReportView',
+    path: '/checkWard/checkWardReportList',
     icon: <CFJHBG />,
-    component: CheckWardReportView
-  }
+    component: CheckWardReportList,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+  },
 ]
 
+//CheckWardReportList
+
 export default function CheckWardRouter(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname])
+  useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
@@ -68,8 +79,8 @@ export default function CheckWardRouter(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-          ))}
+              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+            ))}
       </MainCon>
     </Wrapper>
   )
