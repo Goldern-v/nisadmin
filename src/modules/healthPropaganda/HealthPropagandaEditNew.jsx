@@ -315,7 +315,8 @@ export default observer(function HealthPropagandaEditNew(props) {
             config={{
               extraPlugins: 'stylesheetparser,colorbutton,colordialog',
               removePlugins: 'easyimage,cloudservices',
-              filebrowserUploadUrl: '/ckeditorUpload?type=File',
+              filebrowserUploadUrl:
+                `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`,
               height: 600,
               title: ''
             }}

@@ -11,8 +11,11 @@ import createModal from 'src/libs/createModal'
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import service from 'src/services/api'
+import moment from 'moment'
+import { fileDownload } from 'src/utils/file/file'
 
 import { nurseMeetingRecordService } from './api/NurseMeetingRecordService'
+import YearPicker from 'src/components/YearPicker'
 
 export interface Props { }
 
@@ -119,6 +122,17 @@ export default observer(function NurseMeetingRecordDetail() {
     service.commonApiService.getFileAndDown(path, name)
   }
 
+  const handleExport = () => {
+    setLoading(true)
+    nurseMeetingRecordService.exportData({
+      id: nurseMeeting.id
+    })
+      .then((res: any) => {
+        setLoading(false)
+        fileDownload(res)
+      }, () => setLoading(false))
+  }
+
   return <Wrapper>
     <TopPannel>
       <TopHeader>
@@ -152,7 +166,7 @@ export default observer(function NurseMeetingRecordDetail() {
               <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>
             </React.Fragment>}
             {ReadBtn()}
-            <Button>导出</Button>
+            <Button onClick={handleExport}>导出</Button>
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
         </div>
@@ -526,5 +540,10 @@ const FileCon = styled.div`
         color: #999;
       }
     }
+  }
+`
+const ExportCon = styled.div`
+  &>div{
+    margin-top: 15px;
   }
 `

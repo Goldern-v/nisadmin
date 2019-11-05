@@ -140,8 +140,10 @@ const PatientVisitQuarterEdit = lazy(() =>
 )
 
 const QcCheckContentSetting = lazy(() =>
-  import('src/modules/quality/views/qcOne/page/nursingQualityCheck/QcCheckContentSetting.tsx')
+  import('src/modules/quality/views/qcOne/page/nursingQualityCheck/QcCheckContentSetting')
 )
+
+const CheckWardReportView = lazy(() => import('src/modules/quality/views/checkWard/view/report/CheckWardReportView'))
 
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
@@ -291,6 +293,7 @@ const routes: RouteItem[] = [
     { name: '病区质量检查', link: '/qcOne/nursingQualityCheck' }
   ]),
   setLayout('/WardLogDetail', WardLogDetail, layouts.MainLayout),
+  setLayout('/checkWardReportView', CheckWardReportView, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'

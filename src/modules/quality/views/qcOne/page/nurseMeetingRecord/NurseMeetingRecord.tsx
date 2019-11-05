@@ -156,7 +156,7 @@ export default observer(function NurseMeetingRecord() {
       .then(res => {
         setLoading(false)
         if (res.data) {
-          setTableData(res.data.pages.map((item: any) => {
+          setTableData(res.data.list.map((item: any) => {
             return {
               ...item.nurseMeeting,
               comperes: item.comperes.map((item: any) => item.empName).join('、'),

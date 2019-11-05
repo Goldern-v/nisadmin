@@ -215,12 +215,14 @@ export default function DeptFileShare() {
 
   const getTableData = () => {
     setTableLoading(true)
+    console.log(123)
 
     api.getList(query).then(
       (res) => {
         setTableLoading(false)
         if (res.data) {
           setDataTotal(res.data.totalCount || 0)
+          console.log(res.data.list)
           setTableData(res.data.list)
         }
       },

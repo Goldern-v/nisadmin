@@ -10,12 +10,12 @@ import { navConfig, navConfigItem } from './navConfig_hj'
 import { navConfig as navConfig_wh } from './navConfig_wh'
 import { navConfig as navConfig_whSelf } from './navConfig_whSelf'
 const toNavLink = (path: string | undefined) => {
-  return path ? () => appStore.history.push(path) : () => {}
+  return path ? () => appStore.history.push(path) : () => { }
 }
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
-const MenuCon = observer(function(props: { list: navConfigItem[]; style?: React.CSSProperties | undefined }) {
+const MenuCon = observer(function (props: { list: navConfigItem[]; style?: React.CSSProperties | undefined }) {
   let { list, style } = props
   const Wrapper = styled.div`
     min-width: 158px;
@@ -82,11 +82,11 @@ export default observer(function NavBar(props: any) {
             <img src={require('../images/护理管理系统.png')} alt='' className='name' style={{ paddingRight: 30 }} />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <img src={require('../images/logo-white.png')} alt='' className='logo' />
-            <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
-          </React.Fragment>
-        )}
+            <React.Fragment>
+              <img src={require('../images/logo-white.png')} alt='' className='logo' />
+              <img src={require('../images/宸瑞护理管理系统.png')} alt='' className='name' />
+            </React.Fragment>
+          )}
       </LogoCon>
       {realNavConfig.map(
         (item, index: number) =>
@@ -98,9 +98,9 @@ export default observer(function NavBar(props: any) {
               <NavItem
                 onClick={toNavLink(item.path)}
                 active={
-                  (item.path !== '' && (item.path && location.pathname.indexOf(item.path) !== -1)) ||
+                  (item.path !== '' && (item.path && location && location.pathname.indexOf(item.path) !== -1)) ||
                   (item.children &&
-                    item.children.some((item: any) => !!(item.path && location.pathname.indexOf(item.path) !== -1)))
+                    item.children.some((item: any) => !!(item.path && location && location.pathname.indexOf(item.path) !== -1)))
                 }
                 key={item.name}
               >

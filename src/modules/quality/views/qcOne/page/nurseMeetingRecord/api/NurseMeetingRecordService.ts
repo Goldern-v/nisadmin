@@ -28,9 +28,13 @@ export default class NurseMeetingRecordService extends BaseApiService {
   }
 
   /**已读 */
-  // 
   public read(id: string) {
     return this.get(`/qcNurseMeetingRecord/receiveRead/${id}`)
+  }
+
+  /**导出 */
+  public exportData(query: { id: string }) {
+    return this.post('/qcFlReport/export/qcNurseMeeting', query, { responseType: 'blob' })
   }
 }
 

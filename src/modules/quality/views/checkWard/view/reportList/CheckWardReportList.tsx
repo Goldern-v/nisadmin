@@ -7,45 +7,35 @@ import { ColumnProps } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import YearPicker from 'src/components/YearPicker'
 import moment from 'moment'
-import { appStore } from 'src/stores'
-import { nursingWorkPlainService, ListQuery } from './api/NursingWorkPlainService'
+import qs from 'qs'
+import { checkWardReportListService, ListQuery } from './api/CheckWardReportListService'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import { useKeepAliveEffect } from 'react-keep-alive'
 
-import { authStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import { fileDownload } from 'src/utils/file/file'
 
-import WorkPlainEditModal from './components/WorkPlainEditModal'
+import ReportCreateModal from './components/ReportCreateModal'
 
 export interface Props { }
 
 const Option = Select.Option
 
-export default observer(function NursingWorkPlainList() {
+export default observer(function CheckWardReportList() {
+  const { history } = appStore
   //是否护士长
   const auth = authStore.isRoleManage
 
   const [query, setQuery] = useState({
     wardCode: '',
     pageIndex: 1,
-    type: '',
+    status: '',
     year: moment().format('YYYY'),
-    month: moment().format('M'),
+    month: '',
     pageSize: 15,
   })
 
-  const [editParmas, setEditParmas] = useState({
-    year: '',
-    month: '',
-    type: '1',
-    indexInType: '',
-    content: '',
-    wardName: '',
-    wardCode: ''
-  } as any)
-
-  const [editVisible, setEditVisible] = useState(false)
+  const [createVisible, setCreateVisible] = useState(false)
 
   const [tableData, setTableData] = useState([] as any[])
 
@@ -63,6 +53,13 @@ export default observer(function NursingWorkPlainList() {
         (query.pageIndex - 1) * query.pageSize + idx + 1
     },
     {
+      dataIndex: 'reportName',
+      title: '标题',
+      align: 'left',
+      render: (text: string, record: any, idx: number) =>
+        <div className="ellips" title={text}>{text}</div>
+    },
+    {
       dataIndex: 'wardName',
       key: 'wardName',
       title: '科室',
@@ -72,27 +69,19 @@ export default observer(function NursingWorkPlainList() {
       key: 'month',
       title: '月份',
       align: 'center',
-      width: 100,
+      width: 110,
       render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
     },
     {
-      key: 'type',
-      title: '分类',
+      key: 'status',
+      title: '状态',
       align: 'center',
-      width: 100,
+      width: 90,
       render: (text: string, record: any, idx: number) => {
-        if (record.type == '1') return '月计划'
-        if (record.type == '2') return `第${numToChinese(record.indexInType)}周`
+        if (record.status == '0') return '保存'
+        if (record.status == '1') return '发布'
         return ''
       }
-    },
-    {
-      dataIndex: 'content',
-      key: 'content',
-      title: '内容',
-      align: 'left',
-      render: (text: string, record: any, idx: number) =>
-        <div className="ellips" title={text}>{text}</div>
     },
     {
       dataIndex: 'creatorName',
@@ -102,24 +91,25 @@ export default observer(function NursingWorkPlainList() {
       width: 80
     },
     {
-      dataIndex: 'createTime',
-      key: 'createTime',
+      dataIndex: 'createDate',
+      key: 'createDate',
       title: '创建时间',
-      width: 130
+      align: 'center',
+      width: 160
     },
-  ]
-
-  if (auth) columns.push({
-    key: 'operate',
-    title: '操作',
-    width: 120,
-    render: (text: string, record: any) => {
-      return <DoCon className="operate-group">
-        <span className="edit" onClick={() => handleEdit(record)}>编辑</span>
-        <span className="delete" onClick={() => handleDelete(record)}>删除</span>
-      </DoCon>
+    {
+      key: 'operate',
+      title: '操作',
+      width: 60,
+      render: (text: string, record: any) => {
+        return <DoCon className="operate-group">
+          {auth && <React.Fragment>
+            <span onClick={() => handleEdit(record)}>查看</span>
+          </React.Fragment>}
+        </DoCon>
+      }
     }
-  })
+  ]
 
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
@@ -142,9 +132,9 @@ export default observer(function NursingWorkPlainList() {
     return monthArr
   })()
 
-  const getList = (query: ListQuery) => {
+  const getList = (query: any) => {
     setLoading(true)
-    nursingWorkPlainService.getPage(query).then(res => {
+    checkWardReportListService.getPage(query).then(res => {
       setLoading(false)
       if (res.data) {
         setTableData(res.data.list)
@@ -154,55 +144,11 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const handleCreate = () => {
-    setEditParmas({
-      year: moment().format("YYYY"),
-      month: moment().format("M"),
-      type: '1',
-      indexInType: '',
-      content: '',
-      wardCode: '',
-      wardName: ''
-    })
-
-    setTimeout(() => setEditVisible(true))
-  }
-
-  const handleDelete = (record: any) => {
-    Modal.confirm({
-      title: '提示',
-      content: '是否删除该计划?',
-      onOk: () => {
-        setLoading(true)
-        nursingWorkPlainService.delete({
-          wardCode: record.wardCode,
-          year: record.year,
-          month: record.month,
-          type: record.type,
-          indexInType: record.indexInType,
-        })
-          .then(res => {
-            getList(query)
-          }, () => setLoading(false))
-      }
-    })
-  }
-
-  const handleEdit = (record: any) => {
-    setEditParmas({
-      year: record.year,
-      month: record.month,
-      type: record.type,
-      indexInType: record.type == '2' ? record.indexInType : '',
-      content: record.content,
-      wardName: record.wardName,
-      wardCode: record.wardCode
-    })
-
-    setTimeout(() => setEditVisible(true))
+    setCreateVisible(true)
   }
 
   const handleCancel = () => {
-    setEditVisible(false)
+    setCreateVisible(false)
   }
 
   const handleOk = () => {
@@ -210,48 +156,14 @@ export default observer(function NursingWorkPlainList() {
     getList(query)
   }
 
-  const handleExport = () => {
-    let year = moment()
-    let month = query.month
-
-    const exportContent = <ExportCon>
-      <div>
-        <span>年份: </span>
-        <span>
-          <YearPicker
-            allowClear={false}
-            value={year}
-            onChange={(_moment: any) => year = _moment} />
-        </span>
-      </div>
-      <div>
-        <span>月份: </span>
-        <Select
-          defaultValue={month}
-          style={{ width: '70px' }}
-          onChange={(_month: any) => month = _month}>
-          <Option value="">全部</Option>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
-        </Select>
-      </div>
-    </ExportCon>
-
-    Modal.confirm({
-      title: '导出年月选择',
-      content: exportContent,
-      onOk: () => {
-        setLoading(true)
-        nursingWorkPlainService.exportData({
-          wardCode: query.wardCode,
-          year: year.format('YYYY'),
-          month
-        })
-          .then((res: any) => {
-            setLoading(false)
-            fileDownload(res)
-          }, () => setLoading(false))
-      }
-    })
+  const handleEdit = (record: any) => {
+    history.push(`/checkWardReportView?${qs.stringify({
+      wardCode: record.wardCode,
+      year: record.year,
+      month: record.month,
+      id: record.id,
+      status: record.status,
+    })}`)
   }
 
   useEffect(() => {
@@ -259,7 +171,15 @@ export default observer(function NursingWorkPlainList() {
   }, [query])
 
   useKeepAliveEffect(() => {
-    if ((appStore.history && appStore.history.action) === 'POP') {
+    console.log(appStore.history.action)
+    if (
+      appStore.history &&
+      (
+        appStore.history.action === 'POP' ||
+        appStore.history.action === 'PUSH' ||
+        appStore.history.action === 'REPLACE'
+      )
+    ) {
       if (query.wardCode) getList(query)
     }
     return () => { }
@@ -268,7 +188,7 @@ export default observer(function NursingWorkPlainList() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>护理工作计划</PageTitle>
+        <PageTitle>特殊时段查房统计报告</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -291,20 +211,20 @@ export default observer(function NursingWorkPlainList() {
           <Option value="">全部</Option>
           {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
         </Select>
-        <span>类型:</span>
+        <span>状态:</span>
         <Select
-          value={query.type}
-          onChange={(type: string) => setQuery({ ...query, type })}
+          value={query.status}
+          onChange={(status: string) => setQuery({ ...query, status })}
           style={{ width: '95px' }}>
-          <Option value="">全部</Option>
-          <Option value="1">月计划</Option>
-          <Option value="2">周计划</Option>
+          <Option value=''>全部</Option>
+          <Option value='0'>保存</Option>
+          <Option value='1'>发布</Option>
         </Select>
         <span>科室:</span>
         <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
-        <Button onClick={handleSearch} type="primary">查询</Button>
-        {auth && <Button type="primary" onClick={handleCreate}>添加</Button>}
-        <Button onClick={handleExport}>导出</Button>
+        <Button onClick={handleSearch}>查询</Button>
+        {auth && <Button type="primary" onClick={handleCreate}>新建</Button>}
+        {/* <Button >导出</Button> */}
       </RightIcon>
     </HeaderCon>
     <TableWrapper>
@@ -322,18 +242,29 @@ export default observer(function NursingWorkPlainList() {
         }}
       />
     </TableWrapper>
-    <WorkPlainEditModal
+    <ReportCreateModal
       onOk={handleOk}
-      title={editParmas.content ? "添加计划" : "修改计划"}
-      visible={editVisible}
-      onCancel={handleCancel}
-      query={editParmas} />
+      visible={createVisible}
+      onCancel={handleCancel} />
   </Wrapper>
 })
 
 const TableWrapper = styled(TabledCon)`
 td{
+  position: relative;
   word-break: break-all;
+  .ellips{
+    position: absolute;
+    left:0;
+    top: 0;
+    height: 30px;
+    line-height: 30px;
+    right: 0;
+    padding: 0 5px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
 }
 `
 
@@ -388,9 +319,4 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   display: flex;
   align-items: center;
-`
-const ExportCon = styled.div`
-  &>div{
-    margin-top: 15px;
-  }
 `

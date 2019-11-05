@@ -16,14 +16,20 @@ export default class CheckWardReportService extends BaseApiService {
 
     return this.post(`/qcAnalysis/getReport`, appStore.queryObj)
   }
-  public deleteReport(obj?: any) {
-    return this.post(`/qcAnalysis/deleteReport`, appStore.queryObj)
+
+  /**删除 */
+  public deleteReport(id: string) {
+    return this.get(`/srReport/delete/${id}`)
   }
-  public publishReport(obj?: any) {
-    return this.post(`/qcAnalysis/publish`, appStore.queryObj)
+
+  /**发布报告 */
+  public publishReport(id: string) {
+    return this.get(`/srReport/publish/${id}`)
   }
-  public cancelPublishReport(obj?: any) {
-    return this.post(`/qcAnalysis/cancelPublish`, appStore.queryObj)
+
+  /**撤销发布报告 */
+  public cancelPublishReport(id: string) {
+    return this.get(`/srReport/revoke/${id}`)
   }
 
   /** 更新上月质量问题，持续改进效果评价 */

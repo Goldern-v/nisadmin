@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, DatePicker, Select } from 'antd'
+import { Button, DatePicker, Select, Modal } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -9,10 +9,13 @@ import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { useKeepAliveEffect } from 'react-keep-alive'
 import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
+import moment from 'moment'
+import { fileDownload } from 'src/utils/file/file'
 export interface Props { }
 
 
 import { badEventRecordService } from './api/BadEventRecordService'
+import YearPicker from 'src/components/YearPicker'
 const Option = Select.Option
 const RangePicker = DatePicker.RangePicker
 
@@ -125,7 +128,7 @@ export default observer(function BadEventRecord() {
         setLoading(false)
         if (res.data) {
           setDataTotal(res.data.totalCount)
-          setTableData(res.data.pages.map((item: any) => {
+          setTableData(res.data.list.map((item: any) => {
             return {
               ...item.badEvent,
               parties: item.parties.map((item: any) => item.empName || '').join('、')
@@ -147,6 +150,59 @@ export default observer(function BadEventRecord() {
 
   const handleDetail = (record: any) => {
     history.push(`/badEventRecordDetail?id=${record.id}`)
+  }
+
+  const monthList = (() => {
+    let currentMonth = 12;
+    let monthArr = []
+    while (currentMonth--) {
+      monthArr.push(currentMonth + 1)
+    }
+    return monthArr
+  })()
+
+  const handleExport = () => {
+    let year = moment()
+    let month = moment(query.startDate).format('M')
+
+    const exportContent = <ExportCon>
+      <div>
+        <span>年份: </span>
+        <span>
+          <YearPicker
+            allowClear={false}
+            value={year}
+            onChange={(_moment: any) => year = _moment} />
+        </span>
+      </div>
+      <div>
+        <span>月份: </span>
+        <Select
+          defaultValue={month}
+          style={{ width: '70px' }}
+          onChange={(_month: any) => month = _month}>
+          <Option value="">全部</Option>
+          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+        </Select>
+      </div>
+    </ExportCon>
+
+    Modal.confirm({
+      title: '导出年月选择',
+      content: exportContent,
+      onOk: () => {
+        setLoading(true)
+        badEventRecordService.exportData({
+          wardCode: query.wardCode,
+          year: year.format('YYYY'),
+          month
+        })
+          .then((res: any) => {
+            setLoading(false)
+            fileDownload(res)
+          }, () => setLoading(false))
+      }
+    })
   }
 
   useEffect(() => {
@@ -207,7 +263,7 @@ export default observer(function BadEventRecord() {
         {sameWard && <Button
           type="primary"
           onClick={() => history.push('/badEventRecordEdit')}>添加</Button>}
-        <Button>导出</Button>
+        <Button onClick={handleExport}>导出</Button>
       </RightIcon>
     </HeaderCon>
     <TableWrapper>
@@ -280,4 +336,10 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   display: flex;
   align-items: center;
+`
+
+const ExportCon = styled.div`
+  &>div{
+    margin-top: 15px;
+  }
 `

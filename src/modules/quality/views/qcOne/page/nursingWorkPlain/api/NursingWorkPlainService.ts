@@ -30,6 +30,11 @@ export default class NursingWorkPlainService extends BaseApiService {
   public getDict(query: { groupCode: string, dictCode: string }) {
     return this.get(`/dictTable/getList/${query.groupCode}/${query.dictCode}`)
   }
+
+  /**导出 */
+  public exportData(query: { wardCode: string, year: string, month: string }) {
+    return this.post('/qcFlReport/export/workSchedule', query, { responseType: 'blob' })
+  }
 }
 
 export const nursingWorkPlainService = new NursingWorkPlainService()
