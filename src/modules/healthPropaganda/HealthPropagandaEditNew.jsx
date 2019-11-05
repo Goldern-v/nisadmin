@@ -316,7 +316,7 @@ export default observer(function HealthPropagandaEditNew(props) {
               extraPlugins: 'stylesheetparser,colorbutton,colordialog',
               removePlugins: 'easyimage,cloudservices',
               filebrowserUploadUrl:
-                '/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=51e827c9-d80e-40a1-a95a-1edc257596e7',
+                `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`,
               height: 600,
               title: ''
             }}
