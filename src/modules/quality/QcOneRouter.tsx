@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as YIBG } from './images/icon/YJBG.svg'
 import { ReactComponent as YJJL } from './images/icon/YJJL.svg'
@@ -21,6 +21,7 @@ import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
 
 import StarRatingReport from './views/qcOne/report/StarRatingReport/StarRatingReport'
 import BadEventReport from './views/qcOne/report/BadEventReport/BadEventReport'
+import PatientVisitQuarter from './views/qcOne/report/PatientVisitQuarter/PatientVisitQuarter'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -91,18 +92,26 @@ const LEFT_MENU_CONFIG: any = [
     keepAlive: true,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   },
-  // {
-  //   title: '不良事件报告',
-  //   icon: <YIBG />,
-  //   path: '/qcOne/badEventReport',
-  //   component: BadEventReport,
-  //   keepAlive: true,
-  //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-  // }
+  {
+    title: '不良事件登记表',
+    icon: <YIBG />,
+    path: '/qcOne/badEventReport',
+    component: BadEventReport,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+  },
+  {
+    title: '季度随访汇总表',
+    icon: <YIBG />,
+    path: '/qcOne/patientVisitQuarter',
+    component: PatientVisitQuarter,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+  }
 ]
 
 export default function QcOneRouter(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname])
+  useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
@@ -133,8 +142,8 @@ export default function QcOneRouter(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-          ))}
+              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+            ))}
       </MainCon>
     </Wrapper>
   )

@@ -73,7 +73,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
         if (res.data) {
           message.success('创建成功', 1, () => {
             setLoading(false)
-            history.push(`/badEventReport?${qs.stringify({ ...params })}`)
+            history.push(`/badEventReportEdit?${qs.stringify({ ...params })}`)
             onOk && onOk()
           })
         }
@@ -82,7 +82,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const reportName = (params: any) => {
     const { year, month } = params
-    return `${year}年${month}月${wardName}不良事件报告`
+    return `${year}年${month}月${wardName}不良事件登记表`
   }
 
   useEffect(() => {
@@ -122,7 +122,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
       centered
       onOk={handleCreate}
       onCancel={() => onCancel && onCancel()}
-      title={title || "添加星级考核评价"}>
+      title={title || "添加不良事件登记表"}>
       <Wrapper>
         <Row>
           <Col span={5}>科室:</Col>

@@ -8,7 +8,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import YearPicker from 'src/components/YearPicker'
 import moment from 'moment'
 import qs from 'qs'
-import { starRatingReportService, ListQuery } from './api/StarRatingReportService'
+import { patientVisitQuarterService, ListQuery } from './api/PatientVisitQuarterService'
 import { numToChinese } from 'src/utils/number/numToChinese'
 
 import { authStore, appStore } from 'src/stores'
@@ -21,7 +21,7 @@ export interface Props { }
 
 const Option = Select.Option
 
-export default observer(function NursingWorkPlainList() {
+export default observer(function PatientVisitQuarter() {
   const { history } = appStore
   //是否护士长
   const auth = authStore.isRoleManage
@@ -124,17 +124,17 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const monthList = (() => {
-    let currentMonth = 12;
+    let currentMonth = 4;
     let monthArr = []
     while (currentMonth--) {
-      monthArr.push(currentMonth + 1)
+      monthArr.push(4 - currentMonth)
     }
     return monthArr
   })()
 
   const getList = (query: any) => {
     setLoading(true)
-    starRatingReportService.getPage(query).then(res => {
+    patientVisitQuarterService.getPage(query).then(res => {
       setLoading(false)
       if (res.data) {
         setTableData(res.data.list)
@@ -157,7 +157,7 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const handleEdit = (record: any) => {
-    history.push(`/starRatingReportEdit?${qs.stringify({
+    history.push(`/patientVisitQuarterEdit?${qs.stringify({
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
@@ -181,7 +181,7 @@ export default observer(function NursingWorkPlainList() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>星级考核报表</PageTitle>
+        <PageTitle>季度随访汇总表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -196,19 +196,19 @@ export default observer(function NursingWorkPlainList() {
                 setQuery({ ...query, year: '' })
             }} />
         </span>
-        <span>月份:</span>
+        <span>季度:</span>
         <Select
           value={query.month}
           onChange={(month: string) => setQuery({ ...query, month })}
           className="month-select">
           <Option value="">全部</Option>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+          {monthList.map((month: number) => <Option value={`${month}`} key={month}>第{numToChinese(month)}季度</Option>)}
         </Select>
         <span>状态:</span>
         <Select
           value={query.status}
           onChange={(status: string) => setQuery({ ...query, status })}
-          style={{ width: '95px' }}>
+          style={{ width: '75px' }}>
           <Option value=''>全部</Option>
           <Option value='0'>保存</Option>
           <Option value='1'>发布</Option>
@@ -282,7 +282,7 @@ const HeaderCon = styled(TableHeadCon)`
     margin-left: 0px;
   }
   .month-select{
-    width: 70px;
+    width: 100px;
   }
   .year-select{
     width: 100px;

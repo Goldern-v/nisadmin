@@ -21,7 +21,7 @@ export interface Props { }
 
 const Option = Select.Option
 
-export default observer(function NursingWorkPlainList() {
+export default observer(function BadEventReport() {
   const { history } = appStore
   //是否护士长
   const auth = authStore.isRoleManage
@@ -169,7 +169,10 @@ export default observer(function NursingWorkPlainList() {
   }, [query])
 
   useKeepAliveEffect(() => {
-    if ((appStore.history && appStore.history.action) === 'POP') {
+    if (
+      appStore.history &&
+      (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
+    ) {
       if (query.wardCode) getList(query)
     }
     return () => { }
@@ -178,7 +181,7 @@ export default observer(function NursingWorkPlainList() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>不良事件报告</PageTitle>
+        <PageTitle>不良事件登记表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>

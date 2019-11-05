@@ -29,26 +29,22 @@ export default observer(function Table(props: Props) {
       <table>
         <colgroup>
           <col width='120' />
-          <col width='120' />
+          <col width='180' />
         </colgroup>
         <tbody>
           <tr className='header'>
-            <td>姓名</td>
-            <td>护理质量</td>
-            <td>工作量</td>
-            <td>满意度</td>
-            <td>考核总分</td>
-            <td>星级</td>
+            <td>当事人</td>
+            <td>事件种类</td>
+            <td>事件简要经过</td>
+            <td>结果</td>
           </tr>
 
           {list.map((item, index) => (
             <tr key={index}>
-              <td style={{ textAlign: 'center' }}>{item.empName}</td>
-              <td style={{ textAlign: 'center' }}>{item.nursingDeduct}</td>
-              <td style={{ textAlign: 'center' }}>{item.workloadDeduct}</td>
-              <td style={{ textAlign: 'center' }}>{item.satisfactionDeduct}</td>
-              <td>{sum(item)}</td>
-              <td style={{ textAlign: 'center' }}>{item.starClass}</td>
+              <td style={{ textAlign: 'left' }}>{item.eventEmpNames}</td>
+              <td style={{ textAlign: 'center' }}>{item.eventTypeName}</td>
+              <td style={{ textAlign: 'left' }}>{item.briefCourseEvent}</td>
+              <td style={{ textAlign: 'left' }}>{item.result}</td>
             </tr>
           ))}
         </tbody>

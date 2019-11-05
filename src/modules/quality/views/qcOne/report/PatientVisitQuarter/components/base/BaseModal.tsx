@@ -6,8 +6,8 @@ import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { observer } from 'src/vendors/mobx-react-lite'
-import { badEventReportEditModel } from './../../model/BadEventReportEditModel'
-import { badEventReportService } from '../../api/BadEventReportService'
+import { patientVisitQuarterModel } from '../../model/PatientVisitQuarterModel'
+import { patientVisitQuarterService } from '../../api/PatientVisitQuarterService'
 
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
@@ -31,16 +31,16 @@ export default observer(function BaseModal(props: Props) {
     console.log(sectionData.sectionId, data)
 
     if (sectionData.sectionId == '报告名称') {
-      badEventReportService.updateReportName(data.text).then((res) => {
-        badEventReportEditModel.setSectionData(sectionData.sectionId, {
+      patientVisitQuarterService.updateReportName(data.text).then((res) => {
+        patientVisitQuarterModel.setSectionData(sectionData.sectionId, {
           text: res.data.reportName
         })
         message.success('保存成功')
         onCancel()
       })
-    } else if (sectionData.sectionId == '不良事件记录') {
-      badEventReportService.updateBadEventList(data.list).then((res) => {
-        badEventReportEditModel.setSectionData(sectionData.sectionId, {
+    } else if (sectionData.sectionId == '季度随访') {
+      patientVisitQuarterService.updatePatientVisitList(data.list).then((res) => {
+        patientVisitQuarterModel.setSectionData(sectionData.sectionId, {
           list: res.data || []
         })
         message.success('保存成功')
@@ -48,12 +48,12 @@ export default observer(function BaseModal(props: Props) {
       })
     }
 
-    // badEventReportEditModel.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
+    // patientVisitQuarterModel.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
   }
 
   useLayoutEffect(() => {
     if (visible) {
-      let data = badEventReportEditModel.getSectionData(sectionData.sectionId)
+      let data = patientVisitQuarterModel.getSectionData(sectionData.sectionId)
       setData(data)
     }
   }, [visible])
