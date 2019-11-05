@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { patientVisitQuarterModel } from '../../model/PatientVisitQuarterModel'
+import { badEventReportEditModel as patientVisitQuarterModel } from '../../model/BadEventReportEditModel'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 import Table from './Table'
@@ -18,16 +18,16 @@ export default observer(function 星级考核表模块(props: Props) {
   let data = patientVisitQuarterModel.getSectionData(sectionId)
   let report: Report = patientVisitQuarterModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  let totalSorce = 0;
+  let totalSorce = 0
   for (let i = 0; i < list.length; i++) {
-    totalSorce += list[i].deductScore || 0;
+    totalSorce += list[i].deductScore || 0
   }
 
-  useEffect(() => { })
+  useEffect(() => {})
 
   return (
     <Wrapper>
-      <div className='sup-title' style={{ width: '100px', height: '21px' }}></div>
+      <div className='sup-title' style={{ width: '100px', height: '21px' }} />
       <Table list={list} totalSorce={totalSorce} />
       <EditButton onClick={() => patientVisitQuarterModel.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
