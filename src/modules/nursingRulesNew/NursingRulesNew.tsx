@@ -136,7 +136,7 @@ export default observer(function nursingRulesNew() {
       width: 150,
       key: 'operation',
       render: (text: any, record: any) => {
-        let uploaderAuth = !!(record.upLoaderEmpNo == authStore.getUser().empNo) as boolean
+        let uploaderAuth = !!(record.upLoaderEmpNo == (authStore.user && authStore.user.empNo)) as boolean
 
         let auth = !!(uploaderAuth || absoluteAuth) as boolean
 

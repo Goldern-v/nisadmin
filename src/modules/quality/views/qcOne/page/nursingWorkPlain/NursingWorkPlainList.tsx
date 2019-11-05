@@ -14,6 +14,7 @@ import { useKeepAliveEffect } from 'react-keep-alive'
 
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { fileDownload } from 'src/utils/file/file'
 
 import WorkPlainEditModal from './components/WorkPlainEditModal'
 
@@ -209,6 +210,50 @@ export default observer(function NursingWorkPlainList() {
     getList(query)
   }
 
+  const handleExport = () => {
+    let year = moment()
+    let month = query.month
+
+    const exportContent = <ExportCon>
+      <div>
+        <span>年份: </span>
+        <span>
+          <YearPicker
+            allowClear={false}
+            value={year}
+            onChange={(_moment: any) => year = _moment} />
+        </span>
+      </div>
+      <div>
+        <span>月份: </span>
+        <Select
+          defaultValue={month}
+          style={{ width: '70px' }}
+          onChange={(_month: any) => month = _month}>
+          <Option value="">全部</Option>
+          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+        </Select>
+      </div>
+    </ExportCon>
+
+    Modal.confirm({
+      title: '导出年月选择',
+      content: exportContent,
+      onOk: () => {
+        setLoading(true)
+        nursingWorkPlainService.exportData({
+          wardCode: query.wardCode,
+          year: year.format('YYYY'),
+          month
+        })
+          .then((res: any) => {
+            setLoading(false)
+            fileDownload(res)
+          }, () => setLoading(false))
+      }
+    })
+  }
+
   useEffect(() => {
     if (query.wardCode) getList(query)
   }, [query])
@@ -259,7 +304,7 @@ export default observer(function NursingWorkPlainList() {
         <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
         <Button onClick={handleSearch} type="primary">查询</Button>
         {auth && <Button type="primary" onClick={handleCreate}>添加</Button>}
-        <Button >导出</Button>
+        <Button onClick={handleExport}>导出</Button>
       </RightIcon>
     </HeaderCon>
     <TableWrapper>
@@ -343,4 +388,9 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   display: flex;
   align-items: center;
+`
+const ExportCon = styled.div`
+  &>div{
+    margin-top: 15px;
+  }
 `

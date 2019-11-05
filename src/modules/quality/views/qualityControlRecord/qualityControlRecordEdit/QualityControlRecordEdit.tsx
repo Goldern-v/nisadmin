@@ -171,7 +171,7 @@ export default observer(function QualityControlRecordEdit() {
         <div className='topHeaderTitle'>
           <div className='title'>{baseInfo.qcName}</div>
           <div className="sub-title">
-            {baseInfo.intro}
+            {/* {baseInfo.intro} */}
           </div>
           <div className='topHeaderButton'>
             {step === 1 && !loading && <React.Fragment>
