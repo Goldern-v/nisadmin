@@ -2,12 +2,12 @@ import { observable, computed, action } from 'mobx'
 import React from 'react'
 
 import createModal from 'src/libs/createModal'
-import BaseModal from './../components/base/BaseModal'
+import BaseModal from '../components/base/BaseModal'
 
-import { sectionList } from './../config/sectionList'
+import { sectionList } from '../config/sectionList'
 
-import { starRatingReportService } from './../api/StarRatingReportService'
-import { AllData, DeptItem, DetailItem } from './../types'
+import { patientVisitQuarterService } from '../api/PatientVisitQuarterService'
+import { AllData, DeptItem, DetailItem } from '../types'
 import qs from 'qs'
 import { numToChinese } from 'src/utils/number/numToChinese'
 
@@ -38,7 +38,7 @@ interface SectionCase {
   section?: any
 }
 
-class StarRatingReportEditModel {
+class PatientVisitQuarterModel {
   @observable baseModal: ModalCase | null = null
   @observable public sectionList: SectionListItem[] = sectionList
   @observable public allData: Partial<AllData> = {
@@ -101,7 +101,7 @@ class StarRatingReportEditModel {
 
   /** 数据初始化 */
   async initData(query?: any) {
-    let { data } = await starRatingReportService.getReport(query)
+    let { data } = await patientVisitQuarterService.getReport(query)
     this.allData = data
     /** 本月 */
     let currentYear: any = this.allData!.report!.year
@@ -113,23 +113,7 @@ class StarRatingReportEditModel {
 
     console.log(data)
     this.getSectionData('报告名称')!.text = this.allData.report!.reportName || ''
-    this.getSectionData('星级考核')!.list = this.allData.starRatingList.map((item: any) => {
-      let nursingDeduct = -Number(item.nursingDeduct)
-      if (isNaN(nursingDeduct)) nursingDeduct = 0
-
-      let workloadDeduct = -Number(item.workloadDeduct)
-      if (isNaN(workloadDeduct)) workloadDeduct = 0
-
-      let satisfactionDeduct = -Number(item.satisfactionDeduct)
-      if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
-
-      return {
-        ...item,
-        nursingDeduct,
-        workloadDeduct,
-        satisfactionDeduct
-      }
-    }) || [];
+    this.getSectionData('季度随访')!.list = this.allData.patientVisitList || [];
   }
   async init(query?: any) {
     await this.initData(query)
@@ -137,4 +121,4 @@ class StarRatingReportEditModel {
   }
 }
 
-export const starRatingReportEditModel = new StarRatingReportEditModel()
+export const patientVisitQuarterModel = new PatientVisitQuarterModel()

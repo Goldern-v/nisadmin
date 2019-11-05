@@ -1,6 +1,6 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 // import qs from 'qs'
-import { badEventReportEditModel } from '../model/BadEventReportEditModel'
+import { patientVisitQuarterModel } from '../model/PatientVisitQuarterModel'
 
 export interface ListQuery {
   wardCode: string,
@@ -10,62 +10,62 @@ export interface ListQuery {
   pageIndex: number,
   pageSize: number
 }
-export default class BadEventReportService extends BaseApiService {
+export default class PatientVisitQuarterService extends BaseApiService {
   /**列表接口 */
   public getPage(query: ListQuery) {
-    return this.post('/qcAnalysis/be/getPage', query)
+    return this.post('/qcAnalysis/pvq/getPage', query)
   }
 
   /**新建编辑 */
   public createReport(query: any) {
-    return this.post('/qcAnalysis/be/createReport', query)
+    return this.post('/qcAnalysis/pvq/createReport', query)
   }
 
   /**获取报告 */
   public getReport(query: any) {
-    return this.post('/qcAnalysis/be/getReport', query)
+    return this.post('/qcAnalysis/pvq/getReport', query)
   }
 
   /**修改报告 */
   public editReport(query: any) {
-    return this.post('/qcAnalysis/be/update/report', query)
+    return this.post('/qcAnalysis/pvq/update/report', query)
   }
 
-  /**更新不良事件报告 */
+  /**更新随访记录 */
   public update(query: any) {
-    return this.post('/qcAnalysis/be/update/badEventList', query)
+    return this.post('/qcAnalysis/pvq/update/patientVisitList', query)
   }
 
   /**删除 */
   public delete(query: any) {
-    return this.post('/qcAnalysis/be/deleteReport', query)
+    return this.post('/qcAnalysis/pvq/deleteReport', query)
   }
 
   /**发布报告 */
   public publish(query: any) {
-    return this.post('/qcAnalysis/be/publish', query)
+    return this.post('/qcAnalysis/pvq/publish', query)
   }
 
   /**撤销发布报告 */
   public cancelPublish(query: any) {
-    return this.post('/qcAnalysis/be/cancelPublish', query)
+    return this.post('/qcAnalysis/pvq/cancelPublish', query)
   }
 
   /** 更新报告名称 */
   public updateReportName(reportName?: any) {
-    let { year, month, wardCode } = badEventReportEditModel.report
+    let { year, month, wardCode } = patientVisitQuarterModel.report
     let query = {
       year,
       month,
       wardCode,
       reportName
     }
-    return this.post('/qcAnalysis/be/update/report', query)
+    return this.post('/qcAnalysis/pvq/update/report', query)
   }
 
-  /** 更新星级考核 */
-  public updateBadEventList(itemList: any[]) {
-    let { year, month, wardCode } = badEventReportEditModel.report
+  /** 更新季度随访 */
+  public updatePatientVisitList(itemList: any[]) {
+    let { year, month, wardCode } = patientVisitQuarterModel.report
     let query = {
       year,
       month,
@@ -73,7 +73,7 @@ export default class BadEventReportService extends BaseApiService {
       itemList
     }
 
-    return this.post('/qcAnalysis/be/update/badEventList', query)
+    return this.post('/qcAnalysis/pvq/update/patientVisitList', query)
   }
 
   /**获取字典 */
@@ -82,4 +82,4 @@ export default class BadEventReportService extends BaseApiService {
   }
 }
 
-export const badEventReportService = new BadEventReportService()
+export const patientVisitQuarterService = new PatientVisitQuarterService()

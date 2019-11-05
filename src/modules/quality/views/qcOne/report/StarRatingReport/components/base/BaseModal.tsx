@@ -39,9 +39,41 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '星级考核') {
-      starRatingReportService.updateStarRattingList(data.list).then((res) => {
+      starRatingReportService.updateStarRattingList(data.list.map((item: any) => {
+        let nursingDeduct = -Number(item.nursingDeduct)
+        if (isNaN(nursingDeduct)) nursingDeduct = 0
+
+        let workloadDeduct = -Number(item.workloadDeduct)
+        if (isNaN(workloadDeduct)) workloadDeduct = 0
+
+        let satisfactionDeduct = -Number(item.satisfactionDeduct)
+        if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
+
+        return {
+          ...item,
+          nursingDeduct,
+          workloadDeduct,
+          satisfactionDeduct
+        }
+      })).then((res) => {
         starRatingReportEditModel.setSectionData(sectionData.sectionId, {
-          list: res.data || []
+          list: res.data.map((item: any) => {
+            let nursingDeduct = -Number(item.nursingDeduct)
+            if (isNaN(nursingDeduct)) nursingDeduct = 0
+
+            let workloadDeduct = -Number(item.workloadDeduct)
+            if (isNaN(workloadDeduct)) workloadDeduct = 0
+
+            let satisfactionDeduct = -Number(item.satisfactionDeduct)
+            if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
+
+            return {
+              ...item,
+              nursingDeduct,
+              workloadDeduct,
+              satisfactionDeduct
+            }
+          }) || []
         })
         message.success('保存成功')
         onCancel()

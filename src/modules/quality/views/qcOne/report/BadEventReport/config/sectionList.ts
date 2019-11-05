@@ -3,8 +3,8 @@ import Line from '../components/common/Line'
 
 import 标题模块 from '../components/标题/标题模块'
 import 标题弹窗 from '../components/标题/标题弹窗'
-import 星级考核表模块 from '../components/星级考核表/星级考核表模块'
-import 星级考核表弹窗 from '../components/星级考核表/星级考核表弹窗'
+// import 不良事件记录表模块 from '../components/不良事件记录表/不良事件记录表模块'
+import 不良事件记录表弹窗 from '../components/不良事件记录表/不良事件记录表弹窗'
 
 export const sectionList: SectionListItem[] = [
   {
@@ -16,12 +16,12 @@ export const sectionList: SectionListItem[] = [
     modal: 标题弹窗
   },
   {
-    sectionId: '星级考核',
-    sectionTitle: '星级考核',
-    modalTitle: '编辑星级考核',
+    sectionId: '不良事件记录',
+    sectionTitle: '不良事件记录',
+    modalTitle: '编辑不良事件记录',
     data: {},
-    section: 星级考核表模块,
-    modal: 星级考核表弹窗,
+    // section: 不良事件记录表模块,
+    modal: 不良事件记录表弹窗,
     modalWidth: 900
   }
 ]

@@ -15,13 +15,47 @@ export default observer(function Table(props: Props) {
   let { list, totalSorce } = props
   // let report: Report = starRatingReportEditModel.getDataInAllData('report') || {}
 
+  const formatNum = (num: number | string) => {
+    num = Number(num)
+
+    if (isNaN(num)) return '0.0'
+
+    let numArr = num.toString().split('.')
+    if (!numArr[0]) numArr[0] = '0'
+
+    if (numArr[1]) {
+      numArr[1] = numArr[1][0]
+    } else {
+      numArr[1] = '0'
+    }
+
+    return numArr.join('.')
+  }
+
   const sum = (item: any) => {
     let total = 100;
-    let nursingDeduct = item.nursingDeduct || 0
-    let workloadDeduct = item.workloadDeduct || 0
-    let satisfactionDeduct = item.satisfactionDeduct || 0
+    let nursingDeduct = - Number(
+      formatNum(
+        -Number(item.nursingDeduct)
+      )
+    )
+    if (isNaN(nursingDeduct)) nursingDeduct = 0
 
-    return total - nursingDeduct - workloadDeduct - satisfactionDeduct
+    let workloadDeduct = Number(
+      formatNum(
+        -Number(item.workloadDeduct)
+      )
+    )
+    if (isNaN(workloadDeduct)) workloadDeduct = 0
+
+    let satisfactionDeduct = Number(
+      formatNum(
+        -Number(item.satisfactionDeduct)
+      )
+    )
+    if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
+
+    return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct)
   }
 
   return (
@@ -44,9 +78,9 @@ export default observer(function Table(props: Props) {
           {list.map((item, index) => (
             <tr key={index}>
               <td style={{ textAlign: 'center' }}>{item.empName}</td>
-              <td style={{ textAlign: 'center' }}>{item.nursingDeduct}</td>
-              <td style={{ textAlign: 'center' }}>{item.workloadDeduct}</td>
-              <td style={{ textAlign: 'center' }}>{item.satisfactionDeduct}</td>
+              <td style={{ textAlign: 'center' }}>{formatNum(item.nursingDeduct)}</td>
+              <td style={{ textAlign: 'center' }}>{formatNum(item.workloadDeduct)}</td>
+              <td style={{ textAlign: 'center' }}>{formatNum(item.satisfactionDeduct)}</td>
               <td>{sum(item)}</td>
               <td style={{ textAlign: 'center' }}>{item.starClass}</td>
             </tr>

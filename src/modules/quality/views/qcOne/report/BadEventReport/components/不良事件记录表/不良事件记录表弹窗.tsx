@@ -10,7 +10,9 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import service from 'src/services/api'
 import qs from 'qs'
-const commonApi = service.commonApiService
+
+import { badEventReportService } from './../../api/BadEventReportService'
+// const commonApi = service.commonApiService
 
 const Option = Select.Option
 
@@ -30,7 +32,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
   let report: Report = badEventReportEditModel.getDataInAllData('report')
 
 
-  const [nurseList, setNurseList] = useState([] as any[])
+  const [eventTypeList, setEventTypeList] = useState([] as any[])
 
   const columns: ColumnProps<any>[] = [
     {
@@ -42,72 +44,62 @@ export default observer(function 星级考核表弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '姓名',
+      title: '当事人',
       align: 'center',
       render(text: any, record: any, index: number) {
-        return <Select
-          value={record.empNo}
-          style={{ width: '100%' }}
-          onChange={(empNo: any) => {
-            cloneData.list[index].empNo = empNo
-            let target = nurseList.find((item: any) => item.empNo == empNo)
-            if (target) cloneData.list[index].empName = target.empName
-
+        return <Input.TextArea
+          value={record.eventEmpNames}
+          autosize
+          onChange={(e: any) => {
+            record.eventEmpNames = e.target.value
             setData(cloneData)
-          }}
-          filterOption={(input: string, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }>
-          {nurseList.map((item: any) => <Option key={item.empNo} value={item.empNo}>{item.empName}</Option>)}
-        </Select>
+          }} />
       },
       width: 120
     },
     {
-      title: '护理质量',
+      title: '事件种类',
+      width: 180,
       render(text: any, record: any, index: number) {
-        return <Input
-          className={`nursingDeduct${index}`}
-          defaultValue={record.nursingDeduct}
-          onChange={(e: any) => handleNumberInput(e, record, index, 'nursingDeduct')} />
-      },
-      width: 90
-    },
-    {
-      title: `工作量`,
-      render(text: any, record: any, index: number) {
-        return <Input
-          className={`workloadDeduct${index}`}
-          defaultValue={record.workloadDeduct}
-          onChange={(e: any) => handleNumberInput(e, record, index, 'workloadDeduct')} />
-      },
-      width: 90
-    },
-    {
-      title: `满意度`,
-      render(text: any, record: any, index: number) {
-        return <Input
-          className={`satisfactionDeduct${index}`}
-          defaultValue={record.satisfactionDeduct}
-          onChange={(e: any) => handleNumberInput(e, record, index, 'satisfactionDeduct')} />
-      },
-      width: 90
-    },
-    {
-      title: `星级`,
-      align: 'center',
-      render(text: any, record: any, index: number) {
-        return <span>{record.starClass}</span>
-      },
-      width: 80
-    },
-    {
-      title: `考核总分`,
-      width: 90,
-      align: 'center',
-      render(text: any, record: any, index: number) {
-        return <span>{sum(record)}</span>
+        return <Select
+          style={{ width: '100%' }}
+          value={record.eventType}
+          onChange={(eventType: any) => {
+            record.eventType = eventType
+            let target = eventTypeList.find((item: any) => item.code == eventType)
+            if (target) record.eventTypeName = target.name
+            setData(cloneData)
+          }}>
+          {eventTypeList.map((item: any, idx: number) =>
+            <Option value={item.code} key={idx}>{item.name}</Option>
+          )}
+        </Select>
       }
+    },
+    {
+      title: `事件简要经过`,
+      render(text: any, record: any, index: number) {
+        return <Input.TextArea
+          value={record.briefCourseEvent}
+          autosize
+          onChange={(e: any) => {
+            record.briefCourseEvent = e.target.value
+            setData(cloneData)
+          }} />
+      }
+    },
+    {
+      title: `结果`,
+      render(text: any, record: any, index: number) {
+        return <Input.TextArea
+          value={record.result}
+          autosize
+          onChange={(e: any) => {
+            record.result = e.target.value
+            setData(cloneData)
+          }} />
+      },
+      width: 180
     },
     {
       title: '操作',
@@ -134,67 +126,31 @@ export default observer(function 星级考核表弹窗(props: Props) {
 
     cloneData.list.push({
       id: '',
-      empName: '',
-      empNo: '',
+      eventEmpNames: '',
       indexNo: cloneData.list.length,
-      nursingDeduct: '',
-      workloadDeduct: '',
-      satisfactionDeduct: '',
-      starClass: '三星',
+      eventTypeName: '',
+      eventType: '',
+      briefCourseEvent: '',
+      result: '',
       month: search.month,
       year: search.year,
-      reportCode: "ward_star_rating",
+      reportCode: "bad_event",
       wardCode: search.wardCode
     })
 
     setData(cloneData)
   }
 
-  const handleNumberInput = (e: any, record: any, index: number, key: string) => {
-    if (
-      !Number(e.target.value) &&
-      Number(e.target.value) !== 0 &&
-      e.target.value[e.target.value.length - 1] !== '.'
-    ) {
-      return message.warning('只能输入数字')
-    }
-    record[key] = e.target.value
-
-    record.starClass = starClass(record)
-    setData(cloneData)
-  }
-
-  const sum = (item: any) => {
-    let total = 100;
-    let nursingDeduct = item.nursingDeduct || 0
-    let workloadDeduct = item.workloadDeduct || 0
-    let satisfactionDeduct = item.satisfactionDeduct || 0
-
-    return total - nursingDeduct - workloadDeduct - satisfactionDeduct
-  }
-
-  const starClass = (record: any) => {
-    let sumUp = sum(record)
-
-    if (sumUp > 98) return '三星'
-    if (sumUp > 96) return '二星'
-    if (sumUp > 90) return '一星'
-    return '无星'
-  }
-
   useEffect(() => {
-    commonApi
-      .userDictInfo(search.wardCode)
-      .then(res => {
-        if (res.data && res.data instanceof Array) {
-          setNurseList(res.data.map((item: any) => {
-            return {
-              empName: item.name,
-              empNo: item.code
-            }
-          }))
-        }
+    badEventReportService
+      .getDict({
+        groupCode: 'qc',
+        dictCode: 'qc_bad_event_type'
       })
+      .then((res: any) => {
+        if (res.data) setEventTypeList(res.data)
+      })
+
   }, [])
 
   return (
@@ -204,7 +160,6 @@ export default observer(function 星级考核表弹窗(props: Props) {
           添加
         </Button>
       </div>
-
       <BaseTable
         surplusHeight={400}
         columns={columns}
@@ -267,6 +222,7 @@ const Wrapper = styled.div`
   }
   .ant-input{
       resize: none;
+      word-break: break-all;
       ${defaultInputStyle}
       :hover{
         ${activeInputStyle}

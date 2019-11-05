@@ -154,27 +154,64 @@ export default observer(function 星级考核表弹窗(props: Props) {
     if (
       !Number(e.target.value) &&
       Number(e.target.value) !== 0 &&
+      e.target.value !== '-' &&
       e.target.value[e.target.value.length - 1] !== '.'
     ) {
       return message.warning('只能输入数字')
     }
-    record[key] = e.target.value
+    if (e.target.value !== '-') {
+      record[key] = e.target.value
 
-    record.starClass = starClass(record)
-    setData(cloneData)
+      record.starClass = starClass(record)
+      setData(cloneData)
+    }
+  }
+
+  const formatNum = (num: number | string) => {
+    num = Number(num)
+
+    if (isNaN(num)) return '0.0'
+
+    let numArr = num.toString().split('.')
+    if (!numArr[0]) numArr[0] = '0'
+
+    if (numArr[1]) {
+      numArr[1] = numArr[1][0]
+    } else {
+      numArr[1] = '0'
+    }
+
+    return numArr.join('.')
   }
 
   const sum = (item: any) => {
     let total = 100;
-    let nursingDeduct = item.nursingDeduct || 0
-    let workloadDeduct = item.workloadDeduct || 0
-    let satisfactionDeduct = item.satisfactionDeduct || 0
+    let nursingDeduct = - Number(
+      formatNum(
+        -Number(item.nursingDeduct)
+      )
+    )
+    if (isNaN(nursingDeduct)) nursingDeduct = 0
 
-    return total - nursingDeduct - workloadDeduct - satisfactionDeduct
+    let workloadDeduct = Number(
+      formatNum(
+        -Number(item.workloadDeduct)
+      )
+    )
+    if (isNaN(workloadDeduct)) workloadDeduct = 0
+
+    let satisfactionDeduct = Number(
+      formatNum(
+        -Number(item.satisfactionDeduct)
+      )
+    )
+    if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
+
+    return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct)
   }
 
   const starClass = (record: any) => {
-    let sumUp = sum(record)
+    let sumUp = Number(sum(record))
 
     if (sumUp > 98) return '三星'
     if (sumUp > 96) return '二星'

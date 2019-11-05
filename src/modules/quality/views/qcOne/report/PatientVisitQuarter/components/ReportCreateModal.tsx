@@ -8,7 +8,7 @@ import YearPicker from 'src/components/YearPicker'
 import qs from 'qs'
 const RangePicker = DatePicker.RangePicker
 
-import { starRatingReportService } from './../api/StarRatingReportService'
+import { patientVisitQuarterService } from '../api/PatientVisitQuarterService'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
@@ -34,18 +34,18 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const [editQuery, setEditQuery] = useState({
     year: moment().format('YYYY'),
-    month: moment().format('M'),
+    month: moment().quarter().toString(),
     wardCode: wardCode,
     reportName: '',
-    beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
-    endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
+    beginDate: '',
+    endDate: '',
   } as any)
 
   const monthList = (() => {
-    let currentMonth = 12;
+    let currentMonth = 4;
     let monthArr = []
     while (currentMonth--) {
-      monthArr.push(currentMonth + 1)
+      monthArr.push(4 - currentMonth)
     }
     return monthArr
   })()
@@ -60,7 +60,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
     setLoading(true)
 
-    starRatingReportService
+    patientVisitQuarterService
       .createReport({
         "wardCode": params.wardCode,
         "year": params.year,
@@ -73,7 +73,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
         if (res.data) {
           message.success('创建成功', 1, () => {
             setLoading(false)
-            history.push(`/starRatingReportEdit?${qs.stringify({ ...params })}`)
+            history.push(`/patientVisitQuarterEdit?${qs.stringify({ ...params })}`)
             onOk && onOk()
           })
         }
@@ -82,18 +82,38 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const reportName = (params: any) => {
     const { year, month } = params
-    return `${year}年${month}月${wardName}星级考核表`
+    return `${year}年${wardName}第${numToChinese(month)}季度出院患者家庭访视季度汇总表`
+  }
+
+  const getQuaterRange = (quater: string, year: string) => {
+    let quaterNum = Number(quater)
+    let endMonth = quaterNum * 3
+    let beginMonth: string = `${endMonth - 2}`
+    if (beginMonth.length <= 1) beginMonth = `0${beginMonth}`
+
+    let beginDate = `${year}-${beginMonth}-01`
+
+    let endMonthDays = moment(year + '-' + endMonth).daysInMonth()
+    let endDate = `${year}-${endMonth}-${endMonthDays}`
+
+    return {
+      beginDate,
+      endDate
+    }
   }
 
   useEffect(() => {
     if (visible) {
+      let quater = moment().quarter().toString()
+      let year = moment().format('YYYY')
+      const quaterRange = getQuaterRange(quater, year)
+
       let newQuery = {
-        year: moment().format('YYYY'),
-        month: moment().format('M'),
+        year,
+        month: quater,
         wardCode: wardCode,
         reportName: '',
-        beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
-        endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
+        ...quaterRange
       }
       newQuery.reportName = reportName(newQuery)
 
@@ -104,14 +124,12 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const setEditQueryAndInit = (newQuery: any) => {
     let newReportName = reportName(newQuery)
-    let newRangeDate = moment(`${newQuery.year}-${newQuery.month}`)
-    let newBeginDate = newRangeDate.format('YYYY-MM-01')
 
-    let newEndDate = moment(newBeginDate).add(1, 'M').subtract(1, 'd').format('YYYY-MM-DD')
+    const quaterRange = getQuaterRange(newQuery.month, newQuery.year)
 
     newQuery.reportName = newReportName
-    newQuery.beginDate = newBeginDate
-    newQuery.endDate = newEndDate
+    newQuery.beginDate = quaterRange.beginDate
+    newQuery.endDate = quaterRange.endDate
     setEditQuery(newQuery)
   }
 
@@ -122,7 +140,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
       centered
       onOk={handleCreate}
       onCancel={() => onCancel && onCancel()}
-      title={title || "添加星级考核评价"}>
+      title={title || "添加季度随访汇总表"}>
       <Wrapper>
         <Row>
           <Col span={5}>科室:</Col>
@@ -141,14 +159,16 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={5}>月份:</Col>
+          <Col span={5}>季度:</Col>
           <Col span={18}>
             <Select
               value={editQuery.month}
               onChange={(month: string) =>
                 setEditQueryAndInit({ ...editQuery, month })}
               className="month-select">
-              {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+              {monthList.map((month: number) =>
+                <Option value={`${month}`} key={month}>第{numToChinese(month)}季度</Option>
+              )}
             </Select>
           </Col>
         </Row>
