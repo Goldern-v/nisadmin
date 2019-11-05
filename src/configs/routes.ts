@@ -7,6 +7,7 @@ import LoginView from 'src/modules/login/LoginView'
 import { setLayout } from 'src/utils/route/route-utils'
 import layouts from 'src/layouts'
 import demo from 'src/demo'
+import { specialModule } from './routerConfig/specialModule'
 // import ScheduleView from 'src/modules/schedule/views/ScheduleView'
 const ScheduleHomeView = lazy(() => import('src/modules/schedule/views/ScheduleHome/ScheduleHomeView'))
 const NurseSettingView = lazy(() => import('src/modules/schedule/views/NurseSetting/NurseSettingView')) // 排班人员设置
@@ -72,8 +73,12 @@ const qualityControlRecordEdit = lazy(() =>
 )
 const QualityAnalysisEdit = lazy(() => import('src/modules/quality/views/analysis/AnalysisEdit'))
 const QualityAnalysisDetail = lazy(() => import('src/modules/quality/views/analysis/AnalysisDetail'))
-import { specialModule } from './routerConfig/specialModule'
-import NursingReportDetailView from 'src/modules/quality/views/qcOne/report/NursingReportDetail/NursingReportDetailView'
+const WardLogDetail = lazy(() => import('src/modules/wardLog/page/wardLogDetail/WardLogDetail'))
+
+const NursingReportDetailView = lazy(() =>
+  import('src/modules/quality/views/qcOne/report/NursingReportDetail/NursingReportDetailView')
+)
+const WardLog = lazy(() => import('src/modules/wardLog/WardLog'))
 const SafetyHazardsDetail = lazy(() => import('src/modules/quality/views/qcOne/page/safetyHazards/SafetyHazardsDetail'))
 const HandoverRegisterSet = lazy(() => import('src/modules/WardRegister/page/HandoverRegister/HandoverRegisterSet'))
 const WardRegisterRouter = lazy(() => import('src/modules/WardRegister/WardRegisterRouter'))
@@ -280,10 +285,12 @@ const routes: RouteItem[] = [
   setLayout('/starRatingReportEdit', StarRatingReportEdit, layouts.MainLayout),
   setLayout('/badEventReportEdit', BadEventReportEdit, layouts.MainLayout),
   setLayout('/patientVisitQuarterEdit', PatientVisitQuarterEdit, layouts.MainLayout),
+  setLayout('/wardLog', WardLog, layouts.MainLayout),
   setLayout('/qcCheckContentSetting', QcCheckContentSetting, layouts.BreadcrumbLayout, [
     { name: '一级质控', link: '/qcOne' },
     { name: '病区质量检查', link: '/qcOne/nursingQualityCheck' }
   ]),
+  setLayout('/WardLogDetail', WardLogDetail, layouts.MainLayout),
   {
     path: '/nurseFile',
     redirect: '/nurseFile/onTheJob'

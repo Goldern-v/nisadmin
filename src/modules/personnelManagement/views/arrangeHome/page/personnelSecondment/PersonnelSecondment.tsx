@@ -4,7 +4,7 @@ import { Button } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { Place } from 'src/components/common'
 import BaseTable from 'src/components/BaseTable'
-import { ColumnProps, PaginationConfig } from 'src/vendors/antd'
+import { ColumnProps, PaginationConfig, Select } from 'src/vendors/antd'
 import createModal from 'src/libs/createModal'
 import PersonelSecondModal from './modal/PersonelSecondModal'
 import { personelSecondServices } from './service/PersonelSecondServices'
@@ -14,6 +14,7 @@ export interface Props {}
 
 export default function PersonnelSecondment() {
   const [dataSource, setDataSource] = useState([])
+  const [status, setStatus] = useState('1')
   const [pageLoading, setPageLoading] = useState(false)
   const personelSecondModal = createModal(PersonelSecondModal)
   const [pageOptions, setPageOptions]: any = useState({
@@ -59,19 +60,17 @@ export default function PersonnelSecondment() {
 
   const getData = () => {
     setPageLoading(true)
-    personelSecondServices.getByDeptCode({ ...pageOptions, deptCode: authStore.selectedDeptCode }).then((res) => {
-      setDataSource(res.data.list)
-      setPageLoading(false)
-    })
+    personelSecondServices
+      .getByDeptCode({ ...pageOptions, deptCode: authStore.selectedDeptCode, status })
+      .then((res) => {
+        setDataSource(res.data.list)
+        setPageLoading(false)
+      })
   }
-
-  useCallback(() => {
-    getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize])
 
   useEffect(() => {
     getData()
-  }, [])
+  }, [pageOptions.pageIndex, pageOptions.pageSize, status])
 
   return (
     <Wrapper>
@@ -91,11 +90,17 @@ export default function PersonnelSecondment() {
       <Head>
         <div className='title'>临时人员借调</div>
         <Place />
+        <span className='label'>科室：</span>
         <DeptSelect
           onChange={() => {
             getData()
           }}
         />
+        <span className='label'>类型：</span>
+        <Select style={{ width: 80 }} value={status} onChange={(value: any) => setStatus(value)}>
+          <Select.Option value='1'>借出</Select.Option>
+          <Select.Option value='2'>借入</Select.Option>
+        </Select>
         <Button onClick={() => personelSecondModal.show({ onOkCallBack: getData })} style={{ marginLeft: 10 }}>
           人员借出
         </Button>
@@ -130,8 +135,12 @@ const Wrapper = styled.div``
 const Head = styled.div`
   display: flex;
   padding: 0 20px;
+  align-items: center;
   .title {
     font-size: 20px;
     font-weight: bold;
+  }
+  .label {
+    margin: 0 0 0 15px;
   }
 `

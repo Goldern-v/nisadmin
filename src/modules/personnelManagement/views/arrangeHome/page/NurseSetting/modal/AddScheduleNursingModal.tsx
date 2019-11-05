@@ -39,6 +39,7 @@ export default function AddScheduleNursingModal(props: Props) {
   const [titleList, setTitleList]: any = useState([])
   const [postList, setPostList]: any = useState([])
   const [levelList, setLevelList]: any = useState([])
+  const [userTypeList, setUserTypeList]: any = useState([])
   const [modalLoading, setModalLoading]: any = useState(false)
   let refForm = React.createRef<Form>()
 
@@ -52,6 +53,7 @@ export default function AddScheduleNursingModal(props: Props) {
     if (err) return
     value.deptName = authStore.selectedDeptName
     value.deptCode = authStore.selectedDeptCode
+    if (value.startDate !== undefined) value.startDate = value.startDate ? value.startDate.format('YYYY-MM-DD') : ''
     service.scheduleUserApiService.saveOrUpdate(value).then((res) => {
       message.success('保存成功')
       getTableData && getTableData()
@@ -62,13 +64,27 @@ export default function AddScheduleNursingModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean()
     /** 如果是修改 */
     if (refForm.current && visible) {
-      refForm!.current!.setFields({
-        empName: '',
-        sex: '1',
-        newTitle: '',
-        nurseHierarchy: '',
-        job: ''
+      appStore.hisAdapter({
+        hj: () => {
+          refForm!.current!.setFields({
+            empName: '',
+            sex: '1',
+            newTitle: '',
+            nurseHierarchy: '',
+            job: ''
+          })
+        },
+        wh: () => {
+          refForm!.current!.setFields({
+            empName: '',
+            sex: '1',
+
+            userType: '',
+            startDate: moment()
+          })
+        }
       })
+
       setTitle('添加排班人员')
       setModalLoading(true)
       statisticsViewModal.initDict().then((res) => {
@@ -76,6 +92,9 @@ export default function AddScheduleNursingModal(props: Props) {
         setPostList(statisticsViewModal.getDict('职务'))
         setLevelList(statisticsViewModal.getDict('层级'))
         setModalLoading(false)
+      })
+      service.commonApiService.dictInfo('sch_wh_user_type').then((res) => {
+        setUserTypeList(res.data)
       })
       // refForm.current.setField('unit', 123)
     }
@@ -152,14 +171,19 @@ export default function AddScheduleNursingModal(props: Props) {
               wh: () => (
                 <React.Fragment>
                   <Col span={24}>
-                    <Form.Field label={`类型`} name='job'>
+                    <Form.Field label={`类型`} name='userType'>
                       <Select>
-                        {TYPE_LIST.map((item: string) => (
-                          <Select.Option value={item} key={item}>
-                            {item}
+                        {userTypeList.map((item: DictItem) => (
+                          <Select.Option value={item.code} key={item.name}>
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`开始时间`} name='startDate'>
+                      <DatePicker />
                     </Form.Field>
                   </Col>
                 </React.Fragment>

@@ -348,7 +348,7 @@
       "import { DictItem } from 'src/services/api/CommonApiService'",
       "export interface Props {}",
 
-      "export default observer(function FollowUpRecord() {",
+      "export default observer(function  ${TM_FILENAME_BASE}() {",
       "const [dataSource, setDataSource] = useState([])",
       "const [pageLoading, setPageLoading] = useState(false)",
       "const columns: ColumnProps<any>[] = [",
@@ -395,7 +395,7 @@
       "const getData = () => {",
       "setPageLoading(true)",
       "qcOneService.qcSafetyCheckGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {",
-      "setTotal(res.data.total)",
+      "setTotal(res.data.totalCount)",
       "setDataSource(res.data.list)",
       "setPageLoading(false)",
       "})",

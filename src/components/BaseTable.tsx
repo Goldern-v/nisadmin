@@ -62,8 +62,14 @@ export default observer(function BaseTable(props: Props) {
     option.scroll = { y: wih - option.surplusHeight }
   }
   if (props.pagination) {
+    let _total = 0
+    try {
+      if ((props.dataSource as any).length) {
+        _total = (props.pagination as any).total
+      }
+    } catch (error) {}
     let pagination = {
-      showTotal: (total: number) => `共 ${total} 条`,
+      showTotal: (total: number) => `共 ${_total} 条`,
       showSizeChanger: true,
       showSizeshowQuickJumperChanger: true,
       pageSizeOptions: ['10', '20', '30', '40', '50']

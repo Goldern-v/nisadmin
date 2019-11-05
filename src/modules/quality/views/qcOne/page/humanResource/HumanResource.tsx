@@ -95,7 +95,7 @@ export default observer(function HumanResource() {
         type: selectedDp
       })
       .then((res) => {
-        setTotal(res.data.total)
+        setTotal(res.data.totalCount)
         setDataSource(res.data.list)
         setPageLoading(false)
       })

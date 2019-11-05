@@ -153,7 +153,7 @@ export default observer(function FollowUpRecord() {
           _endDate || (qcOneSelectViewModal.endDate ? moment(qcOneSelectViewModal.endDate).format('YYYY-MM-DD') : '')
       })
       .then((res) => {
-        setTotal(res.data.total)
+        setTotal(res.data.totalCount)
         setDataSource(res.data.list)
         setPageLoading(false)
       })

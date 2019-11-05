@@ -32,7 +32,7 @@ export default function PersonnelManagementView() {
         appStore.HOSPITAL_ID == 'wh'
           ? {
               title: '临时人员借调',
-              path: '/personnelManagement/DeptBorrowNew',
+              path: '/personnelManagement/personnelSecondment',
               component: PersonnelSecondment,
               style: { background: '#fff' },
               hide: !authStore.isRoleManage
