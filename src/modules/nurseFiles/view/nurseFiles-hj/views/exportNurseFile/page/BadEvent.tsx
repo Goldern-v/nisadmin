@@ -15,23 +15,25 @@ export default function BadEvent() {
           <col width='50%' />
           <col width='35%' />
         </colgroup>
-        <tr>
-          <td colSpan={5} style={{ height: 40 }}>
-            <span className='title'>护理不良行为（包括医德医风）记录</span>
-          </td>
-        </tr>
-        <tr className='head'>
-          <td>日&nbsp;期</td>
-          <td>事 情 原 因</td>
-          <td>处理结论</td>
-        </tr>
-        {numberToArray(0, 22).map(() => (
-          <tr className='h-tr'>
-            <td />
-            <td />
-            <td />
+        <tbody>
+          <tr>
+            <td colSpan={5} style={{ height: 40 }}>
+              <span className='title'>护理不良行为（包括医德医风）记录</span>
+            </td>
           </tr>
-        ))}
+          <tr className='head'>
+            <td>日&nbsp;期</td>
+            <td>事 情 原 因</td>
+            <td>处理结论</td>
+          </tr>
+          {numberToArray(0, 22).map((item: any) => (
+            <tr className='h-tr' key={item}>
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
       </table>
       {/* <div className='aside'>
         <div>备注：1. 医学学历教育：从参加医学教育开始填写</div>

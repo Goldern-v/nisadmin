@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+export interface Props {
+  awardWinningList: any[]
+}
 
-export default function Awards() {
+export default function Awards(props: Props) {
+  const { awardWinningList } = props
+  const rowNum = 23 - awardWinningList.length
   return (
     <Wrapper>
       <div className='title title-1'>表四</div>
@@ -17,27 +21,38 @@ export default function Awards() {
           <col width='22%' />
           <col width='20%' />
         </colgroup>
-        <tr>
-          <td colSpan={5} style={{ height: 40 }}>
-            <span className='title'>护理创新、科研成果、科技进步、工作获奖、新技术新项目推广情况</span>
-          </td>
-        </tr>
-        <tr className='head'>
-          <td>时&nbsp;间</td>
-          <td>获奖/推广创新项目名称</td>
-          <td>本人排名</td>
-          <td>授奖级别</td>
-          <td>批准机关</td>
-        </tr>
-        {numberToArray(0, 22).map(() => (
-          <tr className='h-tr'>
-            <td />
-            <td />
-            <td />
-            <td />
-            <td />
+        <tbody>
+          <tr>
+            <td colSpan={5} style={{ height: 40 }}>
+              <span className='title'>护理创新、科研成果、科技进步、工作获奖、新技术新项目推广情况</span>
+            </td>
           </tr>
-        ))}
+          <tr className='head'>
+            <td>时&nbsp;间</td>
+            <td>获奖/推广创新项目名称</td>
+            <td>本人排名</td>
+            <td>授奖级别</td>
+            <td>批准机关</td>
+          </tr>
+          {awardWinningList.map((item: any, index: number) => (
+            <tr className='h-tr' key={index}>
+              <td>{item.time}</td>
+              <td>{item.awardWinningName}</td>
+              <td>{item.rank}</td>
+              <td>{item.awardlevel}</td>
+              <td>{item.approvalAuthority}</td>
+            </tr>
+          ))}
+          {numberToArray(1, Math.max(rowNum, 0)).map((item: any, index: number) => (
+            <tr className='h-tr' key={index}>
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
       </table>
       {/* <div className='aside'>
         <div>备注：1. 医学学历教育：从参加医学教育开始填写</div>

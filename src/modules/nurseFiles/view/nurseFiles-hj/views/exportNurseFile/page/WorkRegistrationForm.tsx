@@ -3,12 +3,16 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+export interface Props {
+  registrationWorkList: any[]
+}
 
-export default function WorkRegistrationForm() {
+export default function WorkRegistrationForm(props: Props) {
+  const { registrationWorkList } = props
+  const rowNum = 21 - registrationWorkList.length
   return (
     <Wrapper>
-      {/* <div className='title title-1'>表七</div> */}
+      <div className='title title-1'>表八</div>
       <table>
         <colgroup>
           <col width='10%' />
@@ -21,35 +25,50 @@ export default function WorkRegistrationForm() {
           <col width='10%' />
           <col width='10%' />
         </colgroup>
-        <tr>
-          <td colSpan={9} style={{ height: 40 }}>
-            <span className='title'>临床护理工作情况登记表</span>
-          </td>
-        </tr>
-        <tr className='head'>
-          <td>年&nbsp;度</td>
-          <td>夜班</td>
-          <td>查房</td>
-          <td>护理会诊</td>
-          <td>病例讨论</td>
-          <td>个案</td>
-          <td>小讲课</td>
-          <td>带教</td>
-          <td>证明人</td>
-        </tr>
-        {numberToArray(0, 22).map(() => (
-          <tr className='h-tr'>
-            <td />
-            <td />
-            <td />
-            <td />
-            <td />
-            <td />
-            <td />
-            <td />
-            <td />
+        <tbody>
+          <tr>
+            <td colSpan={9} style={{ height: 40 }}>
+              <span className='title'>临床护理工作情况登记表</span>
+            </td>
           </tr>
-        ))}
+          <tr className='head'>
+            <td>年&nbsp;度</td>
+            <td>夜班</td>
+            <td>查房</td>
+            <td>护理会诊</td>
+            <td>病例讨论</td>
+            <td>个案</td>
+            <td>小讲课</td>
+            <td>带教</td>
+            <td>证明人</td>
+          </tr>
+          {registrationWorkList.map((item: any, index: number) => (
+            <tr className='h-tr' key={index}>
+              <td>{item.year}</td>
+              <td>{item.nightShift}</td>
+              <td>{item.checkOut}</td>
+              <td>{item.nursingConsultation}</td>
+              <td>{item.caseDiscussion}</td>
+              <td>{item.individualCase}</td>
+              <td>{item.lecture}</td>
+              <td>{item.teaching}</td>
+              <td>{item.witness}</td>
+            </tr>
+          ))}
+          {numberToArray(1, Math.max(0, rowNum)).map((item: any, index: number) => (
+            <tr className='h-tr' key={index}>
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className='aside'>
         <div>备注： 夜班指N班或全夜，查房指业务查房或教学查房，病例讨论含死亡病例及疑难病例，</div>

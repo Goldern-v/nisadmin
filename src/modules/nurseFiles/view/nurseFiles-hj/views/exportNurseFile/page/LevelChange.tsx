@@ -3,12 +3,18 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+export interface Props {
+  medicalEducatioList: any[]
+  levelChangeList: any[]
+}
 
-export default function LevelChange() {
+export default function LevelChange(props: Props) {
+  const { medicalEducatioList, levelChangeList } = props
+  const rowNom1 = 4 - medicalEducatioList.length
+  const rowNom2 = 17 - levelChangeList.length
   return (
     <Wrapper>
-      <div className='title title-1'>表二</div>
+      <div className='title title-1'>表一</div>
       <table>
         <colgroup>
           <col width='17%' />
@@ -16,46 +22,67 @@ export default function LevelChange() {
           <col width='18%' />
           <col width='15%' />
         </colgroup>
-        <tr>
-          <td colSpan={4}>
-            <span className='title'>医学学历教育</span>
-          </td>
-        </tr>
-        <tr>
-          <td>就读时间</td>
-          <td>毕业学校</td>
-          <td>专业</td>
-          <td>毕业时间</td>
-        </tr>
-        {numberToArray(0, 3).map(() => (
+        <tbody>
           <tr>
-            <td />
-            <td />
-            <td />
-            <td />
+            <td colSpan={4}>
+              <span className='title'>医学学历教育</span>
+            </td>
           </tr>
-        ))}
+          <tr>
+            <td>就读时间</td>
+            <td>毕业学校</td>
+            <td>专业</td>
+            <td>毕业时间</td>
+          </tr>
+          {medicalEducatioList.map((item: any, index: number) => (
+            <tr key={index}>
+              <td>{item.readTime}</td>
+              <td>{item.graduationSchool}</td>
+              <td>{item.readProfessional}</td>
+              <td>{item.graduationTime}</td>
+            </tr>
+          ))}
+          {numberToArray(1, Math.max(rowNom1, 0)).map((item: any) => (
+            <tr key={item}>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
       </table>
       <table className='table-1'>
         <colgroup>
-          <col width='50%' />>
-          <col width='50%' />>
+          <col width='50%' />
+          <col width='50%' />
         </colgroup>
-        <tr>
-          <td colSpan={4}>
-            <span className='title'>职称及层级变动</span>
-          </td>
-        </tr>
-        <tr>
-          <td>取得职称资格及层级</td>
-          <td>职称聘用时间</td>
-        </tr>
-        {numberToArray(0, 16).map(() => (
-          <tr className='h-tr'>
-            <td />
-            <td />
+        <tbody>
+          <tr>
+            <td colSpan={4}>
+              <span className='title'>职称及层级变动</span>
+            </td>
           </tr>
-        ))}
+          <tr>
+            <td>取得职称资格及层级</td>
+            <td>职称聘用时间</td>
+          </tr>
+
+          {levelChangeList.map((item: any, index: number) => (
+            <tr key={index} className='h-tr'>
+              <td>
+                {item.titleQualification} {item.hierarchy}
+              </td>
+              <td>{item.appointmentTime}</td>
+            </tr>
+          ))}
+          {numberToArray(1, rowNom2).map((item: any) => (
+            <tr className='h-tr' key={item}>
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
       </table>
     </Wrapper>
   )

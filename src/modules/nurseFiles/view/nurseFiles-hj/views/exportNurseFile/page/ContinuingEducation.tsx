@@ -3,11 +3,16 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+export interface Props {
+  continuingEducationList: any[]
+}
 
-export default function ContinuingEducation() {
+export default function ContinuingEducation(props: Props) {
+  const { continuingEducationList } = props
+  const rowNum = 21 - continuingEducationList.length
   return (
     <Wrapper>
+      <div className='title title-1'>表二</div>
       <table>
         <colgroup>
           <col width='17%' />
@@ -15,25 +20,37 @@ export default function ContinuingEducation() {
           <col width='18%' />
           <col width='15%' />
         </colgroup>
-        <tr>
-          <td colSpan={4}>
-            <span className='title'>继续教育</span>
-          </td>
-        </tr>
-        <tr className='head'>
-          <td>起止年月</td>
-          <td>培训单位</td>
-          <td>培训内容</td>
-          <td>学时（分）</td>
-        </tr>
-        {numberToArray(0, 22).map(() => (
-          <tr className='h-tr'>
-            <td />
-            <td />
-            <td />
-            <td />
+        <tbody>
+          <tr>
+            <td colSpan={4}>
+              <span className='title'>继续教育</span>
+            </td>
           </tr>
-        ))}
+          <tr className='head'>
+            <td>起止年月</td>
+            <td>培训单位</td>
+            <td>培训内容</td>
+            <td>学时（分）</td>
+          </tr>
+          {continuingEducationList.map((item: any, index: number) => (
+            <tr className='h-tr' key={index}>
+              <td>
+                {item.startTime} - {item.endTime}
+              </td>
+              <td>{item.trainingUnit}</td>
+              <td>{item.trainingContent}</td>
+              <td>{item.hours}</td>
+            </tr>
+          ))}
+          {numberToArray(1, Math.max(0, rowNum)).map((item: any) => (
+            <tr className='h-tr' key={item}>
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className='aside'>
         <div>备注：1. 医学学历教育：从参加医学教育开始填写</div>
@@ -74,5 +91,9 @@ const Wrapper = styled.div`
   }
   .head {
     font-weight: bold;
+  }
+  .title-1 {
+    margin: 5px 0;
+    margin-left: 20px;
   }
 `

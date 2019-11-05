@@ -11,6 +11,7 @@ import LeaveModal from '../modal/LeaveModal'
 
 import qs from 'qs'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import ExportNurseFile from '../../exportNurseFile/ExportNurseFile'
 export interface Props extends RouteComponentProps {}
 
 const BG = require('../../../images/顶部背景.png')
@@ -20,6 +21,7 @@ const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
 const WARNNING_ICON = require('../../../images/注意.png')
 
 export default observer(function TopCon() {
+  const [inPrint, setInPrint] = useState(false)
   const deptChangeModal = createModal(DeptChangeModal)
   const leaveModal = createModal(LeaveModal)
   let history = store.appStore.history
@@ -59,6 +61,11 @@ export default observer(function TopCon() {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
+
+      <DeptChangeBtn3 onClick={() => setInPrint(true)} loading={inPrint}>
+        导出档案
+      </DeptChangeBtn3>
+
       <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
 
       <DeptChangeBtn2 onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn2>
@@ -81,6 +88,7 @@ export default observer(function TopCon() {
       )}
       <deptChangeModal.Component />
       <leaveModal.Component />
+      {inPrint && <ExportNurseFile empNo={appStore.queryObj.empNo} onCallBack={() => setInPrint(false)} />}
     </Wrapper>
   )
 })
@@ -159,5 +167,10 @@ const DeptChangeBtn1 = styled(Button)`
 const DeptChangeBtn2 = styled(Button)`
   position: absolute !important;
   right: 20px;
+  top: 34px;
+`
+const DeptChangeBtn3 = styled(Button)`
+  position: absolute !important;
+  right: 228px;
   top: 34px;
 `

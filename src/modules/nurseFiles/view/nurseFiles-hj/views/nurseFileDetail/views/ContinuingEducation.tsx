@@ -105,7 +105,7 @@ export default observer(function EducationalExperience() {
                   tableFormat: [
                     {
                       开始时间: `startTime`,
-                      结束时间: `startTime`
+                      结束时间: `endTime`
                     },
                     {
                       培训单位: `trainingUnit`,

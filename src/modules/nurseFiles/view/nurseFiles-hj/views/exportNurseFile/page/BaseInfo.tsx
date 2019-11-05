@@ -31,7 +31,7 @@ export default function BaseInfo(props: Props) {
           <col width='11%' />
           <col width='20%' />
         </colgroup>
-        <tr>
+        <tbody><tr>
           <td colSpan={6}>
             <span className='title'>基本情况</span>
           </td>
@@ -90,7 +90,8 @@ export default function BaseInfo(props: Props) {
           <td colSpan={3}>{baseInfo.address}</td>
           <td>联系电话</td>
           <td>{baseInfo.phone}</td>
-        </tr>
+        </tr></tbody>
+        
       </table>
       <table className='table-1'>
         <colgroup>
@@ -99,7 +100,8 @@ export default function BaseInfo(props: Props) {
           <col width='18%' />
           <col width='15%' />
         </colgroup>
-        <tr>
+        <tbody>
+          <tr>
           <td colSpan={4}>
             <span className='title'>工作经历</span>
           </td>
@@ -111,8 +113,8 @@ export default function BaseInfo(props: Props) {
           <td>技术职称及职务</td>
         </tr>
 
-        {experienceList.map((item: any) => (
-          <tr>
+        {experienceList.map((item: any, index: number) => (
+          <tr key={index}>
             <td>
               {item.startTime} - {item.endTime || '至今'}
             </td>
@@ -124,14 +126,16 @@ export default function BaseInfo(props: Props) {
           </tr>
         ))}
 
-        {numberToArray(1, rowNum).map(() => (
-          <tr>
+        {numberToArray(1, rowNum).map((item: any) => (
+          <tr key={item}>
             <td />
             <td />
             <td />
             <td />
           </tr>
         ))}
+        </tbody>
+        
       </table>
       <div className='aside'>
         <div>注：1.工作经历从参加工作时填写，包括院内科室调动</div>

@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+export interface Props {
+  yearCheckList: any[]
+}
 
-export default function ExaminationResults() {
+export default function ExaminationResults(props: Props) {
+  const { yearCheckList } = props
+  const rowNum = 23 - yearCheckList.length
   return (
     <Wrapper>
       <div className='title title-1'>表六</div>
@@ -17,27 +21,38 @@ export default function ExaminationResults() {
           <col width='20%' />
           <col width='20%' />
         </colgroup>
-        <tr>
-          <td colSpan={5} style={{ height: 40 }}>
-            <span className='title'>年度履职考核结果（打“√”）</span>
-          </td>
-        </tr>
-        <tr className='head'>
-          <td>年度</td>
-          <td>优秀</td>
-          <td>称职</td>
-          <td>基本称职</td>
-          <td>不称职</td>
-        </tr>
-        {numberToArray(0, 22).map(() => (
-          <tr className='h-tr'>
-            <td />
-            <td />
-            <td />
-            <td />
-            <td />
+        <tbody>
+          <tr>
+            <td colSpan={5} style={{ height: 40 }}>
+              <span className='title'>年度履职考核结果（打“√”）</span>
+            </td>
           </tr>
-        ))}
+          <tr className='head'>
+            <td>年度</td>
+            <td>优秀</td>
+            <td>称职</td>
+            <td>基本称职</td>
+            <td>不称职</td>
+          </tr>
+          {yearCheckList.map((item: any, index: number) => (
+            <tr className='h-tr' key={index}>
+              <td>{item.year}</td>
+              <td>{item.checkResult == '优秀' ? '✔' : ''}</td>
+              <td>{item.checkResult == '称职' ? '✔' : ''}</td>
+              <td>{item.checkResult == '基本称职' ? '✔' : ''}</td>
+              <td>{item.checkResult == '不称职' ? '✔' : ''}</td>
+            </tr>
+          ))}
+          {numberToArray(1, Math.max(0, rowNum)).map((item: any, index: number) => (
+            <tr className='h-tr' key={index}>
+              <td />
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+          ))}
+        </tbody>
       </table>
       {/* <div className='aside'>
         <div>备注：1. 医学学历教育：从参加医学教育开始填写</div>

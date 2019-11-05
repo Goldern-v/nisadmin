@@ -3,39 +3,65 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import PrintPage from '../components/PrintPage'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+import { useLayoutEffect } from 'src/types/react'
+export interface Props {
+  paperExperienceList: any[]
+}
 
-export default function Writings() {
+export default function Writings(props: Props) {
+  const { paperExperienceList } = props
+  const [rowNum, setRowNum] = useState(0)
+
+  useLayoutEffect(() => {
+    let pageHeight = document.querySelector('.nurseFilePrintPage')!.clientHeight
+    let tableHeight = document.querySelector('#writingsTable')!.clientHeight
+    let surplusHeight = pageHeight - tableHeight - 30
+    let rowNum = Math.floor(surplusHeight / 29)
+    setRowNum(rowNum)
+  }, [paperExperienceList])
+
   return (
     <Wrapper>
-      <div className='title title-1'>表三</div>
-      <table>
-        <colgroup>
-          <col width='17%' />
-          <col width='35%' />
-          <col width='10%' />
-          <col width='21%' />
-        </colgroup>
-        <tr>
-          <td colSpan={4}>
-            <span className='title'>主要著作、译文、论文发表情况</span>
-          </td>
-        </tr>
-        <tr className='head'>
-          <td>发表日期</td>
-          <td>题&nbsp;&nbsp;目</td>
-          <td>本人排名</td>
-          <td>出版或登载刊物</td>
-        </tr>
-        {numberToArray(0, 22).map(() => (
-          <tr className='h-tr'>
-            <td />
-            <td />
-            <td />
-            <td />
-          </tr>
-        ))}
-      </table>
+      <div id='writingsTable'>
+        <div className='title title-1'>表三</div>
+        <table>
+          <colgroup>
+            <col width='17%' />
+            <col width='35%' />
+            <col width='10%' />
+            <col width='21%' />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td colSpan={4}>
+                <span className='title'>主要著作、译文、论文发表情况</span>
+              </td>
+            </tr>
+            <tr className='head'>
+              <td>发表日期</td>
+              <td>题&nbsp;&nbsp;目</td>
+              <td>本人排名</td>
+              <td>出版或登载刊物</td>
+            </tr>
+            {paperExperienceList.map((item: any, index: number) => (
+              <tr className='h-tr' key={index}>
+                <td>{item.publicDate}</td>
+                <td>{item.title}</td>
+                <td>{item.rank}</td>
+                <td>{item.publication}</td>
+              </tr>
+            ))}
+            {numberToArray(1, Math.max(0, rowNum)).map((item: any, index: number) => (
+              <tr className='h-tr' key={index}>
+                <td />
+                <td />
+                <td />
+                <td />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {/* <div className='aside'>
         <div>备注：1. 医学学历教育：从参加医学教育开始填写</div>
         <div>&nbsp;&nbsp;&nbsp;2. 职称及层级变动：职称从聘用初级职称开始填写，层级自2016年1月起填写</div>
