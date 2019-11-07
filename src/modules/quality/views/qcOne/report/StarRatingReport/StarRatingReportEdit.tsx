@@ -87,9 +87,9 @@ export default observer(function StarRatingReportEdit() {
     })
   }
   const onPublish = () => {
-    globalModal.confirm('发布确认', '你确定要发布该报告吗？').then((res) => {
+    globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
       starRatingReportService.publish(qs.parse(appStore.query)).then((res) => {
-        message.success('发布成功')
+        message.success('提交成功')
         setTimeout(() => {
           appStore.history.push('/qcOne/starRatingReport')
         }, 500)
@@ -97,7 +97,7 @@ export default observer(function StarRatingReportEdit() {
     })
   }
   const onCancelPublish = () => {
-    globalModal.confirm('撤销发布确认', '你确定要撤销发布该报告吗？').then((res) => {
+    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
       starRatingReportService.cancelPublish(qs.parse(appStore.query)).then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
@@ -124,7 +124,7 @@ export default observer(function StarRatingReportEdit() {
           {report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
-              <Button onClick={onPublish}>发布</Button>
+              <Button onClick={onPublish}>提交</Button>
             )}
           <Button onClick={() => onPrint(true)}>打印</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>

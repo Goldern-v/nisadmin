@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, DatePicker, Modal, Select, Popover, Checkbox } from 'antd'
+import { Button, DatePicker, Modal, Select, Popover, Checkbox, Tooltip } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps, Spin } from 'src/vendors/antd'
@@ -349,13 +349,11 @@ export default observer(function NursingQualityCheck() {
         <Button onClick={handleSearch} type="primary">查询</Button>
         {auth && <React.Fragment>
           <Button type="primary" onClick={handleCreate}>添加</Button>
-          <Button
-            onClick={() => history.push('/qcCheckContentSetting')}
-            title="质控内容设置">
-            设置
-          </Button>
+          <Tooltip title="质控内容设置">
+            <Button onClick={() => history.push('/qcCheckContentSetting')}>设置</Button>
+          </Tooltip>
         </React.Fragment>}
-        <Button>导出</Button>
+        {/* <Button>导出</Button> */}
       </RightIcon>
     </HeaderCon>
     <TableWrapper>

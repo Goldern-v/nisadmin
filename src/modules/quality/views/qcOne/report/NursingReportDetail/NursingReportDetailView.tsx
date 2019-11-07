@@ -13,7 +13,7 @@ import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { qualityAnalysisReportPoolService } from './services/QualityAnalysisReportPoolService'
 import qs from 'qs'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
   const pageRef: any = useRef<HTMLElement>()
@@ -79,9 +79,9 @@ export default observer(function NursingReportDetailView() {
     })
   }
   const onPublish = () => {
-    globalModal.confirm('发布确认', '你确定要发布该报告吗？').then((res) => {
+    globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
       qualityAnalysisReportPoolService.publishReport().then((res) => {
-        message.success('发布成功')
+        message.success('提交成功')
         setTimeout(() => {
           appStore.history.push('/qcThree/summaryReport')
         }, 500)
@@ -89,7 +89,7 @@ export default observer(function NursingReportDetailView() {
     })
   }
   const onCancelPublish = () => {
-    globalModal.confirm('撤销发布确认', '你确定要撤销发布该报告吗？').then((res) => {
+    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
       qualityAnalysisReportPoolService.cancelPublishReport().then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
@@ -114,8 +114,8 @@ export default observer(function NursingReportDetailView() {
           {report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
-            <Button onClick={onPublish}>发布</Button>
-          )}
+              <Button onClick={onPublish}>提交</Button>
+            )}
           <Button onClick={() => onPrint(true)}>打印</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>

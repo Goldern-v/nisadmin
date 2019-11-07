@@ -41,12 +41,12 @@ export default class BadEventReportService extends BaseApiService {
     return this.post('/qcAnalysis/be/deleteReport', query)
   }
 
-  /**发布报告 */
+  /**提交报告 */
   public publish(query: any) {
     return this.post('/qcAnalysis/be/publish', query)
   }
 
-  /**撤销发布报告 */
+  /**撤销报告 */
   public cancelPublish(query: any) {
     return this.post('/qcAnalysis/be/cancelPublish', query)
   }

@@ -22,6 +22,7 @@ import BadEventRecord from './views/qcOne/page/badEventRecord/BadEventRecord'
 import StarRatingReport from './views/qcOne/report/StarRatingReport/StarRatingReport'
 import BadEventReport from './views/qcOne/report/BadEventReport/BadEventReport'
 import PatientVisitQuarter from './views/qcOne/report/PatientVisitQuarter/PatientVisitQuarter'
+import PatientVisitMonth from './views/qcOne/report/PatientVisitMonth/PatientVisitMonth'
 
 const LEFT_MENU_CONFIG: any = [
   {
@@ -105,6 +106,14 @@ const LEFT_MENU_CONFIG: any = [
     icon: <YIBG />,
     path: '/qcOne/patientVisitQuarter',
     component: PatientVisitQuarter,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+  },
+  {
+    title: '月度随访表',
+    icon: <YIBG />,
+    path: '/qcOne/patientVisitMonth',
+    component: PatientVisitMonth,
     keepAlive: true,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   }

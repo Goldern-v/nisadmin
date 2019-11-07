@@ -215,7 +215,6 @@ export default observer(function FollowUpRecord() {
         >
           添加
         </Button>
-        <Button>导出</Button>
       </PageHeader>
 
       <BaseTable

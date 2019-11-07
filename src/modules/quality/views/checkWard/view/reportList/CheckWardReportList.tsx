@@ -27,7 +27,7 @@ export default observer(function CheckWardReportList() {
   const auth = authStore.isRoleManage
 
   const [query, setQuery] = useState({
-    wardCode: '',
+    // wardCode: '',
     pageIndex: 1,
     status: '',
     year: moment().format('YYYY'),
@@ -59,12 +59,12 @@ export default observer(function CheckWardReportList() {
       render: (text: string, record: any, idx: number) =>
         <div className="ellips" title={text}>{text}</div>
     },
-    {
-      dataIndex: 'wardName',
-      key: 'wardName',
-      title: '科室',
-      width: 180,
-    },
+    // {
+    //   dataIndex: 'wardName',
+    //   key: 'wardName',
+    //   title: '科室',
+    //   width: 180,
+    // },
     {
       key: 'month',
       title: '月份',
@@ -158,7 +158,7 @@ export default observer(function CheckWardReportList() {
 
   const handleEdit = (record: any) => {
     history.push(`/checkWardReportView?${qs.stringify({
-      wardCode: record.wardCode,
+      // wardCode: record.wardCode,
       year: record.year,
       month: record.month,
       id: record.id,
@@ -167,11 +167,12 @@ export default observer(function CheckWardReportList() {
   }
 
   useEffect(() => {
-    if (query.wardCode) getList(query)
+    // if (query.wardCode) getList(query)
+    getList(query)
   }, [query])
 
   useKeepAliveEffect(() => {
-    console.log(appStore.history.action)
+    // console.log(appStore.history.action)
     if (
       appStore.history &&
       (
@@ -180,7 +181,7 @@ export default observer(function CheckWardReportList() {
         appStore.history.action === 'REPLACE'
       )
     ) {
-      if (query.wardCode) getList(query)
+      getList(query)
     }
     return () => { }
   })
@@ -220,8 +221,8 @@ export default observer(function CheckWardReportList() {
           <Option value='0'>保存</Option>
           <Option value='1'>发布</Option>
         </Select>
-        <span>科室:</span>
-        <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
+        {/* <span>科室:</span>
+        <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
         <Button onClick={handleSearch}>查询</Button>
         {auth && <Button type="primary" onClick={handleCreate}>新建</Button>}
         {/* <Button >导出</Button> */}

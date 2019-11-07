@@ -230,7 +230,6 @@ export default observer(function NursingWorkPlainList() {
           defaultValue={month}
           style={{ width: '70px' }}
           onChange={(_month: any) => month = _month}>
-          <Option value="">全部</Option>
           {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
         </Select>
       </div>

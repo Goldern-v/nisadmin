@@ -41,12 +41,12 @@ export default class StarRatingReportService extends BaseApiService {
     return this.post('/qcAnalysis/sr/deleteReport', query)
   }
 
-  /**发布报告 */
+  /**提交报告 */
   public publish(query: any) {
     return this.post('/qcAnalysis/sr/publish', query)
   }
 
-  /**撤销发布报告 */
+  /**撤销报告 */
   public cancelPublish(query: any) {
     return this.post('/qcAnalysis/sr/cancelPublish', query)
   }
@@ -74,6 +74,11 @@ export default class StarRatingReportService extends BaseApiService {
     }
 
     return this.post('/qcAnalysis/sr/update/workScheduleList', query)
+  }
+
+  /**导出 */
+  public exportData(query: { wardCode: string, year: string, month: string }) {
+    return this.post('/qcFlReport/export/qcStarRating', query, { responseType: 'blob' })
   }
 }
 

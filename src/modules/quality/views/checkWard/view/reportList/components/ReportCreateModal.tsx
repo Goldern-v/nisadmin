@@ -29,13 +29,13 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const [loading, setLoading] = useState(false)
 
-  const wardName = authStore.selectedDeptName
-  const wardCode = authStore.selectedDeptCode
+  // const wardName = authStore.selectedDeptName
+  // const wardCode = authStore.selectedDeptCode
 
   const [editQuery, setEditQuery] = useState({
     year: moment().format('YYYY'),
     month: moment().format('M'),
-    wardCode: wardCode,
+    // wardCode: wardCode,
     reportName: '',
     beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
     endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
@@ -62,7 +62,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
     checkWardReportListService
       .createReport({
-        "wardCode": params.wardCode,
+        // "wardCode": params.wardCode,
         "year": params.year,
         "month": params.month,
         "beginDate": params.beginDate,
@@ -74,7 +74,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           message.success('创建成功', 1, () => {
             setLoading(false)
             history.push(`/checkWardReportView?${qs.stringify({
-              wardCode: params.wardCode,
+              // wardCode: params.wardCode,
               year: params.year,
               month: params.month,
               id: res.data.id,
@@ -88,7 +88,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const reportName = (params: any) => {
     const { year, month } = params
-    return `${year}年${month}月${wardName}特殊时段查房统计报告`
+    return `${year}年${month}月特殊时段查房统计报告`
   }
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
       let newQuery = {
         year: moment().format('YYYY'),
         month: moment().format('M'),
-        wardCode: wardCode,
+        // wardCode: wardCode,
         reportName: '',
         beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
         endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
@@ -130,12 +130,12 @@ export default observer(function WorkPlainEditModal(props: Props) {
       onCancel={() => onCancel && onCancel()}
       title={title || "新建特殊时段查房统计报告"}>
       <Wrapper>
-        <Row>
+        {/* <Row>
           <Col span={5}>科室:</Col>
           <Col span={18}>
             <Input disabled value={wardName} />
           </Col>
-        </Row>
+        </Row> */}
         <Row>
           <Col span={5}>年份:</Col>
           <Col span={18}>

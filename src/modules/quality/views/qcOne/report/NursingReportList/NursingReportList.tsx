@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { DatePicker, Select, Button, message as Message } from 'antd'
+import { DatePicker, Select, Button, message } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore, authStore } from 'src/stores'
@@ -14,6 +14,11 @@ import qs from 'qs'
 import { PageTitle } from 'src/components/common'
 import DeptSelect from 'src/components/DeptSelect'
 import { numberToArray } from 'src/utils/array/array'
+import { fileDownload } from 'src/utils/file/file'
+import { globalModal } from 'src/global/globalModal'
+import { qcOneSelectViewModal } from './../../QcOneSelectViewModal'
+import CommitModal from './../../components/CommitModal'
+import ArchiveModal from './../../components/ArchiveModal'
 
 const Option = Select.Option
 
@@ -21,30 +26,59 @@ export default observer(function NursingReportList() {
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
   const { history } = appStore
+  const { wardCode, statusList, statusObj } = qcOneSelectViewModal
+  const {
+    deptList, //权限科室列表
+    isRoleManage, //是否护士长
+    isSupervisorNurse, //是否科护士长
+    isDepartment //是否护理部
+  } = authStore
 
-  const [query, setQuery] = useState({
+  const defaultQuery = {
     year: Moment() as null | Moment.Moment,
     month: Number(Moment().format('MM')),
     pageIndex: 1,
     pageSize: 20,
-    status: ''
-  } as any)
+    status: '',
+    wardCode: wardCode
+  } as any
+
+  const [query, setQuery] = useState(defaultQuery)
+  const [cacheQuery, setCacheQuery] = useState(defaultQuery)
 
   useEffect(() => {
-    getTableData()
-  }, [query, authStore.selectedDeptCode])
+    for (let x in query) {
+      if (query[x] !== cacheQuery[x]) {
+        setCacheQuery(query)
+        getTableData()
+        break
+      }
+    }
+  }, [query])
 
   useKeepAliveEffect(() => {
-    if ((appStore.history && appStore.history.action) === 'POP') {
-      getTableData()
+    if (
+      appStore.history &&
+      (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
+    ) {
+      let newWardCode = qcOneSelectViewModal.initWardCode()
+      if (query.wardCode === newWardCode) {
+        getTableData()
+      } else {
+        setQuery({ ...query, wardCode: newWardCode })
+      }
     }
-    return () => {}
+    return () => { }
   })
+
   const [dataTotal, setDataTotal] = useState(0 as number)
 
   const [tableData, setTableData] = useState([] as any)
 
   const [tableLoading, setTableLoading] = useState(false)
+
+  const [commitVisible, setCommitVisible] = useState(false)
+  const [archiveVisible, setArchiveVisible] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -103,27 +137,24 @@ export default observer(function NursingReportList() {
       width: 80,
       align: 'center',
       render: (status: string) => {
-        switch (status) {
-          case '0':
-            return <span style={{ color: 'red' }}>保存</span>
-          case '1':
-            return '发布'
-          default:
-            return '-'
-        }
+        let statusText = statusObj[status] || '-'
+        return statusText
       }
     },
     {
       title: '操作',
       key: 'operation',
-      width: 80,
+      width: 90,
       align: 'center',
       render: (text: string, record: any) => {
-        return (
-          <DoCon>
-            <span onClick={() => handleReview(record)}>查看</span>
-          </DoCon>
-        )
+        return <DoCon className="operate-group">
+          <span onClick={() => handleReview(record)}>查看</span>
+          {isRoleManage && <React.Fragment>
+            {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
+            {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
+          </React.Fragment>}
+          <span onClick={() => handleExport(record)}>导出</span>
+        </DoCon>
       }
     }
   ]
@@ -180,7 +211,7 @@ export default observer(function NursingReportList() {
     let reqQuery = {
       ...query,
       year,
-      wardCode: authStore.selectedDeptCode
+      wardCode
     }
     api
       .getPage(reqQuery)
@@ -205,6 +236,51 @@ export default observer(function NursingReportList() {
       })
   }
 
+  const handleWardCodeChange = (wardCode: string) => {
+    setQuery({ ...query, wardCode })
+    qcOneSelectViewModal.setWardCode(wardCode)
+  }
+
+  const handleExport = (record: any) => {
+    // console.log(record)
+    setTableLoading(true)
+    api.exportData({
+      wardCode: record.wardCode,
+      year: record.year,
+      month: record.month
+    }).then(res => fileDownload(res)).finally(() => setTableLoading(false))
+  }
+
+  const handlePublish = (record: any) => {
+    globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
+      setTableLoading(true)
+      api.publish({
+        wardCode: record.wardCode,
+        year: record.year,
+        month: record.month
+      }).then((res) => {
+        message.success('提交成功')
+        setTableLoading(false)
+        getTableData()
+      }, () => setTableLoading(false))
+    })
+  }
+
+  const handleCancelPublish = (record: any) => {
+    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
+      setTableLoading(true)
+      api.cancelPublish({
+        wardCode: record.wardCode,
+        year: record.year,
+        month: record.month
+      }).then((res) => {
+        message.success('提交成功')
+        setTableLoading(false)
+        getTableData()
+      }, () => setTableLoading(false))
+    })
+  }
+
   return (
     <Wrapper>
       <div className='topbar'>
@@ -215,7 +291,17 @@ export default observer(function NursingReportList() {
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
-              <DeptSelect onChange={() => {}} />
+              <Select
+                showSearch
+                value={query.wardCode}
+                onChange={handleWardCodeChange}
+                filterOption={(input: string, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                style={{ width: '176px' }}>
+                <Option value=''>全部</Option>
+                {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+              </Select>
             </div>
           </div>
           <div className='item'>
@@ -257,26 +343,29 @@ export default observer(function NursingReportList() {
             <div className='label'>状态：</div>
             <div className='content'>
               <Select
-                style={{ width: 100 }}
+                style={{ width: 110 }}
                 value={query.status}
                 onChange={(status: any) => {
                   setQuery({ ...query, status })
                 }}
               >
                 <Option value=''>全部</Option>
-                <Option value='0'>保存</Option>
-                <Option value='1'>发布</Option>
+                {statusList.map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
               </Select>
             </div>
           </div>
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>
-          <div className='item'>
-            <Button onClick={handleCreate} type='primary'>
-              创建
-            </Button>
-          </div>
+          {isRoleManage && <div className="item">
+            <Button type="primary" onClick={handleCreate}>新建</Button>
+          </div>}
+          {isSupervisorNurse && <div className="item">
+            <Button onClick={() => setCommitVisible(true)}>提交</Button>
+          </div>}
+          {isDepartment && <div className="item">
+            <Button onClick={() => setArchiveVisible(true)}>汇总</Button>
+          </div>}
         </div>
       </div>
       <div className='main-contain'>
@@ -307,8 +396,22 @@ export default observer(function NursingReportList() {
         visible={createAnalysisVisible}
         onOk={handleCreateOk}
         onCancel={handleCreateCancel}
-        // groupRoleList={groupRoleListSelf}
+      // groupRoleList={groupRoleListSelf}
       />
+      <CommitModal
+        reportType='wn'
+        visible={commitVisible}
+        onCancel={() => {
+          setCommitVisible(false)
+          getTableData()
+        }} />
+      <ArchiveModal
+        reportType='wn'
+        visible={archiveVisible}
+        onCancel={() => {
+          setArchiveVisible(false)
+          getTableData()
+        }} />
     </Wrapper>
   )
 })

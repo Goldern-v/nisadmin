@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, Modal } from 'antd'
+import { Button, Select, message } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -16,6 +16,12 @@ import { observer } from 'mobx-react-lite'
 import { useKeepAliveEffect } from 'react-keep-alive'
 
 import ReportCreateModal from './components/ReportCreateModal'
+import { globalModal } from 'src/global/globalModal'
+import { qcOneSelectViewModal } from './../../QcOneSelectViewModal'
+import CommitModal from './../../components/CommitModal'
+import ArchiveModal from './../../components/ArchiveModal'
+import { fileDownload } from 'src/utils/file/file'
+import { qcOneService } from './../../services/QcOneService'
 
 export interface Props { }
 
@@ -23,17 +29,25 @@ const Option = Select.Option
 
 export default observer(function PatientVisitQuarter() {
   const { history } = appStore
-  //是否护士长
-  const auth = authStore.isRoleManage
+  const { wardCode, statusList, statusObj } = qcOneSelectViewModal
+  const {
+    deptList, //权限科室列表
+    isRoleManage, //是否护士长
+    isSupervisorNurse, //是否科护士长
+    isDepartment //是否护理部
+  } = authStore
 
-  const [query, setQuery] = useState({
-    wardCode: '',
+  const defaultQuery = {
+    wardCode: wardCode,
     pageIndex: 1,
     status: '',
     year: moment().format('YYYY'),
     month: '',
     pageSize: 15,
-  })
+  } as any
+
+  const [query, setQuery] = useState(defaultQuery)
+  const [cacheQuery, setCacheQuery] = useState(defaultQuery)
 
   const [createVisible, setCreateVisible] = useState(false)
 
@@ -42,6 +56,9 @@ export default observer(function PatientVisitQuarter() {
   const [loading, setLoading] = useState(false)
 
   const [dataTotal, setDataTotal] = useState(0)
+
+  const [commitVisible, setCommitVisible] = useState(false)
+  const [archiveVisible, setArchiveVisible] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -66,21 +83,20 @@ export default observer(function PatientVisitQuarter() {
       width: 180,
     },
     {
-      key: 'month',
+      dataIndex: 'month',
       title: '月份',
       align: 'center',
       width: 110,
       render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
     },
     {
-      key: 'status',
+      dataIndex: 'status',
       title: '状态',
       align: 'center',
       width: 90,
-      render: (text: string, record: any, idx: number) => {
-        if (record.status == '0') return '保存'
-        if (record.status == '1') return '发布'
-        return ''
+      render: (status: string, record: any, idx: number) => {
+        let statusText = statusObj[status] || '-'
+        return statusText
       }
     },
     {
@@ -100,12 +116,15 @@ export default observer(function PatientVisitQuarter() {
     {
       key: 'operate',
       title: '操作',
-      width: 60,
+      width: 120,
       render: (text: string, record: any) => {
         return <DoCon className="operate-group">
-          {auth && <React.Fragment>
-            <span onClick={() => handleEdit(record)}>查看</span>
+          <span onClick={() => handleEdit(record)}>查看</span>
+          {isRoleManage && <React.Fragment>
+            {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
+            {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
           </React.Fragment>}
+          <span onClick={() => handleExport(record)}>导出</span>
         </DoCon>
       }
     }
@@ -120,6 +139,8 @@ export default observer(function PatientVisitQuarter() {
   }
 
   const handleSearch = () => {
+    if (query.pageIndex == 1) getList(query)
+
     setQuery({ ...query, pageIndex: 1 })
   }
 
@@ -164,8 +185,59 @@ export default observer(function PatientVisitQuarter() {
     })}`)
   }
 
+  const handleWardCodeChange = (wardCode: string) => {
+    setQuery({ ...query, wardCode })
+    qcOneSelectViewModal.setWardCode(wardCode)
+  }
+
+  const handleExport = (record: any) => {
+    // console.log(record)
+    setLoading(true)
+    qcOneService.export({
+      wardCode: record.wardCode,
+      year: record.year,
+      month: record.month
+    }, 'qcPatientVisitQuarter').then(res => fileDownload(res)).finally(() => setLoading(false))
+  }
+
+  const handlePublish = (record: any) => {
+    globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
+      setLoading(true)
+      patientVisitQuarterService.publish({
+        wardCode: record.wardCode,
+        year: record.year,
+        month: record.month
+      }).then((res) => {
+        message.success('提交成功')
+        setLoading(false)
+        getList(query)
+      }, () => setLoading(false))
+    })
+  }
+
+  const handleCancelPublish = (record: any) => {
+    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
+      setLoading(true)
+      patientVisitQuarterService.cancelPublish({
+        wardCode: record.wardCode,
+        year: record.year,
+        month: record.month
+      }).then((res) => {
+        message.success('提交成功')
+        setLoading(false)
+        getList(query)
+      }, () => setLoading(false))
+    })
+  }
+
   useEffect(() => {
-    if (query.wardCode) getList(query)
+    for (let x in query) {
+      if (query[x] !== cacheQuery[x]) {
+        setCacheQuery(query)
+        getList(query)
+        break
+      }
+    }
   }, [query])
 
   useKeepAliveEffect(() => {
@@ -173,7 +245,12 @@ export default observer(function PatientVisitQuarter() {
       appStore.history &&
       (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
     ) {
-      if (query.wardCode) getList(query)
+      let newWardCode = qcOneSelectViewModal.initWardCode()
+      if (query.wardCode === newWardCode) {
+        getList(query)
+      } else {
+        setQuery({ ...query, wardCode: newWardCode })
+      }
     }
     return () => { }
   })
@@ -208,15 +285,27 @@ export default observer(function PatientVisitQuarter() {
         <Select
           value={query.status}
           onChange={(status: string) => setQuery({ ...query, status })}
-          style={{ width: '75px' }}>
+          style={{ width: '110px' }}>
           <Option value=''>全部</Option>
-          <Option value='0'>保存</Option>
-          <Option value='1'>发布</Option>
+          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
         </Select>
         <span>科室:</span>
-        <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
+        {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
+        <Select
+          showSearch
+          value={query.wardCode}
+          onChange={handleWardCodeChange}
+          filterOption={(input: string, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          style={{ width: '176px' }}>
+          <Option value=''>全部</Option>
+          {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+        </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
-        {auth && <Button type="primary" onClick={handleCreate}>添加</Button>}
+        {isRoleManage && <Button type="primary" onClick={handleCreate}>新建</Button>}
+        {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
+        {isDepartment && <Button onClick={() => setArchiveVisible(true)}>汇总</Button>}
         {/* <Button >导出</Button> */}
       </RightIcon>
     </HeaderCon>
@@ -242,8 +331,23 @@ export default observer(function PatientVisitQuarter() {
     </TableWrapper>
     <ReportCreateModal
       onOk={handleOk}
+      deptCode={query.wardCode}
       visible={createVisible}
       onCancel={handleCancel} />
+    <CommitModal
+      reportType='pvq'
+      visible={commitVisible}
+      onCancel={() => {
+        setCommitVisible(false)
+        getList(query)
+      }} />
+    <ArchiveModal
+      reportType='pvq'
+      visible={archiveVisible}
+      onCancel={() => {
+        setArchiveVisible(false)
+        getList(query)
+      }} />
   </Wrapper>
 })
 

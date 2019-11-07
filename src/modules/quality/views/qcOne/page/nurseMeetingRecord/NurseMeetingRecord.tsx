@@ -166,7 +166,7 @@ export default observer(function NurseMeetingRecord() {
               unreadReceiverSize: item.unreadReceiverSize
             }
           }))
-          setDataTotal(res.data.totaltount)
+          setDataTotal(res.data.totalCount)
         }
       }, () => setLoading(false))
   }
