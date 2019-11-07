@@ -19,18 +19,20 @@ export interface Props {
   title?: string,
   onOk?: Function,
   onCancel?: Function,
+  deptCode?: string,
   visible: boolean
 }
 
 export default observer(function WorkPlainEditModal(props: Props) {
   const { history } = appStore
 
-  const { title, visible, onCancel, onOk } = props
+  const { title, visible, onCancel, onOk, deptCode } = props
 
   const [loading, setLoading] = useState(false)
 
-  const wardName = authStore.selectedDeptName
-  const wardCode = authStore.selectedDeptCode
+  const wardCode = deptCode || authStore.selectedDeptCode
+  const wardTarget = authStore.deptList.find((item: any) => item.code === wardCode)
+  const wardName = wardTarget ? wardTarget.name : authStore.selectedDeptName
 
   const [editQuery, setEditQuery] = useState({
     year: moment().format('YYYY'),

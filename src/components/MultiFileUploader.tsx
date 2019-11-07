@@ -83,6 +83,7 @@ export default function MultiFileUploader(props: Props) {
   const FileEl = () => {
     if (iptVisible) return <input
       type="file"
+      accept={accept || ''}
       multiple
       className={`file-input ${randomClass}`}
       onChange={handleChange} />

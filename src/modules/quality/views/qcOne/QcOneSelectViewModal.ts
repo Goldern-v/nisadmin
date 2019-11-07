@@ -38,6 +38,17 @@ class QcOneSelectViewModal {
     }
   ]
 
+  @observable public wardCode = authStore.isDepartment ? '' : authStore.selectedDeptCode
+  @computed get wardName() {
+    let target = (authStore.deptList || []).find((item: any) => item.code === this.wardCode)
+    if (target) return target.name
+    return ''
+  }
+  @action public setWardCode = (wardCode: string) => {
+    this.wardCode = wardCode
+    if (wardCode) authStore.selectDeptCode(wardCode)
+  }
+
   /** 时间控件处理 */
   getDateOptions(): any {
     return {

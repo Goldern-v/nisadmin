@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, Modal } from 'antd'
+import { Button, Select, message } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -8,32 +8,43 @@ import DeptSelect from 'src/components/DeptSelect'
 import YearPicker from 'src/components/YearPicker'
 import moment from 'moment'
 import qs from 'qs'
-import { checkWardReportListService, ListQuery } from './api/CheckWardReportListService'
-import { numToChinese } from 'src/utils/number/numToChinese'
-import { useKeepAliveEffect } from 'react-keep-alive'
+import { patientVisitMonthService, ListQuery } from './api/PatientVisitMonthService'
+// import { numToChinese } from 'src/utils/number/numToChinese'
 
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import { useKeepAliveEffect } from 'react-keep-alive'
 
 import ReportCreateModal from './components/ReportCreateModal'
+import { globalModal } from 'src/global/globalModal'
+import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
+import CommitModal from '../../components/CommitModal'
+import ArchiveModal from '../../components/ArchiveModal'
 
 export interface Props { }
 
 const Option = Select.Option
 
-export default observer(function CheckWardReportList() {
+export default observer(function PatientVisitQuarter() {
   const { history } = appStore
-  //是否护士长
-  const auth = authStore.isRoleManage
+  const {
+    deptList, //权限科室列表
+    isRoleManage, //是否护士长
+    isSupervisorNurse, //是否科护士长
+    isDepartment //是否护理部
+  } = authStore
 
-  const [query, setQuery] = useState({
-    // wardCode: '',
+  const defaultQuery = {
+    wardCode: qcOneSelectViewModal.wardCode,
     pageIndex: 1,
     status: '',
     year: moment().format('YYYY'),
     month: '',
     pageSize: 15,
-  })
+  } as any
+
+  const [query, setQuery] = useState(defaultQuery)
+  const [cacheQuery, setCacheQuery] = useState(defaultQuery)
 
   const [createVisible, setCreateVisible] = useState(false)
 
@@ -42,6 +53,9 @@ export default observer(function CheckWardReportList() {
   const [loading, setLoading] = useState(false)
 
   const [dataTotal, setDataTotal] = useState(0)
+
+  const [commitVisible, setCommitVisible] = useState(false)
+  const [archiveVisible, setArchiveVisible] = useState(false)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -59,12 +73,12 @@ export default observer(function CheckWardReportList() {
       render: (text: string, record: any, idx: number) =>
         <div className="ellips" title={text}>{text}</div>
     },
-    // {
-    //   dataIndex: 'wardName',
-    //   key: 'wardName',
-    //   title: '科室',
-    //   width: 180,
-    // },
+    {
+      dataIndex: 'wardName',
+      key: 'wardName',
+      title: '科室',
+      width: 180,
+    },
     {
       key: 'month',
       title: '月份',
@@ -79,7 +93,7 @@ export default observer(function CheckWardReportList() {
       width: 90,
       render: (text: string, record: any, idx: number) => {
         if (record.status == '0') return '保存'
-        if (record.status == '1') return '发布'
+        if (record.status == '1') return '提交'
         return ''
       }
     },
@@ -91,21 +105,24 @@ export default observer(function CheckWardReportList() {
       width: 80
     },
     {
-      dataIndex: 'createDate',
-      key: 'createDate',
+      dataIndex: 'createTime',
+      key: 'createTime',
       title: '创建时间',
       align: 'center',
-      width: 160
+      width: 140
     },
     {
       key: 'operate',
       title: '操作',
-      width: 60,
+      width: 90,
       render: (text: string, record: any) => {
         return <DoCon className="operate-group">
-          {auth && <React.Fragment>
-            <span onClick={() => handleEdit(record)}>查看</span>
+          <span onClick={() => handleEdit(record)}>查看</span>
+          {isRoleManage && <React.Fragment>
+            {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
+            {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
           </React.Fragment>}
+          {/* <span onClick={() => handleExport(record)}>导出</span> */}
         </DoCon>
       }
     }
@@ -120,6 +137,8 @@ export default observer(function CheckWardReportList() {
   }
 
   const handleSearch = () => {
+    if (query.pageIndex == 1) getList(query)
+
     setQuery({ ...query, pageIndex: 1 })
   }
 
@@ -134,7 +153,7 @@ export default observer(function CheckWardReportList() {
 
   const getList = (query: any) => {
     setLoading(true)
-    checkWardReportListService.getPage(query).then(res => {
+    patientVisitMonthService.getPage(query).then(res => {
       setLoading(false)
       if (res.data) {
         setTableData(res.data.list)
@@ -157,29 +176,72 @@ export default observer(function CheckWardReportList() {
   }
 
   const handleEdit = (record: any) => {
-    history.push(`/checkWardReportView?${qs.stringify({
-      // wardCode: record.wardCode,
+    history.push(`/patientVisitMonthEdit?${qs.stringify({
+      wardCode: record.wardCode,
       year: record.year,
-      month: record.month,
-      id: record.id,
-      status: record.status,
+      month: record.month
     })}`)
   }
 
+  const handleWardCodeChange = (wardCode: string) => {
+    setQuery({ ...query, wardCode })
+    qcOneSelectViewModal.setWardCode(wardCode)
+  }
+
+  // const handleExport = (record: any) => {
+  //   // console.log(record)
+  //   setLoading(true)
+  //   patientVisitMonthService.exportData({
+  //     wardCode: record.wardCode,
+  //     year: record.year,
+  //     month: record.month
+  //   }).then(res => fileDownload(res)).finally(() => setLoading(false))
+  // }
+
+  const handlePublish = (record: any) => {
+    globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
+      setLoading(true)
+      patientVisitMonthService.publish({
+        wardCode: record.wardCode,
+        year: record.year,
+        month: record.month
+      }).then((res) => {
+        message.success('提交成功')
+        setLoading(false)
+        getList(query)
+      }, () => setLoading(false))
+    })
+  }
+
+  const handleCancelPublish = (record: any) => {
+    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
+      setLoading(true)
+      patientVisitMonthService.cancelPublish({
+        wardCode: record.wardCode,
+        year: record.year,
+        month: record.month
+      }).then((res) => {
+        message.success('提交成功')
+        setLoading(false)
+        getList(query)
+      }, () => setLoading(false))
+    })
+  }
+
   useEffect(() => {
-    // if (query.wardCode) getList(query)
-    getList(query)
+    for (let x in query) {
+      if (query[x] !== cacheQuery[x]) {
+        setCacheQuery(query)
+        getList(query)
+        break
+      }
+    }
   }, [query])
 
   useKeepAliveEffect(() => {
-    // console.log(appStore.history.action)
     if (
       appStore.history &&
-      (
-        appStore.history.action === 'POP' ||
-        appStore.history.action === 'PUSH' ||
-        appStore.history.action === 'REPLACE'
-      )
+      (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
     ) {
       getList(query)
     }
@@ -189,7 +251,7 @@ export default observer(function CheckWardReportList() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>特殊时段查房统计报告</PageTitle>
+        <PageTitle>月度随访表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -210,26 +272,44 @@ export default observer(function CheckWardReportList() {
           onChange={(month: string) => setQuery({ ...query, month })}
           className="month-select">
           <Option value="">全部</Option>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}月</Option>)}
         </Select>
         <span>状态:</span>
         <Select
           value={query.status}
           onChange={(status: string) => setQuery({ ...query, status })}
-          style={{ width: '95px' }}>
+          style={{ width: '75px' }}>
           <Option value=''>全部</Option>
           <Option value='0'>保存</Option>
-          <Option value='1'>发布</Option>
+          <Option value='1'>提交</Option>
         </Select>
-        {/* <span>科室:</span>
-        <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
-        <Button onClick={handleSearch}>查询</Button>
-        {auth && <Button type="primary" onClick={handleCreate}>新建</Button>}
+        <span>科室:</span>
+        {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
+        <Select
+          showSearch
+          value={query.wardCode}
+          onChange={handleWardCodeChange}
+          filterOption={(input: string, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          style={{ width: '176px' }}>
+          <Option value=''>全部</Option>
+          {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+        </Select>
+        <Button onClick={handleSearch} type="primary">查询</Button>
+        {isRoleManage && <Button type="primary" onClick={handleCreate}>新建</Button>}
+        {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
+        {isDepartment && <Button onClick={() => setArchiveVisible(true)}>汇总</Button>}
         {/* <Button >导出</Button> */}
       </RightIcon>
     </HeaderCon>
     <TableWrapper>
       <BaseTable
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => handleEdit(record)
+          }
+        }}
         surplusHeight={225}
         dataSource={tableData}
         loading={loading}
@@ -245,8 +325,23 @@ export default observer(function CheckWardReportList() {
     </TableWrapper>
     <ReportCreateModal
       onOk={handleOk}
+      deptCode={query.wardCode}
       visible={createVisible}
       onCancel={handleCancel} />
+    <CommitModal
+      reportType='pvm'
+      visible={commitVisible}
+      onCancel={() => {
+        setCommitVisible(false)
+        getList(query)
+      }} />
+    <ArchiveModal
+      reportType='pvm'
+      visible={archiveVisible}
+      onCancel={() => {
+        setArchiveVisible(false)
+        getList(query)
+      }} />
   </Wrapper>
 })
 
@@ -285,7 +380,7 @@ const HeaderCon = styled(TableHeadCon)`
     margin-left: 0px;
   }
   .month-select{
-    width: 70px;
+    width: 100px;
   }
   .year-select{
     width: 100px;

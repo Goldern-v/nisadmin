@@ -41,12 +41,12 @@ export default class PatientVisitQuarterService extends BaseApiService {
     return this.post('/qcAnalysis/pvq/deleteReport', query)
   }
 
-  /**发布报告 */
+  /**提交报告 */
   public publish(query: any) {
     return this.post('/qcAnalysis/pvq/publish', query)
   }
 
-  /**撤销发布报告 */
+  /**撤销报告 */
   public cancelPublish(query: any) {
     return this.post('/qcAnalysis/pvq/cancelPublish', query)
   }

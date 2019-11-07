@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Modal, Input, Row, Col, Select, message, DatePicker } from 'antd'
-import { numToChinese } from 'src/utils/number/numToChinese'
+// import { numToChinese } from 'src/utils/number/numToChinese'
 import { ScrollBox } from 'src/components/common'
 import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import YearPicker from 'src/components/YearPicker'
 import qs from 'qs'
 const RangePicker = DatePicker.RangePicker
 
-import { checkWardReportListService } from '../api/CheckWardReportListService'
+import { patientVisitMonthService } from '../api/PatientVisitMonthService'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
@@ -19,26 +19,28 @@ export interface Props {
   title?: string,
   onOk?: Function,
   onCancel?: Function,
+  deptCode?: string,
   visible: boolean
 }
 
 export default observer(function WorkPlainEditModal(props: Props) {
   const { history } = appStore
 
-  const { title, visible, onCancel, onOk } = props
+  const { title, visible, onCancel, onOk, deptCode } = props
 
   const [loading, setLoading] = useState(false)
 
-  // const wardName = authStore.selectedDeptName
-  // const wardCode = authStore.selectedDeptCode
+  const wardCode = deptCode || authStore.selectedDeptCode
+  const wardTarget = authStore.deptList.find((item: any) => item.code === wardCode)
+  const wardName = wardTarget ? wardTarget.name : authStore.selectedDeptName
 
   const [editQuery, setEditQuery] = useState({
     year: moment().format('YYYY'),
     month: moment().format('M'),
-    // wardCode: wardCode,
+    wardCode: wardCode,
     reportName: '',
-    beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
-    endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
+    beginDate: '',
+    endDate: '',
   } as any)
 
   const monthList = (() => {
@@ -60,9 +62,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
     setLoading(true)
 
-    checkWardReportListService
+    patientVisitMonthService
       .createReport({
-        // "wardCode": params.wardCode,
+        "wardCode": params.wardCode,
         "year": params.year,
         "month": params.month,
         "beginDate": params.beginDate,
@@ -73,13 +75,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
         if (res.data) {
           message.success('创建成功', 1, () => {
             setLoading(false)
-            history.push(`/checkWardReportView?${qs.stringify({
-              // wardCode: params.wardCode,
-              year: params.year,
-              month: params.month,
-              id: res.data.id,
-              status: res.data.status
-            })}`)
+            history.push(`/patientVisitMonthEdit?${qs.stringify({ ...params })}`)
             onOk && onOk()
           })
         }
@@ -88,7 +84,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const reportName = (params: any) => {
     const { year, month } = params
-    return `${year}年${month}月特殊时段查房统计报告`
+    return `${year}年${month}月${wardName}出院患者家庭访视表`
   }
 
   useEffect(() => {
@@ -96,7 +92,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
       let newQuery = {
         year: moment().format('YYYY'),
         month: moment().format('M'),
-        // wardCode: wardCode,
+        wardCode: wardCode,
         reportName: '',
         beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
         endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
@@ -128,14 +124,14 @@ export default observer(function WorkPlainEditModal(props: Props) {
       centered
       onOk={handleCreate}
       onCancel={() => onCancel && onCancel()}
-      title={title || "新建特殊时段查房统计报告"}>
+      title={title || "添加月度随访表"}>
       <Wrapper>
-        {/* <Row>
+        <Row>
           <Col span={5}>科室:</Col>
           <Col span={18}>
             <Input disabled value={wardName} />
           </Col>
-        </Row> */}
+        </Row>
         <Row>
           <Col span={5}>年份:</Col>
           <Col span={18}>
@@ -154,7 +150,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
               onChange={(month: string) =>
                 setEditQueryAndInit({ ...editQuery, month })}
               className="month-select">
-              {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+              {monthList.map((month: number) =>
+                <Option value={`${month}`} key={month}>{month}月</Option>
+              )}
             </Select>
           </Col>
         </Row>

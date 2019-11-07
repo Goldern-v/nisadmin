@@ -181,7 +181,6 @@ export default observer(function BadEventRecord() {
           defaultValue={month}
           style={{ width: '70px' }}
           onChange={(_month: any) => month = _month}>
-          <Option value="">全部</Option>
           {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
         </Select>
       </div>
@@ -263,7 +262,7 @@ export default observer(function BadEventRecord() {
         {sameWard && <Button
           type="primary"
           onClick={() => history.push('/badEventRecordEdit')}>添加</Button>}
-        <Button onClick={handleExport}>导出</Button>
+        {/* <Button onClick={handleExport}>导出</Button> */}
       </RightIcon>
     </HeaderCon>
     <TableWrapper>

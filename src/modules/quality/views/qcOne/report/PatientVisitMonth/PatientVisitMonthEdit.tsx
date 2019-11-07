@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import { Button, message } from 'src/vendors/antd'
-import { qualityAnalysisReportViewModal } from './QualityAnalysisReportPoolViewModal'
+import { patientVisitMonthModel } from './model/PatientVisitMonthModel'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { ScrollBox } from 'src/components/common'
 import { Report } from './types'
@@ -11,27 +11,32 @@ import printing from 'printing'
 import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
-import { qualityAnalysisReportPoolService } from './services/QualityAnalysisReportPoolService'
+import { patientVisitMonthService } from './api/PatientVisitMonthService'
 import qs from 'qs'
 export interface Props extends RouteComponentProps { }
 
-export default observer(function NursingReportDetailView() {
+export default observer(function PatientVisitMonthEdit() {
   const pageRef: any = useRef<HTMLElement>()
   useEffect(() => {
     let search = appStore.location.search
     let query = qs.parse(search.replace('?', ''))
-    qualityAnalysisReportViewModal.init(query)
+
+    patientVisitMonthModel.init(query)
   }, [])
-  let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+
+  let report: Report = patientVisitMonthModel.getDataInAllData('report')
+
+  let reportName = patientVisitMonthModel.getSectionData('报告名称')!.text || report.reportName
+
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
     let title = document.title
-    document.title = report.reportName
+    document.title = reportName
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
       css: `
-         .ant-btn {
+         .ant-btn,.hidden {
            display: none;
          }
          .print-page {
@@ -60,8 +65,14 @@ export default observer(function NursingReportDetailView() {
            min-height: 0;
            margin-bottom: 0;
          }
+         .img-group{
+           margin-top: 0 !important;
+         }
          table { page-break-inside:auto }
          tr{ page-break-inside:avoid; page-break-after:auto }
+         @page {
+          size: A4 landscape; 
+         }
       `
     })
     setTimeout(() => {
@@ -70,30 +81,30 @@ export default observer(function NursingReportDetailView() {
   }
   const onDelete = () => {
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      qualityAnalysisReportPoolService.deleteReport().then((res) => {
+      patientVisitMonthService.delete(qs.parse(appStore.query)).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/summaryReport')
+          appStore.history.push('/qcOne/patientVisitQuarter')
         }, 500)
       })
     })
   }
   const onPublish = () => {
     globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
-      qualityAnalysisReportPoolService.publishReport().then((res) => {
+      patientVisitMonthService.publish(qs.parse(appStore.query)).then((res) => {
         message.success('提交成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/summaryReport')
+          appStore.history.push('/qcOne/patientVisitQuarter')
         }, 500)
       })
     })
   }
   const onCancelPublish = () => {
     globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
-      qualityAnalysisReportPoolService.cancelPublishReport().then((res) => {
+      patientVisitMonthService.cancelPublish(qs.parse(appStore.query)).then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/summaryReport')
+          appStore.history.push('/qcOne/patientVisitQuarter')
         }, 500)
       })
     })
@@ -101,8 +112,10 @@ export default observer(function NursingReportDetailView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/qcThree/summaryReport' }, { name: '报告详情', link: '' }]} />
-        <div className='title'>{report.reportName}</div>
+        <BaseBreadcrumb
+          data={[{ name: '分析报告', link: '/qcOne/patientVisitQuarter' }, { name: '报告详情', link: '' }]}
+        />
+        <div className='title'>{reportName}</div>
         <div className='aside'>
           <span>
             由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
@@ -116,15 +129,15 @@ export default observer(function NursingReportDetailView() {
           ) : (
               <Button onClick={onPublish}>提交</Button>
             )}
-          <Button onClick={() => onPrint(true)}>打印</Button>
+          {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>
         <Page ref={pageRef} className='print-page'>
-          {qualityAnalysisReportViewModal.sectionList.map((item, index) => {
+          {patientVisitMonthModel.sectionList.map((item, index) => {
             if (item.sectionId) {
-              let Components = qualityAnalysisReportViewModal.getSection(item.sectionId)
+              let Components = patientVisitMonthModel.getSection(item.sectionId)
               if (Components && Components.section) {
                 return (
                   <Components.section
@@ -138,7 +151,7 @@ export default observer(function NursingReportDetailView() {
             }
           })}
         </Page>
-        {qualityAnalysisReportViewModal.baseModal && <qualityAnalysisReportViewModal.baseModal.Component />}
+        {patientVisitMonthModel.baseModal && <patientVisitMonthModel.baseModal.Component />}
       </ScrollCon>
     </Wrapper>
   )
@@ -174,7 +187,7 @@ const HeadCon = styled.div`
   }
 `
 const Page = styled.div`
-  width: 720px;
+  width: 1100px;
   margin: 20px auto 20px;
   padding-bottom: 10px;
   background: #fff;

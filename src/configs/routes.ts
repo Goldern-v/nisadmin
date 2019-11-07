@@ -139,6 +139,10 @@ const PatientVisitQuarterEdit = lazy(() =>
   import('src/modules/quality/views/qcOne/report/PatientVisitQuarter/PatientVisitQuarterEdit')
 )
 
+const PatientVisitMonthEdit = lazy(() =>
+  import('src/modules/quality/views/qcOne/report/PatientVisitMonth/PatientVisitMonthEdit')
+)
+
 const QcCheckContentSetting = lazy(() =>
   import('src/modules/quality/views/qcOne/page/nursingQualityCheck/QcCheckContentSetting')
 )
@@ -287,6 +291,7 @@ const routes: RouteItem[] = [
   setLayout('/starRatingReportEdit', StarRatingReportEdit, layouts.MainLayout),
   setLayout('/badEventReportEdit', BadEventReportEdit, layouts.MainLayout),
   setLayout('/patientVisitQuarterEdit', PatientVisitQuarterEdit, layouts.MainLayout),
+  setLayout('/patientVisitMonthEdit', PatientVisitMonthEdit, layouts.MainLayout),
   setLayout('/wardLog', WardLog, layouts.MainLayout),
   setLayout('/qcCheckContentSetting', QcCheckContentSetting, layouts.BreadcrumbLayout, [
     { name: '一级质控', link: '/qcOne' },
