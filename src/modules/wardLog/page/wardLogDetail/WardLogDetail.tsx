@@ -6,28 +6,78 @@ import { appStore } from 'src/stores'
 import { ScrollBox } from 'src/components/common'
 import MainPage from './components/MainPage'
 import RightCon from './components/RightCon'
+import { useRef } from 'src/types/react'
+import printing from 'printing'
+import { wardLogService } from '../../services/WardLogService'
+import { Spin } from 'src/vendors/antd'
 export interface Props {}
 
 export default function WardLogDetail() {
+  const [pageData, setPageData]: any = useState({
+    comments: [],
+    themeName: '',
+    detail: {
+      attachmentList: []
+    },
+    logDetail: [],
+    progressDrop: [],
+    readReceiver: [],
+    unreadReceiver: []
+  })
+  const [pageLoading, setPageLoading] = useState(false)
+  const printRef: any = useRef(null)
+  const onExport = () => {
+    let _title = document.title
+    document.title = pageData.themeName
+    printing(printRef.current, {
+      scanStyles: false,
+      injectGlobalCss: true,
+      css: `
+         @page {
+           margin: 10mm;
+         }
+         #wardLogPrintPage {
+           margin: 0;
+           border: 0;
+         }
+      `
+    })
+    setTimeout(() => {
+      document.title = _title
+    }, 500)
+  }
+
+  const onLoad = () => {
+    setPageLoading(true)
+    wardLogService.getDetail(appStore.queryObj.id).then((res) => {
+      setPageData(res.data)
+      setPageLoading(false)
+    })
+  }
+
+  useEffect(() => {
+    onLoad()
+  }, [])
+
   return (
     <Wrapper>
-      <HeadCon className='healthEducationHeadCon'>
-        <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/setting/healthEducationReportList' }, { name: '报告详情', link: '' }]}
-        />
-        <div className='title'>2019年3月份XXXXXXXX表单分析报告</div>
-        <div className='aside'>日期：2019-10-10 11:11</div>
-        <div className='tool-con'>
-          <Button onClick={() => {}}>导出</Button>
-          <Button onClick={() => appStore.history.push('/setting/healthEducationReportList')}>返回</Button>
-        </div>
-      </HeadCon>
-      <LeftPart>
-        <MainPage />
-      </LeftPart>
-      <RightPart>
-        <RightCon />
-      </RightPart>
+      <Spin spinning={pageLoading} style={{ height: '100vh', maxHeight: '100vh' }}>
+        <HeadCon className='healthEducationHeadCon'>
+          <BaseBreadcrumb data={[{ name: '病区日志', link: '/wardLog' }, { name: '日志详情', link: '' }]} />
+          <div className='title'>{pageData.themeName}</div>
+          <div className='aside'>日期：{pageData.detail.createTime}</div>
+          <div className='tool-con'>
+            <Button onClick={() => onExport()}>导出</Button>
+            <Button onClick={() => appStore.history.goBack()}>返回</Button>
+          </div>
+        </HeadCon>
+        <LeftPart>
+          <MainPage ref={printRef} pageData={pageData} />
+        </LeftPart>
+        <RightPart>
+          <RightCon pageData={pageData} />
+        </RightPart>
+      </Spin>
     </Wrapper>
   )
 }

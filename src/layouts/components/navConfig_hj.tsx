@@ -1,4 +1,5 @@
 import React from 'react'
+import { appStore } from 'src/stores'
 
 export interface navConfigItem {
   name: string
@@ -17,6 +18,11 @@ export const navConfig: navConfigItem[] = [
   {
     name: '审核管理',
     path: '/auditsManagement'
+  },
+  {
+    name: '病区日志',
+    path: '/wardLog',
+    hidden: !appStore.isDev
   },
   {
     name: '档案管理',

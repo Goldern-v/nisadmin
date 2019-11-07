@@ -17,7 +17,7 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '主持/参与排名',
+      label: '排名',
       type: 'input',
       name: 'resultType'
     },
@@ -46,7 +46,7 @@ export const pageObj: PageObj = {
       dataSource: statisticsViewModal.getDict('级别')
     },
     {
-      label: '奖励名称、等级',
+      label: '奖励名/等级',
       type: 'input',
       name: 'winningName'
     }

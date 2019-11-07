@@ -19,11 +19,11 @@ export const navConfig: navConfigItem[] = [
     name: '审核管理',
     path: '/auditsManagement'
   },
-  {
-    name: '病区日志',
-    path: '/wardLog',
-    hidden: !appStore.isDev
-  },
+  // {
+  //   name: '病区日志',
+  //   path: '/wardLog',
+  //   hidden: !appStore.isDev
+  // },
   {
     name: '档案管理',
     path: '/nurseFile'

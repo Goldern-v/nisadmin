@@ -26,7 +26,15 @@ export default observer(function ExamineTable() {
       align: 'left',
       marginLeft: '20px',
       render(text: string, record: any) {
-        return text == 'nurseFile' ? '护士档案' : text == 'qc' ? '质量检查' : ''
+        return text == 'nurseFile'
+          ? '护士档案'
+          : text == 'qc'
+          ? '三级质控'
+          : text == 'qcTwoLevel'
+          ? '二级质控'
+          : text == 'sr'
+          ? '特殊时段查房'
+          : ''
       }
     },
     {

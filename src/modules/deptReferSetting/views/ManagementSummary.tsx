@@ -17,7 +17,7 @@ import ManagementSummaryService from '../api/ManagementSummaryService'
 
 const api = new ManagementSummaryService()
 
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 
 const Option = Select.Option
 
@@ -26,13 +26,12 @@ export default function ManagementSummary() {
   const [dataTotal, setDataTotal] = useState(0 as number)
 
   // const [editParams, setEditParams] = useState({} as any)
-  const [detailVisible, setDetailVisible] = useState(false);
+  const [detailVisible, setDetailVisible] = useState(false)
   const [detailViewType, setDetailViewType] = useState('detail')
-  const [detailData, setDetailData] = useState({} as any);
-
+  const [detailData, setDetailData] = useState({} as any)
 
   //初始化时间范围
-  let startDate = `${moment().format('YYYY-MM')}-01`;
+  let startDate = `${moment().format('YYYY-MM')}-01`
   let endDate = moment(startDate)
     .add('M', 1)
     .subtract(1, 'd')
@@ -197,7 +196,7 @@ export default function ManagementSummary() {
       (res) => {
         setTableLoading(false)
         if (res.data) {
-          setDataTotal(res.data.totalPage * 100)
+          setDataTotal(res.data.totalPage)
           // console.log(formatData(res.data.list), 'formatData(res.data.list)')
           setTableData(formatData(res.data.list))
         }
@@ -209,7 +208,7 @@ export default function ManagementSummary() {
   }
 
   const exportExcel = () => {
-    let params = { ...query };
+    let params = { ...query }
     //文件名称
     let startMonth = moment(query.startDate).format('YYYY-MM')
     let endMonth = moment(query.endDate).format('YYYY-MM')
@@ -228,7 +227,7 @@ export default function ManagementSummary() {
       .subtract(1, 'd')
       .format('YYYY-MM-DD')
 
-    setQuery({ ...query, endDate, pageIndex: 1 });
+    setQuery({ ...query, endDate, pageIndex: 1 })
   }
 
   return (
@@ -245,13 +244,15 @@ export default function ManagementSummary() {
                 allowClear={false}
                 defaultValue={moment(query.startDate) || null}
                 style={{ width: '100px' }}
-                onChange={(date) => setQuery({ ...query, startDate: date.format('YYYY-MM-DD'), pageIndex: 1 })} />
+                onChange={(date) => setQuery({ ...query, startDate: date.format('YYYY-MM-DD'), pageIndex: 1 })}
+              />
               <span> - </span>
               <DatePicker.MonthPicker
                 allowClear={false}
                 defaultValue={moment(query.endDate) || null}
                 style={{ width: '100px' }}
-                onChange={(date) => handleEndDateChange(date)} />
+                onChange={(date) => handleEndDateChange(date)}
+              />
             </div>
           </div>
           {/* <div className='item'>
@@ -390,10 +391,10 @@ const Wrapper = styled.div`
     }
   }
 
-  .status1{
+  .status1 {
     // color: rgba(0, 153, 255, 1);
   }
-  .status2{
+  .status2 {
     // color: rgba(102, 204, 153, 1);
   }
 `

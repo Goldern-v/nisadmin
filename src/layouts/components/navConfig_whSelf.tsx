@@ -15,11 +15,11 @@ export const navConfig: navConfigItem[] = [
     name: '首页',
     path: '/home'
   },
-  {
-    name: '病区日志',
-    path: '/wardLog',
-    hidden: !appStore.isDev
-  },
+  // {
+  //   name: '病区日志',
+  //   path: '/wardLog',
+  //   hidden: !appStore.isDev
+  // },
   {
     name: '我的档案',
     path: '/selfNurseFile'

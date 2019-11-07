@@ -18,7 +18,7 @@ export const pageObj: PageObj = {
     },
 
     {
-      label: '专科护士名称',
+      label: '护士名称',
       type: 'input',
       name: 'nurseName'
     },

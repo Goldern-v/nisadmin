@@ -29,19 +29,19 @@ export const pageObj: PageObj = {
     },
 
     {
-      label: '进修单位所属地',
+      label: '单位所属地',
       type: 'select',
       name: 'unitLocal',
       dataSource: statisticsViewModal.getDict('进修单位')
     },
     {
-      label: '进修开始时间',
+      label: '开始时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker',
       nameList: ['startDateStart', 'startDateEnd']
     },
     {
-      label: '进修结束时间',
+      label: '结束时间',
       type: 'dateRangePicker',
       name: 'dateRangePicker1',
       nameList: ['endDateStart', 'endDateEnd']

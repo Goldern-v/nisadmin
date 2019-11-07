@@ -17,17 +17,17 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '参与课题名称',
+      label: '课题名称',
       type: 'input',
       name: 'goName'
     },
     {
-      label: '课题主持人姓名',
+      label: '主持人姓名',
       type: 'input',
       name: 'hostName'
     },
     {
-      label: '课题主持人工号',
+      label: '主持人工号',
       type: 'input',
       name: 'hostNo'
     },

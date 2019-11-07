@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import { ReactComponent as YIBG } from './images/icon/YJBG.svg'
 import { ReactComponent as YJJL } from './images/icon/YJJL.svg'
@@ -111,7 +111,7 @@ const LEFT_MENU_CONFIG: any = [
 ]
 
 export default function QcOneRouter(props: Props) {
-  useEffect(() => { }, [props.history.location.pathname])
+  useEffect(() => {}, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
@@ -142,8 +142,8 @@ export default function QcOneRouter(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-            ))}
+            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+          ))}
       </MainCon>
     </Wrapper>
   )

@@ -4,6 +4,7 @@ import ReactZmage from 'react-zmage'
 export interface Props {
   list: string[]
   text: string
+  src: string
 }
 
 export default function Zimage(props: Props | any) {

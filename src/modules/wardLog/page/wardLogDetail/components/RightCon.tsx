@@ -3,20 +3,43 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import { numberToArray } from 'src/utils/array/array'
-export interface Props {}
+import classNames from 'classnames'
+export interface Props {
+  pageData: any
+}
 
-export default function RightCon() {
+export default function RightCon(props: Props) {
+  const [selectedTab, setSelectedTab] = useState(1)
+  const readReceiver = props.pageData.readReceiver || []
+  const unreadReceiver = props.pageData.unreadReceiver || []
+  let list = selectedTab == 1 ? readReceiver : unreadReceiver
   return (
     <Wrapper>
       <TabCon>
-        <div className='tab-item'>已读（0）</div>
-        <div className='tab-item active'>未读（10）</div>
+        <div
+          className={classNames({
+            active: selectedTab == 1,
+            'tab-item': true
+          })}
+          onClick={() => setSelectedTab(1)}
+        >
+          已读（{readReceiver.length}）
+        </div>
+        <div
+          className={classNames({
+            active: selectedTab == 2,
+            'tab-item': true
+          })}
+          onClick={() => setSelectedTab(2)}
+        >
+          未读（{unreadReceiver.length}）
+        </div>
       </TabCon>
       <ScrollListCon>
-        {numberToArray(0, 100).map(() => (
+        {list.map((item: any, index: number) => (
           <UserBox>
-            <img src='' alt='' className='head-img' />
-            <div className='name'>111</div>
+            <img src={item.nearImageUrl || require('src/assets/images/护士默认头像.png')} alt='' className='head-img' />
+            <div className='name'>{item.empName}</div>
           </UserBox>
         ))}
       </ScrollListCon>
@@ -64,7 +87,6 @@ const UserBox = styled.div`
     border-radius: 50%;
     margin: 5px auto;
     display: block;
-    background: red;
   }
   .name {
     font-size: 13px;

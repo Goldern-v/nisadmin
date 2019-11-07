@@ -1,22 +1,34 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-export interface Props {}
+export interface Props {
+  pageData: any
+}
 
-export default function MessageCon() {
+interface CommentItem {
+  commentTime: string
+  content: string
+  empName: string
+  empNo: string
+  nearImageUrl: string
+}
+
+export default function MessageCon(props: Props) {
   return (
     <Wrapper>
-      <div className='title'>评价（2）</div>
-      <MessageItem>
-        <HeaderBox>
-          <img src='' alt='' className='head-img' />
-          <div className='text-con'>
-            <div className='name'>林小凡</div>
-            <div className='time'>2019-11-11 11:11</div>
-          </div>
-        </HeaderBox>
-        <div className='message'>关于这个部分希望能尽快修改过来。</div>
-      </MessageItem>
+      <div className='title'>评价（{props.pageData.comments.length}）</div>
+      {props.pageData.comments.map((item: CommentItem, index: number) => (
+        <MessageItem key={index}>
+          <HeaderBox>
+            <img src={item.nearImageUrl || require('src/assets/images/护士默认头像.png')} alt='' className='head-img' />
+            <div className='text-con'>
+              <div className='name'>{item.empName}</div>
+              <div className='time'>{item.commentTime}</div>
+            </div>
+          </HeaderBox>
+          <div className='message'>{item.content}</div>
+        </MessageItem>
+      ))}
     </Wrapper>
   )
 }

@@ -1,29 +1,44 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button } from 'antd'
 import TitleItem from './TitleItem'
 import FileCon from './FileCon'
 import MessageCon from './MessageCon'
-export interface Props {}
+export interface Props {
+  pageData: any
+}
 
-export default function MainPage() {
+interface logItem {
+  content: string
+  id: string
+  indexNo: string
+  name: string
+  type: string
+}
+
+export default React.forwardRef(function MainPage(props: Props, ref: any) {
   return (
-    <Wrapper>
-      <TitleItem
-        title='标题'
-        aside='办等认么段无代阶机共严受明千见派律存意市低团细面界民们间报通节正线题你得经报观务质样飞间积小强众真低重除而至很思价新。不群法或其最认历事部些自便于家第型己线原做率状入系家人。意眼计运列电支识引为相电因但龙程干该八等张见完都争展以种办地上平情四几使严亲半油图革前府量南除标取力片必太始只年没多对需用教专相决证列有争备应又回国京条外名机划目二存和装山或小什求领离利队。'
-      />
-      <TitleItem
-        title='标题'
-        aside='办等认么段无代阶机共严受明千见派律存意市低团细面界民们间报通节正线题你得经报观务质样飞间积小强众真低重除而至很思价新。不群法或其最认历事部些自便于家第型己线原做率状入系家人。意眼计运列电支识引为相电因但龙程干该八等张见完都争展以种办地上平情四几使严亲半油图革前府量南除标取力片必太始只年没多对需用教专相决证列有争备应又回国京条外名机划目二存和装山或小什求领离利队。'
-      />
+    <Wrapper ref={ref} id='wardLogPrintPage'>
+      <PrintHead>
+        <div className='title'>{props.pageData.themeName}</div>
+        <div className='aside-con'>
+          <div className='aside'>创建日期: {props.pageData.detail.createTime}</div>
+          <div className='aside'>创建人: {props.pageData.detail.senderName}</div>
+          <div className='aside'>科室: {props.pageData.detail.wardName}</div>
+        </div>
+      </PrintHead>
+
+      {props.pageData.logDetail.map((item: logItem, index: number) => (
+        <TitleItem title={item.name} aside={item.content} key={index} />
+      ))}
+
       <Line />
-      <FileCon />
+      <FileCon pageData={props.pageData} />
       <BlockLine />
-      <MessageCon />
+      <MessageCon pageData={props.pageData} />
     </Wrapper>
   )
-}
+})
 const Wrapper = styled.div`
   width: 760px;
   min-height: 740px;
@@ -42,4 +57,27 @@ const BlockLine = styled.div`
   border-top: 10px solid #eeeeee;
   margin-top: 10px;
   margin-bottom: 10px;
+`
+
+const PrintHead = styled.div`
+  display: none;
+  color: #000;
+  @media print {
+    display: block;
+  }
+  .title {
+    text-align: center;
+    font-size: 24px;
+    padding: 0 5px 10px;
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 12px;
+    font-weight: bold;
+  }
+  .aside-con {
+    margin-bottom: 15px;
+  }
+  .aside {
+    font-size: 14px;
+    line-height: 22px;
+  }
 `

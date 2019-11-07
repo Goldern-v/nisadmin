@@ -133,6 +133,11 @@ export default class NurseFilesService extends BaseApiService {
       this.stringify({ empNo, pageIndex, pageSize })
     )
   }
+
+  /** 籍贯搜索 */
+  public nurseNativePlaceFindByName(nativePlaceName: any) {
+    return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName })
+  }
 }
 
 export const nurseFilesService = new NurseFilesService()

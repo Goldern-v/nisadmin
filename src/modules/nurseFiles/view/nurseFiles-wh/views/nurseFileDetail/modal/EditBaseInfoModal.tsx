@@ -39,8 +39,21 @@ const rules: Rules = {
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
+  const [nativePlaceList, setNativePlaceList] = useState([])
 
-  const onFieldChange = () => {}
+  const onFieldChange = (name: any, value: any, form: Form<any>) => {
+    if (name == 'nativePlace') {
+      if (value) {
+        nurseFilesService.nurseNativePlaceFindByName(value).then((res) => {
+          setNativePlaceList(
+            res.data.filter((item: any, index: number) => index < 100).map((item: any) => item.nativePlaceName)
+          )
+        })
+      } else {
+        setNativePlaceList([])
+      }
+    }
+  }
 
   const uploadCard = async (file: any) => {
     let img = await tinyPic(file)
@@ -207,7 +220,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`籍贯`} name='nativePlace'>
-              <Input />
+              <AutoComplete dataSource={nativePlaceList} />
             </Form.Field>
           </Col>
           <Col span={12}>

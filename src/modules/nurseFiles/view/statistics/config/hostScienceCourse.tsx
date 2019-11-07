@@ -17,7 +17,7 @@ export const pageObj: PageObj = {
       name: 'deptCode'
     },
     {
-      label: '主持科研课题',
+      label: '科研课题',
       type: 'input',
       name: 'goName'
     },
