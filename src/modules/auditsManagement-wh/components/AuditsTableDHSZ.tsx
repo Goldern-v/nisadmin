@@ -219,7 +219,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   })
 
   useEffect(() => {
-    showType && onload(current, searchText, pageSize)
+    showType && onload(current, searchText, props.selectedDate, pageSize)
   }, [active, authStore.selectedDeptCode, showType, statisticsViewModal.selectedDeptCode])
 
   return (
