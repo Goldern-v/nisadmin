@@ -116,7 +116,7 @@ export default observer(function BadEventReport() {
     {
       key: 'operate',
       title: '操作',
-      width: 90,
+      width: 100,
       render: (text: string, record: any) => {
         return <DoCon className="operate-group">
           <span onClick={() => handleEdit(record)}>查看</span>
