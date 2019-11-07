@@ -21,8 +21,8 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: '病区日志',
-    path: '/wardLog',
-    hidden: !appStore.isDev
+    path: '/wardLog'
+    // hidden: !appStore.isDev
   },
   {
     name: '档案管理',

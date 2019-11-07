@@ -99,7 +99,8 @@ export default class ArrangeService extends BaseApiService {
         .format('YYYY-MM-DD'),
       endTimeWeek: moment(selectViewModal.params.endTime)
         .weekday(6)
-        .format('YYYY-MM-DD')
+        .format('YYYY-MM-DD'),
+        deptCode: selectViewModal.params.deptCode
     }
     return this.post(`/scheduling/copyPrevSettingRange`, obj)
   }

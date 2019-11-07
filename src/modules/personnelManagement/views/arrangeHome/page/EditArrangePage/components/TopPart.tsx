@@ -9,7 +9,7 @@ import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 import { selectViewModal } from '../../../viewModal/SelectViewModal'
 import ExpectSettingModal from '../../../modal/ExpectSettingModal'
 import createModal from 'src/libs/createModal'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 
 import moment from 'moment'
@@ -241,9 +241,12 @@ export default observer(function TopPart() {
         <div className='item'>
           <Button onClick={handleCopy}>复制排班</Button>
         </div>
-        <div className='item'>
-          <Button onClick={findSysnNurse}>同步排班人员</Button>
-        </div>
+        {appStore.HOSPITAL_ID == 'hj' && (
+          <div className='item'>
+            <Button onClick={findSysnNurse}>同步排班人员</Button>
+          </div>
+        )}
+
         <div className='item'>
           <Button type='primary' onClick={() => sheetViewModal.saveSheetTableData('0')}>
             暂存
