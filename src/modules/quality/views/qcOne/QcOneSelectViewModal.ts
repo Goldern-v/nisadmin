@@ -60,6 +60,16 @@ class QcOneSelectViewModal {
     }
   }
 
+  @action public initWardCode = () => {
+    if (authStore.deptList) {
+      let target = authStore.deptList.find((item: any) => item.code === this.wardCode)
+
+      if (!target) this.wardCode = authStore.isDepartment ? '' : authStore.selectedDeptCode
+    }
+
+    return this.wardCode
+  }
+
   initNurseList() {
     service.commonApiService.userDictInfo(authStore.selectedDeptCode).then((res) => {
       this.nurseList = res.data

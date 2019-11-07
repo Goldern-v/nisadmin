@@ -55,10 +55,12 @@ class CheckWardReportViewModal {
 
   @computed
   get postObj() {
-    let dataTime = (new Date(moment(this.selectedYear).year(), this.selectedMonth, 0)).getDate()
+    let year = appStore.queryObj.year
+    let month = appStore.queryObj.month
+    let dataTime = (new Date(year, month, 0)).getDate()
     return {
-      startDate: `${moment(this.selectedYear).year()}-${this.selectedMonth}-01`,
-      endDate: `${moment(this.selectedYear).year()}-${this.selectedMonth}-${dataTime}`,
+      startDate: `${year}-${month}-01`,
+      endDate: `${year}-${month}-${dataTime}`,
     }
   }
 

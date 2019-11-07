@@ -244,7 +244,12 @@ export default observer(function NursingWorkPlainList() {
       appStore.history &&
       (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
     ) {
-      getList(query)
+      let newWardCode = qcOneSelectViewModal.initWardCode()
+      if (query.wardCode === newWardCode) {
+        getList(query)
+      } else {
+        setQuery({ ...query, wardCode: newWardCode })
+      }
     }
     return () => { }
   })

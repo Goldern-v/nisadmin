@@ -60,7 +60,12 @@ export default observer(function NursingReportList() {
       appStore.history &&
       (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
     ) {
-      getTableData()
+      let newWardCode = qcOneSelectViewModal.initWardCode()
+      if (query.wardCode === newWardCode) {
+        getTableData()
+      } else {
+        setQuery({ ...query, wardCode: newWardCode })
+      }
     }
     return () => { }
   })
