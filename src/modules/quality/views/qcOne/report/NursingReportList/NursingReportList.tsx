@@ -26,6 +26,7 @@ export default observer(function NursingReportList() {
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
   const { history } = appStore
+  const { wardCode, statusList, statusObj } = qcOneSelectViewModal
   const {
     deptList, //权限科室列表
     isRoleManage, //是否护士长
@@ -39,7 +40,7 @@ export default observer(function NursingReportList() {
     pageIndex: 1,
     pageSize: 20,
     status: '',
-    wardCode: qcOneSelectViewModal.wardCode
+    wardCode: wardCode
   } as any
 
   const [query, setQuery] = useState(defaultQuery)
@@ -136,14 +137,8 @@ export default observer(function NursingReportList() {
       width: 80,
       align: 'center',
       render: (status: string) => {
-        switch (status) {
-          case '0':
-            return <span style={{ color: 'red' }}>保存</span>
-          case '1':
-            return '提交'
-          default:
-            return '-'
-        }
+        let statusText = statusObj[status] || '-'
+        return statusText
       }
     },
     {
@@ -216,7 +211,7 @@ export default observer(function NursingReportList() {
     let reqQuery = {
       ...query,
       year,
-      wardCode: qcOneSelectViewModal.wardCode
+      wardCode
     }
     api
       .getPage(reqQuery)
@@ -348,15 +343,14 @@ export default observer(function NursingReportList() {
             <div className='label'>状态：</div>
             <div className='content'>
               <Select
-                style={{ width: 100 }}
+                style={{ width: 110 }}
                 value={query.status}
                 onChange={(status: any) => {
                   setQuery({ ...query, status })
                 }}
               >
                 <Option value=''>全部</Option>
-                <Option value='0'>保存</Option>
-                <Option value='1'>提交</Option>
+                {statusList.map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
               </Select>
             </div>
           </div>

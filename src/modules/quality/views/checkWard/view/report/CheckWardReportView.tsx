@@ -136,7 +136,7 @@ export default observer(function CheckWardReportView() {
           data={[{ name: '特殊时段查房报告', link: '/checkWard/checkWardReportList' }, { name: '报告详情', link: '' }]}
         />
         <div className='title'>
-          {year}年{month}月 特殊时段查房报告
+          {year}年{month}月特殊时段查房报告
         </div>
         <div className='tool-con'>
           {/* <span className='label'>年度：</span>
@@ -235,7 +235,7 @@ const HeadCon = styled.div`
 `
 const Page = styled.div`
   width: 720px;
-  margin: 20px auto 0px;
+  margin: 20px auto;
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -247,7 +247,7 @@ const Page = styled.div`
 `
 
 const ScrollCon = styled(ScrollBox)`
-  height: calc(100vh - 50px);
+  height: calc(100vh - 130px);
   .example {
     position:absolute;
     left: 0;

@@ -38,6 +38,23 @@ class QcOneSelectViewModal {
     }
   ]
 
+  @observable public statusList = [
+    { name: '已保存', code: '0' },
+    { name: '病区已提交', code: '1' },
+    { name: '科护长已提交', code: '2' },
+    { name: '已归档', code: '3' },
+  ]
+
+  @computed get statusObj() {
+    // console.log('statusObj')
+    let obj = {} as any
+    for (let i = 0; i < this.statusList.length; i++) {
+      let item = this.statusList[i]
+      obj[item.code] = item.name
+    }
+    return obj
+  }
+
   @observable public wardCode = authStore.isDepartment ? '' : authStore.selectedDeptCode
   @computed get wardName() {
     let target = (authStore.deptList || []).find((item: any) => item.code === this.wardCode)

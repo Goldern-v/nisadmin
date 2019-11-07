@@ -29,6 +29,7 @@ const Option = Select.Option
 
 export default observer(function BadEventReport() {
   const { history } = appStore
+  const { wardCode, statusList, statusObj } = qcOneSelectViewModal
   const {
     deptList, //权限科室列表
     isRoleManage, //是否护士长
@@ -37,7 +38,7 @@ export default observer(function BadEventReport() {
   } = authStore
 
   const defaultQuery = {
-    wardCode: qcOneSelectViewModal.wardCode,
+    wardCode: wardCode,
     pageIndex: 1,
     status: '',
     year: moment().format('YYYY'),
@@ -82,21 +83,21 @@ export default observer(function BadEventReport() {
       width: 180,
     },
     {
-      key: 'month',
+      dataIndex: 'month',
       title: '月份',
       align: 'center',
       width: 110,
       render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
     },
     {
-      key: 'status',
+      dataIndex: 'status',
       title: '状态',
       align: 'center',
       width: 90,
-      render: (text: string, record: any, idx: number) => {
-        if (record.status == '0') return '保存'
-        if (record.status == '1') return '提交'
-        return ''
+      render: (status: string, record: any, idx: number) => {
+
+        let statusText = statusObj[status] || '-'
+        return statusText
       }
     },
     {
@@ -116,7 +117,7 @@ export default observer(function BadEventReport() {
     {
       key: 'operate',
       title: '操作',
-      width: 100,
+      width: 120,
       render: (text: string, record: any) => {
         return <DoCon className="operate-group">
           <span onClick={() => handleEdit(record)}>查看</span>
@@ -286,10 +287,9 @@ export default observer(function BadEventReport() {
         <Select
           value={query.status}
           onChange={(status: string) => setQuery({ ...query, status })}
-          style={{ width: '95px' }}>
+          style={{ width: '110px' }}>
           <Option value=''>全部</Option>
-          <Option value='0'>保存</Option>
-          <Option value='1'>提交</Option>
+          {statusList.map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
         </Select>
         <span>科室:</span>
         {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
