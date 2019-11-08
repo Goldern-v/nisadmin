@@ -23,7 +23,7 @@ export default observer(function FollowUpRecord() {
   const [selectedJd, setselectedJd]: any = useState('')
   const columns: ColumnProps<any>[] = [
     {
-      title: '日期',
+      title: '随访日期',
       dataIndex: 'recordDate',
       align: 'center',
       width: 100

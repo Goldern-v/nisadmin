@@ -136,7 +136,7 @@ export default class NurseFilesService extends BaseApiService {
 
   /** 籍贯搜索 */
   public nurseNativePlaceFindByName(nativePlaceName: any) {
-    return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName })
+    return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
   }
 }
 

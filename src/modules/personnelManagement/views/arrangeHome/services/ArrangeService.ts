@@ -100,7 +100,7 @@ export default class ArrangeService extends BaseApiService {
       endTimeWeek: moment(selectViewModal.params.endTime)
         .weekday(6)
         .format('YYYY-MM-DD'),
-        deptCode: selectViewModal.params.deptCode
+      deptCode: selectViewModal.params.deptCode
     }
     return this.post(`/scheduling/copyPrevSettingRange`, obj)
   }
@@ -164,6 +164,20 @@ export default class ArrangeService extends BaseApiService {
   //结余数据列表保存
   public schHourInstanceSaveOrUpdate(lists: any) {
     return this.post(`/schHourInstance/saveOrUpdate`, { lists })
+  }
+
+  //结余数据列表 新
+  public schBalanceHourGetList(obj: PageObj) {
+    return this.post(`/schBalanceHour/getList`, obj)
+  }
+
+  //新增编辑结余数据 新
+  public schBalanceHourSaveOrUpdate(obj: any) {
+    return this.post(`/schBalanceHour/saveOrUpdate`, obj)
+  }
+  //删除结余数据 新
+  public schBalanceHourDelete(id: any) {
+    return this.get(`/schBalanceHour/delete/${id}`)
   }
 }
 

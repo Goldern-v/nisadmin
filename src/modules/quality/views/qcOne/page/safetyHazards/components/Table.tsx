@@ -49,7 +49,7 @@ export default observer(function Table(props: Props) {
             <th>序号</th>
             <th>问题种类</th>
             <th>问题详情</th>
-            <th>问题分析</th>
+            <th>原因分析</th>
             <th>整改措施</th>
           </tr>
         </thead>
@@ -162,5 +162,8 @@ const TableCon = styled.table`
     width: 100%;
     border: 0;
     resize: none;
+  }
+  textarea {
+    min-height: 100% !important;
   }
 `

@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router'
 import { Table, Input, Switch, message, Icon, Modal } from 'antd'
 // import { authStore, scheduleStore } from 'src/stores'
 import service from 'src/services/api'
-import { scheduleStore } from 'src/stores'
+import { scheduleStore, appStore } from 'src/stores'
 
 import emitter from 'src/libs/ev'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
@@ -17,6 +17,7 @@ import update from 'immutability-helper'
 
 import createModal from 'src/libs/createModal'
 import AddScheduleNursingModal from '../../modal/AddScheduleNursingModal'
+import AppStore from 'src/stores/AppStore'
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
@@ -92,28 +93,42 @@ export default function MainBox() {
     //   key: 'age',
     //   width: 35
     // },
-    {
-      title: '职称',
-      dataIndex: 'newTitle',
-      width: '10%',
-      key: 'newTitle'
-    },
-    {
-      title: '层级',
-      dataIndex: 'nurseHierarchy',
-      key: 'nurseHierarchy',
-      width: '10%'
-    },
+
+    ...appStore.hisAdapter({
+      hj: () => [
+        {
+          title: '职称',
+          dataIndex: 'newTitle',
+          width: '10%',
+          key: 'newTitle'
+        },
+        {
+          title: '层级',
+          dataIndex: 'nurseHierarchy',
+          key: 'nurseHierarchy',
+          width: '10%'
+        }
+      ],
+      wh: () => [
+        {
+          title: '开始时间',
+          dataIndex: 'startDate',
+          key: 'startDate',
+          width: 120
+        }
+      ]
+    }),
+
     {
       title: '职务',
       dataIndex: 'job',
       key: 'job',
-      width: '10%'
+      width: 120
     },
     {
       title: '操作',
       key: '操作',
-      width: '10%',
+      width: 120,
       render(text: any, row: any) {
         return (
           <DoCon>

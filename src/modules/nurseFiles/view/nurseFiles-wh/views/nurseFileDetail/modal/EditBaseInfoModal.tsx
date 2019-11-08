@@ -46,7 +46,7 @@ export default function EditWorkHistoryModal(props: Props) {
       if (value) {
         nurseFilesService.nurseNativePlaceFindByName(value).then((res) => {
           setNativePlaceList(
-            res.data.filter((item: any, index: number) => index < 100).map((item: any) => item.nativePlaceName)
+            res.data.list.filter((item: any, index: number) => index < 100).map((item: any) => item.nativePlaceName)
           )
         })
       } else {

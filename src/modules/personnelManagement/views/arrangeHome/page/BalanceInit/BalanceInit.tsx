@@ -12,18 +12,32 @@ import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { arrangeService } from '../../services/ArrangeService'
+import { getCurrentMonth } from 'src/utils/date/currentMonth'
+import service from 'src/services/api'
+import User from 'src/models/User'
+import moment from 'moment'
+import createModal from 'src/libs/createModal'
+import EditBalanceModal from './modal/EditBalanceModal'
+import { globalModal } from 'src/global/globalModal'
 export interface Props {}
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
+  const [date, setDate]: any = useState(getCurrentMonth())
+  const [selectedNurse, setSelectedNurse]: any = useState('')
+  const [nurseList, setNurseList]: any = useState([])
   const [pageLoading, setPageLoading] = useState(false)
+
+  const editBalanceModal = createModal(EditBalanceModal)
+
   const updateDataSource = () => {
     setDataSource([...dataSource])
   }
   const columns: ColumnProps<any>[] = [
     {
-      title: '科室',
-      dataIndex: 'deptName',
-      width: 130
+      title: '日期',
+      dataIndex: 'workDate',
+      align: 'center',
+      width: 100
     },
     {
       title: '姓名',
@@ -32,77 +46,73 @@ export default observer(function FollowUpRecord() {
       width: 100
     },
     {
-      title: '累计结余(小时)',
-      dataIndex: 'balanceHour',
+      title: '工号',
+      dataIndex: 'empNo',
       align: 'center',
-      className: 'input-cell',
-      width: 100,
-      render(text: any, record: any, index: any) {
-        return (
-          <Input
-            value={text}
-            onChange={(e) => {
-              // if (
-              //   !Number(e.target.value) &&
-              //   Number(e.target.value) !== 0 &&
-              //   e.target.value[e.target.value.length - 1] !== '.'
-              // ) {
-              //   return message.warning('只能输入数字')
-              // }
-              record.balanceHour = e.target.value
-              updateDataSource()
-            }}
-          />
-        )
-      }
+      width: 80
     },
     {
-      title: '公休结余(天数)',
-      dataIndex: 'publicHour',
-      align: 'center',
-      width: 100,
-      className: 'input-cell',
-      render(text: any, record: any, index: any) {
-        return (
-          <Input
-            value={text}
-            onChange={(e) => {
-              // if (
-              //   !Number(e.target.value) &&
-              //   Number(e.target.value) !== 0 &&
-              //   e.target.value[e.target.value.length - 1] !== '.'
-              // ) {
-              //   return message.warning('只能输入数字')
-              // }
-              record.publicHour = e.target.value
-              updateDataSource()
-            }}
-          />
-        )
-      }
+      title: '科室',
+      dataIndex: 'deptName',
+      width: 150
     },
     {
-      title: '节休结余(天数)',
-      dataIndex: 'holidayHour',
+      title: '公休结余（天）',
+      dataIndex: 'publicHourNow',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '节休结余（天）',
+      dataIndex: 'holidayHourNow',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '工时结余（小时）',
+      dataIndex: 'balanceHourNow',
+      align: 'center',
+      width: 100
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      width: 200
+    },
+    {
+      title: '操作',
+      dataIndex: '',
       align: 'center',
       width: 100,
-      className: 'input-cell',
-      render(text: any, record: any, index: any) {
+      render(text: any, record: any) {
         return (
-          <Input
-            value={text}
-            onChange={(e) => {
-              // if (
-              //   !Number(e.target.value) &&
-              //   Number(e.target.value) !== 0 &&
-              //   e.target.value[e.target.value.length - 1] !== '.'
-              // ) {
-              //   return message.warning('只能输入数字')
-              // }
-              record.holidayHour = e.target.value
-              updateDataSource()
-            }}
-          />
+          <DoCon>
+            <span
+              onClick={() => {
+                editBalanceModal.show({
+                  oldData: record,
+                  nurseList,
+                  onOkCallBack() {
+                    getData()
+                  }
+                })
+              }}
+            >
+              编辑
+            </span>
+            <span
+              onClick={() => {
+                globalModal.confirm('删除确认', '你确定要删除改记录吗？').then((res) => {
+                  arrangeService.schBalanceHourDelete(record.id).then((res) => {
+                    message.success('删除成功')
+                    getData()
+                  })
+                })
+              }}
+            >
+              删除
+            </span>
+          </DoCon>
         )
       }
     }
@@ -110,15 +120,33 @@ export default observer(function FollowUpRecord() {
 
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
-    pageSize: 20,
-    total: 0
+    pageSize: 20
   })
+  const [total, setTotal] = useState(0)
+
+  const initData = () => {
+    service.commonApiService.userDictInfo(authStore.selectedDeptCode).then((res) => {
+      setNurseList(res.data)
+    })
+  }
+
   const getData = () => {
     setPageLoading(true)
-    arrangeService.schHourInstanceGetByDeptCode(authStore.selectedDeptCode).then((res) => {
-      setDataSource(res.data)
-      setPageLoading(false)
-    })
+    let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+    let endDate = date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
+    arrangeService
+      .schBalanceHourGetList({
+        deptCode: authStore.selectedDeptCode,
+        ...pageOptions,
+        startDate,
+        endDate,
+        empNo: selectedNurse
+      })
+      .then((res) => {
+        setDataSource(res.data.list)
+        setPageLoading(false)
+        setTotal(res.data.totalCount)
+      })
     // qcOneService.qcSafetyCheckGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {
     //   setDataSource(res.data.list)
     //   setPageLoading(false)
@@ -127,8 +155,9 @@ export default observer(function FollowUpRecord() {
 
   const onDetail = (record: any) => {}
   useEffect(() => {
+    initData()
     getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode])
+  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, date, selectedNurse])
 
   return (
     <Wrapper>
@@ -136,29 +165,32 @@ export default observer(function FollowUpRecord() {
         <PageTitle>结余数据初始化</PageTitle>
         <Place />
 
+        <span className='label'>结余日期:</span>
+        <DatePicker.RangePicker value={date} onChange={(value: any) => setDate(value)} />
         <span className='label'>科室:</span>
         <DeptSelect onChange={() => {}} />
+        <span className='label'>护士:</span>
+        <Select value={selectedNurse} onChange={(value: any) => setSelectedNurse(value)}>
+          <Select.Option value=''>全部</Select.Option>
+          {nurseList.map((item: DictItem, index: number) => (
+            <Select.Option value={item.code} key={index}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
         <Button onClick={() => getData()}>查询</Button>
         <Button
           type='primary'
           onClick={() => {
-            setPageLoading(true)
-            arrangeService
-              .schHourInstanceSaveOrUpdate(
-                dataSource.map((item: any) => {
-                  if (!Number(item.holidayHour)) item.holidayHour = 0
-                  if (!Number(item.publicHour)) item.publicHour = 0
-                  if (!Number(item.balanceHour)) item.balanceHour = 0
-                  return item
-                })
-              )
-              .then((res) => {
-                message.success('保存成功')
+            editBalanceModal.show({
+              nurseList,
+              onOkCallBack() {
                 getData()
-              })
+              }
+            })
           }}
         >
-          保存
+          添加
         </Button>
       </PageHeader>
       <BaseTable
@@ -167,8 +199,23 @@ export default observer(function FollowUpRecord() {
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
-        surplusHeight={180}
+        surplusHeight={200}
+        pagination={{
+          current: pageOptions.pageIndex,
+          pageSize: pageOptions.pageSize,
+          total: total
+        }}
+        onChange={(pagination: PaginationConfig) => {
+          setPageOptions({
+            pageIndex: pagination.current,
+            pageSize: pagination.pageSize
+          })
+        }}
+        onRow={(record: any) => {
+          return { onDoubleClick: () => onDetail(record) }
+        }}
       />
+      <editBalanceModal.Component />
     </Wrapper>
   )
 })
