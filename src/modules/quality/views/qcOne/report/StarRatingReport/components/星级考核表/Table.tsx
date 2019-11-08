@@ -34,7 +34,7 @@ export default observer(function Table(props: Props) {
 
   const sum = (item: any) => {
     let total = 100;
-    let nursingDeduct = - Number(
+    let nursingDeduct = Number(
       formatNum(
         -Number(item.nursingDeduct)
       )

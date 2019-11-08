@@ -61,7 +61,6 @@ export default observer(function NurseMeetingRecord() {
     },
     {
       title: '主题',
-      width: 230,
       render: (text: string, record: any, indx: number) => {
         let text1 = record.meetingConveyed || ''
         let text2 = record.problemRectification || ''
@@ -80,7 +79,7 @@ export default observer(function NurseMeetingRecord() {
       width: 100
     },
     {
-      dataIndex: 'recorders',
+      dataIndex: 'recorderNames',
       title: '记录人',
       align: 'center',
       width: 100
@@ -102,17 +101,18 @@ export default observer(function NurseMeetingRecord() {
       align: 'center',
       width: 80,
       render: (text: string, record: any, idx: number) => {
-        if (record.unreadReceiverSize)
-          return <span style={{ color: 'red' }}>未读</span>
-        else
+        let receiverList = record.receiverList
+        let target = receiverList.find((item: any) => item.empNo.toLowerCase() == (authStore.user && authStore.user.empNo.toLowerCase()))
+        if (target)
           return <span>已读</span>
+        else
+          return <span style={{ color: 'red' }}>未读</span>
       }
     },
     {
       title: '操作',
       align: 'center',
       width: 80,
-      fixed: 'right',
       render: (text: string, record: any, idx: number) => {
         let editable = false
         let creatorNo = record.creatorNo.toLowerCase()
@@ -121,7 +121,7 @@ export default observer(function NurseMeetingRecord() {
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
           {editable && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
-          {!editable && <span style={{ width: '20px', cursor: 'default' }}></span>}
+          {!editable && <span style={{ cursor: 'default', color: '#999' }}>删除</span>}
         </DoCon>
       }
     }
@@ -161,7 +161,9 @@ export default observer(function NurseMeetingRecord() {
               ...item.nurseMeeting,
               comperes: item.comperes.map((item: any) => item.empName).join('、'),
               attendees: item.attendees.map((item: any) => item.empName).join('、'),
-              recorders: item.recorders.map((item: any) => item.empName).join('、'),
+              recorderNames: item.recorders.map((item: any) => item.empName).join('、'),
+              recorders: item.recorders,
+              receiverList: item.receiverList || [],
               readReceiverSize: item.readReceiverSize,
               unreadReceiverSize: item.unreadReceiverSize
             }
@@ -253,10 +255,8 @@ export default observer(function NurseMeetingRecord() {
     </HeaderCon>
     <TableWrapper>
       <BaseTable
-        type={['index', 'fixedIndex']}
         loading={loading}
         surplusHeight={225}
-        surplusWidth={200}
         dataSource={tableData}
         onRow={(record: any) => {
           return {

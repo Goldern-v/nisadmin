@@ -36,12 +36,18 @@ export default function MultiFileUploader(props: Props) {
 
   const handleChange = (e: any) => {
     let files = e.target.files
+
+    let callback = () => {
+      setIptVisible(false)
+      setTimeout(() => setIptVisible(true), 100)
+    }
+
     if (files && files.length > 0) {
 
       let reqList = [] as any
       for (let i = 0; i < files.length; i++) {
         let form = new FormData()
-        form.set('file', files[i])
+        form.append('file', files[i])
         reqList.push(commonApi.uploadAttachment(type, form))
       }
 
@@ -49,27 +55,25 @@ export default function MultiFileUploader(props: Props) {
 
       Promise.all(reqList).then(res => {
         setLoading(false)
+        callback()
         let newData = [] as FileItem[]
         let resList: FileItem[] = res.map((item: any) => item.data)
         if (data) newData = [...data]
 
         newData = [...newData, ...resList]
         onChange && onChange(newData, resList)
-      }, () => setLoading(false))
+      }, () => {
+        callback()
+        setLoading(false)
+      })
     }
   }
 
   const handleUploadOpen = () => {
     if (loading) return
-    setIptVisible(false)
-    setTimeout(() => {
-      setIptVisible(true)
-      setTimeout(() => {
-        let classSelector = `.${randomClass}`
-        let target = document.querySelector(classSelector) as HTMLInputElement
-        if (target) target.click()
-      }, 100)
-    })
+    let classSelector = `.${randomClass}`
+    let target = document.querySelector(classSelector) as HTMLInputElement
+    if (target) target.click()
   }
 
   const handleDelete = (idx: number) => {

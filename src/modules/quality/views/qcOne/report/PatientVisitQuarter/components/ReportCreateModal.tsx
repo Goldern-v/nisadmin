@@ -178,12 +178,13 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={5}>起止日期:</Col>
           <Col span={18}>
             <RangePicker
+              disabled={true}
               value={[moment(editQuery.beginDate), moment(editQuery.endDate)]}
               onChange={(dates: any) => {
                 setEditQuery({
                   ...editQuery,
-                  beginDate: dates[0].format('YYYY-MM-dd'),
-                  endDate: dates[1].format('YYYY-MM-dd')
+                  beginDate: dates[0].format('YYYY-MM-DD'),
+                  endDate: dates[1].format('YYYY-MM-DD')
                 })
               }}
               allowClear={false} />

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { DatePicker, Select, Button, message } from 'antd'
+import { DatePicker, Select, Button, message, Modal } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore, authStore } from 'src/stores'
@@ -19,6 +19,8 @@ import { globalModal } from 'src/global/globalModal'
 import { qcOneSelectViewModal } from './../../QcOneSelectViewModal'
 import CommitModal from './../../components/CommitModal'
 import ArchiveModal from './../../components/ArchiveModal'
+import { qcOneService } from './../../services/QcOneService'
+import YearPicker from 'src/components/YearPicker'
 
 const Option = Select.Option
 
@@ -26,6 +28,7 @@ export default observer(function NursingReportList() {
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false)
   const { history } = appStore
+  const [bigDeptList, setBigDeptList] = useState([] as any[])
   const { wardCode, statusList, statusObj } = qcOneSelectViewModal
   const {
     deptList, //权限科室列表
@@ -45,6 +48,12 @@ export default observer(function NursingReportList() {
 
   const [query, setQuery] = useState(defaultQuery)
   const [cacheQuery, setCacheQuery] = useState(defaultQuery)
+
+  useEffect(() => {
+    qcOneService.bigDeptListSelf().then(res => {
+      if (res.data) setBigDeptList(res.data)
+    })
+  }, [])
 
   useEffect(() => {
     for (let x in query) {
@@ -281,6 +290,79 @@ export default observer(function NursingReportList() {
     })
   }
 
+  const monthList = (() => {
+    let currentMonth = 12;
+    let monthArr = []
+    while (currentMonth--) {
+      monthArr.push(currentMonth + 1)
+    }
+    return monthArr
+  })()
+
+  const handleExportGather = (isBigDept?: boolean) => {
+    let year = query.year
+    let month = query.month || Moment().format('M')
+    let $wardCode = ''
+    if (bigDeptList.length > 0) $wardCode = bigDeptList[0].code
+
+    const exportContent = <ExportCon>
+      <div>
+        <span>年份: </span>
+        <span>
+          <YearPicker
+            allowClear={false}
+            value={year}
+            onChange={(_moment: any) => year = _moment} />
+        </span>
+      </div>
+      <div>
+        <span>月份: </span>
+        <Select
+          defaultValue={month}
+          style={{ width: '70px' }}
+          onChange={(_month: any) => month = _month}>
+          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+        </Select>
+      </div>
+      {isBigDept && <div>
+        <span>片区: </span>
+        <Select
+          defaultValue={$wardCode}
+          onChange={(_wardCode: any) => $wardCode = _wardCode}>
+          {bigDeptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+        </Select>
+      </div>}
+    </ExportCon>
+
+    Modal.confirm({
+      title: isBigDept ? '片区导出' : "全院导出",
+      content: exportContent,
+      onOk: () => {
+        setTableLoading(true)
+
+        if (isBigDept)
+          qcOneService.exportByBigDept({
+            wardCode: $wardCode,
+            year: year.format('YYYY'),
+            month
+          }, 'wardNursingWork')
+            .then((res: any) => {
+              setTableLoading(false)
+              fileDownload(res)
+            }, () => setTableLoading(false))
+        else
+          qcOneService.exportByNd({
+            year: year.format('YYYY'),
+            month
+          }, 'wardNursingWork')
+            .then((res: any) => {
+              setTableLoading(false)
+              fileDownload(res)
+            }, () => setTableLoading(false))
+      }
+    })
+  }
+
   return (
     <Wrapper>
       <div className='topbar'>
@@ -363,8 +445,16 @@ export default observer(function NursingReportList() {
           {isSupervisorNurse && <div className="item">
             <Button onClick={() => setCommitVisible(true)}>提交</Button>
           </div>}
+          {(isRoleManage || isSupervisorNurse || isDepartment) && <div className="item">
+            <Button onClick={() => handleExportGather(true)}>片区导出</Button>
+          </div>}
           {isDepartment && <div className="item">
-            <Button onClick={() => setArchiveVisible(true)}>汇总</Button>
+            <div className="item">
+              <Button onClick={() => handleExportGather()}>全院导出</Button>
+            </div>
+            <div className="item">
+              <Button onClick={() => setArchiveVisible(true)}>汇总</Button>
+            </div>
           </div>}
         </div>
       </div>
@@ -481,5 +571,10 @@ const Wrapper = styled.div`
         white-space: nowrap;
       }
     }
+  }
+`
+const ExportCon = styled.div`
+  &>div{
+    margin-top: 15px;
   }
 `

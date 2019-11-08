@@ -162,8 +162,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
               onChange={(dates: any) => {
                 setEditQuery({
                   ...editQuery,
-                  beginDate: dates[0].format('YYYY-MM-dd'),
-                  endDate: dates[1].format('YYYY-MM-dd')
+                  beginDate: dates[0].format('YYYY-MM-DD'),
+                  endDate: dates[1].format('YYYY-MM-DD')
                 })
               }}
               allowClear={false} />

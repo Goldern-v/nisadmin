@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Modal, Select, message } from 'antd'
+import { Modal, Select, message, Popover } from 'antd'
 import YearPicker from 'src/components/YearPicker'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -71,7 +71,14 @@ export default observer(function ArchiveModal(props: Props) {
       align: 'center',
       width: 110,
       render: (text: string, record: any, idx: number) => {
-        if (record.status == '-1') return '科护士长未提交'
+        if (record.status == '-1')
+          return <Popover
+            placement="right"
+            // title={'病区未提交'}
+            content={<pre>{record.message}</pre>}
+            trigger="hover">
+            <span style={{ color: 'red', cursor: 'pointer' }}>科护士长未提交</span>
+          </Popover>
         if (record.status == '0') return '待归档'
         if (record.status == '1') return '已归档'
         return ''

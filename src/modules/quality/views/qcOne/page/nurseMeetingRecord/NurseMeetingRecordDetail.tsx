@@ -106,6 +106,14 @@ export default observer(function NurseMeetingRecordDetail() {
       return <Button disabled={loading} type="primary" ghost onClick={handleRead}>我已查看</Button>
   }
 
+  const readingStatus = () => {
+    let target = receiverList.find((item: any) => item.empNo.toLowerCase() == (authStore.user && authStore.user.empNo.toLowerCase()))
+    if (target)
+      return <span>已读</span>
+    else
+      return <span style={{ color: 'red' }}>未读</span>
+  }
+
   const handleEdit = () => {
     if (search.id) history.push(`/nurseMeetingRecordEdit?id=${search.id}`)
   }
@@ -144,7 +152,7 @@ export default observer(function NurseMeetingRecordDetail() {
           }}
           data={[
             {
-              name: '一级质控报告',
+              name: '一级质控记录',
               link: '/qcOne'
             },
             {
@@ -189,10 +197,7 @@ export default observer(function NurseMeetingRecordDetail() {
             <div>到会人员：{attendees.map((item: any) => item.empName).join('、')}</div>
             <div className="boxLeft">
               <div>创建时间：{nurseMeeting.createTime}</div>
-              <div>阅读状态：{
-                nurseMeeting.unreadReceiverSize ?
-                  <span style={{ color: 'red' }}>未读</span> : <span>已读</span>
-              }</div>
+              <div>阅读状态：{readingStatus()}</div>
             </div>
             <div className="boxRight">
               <div>创建人：{nurseMeeting.creatorName}</div>

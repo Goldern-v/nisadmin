@@ -15,7 +15,7 @@ import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { numToChinese } from 'src/utils/number/numToChinese'
-export interface Props {}
+export interface Props { }
 
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])

@@ -110,6 +110,16 @@ export default class QcOneService extends BaseApiService {
     // qcPatientVisitQuarter
     return this.post(`/qcFlReport/export/${type}`, query, { responseType: 'blob' })
   }
+
+  /**片区导出 */
+  public exportByBigDept(query: any, type: string) {
+    return this.post(`/qcFlReport/export/${type}ByBigDept`, query, { responseType: 'blob' })
+  }
+
+  /**全院导出 */
+  public exportByNd(query: any, type: string) {
+    return this.post(`/qcFlReport/export/${type}ByNd`, query, { responseType: 'blob' })
+  }
 }
 
 export const qcOneService = new QcOneService()

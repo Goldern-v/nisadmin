@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Modal, Select, message } from 'antd'
+import { Modal, Select, message, Popover } from 'antd'
 import YearPicker from 'src/components/YearPicker'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -8,7 +8,7 @@ import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { globalModal } from 'src/global/globalModal'
-import QcOneService, { qcOneService } from './../services/QcOneService'
+import { qcOneService } from './../services/QcOneService'
 
 export interface Props {
   visible: boolean,
@@ -73,7 +73,14 @@ export default observer(function CommitModal(props: Props) {
       align: 'center',
       width: 90,
       render: (text: string, record: any, idx: number) => {
-        if (record.status == '-1') return '病区未提交'
+        if (record.status == '-1')
+          return <Popover
+            placement="right"
+            // title={'病区未提交'}
+            content={<pre>{record.message}</pre>}
+            trigger="hover">
+            <span style={{ color: 'red', cursor: 'pointer' }}>病区未提交</span>
+          </Popover>
         if (record.status == '0') return '待提交'
         if (record.status == '1') return '已提交'
         return ''

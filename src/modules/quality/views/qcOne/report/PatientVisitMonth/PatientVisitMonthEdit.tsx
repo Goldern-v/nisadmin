@@ -84,7 +84,7 @@ export default observer(function PatientVisitMonthEdit() {
       patientVisitMonthService.delete(qs.parse(appStore.query)).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/qcOne/patientVisitQuarter')
+          appStore.history.push('/qcOne/patientVisitMonth')
         }, 500)
       })
     })
@@ -94,7 +94,7 @@ export default observer(function PatientVisitMonthEdit() {
       patientVisitMonthService.publish(qs.parse(appStore.query)).then((res) => {
         message.success('提交成功')
         setTimeout(() => {
-          appStore.history.push('/qcOne/patientVisitQuarter')
+          appStore.history.push('/qcOne/patientVisitMonth')
         }, 500)
       })
     })
@@ -104,7 +104,7 @@ export default observer(function PatientVisitMonthEdit() {
       patientVisitMonthService.cancelPublish(qs.parse(appStore.query)).then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/qcOne/patientVisitQuarter')
+          appStore.history.push('/qcOne/patientVisitMonth')
         }, 500)
       })
     })
@@ -113,7 +113,7 @@ export default observer(function PatientVisitMonthEdit() {
     <Wrapper>
       <HeadCon>
         <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/qcOne/patientVisitQuarter' }, { name: '报告详情', link: '' }]}
+          data={[{ name: '分析报告', link: '/qcOne/patientVisitMonth' }, { name: '报告详情', link: '' }]}
         />
         <div className='title'>{reportName}</div>
         <div className='aside'>
@@ -159,6 +159,10 @@ export default observer(function PatientVisitMonthEdit() {
 const Wrapper = styled.div`
   * {
     font-size: 14px;
+  }
+  .delete{
+    line-height: 20px;
+    text-indent: 1px;
   }
 `
 

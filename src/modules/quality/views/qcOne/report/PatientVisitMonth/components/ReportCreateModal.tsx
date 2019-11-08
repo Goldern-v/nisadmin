@@ -6,6 +6,7 @@ import { ScrollBox } from 'src/components/common'
 import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import YearPicker from 'src/components/YearPicker'
 import qs from 'qs'
+import MultiFileUploader, { FileItem } from 'src/components/MultiFileUploader'
 const RangePicker = DatePicker.RangePicker
 
 import { patientVisitMonthService } from '../api/PatientVisitMonthService'
@@ -40,6 +41,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
     wardCode: wardCode,
     reportName: '',
     beginDate: '',
+    attachmentList: [],
     endDate: '',
   } as any)
 
@@ -69,7 +71,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
         "month": params.month,
         "beginDate": params.beginDate,
         "endDate": params.endDate,
-        "reportName": params.reportName
+        "reportName": params.reportName,
+        "attachmentList": params.attachmentList,
       })
       .then(res => {
         if (res.data) {
@@ -94,6 +97,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
         month: moment().format('M'),
         wardCode: wardCode,
         reportName: '',
+        attachmentList: [],
         beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
         endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
       }
@@ -115,6 +119,19 @@ export default observer(function WorkPlainEditModal(props: Props) {
     newQuery.beginDate = newBeginDate
     newQuery.endDate = newEndDate
     setEditQuery(newQuery)
+  }
+
+  const handleFilesChange = (payload: any) => {
+    let newList = payload.map((item: any) => {
+      return {
+        attachId: item.id,
+        name: item.name,
+        path: item.path,
+        type: item.type
+      }
+    })
+
+    setEditQuery({ ...editQuery, attachmentList: newList })
   }
 
   return <React.Fragment>
@@ -164,18 +181,35 @@ export default observer(function WorkPlainEditModal(props: Props) {
               onChange={(dates: any) => {
                 setEditQuery({
                   ...editQuery,
-                  beginDate: dates[0].format('YYYY-MM-dd'),
-                  endDate: dates[1].format('YYYY-MM-dd')
+                  beginDate: dates[0].format('YYYY-MM-DD'),
+                  endDate: dates[1].format('YYYY-MM-DD')
                 })
               }}
               allowClear={false} />
           </Col>
-        </Row><Row>
+        </Row>
+        <Row>
           <Col span={5}>名称:</Col>
           <Col span={18}>
             <Input
               value={editQuery.reportName}
               onChange={(e: any) => setEditQuery({ ...editQuery, reportName: e.target.value })} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={5}>附件:</Col>
+          <Col span={18} style={{ textAlign: 'left' }}>
+            <MultiFileUploader
+              type="pvm"
+              data={editQuery.attachmentList.map((item: any) => {
+                return {
+                  id: item.attachId,
+                  name: item.name,
+                  path: item.path,
+                  type: item.type
+                }
+              })}
+              onChange={handleFilesChange} />
           </Col>
         </Row>
       </Wrapper>
