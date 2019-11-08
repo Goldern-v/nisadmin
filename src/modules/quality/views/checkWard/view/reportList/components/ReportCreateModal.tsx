@@ -161,7 +161,28 @@ export default observer(function WorkPlainEditModal(props: Props) {
         <Row>
           <Col span={5}>起止日期:</Col>
           <Col span={18}>
-            <RangePicker
+            <DatePicker
+              style={{ width: '120px', float: 'left' }}
+              value={moment(editQuery.beginDate)}
+              allowClear={false}
+              onChange={(date: any) => {
+                setEditQuery({
+                  ...editQuery,
+                  beginDate: date.format('YYYY-MM-DD')
+                })
+              }} />
+            <span style={{ float: 'left', width: '38px', textAlign: 'center' }}> 至 </span>
+            <DatePicker
+              style={{ width: '120px', float: 'left' }}
+              value={moment(editQuery.endDate)}
+              allowClear={false}
+              onChange={(date: any) => {
+                setEditQuery({
+                  ...editQuery,
+                  endDate: date.format('YYYY-MM-DD')
+                })
+              }} />
+            {/* <RangePicker
               value={[moment(editQuery.beginDate), moment(editQuery.endDate)]}
               onChange={(dates: any) => {
                 setEditQuery({
@@ -170,7 +191,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
                   endDate: dates[1].format('YYYY-MM-dd')
                 })
               }}
-              allowClear={false} />
+              allowClear={false} /> */}
           </Col>
         </Row><Row>
           <Col span={5}>名称:</Col>

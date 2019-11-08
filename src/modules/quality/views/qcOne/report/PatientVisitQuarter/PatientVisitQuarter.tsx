@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, message } from 'antd'
+import { Button, Select, message, Modal } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -48,6 +48,7 @@ export default observer(function PatientVisitQuarter() {
 
   const [query, setQuery] = useState(defaultQuery)
   const [cacheQuery, setCacheQuery] = useState(defaultQuery)
+  const [bigDeptList, setBigDeptList] = useState([] as any[])
 
   const [createVisible, setCreateVisible] = useState(false)
 
@@ -84,10 +85,10 @@ export default observer(function PatientVisitQuarter() {
     },
     {
       dataIndex: 'month',
-      title: '月份',
+      title: '季度',
       align: 'center',
       width: 110,
-      render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
+      render: (text: string, record: any, idx: number) => `${record.year}年第${numToChinese(record.month)}季度`
     },
     {
       dataIndex: 'status',
@@ -230,6 +231,76 @@ export default observer(function PatientVisitQuarter() {
     })
   }
 
+  const handleExportGather = (isBigDept?: boolean) => {
+    let year = query.year
+    let month = query.month || moment().quarter().toString()
+    let $wardCode = ''
+    if (bigDeptList.length > 0) $wardCode = bigDeptList[0].code
+
+    const exportContent = <ExportCon>
+      <div>
+        <span>年份: </span>
+        <span>
+          <YearPicker
+            allowClear={false}
+            value={moment(year) || undefined}
+            onChange={(_moment: any) => year = _moment.format('YYYY')} />
+        </span>
+      </div>
+      <div>
+        <span>季度: </span>
+        <Select
+          defaultValue={month}
+          style={{ width: '100px' }}
+          onChange={(_month: any) => month = _month}>
+          {monthList.map((month: number) => <Option value={`${month}`} key={month}>第{numToChinese(month)}季度</Option>)}
+        </Select>
+      </div>
+      {isBigDept && <div>
+        <span>片区: </span>
+        <Select
+          defaultValue={$wardCode}
+          onChange={(_wardCode: any) => $wardCode = _wardCode}>
+          {bigDeptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+        </Select>
+      </div>}
+    </ExportCon>
+
+    Modal.confirm({
+      title: isBigDept ? '片区导出' : "全院导出",
+      content: exportContent,
+      onOk: () => {
+        setLoading(true)
+
+        if (isBigDept)
+          qcOneService.exportByBigDept({
+            wardCode: $wardCode,
+            year,
+            month
+          }, 'qcPatientVisitQuarter')
+            .then((res: any) => {
+              setLoading(false)
+              fileDownload(res)
+            }, () => setLoading(false))
+        else
+          qcOneService.exportByNd({
+            year,
+            month
+          }, 'qcPatientVisitQuarter')
+            .then((res: any) => {
+              setLoading(false)
+              fileDownload(res)
+            }, () => setLoading(false))
+      }
+    })
+  }
+
+  useEffect(() => {
+    qcOneService.bigDeptListSelf().then(res => {
+      if (res.data) setBigDeptList(res.data)
+    })
+  }, [])
+
   useEffect(() => {
     for (let x in query) {
       if (query[x] !== cacheQuery[x]) {
@@ -287,7 +358,7 @@ export default observer(function PatientVisitQuarter() {
           onChange={(status: string) => setQuery({ ...query, status })}
           style={{ width: '110px' }}>
           <Option value=''>全部</Option>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+          {statusList.map((item: any) => <Option value={`${item.code}`} key={item.code}>{item.name}</Option>)}
         </Select>
         <span>科室:</span>
         {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
@@ -305,8 +376,15 @@ export default observer(function PatientVisitQuarter() {
         <Button onClick={handleSearch} type="primary">查询</Button>
         {isRoleManage && <Button type="primary" onClick={handleCreate}>新建</Button>}
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
-        {isDepartment && <Button onClick={() => setArchiveVisible(true)}>汇总</Button>}
-        {/* <Button >导出</Button> */}
+        {(
+          isRoleManage || isSupervisorNurse || isDepartment
+        ) &&
+          <Button onClick={() => handleExportGather(true)}>片区导出</Button>
+        }
+        {isDepartment && <React.Fragment>
+          <Button onClick={() => handleExportGather()}>全院导出</Button>
+          <Button onClick={() => setArchiveVisible(true)}>汇总</Button>
+        </React.Fragment>}
       </RightIcon>
     </HeaderCon>
     <TableWrapper>
@@ -421,4 +499,9 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   display: flex;
   align-items: center;
+`
+const ExportCon = styled.div`
+  &>div{
+    margin-top: 15px;
+  }
 `
