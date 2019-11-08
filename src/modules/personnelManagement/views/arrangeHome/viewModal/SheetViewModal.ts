@@ -1,3 +1,4 @@
+import { cloneJson } from './../../../../../utils/json/clone'
 import { appStore } from './../../../../../stores/index'
 import { SymbolItem, ArrangeItem } from './../types/Sheet'
 import { observable, computed, action } from 'mobx'
@@ -155,11 +156,19 @@ class SheetViewModal {
   handleCopy() {
     this.tableLoading = true
     return arrangeService.copyPrevSettingRange().then((res) => {
+      // this.tableLoading = false
+      // this.dateList = this.getDateList()
       this.tableLoading = false
-      this.dateList = this.getDateList()
-      this.tableLoading = false
-      this.sheetTableData = this.handleSheetTableData(res.data.setting)
-      this.remark = res.data.remark
+      let copySheetTableData = this.handleSheetTableData(res.data.setting)
+
+      let _sheetTableData = cloneJson(this.sheetTableData)
+
+      for (let i = 0; i < _sheetTableData.length; i++) {
+        if (copySheetTableData[i]) {
+          _sheetTableData[i].settingDtos = copySheetTableData[i].settingDtos
+        }
+      }
+      this.sheetTableData = _sheetTableData
       this.allCell = this.getAllCell(true)
     })
   }

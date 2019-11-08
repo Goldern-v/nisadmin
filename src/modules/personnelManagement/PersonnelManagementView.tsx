@@ -80,7 +80,7 @@ export default function PersonnelManagementView() {
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != 'wh'
         },
         {
-          title: '结余数据初始化',
+          title: '结余设置',
           path: '/personnelManagement/balanceInit',
           component: BalanceInit,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != 'wh'

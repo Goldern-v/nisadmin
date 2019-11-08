@@ -162,7 +162,7 @@ export default observer(function FollowUpRecord() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>结余数据初始化</PageTitle>
+        <PageTitle>结余设置</PageTitle>
         <Place />
 
         <span className='label'>结余日期:</span>

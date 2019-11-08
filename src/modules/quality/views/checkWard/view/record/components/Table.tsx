@@ -25,7 +25,7 @@ export default observer(function Table() {
     {
       title: '查房日期',
       dataIndex: 'srDate',
-      width: 120,
+      width: 130,
       align: 'center'
     },
     {
