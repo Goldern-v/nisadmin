@@ -375,7 +375,7 @@ export default observer(function PatientVisitQuarter() {
           {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
-        {isRoleManage && <Button type="primary" onClick={handleCreate}>新建</Button>}
+        <Button type="primary" onClick={handleCreate}>新建</Button>
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
           isRoleManage || isSupervisorNurse || isDepartment

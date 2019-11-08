@@ -15,7 +15,7 @@ import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { numToChinese } from 'src/utils/number/numToChinese'
-export interface Props {}
+export interface Props { }
 
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
@@ -23,7 +23,7 @@ export default observer(function FollowUpRecord() {
   const [selectedJd, setselectedJd]: any = useState('')
   const columns: ColumnProps<any>[] = [
     {
-      title: '日期',
+      title: '随访日期',
       dataIndex: 'recordDate',
       align: 'center',
       width: 100

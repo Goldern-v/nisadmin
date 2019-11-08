@@ -13,7 +13,7 @@ import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { useKeepAliveEffect } from 'react-keep-alive'
-export interface Props {}
+export interface Props { }
 
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
@@ -81,6 +81,11 @@ export default observer(function FollowUpRecord() {
       }
     },
     {
+      title: '科室',
+      dataIndex: 'wardName',
+      width: 160,
+    },
+    {
       title: '日期',
       dataIndex: 'recordDate',
       align: 'center',
@@ -131,7 +136,7 @@ export default observer(function FollowUpRecord() {
       title: '创建人',
       dataIndex: 'creatorName',
       align: 'center',
-      width: 100,
+      width: 80,
       render(text: string, record: any, index: number) {
         const obj: any = {
           children: text,
@@ -227,7 +232,7 @@ export default observer(function FollowUpRecord() {
     if ((appStore.history && appStore.history.action) === 'POP') {
       getData()
     }
-    return () => {}
+    return () => { }
   })
 
   return (
@@ -238,7 +243,7 @@ export default observer(function FollowUpRecord() {
         <span className='label'>日期:</span>
         <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} />
         <span className='label'>科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => { }} />
         <span className='label'>问题种类:</span>
         <Select onChange={(value: string) => setSelectedProblemType(value)} value={selectedProblemType}>
           {problemList.map((item: DictItem, index: number) => (
