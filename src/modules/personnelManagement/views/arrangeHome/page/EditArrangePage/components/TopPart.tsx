@@ -56,6 +56,21 @@ export default observer(function TopPart() {
     })
   }
 
+  //撤回排班
+  const cancelPush = () => {
+    Modal.confirm({
+      title: '提示',
+      content: '确定需要撤回排班信息吗？',
+      okText: '确定',
+      okType: 'danger',
+      cancelText: '取消',
+      centered: true,
+      onOk: () => {
+        sheetViewModal.saveSheetTableData('0')
+      }
+    })
+  }
+
   //推送排班
   const handlePush = () => {
     Modal.confirm({
@@ -248,12 +263,17 @@ export default observer(function TopPart() {
         )}
 
         <div className='item'>
-          <Button type='primary' onClick={() => sheetViewModal.saveSheetTableData('0')}>
+          <Button type='primary' onClick={() => sheetViewModal.saveSheetTableData(undefined)}>
             暂存
           </Button>
         </div>
         <div className='item'>
-          <Button onClick={handlePush}>{sheetViewModal.isPush ? '已发布' : '发布'}</Button>
+          <Button onClick={cancelPush}>撤回</Button>
+        </div>
+        <div className='item'>
+          <Button type='primary' onClick={handlePush}>
+            {'发布'}
+          </Button>
         </div>
         <div className='item'>
           <Button

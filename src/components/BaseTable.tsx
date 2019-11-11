@@ -26,6 +26,8 @@ export interface Props extends TableProps<any> {
   moveRow?: (dragIndex: number, hoverIndex: number) => void
   /** 底部是否固定 */
   fixedFooter?: boolean
+  /** 不水平滚动 */
+  nohorizontalScroll?: boolean
 }
 
 export interface PageOptions {
@@ -80,7 +82,7 @@ export default observer(function BaseTable(props: Props) {
       props.pagination.total = 1
     }
   }
-  if (props.surplusWidth) {
+  if (props.surplusWidth && !props.nohorizontalScroll) {
     option.scroll = option.scroll
       ? { ...option.scroll, ...{ x: wiw - props.surplusWidth } }
       : { x: wiw - props.surplusWidth }
@@ -143,7 +145,7 @@ export default observer(function BaseTable(props: Props) {
             width: 50
           })
         }
-        option.type.includes('fixedIndex') && (option.columns[0].fixed = 'left')
+        option.type.includes('fixedIndex') && !props.nohorizontalScroll && (option.columns[0].fixed = 'left')
       }
     }
 

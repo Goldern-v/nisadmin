@@ -93,7 +93,8 @@ class SheetViewModal {
     if (!cellObj) return {}
 
     const cellConfig = {
-      isTwoDaysAgo: false && cellObj ? moment().isoWeeks() - moment(cellObj && cellObj.workDate).isoWeeks() > 1 : false,
+      /** 不可编辑 */
+      isTwoDaysAgo: cellObj.status == '1',
       isExpectedScheduling: cellObj.statusType == '1',
       isAddWordTime: appStore.hisAdapter({
         hj: () => cellObj.effectiveTimeOld && cellObj.effectiveTime && cellObj.effectiveTimeOld < cellObj.effectiveTime,
@@ -194,7 +195,7 @@ class SheetViewModal {
     })
   }
 
-  saveSheetTableData(status: '0' | '1') {
+  saveSheetTableData(status: '0' | '1' | undefined) {
     this.tableLoading = true
     return arrangeService.saveOrUpdate(status).then((res) => {
       if (status == '0') message.success('保存成功')

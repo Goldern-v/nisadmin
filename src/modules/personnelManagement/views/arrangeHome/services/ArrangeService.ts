@@ -22,7 +22,7 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/scheduling/findCreateOrUpdate`, obj)
   }
   /** 保存排班信息 */
-  public saveOrUpdate(status: '0' | '1') {
+  public saveOrUpdate(status: '0' | '1' | undefined) {
     let obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,

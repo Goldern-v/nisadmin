@@ -98,6 +98,7 @@ export default observer(function Table() {
         type={['index', 'fixedIndex']}
         surplusHeight={220}
         surplusWidth={300}
+        nohorizontalScroll={appStore.wid > 1447}
         pagination={{
           current: recordViewModal.pageIndex,
           total: recordViewModal.total,

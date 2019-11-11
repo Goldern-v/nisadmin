@@ -21,6 +21,7 @@ export default class AppStore {
     this.appToken = '51e827c9-d80e-40a1-a95a-1edc257596e7'
     window.onresize = () => {
       this.wih = window.innerHeight
+      this.wid = window.innerWidth
     }
   }
   @observable public isExpand: '1' | '0' = '1'
@@ -36,6 +37,8 @@ export default class AppStore {
   @observable public location!: H.Location<any>
   /** 页面高度 */
   @observable public wih: number = window.innerHeight
+  /** 页面宽度 */
+  @observable public wid: number = window.innerWidth
 
   /** 医院id */
   @observable public HOSPITAL_ID: hisIds = process.env.REACT_APP_HOSPITAL_ID as hisIds
