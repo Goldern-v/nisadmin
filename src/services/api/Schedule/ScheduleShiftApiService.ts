@@ -18,7 +18,7 @@ export default class ScheduleShiftApiService extends BaseApiService {
   // 0.排班班次设置新增
   public async saveAll (data: any) {
     const postData = {
-      ranges: data // 是否勾选 data = [ { id:'' , rangeShow:'' } ]
+      ranges: data.map((item:any, index:number) => ({...item, shiftTypeNo: index})) // 是否勾选 data = [ { id:'' , rangeShow:'' } ]
     }
     return this.post(`/schShiftSetting/updateStatus`, postData)
   }
