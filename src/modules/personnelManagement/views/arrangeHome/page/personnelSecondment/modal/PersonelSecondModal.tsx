@@ -67,7 +67,7 @@ export default function PersonelSecondModal(props: Props) {
       ]).then((res) => {
         setModalLoading(false)
         setDeptList(res[0].data.deptList.filter((item: any) => item.code !== authStore.selectedDeptCode))
-        setNurseList(res[1].data)
+        setNurseList(res[1].data.filter((item: any) => item.empNo))
       })
       /** 表单数据初始化 */
       refForm!.current!.setFields({
