@@ -1,39 +1,42 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Place } from 'src/components/common'
-import { Select, Input, Button } from 'antd'
-import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
-import AddNursingModal from '../modal/AddNursingModal'
-import DeptSelect from 'src/components/DeptSelect'
-import { observer } from 'mobx-react-lite'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { Place } from "src/components/common";
+import { Select, Input, Button } from "antd";
+import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
+import AddNursingModal from "../modal/AddNursingModal";
+import DeptSelect from "src/components/DeptSelect";
+import { observer } from "mobx-react-lite";
 
-const Option = Select.Option
+const Option = Select.Option;
 
 export default observer(function SelectCon(props: any, context: any) {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
   const handleOk = () => {
-    setVisible(false)
-  }
+    setVisible(false);
+  };
 
   const handleCancel = () => {
-    setVisible(false)
-  }
+    setVisible(false);
+  };
 
   const onChange = (value: string) => {
-    nurseFilesListViewModel.loadNursingList()
-  }
+    nurseFilesListViewModel.loadNursingList();
+  };
   const onSearch = () => {
-    nurseFilesListViewModel.loadNursingList()
-  }
+    nurseFilesListViewModel.loadNursingList();
+  };
   const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    nurseFilesListViewModel.filterText = e.target.value
-  }
+    nurseFilesListViewModel.filterText = e.target.value;
+  };
+  const exportFile = () => {
+    nurseFilesListViewModel.exportNursingList();
+  };
 
   useEffect(() => {
     return () => {
-      nurseFilesListViewModel.filterText = ''
-    }
-  }, [])
+      nurseFilesListViewModel.filterText = "";
+    };
+  }, []);
 
   return (
     <React.Fragment>
@@ -43,20 +46,25 @@ export default observer(function SelectCon(props: any, context: any) {
         <span>科室：</span>
         <DeptSelect onChange={onChange} />
         <Input
-          placeholder='请输入搜索关键字'
+          placeholder="请输入搜索关键字"
           value={nurseFilesListViewModel.filterText}
           style={{ width: 160 }}
           onChange={SearchByText}
         />
-        <Button type='primary' onClick={onSearch}>
+        <Button type="primary" onClick={onSearch}>
           搜索
         </Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
+        <Button onClick={exportFile}>导出</Button>
       </Wrapper>
-      <AddNursingModal visible={visible} handleOk={handleOk} handleCancel={handleCancel} />
+      <AddNursingModal
+        visible={visible}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+      />
     </React.Fragment>
-  )
-})
+  );
+});
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -66,9 +74,9 @@ const Wrapper = styled.div`
   button {
     margin-left: 10px;
   }
-`
+`;
 const Title = styled.div`
   font-size: 20px;
   font-weight: bold;
   color: #333;
-`
+`;
