@@ -40,7 +40,7 @@ class NurseFilesListViewModel {
       post: this.filterZw /**  职务  */,
       pageIndex: this.pageIndex /**  当前页数 */,
       pageSize: this.pageSize /**   每页页数 */,
-      empName: this.filterText /**   每页页数 */
+      empName: this.filterText /**   工号 */
     };
     this.listSpinning = true;
     nurseFilesService.getByFormCodePC(obj).then(res => {
@@ -58,10 +58,8 @@ class NurseFilesListViewModel {
       education: this.filterXl /** 学历 */,
       title: this.filterZc /** 职称 */,
       currentLevel: this.filterCj /** 能级、层级 */,
-      post: this.filterZw /**  职务  */
-      // pageIndex: this.pageIndex /**  当前页数 */,
-      // pageSize: this.pageSize /**   每页页数 */,
-      // empName: this.filterText /**   每页页数 */
+      post: this.filterZw /**  职务  */,
+      empName: this.filterText /** 工号 */
     };
     nurseFilesService.auditeNurseListExcel(obj).then(res => {
       fileDownload(res);
