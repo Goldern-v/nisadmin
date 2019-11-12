@@ -1,90 +1,90 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 // import { Link } from 'react-router-dom'
 
-import { Table, Input, Switch, message, Icon, Modal } from 'antd'
+import { Table, Input, Switch, message, Icon, Modal } from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
-import service from 'src/services/api'
-import { scheduleStore, appStore } from 'src/stores'
+import service from "src/services/api";
+import { scheduleStore, appStore } from "src/stores";
 
-import emitter from 'src/libs/ev'
-import BaseTable, { DoCon } from 'src/components/BaseTable'
+import emitter from "src/libs/ev";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
-import update from 'immutability-helper'
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import update from "immutability-helper";
 
-import createModal from 'src/libs/createModal'
-import AddScheduleNursingModal from '../../modal/AddScheduleNursingModal'
-import AppStore from 'src/stores/AppStore'
+import createModal from "src/libs/createModal";
+import AddScheduleNursingModal from "../../modal/AddScheduleNursingModal";
+import AppStore from "src/stores/AppStore";
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
 export default function MainBox() {
-  const [userList, setUserList] = useState(new Array())
-  const [loading, setLoading] = useState(false)
+  const [userList, setUserList] = useState(new Array());
+  const [loading, setLoading] = useState(false);
 
-  const addScheduleNursingModal = createModal(AddScheduleNursingModal)
+  const addScheduleNursingModal = createModal(AddScheduleNursingModal);
 
   const columns = [
     {
-      title: '序号',
-      dataIndex: 'index',
-      key: 'index',
+      title: "序号",
+      dataIndex: "index",
+      key: "index",
       width: 35,
       render: (text: string, record: any, index: any) => index + 1
     },
     {
-      title: '列入排班',
-      dataIndex: 'rangeShow',
-      key: '是否排班',
+      title: "列入排班",
+      dataIndex: "rangeShow",
+      key: "是否排班",
       width: 80,
       render: (text: any, record: any, index: any) =>
         record.id ? (
           <span>
             <Switch
-              size='small'
+              size="small"
               onChange={(check: any) => {
-                record.rangeShow = check
+                record.rangeShow = check;
                 // console.log(record, userList, 'chekc')
-                setUserList([...userList])
+                setUserList([...userList]);
               }}
               checked={text}
             />
           </span>
         ) : (
-          ''
+          ""
         )
     },
     {
-      title: '所在科室',
-      dataIndex: 'deptName',
+      title: "所在科室",
+      dataIndex: "deptName",
       width: 180,
-      key: 'deptName'
+      key: "deptName"
     },
     {
-      title: '工号',
-      dataIndex: 'empNo',
-      key: 'empNo',
+      title: "工号",
+      dataIndex: "empNo",
+      key: "empNo",
       width: 120
     },
     {
-      title: '姓名',
-      dataIndex: 'empName',
-      key: 'empName',
+      title: "姓名",
+      dataIndex: "empName",
+      key: "empName",
       width: 90
     },
     {
-      title: '性别',
-      dataIndex: 'sex',
-      key: 'sex',
+      title: "性别",
+      dataIndex: "sex",
+      key: "sex",
       width: 65,
       render(text: any) {
-        if (text === '0') return '男'
-        if (text === '1') return '女'
-        return text
+        if (text === "0") return "男";
+        if (text === "1") return "女";
+        return text;
       }
     },
     // {
@@ -97,37 +97,37 @@ export default function MainBox() {
     ...appStore.hisAdapter({
       hj: () => [
         {
-          title: '职称',
-          dataIndex: 'newTitle',
-          width: '10%',
-          key: 'newTitle'
+          title: "职称",
+          dataIndex: "newTitle",
+          width: "10%",
+          key: "newTitle"
         },
         {
-          title: '层级',
-          dataIndex: 'nurseHierarchy',
-          key: 'nurseHierarchy',
-          width: '10%'
+          title: "层级",
+          dataIndex: "nurseHierarchy",
+          key: "nurseHierarchy",
+          width: "10%"
+        },
+        {
+          title: "职务",
+          dataIndex: "job",
+          key: "job",
+          width: 120
         }
       ],
       wh: () => [
         {
-          title: '开始时间',
-          dataIndex: 'startDate',
-          key: 'startDate',
+          title: "开始时间",
+          dataIndex: "startDate",
+          key: "startDate",
           width: 120
         }
       ]
     }),
 
     {
-      title: '职务',
-      dataIndex: 'job',
-      key: 'job',
-      width: 120
-    },
-    {
-      title: '操作',
-      key: '操作',
+      title: "操作",
+      key: "操作",
       width: 120,
       render(text: any, row: any) {
         return (
@@ -135,94 +135,96 @@ export default function MainBox() {
             <span
               onClick={() => {
                 Modal.confirm({
-                  title: '删除确认',
-                  content: '确定要删除此排班人员吗？',
-                  okText: '确认',
-                  cancelText: '取消',
+                  title: "删除确认",
+                  content: "确定要删除此排班人员吗？",
+                  okText: "确认",
+                  cancelText: "取消",
                   centered: true,
                   maskClosable: true,
                   onOk: () => {
                     if (!row.empNo) {
-                      service.scheduleUserApiService.delete(row.id).then((res) => {
-                        message.success('删除成功')
-                        getUserList()
-                      })
+                      service.scheduleUserApiService
+                        .delete(row.id)
+                        .then(res => {
+                          message.success("删除成功");
+                          getUserList();
+                        });
                     } else {
-                      message.warning('只有工号为空的护士才能删除')
+                      message.warning("只有工号为空的护士才能删除");
                     }
                   }
-                })
+                });
               }}
             >
               删除
             </span>
           </DoCon>
-        )
+        );
       }
     }
-  ]
+  ];
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    getUserList()
+    getUserList();
 
     //
-  }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+  }, []); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
-  emitter.removeAllListeners('获取选中人员列表')
+  emitter.removeAllListeners("获取选中人员列表");
 
-  emitter.addListener('获取选中人员列表', (callback: any) => {
+  emitter.addListener("获取选中人员列表", (callback: any) => {
     if (callback) {
       callback(userList).then((res: any) => {
-        getUserList()
-      })
+        getUserList();
+      });
     }
-  })
+  });
 
-  emitter.removeAllListeners('刷新人员列表')
+  emitter.removeAllListeners("刷新人员列表");
 
-  emitter.addListener('刷新人员列表', () => {
-    getUserList()
-  })
+  emitter.addListener("刷新人员列表", () => {
+    getUserList();
+  });
 
-  emitter.removeAllListeners('删除排班人员')
+  emitter.removeAllListeners("删除排班人员");
 
-  emitter.addListener('删除排班人员', () => {
-    getUserList()
-  })
+  emitter.addListener("删除排班人员", () => {
+    getUserList();
+  });
 
-  emitter.removeAllListeners('添加排班人员')
+  emitter.removeAllListeners("添加排班人员");
 
-  emitter.addListener('添加排班人员', () => {
+  emitter.addListener("添加排班人员", () => {
     addScheduleNursingModal.show({
       getTableData: getUserList
-    })
-  })
+    });
+  });
 
   const getUserList = () => {
-    let deptCode = scheduleStore.getDeptCode() // '2508' ||
-    setLoading(true)
-    service.scheduleUserApiService.getByDeptCode(deptCode).then((res) => {
-      setLoading(false)
+    let deptCode = scheduleStore.getDeptCode(); // '2508' ||
+    setLoading(true);
+    service.scheduleUserApiService.getByDeptCode(deptCode).then(res => {
+      setLoading(false);
 
       let tableData = res.data
         .sort((a: any, b: any) => a.sortValue - b.sortValue)
-        .map((item: any, key: number) => ({ ...item, key, sortValue: key }))
-      setUserList(tableData)
-    })
-  }
+        .map((item: any, key: number) => ({ ...item, key, sortValue: key }));
+      setUserList(tableData);
+    });
+  };
 
   /** 拖拽start */
 
   const moveRow = (dragIndex: number, hoverIndex: number) => {
-    const dragRow = userList[dragIndex]
-    if (!dragRow) return
+    const dragRow = userList[dragIndex];
+    if (!dragRow) return;
     setUserList(
       update(userList, {
         $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
       })
-    )
-  }
+    );
+  };
 
   /** 拖拽end */
 
@@ -231,25 +233,28 @@ export default function MainBox() {
       {/* {JSON.stringify(userList)} */}
       <BaseTable
         bordered
-        size='small'
+        size="small"
         columns={columns}
         dataSource={userList}
         pagination={false}
         surplusHeight={232}
         loading={loading}
         moveRow={moveRow}
-        type={['diagRow', 'spaceRow']}
+        type={["diagRow", "spaceRow"]}
         fixedFooter={true}
         footer={() => (
           <span>
-            <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />
+            <Icon
+              type="info-circle"
+              style={{ color: "#fa8c16", marginRight: "5px" }}
+            />
             可以通过拖拽排序,修改数据后需保存
           </span>
         )}
       />
       <addScheduleNursingModal.Component />
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -294,4 +299,4 @@ const Wrapper = styled.div`
     color: black !important;
     border-radius: 0px;
   }
-`
+`;
