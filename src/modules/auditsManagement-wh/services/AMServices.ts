@@ -10,15 +10,12 @@ export default class AMServices extends BaseApiService {
     showType?: string,
     keyword?: string
   ) {
-    let deptCodes;
+    let deptCodes: any;
     if (
       statisticsViewModal.selectedDeptCode.length == 1 &&
-      statisticsViewModal.selectedDeptCode[0] == "全部"
+      statisticsViewModal.selectedDeptCode[0] == "全院"
     ) {
-      deptCodes = statisticsViewModal
-        .getDict("全部科室")
-        .map((item: any) => item.code)
-        .filter((item: any) => item != "全部");
+      deptCodes = [];
     } else {
       deptCodes = statisticsViewModal.selectedDeptCode;
     }

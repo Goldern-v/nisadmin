@@ -1,35 +1,36 @@
 /** 科室选择器全局使用  */
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 
-import { observer } from 'mobx-react-lite'
-import { authStore, appStore } from 'src/stores'
-import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
-import { Select } from 'src/vendors/antd'
+import { observer } from "mobx-react-lite";
+import { authStore, appStore } from "src/stores";
+import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
+import { Select } from "src/vendors/antd";
 
 export interface Props {
-  onChange?: (value: string[]) => void
+  onChange?: (value: string[]) => void;
+  deptKey?: "全部科室" | "完整科室";
 }
 
 export interface DeptType {
-  code: string
-  name: string
+  code: string;
+  name: string;
 }
 
 export default observer(function MultipleDeptSelect(props: Props) {
-  const [deptList, setDeptList]: any = useState([])
+  const [deptList, setDeptList]: any = useState([]);
 
   const onChange = (value: string[]) => {
     if (value.length > 1) {
-      if (value[value.length - 1] == '全院') {
-        value = ['全院']
-      } else if (value.includes('全院')) {
-        value = value.filter((item: any) => item != '全院')
-      } else if (value[value.length - 1] == '全部') {
-        value = ['全部']
-      } else if (value.includes('全部')) {
-        value = value.filter((item: any) => item != '全部')
+      if (value[value.length - 1] == "全院") {
+        value = ["全院"];
+      } else if (value.includes("全院")) {
+        value = value.filter((item: any) => item != "全院");
+      } else if (value[value.length - 1] == "全部") {
+        value = ["全部"];
+      } else if (value.includes("全部")) {
+        value = value.filter((item: any) => item != "全部");
       }
     }
     // let deptCodes
@@ -41,20 +42,21 @@ export default observer(function MultipleDeptSelect(props: Props) {
     // } else {
     //   deptCodes = value
     // }
-    statisticsViewModal.selectedDeptCode = value
-    props.onChange && props.onChange(value)
-  }
+    statisticsViewModal.selectedDeptCode = value;
+    props.onChange && props.onChange(value);
+  };
 
   useEffect(() => {
-    statisticsViewModal.init().then((res) => {
-      setDeptList(statisticsViewModal.getDict('全部科室'))
-    })
-  }, [])
+    statisticsViewModal.init().then(res => {
+      setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
+      statisticsViewModal.selectedDeptCode = ["全院"];
+    });
+  }, []);
 
   return (
     <Wrapper>
       <Select
-        mode='multiple'
+        mode="multiple"
         value={statisticsViewModal.selectedDeptCode as any}
         showSearch
         allowClear
@@ -64,6 +66,9 @@ export default observer(function MultipleDeptSelect(props: Props) {
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
       >
+        {props.deptKey == "完整科室" && (
+          <Select.Option value="全院">全院</Select.Option>
+        )}
         {deptList.map((item: DeptType) => (
           <Select.Option key={item.name} value={item.code}>
             {item.name}
@@ -71,8 +76,8 @@ export default observer(function MultipleDeptSelect(props: Props) {
         ))}
       </Select>
     </Wrapper>
-  )
-})
+  );
+});
 const Wrapper = styled.div`
   .ant-select {
     height: 26px;
@@ -82,4 +87,4 @@ const Wrapper = styled.div`
     height: 26px;
     overflow: hidden;
   }
-`
+`;
