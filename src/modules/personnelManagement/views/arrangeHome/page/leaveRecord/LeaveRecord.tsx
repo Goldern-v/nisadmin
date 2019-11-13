@@ -11,13 +11,13 @@ import {
 import DeptSelect from "src/components/DeptSelect";
 import { appStore, authStore } from "src/stores";
 import BaseTable from "src/components/BaseTable";
-import { qcOneService } from "../../services/QcOneService";
 import { useCallback } from "src/types/react";
 import { DoCon } from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
+import { arrangeService } from "../../services/ArrangeService";
 export interface Props {}
-export default observer(function leaveRecord() {
+export default observer(function LeaveRecord() {
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const columns: ColumnProps<any>[] = [
@@ -63,8 +63,8 @@ export default observer(function leaveRecord() {
   const [total, setTotal]: any = useState(0);
   const getData = () => {
     setPageLoading(true);
-    qcOneService
-      .qcSafetyCheckGetPage({
+    arrangeService
+      .schVacationGetList({
         ...pageOptions,
         wardCode: authStore.selectedDeptCode
       })

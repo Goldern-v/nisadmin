@@ -13,6 +13,7 @@ import PersonnelSecondment from "./views/arrangeHome/page/personnelSecondment/Pe
 import AddSubClass from "./views/arrangeHome/page/addSubClass/AddSubClass";
 import HolidaysList from "./views/arrangeHome/page/HolidaysList/HolidaysList";
 import BalanceInit from "./views/arrangeHome/page/BalanceInit/BalanceInit";
+import LeaveRecord from "./views/arrangeHome/page/leaveRecord/LeaveRecord";
 
 export interface Props {}
 
@@ -87,8 +88,8 @@ export default function PersonnelManagementView() {
         }
         // {
         //   title: "休假记录查询",
-        //   path: "/personnelManagement/balanceInit",
-        //   component: BalanceInit,
+        //   path: "/personnelManagement/leaveRecord",
+        //   component: LeaveRecord,
         //   hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         // }
       ]
