@@ -53,7 +53,7 @@ export default function GroupsSrAduitModal(props: Props) {
       noPass: value.noPass,
       list
     };
-    aMServices.batchHandleNode(obj).then(res => {
+    aMServices.srRecordBatchHandleNode(obj).then(res => {
       message.success("审核成功");
       props.getTableData && props.getTableData();
       onCancel();

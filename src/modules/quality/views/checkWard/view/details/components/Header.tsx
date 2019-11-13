@@ -1,82 +1,85 @@
-import styled from 'styled-components'
-import React from 'react'
-import { appStore } from 'src/stores'
-import { Button } from 'antd'
-import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
-import HlbModal from '../modal/HlbModal'
-import BqclModal from '../modal/BqclModal'
-import createModal from 'src/libs/createModal'
+import styled from "styled-components";
+import React from "react";
+import { appStore } from "src/stores";
+import { Button } from "antd";
+import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
+import HlbModal from "../modal/HlbModal";
+import BqclModal from "../modal/BqclModal";
+import createModal from "src/libs/createModal";
 
 interface Props {
-  detailData: any
-  onload: any
+  detailData: any;
+  onload: any;
 }
 
 export default function Header(props: Props) {
   //接口头部数据
-  let Title = props.detailData.record || {}
+  let Title = props.detailData.record || {};
 
   //头部目前审核状态
   const titleStatus = () => {
     switch (Title.status) {
-      case '1':
-        return '提交'
-      case '2':
-        return '病区处理'
-      case '3':
-        return '科护士长审核'
-      case '4':
-        return '护理部审核'
+      case "1":
+        return "提交";
+      case "2":
+        return "病区处理";
+      case "3":
+        return "科护士长审核";
+      case "4":
+        return "护理部审核";
       default:
-        return ''
+        return "";
     }
-  }
+  };
 
   //弹窗
-  const hlbModal = createModal(HlbModal)
-  const bqclModal = createModal(BqclModal)
+  const hlbModal = createModal(HlbModal);
+  const bqclModal = createModal(BqclModal);
 
-  let nodeDataList = JSON.parse(JSON.stringify(props.detailData.handlenodeDto || []))
-  nodeDataList.reverse()
+  let nodeDataList = JSON.parse(
+    JSON.stringify(props.detailData.handlenodeDto || [])
+  );
+  nodeDataList.reverse();
   //当前下标
-  let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
+  let currentNodeIndex =
+    nodeDataList.findIndex((item: any) => item.status == "1") || 0;
   //下一个审核阶段
-  let nextNode = nodeDataList[currentNodeIndex - 1] || {}
+  let nextNode = nodeDataList[currentNodeIndex - 1] || {};
 
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
     switch (nodeName) {
-      case '病区处理':
+      case "病区处理":
         {
           bqclModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
             onOkCallBack: props.onload
-          })
+          });
         }
-        break
-      case '科护士长审核':
+        break;
+      case "科护士长审核":
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: '科护士长审核',
+            title: "科护士长审核",
             onOkCallBack: props.onload
-          })
+          });
         }
-        break
-      case '护理部审核':
+        break;
+      case "护理部审核":
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: '护理部审核',
+            title: "护理部审核",
             onOkCallBack: props.onload
-          })
+          });
         }
-        break
+        break;
     }
-  }
+  };
 
   return (
     <Con>
@@ -89,39 +92,45 @@ export default function Header(props: Props) {
           }}
           data={[
             {
-              name: '查房记录',
-              link: '/checkWard'
+              name: "查房记录",
+              link: "/checkWard"
             },
             {
-              name: '记录详情'
+              name: "记录详情"
             }
           ]}
         />
-        <div className='topHeaderTitle'>
-          <div className='title'>护理{Title.type}查房记录表</div>
-          <div className='topHeaderButton'>
+        <div className="topHeaderTitle">
+          <div className="title">护理{Title.type}查房记录表</div>
+          <div className="topHeaderButton">
             {nextNode.nodeName && (
-              <Button onClick={() => onRole(nextNode.nodeName)} type='primary' disabled={!nextNode.canHandle}>
+              <Button
+                onClick={() => onRole(nextNode.nodeName)}
+                type="primary"
+                disabled={!nextNode.canHandle}
+              >
                 {nextNode.nodeName}
               </Button>
             )}
             <Button
               onClick={() => {
-                appStore.history.goBack()
+                if (window.opener) window.close();
+                appStore.history.goBack();
               }}
             >
               返回
             </Button>
           </div>
         </div>
-        <div className='topHeaderStatus'>
-          状态：<span style={{ color: '#6767ff' }}>{Title.nextNodePendingName}</span>
+        <div className="topHeaderStatus">
+          状态：
+          <span style={{ color: "#6767ff" }}>{Title.nextNodePendingName}</span>
         </div>
       </TopHeader>
       <hlbModal.Component />
       <bqclModal.Component />
     </Con>
-  )
+  );
 }
 
 const Con = styled.div`
@@ -130,7 +139,7 @@ const Con = styled.div`
   width: 100%;
   padding-left: 20px;
   position: relative;
-`
+`;
 const TopHeader = styled.div`
   .topHeaderClass {
     font-size: 14px;
@@ -172,4 +181,4 @@ const TopHeader = styled.div`
     line-height: 25px;
     color: #999;
   }
-`
+`;

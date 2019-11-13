@@ -85,13 +85,13 @@ export default function PersonnelManagementView() {
           path: "/personnelManagement/balanceInit",
           component: BalanceInit,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+        },
+        {
+          title: "休假记录查询",
+          path: "/personnelManagement/leaveRecord",
+          component: LeaveRecord,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         }
-        // {
-        //   title: "休假记录查询",
-        //   path: "/personnelManagement/leaveRecord",
-        //   component: LeaveRecord,
-        //   hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
-        // }
       ]
     }
   ];

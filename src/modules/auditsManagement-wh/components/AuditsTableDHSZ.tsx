@@ -208,7 +208,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           return item.othersMessage.nextNodePendingName == "待病区处理";
         })
       ) {
-        message.warning("待病区处理的质量检查不能批量审核");
+        message.warning("待病区处理的记录不能批量审核");
       }
       setSelectedRows(
         selectedRows.filter((item: any) => {
@@ -249,7 +249,6 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         }
       });
     } else if (showType == "sr") {
-      return message.info("正在开发中，暂时不能使用");
       goupsSrAduitModal.show({
         selectedRows,
         getTableData: () => {
