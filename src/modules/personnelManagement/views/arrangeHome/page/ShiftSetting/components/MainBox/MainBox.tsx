@@ -1,22 +1,22 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 // import { Link } from 'react-router-dom'
 
-import { Table, message, Popconfirm, Divider, Tag, Switch } from 'antd'
+import { Table, message, Popconfirm, Divider, Tag, Switch } from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
-import service from 'src/services/api'
-import { scheduleStore, authStore, appStore } from 'src/stores'
-import update from 'immutability-helper'
+import service from "src/services/api";
+import { scheduleStore, authStore, appStore } from "src/stores";
+import update from "immutability-helper";
 
-import emitter from 'src/libs/ev'
-import BaseTable, { DoCon } from 'src/components/BaseTable'
+import emitter from "src/libs/ev";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 
-import { globalModal } from 'src/global/globalModal'
-import createModal from 'src/libs/createModal'
-import AddShiftModal from '../../modal/AddShiftModal'
-import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
-import { Icon } from 'src/vendors/antd'
+import { globalModal } from "src/global/globalModal";
+import createModal from "src/libs/createModal";
+import AddShiftModal from "../../modal/AddShiftModal";
+import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
+import { Icon } from "src/vendors/antd";
 
 // import emitter from 'src/libs/ev'
 
@@ -42,53 +42,53 @@ export interface Props extends RouteComponentProps {}
 // }
 
 export default function MainBox() {
-  const [tableLoading, setTableLoading] = useState(false)
-  const [shiftList, setShiftList] = useState(new Array())
+  const [tableLoading, setTableLoading] = useState(false);
+  const [shiftList, setShiftList] = useState(new Array());
 
   /** 颜色 */
-  const [colorMap, setColorMap]: [any, any] = useState({})
-  const [colorMapCN, setColorMapCN]: [any, any] = useState({})
+  const [colorMap, setColorMap]: [any, any] = useState({});
+  const [colorMapCN, setColorMapCN]: [any, any] = useState({});
 
   const addShiftModal = createModal(
     appStore.hisAdapter({
       hj: () => AddShiftModal,
       wh: () => AddShiftModal_wh
     })
-  )
+  );
   const columns = [
     {
-      title: '序号',
-      dataIndex: 'index',
-      key: 'index',
+      title: "序号",
+      dataIndex: "index",
+      key: "index",
       width: 60,
       render: (text: string, record: any, index: any) => index + 1
     },
     {
-      title: '列入排班',
-      dataIndex: 'status',
-      key: '是否排班',
+      title: "列入排班",
+      dataIndex: "status",
+      key: "是否排班",
       width: 100,
       render: (text: any, record: any, index: any) =>
         record.id ? (
           <span>
             <Switch
-              size='small'
+              size="small"
               onChange={(check: any) => {
-                record.status = check
+                record.status = check;
                 // console.log(record, userList, 'chekc')
-                setShiftList([...shiftList])
+                setShiftList([...shiftList]);
               }}
               checked={text}
             />
           </span>
         ) : (
-          ''
+          ""
         )
     },
     {
-      title: '班次名称',
-      dataIndex: 'name',
-      key: 'name',
+      title: "班次名称",
+      dataIndex: "name",
+      key: "name",
       width: 150
       // render: (text: string, record: any) =>
       //   text.length > 0 ? (
@@ -102,15 +102,15 @@ export default function MainBox() {
       //   )
     },
     {
-      title: '类别',
-      dataIndex: 'shiftType',
-      key: 'shiftType',
+      title: "类别",
+      dataIndex: "shiftType",
+      key: "shiftType",
       width: 100
     },
     {
-      title: '颜色标记',
-      dataIndex: 'nameColor',
-      key: 'nameColor',
+      title: "颜色标记",
+      dataIndex: "nameColor",
+      key: "nameColor",
       width: 100,
       render: (text: string, record: any) =>
         text && text.length > 0 ? (
@@ -120,7 +120,7 @@ export default function MainBox() {
             </Tag>
           </span>
         ) : (
-          ''
+          ""
         )
     },
     // {
@@ -136,30 +136,31 @@ export default function MainBox() {
     //   width: '8%'
     // },
     {
-      title: '上班时间',
-      dataIndex: 'workTime',
-      key: 'workTime',
+      title: "上班时间",
+      dataIndex: "workTime",
+      key: "workTime",
       width: 250
     },
     {
-      title: '工时(小时）',
-      dataIndex: 'effectiveTime',
-      key: 'effectiveTime',
+      title: "工时(小时）",
+      dataIndex: "effectiveTime",
+      key: "effectiveTime",
       width: 100
     }
-  ]
+  ];
 
   let promise =
-    appStore.HOSPITAL_ID == 'wh'
+    appStore.HOSPITAL_ID == "wh"
       ? authStore.isRoleManage
-      : (authStore.user && authStore.user.post) == '护理部' || (authStore.user && authStore.user.empName) == '管理员'
+      : (authStore.user && authStore.user.post) == "护理部" ||
+        (authStore.user && authStore.user.empName) == "管理员";
 
   if (promise) {
     columns.push({
-      title: '操作',
-      dataIndex: 'title',
+      title: "操作",
+      dataIndex: "title",
       width: 100,
-      key: 'title',
+      key: "title",
       render: (text: string, record: any) => (
         <DoCon>
           <span
@@ -167,9 +168,9 @@ export default function MainBox() {
               addShiftModal.show({
                 editData: record,
                 onOkCallBack: () => {
-                  getShiftList()
+                  getShiftList();
                 }
-              })
+              });
               // emitter.emit('弹窗编辑排班', record)
             }}
           >
@@ -177,134 +178,137 @@ export default function MainBox() {
           </span>
           <span
             onClick={() => {
-              globalModal.confirm('确认删除', '确认删除该套餐？').then((res) => {
-                service.scheduleShiftApiService.delete(record.id).then((res) => {
-                  emitter.emit('更新班次列表')
-                })
-                message.success(`删除${record.name}成功`)
-              })
+              globalModal.confirm("确认删除", "确认删除该套餐？").then(res => {
+                service.scheduleShiftApiService.delete(record.id).then(res => {
+                  emitter.emit("更新班次列表");
+                });
+                message.success(`删除${record.name}成功`);
+              });
             }}
           >
             删除
           </span>
         </DoCon>
       )
-    })
+    });
   }
   let data = {
-    key: '',
-    id: '',
-    createTime: '',
-    deptCode: '',
-    effectiveTime: '',
+    key: "",
+    id: "",
+    createTime: "",
+    deptCode: "",
+    effectiveTime: "",
     // endTime: '',
-    name: '',
-    nameColor: '',
-    shiftType: '',
-    workTime: '',
+    name: "",
+    nameColor: "",
+    shiftType: "",
+    workTime: "",
     // startTime: '',
-    status: ''
-  }
+    status: ""
+  };
 
-  let allUser = new Array()
+  let allUser = new Array();
 
-  let tableData = new Array()
-  let selectedRowsArray = new Array()
+  let tableData = new Array();
+  let selectedRowsArray = new Array();
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    getShiftList()
+    getShiftList();
 
-    service.commonApiService.dictInfo('sch_range_color').then((res) => {
-      let colorMap: any = {}
-      let colorMapCN: any = {}
+    service.commonApiService.dictInfo("sch_range_color").then(res => {
+      let colorMap: any = {};
+      let colorMapCN: any = {};
       res.data.map((item: any) => {
-        colorMap[item.name] = item.code
-        colorMapCN[item.code] = item.name
-      })
-      setColorMap(colorMap)
-      setColorMapCN(colorMapCN)
-    })
+        colorMap[item.name] = item.code;
+        colorMapCN[item.code] = item.name;
+      });
+      setColorMap(colorMap);
+      setColorMapCN(colorMapCN);
+    });
     //
-  }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+  }, []); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
-  emitter.removeAllListeners('获取选中班次列表')
-  emitter.removeAllListeners('更新班次列表')
+  emitter.removeAllListeners("获取选中班次列表");
+  emitter.removeAllListeners("更新班次列表");
 
-  emitter.addListener('获取选中班次列表', (callback: any) => {
+  emitter.addListener("获取选中班次列表", (callback: any) => {
     if (callback) {
-      callback(shiftList)
+      callback(shiftList);
     }
-  })
+  });
 
-  emitter.addListener('更新班次列表', () => {
-    getShiftList()
-  })
+  emitter.addListener("更新班次列表", () => {
+    getShiftList();
+  });
   const getShiftList = () => {
-    let deptCode = scheduleStore.getDeptCode() // '2508' ||
-    setTableLoading(true)
-    service.scheduleShiftApiService.getShiftListByCode(deptCode).then((res) => {
-      setTableLoading(false)
+    let deptCode = scheduleStore.getDeptCode(); // '2508' ||
+    setTableLoading(true);
+    service.scheduleShiftApiService.getShiftListByCode(deptCode).then(res => {
+      setTableLoading(false);
 
-      let oneUser = new Object()
-      allUser = new Array()
-      selectedRowsArray = new Array()
+      let oneUser = new Object();
+      allUser = new Array();
+      selectedRowsArray = new Array();
       // columns
 
       if (res && res.data) {
-        tableData = res.data
+        tableData = res.data;
 
-        let rowKeys = new Array()
+        let rowKeys = new Array();
         tableData.map((oneObj: any, index: number) => {
           if (oneObj.status === true) {
-            rowKeys.push(oneObj.id)
+            rowKeys.push(oneObj.id);
           } else {
-            oneObj.status = false
+            oneObj.status = false;
           }
-          oneUser = new Object()
+          oneUser = new Object();
           for (const key in data) {
             if (data.hasOwnProperty(key) && oneObj.hasOwnProperty(key)) {
-              ;(oneUser as any)[key] = oneObj[key]
+              (oneUser as any)[key] = oneObj[key];
             }
-            if (key === 'id') {
-              ;(oneUser as any).key = oneObj[key]
+            if (key === "id") {
+              (oneUser as any).key = oneObj[key];
             }
           }
-          ;(allUser as any).push(oneUser)
-          selectedRowsArray.push(oneUser)
-        })
+          (allUser as any).push(oneUser);
+          selectedRowsArray.push(oneUser);
+        });
 
         // genEmptyTable(allUser)
-        setShiftList(allUser)
+        setShiftList(tableData);
       }
-    })
-  }
+    });
+  };
 
   const moveRow = (dragIndex: number, hoverIndex: number) => {
-    const dragRow = shiftList[dragIndex]
-    if (!dragRow) return
+    const dragRow = shiftList[dragIndex];
+    if (!dragRow) return;
     setShiftList(
       update(shiftList, {
         $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
       })
-    )
-  }
+    );
+  };
   return (
     <Wrapper>
       <BaseTable
         bordered
-        size='small'
+        size="small"
         columns={columns}
         dataSource={shiftList}
         pagination={false}
         surplusHeight={232}
         fixedFooter={true}
         moveRow={moveRow}
-        type={['diagRow', 'spaceRow']}
+        type={["diagRow", "spaceRow"]}
         loading={tableLoading}
         footer={() => (
           <span>
-            <Icon type='info-circle' style={{ color: '#fa8c16', marginRight: '5px' }} />
+            <Icon
+              type="info-circle"
+              style={{ color: "#fa8c16", marginRight: "5px" }}
+            />
             可以通过拖拽排序,修改数据后需保存
           </span>
         )}
@@ -312,7 +316,7 @@ export default function MainBox() {
       {/* <Table bordered size='small' columns={columns} rowSelection={rowSelection} dataSource={ShiftList} /> */}
       <addShiftModal.Component />
     </Wrapper>
-  )
+  );
 }
 const Wrapper = styled.div`
   /* background: #eee; */
@@ -335,4 +339,4 @@ const Wrapper = styled.div`
     width: 60px !important;
     max-width: 60px !important;
   }
-`
+`;
