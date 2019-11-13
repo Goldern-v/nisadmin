@@ -49,7 +49,9 @@ export default observer(function MultipleDeptSelect(props: Props) {
   useEffect(() => {
     statisticsViewModal.init().then(res => {
       setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
-      statisticsViewModal.selectedDeptCode = ["全院"];
+      if (props.deptKey == "完整科室") {
+        statisticsViewModal.selectedDeptCode = ["全院"];
+      }
     });
   }, []);
 
