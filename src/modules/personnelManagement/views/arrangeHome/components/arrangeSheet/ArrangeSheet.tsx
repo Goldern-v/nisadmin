@@ -1,88 +1,90 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Button } from 'antd'
-import BaseTable from 'src/components/BaseTable'
-import { ColumnProps, Input } from 'src/vendors/antd'
-import { createContextMenu } from './ContextMenu'
-import Cell from './Cell'
-import { sheetViewModal } from '../../viewModal/SheetViewModal'
-import moment from 'moment'
-import { getWeekString, getWeekString2 } from 'src/utils/date/week'
-import { observer } from 'mobx-react-lite'
-import classNames from 'classnames'
-import createModal from 'src/libs/createModal'
-import EditEffectiveTimeModal from '../../modal/EditEffectiveTimeModal'
-import EditVacationCountModal from '../../modal/EditVacationCountModal'
-import EditVacationCountModal_wh from '../../modal/EditEffectiveTimeModal_wh'
-import { ArrangeItem } from '../../types/Sheet'
-import TotalCell from './TotalCell'
-import NightHourCell from './NightHourCell'
-import { appStore } from 'src/stores'
-import update from 'immutability-helper'
-import AddUpHourCell from './AddUpHourCell'
-import BalanceHour from './BalanceHour'
-import PublicHour from './PublicHour'
-import HolidayHour from './HolidayHour'
-import $ from 'jquery'
+import styled from "styled-components";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { Button } from "antd";
+import BaseTable from "src/components/BaseTable";
+import { ColumnProps, Input } from "src/vendors/antd";
+import { createContextMenu } from "./ContextMenu";
+import Cell from "./Cell";
+import { sheetViewModal } from "../../viewModal/SheetViewModal";
+import moment from "moment";
+import { getWeekString, getWeekString2 } from "src/utils/date/week";
+import { observer } from "mobx-react-lite";
+import classNames from "classnames";
+import createModal from "src/libs/createModal";
+import EditEffectiveTimeModal from "../../modal/EditEffectiveTimeModal";
+import EditVacationCountModal from "../../modal/EditVacationCountModal";
+import EditVacationCountModal_wh from "../../modal/EditEffectiveTimeModal_wh";
+import { ArrangeItem } from "../../types/Sheet";
+import TotalCell from "./TotalCell";
+import NightHourCell from "./NightHourCell";
+import { appStore } from "src/stores";
+import update from "immutability-helper";
+import AddUpHourCell from "./AddUpHourCell";
+import BalanceHour from "./BalanceHour";
+import PublicHour from "./PublicHour";
+import HolidayHour from "./HolidayHour";
+import $ from "jquery";
 export interface Props {
   /** 编辑模式 */
-  isEdit: boolean
-  surplusHeight: number
+  isEdit: boolean;
+  surplusHeight: number;
 }
 
 export default observer(function ArrangeSheet(props: Props) {
-  let { isEdit, surplusHeight } = props
-  const [surplusWidth, setSurplusWidth]: any = useState(false)
-  let contextMenu = createContextMenu()
+  let { isEdit, surplusHeight } = props;
+  const [surplusWidth, setSurplusWidth]: any = useState(false);
+  let contextMenu = createContextMenu();
   /** 修改工时 or 加减班 */
 
   let editEffectiveTimeModal = createModal(
-    appStore.HOSPITAL_ID == 'wh' ? EditVacationCountModal_wh : EditEffectiveTimeModal
-  )
-  let editVacationCountModal = createModal(EditVacationCountModal)
+    appStore.HOSPITAL_ID == "wh"
+      ? EditVacationCountModal_wh
+      : EditEffectiveTimeModal
+  );
+  let editVacationCountModal = createModal(EditVacationCountModal);
 
   let columns: ColumnProps<any>[] = [
     {
-      title: '序号',
+      title: "序号",
       render: (text: string, row: any, index: number) => index + 1,
-      fixed: 'left',
+      fixed: "left",
       width: 40,
-      align: 'center'
+      align: "center"
     },
     {
-      title: '工号',
-      dataIndex: 'empNo',
+      title: "工号",
+      dataIndex: "empNo",
       width: 50,
-      fixed: 'left',
-      align: 'center'
+      fixed: "left",
+      align: "center"
     },
     {
-      title: '姓名',
-      dataIndex: 'empName',
+      title: "姓名",
+      dataIndex: "empName",
       width: 50,
-      fixed: 'left',
-      align: 'center'
+      fixed: "left",
+      align: "center"
     },
     {
-      title: '层级',
-      dataIndex: 'nurseHierarchy',
+      title: "层级",
+      dataIndex: "nurseHierarchy",
       width: 40,
-      fixed: 'left',
-      align: 'center'
+      fixed: "left",
+      align: "center"
     },
     {
-      title: '职称',
-      dataIndex: 'newTitle',
+      title: "职称",
+      dataIndex: "newTitle",
       width: 70,
-      fixed: 'left',
-      align: 'center'
+      fixed: "left",
+      align: "center"
     },
     {
-      title: '年限',
-      dataIndex: 'year',
+      title: "年限",
+      dataIndex: "year",
       width: 70,
-      fixed: 'left',
-      align: 'center'
+      fixed: "left",
+      align: "center"
     },
     ...sheetViewModal.dateList.map((date, index) => {
       return {
@@ -98,9 +100,9 @@ export default observer(function ArrangeSheet(props: Props) {
               index={index}
               isEdit={isEdit}
             />
-          )
+          );
         }
-      }
+      };
     }),
     {
       title: (
@@ -110,9 +112,9 @@ export default observer(function ArrangeSheet(props: Props) {
         </div>
       ),
       width: 70,
-      align: 'center',
+      align: "center",
       render(text: string, record: any) {
-        return <TotalCell id={record.id} />
+        return <TotalCell id={record.id} />;
       }
     },
     {
@@ -123,14 +125,14 @@ export default observer(function ArrangeSheet(props: Props) {
         </div>
       ),
       width: 70,
-      align: 'center',
+      align: "center",
       render(text: string, record: any) {
-        return <NightHourCell id={record.id} />
+        return <NightHourCell id={record.id} />;
       }
     }
-  ]
+  ];
 
-  if (appStore.HOSPITAL_ID == 'wh') {
+  if (appStore.HOSPITAL_ID == "wh") {
     columns.push(
       {
         title: (
@@ -140,9 +142,9 @@ export default observer(function ArrangeSheet(props: Props) {
           </div>
         ),
         width: 70,
-        align: 'center',
+        align: "center",
         render(text: string, record: any) {
-          return <BalanceHour id={record.id} />
+          return <BalanceHour id={record.id} />;
         }
       },
       {
@@ -153,9 +155,9 @@ export default observer(function ArrangeSheet(props: Props) {
           </div>
         ),
         width: 70,
-        align: 'center',
+        align: "center",
         render(text: string, record: any) {
-          return <PublicHour id={record.id} />
+          return <PublicHour id={record.id} />;
         }
       },
       {
@@ -166,27 +168,35 @@ export default observer(function ArrangeSheet(props: Props) {
           </div>
         ),
         width: 70,
-        align: 'center',
+        align: "center",
         render(text: string, record: any) {
-          return <HolidayHour id={record.id} />
+          return <HolidayHour id={record.id} />;
         }
       }
-    )
+    );
   }
 
   useLayoutEffect(() => {
     try {
-      ;(document as any)
-        .getElementById('baseTable')!
-        .querySelector('.ant-table-fixed-left .ant-table-body-inner table.ant-table-fixed')!.style.marginBottom =
-        (document as any).getElementById('baseTable')!.querySelector('.ant-table-footer')!.offsetHeight + 'px'
+      (document as any)
+        .getElementById("baseTable")!
+        .querySelector(
+          ".ant-table-fixed-left .ant-table-body-inner table.ant-table-fixed"
+        )!.style.marginBottom =
+        (document as any)
+          .getElementById("baseTable")!
+          .querySelector(".ant-table-footer")!.offsetHeight + "px";
     } catch (error) {
-      console.log('同步备注滚动报错')
+      console.log("同步备注滚动报错");
     }
     try {
-      ;(document as any).querySelector('.ant-table-body')!.addEventListener('scroll', (e: any) => {
-        ;(document as any).querySelector('.remark-con.real')!.style.marginLeft = e.target.scrollLeft + 'px'
-      })
+      (document as any)
+        .querySelector(".ant-table-body")!
+        .addEventListener("scroll", (e: any) => {
+          (document as any).querySelector(
+            ".remark-con.real"
+          )!.style.marginLeft = e.target.scrollLeft + "px";
+        });
     } catch (error) {}
     try {
       // if (
@@ -202,33 +212,46 @@ export default observer(function ArrangeSheet(props: Props) {
       // }
       setTimeout(() => {
         if (
-          (document as any).querySelector('#arrangeSheet .ant-table-body') &&
-          (document as any).querySelector('#arrangeSheet .ant-table-body').scrollWidth ==
-            (document as any).querySelector('#arrangeSheet .ant-table-body').clientWidth
+          (document as any).querySelector("#arrangeSheet .ant-table-body") &&
+          (document as any).querySelector("#arrangeSheet .ant-table-body")
+            .scrollWidth ==
+            (document as any).querySelector("#arrangeSheet .ant-table-body")
+              .clientWidth
         ) {
           /** noscorll */
-          ;(document as any).querySelector('#arrangeSheet #baseTable').style.width =
-            (sheetViewModal.dateList.length + appStore.hisAdapter({ hj: () => 3, wh: () => 6 })) * 70 + 250 + 10 + 'px'
-          setSurplusWidth(false)
+          (document as any).querySelector(
+            "#arrangeSheet #baseTable"
+          ).style.width =
+            (sheetViewModal.dateList.length +
+              appStore.hisAdapter({ hj: () => 3, wh: () => 6 })) *
+              70 +
+            250 +
+            10 +
+            "px";
+          setSurplusWidth(false);
         } else {
-          ;(document as any).querySelector('#arrangeSheet #baseTable') &&
-            ((document as any).querySelector('#arrangeSheet #baseTable').style.width = 'auto')
-          setSurplusWidth(isEdit ? 300 : 240)
+          (document as any).querySelector("#arrangeSheet #baseTable") &&
+            ((document as any).querySelector(
+              "#arrangeSheet #baseTable"
+            ).style.width = "auto");
+          setSurplusWidth(isEdit ? 300 : 240);
         }
-      }, 10)
+      }, 10);
     } catch (error) {}
     try {
-      let remark = sheetViewModal.remark
-      ;(document as any).querySelector('.remark-con.real textarea').value = remark
+      let remark = sheetViewModal.remark;
+      (document as any).querySelector(
+        ".remark-con.real textarea"
+      ).value = remark;
     } catch (error) {}
     // try {
     //   $('.ant-table-body tr').attr('draggable', 'false')
     // } catch (error) {}
-  })
+  });
 
-  let remark = sheetViewModal.remark
+  let remark = sheetViewModal.remark;
   return (
-    <Wrapper className={classNames({ isEdit })} id='arrangeSheet'>
+    <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
       <BaseTable
         loading={sheetViewModal.tableLoading}
         surplusHeight={surplusHeight}
@@ -239,43 +262,48 @@ export default observer(function ArrangeSheet(props: Props) {
         footer={() => {
           return (
             <React.Fragment>
-              <div className={'remark-con real'}>
-                <div className='remark-title'>排班备注：</div>
+              <div className={"remark-con real"}>
+                <div className="remark-title">排班备注：</div>
                 <Input.TextArea
                   readOnly={!isEdit}
                   defaultValue={remark}
                   autosize={!isEdit}
-                  onBlur={(e) => {
-                    sheetViewModal.remark = e.target.value
+                  onBlur={e => {
+                    sheetViewModal.remark = e.target.value;
                   }}
                   style={{ minHeight: 100 }}
                 />
               </div>
-              <div className={'remark-con space'}>
-                <div className='remark-title'>排班备注：</div>
-                <Input.TextArea value={remark} autosize={!isEdit} style={{ minHeight: 100 }} />
+              <div className={"remark-con space"}>
+                <div className="remark-title">排班备注：</div>
+                <Input.TextArea
+                  value={remark}
+                  autosize={!isEdit}
+                  style={{ minHeight: 100 }}
+                />
               </div>
             </React.Fragment>
-          )
+          );
         }}
-        type={isEdit && !sheetViewModal.isPush ? ['diagRow'] : []}
+        type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
         moveRow={(dragIndex: number, hoverIndex: number) => {
           try {
-            let pc = (document as any).querySelector('.drop-over-downward,  .drop-over-upward').offsetParent
-              .offsetParent.className
+            let pc = (document as any).querySelector(
+              ".drop-over-downward,  .drop-over-upward"
+            ).offsetParent.offsetParent.className;
 
-            if (pc == 'ant-table-body') {
+            if (pc == "ant-table-body") {
               /** min */
-              const dragRow = sheetViewModal.sheetTableData[dragIndex]
-              const hoverRow = sheetViewModal.sheetTableData[hoverIndex]
-              let dragRow_settingDtos = dragRow.settingDtos
-              let hoverRow_settingDtos = hoverRow.settingDtos
-              dragRow.settingDtos = hoverRow_settingDtos
-              hoverRow.settingDtos = dragRow_settingDtos
-            } else if (pc == 'ant-table-body-outer') {
+              const dragRow = sheetViewModal.sheetTableData[dragIndex];
+              const hoverRow = sheetViewModal.sheetTableData[hoverIndex];
+              let dragRow_settingDtos = dragRow.settingDtos;
+              let hoverRow_settingDtos = hoverRow.settingDtos;
+              dragRow.settingDtos = hoverRow_settingDtos;
+              hoverRow.settingDtos = dragRow_settingDtos;
+            } else if (pc == "ant-table-body-outer") {
               /** left */
-              const dragRow = sheetViewModal.sheetTableData[dragIndex]
-              const hoverRow = sheetViewModal.sheetTableData[hoverIndex]
+              const dragRow = sheetViewModal.sheetTableData[dragIndex];
+              const hoverRow = sheetViewModal.sheetTableData[hoverIndex];
 
               // let keys = Object.keys(dragRow).filter((item: any) => item !== 'settingDtos')
               // let copyObj: any = {}
@@ -283,13 +311,16 @@ export default observer(function ArrangeSheet(props: Props) {
               // keys.forEach((item: any) => (dragRow[item] = hoverRow[item]))
               // keys.forEach((item: any) => (hoverRow[item] = copyObj[item]))
 
-              let dragRow_settingDtos = dragRow.settingDtos
-              let hoverRow_settingDtos = hoverRow.settingDtos
-              dragRow.settingDtos = hoverRow_settingDtos
-              hoverRow.settingDtos = dragRow_settingDtos
-              sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
-                $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-              })
+              let dragRow_settingDtos = dragRow.settingDtos;
+              let hoverRow_settingDtos = hoverRow.settingDtos;
+              dragRow.settingDtos = hoverRow_settingDtos;
+              hoverRow.settingDtos = dragRow_settingDtos;
+              sheetViewModal.sheetTableData = update(
+                sheetViewModal.sheetTableData,
+                {
+                  $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+                }
+              );
             }
           } catch (error) {}
         }}
@@ -298,8 +329,8 @@ export default observer(function ArrangeSheet(props: Props) {
       <editEffectiveTimeModal.Component />
       <editVacationCountModal.Component />
     </Wrapper>
-  )
-})
+  );
+});
 const Wrapper = styled.div`
   background: #fff;
   #baseTable {
@@ -389,10 +420,10 @@ const Wrapper = styled.div`
       }
     }
   }
-`
+`;
 
 function Th(props: { date: string }) {
-  let date = props.date
+  let date = props.date;
   const Con = styled.div`
     text-align: center;
     padding: 0px 0;
@@ -401,15 +432,18 @@ function Th(props: { date: string }) {
     &.red-text {
       color: red;
     }
-  `
+  `;
   return (
     <Con
       className={
-        getWeekString2(date).indexOf('六') > -1 || getWeekString(date).indexOf('日') > -1 ? 'red-text' : undefined
+        getWeekString2(date).indexOf("六") > -1 ||
+        getWeekString(date).indexOf("日") > -1
+          ? "red-text"
+          : undefined
       }
     >
-      <div>{moment(date).format('MM-DD')}</div>
+      <div>{moment(date).format("MM-DD")}</div>
       <div>{getWeekString2(date)}</div>
     </Con>
-  )
+  );
 }

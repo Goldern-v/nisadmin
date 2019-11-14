@@ -29,8 +29,6 @@ class SheetViewModal {
   @observable public copyRow: any[] = [];
   @observable public copyCell: any = null;
 
-  /** 是否全部已推送 */
-  @observable public isPush: boolean = false;
   /** 时间段 */
   getDateList() {
     let days = [];
@@ -151,12 +149,12 @@ class SheetViewModal {
       this.sheetTableData = this.handleSheetTableData(res.data.setting);
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
-      this.getIsPush();
     });
   }
-
-  getIsPush() {
-    return !this.allCell.some((item: any) => item.status != "1");
+  @computed
+  get isPush() {
+    let allCell = this.getAllCell(false);
+    return allCell.some((item: any) => item.status == "1");
   }
 
   /** 同步排班人员数据 */
