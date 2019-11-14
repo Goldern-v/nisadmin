@@ -109,7 +109,7 @@ export default observer(function Cell(props: Props) {
                       /** 减班 */
                       sheetViewModal.selectedCell.effectiveTime =
                         Number(sheetViewModal.selectedCell.effectiveTimeOld) -
-                        Number(Number(data.effectiveTime));
+                        Number(data.effectiveTime);
                     }
                     sheetViewModal.selectedCell.schAddOrSubs = [
                       {
@@ -150,17 +150,37 @@ export default observer(function Cell(props: Props) {
               data: sheetViewModal.selectedCell,
               onOkCallBack(num: any) {
                 // debugger
-                let list = sheetViewModal.getSelectCellList(true);
-                let index = list.indexOf(sheetViewModal.selectedCell);
+                let _list = sheetViewModal.getSelectCellList(true);
+                let _index = _list.indexOf(sheetViewModal.selectedCell);
+                let list = _list.filter((item: any, index: number) => {
+                  let _name = (
+                    sheetViewModal.selectedCell.rangeName || ""
+                  ).replace(/\d+/g, "");
+                  let name = item.rangeName.replace(/\d+/g, "");
+                  if (index >= _index && (_name == name || !name)) {
+                    return true;
+                  }
+                });
                 // debugger
                 if (index > -1) {
-                  for (let i = list.length - 1; i >= index; i--) {
-                    if (!list[i]) break;
+                  for (let i = index; i < list.length; i++) {
+                    if (i == index) {
+                      list[i].rangeName =
+                        (sheetViewModal.selectedCell.rangeName || "").replace(
+                          /\d+/g,
+                          ""
+                        ) + (i + num).toString();
+                    }
+
+                    // if (!list[i]) continue;
+                    // if (list[i].rangeName) continue;
+
                     list[i].rangeName =
                       (sheetViewModal.selectedCell.rangeName || "").replace(
                         /\d+/g,
                         ""
-                      ) + (i - index + 1).toString();
+                      ) + (i + num).toString();
+
                     list[i].nameColor = sheetViewModal.selectedCell.nameColor;
                     list[i].effectiveTime =
                       sheetViewModal.selectedCell.effectiveTime;

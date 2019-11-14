@@ -8,6 +8,8 @@ import { selectViewModal } from "../viewModal/SelectViewModal";
 import { ModalComponentProps } from "src/libs/createModal";
 import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { observer } from "mobx-react-lite";
+import { cleanCell } from "../components/arrangeSheet/cellClickEvent";
+import { cloneJson } from "src/utils/json/clone";
 
 export interface Props extends ModalComponentProps {
   id: string;
@@ -69,34 +71,30 @@ export default observer(function ExpectSettingModal(props: Props) {
       width: 100,
       align: "center",
       render: (a: any, record: any, c: any) => {
-        {
-          let status = 0; /** 0-未填入 1-已经填入 2-休假 */
-          let cellObj = sheetViewModal.getCellObj(
-            record.userId,
-            record.startDate
-          );
-          if (cellObj) {
-            if (
-              cellObj.rangeName == record.rangeName &&
-              cellObj.shiftType == "1"
-            ) {
-              status = 1;
-            }
-            if (cellObj.shiftType == "休假") {
-              status = 2;
-            }
-            return (
-              <DoCon>
-                {status == 0 && <span onClick={() => enter(record)}>填入</span>}
-                {status == 1 && (
-                  <span onClick={() => enter(record)}>重新填入</span>
-                )}
-                {status == 2 && (
-                  <span onClick={() => enter(record)}>已请假</span>
-                )}
-              </DoCon>
-            );
+        let status = 0; /** 0-未填入 1-已经填入 2-休假 */
+        let cellObj = sheetViewModal.getCellObj(
+          record.userId,
+          record.startDate
+        );
+        if (cellObj) {
+          if (
+            cellObj.rangeName == record.rangeName &&
+            cellObj.statusType == "1"
+          ) {
+            status = 1;
           }
+          return (
+            <DoCon>
+              {status == 0 && <span onClick={() => enter(record)}>填入</span>}
+              {status == 1 && <span onClick={() => clean(record)}>撤回</span>}
+            </DoCon>
+          );
+        } else {
+          return (
+            <DoCon>
+              <div style={{ color: "#666" }}>时间不匹配</div>
+            </DoCon>
+          );
         }
       }
     }
@@ -127,6 +125,11 @@ export default observer(function ExpectSettingModal(props: Props) {
     }
     setLoadingTable(true);
     setTimeout(() => setLoadingTable(false), 100);
+  };
+  const clean = (record: any) => {
+    let cellObj = sheetViewModal.getCellObj(record.userId, record.startDate);
+    cellObj && cleanCell(cellObj);
+    sheetViewModal.expectList = [...sheetViewModal.expectList];
   };
   return (
     <Wrapper>
