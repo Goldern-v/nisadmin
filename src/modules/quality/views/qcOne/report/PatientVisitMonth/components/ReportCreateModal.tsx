@@ -87,7 +87,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   const reportName = (params: any) => {
     const { year, month } = params
-    return `${year}年${month}月${wardName}出院患者家庭访视表`
+    return `${year}年${month}月${wardName}出院病人随访表`
   }
 
   useEffect(() => {
@@ -192,6 +192,10 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={5}>名称:</Col>
           <Col span={18}>
             <Input
+              style={{
+                position: 'relative',
+                zIndex: 1,
+              }}
               value={editQuery.reportName}
               onChange={(e: any) => setEditQuery({ ...editQuery, reportName: e.target.value })} />
           </Col>

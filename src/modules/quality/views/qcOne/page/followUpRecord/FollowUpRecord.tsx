@@ -26,9 +26,7 @@ export interface Props {}
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
-  const [selectedJd, setselectedJd]: any = useState(() => {
-    let months = moment().quarter();
-  });
+  const [selectedJd, setselectedJd]: any = useState(moment().quarter());
   const [year, setYear]: any = useState(moment());
   const columns: ColumnProps<any>[] = [
     {

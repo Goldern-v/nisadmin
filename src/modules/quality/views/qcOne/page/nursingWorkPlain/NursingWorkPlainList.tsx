@@ -32,7 +32,7 @@ export default observer(function NursingWorkPlainList() {
     type: '',
     year: moment().format('YYYY'),
     month: moment().format('M'),
-    pageSize: 15,
+    pageSize: 20,
   })
 
   const [editParmas, setEditParmas] = useState({

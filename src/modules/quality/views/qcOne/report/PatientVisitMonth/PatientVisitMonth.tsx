@@ -43,7 +43,7 @@ export default observer(function PatientVisitQuarter() {
     status: '',
     year: moment().format('YYYY'),
     month: '',
-    pageSize: 15,
+    pageSize: 20,
   } as any
 
   const [query, setQuery] = useState(defaultQuery)
@@ -60,8 +60,9 @@ export default observer(function PatientVisitQuarter() {
 
   const [commitVisible, setCommitVisible] = useState(false)
   const [archiveVisible, setArchiveVisible] = useState(false)
+  const [viewType, setViewType] = useState(1)
 
-  const columns: ColumnProps<any>[] = [
+  const columns1: ColumnProps<any>[] = [
     {
       key: 'index',
       title: '序号',
@@ -118,7 +119,7 @@ export default observer(function PatientVisitQuarter() {
     {
       key: 'operate',
       title: '操作',
-      width: 90,
+      width: 120,
       render: (text: string, record: any) => {
         return <DoCon className="operate-group">
           <span onClick={() => handleEdit(record)}>查看</span>
@@ -126,9 +127,65 @@ export default observer(function PatientVisitQuarter() {
             {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
             {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
           </React.Fragment>}
-          {/* <span onClick={() => handleExport(record)}>导出</span> */}
+          <span onClick={() => handleExport(record)}>导出</span>
         </DoCon>
       }
+    }
+  ]
+
+  const columns2: ColumnProps<any>[] = [
+    {
+      key: 'index',
+      title: '序号',
+      width: 80,
+      align: 'center',
+      render: (text: string, record: any, idx: number) =>
+        (query.pageIndex - 1) * query.pageSize + idx + 1
+    },
+    {
+      dataIndex: 'wardName',
+      title: '科室',
+      width: 160,
+    },
+    {
+      title: '病区上报',
+      children: [
+        {
+          dataIndex: 'dischargeNumber',
+          width: 60,
+          title: '出院人数'
+        },
+        {
+          dataIndex: 'visitNumber',
+          width: 60,
+          title: '回访数'
+        },
+        {
+          dataIndex: 'visitRate',
+          width: 80,
+          title: '回访率'
+        }
+      ]
+    },
+    {
+      title: '护理部抽查',
+      children: [
+        {
+          dataIndex: 'dischargeNumber',
+          width: 60,
+          title: '抽查人数'
+        },
+        {
+          dataIndex: 'visitNumber',
+          width: 60,
+          title: '合格人数'
+        },
+        {
+          dataIndex: 'visitRate',
+          width: 80,
+          title: '合格率'
+        }
+      ]
     }
   ]
 
@@ -192,15 +249,16 @@ export default observer(function PatientVisitQuarter() {
     qcOneSelectViewModal.setWardCode(wardCode)
   }
 
-  // const handleExport = (record: any) => {
-  //   // console.log(record)
-  //   setLoading(true)
-  //   patientVisitMonthService.exportData({
-  //     wardCode: record.wardCode,
-  //     year: record.year,
-  //     month: record.month
-  //   }).then(res => fileDownload(res)).finally(() => setLoading(false))
-  // }
+  const handleExport = (record: any) => {
+    // console.log(record)
+    setLoading(true)
+    qcOneService.export({
+      wardCode: record.wardCode,
+      year: record.year,
+      month: record.month
+    }, 'pvm')
+      .then(res => fileDownload(res)).finally(() => setLoading(false))
+  }
 
   const handlePublish = (record: any) => {
     globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
@@ -278,7 +336,7 @@ export default observer(function PatientVisitQuarter() {
             wardCode: $wardCode,
             year,
             month
-          }, 'qcPatientVisitMonth')
+          }, 'pvm')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -287,7 +345,7 @@ export default observer(function PatientVisitQuarter() {
           qcOneService.exportByNd({
             year,
             month
-          }, 'qcPatientVisitMonth')
+          }, 'pvm')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -330,7 +388,7 @@ export default observer(function PatientVisitQuarter() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>月度随访表</PageTitle>
+        <PageTitle className="pannel-title">月度随访表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -398,7 +456,7 @@ export default observer(function PatientVisitQuarter() {
         surplusHeight={225}
         dataSource={tableData}
         loading={loading}
-        columns={columns}
+        columns={viewType == 1 ? columns1 : columns2}
         pagination={{
           current: query.pageIndex,
           pageSize: query.pageSize,
@@ -476,6 +534,11 @@ const Wrapper = styled.div`
   .operate-group{
     .delete{
       color: red;
+    }
+  }
+  .pannel-title{
+    @media (max-width: 1480px) {
+      display: none;
     }
   }
 `

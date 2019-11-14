@@ -14,11 +14,34 @@ interface RowItem {
   problemType: string
   content: string
   cause: string
-  measure: string
+  measure: string,
+  assistWardCode: string
 }
 
 export default observer(function Table(props: Props) {
   const { safetyCheckList, setSafetyCheckList } = props
+  const [wardList, setWardList]: any = useState([
+    {
+      code: '总务处',
+      name: '总务处'
+    },
+    {
+      code: '设备科',
+      name: '设备科'
+    },
+    {
+      code: '药学部',
+      name: '药学部'
+    },
+    {
+      code: '其他',
+      name: '其他'
+    },
+    {
+      code: '无',
+      name: '无'
+    }
+  ])
 
   const updateData = () => {
     setSafetyCheckList([...safetyCheckList])
@@ -43,6 +66,7 @@ export default observer(function Table(props: Props) {
           <col width='150px' />
           <col width='150px' />
           <col width='150px' />
+          <col width='150px' />
         </colgroup>
         <thead>
           <tr>
@@ -51,6 +75,7 @@ export default observer(function Table(props: Props) {
             <th>问题详情</th>
             <th>原因分析</th>
             <th>整改措施</th>
+            <th>需协助科室</th>
           </tr>
         </thead>
         <tbody>
@@ -70,6 +95,7 @@ export default observer(function Table(props: Props) {
                         row.content = ''
                         row.cause = ''
                         row.measure = ''
+                        row.assistWardCode = ''
                       }
                       updateData()
                     }}
@@ -117,6 +143,17 @@ export default observer(function Table(props: Props) {
                     }}
                   />
                 </td>
+                <td>
+                  <AutoComplete
+                    className='noborder-input'
+                    value={row.assistWardCode}
+                    disabled={!canEdit(row)}
+                    dataSource={wardList.map((item: any) => item.name)}
+                    onChange={(value: any) => {
+                      row.assistWardCode = value
+                      updateData()
+                    }} />
+                </td>
               </tr>
             )
           })}
@@ -138,7 +175,7 @@ const Wrapper = styled.div`
 
 const TableCon = styled.table`
   border-collapse: collapse;
-  width: 700px;
+  width: 850px;
   margin: 5px 30px;
   table-layout: fixed;
   th,

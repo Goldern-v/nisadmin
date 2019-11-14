@@ -16,7 +16,7 @@ import { qcOneService } from '../../services/QcOneService'
 import moment from 'moment'
 import { to } from 'src/libs/fns'
 import { globalModal } from 'src/global/globalModal'
-export interface Props {}
+export interface Props { }
 
 export default observer(function SafetyHazardsDetail() {
   const [pageLoading, setPageLoading] = useState(false)
@@ -33,10 +33,6 @@ export default observer(function SafetyHazardsDetail() {
     {
       code: '药学部',
       name: '药学部'
-    },
-    {
-      code: '其他',
-      name: '其他'
     },
     {
       code: '无',
@@ -170,11 +166,11 @@ export default observer(function SafetyHazardsDetail() {
           <FormCon>
             <Form ref={refForm} labelWidth={150}>
               <Row>
-                <Col span={24}>
+                {/* <Col span={24}>
                   <Form.Field label={`需协助科室`} name='assistWardCode'>
                     <AutoComplete dataSource={wardList.map((item: any) => item.name)} />
                   </Form.Field>
-                </Col>
+                </Col> */}
                 <Col span={24}>
                   <Form.Field label={`需大科协调的问题`} name='contentWithBigDept'>
                     <Input.TextArea />
@@ -208,7 +204,7 @@ const Line = styled.div`
 `
 const FormCon = styled.div`
   margin: 20px 30px;
-  width: 700px;
+  width: 850px;
   .label {
     justify-content: flex-start;
   }

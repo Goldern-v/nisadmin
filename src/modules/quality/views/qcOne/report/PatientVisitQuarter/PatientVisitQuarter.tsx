@@ -43,7 +43,7 @@ export default observer(function PatientVisitQuarter() {
     status: '',
     year: moment().format('YYYY'),
     month: '',
-    pageSize: 15,
+    pageSize: 20,
   } as any
 
   const [query, setQuery] = useState(defaultQuery)
@@ -198,7 +198,7 @@ export default observer(function PatientVisitQuarter() {
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
-    }, 'qcPatientVisitQuarter').then(res => fileDownload(res)).finally(() => setLoading(false))
+    }, 'pvq').then(res => fileDownload(res)).finally(() => setLoading(false))
   }
 
   const handlePublish = (record: any) => {
@@ -277,7 +277,7 @@ export default observer(function PatientVisitQuarter() {
             wardCode: $wardCode,
             year,
             month
-          }, 'qcPatientVisitQuarter')
+          }, 'pvq')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -286,7 +286,7 @@ export default observer(function PatientVisitQuarter() {
           qcOneService.exportByNd({
             year,
             month
-          }, 'qcPatientVisitQuarter')
+          }, 'pvq')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -329,7 +329,7 @@ export default observer(function PatientVisitQuarter() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>季度随访汇总表</PageTitle>
+        <PageTitle className="pannel-title">季度家访汇总表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -475,6 +475,11 @@ const Wrapper = styled.div`
   .operate-group{
     .delete{
       color: red;
+    }
+  }
+  .pannel-title{
+    @media (max-width: 1480px) {
+      display: none;
     }
   }
 `

@@ -92,7 +92,7 @@ export default class QcOneService extends BaseApiService {
     return this.post(`/qcAnalysis/${reportSimpleCode}/archive`, query)
   }
 
-  /**护理部归档 */
+  /**护理部撤销归档 */
   public cancelArchive(
     query: { year: string, month: string }, //传参
     reportSimpleCode: string //报告类型
@@ -106,19 +106,19 @@ export default class QcOneService extends BaseApiService {
   }
 
   /**导出 */
-  public export(query: any, type: string) {
+  public export(query: any, reportSimpleCode: string) {
     // qcPatientVisitQuarter
-    return this.post(`/qcFlReport/export/${type}`, query, { responseType: 'blob' })
+    return this.post(`/qcAnalysis/${reportSimpleCode}/export/dept`, query, { responseType: 'blob' })
   }
 
   /**片区导出 */
-  public exportByBigDept(query: any, type: string) {
-    return this.post(`/qcFlReport/export/${type}ByBigDept`, query, { responseType: 'blob' })
+  public exportByBigDept(query: any, reportSimpleCode: string) {
+    return this.post(`/qcAnalysis/${reportSimpleCode}/export/bigDept`, query, { responseType: 'blob' })
   }
 
   /**全院导出 */
-  public exportByNd(query: any, type: string) {
-    return this.post(`/qcFlReport/export/${type}ByNd`, query, { responseType: 'blob' })
+  public exportByNd(query: any, reportSimpleCode: string) {
+    return this.post(`/qcAnalysis/${reportSimpleCode}/export/nd`, query, { responseType: 'blob' })
   }
 }
 

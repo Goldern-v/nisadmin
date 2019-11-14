@@ -17,7 +17,7 @@ import ManagementSummaryService from '../api/ManagementSummaryService'
 
 const api = new ManagementSummaryService()
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option
 
@@ -196,7 +196,7 @@ export default function ManagementSummary() {
       (res) => {
         setTableLoading(false)
         if (res.data) {
-          setDataTotal(res.data.totalPage)
+          setDataTotal(res.data.totalCount)
           // console.log(formatData(res.data.list), 'formatData(res.data.list)')
           setTableData(formatData(res.data.list))
         }
@@ -295,7 +295,7 @@ export default function ManagementSummary() {
             total: dataTotal,
             showSizeChanger: false,
             showQuickJumper: true,
-            pageSize: 100,
+            pageSize: query.pageSize,
             current: query.pageIndex
           }}
         />

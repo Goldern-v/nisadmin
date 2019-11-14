@@ -149,6 +149,8 @@ const QcCheckContentSetting = lazy(() =>
 
 const CheckWardReportView = lazy(() => import('src/modules/quality/views/checkWard/view/report/CheckWardReportView'))
 
+const SafetyCheckEdit = lazy(() => import('src/modules/quality/views/qcOne/report/SafetyCheck/SafetyCheckEdit'))
+
 const routes: RouteItem[] = [
   setLayout('/demo', demo),
   setLayout('/login', LoginView),
@@ -292,6 +294,7 @@ const routes: RouteItem[] = [
   setLayout('/badEventReportEdit', BadEventReportEdit, layouts.MainLayout),
   setLayout('/patientVisitQuarterEdit', PatientVisitQuarterEdit, layouts.MainLayout),
   setLayout('/patientVisitMonthEdit', PatientVisitMonthEdit, layouts.MainLayout),
+  setLayout('/safetyCheckEdit', SafetyCheckEdit, layouts.MainLayout),
   setLayout('/wardLog', WardLog, layouts.MainLayout),
   setLayout('/qcCheckContentSetting', QcCheckContentSetting, layouts.BreadcrumbLayout, [
     { name: '一级质控', link: '/qcOne' },

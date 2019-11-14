@@ -29,7 +29,7 @@ export default observer(function BadEventRecord() {
   const [query, setQuery] = useState({
     wardCode: '',
     pageIndex: 1,
-    pageSize: 15,
+    pageSize: 20,
     problemType: '',
     type: '1',
     startDate: qcOneSelectViewModal.startDate,
