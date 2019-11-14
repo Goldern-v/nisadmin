@@ -250,7 +250,7 @@ export default observer(function NursingWorkPlainList() {
         <span>
           <YearPicker
             allowClear={false}
-            value={moment(year) || undefined}
+            value={moment(`${year}-01-01`) || undefined}
             onChange={(_moment: any) => year = _moment.format('YYYY')} />
         </span>
       </div>
@@ -343,7 +343,7 @@ export default observer(function NursingWorkPlainList() {
         <span className="year-select">
           <YearPicker
             allowClear={false}
-            value={moment(query.year) || undefined}
+            value={moment(`${query.year}-01-01`) || undefined}
             onChange={(newMoment: any) => {
               if (newMoment)
                 setQuery({ ...query, year: newMoment.format('YYYY') })

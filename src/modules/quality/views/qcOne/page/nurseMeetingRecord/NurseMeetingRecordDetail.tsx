@@ -43,10 +43,10 @@ export default observer(function NurseMeetingRecordDetail() {
 
   //是否有编辑权限
   const editable = () => {
-    if (!nurseMeeting.creatorNo) return false
-    if (!authStore.user) return false
+    // if (!nurseMeeting.creatorNo) return false
+    // if (!authStore.user) return false
 
-    if (nurseMeeting.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
+    // if (nurseMeeting.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
 
     return true
   }

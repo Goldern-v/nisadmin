@@ -197,7 +197,7 @@ export default observer(function CommitModal(props: Props) {
         <span>年份: </span>
         <YearPicker
           allowClear={false}
-          value={moment(query.year) || undefined}
+          value={moment(`${query.year}-01-01`) || undefined}
           onChange={(newMoment: any) => {
             if (newMoment)
               setQuery({ ...query, year: newMoment.format('YYYY') })

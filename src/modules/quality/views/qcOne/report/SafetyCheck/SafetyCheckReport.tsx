@@ -235,7 +235,7 @@ export default observer(function SafetyCheckReport() {
 
   const handleExportGather = (isBigDept?: boolean) => {
     let year = query.year
-    let month = query.month || moment().format('M')
+    let month = query.month.toString() || moment().quarter().toString()
     let $wardCode = ''
     if (bigDeptList.length > 0) $wardCode = bigDeptList[0].code
 
@@ -245,7 +245,7 @@ export default observer(function SafetyCheckReport() {
         <span>
           <YearPicker
             allowClear={false}
-            value={moment(year) || undefined}
+            value={moment(`${year}-01-01`) || undefined}
             onChange={(_moment: any) => year = _moment.format('YYYY')} />
         </span>
       </div>
@@ -253,7 +253,7 @@ export default observer(function SafetyCheckReport() {
         <span>季度: </span>
         <Select
           defaultValue={month}
-          style={{ width: '70px' }}
+          style={{ width: '100px' }}
           onChange={(_month: any) => month = _month}>
           {monthList.map((month: number) => <Option value={`${month}`} key={month}>第{numToChinese(month)}季度</Option>)}
         </Select>
@@ -338,7 +338,7 @@ export default observer(function SafetyCheckReport() {
         <span className="year-select">
           <YearPicker
             allowClear={false}
-            value={moment(query.year) || undefined}
+            value={moment(`${query.year}-01-01`) || undefined}
             onChange={(newMoment: any) => {
               if (newMoment)
                 setQuery({ ...query, year: newMoment.format('YYYY') })

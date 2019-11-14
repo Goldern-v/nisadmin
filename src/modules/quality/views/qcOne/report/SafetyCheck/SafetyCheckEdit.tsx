@@ -184,7 +184,7 @@ const HeadCon = styled.div`
   }
 `
 const Page = styled.div`
-  width: 1100px;
+  width: 720px;
   margin: 20px auto 20px;
   padding-bottom: 10px;
   background: #fff;

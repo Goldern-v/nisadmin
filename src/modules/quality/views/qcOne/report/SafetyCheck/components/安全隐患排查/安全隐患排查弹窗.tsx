@@ -42,11 +42,11 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
   const defaultItem = {
     "id": "",
     "reportCode": "qc_safety_check",
-    "wardCode": "",
+    "wardCode": search.wardCode,
     "year": search.year,
     "month": search.month,
     "indexNo": 0,
-    "wardName": "",
+    "wardName": wardName,
     "contentType": "",
     "content": ""
   } as any
@@ -54,11 +54,11 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
   const defaultRecordItem = {
     "id": "",
     "reportCode": "qc_safety_check",
-    "wardCode": "",
+    "wardCode": search.wardCode,
     "year": search.year,
     "month": search.month,
     "indexNo": cloneData.safetyCheckRecordList.length || 0,
-    "wardName": "",
+    "wardName": wardName,
     "assistWardCode": "",
     "assistWardName": "",
     "problemType": "",
@@ -85,14 +85,14 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
     setData(cloneData)
   }
 
-  const handleRecordAdd = (idx: number) => {
+  const handleRecordAdd = () => {
     let list = cloneData.safetyCheckRecordList
     list.push(cloneJson(defaultRecordItem))
 
     setData(cloneData)
   }
 
-  const handleAdd = (idx: number, idx1: number) => {
+  const handleAdd = (idx: number) => {
     let target = cloneData.safetyCheckList[idx]
     target.list.push({ ...cloneJson(defaultItem), contentType: target.code })
 
@@ -103,18 +103,12 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
     let list = cloneData.safetyCheckRecordList
     list.splice(idx, 1)
 
-    if (list.length <= 0)
-      list.push(cloneJson(defaultRecordItem))
-
     setData(cloneData)
   }
 
   const handleDelete = (idx: number, idx1: number) => {
     let target = cloneData.safetyCheckList[idx]
     target.list.splice(idx1, 1)
-
-    if (target.list.length <= 0)
-      target.list.push({ ...cloneJson(defaultItem), contentType: target.code })
 
     setData(cloneData)
   }
@@ -130,20 +124,20 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
           <col />
           <col />
           <col />
-          <col />
+          {/* <col /> */}
           <col width='100' />
         </colgroup>
         <tbody>
           <tr className='header'>
             <td>问题种类</td>
-            <td>科室</td>
+            {/* <td>科室</td> */}
             <td>问题详情</td>
             <td>原因分析</td>
             <td>整改措施</td>
             <td>需协助科室</td>
             <td>操作</td>
           </tr>
-          {cloneData.safetyCheckRecordList
+          {cloneData.safetyCheckRecordList.length > 0 && cloneData.safetyCheckRecordList
             .map((item: any, idx: any) => <tr key={idx}>
               <td>
                 <Select
@@ -166,13 +160,13 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
                   )}
                 </Select>
               </td>
-              <td>
+              {/* <td>
                 <TextArea
                   autosize
                   value={item.wardName}
                   onChange={(e: any) =>
                     handleRecordChange(idx, 'wardName', e.target.value)} />
-              </td>
+              </td> */}
               <td>
                 <TextArea
                   autosize
@@ -206,21 +200,30 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
               <td className="operate align-left">
                 <span style={{ color: 'red' }} onClick={() => handleRecordDelete(idx)}>删除</span>
                 {idx == cloneData.safetyCheckRecordList.length - 1 &&
-                  <span onClick={() => handleRecordAdd(idx)}>新增</span>}
+                  <span onClick={() => handleRecordAdd()}>新增</span>}
               </td>
             </tr>)}
+
+          {cloneData.safetyCheckRecordList.length <= 0 &&
+            <tr>
+              <td colSpan={5}></td>
+              <td className="operate align-left">
+                <span onClick={() => handleRecordAdd()}>新增</span>
+              </td>
+            </tr>}
+
           {cloneData.safetyCheckList
             .map((item: any, idx: number) => <React.Fragment key={idx}>
-              {item.list.map((item1: any, idx1: number) =>
+              {item.list.length > 0 && item.list.map((item1: any, idx1: number) =>
                 <tr key={`${idx}-${idx1}`}>
                   {idx1 === 0 && <td rowSpan={item.list.length} >{item.name}</td>}
-                  <td>
+                  {/* <td>
                     <TextArea
                       autosize
                       value={item1.wardName}
                       onChange={(e: any) =>
                         handleChange(idx, idx1, 'wardName', e.target.value)} />
-                  </td>
+                  </td> */}
                   <td colSpan={4}>
                     <TextArea
                       autosize
@@ -230,9 +233,17 @@ export default observer(function 安全隐患排查弹窗(props: Props) {
                   </td>
                   <td className="operate align-left">
                     <span style={{ color: 'red' }} onClick={() => handleDelete(idx, idx1)}>删除</span>
-                    <span onClick={() => handleAdd(idx, idx1)}>新增</span>
+                    {idx1 == item.list.length - 1 && <span onClick={() => handleAdd(idx)}>新增</span>}
                   </td>
                 </tr>)}
+
+              {item.list.length <= 0 && <tr>
+                <td>{item.name}</td>
+                <td colSpan={4}>无</td>
+                <td className="operate align-left">
+                  <span onClick={() => handleAdd(idx)}>新增</span>
+                </td>
+              </tr>}
             </React.Fragment>)}
         </tbody>
       </table>
@@ -267,6 +278,11 @@ const Wrapper = styled.div`
     table-layout: fixed;
     tr {
       width: 100%;
+      :hover{
+        td{
+          background: ${(p) => p.theme.$mlc};
+        }
+      }
     }
     .header,
     .footer {

@@ -317,7 +317,7 @@ export default observer(function NursingReportList() {
         <span>
           <YearPicker
             allowClear={false}
-            value={year}
+            value={`${year}-01-01`}
             onChange={(_moment: any) => year = _moment} />
         </span>
       </div>

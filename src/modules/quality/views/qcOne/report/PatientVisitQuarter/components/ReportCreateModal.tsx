@@ -154,7 +154,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={5}>年份:</Col>
           <Col span={18}>
             <YearPicker
-              value={editQuery.year ? moment(editQuery.year) : undefined}
+              value={editQuery.year ? moment(`${editQuery.year}-01-01`) : undefined}
               allowClear={false}
               onChange={(_moment: any) =>
                 setEditQueryAndInit({ ...editQuery, year: _moment.format('YYYY') })} />

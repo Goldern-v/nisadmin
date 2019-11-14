@@ -93,6 +93,11 @@ export default class PatientVisitMonthService extends BaseApiService {
   public getDict(query: { groupCode: string, dictCode: string }) {
     return this.get(`/dictTable/getList/${query.groupCode}/${query.dictCode}`)
   }
+
+  /**修改抽查报告 */
+  public relPvmItem(params: any) {
+    return this.post('/qcAnalysis/pvm/update/relPvmItem', params)
+  }
 }
 
 export const patientVisitMonthService = new PatientVisitMonthService()

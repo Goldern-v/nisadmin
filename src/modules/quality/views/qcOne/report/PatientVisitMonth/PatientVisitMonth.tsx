@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, message, Modal } from 'antd'
+import { Button, Select, message, Modal, Input } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -26,6 +26,7 @@ import { qcOneService } from './../../services/QcOneService'
 export interface Props { }
 
 const Option = Select.Option
+const TextArea = Input.TextArea
 
 export default observer(function PatientVisitQuarter() {
   const { history } = appStore
@@ -60,7 +61,7 @@ export default observer(function PatientVisitQuarter() {
 
   const [commitVisible, setCommitVisible] = useState(false)
   const [archiveVisible, setArchiveVisible] = useState(false)
-  const [viewType, setViewType] = useState(1)
+  const [viewType, setViewType] = useState('1')
 
   const columns1: ColumnProps<any>[] = [
     {
@@ -153,12 +154,24 @@ export default observer(function PatientVisitQuarter() {
         {
           dataIndex: 'dischargeNumber',
           width: 60,
-          title: '出院人数'
+          title: '出院人数',
+          className: 'edit-td',
+          render: (text: string, record: any, idx: number) => <Input
+            style={{ width: '100%' }}
+            value={text}
+            onChange={(e: any) =>
+              handleNumChange('dischargeNumber', idx, e.target.value)} />
         },
         {
           dataIndex: 'visitNumber',
           width: 60,
-          title: '回访数'
+          title: '回访数',
+          className: 'edit-td',
+          render: (text: string, record: any, idx: number) => <Input
+            style={{ width: '100%' }}
+            value={text}
+            onChange={(e: any) =>
+              handleNumChange('visitNumber', idx, e.target.value)} />
         },
         {
           dataIndex: 'visitRate',
@@ -171,23 +184,140 @@ export default observer(function PatientVisitQuarter() {
       title: '护理部抽查',
       children: [
         {
-          dataIndex: 'dischargeNumber',
+          dataIndex: 'spotCheckNumber',
           width: 60,
-          title: '抽查人数'
+          title: '抽查人数',
+          className: 'edit-td',
+          render: (text: string, record: any, idx: number) => <Input
+            style={{ width: '100%' }}
+            value={text}
+            onChange={(e: any) =>
+              handleNumChange('spotCheckNumber', idx, e.target.value)} />
         },
         {
-          dataIndex: 'visitNumber',
+          dataIndex: 'qualifiedNumber',
           width: 60,
-          title: '合格人数'
+          title: '合格人数',
+          className: 'edit-td',
+          render: (text: string, record: any, idx: number) => <Input
+            style={{ width: '100%' }}
+            value={text}
+            onChange={(e: any) =>
+              handleNumChange('qualifiedNumber', idx, e.target.value)} />
         },
         {
-          dataIndex: 'visitRate',
+          dataIndex: 'qualifiedRate',
           width: 80,
           title: '合格率'
         }
       ]
+    },
+    {
+      title: '备注(病区原因)',
+      dataIndex: 'wardRemark',
+      className: 'edit-td',
+      render: (text: string, record: any, idx: number) =>
+        <TextArea
+          autosize
+          style={{ width: '100%' }}
+          value={text}
+          onChange={(e: any) =>
+            handleChange('wardRemark', idx, e.target.value)} />
+    },
+    {
+      title: '备注(抽查问题)',
+      dataIndex: 'spotCheckRemark',
+      className: 'edit-td',
+      render: (text: string, record: any, idx: number) =>
+        <TextArea
+          autosize
+          style={{ width: '100%' }}
+          value={text}
+          onChange={(e: any) =>
+            handleChange('spotCheckRemark', idx, e.target.value)} />
+    },
+    {
+      title: '操作',
+      width: 80,
+      render: (text: string, record: any, idx: number) => {
+        return <DoCon className="operate-group">
+          <span onClick={() => handleSave(record)}>保存</span>
+        </DoCon>
+      }
     }
   ]
+
+  const handleSave = (record: any) => {
+
+    setLoading(true)
+
+    patientVisitMonthService.relPvmItem({
+      wardCode: record.wardCode,
+      year: record.year,
+      month: record.month,
+      dischargeNumber: record.dischargeNumber || 0,
+      visitNumber: record.visitNumber || 0,
+      visitRate: record.visitRate,
+      wardRemark: record.wardRemark,
+      spotCheckNumber: record.spotCheckNumber || 0,
+      qualifiedNumber: record.qualifiedNumber || 0,
+      qualifiedRate: record.qualifiedRate,
+      spotCheckRemark: record.spotCheckRemark,
+    }).then(res => {
+      setLoading(false)
+      message.success('修改成功')
+
+    }, () => setLoading(false))
+  }
+
+  const handleChange = (key: string, idx: number, val: any) => {
+    let newTableData = [...tableData]
+    newTableData[idx][key] = val
+
+    setTableData(newTableData)
+  }
+
+  const handleNumChange = (key: string, idx: number, val: any) => {
+    let newVal = parseInt(Math.abs(val).toString())
+    if (isNaN(newVal)) newVal = 0
+
+    let newTableData = [...tableData]
+    newTableData[idx][key] = newVal
+    newTableData[idx].qualifiedRate = getQualifiedRate(newTableData[idx])
+    newTableData[idx].visitRate = getVisitRate(newTableData[idx])
+
+    setTableData(newTableData)
+  }
+
+  const getQualifiedRate = (record: any) => {
+    let spotCheckNumber = Number(record.spotCheckNumber)
+    if (isNaN(spotCheckNumber)) spotCheckNumber = 0
+
+    let qualifiedNumber = Number(record.qualifiedNumber)
+    if (isNaN(qualifiedNumber)) qualifiedNumber = 0
+
+    if (!spotCheckNumber || qualifiedNumber > spotCheckNumber) return '100%'
+    if (!qualifiedNumber) return '0%'
+
+    let rate = qualifiedNumber / spotCheckNumber
+    rate = Math.round(rate * 10000) / 100
+    return `${rate}%`
+  }
+
+  const getVisitRate = (record: any) => {
+    let dischargeNumber = Number(record.dischargeNumber)
+    if (isNaN(dischargeNumber)) dischargeNumber = 0
+
+    let visitNumber = Number(record.visitNumber)
+    if (isNaN(visitNumber)) visitNumber = 0
+
+    if (!dischargeNumber || visitNumber > dischargeNumber) return '100%'
+    if (!visitNumber) return '0%'
+
+    let rate = visitNumber / dischargeNumber
+    rate = Math.round(rate * 10000) / 100
+    return `${rate}%`
+  }
 
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
@@ -302,7 +432,7 @@ export default observer(function PatientVisitQuarter() {
         <span>
           <YearPicker
             allowClear={false}
-            value={moment(year) || undefined}
+            value={moment(`${year}-01-01`) || undefined}
             onChange={(_moment: any) => year = _moment.format('YYYY')} />
         </span>
       </div>
@@ -395,7 +525,7 @@ export default observer(function PatientVisitQuarter() {
         <span className="year-select">
           <YearPicker
             allowClear={false}
-            value={moment(query.year) || undefined}
+            value={moment(`${query.year}-01-01`) || undefined}
             onChange={(newMoment: any) => {
               if (newMoment)
                 setQuery({ ...query, year: newMoment.format('YYYY') })
@@ -432,6 +562,14 @@ export default observer(function PatientVisitQuarter() {
           <Option value=''>全部</Option>
           {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
+        <span>查看类型:</span>
+        <Select
+          style={{ width: '120px' }}
+          value={viewType}
+          onChange={(type: string) => setViewType(type)}>
+          <Option value="1">病区上报</Option>
+          <Option value="2">护理部抽查</Option>
+        </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
         <Button type="primary" onClick={handleCreate}>新建</Button>
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
@@ -450,13 +588,13 @@ export default observer(function PatientVisitQuarter() {
       <BaseTable
         onRow={(record: any) => {
           return {
-            onDoubleClick: () => handleEdit(record)
+            onDoubleClick: () => viewType == '1' && handleEdit(record)
           }
         }}
         surplusHeight={225}
         dataSource={tableData}
         loading={loading}
-        columns={viewType == 1 ? columns1 : columns2}
+        columns={viewType == '1' ? columns1 : columns2}
         pagination={{
           current: query.pageIndex,
           pageSize: query.pageSize,
@@ -503,6 +641,34 @@ td{
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+  }
+  &.edit-td{
+    padding: 0!important;
+    textarea,input{
+      resize: none;
+      border: none;
+      outline: none;
+      background: none;
+      box-shadow: none;
+      :hover{
+        outline: none;
+        border: none;
+        background: none;
+        box-shadow: none;
+      }
+      :focus{
+        outline: none;
+        border: none;
+        background: ${(p) => p.theme.$mlc};
+        box-shadow: none;
+      }
+    }
+    
+    :hover{
+      textarea,input{
+        background: ${(p) => p.theme.$mlc};
+      }
+    }
   }
 }
 `
