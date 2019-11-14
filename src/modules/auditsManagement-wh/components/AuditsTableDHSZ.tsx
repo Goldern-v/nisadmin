@@ -290,7 +290,6 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           current: current,
           showSizeChanger: true,
           showQuickJumper: true,
-          pageSizeOptions: ["20", "40", "80", "100"],
           pageSize: pageSize
         }}
         onChange={onChange}

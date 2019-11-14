@@ -1,80 +1,80 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { appStore, authStore } from 'src/stores/index'
-import BaseTable from 'src/components/BaseTable'
-import { Button } from 'antd'
-import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import { observer } from 'mobx-react-lite'
-import { ReactComponent as TZGG } from '../images/icon/TZGG.svg'
-import { ReactComponent as READ } from '../images/YD.svg'
-import { ReactComponent as NOREAD } from '../images/WD.svg'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import { appStore, authStore } from "src/stores/index";
+import BaseTable from "src/components/BaseTable";
+import { Button } from "antd";
+import HomeApi from "src/modules/home/api/HomeApi.ts";
+import { observer } from "mobx-react-lite";
+import { ReactComponent as TZGG } from "../images/icon/TZGG.svg";
+import { ReactComponent as READ } from "../images/YD.svg";
+import { ReactComponent as NOREAD } from "../images/WD.svg";
 
 export interface Props extends RouteComponentProps {}
 
 export default observer(function NoticeTable() {
-  const [loadingTable, setLoadingTable] = useState(false)
-  const [tableData, setTableData] = useState([])
-  const [pageIndex, setPageIndex] = useState(1)
-  const [pageSize, setPageSize] = useState(20)
-  const [keyword, setKeyword] = useState('')
+  const [loadingTable, setLoadingTable] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [keyword, setKeyword] = useState("");
 
   const setIcon = (read: any) => {
-    return read === true ? <READ /> : <NOREAD />
-  }
+    return read === true ? <READ /> : <NOREAD />;
+  };
 
   const columns: any = [
     {
-      title: '标题',
-      dataIndex: 'title',
-      key: 'title',
+      title: "标题",
+      dataIndex: "title",
+      key: "title",
       width: 60,
-      align: 'left',
+      align: "left",
       render: (text: any, record: any) => (
         <span>
-          <i className='messageStatus'>{setIcon(record.read)}</i>
-          <i className='messageTitle'>{record.title}</i>
+          <i className="messageStatus">{setIcon(record.read)}</i>
+          <i className="messageTitle">{record.title}</i>
         </span>
       )
     },
     {
-      title: '提取人',
-      dataIndex: 'senderName',
-      key: 'senderName',
+      title: "提交人",
+      dataIndex: "senderName",
+      key: "senderName",
       width: 12,
-      align: 'left'
+      align: "left"
     },
     {
-      title: '时间',
-      dataIndex: 'sendTime',
-      key: 'sendTime',
+      title: "时间",
+      dataIndex: "sendTime",
+      key: "sendTime",
       width: 18,
-      align: 'left'
+      align: "left"
     }
-  ]
+  ];
 
   const getMealList = () => {
-    setLoadingTable(true)
-    HomeApi.getReceiveList(pageIndex, pageSize, keyword).then((res) => {
-      setLoadingTable(false)
-      let array: any = []
+    setLoadingTable(true);
+    HomeApi.getReceiveList(pageIndex, pageSize, keyword).then(res => {
+      setLoadingTable(false);
+      let array: any = [];
       res.data.list &&
         res.data.list.length &&
         res.data.list.map((item: any, i: any) => {
-          item.key = i
-          array.push(item)
-        })
-      setTableData(array)
-    })
-  }
+          item.key = i;
+          array.push(item);
+        });
+      setTableData(array);
+    });
+  };
 
   useEffect(() => {
-    getMealList()
-  }, [])
+    getMealList();
+  }, []);
 
   const selectRow = (record: any) => {
-    appStore.history.push(`/notice?selectedMenu=收件箱&id=${record.id}`)
-  }
+    appStore.history.push(`/notice?selectedMenu=收件箱&id=${record.id}`);
+  };
 
   return (
     <Wrapper>
@@ -85,7 +85,7 @@ export default observer(function NoticeTable() {
         <World>通知公告</World>
         <More
           onClick={() => {
-            appStore.history.push('/notice')
+            appStore.history.push("/notice");
           }}
         >
           更多 >
@@ -93,7 +93,7 @@ export default observer(function NoticeTable() {
         {authStore.isRoleManage && (
           <Button
             onClick={() => {
-              appStore.history.push('/sentNotice')
+              appStore.history.push("/sentNotice");
             }}
           >
             创建
@@ -102,27 +102,29 @@ export default observer(function NoticeTable() {
       </TableTitle>
 
       <BaseTable
-        rowKey={(record) => {
-          return record.id
+        rowKey={record => {
+          return record.id;
         }}
         dataSource={tableData}
         columns={columns}
-        surplusHeight={authStore.isRoleManage ? (appStore.wih - 262) / 2 + 262 : 163}
+        surplusHeight={
+          authStore.isRoleManage ? (appStore.wih - 262) / 2 + 262 : 163
+        }
         loading={loadingTable}
-        onRow={(record) => {
+        onRow={record => {
           return {
             onClick: (event: any) => {
-              selectRow(record)
+              selectRow(record);
             }
-          }
+          };
         }}
-        rowClassName={(record) => {
-          return 'cursorPointer'
+        rowClassName={record => {
+          return "cursorPointer";
         }}
       />
     </Wrapper>
-  )
-})
+  );
+});
 const Wrapper = styled.div`
   #baseTable {
     padding: 0 !important;
@@ -152,7 +154,7 @@ const Wrapper = styled.div`
   .cursorPointer {
     cursor: pointer;
   }
-`
+`;
 const TableTitle = styled.div`
   /* box-shadow: 0px -1px 0px 0px rgba(0, 166, 128, 1); */
   border-radius: 2px 2px 0 0;
@@ -176,12 +178,12 @@ const TableTitle = styled.div`
     margin-top: 9px;
     padding: 0px 10px !important;
   }
-`
+`;
 const I = styled.span`
   display: inline-block;
   margin-top: 15px;
   vertical-align: middle;
-`
+`;
 const World = styled.span`
   display: inline-block;
   margin-left: 10px;
@@ -190,7 +192,7 @@ const World = styled.span`
   color: #fff;
   vertical-align: middle;
   margin-bottom: -9px;
-`
+`;
 const More = styled.span`
   float: right;
   height: 17px;
@@ -203,4 +205,4 @@ const More = styled.span`
     cursor: pointer;
     color: #00a65a;
   }
-`
+`;
