@@ -27,6 +27,23 @@ export default observer(function BaseModal(props: Props) {
   let { visible, onCancel, Component, sectionData } = props
   const [data, setData]: any = useState(null)
 
+  const formatNum = (num: number | string) => {
+    num = Number(num)
+
+    if (isNaN(num)) return '0.0'
+
+    let numArr = num.toString().split('.')
+    if (!numArr[0]) numArr[0] = '0'
+
+    if (numArr[1]) {
+      numArr[1] = numArr[1][0]
+    } else {
+      numArr[1] = '0'
+    }
+
+    return numArr.join('.')
+  }
+
   const onSave = async () => {
     console.log(sectionData.sectionId, data)
 
@@ -39,23 +56,27 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '星级考核') {
-      starRatingReportService.updateStarRattingList(data.list.map((item: any) => {
-        let nursingDeduct = -Number(item.nursingDeduct)
+      let reqList = data.list.map((item: any) => {
+        let nursingDeduct = Number(formatNum(item.nursingDeduct))
+        let workloadDeduct = Number(formatNum(item.workloadDeduct))
+        let satisfactionDeduct = Number(formatNum(item.satisfactionDeduct))
         if (isNaN(nursingDeduct)) nursingDeduct = 0
+        if (nursingDeduct < 0) nursingDeduct = -nursingDeduct
 
-        let workloadDeduct = -Number(item.workloadDeduct)
         if (isNaN(workloadDeduct)) workloadDeduct = 0
+        if (workloadDeduct < 0) workloadDeduct = -workloadDeduct
 
-        let satisfactionDeduct = -Number(item.satisfactionDeduct)
         if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
-
+        if (satisfactionDeduct < 0) satisfactionDeduct = -satisfactionDeduct
         return {
           ...item,
           nursingDeduct,
           workloadDeduct,
           satisfactionDeduct
         }
-      })).then((res) => {
+      })
+
+      starRatingReportService.updateStarRattingList(reqList).then((res) => {
         starRatingReportEditModel.setSectionData(sectionData.sectionId, {
           list: res.data.map((item: any) => {
             let nursingDeduct = -Number(item.nursingDeduct)

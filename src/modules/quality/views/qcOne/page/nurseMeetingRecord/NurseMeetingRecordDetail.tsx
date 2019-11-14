@@ -360,6 +360,7 @@ const NurseList = styled(ScrollBox)`
       border-radius: 50%;
       background: url('${require('src/assets/护士默认头像.png')}');
       background-size: 100%;
+      object-fit: cover;
     }
     .emp-name{
       margin-top: 5px;

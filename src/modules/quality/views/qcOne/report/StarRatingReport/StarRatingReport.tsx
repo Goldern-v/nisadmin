@@ -43,7 +43,7 @@ export default observer(function NursingWorkPlainList() {
     status: '',
     year: moment().format('YYYY'),
     month: '',
-    pageSize: 15,
+    pageSize: 20,
   } as any
 
   const [query, setQuery] = useState(defaultQuery)
@@ -195,11 +195,17 @@ export default observer(function NursingWorkPlainList() {
   const handleExport = (record: any) => {
     // console.log(record)
     setLoading(true)
-    starRatingReportService.exportData({
+    // starRatingReportService.exportData({
+    //   wardCode: record.wardCode,
+    //   year: record.year,
+    //   month: record.month
+    // }).
+    qcOneService.export({
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
-    }).then(res => fileDownload(res)).finally(() => setLoading(false))
+    }, 'sr')
+      .then(res => fileDownload(res)).finally(() => setLoading(false))
   }
 
   const handlePublish = (record: any) => {
@@ -278,7 +284,7 @@ export default observer(function NursingWorkPlainList() {
             wardCode: $wardCode,
             year,
             month
-          }, 'qcStarRating')
+          }, 'sr')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -287,7 +293,7 @@ export default observer(function NursingWorkPlainList() {
           qcOneService.exportByNd({
             year,
             month
-          }, 'qcStarRating')
+          }, 'sr')
             .then((res: any) => {
               setLoading(false)
               fileDownload(res)
@@ -330,7 +336,7 @@ export default observer(function NursingWorkPlainList() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>星级考核报表</PageTitle>
+        <PageTitle className="pannel-title">星级考核报表</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>年份:</span>
@@ -476,6 +482,11 @@ const Wrapper = styled.div`
   .operate-group{
     .delete{
       color: red;
+    }
+  }
+  .pannel-title{
+    @media (max-width: 1480px) {
+      display: none;
     }
   }
 `

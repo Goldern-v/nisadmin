@@ -40,7 +40,7 @@ export default observer(function NursingQualityCheck() {
     wardCode: '',
     empNo: '',
     pageIndex: 1,
-    pageSize: 15,
+    pageSize: 20,
     range: '',
     startDate: qcOneSelectViewModal.startDate,
     endDate: qcOneSelectViewModal.endDate,
@@ -50,7 +50,7 @@ export default observer(function NursingQualityCheck() {
     {
       dataIndex: 'wardName',
       title: '科室',
-      width: 180,
+      width: 160,
     },
     {
       dataIndex: 'recordDate',

@@ -46,19 +46,25 @@ export default observer(function 星级考核表弹窗(props: Props) {
       align: 'center',
       render(text: any, record: any, index: number) {
         return <Select
-          value={record.empNo}
+          showSearch
+          value={record.empName}
+          onSearch={(empName: string) => {
+            cloneData.list[index].empName = empName
+            if (cloneData.list[index].empNo) cloneData.list[index].empNo = ''
+            setData(cloneData)
+          }}
           style={{ width: '100%' }}
-          onChange={(empNo: any) => {
-            cloneData.list[index].empNo = empNo
-            let target = nurseList.find((item: any) => item.empNo == empNo)
-            if (target) cloneData.list[index].empName = target.empName
+          onChange={(empName: any) => {
+            cloneData.list[index].empName = empName
+            let target = nurseList.find((item: any) => item.empName == empName)
+            if (target) cloneData.list[index].empNo = target.empNo
 
             setData(cloneData)
           }}
           filterOption={(input: string, option: any) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }>
-          {nurseList.map((item: any) => <Option key={item.empNo} value={item.empNo}>{item.empName}</Option>)}
+          {nurseList.map((item: any) => <Option key={item.empNo} value={item.empName}>{item.empName}</Option>)}
         </Select>
       },
       width: 120
@@ -68,7 +74,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return <Input
           className={`nursingDeduct${index}`}
-          defaultValue={record.nursingDeduct}
+          value={record.nursingDeduct}
           onChange={(e: any) => handleNumberInput(e, record, index, 'nursingDeduct')} />
       },
       width: 90
@@ -78,7 +84,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return <Input
           className={`workloadDeduct${index}`}
-          defaultValue={record.workloadDeduct}
+          value={record.workloadDeduct}
           onChange={(e: any) => handleNumberInput(e, record, index, 'workloadDeduct')} />
       },
       width: 90
@@ -88,18 +94,10 @@ export default observer(function 星级考核表弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return <Input
           className={`satisfactionDeduct${index}`}
-          defaultValue={record.satisfactionDeduct}
+          value={record.satisfactionDeduct}
           onChange={(e: any) => handleNumberInput(e, record, index, 'satisfactionDeduct')} />
       },
       width: 90
-    },
-    {
-      title: `星级`,
-      align: 'center',
-      render(text: any, record: any, index: number) {
-        return <span>{record.starClass}</span>
-      },
-      width: 80
     },
     {
       title: `考核总分`,
@@ -108,6 +106,14 @@ export default observer(function 星级考核表弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return <span>{sum(record)}</span>
       }
+    },
+    {
+      title: `星级`,
+      align: 'center',
+      render(text: any, record: any, index: number) {
+        return <span>{record.starClass}</span>
+      },
+      width: 80
     },
     {
       title: '操作',
@@ -151,20 +157,11 @@ export default observer(function 星级考核表弹窗(props: Props) {
   }
 
   const handleNumberInput = (e: any, record: any, index: number, key: string) => {
-    if (
-      !Number(e.target.value) &&
-      Number(e.target.value) !== 0 &&
-      e.target.value !== '-' &&
-      e.target.value[e.target.value.length - 1] !== '.'
-    ) {
-      return message.warning('只能输入数字')
-    }
-    if (e.target.value !== '-') {
-      record[key] = e.target.value
+    let val = e.target.value
+    record[key] = e.target.value
+    record.starClass = starClass(record)
 
-      record.starClass = starClass(record)
-      setData(cloneData)
-    }
+    setData(cloneData)
   }
 
   const formatNum = (num: number | string) => {
@@ -192,6 +189,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
       )
     )
     if (isNaN(nursingDeduct)) nursingDeduct = 0
+    if (nursingDeduct < 0) nursingDeduct = -nursingDeduct
 
     let workloadDeduct = Number(
       formatNum(
@@ -199,6 +197,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
       )
     )
     if (isNaN(workloadDeduct)) workloadDeduct = 0
+    if (workloadDeduct < 0) workloadDeduct = -workloadDeduct
 
     let satisfactionDeduct = Number(
       formatNum(
@@ -206,6 +205,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
       )
     )
     if (isNaN(satisfactionDeduct)) satisfactionDeduct = 0
+    if (satisfactionDeduct < 0) satisfactionDeduct = -satisfactionDeduct
 
     return formatNum(total - nursingDeduct - workloadDeduct - satisfactionDeduct)
   }
@@ -213,9 +213,9 @@ export default observer(function 星级考核表弹窗(props: Props) {
   const starClass = (record: any) => {
     let sumUp = Number(sum(record))
 
-    if (sumUp > 98) return '三星'
-    if (sumUp > 96) return '二星'
-    if (sumUp > 90) return '一星'
+    if (sumUp >= 98) return '三星'
+    if (sumUp >= 96) return '二星'
+    if (sumUp >= 90) return '一星'
     return '无星'
   }
 

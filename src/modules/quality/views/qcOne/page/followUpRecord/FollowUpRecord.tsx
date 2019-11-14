@@ -14,13 +14,14 @@ import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFile
 import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
+import YearPicker from 'src/components/YearPicker'
 import { numToChinese } from 'src/utils/number/numToChinese'
 export interface Props { }
 
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
-  const [selectedJd, setselectedJd]: any = useState('')
+  const [selectedJd, setselectedJd]: any = useState(moment().quarter())
   const columns: ColumnProps<any>[] = [
     {
       title: '随访日期',
@@ -111,34 +112,43 @@ export default observer(function FollowUpRecord() {
     pageIndex: 1,
     pageSize: 20
   })
+
+  const [year, setYear] = useState(moment().format('YYYY'))
+
   const [total, setTotal]: any = useState(0)
+
   const getData = () => {
     let _startDate = ''
     let _endDate = ''
+    let dateString = `${year}-${moment().format('MM-DD')}`
+
     if (selectedJd == 1) {
-      _startDate = moment().format('YYYY-01-01')
-      _endDate = moment()
+      _startDate = moment(dateString).format('YYYY-01-01')
+      _endDate = moment(dateString)
         .month(2)
         .endOf('month')
         .format('YYYY-MM-DD')
     } else if (selectedJd == 2) {
-      _startDate = moment().format('YYYY-04-01')
-      _endDate = moment()
+      _startDate = moment(dateString).format('YYYY-04-01')
+      _endDate = moment(dateString)
         .month(5)
         .endOf('month')
         .format('YYYY-MM-DD')
     } else if (selectedJd == 3) {
-      _startDate = moment().format('YYYY-07-01')
-      _endDate = moment()
+      _startDate = moment(dateString).format('YYYY-07-01')
+      _endDate = moment(dateString)
         .month(8)
         .endOf('month')
         .format('YYYY-MM-DD')
     } else if (selectedJd == 4) {
-      _startDate = moment().format('YYYY-10-01')
-      _endDate = moment()
+      _startDate = moment(dateString).format('YYYY-10-01')
+      _endDate = moment(dateString)
         .month(11)
         .endOf('month')
         .format('YYYY-MM-DD')
+    } else {
+      _startDate = moment(dateString).format('YYYY-01-01')
+      _endDate = moment(dateString).format('YYYY-12-31')
     }
     setPageLoading(true)
     qcOneService
@@ -146,11 +156,8 @@ export default observer(function FollowUpRecord() {
         ...pageOptions,
         wardCode: authStore.selectedDeptCode,
         // quarter: selectedJd,
-        startDate:
-          _startDate ||
-          (qcOneSelectViewModal.startDate ? moment(qcOneSelectViewModal.startDate).format('YYYY-MM-DD') : ''),
-        endDate:
-          _endDate || (qcOneSelectViewModal.endDate ? moment(qcOneSelectViewModal.endDate).format('YYYY-MM-DD') : '')
+        startDate: _startDate,
+        endDate: _endDate
       })
       .then((res) => {
         setTotal(res.data.totalCount)
@@ -172,7 +179,15 @@ export default observer(function FollowUpRecord() {
 
   useEffect(() => {
     getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize, selectedJd, authStore.selectedDeptCode, qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  }, [
+    pageOptions.pageIndex,
+    pageOptions.pageSize,
+    selectedJd,
+    year,
+    authStore.selectedDeptCode,
+    // qcOneSelectViewModal.startDate, 
+    // qcOneSelectViewModal.endDate
+  ])
 
   // qcOneService
   return (
@@ -180,14 +195,20 @@ export default observer(function FollowUpRecord() {
       <PageHeader>
         <PageTitle>季度家庭随访表</PageTitle>
         <Place />
-        <span className='label'>日期:</span>
-        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} />
+        {/* <span className='label'>日期:</span>
+        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} /> */}
         <span className='label'>科室:</span>
         <DeptSelect
           onChange={() => {
             qcOneSelectViewModal.initNurseList()
           }}
         />
+        <span className='label'>年份:</span>
+        <YearPicker
+          style={{ width: '100px' }}
+          allowClear={false}
+          value={moment(year) || undefined}
+          onChange={(_moment: any) => setYear(_moment.format('YYYY'))} />
         <span className='label'>季度:</span>
         <Select
           value={selectedJd}

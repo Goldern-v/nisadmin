@@ -185,7 +185,7 @@ export default observer(function NursingReportList() {
     const obj = {
       year: record.year,
       month: record.month,
-      wardCode: authStore.selectedDeptCode
+      wardCode: record.wardCode
     }
 
     history.push(`/qcOne/nursingReportDetail?${qs.stringify(obj)}`)
@@ -201,7 +201,7 @@ export default observer(function NursingReportList() {
 
   const handleCreateOk = (info: any) => {
     //汇总报告创建成功
-    let { year, month } = info
+    let { year, month, wardCode } = info
     getTableData()
     setCreateAnalysisVisible(false)
     history.push(`/qcOne/nursingReportDetail?${qs.stringify({ year, month, wardCode: authStore.selectedDeptCode })}`)
@@ -253,11 +253,17 @@ export default observer(function NursingReportList() {
   const handleExport = (record: any) => {
     // console.log(record)
     setTableLoading(true)
-    api.exportData({
+    // api.exportData({
+    //   wardCode: record.wardCode,
+    //   year: record.year,
+    //   month: record.month
+    // })
+    qcOneService.export({
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
-    }).then(res => fileDownload(res)).finally(() => setTableLoading(false))
+    }, 'wn')
+      .then(res => fileDownload(res)).finally(() => setTableLoading(false))
   }
 
   const handlePublish = (record: any) => {
@@ -345,7 +351,7 @@ export default observer(function NursingReportList() {
             wardCode: $wardCode,
             year: year.format('YYYY'),
             month
-          }, 'wardNursingWork')
+          }, 'wn')
             .then((res: any) => {
               setTableLoading(false)
               fileDownload(res)
@@ -354,7 +360,7 @@ export default observer(function NursingReportList() {
           qcOneService.exportByNd({
             year: year.format('YYYY'),
             month
-          }, 'wardNursingWork')
+          }, 'wn')
             .then((res: any) => {
               setTableLoading(false)
               fileDownload(res)
@@ -367,7 +373,7 @@ export default observer(function NursingReportList() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>病区护理工作报表</PageTitle>
+          <PageTitle className="pannel-title">病区护理工作报表</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>
@@ -511,6 +517,11 @@ const Wrapper = styled.div`
   padding-top: 50px;
   height: 100%;
   width: 100%;
+  .pannel-title{
+    @media (max-width: 1540px) {
+      display: none;
+    }
+  }
 
   div.topbar {
     position: absolute;
