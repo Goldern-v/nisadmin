@@ -102,14 +102,14 @@ const LEFT_MENU_CONFIG: any = [
     keepAlive: true,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   },
-  // {
-  //   title: '安全隐患排查汇总表',
-  //   icon: <YIBG />,
-  //   path: '/qcOne/safetyCheckReport',
-  //   component: SafetyCheckReport,
-  //   keepAlive: true,
-  //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-  // },
+  {
+    title: '安全隐患排查汇总表',
+    icon: <YIBG />,
+    path: '/qcOne/safetyCheckReport',
+    component: SafetyCheckReport,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+  },
   {
     title: '季度家访汇总表',
     icon: <YIBG />,

@@ -120,8 +120,9 @@ export default observer(function NurseMeetingRecord() {
         if (empNo && empNo == creatorNo) editable = true
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
-          {editable && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
-          {!editable && <span style={{ cursor: 'default', color: '#999' }}>删除</span>}
+          <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>
+          {/* {editable && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>} */}
+          {/* {!editable && <span style={{ cursor: 'default', color: '#999' }}>删除</span>} */}
         </DoCon>
       }
     }

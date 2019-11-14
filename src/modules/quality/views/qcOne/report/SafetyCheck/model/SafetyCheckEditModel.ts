@@ -122,47 +122,17 @@ class SafetyCheckEditModel {
       {
         name: '需大科协调问题',
         code: 'contentWithBigDeptList',
-        list: [{
-          "id": "",
-          "reportCode": "qc_safety_check",
-          "wardCode": "",
-          "year": appStore.queryObj.year,
-          "month": appStore.queryObj.month,
-          "indexNo": 0,
-          "wardName": "",
-          "contentType": "contentWithBigDept",
-          "content": ""
-        }] as any[]
+        list: [] as any[]
       }, //需大科协助
       {
         name: '需护理部协调问题',
         code: 'contentWithNdList',
-        list: [{
-          "id": "",
-          "reportCode": "qc_safety_check",
-          "wardCode": "",
-          "year": appStore.queryObj.year,
-          "month": appStore.queryObj.month,
-          "indexNo": 0,
-          "wardName": "",
-          "contentType": "contentWithNdList",
-          "content": ""
-        }] as any[]
+        list: [] as any[]
       }, //需护理部协助内容
       {
         name: '查新及建议',
         code: 'suggetionsList',
-        list: [{
-          "id": "",
-          "reportCode": "qc_safety_check",
-          "wardCode": "",
-          "year": appStore.queryObj.year,
-          "month": appStore.queryObj.month,
-          "indexNo": 0,
-          "wardName": "",
-          "contentType": "suggetionsList",
-          "content": ""
-        }] as any[]
+        list: [] as any[]
       } //建议
     ]
 
@@ -178,23 +148,7 @@ class SafetyCheckEditModel {
     this.getSectionData('安全隐患排查')!.safetyCheckList = safetyCheckList
 
     //问题类型条目
-    let safetyCheckRecordList = [
-      {
-        "id": "",
-        "reportCode": "qc_safety_check",
-        "wardCode": "",
-        "year": appStore.queryObj.year,
-        "month": appStore.queryObj.month,
-        "indexNo": 0,
-        "wardName": "",
-        "assistWardCode": "",
-        "assistWardName": "",
-        "problemType": "",
-        "content": "",
-        "cause": "",
-        "measure": ""
-      }
-    ]
+    let safetyCheckRecordList = []
 
     if (this.allData.safetyCheckRecordList && this.allData.safetyCheckRecordList.length > 0)
       safetyCheckRecordList = this.allData.safetyCheckRecordList

@@ -43,6 +43,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
     beginDate: '',
     attachmentList: [],
     endDate: '',
+    dischargeNumber: '',
+    visitNumber: '',
+    wardRemark: ''
   } as any)
 
   const monthList = (() => {
@@ -61,6 +64,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
       message.error('名称未填写')
       return
     }
+
+    return console.log(params)
 
     setLoading(true)
 
@@ -100,6 +105,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
         attachmentList: [],
         beginDate: getCurrentMonth()[0].format('YYYY-MM-DD'),
         endDate: getCurrentMonth()[1].format('YYYY-MM-DD'),
+        dischargeNumber: '',
+        visitNumber: '',
+        wardRemark: ''
       }
       newQuery.reportName = reportName(newQuery)
 
@@ -134,6 +142,13 @@ export default observer(function WorkPlainEditModal(props: Props) {
     setEditQuery({ ...editQuery, attachmentList: newList })
   }
 
+  const handleNumChange = (key: string, val: any) => {
+    let newVal = parseInt(Math.abs(val).toString())
+    if (isNaN(newVal)) newVal = 0
+
+    setEditQuery({ ...editQuery, [key]: newVal })
+  }
+
   return <React.Fragment>
     <Modal
       confirmLoading={loading}
@@ -144,24 +159,24 @@ export default observer(function WorkPlainEditModal(props: Props) {
       title={title || "添加月度随访表"}>
       <Wrapper>
         <Row>
-          <Col span={5}>科室:</Col>
-          <Col span={18}>
+          <Col span={7}>科室:</Col>
+          <Col span={16}>
             <Input disabled value={wardName} />
           </Col>
         </Row>
         <Row>
-          <Col span={5}>年份:</Col>
-          <Col span={18}>
+          <Col span={7}>年份:</Col>
+          <Col span={16}>
             <YearPicker
-              value={editQuery.year ? moment(editQuery.year) : undefined}
+              value={editQuery.year ? moment(`${editQuery.year}-01-01`) : undefined}
               allowClear={false}
               onChange={(_moment: any) =>
                 setEditQueryAndInit({ ...editQuery, year: _moment.format('YYYY') })} />
           </Col>
         </Row>
         <Row>
-          <Col span={5}>月份:</Col>
-          <Col span={18}>
+          <Col span={7}>月份:</Col>
+          <Col span={16}>
             <Select
               value={editQuery.month}
               onChange={(month: string) =>
@@ -174,8 +189,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={5}>起止日期:</Col>
-          <Col span={18}>
+          <Col span={7}>起止日期:</Col>
+          <Col span={16}>
             <RangePicker
               value={[moment(editQuery.beginDate), moment(editQuery.endDate)]}
               onChange={(dates: any) => {
@@ -189,8 +204,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={5}>名称:</Col>
-          <Col span={18}>
+          <Col span={7}>名称:</Col>
+          <Col span={16}>
             <Input
               style={{
                 position: 'relative',
@@ -201,8 +216,32 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={5}>附件:</Col>
-          <Col span={18} style={{ textAlign: 'left' }}>
+          <Col span={7}>出院人数:</Col>
+          <Col span={16}>
+            <Input
+              value={editQuery.dischargeNumber}
+              onChange={(e) => handleNumChange('dischargeNumber', e.target.value)} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={7}>回访数:</Col>
+          <Col span={16}>
+            <Input
+              value={editQuery.visitNumber}
+              onChange={(e) => handleNumChange('visitNumber', e.target.value)} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={7}>备注(病区原因):</Col>
+          <Col span={16}>
+            <Input.TextArea
+              value={editQuery.wardRemark}
+              onChange={(e: any) => setEditQuery({ ...editQuery, wardRemark: e.target.value })} />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={7}>附件:</Col>
+          <Col span={16} style={{ textAlign: 'left' }}>
             <MultiFileUploader
               type="pvm"
               data={editQuery.attachmentList.map((item: any) => {
@@ -232,7 +271,7 @@ const ScrollBody = styled(ScrollBox)`
 `
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   .ant-col {
     line-height: 32px;
