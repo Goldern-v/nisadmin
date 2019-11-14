@@ -27,16 +27,7 @@ export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [selectedJd, setselectedJd]: any = useState(() => {
-    let months = moment().month();
-    if (months >= 0 && months < 3) {
-      return 1;
-    } else if (months >= 3 && months < 6) {
-      return 2;
-    } else if (months >= 6 && months < 9) {
-      return 3;
-    } else if (months >= 9 && months < 12) {
-      return 4;
-    }
+    let months = moment().quarter();
   });
   const [year, setYear]: any = useState(moment());
   const columns: ColumnProps<any>[] = [
