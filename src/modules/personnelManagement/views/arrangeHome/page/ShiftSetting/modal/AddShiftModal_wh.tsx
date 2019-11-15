@@ -60,10 +60,6 @@ export default function AddShiftModal(props: Props) {
         ...value,
         shiftTypeNo: shiftList[shiftList.length - 1].shiftTypeNo + 1
       };
-      console.log(
-        shiftList[shiftList.length - 1],
-        "shiftList[shiftList.length - 1]"
-      );
       data.deptCode = authStore.selectedDeptCode;
       /** 保存接口 */
       arrangeService.schShiftSettingSaveOrUpdate(data).then((res: any) => {
