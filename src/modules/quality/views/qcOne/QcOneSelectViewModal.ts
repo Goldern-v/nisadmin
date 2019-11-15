@@ -29,10 +29,6 @@ class QcOneSelectViewModal {
       name: '管理方面'
     },
     {
-      code: '其他',
-      name: '其他'
-    },
-    {
       code: '无',
       name: '无'
     }

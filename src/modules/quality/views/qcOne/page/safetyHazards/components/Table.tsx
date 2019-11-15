@@ -34,10 +34,6 @@ export default observer(function Table(props: Props) {
       name: '药学部'
     },
     {
-      code: '其他',
-      name: '其他'
-    },
-    {
       code: '无',
       name: '无'
     }
