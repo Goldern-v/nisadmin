@@ -81,7 +81,7 @@ export default function 护士会议记录弹窗(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`一、传到会议`} name='meetingConveyed'>
+            <Form.Field label={`一、会议传达`} name='meetingConveyed'>
               <Input.TextArea rows={4} placeholder='(每人浏览内容后签名)' />
             </Form.Field>
           </Col>

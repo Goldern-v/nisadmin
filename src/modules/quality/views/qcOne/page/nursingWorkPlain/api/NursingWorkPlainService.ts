@@ -27,8 +27,19 @@ export default class NursingWorkPlainService extends BaseApiService {
   }
 
   /**获取字典 */
-  public getDict(query: { groupCode: string, dictCode: string }) {
-    return this.get(`/dictTable/getList/${query.groupCode}/${query.dictCode}`)
+  public getDict(query: { wardCode: string, dictCode: string }) {
+    const { wardCode, dictCode } = query
+    return this.get(`/wardDict/getList/${wardCode}/${dictCode}`);
+  }
+
+  /**修改字典 */
+  public saveOrUpdateDict(params: any) {
+    return this.post(`/wardDict/saveOrUpdate`, params);
+  }
+
+  /**删除字典 */
+  public deleteDict(query: any) {
+    return this.post(`/wardDict/delete`, query);
   }
 
   /**导出 */

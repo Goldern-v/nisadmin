@@ -12,11 +12,12 @@ import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFile
 import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
-export interface Props {}
+export interface Props { }
 export default observer(function HumanResource() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
   const [selectedDp, setSelectedDp] = useState('')
+  const [transferStatus, setTransferStatus] = useState('')
   const dpList = [
     {
       code: '',
@@ -24,11 +25,30 @@ export default observer(function HumanResource() {
     },
     {
       code: '1',
-      name: '调出'
+      name: '转出'
     },
     {
       code: '2',
-      name: '调入'
+      name: '转入'
+    }
+  ]
+
+  const tsList = [
+    {
+      code: '',
+      name: '全部'
+    },
+    {
+      code: '1',
+      name: '档案转科'
+    },
+    {
+      code: '2',
+      name: '片区转科'
+    },
+    {
+      code: '3',
+      name: '排班人员临时调科'
     }
   ]
 
@@ -37,21 +57,35 @@ export default observer(function HumanResource() {
       title: '姓名',
       align: 'center',
       dataIndex: 'empName',
-      width: 120
+      width: 100
     },
     {
       title: '原科室',
       dataIndex: 'deptCodeNameOld',
-      width: 180
+      width: 160
     },
     {
       title: '调配方式',
-      dataIndex: 'type',
-      width: 120,
+      dataIndex: 'transferStatus',
+      align: 'center',
+      width: 130,
       render(text: any, record: any, index: number) {
-        return text == '1' ? '调出' : text == '2' ? '调入' : ''
+        switch (text) {
+          case '1': return '档案转科'
+          case '2': return '片区转科'
+          case '3': return '排班人员临时调科'
+          default: return ''
+        }
       }
     },
+    // {
+    //   title: '转入转出',
+    //   dataIndex: 'type',
+    //   width: 60,
+    //   render(text: any, record: any, index: number) {
+    //     return text == '1' ? '转出' : text == '2' ? '转入' : ''
+    //   }
+    // },
     {
       title: '调往科室',
       dataIndex: 'deptNameNew',
@@ -65,9 +99,9 @@ export default observer(function HumanResource() {
     },
     {
       title: '事由',
-      align: 'center',
+      align: 'left',
       dataIndex: 'remark',
-      width: 180
+      // width: 180
     }
     // {
     //   title: '创建人',
@@ -92,7 +126,8 @@ export default observer(function HumanResource() {
         wardCode: authStore.selectedDeptCode,
         startDate: qcOneSelectViewModal.startDate,
         endDate: qcOneSelectViewModal.endDate,
-        type: selectedDp
+        type: selectedDp,
+        transferStatus: transferStatus,
       })
       .then((res) => {
         setTotal(res.data.totalCount)
@@ -101,10 +136,18 @@ export default observer(function HumanResource() {
       })
   }
 
-  const onDetail = (record: any) => {}
+  const onDetail = (record: any) => { }
   useEffect(() => {
     getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, selectedDp, qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  }, [
+    pageOptions.pageIndex,
+    pageOptions.pageSize,
+    authStore.selectedDeptCode,
+    selectedDp,
+    transferStatus,
+    qcOneSelectViewModal.startDate,
+    qcOneSelectViewModal.endDate
+  ])
 
   // useEffect(() => {
   //   getData()
@@ -117,8 +160,16 @@ export default observer(function HumanResource() {
         <span className='label'>日期:</span>
         <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} />
         <span className='label'>科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => { }} />
         <span className='label'>调配方式:</span>
+        <Select onChange={(value: string) => setTransferStatus(value)} value={transferStatus}>
+          {tsList.map((item: DictItem, index: number) => (
+            <Select.Option value={item.code} key={index}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
+        <span className='label'>转入转出:</span>
         <Select onChange={(value: string) => setSelectedDp(value)} value={selectedDp}>
           {dpList.map((item: DictItem, index: number) => (
             <Select.Option value={item.code} key={index}>
@@ -141,6 +192,7 @@ export default observer(function HumanResource() {
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
         surplusHeight={220}
+        surplusWidth={200}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,

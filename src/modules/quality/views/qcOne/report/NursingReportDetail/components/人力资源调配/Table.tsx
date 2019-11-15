@@ -26,8 +26,8 @@ export default function Table(props: Props) {
           <tr className='header'>
             <td>调配方式</td>
             <td>姓名</td>
-            <td>科室</td>
-            <td>起止时间</td>
+            <td>调往科室</td>
+            <td>开始时间</td>
             <td>事由</td>
           </tr>
 
