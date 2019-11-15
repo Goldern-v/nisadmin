@@ -62,7 +62,7 @@ export default function 人力资源调配弹窗(props: Props) {
       width: 100
     },
     {
-      title: `科室`,
+      title: `调往科室`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -79,7 +79,7 @@ export default function 人力资源调配弹窗(props: Props) {
       width: 100
     },
     {
-      title: `起止时间`,
+      title: `开始时间`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -144,7 +144,7 @@ export default function 人力资源调配弹窗(props: Props) {
     })
     setData(cloneData)
   }
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   return (
     <Wrapper>
       <div className='button-con'>

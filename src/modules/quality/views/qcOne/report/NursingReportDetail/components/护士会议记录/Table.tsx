@@ -58,7 +58,7 @@ export default function Table(props: Props) {
           <tr>
             <td rowSpan={7}>发言记录</td>
             <td colSpan={3} className='text-left'>
-              一、传到会议
+              一、会议传达
             </td>
           </tr>
           <tr>

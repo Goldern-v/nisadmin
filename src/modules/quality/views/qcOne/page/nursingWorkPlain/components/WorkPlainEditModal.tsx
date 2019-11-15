@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, Input, Row, Col, Select, Drawer, message } from 'antd'
+import { Button, Modal, Input, Row, Col, Select, Drawer, message, Icon } from 'antd'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import { ScrollBox } from 'src/components/common'
+import { authStore } from 'src/stores'
 import { nursingWorkPlainService } from './../api/NursingWorkPlainService'
 
-import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 
 const Option = Select.Option
@@ -27,6 +27,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
   const [loading, setLoading] = useState(false)
 
   const [templateList, setTemlateList] = useState([] as any)
+
+  const [createText, setCreateText] = useState('')
 
   const [editQuery, setEditQuery] = useState({
     year: '',
@@ -61,7 +63,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
   })()
 
   const addContent = (template: any) => {
-    let content = [editQuery.content, `${template.name};`].join('')
+    let content = [editQuery.content, `${template.itemName};`].join('')
 
     setEditQuery({ ...editQuery, content })
   }
@@ -95,18 +97,94 @@ export default observer(function WorkPlainEditModal(props: Props) {
     // console.log(params)
   }
 
-  useEffect(() => {
-    if (visible) setEditQuery({ ...query })
-
-  }, [visible])
-
-  useEffect(() => {
+  const getDict = () => {
     nursingWorkPlainService.getDict({
-      groupCode: 'qc',
-      dictCode: 'qc_work_schedule_content'
+      wardCode: authStore.selectedDeptCode,
+      dictCode: 'ward_qc_ward_schedule_content'
     }).then(res => {
       if (res.data) setTemlateList(res.data)
     })
+  }
+
+  const handleAdd = () => {
+    if (!createText.trim()) {
+      message.warning('新增内容不能为空')
+      return
+    }
+
+    setLoading(true)
+    nursingWorkPlainService
+      .saveOrUpdateDict({
+        "dictCode": "ward_qc_ward_schedule_content",
+        "wardCode": authStore.selectedDeptCode,
+        "itemCode": "",
+        "groupCode": "qc",
+        "itemName": createText.trim(),
+        "expand1": "",
+        "expand2": "",
+        "indexNo": templateList.length + 1,
+        // "oldItemCode": "",
+      })
+      .then(res => {
+        setLoading(false)
+        message.success('添加成功')
+        setCreateText('')
+        getDict()
+      }, () => setLoading(false))
+  }
+
+  const handleEdit = (item: any) => {
+    let editText = item.itemName || ''
+
+    let content = <div>
+      <Input defaultValue={editText} onChange={(e) => editText = e.target.value} />
+    </div>
+
+    Modal.confirm({
+      title: '修改内容模板',
+      content,
+      onOk: () => {
+        if (editText.trim() == '') {
+          message.warning('修改内容不能为空')
+          return
+        }
+        setLoading(true)
+        nursingWorkPlainService.saveOrUpdateDict({
+          ...item,
+          "itemName": editText.trim(),
+          "oldItemCode": item.itemCode,
+        })
+          .then(res => {
+            setLoading(false)
+            message.success('修改成功')
+            getDict()
+          }, () => setLoading(false))
+      }
+    })
+  }
+
+  const handleDelete = (item: any) => {
+    Modal.confirm({
+      title: '提示',
+      content: '是否删除该内容模板?',
+      onOk: () => {
+        setLoading(true)
+        nursingWorkPlainService.deleteDict(item)
+          .then(res => {
+            setLoading(false)
+            message.success('删除成功')
+            getDict()
+          }, () => setLoading(false))
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (visible) setEditQuery({ ...query })
+  }, [visible])
+
+  useEffect(() => {
+    getDict()
   }, [])
 
 
@@ -196,12 +274,27 @@ export default observer(function WorkPlainEditModal(props: Props) {
               className="template-item"
               key={idx}
               onClick={() => addContent(item)}>
-              {item.name}
+              <span className="name">{item.itemName}</span>
+              <span className="operate">
+                <Icon type="edit" className="edit" onClick={(e) => {
+                  e.stopPropagation()
+                  handleEdit(item)
+                }} />
+                <Icon type="close" className="delete" onClick={(e) => {
+                  e.stopPropagation()
+                  handleDelete(item)
+                }} />
+              </span>
             </div>)}
         </ScrollBody>
-        {/* <div className="footer">
-          <Button>确定</Button>
-        </div> */}
+        <CreateCon>
+          <Input
+            className="create-ipt"
+            value={createText}
+            disabled={loading}
+            onChange={(e: any) => setCreateText(e.target.value)} />
+          <Button type="primary" onClick={handleAdd} disabled={loading}>添加</Button>
+        </CreateCon>
       </TemplateSelectCon>
     </Drawer>
   </React.Fragment >
@@ -211,8 +304,7 @@ const ScrollBody = styled(ScrollBox)`
   position: absolute;
   left: 0;
   top: 55px;
-  /* bottom: 45px; */
-  bottom: 0;
+  bottom: 45px;
   width: 100%;
   padding: 20px;
 `
@@ -226,8 +318,35 @@ const TemplateSelectCon = styled.div`
     border-radius: 5px;
     cursor: pointer;
     transition: all .3s;
+    display: flex;
+    .name{
+      flex: 1;
+      margin-right: 5px;
+    }
+    .operate{
+      .edit{
+        display: none;
+        margin-right: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        :hover{
+          color:#1db38b;
+        }
+      }
+      .delete{
+        display: none;
+        font-size: 14px;
+        cursor: pointer;
+        :hover{
+          color: red;
+        }
+      }
+    }
     :hover{
       background: #ddd;
+      .edit,.delete{
+        display: inline;
+      }
     }
   }
   /* .footer{
@@ -237,6 +356,23 @@ const TemplateSelectCon = styled.div`
     left: 0;
     bottom: 0;
   } */
+`
+
+const CreateCon = styled.div`
+  position: absolute;
+  left: 0;
+  height: 45px;
+  border-top: 1px solid #ddd;
+  bottom: 0;
+  width: 100%;
+  padding: 5px 8px;
+  &>*{
+    vertical-align: middle;
+  }
+  .create-ipt{
+    width: 170px;
+    margin-right: 5px;
+  }
 `
 
 const Wrapper = styled.div`

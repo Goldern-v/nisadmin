@@ -17,23 +17,25 @@ export default observer(function Table(props: Props) {
 
   // console.log('safetyCheckList', safetyCheckList)
 
-  // const recordList = () => {
-  //   let list = safetyCheckRecordList
+  const recordList = (key: string) => {
+    let list = safetyCheckRecordList
 
-  //   let arr: any[] = []
+    let arr: any[] = []
 
-  //   for (let i = 0; i < list.length; i++) {
-  //     let current = list[i]
-  //     let target = arr.find((item: any) => item.problemType == current.problemType)
-  //     if (target) {
-  //       target.list.push(current)
-  //     } else {
-  //       arr.push({ list: [current], problemType: current.problemType })
-  //     }
-  //   }
+    for (let i = 0; i < list.length; i++) {
+      let current = list[i]
+      let target = arr.find((item: any) => item[key] == current[key])
+      if (target) {
+        target.list.push(current)
+      } else {
+        arr.push({ list: [current], [key]: current[key] })
+      }
+    }
 
-  //   return arr
-  // }
+    return arr
+  }
+
+  console.log(recordList('assistWardCode'))
 
   return (
     <Wrapper>
@@ -45,53 +47,36 @@ export default observer(function Table(props: Props) {
         </colgroup>
         <tbody>
           <tr className='header'>
+            <td>需协助科室</td>
             <td>问题种类</td>
-            {/* <td>科室</td>
-            <td>问题详情</td>
-            <td>原因分析</td>
-            <td>整改措施</td>
-            <td>需协助科室</td> */}
             <td colSpan={2}>内容</td>
           </tr>
-          {/* {recordList().map((item, index) =>
-            <React.Fragment key={index}>
-              {item.list.map((item1: any, index1: any) =>
-                <tr key={`${index}-${index1}`}>
-                  {index1 === 0 && <td rowSpan={item.list.length}>{item1.problemType}</td>}
-                  <td>{item1.wardName}</td>
-                  <td>{item1.content}</td>
-                  <td>{item1.cause}</td>
-                  <td>{item1.measure}</td>
-                  <td>{item1.assistWardCode}</td>
-                </tr>)}
-            </React.Fragment>
-          )} */}
-          {safetyCheckRecordList.length > 0 && safetyCheckRecordList.map((item: any, idx: any) =>
-            <React.Fragment key={idx}>
-              <tr>
-                <td rowSpan={4}>{item.problemType}</td>
-                <td>问题详情</td>
-                <td>{item.content}</td>
-              </tr>
-              <tr>
-                <td>原因分析</td>
-                <td>{item.cause}</td>
-              </tr>
-              <tr>
-                <td>整改措施</td>
-                <td>{item.measure}</td>
-              </tr>
-              <tr>
-                <td>整改措施</td>
-                <td>{item.assistWardCode}</td>
-              </tr>
-            </React.Fragment>)}
-          {safetyCheckRecordList.length <= 0 && <tr><td rowSpan={3}>无</td></tr>}
+          {safetyCheckRecordList.length > 0 &&
+            recordList('assistWardCode').map((item: any, idx: any) =>
+              <React.Fragment key={idx}>
+                {item.list.map((item1: any, idx1: number) => <React.Fragment key={`${idx} ${idx1}`}>
+                  <tr>
+                    {idx1 == 0 && <td rowSpan={item.list.length * 3}>{item.assistWardCode}</td>}
+                    <td rowSpan={3}>{item1.problemType}</td>
+                    <td>问题详情</td>
+                    <td>{item1.content}</td>
+                  </tr>
+                  <tr>
+                    <td>原因分析</td>
+                    <td>{item1.cause}</td>
+                  </tr>
+                  <tr>
+                    <td>整改措施</td>
+                    <td>{item1.measure}</td>
+                  </tr>
+                </React.Fragment>)}
+              </React.Fragment>)}
+          {safetyCheckRecordList.length <= 0 && <tr><td colSpan={4}>无</td></tr>}
           {safetyCheckList.map((item: any, idx: number) =>
             <React.Fragment key={idx}>
               {item.list.length > 0 && item.list.map((item1: any, idx1: number) =>
                 <tr key={`${idx}-${idx1}`}>
-                  {idx1 === 0 && <td rowSpan={item.list.length} >{item.name}</td>}
+                  {idx1 === 0 && <td rowSpan={item.list.length} colSpan={2}>{item.name}</td>}
                   {/* <td>{item1.wardName}</td> */}
                   <td colSpan={2}>{item1.content}</td>
                 </tr>)}

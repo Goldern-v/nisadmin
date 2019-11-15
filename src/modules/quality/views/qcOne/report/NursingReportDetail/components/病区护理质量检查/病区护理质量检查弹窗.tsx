@@ -51,6 +51,30 @@ export default function 病区护理质量检查弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
+            value={record.total}
+            onChange={(e) => {
+              if (
+                !Number(e.target.value) &&
+                Number(e.target.value) !== 0 &&
+                e.target.value[e.target.value.length - 1] !== '.'
+              ) {
+                return message.warning('只能输入数字')
+              }
+              record.total = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
+    {
+      title: `问题数`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
             value={record.wrongSize}
             onChange={(e) => {
               if (
@@ -93,31 +117,31 @@ export default function 病区护理质量检查弹窗(props: Props) {
       },
       width: 200
     },
-    {
-      title: `合格率`,
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.passRate}
-            onChange={(e) => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== '.'
-              ) {
-                return message.warning('只能输入数字')
-              }
+    // {
+    //   title: `合格率`,
+    //   render(text: any, record: DeptItem, index: number) {
+    //     return (
+    //       <input
+    //         type='text'
+    //         className='cell-input'
+    //         value={record.passRate}
+    //         onChange={(e) => {
+    //           if (
+    //             !Number(e.target.value) &&
+    //             Number(e.target.value) !== 0 &&
+    //             e.target.value[e.target.value.length - 1] !== '.'
+    //           ) {
+    //             return message.warning('只能输入数字')
+    //           }
 
-              record.passRate = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
+    //           record.passRate = e.target.value
+    //           setData(cloneData)
+    //         }}
+    //       />
+    //     )
+    //   },
+    //   width: 100
+    // },
 
     {
       title: '操作',
@@ -150,7 +174,7 @@ export default function 病区护理质量检查弹窗(props: Props) {
     })
     setData(cloneData)
   }
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   return (
     <Wrapper>
       <div className='button-con'>

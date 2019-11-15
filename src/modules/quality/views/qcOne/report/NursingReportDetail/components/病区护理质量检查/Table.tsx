@@ -17,14 +17,16 @@ export default function Table(props: Props) {
       <table>
         <colgroup>
           <col width='25%' />
-          <col width='15%' />
-          <col width='45%' />
+          <col width='10%' />
+          <col width='10%' />
+          <col width='40%' />
           <col width='15%' />
         </colgroup>
         <tbody>
           <tr className='header'>
             <td>质控类别</td>
             <td>检查数</td>
+            <td>问题数</td>
             <td>问题详情</td>
             <td>合格率</td>
           </tr>
@@ -32,6 +34,7 @@ export default function Table(props: Props) {
           {list.map((item, index) => (
             <tr key={index}>
               <td style={{ textAlign: 'left' }}>{item.type}</td>
+              <td>{item.total}</td>
               <td>{item.wrongSize}</td>
               <td style={{ textAlign: 'left' }}>{item.description}</td>
               <td>{item.passRate}%</td>
@@ -39,7 +42,7 @@ export default function Table(props: Props) {
           ))}
         </tbody>
       </table>
-      <div className='aside'>例：8月每天检查基础护理，检查出有问题的是3条。合格率=（1-3/31*60）*100%</div>
+      {/* <div className='aside'>例：8月每天检查基础护理，检查出有问题的是3条。合格率=（1-3/31*60）*100%</div> */}
     </Wrapper>
   )
 }
