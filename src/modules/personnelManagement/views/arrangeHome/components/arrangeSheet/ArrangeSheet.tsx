@@ -24,6 +24,7 @@ import BalanceHour from "./BalanceHour";
 import PublicHour from "./PublicHour";
 import HolidayHour from "./HolidayHour";
 import $ from "jquery";
+import { cloneJson } from "src/utils/json/clone";
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean;
@@ -302,8 +303,12 @@ export default observer(function ArrangeSheet(props: Props) {
               hoverRow.settingDtos = dragRow_settingDtos;
             } else if (pc == "ant-table-body-outer") {
               /** left */
-              const dragRow = sheetViewModal.sheetTableData[dragIndex];
-              const hoverRow = sheetViewModal.sheetTableData[hoverIndex];
+              const dragRow = cloneJson(
+                sheetViewModal.sheetTableData[dragIndex]
+              );
+              const hoverRow = cloneJson(
+                sheetViewModal.sheetTableData[hoverIndex]
+              );
 
               // let keys = Object.keys(dragRow).filter((item: any) => item !== 'settingDtos')
               // let copyObj: any = {}
@@ -315,12 +320,15 @@ export default observer(function ArrangeSheet(props: Props) {
               let hoverRow_settingDtos = hoverRow.settingDtos;
               dragRow.settingDtos = hoverRow_settingDtos;
               hoverRow.settingDtos = dragRow_settingDtos;
-              sheetViewModal.sheetTableData = update(
-                sheetViewModal.sheetTableData,
-                {
-                  $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-                }
-              );
+              let list: any = [...sheetViewModal.sheetTableData];
+              [list[dragIndex], list[hoverIndex]] = [hoverRow, dragRow];
+              sheetViewModal.sheetTableData = list;
+              // setTimeout(() => {
+              //   let arr = update(sheetViewModal.sheetTableData, {
+              //     $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+              //   });
+              //   sheetViewModal.sheetTableData = [...arr];
+              // }, 1000);
             }
           } catch (error) {}
         }}
