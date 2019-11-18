@@ -190,6 +190,7 @@ export default observer(function FollowUpRecord() {
         </Select>
         <span className="label">结余日期:</span>
         <DatePicker.RangePicker
+          style={{ width: 220 }}
           value={date}
           onChange={(value: any) => setDate(value)}
         />
