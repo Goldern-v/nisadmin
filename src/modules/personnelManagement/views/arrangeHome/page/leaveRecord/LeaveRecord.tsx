@@ -119,7 +119,7 @@ export default observer(function LeaveRecord() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>结余设置</PageTitle>
+        <PageTitle>休假记录查询</PageTitle>
         <Place />
 
         <span className="label">休假日期:</span>

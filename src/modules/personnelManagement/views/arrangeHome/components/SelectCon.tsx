@@ -291,15 +291,17 @@ export default observer(function SelectCon() {
             导出Excel
           </Button>
         </div>
-        <div className="item">
-          <Button
-            className="statistics getExcel"
-            disabled={sheetViewModal.tableLoading}
-            onClick={toPrint}
-          >
-            打印
-          </Button>
-        </div>
+        {appStore.HOSPITAL_ID == "hj" && (
+          <div className="item">
+            <Button
+              className="statistics getExcel"
+              disabled={sheetViewModal.tableLoading}
+              onClick={toPrint}
+            >
+              打印
+            </Button>
+          </div>
+        )}
       </LeftIcon>
       {/* <RightIcon>
         <span onClick={() => toPath('/personnelManagement/DeptBorrow')}>科室借用</span>
