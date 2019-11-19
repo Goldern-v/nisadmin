@@ -50,7 +50,11 @@ export default function IndexList(props: Props) {
             {item1.map((item2: any, idx2: number) =>
               <Col span={8} key={`${idx} ${idx1} ${idx2}`} onClick={() => handleClick(item2)} className={itemClass || ''}>
                 <span className="circle"></span>
-                <div className="h2">{`${item2.name}`}</div>
+                <div className="h2">
+                  <span>{item2.name}</span>
+                  {!item2.isFileUploaded && <span style={{ color: '#999' }}>(未上传)</span>}
+                  {item2.isFileUploaded == 1 && item2.fileStatus == 1 && <span style={{ color: '#00A680' }}>(待审核)</span>}
+                </div>
               </Col>)}
           </Row>)}
       </Fragment>

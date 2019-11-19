@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, Fragment } from 'react'
-import { Button, Row, Col, message as Message, message } from 'antd'
+import { Button, Row, Col, message as Message, message, Tooltip } from 'antd'
 import { editPageModel } from '../../models/editPageModel'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -213,16 +213,17 @@ export default observer(function BookIndexFilesEdit() {
                 return <Col span={8} key={`${idx} ${idx1} ${idx2}`}>
                   <div className="h2">
                     <span className="circle"></span>
-                    <span className="title" title={item2.name}>{`${item2.name}(${item2.fileName})`}</span>
+                    <span className="title" title={item2.name}>{`${item2.name}`}</span>
                     <span className="info">
                       {fileInfo}
                     </span>
-                    <span
-                      className="operate"
-                      title={`上传 ${item2.fileName}`}
-                      onClick={() => handleFile(item2)}>
-                      {target ? '重新上传' : '选择文件'}
-                    </span>
+                    <Tooltip title={`上传 ${item2.fileName}`}>
+                      <span
+                        className="operate"
+                        onClick={() => handleFile(item2)}>
+                        {target ? '重新上传' : '选择文件'}
+                      </span>
+                    </Tooltip>
                   </div>
                 </Col>
               })}
