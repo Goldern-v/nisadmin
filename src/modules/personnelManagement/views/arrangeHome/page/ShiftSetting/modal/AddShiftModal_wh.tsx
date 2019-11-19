@@ -58,7 +58,7 @@ export default function AddShiftModal(props: Props) {
       let data = {
         ...(props.editData || {}),
         ...value,
-        shiftTypeNo: shiftList[shiftList.length - 1].shiftTypeNo + 1
+        shiftTypeNo: shiftList[0].shiftTypeNo - 1
       };
       data.deptCode = authStore.selectedDeptCode;
       /** 保存接口 */
