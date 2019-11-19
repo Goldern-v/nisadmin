@@ -5,6 +5,7 @@ export interface NurseQuery {
   deptCode?: string /** 部门编码 */;
   empNo?: string /** 员工工号 */;
   education: string /** 学历 */;
+  zybz: string /** 科室属性 */;
   title: string /** 职称 */;
   currentLevel: string /** 能级、层级 */;
   post: string /**  当前页数  */;

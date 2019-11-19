@@ -131,18 +131,6 @@ const columns: ColumnProps<any>[] = [
     align: "center"
   },
   {
-    title: "科室属性",
-    dataIndex: "zybz",
-    key: "zybz",
-    width: 120,
-    align: "center",
-    render(text: any, row: any) {
-      if (text == 1) return "住院护理单元花名册";
-      if (text == 2) return "门诊护理单元花名册";
-      return text;
-    }
-  },
-  {
     title: "操作",
     dataIndex: "auditedStatusName",
     key: "6",
