@@ -1,7 +1,5 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-import qs from 'qs'
-import axios from 'axios'
-import { fileDownload } from 'src/utils/file/file'
+import qs from 'qs';
 
 export default class NursingRulesApiService extends BaseApiService {
   /**主列表查询-分页查询（pc端） */
@@ -48,6 +46,45 @@ export default class NursingRulesApiService extends BaseApiService {
     }
 
     return this.post('/hospitalBookshelf/upLoadTaskBodyFile', formData);
+  }
+
+  /**新建书籍 废弃 2019-10-25 17:51  */
+  public addBook(params: any) {
+    let formData = new FormData();
+    for (let x in params) {
+      if (x == 'cover') {
+        if (Object.prototype.toString.call(params[x]) !== '[object String]') formData.append('coverFile', params[x])
+      } else {
+        formData.append(x, params[x])
+      }
+    }
+    return this.post('/hospitalBookshelf/addBook', formData);
+  }
+
+  /**修订书籍  废弃 2019-10-25 17:51 */
+  public revBook(params: any) {
+    let formData = new FormData();
+    for (let x in params) {
+      if (x == 'cover') {
+        if (Object.prototype.toString.call(params[x]) !== '[object String]') formData.append('coverFile', params[x])
+      } else {
+        formData.append(x, params[x])
+      }
+    }
+    return this.post('/hospitalBookshelf/revBook', formData);
+  }
+
+  /**修改书籍信息 废弃 2019-10-25 17:51 */
+  public updateBookInfo(params: any) {
+    let formData = new FormData();
+    for (let x in params) {
+      if (x == 'cover') {
+        if (Object.prototype.toString.call(params[x]) !== '[object String]') formData.append('coverFile', params[x])
+      } else {
+        formData.append(x, params[x])
+      }
+    }
+    return this.post('/hospitalBookshelf/updateBookInfo', formData);
   }
 
   /**删除某个任务的临时文件夹下的单个pdf */
@@ -150,55 +187,6 @@ export default class NursingRulesApiService extends BaseApiService {
     }
     return this.post(`/hospitalBookshelf/upLoadTaskCataLog`, formData);
   }
-
-  /**根据taskCode获取书籍信息 */
-  public getTaskBookInfo(taskCode: string) {
-    return this.post('/hospitalBookshelf/getTaskBookInfo', qs.stringify({ taskCode }))
-  }
-
-  /**下载文件 */
-  public downloadPage(url: string, name?: string) {
-    axios.get(url, { responseType: 'blob' }).then((res) => fileDownload(res, name))
-  }
-
-  /**根据taskCode nodeNum上传pdf */
-  public upLoadTaskBodyFilebyNode(formData: FormData) {
-    return this.post('/hospitalBookshelf/upLoadTaskBodyFilebyNode', formData)
-  }
-
-  /**获取修订章节 */
-  public getChapterRevisions(treePathCode: string, bookId: string) {
-    return this.post('/hospitalBookshelf/getChapterRevisions',
-      qs.stringify({ treePathCode, bookId }))
-  }
-
-  /**修订单个章节 */
-  public revChapter(params: { bookId: string, nodeNum: number | string, bodyFile: File, rematk: string }) {
-    let newParams = { ...params } as any
-    let formData = new FormData()
-    for (let x in newParams) {
-      formData.append(x, newParams[x])
-    }
-
-    return this.post('/hospitalBookshelf/revChapter', formData)
-  }
-
-  /**pdf阅读时重新上传某个章节文件 */
-  public upLoadChapterBodyFile(params: {
-    nodeNum: any,
-    bodyFile: File,
-    remark: any,
-    bookId: any
-  }) {
-    let newParams = { ...params } as any
-    let formData = new FormData()
-    for (let x in newParams) {
-      formData.append(x, newParams[x])
-    }
-
-    return this.post('/hospitalBookshelf/upLoadChapterBodyFile', formData)
-  }
-
 }
 
 export const nursingRulesApiService = new NursingRulesApiService()

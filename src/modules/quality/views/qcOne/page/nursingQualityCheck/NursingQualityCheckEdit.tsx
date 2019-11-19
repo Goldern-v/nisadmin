@@ -198,6 +198,9 @@ export default observer(function NursingQualityCheckEdit() {
         </EditCon>
       }
     },
+  ]
+
+  if (!search.type) columns.push(
     {
       title: '操作',
       width: 60,
@@ -213,8 +216,7 @@ export default observer(function NursingQualityCheckEdit() {
           删除
         </span>
       }
-    }
-  ]
+    })
 
   useEffect(() => {
     if (search.type == 'edit') {
@@ -262,19 +264,30 @@ export default observer(function NursingQualityCheckEdit() {
 
   const getEditData = () => {
     setLoading(true)
+    // nursingQualityCheckService
+    //   .getListByDate(search.date, wardCode)
+    //   .then(res => {
+    //     if (res.data) {
+    //       setLoading(false)
+    //       setEditData(res.data.map((item: any) => {
+    //         return {
+    //           ...item,
+    //           checkItemList: item.checkItemList || []
+    //         }
+    //       }))
+    //     }
+    //   })
     nursingQualityCheckService
-      .getListByDate(search.date, wardCode)
+      .getDetail(search.id)
       .then(res => {
         if (res.data) {
           setLoading(false)
-          setEditData(res.data.map((item: any) => {
-            return {
-              ...item,
-              checkItemList: item.checkItemList || []
-            }
-          }))
+          setEditData([
+            { ...res.data, checkItemList: res.data.checkItemList || [] }
+          ])
         }
       })
+
   }
 
   const getNurseList = () => {
@@ -359,14 +372,24 @@ export default observer(function NursingQualityCheckEdit() {
       recordDate: moment(search.date).format('YYYY-MM-DD HH:mm')
     }
 
-    setLoading(true)
-    nursingQualityCheckService.saveOrUpdateByDate(saveParams)
-      .then(res => {
+    let callback = (res?: any) => {
+      if (res)
         message.success('保存成功', 1, () => {
           setLoading(false)
           history.goBack()
         })
-      }, () => setLoading(false))
+      else
+        setLoading(false)
+    }
+
+    setLoading(true)
+    if (!search.type) {
+      nursingQualityCheckService.saveOrUpdateByDate(saveParams)
+        .then(res => callback(res), () => callback())
+    } else if (search.type == 'edit') {
+      nursingQualityCheckService.saveOrUpdate(editData[0]).then(res => callback(res), () => callback())
+    }
+
   }
 
   const handleAdd = () => {
@@ -462,7 +485,7 @@ export default observer(function NursingQualityCheckEdit() {
             columns={columns}
             surplusHeight={330}
             loading={loading} />
-          <Button onClick={handleAdd}>新增</Button>
+          {!search.type && <Button onClick={handleAdd}>新增</Button>}
         </MainContent>
       </div>
     </MainPannel>

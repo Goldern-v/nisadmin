@@ -11,9 +11,6 @@ export default observer(function IndexPannel() {
   const { indexList, baseInfo } = detailPageModel
   const { history } = appStore
 
-  const visibleList = indexList.filter((item: any) =>
-    item.childrenList && item.childrenList.length > 0) || []
-
   const handleItemClick = (item: any) => {
     history.push(`nursingRulesPagePreview?${qs.stringify({
       bookId: baseInfo.bookId,
@@ -34,11 +31,11 @@ export default observer(function IndexPannel() {
 
   return <Wrapper>
     <IndexList
-      indexList={visibleList}
+      indexList={indexList}
       onItemClick={handleItemClick}
-      // onParentItemClick={handleParentItemClick}
+      onParentItemClick={handleParentItemClick}
       itemClass="active-item" />
-    <div className="nope">{visibleList.length <= 0 ? '暂无目录' : ''}</div>
+    <div className="nope">{indexList.length <= 0 ? '暂无目录' : ''}</div>
   </Wrapper>
 })
 
@@ -46,12 +43,13 @@ const Wrapper = styled.div`
   padding: 10px;
   min-height:100%;
   .h1{
+    font-size: 16px;
     font-weight: bold;
     color: #000;
-    /* &.has-urls:hover{
+    &.has-urls:hover{
       color: #00A680;
       cursor: pointer;
-    } */
+    }
   }
   .h2{
     padding-right: 8px;

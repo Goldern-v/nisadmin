@@ -7,11 +7,10 @@ import { appStore } from 'src/stores'
 import qs from 'qs'
 import { observer } from 'mobx-react-lite'
 import { editPageModel } from './../models/editPageModel'
-import BookBaseInfoEdit from '../components/editPage/BookBaseInfoEdit'
-import BookIndexFilesEdit from '../components/editPage/BookIndexFilesEdit'
+import BookFileEdit from './../components/editPage/BookFileEdit'
+import BookIndexEdit from './../components/editPage/BookIndexEdit'
 import BookPreview from './../components/editPage/BookPreview'
 import { nursingRulesApiService } from './../api/nursingRulesNewService'
-import { Modal } from 'antd/es'
 
 export interface Props { }
 
@@ -20,16 +19,7 @@ export default observer(function NursingRulesNewEdit() {
 
   const search = qs.parse(location.search.replace('?', ''))
 
-  const {
-    taskName,
-    baseParams,
-    loading,
-    baseInfo,
-    baseLoading,
-    uploadLoading,
-    chapterTotalSize,
-    chapterUploadedSize
-  } = editPageModel
+  const { taskName, baseParams, loading, baseInfo, baseLoading } = editPageModel
 
   const [step, setStep] = useState(0)
 
@@ -40,29 +30,72 @@ export default observer(function NursingRulesNewEdit() {
       return
     }
 
+    // let { bookId, taskCode, taskType } = baseInfo
+
+    // let params = { ...baseParams, bookId, taskCode } as any
+
     setStep(1)
-  }
 
-  //校验目录和文件
-  const checkCatalogAndFiles = () => {
-    // 注意：当前有4个目录文件未上传成功，是否继续？
-    let unUploadSize = chapterTotalSize - chapterUploadedSize || 0
-    if (unUploadSize) {
-      Modal.confirm({
-        title: '提示',
-        content: `注意：当前有${unUploadSize}个目录文件未上传成功，是否继续？`,
-        onOk: () => {
-          setStep(2)
-        }
-      })
-    } else {
-      setStep(2)
-    }
-  }
+    // let callback = (res?: any) => {
+    //   editPageModel.setBaseLoading(false)
+    //   if (res) {
+    //     //跳转下一页
+    //     setStep(1)
 
+    //     let data = res.data
+
+    //     if (data && data.id) {
+    //       //提示成功
+    //       let msgType = '新建'
+    //       if (baseInfo.taskType == '2') msgType = '修改'
+    //       if (baseInfo.taskType == '3') msgType = '修订'
+    //       Message.warning(`书籍${msgType}成功，请及时提交审核`)
+    //       //更新url
+    //       let newQuery = {
+    //         bookId: data.id
+    //       }
+    //       history.replace(`${location.pathname}?${qs.stringify(newQuery)}`)
+    //       //编辑类型 改为 修改书籍
+    //       editPageModel.setBaseInfo({
+    //         taskType: '',
+    //         taskCode: '',
+    //         bookId: data.id
+    //       })
+    //       //修改封面参数
+    //       editPageModel.setBaseParams({ ...baseParams, cover: data.coverPath })
+    //       //重新获取上传文件列表
+    //       editPageModel.getFileList()
+    //     } else {
+    //       Message.warning('书籍修改成功，请及时提交审核')
+    //     }
+    //   }
+    // }
+
+    // editPageModel.setBaseLoading(true)
+
+    // if (baseInfo.taskType == '2') {
+    //   //修订
+    //   nursingRulesApiService.revBook(params).then(res => callback(res), err => callback())
+    // } else if (baseInfo.taskType == '1') {
+    //   //新建
+    //   nursingRulesApiService.addBook(params).then(res => callback(res), err => callback())
+    // } else {
+    //   //编辑
+    //   nursingRulesApiService.updateBookInfo(params).then(res => callback(res), err => callback())
+    // }
+  }
   //提交审核
   const handleSendAudit = () => {
     editPageModel.setBaseLoading(true)
+    // nursingRulesApiService
+    //   .submitToAudit(baseInfo.bookId)
+    //   .then(res => {
+    // editPageModel.setBaseLoading(false)
+
+    // Message.success('提交审核成功', 0.5, () => {
+    //   history.goBack()
+    // })
+    //   }, () => editPageModel.setBaseLoading(false))
 
     let { bookId, taskCode, taskType } = baseInfo
 
@@ -93,7 +126,7 @@ export default observer(function NursingRulesNewEdit() {
       ,
       <Fragment>
         <Button disabled={loading} onClick={() => setStep(0)}>上一步</Button>
-        <Button disabled={loading || uploadLoading} onClick={() => checkCatalogAndFiles()}>下一步</Button>
+        <Button disabled={loading} onClick={() => setStep(2)}>下一步</Button>
       </Fragment>
       ,
       <Fragment>
@@ -108,9 +141,9 @@ export default observer(function NursingRulesNewEdit() {
   const StepPannel = () => {
     switch (step) {
       case 0:
-        return <BookBaseInfoEdit />
+        return <BookFileEdit />
       case 1:
-        return <BookIndexFilesEdit />
+        return <BookIndexEdit />
       case 2:
         return <BookPreview />
       default:

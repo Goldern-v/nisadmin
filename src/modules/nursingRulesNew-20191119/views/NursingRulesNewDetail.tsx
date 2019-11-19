@@ -26,14 +26,16 @@ export default observer(function NursingRulesNewDetail() {
 
   //启用和删除权限 上传者和护理部
   let uploaderAuth = !!(baseInfo.upLoaderEmpNo == (authStore.getUser() && authStore.getUser().empNo)) as boolean
-  let absoluteAuth = !!authStore.isDepartment as boolean
+  let absoluteAuth = (authStore.isDepartment || authStore.isSupervisorNurse) as boolean
   let auth = !!(uploaderAuth || absoluteAuth) as boolean
 
   const indexSize = () => {
     let size = 0;
     for (let i = 0; i < indexList.length; i++)
-      if (indexList[i].childrenList && indexList[i].childrenList.length > 0)
-        size += indexList[i].childrenList.length
+      if (indexList[i].childrenList && indexList[i].childrenList.length == 0)
+        size++
+      else
+        for (let j = 0; j < indexList[i].childrenList.length; j++)size++
 
     return size
   }

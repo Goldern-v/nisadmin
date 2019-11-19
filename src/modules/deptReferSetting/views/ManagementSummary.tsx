@@ -209,16 +209,49 @@ export default function ManagementSummary() {
 
   const exportExcel = () => {
     let params = { ...query }
-    //文件名称
-    let startMonth = moment(query.startDate).format('YYYY-MM')
-    let endMonth = moment(query.endDate).format('YYYY-MM')
+    let startDate = moment(query.startDate)
+    let endDate = moment(query.endDate)
+    let iptStyle = {
+      marginTop: '10px',
+      marginLeft: '10px'
+    }
 
-    let monthString = `${startMonth}至${endMonth}`
-    if (startMonth == endMonth) monthString = startMonth
+    let content = <ExportCon>
+      <div>
+        <span>开始时间:</span>
+        <DatePicker
+          style={iptStyle}
+          allowClear={false}
+          defaultValue={startDate}
+          onChange={(_moment) => startDate = _moment} />
+      </div>
+      <div>
+        <span>结束时间:</span>
+        <DatePicker
+          style={iptStyle}
+          allowClear={false}
+          defaultValue={endDate}
+          onChange={(_moment) => endDate = _moment} />
+      </div>
+    </ExportCon>
 
-    let fileName = `扁平管理汇总(${monthString})`
+    Modal.confirm({
+      title: '导出',
+      content,
+      onOk: () => {
+        let startStr = startDate.format('YYYY-MM-DD')
+        let endStr = endDate.format('YYYY-MM-DD')
+        let monthString = `${startStr}至${endStr}`
+        if (startStr == endStr) monthString = startStr
 
-    api.totalExcel(params, fileName)
+        let fileName = `扁平管理汇总(${monthString})`
+        api.totalExcel({
+          ...params,
+          startDate: startStr,
+          endDate: endStr
+        }, fileName)
+      }
+    })
   }
 
   const handleEndDateChange = (date: any) => {
@@ -397,4 +430,7 @@ const Wrapper = styled.div`
   .status2 {
     // color: rgba(102, 204, 153, 1);
   }
+`
+
+const ExportCon = styled.div`
 `

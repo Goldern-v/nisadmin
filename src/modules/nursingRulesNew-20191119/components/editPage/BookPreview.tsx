@@ -9,12 +9,10 @@ export interface Props { }
 export default observer(function BookPreview() {
   const { indexParams, baseParams, fileList } = editPageModel
 
-  const fileSuccess = fileList.filter((item: any) => item.status == 'success') || []
-
   const totalSize = () => {
     let size = 0;
-    for (let i = 0; i < fileSuccess.length; i++) {
-      size += parseInt(fileSuccess[i].fileSize.toString())
+    for (let i = 0; i < fileList.length; i++) {
+      size += parseInt(fileList[i].fileSize.toString())
     }
     return getFileSize(size)
   }
@@ -22,7 +20,9 @@ export default observer(function BookPreview() {
   const indexSize = () => {
     let size = 0;
     for (let i = 0; i < indexParams.length; i++) {
-      if (indexParams[i].childrenList)
+      if (!indexParams[i].childrenList)
+        size++
+      else
         for (let j = 0; j < indexParams[i].childrenList.length; j++) {
           size++
         }
@@ -38,7 +38,7 @@ export default observer(function BookPreview() {
     </div>
     <div className="row">
       <div className="label label-sp3">文件数：</div>
-      <div className="content">共{fileSuccess.length}个文件,总大小为{totalSize()}</div>
+      <div className="content">共{fileList.length}个文件,总大小为{totalSize()}</div>
     </div>
     <div className="row">
       <div className="label label-sp3">章节数：</div>

@@ -10,8 +10,7 @@ export interface BaseParams {
 export interface FileItem {
   fileName: string,
   filePath: string,
-  fileSize: string | number,
-  status?: string
+  fileSize: string | number
 }
 
 export class EditPageModel {
@@ -61,50 +60,6 @@ export class EditPageModel {
     }
   }
 
-  //获取全部章节数量
-  @computed get chapterTotalSize() {
-    let size = 0
-    for (let i = 0; i < this.indexParams.length; i++) {
-      let childrenList = this.indexParams[i].childrenList || []
-      size += childrenList.length
-    }
-
-    return size
-  }
-
-  //获取已上传章节数量
-  @computed get chapterUploadedSize() {
-    let size = 0
-    for (let i = 0; i < this.indexParams.length; i++) {
-      let childrenList = this.indexParams[i].childrenList || []
-      // let uploadedList = childrenList.filter((item: any) => item.urls && item.urls.length > 0)
-      let uploadedList = childrenList.filter((item: any) => {
-        let target = this.fileList
-          .find((file: any) => file.fileName == item.fileName && file.status == 'success')
-        if (target) return true
-        else return false
-      })
-
-      size += uploadedList.length || 0
-    }
-    return size
-  }
-
-  //获取已上传文件的章节
-  // @computed get chapterWithFile():any[]{
-  //   let chapterList:any[] = []
-
-  //   for(let i=0;i<this.indexParams.length;i++){
-  //     let item0 = this.indexParams[i]
-  //     if(item0&&item0.childrenList instanceof Array)
-  //     for(let j=0;j<item0.length;j++){
-  //       let item1 = item0[j]
-
-  //     }
-  //   }
-  //   return []
-  // }
-
   //初始化model
   @action public inited(newInfo?: any) {
     this.setBaseInfo({ ...this.defaultInfo, ...newInfo })
@@ -131,18 +86,8 @@ export class EditPageModel {
     this.baseInfo = { ...baseInfo }
   }
 
-  @action public setBaseParams(newParams: BaseParams, async?: boolean, callback?: Function) {
+  @action public setBaseParams(newParams: BaseParams) {
     this.baseParams = { ...newParams }
-
-    if (async) {
-      let { taskCode } = this.baseInfo
-      if (taskCode)
-        nursingRulesApiService
-          .updateTaskBookInfo({ taskCode, ...this.baseParams })
-          .then(res => {
-            callback && callback(true)
-          }, () => callback && callback(false))
-    }
   }
 
   @action public setIndexParams(newIndex: any[]) {
@@ -162,36 +107,24 @@ export class EditPageModel {
   }
 
   @action public getBookData = () => {
-    let { taskCode } = this.baseInfo
-    if (!taskCode) return
+    let { bookId } = this.baseInfo
+    if (!bookId) return
     this.setBaseLoading(true)
-    // nursingRulesApiService.getBookInfo(bookId).then(res => {
-    //   this.setBaseLoading(false)
-    //   this.setBaseParams({
-    //     cover: res.data.coverPath,
-    //     bookName: res.data.bookName,
-    //     bookBrief: res.data.bookBrief
-    //   })
-    // }, () => this.setBaseLoading(false))
-    nursingRulesApiService
-      .getTaskBookInfo(taskCode)
-      .then(res => {
-        this.setBaseLoading(false)
-        this.setBaseParams({
-          cover: res.data.coverPath,
-          bookName: res.data.bookName,
-          bookBrief: res.data.bookBrief
-        })
-      }, () => this.setBaseLoading(false))
+    nursingRulesApiService.getBookInfo(bookId).then(res => {
+      this.setBaseLoading(false)
+      this.setBaseParams({
+        cover: res.data.coverPath,
+        bookName: res.data.bookName,
+        bookBrief: res.data.bookBrief
+      })
+    }, () => this.setBaseLoading(false))
   }
 
   //获取文件列表
   @action public getFileList = () => {
 
     let callback = (res: any) => {
-      if (res.data) this.setFileList(res.data.map((item: any) => {
-        return { ...item, status: 'success' } as FileItem
-      }))
+      if (res.data) this.setFileList([...res.data])
     }
     if (this.baseInfo.taskCode) {
       nursingRulesApiService
@@ -293,6 +226,7 @@ export class EditPageModel {
         .then(res => callback(res), err => callback())
     }
   }
+
 }
 
 export const editPageModel = new EditPageModel();

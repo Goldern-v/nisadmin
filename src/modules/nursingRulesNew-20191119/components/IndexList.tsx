@@ -49,7 +49,6 @@ export default function IndexList(props: Props) {
           <Row className="split" key={`${idx} ${idx1}`}>
             {item1.map((item2: any, idx2: number) =>
               <Col span={8} key={`${idx} ${idx1} ${idx2}`} onClick={() => handleClick(item2)} className={itemClass || ''}>
-                <span className="circle"></span>
                 <div className="h2">{`${item2.name}`}</div>
               </Col>)}
           </Row>)}
@@ -60,26 +59,14 @@ export default function IndexList(props: Props) {
 const Wrapper = styled.div`
   padding: 10px;
   .h1{
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     color: #000;
   }
   .h2{
     padding-right: 8px;
     line-height: 30px;
-    font-size: 13px;
-    display: inline-block;
-    vertical-align: top;
   }
-  .circle{
-      width: 4px;
-      height: 4px;
-      display: inline-block;
-      vertical-align: top;
-      background: rgba(204,204,204,1);
-      margin: 13px;
-      border-radius: 50%;
-    }
   .ant-row{
     margin-bottom: 8px;
     &.split{

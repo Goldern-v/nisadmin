@@ -42,14 +42,14 @@ const SentNoticeView = lazy(() => import('src/modules/notice/page/SentNoticeView
 const LmsDetails = lazy(() => import('src/modules/lms/views/LmsDetails'))
 
 //护理制度
-const NursingRules = lazy(() => import('src/modules/nursingRules/NursingRules'))
-const NursingRulesTypeIndexSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeIndexSetting'))
-const NursingRulesTypeSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeSetting'))
+// const NursingRules = lazy(() => import('src/modules/nursingRules/NursingRules'))
+// const NursingRulesTypeIndexSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeIndexSetting'))
+// const NursingRulesTypeSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeSetting'))
 //护理制度 改版
-const NursingRulesNew = lazy(() => import('src/modules/nursingRulesNew/NursingRulesNew'))
-const NursingRulesNewDetail = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesNewDetail'))
-const NursingRulesPagePreview = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesPagePreview'))
-const NursingRulesNewEdit = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesNewEdit'))
+// const NursingRulesNew = lazy(() => import('src/modules/nursingRulesNew/NursingRulesNew'))
+// const NursingRulesNewDetail = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesNewDetail'))
+// const NursingRulesPagePreview = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesPagePreview'))
+// const NursingRulesNewEdit = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesNewEdit'))
 //健康宣教
 //const HealthPropagandaView = lazy(() => import('src/modules/healthPropaganda/HealthPropagandaView'))
 const HealthPropagandaEdit = lazy(() => import('src/modules/healthPropaganda/HealthPropagandaEdit'))
@@ -203,19 +203,19 @@ const routes: RouteItem[] = [
     redirect: '/statistic/护士排班表'
   },
   setLayout('/setting/:name', SettingView, layouts.MainLayout),
-  setLayout('/nursingRules', NursingRules, layouts.MainLayout),
-  setLayout('/nursingRulesTypeSetting', NursingRulesTypeSetting, layouts.BreadcrumbLayout, [
-    { name: '护理制度建设', link: '/nursingRules' },
-    { name: '类型设置', link: '' }
-  ]),
-  setLayout('/nursingRulesTypeIndexSetting', NursingRulesTypeIndexSetting, layouts.BreadcrumbLayout, [
-    { name: '护理制度建设', link: '/nursingRules' },
-    { name: '目录设置', link: '' }
-  ]),
-  setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
-  setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
-  setLayout('/NursingRulesPagePreView', NursingRulesPagePreview, layouts.MainLayout),
-  setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout),
+  // setLayout('/nursingRules', NursingRules, layouts.MainLayout),
+  // setLayout('/nursingRulesTypeSetting', NursingRulesTypeSetting, layouts.BreadcrumbLayout, [
+  //   { name: '护理制度建设', link: '/nursingRules' },
+  //   { name: '类型设置', link: '' }
+  // ]),
+  // setLayout('/nursingRulesTypeIndexSetting', NursingRulesTypeIndexSetting, layouts.BreadcrumbLayout, [
+  //   { name: '护理制度建设', link: '/nursingRules' },
+  //   { name: '目录设置', link: '' }
+  // ]),
+  // setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
+  // setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
+  // setLayout('/NursingRulesPagePreView', NursingRulesPagePreview, layouts.MainLayout),
+  // setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout),
   setLayout('/healthPropagandaEditNew/:id', HealthPropagandaEditNew),
   setLayout('/healthPropagandaEditNew', HealthPropagandaEditNew),
   // setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),

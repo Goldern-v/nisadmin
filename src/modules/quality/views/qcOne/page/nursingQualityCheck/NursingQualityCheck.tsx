@@ -273,7 +273,8 @@ export default observer(function NursingQualityCheck() {
   const handleEdit = (record: any) => {
     let query = {
       date: moment(record.recordDate).format('YYYY-MM-DD'),
-      type: 'edit'
+      type: 'edit',
+      id: record.id
     }
     history.push(`/nursingQualityCheckEdit?${qs.stringify(query)}`)
   }

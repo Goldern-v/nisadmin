@@ -1,35 +1,29 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Progress, Modal, message as Message, message } from 'antd'
+import { Button, Progress, Modal, message as Message } from 'antd'
 import { editPageModel } from './../../models/editPageModel'
 import { observer } from 'mobx-react-lite'
-// import { getFileSize } from 'src/utils/file/file'
-import { appStore } from 'src/stores'
+import { getFileSize } from 'src/utils/file/file'
 export interface Props { }
 
 export default observer(function PagesUploader() {
   let [fileElVisible, setFileElVisible] = useState(false)
   let [files, setFiles] = useState([] as any)
   let [uploadIdx, setUploaddIdx] = useState(0)
-  // let [progressVisible, setProgressVisible] = useState(false)
+  let [progressVisible, setProgressVisible] = useState(false)
 
 
-  const { fileList, uploadLoading, indexParams } = editPageModel;
+  const { fileList, uploadLoading } = editPageModel;
   const accept = 'image/*,.pdf'
 
-  // useEffect(() => {
-  //   setTimeout(() => setProgressVisible(uploadLoading), 500)
-  // }, [uploadLoading])
+
+  useEffect(() => {
+    setTimeout(() => setProgressVisible(uploadLoading), 500)
+  }, [uploadLoading])
 
   const handleFileChange = (e: any) => {
     let files = e.target.files;
-
     if (files && files.length > 0) {
-
-      if (appStore.fullLoadingBarObj) {
-        return message.warning('正在上传文件，请不要操作电脑。')
-      }
-
       setFiles(files)
       uploadFiles(files)
     }
@@ -37,12 +31,6 @@ export default observer(function PagesUploader() {
   }
 
   const handleUploadClick = () => {
-
-    if (indexParams.length <= 0) {
-      message.warning('未上传目录')
-      return
-    }
-
     setFileElVisible(true)
     setTimeout(() => {
       let fileEl = document.getElementById('pages-uploader-file');
@@ -72,9 +60,7 @@ export default observer(function PagesUploader() {
           title: '提示',
           content: content
         })
-        appStore.closeFullLoadingBar('上传结束')
       } else {
-        appStore.closeFullLoadingBar('上传成功')
         Message.success('上传成功')
       }
       return
@@ -84,49 +70,24 @@ export default observer(function PagesUploader() {
       editPageModel.setUploadLoading(true)
     }
 
-
-    appStore.openFullLoadingBar({
-      aside: `正在上传文件，请不要操作电脑。当前第${_uploadIdx + 1}/${files.length}个文件`,
-      progress: `${parseInt((_uploadIdx / files.length * 10000).toString()) / 100}%`,
-      isFullpage: true
-    })
-
     editPageModel.uploadFile(files[_uploadIdx], (res: any) => {
-      let newList = [...editPageModel.fileList]
-      let sameItem = newList.find((item: any) => item.fileName == files[_uploadIdx].name)
-
       if (res && res.data) {
         let data = res.data
+        let newList = [...editPageModel.fileList]
+
+        let sameItem = newList.find((item: any) => item.fileName == data.fileName)
 
         if (sameItem) {
           let replaceIdx = newList.indexOf(sameItem)
 
-          newList[replaceIdx] = { ...data, status: 'success' }
+          newList[replaceIdx] = data
         } else {
-          newList.push({ ...data, status: 'success' })
+          newList.push(data)
         }
-
+        editPageModel.setFileList(newList)
       } else {
-        let failItem = {
-          fileName: files[_uploadIdx].name,
-          filePath: '',
-          fileSize: files[_uploadIdx].size,
-          status: 'fail'
-        }
-
-        if (sameItem) {
-          let replaceIdx = newList.indexOf(sameItem)
-          newList[replaceIdx] = failItem
-        } else {
-          newList.push(failItem)
-        }
-
         _errors.push(files[_uploadIdx].name)
       }
-
-
-
-      editPageModel.setFileList(newList)
 
       _uploadIdx++
       uploadFiles(files, _uploadIdx, _errors)
@@ -135,44 +96,44 @@ export default observer(function PagesUploader() {
 
   const FileInput = () => {
     if (fileElVisible) {
-      return <input type="file" className="file-input" id="pages-uploader-file" accept={accept} multiple onChange={handleFileChange} />
+      return <input type="file" id="pages-uploader-file" accept={accept} multiple onChange={handleFileChange} />
     } else {
-      return <span className="file-input"></span>
+      return <span></span>
     }
   }
 
-  // const totalSize = () => {
-  //   let size = 0;
-  //   for (let i = 0; i < fileList.length; i++) {
-  //     size += parseInt(fileList[i].fileSize.toString())
-  //   }
+  const totalSize = () => {
+    let size = 0;
+    for (let i = 0; i < fileList.length; i++) {
+      size += parseInt(fileList[i].fileSize.toString())
+    }
 
-  //   return getFileSize(size)
-  // }
+    return getFileSize(size)
+  }
 
-  // const deleteAllFile = () => {
-  //   Modal.confirm({
-  //     title: '删除文件',
-  //     content: '是否删除全部已上传文件?',
-  //     centered: true,
-  //     onOk: () => {
-  //       editPageModel.deletAllFile((success: boolean) => {
-  //         if (success) Message.success('删除成功')
-  //       })
-  //     }
-  //   })
-  // }
+  const deleteAllFile = () => {
+    Modal.confirm({
+      title: '删除文件',
+      content: '是否删除全部已上传文件?',
+      centered: true,
+      onOk: () => {
+        editPageModel.deletAllFile((success: boolean) => {
+          if (success) Message.success('删除成功')
+        })
+      }
+    })
+  }
 
-  // const precent = parseInt((uploadIdx / files.length * 10000).toString()) / 100
+  const precent = parseInt((uploadIdx / files.length * 10000).toString()) / 100
 
   return <Wrapper>
     <div className="status-pannel">
       <Button
         onClick={handleUploadClick}
         disabled={uploadLoading}>
-        文件批量上传
+        点击上传
       </Button>
-      {/* <span
+      <span
         className="info"
         style={{ display: uploadLoading || fileList.length > 0 ? 'inline-block' : 'none' }}>
         (已上传{fileList.length}个文件，共{totalSize()})
@@ -181,21 +142,25 @@ export default observer(function PagesUploader() {
         className="progress"
         style={{ display: progressVisible ? 'inline-block' : 'none' }}>
         <Progress percent={precent} size="small" status="active" />
-      </span> */}
-      {/* <Button
+      </span>
+      <Button
         onClick={deleteAllFile}
         disabled={uploadLoading}
         style={{ display: !uploadLoading && fileList.length > 0 ? 'inline-block' : 'none' }}>
         清空上传文件
-      </Button> */}
+      </Button>
       {FileInput()}
+      <span
+        className="tips"
+        style={{ display: fileList.length <= 0 ? 'inline-block' : 'none' }}>
+        (请将书籍每一页拆分好，并设置文件名称为页码数字，文件目前只支持pdf和图片格式)
+      </span>
     </div>
   </Wrapper>
 })
 
 
 const Wrapper = styled.div`
-  display:inline-block;
   .info,.tips{
     color: #999;
   }
@@ -204,8 +169,8 @@ const Wrapper = styled.div`
       margin-right: 10px;
     }
   }
-  .file-input{
-    display: none;
+  input[type="file"]{
+    display: none
   }
   .progress{
     display: inline-block;
