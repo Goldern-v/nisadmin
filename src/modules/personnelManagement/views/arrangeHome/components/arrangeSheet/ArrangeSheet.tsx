@@ -293,43 +293,33 @@ export default observer(function ArrangeSheet(props: Props) {
               ".drop-over-downward,  .drop-over-upward"
             ).offsetParent.offsetParent.className;
 
+            let sheetTableData = cloneJson(sheetViewModal.sheetTableData);
+            let rightList = sheetTableData.map((item: any) => {
+              return item.settingDtos;
+            });
+            let leftList = sheetTableData.map((item: any) => {
+              delete item.settingDtos;
+              return item;
+            });
+
             if (pc == "ant-table-body") {
               /** min */
-              const dragRow = sheetViewModal.sheetTableData[dragIndex];
-              const hoverRow = sheetViewModal.sheetTableData[hoverIndex];
-              let dragRow_settingDtos = dragRow.settingDtos;
-              let hoverRow_settingDtos = hoverRow.settingDtos;
-              dragRow.settingDtos = hoverRow_settingDtos;
-              hoverRow.settingDtos = dragRow_settingDtos;
+              rightList = update(rightList, {
+                $splice: [[dragIndex, 1], [hoverIndex, 0, rightList[dragIndex]]]
+              });
             } else if (pc == "ant-table-body-outer") {
               /** left */
-              const dragRow = cloneJson(
-                sheetViewModal.sheetTableData[dragIndex]
-              );
-              const hoverRow = cloneJson(
-                sheetViewModal.sheetTableData[hoverIndex]
-              );
-
-              // let keys = Object.keys(dragRow).filter((item: any) => item !== 'settingDtos')
-              // let copyObj: any = {}
-              // keys.forEach((item: any) => (copyObj[item] = dragRow[item]))
-              // keys.forEach((item: any) => (dragRow[item] = hoverRow[item]))
-              // keys.forEach((item: any) => (hoverRow[item] = copyObj[item]))
-
-              let dragRow_settingDtos = dragRow.settingDtos;
-              let hoverRow_settingDtos = hoverRow.settingDtos;
-              dragRow.settingDtos = hoverRow_settingDtos;
-              hoverRow.settingDtos = dragRow_settingDtos;
-              let list: any = [...sheetViewModal.sheetTableData];
-              [list[dragIndex], list[hoverIndex]] = [hoverRow, dragRow];
-              sheetViewModal.sheetTableData = list;
-              // setTimeout(() => {
-              //   let arr = update(sheetViewModal.sheetTableData, {
-              //     $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-              //   });
-              //   sheetViewModal.sheetTableData = [...arr];
-              // }, 1000);
+              leftList = update(leftList, {
+                $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]]
+              });
             }
+
+            let list = leftList.map((item: any, index: number) => {
+              item.settingDtos = rightList[index];
+              return item;
+            });
+            sheetViewModal.sheetTableData = list;
+            sheetViewModal.allCell = sheetViewModal.getAllCell(true);
           } catch (error) {}
         }}
       />

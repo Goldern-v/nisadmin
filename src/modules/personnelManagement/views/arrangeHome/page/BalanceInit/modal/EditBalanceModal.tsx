@@ -129,7 +129,11 @@ export default function EditBalanceModal(props: Props) {
               <DatePicker disabledDate={disabledDate} />
             </Form.Field>
           </Col>
-
+          <Col span={24}>
+            <Form.Field label={`工时结余`} name="balanceHourNow">
+              <InputNumber />
+            </Form.Field>
+          </Col>
           <Col span={24}>
             <Form.Field label={`公休结余`} name="publicHourNow">
               <InputNumber />
@@ -140,11 +144,7 @@ export default function EditBalanceModal(props: Props) {
               <InputNumber />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`工时结余`} name="balanceHourNow">
-              <InputNumber />
-            </Form.Field>
-          </Col>
+
           <Col span={24}>
             <Form.Field label={`备注`} name="remark">
               <Input.TextArea

@@ -30,11 +30,11 @@ module.exports = function (app) {
       // target: 'http://192.168.1.20:8964',
       // 广豪
       // target: 'http://192.168.2.144:8080',
-      target: 'http://120.25.105.45:9864',
+      // target: 'http://120.25.105.45:9864',
       //正式环境
       // target: 'http://120.197.141.41:9094',
       //武汉测试
-      // target: 'http://nurse.cr-health.com:34002',
+      target: 'http://nurse.cr-health.com:34002',
       secure: false,
       changeOrigin: true
     })
