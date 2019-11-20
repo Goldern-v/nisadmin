@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, message as Message, Spin, Upload, Icon, message, Input } from 'antd'
+import { Button, message as Message, Tooltip, Upload, Icon, message, Input } from 'antd'
 import { Link } from 'react-router-dom'
 import { appStore, authStore } from 'src/stores'
 import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
@@ -394,7 +394,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       }).then(res => {
         setLoading(false)
         message.success('文件已提交,待护理部审核', 1, () => {
-          history.replace(`/nursingRulesNewDetail?bookId=${search.bookId}`)
+          // history.replace(`/nursingRulesNewDetail?bookId=${search.bookId}`)
+          history.goBack()
         })
       }, () => setLoading(false))
     }
@@ -414,7 +415,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         .then(res => {
           setLoading(false)
           message.success('修订已提交,待护理部审核', 1, () => {
-            history.replace(`/nursingRulesNewDetail?bookId=${search.bookId}`)
+            // history.replace(`/nursingRulesNewDetail?bookId=${search.bookId}`)
+            history.goBack()
           })
         }, (err) => setLoading(false))
     }
@@ -455,14 +457,15 @@ export default observer(function NursingRulesPagePreview(props: Props) {
             if (fileNameIpt) fileNameIpt.value = fileName
           }
         }} id="reversionIpt" />
-        <Button
-          title={noticeText}
-          onClick={() => {
-            let target = document.getElementById('reversionIpt')
-            if (target) target.click()
-          }}>
-          <span>...</span>
-        </Button>
+        <Tooltip title={noticeText}>
+          <Button
+            onClick={() => {
+              let target = document.getElementById('reversionIpt')
+              if (target) target.click()
+            }}>
+            <span>...</span>
+          </Button>
+        </Tooltip>
       </div>
     </React.Fragment>
 
@@ -500,6 +503,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         <UploadCon>
           <Dragger
             accept="image/*,.pdf"
+            className="ant-dragger"
             beforeUpload={uploadFile}>
             <p className="ant-upload-drag-icon">
               <Icon type="cloud-upload" />
@@ -508,6 +512,18 @@ export default observer(function NursingRulesPagePreview(props: Props) {
             <p className="ant-upload-hint">请上传 {chapter.fileName || ''}</p>
           </Dragger>
         </UploadCon>
+      </div>
+    }
+
+    if (!viewType && chapter && chapter.isFileUploaded == 1 && chapter.fileStatus == 1) {
+      return <div
+        className='content-message page-item'
+        style={{
+          fontSize: '16px',
+          color: '#00A680',
+          lineHeight: `${contentHeight / 2 + 100}px`
+        }}>
+        <Icon type="solution" /> 文件已上传,待审核
       </div>
     }
 
@@ -885,6 +901,11 @@ const Wrapper = styled.div`
           }
         }
       }
+    }
+  }
+  .ant-dragger{
+    .ant-upload{
+      padding: 16px 10px;
     }
   }
 `
