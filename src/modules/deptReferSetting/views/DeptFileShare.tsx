@@ -1,116 +1,117 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Button, Modal, message as Message, Select } from 'antd'
-import { Link } from 'react-router-dom'
-import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { ColumnProps } from 'antd/lib/table'
-import DeptSelect from 'src/components/DeptSelect'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import { Button, Modal, message as Message, Select } from "antd";
+import { Link } from "react-router-dom";
+import BaseTable, { DoCon } from "src/components/BaseTable";
+import { ColumnProps } from "antd/lib/table";
+import DeptSelect from "src/components/DeptSelect";
 
-import DeptFileEditModal from './../components/DeptFileEditModal'
-import PreviewModal from './../components/PreviewModal'
-import createModal from 'src/libs/createModal'
+import DeptFileEditModal from "./../components/DeptFileEditModal";
 
-import DeptFielShareService from './../api/DeptFielShareService'
+import createModal from "src/libs/createModal";
 
-const api = new DeptFielShareService()
+import DeptFielShareService from "./../api/DeptFielShareService";
+import PreviewModal from "src/utils/file/modal/PreviewModal";
 
-export interface Props extends RouteComponentProps { }
+const api = new DeptFielShareService();
 
-const Option = Select.Option
+export interface Props extends RouteComponentProps {}
+
+const Option = Select.Option;
 
 export default function DeptFileShare() {
-  const [tableData, setTableData] = useState([] as any)
-  const [dataTotal, setDataTotal] = useState(0 as number)
+  const [tableData, setTableData] = useState([] as any);
+  const [dataTotal, setDataTotal] = useState(0 as number);
 
-  const [editParams, setEditParams] = useState({} as any)
+  const [editParams, setEditParams] = useState({} as any);
 
-  const [editVisible, setEditVisible] = useState(false)
+  const [editVisible, setEditVisible] = useState(false);
 
-  const PreviewModalWrapper = createModal(PreviewModal)
+  const PreviewModalWrapper = createModal(PreviewModal);
 
-  const [catalogList, setCatalogList] = useState([] as any)
+  const [catalogList, setCatalogList] = useState([] as any);
 
   const [query, setQuery] = useState({
-    deptCode: '',
-    fileName: '',
-    catalog: '',
+    deptCode: "",
+    fileName: "",
+    catalog: "",
     pageSize: 20,
     pageIndex: 1
-  } as any)
+  } as any);
   // useEffect(() => {
 
   // }, []);
 
   useEffect(() => {
     if (query.deptCode) {
-      getTableData()
+      getTableData();
     }
-  }, [query])
+  }, [query]);
 
-  const [tableLoading, setTableLoading] = useState(false)
+  const [tableLoading, setTableLoading] = useState(false);
 
   const columns: ColumnProps<any>[] = [
     {
-      title: '序号',
-      dataIndex: 'key',
-      key: 'key',
+      title: "序号",
+      dataIndex: "key",
+      key: "key",
       width: 50,
-      align: 'center',
+      align: "center",
       render: (text: string, record: any, index: number) => {
-        const { pageIndex, pageSize } = query
-        return (pageIndex - 1) * pageSize + index + 1
+        const { pageIndex, pageSize } = query;
+        return (pageIndex - 1) * pageSize + index + 1;
       }
     },
     {
-      title: '文件名称',
-      dataIndex: 'fileName',
-      key: 'fileName',
-      className: 'align-left',
-      align: 'left',
+      title: "文件名称",
+      dataIndex: "fileName",
+      key: "fileName",
+      className: "align-left",
+      align: "left",
       render: (text: string) => {
         return (
-          <div className='rule-name' title={text}>
+          <div className="rule-name" title={text}>
             {text}
           </div>
-        )
+        );
       }
     },
     {
-      title: '文件格式',
-      key: 'fileType',
-      align: 'center',
+      title: "文件格式",
+      key: "fileType",
+      align: "center",
       width: 80,
       render: (text: string, record: any) => {
-        let typeArr = record.originalFileName.split('.')
-        return typeArr[typeArr.length - 1] || ''
+        let typeArr = record.originalFileName.split(".");
+        return typeArr[typeArr.length - 1] || "";
       }
     },
     {
-      title: '目录',
-      dataIndex: 'catalog',
-      key: 'catalog',
-      align: 'center',
+      title: "目录",
+      dataIndex: "catalog",
+      key: "catalog",
+      align: "center",
       width: 180
     },
     {
-      title: '上传日期',
-      dataIndex: 'uploadTime',
-      key: 'uploadTime',
-      align: 'center',
+      title: "上传日期",
+      dataIndex: "uploadTime",
+      key: "uploadTime",
+      align: "center",
       width: 150
     },
     {
-      title: '上传人',
-      dataIndex: 'empName',
-      key: 'empName',
-      align: 'center',
+      title: "上传人",
+      dataIndex: "empName",
+      key: "empName",
+      align: "center",
       width: 70
     },
     {
-      title: '操作',
-      key: 'opetation',
-      align: 'center',
+      title: "操作",
+      key: "opetation",
+      align: "center",
       width: 140,
       render: (text: string, record: any) => {
         return (
@@ -120,52 +121,52 @@ export default function DeptFileShare() {
             <span onClick={() => handleDelete(record)}>删除</span>
             <span onClick={() => handleDownload(record)}>下载</span>
           </DoCon>
-        )
+        );
       }
     }
-  ]
+  ];
 
   const handlePreview = (record: any) => {
-    let typeArr = record.originalFileName.split('.')
+    let typeArr = record.originalFileName.split(".");
 
     PreviewModalWrapper.show({
-      url: `/crNursing/asset/deptShareFile${record.path}`,
-      type: typeArr[typeArr.length - 1],
-      name: record.fileName
-    })
-  }
+      path: `/crNursing/asset/deptShareFile${record.path}`,
+      // type: typeArr[typeArr.length - 1],
+      title: record.fileName
+    });
+  };
   const reUpload = (record: any) => {
     setEditParams({
       id: record.id,
       fileName: record.fileName,
-      catalog: record.catalog || ''
-    })
-    setEditVisible(true)
-  }
+      catalog: record.catalog || ""
+    });
+    setEditVisible(true);
+  };
 
   const fileDownload = (res: any, record?: any) => {
-    let fileType: any = record.originalFileName.split('.')
-    fileType = fileType[fileType.length - 1]
-    let filename = [record.fileName, fileType].join('.')
+    let fileType: any = record.originalFileName.split(".");
+    fileType = fileType[fileType.length - 1];
+    let filename = [record.fileName, fileType].join(".");
     // decodeURIComponent
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
     // "application/json"
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
-    })
+    });
     // console.log('fileDownload', res)
     // if (res.data.type && res.data.type.indexOf('excel') > -1) {
     if (true) {
-      let a = document.createElement('a')
-      let href = window.URL.createObjectURL(blob) // 创建链接对象
-      a.href = href
-      a.download = filename // 自定义文件名
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(href)
-      document.body.removeChild(a) // 移除a元素
+      let a = document.createElement("a");
+      let href = window.URL.createObjectURL(blob); // 创建链接对象
+      a.href = href;
+      a.download = filename; // 自定义文件名
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(href);
+      document.body.removeChild(a); // 移除a元素
     }
-  }
+  };
 
   const handleDelete = (record: any) => {
     let content = (
@@ -173,93 +174,93 @@ export default function DeptFileShare() {
         <div>您确定要删除选中的记录吗？</div>
         <div>删除后将无法恢复。</div>
       </div>
-    )
+    );
     Modal.confirm({
-      title: '提示',
+      title: "提示",
       content,
-      okText: '确定',
-      okType: 'danger',
-      cancelText: '取消',
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
       onOk: () => {
         api
           .delete(record.id)
-          .then((res) => {
+          .then(res => {
             if (res.code == 200) {
-              Message.success('文件删除成功')
-              getTableData()
-            } else Message.error('文件删除失败')
+              Message.success("文件删除成功");
+              getTableData();
+            } else Message.error("文件删除失败");
           })
-          .catch((err) => {
-            Message.error('文件删除失败')
-          })
+          .catch(err => {
+            Message.error("文件删除失败");
+          });
       }
-    })
-  }
+    });
+  };
 
   const handleDeptChange = (deptCode: any) => {
-    setQuery({ ...query, deptCode, catalog: '' })
-    api.getCatalog({ deptCode }).then((res) => {
-      if (res.data) setCatalogList(res.data)
-    })
-  }
+    setQuery({ ...query, deptCode, catalog: "" });
+    api.getCatalog({ deptCode }).then(res => {
+      if (res.data) setCatalogList(res.data);
+    });
+  };
 
   const handleEditCancel = () => {
-    setEditVisible(false)
-    setEditParams({})
-  }
+    setEditVisible(false);
+    setEditParams({});
+  };
 
   const handleEditOk = () => {
-    getTableData()
-    handleEditCancel()
-  }
+    getTableData();
+    handleEditCancel();
+  };
 
   const getTableData = () => {
-    setTableLoading(true)
-    console.log(123)
+    setTableLoading(true);
+    console.log(123);
 
     api.getList(query).then(
-      (res) => {
-        setTableLoading(false)
+      res => {
+        setTableLoading(false);
         if (res.data) {
-          setDataTotal(res.data.totalCount || 0)
-          console.log(res.data.list)
-          setTableData(res.data.list)
+          setDataTotal(res.data.totalCount || 0);
+          console.log(res.data.list);
+          setTableData(res.data.list);
         }
       },
-      (err) => {
-        setTableLoading(false)
+      err => {
+        setTableLoading(false);
       }
-    )
-  }
+    );
+  };
 
   const handleDownload = (record: any) => {
-    api.getFileContent(record.id).then((res) => {
-      fileDownload(res, record)
-    })
-  }
+    api.getFileContent(record.id).then(res => {
+      fileDownload(res, record);
+    });
+  };
 
   return (
     <Wrapper>
-      <div className='topbar'>
-        <div className='float-left'>
-          <div className='item title'>病区文件</div>
+      <div className="topbar">
+        <div className="float-left">
+          <div className="item title">病区文件</div>
         </div>
-        <div className='float-right'>
-          <div className='item'>
-            <div className='label'>科室：</div>
-            <div className='content'>
+        <div className="float-right">
+          <div className="item">
+            <div className="label">科室：</div>
+            <div className="content">
               <DeptSelect onChange={handleDeptChange} />
             </div>
           </div>
-          <div className='item'>
-            <div className='label'>目录：</div>
-            <div className='content'>
+          <div className="item">
+            <div className="label">目录：</div>
+            <div className="content">
               <Select
                 value={query.catalog}
                 onChange={(catalog: any) => setQuery({ ...query, catalog })}
                 style={{ width: 150 }}
               >
-                <Option value=''>全部</Option>
+                <Option value="">全部</Option>
                 {catalogList.map((item: any, index: number) => (
                   <Option value={item.catalog} key={item.id}>
                     {item.catalog}
@@ -268,30 +269,32 @@ export default function DeptFileShare() {
               </Select>
             </div>
           </div>
-          <div className='item link'>
-            <Link to='/deptFileShareCatalogSetting'>目录设置</Link>
+          <div className="item link">
+            <Link to="/deptFileShareCatalogSetting">目录设置</Link>
           </div>
-          <div className='item'>
+          <div className="item">
             <Button onClick={() => getTableData()}>查询</Button>
           </div>
-          <div className='item'>
-            <Button type='primary' onClick={() => setEditVisible(true)}>
+          <div className="item">
+            <Button type="primary" onClick={() => setEditVisible(true)}>
               添加
             </Button>
           </div>
         </div>
       </div>
-      <div className='main-contain'>
+      <div className="main-contain">
         <BaseTable
           columns={columns}
-          rowKey='id'
+          rowKey="id"
           dataSource={tableData}
           loading={tableLoading}
           surplusHeight={235}
           pagination={{
-            pageSizeOptions: ['10', '20', '30', '40', '50'],
-            onShowSizeChange: (pageIndex, pageSize) => setQuery({ ...query, pageSize }),
-            onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex }),
+            pageSizeOptions: ["10", "20", "30", "40", "50"],
+            onShowSizeChange: (pageIndex, pageSize) =>
+              setQuery({ ...query, pageSize }),
+            onChange: (pageIndex, pageSize) =>
+              setQuery({ ...query, pageIndex }),
             total: dataTotal,
             showSizeChanger: true,
             showQuickJumper: true,
@@ -310,7 +313,7 @@ export default function DeptFileShare() {
       />
       <PreviewModalWrapper.Component />
     </Wrapper>
-  )
+  );
 }
 const Wrapper = styled.div`
   position: relative;
@@ -392,4 +395,4 @@ const Wrapper = styled.div`
       }
     }
   }
-`
+`;
