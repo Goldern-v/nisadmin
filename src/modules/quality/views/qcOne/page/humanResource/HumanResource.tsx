@@ -38,18 +38,7 @@ export default observer(function HumanResource() {
       code: '',
       name: '全部'
     },
-    {
-      code: '1',
-      name: '档案转科'
-    },
-    {
-      code: '2',
-      name: '片区转科'
-    },
-    {
-      code: '3',
-      name: '排班人员临时调科'
-    }
+    ...qcOneSelectViewModal.hrType
   ]
 
   const columns: ColumnProps<any>[] = [
@@ -70,12 +59,10 @@ export default observer(function HumanResource() {
       align: 'center',
       width: 130,
       render(text: any, record: any, index: number) {
-        switch (text) {
-          case '1': return '档案转科'
-          case '2': return '片区转科'
-          case '3': return '排班人员临时调科'
-          default: return ''
-        }
+        let target = qcOneSelectViewModal.hrType.find((item: any) =>
+          item.code == text)
+        if (target) return target.name
+        return ''
       }
     },
     // {

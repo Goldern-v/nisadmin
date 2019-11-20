@@ -309,7 +309,7 @@ export default observer(function NursingQualityCheck() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        <PageTitle>病区质量检查</PageTitle>
+        <PageTitle className="page-title">病区质量检查</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>日期:</span>
@@ -423,7 +423,13 @@ const HeaderCon = styled(TableHeadCon)`
 }
 
 `
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  .page-title{
+    @media (max-width: 1465px) {
+      display: none;
+    }
+  }
+`
 
 const LeftIcon = styled.div`
   height: 55px;

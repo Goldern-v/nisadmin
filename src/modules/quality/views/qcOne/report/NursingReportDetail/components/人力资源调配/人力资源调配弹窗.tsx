@@ -27,23 +27,7 @@ export default function 人力资源调配弹窗(props: Props) {
       width: 50,
       align: 'center'
     },
-    {
-      title: '调配方式',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.typeName}
-            onChange={(e) => {
-              record.typeName = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
+
     {
       title: `姓名`,
       render(text: any, record: DeptItem, index: number) {
@@ -62,7 +46,41 @@ export default function 人力资源调配弹窗(props: Props) {
       width: 100
     },
     {
-      title: `调往科室`,
+      title: '调配方式',
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.typeName}
+            onChange={(e) => {
+              record.typeName = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
+    {
+      title: `原科室`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.wardName}
+            onChange={(e) => {
+              record.wardName = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
+    {
+      title: `新科室`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -136,11 +154,13 @@ export default function 人力资源调配弹窗(props: Props) {
 
   const addItem = () => {
     cloneData.list.push({
-      id: '',
-      itemCode: '',
-      itemName: '',
-      itemImproveDesc: '',
-      result: ''
+      anotherWardName: "",
+      empName: "",
+      id: "",
+      wardName: '',
+      remark: "",
+      typeName: "",
+      duration: '',
     })
     setData(cloneData)
   }

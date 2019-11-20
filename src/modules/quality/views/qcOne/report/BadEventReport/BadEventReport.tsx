@@ -38,7 +38,7 @@ export default observer(function BadEventReport() {
   } = authStore
 
   const defaultQuery = {
-    wardCode: wardCode,
+    wardCode: '',
     pageIndex: 1,
     status: '',
     year: moment().format('YYYY'),
@@ -318,13 +318,13 @@ export default observer(function BadEventReport() {
       appStore.history &&
       (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
     ) {
-      let newWardCode = qcOneSelectViewModal.initWardCode()
-      if (query.wardCode === newWardCode) {
-        getList(query)
-      } else {
-        setQuery({ ...query, wardCode: newWardCode })
-      }
-
+      // let newWardCode = qcOneSelectViewModal.initWardCode()
+      // if (query.wardCode === newWardCode) {
+      //   getList(query)
+      // } else {
+      //   setQuery({ ...query, wardCode: newWardCode })
+      // }
+      getList(query)
     }
     return () => { }
   })

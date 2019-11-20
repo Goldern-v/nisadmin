@@ -60,11 +60,11 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
-          <col width='20%' />
-          <col width='20%' />
+          <col width='12.5%' />
+          <col width='12.5%' />
           <col width='15%' />
-          <col width='25%' />
-          <col width='15%' />
+          <col width='27.5%' />
+          <col width='27.5%' />
         </colgroup>
         <tbody>
           <tr className='header'>

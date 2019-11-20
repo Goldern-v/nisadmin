@@ -18,26 +18,30 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
-          <col width='80' />
-          <col width='80' />
-          <col width='120' />
+          <col width='12%' />
+          <col width='14%' />
+          <col width='15%' />
+          <col width='15%' />
+          <col width='12%' />
         </colgroup>
         <tbody>
           <tr className='header'>
             <td>姓名</td>
-            <td>工号</td>
-            <td>调配时间</td>
-            <td>调出科室</td>
-            <td>调入科室</td>
+            <td>调配方式</td>
+            <td>原科室</td>
+            <td>新科室</td>
+            <td>开始时间</td>
+            <td>事由</td>
           </tr>
 
           {list.map((item, index) => (
             <tr key={index}>
               <td style={{ textAlign: 'center' }}>{item.empName}</td>
-              <td style={{ textAlign: 'center' }}>{item.empNo}</td>
-              <td>{item.allocationDate}</td>
+              <td>{item.typeName}</td>
               <td>{item.transferOutWardName}</td>
               <td>{item.transferInWardName}</td>
+              <td style={{ textAlign: 'center' }}>{item.allocationDate}</td>
+              <td>{item.remark}</td>
             </tr>
           ))}
         </tbody>

@@ -29,9 +29,9 @@ export default function 本月片区人力资源调配弹窗(props: Props) {
       width: 50,
       align: 'center'
     },
+
     {
-      title: '姓名',
-      key: '姓名',
+      title: `姓名`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -45,19 +45,18 @@ export default function 本月片区人力资源调配弹窗(props: Props) {
           />
         )
       },
-      width: 80
+      width: 100
     },
     {
-      title: '工号',
-      key: '工号',
+      title: '调配方式',
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
             type='text'
             className='cell-input'
-            value={record.empNo}
+            value={record.typeName}
             onChange={(e) => {
-              record.empNo = e.target.value
+              record.typeName = e.target.value
               setData(cloneData)
             }}
           />
@@ -66,26 +65,7 @@ export default function 本月片区人力资源调配弹窗(props: Props) {
       width: 100
     },
     {
-      title: `调配时间`,
-      key: '调配时间',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <DatePicker
-            className='cell-input'
-            value={record.allocationDate ? moment(record.allocationDate) : undefined}
-            onChange={(val) => {
-              let newDate = val.format('YYYY-MM-DD')
-              record.allocationDate = newDate || ''
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 150
-    },
-    {
-      title: `调出科室`,
-      key: '调出科室',
+      title: `原科室`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -99,11 +79,10 @@ export default function 本月片区人力资源调配弹窗(props: Props) {
           />
         )
       },
-      width: 150
+      width: 100
     },
     {
-      title: `调入科室`,
-      key: '调入科室',
+      title: `新科室`,
       render(text: any, record: DeptItem, index: number) {
         return (
           <input
@@ -117,8 +96,43 @@ export default function 本月片区人力资源调配弹窗(props: Props) {
           />
         )
       },
-      width: 150
+      width: 100
     },
+    {
+      title: `开始时间`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.allocationDate}
+            onChange={(e) => {
+              record.allocationDate = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
+    {
+      title: `事由`,
+      render(text: any, record: DeptItem, index: number) {
+        return (
+          <input
+            type='text'
+            className='cell-input'
+            value={record.remark}
+            onChange={(e) => {
+              record.remark = e.target.value
+              setData(cloneData)
+            }}
+          />
+        )
+      },
+      width: 100
+    },
+
     {
       title: '操作',
       key: '操作',
@@ -142,12 +156,13 @@ export default function 本月片区人力资源调配弹窗(props: Props) {
 
   const addItem = () => {
     cloneData.list.push({
-      id: '',
-      empName: '',
-      empNo: '',
-      allocationDate: '',
+      transferInWardName: "",
+      empName: "",
+      id: "",
       transferOutWardName: '',
-      transferInWardName: ''
+      remark: "",
+      typeName: "",
+      allocationDate: '',
     })
     setData(cloneData)
   }

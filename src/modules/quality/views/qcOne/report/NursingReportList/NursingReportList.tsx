@@ -43,7 +43,7 @@ export default observer(function NursingReportList() {
     pageIndex: 1,
     pageSize: 20,
     status: '',
-    wardCode: wardCode
+    wardCode: ''
   } as any
 
   const [query, setQuery] = useState(defaultQuery)
@@ -70,12 +70,13 @@ export default observer(function NursingReportList() {
       appStore.history &&
       (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
     ) {
-      let newWardCode = qcOneSelectViewModal.initWardCode()
-      if (query.wardCode === newWardCode) {
-        getTableData()
-      } else {
-        setQuery({ ...query, wardCode: newWardCode })
-      }
+      getTableData()
+      // let newWardCode = qcOneSelectViewModal.initWardCode()
+      // if (query.wardCode === newWardCode) {
+      //   getTableData()
+      // } else {
+      //   setQuery({ ...query, wardCode: newWardCode })
+      // }
     }
     return () => { }
   })

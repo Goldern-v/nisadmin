@@ -38,7 +38,7 @@ export default observer(function NursingWorkPlainList() {
   } = authStore
 
   const defaultQuery = {
-    wardCode: wardCode,
+    wardCode: '',
     pageIndex: 1,
     status: '',
     year: moment().format('YYYY'),
@@ -323,12 +323,13 @@ export default observer(function NursingWorkPlainList() {
       appStore.history &&
       (appStore.history.action === 'POP' || appStore.history.action === 'PUSH')
     ) {
-      let newWardCode = qcOneSelectViewModal.initWardCode()
-      if (query.wardCode === newWardCode) {
-        getList(query)
-      } else {
-        setQuery({ ...query, wardCode: newWardCode })
-      }
+      getList(query)
+      // let newWardCode = qcOneSelectViewModal.initWardCode()
+      // if (query.wardCode === newWardCode) {
+      //   getList(query)
+      // } else {
+      //   setQuery({ ...query, wardCode: newWardCode })
+      // }
     }
     return () => { }
   })

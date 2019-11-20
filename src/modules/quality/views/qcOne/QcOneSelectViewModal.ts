@@ -41,6 +41,21 @@ class QcOneSelectViewModal {
     { name: '已归档', code: '3' },
   ]
 
+  @observable public hrType = [
+    {
+      code: '1',
+      name: '岗位变动'
+    },
+    {
+      code: '2',
+      name: '片区内调动'
+    },
+    {
+      code: '3',
+      name: '临时借调'
+    }
+  ]
+
   @computed get statusObj() {
     // console.log('statusObj')
     let obj = {} as any

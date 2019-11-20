@@ -22,7 +22,12 @@ export default function QcCheckContentSettingEditModal(props: Props) {
 
   const rules: Rules = {
     itemName: (val) => !!val || '质控内容不能为空',
-    indexNo: (val) => !!val || '排序号不能为空',
+    indexNo: (val) => {
+      let num = parseInt(val, 10)
+      if (val.trim() === '') return '排序号不能为空'
+      if (isNaN(num) || num.toString().length !== val.length) return '排序号必须为整数'
+      return true
+    },
   }
 
   useEffect(() => {
@@ -36,7 +41,7 @@ export default function QcCheckContentSettingEditModal(props: Props) {
           const { itemName, indexNo } = params;
           current.setFields({
             itemName,
-            indexNo,
+            indexNo: indexNo.toString(),
           });
         } else {
           current.clear();
@@ -54,7 +59,7 @@ export default function QcCheckContentSettingEditModal(props: Props) {
           let newParams = {
             ...params,
             itemName: current.getFields().itemName,
-            indexNo: current.getFields().indexNo,
+            indexNo: parseInt(current.getFields().indexNo),
             oldItemCode: params.itemCode,
             wardCode: deptCode
           }

@@ -65,8 +65,6 @@ export default observer(function WorkPlainEditModal(props: Props) {
       return
     }
 
-    return console.log(params)
-
     setLoading(true)
 
     patientVisitMonthService
@@ -78,6 +76,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
         "endDate": params.endDate,
         "reportName": params.reportName,
         "attachmentList": params.attachmentList,
+        dischargeNumber: params.dischargeNumber,
+        visitNumber: params.visitNumber,
+        wardRemark: params.wardRemark
       })
       .then(res => {
         if (res.data) {

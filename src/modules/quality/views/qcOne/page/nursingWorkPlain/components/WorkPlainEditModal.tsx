@@ -190,6 +190,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   return <React.Fragment>
     <Modal
+      width={720}
       confirmLoading={loading}
       visible={visible}
       centered
@@ -376,7 +377,7 @@ const CreateCon = styled.div`
 `
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   .ant-col {
     line-height: 32px;

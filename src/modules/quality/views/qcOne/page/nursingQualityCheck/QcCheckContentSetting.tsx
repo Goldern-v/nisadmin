@@ -31,13 +31,10 @@ export default observer(function QcCheckContentSetting() {
     getQcContent()
   }, [])
 
-  const seIndexNo = (e: any, index: number, record: any) => {
+  const seIndexNo = (index: number, record: any) => {
     setEditIdx(-1)
     let newArr = qcContent.concat()
-    if (newArr[index].indexNo == e.target.value) return
-
-    newArr[index].indexNo = e.target.value
-    setQcContent(newArr)
+    if (newArr[index].indexNo == newArr[index].defaultIndexNo) return
 
     let params = {
       ...newArr[index]
@@ -86,6 +83,17 @@ export default observer(function QcCheckContentSetting() {
     })
   }
 
+  const handleIndexChange = (e: any, idx: any) => {
+    let val = e.target.value
+    let num = parseInt(val)
+    if (isNaN(num)) num = 0
+
+    let newList = [...qcContent]
+    newList[idx].indexNo = num
+
+    setQcContent(newList)
+  }
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -95,7 +103,11 @@ export default observer(function QcCheckContentSetting() {
       align: 'center',
       render: (text: string, record: any, index: number) => {
         if (editIdx == index) {
-          return <Input size='small' defaultValue={record.indexNo} onBlur={(e) => seIndexNo(e, index, record)} />
+          return <Input size='small'
+            value={record.indexNo}
+            onChange={(e) => handleIndexChange(e, index)}
+            onBlur={(e) => seIndexNo(index, record)}
+          />
         } else {
           return <span onClick={() => setEditIdx(index)}>{record.indexNo}</span>
         }
@@ -134,7 +146,12 @@ export default observer(function QcCheckContentSetting() {
     qcCheckContentSettingService.getList(wardCode)
       .then(res => {
         setTableLoading(false)
-        if (res.data) setQcContent(res.data)
+        if (res.data) setQcContent(res.data.map((item: any) => {
+          return {
+            ...item,
+            defaultIndexNo: item.indexNo
+          }
+        }))
       }, err => setTableLoading(false))
   }
 

@@ -81,7 +81,7 @@ export default observer(function Table(props: Props) {
                   <td colSpan={2}>{item1.content}</td>
                 </tr>)}
               {item.list.length <= 0 && <tr>
-                <td>{item.name}</td>
+                <td colSpan={2}>{item.name}</td>
                 <td colSpan={2}>无</td>
               </tr>}
             </React.Fragment>)}
