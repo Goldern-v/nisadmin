@@ -70,7 +70,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           getReversionList(newChapter)
 
           if (search.pageUrl) {
-            console.log(newChapter)
+            // console.log(newChapter)
             setPageUrl(search.pageUrl)
             // if (hasUrl(newChapter, search.pageUrl)) setPageUrl(search.pageUrl)
             // else if (newChapter.urls) setPageUrl(newChapter.urls[0]||'')
@@ -797,15 +797,6 @@ const Wrapper = styled.div`
           font-size: 14px;
         }
       }
-      /* .page-info {
-        width: ${contentWidth}px;
-        margin: 0 auto;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-top: 0;
-        padding: 10px 0;
-        text-align: center;
-      } */
     }
     .left-control {
       position: absolute;

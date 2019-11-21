@@ -26,13 +26,13 @@ export default observer(function ReversionPannel(props: Props) {
 
   let formatList = () => {
     let newList = [...reversionList]
-    newList.unshift({ upLoadTime: '当前版本', urls: [pageUrl] })
-    return newList.sort((a: any, b: any) => {
-      return Number(moment(b.upLoadTime || '').format('x')) - Number(moment(a.upLoadTime || '').format('x'))
+    newList = newList.sort((a: any, b: any) => {
+      return Number(moment(b.upLoadTime || null).format('x')) - Number(moment(a.upLoadTime || null).format('x'))
     })
-  }
+    newList.unshift({ upLoadTime: '当前版本', urls: [pageUrl] })
 
-  // console.log(formatList())
+    return newList
+  }
 
   return <Drawer
     placement="left"
