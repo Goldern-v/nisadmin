@@ -50,27 +50,27 @@ if (process.env.REACT_APP_HOSPITAL_ID == 'hj') {
     setLayout('/selfNurseFile/:type', NurseFileDetailView_wh, layouts.MainLayout),
     setLayout('/auditsManagement', AuditsManagementView_wh, layouts.MainLayout),
     setLayout('/home', HomeView_wh, layouts.MainLayout),
-    // setLayout('/nursingRulesNew', NursingRulesNew_wh, layouts.MainLayout),
-    // setLayout('/nursingRulesNewDetail', NursingRulesNewDetail_wh, layouts.MainLayout),
-    // setLayout('/NursingRulesPagePreView', NursingRulesPagePreview_wh, layouts.MainLayout),
-    // setLayout('/nursingRulesNewEdit', NursingRulesNewEdit_wh, layouts.MainLayout),
+    setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
+    setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
+    setLayout('/NursingRulesPagePreView', NursingRulesPagePreview, layouts.MainLayout),
+    setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout)
   ]
 
-  if (appStore.isDev) {
-    specialModule = specialModule.concat([
-      setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
-      setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
-      setLayout('/NursingRulesPagePreView', NursingRulesPagePreview, layouts.MainLayout),
-      setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout)
-    ])
-  } else {
-    specialModule = specialModule.concat([
-      setLayout('/nursingRulesNew', NursingRulesNew_wh, layouts.MainLayout),
-      setLayout('/nursingRulesNewDetail', NursingRulesNewDetail_wh, layouts.MainLayout),
-      setLayout('/NursingRulesPagePreView', NursingRulesPagePreview_wh, layouts.MainLayout),
-      setLayout('/nursingRulesNewEdit', NursingRulesNewEdit_wh, layouts.MainLayout)
-    ])
-  }
+  // if (appStore.isDev) {
+  //   specialModule = specialModule.concat([
+  //     setLayout('/nursingRulesNew', NursingRulesNew, layouts.MainLayout),
+  //     setLayout('/nursingRulesNewDetail', NursingRulesNewDetail, layouts.MainLayout),
+  //     setLayout('/NursingRulesPagePreView', NursingRulesPagePreview, layouts.MainLayout),
+  //     setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout)
+  //   ])
+  // } else {
+  //   specialModule = specialModule.concat([
+  //     setLayout('/nursingRulesNew', NursingRulesNew_wh, layouts.MainLayout),
+  //     setLayout('/nursingRulesNewDetail', NursingRulesNewDetail_wh, layouts.MainLayout),
+  //     setLayout('/NursingRulesPagePreView', NursingRulesPagePreview_wh, layouts.MainLayout),
+  //     setLayout('/nursingRulesNewEdit', NursingRulesNewEdit_wh, layouts.MainLayout)
+  //   ])
+  // }
 }
 
 export { specialModule }
