@@ -69,9 +69,9 @@ export default function 人力资源调配弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.wardName}
+            value={record.oldWardName}
             onChange={(e) => {
-              record.wardName = e.target.value
+              record.oldWardName = e.target.value
               setData(cloneData)
             }}
           />
@@ -86,9 +86,9 @@ export default function 人力资源调配弹窗(props: Props) {
           <input
             type='text'
             className='cell-input'
-            value={record.anotherWardName}
+            value={record.newWardName}
             onChange={(e) => {
-              record.anotherWardName = e.target.value
+              record.newWardName = e.target.value
               setData(cloneData)
             }}
           />
@@ -154,10 +154,10 @@ export default function 人力资源调配弹窗(props: Props) {
 
   const addItem = () => {
     cloneData.list.push({
-      anotherWardName: "",
+      newWardName: "",
       empName: "",
       id: "",
-      wardName: '',
+      oldWardName: '',
       remark: "",
       typeName: "",
       duration: '',

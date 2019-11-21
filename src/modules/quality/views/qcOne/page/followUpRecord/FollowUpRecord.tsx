@@ -21,7 +21,7 @@ import { observer } from "mobx-react-lite";
 import moment from "moment";
 import { numToChinese } from "src/utils/number/numToChinese";
 import YearPicker from "src/components/YearPicker";
-export interface Props {}
+export interface Props { }
 
 export default observer(function FollowUpRecord() {
   const [dataSource, setDataSource] = useState([]);
@@ -204,7 +204,7 @@ export default observer(function FollowUpRecord() {
           value={year}
           onChange={(value: any) => setYear(value)}
           allowClear={false}
-          style={{ width: 220 }}
+          style={{ width: 80 }}
         />
         {/* <span className='label'>日期:</span>
         <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} /> */}

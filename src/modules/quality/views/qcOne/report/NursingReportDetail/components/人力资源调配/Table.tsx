@@ -36,8 +36,8 @@ export default function Table(props: Props) {
             <tr key={index}>
               <td style={{ textAlign: 'center' }}>{item.empName}</td>
               <td>{item.typeName}</td>
-              <td>{item.wardName}</td>
-              <td>{item.anotherWardName}</td>
+              <td>{item.oldWardName}</td>
+              <td>{item.newWardName}</td>
               <td style={{ textAlign: 'center' }}>{item.duration}</td>
               <td>{item.remark}</td>
             </tr>

@@ -397,7 +397,7 @@ export default observer(function NursingReportList() {
             <div className='label'>报告年度：</div>
             <div className='content'>
               <DatePicker
-                style={{ width: 100 }}
+                style={{ width: 80 }}
                 value={query.year}
                 open={yearPickerIsOpen}
                 allowClear={false}
