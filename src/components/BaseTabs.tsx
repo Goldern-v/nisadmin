@@ -13,11 +13,12 @@ export interface Props {
   config: ConfigItem[];
   onChange?: (activeKey: string) => void;
   defaultActiveKey?: any;
+  style?: React.CSSProperties;
 }
 
 export default function BaseTabs(props: Props) {
   return (
-    <TabsCon>
+    <TabsCon style={props.style || {}}>
       <Tabs
         type="card"
         defaultActiveKey={props.defaultActiveKey || "0"}

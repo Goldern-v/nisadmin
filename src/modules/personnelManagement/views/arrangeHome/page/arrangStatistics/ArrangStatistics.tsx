@@ -31,7 +31,7 @@ export default observer(function ArrangStatistics() {
       align: "center"
     },
     ...Object.keys(dataSource[0] || {})
-      .filter(item => !(item == "姓名" || item == "合计"))
+      .filter(item => !(item == "姓名" || item == "合计" || item == "序列"))
       .map(item => {
         return {
           title: item,

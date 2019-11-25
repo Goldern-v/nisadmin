@@ -2,19 +2,34 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 
-import { ColumnProps, message } from "src/vendors/antd";
+import {
+  ColumnProps,
+  message,
+  Select,
+  InputNumber,
+  Input,
+  Switch
+} from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
-import { authStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 import emitter from "src/libs/ev";
 import { globalModal } from "src/global/globalModal";
 import update from "immutability-helper";
-export interface Props {}
+import { Place } from "src/components/common";
+import { observer } from "mobx-react-lite";
+export interface Props {
+  blockId: any;
+  registerCode: any;
+  onOkCallBack: any;
+}
 
-export default function TitleTable() {
+export default observer(function SetTittle(props: Props) {
   const [oldData, setOldData]: any = useState({});
   const [dataSource, setDataSource]: any[] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
+  const [moveAble, setMoveAble] = useState(false);
+  const { blockId, registerCode, onOkCallBack } = props;
   const columns: ColumnProps<any>[] = [
     {
       title: "项目名称",
@@ -24,12 +39,12 @@ export default function TitleTable() {
       width: 150,
       render(text: any, record: any, index: any) {
         return (
-          <input
+          <Input
             onChange={e => {
               record.itemCode = e.target.value;
+              updateDataSource();
             }}
-            defaultValue={text}
-            onBlur={() => updateDataSource()}
+            value={text}
           />
         );
       }
@@ -41,19 +56,12 @@ export default function TitleTable() {
       width: 100,
       render(text: any, record: any, index: any) {
         return (
-          <input
-            defaultValue={text}
-            onChange={e => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== "."
-              ) {
-                return message.warning("只能输入数字");
-              }
-              record.width = e.target.value;
+          <InputNumber
+            value={text}
+            onChange={value => {
+              record.width = value;
+              updateDataSource();
             }}
-            onBlur={() => updateDataSource()}
           />
         );
       }
@@ -65,19 +73,12 @@ export default function TitleTable() {
       className: "input-cell",
       render(text: any, record: any, index: any) {
         return (
-          <input
-            defaultValue={text}
-            onChange={e => {
-              if (
-                !Number(e.target.value) &&
-                Number(e.target.value) !== 0 &&
-                e.target.value[e.target.value.length - 1] !== "."
-              ) {
-                return message.warning("只能输入数字");
-              }
-              record.checkSize = e.target.value;
+          <InputNumber
+            value={text}
+            onChange={value => {
+              record.checkSize = value;
+              updateDataSource();
             }}
-            onBlur={() => updateDataSource()}
           />
         );
       }
@@ -89,12 +90,16 @@ export default function TitleTable() {
       className: "input-cell",
       render(text: any, record: any, index: any) {
         return (
-          <input
-            defaultValue={text}
-            onChange={e => {
-              record.options = e.target.value;
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            onChange={(value: any) => {
+              record.options = value || [];
+              updateDataSource();
             }}
-            onBlur={() => updateDataSource()}
+            value={text}
+            open={false}
+            tokenSeparators={[";"]}
           />
         );
       }
@@ -135,58 +140,65 @@ export default function TitleTable() {
     updateDataSource();
   };
 
-  const onLoad = () => {
-    setPageLoading(true);
-    wardRegisterService
-      .getCurrentList({
-        wardCode: authStore.selectedDeptCode,
-        recordCode: "qc_register_handover"
-      })
-      .then(res => {
-        setPageLoading(false);
-        setDataSource(res.data.itemList);
-        setOldData(res.data);
-      });
-  };
   const onSave = () => {
     setPageLoading(true);
     wardRegisterService
-      .qcRegisterItemSaveOrUpdate(
-        Object.assign({}, oldData, { itemList: dataSource })
-      )
+      .saveOrUpdateItemConfig(registerCode, blockId, dataSource)
       .then(res => {
-        message.success("保存成功");
-        onLoad();
+        setPageLoading(false);
+        getData();
+        onOkCallBack();
+      });
+  };
+  const getData = () => {
+    setPageLoading(true);
+    wardRegisterService
+      .getItemConfigByBlockId(registerCode, blockId)
+      .then(res => {
+        setDataSource(res.data.itemList);
+        setPageLoading(false);
       });
   };
 
   useEffect(() => {
-    // onLoad()
+    getData();
   }, []);
 
   return (
     <Wrapper>
+      <ToolCon>
+        <Place />
+        <span>排序：</span>
+        <Switch
+          style={{ marginRight: 10 }}
+          checked={moveAble}
+          onChange={(value: any) => setMoveAble(value)}
+        />
+        <Button onClick={addRow}>添加</Button>
+        <Button onClick={onSave} type="primary">
+          保存
+        </Button>
+      </ToolCon>
       <EditTableCon>
         <BaseTable
           loading={pageLoading}
           dataSource={dataSource}
           columns={columns}
-          // type={['index', 'diagRow']}
-          type={["index"]}
-          surplusHeight={260}
-          // moveRow={(dragIndex: number, hoverIndex: number) => {
-          //   const dragRow = dataSource[dragIndex]
-          //   setDataSource(
-          //     update(dataSource, {
-          //       $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-          //     })
-          //   )
-          // }}
+          type={["index", moveAble ? "diagRow" : ""]}
+          surplusHeight={appStore.wih - 500}
+          moveRow={(dragIndex: number, hoverIndex: number) => {
+            const dragRow = dataSource[dragIndex];
+            setDataSource(
+              update(dataSource, {
+                $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
+              })
+            );
+          }}
         />
       </EditTableCon>
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div``;
 const EditTableCon = styled.div`
   .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
@@ -198,7 +210,7 @@ const EditTableCon = styled.div`
   }
   .input-cell {
     padding: 0 !important;
-    input {
+    .ant-input, .ant-select, .ant-select-selection, .ant-input-number {
       position: relative;
       z-index: 1000;
       width: 100%;
@@ -208,9 +220,23 @@ const EditTableCon = styled.div`
       box-shadow: none;
       outline: none;
       text-align: center;
-      &:focus {
+      /* &:focus {
         background: ${p => p.theme.$mlc};
+      } */
+      input {
+        text-align: center;
       }
     }
+  }
+`;
+
+const ToolCon = styled.div`
+  display: flex;
+  margin: 0 15px;
+  padding-top: 10px;
+  margin-bottom: -5px;
+  align-items: center;
+  button {
+    margin-left: 10px;
   }
 `;
