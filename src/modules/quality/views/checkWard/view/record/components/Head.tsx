@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React from 'react'
 import { Button } from 'antd'
 import { TableHeadCon } from 'src/components/BaseTable'
-import { Select } from 'src/vendors/antd'
+import { Select, Tooltip } from 'src/vendors/antd'
 import { DatePicker } from 'antd'
 import { Place } from 'src/components/common'
 import { recordViewModal } from '../RecordViewModal'
@@ -34,7 +34,9 @@ export default observer(function Head() {
   }
   const options = recordViewModal.selectedWardRoundArray.map((d: any) => (
     <Select.Option key={d.name} value={d.code}>
-      {setColorRed(d.name)}
+      <Tooltip placement="top" title={d.name} >
+        {setColorRed(d.name)}
+      </Tooltip>
     </Select.Option>
   ))
   return (
