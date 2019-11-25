@@ -14,7 +14,8 @@ import AddSubClass from "./views/arrangeHome/page/addSubClass/AddSubClass";
 import HolidaysList from "./views/arrangeHome/page/HolidaysList/HolidaysList";
 import BalanceInit from "./views/arrangeHome/page/BalanceInit/BalanceInit";
 import LeaveRecord from "./views/arrangeHome/page/leaveRecord/LeaveRecord";
-// import StarRatingReport from "./views/arrangeHome/page/nightChargingReport/StarRatingReport";
+import StarRatingReportList from "./views/arrangeHome/page/nightChargingReport/StarRatingReportList";
+import ArrangStatistics from "./views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 export interface Props {}
 
 export default function PersonnelManagementView() {
@@ -91,13 +92,19 @@ export default function PersonnelManagementView() {
           path: "/personnelManagement/leaveRecord",
           component: LeaveRecord,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+        },
+        {
+          title: "夜计费",
+          path: "/personnelManagement/nightChargingReport",
+          component: StarRatingReportList,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+        },
+        {
+          title: "排班统计",
+          path: "/personnelManagement/arrangStatistics",
+          component: ArrangStatistics,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         }
-        // {
-        //   title: "夜计费",
-        //   path: "/personnelManagement/leaveRecord",
-        //   component: LeaveRecord,
-        //   hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
-        // }
       ]
     }
   ];

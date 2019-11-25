@@ -1,34 +1,38 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Tabs } from 'antd'
-const TabPane = Tabs.TabPane
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { Tabs } from "antd";
+const TabPane = Tabs.TabPane;
 
-interface ConfigItem {
-  component?: React.ReactNode
-  title: string
-  index?: string | number
-  [p: string]: any
+export interface ConfigItem {
+  component?: React.ReactNode;
+  title: string;
+  index?: string | number;
+  [p: string]: any;
 }
 export interface Props {
-  config: ConfigItem[]
-  onChange?: (activeKey: string) => void
-  defaultActiveKey?: any
+  config: ConfigItem[];
+  onChange?: (activeKey: string) => void;
+  defaultActiveKey?: any;
 }
 
 export default function BaseTabs(props: Props) {
   return (
     <TabsCon>
-      <Tabs type='card' defaultActiveKey={props.defaultActiveKey || '0'} onChange={props.onChange}>
+      <Tabs
+        type="card"
+        defaultActiveKey={props.defaultActiveKey || "0"}
+        onChange={props.onChange}
+      >
         {props.config.map((item: any, index: number) => {
           return (
             <TabPane tab={item.title} key={(item.index || index).toString()}>
               {item.component}
             </TabPane>
-          )
+          );
         })}
       </Tabs>
     </TabsCon>
-  )
+  );
 }
 const TabsCon = styled.div`
   min-height: 100%;
@@ -70,4 +74,4 @@ const TabsCon = styled.div`
   .ant-tabs-nav-container * ::before {
     display: none !important;
   }
-`
+`;

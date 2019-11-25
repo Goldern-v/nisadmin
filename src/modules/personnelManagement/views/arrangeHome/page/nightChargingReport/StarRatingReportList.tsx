@@ -36,16 +36,9 @@ const Option = Select.Option;
 
 export default observer(function NursingWorkPlainList() {
   const { history } = appStore;
-  const { wardCode, statusList, statusObj } = qcOneSelectViewModal;
-  const {
-    deptList, //权限科室列表
-    isRoleManage, //是否护士长
-    isSupervisorNurse, //是否科护士长
-    isDepartment //是否护理部
-  } = authStore;
 
   const defaultQuery = {
-    wardCode: "",
+    deptCode: "",
     pageIndex: 1,
     status: "",
     year: moment().format("YYYY"),
@@ -78,7 +71,7 @@ export default observer(function NursingWorkPlainList() {
         (query.pageIndex - 1) * query.pageSize + idx + 1
     },
     {
-      dataIndex: "reportName",
+      dataIndex: "name",
       title: "标题",
       align: "left",
       render: (text: string, record: any, idx: number) => (
@@ -87,12 +80,12 @@ export default observer(function NursingWorkPlainList() {
         </div>
       )
     },
-    {
-      dataIndex: "wardName",
-      key: "wardName",
-      title: "科室",
-      width: 180
-    },
+    // {
+    //   dataIndex: "deptName",
+    //   key: "deptName",
+    //   title: "科室",
+    //   width: 180
+    // },
     {
       dataIndex: "month",
       title: "月份",
@@ -101,14 +94,21 @@ export default observer(function NursingWorkPlainList() {
       render: (text: string, record: any, idx: number) =>
         `${record.year}年${record.month}月`
     },
+    // {
+    //   dataIndex: "status",
+    //   title: "状态",
+    //   align: "center",
+    //   width: 90,
+    //   render: (status: string, record: any, idx: number) => {
+    //     return status;
+    //   }
+    // },
     {
-      dataIndex: "status",
-      title: "状态",
-      align: "center",
-      width: 90,
-      render: (status: string, record: any, idx: number) => {
-        let statusText = statusObj[status] || "-";
-        return statusText;
+      dataIndex: "",
+      title: "科室",
+      width: 200,
+      render(text: any, index: any) {
+        return authStore.selectedDeptName;
       }
     },
     {
@@ -116,14 +116,14 @@ export default observer(function NursingWorkPlainList() {
       key: "creatorName",
       title: "创建人",
       align: "center",
-      width: 80
+      width: 100
     },
     {
-      dataIndex: "createTime",
-      key: "createTime",
+      dataIndex: "createDate",
+      key: "createDate",
       title: "创建时间",
       align: "center",
-      width: 140
+      width: 180
     },
     {
       key: "operate",
@@ -133,22 +133,8 @@ export default observer(function NursingWorkPlainList() {
         return (
           <DoCon className="operate-group">
             <span onClick={() => handleEdit(record)}>查看</span>
-            {isRoleManage && (
-              <React.Fragment>
-                {record.status === "0" && (
-                  <span onClick={() => handlePublish(record)}>提交</span>
-                )}
-                {record.status === "1" && (
-                  <span
-                    onClick={() => handleCancelPublish(record)}
-                    style={{ color: "red" }}
-                  >
-                    撤销
-                  </span>
-                )}
-              </React.Fragment>
-            )}
-            <span onClick={() => handleExport(record)}>导出</span>
+
+            {/* <span onClick={() => handleExport(record)}>导出</span> */}
           </DoCon>
         );
       }
@@ -165,7 +151,6 @@ export default observer(function NursingWorkPlainList() {
 
   const handleSearch = () => {
     if (query.pageIndex == 1) getList(query);
-
     setQuery({ ...query, pageIndex: 1 });
   };
 
@@ -207,38 +192,28 @@ export default observer(function NursingWorkPlainList() {
 
   const handleEdit = (record: any) => {
     history.push(
-      `/starRatingReportEdit?${qs.stringify({
-        wardCode: record.wardCode,
-        year: record.year,
-        month: record.month
+      `/nightChargingReport?${qs.stringify({
+        deptCode: record.deptCode,
+        startDate: record.startDate,
+        endDate: record.endDate,
+        name: record.name,
+        id: record.id
       })}`
     );
   };
 
-  const handleWardCodeChange = (wardCode: string) => {
-    setQuery({ ...query, wardCode });
-    qcOneSelectViewModal.setWardCode(wardCode);
+  const handledeptCodeChange = (deptCode: string) => {
+    setQuery({ ...query, deptCode });
   };
 
   const handleExport = (record: any) => {
     // console.log(record)
     setLoading(true);
     // starRatingReportService.exportData({
-    //   wardCode: record.wardCode,
+    //   deptCode: record.deptCode,
     //   year: record.year,
     //   month: record.month
     // }).
-    qcOneService
-      .export(
-        {
-          wardCode: record.wardCode,
-          year: record.year,
-          month: record.month
-        },
-        "sr"
-      )
-      .then(res => fileDownload(res))
-      .finally(() => setLoading(false));
   };
 
   const handlePublish = (record: any) => {
@@ -246,7 +221,7 @@ export default observer(function NursingWorkPlainList() {
       setLoading(true);
       starRatingReportService
         .publish({
-          wardCode: record.wardCode,
+          deptCode: record.deptCode,
           year: record.year,
           month: record.month
         })
@@ -266,7 +241,7 @@ export default observer(function NursingWorkPlainList() {
       setLoading(true);
       starRatingReportService
         .cancelPublish({
-          wardCode: record.wardCode,
+          deptCode: record.deptCode,
           year: record.year,
           month: record.month
         })
@@ -284,8 +259,8 @@ export default observer(function NursingWorkPlainList() {
   const handleExportGather = (isBigDept?: boolean) => {
     let year = query.year;
     let month = query.month || moment().format("M");
-    let $wardCode = "";
-    if (bigDeptList.length > 0) $wardCode = bigDeptList[0].code;
+    let $deptCode = "";
+    if (bigDeptList.length > 0) $deptCode = bigDeptList[0].code;
 
     const exportContent = (
       <ExportCon>
@@ -313,21 +288,6 @@ export default observer(function NursingWorkPlainList() {
             ))}
           </Select>
         </div>
-        {isBigDept && (
-          <div>
-            <span>片区: </span>
-            <Select
-              defaultValue={$wardCode}
-              onChange={(_wardCode: any) => ($wardCode = _wardCode)}
-            >
-              {bigDeptList.map(item => (
-                <Option value={item.code} key={item.code}>
-                  {item.name}
-                </Option>
-              ))}
-            </Select>
-          </div>
-        )}
       </ExportCon>
     );
 
@@ -336,81 +296,32 @@ export default observer(function NursingWorkPlainList() {
       content: exportContent,
       onOk: () => {
         setLoading(true);
-
-        if (isBigDept)
-          qcOneService
-            .exportByBigDept(
-              {
-                wardCode: $wardCode,
-                year,
-                month
-              },
-              "sr"
-            )
-            .then(
-              (res: any) => {
-                setLoading(false);
-                fileDownload(res);
-              },
-              () => setLoading(false)
-            );
-        else
-          qcOneService
-            .exportByNd(
-              {
-                year,
-                month
-              },
-              "sr"
-            )
-            .then(
-              (res: any) => {
-                setLoading(false);
-                fileDownload(res);
-              },
-              () => setLoading(false)
-            );
       }
     });
   };
 
-  useEffect(() => {
-    qcOneService.bigDeptListSelf().then(res => {
-      if (res.data) setBigDeptList(res.data);
-    });
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    for (let x in query) {
-      if (query[x] !== cacheQuery[x]) {
-        setCacheQuery(query);
-        getList(query);
-        break;
-      }
-    }
+    query.deptCode && getList(query);
   }, [query]);
 
-  useKeepAliveEffect(() => {
-    if (
-      appStore.history &&
-      (appStore.history.action === "POP" || appStore.history.action === "PUSH")
-    ) {
-      getList(query);
-      // let newWardCode = qcOneSelectViewModal.initWardCode()
-      // if (query.wardCode === newWardCode) {
-      //   getList(query)
-      // } else {
-      //   setQuery({ ...query, wardCode: newWardCode })
-      // }
-    }
-    return () => {};
-  });
+  // useKeepAliveEffect(() => {
+  //   if (
+  //     appStore.history &&
+  //     (appStore.history.action === "POP" || appStore.history.action === "PUSH")
+  //   ) {
+  //     getList(query);
+
+  //   }
+  //   return () => {};
+  // });
 
   return (
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
-          <PageTitle className="pannel-title">星级考核报表</PageTitle>
+          <PageTitle className="pannel-title">夜计费</PageTitle>
         </LeftIcon>
         <RightIcon>
           <span>年份:</span>
@@ -438,59 +349,16 @@ export default observer(function NursingWorkPlainList() {
               </Option>
             ))}
           </Select>
-          <span>状态:</span>
-          <Select
-            value={query.status}
-            onChange={(status: string) => setQuery({ ...query, status })}
-            style={{ width: "110px" }}
-          >
-            <Option value="">全部</Option>
-            {statusList.map((item: any) => (
-              <Option key={item.code} value={item.code}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
+
           <span>科室:</span>
-          {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
-          <Select
-            showSearch
-            value={query.wardCode}
-            onChange={handleWardCodeChange}
-            filterOption={(input: string, option: any) =>
-              option.props.children
-                .toLowerCase()
-                .indexOf(input.toLowerCase()) >= 0
-            }
-            style={{ width: "176px" }}
-          >
-            <Option value="">全部</Option>
-            {deptList.map(item => (
-              <Option value={item.code} key={item.code}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
+          <DeptSelect onChange={deptCode => setQuery({ ...query, deptCode })} />
+
           <Button onClick={handleSearch} type="primary">
             查询
           </Button>
-          {isRoleManage && (
-            <Button type="primary" onClick={handleCreate}>
-              新建
-            </Button>
-          )}
-          {isSupervisorNurse && (
-            <Button onClick={() => setCommitVisible(true)}>提交</Button>
-          )}
-          {(isRoleManage || isSupervisorNurse || isDepartment) && (
-            <Button onClick={() => handleExportGather(true)}>片区导出</Button>
-          )}
-          {isDepartment && (
-            <React.Fragment>
-              <Button onClick={() => handleExportGather()}>全院导出</Button>
-              <Button onClick={() => setArchiveVisible(true)}>汇总</Button>
-            </React.Fragment>
-          )}
+          <Button onClick={handleCreate} type="primary">
+            创建
+          </Button>
         </RightIcon>
       </HeaderCon>
       <TableWrapper>
@@ -507,7 +375,7 @@ export default observer(function NursingWorkPlainList() {
           pagination={{
             current: query.pageIndex,
             pageSize: query.pageSize,
-            total: dataTotal,
+            total: dataTotal || 0,
             onChange: handlePageChange,
             onShowSizeChange: handleSizeChange
           }}
@@ -515,25 +383,9 @@ export default observer(function NursingWorkPlainList() {
       </TableWrapper>
       <ReportCreateModal
         onOk={handleOk}
-        deptCode={query.wardCode}
+        deptCode={query.deptCode}
         visible={createVisible}
         onCancel={handleCancel}
-      />
-      <CommitModal
-        reportType="sr"
-        visible={commitVisible}
-        onCancel={() => {
-          setCommitVisible(false);
-          getList(query);
-        }}
-      />
-      <ArchiveModal
-        reportType="sr"
-        visible={archiveVisible}
-        onCancel={() => {
-          setArchiveVisible(false);
-          getList(query);
-        }}
       />
     </Wrapper>
   );

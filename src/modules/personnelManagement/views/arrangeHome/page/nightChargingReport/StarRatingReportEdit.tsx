@@ -1,37 +1,40 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
-import { Button, message } from 'src/vendors/antd'
-import { starRatingReportEditModel } from './model/StarRatingReportEditModel'
-import { observer } from 'src/vendors/mobx-react-lite'
-import { ScrollBox } from 'src/components/common'
-import { Report } from './types'
-import printing from 'printing'
-import { useRef } from 'src/types/react'
-import { appStore } from 'src/stores'
-import { globalModal } from 'src/global/globalModal'
-import { starRatingReportService } from './api/StarRatingReportService'
-import qs from 'qs'
-export interface Props extends RouteComponentProps { }
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import BaseBreadcrumb from "src/components/BaseBreadcrumb";
+import { Button, message } from "src/vendors/antd";
+import { starRatingReportEditModel } from "./model/StarRatingReportEditModel";
+import { observer } from "src/vendors/mobx-react-lite";
+import { ScrollBox } from "src/components/common";
+import { Report } from "./types";
+import printing from "printing";
+import { useRef } from "src/types/react";
+import { appStore } from "src/stores";
+import { globalModal } from "src/global/globalModal";
+import { starRatingReportService } from "./api/StarRatingReportService";
+import qs from "qs";
+import { fileDownload } from "src/utils/file/file";
+export interface Props extends RouteComponentProps {}
 
 export default observer(function StarRatingReportEdit() {
-  const pageRef: any = useRef<HTMLElement>()
+  const pageRef: any = useRef<HTMLElement>();
   useEffect(() => {
-    let search = appStore.location.search
-    let query = qs.parse(search.replace('?', ''))
+    let search = appStore.location.search;
+    let query = qs.parse(search.replace("?", ""));
 
-    starRatingReportEditModel.init(query)
-  }, [])
+    starRatingReportEditModel.init(query);
+  }, []);
 
-  let report: Report = starRatingReportEditModel.getDataInAllData('report')
+  let report: Report = starRatingReportEditModel.getDataInAllData("report");
 
-  let reportName = starRatingReportEditModel.getSectionData('报告名称')!.text || report.reportName
+  let reportName =
+    starRatingReportEditModel.getSectionData("报告名称")!.text ||
+    report.reportName;
 
   const onPrint = (isPrint: boolean) => {
-    let printFun = isPrint ? printing : printing.preview
-    let title = document.title
-    document.title = reportName
+    let printFun = isPrint ? printing : printing.preview;
+    let title = document.title;
+    document.title = reportName;
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -71,70 +74,90 @@ export default observer(function StarRatingReportEdit() {
          table { page-break-inside:auto }
          tr{ page-break-inside:avoid; page-break-after:auto }
       `
-    })
+    });
     setTimeout(() => {
-      document.title = title
-    }, 500)
-  }
+      document.title = title;
+    }, 500);
+  };
   const onDelete = () => {
-    globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      starRatingReportService.delete(qs.parse(appStore.query)).then((res) => {
-        message.success('删除成功')
+    globalModal.confirm("删除确认", "你确定要删除该报告吗？").then(res => {
+      starRatingReportService.delete(qs.parse(appStore.query)).then(res => {
+        message.success("删除成功");
         setTimeout(() => {
-          appStore.history.push('/qcOne/starRatingReport')
-        }, 500)
+          appStore.history.push("/personnelManagement/nightChargingReport");
+        }, 500);
+      });
+    });
+  };
+  const onExport = () => {
+    starRatingReportService
+      .export({
+        lists: starRatingReportEditModel.getSectionData("夜班费上报表").list
       })
-    })
-  }
+      .then(res => {
+        fileDownload(res);
+      });
+  };
   const onPublish = () => {
-    globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
-      starRatingReportService.publish(qs.parse(appStore.query)).then((res) => {
-        message.success('提交成功')
+    globalModal.confirm("提交确认", "你确定要提交该报告吗？").then(res => {
+      starRatingReportService.publish(qs.parse(appStore.query)).then(res => {
+        message.success("提交成功");
         setTimeout(() => {
-          appStore.history.push('/qcOne/starRatingReport')
-        }, 500)
-      })
-    })
-  }
+          appStore.history.push("/qcOne/starRatingReport");
+        }, 500);
+      });
+    });
+  };
   const onCancelPublish = () => {
-    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
-      starRatingReportService.cancelPublish(qs.parse(appStore.query)).then((res) => {
-        message.success('撤销成功')
-        setTimeout(() => {
-          appStore.history.push('/qcOne/starRatingReport')
-        }, 500)
-      })
-    })
-  }
+    globalModal.confirm("撤销确认", "你确定要撤销该报告吗？").then(res => {
+      starRatingReportService
+        .cancelPublish(qs.parse(appStore.query))
+        .then(res => {
+          message.success("撤销成功");
+          setTimeout(() => {
+            appStore.history.push("/qcOne/starRatingReport");
+          }, 500);
+        });
+    });
+  };
   return (
     <Wrapper>
       <HeadCon>
         <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/qcOne/starRatingReport' }, { name: '报告详情', link: '' }]}
+          data={[
+            {
+              name: "分析报告",
+              link: "/personnelManagement/nightChargingReport"
+            },
+            { name: "报告详情", link: "" }
+          ]}
         />
-        <div className='title'>{reportName}</div>
-        <div className='aside'>
+        <div className="title">{reportName}</div>
+        {/* <div className='aside'>
           <span>
             由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
           </span>
-        </div>
-        <div className='tool-con'>
+        </div> */}
+        <div className="tool-con">
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' ? (
+          {/* {report.status == "1" ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
-              <Button onClick={onPublish}>提交</Button>
-            )}
-          <Button onClick={() => onPrint(true)}>打印</Button>
+            // <Button onClick={onPublish}>提交</Button>
+          )} */}
+          {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
+          <Button onClick={onExport}>导出</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>
-        <Page ref={pageRef} className='print-page'>
+        <Page ref={pageRef} className="print-page">
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {
-              let Components = starRatingReportEditModel.getSection(item.sectionId)
+              let Components = starRatingReportEditModel.getSection(
+                item.sectionId
+              );
               if (Components && Components.section) {
                 return (
                   <Components.section
@@ -143,21 +166,23 @@ export default observer(function StarRatingReportEdit() {
                     modalTitle={item.modalTitle}
                     sectionTitle={item.sectionTitle}
                   />
-                )
+                );
               }
             }
           })}
         </Page>
-        {starRatingReportEditModel.baseModal && <starRatingReportEditModel.baseModal.Component />}
+        {starRatingReportEditModel.baseModal && (
+          <starRatingReportEditModel.baseModal.Component />
+        )}
       </ScrollCon>
     </Wrapper>
-  )
-})
+  );
+});
 const Wrapper = styled.div`
   * {
     font-size: 14px;
   }
-`
+`;
 
 const HeadCon = styled.div`
   height: 100px;
@@ -182,7 +207,7 @@ const HeadCon = styled.div`
       margin-left: 15px;
     }
   }
-`
+`;
 const Page = styled.div`
   width: 720px;
   margin: 20px auto 20px;
@@ -190,8 +215,8 @@ const Page = styled.div`
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
-`
+`;
 
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
-`
+`;
