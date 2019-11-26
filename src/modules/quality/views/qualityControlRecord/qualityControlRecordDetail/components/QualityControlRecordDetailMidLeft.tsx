@@ -1,106 +1,168 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 // import React from 'react'
-import { Checkbox, Radio, Icon, Input, Row, Col, Spin } from 'antd'
-import React, { useState, useEffect } from 'react'
-import Zimage from 'src/components/Zimage'
-import { CheckboxChangeEvent } from 'src/vendors/antd'
-import { cloneJson } from 'src/utils/json/clone'
-import { numToChinese } from 'src/utils/number/numToChinese'
-const { TextArea } = Input
+import { Checkbox, Radio, Icon, Input, Row, Col, Spin } from "antd";
+import React, { useState, useEffect } from "react";
+import Zimage from "src/components/Zimage";
+import { CheckboxChangeEvent } from "src/vendors/antd";
+import { cloneJson } from "src/utils/json/clone";
+import { numToChinese } from "src/utils/number/numToChinese";
+import { useRef } from "src/types/react";
+const { TextArea } = Input;
+import printing from "printing";
 export interface Props {
-  detailData: any
+  detailData: any;
 }
 export default function qualityControlRecordDetailMidLeft(props: Props) {
-  let [messageBoxData, setMessageBoxData]: any = useState({})
-  let [itemConData, setItemConData]: any = useState([])
-  let [itemCount, setItemCount]: any = useState({})
-  let [userList, setUserList]: any = useState([])
-  let [bedNurseList, setBedNurseList]: any = useState([])
-  let [onlyReadError, setOnlyReadError]: any = useState(false)
-  let [causeList, setCauseList]: any = useState([])
+  const pageRef: any = useRef<HTMLElement>();
+  let [messageBoxData, setMessageBoxData]: any = useState({});
+  let [itemConData, setItemConData]: any = useState([]);
+  let [itemCount, setItemCount]: any = useState({});
+  let [userList, setUserList]: any = useState([]);
+  let [bedNurseList, setBedNurseList]: any = useState([]);
+  let [onlyReadError, setOnlyReadError]: any = useState(false);
+  let [causeList, setCauseList]: any = useState([]);
 
   //
-  const { detailData } = props
+  const { detailData } = props;
+
+  const onPrint = (isPrint: boolean) => {
+    let printFun = isPrint ? printing : printing.preview;
+    let title = document.title;
+    document.title = detailData.master.qcName;
+    printFun(pageRef.current, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+         .ant-btn {
+           display: none;
+         }
+         .print-page {
+           box-shadow: none;
+           -webkit-print-color-adjust: exact;
+           margin: 0 auto;
+           border: 0;
+         }
+         .page-title {
+           min-height: 20px;
+           padding: 0px 30px 20px;
+           display: block !important;
+           font-size: 30px;
+           text-align: center;
+         }
+         .page-title .title {
+           text-align: center;
+           margin-right: 0;
+         }
+         table, img {
+           page-break-inside: avoid;
+         }
+         pre {
+          page-break-after: avoid;
+         }
+         * {
+           color: #000 !important;
+         }
+         .footer-title {
+           min-height: 0;
+           margin-bottom: 0;
+         }
+         table { page-break-inside:auto }
+         tr{ page-break-inside:avoid; page-break-after:auto }
+      `
+    });
+    setTimeout(() => {
+      document.title = title;
+    }, 500);
+  };
+  (window as any).onPrint = onPrint;
   useEffect(() => {
     if (detailData.master) {
-      setMessageBoxData(detailData.master)
+      setMessageBoxData(detailData.master);
     }
     if (detailData.itemGroupList) {
       setItemConData(
         detailData.itemGroupList.map((item: any, index: number) => {
-          return { ...item, index: numToChinese(index + 1) }
+          return { ...item, index: numToChinese(index + 1) };
         })
-      )
+      );
     }
     if (detailData.itemCount) {
-      setItemCount(detailData.itemCount)
+      setItemCount(detailData.itemCount);
     }
     if (detailData.userList) {
-      setUserList(detailData.userList)
+      setUserList(detailData.userList);
     }
     if (detailData.bedNurseList) {
-      setBedNurseList(detailData.bedNurseList)
+      setBedNurseList(detailData.bedNurseList);
     }
     if (detailData.causeList) {
-      setCauseList(detailData.causeList)
+      setCauseList(detailData.causeList);
     }
     //接口没有数据？？？？
     // const apiData: any = []
     // setItemConData(apiData)
-  }, [props])
+  }, [props]);
 
   const titleBoxChange = (e: CheckboxChangeEvent) => {
     if (e.target.checked) {
       setItemConData(
         cloneJson(itemConData).filter((item: any) => {
           let fl = item.itemList.filter((o: any) => {
-            return o.qcItemValue == '否'
-          })
+            return o.qcItemValue == "否";
+          });
           if (fl.length == 0) {
-            return false
+            return false;
           } else {
-            item.itemList = fl
-            return true
+            item.itemList = fl;
+            return true;
           }
         })
-      )
-      setOnlyReadError(true)
+      );
+      setOnlyReadError(true);
     } else {
       setItemConData(
         detailData.itemGroupList.map((item: any, index: number) => {
-          return { ...item, index: numToChinese(index + 1) }
+          return { ...item, index: numToChinese(index + 1) };
         })
-      )
-      setOnlyReadError(false)
+      );
+      setOnlyReadError(false);
     }
-  }
+  };
 
-  const itemRadioChange = (e: any) => {}
+  const itemRadioChange = (e: any) => {};
   // 附件
-  const itemAttachmentCheck = () => {}
+  const itemAttachmentCheck = () => {};
 
   return (
-    <Con>
+    <Con ref={pageRef} className="print-page">
       {/* <Spin spinning={false}> */}
+      <div className="page-title" style={{ display: "none" }}>
+        {detailData.master && detailData.master.qcName}
+      </div>
       <MessageBox>
-        <div className='boxLeft'>
+        <div className="boxLeft">
           <div>质控日期：{messageBoxData.evalDate}</div>
           <div>质控病区：{messageBoxData.wardName}</div>
-          <div>床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + '床'}</div>
-          <div>需要跟踪评价：{messageBoxData.followEvaluate ? '是' : '否'}</div>
           <div>
-            质控结果：是({itemCount.yesSize}) 否({itemCount.noSize}) 不适用({itemCount.inapplicableSize})
+            床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
           </div>
-          {messageBoxData.hasArchiveItem && <div>是否归档：{messageBoxData.archive ? '是' : '否'}</div>}
+          <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
+          <div>
+            质控结果：是({itemCount.yesSize}) 否({itemCount.noSize}) 不适用(
+            {itemCount.inapplicableSize})
+          </div>
+          {messageBoxData.hasArchiveItem && (
+            <div>是否归档：{messageBoxData.archive ? "是" : "否"}</div>
+          )}
         </div>
 
-        <div className='boxRight'>
+        <div className="boxRight">
           <div>
             质控人：
             {userList.map((item: any, index: number, arr: any) => (
               <span key={index}>
                 {item.empName}
-                {index != arr.length - 1 ? '、' : ''}
+                {index != arr.length - 1 ? "、" : ""}
               </span>
             ))}
           </div>
@@ -109,14 +171,18 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             {bedNurseList.map((item: any, index: number, arr: any) => (
               <span key={index}>
                 {item.empName}
-                {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ''}
-                {index != arr.length - 1 ? '、' : ''}
+                {item.nurseHierarchy ? `(${item.nurseHierarchy})` : ""}
+                {index != arr.length - 1 ? "、" : ""}
               </span>
             ))}
           </div>
           <div>住院号：{messageBoxData.inpNo}</div>
           <div>跟踪日期：{messageBoxData.followEvaluateDate}</div>
-          <div>通过率：{messageBoxData.evalRate && messageBoxData.evalRate.toFixed(2) + '%'}</div>
+          <div>
+            通过率：
+            {messageBoxData.evalRate &&
+              messageBoxData.evalRate.toFixed(2) + "%"}
+          </div>
         </div>
       </MessageBox>
       <OnlyReadError>
@@ -124,46 +190,60 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       </OnlyReadError>
       <QuestionCon>
         {detailData.fillItemList && (
-          <div style={{ margin: '15px 0 0', fontSize: 14, fontWeight: 'bold' }}>
+          <div style={{ margin: "15px 0 0", fontSize: 14, fontWeight: "bold" }}>
             {detailData.fillItemList.map((item: any) => {
-              return item.itemContent.replace('%s', item.itemValue) + '  '
+              return item.itemContent.replace("%s", item.itemValue) + "  ";
             })}
           </div>
         )}
         {itemConData.map((itemGroup: any, itemGroupIndex: number) => (
           <QuestionItem key={itemGroupIndex}>
-            <div className='titleCon'>
-              <div className='titleLeftCon'>
+            <div className="titleCon">
+              <div className="titleLeftCon">
                 {itemGroup.index}、{itemGroup.qcItemTypeName}
               </div>
             </div>
             {itemGroup.itemList.map((item: any, itemIndex: number) => (
-              <div className='itemCon' key={itemIndex}>
-                <div className='itemTitleCon'>
+              <div className="itemCon" key={itemIndex}>
+                <div className="itemTitleCon">
                   {item.itemShowCode} {item.qcItemName}
                 </div>
-                <div className='itemMidCon'>
-                  <Radio.Group value={item.qcItemValue} disabled buttonStyle='solid'>
-                    <Radio value={'是'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                <div className="itemMidCon">
+                  <Radio.Group
+                    value={item.qcItemValue}
+                    disabled
+                    buttonStyle="solid"
+                  >
+                    <Radio
+                      value={"是"}
+                      style={{ marginLeft: "20px", marginRight: "30px" }}
+                    >
                       是
                     </Radio>
-                    <Radio value={'否'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                    <Radio
+                      value={"否"}
+                      style={{ marginLeft: "20px", marginRight: "30px" }}
+                    >
                       否
                     </Radio>
-                    <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+                    <Radio
+                      value={"不适用"}
+                      style={{ marginLeft: "20px", marginRight: "30px" }}
+                    >
                       不适用
                     </Radio>
                   </Radio.Group>
                   {}
-                  <div className='itemAttachmentCon'>
+                  <div className="itemAttachmentCon">
                     {item.attachUrls && (
                       <Zimage
                         text={
                           <span>
-                            <Icon type='paper-clip' /> {item.attachUrls.split(',').length}
+                            <Icon type="paper-clip" />{" "}
+                            {item.attachUrls.split(",").length}
                           </span>
                         }
-                        list={item.attachUrls.split(',')}
+                        list={item.attachUrls.split(",")}
                       />
                     )}
                   </div>
@@ -172,10 +252,15 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             ))}
 
             {((onlyReadError && itemGroup.remark) || !onlyReadError) && (
-              <div className='notesCon'>
-                <div className='notesLeftCon'>备注</div>
-                <div className='notesRightCon'>
-                  <TextArea rows={4} readOnly value={itemGroup.remark} autosize />
+              <div className="notesCon">
+                <div className="notesLeftCon">备注</div>
+                <div className="notesRightCon">
+                  <TextArea
+                    rows={4}
+                    readOnly
+                    value={itemGroup.remark}
+                    autosize
+                  />
                 </div>
               </div>
             )}
@@ -184,8 +269,8 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
 
         {!onlyReadError && (
           <QuestionBottomCon>
-            <div className='questionBottomTitle'>问题可能原因</div>
-            <div className='questionBottomCheckbox'>
+            <div className="questionBottomTitle">问题可能原因</div>
+            <div className="questionBottomCheckbox">
               {causeList.map((item: any, index: number) => (
                 <Checkbox disabled key={index} checked={item.checked}>
                   {item.causeContent}
@@ -197,7 +282,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       </QuestionCon>
       {/* </Spin> */}
     </Con>
-  )
+  );
 }
 
 const Con = styled.div`
@@ -211,7 +296,7 @@ const Con = styled.div`
   background: #fff;
 
   border: 1px solid #ddd;
-`
+`;
 const MessageBox = styled.div`
   margin-top: 10px;
   min-height: 138px;
@@ -228,14 +313,14 @@ const MessageBox = styled.div`
     flex: 1;
     width: 0;
   }
-`
+`;
 const QuestionCon = styled.div`
   margin-top: 10px;
   /* flex: 1;
   height: 0; */
   font-size: 12px;
   padding-bottom: 20px;
-`
+`;
 const QuestionItem = styled.div`
   .titleCon {
     margin: 5px 0 0;
@@ -268,7 +353,7 @@ const QuestionItem = styled.div`
         span {
           color: #333;
           &:hover {
-            color: ${(p) => p.theme.$mtc};
+            color: ${p => p.theme.$mtc};
           }
         }
       }
@@ -306,7 +391,7 @@ const QuestionItem = styled.div`
       }
     }
   }
-`
+`;
 const QuestionBottomCon = styled.div`
   box-sizing: border-box;
   padding: 10px 0;
@@ -322,7 +407,7 @@ const QuestionBottomCon = styled.div`
       color: black;
     }
   }
-`
+`;
 
 const OnlyReadError = styled.div`
   text-align: right;
@@ -330,4 +415,4 @@ const OnlyReadError = styled.div`
   margin-bottom: -35px;
   position: relative;
   z-index: 2;
-`
+`;

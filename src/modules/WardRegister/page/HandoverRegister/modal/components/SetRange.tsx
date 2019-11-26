@@ -8,7 +8,8 @@ import {
   Select,
   InputNumber,
   Input,
-  Switch
+  Switch,
+  AutoComplete
 } from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
@@ -18,6 +19,7 @@ import { globalModal } from "src/global/globalModal";
 import update from "immutability-helper";
 import { Place } from "src/components/common";
 import { observer } from "mobx-react-lite";
+import _ from "lodash";
 export interface Props {
   blockId: any;
   registerCode: any;
@@ -29,6 +31,7 @@ export default observer(function SetRange(props: Props) {
   const [dataSource, setDataSource]: any[] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [moveAble, setMoveAble] = useState(false);
+  const [rangeDictMap, setRangeDictMap]: any = useState({});
   const { blockId, registerCode, onOkCallBack } = props;
   const columns: ColumnProps<any>[] = [
     {
@@ -39,12 +42,13 @@ export default observer(function SetRange(props: Props) {
       width: 150,
       render(text: any, record: any, index: any) {
         return (
-          <Input
-            onChange={e => {
-              record.itemCode = e.target.value;
-              updateDataSource();
+          <AutoComplete
+            onChange={value => {
+              record.itemCode = value;
             }}
-            value={text}
+            onBlur={() => updateDataSource()}
+            defaultValue={text}
+            dataSource={Object.keys(rangeDictMap)}
           />
         );
       }
@@ -65,9 +69,12 @@ export default observer(function SetRange(props: Props) {
               updateDataSource();
             }}
             value={text ? text.split(";") : []}
-            open={false}
             tokenSeparators={[";"]}
-          />
+          >
+            {(rangeDictMap[record.itemCode] || []).map((item: any) => {
+              return <Select.Option key={item.id}>{item.name}</Select.Option>;
+            })}
+          </Select>
         );
       }
     },
@@ -122,6 +129,11 @@ export default observer(function SetRange(props: Props) {
     wardRegisterService.getRangeConfigByBlockId(blockId).then(res => {
       setDataSource(res.data.itemList);
       setPageLoading(false);
+    });
+    wardRegisterService.getArrangeMenu().then(res => {
+      let map = _.groupBy(res.data, (item: any) => item.shiftType);
+      console.log(map, "map");
+      setRangeDictMap(map);
     });
   };
 

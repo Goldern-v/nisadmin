@@ -200,17 +200,6 @@ export default observer(function ArrangeSheet(props: Props) {
         });
     } catch (error) {}
     try {
-      // if (
-      //   (document as any).querySelector('.ant-table-body').scrollWidth ==
-      //   (document as any).querySelector('.ant-table-body').clientWidth
-      // ) {
-      //   ;(document as any).querySelector('#baseTable').style.width =
-      //     (sheetViewModal.dateList.length + 6) * 70 + 250 + 10 + 'px'
-      //   setSurplusWidth(false)
-      // } else {
-      //   ;(document as any).querySelector('#baseTable').style.width = 'auto'
-      //   setSurplusWidth(240)
-      // }
       setTimeout(() => {
         if (
           (document as any).querySelector("#arrangeSheet .ant-table-body") &&
@@ -245,9 +234,6 @@ export default observer(function ArrangeSheet(props: Props) {
         ".remark-con.real textarea"
       ).value = remark;
     } catch (error) {}
-    // try {
-    //   $('.ant-table-body tr').attr('draggable', 'false')
-    // } catch (error) {}
   });
 
   let remark = sheetViewModal.remark;

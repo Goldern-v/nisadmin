@@ -1,3 +1,4 @@
+import { authStore } from "./../../../stores/index";
 import BaseApiService from "src/services/api/BaseApiService";
 
 interface BaseQueryType {
@@ -5,33 +6,6 @@ interface BaseQueryType {
   wardCode: string;
 }
 export default class WardRegisterService extends BaseApiService {
-  /** 接班人签名 */
-  public auditAll(ids: any[]) {
-    return this.post(`/qcRegisterMaster/auditAll`, {
-      list: ids.map(id => ({ id }))
-    });
-  }
-  /** 配置项 */
-  public getCurrentList(obj: BaseQueryType) {
-    return this.post(`/qcRegisterItem/getCurrentList`, obj);
-  }
-  /** 配置保存 */
-  public qcRegisterItemSaveOrUpdate(obj: any) {
-    return this.post(`/qcRegisterItem/saveOrUpdate`, obj);
-  }
-  /** 班次列表 */
-  public qcRegisterRangeGetList(obj: BaseQueryType) {
-    return this.post(`/qcRegisterRange/getList`, obj);
-  }
-  /** 班次保存 */
-  public qcRegisterRangeSaveOrUpdate(obj: any) {
-    return this.post(`/qcRegisterRange/saveOrUpdate`, obj);
-  }
-  /** 获取时间段 */
-  public qcRegisterItemGetRevisionList(obj: any) {
-    return this.post(`/qcRegisterItem/getRevisionList`, obj);
-  }
-
   /** new */
 
   /** 获取时间段 */
@@ -47,10 +21,14 @@ export default class WardRegisterService extends BaseApiService {
     return this.post(`/qcRegisterData/${registerCode}/getPage`, obj);
   }
   /** 保存 block 数据 */
-  public saveAndSignAll(registerCode: string, blockId: any, list: any[]) {
+  public saveAndSignAll(
+    registerCode: string,
+    blockId: any,
+    itemDataList: any[]
+  ) {
     return this.post(`/qcRegisterData/${registerCode}/saveAndSignAll`, {
       blockId,
-      list
+      itemDataList
     });
   }
   /** 获取 block 配置项 */
@@ -63,11 +41,11 @@ export default class WardRegisterService extends BaseApiService {
   public saveOrUpdateItemConfig(
     registerCode: string,
     blockId: any,
-    list: any[]
+    itemList: any[]
   ) {
     return this.post(`/qcRegisterItem/${registerCode}/saveOrUpdateWhole`, {
       blockId,
-      list
+      itemList
     });
   }
   /** 获取 block 班次 */
@@ -75,11 +53,50 @@ export default class WardRegisterService extends BaseApiService {
     return this.get(`/qcRegisterRange/getListByBlockId/${blockId}`);
   }
   /** 保存 block 配置项 */
-  public saveOrUpdateRangeConfig(blockId: any, list: any[]) {
+  public saveOrUpdateRangeConfig(blockId: any, itemList: any[]) {
     return this.post(`/qcRegisterRange/saveOrUpdateWhole`, {
       blockId,
+      itemList
+    });
+  }
+
+  /** 交班签名 */
+  public signAll(registerCode: string, list: { id: any }[]) {
+    return this.post(`/qcRegisterData/${registerCode}/signAll`, {
       list
     });
+  }
+  /** 取消交班 */
+  public cancelSign(registerCode: string, list: { id: any }[]) {
+    return this.post(`/qcRegisterData/${registerCode}/cancelSign`, {
+      list
+    });
+  }
+  /** 审核签名 */
+  public auditAll(registerCode: string, list: { id: any }[]) {
+    return this.post(`/qcRegisterData/${registerCode}/auditAll`, {
+      list
+    });
+  }
+  /** 取消审核签名 */
+  public cancelAudit(registerCode: string, list: { id: any }[]) {
+    return this.post(`/qcRegisterData/${registerCode}/cancelAudit`, {
+      list
+    });
+  }
+
+  /** 获取排班班次 */
+  public getArrangeMenu(obj?: any) {
+    obj = {
+      deptCode: authStore.selectedDeptCode,
+      status: true
+    };
+    return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(obj));
+  }
+
+  /** 删除排班block */
+  public qcRegisterBlockDelete(registerCode: any, blockId: any) {
+    return this.get(`/qcRegisterBlock/${registerCode}/delete/${blockId}`);
   }
 }
 

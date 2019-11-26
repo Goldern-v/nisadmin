@@ -130,9 +130,6 @@ const SafetyHazardsDetail = lazy(() =>
     "src/modules/quality/views/qcOne/page/safetyHazards/SafetyHazardsDetail"
   )
 );
-const HandoverRegisterSet = lazy(() =>
-  import("src/modules/WardRegister/page/HandoverRegister/HandoverRegisterSet")
-);
 const WardRegisterRouter = lazy(() =>
   import("src/modules/WardRegister/WardRegisterRouter")
 );
@@ -480,14 +477,6 @@ const routes: RouteItem[] = [
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   /**一级质控 */
-  setLayout(
-    "/wardRegister/handoverRegisterSet",
-    HandoverRegisterSet,
-    layouts.MainLayout,
-    {
-      style: { background: "#fff" }
-    }
-  ),
   setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
   setLayout(
     "/nursingQualityCheckEdit",

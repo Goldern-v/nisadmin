@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
-import HeadCon from "../../components/HeadCon/HeadCon";
 import BaseTable from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -15,7 +14,6 @@ import {
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
-import { wardRegisterViewModal } from "../../WardRegisterViewModal";
 import { globalModal } from "src/global/globalModal";
 import { DoCon } from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFilesList/NurseFilesListView";
 import { arrangeService } from "src/modules/personnelManagement/views/arrangeHome/services/ArrangeService";
@@ -26,8 +24,14 @@ import createModal from "src/libs/createModal";
 import SettingModal from "./modal/SettingModal";
 import { wardLogService } from "src/modules/wardLog/services/WardLogService";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
+import { useLayoutEffect } from "src/types/react";
+import moment from "moment";
+import { throttle } from "src/utils/throttle/throttle";
 export interface Props {}
 const registerCode = "qc_register_handover";
+
+const throttler = throttle();
+
 export default observer(function HandoverRegister() {
   const [oldData, setOldData]: any = useState({});
   const [dataSource, setDataSource] = useState([]);
@@ -37,7 +41,8 @@ export default observer(function HandoverRegister() {
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId] = useState(null);
-  const [date, setDate]: any = useState(getCurrentMonth());
+  const [date, setDate]: any = useState([null, null]);
+  const [surplusWidth, setSurplusWidth]: any = useState(false);
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
@@ -84,7 +89,7 @@ export default observer(function HandoverRegister() {
       align: "center",
       colSpan: 2,
       width: 107,
-      fixed: "left"
+      fixed: surplusWidth && "left"
     },
     {
       title: "头部",
@@ -92,7 +97,7 @@ export default observer(function HandoverRegister() {
       width: 73,
       dataIndex: "range",
       align: "center",
-      fixed: "left"
+      fixed: surplusWidth && "left"
     },
     ...itemConfigList.map((item: any) => {
       if (item.checkSize) {
@@ -109,15 +114,18 @@ export default observer(function HandoverRegister() {
           },
           align: "center",
           dataIndex: item.itemCode,
+          width: (15 * item.width || 50) + 8,
+          className: "input-cell",
           render(text: string, record: any, index: number) {
             return (
               <AutoComplete
+                disabled={!!record.signerName}
                 dataSource={(item.options || "").split(";")}
-                value={text}
+                defaultValue={text}
                 onChange={value => {
                   record[item.itemCode] = value;
-                  updateDataSource();
                 }}
+                onBlur={() => updateDataSource()}
               />
             );
           }
@@ -134,16 +142,19 @@ export default observer(function HandoverRegister() {
             );
           },
           align: "center",
+          className: "input-cell",
+          width: (15 * item.width || 50) + 8,
           dataIndex: item.itemCode,
           render(text: string, record: any, index: number) {
             return (
               <AutoComplete
+                disabled={!!record.signerName}
                 dataSource={(item.options || "").split(";")}
-                value={text}
+                defaultValue={text}
                 onChange={value => {
                   record[item.itemCode] = value;
-                  updateDataSource();
                 }}
+                onBlur={() => updateDataSource()}
               />
             );
           }
@@ -159,12 +170,13 @@ export default observer(function HandoverRegister() {
       render(text: string, record: any, index: number) {
         return (
           <Input.TextArea
+            disabled={!!record.signerName}
             autosize={true}
-            value={text}
+            defaultValue={text}
             onChange={e => {
               record.description = e.target.value;
-              updateDataSource();
             }}
+            onBlur={() => updateDataSource()}
           />
         );
       }
@@ -174,35 +186,94 @@ export default observer(function HandoverRegister() {
       width: 80,
       dataIndex: "signerName",
       align: "center",
+      fixed: surplusWidth && "right",
       render(text: string, record: any, index: number) {
-        return text;
+        return text ? (
+          <div
+            className="sign-name"
+            onClick={() => {
+              globalModal
+                .confirm("交班签名取消", "你确定取消交班签名吗？")
+                .then(res => {
+                  wardRegisterService
+                    .cancelSign(registerCode, [{ id: record.id }])
+                    .then(res => {
+                      message.success("取消交班签名成功");
+                      Object.assign(record, res.data.list[0]);
+                      updateDataSource();
+                    });
+                });
+            }}
+          >
+            {text}
+          </div>
+        ) : (
+          <DoCon>
+            <span
+              onClick={() => {
+                globalModal
+                  .confirm("交班签名确认", "你确定交班签名吗？")
+                  .then(res => {
+                    wardRegisterService
+                      .saveAndSignAll(registerCode, selectedBlockId, [record])
+                      .then(res => {
+                        message.success("交班签名成功");
+                        Object.assign(record, res.data.itemDataList[0]);
+                        updateDataSource();
+                      });
+                  });
+              }}
+            >
+              签名
+            </span>
+          </DoCon>
+        );
       }
     },
     {
       title: "接班者签名",
       width: 80,
       dataIndex: "auditorName",
+      fixed: surplusWidth && "right",
       align: "center",
       render(text: string, record: any, index: number) {
-        return (
-          text || (
-            <DoCon>
-              <span
-                onClick={() => {
-                  globalModal
-                    .confirm("交班签名确认", "你确定交班签名吗？")
+        return text ? (
+          <div
+            className="sign-name"
+            onClick={() => {
+              globalModal
+                .confirm("接班签名取消", "你确定取消接班签名吗？")
+                .then(res => {
+                  wardRegisterService
+                    .auditAll(registerCode, [{ id: record.id }])
                     .then(res => {
-                      wardRegisterService.auditAll([record.id]).then(res => {
-                        message.success("接班签名成功");
-                        // onLoad();
-                      });
+                      message.success("取消接班签名成功");
+                      onSave();
                     });
-                }}
-              >
-                签名
-              </span>
-            </DoCon>
-          )
+                });
+            }}
+          >
+            {text}
+          </div>
+        ) : (
+          <DoCon>
+            <span
+              onClick={() => {
+                globalModal
+                  .confirm("接班签名确认", "你确定接班签名吗？")
+                  .then(res => {
+                    wardRegisterService
+                      .cancelAudit(registerCode, [{ id: record.id }])
+                      .then(res => {
+                        message.success("接班签名成功");
+                        onSave();
+                      });
+                  });
+              }}
+            >
+              签名
+            </span>
+          </DoCon>
         );
       }
     }
@@ -212,22 +283,42 @@ export default observer(function HandoverRegister() {
     // setPageLoading(true);
     await wardRegisterService
       .qcRegisterBlockGetList(registerCode, authStore.selectedDeptCode)
-      .then(res => {
+      .then(async res => {
         setBlockList(res.data);
-        if (res.data[blockList.length]) {
-          setSelectedBlockId((res.data[blockList.length] as any)!.id);
+        if (res.data[res.data.length - 1]) {
+          let blockId = (res.data[res.data.length - 1] as any)!.id;
+          let lastPageIndex = await getLastPageIndex(blockId);
+          setSelectedBlockId(blockId);
+          setPageOptions({
+            ...pageOptions,
+            pageIndex: lastPageIndex
+          });
+        } else {
+          setSelectedBlockId(null);
+          setTotal(0);
+          setDataSource([]);
+          setItemConfigList([]);
+          setRangeConfigList([]);
         }
       });
+  };
+
+  const getLastPageIndex = async (blockId: any) => {
+    return await wardRegisterService
+      .getPage(registerCode, {
+        blockId: blockId,
+        ...pageOptions
+      })
+      .then(res => res.data.itemDataPage.totalPage);
   };
 
   const getPage = () => {
     setPageLoading(true);
     wardRegisterService
       .getPage(registerCode, {
-        wardCode: authStore.selectedDeptCode,
-        startDate: date[0].format("YYYY-MM-DD"),
-        endDate: date[1].format("YYYY-MM-DD"),
-        range: wardRegisterViewModal.selectedClasses,
+        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+        range: selectedRange,
         blockId: selectedBlockId,
         ...pageOptions
       })
@@ -236,7 +327,6 @@ export default observer(function HandoverRegister() {
         setDataSource(res.data.itemDataPage.list);
         setItemConfigList(res.data.itemConfigList);
         setRangeConfigList(res.data.rangeConfigList);
-        // setOldData(res.data);
         setPageLoading(false);
       });
   };
@@ -246,6 +336,7 @@ export default observer(function HandoverRegister() {
       .qcRegisterBlockCreate(registerCode, authStore.selectedDeptCode)
       .then(res => {
         message.success("创建成功");
+        onInitData();
       });
   };
 
@@ -258,17 +349,65 @@ export default observer(function HandoverRegister() {
       });
   };
 
-  const onInit = () => {};
+  const onDelete = () => {
+    globalModal.confirm("删除确认", "确定要删除此修订版本吗？").then(res => {
+      wardRegisterService
+        .qcRegisterBlockDelete(registerCode, selectedBlockId)
+        .then(res => {
+          message.success("保存成功");
+          onInitData();
+        });
+    });
+  };
 
   useEffect(() => {
     onInitData();
-  }, []);
+  }, [authStore.selectedDeptCode]);
 
   useEffect(() => {
-    selectedBlockId && getPage();
-  }, [pageOptions, authStore.selectedDeptCode, date, wardRegisterViewModal.selectedClasses, selectedBlockId]);
+    // selectedBlockId && getPage();
+    selectedBlockId && throttler(getPage);
+  }, [pageOptions, date, selectedRange, selectedBlockId]);
+
+  useLayoutEffect(() => {
+    try {
+      setTimeout(() => {
+        if (
+          (document as any).querySelector(
+            "#HandoverRegisterTable .ant-table-body"
+          ) &&
+          (document as any).querySelector(
+            "#HandoverRegisterTable .ant-table-body"
+          ).scrollWidth ==
+            (document as any).querySelector(
+              "#HandoverRegisterTable .ant-table-body"
+            ).clientWidth
+        ) {
+          /** noscorll */
+          (document as any).querySelector(
+            "#HandoverRegisterTable #baseTable"
+          ).style.width =
+            columns.reduce((total: number, current: any) => {
+              return total + current.width;
+            }, 0) +
+            10 +
+            "px";
+          setSurplusWidth(false);
+        } else {
+          (document as any).querySelector(
+            "#HandoverRegisterTable #baseTable"
+          ) &&
+            ((document as any).querySelector(
+              "#HandoverRegisterTable #baseTable"
+            ).style.width = "auto");
+          setSurplusWidth(280);
+        }
+      }, 10);
+    } catch (error) {}
+  }, [dataSource, surplusWidth]);
+
   return (
-    <Wrapper>
+    <Wrapper id="HandoverRegisterTable">
       <PageHeader>
         <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
           新建
@@ -280,7 +419,7 @@ export default observer(function HandoverRegister() {
         <DatePicker.RangePicker
           value={date}
           onChange={value => setDate(value)}
-          allowClear={false}
+          allowClear={true}
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
@@ -308,7 +447,9 @@ export default observer(function HandoverRegister() {
         >
           {blockList.map((item: any) => (
             <Select.Option value={item.id} key={item.id}>
-              {item.registerName}
+              {item.registerName +
+                " " +
+                moment(item.createTime).format("MM-DD")}
             </Select.Option>
           ))}
         </Select>
@@ -331,15 +472,15 @@ export default observer(function HandoverRegister() {
         >
           设置
         </Button>
-        {/* <Button>筛选</Button> */}
+        <Button onClick={onDelete}>删除</Button>
       </PageHeader>
       <TableCon>
         <BaseTable
           loading={pageLoading}
           dataSource={dataSource}
           columns={columns}
-          surplusWidth={190}
-          surplusHeight={300}
+          surplusWidth={surplusWidth}
+          surplusHeight={280}
           pagination={{
             current: pageOptions.pageIndex,
             pageSize: pageOptions.pageSize,
@@ -377,7 +518,7 @@ const TableCon = styled.div`
     justify-content: center;
   }
   .ant-select {
-    margin: 0 -8px;
+    width: 100%;
     border-radius: 0;
     input {
       border: 0;
@@ -386,7 +527,7 @@ const TableCon = styled.div`
     }
   }
   .input-cell {
-    padding: 0;
+    padding: 0 !important;
   }
   textarea {
     border: 0;
@@ -395,6 +536,7 @@ const TableCon = styled.div`
     width: 100%;
     outline: none;
     resize: none;
+    /* margin: 0 -8px; */
   }
   .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
   .ant-table-row-hover {
@@ -402,6 +544,9 @@ const TableCon = styled.div`
     > td {
       background: #fff !important;
     }
+  }
+  .sign-name {
+    cursor: pointer;
   }
 `;
 

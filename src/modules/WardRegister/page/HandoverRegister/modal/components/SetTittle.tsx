@@ -42,26 +42,26 @@ export default observer(function SetTittle(props: Props) {
           <Input
             onChange={e => {
               record.itemCode = e.target.value;
-              updateDataSource();
             }}
-            value={text}
+            onBlur={() => updateDataSource()}
+            defaultValue={text}
           />
         );
       }
     },
     {
-      title: "列宽度",
+      title: "列宽度(字数)",
       dataIndex: "width",
       className: "input-cell",
       width: 100,
       render(text: any, record: any, index: any) {
         return (
           <InputNumber
-            value={text}
+            defaultValue={text}
             onChange={value => {
               record.width = value;
-              updateDataSource();
             }}
+            onBlur={() => updateDataSource()}
           />
         );
       }
@@ -74,11 +74,11 @@ export default observer(function SetTittle(props: Props) {
       render(text: any, record: any, index: any) {
         return (
           <InputNumber
-            value={text}
+            defaultValue={text}
             onChange={value => {
               record.checkSize = value;
-              updateDataSource();
             }}
+            onBlur={() => updateDataSource()}
           />
         );
       }
@@ -94,10 +94,10 @@ export default observer(function SetTittle(props: Props) {
             mode="tags"
             style={{ width: "100%" }}
             onChange={(value: any) => {
-              record.options = value.join(';');
+              record.options = value.join(";");
               updateDataSource();
             }}
-            value={text ? text.split(';') : []}
+            value={text ? text.split(";") : []}
             open={false}
             tokenSeparators={[";"]}
           />
