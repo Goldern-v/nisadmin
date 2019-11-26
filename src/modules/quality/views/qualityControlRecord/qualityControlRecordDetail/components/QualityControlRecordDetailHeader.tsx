@@ -1,19 +1,19 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { appStore, authStore } from 'src/stores'
-const BG = require('../../../../images/顶部背景.png')
-import { Button, message, Modal } from 'antd'
-import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
-import createModal from 'src/libs/createModal'
-import BqclModal from '../modal/BqclModal'
-import HlbModal from '../modal/HlbModal'
-import EjkhszModal from '../modal/EjkhszModal'
-import { qualityControlRecordApi } from './../../api/QualityControlRecordApi'
-import qs from 'qs'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { appStore, authStore } from "src/stores";
+const BG = require("../../../../images/顶部背景.png");
+import { Button, message, Modal } from "antd";
+import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
+import createModal from "src/libs/createModal";
+import BqclModal from "../modal/BqclModal";
+import HlbModal from "../modal/HlbModal";
+import EjkhszModal from "../modal/EjkhszModal";
+import { qualityControlRecordApi } from "./../../api/QualityControlRecordApi";
+import qs from "qs";
 
 interface Props {
-  detailData: any
-  onload: any
+  detailData: any;
+  onload: any;
 }
 
 export default function qualityControlRecordDetailHeader(props: Props) {
@@ -25,89 +25,92 @@ export default function qualityControlRecordDetailHeader(props: Props) {
     //       ? `/qcTwo?noRefresh=1`
     //       : `/qcThree?noRefresh=1`
     // )
-    appStore.history.goBack()
-  }
-  let master = props.detailData.master || {}
-  let nodeDataList = JSON.parse(JSON.stringify(props.detailData.nodeDataList || []))
-  nodeDataList.reverse()
-  let [deleteLoading, setDeleteLoading] = useState(false)
-  let currentNodeIndex = nodeDataList.findIndex((item: any) => item.status == '1') || 0
+    appStore.history.length == 1 ? window.close() : appStore.history.goBack();
+  };
+  let master = props.detailData.master || {};
+  let nodeDataList = JSON.parse(
+    JSON.stringify(props.detailData.nodeDataList || [])
+  );
+  nodeDataList.reverse();
+  let [deleteLoading, setDeleteLoading] = useState(false);
+  let currentNodeIndex =
+    nodeDataList.findIndex((item: any) => item.status == "1") || 0;
   /** 当前 */
-  let currentNode = nodeDataList[currentNodeIndex] || {}
+  let currentNode = nodeDataList[currentNodeIndex] || {};
   /** 下一个 */
-  let nextNode = nodeDataList[currentNodeIndex - 1] || {}
+  let nextNode = nodeDataList[currentNodeIndex - 1] || {};
 
-  const bqclModal = createModal(BqclModal)
-  const hlbModal = createModal(HlbModal)
-  const ejkhszModal = createModal(EjkhszModal)
+  const bqclModal = createModal(BqclModal);
+  const hlbModal = createModal(HlbModal);
+  const ejkhszModal = createModal(EjkhszModal);
 
   const onAduit = (nodeName: string) => {
-    if (master.qcLevel == '2' && nodeName == '科护士长审核') {
+    if (master.qcLevel == "2" && nodeName == "科护士长审核") {
       return ejkhszModal.show({
         id: appStore.match.params.id,
         qcLevel: master.qcLevel,
         nodeCode: nextNode.nodeCode,
-        title: '科护士长审核',
+        title: "科护士长审核",
         onOkCallBack: props.onload
-      })
+      });
     }
     switch (nodeName) {
-      case '病区处理':
+      case "病区处理":
         bqclModal.show({
           id: appStore.match.params.id,
           nodeCode: nextNode.nodeCode,
           onOkCallBack: props.onload
-        })
-        break
-      case '质控组组长审核':
+        });
+        break;
+      case "质控组组长审核":
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: '质控组组长审核',
+            title: "质控组组长审核",
             onOkCallBack: props.onload
-          })
+          });
         }
-        break
-      case '科护士长审核':
+        break;
+      case "科护士长审核":
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: '科护士长审核',
+            title: "科护士长审核",
             onOkCallBack: props.onload
-          })
+          });
         }
-        break
-      case '护理部审核':
+        break;
+      case "护理部审核":
         {
           hlbModal.show({
             id: appStore.match.params.id,
             nodeCode: nextNode.nodeCode,
-            title: '护理部审核',
+            title: "护理部审核",
             onOkCallBack: props.onload
-          })
-        }
-
-        break
-      case '追踪评价':
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: '追踪评价',
-            onOkCallBack: props.onload
-          })
+          });
         }
 
-        break
+        break;
+      case "追踪评价":
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: "追踪评价",
+            onOkCallBack: props.onload
+          });
+        }
+
+        break;
     }
-  }
+  };
 
   const handleEdit = () => {
     if (!master.id || !master.qcCode) {
-      message.error('缺少质控编码或ID')
-      return
+      message.error("缺少质控编码或ID");
+      return;
     }
 
     appStore.history.push(
@@ -115,77 +118,77 @@ export default function qualityControlRecordDetailHeader(props: Props) {
         qcCode: master.qcCode,
         id: master.id
       })}`
-    )
-  }
+    );
+  };
 
   const handleDelete = () => {
     if (!master.id) {
-      message.error('缺少质控ID')
-      return
+      message.error("缺少质控ID");
+      return;
     }
 
     Modal.confirm({
-      title: '提示',
-      content: '是否删除该评价表?',
+      title: "提示",
+      content: "是否删除该评价表?",
       onOk: () => {
-        setDeleteLoading(true)
+        setDeleteLoading(true);
         qualityControlRecordApi.formDelete(master.id).then(
-          (res) => {
-            message.success('删除成功!', 1, () => {
-              setDeleteLoading(false)
+          res => {
+            message.success("删除成功!", 1, () => {
+              setDeleteLoading(false);
               if (history.length <= 1) {
-                window.close()
+                window.close();
               } else {
-                appStore.history.goBack()
+                appStore.history.goBack();
               }
-            })
+            });
           },
           () => setDeleteLoading(false)
-        )
+        );
       }
-    })
-  }
+    });
+  };
 
   const handleCancel = () => {
     if (!master.id) {
-      message.error('缺少质控ID')
-      return
+      message.error("缺少质控ID");
+      return;
     }
 
     // console.log(currentNode)
 
     Modal.confirm({
-      title: '提示',
-      content: '是否撤销该评价表?',
+      title: "提示",
+      content: "是否撤销该评价表?",
       onOk: () => {
-        setDeleteLoading(true)
+        setDeleteLoading(true);
         qualityControlRecordApi
           .revokeHandleForNode({
             id: master.id,
             nodeCode: currentNode.nodeCode
           })
           .then(
-            (res) => {
-              message.success('撤销成功!', 1, () => {
-                setDeleteLoading(false)
+            res => {
+              message.success("撤销成功!", 1, () => {
+                setDeleteLoading(false);
 
                 if (history.length <= 1) {
-                  window.close()
+                  window.close();
                 } else {
-                  appStore.history.goBack()
+                  appStore.history.goBack();
                 }
-              })
+              });
             },
             () => setDeleteLoading(false)
-          )
+          );
       }
-    })
-  }
+    });
+  };
 
   const statusText = () => {
-    if (!master.nextNodePendingName && master.status == '-1') return '待提交'
-    return master.status == '1' ? '已完成' : master.nextNodePendingName
-  }
+    if (!master.nextNodePendingName && master.status == "-1") return "待提交";
+    return master.status == "1" ? "已完成" : master.nextNodePendingName;
+  };
 
   return (
     <Con>
@@ -198,44 +201,68 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           }}
           data={[
             {
-              name: '质控记录',
-              link: master.qcLevel == '3' ? '/qcThree' : master.qcLevel == '2' ? '/qcTwo' : '3'
+              name: "质控记录",
+              link:
+                master.qcLevel == "3"
+                  ? "/qcThree"
+                  : master.qcLevel == "2"
+                  ? "/qcTwo"
+                  : "3"
             },
             {
-              name: '记录详情'
+              name: "记录详情"
             }
           ]}
         />
-        <div className='topHeaderTitle'>
-          <div className='title'>{master.qcName}</div>
-          <div className='topHeaderButton'>
+        <div className="topHeaderTitle">
+          <div className="title">{master.qcName}</div>
+          <div className="topHeaderButton">
             {nextNode.nodeName && (
-              <Button onClick={() => onAduit(nextNode.nodeName)} type='primary' disabled={!nextNode.canHandle}>
+              <Button
+                onClick={() => onAduit(nextNode.nodeName)}
+                type="primary"
+                disabled={!nextNode.canHandle}
+              >
                 {nextNode.nodeName}
               </Button>
             )}
             {master &&
-              master.qcLevel == '2' &&
-              master.status == '-1' &&
+              master.qcLevel == "2" &&
+              master.status == "-1" &&
               master.creatorNo == (authStore.user && authStore.user.empNo) && (
                 <React.Fragment>
                   <Button onClick={handleEdit} disabled={deleteLoading}>
                     编辑
                   </Button>
-                  <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
+                  <Button
+                    onClick={handleDelete}
+                    type="danger"
+                    ghost
+                    disabled={deleteLoading}
+                  >
                     删除
                   </Button>
                 </React.Fragment>
               )}
             {master &&
-              master.qcLevel == '2' &&
+              master.qcLevel == "2" &&
               master.canUpdate &&
               master.creatorNo == (authStore.user && authStore.user.empNo) && (
                 <React.Fragment>
-                  <Button onClick={handleDelete} type='danger' ghost disabled={deleteLoading}>
+                  <Button
+                    onClick={handleDelete}
+                    type="danger"
+                    ghost
+                    disabled={deleteLoading}
+                  >
                     删除
                   </Button>
-                  <Button onClick={handleCancel} type='danger' ghost disabled={deleteLoading}>
+                  <Button
+                    onClick={handleCancel}
+                    type="danger"
+                    ghost
+                    disabled={deleteLoading}
+                  >
                     撤销
                   </Button>
                 </React.Fragment>
@@ -243,15 +270,15 @@ export default function qualityControlRecordDetailHeader(props: Props) {
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>
-        <div className='topHeaderStatus'>
-          状态：<span style={{ color: '#6767ff' }}>{statusText()}</span>
+        <div className="topHeaderStatus">
+          状态：<span style={{ color: "#6767ff" }}>{statusText()}</span>
         </div>
       </TopHeader>
       <bqclModal.Component />
       <hlbModal.Component />
       <ejkhszModal.Component />
     </Con>
-  )
+  );
 }
 
 const Con = styled.div` 
@@ -263,7 +290,7 @@ const Con = styled.div`
   padding-left: 20px;
   /* border-bottom: 1px solid #ddd; */
   position: relative;
-`
+`;
 const TopHeader = styled.div`
   /* height: 26px;
   line-height: 26px; */
@@ -308,4 +335,4 @@ const TopHeader = styled.div`
     line-height: 25px;
     color: #999;
   }
-`
+`;

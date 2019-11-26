@@ -127,6 +127,18 @@ export default observer(function ExamineTable() {
         .then(res => {
           window.open(`/crNursing/manage/#/nurseAudit?empNo=${res.data.empNo}`);
         });
+    } else if (record.type == "sr") {
+      window.open(
+        `/crNursing/manage/#/qualityScheduleRecordDetails/${
+          record.othersMessage.id
+        }`
+      );
+    } else if (record.type == "qcTwoLevel") {
+      window.open(
+        `/crNursing/manage/#/qualityControlRecordDetail/${
+          record.othersMessage.id
+        }`
+      );
     }
   };
 
