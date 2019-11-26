@@ -338,7 +338,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       icon: <Icon type="download" style={{ fontSize: '30px' }} />,
       onClick: () => {
         nursingRulesApiService
-          .downloadPage(`/crNursing/asset${pageUrl}`, chapterName)
+          .downloadPage(`/crNursing/asset${pageUrl}`, `${chapterName.replace('.pdf', '')}.pdf`)
       }
     },
     {
