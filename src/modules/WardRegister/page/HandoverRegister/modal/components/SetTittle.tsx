@@ -94,10 +94,10 @@ export default observer(function SetTittle(props: Props) {
             mode="tags"
             style={{ width: "100%" }}
             onChange={(value: any) => {
-              record.options = value || [];
+              record.options = value.join(';');
               updateDataSource();
             }}
-            value={text}
+            value={text ? text.split(';') : []}
             open={false}
             tokenSeparators={[";"]}
           />

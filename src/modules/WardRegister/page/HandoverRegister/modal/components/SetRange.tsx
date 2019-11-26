@@ -61,10 +61,10 @@ export default observer(function SetRange(props: Props) {
             mode="tags"
             style={{ width: "100%" }}
             onChange={(value: any) => {
-              record.vsRange = value || [];
+              record.vsRange = value.join(";");
               updateDataSource();
             }}
-            value={text}
+            value={text ? text.split(";") : []}
             open={false}
             tokenSeparators={[";"]}
           />
