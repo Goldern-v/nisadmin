@@ -113,7 +113,7 @@ class PatientVisitMonthModel {
 
     // console.log(data)
     this.getSectionData('报告名称')!.text = this.allData.report!.reportName || ''
-    // this.getSectionData('月度随访')!.list = this.allData.patientVisitList || [];
+    this.getSectionData('月度随访')!.report = this.allData.report || {};
     this.getSectionData('附件')!.list = this.allData.attachmentList || [];
   }
   async init(query?: any) {

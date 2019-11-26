@@ -73,7 +73,13 @@ export default observer(function NursingWorkPlainList() {
       title: '月份',
       align: 'center',
       width: 100,
-      render: (text: string, record: any, idx: number) => `${record.year}年${record.month}月`
+      render: (text: string, record: any, idx: number) => {
+        if (record.type == '3') {
+          return ''
+        } else {
+          return `${record.year}年${record.month}月`
+        }
+      }
     },
     {
       key: 'type',
@@ -81,6 +87,7 @@ export default observer(function NursingWorkPlainList() {
       align: 'center',
       width: 100,
       render: (text: string, record: any, idx: number) => {
+        if (record.type == '3') return '年计划'
         if (record.type == '1') return '月计划'
         if (record.type == '2') return `第${numToChinese(record.indexInType)}周`
         return ''
@@ -296,6 +303,7 @@ export default observer(function NursingWorkPlainList() {
           onChange={(type: string) => setQuery({ ...query, type })}
           style={{ width: '95px' }}>
           <Option value="">全部</Option>
+          <Option value="3">年计划</Option>
           <Option value="1">月计划</Option>
           <Option value="2">周计划</Option>
         </Select>
@@ -323,7 +331,7 @@ export default observer(function NursingWorkPlainList() {
     </TableWrapper>
     <WorkPlainEditModal
       onOk={handleOk}
-      title={editParmas.content ? "添加计划" : "修改计划"}
+      title={editParmas.content ? "修改计划" : "添加计划"}
       visible={editVisible}
       onCancel={handleCancel}
       query={editParmas} />

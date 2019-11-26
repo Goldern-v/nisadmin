@@ -452,7 +452,7 @@ export default observer(function NursingReportList() {
           {isSupervisorNurse && <div className="item">
             <Button onClick={() => setCommitVisible(true)}>提交</Button>
           </div>}
-          {(isRoleManage || isSupervisorNurse || isDepartment) && <div className="item">
+          {(isSupervisorNurse || isDepartment) && <div className="item">
             <Button onClick={() => handleExportGather(true)}>片区导出</Button>
           </div>}
           {isDepartment && <div className="item">

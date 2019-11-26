@@ -73,7 +73,7 @@ export default observer(function NursingReportDetailView() {
       qualityAnalysisReportPoolService.deleteReport().then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/summaryReport')
+          appStore.history.push('/qcOne/nursingReportList')
         }, 500)
       })
     })
@@ -83,7 +83,7 @@ export default observer(function NursingReportDetailView() {
       qualityAnalysisReportPoolService.publishReport().then((res) => {
         message.success('提交成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/summaryReport')
+          appStore.history.push('/qcOne/nursingReportList')
         }, 500)
       })
     })
@@ -93,7 +93,7 @@ export default observer(function NursingReportDetailView() {
       qualityAnalysisReportPoolService.cancelPublishReport().then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/summaryReport')
+          appStore.history.push('/qcOne/nursingReportList')
         }, 500)
       })
     })
@@ -101,7 +101,7 @@ export default observer(function NursingReportDetailView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/qcThree/summaryReport' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb data={[{ name: '病区护理工作报表', link: '/qcOne/nursingReportList' }, { name: '报告详情', link: '' }]} />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>

@@ -110,7 +110,7 @@ export default observer(function StarRatingReportEdit() {
     <Wrapper>
       <HeadCon>
         <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/qcOne/starRatingReport' }, { name: '报告详情', link: '' }]}
+          data={[{ name: '星级考核报表', link: '/qcOne/starRatingReport' }, { name: '报告详情', link: '' }]}
         />
         <div className='title'>{reportName}</div>
         <div className='aside'>

@@ -5,8 +5,10 @@ import { numToChinese } from 'src/utils/number/numToChinese'
 import { ScrollBox } from 'src/components/common'
 import { authStore } from 'src/stores'
 import { nursingWorkPlainService } from './../api/NursingWorkPlainService'
+import YearPicker from 'src/components/YearPicker'
 
 import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 
 const Option = Select.Option
 
@@ -180,11 +182,14 @@ export default observer(function WorkPlainEditModal(props: Props) {
   }
 
   useEffect(() => {
-    if (visible) setEditQuery({ ...query })
+    if (visible) {
+      setEditQuery({ ...query })
+      getDict()
+    }
   }, [visible])
 
   useEffect(() => {
-    getDict()
+
   }, [])
 
 
@@ -205,17 +210,6 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={4}>月份:</Col>
-          <Col span={18}>
-            <Select
-              value={editQuery.month}
-              onChange={(month: string) => setEditQuery({ ...editQuery, month })}
-              className="month-select">
-              {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
-            </Select>
-          </Col>
-        </Row>
-        <Row>
           <Col span={4}>类型:</Col>
           <Col span={18}>
             <Select
@@ -223,10 +217,40 @@ export default observer(function WorkPlainEditModal(props: Props) {
               onChange={(type: string) => {
                 let newEditQuery = { ...editQuery, type }
                 if (type == '1') newEditQuery.indexInType = ''
+                if (type == '3') {
+                  newEditQuery.indexInType = ''
+                  newEditQuery.month = ''
+                } else {
+                  if (!newEditQuery.month) newEditQuery.month = moment().format('M')
+                }
                 setEditQuery(newEditQuery)
               }}>
+              <Option value="3">年计划</Option>
               <Option value="1">月计划</Option>
               <Option value="2">周计划</Option>
+            </Select>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={4}>年份:</Col>
+          <Col span={18}>
+            <YearPicker
+              allowClear={false}
+              value={editQuery.year ? moment(`${editQuery.year}-01-01`) : null}
+              onChange={(_moment: any) =>
+                setEditQuery({ ...editQuery, year: _moment.format('YYYY') })}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={4}>月份:</Col>
+          <Col span={18}>
+            <Select
+              value={editQuery.month}
+              disabled={editQuery.type == '3'}
+              onChange={(month: string) => setEditQuery({ ...editQuery, month })}
+              className="month-select">
+              {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
             </Select>
           </Col>
         </Row>
@@ -234,7 +258,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={4}>周数:</Col>
           <Col span={18}>
             <Select
-              disabled={editQuery.type == '1'}
+              disabled={editQuery.type != '2'}
               value={editQuery.indexInType}
               onChange={(indexInType: string) => setEditQuery({ ...editQuery, indexInType })}>
               {weekList.map((idx: number) =>

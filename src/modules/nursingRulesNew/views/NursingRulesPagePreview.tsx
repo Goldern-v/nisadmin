@@ -29,6 +29,8 @@ export interface Props { }
 
 export default observer(function NursingRulesPagePreview(props: Props) {
   const { history, location } = appStore
+  const { isDepartment } = authStore
+
   const search = appStore.queryObj
   const viewType = search.viewType || ''
   const viewTop = React.createRef<HTMLDivElement>()
@@ -332,10 +334,11 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     },
     {
       name: '下载',
+      hidden: !isDepartment,
       icon: <Icon type="download" style={{ fontSize: '30px' }} />,
       onClick: () => {
         nursingRulesApiService
-          .downloadPage(`/crNursing/asset${pageUrl}`, chapterName)
+          .downloadPage(`/crNursing/asset${pageUrl}`, `${chapterName.replace('.pdf', '')}.pdf`)
       }
     },
     {
@@ -427,25 +430,39 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     let title = chapterName
     let iptStyle = {
       width: '175px',
-      margin: '0 10px',
-      marginTop: '10px'
+      margin: '0 10px'
+    }
+
+    const handleCopyName = () => {
+      let target = document.getElementById('chapterFileNmae') as HTMLInputElement
+      if (target) {
+        target.select()
+        document.execCommand("Copy")
+        message.success('章节对应文件名已复制')
+      }
     }
     let noticeText = `请上传${chapter.fileName}`
     // if (chapter.fileName) title += `(${chapter.fileName})`
     let content = <React.Fragment>
-      <div>
+      <ReversionCon>
         <span>章节名称:</span>
         <Input
           style={iptStyle}
           disabled={true}
           title={chapterName}
           value={title} />
-      </div>
-      <div>
+        <input
+          type="text"
+          id="chapterFileNmae"
+          style={{ width: '1px', height: '1px', border: 'none', opacity: 0 }}
+          value={chapter.fileName || ''} />
+      </ReversionCon>
+      <ReversionCon>
         <span>上传文件:</span>
         <Input
-          disabled={true}
+          readOnly={true}
           style={iptStyle}
+          onClick={handleCopyName}
           placeholder={noticeText}
           className="fileNameIpt" />
         <input type="file" style={{ display: 'none' }} onChange={(e) => {
@@ -466,7 +483,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
             <span>...</span>
           </Button>
         </Tooltip>
-      </div>
+      </ReversionCon>
     </React.Fragment>
 
     Modal.confirm({
@@ -608,7 +625,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           <Button
             onClick={() => handleAudit(true)}
             type='primary'
-            disabled={loading || !!!authStore.isDepartment}
+            disabled={loading || !!!isDepartment}
             style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
             审核
           </Button>
@@ -647,7 +664,9 @@ export default observer(function NursingRulesPagePreview(props: Props) {
             className='left-control'
             style={{ display: viewType == '' ? 'block' : 'none' }}>
             {leftControl.map((item: any, idx: number) => (
-              <div className='item' onClick={() => item.onClick(chapter, indexList)} key={idx}>
+              <div
+                className={item.hidden ? 'item hidden' : 'item'}
+                onClick={() => item.onClick(chapter, indexList)} key={idx}>
                 <div className='icon'>{item.icon}</div>
                 <div className='text'>{item.name}</div>
               </div>
@@ -812,6 +831,9 @@ const Wrapper = styled.div`
         border-bottom: 1px solid #ddd;
         cursor: pointer;
         overflow: hidden;
+        &.hidden{
+          display:none;
+        }
         &:last-of-type {
           border-bottom: none;
         }
@@ -988,5 +1010,13 @@ const ChapterTitleCon = styled.div`
   z-index: 1;
   &.no-border{
     border: none;
+  }
+`
+
+const ReversionCon = styled.div`
+  margin-top: 10px;
+  line-height: 32px;
+  &>*{
+    vertical-align: top;
   }
 `

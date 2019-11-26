@@ -113,7 +113,7 @@ class StarRatingReportEditModel {
 
     console.log(data)
     this.getSectionData('报告名称')!.text = this.allData.report!.reportName || ''
-    this.getSectionData('星级考核')!.list = this.allData.starRatingList.map((item: any) => {
+    this.getSectionData('星级考核')!.list = (this.allData.starRatingList || []).map((item: any) => {
       let nursingDeduct = -Number(item.nursingDeduct)
       if (isNaN(nursingDeduct)) nursingDeduct = 0
 

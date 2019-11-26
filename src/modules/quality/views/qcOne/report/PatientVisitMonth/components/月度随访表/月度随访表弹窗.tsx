@@ -29,216 +29,65 @@ export default observer(function 月度随访表弹窗(props: Props) {
 
   let { sectionId, setData, data } = props
 
-  let cloneData: any = cloneJson(data || { list: [] })
-  let report: Report = patientVisitMonthModel.getDataInAllData('report')
+  let cloneData: any = cloneJson(data || { report: {} })
 
+  const getVisiteRate = (record: any) => {
+    let dischargeNumber = Number(record.dischargeNumber)
+    if (isNaN(dischargeNumber)) dischargeNumber = 0
 
-  const [eventTypeList, setEventTypeList] = useState([] as any[])
+    let visitNumber = Number(record.visitNumber)
+    if (isNaN(visitNumber)) visitNumber = 0
+
+    // if (!dischargeNumber || visitNumber > dischargeNumber) return '100%'
+    if (!dischargeNumber) return '100%'
+    if (!visitNumber) return '0%'
+
+    let rate = visitNumber / dischargeNumber
+    rate = Math.round(rate * 10000) / 100
+    return `${rate}%`
+  }
+
+  const handleChange = (val: any, key: string) => {
+    let num = parseInt(val, 10)
+    if (isNaN(num) || num < 0) num = 0
+
+    let newReport = { ...cloneData.report }
+
+    newReport[key] = num
+
+    newReport.visitRate = getVisiteRate(newReport)
+
+    setData({ report: newReport })
+  }
 
   const columns: ColumnProps<any>[] = [
     {
-      title: '序号',
-      render(text: any, record: any, index: number) {
-        return index + 1
-      },
-      width: 50,
-      align: 'center'
+      dataIndex: 'dischargeNumber',
+      title: '出院人数',
+      render: (text: string, record: any) => {
+        return <Input value={text} onChange={(e: any) => handleChange(e.target.value, 'dischargeNumber')} />
+      }
     },
     {
-      title: '患者姓名',
+      dataIndex: 'visitNumber',
+      title: '出院人数',
+      render: (text: string, record: any) => {
+        return <Input value={text} onChange={(e: any) => handleChange(e.target.value, 'visitNumber')} />
+      }
+    },
+    {
+      dataIndex: 'visitRate',
       align: 'center',
-      render(text: any, record: any, index: number) {
-        return <Input.TextArea
-          value={record.patientName}
-          autosize
-          onChange={(e: any) => {
-            record.patientName = e.target.value
-            setData(cloneData)
-          }} />
-      },
-      width: 80
-    },
-    {
-      title: '疾病诊断',
-      width: 120,
-      render(text: any, record: any, index: number) {
-        return <Input.TextArea
-          value={record.diagnosis}
-          autosize
-          onChange={(e: any) => {
-            record.diagnosis = e.target.value
-            setData(cloneData)
-          }} />
-      }
-    },
-    {
-      title: `家庭住址`,
-      width: 120,
-      render(text: any, record: any, index: number) {
-        return <Input.TextArea
-          value={record.address}
-          autosize
-          onChange={(e: any) => {
-            record.address = e.target.value
-            setData(cloneData)
-          }} />
-      }
-    },
-    {
-      title: `联系方式`,
-      render(text: any, record: any, index: number) {
-        return <Input.TextArea
-          value={record.contactInformation}
-          autosize
-          onChange={(e: any) => {
-            record.contactInformation = e.target.value
-            setData(cloneData)
-          }} />
-      },
-      width: 120
-    },
-    {
-      title: `住院时间`,
-      render(text: any, record: any, index: number) {
-        return <DatePicker
-          value={
-            record.admissionDate ?
-              moment(record.admissionDate) :
-              undefined
-          }
-          allowClear={false}
-          format="YYYY-MM-DD"
-          onChange={(_moment: any) => {
-            record.admissionDate = _moment.format('YYYY-MM-DD')
-            setData(cloneData)
-          }} />
-      },
-      width: 120
-    },
-    {
-      title: `出院时间`,
-      render(text: any, record: any, index: number) {
-        return <DatePicker
-          value={
-            record.dischargeDate ?
-              moment(record.dischargeDate) :
-              undefined
-          }
-          allowClear={false}
-          format="YYYY-MM-DD"
-          onChange={(_moment: any) => {
-            record.dischargeDate = _moment.format('YYYY-MM-DD')
-            setData(cloneData)
-          }} />
-      },
-      width: 120
-    },
-    {
-      title: `家访内容`,
-      render(text: any, record: any, index: number) {
-        return <Input.TextArea
-          value={record.accessContent}
-          autosize
-          onChange={(e: any) => {
-            record.accessContent = e.target.value
-            setData(cloneData)
-          }} />
-      }
-    },
-    {
-      title: `患者反馈意见`,
-      render(text: any, record: any, index: number) {
-        return <Input.TextArea
-          value={record.feedBack}
-          autosize
-          onChange={(e: any) => {
-            record.feedBack = e.target.value
-            setData(cloneData)
-          }} />
-      },
-      width: 120
-    },
-    {
-      title: `家访参加人员`,
-      render(text: any, record: any, index: number) {
-        return <Input.TextArea
-          value={record.empNames}
-          autosize
-          onChange={(e: any) => {
-            record.empNames = e.target.value
-            setData(cloneData)
-          }} />
-      },
-      width: 120
-    },
-    {
-      title: '操作',
-      key: '操作',
-      width: 60,
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span
-              onClick={(e) => {
-                cloneData.list.splice(index, 1)
-                setData(cloneData)
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
-        )
-      }
+      title: '回访率'
     }
   ]
 
-  const addItem = () => {
-
-    cloneData.list.push({
-      id: '',
-      patientName: '',
-      indexNo: cloneData.list.length,
-      diagnosis: '',
-      address: '',
-      briefCourseEvent: '',
-      contactInformation: '',
-      admissionDate: '',
-      dischargeDate: '',
-      accessContent: '',
-      feedBack: '',
-      empNames: '',
-      month: search.month,
-      year: search.year,
-      reportCode: "patient_visit_quarter",
-      wardCode: search.wardCode
-    })
-
-    setData(cloneData)
-  }
-
-  useEffect(() => {
-    // patientVisitMonthService
-    //   .getDict({
-    //     groupCode: 'qc',
-    //     dictCode: 'qc_bad_event_type'
-    //   })
-    //   .then((res: any) => {
-    //     if (res.data) setEventTypeList(res.data)
-    //   })
-
-  }, [])
-
   return (
     <Wrapper>
-      <div className='button-con'>
-        <Button icon='plus' size='small' onClick={addItem}>
-          添加
-        </Button>
-      </div>
       <BaseTable
         surplusHeight={400}
         columns={columns}
-        dataSource={cloneData.list || []}
+        dataSource={[cloneData.report]}
         wrapperStyle={{
           padding: 0,
           paddingTop: 20
