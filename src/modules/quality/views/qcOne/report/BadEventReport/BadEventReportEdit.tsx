@@ -110,7 +110,7 @@ export default observer(function badEventReportEdit() {
     <Wrapper>
       <HeadCon>
         <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/qcOne/badEventReport' }, { name: '报告详情', link: '' }]}
+          data={[{ name: '不良事件登记表', link: '/qcOne/badEventReport' }, { name: '报告详情', link: '' }]}
         />
         <div className='title'>{reportName}</div>
         <div className='aside'>

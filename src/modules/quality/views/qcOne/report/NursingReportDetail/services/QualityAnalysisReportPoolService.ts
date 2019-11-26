@@ -2,7 +2,7 @@ import { appStore } from 'src/stores/index'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { qualityAnalysisReportViewModal } from '../QualityAnalysisReportPoolViewModal'
 export default class QualityAnalysisReportPoolService extends BaseApiService {
-  /** 获取分析报告 */
+  /** 获取病区护理工作报表 */
   public getReport(obj?: any) {
     return this.post(`/qcAnalysis/wn/getReport`, obj || appStore.queryObj)
   }

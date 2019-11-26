@@ -100,7 +100,7 @@ export default observer(function GroupAuditModal(props: Props) {
       <Row gutter={8}>
         <Col span={4}>审核人:</Col>
         <Col span={6}>
-          <Input value={authStore.getUser().empName} disabled />
+          <Input value={authStore.getUser() && authStore.getUser().empName} disabled />
         </Col>
         <Col span={4}>审核时间:</Col>
         <Col span={6}>

@@ -160,7 +160,8 @@ export default observer(function PatientVisitQuarter() {
             style={{ width: '100%' }}
             value={text}
             onChange={(e: any) =>
-              handleNumChange('dischargeNumber', idx, e.target.value)} />
+              handleNumChange('dischargeNumber', idx, e.target.value)}
+            onBlur={() => handleSave(record, idx)} />
         },
         {
           dataIndex: 'visitNumber',
@@ -171,7 +172,8 @@ export default observer(function PatientVisitQuarter() {
             style={{ width: '100%' }}
             value={text}
             onChange={(e: any) =>
-              handleNumChange('visitNumber', idx, e.target.value)} />
+              handleNumChange('visitNumber', idx, e.target.value)}
+            onBlur={() => handleSave(record, idx)} />
         },
         {
           dataIndex: 'visitRate',
@@ -192,7 +194,8 @@ export default observer(function PatientVisitQuarter() {
             style={{ width: '100%' }}
             value={text}
             onChange={(e: any) =>
-              handleNumChange('spotCheckNumber', idx, e.target.value)} />
+              handleNumChange('spotCheckNumber', idx, e.target.value)}
+            onBlur={() => handleSave(record, idx)} />
         },
         {
           dataIndex: 'qualifiedNumber',
@@ -203,7 +206,8 @@ export default observer(function PatientVisitQuarter() {
             style={{ width: '100%' }}
             value={text}
             onChange={(e: any) =>
-              handleNumChange('qualifiedNumber', idx, e.target.value)} />
+              handleNumChange('qualifiedNumber', idx, e.target.value)}
+            onBlur={() => handleSave(record, idx)} />
         },
         {
           dataIndex: 'qualifiedRate',
@@ -222,7 +226,8 @@ export default observer(function PatientVisitQuarter() {
           style={{ width: '100%' }}
           value={text}
           onChange={(e: any) =>
-            handleChange('wardRemark', idx, e.target.value)} />
+            handleChange('wardRemark', idx, e.target.value)}
+          onBlur={() => handleSave(record, idx)} />
     },
     {
       title: '备注(抽查问题)',
@@ -234,22 +239,23 @@ export default observer(function PatientVisitQuarter() {
           style={{ width: '100%' }}
           value={text}
           onChange={(e: any) =>
-            handleChange('spotCheckRemark', idx, e.target.value)} />
+            handleChange('spotCheckRemark', idx, e.target.value)}
+          onBlur={() => handleSave(record, idx)} />
     },
-    {
-      title: '操作',
-      width: 80,
-      render: (text: string, record: any, idx: number) => {
-        return <DoCon className="operate-group">
-          <span onClick={() => handleSave(record)}>保存</span>
-        </DoCon>
-      }
-    }
+    // {
+    //   title: '操作',
+    //   width: 80,
+    //   render: (text: string, record: any, idx: number) => {
+    //     return <DoCon className="operate-group">
+    //       <span onClick={() => handleSave(record)}>保存</span>
+    //     </DoCon>
+    //   }
+    // }
   ]
 
-  const handleSave = (record: any) => {
+  const handleSave = (record: any, idx?: any) => {
 
-    setLoading(true)
+    // setLoading(true)
 
     patientVisitMonthService.relPvmItem({
       wardCode: record.wardCode,
@@ -264,8 +270,15 @@ export default observer(function PatientVisitQuarter() {
       qualifiedRate: record.qualifiedRate,
       spotCheckRemark: record.spotCheckRemark,
     }).then(res => {
-      setLoading(false)
-      message.success('修改成功')
+      // setLoading(false)
+      message.success('修改成功', 0.5)
+
+      if (res.data && (idx || idx === 0)) {
+        let newList = [...tableData]
+        newList[idx] = { ...res.data }
+
+        setTableData(newList)
+      }
 
     }, () => setLoading(false))
   }
@@ -296,7 +309,8 @@ export default observer(function PatientVisitQuarter() {
     let qualifiedNumber = Number(record.qualifiedNumber)
     if (isNaN(qualifiedNumber)) qualifiedNumber = 0
 
-    if (!spotCheckNumber || qualifiedNumber > spotCheckNumber) return '100%'
+    // if (!spotCheckNumber || qualifiedNumber > spotCheckNumber) return '100%'
+    if (!spotCheckNumber) return '100%'
     if (!qualifiedNumber) return '0%'
 
     let rate = qualifiedNumber / spotCheckNumber
@@ -311,7 +325,8 @@ export default observer(function PatientVisitQuarter() {
     let visitNumber = Number(record.visitNumber)
     if (isNaN(visitNumber)) visitNumber = 0
 
-    if (!dischargeNumber || visitNumber > dischargeNumber) return '100%'
+    // if (!dischargeNumber || visitNumber > dischargeNumber) return '100%'
+    if (!dischargeNumber) return '100%'
     if (!visitNumber) return '0%'
 
     let rate = visitNumber / dischargeNumber
@@ -575,7 +590,7 @@ export default observer(function PatientVisitQuarter() {
         <Button type="primary" onClick={handleCreate}>新建</Button>
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
-          isRoleManage || isSupervisorNurse || isDepartment
+          isSupervisorNurse || isDepartment
         ) &&
           <Button onClick={() => handleExportGather(true)}>片区导出</Button>
         }

@@ -113,7 +113,7 @@ export default observer(function PatientVisitQuarterEdit() {
     <Wrapper>
       <HeadCon>
         <BaseBreadcrumb
-          data={[{ name: '分析报告', link: '/qcOne/patientVisitQuarter' }, { name: '报告详情', link: '' }]}
+          data={[{ name: '季度家访汇总表', link: '/qcOne/patientVisitQuarter' }, { name: '报告详情', link: '' }]}
         />
         <div className='title'>{reportName}</div>
         <div className='aside'>

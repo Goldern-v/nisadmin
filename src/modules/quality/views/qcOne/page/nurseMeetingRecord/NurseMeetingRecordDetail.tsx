@@ -309,6 +309,7 @@ const Wrapper = styled.div`
     .content{
       overflow: auto;
       margin-bottom: 30px;
+      word-break: break-all;
       .img-view-item{
         cursor: pointer;
         width: 100px;

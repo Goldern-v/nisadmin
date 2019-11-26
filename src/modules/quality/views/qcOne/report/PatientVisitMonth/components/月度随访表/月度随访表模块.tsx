@@ -16,19 +16,13 @@ export interface Props {
 export default observer(function 月度随访表模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = patientVisitMonthModel.getSectionData(sectionId)
-  let report: Report = patientVisitMonthModel.getDataInAllData('report')
-  let list = data ? data.list || [] : []
-  let totalSorce = 0;
-  for (let i = 0; i < list.length; i++) {
-    totalSorce += list[i].deductScore || 0;
-  }
-
+  // let report: Report = patientVisitMonthModel.getDataInAllData('report')
   useEffect(() => { })
 
   return (
     <Wrapper>
       <div className='sup-title' style={{ width: '100px', height: '21px' }}></div>
-      <Table list={list} totalSorce={totalSorce} />
+      <Table report={data.report || {}} totalSorce={0} />
       <EditButton onClick={() => patientVisitMonthModel.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

@@ -378,7 +378,7 @@ export default observer(function PatientVisitQuarter() {
         <Button type="primary" onClick={handleCreate}>新建</Button>
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
-          isRoleManage || isSupervisorNurse || isDepartment
+          isSupervisorNurse || isDepartment
         ) &&
           <Button onClick={() => handleExportGather(true)}>片区导出</Button>
         }

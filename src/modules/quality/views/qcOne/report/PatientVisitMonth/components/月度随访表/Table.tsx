@@ -1,65 +1,37 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-// import { TypeCompare, Report } from '../../types'
+import { TypeCompare, Report } from '../../types'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-// import { starRatingReportEditModel } from './../../model/StarRatingReportEditModel'
+import { patientVisitMonthModel } from './../../model/PatientVisitMonthModel'
 
 export interface Props {
-  list: any[]
+  report: any
   totalSorce: number
 }
 
 export default observer(function Table(props: Props) {
-  let { list, totalSorce } = props
-  // let report: Report = starRatingReportEditModel.getDataInAllData('report') || {}
+  let { totalSorce, report } = props
 
-  // const sum = (item: any) => {
-  //   let total = 100;
-  //   let nursingDeduct = item.nursingDeduct || 0
-  //   let workloadDeduct = item.workloadDeduct || 0
-  //   let satisfactionDeduct = item.satisfactionDeduct || 0
-
-  //   return total - nursingDeduct - workloadDeduct - satisfactionDeduct
-  // }
+  console.log(report)
 
   return (
     <Wrapper>
       <table>
         <colgroup>
-          <col width='80' />
-          <col />
-          <col />
-          <col />
-          <col width='170' />
         </colgroup>
         <tbody>
           <tr className='header'>
-            <td>患者姓名</td>
-            <td>疾病诊断</td>
-            <td>家庭住址</td>
-            <td>联系方式</td>
-            <td>住院起止时间</td>
-            <td>家访内容</td>
-            <td>患者反馈意见</td>
-            <td>家访参加人员</td>
+            <td>出院人数</td>
+            <td>回访数</td>
+            <td>回访率</td>
           </tr>
-
-          {list.map((item, index) => (
-            <tr key={index}>
-              <td style={{ textAlign: 'center' }}>{item.patientName}</td>
-              <td style={{ textAlign: 'left' }}>{item.diagnosis}</td>
-              <td style={{ textAlign: 'left' }}>{item.address}</td>
-              <td style={{ textAlign: 'left' }}>{item.contactInformation}</td>
-              <td style={{ textAlign: 'center' }}>
-                {item.admissionDate} - {item.dischargeDate}
-              </td>
-              <td style={{ textAlign: 'left' }}>{item.accessContent}</td>
-              <td style={{ textAlign: 'left' }}>{item.feedBack}</td>
-              <td style={{ textAlign: 'left' }}>{item.empNames}</td>
-            </tr>
-          ))}
+          <tr>
+            <td>{report.dischargeNumber || ''}</td>
+            <td>{report.visitNumber || ''}</td>
+            <td>{report.visitRate || ''}</td>
+          </tr>
         </tbody>
       </table>
     </Wrapper>

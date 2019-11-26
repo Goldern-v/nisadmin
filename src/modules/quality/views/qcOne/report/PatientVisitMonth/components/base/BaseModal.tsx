@@ -38,14 +38,16 @@ export default observer(function BaseModal(props: Props) {
         message.success('保存成功')
         onCancel()
       })
-      // } else if (sectionData.sectionId == '月度随访') {
-      //   patientVisitMonthService.updatePatientVisitList(data.list).then((res) => {
-      //     patientVisitMonthModel.setSectionData(sectionData.sectionId, {
-      //       list: res.data || []
-      //     })
-      //     message.success('保存成功')
-      //     onCancel()
-      //   })
+    } else if (sectionData.sectionId == '月度随访') {
+      console.log(data.report)
+      patientVisitMonthService
+        .relPvmItem(data.report).then((res) => {
+          patientVisitMonthModel.setSectionData(sectionData.sectionId, {
+            report: res.data || {}
+          })
+          message.success('保存成功')
+          onCancel()
+        })
     } else if (sectionData.sectionId == '附件') {
       patientVisitMonthService
         .updateAttachmentList(data.list)
