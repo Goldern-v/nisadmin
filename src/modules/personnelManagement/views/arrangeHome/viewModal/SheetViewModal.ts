@@ -16,7 +16,7 @@ class SheetViewModal {
   @observable public expectList: any = [];
   @observable public dateList: string[] = [];
   @observable public remark: string = "";
-  @observable public arrangeMenu = [];
+  @observable public arrangeMenu: any[] = [];
   @observable public arrangeMeal = [];
   @observable public schSymbolList: SymbolItem[] = [];
   /** 选中的格子 */

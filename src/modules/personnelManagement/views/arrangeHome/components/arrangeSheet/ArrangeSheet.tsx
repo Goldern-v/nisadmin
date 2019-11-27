@@ -234,7 +234,7 @@ export default observer(function ArrangeSheet(props: Props) {
         ".remark-con.real textarea"
       ).value = remark;
     } catch (error) {}
-  });
+  }, [sheetViewModal.sheetTableData, surplusWidth]);
 
   let remark = sheetViewModal.remark;
   return (

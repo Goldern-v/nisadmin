@@ -52,7 +52,6 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return (
           <Input
-            readOnly
             value={record.empNo}
             onChange={(e: any) => {
               record.empNo = e.target.value;
@@ -68,7 +67,6 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return (
           <Input
-            readOnly
             value={record.empName}
             onChange={(e: any) => {
               record.empName = e.target.value;
@@ -114,7 +112,6 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       render(text: any, record: any, index: number) {
         return (
           <Input
-            readOnly
             value={record.standard}
             onChange={(e: any) => {
               record.standard = e.target.value;
@@ -124,27 +121,26 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         );
       },
       width: 90
+    },
+    {
+      title: "操作",
+      key: "操作",
+      width: 60,
+      render(text: any, record: any, index: number) {
+        return (
+          <DoCon>
+            <span
+              onClick={e => {
+                cloneData.list.splice(index, 1);
+                setData(cloneData);
+              }}
+            >
+              删除
+            </span>
+          </DoCon>
+        );
+      }
     }
-
-    // {
-    //   title: "操作",
-    //   key: "操作",
-    //   width: 60,
-    //   render(text: any, record: any, index: number) {
-    //     return (
-    //       <DoCon>
-    //         <span
-    //           onClick={e => {
-    //             cloneData.list.splice(index, 1);
-    //             setData(cloneData);
-    //           }}
-    //         >
-    //           删除
-    //         </span>
-    //       </DoCon>
-    //     );
-    //   }
-    // }
   ];
 
   const addItem = () => {
@@ -175,11 +171,11 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
 
   return (
     <Wrapper>
-      {/* <div className="button-con">
+      <div className="button-con">
         <Button icon="plus" size="small" onClick={addItem}>
           添加
         </Button>
-      </div> */}
+      </div>
 
       <BaseTable
         surplusHeight={400}

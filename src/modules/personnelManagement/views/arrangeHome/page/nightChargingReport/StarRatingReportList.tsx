@@ -25,6 +25,8 @@ import { useKeepAliveEffect } from "react-keep-alive";
 import ReportCreateModal from "./components/ReportCreateModal";
 import { fileDownload } from "src/utils/file/file";
 import { globalModal } from "src/global/globalModal";
+import EditSchNightStandardModal from "./model/EditSchNightStandardModal";
+import createModal from "src/libs/createModal";
 // import { qcOneSelectViewModal } from './../../QcOneSelectViewModal'
 // import CommitModal from './../../components/CommitModal'
 // import ArchiveModal from './../../components/ArchiveModal'
@@ -58,8 +60,9 @@ export default observer(function NursingWorkPlainList() {
 
   const [dataTotal, setDataTotal] = useState(0);
 
-  const [commitVisible, setCommitVisible] = useState(false);
-  const [archiveVisible, setArchiveVisible] = useState(false);
+  const [schNightStandard, setSchNightStandard] = useState(0);
+
+  const editSchNightStandardModal = createModal(EditSchNightStandardModal);
 
   const columns: ColumnProps<any>[] = [
     {
@@ -216,95 +219,19 @@ export default observer(function NursingWorkPlainList() {
     // }).
   };
 
-  const handlePublish = (record: any) => {
-    globalModal.confirm("提交确认", "你确定要提交该报告吗？").then(res => {
-      setLoading(true);
-      starRatingReportService
-        .publish({
-          deptCode: record.deptCode,
-          year: record.year,
-          month: record.month
-        })
-        .then(
-          res => {
-            message.success("提交成功");
-            setLoading(false);
-            getList(query);
-          },
-          () => setLoading(false)
-        );
+  const getSchNightStandard = (deptCode: any) => {
+    starRatingReportService.getSchNightStandard(deptCode).then(res => {
+      setSchNightStandard(res.data && res.data.standard);
     });
   };
-
-  const handleCancelPublish = (record: any) => {
-    globalModal.confirm("撤销确认", "你确定要撤销该报告吗？").then(res => {
-      setLoading(true);
-      starRatingReportService
-        .cancelPublish({
-          deptCode: record.deptCode,
-          year: record.year,
-          month: record.month
-        })
-        .then(
-          res => {
-            message.success("提交成功");
-            setLoading(false);
-            getList(query);
-          },
-          () => setLoading(false)
-        );
-    });
-  };
-
-  const handleExportGather = (isBigDept?: boolean) => {
-    let year = query.year;
-    let month = query.month || moment().format("M");
-    let $deptCode = "";
-    if (bigDeptList.length > 0) $deptCode = bigDeptList[0].code;
-
-    const exportContent = (
-      <ExportCon>
-        <div>
-          <span>年份: </span>
-          <span>
-            <YearPicker
-              allowClear={false}
-              value={moment(`${year}-01-01`) || undefined}
-              onChange={(_moment: any) => (year = _moment.format("YYYY"))}
-            />
-          </span>
-        </div>
-        <div>
-          <span>月份: </span>
-          <Select
-            defaultValue={month}
-            style={{ width: "70px" }}
-            onChange={(_month: any) => (month = _month)}
-          >
-            {monthList.map((month: number) => (
-              <Option value={`${month}`} key={month}>
-                {month}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </ExportCon>
-    );
-
-    Modal.confirm({
-      title: isBigDept ? "片区导出" : "全院导出",
-      content: exportContent,
-      onOk: () => {
-        setLoading(true);
-      }
-    });
-  };
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     query.deptCode && getList(query);
   }, [query]);
+
+  useEffect(() => {
+    query.deptCode && getSchNightStandard(query.deptCode);
+  }, [query.deptCode]);
 
   // useKeepAliveEffect(() => {
   //   if (
@@ -353,6 +280,20 @@ export default observer(function NursingWorkPlainList() {
           <span>科室:</span>
           <DeptSelect onChange={deptCode => setQuery({ ...query, deptCode })} />
 
+          <span>标准:</span>
+          <Text
+            onClick={() =>
+              editSchNightStandardModal.show({
+                standard: schNightStandard,
+                deptCode: query.deptCode,
+                onOkCallBack(standard: any) {
+                  setSchNightStandard(standard);
+                }
+              })
+            }
+          >
+            {schNightStandard == 0 ? 0 : schNightStandard || "--"}
+          </Text>
           <Button onClick={handleSearch} type="primary">
             查询
           </Button>
@@ -387,6 +328,7 @@ export default observer(function NursingWorkPlainList() {
         visible={createVisible}
         onCancel={handleCancel}
       />
+      <editSchNightStandardModal.Component />
     </Wrapper>
   );
 });
@@ -470,5 +412,18 @@ const RightIcon = styled.div`
 const ExportCon = styled.div`
   & > div {
     margin-top: 15px;
+  }
+`;
+
+const Text = styled.aside`
+  cursor: pointer;
+  color: ${p => p.theme.$mtc};
+  font-weight: bold;
+  margin-right: 15px;
+  text-decoration: underline;
+  padding: 5px;
+  font-size: 16px;
+  &:hover {
+    color: ${p => p.theme.$mtdc};
   }
 `;

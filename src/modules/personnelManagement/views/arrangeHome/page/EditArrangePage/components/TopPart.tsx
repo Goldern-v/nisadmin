@@ -14,6 +14,7 @@ import emitter from "src/libs/ev";
 
 import moment from "moment";
 import { Select } from "src/vendors/antd";
+import ArrangAnalysisModal from "../../../modal/ArrangAnalysisModal";
 
 export interface Props {}
 
@@ -21,6 +22,8 @@ export default observer(function TopPart() {
   const [date, setDate] = useState([] as any[]);
   const [isInit, setIsInit] = useState(true);
   let expectSettingModal = createModal(ExpectSettingModal);
+
+  let arrangAnalysisModal = createModal(ArrangAnalysisModal);
 
   //重置排班
   const handleReset = () => {
@@ -314,6 +317,16 @@ export default observer(function TopPart() {
           <Button
             className="statistics"
             onClick={() => {
+              arrangAnalysisModal.show({});
+            }}
+          >
+            统计
+          </Button>
+        </div>
+        <div className="item">
+          <Button
+            className="statistics"
+            onClick={() => {
               appStore.history.push(
                 "/personnelManagement/arrangeHome?noRefresh=1"
               );
@@ -324,6 +337,7 @@ export default observer(function TopPart() {
         </div>
       </div>
       <expectSettingModal.Component />
+      <arrangAnalysisModal.Component />
     </Wrapper>
   );
 });

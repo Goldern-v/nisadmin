@@ -332,11 +332,20 @@ export default observer(function HandoverRegister() {
   };
 
   const onAddBlock = () => {
-    wardRegisterService
-      .qcRegisterBlockCreate(registerCode, authStore.selectedDeptCode)
+    globalModal
+      .confirm(
+        "是否新建物品交接登记本",
+        `新建物品交接登记本开始日期为${moment().format(
+          "YYYY-MM-DD"
+        )}，历史交接登记本请切换修订版本查看`
+      )
       .then(res => {
-        message.success("创建成功");
-        onInitData();
+        wardRegisterService
+          .qcRegisterBlockCreate(registerCode, authStore.selectedDeptCode)
+          .then(res => {
+            message.success("创建成功");
+            onInitData();
+          });
       });
   };
 
@@ -415,6 +424,7 @@ export default observer(function HandoverRegister() {
 
         {/* <PageTitle>{pageTitle}</PageTitle> */}
         {/* <Place /> */}
+
         <span className="label">日期</span>
         <DatePicker.RangePicker
           value={date}
@@ -454,50 +464,93 @@ export default observer(function HandoverRegister() {
           ))}
         </Select>
         <Place />
-        <Button onClick={getPage}>查询</Button>
-        <Button type="primary" onClick={onSave}>
-          保存
-        </Button>
-        <Button>导出</Button>
-        <Button
-          onClick={() =>
-            settingModal.show({
-              blockId: selectedBlockId,
-              registerCode,
-              onOkCallBack: () => {
-                getPage();
+
+        {selectedBlockId && (
+          <React.Fragment>
+            <Button onClick={getPage}>查询</Button>
+            <Button type="primary" onClick={onSave}>
+              保存
+            </Button>
+            <Button>导出</Button>
+            <Button
+              onClick={() =>
+                settingModal.show({
+                  blockId: selectedBlockId,
+                  registerCode,
+                  onOkCallBack: () => {
+                    getPage();
+                  }
+                })
               }
-            })
-          }
-        >
-          设置
-        </Button>
-        <Button onClick={onDelete}>删除</Button>
+            >
+              设置
+            </Button>
+            <Button onClick={onDelete}>删除</Button>
+          </React.Fragment>
+        )}
       </PageHeader>
       <TableCon>
-        <BaseTable
-          loading={pageLoading}
-          dataSource={dataSource}
-          columns={columns}
-          surplusWidth={surplusWidth}
-          surplusHeight={280}
-          pagination={{
-            current: pageOptions.pageIndex,
-            pageSize: pageOptions.pageSize,
-            total: total
-          }}
-          onChange={(pagination: PaginationConfig) => {
-            setPageOptions({
-              pageIndex: pagination.current,
-              pageSize: pagination.pageSize
-            });
-          }}
-        />
+        {selectedBlockId ? (
+          <BaseTable
+            loading={pageLoading}
+            dataSource={dataSource}
+            columns={columns}
+            surplusWidth={surplusWidth}
+            surplusHeight={280}
+            pagination={{
+              current: pageOptions.pageIndex,
+              pageSize: pageOptions.pageSize,
+              total: total
+            }}
+            onChange={(pagination: PaginationConfig) => {
+              setPageOptions({
+                pageIndex: pagination.current,
+                pageSize: pagination.pageSize
+              });
+            }}
+          />
+        ) : (
+          <NullBox onClick={onAddBlock} />
+        )}
       </TableCon>
       <settingModal.Component />
     </Wrapper>
   );
 });
+
+function NullBox(props: any) {
+  const { onClick } = props;
+  const Wrapper = styled.div`
+    width: 334px;
+    height: 313px;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid rgba(170, 170, 170, 1);
+    margin: calc((100vh - 100px - 313px) / 2) auto;
+    .file {
+      width: 79px;
+      display: block;
+      margin: 63px auto 37px;
+    }
+    button {
+      display: block;
+      margin: 0 auto;
+    }
+  `;
+  return (
+    <Wrapper>
+      <img
+        src={require("../../images/登记本icon@2x.png")}
+        alt=""
+        className="file"
+      />
+      <Button type="primary" icon="file-add" size={"large"} onClick={onClick}>
+        创建物品交接登记本
+      </Button>
+    </Wrapper>
+  );
+}
+
 const Wrapper = styled.div``;
 const TableCon = styled.div`
   padding: 0 15px;

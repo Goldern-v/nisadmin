@@ -181,10 +181,13 @@ export default class ArrangeService extends BaseApiService {
   public schBalanceHourDelete(id: any) {
     return this.get(`/schBalanceHour/delete/${id}`);
   }
-
   //请假查询
   public schVacationGetList(obj: PageObj) {
     return this.post(`/schVacation/getList`, obj);
+  }
+  // 获取期望排班列表模块
+  public schExpectGetListPC(obj: PageObj) {
+    return this.post(`/schExpect/getListPC`, obj);
   }
 }
 

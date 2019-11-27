@@ -82,6 +82,20 @@ export default class StarRatingReportService extends BaseApiService {
       responseType: "blob"
     });
   }
+
+  /**获取标准 */
+  public getSchNightStandard(deptCode: any) {
+    return this.post("/schNightStandard/get", {
+      deptCode
+    });
+  }
+  /**修改标准 */
+  public saveOrUpdateSchNightStandard(deptCode: any, standard: any) {
+    return this.post("/schNightStandard/saveOrUpdate", {
+      deptCode,
+      standard
+    });
+  }
 }
 
 export const starRatingReportService = new StarRatingReportService();

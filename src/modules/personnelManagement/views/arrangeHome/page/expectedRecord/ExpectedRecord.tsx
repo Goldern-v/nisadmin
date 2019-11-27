@@ -27,7 +27,7 @@ import createModal from "src/libs/createModal";
 
 import { globalModal } from "src/global/globalModal";
 export interface Props {}
-export default observer(function LeaveRecord() {
+export default observer(function ExpectedRecord() {
   const [dataSource, setDataSource] = useState([]);
   const [date, setDate]: any = useState(getCurrentMonth());
   const [selectedNurse, setSelectedNurse]: any = useState("");
@@ -43,7 +43,10 @@ export default observer(function LeaveRecord() {
       title: "科室",
       dataIndex: "deptName",
       align: "center",
-      width: 100
+      width: 100,
+      render(text: any, record: any, index: number) {
+        return authStore.selectedDeptName;
+      }
     },
     {
       title: "工号",
@@ -58,16 +61,37 @@ export default observer(function LeaveRecord() {
       width: 100
     },
     {
-      title: "假期",
-      dataIndex: "rangeName",
-      width: 100,
-      align: "center"
-    },
-    {
-      title: "休假日期",
-      dataIndex: "workDate",
+      title: "期望排班日期",
+      dataIndex: "startDate",
       align: "center",
       width: 100
+    },
+    {
+      title: "期望排班班次",
+      dataIndex: "rangeName",
+      align: "center",
+      width: 100
+    },
+    {
+      title: "班次类别",
+      dataIndex: "shiftType",
+      align: "center",
+      width: 100
+    },
+    {
+      title: "备注",
+      dataIndex: "detail",
+      align: "center",
+      width: 100
+    },
+    {
+      title: "是否已经排入排班",
+      dataIndex: "status",
+      align: "center",
+      width: 100,
+      render(text: any, record: any, index: number) {
+        return text == "1" ? "是" : "否";
+      }
     }
   ];
 
@@ -90,7 +114,7 @@ export default observer(function LeaveRecord() {
     let startDate = date[0] ? moment(date[0]).format("YYYY-MM-DD") : "";
     let endDate = date[1] ? moment(date[1]).format("YYYY-MM-DD") : "";
     arrangeService
-      .schVacationGetList({
+      .schExpectGetListPC({
         deptCode: authStore.selectedDeptCode,
         ...pageOptions,
         startDate,
@@ -119,7 +143,7 @@ export default observer(function LeaveRecord() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>休假记录查询</PageTitle>
+        <PageTitle>期望排班记录查询</PageTitle>
         <Place />
 
         <span className="label">休假日期:</span>

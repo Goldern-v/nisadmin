@@ -16,6 +16,7 @@ import BalanceInit from "./views/arrangeHome/page/BalanceInit/BalanceInit";
 import LeaveRecord from "./views/arrangeHome/page/leaveRecord/LeaveRecord";
 import StarRatingReportList from "./views/arrangeHome/page/nightChargingReport/StarRatingReportList";
 import ArrangStatistics from "./views/arrangeHome/page/arrangStatistics/ArrangStatistics";
+import ExpectedRecord from "./views/arrangeHome/page/expectedRecord/ExpectedRecord";
 export interface Props {}
 
 export default function PersonnelManagementView() {
@@ -103,6 +104,12 @@ export default function PersonnelManagementView() {
           title: "排班统计",
           path: "/personnelManagement/arrangStatistics",
           component: ArrangStatistics,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+        },
+        {
+          title: "期望排班记录查询",
+          path: "/personnelManagement/expectedRecord",
+          component: ExpectedRecord,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         }
       ]
