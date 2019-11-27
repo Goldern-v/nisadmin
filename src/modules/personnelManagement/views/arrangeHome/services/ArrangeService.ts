@@ -96,6 +96,7 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       ids: sheetViewModal.sheetTableData.map((item: any) => item.id),
+      empNames: sheetViewModal.sheetTableData.map((item: any) => item.empName),
       startTimeWeek: moment(selectViewModal.params.startTime)
         .weekday(0)
         .format("YYYY-MM-DD"),
