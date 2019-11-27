@@ -5,6 +5,7 @@ import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps, Spin } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
+import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
 
 import moment from 'moment'
 import qs from 'qs'
@@ -42,8 +43,10 @@ export default observer(function NursingQualityCheck() {
     pageIndex: 1,
     pageSize: 20,
     range: '',
-    startDate: qcOneSelectViewModal.startDate,
-    endDate: qcOneSelectViewModal.endDate,
+    // startDate: qcOneSelectViewModal.startDate,
+    // endDate: qcOneSelectViewModal.endDate,
+    startDate: getCurrentMonthNow()[0].format('YYYY-MM-DD') as string,
+    endDate: getCurrentMonthNow()[1].format('YYYY-MM-DD') as string,
   })
 
   const columns: ColumnProps<any>[] = [
@@ -279,21 +282,32 @@ export default observer(function NursingQualityCheck() {
     history.push(`/nursingQualityCheckEdit?${qs.stringify(query)}`)
   }
 
-  useEffect(() => {
-    if (
-      query.wardCode &&
-      qcOneSelectViewModal.startDate &&
-      qcOneSelectViewModal.endDate
-    ) {
-      setQuery({
-        ...query,
-        startDate: qcOneSelectViewModal.startDate,
-        endDate: qcOneSelectViewModal.endDate,
-        pageIndex: 1
-      })
-    }
+  // useEffect(() => {
+  //   if (
+  //     query.wardCode &&
+  //     qcOneSelectViewModal.startDate &&
+  //     qcOneSelectViewModal.endDate
+  //   ) {
+  //     setQuery({
+  //       ...query,
+  //       startDate: qcOneSelectViewModal.startDate,
+  //       endDate: qcOneSelectViewModal.endDate,
+  //       pageIndex: 1
+  //     })
+  //   }
 
-  }, [qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  // }, [qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  const getDateOptions = () => {
+    return {
+      value: [moment(query.startDate), moment(query.endDate)] as [moment.Moment, moment.Moment],
+      onChange: (date: any[]) => {
+        let newQuery = { ...query }
+        newQuery.startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+        newQuery.endDate = date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
+        setQuery(newQuery)
+      }
+    }
+  }
 
   useEffect(() => {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
@@ -315,7 +329,7 @@ export default observer(function NursingQualityCheck() {
         <span>日期:</span>
         <RangePicker
           style={{ width: 220 }}
-          {...qcOneSelectViewModal.getDateOptions()}
+          {...getDateOptions()}
           allowClear={false} />
         <span>科室:</span>
         <DeptSelect onChange={handleWardCodeChange} />

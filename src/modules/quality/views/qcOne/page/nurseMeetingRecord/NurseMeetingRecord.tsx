@@ -5,7 +5,9 @@ import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps, message } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
-import { crrentMonth } from 'src/utils/moment/crrentMonth'
+import moment from 'moment'
+import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
+
 import { useKeepAliveEffect } from 'react-keep-alive'
 export interface Props { }
 
@@ -21,6 +23,7 @@ const Option = Select.Option
 export default observer(function NurseMeetingRecord() {
   const { history } = appStore
   const auth = authStore.isRoleManage
+
   const sameWard = authStore.defaultDeptCode == authStore.selectedDeptCode
 
   const [query, setQuery] = useState({
@@ -29,8 +32,10 @@ export default observer(function NurseMeetingRecord() {
     pageSize: 20,
     problemType: '',
     type: '1',
-    startDate: qcOneSelectViewModal.startDate,
-    endDate: qcOneSelectViewModal.endDate,
+    // startDate: qcOneSelectViewModal.startDate,
+    // endDate: qcOneSelectViewModal.endDate,
+    startDate: getCurrentMonthNow()[0].format('YYYY-MM-DD') as string,
+    endDate: getCurrentMonthNow()[1].format('YYYY-MM-DD') as string,
   })
 
   const [tableData, setTableData] = useState([] as any)
@@ -114,15 +119,11 @@ export default observer(function NurseMeetingRecord() {
       align: 'center',
       width: 80,
       render: (text: string, record: any, idx: number) => {
-        let editable = false
-        let creatorNo = record.creatorNo.toLowerCase()
-        let empNo = authStore.user && authStore.user.empNo.toLowerCase()
-        if (empNo && empNo == creatorNo) editable = true
+        let deleteAuth = auth
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
-          <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>
-          {/* {editable && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>} */}
-          {/* {!editable && <span style={{ cursor: 'default', color: '#999' }}>删除</span>} */}
+          {deleteAuth && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
+          {!deleteAuth && <span style={{ cursor: 'default', color: '#999' }}>删除</span>}
         </DoCon>
       }
     }
@@ -198,21 +199,32 @@ export default observer(function NurseMeetingRecord() {
     history.push(`/nurseMeetingRecordDetail?id=${record.id}`)
   }
 
-  useEffect(() => {
-    if (
-      query.wardCode &&
-      qcOneSelectViewModal.startDate &&
-      qcOneSelectViewModal.endDate
-    ) {
-      setQuery({
-        ...query,
-        startDate: qcOneSelectViewModal.startDate,
-        endDate: qcOneSelectViewModal.endDate,
-        pageIndex: 1
-      })
-    }
+  // useEffect(() => {
+  //   if (
+  //     query.wardCode &&
+  //     qcOneSelectViewModal.startDate &&
+  //     qcOneSelectViewModal.endDate
+  //   ) {
+  //     setQuery({
+  //       ...query,
+  //       startDate: qcOneSelectViewModal.startDate,
+  //       endDate: qcOneSelectViewModal.endDate,
+  //       pageIndex: 1
+  //     })
+  //   }
 
-  }, [qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  // }, [qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  const getDateOptions = () => {
+    return {
+      value: [moment(query.startDate), moment(query.endDate)] as [moment.Moment, moment.Moment],
+      onChange: (date: any[]) => {
+        let newQuery = { ...query }
+        newQuery.startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+        newQuery.endDate = date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
+        setQuery(newQuery)
+      }
+    }
+  }
 
   useEffect(() => {
     if (query.wardCode && query.endDate && query.startDate) getList(query)
@@ -234,7 +246,7 @@ export default observer(function NurseMeetingRecord() {
         <span>日期:</span>
         <RangePicker
           style={{ width: 220 }}
-          {...qcOneSelectViewModal.getDateOptions()}
+          {...getDateOptions()}
           allowClear={false} />
         <span>科室:</span>
         <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />

@@ -34,10 +34,10 @@ export default observer(function BadEventRecordDetail() {
   const editable = () => {
     if (!badEvent.creatorNo) return false
     if (!authStore.user) return false
+    if (auth) return true
+    if (badEvent.creatorNo.toLowerCase() === authStore.user.empNo.toLowerCase()) return true
 
-    if (badEvent.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
-
-    return true
+    return false
   }
 
   const getDetail = () => {
@@ -139,10 +139,8 @@ export default observer(function BadEventRecordDetail() {
             {badEvent.eventDay} 不良事件详情
           </div>
           <div className='topHeaderButton'>
-            {editable() && <React.Fragment>
-              <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>
-              <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(badEvent)}>删除</Button>
-            </React.Fragment>}
+            {editable() && <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>}
+            {auth && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(badEvent)}>删除</Button>}
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
         </div>

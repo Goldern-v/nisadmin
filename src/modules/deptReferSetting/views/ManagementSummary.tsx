@@ -209,56 +209,60 @@ export default function ManagementSummary() {
 
   const exportExcel = () => {
     let params = { ...query }
-    let startDate = moment(query.startDate)
-    let endDate = moment(query.endDate)
-    let iptStyle = {
-      marginTop: '10px',
-      marginLeft: '10px'
-    }
+    // let startDate = moment(query.startDate)
+    // let endDate = moment(query.endDate)
+    // let iptStyle = {
+    //   marginTop: '10px',
+    //   marginLeft: '10px'
+    // }
 
-    let content = <ExportCon>
-      <div>
-        <span>开始时间:</span>
-        <DatePicker
-          style={iptStyle}
-          allowClear={false}
-          defaultValue={startDate}
-          onChange={(_moment) => startDate = _moment} />
-      </div>
-      <div>
-        <span>结束时间:</span>
-        <DatePicker
-          style={iptStyle}
-          allowClear={false}
-          defaultValue={endDate}
-          onChange={(_moment) => endDate = _moment} />
-      </div>
-    </ExportCon>
+    // let content = <ExportCon>
+    //   <div>
+    //     <span>开始时间:</span>
+    //     <DatePicker
+    //       style={iptStyle}
+    //       allowClear={false}
+    //       defaultValue={startDate}
+    //       onChange={(_moment) => startDate = _moment} />
+    //   </div>
+    //   <div>
+    //     <span>结束时间:</span>
+    //     <DatePicker
+    //       style={iptStyle}
+    //       allowClear={false}
+    //       defaultValue={endDate}
+    //       onChange={(_moment) => endDate = _moment} />
+    //   </div>
+    // </ExportCon>
 
-    Modal.confirm({
-      title: '导出',
-      content,
-      onOk: () => {
-        let startStr = startDate.format('YYYY-MM-DD')
-        let endStr = endDate.format('YYYY-MM-DD')
-        let monthString = `${startStr}至${endStr}`
-        if (startStr == endStr) monthString = startStr
+    // Modal.confirm({
+    //   title: '导出',
+    //   content,
+    //   onOk: () => {
+    //     let startStr = startDate.format('YYYY-MM-DD')
+    //     let endStr = endDate.format('YYYY-MM-DD')
+    //     let monthString = `${startStr}至${endStr}`
+    //     if (startStr == endStr) monthString = startStr
 
-        let fileName = `扁平管理汇总(${monthString})`
-        api.totalExcel({
-          ...params,
-          startDate: startStr,
-          endDate: endStr
-        }, fileName)
-      }
-    })
+    //     let fileName = `扁平管理汇总(${monthString})`
+    //     api.totalExcel({
+    //       ...params,
+    //       startDate: startStr,
+    //       endDate: endStr
+    //     }, fileName)
+    //   }
+    // })
+    let monthString = `${params.startDate}至${params.endDate}`
+    if (params.startDate == params.endDate) monthString = params.startDate
+
+    let fileName = `扁平管理汇总(${monthString})`
+    api.totalExcel({
+      ...params
+    }, fileName)
   }
 
   const handleEndDateChange = (date: any) => {
-    let endDate = moment(`${moment(date).format('YYYY-MM')}-01`)
-      .add('M', 1)
-      .subtract(1, 'd')
-      .format('YYYY-MM-DD')
+    let endDate = date.format('YYYY-MM-DD')
 
     setQuery({ ...query, endDate, pageIndex: 1 })
   }
@@ -273,17 +277,17 @@ export default function ManagementSummary() {
           <div className='item'>
             <div className='label'>汇总时间：</div>
             <div className='content'>
-              <DatePicker.MonthPicker
+              <DatePicker
                 allowClear={false}
                 defaultValue={moment(query.startDate) || null}
-                style={{ width: '100px' }}
+                style={{ width: '120px' }}
                 onChange={(date) => setQuery({ ...query, startDate: date.format('YYYY-MM-DD'), pageIndex: 1 })}
               />
               <span> - </span>
-              <DatePicker.MonthPicker
+              <DatePicker
                 allowClear={false}
                 defaultValue={moment(query.endDate) || null}
-                style={{ width: '100px' }}
+                style={{ width: '120px' }}
                 onChange={(date) => handleEndDateChange(date)}
               />
             </div>

@@ -13,6 +13,9 @@ import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { useKeepAliveEffect } from 'react-keep-alive'
+import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import moment from 'moment'
+
 export interface Props { }
 
 export default observer(function FollowUpRecord() {
@@ -23,6 +26,11 @@ export default observer(function FollowUpRecord() {
     pageIndex: 1,
     pageSize: 20
   })
+  const [dateOptions, setDateOptions] = useState({
+    startDate: getCurrentMonthNow()[0].format('YYYY-MM-DD') as string,
+    endDate: getCurrentMonthNow()[1].format('YYYY-MM-DD') as string,
+  })
+
   const [total, setTotal]: any = useState(0)
   const problemList = [
     {
@@ -197,8 +205,10 @@ export default observer(function FollowUpRecord() {
       .qcSafetyCheckGetPage({
         ...pageOptions,
         wardCode: authStore.selectedDeptCode,
-        startDate: qcOneSelectViewModal.startDate,
-        endDate: qcOneSelectViewModal.endDate,
+        // startDate: qcOneSelectViewModal.startDate,
+        // endDate: qcOneSelectViewModal.endDate,
+        startDate: dateOptions.startDate,
+        endDate: dateOptions.endDate,
         problemType: selectedProblemType
       })
       .then((res) => {
@@ -220,9 +230,31 @@ export default observer(function FollowUpRecord() {
   const onDetail = (record?: any) => {
     appStore.history.push(record ? `/qcOne/safetyHazardsDetail?id=${record.id}` : '/qcOne/safetyHazardsDetail')
   }
+
+  const getDateOptions = () => {
+    return {
+      value: [moment(dateOptions.startDate), moment(dateOptions.endDate)] as [moment.Moment, moment.Moment],
+      onChange: (date: any[]) => {
+        let newDateOptions = { ...dateOptions }
+        newDateOptions.startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+        newDateOptions.endDate = date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
+        setDateOptions(newDateOptions)
+      }
+    }
+  }
+
   useEffect(() => {
     getData()
-  }, [selectedProblemType, pageOptions.pageIndex, pageOptions.pageSize, authStore.selectedDeptCode, qcOneSelectViewModal.startDate, qcOneSelectViewModal.endDate])
+  }, [
+    selectedProblemType,
+    pageOptions.pageIndex,
+    pageOptions.pageSize,
+    authStore.selectedDeptCode,
+    // qcOneSelectViewModal.startDate, 
+    // qcOneSelectViewModal.endDate
+    dateOptions.startDate,
+    dateOptions.endDate
+  ])
 
   // useEffect(() => {
   //   getData()
@@ -241,7 +273,7 @@ export default observer(function FollowUpRecord() {
         <PageTitle>安全隐患排查表</PageTitle>
         <Place />
         <span className='label'>日期:</span>
-        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} />
+        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...getDateOptions()} />
         <span className='label'>科室:</span>
         <DeptSelect onChange={() => { }} />
         <span className='label'>问题种类:</span>

@@ -12,6 +12,9 @@ import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFile
 import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
+import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import moment from 'moment'
+
 export interface Props { }
 export default observer(function HumanResource() {
   const [dataSource, setDataSource] = useState([])
@@ -104,6 +107,11 @@ export default observer(function HumanResource() {
     pageIndex: 1,
     pageSize: 20
   })
+
+  const [dateOptions, setDateOptions] = useState({
+    startDate: getCurrentMonthNow()[0].format('YYYY-MM-DD') as string,
+    endDate: getCurrentMonthNow()[1].format('YYYY-MM-DD') as string,
+  })
   const [total, setTotal]: any = useState(0)
   const getData = () => {
     setPageLoading(true)
@@ -111,8 +119,10 @@ export default observer(function HumanResource() {
       .qcNurseTransferGetPage({
         ...pageOptions,
         wardCode: authStore.selectedDeptCode,
-        startDate: qcOneSelectViewModal.startDate,
-        endDate: qcOneSelectViewModal.endDate,
+        // startDate: qcOneSelectViewModal.startDate,
+        // endDate: qcOneSelectViewModal.endDate,
+        startDate: dateOptions.startDate,
+        endDate: dateOptions.endDate,
         type: selectedDp,
         transferStatus: transferStatus,
       })
@@ -124,6 +134,19 @@ export default observer(function HumanResource() {
   }
 
   const onDetail = (record: any) => { }
+
+  const getDateOptions = () => {
+    return {
+      value: [moment(dateOptions.startDate), moment(dateOptions.endDate)] as [moment.Moment, moment.Moment],
+      onChange: (date: any[]) => {
+        let newDateOptions = { ...dateOptions }
+        newDateOptions.startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+        newDateOptions.endDate = date[1] ? moment(date[1]).format('YYYY-MM-DD') : ''
+        setDateOptions(newDateOptions)
+      }
+    }
+  }
+
   useEffect(() => {
     getData()
   }, [
@@ -132,8 +155,8 @@ export default observer(function HumanResource() {
     authStore.selectedDeptCode,
     selectedDp,
     transferStatus,
-    qcOneSelectViewModal.startDate,
-    qcOneSelectViewModal.endDate
+    dateOptions.startDate,
+    dateOptions.endDate
   ])
 
   // useEffect(() => {
@@ -145,7 +168,7 @@ export default observer(function HumanResource() {
         <PageTitle>人力资源调配</PageTitle>
         <Place />
         <span className='label'>日期:</span>
-        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...qcOneSelectViewModal.getDateOptions()} />
+        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...getDateOptions()} />
         <span className='label'>科室:</span>
         <DeptSelect onChange={() => { }} />
         <span className='label'>调配方式:</span>

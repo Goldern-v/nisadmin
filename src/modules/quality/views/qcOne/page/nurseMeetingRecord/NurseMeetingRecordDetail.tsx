@@ -43,12 +43,12 @@ export default observer(function NurseMeetingRecordDetail() {
 
   //是否有编辑权限
   const editable = () => {
-    // if (!nurseMeeting.creatorNo) return false
-    // if (!authStore.user) return false
+    if (!nurseMeeting.creatorNo) return false
+    if (!authStore.user) return false
+    if (auth) return true
+    if (nurseMeeting.creatorNo.toLowerCase() === authStore.user.empNo.toLowerCase()) return true
 
-    // if (nurseMeeting.creatorNo.toLowerCase() !== authStore.user.empNo.toLowerCase()) return false
-
-    return true
+    return false
   }
 
   const getDetail = () => {
@@ -169,10 +169,8 @@ export default observer(function NurseMeetingRecordDetail() {
             {nurseMeeting.meetingDay} 会议记录详情
           </div>
           <div className='topHeaderButton'>
-            {editable() && <React.Fragment>
-              <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>
-              <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>
-            </React.Fragment>}
+            {editable() && <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>}
+            {auth && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>}
             {ReadBtn()}
             <Button onClick={handleExport}>导出</Button>
             <Button onClick={() => history.goBack()}>返回</Button>
