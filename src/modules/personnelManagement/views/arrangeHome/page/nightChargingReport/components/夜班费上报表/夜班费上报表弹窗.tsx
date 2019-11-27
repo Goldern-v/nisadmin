@@ -100,6 +100,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
             value={record.num}
             onChange={(e: any) => {
               record.num = e.target.value;
+              record.total = record.standard * record.num;
               setData(cloneData);
             }}
           />
@@ -115,6 +116,9 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
             value={record.standard}
             onChange={(e: any) => {
               record.standard = e.target.value;
+
+              record.total = record.standard * record.num;
+
               setData(cloneData);
             }}
           />
