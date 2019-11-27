@@ -1,29 +1,27 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, message as Message, Tooltip, Upload, Icon, message, Input } from 'antd'
+import { Button, message, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import { appStore, authStore } from 'src/stores'
-import { BaseStepCon, BaseStepBox } from 'src/components/BaseStep'
 import GroupAuditModal from '../components/GroupAuditModal'
 import { nursingRulesApiService } from './../api/nursingRulesNewService'
-import PdfViewer from './../components/PdfViewer'
 import { observer } from 'mobx-react-lite'
-import moment from 'moment'
-import Watermark from 'src/components/Watermark'
-import ReversionPannel from './../components/ReversionPannel'
 import qs from 'qs'
 
-import { ReactComponent as SYZ } from './../assets/SYZ.svg'
+import ReversionPannel from './../components/ReversionPannel'
+import ViewContent from './../components/previewPage/ViewContent'
+import AuditInfo from './../components/previewPage/AuditInfo'
+import ReversionBtn from './../components/previewPage/ReversionBtn'
+
+// import { ReactComponent as SYZ } from './../assets/SYZ.svg'
 import { ReactComponent as ML } from './../assets/ML.svg'
 import { ReactComponent as SC } from './../assets/SC.svg'
 import { ReactComponent as YSC } from './../assets/YSC.svg'
-import { ReactComponent as XYZ } from './../assets/XYZ.svg'
-import { Modal } from 'antd/es'
+// import { ReactComponent as XYZ } from './../assets/XYZ.svg'
 
 //内容面板宽度和高度
 const contentWidth = 780
 const contentHeight = 1043
-const Dragger = Upload.Dragger
 
 export interface Props { }
 
@@ -52,7 +50,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
   const initedIndex = () => {
     if (!search.bookId) {
-      Message.error('未知书籍id')
+      message.error('未知书籍id')
       return
     }
 
@@ -183,7 +181,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
   const toggleCollection = (chapter: any, indexList: any) => {
     if (chapter.inCollection)
       nursingRulesApiService.cancelCollection(chapter.collectionId).then((res) => {
-        Message.success('已取消收藏')
+        message.success('已取消收藏')
         chapter.inCollection = 0
         chapter.collectionId = null
         setChapter({ ...chapter })
@@ -195,7 +193,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           bookId: search.bookId
         })
         .then((res) => {
-          Message.success('已收藏')
+          message.success('已收藏')
           if (res.data) {
             chapter.inCollection = 1
             chapter.collectionId = res.data.id
@@ -222,7 +220,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     }
 
     if (!idx1 && idx1 !== 0) {
-      Message.warning('缺失章节信息')
+      message.warning('缺失章节信息')
       return
     }
 
@@ -255,7 +253,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       setChapter(newChapter)
       if (newChapter.urls) setPageUrl(newChapter.urls[0])
     } else {
-      Message.warning('已是第一章')
+      message.warning('已是第一章')
     }
   }
 
@@ -276,7 +274,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     }
 
     if (!idx1 && idx1 !== 0) {
-      Message.warning('缺失章节信息')
+      message.warning('缺失章节信息')
       return
     }
 
@@ -309,7 +307,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
       setChapter(newChapter)
       if (newChapter.urls) setPageUrl(newChapter.urls[0])
     } else {
-      Message.warning('已是最后章节')
+      message.warning('已是最后章节')
     }
   }
 
@@ -382,225 +380,6 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     setAuditCfg({ ...auditCfg, visible: false })
   }
 
-  const uploadFile = (file: File) => {
-    if (file) {
-      if (file.name !== chapter.fileName) {
-        message.error(`上传的文件名${file.name}与目录指定的文件名${chapter.fileName}不一致`)
-        return false
-      }
-      setLoading(true)
-      nursingRulesApiService.upLoadChapterBodyFile({
-        bookId: search.bookId || '',
-        nodeNum: chapter.nodeNum || '',
-        remark: '',
-        bodyFile: file
-      }).then(res => {
-        setLoading(false)
-        message.success('文件已提交,待护理部审核', 1, () => {
-          // history.replace(`/nursingRulesNewDetail?bookId=${search.bookId}`)
-          history.goBack()
-        })
-      }, () => setLoading(false))
-    }
-    return false
-  }
-
-  const handleFileChange = (file: any) => {
-    if (file) {
-      setLoading(true)
-
-      nursingRulesApiService.revChapter({
-        bodyFile: file,
-        bookId: search.bookId,
-        nodeNum: chapter.nodeNum,
-        rematk: ''
-      })
-        .then(res => {
-          setLoading(false)
-          message.success('修订已提交,待护理部审核', 1, () => {
-            // history.replace(`/nursingRulesNewDetail?bookId=${search.bookId}`)
-            history.goBack()
-          })
-        }, (err) => setLoading(false))
-    }
-  }
-
-  const handleReversion = () => {
-    let file: any
-    let title = chapterName
-    let iptStyle = {
-      width: '175px',
-      margin: '0 10px'
-    }
-
-    const handleCopyName = () => {
-      let target = document.getElementById('chapterFileNmae') as HTMLInputElement
-      if (target) {
-        target.select()
-        document.execCommand("Copy")
-        message.success('章节对应文件名已复制')
-      }
-    }
-    let noticeText = `请上传${chapter.fileName}`
-    // if (chapter.fileName) title += `(${chapter.fileName})`
-    let content = <React.Fragment>
-      <ReversionCon>
-        <span>章节名称:</span>
-        <Input
-          style={iptStyle}
-          disabled={true}
-          title={chapterName}
-          value={title} />
-        <input
-          type="text"
-          id="chapterFileNmae"
-          style={{ width: '1px', height: '1px', border: 'none', opacity: 0 }}
-          value={chapter.fileName || ''} />
-      </ReversionCon>
-      <ReversionCon>
-        <span>上传文件:</span>
-        <Input
-          readOnly={true}
-          style={iptStyle}
-          onClick={handleCopyName}
-          placeholder={noticeText}
-          className="fileNameIpt" />
-        <input type="file" style={{ display: 'none' }} onChange={(e) => {
-          if (e.target.files && e.target.files[0]) {
-            file = e.target.files[0]
-
-            let fileName = e.target.files[0].name
-            let fileNameIpt = document.querySelector('.fileNameIpt') as HTMLInputElement
-            if (fileNameIpt) fileNameIpt.value = fileName
-          }
-        }} id="reversionIpt" />
-        <Tooltip title={noticeText}>
-          <Button
-            onClick={() => {
-              let target = document.getElementById('reversionIpt')
-              if (target) target.click()
-            }}>
-            <span>...</span>
-          </Button>
-        </Tooltip>
-      </ReversionCon>
-    </React.Fragment>
-
-    Modal.confirm({
-      title: '修订本章节',
-      content,
-      icon: <Icon type="file-add" style={{ color: '#00A680' }} />,
-      centered: true,
-      onOk: () => {
-        if (!file) {
-          message.error('未选择上传文件')
-          return
-        }
-
-        handleFileChange(file)
-      }
-    })
-  }
-
-  const ViewContent = () => {
-    if (!pageUrl && loading) {
-      return <div
-        className='content-message page-item'
-        style={{
-          fontSize: '16px',
-          lineHeight: `${contentHeight / 2 + 100}px`
-        }}>
-        <Icon type="loading" /> 载入中...
-        </div>
-    }
-
-    if (!viewType && chapter && !chapter.isFileUploaded) {
-      return <div className='content-message page-item'>
-        <ChapterTitleCon className="no-border">{chapterTitle()}</ChapterTitleCon>
-        <UploadCon>
-          <Dragger
-            accept="image/*,.pdf"
-            className="ant-dragger"
-            beforeUpload={uploadFile}>
-            <p className="ant-upload-drag-icon">
-              <Icon type="cloud-upload" />
-            </p>
-            <p className="ant-upload-text">未上传文件</p>
-            <p className="ant-upload-hint">请上传 {chapter.fileName || ''}</p>
-          </Dragger>
-        </UploadCon>
-      </div>
-    }
-
-    if (!viewType && chapter && chapter.isFileUploaded == 1 && chapter.fileStatus == 1) {
-      return <div
-        className='content-message page-item'
-        style={{
-          fontSize: '16px',
-          color: '#00A680',
-          lineHeight: `${contentHeight / 2 + 100}px`
-        }}>
-        <Icon type="solution" /> 文件已上传,待审核
-      </div>
-    }
-
-    if (!pageUrl) {
-      return <div
-        className='content-message page-item'
-        style={{
-          fontSize: '16px',
-          color: 'red',
-          lineHeight: `${contentHeight / 2 + 100}px`
-        }}>
-        <Icon type="stop" /> 无预览文件
-        </div>
-    }
-
-    let pageUrlArr = pageUrl.split('.')
-    let type = pageUrlArr[pageUrlArr.length - 1]
-    let url = `/crNursing/asset${pageUrl}`
-
-    switch (type) {
-      case 'jpg':
-      case 'gif':
-      case 'jpeg':
-      case 'png':
-        return <Watermark>
-          <ChapterTitleCon>{chapterTitle()}</ChapterTitleCon>
-          <img src={url} width='100%' className="page-item" />
-        </Watermark>
-      case 'pdf':
-        return <React.Fragment>
-          <ChapterTitleCon>{chapterTitle()}</ChapterTitleCon>
-          <PdfViewer file={url} width={contentWidth - 2} />
-        </React.Fragment>
-      default:
-        return <div
-          className='content-message page-item'
-          style={{
-            fontSize: '16px',
-            color: 'red',
-            lineHeight: `${contentHeight / 2 + 100}px`
-          }}>
-          <ChapterTitleCon className="no-border">{chapterTitle()}</ChapterTitleCon>
-          <Icon type="stop" /> 该文件格式不支持预览
-        </div>
-    }
-  }
-
-  const overTime = (startTime: string) => {
-    if (!startTime) return '...小时'
-    let time = moment().diff(moment(startTime), 'minute')
-
-    let minutes = time % 60 ? `${time % 60}分钟` : ''
-    let days: any = parseInt((time / (24 * 60)).toString())
-    let hours: any = parseInt(((time / 60) % 24).toString())
-    hours = hours >= 1 ? `${hours}小时` : ''
-    days = days >= 1 ? `${days}天` : ''
-    if (!hours && !minutes && !days) return '0小时'
-    return days + hours + minutes
-  }
-
   const reversionInfo = () => {
     let target = reversionList.find((item) => item.urls && item.urls[0] == appStore.queryObj.pageUrl)
     if (target) return `(${target.upLoadTime} ${target.upLoaderEmpName})`
@@ -629,35 +408,16 @@ export default observer(function NursingRulesPagePreview(props: Props) {
             style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
             审核
           </Button>
-          <Button
-            onClick={handleReversion}
-            disabled={loading}
-            style={{ display: viewType ? 'none' : 'block' }}>
-            修订本章节
-          </Button>
+          <ReversionBtn
+            loading={loading}
+            chapter={chapter}
+            onLoading={(newLoading) => setLoading(newLoading)} />
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
       </div>
       <div className='main-contain'>
         <div className='audit-content' style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
-          <TopTitleCon>
-            <div className='topTitleIcon' />
-            <div className='topTitle'>审核过程</div>
-          </TopTitleCon>
-          <BaseStepCon>
-            <BaseStepBox success={'success'}>
-              <StepBox>
-                <div className='title'>提交书籍</div>
-                <div>{`${auditInfo.upLoaderEmpName || ''} ${auditInfo.upLoadTime || ''}`}</div>
-              </StepBox>
-            </BaseStepBox>
-            <BaseStepBox success={''}>
-              <StepBox>
-                <div className='title'>护理部审核</div>
-                <div>审核中 耗时{overTime(auditInfo.upLoadTime)}</div>
-              </StepBox>
-            </BaseStepBox>
-          </BaseStepCon>
+          <AuditInfo upLoadTime={auditInfo.upLoadTime} upLoaderEmpName={auditInfo.upLoaderEmpName} />
         </div>
         <div className='preview-content'>
           <div
@@ -687,9 +447,14 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           </div>
           <div className='scroll-warpper'>
             <div ref={viewTop} className='scroll-top' />
-            <div className='page-content'>
-              {ViewContent()}
-            </div>
+            <ViewContent
+              contentWidth={contentWidth}
+              contentHeight={contentHeight}
+              loading={loading}
+              pageUrl={pageUrl}
+              chapter={chapter}
+              chapterTitle={chapterTitle()}
+              onLoading={(newLoading) => setLoading(newLoading)} />
           </div>
         </div>
       </div>
@@ -794,28 +559,6 @@ const Wrapper = styled.div`
       padding: 15px 0;
       overflow: auto;
       ${scrollBarStyle}
-
-      .page-content {
-        &>*{
-          width: ${contentWidth}px;
-          margin: 0 auto;
-          min-height: ${contentHeight}px;
-          position: relative;
-        }
-        .page-item{
-          background: #fff;
-          border: 1px solid #ddd;
-        }
-        img {
-          width: 100%;
-        }
-        .content-message {
-          width: ${contentWidth}px;
-          height: ${contentHeight}px;
-          text-align: center;
-          font-size: 14px;
-        }
-      }
     }
     .left-control {
       position: absolute;
@@ -934,89 +677,5 @@ const NavCon = styled.div`
   }
   span {
     color: #888;
-  }
-`
-
-const TopTitleCon = styled.div`
-  margin-bottom: 16px;
-  .topTitleIcon {
-    margin-left: -5px;
-    display: inline-block;
-    width: 6px;
-    height: 12px;
-    background: rgba(75, 176, 141, 1);
-  }
-  .topTitle {
-    margin-left: 10px;
-    display: inline-block;
-    font-size: 16px;
-    color: #333333;
-  }
-`
-
-const StepBox = styled.div`
-  padding-bottom: 10px;
-  * {
-    font-size: 12px;
-  }
-  .title {
-    color: #000;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  .info,
-  .date,
-  .nodo {
-    color: #687179;
-    margin-bottom: 3px;
-  }
-  .text-box {
-    color: 12px;
-    background: #e6eceb;
-    border-radius: 2px;
-    padding: 10px 12px;
-    margin: 5px 0 0;
-    .text-box-title {
-      font-weight: bold;
-    }
-  }
-`
-
-const UploadCon = styled.div`
-  margin: 0 auto;
-  margin-top: 250px;
-  width: 200px;
-  .ant-upload {
-    border-width: 2px!important;
-    background: rgba(0,0,0,0.004)!important;
-  }
-  .ant-upload-list{
-    display: none;
-  }
-`
-
-const ChapterTitleCon = styled.div`
-  height: 31px;
-  line-height: 31px;
-  font-size: 16px;
-  font-weight: bold;
-  min-height: 0!important;
-  text-align: center;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-bottom: 0;
-  position: relative;
-  bottom: -1px;
-  z-index: 1;
-  &.no-border{
-    border: none;
-  }
-`
-
-const ReversionCon = styled.div`
-  margin-top: 10px;
-  line-height: 32px;
-  &>*{
-    vertical-align: top;
   }
 `
