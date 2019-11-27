@@ -20,9 +20,18 @@ const { TabPane } = Tabs;
 export interface Props { }
 
 export default observer(function NursingRulesNewDetail() {
-  const { history, location } = appStore
-  const { baseInfo, indexList, baseLoading, auditList, currentVersionFavorList } = detailPageModel
-  const search = qs.parse(location.search.replace('?', ''))
+  const { history, location, queryObj } = appStore
+  const {
+    baseInfo,
+    indexList,
+    baseLoading,
+    auditList,
+    currentVersionFavorList,
+    indexLoading,
+    auditLoading,
+    favorLoading,
+    repairLoading
+  } = detailPageModel
 
   //启用和删除权限 上传者和护理部
   let uploaderAuth = !!(baseInfo.upLoaderEmpNo == (authStore.getUser() && authStore.getUser().empNo)) as boolean
@@ -41,21 +50,21 @@ export default observer(function NursingRulesNewDetail() {
   let tabsCfg = [
     {
       name: `目录(共${indexSize()}章)`,
-      component: <IndexPannel />
+      component: <Spin spinning={indexLoading}><IndexPannel /></Spin>
     },
     {
       name: `我的收藏(共${currentVersionFavorList.length}章)`,
-      component: <FavorPannel />
+      component: <Spin spinning={favorLoading}><FavorPannel /></Spin>
     },
     {
       name: '修订记录',
-      component: <RepairPannel />
+      component: <Spin spinning={repairLoading}><RepairPannel /></Spin>
     }
   ]
 
   if (auth) tabsCfg.push({
     name: `待审核章节(共${auditList.length}章)`,
-    component: <AuditPannel />
+    component: <Spin spinning={auditLoading}><AuditPannel /></Spin>
   })
 
   const TabPannels = () => {
@@ -65,7 +74,7 @@ export default observer(function NursingRulesNewDetail() {
   }
 
   const handleTabChange = (tab: any) => {
-    history.replace(`${location.pathname}?${qs.stringify({ ...search, tab })}`)
+    history.replace(`${location.pathname}?${qs.stringify({ ...queryObj, tab })}`)
   }
 
   const handleEnable = (enabled: number) => {
@@ -135,8 +144,8 @@ export default observer(function NursingRulesNewDetail() {
 
   useEffect(() => {
     detailPageModel.inited({
-      ...search,
-      bookId: search.bookId || ''
+      ...queryObj,
+      bookId: queryObj.bookId || ''
     })
   }, [])
 
@@ -164,58 +173,53 @@ export default observer(function NursingRulesNewDetail() {
     </div>
     <div className="main-contain">
       <div className="top-pannel">
-        {/* <div className="btn-group">
-          <Button onClick={handleEdit} disabled={!auth}>编辑</Button>
-          <Button onClick={handleRepair} disabled={!auth}>修订</Button>
-          {SettingBtn()}
-          <Button type="danger" disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
-          <Button onClick={() => history.goBack()}>返回</Button>
-        </div> */}
-        <div className="base-info">
-          <div className="left">
-            <BookCover src={baseInfo.coverPath ? `/crNursing/asset${baseInfo.coverPath}` : ''} name={baseInfo.coverPath ? '' : baseInfo.bookName} />
-          </div>
-          <div className="right">
-            <div className="main-title">
-              <span>{baseInfo.bookName}</span>
+        <Spin spinning={baseLoading}>
+
+          <div className="base-info">
+            <div className="left">
+              <BookCover src={baseInfo.coverPath ? `/crNursing/asset${baseInfo.coverPath}` : ''} name={baseInfo.coverPath ? '' : baseInfo.bookName} />
             </div>
-            <div className="update-info">
-              <span className="icon">
-                <img src={require('./../assets/上传@2x.png')} alt="" />
-              </span>
-              <span>上传:</span>
-              <span className="sc-content">{baseInfo.upLoadTime && baseInfo.upLoadTime.split(' ')[0]}</span>
-              <span className="sc-content">{baseInfo.upLoaderEmpName}</span>
-            </div>
-            <div className="audit-info">
-              <span className="icon">
-                <img src={require('./../assets/审核@2x.png')} alt="" />
-              </span>
-              <span>审核:</span>
-              <span className="sc-content">{baseInfo.auditTime && baseInfo.auditTime.split(' ')[0]}</span>
-              <span className="sc-content">{baseInfo.auditorEmpName}</span>
-            </div>
-            <div className="desc">
-              <span className="icon">
-                <img src={require('./../assets/简介@2x.png')} alt="" />
-              </span>
-              <span>简介:</span>
-              <span className="desc-content">{baseInfo.bookBrief}</span>
-            </div>
-            <div className="btn-group">
-              <Button onClick={handleEdit} disabled={!auth}>编辑</Button>
-              <Button onClick={handleRepair} disabled={!auth}>修订</Button>
-              {SettingBtn()}
-              <Button type="danger" disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
-              <Button onClick={() => history.goBack()}>返回</Button>
+            <div className="right">
+              <div className="main-title">
+                <span>{baseInfo.bookName}</span>
+              </div>
+              <div className="update-info">
+                <span className="icon">
+                  <img src={require('./../assets/上传@2x.png')} alt="" />
+                </span>
+                <span>上传:</span>
+                <span className="sc-content">{baseInfo.upLoadTime && baseInfo.upLoadTime.split(' ')[0]}</span>
+                <span className="sc-content">{baseInfo.upLoaderEmpName}</span>
+              </div>
+              <div className="audit-info">
+                <span className="icon">
+                  <img src={require('./../assets/审核@2x.png')} alt="" />
+                </span>
+                <span>审核:</span>
+                <span className="sc-content">{baseInfo.auditTime && baseInfo.auditTime.split(' ')[0]}</span>
+                <span className="sc-content">{baseInfo.auditorEmpName}</span>
+              </div>
+              <div className="desc">
+                <span className="icon">
+                  <img src={require('./../assets/简介@2x.png')} alt="" />
+                </span>
+                <span>简介:</span>
+                <span className="desc-content">{baseInfo.bookBrief}</span>
+              </div>
+              <div className="btn-group">
+                <Button onClick={handleEdit} disabled={!auth}>编辑</Button>
+                <Button onClick={handleRepair} disabled={!auth}>修订</Button>
+                {SettingBtn()}
+                <Button type="danger" disabled={!auth || baseLoading} onClick={handleDelete}>删除</Button>
+                <Button onClick={() => history.goBack()}>返回</Button>
+              </div>
             </div>
           </div>
-        </div>
+
+        </Spin>
       </div>
       <div className="tab-pannels">
-        <Spin spinning={baseLoading}>
-          <Tabs defaultActiveKey={search.tab || '0'} onChange={handleTabChange}>{TabPannels()}</Tabs>
-        </Spin>
+        <Tabs defaultActiveKey={queryObj.tab || '0'} onChange={handleTabChange}>{TabPannels()}</Tabs>
       </div>
     </div>
   </Wrapper>
