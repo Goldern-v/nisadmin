@@ -269,6 +269,8 @@ export default observer(function NurseMeetingRecord() {
     <TableWrapper>
       <BaseTable
         loading={loading}
+        type={['index']}
+        surplusWidth={200}
         surplusHeight={225}
         dataSource={tableData}
         onRow={(record: any) => {

@@ -87,6 +87,11 @@ export default observer(function WorkPlainEditModal(props: Props) {
       return
     }
 
+    if (params.type == '3') {
+      params.indexInType = '1'
+      params.month = '1'
+    }
+
     setLoading(true)
 
     nursingWorkPlainService

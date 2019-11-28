@@ -31,7 +31,7 @@ export default observer(function NursingWorkPlainList() {
     pageIndex: 1,
     type: '',
     year: moment().format('YYYY'),
-    month: moment().format('M'),
+    month: '',
     pageSize: 20,
   })
 
