@@ -71,11 +71,11 @@ export default observer(function NursingWorkPlainList() {
     {
       key: 'month',
       title: '月份',
-      align: 'center',
+      align: 'left',
       width: 100,
       render: (text: string, record: any, idx: number) => {
         if (record.type == '3') {
-          return ''
+          return `${record.year}年`
         } else {
           return `${record.year}年${record.month}月`
         }

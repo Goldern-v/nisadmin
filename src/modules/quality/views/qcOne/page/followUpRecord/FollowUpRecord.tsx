@@ -120,9 +120,9 @@ export default observer(function FollowUpRecord() {
   });
   const [total, setTotal]: any = useState(0);
   const getData = () => {
-    let _startDate = "";
-    let _endDate = "";
     let y = year.format("YYYY");
+    let _startDate = `${y}-01-01`;
+    let _endDate = `${y}-12-31`;
     if (selectedJd == 1) {
       _startDate = moment().format(`${y}-01-01`);
       _endDate = moment()
@@ -154,16 +154,8 @@ export default observer(function FollowUpRecord() {
         ...pageOptions,
         wardCode: authStore.selectedDeptCode,
         // quarter: selectedJd,
-        startDate:
-          _startDate ||
-          (qcOneSelectViewModal.startDate
-            ? moment(qcOneSelectViewModal.startDate).format(`${y}-MM-DD`)
-            : ""),
-        endDate:
-          _endDate ||
-          (qcOneSelectViewModal.endDate
-            ? moment(qcOneSelectViewModal.endDate).format(`${y}-MM-DD`)
-            : "")
+        startDate: _startDate,
+        endDate: _endDate
       })
       .then(res => {
         setTotal(res.data.totalCount);

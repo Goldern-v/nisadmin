@@ -10,6 +10,7 @@ import { Report } from '../../types'
 import Zimage from 'src/components/Zimage'
 import createModal from 'src/libs/createModal'
 import service from 'src/services/api'
+import OneLevelTitle from '../common/OneLevelTitle'
 
 export interface Props {
   sectionId: string
@@ -40,7 +41,7 @@ export default observer(function 附件模块(props: Props) {
 
   return (
     <Wrapper>
-      <div className='sup-title'>附件</div>
+      <OneLevelTitle text="附件" />
       <EditButton onClick={() => patientVisitMonthModel.openEditModal(sectionId)}>编辑</EditButton>
       <FileCon>
         {list.map((item: any, index: number) => (

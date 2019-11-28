@@ -209,33 +209,37 @@ export default observer(function NursingWorkPlainList() {
   }
 
   const handlePublish = (record: any) => {
-    globalModal.confirm('提交确认', '你确定要提交该报告吗？').then((res) => {
-      setLoading(true)
-      starRatingReportService.publish({
-        wardCode: record.wardCode,
-        year: record.year,
-        month: record.month
-      }).then((res) => {
+    globalModal.confirm('提交确认', '你确定要提交该报告吗？')
+      .then((res) => {
+        setLoading(true)
+        return starRatingReportService.publish({
+          wardCode: record.wardCode,
+          year: record.year,
+          month: record.month
+        })
+      })
+      .then((res) => {
         message.success('提交成功')
         setLoading(false)
         getList(query)
       }, () => setLoading(false))
-    })
   }
 
   const handleCancelPublish = (record: any) => {
-    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？').then((res) => {
-      setLoading(true)
-      starRatingReportService.cancelPublish({
-        wardCode: record.wardCode,
-        year: record.year,
-        month: record.month
-      }).then((res) => {
-        message.success('提交成功')
+    globalModal.confirm('撤销确认', '你确定要撤销该报告吗？')
+      .then((res) => {
+        setLoading(true)
+        return starRatingReportService.cancelPublish({
+          wardCode: record.wardCode,
+          year: record.year,
+          month: record.month
+        })
+      })
+      .then((res) => {
+        message.success('撤销成功')
         setLoading(false)
         getList(query)
       }, () => setLoading(false))
-    })
   }
 
   const handleExportGather = (isBigDept?: boolean) => {
