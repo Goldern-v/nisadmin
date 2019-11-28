@@ -27,7 +27,7 @@ export const navConfig: navConfigItem[] = [
   {
     name: "一级质控",
     path: "/qcOne/nursingWorkPlainList",
-    hidden: !appStore.isDev
+    // hidden: !appStore.isDev
   },
   // {
   //   name: '质量管理',
