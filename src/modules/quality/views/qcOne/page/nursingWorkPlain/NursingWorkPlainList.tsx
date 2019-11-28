@@ -197,7 +197,7 @@ export default observer(function NursingWorkPlainList() {
   const handleEdit = (record: any) => {
     setEditParmas({
       year: record.year,
-      month: record.month,
+      month: record.type == '3' ? '' : record.month,
       type: record.type,
       indexInType: record.type == '2' ? record.indexInType : '',
       content: record.content,
