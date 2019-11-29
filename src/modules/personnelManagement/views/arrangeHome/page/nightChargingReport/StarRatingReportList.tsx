@@ -248,7 +248,7 @@ export default observer(function NursingWorkPlainList() {
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
-          <PageTitle className="pannel-title">夜计费</PageTitle>
+          <PageTitle className="pannel-title">夜班费统计</PageTitle>
         </LeftIcon>
         <RightIcon>
           <span>年份:</span>

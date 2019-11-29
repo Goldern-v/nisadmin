@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span,
@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
         /* box-sizing: border-box; */
         /* padding: 0 8px; */
         /* font-size: 13px !important; */
-        /* height: ${(p) => p.theme.$tableRowHeight} !important; */
+        /* height: ${p => p.theme.$tableRowHeight} !important; */
       }
   body {
     margin: 0px;
@@ -80,7 +80,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   padding-bottom: 0;
 }
 .ant-modal-body {
-  max-height: calc(70vh);
+  max-height: calc(80vh);
   overflow: auto;
   &::-webkit-scrollbar {
     width: 8px;
@@ -176,6 +176,6 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       color: #f5222d;
     }
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;

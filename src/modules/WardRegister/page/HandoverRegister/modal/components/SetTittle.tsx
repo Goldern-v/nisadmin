@@ -185,7 +185,7 @@ export default observer(function SetTittle(props: Props) {
           dataSource={dataSource}
           columns={columns}
           type={["index", moveAble ? "diagRow" : ""]}
-          surplusHeight={appStore.wih - 500}
+          surplusHeight={appStore.wih - (appStore.wih * 0.8 - 200)}
           moveRow={(dragIndex: number, hoverIndex: number) => {
             const dragRow = dataSource[dragIndex];
             setDataSource(

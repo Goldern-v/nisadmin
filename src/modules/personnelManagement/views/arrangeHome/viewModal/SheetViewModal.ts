@@ -1,3 +1,4 @@
+import service from "src/services/api/index";
 import { cloneJson } from "./../../../../../utils/json/clone";
 import { appStore } from "./../../../../../stores/index";
 import { SymbolItem, ArrangeItem } from "./../types/Sheet";
@@ -28,6 +29,11 @@ class SheetViewModal {
   /** 复制行 */
   @observable public copyRow: any[] = [];
   @observable public copyCell: any = null;
+
+  /** 特殊班次，计数等 */
+  @observable public countArrangeNameList: any[] = [];
+  /** 一周全是这些班次 按5天计算工时 */
+  @observable public weekArrangeNameList: any[] = [];
 
   /** 时间段 */
   getDateList() {
@@ -143,10 +149,17 @@ class SheetViewModal {
 
   getSheetTableData() {
     this.tableLoading = true;
-    return arrangeService.findCreateOrUpdate().then(res => {
+    return arrangeService.findCreateOrUpdate().then(async res => {
       this.tableLoading = false;
       this.dateList = this.getDateList();
-      this.sheetTableData = this.handleSheetTableData(res.data.setting);
+
+      let { data: countObj } = await arrangeService.listRangeNameCode(
+        res.data.setting
+      );
+      this.sheetTableData = this.handleSheetTableData(
+        res.data.setting,
+        countObj
+      );
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
     });
@@ -173,20 +186,6 @@ class SheetViewModal {
   handleCopy() {
     this.tableLoading = true;
     return arrangeService.copyPrevSettingRange().then(res => {
-      // this.tableLoading = false
-      // this.dateList = this.getDateList()
-      // this.tableLoading = false;
-      // let copySheetTableData = this.handleSheetTableData(res.data.setting);
-
-      // let _sheetTableData = cloneJson(this.sheetTableData);
-
-      // for (let i = 0; i < _sheetTableData.length; i++) {
-      //   if (copySheetTableData[i]) {
-      //     _sheetTableData[i].settingDtos = copySheetTableData[i].settingDtos;
-      //   }
-      // }
-      // this.sheetTableData = _sheetTableData;
-      // this.allCell = this.getAllCell(true);
       this.tableLoading = false;
       this.sheetTableData = this.handleSheetTableData(res.data.setting);
       this.remark = res.data.remark;
@@ -223,8 +222,8 @@ class SheetViewModal {
       this.getSheetTableData();
     });
   }
-  /** 处理后台过来的表格数据，增加一些计算结果 */
-  handleSheetTableData(sheetTableData: any) {
+  /** 处理后台过来的表格数据，增加一些计算结果 公休节休计数等 */
+  handleSheetTableData(sheetTableData: any, countObj: any = {}) {
     for (let i = 0; i < sheetTableData.length; i++) {
       /** 当前结余，公休，节修时间, 用于推导实际时间 */
       let current_balanceHour = 0;
@@ -241,16 +240,42 @@ class SheetViewModal {
       sheetTableData[i].current_balanceHour = current_balanceHour;
       sheetTableData[i].current_holidayHour = current_holidayHour;
       sheetTableData[i].current_publicHour = current_publicHour;
+
+      /** 计数班次的基础次数 */
+      let countArrangeBaseIndexObj: any = {};
+
+      for (let key of this.countArrangeNameList) {
+        if (countObj[sheetTableData[i].empName]) {
+          let countItem: any = countObj[sheetTableData[i].empName].find(
+            (o: any) => o.rangeName == key
+          );
+          if (countItem) {
+            countArrangeBaseIndexObj[key] = countItem.rangeNameCode;
+          }
+        }
+      }
+
+      sheetTableData[i].countArrangeBaseIndexObj = countArrangeBaseIndexObj;
     }
+    console.log(sheetTableData, "sheetTableData");
     return sheetTableData;
   }
 
-  init() {
-    this.getExpectList();
-    this.getSheetTableData();
-    this.getArrangeMenu();
-    this.getArrangeMeal();
-    this.getSchSymbol();
+  async init() {
+    Promise.all([
+      service.commonApiService.dictInfo("sch_vacation_number").then(res => {
+        this.countArrangeNameList = res.data.map((item: any) => item.name);
+      }),
+      service.commonApiService.dictInfo("sch_week_subtract").then(res => {
+        this.weekArrangeNameList = res.data.map((item: any) => item.name);
+      })
+    ]).then(res => {
+      this.getExpectList();
+      this.getSheetTableData();
+      this.getArrangeMenu();
+      this.getArrangeMeal();
+      this.getSchSymbol();
+    });
   }
 }
 

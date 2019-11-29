@@ -190,6 +190,15 @@ export default class ArrangeService extends BaseApiService {
   public schExpectGetListPC(obj: PageObj) {
     return this.post(`/schExpect/getListPC`, obj);
   }
+  // 武汉获取休假类型最近日期得天数编号
+  public listRangeNameCode(list: any) {
+    let obj = {
+      endTime: selectViewModal.params.startTime,
+      empNames: list.map((item: any) => item.empName),
+      deptCode: selectViewModal.params.deptCode
+    };
+    return this.post(`/scheduling/listRangeNameCode`, obj);
+  }
 }
 
 export const arrangeService = new ArrangeService();

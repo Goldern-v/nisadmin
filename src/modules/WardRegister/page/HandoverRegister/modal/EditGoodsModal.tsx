@@ -1,32 +1,42 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
-import { ModalComponentProps } from 'src/libs/createModal'
-import Form from 'src/components/Form'
-import { to } from 'src/libs/fns'
-import { Rules } from 'src/components/Form/interfaces'
+import styled from "styled-components";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import {
+  Modal,
+  Input,
+  Button,
+  Radio,
+  DatePicker,
+  Select,
+  Row,
+  Col,
+  message
+} from "antd";
+import { ModalComponentProps } from "src/libs/createModal";
+import Form from "src/components/Form";
+import { to } from "src/libs/fns";
+import { Rules } from "src/components/Form/interfaces";
 
-const Option = Select.Option
+const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
-  onOkCallBack?: () => {}
+  onOkCallBack?: () => {};
 }
 
 /** 设置规则 */
 const rules: Rules = {
-  publicDate: (val) => !!val || '请填写发表日期'
-}
+  publicDate: val => !!val || "请填写发表日期"
+};
 
 export default function EditGoodsModal(props: Props) {
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState("");
 
-  let { visible, onCancel } = props
-  let refForm = React.createRef<Form>()
+  let { visible, onCancel } = props;
+  let refForm = React.createRef<Form>();
 
   const onSave = async () => {
-    if (!refForm.current) return
-    let [err, value] = await to(refForm.current.validateFields())
-    if (err) return
+    if (!refForm.current) return;
+    let [err, value] = await to(refForm.current.validateFields());
+    if (err) return;
 
     /** 保存接口 */
     // service(value).then((res: any) => {
@@ -34,54 +44,62 @@ export default function EditGoodsModal(props: Props) {
     //   props.onOkCallBack && props.onOkCallBack()
     //   onCancel()
     // })
-  }
+  };
 
   useLayoutEffect(() => {
-    if (refForm.current && visible) refForm!.current!.clean()
+    if (refForm.current && visible) refForm!.current!.clean();
     /** 如果是修改 */
     if (refForm.current && visible) {
       /** 表单数据初始化 */
       refForm!.current!.setFields({
-        publicDate: '',
-        title: ''
-      })
+        publicDate: "",
+        title: ""
+      });
     }
-  }, [visible])
+  }, [visible]);
 
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+    <Modal
+      title={title}
+      visible={visible}
+      onCancel={onCancel}
+      onOk={onSave}
+      okText="保存"
+      forceRender
+      centered
+    >
       <Form ref={refForm} rules={rules} labelWidth={80}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`科室`} name='publicDate' required>
+            <Form.Field label={`科室`} name="publicDate" required>
               <Input />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`物品名称`} name='title'>
-              <Input placeholder='请输入物品名称' />
+            <Form.Field label={`物品名称`} name="title">
+              <Input placeholder="请输入物品名称" />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`列宽度`} name='title'>
-              <Input placeholder='请输入宽度数值' />
+            <Form.Field label={`列宽度`} name="title">
+              <Input placeholder="请输入宽度数值" />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`基数`} name='title'>
-              <Input placeholder='请设置数量，为空代表没有基数' />
+            <Form.Field label={`基数`} name="title">
+              <Input placeholder="请设置数量，为空代表没有基数" />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`下拉选项预设值`} name='title'>
-              <Input.TextArea placeholder=' 请输入下拉选项值，值之前用;隔开' />
+            <Form.Field label={`下拉选项预设值`} name="title">
+              <Input.TextArea placeholder=" 请输入下拉选项值，值之前用;隔开" />
             </Form.Field>
           </Col>
         </Row>
       </Form>
     </Modal>
-  )
+  );
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div``;

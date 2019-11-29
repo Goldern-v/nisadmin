@@ -102,6 +102,7 @@ export default function SettingModal(props: Props) {
       forceRender
       width={900}
       bodyStyle={{ padding: 0 }}
+      centered
     >
       <BaseTabs config={tabConfig} style={{ border: 0 }} />
     </Modal>

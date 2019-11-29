@@ -95,7 +95,7 @@ export default function PersonnelManagementView() {
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         },
         {
-          title: "夜计费",
+          title: "夜班费统计",
           path: "/personnelManagement/nightChargingReport",
           component: StarRatingReportList,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
