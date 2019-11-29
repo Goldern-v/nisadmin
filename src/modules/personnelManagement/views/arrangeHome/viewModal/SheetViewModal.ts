@@ -265,7 +265,8 @@ class SheetViewModal {
             (o: any) => o.rangeName == key
           );
           if (countItem) {
-            countArrangeBaseIndexObj[key] = countItem.rangeNameCode || 0;
+            countArrangeBaseIndexObj[key] =
+              Number(countItem.rangeNameCode) || 0;
           }
         }
       }
