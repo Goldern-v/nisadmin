@@ -33,7 +33,7 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   // publicDate: (val) => !!val || '请填写发表日期'
   // publicDate: (val) => !!val || '请填写发表日期'
-  empNo: val => !!val || "请选择护士",
+  empName: val => !!val || "请选择护士",
   endDate: val => !!val || "请填写结余日期"
 };
 
@@ -55,11 +55,16 @@ export default function EditBalanceModal(props: Props) {
       .startOf("week")
       .format("YYYY-MM-DD");
 
-    data.empName = nurseList.find((item: any) => item.empNo == data.empNo)
-      ? nurseList.find((item: any) => item.empNo == data.empNo).name
-      : data.empNo;
+    data.empNo = nurseList.find((item: any) => item.empName == data.empName)
+      ? nurseList.find((item: any) => item.empName == data.empName).empNo
+      : "";
     data.deptCode = authStore.selectedDeptCode;
     data.deptName = authStore.selectedDeptName;
+
+    data.publicHourNow = Number(data.publicHourNow) || 0;
+    data.holidayHourNow = Number(data.holidayHourNow) || 0;
+    data.balanceHourNow = Number(data.balanceHourNow) || 0;
+
     /** 保存接口 */
     arrangeService.schBalanceHourSaveOrUpdate(data).then((res: any) => {
       message.success("保存成功");
@@ -80,7 +85,7 @@ export default function EditBalanceModal(props: Props) {
       if (props.oldData) {
         setTitle("编辑结余工时");
         refForm!.current!.setFields({
-          empNo: props.oldData.empNo,
+          empName: props.oldData.empName,
           endDate: moment(props.oldData.endDate),
           publicHourNow: props.oldData.publicHourNow,
           holidayHourNow: props.oldData.holidayHourNow,
@@ -92,11 +97,11 @@ export default function EditBalanceModal(props: Props) {
         setTitle("新建结余工时");
         /** 表单数据初始化 */
         refForm!.current!.setFields({
-          empNo: "",
+          empName: "",
           endDate: null,
-          publicHourNow: "",
-          holidayHourNow: "",
-          balanceHourNow: "",
+          publicHourNow: 0,
+          holidayHourNow: 0,
+          balanceHourNow: 0,
           remark: "",
           status: status
         });
@@ -117,10 +122,10 @@ export default function EditBalanceModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={80}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`护士姓名`} name="empNo" required>
+            <Form.Field label={`护士姓名`} name="empName" required>
               <Select disabled={props.oldData}>
                 {(nurseList || []).map((item: any, index: number) => (
-                  <Select.Option value={item.empNo} key={index}>
+                  <Select.Option value={item.empName} key={index}>
                     {item.empName}
                   </Select.Option>
                 ))}
@@ -143,11 +148,7 @@ export default function EditBalanceModal(props: Props) {
               <InputNumber />
             </Form.Field>
           </Col>
-          <Col span={24}>
-            <Form.Field label={`节休结余`} name="holidayHourNow">
-              <InputNumber />
-            </Form.Field>
-          </Col>
+
           <Col span={24}>
             <Form.Field label={`节休结余`} name="holidayHourNow">
               <InputNumber />

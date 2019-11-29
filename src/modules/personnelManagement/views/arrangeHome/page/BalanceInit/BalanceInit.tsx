@@ -204,7 +204,7 @@ export default observer(function FollowUpRecord() {
         >
           <Select.Option value="">全部</Select.Option>
           {nurseList.map((item: any, index: number) => (
-            <Select.Option value={item.empNo} key={index}>
+            <Select.Option value={item.empName} key={index}>
               {item.empName}
             </Select.Option>
           ))}
