@@ -147,6 +147,18 @@ class SheetViewModal {
     });
   }
 
+  /** 根据工号 获取完整用户排班信息 */
+  getUser(userId: number) {
+    let user = this.sheetTableData.find((item: any) => {
+      return item.id == userId;
+    });
+    if (user) {
+      return [user, user.settingDtos];
+    } else {
+      return [null, null];
+    }
+  }
+
   getSheetTableData() {
     this.tableLoading = true;
     return arrangeService.findCreateOrUpdate().then(async res => {
@@ -243,6 +255,9 @@ class SheetViewModal {
 
       /** 计数班次的基础次数 */
       let countArrangeBaseIndexObj: any = {};
+      for (let key of this.countArrangeNameList) {
+        countArrangeBaseIndexObj[key] = 0;
+      }
 
       for (let key of this.countArrangeNameList) {
         if (countObj[sheetTableData[i].empName]) {
@@ -250,7 +265,7 @@ class SheetViewModal {
             (o: any) => o.rangeName == key
           );
           if (countItem) {
-            countArrangeBaseIndexObj[key] = countItem.rangeNameCode;
+            countArrangeBaseIndexObj[key] = countItem.rangeNameCode || 0;
           }
         }
       }

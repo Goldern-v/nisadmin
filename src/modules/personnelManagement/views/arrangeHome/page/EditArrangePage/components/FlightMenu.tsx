@@ -1,17 +1,19 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
-import BaseTabs from 'src/components/BaseTabs'
-import { observer } from 'mobx-react-lite'
-import moment from 'moment'
-import { sheetViewModal } from '../../../viewModal/SheetViewModal'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { Button } from "antd";
+import BaseTabs from "src/components/BaseTabs";
+import { observer } from "mobx-react-lite";
+import moment from "moment";
+import { sheetViewModal } from "../../../viewModal/SheetViewModal";
+import { ArrangeItem } from "../../../types/Sheet";
+import { cloneJson } from "src/utils/json/clone";
 export interface Props {}
 
 const BoxInner = styled.div<{ color?: string }>`
   height: 30px;
   padding: 5px;
   border: 1px solid #d9d9d9;
-  color: ${(p) => p.color || '#666'};
+  color: ${p => p.color || "#666"};
   text-align: center;
   display: flex;
   align-items: center;
@@ -20,9 +22,24 @@ const BoxInner = styled.div<{ color?: string }>`
   border-radius: 2px;
   cursor: pointer;
   &:hover {
-    border-color: ${(p) => p.theme.$mtc};
+    border-color: ${p => p.theme.$mtc};
   }
-`
+`;
+
+/**重置某个用户某个班次的编号 */
+export const resetArrangeCount = (userId: number, arrangeName: string) => {
+  let [user, list] = sheetViewModal.getUser(userId);
+  if (user) {
+    let baseCount = user.countArrangeBaseIndexObj[arrangeName];
+    list
+      .filter((item: ArrangeItem) => {
+        return item.rangeName == arrangeName;
+      })
+      .forEach((item: ArrangeItem, index: number) => {
+        item.rangeNameCode = baseCount + index + 1;
+      });
+  }
+};
 
 export default observer(function FlightMenu() {
   return (
@@ -30,20 +47,20 @@ export default observer(function FlightMenu() {
       <BaseTabs
         config={[
           {
-            title: '可选班次',
-            index: '0',
+            title: "可选班次",
+            index: "0",
             component: <MenuCon dataSource={sheetViewModal.arrangeMenu} />
           },
           {
-            title: '班次套餐',
-            index: '1',
+            title: "班次套餐",
+            index: "1",
             component: <MealCon dataSource={sheetViewModal.arrangeMeal} />
           }
         ]}
       />
     </Wrapper>
-  )
-})
+  );
+});
 function MenuCon(props: { dataSource: any[] }) {
   const Contain = styled.div`
     padding: 5px;
@@ -52,31 +69,52 @@ function MenuCon(props: { dataSource: any[] }) {
       float: left;
       padding: 5px;
     }
-  `
+  `;
   const onClick = (item: any) => {
+    let _rangeName: any = sheetViewModal.selectedCell!.rangeName;
     if (sheetViewModal.selectedCell) {
-      sheetViewModal.selectedCell!.rangeName = item.name
-      sheetViewModal.selectedCell!.nameColor = item.nameColor
-      sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime
-      sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime
-      sheetViewModal.selectedCell!.shiftType = item.shiftType
-      sheetViewModal.selectedCell!.settings = null
-      sheetViewModal.selectedCell!.statusType = ''
+      sheetViewModal.selectedCell!.rangeName = item.name;
+      sheetViewModal.selectedCell!.nameColor = item.nameColor;
+      sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime;
+      sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime;
+      sheetViewModal.selectedCell!.shiftType = item.shiftType;
+      sheetViewModal.selectedCell!.settings = null;
+      sheetViewModal.selectedCell!.statusType = "";
       // sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
-      sheetViewModal.selectedCell = sheetViewModal.getNextCell()
+
+      /** 判断是否生成编号 */
+      if (
+        sheetViewModal.selectedCell.rangeName &&
+        sheetViewModal.countArrangeNameList.includes(
+          sheetViewModal.selectedCell.rangeName
+        )
+      ) {
+        resetArrangeCount(
+          sheetViewModal.selectedCell.userId,
+          sheetViewModal.selectedCell.rangeName
+        );
+      }
+      if (
+        _rangeName &&
+        sheetViewModal.countArrangeNameList.includes(_rangeName)
+      ) {
+        resetArrangeCount(sheetViewModal.selectedCell.userId, _rangeName);
+      }
+      sheetViewModal.selectedCell = sheetViewModal.getNextCell();
     }
-  }
+  };
+
   return (
     <Contain>
       {props.dataSource.map((item, index) => (
-        <div className='menu-box' key={index}>
+        <div className="menu-box" key={index}>
           <BoxInner color={item.nameColor} onClick={() => onClick(item)}>
             {item.name}
           </BoxInner>
         </div>
       ))}
     </Contain>
-  )
+  );
 }
 
 function MealCon(props: { dataSource: any[] }) {
@@ -87,46 +125,54 @@ function MealCon(props: { dataSource: any[] }) {
       float: left;
       padding: 5px;
     }
-  `
+  `;
 
   const onClick = (item: any) => {
     /** 套餐同步 */
     if (sheetViewModal.selectedCell) {
-      let list = sheetViewModal.getSelectCellList(true)
+      let list = sheetViewModal.getSelectCellList(true);
       for (let i = 0; i < list.length; i++) {
-        let weekNum = moment(list[i].workDate).isoWeekday()
-        let mealObj = getMealData(weekNum, item)
-        list[i]!.rangeName = mealObj.name
-        list[i]!.nameColor = mealObj.nameColor
-        list[i]!.effectiveTime = mealObj.effectiveTime
-        list[i]!.effectiveTimeOld = mealObj.effectiveTime
-        list[i]!.shiftType = mealObj.shiftType
-        list[i]!.statusType = ''
+        let weekNum = moment(list[i].workDate).isoWeekday();
+        let mealObj = getMealData(weekNum, item);
+        list[i]!.rangeName = mealObj.name;
+        list[i]!.nameColor = mealObj.nameColor;
+        list[i]!.effectiveTime = mealObj.effectiveTime;
+        list[i]!.effectiveTimeOld = mealObj.effectiveTime;
+        list[i]!.shiftType = mealObj.shiftType;
+        list[i]!.statusType = "";
       }
     }
-  }
+  };
   /** 格式化 */
   const getMealData = (weekNum: number, mealObj: any) => {
-    let days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-    let keys = ['Name', 'NameColor', 'EffectiveTime', 'ShiftType']
-    let _keys = ['name', 'nameColor', 'effectiveTime', 'shiftType']
-    let obj: any = {}
+    let days = [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday"
+    ];
+    let keys = ["Name", "NameColor", "EffectiveTime", "ShiftType"];
+    let _keys = ["name", "nameColor", "effectiveTime", "shiftType"];
+    let obj: any = {};
 
     for (let i = 0; i < keys.length; i++) {
-      obj[_keys[i]] = mealObj[days[weekNum - 1] + keys[i]]
+      obj[_keys[i]] = mealObj[days[weekNum - 1] + keys[i]];
     }
-    return obj
-  }
+    return obj;
+  };
 
   return (
     <Contain>
       {props.dataSource.map((item, index) => (
-        <div className='menu-box' key={index}>
+        <div className="menu-box" key={index}>
           <BoxInner onClick={() => onClick(item)}>{item.name}</BoxInner>
         </div>
       ))}
     </Contain>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -142,4 +188,4 @@ const Wrapper = styled.div`
     text-align: center;
     height: 36px !important;
   }
-`
+`;

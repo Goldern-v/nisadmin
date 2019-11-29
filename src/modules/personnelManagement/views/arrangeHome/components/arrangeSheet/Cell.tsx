@@ -19,6 +19,7 @@ import {
 import { message, Popover } from "src/vendors/antd";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from "src/stores";
+import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
 
 export interface Props {
   contextMenu: ContextMenu;
@@ -142,54 +143,71 @@ export default observer(function Cell(props: Props) {
             },
         {
           icon: require("../../images/休假计数.png"),
-          disabled: sheetViewModal.selectedCell.shiftType != "休假",
+          disabled: !sheetViewModal.countArrangeNameList.includes(
+            sheetViewModal.selectedCell.rangeName
+          ),
           label: "休假计数",
           type: "text",
           onClick: () => {
+            if (!sheetViewModal.selectedCell.rangeName) return;
+            let [user, list] = sheetViewModal.getUser(
+              sheetViewModal.selectedCell.userId
+            );
             editVacationCountModal.show({
+              baseNum:
+                user.countArrangeBaseIndexObj[
+                  sheetViewModal.selectedCell!.rangeName
+                ],
               data: sheetViewModal.selectedCell,
               onOkCallBack(num: any) {
-                // debugger
-                let _list = sheetViewModal.getSelectCellList(true);
-                let _index = _list.indexOf(sheetViewModal.selectedCell);
-                let list = _list.filter((item: any, index: number) => {
-                  let _name = (
-                    sheetViewModal.selectedCell.rangeName || ""
-                  ).replace(/\d+/g, "");
-                  let name = item.rangeName.replace(/\d+/g, "");
-                  if (index >= _index && (_name == name || !name)) {
-                    return true;
-                  }
-                });
-                // debugger
-                if (index > -1) {
-                  for (let i = index; i < list.length; i++) {
-                    if (i == index) {
-                      list[i].rangeName =
-                        (sheetViewModal.selectedCell.rangeName || "").replace(
-                          /\d+/g,
-                          ""
-                        ) + (i + num).toString();
-                    }
-
-                    // if (!list[i]) continue;
-                    // if (list[i].rangeName) continue;
-
-                    list[i].rangeName =
-                      (sheetViewModal.selectedCell.rangeName || "").replace(
-                        /\d+/g,
-                        ""
-                      ) + (i + num).toString();
-
-                    list[i].nameColor = sheetViewModal.selectedCell.nameColor;
-                    list[i].effectiveTime =
-                      sheetViewModal.selectedCell.effectiveTime;
-                    list[i].effectiveTimeOld =
-                      sheetViewModal.selectedCell.effectiveTimeOld;
-                    list[i].shiftType = sheetViewModal.selectedCell.shiftType;
-                    list[i].settings = null;
-                  }
+                if (user && sheetViewModal.selectedCell.rangeName) {
+                  user.countArrangeBaseIndexObj[
+                    sheetViewModal.selectedCell!.rangeName
+                  ] = num - 1;
+                  resetArrangeCount(
+                    sheetViewModal.selectedCell.userId,
+                    sheetViewModal.selectedCell!.rangeName
+                  );
                 }
+                // resetArrangeCount;
+                // old
+                // let _list = sheetViewModal.getSelectCellList(true);
+                // let _index = _list.indexOf(sheetViewModal.selectedCell);
+                // let list = _list.filter((item: any, index: number) => {
+                //   let _name = (
+                //     sheetViewModal.selectedCell.rangeName || ""
+                //   ).replace(/\d+/g, "");
+                //   let name = item.rangeName.replace(/\d+/g, "");
+                //   if (index >= _index && (_name == name || !name)) {
+                //     return true;
+                //   }
+                // });
+                // // debugger
+                // if (index > -1) {
+                //   for (let i = index; i < list.length; i++) {
+                //     if (i == index) {
+                //       list[i].rangeName =
+                //         (sheetViewModal.selectedCell.rangeName || "").replace(
+                //           /\d+/g,
+                //           ""
+                //         ) + (i + num).toString();
+                //     }
+                //     // if (!list[i]) continue;
+                //     // if (list[i].rangeName) continue;
+                //     list[i].rangeName =
+                //       (sheetViewModal.selectedCell.rangeName || "").replace(
+                //         /\d+/g,
+                //         ""
+                //       ) + (i + num).toString();
+                //     list[i].nameColor = sheetViewModal.selectedCell.nameColor;
+                //     list[i].effectiveTime =
+                //       sheetViewModal.selectedCell.effectiveTime;
+                //     list[i].effectiveTimeOld =
+                //       sheetViewModal.selectedCell.effectiveTimeOld;
+                //     list[i].shiftType = sheetViewModal.selectedCell.shiftType;
+                //     list[i].settings = null;
+                //   }
+                // }
               }
             });
           }
@@ -411,7 +429,9 @@ function formatCell(cellObj: ArrangeItem) {
               cellObj.addSymbols[0]!.symbol) ||
               ""}
           </span>
-          {cellObj.rangeName}
+          {sheetViewModal.countArrangeNameList.includes(cellObj.rangeName)
+            ? (cellObj.rangeName || "") + (cellObj.rangeNameCode || "")
+            : cellObj.rangeName}
         </Con>
         {(cellObj.settings && cellObj.settings.length && (
           <React.Fragment>

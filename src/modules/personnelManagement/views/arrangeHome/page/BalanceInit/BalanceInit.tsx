@@ -98,6 +98,7 @@ export default observer(function FollowUpRecord() {
             <span
               onClick={() => {
                 editBalanceModal.show({
+                  status: selectedStatus,
                   oldData: record,
                   nurseList,
                   onOkCallBack() {
@@ -180,7 +181,7 @@ export default observer(function FollowUpRecord() {
         <PageTitle>结余设置</PageTitle>
         <Place />
 
-        <span className="label">类型:</span>
+        <span className="label">结余类型:</span>
         <Select
           value={selectedStatus}
           onChange={(value: any) => setSelectedStatus(value)}
@@ -214,6 +215,7 @@ export default observer(function FollowUpRecord() {
           onClick={() => {
             editBalanceModal.show({
               nurseList,
+              status: selectedStatus,
               onOkCallBack() {
                 getData();
               }

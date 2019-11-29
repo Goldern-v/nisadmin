@@ -26,6 +26,7 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => any;
   nurseList: any[];
   oldData?: any;
+  status?: any;
 }
 
 /** 设置规则 */
@@ -39,7 +40,7 @@ const rules: Rules = {
 export default function EditBalanceModal(props: Props) {
   const [title, setTitle] = useState("新建结余工时");
 
-  let { visible, onCancel, nurseList } = props;
+  let { visible, onCancel, nurseList, status } = props;
   let refForm = React.createRef<Form>();
 
   const onSave = async () => {
@@ -54,9 +55,9 @@ export default function EditBalanceModal(props: Props) {
       .startOf("week")
       .format("YYYY-MM-DD");
 
-    data.empName = nurseList.find(
-      (item: any) => item.empNo == data.empNo
-    ).empName;
+    data.empName = nurseList.find((item: any) => item.empNo == data.empNo)
+      ? nurseList.find((item: any) => item.empNo == data.empNo).name
+      : data.empNo;
     data.deptCode = authStore.selectedDeptCode;
     data.deptName = authStore.selectedDeptName;
     /** 保存接口 */
@@ -84,7 +85,8 @@ export default function EditBalanceModal(props: Props) {
           publicHourNow: props.oldData.publicHourNow,
           holidayHourNow: props.oldData.holidayHourNow,
           balanceHourNow: props.oldData.balanceHourNow,
-          remark: props.oldData.remark
+          remark: props.oldData.remark,
+          status: props.oldData.status
         });
       } else {
         setTitle("新建结余工时");
@@ -95,7 +97,8 @@ export default function EditBalanceModal(props: Props) {
           publicHourNow: "",
           holidayHourNow: "",
           balanceHourNow: "",
-          remark: ""
+          remark: "",
+          status: status
         });
       }
     }
@@ -109,6 +112,7 @@ export default function EditBalanceModal(props: Props) {
       onOk={onSave}
       okText="保存"
       forceRender
+      centered
     >
       <Form ref={refForm} rules={rules} labelWidth={80}>
         <Row>
@@ -142,6 +146,19 @@ export default function EditBalanceModal(props: Props) {
           <Col span={24}>
             <Form.Field label={`节休结余`} name="holidayHourNow">
               <InputNumber />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`节休结余`} name="holidayHourNow">
+              <InputNumber />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`结余类型`} name="status">
+              <Select>
+                <Select.Option value="2">初始结余</Select.Option>
+                <Select.Option value="1">排班结余</Select.Option>
+              </Select>
             </Form.Field>
           </Col>
 
