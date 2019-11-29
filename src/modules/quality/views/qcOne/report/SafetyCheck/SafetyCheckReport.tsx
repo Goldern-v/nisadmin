@@ -200,7 +200,7 @@ export default observer(function SafetyCheckReport() {
       year: record.year,
       month: record.month
     }, 'qsc')
-      .then(res => fileDownload(res)).finally(() => setLoading(false))
+      .then(res => { fileDownload(res); setLoading(false) }, () => setLoading(false))
   }
 
   const handlePublish = (record: any) => {

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Button, Input, message as Message, Modal } from 'antd'
+import { Button, Input, message as Message, Modal, message } from 'antd'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -83,17 +83,6 @@ export default observer(function QcCheckContentSetting() {
     })
   }
 
-  const handleIndexChange = (e: any, idx: any) => {
-    let val = e.target.value
-    let num = parseInt(val)
-    if (isNaN(num)) num = 0
-
-    let newList = [...qcContent]
-    newList[idx].indexNo = num
-
-    setQcContent(newList)
-  }
-
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -101,17 +90,6 @@ export default observer(function QcCheckContentSetting() {
       dataIndex: 'indexNo',
       width: 50,
       align: 'center',
-      render: (text: string, record: any, index: number) => {
-        if (editIdx == index) {
-          return <Input size='small'
-            value={record.indexNo}
-            onChange={(e) => handleIndexChange(e, index)}
-            onBlur={(e) => seIndexNo(index, record)}
-          />
-        } else {
-          return <span onClick={() => setEditIdx(index)}>{record.indexNo}</span>
-        }
-      }
     },
     {
       title: '质控内容',
@@ -179,6 +157,29 @@ export default observer(function QcCheckContentSetting() {
     handleCancel()
   }
 
+  const handleExChange = (dragIndex: number, hoverIndex: number) => {
+    let item1 = { ...qcContent[dragIndex] }
+    item1.oldItemCode = item1.itemCode
+    let item2 = { ...qcContent[hoverIndex] }
+
+    let indexNo1 = item1.indexNo
+    let indexNo2 = item2.indexNo
+
+    item1.indexNo = indexNo2
+    item2.indexNo = indexNo1
+
+    setTableLoading(true)
+
+    Promise.all([
+      qcCheckContentSettingService.saveOrUpdate(item1),
+      qcCheckContentSettingService.saveOrUpdate(item2),
+    ])
+      .then(res => {
+        getQcContent()
+        message.success('修改成功')
+      }, () => setTableLoading(false))
+  }
+
   // const handleDeptChange = (deptCode: any) => {
   //   setDeptCode(deptCode)
   //   getQcContent(deptCode)
@@ -204,12 +205,21 @@ export default observer(function QcCheckContentSetting() {
       </div>
       <div className='main-contain'>
         <BaseTable
+          type={['diagRow']}
+          moveRow={(dragIndex: number, hoverIndex: number) => {
+            try {
+              handleExChange(dragIndex, hoverIndex)
+            } catch (e) {
+              // console.log('拖拽错误')
+            }
+          }}
           columns={columns}
           loading={tableLoading}
           surplusHeight={215}
           dataSource={qcContent} />
       </div>
       <QcCheckContentSettingEditModal
+        qcContentLength={qcContent.length}
         visible={editModalVisible}
         params={editParams}
         onCancel={handleCancel}

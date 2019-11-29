@@ -12,22 +12,23 @@ export interface Props {
   params: any,
   onCancel: any,
   onOk: any,
-  deptCode: any
+  deptCode: any,
+  qcContentLength: number
 }
 
 export default function QcCheckContentSettingEditModal(props: Props) {
-  const { visible, params, onCancel, onOk, deptCode } = props;
+  const { visible, params, onCancel, onOk, deptCode, qcContentLength } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
 
   const rules: Rules = {
     itemName: (val) => !!val || '质控内容不能为空',
-    indexNo: (val) => {
-      let num = parseInt(val, 10)
-      if (val.trim() === '') return '排序号不能为空'
-      if (isNaN(num) || num.toString().length !== val.length) return '排序号必须为整数'
-      return true
-    },
+    // indexNo: (val) => {
+    //   let num = parseInt(val, 10)
+    //   if (val.trim() === '') return '排序号不能为空'
+    //   if (isNaN(num) || num.toString().length !== val.length) return '排序号必须为整数'
+    //   return true
+    // },
   }
 
   useEffect(() => {
@@ -63,6 +64,8 @@ export default function QcCheckContentSettingEditModal(props: Props) {
             oldItemCode: params.itemCode,
             wardCode: deptCode
           }
+
+          if (!params.itemCode) newParams.indexNo = qcContentLength + 1
 
           setEditLoading(true);
           qcCheckContentSettingService.saveOrUpdate(newParams).then(res => {
@@ -104,7 +107,7 @@ export default function QcCheckContentSettingEditModal(props: Props) {
             </Form.Field>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ display: 'none' }}>
           <Col span={4} className="label">排序号:</Col>
           <Col span={20}>
             <Form.Field name="indexNo">

@@ -205,7 +205,7 @@ export default observer(function NursingWorkPlainList() {
       year: record.year,
       month: record.month
     }, 'sr')
-      .then(res => fileDownload(res)).finally(() => setLoading(false))
+      .then(res => { fileDownload(res); setLoading(false) }, () => setLoading(false))
   }
 
   const handlePublish = (record: any) => {

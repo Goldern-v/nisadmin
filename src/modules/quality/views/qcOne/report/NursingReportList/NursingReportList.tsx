@@ -264,7 +264,10 @@ export default observer(function NursingReportList() {
       year: record.year,
       month: record.month
     }, 'wn')
-      .then(res => fileDownload(res)).finally(() => setTableLoading(false))
+      .then(res => {
+        fileDownload(res)
+        setTableLoading(false)
+      }, () => setTableLoading(false))
   }
 
   const handlePublish = (record: any) => {

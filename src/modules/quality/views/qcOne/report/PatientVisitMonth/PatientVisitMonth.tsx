@@ -407,7 +407,7 @@ export default observer(function PatientVisitQuarter() {
       year: record.year,
       month: record.month
     }, 'pvm')
-      .then(res => fileDownload(res)).finally(() => setLoading(false))
+      .then(res => { fileDownload(res); setLoading(false) }, () => setLoading(false))
   }
 
   const handlePublish = (record: any) => {

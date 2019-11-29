@@ -198,7 +198,7 @@ export default observer(function PatientVisitQuarter() {
       wardCode: record.wardCode,
       year: record.year,
       month: record.month
-    }, 'pvq').then(res => fileDownload(res)).finally(() => setLoading(false))
+    }, 'pvq').then(res => { fileDownload(res); setLoading(false) }, () => setLoading(false))
   }
 
   const handlePublish = (record: any) => {
