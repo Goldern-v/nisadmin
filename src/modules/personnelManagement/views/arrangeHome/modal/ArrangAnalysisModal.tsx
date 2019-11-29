@@ -63,10 +63,11 @@ export default function ArrangAnalysisModal(props: Props) {
           align: "center",
           render(text: string, record: any, index: number) {
             let total: any = 0;
-            for (let [key, value] of Object.entries(record)) {
-              console.log(key, value, "aaa");
+            let keys = Object.keys(record);
+            for (let key of keys) {
+              console.log(key, record[key], "aaa");
               if (!(key == "name" || key === "key")) {
-                total += value;
+                total += record[key];
               }
             }
             return total;
