@@ -301,7 +301,10 @@ export default observer(function ArrangeSheet(props: Props) {
             }
 
             let list = leftList.map((item: any, index: number) => {
-              item.settingDtos = rightList[index];
+              item.settingDtos = rightList[index].map((r: any) => ({
+                ...r,
+                userId: item.id
+              }));
               return item;
             });
             sheetViewModal.sheetTableData = list;
