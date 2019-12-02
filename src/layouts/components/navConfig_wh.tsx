@@ -66,15 +66,6 @@ export const navConfig: navConfigItem[] = [
     name: "我的档案",
     path: "/selfNurseFile"
   },
-
-  {
-    name: "通知公告",
-    path: "/notice"
-  },
-  {
-    name: "护理制度",
-    path: "/nursingRulesNew"
-  },
   {
     name: "病区管理",
     path: "/wardManagement"
