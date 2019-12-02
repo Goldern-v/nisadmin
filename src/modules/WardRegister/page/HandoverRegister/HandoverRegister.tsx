@@ -28,7 +28,7 @@ import { useLayoutEffect } from "src/types/react";
 import moment from "moment";
 import { throttle } from "src/utils/throttle/throttle";
 export interface Props {}
-const registerCode = "qc_register_handover";
+const registerCode = "QCRG_01";
 
 const throttler = throttle();
 
@@ -119,6 +119,7 @@ export default observer(function HandoverRegister() {
           render(text: string, record: any, index: number) {
             return (
               <AutoComplete
+                className={text != item.checkSize ? "checkSize-warning" : ""}
                 disabled={!!record.signerName}
                 dataSource={(item.options || "").split(";")}
                 defaultValue={text}
@@ -215,7 +216,12 @@ export default observer(function HandoverRegister() {
                   .confirm("交班签名确认", "你确定交班签名吗？")
                   .then(res => {
                     wardRegisterService
-                      .saveAndSignAll(registerCode, selectedBlockId, [record])
+                      .saveAndSignAll(
+                        registerCode,
+                        selectedBlockId,
+                        [record],
+                        true
+                      )
                       .then(res => {
                         message.success("交班签名成功");
                         Object.assign(record, res.data.itemDataList[0]);
@@ -351,7 +357,7 @@ export default observer(function HandoverRegister() {
 
   const onSave = () => {
     wardRegisterService
-      .saveAndSignAll(registerCode, selectedBlockId, dataSource)
+      .saveAndSignAll(registerCode, selectedBlockId, dataSource, false)
       .then(res => {
         message.success("保存成功");
         getPage();
@@ -600,6 +606,11 @@ const TableCon = styled.div`
   }
   .sign-name {
     cursor: pointer;
+  }
+  .checkSize-warning {
+    input {
+      color: red;
+    }
   }
 `;
 

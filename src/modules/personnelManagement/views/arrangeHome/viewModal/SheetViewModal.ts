@@ -244,22 +244,24 @@ class SheetViewModal {
   }
   /** 处理后台过来的表格数据，增加一些计算结果 公休节休计数等 */
   handleSheetTableData(sheetTableData: any, countObj: any = {}) {
-    for (let i = 0; i < sheetTableData.length; i++) {
+    /** for 优化速度 */
+    let _sheetTableData = cloneJson(sheetTableData);
+    for (let i = 0; i < _sheetTableData.length; i++) {
       /** 当前结余，公休，节修时间, 用于推导实际时间 */
       let current_balanceHour = 0;
       let current_holidayHour = 0;
       let current_publicHour = 0;
-      for (let j = 0; j < sheetTableData[i].settingDtos.length; j++) {
+      for (let j = 0; j < _sheetTableData[i].settingDtos.length; j++) {
         current_balanceHour +=
-          Number(sheetTableData[i].settingDtos[j].effectiveTime) || 0;
+          Number(_sheetTableData[i].settingDtos[j].effectiveTime) || 0;
         current_holidayHour +=
-          sheetTableData[i].settingDtos[j].rangeName == "节休" ? 1 : 0;
+          _sheetTableData[i].settingDtos[j].rangeName == "节休" ? 1 : 0;
         current_publicHour +=
-          sheetTableData[i].settingDtos[j].rangeName == "公休" ? 1 : 0;
+          _sheetTableData[i].settingDtos[j].rangeName == "公休" ? 1 : 0;
       }
-      sheetTableData[i].current_balanceHour = current_balanceHour;
-      sheetTableData[i].current_holidayHour = current_holidayHour;
-      sheetTableData[i].current_publicHour = current_publicHour;
+      _sheetTableData[i].current_balanceHour = current_balanceHour;
+      _sheetTableData[i].current_holidayHour = current_holidayHour;
+      _sheetTableData[i].current_publicHour = current_publicHour;
 
       /** 计数班次的基础次数 */
       let countArrangeBaseIndexObj: any = {};
@@ -268,8 +270,8 @@ class SheetViewModal {
       }
 
       for (let key of this.countArrangeNameList) {
-        if (countObj[sheetTableData[i].empName]) {
-          let countItem: any = countObj[sheetTableData[i].empName].find(
+        if (countObj[_sheetTableData[i].empName]) {
+          let countItem: any = countObj[_sheetTableData[i].empName].find(
             (o: any) => o.rangeName == key
           );
           if (countItem) {
@@ -279,10 +281,30 @@ class SheetViewModal {
         }
       }
 
-      sheetTableData[i].countArrangeBaseIndexObj = countArrangeBaseIndexObj;
+      _sheetTableData[i].countArrangeBaseIndexObj = countArrangeBaseIndexObj;
     }
-    console.log(sheetTableData, "sheetTableData");
-    return sheetTableData;
+
+    /** 假期计数初始化 */
+
+    for (let i = 0; i < _sheetTableData.length; i++) {
+      let list = _sheetTableData[i].settingDtos;
+      for (let j = 0; j < this.countArrangeNameList.length; j++) {
+        let baseCount =
+          _sheetTableData[i].countArrangeBaseIndexObj[
+            this.countArrangeNameList[j]
+          ];
+        list
+          .filter((item: ArrangeItem) => {
+            return item.rangeName == this.countArrangeNameList[j];
+          })
+          .forEach((item: ArrangeItem, index: number) => {
+            item.rangeNameCode = baseCount + index + 1;
+          });
+      }
+    }
+
+    // console.log(sheetTableData, "sheetTableData");
+    return _sheetTableData;
   }
 
   async init() {
