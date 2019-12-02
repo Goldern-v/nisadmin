@@ -15,20 +15,35 @@ export const navConfig: navConfigItem[] = [
     name: "首页",
     path: "/home"
   },
-  // {
-  //   name: '病区日志',
-  //   path: '/wardLog',
-  //   hidden: !appStore.isDev
-  // },
   {
-    name: "我的档案",
-    path: "/selfNurseFile"
+    name: "排班管理",
+    path: "/personnelManagement"
+  },
+  {
+    name: "病区登记本",
+    path: "/wardRegister",
+    hidden: !appStore.isDev
   },
   {
     name: "一级质控",
-    path: "/qcOne/nursingWorkPlainList",
-    // hidden: !appStore.isDev
+    path: "/qcOne/nursingWorkPlainList"
   },
+  // {
+  //   name: "学习培训",
+  //   path: "/wardRegister",
+  //   hidden: !appStore.isDev
+  // },
+  // {
+  //   name: "不良事件",
+  //   path: "/wardRegister",
+  //   hidden: !appStore.isDev
+  // },
+
+  // {
+  //   name: "一级质控",
+  //   path: "/qcOne/nursingWorkPlainList"
+  //   // hidden: !appStore.isDev
+  // },
   // {
   //   name: '质量管理',
   //   children: [
@@ -49,12 +64,11 @@ export const navConfig: navConfigItem[] = [
     path: "/nursingRulesNew"
   },
   {
-    name: "病区管理",
-    path: "/wardManagement"
+    name: "我的档案",
+    path: "/selfNurseFile"
   },
   {
-    name: "排班管理",
-    path: "/personnelManagement"
-    // hidden: !appStore.isDev
+    name: "病区管理",
+    path: "/wardManagement"
   }
 ];

@@ -15,27 +15,9 @@ export const navConfig: navConfigItem[] = [
     name: "首页",
     path: "/home"
   },
-  {
-    name: "排班管理",
-    path: "/personnelManagement"
-  },
-  {
-    name: "病区登记本",
-    path: "/wardRegister",
-    hidden: !appStore.isDev
-  },
-  {
-    name: "一级质控",
-    path: "/qcOne/nursingWorkPlainList"
-  },
   // {
-  //   name: "学习培训",
-  //   path: "/wardRegister",
-  //   hidden: !appStore.isDev
-  // },
-  // {
-  //   name: "不良事件",
-  //   path: "/wardRegister",
+  //   name: '病区日志',
+  //   path: '/wardLog',
   //   hidden: !appStore.isDev
   // },
   {
@@ -44,7 +26,7 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: "一级质控",
-    path: "/qcOne/nursingWorkPlainList"
+    path: "/qcOne/nursingWorkPlainList",
     // hidden: !appStore.isDev
   },
   // {
@@ -69,5 +51,10 @@ export const navConfig: navConfigItem[] = [
   {
     name: "病区管理",
     path: "/wardManagement"
+  },
+  {
+    name: "排班管理",
+    path: "/personnelManagement"
+    // hidden: !appStore.isDev
   }
 ];
