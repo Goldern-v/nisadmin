@@ -12,6 +12,8 @@ import { message } from "src/vendors/antd";
 import { cleanCell } from "../components/arrangeSheet/cellClickEvent";
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
+  /** 是否已经初始化字典数据 */
+  @observable public isInitEd: boolean = false;
   @observable public sheetTableData: any = [];
   /** 期望排班 */
   @observable public expectList: any = [];
@@ -160,6 +162,7 @@ class SheetViewModal {
   }
 
   getSheetTableData() {
+    if (!this.isInitEd) return this.init();
     this.tableLoading = true;
     return arrangeService.findCreateOrUpdate().then(async res => {
       this.tableLoading = false;
@@ -316,6 +319,7 @@ class SheetViewModal {
         this.weekArrangeNameList = res.data.map((item: any) => item.name);
       })
     ]).then(res => {
+      this.isInitEd = true;
       this.getExpectList();
       this.getSheetTableData();
       this.getArrangeMenu();
