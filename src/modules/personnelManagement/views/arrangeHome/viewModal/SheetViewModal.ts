@@ -197,9 +197,17 @@ class SheetViewModal {
   /** 复制排班人员数据 */
   handleCopy() {
     this.tableLoading = true;
-    return arrangeService.copyPrevSettingRange().then(res => {
+    return arrangeService.copyPrevSettingRange().then(async res => {
       this.tableLoading = false;
-      this.sheetTableData = this.handleSheetTableData(res.data.setting);
+      this.dateList = this.getDateList();
+
+      let { data: countObj } = await arrangeService.listRangeNameCode(
+        res.data.setting
+      );
+      this.sheetTableData = this.handleSheetTableData(
+        res.data.setting,
+        countObj
+      );
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
     });

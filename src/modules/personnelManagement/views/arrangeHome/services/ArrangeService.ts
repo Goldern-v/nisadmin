@@ -193,7 +193,8 @@ export default class ArrangeService extends BaseApiService {
   // 武汉获取休假类型最近日期得天数编号
   public listRangeNameCode(list: any) {
     let obj = {
-      endTime: selectViewModal.params.startTime,
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
       empNames: list.map((item: any) => item.empName),
       deptCode: selectViewModal.params.deptCode
     };
