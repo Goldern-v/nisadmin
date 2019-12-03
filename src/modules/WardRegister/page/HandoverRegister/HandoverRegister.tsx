@@ -119,7 +119,11 @@ export default observer(function HandoverRegister() {
           render(text: string, record: any, index: number) {
             return (
               <AutoComplete
-                className={text != item.checkSize ? "checkSize-warning" : ""}
+                className={
+                  text != item.checkSize && text != "√"
+                    ? "checkSize-warning"
+                    : ""
+                }
                 disabled={!!record.signerName}
                 dataSource={(item.options || "").split(";")}
                 defaultValue={text}
@@ -251,7 +255,7 @@ export default observer(function HandoverRegister() {
                 .confirm("接班签名取消", "你确定取消接班签名吗？")
                 .then(res => {
                   wardRegisterService
-                    .auditAll(registerCode, [{ id: record.id }])
+                    .cancelAudit(registerCode, [{ id: record.id }])
                     .then(res => {
                       message.success("取消接班签名成功");
                       onSave();
@@ -269,7 +273,7 @@ export default observer(function HandoverRegister() {
                   .confirm("接班签名确认", "你确定接班签名吗？")
                   .then(res => {
                     wardRegisterService
-                      .cancelAudit(registerCode, [{ id: record.id }])
+                      .auditAll(registerCode, [{ id: record.id }])
                       .then(res => {
                         message.success("接班签名成功");
                         onSave();
