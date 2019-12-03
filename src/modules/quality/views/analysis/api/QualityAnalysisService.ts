@@ -14,4 +14,8 @@ export default class QualityAnalysisService extends BaseApiService {
   public createReport(params: any) {
     return this.post('/qcAnalysis/createReport', params)
   }
+
+  public push(params: any) {
+    return this.post('/qcItem/push/deptNotAuditList', params)
+  }
 }

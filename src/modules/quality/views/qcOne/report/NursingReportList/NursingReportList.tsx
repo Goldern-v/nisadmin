@@ -39,7 +39,7 @@ export default observer(function NursingReportList() {
 
   const defaultQuery = {
     year: Moment() as null | Moment.Moment,
-    month: Number(Moment().format('MM')),
+    month: '',
     pageIndex: 1,
     pageSize: 20,
     status: '',

@@ -200,7 +200,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   return <React.Fragment>
     <Modal
-      width={720}
+      width={1000}
       confirmLoading={loading}
       visible={visible}
       centered
@@ -209,14 +209,14 @@ export default observer(function WorkPlainEditModal(props: Props) {
       title={title || "添加计划"}>
       <Wrapper>
         <Row>
-          <Col span={4}>科室:</Col>
-          <Col span={18}>
+          <Col span={2}>科室:</Col>
+          <Col span={20}>
             <Input disabled value={wardName} />
           </Col>
         </Row>
         <Row>
-          <Col span={4}>类型:</Col>
-          <Col span={18}>
+          <Col span={2}>类型:</Col>
+          <Col span={20}>
             <Select
               value={editQuery.type}
               onChange={(type: string) => {
@@ -237,8 +237,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={4}>年份:</Col>
-          <Col span={18}>
+          <Col span={2}>年份:</Col>
+          <Col span={20}>
             <YearPicker
               allowClear={false}
               value={editQuery.year ? moment(`${editQuery.year}-01-01`) : null}
@@ -248,8 +248,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={4}>月份:</Col>
-          <Col span={18}>
+          <Col span={2}>月份:</Col>
+          <Col span={20}>
             <Select
               value={editQuery.month}
               disabled={editQuery.type == '3'}
@@ -260,8 +260,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={4}>周数:</Col>
-          <Col span={18}>
+          <Col span={2}>周数:</Col>
+          <Col span={20}>
             <Select
               disabled={editQuery.type != '2'}
               value={editQuery.indexInType}
@@ -277,11 +277,11 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={4}>内容:</Col>
-          <Col span={18}>
+          <Col span={2}>内容:</Col>
+          <Col span={20}>
             <Input.TextArea
               value={editQuery.content}
-              onChange={(e: any) => setEditQuery({ ...editQuery, content: e.target.value })} rows={5} />
+              onChange={(e: any) => setEditQuery({ ...editQuery, content: e.target.value })} rows={10} />
           </Col>
           <Col span={1}>
             <Button

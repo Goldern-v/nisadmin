@@ -201,7 +201,9 @@ export default observer(function BadEventRecordEdit() {
                         })
                       }}
                       allowClear={false}
-                      showTime />
+                      showTime={{
+                        format: 'HH:mm'
+                      }} />
                   </td>
                   <td className="label">发生科室</td>
                   <td>

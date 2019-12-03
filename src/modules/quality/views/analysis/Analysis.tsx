@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { DatePicker, Select, Button, message as Message } from 'antd'
+import { DatePicker, Select, Button, message, Icon, Modal } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore } from 'src/stores'
@@ -207,7 +207,7 @@ export default observer(function Analysis() {
     let successCallback = () => {
       setCreateLoading('done')
       setCreateClear(true)
-      Message.success('创建成功', 2, () => {
+      message.success('创建成功', 2, () => {
         setCreateProgressVisible(false)
         setCreateClear(true)
         setCreateLoading('')
@@ -278,6 +278,50 @@ export default observer(function Analysis() {
       .catch((res) => {
         setTableLoading(false)
       })
+  }
+
+  const handleAlert = () => {
+    if (!query.groupRoleCode) {
+      message.warning('未选择质控组')
+      return
+    }
+    let month = query.indexInType
+    let year = query.year.format('YYYY')
+    if (month.length == 1) month = '0' + month
+    let dateStr = `${year}-${month}-01`
+    let beginDate = moment(dateStr)
+    let endDate = moment(dateStr).add(1, 'M').subtract(1, 'd')
+
+    const content = <ModalCon>
+      <div>
+        <span>开始时间: </span>
+        <DatePicker
+          allowClear={false}
+          value={beginDate}
+          onChange={(_moment) => beginDate = _moment} />
+      </div>
+      <div>
+        <span>结束时间: </span>
+        <DatePicker value={endDate} allowClear={false} onChange={(_moment) => endDate = _moment} />
+      </div>
+    </ ModalCon>
+
+    Modal.confirm({
+      title: '推送科室未审核记录',
+      content: content,
+      onOk: () => {
+        setTableLoading(true)
+        api.push({
+          beginDate: beginDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD'),
+          groupRoleCode: query.groupRoleCode
+        })
+          .then(res => {
+            setTableLoading(false)
+            message.success('推送成功')
+          }, () => setTableLoading(false))
+      }
+    })
   }
 
   const MonthList = () => {
@@ -373,6 +417,11 @@ export default observer(function Analysis() {
             <Button onClick={handleCreate} type='primary'>
               创建
             </Button>{' '}
+          </div>
+          <div className="item">
+            <Button onClick={handleAlert} title="推送科室未审核记录" type="primary">
+              <Icon type="bell" style={{ fontSize: '16px' }} />
+            </Button>
           </div>
         </div>
       </div>
@@ -477,5 +526,10 @@ const Wrapper = styled.div`
         white-space: nowrap;
       }
     }
+  }
+`
+const ModalCon = styled.div`
+  &>div{
+    margin-top: 15px;
   }
 `

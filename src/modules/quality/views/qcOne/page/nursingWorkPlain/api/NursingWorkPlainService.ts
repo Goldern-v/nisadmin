@@ -43,7 +43,7 @@ export default class NursingWorkPlainService extends BaseApiService {
   }
 
   /**导出 */
-  public exportData(query: { wardCode: string, year: string, month: string }) {
+  public exportData(query: any) {
     return this.post('/qcFlReport/export/workSchedule', query, { responseType: 'blob' })
   }
 }

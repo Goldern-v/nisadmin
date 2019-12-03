@@ -8,10 +8,10 @@ import { nursingRulesApiService } from './../api/nursingRulesNewService'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs'
 
-import ReversionPannel from './../components/ReversionPannel'
+import RevisionPannel from './../components/RevisionPannel'
 import ViewContent from './../components/previewPage/ViewContent'
 import AuditInfo from './../components/previewPage/AuditInfo'
-import ReversionBtn from './../components/previewPage/ReversionBtn'
+import RevisionBtn from './../components/previewPage/RevisionBtn'
 
 // import { ReactComponent as SYZ } from './../assets/SYZ.svg'
 import { ReactComponent as ML } from './../assets/ML.svg'
@@ -40,8 +40,8 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
   const [auditInfo, setAuditInfo] = useState({} as any)
 
-  const [reversionList, setReversionList] = useState([] as any[])
-  const [reversionVisible, setReversionVisible] = useState(false as boolean)
+  const [revisionList, setRevisionList] = useState([] as any[])
+  const [revisionVisible, setRevisionVisible] = useState(false as boolean)
 
   const bookName = search.bookName || ''
   const chapterName = chapter.name || ''
@@ -67,7 +67,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
         if (newChapter) {
           setChapter(newChapter)
-          getReversionList(newChapter)
+          getRevisionList(newChapter)
 
           if (search.pageUrl) {
             // console.log(newChapter)
@@ -112,12 +112,12 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     }
   }
 
-  const getReversionList = (chapter: any, callback?: Function) => {
+  const getRevisionList = (chapter: any, callback?: Function) => {
     if (chapter.treePathCode)
       nursingRulesApiService
         .getChapterRevisions(chapter.treePathCode, search.bookId)
         .then(res => {
-          if (res.data) setReversionList(res.data)
+          if (res.data) setRevisionList(res.data)
           callback && callback(res.data)
         }, () => callback && callback())
     else
@@ -151,7 +151,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
     if (newChapter) {
       setChapter(newChapter)
-      getReversionList(newChapter)
+      getRevisionList(newChapter)
     }
 
     if (pageUrl) setPageUrl(pageUrl)
@@ -345,11 +345,11 @@ export default observer(function NursingRulesPagePreview(props: Props) {
         <Icon type="loading" style={{ fontSize: '30px' }} /> :
         <Icon type="file-search" style={{ fontSize: '30px' }} />,
       onClick: () => {
-        // setReversionVisible(true)
+        // setRevisionVisible(true)
         setLoading(true)
-        getReversionList(chapter, (val: any) => {
+        getRevisionList(chapter, (val: any) => {
           setLoading(false)
-          if (val) setReversionVisible(true)
+          if (val) setRevisionVisible(true)
         })
 
       }
@@ -380,14 +380,14 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     setAuditCfg({ ...auditCfg, visible: false })
   }
 
-  const reversionInfo = () => {
-    let target = reversionList.find((item) => item.urls && item.urls[0] == appStore.queryObj.pageUrl)
+  const revisionInfo = () => {
+    let target = revisionList.find((item) => item.urls && item.urls[0] == appStore.queryObj.pageUrl)
     if (target) return `(${target.upLoadTime} ${target.upLoaderEmpName})`
     return ''
   }
 
   const chapterTitle = () => {
-    return chapterName ? chapterName + reversionInfo() : '章节名称'
+    return chapterName ? chapterName + revisionInfo() : '章节名称'
   }
 
   return (
@@ -408,7 +408,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
             style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
             审核
           </Button>
-          <ReversionBtn
+          <RevisionBtn
             loading={loading}
             chapter={chapter}
             onLoading={(newLoading) => setLoading(newLoading)} />
@@ -458,17 +458,17 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           </div>
         </div>
       </div>
-      <ReversionPannel
-        visible={reversionVisible}
+      <RevisionPannel
+        visible={revisionVisible}
         pageUrl={(chapter.urls && chapter.urls[0]) || ''}
-        reversionList={reversionList}
+        revisionList={revisionList}
         handleSelect={(revesionItem: any) => {
           if (revesionItem.urls && revesionItem.urls[0])
             setPageUrl(revesionItem.urls[0] || '')
 
-          setReversionVisible(false)
+          setRevisionVisible(false)
         }}
-        onClose={() => setReversionVisible(false)} />
+        onClose={() => setRevisionVisible(false)} />
       <GroupAuditModal
         visible={auditCfg.visible}
         defaultParams={auditCfg.params}

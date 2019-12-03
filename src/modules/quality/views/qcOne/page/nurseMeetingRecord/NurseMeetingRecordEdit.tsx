@@ -242,7 +242,9 @@ export default observer(function NurseMeetingRecordEdit() {
                       }}
                       format="YYYY-MM-DD HH:mm"
                       allowClear={false}
-                      showTime />
+                      showTime={{
+                        format: 'HH:mm'
+                      }} />
                   </td>
                   <td className="label">会议种类</td>
                   <td>

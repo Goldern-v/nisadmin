@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Select, Modal } from 'antd'
+import { Button, Select, Modal, Checkbox } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -219,38 +219,89 @@ export default observer(function NursingWorkPlainList() {
 
   const handleExport = () => {
     let year = moment()
-    let month = query.month
+    let month = query.month || moment().format('M')
+    let isYearPlant = false
+    let selectRef = React.createRef<any>()
 
-    const exportContent = <ExportCon>
-      <div>
-        <span>年份: </span>
-        <span>
-          <YearPicker
-            allowClear={false}
-            value={year}
-            onChange={(_moment: any) => year = _moment} />
-        </span>
-      </div>
-      <div>
-        <span>月份: </span>
-        <Select
-          defaultValue={month}
-          style={{ width: '70px' }}
-          onChange={(_month: any) => month = _month}>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
-        </Select>
-      </div>
-    </ExportCon>
+    const ExportContent = (props: any) => {
+      let {
+        $isYearPlant,
+        $year,
+        $month,
+        isYearPlantChange,
+        yearChange,
+        monthChange,
+      } = props
+      const [year, setYear] = useState($year)
+      const [month, setMonth] = useState($month)
+      const [isYearPlant, setIsYearPlant] = useState($isYearPlant)
+
+      return <ExportCon>
+        <div>
+          <span>类型: </span>
+          <span>
+            <Checkbox
+              checked={isYearPlant}
+              onChange={(e) => {
+                setIsYearPlant(e.target.checked)
+                isYearPlantChange && isYearPlantChange(e.target.checked)
+                let newMonth = ''
+                if (!e.target.checked) {
+                  newMonth = query.month || moment().format('M')
+                }
+                setMonth(newMonth)
+                monthChange && monthChange(newMonth)
+              }}>
+              年计划
+            </Checkbox>
+          </span>
+        </div>
+        <div>
+          <span>年份: </span>
+          <span>
+            <YearPicker
+              allowClear={false}
+              value={year}
+              onChange={(_moment: any) => {
+                setYear(_moment)
+                yearChange && yearChange(_moment)
+              }} />
+          </span>
+        </div>
+        <div>
+          <span>月份: </span>
+          <Select
+            ref={selectRef}
+            disabled={isYearPlant}
+            value={month}
+            style={{ width: '90px' }}
+            onChange={(_month: any) => {
+              setMonth(_month)
+              monthChange && monthChange(_month)
+            }}>
+            {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+          </Select>
+        </div>
+      </ExportCon>
+    }
 
     Modal.confirm({
       title: '导出年月选择',
-      content: exportContent,
+      content: <ExportContent {...{
+        $year: year,
+        $month: month,
+        $isYearPlant: isYearPlant,
+        yearChange: (_year: any) => year = _year,
+        monthChange: (_month: any) => month = _month,
+        isYearPlantChange: (_isYearPlant: any) => isYearPlant = _isYearPlant,
+      }} />,
       onOk: () => {
         setLoading(true)
         nursingWorkPlainService.exportData({
           wardCode: query.wardCode,
           year: year.format('YYYY'),
-          month
+          month: isYearPlant ? '' : month,
+          type: isYearPlant ? '3' : ''
         })
           .then((res: any) => {
             setLoading(false)

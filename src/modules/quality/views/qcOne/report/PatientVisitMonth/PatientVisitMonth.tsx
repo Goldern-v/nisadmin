@@ -504,6 +504,14 @@ export default observer(function PatientVisitQuarter() {
     })
   }
 
+  const handleViewTypeChange = (type: string) => {
+    setViewType(type)
+    if (type == '1')
+      setQuery({ ...query, month: '' })
+    else
+      setQuery({ ...query, month: moment().format('M') })
+  }
+
   useEffect(() => {
     qcOneService.bigDeptListSelf().then(res => {
       if (res.data) setBigDeptList(res.data)
@@ -587,7 +595,7 @@ export default observer(function PatientVisitQuarter() {
         <Select
           style={{ width: '120px' }}
           value={viewType}
-          onChange={(type: string) => setViewType(type)}>
+          onChange={handleViewTypeChange}>
           <Option value="1">病区上报</Option>
           <Option value="2">护理部抽查</Option>
         </Select>
