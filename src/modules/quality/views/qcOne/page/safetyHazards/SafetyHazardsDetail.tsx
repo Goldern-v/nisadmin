@@ -20,7 +20,22 @@ export interface Props { }
 
 export default observer(function SafetyHazardsDetail() {
   const [pageLoading, setPageLoading] = useState(false)
-  const [oldData, setOldData] = useState(null)
+  const [oldData, setOldData] = useState(null as any)
+  const editable = (() => {
+    if (!oldData) {
+      return false
+    } else {
+      if (authStore.isRoleManage) return true
+
+      let creatorNo = oldData && oldData.creatorNo.toLowerCase()
+      let empNo = authStore.user && authStore.user.empNo.toLowerCase()
+      if (!empNo) return false
+      if (creatorNo == empNo) return true
+
+      return false
+    }
+  })()
+
   const [wardList, setWardList]: any = useState([
     {
       code: '总务处',
@@ -127,15 +142,14 @@ export default observer(function SafetyHazardsDetail() {
           <PageHeader>
             <PageTitle>安全隐患排查表设置</PageTitle>
             <Place />
-            <Button type='primary' onClick={onSave}>
-              保存
-            </Button>
-            {appStore.queryObj.id && (
+            {editable && <React.Fragment>
+              <Button type='primary' onClick={onSave}>
+                保存
+              </Button>
               <Button type='danger' onClick={onDel}>
                 删除
               </Button>
-            )}
-
+            </React.Fragment>}
             <Button onClick={() => appStore.history.goBack()}>返回</Button>
           </PageHeader>
           <Line />

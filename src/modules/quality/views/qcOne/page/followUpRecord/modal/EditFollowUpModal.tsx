@@ -267,7 +267,7 @@ export default function EditFollowUpModal(props: Props) {
       forceRender
       centered
       footer={
-        <React.Fragment>
+        canEdit && <React.Fragment>
           <Button onClick={onCancel}>取消</Button>
           {data && canEdit && (
             <Button
@@ -320,11 +320,6 @@ export default function EditFollowUpModal(props: Props) {
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`疾病诊断`} name="diagnosis">
-              <Input placeholder="请输入诊断" disabled={!canEdit} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
             <Form.Field label={`家庭住址`} name="address">
               <Input placeholder="请输入地址" disabled={!canEdit} />
             </Form.Field>
@@ -335,7 +330,7 @@ export default function EditFollowUpModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`住院时间`} name="admissionDate">
+            <Form.Field label={`入院时间`} name="admissionDate">
               <DatePicker disabled={!canEdit} />
             </Form.Field>
           </Col>
@@ -344,8 +339,14 @@ export default function EditFollowUpModal(props: Props) {
               <DatePicker disabled={!canEdit} />
             </Form.Field>
           </Col>
+
           <Col span={24}>
-            <Form.Field label={`随访内容`} name="accessContent">
+            <Form.Field label={`疾病诊断`} name="diagnosis">
+              <Input placeholder="请输入诊断" disabled={!canEdit} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`家访内容`} name="accessContent">
               <Input placeholder="请输入随访内容" disabled={!canEdit} />
             </Form.Field>
           </Col>
@@ -382,7 +383,7 @@ export default function EditFollowUpModal(props: Props) {
                 />
               }
             >
-              <Input.TextArea autosize={true} style={{ resize: "none" }} />
+              <Input.TextArea autosize={true} style={{ resize: "none" }} disabled={!canEdit} />
             </Form.Field>
           </Col>
         </Row>
@@ -412,13 +413,13 @@ export default function EditFollowUpModal(props: Props) {
               </div>
               <Checkbox
                 checked={nurseInSelected(nurse)}
-                // onChange={(e: CheckboxChangeEvent) => {
-                //   if (e.target.checked) {
-                //     addNurse(nurse);
-                //   } else {
-                //     delNurse(nurse);
-                //   }
-                // }}
+              // onChange={(e: CheckboxChangeEvent) => {
+              //   if (e.target.checked) {
+              //     addNurse(nurse);
+              //   } else {
+              //     delNurse(nurse);
+              //   }
+              // }}
               />
             </NursingItem>
           ))}

@@ -70,7 +70,7 @@ export default observer(function 月度随访表弹窗(props: Props) {
     },
     {
       dataIndex: 'visitNumber',
-      title: '出院人数',
+      title: '回访数',
       render: (text: string, record: any) => {
         return <Input value={text} onChange={(e: any) => handleChange(e.target.value, 'visitNumber')} />
       }
