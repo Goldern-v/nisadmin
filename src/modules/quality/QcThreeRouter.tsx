@@ -62,19 +62,19 @@ export default function QcThreeRouter(props: Props) {
     },
     {
       title: "检查表单统计表",
-      path: "/queryStatistics",
+      path: "/qcThree/queryStatistics",
       icon: <JCTJ />,
       component: QueryStatistics
     },
     {
       title: "文件书写统计表",
-      path: "/queryStatistics/writingForm",
+      path: "/qcThree/writingForm",
       icon: <WJSX />,
       component: WritingForm
     },
     {
       title: "特殊时段查房记录",
-      path: "/checkWard",
+      path: "/qcThree/checkWard",
       icon: <CFJL />,
       component: RecordView,
       keepAlive: true,
@@ -82,13 +82,13 @@ export default function QcThreeRouter(props: Props) {
     },
     {
       title: "特殊时段计划表",
-      path: "/checkWard/schedule",
+      path: "/qcThree/schedule",
       icon: <CFJHB />,
       component: ScheduleView
     },
     {
       title: "特殊时段查房统计报告",
-      path: "/checkWard/checkWardReportList",
+      path: "/qcThree/checkWardReportList",
       icon: <CFJHBG />,
       component: CheckWardReportList,
       keepAlive: true,
