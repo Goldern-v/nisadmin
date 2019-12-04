@@ -44,6 +44,7 @@ export default observer(function NurseMeetingRecordDetail() {
   //是否有编辑权限
   const editable = () => {
     if (!nurseMeeting.creatorNo) return false
+    if (nurseMeeting.status == '1') return false
     if (!authStore.user) return false
     if (auth) return true
     if (nurseMeeting.creatorNo.toLowerCase() === authStore.user.empNo.toLowerCase()) return true
@@ -98,6 +99,7 @@ export default observer(function NurseMeetingRecordDetail() {
   }
 
   const ReadBtn = () => {
+    if (nurseMeeting.status !== '1') return <span></span>
     let target = unreceiverList.find((item: any) => item.empNo.toLowerCase() == (authStore.user && authStore.user.empNo.toLowerCase()))
 
     if (!target)
@@ -141,6 +143,31 @@ export default observer(function NurseMeetingRecordDetail() {
       }, () => setLoading(false))
   }
 
+  const handlePush = () => {
+    Modal.confirm({
+      title: '提示',
+      content: "是否发布该会议记录?",
+      onOk: () => {
+        let params = {
+          nurseMeeting: {
+            ...nurseMeeting,
+            status: '1',
+          },
+          comperes,
+          recorders,
+          attendees,
+          fileIds: attachmentList.map((item: any) => item.id)
+        }
+
+        setLoading(true)
+        nurseMeetingRecordService.saveOrUpdate(params).then(res => {
+          setLoading(false)
+          message.success('发布成功', 1, () => history.goBack())
+        }, () => setLoading(false))
+      }
+    })
+  }
+
   return <Wrapper>
     <TopPannel>
       <TopHeader>
@@ -170,8 +197,9 @@ export default observer(function NurseMeetingRecordDetail() {
           </div>
           <div className='topHeaderButton'>
             {editable() && <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>}
-            {auth && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>}
+            {auth && nurseMeeting && nurseMeeting.status == '0' && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>}
             {ReadBtn()}
+            {nurseMeeting && nurseMeeting.status == '0' && authStore.isRoleManage && <Button type="primary" onClick={handlePush} disabled={loading}>发布</Button>}
             <Button onClick={handleExport}>导出</Button>
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>

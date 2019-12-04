@@ -27,7 +27,8 @@ export interface Props { }
 
 export default observer(function NursingRulesPagePreview(props: Props) {
   const { history, location } = appStore
-  const { isDepartment } = authStore
+  const { isDepartment, isSupervisorNurse } = authStore
+  const auth = isDepartment || isSupervisorNurse
 
   const search = appStore.queryObj
   const viewType = search.viewType || ''
@@ -332,7 +333,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
     },
     {
       name: '下载',
-      hidden: !isDepartment,
+      hidden: !auth,
       icon: <Icon type="download" style={{ fontSize: '30px' }} />,
       onClick: () => {
         nursingRulesApiService
@@ -404,7 +405,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
           <Button
             onClick={() => handleAudit(true)}
             type='primary'
-            disabled={loading || !!!isDepartment}
+            disabled={loading || !!!auth}
             style={{ display: viewType == 'audit' ? 'block' : 'none' }}>
             审核
           </Button>

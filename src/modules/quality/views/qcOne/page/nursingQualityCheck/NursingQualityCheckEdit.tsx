@@ -25,6 +25,7 @@ export default observer(function NursingQualityCheckEdit() {
   let { location, history } = appStore
   let wardCode = authStore.selectedDeptCode
   let wardName = authStore.selectedDeptName
+
   let search = qs.parse(location.search.replace('?', ''))
 
   const [nurseList, setNurseList] = useState([] as any[])
@@ -38,6 +39,7 @@ export default observer(function NursingQualityCheckEdit() {
   } as any)
 
   const [loading, setLoading] = useState(false)
+  const [addLoading, setAddLoading] = useState(false)
 
   const [typeList, setTypeList] = useState([] as any[])
   const [contentList, setContentList] = useState([] as any[])
@@ -291,12 +293,14 @@ export default observer(function NursingQualityCheckEdit() {
   }
 
   const getNurseList = () => {
+    setAddLoading(true)
     nursingQualityCheckService.getNurse({
       reportDate: search.date,
       wardCode
     }).then(res => {
-      if (res.data) setNurseList(res.data)
-    })
+      setAddLoading(false)
+      if (res.data) setNurseList(res.data.filter((item: any) => item.empNo))
+    }, () => setAddLoading(false))
   }
 
   const createEditData = () => {
@@ -306,7 +310,7 @@ export default observer(function NursingQualityCheckEdit() {
       .then(res => {
         if (res.data) {
           setLoading(false)
-          setEditData(res.data.map((item: any) => {
+          setEditData(res.data.filter((item: any) => item.empNo).map((item: any) => {
             return {
               ...item,
               result: item.result || '无问题',
@@ -485,7 +489,7 @@ export default observer(function NursingQualityCheckEdit() {
             columns={columns}
             surplusHeight={330}
             loading={loading} />
-          {!search.type && <Button onClick={handleAdd}>新增</Button>}
+          {!search.type && <Button disabled={addLoading} onClick={handleAdd}>新增</Button>}
         </MainContent>
       </div>
     </MainPannel>

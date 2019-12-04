@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, message, Select, Drawer, DatePicker, Checkbox, Spin } from 'antd'
+import { Button, Input, message, Select, Drawer, DatePicker, Checkbox, Spin, Modal } from 'antd'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -32,7 +32,7 @@ export default observer(function NurseMeetingRecordEdit() {
 
   const [nurseMeeting, setNurseMeeting] = useState({
     id: '',
-    status: '1',
+    status: '0',
     meetingDay: moment().format('YYYY-MM-DD'),
     meetingTime: moment().format('HH:mm'),
     meetingType: 'QCWMT001',
@@ -52,9 +52,12 @@ export default observer(function NurseMeetingRecordEdit() {
   // const [urls, setUrls] = useState([] as any)
   // const [ids, setIds] = useState([] as any)
 
-  const handleSave = () => {
+  const handleSave = (cache?: boolean) => {
     let params = {
-      nurseMeeting,
+      nurseMeeting: {
+        ...nurseMeeting,
+        status: cache ? '0' : '1'
+      },
       comperes: comperes.split('、').filter((str: string) => str).map((str: string) => {
         return {
           empName: str
@@ -78,7 +81,7 @@ export default observer(function NurseMeetingRecordEdit() {
       .saveOrUpdate(params)
       .then(res => {
         setLoading(false)
-        message.success('保存成功', 1, () => {
+        message.success(`${cache ? '暂存' : '发布'}成功`, 1, () => {
           history.goBack()
           setLoading(false)
         })
@@ -113,6 +116,14 @@ export default observer(function NurseMeetingRecordEdit() {
     setFiles(newList)
     // setUrls(urls)
     // setIds(ids)
+  }
+
+  const handlePush = () => {
+    Modal.confirm({
+      title: '提示',
+      content: "是否发布该会议记录?",
+      onOk: () => handleSave()
+    })
   }
 
   const initData = () => {
@@ -206,7 +217,8 @@ export default observer(function NurseMeetingRecordEdit() {
             {search.id ? '修改' : '新建'}会议记录
           </div>
           <div className='topHeaderButton'>
-            <Button onClick={handleSave} disabled={loading} type="primary">保存</Button>
+            <Button onClick={() => handleSave(true)} disabled={loading}>暂存</Button>
+            <Button onClick={() => handlePush()} disabled={loading} type="primary">发布</Button>
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
         </div>
