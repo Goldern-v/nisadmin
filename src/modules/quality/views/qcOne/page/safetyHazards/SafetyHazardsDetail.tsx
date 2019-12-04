@@ -22,6 +22,7 @@ export default observer(function SafetyHazardsDetail() {
   const [pageLoading, setPageLoading] = useState(false)
   const [oldData, setOldData] = useState(null as any)
   const editable = (() => {
+    if (!appStore.queryObj.id) return true
     if (!oldData) {
       return false
     } else {
@@ -196,7 +197,7 @@ export default observer(function SafetyHazardsDetail() {
                   </Form.Field>
                 </Col>
                 <Col span={24}>
-                  <Form.Field label={`查新及建议`} name='suggetions'>
+                  <Form.Field label={`建议`} name='suggetions'>
                     <Input.TextArea />
                   </Form.Field>
                 </Col>
