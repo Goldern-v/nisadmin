@@ -429,36 +429,9 @@ export default observer(function HandoverRegister() {
     <Wrapper id="HandoverRegisterTable">
       <PageHeader>
         <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-          新建
+          修订登记本
         </Button>
-
-        {/* <PageTitle>{pageTitle}</PageTitle> */}
-        {/* <Place /> */}
-
-        <span className="label">日期</span>
-        <DatePicker.RangePicker
-          value={date}
-          onChange={value => setDate(value)}
-          allowClear={true}
-          style={{ width: 220 }}
-        />
-        <span className="label">科室</span>
-        <DeptSelect onChange={() => {}} />
-        <span className="label">班次</span>
-        <Select
-          value={selectedRange}
-          onChange={(value: any) => {
-            setSelectedRange(value);
-          }}
-        >
-          <Select.Option value="">全部</Select.Option>
-          {rangeConfigList.map((item: any) => (
-            <Select.Option value={item.itemCode} key={item.itemCode}>
-              {item.itemCode}
-            </Select.Option>
-          ))}
-        </Select>
-        <span className="label">修订</span>
+        <span className="label">修订记录</span>
         <Select
           value={selectedBlockId}
           onChange={(value: any) => {
@@ -473,6 +446,34 @@ export default observer(function HandoverRegister() {
             </Select.Option>
           ))}
         </Select>
+        {/* <PageTitle>{pageTitle}</PageTitle> */}
+        {/* <Place /> */}
+
+        <span className="label">日期</span>
+        <DatePicker.RangePicker
+          value={date}
+          onChange={value => setDate(value)}
+          allowClear={true}
+          style={{ width: 220 }}
+        />
+        <span className="label">科室</span>
+        <DeptSelect onChange={() => {}} style={{ width: 100 }} />
+        <span className="label">班次</span>
+        <Select
+          style={{ width: 70, minWidth: 70 }}
+          value={selectedRange}
+          onChange={(value: any) => {
+            setSelectedRange(value);
+          }}
+        >
+          <Select.Option value="">全部</Select.Option>
+          {rangeConfigList.map((item: any) => (
+            <Select.Option value={item.itemCode} key={item.itemCode}>
+              {item.itemCode}
+            </Select.Option>
+          ))}
+        </Select>
+
         <Place />
 
         {selectedBlockId && (
@@ -544,7 +545,7 @@ function NullBox(props: any) {
     }
     button {
       display: block;
-      margin: 0 auto;
+      margin: 0 auto !important;
     }
   `;
   return (
@@ -561,7 +562,16 @@ function NullBox(props: any) {
   );
 }
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  .label {
+    margin-left: 10px !important;
+    margin-right: 5px !important;
+  }
+  .ant-btn {
+    margin-left: 5px;
+    padding: 0 10px;
+  }
+`;
 const TableCon = styled.div`
   padding: 0 15px;
   .ant-table-header-column {
