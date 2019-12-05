@@ -27,7 +27,6 @@ export default observer(function NurseMeetingRecordDetail() {
   const [loading, setLoading] = useState(true)
   const previewModal = createModal(PreviewModal)
 
-
   const [isRead, setIsRead] = useState(true)
   const [nurseMeeting, setNurseMeeting] = useState({} as any)
   const [attendees, setAttendees] = useState([] as any[])
@@ -45,11 +44,12 @@ export default observer(function NurseMeetingRecordDetail() {
   const editable = () => {
     if (!nurseMeeting.creatorNo) return false
     if (nurseMeeting.status == '1') return false
-    if (!authStore.user) return false
-    if (auth) return true
-    if (nurseMeeting.creatorNo.toLowerCase() === authStore.user.empNo.toLowerCase()) return true
+    // if (!authStore.user) return false
+    // if (auth) return true
+    // if (nurseMeeting.creatorNo.toLowerCase() === authStore.user.empNo.toLowerCase()) return true
 
-    return false
+    // return false
+    return true
   }
 
   const getDetail = () => {
@@ -197,7 +197,7 @@ export default observer(function NurseMeetingRecordDetail() {
           </div>
           <div className='topHeaderButton'>
             {editable() && <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>}
-            {auth && nurseMeeting && nurseMeeting.status == '0' && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>}
+            {editable() && nurseMeeting && nurseMeeting.status == '0' && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(nurseMeeting)}>删除</Button>}
             {ReadBtn()}
             {nurseMeeting && nurseMeeting.status == '0' && authStore.isRoleManage && <Button type="primary" onClick={handlePush} disabled={loading}>发布</Button>}
             <Button onClick={handleExport}>导出</Button>

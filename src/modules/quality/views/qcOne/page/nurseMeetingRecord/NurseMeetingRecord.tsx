@@ -119,7 +119,7 @@ export default observer(function NurseMeetingRecord() {
       align: 'center',
       width: 80,
       render: (text: string, record: any, idx: number) => {
-        let deleteAuth = auth && record.status == '0'
+        let deleteAuth = record.status == '0'
         return <DoCon>
           <span onClick={() => handleDetail(record)}>查看</span>
           {deleteAuth && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
@@ -154,10 +154,7 @@ export default observer(function NurseMeetingRecord() {
   const getList = (query: any) => {
     setLoading(true)
     nurseMeetingRecordService
-      .getPage({
-        ...query,
-        problemType: query.problemType === '0' ? '' : query.problemType
-      })
+      .getPage(query)
       .then(res => {
         setLoading(false)
         if (res.data) {
@@ -253,18 +250,21 @@ export default observer(function NurseMeetingRecord() {
           allowClear={false} />
         <span>科室:</span>
         <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} />
-        <span>类型:</span>
+        <span>会议类型:</span>
         <Select
-          style={{ width: 92 }}
-          onChange={(problemType: string) => {
-            let type = '1'
-            if (problemType == '0') type = '0'
-            setQuery({ ...query, problemType, type })
-          }}
+          style={{ width: 72 }}
+          onChange={(problemType: string) => setQuery({ ...query, problemType })}
           value={query.problemType}>
           <Option value="">全部</Option>
           <Option value="QCWMT001">周会</Option>
           <Option value="QCWMT002">月会</Option>
+        </Select>
+        <span>状态:</span>
+        <Select
+          style={{ width: 92 }}
+          onChange={(type: string) => setQuery({ ...query, type })}
+          value={query.type}>
+          <Option value="1">已发布</Option>
           <Option value="0">草稿箱</Option>
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>

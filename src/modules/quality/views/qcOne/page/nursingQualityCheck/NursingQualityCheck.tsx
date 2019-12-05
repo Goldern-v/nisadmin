@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button, DatePicker, Modal, Select, Popover, Checkbox, Tooltip } from 'antd'
 import { PageTitle } from 'src/components/common'
 import BaseTable, { TabledCon, DoCon, TableHeadCon } from 'src/components/BaseTable'
-import { ColumnProps, Spin } from 'src/vendors/antd'
+import { ColumnProps, Spin, message } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
 
@@ -129,7 +129,7 @@ export default observer(function NursingQualityCheck() {
       key: 'operate',
       title: '操作',
       fixed: 'right',
-      width: 130,
+      width: 150,
       render: (text: string, record: any, idx: number) => {
         const title = <div>
           <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{record.empName}的星级考核</span>
@@ -169,6 +169,7 @@ export default observer(function NursingQualityCheck() {
             <span onClick={() => handleLoadDetail(record, idx)}>查看星级评分</span>
           </Popover>
           {auth && <span onClick={() => handleEdit(record)}>编辑</span>}
+          {auth && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
         </DoCon>
       }
     }
@@ -280,6 +281,24 @@ export default observer(function NursingQualityCheck() {
       id: record.id
     }
     history.push(`/nursingQualityCheckEdit?${qs.stringify(query)}`)
+  }
+
+  const handleDelete = (record: any) => {
+    if (record.id) Modal.confirm({
+      title: '提示',
+      content: '是否删除该记录?',
+      centered: true,
+      onOk: () => {
+        setLoading(true)
+        nursingQualityCheckService
+          .delete(record.id).
+          then(res => {
+            setLoading(false)
+            message.success('删除成功')
+            getList(query)
+          }, () => setLoading(false))
+      }
+    })
   }
 
   // useEffect(() => {
