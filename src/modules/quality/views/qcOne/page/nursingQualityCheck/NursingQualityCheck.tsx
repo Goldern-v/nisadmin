@@ -248,7 +248,7 @@ export default observer(function NursingQualityCheck() {
       })
 
 
-    setQuery({ ...query, wardCode, empNo: '', pageIndex: 1 })
+    setQuery({ ...query, wardCode, empNo: '', range: '', pageIndex: 1 })
   }
 
   const handleCreate = () => {
