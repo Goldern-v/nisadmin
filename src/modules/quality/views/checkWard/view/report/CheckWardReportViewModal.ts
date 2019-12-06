@@ -65,6 +65,11 @@ class CheckWardReportViewModal {
   }
 
   onload() {
+    //避免报错
+    let year = appStore.queryObj.year
+    let month = appStore.queryObj.month
+    if (!year || !month) return
+
     this.pageLoading = true
     checkWardService.searchRoomTotal(this.postObj).then((res) => {
       let specialData: any = []
