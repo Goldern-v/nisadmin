@@ -160,6 +160,7 @@ export default observer(function PatientVisitQuarter() {
           render: (text: string, record: any, idx: number) => <Input
             style={{ width: '100%' }}
             value={text}
+            disabled={record.status == '2' || record.status == '3'}
             onChange={(e: any) =>
               handleNumChange('dischargeNumber', idx, e.target.value)}
             onBlur={() => handleSave(record, idx, 'dischargeNumber')} />
@@ -172,6 +173,7 @@ export default observer(function PatientVisitQuarter() {
           render: (text: string, record: any, idx: number) => <Input
             style={{ width: '100%' }}
             value={text}
+            disabled={record.status == '2' || record.status == '3'}
             onChange={(e: any) =>
               handleNumChange('visitNumber', idx, e.target.value)}
             onBlur={() => handleSave(record, idx, 'visitNumber')} />
@@ -193,7 +195,10 @@ export default observer(function PatientVisitQuarter() {
           className: 'edit-td',
           render: (text: string, record: any, idx: number) => <Input
             style={{ width: '100%' }}
-            disabled={!isDepartment && !isSupervisorNurse}
+            disabled={
+              (!isDepartment && !isSupervisorNurse) ||
+              (record.status == '2' || record.status == '3')
+            }
             value={text}
             onChange={(e: any) =>
               handleNumChange('spotCheckNumber', idx, e.target.value)}
@@ -206,7 +211,10 @@ export default observer(function PatientVisitQuarter() {
           className: 'edit-td',
           render: (text: string, record: any, idx: number) => <Input
             style={{ width: '100%' }}
-            disabled={!isDepartment && !isSupervisorNurse}
+            disabled={
+              (!isDepartment && !isSupervisorNurse) ||
+              (record.status == '2' || record.status == '3')
+            }
             value={text}
             onChange={(e: any) =>
               handleNumChange('qualifiedNumber', idx, e.target.value)}
@@ -228,6 +236,7 @@ export default observer(function PatientVisitQuarter() {
           autosize
           style={{ width: '100%' }}
           value={text}
+          disabled={record.status == '2' || record.status == '3'}
           onChange={(e: any) =>
             handleChange('wardRemark', idx, e.target.value)}
           onBlur={() => handleSave(record, idx, 'wardRemark')} />
@@ -239,7 +248,10 @@ export default observer(function PatientVisitQuarter() {
       render: (text: string, record: any, idx: number) =>
         <TextArea
           autosize
-          disabled={!isDepartment && !isSupervisorNurse}
+          disabled={
+            (!isDepartment && !isSupervisorNurse) ||
+            (record.status == '2' || record.status == '3')
+          }
           style={{ width: '100%' }}
           value={text}
           onChange={(e: any) =>

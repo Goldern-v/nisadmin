@@ -46,13 +46,18 @@ export default observer(function NurseMeetingRecordEdit() {
     createTime: ''
   } as any)
   const [comperes, setComperes] = useState('')
-  const [recorders, setRecorders] = useState('')
+  const [recorders, setRecorders] = useState([] as any[])
   const [attendees, setAttendees] = useState('')
   const [files, setFiles] = useState([] as FileItem[])
   // const [urls, setUrls] = useState([] as any)
   // const [ids, setIds] = useState([] as any)
 
   const handleSave = (cache?: boolean) => {
+    let $recorders = nurseList.filter((item: any) => {
+      if (recorders.indexOf(item.empName) >= 0) return true
+      return false
+    })
+
     let params = {
       nurseMeeting: {
         ...nurseMeeting,
@@ -63,11 +68,7 @@ export default observer(function NurseMeetingRecordEdit() {
           empName: str
         }
       }),
-      recorders: recorders.split('、').filter((str: string) => str).map((str: string) => {
-        return {
-          empName: str
-        }
-      }),
+      recorders: $recorders,
       attendees: attendees.split('、').filter((str: string) => str).map((str: string) => {
         return {
           empName: str
@@ -148,7 +149,7 @@ export default observer(function NurseMeetingRecordEdit() {
 
           if (res.data.recorders) {
             let _recorders = res.data.recorders.map((item: any) => item.empName) || []
-            setRecorders(_recorders.join('、'))
+            setRecorders(_recorders)
           }
 
           if (res.data.comperes) {
@@ -168,6 +169,26 @@ export default observer(function NurseMeetingRecordEdit() {
           }
         }
       })
+  }
+
+  const isAllChecked = (() => {
+    for (let i = 0; i < drawerList.length; i++) {
+      if (!drawerList[i].checked) return false
+    }
+    return true
+  })()
+
+  const toggleAllChecked = () => {
+    let newCheck = true
+    if (isAllChecked) newCheck = false
+    let newDrawerList = drawerList.map((item: any) => {
+      return {
+        ...item,
+        checked: newCheck
+      }
+    })
+
+    setDrawerlist(newDrawerList)
   }
 
   useEffect(() => {
@@ -306,8 +327,18 @@ export default observer(function NurseMeetingRecordEdit() {
                     <Select
                       showSearch
                       mode="tags"
-                      value={recorders.split('、').filter((str: string) => str)}
-                      onChange={(arr: any[]) => setRecorders(arr.join('、'))}
+                      value={recorders}
+                      onChange={(arr: any[]) => {
+                        let newArr = [...arr]
+                        newArr = newArr.filter((item: any) => {
+                          let target = nurseList.find((nurse: any) => nurse.empName == item)
+                          if (target)
+                            return true
+                          else
+                            return false
+                        })
+                        setRecorders(newArr)
+                      }}
                       placeholder="请输入"
                       filterOption={(input: string, option: any) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -399,6 +430,14 @@ export default observer(function NurseMeetingRecordEdit() {
       title={'科室护士'}
       visible={drawerVisible}>
       <TemplateSelectCon>
+        <div className="header">
+          <div className="template-item" onClick={toggleAllChecked}>
+            <span>全选</span>
+            <span className="check">
+              <Checkbox checked={isAllChecked} />
+            </span>
+          </div>
+        </div>
         <ScrollBody className="body">
           {drawerList.map((item: any, idx: number) =>
             <div
@@ -441,7 +480,7 @@ const activeInputStyle = `
 const ScrollBody = styled(ScrollBox)`
   position: absolute;
   left: 0;
-  top: 55px;
+  top: 95px;
   bottom: 45px;
   width: 100%;
 `
@@ -462,6 +501,22 @@ const TemplateSelectCon = styled.div`
     }
     .check{
       float:right;
+    }
+  }
+  .header{
+    position: absolute;
+    height: 45px;
+    border-bottom: 1px solid #eee;
+    left: 0;
+    top: 55px;
+    width: 100%;
+    padding: 5px 10px;
+    z-index: 1;
+    background: #fff;
+    padding-left: 0;
+    .template-item:hover{
+      background: #fff;
+      color: #1db38b;
     }
   }
   .footer{

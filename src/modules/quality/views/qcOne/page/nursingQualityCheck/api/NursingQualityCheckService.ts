@@ -1,5 +1,5 @@
 import BaseApiService from 'src/services/api/BaseApiService'
-// import qs from 'qs'
+import qs from 'qs'
 
 export default class NursingQualityCheckService extends BaseApiService {
   /**列表接口 */
@@ -55,10 +55,10 @@ export default class NursingQualityCheckService extends BaseApiService {
 
   /**获取科室班次 */
   public getRangeByDeptCode(deptCode: string) {
-    return this.post('/schShiftSetting/getByDeptCode', {
+    return this.post('/schShiftSetting/getByDeptCode', qs.stringify({
       deptCode,
       status: true
-    })
+    }))
   }
   // /schShiftSetting/getByDeptCode
 

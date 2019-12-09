@@ -130,7 +130,7 @@ class SafetyCheckEditModel {
         list: [] as any[]
       }, //需护理部协助内容
       {
-        name: '查新及建议',
+        name: '建议',
         code: 'suggetionsList',
         list: [] as any[]
       } //建议
