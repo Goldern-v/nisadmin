@@ -6,6 +6,7 @@ interface SchAddOrSubItem {
 }
 
 export interface ArrangeItem {
+  userId?: number;
   rangeName?: string;
   rangeNameCode?: string | number | null; //编号
   nameColor?: string;

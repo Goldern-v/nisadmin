@@ -30,7 +30,10 @@ class SheetViewModal {
 
   /** 复制行 */
   @observable public copyRow: any[] = [];
+  /** 复杂单个格子 */
   @observable public copyCell: any = null;
+  /** 复杂多个格子 */
+  @observable public copyCellList: any = [];
 
   /** 特殊班次，计数等 */
   @observable public countArrangeNameList: any[] = [];
@@ -128,7 +131,8 @@ class SheetViewModal {
             cellObj.schAddOrSubs.length &&
             cellObj.schAddOrSubs[0].statusType) == "2"
       }),
-      isSelected: this.selectedCell == cellObj
+      isSelected:
+        this.selectedCell == cellObj || this.copyCellList.includes(cellObj)
     };
     return cellConfig;
   }

@@ -71,7 +71,8 @@ function MenuCon(props: { dataSource: any[] }) {
     }
   `;
   const onClick = (item: any) => {
-    let _rangeName: any = sheetViewModal.selectedCell!.rangeName;
+    let _rangeName: any =
+      sheetViewModal.selectedCell && sheetViewModal.selectedCell!.rangeName;
     if (sheetViewModal.selectedCell) {
       sheetViewModal.selectedCell!.rangeName = item.name;
       sheetViewModal.selectedCell!.nameColor = item.nameColor;
@@ -85,6 +86,7 @@ function MenuCon(props: { dataSource: any[] }) {
       /** 判断是否生成编号 */
       if (
         sheetViewModal.selectedCell.rangeName &&
+        sheetViewModal.selectedCell.userId &&
         sheetViewModal.countArrangeNameList.includes(
           sheetViewModal.selectedCell.rangeName
         )
@@ -96,6 +98,7 @@ function MenuCon(props: { dataSource: any[] }) {
       }
       if (
         _rangeName &&
+        sheetViewModal.selectedCell.userId &&
         sheetViewModal.countArrangeNameList.includes(_rangeName)
       ) {
         resetArrangeCount(sheetViewModal.selectedCell.userId, _rangeName);

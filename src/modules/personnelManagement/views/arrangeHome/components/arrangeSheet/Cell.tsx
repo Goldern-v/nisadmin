@@ -150,6 +150,7 @@ export default observer(function Cell(props: Props) {
           type: "text",
           onClick: () => {
             if (!sheetViewModal.selectedCell.rangeName) return;
+            if (!sheetViewModal.selectedCell.userId) return;
             let [user, list] = sheetViewModal.getUser(
               sheetViewModal.selectedCell.userId
             );
@@ -160,6 +161,7 @@ export default observer(function Cell(props: Props) {
                 ],
               data: sheetViewModal.selectedCell,
               onOkCallBack(num: any) {
+                if (!sheetViewModal.selectedCell.userId) return;
                 if (user && sheetViewModal.selectedCell.rangeName) {
                   user.countArrangeBaseIndexObj[
                     sheetViewModal.selectedCell!.rangeName
@@ -269,6 +271,31 @@ export default observer(function Cell(props: Props) {
           label: "粘贴格",
           type: "text",
           onClick() {
+            /** 存在多个格子选中的情况下，优先复制多个格子 */
+            if (
+              sheetViewModal.copyCellList.length &&
+              sheetViewModal.selectedCell.userId
+            ) {
+              const [user, list] = sheetViewModal.getUser(
+                sheetViewModal.selectedCell.userId
+              );
+              if (user) {
+                let index = list.findIndex(
+                  (item: any) => item == sheetViewModal.selectedCell
+                );
+                /** 剩余的格子 */
+                let restList = list.slice(index);
+
+                let length = Math.min(
+                  restList.length,
+                  sheetViewModal.copyCellList.length
+                );
+
+                for (let i = 0; i < length; i++) {
+                  copyCellClick(restList[i], sheetViewModal.copyCellList[i]);
+                }
+              }
+            }
             copyCellClick(sheetViewModal.selectedCell, sheetViewModal.copyCell);
           }
         },
@@ -331,9 +358,15 @@ export default observer(function Cell(props: Props) {
     );
   };
 
-  const onClick = () => {
+  const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isEdit) return;
     if (cellConfig.isTwoDaysAgo) return;
+    /** 判断是否按下 ctrl */
+    if (e.ctrlKey) {
+      sheetViewModal.copyCellList.push(cellObj);
+    } else {
+      sheetViewModal.copyCellList = [];
+    }
     sheetViewModal.selectedCell = cellObj;
   };
   const onVisibleChange = (visible: boolean) => {
