@@ -27,12 +27,15 @@ import { getCurrentMonth } from "src/utils/date/currentMonth";
 import { useLayoutEffect } from "src/types/react";
 import moment from "moment";
 import { throttle } from "src/utils/throttle/throttle";
-export interface Props {}
-const registerCode = "QCRG_01";
+import { codeAdapter } from "../../utils/codeAdapter";
+export interface Props {
+  payload: any;
+}
 
 const throttler = throttle();
 
-export default observer(function HandoverRegister() {
+export default observer(function HandoverRegister(props: Props) {
+  const registerCode = props.payload && props.payload.registerCode;
   const [oldData, setOldData]: any = useState({});
   const [dataSource, setDataSource] = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
@@ -56,33 +59,57 @@ export default observer(function HandoverRegister() {
   const columns: ColumnProps<any>[] | any = [
     {
       title() {
-        return (
-          <LineCon>
-            <TextCon>
-              <Text x="20%" y="75%" deg="0">
-                日期
-              </Text>
-              <Text x="65%" y="77%" deg="22">
-                班次
-              </Text>
-              <Text x="80%" y="62%" deg="21">
-                质量
-              </Text>
-              <Text x="83%" y="35%" deg="12">
-                基数
-              </Text>
-              <Text x="82%" y="8%" deg="0">
-                物品
-              </Text>
-            </TextCon>
-            <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-              <line x1="0" y1="0" x2="60%" y2="100%" />
-              <line x1="0" y1="0" x2="100%" y2="100%" />
-              <line x1="0" y1="0" x2="100%" y2="33%" />
-              <line x1="0" y1="0" x2="100%" y2="66%" />
-              <line x1="0" y1="0" x2="100%" y2="100%" />
-            </SvgCon>
-          </LineCon>
+        return codeAdapter(
+          {
+            QCRG_01: (
+              <LineCon>
+                <TextCon>
+                  <Text x="20%" y="75%" deg="0">
+                    日期
+                  </Text>
+                  <Text x="65%" y="77%" deg="22">
+                    班次
+                  </Text>
+                  <Text x="80%" y="62%" deg="21">
+                    质量
+                  </Text>
+                  <Text x="83%" y="35%" deg="12">
+                    基数
+                  </Text>
+                  <Text x="82%" y="8%" deg="0">
+                    物品
+                  </Text>
+                </TextCon>
+                <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
+                  <line x1="0" y1="0" x2="60%" y2="100%" />
+                  <line x1="0" y1="0" x2="100%" y2="100%" />
+                  <line x1="0" y1="0" x2="100%" y2="33%" />
+                  <line x1="0" y1="0" x2="100%" y2="66%" />
+                  <line x1="0" y1="0" x2="100%" y2="100%" />
+                </SvgCon>
+              </LineCon>
+            ),
+            QCRG_02: (
+              <LineCon>
+                <TextCon>
+                  <Text x="20%" y="70%" deg="0">
+                    日期
+                  </Text>
+                  <Text x="65%" y="70%" deg="22">
+                    班次
+                  </Text>
+                  <Text x="65%" y="20%" deg="0">
+                    交班内容
+                  </Text>
+                </TextCon>
+                <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
+                  <line x1="0" y1="0" x2="60%" y2="100%" />
+                  <line x1="0" y1="0" x2="100%" y2="80%" />
+                </SvgCon>
+              </LineCon>
+            )
+          },
+          registerCode
         );
       },
       dataIndex: "recordDate",
@@ -154,7 +181,7 @@ export default observer(function HandoverRegister() {
             return (
               <AutoComplete
                 disabled={!!record.signerName}
-                dataSource={(item.options || "").split(";")}
+                dataSource={item.options ? item.options.split(";") : []}
                 defaultValue={text}
                 onChange={value => {
                   record[item.itemCode] = value;
@@ -333,10 +360,11 @@ export default observer(function HandoverRegister() {
         ...pageOptions
       })
       .then(res => {
+        console.log(res, "res");
         setTotal(res.data.itemDataPage.totalPage);
         setDataSource(res.data.itemDataPage.list);
         setItemConfigList(res.data.itemConfigList);
-        setRangeConfigList(res.data.rangeConfigList);
+        // setRangeConfigList(res.data.rangeConfigList);
         setPageLoading(false);
       });
   };
