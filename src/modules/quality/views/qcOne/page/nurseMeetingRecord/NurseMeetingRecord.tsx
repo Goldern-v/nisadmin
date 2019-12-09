@@ -102,6 +102,12 @@ export default observer(function NurseMeetingRecord() {
       width: 150,
     },
     {
+      dataIndex: 'publisherName',
+      title: '发布人',
+      align: 'center',
+      width: 150,
+    },
+    {
       title: '状态',
       align: 'center',
       width: 80,
