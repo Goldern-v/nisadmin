@@ -215,11 +215,16 @@ export default observer(function FollowUpRecord() {
         setTotal(res.data.totalCount)
         setDataSource(
           (res.data.list as any[]).reduce((total: any, current: any, rowIndex: number, array: any[]) => {
-            total.push(
-              ...(current.safetyCheckList || []).map((item: any, index: number, array: any[]) => {
-                return Object.assign({}, item, current, { row: index == 0 ? array.length : 0, rowIndex: rowIndex })
-              })
-            )
+            if (current.safetyCheckList && current.safetyCheckList.length > 0) {
+              total.push(
+                ...(current.safetyCheckList || []).map((item: any, index: number, array: any[]) => {
+                  return Object.assign({}, item, current, { row: index == 0 ? array.length : 0, rowIndex: rowIndex })
+                })
+              )
+            } else {
+              total.push(Object.assign({}, current, { row: 1, rowIndex: rowIndex }))
+            }
+
             return total
           }, [])
         )
