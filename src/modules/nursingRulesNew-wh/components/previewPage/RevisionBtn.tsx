@@ -75,7 +75,7 @@ export default observer(function RevisionBtn(props: Props) {
               file = e.target.files[0]
 
               let fileName = e.target.files[0].name
-              let title = fileName.replace('.pdf', '')
+              title = fileName.replace('.pdf', '')
               let titleIpt = document.querySelector('#chapterFileName') as HTMLInputElement
               let fileNameIpt = document.querySelector('.fileNameIpt') as HTMLInputElement
               if (fileNameIpt) fileNameIpt.value = fileName
