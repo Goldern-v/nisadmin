@@ -20,6 +20,7 @@ export interface Props { }
 
 export default observer(function NurseMeetingRecordEdit() {
   let { location, history } = appStore
+  let { isRoleManage, isSupervisorNurse } = authStore
   let wardCode = authStore.selectedDeptCode
   let wardName = authStore.selectedDeptName
   let search = qs.parse(location.search.replace('?', ''))
@@ -239,7 +240,7 @@ export default observer(function NurseMeetingRecordEdit() {
           </div>
           <div className='topHeaderButton'>
             <Button onClick={() => handleSave(true)} disabled={loading}>暂存</Button>
-            <Button onClick={() => handlePush()} disabled={loading} type="primary">发布</Button>
+            {(isRoleManage || isSupervisorNurse) && <Button onClick={() => handlePush()} disabled={loading} type="primary">发布</Button>}
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
         </div>
