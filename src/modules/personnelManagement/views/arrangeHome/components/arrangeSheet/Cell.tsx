@@ -301,8 +301,12 @@ export default observer(function Cell(props: Props) {
                   copyCellClick(restList[i], sheetViewModal._copyCellList[i]);
                 }
               }
+            } else {
+              copyCellClick(
+                sheetViewModal.selectedCell,
+                sheetViewModal.copyCell
+              );
             }
-            copyCellClick(sheetViewModal.selectedCell, sheetViewModal.copyCell);
           }
         },
         {
@@ -369,6 +373,12 @@ export default observer(function Cell(props: Props) {
     if (cellConfig.isTwoDaysAgo) return;
     /** 判断是否按下 ctrl */
     if (e.ctrlKey) {
+      if (
+        sheetViewModal.copyCellList.length == 0 &&
+        sheetViewModal.selectedCell
+      ) {
+        sheetViewModal.copyCellList.push(sheetViewModal.selectedCell);
+      }
       sheetViewModal.copyCellList.push(cellObj);
     } else {
       sheetViewModal.copyCellList = [];
