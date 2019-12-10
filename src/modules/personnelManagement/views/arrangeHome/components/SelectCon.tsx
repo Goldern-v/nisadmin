@@ -2,7 +2,14 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { selectViewModal } from "../viewModal/SelectViewModal";
 import { observer } from "mobx-react-lite";
-import { DatePicker, Button, Select, message } from "src/vendors/antd";
+import {
+  DatePicker,
+  Button,
+  Select,
+  message,
+  Dropdown,
+  Menu
+} from "src/vendors/antd";
 import { fileDownload } from "src/utils/file/file";
 import { appStore, authStore } from "src/stores";
 import DeptSelect from "src/components/DeptSelect";
@@ -11,11 +18,14 @@ import { scheduleStore } from "src/stores";
 import { arrangeService } from "../services/ArrangeService";
 import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { printModal } from "../viewModal/PrintModal";
+import service from "src/services/api";
+import { DictItem } from "src/services/api/CommonApiService";
 
 export interface Props {}
 
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true);
+  const [bigDeptList, setBigDeptList] = useState([]);
   const [date, setDate]: any = useState(() => {
     if (selectViewModal.params.startTime && selectViewModal.params.endTime) {
       return [
@@ -103,12 +113,27 @@ export default observer(function SelectCon() {
     selectViewModal.setParams("group", value);
   };
 
-  // 导出Excel
+  // 导出科室Excel
   const exportExcel = () => {
     let data = {
       deptCode: selectViewModal.params.deptCode,
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime
+    };
+    arrangeService.export(data).then(res => {
+      fileDownload(res);
+    });
+  };
+
+  // 导出片区Excel
+  const exportBigDeptExcel = (param: any) => {
+    console.log(param, "paramparam");
+    let data = {
+      deptCode: selectViewModal.params.deptCode,
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      bigDeptCode: param.key,
+      bigDeptName: param.item.props.children
     };
     arrangeService.export(data).then(res => {
       fileDownload(res);
@@ -132,23 +157,34 @@ export default observer(function SelectCon() {
     setIsInit(false);
   };
 
+  const getBigDept = () => {
+    service.commonApiService.getBigDeptListSelfList().then(res => {
+      setBigDeptList(res.data || []);
+    });
+  };
+
   useEffect(() => {
     if (appStore.queryObj.noRefresh == "1") {
       appStore.history.replace("/personnelManagement/arrangeHome");
     } else {
       if (isInit) {
         handleStatusChange();
+        getBigDept();
       }
     }
   }, []);
 
-  const toPath = (path: string) => {
-    appStore.history.push(path);
-  };
-
   const toPrint = () => {
     printModal.printArrange();
   };
+
+  const bigDeptmenu = (
+    <Menu onClick={exportBigDeptExcel}>
+      {bigDeptList.map((item: DictItem) => (
+        <Menu.Item key={item.code}>{item.name}</Menu.Item>
+      ))}
+    </Menu>
+  );
 
   return (
     <Wrapper>
@@ -288,9 +324,20 @@ export default observer(function SelectCon() {
 
         <div className="item">
           <Button className="statistics getExcel" onClick={exportExcel}>
-            导出Excel
+            导出科室Excel
           </Button>
         </div>
+        {appStore.HOSPITAL_ID == "wh" && (
+          <div className="item">
+            <Dropdown.Button
+              className="statistics getExcel"
+              overlay={bigDeptmenu}
+            >
+              导出片区Excel
+            </Dropdown.Button>
+          </div>
+        )}
+
         {appStore.HOSPITAL_ID == "hj" && (
           <div className="item">
             <Button

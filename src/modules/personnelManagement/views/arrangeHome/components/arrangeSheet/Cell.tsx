@@ -372,6 +372,7 @@ export default observer(function Cell(props: Props) {
     if (!isEdit) return;
     if (cellConfig.isTwoDaysAgo) return;
     /** 判断是否按下 ctrl */
+    sheetViewModal.selectedCell = cellObj;
     if (e.ctrlKey) {
       if (
         sheetViewModal.copyCellList.length == 0 &&
@@ -385,7 +386,6 @@ export default observer(function Cell(props: Props) {
     } else {
       sheetViewModal.copyCellList = [];
     }
-    sheetViewModal.selectedCell = cellObj;
   };
   const onVisibleChange = (visible: boolean) => {
     if (cellConfig.isAddWordTime || cellConfig.isReduceWordTime) {

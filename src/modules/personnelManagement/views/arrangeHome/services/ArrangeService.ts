@@ -73,6 +73,7 @@ export default class ArrangeService extends BaseApiService {
   // 导出护士排班
   public async export(data: any) {
     const postData = {
+      ...data,
       deptCode: selectViewModal.params.deptCode, // deptCode  科室编码
       startTime: selectViewModal.params.startTime, // stratTime 开始时间（刚开始由后台传给前台）
       endTime: selectViewModal.params.endTime // endTime   结束时间（刚开始由后台传给前台）
