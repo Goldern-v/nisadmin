@@ -36,16 +36,37 @@ const throttler = throttle();
 
 export default observer(function HandoverRegister(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
-  const [oldData, setOldData]: any = useState({});
-  const [dataSource, setDataSource] = useState([]);
+  const [dataSource, setDataSource]: any = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
-  const [rangeConfigList, setRangeConfigList] = useState([]);
-  const [selectedRange, setSelectedRange] = useState("");
+  const [wzcdConfigList, setWzcdConfigList] = useState([
+    { label: "全部", value: "全部" },
+    { label: "高", value: "高" },
+    { label: "中", value: "中" },
+    { label: "低", value: "低" }
+  ]);
+  const [selectedWzcd, setSelectedWzcd] = useState("");
+
+  const [hljbConfigList, setHljbConfigList] = useState([
+    { label: "全部", value: "全部" },
+    { label: "特级护理", value: "特级护理" },
+    { label: "一级护理", value: "一级护理" },
+    { label: "二级护理", value: "二级护理" },
+    { label: "三级护理", value: "三级护理" }
+  ]);
+  const [selectedHljb, setSelectedHljb] = useState("");
+
+  const [zlnlConfigList, setZlnlConfigList] = useState([
+    { label: "全部", value: "全部" },
+    { label: "重度依赖", value: "重度依赖" },
+    { label: "中度依赖", value: "中度依赖" },
+    { label: "轻度依赖", value: "轻度依赖" },
+    { label: "无需依赖", value: "无需依赖" }
+  ]);
+  const [selectedZlnl, setSelectedZlnl] = useState("");
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId] = useState(null);
   const [date, setDate]: any = useState([null, null]);
-  const [surplusWidth, setSurplusWidth]: any = useState(false);
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
@@ -58,167 +79,38 @@ export default observer(function HandoverRegister(props: Props) {
   };
   const columns: ColumnProps<any>[] | any = [
     {
-      title() {
-        return codeAdapter(
-          {
-            QCRG_01: (
-              <LineCon>
-                <TextCon>
-                  <Text x="20%" y="75%" deg="0">
-                    日期
-                  </Text>
-                  <Text x="65%" y="77%" deg="22">
-                    班次
-                  </Text>
-                  <Text x="80%" y="62%" deg="21">
-                    质量
-                  </Text>
-                  <Text x="83%" y="35%" deg="12">
-                    基数
-                  </Text>
-                  <Text x="82%" y="8%" deg="0">
-                    物品
-                  </Text>
-                </TextCon>
-                <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-                  <line x1="0" y1="0" x2="60%" y2="100%" />
-                  <line x1="0" y1="0" x2="100%" y2="100%" />
-                  <line x1="0" y1="0" x2="100%" y2="33%" />
-                  <line x1="0" y1="0" x2="100%" y2="66%" />
-                  <line x1="0" y1="0" x2="100%" y2="100%" />
-                </SvgCon>
-              </LineCon>
-            ),
-            QCRG_02: (
-              <LineCon>
-                <TextCon>
-                  <Text x="20%" y="70%" deg="0">
-                    日期
-                  </Text>
-                  <Text x="65%" y="70%" deg="22">
-                    班次
-                  </Text>
-                  <Text x="65%" y="20%" deg="0">
-                    交班内容
-                  </Text>
-                </TextCon>
-                <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
-                  <line x1="0" y1="0" x2="60%" y2="100%" />
-                  <line x1="0" y1="0" x2="100%" y2="80%" />
-                </SvgCon>
-              </LineCon>
-            )
-          },
-          registerCode
-        );
-      },
+      title: "日期",
       dataIndex: "recordDate",
       align: "center",
-      colSpan: 2,
-      width: 107,
-      fixed: surplusWidth && "left"
-    },
-    {
-      title: "头部",
-      colSpan: 0,
-      width: 73,
-      dataIndex: "range",
-      align: "center",
-      fixed: surplusWidth && "left"
+      width: 100
     },
     ...itemConfigList.map((item: any) => {
-      if (item.checkSize) {
-        return {
-          title(text: string, record: any, index: number) {
-            return (
-              <ThBox>
-                <div className="title">
-                  <span className="title-text">{item.itemCode}</span>
-                </div>
-                <div className="aside">{item.checkSize}</div>
-              </ThBox>
-            );
-          },
-          align: "center",
-          dataIndex: item.itemCode,
-          width: (15 * item.width || 50) + 8,
-          className: "input-cell",
-          render(text: string, record: any, index: number) {
-            return (
-              <AutoComplete
-                className={
-                  text != item.checkSize && text != "√"
-                    ? "checkSize-warning"
-                    : ""
-                }
-                disabled={!!record.signerName}
-                dataSource={(item.options || "").split(";")}
-                defaultValue={text}
-                onChange={value => {
-                  record[item.itemCode] = value;
-                }}
-                onBlur={() => updateDataSource()}
-              />
-            );
-          }
-        };
-      } else {
-        return {
-          title(text: string, record: any, index: number) {
-            return (
-              <ThBox>
-                <div className="title">
-                  <span className="title-text">{item.itemCode}</span>
-                </div>
-              </ThBox>
-            );
-          },
-          align: "center",
-          className: "input-cell",
-          width: (15 * item.width || 50) + 8,
-          dataIndex: item.itemCode,
-          render(text: string, record: any, index: number) {
-            return (
-              <AutoComplete
-                disabled={!!record.signerName}
-                dataSource={item.options ? item.options.split(";") : []}
-                defaultValue={text}
-                onChange={value => {
-                  record[item.itemCode] = value;
-                }}
-                onBlur={() => updateDataSource()}
-              />
-            );
-          }
-        };
-      }
+      return {
+        title: item.itemCode,
+        align: "center",
+        className: "input-cell",
+        width: 100,
+        dataIndex: item.itemCode,
+        render(text: string, record: any, index: number) {
+          return (
+            <AutoComplete
+              disabled={!!record.signerName}
+              dataSource={item.options ? item.options.split(";") : undefined}
+              defaultValue={text}
+              onChange={value => {
+                record[item.itemCode] = value;
+              }}
+              onBlur={() => updateDataSource()}
+            />
+          );
+        }
+      };
     }),
-
     {
-      title: "备注",
-      width: 150,
-      dataIndex: "description",
-      className: "input-cell",
-      render(text: string, record: any, index: number) {
-        return (
-          <Input.TextArea
-            disabled={!!record.signerName}
-            autosize={true}
-            defaultValue={text}
-            onChange={e => {
-              record.description = e.target.value;
-            }}
-            onBlur={() => updateDataSource()}
-          />
-        );
-      }
-    },
-    {
-      title: "交班者签名",
-      width: 80,
+      title: "护士长",
+      width: 100,
       dataIndex: "signerName",
       align: "center",
-      fixed: surplusWidth && "right",
       render(text: string, record: any, index: number) {
         return text ? (
           <div
@@ -266,53 +158,6 @@ export default observer(function HandoverRegister(props: Props) {
           </DoCon>
         );
       }
-    },
-    {
-      title: "接班者签名",
-      width: 80,
-      dataIndex: "auditorName",
-      fixed: surplusWidth && "right",
-      align: "center",
-      render(text: string, record: any, index: number) {
-        return text ? (
-          <div
-            className="sign-name"
-            onClick={() => {
-              globalModal
-                .confirm("接班签名取消", "你确定取消接班签名吗？")
-                .then(res => {
-                  wardRegisterService
-                    .cancelAudit(registerCode, [{ id: record.id }])
-                    .then(res => {
-                      message.success("取消接班签名成功");
-                      onSave();
-                    });
-                });
-            }}
-          >
-            {text}
-          </div>
-        ) : (
-          <DoCon>
-            <span
-              onClick={() => {
-                globalModal
-                  .confirm("接班签名确认", "你确定接班签名吗？")
-                  .then(res => {
-                    wardRegisterService
-                      .auditAll(registerCode, [{ id: record.id }])
-                      .then(res => {
-                        message.success("接班签名成功");
-                        onSave();
-                      });
-                  });
-              }}
-            >
-              签名
-            </span>
-          </DoCon>
-        );
-      }
     }
   ];
 
@@ -335,7 +180,7 @@ export default observer(function HandoverRegister(props: Props) {
           setTotal(0);
           setDataSource([]);
           setItemConfigList([]);
-          setRangeConfigList([]);
+          setWzcdConfigList([]);
         }
       });
   };
@@ -355,7 +200,7 @@ export default observer(function HandoverRegister(props: Props) {
       .getPage(registerCode, {
         startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
         endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
-        range: selectedRange,
+        range: selectedWzcd,
         blockId: selectedBlockId,
         ...pageOptions
       })
@@ -364,7 +209,6 @@ export default observer(function HandoverRegister(props: Props) {
         setTotal(res.data.itemDataPage.totalPage);
         setDataSource(res.data.itemDataPage.list);
         setItemConfigList(res.data.itemConfigList);
-        // setRangeConfigList(res.data.rangeConfigList);
         setPageLoading(false);
       });
   };
@@ -407,6 +251,10 @@ export default observer(function HandoverRegister(props: Props) {
     });
   };
 
+  const createRow = () => {
+    setDataSource([...dataSource, {}]);
+  };
+
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -414,47 +262,10 @@ export default observer(function HandoverRegister(props: Props) {
   useEffect(() => {
     // selectedBlockId && getPage();
     selectedBlockId && throttler(getPage);
-  }, [pageOptions, date, selectedRange, selectedBlockId]);
-
-  useLayoutEffect(() => {
-    try {
-      setTimeout(() => {
-        if (
-          (document as any).querySelector(
-            "#HandoverRegisterTable .ant-table-body"
-          ) &&
-          (document as any).querySelector(
-            "#HandoverRegisterTable .ant-table-body"
-          ).scrollWidth ==
-            (document as any).querySelector(
-              "#HandoverRegisterTable .ant-table-body"
-            ).clientWidth
-        ) {
-          /** noscorll */
-          (document as any).querySelector(
-            "#HandoverRegisterTable #baseTable"
-          ).style.width =
-            columns.reduce((total: number, current: any) => {
-              return total + current.width;
-            }, 0) +
-            10 +
-            "px";
-          setSurplusWidth(false);
-        } else {
-          (document as any).querySelector(
-            "#HandoverRegisterTable #baseTable"
-          ) &&
-            ((document as any).querySelector(
-              "#HandoverRegisterTable #baseTable"
-            ).style.width = "auto");
-          setSurplusWidth(280);
-        }
-      }, 10);
-    } catch (error) {}
-  }, [dataSource, surplusWidth]);
+  }, [pageOptions, date, selectedWzcd, selectedBlockId]);
 
   return (
-    <Wrapper id="HandoverRegisterTable">
+    <Wrapper>
       <PageHeader>
         <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
           修订登记本
@@ -486,18 +297,45 @@ export default observer(function HandoverRegister(props: Props) {
         />
         <span className="label">科室</span>
         <DeptSelect onChange={() => {}} style={{ width: 100 }} />
-        <span className="label">班次</span>
+        <span className="label">危重程度</span>
         <Select
           style={{ width: 70, minWidth: 70 }}
-          value={selectedRange}
+          value={selectedWzcd}
           onChange={(value: any) => {
-            setSelectedRange(value);
+            setSelectedWzcd(value);
           }}
         >
-          <Select.Option value="">全部</Select.Option>
-          {rangeConfigList.map((item: any) => (
-            <Select.Option value={item.itemCode} key={item.itemCode}>
-              {item.itemCode}
+          {wzcdConfigList.map((item: any) => (
+            <Select.Option value={item.value} key={item.value}>
+              {item.label}
+            </Select.Option>
+          ))}
+        </Select>
+        <span className="label">护理级别</span>
+        <Select
+          style={{ width: 70, minWidth: 70 }}
+          value={selectedHljb}
+          onChange={(value: any) => {
+            setSelectedHljb(value);
+          }}
+        >
+          {hljbConfigList.map((item: any) => (
+            <Select.Option value={item.value} key={item.value}>
+              {item.label}
+            </Select.Option>
+          ))}
+        </Select>
+        <span className="label">自理能力</span>
+        <Select
+          style={{ width: 70, minWidth: 70 }}
+          value={selectedZlnl}
+          onChange={(value: any) => {
+            setSelectedZlnl(value);
+          }}
+        >
+          {zlnlConfigList.map((item: any) => (
+            <Select.Option value={item.value} key={item.value}>
+              {item.label}
             </Select.Option>
           ))}
         </Select>
@@ -507,6 +345,9 @@ export default observer(function HandoverRegister(props: Props) {
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
+            <Button type="primary" onClick={createRow}>
+              新建
+            </Button>
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
@@ -529,13 +370,12 @@ export default observer(function HandoverRegister(props: Props) {
         )}
       </PageHeader>
       <TableCon>
-        {selectedBlockId ? (
+        {selectedBlockId && itemConfigList.length ? (
           <BaseTable
             loading={pageLoading}
             dataSource={dataSource}
             columns={columns}
-            surplusWidth={surplusWidth}
-            surplusHeight={280}
+            surplusHeight={220}
             pagination={{
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,

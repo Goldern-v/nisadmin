@@ -18,6 +18,7 @@ import { globalModal } from "src/global/globalModal";
 import update from "immutability-helper";
 import { Place } from "src/components/common";
 import { observer } from "mobx-react-lite";
+import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 export interface Props {
   blockId: any;
   registerCode: any;
@@ -66,23 +67,32 @@ export default observer(function SetTittle(props: Props) {
         );
       }
     },
-    {
-      title: "基数",
-      width: 100,
-      dataIndex: "checkSize",
-      className: "input-cell",
-      render(text: any, record: any, index: any) {
-        return (
-          <InputNumber
-            defaultValue={text}
-            onChange={value => {
-              record.checkSize = value;
-            }}
-            onBlur={() => updateDataSource()}
-          />
-        );
-      }
-    },
+    ...codeAdapter(
+      {
+        QCRG_01: [
+          {
+            title: "基数",
+            width: 100,
+            dataIndex: "checkSize",
+            className: "input-cell",
+            render(text: any, record: any, index: any) {
+              return (
+                <InputNumber
+                  defaultValue={text}
+                  onChange={value => {
+                    record.checkSize = value;
+                  }}
+                  onBlur={() => updateDataSource()}
+                />
+              );
+            }
+          }
+        ],
+        QCRG_02: []
+      },
+      registerCode
+    ),
+
     {
       title: "下拉选项预设值(值之前用;隔开)",
       dataIndex: "options",
@@ -99,7 +109,7 @@ export default observer(function SetTittle(props: Props) {
             }}
             value={text ? text.split(";") : []}
             open={false}
-            tokenSeparators={[";"]}
+            tokenSeparators={[";", "；"]}
           />
         );
       }

@@ -34,6 +34,8 @@ class SheetViewModal {
   @observable public copyCell: any = null;
   /** 复杂多个格子 */
   @observable public copyCellList: any = [];
+  /** 缓存 */
+  @observable public _copyCellList: any = [];
 
   /** 特殊班次，计数等 */
   @observable public countArrangeNameList: any[] = [];

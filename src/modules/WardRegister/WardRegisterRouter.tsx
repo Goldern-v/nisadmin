@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import LeftMenuPage from "src/components/LeftMenuPage";
 import { appStore } from "src/stores";
-import HandoverRegister from "./page/HandoverRegister/HandoverRegister";
 import { ReactComponent as WPJJ } from "./images/icon/WPJJ.svg";
 import { ReactComponent as TSWP } from "./images/icon/TSWP.svg";
 import { ReactComponent as ZDHZ } from "./images/icon/ZDHZ.svg";
@@ -23,6 +22,8 @@ import { ReactComponent as HHGT } from "./images/icon/HHGT.svg";
 import { ReactComponent as JKJY } from "./images/icon/JKJY.svg";
 import { ReactComponent as SXJX } from "./images/icon/SXJX.svg";
 import { ReactComponent as SMZC } from "./images/icon/SMZC.svg";
+import 物品交接登记本 from "./page/物品交接登记本/物品交接登记本";
+import 重点患者评估登记本 from "./page/重点患者评估登记本/重点患者评估登记本";
 export interface Props {}
 
 export default function WardRegisterRouter() {
@@ -30,7 +31,7 @@ export default function WardRegisterRouter() {
     {
       title: "物品交接登记本",
       path: "/wardRegister",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <WPJJ />,
       payload: {
         registerCode: "QCRG_01"
@@ -39,7 +40,7 @@ export default function WardRegisterRouter() {
     {
       title: "特殊交接登记本",
       path: "/wardRegister/QCRG_02",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <TSWP />,
       payload: {
         registerCode: "QCRG_02"
@@ -48,7 +49,7 @@ export default function WardRegisterRouter() {
     {
       title: "重点患者评估登记本",
       path: "/wardRegister/QCRG_03",
-      component: { ...HandoverRegister },
+      component: { ...重点患者评估登记本 },
       icon: <ZDHZ />,
       payload: {
         registerCode: "QCRG_03"
@@ -57,7 +58,7 @@ export default function WardRegisterRouter() {
     {
       title: "医嘱核对登记本",
       path: "/wardRegister/QCRG_04",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <YZHD />,
       payload: {
         registerCode: "QCRG_04"
@@ -66,7 +67,7 @@ export default function WardRegisterRouter() {
     {
       title: "床单位消毒登记本",
       path: "/wardRegister/QCRG_05",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <CDWXD />,
       payload: {
         registerCode: "QCRG_05"
@@ -75,7 +76,7 @@ export default function WardRegisterRouter() {
     {
       title: "紫外线空气消毒登记本",
       path: "/wardRegister/QCRG_06",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <ZWXKQ />,
       payload: {
         registerCode: "QCRG_06"
@@ -84,7 +85,7 @@ export default function WardRegisterRouter() {
     {
       title: "消毒隔离工作登记本",
       path: "/wardRegister/QCRG_07",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <XDGL />,
       payload: {
         registerCode: "QCRG_07"
@@ -93,7 +94,7 @@ export default function WardRegisterRouter() {
     {
       title: "出院患者登记本",
       path: "/wardRegister/QCRG_08",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <CYHZ />,
       payload: {
         registerCode: "QCRG_08"
@@ -102,7 +103,7 @@ export default function WardRegisterRouter() {
     {
       title: "备用药品管理登记本",
       path: "/wardRegister/QCRG_10",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <BYYP />,
       payload: {
         registerCode: "QCRG_10"
@@ -111,7 +112,7 @@ export default function WardRegisterRouter() {
     {
       title: "仪器设备使用登记",
       path: "/wardRegister/QCRG_11",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <YQSB />,
       payload: {
         registerCode: "QCRG_11"
@@ -120,7 +121,7 @@ export default function WardRegisterRouter() {
     {
       title: "急救车使用登记本",
       path: "/wardRegister/QCRG_12",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <JJCSY />,
       payload: {
         registerCode: "QCRG_12"
@@ -129,7 +130,7 @@ export default function WardRegisterRouter() {
     {
       title: "毒麻药品使用登记",
       path: "/wardRegister/QCRG_13",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <DMYP />,
       payload: {
         registerCode: "QCRG_13"
@@ -142,7 +143,7 @@ export default function WardRegisterRouter() {
         {
           title: "库房物品入库登记",
           path: "/wardRegister/QCRG_14_1",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_14_1"
           }
@@ -150,7 +151,7 @@ export default function WardRegisterRouter() {
         {
           title: "库房物品管理登记",
           path: "/wardRegister/QCRG_14_2",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_14_2"
           }
@@ -165,7 +166,7 @@ export default function WardRegisterRouter() {
         {
           title: "中医护理登记",
           path: "/wardRegister/QCRG_15_1",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_15_1"
           }
@@ -173,7 +174,7 @@ export default function WardRegisterRouter() {
         {
           title: "中医护理技术项目统计表",
           path: "/wardRegister/QCRG_15_2",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_15_2"
           }
@@ -181,7 +182,7 @@ export default function WardRegisterRouter() {
         {
           title: "中医护理方案季度评价总结表",
           path: "/wardRegister/QCRG_15_3",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_15_3"
           }
@@ -189,7 +190,7 @@ export default function WardRegisterRouter() {
         {
           title: "中医护理方案实施效果半年评价总结",
           path: "/wardRegister/QCRG_15_4",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_15_4"
           }
@@ -203,7 +204,7 @@ export default function WardRegisterRouter() {
         {
           title: "静脉治疗并发登记本",
           path: "/wardRegister/QCRG_16_1",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_16_1"
           }
@@ -211,7 +212,7 @@ export default function WardRegisterRouter() {
         {
           title: "静脉治疗月度统计登记",
           path: "/wardRegister/QCRG_16_2",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_16_2"
           }
@@ -219,7 +220,7 @@ export default function WardRegisterRouter() {
         {
           title: "静脉治疗月度统计登记",
           path: "/wardRegister/QCRG_16_3",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_16_3"
           }
@@ -231,7 +232,7 @@ export default function WardRegisterRouter() {
       title: "护患沟通记录",
       icon: <HHGT />,
       path: "/wardRegister/QCRG_17",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       payload: {
         registerCode: "QCRG_17"
       }
@@ -239,7 +240,7 @@ export default function WardRegisterRouter() {
     {
       title: "健康教育授课登记表",
       path: "/wardRegister/QCRG_18",
-      component: { ...HandoverRegister },
+      component: { ...物品交接登记本 },
       icon: <JKJY />,
       payload: {
         registerCode: "QCRG_18"
@@ -252,7 +253,7 @@ export default function WardRegisterRouter() {
         {
           title: "实习人员登记",
           path: "/wardRegister/QCRG_19_1",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_19_1"
           }
@@ -260,7 +261,7 @@ export default function WardRegisterRouter() {
         {
           title: "实习、进修人员、新职工、轮转职工登记",
           path: "/wardRegister/QCRG_19_1",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_19_2"
           }
@@ -268,7 +269,7 @@ export default function WardRegisterRouter() {
         {
           title: "新职工、轮转职工登记",
           path: "/wardRegister/QCRG_19_1",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_19_3"
           }
@@ -282,7 +283,7 @@ export default function WardRegisterRouter() {
         {
           title: "生命支持仪器交接登记",
           path: "/wardRegister/QCRG_20_1",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_20_1"
           }
@@ -290,7 +291,7 @@ export default function WardRegisterRouter() {
         {
           title: "生命支持仪器检查登记",
           path: "/wardRegister/QCRG_20_2",
-          component: { ...HandoverRegister },
+          component: { ...物品交接登记本 },
           payload: {
             registerCode: "QCRG_20_2"
           }

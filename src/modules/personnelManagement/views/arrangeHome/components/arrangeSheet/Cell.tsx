@@ -262,7 +262,13 @@ export default observer(function Cell(props: Props) {
           label: "复制格",
           type: "text",
           onClick() {
-            sheetViewModal.copyCell = sheetViewModal.selectedCell;
+            if (sheetViewModal.copyCellList.length) {
+              /** 多格子 */
+              sheetViewModal._copyCellList = [...sheetViewModal.copyCellList];
+            } else {
+              sheetViewModal.copyCell = sheetViewModal.selectedCell;
+              sheetViewModal._copyCellList = [];
+            }
             message.success("复制成功");
           }
         },
@@ -273,7 +279,7 @@ export default observer(function Cell(props: Props) {
           onClick() {
             /** 存在多个格子选中的情况下，优先复制多个格子 */
             if (
-              sheetViewModal.copyCellList.length &&
+              sheetViewModal._copyCellList.length &&
               sheetViewModal.selectedCell.userId
             ) {
               const [user, list] = sheetViewModal.getUser(
@@ -288,11 +294,11 @@ export default observer(function Cell(props: Props) {
 
                 let length = Math.min(
                   restList.length,
-                  sheetViewModal.copyCellList.length
+                  sheetViewModal._copyCellList.length
                 );
 
                 for (let i = 0; i < length; i++) {
-                  copyCellClick(restList[i], sheetViewModal.copyCellList[i]);
+                  copyCellClick(restList[i], sheetViewModal._copyCellList[i]);
                 }
               }
             }
