@@ -5,6 +5,8 @@ import _ from "lodash";
 import { cloneJson } from "src/utils/json/clone";
 import { message } from "src/vendors/antd";
 import { appStore } from "src/stores";
+import { sheetViewModal } from "../../viewModal/SheetViewModal";
+import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
 export function getAddArrangeMenuList(
   list: ArrangeItem[],
   selectedCellObj: ArrangeItem
@@ -109,6 +111,23 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
 
     if (appStore.HOSPITAL_ID == "wh") {
       cell.schAddOrSubs = cell.schAddOrSubs;
+    }
+
+    /** 序号同步 */
+    /** 判断是否生成编号 */
+    if (
+      cell.rangeName &&
+      sheetViewModal.selectedCell.userId &&
+      sheetViewModal.countArrangeNameList.includes(cell.rangeName)
+    ) {
+      resetArrangeCount(sheetViewModal.selectedCell.userId, cell.rangeName);
+    }
+    if (
+      copyCell.rangeName &&
+      sheetViewModal.selectedCell.userId &&
+      sheetViewModal.countArrangeNameList.includes(copyCell.rangeName)
+    ) {
+      resetArrangeCount(sheetViewModal.selectedCell.userId, copyCell.rangeName);
     }
   } else {
     message.warning("请先复制格");

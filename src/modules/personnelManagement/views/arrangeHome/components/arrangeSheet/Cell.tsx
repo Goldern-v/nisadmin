@@ -379,7 +379,9 @@ export default observer(function Cell(props: Props) {
       ) {
         sheetViewModal.copyCellList.push(sheetViewModal.selectedCell);
       }
-      sheetViewModal.copyCellList.push(cellObj);
+      if (!sheetViewModal.copyCellList.includes(cellObj)) {
+        sheetViewModal.copyCellList.push(cellObj);
+      }
     } else {
       sheetViewModal.copyCellList = [];
     }
