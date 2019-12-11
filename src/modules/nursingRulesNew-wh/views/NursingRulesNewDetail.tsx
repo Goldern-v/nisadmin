@@ -35,7 +35,7 @@ export default observer(function NursingRulesNewDetail() {
 
   //启用和删除权限 上传者和护理部
   let uploaderAuth = !!(baseInfo.upLoaderEmpNo == (authStore.getUser() && authStore.getUser().empNo)) as boolean
-  let absoluteAuth = !!authStore.isDepartment as boolean
+  let absoluteAuth = !!(authStore.isDepartment || authStore.isSupervisorNurse) as boolean
   let auth = !!(uploaderAuth || absoluteAuth) as boolean
 
   const indexSize = () => {
@@ -62,7 +62,7 @@ export default observer(function NursingRulesNewDetail() {
     }
   ]
 
-  if (auth) tabsCfg.push({
+  if (authStore.isDepartment) tabsCfg.push({
     name: `待审核章节(共${auditList.length}章)`,
     component: <Spin spinning={auditLoading}><AuditPannel /></Spin>
   })

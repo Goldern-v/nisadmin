@@ -154,15 +154,15 @@ export default observer(function NursingReportList() {
     {
       title: '操作',
       key: 'operation',
-      width: 90,
+      width: 70,
       align: 'center',
       render: (text: string, record: any) => {
         return <DoCon className="operate-group">
           <span onClick={() => handleReview(record)}>查看</span>
-          {isRoleManage && <React.Fragment>
+          {/* {isRoleManage && <React.Fragment>
             {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
             {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
-          </React.Fragment>}
+          </React.Fragment>} */}
           <span onClick={() => handleExport(record)}>导出</span>
         </DoCon>
       }
@@ -452,7 +452,7 @@ export default observer(function NursingReportList() {
           {isRoleManage && <div className="item">
             <Button type="primary" onClick={handleCreate}>新建</Button>
           </div>}
-          {isSupervisorNurse && <div className="item">
+          {/* {isSupervisorNurse && <div className="item">
             <Button onClick={() => setCommitVisible(true)}>提交</Button>
           </div>}
           {(isSupervisorNurse || isDepartment) && <div className="item">
@@ -465,7 +465,7 @@ export default observer(function NursingReportList() {
             <div className="item">
               <Button onClick={() => setArchiveVisible(true)}>汇总</Button>
             </div>
-          </div>}
+          </div>} */}
         </div>
       </div>
       <div className='main-contain'>

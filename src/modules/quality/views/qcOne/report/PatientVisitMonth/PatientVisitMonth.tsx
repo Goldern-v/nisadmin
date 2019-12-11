@@ -613,15 +613,15 @@ export default observer(function PatientVisitQuarter() {
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
         <Button type="primary" onClick={handleCreate}>新建</Button>
-        {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
+        {/* {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
           isSupervisorNurse || isDepartment
         ) &&
           <Button onClick={() => handleExportGather(true)}>片区导出</Button>
-        }
+        } */}
         {isDepartment && <React.Fragment>
           <Button onClick={() => handleExportGather()}>全院导出</Button>
-          <Button onClick={() => setArchiveVisible(true)}>汇总</Button>
+          {/* <Button onClick={() => setArchiveVisible(true)}>汇总</Button> */}
         </React.Fragment>}
       </RightIcon>
     </HeaderCon>

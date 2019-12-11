@@ -111,11 +111,11 @@ export default observer(function NursingReportDetailView() {
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' ? (
+          {/* {report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
               <Button onClick={onPublish}>提交</Button>
-            )}
+            )} */}
           <Button onClick={() => onPrint(true)}>打印</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
