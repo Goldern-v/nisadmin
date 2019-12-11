@@ -349,6 +349,7 @@ const Wrapper = styled.div`
   }
   .ant-table-fixed-left {
     box-shadow: none;
+    z-index: 0 !important;
   }
   /** fix table scroll bug */
   div.ant-table-body {

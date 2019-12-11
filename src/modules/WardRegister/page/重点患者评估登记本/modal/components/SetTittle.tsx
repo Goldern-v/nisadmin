@@ -19,6 +19,7 @@ import update from "immutability-helper";
 import { Place } from "src/components/common";
 import { observer } from "mobx-react-lite";
 import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
+import service from "src/services/api";
 export interface Props {
   blockId: any;
   registerCode: any;
@@ -30,7 +31,19 @@ export default observer(function SetTittle(props: Props) {
   const [dataSource, setDataSource]: any[] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [moveAble, setMoveAble] = useState(false);
+  const [empNameList, setEmpNameList] = useState([]);
   const { blockId, registerCode, onOkCallBack } = props;
+  const showEmpName = [
+    "责任护士",
+    "人员调配",
+    "责任组长",
+    "签名",
+    "护士长签名",
+    "责任人",
+    "消毒液擦拭床单位执行者",
+    "床单位消毒机消毒执行者"
+  ];
+
   const columns: ColumnProps<any>[] = [
     {
       title: "项目名称",
@@ -67,39 +80,26 @@ export default observer(function SetTittle(props: Props) {
         );
       }
     },
-    ...codeAdapter(
-      {
-        QCRG_01: [
-          {
-            title: "基数",
-            width: 100,
-            dataIndex: "checkSize",
-            className: "input-cell",
-            render(text: any, record: any, index: any) {
-              return (
-                <InputNumber
-                  defaultValue={text}
-                  onChange={value => {
-                    record.checkSize = value;
-                  }}
-                  onBlur={() => updateDataSource()}
-                />
-              );
-            }
-          }
-        ],
-        QCRG_02: []
-      },
-      registerCode
-    ),
-
     {
       title: "下拉选项预设值(值之前用;隔开)",
       dataIndex: "options",
       width: 300,
       className: "input-cell",
       render(text: any, record: any, index: any) {
-        return (
+        return showEmpName.includes(record.itemCode) ? (
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            onChange={(value: any) => {
+              record.options = value.join(";");
+              updateDataSource();
+            }}
+            value={text ? text.split(";") : []}
+            tokenSeparators={[";", "；"]}
+          >
+            {empNameOptions()}
+          </Select>
+        ) : (
           <Select
             mode="tags"
             style={{ width: "100%" }}
@@ -109,7 +109,7 @@ export default observer(function SetTittle(props: Props) {
             }}
             value={text ? text.split(";") : []}
             open={false}
-            tokenSeparators={[";"]}
+            tokenSeparators={[";", "；"]}
           />
         );
       }
@@ -168,12 +168,19 @@ export default observer(function SetTittle(props: Props) {
         setDataSource(res.data.itemList);
         setPageLoading(false);
       });
+    service.commonApiService
+      .userDictInfo(authStore.selectedDeptCode)
+      .then(res => setEmpNameList(res.data.map((item: any) => item.name)));
   };
 
   useEffect(() => {
     getData();
   }, []);
 
+  const empNameOptions = () =>
+    empNameList.map((item: any) => (
+      <Select.Option key={item}>{item}</Select.Option>
+    ));
   return (
     <Wrapper>
       <ToolCon>

@@ -89,13 +89,17 @@ export default observer(function HandoverRegister(props: Props) {
         title: item.itemCode,
         align: "center",
         className: "input-cell",
-        width: 100,
+        width: (15 * item.width || 50) + 8,
         dataIndex: item.itemCode,
         render(text: string, record: any, index: number) {
           return (
             <AutoComplete
               disabled={!!record.signerName}
-              dataSource={item.options ? item.options.split(";") : undefined}
+              dataSource={
+                item.options
+                  ? item.options.split(";").map((item: any) => item || " ")
+                  : undefined
+              }
               defaultValue={text}
               onChange={value => {
                 record[item.itemCode] = value;
@@ -106,59 +110,123 @@ export default observer(function HandoverRegister(props: Props) {
         }
       };
     }),
-    {
-      title: "护士长",
-      width: 100,
-      dataIndex: "signerName",
-      align: "center",
-      render(text: string, record: any, index: number) {
-        return text ? (
-          <div
-            className="sign-name"
-            onClick={() => {
-              globalModal
-                .confirm("交班签名取消", "你确定取消交班签名吗？")
-                .then(res => {
-                  wardRegisterService
-                    .cancelSign(registerCode, [{ id: record.id }])
-                    .then(res => {
-                      message.success("取消交班签名成功");
-                      Object.assign(record, res.data.list[0]);
-                      updateDataSource();
-                    });
-                });
-            }}
-          >
-            {text}
-          </div>
-        ) : (
-          <DoCon>
-            <span
-              onClick={() => {
-                globalModal
-                  .confirm("交班签名确认", "你确定交班签名吗？")
-                  .then(res => {
-                    wardRegisterService
-                      .saveAndSignAll(
-                        registerCode,
-                        selectedBlockId,
-                        [record],
-                        true
-                      )
+
+    ...codeAdapter(
+      {
+        QCRG_03: [
+          {
+            title: "护士长",
+            width: 70,
+            dataIndex: "signerName",
+            align: "center",
+            render(text: string, record: any, index: number) {
+              return text ? (
+                <div
+                  className="sign-name"
+                  onClick={() => {
+                    globalModal
+                      .confirm("交班签名取消", "你确定取消交班签名吗？")
                       .then(res => {
-                        message.success("交班签名成功");
-                        Object.assign(record, res.data.itemDataList[0]);
-                        updateDataSource();
+                        wardRegisterService
+                          .cancelSign(registerCode, [{ id: record.id }])
+                          .then(res => {
+                            message.success("取消交班签名成功");
+                            Object.assign(record, res.data.list[0]);
+                            updateDataSource();
+                          });
                       });
-                  });
-              }}
-            >
-              签名
-            </span>
-          </DoCon>
-        );
-      }
-    }
+                  }}
+                >
+                  {text}
+                </div>
+              ) : (
+                <DoCon>
+                  <span
+                    onClick={() => {
+                      globalModal
+                        .confirm("交班签名确认", "你确定交班签名吗？")
+                        .then(res => {
+                          wardRegisterService
+                            .saveAndSignAll(
+                              registerCode,
+                              selectedBlockId,
+                              [record],
+                              true
+                            )
+                            .then(res => {
+                              message.success("交班签名成功");
+                              Object.assign(record, res.data.itemDataList[0]);
+                              updateDataSource();
+                            });
+                        });
+                    }}
+                  >
+                    签名
+                  </span>
+                </DoCon>
+              );
+            }
+          }
+        ],
+        QCRG_04: [],
+        QCRG_05: [
+          {
+            title: "检查者签名",
+            width: 70,
+            dataIndex: "signerName",
+            align: "center",
+            render(text: string, record: any, index: number) {
+              return text ? (
+                <div
+                  className="sign-name"
+                  onClick={() => {
+                    globalModal
+                      .confirm("交班签名取消", "你确定取消交班签名吗？")
+                      .then(res => {
+                        wardRegisterService
+                          .cancelSign(registerCode, [{ id: record.id }])
+                          .then(res => {
+                            message.success("取消交班签名成功");
+                            Object.assign(record, res.data.list[0]);
+                            updateDataSource();
+                          });
+                      });
+                  }}
+                >
+                  {text}
+                </div>
+              ) : (
+                <DoCon>
+                  <span
+                    onClick={() => {
+                      globalModal
+                        .confirm("交班签名确认", "你确定交班签名吗？")
+                        .then(res => {
+                          wardRegisterService
+                            .saveAndSignAll(
+                              registerCode,
+                              selectedBlockId,
+                              [record],
+                              true
+                            )
+                            .then(res => {
+                              message.success("交班签名成功");
+                              Object.assign(record, res.data.itemDataList[0]);
+                              updateDataSource();
+                            });
+                        });
+                    }}
+                  >
+                    签名
+                  </span>
+                </DoCon>
+              );
+            }
+          }
+        ]
+      },
+      registerCode
+    )
   ];
 
   const onInitData = async () => {
@@ -252,7 +320,10 @@ export default observer(function HandoverRegister(props: Props) {
   };
 
   const createRow = () => {
-    setDataSource([...dataSource, {}]);
+    setDataSource([
+      ...dataSource,
+      { recordDate: moment().format("YYYY-MM-DD") }
+    ]);
   };
 
   useEffect(() => {
@@ -296,7 +367,7 @@ export default observer(function HandoverRegister(props: Props) {
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
-        <DeptSelect onChange={() => {}} style={{ width: 100 }} />
+        <DeptSelect onChange={() => {}} style={{ width: 150 }} />
         <span className="label">危重程度</span>
         <Select
           style={{ width: 70, minWidth: 70 }}
@@ -376,6 +447,7 @@ export default observer(function HandoverRegister(props: Props) {
             dataSource={dataSource}
             columns={columns}
             surplusHeight={220}
+            surplusWidth={300}
             pagination={{
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,

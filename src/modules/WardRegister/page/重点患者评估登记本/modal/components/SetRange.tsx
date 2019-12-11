@@ -69,7 +69,7 @@ export default observer(function SetRange(props: Props) {
               updateDataSource();
             }}
             value={text ? text.split(";") : []}
-            tokenSeparators={[";"]}
+            tokenSeparators={[";", "；"]}
           >
             {(rangeDictMap[record.itemCode] || []).map((item: any) => {
               return <Select.Option key={item.id}>{item.name}</Select.Option>;

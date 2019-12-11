@@ -277,7 +277,7 @@ export default observer(function SelectCon() {
         <div className="item">
           <div className="label">科室：</div>
           <div className="content">
-            <DeptSelect onChange={handleChange} />
+            <DeptSelect onChange={handleChange} style={{ width: 160 }} />
           </div>
         </div>
         <div className="item">
@@ -287,7 +287,7 @@ export default observer(function SelectCon() {
               value={selectViewModal.params.group}
               onChange={handleGroupChange}
               showSearch
-              style={{ width: 150 }}
+              style={{ width: 100 }}
             >
               <Select.Option key="全部" value="">
                 全部
@@ -324,7 +324,7 @@ export default observer(function SelectCon() {
 
         <div className="item">
           <Button className="statistics getExcel" onClick={exportExcel}>
-            导出科室Excel
+            导出科室
           </Button>
         </div>
         {appStore.HOSPITAL_ID == "wh" && (
@@ -333,7 +333,7 @@ export default observer(function SelectCon() {
               className="statistics getExcel"
               overlay={bigDeptmenu}
             >
-              导出片区Excel
+              导出片区
             </Dropdown.Button>
           </div>
         )}

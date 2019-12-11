@@ -16,10 +16,7 @@ import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import BaseTabs from "src/components/BaseTabs";
-import Table from "src/modules/quality/views/qcOne/report/NursingReportDetail/components/护理工作计划/Table";
 import SetTittle from "./components/SetTittle";
-import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
-import { authStore } from "src/stores";
 import SetRange from "./components/SetRange";
 
 const Option = Select.Option;
@@ -53,18 +50,18 @@ export default function SettingModal(props: Props) {
             />
           ),
           index: 1
-        },
-        {
-          title: "交班班次与提醒设置",
-          component: (
-            <SetRange
-              blockId={blockId}
-              registerCode={registerCode}
-              onOkCallBack={onOkCallBack}
-            />
-          ),
-          index: 2
         }
+        // {
+        //   title: "交班班次与提醒设置",
+        //   component: (
+        //     <SetRange
+        //       blockId={blockId}
+        //       registerCode={registerCode}
+        //       onOkCallBack={onOkCallBack}
+        //     />
+        //   ),
+        //   index: 2
+        // }
       ]
     : [];
 

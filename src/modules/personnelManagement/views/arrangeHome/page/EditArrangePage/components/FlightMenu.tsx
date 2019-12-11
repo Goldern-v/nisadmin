@@ -75,6 +75,7 @@ function MenuCon(props: { dataSource: any[] }) {
       sheetViewModal.selectedCell && sheetViewModal.selectedCell!.rangeName;
     if (sheetViewModal.selectedCell) {
       sheetViewModal.selectedCell!.rangeName = item.name;
+      sheetViewModal.selectedCell!.rangeNameCode = null;
       sheetViewModal.selectedCell!.nameColor = item.nameColor;
       sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime;
       sheetViewModal.selectedCell!.effectiveTimeOld = item.effectiveTime;

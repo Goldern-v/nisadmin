@@ -66,6 +66,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
   if (list.length && copyRow.length) {
     for (let i = 0; i < list.length; i++) {
       list[i].rangeName = copyRow[i].rangeName;
+      list[i].rangeNameCode = null;
       list[i].nameColor = copyRow[i].nameColor;
       list[i].effectiveTime = copyRow[i].effectiveTime;
       list[i].effectiveTimeOld = copyRow[i].effectiveTimeOld;
@@ -80,6 +81,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       if (isClean) {
         /** 清空复制行 */
         copyRow[i].rangeName = "";
+        copyRow[i].rangeNameCode = null;
         copyRow[i].nameColor = "";
         copyRow[i].effectiveTime = null;
         copyRow[i].effectiveTimeOld = null;
@@ -90,6 +92,17 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         if (appStore.HOSPITAL_ID == "wh") {
           copyRow[i].schAddOrSubs = [];
         }
+      } /** 序号同步 */
+      /** 判断是否生成编号 */
+      if (
+        list[i].rangeName &&
+        sheetViewModal.selectedCell.userId &&
+        sheetViewModal.countArrangeNameList.includes(list[i].rangeName)
+      ) {
+        resetArrangeCount(
+          sheetViewModal.selectedCell.userId,
+          list[i].rangeName
+        );
       }
     }
     if (isClean) {
@@ -102,6 +115,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
 export function copyCellClick(cell: ArrangeItem, copyCell: any) {
   if (copyCell) {
     cell.rangeName = copyCell.rangeName;
+    cell.rangeNameCode = null;
     cell.nameColor = copyCell.nameColor;
     cell.effectiveTime = copyCell.effectiveTime;
     cell.effectiveTimeOld = copyCell.effectiveTimeOld;
@@ -136,6 +150,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
 
 export function cleanCell(cellObj: ArrangeItem) {
   cellObj.rangeName = "";
+  cellObj.rangeNameCode = null;
   cellObj.nameColor = "";
   cellObj.effectiveTime = null;
   cellObj.effectiveTimeOld = null;

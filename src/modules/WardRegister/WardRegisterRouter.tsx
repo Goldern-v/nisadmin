@@ -58,7 +58,7 @@ export default function WardRegisterRouter() {
     {
       title: "医嘱核对登记本",
       path: "/wardRegister/QCRG_04",
-      component: { ...物品交接登记本 },
+      component: { ...重点患者评估登记本 },
       icon: <YZHD />,
       payload: {
         registerCode: "QCRG_04"
@@ -67,7 +67,7 @@ export default function WardRegisterRouter() {
     {
       title: "床单位消毒登记本",
       path: "/wardRegister/QCRG_05",
-      component: { ...物品交接登记本 },
+      component: { ...重点患者评估登记本 },
       icon: <CDWXD />,
       payload: {
         registerCode: "QCRG_05"
