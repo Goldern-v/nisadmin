@@ -399,7 +399,7 @@ export default observer(function Cell(props: Props) {
     <div>
       <div>
         备注:
-        {cellObj.detail && <span>{cellObj.detail}</span>}
+        {cellObj.detail && <span>{cellObj.detail || ""}</span>}
         {!cellObj.detail && <span style={{ color: "#999" }}>无</span>}
       </div>
     </div>
@@ -427,8 +427,8 @@ export default observer(function Cell(props: Props) {
           : 0) +
         "h" +
         "," +
-        `现：${cellObj.effectiveTime}h,` +
-        `原：${cellObj.effectiveTimeOld}h`
+        `现：${cellObj.effectiveTime || 0}h,` +
+        `原：${cellObj.effectiveTimeOld || 0}h`
       );
     }
   });

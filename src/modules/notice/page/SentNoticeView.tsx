@@ -179,9 +179,13 @@ export default function SentNoticeView() {
     setFileList([...fileList]);
   };
   const onBack = () => {
-    templateId
-      ? appStore.history.push(`/notice?selectedMenu=草稿箱&id=${templateId}`)
-      : appStore.history.push("/notice");
+    if (templateType == "转发") {
+      appStore.history.push("/notice");
+    } else {
+      templateId
+        ? appStore.history.push(`/notice?selectedMenu=草稿箱&id=${templateId}`)
+        : appStore.history.push("/notice");
+    }
   };
 
   const onDeselect = (user: User | User[]) => {
