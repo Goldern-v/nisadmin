@@ -17,7 +17,7 @@ import { useKeepAliveEffect } from 'react-keep-alive'
 
 import ReportCreateModal from './components/ReportCreateModal'
 import { globalModal } from 'src/global/globalModal'
-import { qcOneSelectViewModal } from './../../QcOneSelectViewModal'
+import { qcOneSelectViewModal, statusListAuth } from './../../QcOneSelectViewModal'
 import CommitModal from './../../components/CommitModal'
 import ArchiveModal from './../../components/ArchiveModal'
 import { fileDownload } from 'src/utils/file/file'
@@ -29,7 +29,8 @@ const Option = Select.Option
 
 export default observer(function BadEventReport() {
   const { history } = appStore
-  const { wardCode, statusList, statusObj } = qcOneSelectViewModal
+  const { wardCode, statusObj } = qcOneSelectViewModal
+  const statusList = statusListAuth(authStore)
   const {
     deptList, //权限科室列表
     isRoleManage, //是否护士长
@@ -361,7 +362,7 @@ export default observer(function BadEventReport() {
           onChange={(status: string) => setQuery({ ...query, status })}
           style={{ width: '110px' }}>
           <Option value=''>全部</Option>
-          {statusList.map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
+          {statusList.filter((item: any) => !item.disabled).map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
         </Select>
         <span>科室:</span>
         {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}

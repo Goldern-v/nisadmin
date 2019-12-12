@@ -31,6 +31,20 @@ const TextArea = Input.TextArea
 export default observer(function PatientVisitQuarter() {
   const { history } = appStore
   const { wardCode, statusList, statusObj } = qcOneSelectViewModal
+
+  const [_statusList, set_statusList] = useState(statusList.map((item: any) => {
+    let disabled = true
+
+    if (item.code == '0' && !authStore.isDepartment) disabled = false
+
+    return {
+      name: item.name,
+      code: item.code,
+      disabled
+    }
+  }))
+
+
   const {
     deptList, //权限科室列表
     isRoleManage, //是否护士长
@@ -588,7 +602,7 @@ export default observer(function PatientVisitQuarter() {
           onChange={(status: string) => setQuery({ ...query, status })}
           style={{ width: '110px' }}>
           <Option value=''>全部</Option>
-          {statusList.map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
+          {_statusList.filter((item: any) => !item.disabled).map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
         </Select>
         <span>科室:</span>
         {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
