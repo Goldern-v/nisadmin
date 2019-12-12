@@ -120,7 +120,7 @@ export function onResponseRejected(error: Error) {
   //   placement: 'bottomRight',
   //   description: `code: ${(error as any).response.status} ${(error as any).response.statusText}`,
   //   onClick: () => {
-  console.log("服务器开小差了", JSON.stringify(error as any));
+  // console.log("服务器开小差了", JSON.stringify(error as any));
   message.warning("服务器开小差了 ");
   //   }
   // })

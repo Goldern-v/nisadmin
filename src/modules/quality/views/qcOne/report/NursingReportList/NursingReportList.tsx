@@ -431,7 +431,7 @@ export default observer(function NursingReportList() {
               </Select>
             </div>
           </div>
-          <div className='item'>
+          {/* <div className='item'>
             <div className='label'>状态：</div>
             <div className='content'>
               <Select
@@ -445,7 +445,7 @@ export default observer(function NursingReportList() {
                 {statusList.map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
               </Select>
             </div>
-          </div>
+          </div> */}
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>

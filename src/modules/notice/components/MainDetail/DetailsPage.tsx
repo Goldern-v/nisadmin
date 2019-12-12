@@ -93,7 +93,7 @@ export default function DetailsPage(props: Props) {
       <ToolCon>
         <Tooltip placement="bottom" title="转发">
           <div className="item-box" onClick={() => editMail("转发")}>
-            <img src={require("./images/编辑.png")} alt="" />
+            <img src={require("./images/转发.png")} alt="" />
           </div>
         </Tooltip>
         {data.showType == "草" && (

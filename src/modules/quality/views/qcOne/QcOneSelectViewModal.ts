@@ -5,6 +5,16 @@ import User from 'src/models/User'
 import { observable, computed, action } from 'mobx'
 import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import moment from 'moment'
+import AuthStore from 'src/stores/AuthStore'
+
+export const statusListAuth = (authStore: AuthStore) => {
+  return [
+    { name: '已保存', code: '0', disabled: authStore.isSupervisorNurse || authStore.isDepartment },
+    { name: '病区已提交', code: '1', disabled: authStore.isDepartment },
+    { name: '科护长已提交', code: '2' },
+    { name: '已归档', code: '3' },
+  ]
+}
 
 class QcOneSelectViewModal {
   @observable public startDate: string = getCurrentMonthNow()[0].format('YYYY-MM-DD')
@@ -35,8 +45,8 @@ class QcOneSelectViewModal {
   ]
 
   @observable public statusList = [
-    { name: '已保存', code: '0' },
-    { name: '病区已提交', code: '1' },
+    { name: '已保存', code: '0', disabled: authStore.isSupervisorNurse || authStore.isDepartment },
+    { name: '病区已提交', code: '1', disabled: authStore.isDepartment },
     { name: '科护长已提交', code: '2' },
     { name: '已归档', code: '3' },
   ]
