@@ -42,7 +42,7 @@ export default observer(function SafetyCheckReport() {
     pageIndex: 1,
     status: '',
     year: moment().format('YYYY'),
-    month: moment().quarter().toString(),
+    month: '',
     pageSize: 20,
   } as any
 

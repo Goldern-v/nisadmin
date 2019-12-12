@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, Modal, message as Message } from 'antd'
+import { Button, Input, Modal, message as Message, Icon, Tag } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { appStore, authStore } from 'src/stores'
 import { nursingRulesApiService } from './api/nursingRulesNewService'
@@ -90,6 +90,10 @@ export default observer(function nursingRulesNew() {
     history.push(`nursingRulesNewDetail?${qs.stringify({ bookId })}`)
   }
 
+  const handleAudit = (bookId: string) => {
+    history.push(`nursingRulesNewDetail?${qs.stringify({ bookId, tab: 3 })}`)
+  }
+
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -104,7 +108,22 @@ export default observer(function nursingRulesNew() {
       key: 'bookName',
       dataIndex: 'bookName',
       align: 'left',
-      render: (text: string) => <div className='rule-name' title={text}>{text}</div>
+      render: (text: string, record: any) =>
+        <div className='rule-name' title={text}>
+          {text}
+          <span> </span>
+          {record.toAuditChapters && authStore.isDepartment &&
+            <Tag
+              color="#f00"
+              style={{
+                lineHeight: '14px',
+                padding: '0 4px'
+              }}
+              onClick={() => handleAudit(record.id)}
+              title={`有${record.toAuditChapters}个章节待审核`}>
+              {record.toAuditChapters}
+            </Tag>}
+        </div>
     },
     {
       title: '上传人',
@@ -158,8 +177,18 @@ export default observer(function nursingRulesNew() {
           deleteBook(record)
         }}>删除</span>
 
+        let needAudit = authStore.isDepartment && record.toAuditChapters
+
+        let auditSpan = <span
+          className={needAudit ? '' : 'disable'}
+          title='审核'
+          onClick={() => needAudit && handleAudit(record.id)}>
+          <Icon type="audit" />
+        </span>
+
         return <DoCon>
           <span onClick={() => handleDetailView(record.id)}>查看</span>
+          {auditSpan}
           {settingSpan}
           {deleteSpan}
         </DoCon>
