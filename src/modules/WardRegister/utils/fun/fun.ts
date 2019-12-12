@@ -71,6 +71,9 @@ export function getFun(context: any) {
         setItemConfigList(res.data.itemConfigList);
         setRangeConfigList(res.data.rangeConfigList);
         setPageLoading(false);
+        if (res.data.itemDataPage.list.length == 0) {
+          createRow();
+        }
       });
   };
 

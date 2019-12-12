@@ -11,6 +11,9 @@ export default function FilterItem(props: any) {
     .label {
       font-weight: bold;
       margin-right: 10px;
+      min-width: 55px;
+      display: inline-block;
+      text-align: right;
     }
   `;
   return (

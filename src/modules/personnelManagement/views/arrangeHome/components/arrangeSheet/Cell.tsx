@@ -300,6 +300,7 @@ export default observer(function Cell(props: Props) {
                 for (let i = 0; i < length; i++) {
                   copyCellClick(restList[i], sheetViewModal._copyCellList[i]);
                 }
+                sheetViewModal.selectedCell = {};
               }
             } else {
               copyCellClick(

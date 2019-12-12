@@ -26,6 +26,7 @@ import { NullBox } from "../../components/NullBox";
 import { TableCon, Wrapper } from "../../utils/style/style";
 import { getFun } from "../../utils/fun/fun";
 import { createFilterItem } from "../../components/FilterItem";
+import classNames from "classnames";
 export interface Props {
   payload: any;
 }
@@ -94,6 +95,33 @@ export default observer(function 重点患者评估登记本(props: Props) {
       getPage();
     }
   );
+  const yzlxFilterItem = createFilterItem(
+    "医嘱类型",
+    itemConfigList,
+    rangConfigList,
+    () => {
+      setPopoverVisible(false);
+      getPage();
+    }
+  );
+  const zgFilterItem = createFilterItem(
+    "转归",
+    itemConfigList,
+    rangConfigList,
+    () => {
+      setPopoverVisible(false);
+      getPage();
+    }
+  );
+  const ypglflFilterItem = createFilterItem(
+    "药品管理分类",
+    itemConfigList,
+    rangConfigList,
+    () => {
+      setPopoverVisible(false);
+      getPage();
+    }
+  );
 
   const popoverContent = codeAdapter(
     {
@@ -107,12 +135,41 @@ export default observer(function 重点患者评估登记本(props: Props) {
       QCRG_04: (
         <div>
           <bcFilterItem.Component />
+          <yzlxFilterItem.Component />
         </div>
       ),
-      QCRG_05: null
+      QCRG_05: null,
+      QCRG_08: (
+        <div>
+          <zgFilterItem.Component />
+        </div>
+      ),
+      QCRG_10: (
+        <div>
+          <ypglflFilterItem.Component />
+        </div>
+      )
     },
     registerCode
   );
+
+  /** 判断是否快过期 */
+  const isEndTime = (current: string, endTime: string) => {
+    var currentDate = moment(current);
+    var endTimeDate = moment(endTime);
+    if (
+      currentDate.isValid() &&
+      endTimeDate.isValid() &&
+      current &&
+      endTime &&
+      registerCode == "QCRG_10"
+    ) {
+      let m = endTimeDate.diff(currentDate, "M");
+      if (m < 1) return "color-red";
+      if (m < 3) return "color-orange";
+    }
+    return "";
+  };
 
   const columns: ColumnProps<any>[] | any = [
     {
@@ -130,6 +187,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               record.recordDate = value;
             }}
             onBlur={() => updateDataSource()}
+            className={isEndTime(record.recordDate, record.有效期) || ""}
           />
         );
       }
@@ -137,8 +195,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     codeAdapter(
       {
         QCRG_04: {
-          title: "头部",
-          colSpan: 0,
+          title: "班次",
           width: 73,
           dataIndex: "range",
           align: "center"
@@ -156,7 +213,13 @@ export default observer(function 重点患者评估登记本(props: Props) {
         render(text: string, record: any, index: number) {
           return (
             <AutoComplete
-              className={text == "未完成" ? "warning-value" : ""}
+              className={classNames({
+                "warning-value": text == "未完成",
+                [isEndTime(record.recordDate, record.有效期)]: isEndTime(
+                  record.recordDate,
+                  record.有效期
+                )
+              })}
               disabled={!!record.signerName}
               dataSource={
                 item.options
@@ -229,7 +292,28 @@ export default observer(function 重点患者评估登记本(props: Props) {
             updateDataSource,
             selectedBlockId
           })
-        ]
+        ],
+        QCRG_10: [
+          signRowObj({
+            title: "备注者签名",
+            width: 70,
+            dataIndex: "signerName",
+            aside: "备注者",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          }),
+          signRowObj({
+            title: "护士长签名",
+            width: 70,
+            dataIndex: "auditorName",
+            aside: "护士长",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
+        other: []
       },
       registerCode
     )
@@ -376,4 +460,13 @@ export default observer(function 重点患者评估登记本(props: Props) {
   );
 });
 
-const Container = styled(Wrapper)``;
+const Container = styled(Wrapper)`
+  .color-red,
+  .color-red * {
+    color: red !important;
+  }
+  .color-orange,
+  .color-orange * {
+    color: orange !important;
+  }
+`;

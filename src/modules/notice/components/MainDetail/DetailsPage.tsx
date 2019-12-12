@@ -1,211 +1,239 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Tooltip, message } from 'antd'
-import { DetailObj } from '../../type'
-import { authStore, appStore } from 'src/stores'
-import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
-import service from 'src/services/api'
-import { FileItem } from '../../page/SentNoticeView'
-import { noticeService } from '../../serveices/NoticeService'
-import { noticeViewModel } from '../../NoticeViewModel'
-import { globalModal } from 'src/global/globalModal'
-import Zimage from 'src/components/Zimage'
-import moment from 'moment'
-import createModal from 'src/libs/createModal'
-import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import { Tooltip, message } from "antd";
+import { DetailObj } from "../../type";
+import { authStore, appStore } from "src/stores";
+import { getFileSize, getFileType, getFilePrevImg } from "src/utils/file/file";
+import service from "src/services/api";
+import { FileItem } from "../../page/SentNoticeView";
+import { noticeService } from "../../serveices/NoticeService";
+import { noticeViewModel } from "../../NoticeViewModel";
+import { globalModal } from "src/global/globalModal";
+import Zimage from "src/components/Zimage";
+import moment from "moment";
+import createModal from "src/libs/createModal";
+import PreviewModal from "src/utils/file/modal/PreviewModal";
 export interface Props {
-  data: DetailObj
+  data: DetailObj;
 }
 
 export default function DetailsPage(props: Props) {
-  let { data } = props
-  const [collected, setCollected] = useState(data.collected)
+  let { data } = props;
+  const [collected, setCollected] = useState(data.collected);
 
-  const previewModal = createModal(PreviewModal)
+  const previewModal = createModal(PreviewModal);
   /** 是否5分钟之内 */
-  let isFiveMin = false
+  let isFiveMin = false;
   if (moment().valueOf() - moment(data.sendTime).valueOf() < 1000 * 60 * 5) {
-    isFiveMin = true
+    isFiveMin = true;
   }
 
   const downFile = (path: string, name: string) => {
-    service.commonApiService.getFileAndDown(path, name)
-  }
+    service.commonApiService.getFileAndDown(path, name);
+  };
   const lotDown = (files: FileItem[]) => {
-    files.forEach((file) => {
-      service.commonApiService.getFileAndDown(file.path, file.name)
-    })
-  }
+    files.forEach(file => {
+      service.commonApiService.getFileAndDown(file.path, file.name);
+    });
+  };
   const removeMail = () => {
-    globalModal.confirm('确认删除', '确认删除该邮箱?').then((res) => {
-      if (!data.id) return
-      noticeService.removeMail(data.id, data.showType).then((res) => {
-        message.success('删除消息成功')
-        noticeViewModel.detailObj = {}
-        noticeViewModel.refreshCurrentListObj()
-      })
-    })
-  }
+    globalModal.confirm("确认删除", "确认删除该邮箱?").then(res => {
+      if (!data.id) return;
+      noticeService.removeMail(data.id, data.showType).then(res => {
+        message.success("删除消息成功");
+        noticeViewModel.detailObj = {};
+        noticeViewModel.refreshCurrentListObj();
+      });
+    });
+  };
   const revokeMail = () => {
-    globalModal.confirm('确认撤回', '确认撤回该邮箱?').then((res) => {
-      if (!data.id) return
-      noticeService.revokeMail(data.id).then((res) => {
-        message.success('撤回消息成功')
-        noticeViewModel.detailObj = {}
-        noticeViewModel.refreshCurrentListObj()
-      })
-    })
-  }
+    globalModal.confirm("确认撤回", "确认撤回该邮箱?").then(res => {
+      if (!data.id) return;
+      noticeService.revokeMail(data.id).then(res => {
+        message.success("撤回消息成功");
+        noticeViewModel.detailObj = {};
+        noticeViewModel.refreshCurrentListObj();
+      });
+    });
+  };
   const collectMail = () => {
-    if (!data.id) return
+    if (!data.id) return;
     collected
-      ? noticeService.revokeCollect(data.id).then((res) => {
-          message.success('取消收藏消息成功')
-          setCollected(!collected)
-          noticeViewModel.refreshCurrentListObj()
+      ? noticeService.revokeCollect(data.id).then(res => {
+          message.success("取消收藏消息成功");
+          setCollected(!collected);
+          noticeViewModel.refreshCurrentListObj();
         })
-      : noticeService.collectMail(data.id).then((res) => {
-          message.success('收藏消息成功')
-          setCollected(!collected)
-          noticeViewModel.refreshCurrentListObj()
-        })
-  }
+      : noticeService.collectMail(data.id).then(res => {
+          message.success("收藏消息成功");
+          setCollected(!collected);
+          noticeViewModel.refreshCurrentListObj();
+        });
+  };
 
   const editMail = (templateType: string) => {
-    appStore.history.push(`/sentNotice?templateId=${data.id}&templateType=${templateType}`)
-  }
+    appStore.history.push(
+      `/sentNotice?templateId=${data.id}&templateType=${templateType}`
+    );
+  };
 
-  const onPreView = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, file: any) => {
+  const onPreView = (
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>,
+    file: any
+  ) => {
     previewModal.show({
       title: file.name,
       path: file.path
-    })
-    e.stopPropagation()
-  }
+    });
+    e.stopPropagation();
+  };
   return (
     <Wrapper>
       <ToolCon>
-        {data.showType == '草' && (
-          <Tooltip placement='bottom' title='编辑'>
-            <div className='item-box' onClick={() => editMail('草')}>
-              <img src={require('./images/编辑.png')} alt='' />
+        <Tooltip placement="bottom" title="转发">
+          <div className="item-box" onClick={() => editMail("转发")}>
+            <img src={require("./images/编辑.png")} alt="" />
+          </div>
+        </Tooltip>
+        {data.showType == "草" && (
+          <Tooltip placement="bottom" title="编辑">
+            <div className="item-box" onClick={() => editMail("草")}>
+              <img src={require("./images/编辑.png")} alt="" />
             </div>
           </Tooltip>
         )}
-        {data.showType == '发' && (
-          <Tooltip placement='bottom' title='再次编辑'>
-            <div className='item-box' onClick={() => editMail('发')}>
-              <img src={require('./images/编辑.png')} alt='' />
+        {data.showType == "发" && (
+          <Tooltip placement="bottom" title="再次编辑">
+            <div className="item-box" onClick={() => editMail("发")}>
+              <img src={require("./images/编辑.png")} alt="" />
             </div>
           </Tooltip>
         )}
-        {data.showType == '发' && (
-          <Tooltip placement='bottom' title='撤销'>
-            <div className='item-box' onClick={revokeMail}>
-              <img src={require('./images/撤销.png')} alt='' />
+        {data.showType == "发" && (
+          <Tooltip placement="bottom" title="撤销">
+            <div className="item-box" onClick={revokeMail}>
+              <img src={require("./images/撤销.png")} alt="" />
             </div>
           </Tooltip>
         )}
 
-        {data.showType != '草' &&
-          data.showType != '发' &&
+        {data.showType != "草" &&
+          data.showType != "发" &&
           (collected ? (
-            <Tooltip placement='bottom' title='取消收藏'>
-              <div className='item-box' onClick={collectMail}>
-                <img src={require('./images/已收藏.png')} alt='' />
+            <Tooltip placement="bottom" title="取消收藏">
+              <div className="item-box" onClick={collectMail}>
+                <img src={require("./images/已收藏.png")} alt="" />
               </div>
             </Tooltip>
           ) : (
-            <Tooltip placement='bottom' title='收藏'>
-              <div className='item-box' onClick={collectMail}>
-                <img src={require('./images/收藏.png')} alt='' />
+            <Tooltip placement="bottom" title="收藏">
+              <div className="item-box" onClick={collectMail}>
+                <img src={require("./images/收藏.png")} alt="" />
               </div>
             </Tooltip>
           ))}
-        {data.showType != '藏' && (
-          <Tooltip placement='bottom' title='删除'>
-            <div className='item-box' onClick={removeMail}>
-              <img src={require('./images/删除.png')} alt='' />
+        {data.showType != "藏" && (
+          <Tooltip placement="bottom" title="删除">
+            <div className="item-box" onClick={removeMail}>
+              <img src={require("./images/删除.png")} alt="" />
             </div>
           </Tooltip>
         )}
       </ToolCon>
-      <HeadCon>{data.title || <span style={{ color: '#bfbfbf' }}>(暂无主题)</span>}</HeadCon>
+      <HeadCon>
+        {data.title || <span style={{ color: "#bfbfbf" }}>(暂无主题)</span>}
+      </HeadCon>
       <PageCon>
         <InfoCon>
           <img
             src={
-              data.showType == '收'
+              data.showType == "收"
                 ? data.nearImageUrl
                   ? data.nearImageUrl
-                  : require('src/assets/images/护士默认头像.png')
+                  : require("src/assets/images/护士默认头像.png")
                 : authStore.user && authStore.user.nearImageUrl
                 ? authStore.user.nearImageUrl
-                : require('src/assets/images/护士默认头像.png')
+                : require("src/assets/images/护士默认头像.png")
             }
-            className='head-img'
-            alt=''
+            className="head-img"
+            alt=""
           />
-          <div className='text-con'>
-            <div className='name'>{data.senderName}</div>
-            <div className='aside'>{data.sendTime}</div>
+          <div className="text-con">
+            <div className="name">{data.senderName}</div>
+            <div className="aside">{data.sendTime}</div>
           </div>
         </InfoCon>
 
-        {(data.showType == '发' || data.showType == '草') && (
+        {(data.showType == "发" || data.showType == "草") && (
           <Tooltip
-            overlayClassName={'largeTip'}
-            placement='bottom'
-            title={(data!.receiverList || []).map((item) => item.empName).join(',')}
+            overlayClassName={"largeTip"}
+            placement="bottom"
+            title={(data!.receiverList || [])
+              .map(item => item.empName)
+              .join(",")}
           >
-            <Aside style={{ cursor: 'pointer' }}>
+            <Aside style={{ cursor: "pointer" }}>
               发送给
-              {(data!.receiverList || []).slice(0, 12).map((item, index, arr) => {
-                return arr.length !== index + 1 ? (
-                  <span key={index}>{item.empName}，</span>
-                ) : (
-                  <span key={index}>{item.empName}</span>
-                )
-              })}
-              {(data!.receiverList || []).length > 12 && <span>...等{(data!.receiverList || []).length}人</span>}
+              {(data!.receiverList || [])
+                .slice(0, 12)
+                .map((item, index, arr) => {
+                  return arr.length !== index + 1 ? (
+                    <span key={index}>{item.empName}，</span>
+                  ) : (
+                    <span key={index}>{item.empName}</span>
+                  );
+                })}
+              {(data!.receiverList || []).length > 12 && (
+                <span>...等{(data!.receiverList || []).length}人</span>
+              )}
             </Aside>
           </Tooltip>
         )}
-        {data.showType == '发' && (
+        {data.showType == "发" && (
           <Aside>
             {data.readReceiverSize}人已读，{data.unreadReceiverSize}人未读
           </Aside>
         )}
 
         <Line />
-        <TextCon>{data.content || <span style={{ color: '#bfbfbf' }}>(暂无内容)</span>}</TextCon>
+        <TextCon>
+          {data.content || <span style={{ color: "#bfbfbf" }}>(暂无内容)</span>}
+        </TextCon>
         {data.attachmentList && data.attachmentList.length > 0 && (
           <FooterCon>
             <Line />
-            <div className='title'>
-              <img className='icon' src={require('./images/附件.png')} alt='' />
+            <div className="title">
+              <img className="icon" src={require("./images/附件.png")} alt="" />
               <span>附件({data.attachmentList.length})：</span>
-              <span className='down-all-text' onClick={() => data.attachmentList && lotDown(data.attachmentList)}>
+              <span
+                className="down-all-text"
+                onClick={() =>
+                  data.attachmentList && lotDown(data.attachmentList)
+                }
+              >
                 批量下载
               </span>
             </div>
             <FileCon>
               {data.attachmentList.map((item: any, index: number) => (
-                <div className='file-box' key={index}>
-                  <div className='file-inner' onClick={() => downFile(item.path, item.name)}>
-                    {getFileType(item.path) == 'img' ? (
-                      <Zimage src={item.path} className='type-img' alt='' />
+                <div className="file-box" key={index}>
+                  <div
+                    className="file-inner"
+                    onClick={() => downFile(item.path, item.name)}
+                  >
+                    {getFileType(item.path) == "img" ? (
+                      <Zimage src={item.path} className="type-img" alt="" />
                     ) : (
                       <img
                         src={getFilePrevImg(item.path)}
-                        className='type-img'
-                        alt=''
-                        onClick={(e) => onPreView(e, item)}
+                        className="type-img"
+                        alt=""
+                        onClick={e => onPreView(e, item)}
                       />
                     )}
-                    <div className='file-name'>{item.name}</div>
-                    <div className='file-size'>{getFileSize(item.size)}</div>
+                    <div className="file-name">{item.name}</div>
+                    <div className="file-size">{getFileSize(item.size)}</div>
                   </div>
                 </div>
               ))}
@@ -215,13 +243,13 @@ export default function DetailsPage(props: Props) {
       </PageCon>
       <previewModal.Component />
     </Wrapper>
-  )
+  );
 }
 const Wrapper = styled.div`
   width: 850px;
   position: relative;
   margin: 0 auto;
-`
+`;
 
 const HeadCon = styled.div`
   min-height: 30px;
@@ -233,7 +261,7 @@ const HeadCon = styled.div`
   margin-bottom: 14px;
   margin-top: 18px;
   font-weight: bold;
-`
+`;
 
 const ToolCon = styled.div`
   position: absolute;
@@ -257,7 +285,7 @@ const ToolCon = styled.div`
       height: 15px;
     }
   }
-`
+`;
 
 const PageCon = styled.div`
   width: 100%;
@@ -268,7 +296,7 @@ const PageCon = styled.div`
   flex-direction: column;
   padding: 5px 30px;
   min-height: calc(100vh - 130px);
-`
+`;
 
 const InfoCon = styled.div`
   height: 42px;
@@ -299,16 +327,16 @@ const InfoCon = styled.div`
       color: #999;
     }
   }
-`
+`;
 
 const Aside = styled.div`
   font-size: 12px;
   color: #999;
   margin: 6px 0 8px;
-`
+`;
 const Line = styled.div`
   border-top: 1px dotted #dddddd;
-`
+`;
 
 const TextCon = styled.pre`
   font-size: 13px;
@@ -316,7 +344,7 @@ const TextCon = styled.pre`
   padding: 12px 0;
   flex: 1;
   white-space: pre-wrap;
-`
+`;
 
 const FooterCon = styled.div`
   padding-bottom: 20px;
@@ -328,7 +356,7 @@ const FooterCon = styled.div`
     }
     .down-all-text {
       cursor: pointer;
-      color: ${(p) => p.theme.$mtc};
+      color: ${p => p.theme.$mtc};
       &:hover {
         font-weight: bold;
       }
@@ -340,7 +368,7 @@ const FooterCon = styled.div`
     position: relative;
     top: -2px;
   }
-`
+`;
 
 const FileCon = styled.div`
   margin: 0 -5px;
@@ -383,4 +411,4 @@ const FileCon = styled.div`
       }
     }
   }
-`
+`;

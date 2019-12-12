@@ -1,74 +1,99 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, SetStateAction, Dispatch } from 'react'
-import { Select, Button, message } from 'antd'
-import { RouteComponentProps } from 'react-router'
-import createModal from 'src/libs/createModal'
-import SelectPeopleModal from './modal/SelectPeopleModal'
-import SelectPeopleModal_wh from './modal-wh/SelectPeopleModal'
-import { ChangeEvent } from 'react'
-import service from 'src/services/api'
-import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
-import { noticeService } from '../serveices/NoticeService'
-import { appStore } from 'src/stores'
-import Zimage from 'src/components/Zimage'
-import { FileType } from 'src/types/file'
-import { Icon, Spin } from 'src/vendors/antd'
+import styled from "styled-components";
+import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
+import { Select, Button, message } from "antd";
+import { RouteComponentProps } from "react-router";
+import createModal from "src/libs/createModal";
+import SelectPeopleModal from "./modal/SelectPeopleModal";
+import SelectPeopleModal_wh from "./modal-wh/SelectPeopleModal";
+import { ChangeEvent } from "react";
+import service from "src/services/api";
+import { getFileSize, getFileType, getFilePrevImg } from "src/utils/file/file";
+import { noticeService } from "../serveices/NoticeService";
+import { appStore } from "src/stores";
+import Zimage from "src/components/Zimage";
+import { FileType } from "src/types/file";
+import { Icon, Spin } from "src/vendors/antd";
 interface User {
-  label?: string
-  key: string
+  label?: string;
+  key: string;
 }
 export interface Props extends RouteComponentProps {}
 
 export interface CheckUserItem {
-  key: string
-  userList: any[]
+  key: string;
+  userList: any[];
 }
 export interface FileItem {
-  name: string
-  size: string
-  type: string
-  id: string
-  path: string
-  fileType?: FileType
+  name: string;
+  size: string;
+  type: string;
+  id: string;
+  path: string;
+  fileType?: FileType;
 }
 export default function SentNoticeView() {
-  const [title, setTitle]: [string, Dispatch<SetStateAction<string>>] = useState('')
-  const [content, setContent]: [string, Dispatch<SetStateAction<string>>] = useState('')
-  const [fileList, setFileList]: [FileItem[], Dispatch<SetStateAction<FileItem[]>>] = useState([] as FileItem[])
-  const [checkedUserList, setCheckedUserList]: any = useState([])
-  const [pageLoading, setPageLoading]: any = useState(false)
-  const [templateId, setTemplateId] = useState('')
-  const [templateType, setTemplateType] = useState('')
-  const selectPeopleModal = createModal(appStore.HOSPITAL_ID == 'wh' ? SelectPeopleModal_wh : SelectPeopleModal)
+  const [title, setTitle]: [
+    string,
+    Dispatch<SetStateAction<string>>
+  ] = useState("");
+  const [content, setContent]: [
+    string,
+    Dispatch<SetStateAction<string>>
+  ] = useState("");
+  const [fileList, setFileList]: [
+    FileItem[],
+    Dispatch<SetStateAction<FileItem[]>>
+  ] = useState([] as FileItem[]);
+  const [checkedUserList, setCheckedUserList]: any = useState([]);
+  const [pageLoading, setPageLoading]: any = useState(false);
+  const [templateId, setTemplateId] = useState("");
+  const [templateType, setTemplateType] = useState("");
+  const selectPeopleModal = createModal(
+    appStore.HOSPITAL_ID == "wh" ? SelectPeopleModal_wh : SelectPeopleModal
+  );
   // const selectPeopleModal = createModal(SelectPeopleModal)
-  const fileInputRef = React.createRef<HTMLInputElement>()
+  const fileInputRef = React.createRef<HTMLInputElement>();
   const openSelectPeopleModal = () => {
     selectPeopleModal.show({
       checkedUserList: checkedUserList
-    })
-  }
+    });
+  };
   const onOkCallBack = (checkedUserList: CheckUserItem[]) => {
-    setCheckedUserList(checkedUserList)
-  }
+    setCheckedUserList(checkedUserList);
+  };
   const updateFile = () => {
-    fileInputRef.current && fileInputRef.current.click()
-  }
+    fileInputRef.current && fileInputRef.current.click();
+  };
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.persist()
-    let promiseList = []
-    let files = e.target.files || []
+    e.persist();
+    let promiseList = [];
+    let files = e.target.files || [];
+
     for (let i = 0; i < files.length; i++) {
-      let postData = new FormData()
-      postData.append('file', files[i])
+      let postData = new FormData();
+      postData.append("file", files[i]);
       promiseList.push(
-        service.commonApiService.uploadAttachment('mail', postData, (a: any, b: any, c: any) => {
-          console.log(a, b, c)
-        })
-      )
+        service.commonApiService.uploadAttachment(
+          "mail",
+          postData,
+          (ProgressEvent: any) => {
+            if (ProgressEvent.total > 100 * 1024 * 1024) {
+              setTimeout(() => {
+                message.warning("附件大小不能超过100M!");
+              }, 100);
+              setTimeout(() => {
+                message.warning("附件大小不能超过100M!");
+              }, 1000);
+
+              Promise.reject("附件大小不能超过100M！");
+            }
+          }
+        )
+      );
     }
-    let hideLoading = message.loading('正在上传，请稍等', 0)
+    let hideLoading = message.loading("正在上传，请稍等", 0);
     Promise.all(promiseList)
-      .then((res) => {
+      .then(res => {
         let list: any = [
           ...fileList,
           ...res.map(({ data: item }: any) => {
@@ -76,222 +101,286 @@ export default function SentNoticeView() {
               ...item,
               size: getFileSize(item.size),
               fileType: getFileType(item.path)
-            }
+            };
           })
-        ]
-        setFileList(list)
+        ];
+        setFileList(list);
         if (!title && list[0] && list[0].name) {
-          setTitle(list[0].name.split('.')[0])
+          setTitle(list[0].name.split(".")[0]);
         }
-        hideLoading()
+        hideLoading();
       })
-      .catch((e) => {
-        hideLoading()
-      })
-  }
+      .catch(e => {
+        hideLoading();
+      });
+  };
 
   const sendMail = () => {
-    let hideLoading = message.loading('消息正在发送中...', 0)
+    let hideLoading = message.loading("消息正在发送中...", 0);
+    let id: any = templateId;
+    let postObj: any = {
+      id: templateType == "草" ? id : "",
+      title,
+      content
+    };
+    if (templateType == "转发") {
+      postObj.forwardId = id;
+    }
     noticeService
       .sendMail({
-        mail: {
-          title,
-          content,
-          id: templateType == '草' ? templateId : ''
-        },
+        mail: postObj,
         empNos: checkedUserList.reduce((prev: any, current: any) => {
-          return [...prev, ...current.userList.map((item: any) => item.empNo)]
+          return [...prev, ...current.userList.map((item: any) => item.empNo)];
         }, []),
-        fileIds: fileList.map((item) => item.id),
+        fileIds: fileList.map(item => item.id),
         tempSave: false
       })
-      .then((res) => {
-        hideLoading()
-        message.success('消息发送成功！')
-        appStore.history.replace('/notice?selectedMenu=发件箱')
+      .then(res => {
+        hideLoading();
+        message.success("消息发送成功！");
+        appStore.history.replace("/notice?selectedMenu=发件箱");
       })
       .catch(() => {
-        hideLoading()
-      })
-  }
+        hideLoading();
+      });
+  };
   const saveTemplateMail = () => {
-    let hideLoading = message.loading('消息正在存草稿...')
-    let id: any = templateId
+    let hideLoading = message.loading("消息正在存草稿...");
+    let id: any = templateId;
+    let postObj: any = {
+      id: templateType == "草" ? id : "",
+      title,
+      content
+    };
     noticeService
       .sendMail({
-        mail: {
-          id: templateType == '草' ? templateId : '',
-          title,
-          content
-        },
+        mail: postObj,
         empNos: checkedUserList.reduce((prev: any, current: any) => {
-          return [...prev, ...current.userList.map((item: any) => item.empNo)]
+          return [...prev, ...current.userList.map((item: any) => item.empNo)];
         }, []),
-        fileIds: fileList.map((item) => item.id),
+        fileIds: fileList.map(item => item.id),
         tempSave: true
       })
-      .then((res) => {
-        hideLoading()
-        message.success('消息存草稿成功！')
-        appStore.history.push(`/notice?selectedMenu=草稿箱`)
+      .then(res => {
+        hideLoading();
+
+        message.success("消息存草稿成功！");
+        appStore.history.push(`/notice?selectedMenu=草稿箱`);
+
         // appStore.history.push(`/notice?selectedMenu=草稿箱&id=${res.data.id}`)
         // res.data && res.data.id && setTemplateId(res.data.id)
       })
       .catch(() => {
-        hideLoading()
-      })
-  }
+        hideLoading();
+      });
+  };
   const deleteFile = (index: number) => {
-    fileList.splice(index, 1)
-    setFileList([...fileList])
-  }
+    fileList.splice(index, 1);
+    setFileList([...fileList]);
+  };
   const onBack = () => {
     templateId
       ? appStore.history.push(`/notice?selectedMenu=草稿箱&id=${templateId}`)
-      : appStore.history.push('/notice')
-  }
+      : appStore.history.push("/notice");
+  };
 
   const onDeselect = (user: User | User[]) => {
     if (user instanceof Array) {
       for (let i = 0; i < user.length; i++) {
-        let index = checkedUserList.findIndex((item: any) => item.key === user[i].key)
+        let index = checkedUserList.findIndex(
+          (item: any) => item.key === user[i].key
+        );
         if (index > -1) {
-          checkedUserList.splice(index, 1)
+          checkedUserList.splice(index, 1);
         }
       }
-      setCheckedUserList([...checkedUserList])
+      setCheckedUserList([...checkedUserList]);
     } else {
-      let index = checkedUserList.findIndex((item: any) => item.key === user.key)
+      let index = checkedUserList.findIndex(
+        (item: any) => item.key === user.key
+      );
       if (index > -1) {
-        checkedUserList.splice(index, 1)
-        setCheckedUserList([...checkedUserList])
+        checkedUserList.splice(index, 1);
+        setCheckedUserList([...checkedUserList]);
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (appStore.queryObj.templateId) {
-      setPageLoading(true)
-      setTemplateId(appStore.queryObj.templateId)
-      setTemplateType(appStore.queryObj.templateType)
-      noticeService.getDetail('草稿箱', appStore.queryObj.templateId).then((res: any) => {
-        setPageLoading(false)
-        setTitle(res.data.title)
-        setContent(res.data.content)
-        setFileList(
-          res.data.attachmentList.map((item: any) => {
-            return {
-              ...item,
-              size: getFileSize(item.size),
-              fileType: getFileType(item.path)
+      setPageLoading(true);
+      setTemplateId(appStore.queryObj.templateId);
+      setTemplateType(appStore.queryObj.templateType);
+      noticeService
+        .getDetail("草稿箱", appStore.queryObj.templateId)
+        .then((res: any) => {
+          setPageLoading(false);
+          if (appStore.queryObj.templateType == "转发") {
+            if (!res.data.title.includes("转发")) {
+              res.data.title = "转发：" + res.data.title;
             }
-          })
-        )
-        setCheckedUserList(
-          res.data.receiverList.map((item: any) => {
-            return {
-              key: item.empName,
-              userList: [item]
-            }
-          })
-        )
-      })
+            res.data.receiverList = [];
+          }
+          setTitle(res.data.title);
+          setContent(res.data.content);
+          setFileList(
+            res.data.attachmentList.map((item: any) => {
+              return {
+                ...item,
+                size: getFileSize(item.size),
+                fileType: getFileType(item.path)
+              };
+            })
+          );
+          setCheckedUserList(
+            res.data.receiverList.map((item: any) => {
+              return {
+                key: item.empName,
+                userList: [item]
+              };
+            })
+          );
+        });
     }
-  }, [])
+  }, []);
 
-  let hasContent = !!(title + content + fileList + checkedUserList)
+  let hasContent = !!(title + content + fileList + checkedUserList);
   return (
     <Spin spinning={pageLoading}>
       <Wrapper>
         {/* {JSON.stringify(checkedUserList)} */}
         <InputBox>
-          <div className='label'>主&nbsp;题</div>
-          <div className='input-con'>
+          <div className="label">主&nbsp;题</div>
+          <div className="input-con">
             <input
-              type='text'
-              className='text-input'
-              placeholder='请输入主题'
+              type="text"
+              className="text-input"
+              placeholder="请输入主题"
               value={title}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setTitle(e.target.value)
+              }
             />
           </div>
         </InputBox>
         <InputBox>
-          <div className='label'>
+          <div className="label">
             收件人
-            <img src={require('../images/添加.png')} alt='' className='add-icon' onClick={openSelectPeopleModal} />
+            <img
+              src={require("../images/添加.png")}
+              alt=""
+              className="add-icon"
+              onClick={openSelectPeopleModal}
+            />
           </div>
 
-          <div className='input-con' onClick={openSelectPeopleModal}>
+          <div className="input-con" onClick={openSelectPeopleModal}>
             <Select
-              mode='tags'
-              placeholder='请添加收件人'
+              mode="tags"
+              placeholder="请添加收件人"
               value={checkedUserList}
               labelInValue={true}
-              style={{ width: '100%' }}
+              style={{ width: "100%" }}
               open={false}
               onDeselect={onDeselect}
             />
           </div>
         </InputBox>
         <InputBox style={fileList.length > 0 ? { border: 0 } : {}}>
-          <div className='label'>
+          <div className="label">
             附&nbsp;件
-            <img src={require('../images/添加.png')} alt='' className='add-icon' onClick={updateFile} />
+            <img
+              src={require("../images/添加.png")}
+              alt=""
+              className="add-icon"
+              onClick={updateFile}
+            />
           </div>
 
-          <div className='input-con' onClick={updateFile} style={{ cursor: 'pointer' }} />
-          <div className='' />
+          <div
+            className="input-con"
+            onClick={updateFile}
+            style={{ cursor: "pointer" }}
+          />
+          <div className="" />
         </InputBox>
         {fileList.length > 0 && (
           <FilesBox>
             {fileList.map((item: FileItem, index: number) => (
-              <div className='file-box' key={index}>
-                {getFileType(item.path) == 'img' ? (
-                  <Zimage src={item.path} className='type-img' alt='' />
+              <div className="file-box" key={index}>
+                {getFileType(item.path) == "img" ? (
+                  <Zimage src={item.path} className="type-img" alt="" />
                 ) : (
-                  <img src={getFilePrevImg(item.path)} className='type-img' alt='' />
+                  <img
+                    src={getFilePrevImg(item.path)}
+                    className="type-img"
+                    alt=""
+                  />
                 )}
 
-                <div className='name'>{item.name}</div>
-                <div className='size'>{item.size}</div>
-                <Icon type='close' title='删除图片' onClick={() => deleteFile(index)} />
+                <div className="name">{item.name}</div>
+                <div className="size">{item.size}</div>
+                <Icon
+                  type="close"
+                  title="删除图片"
+                  onClick={() => deleteFile(index)}
+                />
               </div>
             ))}
           </FilesBox>
         )}
-        <input type='file' style={{ display: 'none' }} ref={fileInputRef} onChange={onFileChange} multiple={true} />
+        <input
+          type="file"
+          style={{ display: "none" }}
+          ref={fileInputRef}
+          onChange={onFileChange}
+          multiple={true}
+        />
         <Textarea
-          className='scrollBox'
-          placeholder='请输入消息内容...'
+          className="scrollBox"
+          placeholder="请输入消息内容..."
           value={content}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setContent(e.target.value)
+          }
         />
         <FooterCon>
-          <Button type='primary' style={{ marginRight: 15 }} onClick={sendMail} disabled={!hasContent}>
+          <Button
+            type="primary"
+            style={{ marginRight: 15 }}
+            onClick={sendMail}
+            disabled={!hasContent}
+          >
             发 送
           </Button>
-          <Button style={{ marginRight: 15 }} onClick={saveTemplateMail} disabled={!hasContent}>
-            存草稿
-          </Button>
+          {templateType !== "转发" && (
+            <Button
+              style={{ marginRight: 15 }}
+              onClick={saveTemplateMail}
+              disabled={!hasContent}
+            >
+              存草稿
+            </Button>
+          )}
+
           <Button onClick={onBack}> 取 消 </Button>
         </FooterCon>
         <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
       </Wrapper>
     </Spin>
-  )
+  );
 }
 const Wrapper = styled.div`
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  top: ${(p) => p.theme.$headerHeight};
+  top: ${p => p.theme.$headerHeight};
   background: #fff;
   padding-top: 5px;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const InputBox = styled.div`
   min-height: 45px;
@@ -353,7 +442,7 @@ const InputBox = styled.div`
       background-color: #c2c2c2;
     }
   }
-`
+`;
 const FilesBox = styled.div`
   padding: 12px 30px 12px;
   margin-top: -12px;
@@ -420,7 +509,7 @@ const FilesBox = styled.div`
       cursor: pointer;
     }
   }
-`
+`;
 
 const Textarea = styled.textarea`
   width: 100%;
@@ -430,7 +519,7 @@ const Textarea = styled.textarea`
   border: 0;
   resize: none;
   padding: 15px 30px;
-`
+`;
 
 const FooterCon = styled.div`
   height: 60px;
@@ -439,4 +528,4 @@ const FooterCon = styled.div`
   display: flex;
   align-items: center;
   padding: 0 30px;
-`
+`;
