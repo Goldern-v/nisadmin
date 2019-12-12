@@ -1,4 +1,6 @@
-import { message } from "antd/es";
+
+import React from 'react'
+import { message, Modal } from "antd/es";
 import { FileType } from "src/types/file";
 
 /**
@@ -26,20 +28,27 @@ export function getFileSize(fileByte: number | string) {
 export const fileDownload = (res: any, fileName?: string) => {
   /** 判断是否成功 */
   if (res.headers["cr-download-code"] == "300") {
-    return message.warn(
-      res.headers["cr-download-message"]
-        ? decodeURI(res.headers["cr-download-message"])
-        : "暂无记录"
-    );
+    let warningMsg = res.headers["cr-download-message"]
+      ? decodeURI(res.headers["cr-download-message"])
+      : "暂无记录"
+
+    if (warningMsg.indexOf('\n') > -1)
+      return Modal.warn({
+        title: '警告',
+        mask: false,
+        content: <pre style={{ whiteSpace: 'pre-wrap' }}>{warningMsg}</pre>
+      })
+    else
+      return message.warn(warningMsg)
   }
 
   let filename = fileName
     ? fileName
     : res.headers["content-disposition"]
-    ? decodeURIComponent(
+      ? decodeURIComponent(
         res.headers["content-disposition"].replace("attachment;filename=", "")
       )
-    : "导出文件";
+      : "导出文件";
   let blob = new Blob([res.data], {
     type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
   });
