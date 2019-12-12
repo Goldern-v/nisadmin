@@ -373,10 +373,13 @@ export default observer(function Cell(props: Props) {
     if (cellConfig.isTwoDaysAgo) return;
     /** 判断是否按下 ctrl */
     if (e.ctrlKey) {
-      if (!sheetViewModal.copyCellList.includes(sheetViewModal.selectedCell)) {
+      if (
+        sheetViewModal.selectedCell.rangeName &&
+        !sheetViewModal.copyCellList.includes(sheetViewModal.selectedCell)
+      ) {
         sheetViewModal.copyCellList.push(sheetViewModal.selectedCell);
       }
-      if (!sheetViewModal.copyCellList.includes(cellObj)) {
+      if (cellObj.rangeName && !sheetViewModal.copyCellList.includes(cellObj)) {
         sheetViewModal.copyCellList.push(cellObj);
       }
     } else {

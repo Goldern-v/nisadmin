@@ -18,7 +18,6 @@ import { Rules } from "src/components/Form/interfaces";
 import BaseTabs from "src/components/BaseTabs";
 import SetTittle from "./components/SetTittle";
 import SetRange from "./components/SetRange";
-import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
@@ -51,26 +50,18 @@ export default function SettingModal(props: Props) {
             />
           ),
           index: 1
-        },
-        ...[
-          codeAdapter(
-            {
-              QCRG_04: {
-                title: "交班班次与提醒设置",
-                component: (
-                  <SetRange
-                    blockId={blockId}
-                    registerCode={registerCode}
-                    onOkCallBack={onOkCallBack}
-                  />
-                ),
-                index: 2
-              },
-              other: null
-            },
-            registerCode
-          )
-        ]
+        }
+        // {
+        //   title: "交班班次与提醒设置",
+        //   component: (
+        //     <SetRange
+        //       blockId={blockId}
+        //       registerCode={registerCode}
+        //       onOkCallBack={onOkCallBack}
+        //     />
+        //   ),
+        //   index: 2
+        // }
       ]
     : [];
 
@@ -110,7 +101,7 @@ export default function SettingModal(props: Props) {
       bodyStyle={{ padding: 0 }}
       centered
     >
-      <BaseTabs config={tabConfig.filter(item => item)} style={{ border: 0 }} />
+      <BaseTabs config={tabConfig} style={{ border: 0 }} />
     </Modal>
   );
 }

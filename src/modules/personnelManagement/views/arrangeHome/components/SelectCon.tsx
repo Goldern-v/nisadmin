@@ -169,9 +169,9 @@ export default observer(function SelectCon() {
     } else {
       if (isInit) {
         handleStatusChange();
-        getBigDept();
       }
     }
+    getBigDept();
   }, []);
 
   const toPrint = () => {
@@ -327,16 +327,17 @@ export default observer(function SelectCon() {
             导出科室
           </Button>
         </div>
-        {appStore.HOSPITAL_ID == "wh" && (
-          <div className="item">
-            <Dropdown.Button
-              className="statistics getExcel"
-              overlay={bigDeptmenu}
-            >
-              导出片区
-            </Dropdown.Button>
-          </div>
-        )}
+        {appStore.HOSPITAL_ID == "wh" &&
+          (authStore.isDepartment || authStore.isSupervisorNurse) && (
+            <div className="item">
+              <Dropdown.Button
+                className="statistics getExcel"
+                overlay={bigDeptmenu}
+              >
+                导出片区
+              </Dropdown.Button>
+            </div>
+          )}
 
         {appStore.HOSPITAL_ID == "hj" && (
           <div className="item">

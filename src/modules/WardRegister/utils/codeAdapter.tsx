@@ -3,6 +3,6 @@ export function codeAdapter(map: any, code: string) {
   if (map[code]) {
     return map[code];
   } else {
-    return map[Object.keys(map)[0]];
+    return map["other"] || map["all"] || null;
   }
 }

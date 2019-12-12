@@ -24,6 +24,8 @@ import { ReactComponent as SXJX } from "./images/icon/SXJX.svg";
 import { ReactComponent as SMZC } from "./images/icon/SMZC.svg";
 import 物品交接登记本 from "./page/物品交接登记本/物品交接登记本";
 import 重点患者评估登记本 from "./page/重点患者评估登记本/重点患者评估登记本";
+import 紫外线空气消毒登记本 from "./page/紫外线空气消毒登记本/紫外线空气消毒登记本";
+import 消毒隔离工作登记本 from "./page/消毒隔离工作登记本/消毒隔离工作登记本";
 export interface Props {}
 
 export default function WardRegisterRouter() {
@@ -76,7 +78,7 @@ export default function WardRegisterRouter() {
     {
       title: "紫外线空气消毒登记本",
       path: "/wardRegister/QCRG_06",
-      component: { ...物品交接登记本 },
+      component: { ...紫外线空气消毒登记本 },
       icon: <ZWXKQ />,
       payload: {
         registerCode: "QCRG_06"
@@ -85,7 +87,7 @@ export default function WardRegisterRouter() {
     {
       title: "消毒隔离工作登记本",
       path: "/wardRegister/QCRG_07",
-      component: { ...物品交接登记本 },
+      component: { ...消毒隔离工作登记本 },
       icon: <XDGL />,
       payload: {
         registerCode: "QCRG_07"
@@ -94,7 +96,7 @@ export default function WardRegisterRouter() {
     {
       title: "出院患者登记本",
       path: "/wardRegister/QCRG_08",
-      component: { ...物品交接登记本 },
+      component: { ...重点患者评估登记本 },
       icon: <CYHZ />,
       payload: {
         registerCode: "QCRG_08"
