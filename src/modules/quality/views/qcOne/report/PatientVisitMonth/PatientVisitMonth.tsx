@@ -35,7 +35,7 @@ export default observer(function PatientVisitQuarter() {
   const [_statusList, set_statusList] = useState(statusList.map((item: any) => {
     let disabled = true
 
-    if (item.code == '0' && !authStore.isDepartment) disabled = false
+    if ((item.code == '0' || item.code == '1') && !authStore.isDepartment) disabled = false
 
     return {
       name: item.name,
