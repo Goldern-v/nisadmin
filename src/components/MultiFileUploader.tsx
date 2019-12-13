@@ -135,6 +135,8 @@ const Wrapper = styled.div`
     position: absolute;
     top: -10px;
     right: -10px;
+    line-height: 21px;
+    text-indent: 1px;
     cursor: pointer;
   }
   .list-item{

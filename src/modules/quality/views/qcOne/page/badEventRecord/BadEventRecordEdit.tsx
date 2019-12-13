@@ -242,27 +242,45 @@ export default observer(function BadEventRecordEdit() {
           </div>
 
           <div className="default-pannel">
-            <div className="title">一、事件简要经过</div>
+            <div className="title">一、事件简要经过 (限100字)</div>
             <div className="content">
               <Input.TextArea
+                maxLength={100}
                 value={badEvent.briefCourseEvent}
-                autosize={{ minRows: 5 }}
+                autosize={{ minRows: 3 }}
                 onChange={(e: any) =>
                   setBadEvent({ ...badEvent, briefCourseEvent: e.target.value })
                 }
               />
+              <span
+                style={{
+                  color: badEvent.briefCourseEvent.length >= 100 ? 'red' : '#999',
+                  float: 'right',
+                  marginTop: '3px',
+                }}>
+                {badEvent.briefCourseEvent.length}/100
+              </span>
             </div>
           </div>
           <div className="default-pannel">
-            <div className="title">二、后果</div>
+            <div className="title">二、后果 (限100字)</div>
             <div className="content">
               <Input.TextArea
+                maxLength={100}
                 value={badEvent.result}
-                autosize={{ minRows: 5 }}
+                autosize={{ minRows: 3 }}
                 onChange={(e: any) =>
                   setBadEvent({ ...badEvent, result: e.target.value })
                 }
               />
+              <span
+                style={{
+                  color: badEvent.result.length >= 100 ? 'red' : '#999',
+                  float: 'right',
+                  marginTop: '3px',
+                }}>
+                {badEvent.result.length}/100
+              </span>
             </div>
           </div>
           <div className="default-pannel">
