@@ -179,24 +179,24 @@ export default function WardRegisterRouter() {
       title: "中医护理登记本",
       icon: <ZYHL />,
       children: [
-        // {
-        //   title: "中医护理登记",
-        //   path: "/wardRegister/QCRG_15_1",
-        //   component: { ...物品交接登记本 },
-        //   payload: {
-        //     registerCode: "QCRG_15_1",
-        //     registerName: "中医护理登记"
-        //   }
-        // },
-        // {
-        //   title: "中医护理技术项目统计表",
-        //   path: "/wardRegister/QCRG_15_2",
-        //   component: { ...物品交接登记本 },
-        //   payload: {
-        //     registerCode: "QCRG_15_2",
-        //     registerName: "中医护理技术项目统计表"
-        //   }
-        // },
+        {
+          title: "中医护理登记本",
+          path: "/wardRegister/QCRG_15_1",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_15_1",
+            registerName: "中医护理登记本"
+          }
+        },
+        {
+          title: "中医护理技术项目统计表",
+          path: "/wardRegister/QCRG_15_2",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_15_2",
+            registerName: "中医护理技术项目统计表"
+          }
+        },
         // {
         //   title: "中医护理方案季度评价总结表",
         //   path: "/wardRegister/QCRG_15_3",
@@ -206,15 +206,15 @@ export default function WardRegisterRouter() {
         //     registerName: "中医护理方案季度评价总结表"
         //   }
         // },
-        // {
-        //   title: "中医护理方案实施效果半年评价总结",
-        //   path: "/wardRegister/QCRG_15_4",
-        //   component: { ...物品交接登记本 },
-        //   payload: {
-        //     registerCode: "QCRG_15_4",
-        //     registerName: "中医护理方案实施效果半年评价总结"
-        //   }
-        // }
+        {
+          title: "中医护理方案实施效果半年评价总结",
+          path: "/wardRegister/QCRG_15_4",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_15_4",
+            registerName: "中医护理方案实施效果半年评价总结"
+          }
+        }
       ]
     },
     {

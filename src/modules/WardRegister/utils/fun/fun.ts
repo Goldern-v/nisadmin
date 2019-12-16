@@ -25,6 +25,7 @@ export interface ItemConfigItem {
 export function getFun(context: any) {
   const {
     registerCode,
+    registerName,
     setBlockList,
     setSelectedBlockId,
     setPageOptions,
@@ -135,10 +136,10 @@ export function getFun(context: any) {
   const onAddBlock = () => {
     globalModal
       .confirm(
-        "是否新建登记本",
-        `新建登记本开始日期为${moment().format(
+        `是否新建${registerName}`,
+        `新建${registerName}开始日期为${moment().format(
           "YYYY-MM-DD"
-        )}，历史交接登记本请切换修订版本查看`
+        )}，历史${registerName}请切换修订版本查看`
       )
       .then(res => {
         wardRegisterService

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "src/vendors/antd";
 export function NullBox(props: any) {
-  const { onClick, text } = props;
+  const { onClick, text, registerName } = props;
   const Wrapper = styled.div`
     width: 334px;
     height: 313px;

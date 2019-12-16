@@ -27,6 +27,7 @@ import { TableCon, Wrapper } from "../../utils/style/style";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { createFilterItem } from "../../components/FilterItem";
 import classNames from "classnames";
+import { createFilterInput } from "../../components/FilterInput";
 export interface Props {
   payload: any;
 }
@@ -36,6 +37,7 @@ const throttler2 = throttle();
 
 export default observer(function 重点患者评估登记本(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
+  const registerName = props.payload && props.payload.registerName;
   const [dataSource, setDataSource]: any = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
   const [rangConfigList, setRangeConfigList] = useState([]);
@@ -201,6 +203,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
       getPage();
     }
   );
+  const chxmFilterItem = createFilterInput("床号或姓名", () => {
+    setPopoverVisible(false);
+    getPage();
+  });
 
   const popoverContent = codeAdapter(
     {
@@ -273,6 +279,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
         <div>
           <yqmcFilterItem.Component />
           <sbztFilterItem.Component />
+        </div>
+      ),
+      QCRG_15_1: (
+        <div>
+          <chxmFilterItem.Component />
         </div>
       )
     },
@@ -383,6 +394,34 @@ export default observer(function 重点患者评估登记本(props: Props) {
             }
           }
         ],
+        QCRG_15_2: [
+          {
+            title() {
+              return (
+                <LineCon>
+                  <TextCon>
+                    <Text x="20%" y="75%" deg="0">
+                      时间
+                    </Text>
+                    <Text x="73%" y="68%" deg="0">
+                      例数
+                    </Text>
+                    <Text x="62%" y="12%" deg="0">
+                      项目名称
+                    </Text>
+                  </TextCon>
+                  <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
+                    <line x1="0" y1="0" x2="70%" y2="100%" />
+                    <line x1="0" y1="0" x2="100%" y2="60%" />
+                  </SvgCon>
+                </LineCon>
+              );
+            },
+            dataIndex: "recordDate",
+            align: "center",
+            width: 107
+          }
+        ],
         other: [
           {
             title: "日期",
@@ -445,7 +484,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
                         <div className="aside">{cItem.checkSize}</div>
                       </ThBox>
                     ) : (
-                      cItem.itemCode
+                      <span className="title-text">
+                        {cItem.label || cItem.itemCode}
+                      </span>
                     )}
                   </CTitleBox>
                 )
@@ -675,7 +716,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             title: "护士长签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "护士长护士",
+            aside: "护士长",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -686,7 +727,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             title: "护士长签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "护士长护士",
+            aside: "护士长",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -697,7 +738,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             title: "护士长签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "护士长护士",
+            aside: "护士长",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -733,6 +774,39 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           })
         ],
+        QCRG_15_1: [
+          signRowObj({
+            title: "护士长签名",
+            width: 90,
+            dataIndex: "signerName",
+            aside: "护士长",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
+        QCRG_15_2: [
+          signRowObj({
+            title: "签名",
+            width: 90,
+            dataIndex: "signerName",
+            aside: "",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
+        QCRG_15_4: [
+          signRowObj({
+            title: "护士长签名",
+            width: 90,
+            dataIndex: "signerName",
+            aside: "护士长",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
         other: []
       },
       registerCode
@@ -749,6 +823,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     createRow
   } = getFun({
     registerCode,
+    registerName,
     setBlockList,
     setSelectedBlockId,
     setPageOptions,
@@ -875,7 +950,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
             }}
           />
         ) : (
-          <NullBox onClick={onAddBlock} text={"创建登记本"} />
+          <NullBox
+            onClick={onAddBlock}
+            text={"创建登记本"}
+            registerName={registerName}
+          />
         )}
       </TableCon>
       <settingModal.Component />
@@ -961,12 +1040,16 @@ const PTitleCon = styled.div`
   display: flex;
   align-items: stretch;
   flex: 1;
+  .title-text {
+    display: block;
+    padding: 4px 0;
+  }
 `;
 const CTitleBox = styled.div`
   flex: 1;
   border-right: 1px solid #e8e8e8;
   box-sizing: content-box;
-  padding: 4px 0;
+  /* padding: 4px 0; */
 `;
 
 const MergeTitle = styled.div`
