@@ -26,6 +26,7 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => void;
   blockId: any;
   registerCode: any;
+  selectedBlockObj: any;
 }
 
 /** 设置规则 */
@@ -35,7 +36,14 @@ const rules: Rules = {
 
 export default function SettingModal(props: Props) {
   const [title, setTitle] = useState("设置");
-  let { visible, onCancel, blockId, registerCode, onOkCallBack } = props;
+  let {
+    visible,
+    onCancel,
+    blockId,
+    registerCode,
+    onOkCallBack,
+    selectedBlockObj
+  } = props;
 
   let refForm = React.createRef<Form>();
 
@@ -46,6 +54,7 @@ export default function SettingModal(props: Props) {
           component: (
             <SetTittle
               blockId={blockId}
+              selectedBlockObj={selectedBlockObj}
               registerCode={registerCode}
               onOkCallBack={onOkCallBack}
             />

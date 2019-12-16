@@ -3,6 +3,25 @@ import { authStore } from "src/stores";
 import { globalModal } from "src/global/globalModal";
 import { message } from "src/vendors/antd";
 import moment from "moment";
+
+export interface ItemConfigItem {
+  blockId: number;
+  checkSize: number | null;
+  createTime?: string;
+  creatorName?: string;
+  creatorNo?: string;
+  indexNo?: number;
+  itemCode: string;
+  options: string;
+  updateTime?: string;
+  updaterName?: string;
+  updaterNo?: string;
+  width: number;
+  colSpan?: number;
+  label?: string;
+  children?: ItemConfigItem[];
+}
+
 export function getFun(context: any) {
   const {
     registerCode,
@@ -53,6 +72,38 @@ export function getFun(context: any) {
       .then(res => res.data.itemDataPage.totalPage);
   };
 
+  /** 表头合并 */
+  const thMerge = (list: ItemConfigItem[]) => {
+    return list.reduce(
+      (total: ItemConfigItem[], current: ItemConfigItem, index: number) => {
+        if (current.itemCode.includes("：")) {
+          let pTitle = current.itemCode.split("：")[0];
+          let cTitle = current.itemCode.split("：")[1];
+          current.label = cTitle;
+          let pthObj: any = total.find(item => item.itemCode == pTitle);
+          if (!pthObj) {
+            pthObj = {
+              itemCode: pTitle,
+              children: [current],
+              colSpan: 1,
+              width: current.width
+            };
+            total.push(pthObj);
+          } else {
+            pthObj.children.push(current);
+            pthObj.colSpan += 1;
+            current.colSpan = 0;
+            total.push(current);
+          }
+        } else {
+          total.push(current);
+        }
+        return total;
+      },
+      []
+    );
+  };
+
   const getPage = () => {
     setPageLoading(true);
     wardRegisterService
@@ -65,10 +116,14 @@ export function getFun(context: any) {
         ...pageOptions
       })
       .then(res => {
+        console.log(
+          thMerge(res.data.itemConfigList),
+          "thMerge(res.data.itemConfigList)"
+        );
         console.log(res, "res");
         setTotal(res.data.itemDataPage.totalPage);
         setDataSource(res.data.itemDataPage.list);
-        setItemConfigList(res.data.itemConfigList);
+        setItemConfigList(thMerge(res.data.itemConfigList));
         setRangeConfigList(res.data.rangeConfigList);
         setPageLoading(false);
         if (res.data.itemDataPage.list.length == 0) {
@@ -80,8 +135,8 @@ export function getFun(context: any) {
   const onAddBlock = () => {
     globalModal
       .confirm(
-        "是否新建物品交接登记本",
-        `新建物品交接登记本开始日期为${moment().format(
+        "是否新建登记本",
+        `新建登记本开始日期为${moment().format(
           "YYYY-MM-DD"
         )}，历史交接登记本请切换修订版本查看`
       )

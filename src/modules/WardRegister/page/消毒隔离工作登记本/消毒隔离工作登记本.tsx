@@ -188,7 +188,8 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             updateDataSource,
             selectedBlockId
           })
-        ]
+        ],
+        other: []
       },
       registerCode
     )
@@ -409,7 +410,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         {selectedBlockId && itemConfigList.length ? (
           <BaseTable
             loading={pageLoading}
-            dataSource={dataSource}
+            dataSource={dataSource.filter((item: any) => item)}
             columns={columns}
             surplusHeight={220}
             surplusWidth={300}

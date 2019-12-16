@@ -22,6 +22,7 @@ import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 import service from "src/services/api";
 export interface Props {
   blockId: any;
+  selectedBlockObj: any;
   registerCode: any;
   onOkCallBack: any;
 }
@@ -32,7 +33,7 @@ export default observer(function SetTittle(props: Props) {
   const [pageLoading, setPageLoading] = useState(false);
   const [moveAble, setMoveAble] = useState(false);
   const [empNameList, setEmpNameList] = useState([]);
-  const { blockId, registerCode, onOkCallBack } = props;
+  const { blockId, registerCode, onOkCallBack, selectedBlockObj } = props;
   const showEmpName = [
     "责任护士",
     "人员调配",
@@ -41,7 +42,9 @@ export default observer(function SetTittle(props: Props) {
     "护士长签名",
     "责任人",
     "消毒液擦拭床单位执行者",
-    "床单位消毒机消毒执行者"
+    "床单位消毒机消毒执行者",
+    "带教老师签名",
+    "带教组长签名"
   ];
 
   const columns: ColumnProps<any>[] = [
@@ -54,6 +57,7 @@ export default observer(function SetTittle(props: Props) {
       render(text: any, record: any, index: any) {
         return (
           <Input
+            disabled={selectedBlockObj && !selectedBlockObj.itemSizeEditable}
             onChange={e => {
               record.itemCode = e.target.value;
             }}
@@ -80,6 +84,31 @@ export default observer(function SetTittle(props: Props) {
         );
       }
     },
+    ...codeAdapter(
+      {
+        QCRG_12: [
+          {
+            title: "基数",
+            width: 100,
+            dataIndex: "checkSize",
+            className: "input-cell",
+            render(text: any, record: any, index: any) {
+              return (
+                <InputNumber
+                  defaultValue={text}
+                  onChange={value => {
+                    record.checkSize = value;
+                  }}
+                  onBlur={() => updateDataSource()}
+                />
+              );
+            }
+          }
+        ],
+        other: []
+      },
+      registerCode
+    ),
     {
       title: "下拉选项预设值(值之前用;隔开)",
       dataIndex: "options",
@@ -120,17 +149,19 @@ export default observer(function SetTittle(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <DoCon>
-            <span
-              onClick={() => {
-                globalModal
-                  .confirm("删除确认", "你确定删除该配置项吗？")
-                  .then(res => {
-                    delRow(index);
-                  });
-              }}
-            >
-              删除
-            </span>
+            {selectedBlockObj && selectedBlockObj.itemSizeEditable && (
+              <span
+                onClick={() => {
+                  globalModal
+                    .confirm("删除确认", "你确定删除该配置项吗？")
+                    .then(res => {
+                      delRow(index);
+                    });
+                }}
+              >
+                删除
+              </span>
+            )}
           </DoCon>
         );
       }
@@ -198,6 +229,7 @@ export default observer(function SetTittle(props: Props) {
       </ToolCon>
       <EditTableCon>
         <BaseTable
+          rowKey="itemCode"
           loading={pageLoading}
           dataSource={dataSource}
           columns={columns}

@@ -44,9 +44,11 @@ export const TableCon = styled.div`
     text-align: center;
     outline: 0;
     box-shadow: none !important;
+    padding: 4px;
   }
   .input-cell {
     padding: 0 !important;
+    overflow: hidden;
   }
   textarea {
     border: 0;
