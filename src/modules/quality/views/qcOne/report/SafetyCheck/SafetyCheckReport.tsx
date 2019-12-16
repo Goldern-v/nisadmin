@@ -127,7 +127,7 @@ export default observer(function SafetyCheckReport() {
             {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
             {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
           </React.Fragment>}
-          <span onClick={() => handleExport(record)}>导出</span>
+          {(isRoleManage || isSupervisorNurse || isDepartment) && <span onClick={() => handleExport(record)}>导出</span>}
         </DoCon>
       }
     }

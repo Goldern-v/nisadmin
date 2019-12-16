@@ -121,13 +121,15 @@ export default observer(function BadEventReport() {
       title: '操作',
       width: 120,
       render: (text: string, record: any) => {
+        let exportAuth = isRoleManage || isSupervisorNurse || isDepartment
+
         return <DoCon className="operate-group">
           <span onClick={() => handleEdit(record)}>查看</span>
           {isRoleManage && <React.Fragment>
             {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
             {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
           </React.Fragment>}
-          <span onClick={() => handleExport(record)}>导出</span>
+          {exportAuth && <span onClick={() => handleExport(record)}>导出</span>}
         </DoCon>
       }
     }
@@ -378,7 +380,7 @@ export default observer(function BadEventReport() {
           {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
-        <Button type="primary" onClick={handleCreate}>新建</Button>
+        {isRoleManage && <Button type="primary" onClick={handleCreate}>新建</Button>}
         {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
           isSupervisorNurse || isDepartment

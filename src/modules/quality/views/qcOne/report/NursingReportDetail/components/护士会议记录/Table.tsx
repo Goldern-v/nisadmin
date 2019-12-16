@@ -48,13 +48,13 @@ export default function Table(props: Props) {
               <Pre>{tableObj.viewedEmpNames}</Pre>
             </td>
           </tr>
-          <tr>
+          {/* (每人浏览内容后签名) */}
+          {/* <tr>
             <td>会议签名</td>
             <td colSpan={3} className='text-left'>
-              {/* (每人浏览内容后签名) */}
               <Pre>{tableObj.signedEmpNames || '(每人浏览内容后签名)'}</Pre>
             </td>
-          </tr>
+          </tr> */}
           <tr>
             <td rowSpan={7}>发言记录</td>
             <td colSpan={3} className='text-left'>

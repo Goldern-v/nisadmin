@@ -9,7 +9,7 @@ import { ScrollBox } from 'src/components/common'
 import { Report } from './types'
 import printing from 'printing'
 import { useRef } from 'src/types/react'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { patientVisitMonthService } from './api/PatientVisitMonthService'
 import qs from 'qs'
@@ -124,11 +124,11 @@ export default observer(function PatientVisitMonthEdit() {
         <div className='tool-con'>
           <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' ? (
+          {authStore.isRoleManage ? report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>
           ) : (
               <Button onClick={onPublish}>提交</Button>
-            )}
+            ) : ''}
           {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>

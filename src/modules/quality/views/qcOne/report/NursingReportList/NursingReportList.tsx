@@ -157,13 +157,16 @@ export default observer(function NursingReportList() {
       width: 70,
       align: 'center',
       render: (text: string, record: any) => {
+        let disabled = !(isRoleManage || isSupervisorNurse || isDepartment)
         return <DoCon className="operate-group">
-          <span onClick={() => handleReview(record)}>查看</span>
+          {!disabled && <span onClick={() => handleReview(record)}>查看</span>}
+          {!disabled && <span onClick={() => handleExport(record)}>导出</span>}
+          {disabled && <span style={{ color: '#999' }}>查看</span>}
+          {disabled && <span style={{ color: '#999' }}>导出</span>}
           {/* {isRoleManage && <React.Fragment>
             {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
             {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
           </React.Fragment>} */}
-          <span onClick={() => handleExport(record)}>导出</span>
         </DoCon>
       }
     }
@@ -188,8 +191,10 @@ export default observer(function NursingReportList() {
       month: record.month,
       wardCode: record.wardCode
     }
-
-    history.push(`/qcOne/nursingReportDetail?${qs.stringify(obj)}`)
+    if (isRoleManage || isSupervisorNurse || isDepartment)
+      history.push(`/qcOne/nursingReportDetail?${qs.stringify(obj)}`)
+    else
+      message.warning('权限不足')
   }
 
   const handleSearch = () => {
