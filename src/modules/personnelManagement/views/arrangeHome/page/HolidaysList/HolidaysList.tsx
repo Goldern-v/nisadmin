@@ -65,7 +65,9 @@ export default observer(function HolidaysList() {
       render(text: string, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={() => onDel(record)}>删除</span>
+            {authStore.isAdmin && (
+              <span onClick={() => onDel(record)}>删除</span>
+            )}
           </DoCon>
         );
       }
@@ -136,15 +138,17 @@ export default observer(function HolidaysList() {
         <Button type="primary" onClick={() => getData()}>
           查询
         </Button>
-        <Button
-          onClick={() => {
-            holidaysModal.show({
-              onOkCallBack: getData
-            });
-          }}
-        >
-          添加
-        </Button>
+        {authStore.isAdmin && (
+          <Button
+            onClick={() => {
+              holidaysModal.show({
+                onOkCallBack: getData
+              });
+            }}
+          >
+            添加
+          </Button>
+        )}
       </PageHeader>
       <BaseTable
         loading={pageLoading}

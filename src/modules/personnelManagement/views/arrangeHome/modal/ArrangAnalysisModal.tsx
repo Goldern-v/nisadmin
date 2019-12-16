@@ -15,7 +15,7 @@ import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
-import { ColumnProps } from "src/vendors/antd";
+import { ColumnProps, Popover, Tag } from "src/vendors/antd";
 import BaseTable from "src/components/BaseTable";
 import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { getWeekString2, getWeekString } from "src/utils/date/week";
@@ -46,6 +46,7 @@ export default function ArrangAnalysisModal(props: Props) {
         {
           title: "班次",
           width: 70,
+          align: "center",
           dataIndex: "name"
         },
         ...sheetViewModal.dateList.map((date, index) => {
@@ -53,7 +54,31 @@ export default function ArrangAnalysisModal(props: Props) {
             title: <Th date={date} />,
             width: 70,
             dataIndex: date,
-            align: "center"
+            align: "center",
+            render(text: any, record: any, index: any) {
+              const content = (
+                <div>
+                  {text.length
+                    ? text.map((item: any) => {
+                        let userId = item.userId;
+                        let [user, list] = sheetViewModal.getUser(userId);
+                        return <Tag>{user && user.empName}</Tag>;
+                      })
+                    : "无"}
+                </div>
+              );
+
+              return (
+                <Popover
+                  placement="rightTop"
+                  title={"排班人员"}
+                  content={content}
+                  trigger="hover"
+                >
+                  <div style={{ cursor: "pointer" }}>{text.length}</div>
+                </Popover>
+              );
+            }
           };
         }),
         {
@@ -67,7 +92,7 @@ export default function ArrangAnalysisModal(props: Props) {
             for (let key of keys) {
               console.log(key, record[key], "aaa");
               if (!(key == "name" || key === "key")) {
-                total += record[key];
+                total += record[key].length;
               }
             }
             return total;
@@ -84,7 +109,7 @@ export default function ArrangAnalysisModal(props: Props) {
         for (let d of sheetViewModal.dateList) {
           obj[d] = allCell.filter(
             (item: any) => item.workDate == d && item.rangeName == obj.name
-          ).length;
+          );
         }
         list.push(obj);
       }
