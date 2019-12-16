@@ -244,6 +244,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={7}>附件:</Col>
           <Col span={16} style={{ textAlign: 'left' }}>
             <MultiFileUploader
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               type="pvm"
               data={editQuery.attachmentList.map((item: any) => {
                 return {

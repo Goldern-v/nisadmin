@@ -51,6 +51,7 @@ export default observer(function 附件弹窗(props: Props) {
   return (
     <Wrapper>
       <MultiFileUploader
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         type="pvm"
         onChange={handleChange}
         data={cloneData.list.map((item: any) => {

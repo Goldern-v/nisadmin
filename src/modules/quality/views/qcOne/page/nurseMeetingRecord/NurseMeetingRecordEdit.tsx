@@ -58,6 +58,18 @@ export default observer(function NurseMeetingRecordEdit() {
       if (recorders.indexOf(item.empName) >= 0) return true
       return false
     })
+    let newAttendees = attendees
+      .split('、')
+      .map((name: string) => {
+        let empNo = ''
+        let target = nurseList.find((item: any) => item.empName == name)
+        if (target) empNo = target.empNo
+        return {
+          empName: name,
+          empNo
+        }
+      })
+      .filter((item: any) => item.empNo)
 
     let params = {
       nurseMeeting: {
@@ -70,11 +82,7 @@ export default observer(function NurseMeetingRecordEdit() {
         }
       }),
       recorders: $recorders,
-      attendees: attendees.split('、').filter((str: string) => str).map((str: string) => {
-        return {
-          empName: str
-        }
-      }),
+      attendees: newAttendees,
       fileIds: files.map((item: any) => item.id)
     }
 
@@ -356,7 +364,14 @@ export default observer(function NurseMeetingRecordEdit() {
                       showSearch
                       mode="tags"
                       value={attendees.split('、').filter((str: string) => str)}
-                      onChange={(arr: any[]) => setAttendees(arr.join('、'))}
+                      onChange={(arr: any[]) => {
+                        let newArr = arr.filter((name: string) => {
+                          let target = nurseList.find((item: any) => item.empName == name)
+                          if (target) return true
+                          return false
+                        })
+                        setAttendees(newArr.join('、'))
+                      }}
                       placeholder="请输入"
                       filterOption={(input: string, option: any) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

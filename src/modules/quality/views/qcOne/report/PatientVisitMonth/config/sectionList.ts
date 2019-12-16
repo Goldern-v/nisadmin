@@ -28,7 +28,7 @@ export const sectionList: SectionListItem[] = [
   {
     sectionId: '附件',
     sectionTitle: '附件',
-    modalTitle: '编辑报附件',
+    modalTitle: '编辑附件',
     data: {},
     section: 附件模块,
     modal: 附件弹窗
