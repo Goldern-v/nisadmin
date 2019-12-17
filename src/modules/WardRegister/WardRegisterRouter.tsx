@@ -80,26 +80,26 @@ export default function WardRegisterRouter() {
         registerName: "床单位消毒登记本"
       }
     },
-    {
-      title: "紫外线空气消毒登记本",
-      path: "/wardRegister/QCRG_06",
-      component: { ...紫外线空气消毒登记本 },
-      icon: <ZWXKQ />,
-      payload: {
-        registerCode: "QCRG_06",
-        registerName: "紫外线空气消毒登记本"
-      }
-    },
-    {
-      title: "消毒隔离工作登记本",
-      path: "/wardRegister/QCRG_07",
-      component: { ...消毒隔离工作登记本 },
-      icon: <XDGL />,
-      payload: {
-        registerCode: "QCRG_07",
-        registerName: "消毒隔离工作登记本"
-      }
-    },
+    // {
+    //   title: "紫外线空气消毒登记本",
+    //   path: "/wardRegister/QCRG_06",
+    //   component: { ...紫外线空气消毒登记本 },
+    //   icon: <ZWXKQ />,
+    //   payload: {
+    //     registerCode: "QCRG_06",
+    //     registerName: "紫外线空气消毒登记本"
+    //   }
+    // },
+    // {
+    //   title: "消毒隔离工作登记本",
+    //   path: "/wardRegister/QCRG_07",
+    //   component: { ...消毒隔离工作登记本 },
+    //   icon: <XDGL />,
+    //   payload: {
+    //     registerCode: "QCRG_07",
+    //     registerName: "消毒隔离工作登记本"
+    //   }
+    // },
     {
       title: "出院患者登记本",
       path: "/wardRegister/QCRG_08",

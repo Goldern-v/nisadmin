@@ -94,10 +94,10 @@ export default observer(function SetTittle(props: Props) {
             className: "input-cell",
             render(text: any, record: any, index: any) {
               return (
-                <InputNumber
+                <Input
                   defaultValue={text}
-                  onChange={value => {
-                    record.checkSize = value;
+                  onChange={e => {
+                    record.checkSize = e.target.value;
                   }}
                   onBlur={() => updateDataSource()}
                 />
@@ -222,7 +222,9 @@ export default observer(function SetTittle(props: Props) {
           checked={moveAble}
           onChange={(value: any) => setMoveAble(value)}
         />
-        <Button onClick={addRow}>添加</Button>
+        {selectedBlockObj && selectedBlockObj.itemSizeEditable && (
+          <Button onClick={addRow}>添加</Button>
+        )}
         <Button onClick={onSave} type="primary">
           保存
         </Button>

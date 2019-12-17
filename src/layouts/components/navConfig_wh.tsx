@@ -40,11 +40,11 @@ export const navConfig: navConfigItem[] = [
     name: "三级质控",
     path: "/qcThree"
   },
-  // {
-  //   name: "学习培训",
-  //   path: "/wardRegister",
-  //   hidden: !appStore.isDev
-  // },
+  {
+    name: "学习培训",
+    path: "/continuingEdu/人员管理",
+    hidden: !appStore.isDev
+  },
   // {
   //   name: "不良事件",
   //   path: "/wardRegister",
