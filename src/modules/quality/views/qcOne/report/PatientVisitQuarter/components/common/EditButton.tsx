@@ -4,11 +4,13 @@ import { Button } from 'antd'
 import { NativeButtonProps } from 'antd/es/button/button'
 import { patientVisitQuarterModel } from '../../model/PatientVisitQuarterModel'
 import { observer } from 'src/vendors/mobx-react-lite'
+import { authStore } from 'src/stores'
 export interface Props extends NativeButtonProps {
   border?: boolean
 }
 
 export default observer(function EditButton(props: Props) {
+  if (!authStore.isRoleManage) return <span></span>
   let btnDisabled = () => {
 
     if (!patientVisitQuarterModel.allData.report) return true;

@@ -241,7 +241,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           </Col>
         </Row>
         <Row>
-          <Col span={7}>附件:</Col>
+          <Col span={7}>附件(上传表格文件):</Col>
           <Col span={16} style={{ textAlign: 'left' }}>
             <MultiFileUploader
               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -273,7 +273,7 @@ const ScrollBody = styled(ScrollBox)`
 `
 
 const Wrapper = styled.div`
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   .ant-col {
     line-height: 32px;
