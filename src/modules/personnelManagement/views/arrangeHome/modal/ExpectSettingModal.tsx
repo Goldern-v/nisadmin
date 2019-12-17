@@ -117,6 +117,7 @@ export default observer(function ExpectSettingModal(props: Props) {
     let cellObj = sheetViewModal.getCellObj(record.userId, record.startDate);
     if (cellObj) {
       cellObj!.rangeName = record.rangeName;
+      cellObj!.settingNightHour = record.settingNightHour;
       cellObj!.nameColor = record.nameColor;
       cellObj!.effectiveTime = record.effectiveTime;
       cellObj!.effectiveTimeOld = record.effectiveTime;

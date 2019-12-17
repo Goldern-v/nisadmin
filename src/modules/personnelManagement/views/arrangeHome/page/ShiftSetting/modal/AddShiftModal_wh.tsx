@@ -88,6 +88,7 @@ export default function AddShiftModal(props: Props) {
               shiftType: props.editData.shiftType,
               workTime: props.editData.workTime,
               effectiveTime: props.editData.effectiveTime,
+              settingNightHour: props.editData.settingNightHour,
               nameColor: props.editData.nameColor,
               status: props.editData.status
             });
@@ -98,6 +99,7 @@ export default function AddShiftModal(props: Props) {
               shiftType: "",
               workTime: "8:00 - 16:00",
               effectiveTime: "0",
+              settingNightHour: "0",
               nameColor: "",
               status: true
             });
@@ -110,6 +112,7 @@ export default function AddShiftModal(props: Props) {
     if (name == "shiftType" && value == "休假") {
       form.setField("workTime", "");
       form.setField("effectiveTime", "");
+      form.setField("settingNightHour", "");
     }
   };
   return (
@@ -153,6 +156,11 @@ export default function AddShiftModal(props: Props) {
             </Col>
             <Col span={24}>
               <Form.Field label={`标准工时`} name="effectiveTime">
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`夜工时`} name="settingNightHour">
                 <Input />
               </Form.Field>
             </Col>

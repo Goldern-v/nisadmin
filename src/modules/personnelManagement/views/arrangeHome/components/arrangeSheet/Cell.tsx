@@ -99,7 +99,10 @@ export default observer(function Cell(props: Props) {
                 editEffectiveTimeModal.show({
                   data: sheetViewModal.selectedCell,
                   onOkCallBack(data: any) {
+                    console.log(data, "datadata");
                     sheetViewModal.selectedCell.detail = data.detail;
+                    sheetViewModal.selectedCell.settingNightHour =
+                      data.settingNightHour;
                     if (data.statusType == "1") {
                       /** 加班 */
                       sheetViewModal.selectedCell.effectiveTime = Number(
@@ -421,14 +424,15 @@ export default observer(function Cell(props: Props) {
         cellObj.schAddOrSubs[0].statusType == "1"
           ? "加班"
           : "减班") +
-        "：" +
+        ":" +
         (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length
           ? cellObj.schAddOrSubs[0].hour
           : 0) +
         "h" +
-        "," +
-        `现：${cellObj.effectiveTime || 0}h,` +
-        `原：${cellObj.effectiveTimeOld || 0}h`
+        "，" +
+        `现:${cellObj.effectiveTime || 0}h，` +
+        `原:${cellObj.effectiveTimeOld || 0}h，` +
+        `夜:${cellObj.settingNightHour || 0}h`
       );
     }
   });

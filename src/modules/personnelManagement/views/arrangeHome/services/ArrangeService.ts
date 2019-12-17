@@ -143,6 +143,11 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/schAddOrSub/findBylist`, obj);
   }
 
+  //夜小时数查询
+  public schNightHourFindBylist(obj: any) {
+    return this.post(`schNightHour/findBylist`, obj);
+  }
+
   //假期查询
   public schHolidaysWHFindBylist(obj: PageObj) {
     return this.post(`/schHolidaysWH/findBylist`, obj);
