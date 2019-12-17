@@ -46,7 +46,7 @@ export default observer(function NurseMeetingRecordEdit() {
     creatorName: '',
     createTime: ''
   } as any)
-  const [comperes, setComperes] = useState('')
+  const [comperes, setComperes] = useState([] as any[])
   const [recorders, setRecorders] = useState([] as any[])
   const [attendees, setAttendees] = useState('')
   const [files, setFiles] = useState([] as FileItem[])
@@ -54,10 +54,11 @@ export default observer(function NurseMeetingRecordEdit() {
   // const [ids, setIds] = useState([] as any)
 
   const handleSave = (cache?: boolean) => {
-    let $recorders = nurseList.filter((item: any) => {
+    let newRecorders = nurseList.filter((item: any) => {
       if (recorders.indexOf(item.empName) >= 0) return true
       return false
     })
+
     let newAttendees = attendees
       .split('、')
       .map((name: string) => {
@@ -71,17 +72,18 @@ export default observer(function NurseMeetingRecordEdit() {
       })
       .filter((item: any) => item.empNo)
 
+    let newComperes = nurseList.filter((item: any) => {
+      if (comperes.indexOf(item.empName) >= 0) return true
+      return false
+    })
+
     let params = {
       nurseMeeting: {
         ...nurseMeeting,
         status: cache ? '0' : '1'
       },
-      comperes: comperes.split('、').filter((str: string) => str).map((str: string) => {
-        return {
-          empName: str
-        }
-      }),
-      recorders: $recorders,
+      comperes: newComperes,
+      recorders: newRecorders,
       attendees: newAttendees,
       fileIds: files.map((item: any) => item.id)
     }
@@ -163,7 +165,7 @@ export default observer(function NurseMeetingRecordEdit() {
 
           if (res.data.comperes) {
             let _comperes = res.data.comperes.map((item: any) => item.empName) || []
-            setComperes(_comperes.join('、'))
+            setComperes(_comperes)
           }
 
           if (res.data.nurseMeeting) {
@@ -322,8 +324,18 @@ export default observer(function NurseMeetingRecordEdit() {
                     <Select
                       showSearch
                       mode="tags"
-                      value={comperes.split('、').filter((str: string) => str)}
-                      onChange={(arr: any[]) => setComperes(arr.join('、'))}
+                      value={comperes}
+                      onChange={(arr: any[]) => {
+                        let newArr = [...arr]
+                        newArr = newArr.filter((item: any) => {
+                          let target = nurseList.find((nurse: any) => nurse.empName == item)
+                          if (target)
+                            return true
+                          else
+                            return false
+                        })
+                        setComperes(newArr)
+                      }}
                       placeholder="请输入"
                       filterOption={(input: string, option: any) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
