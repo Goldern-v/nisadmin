@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { Input, Radio, ColumnProps, AutoComplete, message } from 'src/vendors/antd'
+import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem, Report, TypeCompare, DeptItem } from '../../types'
-import { workSummaryReportViewModal } from '../../WorkSummaryReportViewModal'
+import { workSummaryReportViewModal, EventTypeList } from '../../WorkSummaryReportViewModal'
 
 export interface Props {
   sectionId: string
@@ -50,14 +50,28 @@ export default function 本月片区不良事件汇总表弹窗(props: Props) {
       key: '类型',
       render(text: any, record: DeptItem, index: number) {
         return (
-          <Input
-            className='cell-input'
+          // <Input
+          //   className='cell-input'
+          //   value={record.badEventType}
+          //   onChange={(e) => {
+          //     record.badEventType = e.target.value
+          //     setData(cloneData)
+          //   }}
+          // />
+          <Select
             value={record.badEventType}
-            onChange={(e) => {
-              record.badEventType = e.target.value
+            style={{ width: '100%' }}
+            onChange={(value: any) => {
+              record.badEventType = value
               setData(cloneData)
             }}
-          />
+          >
+            {EventTypeList.map((item: any) => (
+              <Select.Option key={item.code} value={item.code}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
         )
       },
       width: 150
