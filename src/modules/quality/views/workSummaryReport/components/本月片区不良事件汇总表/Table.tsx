@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { TypeCompare, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
-import { workSummaryReportViewModal } from '../../WorkSummaryReportViewModal'
+import { workSummaryReportViewModal, getEventTypeNameByCode } from '../../WorkSummaryReportViewModal'
 export interface Props {
   list: DeptItem[]
   totalSorce: number
@@ -30,7 +30,7 @@ export default function Table(props: Props) {
           {list.map((item, index) => (
             <tr key={index}>
               <td style={{ textAlign: 'center' }}>{item.wardName}</td>
-              <td style={{ textAlign: 'center' }}>{item.badEventType}</td>
+              <td style={{ textAlign: 'center' }}>{getEventTypeNameByCode(item.badEventType)}</td>
               <td className="align-left">{item.content}</td>
             </tr>
           ))}
