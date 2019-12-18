@@ -15,6 +15,8 @@ import emitter from "src/libs/ev";
 import moment from "moment";
 import { Select } from "src/vendors/antd";
 import ArrangAnalysisModal from "../../../modal/ArrangAnalysisModal";
+import { copyRowClick } from "../../../components/arrangeSheet/cellClickEvent";
+import { cloneJson } from "src/utils/json/clone";
 
 export interface Props {}
 
@@ -116,6 +118,18 @@ export default observer(function TopPart() {
   // 分组数据
   const handleGroupChange = (value: any) => {
     selectViewModal.setParams("group", value);
+  };
+  // 班次交换
+  const exchange = () => {
+    if (sheetViewModal.copyCellList.length == 2) {
+      let _cell = cloneJson([sheetViewModal.copyCellList[0]] as any);
+      copyRowClick(
+        [sheetViewModal.copyCellList[0]],
+        [sheetViewModal.copyCellList[1]],
+        false
+      );
+      copyRowClick([sheetViewModal.copyCellList[1]], _cell, false);
+    }
   };
   useEffect(() => {
     if (isInit) {
@@ -284,6 +298,14 @@ export default observer(function TopPart() {
         </div>
         <div className="item">
           <Button onClick={handleReset}>重置排班</Button>
+        </div>
+        <div className="item">
+          <Button
+            onClick={exchange}
+            disabled={sheetViewModal.copyCellList.length != 2}
+          >
+            班次互换
+          </Button>
         </div>
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>

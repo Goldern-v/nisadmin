@@ -91,11 +91,14 @@ export default function DetailsPage(props: Props) {
   return (
     <Wrapper>
       <ToolCon>
-        <Tooltip placement="bottom" title="转发">
-          <div className="item-box" onClick={() => editMail("转发")}>
-            <img src={require("./images/转发.png")} alt="" />
-          </div>
-        </Tooltip>
+        {authStore.isRoleManage && (
+          <Tooltip placement="bottom" title="转发">
+            <div className="item-box" onClick={() => editMail("转发")}>
+              <img src={require("./images/转发.png")} alt="" />
+            </div>
+          </Tooltip>
+        )}
+
         {data.showType == "草" && (
           <Tooltip placement="bottom" title="编辑">
             <div className="item-box" onClick={() => editMail("草")}>
