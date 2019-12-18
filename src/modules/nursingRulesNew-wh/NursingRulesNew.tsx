@@ -108,11 +108,11 @@ export default observer(function nursingRulesNew() {
       key: 'bookName',
       dataIndex: 'bookName',
       align: 'left',
-      render: (text: string, record: any) =>
-        <div className='rule-name' title={text}>
-          {text}
-          <span> </span>
-          {record.toAuditChapters && authStore.isDepartment &&
+      render: (text: string, record: any) => {
+        let auditCon: any = ''
+        if (record.toAuditChapters && authStore.isDepartment)
+          auditCon = <React.Fragment>
+            <span> </span>
             <Tag
               color="#f00"
               style={{
@@ -122,8 +122,15 @@ export default observer(function nursingRulesNew() {
               onClick={() => handleAudit(record.id)}
               title={`有${record.toAuditChapters}个章节待审核`}>
               {record.toAuditChapters}
-            </Tag>}
+            </Tag>
+          </React.Fragment>
+
+
+        return <div className='rule-name' title={text}>
+          {text}
+          {auditCon}
         </div>
+      }
     },
     {
       title: '上传人',
