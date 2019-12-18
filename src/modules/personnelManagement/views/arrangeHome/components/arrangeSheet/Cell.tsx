@@ -49,20 +49,21 @@ export default observer(function Cell(props: Props) {
   const onContextMenu = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
+    let target;
     if (!isEdit) return;
     event.preventDefault();
     if (cellConfig.isTwoDaysAgo) return;
+    if ((event as any).target.tagName !== "DIV") {
+      target = (event as any).target.parentNode;
+    } else {
+      target = (event as any).target;
+    }
     sheetViewModal.selectedCell = cellObj;
     let hasArrange = !!(
       sheetViewModal.selectedCell && sheetViewModal.selectedCell.rangeName
     );
 
-    let {
-      left: x,
-      top: y,
-      width,
-      height
-    } = (event as any).target.getBoundingClientRect();
+    let { left: x, top: y, width, height } = target.getBoundingClientRect();
     // console.log(event.target, x, y, width, height, 'width, height ')
     /** 公休节休不可编辑 */
 
@@ -101,8 +102,7 @@ export default observer(function Cell(props: Props) {
                   onOkCallBack(data: any) {
                     console.log(data, "datadata");
                     sheetViewModal.selectedCell.detail = data.detail;
-                    sheetViewModal.selectedCell.settingNightHour =
-                      data.settingNightHour;
+
                     if (data.statusType == "1") {
                       /** 加班 */
                       sheetViewModal.selectedCell.effectiveTime = Number(
@@ -120,7 +120,8 @@ export default observer(function Cell(props: Props) {
                         startDate: data.startDate,
                         endDate: data.endDate,
                         statusType: data.statusType,
-                        hour: Number(data.effectiveTime)
+                        hour: Number(data.effectiveTime),
+                        settingNightHour: data.settingNightHour
                       }
                     ];
                   }
@@ -174,45 +175,6 @@ export default observer(function Cell(props: Props) {
                     sheetViewModal.selectedCell!.rangeName
                   );
                 }
-                // resetArrangeCount;
-                // old
-                // let _list = sheetViewModal.getSelectCellList(true);
-                // let _index = _list.indexOf(sheetViewModal.selectedCell);
-                // let list = _list.filter((item: any, index: number) => {
-                //   let _name = (
-                //     sheetViewModal.selectedCell.rangeName || ""
-                //   ).replace(/\d+/g, "");
-                //   let name = item.rangeName.replace(/\d+/g, "");
-                //   if (index >= _index && (_name == name || !name)) {
-                //     return true;
-                //   }
-                // });
-                // // debugger
-                // if (index > -1) {
-                //   for (let i = index; i < list.length; i++) {
-                //     if (i == index) {
-                //       list[i].rangeName =
-                //         (sheetViewModal.selectedCell.rangeName || "").replace(
-                //           /\d+/g,
-                //           ""
-                //         ) + (i + num).toString();
-                //     }
-                //     // if (!list[i]) continue;
-                //     // if (list[i].rangeName) continue;
-                //     list[i].rangeName =
-                //       (sheetViewModal.selectedCell.rangeName || "").replace(
-                //         /\d+/g,
-                //         ""
-                //       ) + (i + num).toString();
-                //     list[i].nameColor = sheetViewModal.selectedCell.nameColor;
-                //     list[i].effectiveTime =
-                //       sheetViewModal.selectedCell.effectiveTime;
-                //     list[i].effectiveTimeOld =
-                //       sheetViewModal.selectedCell.effectiveTimeOld;
-                //     list[i].shiftType = sheetViewModal.selectedCell.shiftType;
-                //     list[i].settings = null;
-                //   }
-                // }
               }
             });
           }
@@ -272,7 +234,7 @@ export default observer(function Cell(props: Props) {
               sheetViewModal.copyCell = sheetViewModal.selectedCell;
               sheetViewModal._copyCellList = [];
             }
-            message.success("复制成功");
+            message.success("复制格成功");
           }
         },
         {
@@ -315,22 +277,30 @@ export default observer(function Cell(props: Props) {
         },
         {
           icon: require("../../images/复制行.png"),
+          label: "复制周",
+          type: "text",
+          onClick() {
+            sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
+            message.success("复制周成功");
+          }
+        },
+        {
+          icon: require("../../images/粘贴行.png"),
+          label: "粘贴周",
+          type: "text",
+          onClick() {
+            let list = sheetViewModal.getSelectWeekList(true);
+            let copyWeekRow = sheetViewModal.copyWeekRow;
+            copyRowClick(list, copyWeekRow, false);
+          }
+        },
+        {
+          icon: require("../../images/复制行.png"),
           label: "复制行",
           type: "text",
           onClick() {
             sheetViewModal.copyRow = sheetViewModal.getSelectCellList(true);
-            message.success("复制成功");
-          }
-        },
-
-        {
-          icon: require("../../images/剪切行.png"),
-          label: "剪切行",
-          type: "text",
-          onClick() {
-            let list = sheetViewModal.getSelectCellList(true);
-            let copyRow = sheetViewModal.copyRow;
-            copyRowClick(list, copyRow, true);
+            message.success("复制行成功");
           }
         },
         {
@@ -343,7 +313,16 @@ export default observer(function Cell(props: Props) {
             copyRowClick(list, copyRow, false);
           }
         },
-
+        {
+          icon: require("../../images/剪切行.png"),
+          label: "剪切行",
+          type: "text",
+          onClick() {
+            let list = sheetViewModal.getSelectCellList(true);
+            let copyRow = sheetViewModal.copyRow;
+            copyRowClick(list, copyRow, true);
+          }
+        },
         {
           type: "line"
         },
@@ -432,7 +411,9 @@ export default observer(function Cell(props: Props) {
         "，" +
         `现:${cellObj.effectiveTime || 0}h，` +
         `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `夜:${cellObj.settingNightHour || 0}h`
+        `夜:${(cellObj.schAddOrSubs[0] &&
+          cellObj.schAddOrSubs[0].settingNightHour) ||
+          0}h`
       );
     }
   });

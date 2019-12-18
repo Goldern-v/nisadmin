@@ -78,7 +78,10 @@ export default function EditEffectiveTimeModal(props: Props) {
           (data.effectiveTime || 0) - (data.effectiveTimeOld || 0)
         ),
         detail: data.detail,
-        settingNightHour: data.settingNightHour,
+        settingNightHour:
+          data.schAddOrSubs &&
+          data.schAddOrSubs[0] &&
+          data.schAddOrSubs[0].settingNightHour,
         startDate_1: moment(data.workDate),
         startDate_2:
           data.schAddOrSubs &&

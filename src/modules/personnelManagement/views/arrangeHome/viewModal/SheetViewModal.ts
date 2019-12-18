@@ -36,7 +36,8 @@ class SheetViewModal {
   @observable public copyCellList: any = [];
   /** 缓存 */
   @observable public _copyCellList: any = [];
-
+  /** 复制周 */
+  @observable public copyWeekRow: any[] = [];
   /** 特殊班次，计数等 */
   @observable public countArrangeNameList: any[] = [];
   /** 一周全是这些班次 按5天计算工时 */
@@ -69,6 +70,9 @@ class SheetViewModal {
     let cellList = [];
     for (let i = 0; i < this.sheetTableData.length; i++) {
       for (let j = 0; j < this.sheetTableData[i]!.settingDtos.length; j++) {
+        this.sheetTableData[i]!.settingDtos[j].empName = this.sheetTableData[
+          i
+        ].empName;
         cellList.push(this.sheetTableData[i].settingDtos[j]);
       }
     }
@@ -103,6 +107,31 @@ class SheetViewModal {
       });
     }
     return list;
+  }
+
+  /** 获取选中格子的周 */
+  getSelectWeekList(canEdit: boolean) {
+    let list: any[] = [];
+    if (this.selectedCell) {
+      let userId = this.selectedCell.userId;
+      list = this.allCell.filter(item => {
+        return (
+          item.userId == userId &&
+          (canEdit ? this.analyseCell(item).isTwoDaysAgo == false : true)
+        );
+      });
+    }
+
+    let weekIndex = moment(this.selectedCell.workDate).weeks();
+    let weekRow = [];
+    for (let i = 0; i < 7; i++) {
+      weekRow[i] = list.find(
+        item =>
+          moment(item.workDate).weeks() == weekIndex &&
+          moment(item.workDate).isoWeekday() == i + 1
+      );
+    }
+    return weekRow;
   }
 
   /** 解析cellobj 获取额外信息 */
@@ -152,6 +181,13 @@ class SheetViewModal {
     let allCell = this.getAllCell(true);
     return allCell.find(item => {
       return item.userId == userId && item.workDate == date;
+    });
+  }
+  /** 根据姓名和时间获取排班格子 */
+  getCellObjByName(empName: string, date: string) {
+    let allCell = this.getAllCell(true);
+    return allCell.find(item => {
+      return item.empName == empName && item.workDate == date;
     });
   }
 

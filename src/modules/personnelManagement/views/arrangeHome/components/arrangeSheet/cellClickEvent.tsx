@@ -65,6 +65,7 @@ export function getAddArrangeMenuList(
 export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
   if (list.length && copyRow.length) {
     for (let i = 0; i < list.length; i++) {
+      if (!list[i] || !copyRow[i]) continue;
       list[i].rangeName = copyRow[i].rangeName;
       list[i].rangeNameCode = null;
       list[i].nameColor = copyRow[i].nameColor;

@@ -1,41 +1,44 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useRef } from 'react'
-import { Button } from 'antd'
-import { Options, MenuList, MenuListItem } from '../../types/contextMenu'
-import classNames from 'classnames'
+import styled from "styled-components";
+import React, { useState, useEffect, useRef } from "react";
+import { Button } from "antd";
+import { Options, MenuList, MenuListItem } from "../../types/contextMenu";
+import classNames from "classnames";
 
 export interface Props {
-  menuList: MenuList
-  options: Options
-  show: boolean
-  setShow: any
+  menuList: MenuList;
+  options: Options;
+  show: boolean;
+  setShow: any;
 }
 
 export default function ContextMenu(props: Props) {
-  let { menuList, options, show, setShow } = props
-  let { x, y } = options
-  let elRef = useRef(null)
+  let { menuList, options, show, setShow } = props;
+  let { x, y } = options;
+  let elRef = useRef(null);
   useEffect(() => {
     function onClose(event: any) {
       if ((event.path || []).includes(elRef.current)) {
       } else {
         // console.log(event.path, elRef.current, 'event.path')
-        setShow(false)
+        setShow(false);
       }
     }
-    document.addEventListener('click', onClose, false)
+    document.addEventListener("click", onClose, false);
     return () => {
-      document.removeEventListener('click', onClose, false)
-    }
-  }, [])
+      document.removeEventListener("click", onClose, false);
+    };
+  }, []);
 
-  const onItemClick = (item: MenuListItem, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    item.onClick && (item.onClick(item), setShow(false))
-  }
+  const onItemClick = (
+    item: MenuListItem,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    item.onClick && (item.onClick(item), setShow(false));
+  };
 
-  let max_y = window.innerHeight
+  let max_y = window.innerHeight;
   if (max_y - y < 310) {
-    y = max_y - 310
+    y = max_y - 310;
   }
   return (
     <div ref={elRef}>
@@ -45,67 +48,85 @@ export default function ContextMenu(props: Props) {
         </Wrapper>
       )}
     </div>
-  )
+  );
 }
 
 function renderItem(menuList: MenuListItem[], onItemClick: any) {
   return (
     menuList &&
     menuList.map((item, index) => {
-      if (item.type == 'text') {
+      if (item.type == "text") {
         return (
           <div
-            className={classNames({ 'text-item': true, disabled: item.disabled })}
+            className={classNames({
+              "text-item": true,
+              disabled: item.disabled
+            })}
             key={index}
             onClick={() => onItemClick(item)}
           >
-            {item.icon && <img src={item.icon} alt='' className='icon' />}
+            {item.icon && <img src={item.icon} alt="" className="icon" />}
             {item.label}
-            {item.children && <img src={require('../../images/展开二级.png')} alt='' className='more' />}
             {item.children && (
-              <div className='children-con'>{item.children && renderItem(item.children, onItemClick)}</div>
+              <img
+                src={require("../../images/展开二级.png")}
+                alt=""
+                className="more"
+              />
+            )}
+            {item.children && (
+              <div className="children-con">
+                {item.children && renderItem(item.children, onItemClick)}
+              </div>
             )}
           </div>
-        )
+        );
       } else {
-        return <div className='line-item' key={index} />
+        return <div className="line-item" key={index} />;
       }
     })
-  )
+  );
 }
 
 export function createContextMenu() {
-  let _setShow: any = null
-  let _setMenuList: any = null
-  let _setOptions: any = null
+  let _setShow: any = null;
+  let _setMenuList: any = null;
+  let _setOptions: any = null;
   return {
     Component: () => {
-      const [menuList, setMenuList]: any = useState([])
+      const [menuList, setMenuList]: any = useState([]);
       const [options, setOptions] = useState({
         x: 0,
         y: 0
-      })
-      const [show, setShow] = useState(false)
+      });
+      const [show, setShow] = useState(false);
 
-      _setShow = setShow
-      _setMenuList = setMenuList
-      _setOptions = setOptions
-      return <ContextMenu menuList={menuList} options={options} show={show} setShow={setShow} />
+      _setShow = setShow;
+      _setMenuList = setMenuList;
+      _setOptions = setOptions;
+      return (
+        <ContextMenu
+          menuList={menuList}
+          options={options}
+          show={show}
+          setShow={setShow}
+        />
+      );
     },
     show(menuList: MenuList, options: Options) {
-      _setShow && _setShow(true)
-      _setShow && _setMenuList(menuList)
-      _setShow && _setOptions(options)
+      _setShow && _setShow(true);
+      _setShow && _setMenuList(menuList);
+      _setShow && _setOptions(options);
     },
     close() {
-      _setShow(false)
+      _setShow(false);
     }
-  }
+  };
 }
 const Wrapper = styled.div<{ x: number; y: number }>`
   position: fixed;
-  left: ${(p) => p.x}px;
-  top: ${(p) => p.y}px;
+  left: ${p => p.x}px;
+  top: ${p => p.y}px;
   z-index: 998;
   width: 150px;
   max-height: 500px;
@@ -127,8 +148,8 @@ const Wrapper = styled.div<{ x: number; y: number }>`
     float: right;
   }
   .text-item {
-    height: 26px;
-    line-height: 26px;
+    height: 22px;
+    line-height: 22px;
     cursor: pointer;
     color: #486a62;
     font-size: 13px;
@@ -183,4 +204,4 @@ const Wrapper = styled.div<{ x: number; y: number }>`
       flex: 1;
     }
   }
-`
+`;

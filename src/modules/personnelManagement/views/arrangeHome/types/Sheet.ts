@@ -3,6 +3,7 @@ interface SchAddOrSubItem {
   endDate: string;
   statusType: string;
   hour: number;
+  settingNightHour: number;
 }
 
 export interface ArrangeItem {
@@ -17,6 +18,7 @@ export interface ArrangeItem {
   detail?: string;
   settings?: ArrangeItem | null;
   statusType?: string;
+  workDate?: string;
   /** 武汉加减班 */
   schAddOrSubs?: Partial<SchAddOrSubItem>[];
   [p: string]: any;

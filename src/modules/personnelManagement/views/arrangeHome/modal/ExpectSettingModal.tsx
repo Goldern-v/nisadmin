@@ -72,10 +72,11 @@ export default observer(function ExpectSettingModal(props: Props) {
       align: "center",
       render: (a: any, record: any, c: any) => {
         let status = 0; /** 0-未填入 1-已经填入 2-休假 */
-        let cellObj = sheetViewModal.getCellObj(
-          record.userId,
+        let cellObj = sheetViewModal.getCellObjByName(
+          record.empName,
           record.startDate
         );
+        console.log(cellObj, "cellObjcellObj");
         if (cellObj) {
           if (
             cellObj.rangeName == record.rangeName &&
@@ -114,7 +115,10 @@ export default observer(function ExpectSettingModal(props: Props) {
   };
 
   const enter = (record: any) => {
-    let cellObj = sheetViewModal.getCellObj(record.userId, record.startDate);
+    let cellObj = sheetViewModal.getCellObjByName(
+      record.empName,
+      record.startDate
+    );
     if (cellObj) {
       cellObj!.rangeName = record.rangeName;
       cellObj!.settingNightHour = record.settingNightHour;
@@ -128,7 +132,10 @@ export default observer(function ExpectSettingModal(props: Props) {
     setTimeout(() => setLoadingTable(false), 100);
   };
   const clean = (record: any) => {
-    let cellObj = sheetViewModal.getCellObj(record.userId, record.startDate);
+    let cellObj = sheetViewModal.getCellObjByName(
+      record.empName,
+      record.startDate
+    );
     cellObj && cleanCell(cellObj);
     sheetViewModal.expectList = [...sheetViewModal.expectList];
   };
