@@ -16,6 +16,7 @@ import qs from 'qs'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function StarRatingReportEdit() {
+  const { isRoleManage, isSupervisorNurse, isDepartment } = authStore
   const pageRef: any = useRef<HTMLElement>()
   useEffect(() => {
     let search = appStore.location.search
@@ -107,8 +108,7 @@ export default observer(function StarRatingReportEdit() {
     })
   }
   const authBtns = () => {
-    const { isRoleManage, isSupervisorNurse, isDepartment } = authStore
-    if (isRoleManage || isSupervisorNurse || isDepartment) {
+    if (isRoleManage && !isSupervisorNurse && !isDepartment) {
       return <React.Fragment>
         <Button onClick={onDelete}>删除</Button>
         {/* <Button onClick={() => onPrint(false)}>预览</Button> */}

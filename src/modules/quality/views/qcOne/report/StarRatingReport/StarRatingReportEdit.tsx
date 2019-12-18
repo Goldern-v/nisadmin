@@ -17,6 +17,7 @@ export interface Props extends RouteComponentProps { }
 
 export default observer(function StarRatingReportEdit() {
   const pageRef: any = useRef<HTMLElement>()
+  const { isRoleManage, isSupervisorNurse, isDepartment } = authStore
   useEffect(() => {
     let search = appStore.location.search
     let query = qs.parse(search.replace('?', ''))
@@ -106,22 +107,7 @@ export default observer(function StarRatingReportEdit() {
       })
     })
   }
-  const authBtns = () => {
-    const { isRoleManage, isSupervisorNurse, isDepartment } = authStore
-    if (isRoleManage || isSupervisorNurse || isDepartment) {
-      return <React.Fragment>
-        <Button onClick={onDelete}>删除</Button>
-        {report.status == '1' ? (
-          <Button onClick={onCancelPublish}>撤销</Button>
-        ) : (
-            <Button onClick={onPublish}>提交</Button>
-          )}
-        <Button onClick={() => onPrint(true)}>打印</Button>
-      </React.Fragment>
-    } else {
-      return ''
-    }
-  }
+
   return (
     <Wrapper>
       <HeadCon>
@@ -135,8 +121,15 @@ export default observer(function StarRatingReportEdit() {
           </span>
         </div>
         <div className='tool-con'>
-          {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {authBtns()}
+          {(isRoleManage && !isSupervisorNurse && !isDepartment) && <React.Fragment>
+            <Button onClick={onDelete}>删除</Button>
+            {report.status == '1' ? (
+              <Button onClick={onCancelPublish}>撤销</Button>
+            ) : (
+                <Button onClick={onPublish}>提交</Button>
+              )}
+          </React.Fragment>}
+          {(isRoleManage || isSupervisorNurse || isDepartment) && <Button onClick={() => onPrint(true)}>打印</Button>}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>

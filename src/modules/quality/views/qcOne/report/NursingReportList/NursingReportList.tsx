@@ -157,7 +157,7 @@ export default observer(function NursingReportList() {
       width: 70,
       align: 'center',
       render: (text: string, record: any) => {
-        let disabled = !(isRoleManage || isSupervisorNurse || isDepartment)
+        let disabled = !(isRoleManage && !isSupervisorNurse && !isDepartment)
         return <DoCon className="operate-group">
           {!disabled && <span onClick={() => handleReview(record)}>查看</span>}
           {!disabled && <span onClick={() => handleExport(record)}>导出</span>}
@@ -454,7 +454,7 @@ export default observer(function NursingReportList() {
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>
-          {isRoleManage && <div className="item">
+          {(isRoleManage && !isDepartment && !isSupervisorNurse) && <div className="item">
             <Button type="primary" onClick={handleCreate}>新建</Button>
           </div>}
           {/* {isSupervisorNurse && <div className="item">
