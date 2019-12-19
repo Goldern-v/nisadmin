@@ -130,7 +130,7 @@ export default observer(function PatientVisitMonthEdit() {
               <Button onClick={onCancelPublish}>撤销</Button>
             ) : (
                 <Button onClick={onPublish}>提交</Button>
-              ) : ''}}
+              ) : ''}
           </React.Fragment>}
           {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
