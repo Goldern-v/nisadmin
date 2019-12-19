@@ -10,7 +10,7 @@ export interface Props extends NativeButtonProps {
 }
 
 export default observer(function EditButton(props: Props) {
-  if (!authStore.isRoleManage) return <span></span>
+  if (!authStore.isOnlyRoleManage) return <span></span>
   let btnDisabled = () => {
 
     if (!patientVisitQuarterModel.allData.report) return true;

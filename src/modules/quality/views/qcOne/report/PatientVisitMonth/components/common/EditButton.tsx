@@ -4,13 +4,16 @@ import { Button } from 'antd'
 import { NativeButtonProps } from 'antd/es/button/button'
 import { patientVisitMonthModel } from '../../model/PatientVisitMonthModel'
 import { observer } from 'src/vendors/mobx-react-lite'
+import { authStore } from 'src/stores'
 export interface Props extends NativeButtonProps {
   border?: boolean
 }
 
 export default observer(function EditButton(props: Props) {
-  let btnDisabled = () => {
+  const { isDepartment, isSupervisorNurse } = authStore
+  if (isDepartment || isSupervisorNurse) return <span></span>
 
+  let btnDisabled = () => {
     if (!patientVisitMonthModel.allData.report) return true;
     if (patientVisitMonthModel.allData.report.status == '1') return true;
     return false;

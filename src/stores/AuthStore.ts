@@ -111,6 +111,14 @@ export default class AuthStore {
       return false
     }
   }
+  /** 是否只是护士长 */
+  public get isOnlyRoleManage() {
+    return this.isRoleManage && !(this.isDepartment || this.isSupervisorNurse)
+  }
+  /** 是否非普通护士 */
+  public get isNotANormalNurse() {
+    return this.isRoleManage || this.isDepartment || this.isSupervisorNurse
+  }
   /** 用户初始化 */
   @action
   public initUser() {

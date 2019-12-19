@@ -49,7 +49,8 @@ export default observer(function PatientVisitQuarter() {
     deptList, //权限科室列表
     isRoleManage, //是否护士长
     isSupervisorNurse, //是否科护士长
-    isDepartment //是否护理部
+    isDepartment, //是否护理部
+    isOnlyRoleManage
   } = authStore
 
   const defaultQuery = {
@@ -139,7 +140,7 @@ export default observer(function PatientVisitQuarter() {
       render: (text: string, record: any) => {
         return <DoCon className="operate-group">
           <span onClick={() => handleEdit(record)}>查看</span>
-          {isRoleManage && <React.Fragment>
+          {!(isSupervisorNurse || isDepartment) && <React.Fragment>
             {record.status === '0' && <span onClick={() => handlePublish(record)}>提交</span>}
             {record.status === '1' && <span onClick={() => handleCancelPublish(record)} style={{ color: 'red' }}>撤销</span>}
           </React.Fragment>}
@@ -626,7 +627,7 @@ export default observer(function PatientVisitQuarter() {
           <Option value="2">护理部抽查</Option>
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
-        <Button type="primary" onClick={handleCreate}>新建</Button>
+        {!(isDepartment || isSupervisorNurse) && <Button type="primary" onClick={handleCreate}>新建</Button>}
         {/* {isSupervisorNurse && <Button onClick={() => setCommitVisible(true)}>提交</Button>}
         {(
           isSupervisorNurse || isDepartment

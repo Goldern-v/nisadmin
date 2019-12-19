@@ -16,7 +16,7 @@ import qs from 'qs'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function NursingReportDetailView() {
-  const { isRoleManage, isDepartment, isSupervisorNurse } = authStore
+  const { isRoleManage, isDepartment, isSupervisorNurse, isOnlyRoleManage } = authStore
   const pageRef: any = useRef<HTMLElement>()
   useEffect(() => {
     let search = appStore.location.search
@@ -110,7 +110,7 @@ export default observer(function NursingReportDetailView() {
           </span>
         </div>
         <div className='tool-con'>
-          {(isRoleManage && !isSupervisorNurse && !isDepartment) && <Button onClick={onDelete}>删除</Button>}
+          {isOnlyRoleManage && <Button onClick={onDelete}>删除</Button>}
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
           {/* {report.status == '1' ? (
             <Button onClick={onCancelPublish}>撤销</Button>

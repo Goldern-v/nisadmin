@@ -16,6 +16,7 @@ import qs from 'qs'
 export interface Props extends RouteComponentProps { }
 
 export default observer(function PatientVisitMonthEdit() {
+  const { isDepartment, isSupervisorNurse, isRoleManage } = authStore
   const pageRef: any = useRef<HTMLElement>()
   useEffect(() => {
     let search = appStore.location.search
@@ -122,13 +123,15 @@ export default observer(function PatientVisitMonthEdit() {
           </span>
         </div>
         <div className='tool-con'>
-          <Button onClick={onDelete}>删除</Button>
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {authStore.isRoleManage ? report.status == '1' ? (
-            <Button onClick={onCancelPublish}>撤销</Button>
-          ) : (
-              <Button onClick={onPublish}>提交</Button>
-            ) : ''}
+          {!(isDepartment || isSupervisorNurse) && <React.Fragment>
+            <Button onClick={onDelete}>删除</Button>
+            {authStore.isRoleManage ? report.status == '1' ? (
+              <Button onClick={onCancelPublish}>撤销</Button>
+            ) : (
+                <Button onClick={onPublish}>提交</Button>
+              ) : ''}}
+          </React.Fragment>}
           {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
