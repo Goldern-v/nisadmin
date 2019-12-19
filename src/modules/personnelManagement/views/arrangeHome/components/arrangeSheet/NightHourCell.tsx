@@ -19,7 +19,7 @@ export default observer(function NightHourCell(props: Props) {
 
   let total = list.reduce((total: any, current: ArrangeItem) => {
     total += Number(current.settingNightHour);
-    if (current.schAddOrSubs && current.schAddOrSubs[0]) {
+    if (current.schAddOrSubs && current.schAddOrSubs.length) {
       if (current.schAddOrSubs[0].statusType == "1") {
         total += Number(current.schAddOrSubs[0].settingNightHour);
       }

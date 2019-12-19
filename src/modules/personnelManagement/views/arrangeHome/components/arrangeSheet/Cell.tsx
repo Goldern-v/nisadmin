@@ -411,7 +411,8 @@ export default observer(function Cell(props: Props) {
         "，" +
         `现:${cellObj.effectiveTime || 0}h，` +
         `原:${cellObj.effectiveTimeOld || 0}h，` +
-        `夜:${(cellObj.schAddOrSubs[0] &&
+        `夜:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
           cellObj.schAddOrSubs[0].settingNightHour) ||
           0}h`
       );

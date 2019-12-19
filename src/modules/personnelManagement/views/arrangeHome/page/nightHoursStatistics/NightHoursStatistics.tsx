@@ -145,6 +145,7 @@ export default observer(function NightHoursStatistics() {
         wrapperStyle={{ margin: "0 15px" }}
         type={["index"]}
         surplusHeight={180}
+        surplusWidth={200}
         // pagination={{
         //   current: pageOptions.pageIndex,
         //   pageSize: pageOptions.pageSize,

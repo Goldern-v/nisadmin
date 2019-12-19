@@ -1,64 +1,71 @@
 /** 科室选择器全局使用  */
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Select } from 'antd'
-import { observer } from 'mobx-react-lite'
-import { authStore, appStore } from 'src/stores'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import { Select } from "antd";
+import { observer } from "mobx-react-lite";
+import { authStore, appStore } from "src/stores";
 export interface Props {
-  onChange: (value: string) => void
-  extraDept?: any[]
-  style?: any
+  onChange: (value: string) => void;
+  extraDept?: any[];
+  style?: any;
 }
 
 export interface DeptType {
-  code: string
-  name: string
+  code: string;
+  name: string;
 }
 
 export default observer(function DeptSelect(props: Props) {
-  const [hasAllDept, setHasAllDept] = useState(false)
-  const [defaultValue, setDefaultValue] = useState(authStore.selectedDeptCode)
-  let deptList = authStore.deptList
+  const [hasAllDept, setHasAllDept] = useState(false);
+  const [defaultValue, setDefaultValue] = useState(authStore.selectedDeptCode);
+  let deptList = authStore.deptList;
   const onChange = (value: string) => {
-    authStore.selectedDeptCode = value
+    authStore.selectedDeptCode = value;
     // if(authStore.deptList)
     if (!authStore.deptList) {
-      authStore.deptList = []
+      authStore.deptList = [];
     }
-    if (!authStore.deptList[0]) {
-      authStore.deptList = [{ code: '', name: '' }]
+    if (!authStore.deptList.length) {
+      authStore.deptList = [{ code: "", name: "" }];
     }
 
-    authStore.selectDeptCode(value)
-    setDefaultValue(value)
-    props.onChange(value)
-  }
+    authStore.selectDeptCode(value);
+    setDefaultValue(value);
+    props.onChange(value);
+  };
 
   useEffect(() => {
-    const hasAllDeptRouteList = ['/home', '/nurseFile/:path', '/statistic/:name', '/auditsManagement', '/quality/:name']
-    if (authStore.post === '护理部' || authStore.isAdmin) {
+    const hasAllDeptRouteList = [
+      "/home",
+      "/nurseFile/:path",
+      "/statistic/:name",
+      "/auditsManagement",
+      "/quality/:name"
+    ];
+    if (authStore.post === "护理部" || authStore.isAdmin) {
       if (hasAllDeptRouteList.indexOf(appStore.match.path) > -1) {
         // alert(123)
-        setHasAllDept(true)
+        setHasAllDept(true);
         // if (!authStore.selectedDeptCode) {
-        authStore.selectedDeptCode = '全院'
+        authStore.selectedDeptCode = "全院";
         // }
       } else {
-        setHasAllDept(false)
-        if (authStore.selectedDeptCode === '全院') {
-          authStore.selectedDeptCode = authStore.defaultDeptCode
+        setHasAllDept(false);
+        if (authStore.selectedDeptCode === "全院") {
+          authStore.selectedDeptCode = authStore.defaultDeptCode;
         }
       }
     }
-    if (!props.extraDept && authStore.selectedDeptCode == '*') authStore.selectedDeptCode = authStore.defaultDeptCode
-    onChange(authStore.selectedDeptCode)
+    if (!props.extraDept && authStore.selectedDeptCode == "*")
+      authStore.selectedDeptCode = authStore.defaultDeptCode;
+    onChange(authStore.selectedDeptCode);
     return () => {
       setTimeout(() => {
         // authStore.selectedDeptCode = authStore.defaultDeptCode
-      }, 0)
-    }
-  }, [])
+      }, 0);
+    };
+  }, []);
 
   return (
     <Wrapper>
@@ -72,7 +79,7 @@ export default observer(function DeptSelect(props: Props) {
         }
       >
         {hasAllDept && (
-          <Select.Option key={'全院'} value={'全院'}>
+          <Select.Option key={"全院"} value={"全院"}>
             全院
           </Select.Option>
         )}
@@ -91,6 +98,6 @@ export default observer(function DeptSelect(props: Props) {
         ))}
       </Select>
     </Wrapper>
-  )
-})
-const Wrapper = styled.div``
+  );
+});
+const Wrapper = styled.div``;
