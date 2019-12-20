@@ -90,7 +90,9 @@ export default observer(function ArrangStatistics() {
           total += record[current];
           return total;
         }, 0);
-        return sum + Number(record["加班"]) - Number(record["减班"]);
+        return Number(
+          sum + Number(record["加班"]) - Number(record["减班"])
+        ).toFixed(2);
       }
     },
     ...Object.keys(dataSource[0] || {})

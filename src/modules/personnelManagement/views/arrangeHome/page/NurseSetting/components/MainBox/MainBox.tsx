@@ -6,7 +6,7 @@ import { RouteComponentProps } from "react-router";
 import { Table, Input, Switch, message, Icon, Modal } from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
 import service from "src/services/api";
-import { scheduleStore, appStore } from "src/stores";
+import { scheduleStore, appStore, authStore } from "src/stores";
 
 import emitter from "src/libs/ev";
 import BaseTable, { DoCon } from "src/components/BaseTable";
@@ -18,11 +18,12 @@ import update from "immutability-helper";
 import createModal from "src/libs/createModal";
 import AddScheduleNursingModal from "../../modal/AddScheduleNursingModal";
 import AppStore from "src/stores/AppStore";
+import { observer } from "mobx-react-lite";
 
 // const Option = Select.Option
 export interface Props extends RouteComponentProps {}
 
-export default function MainBox() {
+export default observer(function MainBox() {
   const [userList, setUserList] = useState(new Array());
   const [loading, setLoading] = useState(false);
 
@@ -169,7 +170,7 @@ export default function MainBox() {
     getUserList();
 
     //
-  }, []); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+  }, [authStore.selectedDeptCode]); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   emitter.removeAllListeners("获取选中人员列表");
 
@@ -255,7 +256,7 @@ export default function MainBox() {
       <addScheduleNursingModal.Component />
     </Wrapper>
   );
-}
+});
 
 const Wrapper = styled.div`
   /* background: #eee; */

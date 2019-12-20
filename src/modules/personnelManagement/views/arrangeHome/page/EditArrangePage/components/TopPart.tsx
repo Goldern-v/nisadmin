@@ -299,9 +299,9 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
         </div>
-        {/* <div className="item">
+        <div className="item">
           <Button onClick={() => asClassModal.show()}>期望加减班</Button>
-        </div> */}
+        </div>
         <div className="item">
           <Button onClick={handleCopy}>复制排班</Button>
         </div>

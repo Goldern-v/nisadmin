@@ -10,6 +10,7 @@ import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { observer } from "mobx-react-lite";
 import { cleanCell } from "../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
+import { ArrangeItem } from "../types/Sheet";
 
 export interface Props extends ModalComponentProps {
   id: string;
@@ -29,67 +30,108 @@ export default observer(function AsClassModal(props: Props) {
 
   const columns: any = [
     {
-      title: "排班日期",
-      dataIndex: "startDate",
-      key: "startDate",
+      title: "加减班日期",
+      dataIndex: "workDate",
+      key: "workDate",
       width: 100,
       align: "center",
       marginLeft: "20px"
     },
     {
-      title: "护士",
+      title: "星期",
+      dataIndex: "week",
+      key: "week",
+      width: 60,
+      align: "center"
+    },
+    {
+      title: "姓名",
       dataIndex: "empName",
       key: "empName",
+      width: 60,
+      align: "center"
+    },
+    {
+      title: "工号",
+      dataIndex: "empNo",
+      key: "empNo",
+      width: 60,
+      align: "center"
+    },
+
+    {
+      title: "类别",
+      dataIndex: "statusType",
+      key: "statusType",
+      width: 60,
+      align: "center",
+      render: (text: any, record: any) => {
+        return text == "1" ? "加班" : text == "2" ? "减班" : text;
+      }
+    },
+
+    {
+      title: "时间",
+      width: 100,
+      align: "center",
+      render: (text: any, record: any) => {
+        return `${record.startDate} - ${record.endDate}`;
+      }
+    },
+    {
+      title: "工时",
+      dataIndex: "hour",
+      key: "hour",
       width: 100,
       align: "center"
     },
     {
-      title: "内容",
-      dataIndex: "rangeName",
-      key: "rangeName",
-      width: 120,
+      title: "白班",
+      dataIndex: "settingMorningHour",
+      key: "settingMorningHour",
+      width: 60,
       align: "center"
     },
     {
-      title: "期望班次",
-      dataIndex: "shiftType",
-      key: "shiftType",
-      width: 100,
-      align: "center"
-    },
-    {
-      title: "原因",
-      dataIndex: "detail",
-      key: "detail",
-      width: 150,
+      title: "夜班",
+      dataIndex: "settingNightHour",
+      key: "settingNightHour",
+      width: 60,
       align: "center"
     },
     {
       title: "操作",
       dataIndex: "操作",
-      key: "8",
       width: 100,
       align: "center",
       render: (a: any, record: any, c: any) => {
-        let status = 0; /** 0-未填入 1-已经填入 2-休假 */
-        let cellObj = sheetViewModal.getCellObjByName(
+        let cellObj: ArrangeItem | any = sheetViewModal.getCellObjByName(
           record.empName,
-          record.startDate
+          record.workDate
         );
 
         if (cellObj) {
-          if (
-            cellObj.rangeName == record.rangeName &&
-            cellObj.statusType == "1"
-          ) {
-            status = 1;
+          if (!cellObj.rangeName) {
+            return (
+              <DoCon>
+                <div style={{ color: "#666" }}>班次为空</div>
+              </DoCon>
+            );
           }
-          return (
-            <DoCon>
-              {status == 0 && <span onClick={() => enter(record)}>填入</span>}
-              {status == 1 && <span onClick={() => clean(record)}>撤回</span>}
-            </DoCon>
-          );
+          if (cellObj.schAddOrSubs && cellObj.schAddOrSubs.length) {
+            return (
+              <DoCon>
+                <span onClick={() => clean(record)}>清除</span>
+                <span onClick={() => enter(record)}>覆盖</span>
+              </DoCon>
+            );
+          } else {
+            return (
+              <DoCon>
+                <span onClick={() => enter(record)}>填入</span>
+              </DoCon>
+            );
+          }
         } else {
           return (
             <DoCon>
@@ -108,7 +150,7 @@ export default observer(function AsClassModal(props: Props) {
   }, [visible]);
 
   const handleOk = () => {
-    sheetViewModal.expectList.forEach((record: any) => {
+    sheetViewModal.expectAsClassList.forEach((record: any) => {
       enter(record);
     });
     onCancel();
@@ -117,35 +159,38 @@ export default observer(function AsClassModal(props: Props) {
   const enter = (record: any) => {
     let cellObj = sheetViewModal.getCellObjByName(
       record.empName,
-      record.startDate
+      record.workDate
     );
-    if (cellObj) {
-      cellObj!.rangeName = record.rangeName;
-      cellObj!.settingNightHour = record.settingNightHour;
-      cellObj!.settingMorningHour = record.settingMorningHour;
-      cellObj!.nameColor = record.nameColor;
-      cellObj!.effectiveTime = record.effectiveTime;
-      cellObj!.effectiveTimeOld = record.effectiveTime;
-      cellObj!.shiftType = record.shiftType;
-      cellObj!.statusType = "1";
+    if (cellObj && cellObj.rangeName) {
+      cellObj.schAddOrSubs = [
+        {
+          startDate: record.startDate,
+          endDate: record.endDate,
+          statusType: record.statusType,
+          hour: Number(record.effectiveTime),
+          settingNightHour: record.settingNightHour,
+          settingMorningHour: record.settingMorningHour
+        }
+      ];
     }
+    sheetViewModal.expectAsClassList = [...sheetViewModal.expectAsClassList];
     setLoadingTable(true);
     setTimeout(() => setLoadingTable(false), 100);
   };
   const clean = (record: any) => {
     let cellObj = sheetViewModal.getCellObjByName(
       record.empName,
-      record.startDate
+      record.workDate
     );
-    cellObj && cleanCell(cellObj);
-    sheetViewModal.expectList = [...sheetViewModal.expectList];
+    cellObj && (cellObj.schAddOrSubs = []);
+    sheetViewModal.expectAsClassList = [...sheetViewModal.expectAsClassList];
   };
   return (
     <Wrapper>
       <Modal
         className="modal"
         title="期望加减班"
-        width="800px"
+        width="1000px"
         okText="全部填入"
         cancelText="返回"
         onOk={handleOk}

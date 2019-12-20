@@ -276,25 +276,7 @@ export default observer(function Cell(props: Props) {
             }
           }
         },
-        {
-          icon: require("../../images/复制行.png"),
-          label: "复制周",
-          type: "text",
-          onClick() {
-            sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
-            message.success("复制周成功");
-          }
-        },
-        {
-          icon: require("../../images/粘贴行.png"),
-          label: "粘贴周",
-          type: "text",
-          onClick() {
-            let list = sheetViewModal.getSelectWeekList(true);
-            let copyWeekRow = sheetViewModal.copyWeekRow;
-            copyRowClick(list, copyWeekRow, false);
-          }
-        },
+
         {
           icon: require("../../images/复制行.png"),
           label: "复制行",
@@ -322,6 +304,25 @@ export default observer(function Cell(props: Props) {
             let list = sheetViewModal.getSelectCellList(true);
             let copyRow = sheetViewModal.copyRow;
             copyRowClick(list, copyRow, true);
+          }
+        },
+        {
+          icon: require("../../images/复制行.png"),
+          label: "复制整周",
+          type: "text",
+          onClick() {
+            sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
+            message.success("复制周成功");
+          }
+        },
+        {
+          icon: require("../../images/粘贴行.png"),
+          label: "粘贴整周",
+          type: "text",
+          onClick() {
+            let list = sheetViewModal.getSelectWeekList(true);
+            let copyWeekRow = sheetViewModal.copyWeekRow;
+            copyRowClick(list, copyWeekRow, false);
           }
         },
         {
