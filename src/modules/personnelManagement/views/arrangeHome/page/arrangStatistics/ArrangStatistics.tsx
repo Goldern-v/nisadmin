@@ -153,9 +153,9 @@ export default observer(function ArrangStatistics() {
       arrangeService
         .schNightHourFindBylist({
           wardCode: authStore.selectedDeptCode,
-          // empNo: searchWord,
-          startTime: (date && date[0] && date[0].format("YYYY-MM-DD")) || "",
-          endTime: (date && date[1] && date[1].format("YYYY-MM-DD")) || ""
+          empNo: "",
+          startDate: (date && date[0] && date[0].format("YYYY-MM-DD")) || "",
+          endDate: (date && date[1] && date[1].format("YYYY-MM-DD")) || ""
         })
         .then(res => {
           setDataSource(res.data);

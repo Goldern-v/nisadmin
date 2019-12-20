@@ -141,6 +141,8 @@ function MealCon(props: { dataSource: any[] }) {
         let weekNum = moment(list[i].workDate).isoWeekday();
         let mealObj = getMealData(weekNum, item);
         list[i]!.rangeName = mealObj.name;
+        list[i]!.settingNightHour = mealObj.NightHour;
+        list[i]!.settingMorningHour = mealObj.MorningHour;
         list[i]!.nameColor = mealObj.nameColor;
         list[i]!.effectiveTime = mealObj.effectiveTime;
         list[i]!.effectiveTimeOld = mealObj.effectiveTime;
