@@ -30,6 +30,7 @@ const RangePicker = DatePicker.RangePicker
 
 export default observer(function NursingQualityCheck() {
   const { history } = appStore
+  const { isNotANormalNurse } = authStore
   const auth = authStore.isRoleManage
 
   const [tableData, setTableData] = useState([] as any)
@@ -37,9 +38,11 @@ export default observer(function NursingQualityCheck() {
   const [rangeList, setRngeList] = useState([] as any)
   const [loading, setLoading] = useState(false)
 
+  let defaultEmpNo = isNotANormalNurse ? '' : authStore.user && authStore.user.empNo
+
   const [query, setQuery] = useState({
     wardCode: '',
-    empNo: '',
+    empNo: defaultEmpNo,
     pageIndex: 1,
     pageSize: 20,
     range: '',
@@ -247,8 +250,7 @@ export default observer(function NursingQualityCheck() {
         }
       })
 
-
-    setQuery({ ...query, wardCode, empNo: '', range: '', pageIndex: 1 })
+    setQuery({ ...query, wardCode, empNo: defaultEmpNo, range: '', pageIndex: 1 })
   }
 
   const handleCreate = () => {
@@ -353,19 +355,29 @@ export default observer(function NursingQualityCheck() {
         <span>科室:</span>
         <DeptSelect onChange={handleWardCodeChange} />
         <span>护士:</span>
-        <Select
+        {isNotANormalNurse && <Select
           style={{ width: '120px' }}
           showSearch
           filterOption={(input: string, option: any) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
           onChange={(empNo: string) => setQuery({ ...query, empNo })}
-          value={query.empNo}>
-          <Option value={''}>全部</Option>
+          value={query.empNo || ''}>
+          <Option value={''} style={{ display: isNotANormalNurse ? 'block' : 'none' }}>全部</Option>
           {nurseList.map((item: any, idx: number) =>
-            <Option key={idx} value={item.empNo}>{item.empName}</Option>
+            <Option key={idx} value={item.empNo} style={{ display: isNotANormalNurse ? 'block' : 'none' }}>{item.empName}</Option>
           )}
-        </Select>
+        </Select>}
+        {!isNotANormalNurse && <Select
+          style={{ width: '120px' }}
+          showSearch
+          filterOption={(input: string, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          onChange={(empNo: string) => setQuery({ ...query, empNo })}
+          value={query.empNo || ''}>
+          <Option value={defaultEmpNo || ''} style={{ display: !isNotANormalNurse ? 'block' : 'none' }}>{authStore.user && authStore.user.empName}</Option>
+        </Select>}
         <span>班次:</span>
         <Select
           style={{ width: '120px' }}
