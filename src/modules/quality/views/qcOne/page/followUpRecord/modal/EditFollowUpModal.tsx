@@ -85,7 +85,7 @@ export default function EditFollowUpModal(props: Props) {
 
     /** 保存接口 */
     let data = { ...value };
-    data.recordDate = data.admissionDate
+    data.recordDate = data.recordDate
       ? moment(data.recordDate).format("YYYY-MM-DD HH:mm")
       : "";
     data.admissionDate = data.admissionDate

@@ -133,7 +133,7 @@ export default observer(function NurseMeetingRecordEdit() {
   const handlePush = () => {
     Modal.confirm({
       title: '提示',
-      content: "是否发布该会议记录?",
+      content: "是否发布该会议记录?发布后无法撤销修改",
       onOk: () => handleSave()
     })
   }
