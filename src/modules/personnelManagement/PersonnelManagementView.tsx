@@ -113,13 +113,13 @@ export default function PersonnelManagementView() {
           path: "/personnelManagement/expectedRecord",
           component: ExpectedRecord,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
-        },
-        {
-          title: "小时数统计",
-          path: "/personnelManagement/nightHoursStatistics",
-          component: NightHoursStatistics,
-          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
         }
+        // {
+        //   title: "小时数统计",
+        //   path: "/personnelManagement/nightHoursStatistics",
+        //   component: NightHoursStatistics,
+        //   hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+        // }
       ]
     }
   ];

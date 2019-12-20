@@ -162,6 +162,8 @@ export function cleanCell(cellObj: ArrangeItem) {
 
   if (appStore.HOSPITAL_ID == "wh") {
     cellObj.schAddOrSubs = [];
+    cellObj.settingMorningHour = 0;
+    cellObj.settingNightHour = 0;
   }
 }
 

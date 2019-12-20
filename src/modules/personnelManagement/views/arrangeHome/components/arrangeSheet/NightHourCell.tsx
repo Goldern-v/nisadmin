@@ -4,6 +4,7 @@ import { Button } from "antd";
 import { observer } from "src/vendors/mobx-react-lite.ts";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
 import { ArrangeItem } from "../../types/Sheet";
+import { cloneJson } from "src/utils/json/clone";
 export interface Props {
   id: any;
 }
@@ -16,7 +17,7 @@ export default observer(function NightHourCell(props: Props) {
   if (user) {
     list = user.settingDtos;
   }
-
+  console.log(cloneJson(list), "yyeyyye");
   let total = list.reduce((total: any, current: ArrangeItem) => {
     total += Number(current.settingNightHour);
     if (current.schAddOrSubs && current.schAddOrSubs.length) {
