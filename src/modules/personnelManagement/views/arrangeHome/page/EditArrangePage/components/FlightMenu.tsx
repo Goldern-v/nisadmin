@@ -76,6 +76,7 @@ function MenuCon(props: { dataSource: any[] }) {
     if (sheetViewModal.selectedCell) {
       sheetViewModal.selectedCell!.rangeName = item.name;
       sheetViewModal.selectedCell!.settingNightHour = item.settingNightHour;
+      sheetViewModal.selectedCell!.settingMorningHour = item.settingMorningHour;
       sheetViewModal.selectedCell!.rangeNameCode = null;
       sheetViewModal.selectedCell!.nameColor = item.nameColor;
       sheetViewModal.selectedCell!.effectiveTime = item.effectiveTime;

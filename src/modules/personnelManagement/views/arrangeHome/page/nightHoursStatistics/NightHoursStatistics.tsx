@@ -72,7 +72,10 @@ export default observer(function NightHoursStatistics() {
         title: item,
         width: 100,
         dataIndex: item,
-        align: "center"
+        align: "center",
+        render(text: string, record: any, index: number) {
+          return text || 0;
+        }
       })),
     {
       title: "加班",

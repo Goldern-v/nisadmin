@@ -17,7 +17,7 @@ export interface Props extends ModalComponentProps {
 
 export interface Props {}
 
-export default observer(function ExpectSettingModal(props: Props) {
+export default observer(function AsClassModal(props: Props) {
   // const [editingKey, setEditingKey] = useState(false)
   const [loadingTable, setLoadingTable] = useState(false);
   let { visible, onCancel } = props;
@@ -103,7 +103,7 @@ export default observer(function ExpectSettingModal(props: Props) {
 
   useEffect(() => {
     if (visible) {
-      sheetViewModal.getExpectList();
+      sheetViewModal.getExpectAsList();
     }
   }, [visible]);
 
@@ -144,7 +144,7 @@ export default observer(function ExpectSettingModal(props: Props) {
     <Wrapper>
       <Modal
         className="modal"
-        title="期望排班"
+        title="期望加减班"
         width="800px"
         okText="全部填入"
         cancelText="返回"
@@ -155,7 +155,7 @@ export default observer(function ExpectSettingModal(props: Props) {
         centered
       >
         <BaseTable
-          dataSource={sheetViewModal.expectList}
+          dataSource={sheetViewModal.expectAsClassList}
           columns={columns}
           wrapperStyle={{ padding: 0 }}
         />

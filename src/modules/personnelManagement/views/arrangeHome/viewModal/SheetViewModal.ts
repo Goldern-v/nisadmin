@@ -17,6 +17,8 @@ class SheetViewModal {
   @observable public sheetTableData: any = [];
   /** 期望排班 */
   @observable public expectList: any = [];
+  /** 期望加减班 */
+  @observable public expectAsClassList: any = [];
   @observable public dateList: string[] = [];
   @observable public remark: string = "";
   @observable public arrangeMenu: any[] = [];
@@ -275,6 +277,12 @@ class SheetViewModal {
   }
   getExpectList() {
     return arrangeService.getByDeptCodeAndDate().then(res => {
+      this.expectList = res.data;
+    });
+  }
+  /** 期望加减班 */
+  getExpectAsList() {
+    return arrangeService.schExpectAddOrSubGetByDeptCodeAndDate().then(res => {
       this.expectList = res.data;
     });
   }

@@ -4,6 +4,7 @@ interface SchAddOrSubItem {
   statusType: string;
   hour: number;
   settingNightHour: number;
+  settingMorningHour: number;
 }
 
 export interface ArrangeItem {

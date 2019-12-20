@@ -17,6 +17,7 @@ import { Select } from "src/vendors/antd";
 import ArrangAnalysisModal from "../../../modal/ArrangAnalysisModal";
 import { copyRowClick } from "../../../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
+import AsClassModal from "../../../modal/AsClassModal";
 
 export interface Props {}
 
@@ -24,6 +25,7 @@ export default observer(function TopPart() {
   const [date, setDate] = useState([] as any[]);
   const [isInit, setIsInit] = useState(true);
   let expectSettingModal = createModal(ExpectSettingModal);
+  let asClassModal = createModal(AsClassModal);
 
   let arrangAnalysisModal = createModal(ArrangAnalysisModal);
 
@@ -195,27 +197,21 @@ export default observer(function TopPart() {
                   ];
                   /** 判断是否是一周 */
                   let weeks = date[0].week();
+                  let _date = date[0].format("YYYY-MM-DD");
                   if (
                     date[0].format("YYYY-MM-DD") ==
                       date[0].startOf("week").format("YYYY-MM-DD") ||
                     date[1].format("YYYY-MM-DD") ==
                       date[0].endOf("week").format("YYYY-MM-DD")
                   ) {
-                    return [
-                      moment()
-                        .week(weeks - 1)
-                        .startOf("week"),
-                      moment()
-                        .week(weeks - 1)
-                        .endOf("week")
-                    ];
+                    return [date[0].subtract(7, "d"), date[1].subtract(7, "d")];
                   }
                   return [
-                    moment()
-                      .week(moment().week() - 1)
+                    moment(_date)
+                      .week(moment(_date).week() - 1)
                       .startOf("week"),
-                    moment()
-                      .week(moment().week() - 1)
+                    moment(_date)
+                      .week(moment(_date).week() - 1)
                       .endOf("week")
                   ];
                 },
@@ -232,14 +228,7 @@ export default observer(function TopPart() {
                     date[1].format("YYYY-MM-DD") ==
                       date[0].endOf("week").format("YYYY-MM-DD")
                   ) {
-                    return [
-                      moment()
-                        .week(weeks + 1)
-                        .startOf("week"),
-                      moment()
-                        .week(weeks + 1)
-                        .endOf("week")
-                    ];
+                    return [date[0].add(7, "d"), date[1].add(7, "d")];
                   }
                   return [
                     moment()
@@ -278,7 +267,7 @@ export default observer(function TopPart() {
               value={selectViewModal.params.group}
               onChange={handleGroupChange}
               showSearch
-              style={{ width: 170 }}
+              style={{ width: 150 }}
             >
               <Select.Option key="全部" value="">
                 全部
@@ -310,6 +299,9 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
         </div>
+        {/* <div className="item">
+          <Button onClick={() => asClassModal.show()}>期望加减班</Button>
+        </div> */}
         <div className="item">
           <Button onClick={handleCopy}>复制排班</Button>
         </div>
@@ -359,6 +351,7 @@ export default observer(function TopPart() {
         </div>
       </div>
       <expectSettingModal.Component />
+      <asClassModal.Component />
       <arrangAnalysisModal.Component />
     </Wrapper>
   );

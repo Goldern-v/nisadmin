@@ -146,6 +146,18 @@ export default function MainBox() {
       dataIndex: "effectiveTime",
       key: "effectiveTime",
       width: 100
+    },
+    {
+      title: "白小时数",
+      dataIndex: "settingMorningHour",
+      key: "settingMorningHour",
+      width: 100
+    },
+    {
+      title: "夜小时数",
+      dataIndex: "settingNightHour",
+      key: "settingNightHour",
+      width: 100
     }
   ];
 

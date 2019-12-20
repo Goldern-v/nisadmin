@@ -121,7 +121,8 @@ export default observer(function Cell(props: Props) {
                         endDate: data.endDate,
                         statusType: data.statusType,
                         hour: Number(data.effectiveTime),
-                        settingNightHour: data.settingNightHour
+                        settingNightHour: data.settingNightHour,
+                        settingMorningHour: data.settingMorningHour
                       }
                     ];
                   }
@@ -411,6 +412,10 @@ export default observer(function Cell(props: Props) {
         "，" +
         `现:${cellObj.effectiveTime || 0}h，` +
         `原:${cellObj.effectiveTimeOld || 0}h，` +
+        `白:${(cellObj.schAddOrSubs &&
+          cellObj.schAddOrSubs.length &&
+          cellObj.schAddOrSubs[0].settingMorningHour) ||
+          0}h，` +
         `夜:${(cellObj.schAddOrSubs &&
           cellObj.schAddOrSubs.length &&
           cellObj.schAddOrSubs[0].settingNightHour) ||

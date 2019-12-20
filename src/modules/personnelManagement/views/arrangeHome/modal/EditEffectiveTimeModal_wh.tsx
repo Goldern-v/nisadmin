@@ -46,6 +46,7 @@ export default function EditEffectiveTimeModal(props: Props) {
       statusType: value.statusType,
       effectiveTime: value.effectiveTime,
       settingNightHour: value.settingNightHour,
+      settingMorningHour: value.settingMorningHour,
       startDate: `${moment(value.startDate_1).format("YYYY-MM-DD")} ${moment(
         value.startDate_2
       ).format("HH:mm")}`,
@@ -82,6 +83,10 @@ export default function EditEffectiveTimeModal(props: Props) {
           data.schAddOrSubs &&
           data.schAddOrSubs[0] &&
           data.schAddOrSubs[0].settingNightHour,
+        settingMorningHour:
+          data.schAddOrSubs &&
+          data.schAddOrSubs[0] &&
+          data.schAddOrSubs[0].settingMorningHour,
         startDate_1: moment(data.workDate),
         startDate_2:
           data.schAddOrSubs &&
@@ -152,6 +157,11 @@ export default function EditEffectiveTimeModal(props: Props) {
           <Col span={24}>
             <Form.Field label={`工时`} name="effectiveTime" required>
               <InputNumber readOnly={true} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`白工时`} name="settingMorningHour">
+              <InputNumber />
             </Form.Field>
           </Col>
           <Col span={24}>
