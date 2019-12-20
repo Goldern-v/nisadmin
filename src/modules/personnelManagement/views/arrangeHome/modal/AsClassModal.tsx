@@ -76,7 +76,7 @@ export default observer(function AsClassModal(props: Props) {
           record.empName,
           record.startDate
         );
-        console.log(cellObj, "cellObjcellObj");
+
         if (cellObj) {
           if (
             cellObj.rangeName == record.rangeName &&

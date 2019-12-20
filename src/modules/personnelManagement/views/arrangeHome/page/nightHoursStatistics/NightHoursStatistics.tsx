@@ -115,7 +115,7 @@ export default observer(function NightHoursStatistics() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>夜小时数统计</PageTitle>
+        <PageTitle>小时数统计</PageTitle>
         <Place />
         <span className="label">日期:</span>
         <DatePicker.RangePicker

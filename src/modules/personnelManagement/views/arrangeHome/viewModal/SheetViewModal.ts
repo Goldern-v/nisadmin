@@ -72,9 +72,9 @@ class SheetViewModal {
     let cellList = [];
     for (let i = 0; i < this.sheetTableData.length; i++) {
       for (let j = 0; j < this.sheetTableData[i]!.settingDtos.length; j++) {
-        this.sheetTableData[i]!.settingDtos[j].empName = this.sheetTableData[
-          i
-        ].empName;
+        // this.sheetTableData[i]!.settingDtos[j].empName = this.sheetTableData[
+        //   i
+        // ].empName;
         cellList.push(this.sheetTableData[i].settingDtos[j]);
       }
     }
@@ -305,6 +305,9 @@ class SheetViewModal {
       let current_holidayHour = 0;
       let current_publicHour = 0;
       for (let j = 0; j < _sheetTableData[i].settingDtos.length; j++) {
+        /** 添加姓名 */
+        _sheetTableData[i].settingDtos[j].empName = _sheetTableData[i].empName;
+
         current_balanceHour +=
           Number(_sheetTableData[i].settingDtos[j].effectiveTime) || 0;
         current_holidayHour +=
