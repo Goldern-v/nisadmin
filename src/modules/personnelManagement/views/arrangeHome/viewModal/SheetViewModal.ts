@@ -43,6 +43,8 @@ class SheetViewModal {
   @observable public _copyCellList: any = [];
   /** 复制周 */
   @observable public copyWeekRow: any[] = [];
+  /** 复制周班次数据 */
+  @observable public copyWeekData: any[] = [];
   /** 复制周数 */
   @observable public copyWeekNum: number = 0;
   /** 特殊班次，计数等 */
@@ -377,29 +379,24 @@ class SheetViewModal {
   }
 
   /** 复制黏贴所有人周 */
-  copyWeek(currentWeekNum: number, copyWeekNum: number) {
-    console.log(currentWeekNum, copyWeekNum);
-    if (!copyWeekNum) return message.warning("请先复制周");
-    if (currentWeekNum == copyWeekNum) return;
+  copyWeek(currentWeekNum: number) {
+    console.log(currentWeekNum);
     for (let i = 0; i < this.sheetTableData.length; i++) {
-      let currentWeekList = [];
-      for (let j = 0; j < 7; j++) {
-        currentWeekList[j] = this.sheetTableData[i].settingDtos.find(
-          (item: any) =>
-            moment(item.workDate).weeks() == currentWeekNum &&
-            moment(item.workDate).isoWeekday() == j + 1
-        );
-      }
-      let copyWeekList = [];
-      for (let j = 0; j < 7; j++) {
-        copyWeekList[j] = this.sheetTableData[i].settingDtos.find(
-          (item: any) =>
-            moment(item.workDate).weeks() == copyWeekNum &&
-            moment(item.workDate).isoWeekday() == j + 1
-        );
-      }
+      let currentWeekList = this.sheetTableData[i].settingDtos.filter(
+        (item: any) => moment(item.workDate).weeks() == currentWeekNum
+      );
 
-      copyRowClick(currentWeekList, copyWeekList, false);
+      for (let j = 0; j < currentWeekList.length; j++) {
+        let weekDays = moment(currentWeekList[j].workDate).weekday();
+        let copyObj = this.copyWeekData.find(
+          item =>
+            moment(item.workDate).weekday() == weekDays &&
+            currentWeekList[j].userId == item.userId
+        );
+        if (copyObj) {
+          copyRowClick([currentWeekList[j]], [copyObj], false);
+        }
+      }
     }
   }
 

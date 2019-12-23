@@ -312,9 +312,16 @@ export default observer(function Cell(props: Props) {
           type: "text",
           onClick() {
             // sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
-            sheetViewModal.copyWeekNum = moment(
+            let copyWeekNum = moment(
               sheetViewModal.selectedCell.workDate
             ).week();
+
+            let copyWeekData = sheetViewModal
+              .getAllCell(true)
+              .filter(item => moment(item.workDate).week() == copyWeekNum);
+
+            sheetViewModal.copyWeekData = cloneJson(copyWeekData);
+
             message.success("复制周成功");
           }
         },
@@ -330,7 +337,7 @@ export default observer(function Cell(props: Props) {
               sheetViewModal.selectedCell.workDate
             ).week();
 
-            sheetViewModal.copyWeek(currentWeekNum, sheetViewModal.copyWeekNum);
+            sheetViewModal.copyWeek(currentWeekNum);
           }
         },
         {
