@@ -28,6 +28,7 @@ import { useLayoutEffect } from "src/types/react";
 import moment from "moment";
 import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
+import TextArea from "antd/lib/input/TextArea";
 export interface Props {
   payload: any;
 }
@@ -159,7 +160,9 @@ export default observer(function HandoverRegister(props: Props) {
                 }}
                 onBlur={() => updateDataSource()}
                 onSelect={() => updateDataSource()}
-              />
+              >
+                <TextArea autosize />
+              </AutoComplete>
             );
           }
         };

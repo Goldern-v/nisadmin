@@ -175,6 +175,12 @@ export default observer(function AsClassModal(props: Props) {
         }
       ];
       cellObj.detail = record.remark;
+      if (record.statusType == "1") {
+        cellObj.effectiveTime = cellObj.effectiveTimeOld + Number(record.hour);
+      }
+      if (record.statusType == "2") {
+        cellObj.effectiveTime = cellObj.effectiveTimeOld - Number(record.hour);
+      }
     }
     sheetViewModal.expectAsClassList = [...sheetViewModal.expectAsClassList];
     setLoadingTable(true);
@@ -187,6 +193,8 @@ export default observer(function AsClassModal(props: Props) {
     );
     cellObj && (cellObj.schAddOrSubs = []);
     sheetViewModal.expectAsClassList = [...sheetViewModal.expectAsClassList];
+    cellObj.detail = "";
+    cellObj.effectiveTime = cellObj.effectiveTimeOld;
   };
   return (
     <Wrapper>
