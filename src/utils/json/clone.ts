@@ -1,4 +1,4 @@
-export const cloneJson = (json: JSON) => {
+export const cloneJson = (json: JSON | any) => {
   return JSON.parse(JSON.stringify(json));
 };
 export const deepCopy = (obj: any, cache: any = []) => {

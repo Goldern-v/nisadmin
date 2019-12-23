@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 import { cleanCell } from "../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
 import { ArrangeItem } from "../types/Sheet";
-
+import moment from "moment";
 export interface Props extends ModalComponentProps {
   id: string;
 }
@@ -75,7 +75,9 @@ export default observer(function AsClassModal(props: Props) {
       width: 100,
       align: "center",
       render: (text: any, record: any) => {
-        return `${record.startDate} - ${record.endDate}`;
+        return `${moment(record.startDate).format("HH-mm")} - ${moment(
+          record.endDate
+        ).format("HH-mm")}`;
       }
     },
     {
@@ -167,11 +169,12 @@ export default observer(function AsClassModal(props: Props) {
           startDate: record.startDate,
           endDate: record.endDate,
           statusType: record.statusType,
-          hour: Number(record.effectiveTime),
+          hour: Number(record.hour),
           settingNightHour: record.settingNightHour,
           settingMorningHour: record.settingMorningHour
         }
       ];
+      cellObj.detail = record.remark;
     }
     sheetViewModal.expectAsClassList = [...sheetViewModal.expectAsClassList];
     setLoadingTable(true);

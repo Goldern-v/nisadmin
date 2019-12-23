@@ -9,7 +9,10 @@ import moment from "moment";
 import { arrangeService } from "../services/ArrangeService";
 import monnet from "src/vendors/moment";
 import { message } from "src/vendors/antd";
-import { cleanCell } from "../components/arrangeSheet/cellClickEvent";
+import {
+  cleanCell,
+  copyRowClick
+} from "../components/arrangeSheet/cellClickEvent";
 /** 用于存放排班表等基础数据 */
 class SheetViewModal {
   /** 是否已经初始化字典数据 */
@@ -40,6 +43,8 @@ class SheetViewModal {
   @observable public _copyCellList: any = [];
   /** 复制周 */
   @observable public copyWeekRow: any[] = [];
+  /** 复制周数 */
+  @observable public copyWeekNum: number = 0;
   /** 特殊班次，计数等 */
   @observable public countArrangeNameList: any[] = [];
   /** 一周全是这些班次 按5天计算工时 */
@@ -369,6 +374,33 @@ class SheetViewModal {
 
     // console.log(sheetTableData, "sheetTableData");
     return _sheetTableData;
+  }
+
+  /** 复制黏贴所有人周 */
+  copyWeek(currentWeekNum: number, copyWeekNum: number) {
+    console.log(currentWeekNum, copyWeekNum);
+    if (!copyWeekNum) return message.warning("请先复制周");
+    if (currentWeekNum == copyWeekNum) return;
+    for (let i = 0; i < this.sheetTableData.length; i++) {
+      let currentWeekList = [];
+      for (let j = 0; j < 7; j++) {
+        currentWeekList[j] = this.sheetTableData[i].settingDtos.find(
+          (item: any) =>
+            moment(item.workDate).weeks() == currentWeekNum &&
+            moment(item.workDate).isoWeekday() == j + 1
+        );
+      }
+      let copyWeekList = [];
+      for (let j = 0; j < 7; j++) {
+        copyWeekList[j] = this.sheetTableData[i].settingDtos.find(
+          (item: any) =>
+            moment(item.workDate).weeks() == copyWeekNum &&
+            moment(item.workDate).isoWeekday() == j + 1
+        );
+      }
+
+      copyRowClick(currentWeekList, copyWeekList, false);
+    }
   }
 
   async init() {

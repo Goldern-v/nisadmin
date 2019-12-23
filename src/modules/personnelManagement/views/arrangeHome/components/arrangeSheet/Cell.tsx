@@ -20,7 +20,7 @@ import { message, Popover } from "src/vendors/antd";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from "src/stores";
 import { resetArrangeCount } from "../../page/EditArrangePage/components/FlightMenu";
-
+import moment from "moment";
 export interface Props {
   contextMenu: ContextMenu;
   editEffectiveTimeModal: any;
@@ -311,7 +311,10 @@ export default observer(function Cell(props: Props) {
           label: "复制整周",
           type: "text",
           onClick() {
-            sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
+            // sheetViewModal.copyWeekRow = sheetViewModal.getSelectWeekList(true);
+            sheetViewModal.copyWeekNum = moment(
+              sheetViewModal.selectedCell.workDate
+            ).week();
             message.success("复制周成功");
           }
         },
@@ -320,9 +323,14 @@ export default observer(function Cell(props: Props) {
           label: "粘贴整周",
           type: "text",
           onClick() {
-            let list = sheetViewModal.getSelectWeekList(true);
-            let copyWeekRow = sheetViewModal.copyWeekRow;
-            copyRowClick(list, copyWeekRow, false);
+            // let list = sheetViewModal.getSelectWeekList(true);
+            // let copyWeekRow = sheetViewModal.copyWeekRow;
+            // copyRowClick(list, copyWeekRow, false);
+            let currentWeekNum = moment(
+              sheetViewModal.selectedCell.workDate
+            ).week();
+
+            sheetViewModal.copyWeek(currentWeekNum, sheetViewModal.copyWeekNum);
           }
         },
         {
