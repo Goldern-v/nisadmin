@@ -380,7 +380,7 @@ class SheetViewModal {
 
   /** 复制黏贴所有人周 */
   copyWeek(currentWeekNum: number) {
-    console.log(currentWeekNum);
+    if (this.copyWeekData.length == 0) message.warn("请先复制周");
     for (let i = 0; i < this.sheetTableData.length; i++) {
       let currentWeekList = this.sheetTableData[i].settingDtos.filter(
         (item: any) => moment(item.workDate).weeks() == currentWeekNum
