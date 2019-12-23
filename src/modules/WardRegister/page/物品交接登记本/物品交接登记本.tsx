@@ -161,7 +161,15 @@ export default observer(function HandoverRegister(props: Props) {
                 onBlur={() => updateDataSource()}
                 onSelect={() => updateDataSource()}
               >
-                <TextArea autosize />
+                <TextArea
+                  autosize
+                  style={{
+                    lineHeight: 1.2,
+                    overflow: "hidden",
+                    padding: "9px 2px",
+                    textAlign: "center"
+                  }}
+                />
               </AutoComplete>
             );
           }
@@ -191,7 +199,17 @@ export default observer(function HandoverRegister(props: Props) {
                   record[item.itemCode] = value;
                 }}
                 onBlur={() => updateDataSource()}
-              />
+              >
+                <TextArea
+                  autosize
+                  style={{
+                    lineHeight: 1.2,
+                    overflow: "hidden",
+                    padding: "9px 2px",
+                    textAlign: "center"
+                  }}
+                />
+              </AutoComplete>
             );
           }
         };
@@ -461,10 +479,11 @@ export default observer(function HandoverRegister(props: Props) {
     <Wrapper id="HandoverRegisterTable">
       <PageHeader>
         <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-          修订登记本
+          修订
         </Button>
-        <span className="label">修订记录</span>
+        <span className="label">记录</span>
         <Select
+          style={{ width: 155 }}
           value={selectedBlockId}
           onChange={(value: any) => {
             setSelectedBlockId(value);
@@ -486,10 +505,10 @@ export default observer(function HandoverRegister(props: Props) {
           value={date}
           onChange={value => setDate(value)}
           allowClear={true}
-          style={{ width: 220 }}
+          style={{ width: 210 }}
         />
         <span className="label">科室</span>
-        <DeptSelect onChange={() => {}} style={{ width: 100 }} />
+        <DeptSelect onChange={() => {}} style={{ width: 150 }} />
         <span className="label">班次</span>
         <Select
           style={{ width: 70, minWidth: 70 }}
@@ -602,6 +621,10 @@ const Wrapper = styled.div`
   .ant-btn {
     margin-left: 5px;
     padding: 0 10px;
+  }
+  .ant-btn {
+    padding: 0 6px;
+    letter-spacing: -1px;
   }
 `;
 const TableCon = styled.div`

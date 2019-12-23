@@ -28,6 +28,7 @@ import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { createFilterItem } from "../../components/FilterItem";
 import classNames from "classnames";
 import { createFilterInput } from "../../components/FilterInput";
+import TextArea from "antd/lib/input/TextArea";
 export interface Props {
   payload: any;
 }
@@ -534,7 +535,17 @@ export default observer(function 重点患者评估登记本(props: Props) {
               }}
               onBlur={() => updateDataSource()}
               onSelect={() => updateDataSource()}
-            />
+            >
+              <TextArea
+                autosize
+                style={{
+                  lineHeight: 1.2,
+                  overflow: "hidden",
+                  padding: "9px 2px",
+                  textAlign: "center"
+                }}
+              />
+            </AutoComplete>
           );
           let obj = {
             children

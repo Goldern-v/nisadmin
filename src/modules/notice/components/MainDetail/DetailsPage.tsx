@@ -113,6 +113,13 @@ export default function DetailsPage(props: Props) {
             </div>
           </Tooltip>
         )}
+        {data.showType == "收" && (
+          <Tooltip placement="bottom" title="再次编辑">
+            <div className="item-box" onClick={() => editMail("发")}>
+              <img src={require("./images/编辑.png")} alt="" />
+            </div>
+          </Tooltip>
+        )}
         {data.showType == "发" && (
           <Tooltip placement="bottom" title="撤销">
             <div className="item-box" onClick={revokeMail}>
