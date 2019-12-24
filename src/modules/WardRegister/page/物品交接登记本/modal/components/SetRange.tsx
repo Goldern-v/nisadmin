@@ -158,6 +158,7 @@ export default observer(function SetRange(props: Props) {
       </ToolCon>
       <EditTableCon>
         <BaseTable
+          rowKey="itemCode"
           loading={pageLoading}
           dataSource={dataSource}
           columns={columns}

@@ -191,6 +191,7 @@ export default observer(function SetTittle(props: Props) {
       </ToolCon>
       <EditTableCon>
         <BaseTable
+          rowKey="itemCode"
           loading={pageLoading}
           dataSource={dataSource}
           columns={columns}

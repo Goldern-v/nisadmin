@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   }
   .ant-btn {
     margin-left: 5px;
-    padding: 0 10px;
+    padding: 0 5px;
   }
 `;
 export const TableCon = styled.div`

@@ -383,7 +383,7 @@ export default observer(function HandoverRegister(props: Props) {
       })
       .then(res => {
         console.log(res, "res");
-        setTotal(res.data.itemDataPage.totalPage);
+        setTotal(res.data.itemDataPage.totalCount);
         setDataSource(res.data.itemDataPage.list);
         setItemConfigList(res.data.itemConfigList);
         setRangeConfigList(res.data.rangeConfigList);

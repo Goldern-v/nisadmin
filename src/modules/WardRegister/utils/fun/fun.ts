@@ -122,7 +122,7 @@ export function getFun(context: any) {
           "thMerge(res.data.itemConfigList)"
         );
         console.log(res, "res");
-        setTotal(res.data.itemDataPage.totalPage);
+        setTotal(res.data.itemDataPage.totalCount);
         setDataSource(res.data.itemDataPage.list);
         setItemConfigList(thMerge(res.data.itemConfigList));
         setRangeConfigList(res.data.rangeConfigList);

@@ -61,10 +61,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
   );
 
   const settingModal = createModal(SettingModal);
-  const updateDataSource = () => {
-    throttler2(() => {
+  const updateDataSource = (isAll?: boolean) => {
+    if (isAll) {
+      setDataSource([]);
       setDataSource([...dataSource]);
-    });
+    } else {
+      throttler2(() => {
+        setDataSource([...dataSource]);
+      });
+    }
   };
 
   const bcFilterItem = createFilterItem(
@@ -455,7 +460,37 @@ export default observer(function 重点患者评估登记本(props: Props) {
           title: "班次",
           width: 73,
           dataIndex: "range",
-          align: "center"
+          align: "center",
+          render(text: string, record: any, index: number) {
+            let children = (
+              <AutoComplete
+                disabled={!!record.signerName}
+                dataSource={rangConfigList.map((item: any) => item.itemCode)}
+                defaultValue={text}
+                onChange={value => {
+                  record["range"] = value;
+                }}
+                onBlur={() => updateDataSource()}
+                onSelect={value => {
+                  updateDataSource();
+                }}
+              >
+                <TextArea
+                  autosize
+                  style={{
+                    lineHeight: 1.2,
+                    overflow: "hidden",
+                    padding: "9px 2px",
+                    textAlign: "center"
+                  }}
+                />
+              </AutoComplete>
+            );
+            let obj = {
+              children
+            };
+            return obj;
+          }
         }
       },
       registerCode
@@ -534,7 +569,21 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 record[item.itemCode] = value;
               }}
               onBlur={() => updateDataSource()}
-              onSelect={() => updateDataSource()}
+              onSelect={value => {
+                if (
+                  registerCode == "QCRG_04" &&
+                  item.itemCode == "组号及床号"
+                ) {
+                  let prevValue = record[item.itemCode];
+                  setTimeout(() => {
+                    record[item.itemCode] =
+                      prevValue + (prevValue ? ";" : "") + value;
+                    updateDataSource(true);
+                  }, 0);
+                } else {
+                  updateDataSource();
+                }
+              }}
             >
               <TextArea
                 autosize
@@ -870,9 +919,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
     <Container>
       <PageHeader>
         <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-          修订登记本
+          修订
         </Button>
-        <span className="label">修订记录</span>
+        <span className="label">记录</span>
         <Select
           value={selectedBlockId}
           onChange={(value: any) => {
