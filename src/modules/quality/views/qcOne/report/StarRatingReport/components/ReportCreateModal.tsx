@@ -124,7 +124,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
       centered
       onOk={handleCreate}
       onCancel={() => onCancel && onCancel()}
-      title={title || "添加星级考核评价"}>
+      title={title || "添加星级考核报表"}>
       <Wrapper>
         <Row>
           <Col span={5}>科室:</Col>
