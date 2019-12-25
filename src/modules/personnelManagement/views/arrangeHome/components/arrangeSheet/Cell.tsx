@@ -121,8 +121,8 @@ export default observer(function Cell(props: Props) {
                         endDate: data.endDate,
                         statusType: data.statusType,
                         hour: Number(data.effectiveTime),
-                        settingNightHour: data.settingNightHour,
-                        settingMorningHour: data.settingMorningHour
+                        settingNightHour: Number(data.settingNightHour) || 0,
+                        settingMorningHour: Number(data.settingMorningHour) || 0
                       }
                     ];
                   }
