@@ -90,7 +90,7 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/schExpect/getByDeptCodeAndDatePC`, obj);
   }
-  // 获取期望加减班
+  // 获取申请加减班
   public schExpectAddOrSubGetByDeptCodeAndDate(obj?: any) {
     obj = {
       startDate: selectViewModal.params.startTime,

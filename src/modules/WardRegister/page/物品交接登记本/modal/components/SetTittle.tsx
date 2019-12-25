@@ -151,11 +151,9 @@ export default observer(function SetTittle(props: Props) {
   };
 
   const onSave = () => {
-    setPageLoading(true);
     wardRegisterService
       .saveOrUpdateItemConfig(registerCode, blockId, dataSource)
       .then(res => {
-        setPageLoading(false);
         getData();
         onOkCallBack();
       });

@@ -117,7 +117,7 @@ export default observer(function HandoverRegister(props: Props) {
       align: "center",
       colSpan: 2,
       width: 107,
-      fixed: surplusWidth && "left"
+      fixed: false && surplusWidth && "left"
     },
     {
       title: "班次",
@@ -125,7 +125,7 @@ export default observer(function HandoverRegister(props: Props) {
       width: 73,
       dataIndex: "range",
       align: "center",
-      fixed: surplusWidth && "left"
+      fixed: false && surplusWidth && "left"
     },
     ...itemConfigList.map((item: any) => {
       if (item.checkSize) {
@@ -153,7 +153,9 @@ export default observer(function HandoverRegister(props: Props) {
                     : ""
                 }
                 disabled={!!record.signerName}
-                dataSource={(item.options || "").split(";")}
+                dataSource={(item.options || "")
+                  .split(";")
+                  .filter((item: any) => item)}
                 defaultValue={text}
                 onChange={value => {
                   record[item.itemCode] = value;
@@ -240,7 +242,7 @@ export default observer(function HandoverRegister(props: Props) {
       width: 80,
       dataIndex: "signerName",
       align: "center",
-      fixed: surplusWidth && "right",
+      fixed: false && surplusWidth && "right",
       render(text: string, record: any, index: number) {
         return text ? (
           <div
@@ -293,7 +295,7 @@ export default observer(function HandoverRegister(props: Props) {
       title: "接班者签名",
       width: 80,
       dataIndex: "auditorName",
-      fixed: surplusWidth && "right",
+      fixed: false && surplusWidth && "right",
       align: "center",
       render(text: string, record: any, index: number) {
         return text ? (
@@ -471,7 +473,7 @@ export default observer(function HandoverRegister(props: Props) {
             ).style.width = "auto");
           setSurplusWidth(280);
         }
-      }, 10);
+      }, 100);
     } catch (error) {}
   }, [dataSource, surplusWidth]);
 
@@ -554,6 +556,7 @@ export default observer(function HandoverRegister(props: Props) {
       <TableCon>
         {selectedBlockId ? (
           <BaseTable
+            rowKey={"id"}
             loading={pageLoading}
             dataSource={dataSource}
             columns={columns}

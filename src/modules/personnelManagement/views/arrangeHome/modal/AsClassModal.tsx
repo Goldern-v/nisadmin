@@ -200,7 +200,7 @@ export default observer(function AsClassModal(props: Props) {
     <Wrapper>
       <Modal
         className="modal"
-        title="期望加减班"
+        title="申请加减班"
         width="1000px"
         okText="全部填入"
         cancelText="返回"

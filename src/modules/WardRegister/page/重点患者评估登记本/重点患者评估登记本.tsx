@@ -561,7 +561,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               disabled={!!record.signerName}
               dataSource={
                 item.options
-                  ? item.options.split(";").map((item: any) => item || " ")
+                  ? item.options.split(";").filter((item: any) => item)
                   : undefined
               }
               defaultValue={text}
