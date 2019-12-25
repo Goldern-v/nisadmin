@@ -469,7 +469,9 @@ export default observer(function Cell(props: Props) {
           ""
         )}
         {formatCell(cellObj)}
-        <span style={{ display: "none" }}>{JSON.stringify(cellObj)}</span>
+        {appStore.isDev && (
+          <span style={{ display: "none" }}>{JSON.stringify(cellObj)}</span>
+        )}
       </Wrapper>
     </Popover>
   );
