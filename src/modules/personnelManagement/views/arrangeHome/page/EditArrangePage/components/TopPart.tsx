@@ -320,11 +320,17 @@ export default observer(function TopPart() {
           </Button>
         </div>
         <div className="item">
-          <Button onClick={cancelPush}>撤回</Button>
+          <Button onClick={cancelPush} disabled={!sheetViewModal.isPush}>
+            撤回
+          </Button>
         </div>
         <div className="item">
-          <Button type="primary" onClick={handlePush}>
-            {"发布"}
+          <Button
+            type="primary"
+            onClick={handlePush}
+            disabled={sheetViewModal.isPush}
+          >
+            发布
           </Button>
         </div>
         <div className="item">
