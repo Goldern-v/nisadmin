@@ -141,12 +141,22 @@ export default observer(function NursingQualityCheckEdit() {
       width: 80,
       render: (text: string, record: any, idx: number) => {
         let checkedList = record.checkItemList.filter((item: any) => item.checked)
+        let sorce = 0
+        for (let i = 0; i < checkedList.length; i++) {
+          let checkedItem = checkedList[i]
+          if (checkedItem.deductScore) {
+            console.log(123)
+            sorce += parseFloat(checkedItem.deductScore)
+          }
+        }
+        console.log(sorce)
+
         let propInside = <span className="pop-inside nope">请选择</span>
-        if (checkedList.length > 0) propInside = <span className="pop-inside">{`-${checkedList.length}`}</span>
+        if (checkedList.length > 0) propInside = <span className="pop-inside">{sorce == 0 ? '0' : `-${sorce}`}</span>
 
         let title = <div>
           <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{record.empName}的星级考核</span>
-          <span style={{ marginLeft: '15px', color: '#999' }}>选中一个扣1分</span>
+          {/* <span style={{ marginLeft: '15px', color: '#999' }}>选中一个扣1分</span> */}
         </div>
 
         let content = <div
@@ -169,6 +179,22 @@ export default observer(function NursingQualityCheckEdit() {
                   handleRecordChange(newRecord, idx)
                 }}>
                   <span className="pop-item-content">{`${itemIdx + 1}.${item.itemName}`}</span>
+                  <span onClick={(e) => { e.stopPropagation() }} style={{
+                    marginLeft: '5px',
+                    marginRight: '-5px',
+                    color: '#999',
+                    fontSize: '12px',
+                    position: 'relative',
+                    top: '-2px',
+                  }}>
+                    <span>分值:</span>
+                    <span><Input
+                      size="small"
+                      style={{ width: '60px' }}
+                      className={`check-item-source-${idx}-${itemIdx}`}
+                      value={item.deductScore}
+                      onChange={(e) => handleCheckItemSource(e.target.value, item.deductScore, record, idx, itemIdx)} /></span>
+                  </span>
                 </Checkbox>
               </PopItemCon>
             )
@@ -233,6 +259,26 @@ export default observer(function NursingQualityCheckEdit() {
     getContentList()
     getResultist()
   }, [])
+
+  const handleCheckItemSource = (newVal: string, oldVal: string, record: any, idx1: number, idx2: number) => {
+    if (/^\d*\.{0,1}\d*$/.test(newVal)) {
+      newVal = newVal.replace('-', '')
+      let valArr = newVal.split('.')
+      if (valArr.length > 1) {
+        valArr[1] = valArr[1].slice(0, 1)
+        // if (valArr[1].length <= 0) valArr[1] = '0'
+      }
+      newVal = valArr.join('.')
+    } else if (newVal !== '' && newVal !== '0') {
+      newVal = oldVal
+    }
+
+    let newCheckItemList = [...record.checkItemList]
+
+    newCheckItemList[idx2].deductScore = newVal
+
+    handleRecordChange({ ...record, checkItemList: newCheckItemList }, idx1)
+  }
 
   const getStarRatting = () => {
     let reqArr = [] as any[];
@@ -311,10 +357,18 @@ export default observer(function NursingQualityCheckEdit() {
         if (res.data) {
           setLoading(false)
           setEditData(res.data.filter((item: any) => item.empNo).map((item: any) => {
+
+            let checkItemList = item.checkItemList || []
+            checkItemList = checkItemList.map((checkItem: any) => {
+              return {
+                ...checkItem,
+                deductScore: '1'
+              }
+            })
             return {
               ...item,
               result: item.result || '无问题',
-              checkItemList: item.checkItemList || []
+              checkItemList
             }
           }))
         }
@@ -422,6 +476,15 @@ export default observer(function NursingQualityCheckEdit() {
       onOk: () => {
         if (target) {
           let newList = [...editData]
+          let checkItemList = starRatting[target.nurseHierarchy] || []
+
+          checkItemList = checkItemList.map((item: any) => {
+            return {
+              ...item,
+              deductScore: '1'
+            }
+          })
+
           newList.push({
             empName: target.empName,
             empNo: target.empNo,
@@ -433,7 +496,7 @@ export default observer(function NursingQualityCheckEdit() {
             type: '',
             content: '',
             result: '无问题',
-            checkItemList: starRatting[target.nurseHierarchy] || []
+            checkItemList,
           })
 
           setEditData(newList)
@@ -520,8 +583,9 @@ const PopItemCon = styled.div`
   }
   .pop-item-content{
     display:inline-block;
-    max-width: 350px;
+    width: 350px;
     word-break: break-all;
+    vertical-align: top;
   }
 `
 

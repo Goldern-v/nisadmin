@@ -136,7 +136,7 @@ export default function CreateSummearyReportModal(props: Props) {
 
   return (
     <Modal
-      title='创建报告'
+      title='添加病区护理工作报表'
       visible={visible}
       onCancel={onCancel}
       onOk={handleOk}

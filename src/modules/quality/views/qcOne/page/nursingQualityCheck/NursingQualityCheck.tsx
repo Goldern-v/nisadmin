@@ -136,7 +136,7 @@ export default observer(function NursingQualityCheck() {
       render: (text: string, record: any, idx: number) => {
         const title = <div>
           <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{record.empName}的星级考核</span>
-          <span style={{ marginLeft: '15px', color: '#999' }}>选中一个扣1分</span>
+          {/* <span style={{ marginLeft: '15px', color: '#999' }}>选中一个扣1分</span> */}
         </div>
 
         let content = <Spin>
@@ -158,7 +158,10 @@ export default observer(function NursingQualityCheck() {
           .map((item: any, itemIdx: number) =>
             <PopItemCon key={`pop-${itemIdx}`}>
               <Checkbox checked={item.checked} >
-                <span className="pop-item-content">{`${itemIdx + 1}.${item.itemName}`}</span>
+                <span className="pop-item-content">
+                  {`${itemIdx + 1}.${item.itemName}`}
+                  <span style={{ color: '#999' }}>{`(${item.deductScore || '0'}分)`}</span>
+                </span>
               </Checkbox>
             </PopItemCon>
           )
@@ -169,7 +172,7 @@ export default observer(function NursingQualityCheck() {
             trigger='click'
             title={title}
             content={content}>
-            <span onClick={() => handleLoadDetail(record, idx)}>查看星级评分</span>
+            <span onClick={() => handleLoadDetail(record, idx)}>查看星级考核</span>
           </Popover>
           {auth && <span onClick={() => handleEdit(record)}>编辑</span>}
           {auth && <span style={{ color: 'red' }} onClick={() => handleDelete(record)}>删除</span>}
