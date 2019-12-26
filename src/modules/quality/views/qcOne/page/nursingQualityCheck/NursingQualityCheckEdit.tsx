@@ -112,7 +112,7 @@ export default observer(function NursingQualityCheckEdit() {
                 }
               })
 
-              handleRecordChange({ ...record, result, checkItemList, description: '' }, idx)
+              handleRecordChange({ ...record, result, checkItemList, type: '', description: '' }, idx)
               let descriptionIpt =
                 document.querySelector(`.description-${idx}`) as HTMLInputElement
 
@@ -383,12 +383,19 @@ export default observer(function NursingQualityCheckEdit() {
             checkItemList = checkItemList.map((checkItem: any) => {
               return {
                 ...checkItem,
-                deductScore: '0'
+                deductScore: checkItem.deductScore || '0'
               }
             })
+
+            let result = item.result || '无问题'
+
+            let type = item.type || ''
+            if (result === '无问题') type = ''
+
             return {
               ...item,
-              result: item.result || '无问题',
+              result,
+              type,
               checkItemList
             }
           }))

@@ -10,7 +10,8 @@ import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 
 import FlatManageEditModal from './../components/FlatManageEditModal'
-import PreviewModal from './../components/PreviewModal'
+// import PreviewModal from './../components/PreviewModal'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import createModal from 'src/libs/createModal'
 
 import FlatManageService from './../api/FlatManageService'
@@ -120,9 +121,8 @@ export default observer(function DeptFileShare() {
     let typeArr = record.filePath.split('.')
 
     PreviewModalWrapper.show({
-      url: `/crNursing/asset/flatManageSetting${record.filePath}`,
-      type: typeArr[typeArr.length - 1],
-      name: record.manageType
+      path: `/crNursing/asset/flatManageSetting${record.filePath}`,
+      title: record.manageType || '文件预览',
     })
   }
   const reUpload = (record: any) => {
