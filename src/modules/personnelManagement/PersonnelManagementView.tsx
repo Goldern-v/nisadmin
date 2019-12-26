@@ -17,6 +17,7 @@ import LeaveRecord from "./views/arrangeHome/page/leaveRecord/LeaveRecord";
 import StarRatingReportList from "./views/arrangeHome/page/nightChargingReport/StarRatingReportList";
 import ArrangStatistics from "./views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "./views/arrangeHome/page/expectedRecord/ExpectedRecord";
+import ExpectedRecordSelf from "./views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import NightHoursStatistics from "./views/arrangeHome/page/nightHoursStatistics/NightHoursStatistics";
 export interface Props {}
 
@@ -32,6 +33,12 @@ export default function PersonnelManagementView() {
           path: "/personnelManagement/arrangeHome",
           component: ArrangeHome,
           style: { background: "#fff" }
+        },
+        {
+          title: "我的期望排班",
+          path: "/personnelManagement/expectedRecordSelf",
+          component: ExpectedRecordSelf,
+          hide: appStore.HOSPITAL_ID != "wh"
         },
         appStore.HOSPITAL_ID == "wh"
           ? {

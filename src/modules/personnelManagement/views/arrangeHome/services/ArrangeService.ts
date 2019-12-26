@@ -215,6 +215,15 @@ export default class ArrangeService extends BaseApiService {
     };
     return this.post(`/scheduling/listRangeNameCode`, obj);
   }
+
+  // 期望排班增改
+  public schExpectSaveOrUpdate(obj: any) {
+    return this.post(`/schExpect/saveOrUpdate`, obj);
+  }
+  // 期望排班删除
+  public schExpectDelete(id: any) {
+    return this.get(`/schExpect/delete/${id}`);
+  }
 }
 
 export const arrangeService = new ArrangeService();
