@@ -218,14 +218,18 @@ class SheetViewModal {
     return arrangeService.findCreateOrUpdate().then(async res => {
       this.tableLoading = false;
       this.dateList = this.getDateList();
+      if (appStore.HOSPITAL_ID == "wh") {
+        let { data: countObj } = await arrangeService.listRangeNameCode(
+          res.data.setting
+        );
+        this.sheetTableData = this.handleSheetTableData(
+          res.data.setting,
+          countObj
+        );
+      } else {
+        this.sheetTableData = this.handleSheetTableData(res.data.setting, {});
+      }
 
-      let { data: countObj } = await arrangeService.listRangeNameCode(
-        res.data.setting
-      );
-      this.sheetTableData = this.handleSheetTableData(
-        res.data.setting,
-        countObj
-      );
       this.remark = res.data.remark;
       this.allCell = this.getAllCell(true);
     });

@@ -50,7 +50,7 @@ export default function EditVacationCountModal(props: Props) {
 
   return (
     <Modal
-      title={"设置休假计数基数"}
+      title={"设置班次计数基数"}
       width={300}
       visible={visible}
       onCancel={onCancel}
@@ -60,7 +60,7 @@ export default function EditVacationCountModal(props: Props) {
       centered
     >
       <Wrapper>
-        <div className="title">{arrangeName}在本排班表中第一条的计数</div>
+        <div className="title">{arrangeName}-当前选择班次的的计数</div>
         <InputNumber value={num} onChange={value => setNum(value)} />
       </Wrapper>
     </Modal>

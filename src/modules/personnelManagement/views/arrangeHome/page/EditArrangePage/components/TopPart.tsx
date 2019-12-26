@@ -267,7 +267,7 @@ export default observer(function TopPart() {
               value={selectViewModal.params.group}
               onChange={handleGroupChange}
               showSearch
-              style={{ width: 150 }}
+              style={{ width: 120 }}
             >
               <Select.Option key="全部" value="">
                 全部
@@ -288,20 +288,26 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={handleReset}>重置排班</Button>
         </div>
-        <div className="item">
-          <Button
-            onClick={exchange}
-            disabled={sheetViewModal.copyCellList.length != 2}
-          >
-            班次互换
-          </Button>
-        </div>
+        {appStore.HOSPITAL_ID == "wh" && (
+          <div className="item">
+            <Button
+              onClick={exchange}
+              disabled={sheetViewModal.copyCellList.length != 2}
+            >
+              班次互换
+            </Button>
+          </div>
+        )}
+
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
         </div>
-        <div className="item">
-          <Button onClick={() => asClassModal.show()}>申请加减班</Button>
-        </div>
+        {appStore.HOSPITAL_ID == "wh" && (
+          <div className="item">
+            <Button onClick={() => asClassModal.show()}>申请加减班</Button>
+          </div>
+        )}
+
         <div className="item">
           <Button onClick={handleCopy}>复制排班</Button>
         </div>
@@ -333,16 +339,19 @@ export default observer(function TopPart() {
             发布
           </Button>
         </div>
-        <div className="item">
-          <Button
-            className="statistics"
-            onClick={() => {
-              arrangAnalysisModal.show({});
-            }}
-          >
-            统计
-          </Button>
-        </div>
+        {appStore.HOSPITAL_ID == "wh" && (
+          <div className="item">
+            <Button
+              className="statistics"
+              onClick={() => {
+                arrangAnalysisModal.show({});
+              }}
+            >
+              统计
+            </Button>
+          </div>
+        )}
+
         <div className="item">
           <Button
             className="statistics"
