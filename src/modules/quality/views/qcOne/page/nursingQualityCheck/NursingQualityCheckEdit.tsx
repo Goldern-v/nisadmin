@@ -190,6 +190,7 @@ export default observer(function NursingQualityCheckEdit() {
                     <span>分值:</span>
                     <span><Input
                       size="small"
+                      disabled={!item.checked}
                       style={{ width: '60px' }}
                       className={`check-item-source-${idx}-${itemIdx}`}
                       value={item.deductScore}
@@ -362,7 +363,7 @@ export default observer(function NursingQualityCheckEdit() {
             checkItemList = checkItemList.map((checkItem: any) => {
               return {
                 ...checkItem,
-                deductScore: '1'
+                deductScore: '0'
               }
             })
             return {
@@ -481,7 +482,7 @@ export default observer(function NursingQualityCheckEdit() {
           checkItemList = checkItemList.map((item: any) => {
             return {
               ...item,
-              deductScore: '1'
+              deductScore: '0'
             }
           })
 
