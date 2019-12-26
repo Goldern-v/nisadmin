@@ -104,6 +104,14 @@ export default observer(function NursingQualityCheckEdit() {
           <Select
             value={record.result}
             onChange={(result: any) => {
+              let checkItemList = record.checkItemList.map((item: any) => {
+                return {
+                  ...item,
+                  checked: false,
+                  deductScore: '0'
+                }
+              })
+
               handleRecordChange({ ...record, result, description: '' }, idx)
               let descriptionIpt =
                 document.querySelector(`.description-${idx}`) as HTMLInputElement
@@ -145,14 +153,12 @@ export default observer(function NursingQualityCheckEdit() {
         for (let i = 0; i < checkedList.length; i++) {
           let checkedItem = checkedList[i]
           if (checkedItem.deductScore) {
-            console.log(123)
             sorce += parseFloat(checkedItem.deductScore)
           }
         }
-        console.log(sorce)
 
         let propInside = <span className="pop-inside nope">请选择</span>
-        if (checkedList.length > 0) propInside = <span className="pop-inside">{sorce == 0 ? '0' : `-${sorce}`}</span>
+        if (checkedList.length > 0) propInside = <span className="pop-inside" style={{ cursor: 'pointer' }}>{sorce == 0 ? '0' : `-${sorce}`}</span>
 
         let title = <div>
           <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{record.empName}的星级考核</span>
@@ -201,13 +207,26 @@ export default observer(function NursingQualityCheckEdit() {
             )
         }
 
-        return <Popover
-          placement='right'
-          trigger='click'
-          title={title}
-          content={content}>
-          {propInside}
-        </Popover>
+        if (record.result === '无问题')
+          return <span
+            className="pop-inside nope"
+            style={{
+              cursor: 'not-allowed',
+              color: 'rgba(0, 0, 0, 0.25)'
+            }}>
+            请选择
+          </span>
+        else
+          return <Popover
+            placement='right'
+            trigger='click'
+            title={title}
+            content={content}>
+            {propInside}
+          </Popover>
+
+
+
       }
     },
     {
@@ -219,6 +238,7 @@ export default observer(function NursingQualityCheckEdit() {
         return <EditCon>
           <Select
             value={record.type}
+            disabled={record.result === '无问题'}
             onChange={(type: any) => handleRecordChange({ ...record, type }, idx)}>
             {typeList.map((item: any, typeIdx: number) =>
               <Option key={typeIdx} value={item.code}>{item.name}</Option>
@@ -656,7 +676,7 @@ const MainContent = styled.div`
     display: inline-block;
     min-width:60px;
     &.nope{
-      color: #999;
+      color: #888;
     }
   }
 }
