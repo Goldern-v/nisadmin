@@ -112,7 +112,7 @@ export default observer(function NursingQualityCheckEdit() {
                 }
               })
 
-              handleRecordChange({ ...record, result, description: '' }, idx)
+              handleRecordChange({ ...record, result, checkItemList, description: '' }, idx)
               let descriptionIpt =
                 document.querySelector(`.description-${idx}`) as HTMLInputElement
 
