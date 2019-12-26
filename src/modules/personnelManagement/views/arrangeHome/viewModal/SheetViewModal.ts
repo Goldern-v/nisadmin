@@ -364,12 +364,23 @@ class SheetViewModal {
           _sheetTableData[i].countArrangeBaseIndexObj[
             this.countArrangeNameList[j]
           ];
+        /** 计数顺序 */
+        let _index = 0;
+        /** 基本序号 */
+        let _baseCount = baseCount;
         list
           .filter((item: ArrangeItem) => {
             return item.rangeName == this.countArrangeNameList[j];
           })
           .forEach((item: ArrangeItem, index: number) => {
-            item.rangeNameCode = baseCount + index + 1;
+            if (item.rangeNameCodeList) {
+              _index = 0;
+              _baseCount = Number(item.rangeNameCodeList);
+              item.rangeNameCode = Number(item.rangeNameCodeList);
+            } else {
+              _index += 1;
+              item.rangeNameCode = _baseCount + _index;
+            }
           });
       }
     }

@@ -160,17 +160,16 @@ export default observer(function Cell(props: Props) {
               sheetViewModal.selectedCell.userId
             );
             editVacationCountModal.show({
-              baseNum:
-                user.countArrangeBaseIndexObj[
-                  sheetViewModal.selectedCell!.rangeName
-                ],
+              baseNum: sheetViewModal.selectedCell.rangeNameCode,
               data: sheetViewModal.selectedCell,
               onOkCallBack(num: any) {
                 if (!sheetViewModal.selectedCell.userId) return;
+                /** 存班次计数断点 */
+                sheetViewModal.selectedCell.rangeNameCodeList = (num || 0) + "";
                 if (user && sheetViewModal.selectedCell.rangeName) {
-                  user.countArrangeBaseIndexObj[
-                    sheetViewModal.selectedCell!.rangeName
-                  ] = num - 1;
+                  // user.countArrangeBaseIndexObj[
+                  //   sheetViewModal.selectedCell!.rangeName
+                  // ] = num - 1;
                   resetArrangeCount(
                     sheetViewModal.selectedCell.userId,
                     sheetViewModal.selectedCell!.rangeName

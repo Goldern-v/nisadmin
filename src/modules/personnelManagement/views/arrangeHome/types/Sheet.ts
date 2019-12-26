@@ -22,6 +22,7 @@ export interface ArrangeItem {
   workDate?: string;
   /** 武汉加减班 */
   schAddOrSubs?: Partial<SchAddOrSubItem>[];
+  rangeNameCodeList?: any;
   [p: string]: any;
 }
 

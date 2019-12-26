@@ -43,7 +43,7 @@ export default function EditVacationCountModal(props: Props) {
   };
   useLayoutEffect(() => {
     if (visible && data) {
-      setNum(baseNum + 1 || 0);
+      setNum(baseNum || 0);
       setArrangeName(data.rangeName);
     }
   }, [visible]);
