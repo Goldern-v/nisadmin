@@ -23,26 +23,14 @@ export default function Table(props: Props) {
             <td className='td-title'>内容</td>
           </tr>
 
-          {tableList.map((item: any, index: number) => {
-            if (item.type == '1')
-              return (
-                <tr key={index}>
-                  <td rowSpan={tableList.length}>{item.month}月</td>
-                  <td>月重点</td>
-                  <td>
-                    <Pre>{item.content}</Pre>
-                  </td>
-                </tr>
-              )
-            return (
-              <tr key={index}>
-                <td>第{numToChinese(item.indexInType)}周</td>
-                <td>
-                  <Pre>{item.content}</Pre>
-                </td>
-              </tr>
-            )
-          })}
+          {tableList.map((item: any, index: number) =>
+            <tr key={index}>
+              {index === 0 && <td rowSpan={tableList.length}>{item.month}月</td>}
+              <td>{item.type == '1' ? '月重点' : `第${numToChinese(item.indexInType)}周`}</td>
+              <td>
+                <Pre>{item.content}</Pre>
+              </td>
+            </tr>)}
         </tbody>
       </table>
     </Wrapper>
@@ -75,4 +63,5 @@ const Pre = styled.pre`
   white-space: pre-wrap;
   text-align: left;
   padding: 2px 4px;
+  word-break: break-all;
 `
