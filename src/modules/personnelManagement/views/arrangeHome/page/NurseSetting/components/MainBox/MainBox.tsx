@@ -26,6 +26,7 @@ export interface Props extends RouteComponentProps {}
 export default observer(function MainBox() {
   const [userList, setUserList] = useState(new Array());
   const [loading, setLoading] = useState(false);
+  const [userTypeList, setUserTypeList] = useState([] as any[]);
 
   const addScheduleNursingModal = createModal(AddScheduleNursingModal);
 
@@ -66,10 +67,18 @@ export default observer(function MainBox() {
       key: "deptName"
     },
     {
-      title: "工号",
+      title: "工号(类型)",
       dataIndex: "empNo",
       key: "empNo",
-      width: 120
+      width: 120,
+      render: (text: string, record: any, index: number) => {
+        let str = text || ''
+        if (userTypeList.length > 0) {
+          let target = userTypeList.find((item: any) => item.code === record.userType)
+          if (target && target.name) str = `${text}(${target.name})`
+        }
+        return str
+      }
     },
     {
       title: "姓名",
@@ -164,6 +173,12 @@ export default observer(function MainBox() {
       }
     }
   ];
+
+  useEffect(() => {
+    service.commonApiService.dictInfo('sch_wh_user_type').then((res) => {
+      setUserTypeList(res.data)
+    })
+  }, [])
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
