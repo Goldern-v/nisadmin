@@ -17,7 +17,7 @@ import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
 import { getCurrentMonthNow } from "src/utils/date/currentMonth";
 import moment from "moment";
-export interface Props {}
+export interface Props { }
 export default observer(function AddSubClass() {
   const [searchWord, setSearchWord] = useState("");
   const [dataSource, setDataSource] = useState([]);
@@ -126,11 +126,12 @@ export default observer(function AddSubClass() {
       })
       .then(res => {
         setDataSource(res.data.list);
+        setPageOptions({ ...pageOptions, total: res.data.totalCount || 0 })
         setPageLoading(false);
       });
   };
 
-  const onDetail = (record: any) => {};
+  const onDetail = (record: any) => { };
 
   useEffect(() => {
     getData();
@@ -149,7 +150,7 @@ export default observer(function AddSubClass() {
           onChange={value => setDate(value)}
         />
         <span className="label">科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => { }} />
         <span className="label">工号姓名:</span>
         <Input
           value={searchWord}
