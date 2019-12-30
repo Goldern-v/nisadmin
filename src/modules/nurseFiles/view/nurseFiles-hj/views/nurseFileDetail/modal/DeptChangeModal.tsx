@@ -65,7 +65,7 @@ export default function DeptChangeModal(props: Props) {
     /** 如果是修改 */
     if (info && refForm.current && visible) {
       service.commonApiService.getNursingUnitAll().then(res => {
-        setDeptList(res.data.deptListc);
+        setDeptList(res.data.deptList);
       });
       refForm!.current!.setFields({
         date: moment(),

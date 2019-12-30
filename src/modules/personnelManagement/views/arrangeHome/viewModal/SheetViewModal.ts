@@ -307,6 +307,9 @@ class SheetViewModal {
   }
 
   saveSheetTableData(status: "0" | "1" | undefined) {
+    if (document.querySelector(".public-hour-warning")) {
+      return message.warning("存在公休天数小于0的护士，请修正");
+    }
     this.tableLoading = true;
     return arrangeService.saveOrUpdate(status).then(res => {
       if (status == "0") message.success("保存成功");
