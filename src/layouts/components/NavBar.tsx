@@ -9,6 +9,8 @@ import { Menu, Dropdown } from "src/vendors/antd";
 import { navConfig, navConfigItem } from "./navConfig_hj";
 import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
+import { ReactComponent as SYSC } from 'src/modules/UserManual/images/SYSC.svg'
+
 const toNavLink = (path: string | undefined) => {
   return path ? () => appStore.history.push(path) : () => {};
 };
@@ -158,6 +160,11 @@ export default observer(function NavBar(props: any) {
       )}
       <Place />
       <RightCon>
+        <UserManual 
+          onClick={() => {
+            appStore.history.push("/UserManual/Guidance");
+          }}
+        ><SYSC /></UserManual>
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
         )}
@@ -255,5 +262,16 @@ const RightCon = styled.div`
     border-radius: 50%;
     margin-right: 10px;
     object-fit: cover;
+  }
+`;
+const UserManual = styled.span`
+  cursor: pointer;
+  align-items: center;
+  position: relative;
+  svg {
+    height: 15px;
+    position: absolute;
+    bottom: -2px;
+    left: -23px;
   }
 `;

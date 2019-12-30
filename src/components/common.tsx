@@ -53,7 +53,10 @@ export const PageTitle = styled.div`
   font-size: 20px;
   color: #333;
   font-weight: bold;
-  @media (max-width: 1400px) {
+  // @media (max-width: 1400px) {
+  //   display: none;
+  // }
+  @media (max-width: ${(props: { maxWidth?: number }) => props.maxWidth || 1400}px) {
     display: none;
   }
 `

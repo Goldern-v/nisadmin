@@ -140,6 +140,11 @@ const ImportView = lazy(() =>
   import("src/modules/quality/views/checkWard/view/import/ImportView")
 );
 
+// 平台使用手册
+const UserManualRouter = lazy(() =>
+  import("src/modules/UserManual/UserManualRouter")
+);
+
 //病区文件
 const DeptFileShareCatalogSetting = lazy(() =>
   import("src/modules/deptReferSetting/views/DeptFileShareCatalogSetting")
@@ -476,6 +481,8 @@ const routes: RouteItem[] = [
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
+  setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
+
   /**一级质控 */
   setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
   setLayout(
