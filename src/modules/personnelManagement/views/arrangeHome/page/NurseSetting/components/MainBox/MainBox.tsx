@@ -71,13 +71,13 @@ export default observer(function MainBox() {
       dataIndex: "empNo",
       key: "empNo",
       width: 120,
-      render: (text: string, record: any, index: number) => {
-        let str = text || ''
+      render: (empNo: string, record: any, index: number) => {
+        let usetTypeName = ''
         if (userTypeList.length > 0) {
           let target = userTypeList.find((item: any) => item.code === record.userType)
-          if (target && target.name) str = `${text}(${target.name})`
+          if (target && target.name) usetTypeName = target.name
         }
-        return str
+        return empNo || usetTypeName
       }
     },
     {
