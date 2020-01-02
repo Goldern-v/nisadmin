@@ -480,9 +480,12 @@ export default observer(function HandoverRegister(props: Props) {
   return (
     <Wrapper id="HandoverRegisterTable">
       <PageHeader>
-        <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-          修订
-        </Button>
+        {authStore.isNotANormalNurse && (
+          <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
+            修订
+          </Button>
+        )}
+
         <span className="label">记录</span>
         <Select
           style={{ width: 155 }}
@@ -536,20 +539,24 @@ export default observer(function HandoverRegister(props: Props) {
               保存
             </Button>
             <Button>导出</Button>
-            <Button
-              onClick={() =>
-                settingModal.show({
-                  blockId: selectedBlockId,
-                  registerCode,
-                  onOkCallBack: () => {
-                    getPage();
-                  }
-                })
-              }
-            >
-              设置
-            </Button>
-            <Button onClick={onDelete}>删除</Button>
+            {authStore.isNotANormalNurse && (
+              <Button
+                onClick={() =>
+                  settingModal.show({
+                    blockId: selectedBlockId,
+                    registerCode,
+                    onOkCallBack: () => {
+                      getPage();
+                    }
+                  })
+                }
+              >
+                设置
+              </Button>
+            )}
+            {authStore.isNotANormalNurse && (
+              <Button onClick={onDelete}>删除</Button>
+            )}
           </React.Fragment>
         )}
       </PageHeader>
