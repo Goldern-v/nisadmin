@@ -29,6 +29,7 @@ import moment from "moment";
 import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
 import TextArea from "antd/lib/input/TextArea";
+import { fileDownload } from "src/utils/file/file";
 export interface Props {
   payload: any;
 }
@@ -431,6 +432,20 @@ export default observer(function HandoverRegister(props: Props) {
     });
   };
 
+  const exportExcel = () => {
+    wardRegisterService
+      .exportExcel(registerCode, {
+        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+        range: selectedRange,
+        blockId: selectedBlockId,
+        ...pageOptions
+      })
+      .then(res => {
+        fileDownload(res);
+      });
+  };
+
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -538,7 +553,7 @@ export default observer(function HandoverRegister(props: Props) {
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
-            <Button>导出</Button>
+            <Button onClick={exportExcel}>导出</Button>
             {authStore.isNotANormalNurse && (
               <Button
                 onClick={() =>

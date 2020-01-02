@@ -19,6 +19,9 @@ export default observer(function PublicHour(props: Props) {
   let real_publicHour = 0;
   for (let j = 0; j < (user.settingDtos || []).length; j++) {
     real_publicHour += user.settingDtos[j].rangeName == "公休" ? 1 : 0;
+    if (user.settingDtos[j]!.workDate.includes("-01-01")) {
+      real_publicHour = user.settingDtos[j].rangeName == "公休" ? 1 : 0;
+    }
   }
   let total =
     Number(user.publicHour) -

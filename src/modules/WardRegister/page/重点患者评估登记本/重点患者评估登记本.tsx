@@ -31,6 +31,7 @@ import { createFilterInput } from "../../components/FilterInput";
 import TextArea from "antd/lib/input/TextArea";
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { globalModal } from "src/global/globalModal";
+import { fileDownload } from "src/utils/file/file";
 export interface Props {
   payload: any;
 }
@@ -932,6 +933,19 @@ export default observer(function 重点患者评估登记本(props: Props) {
     paramMap
   });
 
+  const exportExcel = () => {
+    wardRegisterService
+      .exportExcel(registerCode, {
+        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+        blockId: selectedBlockId,
+        ...pageOptions
+      })
+      .then(res => {
+        fileDownload(res);
+      });
+  };
+
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -1005,7 +1019,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
-            <Button>导出</Button>
+            <Button onClick={exportExcel}>导出</Button>
             {authStore.isNotANormalNurse && (
               <Button
                 onClick={() =>

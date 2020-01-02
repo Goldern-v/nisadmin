@@ -107,6 +107,10 @@ export default class WardRegisterService extends BaseApiService {
       list
     });
   }
+  /** 导出登记本 */
+  public exportExcel(registerCode: string, obj: any) {
+    return this.post(`/qcRegisterData/${registerCode}/export`, obj);
+  }
 }
 
 export const wardRegisterService = new WardRegisterService();

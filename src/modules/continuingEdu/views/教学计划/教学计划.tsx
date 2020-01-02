@@ -22,23 +22,22 @@ export default observer(function 教学计划() {
   const [pageLoading, setPageLoading] = useState(false);
   const columns: ColumnProps<any>[] = [
     {
-      title: "日期",
-      dataIndex: "recordDate",
+      title: "序号",
       render(text: string, record: any, index: number) {
-        return text ? text.split(" ")[0] : "";
+        return index + 1;
       }
     },
     {
-      title: "时间"
+      title: "开始时间"
     },
     {
-      title: "问题种类"
+      title: "结束时间"
     },
     {
-      title: "详情"
+      title: "类型"
     },
     {
-      title: "创建人"
+      title: "标题"
     },
     {
       title: "创建时间"
@@ -91,12 +90,14 @@ export default observer(function 教学计划() {
         <Select>{/* <Select.Option>123</Select.Option> */}</Select>
         <span className="label">状态:</span>
         <Select>{/* <Select.Option>123</Select.Option> */}</Select>
-        <Input style={{ width: 100 }} />
+        <Input
+          style={{ width: 150, marginLeft: 15, marginRight: -10 }}
+          placeholder="请输入要搜索的关键字"
+        />
         <Button onClick={() => getData()}>查询</Button>
-        <Button type="primary" onClick={() => {}}>
-          添加
-        </Button>
         <Button>导出</Button>
+        <Button>类型管理</Button>
+        <Button type="primary">添加记录</Button>
       </PageHeader>
       <BaseTable
         loading={pageLoading}
