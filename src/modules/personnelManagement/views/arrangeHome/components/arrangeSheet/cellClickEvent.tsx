@@ -117,6 +117,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
   if (copyCell) {
     cell.rangeName = copyCell.rangeName;
     cell.rangeNameCode = null;
+    cell.rangeNameCodeList = null;
     cell.nameColor = copyCell.nameColor;
     cell.effectiveTime = copyCell.effectiveTime;
     cell.effectiveTimeOld = copyCell.effectiveTimeOld;
@@ -164,6 +165,7 @@ export function cleanCell(cellObj: ArrangeItem) {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;
+    cellObj.rangeNameCodeList = null;
   }
 }
 
