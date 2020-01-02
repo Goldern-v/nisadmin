@@ -84,6 +84,10 @@ export default function PdfViewer(props: Props) {
 
   return <Wrapper>
     <Document
+      options={{
+        cMapUrl: `pdfJs/cmaps/`,
+        cMapPacked: true,
+      }}
       file={file}
       onLoadSuccess={handleSuccess}
       onLoadError={handleError}
