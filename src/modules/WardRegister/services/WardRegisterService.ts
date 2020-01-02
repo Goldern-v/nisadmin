@@ -100,6 +100,13 @@ export default class WardRegisterService extends BaseApiService {
   public qcRegisterBlockDelete(registerCode: any, blockId: any) {
     return this.get(`/qcRegisterBlock/${registerCode}/delete/${blockId}`);
   }
+
+  /** 删除行 */
+  public deleteAll(registerCode: string, list: { id: any }[]) {
+    return this.post(`/qcRegisterData/${registerCode}/deleteAll`, {
+      list
+    });
+  }
 }
 
 export const wardRegisterService = new WardRegisterService();

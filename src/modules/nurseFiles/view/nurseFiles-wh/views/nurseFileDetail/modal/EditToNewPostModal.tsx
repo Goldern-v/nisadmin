@@ -38,6 +38,9 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {};
 }
 const rules: Rules = {
+  oldDeptCode: val => !!val || "原工作科室",
+  newDeptCode: val => !!val || "现工作科室",
+  deptBeDepartment: val => !!val || "现科室隶属部门",
   transferDate: val => !!val || "请填写转岗时间"
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
   // rank: (val) => !!val || '请填写本人排名',
@@ -146,7 +149,7 @@ export default function EditToNewPostModal(props: Props) {
       >
         <Row>
           <Col span={24}>
-            <Form.Field label={`原工作科室`} name="oldDeptCode">
+            <Form.Field label={`原工作科室`} name="oldDeptCode" required>
               <Select placeholder="选择原工作科室">
                 {list.map((item: any) => (
                   <Select.Option value={item.code} key={item.code}>
@@ -157,7 +160,7 @@ export default function EditToNewPostModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现工作科室`} name="newDeptCode">
+            <Form.Field label={`现工作科室`} name="newDeptCode" required>
               <Select placeholder="选择现工作科室">
                 {nurseFileDetailViewModal
                   .getDict("全部科室")
@@ -170,8 +173,12 @@ export default function EditToNewPostModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`现科室隶属部门`} name="deptBeDepartment">
-              <Select placeholder="选择现工作科室">
+            <Form.Field
+              label={`现科室隶属部门`}
+              name="deptBeDepartment"
+              required
+            >
+              <Select placeholder="现科室隶属部门">
                 {nurseFileDetailViewModal
                   .getDict("现科室隶属部门")
                   .map((item: any) => (

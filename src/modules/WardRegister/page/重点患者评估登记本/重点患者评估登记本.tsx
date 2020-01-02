@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
 import { Button } from "antd";
-import BaseTable from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
   PaginationConfig,
@@ -29,6 +29,8 @@ import { createFilterItem } from "../../components/FilterItem";
 import classNames from "classnames";
 import { createFilterInput } from "../../components/FilterInput";
 import TextArea from "antd/lib/input/TextArea";
+import { wardRegisterService } from "../../services/WardRegisterService";
+import { globalModal } from "src/global/globalModal";
 export interface Props {
   payload: any;
 }
@@ -870,7 +872,38 @@ export default observer(function 重点患者评估登记本(props: Props) {
         other: []
       },
       registerCode
-    )
+    ),
+    {
+      title: "操作",
+      width: 50,
+      className: "input-cell",
+      render(text: string, record: any, index: number) {
+        return (
+          <DoCon>
+            {record.signerName ? (
+              <aside style={{ color: "#aaa" }}>删除</aside>
+            ) : (
+              <span
+                onClick={() => {
+                  globalModal
+                    .confirm("删除确认", "是否删除该记录")
+                    .then(res => {
+                      wardRegisterService
+                        .deleteAll(registerCode, [{ id: record.id }])
+                        .then(res => {
+                          message.warning("删除成功");
+                          getPage();
+                        });
+                    });
+                }}
+              >
+                删除
+              </span>
+            )}
+          </DoCon>
+        );
+      }
+    }
   ];
 
   /** 公共函数 */
