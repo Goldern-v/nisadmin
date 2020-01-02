@@ -216,6 +216,11 @@ export default class NursingRulesApiService extends BaseApiService {
   public getChangeRecordListByParam(query: any) {
     return this.post('/hospitalBookshelf/getChangeRecordListByParam', query)
   }
+
+  /**书籍变更记录列表类型下拉选项 */
+  public getOperateTypes() {
+    return this.get('/hospitalBookshelf/getOperateTypes')
+  }
 }
 
 export const nursingRulesApiService = new NursingRulesApiService()
