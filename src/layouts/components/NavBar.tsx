@@ -9,7 +9,7 @@ import { Menu, Dropdown } from "src/vendors/antd";
 import { navConfig, navConfigItem } from "./navConfig_hj";
 import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
-import { ReactComponent as SYSC } from 'src/modules/UserManual/images/SYSC.svg'
+import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 
 const toNavLink = (path: string | undefined) => {
   return path ? () => appStore.history.push(path) : () => {};
