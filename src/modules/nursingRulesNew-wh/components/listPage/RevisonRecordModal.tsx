@@ -154,7 +154,8 @@ export default function RevisonRecordModal(props: Props) {
           style={{ width: 130 }}
           onChange={(operateType: string) => setQuery({ ...query, operateType })}>
           <Option value={''}>全部</Option>
-          {operateTypeList.map((item: any) => <Option value={item.code}>{item.desc}</Option>)}
+          {operateTypeList.map((item: any, idx: number) =>
+            <Option key={idx} value={item.code}>{item.desc}</Option>)}
         </Select>
         <Button className="label" onClick={() => getData(query)}>查询</Button>
       </div>

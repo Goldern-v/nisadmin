@@ -40,15 +40,21 @@ export default function CreateSummearyReportModal(props: Props) {
     if (!params.indexInType) return Message.error('未选择汇总月份/季度')
     if (!params.reportName) return Message.error('未填写报告名称')
 
+    let year = params.year.format('YYYY')
+    let month = params.indexInType
+    let rangeDate = Moment(`${year}-${month}`)
+    let beginDate = rangeDate.format('YYYY-MM-01')
+    let endDate = Moment(beginDate).add(1, 'M').subtract(1, 'd').format('YYYY-MM-DD')
+
     setLoadingState(true)
     api
       .createReport({
-        year: params.year.format('YYYY'),
-        month: params.indexInType,
+        year,
+        month,
         reportName: params.reportName,
         wardCode: authStore.selectedDeptCode,
-        beginDate: getCurrentMonth(params.indexInType)[0].format('YYYY-MM-DD'),
-        endDate: getCurrentMonth(params.indexInType)[1].format('YYYY-MM-DD')
+        beginDate,
+        endDate
       })
       .then(
         (res) => {
