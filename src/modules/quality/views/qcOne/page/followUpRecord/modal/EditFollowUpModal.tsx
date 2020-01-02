@@ -411,7 +411,18 @@ export default function EditFollowUpModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field
-              label={`附件`}
+              label={<span>
+                <span>附件</span>
+                <br />
+                <span
+                  style={{
+                    color: 'red',
+                    position: 'relative',
+                    right: '-2px'
+                  }}>
+                  (限图片)
+                </span>
+              </span>}
               name="">
               <MultiFileUploader
                 type='qc_pvq'
