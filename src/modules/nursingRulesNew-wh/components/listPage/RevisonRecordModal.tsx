@@ -17,6 +17,7 @@ export default function RevisonRecordModal(props: Props) {
   const operaterNameRef = React.createRef<any>()
   const [loading, setLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0 as number)
+  const [typeList, setTypeList] = useState([] as any[])
 
   const [data, setData] = useState([] as any)
 

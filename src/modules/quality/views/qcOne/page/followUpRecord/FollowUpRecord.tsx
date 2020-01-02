@@ -167,7 +167,14 @@ export default observer(function FollowUpRecord() {
   const onDetail = (record: any) =>
     editFollowUpModal.show({
       onOkCallBack: getData,
-      data: record
+      data: {
+        ...record, attachList: (record.attachList || []).map((item: any) => {
+          return {
+            ...item,
+            id: item.attachId
+          }
+        })
+      }
     });
 
   useEffect(() => {
