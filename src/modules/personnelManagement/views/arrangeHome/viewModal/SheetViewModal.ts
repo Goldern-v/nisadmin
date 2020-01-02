@@ -336,6 +336,17 @@ class SheetViewModal {
           _sheetTableData[i].settingDtos[j].rangeName == "节休" ? 1 : 0;
         current_publicHour +=
           _sheetTableData[i].settingDtos[j].rangeName == "公休" ? 1 : 0;
+
+        /** 假如是跨年，公休基数设置为1 */
+
+        if (
+          _sheetTableData[i].settingDtos[j].rangeName == "公休" &&
+          _sheetTableData[i].settingDtos[j].workDate.includes("-01-01")
+        ) {
+          if (!_sheetTableData[i].settingDtos[j].rangeNameCodeList) {
+            _sheetTableData[i].settingDtos[j].rangeNameCodeList = 1;
+          }
+        }
       }
       _sheetTableData[i].current_balanceHour = current_balanceHour;
       _sheetTableData[i].current_holidayHour = current_holidayHour;

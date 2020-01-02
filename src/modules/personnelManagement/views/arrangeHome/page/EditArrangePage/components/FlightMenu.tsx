@@ -40,6 +40,17 @@ export const resetArrangeCount = (userId: number, arrangeName: string) => {
         return item.rangeName == arrangeName;
       })
       .forEach((item: ArrangeItem, index: number) => {
+        if (!item) return;
+
+        if (
+          item!.rangeName == "公休" &&
+          (item!.workDate || "").includes("-01-01")
+        ) {
+          if (!item.rangeNameCodeList) {
+            item.rangeNameCodeList = 1;
+          }
+        }
+
         if (item.rangeNameCodeList) {
           _index = 0;
           _baseCount = Number(item.rangeNameCodeList);

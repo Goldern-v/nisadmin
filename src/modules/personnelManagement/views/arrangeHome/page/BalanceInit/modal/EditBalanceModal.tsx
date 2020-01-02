@@ -91,7 +91,7 @@ export default function EditBalanceModal(props: Props) {
           holidayHourNow: props.oldData.holidayHourNow,
           balanceHourNow: props.oldData.balanceHourNow,
           remark: props.oldData.remark,
-          status: props.oldData.status
+          status: "2" || props.oldData.status
         });
       } else {
         setTitle("新建结余工时");
@@ -156,7 +156,7 @@ export default function EditBalanceModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`结余类型`} name="status">
-              <Select>
+              <Select disabled={props.oldData}>
                 <Select.Option value="2">初始结余</Select.Option>
                 <Select.Option value="1">排班结余</Select.Option>
               </Select>
