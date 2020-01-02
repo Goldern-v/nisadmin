@@ -67,7 +67,7 @@ export default observer(function NursingRulesPagePreview(props: Props) {
 
         if (newChapter) {
           setChapter(newChapter)
-          getRevisionList(newChapter)
+          if (search.viewType !== 'audit') getRevisionList(newChapter)
 
           if (search.pageUrl) {
             // console.log(newChapter)

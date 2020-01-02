@@ -16,6 +16,9 @@ export default class QcOneService extends BaseApiService {
   public qcPatientVisitDelete(id: any) {
     return this.get(`/qcPatientVisit/delete/${id}`)
   }
+  public qcPatientDetail(id: any) {
+    return this.get(`/qcPatientVisit/getDetail/${id}`)
+  }
 
   /** 安全隐患 */
   public qcSafetyCheckGetPage(obj: PageObj) {

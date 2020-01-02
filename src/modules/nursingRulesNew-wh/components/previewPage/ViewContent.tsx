@@ -76,7 +76,7 @@ export default observer(function ViewContent(props: Props) {
 
     if (!viewType && chapter && !chapter.isFileUploaded) {
       return <div className='content-message page-item' style={defaultStyle}>
-        <ChapterTitleCon className="no-border">{chapterTitle}</ChapterTitleCon>
+        {/* <ChapterTitleCon className="no-border">{chapterTitle}</ChapterTitleCon> */}
         <UploadCon>
           <Dragger
             accept="image/*,.pdf"
@@ -128,12 +128,12 @@ export default observer(function ViewContent(props: Props) {
       case 'jpeg':
       case 'png':
         return <Watermark>
-          <ChapterTitleCon>{chapterTitle}</ChapterTitleCon>
+          {/* <ChapterTitleCon>{chapterTitle}</ChapterTitleCon> */}
           <img src={url} width='100%' className="page-item" />
         </Watermark>
       case 'pdf':
         return <React.Fragment>
-          <ChapterTitleCon>{chapterTitle}</ChapterTitleCon>
+          {/* <ChapterTitleCon>{chapterTitle}</ChapterTitleCon> */}
           <PdfViewer file={url} width={contentWidth - 2} />
         </React.Fragment>
       default:
@@ -145,7 +145,7 @@ export default observer(function ViewContent(props: Props) {
             lineHeight: `${contentHeight / 2 + 100}px`,
             ...defaultStyle
           }}>
-          <ChapterTitleCon className="no-border">{chapterTitle}</ChapterTitleCon>
+          {/* <ChapterTitleCon className="no-border">{chapterTitle}</ChapterTitleCon> */}
           <Icon type="stop" /> 该文件格式不支持预览
         </div>
     }

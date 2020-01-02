@@ -15,6 +15,7 @@ import { useKeepAliveEffect } from 'react-keep-alive'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { fileDownload } from 'src/utils/file/file'
+import { FileItem } from 'src/components/MultiFileUploader'
 
 import WorkPlainEditModal from './components/WorkPlainEditModal'
 
@@ -168,7 +169,8 @@ export default observer(function NursingWorkPlainList() {
       indexInType: '',
       content: '',
       wardCode: '',
-      wardName: ''
+      wardName: '',
+      attachList: [] as FileItem[],
     })
 
     setTimeout(() => setEditVisible(true))
@@ -202,7 +204,8 @@ export default observer(function NursingWorkPlainList() {
       indexInType: record.type == '2' ? record.indexInType : '',
       content: record.content,
       wardName: record.wardName,
-      wardCode: record.wardCode
+      wardCode: record.wardCode,
+      attachList: record.attachList || [],
     })
 
     setTimeout(() => setEditVisible(true))
