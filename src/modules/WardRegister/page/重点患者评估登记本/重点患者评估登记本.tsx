@@ -892,7 +892,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       wardRegisterService
                         .deleteAll(registerCode, [{ id: record.id }])
                         .then(res => {
-                          message.warning("删除成功");
+                          message.success("删除成功");
                           getPage();
                         });
                     });

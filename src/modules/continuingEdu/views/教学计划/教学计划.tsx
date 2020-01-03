@@ -16,6 +16,7 @@ import { useCallback } from "src/types/react";
 import { DoCon } from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
+import MergeTh from "../../components/mergeTh/MergeTh";
 export interface Props {}
 export default observer(function 教学计划() {
   const [dataSource, setDataSource] = useState([]);
@@ -40,7 +41,41 @@ export default observer(function 教学计划() {
       title: "标题"
     },
     {
-      title: "创建时间"
+      title: "教学方式"
+    },
+    {
+      title: () => {
+        return (
+          <MergeTh
+            mainTitle="培训对象（必修√/选修△）"
+            children={["N0", "N1", "N2", "N3", "N4", "其他"]}
+          />
+        );
+      },
+      colSpan: 6
+    },
+    {
+      title: "N1",
+      colSpan: 0
+    },
+    {
+      title: "N2",
+      colSpan: 0
+    },
+    {
+      title: "N3",
+      colSpan: 0
+    },
+    {
+      title: "N4",
+      colSpan: 0
+    },
+    {
+      title: "其他",
+      colSpan: 0
+    },
+    {
+      title: "管理人员"
     },
     {
       title: "操作",
@@ -61,7 +96,7 @@ export default observer(function 教学计划() {
   });
   const [total, setTotal]: any = useState(0);
   const getData = () => {
-    setPageLoading(true);
+    // setPageLoading(true);
     // qcOneService
     //   .qcSafetyCheckGetPage({
     //     ...pageOptions,
