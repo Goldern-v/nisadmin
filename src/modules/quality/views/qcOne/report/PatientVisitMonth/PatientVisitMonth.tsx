@@ -533,10 +533,18 @@ export default observer(function PatientVisitQuarter() {
 
   const handleViewTypeChange = (type: string) => {
     setViewType(type)
-    if (type == '1')
+    if (type == '1') {
       setQuery({ ...query, month: '' })
-    else
-      setQuery({ ...query, month: moment().format('M') })
+    } else {
+      let month = query.month
+      let year = query.year
+      if (!month) {
+        let _moment = moment()
+        month = _moment.format('M')
+        year = _moment.format('YYYY')
+      }
+      setQuery({ ...query, year, month })
+    }
   }
 
   useEffect(() => {
@@ -595,7 +603,8 @@ export default observer(function PatientVisitQuarter() {
           onChange={(month: string) => setQuery({ ...query, month })}
           className="month-select">
           <Option value="">全部</Option>
-          {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}月</Option>)}
+          {monthList.map((month: number) =>
+            <Option value={`${month}`} key={month}>{month}月</Option>)}
         </Select>
         <span>状态:</span>
         <Select
@@ -603,7 +612,8 @@ export default observer(function PatientVisitQuarter() {
           onChange={(status: string) => setQuery({ ...query, status })}
           style={{ width: '110px' }}>
           <Option value=''>全部</Option>
-          {_statusList.filter((item: any) => !item.disabled).map((item: any) => <Option key={item.code} value={item.code}>{item.name}</Option>)}
+          {_statusList.filter((item: any) => !item.disabled).map((item: any) =>
+            <Option key={item.code} value={item.code}>{item.name}</Option>)}
         </Select>
         <span>科室:</span>
         {/* <DeptSelect onChange={(wardCode) => setQuery({ ...query, wardCode })} /> */}
@@ -616,7 +626,8 @@ export default observer(function PatientVisitQuarter() {
           }
           style={{ width: '176px' }}>
           <Option value=''>全部</Option>
-          {deptList.map((item) => <Option value={item.code} key={item.code}>{item.name}</Option>)}
+          {deptList.map((item) =>
+            <Option value={item.code} key={item.code}>{item.name}</Option>)}
         </Select>
         <span>查看类型:</span>
         <Select
