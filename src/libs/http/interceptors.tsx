@@ -56,6 +56,7 @@ export function onResponseFulfilled(response: AxiosResponse) {
   let status = code;
   switch (status) {
     case StatusCode.error: {
+      if (appStore.HOSPITAL_ID == "ys") return Promise.reject();
       // alert(12)
       if (desc.indexOf("\n") > -1) {
         const modal = Modal.error({
