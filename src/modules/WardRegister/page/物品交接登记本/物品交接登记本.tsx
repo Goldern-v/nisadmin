@@ -503,7 +503,7 @@ export default observer(function HandoverRegister(props: Props) {
 
         <span className="label">记录</span>
         <Select
-          style={{ width: 155 }}
+          style={{ width: 150 }}
           value={selectedBlockId}
           onChange={(value: any) => {
             setSelectedBlockId(value);
@@ -511,9 +511,9 @@ export default observer(function HandoverRegister(props: Props) {
         >
           {blockList.map((item: any) => (
             <Select.Option value={item.id} key={item.id}>
-              {item.registerName +
-                " " +
-                moment(item.createTime).format("MM-DD")}
+              {// item.registerName +
+              //   " " +
+              moment(item.createTime).format("YYYY-MM-DD") + " 修订"}
             </Select.Option>
           ))}
         </Select>

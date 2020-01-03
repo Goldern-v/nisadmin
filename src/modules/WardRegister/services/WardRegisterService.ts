@@ -109,7 +109,9 @@ export default class WardRegisterService extends BaseApiService {
   }
   /** 导出登记本 */
   public exportExcel(registerCode: string, obj: any) {
-    return this.post(`/qcRegisterData/${registerCode}/export`, obj);
+    return this.post(`/qcRegisterData/${registerCode}/export`, obj, {
+      responseType: "blob"
+    });
   }
 }
 
