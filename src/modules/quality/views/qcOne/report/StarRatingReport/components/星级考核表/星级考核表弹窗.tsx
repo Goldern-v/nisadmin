@@ -214,7 +214,7 @@ export default observer(function 星级考核表弹窗(props: Props) {
     let sumUp = Number(sum(record))
 
     if (sumUp >= 98) return '三星'
-    if (sumUp >= 96) return '二星'
+    if (sumUp >= 94) return '二星'
     if (sumUp >= 90) return '一星'
     return '无星'
   }

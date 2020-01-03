@@ -4,6 +4,7 @@ import { Button } from 'antd'
 // import { TypeCompare, Report } from '../../types'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import Zmage from 'react-zmage'
 // import { starRatingReportEditModel } from './../../model/StarRatingReportEditModel'
 
 export interface Props {
@@ -33,6 +34,10 @@ export default observer(function Table(props: Props) {
           <col />
           <col />
           <col width='170' />
+          <col />
+          <col />
+          <col />
+          <col width='160' />
         </colgroup>
         <tbody>
           <tr className='header'>
@@ -44,6 +49,7 @@ export default observer(function Table(props: Props) {
             <td>家访内容</td>
             <td>患者反馈意见</td>
             <td>家访参加人员</td>
+            <td>附件</td>
           </tr>
 
           {list.map((item, index) => (
@@ -58,6 +64,19 @@ export default observer(function Table(props: Props) {
               <td style={{ textAlign: 'left' }}>{item.accessContent}</td>
               <td style={{ textAlign: 'left' }}>{item.feedBack}</td>
               <td style={{ textAlign: 'left' }}>{item.empNames}</td>
+              <td style={{ textAlign: 'left' }}>
+                {item.attachList && item.attachList.map((item: any, idx: number) => {
+                  return <span key={idx}>
+                    <span style={{ verticalAlign: 'middle' }}>附件{idx + 1}: </span>
+                    {/* <a >{item.name}</a> */}
+                    <PreViewCon
+                      title={item.name}
+                      onClick={() => Zmage.browsing({ src: item.path, backdrop: 'rgba(0,0,0, .8)' })}>{item.name}
+                    </PreViewCon>
+                    <br />
+                  </span>
+                })}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -89,6 +108,7 @@ const Wrapper = styled.div`
       font-size: 14px;
       color: #000;
       border: 1px #cccccc solid;
+      word-break:break-all;
       &.align-left{
         text-align: left;
       }
@@ -100,4 +120,13 @@ const Wrapper = styled.div`
     top: -2px;
     margin-right: 5px;
   }
+`
+
+const PreViewCon = styled.a`
+  width: 100px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
 `

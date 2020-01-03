@@ -28,6 +28,7 @@ import moment from "moment";
 import { qcOneService } from "../../../services/QcOneService";
 import { globalModal } from "src/global/globalModal";
 import { DictItem } from "src/services/api/CommonApiService";
+import MultiFileUploader, { FileItem } from 'src/components/MultiFileUploader'
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
@@ -70,6 +71,7 @@ export default function EditFollowUpModal(props: Props) {
   const [nurseList, setNurseList]: any = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
   const [selectedNurse, setSelectedNurse]: any = useState([]);
+  const [attachList, setAttachList] = useState([] as FileItem[]);
   let { visible, onCancel, data } = props;
 
   let refForm = React.createRef<Form>();
@@ -85,6 +87,12 @@ export default function EditFollowUpModal(props: Props) {
 
     /** 保存接口 */
     let data = { ...value };
+    data.attachList = attachList.map((item: FileItem) => {
+      return {
+        attachId: item.id
+      }
+    })
+
     data.recordDate = data.recordDate
       ? moment(data.recordDate).format("YYYY-MM-DD HH:mm")
       : "";
@@ -173,6 +181,9 @@ export default function EditFollowUpModal(props: Props) {
     if (refForm.current && visible) {
       let form = refForm.current;
       setModalLoading(true);
+
+      setAttachList([])
+
       service.commonApiService
         .userDictInfo(authStore.selectedDeptCode)
         .then(res => {
@@ -181,7 +192,6 @@ export default function EditFollowUpModal(props: Props) {
             empName: item.name
           }));
           setNurseList(nurseList);
-          setModalLoading(false);
 
           if (data) {
             setTitle("编辑随访记录");
@@ -231,7 +241,20 @@ export default function EditFollowUpModal(props: Props) {
                 }))
               );
             }
+
+            // setAttachList(data.attachList)
+            qcOneService.qcPatientDetail(data.id).then(res => {
+              setModalLoading(false);
+              if (res.data.attachList)
+                setAttachList(res.data.attachList.map((item: any) => {
+                  return {
+                    ...item,
+                    id: item.attachId
+                  } as FileItem
+                }))
+            })
           } else {
+            setModalLoading(false);
             setTitle("创建随访记录");
             /** 表单数据初始化 */
             form.setFields({
@@ -384,6 +407,29 @@ export default function EditFollowUpModal(props: Props) {
               }
             >
               <Input.TextArea autosize={true} style={{ resize: "none" }} disabled={!canEdit} />
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field
+              label={<span>
+                <span>附件</span>
+                <br />
+                <span
+                  style={{
+                    color: 'red',
+                    position: 'relative',
+                    right: '-2px'
+                  }}>
+                  (限图片)
+                </span>
+              </span>}
+              name="">
+              <MultiFileUploader
+                type='qc_pvq'
+                accept='image/jpg, image/jpeg, image/png, image/bmp'
+                readOnly={!canEdit}
+                data={attachList}
+                onChange={(newAttachList: FileItem[]) => setAttachList(newAttachList)} />
             </Form.Field>
           </Col>
         </Row>

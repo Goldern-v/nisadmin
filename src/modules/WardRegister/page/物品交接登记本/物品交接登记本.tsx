@@ -29,6 +29,7 @@ import moment from "moment";
 import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
 import TextArea from "antd/lib/input/TextArea";
+import { fileDownload } from "src/utils/file/file";
 export interface Props {
   payload: any;
 }
@@ -431,6 +432,20 @@ export default observer(function HandoverRegister(props: Props) {
     });
   };
 
+  const exportExcel = () => {
+    wardRegisterService
+      .exportExcel(registerCode, {
+        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+        range: selectedRange,
+        blockId: selectedBlockId,
+        ...pageOptions
+      })
+      .then(res => {
+        fileDownload(res);
+      });
+  };
+
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -480,12 +495,15 @@ export default observer(function HandoverRegister(props: Props) {
   return (
     <Wrapper id="HandoverRegisterTable">
       <PageHeader>
-        <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-          修订
-        </Button>
+        {authStore.isNotANormalNurse && (
+          <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
+            修订
+          </Button>
+        )}
+
         <span className="label">记录</span>
         <Select
-          style={{ width: 155 }}
+          style={{ width: 150 }}
           value={selectedBlockId}
           onChange={(value: any) => {
             setSelectedBlockId(value);
@@ -493,9 +511,9 @@ export default observer(function HandoverRegister(props: Props) {
         >
           {blockList.map((item: any) => (
             <Select.Option value={item.id} key={item.id}>
-              {item.registerName +
-                " " +
-                moment(item.createTime).format("MM-DD")}
+              {// item.registerName +
+              //   " " +
+              moment(item.createTime).format("YYYY-MM-DD") + " 修订"}
             </Select.Option>
           ))}
         </Select>
@@ -535,21 +553,25 @@ export default observer(function HandoverRegister(props: Props) {
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
-            <Button>导出</Button>
-            <Button
-              onClick={() =>
-                settingModal.show({
-                  blockId: selectedBlockId,
-                  registerCode,
-                  onOkCallBack: () => {
-                    getPage();
-                  }
-                })
-              }
-            >
-              设置
-            </Button>
-            <Button onClick={onDelete}>删除</Button>
+            <Button onClick={exportExcel}>导出</Button>
+            {authStore.isNotANormalNurse && (
+              <Button
+                onClick={() =>
+                  settingModal.show({
+                    blockId: selectedBlockId,
+                    registerCode,
+                    onOkCallBack: () => {
+                      getPage();
+                    }
+                  })
+                }
+              >
+                设置
+              </Button>
+            )}
+            {authStore.isNotANormalNurse && (
+              <Button onClick={onDelete}>删除</Button>
+            )}
           </React.Fragment>
         )}
       </PageHeader>

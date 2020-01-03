@@ -80,7 +80,10 @@ export default observer(function FollowUpRecord() {
       title: "工时结余（小时）",
       dataIndex: "balanceHourNow",
       align: "center",
-      width: 100
+      width: 100,
+      render(text: any, record: any) {
+        return Number(text).toFixed(2);
+      }
     },
     {
       title: "备注",

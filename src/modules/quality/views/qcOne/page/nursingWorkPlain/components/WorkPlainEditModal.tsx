@@ -5,6 +5,7 @@ import { numToChinese } from 'src/utils/number/numToChinese'
 import { ScrollBox } from 'src/components/common'
 import { authStore } from 'src/stores'
 import { nursingWorkPlainService } from './../api/NursingWorkPlainService'
+import MultiFileUploader, { FileItem } from 'src/components/MultiFileUploader'
 import YearPicker from 'src/components/YearPicker'
 
 import { observer } from 'mobx-react-lite'
@@ -40,6 +41,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
     wardName: '',
     wardCode: '',
     content: '',
+    attachList: [] as FileItem[]
   } as any)
 
   const wardName = editQuery.wardName || authStore.selectedDeptName
@@ -73,6 +75,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
   const handleSave = () => {
     let params = {
       ...editQuery,
+      attachList: editQuery.attachList.map((item: FileItem) => {
+        return { attachId: item.id }
+      }),
       wardName,
       wardCode,
     }
@@ -91,6 +96,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
       params.indexInType = '1'
       params.month = '1'
     }
+
+    if (!query.content) params.onlySave = true
 
     setLoading(true)
 
@@ -188,7 +195,14 @@ export default observer(function WorkPlainEditModal(props: Props) {
 
   useEffect(() => {
     if (visible) {
-      setEditQuery({ ...query })
+      setEditQuery({
+        ...query, attachList: (query.attachList || []).map((item: any) => {
+          return {
+            ...item,
+            id: item.attachId
+          } as FileItem
+        })
+      })
       getDict()
     }
   }, [visible])
@@ -289,6 +303,17 @@ export default observer(function WorkPlainEditModal(props: Props) {
               onClick={() => setTemplateVisible(true)}>
               模板
             </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={2}>附件:</Col>
+          <Col span={20}>
+            <UploadWrapper>
+              <MultiFileUploader
+                type='qc_pvqqc_wks'
+                data={editQuery.attachList}
+                onChange={(attachList: FileItem[]) => setEditQuery({ ...editQuery, attachList })} />
+            </UploadWrapper>
           </Col>
         </Row>
       </Wrapper>
@@ -422,5 +447,11 @@ const Wrapper = styled.div`
     .ant-select {
       width: 100%;
     }
+  }
+`
+
+const UploadWrapper = styled.div`
+  &>div{
+    float: left;
   }
 `

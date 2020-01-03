@@ -9,6 +9,7 @@ import { Menu, Dropdown } from "src/vendors/antd";
 import { navConfig, navConfigItem } from "./navConfig_hj";
 import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
+import { navConfig as navConfig_ys } from "./navConfig_ys";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 
 const toNavLink = (path: string | undefined) => {
@@ -83,6 +84,8 @@ export default observer(function NavBar(props: any) {
       ? authStore.isRoleManage
         ? navConfig_wh
         : navConfig_whSelf
+      : appStore.HOSPITAL_ID == "ys"
+      ? navConfig_ys
       : navConfig;
 
   let location = appStore.location;

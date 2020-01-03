@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Icon } from 'antd'
-import { getFilePrevImg } from 'src/utils/file/file'
+import { getFilePrevImg, getFileType } from 'src/utils/file/file'
 import service from 'src/services/api'
+import createModal from 'src/libs/createModal'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import Zimage from 'src/components/Zimage'
 
 const commonApi = service.commonApiService
 
@@ -18,17 +21,19 @@ export interface Props {
   accept?: string,
   type: string,
   onChange?: any,
+  readOnly?: boolean,
   data?: FileItem[]
 }
 
 export default function MultiFileUploader(props: Props) {
-  const { accept, type, onChange, data } = props
+  const { accept, type, onChange, data, readOnly } = props
 
   const [iptVisible, setIptVisible] = useState(true)
 
   const [loading, setLoading] = useState(false)
 
   const [randomClass, setRandomClass] = useState('')
+  const previewModal = createModal(PreviewModal)
 
   useEffect(() => {
     setRandomClass(`file-input-${parseInt(`${Math.random() * 1000}`)}`)
@@ -94,16 +99,35 @@ export default function MultiFileUploader(props: Props) {
     return <span className="file-input"></span>
   }
 
+  const onPreView = (e: React.MouseEvent<HTMLImageElement, MouseEvent>, file: any) => {
+    previewModal.show({
+      title: file.name,
+      path: file.path
+    })
+    e.stopPropagation()
+  }
+
   return <Wrapper>
     {data && data.map((item: any, idx: number) => <div className="list-item" key={idx}>
-      <img src={getFilePrevImg(item.path)} />
-      <div className="delete" onClick={() => handleDelete(idx)} title="删除">X</div>
+      {getFileType(item.path) == 'img' ? (
+        <Zimage src={item.path} className='type-img' alt='' />
+      ) : (
+          <img
+            src={getFilePrevImg(item.path)}
+            className='type-img'
+            style={{ cursor: 'pointer' }}
+            alt=''
+            onClick={(e) => onPreView(e, item)}
+          />
+        )}
+      {!readOnly && <div className="delete" onClick={() => handleDelete(idx)} title="删除">X</div>}
       {item.name && <span className="file-name" title={item.name}>{item.name}</span>}
     </div>)}
-    <div className="add-btn" title="添加文件" onClick={handleUploadOpen}>
+    {!readOnly && <div className="add-btn" title="添加文件" onClick={handleUploadOpen}>
       <StyledIcon type={loading ? 'loading' : 'plus'} />
-    </div>
+    </div>}
     {FileEl()}
+    <previewModal.Component />
   </Wrapper>
 }
 const Wrapper = styled.div`
@@ -148,11 +172,13 @@ const Wrapper = styled.div`
     border-right: 5px;
     margin-right: 15px;
     margin-top: 30px;
+    border-radius: 5px;
     position: relative;
     img{
       width: 70px;
       height: 70px;
       border-radius: 5px;
+      object-fit: cover;
     }
     .file-name{
       width: 80px;

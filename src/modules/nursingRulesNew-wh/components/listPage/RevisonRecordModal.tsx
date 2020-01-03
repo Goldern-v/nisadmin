@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, DatePicker, Input } from 'antd'
+import { Button, Modal, DatePicker, Input, Select } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import moment from 'moment'
 import { ColumnProps } from 'antd/lib/table'
 import { nursingRulesApiService } from './../../api/nursingRulesNewService'
-
+const Option = Select.Option
 export interface Props {
   visible: boolean,
   onCancel?: Function
@@ -17,6 +17,7 @@ export default function RevisonRecordModal(props: Props) {
   const operaterNameRef = React.createRef<any>()
   const [loading, setLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0 as number)
+  const [operateTypeList, setOperateTypeList] = useState([] as any[])
 
   const [data, setData] = useState([] as any)
 
@@ -26,7 +27,8 @@ export default function RevisonRecordModal(props: Props) {
     bookName: '',
     pageSize: 20,
     pageIndex: 1,
-    operaterName: ''
+    operaterName: '',
+    operateType: '',
   })
 
   const columns: ColumnProps<any>[] = [
@@ -92,6 +94,12 @@ export default function RevisonRecordModal(props: Props) {
   }
 
   useEffect(() => {
+    nursingRulesApiService.getOperateTypes().then(res => {
+      if (res.data) setOperateTypeList(res.data)
+    })
+  }, [])
+
+  useEffect(() => {
     if (visible) getData(query)
   }, [visible, query])
 
@@ -130,7 +138,7 @@ export default function RevisonRecordModal(props: Props) {
             if (query.bookName !== e.target.value)
               setQuery({ ...query, bookName: e.target.value })
           }} />
-        <span className="label">上传人员: </span>
+        {/* <span className="label">上传人员: </span>
         <Input
           ref={operaterNameRef}
           allowClear
@@ -139,7 +147,16 @@ export default function RevisonRecordModal(props: Props) {
           onBlur={(e: any) => {
             if (query.operaterName !== e.target.value)
               setQuery({ ...query, operaterName: e.target.value })
-          }} />
+          }} /> */}
+        <span className="label">类型: </span>
+        <Select
+          value={query.operateType}
+          style={{ width: 130 }}
+          onChange={(operateType: string) => setQuery({ ...query, operateType })}>
+          <Option value={''}>全部</Option>
+          {operateTypeList.map((item: any, idx: number) =>
+            <Option key={idx} value={item.code}>{item.desc}</Option>)}
+        </Select>
         <Button className="label" onClick={() => getData(query)}>查询</Button>
       </div>
       <div className="table-con">

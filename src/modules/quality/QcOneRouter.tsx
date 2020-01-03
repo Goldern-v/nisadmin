@@ -35,28 +35,28 @@ const LEFT_MENU_CONFIG: any = [
         path: '/qcOne/nursingWorkPlainList',
         component: NursingWorkPlainList,
         keepAlive: true,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '病区质量检查',
         path: '/qcOne/nursingQualityCheck',
         component: NursingQualityCheck,
         keepAlive: true,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '护士会议记录',
         path: '/qcOne/nurseMeetingRecord',
         component: NurseMeetingRecord,
         keepAlive: true,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '不良事件记录',
         path: '/qcOne/badEventRecord',
         component: BadEventRecord,
         keepAlive: true,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '人力资源调配',
@@ -68,7 +68,7 @@ const LEFT_MENU_CONFIG: any = [
         path: '/qcOne/safetyHazards',
         component: SafetyHazards,
         keepAlive: true,
-        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
       },
       {
         title: '季度家庭随访表',
@@ -83,7 +83,7 @@ const LEFT_MENU_CONFIG: any = [
     path: '/qcOne/nursingReportList',
     component: NursingReportList,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP',
+    disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP',
     hide: !authStore.isRoleManage
   },
   {
@@ -92,7 +92,7 @@ const LEFT_MENU_CONFIG: any = [
     path: '/qcOne/starRatingReport',
     component: StarRatingReport,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },
   {
     title: '不良事件登记表',
@@ -100,7 +100,7 @@ const LEFT_MENU_CONFIG: any = [
     path: '/qcOne/badEventReport',
     component: BadEventReport,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },
   {
     title: '安全隐患排查汇总表',
@@ -108,7 +108,7 @@ const LEFT_MENU_CONFIG: any = [
     path: '/qcOne/safetyCheckReport',
     component: SafetyCheckReport,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },
   {
     title: '季度家访汇总表',
@@ -116,7 +116,7 @@ const LEFT_MENU_CONFIG: any = [
     path: '/qcOne/patientVisitQuarter',
     component: PatientVisitQuarter,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   },
   {
     title: '月度随访表',
@@ -124,7 +124,7 @@ const LEFT_MENU_CONFIG: any = [
     path: '/qcOne/patientVisitMonth',
     component: PatientVisitMonth,
     keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
   }
 ]
 
@@ -156,7 +156,7 @@ export default function QcOneRouter(props: Props) {
         {currentRoute &&
           currentRoute.component &&
           (currentRoute.keepAlive ? (
-            <KeepAlive name={currentRoute.path} disabled={currentRoute.disabledKeepAlive}>
+            <KeepAlive name={currentRoute.path} disabled={currentRoute.disabledKeepAlive()}>
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (

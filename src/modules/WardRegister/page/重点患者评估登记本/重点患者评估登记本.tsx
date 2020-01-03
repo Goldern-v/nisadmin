@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
 import { Button } from "antd";
-import BaseTable from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
   PaginationConfig,
@@ -29,6 +29,9 @@ import { createFilterItem } from "../../components/FilterItem";
 import classNames from "classnames";
 import { createFilterInput } from "../../components/FilterInput";
 import TextArea from "antd/lib/input/TextArea";
+import { wardRegisterService } from "../../services/WardRegisterService";
+import { globalModal } from "src/global/globalModal";
+import { fileDownload } from "src/utils/file/file";
 export interface Props {
   payload: any;
 }
@@ -870,7 +873,38 @@ export default observer(function 重点患者评估登记本(props: Props) {
         other: []
       },
       registerCode
-    )
+    ),
+    {
+      title: "操作",
+      width: 50,
+      className: "input-cell",
+      render(text: string, record: any, index: number) {
+        return (
+          <DoCon>
+            {record.signerName ? (
+              <aside style={{ color: "#aaa" }}>删除</aside>
+            ) : (
+              <span
+                onClick={() => {
+                  globalModal
+                    .confirm("删除确认", "是否删除该记录")
+                    .then(res => {
+                      wardRegisterService
+                        .deleteAll(registerCode, [{ id: record.id }])
+                        .then(res => {
+                          message.success("删除成功");
+                          getPage();
+                        });
+                    });
+                }}
+              >
+                删除
+              </span>
+            )}
+          </DoCon>
+        );
+      }
+    }
   ];
 
   /** 公共函数 */
@@ -899,6 +933,19 @@ export default observer(function 重点患者评估登记本(props: Props) {
     paramMap
   });
 
+  const exportExcel = () => {
+    wardRegisterService
+      .exportExcel(registerCode, {
+        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+        blockId: selectedBlockId,
+        ...pageOptions
+      })
+      .then(res => {
+        fileDownload(res);
+      });
+  };
+
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -918,9 +965,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
   return (
     <Container>
       <PageHeader>
-        <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-          修订
-        </Button>
+        {authStore.isNotANormalNurse && (
+          <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
+            修订
+          </Button>
+        )}
+
         <span className="label">记录</span>
         <Select
           value={selectedBlockId}
@@ -969,22 +1019,26 @@ export default observer(function 重点患者评估登记本(props: Props) {
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
-            <Button>导出</Button>
-            <Button
-              onClick={() =>
-                settingModal.show({
-                  blockId: selectedBlockId,
-                  selectedBlockObj,
-                  registerCode,
-                  onOkCallBack: () => {
-                    getPage();
-                  }
-                })
-              }
-            >
-              设置
-            </Button>
-            <Button onClick={onDelete}>删除</Button>
+            <Button onClick={exportExcel}>导出</Button>
+            {authStore.isNotANormalNurse && (
+              <Button
+                onClick={() =>
+                  settingModal.show({
+                    blockId: selectedBlockId,
+                    selectedBlockObj,
+                    registerCode,
+                    onOkCallBack: () => {
+                      getPage();
+                    }
+                  })
+                }
+              >
+                设置
+              </Button>
+            )}
+            {authStore.isNotANormalNurse && (
+              <Button onClick={onDelete}>删除</Button>
+            )}
           </React.Fragment>
         )}
       </PageHeader>
