@@ -45,6 +45,9 @@ export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
   const [shiftList, setShiftList] = useState(new Array());
 
+  /** 禁用的班次 */
+  const [disableArrangeList, setDisableArrangeList]: any = useState([]);
+
   /** 颜色 */
   const [colorMap, setColorMap]: [any, any] = useState({});
   const [colorMapCN, setColorMapCN]: [any, any] = useState({});
@@ -173,7 +176,44 @@ export default function MainBox() {
       dataIndex: "title",
       width: 100,
       key: "title",
-      render: (text: string, record: any) => (
+      render: (text: string, record: any) => {
+        if (disableArrangeList.includes(record.name)) {
+          return "";
+        } else {
+          return (
+            <DoCon>
+              <span
+                onClick={(e: any) => {
+                  addShiftModal.show({
+                    editData: record,
+                    onOkCallBack: () => {
+                      getShiftList();
+                    }
+                  });
+                  // emitter.emit('弹窗编辑排班', record)
+                }}
+              >
+                编辑
+              </span>
+              <span
+                onClick={() => {
+                  globalModal
+                    .confirm("确认删除", "确认删除该套餐？")
+                    .then(res => {
+                      service.scheduleShiftApiService
+                        .delete(record.id)
+                        .then(res => {
+                          emitter.emit("更新班次列表");
+                        });
+                      message.success(`删除${record.name}成功`);
+                    });
+                }}
+              >
+                删除
+              </span>
+            </DoCon>
+          );
+        }
         <DoCon>
           <span
             onClick={(e: any) => {
@@ -200,8 +240,8 @@ export default function MainBox() {
           >
             删除
           </span>
-        </DoCon>
-      )
+        </DoCon>;
+      }
     });
   }
   let data = {
@@ -227,6 +267,10 @@ export default function MainBox() {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     getShiftList();
+
+    service.commonApiService.dictInfo("sch_range_no_change").then(res => {
+      setDisableArrangeList(res.data.map((item: any) => item.name));
+    });
 
     service.commonApiService.dictInfo("sch_range_color").then(res => {
       let colorMap: any = {};

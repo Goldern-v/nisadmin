@@ -27,6 +27,7 @@ import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBa
 import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
 import TrainingManageHome from "./views/trainingManage/views/trainingManageHome/TrainingManageHome";
 import 教学计划 from "./views/教学计划/教学计划";
+import 类型管理 from "./views/类型管理/类型管理";
 
 const LEFT_MENU_CONFIG = [
   {
@@ -43,6 +44,12 @@ const LEFT_MENU_CONFIG = [
         title: "教学计划",
         path: "/continuingEdu/教学计划",
         component: 教学计划
+      },
+      {
+        title: "类型管理",
+        path: "/continuingEdu/类型管理",
+        component: 类型管理,
+        hide: true
       }
     ]
   },
