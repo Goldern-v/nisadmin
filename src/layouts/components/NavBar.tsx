@@ -163,11 +163,15 @@ export default observer(function NavBar(props: any) {
       )}
       <Place />
       <RightCon>
-        {/* <UserManual 
-          onClick={() => {
-            appStore.history.push("/UserManual/Guidance");
-          }}
-        ><SYSC /></UserManual> */}
+        {appStore.isDev && (
+          <UserManual
+            onClick={() => {
+              appStore.history.push("/UserManual/Guidance");
+            }}
+          >
+            <SYSC />
+          </UserManual>
+        )}
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
         )}

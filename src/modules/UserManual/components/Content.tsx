@@ -1,64 +1,79 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { appStore } from "src/stores";
-import { Button, Select, Modal } from "antd";
+import { Button, Modal, message as Message, Input } from "antd";
 import { TableHeadCon } from "src/components/BaseTable";
 import { PageTitle } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import AddModal from "../modal/AddModal";
+import FileEditModal from "../modal/FileEditModal";
 import PreviewModal from "../modal/PreviewModal";
 import createModal from "src/libs/createModal";
 import { userManualApi } from "../api/UserManualApi";
-
 interface Props {
   getTitle: any;
 }
 
 export default function RightContent(props: Props) {
   const { getTitle } = props; //获取当前页面标题
-  const auth = true; //权限控制
-  const addModal = createModal(AddModal); //添加修改弹窗
-  const previewModal = createModal(PreviewModal); //预览弹窗
-  const [tableList, setTableList] = useState([]); //表格数据
-  const [loading, setLoading] = useState(false);
-  const [fileName, setFileName] = useState(""); // 文件名
-  const [pageIndex, setPageIndex] = useState(1); // 页码
-  const [totalCount, setTotalCount] = useState(Number); // 页码
-  const [pageSize, setPageSize] = useState(4); // 页面条数
-  const [id, setId] = useState(""); // 对应id
+  const [auth, setAuth] = useState(Boolean);
+  // const auth = true; //权限控制
+  const PreviewModalWrapper = createModal(PreviewModal); //预览弹窗
+  const [searchText, setSearchText] = useState(""); // 搜索内容
+  const [editVisible, setEditVisible] = useState(false); // 判断添加修改
+  const [editParams, setEditParams] = useState({} as any); // 保存入参
+  const [loading, setLoading] = useState(false); // loading
+  const [tableList, setTableList] = useState([] as any); //表格数据
+  const [totalCount, setTotalCount] = useState(Number); // 总页码
+  const [query, setQuery] = useState({
+    type: getTitle,
+    fileName: "",
+    pageSize: 20,
+    pageIndex: 1
+  } as any);
+
+  // 初始化
+  useEffect(() => {
+    getTableData();
+  }, [query]);
 
   // 查询
-  const getTableData = (pagination?: any) => {
-    let obj = {
-      type: getTitle,
-      fileName: fileName,
-      pageIndex: pagination ? pagination.current : pageIndex,
-      pageSize: pagination ? pagination.pageSize : pageSize
-    };
+  const getTableData = () => {
     setLoading(true);
-    userManualApi.getData(obj).then(res => {
+    userManualApi.getData(query).then(res => {
       setLoading(false);
-      setTableList(res.data.list);
-      setPageIndex(res.data.pageIndex);
-      setTotalCount(res.data.totalCount);
-      setPageSize(res.data.pageSize);
+      if (res.data) {
+        setTableList(res.data.data.list);
+        setTotalCount(res.data.data.totalCount || 0);
+        setAuth(res.data.role);
+      }
     });
   };
-  // 添加/修改
-  const handleAdd = (type: number) => {
-    switch (type) {
-      case 1:
-        {
-          addModal.show({ title: "添加" });
-        }
-        break;
-      case 2:
-        {
-          addModal.show({ title: "修改" });
-        }
-        break;
-    }
+
+  // 输入查询
+  const onSearch = () => {
+    setQuery({ ...query, fileName: searchText });
   };
+  const onChangeSearchText = (e: any) => {
+    setSearchText(e.target.value);
+  };
+
+  // 添加/修改
+  const reUpload = (record: any) => {
+    setEditParams({
+      id: record.id,
+      fileName: record.fileName
+    });
+    setEditVisible(true);
+  };
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setEditParams({});
+  };
+  const handleEditOk = () => {
+    getTableData();
+    handleEditCancel();
+  };
+
   // 删除
   const handleDelete = (record: any) => {
     let content = (
@@ -73,25 +88,69 @@ export default function RightContent(props: Props) {
       okText: "确定",
       okType: "danger",
       cancelText: "取消",
-      onOk: () => {}
+      onOk: () => {
+        userManualApi
+          .delete(record.id)
+          .then(res => {
+            if (res.code == 200) {
+              Message.success("文件删除成功");
+              getTableData();
+            } else {
+              Message.error("文件删除失败");
+            }
+          })
+          .catch(err => {
+            Message.error("文件删除失败");
+          });
+      }
     });
   };
+
   // 预览
   const handlePreview = (record: any) => {
-    previewModal.show();
+    console.log(record);
+    PreviewModalWrapper.show({
+      url: `/crNursing/asset/deptShareFile${record.path}`,
+      name: record.fileName,
+      type: record.fileType
+    });
   };
+
   // 下载
-  const handleDownload = (record: any) => {};
-  useEffect(() => {
-    getTableData();
-  }, []);
+  const fileDownload = (res: any, record?: any) => {
+    let fileType: any = record.originalFileName.split(".");
+    fileType = fileType[fileType.length - 1];
+    let filename = [record.fileName, fileType].join(".");
+    let blob = new Blob([res.data], {
+      type: res.data.type
+    });
+    if (true) {
+      let a = document.createElement("a");
+      let href = window.URL.createObjectURL(blob); // 创建链接对象
+      a.href = href;
+      a.download = filename; // 自定义文件名
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(href);
+      document.body.removeChild(a); // 移除a元素
+    }
+  };
+  const handleDownload = (record: any) => {
+    userManualApi.getFileContent(record.id).then(res => {
+      fileDownload(res, record);
+    });
+  };
+
   const columns: any = [
     {
       key: "index",
       title: "序号",
       width: 50,
       align: "center",
-      render: (text: string, record: any, index: number) => index + 1
+      render: (text: string, record: any, index: number) => {
+        const { pageIndex, pageSize } = query;
+        return (pageIndex - 1) * pageSize + index + 1;
+      }
     },
     {
       title: "文件名称",
@@ -125,7 +184,7 @@ export default function RightContent(props: Props) {
         return (
           <DoCon>
             <span onClick={() => handlePreview(record)}>预览</span>
-            {auth && <span onClick={() => handleAdd(2)}>修改</span>}
+            {auth && <span onClick={() => reUpload(record)}>修改</span>}
             {auth && <span onClick={() => handleDelete(record)}>删除</span>}
             <span onClick={() => handleDownload(record)}>下载</span>
           </DoCon>
@@ -133,6 +192,7 @@ export default function RightContent(props: Props) {
       }
     }
   ];
+
   return (
     <Wrapper>
       <Header>
@@ -140,10 +200,15 @@ export default function RightContent(props: Props) {
           <PageTitle maxWidth={1000}>{getTitle}</PageTitle>
         </LeftIcon>
         <RightIcon>
-          <Select placeholder="请输入文件名称关键字搜索" />
-          <Button onClick={() => {}}>查询</Button>
+          <Input
+            placeholder="请输入文件名称关键字搜索"
+            style={{ width: 230 }}
+            value={searchText}
+            onChange={onChangeSearchText}
+          />
+          <Button onClick={onSearch}>查询</Button>
           {auth && (
-            <Button type="primary" onClick={() => handleAdd(1)}>
+            <Button type="primary" onClick={() => setEditVisible(true)}>
               添加
             </Button>
           )}
@@ -158,17 +223,27 @@ export default function RightContent(props: Props) {
           nohorizontalScroll={appStore.wid > 1447}
           loading={loading}
           pagination={{
-            current: pageIndex,
+            pageSizeOptions: ["10", "20", "30", "40", "50"],
+            onShowSizeChange: (pageIndex, pageSize) =>
+              setQuery({ ...query, pageSize }),
+            onChange: (pageIndex, pageSize) =>
+              setQuery({ ...query, pageIndex }),
             total: totalCount,
-            pageSize: pageSize
-          }}
-          onChange={(pagination: any) => {
-            getTableData(pagination);
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex
           }}
         />
       </Table>
-      <addModal.Component />
-      <previewModal.Component />
+      <FileEditModal
+        visible={editVisible}
+        params={editParams}
+        type={getTitle}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
+      <PreviewModalWrapper.Component />
     </Wrapper>
   );
 }

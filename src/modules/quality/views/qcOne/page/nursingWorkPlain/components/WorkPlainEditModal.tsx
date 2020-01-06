@@ -97,6 +97,8 @@ export default observer(function WorkPlainEditModal(props: Props) {
       params.month = '1'
     }
 
+    if (!query.content) params.onlySave = true
+
     setLoading(true)
 
     nursingWorkPlainService
