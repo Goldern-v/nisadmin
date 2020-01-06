@@ -27,6 +27,8 @@ import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBa
 import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
 import TrainingManageHome from "./views/trainingManage/views/trainingManageHome/TrainingManageHome";
 import 教学计划 from "./views/教学计划/教学计划";
+// 继续教育
+import ContinuingEducation from "./views/outsideHospital/views/continuingEducation/ContinuingEducation";
 
 const LEFT_MENU_CONFIG = [
   {
@@ -51,6 +53,17 @@ const LEFT_MENU_CONFIG = [
     icon: <RYGL />,
     path: "/continuingEdu/trainingManageHome",
     component: TrainingManageHome
+  },
+  {
+    title: "院外培训",
+    // icon: <RYGL />,
+    children: [
+      {
+        title: "继续教育",
+        path: "/continuingEdu/continuingEducation",
+        component: ContinuingEducation
+      }
+    ]
   },
   {
     title: "院内学习班",

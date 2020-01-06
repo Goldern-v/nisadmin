@@ -15,8 +15,7 @@ interface Props {
 
 export default function RightContent(props: Props) {
   const { getTitle } = props; //获取当前页面标题
-  const [auth, setAuth] = useState(Boolean);
-  // const auth = true; //权限控制
+  const [auth, setAuth] = useState(Boolean); //权限控制
   const PreviewModalWrapper = createModal(PreviewModal); //预览弹窗
   const [searchText, setSearchText] = useState(""); // 搜索内容
   const [editVisible, setEditVisible] = useState(false); // 判断添加修改
@@ -41,10 +40,10 @@ export default function RightContent(props: Props) {
     setLoading(true);
     userManualApi.getData(query).then(res => {
       setLoading(false);
-      if (res.data) {
-        setTableList(res.data.data.list);
+      if (res.data.data) {
+        setTableList(res.data.data.list || []);
         setTotalCount(res.data.data.totalCount || 0);
-        setAuth(res.data.role);
+        setAuth(res.data.role || false);
       }
     });
   };
