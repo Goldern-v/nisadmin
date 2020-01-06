@@ -106,6 +106,7 @@ function MenuCon(props: { dataSource: any[] }) {
       sheetViewModal.selectedCell!.shiftType = item.shiftType;
       sheetViewModal.selectedCell!.settings = null;
       sheetViewModal.selectedCell!.statusType = "";
+      sheetViewModal.selectedCell!.schAddOrSubs = [];
       // sheetViewModal.selectedCell!.rangeNameCode = item.rangeNameCode
 
       /** 判断是否生成编号 */
@@ -170,6 +171,7 @@ function MealCon(props: { dataSource: any[] }) {
         list[i]!.effectiveTimeOld = mealObj.effectiveTime;
         list[i]!.shiftType = mealObj.shiftType;
         list[i]!.statusType = "";
+        list[i]!.schAddOrSubs = [];
       }
     }
   };

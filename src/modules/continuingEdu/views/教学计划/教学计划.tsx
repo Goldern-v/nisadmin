@@ -17,10 +17,14 @@ import { DoCon } from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
 import MergeTh from "../../components/mergeTh/MergeTh";
+import createModal from "src/libs/createModal";
+import AddRecordModal from "../../modal/AddRecordModal";
 export interface Props {}
 export default observer(function 教学计划() {
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
+
+  const addRecordModal = createModal(AddRecordModal);
   const columns: ColumnProps<any>[] = [
     {
       title: "序号",
@@ -136,7 +140,9 @@ export default observer(function 教学计划() {
         >
           类型管理
         </Button>
-        <Button type="primary">添加记录</Button>
+        <Button type="primary" onClick={() => addRecordModal.show({})}>
+          添加记录
+        </Button>
       </PageHeader>
       <BaseTable
         loading={pageLoading}
@@ -161,6 +167,7 @@ export default observer(function 教学计划() {
           return { onDoubleClick: () => onDetail(record) };
         }}
       />
+      <addRecordModal.Component />
     </Wrapper>
   );
 });

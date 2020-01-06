@@ -9,80 +9,96 @@ import {
   Select,
   Row,
   Col,
-  message
+  message,
+  Steps
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
-
+import Step1 from "./stepComponent/Step1";
+import Step2 from "./stepComponent/Step2";
+import Step3 from "./stepComponent/Step3";
+import Step4 from "./stepComponent/Step4";
+import Step5 from "./stepComponent/Step5";
+const { Step } = Steps;
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => {};
 }
 
-/** 设置规则 */
-const rules: Rules = {
-  publicDate: val => !!val || "请填写发表日期"
-};
-
 export default function AddRecordModal(props: Props) {
-  const [title, setTitle] = useState("");
-
+  const [title, setTitle] = useState("添加记录");
+  const [currentStep, setCurrentStep] = useState(0);
   let { visible, onCancel } = props;
-  let refForm = React.createRef<Form>();
 
-  const onSave = async () => {
-    if (!refForm.current) return;
-    let [err, value] = await to(refForm.current.validateFields());
-    if (err) return;
+  const stepList = [
+    {
+      title: "类型选择",
+      component: <Step1 />
+    },
+    {
+      title: "基本设置",
+      component: <Step2 />
+    },
+    {
+      title: "参与人员",
+      component: <Step3 />
+    },
+    {
+      title: "上传设置",
+      component: <Step4 />
+    },
+    {
+      title: "完成",
+      component: <Step5 />
+    }
+  ];
 
-    /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
+  const nextStep = () => {
+    const current = currentStep + 1;
+    setCurrentStep(current);
   };
 
-  useLayoutEffect(() => {
-    if (refForm.current && visible) refForm!.current!.clean();
-    /** 如果是修改 */
-    if (refForm.current && visible) {
-      /** 表单数据初始化 */
-      refForm!.current!.setFields({
-        publicDate: "",
-        title: ""
-      });
-    }
-  }, [visible]);
+  const prevStep = () => {
+    const current = currentStep - 1;
+    setCurrentStep(current);
+  };
+
+  useLayoutEffect(() => {}, [visible]);
 
   return (
     <Modal
+      width={900}
       title={title}
       visible={visible}
       onCancel={onCancel}
-      onOk={onSave}
+      // onOk={onSave}
       okText="保存"
       forceRender
+      footer={
+        <div style={{ textAlign: "center" }}>
+          <Button onClick={prevStep}>上一步</Button>
+          <Button onClick={onCancel}>取消</Button>
+          <Button onClick={nextStep}>下一步</Button>
+        </div>
+      }
     >
-      <Form ref={refForm} rules={rules} labelWidth={80}>
-        <Row>
-          <Col span={24}>
-            <Form.Field label={`发表日期`} name="publicDate" required>
-              <DatePicker />
-            </Form.Field>
-          </Col>
-
-          <Col span={24}>
-            <Form.Field label={`题目`} name="title">
-              <Input />
-            </Form.Field>
-          </Col>
-        </Row>
-      </Form>
+      <Steps current={currentStep}>
+        {stepList.map(item => (
+          <Step title={item.title} />
+        ))}
+      </Steps>
+      <StepCon>
+        {stepList
+          .filter((item, index) => index == currentStep)
+          .map(item => item.component)}
+      </StepCon>
     </Modal>
   );
 }
 const Wrapper = styled.div``;
+const StepCon = styled.div`
+  margin-top: 30px;
+`;
