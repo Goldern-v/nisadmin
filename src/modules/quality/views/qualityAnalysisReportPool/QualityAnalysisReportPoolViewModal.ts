@@ -107,6 +107,7 @@ class QualityAnalysisReportViewModal {
     let currentYear: any = this.allData!.report!.year
     let currentMonth: any = this.allData!.report!.indexInType
     /** 下月 */
+    let nextMonthYear = currentMonth == 12 ? Number(currentYear + 1) : currentYear
     let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
     /** 上月 */
     let lastMonth = currentMonth == 1 ? 12 : currentMonth - 1
@@ -125,7 +126,7 @@ class QualityAnalysisReportViewModal {
 
     this.getSectionData('4')!.text = `四、${currentMonth}月各组质量问题反馈`
     this.getSectionData('6')!.text = `六、各组重点问题${currentMonth}月整改情况反馈`
-    this.getSectionData('7')!.text = `七、${currentYear}年${nextMonth}月护理质量工作重点`
+    this.getSectionData('7')!.text = `七、${nextMonthYear}年${nextMonth}月护理质量工作重点`
     for (let i = 0; i < 11; i++) {
       let target = this.allData!.detailItemList![i] || {}
       this.getSectionData(`4_${i + 1}`)!.list = target!.childrenItemList || []

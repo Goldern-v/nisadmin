@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, Input } from "antd";
+import { Button } from "antd";
 import { PageHeader, PageTitle, Place } from "src/components/common";
 import {
   DatePicker,
@@ -16,70 +16,23 @@ import { useCallback } from "src/types/react";
 import { DoCon } from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
-import MergeTh from "../../components/mergeTh/MergeTh";
 import createModal from "src/libs/createModal";
-import AddRecordModal from "../../modal/AddRecordModal";
+import AddTypeModal from "./modal/AddTypeModal";
 export interface Props {}
-export default observer(function 教学计划() {
+export default observer(function 类型管理() {
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
 
-  const addRecordModal = createModal(AddRecordModal);
+  const addTypeModal = createModal(AddTypeModal);
   const columns: ColumnProps<any>[] = [
     {
-      title: "序号",
-      render(text: string, record: any, index: number) {
-        return index + 1;
-      }
-    },
-    {
-      title: "开始时间"
-    },
-    {
-      title: "结束时间"
-    },
-    {
-      title: "类型"
-    },
-    {
-      title: "标题"
+      title: "名称"
     },
     {
       title: "教学方式"
     },
     {
-      title: () => {
-        return (
-          <MergeTh
-            mainTitle="培训对象（必修√/选修△）"
-            children={["N0", "N1", "N2", "N3", "N4", "其他"]}
-          />
-        );
-      },
-      colSpan: 6
-    },
-    {
-      title: "N1",
-      colSpan: 0
-    },
-    {
-      title: "N2",
-      colSpan: 0
-    },
-    {
-      title: "N3",
-      colSpan: 0
-    },
-    {
-      title: "N4",
-      colSpan: 0
-    },
-    {
-      title: "其他",
-      colSpan: 0
-    },
-    {
-      title: "管理人员"
+      title: "显示顺序"
     },
     {
       title: "操作",
@@ -87,7 +40,8 @@ export default observer(function 教学计划() {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={() => onDetail(record)}>查看详情</span>
+            <span>修改</span>
+            <span>删除</span>
           </DoCon>
         );
       }
@@ -100,7 +54,7 @@ export default observer(function 教学计划() {
   });
   const [total, setTotal]: any = useState(0);
   const getData = () => {
-    // setPageLoading(true);
+    setPageLoading(true);
     // qcOneService
     //   .qcSafetyCheckGetPage({
     //     ...pageOptions,
@@ -121,28 +75,19 @@ export default observer(function 教学计划() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>安全隐患排查表</PageTitle>
+        <PageTitle>类型管理</PageTitle>
         <Place />
-        <span className="label">开始时间:</span>
-        <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} />
-        <span className="label">类型:</span>
-        <Select>{/* <Select.Option>123</Select.Option> */}</Select>
-        <span className="label">状态:</span>
-        <Select>{/* <Select.Option>123</Select.Option> */}</Select>
-        <Input
-          style={{ width: 150, marginLeft: 15, marginRight: -10 }}
-          placeholder="请输入要搜索的关键字"
-        />
+
         <Button onClick={() => getData()}>查询</Button>
-        <Button>导出</Button>
         <Button
-          onClick={() => appStore.history.push("/continuingEdu/类型管理")}
+          type="primary"
+          onClick={() => {
+            addTypeModal.show();
+          }}
         >
-          类型管理
+          添加类型
         </Button>
-        <Button type="primary" onClick={() => addRecordModal.show({})}>
-          添加记录
-        </Button>
+        <Button>返回</Button>
       </PageHeader>
       <BaseTable
         loading={pageLoading}
@@ -167,7 +112,7 @@ export default observer(function 教学计划() {
           return { onDoubleClick: () => onDetail(record) };
         }}
       />
-      <addRecordModal.Component />
+      <addTypeModal.Component />
     </Wrapper>
   );
 });

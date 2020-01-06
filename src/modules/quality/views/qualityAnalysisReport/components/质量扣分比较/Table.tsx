@@ -26,7 +26,7 @@ export default function Table(props: Props) {
           <tr className='header'>
             <td />
             <td>{report.indexInType}月(分)</td>
-            <td>{report.indexInType - 1}月(分)</td>
+            <td>{report.indexInType - 1 || 12}月(分)</td>
             <td>扣分增减(分)</td>
             <td>增减百分比(分)</td>
           </tr>
@@ -41,29 +41,29 @@ export default function Table(props: Props) {
                 {item.compareScore == 0 ? (
                   '持平'
                 ) : (
-                  <React.Fragment>
-                    {item.compareScore > 0 ? (
-                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                    ) : (
-                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
-                    )}
-                    {Math.abs(Number(item.compareScore))}
-                  </React.Fragment>
-                )}
+                    <React.Fragment>
+                      {item.compareScore > 0 ? (
+                        <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                      ) : (
+                          <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                        )}
+                      {Math.abs(Number(item.compareScore))}
+                    </React.Fragment>
+                  )}
               </td>
               <td>
                 {item.compareScore == 0 ? (
                   '持平'
                 ) : (
-                  <React.Fragment>
-                    {item.compareScorePercent > 0 ? (
-                      <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                    ) : (
-                      <img src={require('./images/less.png')} alt='' className='lm-arrow' />
-                    )}
-                    {Math.abs(Number(item.compareScorePercent))}%
+                    <React.Fragment>
+                      {item.compareScorePercent > 0 ? (
+                        <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                      ) : (
+                          <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                        )}
+                      {Math.abs(Number(item.compareScorePercent))}%
                   </React.Fragment>
-                )}
+                  )}
               </td>
             </tr>
           ))}

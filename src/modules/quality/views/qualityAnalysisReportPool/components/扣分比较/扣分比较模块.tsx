@@ -17,21 +17,18 @@ export default observer(function 扣分比较模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  console.warn(report)
   let list = data ? data.list || [] : []
 
-  useEffect(() => {})
+  useEffect(() => { })
   let title = ''
 
   if (report)
     title =
       report &&
-      `（三）${moment(report.endDate).format('YYYY年')}${report.indexInType}月与${
-        report.indexInType == 1
-          ? moment(report.beginDate)
-              .subtract(1, 'year')
-              .format('YYYY年')
-          : moment(report.beginDate).format('YYYY年')
-      }${report.indexInType == 1 ? 12 : report.indexInType - 1}月质量扣分比较`
+      `（三）${report.year}年${report.indexInType}月与${
+      report.indexInType == 1
+        ? Number(report.year) - 1 : report.year}年${report.indexInType == 1 ? 12 : report.indexInType - 1}月质量扣分比较`
   return (
     <Wrapper>
       <div className='sup-title'>{title}</div>
