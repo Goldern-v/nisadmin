@@ -1,6 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`
+
 export const NavCon = styled.div`
   a{
     color: #666;
@@ -44,4 +50,15 @@ export const ButtonGroups = styled.div`
   right: 15px;
   top: 35px;
 `
-export const MainPannel = styled.div``
+export const MainPannel = styled.div`
+  flex: 1;
+  padding-top: 15px;
+`
+
+export const ActiveText = styled.span`
+  cursor: pointer;
+  color: #1db38b;
+  &:hover{
+    font-weight: bold;
+  }
+`
