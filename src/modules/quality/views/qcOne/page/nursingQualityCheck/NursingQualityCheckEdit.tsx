@@ -240,6 +240,7 @@ export default observer(function NursingQualityCheckEdit() {
             value={record.type}
             disabled={record.result === '无问题'}
             onChange={(type: any) => handleRecordChange({ ...record, type }, idx)}>
+            <Option value="">无</Option>
             {typeList.map((item: any, typeIdx: number) =>
               <Option key={typeIdx} value={item.code}>{item.name}</Option>
             )}
