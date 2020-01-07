@@ -266,6 +266,9 @@ const nightChargingReport = lazy(() =>
   )
 );
 
+//学习培训查看结果
+const StudyResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview.tsx"))
+
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/login", LoginView),
@@ -317,6 +320,11 @@ const routes: RouteItem[] = [
   setLayout(
     "/trainingExamination/:type",
     TrainingExamination,
+    layouts.MainLayout
+  ),
+  setLayout(
+    "/studyResultReview",
+    StudyResultReview,
     layouts.MainLayout
   ),
   {
