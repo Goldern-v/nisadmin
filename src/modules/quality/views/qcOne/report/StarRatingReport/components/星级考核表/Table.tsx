@@ -78,11 +78,18 @@ export default observer(function Table(props: Props) {
           {list.map((item, index) => (
             <tr key={index}>
               <td style={{ textAlign: 'center' }}>{item.empName}</td>
-              <td style={{ textAlign: 'center' }}>{formatNum(item.nursingDeduct)}</td>
-              <td style={{ textAlign: 'center' }}>{formatNum(item.workloadDeduct)}</td>
-              <td style={{ textAlign: 'center' }}>{formatNum(item.satisfactionDeduct)}</td>
-              <td>{sum(item)}</td>
-              <td style={{ textAlign: 'center' }}>{item.starClass}</td>
+              {item.noCheck ?
+                <React.Fragment>
+                  <td style={{ textAlign: 'center' }} className="headerItem">不参加考核原因</td>
+                  <td style={{ textAlign: 'center' }} colSpan={4}>{item.noCheckReason || ''}</td>
+                </React.Fragment> :
+                <React.Fragment>
+                  <td style={{ textAlign: 'center' }}>{formatNum(item.nursingDeduct)}</td>
+                  <td style={{ textAlign: 'center' }}>{formatNum(item.workloadDeduct)}</td>
+                  <td style={{ textAlign: 'center' }}>{formatNum(item.satisfactionDeduct)}</td>
+                  <td>{sum(item)}</td>
+                  <td style={{ textAlign: 'center' }}>{item.starClass}</td>
+                </React.Fragment>}
             </tr>
           ))}
         </tbody>
@@ -107,6 +114,9 @@ const Wrapper = styled.div`
         background: #f0f0f0;
       }
     }
+    td.headerItem{
+      /* font-weight: bold; */
+    }
     td {
       height: 30px;
       text-align: center;
@@ -114,6 +124,7 @@ const Wrapper = styled.div`
       font-size: 14px;
       color: #000;
       border: 1px #cccccc solid;
+      word-break: break-all;
       &.align-left{
         text-align: left;
       }

@@ -13,6 +13,7 @@ import qs from 'qs'
 const commonApi = service.commonApiService
 
 const Option = Select.Option
+const TextArea = Input.TextArea
 
 export interface Props {
   sectionId: string
@@ -72,30 +73,56 @@ export default observer(function 星级考核表弹窗(props: Props) {
     {
       title: '护理质量',
       render(text: any, record: any, index: number) {
-        return <Input
-          className={`nursingDeduct${index}`}
-          value={record.nursingDeduct}
-          onChange={(e: any) => handleNumberInput(e, record, index, 'nursingDeduct')} />
+        if (record.noCheck)
+          return <span
+            style={{
+              fontWeight: 'bold',
+              cursor: 'default'
+            }}>
+            不参加考核原因
+            </span>
+        else
+          return <Input
+            className={`nursingDeduct${index}`}
+            value={record.nursingDeduct}
+            onChange={(e: any) => handleNumberInput(e, record, index, 'nursingDeduct')} />
       },
       width: 90
     },
     {
       title: `工作量`,
       render(text: any, record: any, index: number) {
-        return <Input
-          className={`workloadDeduct${index}`}
-          value={record.workloadDeduct}
-          onChange={(e: any) => handleNumberInput(e, record, index, 'workloadDeduct')} />
+        if (record.noCheck)
+          return {
+            children: <TextArea
+              autosize={{ minRows: 1 }}
+              value={record.noCheckReason}
+              onChange={(e: any) => {
+                cloneData.list[index].noCheckReason = e.target.value
+                setData(cloneData)
+              }} />,
+            props: {
+              colSpan: 4
+            }
+          }
+        else
+          return <Input
+            className={`workloadDeduct${index}`}
+            value={record.workloadDeduct}
+            onChange={(e: any) => handleNumberInput(e, record, index, 'workloadDeduct')} />
       },
       width: 90
     },
     {
       title: `满意度`,
       render(text: any, record: any, index: number) {
-        return <Input
-          className={`satisfactionDeduct${index}`}
-          value={record.satisfactionDeduct}
-          onChange={(e: any) => handleNumberInput(e, record, index, 'satisfactionDeduct')} />
+        if (record.noCheck)
+          return { children: '', props: { colSpan: 0 } }
+        else
+          return <Input
+            className={`satisfactionDeduct${index}`}
+            value={record.satisfactionDeduct}
+            onChange={(e: any) => handleNumberInput(e, record, index, 'satisfactionDeduct')} />
       },
       width: 90
     },
@@ -104,14 +131,20 @@ export default observer(function 星级考核表弹窗(props: Props) {
       width: 90,
       align: 'center',
       render(text: any, record: any, index: number) {
-        return <span>{sum(record)}</span>
+        if (record.noCheck)
+          return { children: '', props: { colSpan: 0 } }
+        else
+          return <span>{sum(record)}</span>
       }
     },
     {
       title: `星级`,
       align: 'center',
       render(text: any, record: any, index: number) {
-        return <span>{record.starClass}</span>
+        if (record.noCheck)
+          return { children: '', props: { colSpan: 0 } }
+        else
+          return <span>{record.starClass}</span>
       },
       width: 80
     },
@@ -149,6 +182,28 @@ export default observer(function 星级考核表弹窗(props: Props) {
       starClass: '三星',
       month: search.month,
       year: search.year,
+      reportCode: "ward_star_rating",
+      wardCode: search.wardCode
+    })
+
+    setData(cloneData)
+  }
+
+  const addUncheckedItem = () => {
+    //添加不考核人员
+    cloneData.list.push({
+      id: '',
+      empName: '',
+      empNo: '',
+      indexNo: cloneData.list.length,
+      nursingDeduct: '',
+      workloadDeduct: '',
+      satisfactionDeduct: '',
+      starClass: '',
+      month: search.month,
+      year: search.year,
+      noCheck: true,
+      noCheckReason: '',
       reportCode: "ward_star_rating",
       wardCode: search.wardCode
     })
@@ -237,7 +292,18 @@ export default observer(function 星级考核表弹窗(props: Props) {
   return (
     <Wrapper>
       <div className='button-con'>
-        <Button icon='plus' size='small' onClick={addItem}>
+        <Button
+          icon='plus'
+          type="danger"
+          size='small'
+          style={{ marginRight: '5px' }}
+          onClick={addUncheckedItem}>
+          添加不考核人员
+        </Button>
+        <Button
+          icon='plus'
+          size='small'
+          onClick={addItem}>
           添加
         </Button>
       </div>
