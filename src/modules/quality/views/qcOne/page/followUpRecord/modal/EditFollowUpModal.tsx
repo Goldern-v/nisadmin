@@ -105,6 +105,7 @@ export default function EditFollowUpModal(props: Props) {
     // data.participantsList = selectedNurse.map((item: selectedNurseItem) => item.value)
     data.wardCode = authStore.selectedDeptCode;
     data.wardName = authStore.selectedDeptName;
+    setModalLoading(true)
     qcOneService
       .qcPatientVisitSaveOrUpdate(Object.assign({}, props.data || {}, data))
       .then((res: any) => {
@@ -112,6 +113,7 @@ export default function EditFollowUpModal(props: Props) {
         props.onOkCallBack && props.onOkCallBack();
         setShowDraWer(false);
         setTimeout(onCancel);
+        setModalLoading(false)
       });
   };
 
@@ -295,14 +297,18 @@ export default function EditFollowUpModal(props: Props) {
           {data && canEdit && (
             <Button
               type="danger"
+              disabled={modalLoading}
+              icon={modalLoading ? 'loading' : ''}
               onClick={() => {
                 globalModal
                   .confirm("删除确认", "你确定要删除该记录吗？")
                   .then(res => {
+                    setModalLoading(true)
                     qcOneService.qcPatientVisitDelete(data.id).then(res => {
                       message.success("删除成功");
                       props.onOkCallBack && props.onOkCallBack();
                       setShowDraWer(false);
+                      setModalLoading(false)
                       onCancel();
                     });
                   });
@@ -311,7 +317,11 @@ export default function EditFollowUpModal(props: Props) {
               删除
             </Button>
           )}
-          <Button type="primary" onClick={onSave}>
+          <Button
+            disabled={modalLoading}
+            icon={modalLoading ? 'loading' : ''}
+            type="primary"
+            onClick={onSave}>
             确认
           </Button>
         </React.Fragment>

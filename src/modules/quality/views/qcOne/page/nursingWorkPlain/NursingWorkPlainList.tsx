@@ -155,7 +155,16 @@ export default observer(function NursingWorkPlainList() {
     nursingWorkPlainService.getPage(query).then(res => {
       setLoading(false)
       if (res.data) {
-        setTableData(res.data.list)
+        let newData = res.data.list
+        //年计划排顶部
+        let target = res.data.list.find((item: any) => item.type == '3')
+        if (target) {
+          let cache = { ...target }
+          newData.splice(newData.indexOf(target), 1)
+          newData.unshift(cache)
+        }
+
+        setTableData(newData)
         setDataTotal(res.data.totalCount)
       }
     }, () => setLoading(false))
