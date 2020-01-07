@@ -31,11 +31,9 @@ export default function FileEditModal(props: Props) {
     let nameEL = document.querySelector(
       ".new-nursing-rules-add-modal .file-name"
     ) as HTMLInputElement;
-
     let fName = target.value.split("\\");
     fName = fName[fName.length - 1];
     nameEL.value = fName;
-
     let current = refForm.current;
     if (current) {
       let fileName = current.getField("fileName");
@@ -54,7 +52,6 @@ export default function FileEditModal(props: Props) {
         ".new-nursing-rules-add-modal .file-name"
       ) as HTMLInputElement;
       if (nameEL && nameEL.value) nameEL.value = "";
-
       setTimeout(() => {
         if (refForm && refForm.current)
           refForm.current.clear(() => {
@@ -65,7 +62,6 @@ export default function FileEditModal(props: Props) {
                 refForm.current.setFields({
                   fileName: params.fileName
                 });
-
                 //防止在handleFormChange中把目录字段替换为空字符
                 new Promise(resolve =>
                   setTimeout(() => resolve("ok"), 100)

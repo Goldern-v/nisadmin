@@ -109,7 +109,7 @@ export default function RightContent(props: Props) {
   const handlePreview = (record: any) => {
     console.log(record);
     PreviewModalWrapper.show({
-      url: `/crNursing/asset/deptShareFile${record.path}`,
+      url: `/crNursing/asset/userManual${record.path}`,
       name: record.fileName,
       type: record.fileType
     });
@@ -142,8 +142,9 @@ export default function RightContent(props: Props) {
 
   const columns: any = [
     {
-      key: "index",
       title: "序号",
+      dataIndex: "key",
+      key: "index",
       width: 50,
       align: "center",
       render: (text: string, record: any, index: number) => {
@@ -154,31 +155,30 @@ export default function RightContent(props: Props) {
     {
       title: "文件名称",
       dataIndex: "fileName",
-      width: 320,
       align: "left"
     },
     {
       title: "文件格式",
       dataIndex: "fileType",
-      width: 90,
+      width: 80,
       align: "center"
     },
     {
       title: "上传日期",
       dataIndex: "uploadTime",
-      width: 180,
+      width: 150,
       align: "center"
     },
     {
       title: "上传人",
       dataIndex: "empName",
-      width: 110,
+      width: 70,
       align: "center"
     },
     {
       title: "操作",
       dataIndex: "操作",
-      width: 180,
+      width: 140,
       render(text: string, record: any) {
         return (
           <DoCon>

@@ -46,7 +46,7 @@ export default function PreviewModal(props: Props) {
               textAlign: "center"
             }}
           >
-            {`.${type} `}文件不支持预览，请在app内查看
+            {`.${type} `}文件目前不支持预览
           </div>
         );
     }

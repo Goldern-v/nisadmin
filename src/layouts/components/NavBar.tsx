@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { Place } from "src/components/common";
 import { authStore, appStore } from "src/stores";
 import service from "src/services/api";
-import { Menu, Dropdown } from "src/vendors/antd";
+import { Menu, Dropdown, Tooltip } from "src/vendors/antd";
 import { navConfig, navConfigItem } from "./navConfig_hj";
 import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
@@ -169,7 +169,9 @@ export default observer(function NavBar(props: any) {
               appStore.history.push("/UserManual/Guidance");
             }}
           >
-            <SYSC />
+            <Tooltip placement="top" title="平台使用手册">
+              <SYSC />
+            </Tooltip>
           </UserManual>
         )}
         {authStore.user && authStore.user.nearImageUrl && (
@@ -276,9 +278,10 @@ const UserManual = styled.span`
   align-items: center;
   position: relative;
   svg {
+    width: 22px;
     height: 15px;
     position: absolute;
     bottom: -2px;
-    left: -23px;
+    left: -28px;
   }
 `;
