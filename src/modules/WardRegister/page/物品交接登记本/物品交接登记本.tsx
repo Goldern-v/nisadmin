@@ -92,6 +92,13 @@ export default observer(function HandoverRegister(props: Props) {
   const updateDataSource = () => {
     setDataSource([...dataSource]);
   };
+
+  const cellDisabled = (record: any) => {
+    return (
+      record.signerName && record.auditorName && !authStore.isNotANormalNurse
+    );
+  };
+
   const columns: ColumnProps<any>[] | any = [
     {
       title() {
@@ -188,7 +195,7 @@ export default observer(function HandoverRegister(props: Props) {
                       ? "checkSize-warning"
                       : ""
                   }
-                  disabled={!!record.signerName}
+                  disabled={cellDisabled(record)}
                   dataSource={(item.options || "")
                     .split(";")
                     .filter((item: any) => item)}
@@ -232,7 +239,7 @@ export default observer(function HandoverRegister(props: Props) {
           render(text: string, record: any, index: number) {
             return (
               <AutoComplete
-                disabled={!!record.signerName}
+                disabled={cellDisabled(record)}
                 dataSource={item.options ? item.options.split(";") : []}
                 defaultValue={text}
                 onChange={value => {
@@ -265,7 +272,7 @@ export default observer(function HandoverRegister(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <Input.TextArea
-            disabled={!!record.signerName}
+            disabled={cellDisabled(record)}
             autosize={true}
             defaultValue={text}
             onChange={e => {
@@ -278,7 +285,7 @@ export default observer(function HandoverRegister(props: Props) {
     },
     {
       title: "交班者签名",
-      width: 80,
+      width: 110,
       dataIndex: "signerName",
       align: "center",
       fixed: false && surplusWidth && "right",
@@ -300,7 +307,10 @@ export default observer(function HandoverRegister(props: Props) {
                 });
             }}
           >
-            {text}
+            {text +
+              (record.chiefNurseName || record.chiefNurseNo
+                ? `/${record.chiefNurseName || record.chiefNurseNo}`
+                : "")}
           </div>
         ) : (
           <DoCon>
@@ -376,54 +386,64 @@ export default observer(function HandoverRegister(props: Props) {
           </DoCon>
         );
       }
-    },
-    {
-      title: "护士长签名",
-      width: 80,
-      dataIndex: "auditorName",
-      fixed: false && surplusWidth && "right",
-      align: "center",
-      render(text: string, record: any, index: number) {
-        return text ? (
-          <div
-            className="sign-name"
-            onClick={() => {
-              globalModal
-                .confirm("接班签名取消", "你确定取消接班签名吗？")
-                .then(res => {
-                  wardRegisterService
-                    .cancelAudit(registerCode, [{ id: record.id }])
-                    .then(res => {
-                      message.success("取消接班签名成功");
-                      onSave();
-                    });
-                });
-            }}
-          >
-            {text}
-          </div>
-        ) : (
-          <DoCon>
-            <span
-              onClick={() => {
-                globalModal
-                  .confirm("接班签名确认", "你确定接班签名吗？")
-                  .then(res => {
-                    wardRegisterService
-                      .auditAll(registerCode, [{ id: record.id }])
-                      .then(res => {
-                        message.success("接班签名成功");
-                        onSave();
-                      });
-                  });
-              }}
-            >
-              签名
-            </span>
-          </DoCon>
-        );
-      }
     }
+    // {
+    //   title: "护士长签名",
+    //   width: 80,
+    //   dataIndex: "chiefNurseName",
+    //   fixed: false && surplusWidth && "right",
+    //   align: "center",
+    //   render(text: string, record: any, index: number) {
+    //     return text ? (
+    //       <div
+    //         className="sign-name"
+    //         onClick={() => {
+    //           if (authStore.isNotANormalNurse) {
+    //             globalModal
+    //               .confirm("护士长签名取消", "你确定取消护士长签名吗？")
+    //               .then(res => {
+    //                 record.chiefNurseName = null;
+    //                 record.chiefNurseNo = null;
+    //                 record.chiefNurseUpdateTime = null;
+    //                 record.modified = true
+    //                 message.success("取消护士长签名成功");
+    //                 updateDataSource()
+    //                 onSave();
+    //               });
+    //           } else {
+    //             message.warning("只有护士长才有操作权限");
+    //           }
+    //         }}
+    //       >
+    //         {text}
+    //       </div>
+    //     ) : (
+    //       <DoCon>
+    //         <span
+    //           onClick={() => {
+    //             if (authStore.isNotANormalNurse) {
+    //               globalModal
+    //                 .confirm("护士长签名确认", "你确定护士长签名吗？")
+    //                 .then(res => {
+    //                   record.chiefNurseName = authStore.user?.empName;
+    //                   record.chiefNurseNo = authStore.user?.empNo;
+    //                   record.chiefNurseUpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    //                   record.modified = true
+    //                   message.success("取消护士长签名成功");
+    //                   updateDataSource()
+    //                   onSave();
+    //                 });
+    //             } else {
+    //               message.warning("只有护士长才有操作权限");
+    //             }
+    //           }}
+    //         >
+    //           签名
+    //         </span>
+    //       </DoCon>
+    //     );
+    //   }
+    // }
   ];
 
   const onInitData = async () => {

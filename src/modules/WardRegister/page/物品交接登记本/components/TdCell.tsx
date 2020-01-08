@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button, Popover } from "antd";
+import { appStore } from "src/stores";
 export interface Props {
   children: React.ReactNode;
 }
@@ -39,7 +40,7 @@ const content = () => {
       }
     }
   `;
-  return (
+  return appStore.isDev ? (
     <Wrapper>
       <div className="top-con">
         <div className="title">张荣 登记：</div>
@@ -59,6 +60,8 @@ const content = () => {
         </div>
       </div>
     </Wrapper>
+  ) : (
+    <Wrapper />
   );
 };
 
