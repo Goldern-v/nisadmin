@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { TableHeadCon } from "src/components/BaseTable";
 import { PageTitle } from "src/components/common";
+import { appStore } from "src/stores";
 import { DatePicker, Select, Input, Button } from "src/vendors/antd";
 interface Props {
   getTitle: any;
@@ -27,7 +28,15 @@ export default observer(function Header(props: Props) {
         />
         <Button onClick={() => {}}>查询</Button>
         <Button>导出</Button>
-        <Button>类型管理</Button>
+        <Button
+          onClick={() =>
+            appStore.history.push(
+              `/continuingEdu/typeManagement?type=${getTitle}`
+            )
+          }
+        >
+          类型管理
+        </Button>
         <Button type="primary">添加记录</Button>
       </RightIcon>
     </Wrapper>

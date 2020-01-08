@@ -27,8 +27,19 @@ import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBa
 import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
 import TrainingManageHome from "./views/trainingManage/views/trainingManageHome/TrainingManageHome";
 import 教学计划 from "./views/教学计划/教学计划";
-// 继续教育
+// 院外培训继续教育
 import ContinuingEducation from "./views/outsideHospital/views/continuingEducation/ContinuingEducation";
+// 院外培训短期培训
+import ShortTermTraining from "./views/outsideHospital/views/shortTermTraining/ShortTermTraining";
+// 院外培训会议文章
+import MeetingArticle from "./views/outsideHospital/views/meetingArticle/MeetingArticle";
+// 院外培训会议交流
+import MeetingExchange from "./views/outsideHospital/views/meetingExchange/MeetingExchange";
+// 院外培训其他类培训
+import OtherTraining from "./views/outsideHospital/views/otherTraining/OtherTraining";
+// 院外培训类型管理
+import TypeManagement from "./views/outsideHospital/views/typeManagement/TypeManagement";
+
 import 类型管理 from "./views/类型管理/类型管理";
 
 const LEFT_MENU_CONFIG = [
@@ -67,8 +78,34 @@ const LEFT_MENU_CONFIG = [
     children: [
       {
         title: "继续教育",
-        path: "/continuingEdu/continuingEducation",
+        path: "/continuingEdu/继续教育",
         component: ContinuingEducation
+      },
+      {
+        title: "短期培训",
+        path: "/continuingEdu/短期培训",
+        component: ShortTermTraining
+      },
+      {
+        title: "会议文章",
+        path: "/continuingEdu/会议文章",
+        component: MeetingArticle
+      },
+      {
+        title: "会议交流",
+        path: "/continuingEdu/会议交流",
+        component: MeetingExchange
+      },
+      {
+        title: "其他类培训",
+        path: "/continuingEdu/其他类培训",
+        component: OtherTraining
+      },
+      {
+        title: "类型管理",
+        path: "/continuingEdu/typeManagement",
+        component: TypeManagement,
+        hide: true
       }
     ]
   },
