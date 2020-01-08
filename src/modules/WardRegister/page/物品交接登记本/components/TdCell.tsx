@@ -40,7 +40,7 @@ const content = () => {
       }
     }
   `;
-  return appStore.isDev ? (
+  return (
     <Wrapper>
       <div className="top-con">
         <div className="title">张荣 登记：</div>
@@ -60,13 +60,12 @@ const content = () => {
         </div>
       </div>
     </Wrapper>
-  ) : (
-    <Wrapper />
   );
 };
 
 /** 中间层，处理 */
 export default function TdCell(props: Props) {
+  return <Wrapper>{props.children}</Wrapper>;
   return (
     <Popover
       placement="rightTop"
