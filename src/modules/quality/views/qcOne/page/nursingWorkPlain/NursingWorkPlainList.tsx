@@ -26,6 +26,7 @@ const Option = Select.Option
 export default observer(function NursingWorkPlainList() {
   //是否护士长
   const auth = authStore.isRoleManage
+  const canEdit = auth ? true : false
 
   const [query, setQuery] = useState({
     wardCode: '',
@@ -115,19 +116,23 @@ export default observer(function NursingWorkPlainList() {
       title: '创建时间',
       width: 130
     },
-  ]
-
-  if (auth) columns.push({
-    key: 'operate',
-    title: '操作',
-    width: 120,
-    render: (text: string, record: any) => {
-      return <DoCon className="operate-group">
-        <span className="edit" onClick={() => handleEdit(record)}>编辑</span>
-        <span className="delete" onClick={() => handleDelete(record)}>删除</span>
-      </DoCon>
+    {
+      key: 'operate',
+      title: '操作',
+      width: 120,
+      render: (text: string, record: any) => {
+        return <DoCon className="operate-group">
+          {auth && <React.Fragment>
+            <span className="edit" onClick={() => handleEdit(record)}>编辑</span>
+            <span className="delete" onClick={() => handleDelete(record)}>删除</span>
+          </React.Fragment>}
+          {!auth && <React.Fragment>
+            <span className="edit" onClick={() => handleEdit(record)}>预览</span>
+          </React.Fragment>}
+        </DoCon>
+      }
     }
-  })
+  ]
 
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current })
@@ -379,6 +384,11 @@ export default observer(function NursingWorkPlainList() {
     </HeaderCon>
     <TableWrapper>
       <BaseTable
+        onRow={record => {
+          return {
+            onDoubleClick: () => handleEdit(record),
+          };
+        }}
         surplusHeight={225}
         dataSource={tableData}
         loading={loading}
@@ -393,6 +403,7 @@ export default observer(function NursingWorkPlainList() {
       />
     </TableWrapper>
     <WorkPlainEditModal
+      canEdit={canEdit}
       onOk={handleOk}
       title={editParmas.content ? "修改计划" : "添加计划"}
       visible={editVisible}
