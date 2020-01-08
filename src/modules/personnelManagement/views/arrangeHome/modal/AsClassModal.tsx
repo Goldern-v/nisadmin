@@ -124,7 +124,7 @@ export default observer(function AsClassModal(props: Props) {
             return (
               <DoCon>
                 <span onClick={() => clean(record)}>清除</span>
-                <span onClick={() => enter(record)}>覆盖</span>
+                {/* <span onClick={() => enter(record)}>覆盖</span> */}
               </DoCon>
             );
           } else {

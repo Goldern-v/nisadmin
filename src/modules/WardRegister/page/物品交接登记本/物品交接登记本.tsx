@@ -31,6 +31,7 @@ import { codeAdapter } from "../../utils/codeAdapter";
 import TextArea from "antd/lib/input/TextArea";
 import { fileDownload } from "src/utils/file/file";
 import { createContextMenu } from "src/modules/personnelManagement/views/arrangeHome/components/arrangeSheet/ContextMenu";
+import TdCell from "./components/TdCell";
 export interface Props {
   payload: any;
 }
@@ -76,8 +77,8 @@ export default observer(function HandoverRegister(props: Props) {
     contextMenu.show(
       [
         {
-          // icon: require("../../images/追加排班.png"),
-          label: "追加排班",
+          icon: require("../../images/提醒@2x.png"),
+          label: "添加提醒",
           type: "text",
           onClick: () => {}
         }
@@ -180,33 +181,36 @@ export default observer(function HandoverRegister(props: Props) {
           className: "input-cell",
           render(text: string, record: any, index: number) {
             return (
-              <AutoComplete
-                className={
-                  text != item.checkSize && text != "√"
-                    ? "checkSize-warning"
-                    : ""
-                }
-                disabled={!!record.signerName}
-                dataSource={(item.options || "")
-                  .split(";")
-                  .filter((item: any) => item)}
-                defaultValue={text}
-                onChange={value => {
-                  record[item.itemCode] = value;
-                }}
-                onBlur={() => updateDataSource()}
-                onSelect={() => updateDataSource()}
-              >
-                <TextArea
-                  autosize
-                  style={{
-                    lineHeight: 1.2,
-                    overflow: "hidden",
-                    padding: "9px 2px",
-                    textAlign: "center"
+              <TdCell>
+                <AutoComplete
+                  className={
+                    text != item.checkSize && text != "√"
+                      ? "checkSize-warning"
+                      : ""
+                  }
+                  disabled={!!record.signerName}
+                  dataSource={(item.options || "")
+                    .split(";")
+                    .filter((item: any) => item)}
+                  defaultValue={text}
+                  onChange={value => {
+                    record[item.itemCode] = value;
+                    record.modified = true;
                   }}
-                />
-              </AutoComplete>
+                  onBlur={() => updateDataSource()}
+                  onSelect={() => updateDataSource()}
+                >
+                  <TextArea
+                    autosize
+                    style={{
+                      lineHeight: 1.2,
+                      overflow: "hidden",
+                      padding: "9px 2px",
+                      textAlign: "center"
+                    }}
+                  />
+                </AutoComplete>
+              </TdCell>
             );
           }
         };
@@ -233,6 +237,7 @@ export default observer(function HandoverRegister(props: Props) {
                 defaultValue={text}
                 onChange={value => {
                   record[item.itemCode] = value;
+                  record.modified = true;
                 }}
                 onBlur={() => updateDataSource()}
               >
@@ -371,6 +376,53 @@ export default observer(function HandoverRegister(props: Props) {
           </DoCon>
         );
       }
+    },
+    {
+      title: "护士长签名",
+      width: 80,
+      dataIndex: "auditorName",
+      fixed: false && surplusWidth && "right",
+      align: "center",
+      render(text: string, record: any, index: number) {
+        return text ? (
+          <div
+            className="sign-name"
+            onClick={() => {
+              globalModal
+                .confirm("接班签名取消", "你确定取消接班签名吗？")
+                .then(res => {
+                  wardRegisterService
+                    .cancelAudit(registerCode, [{ id: record.id }])
+                    .then(res => {
+                      message.success("取消接班签名成功");
+                      onSave();
+                    });
+                });
+            }}
+          >
+            {text}
+          </div>
+        ) : (
+          <DoCon>
+            <span
+              onClick={() => {
+                globalModal
+                  .confirm("接班签名确认", "你确定接班签名吗？")
+                  .then(res => {
+                    wardRegisterService
+                      .auditAll(registerCode, [{ id: record.id }])
+                      .then(res => {
+                        message.success("接班签名成功");
+                        onSave();
+                      });
+                  });
+              }}
+            >
+              签名
+            </span>
+          </DoCon>
+        );
+      }
     }
   ];
 
@@ -420,7 +472,12 @@ export default observer(function HandoverRegister(props: Props) {
       .then(res => {
         console.log(res, "res");
         setTotal(res.data.itemDataPage.totalCount);
-        setDataSource(res.data.itemDataPage.list);
+        setDataSource(
+          res.data.itemDataPage.list.map((item: any) => ({
+            ...item,
+            modified: false
+          }))
+        );
         setItemConfigList(res.data.itemConfigList);
         setRangeConfigList(res.data.rangeConfigList);
         setPageLoading(false);
@@ -447,7 +504,12 @@ export default observer(function HandoverRegister(props: Props) {
 
   const onSave = () => {
     wardRegisterService
-      .saveAndSignAll(registerCode, selectedBlockId, dataSource, false)
+      .saveAndSignAll(
+        registerCode,
+        selectedBlockId,
+        dataSource.filter((item: any) => item.modified),
+        false
+      )
       .then(res => {
         message.success("保存成功");
         getPage();

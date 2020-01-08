@@ -31,7 +31,7 @@ export default observer(function SetRange(props: Props) {
   const [dataSource, setDataSource]: any[] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [moveAble, setMoveAble] = useState(false);
-  const [rangeDictMap, setRangeDictMap]: any = useState({});
+  const [rangeDictMap, setRangeDictMap]: any = useState([]);
   const { blockId, registerCode, onOkCallBack } = props;
   const columns: ColumnProps<any>[] = [
     {
@@ -71,7 +71,7 @@ export default observer(function SetRange(props: Props) {
             value={text ? text.split(";") : []}
             tokenSeparators={[";"]}
           >
-            {(rangeDictMap[record.itemCode] || []).map((item: any) => {
+            {(rangeDictMap || []).map((item: any) => {
               return <Select.Option key={item.id}>{item.name}</Select.Option>;
             })}
           </Select>
@@ -131,8 +131,11 @@ export default observer(function SetRange(props: Props) {
       setPageLoading(false);
     });
     wardRegisterService.getArrangeMenu().then(res => {
-      let map = _.groupBy(res.data, (item: any) => item.shiftType);
-      console.log(map, "map");
+      // let map = _.groupBy(res.data, (item: any) => item.shiftType);
+      let map = res.data.filter(
+        (item: any) => !(item.name.includes("休") || item.name.includes("假"))
+      );
+      // console.log(map, "map");
       setRangeDictMap(map);
     });
   };
