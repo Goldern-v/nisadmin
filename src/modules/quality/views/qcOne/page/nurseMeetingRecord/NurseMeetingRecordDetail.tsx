@@ -231,15 +231,21 @@ export default observer(function NurseMeetingRecordDetail() {
           </MessageBox>
           <div className="default-pannel">
             <div className="title">一、会议传达</div>
-            <div className="content">{nurseMeeting.meetingConveyed}</div>
+            <div className="content">
+              <pre>{nurseMeeting.meetingConveyed}</pre>
+            </div>
           </div>
           <div className="default-pannel">
             <div className="title">二、工作中问题及整改</div>
-            <div className="content">{nurseMeeting.problemRectification}</div>
+            <div className="content">
+              <pre>{nurseMeeting.problemRectification}</pre>
+            </div>
           </div>
           <div className="default-pannel">
             <div className="title">三、护士发言</div>
-            <div className="content">{nurseMeeting.nurseStatement}</div>
+            <div className="content">
+              <pre>{nurseMeeting.nurseStatement}</pre>
+            </div>
           </div>
           <div className="default-pannel">
             <div className="title">四、附件上传</div>
@@ -336,6 +342,11 @@ const Wrapper = styled.div`
       overflow: auto;
       margin-bottom: 30px;
       word-break: break-all;
+      pre{
+        word-break: break-all;
+        white-space: pre-wrap;
+        margin: 0;
+      }
       .img-view-item{
         cursor: pointer;
         width: 100px;

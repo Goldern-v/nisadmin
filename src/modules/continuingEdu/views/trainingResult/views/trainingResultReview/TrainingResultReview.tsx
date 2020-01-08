@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Checkbox, message, Modal } from 'antd'
+import { Button, Checkbox, message } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   Wrapper,
@@ -13,7 +13,7 @@ import {
   ActiveText,
 } from './../../components/common'
 import createModal from "src/libs/createModal";
-import ScoreConfirmModal from './components/ScoreConfirmModal'
+import ScoreConfirmModal from './../../components/ScoreConfirmModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -77,21 +77,21 @@ export default observer(function TrainingResultReview() {
       align: 'center',
     },
     {
-      dataIndex: 'status',
-      title: '学习情况',
-      align: 'center',
-      width: 60,
-      render: (status: string, record: any) => {
-        return <span style={{ color: 'red' }}>未完成</span>
-      }
-    },
-    {
-      dataIndex: 'completeDate',
-      title: '完成时间',
+      dataIndex: 'signTime',
+      title: '签到',
       align: 'center',
       width: 180,
       render: (status: string, record: any) =>
         moment().format('YYYY-MM-DD HH:mm:ss')
+    },
+    {
+      dataIndex: 'available',
+      title: '成绩有效',
+      align: 'center',
+      width: 60,
+      render: (status: string, record: any) => {
+        return <span style={{ color: 'red' }}>无效</span>
+      }
     },
     {
       dataIndex: 'score',
@@ -123,17 +123,25 @@ export default observer(function TrainingResultReview() {
   }
 
   const getData = (reqParams: any = query) => {
+    setLoading(true)
+    setSelectedRowKeys([])
+    setTimeout(() => setLoading(false), 1000)
     console.log(query)
   }
 
   const handleScoreAvailable = () => {
+    if (loading) return
+
     if (selectedRowKeys.length <= 0) {
       message.warning('未勾选条目')
       return
     }
 
     scorceConfirm.show({
-      onOkCallBack: getData,
+      onOkCallBack: () => {
+        message.success(`选中人员（共${selectedRowKeys.length}人）的成绩修改成功`)
+        getData()
+      },
       empNoList: selectedRowKeys
     })
   }
@@ -150,7 +158,7 @@ export default observer(function TrainingResultReview() {
         <Link to="/home">一级目录</Link>
         <span> > </span>
         <Link to="/home">二级目录</Link>
-        <span> > 培训计划</span>
+        <span> > 查看结果</span>
       </NavCon>
       <MainTitle>{title}</MainTitle>
       <SubContent>
@@ -159,7 +167,7 @@ export default observer(function TrainingResultReview() {
           {moment().format('YYYY-MM-DD')}
         </span>
         <span className="label">类型:</span>
-        <span className="content">教学计划（学习）</span>
+        <span className="content">理论培训（培训）</span>
         <span className="label"> 参与人员:</span>
         <span className="content">35人</span>
       </SubContent>
@@ -206,6 +214,7 @@ export default observer(function TrainingResultReview() {
                 return false
               return true
             })()}
+            disabled={loading}
             onChange={(e: any) => {
               let checked = e.target.checked
               if (checked)

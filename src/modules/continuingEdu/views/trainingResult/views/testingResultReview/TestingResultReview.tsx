@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, Checkbox, message } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   Wrapper,
@@ -10,18 +10,26 @@ import {
   SubContent,
   ButtonGroups,
   MainPannel,
+  ActiveText,
 } from './../../components/common'
+import createModal from "src/libs/createModal";
+
+import AnswerSheetModal from './components/AnswerSheetModal'
+import ScoreConfirmModal from './../../components/ScoreConfirmModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
+
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 export interface Props { }
 
-//查看学习结果
-export default observer(function StudyResultReview() {
+//查看考试结果
+export default observer(function TestingResultReview() {
   const { history } = appStore
+  const scorceConfirm = createModal(ScoreConfirmModal)
+  const answerSheet = createModal(AnswerSheetModal)
   const [query, setQuery] = useState({
     pianqv: '',
     bingqv: '',
@@ -31,9 +39,15 @@ export default observer(function StudyResultReview() {
     pageSize: 10,
   } as any)
 
-  const [tableData, setTableData] = useState([{}] as any[])
+  const [tableData, setTableData] = useState([
+    { empName: '测试1', empNo: 'H0001' },
+    { empName: '测试2', empNo: 'H0002' },
+    { empName: '测试3', empNo: 'H0003' },
+    { empName: '测试4', empNo: 'H0004' },
+  ] as any[])
   const [dataTotal, setDataTotal] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
   const title = '2020年新职工培训教学计划'
 
   const columns: ColumnProps<any>[] = [
@@ -65,24 +79,36 @@ export default observer(function StudyResultReview() {
       dataIndex: 'bingqv',
       title: '病区',
       align: 'center',
-      width: 120,
     },
     {
-      dataIndex: 'status',
-      title: '学习情况',
+      dataIndex: 'available',
+      title: '成绩有效',
       align: 'center',
       width: 60,
       render: (status: string, record: any) => {
-        return <span style={{ color: 'red' }}>未完成</span>
+        return <span style={{ color: 'red' }}>无效</span>
       }
     },
     {
-      dataIndex: 'completeDate',
-      title: '完成时间',
+      dataIndex: 'finalTestingScore',
+      title: '最终成绩',
       align: 'center',
-      width: 100,
+      width: 60,
+    },
+    {
+      dataIndex: 'awnserTime',
+      title: '答题时间',
+      align: 'center',
+      width: 180,
       render: (status: string, record: any) =>
         moment().format('YYYY-MM-DD HH:mm:ss')
+    },
+    {
+      dataIndex: 'publish',
+      title: '发布成绩',
+      align: 'center',
+      width: 60,
+      render: (status: string, record: any) => '自动'
     },
     {
       dataIndex: 'score',
@@ -94,8 +120,18 @@ export default observer(function StudyResultReview() {
       dataIndex: 'studyTime',
       title: '学时',
       align: 'center',
-      width: 50,
+      width: 100,
     },
+    {
+      dataIndex: 'oparate',
+      title: '操作',
+      width: 100,
+      render: (status: string, record: any) => {
+        return <DoCon>
+          <span onClick={() => handleAnwserSheetReview(record)}>查看答卷</span>
+        </DoCon>
+      }
+    }
   ]
 
   const handleDetail = (record: any) => {
@@ -108,8 +144,41 @@ export default observer(function StudyResultReview() {
     setQuery({ ...query, pageSize, pageIndex: 1 })
   }
 
+  const handleRowSelect = (rowKeys: string[] | number[]) => {
+    console.log(rowKeys)
+    setSelectedRowKeys(rowKeys)
+  }
+
   const getData = (reqParams: any = query) => {
+    setLoading(true)
+    setSelectedRowKeys([])
+    setTimeout(() => setLoading(false), 1000)
     console.log(query)
+  }
+
+  const handleScoreAvailable = () => {
+    if (loading) return
+
+    if (selectedRowKeys.length <= 0) {
+      message.warning('未勾选条目')
+      return
+    }
+
+    scorceConfirm.show({
+      onOkCallBack: () => {
+        message.success(`选中人员（共${selectedRowKeys.length}人）的成绩修改成功`)
+        getData()
+      },
+      empNoList: selectedRowKeys
+    })
+  }
+
+  const handleAnwserSheetReview = (record: any) => {
+    answerSheet.show({
+      onOkCallBack: () => {
+        console.log('ok')
+      }
+    })
   }
 
   useEffect(() => {
@@ -133,7 +202,11 @@ export default observer(function StudyResultReview() {
           {moment().format('YYYY-MM-DD')}
         </span>
         <span className="label">类型:</span>
-        <span className="content">教学计划（学习）</span>
+        <span className="content">理论考核（考试）</span>
+        <span className="label">总成绩:</span>
+        <span className="content">100</span>
+        <span className="label">及格分数线:</span>
+        <span className="content">60</span>
         <span className="label"> 参与人员:</span>
         <span className="content">35人</span>
       </SubContent>
@@ -149,7 +222,11 @@ export default observer(function StudyResultReview() {
           query={query} />
         <BaseTable
           loading={loading}
-          type={['index']}
+          rowSelection={{
+            selectedRowKeys,
+            onChange: handleRowSelect
+          }}
+          rowKey='empNo'
           surplusWidth={200}
           surplusHeight={315}
           dataSource={tableData}
@@ -167,12 +244,38 @@ export default observer(function StudyResultReview() {
           }}
           columns={columns}
         />
+        <SelectionOperate>
+          <Checkbox
+            indeterminate={(() => {
+              if (selectedRowKeys.length <= 0)
+                return false
+              if (selectedRowKeys.length >= tableData.length)
+                return false
+              return true
+            })()}
+            disabled={loading}
+            onChange={(e: any) => {
+              let checked = e.target.checked
+              if (checked)
+                setSelectedRowKeys(tableData.map((item: any) => item.empNo))
+              else
+                setSelectedRowKeys([])
+            }}
+            checked={selectedRowKeys.length >= tableData.length}>
+            全选
+          </Checkbox>
+          <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
+          <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
+        </SelectionOperate>
       </TableWrapper>
     </MainPannel>
+    <scorceConfirm.Component />
+    <answerSheet.Component />
   </Wrapper>
 })
 
 const TableWrapper = styled(TabledCon)`
+  position: relative;
   td{
     word-break: break-all;
   }
@@ -184,5 +287,20 @@ const TableWrapper = styled(TabledCon)`
   }
   #baseTable{
     padding: 10px 15px;
+    .ant-table-column-title{
+      .ant-table-selection{
+        display: none;
+      }
+    }
+  }
+`
+
+const SelectionOperate = styled.div`
+  position: absolute;
+  bottom: 15px;
+  left: 38px;
+  /* font-size: 12px; */
+  span{
+    vertical-align: middle;
   }
 `

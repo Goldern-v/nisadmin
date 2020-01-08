@@ -17,6 +17,7 @@ export default function ScoreConfirmModal(props: Props) {
   })
 
   const handleOK = () => {
+    onCancel()
     onOkCallBack && onOkCallBack()
   }
 
@@ -34,15 +35,22 @@ export default function ScoreConfirmModal(props: Props) {
     onOk={handleOK}
     onCancel={onCancel}
     centered
+    width={400}
     title="修改成绩有效">
     <Wrapper>
       <div>你需要修改选中人员（共{empNoList && empNoList.length}人）的成绩为有效或无效吗？</div>
       <div>
         <Radio.Group
+          style={{ width: '100%' }}
           value={params.available}
-          onChange={(val) => console.log(val)}>
-          <Radio value="1">有效</Radio>
-          <Radio value="0">无效</Radio>
+          onChange={(e) =>
+            setParams({ ...params, available: e.target.value })}>
+          <span style={{ width: '50%', display: 'inline-block', textAlign: 'center' }}>
+            <Radio value="1">有效</Radio>
+          </span>
+          <span style={{ width: '50%', display: 'inline-block', textAlign: 'center' }}>
+            <Radio value="0" style={{ marginLeft: '-70px' }}>无效</Radio>
+          </span>
         </Radio.Group>
       </div>
       <div>
@@ -53,10 +61,14 @@ export default function ScoreConfirmModal(props: Props) {
           onChange={(e: any) =>
             setParams({ ...params, reason: e.target.value })} />
       </div>
+      <div>注：无效成绩将不作为今后的结果统计</div>
     </Wrapper>
   </Modal>
 }
 
 const Wrapper = styled.div`
   font-size: 14px;
+  &>div{
+    margin-bottom: 10px;
+  }
 `
