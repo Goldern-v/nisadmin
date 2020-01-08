@@ -12,6 +12,8 @@ import {
   MainPannel,
   ActiveText,
 } from './../../components/common'
+import createModal from "src/libs/createModal";
+import ScoreConfirmModal from './components/ScoreConfirmModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -23,6 +25,7 @@ export interface Props { }
 //查看培训结果
 export default observer(function TrainingResultReview() {
   const { history } = appStore
+  const scorceConfirm = createModal(ScoreConfirmModal)
   const [query, setQuery] = useState({
     pianqv: '',
     bingqv: '',
@@ -129,17 +132,9 @@ export default observer(function TrainingResultReview() {
       return
     }
 
-    const content = <div>
-      <div>你需要修改选中人员（共2人）的成绩为有效或无效吗？</div>
-    </div>
-
-    Modal.confirm({
-      title: '修改成绩有效',
-      centered: true,
-      content,
-      onOk: () => {
-
-      }
+    scorceConfirm.show({
+      onOkCallBack: getData,
+      empNoList: selectedRowKeys
     })
   }
 
@@ -226,6 +221,7 @@ export default observer(function TrainingResultReview() {
         </SelectionOperate>
       </TableWrapper>
     </MainPannel>
+    <scorceConfirm.Component />
   </Wrapper>
 })
 
