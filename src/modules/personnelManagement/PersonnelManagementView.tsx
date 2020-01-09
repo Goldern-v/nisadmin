@@ -19,6 +19,7 @@ import ArrangStatistics from "./views/arrangeHome/page/arrangStatistics/ArrangSt
 import ExpectedRecord from "./views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "./views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import NightHoursStatistics from "./views/arrangeHome/page/nightHoursStatistics/NightHoursStatistics";
+import StandardTime from "./views/arrangeHome/page/StandardTime/StandardTime";
 export interface Props {}
 
 export default function PersonnelManagementView() {
@@ -83,6 +84,12 @@ export default function PersonnelManagementView() {
           path: "/personnelManagement/balanceInit",
           component: BalanceInit,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+        },
+        {
+          title: "标准工时设置",
+          path: "/personnelManagement/standardTime",
+          component: StandardTime,
+          hide:  appStore.HOSPITAL_ID != "wh" || !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
         },
         {
           title: "加减班列表查询",

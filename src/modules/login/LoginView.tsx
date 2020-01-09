@@ -1,55 +1,60 @@
 // import * as React from 'react'
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
-import styled from 'styled-components'
-import { RouteComponentProps } from 'react-router'
-import loginViewModel from './LoginViewModel'
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import styled from "styled-components";
+import { RouteComponentProps } from "react-router";
+import loginViewModel from "./LoginViewModel";
 
-import service from 'src/services/api'
-import { appStore } from 'src/stores'
-import { Button } from 'src/vendors/antd'
+import service from "src/services/api";
+import { appStore } from "src/stores";
+import { Button } from "src/vendors/antd";
 
 export interface Props extends RouteComponentProps {}
 
 export default function LoginView() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [loginLoading, setLoginLoading] = useState(false)
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [isSaveUserName, setIsSaveUserName] = useState(false);
+  let userRef: any = useRef<HTMLInputElement>();
+  let passwordRef: any = useRef<HTMLInputElement>();
 
-  let userRef: any = useRef<HTMLInputElement>()
-  let passwordRef: any = useRef<HTMLInputElement>()
-
-  useEffect(() => {})
+  useEffect(() => {});
   useLayoutEffect(() => {
-    userRef.current.focus()
-    userRef.current.select()
-  }, [])
+    userRef.current.focus();
+    userRef.current.select();
+    if (localStorage.userNameCache) {
+      setUsername(localStorage.userNameCache || "");
+    }
+  }, []);
   function checkClick() {
-    // e.target.style.color = '#3FB593'
+    setIsSaveUserName(!isSaveUserName);
   }
   function login() {
-    setLoginLoading(true)
-    console.log(
-      service.authApiService
-        .login(username, password)
-        .then(() => {
-          setLoginLoading(false)
-        })
-        .catch(() => {
-          setLoginLoading(false)
-        })
-    )
+    setLoginLoading(true);
+
+    service.authApiService
+      .login(username, password)
+      .then(() => {
+        if (isSaveUserName) {
+          localStorage.userNameCache = username;
+        }
+        setLoginLoading(false);
+      })
+      .catch(() => {
+        setLoginLoading(false);
+      });
   }
 
   const userEnter = (e: any) => {
     if (e.keyCode === 13) {
-      passwordRef.current.focus()
+      passwordRef.current.focus();
     }
-  }
+  };
   const passwordEnter = (e: any) => {
     if (e.keyCode === 13) {
-      login()
+      login();
     }
-  }
+  };
   return (
     <Wrapper>
       <BgImg>
@@ -58,46 +63,59 @@ export default function LoginView() {
         //   handleKeyUp(e)
         // }}
         >
-          <img src={appStore.HOSPITAL_LOGO} alt='logo' className='BoxLogin' />
-          <h1 className='Title'>护理管理系统</h1>
+          <img src={appStore.HOSPITAL_LOGO} alt="logo" className="BoxLogin" />
+          <h1 className="Title">护理管理系统</h1>
 
-          <div className='TextItem'>
-            <div className='iconfont NameIcon'>&#xe648;</div>
+          <div className="TextItem">
+            <div className="iconfont NameIcon">&#xe648;</div>
+
             <input
-              onChange={(e) => setUsername(e.target.value)}
-              type='text'
-              placeholder='用户名'
+              onChange={e => setUsername(e.target.value)}
+              type="text"
+              placeholder="用户名"
               onKeyDown={userEnter}
+              value={username}
               ref={userRef}
             />
           </div>
-          <div style={{ height: '2px' }} />
-          <div className='TextItem'>
-            <div className='iconfont NameIcon'>&#xe6cb;</div>
+          <div style={{ height: "2px" }} />
+          <div className="TextItem">
+            <div className="iconfont NameIcon">&#xe6cb;</div>
             <input
-              onChange={(e) => setPassword(e.target.value)}
-              type='password'
-              placeholder='密码'
+              onChange={e => setPassword(e.target.value)}
+              type="password"
+              placeholder="密码"
               ref={passwordRef}
               onKeyDown={passwordEnter}
             />
           </div>
 
-          <div className='CheckItem' onClick={checkClick}>
-            <input type='checkbox' id='rememberCheckbox' />
-            <label htmlFor='rememberCheckbox'>记住账号</label>
+          <div className="CheckItem" onClick={checkClick}>
+            <input
+              type="checkbox"
+              onChange={() => {}}
+              checked={isSaveUserName}
+            />
+            <label>记住账号</label>
           </div>
-          <Button type='primary' onClick={login} block loading={loginLoading} style={{ marginTop: 20, height: 36 }}>
+          <Button
+            type="primary"
+            onClick={login}
+            block
+            loading={loginLoading}
+            style={{ marginTop: 20, height: 36 }}
+          >
             登陆系统
           </Button>
         </BoxInput>
       </BgImg>
       <BottomContent>
-        广州宸瑞软件科技有限公司 http://www.cr-health.com 版权所有©2013-{new Date().getFullYear()}，All rights reseved.
-        关于宸瑞 | 关于智慧护理 | 联系客服
+        广州宸瑞软件科技有限公司 http://www.cr-health.com 版权所有©2013-
+        {new Date().getFullYear()}，All rights reseved. 关于宸瑞 | 关于智慧护理
+        | 联系客服
       </BottomContent>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
@@ -109,18 +127,18 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100vw;
   background-color: #57bb96;
-`
+`;
 const BgImg = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   width: 975px;
   height: 414px;
-  background-image: url(${require('./img/background.png')});
+  background-image: url(${require("./img/background.png")});
   background-size: 100% 100%;
   transform: translate(-50%, -50%);
   box-sizing: border-box;
-`
+`;
 const BottomContent = styled.pre`
   /* position: relative;
   top: 580px;
@@ -133,7 +151,7 @@ const BottomContent = styled.pre`
   font-size: 12px;
   color: #eef8f2;
   overflow: hidden;
-`
+`;
 const BoxInput = styled.div`
   position: fixed;
   bottom: 100px;
@@ -161,7 +179,7 @@ const BoxInput = styled.div`
       z-index: 2;
     }
   }
-  input[type='text'] {
+  input[type="text"] {
     position: relative;
     padding-left: 30px;
     background: #fff;
@@ -173,7 +191,7 @@ const BoxInput = styled.div`
     outline: none;
     transition: box-shadow 0.2s;
   }
-  input[type='password'] {
+  input[type="password"] {
     position: relative;
     padding-left: 30px;
     background: #fff;
@@ -185,14 +203,14 @@ const BoxInput = styled.div`
     outline: none;
     transition: box-shadow 0.2s;
   }
-  input[type='text']:hover {
+  input[type="text"]:hover {
     box-shadow: 0 0 0 1px #4fb390;
   }
-  input[type='password']:hover {
+  input[type="password"]:hover {
     box-shadow: 0 0 0 1px #4fb390;
   }
-  input[type='text']:focus,
-  input[type='password']:focus {
+  input[type="text"]:focus,
+  input[type="password"]:focus {
     z-index: 1;
     box-shadow: 0 0 0 1px #4fb390;
   }
@@ -205,7 +223,7 @@ const BoxInput = styled.div`
     label {
       cursor: pointer;
     }
-    input[type='checkbox'] {
+    input[type="checkbox"] {
       display: inline-block;
       position: absolute;
       top: 4px;
@@ -219,13 +237,13 @@ const BoxInput = styled.div`
       background-color: #fff;
       cursor: pointer;
     }
-    input[type='checkbox']:hover {
+    input[type="checkbox"]:hover {
       background-color: #15a57b;
       border: 1px solid #15a57b;
     }
-    input[type='checkbox']:after {
+    input[type="checkbox"]:after {
       box-sizing: content-box;
-      content: '';
+      content: "";
       border: 1px solid #fff;
       border-left: 0;
       border-top: 0;
@@ -262,4 +280,4 @@ const BoxInput = styled.div`
   button:active {
     background-color: #15a57b;
   } */
-`
+`;

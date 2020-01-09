@@ -20,6 +20,8 @@ import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { printModal } from "../viewModal/PrintModal";
 import service from "src/services/api";
 import { DictItem } from "src/services/api/CommonApiService";
+import createModal from "src/libs/createModal";
+import ShowStandardTimeModal from "../modal/ShowStandardTimeModal";
 
 export interface Props {}
 
@@ -37,6 +39,8 @@ export default observer(function SelectCon() {
     }
   });
   const [deptCode, setDeptCode] = useState();
+
+  const showStandardTimeModal = createModal(ShowStandardTimeModal);
 
   /** 日期*/
   // 获取星期一
@@ -325,6 +329,16 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
+        {appStore.HOSPITAL_ID == "wh" && (
+          <div className="item">
+            <Button
+              className="item"
+              onClick={() => showStandardTimeModal.show()}
+            >
+              标准工时
+            </Button>
+          </div>
+        )}
 
         {appStore.HOSPITAL_ID == "hj" && (
           <div className="item">
@@ -349,6 +363,7 @@ export default observer(function SelectCon() {
         <span> | </span>
         <span onClick={() => toPath('/personnelManagement/mealSetting')}>排班套餐设置</span>
       </RightIcon> */}
+      <showStandardTimeModal.Component />
     </Wrapper>
   );
 });

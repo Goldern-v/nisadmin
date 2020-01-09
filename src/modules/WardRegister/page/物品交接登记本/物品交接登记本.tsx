@@ -22,6 +22,7 @@ import { PageHeader, Place } from "src/components/common";
 import DeptSelect from "src/components/DeptSelect";
 import createModal from "src/libs/createModal";
 import SettingModal from "./modal/SettingModal";
+import AddMessageModal from "./modal/AddMessageModal";
 import { wardLogService } from "src/modules/wardLog/services/WardLogService";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import { useLayoutEffect } from "src/types/react";
@@ -32,14 +33,16 @@ import TextArea from "antd/lib/input/TextArea";
 import { fileDownload } from "src/utils/file/file";
 import { createContextMenu } from "src/modules/personnelManagement/views/arrangeHome/components/arrangeSheet/ContextMenu";
 import TdCell from "./components/TdCell";
+
 export interface Props {
   payload: any;
 }
 
 const throttler = throttle();
-
 let contextMenu = createContextMenu();
 const MemoContextMenu = React.memo(contextMenu.Component);
+const addMessageModal = createModal(AddMessageModal);
+const MemoAddMessageModal = React.memo(addMessageModal.Component);
 export default observer(function HandoverRegister(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
   const [oldData, setOldData]: any = useState({});
@@ -73,14 +76,15 @@ export default observer(function HandoverRegister(props: Props) {
       target = (event as any).target;
     }
     let { left: x, top: y, width, height } = target.getBoundingClientRect();
-    console.log(x, y, "aaa");
     contextMenu.show(
       [
         {
           icon: require("../../images/提醒@2x.png"),
           label: "添加提醒",
           type: "text",
-          onClick: () => {}
+          onClick: () => {
+            addMessageModal.show();
+          }
         }
       ],
       {
@@ -723,6 +727,7 @@ export default observer(function HandoverRegister(props: Props) {
         )}
       </TableCon>
       <settingModal.Component />
+      <MemoAddMessageModal />
       <MemoContextMenu />
     </Wrapper>
   );
