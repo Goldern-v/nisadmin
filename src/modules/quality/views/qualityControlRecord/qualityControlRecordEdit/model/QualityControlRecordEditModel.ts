@@ -48,8 +48,8 @@ class QualityControlRecordEditModel {
   //基本填写信息
   @observable master = {
     evalDate: '', //评估时间
-    userList: [] as Emp[],//管床护士
-    bedNurseList: [] as BedNurse[],//质控人
+    userList: [] as Emp[],//质控人
+    bedNurseList: [] as BedNurse[],//管床护士
     wardCode: '', //科室编码
     bedLabel: '', //床号
     inpNo: '', //入院号

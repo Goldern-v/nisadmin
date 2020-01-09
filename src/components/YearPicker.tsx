@@ -8,7 +8,8 @@ export interface Props {
   value?: any
   onChange?: any
   style?: any
-  allowClear?: any
+  allowClear?: any,
+  disabled?: boolean
 }
 
 export default function YearPicker(props: Props) {
@@ -25,6 +26,7 @@ export default function YearPicker(props: Props) {
       style={props.style || {}}
       allowClear={props.allowClear !== undefined ? props.allowClear : true}
       value={time}
+      disabled={props.disabled}
       open={isOpen}
       mode='year'
       placeholder='请选择年份'

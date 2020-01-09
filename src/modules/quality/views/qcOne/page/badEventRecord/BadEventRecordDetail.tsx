@@ -162,11 +162,15 @@ export default observer(function BadEventRecordDetail() {
         </MessageBox>
         <div className="default-pannel">
           <div className="title">一、事件简要经过</div>
-          <div className="content">{badEvent.briefCourseEvent}</div>
+          <div className="content">
+            <pre>{badEvent.briefCourseEvent}</pre>
+          </div>
         </div>
         <div className="default-pannel">
           <div className="title">二、后果</div>
-          <div className="content">{badEvent.result}</div>
+          <div className="content">
+            <pre>{badEvent.result}</pre>
+          </div>
         </div>
         <div className="default-pannel">
           <div className="title">三、附件</div>
@@ -234,6 +238,11 @@ const Wrapper = styled.div`
     .content{
       overflow: auto;
       word-break:break-all;
+      pre{
+        word-break: break-all;
+        white-space: pre-wrap;
+        margin: 0;
+      }
       .img-view-item{
         cursor: pointer;
         width: 100px;

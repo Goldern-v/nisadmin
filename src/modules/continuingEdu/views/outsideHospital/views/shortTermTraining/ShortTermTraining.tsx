@@ -8,7 +8,7 @@ import Header from "../../components/Header";
 interface Props {
   getTitle: any;
 }
-export default observer(function ContinuingEducation(props: Props) {
+export default observer(function ShortTermTraining(props: Props) {
   const { getTitle } = props; //获取当前页面标题
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据

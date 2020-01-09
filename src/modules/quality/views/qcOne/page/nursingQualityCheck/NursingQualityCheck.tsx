@@ -44,7 +44,7 @@ export default observer(function NursingQualityCheck() {
     wardCode: '',
     empNo: defaultEmpNo,
     pageIndex: 1,
-    pageSize: 20,
+    pageSize: 50,
     range: '',
     // startDate: qcOneSelectViewModal.startDate,
     // endDate: qcOneSelectViewModal.endDate,

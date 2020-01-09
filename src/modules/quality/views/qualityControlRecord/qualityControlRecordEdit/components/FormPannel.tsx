@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { DatePicker, Select, Input, Checkbox } from 'antd'
-// import { appStore } from 'src/stores'
+import { authStore, appStore } from 'src/stores'
 import { qualityControlRecordEditModel as qcModel, Emp, BedNurse } from './../model/QualityControlRecordEditModel'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
@@ -77,6 +77,28 @@ export default observer(function FormPannel() {
     return classList.join(' ')
   }
 
+  //新建时显示的质控人
+  const qcNewPerson = () => {
+    // console.log('new')
+    if (!authStore.user) return ''
+    let empNo = authStore.user.empNo
+    let empName = authStore.user.empName
+
+    let target = userList.find((item: any) => item.empNo.toLowerCase() === empNo.toLowerCase())
+
+    if (target) return empName
+    return ''
+  }
+
+  //编辑时显示的质控人
+  const qcEditPerson = () => {
+    // console.log('edit')
+    if (master.userList && master.userList.length > 0)
+      return master.userList[0].empName
+    else
+      return ''
+  }
+
   return <Wrapper>
     <div className="master-area" id="masterArea">
       <div className="item">
@@ -109,7 +131,10 @@ export default observer(function FormPannel() {
             }>
             {userList.map((item: any, idx: number) => <Option key={idx} value={item.empNo}>{item.empName}</Option>)}
           </Select> */}
-          <Input disabled value={(userList.length > 0 && userList[0].empName) || ''} />
+          <Input disabled value={
+            appStore.queryObj.id ?
+              qcEditPerson() : qcNewPerson()
+          } />
         </div>
       </div>
       <div className="item">

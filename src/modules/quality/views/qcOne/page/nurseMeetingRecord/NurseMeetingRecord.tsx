@@ -275,7 +275,7 @@ export default observer(function NurseMeetingRecord() {
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
         {
-          sameWard &&
+          (sameWard || auth) &&
           <Button type="primary" onClick={() => history.push('/nurseMeetingRecordEdit')}>添加</Button>
         }
       </RightIcon>

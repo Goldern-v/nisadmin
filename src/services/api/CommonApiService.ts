@@ -16,6 +16,7 @@ export interface DictItem {
 import BaseApiService from "./BaseApiService";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores";
+import qs from 'qs'
 type EntityType = "mail";
 export default class CommonApiService extends BaseApiService {
   // 0.获取护理单元列表
@@ -114,7 +115,7 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => {})
+      onUploadProgress: onUploadProgress || (() => { })
     });
   }
   /** 下载文件并导出 */
@@ -155,8 +156,10 @@ export default class CommonApiService extends BaseApiService {
   }
 
   /** 根据科室获取科室全部护士 */
-  public userDictInfo(wardCode: string) {
-    return this.get(`/user/userDictInfo/${wardCode}`);
+  public userDictInfo(wardCode: string, query?: { getAllRelUser: boolean }) {
+    let queryStr = ''
+    if (query) queryStr = `?${qs.stringify(query)}`
+    return this.get(`/user/userDictInfo/${wardCode}${queryStr}`);
   }
 
   // 签名

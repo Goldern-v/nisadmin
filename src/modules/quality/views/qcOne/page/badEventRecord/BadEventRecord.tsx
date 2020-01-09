@@ -275,7 +275,7 @@ export default observer(function BadEventRecord() {
           )}
         </Select>
         <Button onClick={handleSearch} type="primary">查询</Button>
-        {sameWard && <Button
+        {(sameWard || auth) && <Button
           type="primary"
           onClick={() => history.push('/badEventRecordEdit')}>添加</Button>}
         {/* <Button onClick={handleExport}>导出</Button> */}

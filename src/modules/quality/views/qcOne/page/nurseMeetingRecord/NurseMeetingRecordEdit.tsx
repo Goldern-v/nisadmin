@@ -204,7 +204,7 @@ export default observer(function NurseMeetingRecordEdit() {
 
   useEffect(() => {
     commonApi
-      .userDictInfo(wardCode)
+      .userDictInfo(wardCode, { getAllRelUser: true })
       .then(res => {
         if (res.data && res.data instanceof Array) {
           setNurseList(res.data.map((item: any) => {

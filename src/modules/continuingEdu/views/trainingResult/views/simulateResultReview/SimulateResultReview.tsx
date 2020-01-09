@@ -20,7 +20,7 @@ import moment from 'moment'
 export interface Props { }
 
 //查看学习结果
-export default observer(function StudyResultReview() {
+export default observer(function SimulateResultReview() {
   const { history } = appStore
   const [query, setQuery] = useState({
     pianqv: '',

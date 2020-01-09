@@ -269,6 +269,10 @@ const nightChargingReport = lazy(() =>
 //学习培训查看结果
 const StudyResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview.tsx"))
 const TrainingResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/trainingResultReview/TrainingResultReview.tsx"))
+const TestingResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/testingResultReview/TestingResultReview.tsx"))
+const OperateResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/operateResultReview/OperateResultReview"))
+const PracticeResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/practiceResultReview/PracticeResultReview"))
+const SimulateResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/simulateResultReview/SimulateResultReview"))
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -325,6 +329,10 @@ const routes: RouteItem[] = [
   ),
   setLayout("/studyResultReview", StudyResultReview, layouts.MainLayout),
   setLayout("/trainingResultReview", TrainingResultReview, layouts.MainLayout),
+  setLayout("/testingResultReview", TestingResultReview, layouts.MainLayout),
+  setLayout("/operateResultReview", OperateResultReview, layouts.MainLayout),
+  setLayout("/practiceResultReview", PracticeResultReview, layouts.MainLayout),
+  setLayout("/simulateResultReview", SimulateResultReview, layouts.MainLayout),
   {
     path: "/trainingExamination",
     redirect: "/trainingExamination/人员管理"

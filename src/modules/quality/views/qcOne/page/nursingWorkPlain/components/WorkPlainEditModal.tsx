@@ -14,6 +14,7 @@ import moment from 'moment'
 const Option = Select.Option
 
 export interface Props {
+  canEdit?: Boolean,
   title?: string,
   onOk?: Function,
   onCancel?: Function,
@@ -23,7 +24,7 @@ export interface Props {
 
 export default observer(function WorkPlainEditModal(props: Props) {
 
-  const { title, visible, query, onCancel, onOk } = props
+  const { title, visible, query, onCancel, onOk, canEdit } = props
 
   const [templateVisible, setTemplateVisible] = useState(false)
 
@@ -217,6 +218,10 @@ export default observer(function WorkPlainEditModal(props: Props) {
       width={1000}
       confirmLoading={loading}
       visible={visible}
+      footer={canEdit ? <React.Fragment>
+        <Button onClick={() => onCancel && onCancel()}>取消</Button>
+        <Button type="primary" icon={loading ? 'loading' : ''} onClick={handleSave}>确认</Button>
+      </React.Fragment> : null}
       centered
       onOk={handleSave}
       onCancel={() => onCancel && onCancel()}
@@ -233,6 +238,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={20}>
             <Select
               value={editQuery.type}
+              disabled={!canEdit}
               onChange={(type: string) => {
                 let newEditQuery = { ...editQuery, type }
                 if (type == '1') newEditQuery.indexInType = ''
@@ -255,6 +261,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={20}>
             <YearPicker
               allowClear={false}
+              disabled={!canEdit}
               value={editQuery.year ? moment(`${editQuery.year}-01-01`) : null}
               onChange={(_moment: any) =>
                 setEditQuery({ ...editQuery, year: _moment.format('YYYY') })}
@@ -266,7 +273,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={20}>
             <Select
               value={editQuery.month}
-              disabled={editQuery.type == '3'}
+              disabled={editQuery.type == '3' || !canEdit}
               onChange={(month: string) => setEditQuery({ ...editQuery, month })}
               className="month-select">
               {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
@@ -277,7 +284,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={2}>周数:</Col>
           <Col span={20}>
             <Select
-              disabled={editQuery.type != '2'}
+              disabled={editQuery.type != '2' || !canEdit}
               value={editQuery.indexInType}
               onChange={(indexInType: string) => setEditQuery({ ...editQuery, indexInType })}>
               {weekList.map((idx: number) =>
@@ -294,15 +301,16 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={2}>内容:</Col>
           <Col span={20}>
             <Input.TextArea
+              disabled={!canEdit}
               value={editQuery.content}
               onChange={(e: any) => setEditQuery({ ...editQuery, content: e.target.value })} rows={10} />
           </Col>
           <Col span={1}>
-            <Button
+            {canEdit && <Button
               style={{ color: 'blue' }}
               onClick={() => setTemplateVisible(true)}>
               模板
-            </Button>
+            </Button>}
           </Col>
         </Row>
         <Row>
@@ -310,6 +318,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={20}>
             <UploadWrapper>
               <MultiFileUploader
+                readOnly={!canEdit}
                 type='qc_pvqqc_wks'
                 data={editQuery.attachList}
                 onChange={(attachList: FileItem[]) => setEditQuery({ ...editQuery, attachList })} />
