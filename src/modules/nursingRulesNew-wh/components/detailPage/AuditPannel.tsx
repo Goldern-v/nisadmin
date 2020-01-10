@@ -69,7 +69,7 @@ export default observer(function AuditPannel() {
       </Row>)}
     <div className="audit-btn-group">
       <Button onClick={() => handleAudit(true)} type="primary" ghost disabled={auditList.length <= 0}>全部通过</Button>
-      <Button onClick={() => handleAudit(false)} type="danger" ghost disabled={auditList.length <= 0}>全部拒绝</Button>
+      {/* <Button onClick={() => handleAudit(false)} type="danger" ghost disabled={auditList.length <= 0}>全部拒绝</Button> */}
     </div>
     <GroupAuditModal
       visible={auditCfg.visible}
