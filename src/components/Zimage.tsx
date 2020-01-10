@@ -34,32 +34,39 @@ export default function Zimage(props: Props | any) {
         >
           <Text
             onClick={() => {
-              imgRef.current && imgRef.current.cover.click()
+              ReactZmage.browsing({
+                ...option,
+                set: option.list.map((src: string) => {
+                  return { src }
+                })
+              })
+              // imgRef.current && imgRef.current.cover.click()
             }}
           >
             {option.text}
           </Text>
 
-          <ReactZmage
+          {/* <ReactZmage
             {...option}
             ref={imgRef}
             set={option.list.map((item: any) => {
               return { src: item }
             })}
-          />
+          /> */}
         </Wrapper>
       )
     } else if (option.src) {
       return (
         <Wrapper
           onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            imgRef.current && imgRef.current.cover.click()
+            // imgRef.current && imgRef.current.cover.click()
+            ReactZmage.browsing({ ...option })
             e.stopPropagation()
             e.preventDefault()
           }}
         >
           <Text>{option.text}</Text>
-          <ReactZmage {...option} ref={imgRef} />
+          {/* <ReactZmage {...option} ref={imgRef} /> */}
         </Wrapper>
       )
     } else {
@@ -71,8 +78,8 @@ export default function Zimage(props: Props | any) {
         <ReactZmage {...option} />
       </div>
     ) : (
-      <span />
-    )
+        <span />
+      )
   }
 }
 const Wrapper = styled.div`
@@ -81,7 +88,7 @@ const Wrapper = styled.div`
     width: 0;
     height: 0;
     position: absolute;
-    opacity: 0;
+    /* opacity: 0; */
   }
 `
 
