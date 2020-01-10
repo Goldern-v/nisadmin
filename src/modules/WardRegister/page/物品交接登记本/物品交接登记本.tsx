@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Button } from "antd";
 import BaseTable from "src/components/BaseTable";
 import {
@@ -61,8 +61,9 @@ export default observer(function HandoverRegister(props: Props) {
   });
   const [total, setTotal] = useState(0);
   const settingModal = createModal(SettingModal);
-  const addMessageModal = createModal(AddMessageModal);
-  const MemoAddMessageModal = React.memo(addMessageModal.Component);
+
+  const addMessageModal = useMemo(() => createModal(AddMessageModal), []);
+  const MemoAddMessageModal = addMessageModal.Component;
 
   const onContextMenu = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
