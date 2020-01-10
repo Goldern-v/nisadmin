@@ -48,9 +48,9 @@ export default observer(function FormCreateModal(props: Props) {
 
     if (formList[activeIdx]) qcCode = formList[activeIdx].qcCode
 
-    appStore
+    setTimeout(() => appStore
       .history
-      .push(`/qualityControlRecordEdit?qcCode=${qcCode}`)
+      .push(`/qualityControlRecordEdit?qcCode=${qcCode}`), 300)
   }
 
   return <Modal

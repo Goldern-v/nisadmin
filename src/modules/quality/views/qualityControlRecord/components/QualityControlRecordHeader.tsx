@@ -15,7 +15,7 @@ import { PageTitle, Place } from 'src/components/common'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import FormCreateModal from './common/FormCreateModal'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const Option = Select.Option
 
@@ -124,10 +124,7 @@ export default observer(function TopCon(props: any) {
       {/* <Button onClick={() => props.refExport()}>导出excl</Button> */}
       <FormCreateModal
         onCancel={() => setFormCreateVisible(false)}
-        onOk={() => {
-          console.log(123)
-          setFormCreateVisible(false)
-        }}
+        onOk={() => setFormCreateVisible(false)}
         visible={formCreateVisible}
         level={qualityControlRecordVM.level}
       />
