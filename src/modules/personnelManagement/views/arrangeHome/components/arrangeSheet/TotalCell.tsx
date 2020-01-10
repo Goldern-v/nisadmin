@@ -45,7 +45,8 @@ export default observer(function TotalCell(props: Props) {
           .week(Number(key))
           .format("YYYY-MM-DD")
       );
-      total -= (real_week / 5) * 2;
+      // total -= (real_week / 5) * 2;
+      total = real_week;
     }
   }
 
