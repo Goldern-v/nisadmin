@@ -7,7 +7,7 @@ export interface Props {
 
 export default function BaseSetting(props: Props) {
   const { labelWidth } = props
-  const _labelWidth = labelWidth ? `${labelWidth}px` : '110px'
+  const _labelWidth = labelWidth ? `${labelWidth}px` : '92px'
 
   return <Wrapper>
     <div className="content-item-title">基本设置</div>
