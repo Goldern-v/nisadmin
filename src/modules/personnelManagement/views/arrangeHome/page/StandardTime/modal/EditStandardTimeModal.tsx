@@ -78,7 +78,7 @@ export default function EditStandardTimeModal(props: Props) {
         setTitle("新建标准工时");
         /** 表单数据初始化 */
         refForm!.current!.setFields({
-          startDate: moment(),
+          startDate: moment().startOf("week"),
           initialHour: 37.5
         });
       }

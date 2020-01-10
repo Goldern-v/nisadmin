@@ -43,6 +43,7 @@ let contextMenu = createContextMenu();
 const MemoContextMenu = React.memo(contextMenu.Component);
 const addMessageModal = createModal(AddMessageModal);
 const MemoAddMessageModal = React.memo(addMessageModal.Component);
+
 export default observer(function HandoverRegister(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
   const [oldData, setOldData]: any = useState({});
@@ -64,7 +65,8 @@ export default observer(function HandoverRegister(props: Props) {
   const settingModal = createModal(SettingModal);
 
   const onContextMenu = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    record: any
   ) => {
     event.persist();
     (event as any).target.blur();
@@ -83,7 +85,7 @@ export default observer(function HandoverRegister(props: Props) {
           label: "添加提醒",
           type: "text",
           onClick: () => {
-            addMessageModal.show();
+            addMessageModal.show({ record });
           }
         }
       ],
@@ -717,7 +719,7 @@ export default observer(function HandoverRegister(props: Props) {
             onRow={record => {
               return appStore.isDev
                 ? {
-                    onContextMenu: onContextMenu
+                    onContextMenu: (e: any) => onContextMenu(e, record)
                   }
                 : {};
             }}

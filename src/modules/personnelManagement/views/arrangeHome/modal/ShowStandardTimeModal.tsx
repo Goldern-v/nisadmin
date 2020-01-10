@@ -85,7 +85,7 @@ export default function ShowStandardTimeModal(props: Props) {
           <span className="value">37.5h</span>
         </div>
         {list.map((item: any) => (
-          <div className="row">
+          <div className="row" key={item.startDate}>
             <span className="key">{item.startDate}起:</span>
             <span className="value">{item.initialHour}h</span>
           </div>

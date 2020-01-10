@@ -1,6 +1,6 @@
 import service from "src/services/api/index";
 import { cloneJson } from "./../../../../../utils/json/clone";
-import { appStore } from "./../../../../../stores/index";
+import { appStore, authStore } from "./../../../../../stores/index";
 import { SymbolItem, ArrangeItem } from "./../types/Sheet";
 import { observable, computed, action } from "mobx";
 import { selectViewModal } from "./SelectViewModal";
@@ -51,6 +51,9 @@ class SheetViewModal {
   @observable public countArrangeNameList: any[] = [];
   /** 一周全是这些班次 按5天计算工时 */
   @observable public weekArrangeNameList: any[] = [];
+
+  /** 标准工时列表 */
+  @observable public standardTimeList: any[] = [];
 
   /** 时间段 */
   getDateList() {
@@ -222,6 +225,16 @@ class SheetViewModal {
         let { data: countObj } = await arrangeService.listRangeNameCode(
           res.data.setting
         );
+
+        const {
+          data: standardTimeList
+        } = await arrangeService.schInitialHourGetListByDate({
+          wardCode: authStore.selectedDeptCode,
+          startDate: selectViewModal.params.startTime,
+          endDate: selectViewModal.params.endTime
+        });
+        this.standardTimeList = standardTimeList;
+
         this.sheetTableData = this.handleSheetTableData(
           res.data.setting,
           countObj
@@ -427,6 +440,19 @@ class SheetViewModal {
         }
       }
     }
+  }
+
+  /** 根据日期获取当前的时间的标准工时 */
+  getStandTime(date: string) {
+    let initialHour = 37.5;
+    for (let i = 0; i < this.standardTimeList.length; i++) {
+      let dateNum = new Date(date).getTime();
+      let standardTime = new Date(this.standardTimeList[i].startDate).getTime();
+      if (dateNum >= standardTime) {
+        initialHour = this.standardTimeList[i].initialHour;
+      }
+    }
+    return initialHour;
   }
 
   async init() {

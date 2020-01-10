@@ -15,11 +15,13 @@ import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
-
+import moment from "moment";
+import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => {};
+  record: any;
 }
 
 /** 设置规则 */
@@ -29,7 +31,7 @@ const rules: Rules = {
 
 export default function AddMessageModal(props: Props) {
   const [title, setTitle] = useState("添加提醒");
-
+  const [rangeDictMap, setRangeDictMap]: any = useState([]);
   let { visible, onCancel } = props;
   let refForm = React.createRef<Form>();
 
@@ -55,6 +57,15 @@ export default function AddMessageModal(props: Props) {
         publicDate: "",
         title: ""
       });
+
+      wardRegisterService.getArrangeMenu().then(res => {
+        // let map = _.groupBy(res.data, (item: any) => item.shiftType);
+        let map = res.data.filter(
+          (item: any) => !(item.name.includes("休") || item.name.includes("假"))
+        );
+        // console.log(map, "map");
+        setRangeDictMap(map);
+      });
     }
   }, [visible]);
 
@@ -71,19 +82,41 @@ export default function AddMessageModal(props: Props) {
         <Row>
           <Col span={24}>
             <Form.Field label={`登记内容`} name="publicDate" required>
-              <Input.TextArea />
+              <Input.TextArea style={{ resize: "none", height: 80 }} />
             </Form.Field>
           </Col>
-          <Row>
-            <Col span={12}>
-              <Form.Field label={`提醒时间`} name="title">
-                <Input />
-              </Form.Field>
-            </Col>
-          </Row>
+
+          <Col span={12}>
+            <Form.Field label={`提醒时间`} name="title">
+              <Radio.Group buttonStyle="solid">
+                <Radio.Button value={moment().format("YYYY-MM-DD")}>
+                  今天
+                </Radio.Button>
+                <Radio.Button
+                  value={moment()
+                    .add(1, "d")
+                    .format("YYYY-MM-DD")}
+                >
+                  明天
+                </Radio.Button>
+              </Radio.Group>
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+            <Form.Field label={``} name="title" labelWidth={1}>
+              <ShowDate />
+            </Form.Field>
+          </Col>
+
           <Col span={24}>
             <Form.Field label={`提醒班次`} name="title">
-              <Select />
+              <Select>
+                {rangeDictMap.map((item: any) => (
+                  <Select.Option value={item.name} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
@@ -111,4 +144,17 @@ export default function AddMessageModal(props: Props) {
     </Modal>
   );
 }
+
+const ShowDate = (props: any) => {
+  const Wrapper = styled.div`
+    font-size: 14px;
+    color: #999;
+    height: 32px;
+    line-height: 32px;
+    position: relative;
+    left: -20px;
+  `;
+  return <Wrapper>(即为{props.value})</Wrapper>;
+};
+
 const Wrapper = styled.div``;
