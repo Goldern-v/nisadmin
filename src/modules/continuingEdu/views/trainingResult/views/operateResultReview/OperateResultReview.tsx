@@ -14,6 +14,7 @@ import {
 } from './../../components/common'
 import createModal from "src/libs/createModal";
 import ScoreConfirmModal from './../../components/ScoreConfirmModal'
+import ExamScoreEditModal from './components/ExamScoreEditModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
@@ -26,6 +27,7 @@ export interface Props { }
 export default observer(function OperateResultReview() {
   const { history } = appStore
   const scorceConfirm = createModal(ScoreConfirmModal)
+  const examScoreEdit = createModal(ExamScoreEditModal)
   const [query, setQuery] = useState({
     pianqv: '',
     bingqv: '',
@@ -238,6 +240,7 @@ export default observer(function OperateResultReview() {
       </TableWrapper>
     </MainPannel>
     <scorceConfirm.Component />
+    <examScoreEdit.Component />
   </Wrapper>
 })
 
