@@ -41,8 +41,6 @@ export interface Props {
 const throttler = throttle();
 let contextMenu = createContextMenu();
 const MemoContextMenu = React.memo(contextMenu.Component);
-const addMessageModal = createModal(AddMessageModal);
-const MemoAddMessageModal = React.memo(addMessageModal.Component);
 
 export default observer(function HandoverRegister(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
@@ -63,6 +61,8 @@ export default observer(function HandoverRegister(props: Props) {
   });
   const [total, setTotal] = useState(0);
   const settingModal = createModal(SettingModal);
+  const addMessageModal = createModal(AddMessageModal);
+  const MemoAddMessageModal = React.memo(addMessageModal.Component);
 
   const onContextMenu = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,

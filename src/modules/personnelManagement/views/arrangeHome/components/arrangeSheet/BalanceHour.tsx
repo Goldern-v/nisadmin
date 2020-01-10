@@ -18,6 +18,7 @@ export default observer(function BalanceHour(props: Props) {
   if (user) {
     list = user.settingDtos;
   }
+
   /** 计算总工时 */
   let real_balanceHour = 0;
   for (let j = 0; j < (user.settingDtos || []).length; j++) {
@@ -46,8 +47,8 @@ export default observer(function BalanceHour(props: Props) {
           .week(Number(key))
           .format("YYYY-MM-DD")
       );
-      // real_balanceHour -= (real_week / 5) * 2;
-      real_balanceHour = real_week;
+      real_balanceHour -= (real_week / 5) * 2;
+      // real_balanceHour = real_week;
     }
   }
 

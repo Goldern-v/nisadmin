@@ -345,6 +345,7 @@ class SheetViewModal {
 
         current_balanceHour +=
           Number(_sheetTableData[i].settingDtos[j].effectiveTime) || 0;
+
         current_holidayHour +=
           _sheetTableData[i].settingDtos[j].rangeName == "节休" ? 1 : 0;
         current_publicHour +=
@@ -361,6 +362,32 @@ class SheetViewModal {
           }
         }
       }
+
+      /** 如果存在一周7天都是 */
+      let weekObj: any = {};
+      for (let item of _sheetTableData[i].settingDtos) {
+        if (this.weekArrangeNameList.includes(item.rangeName)) {
+          let num = moment(item.workDate).week();
+          if (weekObj[num]) {
+            weekObj[num].push(num);
+          } else {
+            weekObj[num] = [];
+            weekObj[num].push(num);
+          }
+        }
+      }
+      /** 标准周工时 */
+      for (let key in weekObj) {
+        if (weekObj[key].length == 7) {
+          let real_week = sheetViewModal.getStandTime(
+            moment()
+              .week(Number(key))
+              .format("YYYY-MM-DD")
+          );
+          current_balanceHour -= (real_week / 5) * 2;
+        }
+      }
+
       _sheetTableData[i].current_balanceHour = current_balanceHour;
       _sheetTableData[i].current_holidayHour = current_holidayHour;
       _sheetTableData[i].current_publicHour = current_publicHour;
