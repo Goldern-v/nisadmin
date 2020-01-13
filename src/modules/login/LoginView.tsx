@@ -15,6 +15,7 @@ export default function LoginView() {
   const [password, setPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
   const [isSaveUserName, setIsSaveUserName] = useState(false);
+  const [isSavePassword, setIsSavePassword] = useState(false);
   let userRef: any = useRef<HTMLInputElement>();
   let passwordRef: any = useRef<HTMLInputElement>();
 
@@ -24,6 +25,11 @@ export default function LoginView() {
     userRef.current.select();
     if (localStorage.userNameCache) {
       setUsername(localStorage.userNameCache || "");
+      setIsSaveUserName(true);
+      if (localStorage.passwordNameCache) {
+        setPassword(localStorage.passwordNameCache || "");
+        setIsSavePassword(true);
+      }
     }
   }, []);
   function checkClick() {
@@ -37,6 +43,14 @@ export default function LoginView() {
       .then(() => {
         if (isSaveUserName) {
           localStorage.userNameCache = username;
+          if (isSavePassword) {
+            localStorage.passwordNameCache = password;
+          } else {
+            localStorage.passwordNameCache = "";
+          }
+        } else {
+          localStorage.userNameCache = "";
+          localStorage.passwordNameCache = "";
         }
         setLoginLoading(false);
       })
@@ -86,18 +100,37 @@ export default function LoginView() {
               type="password"
               placeholder="密码"
               ref={passwordRef}
+              value={password}
               onKeyDown={passwordEnter}
             />
           </div>
-
-          <div className="CheckItem" onClick={checkClick}>
-            <input
-              type="checkbox"
-              onChange={() => {}}
-              checked={isSaveUserName}
-            />
-            <label>记住账号</label>
+          <div style={{ display: "flex" }}>
+            <div className="CheckItem" onClick={checkClick}>
+              <input
+                type="checkbox"
+                onChange={() => {}}
+                checked={isSaveUserName}
+              />
+              <label>记住账号</label>
+            </div>
+            <div
+              className="CheckItem"
+              onClick={() => {
+                if (!isSavePassword) {
+                  setIsSaveUserName(true);
+                }
+                setIsSavePassword(!isSavePassword);
+              }}
+            >
+              <input
+                type="checkbox"
+                onChange={() => {}}
+                checked={isSavePassword}
+              />
+              <label>记住密码</label>
+            </div>
           </div>
+
           <Button
             type="primary"
             onClick={login}
@@ -217,6 +250,7 @@ const BoxInput = styled.div`
   .CheckItem {
     position: relative;
     margin-top: 12px;
+    margin-right: 20px;
     padding-left: 22px;
     text-align: left;
     /* cursor: pointer; */
@@ -226,7 +260,7 @@ const BoxInput = styled.div`
     input[type="checkbox"] {
       display: inline-block;
       position: absolute;
-      top: 4px;
+      top: 2px;
       left: 0;
       z-index: 1;
       border: 1px solid #dcdfe6;
