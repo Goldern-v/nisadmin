@@ -16,7 +16,7 @@ export interface DictItem {
 import BaseApiService from "./BaseApiService";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores";
-import qs from 'qs'
+import qs from "qs";
 type EntityType = "mail";
 export default class CommonApiService extends BaseApiService {
   // 0.获取护理单元列表
@@ -42,8 +42,8 @@ export default class CommonApiService extends BaseApiService {
     return this.post(`/dept/multiDictInfo`, codeList);
   }
   /** 全部片区 */
-  public groupByBigDeptInDeptList() {
-    return this.post(`/user/groupByBigDeptInDeptList`, {});
+  public groupByBigDeptInDeptList(postData: any = {}) {
+    return this.post(`/user/groupByBigDeptInDeptList`, postData);
   }
   /** 本人有权限的片区 */
   public getBigDeptListSelfList() {
@@ -54,58 +54,66 @@ export default class CommonApiService extends BaseApiService {
   public groupByDeptInDeptList(
     bigDeptCode?: string,
     deptCode?: string,
-    keyword?: String
+    keyword?: String,
+    postData: any = {}
   ) {
     return this.post(`/user/groupByDeptInDeptList`, {
       deptCode,
       keyword,
-      bigDeptCode
+      bigDeptCode,
+      ...postData
     });
   }
   /** 根据职称获取人员列表 */
   public groupByTitleInDeptList(
     bigDeptCode?: string,
     title?: string,
-    keyword?: String
+    keyword?: String,
+    postData: any = {}
   ) {
     return this.post(`/user/groupByTitleInDeptList`, {
       title,
       keyword,
-      bigDeptCode
+      bigDeptCode,
+      ...postData
     });
   }
   /** 根据职务获取人员列表 */
   public groupByJobInDeptList(
     bigDeptCode?: string,
     job?: string,
-    keyword?: String
+    keyword?: String,
+    postData: any = {}
   ) {
     return this.post(`/user/groupByJobInDeptList`, {
       job,
       keyword,
-      bigDeptCode
+      bigDeptCode,
+      ...postData
     });
   }
   /** 根据职务获取人员列表 */
   public groupByLevelInDeptList(
     bigDeptCode?: string,
     currentLevel?: string,
-    keyword?: String
+    keyword?: String,
+    postData: any = {}
   ) {
     return this.post(`/user/groupByLevelInDeptList`, {
       currentLevel,
       keyword,
-      bigDeptCode
+      bigDeptCode,
+      ...postData
     });
   }
 
   /** 根据用户名获取人员列表 */
-  public searchUser(empName: string) {
-    return this.post(`/user/search`, { empName });
+  public searchUser(empName: string, postData: any = {}) {
+    return this.post(`/user/search`, { empName, ...postData });
   }
   /** 获取默认科室人员列表 */
-  public defaultDeptUser(keyword?: String) {
-    return this.post(`/user/defaultDeptUser`, { keyword });
+  public defaultDeptUser(keyword?: String, postData: any = {}) {
+    return this.post(`/user/defaultDeptUser`, { keyword, ...postData });
   }
   /** 上传附件 */
   public uploadAttachment(
@@ -115,7 +123,7 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => { })
+      onUploadProgress: onUploadProgress || (() => {})
     });
   }
   /** 下载文件并导出 */
@@ -157,8 +165,8 @@ export default class CommonApiService extends BaseApiService {
 
   /** 根据科室获取科室全部护士 */
   public userDictInfo(wardCode: string, query?: { getAllRelUser: boolean }) {
-    let queryStr = ''
-    if (query) queryStr = `?${qs.stringify(query)}`
+    let queryStr = "";
+    if (query) queryStr = `?${qs.stringify(query)}`;
     return this.get(`/user/userDictInfo/${wardCode}${queryStr}`);
   }
 

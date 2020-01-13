@@ -71,13 +71,8 @@ export default observer(function HandoverRegister(props: Props) {
   ) => {
     event.persist();
     (event as any).target.blur();
-    let target;
     event.preventDefault();
-    if ((event as any).target.tagName !== "TD") {
-      target = (event as any).target.parentNode;
-    } else {
-      target = (event as any).target;
-    }
+    let target = (event as any).target;
     let { left: x, top: y, width, height } = target.getBoundingClientRect();
     contextMenu.show(
       [
@@ -86,7 +81,11 @@ export default observer(function HandoverRegister(props: Props) {
           label: "添加提醒",
           type: "text",
           onClick: () => {
-            addMessageModal.show({ record });
+            addMessageModal.show({
+              registerCode,
+              record,
+              fieldEn: target.getAttribute("data-key")
+            });
           }
         }
       ],
@@ -215,6 +214,7 @@ export default observer(function HandoverRegister(props: Props) {
                   onSelect={() => updateDataSource()}
                 >
                   <TextArea
+                    data-key={item.itemCode}
                     autosize
                     style={{
                       lineHeight: 1.2,
@@ -245,26 +245,29 @@ export default observer(function HandoverRegister(props: Props) {
           dataIndex: item.itemCode,
           render(text: string, record: any, index: number) {
             return (
-              <AutoComplete
-                disabled={cellDisabled(record)}
-                dataSource={item.options ? item.options.split(";") : []}
-                defaultValue={text}
-                onChange={value => {
-                  record[item.itemCode] = value;
-                  record.modified = true;
-                }}
-                onBlur={() => updateDataSource()}
-              >
-                <TextArea
-                  autosize
-                  style={{
-                    lineHeight: 1.2,
-                    overflow: "hidden",
-                    padding: "9px 2px",
-                    textAlign: "center"
+              <TdCell>
+                <AutoComplete
+                  disabled={cellDisabled(record)}
+                  dataSource={item.options ? item.options.split(";") : []}
+                  defaultValue={text}
+                  onChange={value => {
+                    record[item.itemCode] = value;
+                    record.modified = true;
                   }}
-                />
-              </AutoComplete>
+                  onBlur={() => updateDataSource()}
+                >
+                  <TextArea
+                    data-key={item.itemCode}
+                    autosize
+                    style={{
+                      lineHeight: 1.2,
+                      overflow: "hidden",
+                      padding: "9px 2px",
+                      textAlign: "center"
+                    }}
+                  />
+                </AutoComplete>
+              </TdCell>
             );
           }
         };
@@ -718,9 +721,12 @@ export default observer(function HandoverRegister(props: Props) {
               });
             }}
             onRow={record => {
-              return appStore.isDev
+              return appStore.isDev && registerCode == "QCRG_02"
                 ? {
-                    onContextMenu: (e: any) => onContextMenu(e, record)
+                    onContextMenu: (e: any) => {
+                      console.log(e, "eeeeeeeeee");
+                      onContextMenu(e, record);
+                    }
                   }
                 : {};
             }}

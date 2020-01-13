@@ -17,35 +17,63 @@ import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import moment from "moment";
 import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
+import service from "src/services/api";
+import { authStore } from "src/stores";
+import { cloneJson } from "src/utils/json/clone";
+import { DictItem } from "src/services/api/CommonApiService";
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => {};
   record: any;
+  registerCode: any;
+  fieldEn: any;
 }
 
 /** 设置规则 */
 const rules: Rules = {
-  publicDate: val => !!val || "请填写发表日期"
+  content: val => !!val || "请填写登记内容",
+  appointRange: val => !!val || "请选择提醒班次",
+  vsUserList: val => !!val || "请选择提醒护士",
+  appointHandleTime: val => !!val || "请选择提醒日期"
 };
 
 export default function AddMessageModal(props: Props) {
   const [title, setTitle] = useState("添加提醒");
   const [rangeDictMap, setRangeDictMap]: any = useState([]);
-  let { visible, onCancel } = props;
+  const [empList, setEmpList]: any = useState([]);
+  let { visible, onCancel, registerCode, record, fieldEn } = props;
   let refForm = React.createRef<Form>();
 
   const onSave = async () => {
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
     if (err) return;
-
+    // console.log(record, "record");
     /** 保存接口 */
-    // service(value).then((res: any) => {
-    //   message.success('保存成功')
-    //   props.onOkCallBack && props.onOkCallBack()
-    //   onCancel()
-    // })
+    let data = {
+      ...value,
+      ...{
+        blockId: record.blockId,
+        recordId: record.id,
+        fieldEn: fieldEn,
+        wardCode: authStore.selectedDeptCode,
+        vsUserList: value.vsUserList.map((item: DictItem) => {
+          let obj = JSON.parse(item as any);
+          return {
+            empNo: obj.code,
+            empName: obj.name
+          };
+        })
+      }
+    };
+    wardRegisterService
+      .messageSaveOrUpdate(registerCode, data)
+      .then((res: any) => {
+        message.success("保存成功");
+        props.onOkCallBack && props.onOkCallBack();
+        onCancel();
+      });
   };
 
   useLayoutEffect(() => {
@@ -54,18 +82,21 @@ export default function AddMessageModal(props: Props) {
     if (refForm.current && visible) {
       /** 表单数据初始化 */
       refForm!.current!.setFields({
-        publicDate: "",
-        title: ""
+        content: "",
+        appointRange: "",
+        vsUserList: [],
+        appointHandleTime: moment().format("YYYY-MM-DD")
       });
 
       wardRegisterService.getArrangeMenu().then(res => {
-        // let map = _.groupBy(res.data, (item: any) => item.shiftType);
         let map = res.data.filter(
           (item: any) => !(item.name.includes("休") || item.name.includes("假"))
         );
-        // console.log(map, "map");
         setRangeDictMap(map);
       });
+      service.commonApiService
+        .userDictInfo(authStore.selectedDeptCode)
+        .then(res => setEmpList(res.data));
     }
   }, [visible]);
 
@@ -81,13 +112,13 @@ export default function AddMessageModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={80}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`登记内容`} name="publicDate" required>
+            <Form.Field label={`登记内容`} name="content" required>
               <Input.TextArea style={{ resize: "none", height: 80 }} />
             </Form.Field>
           </Col>
 
           <Col span={12}>
-            <Form.Field label={`提醒时间`} name="title">
+            <Form.Field label={`提醒时间`} name="appointHandleTime">
               <Radio.Group buttonStyle="solid">
                 <Radio.Button value={moment().format("YYYY-MM-DD")}>
                   今天
@@ -103,16 +134,16 @@ export default function AddMessageModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={``} name="title" labelWidth={1}>
+            <Form.Field label={``} name="appointHandleTime" labelWidth={1}>
               <ShowDate />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`提醒班次`} name="title">
+            <Form.Field label={`提醒班次`} name="appointRange">
               <Select>
                 {rangeDictMap.map((item: any) => (
-                  <Select.Option value={item.name} key={item.name}>
+                  <Select.Option value={item.name} key={item.id}>
                     {item.name}
                   </Select.Option>
                 ))}
@@ -120,22 +151,19 @@ export default function AddMessageModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`提醒护士`} name="title">
+            <Form.Field label={`提醒护士`} name="vsUserList">
               <Select
-                mode="tags"
+                mode="multiple"
                 style={{ width: "100%" }}
-                // onChange={(value: any) => {
-                //   record.vsRange = value.join(";");
-                //   updateDataSource();
-                // }}
-                // value={text ? text.split(";") : []}
                 tokenSeparators={[";"]}
               >
-                {/* {(rangeDictMap || []).map((item: any) => {
+                {(empList || []).map((item: any) => {
                   return (
-                    <Select.Option key={item.id}>{item.name}</Select.Option>
+                    <Select.Option key={item.code} value={JSON.stringify(item)}>
+                      {item.name}
+                    </Select.Option>
                   );
-                })} */}
+                })}
               </Select>
             </Form.Field>
           </Col>

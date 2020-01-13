@@ -113,6 +113,13 @@ export default class WardRegisterService extends BaseApiService {
       responseType: "blob"
     });
   }
+
+  /** 提醒-保存 */
+  public messageSaveOrUpdate(registerCode: string, obj: any) {
+    return this.post(`/sign/qcRegister/${registerCode}/saveOrUpdate`, obj, {
+      responseType: "blob"
+    });
+  }
 }
 
 export const wardRegisterService = new WardRegisterService();
