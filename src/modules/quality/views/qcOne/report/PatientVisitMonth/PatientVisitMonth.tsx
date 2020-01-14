@@ -563,6 +563,7 @@ export default observer(function PatientVisitQuarter() {
       if (res.data && res.data.attachmentList && res.data.attachmentList.length > 0) {
         let attachmentList = res.data.attachmentList.concat()
         previewModal.show({
+          modalWidth: 1200,
           path: attachmentList[0].path,
           title: attachmentList[0].name,
           attachmentList
