@@ -1,156 +1,201 @@
-import { observable, computed, action } from 'mobx'
-import { authStore } from 'src/stores'
-import { noticeService } from '../../serveices/NoticeService'
-import service from 'src/services/api'
+import { observable, computed, action } from "mobx";
+import { authStore } from "src/stores";
+import { noticeService } from "../../serveices/NoticeService";
+import service from "src/services/api";
 class SelectPeopleViewModel {
-  @observable modalLoading: boolean = false
+  @observable modalLoading: boolean = false;
   /** 选择的片区 */
-  @observable selectedBigDeptCode: any = ''
-  @observable selectedBigDeptName: any = ''
+  @observable selectedBigDeptCode: any = "";
+  @observable selectedBigDeptName: any = "";
 
   @observable public selectTreeDataAll = [
     {
-      step: '按片区选择',
-      label: '按片区选择',
+      step: "按片区选择",
+      label: "按片区选择",
       data: [],
-      dataLabel: 'deptName',
-      stepLabel: 'deptCode'
+      dataLabel: "deptName",
+      stepLabel: "deptCode"
     },
     {
-      step: '默认科室',
+      step: "默认科室",
       label: authStore.defaultDeptName,
       data: []
     },
 
     {
-      step: '按护理单元选择',
-      label: '按护理单元选择',
+      step: "按护理单元选择",
+      label: "按护理单元选择",
       data: [],
-      dataLabel: 'deptName'
+      dataLabel: "deptName"
     },
 
     {
-      step: '按职务选择',
-      label: '按职务选择',
+      step: "按职务选择",
+      label: "按职务选择",
       data: [],
-      dataLabel: 'job'
+      dataLabel: "job"
     },
     {
-      step: '按职称选择',
-      label: '按职称选择',
+      step: "按职称选择",
+      label: "按职称选择",
       data: [],
-      dataLabel: 'title'
+      dataLabel: "title"
     },
     {
-      step: '按层级选择',
-      label: '按层级选择',
+      step: "按层级选择",
+      label: "按层级选择",
       data: [],
-      dataLabel: 'level'
+      dataLabel: "level"
     }
-  ]
+  ];
   /** 病区下数据 */
   @observable public selectTreeHasBigDept = [
     {
-      step: '按护理单元选择',
-      label: '按护理单元选择',
+      step: "按护理单元选择",
+      label: "按护理单元选择",
       data: [],
-      dataLabel: 'deptName'
+      dataLabel: "deptName"
     },
 
     {
-      step: '按职务选择',
-      label: '按职务选择',
+      step: "按职务选择",
+      label: "按职务选择",
       data: [],
-      dataLabel: 'job'
+      dataLabel: "job"
     },
     {
-      step: '按职称选择',
-      label: '按职称选择',
+      step: "按职称选择",
+      label: "按职称选择",
       data: [],
-      dataLabel: 'title'
+      dataLabel: "title"
     },
     {
-      step: '按层级选择',
-      label: '按层级选择',
+      step: "按层级选择",
+      label: "按层级选择",
       data: [],
-      dataLabel: 'level'
+      dataLabel: "level"
     }
-  ]
-  @observable stepState: string[] = []
+  ];
+  @observable stepState: string[] = [];
 
-  @observable public currentData: any = {}
+  @observable public currentData: any = {};
   async pushStep(step: string) {
-    this.modalLoading = true
-    let ser = service.commonApiService
+    this.modalLoading = true;
+    let ser = service.commonApiService;
     if (this.stepState.indexOf(step) == -1) {
-      this.currentData = {}
-      this.stepState.push(step)
+      this.currentData = {};
+      this.stepState.push(step);
       if (this.stepState.length == 1) {
-        if (this.stepState[0] == '默认科室') {
-          this.currentData = (await ser.defaultDeptUser()).data
-        } else if (this.stepState[0] == '按片区选择') {
+        if (this.stepState[0] == "默认科室") {
+          this.currentData = (await ser.defaultDeptUser("", {
+            showAuthDept: true
+          })).data;
+        } else if (this.stepState[0] == "按片区选择") {
           this.currentData = {
-            list: (await ser.groupByBigDeptInDeptList()).data
-          }
-        } else if (this.stepState[0] == '按护理单元选择') {
+            list: (await ser.groupByBigDeptInDeptList({ showAuthDept: true }))
+              .data
+          };
+        } else if (this.stepState[0] == "按护理单元选择") {
           this.currentData = {
-            list: (await ser.groupByDeptInDeptList(this.selectedBigDeptCode)).data
-          }
-        } else if (this.stepState[0] == '按职务选择') {
+            list: (await ser.groupByDeptInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
+        } else if (this.stepState[0] == "按职务选择") {
           this.currentData = {
-            list: (await ser.groupByJobInDeptList(this.selectedBigDeptCode)).data
-          }
-        } else if (this.stepState[0] == '按职称选择') {
+            list: (await ser.groupByJobInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
+        } else if (this.stepState[0] == "按职称选择") {
           this.currentData = {
-            list: (await ser.groupByTitleInDeptList(this.selectedBigDeptCode)).data
-          }
-        } else if (this.stepState[0] == '按层级选择') {
+            list: (await ser.groupByTitleInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
+        } else if (this.stepState[0] == "按层级选择") {
           this.currentData = {
-            list: (await ser.groupByLevelInDeptList(this.selectedBigDeptCode)).data
-          }
+            list: (await ser.groupByLevelInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
         }
       } else if (this.stepState.length == 2) {
-        if (this.stepState[0] == '按片区选择') {
-          this.selectedBigDeptCode = this.stepState[1].split('-')[0]
-          this.selectedBigDeptName = this.stepState[1].split('-')[1]
-          this.stepState = []
-        } else if (this.stepState[0] == '按护理单元选择') {
+        if (this.stepState[0] == "按片区选择") {
+          this.selectedBigDeptCode = this.stepState[1].split("-")[0];
+          this.selectedBigDeptName = this.stepState[1].split("-")[1];
+          this.stepState = [];
+        } else if (this.stepState[0] == "按护理单元选择") {
           this.currentData = {
-            list: (await ser.groupByDeptInDeptList(this.selectedBigDeptCode)).data
-          }
-        } else if (this.stepState[0] == '按职务选择') {
+            list: (await ser.groupByDeptInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
+        } else if (this.stepState[0] == "按职务选择") {
           this.currentData = {
-            list: (await ser.groupByJobInDeptList(this.selectedBigDeptCode)).data
-          }
-        } else if (this.stepState[0] == '按职称选择') {
+            list: (await ser.groupByJobInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
+        } else if (this.stepState[0] == "按职称选择") {
           this.currentData = {
-            list: (await ser.groupByTitleInDeptList(this.selectedBigDeptCode)).data
-          }
-        } else if (this.stepState[0] == '按层级选择') {
+            list: (await ser.groupByTitleInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
+        } else if (this.stepState[0] == "按层级选择") {
           this.currentData = {
-            list: (await ser.groupByLevelInDeptList(this.selectedBigDeptCode)).data
-          }
+            list: (await ser.groupByLevelInDeptList(
+              this.selectedBigDeptCode,
+              "",
+              "",
+              { showAuthDept: true }
+            )).data
+          };
         }
       }
     }
-    this.modalLoading = false
+    this.modalLoading = false;
   }
   popStep() {
     if (this.stepState.length == 0) {
-      this.pushStep('按片区选择')
-      this.selectedBigDeptCode = ''
-      this.selectedBigDeptName = ''
+      this.pushStep("按片区选择");
+      this.selectedBigDeptCode = "";
+      this.selectedBigDeptName = "";
     } else {
-      this.stepState.pop()
+      this.stepState.pop();
     }
   }
 
   @computed get selectTreeData(): any {
-    return this.selectedBigDeptCode ? this.selectTreeHasBigDept : this.selectTreeDataAll
+    return this.selectedBigDeptCode
+      ? this.selectTreeHasBigDept
+      : this.selectTreeDataAll;
   }
   @computed get currentTreeData() {
     if (this.stepState.length == 1) {
-      if (this.stepState[0] == '默认科室') {
+      if (this.stepState[0] == "默认科室") {
         return {
           parent: authStore.selectedDeptName,
           list: (this.currentData.userList || []).map((item: any) => ({
@@ -159,55 +204,64 @@ class SelectPeopleViewModel {
             label: item.empName,
             key: item.empNo
           })),
-          type: 'userList',
-          dataLabel: 'empName'
-        }
+          type: "userList",
+          dataLabel: "empName"
+        };
       } else {
-        let { dataLabel, stepLabel } = this.selectTreeData.find((item: any) => item.step == this.stepState[0]) || {
-          dataLabel: '',
-          stepLabel: ''
-        }
+        let { dataLabel, stepLabel } = this.selectTreeData.find(
+          (item: any) => item.step == this.stepState[0]
+        ) || {
+          dataLabel: "",
+          stepLabel: ""
+        };
         return {
           parent: this.stepState[0],
-          list: (this.currentData.list || []).map((item: any, index: number, arr: any[]) => ({
-            ...item,
-            label: dataLabel && `${item[dataLabel]}（${item.userList.length}）人`,
-            key: dataLabel && item[dataLabel]
-          })),
+          list: (this.currentData.list || []).map(
+            (item: any, index: number, arr: any[]) => ({
+              ...item,
+              label:
+                dataLabel && `${item[dataLabel]}（${item.userList.length}）人`,
+              key: dataLabel && item[dataLabel]
+            })
+          ),
           dataLabel,
           stepLabel,
-          type: 'parentList'
-        }
+          type: "parentList"
+        };
       }
     }
     if (this.stepState.length == 2) {
-      let { dataLabel } = this.selectTreeData.find((item: any) => item.step == this.stepState[0]) || {
-        dataLabel: ''
-      }
+      let { dataLabel } = this.selectTreeData.find(
+        (item: any) => item.step == this.stepState[0]
+      ) || {
+        dataLabel: ""
+      };
       let userData: any =
-        (this.currentData.list || []).find((item: any) => item[dataLabel || ''] == this.stepState[1]) || {}
+        (this.currentData.list || []).find(
+          (item: any) => item[dataLabel || ""] == this.stepState[1]
+        ) || {};
       return {
-        parent: userData[dataLabel || ''],
+        parent: userData[dataLabel || ""],
         list: (userData.userList || []).map((item: any) => ({
           ...item,
           label: item.empName,
           key: item.empNo,
           userList: [item]
         })),
-        type: 'userList',
-        dataLabel: 'empName'
-      }
+        type: "userList",
+        dataLabel: "empName"
+      };
     }
   }
 
   /** 初始化数据 */
   initData() {
     // this.modalLoading = true
-    let ser = service.commonApiService
-    this.stepState = []
-    this.selectedBigDeptCode = ''
-    this.selectedBigDeptName = ''
-    this.currentData = {}
+    let ser = service.commonApiService;
+    this.stepState = [];
+    this.selectedBigDeptCode = "";
+    this.selectedBigDeptName = "";
+    this.currentData = {};
     // return Promise.all([
     //   ser.groupByBigDeptInDeptList(),
     //   ser.defaultDeptUser(),
@@ -224,4 +278,4 @@ class SelectPeopleViewModel {
   }
 }
 
-export const selectPeopleViewModel = new SelectPeopleViewModel()
+export const selectPeopleViewModel = new SelectPeopleViewModel();

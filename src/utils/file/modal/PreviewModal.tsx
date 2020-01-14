@@ -9,7 +9,8 @@ import {
   Select,
   Row,
   Col,
-  message
+  message,
+  Icon
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -24,6 +25,12 @@ const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   path: string;
   title: string;
+  modalWidth?: number;
+  attachmentList?: {
+    path: string,
+    name: string,
+    [p: string]: any
+  }[]
 }
 
 /** 设置规则 */
@@ -32,65 +39,112 @@ const rules: Rules = {
 };
 
 export default function PreviewModal(props: Props) {
-  let { visible, onCancel, path, title } = props;
+  let { visible, onCancel, path, title, modalWidth, attachmentList } = props;
   let [modalLoading, setModalLoading] = useState(false);
-  let [pdfPath, setPdfPath] = useState("");
+  let [filePath, setFilePath] = useState("")
+  let [fileList, setFileList] = useState([] as any[])
   let [noFile, setNoFile] = useState(false);
   let refVideo = React.createRef<HTMLVideoElement>();
+
+  const changeFilePath = (path: string) => {
+    let fileType = getFileType(path);
+    console.log(fileType, "fileType");
+    if (visible) {
+      if (fileType == "video" && refVideo.current) {
+        refVideo.current.play();
+      } else if (fileType == "img") {
+        setFilePath(path)
+      } else if (fileType == "word" || fileType == "excel") {
+        setModalLoading(true);
+        setNoFile(true);
+
+        if (appStore.isDev) {
+          path =
+            "/crNursing" +
+            (path.split("/crNursing")[1] || path.split("/crNursing")[0]);
+        }
+
+        httpNoError
+          .get(clearFilePath(path) + ".pdf")
+          .then(res => {
+            setNoFile(false);
+            setModalLoading(false);
+            setFilePath(clearFilePath(path) + ".pdf#toolbar=0");
+          })
+          .catch(res => {
+            setNoFile(true);
+            setModalLoading(false);
+          });
+      } else if (fileType == "pdf") {
+        setNoFile(false);
+        setFilePath(path)
+      }
+    } else {
+      if (fileType == "video" && refVideo.current) {
+        refVideo.current.pause();
+      }
+      setFilePath('')
+      setNoFile(true);
+      setModalLoading(false);
+    }
+  }
+
+  const formatFileList = () => {
+    let arr = [] as any[]
+    if (attachmentList) arr = attachmentList.concat()
+    let target = arr.find((item: any) => item.path === path)
+    if (!target) arr.unshift({
+      path: devPath(path),
+      type: clearFilePath(path),
+      title: title
+    })
+
+    let newArr = arr.map((item: any) => {
+      let newPath = devPath(item.path)
+      let pathArr = newPath.split('.')
+      return {
+        path: clearFilePath(newPath),
+        type: pathArr[pathArr.length - 1],
+        title: item.name || ''
+      }
+    })
+
+    setFileList(newArr)
+  }
 
   const onSave = async () => {
     onCancel();
   };
 
+  const devPath = (path: string) => {
+    if (appStore.isDev) return "/crNursing" +
+      (path.split("/crNursing")[1] || path.split("/crNursing")[0])
+    return path
+  }
+
   useLayoutEffect(() => {
-    if (path) {
-      let fileType = getFileType(path);
-      console.log(fileType, "fileType");
-      if (visible) {
-        if (fileType == "video" && refVideo.current) {
-          refVideo.current.play();
-        } else if (fileType == "img") {
-        } else if (fileType == "word") {
-          setModalLoading(true);
-          setNoFile(true);
-
-          // setNoFile(false);
-          // setModalLoading(false);
-          // setPdfPath(
-          //   "http://60.6.218.17:9093/crNursing/asset/print/archive//0001252165_1/eval_30128_1.pdf#toolbar=0"
-          // );
-          if (appStore.isDev) {
-            path =
-              "/crNursing" +
-              (path.split("/crNursing")[1] || path.split("/crNursing")[0]);
-          }
-
-          httpNoError
-            .get(clearFilePath(path) + ".pdf")
-            .then(res => {
-              setNoFile(false);
-              setModalLoading(false);
-              setPdfPath(clearFilePath(path) + ".pdf#toolbar=0");
-            })
-            .catch(res => {
-              setNoFile(true);
-              setModalLoading(false);
-            });
-        }
-      } else {
-        if (fileType == "video" && refVideo.current) {
-          refVideo.current.pause();
-        }
-        setNoFile(true);
-        setModalLoading(false);
-      }
+    if (path) changeFilePath(path)
+    if (visible && attachmentList) {
+      formatFileList()
+    } else {
+      setFileList([])
     }
   }, [visible]);
 
+  let currentItem = fileList.find((item: any) => {
+    return item.path == clearFilePath(filePath)
+  })
+
+  let currentTitle = title
+  let currentIndex = fileList.indexOf(currentItem)
+  if (currentItem && currentItem.title) currentTitle = currentItem.title
+
+  // console.log(filePath)
+
   return (
     <Modal
-      width={900}
-      title={title}
+      width={modalWidth || 900}
+      title={currentTitle}
       visible={visible}
       onCancel={onCancel}
       onOk={onSave}
@@ -99,24 +153,44 @@ export default function PreviewModal(props: Props) {
       centered
     >
       <Wrapper>
-        {getFileType(path) == "video" ? (
+        {getFileType(filePath) == "video" ? (
           <div className="video-con">
-            {visible && <video src={path} ref={refVideo} controls />}
+            {visible && <video src={filePath} ref={refVideo} controls />}
           </div>
-        ) : getFileType(path) == "img" ? (
+        ) : getFileType(filePath) == "img" ? (
           <div className="img-con">
-            <img src={path} alt="" />
+            <img src={filePath} alt="" />
           </div>
         ) : (
-          <Spin spinning={modalLoading}>
-            {!noFile ? (
-              <PdfPrview path={pdfPath} />
-            ) : (
-              <NoPrview loading={modalLoading} />
+              <Spin spinning={modalLoading}>
+                {!noFile ? (
+                  <PdfPrview path={filePath} />
+                ) : (
+                    <NoPrview loading={modalLoading} />
+                  )}
+              </Spin>
             )}
-          </Spin>
-        )}
       </Wrapper>
+      {fileList.length > 1 && <IndexSelect>
+        {currentIndex !== 0 && <div
+          className="arrow-left"
+          onClick={() => {
+            let idx = currentIndex - 1
+            let target = fileList[idx]
+            if (target) changeFilePath(`${target.path}.${target.type}`)
+          }}>
+          <Icon type="left-square" theme="filled" />
+        </div>}
+        {currentIndex < (fileList.length - 1) && <div
+          className="arrow-right"
+          onClick={() => {
+            let idx = currentIndex + 1
+            let target = fileList[idx]
+            if (target) changeFilePath(`${target.path}.${target.type}`)
+          }}>
+          <Icon type="right-square" theme="filled" />
+        </div>}
+      </IndexSelect>}
     </Modal>
   );
 }
@@ -158,3 +232,23 @@ function PdfPrview({ path }: { path: string }) {
     </Wrapper>
   );
 }
+
+const IndexSelect = styled.div`
+  &>div{
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    :hover{
+      color: #999;
+    }
+    &.arrow-left{
+      left: 75px;
+      font-size: 80px;
+    }
+    &.arrow-right{
+      right: 75px;
+      font-size: 80px;
+    }
+  }
+`

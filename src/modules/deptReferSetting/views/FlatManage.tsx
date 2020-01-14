@@ -8,6 +8,7 @@ import { ColumnProps } from 'antd/lib/table'
 import DeptSelect from 'src/components/DeptSelect'
 import { authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import service from 'src/services/api'
 
 import FlatManageEditModal from './../components/FlatManageEditModal'
 // import PreviewModal from './../components/PreviewModal'
@@ -102,11 +103,12 @@ export default observer(function DeptFileShare() {
       title: '操作',
       key: 'opetation',
       align: 'center',
-      width: 120,
+      width: 130,
       render: (text: string, record: any) => {
         return (
           <DoCon>
             <span onClick={() => handlePreview(record)}>预览</span>
+            <span onClick={() => handleDownload(record)}>下载</span>
             <span onClick={() => reUpload(record)} style={{ display: postAuth ? 'inline' : 'none' }}>修改</span>
             <span style={{ display: postAuth ? 'none' : 'inline', color: "#aaa" }}>修改</span>
             <span onClick={() => handleDelete(record)} style={{ display: postAuth ? 'inline' : 'none' }}>删除</span>
@@ -125,6 +127,11 @@ export default observer(function DeptFileShare() {
       title: record.manageType || '文件预览',
     })
   }
+
+  const handleDownload = (record: any) => {
+    service.commonApiService.getFileAndDown(`/crNursing/asset/flatManageSetting${record.filePath}`, record.fileName, true)
+  }
+
   const reUpload = (record: any) => {
     setEditParams({
       id: record.id,

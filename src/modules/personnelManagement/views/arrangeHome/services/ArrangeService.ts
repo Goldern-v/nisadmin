@@ -189,13 +189,27 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/schBalanceHour/getList`, obj);
   }
 
+  //标准工时设置列表
+  public schInitialHourGetList(obj: any) {
+    return this.post(`/schInitialHour/getList`, obj);
+  }
+
   //新增编辑结余数据 新
   public schBalanceHourSaveOrUpdate(obj: any) {
     return this.post(`/schBalanceHour/saveOrUpdate`, obj);
   }
+
+  //新增编辑标准工时
+  public schInitialHourSaveOrUpdate(obj: any) {
+    return this.post(`/schInitialHour/saveOrUpdate`, obj);
+  }
   //删除结余数据 新
   public schBalanceHourDelete(id: any) {
     return this.get(`/schBalanceHour/delete/${id}`);
+  }
+  //删除标准工时
+  public schInitialHourDelete(id: any) {
+    return this.get(`/schInitialHour/delete/${id}`);
   }
   //请假查询
   public schVacationGetList(obj: PageObj) {
@@ -223,6 +237,11 @@ export default class ArrangeService extends BaseApiService {
   // 期望排班删除
   public schExpectDelete(id: any) {
     return this.get(`/schExpect/delete/${id}`);
+  }
+
+  // 排班 查看标准工时
+  public schInitialHourGetListByDate(obj: any) {
+    return this.post(`/schInitialHour/getListByDate`, obj);
   }
 }
 

@@ -87,7 +87,7 @@ export default observer(function GroupAuditModal(props: Props) {
         <Col span={20}>
           <RadioGroup value={params.audit} onChange={(e: any) => setParams({ ...params, audit: e.target.value })}>
             <Radio value={true}>通过</Radio>
-            <Radio value={false}>退回</Radio>
+            {/* <Radio value={false}>退回</Radio> */}
           </RadioGroup>
         </Col>
       </Row>

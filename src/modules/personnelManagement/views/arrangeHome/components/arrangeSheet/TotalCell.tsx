@@ -24,9 +24,7 @@ export default observer(function TotalCell(props: Props) {
   }, 0);
 
   /** 如果存在一周7天都是 */
-
   let weekObj: any = {};
-
   for (let item of list) {
     if (sheetViewModal.weekArrangeNameList.includes(item.rangeName)) {
       let num = moment(item.workDate).week();
@@ -38,10 +36,17 @@ export default observer(function TotalCell(props: Props) {
       }
     }
   }
-
+  /** 标准周工时 */
+  sheetViewModal.standardTimeList;
   for (let key in weekObj) {
     if (weekObj[key].length == 7) {
-      total -= 15;
+      let real_week = sheetViewModal.getStandTime(
+        moment()
+          .week(Number(key))
+          .format("YYYY-MM-DD")
+      );
+      total -= (real_week / 5) * 2;
+      // total = real_week;
     }
   }
 

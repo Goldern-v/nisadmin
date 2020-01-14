@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Button } from "antd";
 import BaseTable from "src/components/BaseTable";
 import {
@@ -22,6 +22,7 @@ import { PageHeader, Place } from "src/components/common";
 import DeptSelect from "src/components/DeptSelect";
 import createModal from "src/libs/createModal";
 import SettingModal from "./modal/SettingModal";
+import AddMessageModal from "./modal/AddMessageModal";
 import { wardLogService } from "src/modules/wardLog/services/WardLogService";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import { useLayoutEffect } from "src/types/react";
@@ -32,14 +33,15 @@ import TextArea from "antd/lib/input/TextArea";
 import { fileDownload } from "src/utils/file/file";
 import { createContextMenu } from "src/modules/personnelManagement/views/arrangeHome/components/arrangeSheet/ContextMenu";
 import TdCell from "./components/TdCell";
+
 export interface Props {
   payload: any;
 }
 
 const throttler = throttle();
-
 let contextMenu = createContextMenu();
 const MemoContextMenu = React.memo(contextMenu.Component);
+
 export default observer(function HandoverRegister(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
   const [oldData, setOldData]: any = useState({});
@@ -60,27 +62,31 @@ export default observer(function HandoverRegister(props: Props) {
   const [total, setTotal] = useState(0);
   const settingModal = createModal(SettingModal);
 
+  const addMessageModal = useMemo(() => createModal(AddMessageModal), []);
+  const MemoAddMessageModal = addMessageModal.Component;
+
   const onContextMenu = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    record: any
   ) => {
     event.persist();
     (event as any).target.blur();
-    let target;
     event.preventDefault();
-    if ((event as any).target.tagName !== "TD") {
-      target = (event as any).target.parentNode;
-    } else {
-      target = (event as any).target;
-    }
+    let target = (event as any).target;
     let { left: x, top: y, width, height } = target.getBoundingClientRect();
-    console.log(x, y, "aaa");
     contextMenu.show(
       [
         {
           icon: require("../../images/提醒@2x.png"),
           label: "添加提醒",
           type: "text",
-          onClick: () => {}
+          onClick: () => {
+            addMessageModal.show({
+              registerCode,
+              record,
+              fieldEn: target.getAttribute("data-key")
+            });
+          }
         }
       ],
       {
@@ -208,6 +214,7 @@ export default observer(function HandoverRegister(props: Props) {
                   onSelect={() => updateDataSource()}
                 >
                   <TextArea
+                    data-key={item.itemCode}
                     autosize
                     style={{
                       lineHeight: 1.2,
@@ -238,26 +245,29 @@ export default observer(function HandoverRegister(props: Props) {
           dataIndex: item.itemCode,
           render(text: string, record: any, index: number) {
             return (
-              <AutoComplete
-                disabled={cellDisabled(record)}
-                dataSource={item.options ? item.options.split(";") : []}
-                defaultValue={text}
-                onChange={value => {
-                  record[item.itemCode] = value;
-                  record.modified = true;
-                }}
-                onBlur={() => updateDataSource()}
-              >
-                <TextArea
-                  autosize
-                  style={{
-                    lineHeight: 1.2,
-                    overflow: "hidden",
-                    padding: "9px 2px",
-                    textAlign: "center"
+              <TdCell>
+                <AutoComplete
+                  disabled={cellDisabled(record)}
+                  dataSource={item.options ? item.options.split(";") : []}
+                  defaultValue={text}
+                  onChange={value => {
+                    record[item.itemCode] = value;
+                    record.modified = true;
                   }}
-                />
-              </AutoComplete>
+                  onBlur={() => updateDataSource()}
+                >
+                  <TextArea
+                    data-key={item.itemCode}
+                    autosize
+                    style={{
+                      lineHeight: 1.2,
+                      overflow: "hidden",
+                      padding: "9px 2px",
+                      textAlign: "center"
+                    }}
+                  />
+                </AutoComplete>
+              </TdCell>
             );
           }
         };
@@ -711,9 +721,12 @@ export default observer(function HandoverRegister(props: Props) {
               });
             }}
             onRow={record => {
-              return appStore.isDev
+              return appStore.isDev && registerCode == "QCRG_02"
                 ? {
-                    onContextMenu: onContextMenu
+                    onContextMenu: (e: any) => {
+                      console.log(e, "eeeeeeeeee");
+                      onContextMenu(e, record);
+                    }
                   }
                 : {};
             }}
@@ -723,6 +736,7 @@ export default observer(function HandoverRegister(props: Props) {
         )}
       </TableCon>
       <settingModal.Component />
+      <MemoAddMessageModal />
       <MemoContextMenu />
     </Wrapper>
   );

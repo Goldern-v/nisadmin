@@ -21,6 +21,8 @@ import { qcOneSelectViewModal } from '../../QcOneSelectViewModal'
 import { fileDownload } from 'src/utils/file/file'
 import CommitModal from '../../components/CommitModal'
 import ArchiveModal from '../../components/ArchiveModal'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import createModal from 'src/libs/createModal'
 import { qcOneService } from './../../services/QcOneService'
 
 export interface Props { }
@@ -31,6 +33,7 @@ const TextArea = Input.TextArea
 export default observer(function PatientVisitQuarter() {
   const { history } = appStore
   const { wardCode, statusList, statusObj } = qcOneSelectViewModal
+  const previewModal = createModal(PreviewModal)
 
   const [_statusList, set_statusList] = useState(statusList.map((item: any) => {
     let disabled = true
@@ -273,15 +276,17 @@ export default observer(function PatientVisitQuarter() {
             handleChange('spotCheckRemark', idx, e.target.value)}
           onBlur={() => handleSave(record, idx, 'spotCheckRemark')} />
     },
-    // {
-    //   title: '操作',
-    //   width: 80,
-    //   render: (text: string, record: any, idx: number) => {
-    //     return <DoCon className="operate-group">
-    //       <span onClick={() => handleSave(record)}>保存</span>
-    //     </DoCon>
-    //   }
-    // }
+    {
+      key: 'operate',
+      title: '操作',
+      width: 100,
+      render: (text: string, record: any) => {
+        return <DoCon className="operate-group">
+          <span onClick={() => handleFileReview(record)}>附件</span>
+          <span onClick={() => handleExport(record)}>下载</span>
+        </DoCon>
+      }
+    }
   ]
 
   const handleSave = (record: any, idx?: any, key?: any) => {
@@ -547,6 +552,30 @@ export default observer(function PatientVisitQuarter() {
     }
   }
 
+  const handleFileReview = (record: any) => {
+    // setLoading(true)
+    patientVisitMonthService.getReport({
+      wardCode: record.wardCode,
+      year: record.year,
+      month: record.month,
+    }).then(res => {
+      // setLoading(false)
+      if (res.data && res.data.attachmentList && res.data.attachmentList.length > 0) {
+        let attachmentList = res.data.attachmentList.concat()
+        previewModal.show({
+          modalWidth: 1200,
+          path: attachmentList[0].path,
+          title: attachmentList[0].name,
+          attachmentList
+        })
+      } else {
+        message.warn('未上传附件')
+      }
+    }, err => {
+      // setLoading(false)
+    })
+  }
+
   useEffect(() => {
     qcOneService.bigDeptListSelf().then(res => {
       if (res.data) setBigDeptList(res.data)
@@ -690,6 +719,7 @@ export default observer(function PatientVisitQuarter() {
         setArchiveVisible(false)
         getList(query)
       }} />
+    <previewModal.Component />
   </Wrapper>
 })
 
