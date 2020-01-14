@@ -281,16 +281,17 @@ export default observer(function Analysis() {
   }
 
   const handleAlert = () => {
-    if (!query.groupRoleCode) {
-      message.warning('未选择质控组')
-      return
-    }
+    // if (!query.groupRoleCode) {
+    //   message.warning('未选择质控组')
+    //   return
+    // }
     let month = query.indexInType
     let year = query.year.format('YYYY')
     if (month.length == 1) month = '0' + month
     let dateStr = `${year}-${month}-01`
     let beginDate = moment(dateStr)
     let endDate = moment(dateStr).add(1, 'M').subtract(1, 'd')
+    let groupRoleCode = ''
 
     const content = <ModalCon>
       <div>
@@ -304,17 +305,34 @@ export default observer(function Analysis() {
         <span>结束时间: </span>
         <DatePicker value={endDate} allowClear={false} onChange={(_moment) => endDate = _moment} />
       </div>
+      <div>
+        <span>质 控 组: </span>
+        <Select
+          style={{ width: '171px' }}
+          onChange={(code: any) => groupRoleCode = code}>
+          {groupRoleListSelf.map((item: any, idx: number) =>
+            <Option
+              value={item.code}
+              key={idx}>
+              {item.name}
+            </Option>)}
+        </Select>
+      </div>
     </ ModalCon>
 
     Modal.confirm({
       title: '推送科室未审核记录',
       content: content,
       onOk: () => {
+        if (groupRoleCode = '') {
+          message.warning('未选择质控组')
+          return
+        }
         setTableLoading(true)
         api.push({
           beginDate: beginDate.format('YYYY-MM-DD'),
           endDate: endDate.format('YYYY-MM-DD'),
-          groupRoleCode: query.groupRoleCode
+          groupRoleCode
         })
           .then(res => {
             setTableLoading(false)
@@ -419,7 +437,11 @@ export default observer(function Analysis() {
             </Button>{' '}
           </div>
           <div className="item">
-            <Button onClick={handleAlert} title="推送科室未审核记录" type="primary">
+            <Button
+              disabled={groupRoleListSelf.length <= 0}
+              onClick={handleAlert}
+              title="推送科室未审核记录"
+              type="primary">
               <Icon type="bell" style={{ fontSize: '16px' }} />
             </Button>
           </div>
