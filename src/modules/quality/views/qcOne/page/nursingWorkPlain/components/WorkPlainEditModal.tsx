@@ -14,7 +14,7 @@ import moment from 'moment'
 const Option = Select.Option
 
 export interface Props {
-  canEdit?: Boolean,
+  canEdit?: boolean,
   title?: string,
   onOk?: Function,
   onCancel?: Function,
@@ -230,7 +230,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
         <Row>
           <Col span={2}>科室:</Col>
           <Col span={20}>
-            <Input disabled value={wardName} />
+            <Input readOnly={true} disabled={canEdit} value={wardName} />
           </Col>
         </Row>
         <Row>
@@ -238,6 +238,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={20}>
             <Select
               value={editQuery.type}
+              className={canEdit ? '' : 'read-only'}
               disabled={!canEdit}
               onChange={(type: string) => {
                 let newEditQuery = { ...editQuery, type }
@@ -261,6 +262,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={20}>
             <YearPicker
               allowClear={false}
+              className={canEdit ? '' : 'read-only'}
               disabled={!canEdit}
               value={editQuery.year ? moment(`${editQuery.year}-01-01`) : null}
               onChange={(_moment: any) =>
@@ -273,9 +275,9 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={20}>
             <Select
               value={editQuery.month}
+              className={canEdit ? 'month-select' : ' month-select read-only'}
               disabled={editQuery.type == '3' || !canEdit}
-              onChange={(month: string) => setEditQuery({ ...editQuery, month })}
-              className="month-select">
+              onChange={(month: string) => setEditQuery({ ...editQuery, month })}>
               {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
             </Select>
           </Col>
@@ -284,6 +286,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={2}>周数:</Col>
           <Col span={20}>
             <Select
+              className={canEdit ? '' : 'read-only'}
               disabled={editQuery.type != '2' || !canEdit}
               value={editQuery.indexInType}
               onChange={(indexInType: string) => setEditQuery({ ...editQuery, indexInType })}>
@@ -301,7 +304,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
           <Col span={2}>内容:</Col>
           <Col span={20}>
             <Input.TextArea
-              disabled={!canEdit}
+              readOnly={!canEdit}
               value={editQuery.content}
               onChange={(e: any) => setEditQuery({ ...editQuery, content: e.target.value })} rows={10} />
           </Col>
@@ -455,6 +458,14 @@ const Wrapper = styled.div`
     }
     .ant-select {
       width: 100%;
+    }
+  }
+  .ant-select-disabled.read-only .ant-select-selection{
+    background: #fff!important;
+  }
+  .read-only.ant-calendar-picker{
+    input{
+      background:#fff!important;
     }
   }
 `

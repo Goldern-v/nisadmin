@@ -9,11 +9,12 @@ export interface Props {
   onChange?: any
   style?: any
   allowClear?: any,
-  disabled?: boolean
+  disabled?: boolean,
+  className?: string
 }
 
 export default function YearPicker(props: Props) {
-  let { value, onChange } = props
+  let { value, onChange, className } = props
   const [isOpen, setIsOpen] = useState(false)
   const [time, setTime]: any = useState(value)
 
@@ -23,6 +24,7 @@ export default function YearPicker(props: Props) {
 
   return (
     <DatePicker
+      className={className}
       style={props.style || {}}
       allowClear={props.allowClear !== undefined ? props.allowClear : true}
       value={time}

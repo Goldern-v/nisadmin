@@ -274,7 +274,7 @@ const OperateResultReview = lazy(() => import("src/modules/continuingEdu/views/t
 const PracticeResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/practiceResultReview/PracticeResultReview"))
 const SimulateResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/simulateResultReview/SimulateResultReview"))
 //学习培训查看信息
-const TraningInfoReview = lazy(() => import("src/modules/continuingEdu/views/traningInfoReview/TraningInfoReview"))
+const TrainingInfoReview = lazy(() => import("src/modules/continuingEdu/views/trainingInfoReview/TrainingInfoReview"))
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -335,7 +335,7 @@ const routes: RouteItem[] = [
   setLayout("/operateResultReview", OperateResultReview, layouts.MainLayout),
   setLayout("/practiceResultReview", PracticeResultReview, layouts.MainLayout),
   setLayout("/simulateResultReview", SimulateResultReview, layouts.MainLayout),
-  setLayout("/traningInfoReview", TraningInfoReview, layouts.MainLayout),
+  setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
   {
     path: "/trainingExamination",
     redirect: "/trainingExamination/人员管理"

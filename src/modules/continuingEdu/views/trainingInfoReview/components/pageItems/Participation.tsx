@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { spawn } from 'child_process'
+
 export interface Props {
   data?: any
 }

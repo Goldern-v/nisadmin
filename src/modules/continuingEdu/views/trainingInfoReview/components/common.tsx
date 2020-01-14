@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 
 export const Wrapper = styled.div`
   height: 100%;
+  overflow: hidden;
 `
 
 export const NavCon = styled.div`
@@ -47,6 +48,12 @@ export const ButtonGroups = styled.div`
   position: absolute;
   right: 15px;
   top: 35px;
+  button{
+      margin-right: 5px;
+    :last-of-type{
+      margin-right:0;
+    }
+  }
 `
 export const MainPannel = styled.div`
   height: calc(100vh - 150px);

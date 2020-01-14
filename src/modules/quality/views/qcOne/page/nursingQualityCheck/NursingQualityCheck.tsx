@@ -344,6 +344,27 @@ export default observer(function NursingQualityCheck() {
     return () => { }
   })
 
+  const formatTableData = () => {
+    let classList = ['while', 'gray']
+    let idx = 0
+    let currentDate = ''
+
+    let viewList = tableData.map((item: any) => {
+      if (!currentDate) currentDate = item.recordDate
+
+      if (currentDate !== item.recordDate) {
+        idx = idx ? 0 : 1
+        currentDate = item.recordDate
+      }
+      return {
+        ...item,
+        rowClass: classList[idx]
+      }
+    })
+
+    return viewList
+  }
+
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
@@ -407,11 +428,12 @@ export default observer(function NursingQualityCheck() {
     </HeaderCon>
     <TableWrapper>
       <BaseTable
+        rowClassName={(record: any, index: number) => record.rowClass}
         type={['index', 'fixedIndex']}
         loading={loading}
         surplusHeight={225}
         surplusWidth={200}
-        dataSource={tableData}
+        dataSource={formatTableData()}
         pagination={{
           current: query.pageIndex,
           pageSize: query.pageSize,
@@ -451,6 +473,12 @@ const CreateWrapper = styled.div`
 const TableWrapper = styled(TabledCon)`
 td{
   word-break: break-all;
+}
+.ant-table-row{
+  &.white{}
+  &.gray{
+    background: #eee;
+  }
 }
 `
 

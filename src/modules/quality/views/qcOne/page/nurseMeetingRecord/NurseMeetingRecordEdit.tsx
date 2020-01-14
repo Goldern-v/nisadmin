@@ -204,13 +204,13 @@ export default observer(function NurseMeetingRecordEdit() {
 
   useEffect(() => {
     commonApi
-      .userDictInfo(wardCode, { getAllRelUser: true })
+      .findAllNurseByPerDept()
       .then(res => {
         if (res.data && res.data instanceof Array) {
           setNurseList(res.data.map((item: any) => {
             return {
-              empName: item.name,
-              empNo: item.code
+              empName: item.empName,
+              empNo: item.empNo
             }
           }))
         }

@@ -177,4 +177,9 @@ export default class CommonApiService extends BaseApiService {
       password
     });
   }
+
+  //获取用户权限科室的所有护士
+  public findAllNurseByPerDept() {
+    return this.get('/user/findAllNurseByPerDept')
+  }
 }
