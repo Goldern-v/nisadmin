@@ -17,6 +17,7 @@ import BaseApiService from "./BaseApiService";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores";
 import qs from "qs";
+import axios from "axios"
 type EntityType = "mail";
 export default class CommonApiService extends BaseApiService {
   // 0.获取护理单元列表
@@ -123,15 +124,21 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => {})
+      onUploadProgress: onUploadProgress || (() => { })
     });
   }
   /** 下载文件并导出 */
-  public getFileAndDown(path: string, name?: string) {
+  public getFileAndDown(path: string, name?: string, needAxios?: boolean) {
+    //针对需要下载原始路径的文件
+    if (needAxios) return axios.get(path, { responseType: "blob" }).then(res => {
+      fileDownload(res, name);
+    });
+
     return this.get(path, { responseType: "blob" }).then(res => {
       fileDownload(res, name);
     });
   }
+
   /** 根据工号获取完整信息 */
   public getNurseInformation(empNo: any) {
     if (appStore.HOSPITAL_ID == "hj") {
