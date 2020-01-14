@@ -324,7 +324,7 @@ export default observer(function Analysis() {
       title: '推送科室未审核记录',
       content: content,
       onOk: () => {
-        if (groupRoleCode = '') {
+        if (groupRoleCode == '') {
           message.warning('未选择质控组')
           return
         }
