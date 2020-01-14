@@ -18,11 +18,12 @@ export default function RightContent(props: Props) {
   const [auth, setAuth] = useState(Boolean); //权限控制
   const PreviewModalWrapper = createModal(PreviewModal); //预览弹窗
   const [searchText, setSearchText] = useState(""); // 搜索内容
-  const [editVisible, setEditVisible] = useState(false); // 判断添加修改
-  const [editParams, setEditParams] = useState({} as any); // 保存入参
+  const [editVisible, setEditVisible] = useState(false);
+  const [editParams, setEditParams] = useState({} as any);
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
   const [totalCount, setTotalCount] = useState(Number); // 总页码
+  const [effect, setEffect] = useState(true);
   const [query, setQuery] = useState({
     type: getTitle,
     fileName: "",
@@ -30,22 +31,29 @@ export default function RightContent(props: Props) {
     pageIndex: 1
   } as any);
 
+  useLayoutEffect(() => {
+    setEffect(false);
+  }, []);
+
   // 初始化
   useEffect(() => {
+    setEffect(true);
     getTableData();
   }, [query]);
 
   // 查询
   const getTableData = () => {
-    setLoading(true);
-    userManualApi.getData(query).then(res => {
-      setLoading(false);
-      if (res.data.data) {
-        setTableList(res.data.data.list || []);
-        setTotalCount(res.data.data.totalCount || 0);
-        setAuth(res.data.role || false);
-      }
-    });
+    if (effect) {
+      setLoading(true);
+      userManualApi.getData(query).then(res => {
+        setLoading(false);
+        if (res.data.data) {
+          setTableList(res.data.data.list || []);
+          setTotalCount(res.data.data.totalCount || 0);
+          setAuth(res.data.role || false);
+        }
+      });
+    }
   };
 
   // 输入查询
@@ -107,7 +115,6 @@ export default function RightContent(props: Props) {
 
   // 预览
   const handlePreview = (record: any) => {
-    console.log(record);
     PreviewModalWrapper.show({
       url: `/crNursing/asset/userManual${record.path}`,
       name: record.fileName,
@@ -201,7 +208,7 @@ export default function RightContent(props: Props) {
         <RightIcon>
           <Input
             placeholder="请输入文件名称关键字搜索"
-            style={{ width: 230 }}
+            style={{ width: "230px", marginLeft: "10px" }}
             value={searchText}
             onChange={onChangeSearchText}
           />

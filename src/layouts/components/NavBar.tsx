@@ -174,6 +174,18 @@ export default observer(function NavBar(props: any) {
             </Tooltip>
           </UserManual>
         )}
+        {appStore.isDev && (
+          <Tooltip placement="top" title="平台使用手册目录设置">
+            <span
+              className="setting"
+              onClick={() => {
+                appStore.history.push("/SetUserManual");
+              }}
+            >
+              设置
+            </span>
+          </Tooltip>
+        )}
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
         )}
@@ -202,6 +214,10 @@ const Wrapper = styled.div`
     top: -1px;
     height: 2px;
     background: #fff;
+  }
+  .setting {
+    cursor: pointer;
+    margin-right: 5px;
   }
 `;
 const LogoCon = styled.div`
@@ -282,6 +298,6 @@ const UserManual = styled.span`
     height: 15px;
     position: absolute;
     bottom: -2px;
-    left: -28px;
+    left: -25px;
   }
 `;

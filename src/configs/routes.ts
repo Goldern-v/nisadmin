@@ -144,6 +144,10 @@ const ImportView = lazy(() =>
 const UserManualRouter = lazy(() =>
   import("src/modules/UserManual/UserManualRouter")
 );
+// 平台使用手册目录设置
+const SetUserManual = lazy(() =>
+  import("src/modules/SetUserManual/SetUserManual")
+);
 
 //病区文件
 const DeptFileShareCatalogSetting = lazy(() =>
@@ -267,9 +271,21 @@ const nightChargingReport = lazy(() =>
 );
 
 //学习培训查看结果
-const StudyResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview.tsx"))
-const TrainingResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/trainingResultReview/TrainingResultReview.tsx"))
-const TestingResultReview = lazy(() => import("src/modules/continuingEdu/views/trainingResult/views/testingResultReview/TestingResultReview.tsx"))
+const StudyResultReview = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview.tsx"
+  )
+);
+const TrainingResultReview = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/trainingResult/views/trainingResultReview/TrainingResultReview.tsx"
+  )
+);
+const TestingResultReview = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/trainingResult/views/testingResultReview/TestingResultReview.tsx"
+  )
+);
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -490,6 +506,10 @@ const routes: RouteItem[] = [
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
+  setLayout("/SetUserManual", SetUserManual, layouts.BreadcrumbLayout, [
+    { name: "平台使用手册", link: "/UserManual/Guidance" },
+    { name: "目录设置", link: "" }
+  ]),
 
   /**一级质控 */
   setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
