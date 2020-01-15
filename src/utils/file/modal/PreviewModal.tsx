@@ -12,6 +12,7 @@ import {
   message,
   Icon
 } from "antd";
+import reactZmage from 'react-zmage'
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
@@ -80,6 +81,7 @@ export default function PreviewModal(props: Props) {
             setFilePath(clearFilePath(path) + ".pdf#toolbar=0");
           })
           .catch(res => {
+            setFilePath(clearFilePath(path) + ".pdf#toolbar=0");
             setNoFile(true);
             setModalLoading(false);
           });
@@ -169,7 +171,10 @@ export default function PreviewModal(props: Props) {
           </div>
         ) : getFileType(filePath) == "img" ? (
           <div className="img-con">
-            <img src={filePath} alt="" />
+            <img
+              src={filePath}
+              alt=""
+              onClick={() => reactZmage.browsing({ src: filePath, backdrop: 'rgba(0,0,0,0.3)' })} />
           </div>
         ) : (
               <Spin spinning={modalLoading}>
@@ -183,8 +188,9 @@ export default function PreviewModal(props: Props) {
       </Wrapper>
       {fileList.length > 1 && <IndexSelect>
         {currentIndex !== 0 && <div
-          className="arrow-left"
+          className={modalLoading ? "arrow-left disabled" : "arrow-left"}
           onClick={() => {
+            if (modalLoading) return
             let idx = currentIndex - 1
             let target = fileList[idx]
             if (target) changeFilePath(`${target.path}.${target.type}`)
@@ -192,8 +198,9 @@ export default function PreviewModal(props: Props) {
           <Icon type="left-square" theme="filled" />
         </div>}
         {currentIndex < (fileList.length - 1) && <div
-          className="arrow-right"
+          className={modalLoading ? "arrow-right disabled" : "arrow-right"}
           onClick={() => {
+            if (modalLoading) return
             let idx = currentIndex + 1
             let target = fileList[idx]
             if (target) changeFilePath(`${target.path}.${target.type}`)
@@ -207,7 +214,8 @@ export default function PreviewModal(props: Props) {
 const Wrapper = styled.div`
   video {
     width: 100%;
-    height: calc(100vh - 198px);
+    height: calc(80vh - 60px);
+    min-height: 400px;
   }
   .img-con {
     height: 60vh;
@@ -252,6 +260,10 @@ const IndexSelect = styled.div`
     cursor: pointer;
     :hover{
       color: #999;
+    }
+    &.disabled{
+      color: #777!important;
+      cursor: not-allowed;
     }
     &.arrow-left{
       left: 75px;
