@@ -7,6 +7,7 @@ import loginViewModel from "./LoginViewModel";
 import service from "src/services/api";
 import { appStore } from "src/stores";
 import { Button } from "src/vendors/antd";
+import { AutoComplete } from "antd";
 
 export interface Props extends RouteComponentProps {}
 
@@ -14,43 +15,43 @@ export default function LoginView() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
-  const [isSaveUserName, setIsSaveUserName] = useState(false);
+
   const [isSavePassword, setIsSavePassword] = useState(false);
   let userRef: any = useRef<HTMLInputElement>();
   let passwordRef: any = useRef<HTMLInputElement>();
 
-  useEffect(() => {});
-  useLayoutEffect(() => {
-    userRef.current.focus();
-    userRef.current.select();
-    if (localStorage.userNameCache) {
-      setUsername(localStorage.userNameCache || "");
-      setIsSaveUserName(true);
-      if (localStorage.passwordNameCache) {
-        setPassword(localStorage.passwordNameCache || "");
-        setIsSavePassword(true);
-      }
+  useEffect(() => {
+    if (localStorage.lastLoginUserName) {
+      setUsername(localStorage.lastLoginUserName);
     }
   }, []);
-  function checkClick() {
-    setIsSaveUserName(!isSaveUserName);
-  }
+
+  useEffect(() => {
+    const userLoginInfoMap = JSON.parse(localStorage.userLoginInfoMap || "{}");
+    if (username == "") {
+      setPassword("");
+    }
+    if (userLoginInfoMap[username]) {
+      setPassword(userLoginInfoMap[username]);
+    }
+  }, [username]);
+
+  useLayoutEffect(() => {}, []);
+
   function login() {
     setLoginLoading(true);
 
     service.authApiService
       .login(username, password)
       .then(() => {
-        if (isSaveUserName) {
-          localStorage.userNameCache = username;
-          if (isSavePassword) {
-            localStorage.passwordNameCache = password;
-          } else {
-            localStorage.passwordNameCache = "";
-          }
-        } else {
-          localStorage.userNameCache = "";
-          localStorage.passwordNameCache = "";
+        if (isSavePassword) {
+          const userLoginInfoMap = JSON.parse(
+            localStorage.userLoginInfoMap || "{}"
+          );
+          userLoginInfoMap[username] = password;
+          localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap);
+          /** 最后登录的用户 */
+          localStorage.lastLoginUserName = username;
         }
         setLoginLoading(false);
       })
@@ -69,6 +70,16 @@ export default function LoginView() {
       login();
     }
   };
+
+  const userLoginInfoMap = JSON.parse(localStorage.userLoginInfoMap || "{}");
+  const keys = Object.keys(userLoginInfoMap);
+  let userNameDataSource: any = [];
+  if (!username) {
+    userNameDataSource = keys;
+  } else {
+    userNameDataSource = keys.filter((item: string) => item.includes(username));
+  }
+
   return (
     <Wrapper>
       <BgImg>
@@ -82,14 +93,13 @@ export default function LoginView() {
 
           <div className="TextItem">
             <div className="iconfont NameIcon">&#xe648;</div>
-
-            <input
-              onChange={e => setUsername(e.target.value)}
-              type="text"
+            {/* {JSON.stringify(userNameDataSource)} */}
+            <AutoComplete
+              style={{ width: "100%", borderRadius: 0 }}
+              onChange={(value: any) => setUsername(value)}
               placeholder="用户名"
-              onKeyDown={userEnter}
               value={username}
-              ref={userRef}
+              dataSource={userNameDataSource}
             />
           </div>
           <div style={{ height: "2px" }} />
@@ -105,20 +115,9 @@ export default function LoginView() {
             />
           </div>
           <div style={{ display: "flex" }}>
-            <div className="CheckItem" onClick={checkClick}>
-              <input
-                type="checkbox"
-                onChange={() => {}}
-                checked={isSaveUserName}
-              />
-              <label>记住账号</label>
-            </div>
             <div
               className="CheckItem"
               onClick={() => {
-                if (!isSavePassword) {
-                  setIsSaveUserName(true);
-                }
                 setIsSavePassword(!isSavePassword);
               }}
             >
@@ -127,7 +126,7 @@ export default function LoginView() {
                 onChange={() => {}}
                 checked={isSavePassword}
               />
-              <label>记住密码</label>
+              <label>记住账号密码</label>
             </div>
           </div>
 
@@ -211,6 +210,12 @@ const BoxInput = styled.div`
       left: 9px;
       z-index: 2;
     }
+    .ant-select-selection__placeholder {
+      margin-left: 30px !important;
+    }
+    input {
+      font-size: 14px !important;
+    }
   }
   input[type="text"] {
     position: relative;
@@ -223,9 +228,11 @@ const BoxInput = styled.div`
     height: 35px;
     outline: none;
     transition: box-shadow 0.2s;
+    border-radius: 0;
   }
   input[type="password"] {
     position: relative;
+    padding: 0;
     padding-left: 30px;
     background: #fff;
     box-sizing: border-box;
