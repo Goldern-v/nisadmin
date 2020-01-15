@@ -22,18 +22,18 @@ import { arrangeService } from "../../../services/ArrangeService";
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
-  onOkCallBack?: () => {};
+  onOkCallBack?: () => void;
 }
 
 /** 设置规则 */
 const rules: Rules = {
   startDate: val => !!val || "请填写开始日期",
-  initialHour: val => !!val || "请填写班次工时",
+  initialHour: val => !!val || "请填写标准工时",
   depts: val => !!val || "请选择科室"
 };
 
 export default function LotChangeInitTimeModal(props: Props) {
-  const [title, setTitle] = useState("批量修改班次工时");
+  const [title, setTitle] = useState("批量修改标准工时");
   const [deptList, setDeptList] = useState([]);
 
   let { visible, onCancel } = props;
@@ -95,7 +95,7 @@ export default function LotChangeInitTimeModal(props: Props) {
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`班次工时`} name="initialHour" required>
+            <Form.Field label={`标准工时`} name="initialHour" required>
               <InputNumber />
             </Form.Field>
           </Col>

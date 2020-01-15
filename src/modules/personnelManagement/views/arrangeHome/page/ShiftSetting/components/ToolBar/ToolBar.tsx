@@ -26,7 +26,6 @@ import createModal from "src/libs/createModal";
 import AddShiftModal from "../../modal/AddShiftModal";
 import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
 import DeptSelect from "src/modules/statistic/common/DeptSelect";
-import LotChangeInitTimeModal from "../../modal/LotChangeInitTimeModal";
 
 // import emitter from 'src/libs/ev'
 
@@ -40,8 +39,6 @@ export default function ToolBar() {
       wh: () => AddShiftModal_wh
     })
   );
-
-  const lotChangeInitTimeModal = createModal(LotChangeInitTimeModal);
 
   let dataSource = ["A班", "P班", "N班", "休假", "进修学习", "其他123"];
   // let bangci = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
@@ -473,21 +470,8 @@ export default function ToolBar() {
         >
           返回
         </Button> */}
-        {authStore.isAdmin && (
-          <Button
-            onClick={() =>
-              lotChangeInitTimeModal.show({
-                onOkCallBack: () => emitter.emit("更新班次列表")
-              })
-            }
-            style={{ marginLeft: 3, marginRight: 3 }}
-          >
-            批量修改班次工时
-          </Button>
-        )}
       </Wrapper>
       <addShiftModal.Component />
-      <lotChangeInitTimeModal.Component />
     </div>
   );
 }

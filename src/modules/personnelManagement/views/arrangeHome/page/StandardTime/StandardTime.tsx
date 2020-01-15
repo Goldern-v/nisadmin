@@ -26,12 +26,14 @@ import moment from "moment";
 import createModal from "src/libs/createModal";
 import EditStandardTimeModal from "./modal/EditStandardTimeModal";
 import { globalModal } from "src/global/globalModal";
+import LotChangeInitTimeModal from "./modal/LotChangeInitTimeModal";
 export interface Props {}
 export default observer(function StandardTime() {
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
 
   const editStandardTimeModal = createModal(EditStandardTimeModal);
+  const lotChangeInitTimeModal = createModal(LotChangeInitTimeModal);
 
   const columns: ColumnProps<any>[] = [
     {
@@ -134,6 +136,18 @@ export default observer(function StandardTime() {
         >
           添加
         </Button>
+        {authStore.isAdmin && (
+          <Button
+            onClick={() =>
+              lotChangeInitTimeModal.show({
+                onOkCallBack: getData
+              })
+            }
+            style={{ marginLeft: 3, marginRight: 3 }}
+          >
+            批量修改班次工时
+          </Button>
+        )}
       </PageHeader>
       <BaseTable
         loading={pageLoading}
@@ -144,6 +158,7 @@ export default observer(function StandardTime() {
         surplusHeight={200}
       />
       <editStandardTimeModal.Component />
+      <lotChangeInitTimeModal.Component />
     </Wrapper>
   );
 });
