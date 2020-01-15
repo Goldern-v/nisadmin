@@ -44,14 +44,22 @@ export default function PreviewModal(props: Props) {
   let [filePath, setFilePath] = useState("")
   let [fileList, setFileList] = useState([] as any[])
   let [noFile, setNoFile] = useState(false);
-  let refVideo = React.createRef<HTMLVideoElement>();
+  // let refVideo = React.createRef<HTMLVideoElement>();
 
-  const changeFilePath = (path: string) => {
+  const changeFilePath = (path: string, _visible?: boolean) => {
+    if (_visible === undefined) _visible = visible
+    console.log(_visible)
     let fileType = getFileType(path);
     console.log(fileType, "fileType");
-    if (visible) {
-      if (fileType == "video" && refVideo.current) {
-        refVideo.current.play();
+    if (_visible) {
+      if (fileType == "video") {
+        setFilePath(path)
+        setTimeout(() => {
+          let videoRef = document.getElementById('videoRef') as HTMLVideoElement
+          console.log(videoRef)
+          videoRef.play()
+        }, 500)
+        // refVideo.current.play();
       } else if (fileType == "img") {
         setFilePath(path)
       } else if (fileType == "word" || fileType == "excel") {
@@ -80,8 +88,10 @@ export default function PreviewModal(props: Props) {
         setFilePath(path)
       }
     } else {
-      if (fileType == "video" && refVideo.current) {
-        refVideo.current.pause();
+      let videoRef = document.getElementById('videoRef') as HTMLVideoElement
+      if (fileType == "video" && videoRef) {
+        console.log(videoRef)
+        videoRef.pause();
       }
       setFilePath('')
       setNoFile(true);
@@ -123,7 +133,7 @@ export default function PreviewModal(props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (path) changeFilePath(path)
+    if (path) changeFilePath(path, visible)
     if (visible && attachmentList) {
       formatFileList()
     } else {
@@ -155,7 +165,7 @@ export default function PreviewModal(props: Props) {
       <Wrapper>
         {getFileType(filePath) == "video" ? (
           <div className="video-con">
-            {visible && <video src={filePath} ref={refVideo} controls />}
+            {visible && <video src={filePath} id="videoRef" controls />}
           </div>
         ) : getFileType(filePath) == "img" ? (
           <div className="img-con">
@@ -197,6 +207,7 @@ export default function PreviewModal(props: Props) {
 const Wrapper = styled.div`
   video {
     width: 100%;
+    height: calc(100vh - 198px);
   }
   .img-con {
     height: 60vh;
