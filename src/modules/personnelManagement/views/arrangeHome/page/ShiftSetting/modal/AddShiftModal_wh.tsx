@@ -113,9 +113,9 @@ export default function AddShiftModal(props: Props) {
   const onFormChange = (name: string, value: any, form: Form<any>) => {
     if (name == "shiftType" && value == "休假") {
       form.setField("workTime", "");
-      form.setField("effectiveTime", "");
-      form.setField("settingNightHour", "");
-      form.setField("settingMorningHour", "");
+      form.setField("effectiveTime", 0);
+      form.setField("settingNightHour", 0);
+      form.setField("settingMorningHour", 0);
     }
   };
   return (

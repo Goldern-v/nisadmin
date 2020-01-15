@@ -354,7 +354,8 @@ class SheetViewModal {
         /** 假如是跨年，公休基数设置为1 */
 
         if (
-          _sheetTableData[i].settingDtos[j].rangeName == "公休" &&
+          (_sheetTableData[i].settingDtos[j].rangeName == "公休" ||
+            _sheetTableData[i].settingDtos[j].rangeName == "病假") &&
           _sheetTableData[i].settingDtos[j].workDate.includes("-01-01")
         ) {
           if (!_sheetTableData[i].settingDtos[j].rangeNameCodeList) {

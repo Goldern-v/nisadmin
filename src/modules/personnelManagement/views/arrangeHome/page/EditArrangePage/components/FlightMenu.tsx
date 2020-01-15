@@ -43,7 +43,7 @@ export const resetArrangeCount = (userId: number, arrangeName: string) => {
         if (!item) return;
 
         if (
-          item!.rangeName == "公休" &&
+          (item!.rangeName == "公休" || item!.rangeName == "病假") &&
           (item!.workDate || "").includes("-01-01")
         ) {
           if (!item.rangeNameCodeList) {

@@ -50,11 +50,13 @@ export default function LotChangeInitTimeModal(props: Props) {
       initialHour: value.initialHour
     }));
     /** 保存接口 */
-    arrangeService.schInitialHourSaveOrUpdateList({ list }).then((res: any) => {
-      message.success("保存成功");
-      props.onOkCallBack && props.onOkCallBack();
-      onCancel();
-    });
+    arrangeService
+      .schInitialHourSaveOrUpdateList({ lists: list })
+      .then((res: any) => {
+        message.success("保存成功");
+        props.onOkCallBack && props.onOkCallBack();
+        onCancel();
+      });
   };
 
   useLayoutEffect(() => {
