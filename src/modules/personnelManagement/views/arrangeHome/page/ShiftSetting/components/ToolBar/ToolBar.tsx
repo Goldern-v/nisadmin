@@ -1,22 +1,32 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 // import { Link } from 'react-router-dom'
 
 // import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
 
-import emitter from 'src/libs/ev'
+import emitter from "src/libs/ev";
 
-import { Button, message, Modal, Form, Input, AutoComplete, TimePicker, Switch } from 'antd'
+import {
+  Button,
+  message,
+  Modal,
+  Form,
+  Input,
+  AutoComplete,
+  TimePicker,
+  Switch
+} from "antd";
 // import { authStore, scheduleStore } from 'src/stores'
-import service from 'src/services/api'
-import moment from 'moment'
-import { scheduleStore, authStore, appStore } from 'src/stores'
-import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
-import createModal from 'src/libs/createModal'
-import AddShiftModal from '../../modal/AddShiftModal'
-import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
-import DeptSelect from 'src/modules/statistic/common/DeptSelect'
+import service from "src/services/api";
+import moment from "moment";
+import { scheduleStore, authStore, appStore } from "src/stores";
+import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
+import createModal from "src/libs/createModal";
+import AddShiftModal from "../../modal/AddShiftModal";
+import AddShiftModal_wh from "../../modal/AddShiftModal_wh";
+import DeptSelect from "src/modules/statistic/common/DeptSelect";
+import LotChangeInitTimeModal from "../../modal/LotChangeInitTimeModal";
 
 // import emitter from 'src/libs/ev'
 
@@ -29,11 +39,13 @@ export default function ToolBar() {
       hj: () => AddShiftModal,
       wh: () => AddShiftModal_wh
     })
-  )
+  );
 
-  let dataSource = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
+  const lotChangeInitTimeModal = createModal(LotChangeInitTimeModal);
+
+  let dataSource = ["A班", "P班", "N班", "休假", "进修学习", "其他123"];
   // let bangci = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
-  let dataSourceColor = ['red', 'green', 'blue', 'yellow', 'black', 'gray']
+  let dataSourceColor = ["red", "green", "blue", "yellow", "black", "gray"];
 
   // let dataSourceColorCN = ['红色', '绿色', '蓝色', '黄色', '黑色', '灰色']
 
@@ -54,88 +66,88 @@ export default function ToolBar() {
   //   黑色: 'black',
   //   灰色: 'gray'
   // }
-  const [bangci, setBangci]: [any, any] = useState([])
-  const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([])
-  const [colorMap, setColorMap]: [any, any] = useState({})
-  const [colorMapCN, setColorMapCN]: [any, any] = useState({})
+  const [bangci, setBangci]: [any, any] = useState([]);
+  const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([]);
+  const [colorMap, setColorMap]: [any, any] = useState({});
+  const [colorMapCN, setColorMapCN]: [any, any] = useState({});
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     //
-    service.commonApiService.dictInfo('sch_range_color').then((res) => {
-      let colorMap: any = {}
-      let colorMapCN: any = {}
-      let dataSourceColorCN: any = []
+    service.commonApiService.dictInfo("sch_range_color").then(res => {
+      let colorMap: any = {};
+      let colorMapCN: any = {};
+      let dataSourceColorCN: any = [];
       res.data.map((item: any) => {
-        colorMap[item.name] = item.code
-        colorMapCN[item.code] = item.name
-        dataSourceColorCN.push(item.name)
-      })
-      setColorMap(colorMap)
-      setColorMapCN(colorMapCN)
-      setDataSourceColorCN(dataSourceColorCN)
-    })
-    service.commonApiService.dictInfo('sch_range_shift_type').then((res) => {
-      setBangci(res.data.map((res: any) => res.name))
-    })
-  }, []) // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
-  emitter.removeAllListeners('弹窗编辑排班')
+        colorMap[item.name] = item.code;
+        colorMapCN[item.code] = item.name;
+        dataSourceColorCN.push(item.name);
+      });
+      setColorMap(colorMap);
+      setColorMapCN(colorMapCN);
+      setDataSourceColorCN(dataSourceColorCN);
+    });
+    service.commonApiService.dictInfo("sch_range_shift_type").then(res => {
+      setBangci(res.data.map((res: any) => res.name));
+    });
+  }, []); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
+  emitter.removeAllListeners("弹窗编辑排班");
 
-  emitter.addListener('弹窗编辑排班', (record: any) => {
+  emitter.addListener("弹窗编辑排班", (record: any) => {
     fields = {
       shiftName: {
-        value: record.name || ''
+        value: record.name || ""
       },
       id: {
-        value: record.id || ''
+        value: record.id || ""
       },
       type: {
-        value: record.shiftType || ''
+        value: record.shiftType || ""
       },
       workTime: {
-        value: record.workTime || ''
+        value: record.workTime || ""
       },
       workHour: {
-        value: record.effectiveTime || ''
+        value: record.effectiveTime || ""
       },
       color: {
-        value: colorMapCN[record.nameColor] || ''
+        value: colorMapCN[record.nameColor] || ""
       },
       status: {
         value: record.status != null ? record.status : true
       }
-    }
-    console.log('编辑排班-', record)
-    addShift('编辑排班')
-  })
+    };
+    console.log("编辑排班-", record);
+    addShift("编辑排班");
+  });
   const save = (e: any) => {
     // 获取选中班次
     // console.log('获取选中班次', e)
     // return
-    emitter.emit('获取选中班次列表', (shiftList: any) => {
+    emitter.emit("获取选中班次列表", (shiftList: any) => {
       // message.success('保存排班班次设置')
-      console.log('获取选中班次', shiftList)
+      console.log("获取选中班次", shiftList);
       // return
       shiftList = shiftList.filter((u: any) => {
-        return u.status !== null && u.id
-      })
-      service.scheduleShiftApiService.saveAll(shiftList).then((res) => {
-        message.success('保存排班班次设置成功')
-        emitter.emit('更新班次列表')
-        console.log('保存排班班次', res)
-      })
-    })
-  }
+        return u.status !== null && u.id;
+      });
+      service.scheduleShiftApiService.saveAll(shiftList).then(res => {
+        message.success("保存排班班次设置成功");
+        emitter.emit("更新班次列表");
+        console.log("保存排班班次", res);
+      });
+    });
+  };
 
-  let customizedForm: any = null
+  let customizedForm: any = null;
   const CustomizedForm = Form.create({
     // name: 'coordinated',
     onFieldsChange(props: any, changedFields: any) {
       // props = { ...props, ...changedFields }
-      props.onChange(changedFields)
+      props.onChange(changedFields);
     },
     mapPropsToFields(props: any) {
-      console.log('mapPropsToFields', props)
+      console.log("mapPropsToFields", props);
       return {
         id: Form.createFormField({
           ...props.id,
@@ -173,29 +185,29 @@ export default function ToolBar() {
           ...props.status,
           value: props.status.value
         })
-      }
+      };
     },
     onValuesChange(_: any, values: any) {
-      console.log(values)
+      console.log(values);
     }
   })((props: any) => {
-    const { getFieldDecorator } = props.form
-    customizedForm = props.form
+    const { getFieldDecorator } = props.form;
+    customizedForm = props.form;
     return (
-      <Form layout='inline'>
-        <Form.Item label='班次名称'>
-          {getFieldDecorator('shiftName', {
-            rules: [{ required: false, message: '班次名称在同一科室下为唯一' }]
+      <Form layout="inline">
+        <Form.Item label="班次名称">
+          {getFieldDecorator("shiftName", {
+            rules: [{ required: false, message: "班次名称在同一科室下为唯一" }]
           })(<Input style={{ width: inputWidth }} />)}
         </Form.Item>
-        <Form.Item label='所属类别'>
-          {getFieldDecorator('type', {
-            rules: [{ required: false, message: '' }]
+        <Form.Item label="所属类别">
+          {getFieldDecorator("type", {
+            rules: [{ required: false, message: "" }]
           })(
             <AutoComplete
               style={{ width: inputWidth }}
               dataSource={bangci}
-              placeholder=''
+              placeholder=""
               // filterOption={(inputValue: any, option: any) =>
               //   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
               //   bangci.indexOf(inputValue.toUpperCase()) > -1
@@ -203,9 +215,9 @@ export default function ToolBar() {
             />
           )}
         </Form.Item>
-        <Form.Item label='上班时间'>
-          {getFieldDecorator('workTime', {
-            rules: [{ required: false, message: '' }]
+        <Form.Item label="上班时间">
+          {getFieldDecorator("workTime", {
+            rules: [{ required: false, message: "" }]
           })(<Input style={{ width: inputWidth }} />)}
         </Form.Item>
         {/* <Form.Item label='开始时间'>
@@ -218,34 +230,41 @@ export default function ToolBar() {
             rules: [{ required: false, message: '' }]
           })(<TimePicker style={{ width: inputWidth }} />)}
         </Form.Item> */}
-        <Form.Item label='标准工时'>
-          {getFieldDecorator('workHour', {
-            rules: [{ required: false, message: '' }]
-          })(<Input style={{ width: inputWidth }} placeholder='标准工时' />)}
+        <Form.Item label="标准工时">
+          {getFieldDecorator("workHour", {
+            rules: [{ required: false, message: "" }]
+          })(<Input style={{ width: inputWidth }} placeholder="标准工时" />)}
         </Form.Item>
 
-        <Form.Item label='颜色标记'>
-          {getFieldDecorator('color', {
-            rules: [{ required: false, message: '' }]
+        <Form.Item label="颜色标记">
+          {getFieldDecorator("color", {
+            rules: [{ required: false, message: "" }]
           })(
             <AutoComplete
               style={{ width: inputWidth }}
               dataSource={dataSourceColorCN}
-              placeholder=''
+              placeholder=""
               filterOption={(inputValue: any, option: any) =>
-                option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 ||
-                (dataSourceColorCN.indexOf(inputValue) > -1 || dataSourceColorCN.indexOf(inputValue) === -1)
+                option.props.children
+                  .toUpperCase()
+                  .indexOf(inputValue.toUpperCase()) !== -1 ||
+                (dataSourceColorCN.indexOf(inputValue) > -1 ||
+                  dataSourceColorCN.indexOf(inputValue) === -1)
               }
             />
           )}
         </Form.Item>
-        <Form.Item label='启用状态'>{getFieldDecorator('status', { valuePropName: 'checked' })(<Switch />)}</Form.Item>
+        <Form.Item label="启用状态">
+          {getFieldDecorator("status", { valuePropName: "checked" })(
+            <Switch />
+          )}
+        </Form.Item>
       </Form>
-    )
-  })
+    );
+  });
 
   const handleFormChange = (changedFields: any) => {
-    fields = { ...fields, ...changedFields }
+    fields = { ...fields, ...changedFields };
     // console.log('handleFormChange', changedFields, customizedForm)
     // console.log('onFieldsChange', props, changedFields)
     // let diff = 0
@@ -265,17 +284,17 @@ export default function ToolBar() {
     //   //
     // }
     // console.log('工时', diff, fields.endTime)
-  }
+  };
 
   let fields = {
     shiftName: {
-      value: ''
+      value: ""
     },
     id: {
-      value: ''
+      value: ""
     },
     type: {
-      value: ''
+      value: ""
     },
     // startTime: {
     //   value: moment(new Date(), 'HH:mm:ss')
@@ -284,20 +303,20 @@ export default function ToolBar() {
     //   value: moment(new Date(), 'HH:mm:ss').add(8, 'h')
     // },
     workTime: {
-      value: '8:00 - 16:00'
+      value: "8:00 - 16:00"
     },
     workHour: {
-      value: '8'
+      value: "8"
     },
     color: {
-      value: '灰色'
+      value: "灰色"
     },
     status: {
       value: true
     }
-  }
+  };
 
-  const onOk = (title: any = '排班设置') => {
+  const onOk = (title: any = "排班设置") => {
     const postData = {
       id: fields.id.value, // 	Long 必须参数 班次名称
       name: fields.shiftName.value, // 	Long 必须参数 班次名称
@@ -309,47 +328,47 @@ export default function ToolBar() {
       effectiveTime: fields.workHour.value, // string 必须参数 标准工时
       nameColor: colorMap[fields.color.value], // string 必须参数 班次颜色
       status: fields.status.value // Boolean 必须参数 启用状态 true或者false
-    }
-    service.scheduleShiftApiService.save(postData).then((res) => {
-      message.success(title + '成功')
-      emitter.emit('更新班次列表')
-      console.log(title + '成功', res)
+    };
+    service.scheduleShiftApiService.save(postData).then(res => {
+      message.success(title + "成功");
+      emitter.emit("更新班次列表");
+      console.log(title + "成功", res);
       // 更新班次列表
-    })
+    });
     // message.success('onOk')
-  }
+  };
 
-  let inputWidth = '250px'
+  let inputWidth = "250px";
 
   // let modalInfo: any = null
 
   const addShift = (title: string) => {
     // message.success('添加班次')
     // console.log('Modal', Modal)
-    if (title === '添加排班') {
+    if (title === "添加排班") {
       fields = {
         shiftName: {
-          value: ''
+          value: ""
         },
         id: {
-          value: ''
+          value: ""
         },
         type: {
-          value: ''
+          value: ""
         },
         workTime: {
-          value: '8:00 - 16:00'
+          value: "8:00 - 16:00"
         },
         workHour: {
-          value: '8'
+          value: "8"
         },
         color: {
-          value: '灰色'
+          value: "灰色"
         },
         status: {
           value: true
         }
-      }
+      };
     }
 
     // startTime: {
@@ -360,7 +379,7 @@ export default function ToolBar() {
     // },
     // if (!modalInfo) {
     Modal.confirm({
-      title: title + '',
+      title: title + "",
       centered: true,
       // visible: false,
       onOk: () => onOk(title),
@@ -368,34 +387,35 @@ export default function ToolBar() {
         // message.success('onCancel')
         // modalInfo.destroy()
       },
-      iconType: 'form',
-      width: '500px',
+      iconType: "form",
+      width: "500px",
       content: (
         <div>
           <CustomizedForm {...fields} onChange={handleFormChange} />
         </div>
       )
-    })
+    });
     // } else {
     //   modalInfo.update({ visible: true })
     // }
-  }
+  };
 
   // {/* <ModalBox title={'添加排班/编辑排班'} /> */}
   let promise =
-    appStore.HOSPITAL_ID == 'wh'
+    appStore.HOSPITAL_ID == "wh"
       ? authStore.isRoleManage
-      : (authStore.user && authStore.user.post) == '护理部' || (authStore.user && authStore.user.empName) == '管理员'
+      : (authStore.user && authStore.user.post) == "护理部" ||
+        (authStore.user && authStore.user.empName) == "管理员";
   return (
     <div>
       <BreadcrumbBox
         data={[
           {
-            name: '排班管理',
-            link: '/personnelManagement/arrangeHome'
+            name: "排班管理",
+            link: "/personnelManagement/arrangeHome"
           },
           {
-            name: '班次设置'
+            name: "班次设置"
           }
         ]}
       />
@@ -405,7 +425,7 @@ export default function ToolBar() {
         <div style={{ flex: 1 }} />
         <DeptSelect
           onChange={() => {
-            emitter.emit('更新班次列表')
+            emitter.emit("更新班次列表");
           }}
         />
         {/* {promise && (
@@ -423,9 +443,9 @@ export default function ToolBar() {
             onClick={() => {
               addShiftModal.show({
                 onOkCallBack: () => {
-                  emitter.emit('更新班次列表')
+                  emitter.emit("更新班次列表");
                 }
-              })
+              });
             }}
             style={{ marginLeft: 6, marginRight: 3 }}
           >
@@ -433,10 +453,17 @@ export default function ToolBar() {
           </Button>
         )}
 
-        <Button onClick={() => emitter.emit('更新班次列表')} style={{ marginLeft: 3, marginRight: 3 }}>
+        <Button
+          onClick={() => emitter.emit("更新班次列表")}
+          style={{ marginLeft: 3, marginRight: 3 }}
+        >
           刷新
         </Button>
-        <Button type='primary' onClick={save} style={{ marginLeft: 3, marginRight: 3 }}>
+        <Button
+          type="primary"
+          onClick={save}
+          style={{ marginLeft: 3, marginRight: 3 }}
+        >
           保存
         </Button>
         {/* <Button
@@ -446,10 +473,23 @@ export default function ToolBar() {
         >
           返回
         </Button> */}
+        {authStore.isAdmin && (
+          <Button
+            onClick={() =>
+              lotChangeInitTimeModal.show({
+                onOkCallBack: () => emitter.emit("更新班次列表")
+              })
+            }
+            style={{ marginLeft: 3, marginRight: 3 }}
+          >
+            批量修改班次工时
+          </Button>
+        )}
       </Wrapper>
       <addShiftModal.Component />
+      <lotChangeInitTimeModal.Component />
     </div>
-  )
+  );
 }
 const Wrapper = styled.div`
   /* background: #eee; */
@@ -461,9 +501,9 @@ const Wrapper = styled.div`
   background: #fff;
 
   form.Item {
-    width: '250px';
+    width: "250px";
   }
-`
+`;
 // const TimePicker = styled.div`
 //   width: '200px';
 // `
@@ -479,4 +519,4 @@ const Wrapper = styled.div`
 const Title = styled.div`
   font-size: 20px;
   font-weight: bold;
-`
+`;
