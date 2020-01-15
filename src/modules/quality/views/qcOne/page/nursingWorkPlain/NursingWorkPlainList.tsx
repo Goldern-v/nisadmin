@@ -405,7 +405,7 @@ export default observer(function NursingWorkPlainList() {
     <WorkPlainEditModal
       canEdit={canEdit}
       onOk={handleOk}
-      title={editParmas.content ? "修改计划" : "添加计划"}
+      title={editParmas.content ? (canEdit ? "修改计划" : "查看计划") : "添加计划"}
       visible={editVisible}
       onCancel={handleCancel}
       query={editParmas} />
