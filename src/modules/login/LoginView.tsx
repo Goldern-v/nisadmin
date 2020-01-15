@@ -36,7 +36,16 @@ export default function LoginView() {
     }
   }, [username]);
 
-  useLayoutEffect(() => {}, []);
+  useLayoutEffect(() => {
+    (document as any).querySelector("#username input").focus();
+    (document as any).querySelector("#username input")!.onkeydown = (
+      e: any
+    ) => {
+      if (e.keyCode === 13) {
+        passwordRef.current.focus();
+      }
+    };
+  }, []);
 
   function login() {
     setLoginLoading(true);
@@ -95,6 +104,7 @@ export default function LoginView() {
             <div className="iconfont NameIcon">&#xe648;</div>
             {/* {JSON.stringify(userNameDataSource)} */}
             <AutoComplete
+              id="username"
               style={{ width: "100%", borderRadius: 0 }}
               onChange={(value: any) => setUsername(value)}
               placeholder="用户名"
