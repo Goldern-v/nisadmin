@@ -112,7 +112,7 @@ export default function LoginView() {
               dataSource={userNameDataSource}
             />
           </div>
-          <div style={{ height: "2px" }} />
+          {/* <div style={{ height: "2px" }} /> */}
           <div className="TextItem">
             <div className="iconfont NameIcon">&#xe6cb;</div>
             <input

@@ -191,7 +191,10 @@ export default observer(function NavBar(props: any) {
         )}
         <span className="name">{authStore.user && authStore.user.empName}</span>
         <span className="line">|</span>
-        <span className="logout" onClick={service.authApiService.logout}>
+        <span
+          className="logout"
+          onClick={() => service.authApiService.logout()}
+        >
           退出
         </span>
       </RightCon>
