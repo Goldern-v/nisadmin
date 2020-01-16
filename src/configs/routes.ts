@@ -532,7 +532,7 @@ const routes: RouteItem[] = [
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
   setLayout("/SetUserManual", SetUserManual, layouts.BreadcrumbLayout, [
-    { name: "平台使用手册", link: "/UserManual/Guidance" },
+    { name: "平台使用手册", link: "/UserManual" },
     { name: "目录设置", link: "" }
   ]),
 

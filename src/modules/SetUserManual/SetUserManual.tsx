@@ -16,6 +16,7 @@ export default function SetUserManual() {
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
   const [effect, setEffect] = useState(true);
+  const [editIdx, setEditIdx] = useState(-1);
 
   useLayoutEffect(() => {
     setEffect(false);
@@ -45,7 +46,7 @@ export default function SetUserManual() {
     setEditParams({
       id: record.id,
       type: record.type,
-      // path: record.path,
+      icon: record.icon,
       orderNo: record.orderNo,
       isShow: record.isShow
     });
@@ -92,6 +93,26 @@ export default function SetUserManual() {
     });
   };
 
+  // 手动输入目录顺序
+  const setOrderNo = (e: any, index: number, record: any) => {
+    setEditIdx(-1);
+    let newArr = tableList.concat();
+    if (newArr[index].orderNo == e.target.value) return;
+    newArr[index].orderNo = e.target.value;
+    setTableList(newArr);
+    setLoading(true);
+    setUserManualApi.saveOrUpdate(newArr[index]).then(
+      (res: any) => {
+        setLoading(false);
+        if (res.code == "200") Message.success("修改成功");
+        getTableData();
+      },
+      err => {
+        setLoading(false);
+      }
+    );
+  };
+
   const columns: any = [
     {
       title: "序号",
@@ -99,7 +120,21 @@ export default function SetUserManual() {
       key: "index",
       width: 50,
       align: "center",
-      render: (text: string, record: any, index: number) => index + 1
+      render: (text: string, record: any, index: number) => {
+        if (editIdx == index) {
+          return (
+            <Input
+              size="small"
+              defaultValue={record.orderNo}
+              onBlur={e => setOrderNo(e, index, record)}
+            />
+          );
+        } else {
+          return (
+            <span onClick={() => setEditIdx(index)}>{record.orderNo}</span>
+          );
+        }
+      }
     },
     {
       title: "目录名称",
@@ -157,7 +192,7 @@ export default function SetUserManual() {
         <BaseTable
           dataSource={tableList}
           columns={columns}
-          surplusHeight={220}
+          surplusHeight={250}
           loading={loading}
         />
       </Table>
@@ -176,7 +211,6 @@ const Wrapper = styled.div`
   padding-top: 55px;
   height: 100%;
   width: 100%;
-  background: #fff;
 `;
 const Header = styled.div`
   position: absolute;
@@ -188,6 +222,9 @@ const Header = styled.div`
   height: 55px;
   overflow: hidden;
   border-bottom: 1px solid #ddd;
+  background: #fff;
+  font-size: 16px;
+  font-weight: bold;
 `;
 const LeftIcon = styled.div`
   float: left;
@@ -196,7 +233,7 @@ const RightIcon = styled.div`
   float: right;
 `;
 const Table = styled.div`
-  padding: 0 15px;
+  padding: 15px 15px;
   box-sizing: border-box;
   height: 100%;
   width: 650px;

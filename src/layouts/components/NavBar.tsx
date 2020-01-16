@@ -11,6 +11,7 @@ import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
 import { navConfig as navConfig_ys } from "./navConfig_ys";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
+import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
 const toNavLink = (path: string | undefined) => {
   return path ? () => appStore.history.push(path) : () => {};
@@ -166,7 +167,7 @@ export default observer(function NavBar(props: any) {
         {appStore.isDev && (
           <UserManual
             onClick={() => {
-              appStore.history.push("/UserManual/Guidance");
+              appStore.history.push("/UserManual");
             }}
           >
             <Tooltip placement="top" title="平台使用手册">
@@ -175,16 +176,16 @@ export default observer(function NavBar(props: any) {
           </UserManual>
         )}
         {appStore.isDev && (
-          <Tooltip placement="top" title="平台使用手册目录设置">
-            <span
-              className="setting"
-              onClick={() => {
-                appStore.history.push("/SetUserManual");
-              }}
-            >
-              设置
-            </span>
-          </Tooltip>
+          <SetUserManual
+            className="setting"
+            onClick={() => {
+              appStore.history.push("/SetUserManual");
+            }}
+          >
+            <Tooltip placement="top" title="平台使用手册目录设置">
+              <SYSCSZ />
+            </Tooltip>
+          </SetUserManual>
         )}
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
@@ -297,7 +298,13 @@ const UserManual = styled.span`
     width: 22px;
     height: 15px;
     position: absolute;
-    bottom: -2px;
+    bottom: -3px;
+    left: -55px;
+  }
+`;
+const SetUserManual = styled(UserManual)`
+  svg {
     left: -25px;
+    bottom: -1px;
   }
 `;

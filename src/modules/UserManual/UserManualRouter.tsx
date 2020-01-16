@@ -1,6 +1,6 @@
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { KeepAlive } from "react-keep-alive";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -18,110 +18,117 @@ import { ReactComponent as BQDJ } from "./images/BQDJ.svg";
 import { ReactComponent as BQGL } from "./images/BQGL.svg";
 import { ReactComponent as TZGG } from "./images/TZGG.svg";
 import { ReactComponent as SY } from "./images/SY.svg";
-
-const LEFT_MENU_CONFIG: any = [
-  {
-    title: "首页相关指导",
-    icon: <SY />,
-    path: "/UserManual/Guidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "审核管理相关指导",
-    icon: <SHGL />,
-    path: "/UserManual/AuditManagementGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "排班管理相关指导",
-    icon: <PBGL />,
-    path: "/UserManual/WorkforceManagementGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "病区登记本相关指导",
-    icon: <BQDJ />,
-    path: "/UserManual/WardRegisterGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "一级质控相关指导",
-    icon: <YJZK />,
-    path: "/UserManual/QualityOneControlGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "二级质控相关指导",
-    icon: <EJZK />,
-    path: "/UserManual/QualityTwoControlGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "三级质控相关指导",
-    icon: <SJZK />,
-    path: "/UserManual/QualityThreeControlGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "通知公告相关指导",
-    icon: <TZGG />,
-    path: "/UserManual/NoticeAnnouncementGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "护理制度相关指导",
-    icon: <HLZD />,
-    path: "/UserManual/NursingSystemGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "档案管理相关指导",
-    icon: <DAGL />,
-    path: "/UserManual/FileManagementGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "我的档案相关指导",
-    icon: <WDDA />,
-    path: "/UserManual/MyFileGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  },
-  {
-    title: "病区管理相关指导",
-    icon: <BQGL />,
-    path: "/UserManual/WardManagementGuidance",
-    component: Content,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
-];
+import { userManualApi } from "./api/UserManualApi";
 
 export default function UserManualRouter(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname]);
+  const [effect, setEffect] = useState(true);
+  const [arrData, setArrData] = useState([] as any);
+  const [type, setType] = useState(1); //1--内容 2--提示跳转
+  const [resData, setResData] = useState([] as any); // 测试用
+
+  useLayoutEffect(() => {
+    setEffect(false);
+  }, []);
+
+  // 初始化
+  useEffect(() => {
+    setEffect(true);
+    getList();
+  }, [props.history.location.pathname]);
+
+  // 查询目录列表
+  const getList = () => {
+    if (effect) {
+      userManualApi.setGetData().then((res: any) => {
+        let newArr: any = [];
+        if (res.data) {
+          setType(1);
+          let arr = res.data.filter((item: any) => item.isShow);
+          if (arr !== []) {
+            var obj1: any = {};
+            obj1.component = Content;
+            obj1.keepAlive = true;
+            obj1.disabledKeepAlive =
+              (appStore.history && appStore.history.action) !== "POP";
+            arr.map((item: any, index: number) => {
+              var obj2: any = {};
+              obj2.title = item.type;
+              obj2.icon = getIcon(item.icon);
+              obj2.path = `/UserManual/${item.type}`;
+              let obj: any = { ...obj1, ...obj2 };
+              newArr.push(obj);
+            });
+            setArrData(newArr);
+            appStore.history.push(`/UserManual/${newArr[0].title}`);
+          } else {
+            newArr = [
+              {
+                title: "首页相关指导",
+                icon: <SY />,
+                path: "/UserManual/首页相关指导",
+                component: Content,
+                keepAlive: true,
+                disabledKeepAlive:
+                  (appStore.history && appStore.history.action) !== "POP"
+              }
+            ];
+            setArrData(newArr);
+            appStore.history.push(`/UserManual/首页相关指导`);
+          }
+        } else {
+          setType(0);
+          newArr = [
+            {
+              title: "首页相关指导",
+              icon: <SY />,
+              path: "/UserManual/首页相关指导",
+              component: Content,
+              keepAlive: true,
+              disabledKeepAlive:
+                (appStore.history && appStore.history.action) !== "POP"
+            }
+          ];
+          setArrData(newArr);
+          appStore.history.push(`/UserManual/首页相关指导`);
+        }
+      });
+    }
+  };
+
+  // 获取图表icon
+  const getIcon = (icon: any) => {
+    switch (icon) {
+      case "1":
+        return <SY />;
+      case "2":
+        return <SHGL />;
+      case "3":
+        return <PBGL />;
+      case "4":
+        return <BQDJ />;
+      case "5":
+        return <YJZK />;
+      case "6":
+        return <EJZK />;
+      case "7":
+        return <SJZK />;
+      case "8":
+        return <TZGG />;
+      case "9":
+        return <HLZD />;
+      case "10":
+        return <DAGL />;
+      case "11":
+        return <WDDA />;
+      case "12":
+        return <BQGL />;
+      default:
+        return <BQDJ />;
+    }
+  };
+
   let currentRoutePath = props.history.location.pathname || "";
-  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
+  let currentRoute = getTargetObj(arrData, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -140,11 +147,10 @@ export default function UserManualRouter(props: Props) {
     }
     return chooseRoute;
   }
-
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={LEFT_MENU_CONFIG} />
+        <LeftMenu config={arrData} />
       </LeftMenuCon>
       <MainCon>
         {currentRoute &&
@@ -178,6 +184,9 @@ const Wrapper = styled.div`
     margin-right: 5px;
     position: relative;
     top: 6px;
+  }
+  .cls-13 {
+    fill: none !important;
   }
 `;
 const LeftMenuCon = styled.div`

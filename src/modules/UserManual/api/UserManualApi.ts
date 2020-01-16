@@ -3,7 +3,7 @@ import { authStore } from "src/stores/index";
 import qs from "qs";
 
 export default class UserManualApi extends BaseApiService {
-  // 查询
+  // 查询每条目录对应内容
   public async getData(obj: any) {
     return this.post(`/userManual/getList`, obj);
   }
@@ -24,6 +24,10 @@ export default class UserManualApi extends BaseApiService {
     return this.post(`/userManual/getFileContent`, qs.stringify({ id }), {
       responseType: "blob"
     });
+  }
+  // 查询目录列表
+  public async setGetData() {
+    return this.post(`/userManualSet/getList`);
   }
 }
 export const userManualApi = new UserManualApi();
