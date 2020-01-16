@@ -57,10 +57,10 @@ export default function LoginView() {
           const userLoginInfoMap = JSON.parse(
             localStorage.userLoginInfoMap || "{}"
           );
-          userLoginInfoMap[username] = password;
+          userLoginInfoMap[username.toLowerCase()] = password;
           localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap);
           /** 最后登录的用户 */
-          localStorage.lastLoginUserName = username;
+          localStorage.lastLoginUserName = username.toLowerCase();
         }
         setLoginLoading(false);
       })
