@@ -243,6 +243,11 @@ export default class ArrangeService extends BaseApiService {
   public schInitialHourGetListByDate(obj: any) {
     return this.post(`/schInitialHour/getListByDate`, obj);
   }
+
+  // 批量修改班次工时
+  public schInitialHourSaveOrUpdateList(list: any) {
+    return this.post(`/schInitialHour/saveOrUpdateList`, list);
+  }
 }
 
 export const arrangeService = new ArrangeService();

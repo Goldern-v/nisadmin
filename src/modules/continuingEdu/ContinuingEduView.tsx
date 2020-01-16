@@ -14,7 +14,7 @@ import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 import 人员管理 from "./人员管理";
 import QuestionBankManagement from "../questionBankManagement/QuestionBankManagement";
@@ -39,6 +39,8 @@ import MeetingExchange from "./views/outsideHospital/views/meetingExchange/Meeti
 import OtherTraining from "./views/outsideHospital/views/otherTraining/OtherTraining";
 // 院外培训类型管理
 import TypeManagement from "./views/outsideHospital/views/typeManagement/TypeManagement";
+//晋升设置
+import PromotionSetting from "./views/promotionSetting/PromotionSetting"
 
 import 类型管理 from "./views/类型管理/类型管理";
 
@@ -197,7 +199,7 @@ const LEFT_MENU_CONFIG = [
     title: "晋级设置",
     icon: <JJSZ />,
     path: "/continuingEdu/晋级设置",
-    component: Null
+    component: PromotionSetting
   }
 ];
 

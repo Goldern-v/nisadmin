@@ -1,3 +1,5 @@
+import { globalModal } from './../../global/globalModal';
+
 import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
 import { message } from 'src/vendors/antd'
 import { httpLoginToken } from 'src/libs/http/http'
@@ -31,12 +33,32 @@ export default class AuthApiService extends BaseApiService {
     })
   }
   public logout() {
+    const userLoginInfoMap:any = JSON.parse(
+      localStorage.userLoginInfoMap || "{}"
+    );
+    let _this = this
+    if(userLoginInfoMap[authStore.user?.empNo.toLowerCase() || '']) {
+      globalModal.confirm('是否清除登录信息', '是否清除记住账号密码, 再次登录将不再自动补全此账号密码').then(res => {
+        delete userLoginInfoMap[authStore.user?.empNo.toLowerCase() || '']
+        localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap)
+        localStorage.lastLoginUserName = ''
+        _this.clearUser()
+      }).catch(res => {
+        _this.clearUser()
+      })
+    } else {
+      _this.clearUser()
+    }
+    
+  }
+
+  clearUser () {
     sessionStorage.removeItem('adminNurse')
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('user')
     sessionStorage.removeItem('selectedDeptCode')
     authStore.delUser()
     statisticsViewModal.hadData = false
-    window.location.href = '#/login'
+    window.location.href = '#/login' 
   }
 }

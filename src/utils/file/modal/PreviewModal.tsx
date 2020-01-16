@@ -12,6 +12,7 @@ import {
   message,
   Icon
 } from "antd";
+import reactZmage from 'react-zmage'
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
@@ -44,14 +45,22 @@ export default function PreviewModal(props: Props) {
   let [filePath, setFilePath] = useState("")
   let [fileList, setFileList] = useState([] as any[])
   let [noFile, setNoFile] = useState(false);
-  let refVideo = React.createRef<HTMLVideoElement>();
+  // let refVideo = React.createRef<HTMLVideoElement>();
 
-  const changeFilePath = (path: string) => {
+  const changeFilePath = (path: string, _visible?: boolean) => {
+    if (_visible === undefined) _visible = visible
+    console.log(_visible)
     let fileType = getFileType(path);
     console.log(fileType, "fileType");
-    if (visible) {
-      if (fileType == "video" && refVideo.current) {
-        refVideo.current.play();
+    if (_visible) {
+      if (fileType == "video") {
+        setFilePath(path)
+        setTimeout(() => {
+          let videoRef = document.getElementById('videoRef') as HTMLVideoElement
+          console.log(videoRef)
+          videoRef.play()
+        }, 500)
+        // refVideo.current.play();
       } else if (fileType == "img") {
         setFilePath(path)
       } else if (fileType == "word" || fileType == "excel") {
@@ -72,6 +81,7 @@ export default function PreviewModal(props: Props) {
             setFilePath(clearFilePath(path) + ".pdf#toolbar=0");
           })
           .catch(res => {
+            setFilePath(clearFilePath(path) + ".pdf#toolbar=0");
             setNoFile(true);
             setModalLoading(false);
           });
@@ -80,8 +90,10 @@ export default function PreviewModal(props: Props) {
         setFilePath(path)
       }
     } else {
-      if (fileType == "video" && refVideo.current) {
-        refVideo.current.pause();
+      let videoRef = document.getElementById('videoRef') as HTMLVideoElement
+      if (fileType == "video" && videoRef) {
+        console.log(videoRef)
+        videoRef.pause();
       }
       setFilePath('')
       setNoFile(true);
@@ -123,7 +135,7 @@ export default function PreviewModal(props: Props) {
   }
 
   useLayoutEffect(() => {
-    if (path) changeFilePath(path)
+    if (path) changeFilePath(path, visible)
     if (visible && attachmentList) {
       formatFileList()
     } else {
@@ -155,11 +167,14 @@ export default function PreviewModal(props: Props) {
       <Wrapper>
         {getFileType(filePath) == "video" ? (
           <div className="video-con">
-            {visible && <video src={filePath} ref={refVideo} controls />}
+            {visible && <video src={filePath} id="videoRef" controls />}
           </div>
         ) : getFileType(filePath) == "img" ? (
           <div className="img-con">
-            <img src={filePath} alt="" />
+            <img
+              src={filePath}
+              alt=""
+              onClick={() => reactZmage.browsing({ src: filePath, backdrop: 'rgba(0,0,0,0.3)' })} />
           </div>
         ) : (
               <Spin spinning={modalLoading}>
@@ -173,8 +188,9 @@ export default function PreviewModal(props: Props) {
       </Wrapper>
       {fileList.length > 1 && <IndexSelect>
         {currentIndex !== 0 && <div
-          className="arrow-left"
+          className={modalLoading ? "arrow-left disabled" : "arrow-left"}
           onClick={() => {
+            if (modalLoading) return
             let idx = currentIndex - 1
             let target = fileList[idx]
             if (target) changeFilePath(`${target.path}.${target.type}`)
@@ -182,8 +198,9 @@ export default function PreviewModal(props: Props) {
           <Icon type="left-square" theme="filled" />
         </div>}
         {currentIndex < (fileList.length - 1) && <div
-          className="arrow-right"
+          className={modalLoading ? "arrow-right disabled" : "arrow-right"}
           onClick={() => {
+            if (modalLoading) return
             let idx = currentIndex + 1
             let target = fileList[idx]
             if (target) changeFilePath(`${target.path}.${target.type}`)
@@ -197,6 +214,8 @@ export default function PreviewModal(props: Props) {
 const Wrapper = styled.div`
   video {
     width: 100%;
+    height: calc(80vh - 60px);
+    min-height: 400px;
   }
   .img-con {
     height: 60vh;
@@ -241,6 +260,10 @@ const IndexSelect = styled.div`
     cursor: pointer;
     :hover{
       color: #999;
+    }
+    &.disabled{
+      color: #777!important;
+      cursor: not-allowed;
     }
     &.arrow-left{
       left: 75px;
