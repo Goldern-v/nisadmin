@@ -41,8 +41,13 @@ export interface Props extends ModalComponentProps {
 }
 const uploadCard = () => Promise.resolve("123");
 const rules: Rules = {
-  empName: val => !!val || "请选择姓名"
+  empName: val => !!val || "请输入姓名"
 };
+
+if (appStore.HOSPITAL_ID == "wh") {
+  rules.userType = val => !!val || "请选择类型";
+}
+
 const TYPE_LIST = ["实习", "进修"];
 export default function AddScheduleNursingModal(props: Props) {
   let { visible, onCancel, onOk, getTableData } = props;
@@ -200,7 +205,7 @@ export default function AddScheduleNursingModal(props: Props) {
               wh: () => (
                 <React.Fragment>
                   <Col span={24}>
-                    <Form.Field label={`类型`} name="userType">
+                    <Form.Field label={`类型`} name="userType" required>
                       <Select>
                         {userTypeList.map((item: DictItem) => (
                           <Select.Option value={item.code} key={item.name}>
