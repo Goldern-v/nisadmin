@@ -41,10 +41,12 @@ export default function UserManualRouter(props: Props) {
     if (effect) {
       userManualApi.setGetData().then((res: any) => {
         let newArr: any = [];
-        if (res.data) {
+        if (resData.length > 0) {
           setType(1);
           let arr = res.data.filter((item: any) => item.isShow);
-          if (arr !== []) {
+          console.log(res.data, arr, "00000000");
+          if (arr.length > 0) {
+            console.log("11111111");
             var obj1: any = {};
             obj1.component = Content;
             obj1.keepAlive = true;
@@ -59,8 +61,10 @@ export default function UserManualRouter(props: Props) {
               newArr.push(obj);
             });
             setArrData(newArr);
-            appStore.history.push(`/UserManual/${newArr[0].title}`);
+            if (appStore.location.pathname == "/UserManual")
+              appStore.history.push(`/UserManual/${newArr[0].title}`);
           } else {
+            console.log("2222222");
             newArr = [
               {
                 title: "首页相关指导",

@@ -113,6 +113,24 @@ export default function SetUserManual() {
     );
   };
 
+  // 目录开关
+  const switchBtn = (check: any, record: any) => {
+    record.isShow = check;
+    setTableList([...tableList]);
+    let obj: any = {
+      id: record.id,
+      type: record.type,
+      orderNo: record.orderNo,
+      isShow: record.isShow,
+      icon: record.icon
+    };
+    setUserManualApi.saveOrUpdate(obj).then(res => {
+      let msg: any = "目录隐藏成功";
+      if (res.data.isShow) msg = "目录显示成功";
+      Message.success(msg);
+    });
+  };
+
   const columns: any = [
     {
       title: "序号",
@@ -146,16 +164,12 @@ export default function SetUserManual() {
       dataIndex: "isShow",
       width: 100,
       align: "center",
-      render: (text: any, record: any, index: any) =>
+      render: (text: any, record: any) =>
         record.id ? (
           <span>
             <Switch
-              disabled={true}
               size="small"
-              onChange={(check: any) => {
-                record.isShow = check;
-                setTableList([...tableList]);
-              }}
+              onChange={(check: any) => switchBtn(check, record)}
               checked={text}
             />
           </span>

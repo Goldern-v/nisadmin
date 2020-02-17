@@ -11,6 +11,7 @@ import {
 } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
+import emitter from "src/libs/ev";
 import { setUserManualApi } from "../api/SetUserManualApi";
 
 export interface Props {
@@ -23,7 +24,7 @@ export interface Props {
 export default function EditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const [defaultChecked, setDefaultChecked] = useState(Boolean);
+  const [isShow, setIsShow] = useState(Boolean);
   const formRef = React.createRef<Form>();
 
   const rules: Rules = {
@@ -36,9 +37,9 @@ export default function EditModal(props: Props) {
       setTimeout(() => {
         let current = formRef.current;
         if (!current) return;
-        // console.log(params, "222222222222");
         if (params.id) {
           const { type, orderNo, isShow, icon } = params;
+          setIsShow(params.isShow);
           current.setFields({
             type,
             orderNo,
@@ -47,9 +48,9 @@ export default function EditModal(props: Props) {
           });
         } else {
           current.clear();
+          setIsShow(true);
         }
       }, 100);
-      // console.log(defaultChecked, "3333333");
     }
   }, [visible, params]);
 
@@ -63,7 +64,6 @@ export default function EditModal(props: Props) {
           if (current) {
             let id = params.id || null;
             let newParams = current.getFields();
-            // console.log(params, newParams, "00000000");
             if (id) newParams.id = id;
             newParams.orderNo = Number(newParams.orderNo);
             setEditLoading(true);
@@ -128,7 +128,17 @@ export default function EditModal(props: Props) {
             </Col>
             <Col span={20}>
               <Form.Field name="isShow">
-                <Switch size="small" />
+                <Switch
+                  size="small"
+                  // checked={isShow}
+                  defaultChecked={params.isShow ? params.isShow : true}
+                  onChange={(checked: any, e: any) => {
+                    console.log(checked, e, "999999999999");
+                    let val = e.value;
+                    setIsShow(checked);
+                    checked = !isShow;
+                  }}
+                />
               </Form.Field>
             </Col>
           </Row>
