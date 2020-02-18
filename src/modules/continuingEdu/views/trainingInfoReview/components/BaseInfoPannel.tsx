@@ -2,19 +2,22 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Spin } from 'antd'
 import StudyContent from './pageContents/StudyContent'
+import { observer } from 'mobx-react-lite'
+import { trainingInfoReviewModel } from './../model/TrainingInfoReviewModel'
 export interface Props { }
 
-export default function BaseInfoPannel() {
-  const loading = false
+export default observer(function BaseInfoPannel() {
+  const { baseInfo, baseLoading } = trainingInfoReviewModel
 
-  return <Wrapper style={{ overflowY: loading ? 'hidden' : 'auto' }}>
-    <Spin spinning={loading}>
+  return <Wrapper style={{ overflowY: baseLoading ? 'hidden' : 'auto' }}>
+    <Spin spinning={baseLoading}>
       <BaseInfoPage>
-        <StudyContent />
+        <StudyContent data={baseInfo} />
       </BaseInfoPage>
     </Spin>
   </Wrapper>
-}
+})
+
 const Wrapper = styled.div`
   overflow: hidden;
   overflow-y: auto;
@@ -44,9 +47,11 @@ const BaseInfoPage = styled.div`
   .main-title{
     padding: 15px;
     text-align: center;
-    font-size: 20px;
+    font-size: 28px;
     color: #000;
     margin-bottom: 10px;
+    line-height: 30px;
+    height:30px;
   }
   .content-item-title{
     font-size: 14px;

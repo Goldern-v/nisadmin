@@ -7,18 +7,36 @@ import FileUploadReview from '../pageItems/FileUploadReview'
 import TestInfo from '../pageItems/TestInfo'
 import PrecticeSetting from '../pageItems/PrecticeSetting'
 import OperateSetting from '../pageItems/OperateSetting'
-export interface Props { }
+export interface Props {
+  data: any
+}
 
-export default function StudyContent() {
+export default function StudyContent(props: Props) {
+  const { data } = props
 
+  const otherContent = () => {
+    switch (data.teachingMethodName) {
+      case '考试':
+        return <TestInfo info={data} />
+      case '练习':
+        return <PrecticeSetting info={data} />
+      case '实操':
+        return <OperateSetting info={data} />
+      default:
+        return <FileUploadReview info={data} />
+    }
+  }
   return <Wrapper>
-    <div className="main-title">《中医自学》</div>
-    <BaseSetting />
-    <Participation />
-    <FileUploadReview />
+    <div className="main-title">
+      {data.title && <span>《{data.title}》</span>}
+    </div>
+    <BaseSetting info={data} />
+    <Participation info={data} />
+    {/* <FileUploadReview info={data} />
     <TestInfo />
     <PrecticeSetting />
-    <OperateSetting />
+    <OperateSetting /> */}
+    {otherContent()}
   </Wrapper>
 }
 const Wrapper = styled.div``

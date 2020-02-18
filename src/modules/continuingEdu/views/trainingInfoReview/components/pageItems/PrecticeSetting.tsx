@@ -5,13 +5,13 @@ import createModal from "src/libs/createModal";
 import TestPageModal from './../TestPageModal/TestPageModal'
 
 export interface Props {
-  data?: any
+  info?: any
 }
 
 //参与人员
 export default function PrecticeSetting(props: Props) {
   const testPage = createModal(TestPageModal)
-  const { data } = props
+  const { info } = props
 
   return <Wrapper>
     <div className="content-item-title">上传设置</div>

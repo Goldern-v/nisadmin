@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 
 export interface Props {
-  data?: any
+  info?: any
 }
 
 //参与人员
 export default function OperateSetting(props: Props) {
-  const { data } = props
+  const { info } = props
 
   return <Wrapper>
     <div className="content-item-title">上传设置</div>
