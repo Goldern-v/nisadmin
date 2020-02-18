@@ -204,7 +204,7 @@ const LEFT_MENU_CONFIG = [
   },
   {
     title: "菜单设置",
-    icon: <RYGL />,
+    icon: <KSGL />,
     path: "/continuingEdu/菜单设置",
     component: MenuSettings
   }

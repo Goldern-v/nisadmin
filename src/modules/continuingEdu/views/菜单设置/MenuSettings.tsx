@@ -2,101 +2,21 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
-import { appStore } from "src/stores/index";
 import { Button, Modal, message as Message } from "antd";
 import { meunSettingApi } from "./api/MeunSettingApi";
-import qs from "qs";
+import FirstEditModal from "./modal/FirstEditModal";
+
 export default observer(function MenuSettings() {
   const [effect, setEffect] = useState(true);
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
   const [totalCount, setTotalCount] = useState(Number); // 总页码
-  const [empName, setEmpName] = useState(String);
-  const [query, setQuery] = useState({
-    pageSize: 20,
-    pageIndex: 1
-  } as any);
-
-  const columns: any = [
-    {
-      title: "菜单设置",
-      key: "0",
-      dataIndex: "name",
-      align: "left"
-    },
-    {
-      title: "排序",
-      key: "1",
-      dataIndex: "sort",
-      align: "center",
-      width: 50
-    },
-    {
-      title: "提交人",
-      key: "2",
-      dataIndex: "",
-      align: "center",
-      width: 175,
-      render(text: any, record: any, index: number) {
-        if (record.submitEmployees) {
-          for (let i = 0; i < record.submitEmployees.length; i++) {
-            setEmpName(record.submitEmployees[i].empName);
-          }
-        }
-        return empName;
-      }
-    },
-    {
-      title: "一级审核",
-      key: "3",
-      dataIndex: "",
-      align: "center",
-      width: 175
-    },
-    {
-      title: "二级审核",
-      key: "4",
-      dataIndex: "",
-      align: "center",
-      width: 175
-    },
-    {
-      title: "三级审核",
-      key: "5",
-      dataIndex: "",
-      align: "center",
-      width: 175
-    },
-    {
-      title: "操作",
-      key: "6",
-      dataIndex: "",
-      width: 120,
-      align: "center",
-      render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span onClick={() => {}}>修改</span>
-            <span onClick={() => handleDelete(record)}>删除</span>
-          </DoCon>
-        );
-      }
-    }
-  ];
-
-  const qqq = (record: any) => {
-    console.log(record);
-  };
-  // for (let i = 0; i < sheetViewModal.arrangeMenu.length; i++) {
-  //   let obj: any = {
-  //     name: sheetViewModal.arrangeMenu[i].name
-  //   };
-  //   for (let d of sheetViewModal.dateList) {
-  //     obj[d] = allCell.filter(
-  //       (item: any) => item.workDate == d && item.rangeName == obj.name
-  //     );
-  //   }
-  //   list.push(obj);
+  const [submit, setSubmit] = useState(String); // 提交人
+  const [first, setFrist] = useState(String); //一级审核
+  const [second, setSecond] = useState(String); // 二级审核
+  const [third, setThird] = useState(String); // 三级审核
+  const [editVisible, setEditVisible] = useState(false);
+  const [editParams, setEditParams] = useState({} as any);
 
   useLayoutEffect(() => {
     setEffect(false);
@@ -106,7 +26,123 @@ export default observer(function MenuSettings() {
   useEffect(() => {
     setEffect(true);
     getTableData();
-  }, [query]);
+  }, []);
+
+  const columns: any = [
+    {
+      title: "菜单设置",
+      dataIndex: "name",
+      align: "left"
+    },
+    {
+      title: "排序",
+      dataIndex: "sort",
+      align: "center",
+      width: 50
+    },
+    {
+      title: "提交人",
+      dataIndex: "submitEmployees",
+      align: "center",
+      width: 175,
+      render(text: any, record: any, index: number) {
+        if (record.submitEmployees) {
+          let str = "";
+          for (let i = 0; i < record.submitEmployees.length; i++) {
+            if (i === record.submitEmployees.length - 1) {
+              str += record.submitEmployees[i].empName;
+            } else {
+              str += record.submitEmployees[i].empName + "、";
+            }
+            setSubmit(str);
+          }
+          return submit;
+        } else {
+          return "--";
+        }
+      }
+    },
+    {
+      title: "一级审核",
+      dataIndex: "firstAuditEmployees",
+      align: "center",
+      width: 175,
+      render(text: any, record: any, index: number) {
+        if (record.firstAuditEmployees) {
+          let str = "";
+          for (let i = 0; i < record.firstAuditEmployees.length; i++) {
+            if (i === record.firstAuditEmployees.length - 1) {
+              str += record.firstAuditEmployees[i].empName;
+            } else {
+              str += record.firstAuditEmployees[i].empName + "、";
+            }
+            setFrist(str);
+          }
+          return first;
+        } else {
+          return "--";
+        }
+      }
+    },
+    {
+      title: "二级审核",
+      dataIndex: "secondAuditRoles",
+      align: "center",
+      width: 175,
+      render(text: any, record: any, index: number) {
+        if (record.secondAuditRoles) {
+          let str = "";
+          for (let i = 0; i < record.secondAuditRoles.length; i++) {
+            if (i === record.secondAuditRoles.length - 1) {
+              str += record.secondAuditRoles[i].roleName;
+            } else {
+              str += record.secondAuditRoles[i].roleName + "、";
+            }
+            setSecond(str);
+          }
+          return second;
+        } else {
+          return "--";
+        }
+      }
+    },
+    {
+      title: "三级审核",
+      dataIndex: "thirdAuditRoles",
+      align: "center",
+      width: 175,
+      render(text: any, record: any, index: number) {
+        if (record.thirdAuditRoles) {
+          let str = "";
+          for (let i = 0; i < record.thirdAuditRoles.length; i++) {
+            if (i === record.thirdAuditRoles.length - 1) {
+              str += record.thirdAuditRoles[i].roleName;
+            } else {
+              str += record.thirdAuditRoles[i].roleName + "、";
+            }
+            setThird(str);
+          }
+          return third;
+        } else {
+          return "--";
+        }
+      }
+    },
+    {
+      title: "操作",
+      dataIndex: "",
+      width: 120,
+      align: "center",
+      render(text: any, record: any, index: number) {
+        return (
+          <DoCon>
+            <span onClick={() => saveOrUpload(record)}>修改</span>
+            <span onClick={() => handleDelete(record)}>删除</span>
+          </DoCon>
+        );
+      }
+    }
+  ];
 
   // 查询
   const getTableData = () => {
@@ -115,7 +151,6 @@ export default observer(function MenuSettings() {
       meunSettingApi.getGetData().then((res: any) => {
         setLoading(false);
         if (res.data) {
-          console.log(res.data);
           setTableList(res.data || []);
         }
       });
@@ -124,9 +159,7 @@ export default observer(function MenuSettings() {
 
   //删除
   const handleDelete = (record: any) => {
-    console.log(record);
     meunSettingApi.whetherPlan(record.id).then(res => {
-      console.log(res.data.flag);
       if (!res.data.flag) {
         Modal.confirm({
           title: "提示",
@@ -167,6 +200,24 @@ export default observer(function MenuSettings() {
     );
   };
 
+  // 添加修改一级菜单
+  const saveOrUpload = (record: any) => {
+    setEditParams({
+      id: record.id,
+      name: record.name,
+      sort: record.sort
+    });
+    setEditVisible(true);
+  };
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setEditParams({});
+  };
+  const handleEditOk = () => {
+    getTableData();
+    handleEditCancel();
+  };
+
   return (
     <Wrapper>
       <Con>
@@ -174,7 +225,9 @@ export default observer(function MenuSettings() {
           <div className="topHeaderTitle">
             <div className="title">菜单设置</div>
             <div className="topHeaderButton">
-              <Button type="primary">添加一级菜单</Button>
+              <Button type="primary" onClick={() => setEditVisible(true)}>
+                添加一级菜单
+              </Button>
               <Button type="primary">添加二级菜单</Button>
             </div>
           </div>
@@ -182,30 +235,26 @@ export default observer(function MenuSettings() {
       </Con>
       <Content>
         <BaseTable
+          rowKey={(record, index) => `complete${record.id}${index}`}
           loading={loading}
           columns={columns}
           dataSource={tableList}
           childrenColumnName="childList"
           type={[]}
           surplusWidth={300}
-          surplusHeight={240}
-          pagination={{
-            pageSizeOptions: ["10", "20", "30", "40", "50"],
-            onShowSizeChange: (pageIndex, pageSize) =>
-              setQuery({ ...query, pageSize }),
-            onChange: (pageIndex, pageSize) =>
-              setQuery({ ...query, pageIndex }),
-            total: totalCount,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            pageSize: query.pageSize,
-            current: query.pageIndex
-          }}
+          surplusHeight={200}
         />
       </Content>
+      <FirstEditModal
+        visible={editVisible}
+        params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
     </Wrapper>
   );
 });
+
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
