@@ -29,6 +29,7 @@ export const TopPannel = styled.div`
 `
 export const MainTitle = styled.div`
   font-size: 24px;
+  height: 36px;
   color: #000;
 `
 export const SubContent = styled.div`

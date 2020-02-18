@@ -82,6 +82,15 @@ const Wrapper = styled.div`
     text-align: center;
     margin-bottom: 15px;
   }
+  .question-desc{
+    .white-space{
+      display: inline-block;
+      width: 60px;
+      border-bottom:1px solid #000;
+      vertical-align: middle;
+      height: 20px;
+    }
+  }
   .question-item{
     padding-left: 10px;
     font-size: 13px;

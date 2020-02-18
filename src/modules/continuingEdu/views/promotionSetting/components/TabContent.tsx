@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, InputNumber, Select } from 'antd'
+import { Button, InputNumber, Select, Modal } from 'antd'
 import { promotionSettingModel } from '../model/PromotionSettingModel'
 import { observer } from 'mobx-react-lite'
 export interface Props {
@@ -11,6 +11,21 @@ const Option = Select.Option
 
 export default observer(function TabContent(props: Props) {
   const { data, config } = promotionSettingModel
+
+  const handleSave = () => {
+    Modal.confirm({
+      title: 'N0升N1晋升要求发布',
+      content: <div>
+        <div>发布后层级 N0 的护士晋升要求会同步更新</div>
+        <div>确实发布新的晋升要求吗？</div>
+        <div>发布后层级为N0护士会立即收到一条更新消息通知</div>
+      </div>,
+      centered: true,
+      onOk: () => {
+        console.log('ok')
+      }
+    })
+  }
 
   return <Wrapper>
     {Object.keys(data).map((key: string, keyIdx: number) => {
@@ -77,7 +92,7 @@ export default observer(function TabContent(props: Props) {
     <div className="row">
       <span className="label"> </span>
       <span className="content">
-        <Button type="primary" style={{ marginTop: '10px' }}>保存并发布</Button>
+        <Button type="primary" style={{ marginTop: '10px' }} onClick={handleSave}>保存并发布</Button>
       </span>
     </div>
   </Wrapper>
