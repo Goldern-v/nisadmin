@@ -16,10 +16,10 @@ const Option = Select.Option
 export default observer(function InfectedAreasCount() {
   const [query, setQuery] = useState({
     pageIndex: 1,
-    empName: '',
+    empName: appStore.queryObj.empName || '',
     companyName: appStore.queryObj.companyName || '',
-    startDate: moment().subtract(1, 'days').format('YYYY-MM-DD'),
-    endDate: moment().format('YYYY-MM-DD'),
+    startDate: appStore.queryObj.startDate || moment().subtract(1, 'days').format('YYYY-MM-DD'),
+    endDate: appStore.queryObj.endDate || moment().format('YYYY-MM-DD'),
     pageSize: 15,
   })
 
@@ -114,14 +114,14 @@ export default observer(function InfectedAreasCount() {
 
         if (exportType == 0) {
           infectedAreasCountService
-            .detailExport()
+            .detailExport(query)
             .then((res) => {
               setLoading(false)
               fileDownload(res)
             }, () => setLoading(false))
         } else {
           infectedAreasCountService
-            .countExport()
+            .countExport(query)
             .then((res) => {
               setLoading(false)
               fileDownload(res)

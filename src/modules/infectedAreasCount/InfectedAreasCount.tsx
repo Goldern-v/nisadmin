@@ -99,9 +99,16 @@ export default observer(function InfectedAreasCount() {
   ]
 
   const handleDetail = (record: any) => {
+    let params = {
+      companyName: record.companyName,
+      startDate: query.startDate,
+      endDate: query.endDate,
+      empName: query.empName
+    }
+
     appStore
       .history
-      .push(`/InfectedAreasCountDetail?companyName=${record.companyName}`)
+      .push(`/InfectedAreasCountDetail?${qs.stringify(params)}`)
   }
 
   const handleSearch = () => {
@@ -111,7 +118,7 @@ export default observer(function InfectedAreasCount() {
   const handleExport = () => {
     setLoading(true)
     infectedAreasCountService
-      .countExport()
+      .countExport(query)
       .then((res) => {
         setLoading(false)
         fileDownload(res)
@@ -154,7 +161,7 @@ export default observer(function InfectedAreasCount() {
   let totalSizeTotal = 0
   let avgSizeTotal = 0
   let maxSizeTotal = 0
-  let minSizeTotal = 0
+  let minSizeTotal = tableData[0] ? tableData[0].minSize : 0
   let noUseSizeTotal = 0
 
   for (let i = 0; i < tableData.length; i++) {
@@ -169,29 +176,32 @@ export default observer(function InfectedAreasCount() {
     if (item.totalSize && !isNaN(Number(item.totalSize)))
       totalSizeTotal += Number(item.totalSize)
 
-    if (item.avgSize && !isNaN(Number(item.avgSize)))
-      avgSizeTotal += Number(item.avgSize)
+    // if (item.avgSize && !isNaN(Number(item.avgSize)))
+    //   avgSizeTotal += Number(item.avgSize)
 
 
-    if (item.maxSize && !isNaN(Number(item.maxSize)))
-      maxSizeTotal += Number(item.maxSize)
+    if (item.maxSize && !isNaN(Number(item.maxSize))) {
+      if (item.maxSize > maxSizeTotal) maxSizeTotal = item.maxSize
+    }
 
 
-    if (item.minSize && !isNaN(Number(item.minSize)))
-      minSizeTotal += Number(item.minSize)
+    if (!isNaN(Number(item.minSize))) {
+      if (item.minSize < minSizeTotal) minSizeTotal = item.minSize
+    }
 
     if (item.noUseSize && !isNaN(Number(item.noUseSize)))
       noUseSizeTotal += Number(item.noUseSize)
   }
 
   empSizeTotal = parseInt((empSizeTotal * 100).toString()) / 100
+  empTotalSizeTotal = parseInt((empTotalSizeTotal * 100).toString()) / 100
   totalSizeTotal = parseInt((totalSizeTotal * 100).toString()) / 100
-  avgSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
+  avgSizeTotal = Math.round((totalSizeTotal / empTotalSizeTotal) * 100) / 100
   maxSizeTotal = parseInt((maxSizeTotal * 100).toString()) / 100
   minSizeTotal = parseInt((minSizeTotal * 100).toString()) / 100
-  noUseSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
-  avgSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
-  avgSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
+  noUseSizeTotal = parseInt((noUseSizeTotal * 100).toString()) / 100
+
+  if (isNaN(avgSizeTotal)) avgSizeTotal = 0
 
   useEffect(() => {
     getTableData(query)
@@ -248,7 +258,7 @@ export default observer(function InfectedAreasCount() {
         <span className="content">{companyTotal}</span>
         <span className="label">医护人数: </span>
         <span className="content">{empSizeTotal}</span>
-        <span className="label">总人数:</span>
+        <span className="label">总人次:</span>
         <span className="content">{empTotalSizeTotal}</span>
         <span className="label">总时长: </span>
         <span className="content">{totalSizeTotal}</span>

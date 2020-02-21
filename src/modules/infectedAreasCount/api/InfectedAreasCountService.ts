@@ -15,12 +15,18 @@ export default class InfectedAreasCountService extends BaseApiService {
 
   /** 详情表导出 */
   public detailExport(query?: any) {
-    return this.post('/personInfoRegister/getPageForDetail/export', {}, { responseType: 'blob' })
+    let newQuery = { ...query }
+    delete newQuery.pageIndex
+    delete newQuery.pageSize
+    return this.post('/personInfoRegister/getPageForDetail/export', newQuery, { responseType: 'blob' })
   }
 
   /** 汇总表导出 */
   public countExport(query?: any) {
-    return this.post('/personInfoRegister/getCountList/export', {}, { responseType: 'blob' })
+    let newQuery = { ...query }
+    delete newQuery.pageIndex
+    delete newQuery.pageSize
+    return this.post('/personInfoRegister/getCountList/export', newQuery, { responseType: 'blob' })
   }
 
   /** 获取医疗队列表 */
