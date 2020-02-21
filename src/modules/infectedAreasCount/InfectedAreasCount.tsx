@@ -83,7 +83,7 @@ export default observer(function InfectedAreasCount() {
       dataIndex: 'noUseSize',
       title: '无效出入记录数',
       align: 'center',
-      width: 90,
+      width: 110,
     },
     {
       key: 'operate',
