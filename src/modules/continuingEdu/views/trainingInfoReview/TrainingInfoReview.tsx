@@ -52,7 +52,11 @@ export default observer(function TrainingInfoReview() {
         <span className="content" style={{ color: 'red' }}>回退</span>
       </SubContent>
       <ButtonGroups>
-        {/* <Button type="primary" onClick={handleAuditOpen}>待护理部主任审核/待护士长审核/待科护士长审核</Button> */}
+        {/* <Button 
+          type="primary" 
+          onClick={handleAuditOpen}>
+          待护理部主任审核/待护士长审核/待科护士长审核
+        </Button> */}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>

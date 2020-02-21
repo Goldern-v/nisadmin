@@ -27,7 +27,7 @@ export default function TestInfo(props: Props) {
       <div className="label w-106"></div>
       <div className="content">卷面题目数共  37  题    随机显示题目顺序    随机显示选项顺序</div>
       <div className="label w-106"></div>
-      <div className="content"><Button size="small">试卷预览</Button></div>
+      <div className="content"><Button size="small" onClick={() => testPage.show()}>试卷预览</Button></div>
     </div>
     <testPage.Component />
   </Wrapper>

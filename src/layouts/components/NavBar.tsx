@@ -14,12 +14,21 @@ import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
 const toNavLink = (path: string | undefined) => {
-  return path ? () => appStore.history.push(path) : () => {};
+  return path ? () => appStore.history.push(path) : () => { };
 };
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
-const MenuCon = observer(function(props: {
+const itemHidden = (hidden?: any) => {
+  if (!hidden) return false
+  if (Object.prototype.toString.call(hidden) == '[object Function]') {
+    return !!hidden()
+  } else {
+    return true
+  }
+}
+
+const MenuCon = observer(function (props: {
   list: navConfigItem[];
   style?: React.CSSProperties | undefined;
 }) {
@@ -61,7 +70,7 @@ const MenuCon = observer(function(props: {
       <Menu>
         {list.map((item, index) => (
           <Menu.Item
-            style={item.hidden ? { display: "none" } : {}}
+            style={itemHidden(item.hidden) ? { display: 'none' } : {}}
             key={index}
             onClick={toNavLink(item.path)}
             className={
@@ -80,14 +89,15 @@ const MenuCon = observer(function(props: {
 });
 
 export default observer(function NavBar(props: any) {
+
   const realNavConfig =
     appStore.HOSPITAL_ID == "wh"
       ? authStore.isRoleManage
         ? navConfig_wh
         : navConfig_whSelf
       : appStore.HOSPITAL_ID == "ys"
-      ? navConfig_ys
-      : navConfig;
+        ? navConfig_ys
+        : navConfig;
 
   let location = appStore.location;
   return (
@@ -109,30 +119,30 @@ export default observer(function NavBar(props: any) {
             />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <img
-              src={require("../images/logo-white.png")}
-              alt=""
-              className="logo"
-            />
-            <img
-              src={require("../images/宸瑞护理管理系统.png")}
-              alt=""
-              className="name"
-            />
-          </React.Fragment>
-        )}
+            <React.Fragment>
+              <img
+                src={require("../images/logo-white.png")}
+                alt=""
+                className="logo"
+              />
+              <img
+                src={require("../images/宸瑞护理管理系统.png")}
+                alt=""
+                className="name"
+              />
+            </React.Fragment>
+          )}
       </LogoCon>
       {realNavConfig.map(
         (item, index: number) =>
-          !item.hidden && (
+          !itemHidden(item.hidden) && (
             <Dropdown
               overlay={
                 item.children ? (
                   <MenuCon list={item.children} style={item.menuStyle} />
                 ) : (
-                  <div />
-                )
+                    <div />
+                  )
               }
               key={index}
             >
@@ -251,6 +261,13 @@ const NavItem = styled.div<{ active?: boolean }>`
   position: relative;
   background: ${p => p.active && p.theme.$mcc};
   color: #fff;
+  @media (max-width: 1440px) {
+    padding: 0 5px 0 5px;
+  }
+  @media (max-width: 1280px) {
+    padding: 0 3px 0 3px;
+    letter-spacing: -1px;
+  }
   svg {
     width: 16px;
     height: 16px;
