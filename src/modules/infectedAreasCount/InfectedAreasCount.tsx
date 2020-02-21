@@ -184,6 +184,15 @@ export default observer(function InfectedAreasCount() {
       noUseSizeTotal += Number(item.noUseSize)
   }
 
+  empSizeTotal = parseInt((empSizeTotal * 100).toString()) / 100
+  totalSizeTotal = parseInt((totalSizeTotal * 100).toString()) / 100
+  avgSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
+  maxSizeTotal = parseInt((maxSizeTotal * 100).toString()) / 100
+  minSizeTotal = parseInt((minSizeTotal * 100).toString()) / 100
+  noUseSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
+  avgSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
+  avgSizeTotal = parseInt((avgSizeTotal * 100).toString()) / 100
+
   useEffect(() => {
     getTableData(query)
   }, [query])
