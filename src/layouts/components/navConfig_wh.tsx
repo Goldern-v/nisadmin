@@ -76,7 +76,7 @@ export const navConfig: navConfigItem[] = [
     hidden: () => {
       if (appStore.isDev) return false
 
-      if (authStore.user && authStore.user.empNo.toLowerCase() == 'xxk001') return false
+      if (authStore.user && authStore.user.empNo && authStore.user.empNo.toLowerCase() == 'xxk001') return false
 
       return true
     }
