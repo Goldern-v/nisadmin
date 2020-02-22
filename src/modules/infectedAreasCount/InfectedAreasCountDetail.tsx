@@ -98,6 +98,7 @@ export default observer(function InfectedAreasCount() {
   }
 
   const handleExport = () => {
+    setLoading(true)
     infectedAreasCountService
       .detailExport(query)
       .then((res) => {
