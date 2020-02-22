@@ -9,6 +9,7 @@ import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { fileDownload } from 'src/utils/file/file'
 import { infectedAreasCountService } from './api/InfectedAreasCountService'
+import qs from 'qs'
 
 const RangePicker = DatePicker.RangePicker
 const Option = Select.Option
@@ -25,6 +26,7 @@ export default observer(function InfectedAreasCount() {
 
   const [tableData, setTableData] = useState([] as any)
   const [dataTotal, setDataTotal] = useState(0)
+  const [companyList, setCompanyList] = useState([] as any)
   const [loading, setLoading] = useState(false)
 
   const columns: ColumnProps<any>[] = [
@@ -96,46 +98,55 @@ export default observer(function InfectedAreasCount() {
   }
 
   const handleExport = () => {
-    let exportType = 0
-    const ExportContent = <ExportCon>
-      <Radio.Group
-        defaultValue={0}
-        onChange={(e: any) => exportType = e.target.value}>
-        <Radio value={0}>明细表</Radio>
-        <Radio value={1}>汇总表</Radio>
-      </Radio.Group>
-    </ExportCon>
+    infectedAreasCountService
+      .detailExport(query)
+      .then((res) => {
+        setLoading(false)
+        fileDownload(res)
+      }, () => setLoading(false))
+    // let exportType = 0
+    // const ExportContent = <ExportCon>
+    //   <Radio.Group
+    //     defaultValue={0}
+    //     onChange={(e: any) => exportType = e.target.value}>
+    //     <Radio value={0}>明细表</Radio>
+    //     <Radio value={1}>汇总表</Radio>
+    //   </Radio.Group>
+    // </ExportCon>
 
-    Modal.confirm({
-      title: '导出表格选择',
-      content: ExportContent,
-      onOk: () => {
-        setLoading(true)
+    // Modal.confirm({
+    //   title: '导出表格选择',
+    //   content: ExportContent,
+    //   onOk: () => {
+    //     setLoading(true)
 
-        if (exportType == 0) {
-          infectedAreasCountService
-            .detailExport(query)
-            .then((res) => {
-              setLoading(false)
-              fileDownload(res)
-            }, () => setLoading(false))
-        } else {
-          infectedAreasCountService
-            .countExport(query)
-            .then((res) => {
-              setLoading(false)
-              fileDownload(res)
-            }, () => setLoading(false))
-        }
-      }
-    })
+    //     if (exportType == 0) {
+    //       infectedAreasCountService
+    //         .detailExport(query)
+    //         .then((res) => {
+    //           setLoading(false)
+    //           fileDownload(res)
+    //         }, () => setLoading(false))
+    //     } else {
+    //       infectedAreasCountService
+    //         .countExport(query)
+    //         .then((res) => {
+    //           setLoading(false)
+    //           fileDownload(res)
+    //         }, () => setLoading(false))
+    //     }
+    //   }
+    // })
   }
 
   const getTableData = (query: any) => {
+    appStore.history.replace(`${appStore.location.pathname}?${qs.stringify(query)}`)
+
     setLoading(true)
     infectedAreasCountService
       .getDetail(query)
       .then(res => {
+
         setLoading(false)
         if (res.data) {
           setTableData(res.data.list)
@@ -152,10 +163,21 @@ export default observer(function InfectedAreasCount() {
     setQuery({ ...query, pageSize: size, pageIndex: 1 })
   }
 
+  const getCompanyList = () => {
+    infectedAreasCountService
+      .getCompanyList()
+      .then((res: any) => {
+        if (res.data) setCompanyList(res.data)
+      })
+  }
+
   useEffect(() => {
     getTableData(query)
   }, [query])
 
+  useEffect(() => {
+    getCompanyList()
+  }, [])
 
   return <Wrapper>
     <HeaderCon>
@@ -177,13 +199,15 @@ export default observer(function InfectedAreasCount() {
             startDate: moments[0]?.format('YYYY-MM-DD'),
             endDate: moments[1]?.format('YYYY-MM-DD'),
           })} />
-        {/* <span>医疗队:</span>
+        <span>医疗队:</span>
         <Select
           value={query.companyName}
           onChange={(companyName: string) => setQuery({ ...query, companyName })}
-          style={{ width: '95px' }}>
+          style={{ width: '160px' }}>
           <Option value="">全部</Option>
-        </Select> */}
+          {companyList.map((item: any, idx: number) =>
+            <Option value={item.companyName} key={idx}>{item.companyName}</Option>)}
+        </Select>
         <span>搜索:</span>
         <Input
           style={{ width: '120px' }}

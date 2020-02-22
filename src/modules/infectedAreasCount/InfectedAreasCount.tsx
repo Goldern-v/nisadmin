@@ -241,13 +241,13 @@ export default observer(function InfectedAreasCount() {
           {companyList.map((item: any, idx: number) =>
             <Option value={item.companyName} key={idx}>{item.companyName}</Option>)}
         </Select>
-        <span>搜索:</span>
+        {/* <span>搜索:</span>
         <Input
           style={{ width: '160px' }}
           defaultValue={query.empName}
           placeholder="请输入姓名"
           allowClear
-          onBlur={(e: any) => setQuery({ ...query, empName: e.target.value, pageIndex: 1 })} />
+          onBlur={(e: any) => setQuery({ ...query, empName: e.target.value, pageIndex: 1 })} /> */}
         <Button onClick={handleSearch} type="primary">查询</Button>
         <Button onClick={handleExport}>导出</Button>
       </RightIcon>

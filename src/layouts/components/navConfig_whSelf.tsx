@@ -1,5 +1,5 @@
 import React from "react";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 
 export interface navConfigItem {
   name: string;
@@ -70,5 +70,16 @@ export const navConfig: navConfigItem[] = [
   {
     name: "病区管理",
     path: "/wardManagement"
+  },
+  {
+    name: "进出感染区统计",
+    path: "/InfectedAreasCount",
+    hidden: () => {
+      if (appStore.isDev) return false
+
+      if (authStore.user && authStore.user.empNo.toLowerCase() == 'xxk001') return false
+
+      return true
+    }
   }
 ];
