@@ -308,6 +308,18 @@ const TrainingInfoReview = lazy(() =>
   )
 );
 
+//进出感染区统计
+const InfectedAreasCount = lazy(() =>
+  import(
+    "src/modules/infectedAreasCount/InfectedAreasCount"
+  )
+);
+const InfectedAreasCountDetail = lazy(() =>
+  import(
+    "src/modules/infectedAreasCount/InfectedAreasCountDetail"
+  )
+);
+
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/login", LoginView),
@@ -581,6 +593,12 @@ const routes: RouteItem[] = [
   setLayout("/WardLogDetail", WardLogDetail, layouts.MainLayout),
   setLayout("/checkWardReportView", CheckWardReportView, layouts.MainLayout),
   setLayout("/nightChargingReport", nightChargingReport, layouts.MainLayout),
+  setLayout("/InfectedAreasCount", InfectedAreasCount, layouts.MainLayout),
+  {
+    path: "/nurseFile",
+    redirect: "/nurseFile/onTheJob"
+  },
+  setLayout("/InfectedAreasCountDetail", InfectedAreasCountDetail, layouts.MainLayout),
   {
     path: "/nurseFile",
     redirect: "/nurseFile/onTheJob"

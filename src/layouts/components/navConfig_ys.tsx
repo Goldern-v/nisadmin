@@ -5,7 +5,7 @@ export interface navConfigItem {
   name: string;
   path?: string;
   children?: navConfigItem[];
-  hidden?: boolean;
+  hidden?: boolean | Function;
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
