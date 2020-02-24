@@ -4,19 +4,20 @@ import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
 import { meunSettingApi } from "./api/MeunSettingApi";
-import FirstEditModal from "./modal/FirstEditModal";
+import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
+import SecondEditModal from "./modal/SecondEditModal"; // 二级菜单弹窗
 
 export default observer(function MenuSettings() {
   const [effect, setEffect] = useState(true);
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
-  const [totalCount, setTotalCount] = useState(Number); // 总页码
   const [submit, setSubmit] = useState(String); // 提交人
   const [first, setFrist] = useState(String); //一级审核
   const [second, setSecond] = useState(String); // 二级审核
   const [third, setThird] = useState(String); // 三级审核
-  const [editVisible, setEditVisible] = useState(false);
-  const [editParams, setEditParams] = useState({} as any);
+  const [editVisible, setEditVisible] = useState(false); // 控制弹窗状态
+  const [editParams, setEditParams] = useState({} as any); //修改回显数据
+  const [editSecondVisible, setEditSecondVisible] = useState(false); // 控制弹窗状态
 
   useLayoutEffect(() => {
     setEffect(false);
@@ -200,17 +201,23 @@ export default observer(function MenuSettings() {
     );
   };
 
-  // 添加修改一级菜单
+  // 修改一级菜单
   const saveOrUpload = (record: any) => {
-    setEditParams({
-      id: record.id,
-      name: record.name,
-      sort: record.sort
-    });
-    setEditVisible(true);
+    if (record.key) {
+      setEditParams({
+        id: record.id,
+        name: record.name,
+        sort: record.sort
+      });
+      setEditVisible(true);
+    } else {
+      setEditParams(record);
+      setEditSecondVisible(true);
+    }
   };
   const handleEditCancel = () => {
     setEditVisible(false);
+    setEditSecondVisible(false);
     setEditParams({});
   };
   const handleEditOk = () => {
@@ -247,6 +254,12 @@ export default observer(function MenuSettings() {
       </Content>
       <FirstEditModal
         visible={editVisible}
+        params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
+      <SecondEditModal
+        visible={editSecondVisible}
         params={editParams}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
