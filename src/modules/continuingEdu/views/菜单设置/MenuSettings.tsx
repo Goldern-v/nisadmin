@@ -259,7 +259,7 @@ export default observer(function MenuSettings() {
         onOk={handleEditOk}
       />
       <SecondEditModal
-        visible={editSecondVisible}
+        secondVisible={editSecondVisible}
         params={editParams}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
