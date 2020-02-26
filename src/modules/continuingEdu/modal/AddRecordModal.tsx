@@ -21,6 +21,7 @@ import Step2 from "./stepComponent/Step2";
 import Step3 from "./stepComponent/Step3";
 import Step4 from "./stepComponent/Step4";
 import Step5 from "./stepComponent/Step5";
+import { ScrollBox } from "src/components/common";
 const { Step } = Steps;
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
@@ -66,7 +67,13 @@ export default function AddRecordModal(props: Props) {
     setCurrentStep(current);
   };
 
-  useLayoutEffect(() => {}, [visible]);
+  useLayoutEffect(() => {
+    if (visible) {
+      setCurrentStep(0);
+    } else {
+      setCurrentStep(-1);
+    }
+  }, [visible]);
 
   return (
     <Modal
@@ -74,6 +81,7 @@ export default function AddRecordModal(props: Props) {
       title={title}
       visible={visible}
       onCancel={onCancel}
+      centered
       // onOk={onSave}
       okText="保存"
       forceRender
@@ -85,11 +93,14 @@ export default function AddRecordModal(props: Props) {
         </div>
       }
     >
-      <Steps current={currentStep}>
-        {stepList.map(item => (
-          <Step title={item.title} />
-        ))}
-      </Steps>
+      <StepHead>
+        <Steps current={currentStep}>
+          {stepList.map(item => (
+            <Step title={item.title} />
+          ))}
+        </Steps>
+      </StepHead>
+
       <StepCon>
         {stepList
           .filter((item, index) => index == currentStep)
@@ -99,6 +110,12 @@ export default function AddRecordModal(props: Props) {
   );
 }
 const Wrapper = styled.div``;
-const StepCon = styled.div`
-  margin-top: 30px;
+const StepCon = styled(ScrollBox)`
+  margin-top: 0px;
+  height: 55vh;
+  overflow: auto;
+`;
+const StepHead = styled.div`
+  padding: 0px 20px 15px;
+  border-bottom: 1px solid #ddd;
 `;
