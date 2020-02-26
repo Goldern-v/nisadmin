@@ -8,7 +8,7 @@ import createModal from "src/libs/createModal";
 import SelectPeopleModal from "./modal-two/SelectPeopleModal";
 
 export interface Props {
-  visible: boolean;
+  secondVisible: boolean;
   params: any;
   onCancel: any;
   onOk: any;
@@ -26,23 +26,23 @@ export interface CheckUserItem {
 
 export default function SecondEditModal(props: Props) {
   const selectPeopleModal = createModal(SelectPeopleModal);
-  const { visible, params, onCancel, onOk } = props;
+  const { secondVisible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const [data, setData] = useState({});
   const [submitList, setSubmitList]: any = useState([]);
   const [firstList, setFirstList]: any = useState([]);
   const [secondList, setSecondList]: any = useState([]);
   const [thirdList, setThirdList]: any = useState([]);
-
+  const [peopleVisible, setPeopleVisible] = useState(false);
   const openSelectPeopleModal = () => {
+    setPeopleVisible(true);
     selectPeopleModal.show({
       checkedUserList: firstList
     });
   };
   const onOkCallBack = (firstList: CheckUserItem[]) => {
     setFirstList(firstList);
+    setPeopleVisible(false);
   };
-
   const formRef = React.createRef<Form>();
   // 验证
   const rules: Rules = {
@@ -72,7 +72,7 @@ export default function SecondEditModal(props: Props) {
   };
 
   useEffect(() => {
-    if (visible) {
+    if (secondVisible) {
       setTimeout(() => {
         let current = formRef.current;
         if (!current) return;
@@ -100,7 +100,7 @@ export default function SecondEditModal(props: Props) {
         });
       }, 100);
     }
-  }, [visible, params, firstList, secondList, thirdList]);
+  }, [secondVisible, params, firstList, secondList, thirdList]);
 
   const checkForm = () => {
     let current = formRef.current;
@@ -135,106 +135,113 @@ export default function SecondEditModal(props: Props) {
   };
 
   return (
-    <Spin>
-      <Modal
-        width={600}
-        visible={visible}
-        onCancel={handleCancel}
-        onOk={checkForm}
-        confirmLoading={editLoading}
-        title="修改二级菜单"
-      >
-        <Wrapper>
-          <Form ref={formRef} rules={rules}>
-            <Row>
-              <Col span={4} className="label">
-                名称:
-              </Col>
-              <Col span={20}>
-                <Form.Field name="name">
-                  <Input placeholder="名称" />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={4} className="label">
-                提交人:
-              </Col>
-              <Col span={20}>
-                <Form.Field name="submitList">
-                  <div onClick={openSelectPeopleModal}>
+    <ModalSpin>
+      <Spin>
+        <Modal
+          width={600}
+          visible={secondVisible}
+          onCancel={handleCancel}
+          onOk={checkForm}
+          confirmLoading={editLoading}
+          title="修改二级菜单"
+        >
+          <Wrapper>
+            <Form ref={formRef} rules={rules}>
+              <Row>
+                <Col span={4} className="label">
+                  名称:
+                </Col>
+                <Col span={20}>
+                  <Form.Field name="name">
+                    <Input placeholder="名称" />
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={4} className="label">
+                  提交人:
+                </Col>
+                <Col span={20}>
+                  <Form.Field name="submitList">
+                    <div>
+                      <Select
+                        mode="tags"
+                        placeholder="提交人"
+                        value={submitList}
+                        labelInValue={true}
+                        style={{ width: "100%" }}
+                        open={false}
+                      />
+                    </div>
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={4} className="label">
+                  审核人:
+                </Col>
+                <Col span={20}>
+                  <Form.Field name="firstList">
+                    <div onClick={openSelectPeopleModal}>
+                      <Select
+                        mode="tags"
+                        placeholder="审核人"
+                        value={firstList}
+                        labelInValue={true}
+                        style={{ width: "100%" }}
+                        open={false}
+                      />
+                    </div>
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={4} className="label">
+                  二级审核人:
+                </Col>
+                <Col span={20}>
+                  <Form.Field name="secondList">
                     <Select
                       mode="tags"
-                      placeholder="提交人"
-                      value={submitList}
+                      placeholder="二级审核人"
+                      value={secondList}
                       labelInValue={true}
                       style={{ width: "100%" }}
                       open={false}
                     />
-                  </div>
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={4} className="label">
-                审核人:
-              </Col>
-              <Col span={20}>
-                <Form.Field name="firstList">
-                  <div onClick={openSelectPeopleModal}>
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={4} className="label">
+                  三级审核人:
+                </Col>
+                <Col span={20}>
+                  <Form.Field name="thirdList">
                     <Select
                       mode="tags"
-                      placeholder="审核人"
-                      value={firstList}
+                      placeholder="三级审核人"
+                      value={thirdList}
                       labelInValue={true}
                       style={{ width: "100%" }}
                       open={false}
                     />
-                  </div>
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={4} className="label">
-                二级审核人:
-              </Col>
-              <Col span={20}>
-                <Form.Field name="secondList">
-                  <Select
-                    mode="tags"
-                    placeholder="二级审核人"
-                    value={secondList}
-                    labelInValue={true}
-                    style={{ width: "100%" }}
-                    open={false}
-                  />
-                </Form.Field>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={4} className="label">
-                三级审核人:
-              </Col>
-              <Col span={20}>
-                <Form.Field name="thirdList">
-                  <Select
-                    mode="tags"
-                    placeholder="三级审核人"
-                    value={thirdList}
-                    labelInValue={true}
-                    style={{ width: "100%" }}
-                    open={false}
-                  />
-                </Form.Field>
-              </Col>
-            </Row>
-          </Form>
-        </Wrapper>
-      </Modal>
-      <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
-    </Spin>
+                  </Form.Field>
+                </Col>
+              </Row>
+            </Form>
+          </Wrapper>
+        </Modal>
+      </Spin>
+      <selectPeopleModal.Component
+        visible={peopleVisible}
+        onOkCallBack={onOkCallBack}
+      />
+    </ModalSpin>
   );
 }
+const ModalSpin = styled.div``;
+
 const Spin = styled.div``;
 const Wrapper = styled.div`
   width: 85%;

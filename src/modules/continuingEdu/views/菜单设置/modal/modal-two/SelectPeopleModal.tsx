@@ -39,7 +39,7 @@ interface User {
   key: string;
 }
 export default observer(function SelectPeopleModal(props: Props) {
-  let { visible, onCancel, onOkCallBack, onClose } = props;
+  const { visible, onCancel, onOkCallBack, onClose } = props;
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
   const [searchWord, setSearchWord]: any = useState("");

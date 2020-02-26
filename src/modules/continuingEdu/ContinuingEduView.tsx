@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import Null from "src/components/null/Null";
+import { meunSettingApi } from "./views/菜单设置/api/MeunSettingApi";
 
 import { ReactComponent as RYGL } from "./assets/icon_svg/RYGL.svg";
 import { ReactComponent as YNXXB } from "./assets/icon_svg/YNXXB.svg";
@@ -43,7 +44,7 @@ import TypeManagement from "./views/outsideHospital/views/typeManagement/TypeMan
 import PromotionSetting from "./views/promotionSetting/PromotionSetting";
 
 import 类型管理 from "./views/类型管理/类型管理";
-import MenuSettings from "./views/菜单设置/MenuSettings";
+import 菜单设置 from "./views/菜单设置/MenuSettings";
 
 const LEFT_MENU_CONFIG = [
   {
@@ -206,11 +207,87 @@ const LEFT_MENU_CONFIG = [
     title: "菜单设置",
     icon: <KSGL />,
     path: "/continuingEdu/菜单设置",
-    component: MenuSettings
+    component: 菜单设置
   }
 ];
 
 export default function ContinuingEdu(props: Props) {
+  const [effect, setEffect] = useState(true);
+  const [dataList, setDataList] = useState([] as any);
+  // 查询
+  const getList = () => {
+    if (effect) {
+      meunSettingApi.getGetData().then((res: any) => {
+        let newArr: any = [];
+        if (res.data) {
+          let arr = res.data;
+          if (arr.length > 0) {
+            arr.map((item: any, index: number) => {
+              var obj1: any = {
+                id: item.id,
+                title: item.name,
+                icon: getIcon(item.sort),
+                component: getComponent(item.name),
+                path: `/continuingEdu/${item.name}`
+              };
+              if (item.childList && item.childList.length) {
+                let arr: any = [];
+                item.childList.map((item: any, index: any) => {
+                  var obj2: any = {
+                    id: item.id,
+                    title: item.name,
+                    component: getComponent(item.name),
+                    path: `/continuingEdu/${item.name}`
+                  };
+                  arr.push(obj2);
+                  obj1.children = arr;
+                });
+              }
+              newArr.push(obj1);
+            });
+            setDataList(newArr);
+          }
+        }
+      });
+    }
+  };
+  useLayoutEffect(() => {
+    setEffect(false);
+  }, []);
+  // 初始化
+  useEffect(() => {
+    setEffect(true);
+    getList();
+  }, [props.history.location.pathname]);
+  // 获取icon
+  const getIcon = (icon: any) => {
+    switch (icon) {
+      case 1:
+        return <RYGL />;
+      case 2:
+        return <YNXXB />;
+      case 3:
+        return <JXJH />;
+      case 4:
+        return <LXGL />;
+      case 5:
+        return <KSGL />;
+      case 6:
+        return <SPXX />;
+      default:
+        return <RYGL />;
+    }
+  };
+  // 获取组件名
+  const getComponent = (name: any) => {
+    switch (name) {
+      case "菜单设置":
+        return 菜单设置;
+      default:
+        return 菜单设置;
+    }
+  };
+
   let currentRoutePath = props.match.url || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
@@ -231,7 +308,6 @@ export default function ContinuingEdu(props: Props) {
     }
     return chooseRoute;
   }
-  // let cacheSetHeadTitle = currentRoute && currentRoute.title
   return (
     <Wrapper>
       <LeftWrapper>
@@ -241,6 +317,7 @@ export default function ContinuingEdu(props: Props) {
         {currentRoute && currentRoute.component && (
           <currentRoute.component
             getTitle={currentRoute && currentRoute.title}
+            // getId={currentRoute && currentRoute.id}
           />
         )}
       </MainWrapper>
