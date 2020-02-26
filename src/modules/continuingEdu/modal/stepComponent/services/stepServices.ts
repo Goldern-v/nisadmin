@@ -3,7 +3,7 @@ import { appStore, authStore } from "src/stores";
 import qs from "qs";
 
 let getPid = () => {
-  return appStore.queryObj.pid || 24;
+  return appStore.queryObj.pid || 25;
 };
 
 export default class StepServices extends BaseApiService {
@@ -23,6 +23,16 @@ export default class StepServices extends BaseApiService {
       `/studyAndTrain/teachingPlanManage/addTeachingPlanInfo/study`,
       obj
     );
+  }
+
+  /** 上传附件 */
+  public uploadAttachment(obj: any) {
+    return this.post(`/file/uploadAttachment/studyAndTrain`, obj);
+  }
+
+  /** 生成任务处理码 */
+  public generateTaskCode() {
+    return this.post(`/studyAndTrain/teachingPlanManage/generateTaskCode`);
   }
 }
 

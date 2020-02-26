@@ -13,14 +13,11 @@ import Form from "src/components/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import { stepServices } from "./services/stepServices";
+import { stepViewModal } from "./StepViewModal";
 export interface Props {}
 
 export default function Step1() {
-  const [typeList, setTypeList] = useState([
-    { name: "1", code: "1" },
-    { name: "2", code: "2" },
-    { name: "3", code: "3" }
-  ]);
+  const [typeList, setTypeList] = useState([]);
   let refForm = React.createRef<Form>();
   /** 设置规则 */
   const rules: Rules = {
@@ -39,6 +36,9 @@ export default function Step1() {
       if (obj) {
         form.setField("teachingMethodName", obj.teachingMethodName);
       }
+      stepViewModal.stepData1.teachingMethod = obj.teachingMethod;
+      stepViewModal.stepData1.teachingMethodName = obj.teachingMethodName;
+      stepViewModal.stepData1.name = obj.name;
     }
   };
 
@@ -65,7 +65,7 @@ export default function Step1() {
                 <Select>
                   {typeList.map((item: any) => (
                     <Select.Option value={item.id} key={item.id}>
-                      {item.typeName}
+                      {item.name}
                     </Select.Option>
                   ))}
                 </Select>

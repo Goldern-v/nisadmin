@@ -3,12 +3,23 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { Button, Icon, message } from "antd";
 import { getFileType, getFileSize, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
+import { stepServices } from "./services/stepServices";
+import { stepViewModal } from "./StepViewModal";
 export interface Props {}
 
 export default function Step4() {
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [fileList, setFileList] = useState([]);
   const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    setFileList(stepViewModal.stepData4.attachmentIds);
+  }, []);
+
+  useEffect(() => {
+    stepViewModal.stepData4.attachmentIds = fileList;
+  }, [fileList]);
+
   const deleteFile = (index: number) => {
     fileList.splice(index, 1);
     setFileList([...fileList]);
@@ -24,24 +35,7 @@ export default function Step4() {
     for (let i = 0; i < files.length; i++) {
       let postData = new FormData();
       postData.append("file", files[i]);
-      // promiseList.push(
-      //   service.commonApiService.uploadAttachment(
-      //     "mail",
-      //     postData,
-      //     (ProgressEvent: any) => {
-      //       if (ProgressEvent.total > 100 * 1024 * 1024) {
-      //         setTimeout(() => {
-      //           message.warning("附件大小不能超过100M!");
-      //         }, 100);
-      //         setTimeout(() => {
-      //           message.warning("附件大小不能超过100M!");
-      //         }, 1000);
-
-      //         Promise.reject("附件大小不能超过100M！");
-      //       }
-      //     }
-      //   )
-      // );
+      promiseList.push(stepServices.uploadAttachment(postData));
     }
     let hideLoading = message.loading("正在上传，请稍等", 0);
     Promise.all(promiseList)
@@ -113,14 +107,14 @@ export default function Step4() {
 }
 const Wrapper = styled.div`
   .btn-con {
-    margin: 40px 20px 20px;
+    margin: 40px 30px 20px;
   }
 `;
 const FileList = styled.div``;
 const FilesBox = styled.div`
   padding: 12px 30px 12px;
   margin-top: -12px;
-  border-bottom: 1px solid #ddd;
+  /* border-bottom: 1px solid #ddd; */
   overflow: auto;
   max-height: 120px;
   &::-webkit-scrollbar {

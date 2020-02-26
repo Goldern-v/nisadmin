@@ -22,6 +22,8 @@ import Step3 from "./stepComponent/Step3";
 import Step4 from "./stepComponent/Step4";
 import Step5 from "./stepComponent/Step5";
 import { ScrollBox } from "src/components/common";
+import { stepViewModal } from "./stepComponent/StepViewModal";
+import { observer } from "mobx-react-lite";
 const { Step } = Steps;
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
@@ -29,7 +31,7 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => {};
 }
 
-export default function AddRecordModal(props: Props) {
+export default observer(function AddRecordModal(props: Props) {
   const [title, setTitle] = useState("添加记录");
   const [currentStep, setCurrentStep] = useState(0);
   let { visible, onCancel } = props;
@@ -72,6 +74,7 @@ export default function AddRecordModal(props: Props) {
       setCurrentStep(0);
     } else {
       setCurrentStep(-1);
+      stepViewModal.cleanAllStepData();
     }
   }, [visible]);
 
@@ -89,7 +92,24 @@ export default function AddRecordModal(props: Props) {
         <div style={{ textAlign: "center" }}>
           <Button onClick={prevStep}>上一步</Button>
           <Button onClick={onCancel}>取消</Button>
-          <Button onClick={nextStep}>下一步</Button>
+
+          {currentStep <= 3 && (
+            <Button
+              onClick={nextStep}
+              type="primary"
+              disabled={!stepViewModal.isOkStep(currentStep)}
+            >
+              下一步
+            </Button>
+          )}
+          {currentStep == 4 && (
+            <Button
+              onClick={() => stepViewModal.addTeachingPlanInfoStudy()}
+              type="primary"
+            >
+              提交审核
+            </Button>
+          )}
         </div>
       }
     >
@@ -108,7 +128,7 @@ export default function AddRecordModal(props: Props) {
       </StepCon>
     </Modal>
   );
-}
+});
 const Wrapper = styled.div``;
 const StepCon = styled(ScrollBox)`
   margin-top: 0px;

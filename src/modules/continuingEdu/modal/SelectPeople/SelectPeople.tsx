@@ -28,6 +28,7 @@ import { CheckboxChangeEvent } from "antd/lib/checkbox/index";
 import service from "src/services/api";
 import classNames from "classnames";
 import { toJS } from "src/vendors/mobx-react-lite";
+import { stepViewModal } from "../stepComponent/StepViewModal";
 
 export interface Props {
   /** 表单提交成功后的回调 */
@@ -101,6 +102,11 @@ export default observer(function SelectPeople(props: Props) {
     setSearchWord("");
   }, []);
 
+  useEffect(() => {
+    console.log(checkedUserList, "checkedUserList");
+    stepViewModal.stepData3.participantList = checkedUserList;
+  }, [checkedUserList]);
+
   const handleSearch = (value: any) => {
     setSearchWord(value);
     value &&
@@ -136,7 +142,7 @@ export default observer(function SelectPeople(props: Props) {
   };
   return (
     <Wrapper>
-      {/* {toJS(selectPeopleViewModel.stepState)}123 */}
+      {/* {stepViewModal.stepData3.participantList.length} */}
       <div className="main-con">
         <div className="left-part scrollBox">
           <Spin spinning={selectPeopleViewModel.modalLoading}>
