@@ -278,7 +278,7 @@ export default function ContinuingEdu(props: Props) {
         return <RYGL />;
     }
   };
-  // 获取组件名
+  // 获取组件变量名
   const getComponent = (name: any) => {
     switch (name) {
       case "菜单设置":

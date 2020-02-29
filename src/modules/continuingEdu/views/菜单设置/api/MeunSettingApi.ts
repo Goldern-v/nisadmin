@@ -3,11 +3,6 @@ import { authStore } from "src/stores/index";
 import qs from "qs";
 
 export default class MeunSettingApi extends BaseApiService {
-  // 获取所有角色
-  public async getAllRoles() {
-    return this.get(`/studyAndTrain/menuManage/getAllRoles`);
-  }
-
   // 查询菜单树
   public async getGetData() {
     return this.get(`/studyAndTrain/menuManage/getMenuTree`);
@@ -15,7 +10,6 @@ export default class MeunSettingApi extends BaseApiService {
 
   // 判断是否有教学计划
   public async whetherPlan(id: any) {
-    id;
     return this.post(
       `/studyAndTrain/menuManage/isExistedTeachingPlans`,
       qs.stringify({ id })
@@ -49,6 +43,19 @@ export default class MeunSettingApi extends BaseApiService {
   public async updateSecond(obj: any) {
     // id name sort
     return this.post(`/studyAndTrain/menuManage/updateMenuItem/2`, obj);
+  }
+
+  // 获取所有角色信息
+  public async getAllRoles() {
+    return this.get(`/studyAndTrain/menuManage/getAllRoles`);
+  }
+
+  // 根据pId获取子菜单列表
+  public async getChildrenMeun(pId: any) {
+    return this.post(
+      `studyAndTrain/menuManage/getMenuListByPId`,
+      qs.stringify({ pId })
+    );
   }
 }
 export const meunSettingApi = new MeunSettingApi();

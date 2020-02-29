@@ -1,14 +1,10 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
   Input,
   Button,
-  Radio,
-  DatePicker,
   Select,
-  Row,
-  Col,
   message,
   Icon,
   Checkbox,
@@ -17,7 +13,6 @@ import {
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import { ScrollBox } from "src/components/common";
-import { authStore } from "src/stores";
 import { selectPeopleViewModel } from "./SelectPeopleViewModel";
 import { observer } from "mobx-react-lite";
 const { Search } = Input;
@@ -38,8 +33,10 @@ interface User {
   label?: string;
   key: string;
 }
+
 export default observer(function SelectPeopleModal(props: Props) {
-  const { visible, onCancel, onOkCallBack, onClose } = props;
+  let { visible, onCancel, onOkCallBack, onClose } = props;
+
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
   const [searchWord, setSearchWord]: any = useState("");
@@ -132,18 +129,22 @@ export default observer(function SelectPeopleModal(props: Props) {
     });
   };
 
+  const onClean = () => {
+    setCheckedUserList([]);
+  };
   return (
     <Modal
       title="选择联系人"
       visible={visible}
       onCancel={onCancel}
       onOk={onSave}
-      okText="保存"
       forceRender
       width={800}
       footer={null}
+      centered
     >
       <Wrapper>
+        {/* {toJS(selectPeopleViewModel.stepState)}123 */}
         <div className="main-con">
           <div className="left-part scrollBox">
             <Spin spinning={selectPeopleViewModel.modalLoading}>
@@ -171,18 +172,37 @@ export default observer(function SelectPeopleModal(props: Props) {
                 </ListCon>
               ) : (
                 <div>
-                  <AutoComplete
-                    dataSource={searchUserList}
-                    style={{ width: "100%" }}
-                    onSelect={onSelect}
-                    onSearch={handleSearch}
-                    value={searchWord}
-                  >
-                    <Search placeholder="请输入搜索关键字" />
-                  </AutoComplete>
+                  {selectPeopleViewModel.selectedBigDeptCode ? (
+                    <div
+                      className="title"
+                      onClick={() => selectPeopleViewModel.popStep()}
+                      style={{
+                        color: "#333",
+                        marginBottom: "10px",
+                        marginLeft: "-3px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      <Icon type="left" />
+                      <span style={{ paddingLeft: 5 }}>
+                        {selectPeopleViewModel.selectedBigDeptName}
+                      </span>
+                    </div>
+                  ) : (
+                    <AutoComplete
+                      dataSource={searchUserList}
+                      style={{ width: "100%" }}
+                      onSelect={onSelect}
+                      onSearch={handleSearch}
+                      value={searchWord}
+                    >
+                      <Search placeholder="请输入搜索关键字" />
+                    </AutoComplete>
+                  )}
+
                   <FileList>
                     {selectPeopleViewModel.selectTreeData.map(
-                      (item, index: any) => (
+                      (item: any, index: any) => (
                         <div
                           className="item-box"
                           onClick={() =>
@@ -218,6 +238,7 @@ export default observer(function SelectPeopleModal(props: Props) {
 
             <div className="footer-con">
               <Button onClick={onClose}>取消</Button>
+              <Button onClick={onClean}>重置</Button>
               <Button type="primary" onClick={onSave}>
                 确认
               </Button>
@@ -332,9 +353,23 @@ const CheckListCon = observer(function(props: any) {
                       onClick={() =>
                         selectPeopleViewModel.pushStep(
                           item[
-                            selectPeopleViewModel!.currentTreeData!.dataLabel ||
-                              ""
+                            selectPeopleViewModel!.currentTreeData!.stepLabel
                           ]
+                            ? `${
+                                item[
+                                  selectPeopleViewModel!.currentTreeData!
+                                    .stepLabel
+                                ]
+                              }-${
+                                item[
+                                  selectPeopleViewModel!.currentTreeData!
+                                    .dataLabel
+                                ]
+                              }`
+                            : item[
+                                selectPeopleViewModel!.currentTreeData!
+                                  .dataLabel || ""
+                              ]
                         )
                       }
                     >
@@ -383,7 +418,7 @@ const Wrapper = styled.div`
     right: 20px;
     bottom: 10px;
     button {
-      margin-left: 20px;
+      margin-left: 15px;
     }
   }
 `;
@@ -418,6 +453,7 @@ const ListCon = styled.div`
   .title {
     color: #333;
     margin-bottom: 10px;
+    margin-left: -3px;
     cursor: pointer;
   }
   .scrollBox {

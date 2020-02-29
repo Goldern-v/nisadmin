@@ -5,7 +5,8 @@ import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
 import { meunSettingApi } from "./api/MeunSettingApi";
 import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
-import SecondEditModal from "./modal/SecondEditModal"; // 二级菜单弹窗
+import SecondEditModal from "./modal/SecondEditModal"; // 修改二级菜单
+import SecondAddModal from "./modal/SecondAddModal"; // 添加二级菜单
 
 export default observer(function MenuSettings() {
   const [effect, setEffect] = useState(true);
@@ -15,10 +16,11 @@ export default observer(function MenuSettings() {
   const [first, setFrist] = useState(String); //一级审核
   const [second, setSecond] = useState(String); // 二级审核
   const [third, setThird] = useState(String); // 三级审核
-  const [editVisible, setEditVisible] = useState(false); // 控制弹窗状态
+  const [editVisible, setEditVisible] = useState(false); // 控制一级弹窗状态
   const [editParams, setEditParams] = useState({} as any); //修改回显数据
-  const [editSecondVisible, setEditSecondVisible] = useState(false); // 控制弹窗状态
-
+  const [editSecondVisible, setEditSecondVisible] = useState(false); // 控制修改二级弹窗状态
+  const [addSecondVisible, setAddSecondVisible] = useState(false); // 控制添加二级弹窗状态
+  const [addParams, setAddParams] = useState([]);
   useLayoutEffect(() => {
     setEffect(false);
   }, []);
@@ -153,6 +155,7 @@ export default observer(function MenuSettings() {
         setLoading(false);
         if (res.data) {
           setTableList(res.data || []);
+          console.log(res.data, "0000000000");
         }
       });
     }
@@ -215,9 +218,17 @@ export default observer(function MenuSettings() {
       setEditSecondVisible(true);
     }
   };
+
+  // 添加二级菜单
+  const addSecond = () => {
+    setAddParams([]);
+    setAddSecondVisible(true);
+  };
+
   const handleEditCancel = () => {
     setEditVisible(false);
     setEditSecondVisible(false);
+    setAddSecondVisible(false);
     setEditParams({});
   };
   const handleEditOk = () => {
@@ -235,7 +246,9 @@ export default observer(function MenuSettings() {
               <Button type="primary" onClick={() => setEditVisible(true)}>
                 添加一级菜单
               </Button>
-              <Button type="primary">添加二级菜单</Button>
+              <Button type="primary" onClick={addSecond}>
+                添加二级菜单
+              </Button>
             </div>
           </div>
         </TopHeader>
@@ -261,6 +274,12 @@ export default observer(function MenuSettings() {
       <SecondEditModal
         secondVisible={editSecondVisible}
         params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
+      <SecondAddModal
+        visible={addSecondVisible}
+        params={tableList}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />

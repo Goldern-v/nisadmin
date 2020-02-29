@@ -39,8 +39,9 @@ export default function SecondEditModal(props: Props) {
       checkedUserList: firstList
     });
   };
-  const onOkCallBack = (firstList: CheckUserItem[]) => {
-    setFirstList(firstList);
+  const onOkCallBack = (checkedUserList: CheckUserItem[]) => {
+    console.log(checkedUserList, "1111");
+    setFirstList(checkedUserList);
     setPeopleVisible(false);
   };
   const formRef = React.createRef<Form>();
@@ -55,7 +56,8 @@ export default function SecondEditModal(props: Props) {
         employees.map((item: any, index: any) => {
           return {
             key: item.empName,
-            userList: [item.empName]
+            label: item.empName,
+            userList: [item.empNo]
           };
         })
       );
@@ -64,13 +66,33 @@ export default function SecondEditModal(props: Props) {
         employees.map((item: any, index: any) => {
           return {
             key: item.roleName,
-            userList: [item.roleName]
+            label: item.roleName,
+            userList: [item.roleNo]
           };
         })
       );
     }
   };
-
+  // 取消标签审核人
+  const onDeselect = (user: User | User[]) => {
+    if (user instanceof Array) {
+      for (let i = 0; i < user.length; i++) {
+        let index = firstList.findIndex(
+          (item: any) => item.key === user[i].key
+        );
+        if (index > -1) {
+          firstList.splice(index, 1);
+        }
+      }
+      setFirstList([...firstList]);
+    } else {
+      let index = firstList.findIndex((item: any) => item.key === user.key);
+      if (index > -1) {
+        firstList.splice(index, 1);
+        setFirstList([...firstList]);
+      }
+    }
+  };
   useEffect(() => {
     if (secondVisible) {
       setTimeout(() => {
@@ -190,6 +212,7 @@ export default function SecondEditModal(props: Props) {
                         labelInValue={true}
                         style={{ width: "100%" }}
                         open={false}
+                        onDeselect={onDeselect}
                       />
                     </div>
                   </Form.Field>
@@ -232,11 +255,11 @@ export default function SecondEditModal(props: Props) {
             </Form>
           </Wrapper>
         </Modal>
+        <selectPeopleModal.Component
+          visible={peopleVisible}
+          onOkCallBack={onOkCallBack}
+        />
       </Spin>
-      <selectPeopleModal.Component
-        visible={peopleVisible}
-        onOkCallBack={onOkCallBack}
-      />
     </ModalSpin>
   );
 }
