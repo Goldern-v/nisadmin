@@ -2,36 +2,33 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Icon } from 'antd'
 export interface Props { }
+import { trainingInfoReviewModel } from './../model/TrainingInfoReviewModel'
 
 export default function AuditInfoPannel() {
+  const { auditInfo, auditLoading, taskTypeName } = trainingInfoReviewModel
+
+  console.log(JSON.parse(JSON.stringify(auditInfo)))
 
   return <Wrapper>
     <div className="audit-title">审核过程</div>
     <div className="audit-list">
-      <div className="audit-item">
-        <div className="emp-img">
-          <img src="" alt="" />
-          <Icon type="check-circle" theme="filled" className="step-status success" />
-        </div>
-        <div className="info">
-          <div className="step-title">提交</div>
-          <div className="emp-name">王力</div>
-          <div className="emp-name">2019-12-20 16:23（星期五）</div>
-          <div className="desc">文档有问题，打不开，重新上传提交</div>
-        </div>
-      </div>
-      <div className="audit-item">
-        <div className="emp-img">
-          <img src="" alt="" />
-          <Icon type="check-circle" theme="filled" className="step-status success" />
-        </div>
-        <div className="info">
-          <div className="step-title">提交</div>
-          <div className="emp-name">王力</div>
-          <div className="emp-name">2019-12-20 16:23（星期五）</div>
-          <div className="desc">文档有问题，打不开，重新上传提交</div>
-        </div>
-      </div>
+      {auditInfo.map((item: any, idx: number) =>
+        <div className="audit-item" key={idx}>
+          <div className="emp-img">
+            <img src={item.nearImageUrl} alt="" />
+            {!!item.flag && (item.taskType == 4 ? <Icon type="close-circle" theme="filled" className="step-status error" /> : <Icon type="check-circle" theme="filled" className="step-status success" />)}
+          </div>
+          <div className="info">
+            <div className="step-title">
+              <span>{item.taskDesc}</span>
+              {item.taskType == 4 && <span> ({taskTypeName(item.taskType)})</span>}
+            </div>
+            <div className="emp-name">{item.handlerEmpName}</div>
+            {item.flag == 1 && <div className="emp-name">{item.handleTime}({item.handleDayOfWeek})</div>}
+            {item.flag !== 1 && <div className="emp-name">审核中 耗时{item.takeTimeDesc}</div>}
+            {item.handleRemark && <div className="desc">{item.handleRemark}</div>}
+          </div>
+        </div>)}
     </div>
   </Wrapper>
 }
@@ -101,11 +98,18 @@ const Wrapper = styled.div`
         border-radius: 50%;
         object-fit: cover;
         display:inline-block;
+        background: url('${require('src/assets/护士默认头像.png')}');
+        background-size: 100%;
       }
       .step-status{
         position:absolute;
         right: 0;
         bottom: 0;
+        background: #fff;
+        border-radius: 50%;
+        &.error{
+          color: red;
+        }
         &.success{
           color: rgb(2, 159, 123);
         }

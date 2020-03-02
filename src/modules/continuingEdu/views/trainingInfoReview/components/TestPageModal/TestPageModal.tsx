@@ -1,17 +1,52 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal, Spin } from 'antd'
 import { ModalComponentProps } from "src/libs/createModal";
 import { observer } from 'mobx-react-lite'
 import QuestionList from './QuestionList'
 import AwnserInfo from './AwnserInfo'
+import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService'
 export interface Props extends ModalComponentProps {
-
+  id?: number | string,
+  teachingMethodName?: string,
+  title?: string,
+  startTime?: string,
+  endTime?: string,
+  examDuration?: string,
+  passScores?: string
 }
 
 export default observer(function TestPageModal(props: Props) {
   const [loading, setLoading] = useState(false)
-  const { visible, onCancel } = props
+  const {
+    visible,
+    onCancel,
+    id,
+    title,
+    teachingMethodName,
+    startTime,
+    endTime,
+    examDuration,
+    passScores
+  } = props
+
+  const [questionInfo, setQuestionInfo] = useState([] as any)
+
+  const getInfo = () => {
+    setLoading(true)
+    trainingInfoReviewService
+      .previewPaper(id?.toString() || '')
+      .then(res => {
+        setLoading(false)
+        if (res.data) setQuestionInfo(res.data)
+      }, () => setLoading(false))
+  }
+
+  useLayoutEffect(() => {
+    if (visible) {
+      getInfo()
+    }
+  }, [visible])
 
   return <Modal
     width={1200}
@@ -19,16 +54,29 @@ export default observer(function TestPageModal(props: Props) {
     onCancel={onCancel}
     footer={null}
     bodyStyle={{ padding: 0 }}
-    title="考试：1月理论考核第一期"
+    title={`${teachingMethodName} ${title}`}
     confirmLoading={loading}>
     <Wrapper>
       <div className="left" style={{ overflowY: loading ? 'hidden' : 'auto' }}>
         <Spin spinning={loading}>
-          <QuestionList />
+          <QuestionList
+            info={{
+              ...questionInfo,
+              title,
+              startTime,
+              endTime,
+              examDuration,
+              passScores
+            }} />
         </Spin>
       </div>
       <div className="right">
-        <AwnserInfo />
+        <AwnserInfo
+          info={{
+            ...questionInfo,
+            title,
+            teachingMethodName
+          }} />
       </div>
     </Wrapper>
   </Modal>

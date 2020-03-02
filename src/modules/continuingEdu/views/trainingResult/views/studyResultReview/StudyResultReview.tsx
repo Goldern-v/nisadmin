@@ -17,24 +17,14 @@ import { ColumnProps } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
+// import { trainingResultService } from './../../api/TrainingResultService'
+import { trainingResultModel } from './../../models/TrainingResultModel'
 export interface Props { }
 
 //查看学习结果
 export default observer(function StudyResultReview() {
-  const { history } = appStore
-  const [query, setQuery] = useState({
-    pianqv: '',
-    bingqv: '',
-    zhicheng: '',
-    wanchengqingkuang: '',
-    pageIndex: 1,
-    pageSize: 10,
-  } as any)
-
-  const [tableData, setTableData] = useState([{}] as any[])
-  const [dataTotal, setDataTotal] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const title = '2020年新职工培训教学计划'
+  const { history, queryObj } = appStore
+  const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
   const columns: ColumnProps<any>[] = [
     {
@@ -50,48 +40,49 @@ export default observer(function StudyResultReview() {
       width: 60,
     },
     {
-      dataIndex: 'zhiwu',
+      dataIndex: 'empTitle',
       title: '职位',
       align: 'center',
       width: 80,
     },
     {
-      dataIndex: 'pianqv',
+      dataIndex: 'bigDeptName',
       title: '片区',
       align: 'center',
       width: 80,
     },
     {
-      dataIndex: 'bingqv',
+      dataIndex: 'deptName',
       title: '病区',
       align: 'center',
       width: 120,
     },
     {
-      dataIndex: 'status',
+      dataIndex: 'taskStatus',
       title: '学习情况',
       align: 'center',
       width: 60,
-      render: (status: string, record: any) => {
-        return <span style={{ color: 'red' }}>未完成</span>
+      render: (status: number, record: any) => {
+        if (status == 0)
+          return <span style={{ color: 'red' }}>未完成</span>
+        else
+          return <span>已完成</span>
       }
     },
     {
-      dataIndex: 'completeDate',
+      dataIndex: 'finishTime',
       title: '完成时间',
       align: 'center',
-      width: 100,
-      render: (status: string, record: any) =>
-        moment().format('YYYY-MM-DD HH:mm:ss')
+      width: 100
     },
     {
-      dataIndex: 'score',
+      dataIndex: 'creditDesc',
       title: '学分',
       align: 'center',
       width: 120,
     },
     {
-      dataIndex: 'studyTime',
+      dataIndex: 'classHours',
       title: '学时',
       align: 'center',
       width: 50,
@@ -102,40 +93,45 @@ export default observer(function StudyResultReview() {
     //查看详情
   }
   const handlePageChange = (pageIndex: number, pageSize: number | undefined) => {
-    setQuery({ ...query, pageIndex })
+    trainingResultModel.setQuery({ ...query, pageIndex }, true)
   }
   const handleSizeChange = (pageIndex: number, pageSize: number) => {
-    setQuery({ ...query, pageSize, pageIndex: 1 })
-  }
-
-  const getData = (reqParams: any = query) => {
-    console.log(query)
+    trainingResultModel.setQuery({ ...query, pageSize, pageIndex: 1 }, true)
   }
 
   useEffect(() => {
-    getData()
-  }, [query])
+    trainingResultModel.init()
+  }, [])
 
   return <Wrapper>
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
         <span> > </span>
-        <Link to="/home">一级目录</Link>
+        <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
         <span> > </span>
-        <Link to="/home">二级目录</Link>
+        {
+          (Object.keys(menuInfo).length > 0 && <Link
+            to={`/trainningPlanList/${menuInfo.firstLevelMenuId}/${menuInfo.secondLevelMenuId}`}>
+            {menuInfo.secondLevelMenuName}
+          </Link>) || <span>二级目录</span>
+        }
         <span> > 查看结果</span>
       </NavCon>
-      <MainTitle>{title}</MainTitle>
+      <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>
         <span className="label">开始时间:</span>
         <span className="content">
-          {moment().format('YYYY-MM-DD')}
+          {baseInfo.startTime}
         </span>
         <span className="label">类型:</span>
-        <span className="content">教学计划（学习）</span>
+        <span className="content">
+          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
+        </span>
         <span className="label"> 参与人员:</span>
-        <span className="content">35人</span>
+        <span className="content">{
+          (baseInfo.participantList && baseInfo.participantList.length) || 0}人
+        </span>
       </SubContent>
       <ButtonGroups>
         <Button onClick={() => history.goBack()}>返回</Button>
@@ -143,10 +139,7 @@ export default observer(function StudyResultReview() {
     </TopPannel>
     <MainPannel>
       <TableWrapper>
-        <QueryPannel
-          onQueryChange={(newQuery: any) => setQuery({ ...newQuery })}
-          onSearch={getData}
-          query={query} />
+        <QueryPannel />
         <BaseTable
           loading={loading}
           type={['index']}
@@ -159,9 +152,10 @@ export default observer(function StudyResultReview() {
             }
           }}
           pagination={{
+            pageSizeOptions: ['10', '15', '20'],
             current: query.pageIndex,
             pageSize: query.pageSize,
-            total: dataTotal,
+            total: tableDataTotal,
             onChange: handlePageChange,
             onShowSizeChange: handleSizeChange
           }}

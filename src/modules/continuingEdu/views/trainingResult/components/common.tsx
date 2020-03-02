@@ -31,6 +31,8 @@ export const TopPannel = styled.div`
 export const MainTitle = styled.div`
   font-size: 24px;
   color: #000;
+  min-height: 36px;
+  min-width:100px;
 `
 export const SubContent = styled.div`
   span{
@@ -49,6 +51,12 @@ export const ButtonGroups = styled.div`
   position: absolute;
   right: 15px;
   top: 35px;
+  button{
+    margin-right:10px;
+    &:last-of-type{
+      margin-right:0;
+    }
+  }
 `
 export const MainPannel = styled.div`
   flex: 1;

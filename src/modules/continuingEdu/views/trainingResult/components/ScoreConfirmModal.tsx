@@ -1,31 +1,43 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal, Radio, Input } from 'antd'
-import { ModalComponentProps } from "src/libs/createModal";
+import { ModalComponentProps } from "src/libs/createModal"
+import { trainingResultService } from './../api/TrainingResultService'
 export interface Props extends ModalComponentProps {
+  cetpId?: string,
   empNoList?: string[] | number[],
   onOkCallBack?: Function,
   visible: boolean
 }
 export default function ScoreConfirmModal(props: Props) {
-  const { visible, onOkCallBack, onCancel, empNoList } = props
+  const { visible, onOkCallBack, onCancel, empNoList, cetpId } = props
   const [loading, setLoading] = useState(false)
 
   const [params, setParams] = useState({
-    available: '1',
-    reason: ''
+    isValidResult: '1',
+    resultModifyReason: ''
   })
 
   const handleOK = () => {
-    onCancel()
-    onOkCallBack && onOkCallBack()
+    setLoading(true)
+    trainingResultService.updateGradesValid({
+      ...params,
+      empNoList,
+      cetpId
+    }).then(res => {
+      setLoading(false)
+      onCancel()
+      onOkCallBack && onOkCallBack()
+    }, () => setLoading(false))
+    // onCancel()
+    // onOkCallBack && onOkCallBack()
   }
 
   useLayoutEffect(() => {
     if (visible)
       setParams({
-        available: '1',
-        reason: ''
+        isValidResult: '1',
+        resultModifyReason: ''
       })
   }, [visible])
 
@@ -42,9 +54,9 @@ export default function ScoreConfirmModal(props: Props) {
       <div>
         <Radio.Group
           style={{ width: '100%' }}
-          value={params.available}
+          value={params.isValidResult}
           onChange={(e) =>
-            setParams({ ...params, available: e.target.value })}>
+            setParams({ ...params, isValidResult: e.target.value })}>
           <span style={{ width: '50%', display: 'inline-block', textAlign: 'center' }}>
             <Radio value="1">有效</Radio>
           </span>
@@ -57,9 +69,9 @@ export default function ScoreConfirmModal(props: Props) {
         <Input.TextArea
           autosize={{ minRows: 2 }}
           placeholder="请填写修改原因"
-          value={params.reason}
+          value={params.resultModifyReason}
           onChange={(e: any) =>
-            setParams({ ...params, reason: e.target.value })} />
+            setParams({ ...params, resultModifyReason: e.target.value })} />
       </div>
       <div>注：无效成绩将不作为今后的结果统计</div>
     </Wrapper>
