@@ -6,8 +6,9 @@ class SelectPeopleViewModel {
   /** 选择的片区 */
   @observable selectedBigDeptCode: any = "";
   @observable selectedBigDeptName: any = "";
+  @observable selectTreeDataAll: any = [];
 
-  @observable public selectTreeDataAll = [
+  @observable public newSelectTreeDataAll = [
     {
       step: "按片区选择",
       label: "按片区选择",
@@ -45,6 +46,13 @@ class SelectPeopleViewModel {
       label: "按层级选择",
       data: [],
       dataLabel: "level"
+    },
+    {
+      step: "按角色选择",
+      label: "按角色选择",
+      data: [],
+      dataLabel: "roleName",
+      stepLabel: "roleCode"
     }
   ];
   /** 病区下数据 */
@@ -73,6 +81,12 @@ class SelectPeopleViewModel {
       label: "按层级选择",
       data: [],
       dataLabel: "level"
+    },
+    {
+      step: "按角色选择",
+      label: "按角色选择",
+      data: [],
+      dataLabel: "role"
     }
   ];
   @observable stepState: string[] = [];
@@ -130,6 +144,10 @@ class SelectPeopleViewModel {
               { showAuthDept: true }
             )).data
           };
+        } else if (this.stepState[0] == "按角色选择") {
+          this.currentData = {
+            list: (await ser.groupByRoleInDeptList()).data
+          };
         }
       } else if (this.stepState.length == 2) {
         if (this.stepState[0] == "按片区选择") {
@@ -172,6 +190,10 @@ class SelectPeopleViewModel {
               { showAuthDept: true }
             )).data
           };
+        } else if (this.stepState[0] == "按角色选择") {
+          this.currentData = {
+            list: (await ser.groupByRoleInDeptList()).data
+          };
         }
       }
     }
@@ -205,6 +227,23 @@ class SelectPeopleViewModel {
           })),
           type: "userList",
           dataLabel: "empName"
+        };
+      } else if (this.stepState[0] == "按角色选择") {
+        let { dataLabel, stepLabel } = this.selectTreeData.find(
+          (item: any) => item.step == this.stepState[0]
+        );
+        return {
+          parent: this.stepState[0],
+          list: (this.currentData.list || []).map(
+            (item: any, index: number, arr: any[]) => ({
+              label: item[dataLabel],
+              key: item[stepLabel],
+              value: item[stepLabel]
+            })
+          ),
+          dataLabel,
+          stepLabel,
+          type: "userList"
         };
       } else {
         let { dataLabel, stepLabel } = this.selectTreeData.find(
@@ -254,7 +293,15 @@ class SelectPeopleViewModel {
   }
 
   /** 初始化数据 */
-  initData() {
+  initData(type: any) {
+    if (type > 1) {
+      let data = [this.newSelectTreeDataAll.slice().pop()];
+      this.selectTreeDataAll = data;
+    } else {
+      let data = this.newSelectTreeDataAll.slice();
+      data.pop();
+      this.selectTreeDataAll = data;
+    }
     this.stepState = [];
     this.selectedBigDeptCode = "";
     this.selectedBigDeptName = "";

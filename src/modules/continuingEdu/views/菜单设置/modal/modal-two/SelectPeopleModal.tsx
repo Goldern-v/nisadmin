@@ -27,6 +27,7 @@ export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: (checkedUserList: CheckUserItem[]) => void;
   checkedUserList: CheckUserItem[];
+  type: Number;
 }
 
 interface User {
@@ -35,7 +36,7 @@ interface User {
 }
 
 export default observer(function SelectPeopleModal(props: Props) {
-  let { visible, onCancel, onOkCallBack, onClose } = props;
+  let { visible, onCancel, onOkCallBack, onClose, type } = props;
 
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
@@ -85,7 +86,6 @@ export default observer(function SelectPeopleModal(props: Props) {
 
   const onSave = () => {
     onOkCallBack && onOkCallBack(checkedUserList);
-    onClose();
   };
   const onDeselect = (key: any) => {
     deleteUser(key);
@@ -93,7 +93,7 @@ export default observer(function SelectPeopleModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
-      selectPeopleViewModel.initData();
+      selectPeopleViewModel.initData(type);
       setCheckedUserList(props.checkedUserList);
       setSearchWord("");
     }
@@ -137,7 +137,6 @@ export default observer(function SelectPeopleModal(props: Props) {
       title="选择联系人"
       visible={visible}
       onCancel={onCancel}
-      onOk={onSave}
       forceRender
       width={800}
       footer={null}

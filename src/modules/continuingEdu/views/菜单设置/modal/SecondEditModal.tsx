@@ -28,71 +28,77 @@ export default function SecondEditModal(props: Props) {
   const selectPeopleModal = createModal(SelectPeopleModal);
   const { secondVisible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const [submitList, setSubmitList]: any = useState([]);
-  const [firstList, setFirstList]: any = useState([]);
-  const [secondList, setSecondList]: any = useState([]);
-  const [thirdList, setThirdList]: any = useState([]);
-  const [peopleVisible, setPeopleVisible] = useState(false);
-  const openSelectPeopleModal = () => {
-    setPeopleVisible(true);
-    selectPeopleModal.show({
-      checkedUserList: firstList
-    });
-  };
+  const [inputValue, setInputValue] = useState("");
+  const [submitEmployees, setSubmitEmployees]: any = useState([]);
+  const [firstAuditEmployees, setFirstAuditEmployees]: any = useState([]);
+  const [secondAuditRoles, setSecondAuditRoles]: any = useState([]);
+  const [thirdAuditRoles, setThirdAuditRoles]: any = useState([]);
+  const [type, setType]: any = useState(0); // 用于区分哪一种数据类型 0-提交人 1-审核人 2-二级 3-三级
+  const setArray = [
+    setSubmitEmployees,
+    setFirstAuditEmployees,
+    setSecondAuditRoles,
+    setThirdAuditRoles
+  ];
+  const dataArray = [
+    submitEmployees,
+    firstAuditEmployees,
+    secondAuditRoles,
+    thirdAuditRoles
+  ];
+
   const onOkCallBack = (checkedUserList: CheckUserItem[]) => {
-    console.log(checkedUserList, "1111");
-    setFirstList(checkedUserList);
-    setPeopleVisible(false);
+    setArray[type](checkedUserList);
+  };
+
+  const openSelectPeopleModal = (value: any) => {
+    selectPeopleModal.show({
+      checkedUserList: dataArray[value],
+      type: value
+    });
+    setType(value);
   };
   const formRef = React.createRef<Form>();
+
   // 验证
   const rules: Rules = {
     name: val => !!val || "名称不能为空"
   };
+
   // 过滤审核人回显数据 1按人员empName、2按角色roleName
   const getData = (type: any, employees: any, setdData: any) => {
-    if (type == 1) {
-      setdData(
-        employees.map((item: any, index: any) => {
-          return {
-            key: item.empName,
-            label: item.empName,
-            userList: [item.empNo]
-          };
-        })
-      );
-    } else if (type == 2) {
-      setdData(
-        employees.map((item: any, index: any) => {
-          return {
-            key: item.roleName,
-            label: item.roleName,
-            userList: [item.roleNo]
-          };
-        })
-      );
-    }
+    setdData(
+      employees.map((item: any, index: any) => {
+        return {
+          key: type == 1 ? item.empNo : item.roleCode,
+          value: type == 1 ? item.empNo : item.roleCode,
+          label: type == 1 ? item.empName : item.roleName
+        };
+      })
+    );
   };
+
   // 取消标签审核人
-  const onDeselect = (user: User | User[]) => {
+  const onDeselect = (user: User | User[], number: any) => {
+    let data = dataArray[number];
+    let setData = setArray[number];
     if (user instanceof Array) {
       for (let i = 0; i < user.length; i++) {
-        let index = firstList.findIndex(
-          (item: any) => item.key === user[i].key
-        );
+        let index = data.findIndex((item: any) => item.key === user[i].key);
         if (index > -1) {
-          firstList.splice(index, 1);
+          data.splice(index, 1);
         }
       }
-      setFirstList([...firstList]);
+      setData([...data]);
     } else {
-      let index = firstList.findIndex((item: any) => item.key === user.key);
+      let index = data.findIndex((item: any) => item.key === user.key);
       if (index > -1) {
-        firstList.splice(index, 1);
-        setFirstList([...firstList]);
+        data.splice(index, 1);
+        setData([...data]);
       }
     }
   };
+
   useEffect(() => {
     if (secondVisible) {
       setTimeout(() => {
@@ -109,20 +115,50 @@ export default function SecondEditModal(props: Props) {
           thirdAuditorType,
           thirdAuditRoles = []
         } = params;
-        getData(submitterType, submitEmployees, setSubmitList);
-        getData(firstAuditorType, firstAuditEmployees, setFirstList);
-        getData(secondAuditorType, secondAuditRoles, setSecondList);
-        getData(thirdAuditorType, thirdAuditRoles, setThirdList);
+        setInputValue(name);
+        getData(submitterType, submitEmployees, setSubmitEmployees);
+        getData(firstAuditorType, firstAuditEmployees, setFirstAuditEmployees);
+        getData(secondAuditorType, secondAuditRoles, setSecondAuditRoles);
+        getData(thirdAuditorType, thirdAuditRoles, setThirdAuditRoles);
         current.setFields({
           name,
-          submitList,
-          firstList,
-          secondList,
-          thirdList
+          submitEmployees,
+          firstAuditEmployees,
+          secondAuditRoles,
+          thirdAuditRoles
         });
       }, 100);
     }
-  }, [secondVisible, params, firstList, secondList, thirdList]);
+  }, [secondVisible]);
+
+  const setParamsData = () => {
+    let nameList = [
+      "submitEmployees",
+      "firstAuditEmployees",
+      "secondAuditRoles",
+      "thirdAuditRoles"
+    ];
+    let obj: any = {};
+    dataArray.map((item, i) => {
+      let data: any = [];
+      item.map((o: any) => {
+        let objItem: any = {};
+        let objProperty = i > 1 ? "roleCode" : "empNo";
+        if (o.value) {
+          objItem[objProperty] = o.value;
+          data.push(objItem);
+        } else {
+          o.userList.map((k: any) => {
+            let obj: any = {};
+            obj.empNo = k.empNo;
+            data.push(obj);
+          });
+        }
+      });
+      obj[nameList[i]] = data;
+    });
+    return obj;
+  };
 
   const checkForm = () => {
     let current = formRef.current;
@@ -130,24 +166,37 @@ export default function SecondEditModal(props: Props) {
       current
         .validateFields()
         .then(res => {
-          current = formRef.current;
-          if (current) {
-            let newParams = current.getFields();
-            if (params.id) {
-              newParams.id = params.id;
-              setEditLoading(true);
-              meunSettingApi.updateFirst(newParams).then(res => {
-                setEditLoading(false);
-                let msg = "二级菜单修改成功";
-                Message.success(msg);
-                onOk();
-              });
-            }
-          }
+          let typeList = {
+            submitterType: submitEmployees.length ? 1 : null,
+            firstAuditorType: firstAuditEmployees.length ? 1 : null,
+            secondAuditorType: secondAuditRoles.length ? 2 : null,
+            thirdAuditorType: thirdAuditRoles.length ? 2 : null,
+            submitEmployees: [],
+            firstAuditEmployees: [],
+            secondAuditRoles: [],
+            thirdAuditRoles: []
+          };
+          let data = setParamsData();
+          let newParams = {
+            ...typeList,
+            ...params,
+            ...data
+          };
+          newParams.name = inputValue;
+          setEditLoading(true);
+          meunSettingApi
+            .updateSecond(newParams)
+            .then(res => {
+              setEditLoading(false);
+              let msg = "二级菜单修改成功";
+              Message.success(msg);
+              onOk();
+            })
+            .catch(e => {
+              setEditLoading(false);
+            });
         })
-        .catch(e => {
-          console.log(e);
-        });
+        .catch(e => {});
     }
   };
 
@@ -175,7 +224,13 @@ export default function SecondEditModal(props: Props) {
                 </Col>
                 <Col span={20}>
                   <Form.Field name="name">
-                    <Input placeholder="名称" />
+                    <Input
+                      onBlur={(e: any) => {
+                        setInputValue(e.target.value);
+                      }}
+                      value={inputValue}
+                      placeholder="名称"
+                    />
                   </Form.Field>
                 </Col>
               </Row>
@@ -184,15 +239,16 @@ export default function SecondEditModal(props: Props) {
                   提交人:
                 </Col>
                 <Col span={20}>
-                  <Form.Field name="submitList">
-                    <div>
+                  <Form.Field name="submitEmployees">
+                    <div onClick={() => openSelectPeopleModal(0)}>
                       <Select
                         mode="tags"
                         placeholder="提交人"
-                        value={submitList}
+                        value={submitEmployees}
                         labelInValue={true}
                         style={{ width: "100%" }}
                         open={false}
+                        onDeselect={(user: any) => onDeselect(user, 0)}
                       />
                     </div>
                   </Form.Field>
@@ -203,16 +259,16 @@ export default function SecondEditModal(props: Props) {
                   审核人:
                 </Col>
                 <Col span={20}>
-                  <Form.Field name="firstList">
-                    <div onClick={openSelectPeopleModal}>
+                  <Form.Field name="firstAuditEmployees">
+                    <div onClick={() => openSelectPeopleModal(1)}>
                       <Select
                         mode="tags"
                         placeholder="审核人"
-                        value={firstList}
+                        value={firstAuditEmployees}
                         labelInValue={true}
                         style={{ width: "100%" }}
                         open={false}
-                        onDeselect={onDeselect}
+                        onDeselect={(user: any) => onDeselect(user, 1)}
                       />
                     </div>
                   </Form.Field>
@@ -223,15 +279,18 @@ export default function SecondEditModal(props: Props) {
                   二级审核人:
                 </Col>
                 <Col span={20}>
-                  <Form.Field name="secondList">
-                    <Select
-                      mode="tags"
-                      placeholder="二级审核人"
-                      value={secondList}
-                      labelInValue={true}
-                      style={{ width: "100%" }}
-                      open={false}
-                    />
+                  <Form.Field name="secondAuditRoles">
+                    <div onClick={() => openSelectPeopleModal(2)}>
+                      <Select
+                        mode="tags"
+                        placeholder="二级审核人"
+                        value={secondAuditRoles}
+                        labelInValue={true}
+                        style={{ width: "100%" }}
+                        open={false}
+                        onDeselect={(user: any) => onDeselect(user, 2)}
+                      />
+                    </div>
                   </Form.Field>
                 </Col>
               </Row>
@@ -240,25 +299,25 @@ export default function SecondEditModal(props: Props) {
                   三级审核人:
                 </Col>
                 <Col span={20}>
-                  <Form.Field name="thirdList">
-                    <Select
-                      mode="tags"
-                      placeholder="三级审核人"
-                      value={thirdList}
-                      labelInValue={true}
-                      style={{ width: "100%" }}
-                      open={false}
-                    />
+                  <Form.Field name="thirdAuditRoles">
+                    <div onClick={() => openSelectPeopleModal(3)}>
+                      <Select
+                        mode="tags"
+                        placeholder="三级审核人"
+                        value={thirdAuditRoles}
+                        labelInValue={true}
+                        style={{ width: "100%" }}
+                        onDeselect={(user: any) => onDeselect(user, 3)}
+                        open={false}
+                      />
+                    </div>
                   </Form.Field>
                 </Col>
               </Row>
             </Form>
           </Wrapper>
         </Modal>
-        <selectPeopleModal.Component
-          visible={peopleVisible}
-          onOkCallBack={onOkCallBack}
-        />
+        <selectPeopleModal.Component type={type} onOkCallBack={onOkCallBack} />
       </Spin>
     </ModalSpin>
   );

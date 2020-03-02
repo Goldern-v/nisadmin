@@ -155,7 +155,6 @@ export default observer(function MenuSettings() {
         setLoading(false);
         if (res.data) {
           setTableList(res.data || []);
-          console.log(res.data, "0000000000");
         }
       });
     }

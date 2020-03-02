@@ -17,7 +17,7 @@ import BaseApiService from "./BaseApiService";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores";
 import qs from "qs";
-import axios from "axios"
+import axios from "axios";
 type EntityType = "mail";
 export default class CommonApiService extends BaseApiService {
   // 0.获取护理单元列表
@@ -107,6 +107,10 @@ export default class CommonApiService extends BaseApiService {
       ...postData
     });
   }
+  /** 根据角色获取人员列表 ---学习培训 菜单设置*/
+  public groupByRoleInDeptList() {
+    return this.get(`/studyAndTrain/menuManage/getAllRoles`);
+  }
 
   /** 根据用户名获取人员列表 */
   public searchUser(empName: string, postData: any = {}) {
@@ -124,15 +128,16 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => { })
+      onUploadProgress: onUploadProgress || (() => {})
     });
   }
   /** 下载文件并导出 */
   public getFileAndDown(path: string, name?: string, needAxios?: boolean) {
     //针对需要下载原始路径的文件
-    if (needAxios) return axios.get(path, { responseType: "blob" }).then(res => {
-      fileDownload(res, name);
-    });
+    if (needAxios)
+      return axios.get(path, { responseType: "blob" }).then(res => {
+        fileDownload(res, name);
+      });
 
     return this.get(path, { responseType: "blob" }).then(res => {
       fileDownload(res, name);
@@ -187,6 +192,6 @@ export default class CommonApiService extends BaseApiService {
 
   //获取用户权限科室的所有护士
   public findAllNurseByPerDept() {
-    return this.get('/user/findAllNurseByPerDept')
+    return this.get("/user/findAllNurseByPerDept");
   }
 }
