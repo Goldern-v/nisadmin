@@ -18,6 +18,7 @@ export default observer(function Table(props: Props) {
     {
       title: "序号",
       width: 50,
+      align: "center",
       render(text: string, record: any, index: number) {
         return index + 1;
       }
@@ -36,21 +37,33 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "类型",
-      dataIndex: "",
+      dataIndex: "thirdLevelMenuName",
       width: 130,
       align: "center"
     },
     {
       title: "标题",
-      dataIndex: "",
+      dataIndex: "title",
       width: 130,
       align: "center"
     },
     {
       title: "教学方式",
-      dataIndex: "",
+      dataIndex: "teachingMethod",
       width: 130,
-      align: "center"
+      align: "center",
+      render(teachingMethod: any, record: any) {
+        //1.学习、2培训、3考试、4练习、5实操、6演练
+        const teachingMethodArray = [
+          "学习",
+          "培训",
+          "考试",
+          "练习",
+          "实操",
+          "演练"
+        ];
+        return teachingMethodArray[teachingMethod - 1];
+      }
     },
     {
       title: () => {
@@ -147,9 +160,15 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "状态",
-      dataIndex: "",
+      dataIndex: "status",
       width: 80,
-      align: "center"
+      align: "center",
+      render(status: any, record: any) {
+        //1草稿，2待审核；3退回；4发布；5归档
+        const statusArray = ["草稿", "待审核", "退回", "发布", "归档"];
+        // const color
+        return statusArray[status - 1];
+      }
     },
     {
       title: "备注",
@@ -178,7 +197,6 @@ export default observer(function Table(props: Props) {
         loading={mainPageModal.tableLoading}
         dataSource={mainPageModal.tableList}
         columns={columns}
-        type={["index", "fixedIndex"]}
         surplusWidth={300}
         surplusHeight={240}
         pagination={{
