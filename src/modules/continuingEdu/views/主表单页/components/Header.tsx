@@ -22,7 +22,9 @@ export default observer(function Header(props: Props) {
   }, [id, Title]);
 
   const addRecord = () => {
-    addRecordModal.show();
+    addRecordModal.show({
+      onOkCallBack: () => mainPageModal.onload()
+    });
   };
   return (
     <Wrapper>
