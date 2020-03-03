@@ -28,13 +28,13 @@ const { Step } = Steps;
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
-  onOkCallBack?: () => {};
+  onOkCallBack?: () => any;
 }
 
 export default observer(function AddRecordModal(props: Props) {
   const [title, setTitle] = useState("添加记录");
   const [currentStep, setCurrentStep] = useState(0);
-  let { visible, onCancel } = props;
+  let { visible, onCancel, onOkCallBack } = props;
 
   const stepList = [
     {
@@ -67,6 +67,14 @@ export default observer(function AddRecordModal(props: Props) {
   const prevStep = () => {
     const current = currentStep - 1;
     setCurrentStep(current);
+  };
+
+  const addTeachingPlanInfoStudy = () => {
+    stepViewModal.addTeachingPlanInfoStudy().then(res => {
+      message.success("提交成功");
+      onCancel();
+      onOkCallBack && onOkCallBack();
+    });
   };
 
   useLayoutEffect(() => {
@@ -103,10 +111,7 @@ export default observer(function AddRecordModal(props: Props) {
             </Button>
           )}
           {currentStep == 4 && (
-            <Button
-              onClick={() => stepViewModal.addTeachingPlanInfoStudy()}
-              type="primary"
-            >
+            <Button onClick={addTeachingPlanInfoStudy} type="primary">
               提交审核
             </Button>
           )}

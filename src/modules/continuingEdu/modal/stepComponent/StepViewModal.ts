@@ -1,3 +1,4 @@
+import { appStore } from "src/stores";
 import { stepServices } from "./services/stepServices";
 import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
@@ -6,7 +7,8 @@ class StepViewModal {
   @observable public stepData1 = {
     teachingMethod: null,
     teachingMethodName: null,
-    name: null
+    name: null,
+    id: null
   };
   @observable public stepData2: any = {
     /** 学习名称 **/
@@ -115,8 +117,8 @@ class StepViewModal {
   public decodeData = () => {
     let result = {
       taskCode: "tp1581419592543_47",
-      secondLevelMenuId: 25,
-      thirdLevelMenuId: 28,
+      secondLevelMenuId: appStore.queryObj.id,
+      thirdLevelMenuId: this.stepData1.id,
       teachingMethod: this.stepData1.teachingMethod,
       title: this.stepData2.title,
       startTime: this.stepData2.startTime,
@@ -158,11 +160,11 @@ class StepViewModal {
 
   /** 新建教学计划 */
   public addTeachingPlanInfoStudy = () => {
-    stepServices.generateTaskCode().then(res => {
-      stepServices.addTeachingPlanInfoStudy({
+   return stepServices.generateTaskCode().then(res => {
+     return stepServices.addTeachingPlanInfoStudy({
         ...this.decodeData(),
         taskCode: res.data
-      });
+      })
     });
   };
 }

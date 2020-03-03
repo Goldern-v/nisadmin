@@ -39,6 +39,7 @@ export default function Step1() {
       stepViewModal.stepData1.teachingMethod = obj.teachingMethod;
       stepViewModal.stepData1.teachingMethodName = obj.teachingMethodName;
       stepViewModal.stepData1.name = obj.name;
+      stepViewModal.stepData1.id = obj.id;
     }
   };
 
