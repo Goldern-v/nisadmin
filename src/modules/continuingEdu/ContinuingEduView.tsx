@@ -45,6 +45,7 @@ import PromotionSetting from "./views/promotionSetting/PromotionSetting";
 
 import 类型管理 from "./views/类型管理/类型管理";
 import 菜单设置 from "./views/菜单设置/MenuSettings";
+import 主列表页 from "./views/主表单页/MainPage";
 
 const LEFT_MENU_CONFIG = [
   {
@@ -213,11 +214,11 @@ const LEFT_MENU_CONFIG = [
 
 export default function ContinuingEdu(props: Props) {
   const [effect, setEffect] = useState(true);
-  const [dataList, setDataList] = useState([] as any);
-  // 查询
+  const [dataList, setDataList] = useState([] as any); // 菜单树
+  // 查询获取菜单列表
   const getList = () => {
     if (effect) {
-      meunSettingApi.getGetData().then((res: any) => {
+      meunSettingApi.getData().then((res: any) => {
         let newArr: any = [];
         if (res.data) {
           let arr = res.data;
@@ -228,16 +229,17 @@ export default function ContinuingEdu(props: Props) {
                 title: item.name,
                 icon: getIcon(item.sort),
                 component: getComponent(item.name),
-                path: `/continuingEdu/${item.name}`
+                path: `/continuingEdu/${item.name}&id=${item.id}`
               };
               if (item.childList && item.childList.length) {
+                let Pid = item.id;
                 let arr: any = [];
                 item.childList.map((item: any, index: any) => {
                   var obj2: any = {
                     id: item.id,
                     title: item.name,
                     component: getComponent(item.name),
-                    path: `/continuingEdu/${item.name}`
+                    path: `/continuingEdu/${item.name}&Pid=${Pid}&id=${item.id}`
                   };
                   arr.push(obj2);
                   obj1.children = arr;
@@ -284,12 +286,12 @@ export default function ContinuingEdu(props: Props) {
       case "菜单设置":
         return 菜单设置;
       default:
-        return 菜单设置;
+        return 主列表页;
     }
   };
 
   let currentRoutePath = props.match.url || "";
-  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
+  let currentRoute = getTargetObj(dataList, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -311,13 +313,13 @@ export default function ContinuingEdu(props: Props) {
   return (
     <Wrapper>
       <LeftWrapper>
-        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="继续教育" />
+        <LeftMenu config={dataList} menuTitle="继续教育" />
       </LeftWrapper>
       <MainWrapper>
         {currentRoute && currentRoute.component && (
           <currentRoute.component
-            getTitle={currentRoute && currentRoute.title}
-            // getId={currentRoute && currentRoute.id}
+            getTitle={currentRoute && currentRoute.title} //对应菜单标题
+            getId={currentRoute && currentRoute.id} //对应菜单id
           />
         )}
       </MainWrapper>

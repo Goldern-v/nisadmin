@@ -4,6 +4,10 @@ import qs from "qs";
 
 export default class MeunSettingApi extends BaseApiService {
   // 查询菜单树
+  public async getData() {
+    return this.get(`/studyAndTrain/menuManage/getMenuTreeByAuthorization`);
+  }
+
   public async getGetData() {
     return this.get(`/studyAndTrain/menuManage/getMenuTree`);
   }
@@ -37,7 +41,7 @@ export default class MeunSettingApi extends BaseApiService {
   // 添加二级菜单
   public async saveSecond(obj: any) {
     //name sort
-    return this.post(`/studyAndTrain/menuManage/addMenuItem/2`, obj);
+    return this.post(`/studyAndTrain/menuManage/addMenuItems/2`, obj);
   }
   // 修改二级菜单
   public async updateSecond(obj: any) {

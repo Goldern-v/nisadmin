@@ -139,6 +139,10 @@ const DetailsView = lazy(() =>
 const ImportView = lazy(() =>
   import("src/modules/quality/views/checkWard/view/import/ImportView")
 );
+// 学习培训--主列表页类型管理
+const TypeManagementView = lazy(() =>
+  import("src/modules/continuingEdu/views/主表单页/view/TypeManagement")
+);
 
 // 平台使用手册
 const UserManualRouter = lazy(() =>
@@ -310,14 +314,10 @@ const TrainingInfoReview = lazy(() =>
 
 //进出感染区统计
 const InfectedAreasCount = lazy(() =>
-  import(
-    "src/modules/infectedAreasCount/InfectedAreasCount"
-  )
+  import("src/modules/infectedAreasCount/InfectedAreasCount")
 );
 const InfectedAreasCountDetail = lazy(() =>
-  import(
-    "src/modules/infectedAreasCount/InfectedAreasCountDetail"
-  )
+  import("src/modules/infectedAreasCount/InfectedAreasCountDetail")
 );
 
 const routes: RouteItem[] = [
@@ -443,6 +443,7 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout("/qualityScheduleImport", ImportView, layouts.MainLayout),
+  setLayout("/typeManagement", TypeManagementView, layouts.MainLayout),
 
   setLayout(
     "/qualityAnalysisDetail/:id",
@@ -598,7 +599,11 @@ const routes: RouteItem[] = [
     path: "/nurseFile",
     redirect: "/nurseFile/onTheJob"
   },
-  setLayout("/InfectedAreasCountDetail", InfectedAreasCountDetail, layouts.MainLayout),
+  setLayout(
+    "/InfectedAreasCountDetail",
+    InfectedAreasCountDetail,
+    layouts.MainLayout
+  ),
   {
     path: "/nurseFile",
     redirect: "/nurseFile/onTheJob"
