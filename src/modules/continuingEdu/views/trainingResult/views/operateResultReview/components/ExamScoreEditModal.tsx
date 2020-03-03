@@ -45,8 +45,11 @@ export default observer(function ExamScoreEditModal(props: Props) {
   finalScore = totalScore - deductScore
 
   const handleOK = () => {
-    onCancel()
-    onOkCallBack && onOkCallBack()
+    setLoading(true)
+    setTimeout(() => {
+      onCancel()
+      onOkCallBack && onOkCallBack()
+    }, 1000)
   }
 
   useEffect(() => {

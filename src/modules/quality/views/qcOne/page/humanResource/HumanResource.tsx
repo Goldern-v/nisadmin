@@ -19,6 +19,7 @@ export interface Props { }
 export default observer(function HumanResource() {
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
+  const [deptSelected, setDeptSelected] = useState(authStore.selectedDeptCode)
   const [selectedDp, setSelectedDp] = useState('')
   const [transferStatus, setTransferStatus] = useState('')
   const dpList = [
@@ -118,7 +119,7 @@ export default observer(function HumanResource() {
     qcOneService
       .qcNurseTransferGetPage({
         ...pageOptions,
-        wardCode: authStore.selectedDeptCode,
+        wardCode: deptSelected,
         // startDate: qcOneSelectViewModal.startDate,
         // endDate: qcOneSelectViewModal.endDate,
         startDate: dateOptions.startDate,
@@ -152,7 +153,7 @@ export default observer(function HumanResource() {
   }, [
     pageOptions.pageIndex,
     pageOptions.pageSize,
-    authStore.selectedDeptCode,
+    deptSelected,
     selectedDp,
     transferStatus,
     dateOptions.startDate,
@@ -170,7 +171,22 @@ export default observer(function HumanResource() {
         <span className='label'>日期:</span>
         <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...getDateOptions()} />
         <span className='label'>科室:</span>
-        <DeptSelect onChange={() => { }} />
+        {/* <DeptSelect onChange={() => { }} /> */}
+        <Select
+          value={deptSelected}
+          style={{ width: 200 }}
+          onChange={(val: string) => {
+            setDeptSelected(val)
+            if (val) authStore.selectDeptCode(val)
+          }}>
+          <Select.Option value="">全部</Select.Option>
+          {authStore.deptList.map((item: any, idx: any) =>
+            <Select.Option
+              key={idx}
+              value={item.code}>
+              {item.name}
+            </Select.Option>)}
+        </Select>
         <span className='label'>调配方式:</span>
         <Select onChange={(value: string) => setTransferStatus(value)} value={transferStatus}>
           {tsList.map((item: DictItem, index: number) => (
