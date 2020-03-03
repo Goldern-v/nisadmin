@@ -237,7 +237,7 @@ export default function ContinuingEdu(props: Props) {
                 title: item.name,
                 icon: getIcon(item.sort),
                 component: getComponent(item.name),
-                path: `/continuingEdu/${item.name}&id=${item.id}`
+                path: `/continuingEdu/${item.name}?Pid=${item.id}`
               };
               if (item.childList && item.childList.length) {
                 let Pid = item.id;
@@ -247,7 +247,7 @@ export default function ContinuingEdu(props: Props) {
                     id: item.id,
                     title: item.name,
                     component: getComponent(item.name),
-                    path: `/continuingEdu/${item.name}&Pid=${Pid}&id=${item.id}`
+                    path: `/continuingEdu/${item.name}?Pid=${Pid}&id=${item.id}`
                   };
                   arr.push(obj2);
                   obj1.children = arr;
@@ -285,9 +285,10 @@ export default function ContinuingEdu(props: Props) {
       case 6:
         return <SPXX />;
       default:
-        return <RYGL />;
+        return <JXJH />;
     }
   };
+
   // 获取组件变量名
   const getComponent = (name: any) => {
     switch (name) {
@@ -298,7 +299,8 @@ export default function ContinuingEdu(props: Props) {
     }
   };
 
-  let currentRoutePath = props.match.url || "";
+  let currentRoutePath =
+    `${props.history.location.pathname}${props.history.location.search}` || "";
   let currentRoute = getTargetObj(dataList, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {

@@ -184,7 +184,8 @@ export default function SecondAddModal(props: Props) {
         pId: item.id
       };
     });
-    return newData;
+    let obj: any = { pId: newData[0].pId, menuItemList: newData };
+    return obj;
   };
 
   // 确定函数

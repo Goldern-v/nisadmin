@@ -5,6 +5,8 @@ import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
 import MergeTh from "../../components/mergeTh/MergeTh";
 import Header from "./components/Header";
 import Table from "./components/Table";
+import { appStore } from "src/stores/index";
+import qs from "qs";
 
 interface Props {
   getTitle: any;
@@ -12,7 +14,6 @@ interface Props {
 }
 export default observer(function ContinuingEducation(props: Props) {
   const { getTitle, getId } = props; //获取当前页面标题
-
   const columns: any = [
     {
       title: "序号",

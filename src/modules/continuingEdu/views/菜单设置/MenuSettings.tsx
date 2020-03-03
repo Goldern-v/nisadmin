@@ -49,7 +49,6 @@ export default observer(function MenuSettings() {
       align: "center",
       width: 175,
       render(text: any, record: any, index: number) {
-        console.log(record, "0000000000");
         if (record.submitEmployees) {
           let str = "";
           for (let i = 0; i < record.submitEmployees.length; i++) {
@@ -72,7 +71,6 @@ export default observer(function MenuSettings() {
       align: "center",
       width: 175,
       render(text: any, record: any, index: number) {
-        console.log(record.firstAuditEmployees, "000000000000");
         if (record.firstAuditEmployees) {
           let str = "";
           for (let i = 0; i < record.firstAuditEmployees.length; i++) {
