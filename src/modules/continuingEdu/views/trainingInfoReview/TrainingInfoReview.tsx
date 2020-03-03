@@ -19,17 +19,21 @@ import {
 } from './components/common'
 import BaseInfoPannel from './components/BaseInfoPannel'
 import AuditInfoPannel from './components/AuditInfoPannel'
-import AuditModal from './components/AuditModal'
+import AuditModal from './../auditEduPlant/components/AuditModal'
 
 export interface Props { }
 
 export default observer(function TrainingInfoReview() {
-  const { history } = appStore
+  const { history, queryObj } = appStore
   const auditModal = createModal(AuditModal)
-  const { baseInfo } = trainingInfoReviewModel
+  const { baseInfo, auditInfo, taskTypeName } = trainingInfoReviewModel
+  const lastAuditItem = auditInfo[auditInfo.length - 1] || null
 
   const handleAuditOpen = () => {
-    auditModal.show()
+    auditModal.show({
+      taskIdList: [appStore.queryObj.taskId],
+      onOkCallBack: () => setTimeout(() => history.goBack(), 500)
+    })
   }
 
   useEffect(() => {
@@ -49,14 +53,26 @@ export default observer(function TrainingInfoReview() {
       <MainTitle>{baseInfo.title || ' '}</MainTitle>
       <SubContent>
         <span className="label"> 状态:</span>
-        <span className="content" style={{ color: 'red' }}>回退</span>
+        <span
+          className="content"
+          style={{
+            color:
+              lastAuditItem &&
+                (lastAuditItem.taskType == 4) ?
+                'red' : 'blue'
+          }}>
+          {lastAuditItem && <React.Fragment>
+            <span>{lastAuditItem.taskDesc}</span>
+            <span>{lastAuditItem.taskType == 4 && `(${taskTypeName(lastAuditItem.taskType)})`}</span>
+          </React.Fragment>}
+        </span>
       </SubContent>
       <ButtonGroups>
-        {/* <Button 
-          type="primary" 
+        {queryObj.audit && <Button
+          type="primary"
           onClick={handleAuditOpen}>
-          待护理部主任审核/待护士长审核/待科护士长审核
-        </Button> */}
+          {queryObj.statusDesc || '未知审核流程'}
+        </Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>

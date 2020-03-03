@@ -12,22 +12,30 @@ export default function BaseSetting(props: Props) {
   const _labelWidth = labelWidth ? `${labelWidth}px` : '92px'
 
   const creditInfo = () => {
+    let credit = info.credit || info.studentCredit || ''
+    let creditType = info.creditType || info.studentCreditType || ''
+    let classHours = info.classHours || info.studentClassHours || ''
     let baseCredit = <React.Fragment>
       <div className="row">
         <div className="label" style={{ width: _labelWidth }}>学 分：</div>
-        <div className="content">{info.creditType} {info.credit}</div>
+        <div className="content">{creditType} {credit}</div>
       </div>
       <div className="row">
         <div className="label" style={{ width: _labelWidth }}>学 时：</div>
-        <div className="content">{info.classHours}</div>
+        <div className="content">{classHours}</div>
       </div>
     </React.Fragment>
 
-    if (info.teachingMethodName == '考试')
+    // console.log(JSON.parse(JSON.stringify(info)))
+
+    if (info.teachingMethod == 2)
       return <React.Fragment>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>讲 师：</div>
-          <div className="content">{info.tracherDeptName}/{info.teacherName}</div>
+          <div className="content">
+            {(info.teachers || []).map((teacher: any) =>
+              `${teacher.deptName}/${teacher.empName}`).join(', ')}
+          </div>
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>学员学分：</div>
@@ -35,7 +43,7 @@ export default function BaseSetting(props: Props) {
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>讲师学分：</div>
-          <div className="content">{info.creditType} {info.credit}</div>
+          <div className="content">{info.teacherCreditType} {info.teacherCredit}</div>
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>学员学时：</div>
@@ -43,7 +51,7 @@ export default function BaseSetting(props: Props) {
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>讲师学时：</div>
-          <div className="content">{info.classHours}</div>
+          <div className="content">{info.teacherClassHours}</div>
         </div>
       </React.Fragment>
     else
@@ -56,7 +64,12 @@ export default function BaseSetting(props: Props) {
       case '实操':
         return <div className="row">
           <div className="label" style={{ width: _labelWidth }}>评分负责人：</div>
-          <div className="content">{info.raters}</div>
+          <div className="content">{
+            (info.scorePersonList || [])
+              .map((item: any) =>
+                `${item.deptName}/${item.empName}`)
+              .join(', ')
+          }</div>
         </div>
       default:
         return <span></span>
@@ -64,11 +77,16 @@ export default function BaseSetting(props: Props) {
   }
 
   const signerInfo = () => {
-    if (info.organizationWayName == '线下')
+    if ((info.organizationWayName || info.organizationWay) == '线下')
       return <React.Fragment>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>签到负责人：</div>
-          <div className="content">{info.signers}</div>
+          <div className="content">{
+            (info.signInInChargePersons || [])
+              .map((signer: any) =>
+                `${signer.deptName}/${signer.empName}`)
+              .join(', ')
+          }</div>
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>签到方式：</div>
@@ -105,17 +123,17 @@ export default function BaseSetting(props: Props) {
     </div>
     <div className="row">
       <div className="label" style={{ width: _labelWidth }}>组织方式：</div>
-      <div className="content">{info.organizationWayName}</div>
+      <div className="content">{info.organizationWayName || info.organizationWay}</div>
     </div>
     {/* 类型对应地址 */}
-    {info.teachingAddress &&
+    {info.address &&
       <div className="row">
         <div
           className="label"
           style={{ width: _labelWidth }}>
           {info.teachingMethodName}地址：
       </div>
-        <div className="content">{info.teachingAddress}</div>
+        <div className="content">{info.address}</div>
       </div>}
     {/* 签到负责人 */}
     {signerInfo()}

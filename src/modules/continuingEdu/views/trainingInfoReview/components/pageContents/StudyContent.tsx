@@ -37,7 +37,6 @@ export default function StudyContent(props: Props) {
     <PrecticeSetting />
     <OperateSetting /> */}
     {otherContent()}
-    <TestInfo />
   </Wrapper>
 }
 const Wrapper = styled.div``

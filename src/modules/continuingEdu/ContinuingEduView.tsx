@@ -42,6 +42,8 @@ import OtherTraining from "./views/outsideHospital/views/otherTraining/OtherTrai
 import TypeManagement from "./views/outsideHospital/views/typeManagement/TypeManagement";
 //晋升设置
 import PromotionSetting from "./views/promotionSetting/PromotionSetting";
+//审核发布
+import AuditEduPlan from "./views/auditEduPlant/AuditEduPlan";
 
 import 类型管理 from "./views/类型管理/类型管理";
 import 菜单设置 from "./views/菜单设置/MenuSettings";
@@ -53,6 +55,12 @@ const LEFT_MENU_CONFIG = [
     icon: <RYGL />,
     path: "/continuingEdu/人员管理",
     component: 人员管理
+  },
+  {
+    title: "审核发布",
+    icon: <RYGL />,
+    path: "/continuingEdu/审核发布",
+    component: AuditEduPlan
   },
   {
     title: "新职工培训",

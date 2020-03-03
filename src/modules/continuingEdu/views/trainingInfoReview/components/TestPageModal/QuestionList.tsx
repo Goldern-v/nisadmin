@@ -2,115 +2,56 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 export interface Props {
-  data?: any[]
+  info?: any,
 }
 
-export default function QuestionList() {
+export default function QuestionList(props: Props) {
+  const { info } = props
+  const questionList = (info && info.questionList) || []
   const correctImg = <img src={require('./../../assets/question-correct.png')} />
 
-  const questionArr = [
-    {
-      type: '选择题',
-      desc: '现场医护人员到达现场进行基础生命支持复苏，支援人员和急救小组人员间是几分钟',
-      awnsers: [
-        {
-          key: 'A',
-          right: true,
-          awnserContent: '10'
-        },
-        {
-          key: 'B',
-          right: false,
-          awnserContent: '20'
-        },
-        {
-          key: 'C',
-          right: true,
-          awnserContent: '30'
-        },
-        {
-          key: 'D',
-          right: false,
-          awnserContent: '40'
-        },
-      ]
-    },
-    {
-      type: '选择题',
-      desc: '现场医护人员到达现场进行基础生命支持复苏，支援人员和急救小组人员间是几分钟',
-      awnsers: [
-        {
-          key: 'A',
-          right: false,
-          awnserContent: '10'
-        },
-        {
-          key: 'B',
-          right: false,
-          awnserContent: '20'
-        },
-        {
-          key: 'C',
-          right: false,
-          awnserContent: '30'
-        },
-        {
-          key: 'D',
-          right: true,
-          awnserContent: '40'
-        },
-      ]
-    },
-    {
-      type: '填空题',
-      desc: '这是一道填##空##题',
-      awnsers: ['答案1', '答案2']
-    },
-    {
-      type: '问答题',
-      desc: '这是一道问答题',
-      awnser: '问答题答案与解释'
+  const typeName = (type: number) => {
+    switch (type) {
+      case 1: return '单选题'
+      case 2: return '多选题'
+      case 3: return '填空题'
+      case 4: return '问答题'
+      default: return ''
     }
-  ]
+  }
 
-  const awnsersCon = (item: any, qsIdx: number) => {
-    switch (item.type) {
-      case '选择题':
+  const answerCon = (item: any, qsIdx: number) => {
+    switch (item.questionType) {
+      case 1:
+      case 2:
         return <div
-          className="awnser-content">
+          className="answer-content">
           {item
-            .awnsers
-            .map((awnser: any, asIdx: number) =>
+            .answerList
+            .map((answer: any, asIdx: number) =>
               <span
                 className="choice-item"
                 key={`${qsIdx}-${asIdx}`}>
-                {awnser.right && <span
+                {!!answer.isRight && <span
                   className="correct-choice">
                   {correctImg}
                 </span>}
                 <span
                   className="choice-desc">
-                  {awnser.key}、{awnser.awnserContent}
+                  {answer.optionLabel}、{answer.optionContent}
                 </span>
               </span>
             )}
         </div>
-      case '填空题':
+      case 3:
         return <div
-          className="awnser-content">
-          {item
-            .awnsers
-            .map((awnser: any, asIdx: number) =>
-              <span
-                className="choice-item"
-                key={`${qsIdx}-${asIdx}`}>
-                {asIdx + 1}.{awnser}
-              </span>)}
+          className="answer-content">
+          答案: {item.answer && item.answer.rightAnswer}
         </div>
-      case '问答题':
+      case 4:
         return <div
-          className="awnser-content">
-          参考答案: {item.awnser}
+          className="answer-content">
+          参考答案: {item.answer.suggestedAnswer}
         </div>
       default:
         return <span></span>
@@ -118,38 +59,39 @@ export default function QuestionList() {
   }
 
   return <Wrapper>
-    <div className="main-title">《1月理论考核第一期》</div>
-    <div className="test-info">
+    <div className="main-title">{info.title && `《${info.title}》`}</div>
+    {info.teachingMethod == 3 && <div className="test-info">
       <div className="test-info-item">
-        开始时间: 2019-10-17 15:30:00
+        开始时间: {info.startTime}
       </div>
       <div className="test-info-item">
-        结束时间: 2019-10-17 15:30:00
+        结束时间: {info.endTime}
       </div>
       <div className="test-info-item">
-        考试时间: 50分钟
+        考试时间: {info.examDuration}分钟
       </div>
       <div className="test-info-item">
-        及格分数线: 60
+        及格分数线: {info.passScores}
       </div>
       <div className="test-info-item">
-        题目数量: 37题
+        题目数量: {info.questionCount}题
       </div>
-    </div>
+    </div>}
     <div className="question-list">
-      {questionArr.map((item: any, qsIdx: number) =>
+      {(questionList || []).map((item: any, qsIdx: number) =>
         <div className="question-item" key={qsIdx}>
           <div className="question-content">
             <span className="index">{qsIdx + 1}、</span>
-            <span className="question-type">[{item.type}]</span>
+            <span className="question-type">[{typeName(item.questionType)}]</span>
             <span
               className="question-desc"
               dangerouslySetInnerHTML={{
-                __html: item.desc.replace(/##/g, '<span class="fill">____</span>')
+                __html: item.questionContent
+                  .replace(/##/g, '<span class="fill">____</span>')
               }}>
             </span>
           </div>
-          {awnsersCon(item, qsIdx)}
+          {answerCon(item, qsIdx)}
         </div>)}
     </div>
   </Wrapper>
@@ -199,7 +141,7 @@ const Wrapper = styled.div`
     .question-type{
       color: #F59A23;
     }
-    .awnser-content{
+    .answer-content{
       padding: 0 5px;
     }
     .choice-item{
@@ -238,7 +180,7 @@ const Wrapper = styled.div`
     pre{
       white-space: pre-wrap;
       word-break: break-all;
-      &.awnser{
+      &.answer{
         color: #00f;
       }
     }

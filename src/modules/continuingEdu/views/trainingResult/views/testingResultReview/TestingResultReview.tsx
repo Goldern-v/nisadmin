@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Checkbox, message } from 'antd'
+import { Button, Checkbox, message, Modal } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   Wrapper,
@@ -23,6 +23,8 @@ import { ColumnProps } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
+import { trainingResultModel } from './../../models/TrainingResultModel'
+import { trainingResultService } from './../../api/TrainingResultService'
 export interface Props { }
 
 //查看考试结果
@@ -30,25 +32,9 @@ export default observer(function TestingResultReview() {
   const { history } = appStore
   const scorceConfirm = createModal(ScoreConfirmModal)
   const answerSheet = createModal(AnswerSheetModal)
-  const [query, setQuery] = useState({
-    pianqv: '',
-    bingqv: '',
-    zhicheng: '',
-    wanchengqingkuang: '',
-    pageIndex: 1,
-    pageSize: 10,
-  } as any)
+  const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
-  const [tableData, setTableData] = useState([
-    { empName: '测试1', empNo: 'H0001' },
-    { empName: '测试2', empNo: 'H0002' },
-    { empName: '测试3', empNo: 'H0003' },
-    { empName: '测试4', empNo: 'H0004' },
-  ] as any[])
-  const [dataTotal, setDataTotal] = useState(0)
-  const [loading, setLoading] = useState(false)
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
-  const title = '2020年新职工培训教学计划'
 
   const columns: ColumnProps<any>[] = [
     {
@@ -64,60 +50,65 @@ export default observer(function TestingResultReview() {
       width: 60,
     },
     {
-      dataIndex: 'zhiwu',
+      dataIndex: 'empTitle',
       title: '职位',
       align: 'center',
       width: 80,
     },
     {
-      dataIndex: 'pianqv',
+      dataIndex: 'bigDeptName',
       title: '片区',
       align: 'center',
       width: 80,
     },
     {
-      dataIndex: 'bingqv',
+      dataIndex: 'deptName',
       title: '病区',
       align: 'center',
+      width: 120,
     },
     {
-      dataIndex: 'available',
+      dataIndex: 'isValidResult',
       title: '成绩有效',
       align: 'center',
-      width: 60,
-      render: (status: string, record: any) => {
-        return <span style={{ color: 'red' }}>无效</span>
+      width: 70,
+      render: (isValidResult: number, record: any) => {
+        if (isValidResult == 1)
+          return <span style={{ color: 'blue' }}>有效</span>
+        else
+          return <span style={{ color: 'red' }}>无效</span>
       }
     },
     {
-      dataIndex: 'finalTestingScore',
+      dataIndex: 'totalScores',
       title: '最终成绩',
       align: 'center',
-      width: 60,
+      width: 70,
     },
     {
-      dataIndex: 'awnserTime',
+      dataIndex: 'answerTime',
       title: '答题时间',
       align: 'center',
       width: 180,
-      render: (status: string, record: any) =>
-        moment().format('YYYY-MM-DD HH:mm:ss')
+      render: (answerTime: string) => {
+        if (answerTime) return answerTime
+        return '未答题'
+      }
     },
     {
-      dataIndex: 'publish',
+      dataIndex: 'resultPublishDesc',
       title: '发布成绩',
       align: 'center',
-      width: 60,
-      render: (status: string, record: any) => '自动'
+      width: 60
     },
     {
-      dataIndex: 'score',
+      dataIndex: 'creditDesc',
       title: '学分',
       align: 'center',
       width: 120,
     },
     {
-      dataIndex: 'studyTime',
+      dataIndex: 'classHours',
       title: '学时',
       align: 'center',
       width: 100,
@@ -129,6 +120,9 @@ export default observer(function TestingResultReview() {
       render: (status: string, record: any) => {
         return <DoCon>
           <span onClick={() => handleAnwserSheetReview(record)}>查看答卷</span>
+          {/* {record.awnserTime ?
+            <span onClick={() => handleAnwserSheetReview(record)}>查看答卷</span> :
+            <span style={{ color: '#ddd', cursor: 'default' }}>查看答卷</span>} */}
         </DoCon>
       }
     }
@@ -138,22 +132,14 @@ export default observer(function TestingResultReview() {
     //查看详情
   }
   const handlePageChange = (pageIndex: number, pageSize: number | undefined) => {
-    setQuery({ ...query, pageIndex })
+    trainingResultModel.setQuery({ ...query, pageIndex }, true)
   }
   const handleSizeChange = (pageIndex: number, pageSize: number) => {
-    setQuery({ ...query, pageSize, pageIndex: 1 })
+    trainingResultModel.setQuery({ ...query, pageSize, pageIndex: 1 }, true)
   }
 
   const handleRowSelect = (rowKeys: string[] | number[]) => {
-    console.log(rowKeys)
     setSelectedRowKeys(rowKeys)
-  }
-
-  const getData = (reqParams: any = query) => {
-    setLoading(true)
-    setSelectedRowKeys([])
-    setTimeout(() => setLoading(false), 1000)
-    console.log(query)
   }
 
   const handleScoreAvailable = () => {
@@ -167,13 +153,15 @@ export default observer(function TestingResultReview() {
     scorceConfirm.show({
       onOkCallBack: () => {
         message.success(`选中人员（共${selectedRowKeys.length}人）的成绩修改成功`)
-        getData()
+        trainingResultModel.getTableData()
       },
+      cetpId: appStore.queryObj.id,
       empNoList: selectedRowKeys
     })
   }
 
   const handleAnwserSheetReview = (record: any) => {
+    // if (record.awnserTime)
     answerSheet.show({
       onOkCallBack: () => {
         console.log('ok')
@@ -181,45 +169,87 @@ export default observer(function TestingResultReview() {
     })
   }
 
+  const setLoading = (loading: boolean) => trainingResultModel.setLoading(loading)
+
+  const handlePublish = () => {
+
+    Modal.confirm({
+      title: '发布成绩',
+      content: '确定给所有考生发布成绩？',
+      onOk: () => {
+
+        setLoading(true)
+        trainingResultService
+          .publishGrades(appStore.queryObj.id || '')
+          .then(res => {
+            message.success('发布成功')
+            setLoading(false)
+            trainingResultModel.
+              setBaseInfo({
+                ...baseInfo,
+                isResultPublished: 1
+              })
+          }, () => setLoading(false))
+      }
+    })
+  }
+
   useEffect(() => {
-    getData()
-  }, [query])
+    if (loading) setSelectedRowKeys([])
+  }, [loading])
+
+  useEffect(() => {
+    trainingResultModel.init()
+  }, [])
 
   return <Wrapper>
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
         <span> > </span>
-        <Link to="/home">一级目录</Link>
+        <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
         <span> > </span>
-        <Link to="/home">二级目录</Link>
+        {(Object.keys(menuInfo).length > 0 && <Link
+          to={`/trainningPlanList/${menuInfo.firstLevelMenuId}/${menuInfo.secondLevelMenuId}`}>
+          {menuInfo.secondLevelMenuName}
+        </Link>) || <span>二级目录</span>}
         <span> > 查看结果</span>
       </NavCon>
-      <MainTitle>{title}</MainTitle>
+      <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>
         <span className="label">开始时间:</span>
         <span className="content">
-          {moment().format('YYYY-MM-DD')}
+          {baseInfo.startTime}
         </span>
         <span className="label">类型:</span>
-        <span className="content">理论考核（考试）</span>
+        <span className="content">
+          {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
+        </span>
         <span className="label">总成绩:</span>
-        <span className="content">100</span>
+        <span className="content">{baseInfo.totalScores}</span>
         <span className="label">及格分数线:</span>
-        <span className="content">60</span>
+        <span className="content">{baseInfo.passScores}</span>
         <span className="label"> 参与人员:</span>
-        <span className="content">35人</span>
+        <span className="content">
+          {(baseInfo.participantList && baseInfo.participantList.length) || 0}人
+        </span>
       </SubContent>
       <ButtonGroups>
+        {(baseInfo.isResultPublished === 0 &&
+          baseInfo.showScoreInstantly === 0 &&
+          baseInfo.tqStatusDesc === '归档') &&
+          <Button
+            type="primary"
+            onClick={handlePublish}
+            disabled={loading}>
+            发布成绩
+          </Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
       <TableWrapper>
-        <QueryPannel
-          onQueryChange={(newQuery: any) => setQuery({ ...newQuery })}
-          onSearch={getData}
-          query={query} />
+        <QueryPannel />
         <BaseTable
           loading={loading}
           rowSelection={{
@@ -238,7 +268,7 @@ export default observer(function TestingResultReview() {
           pagination={{
             current: query.pageIndex,
             pageSize: query.pageSize,
-            total: dataTotal,
+            total: tableDataTotal,
             onChange: handlePageChange,
             onShowSizeChange: handleSizeChange
           }}
@@ -261,7 +291,7 @@ export default observer(function TestingResultReview() {
               else
                 setSelectedRowKeys([])
             }}
-            checked={selectedRowKeys.length >= tableData.length}>
+            checked={(selectedRowKeys.length >= tableData.length) && tableData.length > 0}>
             全选
           </Checkbox>
           <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
