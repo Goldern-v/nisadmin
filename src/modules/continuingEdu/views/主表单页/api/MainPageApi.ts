@@ -9,6 +9,11 @@ export default class MainPageApi extends BaseApiService {
     return this.post(`/studyAndTrain/teachingPlanManage/queryPageList`, obj);
   }
 
+  // 主列表页--导出
+  public exportMainData(obj?: any) {
+    return this.post(`/searchRoom/export`, obj, { responseType: "blob" });
+  }
+
   // 主列表页--删除
   public async delMainData(id: any) {
     return this.post(

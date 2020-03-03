@@ -27,9 +27,6 @@ export default observer(function Header(props: Props) {
   return (
     <Wrapper>
       <LeftIcon>
-        <PageTitle>{Title}</PageTitle>
-      </LeftIcon>
-      <RightIcon>
         <span>开始时间：</span>
         <DatePicker.RangePicker
           allowClear={false}
@@ -71,6 +68,8 @@ export default observer(function Header(props: Props) {
           <Select.Option value="4">发布</Select.Option>
           <Select.Option value="5">归档</Select.Option>
         </Select>
+      </LeftIcon>
+      <RightIcon>
         <Input
           style={{ width: 150, marginLeft: 5, marginRight: -5 }}
           placeholder="请输入要搜索的关键字"

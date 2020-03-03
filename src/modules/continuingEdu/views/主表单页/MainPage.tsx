@@ -31,6 +31,5 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 const Content = styled(TabledCon)`
-  padding: 0 15px;
   box-sizing: border-box;
 `;

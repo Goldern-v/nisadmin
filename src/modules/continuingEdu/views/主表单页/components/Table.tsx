@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import React from "react";
 import BaseTable, { TabledCon, DoCon } from "src/components/BaseTable";
-import { ColumnProps } from "src/vendors/antd";
+import { message as Message, Modal } from "src/vendors/antd";
 import { observer } from "src/vendors/mobx-react-lite";
 import { mainPageModal } from "../MainPageModal";
-import { appStore } from "src/stores";
-import { useKeepAliveEffect } from "react-keep-alive";
 import MergeTh from "../../../components/mergeTh/MergeTh";
+import { mainPageApi } from "../api/MainPageApi";
+
 interface Props {
   getId: any;
 }
@@ -160,14 +160,20 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "状态",
-      dataIndex: "status",
+      dataIndex: "statusDesc",
       width: 80,
       align: "center",
-      render(status: any, record: any) {
-        //1草稿，2待审核；3退回；4发布；5归档
-        const statusArray = ["草稿", "待审核", "退回", "发布", "归档"];
-        // const color
-        return statusArray[status - 1];
+      render(statusDesc: any, record: any) {
+        switch (statusDesc) {
+          case "待审核":
+            return <span style={{ color: "#284fc2" }}>{statusDesc}</span>;
+          case "进行中":
+            return <span style={{ color: "#E63122" }}>({statusDesc}</span>;
+          case "退回":
+            return <span style={{ color: "##FF9C35" }}>{statusDesc}</span>;
+          default:
+            return <span style={{ color: "#000" }}>{statusDesc}</span>;
+        }
       }
     },
     {
@@ -179,17 +185,119 @@ export default observer(function Table(props: Props) {
     {
       title: "操作",
       dataIndex: "",
-      width: 80,
+      width: 180,
       align: "center",
       render(text: any, record: any, index: number) {
-        return (
-          <DoCon>
-            <span onClick={() => {}}>操作</span>
-          </DoCon>
-        );
+        switch (record.statusDesc) {
+          case "待审核":
+            return (
+              <DoCon>
+                <span onClick={() => {}}>查看结果</span>
+                <span onClick={() => {}}>查看信息</span>
+                <span onClick={() => handleRevoke(record)}>撤销</span>
+              </DoCon>
+            );
+          case "进行中":
+            return (
+              <DoCon>
+                <span onClick={() => {}}>查看结果</span>
+                <span onClick={() => {}}>查看信息</span>
+                <span onClick={() => handleDelete(record)}>删除</span>
+              </DoCon>
+            );
+          case "退回":
+            return (
+              <DoCon>
+                <span onClick={() => {}}>修改</span>
+                <span onClick={() => handleDelete(record)}>删除</span>
+              </DoCon>
+            );
+          case "草稿":
+            return (
+              <DoCon>
+                <span onClick={() => {}}>修改</span>
+                <span onClick={() => handleDelete(record)}>删除</span>
+              </DoCon>
+            );
+          case "已结束":
+            return (
+              <DoCon>
+                <span onClick={() => {}}>查看结果</span>
+                <span onClick={() => {}}>查看信息</span>
+              </DoCon>
+            );
+          default:
+            return (
+              <DoCon>
+                <span>暂无操作</span>
+              </DoCon>
+            );
+        }
       }
     }
   ];
+
+  //删除
+  const handleDelete = (record: any) => {
+    let content = (
+      <div>
+        <div>您确定要删除选中的记录吗？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        mainPageApi
+          .delMainData(record.id)
+          .then(res => {
+            if (res.code == 200) {
+              Message.success("文件删除成功");
+              mainPageModal.onload();
+            } else {
+              Message.error("文件删除失败");
+            }
+          })
+          .catch(err => {
+            Message.error("文件删除失败");
+          });
+      }
+    });
+  };
+
+  //撤销
+  const handleRevoke = (record: any) => {
+    let content = (
+      <div>
+        <div>您确定要撤销选中的记录吗？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        mainPageApi
+          .delMainData(record.id)
+          .then(res => {
+            if (res.code == 200) {
+              Message.success("文件撤销成功");
+              mainPageModal.onload();
+            } else {
+              Message.error("文件撤销失败");
+            }
+          })
+          .catch(err => {
+            Message.error("文件撤销失败");
+          });
+      }
+    });
+  };
 
   return (
     <Wrapper>
@@ -197,7 +305,7 @@ export default observer(function Table(props: Props) {
         loading={mainPageModal.tableLoading}
         dataSource={mainPageModal.tableList}
         columns={columns}
-        surplusWidth={300}
+        surplusWidth={250}
         surplusHeight={240}
         pagination={{
           current: mainPageModal.pageIndex,
@@ -208,4 +316,4 @@ export default observer(function Table(props: Props) {
     </Wrapper>
   );
 });
-const Wrapper = styled(TabledCon)``;
+const Wrapper = styled.div``;
