@@ -3,7 +3,7 @@ import { appStore, authStore } from "src/stores";
 import qs from "qs";
 
 let getPid = () => {
-  return appStore.queryObj.pid || 25;
+  return appStore.queryObj.id;
 };
 
 export default class StepServices extends BaseApiService {

@@ -6,7 +6,8 @@ import { PageTitle } from "src/components/common";
 import { appStore } from "src/stores";
 import { DatePicker, Select, Input, Button } from "src/vendors/antd";
 import { mainPageModal } from "../MainPageModal";
-
+import AddRecordModal from "../../../modal/AddRecordModal";
+import createModal from "src/libs/createModal";
 interface Props {
   getTitle: any;
   getId: any;
@@ -14,12 +15,16 @@ interface Props {
 export default observer(function Header(props: Props) {
   let Title = props.getTitle || "";
   let id = props.getId || "";
-
+  const addRecordModal = createModal(AddRecordModal);
   useEffect(() => {
     mainPageModal.id = id;
     mainPageModal.title = Title;
     mainPageModal.onload();
   }, [id, Title]);
+
+  const addRecord = () => {
+    addRecordModal.show();
+  };
   return (
     <Wrapper>
       <LeftIcon>
@@ -80,8 +85,11 @@ export default observer(function Header(props: Props) {
         >
           类型管理
         </Button>
-        <Button type="primary">添加记录</Button>
+        <Button type="primary" onClick={addRecord}>
+          添加记录
+        </Button>
       </RightIcon>
+      <addRecordModal.Component />
     </Wrapper>
   );
 });
