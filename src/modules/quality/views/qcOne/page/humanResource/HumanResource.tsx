@@ -175,6 +175,10 @@ export default observer(function HumanResource() {
         <Select
           value={deptSelected}
           style={{ width: 200 }}
+          showSearch
+          filterOption={(input: any, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
           onChange={(val: string) => {
             setDeptSelected(val)
             if (val) authStore.selectDeptCode(val)
