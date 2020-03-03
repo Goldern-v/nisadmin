@@ -9,6 +9,7 @@ import { Button, Modal, message as Message } from "antd";
 import qs from "qs";
 import { mainPageApi } from "../api/MainPageApi";
 import { meunSettingApi } from "../../菜单设置/api/MeunSettingApi";
+import TypeEditModal from "../modal/TypeEditModal"; // 一级菜单弹窗
 
 export default withRouter(
   observer(function TypeManagement() {
@@ -113,7 +114,28 @@ export default withRouter(
     };
 
     // 修改一级菜单
-    const saveOrUpload = (record: any) => {};
+    const saveOrUpload = (record?: any) => {
+      if (record) {
+        setEditParams({
+          id: record.id,
+          name: record.name,
+          sort: record.sort
+        });
+      } else {
+        setEditParams({
+          Pid: id
+        });
+      }
+      setEditVisible(true);
+    };
+    const handleEditCancel = () => {
+      setEditVisible(false);
+      setEditParams({});
+    };
+    const handleEditOk = () => {
+      getTableData();
+      handleEditCancel();
+    };
 
     return (
       <Wrapper>
@@ -139,7 +161,9 @@ export default withRouter(
             <div className="topHeaderTitle">
               <div className="title">类型管理</div>
               <div className="topHeaderButton">
-                <Button type="primary">添加类型</Button>
+                <Button type="primary" onClick={() => saveOrUpload()}>
+                  添加类型
+                </Button>
                 <Button
                   onClick={() => {
                     appStore.history.push(`/continuingEdu/${titleType.type}`);
@@ -161,6 +185,12 @@ export default withRouter(
             surplusHeight={260}
           />
         </Content>
+        <TypeEditModal
+          visible={editVisible}
+          params={editParams}
+          onCancel={handleEditCancel}
+          onOk={handleEditOk}
+        />
       </Wrapper>
     );
   })

@@ -18,7 +18,6 @@ export default observer(function Header(props: Props) {
   const addRecordModal = createModal(AddRecordModal);
   useEffect(() => {
     mainPageModal.id = id;
-    mainPageModal.title = Title;
     mainPageModal.onload();
   }, [id, Title]);
 
@@ -51,7 +50,7 @@ export default observer(function Header(props: Props) {
             mainPageModal.onload();
           }}
         >
-          <Select.Option value="null">全部</Select.Option>
+          <Select.Option value="">全部</Select.Option>
           <Select.Option value={id}>{Title}</Select.Option>
           <Select.Option value="-1">其他</Select.Option>
         </Select>
@@ -65,7 +64,7 @@ export default observer(function Header(props: Props) {
             mainPageModal.onload();
           }}
         >
-          <Select.Option value="null">全部</Select.Option>
+          <Select.Option value="">全部</Select.Option>
           <Select.Option value="1">草稿</Select.Option>
           <Select.Option value="2">待审核</Select.Option>
           <Select.Option value="3">退回</Select.Option>
@@ -75,8 +74,18 @@ export default observer(function Header(props: Props) {
         <Input
           style={{ width: 150, marginLeft: 5, marginRight: -5 }}
           placeholder="请输入要搜索的关键字"
+          value={mainPageModal.keyWord}
+          onChange={e => {
+            mainPageModal.keyWord = e.target.value;
+          }}
         />
-        <Button onClick={() => {}}>查询</Button>
+        <Button
+          onClick={() => {
+            mainPageModal.onload();
+          }}
+        >
+          查询
+        </Button>
         <Button>导出</Button>
         <Button
           onClick={() =>
