@@ -12,8 +12,8 @@ import {
 import Form from "src/components/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
-import { stepServices } from "./services/stepServices";
-import { stepViewModal } from "./StepViewModal";
+import { stepServices } from "../services/stepServices";
+import { stepViewModal } from "../StepViewModal";
 export interface Props {}
 
 export default function Step1() {

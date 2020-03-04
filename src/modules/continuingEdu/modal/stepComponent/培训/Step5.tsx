@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button, Radio, Icon } from "antd";
-import { stepViewModal } from "./StepViewModal";
+import { pxStepViewModal } from "./PXStepViewModal";
+import { stepViewModal } from "../StepViewModal";
 import Zimage from "src/components/Zimage";
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
@@ -33,25 +34,25 @@ export default observer(function Step5() {
       <table>
         <tbody>
           <tr>
-            <td className="key">名&nbsp;&nbsp;称：</td>
-            <td className="value">{stepViewModal.stepData2.title}</td>
+            <td className="key">培训名称：</td>
+            <td className="value">{pxStepViewModal.stepData2.title}</td>
           </tr>
           <tr>
-            <td className="key">学习开始时间：</td>
-            <td className="value">{stepViewModal.stepData2.startTime}</td>
+            <td className="key">培训开始时间：</td>
+            <td className="value">{pxStepViewModal.stepData2.startTime}</td>
           </tr>
           <tr>
-            <td className="key">学习开放时间：</td>
+            <td className="key">培训开放时间：</td>
             <td className="value">
-              {stepViewModal.stepData2.openTime}
-              {stepViewModal.stepData2.openTimeUnit}{" "}
-              <span className="aside">即：{stepViewModal.endTime} 结束</span>
+              {pxStepViewModal.stepData2.openTime}
+              {pxStepViewModal.stepData2.openTimeUnit}{" "}
+              <span className="aside">即：{pxStepViewModal.endTime} 结束</span>
             </td>
           </tr>
           <tr>
             <td className="key">组织方式：</td>
             <td className="value">
-              {organizationWayMap[stepViewModal.stepData2.organizationWay]}
+              {organizationWayMap[pxStepViewModal.stepData2.organizationWay]}
             </td>
           </tr>
           <tr>
@@ -62,26 +63,72 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
-            <td className="key">学习地址：</td>
-            <td className="value">{stepViewModal.stepData2.address}</td>
+            <td className="key">培训地址：</td>
+            <td className="value">{pxStepViewModal.stepData2.address}</td>
           </tr>
+
+          {pxStepViewModal.stepData2.organizationWay == "2" && (
+            <React.Fragment>
+              <tr>
+                <td className="key">签到负责人：</td>
+                <td className="value">
+                  {pxStepViewModal.stepData2.sicPersonList
+                    .map((item: any) => item.label)
+                    .join("，")}
+                </td>
+              </tr>
+              <tr>
+                <td className="key">签到方式：</td>
+                <td className="value">二维码</td>
+              </tr>
+            </React.Fragment>
+          )}
           <tr>
-            <td className="key">学&nbsp;&nbsp;分：</td>
+            <td className="key">讲师：</td>
             <td className="value">
-              {studentCreditTypeMap[stepViewModal.stepData2.studentCreditType]}{" "}
-              {stepViewModal.stepData2.studentCredit} 分
+              {pxStepViewModal.stepData2.teacherList
+                .map((item: any) => item.label)
+                .join("，")}
             </td>
           </tr>
           <tr>
-            <td className="key">学&nbsp;&nbsp;时：</td>
+            <td className="key">学员学分：</td>
             <td className="value">
-              {stepViewModal.stepData2.studentClassHours}
+              {
+                studentCreditTypeMap[
+                  pxStepViewModal.stepData2.studentCreditType
+                ]
+              }{" "}
+              {pxStepViewModal.stepData2.studentCredit} 分
+            </td>
+          </tr>
+          <tr>
+            <td className="key">讲师学分：</td>
+            <td className="value">
+              {
+                studentCreditTypeMap[
+                  pxStepViewModal.stepData2.teacherCreditType
+                ]
+              }{" "}
+              {pxStepViewModal.stepData2.teacherCredit} 分
+            </td>
+          </tr>
+          <tr>
+            <td className="key">学员学时：</td>
+            <td className="value">
+              {pxStepViewModal.stepData2.studentClassHours}
+            </td>
+          </tr>
+          <tr>
+            <td className="key">讲师学时：</td>
+            <td className="value">
+              {pxStepViewModal.stepData2.teacherClassHours}
             </td>
           </tr>
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">
-              {stepViewModal.stepData2.bxNurse
+              {pxStepViewModal.stepData2.bxNurse
                 .map((item: any) => bxNursingMap[item])
                 .join("，")}
             </td>
@@ -134,7 +181,7 @@ export default observer(function Step5() {
               <Radio
                 checked={!!stepViewModal.stepData5.ifSendMessage}
                 onClick={() => {
-                  stepViewModal.stepData5.ifSendMessage = !stepViewModal
+                  pxStepViewModal.stepData5.ifSendMessage = !pxStepViewModal
                     .stepData5.ifSendMessage;
                 }}
               >

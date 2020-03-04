@@ -17,10 +17,18 @@ export default class StepServices extends BaseApiService {
     );
   }
 
-  /** 新建教学计划 */
+  /** 新建教学计划 学习 */
   public addTeachingPlanInfoStudy(obj: any) {
     return this.post(
       `/studyAndTrain/teachingPlanManage/addTeachingPlanInfo/study`,
+      obj
+    );
+  }
+
+  /** 新建教学计划  培训*/
+  public addTeachingPlanInfoTrain(obj: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/addTeachingPlanInfo/train`,
       obj
     );
   }

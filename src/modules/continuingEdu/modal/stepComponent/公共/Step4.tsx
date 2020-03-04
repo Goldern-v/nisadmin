@@ -3,8 +3,8 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { Button, Icon, message } from "antd";
 import { getFileType, getFileSize, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
-import { stepServices } from "./services/stepServices";
-import { stepViewModal } from "./StepViewModal";
+import { stepServices } from "../services/stepServices";
+import { stepViewModal } from "../StepViewModal";
 export interface Props {}
 
 export default function Step4() {

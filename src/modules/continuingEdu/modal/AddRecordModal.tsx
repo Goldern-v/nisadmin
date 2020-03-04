@@ -16,11 +16,16 @@ import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
-import Step1 from "./stepComponent/Step1";
-import Step2 from "./stepComponent/Step2";
-import Step3 from "./stepComponent/Step3";
-import Step4 from "./stepComponent/Step4";
-import Step5 from "./stepComponent/Step5";
+import Step1 from "./stepComponent/公共/Step1";
+import Step3 from "./stepComponent/公共/Step3";
+import Step4 from "./stepComponent/公共/Step4";
+
+import Step2_xx from "./stepComponent/学习/Step2";
+import Step5_xx from "./stepComponent/学习/Step5";
+
+import Step2_px from "./stepComponent/培训/Step2";
+import Step5_px from "./stepComponent/培训/Step5";
+
 import { ScrollBox } from "src/components/common";
 import { stepViewModal } from "./stepComponent/StepViewModal";
 import { observer } from "mobx-react-lite";
@@ -36,6 +41,27 @@ export default observer(function AddRecordModal(props: Props) {
   const [currentStep, setCurrentStep] = useState(0);
   let { visible, onCancel, onOkCallBack } = props;
 
+  const getStep2 = () => {
+    //1.学习、2培训、3考试、4练习、5实操、6演练
+    if (stepViewModal.stepData1.teachingMethod == 1) {
+      return <Step2_xx />;
+    } else if (stepViewModal.stepData1.teachingMethod == 2) {
+      return <Step2_px />;
+    } else {
+      return <Step2_xx />;
+    }
+  };
+  const getStep5 = () => {
+    //1.学习、2培训、3考试、4练习、5实操、6演练
+    if (stepViewModal.stepData1.teachingMethod == 1) {
+      return <Step5_xx />;
+    } else if (stepViewModal.stepData1.teachingMethod == 2) {
+      return <Step5_px />;
+    } else {
+      return <Step5_xx />;
+    }
+  };
+
   const stepList = [
     {
       title: "类型选择",
@@ -43,7 +69,7 @@ export default observer(function AddRecordModal(props: Props) {
     },
     {
       title: "基本设置",
-      component: <Step2 />
+      component: getStep2()
     },
     {
       title: "参与人员",
@@ -55,7 +81,7 @@ export default observer(function AddRecordModal(props: Props) {
     },
     {
       title: "完成",
-      component: <Step5 />
+      component: getStep5()
     }
   ];
 
