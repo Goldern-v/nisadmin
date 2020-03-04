@@ -22,13 +22,25 @@ export default function ContinuingEdu(props: Props) {
   // 写死的菜单列表
   const LEFT_MENU_CONFIG = [
     {
+      title: "人员管理",
+      icon: <RYGL />,
+      path: "/continuingEdu/人员管理",
+      component: ""
+    },
+    {
+      title: "审核发布",
+      icon: <YNXXB />,
+      path: "/continuingEdu/审核发布",
+      component: ""
+    },
+    ...dataList,
+    {
       title: "菜单设置",
-      icon: <LXGL />,
+      icon: <KSGL />,
       path: "/continuingEdu/菜单设置",
       component: 菜单设置
     }
   ];
-
   // 查询获取动态菜单列表
   const getList = () => {
     if (effect) {
@@ -61,7 +73,6 @@ export default function ContinuingEdu(props: Props) {
               }
               newArr.push(obj1);
             });
-            newArr.push(...LEFT_MENU_CONFIG);
             setDataList(newArr);
           }
         }
@@ -81,28 +92,21 @@ export default function ContinuingEdu(props: Props) {
   const getIcon = (icon: any) => {
     switch (icon) {
       case 1:
-        return <RYGL />;
-      case 2:
-        return <YNXXB />;
-      case 3:
         return <JXJH />;
-      case 4:
+      case 2:
         return <LXGL />;
-      case 5:
-        return <KSGL />;
-      case 6:
+      case 3:
         return <SPXX />;
-      case 7:
+      case 4:
         return <TKGL />;
-      case 8:
+      case 5:
         return <PXGL />;
-      case 9:
+      case 6:
         return <JJSZ />;
       default:
         return <JXJH />;
     }
   };
-
   // 获取组件变量名
   const getComponent = (name: any) => {
     switch (name) {
@@ -115,7 +119,7 @@ export default function ContinuingEdu(props: Props) {
 
   let currentRoutePath =
     `${props.history.location.pathname}${props.history.location.search}` || "";
-  let currentRoute = getTargetObj(dataList, "path", currentRoutePath);
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -137,7 +141,7 @@ export default function ContinuingEdu(props: Props) {
   return (
     <Wrapper>
       <LeftWrapper>
-        <LeftMenu config={dataList} menuTitle="继续教育" />
+        <LeftMenu config={LEFT_MENU_CONFIG} menuTitle="学习培训" />
       </LeftWrapper>
       <MainWrapper>
         {currentRoute && currentRoute.component && (
