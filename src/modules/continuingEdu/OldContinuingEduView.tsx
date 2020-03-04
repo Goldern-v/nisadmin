@@ -2,7 +2,9 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
+import Null from "src/components/null/Null";
 import { meunSettingApi } from "./views/菜单设置/api/MeunSettingApi";
+
 import { ReactComponent as RYGL } from "./assets/icon_svg/RYGL.svg";
 import { ReactComponent as YNXXB } from "./assets/icon_svg/YNXXB.svg";
 import { ReactComponent as JXJH } from "./assets/icon_svg/JXJH.svg";
@@ -12,24 +14,167 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
+
 export interface Props extends RouteComponentProps {}
+
+import 人员管理 from "./人员管理";
+import QuestionBankManagement from "../questionBankManagement/QuestionBankManagement";
+import ChoiceQustionEdit from "../questionBankManagement/views/ChoiceQuestionEdit";
+import FillingQuestionEdit from "../questionBankManagement/views/FillingQuestionEdit";
+import ShortQuestionEdit from "../questionBankManagement/views/ShortQuestionEdit";
+import LabelQuestionBank from "../questionBankManagement/views/LabelQuestionBank";
+import UploadRecordQuestionBank from "../questionBankManagement/views/UploadRecordQuestionBank";
+import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBank";
+import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
+import TrainingManageHome from "./views/trainingManage/views/trainingManageHome/TrainingManageHome";
+import 教学计划 from "./views/教学计划/教学计划";
+//晋升设置
+import PromotionSetting from "./views/promotionSetting/PromotionSetting";
+//审核发布
+import AuditEduPlan from "./views/auditEduPlant/AuditEduPlan";
+
+import 类型管理 from "./views/类型管理/类型管理";
 import 菜单设置 from "./views/菜单设置/MenuSettings";
 import 主列表页 from "./views/主表单页/MainPage";
+
+const LEFT_MENU_CONFIG = [
+  {
+    title: "人员管理",
+    icon: <RYGL />,
+    path: "/continuingEdu/人员管理",
+    component: 人员管理
+  },
+  {
+    title: "审核发布",
+    icon: <RYGL />,
+    path: "/continuingEdu/审核发布",
+    component: AuditEduPlan
+  },
+  {
+    title: "新职工培训",
+    icon: <RYGL />,
+    children: [
+      {
+        title: "教学计划",
+        path: "/continuingEdu/教学计划",
+        component: 教学计划
+      },
+      {
+        title: "类型管理",
+        path: "/continuingEdu/类型管理",
+        component: 类型管理,
+        hide: true
+      }
+    ]
+  },
+  {
+    title: "培训管理",
+    icon: <RYGL />,
+    path: "/continuingEdu/trainingManageHome",
+    component: TrainingManageHome
+  },
+  {
+    title: "院内学习班",
+    icon: <YNXXB />,
+    path: "/continuingEdu/院内学习班",
+    component: Null
+  },
+  {
+    title: "教学计划",
+    icon: <JXJH />,
+    path: "/continuingEdu/教学计划",
+    component: Null
+  },
+  {
+    title: "练习管理",
+    icon: <LXGL />,
+    path: "/continuingEdu/练习管理",
+    component: Null
+  },
+  {
+    title: "考试管理",
+    icon: <KSGL />,
+    path: "/continuingEdu/考试管理",
+    component: Null
+  },
+  {
+    title: "视频学习",
+    icon: <SPXX />,
+    path: "/continuingEdu/视频学习",
+    component: Null
+  },
+  {
+    title: "选择题新建和编辑",
+    hide: true,
+    path: "/continuingEdu/choiceQuestionEdit",
+    component: ChoiceQustionEdit
+  },
+  {
+    title: "填空题新建和编辑",
+    hide: true,
+    path: "/continuingEdu/fillingQuestionEdit",
+    component: FillingQuestionEdit
+  },
+  {
+    title: "问答题新建和编辑",
+    hide: true,
+    path: "/continuingEdu/shortQuestionEdit",
+    component: ShortQuestionEdit
+  },
+  {
+    title: "标签题库",
+    hide: true,
+    path: "/continuingEdu/labelQuestionBank",
+    component: LabelQuestionBank
+  },
+  {
+    title: "导入题库",
+    hide: true,
+    path: "/continuingEdu/uploadRecordQuestionBank",
+    component: UploadRecordQuestionBank
+  },
+  {
+    title: "上传新题库",
+    hide: true,
+    path: "/continuingEdu/uploadQuestionBank",
+    component: UploadQuestionBank
+  },
+  {
+    title: "错题反馈",
+    hide: true,
+    path: "/continuingEdu/wrongQuestionBank",
+    component: WrongQuestionBank
+  },
+  {
+    title: "题库管理",
+    icon: <TKGL />,
+    path: "/continuingEdu/questionBankManagement",
+    component: QuestionBankManagement
+  },
+  {
+    title: "培训管理",
+    icon: <PXGL />,
+    path: "/continuingEdu/培训管理",
+    component: Null
+  },
+  {
+    title: "晋级设置",
+    icon: <JJSZ />,
+    path: "/continuingEdu/晋级设置",
+    component: PromotionSetting
+  },
+  {
+    title: "菜单设置",
+    icon: <KSGL />,
+    path: "/continuingEdu/菜单设置",
+    component: 菜单设置
+  }
+];
 
 export default function ContinuingEdu(props: Props) {
   const [effect, setEffect] = useState(true);
   const [dataList, setDataList] = useState([] as any); // 菜单树
-  // 写死的菜单列表
-  const LEFT_MENU_CONFIG = [
-    {
-      title: "菜单设置",
-      icon: <LXGL />,
-      path: "/continuingEdu/菜单设置",
-      component: 菜单设置
-    }
-  ];
-
-  // 查询获取动态菜单列表
+  // 查询获取菜单列表
   const getList = () => {
     if (effect) {
       meunSettingApi.getData().then((res: any) => {
@@ -52,7 +197,7 @@ export default function ContinuingEdu(props: Props) {
                   var obj2: any = {
                     id: item.id,
                     title: item.name,
-                    component: 主列表页,
+                    component: getComponent(item.name),
                     path: `/continuingEdu/${item.name}?Pid=${Pid}&id=${item.id}`
                   };
                   arr.push(obj2);
@@ -61,14 +206,12 @@ export default function ContinuingEdu(props: Props) {
               }
               newArr.push(obj1);
             });
-            newArr.push(...LEFT_MENU_CONFIG);
             setDataList(newArr);
           }
         }
       });
     }
   };
-
   useLayoutEffect(() => {
     setEffect(false);
   }, []);
@@ -92,12 +235,6 @@ export default function ContinuingEdu(props: Props) {
         return <KSGL />;
       case 6:
         return <SPXX />;
-      case 7:
-        return <TKGL />;
-      case 8:
-        return <PXGL />;
-      case 9:
-        return <JJSZ />;
       default:
         return <JXJH />;
     }
@@ -109,7 +246,7 @@ export default function ContinuingEdu(props: Props) {
       case "菜单设置":
         return 菜单设置;
       default:
-        return "";
+        return 主列表页;
     }
   };
 

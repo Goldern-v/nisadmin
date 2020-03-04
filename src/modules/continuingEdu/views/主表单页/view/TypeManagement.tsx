@@ -18,8 +18,8 @@ export default withRouter(
     const [tableList, setTableList] = useState([] as any); //表格数据
     const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
     const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
-
     let id = qs.parse(appStore.location.search.replace("?", "")).id;
+    const { history } = appStore;
 
     const columns: any = [
       {
@@ -151,7 +151,7 @@ export default withRouter(
               data={[
                 {
                   name: `${titleType.type}`,
-                  link: `/continuingEdu/${titleType.type}`
+                  link: `/continuingEdu/${titleType.type}?`
                 },
                 {
                   name: "类型管理"
@@ -164,25 +164,18 @@ export default withRouter(
                 <Button type="primary" onClick={() => saveOrUpload()}>
                   添加类型
                 </Button>
-                <Button
-                  onClick={() => {
-                    appStore.history.push(`/continuingEdu/${titleType.type}`);
-                  }}
-                >
-                  返回
-                </Button>
+                <Button onClick={() => history.goBack()}>返回</Button>
               </div>
             </div>
           </TopHeader>
         </Con>
-
         <Content>
           <BaseTable
             loading={loading}
             columns={columns}
             dataSource={tableList}
             surplusWidth={300}
-            surplusHeight={260}
+            surplusHeight={205}
           />
         </Content>
         <TypeEditModal
@@ -202,12 +195,12 @@ const Wrapper = styled.div`
     background: #red !important;
   }
 `;
-const Content = styled(TabledCon)`
+const Content = styled.div`
   padding: 0 15px;
   box-sizing: border-box;
 `;
 const Con = styled.div`
-  height: 76px;
+  height: 60px;
   padding: 0 15px;
   box-sizing: border-box;
   margin-bottom: 10px;
@@ -237,7 +230,7 @@ const TopHeader = styled.div`
     color: #000;
     .topHeaderButton {
       position: absolute;
-      top: 75px;
+      top: 68px;
       right: 20px;
       button {
         margin-left: 10px;

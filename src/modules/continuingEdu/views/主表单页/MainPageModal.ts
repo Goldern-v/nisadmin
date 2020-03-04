@@ -1,7 +1,7 @@
 import { observable, computed } from "mobx";
 import { mainPageApi } from "./api/MainPageApi";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
-import { any } from "prop-types";
+import { fileDownload } from "src/utils/file/file";
 
 class MainPageModal {
   @observable public id = ""; //菜单id
@@ -34,6 +34,13 @@ class MainPageModal {
     mainPageApi.getMainData(this.postObj).then(res => {
       this.tableLoading = false;
       this.tableList = res.data.list;
+    });
+  }
+
+  //导出Excel
+  export() {
+    mainPageApi.exportMainData(this.postObj).then(res => {
+      fileDownload(res);
     });
   }
 

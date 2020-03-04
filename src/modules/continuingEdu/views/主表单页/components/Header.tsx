@@ -2,11 +2,9 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { TableHeadCon } from "src/components/BaseTable";
-import { PageTitle } from "src/components/common";
 import { appStore } from "src/stores";
 import { DatePicker, Select, Input, Button } from "src/vendors/antd";
 import { mainPageModal } from "../MainPageModal";
-import AddRecordModal from "../../../modal/AddRecordModal";
 import createModal from "src/libs/createModal";
 interface Props {
   getTitle: any;
@@ -15,23 +13,14 @@ interface Props {
 export default observer(function Header(props: Props) {
   let Title = props.getTitle || "";
   let id = props.getId || "";
-  const addRecordModal = createModal(AddRecordModal);
   useEffect(() => {
     mainPageModal.id = id;
     mainPageModal.onload();
   }, [id, Title]);
 
-  const addRecord = () => {
-    addRecordModal.show({
-      onOkCallBack: () => mainPageModal.onload()
-    });
-  };
   return (
     <Wrapper>
       <LeftIcon>
-        <PageTitle>{Title}</PageTitle>
-      </LeftIcon>
-      <RightIcon>
         <span>开始时间：</span>
         <DatePicker.RangePicker
           allowClear={false}
@@ -73,6 +62,8 @@ export default observer(function Header(props: Props) {
           <Select.Option value="4">发布</Select.Option>
           <Select.Option value="5">归档</Select.Option>
         </Select>
+      </LeftIcon>
+      <RightIcon>
         <Input
           style={{ width: 150, marginLeft: 5, marginRight: -5 }}
           placeholder="请输入要搜索的关键字"
@@ -96,11 +87,8 @@ export default observer(function Header(props: Props) {
         >
           类型管理
         </Button>
-        <Button type="primary" onClick={addRecord}>
-          添加记录
-        </Button>
+        <Button type="primary">添加记录</Button>
       </RightIcon>
-      <addRecordModal.Component />
     </Wrapper>
   );
 });

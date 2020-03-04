@@ -1,18 +1,34 @@
 import styled from "styled-components";
 import React from "react";
-import BaseTable, { TabledCon, DoCon } from "src/components/BaseTable";
-import { ColumnProps } from "src/vendors/antd";
+import BaseTable, { DoCon } from "src/components/BaseTable";
+import { message as Message, Modal } from "src/vendors/antd";
 import { observer } from "src/vendors/mobx-react-lite";
 import { mainPageModal } from "../MainPageModal";
+import { mainPageApi } from "../api/MainPageApi";
 import { appStore } from "src/stores";
-import { useKeepAliveEffect } from "react-keep-alive";
-import MergeTh from "../../../components/mergeTh/MergeTh";
+
 interface Props {
   getId: any;
 }
 
 export default observer(function Table(props: Props) {
   let id = props.getId || "";
+  //培训对象函数封装
+  const setTableConfig = () => {
+    let array = [];
+    for (let i = 0; i < 7; i++) {
+      array.push({
+        title: i === 6 ? "其他" : `N${0}`,
+        dataIndex: i === 6 ? "nurseOther" : `nurse${i}`,
+        width: 40,
+        align: "center",
+        render(value: any) {
+          return value === 1 ? <span>√</span> : <span>△</span>;
+        }
+      });
+    }
+    return array;
+  };
 
   const columns: any = [
     {
@@ -66,40 +82,8 @@ export default observer(function Table(props: Props) {
       }
     },
     {
-      title: () => {
-        return (
-          <MergeTh
-            mainTitle="培训对象（必修√/选修△）"
-            children={["N0", "N1", "N2", "N3", "N4", "其他"]}
-          />
-        );
-      },
-      colSpan: 7,
-      width: 280
-    },
-    {
-      title: "N0",
-      colSpan: 0
-    },
-    {
-      title: "N1",
-      colSpan: 0
-    },
-    {
-      title: "N2",
-      colSpan: 0
-    },
-    {
-      title: "N3",
-      colSpan: 0
-    },
-    {
-      title: "N4",
-      colSpan: 0
-    },
-    {
-      title: "其他",
-      colSpan: 0
+      title: "培训对象（必修√/选修△）",
+      children: setTableConfig()
     },
     {
       title: "管理人员",
@@ -108,43 +92,51 @@ export default observer(function Table(props: Props) {
       align: "center"
     },
     {
-      title: () => {
-        return <MergeTh mainTitle="组织方式" children={["线上", "线下"]} />;
-      },
-      colSpan: 3,
-      width: 100
+      title: "组织方式",
+      // 1线上 2线下
+      children: [
+        {
+          title: "线上",
+          dataIndex: "isOnLine",
+          width: 40,
+          align: "center",
+          render(value: any) {
+            return value === 1 ? <span>√</span> : "";
+          }
+        },
+        {
+          title: "线下",
+          dataIndex: "isDownLine",
+          width: 40,
+          align: "center",
+          render(value: any) {
+            return value === 1 ? <span>√</span> : "";
+          }
+        }
+      ]
     },
     {
-      title: "线上",
-      colSpan: 0
-    },
-    {
-      title: "线下",
-      colSpan: 0
-    },
-    {
-      title: () => {
-        return (
-          <MergeTh
-            mainTitle="学习资料"
-            children={["课件", "视频", "题库(题)"]}
-          />
-        );
-      },
-      colSpan: 4,
-      width: 180
-    },
-    {
-      title: "课件",
-      colSpan: 0
-    },
-    {
-      title: "视频",
-      colSpan: 0
-    },
-    {
-      title: "题库(题)",
-      colSpan: 0
+      title: "学习资料",
+      children: [
+        {
+          title: "课件",
+          dataIndex: "coursewareCount",
+          width: 40,
+          align: "center"
+        },
+        {
+          title: "视频",
+          dataIndex: "videoCount",
+          width: 40,
+          align: "center"
+        },
+        {
+          title: "题库(题)",
+          dataIndex: "questionCount",
+          width: 40,
+          align: "center"
+        }
+      ]
     },
     {
       title: "学分",
@@ -160,14 +152,25 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "状态",
-      dataIndex: "status",
+      dataIndex: "statusDesc",
       width: 80,
       align: "center",
-      render(status: any, record: any) {
-        //1草稿，2待审核；3退回；4发布；5归档
-        const statusArray = ["草稿", "待审核", "退回", "发布", "归档"];
-        // const color
-        return statusArray[status - 1];
+      render(statusDesc: any, record: any) {
+        let color = "";
+        switch (statusDesc) {
+          case "待审核":
+            color = "#284fc2";
+            break;
+          case "进行中":
+            color = "#E63122";
+            break;
+          case "退回":
+            color = "#FF9C35";
+            break;
+          default:
+            color = "#000";
+        }
+        return <span style={{ color }}>{statusDesc}</span>;
       }
     },
     {
@@ -179,17 +182,184 @@ export default observer(function Table(props: Props) {
     {
       title: "操作",
       dataIndex: "",
-      width: 80,
+      width: 180,
       align: "center",
       render(text: any, record: any, index: number) {
+        let data: any = [{ text: "暂无操作" }];
+        switch (record.statusDesc) {
+          case "待审核":
+            data = [
+              {
+                text: "查看结果",
+                function: checkResult
+              },
+              {
+                text: "查看信息",
+                function: checkMessage
+              },
+              {
+                text: "撤销",
+                function: handleRevoke
+              }
+            ];
+            break;
+          case "进行中":
+            data = [
+              {
+                text: "查看结果",
+                function: checkResult
+              },
+              {
+                text: "查看信息",
+                function: checkMessage
+              },
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ];
+            break;
+          case "退回":
+            data = [
+              {
+                text: "修改"
+              },
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ];
+            break;
+          case "草稿":
+            data = [
+              {
+                text: "修改"
+              },
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ];
+            break;
+          case "已结束":
+            data = [
+              {
+                text: "查看结果",
+                function: checkResult
+              },
+              {
+                text: "查看信息",
+                function: checkMessage
+              }
+            ];
+            break;
+          default:
+        }
         return (
           <DoCon>
-            <span onClick={() => {}}>操作</span>
+            {data.map((item: any, index: any) => (
+              <span
+                key={index}
+                onClick={() => (item.function ? item.function(record) : {})}
+              >
+                {item.text}
+              </span>
+            ))}
           </DoCon>
         );
       }
     }
   ];
+
+  //删除
+  const handleDelete = (record: any) => {
+    let content = (
+      <div>
+        <div>您确定要删除选中的记录吗？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        mainPageApi
+          .delMainData(record.id)
+          .then(res => {
+            if (res.code == 200) {
+              Message.success("文件删除成功");
+              mainPageModal.onload();
+            } else {
+              Message.error("文件删除失败");
+            }
+          })
+          .catch(err => {
+            Message.error("文件删除失败");
+          });
+      }
+    });
+  };
+
+  //撤销
+  const handleRevoke = (record: any) => {
+    let content = (
+      <div>
+        <div>您确定要撤销选中的记录吗？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        mainPageApi
+          .delMainData(record.id)
+          .then(res => {
+            if (res.code == 200) {
+              Message.success("文件撤销成功");
+              mainPageModal.onload();
+            } else {
+              Message.error("文件撤销失败");
+            }
+          })
+          .catch(err => {
+            Message.error("文件撤销失败");
+          });
+      }
+    });
+  };
+
+  /** 
+  studyResultReview 查看学习结果
+  trainingResultReview 查看培训结果
+  testingResultReview 查看考试结果
+  operateResultReview 查看实操结果
+  practiceResultReview 查看练习结果
+  simulateResultReview 查看演练结果
+  */
+  // 查看结果
+  const checkResult = (record: any) => {
+    const teachingMethodArray = [
+      "studyResultReview",
+      "trainingResultReview",
+      "testingResultReview",
+      "practiceResultReview",
+      "operateResultReview",
+      "simulateResultReview"
+    ];
+    let router = teachingMethodArray[record.teachingMethod - 1];
+    appStore.history.push(`/${router}?id=${record.id}`);
+  };
+
+  //trainingInfoReview 查看详情(所有类型)
+  // 查看信息
+  const checkMessage = (record: any) => {
+    appStore.history.push(`/trainingInfoReview?id=${record.id}`);
+  };
 
   return (
     <Wrapper>
@@ -198,7 +368,7 @@ export default observer(function Table(props: Props) {
         dataSource={mainPageModal.tableList}
         columns={columns}
         surplusWidth={300}
-        surplusHeight={240}
+        surplusHeight={270}
         pagination={{
           current: mainPageModal.pageIndex,
           total: mainPageModal.total,
@@ -208,4 +378,4 @@ export default observer(function Table(props: Props) {
     </Wrapper>
   );
 });
-const Wrapper = styled(TabledCon)``;
+const Wrapper = styled.div``;
