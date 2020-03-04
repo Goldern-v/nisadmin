@@ -97,7 +97,7 @@ export default observer(function Table(props: Props) {
       children: [
         {
           title: "线上",
-          dataIndex: "organizationWay",
+          dataIndex: "isOnLine",
           width: 40,
           align: "center",
           render(value: any) {
@@ -106,11 +106,11 @@ export default observer(function Table(props: Props) {
         },
         {
           title: "线下",
-          dataIndex: "organizationWay",
+          dataIndex: "isDownLine",
           width: 40,
           align: "center",
           render(value: any) {
-            return value === 2 ? <span>√</span> : "";
+            return value === 1 ? <span>√</span> : "";
           }
         }
       ]
@@ -326,6 +326,19 @@ export default observer(function Table(props: Props) {
       }
     });
   };
+
+  // /studyResultReview 查看学习结果
+  // /trainingResultReview 查看培训结果
+  // /testingResultReview 查看考试结果
+  // /operateResultReview 查看实操结果
+  // /practiceResultReview 查看练习结果
+  // /simulateResultReview 查看演练结果
+  // 查看结果
+  const checkResult = (record: any) => {};
+
+  // /trainingInfoReview 查看详情(所有类型)
+  // 查看信息
+  const checkMessage = (record: any) => {};
 
   return (
     <Wrapper>
