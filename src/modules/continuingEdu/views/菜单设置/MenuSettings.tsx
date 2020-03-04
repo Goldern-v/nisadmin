@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
-import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
 import { meunSettingApi } from "./api/MeunSettingApi";
 import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗

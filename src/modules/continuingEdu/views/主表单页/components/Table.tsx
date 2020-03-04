@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import React from "react";
-import BaseTable, { TabledCon, DoCon } from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import { message as Message, Modal } from "src/vendors/antd";
 import { observer } from "src/vendors/mobx-react-lite";
 import { mainPageModal } from "../MainPageModal";
-import MergeTh from "../../../components/mergeTh/MergeTh";
 import { mainPageApi } from "../api/MainPageApi";
+import { appStore } from "src/stores";
 
 interface Props {
   getId: any;
@@ -190,10 +190,12 @@ export default observer(function Table(props: Props) {
           case "待审核":
             data = [
               {
-                text: "查看结果"
+                text: "查看结果",
+                function: checkResult
               },
               {
-                text: "查看信息"
+                text: "查看信息",
+                function: checkMessage
               },
               {
                 text: "撤销",
@@ -204,10 +206,12 @@ export default observer(function Table(props: Props) {
           case "进行中":
             data = [
               {
-                text: "查看结果"
+                text: "查看结果",
+                function: checkResult
               },
               {
-                text: "查看信息"
+                text: "查看信息",
+                function: checkMessage
               },
               {
                 text: "删除",
@@ -240,10 +244,12 @@ export default observer(function Table(props: Props) {
           case "已结束":
             data = [
               {
-                text: "查看结果"
+                text: "查看结果",
+                function: checkResult
               },
               {
-                text: "查看信息"
+                text: "查看信息",
+                function: checkMessage
               }
             ];
             break;
@@ -327,18 +333,33 @@ export default observer(function Table(props: Props) {
     });
   };
 
-  // /studyResultReview 查看学习结果
-  // /trainingResultReview 查看培训结果
-  // /testingResultReview 查看考试结果
-  // /operateResultReview 查看实操结果
-  // /practiceResultReview 查看练习结果
-  // /simulateResultReview 查看演练结果
+  /** 
+  studyResultReview 查看学习结果
+  trainingResultReview 查看培训结果
+  testingResultReview 查看考试结果
+  operateResultReview 查看实操结果
+  practiceResultReview 查看练习结果
+  simulateResultReview 查看演练结果
+  */
   // 查看结果
-  const checkResult = (record: any) => {};
+  const checkResult = (record: any) => {
+    const teachingMethodArray = [
+      "studyResultReview",
+      "trainingResultReview",
+      "testingResultReview",
+      "practiceResultReview",
+      "operateResultReview",
+      "simulateResultReview"
+    ];
+    let router = teachingMethodArray[record.teachingMethod - 1];
+    appStore.history.push(`/${router}?id=${record.id}`);
+  };
 
-  // /trainingInfoReview 查看详情(所有类型)
+  //trainingInfoReview 查看详情(所有类型)
   // 查看信息
-  const checkMessage = (record: any) => {};
+  const checkMessage = (record: any) => {
+    appStore.history.push(`/trainingInfoReview?id=${record.id}`);
+  };
 
   return (
     <Wrapper>
