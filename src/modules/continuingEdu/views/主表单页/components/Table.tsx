@@ -13,6 +13,22 @@ interface Props {
 
 export default observer(function Table(props: Props) {
   let id = props.getId || "";
+  //培训对象函数封装
+  const setTableConfig = () => {
+    let array = [];
+    for (let i = 0; i < 7; i++) {
+      array.push({
+        title: i === 6 ? "其他" : `N${0}`,
+        dataIndex: i === 6 ? "nurseOther" : `nurse${i}`,
+        width: 40,
+        align: "center",
+        render(value: any) {
+          return value === 1 ? <span>√</span> : <span>△</span>;
+        }
+      });
+    }
+    return array;
+  };
 
   const columns: any = [
     {
@@ -66,40 +82,8 @@ export default observer(function Table(props: Props) {
       }
     },
     {
-      title: () => {
-        return (
-          <MergeTh
-            mainTitle="培训对象（必修√/选修△）"
-            children={["N0", "N1", "N2", "N3", "N4", "其他"]}
-          />
-        );
-      },
-      colSpan: 7,
-      width: 280
-    },
-    {
-      title: "N0",
-      colSpan: 0
-    },
-    {
-      title: "N1",
-      colSpan: 0
-    },
-    {
-      title: "N2",
-      colSpan: 0
-    },
-    {
-      title: "N3",
-      colSpan: 0
-    },
-    {
-      title: "N4",
-      colSpan: 0
-    },
-    {
-      title: "其他",
-      colSpan: 0
+      title: "培训对象（必修√/选修△）",
+      children: setTableConfig()
     },
     {
       title: "管理人员",
@@ -108,43 +92,51 @@ export default observer(function Table(props: Props) {
       align: "center"
     },
     {
-      title: () => {
-        return <MergeTh mainTitle="组织方式" children={["线上", "线下"]} />;
-      },
-      colSpan: 3,
-      width: 100
+      title: "组织方式",
+      // 1线上 2线下
+      children: [
+        {
+          title: "线上",
+          dataIndex: "organizationWay",
+          width: 40,
+          align: "center",
+          render(value: any) {
+            return value === 1 ? <span>√</span> : "";
+          }
+        },
+        {
+          title: "线下",
+          dataIndex: "organizationWay",
+          width: 40,
+          align: "center",
+          render(value: any) {
+            return value === 2 ? <span>√</span> : "";
+          }
+        }
+      ]
     },
     {
-      title: "线上",
-      colSpan: 0
-    },
-    {
-      title: "线下",
-      colSpan: 0
-    },
-    {
-      title: () => {
-        return (
-          <MergeTh
-            mainTitle="学习资料"
-            children={["课件", "视频", "题库(题)"]}
-          />
-        );
-      },
-      colSpan: 4,
-      width: 180
-    },
-    {
-      title: "课件",
-      colSpan: 0
-    },
-    {
-      title: "视频",
-      colSpan: 0
-    },
-    {
-      title: "题库(题)",
-      colSpan: 0
+      title: "学习资料",
+      children: [
+        {
+          title: "课件",
+          dataIndex: "coursewareCount",
+          width: 40,
+          align: "center"
+        },
+        {
+          title: "视频",
+          dataIndex: "videoCount",
+          width: 40,
+          align: "center"
+        },
+        {
+          title: "题库(题)",
+          dataIndex: "questionCount",
+          width: 40,
+          align: "center"
+        }
+      ]
     },
     {
       title: "学分",
@@ -164,16 +156,21 @@ export default observer(function Table(props: Props) {
       width: 80,
       align: "center",
       render(statusDesc: any, record: any) {
+        let color = "";
         switch (statusDesc) {
           case "待审核":
-            return <span style={{ color: "#284fc2" }}>{statusDesc}</span>;
+            color = "#284fc2";
+            break;
           case "进行中":
-            return <span style={{ color: "#E63122" }}>({statusDesc}</span>;
+            color = "#E63122";
+            break;
           case "退回":
-            return <span style={{ color: "##FF9C35" }}>{statusDesc}</span>;
+            color = "#FF9C35";
+            break;
           default:
-            return <span style={{ color: "#000" }}>{statusDesc}</span>;
+            color = "#000";
         }
+        return <span style={{ color }}>{statusDesc}</span>;
       }
     },
     {
@@ -188,51 +185,82 @@ export default observer(function Table(props: Props) {
       width: 180,
       align: "center",
       render(text: any, record: any, index: number) {
+        let data: any = [{ text: "暂无操作" }];
         switch (record.statusDesc) {
           case "待审核":
-            return (
-              <DoCon>
-                <span onClick={() => {}}>查看结果</span>
-                <span onClick={() => {}}>查看信息</span>
-                <span onClick={() => handleRevoke(record)}>撤销</span>
-              </DoCon>
-            );
+            data = [
+              {
+                text: "查看结果"
+              },
+              {
+                text: "查看信息"
+              },
+              {
+                text: "撤销",
+                function: handleRevoke
+              }
+            ];
+            break;
           case "进行中":
-            return (
-              <DoCon>
-                <span onClick={() => {}}>查看结果</span>
-                <span onClick={() => {}}>查看信息</span>
-                <span onClick={() => handleDelete(record)}>删除</span>
-              </DoCon>
-            );
+            data = [
+              {
+                text: "查看结果"
+              },
+              {
+                text: "查看信息"
+              },
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ];
+            break;
           case "退回":
-            return (
-              <DoCon>
-                <span onClick={() => {}}>修改</span>
-                <span onClick={() => handleDelete(record)}>删除</span>
-              </DoCon>
-            );
+            data = [
+              {
+                text: "修改"
+              },
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ];
+            break;
           case "草稿":
-            return (
-              <DoCon>
-                <span onClick={() => {}}>修改</span>
-                <span onClick={() => handleDelete(record)}>删除</span>
-              </DoCon>
-            );
+            data = [
+              {
+                text: "修改"
+              },
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ];
+            break;
           case "已结束":
-            return (
-              <DoCon>
-                <span onClick={() => {}}>查看结果</span>
-                <span onClick={() => {}}>查看信息</span>
-              </DoCon>
-            );
+            data = [
+              {
+                text: "查看结果"
+              },
+              {
+                text: "查看信息"
+              }
+            ];
+            break;
           default:
-            return (
-              <DoCon>
-                <span>暂无操作</span>
-              </DoCon>
-            );
         }
+        return (
+          <DoCon>
+            {data.map((item: any, index: any) => (
+              <span
+                key={index}
+                onClick={() => (item.function ? item.function(record) : {})}
+              >
+                {item.text}
+              </span>
+            ))}
+          </DoCon>
+        );
       }
     }
   ];
@@ -305,8 +333,8 @@ export default observer(function Table(props: Props) {
         loading={mainPageModal.tableLoading}
         dataSource={mainPageModal.tableList}
         columns={columns}
-        surplusWidth={250}
-        surplusHeight={240}
+        surplusWidth={300}
+        surplusHeight={270}
         pagination={{
           current: mainPageModal.pageIndex,
           total: mainPageModal.total,

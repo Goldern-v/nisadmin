@@ -151,7 +151,7 @@ export default withRouter(
               data={[
                 {
                   name: `${titleType.type}`,
-                  link: `/continuingEdu/${titleType.type}`
+                  link: `/continuingEdu/${titleType.type}?`
                 },
                 {
                   name: "类型管理"
@@ -175,14 +175,13 @@ export default withRouter(
             </div>
           </TopHeader>
         </Con>
-
         <Content>
           <BaseTable
             loading={loading}
             columns={columns}
             dataSource={tableList}
             surplusWidth={300}
-            surplusHeight={260}
+            surplusHeight={205}
           />
         </Content>
         <TypeEditModal
@@ -202,12 +201,12 @@ const Wrapper = styled.div`
     background: #red !important;
   }
 `;
-const Content = styled(TabledCon)`
+const Content = styled.div`
   padding: 0 15px;
   box-sizing: border-box;
 `;
 const Con = styled.div`
-  height: 76px;
+  height: 60px;
   padding: 0 15px;
   box-sizing: border-box;
   margin-bottom: 10px;
@@ -237,7 +236,7 @@ const TopHeader = styled.div`
     color: #000;
     .topHeaderButton {
       position: absolute;
-      top: 75px;
+      top: 68px;
       right: 20px;
       button {
         margin-left: 10px;
