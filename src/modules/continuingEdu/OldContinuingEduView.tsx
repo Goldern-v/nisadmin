@@ -28,18 +28,6 @@ import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBa
 import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
 import TrainingManageHome from "./views/trainingManage/views/trainingManageHome/TrainingManageHome";
 import 教学计划 from "./views/教学计划/教学计划";
-// 院外培训继续教育
-import ContinuingEducation from "./views/outsideHospital/views/continuingEducation/ContinuingEducation";
-// 院外培训短期培训
-import ShortTermTraining from "./views/outsideHospital/views/shortTermTraining/ShortTermTraining";
-// 院外培训会议文章
-import MeetingArticle from "./views/outsideHospital/views/meetingArticle/MeetingArticle";
-// 院外培训会议交流
-import MeetingExchange from "./views/outsideHospital/views/meetingExchange/MeetingExchange";
-// 院外培训其他类培训
-import OtherTraining from "./views/outsideHospital/views/otherTraining/OtherTraining";
-// 院外培训类型管理
-import TypeManagement from "./views/outsideHospital/views/typeManagement/TypeManagement";
 //晋升设置
 import PromotionSetting from "./views/promotionSetting/PromotionSetting";
 //审核发布
@@ -84,43 +72,6 @@ const LEFT_MENU_CONFIG = [
     icon: <RYGL />,
     path: "/continuingEdu/trainingManageHome",
     component: TrainingManageHome
-  },
-  {
-    title: "院外培训",
-    // icon: <RYGL />,
-    children: [
-      {
-        title: "继续教育",
-        path: "/continuingEdu/继续教育",
-        component: ContinuingEducation
-      },
-      {
-        title: "短期培训",
-        path: "/continuingEdu/短期培训",
-        component: ShortTermTraining
-      },
-      {
-        title: "会议文章",
-        path: "/continuingEdu/会议文章",
-        component: MeetingArticle
-      },
-      {
-        title: "会议交流",
-        path: "/continuingEdu/会议交流",
-        component: MeetingExchange
-      },
-      {
-        title: "其他类培训",
-        path: "/continuingEdu/其他类培训",
-        component: OtherTraining
-      },
-      {
-        title: "类型管理",
-        path: "/continuingEdu/typeManagement",
-        component: TypeManagement,
-        hide: true
-      }
-    ]
   },
   {
     title: "院内学习班",

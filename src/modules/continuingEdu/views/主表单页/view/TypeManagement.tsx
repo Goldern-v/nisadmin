@@ -18,8 +18,8 @@ export default withRouter(
     const [tableList, setTableList] = useState([] as any); //表格数据
     const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
     const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
-
     let id = qs.parse(appStore.location.search.replace("?", "")).id;
+    const { history } = appStore;
 
     const columns: any = [
       {
@@ -164,13 +164,7 @@ export default withRouter(
                 <Button type="primary" onClick={() => saveOrUpload()}>
                   添加类型
                 </Button>
-                <Button
-                  onClick={() => {
-                    appStore.history.push(`/continuingEdu/${titleType.type}`);
-                  }}
-                >
-                  返回
-                </Button>
+                <Button onClick={() => history.goBack()}>返回</Button>
               </div>
             </div>
           </TopHeader>

@@ -3,13 +3,15 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import { meunSettingApi } from "./views/菜单设置/api/MeunSettingApi";
-
 import { ReactComponent as RYGL } from "./assets/icon_svg/RYGL.svg";
 import { ReactComponent as YNXXB } from "./assets/icon_svg/YNXXB.svg";
 import { ReactComponent as JXJH } from "./assets/icon_svg/JXJH.svg";
 import { ReactComponent as LXGL } from "./assets/icon_svg/LXGL.svg";
 import { ReactComponent as KSGL } from "./assets/icon_svg/KSGL.svg";
 import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
+import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
+import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
+import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
 export interface Props extends RouteComponentProps {}
 import 菜单设置 from "./views/菜单设置/MenuSettings";
 import 主列表页 from "./views/主表单页/MainPage";
@@ -17,7 +19,17 @@ import 主列表页 from "./views/主表单页/MainPage";
 export default function ContinuingEdu(props: Props) {
   const [effect, setEffect] = useState(true);
   const [dataList, setDataList] = useState([] as any); // 菜单树
-  // 查询获取菜单列表
+  // 写死的菜单列表
+  const LEFT_MENU_CONFIG = [
+    {
+      title: "菜单设置",
+      icon: <LXGL />,
+      path: "/continuingEdu/菜单设置",
+      component: 菜单设置
+    }
+  ];
+
+  // 查询获取动态菜单列表
   const getList = () => {
     if (effect) {
       meunSettingApi.getData().then((res: any) => {
@@ -49,12 +61,14 @@ export default function ContinuingEdu(props: Props) {
               }
               newArr.push(obj1);
             });
+            newArr.push(...LEFT_MENU_CONFIG);
             setDataList(newArr);
           }
         }
       });
     }
   };
+
   useLayoutEffect(() => {
     setEffect(false);
   }, []);
@@ -78,6 +92,12 @@ export default function ContinuingEdu(props: Props) {
         return <KSGL />;
       case 6:
         return <SPXX />;
+      case 7:
+        return <TKGL />;
+      case 8:
+        return <PXGL />;
+      case 9:
+        return <JJSZ />;
       default:
         return <JXJH />;
     }
