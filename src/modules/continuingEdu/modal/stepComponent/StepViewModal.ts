@@ -1,8 +1,10 @@
+import { xxStepViewModal } from "./学习/XXStepViewModal";
 import { appStore } from "src/stores";
 import { stepServices } from "./services/stepServices";
 import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
 import moment from "moment";
+import { pxStepViewModal } from "./培训/PXStepViewModal";
 class StepViewModal {
   @observable public stepData1 = {
     teachingMethod: null,
@@ -10,51 +12,6 @@ class StepViewModal {
     name: null,
     id: null
   };
-  @observable public stepData2: any = {
-    /** 学习名称 **/
-    title: "",
-    /**  学习开始时间 */
-    startTime: "",
-    /**  开放时长 */
-    openTime: "",
-    /**  开放时长单位（小时、天、周） */
-    openTimeUnit: "",
-    /**  结束XX天后归档 */
-    daysToArchive: "",
-    /**  组织方式（1线上；2线下） */
-    organizationWay: "",
-    /**  学习地址（如：护理app） */
-    address: "",
-    /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
-    studentCreditType: "",
-    /**  学员学分 */
-    studentCredit: "",
-    /**  学员学时 */
-    studentClassHours: "",
-    /**  通知内容 */
-    noticeContent: "",
-    bxNurse: []
-  };
-
-  /** 计算学习截止时间 */
-  @computed
-  public get endTime() {
-    if (
-      this.stepData2.startTime &&
-      this.stepData2.openTime &&
-      this.stepData2.openTimeUnit
-    ) {
-      let unitMap: any = {
-        小时: "h",
-        天: "d",
-        周: "w"
-      };
-      return moment(this.stepData2.startTime)
-        .add(this.stepData2.openTime, unitMap[this.stepData2.openTimeUnit])
-        .format("YYYY-MM-DD HH:mm:ss");
-    }
-    return "";
-  }
 
   @observable public stepData3 = {
     participantList: []
@@ -70,19 +27,27 @@ class StepViewModal {
 
   /** 步骤一完整 */
   public isOkStep = (step: number) => {
-    let stepArr = [
-      this.stepData1,
-      this.stepData2,
-      this.stepData3,
-      this.stepData4
-    ];
+    const stepData2 = this.getCurrentStepViewModal
+      ? this.getCurrentStepViewModal.stepData2
+      : {};
+
+    let stepArr = [this.stepData1, stepData2, this.stepData3, this.stepData4];
     if (step == 2) return true;
     if (step == 3) return true;
+
     return this.isOk(stepArr[step]);
   };
 
-  public get getTitle() {
-    return this.title;
+  /** 获取当前选择模式下的私有viewModal */
+  public get getCurrentStepViewModal() {
+    let map: any = {
+      1: xxStepViewModal,
+      2: pxStepViewModal
+    };
+    if (this.stepData1.teachingMethod) {
+      return map[this.stepData1.teachingMethod as any];
+    }
+    return {};
   }
 
   public isOk = (obj: any) => {
@@ -106,53 +71,33 @@ class StepViewModal {
         });
       }
     };
+    this.getCurrentStepViewModal.cleanAllStepData &&
+      this.getCurrentStepViewModal.cleanAllStepData();
     cleanObj(this.stepData1);
-    cleanObj(this.stepData2);
     cleanObj(this.stepData3);
     cleanObj(this.stepData4);
-    cleanObj(this.stepData5);
   };
 
   /** 数据合并 */
   public decodeData = () => {
     let result = {
+      ...(this.getCurrentStepViewModal.decodeData &&
+        this.getCurrentStepViewModal.decodeData()),
       taskCode: "tp1581419592543_47",
       secondLevelMenuId: appStore.queryObj.id,
       thirdLevelMenuId: this.stepData1.id,
       teachingMethod: this.stepData1.teachingMethod,
-      title: this.stepData2.title,
-      startTime: this.stepData2.startTime,
-      openTime: this.stepData2.openTime,
-      openTimeUnit: this.stepData2.openTimeUnit,
-      daysToArchive: this.stepData2.daysToArchive,
-      organizationWay: this.stepData2.organizationWay,
-      address: this.stepData2.address,
-      nurse0: this.stepData2.bxNurse.includes("nurse0") ? 1 : 0,
-      nurse1: this.stepData2.bxNurse.includes("nurse1") ? 1 : 0,
-      nurse2: this.stepData2.bxNurse.includes("nurse2") ? 1 : 0,
-      nurse3: this.stepData2.bxNurse.includes("nurse3") ? 1 : 0,
-      nurse4: this.stepData2.bxNurse.includes("nurse4") ? 1 : 0,
-      nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
-      nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
-      // teacherList: this.stepData3.participantList.reduce(
-      //   (total: any[], item: any) => {
-      //     return [...total, ...item.userList];
-      //   },
-      //   []
-      // ),
+
       attachmentIds: this.stepData4.attachmentIds.map((item: any) => item.id),
       detailInfo: {
-        studentCreditType: this.stepData2.studentCreditType,
-        studentCredit: this.stepData2.studentCredit,
-        studentClassHours: this.stepData2.studentClassHours,
-        noticeContent: this.stepData2.noticeContent,
         ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
         participantList: this.stepData3.participantList.reduce(
           (total: any[], item: any) => {
             return [...total, ...item.userList];
           },
           []
-        )
+        ),
+        ...(this.getCurrentStepViewModal.decodeData().detailInfo || {})
       }
     };
     return result;
@@ -160,11 +105,18 @@ class StepViewModal {
 
   /** 新建教学计划 */
   public addTeachingPlanInfoStudy = () => {
-   return stepServices.generateTaskCode().then(res => {
-     return stepServices.addTeachingPlanInfoStudy({
+    let ajaxMap: any = {
+      1: "addTeachingPlanInfoStudy",
+      2: "addTeachingPlanInfoTrain"
+    };
+
+    return stepServices.generateTaskCode().then(res => {
+      return (stepServices as any)[
+        ajaxMap[this.stepData1.teachingMethod as any] as any
+      ]({
         ...this.decodeData(),
         taskCode: res.data
-      })
+      });
     });
   };
 }
