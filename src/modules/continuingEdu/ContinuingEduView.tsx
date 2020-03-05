@@ -12,7 +12,9 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
+import 人员管理 from './人员管理'
+import 审核发布 from './views/auditEduPlant/AuditEduPlan'
 import 菜单设置 from "./views/菜单设置/MenuSettings";
 import 主列表页 from "./views/主表单页/MainPage";
 
@@ -25,13 +27,13 @@ export default function ContinuingEdu(props: Props) {
       title: "人员管理",
       icon: <RYGL />,
       path: "/continuingEdu/人员管理",
-      component: ""
+      component: 人员管理
     },
     {
       title: "审核发布",
       icon: <YNXXB />,
       path: "/continuingEdu/审核发布",
-      component: ""
+      component: 审核发布
     },
     ...dataList,
     {
@@ -125,15 +127,15 @@ export default function ContinuingEdu(props: Props) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
         return item.children.find(
-          (item1: any) => item1[targetKey] === targetName
+          (item1: any) => targetName.indexOf(item1[targetKey]) >= 0
         );
       } else {
-        return item[targetKey] === targetName;
+        return targetName.indexOf(item[targetKey]) >= 0
       }
     });
     if (chooseRoute && chooseRoute.children) {
       chooseRoute = chooseRoute.children.find(
-        (item1: any) => item1[targetKey] === targetName
+        (item1: any) => targetName.indexOf(item1[targetKey]) >= 0
       );
     }
     return chooseRoute;

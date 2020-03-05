@@ -111,10 +111,7 @@ export default observer(function SimulateResultReview() {
         <span> > </span>
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
         <span> > </span>
-        {(Object.keys(menuInfo).length > 0 && <Link
-          to={`/trainningPlanList/${menuInfo.firstLevelMenuId}/${menuInfo.secondLevelMenuId}`}>
-          {menuInfo.secondLevelMenuName}
-        </Link>) || <span>二级目录</span>}
+        {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
         <span> > 查看结果</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
