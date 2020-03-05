@@ -23,11 +23,11 @@ export interface Props {}
 
 export default function Step1() {
   // 组织方式
-  const zzfs = [{ name: "线上", code: "1" }, { name: "线下", code: "2" }];
+  const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   const studentCreditTypeList = [
-    { name: "院级学分", code: "1" },
-    { name: "片区学分", code: "2" },
-    { name: "病区学分", code: "3" }
+    { name: "院级学分", code: 1 },
+    { name: "片区学分", code: 2 },
+    { name: "病区学分", code: 3 }
   ];
 
   const bxNursing = [
@@ -73,8 +73,14 @@ export default function Step1() {
 
   /** 选择人员 */
   const openSelectNurseModal = (name: string) => {
+    let checkedUserList = [];
+    if (name == "teacherList") {
+      checkedUserList = stepViewModal.stepData2.teacherList;
+    } else if (name == "sicPersonList") {
+      checkedUserList = stepViewModal.stepData2.sicPersonList;
+    }
     selectNurseModal.show({
-      checkedUserList: [],
+      checkedUserList: checkedUserList,
       onOkCallBack: (checkedUserList: CheckUserItem[]) => {
         refForm.current && refForm.current.setField(name, checkedUserList);
       }

@@ -23,11 +23,11 @@ export interface Props {}
 export default observer(function Step2() {
 
   // 组织方式
-  const zzfs = [{ name: "线上", code: "1" }, { name: "线下", code: "2" }];
+  const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   const studentCreditTypeList = [
-    { name: "院级学分", code: "1" },
-    { name: "片区学分", code: "2" },
-    { name: "病区学分", code: "3" }
+    { name: "院级学分", code: 1 },
+    { name: "片区学分", code: 2 },
+    { name: "病区学分", code: 3 }
   ];
 
   const bxNursing = [

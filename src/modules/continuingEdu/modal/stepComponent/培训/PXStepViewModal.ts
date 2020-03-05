@@ -80,7 +80,7 @@ class StepViewModal {
   public isOk = (obj: any) => {
     if (obj) {
       let keys = Object.keys(obj);
-      return keys.every(item => obj[item]);
+      return keys.every(item => obj[item] !== "");
     }
   };
 
@@ -146,7 +146,44 @@ class StepViewModal {
   };
 
   /** 数据初始化 */
-  public initData = (data: any) => {};
+  public initData = (data: any) => {
+    for (let key in data) {
+      if (this.stepData2[key] !== undefined) {
+        this.stepData2[key] = data[key];
+      }
+    }
+    for (let key in data.detailInfo) {
+      if (this.stepData2[key] !== undefined) {
+        this.stepData2[key] = data.detailInfo[key];
+      }
+    }
+    data.nurse0 && this.stepData2.bxNurse.push("nurse0");
+    data.nurse1 && this.stepData2.bxNurse.push("nurse1");
+    data.nurse2 && this.stepData2.bxNurse.push("nurse2");
+    data.nurse3 && this.stepData2.bxNurse.push("nurse3");
+    data.nurse4 && this.stepData2.bxNurse.push("nurse4");
+    data.nurse5 && this.stepData2.bxNurse.push("nurse5");
+    data.nurseOther && this.stepData2.bxNurse.push("nurseOther");
+
+    this.stepData5.ifSendMessage = !!data.detailInfo.ifSendMessage;
+
+    this.stepData2.teacherList = data.teacherList.map((item: any) => {
+      return {
+        label: item.empName,
+        key: item.empName,
+        userList: [item]
+      };
+    });
+    this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
+      (item: any) => {
+        return {
+          label: item.empName,
+          key: item.empName,
+          userList: [item]
+        };
+      }
+    );
+  };
 }
 
 export const pxStepViewModal = new StepViewModal();
