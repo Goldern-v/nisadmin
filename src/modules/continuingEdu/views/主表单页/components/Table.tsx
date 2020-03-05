@@ -9,6 +9,7 @@ import { appStore } from "src/stores";
 
 interface Props {
   getId: any;
+  addRecordModal: any;
 }
 
 export default observer(function Table(props: Props) {
@@ -233,7 +234,8 @@ export default observer(function Table(props: Props) {
           case "草稿":
             data = [
               {
-                text: "修改"
+                text: "修改",
+                function: handReWrite
               },
               {
                 text: "删除",
@@ -353,6 +355,17 @@ export default observer(function Table(props: Props) {
     ];
     let router = teachingMethodArray[record.teachingMethod - 1];
     appStore.history.push(`/${router}?id=${record.id}`);
+  };
+
+  // 修改
+  const handReWrite = (record: any) => {
+    props.addRecordModal.show({
+      id: record.id,
+      onOkCallBack: () => {
+        Message.success("修改成功");
+        mainPageModal.onload();
+      }
+    });
   };
 
   //trainingInfoReview 查看详情(所有类型)

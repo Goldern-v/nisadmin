@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { TableHeadCon } from "src/components/BaseTable";
 import { appStore } from "src/stores";
-import { DatePicker, Select, Input, Button } from "src/vendors/antd";
+import { DatePicker, Select, Input, Button, message } from "src/vendors/antd";
 import { mainPageModal } from "../MainPageModal";
 import createModal from "src/libs/createModal";
 interface Props {
   getTitle: any;
   getId: any;
+  addRecordModal: any;
 }
 export default observer(function Header(props: Props) {
   let Title = props.getTitle || "";
@@ -87,7 +88,19 @@ export default observer(function Header(props: Props) {
         >
           类型管理
         </Button>
-        <Button type="primary">添加记录</Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            props.addRecordModal.show({
+              onOkCallBack() {
+                message.success("保存成功");
+                mainPageModal.onload();
+              }
+            });
+          }}
+        >
+          添加记录
+        </Button>
       </RightIcon>
     </Wrapper>
   );

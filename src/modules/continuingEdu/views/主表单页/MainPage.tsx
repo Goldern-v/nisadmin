@@ -7,6 +7,8 @@ import Header from "./components/Header";
 import Table from "./components/Table";
 import { appStore } from "src/stores/index";
 import qs from "qs";
+import createModal from "src/libs/createModal";
+import AddRecordModal from "../../modal/AddRecordModal";
 
 interface Props {
   getTitle: any;
@@ -15,14 +17,20 @@ interface Props {
 export default observer(function MainPage(props: Props) {
   const { getTitle, getId } = props; //获取当前页面标题
   // 初始化
+  const addRecordModal = createModal(AddRecordModal);
   useEffect(() => {}, [props.getId]);
 
   return (
     <Wrapper>
-      <Header getTitle={getTitle} getId={getId} />
+      <Header
+        getTitle={getTitle}
+        getId={getId}
+        addRecordModal={addRecordModal}
+      />
       <Content>
-        <Table getId={getId} />
+        <Table getId={getId} addRecordModal={addRecordModal} />
       </Content>
+      <addRecordModal.Component />
     </Wrapper>
   );
 });

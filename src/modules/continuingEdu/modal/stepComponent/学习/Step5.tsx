@@ -137,7 +137,7 @@ export default observer(function Step5() {
             <td className="key">通知设置：</td>
             <td className="value">
               <Radio
-                checked={!!stepViewModal.stepData5.ifSendMessage}
+                checked={!!xxStepViewModal.stepData5.ifSendMessage}
                 onClick={() => {
                   xxStepViewModal.stepData5.ifSendMessage = !xxStepViewModal
                     .stepData5.ifSendMessage;

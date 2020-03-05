@@ -13,6 +13,10 @@ export default function Step4() {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
+    console.log(
+      stepViewModal.stepData4.attachmentIds,
+      "stepViewModal.stepData4.attachmentIdsstepViewModal.stepData4.attachmentIds"
+    );
     setFileList(stepViewModal.stepData4.attachmentIds);
   }, []);
 

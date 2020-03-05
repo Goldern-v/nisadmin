@@ -99,12 +99,15 @@ export default observer(function SelectPeople(props: Props) {
   useLayoutEffect(() => {
     selectPeopleViewModel.initData();
     setCheckedUserList(props.checkedUserList);
+    console.log(props.checkedUserList, "props.checkedUserList");
     setSearchWord("");
-  }, []);
+  }, [props.checkedUserList]);
 
   useEffect(() => {
     console.log(checkedUserList, "checkedUserList");
-    stepViewModal.stepData3.participantList = checkedUserList;
+    return () => {
+      stepViewModal.stepData3.participantList = checkedUserList;
+    };
   }, [checkedUserList]);
 
   const handleSearch = (value: any) => {
@@ -327,6 +330,7 @@ const CheckListCon = observer(function(props: any) {
           全选
         </Checkbox>
       </div>
+
       <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
         {selectPeopleViewModel.currentTreeData!.list.map(
           (item: any, index: number) => {

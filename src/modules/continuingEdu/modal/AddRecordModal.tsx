@@ -27,11 +27,16 @@ import Step2_px from "./stepComponent/培训/Step2";
 import Step5_px from "./stepComponent/培训/Step5";
 
 import { ScrollBox } from "src/components/common";
-import { stepViewModal } from "./stepComponent/StepViewModal";
+import {
+  stepViewModal,
+  selfStepViewModalMap
+} from "./stepComponent/StepViewModal";
 import { observer } from "mobx-react-lite";
+import { stepServices } from "./stepComponent/services/stepServices";
 const { Step } = Steps;
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
+  id?: any;
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => any;
 }
@@ -105,7 +110,21 @@ export default observer(function AddRecordModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
-      setCurrentStep(0);
+      if (props.id) {
+        /** 修改 */
+        stepServices.getCompleteInfo(props.id).then(res => {
+          stepViewModal.initData(res.data);
+          console.log(
+            selfStepViewModalMap,
+            res.data.teachingMethod,
+            "res.data.teachingMethod"
+          );
+          selfStepViewModalMap[res.data.teachingMethod].initData(res.data);
+          setCurrentStep(0);
+        });
+      } else {
+        setCurrentStep(0);
+      }
     } else {
       setCurrentStep(-1);
       stepViewModal.cleanAllStepData();

@@ -121,15 +121,28 @@ class StepViewModal {
     return result;
   };
 
-  /** 新建教学计划 */
-  // public addTeachingPlanInfoStudy = () => {
-  //   return stepServices.generateTaskCode().then(res => {
-  //     return stepServices.addTeachingPlanInfoStudy({
-  //       ...this.decodeData(),
-  //       taskCode: res.data
-  //     });
-  //   });
-  // };
+  /** 数据初始化 */
+  public initData = (data: any) => {
+    for (let key in data) {
+      if (this.stepData2[key] !== undefined) {
+        this.stepData2[key] = data[key];
+      }
+    }
+    for (let key in data.detailInfo) {
+      if (this.stepData2[key] !== undefined) {
+        this.stepData2[key] = data.detailInfo[key];
+      }
+    }
+    data.nurse0 && this.stepData2.bxNurse.push("nurse0");
+    data.nurse1 && this.stepData2.bxNurse.push("nurse1");
+    data.nurse2 && this.stepData2.bxNurse.push("nurse2");
+    data.nurse3 && this.stepData2.bxNurse.push("nurse3");
+    data.nurse4 && this.stepData2.bxNurse.push("nurse4");
+    data.nurse5 && this.stepData2.bxNurse.push("nurse5");
+    data.nurseOther && this.stepData2.bxNurse.push("nurseOther");
+
+    this.stepData5.ifSendMessage = !!data.detailInfo.ifSendMessage;
+  };
 }
 
 export const xxStepViewModal = new StepViewModal();

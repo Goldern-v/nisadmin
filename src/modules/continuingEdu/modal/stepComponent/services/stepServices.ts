@@ -42,6 +42,16 @@ export default class StepServices extends BaseApiService {
   public generateTaskCode() {
     return this.post(`/studyAndTrain/teachingPlanManage/generateTaskCode`);
   }
+
+  /** 教学计划-查看信息 */
+  public getCompleteInfo(id: Number) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/getCompleteInfo`,
+      qs.stringify({
+        id
+      })
+    );
+  }
 }
 
 export const stepServices = new StepServices();

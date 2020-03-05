@@ -16,10 +16,11 @@ import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { xxStepViewModal as stepViewModal  } from "./XXStepViewModal";
+import { observer } from "mobx-react-lite";
+import { cloneJson } from "src/utils/json/clone";
 export interface Props {}
 
-export default function Step1() {
-
+export default observer(function Step2() {
 
   // 组织方式
   const zzfs = [{ name: "线上", code: "1" }, { name: "线下", code: "2" }];
@@ -52,7 +53,7 @@ export default function Step1() {
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
-    console.log(data, "datadata");
+
     stepViewModal.stepData2 = data;
   };
 
@@ -70,6 +71,7 @@ export default function Step1() {
   };
 
    useLayoutEffect(() => {
+     console.log( cloneJson(stepViewModal.stepData2), 'stepViewModal.stepData299')
     refForm.current?.setFields(stepViewModal.stepData2)
    }, [])
 
@@ -180,7 +182,7 @@ export default function Step1() {
       </Form>
     </Wrapper>
   );
-}
+})
 const Wrapper = styled.div`
   margin: 40px 100px 20px;
 `;

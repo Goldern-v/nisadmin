@@ -145,15 +145,8 @@ class StepViewModal {
     return result;
   };
 
-  /** 新建教学计划 */
-  // public addTeachingPlanInfoStudy = () => {
-  //   return stepServices.generateTaskCode().then(res => {
-  //     return stepServices.addTeachingPlanInfoStudy({
-  //       ...this.decodeData(),
-  //       taskCode: res.data
-  //     });
-  //   });
-  // };
+  /** 数据初始化 */
+  public initData = (data: any) => {};
 }
 
 export const pxStepViewModal = new StepViewModal();

@@ -1,3 +1,4 @@
+import { cloneJson } from "src/utils/json/clone";
 import { xxStepViewModal } from "./学习/XXStepViewModal";
 import { appStore } from "src/stores";
 import { stepServices } from "./services/stepServices";
@@ -5,8 +6,23 @@ import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
 import moment from "moment";
 import { pxStepViewModal } from "./培训/PXStepViewModal";
+
+export let selfStepViewModalMap: any = {
+  1: xxStepViewModal,
+  2: pxStepViewModal
+};
+
+export let teachingMethodMap: any = {
+  1: "学习",
+  2: "培训",
+  3: "考试",
+  4: "练习",
+  5: "实操",
+  6: "演练"
+};
 class StepViewModal {
-  @observable public stepData1 = {
+  @observable public oldData: any = null;
+  @observable public stepData1: any = {
     teachingMethod: null,
     teachingMethodName: null,
     name: null,
@@ -40,12 +56,8 @@ class StepViewModal {
 
   /** 获取当前选择模式下的私有viewModal */
   public get getCurrentStepViewModal() {
-    let map: any = {
-      1: xxStepViewModal,
-      2: pxStepViewModal
-    };
     if (this.stepData1.teachingMethod) {
-      return map[this.stepData1.teachingMethod as any];
+      return selfStepViewModalMap[this.stepData1.teachingMethod as any];
     }
     return {};
   }
@@ -71,8 +83,11 @@ class StepViewModal {
         });
       }
     };
-    this.getCurrentStepViewModal.cleanAllStepData &&
-      this.getCurrentStepViewModal.cleanAllStepData();
+    // this.getCurrentStepViewModal.cleanAllStepData &&
+    //   this.getCurrentStepViewModal.cleanAllStepData();
+    for (let key in selfStepViewModalMap) {
+      selfStepViewModalMap[key].cleanAllStepData();
+    }
     cleanObj(this.stepData1);
     cleanObj(this.stepData3);
     cleanObj(this.stepData4);
@@ -115,9 +130,31 @@ class StepViewModal {
         ajaxMap[this.stepData1.teachingMethod as any] as any
       ]({
         ...this.decodeData(),
-        taskCode: res.data
+        taskCode: res.data,
+        id: this.oldData ? this.oldData.id : undefined
       });
     });
+  };
+
+  /** 数据初始化 */
+  public initData = (data: any) => {
+    this.oldData = data;
+
+    this.stepData1.id = data.thirdLevelMenuId;
+    this.stepData1.name = "  ";
+    this.stepData1.teachingMethod = data.teachingMethod;
+    this.stepData1.teachingMethodName = "  ";
+
+    this.stepData3.participantList = data.detailInfo.participantList.map(
+      (item: any) => {
+        return {
+          label: item.empName,
+          key: item.empName,
+          userList: [item]
+        };
+      }
+    );
+    this.stepData4.attachmentIds = data.attachmentList;
   };
 }
 
