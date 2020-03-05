@@ -169,7 +169,7 @@ export default observer(function Table(props: Props) {
             color = "#FF9C35";
             break;
           default:
-            color = "#000";
+            color = "#000000";
         }
         return <span style={{ color }}>{statusDesc}</span>;
       }
@@ -335,14 +335,6 @@ export default observer(function Table(props: Props) {
     });
   };
 
-  /** 
-  studyResultReview 查看学习结果
-  trainingResultReview 查看培训结果
-  testingResultReview 查看考试结果
-  operateResultReview 查看实操结果
-  practiceResultReview 查看练习结果
-  simulateResultReview 查看演练结果
-  */
   // 查看结果
   const checkResult = (record: any) => {
     const teachingMethodArray = [
