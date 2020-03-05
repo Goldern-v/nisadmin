@@ -388,7 +388,7 @@ const Wrapper = styled.div`
   .main-con,
   .left-part,
   .right-part {
-    height: 460px;
+    height: calc(100vh - 425px);
   }
   .main-con {
     display: flex;

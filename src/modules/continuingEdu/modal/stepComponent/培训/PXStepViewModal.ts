@@ -125,12 +125,6 @@ class StepViewModal {
         },
         []
       ),
-      sicPersonList: this.stepData2.sicPersonList.reduce(
-        (total: any[], item: any) => {
-          return [...total, ...item.userList];
-        },
-        []
-      ),
       detailInfo: {
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
@@ -139,7 +133,13 @@ class StepViewModal {
         teacherCredit: this.stepData2.teacherCredit,
         teacherClassHours: this.stepData2.teacherClassHours,
         noticeContent: this.stepData2.noticeContent,
-        ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0
+        ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
+        sicPersonList: this.stepData2.sicPersonList.reduce(
+          (total: any[], item: any) => {
+            return [...total, ...item.userList];
+          },
+          []
+        )
       }
     };
     return result;

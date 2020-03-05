@@ -15,6 +15,9 @@ import { to } from "src/libs/fns";
 import { stepServices } from "../services/stepServices";
 import { stepViewModal, teachingMethodMap } from "../StepViewModal";
 import { cloneJson } from "src/utils/json/clone";
+import createModal from "src/libs/createModal";
+import AddTypeModal from "src/modules/continuingEdu/views/类型管理/modal/AddTypeModal";
+
 export interface Props {}
 
 export default function Step1() {
@@ -25,11 +28,17 @@ export default function Step1() {
     publicDate: val => !!val || "请填写发表日期"
   };
 
+  const addTypeModal = createModal(AddTypeModal);
+
   useLayoutEffect(() => {
     let from = refForm.current;
     console.log(from, "from", cloneJson(stepViewModal.stepData1));
     stepServices.getMenuListByPId().then(res => {
-      setTypeList([...res.data, { id: -1, name: "其他" }]);
+      if (stepViewModal.stepData1.id) {
+        setTypeList([...res.data, { id: -1, name: "其他" }]);
+      } else {
+        setTypeList([...res.data]);
+      }
     });
   }, []);
 
@@ -37,6 +46,7 @@ export default function Step1() {
     if (typeList.length) {
       let form = refForm.current;
       form &&
+        stepViewModal.stepData1.id &&
         form.setFields({
           id: stepViewModal.stepData1.id
         });
@@ -92,7 +102,13 @@ export default function Step1() {
               </Form.Field>
             </Col>
             <Col span={4} style={{ textAlign: "right" }}>
-              <Button style={{ marginLeft: 10 }} type="primary">
+              <Button
+                style={{ marginLeft: 10 }}
+                type="primary"
+                onClick={() => {
+                  addTypeModal.show();
+                }}
+              >
                 其他类型
               </Button>
             </Col>
@@ -104,6 +120,7 @@ export default function Step1() {
           </Col>
         </Row>
       </Form>
+      <addTypeModal.Component />
     </Wrapper>
   );
 }

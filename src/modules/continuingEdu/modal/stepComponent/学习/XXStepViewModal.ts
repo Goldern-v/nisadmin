@@ -1,33 +1,39 @@
+import { cloneJson } from "src/utils/json/clone";
 import { appStore } from "src/stores";
 import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
 import moment from "moment";
+const defaultStepData2 = {
+  /** 学习名称 **/
+  title: "",
+  /**  学习开始时间 */
+  startTime: "",
+  /**  开放时长 */
+  openTime: 1,
+  /**  开放时长单位（小时、天、周） */
+  openTimeUnit: "小时",
+  /**  结束XX天后归档 */
+  daysToArchive: 2,
+  /**  组织方式（1线上；2线下） */
+  organizationWay: 1,
+  /**  学习地址（如：护理app） */
+  address: "",
+  /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
+  studentCreditType: 1,
+  /**  学员学分 */
+  studentCredit: 0,
+  /**  学员学时 */
+  studentClassHours: 0,
+  /**  通知内容 */
+  noticeContent: "",
+  bxNurse: []
+};
+const defaultStepData5 = {
+  /**  是否发送通知（1发通知  0不发通知） */
+  ifSendMessage: null
+};
 class StepViewModal {
-  @observable public stepData2: any = {
-    /** 学习名称 **/
-    title: "",
-    /**  学习开始时间 */
-    startTime: "",
-    /**  开放时长 */
-    openTime: "",
-    /**  开放时长单位（小时、天、周） */
-    openTimeUnit: "",
-    /**  结束XX天后归档 */
-    daysToArchive: "",
-    /**  组织方式（1线上；2线下） */
-    organizationWay: "",
-    /**  学习地址（如：护理app） */
-    address: "",
-    /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
-    studentCreditType: "",
-    /**  学员学分 */
-    studentCredit: "",
-    /**  学员学时 */
-    studentClassHours: "",
-    /**  通知内容 */
-    noticeContent: "",
-    bxNurse: []
-  };
+  @observable public stepData2: any = cloneJson(defaultStepData2);
 
   /** 计算学习截止时间 */
   @computed
@@ -49,15 +55,13 @@ class StepViewModal {
     return "";
   }
 
-  @observable public stepData5: any = {
-    /**  是否发送通知（1发通知  0不发通知） */
-    ifSendMessage: null
-  };
+  @observable public stepData5: any = cloneJson(defaultStepData5);
   @observable public title = "";
 
   /** 步骤一完整 */
   public isOkStep = (step: number) => {
     let stepArr = [this.stepData2];
+    if (step == 1) return true;
     if (step == 2) return true;
     if (step == 3) return true;
     return this.isOk(stepArr[step]);
@@ -76,20 +80,8 @@ class StepViewModal {
 
   /** 清空数据 */
   public cleanAllStepData = () => {
-    let cleanObj = (obj: any) => {
-      if (obj) {
-        let keys = Object.keys(obj);
-        keys.forEach(key => {
-          if (getVarType(obj[key]) == "Array") {
-            obj[key] = [];
-          } else {
-            obj[key] = null;
-          }
-        });
-      }
-    };
-    cleanObj(this.stepData2);
-    cleanObj(this.stepData5);
+    this.stepData2 = cloneJson(defaultStepData2);
+    this.stepData5 = cloneJson(defaultStepData5);
   };
 
   /** 数据合并 */

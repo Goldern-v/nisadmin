@@ -19,9 +19,10 @@ import { pxStepViewModal as stepViewModal } from "./PXStepViewModal";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
+import { observer } from "mobx-react-lite";
 export interface Props {}
 
-export default function Step1() {
+export default observer(function Step1() {
   // 组织方式
   const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
   const studentCreditTypeList = [
@@ -297,7 +298,7 @@ export default function Step1() {
       <selectNurseModal.Component />
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div`
   margin: 40px 100px 20px;
 `;

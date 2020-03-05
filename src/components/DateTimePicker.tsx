@@ -39,7 +39,9 @@ export default function DateTimePicker(props: Props) {
       <TimePicker
         style={{ marginLeft: 20 }}
         value={time}
+        minuteStep={5}
         placeholder={"选择时间"}
+        format="HH:mm"
         onChange={_time => {
           onChange && onChange(moment(_time).format("YYYY-MM-DD HH:mm:ss"));
         }}

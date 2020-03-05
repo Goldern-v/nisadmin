@@ -42,8 +42,8 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: "学习培训",
-    path: "/continuingEdu/人员管理",
-    hidden: !appStore.isDev
+    path: "/continuingEdu/人员管理"
+    // hidden: !appStore.isDev
   },
   // {
   //   name: "不良事件",
@@ -74,11 +74,16 @@ export const navConfig: navConfigItem[] = [
     name: "进出感染区统计",
     path: "/InfectedAreasCount",
     hidden: () => {
-      if (appStore.isDev) return false
+      if (appStore.isDev) return false;
 
-      if (authStore.user && authStore.user.empNo && authStore.user.empNo.toLowerCase() == 'xxk001') return false
+      if (
+        authStore.user &&
+        authStore.user.empNo &&
+        authStore.user.empNo.toLowerCase() == "xxk001"
+      )
+        return false;
 
-      return true
+      return true;
     }
   }
 ];

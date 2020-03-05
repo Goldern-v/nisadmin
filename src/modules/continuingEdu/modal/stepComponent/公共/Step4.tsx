@@ -120,7 +120,7 @@ const FilesBox = styled.div`
   margin-top: -12px;
   /* border-bottom: 1px solid #ddd; */
   overflow: auto;
-  max-height: 120px;
+  /* max-height: 120px; */
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;

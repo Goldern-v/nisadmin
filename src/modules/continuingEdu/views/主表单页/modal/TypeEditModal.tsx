@@ -12,7 +12,7 @@ export interface Props {
   onOk: any;
 }
 
-export default function FirstEditModal(props: Props) {
+export default function TypeEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
