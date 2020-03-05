@@ -5,7 +5,7 @@ import BaseTabs from 'src/components/BaseTabs'
 import BaseTable, { DoCon } from "src/components/BaseTable"
 import { auditEduPlantService } from './api/AuditEduPlantService'
 import { Place } from "src/components/common"
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs'
 import createModal from "src/libs/createModal"
@@ -15,7 +15,7 @@ const Option = Select.Option
 
 export interface Props { }
 
-export default observer(function AuditEduPlan() {
+export default observer(function AuditEduPlan(props: Props) {
   const auditModal = createModal(AuditModal)
 
   const { queryObj } = appStore
@@ -196,6 +196,7 @@ export default observer(function AuditEduPlan() {
     setSelectRowKeys([])
     setSelectRows([])
     appStore.history.replace(`/continuingEdu/审核发布?${qs.stringify({
+      ...appStore.queryObj,
       ...query,
       activeKey
     })}`)
