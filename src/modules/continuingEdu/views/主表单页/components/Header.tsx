@@ -5,13 +5,14 @@ import { TableHeadCon } from "src/components/BaseTable";
 import { appStore } from "src/stores";
 import { DatePicker, Select, Input, Button, message } from "src/vendors/antd";
 import { mainPageModal } from "../MainPageModal";
-import createModal from "src/libs/createModal";
+import qs from "qs";
 interface Props {
   getTitle: any;
   getId: any;
   addRecordModal: any;
 }
 export default observer(function Header(props: Props) {
+  let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
   let Title = props.getTitle || "";
   let id = props.getId || "";
   useEffect(() => {
@@ -83,7 +84,9 @@ export default observer(function Header(props: Props) {
         <Button>导出</Button>
         <Button
           onClick={() =>
-            appStore.history.push(`/typeManagement?type=${Title}&id=${id}`)
+            appStore.history.push(
+              `/typeManagement?type=${Title}&id=${id}&Pid=${Pid}`
+            )
           }
         >
           类型管理

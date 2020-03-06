@@ -134,12 +134,10 @@ export default observer(function MenuSettings() {
   //删除
   const handleDelete = (record: any) => {
     meunSettingApi.whetherPlan(record.id).then(res => {
-      if (!res.data.flag) {
-        Modal.confirm({
+      if (res.data.flag === "1") {
+        Modal.warning({
           title: "提示",
-          content: "【新护士培训】已创建教学记录，无法删除",
-          okText: "确定",
-          onOk: () => {}
+          content: `【${record.name}】已创建教学记录，无法删除`
         });
       } else {
         Modal.confirm({
@@ -168,13 +166,11 @@ export default observer(function MenuSettings() {
     });
     let content = (
       <div>
-        <div>【操作培训】没有创建教学记录，确定是否删除？</div>
-        <div> 删除后无法恢复。</div>
+        <div> 是否确定删除【{record.name}】? 删除后无法恢复。</div>
       </div>
     );
   };
 
-  // 修改一级菜单
   const saveOrUpload = (record: any) => {
     if (record.key) {
       setEditParams({
@@ -189,7 +185,6 @@ export default observer(function MenuSettings() {
     }
   };
 
-  // 添加二级菜单
   const addSecond = () => {
     setAddParams([]);
     setAddSecondVisible(true);

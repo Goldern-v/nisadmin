@@ -273,6 +273,7 @@ export default function SecondAddModal(props: Props) {
       <Modal
         className="modal"
         width={800}
+        bodyStyle={{ height: "510px" }}
         visible={visible}
         onCancel={handleCancel}
         onOk={checkForm}
@@ -305,7 +306,6 @@ export default function SecondAddModal(props: Props) {
             <Step title="提交审核设置" />
             <Step title="完成" />
           </Steps>
-          <div />
         </Wrapper>
         {current === 0 && (
           <NavOne>
@@ -558,11 +558,14 @@ export default function SecondAddModal(props: Props) {
   );
 }
 
-const Spin = styled.div``;
+const Spin = styled.div`
+  opsition: relactive;
+`;
 
 const Wrapper = styled.div`
   width: 90%;
   margin: 0 auto;
+  opsition: adsolution;
 `;
 
 const NavOne = styled.div`
