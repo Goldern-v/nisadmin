@@ -136,6 +136,12 @@ export default observer(function Step5() {
             <td className="key">及格分数线：</td>
             <td className="value">{ksStepViewModal.stepData2.passScores}</td>
           </tr>
+          <tr>
+            <td className="key">答题时长：</td>
+            <td className="value">
+              {ksStepViewModal.stepData2.examDuration} 分钟
+            </td>
+          </tr>
 
           <tr>
             <td className="key">题目设置：</td>

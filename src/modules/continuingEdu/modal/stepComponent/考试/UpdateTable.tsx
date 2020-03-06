@@ -6,12 +6,15 @@ import { ColumnProps } from "antd/lib/table";
 import { stepServices } from "../services/stepServices";
 import { fileDownload } from "src/utils/file/file";
 import { stepViewModal } from "../StepViewModal";
+import { InputNumber } from "antd/es";
+import { observer } from "mobx-react-lite";
+import { ksStepViewModal } from "./KSStepViewModal";
 export interface Props {
   value?: any;
   onChange?: any;
 }
 
-export default function UpdateTable(props: Props) {
+export default observer(function UpdateTable(props: Props) {
   const { value, onChange } = props;
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [dataSource, setDataSource]: any = useState([]);
@@ -20,10 +23,12 @@ export default function UpdateTable(props: Props) {
   let totalNum = dataSource.reduce((total: any, current: any) => {
     return total + current.questionCount;
   }, 0);
-  /** 题目条数 */
+
+  /** 总分 */
   let totalScore = dataSource.reduce((total: any, current: any) => {
     return total + current.totalScores;
   }, 0);
+  let _totalScore = ksStepViewModal.stepData2.totalScores;
 
   const columns: ColumnProps<any>[] = [
     {
@@ -68,11 +73,29 @@ export default function UpdateTable(props: Props) {
     {
       title: "分值",
       align: "center",
+      className: "input-cell",
       width: 100,
       dataIndex: "scoresPerQuestion",
       render(text: any, record: any, index: number) {
         if (index == 0) return "--";
-        return text;
+        return (
+          <InputNumber
+            style={{ border: 0, textAlign: "center" }}
+            value={text}
+            onChange={val => {
+              record.scoresPerQuestion = val;
+              onChange(
+                dataSource.map((item: any) => {
+                  if (item.scoresPerQuestion && record.scoresPerQuestion) {
+                    item.totalScores =
+                      item.scoresPerQuestion * record.scoresPerQuestion;
+                  }
+                  return item;
+                })
+              );
+            }}
+          />
+        );
       }
     },
     {
@@ -81,7 +104,12 @@ export default function UpdateTable(props: Props) {
       align: "center",
       dataIndex: "totalScores",
       render(text: any, record: any, index: number) {
-        if (index == 0) return totalScore;
+        if (index == 0)
+          return (
+            <span style={_totalScore == totalScore ? {} : { color: "red" }}>
+              {totalScore}
+            </span>
+          );
         return text;
       }
     }
@@ -140,7 +168,8 @@ export default function UpdateTable(props: Props) {
       />
     </Wrapper>
   );
-}
+});
+
 const Wrapper = styled.div`
   .down-file-con {
     margin-top: 10px;
@@ -151,6 +180,27 @@ const Wrapper = styled.div`
       color: blue;
       text-decoration: underline;
       cursor: pointer;
+    }
+  }
+
+  .input-cell {
+    padding: 0 !important;
+    .ant-input, .ant-select, .ant-select-selection, .ant-input-number {
+      position: relative;
+      z-index: 1000;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      outline: none;
+      text-align: center;
+      /* &:focus {
+        background: ${p => p.theme.$mlc};
+      } */
+      input {
+        text-align: center;
+      }
     }
   }
 `;

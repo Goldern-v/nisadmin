@@ -55,7 +55,7 @@ export default observer(function Step4() {
 
   /** 选择人员 */
   const openSelectNurseModal = (name: string) => {
-    let checkedUserList = [];
+    let checkedUserList:any = [];
     if (name == "scorePersonList") {
       checkedUserList = stepViewModal.stepData2.scorePersonList;
     }

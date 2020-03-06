@@ -115,7 +115,7 @@ export default function Step1() {
           </Row>
           <Col span={24}>
             <Form.Field label={`教学方式`} name="teachingMethodName">
-              <Input disabled />
+              <Input readOnly />
             </Form.Field>
           </Col>
         </Row>

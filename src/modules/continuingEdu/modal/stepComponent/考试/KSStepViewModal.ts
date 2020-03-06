@@ -4,7 +4,7 @@ import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
 import moment from "moment";
 
-const defaultStepData2 = {
+const defaultStepData2: any = {
   /** 考试名称 **/
   title: "",
   /**  考试开始时间 */
@@ -52,12 +52,14 @@ const defaultStepData2 = {
   questionStatList: []
 };
 
+type DefaultStepData2 = typeof defaultStepData2;
+
 const defaultStepData5 = {
   /**  是否发送通知（1发通知  0不发通知） */
   ifSendMessage: null
 };
 class StepViewModal {
-  @observable public stepData2: any = cloneJson(defaultStepData2);
+  @observable public stepData2: DefaultStepData2 = cloneJson(defaultStepData2);
 
   /** 计算考试截止时间 */
   @computed
@@ -74,7 +76,7 @@ class StepViewModal {
       };
       return moment(this.stepData2.startTime)
         .add(this.stepData2.openTime, unitMap[this.stepData2.openTimeUnit])
-        .format("YYYY-MM-DD HH:mm:ss");
+        .format("YYYY-MM-DD HH:mm");
     }
     return "";
   }
@@ -129,9 +131,7 @@ class StepViewModal {
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
         studentClassHours: this.stepData2.studentClassHours,
-        teacherCreditType: this.stepData2.teacherCreditType,
-        teacherCredit: this.stepData2.teacherCredit,
-        teacherClassHours: this.stepData2.teacherClassHours,
+
         noticeContent: this.stepData2.noticeContent,
         ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
         sicPersonList: this.stepData2.sicPersonList.reduce(
