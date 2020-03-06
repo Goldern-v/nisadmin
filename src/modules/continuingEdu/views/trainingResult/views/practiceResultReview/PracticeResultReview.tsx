@@ -178,8 +178,8 @@ export default observer(function PracticeResultReview(props: Props) {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
+      <QueryPannel />
       <TableWrapper>
-        <QueryPannel />
         <BaseTable
           loading={loading}
           rowSelection={{

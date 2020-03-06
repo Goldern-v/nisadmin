@@ -12,7 +12,7 @@ import { numberToArray } from 'src/utils/array/array'
 import moment from 'moment'
 import { problemSummaryServices } from './services/ProblemSummaryServices'
 import { ScrollBox, PageTitle } from 'src/components/common'
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function ProblemSummary(props: any) {
   const [tableData, setTableData] = useState([])
@@ -61,8 +61,9 @@ export default observer(function ProblemSummary(props: any) {
             <div className='label'>年度：</div>
             <div className='content'>
               <YearPicker
+                allowClear={false}
                 style={{ width: 100 }}
-                value={filterObj.year}
+                value={filterObj.year || undefined}
                 onChange={(value: any) => setFilterObj({ ...filterObj, year: value })}
               />
             </div>

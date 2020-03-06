@@ -134,8 +134,8 @@ export default observer(function SimulateResultReview() {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
+      <QueryPannel />
       <TableWrapper>
-        <QueryPannel />
         <BaseTable
           loading={loading}
           type={['index']}

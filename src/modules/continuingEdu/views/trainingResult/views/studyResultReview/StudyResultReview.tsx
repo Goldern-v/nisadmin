@@ -135,8 +135,8 @@ export default observer(function StudyResultReview() {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
+      <QueryPannel />
       <TableWrapper>
-        <QueryPannel />
         <BaseTable
           loading={loading}
           type={['index']}

@@ -234,7 +234,7 @@ export default observer(function NursingReportList() {
       .then((res) => {
         setTableLoading(false)
 
-        if (res.data.totalPage) setDataTotal(res.data.totalPage)
+        if (res.data.totalCount) setDataTotal(res.data.totalCount)
         else setDataTotal(0)
 
         if (res.data.list instanceof Array)
