@@ -5,9 +5,9 @@ import { getVarType } from "src/utils/object/object";
 import moment from "moment";
 
 const defaultStepData2 = {
-  /** 培训名称 **/
+  /** 考试名称 **/
   title: "",
-  /**  培训开始时间 */
+  /**  考试开始时间 */
   startTime: "",
   /**  开放时长 */
   openTime: "",
@@ -17,7 +17,7 @@ const defaultStepData2 = {
   daysToArchive: 2,
   /**  组织方式（1线上；2线下） */
   organizationWay: 1,
-  /**  培训地址（如：护理app） */
+  /**  考试地址（如：护理app） */
   address: "",
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
   studentCreditType: 1,
@@ -28,14 +28,6 @@ const defaultStepData2 = {
   /**  通知内容 */
   noticeContent: "",
   bxNurse: [],
-  /** 讲师 */
-  teacherList: [],
-  /** 讲师学分类型 1院级学分 2片区学分 3病区学分 */
-  teacherCreditType: 1,
-  /** 讲师学分 */
-  teacherCredit: 0,
-  /** 讲师学时 */
-  teacherClassHours: 0,
   /** 签到负责人 */
   sicPersonList: []
 };
@@ -47,7 +39,7 @@ const defaultStepData5 = {
 class StepViewModal {
   @observable public stepData2: any = cloneJson(defaultStepData2);
 
-  /** 计算培训截止时间 */
+  /** 计算考试截止时间 */
   @computed
   public get endTime() {
     if (
@@ -179,4 +171,4 @@ class StepViewModal {
   };
 }
 
-export const pxStepViewModal = new StepViewModal();
+export const ksStepViewModal = new StepViewModal();

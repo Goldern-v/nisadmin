@@ -122,7 +122,8 @@ class StepViewModal {
   public addTeachingPlanInfoStudy = () => {
     let ajaxMap: any = {
       1: "addTeachingPlanInfoStudy",
-      2: "addTeachingPlanInfoTrain"
+      2: "addTeachingPlanInfoTrain",
+      3: "addTeachingPlanInfoExam",
     };
 
     return stepServices.generateTaskCode().then(res => {

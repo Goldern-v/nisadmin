@@ -12,7 +12,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys";
+type hisIds = "hj" | "wh" | "ys" | "nys";
 type HisAdapterMap = { [p in hisIds]?: any };
 
 export default class AppStore {
@@ -57,6 +57,8 @@ export default class AppStore {
       return require("src/assets/images/武汉logo.png");
     } else if (this.HOSPITAL_ID == "hj") {
       return require("src/assets/images/厚街logo.png");
+    } else if (this.HOSPITAL_ID == "nys") {
+      return require("src/assets/images/南医三logo.png");
     } else {
       return require("src/assets/images/厚街logo.png");
     }

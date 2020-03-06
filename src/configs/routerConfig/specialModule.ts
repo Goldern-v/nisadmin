@@ -74,6 +74,31 @@ if (
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
+} else if (process.env.REACT_APP_HOSPITAL_ID == "nys") {
+  specialModule = [
+    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
+    setLayout(
+      "/nurseFileDetail/:type",
+      NurseFileDetailView,
+      layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
+    setLayout("/home", HomeView_wh, layouts.MainLayout),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview,
+      layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  ];
 } else if (process.env.REACT_APP_HOSPITAL_ID == "wh") {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
