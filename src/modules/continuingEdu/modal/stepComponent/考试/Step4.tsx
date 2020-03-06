@@ -21,6 +21,7 @@ import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
+import { cloneJson } from "src/utils/json/clone";
 export interface Props {}
 
 export default observer(function Step4() {
@@ -36,7 +37,7 @@ export default observer(function Step4() {
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
-    stepViewModal.stepData2 = data;
+    Object.assign(stepViewModal.stepData2, data);
   };
 
   const onSave = async () => {
@@ -55,10 +56,8 @@ export default observer(function Step4() {
   /** 选择人员 */
   const openSelectNurseModal = (name: string) => {
     let checkedUserList = [];
-    if (name == "teacherList") {
-      checkedUserList = stepViewModal.stepData2.teacherList;
-    } else if (name == "sicPersonList") {
-      checkedUserList = stepViewModal.stepData2.sicPersonList;
+    if (name == "scorePersonList") {
+      checkedUserList = stepViewModal.stepData2.scorePersonList;
     }
     selectNurseModal.show({
       checkedUserList: checkedUserList,
@@ -82,24 +81,24 @@ export default observer(function Step4() {
       >
         <Row>
           <Col span={24}>
-            <Form.Field label={`最大考试次数`} name="title">
+            <Form.Field label={`最大考试次数`} name="maxExamTimes">
               <InputNumber />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`总成绩`} name="title">
+            <Form.Field label={`总成绩`} name="totalScores">
               <InputNumber />
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`及格分数线`} name="title">
+            <Form.Field label={`及格分数线`} name="passScores">
               <InputNumber />
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field
               label={`答题时长`}
-              name="title"
+              name="examDuration"
               suffix={"分钟"}
               aside="注：从点击“开始答题”按钮时，单独给每个人开始计时"
             >
@@ -107,24 +106,117 @@ export default observer(function Step4() {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={`上传题库`} name="title">
+            <Form.Field label={`上传题库`} name="questionStatList">
               <UpdateTable />
             </Form.Field>
           </Col>
-
           <Col span={24}>
-            <Form.Field label={`考试开始时间`} name="startTime">
-              <DateTimePicker />
+        {/* <Form.Field label={`卷面设置`} name="卷面设置"> */}
+        <span
+          style={{
+            display: "inline-block",
+            width: 100,
+            marginRight: 20,
+            textAlign: "right",
+            fontSize: 14,
+            float: "left"
+          }}
+        >
+          卷面设置
+        </span>
+        <div style={{ marginLeft: 120 }}>
+          <Row>
+            <Checkbox
+              checked={!!stepViewModal.stepData2.randomOrderQue}
+              onClick={() => {
+                stepViewModal.stepData2.randomOrderQue = !stepViewModal
+                  .stepData2.randomOrderQue;
+                  refForm.current?.setField('randomOrderQue', stepViewModal.stepData2.randomOrderQue )    
+              }}
+            >
+              随机显示题目顺序
+            </Checkbox>
+          </Row>
+          <Row style={{marginTop: 10}}>
+            <Checkbox
+              checked={!!stepViewModal.stepData2.randomOrderQItem}
+              onClick={() => {
+                stepViewModal.stepData2.randomOrderQItem = !stepViewModal
+                  .stepData2.randomOrderQItem;
+                  refForm.current?.setField('randomOrderQItem', stepViewModal.stepData2.randomOrderQItem )       
+              }}
+            >
+              随机显示题目选项顺序
+            </Checkbox>
+          </Row>
+          <Row style={{marginTop: 10}}>
+            <Checkbox
+              checked={!!stepViewModal.stepData2.showScoreInstantly}
+              onClick={() => {
+                stepViewModal.stepData2.showScoreInstantly = !stepViewModal
+                  .stepData2.showScoreInstantly;
+                  refForm.current?.setField('showScoreInstantly', stepViewModal.stepData2.showScoreInstantly )  
+              }}
+            >
+              交卷后显示分数
+              <span style={{ color: "#999" }}>（含有问答题不建议勾选）</span>
+            </Checkbox>
+          </Row>
+        </div>
+        {/* </Form.Field> */}
+      </Col>
+      <Col span={24} style={{marginTop: 10, marginBottom: 10}}>
+        <span
+          style={{
+            display: "inline-block",
+            width: 100,
+            marginRight: 20,
+            textAlign: "right",
+            fontSize: 14
+          }}
+        >
+          评分
+        </span>
+        <Checkbox
+          checked={!!stepViewModal.stepData2.needScorePerson}
+          onClick={() => {
+            stepViewModal.stepData2.needScorePerson = !stepViewModal.stepData2
+              .needScorePerson;
+              refForm.current?.setField('needScorePerson', stepViewModal.stepData2.needScorePerson )    
+          }}
+        >
+          是否需要评分负责人
+        </Checkbox>
+      </Col>
+
+      {!!stepViewModal.stepData2.needScorePerson && (
+        <React.Fragment>
+          <Col span={2} />
+          <Col span={22}>
+            <Form.Field
+              label={`评分负责人`}
+              name="scorePersonList"
+              suffix={
+                <MoreBox
+                  onClick={() => {
+                    openSelectNurseModal("scorePersonList");
+                  }}
+                />
+              }
+            >
+              <Select
+                labelInValue={true}
+                mode="multiple"
+                style={{ width: "100%" }}
+                open={false}
+              />
             </Form.Field>
           </Col>
-
-          <Col span={24}>
-            <Form.Field label={`通知消息`} name="noticeContent">
-              <Input.TextArea placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送" />
-            </Form.Field>
-          </Col>
+        </React.Fragment>
+      )}
         </Row>
       </Form>
+    
       <selectNurseModal.Component />
     </Wrapper>
   );

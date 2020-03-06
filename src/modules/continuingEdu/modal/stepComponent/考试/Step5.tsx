@@ -29,20 +29,27 @@ export default observer(function Step5() {
     3: "病区学分"
   };
 
+  let totalNum = ksStepViewModal.stepData2.questionStatList.reduce(
+    (total: any, current: any) => {
+      return total + current.questionCount;
+    },
+    0
+  );
+
   return (
     <Wrapper>
       <table>
         <tbody>
           <tr>
-            <td className="key">培训名称：</td>
-            <td className="value">{ksStepViewModal.stepData2.title}</td>
+            <td className="key">考试名称：</td>
+            <td className="value">《{ksStepViewModal.stepData2.title}》</td>
           </tr>
           <tr>
-            <td className="key">培训开始时间：</td>
+            <td className="key">考试开始时间：</td>
             <td className="value">{ksStepViewModal.stepData2.startTime}</td>
           </tr>
           <tr>
-            <td className="key">培训开放时间：</td>
+            <td className="key">考试开放时间：</td>
             <td className="value">
               {ksStepViewModal.stepData2.openTime}
               {ksStepViewModal.stepData2.openTimeUnit}{" "}
@@ -63,7 +70,7 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
-            <td className="key">培训地址：</td>
+            <td className="key">考试地址：</td>
             <td className="value">{ksStepViewModal.stepData2.address}</td>
           </tr>
 
@@ -83,14 +90,21 @@ export default observer(function Step5() {
               </tr>
             </React.Fragment>
           )}
+
           <tr>
-            <td className="key">讲师：</td>
+            <td className="key">评分负责人：</td>
             <td className="value">
-              {ksStepViewModal.stepData2.teacherList
+              <span>
+                {ksStepViewModal.stepData2.passScores ? "需要" : "不需要"}
+              </span>
+              （
+              {ksStepViewModal.stepData2.scorePersonList
                 .map((item: any) => item.label)
                 .join("，")}
+              ）
             </td>
           </tr>
+
           <tr>
             <td className="key">学员学分：</td>
             <td className="value">
@@ -102,29 +116,48 @@ export default observer(function Step5() {
               {ksStepViewModal.stepData2.studentCredit} 分
             </td>
           </tr>
-          <tr>
-            <td className="key">讲师学分：</td>
-            <td className="value">
-              {
-                studentCreditTypeMap[
-                  ksStepViewModal.stepData2.teacherCreditType
-                ]
-              }{" "}
-              {ksStepViewModal.stepData2.teacherCredit} 分
-            </td>
-          </tr>
+
           <tr>
             <td className="key">学员学时：</td>
             <td className="value">
               {ksStepViewModal.stepData2.studentClassHours}
             </td>
           </tr>
+
           <tr>
-            <td className="key">讲师学时：</td>
+            <td className="key">最大考试次数：</td>
+            <td className="value">{ksStepViewModal.stepData2.maxExamTimes}</td>
+          </tr>
+          <tr>
+            <td className="key">卷面总分：</td>
+            <td className="value">{ksStepViewModal.stepData2.totalScores}</td>
+          </tr>
+          <tr>
+            <td className="key">及格分数线：</td>
+            <td className="value">{ksStepViewModal.stepData2.passScores}</td>
+          </tr>
+
+          <tr>
+            <td className="key">题目设置：</td>
             <td className="value">
-              {ksStepViewModal.stepData2.teacherClassHours}
+              <div>【考试】《{ksStepViewModal.stepData2.title}》</div>
+              <div>
+                <span style={{ marginRight: 10 }}>
+                  卷面题目共 {totalNum} 题
+                </span>
+                {!!ksStepViewModal.stepData2.randomOrderQue && (
+                  <span style={{ marginRight: 10 }}>随机显示题目顺序</span>
+                )}
+                {!!ksStepViewModal.stepData2.randomOrderQItem && (
+                  <span style={{ marginRight: 10 }}>随机显示题目选项顺序</span>
+                )}
+                {!!ksStepViewModal.stepData2.showScoreInstantly && (
+                  <span style={{ marginRight: 10 }}>交卷后显示分数</span>
+                )}
+              </div>
             </td>
           </tr>
+
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">
@@ -139,40 +172,6 @@ export default observer(function Step5() {
               {stepViewModal.stepData3.participantList
                 .map((item: any) => item.label)
                 .join("，")}
-            </td>
-          </tr>
-          <tr>
-            <td className="key">上传附件：</td>
-            <td className="value">
-              <FileList>
-                {stepViewModal.stepData4.attachmentIds.length > 0 && (
-                  <FilesBox>
-                    {stepViewModal.stepData4.attachmentIds.map(
-                      (item: any, index: number) => (
-                        <div className="file-box" key={index}>
-                          {getFileType(item.path) == "img" ? (
-                            <Zimage
-                              src={item.path}
-                              className="type-img"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              src={getFilePrevImg(item.path)}
-                              className="type-img"
-                              alt=""
-                            />
-                          )}
-
-                          <div className="name">{item.name}</div>
-                          <div className="size">{item.size}</div>
-                          <Icon type="close" title="删除图片" />
-                        </div>
-                      )
-                    )}
-                  </FilesBox>
-                )}
-              </FileList>
             </td>
           </tr>
           <tr>

@@ -1,3 +1,4 @@
+import { ksStepViewModal } from "./考试/KSStepViewModal";
 import { cloneJson } from "src/utils/json/clone";
 import { xxStepViewModal } from "./学习/XXStepViewModal";
 import { appStore } from "src/stores";
@@ -9,7 +10,8 @@ import { pxStepViewModal } from "./培训/PXStepViewModal";
 
 export let selfStepViewModalMap: any = {
   1: xxStepViewModal,
-  2: pxStepViewModal
+  2: pxStepViewModal,
+  3: ksStepViewModal
 };
 
 export let teachingMethodMap: any = {
@@ -22,6 +24,7 @@ export let teachingMethodMap: any = {
 };
 class StepViewModal {
   @observable public oldData: any = null;
+  @observable public taskCode: any = null;
   @observable public stepData1: any = {
     teachingMethod: null,
     teachingMethodName: null,
@@ -103,7 +106,6 @@ class StepViewModal {
       thirdLevelMenuId: this.stepData1.id,
       teachingMethod: this.stepData1.teachingMethod,
 
-      attachmentIds: this.stepData4.attachmentIds.map((item: any) => item.id),
       detailInfo: {
         ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
         participantList: this.stepData3.participantList.reduce(
@@ -115,25 +117,34 @@ class StepViewModal {
         ...(this.getCurrentStepViewModal.decodeData().detailInfo || {})
       }
     };
+
+    if (this.stepData1.teachingMethod == 3) {
+      /** 考试 */
+      //  Object.assign(target, source)
+    } else {
+      Object.assign(result, {
+        attachmentIds: this.stepData4.attachmentIds.map((item: any) => item.id)
+      });
+    }
+
     return result;
   };
 
   /** 新建教学计划 */
-  public addTeachingPlanInfoStudy = () => {
+  public addTeachingPlanInfoStudy = (status: any) => {
     let ajaxMap: any = {
       1: "addTeachingPlanInfoStudy",
       2: "addTeachingPlanInfoTrain",
-      3: "addTeachingPlanInfoExam",
+      3: "addTeachingPlanInfoExam"
     };
 
-    return stepServices.generateTaskCode().then(res => {
-      return (stepServices as any)[
-        ajaxMap[this.stepData1.teachingMethod as any] as any
-      ]({
-        ...this.decodeData(),
-        taskCode: res.data,
-        id: this.oldData ? this.oldData.id : undefined
-      });
+    return (stepServices as any)[
+      ajaxMap[this.stepData1.teachingMethod as any] as any
+    ]({
+      ...this.decodeData(),
+      status,
+      taskCode: this.taskCode,
+      id: this.oldData ? this.oldData.id : undefined
     });
   };
 
@@ -157,6 +168,13 @@ class StepViewModal {
     );
     this.stepData4.attachmentIds = data.attachmentList;
   };
+
+  /** 初始化taskCode */
+  initTaskCode() {
+    stepServices.generateTaskCode().then(res => {
+      this.taskCode = res.data;
+    });
+  }
 }
 
 export const stepViewModal = new StepViewModal();

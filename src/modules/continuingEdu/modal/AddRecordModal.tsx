@@ -99,7 +99,7 @@ export default observer(function AddRecordModal(props: Props) {
     },
     {
       title: "上传设置",
-      component: <Step4 />
+      component: getStep4()
     },
     {
       title: "完成",
@@ -117,8 +117,8 @@ export default observer(function AddRecordModal(props: Props) {
     setCurrentStep(current);
   };
 
-  const addTeachingPlanInfoStudy = () => {
-    stepViewModal.addTeachingPlanInfoStudy().then(res => {
+  const addTeachingPlanInfoStudy = (status: any) => {
+    stepViewModal.addTeachingPlanInfoStudy(status).then((res: any) => {
       message.success("提交成功");
       onCancel();
       onOkCallBack && onOkCallBack();
@@ -127,6 +127,7 @@ export default observer(function AddRecordModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
+      stepViewModal.initTaskCode();
       if (props.id) {
         /** 修改 */
         stepServices.getCompleteInfo(props.id).then(res => {
@@ -173,9 +174,17 @@ export default observer(function AddRecordModal(props: Props) {
             </Button>
           )}
           {currentStep == 4 && (
-            <Button onClick={addTeachingPlanInfoStudy} type="primary">
-              提交审核
-            </Button>
+            <React.Fragment>
+              <Button onClick={() => addTeachingPlanInfoStudy(1)}>
+                存草稿
+              </Button>
+              <Button
+                onClick={() => addTeachingPlanInfoStudy(2)}
+                type="primary"
+              >
+                提交审核
+              </Button>
+            </React.Fragment>
           )}
         </div>
       }

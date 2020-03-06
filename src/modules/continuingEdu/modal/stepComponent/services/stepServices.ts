@@ -59,6 +59,19 @@ export default class StepServices extends BaseApiService {
       })
     );
   }
+  /** 下载题目上传模板-考试 */
+  public downLoadQueUploadTemplat() {
+    return this.get(`/studyAndTrain/examManage/downLoadQueUploadTemplate`, {
+      responseType: "blob"
+    });
+  }
+  /** 上传题目-考试 */
+  public upLoadQuestionsExam(file: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/upLoadQuestions/exam`,
+      file
+    );
+  }
 }
 
 export const stepServices = new StepServices();

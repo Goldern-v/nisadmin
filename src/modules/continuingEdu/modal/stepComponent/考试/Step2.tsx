@@ -56,7 +56,7 @@ export default observer(function Step1() {
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
-    stepViewModal.stepData2 = data;
+    Object.assign(stepViewModal.stepData2, data);
   };
 
   const onSave = async () => {

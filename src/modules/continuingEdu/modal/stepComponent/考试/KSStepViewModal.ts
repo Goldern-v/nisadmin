@@ -29,7 +29,27 @@ const defaultStepData2 = {
   noticeContent: "",
   bxNurse: [],
   /** 签到负责人 */
-  sicPersonList: []
+  sicPersonList: [],
+  /** 最大考试次数 */
+  maxExamTimes: 0,
+  /** 总成绩 */
+  totalScores: 0,
+  /** 及格分数线 */
+  passScores: 0,
+  /** 答题时长（分钟) */
+  examDuration: 0,
+  /** 是否随机显示题目顺序 （1是 0否） */
+  randomOrderQue: 0,
+  /** 是否随机显示题目选项顺序 （1是 0否） */
+  randomOrderQItem: 0,
+  /** 是否交卷后显示分数 （1是 0否）*/
+  showScoreInstantly: 0,
+  /** 是否需要评分负责人(1需要 0不需要)*/
+  needScorePerson: 0,
+  /** 评分负责人*/
+  scorePersonList: [],
+  /** 题目统计信息 */
+  questionStatList: []
 };
 
 const defaultStepData5 = {
@@ -104,12 +124,7 @@ class StepViewModal {
       nurse4: this.stepData2.bxNurse.includes("nurse4") ? 1 : 0,
       nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
       nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
-      teacherList: this.stepData2.teacherList.reduce(
-        (total: any[], item: any) => {
-          return [...total, ...item.userList];
-        },
-        []
-      ),
+
       detailInfo: {
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
@@ -124,7 +139,22 @@ class StepViewModal {
             return [...total, ...item.userList];
           },
           []
-        )
+        ),
+        maxExamTimes: this.stepData2.maxExamTimes,
+        totalScores: this.stepData2.totalScores,
+        passScores: this.stepData2.passScores,
+        examDuration: this.stepData2.examDuration,
+        randomOrderQue: this.stepData2.randomOrderQue ? 1 : 0,
+        randomOrderQItem: this.stepData2.randomOrderQItem ? 1 : 0,
+        showScoreInstantly: this.stepData2.showScoreInstantly ? 1 : 0,
+        needScorePerson: this.stepData2.needScorePerson ? 1 : 0,
+        scorePersonList: this.stepData2.scorePersonList.reduce(
+          (total: any[], item: any) => {
+            return [...total, ...item.userList];
+          },
+          []
+        ),
+        questionStatList: this.stepData2.questionStatList
       }
     };
     return result;
@@ -160,6 +190,15 @@ class StepViewModal {
       };
     });
     this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
+      (item: any) => {
+        return {
+          label: item.empName,
+          key: item.empName,
+          userList: [item]
+        };
+      }
+    );
+    this.stepData2.scorePersonList = data.detailInfo.scorePersonList.map(
       (item: any) => {
         return {
           label: item.empName,
