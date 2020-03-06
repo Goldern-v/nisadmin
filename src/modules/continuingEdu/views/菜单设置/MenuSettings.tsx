@@ -56,38 +56,50 @@ export default observer(function MenuSettings() {
     },
     {
       title: "提交人",
-      dataIndex: "submitEmployees",
       align: "center",
       width: 175,
       render(text: any, record: any, index: number) {
-        return setTextData(record.submitEmployees, record.submitterType);
+        let data: any =
+          record.submitterType === 1
+            ? record.submitEmployees
+            : record.submitRoles;
+        return setTextData(data, record.submitterType);
       }
     },
     {
       title: "一级审核",
-      dataIndex: "firstAuditEmployees",
       align: "center",
       width: 175,
       render(text: any, record: any, index: number) {
-        return setTextData(record.firstAuditEmployees, record.firstAuditorType);
+        let data: any =
+          record.firstAuditorType === 1
+            ? record.firstAuditEmployees
+            : record.firstAuditRoles;
+        return setTextData(data, record.firstAuditorType);
       }
     },
     {
       title: "二级审核",
-      dataIndex: "secondAuditRoles",
       align: "center",
       width: 175,
       render(text: any, record: any, index: number) {
-        return setTextData(record.secondAuditRoles, record.secondAuditorType);
+        let data: any =
+          record.secondAuditorType === 1
+            ? record.secondAuditEmployees
+            : record.secondAuditRoles;
+        return setTextData(data, record.secondAuditorType);
       }
     },
     {
       title: "三级审核",
-      dataIndex: "thirdAuditRoles",
       align: "center",
       width: 175,
       render(text: any, record: any, index: number) {
-        return setTextData(record.thirdAuditRoles, record.firstAuditorType);
+        let data: any =
+          record.firstAuditorType === 1
+            ? record.thirdAuditEmployees
+            : record.thirdAuditRoles;
+        return setTextData(data, record.firstAuditorType);
       }
     },
     {

@@ -48,31 +48,42 @@ export default function SecondAddModal(props: Props) {
   const [chilrenList, setChilrenList] = useState([]);
   const formRef = React.createRef<Form>();
   const checkForm = () => {};
-  const [type, setType]: any = useState(0); // 用于区分哪一种数据类型 0-提交人 1-审核人 2-二级 3-三级
-  const [presentIndex, setPresentIndex]: any = useState(0); // 用于区分当前操作的索引
-  let nameList: any = [
-    "submitEmployees",
-    "firstAuditEmployees",
-    "secondAuditRoles",
-    "thirdAuditRoles"
-  ];
-  const onOkCallBack = (checkedUserList: CheckUserItem[]) => {
+  let nameList: any = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
+  const onOkCallBack = (
+    checkedUserList: CheckUserItem[],
+    type: any,
+    presentIndex: any
+  ) => {
     let data: any = allDataList.slice();
     data[presentIndex][nameList[type]] = checkedUserList;
     setAllDataList(data);
   };
 
+  // 判断当前选择的是哪种类型 1-人员 2-角色
+  const judgeTypeItem = (data: any) => {
+    if (data.length === 0) {
+      return 1;
+    } else {
+      if (data[0].userList) {
+        return data[0].userList[0].empNo ? 2 : 3;
+      } else {
+        return data[0].type === 1 ? 2 : 3;
+      }
+    }
+  };
+
   // 打开弹框
   const openSelectPeopleModal = (value: any, index: any) => {
+    // value 用于区分哪一种数据类型 0-提交人 1-审核人 2-二级 3-三级; index 用于区分当前操作的索引
     let data: any = allDataList[index]
       ? allDataList[index][nameList[value]]
       : [];
     selectPeopleModal.show({
-      checkedUserList: data,
-      type: value
+      checkedUserList: data || [],
+      messageType: judgeTypeItem(data || []),
+      type: value,
+      presentIndex: index
     });
-    setType(value);
-    setPresentIndex(index);
   };
 
   // 取消标签审核人
@@ -136,6 +147,23 @@ export default function SecondAddModal(props: Props) {
     }
   };
 
+  // 判断是哪种类型 1-人员 2-角色
+  const judgeType = (data: any) => {
+    if (data && data.length > 0) {
+      return data[0].empNo ? 1 : 2;
+    } else {
+      return null;
+    }
+  };
+
+  const setParamsProperty = (typeList: any, a: any, b: any) => {
+    if (typeList[b]) {
+      typeList[`${a}${typeList[b] === 1 ? "Employees" : "Roles"}`] =
+        typeList[a];
+    }
+    delete typeList[a];
+  };
+
   // 处理入参数据
   const setParamsData = () => {
     let newData = allDataList.map((item: any) => {
@@ -146,14 +174,15 @@ export default function SecondAddModal(props: Props) {
           let data: any = [];
           setItem.map((k: any) => {
             let objItem: any = {};
-            let objProperty = i > 1 ? "roleCode" : "empNo";
             if (k.value) {
+              let objProperty = k.type === 1 ? "empNo" : "roleCode";
               objItem[objProperty] = k.value;
               data.push(objItem);
             } else {
               k.userList.map((j: any) => {
                 let obj: any = {};
-                obj.empNo = j.empNo;
+                let type = j.empNo ? "empNo" : "roleCode";
+                obj[type] = j[type];
                 data.push(obj);
               });
             }
@@ -162,24 +191,18 @@ export default function SecondAddModal(props: Props) {
         }
       });
       let typeList = {
-        submitterType:
-          item.submitEmployees && item.submitEmployees.length ? 1 : null,
-        firstAuditorType:
-          item.firstAuditEmployees.length && item.firstAuditEmployees.length
-            ? 1
-            : null,
-        secondAuditorType:
-          item.secondAuditRoles && item.secondAuditRoles.length ? 2 : null,
-        thirdAuditorType:
-          item.thirdAuditRoles && item.thirdAuditRoles.length ? 2 : null,
-        submitEmployees: [],
-        firstAuditEmployees: [],
-        secondAuditRoles: [],
-        thirdAuditRoles: []
+        submitterType: judgeType(objItem.submit),
+        firstAuditorType: judgeType(objItem.firstAudit),
+        secondAuditorType: judgeType(objItem.secondAudit),
+        thirdAuditorType: judgeType(objItem.thirdAudit),
+        ...objItem
       };
+      setParamsProperty(typeList, "submit", "submitterType");
+      setParamsProperty(typeList, "firstAudit", "firstAuditorType");
+      setParamsProperty(typeList, "secondAudit", "secondAuditorType");
+      setParamsProperty(typeList, "thirdAudit", "thirdAuditorType");
       return {
         ...typeList,
-        ...objItem,
         name: item.childrenName,
         pId: item.id
       };
@@ -198,6 +221,8 @@ export default function SecondAddModal(props: Props) {
         setAddLoading(false);
         Message.success("保存成功！");
         setAddVisible(false);
+        setChilrenList([]);
+        setCurrent(0);
         onOk();
       })
       .catch(e => {
@@ -216,10 +241,10 @@ export default function SecondAddModal(props: Props) {
           firstAuditorType: null,
           secondAuditorType: null,
           thirdAuditorType: null,
-          submitEmployees: [],
-          firstAuditEmployees: [],
-          secondAuditRoles: [],
-          thirdAuditRoles: []
+          submit: [],
+          firstAudit: [],
+          secondAudit: [],
+          thirdAudit: []
         };
         let obj = params.find((o: any) => o.id === checkedId);
         let array: any = chilrenList.map((item: any) => ({
@@ -351,12 +376,12 @@ export default function SecondAddModal(props: Props) {
                     提交人:
                   </Col>
                   <Col span={20}>
-                    <Form.Field name="submitEmployees">
+                    <Form.Field name="submit">
                       <div onClick={() => openSelectPeopleModal(0, index)}>
                         <Select
                           mode="tags"
                           placeholder="提交人"
-                          value={item.submitEmployees}
+                          value={item.submit}
                           labelInValue={true}
                           style={{ width: "100%" }}
                           open={false}
@@ -371,12 +396,12 @@ export default function SecondAddModal(props: Props) {
                     审核人:
                   </Col>
                   <Col span={20}>
-                    <Form.Field name="firstAuditEmployees">
+                    <Form.Field name="firstAudit">
                       <div onClick={() => openSelectPeopleModal(1, index)}>
                         <Select
                           mode="tags"
                           placeholder="审核人"
-                          value={item.firstAuditEmployees}
+                          value={item.firstAudit}
                           labelInValue={true}
                           style={{ width: "100%" }}
                           open={false}
@@ -391,12 +416,12 @@ export default function SecondAddModal(props: Props) {
                     二级审核人:
                   </Col>
                   <Col span={20}>
-                    <Form.Field name="secondAuditRoles">
+                    <Form.Field name="secondAudit">
                       <div onClick={() => openSelectPeopleModal(2, index)}>
                         <Select
                           mode="tags"
                           placeholder="二级审核人"
-                          value={item.secondAuditRoles}
+                          value={item.secondAudit}
                           labelInValue={true}
                           style={{ width: "100%" }}
                           open={false}
@@ -411,12 +436,12 @@ export default function SecondAddModal(props: Props) {
                     三级审核人:
                   </Col>
                   <Col span={20}>
-                    <Form.Field name="thirdAuditRoles">
+                    <Form.Field name="thirdAudit">
                       <div onClick={() => openSelectPeopleModal(3, index)}>
                         <Select
                           mode="tags"
                           placeholder="三级审核人"
-                          value={item.thirdAuditRoles}
+                          value={item.thirdAudit}
                           labelInValue={true}
                           style={{ width: "100%" }}
                           onDeselect={(user: any) => onDeselect(user, 3, index)}
@@ -449,38 +474,36 @@ export default function SecondAddModal(props: Props) {
                     二级菜单添加:
                   </Col>
                   <Col span={20}>
-                    <Form.Field name="submitEmployees">
+                    <Form.Field name="submit">
                       <div>{item.childrenName}</div>
-                      {item.submitEmployees.length !== 0 && (
+                      {item.submit.length !== 0 && (
                         <div>
                           <span>提交人:</span>
-                          {item.submitEmployees.map((o: any, index: any) => (
+                          {item.submit.map((o: any, index: any) => (
                             <span key={index}>{o.label}</span>
                           ))}
                         </div>
                       )}
-                      {item.firstAuditEmployees.length !== 0 && (
+                      {item.firstAudit.length !== 0 && (
                         <div>
                           <span>审核人:</span>
-                          {item.firstAuditEmployees.map(
-                            (o: any, index: any) => (
-                              <span key={index}>{o.label}</span>
-                            )
-                          )}
-                        </div>
-                      )}
-                      {item.secondAuditRoles.length !== 0 && (
-                        <div>
-                          <span>二级审核人:</span>
-                          {item.secondAuditRoles.map((o: any, index: any) => (
+                          {item.firstAudit.map((o: any, index: any) => (
                             <span key={index}>{o.label}</span>
                           ))}
                         </div>
                       )}
-                      {item.thirdAuditRoles.length !== 0 && (
+                      {item.secondAudit.length !== 0 && (
+                        <div>
+                          <span>二级审核人:</span>
+                          {item.secondAudit.map((o: any, index: any) => (
+                            <span key={index}>{o.label}</span>
+                          ))}
+                        </div>
+                      )}
+                      {item.thirdAudit.length !== 0 && (
                         <div>
                           <span>三级审核人:</span>
-                          {item.thirdAuditRoles.map((o: any, index: any) => (
+                          {item.thirdAudit.map((o: any, index: any) => (
                             <span key={index}>{o.label}</span>
                           ))}
                         </div>
@@ -516,7 +539,7 @@ export default function SecondAddModal(props: Props) {
           </span>
         )}
       </Modal>
-      <selectPeopleModal.Component type={type} onOkCallBack={onOkCallBack} />
+      <selectPeopleModal.Component onOkCallBack={onOkCallBack} />
     </Spin>
   );
 }
@@ -551,7 +574,7 @@ const NavOne = styled.div`
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
-    background-color: #00a680;
+    background-color: #ccc;
 
     .botton {
       margin: 8px 10px 0 0;
@@ -562,7 +585,7 @@ const NavOne = styled.div`
 
     span {
       margin: 0 15px;
-      color: #fff;
+      // color: #fff;
     }
   }
 

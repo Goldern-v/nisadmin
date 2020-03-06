@@ -89,7 +89,7 @@ export default function TypeEditModal(props: Props) {
       onCancel={handleCancel}
       onOk={checkForm}
       confirmLoading={editLoading}
-      title={params.id ? "修改一级菜单" : "添加一级菜单"}
+      title={params.id ? "修改" : "添加"}
     >
       <Wrapper>
         <Form ref={formRef} rules={rules}>
