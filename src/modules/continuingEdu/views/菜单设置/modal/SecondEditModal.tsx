@@ -281,7 +281,7 @@ export default function SecondEditModal(props: Props) {
                 </Col>
                 <Col span={20}>
                   <Form.Field name="submit">
-                    <div onClick={() => openSelectPeopleModal(0)}>
+                    <div className="divStyle">
                       <Select
                         mode="tags"
                         placeholder="提交人"
@@ -291,6 +291,9 @@ export default function SecondEditModal(props: Props) {
                         open={false}
                         onDeselect={(user: any) => onDeselect(user, 0)}
                       />
+                      <ClickBtn onClick={() => openSelectPeopleModal(0)}>
+                        ...
+                      </ClickBtn>
                     </div>
                   </Form.Field>
                 </Col>
@@ -301,7 +304,7 @@ export default function SecondEditModal(props: Props) {
                 </Col>
                 <Col span={20}>
                   <Form.Field name="firstAudit">
-                    <div onClick={() => openSelectPeopleModal(1)}>
+                    <div className="divStyle">
                       <Select
                         mode="tags"
                         placeholder="审核人"
@@ -311,6 +314,9 @@ export default function SecondEditModal(props: Props) {
                         open={false}
                         onDeselect={(user: any) => onDeselect(user, 1)}
                       />
+                      <ClickBtn onClick={() => openSelectPeopleModal(1)}>
+                        ...
+                      </ClickBtn>
                     </div>
                   </Form.Field>
                 </Col>
@@ -321,7 +327,7 @@ export default function SecondEditModal(props: Props) {
                 </Col>
                 <Col span={20}>
                   <Form.Field name="secondAudit">
-                    <div onClick={() => openSelectPeopleModal(2)}>
+                    <div className="divStyle">
                       <Select
                         mode="tags"
                         placeholder="二级审核人"
@@ -331,6 +337,9 @@ export default function SecondEditModal(props: Props) {
                         open={false}
                         onDeselect={(user: any) => onDeselect(user, 2)}
                       />
+                      <ClickBtn onClick={() => openSelectPeopleModal(2)}>
+                        ...
+                      </ClickBtn>
                     </div>
                   </Form.Field>
                 </Col>
@@ -341,7 +350,7 @@ export default function SecondEditModal(props: Props) {
                 </Col>
                 <Col span={20}>
                   <Form.Field name="thirdAudit">
-                    <div onClick={() => openSelectPeopleModal(3)}>
+                    <div className="divStyle">
                       <Select
                         mode="tags"
                         placeholder="三级审核人"
@@ -351,6 +360,9 @@ export default function SecondEditModal(props: Props) {
                         onDeselect={(user: any) => onDeselect(user, 3)}
                         open={false}
                       />
+                      <ClickBtn onClick={() => openSelectPeopleModal(3)}>
+                        ...
+                      </ClickBtn>
                     </div>
                   </Form.Field>
                 </Col>
@@ -376,4 +388,19 @@ const Wrapper = styled.div`
     margin-left: 10px;
     margin-top: 8px;
   }
+  .divStyle {
+    position: relative;
+  }
+`;
+const ClickBtn = styled.span`
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-left: 1px solid #ccc;
+  width: 50px;
+  height: 100%;
+  line-height: 28px;
+  cursor: pointer;
+  text-align: center;
+} 
 `;

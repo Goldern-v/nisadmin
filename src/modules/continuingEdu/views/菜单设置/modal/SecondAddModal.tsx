@@ -377,7 +377,7 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                   <Col span={20}>
                     <Form.Field name="submit">
-                      <div onClick={() => openSelectPeopleModal(0, index)}>
+                      <div className="divStyle">
                         <Select
                           mode="tags"
                           placeholder="提交人"
@@ -388,6 +388,9 @@ export default function SecondAddModal(props: Props) {
                           onDeselect={(user: any) => onDeselect(user, 0, index)}
                         />
                       </div>
+                      <ClickBtn onClick={() => openSelectPeopleModal(0, index)}>
+                        ...
+                      </ClickBtn>
                     </Form.Field>
                   </Col>
                 </Row>
@@ -397,7 +400,7 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                   <Col span={20}>
                     <Form.Field name="firstAudit">
-                      <div onClick={() => openSelectPeopleModal(1, index)}>
+                      <div className="divStyle">
                         <Select
                           mode="tags"
                           placeholder="审核人"
@@ -408,6 +411,9 @@ export default function SecondAddModal(props: Props) {
                           onDeselect={(user: any) => onDeselect(user, 1, index)}
                         />
                       </div>
+                      <ClickBtn onClick={() => openSelectPeopleModal(1, index)}>
+                        ...
+                      </ClickBtn>
                     </Form.Field>
                   </Col>
                 </Row>
@@ -417,7 +423,7 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                   <Col span={20}>
                     <Form.Field name="secondAudit">
-                      <div onClick={() => openSelectPeopleModal(2, index)}>
+                      <div className="divStyle">
                         <Select
                           mode="tags"
                           placeholder="二级审核人"
@@ -428,6 +434,9 @@ export default function SecondAddModal(props: Props) {
                           onDeselect={(user: any) => onDeselect(user, 2, index)}
                         />
                       </div>
+                      <ClickBtn onClick={() => openSelectPeopleModal(2, index)}>
+                        ...
+                      </ClickBtn>
                     </Form.Field>
                   </Col>
                 </Row>
@@ -437,7 +446,7 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                   <Col span={20}>
                     <Form.Field name="thirdAudit">
-                      <div onClick={() => openSelectPeopleModal(3, index)}>
+                      <div className="divStyle">
                         <Select
                           mode="tags"
                           placeholder="三级审核人"
@@ -447,6 +456,11 @@ export default function SecondAddModal(props: Props) {
                           onDeselect={(user: any) => onDeselect(user, 3, index)}
                           open={false}
                         />
+                        <ClickBtn
+                          onClick={() => openSelectPeopleModal(3, index)}
+                        >
+                          ...
+                        </ClickBtn>
                       </div>
                     </Form.Field>
                   </Col>
@@ -555,7 +569,7 @@ const NavOne = styled.div`
   margin: 15px 20px;
   height: 400px;
   display: flex;
-  border: 1px solid rgba(0, 0, 0, 0.25);
+  border: 1px solid #eee;
   font-size: 14px;
 
   div {
@@ -563,7 +577,7 @@ const NavOne = styled.div`
     box-sizing: border-box;
   }
   div:nth-child(1) {
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #eee;
   }
 
   .header {
@@ -585,7 +599,6 @@ const NavOne = styled.div`
 
     span {
       margin: 0 15px;
-      // color: #fff;
     }
   }
 
@@ -614,7 +627,8 @@ const NavOne = styled.div`
   }
 
   .is-check {
-    color: #00a680;
+    background: #00a680;
+    color: #ffffff;
   }
 `;
 
@@ -623,6 +637,22 @@ const NavTwo = styled.div`
     margin: 20px 37px;
     line-height: 32px;
   }
+  .divStyle {
+    position: relative;
+  }
+`;
+
+const ClickBtn = styled.span`
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-left: 1px solid #ccc;
+  width: 50px;
+  height: 100%;
+  line-height: 28px;
+  cursor: pointer;
+  text-align: center;
+} 
 `;
 
 const NavThree = styled.div`

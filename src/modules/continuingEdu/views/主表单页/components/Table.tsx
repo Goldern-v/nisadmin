@@ -19,7 +19,7 @@ export default observer(function Table(props: Props) {
     let array = [];
     for (let i = 0; i < 7; i++) {
       array.push({
-        title: i === 6 ? "其他" : `N${0}`,
+        title: i === 6 ? "其他" : `N${i}`,
         dataIndex: i === 6 ? "nurseOther" : `nurse${i}`,
         width: 40,
         align: "center",
@@ -29,6 +29,19 @@ export default observer(function Table(props: Props) {
       });
     }
     return array;
+  };
+
+  //教育方式背景颜色函数封装
+  const typeBackground = (data: any) => {
+    const background = [
+      "#EEFDEE",
+      "#FDF8E6",
+      "#FCECE9",
+      "#EEF1FF",
+      "#F0F8F8",
+      "#FAEAFB"
+    ];
+    return background[data - 1];
   };
 
   const columns: any = [
@@ -44,31 +57,42 @@ export default observer(function Table(props: Props) {
       title: "开始时间",
       dataIndex: "startTime",
       width: 130,
-      align: "center"
+      align: "center",
+      render(startTime: string) {
+        return startTime.substr(0, 16);
+      }
     },
     {
       title: "结束时间",
       dataIndex: "endTime",
       width: 130,
-      align: "center"
+      align: "center",
+      render(endTime: string) {
+        return endTime.substr(0, 16);
+      }
     },
     {
       title: "类型",
       dataIndex: "thirdLevelMenuName",
       width: 130,
-      align: "center"
+      align: "left"
     },
     {
       title: "标题",
       dataIndex: "title",
-      width: 130,
-      align: "center"
+      width: 200,
+      align: "left"
     },
     {
       title: "教学方式",
       dataIndex: "teachingMethod",
-      width: 130,
+      width: 80,
       align: "center",
+      onCell: (record: any, rowIndex: any) => ({
+        style: {
+          backgroundColor: typeBackground(record.teachingMethod)
+        }
+      }),
       render(teachingMethod: any, record: any) {
         //1.学习、2培训、3考试、4练习、5实操、6演练
         const teachingMethodArray = [
@@ -79,7 +103,23 @@ export default observer(function Table(props: Props) {
           "实操",
           "演练"
         ];
-        return teachingMethodArray[teachingMethod - 1];
+        const color = [
+          "#4CA21D",
+          "#DD7316",
+          "#EA3838",
+          "#2754A8",
+          "#006667",
+          "#AB2892"
+        ];
+        return (
+          <span
+            style={{
+              color: color[teachingMethod - 1]
+            }}
+          >
+            {teachingMethodArray[teachingMethod - 1]}
+          </span>
+        );
       }
     },
     {
@@ -88,9 +128,14 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "管理人员",
-      dataIndex: "",
-      width: 130,
-      align: "center"
+      children: [
+        {
+          title: "讲师",
+          dataIndex: "teachers",
+          width: 130,
+          align: "center"
+        }
+      ]
     },
     {
       title: "组织方式",
@@ -141,13 +186,13 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "学分",
-      dataIndex: "",
+      dataIndex: "credit",
       width: 130,
       align: "center"
     },
     {
       title: "学时",
-      dataIndex: "",
+      dataIndex: "classHours",
       width: 50,
       align: "center"
     },
@@ -176,9 +221,9 @@ export default observer(function Table(props: Props) {
     },
     {
       title: "备注",
-      dataIndex: "",
+      dataIndex: "auditRemark",
       width: 150,
-      align: "center"
+      align: "left"
     },
     {
       title: "操作",

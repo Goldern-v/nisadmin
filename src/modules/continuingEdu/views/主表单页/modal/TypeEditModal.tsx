@@ -19,8 +19,14 @@ export default function TypeEditModal(props: Props) {
 
   // 弹窗必填项
   const rules: Rules = {
-    // name: val => !!val || "名称不能为空",
-    // sort: val => !!val || "排序不能为空"
+    name: val => !!val || "名称不能为空",
+    teachingMethod: val => !!val || "教学方式不能为空",
+    sort: val =>
+      !!!val
+        ? "排序不能为空"
+        : !!val.replace(/[^\d]/g, "")
+        ? ""
+        : "排序只能填入数字"
   };
 
   useEffect(() => {
