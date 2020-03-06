@@ -19,6 +19,7 @@ export default withRouter(
     const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
     const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
     let id = qs.parse(appStore.location.search.replace("?", "")).id;
+    let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
     const { history } = appStore;
 
     const columns: any = [
@@ -149,9 +150,10 @@ export default withRouter(
                 background: "rgba(0, 0, 0, 0)"
               }}
               data={[
+                // continuingEdu/病区培训2?Pid=23&id=25
                 {
                   name: `${titleType.type}`,
-                  link: `/continuingEdu/${titleType.type}?`
+                  link: `/continuingEdu/${titleType.type}?Pid=${Pid}&id=${id}`
                 },
                 {
                   name: "类型管理"

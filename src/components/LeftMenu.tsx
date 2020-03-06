@@ -1,30 +1,30 @@
-import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Icon, Menu } from 'antd'
-import { appStore } from 'src/stores'
-import { toJS } from 'mobx'
+import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
+import { Icon, Menu } from "antd";
+import { appStore } from "src/stores";
+import { toJS } from "mobx";
 
-const SubMenu = Menu.SubMenu
-const MenuItemGroup = Menu.ItemGroup
+const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
 export interface Props {
-  config: any
-  menuTitle?: string
+  config: any;
+  menuTitle?: string;
 }
 
 export default function LeftMenu(props: Props) {
   const handleSelect = (e: any) => {
-    appStore.history.push(e.key)
+    appStore.history.push(e.key);
     if (e.item.props.level === 1) {
-      setOpenKeys([])
+      setOpenKeys([]);
     }
 
     // console.log('click ', e)
-  }
+  };
   const renderMenu = (list: any) => {
     return list
       .filter((item: any) => {
-        return !item.hide
+        return !item.hide;
       })
       .map((item: any, index: number) => {
         if (item.children && item.children.length > 0) {
@@ -40,82 +40,94 @@ export default function LeftMenu(props: Props) {
             >
               {renderMenu(item.children)}
             </SubMenu>
-          )
+          );
         } else {
           return (
             <Menu.Item key={item.path}>
               <span>
                 {item.icon && <MenuIcon>{item.icon}</MenuIcon>}
                 <span>{item.title}</span>
-                <span className='selected-arrow'>
-                  <img src={require('./images/菜单选中右箭头.png')} alt='' />
+                <span className="selected-arrow">
+                  <img src={require("./images/菜单选中右箭头.png")} alt="" />
                 </span>
               </span>
             </Menu.Item>
-          )
+          );
         }
-      })
-  }
+      });
+  };
 
-  const getOpenKeyByPath: any = (list: any[], path: string, parentKeys: string[]) => {
+  const getOpenKeyByPath: any = (
+    list: any[],
+    path: string,
+    parentKeys: string[]
+  ) => {
     for (let i = 0; i < list.length; i++) {
-      let item = list[i]
+      let item = list[i];
       if (item.children && item.children.length > 0) {
-        let parentKeysClone = [...parentKeys]
-        parentKeysClone.push(item.title)
-        let currentPath = getOpenKeyByPath(item.children, path, parentKeysClone)
-        if (currentPath) return currentPath
+        let parentKeysClone = [...parentKeys];
+        parentKeysClone.push(item.title);
+        let currentPath = getOpenKeyByPath(
+          item.children,
+          path,
+          parentKeysClone
+        );
+        if (currentPath) return currentPath;
       } else {
         if (item.path === path) {
           if (item.hide) {
             for (let j = i; j < list.length; j++) {
-              if (!list[j].hide) return [parentKeys, [list[j].path]]
+              if (!list[j].hide) return [parentKeys, [list[j].path]];
             }
           } else {
-            return [parentKeys, [item.path]]
+            return [parentKeys, [item.path]];
           }
         }
       }
     }
-  }
+  };
 
   const onOpenChange = (openKeys: any) => {
-    setOpenKeys([openKeys[openKeys.length - 1]])
-  }
+    setOpenKeys([openKeys[openKeys.length - 1]]);
+  };
 
   // let path = appStore.match.url
-  let path = appStore.location.pathname
-  let [defaultOpenKeys, defaultSelectedKeys] = getOpenKeyByPath(props.config, path, []) || [[], []]
+  let path = appStore.location.pathname;
+  let [defaultOpenKeys, defaultSelectedKeys] = getOpenKeyByPath(
+    props.config,
+    path,
+    []
+  ) || [[], []];
   const [openKeys, setOpenKeys] = useState(() => {
-    return defaultOpenKeys
-  })
+    return defaultOpenKeys;
+  });
 
   return (
-    <Wrapper id='left-menu-con'>
+    <Wrapper id="left-menu-con">
       {/* {JSON.stringify(openKeys)} */}
       <Menu
         onSelect={handleSelect}
-        selectedKeys={defaultSelectedKeys}
+        defaultSelectedKeys={defaultSelectedKeys}
         openKeys={openKeys}
-        mode='inline'
+        mode="inline"
         inlineIndent={12}
         onOpenChange={onOpenChange}
       >
         {renderMenu(props.config)}
       </Menu>
     </Wrapper>
-  )
+  );
 }
 
-const menu_bg_color = '#F2F2F2' // 背景色
-const item_bg_color = '#F9F9F9' // item背景色
-const normal_text_size = '13px' // 正常文字大小
-const normal_text_color = '#666666' // 正常文字颜色
-const active_text_color = '#00A680' // 激活文字颜色
-const sub_ul_bg = '#fff' // 二级菜单背景颜色
-const hover_li_bg = '#fff' // 划过item背景颜色
-const menu_li_bottom_line = '1px solid #E5E5E5' // 划过item背景颜色
-const sub_li_bottom_line = '1px dashed #E5E5E5' // 划过item背景颜色
+const menu_bg_color = "#F2F2F2"; // 背景色
+const item_bg_color = "#F9F9F9"; // item背景色
+const normal_text_size = "13px"; // 正常文字大小
+const normal_text_color = "#666666"; // 正常文字颜色
+const active_text_color = "#00A680"; // 激活文字颜色
+const sub_ul_bg = "#fff"; // 二级菜单背景颜色
+const hover_li_bg = "#fff"; // 划过item背景颜色
+const menu_li_bottom_line = "1px solid #E5E5E5"; // 划过item背景颜色
+const sub_li_bottom_line = "1px dashed #E5E5E5"; // 划过item背景颜色
 const Wrapper = styled.div`
   &#left-menu-con {
     * {
@@ -170,7 +182,7 @@ const Wrapper = styled.div`
           transform: none;
           opacity: 1;
           display: block;
-          content: '';
+          content: "";
           position: absolute;
           left: 0;
           top: 0;
@@ -187,7 +199,7 @@ const Wrapper = styled.div`
         font-weight: bold;
         position: relative;
         &::after {
-          content: '';
+          content: "";
           display: block;
           position: absolute;
           width: 2px;
@@ -199,7 +211,7 @@ const Wrapper = styled.div`
           z-index: 3;
         }
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           display: block;
           background: ${active_text_color};
@@ -225,7 +237,7 @@ const Wrapper = styled.div`
       background: ${sub_ul_bg};
       position: relative;
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         width: 2px;
         background: ${active_text_color};
@@ -237,7 +249,7 @@ const Wrapper = styled.div`
       }
 
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 40px;
         bottom: 0;
@@ -261,7 +273,7 @@ const Wrapper = styled.div`
           font-weight: bold;
         }
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0px;
           bottom: 0;
@@ -305,7 +317,7 @@ const Wrapper = styled.div`
       display: block;
     }
   }
-`
+`;
 
 const MenuIcon = styled.span`
   svg {
@@ -318,4 +330,4 @@ const MenuIcon = styled.span`
       fill: ${normal_text_color};
     }
   }
-`
+`;

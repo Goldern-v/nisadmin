@@ -294,13 +294,16 @@ class SelectPeopleViewModel {
 
   /** 初始化数据 */
   initData(type: any) {
-    if (type > 1) {
-      let data = [this.newSelectTreeDataAll.slice().pop()];
-      this.selectTreeDataAll = data;
-    } else {
+    // type 1-全部数据 2-人员数据 3-角色数据
+    if (type === 2) {
       let data = this.newSelectTreeDataAll.slice();
       data.pop();
       this.selectTreeDataAll = data;
+    } else if (type === 3) {
+      let data = [this.newSelectTreeDataAll.slice().pop()];
+      this.selectTreeDataAll = data;
+    } else {
+      this.selectTreeDataAll = this.newSelectTreeDataAll.slice();
     }
     this.stepState = [];
     this.selectedBigDeptCode = "";

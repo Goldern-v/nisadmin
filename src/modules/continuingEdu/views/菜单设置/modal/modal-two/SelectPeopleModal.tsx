@@ -25,9 +25,15 @@ import classNames from "classnames";
 
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
-  onOkCallBack?: (checkedUserList: CheckUserItem[]) => void;
+  onOkCallBack?: (
+    checkedUserList: CheckUserItem[],
+    type: any,
+    presentIndex: any
+  ) => void;
   checkedUserList: CheckUserItem[];
+  messageType: Number;
   type: Number;
+  presentIndex: Number;
 }
 
 interface User {
@@ -36,7 +42,15 @@ interface User {
 }
 
 export default observer(function SelectPeopleModal(props: Props) {
-  let { visible, onCancel, onOkCallBack, onClose, type } = props;
+  let {
+    visible,
+    onCancel,
+    onOkCallBack,
+    onClose,
+    messageType,
+    type,
+    presentIndex
+  } = props;
 
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
@@ -85,7 +99,7 @@ export default observer(function SelectPeopleModal(props: Props) {
   };
 
   const onSave = () => {
-    onOkCallBack && onOkCallBack(checkedUserList);
+    onOkCallBack && onOkCallBack(checkedUserList, type, presentIndex);
   };
   const onDeselect = (key: any) => {
     deleteUser(key);
@@ -93,7 +107,7 @@ export default observer(function SelectPeopleModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
-      selectPeopleViewModel.initData(type);
+      selectPeopleViewModel.initData(messageType);
       setCheckedUserList(props.checkedUserList);
       setSearchWord("");
     }

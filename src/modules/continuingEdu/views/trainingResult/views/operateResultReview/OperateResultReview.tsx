@@ -176,8 +176,8 @@ export default observer(function OperateResultReview() {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
+      <QueryPannel />
       <TableWrapper>
-        <QueryPannel />
         <BaseTable
           loading={loading}
           rowSelection={{

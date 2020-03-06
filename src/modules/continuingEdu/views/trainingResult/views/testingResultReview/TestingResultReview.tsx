@@ -245,8 +245,8 @@ export default observer(function TestingResultReview() {
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
+      <QueryPannel />
       <TableWrapper>
-        <QueryPannel />
         <BaseTable
           loading={loading}
           rowSelection={{
