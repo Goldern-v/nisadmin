@@ -73,7 +73,7 @@ export default observer(function Step5() {
             <td className="key">考试地址：</td>
             <td className="value">{ksStepViewModal.stepData2.address}</td>
           </tr>
-
+          {/* 
           {ksStepViewModal.stepData2.organizationWay == "2" && (
             <React.Fragment>
               <tr>
@@ -89,7 +89,7 @@ export default observer(function Step5() {
                 <td className="value">二维码</td>
               </tr>
             </React.Fragment>
-          )}
+          )} */}
 
           <tr>
             <td className="key">评分负责人：</td>
