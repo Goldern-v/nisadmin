@@ -47,6 +47,7 @@ export default function SecondAddModal(props: Props) {
   const [isSaveOk, setIsSaveOk] = useState(false);
   const [isErrorText, setIsErrorText] = useState("");
   const [chilrenList, setChilrenList] = useState([]);
+  const [parentName, setParentName] = useState("");
   const formRef = React.createRef<Form>();
   const checkForm = () => {};
   let nameList: any = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
@@ -269,6 +270,7 @@ export default function SecondAddModal(props: Props) {
           thirdAudit: []
         };
         let obj = params.find((o: any) => o.id === checkedId);
+        setParentName(obj.name);
         let array: any = chilrenList.map((item: any) => ({
           id: checkedId,
           parentName: obj.name,
@@ -336,7 +338,11 @@ export default function SecondAddModal(props: Props) {
         }
       >
         <Wrapper>
-          <Steps size="small" current={current}>
+          <Steps
+            size="small"
+            current={current}
+            style={{ marginBottom: "20px" }}
+          >
             <Step title="菜单设置" />
             <Step title="提交审核设置" />
             <Step title="完成" />
@@ -392,16 +398,17 @@ export default function SecondAddModal(props: Props) {
 
         {current === 1 && (
           <NavTwo>
+            <span className="parentName">{parentName}</span>
             {allDataList.map((item: any, index: any) => (
               <Form key={index} ref={formRef}>
                 <Row>
-                  <Col span={4} className="label">
-                    添加:
-                  </Col>
                   <Col span={20}>
                     <Form.Field>
                       <span>
-                        {item.parentName}/{item.childrenName}
+                        新增二级子菜单：
+                        <span style={{ fontWeight: 900 }}>
+                          {item.childrenName}
+                        </span>
                       </span>
                     </Form.Field>
                   </Col>
@@ -630,7 +637,7 @@ const NavOne = styled.div`
   margin: 15px 20px;
   height: 400px;
   display: flex;
-  border: 1px solid #eee;
+  border: 1px solid #ccc;
   font-size: 14px;
 
   div {
@@ -638,7 +645,7 @@ const NavOne = styled.div`
     box-sizing: border-box;
   }
   div:nth-child(1) {
-    border-right: 1px solid #eee;
+    border-right: 1px solid #ccc;
   }
 
   .header {
@@ -649,7 +656,8 @@ const NavOne = styled.div`
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
-    background-color: #ccc;
+    background-color: rgba(242, 244, 245, 1);
+    border-bottom: 1px solid #ccc;
 
     .botton {
       margin: 8px 10px 0 0;
@@ -711,6 +719,11 @@ const NavTwo = styled.div`
       left: -10px;
       top: 0;
     }
+  }
+  .parentName {
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 38px;
   }
 `;
 

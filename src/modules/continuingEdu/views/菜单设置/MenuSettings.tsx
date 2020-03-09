@@ -42,11 +42,22 @@ export default observer(function MenuSettings() {
     }
   };
 
+  const fontWeight = (data: any) => {
+    if (data) {
+      return 900;
+    }
+  };
+
   const columns: any = [
     {
       title: "菜单设置",
       dataIndex: "name",
-      align: "left"
+      align: "left",
+      onCell: (record: any, rowIndex: any) => ({
+        style: {
+          fontWeight: fontWeight(record.key)
+        }
+      })
     },
     {
       title: "排序",
