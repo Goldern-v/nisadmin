@@ -63,17 +63,20 @@ export default function AnwserSheetPage(props: Props) {
           </span>
         </div>
         <div style={{ paddingLeft: '5px' }}>
-          <pre className="awnser">这是学员答案，这是学员答案这是学员答案，
+          <pre className="awnser">
+            {`这是学员答案，
+            这是学员答案这是学员答案，
             这是学员答案这是学员答案，这是学员答案这是学员答案，
-这是学员答案这是学员答案，
-这是学员答案这是学员答案，这是学员答案这是学员。</pre>
+            这是学员答案这是学员答案，
+            这是学员答案这是学员答案，这是学员答案这是学员。`}
+          </pre>
         </div>
       </span>
     </div>
   }
 
   return <Wrapper>
-    <div className="main-title">《2019年东莞市厚街医院N3-N5级护理人员第四季度理论考核试卷》</div>
+    <div className="main-title">《{'2019年东莞市厚街医院N3-N5级护理人员第四季度理论考核试卷'}》</div>
     <div className="question-list">
       {choiceContent({}, 0)}
       {fillInContent({}, 1)}

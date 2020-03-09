@@ -63,6 +63,18 @@ export default class PatientVisitMonthService extends BaseApiService {
     return this.post('/qcAnalysis/pvm/update/report', query)
   }
 
+  /** 更新备注 */
+  public updateWardRemark(wardRemark?: any) {
+    let { year, month, wardCode } = patientVisitMonthModel.report
+    let query = {
+      year,
+      month,
+      wardCode,
+      wardRemark
+    }
+    return this.post('/qcAnalysis/pvm/update/report', query)
+  }
+
   /** 更新月度随访 */
   public updatePatientVisitList(itemList: any[]) {
     let { year, month, wardCode } = patientVisitMonthModel.report

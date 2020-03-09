@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import { appStore } from 'src/stores'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
@@ -39,7 +40,6 @@ export default observer(function BaseModal(props: Props) {
         onCancel()
       })
     } else if (sectionData.sectionId == '月度随访') {
-      console.log(data.report)
       patientVisitMonthService
         .relPvmItem(data.report).then((res) => {
           patientVisitMonthModel.setSectionData(sectionData.sectionId, {
@@ -57,6 +57,21 @@ export default observer(function BaseModal(props: Props) {
               list: res.data || []
             })
 
+          message.success('保存成功')
+          onCancel()
+        })
+    } else if (sectionData.sectionId == '备注') {
+      const { queryObj } = appStore
+      patientVisitMonthService.relPvmItem({
+        wardCode: queryObj.wardCode,
+        month: queryObj.month,
+        year: queryObj.year,
+        wardRemark: data.text
+      })
+        .then((res) => {
+          patientVisitMonthModel.setSectionData(sectionData.sectionId, {
+            text: data.text
+          })
           message.success('保存成功')
           onCancel()
         })

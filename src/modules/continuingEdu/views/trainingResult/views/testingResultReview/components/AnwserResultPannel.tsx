@@ -9,79 +9,85 @@ export interface Props {
 
 export default function AnwserResultPannel(props: Props) {
   const { data } = props
+  const baseInfo = {
+    deptName: '妇科',
+    empName: '张新',
+    score: 94,
+    passScore: 60,
+    spendTime: '2分30秒',
+    startTime: '2019/03/20 10:00',
+    endTime: '2019/03/20  11:00',
+    totalQuestion: 20,
+    totalAnswer: 20,
+    rightAnswer: 10
+  }
+
+  let rightRate = 0
+  if (baseInfo.rightAnswer && baseInfo.totalAnswer) {
+    rightRate = parseInt((baseInfo.rightAnswer / baseInfo.totalAnswer * 10000).toString()) / 100
+  }
+
+  const answerList = [
+    {
+      sort: 1,
+      type: 2,
+      score: 4,
+      content: '关于戴手套描述错误的是',
+      empAnswers: 'A,B,C',
+      rightAnswer: 'D',
+    },
+    {
+      sort: 2,
+      type: 1,
+      score: 2,
+      content: '关于戴手套描述错误的是',
+      empAnswers: 'A',
+      rightAnswer: 'B',
+    }
+  ]
+
+  const awnserTypeName = (type: number) => {
+    switch (type) {
+      case 1: return '单选题'
+      case 2: return '多选题'
+      case 3: return '填空题'
+      case 4: return '问答题'
+      default: return ''
+    }
+  }
+
   return <Wrapper>
-    <div className="emp-info">妇科/张新</div>
+    <div className="emp-info">
+      {baseInfo.deptName}/{baseInfo.empName}
+    </div>
     <div className="title">试卷详情</div>
     <div className="base-info">
-      <div className="row">得分：94分</div>
-      <div className="row">及格分数线：60分</div>
-      <div className="row">答题用时：2分35秒</div>
-      <div className="row">开始时间：2019/03/20 10:00</div>
-      <div className="row">结束时间：2019/03/20  11:00</div>
+      <div className="row">得分：{baseInfo.score || 0}分</div>
+      <div className="row">及格分数线：{baseInfo.passScore || 0}分</div>
+      <div className="row">答题用时：{baseInfo.spendTime || 0}</div>
+      <div className="row">开始时间：{baseInfo.startTime}</div>
+      <div className="row">结束时间：{baseInfo.endTime}</div>
       <div className="row">
-        答题情况：10/20
+        答题情况：{baseInfo.rightAnswer}/{baseInfo.totalAnswer}
         <span style={{ color: '#aaa' }}>（正确题数/答题数）</span>
       </div>
-      <div className="row">题目数量：20</div>
-      <div className="row">正确率：80%</div>
+      <div className="row">题目数量：{baseInfo.totalQuestion}</div>
+      <div className="row">正确率：{rightRate}%</div>
     </div>
     <div className="title">❌错题:</div>
     <div className="wrong-awnser-list">
-      <div className="wrong-awnser-item">
-        <div className="question">
-          <span className="index">4、</span>
-          <span className="type">[单选]</span>
-          <span className="desc">关于戴手套描述错误的是（ 2分）</span>
-        </div>
-        <div className="awnser">
-          <div className="left">学员选【C,D】</div>
-          <div className="right">正确答案：【A,C,D】</div>
-        </div>
-      </div>
-      <div className="wrong-awnser-item">
-        <div className="question">
-          <span className="index">4、</span>
-          <span className="type">[单选]</span>
-          <span className="desc">关于戴手套描述错误的是（ 2分）</span>
-        </div>
-        <div className="awnser">
-          <div className="left">学员选【C,D】</div>
-          <div className="right">正确答案：【A,C,D】</div>
-        </div>
-      </div>
-      <div className="wrong-awnser-item">
-        <div className="question">
-          <span className="index">4、</span>
-          <span className="type">[单选]</span>
-          <span className="desc">关于戴手套描述错误的是（ 2分）</span>
-        </div>
-        <div className="awnser">
-          <div className="left">学员选【C,D】</div>
-          <div className="right">正确答案：【A,C,D】</div>
-        </div>
-      </div>
-      <div className="wrong-awnser-item">
-        <div className="question">
-          <span className="index">4、</span>
-          <span className="type">[单选]</span>
-          <span className="desc">关于戴手套描述错误的是（ 2分）</span>
-        </div>
-        <div className="awnser">
-          <div className="left">学员选【C,D】</div>
-          <div className="right">正确答案：【A,C,D】</div>
-        </div>
-      </div>
-      <div className="wrong-awnser-item">
-        <div className="question">
-          <span className="index">4、</span>
-          <span className="type">[单选]</span>
-          <span className="desc">关于戴手套描述错误的是（ 2分）</span>
-        </div>
-        <div className="awnser">
-          <div className="left">学员选【C,D】</div>
-          <div className="right">正确答案：【A,C,D】</div>
-        </div>
-      </div>
+      {answerList.map((item: any) =>
+        <div className="wrong-awnser-item" key={item.sort}>
+          <div className="question">
+            <span className="index">{item.sort}、</span>
+            <span className="type">[{awnserTypeName(item.type)}]</span>
+            <span className="desc">{item.content} ({item.score}分)</span>
+          </div>
+          <div className="awnser">
+            <div className="left">学员选【{item.empAnswers}】</div>
+            <div className="right">正确答案：【{item.rightAnswer}】</div>
+          </div>
+        </div>)}
     </div>
   </Wrapper>
 }

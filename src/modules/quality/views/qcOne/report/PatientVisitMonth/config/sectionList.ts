@@ -7,6 +7,8 @@ import 月度随访表模块 from '../components/月度随访表/月度随访表
 import 月度随访表弹窗 from '../components/月度随访表/月度随访表弹窗'
 import 附件模块 from '../components/附件/附件模块'
 import 附件弹窗 from '../components/附件/附件弹窗'
+import 备注模块 from '../components/备注/备注模块'
+import 备注弹窗 from '../components/备注/备注弹窗'
 
 export const sectionList: SectionListItem[] = [
   {
@@ -24,6 +26,14 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 月度随访表模块,
     modal: 月度随访表弹窗,
+  },
+  {
+    sectionId: '备注',
+    sectionTitle: '备注弹窗',
+    modalTitle: '编辑备注',
+    data: {},
+    section: 备注模块,
+    modal: 备注弹窗
   },
   {
     sectionId: '附件',

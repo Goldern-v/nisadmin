@@ -22,7 +22,7 @@ import { ColumnProps } from 'src/vendors/antd'
 
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import moment from 'moment'
+// import moment from 'moment'
 import { trainingResultModel } from './../../models/TrainingResultModel'
 import { trainingResultService } from './../../api/TrainingResultService'
 export interface Props { }
