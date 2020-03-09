@@ -17,7 +17,7 @@ export default observer(function Header(props: Props) {
   let id = props.getId || "";
   useEffect(() => {
     mainPageModal.id = id;
-    mainPageModal.onload();
+    mainPageModal.init();
   }, [id, Title]);
 
   return (
@@ -44,7 +44,11 @@ export default observer(function Header(props: Props) {
           }}
         >
           <Select.Option value="">全部</Select.Option>
-          <Select.Option value={id}>{Title}</Select.Option>
+          {mainPageModal.selectTypeList.map((item: any, index: number) => (
+            <Select.Option value={item.id} key={index}>
+              {item.name}
+            </Select.Option>
+          ))}
           <Select.Option value="-1">其他</Select.Option>
         </Select>
         <span>状态：</span>

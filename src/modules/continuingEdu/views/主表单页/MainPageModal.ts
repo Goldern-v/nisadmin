@@ -7,6 +7,7 @@ class MainPageModal {
   @observable public id = ""; //菜单id
   @observable public keyWord = ""; //菜单名
   @observable public selectedType = ""; //类型
+  @observable public selectTypeList = []; //类型
   @observable public selectedState = ""; //状态
   @observable public pageIndex: any = 1; //页码
   @observable public pageSize: any = 20; //每页大小
@@ -28,6 +29,14 @@ class MainPageModal {
       endTime: this.selectedDate[1].format("YYYY-MM-DD") // 结束时间
     };
   }
+  async initData() {
+    await Promise.all([
+      //类型
+      mainPageApi.getTypeData(this.id).then(res => {
+        this.selectTypeList = res.data;
+      })
+    ]);
+  }
 
   onload() {
     this.tableLoading = true;
@@ -45,6 +54,7 @@ class MainPageModal {
   }
 
   async init() {
+    await this.initData();
     await this.onload();
   }
 }
