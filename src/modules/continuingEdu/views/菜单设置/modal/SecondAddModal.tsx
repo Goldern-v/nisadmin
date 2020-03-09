@@ -44,6 +44,7 @@ export default function SecondAddModal(props: Props) {
   const [inputValue, setInputValue] = useState("");
   const [allDataList, setAllDataList] = useState([]);
   const [checkedId, setCheckedId] = useState("");
+  const [isSaveOk, setIsSaveOk] = useState(false);
   const [isErrorText, setIsErrorText] = useState("");
   const [chilrenList, setChilrenList] = useState([]);
   const formRef = React.createRef<Form>();
@@ -145,6 +146,27 @@ export default function SecondAddModal(props: Props) {
       setAddVisible(false);
       setIsErrorText("");
     }
+  };
+
+  // 添加二级审核人
+  const addSecondAudit = (index: any) => {
+    let data: any = allDataList.slice();
+    data[index].isSecondAudit = true;
+    setAllDataList(data);
+  };
+
+  // 添加三级审核人
+  const addThirdAudit = (index: any) => {
+    let obj: any = allDataList[index];
+    let length = obj.secondAudit.length;
+    let data: any = allDataList.slice();
+    if (length === 0) {
+      data[index].errorMessage = "请先选择二级审核人!";
+    } else {
+      data[index].errorMessage = "";
+      data[index].isThirdAudit = true;
+    }
+    setAllDataList(data);
   };
 
   // 判断是哪种类型 1-人员 2-角色
@@ -257,7 +279,19 @@ export default function SecondAddModal(props: Props) {
         setCurrent(current + 1);
       }
     } else {
-      setCurrent(current + 1);
+      let isOk = true;
+      allDataList.map((item: any) => {
+        if (item.submit.length === 0 || item.firstAudit.length === 0) {
+          isOk = false;
+        }
+      });
+      if (!isOk) {
+        setIsSaveOk(true);
+        return;
+      } else {
+        setIsSaveOk(false);
+        setCurrent(current + 1);
+      }
     }
   };
 
@@ -292,6 +326,7 @@ export default function SecondAddModal(props: Props) {
             )}
             <Button onClick={handleCancel}>取消</Button>
             {current !== 2 && <Button onClick={toNext}>下一步</Button>}
+            {isSaveOk && <RequiredText>提交人跟审核人必填！</RequiredText>}
             {current === 2 && (
               <Button onClick={confirm} type="primary">
                 保存
@@ -372,7 +407,7 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={4} className="label">
+                  <Col span={4} className="label required-label">
                     提交人:
                   </Col>
                   <Col span={20}>
@@ -395,7 +430,7 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={4} className="label">
+                  <Col span={4} className="label required-label">
                     审核人:
                   </Col>
                   <Col span={20}>
@@ -423,20 +458,32 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                   <Col span={20}>
                     <Form.Field name="secondAudit">
-                      <div className="divStyle">
-                        <Select
-                          mode="tags"
-                          placeholder="二级审核人"
-                          value={item.secondAudit}
-                          labelInValue={true}
-                          style={{ width: "100%" }}
-                          open={false}
-                          onDeselect={(user: any) => onDeselect(user, 2, index)}
-                        />
-                      </div>
-                      <ClickBtn onClick={() => openSelectPeopleModal(2, index)}>
-                        ...
-                      </ClickBtn>
+                      {item.isSecondAudit ? (
+                        <div>
+                          <div className="divStyle">
+                            <Select
+                              mode="tags"
+                              placeholder="二级审核人"
+                              value={item.secondAudit}
+                              labelInValue={true}
+                              style={{ width: "100%" }}
+                              open={false}
+                              onDeselect={(user: any) =>
+                                onDeselect(user, 2, index)
+                              }
+                            />
+                          </div>
+                          <ClickBtn
+                            onClick={() => openSelectPeopleModal(2, index)}
+                          >
+                            ...
+                          </ClickBtn>
+                        </div>
+                      ) : (
+                        <AddClickBtn onClick={() => addSecondAudit(index)}>
+                          + 添加二级审核人
+                        </AddClickBtn>
+                      )}
                     </Form.Field>
                   </Col>
                 </Row>
@@ -446,25 +493,36 @@ export default function SecondAddModal(props: Props) {
                   </Col>
                   <Col span={20}>
                     <Form.Field name="thirdAudit">
-                      <div className="divStyle">
-                        <Select
-                          mode="tags"
-                          placeholder="三级审核人"
-                          value={item.thirdAudit}
-                          labelInValue={true}
-                          style={{ width: "100%" }}
-                          onDeselect={(user: any) => onDeselect(user, 3, index)}
-                          open={false}
-                        />
-                        <ClickBtn
-                          onClick={() => openSelectPeopleModal(3, index)}
-                        >
-                          ...
-                        </ClickBtn>
-                      </div>
+                      {item.isThirdAudit ? (
+                        <div>
+                          <Select
+                            mode="tags"
+                            placeholder="三级审核人"
+                            value={item.thirdAudit}
+                            labelInValue={true}
+                            style={{ width: "100%" }}
+                            onDeselect={(user: any) =>
+                              onDeselect(user, 3, index)
+                            }
+                            open={false}
+                          />
+                          <ClickBtn
+                            onClick={() => openSelectPeopleModal(3, index)}
+                          >
+                            ...
+                          </ClickBtn>
+                        </div>
+                      ) : (
+                        <AddClickBtn onClick={() => addThirdAudit(index)}>
+                          + 添加三级审核人
+                        </AddClickBtn>
+                      )}
                     </Form.Field>
                   </Col>
                 </Row>
+                {item.errorMessage && (
+                  <ErrorMessage>{item.errorMessage}</ErrorMessage>
+                )}
               </Form>
             ))}
           </NavTwo>
@@ -643,6 +701,17 @@ const NavTwo = styled.div`
   .divStyle {
     position: relative;
   }
+
+  .required-label {
+    position: relative;
+    &::before {
+      content: "*";
+      color: red;
+      position: absolute;
+      left: -10px;
+      top: 0;
+    }
+  }
 `;
 
 const ClickBtn = styled.span`
@@ -658,9 +727,33 @@ const ClickBtn = styled.span`
 } 
 `;
 
+const AddClickBtn = styled.span`
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 150px;
+  height: 30px;
+  line-height: 28px;
+  cursor: pointer;
+  text-align: center;
+} 
+`;
+
 const NavThree = styled.div`
   padding: 20px 30px;
   form {
     line-height: 25px;
   }
+`;
+
+const ErrorMessage = styled.div`
+  padding-left: 114px;
+  color: red;
+`;
+
+const RequiredText = styled.span`
+  margin-left: 20px;
+  color: red;
 `;
