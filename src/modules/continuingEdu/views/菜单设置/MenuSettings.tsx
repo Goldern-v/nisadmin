@@ -96,10 +96,10 @@ export default observer(function MenuSettings() {
       width: 175,
       render(text: any, record: any, index: number) {
         let data: any =
-          record.firstAuditorType === 1
+          record.thirdAuditorType === 1
             ? record.thirdAuditEmployees
             : record.thirdAuditRoles;
-        return setTextData(data, record.firstAuditorType);
+        return setTextData(data, record.thirdAuditorType);
       }
     },
     {

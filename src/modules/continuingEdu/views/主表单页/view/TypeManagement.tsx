@@ -10,6 +10,7 @@ import qs from "qs";
 import { mainPageApi } from "../api/MainPageApi";
 import { meunSettingApi } from "../../菜单设置/api/MeunSettingApi";
 import TypeEditModal from "../modal/TypeEditModal"; // 一级菜单弹窗
+import createModal from "src/libs/createModal";
 
 export default withRouter(
   observer(function TypeManagement() {
@@ -21,6 +22,7 @@ export default withRouter(
     let id = qs.parse(appStore.location.search.replace("?", "")).id;
     let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
     const { history } = appStore;
+    const typeEditModal = createModal(TypeEditModal);
 
     const columns: any = [
       {
@@ -186,6 +188,7 @@ export default withRouter(
           onCancel={handleEditCancel}
           onOk={handleEditOk}
         />
+        <typeEditModal.Component />
       </Wrapper>
     );
   })
