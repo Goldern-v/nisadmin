@@ -15,31 +15,27 @@ import { to } from "src/libs/fns";
 import { stepServices } from "../services/stepServices";
 import { stepViewModal, teachingMethodMap } from "../StepViewModal";
 import { cloneJson } from "src/utils/json/clone";
-import createModal from "src/libs/createModal";
-import AddTypeModal from "src/modules/continuingEdu/views/类型管理/modal/AddTypeModal";
+import TypeEditModal from "src/modules/continuingEdu/views/主表单页/modal/TypeEditModal";
+import { appStore } from "src/stores/index";
+import qs from "qs";
 
 export interface Props {}
 
 export default function Step1() {
+  const [editVisible, setEditVisible] = useState(false); // 控制类型管理弹窗状态
+  const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [typeList, setTypeList]: any = useState([]);
+  let Pid = qs.parse(appStore.location.search.replace("?", "")).id;
   let refForm = React.createRef<Form>();
   /** 设置规则 */
   const rules: Rules = {
     publicDate: val => !!val || "请填写发表日期"
   };
 
-  const addTypeModal = createModal(AddTypeModal);
-
   useLayoutEffect(() => {
     let from = refForm.current;
     console.log(from, "from", cloneJson(stepViewModal.stepData1));
-    stepServices.getMenuListByPId().then(res => {
-      if (stepViewModal.stepData1.id) {
-        setTypeList([...res.data, { id: -1, name: "其他" }]);
-      } else {
-        setTypeList([...res.data]);
-      }
-    });
+    getTypeList();
   }, []);
 
   useEffect(() => {
@@ -85,6 +81,32 @@ export default function Step1() {
     }
   };
 
+  // 查询类型
+  const getTypeList = () => {
+    stepServices.getMenuListByPId().then(res => {
+      if (stepViewModal.stepData1.id) {
+        setTypeList([...res.data, { id: -1, name: "其他" }]);
+      } else {
+        setTypeList([...res.data]);
+      }
+    });
+  };
+  // 添加类型管理
+  const saveOrUpload = (record?: any) => {
+    setEditParams({
+      Pid: Pid
+    });
+    setEditVisible(true);
+  };
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setEditParams({});
+  };
+  const handleEditOk = () => {
+    getTypeList();
+    handleEditCancel();
+  };
+
   return (
     <Wrapper>
       <Form ref={refForm} rules={rules} labelWidth={80} onChange={onFormChange}>
@@ -105,9 +127,7 @@ export default function Step1() {
               <Button
                 style={{ marginLeft: 10 }}
                 type="primary"
-                onClick={() => {
-                  addTypeModal.show();
-                }}
+                onClick={() => saveOrUpload()}
               >
                 其他类型
               </Button>
@@ -120,7 +140,12 @@ export default function Step1() {
           </Col>
         </Row>
       </Form>
-      <addTypeModal.Component />
+      <TypeEditModal
+        visible={editVisible}
+        params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
     </Wrapper>
   );
 }

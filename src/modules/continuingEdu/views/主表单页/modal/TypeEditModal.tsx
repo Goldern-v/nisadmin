@@ -6,10 +6,10 @@ import { Rules } from "src/components/Form/interfaces";
 import { mainPageApi } from "../api/MainPageApi";
 
 export interface Props {
-  visible?: boolean;
-  params?: any;
-  onCancel?: any;
-  onOk?: any;
+  visible: boolean;
+  params: any;
+  onCancel: any;
+  onOk: any;
 }
 
 export default function TypeEditModal(props: Props) {

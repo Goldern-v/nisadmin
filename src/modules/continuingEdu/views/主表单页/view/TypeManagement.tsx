@@ -22,7 +22,6 @@ export default withRouter(
     let id = qs.parse(appStore.location.search.replace("?", "")).id;
     let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
     const { history } = appStore;
-    const typeEditModal = createModal(TypeEditModal);
 
     const columns: any = [
       {
@@ -116,7 +115,7 @@ export default withRouter(
       });
     };
 
-    // 修改一级菜单
+    // 修改类型管理
     const saveOrUpload = (record?: any) => {
       if (record) {
         setEditParams({
@@ -188,7 +187,6 @@ export default withRouter(
           onCancel={handleEditCancel}
           onOk={handleEditOk}
         />
-        <typeEditModal.Component />
       </Wrapper>
     );
   })
