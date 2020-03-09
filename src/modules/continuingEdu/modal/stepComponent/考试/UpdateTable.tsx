@@ -80,19 +80,25 @@ export default observer(function UpdateTable(props: Props) {
         if (index == 0) return "--";
         return (
           <InputNumber
+            min={0}
             style={{ border: 0, textAlign: "center" }}
             value={text}
             onChange={val => {
               record.scoresPerQuestion = val;
-              onChange(
-                dataSource.map((item: any) => {
-                  if (item.scoresPerQuestion && record.scoresPerQuestion) {
-                    item.totalScores =
-                      item.scoresPerQuestion * record.scoresPerQuestion;
-                  }
-                  return item;
-                })
-              );
+              if (record.scoresPerQuestion && record.questionCount) {
+                record.totalScores =
+                  record.scoresPerQuestion * record.questionCount;
+              }
+              onChange([...dataSource]);
+              // onChange(
+              //   dataSource.map((item: any) => {
+              //     if (item.scoresPerQuestion && record.questionCount) {
+              //       item.totalScores =
+              //         item.scoresPerQuestion * record.questionCount;
+              //     }
+              //     return item;
+              //   })
+              // );
             }}
           />
         );
