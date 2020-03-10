@@ -41,10 +41,10 @@ export default function UserManualRouter(props: Props) {
     if (effect) {
       userManualApi.setGetData().then((res: any) => {
         let newArr: any = [];
-        if (resData.length > 0) {
+        if (res.data.length > 0) {
           setType(1);
           let arr = res.data.filter((item: any) => item.isShow);
-          if (arr.length > 0) {
+          if (arr && arr.length > 0) {
             var obj1: any = {
               component: Content,
               keepAlive: true,

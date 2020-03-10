@@ -207,10 +207,10 @@ export default observer(function Table(props: Props) {
             color = "#284fc2";
             break;
           case "进行中":
-            color = "#E63122";
+            color = "#EFF9C35";
             break;
           case "退回":
-            color = "#FF9C35";
+            color = "#E63122";
             break;
           default:
             color = "#000000";
