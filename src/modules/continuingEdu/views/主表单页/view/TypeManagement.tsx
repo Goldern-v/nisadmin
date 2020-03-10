@@ -120,6 +120,7 @@ export default withRouter(
       if (record) {
         setEditParams({
           id: record.id,
+          teachingMethod: record.teachingMethod,
           name: record.name,
           sort: record.sort
         });

@@ -35,10 +35,11 @@ export default function TypeEditModal(props: Props) {
         let current = formRef.current;
         if (!current) return;
         if (params.id) {
-          const { name, sort } = params;
+          const { name, sort, teachingMethod } = params;
           current.setFields({
             name,
-            sort
+            sort,
+            teachingMethod
           });
         } else {
           current.clear();
@@ -98,7 +99,7 @@ export default function TypeEditModal(props: Props) {
       title={params.id ? "修改" : "添加"}
     >
       <Wrapper>
-        <Form ref={formRef} rules={rules}>
+        <Form ref={formRef} rules={!params.id ? rules : {}}>
           <Row>
             <Col span={4} className="label">
               名称:
@@ -109,27 +110,23 @@ export default function TypeEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {!params.id ? (
-            <Row>
-              <Col span={4} className="label">
-                教学方式:
-              </Col>
-              <Col span={20}>
-                <Form.Field name="teachingMethod">
-                  <Select defaultValue="1">
-                    <Select.Option value="1">学习</Select.Option>
-                    <Select.Option value="2">培训</Select.Option>
-                    <Select.Option value="3">考试</Select.Option>
-                    <Select.Option value="4">练习</Select.Option>
-                    <Select.Option value="5">实操</Select.Option>
-                    <Select.Option value="6">演练</Select.Option>
-                  </Select>
-                </Form.Field>
-              </Col>
-            </Row>
-          ) : (
-            ""
-          )}
+          <Row>
+            <Col span={4} className="label">
+              教学方式:
+            </Col>
+            <Col span={20}>
+              <Form.Field name="teachingMethod">
+                <Select defaultValue="1" disabled={params.id ? true : false}>
+                  <Select.Option value="1">学习</Select.Option>
+                  <Select.Option value="2">培训</Select.Option>
+                  <Select.Option value="3">考试</Select.Option>
+                  <Select.Option value="4">练习</Select.Option>
+                  <Select.Option value="5">实操</Select.Option>
+                  <Select.Option value="6">演练</Select.Option>
+                </Select>
+              </Form.Field>
+            </Col>
+          </Row>
           <Row>
             <Col span={4} className="label">
               排序:

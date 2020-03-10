@@ -176,29 +176,25 @@ export default observer(function NavBar(props: any) {
       )}
       <Place />
       <RightCon>
-        {appStore.isDev && (
-          <UserManual
-            onClick={() => {
-              appStore.history.push("/UserManual");
-            }}
-          >
-            <Tooltip placement="top" title="平台使用手册">
-              <SYSC />
-            </Tooltip>
-          </UserManual>
-        )}
-        {appStore.isDev && (
-          <SetUserManual
-            className="setting"
-            onClick={() => {
-              appStore.history.push("/SetUserManual");
-            }}
-          >
-            <Tooltip placement="top" title="平台使用手册目录设置">
-              <SYSCSZ />
-            </Tooltip>
-          </SetUserManual>
-        )}
+        <UserManual
+          onClick={() => {
+            appStore.history.push("/UserManual");
+          }}
+        >
+          <Tooltip placement="top" title="平台使用手册">
+            <SYSC />
+          </Tooltip>
+        </UserManual>
+        <SetUserManual
+          className="setting"
+          onClick={() => {
+            appStore.history.push("/SetUserManual");
+          }}
+        >
+          <Tooltip placement="top" title="平台使用手册目录设置">
+            <SYSCSZ />
+          </Tooltip>
+        </SetUserManual>
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
         )}
