@@ -27,15 +27,19 @@ export default function TestInfo(props: Props) {
       <div className="label w-106"></div>
       <div className="content">卷面题目数共  {info.questionCount}  题    {info.randomOrderQue ? '随机显示题目顺序' : ''}    {info.randomOrderQItem ? '随机显示选项顺序' : ''}</div>
       <div className="label w-106"></div>
-      {info.id && <div className="content"><Button size="small" onClick={() => testPage.show({
-        id: info.id,
-        teachingMethodName: info.teachingMethodName,
-        title: info.title,
-        startTime: info.startTime,
-        endTime: info.endTime,
-        examDuration: info.examDuration,
-        passScores: info.passScores,
-      })}>试卷预览</Button></div>}
+      {info.id && <div className="content"><Button
+        type="primary"
+        onClick={() => testPage.show({
+          id: info.id,
+          teachingMethodName: info.teachingMethodName,
+          title: info.title,
+          startTime: info.startTime,
+          endTime: info.endTime,
+          examDuration: info.examDuration,
+          passScores: info.passScores,
+        })}>
+        试卷预览
+      </Button></div>}
     </div>
     <testPage.Component />
   </Wrapper>

@@ -16,7 +16,7 @@ import qs from "qs";
 
 const Option = Select.Option;
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default observer(function 人员管理(props: Props) {
   const [query, setQuery] = useState({
@@ -96,6 +96,13 @@ export default observer(function 人员管理(props: Props) {
       align: "center"
     },
     {
+      title: "职称",
+      key: "zhicheng",
+      dataIndex: "zhicheng",
+      width: 80,
+      align: "center"
+    },
+    {
       title: "层级",
       key: "nurseHierarchy",
       dataIndex: "nurseHierarchy",
@@ -117,9 +124,9 @@ export default observer(function 人员管理(props: Props) {
       align: "center"
     },
     {
-      title: "积分",
-      key: "rewardPoints",
-      dataIndex: "rewardPoints",
+      title: "学时",
+      key: "xueshi",
+      dataIndex: "xueshi",
       width: 50,
       align: "center"
     },
@@ -351,7 +358,7 @@ const Wrapper = styled.div`
         cursor: pointer;
         :hover{
           color: #00A680;
-          font-weight：bold;
+          font-weight: bold;
         }
       }
     }

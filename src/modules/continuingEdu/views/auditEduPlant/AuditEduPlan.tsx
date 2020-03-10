@@ -69,7 +69,46 @@ export default observer(function AuditEduPlan(props: Props) {
       title: "培训类型",
       dataIndex: "teachingMethodName",
       align: "center",
-      width: 80
+      className: 'teaching-method-name',
+      width: 80,
+      render: (text: string) => {
+        let bgColor = ''
+        let textColor = ''
+
+        switch (text) {
+          case '学习':
+            bgColor = '#EEFDEE'
+            textColor = '#4CA21D'
+            break
+          case '培训':
+            bgColor = '#FDF8E6'
+            textColor = '#DD7316'
+            break
+          case '考试':
+            bgColor = '#FCECE9'
+            textColor = '#EA3838'
+            break
+          case '练习':
+            bgColor = '#EEF1FF'
+            textColor = '#2754A8'
+            break
+          case '实操':
+            bgColor = '#F0F8F8'
+            textColor = '#006667'
+            break
+          case '演练':
+            bgColor = '#FAEAFB'
+            textColor = '#AB2892'
+            break
+          default:
+        }
+
+        return <div
+          className="teaching-method-item"
+          style={{ backgroundColor: bgColor }}>
+          <span style={{ color: textColor }}>{text}</span>
+        </div>
+      }
     },
     {
       title: "标题",
@@ -308,6 +347,7 @@ export default observer(function AuditEduPlan(props: Props) {
             config={tabList}
             onChange={(key: any) => {
               setActiveKey(key)
+              setQuery({ ...query, pageIndex: 1 })
             }} />
         </MainCon>
       </BodyWarpper>
@@ -322,6 +362,24 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  .teaching-method-name{
+    position: relative;
+    .teaching-method-item{
+      position: absolute;
+      left:0;
+      right:0;
+      top:0;
+      bottom:0;
+      span{
+        cursor: default;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+      }
+    }
+  }
 `
 
 const HeaderCon = styled.div`

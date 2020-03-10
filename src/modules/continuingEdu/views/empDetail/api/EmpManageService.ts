@@ -36,7 +36,13 @@ export default class EmpManageService extends BaseApiService {
   }
   /**获取所有片区 */
   public async findAllAreas() {
-    return this.post('/educon/eduMasterData/findAllAreas');
+    return
+    this.post('/educon/eduMasterData/findAllAreas');
+  }
+
+  //获取一级菜单
+  public async getMenuTree() {
+    return this.get(`/studyAndTrain/menuManage/getMenuTree`);
   }
 }
 

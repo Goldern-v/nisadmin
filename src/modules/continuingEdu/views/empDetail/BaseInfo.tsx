@@ -13,7 +13,7 @@ export default observer(function BaseInfo() {
   const [loading, setLoading] = useState(false)
   const [sourceChange, setSourceChange] = useState(null as null | string)
   const [baseInfo, setBaseInfo] = useState({} as any)
-  const [query, setQuery] = useState({} as any)
+  // const [query, setQuery] = useState({} as any)
 
   useEffect(() => {
     let search: any = appStore.location.search
@@ -31,16 +31,18 @@ export default observer(function BaseInfo() {
 
   const getData = (query: any) => {
     setLoading(true)
-    empManageService.getEmpDetail(query).then(res => {
-      let user = res.data;
-      setBaseInfo({
-        ...user,
-        sexual: user.sexual == 0 ? '男' : '女',
+    empManageService
+      .getEmpDetail(query)
+      .then(res => {
+        let user = res.data;
+        setBaseInfo({
+          ...user,
+          sexual: user.sexual == 0 ? '男' : '女',
+        })
+        setLoading(false)
+      }, err => {
+        setLoading(false)
       })
-      setLoading(false)
-    }, err => {
-      setLoading(false)
-    })
   }
 
   return (

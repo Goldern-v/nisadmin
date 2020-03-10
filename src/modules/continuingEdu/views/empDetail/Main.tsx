@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd'
 import { observer } from 'mobx-react-lite'
+import { empDetailModel } from './models/EmpDetailModel'
 import { appStore } from 'src/stores'
 import qs from 'qs'
 
@@ -25,8 +26,13 @@ const Routes_Config = [
     component: TableView
   },
   {
-    name: '积分记录',
-    title: '积分记录',
+    name: '学时记录',
+    title: '学时记录',
+    component: TableView
+  },
+  {
+    name: '学习记录',
+    title: '学习记录',
     component: TableView
   },
   {
@@ -35,18 +41,23 @@ const Routes_Config = [
     component: TableView
   },
   {
-    name: '练习记录',
-    title: '练习记录',
-    component: TableView
-  },
-  {
     name: '考试记录',
     title: '考试记录',
     component: TableView
   },
   {
-    name: '视频学习',
-    title: '视频学习',
+    name: '练习记录',
+    title: '练习记录',
+    component: TableView
+  },
+  {
+    name: '实操记录',
+    title: '实操记录',
+    component: TableView
+  },
+  {
+    name: '演练记录',
+    title: '演练记录',
     component: TableView
   }
 ]
@@ -64,13 +75,16 @@ export default observer(function Main(props: any) {
     deptName: '',
     status: ''
   } as any)
-  // console.log(appStore.match.params.pannelName);
+
+  const pannelName = appStore.match.params.pannelName || ''
 
   useEffect(() => {
     let search: any = appStore.location.search;
     let query = {} as any;
     if (search) query = qs.parse(search.replace('?', ''));
     setData({ ...data, ...query })
+
+    empDetailModel.init()
   }, [])
 
   const targetComponent = () => {
@@ -98,6 +112,10 @@ export default observer(function Main(props: any) {
       query.sourceChange = 1
 
     appStore.history.replace(`${url}?${qs.stringify(query)}`);
+
+    if (pannelName == '学分记录') {
+      console.log('刷新学分记录')
+    }
   }
 
   const TargetRoute = targetComponent();
@@ -121,8 +139,8 @@ export default observer(function Main(props: any) {
         </span>
       </div>
       <div className="btn-group">
-        {/* <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button> */}
-        <Button onClick={() => history.replace('/continuingEdu/人员管理')}>返回</Button>
+        <Button onClick={() => setSorceAppendVisible(true)}>扣除学分</Button>
+        <Button onClick={() => history.goBack()}>返回</Button>
       </div>
     </div>
     <div className="main-contain">
@@ -155,7 +173,7 @@ const Wrapper = styled.div`
     padding: 10px 15px;
     margin-top: -135px;
     height: 135px;
-    background: url(/static/media/顶部背景.7f60fe00.png);
+    background: url('/static/media/顶部背景.7f60fe00.png');
     background-size: cover;
     box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.1);
     border-bottom: 1px solid #dbe0e4;
@@ -220,7 +238,7 @@ const Wrapper = styled.div`
       width: 160px;
       height: 100%;
       overflow-y: auto;
-      background: url(/static/media/侧边背景.5cb403af.png);
+      background: url('/static/media/侧边背景.5cb403af.png');
       background-color: rgba(0,0,0,0);
       background-size: 120% auto;
       background-repeat: no-repeat;

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Modal, Row, Col, Select, Input } from 'antd'
+import { Modal, Row, Col, Select, Input, InputNumber } from 'antd'
 import Form from 'src/components/Form/Form'
 import { Rules } from 'src/components/Form/interfaces'
 
@@ -16,6 +16,7 @@ export interface Props {
 export default function SorceAppendModal(props: Props) {
   const { visible, onCancel, onOk } = props;
   const formRef = React.createRef<Form>();
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     let timer = null as any | null;
@@ -35,13 +36,18 @@ export default function SorceAppendModal(props: Props) {
   }, [visible])
 
   const handleOk = () => {
-    // console.log(formRef.current)
-    onOk && onOk()
+    setLoading(true)
+    console.log(formRef.current && formRef.current.getFields())
+    setTimeout(() => {
+      setLoading(false)
+      onOk && onOk()
+    }, 1000)
   }
 
   return <Modal
     visible={visible}
     title="学分维护"
+    confirmLoading={loading}
     onOk={handleOk}
     centered
     onCancel={onCancel}>
@@ -63,7 +69,7 @@ export default function SorceAppendModal(props: Props) {
           <Col span={4} className="label">学分:</Col>
           <Col span={14}>
             <Form.Field name="sorce">
-              <Input type="number" />
+              <InputNumber min={0} />
             </Form.Field>
           </Col>
           <Col span={6}>
