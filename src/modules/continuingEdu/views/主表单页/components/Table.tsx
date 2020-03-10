@@ -46,14 +46,6 @@ export default observer(function Table(props: Props) {
 
   const columns: any = [
     {
-      title: "序号",
-      width: 50,
-      align: "center",
-      render(text: string, record: any, index: number) {
-        return index + 1;
-      }
-    },
-    {
       title: "开始时间",
       dataIndex: "startTime",
       width: 130,
@@ -197,10 +189,17 @@ export default observer(function Table(props: Props) {
       align: "center"
     },
     {
+      title: "备注",
+      dataIndex: "auditRemark",
+      width: 150,
+      align: "left"
+    },
+    {
       title: "状态",
       dataIndex: "statusDesc",
       width: 80,
       align: "center",
+      fixed: "right",
       render(statusDesc: any, record: any) {
         let color = "";
         switch (statusDesc) {
@@ -220,19 +219,30 @@ export default observer(function Table(props: Props) {
       }
     },
     {
-      title: "备注",
-      dataIndex: "auditRemark",
-      width: 150,
-      align: "left"
-    },
-    {
       title: "操作",
       dataIndex: "",
       width: 180,
       align: "center",
+      fixed: "right",
       render(text: any, record: any, index: number) {
         let data: any = [{ text: "暂无操作" }];
         switch (record.statusDesc) {
+          case "待开始":
+            data = [
+              {
+                text: "查看结果",
+                function: checkResult
+              },
+              {
+                text: "查看信息",
+                function: checkMessage
+              },
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ];
+            break;
           case "待审核":
             data = [
               {
@@ -419,6 +429,8 @@ export default observer(function Table(props: Props) {
         columns={columns}
         surplusWidth={300}
         surplusHeight={270}
+        type={["index"]}
+        scroll={{ x: 895 }}
         pagination={{
           current: mainPageModal.pageIndex,
           total: mainPageModal.total,

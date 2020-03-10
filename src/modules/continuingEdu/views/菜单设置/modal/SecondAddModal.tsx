@@ -404,7 +404,12 @@ export default function SecondAddModal(props: Props) {
                 <Row>
                   <Col span={20}>
                     <Form.Field>
-                      <span>
+                      <span
+                        style={{
+                          color: "#666666",
+                          display: "inline-block"
+                        }}
+                      >
                         新增二级子菜单：
                         <span style={{ fontWeight: 900 }}>
                           {item.childrenName}
@@ -536,28 +541,39 @@ export default function SecondAddModal(props: Props) {
         )}
         {current === 2 && (
           <NavThree>
+            <span className="parentName">{parentName}</span>
             {allDataList.map((item: any, index: any) => (
               <Form key={index} ref={formRef}>
                 <Row>
-                  <Col span={4} className="label">
-                    一级菜单添加:
-                  </Col>
                   <Col span={20}>
                     <Form.Field>
-                      <span>{item.parentName}</span>
+                      <span
+                        style={{
+                          color: "#666666",
+                          marginTop: "25px",
+                          display: "inline-block"
+                        }}
+                      >
+                        新增二级子菜单：
+                        <span
+                          style={{
+                            fontWeight: 900,
+                            marginLeft: "10px",
+                            color: "black"
+                          }}
+                        >
+                          {item.childrenName}
+                        </span>
+                      </span>
                     </Form.Field>
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={4} className="label">
-                    二级菜单添加:
-                  </Col>
-                  <Col span={20}>
+                  <Col span={20} className="peopleName">
                     <Form.Field name="submit">
-                      <div>{item.childrenName}</div>
                       {item.submit.length !== 0 && (
                         <div>
-                          <span>提交人:</span>
+                          <span style={{ marginRight: "10px" }}>提交人:</span>
                           {item.submit.map((o: any, index: any) => (
                             <span key={index}>{o.label}</span>
                           ))}
@@ -565,7 +581,7 @@ export default function SecondAddModal(props: Props) {
                       )}
                       {item.firstAudit.length !== 0 && (
                         <div>
-                          <span>审核人:</span>
+                          <span style={{ marginRight: "10px" }}>审核人:</span>
                           {item.firstAudit.map((o: any, index: any) => (
                             <span key={index}>{o.label}</span>
                           ))}
@@ -573,7 +589,15 @@ export default function SecondAddModal(props: Props) {
                       )}
                       {item.secondAudit.length !== 0 && (
                         <div>
-                          <span>二级审核人:</span>
+                          <span
+                            style={{
+                              marginLeft: "-26px",
+                              color: "#666666",
+                              marginRight: "10px"
+                            }}
+                          >
+                            二级审核人:
+                          </span>
                           {item.secondAudit.map((o: any, index: any) => (
                             <span key={index}>{o.label}</span>
                           ))}
@@ -581,7 +605,15 @@ export default function SecondAddModal(props: Props) {
                       )}
                       {item.thirdAudit.length !== 0 && (
                         <div>
-                          <span>三级审核人:</span>
+                          <span
+                            style={{
+                              marginLeft: "-26px",
+                              color: "#666666",
+                              marginRight: "10px"
+                            }}
+                          >
+                            三级审核人:
+                          </span>
                           {item.thirdAudit.map((o: any, index: any) => (
                             <span key={index}>{o.label}</span>
                           ))}
@@ -702,8 +734,9 @@ const NavOne = styled.div`
 `;
 
 const NavTwo = styled.div`
+  border-top: 1px solid #e8e8e8;
   form {
-    margin: 20px 37px;
+    margin: 15px 37px 10px 37px;
     line-height: 32px;
   }
   .divStyle {
@@ -721,9 +754,10 @@ const NavTwo = styled.div`
     }
   }
   .parentName {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
-    margin-left: 38px;
+    display: inline-block;
+    margin: 25px 0 5px 38px;
   }
 `;
 
@@ -755,9 +789,24 @@ const AddClickBtn = styled.span`
 `;
 
 const NavThree = styled.div`
-  padding: 20px 30px;
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 30px;
   form {
     line-height: 25px;
+  }
+  .parentName {
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 15px;
+  }
+  .peopleName {
+    margin-left: 113px;
+    margin-top: -20px;
+    border: 1px dashed #cccccc;
+    background: rgba(245, 245, 245, 1);
+    padding: 10px 0 0 45px;
+    box-sizing: border-box;
   }
 `;
 
