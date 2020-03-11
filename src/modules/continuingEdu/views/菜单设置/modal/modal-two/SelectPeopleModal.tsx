@@ -273,26 +273,26 @@ const CheckListCon = observer(function(props: any) {
   let checkAll = false;
   let indeterminate = false;
   try {
-    let allKeys = selectPeopleViewModel.currentTreeData!.list.map(
-      (item: any) => {
+    let allKeys = [];
+    if (selectPeopleViewModel.currentTreeData) {
+      allKeys = selectPeopleViewModel.currentTreeData!.list.map((item: any) => {
         return item.key;
-      }
-    );
-    let checkedLabels = checkedUserList.map((item: any) => item.key);
-
-    checkAll = (() => {
-      for (let i = 0; i < allKeys.length; i++) {
-        if (checkedLabels.indexOf(allKeys[i]) == -1) return false;
-      }
-      return true;
-    })();
-    indeterminate = (() => {
-      if (checkAll) return false;
-      for (let i = 0; i < allKeys.length; i++) {
-        if (checkedLabels.indexOf(allKeys[i]) > -1) return true;
-      }
-      return false;
-    })();
+      });
+      let checkedLabels = checkedUserList.map((item: any) => item.key);
+      checkAll = (() => {
+        for (let i = 0; i < allKeys.length; i++) {
+          if (checkedLabels.indexOf(allKeys[i]) == -1) return false;
+        }
+        return true;
+      })();
+      indeterminate = (() => {
+        if (checkAll) return false;
+        for (let i = 0; i < allKeys.length; i++) {
+          if (checkedLabels.indexOf(allKeys[i]) > -1) return true;
+        }
+        return false;
+      })();
+    }
   } catch (error) {}
 
   const onCheck = (e: CheckboxChangeEvent, item: any) => {
@@ -347,53 +347,54 @@ const CheckListCon = observer(function(props: any) {
         </Checkbox>
       </div>
       <Checkbox.Group value={checkedUserList.map((item: any) => item.key)}>
-        {selectPeopleViewModel.currentTreeData!.list.map(
-          (item: any, index: number) => {
-            return (
-              <div className="check-row" key={index}>
-                <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
-                  {item.label}
-                </Checkbox>
-                {selectPeopleViewModel!.currentTreeData!.type !==
-                  "userList" && (
-                  <div style={{ minWidth: 54 }}>
-                    <span style={{ padding: "0 4px" }}>|</span>
-                    <span
-                      className={classNames({
-                        open: true,
-                        inChecked: inCheckedUser(item)
-                      })}
-                      onClick={() =>
-                        selectPeopleViewModel.pushStep(
-                          item[
-                            selectPeopleViewModel!.currentTreeData!.stepLabel
-                          ]
-                            ? `${
-                                item[
+        {selectPeopleViewModel.currentTreeData &&
+          selectPeopleViewModel.currentTreeData!.list.map(
+            (item: any, index: number) => {
+              return (
+                <div className="check-row" key={index}>
+                  <Checkbox value={item.key} onChange={e => onCheck(e, item)}>
+                    {item.label}
+                  </Checkbox>
+                  {selectPeopleViewModel!.currentTreeData!.type !==
+                    "userList" && (
+                    <div style={{ minWidth: 54 }}>
+                      <span style={{ padding: "0 4px" }}>|</span>
+                      <span
+                        className={classNames({
+                          open: true,
+                          inChecked: inCheckedUser(item)
+                        })}
+                        onClick={() =>
+                          selectPeopleViewModel.pushStep(
+                            item[
+                              selectPeopleViewModel!.currentTreeData!.stepLabel
+                            ]
+                              ? `${
+                                  item[
+                                    selectPeopleViewModel!.currentTreeData!
+                                      .stepLabel
+                                  ]
+                                }-${
+                                  item[
+                                    selectPeopleViewModel!.currentTreeData!
+                                      .dataLabel
+                                  ]
+                                }`
+                              : item[
                                   selectPeopleViewModel!.currentTreeData!
-                                    .stepLabel
+                                    .dataLabel || ""
                                 ]
-                              }-${
-                                item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .dataLabel
-                                ]
-                              }`
-                            : item[
-                                selectPeopleViewModel!.currentTreeData!
-                                  .dataLabel || ""
-                              ]
-                        )
-                      }
-                    >
-                      展开
-                    </span>
-                  </div>
-                )}
-              </div>
-            );
-          }
-        )}
+                          )
+                        }
+                      >
+                        展开
+                      </span>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+          )}
       </Checkbox.Group>
     </Con>
   );
