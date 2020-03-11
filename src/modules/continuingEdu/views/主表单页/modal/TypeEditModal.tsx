@@ -10,6 +10,7 @@ export interface Props {
   params: any;
   onCancel: any;
   onOk: any;
+  onOkCallBack?: any;
 }
 
 export default function TypeEditModal(props: Props) {
@@ -74,7 +75,7 @@ export default function TypeEditModal(props: Props) {
                 setEditLoading(false);
                 let msg = "类型添加成功";
                 Message.success(msg);
-                onOk();
+                onOk(res);
               });
             }
           }

@@ -83,7 +83,7 @@ export default function Step1() {
 
   // 查询类型
   const getTypeList = () => {
-    stepServices.getMenuListByPId().then(res => {
+    return stepServices.getMenuListByPId().then(res => {
       if (stepViewModal.stepData1.id) {
         setTypeList([...res.data, { id: -1, name: "其他" }]);
       } else {
@@ -102,8 +102,23 @@ export default function Step1() {
     setEditVisible(false);
     setEditParams({});
   };
-  const handleEditOk = () => {
-    getTypeList();
+
+  const setFormType = (form: any, id: any) => {
+    console.log(form, id);
+    form &&
+      id &&
+      form.setFields({
+        id: id
+      });
+  };
+
+  const handleEditOk = (res: any) => {
+    let form = refForm.current;
+    getTypeList().then(_ => {
+      setTimeout(() => {
+        setFormType(form, res.data.id);
+      }, 100);
+    });
     handleEditCancel();
   };
 
