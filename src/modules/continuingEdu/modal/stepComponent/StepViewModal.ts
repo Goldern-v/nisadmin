@@ -101,6 +101,7 @@ class StepViewModal {
     for (let key in selfStepViewModalMap) {
       selfStepViewModalMap[key].cleanAllStepData();
     }
+    stepViewModal.oldData = null;
     cleanObj(this.stepData1);
     cleanObj(this.stepData3);
     cleanObj(this.stepData4);
