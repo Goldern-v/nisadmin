@@ -9,10 +9,6 @@ export interface Props {}
 export default function Step3() {
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   useEffect(() => {
-    console.log(
-      cloneJson(stepViewModal.stepData3.participantList),
-      " stepViewModal.stepData3.participantList"
-    );
     setCheckedUserList(stepViewModal.stepData3.participantList);
   }, []);
   return (

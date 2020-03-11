@@ -114,7 +114,12 @@ class StepViewModal {
       nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
       teacherList: this.stepData2.teacherList.reduce(
         (total: any[], item: any) => {
-          return [...total, ...item.userList];
+          return [
+            ...total,
+            {
+              empNo: item.key
+            }
+          ];
         },
         []
       ),
@@ -129,7 +134,12 @@ class StepViewModal {
         ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {
-            return [...total, ...item.userList];
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
           },
           []
         )
@@ -163,16 +173,14 @@ class StepViewModal {
     this.stepData2.teacherList = data.teacherList.map((item: any) => {
       return {
         label: item.empName,
-        key: item.empName,
-        userList: [item]
+        key: item.empNo
       };
     });
     this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
       (item: any) => {
         return {
           label: item.empName,
-          key: item.empName,
-          userList: [item]
+          key: item.empNo
         };
       }
     );

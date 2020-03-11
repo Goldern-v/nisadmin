@@ -136,7 +136,12 @@ class StepViewModal {
         ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {
-            return [...total, ...item.userList];
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
           },
           []
         ),
@@ -150,7 +155,12 @@ class StepViewModal {
         needScorePerson: this.stepData2.needScorePerson ? 1 : 0,
         scorePersonList: this.stepData2.scorePersonList.reduce(
           (total: any[], item: any) => {
-            return [...total, ...item.userList];
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
           },
           []
         ),
@@ -182,19 +192,11 @@ class StepViewModal {
 
     this.stepData5.ifSendMessage = !!data.detailInfo.ifSendMessage;
 
-    this.stepData2.teacherList = data.teacherList.map((item: any) => {
-      return {
-        label: item.empName,
-        key: item.empName,
-        userList: [item]
-      };
-    });
     this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
       (item: any) => {
         return {
           label: item.empName,
-          key: item.empName,
-          userList: [item]
+          key: item.empNo
         };
       }
     );
@@ -202,8 +204,7 @@ class StepViewModal {
       (item: any) => {
         return {
           label: item.empName,
-          key: item.empName,
-          userList: [item]
+          key: item.empNo
         };
       }
     );

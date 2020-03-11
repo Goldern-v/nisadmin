@@ -46,15 +46,25 @@ class StepViewModal {
 
   /** 步骤一完整 */
   public isOkStep = (step: number) => {
-    const stepData2 = this.getCurrentStepViewModal
-      ? this.getCurrentStepViewModal.stepData2
-      : {};
+    /** step 必须完整 */
 
-    let stepArr = [this.stepData1, stepData2, this.stepData3, this.stepData4];
-    if (step == 2) return true;
-    if (step == 3) return true;
+    if (step == 0) {
+      if (this.stepData1.teachingMethod) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+    // const stepData2 = this.getCurrentStepViewModal
+    //   ? this.getCurrentStepViewModal.stepData2
+    //   : {};
 
-    return this.isOk(stepArr[step]);
+    // let stepArr = [this.stepData1, stepData2, this.stepData3, this.stepData4];
+    // if (step == 2) return true;
+    // if (step == 3) return true;
+
+    // return this.isOk(stepArr[step]);
   };
 
   /** 获取当前选择模式下的私有viewModal */
