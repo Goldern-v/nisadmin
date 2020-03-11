@@ -41,16 +41,17 @@ export default function Step1() {
   useEffect(() => {
     if (typeList.length) {
       let form = refForm.current;
-      form &&
-        stepViewModal.stepData1.id &&
-        form.setFields({
-          id: stepViewModal.stepData1.id
-        });
-      console.log(
-        form,
-        stepViewModal.stepData1.id,
-        "stepViewModal.stepData1.id"
-      );
+      if (form) {
+        if (stepViewModal.stepData1.id) {
+          form.setFields({
+            id: stepViewModal.stepData1.id
+          });
+        } else {
+          form.setFields({
+            id: typeList[typeList.length - 1].id
+          });
+        }
+      }
     }
   }, [typeList]);
 

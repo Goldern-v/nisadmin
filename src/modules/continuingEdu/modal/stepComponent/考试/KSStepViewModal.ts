@@ -10,7 +10,7 @@ const defaultStepData2: any = {
   /**  考试开始时间 */
   startTime: "",
   /**  开放时长 */
-  openTime: "",
+  openTime: "1",
   /**  开放时长单位（小时、天、周） */
   openTimeUnit: "小时",
   /**  结束XX天后归档 */
@@ -18,7 +18,7 @@ const defaultStepData2: any = {
   /**  组织方式（1线上；2线下） */
   organizationWay: 1,
   /**  考试地址（如：护理app） */
-  address: "",
+  address: "护士app",
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
   studentCreditType: 1,
   /**  学员学分 */

@@ -41,8 +41,10 @@ export default class StepServices extends BaseApiService {
   }
 
   /** 上传附件 */
-  public uploadAttachment(obj: any) {
-    return this.post(`/file/uploadAttachment/studyAndTrain`, obj);
+  public uploadAttachment(obj: any, onUploadProgress?: any) {
+    return this.post(`/file/uploadAttachment/studyAndTrain`, obj, {
+      onUploadProgress: onUploadProgress
+    });
   }
 
   /** 生成任务处理码 */

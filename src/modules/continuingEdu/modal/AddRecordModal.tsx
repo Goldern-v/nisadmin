@@ -161,7 +161,8 @@ export default observer(function AddRecordModal(props: Props) {
       forceRender
       footer={
         <div style={{ textAlign: "center" }}>
-          <Button onClick={prevStep}>上一步</Button>
+          {currentStep >= 1 && <Button onClick={prevStep}>上一步</Button>}
+
           <Button onClick={onCancel}>取消</Button>
 
           {currentStep <= 3 && (
