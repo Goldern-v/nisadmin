@@ -9,7 +9,8 @@ import {
   AutoComplete,
   Select,
   Checkbox,
-  InputNumber
+  InputNumber,
+  message
 } from "antd";
 import Form from "src/components/Form";
 import { Rules } from "src/components/Form/interfaces";
@@ -75,15 +76,25 @@ export default observer(function Step1() {
   /** 选择人员 */
   const openSelectNurseModal = (name: string) => {
     let checkedUserList = [];
-    if (name == "teacherList") {
-      checkedUserList = stepViewModal.stepData2.teacherList;
-    } else if (name == "sicPersonList") {
+   if (name == "sicPersonList") {
       checkedUserList = stepViewModal.stepData2.sicPersonList;
     }
     selectNurseModal.show({
       checkedUserList: checkedUserList,
       onOkCallBack: (checkedUserList: CheckUserItem[]) => {
-        refForm.current && refForm.current.setField(name, checkedUserList);
+        let userList = checkedUserList.reduce((total: any[], item: any) => {
+          return [
+            ...total,
+            ...item.userList.map((item: any) => ({
+              label: item.empName,
+              key: item.empNo
+            }))
+          ];
+        }, []);
+        if(userList.length > 3) {
+          return message.warn('选择人数不能超过三人')
+        }
+        refForm.current && refForm.current.setField(name, userList);
       }
     });
   };

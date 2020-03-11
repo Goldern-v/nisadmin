@@ -161,23 +161,21 @@ export default observer(function AddRecordModal(props: Props) {
       forceRender
       footer={
         <div style={{ textAlign: "center" }}>
-          <Button onClick={prevStep}>上一步</Button>
+          {currentStep >= 1 && <Button onClick={prevStep}>上一步</Button>}
+
           <Button onClick={onCancel}>取消</Button>
 
           {currentStep <= 3 && (
             <Button
               onClick={nextStep}
               type="primary"
-              // disabled={!stepViewModal.isOkStep(currentStep)}
+              disabled={!stepViewModal.isOkStep(currentStep)}
             >
               下一步
             </Button>
           )}
           {currentStep == 4 && (
             <React.Fragment>
-              <Button onClick={() => addTeachingPlanInfoStudy(1)}>
-                存草稿
-              </Button>
               <Button
                 onClick={() => addTeachingPlanInfoStudy(2)}
                 type="primary"
@@ -185,6 +183,9 @@ export default observer(function AddRecordModal(props: Props) {
                 提交审核
               </Button>
             </React.Fragment>
+          )}
+          {currentStep >= 1 && (
+            <Button onClick={() => addTeachingPlanInfoStudy(1)}>存草稿</Button>
           )}
         </div>
       }

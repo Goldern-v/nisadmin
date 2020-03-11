@@ -17,7 +17,7 @@ const defaultStepData2 = {
   /**  组织方式（1线上；2线下） */
   organizationWay: 1,
   /**  学习地址（如：护理app） */
-  address: "",
+  address: "护士app",
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
   studentCreditType: 1,
   /**  学员学分 */

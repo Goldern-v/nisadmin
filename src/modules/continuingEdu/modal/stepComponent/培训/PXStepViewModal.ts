@@ -10,7 +10,7 @@ const defaultStepData2 = {
   /**  培训开始时间 */
   startTime: "",
   /**  开放时长 */
-  openTime: "",
+  openTime: "1",
   /**  开放时长单位（小时、天、周） */
   openTimeUnit: "小时",
   /**  结束XX天后归档 */
@@ -18,7 +18,7 @@ const defaultStepData2 = {
   /**  组织方式（1线上；2线下） */
   organizationWay: 1,
   /**  培训地址（如：护理app） */
-  address: "",
+  address: "护士app",
   /**  学院学分类型（1院级学分 2片区学分 3病区学分） */
   studentCreditType: 1,
   /**  学员学分 */
@@ -114,7 +114,12 @@ class StepViewModal {
       nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
       teacherList: this.stepData2.teacherList.reduce(
         (total: any[], item: any) => {
-          return [...total, ...item.userList];
+          return [
+            ...total,
+            {
+              empNo: item.key
+            }
+          ];
         },
         []
       ),
@@ -129,7 +134,12 @@ class StepViewModal {
         ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {
-            return [...total, ...item.userList];
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
           },
           []
         )
@@ -163,16 +173,14 @@ class StepViewModal {
     this.stepData2.teacherList = data.teacherList.map((item: any) => {
       return {
         label: item.empName,
-        key: item.empName,
-        userList: [item]
+        key: item.empNo
       };
     });
     this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
       (item: any) => {
         return {
           label: item.empName,
-          key: item.empName,
-          userList: [item]
+          key: item.empNo
         };
       }
     );

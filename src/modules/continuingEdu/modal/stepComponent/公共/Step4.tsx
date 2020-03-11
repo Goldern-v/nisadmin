@@ -1,16 +1,31 @@
 import styled from "styled-components";
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { Button, Icon, message } from "antd";
+import { Button, Icon, message, Progress } from "antd";
 import { getFileType, getFileSize, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
 import { stepServices } from "../services/stepServices";
 import { stepViewModal } from "../StepViewModal";
+import Axios from "axios";
 export interface Props {}
 
 export default function Step4() {
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [fileList, setFileList] = useState([]);
   const [title, setTitle] = useState("");
+
+  /** 上传文件状态 */
+  const [progressEventMap, setProgressEventMap]: any = useState({});
+
+  let totalFileSize = 0;
+  let loadedFileSize = 0;
+
+  console.log(progressEventMap, "progressEventMapprogressEventMap");
+  for (let key in progressEventMap) {
+    if (progressEventMap[key].total) {
+      totalFileSize += progressEventMap[key].total;
+      loadedFileSize += progressEventMap[key].loaded;
+    }
+  }
 
   useEffect(() => {
     console.log(
@@ -39,11 +54,22 @@ export default function Step4() {
     for (let i = 0; i < files.length; i++) {
       let postData = new FormData();
       postData.append("file", files[i]);
-      promiseList.push(stepServices.uploadAttachment(postData));
+      promiseList.push(
+        stepServices.uploadAttachment(postData, (progressEvent: any) => {
+          let fileName = files[i].name;
+          setProgressEventMap({
+            ...progressEvent,
+            [fileName]: progressEvent
+          });
+          console.log(progressEvent, "progressEvent");
+        })
+      );
     }
     let hideLoading = message.loading("正在上传，请稍等", 0);
-    Promise.all(promiseList)
+
+    Axios.all(promiseList)
       .then(res => {
+        console.log(res, "1111");
         let list: any = [
           ...fileList,
           ...res.map(({ data: item }: any) => {
@@ -55,6 +81,7 @@ export default function Step4() {
           })
         ];
         setFileList(list);
+        setProgressEventMap({});
         if (!title && list[0] && list[0].name) {
           setTitle(list[0].name.split(".")[0]);
         }
@@ -71,8 +98,25 @@ export default function Step4() {
           <Icon type="upload" />
           上传
         </Button>
+        <span className="aside">
+          支持格式："图片；*.pdf;**.doc;**.docx;**.ppt;**.pptx;**.xls;**.xlsx*，“.mp4”
+        </span>
       </div>
       <FileList>
+        {!!totalFileSize && (
+          <div style={{ padding: "0 30px 10px" }}>
+            上传进度{" "}
+            <Progress
+              strokeColor={"#00A680"}
+              percent={parseInt(
+                ((loadedFileSize * 0.98) / totalFileSize) * 100 + ""
+              )}
+            />
+            （{getFileSize(loadedFileSize * 0.98)}/{getFileSize(totalFileSize)}
+            ）
+          </div>
+        )}
+
         {fileList.length > 0 && (
           <FilesBox>
             {fileList.map((item: any, index: number) => (
@@ -112,6 +156,13 @@ export default function Step4() {
 const Wrapper = styled.div`
   .btn-con {
     margin: 40px 30px 20px;
+    display: flex;
+    align-items: center;
+  }
+  .aside {
+    font-size: 13px;
+    margin-left: 20px;
+    color: #999;
   }
 `;
 const FileList = styled.div``;
@@ -135,7 +186,7 @@ const FilesBox = styled.div`
     background-color: #c2c2c2;
   }
   .file-box {
-    width: 260px;
+    width: 250px;
     height: 65px;
     background: rgba(246, 246, 246, 1);
     border-radius: 2px;

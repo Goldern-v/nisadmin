@@ -41,16 +41,17 @@ export default function Step1() {
   useEffect(() => {
     if (typeList.length) {
       let form = refForm.current;
-      form &&
-        stepViewModal.stepData1.id &&
-        form.setFields({
-          id: stepViewModal.stepData1.id
-        });
-      console.log(
-        form,
-        stepViewModal.stepData1.id,
-        "stepViewModal.stepData1.id"
-      );
+      if (form) {
+        if (stepViewModal.stepData1.id) {
+          form.setFields({
+            id: stepViewModal.stepData1.id
+          });
+        } else {
+          form.setFields({
+            id: typeList[typeList.length - 1].id
+          });
+        }
+      }
     }
   }, [typeList]);
 
@@ -83,7 +84,7 @@ export default function Step1() {
 
   // 查询类型
   const getTypeList = () => {
-    stepServices.getMenuListByPId().then(res => {
+    return stepServices.getMenuListByPId().then(res => {
       if (stepViewModal.stepData1.id) {
         setTypeList([...res.data, { id: -1, name: "其他" }]);
       } else {
@@ -102,8 +103,23 @@ export default function Step1() {
     setEditVisible(false);
     setEditParams({});
   };
-  const handleEditOk = () => {
-    getTypeList();
+
+  const setFormType = (form: any, id: any) => {
+    console.log(form, id);
+    form &&
+      id &&
+      form.setFields({
+        id: id
+      });
+  };
+
+  const handleEditOk = (res: any) => {
+    let form = refForm.current;
+    getTypeList().then(_ => {
+      setTimeout(() => {
+        setFormType(form, res.data.id);
+      }, 100);
+    });
     handleEditCancel();
   };
 

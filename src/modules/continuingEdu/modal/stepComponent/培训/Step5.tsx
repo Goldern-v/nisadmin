@@ -166,7 +166,7 @@ export default observer(function Step5() {
 
                           <div className="name">{item.name}</div>
                           <div className="size">{item.size}</div>
-                          <Icon type="close" title="删除图片" />
+                          {/* <Icon type="close" title="删除图片" /> */}
                         </div>
                       )
                     )}
@@ -218,7 +218,7 @@ const FilesBox = styled.div`
   margin-top: -12px;
   /* border-bottom: 1px solid #ddd; */
   overflow: auto;
-  max-height: 120px;
+  /* max-height: 120px; */
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;
