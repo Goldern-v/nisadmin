@@ -35,6 +35,15 @@ export default function TypeEditModal(props: Props) {
         let current = formRef.current;
         if (!current) return;
         if (params.id) {
+          const teachingMethodList = [
+            "学习",
+            "培训",
+            "考试",
+            "练习",
+            "实操",
+            "演练"
+          ];
+          params.teachingMethod = teachingMethodList[params.teachingMethod - 1];
           const { name, sort, teachingMethod } = params;
           current.setFields({
             name,
@@ -60,6 +69,7 @@ export default function TypeEditModal(props: Props) {
             newParams.sort = Number(newParams.sort);
             if (params.id) {
               newParams.id = params.id;
+              delete newParams.teachingMethod;
               setEditLoading(true);
               mainPageApi.updateTypeData(newParams).then(res => {
                 setEditLoading(false);

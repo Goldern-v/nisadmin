@@ -203,11 +203,17 @@ export default observer(function Table(props: Props) {
       render(statusDesc: any, record: any) {
         let color = "";
         switch (statusDesc) {
+          case "待开始":
+            color = "#39A133";
+            break;
+          case "已结束":
+            color = "rgba(0, 0, 0, 0.65)";
+            break;
           case "待审核":
             color = "#284fc2";
             break;
           case "进行中":
-            color = "#EFF9C35";
+            color = "#ED8628";
             break;
           case "退回":
             color = "#E63122";
@@ -278,7 +284,12 @@ export default observer(function Table(props: Props) {
           case "退回":
             data = [
               {
-                text: "修改"
+                text: "查看信息",
+                function: checkMessage
+              },
+              {
+                text: "修改",
+                function: handReWrite
               },
               {
                 text: "删除",

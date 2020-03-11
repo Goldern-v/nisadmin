@@ -7,8 +7,12 @@ import { meunSettingApi } from "./api/MeunSettingApi";
 import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
 import SecondEditModal from "./modal/SecondEditModal"; // 修改二级菜单
 import SecondAddModal from "./modal/SecondAddModal"; // 添加二级菜单
+interface Props {
+  getList: any;
+}
 
-export default observer(function MenuSettings() {
+export default observer(function MenuSettings(props: Props) {
+  const getList = props.getList;
   const [effect, setEffect] = useState(true);
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
@@ -219,6 +223,7 @@ export default observer(function MenuSettings() {
           <div className="topHeaderTitle">
             <div className="title">菜单设置</div>
             <div className="topHeaderButton">
+              <Button onClick={getList}>刷新</Button>
               <Button type="primary" onClick={() => setEditVisible(true)}>
                 添加一级菜单
               </Button>
