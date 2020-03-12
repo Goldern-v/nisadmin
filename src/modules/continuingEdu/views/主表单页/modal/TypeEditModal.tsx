@@ -23,11 +23,9 @@ export default function TypeEditModal(props: Props) {
     name: val => !!val || "名称不能为空",
     teachingMethod: val => !!val || "教学方式不能为空",
     sort: val =>
-      !!!val
-        ? "排序不能为空"
-        : !!val.replace(/[^\d]/g, "")
-        ? ""
-        : "排序只能填入数字"
+      isNaN(Number(val)) || val === "" || Number(val) < 0
+        ? "排序必填且为正整数"
+        : ""
   };
 
   useEffect(() => {
@@ -53,6 +51,11 @@ export default function TypeEditModal(props: Props) {
           });
         } else {
           current.clear();
+          const { sort, teachingMethod } = params;
+          current.setFields({
+            sort,
+            teachingMethod
+          });
         }
       }, 100);
     }
@@ -79,6 +82,9 @@ export default function TypeEditModal(props: Props) {
                 onOk();
               });
             } else {
+              if (newParams.teachingMethod === "学习") {
+                newParams.teachingMethod = 1;
+              }
               newParams.pId = Number(params.Pid);
               newParams.teachingMethod = Number(newParams.teachingMethod);
               mainPageApi.addTypeData(newParams).then(res => {
@@ -110,7 +116,7 @@ export default function TypeEditModal(props: Props) {
       title={params.id ? "修改" : "添加"}
     >
       <Wrapper>
-        <Form ref={formRef} rules={!params.id ? rules : {}}>
+        <Form ref={formRef} rules={rules}>
           <Row>
             <Col span={4} className="label">
               名称:

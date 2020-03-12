@@ -186,17 +186,24 @@ export default observer(function MenuSettings(props: Props) {
     );
   };
 
-  const saveOrUpload = (record: any) => {
-    if (record.key) {
+  const saveOrUpload = (record?: any) => {
+    if (record) {
+      if (record.key) {
+        setEditParams({
+          id: record.id,
+          name: record.name,
+          sort: record.sort
+        });
+        setEditVisible(true);
+      } else {
+        setEditParams(record);
+        setEditSecondVisible(true);
+      }
+    } else {
       setEditParams({
-        id: record.id,
-        name: record.name,
-        sort: record.sort
+        sort: 1
       });
       setEditVisible(true);
-    } else {
-      setEditParams(record);
-      setEditSecondVisible(true);
     }
   };
 
@@ -224,7 +231,7 @@ export default observer(function MenuSettings(props: Props) {
             <div className="title">菜单设置</div>
             <div className="topHeaderButton">
               <Button onClick={getTableData}>刷新</Button>
-              <Button type="primary" onClick={() => setEditVisible(true)}>
+              <Button type="primary" onClick={() => saveOrUpload()}>
                 添加一级菜单
               </Button>
               <Button type="primary" onClick={addSecond}>

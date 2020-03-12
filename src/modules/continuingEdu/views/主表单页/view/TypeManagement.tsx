@@ -134,7 +134,7 @@ export default withRouter(
       let content = (
         <div>
           <div>删除只会将类型名称删除，原先创建的记录还保留教学方式不变</div>
-          <div>您确定要删除选中的记录吗？</div>
+          <div>您确定要删除选中的类型吗？</div>
         </div>
       );
       Modal.confirm({
@@ -172,7 +172,9 @@ export default withRouter(
         });
       } else {
         setEditParams({
-          Pid: id
+          Pid: id,
+          sort: 0,
+          teachingMethod: "学习"
         });
       }
       setEditVisible(true);

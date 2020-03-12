@@ -20,11 +20,9 @@ export default function FirstEditModal(props: Props) {
   const rules: Rules = {
     name: val => !!val || "名称不能为空",
     sort: val =>
-      !!!val
-        ? "排序不能为空"
-        : !!val.replace(/[^\d]/g, "")
-        ? ""
-        : "排序只能填入数字"
+      isNaN(Number(val)) || val === "" || Number(val) < 0
+        ? "排序必填且为正整数"
+        : ""
   };
 
   useEffect(() => {
@@ -40,6 +38,10 @@ export default function FirstEditModal(props: Props) {
           });
         } else {
           current.clear();
+          const { sort } = params;
+          current.setFields({
+            sort
+          });
         }
       }, 100);
     }
