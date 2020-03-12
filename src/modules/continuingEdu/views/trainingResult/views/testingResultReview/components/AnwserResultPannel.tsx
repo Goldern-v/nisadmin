@@ -39,11 +39,22 @@ export default function AnwserResultPannel(props: Props) {
     })
 
   let wendaQuestionList = questionList.filter((item: any) => item.questionType == 4)
-  let totalGainScores = baseInfo.totalGainScores || 0
+  let rightQuestionList = questionList.filter((item: any) => {
+    if (item.questionType == 4) return false
+    if (item.answerRight) return true
+    return false
+  })
+  //计算总得分
+  let totalGainScores = 0
+
+  for (let i = 0; i < rightQuestionList.length; i++) {
+    let rightItem = rightQuestionList[i]
+    if (rightItem.scores) totalGainScores += rightItem.scores
+  }
 
   for (let i = 0; i < wendaQuestionList.length; i++) {
     let wendati = wendaQuestionList[i]
-    let score = wendati.scores - wendati.editScore
+    let score = wendati.scores - wendati.deduction
     totalGainScores += score
   }
 

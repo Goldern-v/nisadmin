@@ -120,17 +120,11 @@ export default observer(function TestingResultReview() {
       render: (status: string, record: any) => {
         return <DoCon>
           <span onClick={() => handleAnwserSheetReview(record)}>查看答卷</span>
-          {/* {record.awnserTime ?
-            <span onClick={() => handleAnwserSheetReview(record)}>查看答卷</span> :
-            <span style={{ color: '#ddd', cursor: 'default' }}>查看答卷</span>} */}
         </DoCon>
       }
     }
   ]
 
-  const handleDetail = (record: any) => {
-    //查看详情
-  }
   const handlePageChange = (pageIndex: number, pageSize: number | undefined) => {
     trainingResultModel.setQuery({ ...query, pageIndex }, true)
   }
@@ -161,7 +155,9 @@ export default observer(function TestingResultReview() {
   }
 
   const handleAnwserSheetReview = (record: any) => {
-    // if (record.awnserTime)
+    // if (!record.answerTime)
+    // return message.warning('该学员未答题')
+
     answerSheet.show({
       title: `${baseInfo.title}考卷`,
       empNo: record.empNo,
@@ -263,7 +259,7 @@ export default observer(function TestingResultReview() {
           dataSource={tableData}
           onRow={(record: any) => {
             return {
-              onDoubleClick: () => handleDetail(record)
+              onDoubleClick: () => handleAnwserSheetReview(record)
             }
           }}
           pagination={{

@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import AnwserSheetPage from './AnwserSheetPage'
 import AnwserResultPannel from './AnwserResultPannel'
 import { trainingResultService } from './../../../api/TrainingResultService'
+import { message } from 'antd/es';
 export interface Props extends ModalComponentProps {
   onOkCallBack?: Function,
   title?: string,
@@ -24,10 +25,27 @@ export default observer(function AnswerSheetModal(props: Props) {
   const [questionList, setQuestionList] = useState([] as any[])
   const [loading, setLoading] = useState(false)
 
+  const wendaQuestionList = questionList.filter((question: any) => question.questionType == 4)
+
   const handleOK = () => {
     if (loading) return
     setLoading(true)
     setTimeout(() => {
+
+      let params = {
+        cetpId,
+        empNo,
+        questionScoreList: wendaQuestionList.map((question: any) => {
+          return {
+            questionId: question.id,
+            deduction: question.deduction,
+          }
+        })
+      } as any
+
+      console.log(params)
+
+      message.success('成绩保存成功')
       setLoading(false)
       onOkCallBack && onOkCallBack()
       onCancel && onCancel()
@@ -47,7 +65,7 @@ export default observer(function AnswerSheetModal(props: Props) {
             if (item.questionType == 4)
               return {
                 ...item,
-                editScore: 0,
+                deduction: 0,
               }
 
             return item
@@ -67,7 +85,7 @@ export default observer(function AnswerSheetModal(props: Props) {
     confirmLoading={loading}
     footer={<div>
       <Button onClick={onCancel}>取消</Button>
-      {viewType == 'edit' && <Button
+      {viewType == 'edit' && wendaQuestionList.length > 0 && <Button
         loading={loading}
         onClick={handleOK}
         type="primary">

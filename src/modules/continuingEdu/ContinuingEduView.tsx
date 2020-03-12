@@ -12,7 +12,7 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 菜单设置 from "./views/菜单设置/MenuSettings";
@@ -24,12 +24,12 @@ export default function ContinuingEdu(props: Props) {
   const [dataList, setDataList] = useState([] as any); // 菜单树
   // 写死的菜单列表
   const LEFT_MENU_CONFIG = [
-    {
-      title: "人员管理",
-      icon: <RYGL />,
-      path: "/continuingEdu/人员管理",
-      component: 人员管理
-    },
+    // {
+    //   title: "人员管理",
+    //   icon: <RYGL />,
+    //   path: "/continuingEdu/人员管理",
+    //   component: 人员管理
+    // },
     {
       title: "审核发布",
       icon: <YNXXB />,

@@ -608,9 +608,13 @@ const routes: RouteItem[] = [
     path: "/nurseFile",
     redirect: "/nurseFile/onTheJob"
   },
+  // {
+  //   path: "/continuingEdu",
+  //   redirect: "/continuingEdu/人员管理"
+  // },
   {
     path: "/continuingEdu",
-    redirect: "/continuingEdu/人员管理"
+    redirect: "/continuingEdu/审核发布"
   },
   {
     path: "/continuingEduEmpDetail",

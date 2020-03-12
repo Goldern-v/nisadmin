@@ -24,8 +24,6 @@ export default function AnwserSheetPage(props: Props) {
 
       if (answerItem.isSelected)
         selectedArr.push(answerItem.optionLabel)
-
-      // if()
     }
 
     return <div className="question-item" key={idx || 0}>
@@ -104,7 +102,9 @@ export default function AnwserSheetPage(props: Props) {
           <span className="question-desc">
             {item.questionContent}（{item.scores}分）
           </span>
-          <Popover content={answer.suggestedAnswer} trigger="click" title="参考答案">
+          <Popover
+            content={<pre>{answer.suggestedAnswer}</pre>}
+            trigger="click" title="参考答案">
             <span className="refer">参考答案</span>
           </Popover>
           {viewType == 'edit' && <span className="de-score">
@@ -112,7 +112,7 @@ export default function AnwserSheetPage(props: Props) {
             <InputNumber
               className="de-score-ipt"
               size="small"
-              value={item.editScore}
+              value={item.deduction}
               precision={2}
               step={0.1}
               max={item.scores}
@@ -120,7 +120,7 @@ export default function AnwserSheetPage(props: Props) {
               onChange={(val: any) => {
                 let newData = (data || [])?.concat()
                 if (newData.length > 0) {
-                  newData[idx].editScore = val
+                  newData[idx].deduction = val
                   onDataChange && onDataChange(newData)
                 }
               }} />
