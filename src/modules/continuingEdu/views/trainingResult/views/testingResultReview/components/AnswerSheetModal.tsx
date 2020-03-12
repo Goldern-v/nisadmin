@@ -25,22 +25,24 @@ export default observer(function AnswerSheetModal(props: Props) {
   const [questionList, setQuestionList] = useState([] as any[])
   const [loading, setLoading] = useState(false)
 
-  const wendaQuestionList = questionList.filter((question: any) => question.questionType == 4)
+  const wendaQuestionList = questionList
+    .filter((question: any) => question.questionType == 4)
 
   const handleOK = () => {
     if (loading) return
     setLoading(true)
     setTimeout(() => {
-
       let params = {
         cetpId,
         empNo,
-        questionScoreList: wendaQuestionList.map((question: any) => {
-          return {
-            questionId: question.id,
-            deduction: question.deduction,
-          }
-        })
+        questionScoreList:
+          wendaQuestionList
+            .map((question: any) => {
+              return {
+                questionId: question.id,
+                deduction: question.deduction,
+              }
+            })
       } as any
 
       console.log(params)
@@ -61,15 +63,16 @@ export default observer(function AnswerSheetModal(props: Props) {
         if (res.data) {
           setLoading(false)
           setBaseInfo(res.data.summaryInfo)
-          setQuestionList(res.data.questionList.map((item: any) => {
-            if (item.questionType == 4)
-              return {
-                ...item,
-                deduction: 0,
-              }
+          setQuestionList(res.data.questionList
+            .map((item: any) => {
+              if (item.questionType == 4)
+                return {
+                  ...item,
+                  deduction: 0,
+                }
 
-            return item
-          }))
+              return item
+            }))
         }
       }, () => setLoading(false))
   }

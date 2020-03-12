@@ -17,17 +17,30 @@ export default function AnwserResultPannel(props: Props) {
   if (timeForAnswer % 60 > 0) timeForAnswerStr += `${timeForAnswer % 60}分钟`
 
   let rightRate = 0
-  if (baseInfo.answerRightCount && baseInfo.totalQuestionsCount && baseInfo.shortQuestionsCount) {
-    rightRate = parseInt((baseInfo.answerRightCount / (baseInfo.totalQuestionsCount - baseInfo.shortQuestionsCount) * 10000).toString()) / 100
+  if (
+    baseInfo.answerRightCount &&
+    baseInfo.totalQuestionsCount &&
+    baseInfo.shortQuestionsCount
+  ) {
+    rightRate = Math.ceil(
+      baseInfo.answerRightCount /
+      (baseInfo.totalQuestionsCount - baseInfo.shortQuestionsCount)
+      * 10000
+    ) / 100
   }
 
   const awnserTypeName = (type: number) => {
     switch (type) {
-      case 1: return '单选题'
-      case 2: return '多选题'
-      case 3: return '填空题'
-      case 4: return '问答题'
-      default: return ''
+      case 1:
+        return '单选题'
+      case 2:
+        return '多选题'
+      case 3:
+        return '填空题'
+      case 4:
+        return '问答题'
+      default:
+        return ''
     }
   }
 
@@ -38,12 +51,15 @@ export default function AnwserResultPannel(props: Props) {
       return true
     })
 
-  let wendaQuestionList = questionList.filter((item: any) => item.questionType == 4)
-  let rightQuestionList = questionList.filter((item: any) => {
-    if (item.questionType == 4) return false
-    if (item.answerRight) return true
-    return false
-  })
+  let wendaQuestionList = questionList
+    .filter((item: any) => item.questionType == 4)
+
+  let rightQuestionList = questionList
+    .filter((item: any) => {
+      if (item.questionType == 4) return false
+      if (item.answerRight) return true
+      return false
+    })
   //计算总得分
   let totalGainScores = 0
 
@@ -121,8 +137,12 @@ export default function AnwserResultPannel(props: Props) {
             </span>
           </div>
           <div className="awnser">
-            <div className="left">学员选【{selectedAnwser(item)}】</div>
-            <div className="right">正确答案：【{rightAnwser(item)}】</div>
+            <div className="left">
+              学员选【{selectedAnwser(item)}】
+            </div>
+            <div className="right">
+              正确答案：【{rightAnwser(item)}】
+            </div>
           </div>
         </div>)}
     </div>
