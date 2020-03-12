@@ -14,16 +14,18 @@ export default function Participation(props: Props) {
 
   let viewList = empList.concat()
 
-  if (!showAll) viewList = viewList.slice(0, 40)
+  const maxLength = 20
+
+  if (!showAll) viewList = viewList.slice(0, maxLength)
 
   return <Wrapper>
     <div className="content-item-title">参与人员：（{empList.length}人）</div>
     <div className="content-item-pannel">
-      {viewList.map((item: any, idx: any) => <span key={idx}>
-        {item.deptName}/{item.empName}{idx < viewList.length - 1 ? ', ' : ''}
+      {viewList.map((item: any, idx: any) => <span key={idx} className="emp-item">
+        {item.deptName}/{item.empName}{idx < viewList.length - 1 ? ',' : ''}
       </span>)}
       {(() => {
-        if (empList.length > 40)
+        if (empList.length > maxLength)
           return <React.Fragment>
             {!showAll && <span>等{empList.length}人  </span>}
             <span
@@ -42,6 +44,7 @@ const Wrapper = styled.div`
   .show-all-span{
     color: #00f;
     cursor: pointer;
+    display: inline-block;
     :hover{
       font-weight: bold;
     }
@@ -49,5 +52,12 @@ const Wrapper = styled.div`
   .content-item-pannel{
     font-size:13px;
     padding: 0 12px;
+      line-height:24px;
+    .emp-item{
+      margin: 6px;
+      &:first-of-type{
+        margin-left:0;
+      }
+    }
   }
 `

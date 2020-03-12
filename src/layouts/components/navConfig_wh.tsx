@@ -42,7 +42,7 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: "学习培训",
-    path: "/continuingEdu/人员管理"
+    path: "/continuingEdu"
     // hidden: !appStore.isDev
   },
   // {

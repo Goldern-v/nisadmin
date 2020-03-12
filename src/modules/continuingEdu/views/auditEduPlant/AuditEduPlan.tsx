@@ -70,7 +70,7 @@ export default observer(function AuditEduPlan(props: Props) {
       dataIndex: "teachingMethodName",
       align: "center",
       className: 'teaching-method-name',
-      width: 80,
+      width: 60,
       render: (text: string) => {
         let bgColor = ''
         let textColor = ''
@@ -114,14 +114,27 @@ export default observer(function AuditEduPlan(props: Props) {
       title: "标题",
       dataIndex: "title",
       align: "left",
-      width: 120
+      width: 140
     },
-
     {
       title: "状态",
       dataIndex: "statusDesc",
       width: 100,
-      align: "center"
+      align: "center",
+      render: (text: string) => {
+        let textColor = ''
+        switch (text) {
+          case '发布':
+            textColor = '#00F'
+            break
+          case '退回':
+            textColor = '#F00'
+            break
+          default:
+        }
+
+        return <span style={{ color: textColor }}>{text}</span>
+      }
     },
     {
       title: "提交人",

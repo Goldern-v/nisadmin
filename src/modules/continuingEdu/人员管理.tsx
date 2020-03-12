@@ -356,8 +356,8 @@ const Wrapper = styled.div`
       font-weight: normal;
       .review{
         cursor: pointer;
+        color: #00A680;
         :hover{
-          color: #00A680;
           font-weight: bold;
         }
       }

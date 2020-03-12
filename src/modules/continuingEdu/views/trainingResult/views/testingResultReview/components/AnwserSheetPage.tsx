@@ -4,71 +4,132 @@ import { Button, InputNumber, Popover } from 'antd'
 
 export interface Props {
   data?: any[],
+  title?: string,
+  type?: 'view' | 'edit',
   onDataChange?: (data: any[]) => void
 }
 
 export default function AnwserSheetPage(props: Props) {
-  const { data } = props
+  const { data, type, title, onDataChange } = props
+  const viewType = type || 'edit'
 
-  const correctImg = <img src={require('./../../../assets/question-correct.png')} />
+  const correctImg =
+    <img src={require('./../../../assets/question-correct.png')} />
 
   const choiceContent = (item: any, idx: number) => {
-    return <div className="question-item">
+    let selectedArr = []
+    let answersList = item.answersList || []
+    for (let i = 0; i < answersList.length; i++) {
+      let answerItem = answersList[i]
+
+      if (answerItem.isSelected)
+        selectedArr.push(answerItem.optionLabel)
+    }
+
+    return <div className="question-item" key={idx || 0}>
       <span className="question-result">
-        <span>❌</span>
-        {/* <span>{correctImg}</span> */}
+        {item.answerRight ?
+          <span>{correctImg}</span> :
+          <span>❌</span>}
       </span>
       <span className="question-content">
         <div>
-          <span className="index">{idx + 1}、</span>
-          <span className="question-type">[单选]</span>
-          <span className="question-desc">下列哪些不是护理不良反应事件防范对策（ ）</span>
-          <span className="emp-choices">学员选【C】</span>
+          <span className="index">{item.sort}、</span>
+          <span className="question-type">
+            [{item.questionType == 1 ? '单选题' : '多选题'}]
+          </span>
+          <span className="question-desc">{item.questionContent}</span>
+          <span style={{ color: '#999' }}>({item.scores}分) </span>
+          <span className="emp-choices">
+            学员选【{selectedArr.join(',')}】
+          </span>
         </div>
         <div style={{ paddingLeft: '5px' }}>
-          <span className="choice-item">
-            <span className="correct-choice">{correctImg}</span>
-            <span className="choice-desc">A、接触患者的血液、体液、分泌物、排泄物、呕吐物时，应戴清洁手套</span>
-          </span>
-          <span className="choice-item">
-            <span className="correct-choice">{correctImg}</span>
-            <span className="choice-desc">B、应戴清洁手套</span>
-          </span>
+          {answersList.map((awnserItem: any, awnserIdx: number) =>
+            <span className="choice-item" key={`${idx}-${awnserIdx}`}>
+              {!!awnserItem.isRight && <span className="correct-choice">{correctImg}</span>}
+              <span className="choice-desc">{`${awnserItem.optionLabel}、${awnserItem.optionContent}`}</span>
+            </span>)}
         </div>
       </span>
     </div>
   }
 
-  const fillInContent = (item: any, idx: number) => {
-    return <div className="question-item">
-      <span className="question-result"></span>
+  const fillContent = (item: any, idx: number) => {
+
+    return <div className="question-item" key={idx || 0}>
+      <span className="question-result">
+        {item.answerRight ?
+          <span>{correctImg}</span> :
+          <span>❌</span>}
+      </span>
       <span className="question-content">
         <div>
-          <span className="index">{idx + 1}、</span>
+          <span className="index">{item.sort}、</span>
           <span className="question-type">[问答题] </span>
-          <span className="question-desc">下列哪些不是护理不良反应事件防范对策（8分）</span>
-          <Popover content="11111111" trigger="click" title="参考答案">
+          <span className="question-desc">
+            <span
+              dangerouslySetInnerHTML={{
+                __html: `${item.questionContent.replace(/##/g, '<span class="fill-underline"></span>')}`
+              }}></span>
+            <span style={{ color: '#999' }}>({item.scores}分) </span>
+          </span>
+          <span style={{ color: '#027DB4' }}>
+            正确答案:{item.answersList.map((answer: any) => answer.rightAnswer).join(',')}
+          </span>
+        </div>
+        <div style={{ paddingLeft: '5px' }}>
+          <pre className="answer">
+            学员答案: {item.answersList.map((answer: any) => answer.answerContent).join(',')}
+          </pre>
+        </div>
+      </span>
+    </div>
+  }
+
+  const wendaContent = (item: any, idx: number) => {
+    let answer = (item.answersList && item.answersList[0]) || {}
+    return <div className="question-item" key={idx || 0}>
+      <span className="question-result">
+        {/* {item.answerRight ?
+          <span>{correctImg}</span> :
+          <span>❌</span>} */}
+      </span>
+      <span className="question-content">
+        <div>
+          <span className="index">{item.sort}、</span>
+          <span className="question-type">[问答题] </span>
+          <span className="question-desc">
+            {item.questionContent}（{item.scores}分）
+          </span>
+          <Popover
+            content={<pre>{answer.suggestedAnswer}</pre>}
+            trigger="click" title="参考答案">
             <span className="refer">参考答案</span>
           </Popover>
-          <span className="de-score">
+          {viewType == 'edit' && <span className="de-score">
             答案扣
             <InputNumber
               className="de-score-ipt"
               size="small"
+              value={item.deduction}
               precision={2}
               step={0.1}
-              max={8}
-              min={0} />
+              max={item.scores}
+              min={0}
+              onChange={(val: any) => {
+                let newData = (data || [])?.concat()
+                if (newData.length > 0) {
+                  newData[idx].deduction = val
+                  onDataChange && onDataChange(newData)
+                }
+              }} />
             分
-          </span>
+          </span>}
         </div>
         <div style={{ paddingLeft: '5px' }}>
-          <pre className="awnser">
-            {`这是学员答案，
-            这是学员答案这是学员答案，
-            这是学员答案这是学员答案，这是学员答案这是学员答案，
-            这是学员答案这是学员答案，
-            这是学员答案这是学员答案，这是学员答案这是学员。`}
+          <pre className="answer">
+            学员答案: {answer.answerContent}
           </pre>
         </div>
       </span>
@@ -76,10 +137,20 @@ export default function AnwserSheetPage(props: Props) {
   }
 
   return <Wrapper>
-    <div className="main-title">《{'2019年东莞市厚街医院N3-N5级护理人员第四季度理论考核试卷'}》</div>
+    <div className="main-title">《{title}》</div>
     <div className="question-list">
-      {choiceContent({}, 0)}
-      {fillInContent({}, 1)}
+      {data?.map((item: any, idx: number) => {
+        switch (item.questionType) {
+          case 1:
+          case 2:
+            return choiceContent(item, idx)
+          case 3:
+            return fillContent(item, idx)
+          case 4:
+            return wendaContent(item, idx)
+          default: return <span key={idx}></span>
+        }
+      })}
     </div>
   </Wrapper>
 }
@@ -114,12 +185,18 @@ const Wrapper = styled.div`
       float: left;
       span{
         font-size: 13px;
+        color:#000;
       }
       img{
         width: 15px;
         position: relative;
         left: 1px;
       }
+    }
+    .fill-underline{
+      display: inline-block;
+      width: 40px;
+      border-bottom: 1px solid #333;
     }
     .question-content{
       width: ${contentWidth - 20}px;
@@ -169,7 +246,7 @@ const Wrapper = styled.div`
       pre{
         white-space: pre-wrap;
         word-break: break-all;
-        &.awnser{
+        &.answer{
           color: #00f;
         }
       }

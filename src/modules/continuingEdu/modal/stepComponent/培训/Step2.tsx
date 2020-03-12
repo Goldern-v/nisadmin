@@ -154,7 +154,7 @@ export default observer(function Step1() {
               <Form.Field label={``} name="daysToArchive" labelWidth={1}>
                 <InputNumber min={2} />
               </Form.Field>
-              <span className="aside">天后进行归档</span>
+              <span className="aside">天后进行归档 {stepViewModal.overTime ? `即：${stepViewModal.overTime}`: ''}</span>
             </div>
           </DateSelectCon>
 

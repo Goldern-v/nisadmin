@@ -106,14 +106,14 @@ export default observer(function Step2() {
                   ))}
                 </Select>
               </Form.Field>
-                  <span className="aside">{stepViewModal.endTime ? `即：${stepViewModal.endTime} 结束`: ''}</span>
+            <span className="aside">{stepViewModal.endTime ? `即：${stepViewModal.endTime} 结束`: ''}</span>
             </div>
             <div className="date-row">
               <span  className="date-label">学习结束</span>
               <Form.Field label={``} name="daysToArchive" labelWidth={1}>
                 <InputNumber min={2}></InputNumber>
               </Form.Field>
-              <span className="aside">天后进行归档</span>
+              <span className="aside">天后进行归档 {stepViewModal.overTime ? `即：${stepViewModal.overTime}`: ''}</span>
             </div>
           </DateSelectCon>
 

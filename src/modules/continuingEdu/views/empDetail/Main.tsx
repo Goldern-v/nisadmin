@@ -139,7 +139,7 @@ export default observer(function Main(props: any) {
         </span>
       </div>
       <div className="btn-group">
-        <Button onClick={() => setSorceAppendVisible(true)}>扣除学分</Button>
+        <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </div>
     </div>

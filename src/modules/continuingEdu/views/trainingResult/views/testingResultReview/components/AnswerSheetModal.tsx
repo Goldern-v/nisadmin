@@ -5,23 +5,47 @@ import { ModalComponentProps } from "src/libs/createModal";
 import { observer } from 'mobx-react-lite'
 import AnwserSheetPage from './AnwserSheetPage'
 import AnwserResultPannel from './AnwserResultPannel'
+import { trainingResultService } from './../../../api/TrainingResultService'
+import { message } from 'antd/es';
 export interface Props extends ModalComponentProps {
   onOkCallBack?: Function,
+  title?: string,
   type?: 'view' | 'edit',
+  cetpId?: string | number,
+  empNo?: string | number,
   visible: boolean
 }
 export default observer(function AnswerSheetModal(props: Props) {
   const bodyStyle = {
     padding: 0
   }
-  const { visible, onOkCallBack, onCancel, type } = props
+  const { visible, onOkCallBack, onCancel, type, title, cetpId, empNo } = props
   const viewType = type || 'edit'
+  const [baseInfo, setBaseInfo] = useState({} as any)
+  const [questionList, setQuestionList] = useState([] as any[])
   const [loading, setLoading] = useState(false)
+
+  const wendaQuestionList = questionList.filter((question: any) => question.questionType == 4)
 
   const handleOK = () => {
     if (loading) return
     setLoading(true)
     setTimeout(() => {
+
+      let params = {
+        cetpId,
+        empNo,
+        questionScoreList: wendaQuestionList.map((question: any) => {
+          return {
+            questionId: question.id,
+            deduction: question.deduction,
+          }
+        })
+      } as any
+
+      console.log(params)
+
+      message.success('成绩保存成功')
       setLoading(false)
       onOkCallBack && onOkCallBack()
       onCancel && onCancel()
@@ -29,7 +53,25 @@ export default observer(function AnswerSheetModal(props: Props) {
   }
 
   const getAnswerInfo = () => {
-    console.log('getAnswerInfo')
+    setLoading(true)
+    trainingResultService
+      .reviewExamPaper(170, 6859)
+      // .reviewExamPaper(cetpId || '', empNo || '')
+      .then((res) => {
+        if (res.data) {
+          setLoading(false)
+          setBaseInfo(res.data.summaryInfo)
+          setQuestionList(res.data.questionList.map((item: any) => {
+            if (item.questionType == 4)
+              return {
+                ...item,
+                deduction: 0,
+              }
+
+            return item
+          }))
+        }
+      }, () => setLoading(false))
   }
 
   useLayoutEffect(() => {
@@ -43,7 +85,7 @@ export default observer(function AnswerSheetModal(props: Props) {
     confirmLoading={loading}
     footer={<div>
       <Button onClick={onCancel}>取消</Button>
-      {viewType == 'edit' && <Button
+      {viewType == 'edit' && wendaQuestionList.length > 0 && <Button
         loading={loading}
         onClick={handleOK}
         type="primary">
@@ -64,11 +106,18 @@ export default observer(function AnswerSheetModal(props: Props) {
           overflowY: loading ? 'hidden' : 'auto'
         }}>
         <Spin spinning={loading}>
-          <AnwserSheetPage />
+          <AnwserSheetPage
+            type={viewType}
+            title={title}
+            data={questionList}
+            onDataChange={(newList: any[]) =>
+              setQuestionList(newList)} />
         </Spin>
       </div>
       <div className="right">
-        <AnwserResultPannel />
+        <AnwserResultPannel
+          baseInfo={baseInfo}
+          questionList={questionList} />
       </div>
     </Wrapper>
   </Modal>

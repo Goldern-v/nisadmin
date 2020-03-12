@@ -107,29 +107,56 @@ export default observer(function TableView() {
         ]
       case '学时记录':
         return [
-          indexColumn,
+          {
+            title: '序号',
+            key: 'index',
+            align: 'center',
+            width: 50,
+            render: (text: any, record: any, index: any) => {
+              if (record.rowType) {
+                return '合计'
+              } else {
+                return (query.pageIndex - 1) * query.pageSize + index + 1
+              }
+            }
+          },
           {
             title: '项目',
             key: 'name',
             align: 'left',
+            render: (text: any, record: any, index: any) => {
+              let renderItem = {
+                children: text,
+                props: {} as any
+              }
+              if (record.rowType) {
+                renderItem.children = record.text
+                renderItem.props.colSpan = 5
+              }
+
+              return renderItem
+            }
           },
           {
             title: '培训类型',
             key: 'type',
             width: 60,
             align: 'center',
+            render: renderContent,
           },
           {
             title: '日期',
             key: 'startDate',
             width: 60,
             align: 'center',
+            render: renderContent,
           },
           {
             title: '学时',
             key: 'xueshi',
             width: 60,
             align: 'center',
+            render: renderContent,
           },
         ]
       case '学习记录':
