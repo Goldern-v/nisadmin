@@ -141,6 +141,7 @@ export default function Step1() {
             </Col>
             <Col span={4} style={{ textAlign: "right" }}>
               <Button
+                disabled={stepViewModal.oldData}
                 style={{ marginLeft: 10 }}
                 type="primary"
                 onClick={() => saveOrUpload()}

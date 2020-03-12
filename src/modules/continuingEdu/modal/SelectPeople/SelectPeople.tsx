@@ -43,6 +43,7 @@ interface User {
 export default observer(function SelectPeople(props: Props) {
   let { onOkCallBack } = props;
 
+  const [initEd, setInitEd]: any = useState(false);
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
   const [searchWord, setSearchWord]: any = useState("");
@@ -99,15 +100,14 @@ export default observer(function SelectPeople(props: Props) {
   useLayoutEffect(() => {
     selectPeopleViewModel.initData();
     setCheckedUserList(props.checkedUserList);
-    console.log(props.checkedUserList, "props.checkedUserList");
     setSearchWord("");
+    setInitEd(true);
   }, [props.checkedUserList]);
 
   useEffect(() => {
-    console.log(checkedUserList, "checkedUserList");
-    return () => {
+    if (initEd) {
       stepViewModal.stepData3.participantList = checkedUserList;
-    };
+    }
   }, [checkedUserList]);
 
   const handleSearch = (value: any) => {
@@ -388,7 +388,7 @@ const Wrapper = styled.div`
   .main-con,
   .left-part,
   .right-part {
-    min-height: calc(100vh - 425px);
+    min-height: calc(55vh - 0px);
   }
   .main-con {
     display: flex;
@@ -422,7 +422,8 @@ const Wrapper = styled.div`
 `;
 
 const SelectCon = styled(ScrollBox)`
-  height: 400px;
+  /* height: 390px; */
+  min-height: calc(55vh - 0px);
 `;
 
 const FileList = styled.div`
@@ -455,7 +456,8 @@ const ListCon = styled.div`
     cursor: pointer;
   }
   .scrollBox {
-    height: 390px;
+    /* height: 390px; */
+    min-height: calc(55vh - 60px);
     box-sizing: content-box;
     padding-right: 10px;
     margin-right: -10px;
