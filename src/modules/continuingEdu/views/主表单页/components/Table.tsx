@@ -72,7 +72,7 @@ export default observer(function Table(props: Props) {
     {
       title: "标题",
       dataIndex: "title",
-      width: 200,
+      width: 300,
       align: "left"
     },
     {
@@ -250,20 +250,33 @@ export default observer(function Table(props: Props) {
             ];
             break;
           case "待审核":
-            data = [
-              {
-                text: "查看结果",
-                function: checkResult
-              },
-              {
-                text: "查看信息",
-                function: checkMessage
-              },
-              {
-                text: "撤销",
-                function: handleRevoke
-              }
-            ];
+            if (record.auditStatus === 1) {
+              data = [
+                {
+                  text: "查看结果",
+                  function: checkResult
+                },
+                {
+                  text: "查看信息",
+                  function: checkMessage
+                }
+              ];
+            } else {
+              data = [
+                {
+                  text: "查看结果",
+                  function: checkResult
+                },
+                {
+                  text: "查看信息",
+                  function: checkMessage
+                },
+                {
+                  text: "撤销",
+                  function: handleRevoke
+                }
+              ];
+            }
             break;
           case "进行中":
             data = [
