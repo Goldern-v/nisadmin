@@ -142,6 +142,7 @@ export default observer(function MenuSettings(props: Props) {
           setTableList(res.data || []);
         }
       });
+      props.getList();
     }
   };
 
@@ -222,7 +223,7 @@ export default observer(function MenuSettings(props: Props) {
           <div className="topHeaderTitle">
             <div className="title">菜单设置</div>
             <div className="topHeaderButton">
-              <Button onClick={props.getList}>刷新</Button>
+              <Button onClick={getTableData}>刷新</Button>
               <Button type="primary" onClick={() => setEditVisible(true)}>
                 添加一级菜单
               </Button>
