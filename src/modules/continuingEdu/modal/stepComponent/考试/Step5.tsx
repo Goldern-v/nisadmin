@@ -6,6 +6,7 @@ import { stepViewModal } from "../StepViewModal";
 import Zimage from "src/components/Zimage";
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
+import moment from 'moment'
 export interface Props {}
 
 export default observer(function Step5() {
@@ -46,7 +47,7 @@ export default observer(function Step5() {
           </tr>
           <tr>
             <td className="key">考试开始时间：</td>
-            <td className="value">{ksStepViewModal.stepData2.startTime}</td>
+            <td className="value">{ksStepViewModal.stepData2.startTime && moment(ksStepViewModal.stepData2.startTime).format('YYYY-MM-DD HH:mm')}</td>
           </tr>
           <tr>
             <td className="key">考试开放时间：</td>
