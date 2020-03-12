@@ -591,7 +591,7 @@ export default function SecondAddModal(props: Props) {
                         <div>
                           <span style={{ marginRight: "10px" }}>提交人:</span>
                           {item.submit.map((o: any, index: any) => (
-                            <span key={index}>{o.label}</span>
+                            <span key={index}>{o.label}&nbsp;&nbsp;</span>
                           ))}
                         </div>
                       )}
@@ -599,7 +599,7 @@ export default function SecondAddModal(props: Props) {
                         <div>
                           <span style={{ marginRight: "10px" }}>审核人:</span>
                           {item.firstAudit.map((o: any, index: any) => (
-                            <span key={index}>{o.label}</span>
+                            <span key={index}>{o.label}&nbsp;&nbsp;</span>
                           ))}
                         </div>
                       )}
@@ -615,7 +615,7 @@ export default function SecondAddModal(props: Props) {
                             二级审核人:
                           </span>
                           {item.secondAudit.map((o: any, index: any) => (
-                            <span key={index}>{o.label}</span>
+                            <span key={index}>{o.label}&nbsp;&nbsp;</span>
                           ))}
                         </div>
                       )}
@@ -631,7 +631,7 @@ export default function SecondAddModal(props: Props) {
                             三级审核人:
                           </span>
                           {item.thirdAudit.map((o: any, index: any) => (
-                            <span key={index}>{o.label}</span>
+                            <span key={index}>{o.label}&nbsp;</span>
                           ))}
                         </div>
                       )}
