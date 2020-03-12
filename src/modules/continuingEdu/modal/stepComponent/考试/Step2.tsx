@@ -76,7 +76,7 @@ export default observer(function Step1() {
   /** 选择人员 */
   const openSelectNurseModal = (name: string) => {
     let checkedUserList = [];
-   if (name == "sicPersonList") {
+    if (name == "sicPersonList") {
       checkedUserList = stepViewModal.stepData2.sicPersonList;
     }
     selectNurseModal.show({
@@ -91,8 +91,8 @@ export default observer(function Step1() {
             }))
           ];
         }, []);
-        if(userList.length > 3) {
-          return message.warn('选择人数不能超过三人')
+        if (userList.length > 3) {
+          return message.warn("选择人数不能超过三人");
         }
         refForm.current && refForm.current.setField(name, userList);
       }
@@ -150,7 +150,10 @@ export default observer(function Step1() {
               <Form.Field label={``} name="daysToArchive" labelWidth={1}>
                 <InputNumber min={2} />
               </Form.Field>
-              <span className="aside">天后进行归档</span>
+              <span className="aside">
+                天后进行归档{" "}
+                {stepViewModal.overTime ? `即：${stepViewModal.overTime}` : ""}
+              </span>
             </div>
           </DateSelectCon>
 

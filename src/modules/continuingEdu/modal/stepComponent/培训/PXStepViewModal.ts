@@ -67,6 +67,17 @@ class StepViewModal {
     return "";
   }
 
+  /** 计算学习结束时间 */
+  @computed
+  public get overTime() {
+    if (this.stepData2.startTime && this.stepData2.daysToArchive) {
+      return moment(this.stepData2.startTime)
+        .add(this.stepData2.daysToArchive, "d")
+        .format("YYYY-MM-DD HH:mm");
+    }
+    return "";
+  }
+
   @observable public stepData5: any = cloneJson(defaultStepData5);
   @observable public title = "";
 
