@@ -49,9 +49,7 @@ const BaseInfoPage = styled.div`
     text-align: center;
     font-size: 28px;
     color: #000;
-    margin-bottom: 10px;
     line-height: 30px;
-    height:30px;
   }
   .content-item-title{
     font-size: 14px;

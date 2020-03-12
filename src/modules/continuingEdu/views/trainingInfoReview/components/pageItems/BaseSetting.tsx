@@ -39,7 +39,7 @@ export default function BaseSetting(props: Props) {
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>学员学分：</div>
-          <div className="content">{info.creditType} {info.credit}</div>
+          <div className="content">{creditType} {credit}</div>
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>讲师学分：</div>
@@ -47,7 +47,7 @@ export default function BaseSetting(props: Props) {
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>学员学时：</div>
-          <div className="content">{info.classHours}</div>
+          <div className="content">{classHours}</div>
         </div>
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>讲师学时：</div>
@@ -65,10 +65,12 @@ export default function BaseSetting(props: Props) {
         return <div className="row">
           <div className="label" style={{ width: _labelWidth }}>评分负责人：</div>
           <div className="content">{
-            (info.scorePersonList || [])
-              .map((item: any) =>
-                `${item.deptName}/${item.empName}`)
-              .join(', ')
+            !!(info.scorePersonList || []).length ?
+              `需要（${(info.scorePersonList || [])
+                .map((item: any) =>
+                  `${item.deptName}/${item.empName}`)
+                .join(', ')}）` :
+              '不需要'
           }</div>
         </div>
       default:
@@ -82,7 +84,7 @@ export default function BaseSetting(props: Props) {
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>签到负责人：</div>
           <div className="content">{
-            (info.signInInChargePersons || [])
+            (info.sicPersonList || [])
               .map((signer: any) =>
                 `${signer.deptName}/${signer.empName}`)
               .join(', ')

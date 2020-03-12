@@ -47,8 +47,11 @@ export default function AnwserSheetPage(props: Props) {
         <div style={{ paddingLeft: '5px' }}>
           {answersList.map((awnserItem: any, awnserIdx: number) =>
             <span className="choice-item" key={`${idx}-${awnserIdx}`}>
-              {!!awnserItem.isRight && <span className="correct-choice">{correctImg}</span>}
-              <span className="choice-desc">{`${awnserItem.optionLabel}、${awnserItem.optionContent}`}</span>
+              {!!awnserItem.isRight &&
+                <span className="correct-choice">{correctImg}</span>}
+              <span className="choice-desc">
+                {`${awnserItem.optionLabel}、${awnserItem.optionContent}`}
+              </span>
             </span>)}
         </div>
       </span>
@@ -70,17 +73,22 @@ export default function AnwserSheetPage(props: Props) {
           <span className="question-desc">
             <span
               dangerouslySetInnerHTML={{
-                __html: `${item.questionContent.replace(/##/g, '<span class="fill-underline"></span>')}`
+                __html: `${item.questionContent
+                  .replace(/##/g, '<span class="fill-underline"></span>')}`
               }}></span>
             <span style={{ color: '#999' }}>({item.scores}分) </span>
           </span>
           <span style={{ color: '#027DB4' }}>
-            正确答案:{item.answersList.map((answer: any) => answer.rightAnswer).join(',')}
+            正确答案:{item.answersList
+              .map((answer: any) => answer.rightAnswer)
+              .join(',')}
           </span>
         </div>
         <div style={{ paddingLeft: '5px' }}>
           <pre className="answer">
-            学员答案: {item.answersList.map((answer: any) => answer.answerContent).join(',')}
+            学员答案: {item.answersList
+              .map((answer: any) => answer.answerContent)
+              .join(',')}
           </pre>
         </div>
       </span>
@@ -148,7 +156,8 @@ export default function AnwserSheetPage(props: Props) {
             return fillContent(item, idx)
           case 4:
             return wendaContent(item, idx)
-          default: return <span key={idx}></span>
+          default:
+            return <span key={idx}></span>
         }
       })}
     </div>
