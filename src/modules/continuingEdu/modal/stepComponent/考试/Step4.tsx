@@ -84,6 +84,19 @@ export default observer(function Step4() {
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
   }, []);
 
+
+  /** 判断是否有问答题，只有问答题才允许选择评分负责人 */
+  let hasWdt = stepViewModal.stepData2.questionStatList.find((item:any) => {
+    return item.questionType == 4
+  })
+  
+  if(!hasWdt) {
+    stepViewModal.stepData2.needScorePerson = false
+    stepViewModal.stepData2.scorePersonList = []
+    refForm.current && refForm.current.setField('scorePersonList', []);
+  }
+
+
   return (
     <Wrapper>
       <Form
@@ -191,6 +204,7 @@ export default observer(function Step4() {
           评分
         </span>
         <Checkbox
+          disabled={!hasWdt}
           checked={!!stepViewModal.stepData2.needScorePerson}
           onClick={() => {
             stepViewModal.stepData2.needScorePerson = !stepViewModal.stepData2
