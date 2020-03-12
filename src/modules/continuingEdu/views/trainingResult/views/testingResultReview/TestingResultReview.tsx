@@ -163,6 +163,10 @@ export default observer(function TestingResultReview() {
   const handleAnwserSheetReview = (record: any) => {
     // if (record.awnserTime)
     answerSheet.show({
+      title: `${baseInfo.title}考卷`,
+      empNo: record.empNo,
+      // type: 'view',
+      cetpId: appStore.queryObj.id,
       onOkCallBack: () => {
         console.log('ok')
       }

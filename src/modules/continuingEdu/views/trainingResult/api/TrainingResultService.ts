@@ -37,6 +37,13 @@ export default class TrainingResultService extends BaseApiService {
       .post(`/studyAndTrain/teachingPlanManage/getMenuChainByCetpId`,
         qs.stringify({ cetpId }))
   }
+
+  /**查看个人考卷 */
+  public reviewExamPaper(cetpId: string | number, empNo: string | number) {
+    return this
+      .post(`/studyAndTrain/teachingPlanManage/reviewExamPaper`,
+        { cetpId, empNo })
+  }
 }
 
 export const trainingResultService = new TrainingResultService()
