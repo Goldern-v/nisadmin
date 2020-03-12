@@ -114,7 +114,7 @@ export default observer(function AuditEduPlan(props: Props) {
       title: "标题",
       dataIndex: "title",
       align: "left",
-      width: 140
+      width: 180
     },
     {
       title: "状态",
@@ -151,7 +151,7 @@ export default observer(function AuditEduPlan(props: Props) {
     {
       title: "操作",
       key: "8",
-      width: 100,
+      width: 60,
       align: "center",
       render: (text: any, record: any, c: any) => {
         return (
