@@ -43,6 +43,9 @@ class MainPageModal {
     mainPageApi.getMainData(this.postObj).then(res => {
       this.tableLoading = false;
       this.tableList = res.data.list;
+      this.total = res.data.totalCount;
+      this.pageIndex = res.data.pageIndex;
+      this.pageSize = res.data.pageSize;
     });
   }
 

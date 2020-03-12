@@ -447,6 +447,12 @@ export default observer(function Table(props: Props) {
           total: mainPageModal.total,
           pageSize: mainPageModal.pageSize
         }}
+        onChange={pagination => {
+          mainPageModal.pageIndex = pagination.current;
+          mainPageModal.total = pagination.total;
+          mainPageModal.pageSize = pagination.pageSize;
+          mainPageModal.onload();
+        }}
       />
     </Wrapper>
   );

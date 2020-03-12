@@ -11,7 +11,9 @@ export default class MainPageApi extends BaseApiService {
 
   // 主列表页--导出
   public exportMainData(obj?: any) {
-    return this.post(`/searchRoom/export`, obj, { responseType: "blob" });
+    return this.post(`/studyAndTrain/teachingPlanManage/exportPageList`, obj, {
+      responseType: "blob"
+    });
   }
 
   // 主列表页--删除

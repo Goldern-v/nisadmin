@@ -85,7 +85,13 @@ export default observer(function Header(props: Props) {
         >
           查询
         </Button>
-        <Button>导出</Button>
+        <Button
+          onClick={() => {
+            mainPageModal.export();
+          }}
+        >
+          导出
+        </Button>
         <Button
           onClick={() =>
             appStore.history.push(

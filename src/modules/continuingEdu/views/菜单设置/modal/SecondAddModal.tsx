@@ -110,8 +110,9 @@ export default function SecondAddModal(props: Props) {
   // 点击一级菜单函数
   const onClickParent = (id: any) => {
     let data: any = params.find((item: any) => item.id === id);
+    let chilrenList = data.childList || [];
     setCheckedId(data.id);
-    setChilrenList([]);
+    setChilrenList(chilrenList);
   };
 
   // 删除二级菜单函数
@@ -141,7 +142,7 @@ export default function SecondAddModal(props: Props) {
       return;
     } else {
       let data: any = chilrenList.slice();
-      data.push({ name: inputValue });
+      data.unshift({ name: inputValue });
       setChilrenList(data);
       setInputValue("");
       setAddVisible(false);
@@ -256,27 +257,32 @@ export default function SecondAddModal(props: Props) {
   // 下一步函数
   const toNext = () => {
     if (current === 0) {
-      if (!chilrenList.length) {
+      let typeList: any = {
+        submitterType: null,
+        firstAuditorType: null,
+        secondAuditorType: null,
+        thirdAuditorType: null,
+        submit: [],
+        firstAudit: [],
+        secondAudit: [],
+        thirdAudit: []
+      };
+      let array: any = [];
+      let obj = params.find((o: any) => o.id === checkedId);
+      chilrenList.map((item: any) => {
+        if (!item.id) {
+          array.push({
+            id: checkedId,
+            parentName: obj.name,
+            childrenName: item.name,
+            ...typeList
+          });
+        }
+      });
+      if (!array.length) {
         Message.warning("请至少添加一项二级菜单");
       } else {
-        let typeList = {
-          submitterType: null,
-          firstAuditorType: null,
-          secondAuditorType: null,
-          thirdAuditorType: null,
-          submit: [],
-          firstAudit: [],
-          secondAudit: [],
-          thirdAudit: []
-        };
-        let obj = params.find((o: any) => o.id === checkedId);
         setParentName(obj.name);
-        let array: any = chilrenList.map((item: any) => ({
-          id: checkedId,
-          parentName: obj.name,
-          childrenName: item.name,
-          ...typeList
-        }));
         setAllDataList(array);
         setCurrent(current + 1);
       }
@@ -300,6 +306,8 @@ export default function SecondAddModal(props: Props) {
   // 初始化
   useEffect(() => {
     if (params.length) {
+      let chilrenList = params[0].childList || [];
+      setChilrenList(chilrenList);
       setCheckedId(params[0].id);
     }
   }, [params]);
@@ -379,16 +387,24 @@ export default function SecondAddModal(props: Props) {
                   <i>添加</i>
                 </Button>
               </div>
-              <ul>
+              <ul className="second-menu">
                 {chilrenList.map((item: any, index: any) => (
                   <li key={index}>
-                    <span>{item.name}</span>
                     <span
-                      className="to-detele"
-                      onClick={() => deteleSonData(item.name)}
+                      style={{
+                        color: `${item.id ? "#999" : "rgba(0, 0, 0, 0.65)"}`
+                      }}
                     >
-                      ×
+                      {item.name}
                     </span>
+                    {!item.id && (
+                      <span
+                        className="to-detele"
+                        onClick={() => deteleSonData(item.name)}
+                      >
+                        ×
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -671,6 +687,11 @@ const NavOne = styled.div`
   display: flex;
   border: 1px solid #ccc;
   font-size: 14px;
+
+  .second-menu {
+    overflow-y: auto;
+    height: 357px;
+  }
 
   div {
     width: 50%;

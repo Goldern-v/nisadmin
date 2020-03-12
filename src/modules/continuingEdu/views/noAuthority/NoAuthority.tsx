@@ -22,7 +22,7 @@ const Wrapper = styled.div`
     width: 400px;
     height: 500px;
     margin: auto;
-    margin-top: 100px;
+    margin-top: 150px;
     text-align: center;
   }
   .p1 {

@@ -23,6 +23,19 @@ export default withRouter(
     let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
     const { history } = appStore;
 
+    //教育方式背景颜色函数封装
+    const typeBackground = (data: any) => {
+      const background = [
+        "#EEFDEE",
+        "#FDF8E6",
+        "#FCECE9",
+        "#EEF1FF",
+        "#F0F8F8",
+        "#FAEAFB"
+      ];
+      return background[data - 1];
+    };
+
     const columns: any = [
       {
         title: "序号",
@@ -39,15 +52,48 @@ export default withRouter(
       },
       {
         title: "教学方式",
-        dataIndex: "teachingMethodName",
+        dataIndex: "teachingMethod",
+        width: 80,
         align: "center",
-        width: 200
+        onCell: (record: any, rowIndex: any) => ({
+          style: {
+            backgroundColor: typeBackground(record.teachingMethod)
+          }
+        }),
+        render(teachingMethod: any, record: any) {
+          //1.学习、2培训、3考试、4练习、5实操、6演练
+          const teachingMethodArray = [
+            "学习",
+            "培训",
+            "考试",
+            "练习",
+            "实操",
+            "演练"
+          ];
+          const color = [
+            "#4CA21D",
+            "#DD7316",
+            "#EA3838",
+            "#2754A8",
+            "#006667",
+            "#AB2892"
+          ];
+          return (
+            <span
+              style={{
+                color: color[teachingMethod - 1]
+              }}
+            >
+              {teachingMethodArray[teachingMethod - 1]}
+            </span>
+          );
+        }
       },
       {
         title: "显示顺序",
         dataIndex: "sort",
         align: "center",
-        width: 100
+        width: 70
       },
 
       {

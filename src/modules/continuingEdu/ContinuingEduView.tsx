@@ -151,7 +151,7 @@ export default function ContinuingEdu(props: Props) {
           <currentRoute.component
             getTitle={currentRoute && currentRoute.title} //对应菜单标题
             getId={currentRoute && currentRoute.id} //对应菜单id
-            getList={getList()}
+            getList={getList}
           />
         )}
       </MainWrapper>

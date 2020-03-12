@@ -12,7 +12,6 @@ interface Props {
 }
 
 export default observer(function MenuSettings(props: Props) {
-  const getList = props.getList;
   const [effect, setEffect] = useState(true);
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
@@ -223,7 +222,7 @@ export default observer(function MenuSettings(props: Props) {
           <div className="topHeaderTitle">
             <div className="title">菜单设置</div>
             <div className="topHeaderButton">
-              <Button onClick={getList}>刷新</Button>
+              <Button onClick={props.getList}>刷新</Button>
               <Button type="primary" onClick={() => setEditVisible(true)}>
                 添加一级菜单
               </Button>
