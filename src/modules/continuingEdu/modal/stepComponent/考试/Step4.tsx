@@ -196,6 +196,10 @@ export default observer(function Step4() {
             stepViewModal.stepData2.needScorePerson = !stepViewModal.stepData2
               .needScorePerson;
               refForm.current?.setField('needScorePerson', stepViewModal.stepData2.needScorePerson )    
+
+              if(!stepViewModal.stepData2.needScorePerson) {
+                refForm.current && refForm.current.setField('scorePersonList', []);
+              }
           }}
         >
           是否需要评分负责人

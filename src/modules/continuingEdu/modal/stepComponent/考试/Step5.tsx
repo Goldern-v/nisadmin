@@ -95,13 +95,17 @@ export default observer(function Step5() {
             <td className="key">评分负责人：</td>
             <td className="value">
               <span>
-                {ksStepViewModal.stepData2.passScores ? "需要" : "不需要"}
+                {ksStepViewModal.stepData2.needScorePerson ? "需要" : "不需要"}
               </span>
-              （
-              {ksStepViewModal.stepData2.scorePersonList
-                .map((item: any) => item.label)
-                .join("，")}
-              ）
+              {!!ksStepViewModal.stepData2.scorePersonList.length && (
+                <span>
+                  （
+                  {ksStepViewModal.stepData2.scorePersonList
+                    .map((item: any) => item.label)
+                    .join("，")}
+                  ）
+                </span>
+              )}
             </td>
           </tr>
 
