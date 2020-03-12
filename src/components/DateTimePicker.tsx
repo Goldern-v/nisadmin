@@ -28,6 +28,7 @@ export default function DateTimePicker(props: Props) {
   return (
     <Wrapper>
       <DatePicker
+        allowClear={false}
         value={date}
         mode="date"
         placeholder={"选择日期"}
@@ -37,6 +38,7 @@ export default function DateTimePicker(props: Props) {
         }}
       />
       <TimePicker
+        allowClear={false}
         style={{ marginLeft: 20 }}
         value={time}
         minuteStep={5}

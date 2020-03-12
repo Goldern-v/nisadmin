@@ -49,11 +49,11 @@ export const navConfig: navConfigItem[] = [
         path: "/qcTwo",
         icon: require("../images/menu-icon/二级质控@2x.png")
       },
-      // {
-      //   name: '一级质量',
-      //   path: '/qcOne',
-      //   icon: require('../images/menu-icon/一级质控@2x.png')
-      // },
+      {
+        name: "一级质量",
+        path: "/qcOne/nursingWorkPlainList",
+        icon: require("../images/menu-icon/一级质控@2x.png")
+      },
       // {
       //   name: '病区登记本',
       //   path: '',

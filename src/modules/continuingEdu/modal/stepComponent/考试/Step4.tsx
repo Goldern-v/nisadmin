@@ -94,6 +94,9 @@ export default observer(function Step4() {
     stepViewModal.stepData2.needScorePerson = false
     stepViewModal.stepData2.scorePersonList = []
     refForm.current && refForm.current.setField('scorePersonList', []);
+    stepViewModal.stepData2.showScoreInstantly = true
+  } else {
+    stepViewModal.stepData2.showScoreInstantly = false
   }
 
 
@@ -177,6 +180,7 @@ export default observer(function Step4() {
           </Row>
           <Row style={{marginTop: 10}}>
             <Checkbox
+              disabled={true}
               checked={!!stepViewModal.stepData2.showScoreInstantly}
               onClick={() => {
                 stepViewModal.stepData2.showScoreInstantly = !stepViewModal
@@ -185,7 +189,7 @@ export default observer(function Step4() {
               }}
             >
               交卷后显示分数
-              <span style={{ color: "#999" }}>（含有问答题不建议勾选）</span>
+              <span style={{ color: "#999" }}>（有问答题需要人工评分，没有则立即显示成绩）</span>
             </Checkbox>
           </Row>
         </div>
