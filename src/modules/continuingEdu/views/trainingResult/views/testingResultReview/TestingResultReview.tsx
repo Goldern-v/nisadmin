@@ -155,8 +155,8 @@ export default observer(function TestingResultReview() {
   }
 
   const handleAnwserSheetReview = (record: any) => {
-    // if (!record.answerTime)
-    // return message.warning('该学员未答题')
+    if (!record.answerTime)
+      return message.warning('该学员未答题')
 
     answerSheet.show({
       title: `${baseInfo.title}考卷`,

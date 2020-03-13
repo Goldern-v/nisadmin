@@ -57,8 +57,8 @@ export default observer(function AnswerSheetModal(props: Props) {
   const getAnswerInfo = () => {
     setLoading(true)
     trainingResultService
-      .reviewExamPaper(170, 6859)
-      // .reviewExamPaper(cetpId || '', empNo || '')
+      // .reviewExamPaper(170, 6859)
+      .reviewExamPaper(cetpId || '', empNo || '')
       .then((res) => {
         if (res.data) {
           setLoading(false)

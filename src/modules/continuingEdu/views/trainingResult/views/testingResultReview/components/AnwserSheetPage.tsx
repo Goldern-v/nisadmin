@@ -59,7 +59,6 @@ export default function AnwserSheetPage(props: Props) {
   }
 
   const fillContent = (item: any, idx: number) => {
-
     return <div className="question-item" key={idx || 0}>
       <span className="question-result">
         {item.answerRight ?

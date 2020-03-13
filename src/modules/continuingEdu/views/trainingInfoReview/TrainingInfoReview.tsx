@@ -61,19 +61,24 @@ export default observer(function TrainingInfoReview() {
                 (lastAuditItem.taskType == 4) ?
                 'red' : 'blue'
           }}>
-          {lastAuditItem && <React.Fragment>
-            <span>{lastAuditItem.taskDesc}</span>
-            <span>{lastAuditItem.taskType == 4 && `(${taskTypeName(lastAuditItem.taskType)})`}</span>
-          </React.Fragment>}
+          {lastAuditItem &&
+            <React.Fragment>
+              <span>{lastAuditItem.taskDesc}</span>
+              <span>{lastAuditItem.taskType == 4 && `(${taskTypeName(lastAuditItem.taskType)})`}</span>
+            </React.Fragment>}
         </span>
       </SubContent>
       <ButtonGroups>
-        {queryObj.audit && <Button
-          type="primary"
-          onClick={handleAuditOpen}>
-          {queryObj.statusDesc || '未知审核流程'}
-        </Button>}
-        <Button onClick={() => history.goBack()}>返回</Button>
+        {queryObj.audit &&
+          <Button
+            type="primary"
+            onClick={handleAuditOpen}>
+            {queryObj.statusDesc || '未知审核流程'}
+          </Button>}
+        <Button
+          onClick={() => history.goBack()}>
+          返回
+        </Button>
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
