@@ -166,7 +166,7 @@ export default function SecondEditModal(props: Props) {
           setIsSecondAudit(true);
         }
         if (thirdAudit.length > 0) {
-          setIsSecondAudit(true);
+          setIsThirdAudit(true);
         }
         getData(submitterType, submit, setSubmit);
         getData(firstAuditorType, firstAudit, setFirstAudit);
