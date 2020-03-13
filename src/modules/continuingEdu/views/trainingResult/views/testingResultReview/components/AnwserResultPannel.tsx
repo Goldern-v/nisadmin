@@ -11,10 +11,10 @@ export interface Props {
 export default function AnwserResultPannel(props: Props) {
   const { baseInfo, questionList } = props
 
-  let timeForAnswer = baseInfo.timeForAnswer / (1000 * 60)
-  let timeForAnswerStr = ''
-  if (timeForAnswer / 60 >= 1) timeForAnswerStr += `${Math.ceil(timeForAnswer / 60)}小时`
-  if (timeForAnswer % 60 > 0) timeForAnswerStr += `${timeForAnswer % 60}分钟`
+  // let timeForAnswer = baseInfo.timeForAnswer / (1000 * 60)
+  // let timeForAnswerStr = ''
+  // if (timeForAnswer / 60 >= 1) timeForAnswerStr += `${Math.ceil(timeForAnswer / 60)}小时`
+  // if (timeForAnswer % 60 > 0) timeForAnswerStr += `${Math.ceil(timeForAnswer % 60)}分钟`
 
   let rightRate = 0
   if (
@@ -110,7 +110,10 @@ export default function AnwserResultPannel(props: Props) {
     <div className="base-info">
       <div className="row">得分：{totalGainScores || 0}分</div>
       <div className="row">及格分数线：{baseInfo.passScores || 0}分</div>
-      <div className="row">答题用时：{timeForAnswerStr}</div>
+      <div className="row">答题用时：
+        {/* {timeForAnswerStr} */}
+        {baseInfo.timeForAnswerDesc}
+      </div>
       <div className="row">开始时间：{baseInfo.answerBeginTime}</div>
       <div className="row">结束时间：{baseInfo.answerEndTime}</div>
       <div className="row">

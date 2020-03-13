@@ -120,7 +120,7 @@ export default function AnwserSheetPage(props: Props) {
               className="de-score-ipt"
               size="small"
               value={item.deduction}
-              precision={2}
+              precision={1}
               step={0.1}
               max={item.scores}
               min={0}

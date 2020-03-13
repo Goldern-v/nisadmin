@@ -44,6 +44,13 @@ export default class TrainingResultService extends BaseApiService {
       .post(`/studyAndTrain/teachingPlanManage/reviewExamPaper`,
         { cetpId, empNo })
   }
+
+  /**保存问答题评分 */
+  // 
+  public saveScores(params: any) {
+    return this.post(`/studyAndTrain/examManage/saveScoresForShortQuestions`,
+      params)
+  }
 }
 
 export const trainingResultService = new TrainingResultService()

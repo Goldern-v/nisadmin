@@ -177,7 +177,6 @@ export default observer(function TestingResultReview() {
       title: '发布成绩',
       content: '确定给所有考生发布成绩？',
       onOk: () => {
-
         setLoading(true)
         trainingResultService
           .publishGrades(appStore.queryObj.id || '')

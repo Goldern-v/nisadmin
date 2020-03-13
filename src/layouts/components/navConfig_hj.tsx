@@ -72,6 +72,11 @@ export const navConfig: navConfigItem[] = [
     ]
   },
   {
+    name: "学习培训",
+    path: "/continuingEdu"
+    // hidden: !appStore.isDev
+  },
+  {
     name: "敏感指标",
     path: "/indicator"
   },

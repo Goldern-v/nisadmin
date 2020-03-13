@@ -31,27 +31,28 @@ export default observer(function AnswerSheetModal(props: Props) {
   const handleOK = () => {
     if (loading) return
     setLoading(true)
-    setTimeout(() => {
-      let params = {
-        cetpId,
-        empNo,
-        questionScoreList:
-          wendaQuestionList
-            .map((question: any) => {
-              return {
-                questionId: question.id,
-                deduction: question.deduction,
-              }
-            })
-      } as any
+    let params = {
+      cetpId,
+      empNo,
+      questionScoreList:
+        wendaQuestionList
+          .map((question: any) => {
+            return {
+              questionId: question.id,
+              deduction: question.deduction,
+            }
+          })
+    } as any
 
-      console.log(params)
+    trainingResultService
+      .saveScores(params)
+      .then(res => {
+        setLoading(false)
 
-      message.success('成绩保存成功')
-      setLoading(false)
-      onOkCallBack && onOkCallBack()
-      onCancel && onCancel()
-    }, 1500)
+        message.success('成绩保存成功')
+        onOkCallBack && onOkCallBack()
+        onCancel && onCancel()
+      }, () => setLoading(false))
   }
 
   const getAnswerInfo = () => {
