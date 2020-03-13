@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Input, Row, Col, Modal, message as Message, Select } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
@@ -25,6 +25,7 @@ export interface CheckUserItem {
 }
 
 export default function SecondEditModal(props: Props) {
+  const [effect, setEffect] = useState(true);
   const selectPeopleModal = createModal(SelectPeopleModal);
   const { secondVisible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
@@ -129,57 +130,68 @@ export default function SecondEditModal(props: Props) {
     }
   };
 
+  useLayoutEffect(() => {
+    setEffect(false);
+  }, []);
+
   useEffect(() => {
-    if (secondVisible) {
-      setTimeout(() => {
-        let current = formRef.current;
-        if (!current) return;
-        const {
-          name,
-          submitterType,
-          firstAuditorType,
-          secondAuditorType,
-          thirdAuditorType
-        } = params;
-        setInputValue(name);
-        let submit = submitterType
-          ? submitterType === 1
-            ? params.submitEmployees
-            : params.submitRoles
-          : [];
-        let firstAudit = firstAuditorType
-          ? firstAuditorType === 1
-            ? params.firstAuditEmployees
-            : params.firstAuditRoles
-          : [];
-        let secondAudit = secondAuditorType
-          ? secondAuditorType === 1
-            ? params.secondAuditEmployees
-            : params.secondAuditRoles
-          : [];
-        let thirdAudit = thirdAuditorType
-          ? thirdAuditorType === 1
-            ? params.thirdAuditEmployees
-            : params.thirdAuditRoles
-          : [];
-        if (secondAudit.length > 0) {
-          setIsSecondAudit(true);
-        }
-        if (thirdAudit.length > 0) {
-          setIsThirdAudit(true);
-        }
-        getData(submitterType, submit, setSubmit);
-        getData(firstAuditorType, firstAudit, setFirstAudit);
-        getData(secondAuditorType, secondAudit, setSecondAudit);
-        getData(thirdAuditorType, thirdAudit, setThirdAudit);
-        current.setFields({
-          name,
-          submit,
-          firstAudit,
-          secondAudit,
-          thirdAudit
-        });
-      }, 100);
+    setEffect(true);
+    if (effect) {
+      if (secondVisible) {
+        setTimeout(() => {
+          let current = formRef.current;
+          if (!current) return;
+          // 初始化数据
+          setIsSecondAudit(false);
+          setIsThirdAudit(false);
+          setErrorMessage("");
+          const {
+            name,
+            submitterType,
+            firstAuditorType,
+            secondAuditorType,
+            thirdAuditorType
+          } = params;
+          setInputValue(name);
+          let submit = submitterType
+            ? submitterType === 1
+              ? params.submitEmployees
+              : params.submitRoles
+            : [];
+          let firstAudit = firstAuditorType
+            ? firstAuditorType === 1
+              ? params.firstAuditEmployees
+              : params.firstAuditRoles
+            : [];
+          let secondAudit = secondAuditorType
+            ? secondAuditorType === 1
+              ? params.secondAuditEmployees
+              : params.secondAuditRoles
+            : [];
+          let thirdAudit = thirdAuditorType
+            ? thirdAuditorType === 1
+              ? params.thirdAuditEmployees
+              : params.thirdAuditRoles
+            : [];
+          if (secondAudit && secondAudit.length > 0) {
+            setIsSecondAudit(true);
+          }
+          if (thirdAudit && thirdAudit.length > 0) {
+            setIsThirdAudit(true);
+          }
+          getData(submitterType, submit, setSubmit);
+          getData(firstAuditorType, firstAudit, setFirstAudit);
+          getData(secondAuditorType, secondAudit, setSecondAudit);
+          getData(thirdAuditorType, thirdAudit, setThirdAudit);
+          current.setFields({
+            name,
+            submit,
+            firstAudit,
+            secondAudit,
+            thirdAudit
+          });
+        }, 100);
+      }
     }
   }, [secondVisible]);
 
@@ -264,6 +276,7 @@ export default function SecondEditModal(props: Props) {
               onOk();
             })
             .catch(e => {
+              Message.warning("修改失败！添加三级审核人，请先添加二级审核人");
               setEditLoading(false);
             });
         })
