@@ -120,8 +120,13 @@ export default observer(function UpdateTable(props: Props) {
       }
     }
   ];
-  const downFile = () => {
-    stepServices.downLoadQueUploadTemplat().then(res => {
+  const downFileWith = () => {
+    stepServices.downLoadQueUploadTemplateWithShortQues().then(res => {
+      fileDownload(res);
+    });
+  };
+  const downFileWithout = () => {
+    stepServices.downLoadQueUploadTemplateWithoutShortQues().then(res => {
       fileDownload(res);
     });
   };
@@ -157,8 +162,10 @@ export default observer(function UpdateTable(props: Props) {
   return (
     <Wrapper>
       <div className="down-file-con">
-        选择上传文件，
-        <span onClick={downFile}>下载题库模板</span>
+        选择上传文件：
+        <span onClick={downFileWith}>下载题库模板(含问答题)</span>
+        &nbsp;
+        <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
       </div>
       <BaseTable
         dataSource={[{}, ...dataSource]}
