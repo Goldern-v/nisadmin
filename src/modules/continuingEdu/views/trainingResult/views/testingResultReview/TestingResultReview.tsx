@@ -20,7 +20,7 @@ import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
 
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 // import moment from 'moment'
 import { trainingResultModel } from './../../models/TrainingResultModel'
@@ -155,13 +155,20 @@ export default observer(function TestingResultReview() {
   }
 
   const handleAnwserSheetReview = (record: any) => {
-    if (!record.answerTime)
-      return message.warning('该学员未答题')
+    // if (!record.answerTime)
+    //   return message.warning('该学员未答题')
+
+    let isScoreEdit = false
+    let sameEmpNo = baseInfo.scorePersonList.find((item: any) => {
+      return item.empNo == (authStore.user && authStore.user?.empNo)
+    })
+
+    if (sameEmpNo) isScoreEdit = true
 
     answerSheet.show({
       title: `${baseInfo.title}考卷`,
       empNo: record.empNo,
-      // type: 'view',
+      type: isScoreEdit ? 'edit' : 'view',
       cetpId: appStore.queryObj.id,
       onOkCallBack: () => {
         console.log('ok')
@@ -228,6 +235,10 @@ export default observer(function TestingResultReview() {
         <span className="label"> 参与人员:</span>
         <span className="content">
           {(baseInfo.participantList && baseInfo.participantList.length) || 0}人
+        </span>
+        <span>评分负责人:</span>
+        <span className="content">
+          {(baseInfo.scorePersonList && baseInfo.scorePersonList.map((item: any) => item.empName).join(','))}
         </span>
       </SubContent>
       <ButtonGroups>

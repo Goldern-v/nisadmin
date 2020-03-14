@@ -1,6 +1,6 @@
 const proxy = require("http-proxy-middleware");
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
     proxy("/crNursing/api", {
       // target: 'http://120.25.105.45:9865',
@@ -42,11 +42,11 @@ module.exports = function(app) {
   );
   app.use(
     proxy("/crNursing/asset/", {
-      // target: 'http://120.25.105.45:9864',
+      target: 'http://120.25.105.45:9864',
       // target: 'http://120.197.141.41:9094',
       // target: 'http://111.47.19.230:9091',
       //武汉测试
-      target: "http://nurse.cr-health.com:34002",
+      // target: "http://nurse.cr-health.com:34002",
       secure: false,
       changeOrigin: false
     })
