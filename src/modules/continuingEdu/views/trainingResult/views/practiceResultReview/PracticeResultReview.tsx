@@ -97,6 +97,10 @@ export default observer(function PracticeResultReview(props: Props) {
       title: '学分',
       align: 'center',
       width: 120,
+      render: (text: string) => {
+        if (text) return text
+        return '0'
+      }
     },
     {
       dataIndex: 'studyTime',

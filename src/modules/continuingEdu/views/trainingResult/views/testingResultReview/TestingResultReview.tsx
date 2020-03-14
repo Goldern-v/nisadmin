@@ -74,9 +74,9 @@ export default observer(function TestingResultReview() {
       width: 70,
       render: (isValidResult: number, record: any) => {
         if (isValidResult == 1)
-          return <span style={{ color: 'blue' }}>有效</span>
+          return <span style={{ color: 'blue', cursor: 'pointer' }}>有效</span>
         else
-          return <span style={{ color: 'red' }}>无效</span>
+          return <span style={{ color: 'red', cursor: 'pointer' }}>无效</span>
       }
     },
     {
@@ -155,8 +155,16 @@ export default observer(function TestingResultReview() {
   }
 
   const handleAnwserSheetReview = (record: any) => {
-    // if (!record.answerTime)
-    //   return message.warning('该学员未答题')
+    if (!record.answerTime) {
+      Modal.warning({
+        title: <span style={{ fontWeight: 'bold' }}>{`《${baseInfo.title}》`}</span>,
+        okText: '我知道了',
+        content: '该考生未答题，得分为0。'
+      })
+      return
+      // return message.warning('该学员未答题')
+
+    }
 
     let isScoreEdit = false
     let sameEmpNo = baseInfo.scorePersonList.find((item: any) => {

@@ -80,6 +80,10 @@ export default observer(function StudyResultReview() {
       title: '学分',
       align: 'center',
       width: 120,
+      render: (text: string) => {
+        if (text) return text
+        return '0'
+      }
     },
     {
       dataIndex: 'classHours',

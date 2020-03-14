@@ -45,7 +45,7 @@ export default observer(function TrainingResultReview() {
       width: 60,
     },
     {
-      dataIndex: 'zhiwu',
+      dataIndex: 'empTitle',
       title: '职位',
       align: 'center',
       width: 80,
@@ -69,7 +69,7 @@ export default observer(function TrainingResultReview() {
       width: 180,
       render: (signInTime: string, record: any) => {
         if (signInTime) return signInTime
-        return '未签到'
+        return <span style={{ color: 'red' }}>未签到</span>
       }
     },
     {
@@ -89,6 +89,10 @@ export default observer(function TrainingResultReview() {
       title: '学分',
       align: 'center',
       width: 120,
+      render: (text: string) => {
+        if (text) return text
+        return '0'
+      }
     },
     {
       dataIndex: 'classHours',

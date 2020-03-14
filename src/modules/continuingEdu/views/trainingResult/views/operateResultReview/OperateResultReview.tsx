@@ -70,6 +70,10 @@ export default observer(function OperateResultReview() {
       title: '签到',
       align: 'center',
       width: 180,
+      render: (signInTime: string, record: any) => {
+        if (signInTime) return signInTime
+        return <span style={{ color: 'red' }}>未签到</span>
+      }
     },
     {
       dataIndex: 'isValidResult',
@@ -94,6 +98,10 @@ export default observer(function OperateResultReview() {
       title: '学分',
       align: 'center',
       width: 120,
+      render: (text: string) => {
+        if (text) return text
+        return '0'
+      }
     },
     {
       dataIndex: 'classHours',
