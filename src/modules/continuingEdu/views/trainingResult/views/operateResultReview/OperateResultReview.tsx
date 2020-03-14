@@ -81,10 +81,30 @@ export default observer(function OperateResultReview() {
       align: 'center',
       width: 70,
       render: (isValidResult: number, record: any) => {
+        const itemScoreConfirm = () => {
+          scorceConfirm.show({
+            onOkCallBack: () => {
+              message.success(`${record.empName} 的成绩修改成功`)
+              trainingResultModel.getTableData()
+            },
+            cetpId: appStore.queryObj.id,
+            empNoList: [record.empNo],
+            isValidResult: record.isValidResult.toString() || ''
+          })
+        }
+
         if (isValidResult == 1)
-          return <span style={{ color: 'blue' }}>有效</span>
+          return <span
+            style={{ color: 'blue', cursor: 'pointer' }}
+            onClick={itemScoreConfirm}>
+            有效
+            </span>
         else
-          return <span style={{ color: 'red' }}>无效</span>
+          return <span
+            style={{ color: 'red', cursor: 'pointer' }}
+            onClick={itemScoreConfirm}>
+            无效
+          </span>
       }
     },
     {
