@@ -3,8 +3,8 @@ import React from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { message as Message, Modal } from "src/vendors/antd";
 import { observer } from "src/vendors/mobx-react-lite";
-// import { mainPageModal } from "../MainPageModal";
-// import { mainPageApi } from "../api/MainPageApi";
+import { notificationModal } from "../NotificationModal";
+import { notificationApi } from "../api/NotificationApi";
 import { appStore } from "src/stores";
 
 interface Props {
@@ -111,13 +111,13 @@ export default observer(function Table(props: Props) {
         // dataSource={mainPageModal.tableList}
         columns={columns}
         surplusWidth={300}
-        surplusHeight={270}
+        surplusHeight={230}
         type={["index"]}
-        // pagination={{
-        //   current: mainPageModal.pageIndex,
-        //   total: mainPageModal.total,
-        //   pageSize: mainPageModal.pageSize
-        // }}
+        pagination={{
+          current: notificationModal.pageIndex,
+          total: notificationModal.total,
+          pageSize: notificationModal.pageSize
+        }}
         // onChange={pagination => {
         //   mainPageModal.pageIndex = pagination.current;
         //   mainPageModal.total = pagination.total;

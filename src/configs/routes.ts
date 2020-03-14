@@ -143,6 +143,12 @@ const ImportView = lazy(() =>
 const TypeManagementView = lazy(() =>
   import("src/modules/continuingEdu/views/mainTablePage/view/TypeManagement")
 );
+//学习培训--通知管理查看结果
+const NotificationManagementView = lazy(() =>
+  import(
+    "src/modules/continuingEdu/views/notificationManagement/view/CheckResults"
+  )
+);
 
 // 平台使用手册
 const UserManualRouter = lazy(() =>
@@ -444,6 +450,11 @@ const routes: RouteItem[] = [
   ),
   setLayout("/qualityScheduleImport", ImportView, layouts.MainLayout),
   setLayout("/typeManagement", TypeManagementView, layouts.MainLayout),
+  setLayout(
+    "/notificationManagement",
+    NotificationManagementView,
+    layouts.MainLayout
+  ),
 
   setLayout(
     "/qualityAnalysisDetail/:id",

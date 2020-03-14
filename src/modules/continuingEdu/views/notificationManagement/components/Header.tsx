@@ -44,12 +44,13 @@ export default observer(function Header(props: Props) {
           // }}
         >
           <Select.Option value="">全部</Select.Option>
-          {/* {mainPageModal.selectTypeList.map((item: any, index: number) => (
-            <Select.Option value={item.id} key={index}>
-              {item.name}
-            </Select.Option>
-          ))} */}
-          <Select.Option value="-1">其他</Select.Option>
+
+          <Select.Option value="1">学习</Select.Option>
+          <Select.Option value="2">培训</Select.Option>
+          <Select.Option value="3">考试</Select.Option>
+          <Select.Option value="4">练习</Select.Option>
+          <Select.Option value="5">实操</Select.Option>
+          <Select.Option value="6">演练</Select.Option>
         </Select>
         <span>状态：</span>
         <Select
@@ -62,11 +63,8 @@ export default observer(function Header(props: Props) {
           // }}
         >
           <Select.Option value="">全部</Select.Option>
-          <Select.Option value="1">草稿</Select.Option>
-          <Select.Option value="2">待审核</Select.Option>
-          <Select.Option value="3">退回</Select.Option>
-          <Select.Option value="4">发布</Select.Option>
-          <Select.Option value="5">归档</Select.Option>
+          <Select.Option value="1">已发送</Select.Option>
+          <Select.Option value="2">未发送</Select.Option>
         </Select>
       </LeftIcon>
       <RightIcon>
@@ -80,7 +78,7 @@ export default observer(function Header(props: Props) {
         />
         <Button
           onClick={() => {
-            // mainPageModal.onload();
+            appStore.history.push(`/notificationManagement`);
           }}
         >
           查询
