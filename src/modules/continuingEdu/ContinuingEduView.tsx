@@ -12,14 +12,14 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
 import 菜单设置 from "./views/菜单设置/MenuSettings";
 import 主列表页 from "./views/主表单页/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
-import 通知管理 from "./views/通知管理/Notification";
+import 通知管理 from "./views/notificationManagement/Notification";
 import { authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
@@ -46,7 +46,6 @@ export default function ContinuingEdu(props: Props) {
     //   component: 评分管理
     // },
     ...dataList,
-    // 菜单设置只有护理部可见
     {
       title: "通知管理",
       icon: <RYGL />,
@@ -59,7 +58,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <KSGL />,
       path: "/continuingEdu/菜单设置",
       component: 菜单设置,
-      hide: !authStore.isDepartment
+      hide: !authStore.isDepartment // 菜单设置只有护理部可见
     }
   ];
   // 查询获取动态菜单列表
