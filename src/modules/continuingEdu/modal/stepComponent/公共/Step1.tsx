@@ -31,6 +31,7 @@ export default function Step1() {
   const rules: Rules = {
     publicDate: val => !!val || "请填写发表日期"
   };
+  const [selectedtypeText, setSelectedtypeText]: any = useState("");
 
   useLayoutEffect(() => {
     let from = refForm.current;
@@ -95,7 +96,9 @@ export default function Step1() {
   // 添加类型管理
   const saveOrUpload = (record?: any) => {
     setEditParams({
-      Pid: Pid
+      Pid: Pid,
+      sort: 0,
+      teachingMethod: "学习"
     });
     setEditVisible(true);
   };
