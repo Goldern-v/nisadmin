@@ -15,7 +15,7 @@ import { to } from "src/libs/fns";
 import { stepServices } from "../services/stepServices";
 import { stepViewModal, teachingMethodMap } from "../StepViewModal";
 import { cloneJson } from "src/utils/json/clone";
-import TypeEditModal from "src/modules/continuingEdu/views/主表单页/modal/TypeEditModal";
+import TypeEditModal from "src/modules/continuingEdu/views/mainTablePage/modal/TypeEditModal";
 import { appStore } from "src/stores/index";
 import qs from "qs";
 

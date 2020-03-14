@@ -141,7 +141,7 @@ const ImportView = lazy(() =>
 );
 // 学习培训--主列表页类型管理
 const TypeManagementView = lazy(() =>
-  import("src/modules/continuingEdu/views/主表单页/view/TypeManagement")
+  import("src/modules/continuingEdu/views/mainTablePage/view/TypeManagement")
 );
 
 // 平台使用手册

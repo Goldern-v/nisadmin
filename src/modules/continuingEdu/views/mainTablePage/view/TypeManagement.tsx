@@ -8,7 +8,7 @@ import { appStore } from "src/stores/index";
 import { Button, Modal, message as Message } from "antd";
 import qs from "qs";
 import { mainPageApi } from "../api/MainPageApi";
-import { meunSettingApi } from "../../菜单设置/api/MeunSettingApi";
+import { meunSettingApi } from "../../menuSettings/api/MeunSettingApi";
 import TypeEditModal from "../modal/TypeEditModal"; // 一级菜单弹窗
 import createModal from "src/libs/createModal";
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
-import { meunSettingApi } from "./views/菜单设置/api/MeunSettingApi";
+import { meunSettingApi } from "./views/menuSettings/api/MeunSettingApi";
 import { ReactComponent as RYGL } from "./assets/icon_svg/RYGL.svg";
 import { ReactComponent as YNXXB } from "./assets/icon_svg/YNXXB.svg";
 import { ReactComponent as JXJH } from "./assets/icon_svg/JXJH.svg";
@@ -16,8 +16,8 @@ export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
-import 菜单设置 from "./views/菜单设置/MenuSettings";
-import 主列表页 from "./views/主表单页/MainPage";
+import 菜单设置 from "./views/menuSettings/MenuSettings";
+import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
 import { authStore } from "src/stores";
@@ -52,8 +52,8 @@ export default function ContinuingEdu(props: Props) {
       title: "通知管理",
       icon: <RYGL />,
       path: "/continuingEdu/通知管理",
-      component: 通知管理,
-      hide: true
+      component: 通知管理
+      // hide: true
     },
     {
       title: "菜单设置",
@@ -129,15 +129,6 @@ export default function ContinuingEdu(props: Props) {
         return <JXJH />;
     }
   };
-  // 获取组件变量名
-  // const getComponent = (name: any) => {
-  //   switch (name) {
-  //     case "菜单设置":
-  //       return 菜单设置;
-  //     default:
-  //       return "";
-  //   }
-  // };
 
   let currentRoutePath =
     `${props.history.location.pathname}${props.history.location.search}` || "";
