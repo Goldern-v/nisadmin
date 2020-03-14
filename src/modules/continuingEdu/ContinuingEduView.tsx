@@ -12,9 +12,10 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
+import 评分管理 from "./views/scoreManage/ScoreManage";
 import 菜单设置 from "./views/菜单设置/MenuSettings";
 import 主列表页 from "./views/主表单页/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
@@ -38,6 +39,12 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/审核发布",
       component: 审核发布
     },
+    // {
+    //   title: "评分管理",
+    //   icon: <LXGL />,
+    //   path: "/continuingEdu/评分管理",
+    //   component: 评分管理
+    // },
     ...dataList,
     // 菜单设置只有护理部可见
     {

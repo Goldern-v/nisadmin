@@ -3,20 +3,18 @@ import React, { useState, useEffect } from 'react'
 import { Button, Select, Input, message } from 'antd'
 import BaseTabs from 'src/components/BaseTabs'
 import BaseTable, { DoCon } from "src/components/BaseTable"
-import { auditEduPlantService } from './api/AuditEduPlantService'
+import { scoreManageService } from './api/ScoreManageService'
 import { Place } from "src/components/common"
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs'
-import createModal from "src/libs/createModal"
-import AuditModal from './components/AuditModal'
+// import createModal from "src/libs/createModal"
 
 const Option = Select.Option
 
 export interface Props { }
 
 export default observer(function AuditEduPlan(props: Props) {
-  const auditModal = createModal(AuditModal)
 
   const { queryObj } = appStore
   const [tableData, setTableData] = useState([] as any[])
@@ -123,6 +121,18 @@ export default observer(function AuditEduPlan(props: Props) {
       width: 180
     },
     {
+      title: "参与人员",
+      dataIndex: "参与人员",
+      width: 60,
+      align: "center"
+    },
+    {
+      title: "评分负责人",
+      dataIndex: "评分负责人",
+      width: 120,
+      align: "center"
+    },
+    {
       title: "状态",
       dataIndex: "statusDesc",
       width: 100,
@@ -143,28 +153,28 @@ export default observer(function AuditEduPlan(props: Props) {
       }
     },
     {
-      title: "提交人",
-      dataIndex: "submitterEmpName",
-      width: 90,
-      align: "center"
-    },
-    {
-      title: "提交时间",
-      dataIndex: "submitTime",
-      width: 130,
-      align: "center"
-    },
-    {
       title: "操作",
       key: "8",
       width: 60,
       align: "center",
       render: (text: any, record: any, c: any) => {
+        let btnText = activeKey == 0 ? "立即评分" : "查看"
         return (
           <DoCon>
-            <span onClick={() => handleDetail(record)}>
-              {activeKey == 0 ? "审核" : "查看"}
-            </span>
+            {btnText == '立即评分' ?
+              (record.statusDesc == '结束' ?
+                <span onClick={() => handleDetail(record)}>
+                  {btnText}
+                </span> :
+                <span style={{
+                  color: '#999',
+                  cursor: 'default'
+                }}>
+                  {btnText}
+                </span>) :
+              <span onClick={() => handleDetail(record)}>
+                {btnText}
+              </span>}
           </DoCon>
         )
       }
@@ -179,43 +189,34 @@ export default observer(function AuditEduPlan(props: Props) {
     setQuery({ ...query, pageSize, pageIndex: 1 })
   }
 
-  const handleAuditOpen = () => {
-    if (selectedRowKeys.length <= 0) {
-      message.warning('未选择审核项目')
-      return
-    }
-
-    let taskIdList = selectedRows.map((item: any) => item.taskId)
-
-    auditModal.show({
-      taskIdList,
-      onOkCallBack: () => getTableData(query)
-    })
-  }
-
   const handleDetail = (record: any) => {
     let newQuery = {
       id: record.cetpId,
-      taskId: record.taskId,
-      statusDesc: record.statusDesc,
+      // taskId: record.taskId,
+      // statusDesc: record.statusDesc,
     } as any
 
-    if (activeKey == '0') newQuery.audit = true
+    // if (activeKey == '0') newQuery.audit = true
+    // appStore.history.push(`/trainingInfoReview?${qs.stringify(newQuery)}`)
+    if (record.teachingMethodName == '考试') {
+      appStore.history.push(`/testingResultReview?${qs.stringify(newQuery)}`)
+    } else {
+      appStore.history.push(`/operateResultReview?${qs.stringify(newQuery)}`)
+    }
 
-    appStore.history.push(`/trainingInfoReview?${qs.stringify(newQuery)}`)
   }
 
-  const AuditPannel = <div>
+  const ScorePannel = <div>
     <GroupPostBtn
       onClick={() => getTableData(query)}>
       刷新
     </GroupPostBtn>
-    {activeKey == 0 &&
+    {/* {activeKey == 0 &&
       <GroupPostBtn
         onClick={handleAuditOpen}
         style={{ right: 110 }}>
         批量审核
-      </GroupPostBtn>}
+      </GroupPostBtn>} */}
     <BaseTable
       surplusHeight={280}
       dataSource={tableData}
@@ -226,7 +227,7 @@ export default observer(function AuditEduPlan(props: Props) {
           onDoubleClick: () => handleDetail(record)
         }
       }}
-      rowSelection={activeKey == 0 ? rowSelection : undefined}
+      // rowSelection={activeKey == 0 ? rowSelection : undefined}
       pagination={{
         pageSizeOptions: ['10', '15', '20'],
         total: dataTotal,
@@ -241,11 +242,11 @@ export default observer(function AuditEduPlan(props: Props) {
 
   const tabList = [
     {
-      title: '待我审核',
-      component: AuditPannel
+      title: '待我评分',
+      component: ScorePannel
     }, {
-      title: '我已审核',
-      component: AuditPannel
+      title: '已发布',
+      component: ScorePannel
     }
   ]
 
@@ -253,16 +254,16 @@ export default observer(function AuditEduPlan(props: Props) {
     setLoading(true)
     setSelectRowKeys([])
     setSelectRows([])
-    appStore.history.replace(`/continuingEdu/审核发布?${qs.stringify({
+    appStore.history.replace(`/continuingEdu/评分管理?${qs.stringify({
       ...appStore.queryObj,
       ...query,
       activeKey
     })}`)
     let req = (query: any) => {
       if (activeKey == 0) {
-        return auditEduPlantService.queryToAuditPageList(query)
+        return scoreManageService.queryToAuditPageList(query)
       } else {
-        return auditEduPlantService.queryAuditedPageList(query)
+        return scoreManageService.queryAuditedPageList(query)
       }
     }
 
@@ -285,7 +286,7 @@ export default observer(function AuditEduPlan(props: Props) {
     setQuery({ ...query, pageIndex: 1 })
   }
   const getMenuInfo = () => {
-    auditEduPlantService
+    scoreManageService
       .getMenuTree()
       .then(res => {
         if (res.data) {
@@ -306,7 +307,7 @@ export default observer(function AuditEduPlan(props: Props) {
 
   return <Wrapper>
     <HeaderCon>
-      <Title>审核发布</Title>
+      <Title>评分管理</Title>
       <Place />
       <span style={{ marginLeft: 20 }}>一级分类：</span>
       <Select
@@ -371,7 +372,7 @@ export default observer(function AuditEduPlan(props: Props) {
         </MainCon>
       </BodyWarpper>
     </ScrollCon>
-    <auditModal.Component />
+    {/* <auditModal.Component /> */}
   </Wrapper>
 })
 

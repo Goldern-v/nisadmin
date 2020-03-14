@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { getFilePrevImg, getFileType } from 'src/utils/file/file'
+import service from 'src/services/api'
 import { getFileSize } from 'src/utils/file/file'
 
 import createModal from 'src/libs/createModal'
@@ -20,6 +21,10 @@ export default function StudyUpload(props: Props) {
       title: file.name,
       path: file.path
     })
+  }
+
+  const downFile = (path: string, name: string) => {
+    service.commonApiService.getFileAndDown(path, name)
   }
 
   return <Wrapper>
@@ -44,6 +49,12 @@ export default function StudyUpload(props: Props) {
             alt='' />
           <div className="file-title">{item.name}</div>
           <div className="file-size">{getFileSize(item.size)}</div>
+          <Button
+            className="download-btn"
+            size="small"
+            onClick={() => downFile(item.path, item.name)}>
+            下载
+          </Button>
           <Button
             className="preview-btn"
             size="small"
@@ -77,7 +88,7 @@ const Wrapper = styled.div`
     position: absolute;
     top: 15px;
     left: 80px;
-    right: 80px;
+    right: 122px;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
@@ -90,6 +101,11 @@ const Wrapper = styled.div`
     left: 80px;
   }
   .preview-btn{
+    position: absolute;
+    right: 65px;
+    top: 15px;
+  }
+  .download-btn{
     position: absolute;
     right: 10px;
     top: 15px;
