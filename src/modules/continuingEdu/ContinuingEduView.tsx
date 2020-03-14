@@ -27,24 +27,26 @@ export default function ContinuingEdu(props: Props) {
   const [dataList, setDataList] = useState([] as any); // 菜单树
   // 写死的菜单列表
   const LEFT_MENU_CONFIG = [
-    // {
-    //   title: "人员管理",
-    //   icon: <RYGL />,
-    //   path: "/continuingEdu/人员管理",
-    //   component: 人员管理
-    // },
+    {
+      title: "人员管理",
+      icon: <RYGL />,
+      path: "/continuingEdu/人员管理",
+      component: 人员管理,
+      hide: true
+    },
     {
       title: "审核发布",
       icon: <YNXXB />,
       path: "/continuingEdu/审核发布",
       component: 审核发布
     },
-    // {
-    //   title: "评分管理",
-    //   icon: <LXGL />,
-    //   path: "/continuingEdu/评分管理",
-    //   component: 评分管理
-    // },
+    {
+      title: "评分管理",
+      icon: <LXGL />,
+      path: "/continuingEdu/评分管理",
+      component: 评分管理,
+      hide: true
+    },
     ...dataList,
     // 菜单设置只有护理部可见
     {
