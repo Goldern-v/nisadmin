@@ -259,6 +259,10 @@ export default observer(function Table(props: Props) {
                 {
                   text: "查看信息",
                   function: checkMessage
+                },
+                {
+                  text: "撤销",
+                  function: handleRevoke
                 }
               ];
             } else {
@@ -270,10 +274,6 @@ export default observer(function Table(props: Props) {
                 {
                   text: "查看信息",
                   function: checkMessage
-                },
-                {
-                  text: "撤销",
-                  function: handleRevoke
                 }
               ];
             }

@@ -13,13 +13,12 @@ export interface Props {
 }
 
 export default function LeftMenu(props: Props) {
+  const [openKeys, setOpenKeys]: any = useState("");
   const handleSelect = (e: any) => {
     appStore.history.push(e.key);
     if (e.item.props.level === 1) {
-      setOpenKeys([]);
+      setOpenKeys("");
     }
-
-    // console.log('click ', e)
   };
   const renderMenu = (list: any) => {
     return list
@@ -74,7 +73,7 @@ export default function LeftMenu(props: Props) {
         );
         if (currentPath) return currentPath;
       } else {
-        if (item.path === path) {
+        if (item.path.split("?")[0] === path) {
           if (item.hide) {
             for (let j = i; j < list.length; j++) {
               if (!list[j].hide) return [parentKeys, [list[j].path]];
@@ -86,7 +85,6 @@ export default function LeftMenu(props: Props) {
       }
     }
   };
-
   const onOpenChange = (openKeys: any) => {
     setOpenKeys([openKeys[openKeys.length - 1]]);
   };
@@ -98,17 +96,14 @@ export default function LeftMenu(props: Props) {
     path,
     []
   ) || [[], []];
-  const [openKeys, setOpenKeys] = useState(() => {
-    return defaultOpenKeys;
-  });
 
   return (
     <Wrapper id="left-menu-con">
       {/* {JSON.stringify(openKeys)} */}
       <Menu
         onSelect={handleSelect}
-        defaultSelectedKeys={defaultSelectedKeys}
-        openKeys={openKeys}
+        selectedKeys={defaultSelectedKeys}
+        openKeys={openKeys ? openKeys : defaultOpenKeys}
         mode="inline"
         inlineIndent={12}
         onOpenChange={onOpenChange}

@@ -18,6 +18,7 @@ import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 菜单设置 from "./views/菜单设置/MenuSettings";
 import 主列表页 from "./views/主表单页/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
+import 通知管理 from "./views/通知管理/Notification";
 import { authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
@@ -39,6 +40,13 @@ export default function ContinuingEdu(props: Props) {
     },
     ...dataList,
     // 菜单设置只有护理部可见
+    {
+      title: "通知管理",
+      icon: <RYGL />,
+      path: "/continuingEdu/通知管理",
+      component: 通知管理,
+      hide: true
+    },
     {
       title: "菜单设置",
       icon: <KSGL />,
