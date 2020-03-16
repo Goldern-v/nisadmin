@@ -133,7 +133,17 @@ export default function Step1() {
           <Row>
             <Col span={20}>
               <Form.Field label={`类型`} name="id" required>
-                <Select disabled={!!stepViewModal.oldData}>
+                <Select
+                  disabled={!!stepViewModal.oldData}
+                  showSearch
+                  filterOption={(input: any, option: any) => {
+                    return (
+                      option.props.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    );
+                  }}
+                >
                   {typeList.map((item: any) => (
                     <Select.Option value={item.id} key={item.name}>
                       {item.name}
