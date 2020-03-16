@@ -20,8 +20,8 @@ export default observer(function AuditEduPlan(props: Props) {
   const [tableData, setTableData] = useState([] as any[])
   const [loading, setLoading] = useState(false)
   const [dataTotal, setDataTotal] = useState(0)
-  const [selectedRowKeys, setSelectRowKeys] = useState([] as any[])
-  const [selectedRows, setSelectRows] = useState([] as any[])
+  // const [selectedRowKeys, setSelectRowKeys] = useState([] as any[])
+  // const [selectedRows, setSelectRows] = useState([] as any[])
   const [firstLevelMenu, setFirstLevelMenu] = useState([] as any[])
   const [secondLevelMenu, setSecondLevelMenu] = useState([] as any[])
   const [query, setQuery] = useState({
@@ -33,13 +33,13 @@ export default observer(function AuditEduPlan(props: Props) {
   })
   const [activeKey, setActiveKey]: any = useState(queryObj.activeKey || '0')
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys: any, selectedRows: any) => {
-      setSelectRowKeys(selectedRowKeys)
-      setSelectRows(selectedRows)
-    }
-  }
+  // const rowSelection = {
+  //   selectedRowKeys,
+  //   onChange: (selectedRowKeys: any, selectedRows: any) => {
+  //     setSelectRowKeys(selectedRowKeys)
+  //     setSelectRows(selectedRows)
+  //   }
+  // }
 
   const columns: any = [
     {
@@ -190,6 +190,8 @@ export default observer(function AuditEduPlan(props: Props) {
   }
 
   const handleDetail = (record: any) => {
+    if (record.statusDesc != '结束') return
+
     let newQuery = {
       id: record.cetpId,
       // taskId: record.taskId,
@@ -252,8 +254,8 @@ export default observer(function AuditEduPlan(props: Props) {
 
   const getTableData = (query: any) => {
     setLoading(true)
-    setSelectRowKeys([])
-    setSelectRows([])
+    // setSelectRowKeys([])
+    // setSelectRows([])
     appStore.history.replace(`/continuingEdu/评分管理?${qs.stringify({
       ...appStore.queryObj,
       ...query,
