@@ -33,7 +33,7 @@ export default function BaseSetting(props: Props) {
         <div className="row">
           <div className="label" style={{ width: _labelWidth }}>讲 师：</div>
           <div className="content">
-            {(info.teachers || []).map((teacher: any) =>
+            {(info.teacherList || []).map((teacher: any) =>
               `${teacher.deptName}/${teacher.empName}`).join(', ')}
           </div>
         </div>

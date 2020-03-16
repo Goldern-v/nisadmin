@@ -3,6 +3,7 @@ import Form from "src/components/Form";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Button, DatePicker, Select, Pagination } from "antd";
+import service from 'src/services/api'
 import { Link } from "react-router-dom";
 import { ColumnProps } from "antd/lib/table";
 import { authStore } from "src/stores";
@@ -18,12 +19,20 @@ const api = new BadEventsNewService();
 const { RangePicker } = DatePicker;
 
 export default observer(function BadEventNewList() {
+
+  const defaultDateRange = () => {
+    let startDate = Moment(Moment().format("YYYY-MM-") + "01");
+    let ednDate = Moment(Moment().format("YYYY-MM-DD"));
+
+    return [startDate, ednDate] as [Moment.Moment, Moment.Moment];
+  };
   // const queryForm = React.createRef<Form>()
+  let dateRange = defaultDateRange()
   //列表请求参数
   const [query, setQuery] = useState({
     wardCode: "",
-    dateBegin: "",
-    dateEnd: "",
+    dateBegin: dateRange[0].format("YYYY-MM-DD"),
+    dateEnd: dateRange[1].format("YYYY-MM-DD"),
     patientName: "",
     eventType: "",
     eventStatus: ""
@@ -50,7 +59,7 @@ export default observer(function BadEventNewList() {
       key: "key",
       width: 50,
       align: "center",
-      render: (text: string) => Number(text) + 1
+      render: (text: string, record: any, idx: number) => (page.current - 1) * 10 + idx + 1
     },
     {
       title: "事件单号",
@@ -126,8 +135,9 @@ export default observer(function BadEventNewList() {
       render: (text: string, item: any) => {
         let statusText = "";
         let target = eventStatusList.filter(
-          (item1: any) => item1.value == item.status
+          (item1: any) => item1.code == item.status
         );
+
         if (target.length > 0) statusText = target[0].name;
         return <span style={{ wordBreak: "break-word" }}>{statusText}</span>;
       }
@@ -150,16 +160,12 @@ export default observer(function BadEventNewList() {
     }
   ];
   //不良事件状态对应的文本显示
-  const eventStatusList = [
-    { name: "禁用", value: -1 },
-    { name: "保存", value: 0 },
-    { name: "护士上报", value: 1 },
-    { name: "质管科审核通过", value: 2 },
-    { name: "质控科审核不通过", value: -2 },
-    { name: "责任科室已处理", value: 3 },
-    { name: "质控科已总结", value: 4 },
-    { name: "质量委员会已处理", value: 5 }
-  ];
+  const [eventStatusList, setEventStatusList] = useState([] as any[])
+  const getTypeList = () => {
+    service.commonApiService.dictInfo('badEvent_status').then((res: any) => {
+      setEventStatusList(res.data)
+    })
+  }
 
   useEffect(() => {
     api.getDeptList("2").then(res => {
@@ -184,14 +190,15 @@ export default observer(function BadEventNewList() {
         setEventTypeList(data.map((item: any) => item.name));
     });
 
-    let dateRange = defaultDateRange();
-    let newQuery = {
-      ...query,
-      dateBegin: dateRange[0].format("YYYY-MM-DD"),
-      dateEnd: dateRange[1].format("YYYY-MM-DD")
-    };
-    setQuery(newQuery);
-    getEventList(newQuery);
+    // let dateRange = defaultDateRange();
+    // let newQuery = {
+    //   ...query,
+    //   dateBegin: dateRange[0].format("YYYY-MM-DD"),
+    //   dateEnd: dateRange[1].format("YYYY-MM-DD")
+    // };
+    // setQuery(newQuery);
+
+    getTypeList()
   }, []);
 
   // useEffect(() => {
@@ -239,9 +246,8 @@ export default observer(function BadEventNewList() {
   };
 
   const handleSearch = (): void => {
-    getEventList();
-    setPage({ ...page, current: 1 });
-  };
+    setPage({ ...page, current: 1 })
+  }
 
   const handleWarNameChange = (name: any) => {
     if (name === undefined) name = "";
@@ -265,12 +271,9 @@ export default observer(function BadEventNewList() {
       }
   };
 
-  const defaultDateRange = () => {
-    let startDate = Moment(Moment().format("YYYY-MM-") + "01");
-    let ednDate = Moment(Moment().format("YYYY-MM-DD"));
-
-    return [startDate, ednDate] as [Moment.Moment, Moment.Moment];
-  };
+  useEffect(() => {
+    getEventList()
+  }, [query, page])
 
   return (
     <Wrapper>
@@ -344,7 +347,7 @@ export default observer(function BadEventNewList() {
                   <Select.Option value="">全部</Select.Option>
                   {eventStatusList.map((item, idx) => {
                     return (
-                      <Select.Option value={item.value} key={idx}>
+                      <Select.Option value={item.code} key={idx}>
                         {item.name}
                       </Select.Option>
                     );
@@ -460,7 +463,6 @@ const Wrapper = styled.div`
     }
   }
   .main-contain{
-    // background: #fff;
     position: absolute;
     left: 10px;
     top: 110px;
@@ -471,7 +473,6 @@ const Wrapper = styled.div`
       left: 0;
       top: 0;
       right: 0;
-      // bottom: 45px;
       bottom: 0;
       overflow: hidden;
       td.align-left{
@@ -510,4 +511,5 @@ const Wrapper = styled.div`
         font-weight: bold;
       }
     }
-`;
+  }
+`

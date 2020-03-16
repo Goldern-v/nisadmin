@@ -106,12 +106,12 @@ export default observer(function TestingResultReview() {
       width: 70,
     },
     {
-      dataIndex: 'answerTime',
+      dataIndex: 'finishTime',
       title: '答题时间',
       align: 'center',
       width: 180,
-      render: (answerTime: string) => {
-        if (answerTime) return answerTime
+      render: (finishTime: string) => {
+        if (finishTime) return finishTime
         return '未答题'
       }
     },
@@ -179,7 +179,7 @@ export default observer(function TestingResultReview() {
   }
 
   const handleAnwserSheetReview = (record: any) => {
-    if (!record.answerTime) {
+    if (!record.finishTime) {
       Modal.warning({
         title: <span style={{ fontWeight: 'bold' }}>{`《${baseInfo.title}》`}</span>,
         okText: '我知道了',
