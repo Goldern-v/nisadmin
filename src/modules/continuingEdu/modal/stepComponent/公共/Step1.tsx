@@ -94,7 +94,7 @@ export default function Step1() {
     });
   };
   // 添加类型管理
-  const saveOrUpload = (record?: any) => {
+  const saveOrUpload = () => {
     setEditParams({
       Pid: Pid,
       sort: 0,

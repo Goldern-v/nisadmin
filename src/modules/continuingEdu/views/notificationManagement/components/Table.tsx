@@ -19,8 +19,7 @@ export default observer(function Table(props: Props) {
       title: "序号",
       dataIndex: "",
       key: "",
-      // render: (text: any, record: any, index: number) =>
-      //   (current - 1) * pageSize + index + 1,
+      render: (text: any, record: any, index: number) => index + 1,
       align: "center",
       width: 40
     },
