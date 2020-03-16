@@ -46,6 +46,14 @@ export default observer(function Table(props: Props) {
 
   const columns: any = [
     {
+      title: "序号",
+      dataIndex: "",
+      key: "",
+      render: (text: any, record: any, index: number) => index + 1,
+      align: "center",
+      width: 40
+    },
+    {
       title: "开始时间",
       dataIndex: "startTime",
       width: 130,
@@ -453,7 +461,6 @@ export default observer(function Table(props: Props) {
         columns={columns}
         surplusWidth={300}
         surplusHeight={270}
-        type={["index"]}
         scroll={{ x: 895 }}
         pagination={{
           current: mainPageModal.pageIndex,
