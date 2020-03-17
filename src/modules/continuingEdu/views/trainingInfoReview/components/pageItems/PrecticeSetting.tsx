@@ -13,11 +13,32 @@ export default function PrecticeSetting(props: Props) {
   const testPage = createModal(TestPageModal)
   const { info } = props
 
+  const handlePagePreview = () => {
+    testPage.show({
+      id: info.id,
+      teachingMethodName: info.teachingMethodName,
+      title: info.title,
+      startTime: info.startTime,
+      endTime: info.endTime,
+      examDuration: info.examDuration,
+      passScores: info.passScores,
+    })
+  }
+
+  const questionStatList = (info.questionStatList || []) as any[]
+
   return <Wrapper>
     <div className="content-item-title">上传设置</div>
     <div className="pd">
-      <span>习题上传：270题（顺序出题）</span>
-      <span><Button size="small" className="fr">习题预览</Button></span>
+      <span>习题上传：{info.questionCount || 0}题（{info.randomOrderQue}）</span>
+      <span>
+        <Button
+          size="small"
+          className="fr"
+          onClick={() => { handlePagePreview() }}>
+          习题预览
+          </Button>
+      </span>
     </div>
     <div className="pd">
       <table>
@@ -30,11 +51,12 @@ export default function PrecticeSetting(props: Props) {
             <td>出题类型</td>
             <td>题目数</td>
           </tr>
-          <tr>
-            <td>1</td>
-            <td>单选题</td>
-            <td>120</td>
-          </tr>
+          {questionStatList.map((item: any, idx: number) =>
+            <tr key={idx}>
+              <td>{idx + 1}</td>
+              <td>{item.questionName}</td>
+              <td>{item.questionCount}</td>
+            </tr>)}
         </tbody>
       </table>
     </div>

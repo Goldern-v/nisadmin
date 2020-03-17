@@ -11,6 +11,7 @@ import UserCheckModal from './UserCheckModal'
 const api = new badEventsNewService()
 
 const { TextArea } = Input
+const { Option } = Select
 
 export interface Props {
   visible: boolean //审核窗口显示
@@ -210,7 +211,8 @@ export default observer(function AduitModal(props: Props) {
               className='radio-group'
               value={formMap[`${eventCode}_shjg_option`]}
               onChange={(e) =>
-                setFormMap({ ...formMap, [`${eventCode}_shjg_option`]: e.target.value })}>
+                setFormMap({ ...formMap, [`${eventCode}_shjg_option`]: e.target.value })
+              }>
               <Row>
                 <Col span={6} className='item-label'>
                   审核结果：
@@ -225,7 +227,8 @@ export default observer(function AduitModal(props: Props) {
                     className='input-item'
                     disabled={formMap[`${eventCode}_shjg_option`] == '转发'}
                     onChange={(e) =>
-                      setFormMap({ ...formMap, [`${eventCode}_th_explain`]: e.target.value })} />
+                      setFormMap({ ...formMap, [`${eventCode}_th_explain`]: e.target.value })
+                    } />
                 </Col>
               </Row>
               <Row>
@@ -247,9 +250,9 @@ export default observer(function AduitModal(props: Props) {
                   >
                     {dealerDepts.map((item: any, idx: number) => {
                       return (
-                        <Select.Option value={item.name} key={idx}>
+                        <Option value={item.name} key={idx}>
                           {item.name}
-                        </Select.Option>
+                        </Option>
                       )
                     })}
                   </Select>
@@ -269,10 +272,11 @@ export default observer(function AduitModal(props: Props) {
                     defaultValue='轻度'
                     value={formMap[`${eventCode}_shcdpd_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_shcdpd_option`]: val })}>
-                    <Select.Option value='轻度'>轻度</Select.Option>
-                    <Select.Option value='中度'>中度</Select.Option>
-                    <Select.Option value='高度'>高度</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_shcdpd_option`]: val })
+                    }>
+                    <Option value='轻度'>轻度</Option>
+                    <Option value='中度'>中度</Option>
+                    <Option value='高度'>高度</Option>
                   </Select>
                 </span>
               </span>
@@ -283,11 +287,12 @@ export default observer(function AduitModal(props: Props) {
                     defaultValue='nurse_submit'
                     value={formMap[`${eventCode}_sac_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_sac_option`]: val })}>
-                    <Select.Option value='1级'>1级</Select.Option>
-                    <Select.Option value='2级'>2级</Select.Option>
-                    <Select.Option value='3级'>3级</Select.Option>
-                    <Select.Option value='4级'>4级</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_sac_option`]: val })
+                    }>
+                    <Option value='1级'>1级</Option>
+                    <Option value='2级'>2级</Option>
+                    <Option value='3级'>3级</Option>
+                    <Option value='4级'>4级</Option>
                   </Select>
                 </span>
               </span>
@@ -298,9 +303,10 @@ export default observer(function AduitModal(props: Props) {
                     defaultValue='0'
                     value={formMap[`${eventCode}_rca_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_rca_option`]: val })}>
-                    <Select.Option value='不需要'>不需要</Select.Option>
-                    <Select.Option value='需要'>需要</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_rca_option`]: val })
+                    }>
+                    <Option value='不需要'>不需要</Option>
+                    <Option value='需要'>需要</Option>
                   </Select>
                 </span>
               </span>
@@ -311,9 +317,10 @@ export default observer(function AduitModal(props: Props) {
                     defaultValue='不提交'
                     value={formMap[`${eventCode}_tjzlanwyh_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_tjzlanwyh_option`]: val })}>
-                    <Select.Option value='不提交'>不提交</Select.Option>
-                    <Select.Option value='提交'>提交</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_tjzlanwyh_option`]: val })
+                    }>
+                    <Option value='不提交'>不提交</Option>
+                    <Option value='提交'>提交</Option>
                   </Select>
                 </span>
               </span>
@@ -325,7 +332,8 @@ export default observer(function AduitModal(props: Props) {
                   rows={8}
                   value={formMap[`${eventCode}_shyj_explain`]}
                   onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_shyj_explain`]: e.target.value })} />
+                    setFormMap({ ...formMap, [`${eventCode}_shyj_explain`]: e.target.value })
+                  } />
               </Col>
             </Row>
           </div>
@@ -339,8 +347,9 @@ export default observer(function AduitModal(props: Props) {
                 <TextArea
                   rows={8}
                   value={formMap[`${eventCode}_zkk_zjyj_explain`]}
-                  onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_zkk_zjyj_explain`]: e.target.value })}
-                />
+                  onChange={(e) =>
+                    setFormMap({ ...formMap, [`${eventCode}_zkk_zjyj_explain`]: e.target.value })
+                  } />
               </Col>
             </Row>
           </div>
@@ -354,8 +363,9 @@ export default observer(function AduitModal(props: Props) {
                 <TextArea
                   rows={8}
                   value={formMap[`${eventCode}_wyh_zjyj_explain`]}
-                  onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_wyh_zjyj_explain`]: e.target.value })}
-                />
+                  onChange={(e) =>
+                    setFormMap({ ...formMap, [`${eventCode}_wyh_zjyj_explain`]: e.target.value })
+                  } />
               </Col>
             </Row>
           </div>
@@ -378,7 +388,10 @@ export default observer(function AduitModal(props: Props) {
       >
         <Wrapper>{AduitPannelContent()}</Wrapper>
       </Modal>
-      <UserCheckModal visible={userCheckVisible} onCancel={() => setUserCheckVisible(false)} onOk={handleUserCheckOk} />
+      <UserCheckModal
+        visible={userCheckVisible}
+        onCancel={() => setUserCheckVisible(false)}
+        onOk={handleUserCheckOk} />
     </Fragment>
   )
 })
