@@ -185,16 +185,6 @@ export default observer(function NavBar(props: any) {
             <SYSC />
           </Tooltip>
         </UserManual>
-        <SetUserManual
-          className="setting"
-          onClick={() => {
-            appStore.history.push("/SetUserManual");
-          }}
-        >
-          <Tooltip placement="top" title="平台使用手册目录设置">
-            <SYSCSZ />
-          </Tooltip>
-        </SetUserManual>
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
         )}
@@ -317,12 +307,6 @@ const UserManual = styled.span`
     height: 15px;
     position: absolute;
     bottom: -3px;
-    left: -55px;
-  }
-`;
-const SetUserManual = styled(UserManual)`
-  svg {
-    left: -25px;
-    bottom: -1px;
+    left: -35px;
   }
 `;

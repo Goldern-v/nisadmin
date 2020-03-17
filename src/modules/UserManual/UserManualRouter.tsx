@@ -4,7 +4,7 @@ import React, { useEffect, useState, useLayoutEffect } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { KeepAlive } from "react-keep-alive";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import Content from "./components/Content";
 import { ReactComponent as YJZK } from "./images/YJZK.svg";
 import { ReactComponent as SJZK } from "./images/SJZK.svg";
@@ -18,13 +18,14 @@ import { ReactComponent as BQDJ } from "./images/BQDJ.svg";
 import { ReactComponent as BQGL } from "./images/BQGL.svg";
 import { ReactComponent as TZGG } from "./images/TZGG.svg";
 import { ReactComponent as SY } from "./images/SY.svg";
+import { ReactComponent as KSGL } from "./images/KSGL.svg";
+import 目录设置 from "./view/SetUserManual";
 import { userManualApi } from "./api/UserManualApi";
 
 export default function UserManualRouter(props: Props) {
   const [effect, setEffect] = useState(true);
   const [arrData, setArrData] = useState([] as any);
-  const [type, setType] = useState(1); //1--内容 2--提示跳转
-  const [resData, setResData] = useState([] as any); // 测试用
+  const [type, setType] = useState(0); // 1--空页面
 
   useLayoutEffect(() => {
     setEffect(false);
@@ -36,20 +37,28 @@ export default function UserManualRouter(props: Props) {
     getList();
   }, [props.history.location.pathname]);
 
+  const LEFT_MENU_CONFIG = [
+    ...arrData,
+    {
+      title: "目录设置",
+      icon: <KSGL />,
+      path: "/UserManual/setUserManual",
+      component: 目录设置,
+      hide: authStore.isAdmin
+    }
+  ];
+  // 查询获取动态菜单列表
+
   // 查询目录列表
   const getList = () => {
     if (effect) {
       userManualApi.setGetData().then((res: any) => {
         let newArr: any = [];
         if (res.data.length > 0) {
-          setType(1);
           let arr = res.data.filter((item: any) => item.isShow);
           if (arr && arr.length > 0) {
             var obj1: any = {
-              component: Content,
-              keepAlive: true,
-              disabledKeepAlive:
-                (appStore.history && appStore.history.action) !== "POP"
+              component: Content
             };
             arr.map((item: any, index: number) => {
               var obj2: any = {
@@ -64,35 +73,14 @@ export default function UserManualRouter(props: Props) {
             if (appStore.location.pathname == "/UserManual")
               appStore.history.push(`/UserManual/${newArr[0].title}`);
           } else {
-            newArr = [
-              {
-                title: "首页相关指导",
-                icon: <SY />,
-                path: "/UserManual/首页相关指导",
-                component: Content,
-                keepAlive: true,
-                disabledKeepAlive:
-                  (appStore.history && appStore.history.action) !== "POP"
-              }
-            ];
-            setArrData(newArr);
-            appStore.history.push(`/UserManual/首页相关指导`);
-          }
-        } else {
-          setType(0);
-          newArr = [
-            {
-              title: "首页相关指导",
-              icon: <SY />,
-              path: "/UserManual/首页相关指导",
-              component: Content,
-              keepAlive: true,
-              disabledKeepAlive:
-                (appStore.history && appStore.history.action) !== "POP"
+            setArrData([]);
+            if (!authStore.isAdmin) {
+              appStore.history.push(`/UserManual/setUserManual`);
+            } else {
+              setType(1);
+              appStore.history.push(`/UserManual`);
             }
-          ];
-          setArrData(newArr);
-          appStore.history.push(`/UserManual/首页相关指导`);
+          }
         }
       });
     }
@@ -131,7 +119,7 @@ export default function UserManualRouter(props: Props) {
   };
 
   let currentRoutePath = props.history.location.pathname || "";
-  let currentRoute = getTargetObj(arrData, "path", currentRoutePath);
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
@@ -152,30 +140,32 @@ export default function UserManualRouter(props: Props) {
   }
   return (
     <Wrapper>
-      <LeftMenuCon>
-        <LeftMenu config={arrData} />
-      </LeftMenuCon>
-      <MainCon>
-        {currentRoute &&
-          currentRoute.component &&
-          (currentRoute.keepAlive ? (
-            <KeepAlive
-              name={currentRoute.path}
-              disabled={currentRoute.disabledKeepAlive}
-            >
+      {type === 1 ? (
+        <ContentSecond>暂无平台手册</ContentSecond>
+      ) : (
+        <ContentFirst>
+          <LeftMenuCon>
+            <LeftMenu config={LEFT_MENU_CONFIG} />
+          </LeftMenuCon>
+          <MainCon>
+            {currentRoute && currentRoute.component && (
               <currentRoute.component
-                getTitle={currentRoute && currentRoute.title}
+                getTitle={currentRoute && currentRoute.title} //菜单标题
+                getList={getList} // 动态菜单树
               />
-            </KeepAlive>
-          ) : (
-            <currentRoute.component
-              getTitle={currentRoute && currentRoute.title}
-            />
-          ))}
-      </MainCon>
+            )}
+          </MainCon>
+        </ContentFirst>
+      )}
     </Wrapper>
   );
 }
+const ContentFirst = styled.div``;
+const ContentSecond = styled.div`
+  margin: auto;
+  text-align: center;
+  font-size: 30px;
+`;
 const Wrapper = styled.div`
   overflow: hidden;
   height: calc(100vh - 50px);

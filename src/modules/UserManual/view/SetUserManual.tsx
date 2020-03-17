@@ -2,15 +2,16 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { appStore } from "src/stores";
 import { Button, Modal, message as Message, Input, Switch } from "antd";
-import { TableHeadCon } from "src/components/BaseTable";
-import { PageTitle } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import createModal from "src/libs/createModal";
 import { setUserManualApi } from "./api/SetUserManualApi";
 import EditModal from "./modal/EditModal";
+import { observer } from "mobx-react-lite";
 
-export default function SetUserManual() {
-  // const [auth, setAuth] = useState(Boolean); //权限控制
+interface Props {
+  getList: any;
+}
+
+export default observer(function SetUserManual(props: Props) {
   const [editVisible, setEditVisible] = useState(false);
   const [editParams, setEditParams] = useState({} as any);
   const [loading, setLoading] = useState(false); // loading
@@ -36,6 +37,7 @@ export default function SetUserManual() {
         setLoading(false);
         if (res.data) {
           setTableList(res.data || []);
+          props.getList();
         }
       });
     }
@@ -104,8 +106,10 @@ export default function SetUserManual() {
     setUserManualApi.saveOrUpdate(newArr[index]).then(
       (res: any) => {
         setLoading(false);
-        if (res.code == "200") Message.success("修改成功");
-        getTableData();
+        if (res.code == "200") {
+          Message.success("修改成功");
+          getTableData();
+        }
       },
       err => {
         setLoading(false);
@@ -128,6 +132,7 @@ export default function SetUserManual() {
       let msg: any = "目录隐藏成功";
       if (res.data.isShow) msg = "目录显示成功";
       Message.success(msg);
+      getTableData();
     });
   };
 
@@ -199,14 +204,19 @@ export default function SetUserManual() {
           <div className="item title">平台使用手册目录设置</div>
         </LeftIcon>
         <RightIcon>
-          <Button onClick={() => setEditVisible(true)}>添加</Button>
+          <Button onClick={getTableData} style={{ marginRight: 10 }}>
+            刷新
+          </Button>
+          <Button type="primary" onClick={() => setEditVisible(true)}>
+            添加
+          </Button>
         </RightIcon>
       </Header>
       <Table>
         <BaseTable
           dataSource={tableList}
           columns={columns}
-          surplusHeight={250}
+          surplusHeight={180}
           loading={loading}
         />
       </Table>
@@ -218,26 +228,17 @@ export default function SetUserManual() {
       />
     </Wrapper>
   );
-}
+});
 
-const Wrapper = styled.div`
-  position: relative;
-  padding-top: 55px;
-  height: 100%;
-  width: 100%;
-`;
+const Wrapper = styled.div``;
 const Header = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  padding: 10px 15px;
+  padding: 5px 15px;
   box-sizing: border-box;
-  height: 55px;
+  height: 45px;
   overflow: hidden;
-  border-bottom: 1px solid #ddd;
-  background: #fff;
-  font-size: 16px;
+  font-size: 20px;
+  color: #333;
   font-weight: bold;
 `;
 const LeftIcon = styled.div`
@@ -247,8 +248,7 @@ const RightIcon = styled.div`
   float: right;
 `;
 const Table = styled.div`
-  padding: 15px 15px;
+  padding: 0 15px;
   box-sizing: border-box;
   height: 100%;
-  width: 650px;
 `;

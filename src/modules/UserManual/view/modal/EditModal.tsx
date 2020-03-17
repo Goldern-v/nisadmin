@@ -1,17 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import {
-  Select,
-  Input,
-  Row,
-  Col,
-  Modal,
-  message as Message,
-  Switch
-} from "antd";
+import { Input, Row, Col, Modal, message as Message, Switch } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
-import emitter from "src/libs/ev";
 import { setUserManualApi } from "../api/SetUserManualApi";
 
 export interface Props {
@@ -24,7 +15,6 @@ export interface Props {
 export default function EditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const [isShow, setIsShow] = useState(Boolean);
   const formRef = React.createRef<Form>();
 
   const rules: Rules = {
@@ -38,17 +28,14 @@ export default function EditModal(props: Props) {
         let current = formRef.current;
         if (!current) return;
         if (params.id) {
-          const { type, orderNo, isShow, icon } = params;
-          setIsShow(params.isShow);
+          const { type, orderNo, icon } = params;
           current.setFields({
             type,
             orderNo,
-            isShow,
             icon
           });
         } else {
           current.clear();
-          setIsShow(true);
         }
       }, 100);
     }
@@ -64,9 +51,16 @@ export default function EditModal(props: Props) {
           if (current) {
             let id = params.id || null;
             let newParams = current.getFields();
-            if (id) newParams.id = id;
-            newParams.orderNo = Number(newParams.orderNo);
-            setEditLoading(true);
+            if (id) {
+              newParams.id = id;
+              newParams.orderNo = Number(newParams.orderNo);
+              newParams.isShow = params.isShow;
+              newParams.icon = params.icon;
+              setEditLoading(true);
+            } else {
+              newParams.isShow = true;
+            }
+            console.log(newParams, "ppppppppp");
             setUserManualApi.saveOrUpdate(newParams).then(
               res => {
                 setEditLoading(false);
@@ -122,7 +116,7 @@ export default function EditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col span={4} className="label">
               是否显示:
             </Col>
@@ -130,18 +124,14 @@ export default function EditModal(props: Props) {
               <Form.Field name="isShow">
                 <Switch
                   size="small"
-                  // checked={isShow}
-                  defaultChecked={params.isShow ? params.isShow : true}
-                  onChange={(checked: any, e: any) => {
-                    console.log(checked, e, "999999999999");
-                    let val = e.value;
-                    setIsShow(checked);
-                    checked = !isShow;
+                  defaultChecked={!params.isShow}
+                  onChange={(check: any, record: any) => {
+                    console.log(check, record, "pppppppp");
                   }}
                 />
               </Form.Field>
             </Col>
-          </Row>
+          </Row> */}
         </Form>
       </Wrapper>
     </Modal>
