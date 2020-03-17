@@ -7,11 +7,13 @@ import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
 import moment from "moment";
 import { pxStepViewModal } from "./培训/PXStepViewModal";
+import { lxStepViewModal } from "./练习/LXStepViewModal";
 
 export let selfStepViewModalMap: any = {
   1: xxStepViewModal,
   2: pxStepViewModal,
-  3: ksStepViewModal
+  3: ksStepViewModal,
+  4: lxStepViewModal
 };
 
 export let teachingMethodMap: any = {
@@ -146,7 +148,8 @@ class StepViewModal {
     let ajaxMap: any = {
       1: "addTeachingPlanInfoStudy",
       2: "addTeachingPlanInfoTrain",
-      3: "addTeachingPlanInfoExam"
+      3: "addTeachingPlanInfoExam",
+      4: "addTeachingPlanInfoExercise"
     };
 
     return (stepServices as any)[

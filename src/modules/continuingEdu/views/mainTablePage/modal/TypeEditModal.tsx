@@ -137,8 +137,8 @@ export default function TypeEditModal(props: Props) {
                   <Select.Option value="1">学习</Select.Option>
                   <Select.Option value="2">培训</Select.Option>
                   <Select.Option value="3">考试</Select.Option>
-                  {/* <Select.Option value="4">练习</Select.Option>
-                  <Select.Option value="5">实操</Select.Option>
+                  <Select.Option value="4">练习</Select.Option>
+                  {/* <Select.Option value="5">实操</Select.Option>
                   <Select.Option value="6">演练</Select.Option> */}
                 </Select>
               </Form.Field>

@@ -39,6 +39,13 @@ export default class StepServices extends BaseApiService {
       obj
     );
   }
+  /** 新建教学计划  练习*/
+  public addTeachingPlanInfoExercise(obj: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/addTeachingPlanInfo/exercise`,
+      obj
+    );
+  }
 
   /** 上传附件 */
   public uploadAttachment(obj: any, onUploadProgress?: any) {
@@ -83,6 +90,19 @@ export default class StepServices extends BaseApiService {
   public upLoadQuestionsExam(file: any) {
     return this.post(
       `/studyAndTrain/teachingPlanManage/upLoadQuestions/exam`,
+      file
+    );
+  }
+  /** 下载题目上传模板-练习*/
+  public downLoadQueUploadTemplate() {
+    return this.get(`/studyAndTrain/exerciseManage/downLoadQueUploadTemplate`, {
+      responseType: "blob"
+    });
+  }
+  /** 上传题目-练习 */
+  public upLoadQuestionsExercise(file: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/upLoadQuestions/exercise`,
       file
     );
   }

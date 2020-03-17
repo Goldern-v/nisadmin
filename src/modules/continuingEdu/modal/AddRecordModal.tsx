@@ -30,6 +30,10 @@ import Step2_ks from "./stepComponent/考试/Step2";
 import Step4_ks from "./stepComponent/考试/Step4";
 import Step5_ks from "./stepComponent/考试/Step5";
 
+import Step2_lx from "./stepComponent/练习/Step2";
+import Step4_lx from "./stepComponent/练习/Step4";
+import Step5_lx from "./stepComponent/练习/Step5";
+
 import { ScrollBox } from "src/components/common";
 import {
   stepViewModal,
@@ -58,6 +62,8 @@ export default observer(function AddRecordModal(props: Props) {
       return <Step2_px />;
     } else if (stepViewModal.stepData1.teachingMethod == 3) {
       return <Step2_ks />;
+    } else if (stepViewModal.stepData1.teachingMethod == 4) {
+      return <Step2_lx />;
     } else {
       return <Step2_xx />;
     }
@@ -66,6 +72,8 @@ export default observer(function AddRecordModal(props: Props) {
     //1.学习、2培训、3考试、4练习、5实操、6演练
     if (stepViewModal.stepData1.teachingMethod == 3) {
       return <Step4_ks />;
+    } else if (stepViewModal.stepData1.teachingMethod == 4) {
+      return <Step4_lx />;
     } else {
       return <Step4 />;
     }
@@ -79,6 +87,8 @@ export default observer(function AddRecordModal(props: Props) {
       return <Step5_px />;
     } else if (stepViewModal.stepData1.teachingMethod == 3) {
       return <Step5_ks />;
+    } else if (stepViewModal.stepData1.teachingMethod == 4) {
+      return <Step5_lx />;
     } else {
       return <Step5_xx />;
     }
