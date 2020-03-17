@@ -78,7 +78,6 @@ export default observer(function QueryPannel(props: Props) {
       </span>
       <span className="content">
         <Input
-
           placeholder="请输入姓名、工号"
           style={{ width: '180px' }}
           defaultValue={query.keyWord}

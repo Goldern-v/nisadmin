@@ -252,6 +252,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           <span className='bad-event-order-no'>
             {props.match.params.orderNo || ''} {detailData.badEventName}
           </span>
+          <Button
+            className='audit'
+            style={{ marginLeft: 10 }}
+            onClick={() => appStore.history.goBack()}>
+            返回
+          </Button>
           {AuditBtn()}
         </div>
         <div className='status'>状态：{statusText()}</div>

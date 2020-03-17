@@ -45,55 +45,86 @@ export default observer(function PracticeResultReview(props: Props) {
       width: 60,
     },
     {
-      dataIndex: 'zhiwu',
+      dataIndex: 'empTitle',
       title: '职位',
       align: 'center',
       width: 80,
     },
     {
-      dataIndex: 'pianqv',
+      dataIndex: 'bigDeptName',
       title: '片区',
       align: 'center',
       width: 80,
     },
     {
-      dataIndex: 'bingqv',
+      dataIndex: 'deptName',
       title: '病区',
       align: 'center',
     },
     {
-      dataIndex: 'available',
+      dataIndex: 'isValidResult',
       title: '成绩有效',
       align: 'center',
       width: 60,
-      render: (status: string, record: any) => {
-        return <span style={{ color: 'red' }}>无效</span>
+      render: (isValidResult: number, record: any) => {
+        const itemScoreConfirm = () => {
+          scorceConfirm.show({
+            onOkCallBack: () => {
+              message.success(`${record.empName} 的成绩修改成功`)
+              trainingResultModel.getTableData()
+            },
+            cetpId: appStore.queryObj.id,
+            empNoList: [record.empNo],
+            isValidResult: record.isValidResult.toString() || ''
+          })
+        }
+
+        if (isValidResult == 1)
+          return <span
+            style={{ color: 'blue', cursor: 'pointer' }}
+            onClick={itemScoreConfirm}>
+            有效
+            </span>
+        else
+          return <span
+            style={{ color: 'red', cursor: 'pointer' }}
+            onClick={itemScoreConfirm}>
+            无效
+          </span>
       }
     },
     {
-      dataIndex: 'latestAwnserTime',
+      dataIndex: 'lastAnswerTime',
       title: '最近答题',
       align: 'center',
       width: 180,
-      render: (status: string, record: any) =>
-        moment().format('YYYY-MM-DD HH:mm:ss')
+      render: (text: string, record: any) => {
+        if (!text) return '未答题'
+        return text
+      }
     },
     {
-      dataIndex: 'progress',
+      dataIndex: 'progressRate',
       title: '练习进度',
       align: 'center',
       width: 60,
-      render: (status: string, record: any) => '50%'
+      render: (text: any, record: any) => {
+        if (text) return `${Number(text) * 100}%`
+        return '0%'
+      }
     },
     {
-      dataIndex: 'progress',
+      dataIndex: 'correctRate',
       title: '正确率',
       align: 'center',
       width: 60,
-      render: (status: string, record: any) => '40'
+      render: (text: any, record: any) => {
+        if (text) return `${Number(text) * 100}%`
+        return '0%'
+      }
     },
     {
-      dataIndex: 'score',
+      dataIndex: 'creditDesc',
       title: '学分',
       align: 'center',
       width: 120,
@@ -103,10 +134,14 @@ export default observer(function PracticeResultReview(props: Props) {
       }
     },
     {
-      dataIndex: 'studyTime',
+      dataIndex: 'classHours',
       title: '学时',
       align: 'center',
       width: 100,
+      render: (text: string) => {
+        if (text) return text
+        return '0'
+      }
     },
   ]
 

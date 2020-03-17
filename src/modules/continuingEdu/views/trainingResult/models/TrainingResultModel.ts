@@ -3,19 +3,22 @@ import { appStore } from 'src/stores'
 import { trainingResultService } from './../api/TrainingResultService'
 
 class TrainingResultModel {
-  defaultQuery = {
-    cetpId: '',//计划id
-    bigDeptCode: '' as string | number,//片区code
-    deptCode: '' as string | number,//病区code
-    empTitle: '' as string | number,//职称
-    taskStatus: '' as string | number,//完成情况
-    keyWord: '', //关键字
-    pageIndex: 1,
-    pageSize: 15,
+
+  private defaultQuery = (): any => {
+    return JSON.parse(JSON.stringify({
+      cetpId: '',//计划id
+      bigDeptCode: '' as string | number,//片区code
+      deptCode: '' as string | number,//病区code
+      empTitle: '' as string | number,//职称
+      taskStatus: '' as string | number,//完成情况
+      keyWord: '', //关键字
+      pageIndex: 1,
+      pageSize: 15,
+    }))
   }
 
   @observable baseInfo = {} as any //基本信息
-  @observable query = { ...this.defaultQuery } as any //列表请求参数
+  @observable query = this.defaultQuery() as any //列表请求参数
   @observable tableData = [] as any[] //列表数据
   @observable tableDataTotal = 0 //列表数据
   @observable loading = false //页面载入状态
@@ -31,10 +34,9 @@ class TrainingResultModel {
     this.tableData = []
 
     this.setQuery({
-      ...this.defaultQuery,
+      ...this.defaultQuery(),
       cetpId: appStore.queryObj.id || ''
     }, true)
-
 
     this.deptList = []
     if (this.bigDeptList.length <= 0) this.getBigDeptList()
@@ -47,6 +49,7 @@ class TrainingResultModel {
 
   @action public setQuery(newQuery: any, newData?: boolean) {
     this.query = { ...newQuery }
+    // console.log({ ...newQuery })
     if (newData) this.getTableData()
   }
 

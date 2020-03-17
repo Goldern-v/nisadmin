@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import { Modal, Input, Select, Button, message as Message, Row, Col, Radio } from 'antd'
 import { authStore } from 'src/stores'
@@ -11,6 +11,7 @@ import UserCheckModal from './UserCheckModal'
 const api = new badEventsNewService()
 
 const { TextArea } = Input
+const { Option } = Select
 
 export interface Props {
   visible: boolean //审核窗口显示
@@ -40,67 +41,52 @@ export default observer(function AduitModal(props: Props) {
   //转发科室列表
   const [dealerDepts, setDealerDepts] = useState([] as any)
 
-  //是否退回
-  const [tuihui, setTuihui] = useState(false)
-  //退回原因
-  const [reason, setReason] = useState('')
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (visible) {
-      resetData()
-      resetAllow()
+      let user = authStore.user
+      if (user)
+        setInstance({
+          instanceId: id,
+          operatorWardCode: user.deptCode,
+          operatorWardName: user.deptName,
+          operatorStatus: status,
+          operatorName: user.empName,
+          operatorEmpNo: user.empNo,
+          operateDate: Moment().format('YYYY-MM-DD'),
+          operatorPW: '',
+          isAllowNext: true,
+          departmentCode: '',
+          departmentName: '',
+          sac: ''
+        })
+
+      let newMap: any = {}
+      switch (status) {
+        case 'nurse_submit':
+          newMap[`${eventCode}_department_code`] = reportDept.code
+          newMap[`${eventCode}_department_name`] = reportDept.name
+          newMap[`${eventCode}_shjg_option`] = '转发'
+          newMap[`${eventCode}_th_explain`] = ''
+          if (dealerDepts.length <= 0) getDealerDepts()
+          break
+        case 'quality_controller':
+          newMap[`${eventCode}_shcdpd_option`] = '轻度'
+          newMap[`${eventCode}_sac_option`] = '1级'
+          newMap[`${eventCode}_rca_option`] = '不需要'
+          newMap[`${eventCode}_tjzlanwyh_option`] = '不提交'
+          newMap[`${eventCode}_shyj_explain`] = ''
+          break
+        case 'department_auditor':
+          newMap[`${eventCode}_zkk_zjyj_explain`] = ''
+          break
+        case 'qc_summary':
+          newMap[`${eventCode}_wyh_zjyj_explain`] = ''
+          break
+      }
+
+      setFormMap({ ...paramMap, ...newMap })
     }
   }, [visible])
-
-  const resetAllow = () => {
-    setTuihui(false)
-    setReason('')
-  }
-
-  const resetData = () => {
-    let user = authStore.user
-    if (user)
-      setInstance({
-        instanceId: id,
-        operatorWardCode: user.deptCode,
-        operatorWardName: user.deptName,
-        operatorStatus: status,
-        operatorName: user.empName,
-        operatorEmpNo: user.empNo,
-        operateDate: Moment().format('YYYY-MM-DD'),
-        operatorPW: '',
-        isAllowNext: 'nurse_submit',
-        departmentCode: '',
-        departmentName: '',
-        sac: ''
-      })
-
-    let newMap: any = {}
-    switch (status) {
-      case 'nurse_submit':
-        newMap[`${eventCode}_department_code`] = reportDept.code
-        newMap[`${eventCode}_department_name`] = reportDept.name
-        newMap[`${eventCode}_shjg_option`] = '转发'
-        newMap[`${eventCode}_th_explain`] = ''
-        if (dealerDepts.length <= 0) getDealerDepts()
-        break
-      case 'quality_controller':
-        newMap[`${eventCode}_shcdpd_option`] = '轻度'
-        newMap[`${eventCode}_sac_option`] = '1级'
-        newMap[`${eventCode}_rca_option`] = '不需要'
-        newMap[`${eventCode}_tjzlanwyh_option`] = '不提交'
-        newMap[`${eventCode}_shyj_explain`] = ''
-        break
-      case 'department_auditor':
-        newMap[`${eventCode}_zkk_zjyj_explain`] = ''
-        break
-      case 'qc_summary':
-        newMap[`${eventCode}_wyh_zjyj_explain`] = ''
-        break
-    }
-
-    setFormMap({ ...paramMap, ...newMap })
-  }
 
   const getDealerDepts = () => {
     api.getDeptList().then((res) => {
@@ -163,8 +149,9 @@ export default observer(function AduitModal(props: Props) {
       commitToQC: formMap[`${eventCode}_tjzlanwyh_option`]
     }
 
-    params.isAllowNext = true
+    delete params.operatorStatus
 
+    params.isAllowNext = true
     if (params.operatorStatus == 'nurse_submit') {
       if (formMap[`${eventCode}_shjg_option`] === '退回') {
         params.isAllowNext = false
@@ -175,16 +162,7 @@ export default observer(function AduitModal(props: Props) {
       } else {
         params.paramMap[`${eventCode}_th_explain`] = ''
       }
-    } else {
-      if (tuihui) {
-        params.isAllowNext = false
-        params.paramMap[`${eventCode}_th_explain`] = reason
-        params.paramMap[`${eventCode}_wyh_zjyj_explain`] = ''
-        params.paramMap[`${eventCode}_shyj_explain`] = ''
-      }
     }
-
-    // return console.log(params)
 
     api
       .aduit(params)
@@ -196,11 +174,7 @@ export default observer(function AduitModal(props: Props) {
         } else {
           if (res.desc) Message.error(res.desc)
         }
-      })
-      .catch(() => {
-        setConfirmLoading(false)
-        Message.error('审核请求发送失败')
-      })
+      }, () => setConfirmLoading(false))
   }
   const AduitPannelTitle = () => {
     switch (status) {
@@ -237,7 +211,8 @@ export default observer(function AduitModal(props: Props) {
               className='radio-group'
               value={formMap[`${eventCode}_shjg_option`]}
               onChange={(e) =>
-                setFormMap({ ...formMap, [`${eventCode}_shjg_option`]: e.target.value })}>
+                setFormMap({ ...formMap, [`${eventCode}_shjg_option`]: e.target.value })
+              }>
               <Row>
                 <Col span={6} className='item-label'>
                   审核结果：
@@ -247,12 +222,13 @@ export default observer(function AduitModal(props: Props) {
                   <span>退回</span>
                 </Col>
                 <Col span={14}>
-                  <TextArea
+                  <Input
                     value={formMap[`${eventCode}_th_explain`]}
                     className='input-item'
                     disabled={formMap[`${eventCode}_shjg_option`] == '转发'}
                     onChange={(e) =>
-                      setFormMap({ ...formMap, [`${eventCode}_th_explain`]: e.target.value })} />
+                      setFormMap({ ...formMap, [`${eventCode}_th_explain`]: e.target.value })
+                    } />
                 </Col>
               </Row>
               <Row>
@@ -270,12 +246,13 @@ export default observer(function AduitModal(props: Props) {
                     showSearch
                     filterOption={(input: any, option: any) =>
                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
+                    }
+                  >
                     {dealerDepts.map((item: any, idx: number) => {
                       return (
-                        <Select.Option value={item.name} key={idx}>
+                        <Option value={item.name} key={idx}>
                           {item.name}
-                        </Select.Option>
+                        </Option>
                       )
                     })}
                   </Select>
@@ -288,36 +265,18 @@ export default observer(function AduitModal(props: Props) {
         return (
           <div className='form2'>
             <Row>
-              <Col span={2}>
-                是否退回:
-            </Col>
-              <Col span={2}>
-                <Radio
-                  checked={tuihui}
-                  onClick={(e: any) => setTuihui(!tuihui)}>
-                  退回
-                </Radio>
-              </Col>
-              <Col span={20}>
-                <TextArea
-                  disabled={!tuihui}
-                  value={reason}
-                  onChange={(e: any) => setReason(e.target.value)} />
-              </Col>
-            </Row>
-            <Row>
               <span className='select-item'>
                 <span className='item-label'>伤害程度判定:</span>
                 <span className='item-content'>
                   <Select
                     defaultValue='轻度'
-                    disabled={tuihui}
                     value={formMap[`${eventCode}_shcdpd_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_shcdpd_option`]: val })}>
-                    <Select.Option value='轻度'>轻度</Select.Option>
-                    <Select.Option value='中度'>中度</Select.Option>
-                    <Select.Option value='高度'>高度</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_shcdpd_option`]: val })
+                    }>
+                    <Option value='轻度'>轻度</Option>
+                    <Option value='中度'>中度</Option>
+                    <Option value='高度'>高度</Option>
                   </Select>
                 </span>
               </span>
@@ -325,15 +284,15 @@ export default observer(function AduitModal(props: Props) {
                 <span className='item-label'>SAC:</span>
                 <span className='item-content'>
                   <Select
-                    disabled={tuihui}
-                    defaultValue='1级'
+                    defaultValue='nurse_submit'
                     value={formMap[`${eventCode}_sac_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_sac_option`]: val })}>
-                    <Select.Option value='1级'>1级</Select.Option>
-                    <Select.Option value='2级'>2级</Select.Option>
-                    <Select.Option value='3级'>3级</Select.Option>
-                    <Select.Option value='4级'>4级</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_sac_option`]: val })
+                    }>
+                    <Option value='1级'>1级</Option>
+                    <Option value='2级'>2级</Option>
+                    <Option value='3级'>3级</Option>
+                    <Option value='4级'>4级</Option>
                   </Select>
                 </span>
               </span>
@@ -342,12 +301,12 @@ export default observer(function AduitModal(props: Props) {
                 <span className='item-content'>
                   <Select
                     defaultValue='0'
-                    disabled={tuihui}
                     value={formMap[`${eventCode}_rca_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_rca_option`]: val })}>
-                    <Select.Option value='不需要'>不需要</Select.Option>
-                    <Select.Option value='需要'>需要</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_rca_option`]: val })
+                    }>
+                    <Option value='不需要'>不需要</Option>
+                    <Option value='需要'>需要</Option>
                   </Select>
                 </span>
               </span>
@@ -356,25 +315,25 @@ export default observer(function AduitModal(props: Props) {
                 <span className='item-content'>
                   <Select
                     defaultValue='不提交'
-                    disabled={tuihui}
                     value={formMap[`${eventCode}_tjzlanwyh_option`]}
                     onChange={(val: any) =>
-                      setFormMap({ ...formMap, [`${eventCode}_tjzlanwyh_option`]: val })}>
-                    <Select.Option value='不提交'>不提交</Select.Option>
-                    <Select.Option value='提交'>提交</Select.Option>
+                      setFormMap({ ...formMap, [`${eventCode}_tjzlanwyh_option`]: val })
+                    }>
+                    <Option value='不提交'>不提交</Option>
+                    <Option value='提交'>提交</Option>
                   </Select>
                 </span>
               </span>
             </Row>
             <Row>
-              <Col span={2}>审核意见:</Col>
+              <Col span={2}>审核意见：</Col>
               <Col span={22}>
                 <TextArea
                   rows={8}
-                  disabled={tuihui}
                   value={formMap[`${eventCode}_shyj_explain`]}
                   onChange={(e) =>
-                    setFormMap({ ...formMap, [`${eventCode}_shyj_explain`]: e.target.value })} />
+                    setFormMap({ ...formMap, [`${eventCode}_shyj_explain`]: e.target.value })
+                  } />
               </Col>
             </Row>
           </div>
@@ -388,8 +347,9 @@ export default observer(function AduitModal(props: Props) {
                 <TextArea
                   rows={8}
                   value={formMap[`${eventCode}_zkk_zjyj_explain`]}
-                  onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_zkk_zjyj_explain`]: e.target.value })}
-                />
+                  onChange={(e) =>
+                    setFormMap({ ...formMap, [`${eventCode}_zkk_zjyj_explain`]: e.target.value })
+                  } />
               </Col>
             </Row>
           </div>
@@ -403,8 +363,9 @@ export default observer(function AduitModal(props: Props) {
                 <TextArea
                   rows={8}
                   value={formMap[`${eventCode}_wyh_zjyj_explain`]}
-                  onChange={(e) => setFormMap({ ...formMap, [`${eventCode}_wyh_zjyj_explain`]: e.target.value })}
-                />
+                  onChange={(e) =>
+                    setFormMap({ ...formMap, [`${eventCode}_wyh_zjyj_explain`]: e.target.value })
+                  } />
               </Col>
             </Row>
           </div>
@@ -427,7 +388,10 @@ export default observer(function AduitModal(props: Props) {
       >
         <Wrapper>{AduitPannelContent()}</Wrapper>
       </Modal>
-      <UserCheckModal visible={userCheckVisible} onCancel={() => setUserCheckVisible(false)} onOk={handleUserCheckOk} />
+      <UserCheckModal
+        visible={userCheckVisible}
+        onCancel={() => setUserCheckVisible(false)}
+        onOk={handleUserCheckOk} />
     </Fragment>
   )
 })
@@ -462,12 +426,6 @@ const Wrapper = styled.div`
     .ant-select{
       width: 100px;
     }
-  }
-}
-.tuihui-item{
-  margin-right: 15px;
-  .item-label{
-    margin-right: 5px;
   }
 }
 `

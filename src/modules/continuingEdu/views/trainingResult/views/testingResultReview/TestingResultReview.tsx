@@ -192,7 +192,7 @@ export default observer(function TestingResultReview() {
 
     let isScoreEdit = false
     let sameEmpNo = baseInfo.scorePersonList.find((item: any) => {
-      return item.empNo == (authStore.user && authStore.user?.empNo)
+      return item.empNo.toLowerCase() == (authStore.user && authStore.user?.empNo.toLowerCase())
     })
 
     if (sameEmpNo) isScoreEdit = true
