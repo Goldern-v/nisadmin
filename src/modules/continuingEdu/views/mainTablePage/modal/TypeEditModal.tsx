@@ -4,6 +4,7 @@ import { Input, Row, Col, Modal, message as Message, Select } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { mainPageApi } from "../api/MainPageApi";
+import { appStore } from "src/stores";
 
 export interface Props {
   visible: boolean;
@@ -137,7 +138,10 @@ export default function TypeEditModal(props: Props) {
                   <Select.Option value="1">学习</Select.Option>
                   <Select.Option value="2">培训</Select.Option>
                   <Select.Option value="3">考试</Select.Option>
-                  <Select.Option value="4">练习</Select.Option>
+                  {appStore.isDev && (
+                    <Select.Option value="4">练习</Select.Option>
+                  )}
+
                   {/* <Select.Option value="5">实操</Select.Option>
                   <Select.Option value="6">演练</Select.Option> */}
                 </Select>
