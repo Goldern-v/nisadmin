@@ -406,7 +406,7 @@ export default observer(function Table(props: Props) {
       cancelText: "取消",
       onOk: () => {
         mainPageApi
-          .delMainData(record.id)
+          .revokeMainData(record.id)
           .then(res => {
             if (res.code == 200) {
               Message.success("文件撤销成功");
