@@ -156,7 +156,7 @@ const UserManualRouter = lazy(() =>
 );
 // 平台使用手册目录设置
 const SetUserManual = lazy(() =>
-  import("src/modules/SetUserManual/SetUserManual")
+  import("src/modules/UserManual/view/SetUserManual")
 );
 
 //病区文件
