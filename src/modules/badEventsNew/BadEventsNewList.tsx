@@ -137,9 +137,9 @@ export default observer(function BadEventNewList() {
         let target = eventStatusList.filter(
           (item1: any) => item1.code == item.status
         );
-
+        if (!item.allow) return <span style={{ color: "red" }}>退回</span>
         if (target.length > 0) statusText = target[0].name;
-        return <span style={{ wordBreak: "break-word" }}>{statusText}</span>;
+        return <span style={{ wordBreak: "break-word" }}>{statusText}</span>
       }
     },
     {

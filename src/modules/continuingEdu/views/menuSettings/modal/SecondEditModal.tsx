@@ -98,13 +98,13 @@ export default function SecondEditModal(props: Props) {
     setdData(
       employees
         ? employees.map((item: any, index: any) => {
-            return {
-              key: type == 1 ? item.empNo : item.roleCode,
-              value: type == 1 ? item.empNo : item.roleCode,
-              type: type,
-              label: type == 1 ? item.empName : item.roleName
-            };
-          })
+          return {
+            key: type == 1 ? item.empNo : item.roleCode,
+            value: type == 1 ? item.empNo : item.roleCode,
+            type: type,
+            label: type == 1 ? item.empName : item.roleName
+          };
+        })
         : []
     );
   };
@@ -202,7 +202,7 @@ export default function SecondEditModal(props: Props) {
       let data: any = [];
       item.map((o: any) => {
         let objItem: any = {};
-        if (o.value) {
+        if (o.value && !o.userList) {
           let objProperty = o.type === 1 ? "empNo" : "roleCode";
           objItem[objProperty] = o.value;
           data.push(objItem);
@@ -280,7 +280,7 @@ export default function SecondEditModal(props: Props) {
               setEditLoading(false);
             });
         })
-        .catch(e => {});
+        .catch(e => { });
     }
   };
 
@@ -386,10 +386,10 @@ export default function SecondEditModal(props: Props) {
                         </ClickBtn>
                       </div>
                     ) : (
-                      <EditClickBtn onClick={editSecondAudit}>
-                        + 添加二级审核人
-                      </EditClickBtn>
-                    )}
+                        <EditClickBtn onClick={editSecondAudit}>
+                          + 添加二级审核人
+                        </EditClickBtn>
+                      )}
                   </Form.Field>
                 </Col>
               </Row>
@@ -415,10 +415,10 @@ export default function SecondEditModal(props: Props) {
                         </ClickBtn>
                       </div>
                     ) : (
-                      <EditClickBtn onClick={editThirdAudit}>
-                        + 添加三级审核人
-                      </EditClickBtn>
-                    )}
+                        <EditClickBtn onClick={editThirdAudit}>
+                          + 添加三级审核人
+                        </EditClickBtn>
+                      )}
                   </Form.Field>
                 </Col>
               </Row>

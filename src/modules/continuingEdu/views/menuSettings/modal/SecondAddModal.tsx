@@ -49,7 +49,7 @@ export default function SecondAddModal(props: Props) {
   const [chilrenList, setChilrenList] = useState([]);
   const [parentName, setParentName] = useState("");
   const formRef = React.createRef<Form>();
-  const checkForm = () => {};
+  const checkForm = () => { };
   let nameList: any = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
   const onOkCallBack = (
     checkedUserList: CheckUserItem[],
@@ -198,7 +198,7 @@ export default function SecondAddModal(props: Props) {
           let data: any = [];
           setItem.map((k: any) => {
             let objItem: any = {};
-            if (k.value) {
+            if (k.value && !k.userList) {
               let objProperty = k.type === 1 ? "empNo" : "roleCode";
               objItem[objProperty] = k.value;
               data.push(objItem);
@@ -508,10 +508,10 @@ export default function SecondAddModal(props: Props) {
                           </ClickBtn>
                         </div>
                       ) : (
-                        <AddClickBtn onClick={() => addSecondAudit(index)}>
-                          + 添加二级审核人
-                        </AddClickBtn>
-                      )}
+                          <AddClickBtn onClick={() => addSecondAudit(index)}>
+                            + 添加二级审核人
+                          </AddClickBtn>
+                        )}
                     </Form.Field>
                   </Col>
                 </Row>
@@ -541,10 +541,10 @@ export default function SecondAddModal(props: Props) {
                           </ClickBtn>
                         </div>
                       ) : (
-                        <AddClickBtn onClick={() => addThirdAudit(index)}>
-                          + 添加三级审核人
-                        </AddClickBtn>
-                      )}
+                          <AddClickBtn onClick={() => addThirdAudit(index)}>
+                            + 添加三级审核人
+                          </AddClickBtn>
+                        )}
                     </Form.Field>
                   </Col>
                 </Row>

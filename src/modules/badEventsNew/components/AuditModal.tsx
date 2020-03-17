@@ -149,8 +149,6 @@ export default observer(function AduitModal(props: Props) {
       commitToQC: formMap[`${eventCode}_tjzlanwyh_option`]
     }
 
-    delete params.operatorStatus
-
     params.isAllowNext = true
     if (params.operatorStatus == 'nurse_submit') {
       if (formMap[`${eventCode}_shjg_option`] === '退回') {
@@ -163,6 +161,8 @@ export default observer(function AduitModal(props: Props) {
         params.paramMap[`${eventCode}_th_explain`] = ''
       }
     }
+
+    delete params.operatorStatus
 
     api
       .aduit(params)
