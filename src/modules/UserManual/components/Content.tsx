@@ -25,7 +25,6 @@ export default function RightContent(props: Props) {
   const [totalCount, setTotalCount] = useState(Number); // 总页码
   const [effect, setEffect] = useState(true);
   const [query, setQuery] = useState({
-    type: getTitle,
     fileName: "",
     pageSize: 20,
     pageIndex: 1
@@ -39,13 +38,17 @@ export default function RightContent(props: Props) {
   useEffect(() => {
     setEffect(true);
     getTableData();
-  }, [query]);
+  }, [getTitle, query]);
 
   // 查询
   const getTableData = () => {
     if (effect) {
       setLoading(true);
-      userManualApi.getData(query).then(res => {
+      const obj = {
+        type: getTitle,
+        ...query
+      };
+      userManualApi.getData(obj).then(res => {
         setLoading(false);
         if (res.data.data) {
           setTableList(res.data.data.list || []);

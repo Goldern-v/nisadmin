@@ -34,7 +34,7 @@ export default function UserManualRouter(props: Props) {
   // 初始化
   useEffect(() => {
     setEffect(true);
-    getList();
+    getDataList();
   }, [props.history.location.pathname]);
 
   const LEFT_MENU_CONFIG = [
@@ -50,7 +50,7 @@ export default function UserManualRouter(props: Props) {
   // 查询获取动态菜单列表
 
   // 查询目录列表
-  const getList = () => {
+  const getDataList = () => {
     if (effect) {
       userManualApi.setGetData().then((res: any) => {
         let newArr: any = [];
@@ -125,15 +125,15 @@ export default function UserManualRouter(props: Props) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
         return item.children.find(
-          (item1: any) => item1[targetKey] === targetName
+          (item1: any) => targetName.indexOf(item1[targetKey]) >= 0
         );
       } else {
-        return item[targetKey] === targetName;
+        return targetName.indexOf(item[targetKey]) >= 0;
       }
     });
     if (chooseRoute && chooseRoute.children) {
       chooseRoute = chooseRoute.children.find(
-        (item1: any) => item1[targetKey] === targetName
+        (item1: any) => targetName.indexOf(item1[targetKey]) >= 0
       );
     }
     return chooseRoute;
@@ -151,7 +151,7 @@ export default function UserManualRouter(props: Props) {
             {currentRoute && currentRoute.component && (
               <currentRoute.component
                 getTitle={currentRoute && currentRoute.title} //菜单标题
-                getList={getList} // 动态菜单树
+                getDataList={getDataList} // 动态菜单树
               />
             )}
           </MainCon>

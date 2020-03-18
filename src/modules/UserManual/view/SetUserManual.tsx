@@ -8,7 +8,7 @@ import EditModal from "./modal/EditModal";
 import { observer } from "mobx-react-lite";
 
 interface Props {
-  getList: any;
+  getDataList: any;
 }
 
 export default observer(function SetUserManual(props: Props) {
@@ -37,9 +37,9 @@ export default observer(function SetUserManual(props: Props) {
         setLoading(false);
         if (res.data) {
           setTableList(res.data || []);
-          props.getList();
         }
       });
+      props.getDataList();
     }
   };
 
