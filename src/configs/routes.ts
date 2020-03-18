@@ -154,10 +154,6 @@ const NotificationManagementView = lazy(() =>
 const UserManualRouter = lazy(() =>
   import("src/modules/UserManual/UserManualRouter")
 );
-// 平台使用手册目录设置
-const SetUserManual = lazy(() =>
-  import("src/modules/UserManual/view/SetUserManual")
-);
 
 //病区文件
 const DeptFileShareCatalogSetting = lazy(() =>
@@ -555,11 +551,6 @@ const routes: RouteItem[] = [
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/UserManual", UserManualRouter, layouts.MainLayout),
-  setLayout("/SetUserManual", SetUserManual, layouts.BreadcrumbLayout, [
-    { name: "平台使用手册", link: "/UserManual" },
-    { name: "目录设置", link: "" }
-  ]),
-
   /**一级质控 */
   setLayout("/wardRegister", WardRegisterRouter, layouts.MainLayout),
   setLayout(
