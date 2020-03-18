@@ -28,7 +28,8 @@ export default observer(function UpdateTable(props: Props) {
   let totalScore = dataSource.reduce((total: any, current: any) => {
     return total + current.totalScores;
   }, 0);
-  let _totalScore = ksStepViewModal.stepData2.totalScores;
+  // let _totalScore = ksStepViewModal.stepData2.totalScores;
+  ksStepViewModal.stepData2.totalScores = totalScore;
 
   const columns: ColumnProps<any>[] = [
     {
@@ -110,12 +111,7 @@ export default observer(function UpdateTable(props: Props) {
       align: "center",
       dataIndex: "totalScores",
       render(text: any, record: any, index: number) {
-        if (index == 0)
-          return (
-            <span style={_totalScore == totalScore ? {} : { color: "red" }}>
-              {totalScore}
-            </span>
-          );
+        if (index == 0) return <span>{totalScore}</span>;
         return text;
       }
     }

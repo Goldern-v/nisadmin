@@ -51,9 +51,14 @@ class StepViewModal {
     /** step 必须完整 */
 
     if (step == 0) {
-      if (this.stepData1.teachingMethod) {
-        return true;
-      } else {
+      if (!this.stepData1.teachingMethod) {
+        return false;
+      }
+    } else if (step == 1) {
+      const stepData2 = this.getCurrentStepViewModal
+        ? this.getCurrentStepViewModal.stepData2
+        : {};
+      if (!stepData2.title || !stepData2.startTime) {
         return false;
       }
     }

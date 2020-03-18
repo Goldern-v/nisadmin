@@ -116,7 +116,9 @@ export default observer(function Step4() {
           </Col>
           <Col span={24}>
             <Form.Field label={`总成绩`} name="totalScores">
-              <InputNumber />
+              <span>
+                <Input readOnly value={stepViewModal.stepData2.totalScores}/>
+              </span>
             </Form.Field>
           </Col>
           <Col span={24}>
