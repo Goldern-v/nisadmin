@@ -10,7 +10,6 @@ import qs from "qs";
 import { mainPageApi } from "../api/MainPageApi";
 import { meunSettingApi } from "../../menuSettings/api/MeunSettingApi";
 import TypeEditModal from "../modal/TypeEditModal"; // 一级菜单弹窗
-import createModal from "src/libs/createModal";
 
 export default withRouter(
   observer(function TypeManagement() {

@@ -44,7 +44,7 @@ export default function UserManualRouter(props: Props) {
       icon: <KSGL />,
       path: "/UserManual/setUserManual",
       component: 目录设置,
-      hide: authStore.isAdmin
+      hide: !authStore.isAdmin
     }
   ];
   // 查询获取动态菜单列表
@@ -74,7 +74,7 @@ export default function UserManualRouter(props: Props) {
               appStore.history.push(`/UserManual/${newArr[0].title}`);
           } else {
             setArrData([]);
-            if (!authStore.isAdmin) {
+            if (authStore.isAdmin) {
               appStore.history.push(`/UserManual/setUserManual`);
             } else {
               setType(1);
@@ -160,13 +160,9 @@ export default function UserManualRouter(props: Props) {
     </Wrapper>
   );
 }
-const ContentFirst = styled.div``;
-const ContentSecond = styled.div`
-  margin: auto;
-  text-align: center;
-  font-size: 30px;
-`;
-const Wrapper = styled.div`
+const Wrapper = styled.div``;
+
+const ContentFirst = styled.div`
   overflow: hidden;
   height: calc(100vh - 50px);
   display: flex;
@@ -181,6 +177,12 @@ const Wrapper = styled.div`
   .cls-13 {
     fill: none !important;
   }
+`;
+const ContentSecond = styled.div`
+  height: calc(100vh - 50px);
+  text-align: center;
+  font-size: 30px;
+  line-height: calc(100vh - 50px);
 `;
 const LeftMenuCon = styled.div`
   width: 200px;
