@@ -6,7 +6,8 @@ import { TableHeadCon } from "src/components/BaseTable";
 import { PageTitle } from "src/components/common";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import FileEditModal from "../modal/FileEditModal";
-import PreviewModal from "../modal/PreviewModal";
+// import PreviewModal from "../modal/PreviewModal";
+import PreviewModal from "src/utils/file/modal/PreviewModal";
 import createModal from "src/libs/createModal";
 import { userManualApi } from "../api/UserManualApi";
 interface Props {
@@ -119,9 +120,8 @@ export default function RightContent(props: Props) {
   // 预览
   const handlePreview = (record: any) => {
     PreviewModalWrapper.show({
-      url: `/crNursing/asset/userManual${record.path}`,
-      name: record.fileName,
-      type: record.fileType
+      path: record.path,
+      title: record.fileName || "文件预览"
     });
   };
 

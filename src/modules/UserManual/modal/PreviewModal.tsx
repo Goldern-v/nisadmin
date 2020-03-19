@@ -21,6 +21,7 @@ export default function PreviewModal(props: Props) {
       case "jpg":
       case "gif":
       case "jpeg":
+      case "png":
         return (
           <Watermark>
             <img src={url} width="100%" />
