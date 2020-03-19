@@ -207,7 +207,7 @@ export default observer(function Table(props: Props) {
       dataIndex: "statusDesc",
       width: 80,
       align: "center",
-      fixed: "right",
+      // fixed: "right",
       render(statusDesc: any, record: any) {
         let color = "";
         switch (statusDesc) {
@@ -237,7 +237,7 @@ export default observer(function Table(props: Props) {
       dataIndex: "",
       width: 180,
       align: "center",
-      fixed: "right",
+      // fixed: "right",
       render(text: any, record: any, index: number) {
         let data: any = [{ text: "暂无操作" }];
         switch (record.statusDesc) {
@@ -461,7 +461,7 @@ export default observer(function Table(props: Props) {
         columns={columns}
         surplusWidth={300}
         surplusHeight={270}
-        scroll={{ x: 895 }}
+        // scroll={{ x: 895 }}
         pagination={{
           current: mainPageModal.pageIndex,
           total: mainPageModal.total,

@@ -68,22 +68,22 @@ export default observer(function MenuSettings(props: Props) {
       align: "center",
       width: 50
     },
-    {
-      title: "提交人",
-      align: "center",
-      width: 175,
-      render(text: any, record: any, index: number) {
-        let data: any =
-          record.submitterType === 1
-            ? record.submitEmployees
-            : record.submitRoles;
-        return setTextData(data, record.submitterType);
-      }
-    },
+    // {
+    //   title: "提交人",
+    //   align: "center",
+    //   width: 175,
+    //   render(text: any, record: any, index: number) {
+    //     let data: any =
+    //       record.submitterType === 1
+    //         ? record.submitEmployees
+    //         : record.submitRoles;
+    //     return setTextData(data, record.submitterType);
+    //   }
+    // },
     {
       title: "一级审核",
       align: "center",
-      width: 175,
+      width: 185,
       render(text: any, record: any, index: number) {
         let data: any =
           record.firstAuditorType === 1
@@ -95,7 +95,7 @@ export default observer(function MenuSettings(props: Props) {
     {
       title: "二级审核",
       align: "center",
-      width: 175,
+      width: 185,
       render(text: any, record: any, index: number) {
         let data: any =
           record.secondAuditorType === 1
@@ -107,7 +107,7 @@ export default observer(function MenuSettings(props: Props) {
     {
       title: "三级审核",
       align: "center",
-      width: 175,
+      width: 185,
       render(text: any, record: any, index: number) {
         let data: any =
           record.thirdAuditorType === 1

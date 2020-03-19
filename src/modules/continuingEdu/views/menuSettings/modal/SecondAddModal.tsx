@@ -49,8 +49,9 @@ export default function SecondAddModal(props: Props) {
   const [chilrenList, setChilrenList] = useState([]);
   const [parentName, setParentName] = useState("");
   const formRef = React.createRef<Form>();
-  const checkForm = () => { };
-  let nameList: any = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
+  const checkForm = () => {};
+  // let nameList: any = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
+  let nameList: any = ["firstAudit", "secondAudit", "thirdAudit"];
   const onOkCallBack = (
     checkedUserList: CheckUserItem[],
     type: any,
@@ -215,13 +216,13 @@ export default function SecondAddModal(props: Props) {
         }
       });
       let typeList = {
-        submitterType: judgeType(objItem.submit),
+        // submitterType: judgeType(objItem.submit),
         firstAuditorType: judgeType(objItem.firstAudit),
         secondAuditorType: judgeType(objItem.secondAudit),
         thirdAuditorType: judgeType(objItem.thirdAudit),
         ...objItem
       };
-      setParamsProperty(typeList, "submit", "submitterType");
+      // setParamsProperty(typeList, "submit", "submitterType");
       setParamsProperty(typeList, "firstAudit", "firstAuditorType");
       setParamsProperty(typeList, "secondAudit", "secondAuditorType");
       setParamsProperty(typeList, "thirdAudit", "thirdAuditorType");
@@ -258,11 +259,11 @@ export default function SecondAddModal(props: Props) {
   const toNext = () => {
     if (current === 0) {
       let typeList: any = {
-        submitterType: null,
+        // submitterType: null,
         firstAuditorType: null,
         secondAuditorType: null,
         thirdAuditorType: null,
-        submit: [],
+        // submit: [],
         firstAudit: [],
         secondAudit: [],
         thirdAudit: []
@@ -289,7 +290,8 @@ export default function SecondAddModal(props: Props) {
     } else {
       let isOk = true;
       allDataList.map((item: any) => {
-        if (item.submit.length === 0 || item.firstAudit.length === 0) {
+        // if (item.submit.length === 0 || item.firstAudit.length === 0) {
+        if (item.firstAudit.length === 0) {
           isOk = false;
         }
       });
@@ -336,7 +338,7 @@ export default function SecondAddModal(props: Props) {
             )}
             <Button onClick={handleCancel}>取消</Button>
             {current !== 2 && <Button onClick={toNext}>下一步</Button>}
-            {isSaveOk && <RequiredText>提交人跟审核人必填！</RequiredText>}
+            {isSaveOk && <RequiredText>审核人必填！</RequiredText>}
             {current === 2 && (
               <Button onClick={confirm} type="primary">
                 保存
@@ -434,7 +436,7 @@ export default function SecondAddModal(props: Props) {
                     </Form.Field>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col span={4} className="label required-label">
                     提交人:
                   </Col>
@@ -456,7 +458,7 @@ export default function SecondAddModal(props: Props) {
                       </ClickBtn>
                     </Form.Field>
                   </Col>
-                </Row>
+                </Row> */}
                 <Row>
                   <Col span={4} className="label required-label">
                     审核人:
@@ -471,10 +473,10 @@ export default function SecondAddModal(props: Props) {
                           labelInValue={true}
                           style={{ width: "100%" }}
                           open={false}
-                          onDeselect={(user: any) => onDeselect(user, 1, index)}
+                          onDeselect={(user: any) => onDeselect(user, 0, index)}
                         />
                       </div>
-                      <ClickBtn onClick={() => openSelectPeopleModal(1, index)}>
+                      <ClickBtn onClick={() => openSelectPeopleModal(0, index)}>
                         ...
                       </ClickBtn>
                     </Form.Field>
@@ -497,21 +499,21 @@ export default function SecondAddModal(props: Props) {
                               style={{ width: "100%" }}
                               open={false}
                               onDeselect={(user: any) =>
-                                onDeselect(user, 2, index)
+                                onDeselect(user, 1, index)
                               }
                             />
                           </div>
                           <ClickBtn
-                            onClick={() => openSelectPeopleModal(2, index)}
+                            onClick={() => openSelectPeopleModal(1, index)}
                           >
                             ...
                           </ClickBtn>
                         </div>
                       ) : (
-                          <AddClickBtn onClick={() => addSecondAudit(index)}>
-                            + 添加二级审核人
-                          </AddClickBtn>
-                        )}
+                        <AddClickBtn onClick={() => addSecondAudit(index)}>
+                          + 添加二级审核人
+                        </AddClickBtn>
+                      )}
                     </Form.Field>
                   </Col>
                 </Row>
@@ -530,21 +532,21 @@ export default function SecondAddModal(props: Props) {
                             labelInValue={true}
                             style={{ width: "100%" }}
                             onDeselect={(user: any) =>
-                              onDeselect(user, 3, index)
+                              onDeselect(user, 2, index)
                             }
                             open={false}
                           />
                           <ClickBtn
-                            onClick={() => openSelectPeopleModal(3, index)}
+                            onClick={() => openSelectPeopleModal(2, index)}
                           >
                             ...
                           </ClickBtn>
                         </div>
                       ) : (
-                          <AddClickBtn onClick={() => addThirdAudit(index)}>
-                            + 添加三级审核人
-                          </AddClickBtn>
-                        )}
+                        <AddClickBtn onClick={() => addThirdAudit(index)}>
+                          + 添加三级审核人
+                        </AddClickBtn>
+                      )}
                     </Form.Field>
                   </Col>
                 </Row>
@@ -587,14 +589,14 @@ export default function SecondAddModal(props: Props) {
                 <Row>
                   <Col span={20} className="peopleName">
                     <Form.Field name="submit">
-                      {item.submit.length !== 0 && (
+                      {/* {item.submit.length !== 0 && (
                         <div>
                           <span style={{ marginRight: "10px" }}>提交人:</span>
                           {item.submit.map((o: any, index: any) => (
                             <span key={index}>{o.label}&nbsp;&nbsp;</span>
                           ))}
                         </div>
-                      )}
+                      )} */}
                       {item.firstAudit.length !== 0 && (
                         <div>
                           <span style={{ marginRight: "10px" }}>审核人:</span>
