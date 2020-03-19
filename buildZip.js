@@ -5,13 +5,12 @@ const chalk = require("chalk");
 const compressing = require("compressing");
 const moment = require("moment");
 
-let hospitalName = process.env.REACT_APP_HOSPITAL_NAME
+let hospitalName = process.env.REACT_APP_HOSPITAL_NAME;
 
-let sourcePath = 'build/'
-let zipPath = `build/护理管理_${hospitalName}_${moment().format("YYYY_MM_DD_HH_mm")}.zip`
-
-
-
+let sourcePath = "build/";
+let zipPath = `publish/护理管理_${hospitalName}_${moment().format(
+  "YYYY_MM_DD_HH_mm"
+)}.zip`;
 
 const resolve = dir => path.join(__dirname, "./", dir);
 const publishPath = resolve("publish");
@@ -25,7 +24,9 @@ if (!fs.existsSync(publishPath)) {
 compressing.zip
   .compressDir(resolve(sourcePath), resolve(zipName))
   .then(() => {
-    console.log(chalk.yellow(`Tip: 文件压缩成功，已压缩至【${resolve(zipName)}】`));
+    console.log(
+      chalk.yellow(`Tip: 文件压缩成功，已压缩至【${resolve(zipName)}】`)
+    );
   })
   .catch(err => {
     console.log(chalk.red("Tip: 压缩报错"));

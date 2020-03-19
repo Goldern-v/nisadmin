@@ -96,6 +96,8 @@ export default function ContinuingEdu(props: Props) {
               newArr.push(obj1);
             });
             setDataList(newArr);
+          } else {
+            setDataList([]);
           }
         }
       });
