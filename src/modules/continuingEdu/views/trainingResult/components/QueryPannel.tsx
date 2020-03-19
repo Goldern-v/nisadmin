@@ -12,7 +12,7 @@ export interface Props { }
 
 export default observer(function QueryPannel(props: Props) {
   // const { query, onQueryChange, onSearch } = props
-  const { query, bigDeptList, deptList, titleList } = trainingResultModel
+  const { query, bigDeptList, deptList, titleList, iptVisible } = trainingResultModel
 
   const handleQueryChange = (newQuery: any) => {
     trainingResultModel.setQuery({ ...newQuery, pageIndex: 1 }, true)
@@ -25,7 +25,6 @@ export default observer(function QueryPannel(props: Props) {
       <span className="label">片区:</span>
       <span className="content">
         <Select
-
           style={{ width: '120px' }}
           value={query.bigDeptCode}
           onChange={(bigDeptCode: string) => {
@@ -40,7 +39,6 @@ export default observer(function QueryPannel(props: Props) {
       <span className="label">病区:</span>
       <span className="content">
         <Select
-
           style={{ width: '120px' }}
           value={query.deptCode}
           onChange={(deptCode: string) =>
@@ -53,7 +51,6 @@ export default observer(function QueryPannel(props: Props) {
       <span className="label">职称:</span>
       <span className="content">
         <Select
-
           style={{ width: '120px' }}
           value={query.empTitle}
           onChange={(empTitle: string) =>
@@ -66,7 +63,6 @@ export default observer(function QueryPannel(props: Props) {
       <span className="label">完成情况:</span>
       <span className="content">
         <Select
-
           style={{ width: '120px' }}
           value={query.taskStatus}
           onChange={(taskStatus: string) =>
@@ -77,16 +73,15 @@ export default observer(function QueryPannel(props: Props) {
         </Select>
       </span>
       <span className="content">
-        <Input
+        {iptVisible && <Input
           placeholder="请输入姓名、工号"
           style={{ width: '180px' }}
-          defaultValue={query.keyWord}
+          defaultValue={iptVisible ? query.keyWord : ''}
           onBlur={(e: any) =>
-            handleQueryChange({ ...query, keyWord: e.target.value })} />
+            handleQueryChange({ ...query, keyWord: e.target.value })} />}
       </span>
       <span className="content">
         <Button
-
           onClick={handleSearch}>
           查询
       </Button>

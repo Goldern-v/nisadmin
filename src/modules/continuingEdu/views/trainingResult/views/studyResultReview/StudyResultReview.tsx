@@ -96,9 +96,11 @@ export default observer(function StudyResultReview() {
   const handleDetail = (record: any) => {
     //查看详情
   }
+
   const handlePageChange = (pageIndex: number, pageSize: number | undefined) => {
     trainingResultModel.setQuery({ ...query, pageIndex }, true)
   }
+
   const handleSizeChange = (pageIndex: number, pageSize: number) => {
     trainingResultModel.setQuery({ ...query, pageSize, pageIndex: 1 }, true)
   }
@@ -114,9 +116,7 @@ export default observer(function StudyResultReview() {
         <span> > </span>
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
         <span> > </span>
-        {
-          <a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>
-        }
+        {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
         <span> > 查看结果</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
@@ -130,8 +130,8 @@ export default observer(function StudyResultReview() {
           {baseInfo.teachingTypeName}（{baseInfo.teachingMethodName}）
         </span>
         <span className="label"> 参与人员:</span>
-        <span className="content">{
-          (baseInfo.participantList && baseInfo.participantList.length) || 0}人
+        <span className="content">
+          {(baseInfo.participantList && baseInfo.participantList.length) || 0}人
         </span>
       </SubContent>
       <ButtonGroups>

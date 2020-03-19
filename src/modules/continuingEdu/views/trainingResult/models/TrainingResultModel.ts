@@ -17,6 +17,7 @@ class TrainingResultModel {
     }))
   }
 
+  @observable iptVisible = false //带有defaultValue属性的组件渲染与否
   @observable baseInfo = {} as any //基本信息
   @observable query = this.defaultQuery() as any //列表请求参数
   @observable tableData = [] as any[] //列表数据
@@ -28,6 +29,7 @@ class TrainingResultModel {
   @observable menuInfo = {} as any
 
   @action public init() {
+    this.iptVisible = false
     this.baseInfo = {}
     this.menuInfo = {}
     this.tableDataTotal = 0
@@ -45,6 +47,7 @@ class TrainingResultModel {
 
     this.getBaseInfo()
     this.getMenuInfo()
+    setTimeout(() => this.iptVisible = true, 100)
   }
 
   @action public setQuery(newQuery: any, newData?: boolean) {
