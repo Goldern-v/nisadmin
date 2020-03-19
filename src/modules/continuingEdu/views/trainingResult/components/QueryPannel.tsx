@@ -12,13 +12,15 @@ export interface Props { }
 
 export default observer(function QueryPannel(props: Props) {
   // const { query, onQueryChange, onSearch } = props
-  const { query, bigDeptList, deptList, titleList, iptVisible } = trainingResultModel
+  const { query, bigDeptList, deptList, titleList } = trainingResultModel
 
-  const handleQueryChange = (newQuery: any) => {
-    trainingResultModel.setQuery({ ...newQuery, pageIndex: 1 }, true)
-  }
+  const handleQueryChange = (newQuery: any) =>
+    trainingResultModel
+      .setQuery({ ...newQuery, pageIndex: 1 }, true)
 
-  const handleSearch = () => trainingResultModel.setQuery({ ...query, pageIndex: 1 }, true)
+  const handleSearch = () =>
+    trainingResultModel
+      .setQuery({ ...query, pageIndex: 1 }, true)
 
   return <Wrapper>
     <div className="fr">
@@ -73,12 +75,11 @@ export default observer(function QueryPannel(props: Props) {
         </Select>
       </span>
       <span className="content">
-        {iptVisible && <Input
+        <Input
           placeholder="请输入姓名、工号"
           style={{ width: '180px' }}
-          defaultValue={iptVisible ? query.keyWord : ''}
           onBlur={(e: any) =>
-            handleQueryChange({ ...query, keyWord: e.target.value })} />}
+            handleQueryChange({ ...query, keyWord: e.target.value })} />
       </span>
       <span className="content">
         <Button
