@@ -30,6 +30,7 @@ export default function SecondEditModal(props: Props) {
   const { secondVisible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [sortValue, setSortValue] = useState(Number);
   const [errorMessage, setErrorMessage]: any = useState("");
   const [isThirdAudit, setIsThirdAudit]: any = useState(false);
   const [isSecondAudit, setIsSecondAudit]: any = useState(false);
@@ -92,7 +93,11 @@ export default function SecondEditModal(props: Props) {
 
   // 验证
   const rules: Rules = {
-    name: val => !!val || "名称不能为空"
+    name: val => !!val || "名称不能为空",
+    sort: val =>
+      isNaN(Number(val)) || val === "" || Number(val) < 0
+        ? "排序必填且为正整数"
+        : ""
   };
 
   // 过滤审核人回显数据 1按人员empName、2按角色roleName
@@ -152,9 +157,11 @@ export default function SecondEditModal(props: Props) {
             // submitterType,
             firstAuditorType,
             secondAuditorType,
-            thirdAuditorType
+            thirdAuditorType,
+            sort
           } = params;
           setInputValue(name);
+          setSortValue(sort);
           // let submit = submitterType
           //   ? submitterType === 1
           //     ? params.submitEmployees
@@ -190,7 +197,8 @@ export default function SecondEditModal(props: Props) {
             // submit,
             firstAudit,
             secondAudit,
-            thirdAudit
+            thirdAudit,
+            sort
           });
         }, 100);
       }
@@ -268,6 +276,7 @@ export default function SecondEditModal(props: Props) {
           let newParams = {
             name: inputValue,
             id: params.id,
+            sort: sortValue,
             ...typeList
           };
           setEditLoading(true);
@@ -423,6 +432,22 @@ export default function SecondEditModal(props: Props) {
                         + 添加三级审核人
                       </EditClickBtn>
                     )}
+                  </Form.Field>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={4} className="label">
+                  排序:
+                </Col>
+                <Col span={20}>
+                  <Form.Field name="sort">
+                    <Input
+                      placeholder="排序"
+                      value={sortValue}
+                      onBlur={(e: any) => {
+                        setSortValue(e.target.value);
+                      }}
+                    />
                   </Form.Field>
                 </Col>
               </Row>
