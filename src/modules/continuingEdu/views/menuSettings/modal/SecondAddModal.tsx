@@ -213,6 +213,7 @@ export default function SecondAddModal(props: Props) {
             }
           });
           objItem[o] = data;
+          objItem.sort = 0;
         }
       });
       let typeList = {

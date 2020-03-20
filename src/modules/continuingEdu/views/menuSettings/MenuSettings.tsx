@@ -51,6 +51,12 @@ export default observer(function MenuSettings(props: Props) {
     }
   };
 
+  const colorType = (data: any) => {
+    if (!data) {
+      return "#666";
+    }
+  };
+
   const columns: any = [
     {
       title: "菜单设置",
@@ -66,7 +72,13 @@ export default observer(function MenuSettings(props: Props) {
       title: "排序",
       dataIndex: "sort",
       align: "center",
-      width: 50
+      width: 50,
+      onCell: (record: any, rowIndex: any) => ({
+        style: {
+          fontWeight: fontWeight(record.key),
+          color: colorType(record.key)
+        }
+      })
     },
     // {
     //   title: "提交人",
