@@ -118,14 +118,13 @@ class StepViewModal {
       nurse4: this.stepData2.bxNurse.includes("nurse4") ? 1 : 0,
       nurse5: this.stepData2.bxNurse.includes("nurse5") ? 1 : 0,
       nurseOther: this.stepData2.bxNurse.includes("nurseOther") ? 1 : 0,
+      ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
 
+      noticeContent: this.stepData2.noticeContent,
       detailInfo: {
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
         studentClassHours: this.stepData2.studentClassHours,
-
-        noticeContent: this.stepData2.noticeContent,
-        ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
 
         questionStatList: this.stepData2.questionStatList
       }
@@ -153,7 +152,7 @@ class StepViewModal {
     data.nurse5 && this.stepData2.bxNurse.push("nurse5");
     data.nurseOther && this.stepData2.bxNurse.push("nurseOther");
 
-    this.stepData5.ifSendMessage = !!data.detailInfo.ifSendMessage;
+    this.stepData5.ifSendMessage = !!data.ifSendMessage;
 
     this.stepData2.sicPersonList = data.detailInfo.sicPersonList.map(
       (item: any) => {

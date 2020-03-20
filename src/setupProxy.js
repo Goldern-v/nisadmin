@@ -1,10 +1,10 @@
 const proxy = require("http-proxy-middleware");
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
     proxy("/crNursing/api", {
       // target: 'http://120.25.105.45:9865',
-      target: "http://120.25.105.45:9866", //厚街测试 兆大锅
+      // target: "http://120.25.105.45:9866", //厚街测试 兆大锅
       //厚街正式环境
       // target: 'http://120.197.141.41:9094',
       // target: 'http://120.197.141.41:9091',
@@ -14,7 +14,7 @@ module.exports = function(app) {
       // target: 'http://192.168.2.75:8080',
       //武汉测试
       // target: "http://nurse.cr-health.com:34002",
-      // target: "http://120.25.105.45:9864", //武汉继续教育接口测试
+      target: "http://120.25.105.45:9864", //武汉继续教育接口测试
       // target: 'http://192.168.2.144:8062',
       // target: 'http://192.168.2.75:8080',  //俊涛
       // target: 'http://172.16.199.58:8062',  //俊涛

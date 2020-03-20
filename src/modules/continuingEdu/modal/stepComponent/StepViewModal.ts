@@ -40,10 +40,10 @@ class StepViewModal {
   @observable public stepData4 = {
     attachmentIds: []
   };
-  @observable public stepData5: any = {
-    /**  是否发送通知（1发通知  0不发通知） */
-    ifSendMessage: null
-  };
+  // @observable public stepData5: any = {
+  //   /**  是否发送通知（1发通知  0不发通知） */
+  //   ifSendMessage: null
+  // };
   @observable public title = "";
 
   /** 步骤一完整 */
@@ -123,15 +123,15 @@ class StepViewModal {
       secondLevelMenuId: appStore.queryObj.id,
       thirdLevelMenuId: this.stepData1.id,
       teachingMethod: this.stepData1.teachingMethod,
-
+      participantList: this.stepData3.participantList.reduce(
+        (total: any[], item: any) => {
+          return [...total, ...item.userList];
+        },
+        []
+      ),
       detailInfo: {
-        ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
-        participantList: this.stepData3.participantList.reduce(
-          (total: any[], item: any) => {
-            return [...total, ...item.userList];
-          },
-          []
-        ),
+        // ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
+
         ...(this.getCurrentStepViewModal.decodeData().detailInfo || {})
       }
     };
@@ -176,15 +176,13 @@ class StepViewModal {
     this.stepData1.teachingMethod = data.teachingMethod;
     this.stepData1.teachingMethodName = "  ";
 
-    this.stepData3.participantList = data.detailInfo.participantList.map(
-      (item: any) => {
-        return {
-          label: item.empName,
-          key: item.empName,
-          userList: [item]
-        };
-      }
-    );
+    this.stepData3.participantList = data.participantList.map((item: any) => {
+      return {
+        label: item.empName,
+        key: item.empName,
+        userList: [item]
+      };
+    });
     this.stepData4.attachmentIds = data.attachmentList;
   };
 

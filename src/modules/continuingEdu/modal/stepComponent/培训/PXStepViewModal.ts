@@ -134,6 +134,8 @@ class StepViewModal {
         },
         []
       ),
+      ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
+      noticeContent: this.stepData2.noticeContent,
       detailInfo: {
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
@@ -141,8 +143,7 @@ class StepViewModal {
         teacherCreditType: this.stepData2.teacherCreditType,
         teacherCredit: this.stepData2.teacherCredit,
         teacherClassHours: this.stepData2.teacherClassHours,
-        noticeContent: this.stepData2.noticeContent,
-        ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
+
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {
             return [
@@ -179,7 +180,7 @@ class StepViewModal {
     data.nurse5 && this.stepData2.bxNurse.push("nurse5");
     data.nurseOther && this.stepData2.bxNurse.push("nurseOther");
 
-    this.stepData5.ifSendMessage = !!data.detailInfo.ifSendMessage;
+    this.stepData5.ifSendMessage = !!data.ifSendMessage;
 
     this.stepData2.teacherList = data.teacherList.map((item: any) => {
       return {
