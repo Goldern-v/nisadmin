@@ -7,18 +7,14 @@ import { withRouter } from "react-router-dom";
 import { appStore } from "src/stores/index";
 import { Button, Modal, message as Message } from "antd";
 import qs from "qs";
-// import { mainPageApi } from "../api/MainPageApi";
-// import { meunSettingApi } from "../../menuSettings/api/MeunSettingApi";
+import { notificationApi } from "../api/NotificationApi";
 
 export default withRouter(
   observer(function TypeManagement() {
-    const [titleType, setTitleType] = useState({} as any); // 存放路由跳转参数
+    let title = qs.parse(appStore.location.search.replace("?", "")).title; // 标题
     const [loading, setLoading] = useState(false); // loading
     const [tableList, setTableList] = useState([] as any); //表格数据
-    let id = qs.parse(appStore.location.search.replace("?", "")).id;
-    let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
     const { history } = appStore;
-
     const columns: any = [
       {
         title: "序号",
@@ -29,23 +25,35 @@ export default withRouter(
         }
       },
       {
-        title: "名称",
-        dataIndex: "name",
+        title: "姓名",
+        dataIndex: "",
+        width: 80,
         align: "left"
       },
       {
-        title: "教学方式",
-        dataIndex: "teachingMethod",
-        width: 80,
+        title: "病区",
+        dataIndex: "",
+        width: 120,
         align: "center"
       },
       {
-        title: "显示顺序",
-        dataIndex: "sort",
+        title: "消息推送",
+        dataIndex: "",
         align: "center",
-        width: 70
+        width: 90
       },
-
+      {
+        title: "阅读时间",
+        dataIndex: "",
+        width: 140,
+        align: "center"
+      },
+      {
+        title: "是否已读",
+        dataIndex: "",
+        align: "center",
+        width: 80
+      },
       {
         title: "操作",
         dataIndex: "",
@@ -64,7 +72,6 @@ export default withRouter(
 
     // 初始化
     useEffect(() => {
-      setTitleType(qs.parse(appStore.location.search.replace("?", "")));
       getTableData();
     }, []);
 
@@ -83,18 +90,17 @@ export default withRouter(
                 background: "rgba(0, 0, 0, 0)"
               }}
               data={[
-                // continuingEdu/病区培训2?Pid=23&id=25
                 {
                   name: "通知管理",
-                  link: `/continuingEdu/${titleType.type}?Pid=${Pid}&id=${id}`
+                  link: `/continuingEdu/通知管理`
                 },
                 {
-                  name: "2019年供应室管理规范第4季度"
+                  name: `${title}`
                 }
               ]}
             />
             <div className="topHeaderTitle">
-              <div className="title">2019年供应室管理规范第4季度</div>
+              <div className="title">{title}</div>
               <div className="topHeaderButton">
                 <Button type="primary">重新推送</Button>
                 <Button onClick={() => history.goBack()}>返回</Button>
