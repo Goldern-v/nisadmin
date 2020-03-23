@@ -151,7 +151,9 @@ export default observer(function Table() {
             <span
               onClick={() => {
                 appStore.history.push(
-                  `/notificationManagement?title=${row.title}`
+                  `/notificationManagement?title=${row.title}&cetpId=${
+                    row.cetpId
+                  }`
                 );
               }}
             >
