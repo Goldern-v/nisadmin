@@ -1,34 +1,37 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button, InputNumber, Select, Modal } from 'antd'
-import { promotionSettingModel } from '../model/PromotionSettingModel'
-import { observer } from 'mobx-react-lite'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { Button, InputNumber, Select, Modal } from "antd";
+import { promotionSettingModel } from "../model/PromotionSettingModel";
+import { observer } from "mobx-react-lite";
 export interface Props {
-  data?: any
+  data?: any;
 }
 
-const Option = Select.Option
+const Option = Select.Option;
 
 export default observer(function TabContent(props: Props) {
-  const { data, config } = promotionSettingModel
+  const { data, config } = promotionSettingModel;
 
   const handleSave = () => {
     Modal.confirm({
-      title: 'N0升N1晋升要求发布',
-      content: <div>
-        <div>发布后层级 N0 的护士晋升要求会同步更新</div>
-        <div>确实发布新的晋升要求吗？</div>
-        <div>发布后层级为N0护士会立即收到一条更新消息通知</div>
-      </div>,
+      title: "N0升N1晋升要求发布",
+      content: (
+        <div>
+          <div>发布后层级 N0 的护士晋升要求会同步更新</div>
+          <div>确实发布新的晋升要求吗？</div>
+          <div>发布后层级为N0护士会立即收到一条更新消息通知</div>
+        </div>
+      ),
       centered: true,
       onOk: () => {
-        console.log('ok')
+        console.log("ok");
       }
-    })
-  }
+    });
+  };
 
-  return <Wrapper>
-    {Object.keys(data).map((key: string, keyIdx: number) => {
+  return (
+    <Wrapper>
+      {/* {Object.keys(data).map((key: string, keyIdx: number) => {
       let cfgItem = config[key]
       let value = data[key]
       let unitType = 0
@@ -88,15 +91,22 @@ export default observer(function TabContent(props: Props) {
       else
         return ''
 
-    })}
-    <div className="row">
-      <span className="label"> </span>
-      <span className="content">
-        <Button type="primary" style={{ marginTop: '10px' }} onClick={handleSave}>保存并发布</Button>
-      </span>
-    </div>
-  </Wrapper>
-})
+    })} */}
+      <div className="row">
+        <span className="label"> </span>
+        <span className="content">
+          <Button
+            type="primary"
+            style={{ marginTop: "10px" }}
+            onClick={handleSave}
+          >
+            保存并发布
+          </Button>
+        </span>
+      </div>
+    </Wrapper>
+  );
+});
 
 const Wrapper = styled.div`
   height: calc(100vh - 158px);
@@ -115,37 +125,36 @@ const Wrapper = styled.div`
     border-radius: 50px;
     background-color: #eaeaea;
   }
-  div.row{
+  div.row {
     margin-bottom: 10px;
-    &>*{
+    & > * {
       vertical-align: middle;
     }
-    .label{
-      width:140px;
+    .label {
+      width: 140px;
       text-align: right;
       display: inline-block;
     }
-    .opt-select{
+    .opt-select {
       width: 145px;
     }
-    .unit-select{
+    .unit-select {
       position: relative;
       top: -1px;
       margin-left: 5px;
     }
-    .input-type1{
+    .input-type1 {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      .ant-input-number-input{
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-
+      .ant-input-number-input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
       }
     }
-    .unit-span{
+    .unit-span {
       display: inline-block;
       line-height: 22px;
-      border: 1px solid rgb(217,217,217);
+      border: 1px solid rgb(217, 217, 217);
       border-left: none;
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
@@ -154,4 +163,4 @@ const Wrapper = styled.div`
       position: relative;
     }
   }
-`
+`;
