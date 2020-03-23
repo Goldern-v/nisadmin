@@ -20,6 +20,7 @@ import 菜单设置 from "./views/menuSettings/MenuSettings";
 import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
+import 层级晋升 from "./views/promotionSetting/PromotionSetting";
 import { authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
@@ -54,6 +55,13 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/通知管理",
       component: 通知管理
       // hide: true
+    },
+    {
+      title: "层级晋升",
+      icon: <RYGL />,
+      path: "/continuingEdu/层级晋升",
+      component: 层级晋升,
+      hide: true
     },
     {
       title: "菜单设置",
