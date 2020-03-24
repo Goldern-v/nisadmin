@@ -22,10 +22,6 @@ export default class NotificationApi extends BaseApiService {
   }
 
   // 推送
-  //   {
-  //     "cetpId":508,
-  //      "empNos":["6503","6504"]
-  //  }
   public async pushData(obj: any) {
     return this.post(`studyAndTrain/noticeManage/sendMessage`, obj);
   }

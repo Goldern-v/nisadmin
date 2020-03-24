@@ -1,295 +1,311 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { observer } from "mobx-react-lite";
-import BaseTable, { DoCon, TabledCon } from "src/components/BaseTable";
+import React, { useState, useLayoutEffect } from "react";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import { withRouter } from "react-router-dom";
 import { appStore } from "src/stores/index";
 import { Button, Modal, message as Message, Tabs } from "antd";
 import qs from "qs";
 import { notificationApi } from "../api/NotificationApi";
 const { TabPane } = Tabs;
 
-export default withRouter(
-  observer(function TypeManagement() {
-    const { history } = appStore;
-    let title = qs.parse(appStore.location.search.replace("?", "")).title; // 标题
-    let cetpId = qs.parse(appStore.location.search.replace("?", "")).cetpId; // 标题
-    const [loading, setLoading] = useState(false); // loading
-    const [tableList, setTableList] = useState([] as any); // 表格数据
-    const [rowSelection, setRowSelection] = useState({}); //
-    const [query, setQuery] = useState({
-      pageSize: 20,
-      pageIndex: 1
-    } as any); // 页码 ，每页条数
-    const [dataTotal, setDataTotal] = useState(0 as number); // 总条数
-    const [isReady, setIsReady] = useState([]); // 已读名单
-    const [noReady, setNoReady] = useState([]); // 未读名单
-    const [allEmpNos, setAllEmpNos] = useState([]); // 当页所有工号
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //选择的每行的key
+export default function TypeManagement() {
+  const { history } = appStore;
+  let title = qs.parse(appStore.location.search.replace("?", "")).title; // 标题
+  let cetpId = Number(
+    qs.parse(appStore.location.search.replace("?", "")).cetpId
+  ); // 标题
+  const [loading, setLoading] = useState(false); // loading
+  const [tableList, setTableList] = useState([] as any); // 表格数据
+  const [query, setQuery] = useState({
+    pageSize: 20,
+    pageIndex: 1
+  } as any); // 页码 ，每页条数
+  const [dataTotal, setDataTotal] = useState(0 as number); // 总条数
+  const [isReady, setIsReady] = useState([]); // 已读名单
+  const [noReady, setNoReady] = useState([]); // 未读名单
+  const [allEmpNos, setAllEmpNos] = useState([]); // 当页所有工号
+  const [selectedRows, setSelectedRows] = useState([]); // 选中数据全部信息
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
+  const [empNos, setEmpNos] = useState([]); // 选中的工号
 
-    const columns: any = [
-      {
-        title: "序号",
-        width: 50,
-        align: "center",
-        render(text: string, record: any, index: number) {
-          return index + 1;
+  const columns: any = [
+    {
+      title: "序号",
+      key: "序号",
+      width: 50,
+      align: "center",
+      render(text: string, record: any, index: number) {
+        return index + 1;
+      }
+    },
+    {
+      title: "姓名",
+      dataIndex: "empName",
+      key: "empName",
+      width: 80,
+      align: "center"
+    },
+    {
+      title: "病区",
+      dataIndex: "deptName",
+      key: "deptName",
+      width: 200,
+      align: "center"
+    },
+    {
+      title: "消息推送",
+      dataIndex: "alReadysendedMessage",
+      key: "alReadysendedMessage",
+      align: "center",
+      width: 90,
+      render: (text: any) => {
+        let color = "";
+        let content = "未推送";
+        switch (text) {
+          case 1:
+            color = "#284fc2";
+            content = "已推送";
+            break;
+          case 0:
+            color = "#E63122";
+            break;
+          default:
         }
-      },
+        return <span style={{ color }}>{content}</span>;
+      }
+    },
+    {
+      title: "阅读时间",
+      dataIndex: "readMessageTime",
+      key: "readMessageTime",
+      width: 140,
+      align: "center"
+    },
+    {
+      title: "是否已读",
+      dataIndex: "alReadyreadMessage",
+      key: "alReadyreadMessage",
+      align: "center",
+      width: 80,
+      render: (text: any, record: any) => {
+        return <span>{text === null ? "" : text === 1 ? "已读" : "未读"}</span>;
+      }
+    },
+    {
+      title: "操作",
+      dataIndex: "empNo",
+      key: "empNo",
+      width: 120,
+      align: "center",
+      render(text: any) {
+        return (
+          <DoCon>
+            <span onClick={() => pushData(1, text)}>重新推送</span>
+          </DoCon>
+        );
+      }
+    }
+  ];
+
+  // 初始化
+  useLayoutEffect(() => {
+    init();
+  }, [query]);
+
+  // 查询表格初始化数据
+  const getTableData = () => {
+    setLoading(true);
+    let obj = {
+      cetpId,
+      pageIndex: query.pageIndex,
+      pageSize: query.pageSize
+    };
+    notificationApi.getResultData(obj).then(res => {
+      setLoading(false);
+      setTableList(res.data.list || []);
+      setDataTotal(res.data.totalCount || 0);
+      let arr: any = [];
+      res.data.list.map((item: any) => {
+        arr.push(item.empNo);
+      });
+      setAllEmpNos(arr);
+    });
+  };
+
+  // 获取是否已读人员名单
+  const readyPeople = () => {
+    notificationApi.getReadMsgTaskList(cetpId).then(res => {
+      setIsReady(
+        res.data.filter((item: any, index: any) => item.alreadyReadMessage == 1)
+      );
+      setNoReady(
+        res.data.filter((item: any, index: any) => item.alreadyReadMessage == 0)
+      );
+    });
+  };
+
+  // 初始化函数
+  const init = () => {
+    getTableData();
+    readyPeople();
+  };
+
+  // 表格选中操作
+  const rowSelection: any = {
+    selectedRowKeys,
+    onChange: (selectedRowKeys: any, selectedRows: any) => {
+      let arr1: any = [];
+      selectedRowKeys.map((item: any) => {
+        arr1.push(selectedRows.filter((a: any) => a.key === item));
+      });
+      setSelectedRows(arr1);
+      setSelectedRowKeys(selectedRowKeys);
+      let arr: any = [];
+      selectedRows.map((item: any) => {
+        arr.push(item.empNo);
+      });
+      setEmpNos(arr);
+    },
+    hideDefaultSelections: false,
+    selections: [
       {
-        title: "姓名",
-        dataIndex: "empName",
-        width: 80,
-        align: "center"
-      },
-      {
-        title: "病区",
-        dataIndex: "deptName",
-        width: 200,
-        align: "center"
-      },
-      {
-        title: "消息推送",
-        dataIndex: "alReadysendedMessage",
-        align: "center",
-        width: 90,
-        render: (text: any) => {
-          let color = "";
-          let content = "";
-          switch (text) {
-            case 1:
-              color = "#284fc2";
-              content = "已推送";
-              break;
-            case 0:
-              color = "#E63122";
-              content = "未推送";
-              break;
-            default:
-          }
-          return <span style={{ color }}>{content}</span>;
-        }
-      },
-      {
-        title: "阅读时间",
-        dataIndex: "readMessageTime",
-        width: 140,
-        align: "center"
-      },
-      {
-        title: "是否已读",
-        dataIndex: "alReadyreadMessage",
-        align: "center",
-        width: 80,
-        render: (text: any) => {
-          return <span>{text === 1 ? "已读" : "未读"}</span>;
-        }
-      },
-      {
-        title: "操作",
-        dataIndex: "empNo",
-        width: 120,
-        align: "center",
-        render(text: any) {
-          return (
-            <DoCon>
-              <span onClick={() => pushData(1, text)}>重新推送</span>
-            </DoCon>
-          );
+        key: "allNo",
+        text: "全部不选",
+        onSelect: (changableRowKeys: any) => {
+          setEmpNos([]);
+          setSelectedRows([]);
+          setSelectedRowKeys([]);
         }
       }
-    ];
+    ]
+  };
 
-    // 初始化
-    useLayoutEffect(() => {
-      init();
-    }, [query]);
-
-    // 查询表格初始化数据
-    const getTableData = () => {
-      // setLoading(true);
-      let obj = {
-        cetpId: Number(cetpId),
-        pageIndex: query.pageIndex,
-        pageSize: query.pageSize
-      };
-      notificationApi.getResultData(obj).then(res => {
-        setLoading(false);
-        setTableList(res.data.list || []);
-        setDataTotal(res.data.totalCount || 0);
+  // 推送 ---current：1单条 2全部 3选中
+  const pushData = (current: any, record?: any) => {
+    let obj: any = { cetpId };
+    if (current === 1) {
+      obj.empNos = [record];
+    } else if (current === 2) {
+      notificationApi.getResultData({ cetpId }).then(res => {
         let arr: any = [];
         res.data.list.map((item: any) => {
           arr.push(item.empNo);
         });
-        setAllEmpNos(arr);
+        obj.empNos = arr.slice();
       });
-    };
-
-    // 获取是否已读人员名单
-    const readyPeople = () => {
-      notificationApi.getReadMsgTaskList(Number(cetpId)).then(res => {
-        setIsReady(
-          res.data.filter(
-            (item: any, index: any) => item.alreadyReadMessage == 1
-          )
-        );
-        setNoReady(
-          res.data.filter(
-            (item: any, index: any) => item.alreadyReadMessage == 0
-          )
-        );
-      });
-    };
-
-    // 初始化函数
-    const init = () => {
-      getTableData();
-      readyPeople();
-    };
-
-    const onSelectChange = (selectedRowKeys: any) => {
-      console.log("selectedRowKeys changed: ", selectedRowKeys);
-      // setSelectedRowKeys(selectedRowKeys);
-    };
-
-    // 表格推送操作
-    // const rowSelection: any = {
-    //   selectedRowKeys,
-    //   onChange: onSelectChange(selectedRowKeys),
-    //   hideDefaultSelections: false,
-    //   selections: [
-    //     {
-    //       key: 'odd',
-    //       text: 'Select Odd Row',
-    //       onSelect: changableRowKeys => {
-    //         let newSelectedRowKeys = [];
-    //         newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-    //           if (index % 2 !== 0) {
-    //             return false;
-    //           }
-    //           return true;
-    //         });
-    //         this.setState({ selectedRowKeys: newSelectedRowKeys });
-    //       },
-    //     }
-    //   ]
-    // };
-
-    // 推送数据 ---current：1单条 2全部 3选中
-    const pushData = (current: any, record?: any) => {
-      let obj: any = {
-        cetpId: Number(cetpId)
-      };
-      if (current === 1) {
-        obj.empNos = [record];
-      } else if (current === 2) {
-        obj.empNos = allEmpNos.slice();
-      } else if (current === 3) {
+    } else if (current === 3) {
+      if (empNos.length > 0) {
+        obj.empNos = empNos.slice();
+      } else {
+        Message.warning("推送前请至少选择一名员工");
+        return;
       }
-      notificationApi.pushData(obj).then(res => {
-        let success = res.data.successList.length;
-        let fail = res.data.failureList.length;
-        let total = success + fail;
-        let content = (
+    }
+    notificationApi.pushData(obj).then(res => {
+      let success = res.data.successList.length;
+      let fail = res.data.failureList.length;
+      let total = success + fail;
+      let content = (
+        <div>
           <div>
-            <div>
-              总共推送{total}人，异常{fail}人，完成推送{success}人！
+            总共推送{total}人，异常{fail}人，完成推送{success}人！
+          </div>
+        </div>
+      );
+      Modal.warning({
+        title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
+        content,
+        okText: "确定",
+        onOk: () => {}
+      });
+    });
+  };
+
+  return (
+    <Wrapper>
+      <Con>
+        <TopHeader>
+          <BreadcrumbBox
+            style={{
+              paddingLeft: 0,
+              paddingTop: 10,
+              paddingBottom: 2,
+              background: "rgba(0, 0, 0, 0)"
+            }}
+            data={[
+              {
+                name: "通知管理",
+                link: `/continuingEdu/通知管理`
+              },
+              {
+                name: `${title}`
+              }
+            ]}
+          />
+          <div className="topHeaderTitle">
+            <div className="title">{title}</div>
+            <div className="topHeaderButton">
+              <Button type="primary" onClick={() => pushData(2)}>
+                全部重新推送
+              </Button>
+              <Button onClick={() => history.goBack()}>返回</Button>
             </div>
           </div>
-        );
-        Modal.warning({
-          title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
-          content,
-          okText: "确定",
-          onOk: () => {}
-        });
-      });
-    };
-
-    return (
-      <Wrapper>
-        <Con>
-          <TopHeader>
-            <BreadcrumbBox
-              style={{
-                paddingLeft: 0,
-                paddingTop: 10,
-                paddingBottom: 2,
-                background: "rgba(0, 0, 0, 0)"
-              }}
-              data={[
-                {
-                  name: "通知管理",
-                  link: `/continuingEdu/通知管理`
-                },
-                {
-                  name: `${title}`
-                }
-              ]}
-            />
-            <div className="topHeaderTitle">
-              <div className="title">{title}</div>
-              <div className="topHeaderButton">
-                <Button type="primary" onClick={() => pushData(2)}>
-                  重新推送
-                </Button>
-                <Button onClick={() => history.goBack()}>返回</Button>
-              </div>
-            </div>
-          </TopHeader>
-        </Con>
-        <Content>
-          <Table>
-            <BaseTable
-              loading={loading}
-              columns={columns}
-              dataSource={tableList}
-              rowSelection={rowSelection}
-              surplusHeight={245}
-              pagination={{
-                onChange: (pageIndex, pageSize) =>
-                  setQuery({ ...query, pageIndex }),
-                total: dataTotal,
-                pageSize: query.pageSize,
-                current: query.pageIndex
-              }}
-            />
-          </Table>
-          <People>
-            <Tabs defaultActiveKey="1">
-              <TabPane tab={`已读（${isReady.length}）`} key="1">
-                {isReady && isReady.length > 0 ? (
-                  <div>youshuju</div>
-                ) : (
-                  <div className="noData">暂无数据</div>
-                )}
-              </TabPane>
-              <TabPane tab={`未读（${noReady.length}）`} key="2">
-                {noReady && noReady.length > 0 ? (
-                  <ul>
-                    {noReady.map((item: any) => (
-                      <li>
-                        <img
-                          className="head-img"
-                          src={require("../images/护士默认头像.png")}
-                          alt=""
-                        />
-                        <p>{item.empName}</p>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <div className="noData">暂无数据</div>
-                )}
-              </TabPane>
-            </Tabs>
-          </People>
-        </Content>
-      </Wrapper>
-    );
-  })
-);
+        </TopHeader>
+      </Con>
+      <Content>
+        <Table>
+          <BaseTable
+            loading={loading}
+            columns={columns}
+            dataSource={tableList}
+            rowSelection={rowSelection}
+            surplusHeight={245}
+            pagination={{
+              onChange: (pageIndex, pageSize) =>
+                setQuery({ ...query, pageIndex }),
+              total: dataTotal,
+              pageSize: query.pageSize,
+              current: query.pageIndex
+            }}
+          />
+        </Table>
+        <People>
+          <Tabs defaultActiveKey="1">
+            <TabPane tab={`已读（${isReady.length}）`} key="1">
+              {isReady && isReady.length > 0 ? (
+                <div>youshuju</div>
+              ) : (
+                <div className="noData">暂无数据</div>
+              )}
+            </TabPane>
+            <TabPane tab={`未读（${noReady.length}）`} key="2">
+              {noReady && noReady.length > 0 ? (
+                <ul>
+                  {noReady.map((item: any, index: any) => (
+                    <li key={index}>
+                      <img
+                        className="head-img"
+                        src={require("../images/护士默认头像.png")}
+                        alt=""
+                      />
+                      <p>{item.empName}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="noData">暂无数据</div>
+              )}
+            </TabPane>
+          </Tabs>
+        </People>
+        <div className="btn">
+          <Button onClick={() => pushData(3)}>推送选中</Button>
+        </div>
+      </Content>
+    </Wrapper>
+  );
+}
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
@@ -301,6 +317,12 @@ const Content = styled.div`
   padding: 0 15px;
   box-sizing: border-box;
   display: flex;
+  position: relative;
+  .btn {
+    position: absolute;
+    bottom: 10px;
+    left: 30px;
+  }
 `;
 const Table = styled.div`
   width: calc(100% - 400px);

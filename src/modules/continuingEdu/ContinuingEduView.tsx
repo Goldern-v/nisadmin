@@ -12,7 +12,7 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
@@ -20,7 +20,7 @@ import 菜单设置 from "./views/menuSettings/MenuSettings";
 import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
-import 晋升管理 from "./views/promotionSetting/PromotionSetting"
+import 晋升管理 from "./views/promotionSetting/PromotionSetting";
 import { authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
@@ -53,8 +53,7 @@ export default function ContinuingEdu(props: Props) {
       title: "通知管理",
       icon: <RYGL />,
       path: "/continuingEdu/通知管理",
-      component: 通知管理,
-      hide: true
+      component: 通知管理
     },
     {
       title: "晋升管理",
@@ -95,7 +94,9 @@ export default function ContinuingEdu(props: Props) {
                     id: item.id,
                     title: item.name,
                     component: 主列表页,
-                    path: `/continuingEdu/${Pid}/${item.id}?Pid=${Pid}&id=${item.id}`
+                    path: `/continuingEdu/${Pid}/${item.id}?Pid=${Pid}&id=${
+                      item.id
+                    }`
                   };
                   arr.push(obj2);
                   obj1.children = arr;

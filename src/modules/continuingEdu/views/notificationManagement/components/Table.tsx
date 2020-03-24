@@ -7,7 +7,7 @@ import { notificationModal } from "../NotificationModal";
 import { notificationApi } from "../api/NotificationApi";
 import { appStore } from "src/stores";
 
-export default observer(function Table() {
+export default function Table() {
   //类型背景颜色函数封装
   const typeBackground = (data: any) => {
     const background = [
@@ -187,5 +187,5 @@ export default observer(function Table() {
       />
     </Wrapper>
   );
-});
+}
 const Wrapper = styled.div``;

@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import React, { useEffect } from "react";
-import { observer } from "mobx-react-lite";
 import { TableHeadCon } from "src/components/BaseTable";
 import { DatePicker, Select, Input, Button } from "src/vendors/antd";
 import { notificationModal } from "../NotificationModal";
 
-export default observer(function Header() {
+export default function Header() {
   useEffect(() => {
     notificationModal.onload();
   }, []);
@@ -75,7 +74,7 @@ export default observer(function Header() {
       </RightIcon>
     </Wrapper>
   );
-});
+}
 const Wrapper = styled(TableHeadCon)`
   justify-content: space-between;
   .ant-select {
