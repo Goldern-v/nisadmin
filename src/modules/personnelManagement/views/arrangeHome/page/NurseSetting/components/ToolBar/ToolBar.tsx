@@ -53,6 +53,8 @@ export default function ToolBar() {
             ? "添加"
             : appStore.HOSPITAL_ID == "hj"
             ? "添加实习护士"
+            : appStore.HOSPITAL_ID == "nys"
+            ? "添加排班人员"
             : "添加实习护士"}
         </Button>
         {/* <Button

@@ -17,6 +17,7 @@ import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { ksStepViewModal as stepViewModal } from "./KSStepViewModal";
+import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
@@ -197,7 +198,11 @@ export default observer(function Step1() {
 
           <Col span={24}>
             <Form.Field label={`考试地址`} name="address">
-              <Input />
+              <AutoComplete
+                dataSource={allStepViewModal.dictObj.studyAndTrainAddress.map(
+                  (item: any) => item.name
+                )}
+              />
             </Form.Field>
           </Col>
 
