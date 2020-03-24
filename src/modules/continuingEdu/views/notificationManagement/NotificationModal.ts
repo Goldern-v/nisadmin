@@ -1,10 +1,13 @@
 import { observable, computed } from "mobx";
-import { notificationApi } from "./api/NotificationApi";
+// import { mainPageApi } from "./api/MainPageApi";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
+import { fileDownload } from "src/utils/file/file";
 
 class NotificationModal {
+  @observable public id = ""; //菜单id
   @observable public keyWord = ""; //菜单名
   @observable public selectedType = ""; //类型
+  @observable public selectTypeList = []; //类型
   @observable public selectedState = ""; //状态
   @observable public pageIndex: any = 1; //页码
   @observable public pageSize: any = 20; //每页大小
@@ -16,7 +19,8 @@ class NotificationModal {
   @computed
   get postObj() {
     return {
-      teachingMethod: this.selectedType, //类型
+      secondLevelMenuId: this.id, //二级菜单id
+      thirdLevelMenuId: this.selectedType, //三级菜单id(类型)
       status: this.selectedState, //状态
       keyWord: this.keyWord, //菜单名
       pageIndex: this.pageIndex, //页码
@@ -25,16 +29,29 @@ class NotificationModal {
       endTime: this.selectedDate[1].format("YYYY-MM-DD") // 结束时间
     };
   }
+  async initData() {
+    await Promise.all([
+      //类型
+      // mainPageApi.getTypeData(this.id).then(res => {
+      //   this.selectTypeList = res.data;
+      // })
+    ]);
+  }
 
   onload() {
-    this.tableLoading = true;
-    notificationApi.getData(this.postObj).then(res => {
-      this.tableLoading = false;
-      this.tableList = res.data.list;
-      this.total = res.data.totalCount;
-      this.pageIndex = res.data.pageIndex;
-      this.pageSize = res.data.pageSize;
-    });
+    // this.tableLoading = true;
+    // mainPageApi.getMainData(this.postObj).then(res => {
+    //   this.tableLoading = false;
+    //   this.tableList = res.data.list;
+    //   this.total = res.data.totalCount;
+    //   this.pageIndex = res.data.pageIndex;
+    //   this.pageSize = res.data.pageSize;
+    // });
+  }
+
+  async init() {
+    // await this.initData();
+    // await this.onload();
   }
 }
 

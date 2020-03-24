@@ -313,11 +313,9 @@ export default observer(function HealthPropagandaEditNew(props) {
             data={editorData}
             onChange={handleEditorChange}
             config={{
-              extraPlugins: 'stylesheetparser,colorbutton,colordialog,html5video',
+              extraPlugins: 'stylesheetparser,colorbutton,colordialog',
               removePlugins: 'easyimage,cloudservices',
               filebrowserUploadUrl:
-                `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`,
-              filebrowserHtml5videoUploadUrl:
                 `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${appStore.appToken}&Auth-Token-Nursing=${authStore.authToken}`,
               height: 600,
               title: ''

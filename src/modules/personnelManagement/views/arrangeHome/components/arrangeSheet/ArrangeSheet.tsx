@@ -198,15 +198,15 @@ export default observer(function ArrangeSheet(props: Props) {
             ".remark-con.real"
           )!.style.marginLeft = e.target.scrollLeft + "px";
         });
-    } catch (error) { }
+    } catch (error) {}
     try {
       setTimeout(() => {
         if (
           (document as any).querySelector("#arrangeSheet .ant-table-body") &&
           (document as any).querySelector("#arrangeSheet .ant-table-body")
             .scrollWidth ==
-          (document as any).querySelector("#arrangeSheet .ant-table-body")
-            .clientWidth
+            (document as any).querySelector("#arrangeSheet .ant-table-body")
+              .clientWidth
         ) {
           /** noscorll */
           (document as any).querySelector(
@@ -214,7 +214,7 @@ export default observer(function ArrangeSheet(props: Props) {
           ).style.width =
             (sheetViewModal.dateList.length +
               appStore.hisAdapter({ hj: () => 3, wh: () => 6 })) *
-            70 +
+              70 +
             250 +
             10 +
             "px";
@@ -227,19 +227,19 @@ export default observer(function ArrangeSheet(props: Props) {
           setSurplusWidth(isEdit ? 300 : 240);
         }
       }, 10);
-    } catch (error) { }
+    } catch (error) {}
     try {
       let remark = sheetViewModal.remark;
       (document as any).querySelector(
         ".remark-con.real textarea"
       ).value = remark;
-    } catch (error) { }
+    } catch (error) {}
   }, [sheetViewModal.sheetTableData, surplusWidth]);
 
   let remark = sheetViewModal.remark;
   return (
     <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
-      {sheetViewModal.sheetTableData.length > 0 && <BaseTable
+      <BaseTable
         loading={sheetViewModal.tableLoading}
         surplusHeight={surplusHeight}
         surplusWidth={surplusWidth}
@@ -309,56 +309,9 @@ export default observer(function ArrangeSheet(props: Props) {
             });
             sheetViewModal.sheetTableData = list;
             sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-          } catch (error) { }
+          } catch (error) {}
         }}
-      />}
-      {sheetViewModal.sheetTableData.length <= 0 && <BaseTable
-        loading={sheetViewModal.tableLoading}
-        surplusHeight={surplusHeight}
-        surplusWidth={surplusWidth}
-        columns={columns}
-        // fixedFooter={true}
-        dataSource={sheetViewModal.sheetTableData}
-        type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
-        moveRow={(dragIndex: number, hoverIndex: number) => {
-          try {
-            let pc = (document as any).querySelector(
-              ".drop-over-downward,  .drop-over-upward"
-            ).offsetParent.offsetParent.className;
-
-            let sheetTableData = cloneJson(sheetViewModal.sheetTableData);
-            let rightList = sheetTableData.map((item: any) => {
-              return item.settingDtos;
-            });
-            let leftList = sheetTableData.map((item: any) => {
-              delete item.settingDtos;
-              return item;
-            });
-
-            if (pc == "ant-table-body") {
-              /** min */
-              rightList = update(rightList, {
-                $splice: [[dragIndex, 1], [hoverIndex, 0, rightList[dragIndex]]]
-              });
-            } else if (pc == "ant-table-body-outer") {
-              /** left */
-              leftList = update(leftList, {
-                $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]]
-              });
-            }
-
-            let list = leftList.map((item: any, index: number) => {
-              item.settingDtos = rightList[index].map((r: any) => ({
-                ...r,
-                userId: item.id
-              }));
-              return item;
-            });
-            sheetViewModal.sheetTableData = list;
-            sheetViewModal.allCell = sheetViewModal.getAllCell(true);
-          } catch (error) { }
-        }}
-      />}
+      />
       <contextMenu.Component />
       <editEffectiveTimeModal.Component />
       <editVacationCountModal.Component />
@@ -472,7 +425,7 @@ function Th(props: { date: string }) {
     <Con
       className={
         getWeekString2(date).indexOf("六") > -1 ||
-          getWeekString(date).indexOf("日") > -1
+        getWeekString(date).indexOf("日") > -1
           ? "red-text"
           : undefined
       }
