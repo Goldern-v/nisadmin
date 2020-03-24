@@ -56,6 +56,7 @@ export default function AddScheduleNursingModal(props: Props) {
   const [postList, setPostList]: any = useState([]);
   const [levelList, setLevelList]: any = useState([]);
   const [userTypeList, setUserTypeList]: any = useState([]);
+  const [nansanTypeList, setNansanTypeList]: any = useState([]);
   const [modalLoading, setModalLoading]: any = useState(false);
   let refForm = React.createRef<Form>();
 
@@ -115,6 +116,27 @@ export default function AddScheduleNursingModal(props: Props) {
       service.commonApiService.dictInfo("sch_wh_user_type").then(res => {
         setUserTypeList(res.data);
       });
+
+      /** 层级 */
+      service.commonApiService.dictInfo("user_new_hierarchy").then(res => {
+        setLevelList(res.data);
+      });
+
+      /** 职务 */
+      service.commonApiService.dictInfo("user_new_job").then(res => {
+        setPostList(res.data);
+      });
+
+      /** 职称 */
+      service.commonApiService.dictInfo("user_new_title").then(res => {
+        setTitleList(res.data);
+      });
+
+      /** 类型 --南医三专有 */
+      service.commonApiService.dictInfo("user_new_nansan_type").then(res => {
+        setNansanTypeList(res.data);
+      });
+
       // refForm.current.setField('unit', 123)
     }
   }, [visible]);
@@ -161,7 +183,7 @@ export default function AddScheduleNursingModal(props: Props) {
                   <Col span={24}>
                     <Form.Field label={`职称`} name="newTitle">
                       <Select>
-                        {TITLE_LIST.map((item: string) => (
+                        {titleList.map((item: string) => (
                           <Select.Option value={item} key={item}>
                             {item}
                           </Select.Option>
@@ -181,7 +203,7 @@ export default function AddScheduleNursingModal(props: Props) {
                         style={{ width: "100%" }}
                         placeholder="选择层级"
                       >
-                        {CURRENTLEVEL_LIST.map((item: string) => (
+                        {levelList.map((item: string) => (
                           <Select.Option value={item} key={item}>
                             {item}
                           </Select.Option>
@@ -192,7 +214,53 @@ export default function AddScheduleNursingModal(props: Props) {
                   <Col span={24}>
                     <Form.Field label={`职务`} name="job">
                       <Select>
-                        {POST_LIST.map((item: string) => (
+                        {postList.map((item: string) => (
+                          <Select.Option value={item} key={item}>
+                            {item}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                </React.Fragment>
+              ),
+              nys: () => (
+                <React.Fragment>
+                  <Col span={24}>
+                    <Form.Field label={`职称`} name="newTitle">
+                      <Select>
+                        {titleList.map((item: string) => (
+                          <Select.Option value={item} key={item}>
+                            {item}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`类型`} name="nurseHierarchy">
+                      <Select
+                        showSearch
+                        filterOption={(input: any, option: any) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                        style={{ width: "100%" }}
+                        placeholder="选择类型"
+                      >
+                        {nansanTypeList.map((item: string) => (
+                          <Select.Option value={item} key={item}>
+                            {item}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Field label={`职务`} name="job">
+                      <Select>
+                        {postList.map((item: string) => (
                           <Select.Option value={item} key={item}>
                             {item}
                           </Select.Option>

@@ -17,6 +17,7 @@ import NurseAudit from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseAud
 import NurseAudit_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit";
 import NurseFileDetailView from "src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFileDetail/NurseFileDetailView";
 import NurseFileDetailView_wh from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView";
+import NurseFileDetailView_nys from "src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView";
 
 const NursingRulesNew = lazy(() =>
   import("src/modules/nursingRulesNew/NursingRulesNew")
@@ -80,7 +81,7 @@ if (
     setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
-      NurseFileDetailView,
+      NurseFileDetailView_nys,
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
