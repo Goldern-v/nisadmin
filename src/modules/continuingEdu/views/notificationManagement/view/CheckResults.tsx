@@ -25,6 +25,7 @@ export default withRouter(
     const [dataTotal, setDataTotal] = useState(0 as number); // 总条数
     const [isReady, setIsReady] = useState([]); // 已读名单
     const [noReady, setNoReady] = useState([]); // 未读名单
+    const [allEmpNos, setAllEmpNos] = useState([]); // 当页所有工号
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //选择的每行的key
 
     const columns: any = [
@@ -117,6 +118,11 @@ export default withRouter(
         setLoading(false);
         setTableList(res.data.list || []);
         setDataTotal(res.data.totalCount || 0);
+        let arr: any = [];
+        res.data.list.map((item: any) => {
+          arr.push(item.empNo);
+        });
+        setAllEmpNos(arr);
       });
     };
 
@@ -170,14 +176,16 @@ export default withRouter(
     //   ]
     // };
 
-    // 推送单条数据
+    // 推送数据 ---current：1单条 2全部 3选中
     const pushData = (current: any, record?: any) => {
-      let obj = {};
+      let obj: any = {
+        cetpId: Number(cetpId)
+      };
       if (current === 1) {
-        obj = {
-          cetpId: Number(cetpId),
-          empNos: [record]
-        };
+        obj.empNos = [record];
+      } else if (current === 2) {
+        obj.empNos = allEmpNos.slice();
+      } else if (current === 3) {
       }
       notificationApi.pushData(obj).then(res => {
         let success = res.data.successList.length;
@@ -223,7 +231,9 @@ export default withRouter(
             <div className="topHeaderTitle">
               <div className="title">{title}</div>
               <div className="topHeaderButton">
-                <Button type="primary">重新推送</Button>
+                <Button type="primary" onClick={() => pushData(2)}>
+                  重新推送
+                </Button>
                 <Button onClick={() => history.goBack()}>返回</Button>
               </div>
             </div>
