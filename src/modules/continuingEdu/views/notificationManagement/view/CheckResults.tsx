@@ -25,6 +25,8 @@ export default withRouter(
     const [dataTotal, setDataTotal] = useState(0 as number); // 总条数
     const [isReady, setIsReady] = useState([]); // 已读名单
     const [noReady, setNoReady] = useState([]); // 未读名单
+    const [allEmpNos, setAllEmpNos] = useState([]); // 当页所有工号
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //选择的每行的key
 
     const columns: any = [
       {
@@ -92,7 +94,7 @@ export default withRouter(
         render(text: any) {
           return (
             <DoCon>
-              <span onClick={() => pushData(text)}>重新推送</span>
+              <span onClick={() => pushData(1, text)}>重新推送</span>
             </DoCon>
           );
         }
@@ -116,6 +118,11 @@ export default withRouter(
         setLoading(false);
         setTableList(res.data.list || []);
         setDataTotal(res.data.totalCount || 0);
+        let arr: any = [];
+        res.data.list.map((item: any) => {
+          arr.push(item.empNo);
+        });
+        setAllEmpNos(arr);
       });
     };
 
@@ -135,17 +142,51 @@ export default withRouter(
       });
     };
 
+    // 初始化函数
     const init = () => {
       getTableData();
       readyPeople();
     };
 
-    // 推送单条数据
-    const pushData = (record?: any) => {
-      let obj = {
-        cetpId: Number(cetpId),
-        empNos: [record]
+    const onSelectChange = (selectedRowKeys: any) => {
+      console.log("selectedRowKeys changed: ", selectedRowKeys);
+      // setSelectedRowKeys(selectedRowKeys);
+    };
+
+    // 表格推送操作
+    // const rowSelection: any = {
+    //   selectedRowKeys,
+    //   onChange: onSelectChange(selectedRowKeys),
+    //   hideDefaultSelections: false,
+    //   selections: [
+    //     {
+    //       key: 'odd',
+    //       text: 'Select Odd Row',
+    //       onSelect: changableRowKeys => {
+    //         let newSelectedRowKeys = [];
+    //         newSelectedRowKeys = changableRowKeys.filter((key, index) => {
+    //           if (index % 2 !== 0) {
+    //             return false;
+    //           }
+    //           return true;
+    //         });
+    //         this.setState({ selectedRowKeys: newSelectedRowKeys });
+    //       },
+    //     }
+    //   ]
+    // };
+
+    // 推送数据 ---current：1单条 2全部 3选中
+    const pushData = (current: any, record?: any) => {
+      let obj: any = {
+        cetpId: Number(cetpId)
       };
+      if (current === 1) {
+        obj.empNos = [record];
+      } else if (current === 2) {
+        obj.empNos = allEmpNos.slice();
+      } else if (current === 3) {
+      }
       notificationApi.pushData(obj).then(res => {
         let success = res.data.successList.length;
         let fail = res.data.failureList.length;
@@ -157,11 +198,10 @@ export default withRouter(
             </div>
           </div>
         );
-        Modal.confirm({
+        Modal.warning({
           title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
           content,
           okText: "确定",
-          okType: "danger",
           onOk: () => {}
         });
       });
@@ -191,7 +231,9 @@ export default withRouter(
             <div className="topHeaderTitle">
               <div className="title">{title}</div>
               <div className="topHeaderButton">
-                <Button type="primary">重新推送</Button>
+                <Button type="primary" onClick={() => pushData(2)}>
+                  重新推送
+                </Button>
                 <Button onClick={() => history.goBack()}>返回</Button>
               </div>
             </div>
