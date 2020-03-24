@@ -1,27 +1,27 @@
-import LeftMenu from 'src/components/LeftMenu'
-import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'src/components/RouterView'
-import { appStore } from 'src/stores'
+import LeftMenu from "src/components/LeftMenu";
+import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import { RouteComponentProps } from "src/components/RouterView";
+import { appStore } from "src/stores";
 
-import HealthPropagandaView from './../healthPropaganda/HealthPropagandaView'
-import EditTable from './components/EditTable'
-import settingViewModel from './SettingViewModel'
-import AutomaticPush from './view/ AutomaticPush'
-import CategoryDictionary from './view/CategoryDictionary'
+import HealthPropagandaView from "./../healthPropaganda/HealthPropagandaView";
+import EditTable from "./components/EditTable";
+import settingViewModel from "./SettingViewModel";
+import AutomaticPush from "./view/AutomaticPush";
+import CategoryDictionary from "./view/CategoryDictionary";
 
-import { ReactComponent as JKXJZD } from './images/JKXJZD.svg'
-import { ReactComponent as JJRSZ } from './images/JJRSZ.svg'
-import { ReactComponent as KSPHSZ } from './images/KSPHSZ.svg'
+import { ReactComponent as JKXJZD } from "./images/JKXJZD.svg";
+import { ReactComponent as JJRSZ } from "./images/JJRSZ.svg";
+import { ReactComponent as KSPHSZ } from "./images/KSPHSZ.svg";
 
-import 绩效参数设置 from './view/绩效参数设置'
-import 节假日设置 from './view/节假日设置'
-import 物流角色设置 from './view/物流角色设置'
-import 健康宣教字典 from './../healthPropaganda/健康宣教字典'
-import Preview from './view/components/Preview'
-import DeptFileShare from 'src/modules/deptReferSetting/views/DeptFileShare'
-import FlatManage from 'src/modules/deptReferSetting/views/FlatManage'
-import HealthEducationReportList from '../healthEducationReport/healthEducationReportList/HealthEducationReportList'
+import 绩效参数设置 from "./view/绩效参数设置";
+import 节假日设置 from "./view/节假日设置";
+import 物流角色设置 from "./view/物流角色设置";
+import 健康宣教字典 from "./../healthPropaganda/健康宣教字典";
+import Preview from "./view/components/Preview";
+import DeptFileShare from "src/modules/deptReferSetting/views/DeptFileShare";
+import FlatManage from "src/modules/deptReferSetting/views/FlatManage";
+import HealthEducationReportList from "../healthEducationReport/healthEducationReportList/HealthEducationReportList";
 // 引入类别字典设置页面
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -33,40 +33,40 @@ const LEFT_MENU_CONFIG = [
   //   path: '/setting/护理诊断字典'
   // },
   {
-    title: '健康宣教设置',
+    title: "健康宣教设置",
     icon: <JKXJZD />,
-    path: '/setting/健康宣教字典',
+    path: "/setting/健康宣教字典",
     children: [
       {
-        title: '类别字典设置',
-        path: '/setting/typeDict',
+        title: "类别字典设置",
+        path: "/setting/typeDict",
         component: CategoryDictionary
       },
       {
-        title: '健康宣教字典详情',
-        path: '/setting/健康宣教字典详情',
+        title: "健康宣教字典详情",
+        path: "/setting/健康宣教字典详情",
         component: HealthPropagandaView,
         hide: true
       },
       {
-        title: '健康宣教字典',
-        path: '/setting/健康宣教字典',
+        title: "健康宣教字典",
+        path: "/setting/健康宣教字典",
         component: 健康宣教字典
       },
       {
-        title: '健康宣教字典详情',
-        path: '/setting/自动推送字典详情',
+        title: "健康宣教字典详情",
+        path: "/setting/自动推送字典详情",
         component: Preview,
         hide: true
       },
       {
-        title: '自动推送设置',
-        path: '/setting/pushSetting',
+        title: "自动推送设置",
+        path: "/setting/pushSetting",
         component: AutomaticPush
       },
       {
-        title: '健康宣教月度报告',
-        path: '/setting/healthEducationReportList',
+        title: "健康宣教月度报告",
+        path: "/setting/healthEducationReportList",
         component: HealthEducationReportList
       }
     ]
@@ -77,24 +77,24 @@ const LEFT_MENU_CONFIG = [
   //   path: '/setting/护理评估设置'
   // },
   {
-    title: '节假日设置',
+    title: "节假日设置",
     icon: <JJRSZ />,
-    path: '/setting/节假日设置',
+    path: "/setting/节假日设置",
     component: 节假日设置
   },
   {
-    title: '科室偏好设置',
+    title: "科室偏好设置",
     icon: <KSPHSZ />,
-    path: '/setting/科室文件共享',
+    path: "/setting/科室文件共享",
     children: [
       {
-        title: '扁平管理设置',
-        path: '/setting/扁平管理设置',
+        title: "扁平管理设置",
+        path: "/setting/扁平管理设置",
         component: FlatManage
       },
       {
-        title: '病区文件',
-        path: '/setting/病区文件',
+        title: "病区文件",
+        path: "/setting/病区文件",
         component: DeptFileShare
       }
     ]
@@ -125,51 +125,62 @@ const LEFT_MENU_CONFIG = [
   //   path: '/setting/绩效参数设置',
   //   component: 绩效参数设置
   // }
-]
+];
 const LEFT_MENU_CONFIG_WH = [
   {
-    title: '科室偏好设置',
+    title: "科室偏好设置",
     icon: <KSPHSZ />,
-    path: '/setting/科室文件共享',
+    path: "/setting/科室文件共享",
     children: [
       {
-        title: '扁平管理设置',
-        path: '/setting/扁平管理设置',
+        title: "扁平管理设置",
+        path: "/setting/扁平管理设置",
         component: FlatManage
       },
       {
-        title: '病区文件',
-        path: '/setting/病区文件',
+        title: "病区文件",
+        path: "/setting/病区文件",
         component: DeptFileShare
       }
     ]
   }
-]
+];
 
 export default function SettingView(props: Props) {
-  useEffect(() => {}, [props.match.params.name])
-  let currentRoutePath = props.match.url || ''
-  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
+  useEffect(() => {}, [props.match.params.name]);
+  let currentRoutePath = props.match.url || "";
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
-        return item.children.find((item1: any) => item1[targetKey] === targetName)
+        return item.children.find(
+          (item1: any) => item1[targetKey] === targetName
+        );
       } else {
-        return item[targetKey] === targetName
+        return item[targetKey] === targetName;
       }
-    })
+    });
     if (chooseRoute && chooseRoute.children) {
-      chooseRoute = chooseRoute.children.find((item1: any) => item1[targetKey] === targetName)
+      chooseRoute = chooseRoute.children.find(
+        (item1: any) => item1[targetKey] === targetName
+      );
     }
-    return chooseRoute
+    return chooseRoute;
   }
-  let cacheSetHeadTitle = currentRoute && currentRoute.title
-  settingViewModel.setHeadTitle(cacheSetHeadTitle)
+  let cacheSetHeadTitle = currentRoute && currentRoute.title;
+  settingViewModel.setHeadTitle(cacheSetHeadTitle);
   return (
     <Wrapper>
       <LeftMenuCon>
-        <LeftMenu config={appStore.HOSPITAL_ID == 'wh' ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG} menuTitle='系统设置' />
+        <LeftMenu
+          config={
+            appStore.HOSPITAL_ID == "wh"
+              ? LEFT_MENU_CONFIG_WH
+              : LEFT_MENU_CONFIG
+          }
+          menuTitle="系统设置"
+        />
       </LeftMenuCon>
       <MainCon>
         {/*
@@ -177,31 +188,33 @@ export default function SettingView(props: Props) {
         <TableCon> */}
         {/* <EditTable /> */}
         {currentRoute && currentRoute.component && (
-          <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+          <currentRoute.component
+            getTitle={currentRoute && currentRoute.title}
+          />
         )}
         {/* </TableCon>
          */}
       </MainCon>
     </Wrapper>
-  )
+  );
 }
 const Wrapper = styled.div`
   overflow: hidden;
   height: calc(100vh - 50px);
   display: flex;
   align-items: stretch;
-`
+`;
 
 const LeftMenuCon = styled.div`
   width: 200px;
-`
+`;
 const MainCon = styled.div`
   flex: 1;
   width: 0;
   align-items: stretch;
   display: flex;
   flex-direction: column;
-`
+`;
 
 const TopCon = styled.div`
   height: 45px;
@@ -216,11 +229,11 @@ const TopCon = styled.div`
   display: flex;
   align-items: center;
   z-index: 1;
-`
+`;
 
 const TableCon = styled.div`
   flex: 1;
   margin: 15px;
   background: #fff;
   border: 1px solid rgba(228, 228, 228, 1);
-`
+`;
