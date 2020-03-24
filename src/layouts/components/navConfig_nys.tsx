@@ -28,10 +28,10 @@ export const navConfig: navConfigItem[] = [
     name: "档案管理",
     path: "/nurseFile"
   },
-  // {
-  //   name: '不良事件',
-  //   path: '/badEventsNewList'
-  // },
+  {
+    name: '不良事件',
+    path: '/badEventsNewList'
+  },
   // {
   //   name: '不良事件分析报告',
   //   path: '/badEvents/alanysis/1/1'
