@@ -16,6 +16,7 @@ import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { xxStepViewModal as stepViewModal  } from "./XXStepViewModal";
+import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import { observer } from "mobx-react-lite";
 import { cloneJson } from "src/utils/json/clone";
 export interface Props {}
@@ -131,7 +132,11 @@ export default observer(function Step2() {
 
           <Col span={24}>
             <Form.Field label={`学习地址`} name="address">
-              <Input />
+            <AutoComplete
+                dataSource={allStepViewModal.dictObj.studyAndTrainAddress.map(
+                  (item: any) => item.name
+                )}
+              />
             </Form.Field>
           </Col>
 

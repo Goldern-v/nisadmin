@@ -17,6 +17,7 @@ import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { pxStepViewModal as stepViewModal } from "./PXStepViewModal";
+import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
@@ -154,7 +155,10 @@ export default observer(function Step1() {
               <Form.Field label={``} name="daysToArchive" labelWidth={1}>
                 <InputNumber min={2} />
               </Form.Field>
-              <span className="aside">天后进行归档 {stepViewModal.overTime ? `即：${stepViewModal.overTime}`: ''}</span>
+              <span className="aside">
+                天后进行归档{" "}
+                {stepViewModal.overTime ? `即：${stepViewModal.overTime}` : ""}
+              </span>
             </div>
           </DateSelectCon>
 
@@ -199,7 +203,11 @@ export default observer(function Step1() {
 
           <Col span={24}>
             <Form.Field label={`培训地址`} name="address">
-              <Input />
+              <AutoComplete
+                dataSource={allStepViewModal.dictObj.studyAndTrainAddress.map(
+                  (item: any) => item.name
+                )}
+              />
             </Form.Field>
           </Col>
 
