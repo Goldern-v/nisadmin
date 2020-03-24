@@ -4,11 +4,14 @@
  */
 
 CKEDITOR.editorConfig = function (config) {
-	// Define changes to default configuration here.
-	// For complete reference see:
-	// https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
-
-	// The toolbar groups arrangement, optimized for two toolbar rows.
+	// Define changes to default configuration here. For example:
+	// config.language = 'fr';
+	// config.uiColor = '#AADC6E';
+	config.removeDialogTabs = 'image:advanced;image:Link';//隐藏超链接与高级选项
+	// config.filebrowserImageUploadUrl = "/HmCode/Shop/upload";//上传图片的地址
+	// config.filebrowserHtml5videoUploadUrl = "/HmCode/Shop/uploads";//上传视频的地址
+	// config.extraPlugins = 'html5video';
+	// config.image_previewText = ' '//设置图片预览默认值为' '
 	config.toolbarGroups = [
 		{ name: 'clipboard', groups: ['clipboard', 'undo'] },
 		{ name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
