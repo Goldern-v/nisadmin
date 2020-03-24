@@ -1,3 +1,4 @@
+import service from "src/services/api";
 import { ksStepViewModal } from "./考试/KSStepViewModal";
 import { cloneJson } from "src/utils/json/clone";
 import { xxStepViewModal } from "./学习/XXStepViewModal";
@@ -190,6 +191,18 @@ class StepViewModal {
   initTaskCode() {
     stepServices.generateTaskCode().then(res => {
       this.taskCode = res.data;
+    });
+  }
+
+  @observable public dictObj = {
+    /** 学习地址 */
+    studyAndTrainAddress: []
+  };
+  /** 初始化字典项 */
+  initDict() {
+    let dictList = Object.keys(this.dictObj);
+    service.commonApiService.multiDictInfo(dictList).then(res => {
+      Object.assign(this.dictObj, res.data);
     });
   }
 }

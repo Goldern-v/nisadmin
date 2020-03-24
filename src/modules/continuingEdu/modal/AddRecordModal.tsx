@@ -137,6 +137,7 @@ export default observer(function AddRecordModal(props: Props) {
 
   useLayoutEffect(() => {
     if (visible) {
+      stepViewModal.initDict();
       stepViewModal.initTaskCode();
       if (props.id) {
         /** 修改 */

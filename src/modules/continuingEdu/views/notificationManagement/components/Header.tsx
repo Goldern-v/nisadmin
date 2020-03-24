@@ -1,14 +1,24 @@
 import styled from "styled-components";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { TableHeadCon } from "src/components/BaseTable";
-import { DatePicker, Select, Input, Button } from "src/vendors/antd";
-import { notificationModal } from "../NotificationModal";
-
-export default observer(function Header() {
+import { appStore } from "src/stores";
+import { DatePicker, Select, Input, Button, message } from "src/vendors/antd";
+// import { mainPageModal } from "../MainPageModal";
+import qs from "qs";
+interface Props {
+  getTitle: any;
+  getId: any;
+  addRecordModal: any;
+}
+export default observer(function Header(props: Props) {
+  let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
+  let Title = props.getTitle || "";
+  let id = props.getId || "";
   useEffect(() => {
-    notificationModal.onload();
-  }, []);
+    // mainPageModal.id = id;
+    // mainPageModal.init();
+  }, [id, Title]);
 
   return (
     <Wrapper>
@@ -17,23 +27,24 @@ export default observer(function Header() {
         <DatePicker.RangePicker
           allowClear={false}
           style={{ width: 220 }}
-          value={notificationModal.selectedDate}
-          onChange={date => {
-            notificationModal.selectedDate = date;
-            notificationModal.onload();
-          }}
+          // value={mainPageModal.selectedDate}
+          // onChange={date => {
+          //   mainPageModal.selectedDate = date;
+          //   mainPageModal.onload();
+          // }}
         />
         <span>类型：</span>
         <Select
           style={{ width: 120 }}
-          value={notificationModal.selectedType}
-          onChange={(val: string) => {
-            notificationModal.selectedType = val;
-            notificationModal.pageIndex = 1;
-            notificationModal.onload();
-          }}
+          // value={mainPageModal.selectedType}
+          // onChange={(val: string) => {
+          //   mainPageModal.selectedType = val;
+          //   mainPageModal.pageIndex = 1;
+          //   mainPageModal.onload();
+          // }}
         >
           <Select.Option value="">全部</Select.Option>
+
           <Select.Option value="1">学习</Select.Option>
           <Select.Option value="2">培训</Select.Option>
           <Select.Option value="3">考试</Select.Option>
@@ -44,30 +55,30 @@ export default observer(function Header() {
         <span>状态：</span>
         <Select
           style={{ width: 120 }}
-          value={notificationModal.selectedState}
-          onChange={(val: string) => {
-            notificationModal.selectedState = val;
-            notificationModal.pageIndex = 1;
-            notificationModal.onload();
-          }}
+          // value={mainPageModal.selectedState}
+          // onChange={(val: string) => {
+          //   mainPageModal.selectedState = val;
+          //   mainPageModal.pageIndex = 1;
+          //   mainPageModal.onload();
+          // }}
         >
           <Select.Option value="">全部</Select.Option>
           <Select.Option value="1">已发送</Select.Option>
-          <Select.Option value="0">未发送</Select.Option>
+          <Select.Option value="2">未发送</Select.Option>
         </Select>
       </LeftIcon>
       <RightIcon>
         <Input
           style={{ width: 150, marginLeft: 5, marginRight: -5 }}
           placeholder="请输入要搜索的关键字"
-          value={notificationModal.keyWord}
-          onChange={e => {
-            notificationModal.keyWord = e.target.value;
-          }}
+          // value={mainPageModal.keyWord}
+          // onChange={e => {
+          //   mainPageModal.keyWord = e.target.value;
+          // }}
         />
         <Button
           onClick={() => {
-            notificationModal.onload();
+            appStore.history.push(`/notificationManagement`);
           }}
         >
           查询
