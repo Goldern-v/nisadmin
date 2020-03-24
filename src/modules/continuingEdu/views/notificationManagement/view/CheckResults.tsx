@@ -340,7 +340,7 @@ const People = styled.div`
   }
   ul {
     padding: 0 0 0 15px !important;
-    height: calc(100vh - 190px);
+    height: calc(100vh - 195px);
     overflow-y: auto;
   }
   li {
