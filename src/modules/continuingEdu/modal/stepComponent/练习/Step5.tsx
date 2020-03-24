@@ -112,6 +112,15 @@ export default observer(function Step5() {
             <td className="key">参与人员：</td>
             <td className="value">
               {stepViewModal.stepData3.participantList
+                .reduce((total: any[], item: any) => {
+                  return [
+                    ...total,
+                    ...item.userList.map((item: any) => ({
+                      label: item.empName,
+                      key: item.empNo
+                    }))
+                  ];
+                }, [])
                 .map((item: any) => item.label)
                 .join("，")}
             </td>
