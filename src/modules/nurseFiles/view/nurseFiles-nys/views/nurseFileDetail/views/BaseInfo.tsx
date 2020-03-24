@@ -118,6 +118,13 @@ export default observer(function BaseInfo() {
                 {
                   手机号: `phone`,
                   家庭住址: `address`
+                },
+                {
+                  来院工作时间: "goHospitalWorkDate",
+                  工作编制: "workConversion"
+                },
+                {
+                  纳编时间: "enrolDate"
                 }
               ],
               fileData: [
