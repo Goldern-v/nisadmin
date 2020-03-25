@@ -91,15 +91,6 @@ export default observer(function UpdateTable(props: Props) {
                   record.scoresPerQuestion * record.questionCount;
               }
               onChange([...dataSource]);
-              // onChange(
-              //   dataSource.map((item: any) => {
-              //     if (item.scoresPerQuestion && record.questionCount) {
-              //       item.totalScores =
-              //         item.scoresPerQuestion * record.questionCount;
-              //     }
-              //     return item;
-              //   })
-              // );
             }}
           />
         );
