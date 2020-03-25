@@ -183,9 +183,9 @@ export default function AddScheduleNursingModal(props: Props) {
                   <Col span={24}>
                     <Form.Field label={`职称`} name="newTitle">
                       <Select>
-                        {titleList.map((item: string) => (
-                          <Select.Option value={item} key={item}>
-                            {item}
+                        {titleList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>
@@ -203,9 +203,9 @@ export default function AddScheduleNursingModal(props: Props) {
                         style={{ width: "100%" }}
                         placeholder="选择层级"
                       >
-                        {levelList.map((item: string) => (
-                          <Select.Option value={item} key={item}>
-                            {item}
+                        {levelList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>
@@ -214,9 +214,9 @@ export default function AddScheduleNursingModal(props: Props) {
                   <Col span={24}>
                     <Form.Field label={`职务`} name="job">
                       <Select>
-                        {postList.map((item: string) => (
-                          <Select.Option value={item} key={item}>
-                            {item}
+                        {postList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>
@@ -229,9 +229,9 @@ export default function AddScheduleNursingModal(props: Props) {
                   <Col span={24}>
                     <Form.Field label={`职称`} name="newTitle">
                       <Select>
-                        {titleList.map((item: string) => (
-                          <Select.Option value={item} key={item}>
-                            {item}
+                        {titleList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>
@@ -249,9 +249,9 @@ export default function AddScheduleNursingModal(props: Props) {
                         style={{ width: "100%" }}
                         placeholder="选择类型"
                       >
-                        {nansanTypeList.map((item: string) => (
-                          <Select.Option value={item} key={item}>
-                            {item}
+                        {nansanTypeList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>
@@ -260,9 +260,9 @@ export default function AddScheduleNursingModal(props: Props) {
                   <Col span={24}>
                     <Form.Field label={`职务`} name="job">
                       <Select>
-                        {postList.map((item: string) => (
-                          <Select.Option value={item} key={item}>
-                            {item}
+                        {postList.map((item: any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
                           </Select.Option>
                         ))}
                       </Select>

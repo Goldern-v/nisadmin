@@ -82,7 +82,7 @@ const columns: ColumnProps<any>[] = [
     align: "center"
   },
   {
-    title: "层级",
+    title: "类型",
     dataIndex: "nurseHierarchy",
     key: "nurseHierarchy",
     width: 70,
@@ -127,6 +127,27 @@ const columns: ColumnProps<any>[] = [
     title: "执业证书编号",
     dataIndex: "zyzsNumber",
     key: "zyzsNumber",
+    width: 120,
+    align: "center"
+  },
+  {
+    title: "来院工作时间",
+    dataIndex: "goHospitalWorkDate",
+    key: "goHospitalWorkDate",
+    width: 120,
+    align: "center"
+  },
+  {
+    title: "工作编制",
+    dataIndex: "workConversion",
+    key: "workConversion",
+    width: 80,
+    align: "center"
+  },
+  {
+    title: "纳编时间",
+    dataIndex: "enrolDate",
+    key: "enrolDate",
     width: 120,
     align: "center"
   },

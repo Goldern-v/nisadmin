@@ -72,12 +72,14 @@ export default observer(function MainBox() {
       key: "empNo",
       width: 120,
       render: (empNo: string, record: any, index: number) => {
-        let usetTypeName = ''
+        let usetTypeName = "";
         if (userTypeList.length > 0) {
-          let target = userTypeList.find((item: any) => item.code === record.userType)
-          if (target && target.name) usetTypeName = target.name
+          let target = userTypeList.find(
+            (item: any) => item.code === record.userType
+          );
+          if (target && target.name) usetTypeName = target.name;
         }
-        return empNo || usetTypeName
+        return empNo || usetTypeName;
       }
     },
     {
@@ -114,6 +116,26 @@ export default observer(function MainBox() {
         },
         {
           title: "层级",
+          dataIndex: "nurseHierarchy",
+          key: "nurseHierarchy",
+          width: "10%"
+        },
+        {
+          title: "职务",
+          dataIndex: "job",
+          key: "job",
+          width: 120
+        }
+      ],
+      nys: () => [
+        {
+          title: "职称",
+          dataIndex: "newTitle",
+          width: "10%",
+          key: "newTitle"
+        },
+        {
+          title: "类型",
           dataIndex: "nurseHierarchy",
           key: "nurseHierarchy",
           width: "10%"
@@ -175,10 +197,10 @@ export default observer(function MainBox() {
   ];
 
   useEffect(() => {
-    service.commonApiService.dictInfo('sch_wh_user_type').then((res) => {
-      setUserTypeList(res.data)
-    })
-  }, [])
+    service.commonApiService.dictInfo("sch_wh_user_type").then(res => {
+      setUserTypeList(res.data);
+    });
+  }, []);
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
