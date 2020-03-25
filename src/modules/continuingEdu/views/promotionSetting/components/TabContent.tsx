@@ -184,13 +184,16 @@ const Wrapper = styled.div`
     .unit-span {
       display: inline-block;
       line-height: 30px;
-      border: 1px solid rgb(217, 217, 217);
+      border: 1px solid rgb(217,217,217);
       border-left: none;
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
       width: 62px;
       text-align: center;
       position: relative;
+      height: 32px;
+      vertical-align: middle;
+      top: -2px;
     }
   }
 `

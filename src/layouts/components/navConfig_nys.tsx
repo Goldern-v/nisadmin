@@ -37,6 +37,11 @@ export const navConfig: navConfigItem[] = [
   //   path: '/badEvents/alanysis/1/1'
   // },
   {
+    name: "学习培训",
+    path: "/continuingEdu"
+    // hidden: !appStore.isDev
+  },
+  {
     name: "质量管理",
     children: [
       {

@@ -34,6 +34,10 @@ export default observer(function TestingResultReview() {
   const answerSheet = createModal(AnswerSheetModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
+  const editScoreAuth = baseInfo.scorePersonList.find((item: any) => {
+    return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
+  })
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
 
   const columns: ColumnProps<any>[] = [
@@ -191,11 +195,8 @@ export default observer(function TestingResultReview() {
     }
 
     let isScoreEdit = false
-    let sameEmpNo = baseInfo.scorePersonList.find((item: any) => {
-      return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
-    })
 
-    if (sameEmpNo) isScoreEdit = true
+    if (editScoreAuth) isScoreEdit = true
 
     answerSheet.show({
       title: `${baseInfo.title}考卷`,

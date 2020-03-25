@@ -14,15 +14,15 @@ export default function OperateSetting(props: Props) {
     <div className="content-item-title">上传设置</div>
     <div className="row">
       <span className="label w-98">总成绩:</span>
-      <span className="content">100</span>
+      <span className="content">{info.totalScores}</span>
     </div>
     <div className="row">
       <span className="label w-98">及格分数线:</span>
-      <span className="content">60</span>
+      <span className="content">{info.passScores}</span>
     </div>
     <div className="row">
       <span className="label w-98">实操考核评分项:</span>
-      <span className="content">3项</span>
+      <span className="content">{info.scoreItemList.length || 0}项</span>
     </div>
     <div className="pd">
       <table>
@@ -35,11 +35,20 @@ export default function OperateSetting(props: Props) {
             <td>评分项标题</td>
             <td>分值</td>
           </tr>
-          <tr>
+          {/* <tr>
             <td>1</td>
             <td>走位考核标准</td>
             <td>40</td>
-          </tr>
+          </tr> */}
+          {info.scoreItemList.length > 0 && info.scoreItemList.map((item: any, idx: number) =>
+            <tr key={idx}>
+              <td>{idx + 1}</td>
+              <td>{item.itemName}</td>
+              <td>{item.score}</td>
+            </tr>)}
+          {info.scoreItemList.length <= 0 && <tr>
+            <td colSpan={3} style={{ color: "#666" }}>暂无评分项目</td>
+          </tr>}
         </tbody>
       </table>
     </div>
