@@ -66,8 +66,8 @@ export default observer(function RequestEditModal(props: Props) {
     promotionSettingService
       .editPromoteConfig(params)
       .then(res => {
-        setLoading(false)
-        message.success('保存成功', 0.5, () => {
+        message.success('保存成功', 1, () => {
+          setLoading(false)
           onOkCallBack && onOkCallBack()
           onCancel && onCancel()
         })
@@ -115,15 +115,28 @@ export default observer(function RequestEditModal(props: Props) {
     let itemIdx = targetKeys.indexOf(item.title)
     if (itemIdx >= 0) draggable = true
 
-    return <div
+    return <DragCon
       draggable={draggable}
-      style={{ width: 200, display: 'inline-block' }}
+      style={{ width: itemIdx < 0 ? 200 : 216 }}
       onDragStart={(e) => {
         e.dataTransfer.setData('dragIdx', itemIdx.toString())
       }}
-      onDragOver={(e) => e.preventDefault()}
-      onDrop={(e: any) => {
+      onDragOver={(e: any) => {
+        if (itemIdx < 0) return
         e.preventDefault()
+        e.target.parentNode.parentNode.style.background = '#eee'
+      }}
+      onDragLeave={(e: any) => {
+        if (itemIdx < 0) return
+        e.preventDefault()
+        e.target.parentNode.parentNode.style.background = '#fff'
+      }}
+      onDrop={(e: any) => {
+        if (itemIdx < 0) return
+        e.preventDefault()
+        e.target.parentNode.parentNode.style.background = '#fff'
+
+        if (itemIdx < 0) return
         let newTargetKeys = targetKeys.concat()
         let dragIdx = Number(e.dataTransfer.getData('dragIdx'))
         let cacheKey = newTargetKeys[dragIdx]
@@ -133,7 +146,7 @@ export default observer(function RequestEditModal(props: Props) {
         setTargetKeys(newTargetKeys)
       }}>
       {item.title}
-    </div>
+    </DragCon>
   }
 
   return (
@@ -197,4 +210,13 @@ const Wrapper = styled.div`
   .ant-tabs-nav {
     padding-left: 3px;
   }
+`
+
+const DragCon = styled.div`
+    width:216px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
 `

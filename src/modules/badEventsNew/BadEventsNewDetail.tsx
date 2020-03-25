@@ -168,7 +168,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
 
           if (title) newItem.title = title
 
-          newTimeline.push({
+          if (newItem.instanceId) newTimeline.push({
             ...newItem,
             description
           })
@@ -267,19 +267,17 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           <div className='right-pannel-title'>事件轨迹:</div>
           <Steps direction='vertical' size='small' current={StepsCurrent()} className='status-line-content'>
             {timeLine.map((item, idx) => {
-              if (
-                detailData.paramMap[`${detailData.badEventCode}_tjzlanwyh_option`] == '不提交' &&
-                item.statuses.indexOf('5') >= 0
-              )
-                return ''
+              // if (
+              //   detailData.paramMap[`${detailData.badEventCode}_tjzlanwyh_option`] == '不提交' &&
+              //   item.statuses.indexOf('5') >= 0
+              // )
+              //   return ''
 
               let icon: any
-              if (idx <= StepsCurrent()) {
+              if (item.allow) {
                 icon = <Icon type='check-circle' className='icon-step success' />
-                if (idx == StepsCurrent() && detailData.status == '-2')
-                  icon = <Icon type='close-circle' className='icon-step error' />
               } else {
-                icon = ''
+                icon = <Icon type='close-circle' className='icon-step error' />
               }
               return <Step title={item.title} icon={icon} description={item.description} key={idx} />
             })}
