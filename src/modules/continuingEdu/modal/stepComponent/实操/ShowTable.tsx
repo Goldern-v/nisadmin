@@ -15,7 +15,7 @@ export interface Props {
 }
 
 export default observer(function ShowTable(props: Props) {
-  let dataSource = scStepViewModal.stepData2.questionStatList;
+  let dataSource = scStepViewModal.stepData2.scoreItems;
 
   /** 题目条数 */
   let totalNum = dataSource.reduce((total: any, current: any) => {
@@ -33,17 +33,17 @@ export default observer(function ShowTable(props: Props) {
       }
     },
     {
-      title: "出题类型",
+      title: "评分项标题",
       width: 135,
       align: "center",
-      dataIndex: "questionName",
+      dataIndex: "itemName",
       render(text: any, record: any, index: number) {
         return text;
       }
     },
     {
-      title: "题目数",
-      dataIndex: "questionCount",
+      title: "分值",
+      dataIndex: "scores",
       align: "center",
       render(text: any, record: any, index: number) {
         return text;
@@ -53,7 +53,7 @@ export default observer(function ShowTable(props: Props) {
 
   return (
     <Wrapper>
-      <div className="all-con">{totalNum}题（顺序出题）</div>
+      <div className="all-con">{dataSource.length || "--"}项）</div>
       <BaseTable
         dataSource={dataSource}
         columns={columns}

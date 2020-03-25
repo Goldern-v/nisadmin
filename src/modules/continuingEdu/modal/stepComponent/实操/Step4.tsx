@@ -69,11 +69,7 @@ export default observer(function Step4() {
         </Row>
         <Row style={{ marginTop: 20 }}>
           <Col span={24}>
-            <Form.Field
-              label={`上传题库`}
-              name="questionStatList"
-              labelWidth={70}
-            >
+            <Form.Field label={`上传题库`} name="scoreItems">
               <UpdateTable />
             </Form.Field>
           </Col>

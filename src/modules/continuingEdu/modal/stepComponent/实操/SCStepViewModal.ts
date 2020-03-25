@@ -33,7 +33,9 @@ const defaultStepData2: any = {
   /** 评分负责人*/
   scorePersonList: [],
   /** 题目统计信息 */
-  questionStatList: []
+  scoreItems: [],
+  totalScores: 0,
+  passScores: 0
 };
 
 type DefaultStepData2 = typeof defaultStepData2;
@@ -128,8 +130,31 @@ class StepViewModal {
         studentCreditType: this.stepData2.studentCreditType,
         studentCredit: this.stepData2.studentCredit,
         studentClassHours: this.stepData2.studentClassHours,
-
-        questionStatList: this.stepData2.questionStatList
+        scoreItems: this.stepData2.scoreItems,
+        totalScores: this.stepData2.totalScores,
+        passScores: this.stepData2.passScores,
+        scorePersonList: this.stepData2.scorePersonList.reduce(
+          (total: any[], item: any) => {
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
+          },
+          []
+        ),
+        sicPersonList: this.stepData2.sicPersonList.reduce(
+          (total: any[], item: any) => {
+            return [
+              ...total,
+              {
+                empNo: item.key
+              }
+            ];
+          },
+          []
+        )
       }
     };
     return result;

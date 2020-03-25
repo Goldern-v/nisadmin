@@ -2,6 +2,7 @@ import service from "src/services/api";
 import { ksStepViewModal } from "./考试/KSStepViewModal";
 import { cloneJson } from "src/utils/json/clone";
 import { xxStepViewModal } from "./学习/XXStepViewModal";
+import { scStepViewModal } from "./实操/SCStepViewModal";
 import { appStore } from "src/stores";
 import { stepServices } from "./services/stepServices";
 import { observable, computed, action } from "mobx";
@@ -14,7 +15,8 @@ export let selfStepViewModalMap: any = {
   1: xxStepViewModal,
   2: pxStepViewModal,
   3: ksStepViewModal,
-  4: lxStepViewModal
+  4: lxStepViewModal,
+  5: scStepViewModal
 };
 
 export let teachingMethodMap: any = {
@@ -155,7 +157,8 @@ class StepViewModal {
       1: "addTeachingPlanInfoStudy",
       2: "addTeachingPlanInfoTrain",
       3: "addTeachingPlanInfoExam",
-      4: "addTeachingPlanInfoExercise"
+      4: "addTeachingPlanInfoExercise",
+      5: "addTeachingPlanInfoPractise"
     };
 
     return (stepServices as any)[

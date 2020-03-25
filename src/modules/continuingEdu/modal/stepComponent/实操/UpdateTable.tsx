@@ -26,7 +26,7 @@ export default observer(function UpdateTable(props: Props) {
 
   /** 总分 */
   let totalScore = dataSource.reduce((total: any, current: any) => {
-    return total + current.totalScores;
+    return total + current.scores;
   }, 0);
   // let _totalScore = scStepViewModal.stepData2.totalScores;
   scStepViewModal.stepData2.totalScores = totalScore;
@@ -39,24 +39,25 @@ export default observer(function UpdateTable(props: Props) {
       dataIndex: "sort",
       render(text: any, record: any, index: number) {
         if (index == 0) return "";
-        return index + 1;
+        return index;
       }
     },
     {
       title: "标题",
       width: 135,
       align: "center",
-      dataIndex: "questionName",
+      dataIndex: "itemName",
+      className: "input-cell",
       render(text: any, record: any, index: number) {
         if (index == 0)
           return (
             <Button
               type="primary"
               icon="plus"
-              onClick={uploadFile}
+              onClick={addList}
               style={{ margin: "10px auto" }}
             >
-              题库上传
+              添加评分项
             </Button>
           );
         return (
@@ -64,7 +65,7 @@ export default observer(function UpdateTable(props: Props) {
             style={{ border: 0, textAlign: "center" }}
             value={text}
             onChange={val => {
-              record.scoresPerQuestion = val;
+              record.itemName = val.target.value;
               onChange([...dataSource]);
             }}
           />
@@ -76,20 +77,17 @@ export default observer(function UpdateTable(props: Props) {
       align: "center",
       className: "input-cell",
       width: 100,
-      dataIndex: "scoresPerQuestion",
+      dataIndex: "scores",
       render(text: any, record: any, index: number) {
-        if (index == 0) return "--";
+        if (index == 0) return totalScore || "--";
         return (
           <InputNumber
             min={0}
             style={{ border: 0, textAlign: "center" }}
             value={text}
             onChange={val => {
-              record.scoresPerQuestion = val;
-              if (record.scoresPerQuestion && record.questionCount) {
-                record.totalScores =
-                  record.scoresPerQuestion * record.questionCount;
-              }
+              record.scores = val;
+
               onChange([...dataSource]);
             }}
           />
@@ -105,28 +103,31 @@ export default observer(function UpdateTable(props: Props) {
         if (index == 0) return;
         return (
           <DoCon>
-            <span>删除</span>
+            <span onClick={() => delList(index - 1)}>删除</span>
           </DoCon>
         );
       }
     }
   ];
-  const downFileWith = () => {
-    stepServices.downLoadQueUploadTemplateWithShortQues().then(res => {
-      fileDownload(res);
-    });
+
+  const addList = () => {
+    onChange([
+      ...dataSource,
+      {
+        itemName: "",
+        scores: 0
+      }
+    ]);
   };
-  const downFileWithout = () => {
-    stepServices.downLoadQueUploadTemplateWithoutShortQues().then(res => {
-      fileDownload(res);
-    });
+
+  const delList = (index: any) => {
+    dataSource.splice(index, 1);
+
+    onChange([...dataSource]);
   };
-  const uploadFile = () => {
-    fileInputRef.current && fileInputRef.current.click();
-  };
+
   const onFileChange = (e: any) => {
     e.persist();
-
     let files = e.target.files || [];
     let postData = new FormData();
     postData.append("file", files[0]);
@@ -152,12 +153,6 @@ export default observer(function UpdateTable(props: Props) {
 
   return (
     <Wrapper>
-      <div className="down-file-con">
-        选择上传文件：
-        <span onClick={downFileWith}>下载题库模板(含问答题)</span>
-        &nbsp;
-        <span onClick={downFileWithout}>下载题库模板(不含问答题)</span>
-      </div>
       <BaseTable
         dataSource={[{}, ...dataSource]}
         columns={columns}

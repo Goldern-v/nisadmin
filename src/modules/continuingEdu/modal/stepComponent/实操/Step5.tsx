@@ -31,23 +31,16 @@ export default observer(function Step5() {
     3: "病区学分"
   };
 
-  let totalNum = scStepViewModal.stepData2.questionStatList.reduce(
-    (total: any, current: any) => {
-      return total + current.questionCount;
-    },
-    0
-  );
-
   return (
     <Wrapper>
       <table>
         <tbody>
           <tr>
-            <td className="key">练习名称：</td>
+            <td className="key">实操名称：</td>
             <td className="value">《{scStepViewModal.stepData2.title}》</td>
           </tr>
           <tr>
-            <td className="key">练习开始时间：</td>
+            <td className="key">考核开始时间：</td>
             <td className="value">
               {scStepViewModal.stepData2.startTime &&
                 moment(scStepViewModal.stepData2.startTime).format(
@@ -56,7 +49,7 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
-            <td className="key">练习开放时间：</td>
+            <td className="key">考核开放时间：</td>
             <td className="value">
               {scStepViewModal.stepData2.openTime}
               {scStepViewModal.stepData2.openTimeUnit}{" "}
@@ -77,10 +70,39 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
-            <td className="key">练习地址：</td>
+            <td className="key">实操考核地址：</td>
             <td className="value">{scStepViewModal.stepData2.address}</td>
           </tr>
 
+          {scStepViewModal.stepData2.organizationWay == "2" && (
+            <React.Fragment>
+              <tr>
+                <td className="key">签到负责人：</td>
+                <td className="value">
+                  {scStepViewModal.stepData2.sicPersonList
+                    .map((item: any) => item.label)
+                    .join("，")}
+                </td>
+              </tr>
+            </React.Fragment>
+          )}
+          <tr>
+            <td className="key">评分负责人：</td>
+            <td className="value">
+              <span>
+                {scStepViewModal.stepData2.needScorePerson ? "需要" : "不需要"}
+              </span>
+              {!!scStepViewModal.stepData2.scorePersonList.length && (
+                <span>
+                  （
+                  {scStepViewModal.stepData2.scorePersonList
+                    .map((item: any) => item.label)
+                    .join("，")}
+                  ）
+                </span>
+              )}
+            </td>
+          </tr>
           <tr>
             <td className="key">学员学分：</td>
             <td className="value">
@@ -98,6 +120,14 @@ export default observer(function Step5() {
             <td className="value">
               {scStepViewModal.stepData2.studentClassHours}
             </td>
+          </tr>
+          <tr>
+            <td className="key">总成绩：</td>
+            <td className="value">{scStepViewModal.stepData2.totalScores}</td>
+          </tr>
+          <tr>
+            <td className="key">及格分数线：</td>
+            <td className="value">{scStepViewModal.stepData2.passScores}</td>
           </tr>
 
           <tr>
