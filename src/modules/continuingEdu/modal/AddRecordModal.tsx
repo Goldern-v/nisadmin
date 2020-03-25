@@ -34,6 +34,9 @@ import Step2_lx from "./stepComponent/练习/Step2";
 import Step4_lx from "./stepComponent/练习/Step4";
 import Step5_lx from "./stepComponent/练习/Step5";
 
+import Step2_yl from "./stepComponent/演练/Step2";
+import Step5_yl from "./stepComponent/演练/Step5";
+
 import { ScrollBox } from "src/components/common";
 import {
   stepViewModal,
