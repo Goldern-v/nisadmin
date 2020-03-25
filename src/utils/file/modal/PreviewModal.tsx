@@ -152,10 +152,13 @@ export default function PreviewModal(props: Props) {
   if (currentItem && currentItem.title) currentTitle = currentItem.title
 
   // console.log(filePath)
+  let defaultWidth = 900
+  //武汉市一要加宽预览窗口大小
+  if (appStore.HOSPITAL_ID == 'wh') defaultWidth = 1100
 
   return (
     <Modal
-      width={modalWidth || 900}
+      width={modalWidth || defaultWidth}
       title={currentTitle}
       visible={visible}
       onCancel={onCancel}
