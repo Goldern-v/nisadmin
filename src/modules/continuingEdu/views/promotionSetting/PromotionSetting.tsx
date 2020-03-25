@@ -27,7 +27,8 @@ export default observer(function PromotionSetting() {
         <Button onClick={() => {
           if (!loading)
             requestEditModal.show({
-              defaultLevelSort: currentLevelItem.sort || ''
+              defaultLevelSort: currentLevelItem.sort || '',
+              onOkCallBack: () => promotionSettingModel.getData()
             })
         }}>编辑</Button>
       </PageHeader>

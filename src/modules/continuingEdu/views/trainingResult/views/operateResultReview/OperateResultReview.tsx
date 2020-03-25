@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Checkbox, message } from 'antd'
+import { Button, Checkbox, message, Modal } from 'antd'
 import { Link } from 'react-router-dom'
 import {
   Wrapper,
@@ -22,6 +22,8 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 // import moment from 'moment'
 import { trainingResultModel } from './../../models/TrainingResultModel'
+import { authStore } from 'src/stores'
+import { trainingResultService } from './../../api/TrainingResultService'
 export interface Props { }
 
 //查看培训结果
@@ -31,6 +33,11 @@ export default observer(function OperateResultReview() {
   const examScoreEdit = createModal(ExamScoreEditModal)
 
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
+
+
+  let editScoreAuth = baseInfo.scorePersonList.find((item: any) => {
+    return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
+  })
 
   const [selectedRowKeys, setSelectedRowKeys] =
     useState([] as number[] | string[])
@@ -129,10 +136,29 @@ export default observer(function OperateResultReview() {
       align: 'center',
       width: 100,
     },
+    {
+      dataIndex: 'oparate',
+      title: '操作',
+      width: 100,
+      render: (status: string, record: any) => {
+        return <DoCon>
+          <span onClick={() => handleViewScore(record)}>查看成绩</span>
+        </DoCon>
+      }
+    }
   ]
 
-  const handleDetail = (record: any) => {
+  const handleViewScore = (record: any) => {
+    if (!editScoreAuth) {
+      Modal.warn({
+        title: '提示',
+        content: '非评分人不能上传成绩'
+      })
+    }
     //查看详情
+    examScoreEdit.show({
+
+    })
   }
   const handlePageChange = (pageIndex: number, pageSize: number | undefined) => {
     trainingResultModel
@@ -163,6 +189,30 @@ export default observer(function OperateResultReview() {
       },
       cetpId: appStore.queryObj.id,
       empNoList: selectedRowKeys
+    })
+  }
+
+  const setLoading = (loading: boolean) => trainingResultModel.setLoading(loading)
+
+  const handlePublish = () => {
+
+    Modal.confirm({
+      title: '发布成绩',
+      content: '确定给所有学员发布成绩？',
+      onOk: () => {
+        setLoading(true)
+        trainingResultService
+          .publishGrades(appStore.queryObj.id || '')
+          .then(res => {
+            message.success('发布成功')
+            setLoading(false)
+            trainingResultModel.
+              setBaseInfo({
+                ...baseInfo,
+                isResultPublished: 1
+              })
+          }, () => setLoading(false))
+      }
     })
   }
 
@@ -198,8 +248,21 @@ export default observer(function OperateResultReview() {
         <span className="content">{
           (baseInfo.participantList && baseInfo.participantList.length) || 0}人
         </span>
+        <span>评分负责人:</span>
+        <span className="content">
+          {(baseInfo.scorePersonList && baseInfo.scorePersonList.map((item: any) => item.empName).join(','))}
+        </span>
       </SubContent>
       <ButtonGroups>
+        {(baseInfo.isResultPublished === 0 &&
+          baseInfo.showScoreInstantly === 0 &&
+          baseInfo.tqStatusDesc === '归档') &&
+          <Button
+            type="primary"
+            onClick={handlePublish}
+            disabled={loading}>
+            发布成绩
+          </Button>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
@@ -218,7 +281,7 @@ export default observer(function OperateResultReview() {
           dataSource={tableData}
           onRow={(record: any) => {
             return {
-              onDoubleClick: () => handleDetail(record)
+              onDoubleClick: () => handleViewScore(record)
             }
           }}
           pagination={{

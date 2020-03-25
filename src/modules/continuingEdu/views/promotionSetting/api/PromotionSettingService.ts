@@ -24,6 +24,14 @@ export default class PromotionSettingService extends BaseApiService {
   }) {
     return this.post(`/studyAndTrain/promoteManage/editPromoteRequest`, params);
   }
+
+  /** 设置晋升层级的晋升要求条目 */
+  public editPromoteConfig(params: {
+    promoteLevel: string;
+    promoteInfoList: any[];
+  }) {
+    return this.post(`/studyAndTrain/promoteManage/SaveSelectedRequest`, params);
+  }
 }
 
 export const promotionSettingService = new PromotionSettingService();

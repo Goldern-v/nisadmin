@@ -9,23 +9,30 @@ import {
   // DatePicker,
   // Select,
   // message,
-  Transfer
+  Transfer,
+  message
 } from "antd"
 import { ModalComponentProps } from "src/libs/createModal"
 import { observer } from "mobx-react-lite"
 import { promotionSettingModel } from "../model/PromotionSettingModel"
 import { promotionSettingService } from './../api/PromotionSettingService'
+// import {__EXPERIMENTAL_DND_HOOKS_THAT_MAY_CHANGE_AND_BREAK_MY_BUILD__} from 'react-dnd'
+
+// const {useDrag,useDrop} = __EXPERIMENTAL_DND_HOOKS_THAT_MAY_CHANGE_AND_BREAK_MY_BUILD__
 
 export interface Props extends ModalComponentProps {
-  defaultLevelSort?: string
+  defaultLevelSort?: string,
+  onOkCallBack?: Function
 }
 
 export default observer(function RequestEditModal(props: Props) {
-  const { defaultLevelSort } = props
+  const { defaultLevelSort, onOkCallBack, visible, onCancel } = props
+
   const [levelSort, setLevelSort] = useState('')
   const { levelList } = promotionSettingModel
-  let { visible, onCancel } = props
+
   let [loading, setLoading] = useState(false)
+
   let [targetKeys, setTargetKeys] = useState([] as string[])
   let [selectedKeys, setSelectedKeys] = useState([] as string[])
   let [promotionList, setPromotionList] = useState([] as string[])
@@ -33,33 +40,100 @@ export default observer(function RequestEditModal(props: Props) {
   useLayoutEffect(() => {
     if (visible) {
       setLevelSort(defaultLevelSort || '')
-      getPromotionList()
+      getPromotionList(() => getCurentSetting(defaultLevelSort || ''))
     }
   }, [visible])
 
-  const handleOk = () => { }
+  const handleOk = () => {
+    let target = levelList.find((item: any) => item.sort == levelSort)
+    if (!target) {
+      message.error('未知晋升层级')
+      return
+    }
+
+    let params = {
+      promoteLevel: target.title,
+      promoteInfoList: targetKeys.map((name: string, idx: number) => {
+        return {
+          requestKey: name,
+          sort: idx + 1
+        }
+      })
+    }
+
+    setLoading(true)
+
+    promotionSettingService
+      .editPromoteConfig(params)
+      .then(res => {
+        setLoading(false)
+        message.success('保存成功', 0.5, () => {
+          onOkCallBack && onOkCallBack()
+          onCancel && onCancel()
+        })
+      }, err => setLoading(false))
+  }
 
   const getPromotionList = (callback?: Function) => {
     setLoading(true)
     setSelectedKeys([])
     setTargetKeys([])
 
-    let reqArr = [
-      promotionSettingService.getAllPromoteRequest(),
-    ]
+    promotionSettingService
+      .getAllPromoteRequest()
+      .then(res => {
+        setLoading(false)
+        let newList = res.data || []
+        setPromotionList(newList)
+        callback && callback(newList)
+      }, () => setLoading(false))
+  }
 
-    Promise.all(reqArr).then(res => {
-      setLoading(false)
-      let newList = res[0].data || []
-      setPromotionList(newList)
-      callback && callback(newList)
-    }, () => setLoading(false))
+  const getCurentSetting = (levelSort: string) => {
+    let target = levelList.find((item: any) => item.sort == levelSort)
+    if (!target) return
+
+    setSelectedKeys([])
+    setTargetKeys([])
+    setLoading(true)
+    promotionSettingService
+      .getPromoteConfig(target.title)
+      .then((res) => {
+        setLoading(false)
+
+        if (res.data) setTargetKeys(res.data.map((item: any) => item.requestKey))
+      }, () => setLoading(false))
   }
 
   const handleTabChange = (idx: string) => {
     setLevelSort(idx)
-    setSelectedKeys([])
-    setTargetKeys([])
+    getCurentSetting(idx)
+  }
+
+  const renderItem = (item: any) => {
+    let draggable = false
+    let itemIdx = targetKeys.indexOf(item.title)
+    if (itemIdx >= 0) draggable = true
+
+    return <div
+      draggable={draggable}
+      style={{ width: 200, display: 'inline-block' }}
+      onDragStart={(e) => {
+        e.dataTransfer.setData('dragIdx', itemIdx.toString())
+      }}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e: any) => {
+        e.preventDefault()
+        let newTargetKeys = targetKeys.concat()
+        let dragIdx = Number(e.dataTransfer.getData('dragIdx'))
+        let cacheKey = newTargetKeys[dragIdx]
+        newTargetKeys[dragIdx] = newTargetKeys[itemIdx]
+        newTargetKeys[itemIdx] = cacheKey
+
+        setTargetKeys(newTargetKeys)
+      }}>
+      {item.title}
+    </div>
   }
 
   return (
@@ -94,7 +168,7 @@ export default observer(function RequestEditModal(props: Props) {
             <Transfer
               targetKeys={targetKeys}
               selectedKeys={selectedKeys}
-              render={item => item.title}
+              render={item => renderItem(item)}
               listStyle={{ width: "267px", height: "300px" }}
               onSelectChange={(keys: string[], keys1: string[]) =>
                 setSelectedKeys(keys.concat(keys1))
@@ -102,12 +176,12 @@ export default observer(function RequestEditModal(props: Props) {
               onChange={(keys: any) => setTargetKeys(keys)}
               dataSource={promotionList.map((item: any) => {
                 return {
-                  key: item.code,
+                  key: item.name,
                   title: item.name,
                   description: item.name
                 }
               })}
-              titles={["全部要求", "已选要求"]}
+              titles={["未选要求", "已选要求"]}
             />
           </div>
         </Spin>
