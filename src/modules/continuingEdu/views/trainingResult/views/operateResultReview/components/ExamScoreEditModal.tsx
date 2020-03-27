@@ -66,7 +66,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
       empNo
     }).then(res => {
       setLoading(false)
-      if (res.data) setItemList(res.data)
+      if (res.data) setItemList(res.data.sort((a: any, b: any) => a.sort - b.sort))
     }, err => setLoading(false))
   }
 
@@ -127,6 +127,7 @@ const Wrapper = styled.div`
 }
   .main-title{
     font-size: 16px;
+    margin-bottom: 10px;
     color: #000;
   }
   .edit-item{
