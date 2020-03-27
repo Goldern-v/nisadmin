@@ -1,37 +1,21 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Modal, InputNumber } from 'antd'
+import { Button, Modal, InputNumber, Spin, message } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { ModalComponentProps } from "src/libs/createModal";
+import { trainingResultService } from './../../../api/TrainingResultService'
 export interface Props extends ModalComponentProps {
   onOkCallBack?: Function,
-  data?: any
+  type: 'view' | 'edit',
+  cetpId: string,
+  empNo: string
 }
 
 export default observer(function ExamScoreEditModal(props: Props) {
-  const { visible, onOkCallBack, onCancel } = props
+  const { visible, onOkCallBack, onCancel, cetpId, empNo, type } = props
   const [loading, setLoading] = useState(false)
 
-  const [itemList, setItemList] = useState([
-    {
-      id: 1,
-      score: 40,
-      editScore: 0,
-      desc: '走位操作标'
-    },
-    {
-      id: 2,
-      score: 10,
-      editScore: 5,
-      desc: '手势操作标准'
-    },
-    {
-      id: 3,
-      score: 50,
-      editScore: 0,
-      desc: '抽血操作标准'
-    },
-  ] as any)
+  const [itemList, setItemList] = useState([] as any[])
 
   let finalScore = 0
 
@@ -39,23 +23,55 @@ export default observer(function ExamScoreEditModal(props: Props) {
   let deductScore = 0
   for (let i = 0; i < itemList.length; i++) {
     let item = itemList[i]
-    totalScore += item.score || 0
-    deductScore += item.editScore || 0
+    totalScore += item.fullScores || 0
+    deductScore += item.deduction || 0
   }
   finalScore = totalScore - deductScore
 
   const handleOK = () => {
+    Modal.confirm({
+      title: '提示',
+      centered: true,
+      content: '确认修改该学员成绩?',
+      onOk: () => {
+        setLoading(true)
+
+        trainingResultService
+          .uploadScores({
+            cetpId,
+            empNo,
+            itemDeductionList: itemList.map((item: any) => {
+              return {
+                id: item.id,
+                deduction: item.deduction,
+              }
+            })
+          })
+          .then(res => {
+            message.success('修改成功', 1, () => {
+              onCancel()
+              onOkCallBack && onOkCallBack()
+            })
+          }, err => setLoading(false))
+
+      }
+    })
+
+  }
+
+  const getOperateScoreList = () => {
     setLoading(true)
-    setTimeout(() => {
-      onCancel()
-      onOkCallBack && onOkCallBack()
-    }, 1000)
+    trainingResultService.reviewScoreItemsByCetpId({
+      cetpId,
+      empNo
+    }).then(res => {
+      setLoading(false)
+      if (res.data) setItemList(res.data)
+    }, err => setLoading(false))
   }
 
   useEffect(() => {
-    if (visible) {
-      console.log('open')
-    }
+    if (visible) getOperateScoreList()
   }, [visible])
 
   return <Modal
@@ -63,40 +79,46 @@ export default observer(function ExamScoreEditModal(props: Props) {
     confirmLoading={loading}
     visible={visible}
     onOk={handleOK}
+    footer={type == 'view' ? null : <span>
+      <Button onClick={() => onCancel && onCancel()}>取消</Button>
+      <Button type="primary" loading={loading} onClick={() => handleOK()}>确定</Button>
+    </span>}
     onCancel={onCancel}
     centered
-    title="上传考核成绩">
+    title={`${type == 'view' ? '查看' : '上传'}考核成绩`}>
     <Wrapper>
-      <div className="main-title">最终成绩：{finalScore}分</div>
-      {itemList.map((item: any, idx: number) =>
-        <div className="edit-item" key={idx}>
-          <span >
-            <span>{idx + 1}.</span>
-            <span className="desc" title={item.desc}>{item.desc}</span>
-            （满分{item.score || 0}分）：扣
-          </span>
-          <span className="content">
-            <InputNumber
-              size="small"
-              min={0}
-              max={item.score || 0}
-              className="score-edit"
-              value={item.editScore}
-              onChange={(val: any) => {
-                let newItemList = itemList.concat()
-                newItemList[idx].editScore = val
-                setItemList(newItemList)
-              }}
-              precision={2} />
-          </span>
-          <span>分</span>
-        </div>)}
+      <Spin spinning={loading}>
+        <div className="main-title">最终成绩：{finalScore}分</div>
+        {itemList.map((item: any, idx: number) =>
+          <div className="edit-item" key={idx}>
+            <span >
+              <span>{idx + 1}.</span>
+              <span className="desc" title={item.itemName}>{item.itemName}</span>
+              （满分{item.fullScores || 0}分）：扣
+            </span>
+            <span className="content">
+              <InputNumber
+                min={0}
+                size="small"
+                max={item.fullScores || 0}
+                className="score-edit"
+                value={item.deduction}
+                onChange={(val: any) => {
+                  let newItemList = itemList.concat()
+                  newItemList[idx].deduction = val
+                  setItemList(newItemList)
+                }}
+                precision={2} />
+            </span>
+            <span>分</span>
+          </div>)}
+      </Spin>
     </Wrapper>
   </Modal>
 })
 
 const Wrapper = styled.div`
-&>div{
+.edit-item{
   margin-bottom: 10px;
   &:last-of-type{
     margin-bottom: 0;

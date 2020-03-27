@@ -46,9 +46,20 @@ export default class TrainingResultService extends BaseApiService {
   }
 
   /**保存问答题评分 */
-  // 
   public saveScores(params: any) {
     return this.post(`/studyAndTrain/examManage/saveScoresForShortQuestions`,
+      params)
+  }
+
+  /**实操-获取指定考生的评分信息 */
+  public reviewScoreItemsByCetpId(params: any) {
+    return this.post(`/studyAndTrain/practiseManage/reviewScoreItemsByCetpId`,
+      qs.stringify(params))
+  }
+
+  /**实操-上传成绩 */
+  public uploadScores(params: any) {
+    return this.post(`/studyAndTrain/practiseManage/uploadScores`,
       params)
   }
 }
