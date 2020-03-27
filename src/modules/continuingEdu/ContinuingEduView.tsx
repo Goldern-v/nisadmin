@@ -53,7 +53,8 @@ export default function ContinuingEdu(props: Props) {
       title: "通知管理",
       icon: <RYGL />,
       path: "/continuingEdu/通知管理",
-      component: 通知管理
+      component: 通知管理,
+      hide: true
     },
     {
       title: "晋升管理",
