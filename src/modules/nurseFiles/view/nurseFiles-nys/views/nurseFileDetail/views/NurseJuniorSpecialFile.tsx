@@ -94,8 +94,8 @@ export default observer(function NurseJuniorSpecialFile() {
                   title: "审核专科护士",
                   tableFormat: [
                     {
-                      时间: `time`,
-                      文件类型: `awardWinningName`
+                      获得时间: `time`,
+                      文件类型: `specialFileName`
                     }
                   ],
                   fileData: row.urlImageOne
