@@ -1,15 +1,15 @@
-import { globalModal } from 'src/global/globalModal'
+import { globalModal } from "src/global/globalModal";
 
 export default function Format(row: any, getTableData: any) {
   switch (row.typeName) {
-    case '基本信息': {
+    case "基本信息": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         empNo: row.empNo,
         id: row.id,
-        type: 'nurseInformation',
+        type: "nurseInformation",
         // empNo: appStore.queryObj.empNo,
-        title: '审核基础信息',
+        title: "审核基础信息",
         tableFormat: [
           //
           {
@@ -38,7 +38,7 @@ export default function Format(row: any, getTableData: any) {
           },
           {
             身份证号: `cardNumber`,
-            社会团体职务: `socialGroup`
+            学术任职: `socialGroup`
           },
           {
             手机号: `phone`,
@@ -50,22 +50,22 @@ export default function Format(row: any, getTableData: any) {
             个人头像: row.nearImageUrl
           },
           ...(row.zyzsUrl
-            ? row.zyzsUrl.split(',').map((item: any, index: number) => {
+            ? row.zyzsUrl.split(",").map((item: any, index: number) => {
                 return {
-                  ['执业证书' + (index + 1)]: item
-                }
+                  ["执业证书" + (index + 1)]: item
+                };
               })
             : [])
         ],
         allData: row
-      })
+      });
     }
-    case '工作经历': {
+    case "工作经历": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseWorkExperience',
-        title: '审核工作经历',
+        type: "nurseWorkExperience",
+        title: "审核工作经历",
         tableFormat: [
           {
             起始时间: `startTime`,
@@ -73,22 +73,22 @@ export default function Format(row: any, getTableData: any) {
           },
           {
             单位: `unit`,
-            专业技术工作: 'professionalWork'
+            专业技术工作: "professionalWork"
           },
           {
-            技术职称: 'professional',
-            职务: 'post'
+            技术职称: "professional",
+            职务: "post"
           }
         ],
         allData: row
-      })
+      });
     }
-    case '特殊资格证': {
+    case "特殊资格证": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseSpecialQualification',
-        title: '审核特殊资格证',
+        type: "nurseSpecialQualification",
+        title: "审核特殊资格证",
         tableFormat: [
           {
             获得时间: `time`,
@@ -99,20 +99,20 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '教育经历': {
+    case "教育经历": {
       return globalModal.auditModal.show({
         id: row.id,
-        type: 'nurseMedicalEducation',
-        title: '审核教育经历',
+        type: "nurseMedicalEducation",
+        title: "审核教育经历",
         tableFormat: [
           {
             就读时间: `readTime`,
@@ -127,21 +127,21 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '职称及层级变动': {
+    case "职称及层级变动": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseProfessionalAndLevelChange',
-        title: '审核职称及层级变动',
+        type: "nurseProfessionalAndLevelChange",
+        title: "审核职称及层级变动",
         tableFormat: [
           {
             职称聘用时间: `appointmentTime`,
@@ -152,21 +152,21 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '继续教育': {
+    case "继续教育": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseContinuingEducation',
-        title: '审核继续教育',
+        type: "nurseContinuingEducation",
+        title: "审核继续教育",
         tableFormat: [
           {
             开始时间: `startTime`,
@@ -178,21 +178,21 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '著作译文论文': {
+    case "著作译文论文": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nursePaperExperience',
-        title: '审核著作译文论文',
+        type: "nursePaperExperience",
+        title: "审核著作译文论文",
         tableFormat: [
           {
             发表日期: `publicDate`,
@@ -204,21 +204,21 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '所获奖励': {
+    case "所获奖励": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseAwardWinning',
-        title: '审核所获奖励',
+        type: "nurseAwardWinning",
+        title: "审核所获奖励",
         tableFormat: [
           {
             时间: `time`,
@@ -233,21 +233,21 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '年度考核结果': {
+    case "年度考核结果": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseYearCheck',
-        title: '审核年度考核结果',
+        type: "nurseYearCheck",
+        title: "审核年度考核结果",
         tableFormat: [
           {
             年度: `year`,
@@ -255,21 +255,21 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '医院三基考核': {
+    case "医院三基考核": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseHospitalsThreeBase',
-        title: '审核医院三基考核',
+        type: "nurseHospitalsThreeBase",
+        title: "审核医院三基考核",
         tableFormat: [
           {
             年度: `year`,
@@ -280,21 +280,21 @@ export default function Format(row: any, getTableData: any) {
           }
         ],
         fileData: row.urlImageOne
-          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+          ? row.urlImageOne.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
-    case '工作情况登记': {
+    case "工作情况登记": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseRegistrationWork',
-        title: '审核工作情况登记',
+        type: "nurseRegistrationWork",
+        title: "审核工作情况登记",
         tableFormat: [
           {
             年度: `year`,
@@ -318,24 +318,24 @@ export default function Format(row: any, getTableData: any) {
         ],
         // fileData: [{}],
         allData: row
-      })
+      });
     }
-    case '附件': {
+    case "附件": {
       return globalModal.auditModal.show({
         getTableData: getTableData,
         id: row.id,
-        type: 'nurseAttachment',
-        title: '附件审核',
+        type: "nurseAttachment",
+        title: "附件审核",
         tableFormat: [],
         fileData: row.path
-          ? row.path.split(',').map((item: any, index: number) => {
+          ? row.path.split(",").map((item: any, index: number) => {
               return {
-                ['附件' + (index + 1)]: item
-              }
+                ["附件" + (index + 1)]: item
+              };
             })
           : [],
         allData: row
-      })
+      });
     }
   }
 }

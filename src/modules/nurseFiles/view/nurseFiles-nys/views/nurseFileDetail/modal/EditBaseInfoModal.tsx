@@ -51,7 +51,7 @@ const uploadCard = () => Promise.resolve("123");
 //   highestEducation: (val) => !!val || '最高学历',
 //   zyzsNumber: (val) => !!val || '',
 //   cardNumber: (val) => !!val || '',
-//   socialGroup: (val) => !!val || '社会团体职务',
+//   socialGroup: (val) => !!val || '学术任职',
 //   phone: (val) => !!val || '',
 //   address: (val) => !!val || ''
 // }
@@ -235,7 +235,7 @@ export default observer(function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`社会团体职务`} name="socialGroup">
+            <Form.Field label={`学术任职`} name="socialGroup">
               <Input />
             </Form.Field>
           </Col>

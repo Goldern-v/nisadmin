@@ -113,7 +113,7 @@ export default observer(function BaseInfo() {
                 },
                 {
                   身份证号: `cardNumber`,
-                  社会团体职务: `socialGroup`
+                  学术任职: `socialGroup`
                 },
                 {
                   手机号: `phone`,
@@ -188,7 +188,7 @@ export default observer(function BaseInfo() {
         },
         {
           身份证号: data.cardNumber,
-          社会团体职务: data.socialGroup
+          学术任职: data.socialGroup
         },
         {
           手机号: data.phone,

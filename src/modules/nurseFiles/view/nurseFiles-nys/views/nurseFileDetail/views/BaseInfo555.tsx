@@ -1,42 +1,44 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import BaseLayout from '../components/BaseLayout'
-import { nurseFilesService } from '../../../services/NurseFilesService';
-import { appStore, authStore } from 'src/stores'
-import { sexEnum } from 'src/libs/enum/common'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
+import BaseLayout from "../components/BaseLayout";
+import { nurseFilesService } from "../../../services/NurseFilesService";
+import { appStore, authStore } from "src/stores";
+import { sexEnum } from "src/libs/enum/common";
+import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 export interface Props extends RouteComponentProps {}
-import createModal from 'src/libs/createModal'
-import EditBaseInfoModal from '../modal/EditBaseInfoModal'
-import { observer } from 'mobx-react-lite'
-import { globalModal } from 'src/global/globalModal'
-let editBaseInfoModal = createModal(EditBaseInfoModal)
-export default observer(function BaseInfo () {
-  let [tableData, setTableData]: [any, any] = useState([])
-  let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
-  const [idData, setIdData] = useState(0)
+import createModal from "src/libs/createModal";
+import EditBaseInfoModal from "../modal/EditBaseInfoModal";
+import { observer } from "mobx-react-lite";
+import { globalModal } from "src/global/globalModal";
+let editBaseInfoModal = createModal(EditBaseInfoModal);
+export default observer(function BaseInfo() {
+  let [tableData, setTableData]: [any, any] = useState([]);
+  let [info, setInfo]: [any, any] = useState(
+    nurseFileDetailViewModal.nurserInfo
+  );
+  const [idData, setIdData] = useState(0);
   const btnList = [
     {
-      label: '修改',
+      label: "修改",
       onClick: () => {
         editBaseInfoModal.show({
           id: idData,
           data: info
-        })
+        });
       }
     },
     {
-      label: '审核',
+      label: "审核",
       //
 
       //
       onClick: () => {
         globalModal.auditModal.show({
           id: idData,
-          type: 'nurseInformation',
+          type: "nurseInformation",
           // empNo: appStore.queryObj.empNo,
-          title: '审核基础信息',
+          title: "审核基础信息",
           tableFormat: [
             {
               获得时间: `empName`,
@@ -53,16 +55,16 @@ export default observer(function BaseInfo () {
           //   }
           // ],
           allData: info
-        })
+        });
       }
     }
-  ]
+  ];
 
   const getTableData = () =>
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-      let data = res.data || info
-      setInfo(data)
-      setIdData(data.id)
+    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then(res => {
+      let data = res.data || info;
+      setInfo(data);
+      setIdData(data.id);
       setTableData([
         {
           性别: sexEnum[data.sex],
@@ -86,16 +88,16 @@ export default observer(function BaseInfo () {
         },
         {
           身份证号: data.cardNumber,
-          社会团体职务: data.socialGroup
+          学术任职: data.socialGroup
         },
         {
           手机号: data.phone,
           家庭住址: data.address
         }
-      ])
-    })
+      ]);
+    });
   useEffect(() => {
-    getTableData()
+    getTableData();
     // if (
     //   (authStore.post === '护长' && info.auditedStatusName === '待护士长审核') ||
     //   authStore.post === '护理部' ||
@@ -184,17 +186,17 @@ export default observer(function BaseInfo () {
     //     }
     //   ])
     // }
-  }, [authStore.post])
+  }, [authStore.post]);
   return (
-    <BaseLayout title='基本信息' btnList={btnList}>
+    <BaseLayout title="基本信息" btnList={btnList}>
       <ScrollCon>
         <InfoTable>
           <colgroup>
-            <col width='120' />
+            <col width="120" />
             <col />
-            <col width='139' />
+            <col width="139" />
             <col />
-            <col width='200' />
+            <col width="200" />
           </colgroup>
           <tbody>
             <tr>
@@ -208,9 +210,12 @@ export default observer(function BaseInfo () {
               </td>
               <td rowSpan={5}>
                 <img
-                  className='head-img'
-                  src={(info && info.nearImageUrl) || require('../../../images/护士默认头像.png')}
-                  alt=''
+                  className="head-img"
+                  src={
+                    (info && info.nearImageUrl) ||
+                    require("../../../images/护士默认头像.png")
+                  }
+                  alt=""
                 />
               </td>
             </tr>
@@ -230,13 +235,13 @@ export default observer(function BaseInfo () {
         </InfoTable>
         <ZyzsCon>
           <span>职业证书：</span>
-          {info.zyzsUrl && <img src={info.zyzsUrl} alt='' />}
+          {info.zyzsUrl && <img src={info.zyzsUrl} alt="" />}
         </ZyzsCon>
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>
-  )
-})
+  );
+});
 const InfoTable = styled.table`
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
@@ -260,14 +265,14 @@ const InfoTable = styled.table`
   & tr td:nth-of-type(1),
   & tr td:nth-of-type(3) {
   }
-`
+`;
 const Value = styled.div`
   background: rgba(238, 239, 240, 1);
   border-radius: 2px;
   border: 1px solid rgba(227, 228, 230, 1);
   padding: 3px 13px;
   min-height: 27px;
-`
+`;
 
 const ZyzsCon = styled.div`
   height: 220px;
@@ -291,9 +296,9 @@ const ZyzsCon = styled.div`
     top: 20px;
     left: 137px;
   }
-`
+`;
 
 const ScrollCon = styled.div`
   overflow: auto;
   height: calc(100vh - 300px);
-`
+`;
