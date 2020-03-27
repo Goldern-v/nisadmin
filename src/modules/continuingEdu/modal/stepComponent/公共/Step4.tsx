@@ -76,7 +76,7 @@ export default function Step4() {
               fileType: getFileType(res.data.path)
             };
             list.push(item);
-
+            console.log(list, "list");
             /** 最后一项 */
             if (index == arr.length - 1) {
               return current().then((res: any) => {
@@ -92,6 +92,17 @@ export default function Step4() {
             }
           });
         } else {
+          /** 如果只上传一个 */
+          if (arr.length == 1) {
+            return current().then((res: any) => {
+              let item = {
+                ...res.data,
+                size: getFileSize(res.data.size),
+                fileType: getFileType(res.data.path)
+              };
+              list.push(item);
+            });
+          }
           return current();
         }
       }, 0)
