@@ -11,7 +11,6 @@ export interface Props {}
 export default function Step4() {
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [fileList, setFileList] = useState([]);
-  const [title, setTitle] = useState("");
 
   /** 上传文件状态 */
   const [progressEventMap, setProgressEventMap]: any = useState({});
@@ -48,13 +47,13 @@ export default function Step4() {
   };
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.persist();
-    let promiseList: any = [];
+    let promiseList: any[] = [];
     let files = e.target.files || [];
 
     for (let i = 0; i < files.length; i++) {
       let postData = new FormData();
       postData.append("file", files[i]);
-      promiseList.push(
+      promiseList.push(() =>
         stepServices.uploadAttachment(postData, (progressEvent: any) => {
           let fileName = files[i].name;
           setProgressEventMap({
@@ -66,30 +65,64 @@ export default function Step4() {
       );
     }
     let hideLoading = message.loading("正在上传，请稍等", 0);
-
-    Axios.all(promiseList)
-      .then(res => {
-        console.log(res, "1111");
-        let list: any = [
-          ...fileList,
-          ...res.map(({ data: item }: any) => {
-            return {
-              ...item,
-              size: getFileSize(item.size),
-              fileType: getFileType(item.path)
+    let list: any = [...fileList];
+    promiseList
+      .reduce((total: any, current, index, arr) => {
+        if (total) {
+          return total.then((res: any) => {
+            let item = {
+              ...res.data,
+              size: getFileSize(res.data.size),
+              fileType: getFileType(res.data.path)
             };
-          })
-        ];
+            list.push(item);
+
+            /** 最后一项 */
+            if (index == arr.length - 1) {
+              return current().then((res: any) => {
+                let item = {
+                  ...res.data,
+                  size: getFileSize(res.data.size),
+                  fileType: getFileType(res.data.path)
+                };
+                list.push(item);
+              });
+            } else {
+              return current();
+            }
+          });
+        } else {
+          return current();
+        }
+      }, 0)
+      .then((res: any) => {
         setFileList(list);
         setProgressEventMap({});
-        if (!title && list[0] && list[0].name) {
-          setTitle(list[0].name.split(".")[0]);
-        }
         hideLoading();
       })
-      .catch(e => {
+      .catch((e: any) => {
         hideLoading();
       });
+
+    // Axios.all(promiseList)
+    //   .then(res => {
+    //     let list: any = [
+    //       ...fileList,
+    //       ...res.map(({ data: item }: any) => {
+    //         return {
+    //           ...item,
+    //           size: getFileSize(item.size),
+    //           fileType: getFileType(item.path)
+    //         };
+    //       })
+    //     ];
+    //     setFileList(list);
+    //     setProgressEventMap({});
+    //     hideLoading();
+    //   })
+    //   .catch(e => {
+    //     hideLoading();
+    //   });
   };
   return (
     <Wrapper>
