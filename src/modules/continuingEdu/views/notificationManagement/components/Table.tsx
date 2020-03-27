@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { message as Message, Modal } from "src/vendors/antd";
 import { notificationModal } from "../NotificationModal";
-import { notificationApi } from "../api/NotificationApi";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 

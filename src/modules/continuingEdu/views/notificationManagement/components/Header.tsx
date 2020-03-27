@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import React, { useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { TableHeadCon } from "src/components/BaseTable";
 import { DatePicker, Select, Input, Button } from "src/vendors/antd";
 import { notificationModal } from "../NotificationModal";
 import { observer } from "mobx-react-lite";
 
 export default observer(function Header() {
-  useEffect(() => {
+  useLayoutEffect(() => {
     notificationModal.onload();
   }, []);
 
