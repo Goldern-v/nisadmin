@@ -39,7 +39,7 @@ export default observer(function Step5() {
             <td className="value">{ylStepViewModal.stepData2.title}</td>
           </tr>
           <tr>
-            <td className="key">学习开始时间：</td>
+            <td className="key">演练开始时间：</td>
             <td className="value">
               {ylStepViewModal.stepData2.startTime &&
                 moment(ylStepViewModal.stepData2.startTime).format(
@@ -48,7 +48,7 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
-            <td className="key">学习开放时间：</td>
+            <td className="key">演练开放时间：</td>
             <td className="value">
               {ylStepViewModal.stepData2.openTime}
               {ylStepViewModal.stepData2.openTimeUnit}{" "}
