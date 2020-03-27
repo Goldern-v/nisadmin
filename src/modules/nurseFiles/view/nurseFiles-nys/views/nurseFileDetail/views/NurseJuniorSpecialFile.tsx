@@ -90,8 +90,8 @@ export default observer(function NurseJuniorSpecialFile() {
                 globalModal.auditModal.show({
                   getTableData: getTableData,
                   id: row.id,
-                  type: "nurseAwardWinning",
-                  title: "审核所获奖励",
+                  type: "nurseJuniorSpecialFile",
+                  title: "审核专科护士",
                   tableFormat: [
                     {
                       时间: `time`,
