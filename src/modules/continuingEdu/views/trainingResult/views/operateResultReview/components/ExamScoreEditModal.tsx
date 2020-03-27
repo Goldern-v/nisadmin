@@ -100,6 +100,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
               <InputNumber
                 min={0}
                 size="small"
+                disabled={type == 'view'}
                 max={item.fullScores || 0}
                 className="score-edit"
                 value={item.deduction}

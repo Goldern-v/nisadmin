@@ -153,7 +153,7 @@ export default observer(function StudyResultReview() {
             }
           }}
           pagination={{
-            pageSizeOptions: ['10', '15', '20'],
+            pageSizeOptions: ['10', '15', '20', '30', '50'],
             current: query.pageIndex,
             pageSize: query.pageSize,
             total: tableDataTotal,
