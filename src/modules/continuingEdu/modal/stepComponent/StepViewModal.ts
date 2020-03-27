@@ -10,13 +10,15 @@ import { getVarType } from "src/utils/object/object";
 import moment from "moment";
 import { pxStepViewModal } from "./培训/PXStepViewModal";
 import { lxStepViewModal } from "./练习/LXStepViewModal";
+import { ylStepViewModal } from "./演练/YLStepViewModal";
 
 export let selfStepViewModalMap: any = {
   1: xxStepViewModal,
   2: pxStepViewModal,
   3: ksStepViewModal,
   4: lxStepViewModal,
-  5: scStepViewModal
+  5: scStepViewModal,
+  6: ylStepViewModal
 };
 
 export let teachingMethodMap: any = {
@@ -158,7 +160,8 @@ class StepViewModal {
       2: "addTeachingPlanInfoTrain",
       3: "addTeachingPlanInfoExam",
       4: "addTeachingPlanInfoExercise",
-      5: "addTeachingPlanInfoPractise"
+      5: "addTeachingPlanInfoPractise",
+      6: "addTeachingPlanInfoWalkthrough"
     };
 
     return (stepServices as any)[

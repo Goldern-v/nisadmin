@@ -81,20 +81,20 @@ export default observer(function Step2() {
       <Form ref={refForm} rules={rules} labelWidth={100} onChange={onFormChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`学习名称`} name="title">
+            <Form.Field label={`演练名称`} name="title">
               <Input />
             </Form.Field>
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`学习开始时间`} name="startTime">
+            <Form.Field label={`演练开始时间`} name="startTime">
               <DateTimePicker />
             </Form.Field>
           </Col>
 
           <DateSelectCon>
             <div className="date-row">
-              <span className="date-label">学习开放</span>
+              <span className="date-label">演练开放</span>
               <Form.Field label={``} name="openTime" labelWidth={1}>
                   <InputNumber></InputNumber>
               </Form.Field>
@@ -110,7 +110,7 @@ export default observer(function Step2() {
             <span className="aside">{stepViewModal.endTime ? `即：${stepViewModal.endTime} 结束`: ''}</span>
             </div>
             <div className="date-row">
-              <span  className="date-label">学习结束</span>
+              <span  className="date-label">演练结束</span>
               <Form.Field label={``} name="daysToArchive" labelWidth={1}>
                 <InputNumber min={2}></InputNumber>
               </Form.Field>
@@ -131,7 +131,7 @@ export default observer(function Step2() {
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`学习地址`} name="address">
+            <Form.Field label={`演练地址`} name="address">
             <AutoComplete
                 dataSource={allStepViewModal.dictObj.studyAndTrainAddress.map(
                   (item: any) => item.name
@@ -141,7 +141,7 @@ export default observer(function Step2() {
           </Col>
 
           <Col span={10}>
-            <Form.Field label={`学分`} name="studentCreditType">
+            <Form.Field label={`学员学分`} name="studentCreditType">
               <Select>
                 {studentCreditTypeList.map(item => (
                   <Select.Option value={item.code} key={item.name}>
@@ -163,7 +163,7 @@ export default observer(function Step2() {
           </Col>
 
           <Col span={24}>
-            <Form.Field label={`学时`} name="studentClassHours" suffix="学时">
+            <Form.Field label={`学员学时`} name="studentClassHours" suffix="学时">
               <InputNumber />
             </Form.Field>
           </Col>

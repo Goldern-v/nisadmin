@@ -54,6 +54,14 @@ export default class StepServices extends BaseApiService {
     );
   }
 
+  /** 新建教学计划 演练 */
+  public addTeachingPlanInfoWalkthrough(obj: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/addTeachingPlanInfo/walkthrough`,
+      obj
+    );
+  }
+
   /** 上传附件 */
   public uploadAttachment(obj: any, onUploadProgress?: any) {
     return this.post(`/file/uploadAttachment/studyAndTrain`, obj, {
