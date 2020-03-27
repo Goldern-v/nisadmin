@@ -34,7 +34,7 @@ export default observer(function TestingResultReview() {
   const answerSheet = createModal(AnswerSheetModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
-  const editScoreAuth = baseInfo.scorePersonList.find((item: any) => {
+  const editScoreAuth = baseInfo.scorePersonList?.find((item: any) => {
     return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
   })
 
@@ -215,6 +215,7 @@ export default observer(function TestingResultReview() {
 
     Modal.confirm({
       title: '发布成绩',
+      centered: true,
       content: '确定给所有考生发布成绩？',
       onOk: () => {
         setLoading(true)

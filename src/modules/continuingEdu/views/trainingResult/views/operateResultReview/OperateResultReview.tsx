@@ -35,7 +35,7 @@ export default observer(function OperateResultReview() {
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
 
-  let editScoreAuth = baseInfo.scorePersonList.find((item: any) => {
+  let editScoreAuth = baseInfo.scorePersonList?.find((item: any) => {
     return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
   })
 
@@ -149,15 +149,14 @@ export default observer(function OperateResultReview() {
   ]
 
   const handleViewScore = (record: any) => {
-    if (!editScoreAuth) {
-      Modal.warn({
-        title: '提示',
-        content: '非评分人不能上传成绩'
-      })
-    }
-    //查看详情
+    //查看考核成绩
     examScoreEdit.show({
-
+      cetpId: appStore.queryObj.id,
+      empNo: record.empNo,
+      type: editScoreAuth ? 'edit' : 'view',
+      onOkCallBack: () => {
+        trainingResultModel.getTableData()
+      }
     })
   }
   const handlePageChange = (pageIndex: number, pageSize: number | undefined) => {
@@ -198,6 +197,7 @@ export default observer(function OperateResultReview() {
 
     Modal.confirm({
       title: '发布成绩',
+      centered: true,
       content: '确定给所有学员发布成绩？',
       onOk: () => {
         setLoading(true)
