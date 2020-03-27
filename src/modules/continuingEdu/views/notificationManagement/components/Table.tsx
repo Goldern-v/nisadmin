@@ -2,12 +2,12 @@ import styled from "styled-components";
 import React from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { message as Message, Modal } from "src/vendors/antd";
-import { observer } from "src/vendors/mobx-react-lite";
 import { notificationModal } from "../NotificationModal";
 import { notificationApi } from "../api/NotificationApi";
 import { appStore } from "src/stores";
+import { observer } from "mobx-react-lite";
 
-export default function Table() {
+export default observer(function Table() {
   //类型背景颜色函数封装
   const typeBackground = (data: any) => {
     const background = [
@@ -187,5 +187,5 @@ export default function Table() {
       />
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div``;

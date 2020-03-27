@@ -3,8 +3,9 @@ import React from "react";
 import { TabledCon } from "src/components/BaseTable";
 import Header from "./components/Header";
 import Table from "./components/Table";
+import { observer } from "mobx-react-lite";
 
-export default function Notification() {
+export default observer(function Notification() {
   return (
     <Wrapper>
       <Header />
@@ -13,7 +14,7 @@ export default function Notification() {
       </Content>
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
