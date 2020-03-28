@@ -60,7 +60,7 @@ export default observer(function TrainingResultReview() {
       dataIndex: 'deptName',
       title: '病区',
       align: 'center',
-      width: 180,
+      width: 120,
     },
     {
       dataIndex: 'signInTime',

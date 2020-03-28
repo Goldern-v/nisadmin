@@ -60,49 +60,50 @@ export default observer(function PracticeResultReview(props: Props) {
       dataIndex: 'deptName',
       title: '病区',
       align: 'center',
+      width: 120,
     },
-    {
-      dataIndex: 'isValidResult',
-      title: '成绩有效',
-      align: 'center',
-      width: 60,
-      render: (isValidResult: number, record: any) => {
-        const itemScoreConfirm = () => {
-          scorceConfirm.show({
-            onOkCallBack: () => {
-              message.success(`${record.empName} 的成绩修改成功`)
-              trainingResultModel.getTableData()
-            },
-            cetpId: appStore.queryObj.id,
-            empNoList: [record.empNo],
-            isValidResult: record.isValidResult.toString() || ''
-          })
-        }
+    // {
+    //   dataIndex: 'isValidResult',
+    //   title: '成绩有效',
+    //   align: 'center',
+    //   width: 60,
+    //   render: (isValidResult: number, record: any) => {
+    //     const itemScoreConfirm = () => {
+    //       scorceConfirm.show({
+    //         onOkCallBack: () => {
+    //           message.success(`${record.empName} 的成绩修改成功`)
+    //           trainingResultModel.getTableData()
+    //         },
+    //         cetpId: appStore.queryObj.id,
+    //         empNoList: [record.empNo],
+    //         isValidResult: record.isValidResult.toString() || ''
+    //       })
+    //     }
 
-        if (isValidResult == 1)
-          return <span
-            style={{ color: 'blue', cursor: 'pointer' }}
-            onClick={itemScoreConfirm}>
-            有效
-            </span>
-        else
-          return <span
-            style={{ color: 'red', cursor: 'pointer' }}
-            onClick={itemScoreConfirm}>
-            无效
-          </span>
-      }
-    },
-    {
-      dataIndex: 'lastAnswerTime',
-      title: '最近答题',
-      align: 'center',
-      width: 180,
-      render: (text: string, record: any) => {
-        if (!text) return '未答题'
-        return text
-      }
-    },
+    //     if (isValidResult == 1)
+    //       return <span
+    //         style={{ color: 'blue', cursor: 'pointer' }}
+    //         onClick={itemScoreConfirm}>
+    //         有效
+    //         </span>
+    //     else
+    //       return <span
+    //         style={{ color: 'red', cursor: 'pointer' }}
+    //         onClick={itemScoreConfirm}>
+    //         无效
+    //       </span>
+    //   }
+    // },
+    // {
+    //   dataIndex: 'lastAnswerTime',
+    //   title: '最近答题',
+    //   align: 'center',
+    //   width: 180,
+    //   render: (text: string, record: any) => {
+    //     if (!text) return '未答题'
+    //     return text
+    //   }
+    // },
     {
       dataIndex: 'progressRate',
       title: '练习进度',
@@ -221,10 +222,10 @@ export default observer(function PracticeResultReview(props: Props) {
       <TableWrapper>
         <BaseTable
           loading={loading}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleRowSelect
-          }}
+          // rowSelection={{
+          //   selectedRowKeys,
+          //   onChange: handleRowSelect
+          // }}
           rowKey='empNo'
           surplusWidth={200}
           surplusHeight={315}
@@ -244,7 +245,7 @@ export default observer(function PracticeResultReview(props: Props) {
           }}
           columns={columns}
         />
-        <SelectionOperate>
+        {/* <SelectionOperate>
           <Checkbox
             indeterminate={(() => {
               if (selectedRowKeys.length <= 0)
@@ -266,7 +267,7 @@ export default observer(function PracticeResultReview(props: Props) {
           </Checkbox>
           <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
           <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
-        </SelectionOperate>
+        </SelectionOperate> */}
       </TableWrapper>
     </MainPannel>
     <scorceConfirm.Component />

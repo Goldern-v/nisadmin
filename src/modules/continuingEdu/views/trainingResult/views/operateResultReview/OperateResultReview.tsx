@@ -71,6 +71,7 @@ export default observer(function OperateResultReview() {
       dataIndex: 'deptName',
       title: '病区',
       align: 'center',
+      width: 120,
     },
     {
       dataIndex: 'signTime',
@@ -273,10 +274,10 @@ export default observer(function OperateResultReview() {
       <TableWrapper>
         <BaseTable
           loading={loading}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: handleRowSelect
-          }}
+          // rowSelection={{
+          //   selectedRowKeys,
+          //   onChange: handleRowSelect
+          // }}
           rowKey='empNo'
           surplusWidth={200}
           surplusHeight={315}
@@ -296,7 +297,7 @@ export default observer(function OperateResultReview() {
           }}
           columns={columns}
         />
-        <SelectionOperate>
+        {/* <SelectionOperate>
           <Checkbox
             indeterminate={(() => {
               if (selectedRowKeys.length <= 0)
@@ -318,7 +319,7 @@ export default observer(function OperateResultReview() {
           </Checkbox>
           <span>共选择对象（{selectedRowKeys.length}）人，执行操作：</span>
           <ActiveText onClick={handleScoreAvailable}>成绩有效？</ActiveText>
-        </SelectionOperate>
+        </SelectionOperate> */}
       </TableWrapper>
     </MainPannel>
     <scorceConfirm.Component />
