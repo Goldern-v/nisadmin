@@ -44,7 +44,7 @@ export default function OperateSetting(props: Props) {
             <tr key={idx}>
               <td>{idx + 1}</td>
               <td>{item.itemName}</td>
-              <td>{item.score}</td>
+              <td>{item.scores}</td>
             </tr>)}
           {info.scoreItemList.length <= 0 && <tr>
             <td colSpan={3} style={{ color: "#666" }}>暂无评分项目</td>
