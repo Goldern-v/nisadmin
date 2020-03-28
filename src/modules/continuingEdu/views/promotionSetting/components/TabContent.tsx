@@ -10,7 +10,12 @@ export interface Props {
 const Option = Select.Option
 
 export default observer(function TabContent(props: Props) {
-  const { data, loading, activeLevel, currentLevelItem } = promotionSettingModel
+  const {
+    data,
+    loading,
+    activeLevel,
+    currentLevelItem
+  } = promotionSettingModel
 
   const handleSave = () => {
     Modal.confirm({
@@ -22,7 +27,7 @@ export default observer(function TabContent(props: Props) {
           </div>
           <div>确实发布新的晋升要求吗？</div>
           <div>
-            发布后层级为{currentLevelItem.current}护士会立即收到一条更新消息通知
+            发布后层级为 {currentLevelItem.current} 护士会立即收到一条更新消息通知
           </div>
         </div>
       ),
@@ -56,7 +61,7 @@ export default observer(function TabContent(props: Props) {
               {itemCfg.type === "number" && (
                 <React.Fragment>
                   <InputNumber
-
+                    precision={itemCfg.precision}
                     className={typeName("input-type")}
                     value={item.requestValue}
                     onChange={(requestValue: any) =>
@@ -72,7 +77,6 @@ export default observer(function TabContent(props: Props) {
                   {itemCfg.units && (
                     <Select
                       className="unit-select"
-
                       value={item.unit}
                       onChange={(unit: any) =>
                         promotionSettingModel.setDataItem(keyIdx, {
@@ -97,7 +101,6 @@ export default observer(function TabContent(props: Props) {
               )}
               {itemCfg.type === "select" && (
                 <Select
-
                   className="opt-select"
                   value={item.requestValue}
                   onChange={(requestValue: any) =>

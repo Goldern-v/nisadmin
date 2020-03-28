@@ -16,9 +16,6 @@ import { ModalComponentProps } from "src/libs/createModal"
 import { observer } from "mobx-react-lite"
 import { promotionSettingModel } from "../model/PromotionSettingModel"
 import { promotionSettingService } from './../api/PromotionSettingService'
-// import {__EXPERIMENTAL_DND_HOOKS_THAT_MAY_CHANGE_AND_BREAK_MY_BUILD__} from 'react-dnd'
-
-// const {useDrag,useDrop} = __EXPERIMENTAL_DND_HOOKS_THAT_MAY_CHANGE_AND_BREAK_MY_BUILD__
 
 export interface Props extends ModalComponentProps {
   defaultLevelSort?: string,
@@ -117,7 +114,7 @@ export default observer(function RequestEditModal(props: Props) {
 
     return <DragCon
       draggable={draggable}
-      style={{ width: itemIdx < 0 ? 200 : 216 }}
+      style={{ width: 200 }}
       onDragStart={(e) => {
         e.dataTransfer.setData('dragIdx', itemIdx.toString())
       }}

@@ -16,8 +16,13 @@ class PromotionSettingModel {
     let type = 'number'
     let units = [] as any[]
     let vals = [] as any[]
+    let precision = 0
     switch (item?.requestKey) {
+      case '学时':
+        precision = 1
+        break
       case '在院工作年限':
+        precision = 1
         units = [
           { code: '日', name: '日' },
           { code: '周', name: '周' },
@@ -67,7 +72,7 @@ class PromotionSettingModel {
           { code: '群众', name: '群众' },
         ]
         break
-      case '编织':
+      case '编制':
         type = 'select'
         vals = [
           { code: '人事编制', name: '人事编制' },
@@ -86,6 +91,7 @@ class PromotionSettingModel {
       type,
       units: units.length <= 0 ? null : units,
       vals: vals.length <= 0 ? null : vals,
+      precision,
     }
   }
 
