@@ -34,7 +34,6 @@ export default observer(function ShowTable(props: Props) {
     },
     {
       title: "评分项标题",
-      width: 135,
       align: "center",
       dataIndex: "itemName",
       render(text: any, record: any, index: number) {
@@ -43,6 +42,7 @@ export default observer(function ShowTable(props: Props) {
     },
     {
       title: "分值",
+      width: 100,
       dataIndex: "scores",
       align: "center",
       render(text: any, record: any, index: number) {

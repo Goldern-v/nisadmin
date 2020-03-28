@@ -183,9 +183,11 @@ export default function TypeManagement() {
   // 推送 ---current：1单条 2全部 3选中
   const pushData = (current: any, record?: any) => {
     let obj: any = { cetpId };
+    let world: any = "您确定要重新推送该条消息吗？";
     if (current === 1) {
       obj.empNos = [record];
     } else if (current === 2) {
+      world = "您确定要全部重新推送吗？";
       notificationApi.getResultData({ cetpId }).then(res => {
         let arr: any = [];
         res.data.list.map((item: any) => {
@@ -194,6 +196,7 @@ export default function TypeManagement() {
         obj.empNos = arr.slice();
       });
     } else if (current === 3) {
+      world = "您确定要重新推送选中消息吗？";
       if (empNos.length > 0) {
         obj.empNos = empNos.slice();
       } else {
@@ -201,23 +204,37 @@ export default function TypeManagement() {
         return;
       }
     }
-    notificationApi.pushData(obj).then(res => {
-      let success = res.data.successList.length;
-      let fail = res.data.failureList.length;
-      let total = success + fail;
-      let content = (
-        <div>
-          <div>
-            总共推送{total}人，异常{fail}人，完成推送{success}人！
-          </div>
-        </div>
-      );
-      Modal.warning({
-        title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
-        content,
-        okText: "确定",
-        onOk: () => {}
-      });
+    let content = (
+      <div>
+        <div>{world}</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        notificationApi.pushData(obj).then(res => {
+          let success = res.data.successList.length;
+          let fail = res.data.failureList.length;
+          let total = success + fail;
+          let content = (
+            <div>
+              <div>
+                总共推送{total}人，异常{fail}人，完成推送{success}人！
+              </div>
+            </div>
+          );
+          Modal.warning({
+            title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
+            content,
+            okText: "确定",
+            onOk: () => {}
+          });
+        });
+      }
     });
   };
 

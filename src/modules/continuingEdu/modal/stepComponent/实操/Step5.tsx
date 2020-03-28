@@ -89,9 +89,7 @@ export default observer(function Step5() {
           <tr>
             <td className="key">评分负责人：</td>
             <td className="value">
-              <span>
-                {scStepViewModal.stepData2.needScorePerson ? "需要" : "不需要"}
-              </span>
+              <span>需要</span>
               {!!scStepViewModal.stepData2.scorePersonList.length && (
                 <span>
                   （
@@ -157,7 +155,7 @@ export default observer(function Step5() {
           </tr>
 
           <tr>
-            <td className="key">习题上传：</td>
+            <td className="key">评分项上传：</td>
             <td className="value" />
           </tr>
           <tr>

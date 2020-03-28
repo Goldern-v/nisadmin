@@ -23,9 +23,12 @@ import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
 import { cloneJson } from "src/utils/json/clone";
+import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
+
 export interface Props {}
 
 export default observer(function Step4() {
+  const testPage = createModal(TestPageModal); // 习题预览弹窗
   // 组织方式
 
   const selectNurseModal = createModal(SelectPeopleModal);
@@ -44,6 +47,18 @@ export default observer(function Step4() {
   useLayoutEffect(() => {
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
   }, []);
+
+  const handlePagePreview = () => {
+    testPage.show({
+      // id: info.id,
+      // teachingMethodName: info.teachingMethodName,
+      // title: info.title,
+      // startTime: info.startTime,
+      // endTime: info.endTime,
+      // examDuration: info.examDuration,
+      // passScores: info.passScores,
+    });
+  };
 
   return (
     <Wrapper>
@@ -70,13 +85,14 @@ export default observer(function Step4() {
         <Row style={{ marginTop: 20 }}>
           <Col span={24}>
             <Form.Field label={`上传题库`} name="scoreItems">
-              <UpdateTable />
+              <UpdateTable type="sc" />
             </Form.Field>
           </Col>
         </Row>
       </Form>
 
       <selectNurseModal.Component />
+      <testPage.Component />
     </Wrapper>
   );
 });

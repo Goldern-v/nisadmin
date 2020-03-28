@@ -12,6 +12,7 @@ import { scStepViewModal } from "./SCStepViewModal";
 export interface Props {
   value?: any;
   onChange?: any;
+  type?: any;
 }
 
 export default observer(function UpdateTable(props: Props) {
@@ -111,6 +112,13 @@ export default observer(function UpdateTable(props: Props) {
   ];
 
   const addList = () => {
+    // 实操习题上传最多不可以超过4条
+    if (props.type && props.type === "sc") {
+      if (value && value.length > 3) {
+        message.warning("评分项最多只可添加4项");
+        return;
+      }
+    }
     onChange([
       ...dataSource,
       {

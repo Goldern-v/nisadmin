@@ -124,10 +124,10 @@ export default observer(function Table() {
       align: "center"
     },
     {
-      title: "绑定",
+      title: "绑定(人)",
       dataIndex: "participantsCount",
       key: "participantsCount",
-      width: 60,
+      width: 70,
       align: "center"
     },
     {

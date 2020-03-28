@@ -25,8 +25,8 @@ import { observer } from "mobx-react-lite";
 export interface Props {}
 
 export default observer(function Step1() {
-  // 组织方式
-  const zzfs = [{ name: "线上", code: 1 }];
+  // 组织方式 1-线上 2-线下
+  const zzfs = [{ name: "线下", code: 2 }];
   const studentCreditTypeList = [
     { name: "院级学分", code: 1 },
     { name: "片区学分", code: 2 },
@@ -341,6 +341,9 @@ function MoreBox(props: any) {
       border-color: #1db38b;
       outline: 0;
       box-shadow: 0 0 0 2px rgba(0, 166, 128, 0.2);
+    }
+    /deep/ .jXpPbw {
+      width: 120px !important;
     }
   `;
   return <Wrapper onClick={onClick}>...</Wrapper>;
