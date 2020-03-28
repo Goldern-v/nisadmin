@@ -12,9 +12,9 @@ export default function BaseSetting(props: Props) {
   const _labelWidth = labelWidth ? `${labelWidth}px` : '92px'
 
   const creditInfo = () => {
-    let credit = info.credit || info.studentCredit || ''
+    let credit = info.credit || info.studentCredit || '0'
     let creditType = info.creditType || info.studentCreditType || ''
-    let classHours = info.classHours || info.studentClassHours || ''
+    let classHours = info.classHours || info.studentClassHours || '0'
     let baseCredit = <React.Fragment>
       <div className="row">
         <div className="label" style={{ width: _labelWidth }}>学 分：</div>

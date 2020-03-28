@@ -142,13 +142,15 @@ export default observer(function OperateResultReview() {
       width: 100,
       render: (status: string, record: any) => {
         return <DoCon>
-          <span onClick={() => handleViewScore(record)}>查看成绩</span>
+          {record.signInTime && <span onClick={() => handleViewScore(record)}>查看成绩</span>}
+          {!record.signInTime && <span style={{ color: '#999', cursor: 'default' }}>查看成绩</span>}
         </DoCon>
       }
     }
   ]
 
   const handleViewScore = (record: any) => {
+    if (!record.signInTime) return
     //查看考核成绩
     examScoreEdit.show({
       cetpId: appStore.queryObj.id,
