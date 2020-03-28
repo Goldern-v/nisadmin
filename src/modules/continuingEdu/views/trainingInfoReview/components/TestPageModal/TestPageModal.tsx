@@ -7,13 +7,13 @@ import QuestionList from './QuestionList'
 import AwnserInfo from './AwnserInfo'
 import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService'
 export interface Props extends ModalComponentProps {
-  id?: number | string,
-  teachingMethodName?: string,
-  title?: string,
-  startTime?: string,
-  endTime?: string,
-  examDuration?: string,
-  passScores?: string
+  id?: number | string, //教学计划ceptId
+  teachingMethodName?: string, //教学类型名称
+  title?: string, //教学计划名称
+  startTime?: string, //考试类型开始时间
+  endTime?: string, //考试类型借宿时间
+  examDuration?: string, //考试时间
+  passScores?: string  //及格分数
 }
 
 export default observer(function TestPageModal(props: Props) {
