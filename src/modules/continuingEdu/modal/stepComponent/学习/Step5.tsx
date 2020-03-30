@@ -119,7 +119,7 @@ export default observer(function Step5() {
             <td className="value">
               <FileList>
                 {stepViewModal.stepData4.attachmentIds.length > 0 && (
-                  <FilesBox>
+                  <FilesBox className="files">
                     {stepViewModal.stepData4.attachmentIds.map(
                       (item: any, index: number) => (
                         <div className="file-box" key={index}>
@@ -179,9 +179,13 @@ const Wrapper = styled.div`
     .key {
       width: 100px;
       text-align: right;
+      vertical-align: top;
     }
     .value {
       padding-left: 10px;
+      .files {
+        padding: 12px 0px 12px !important;
+      }
     }
   }
 `;
@@ -206,7 +210,7 @@ const FilesBox = styled.div`
     background-color: #c2c2c2;
   }
   .file-box {
-    width: 260px;
+    width: 255px;
     height: 65px;
     background: rgba(246, 246, 246, 1);
     border-radius: 2px;
