@@ -17,15 +17,20 @@ import { Rules } from "src/components/Form/interfaces";
 import { to } from "src/libs/fns";
 import DateTimePicker from "src/components/DateTimePicker";
 import { ksStepViewModal as stepViewModal } from "./KSStepViewModal";
+import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
 import { cloneJson } from "src/utils/json/clone";
+import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
+
 export interface Props {}
 
 export default observer(function Step4() {
+  const testPage = createModal(TestPageModal); // 习题预览弹窗
+
   // 组织方式
 
   const selectNurseModal = createModal(SelectPeopleModal);
@@ -99,6 +104,18 @@ export default observer(function Step4() {
     stepViewModal.stepData2.showScoreInstantly = false
   }
 
+  // 习题预览弹窗
+  const handlePagePreview = () => {
+    testPage.show({
+      id: allStepViewModal.taskCode,
+      teachingMethodName: "",
+      title: "",
+      startTime: "",
+      endTime: "",
+      examDuration: "",
+      passScores: ""
+    });
+  };
 
   return (
     <Wrapper>
@@ -253,13 +270,30 @@ export default observer(function Step4() {
       )}
         </Row>
       </Form>
-    
+      <span className="ab">
+        <Button
+          size="small"
+          onClick={() => {
+            handlePagePreview();
+          }}
+        >
+          试卷预览
+        </Button>
+      </span>
+      <testPage.Component />
       <selectNurseModal.Component />
     </Wrapper>
   );
 });
 const Wrapper = styled.div`
   margin: 40px 100px 20px;
+  position: relative;
+  .ab {
+    display: inline-block;
+    position: absolute;
+    right: 6px;
+    top: 215px;
+  }
 `;
 
 const DateSelectCon = styled.div`

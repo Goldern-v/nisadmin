@@ -48,18 +48,6 @@ export default observer(function Step4() {
     refForm.current && refForm.current.setFields(stepViewModal.stepData2);
   }, []);
 
-  const handlePagePreview = () => {
-    testPage.show({
-      // id: info.id,
-      // teachingMethodName: info.teachingMethodName,
-      // title: info.title,
-      // startTime: info.startTime,
-      // endTime: info.endTime,
-      // examDuration: info.examDuration,
-      // passScores: info.passScores,
-    });
-  };
-
   return (
     <Wrapper>
       <Form

@@ -7,9 +7,14 @@ import Zimage from "src/components/Zimage";
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
+import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
+import createModal from "src/libs/createModal";
+
 export interface Props {}
 
 export default observer(function Step5() {
+  const testPage = createModal(TestPageModal); // 习题预览弹窗
+
   const organizationWayMap: any = {
     1: "线上",
     2: "线下"
@@ -36,6 +41,19 @@ export default observer(function Step5() {
     },
     0
   );
+
+  // 习题预览弹窗
+  const handlePagePreview = () => {
+    testPage.show({
+      id: stepViewModal.taskCode,
+      teachingMethodName: "",
+      title: "",
+      startTime: "",
+      endTime: "",
+      examDuration: "",
+      passScores: ""
+    });
+  };
 
   return (
     <Wrapper>
@@ -172,6 +190,16 @@ export default observer(function Step5() {
                 )}
               </div>
             </td>
+            <td className="ab">
+              <Button
+                size="small"
+                onClick={() => {
+                  handlePagePreview();
+                }}
+              >
+                试卷预览
+              </Button>
+            </td>
           </tr>
 
           <tr>
@@ -215,12 +243,18 @@ export default observer(function Step5() {
           </tr>
         </tbody>
       </table>
+      <testPage.Component />
     </Wrapper>
   );
 });
 const Wrapper = styled.div`
   padding: 20px 100px 20px;
   font-size: 14px;
+  .ab {
+    display: inline-block;
+    margin-left: -306px;
+    margin-top: 17px;
+  }
   table {
     width: 100%;
     tr,

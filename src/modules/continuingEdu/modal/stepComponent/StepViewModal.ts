@@ -63,7 +63,19 @@ class StepViewModal {
       const stepData2 = this.getCurrentStepViewModal
         ? this.getCurrentStepViewModal.stepData2
         : {};
-      if (!stepData2.title || !stepData2.startTime) {
+      const sicPersonList =
+        stepData2.sicPersonList && stepData2.sicPersonList.length; // 签到负责人
+      const scorePersonList =
+        stepData2.scorePersonList && stepData2.scorePersonList.length; // 评分负责人
+      const address = stepData2.address.length; // 实操考核地址
+
+      if (
+        !stepData2.title ||
+        !stepData2.startTime ||
+        sicPersonList === 0 ||
+        address === 0 ||
+        scorePersonList === 0
+      ) {
         return false;
       }
     }

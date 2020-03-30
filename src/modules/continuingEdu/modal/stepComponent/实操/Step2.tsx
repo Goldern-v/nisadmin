@@ -112,7 +112,7 @@ export default observer(function Step1() {
       <Form
         ref={refForm}
         rules={rules}
-        labelWidth={100}
+        labelWidth={120}
         onChange={onFormChange}
       >
         <Row>
@@ -341,9 +341,6 @@ function MoreBox(props: any) {
       border-color: #1db38b;
       outline: 0;
       box-shadow: 0 0 0 2px rgba(0, 166, 128, 0.2);
-    }
-    /deep/ .jXpPbw {
-      width: 120px !important;
     }
   `;
   return <Wrapper onClick={onClick}>...</Wrapper>;

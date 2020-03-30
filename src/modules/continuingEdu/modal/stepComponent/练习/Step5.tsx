@@ -8,9 +8,14 @@ import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
 import ShowTable from "./ShowTable";
+import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
+import createModal from "src/libs/createModal";
+
 export interface Props {}
 
 export default observer(function Step5() {
+  const testPage = createModal(TestPageModal); // 习题预览弹窗
+
   const organizationWayMap: any = {
     1: "线上",
     2: "线下"
@@ -37,6 +42,19 @@ export default observer(function Step5() {
     },
     0
   );
+
+  // 习题预览弹窗
+  const handlePagePreview = () => {
+    testPage.show({
+      id: stepViewModal.taskCode,
+      teachingMethodName: "",
+      title: "",
+      startTime: "",
+      endTime: "",
+      examDuration: "",
+      passScores: ""
+    });
+  };
 
   return (
     <Wrapper>
@@ -125,10 +143,19 @@ export default observer(function Step5() {
                 .join("，")}
             </td>
           </tr>
-
           <tr>
             <td className="key">习题上传：</td>
             <td className="value" />
+            <td className="ab">
+              <Button
+                size="small"
+                onClick={() => {
+                  handlePagePreview();
+                }}
+              >
+                习题预览
+              </Button>
+            </td>
           </tr>
           <tr>
             <td className="key" />
@@ -152,12 +179,17 @@ export default observer(function Step5() {
           </tr>
         </tbody>
       </table>
+      <testPage.Component />
     </Wrapper>
   );
 });
 const Wrapper = styled.div`
   padding: 20px 100px 20px;
   font-size: 14px;
+  .ab {
+    display: inline-block;
+    margin-left: -72px;
+  }
   table {
     width: 100%;
     tr,

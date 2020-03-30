@@ -34,7 +34,6 @@ export default observer(function ShowTable(props: Props) {
     },
     {
       title: "出题类型",
-      width: 135,
       align: "center",
       dataIndex: "questionName",
       render(text: any, record: any, index: number) {
@@ -45,6 +44,7 @@ export default observer(function ShowTable(props: Props) {
       title: "题目数",
       dataIndex: "questionCount",
       align: "center",
+      width: 100,
       render(text: any, record: any, index: number) {
         return text;
       }
