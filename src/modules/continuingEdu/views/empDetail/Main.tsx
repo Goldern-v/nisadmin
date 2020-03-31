@@ -130,7 +130,7 @@ export default observer(function Main(props: any) {
       </div>
       <div className="emp-info">
         <span className="emp-img">
-          <img src="" alt="" />
+          <img src={appStore.queryObj.nearImageUrl || ''} alt="" />
         </span>
         <span>
           <span className="emp-name">{data.empName}</span>
@@ -203,6 +203,7 @@ const Wrapper = styled.div`
           position: relative;
           top: -1px;
           left: -1px;
+          object-fit: cover;
         }
       }
       .emp-name{

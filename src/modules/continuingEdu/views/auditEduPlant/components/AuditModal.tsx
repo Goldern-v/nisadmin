@@ -17,7 +17,7 @@ export default observer(function AuditModal(props: Props) {
 
   const [loading, setLoading] = useState(false)
   const [auditResult, setAuditResult] = useState(1)
-  const [auditRemark, setAuditRemark] = useState()
+  const [auditRemark, setAuditRemark] = useState('')
 
   let userName = authStore.user ? authStore.user.empName : ''
 

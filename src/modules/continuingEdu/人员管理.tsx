@@ -71,7 +71,7 @@ export default observer(function 人员管理(props: Props) {
       dataIndex: "sex",
       width: 80,
       align: "center",
-      render: (text: any) => (text == 0 ? "女" : "男")
+      // render: (text: any) => (text == 0 ? "女" : "男")
     },
     {
       title: "年龄",
@@ -97,8 +97,8 @@ export default observer(function 人员管理(props: Props) {
     },
     {
       title: "职称",
-      key: "zhicheng",
-      dataIndex: "zhicheng",
+      key: "title",
+      dataIndex: "title",
       width: 80,
       align: "center"
     },
@@ -121,14 +121,16 @@ export default observer(function 人员管理(props: Props) {
       key: "credit",
       dataIndex: "credit",
       width: 50,
-      align: "center"
+      align: "center",
+      render: (text: any) => text || '0',
     },
     {
       title: "学时",
-      key: "xueshi",
-      dataIndex: "xueshi",
+      key: "classHours",
+      dataIndex: "classHours",
       width: 50,
-      align: "center"
+      align: "center",
+      render: (text: any) => text || '0',
     },
     {
       title: "状态",
@@ -166,7 +168,8 @@ export default observer(function 人员管理(props: Props) {
       nurseHierarchy: record.nurseHierarchy,
       deptCode: record.deptCode,
       deptName: record.deptName,
-      status: record.status
+      status: record.status,
+      nearImageUrl: record.nearImageUrl
     };
     appStore.history.push(
       `/continuingEduEmpDetail/baseInfo?${qs.stringify(search)}`
@@ -298,6 +301,11 @@ export default observer(function 人员管理(props: Props) {
             loading={dataLoading}
             columns={columns}
             surplusHeight={queryFilter ? 420 : 130}
+            onRow={(record: any) => {
+              return {
+                onDoubleClick: () => handleReview(record)
+              }
+            }}
             pagination={{
               current: query.pageIndex,
               total: total,

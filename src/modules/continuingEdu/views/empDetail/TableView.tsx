@@ -1,15 +1,16 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import BaseTable from 'src/components/BaseTable'
 import { DatePicker, Select, Button } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
-import qs from 'qs'
+// import qs from 'qs'
 import moment from 'moment'
 import { empDetailModel } from './models/EmpDetailModel'
-
+import StudyInfoModal from './components/StudyInfoModal'
+import createModal from "src/libs/createModal";
 import { empManageService } from './api/EmpManageService'
 
 const Option = Select.Option
@@ -18,7 +19,10 @@ export interface Props extends RouteComponentProps { }
 
 export default observer(function TableView() {
   const { query, loading, dataTotal, tableData } = empDetailModel
+  const [menuTree, setMenuTree] = useState([] as any[])
   const [typeList, setTypeList] = useState([] as any[])
+
+  const studyInfoModal = createModal(StudyInfoModal)
 
   const pannelName = appStore.match.params?.pannelName || ''
 
@@ -27,20 +31,42 @@ export default observer(function TableView() {
     key: 'index',
     align: 'center',
     width: 50,
-    render: (text: any, record: any, index: any) => (query.pageIndex - 1) * query.pageSize + index + 1
+    render: (text: any, record: any, index: any) => {
+      if (Object.keys(record).length <= 1) return <span></span>
+
+      return (query.pageIndex - 1) * query.pageSize + index + 1
+    }
   } as ColumnProps<any>
+
+  const titleColumn = {
+    title: '项目',
+    dataIndex: 'title',
+    align: 'left',
+    width: 180,
+    render: (text: any, record: any, index: any) => {
+      return <span
+        style={{ color: '#00F', cursor: 'pointer' }}
+        onClick={() => handleDetail(record)}>
+        {text}
+      </span>
+    }
+  } as ColumnProps<any>
+
+  const handleDetail = (record: any) => {
+    if (record.cetpId) {
+      studyInfoModal.show({
+        cetpId: record.cetpId,
+        title: record.title
+      })
+    }
+  }
 
   const columns = (): ColumnProps<any>[] => {
     switch (pannelName) {
       case '学分记录':
         return [
           indexColumn,
-          {
-            title: '项目',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '培训类型',
             dataIndex: 'teachingMethodName',
@@ -83,12 +109,7 @@ export default observer(function TableView() {
       case '学时记录':
         return [
           indexColumn,
-          {
-            title: '项目',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '培训类型',
             dataIndex: 'teachingMethodName',
@@ -120,12 +141,7 @@ export default observer(function TableView() {
             width: 150,
             align: 'center',
           },
-          {
-            title: '名称',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
@@ -172,12 +188,7 @@ export default observer(function TableView() {
             width: 150,
             align: 'center',
           },
-          {
-            title: '名称',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
@@ -242,12 +253,7 @@ export default observer(function TableView() {
             width: 150,
             align: 'center',
           },
-          {
-            title: '名称',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
@@ -300,12 +306,7 @@ export default observer(function TableView() {
             width: 150,
             align: 'center',
           },
-          {
-            title: '名称',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
@@ -358,12 +359,7 @@ export default observer(function TableView() {
             width: 150,
             align: 'center',
           },
-          {
-            title: '名称',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
@@ -416,12 +412,7 @@ export default observer(function TableView() {
             width: 150,
             align: 'center',
           },
-          {
-            title: '名称',
-            dataIndex: 'title',
-            align: 'left',
-            width: 180,
-          },
+          titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
@@ -466,7 +457,10 @@ export default observer(function TableView() {
       case '练习记录':
       case '实操记录':
       case '演练记录':
-        getTypeList()
+        if (menuTree.length <= 0)
+          getTypeList()
+        else
+          setTypeList(menuTree)
         break
       case '学分记录':
         setTypeList([
@@ -506,12 +500,20 @@ export default observer(function TableView() {
   }, [appStore.match.params.pannelName])
 
   const getTypeList = () => {
-    if (typeList.length <= 0)
-      empManageService
-        .getMenuTree()
-        .then(res => {
-          if (res.data) setTypeList(res.data)
-        })
+    empManageService
+      .getMenuTree()
+      .then(res => {
+        if (res.data) {
+          let newArr = res.data.map((item: any) => {
+            return {
+              id: item.id.toString(),
+              name: item.name
+            }
+          })
+          setTypeList(newArr)
+          setMenuTree(newArr)
+        }
+      })
   }
 
   const handlePageChange = (pageIndex: number) => {
@@ -528,16 +530,19 @@ export default observer(function TableView() {
     return '类型'
   }
 
+  //需要在底部额外显示
   let footer = <span style={{ display: 'none' }}></span>
   if (pannelName == '学分记录')
     footer = <span>合计： 院级学分：232分    片区学分：45分    病区学分：15分</span>
   if (pannelName == '学时记录')
     footer = <span>42</span>
 
-  let dateRange = [undefined, undefined] as [moment.Moment, moment.Moment] | [undefined, undefined]
-  if (query.startDate && query.endDate) {
+  //起止时间控件配置
+  let dateRange =
+    [undefined, undefined] as [moment.Moment, moment.Moment] | [undefined, undefined]
+
+  if (query.startDate && query.endDate)
     dateRange = [moment(query.startDate), moment(query.endDate)]
-  }
 
   return <Wrapper>
     <div className="bar">
@@ -562,7 +567,7 @@ export default observer(function TableView() {
         <span className="content">
           <Select
             value={query.type}
-            style={{ width: 120 }}
+            style={{ width: 150 }}
             onChange={(val: string) => {
               handleQueryChange({
                 ...query,
@@ -571,8 +576,13 @@ export default observer(function TableView() {
               }, true)
             }}>
             <Option value="">全部</Option>
-            {typeList.map((item: any, idx: number) =>
-              <Option key={idx} value={item.id}>{item.name}</Option>)}
+            {typeList
+              .map((item: any, idx: number) =>
+                <Option
+                  key={idx}
+                  value={item.id}>
+                  {item.name}
+                </Option>)}
           </Select>
         </span>
         <span className="label">
@@ -588,12 +598,11 @@ export default observer(function TableView() {
         surplusHeight={355}
         footer={() => footer}
         surplusWidth={200}
-        // rowClassName={(record: any, index: number) => {
-        //   if (record.rowType == 'sum') {
-        //     return 'sum-row'
-        //   }
-        //   return ''
-        // }}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => handleDetail(record)
+          }
+        }}
         pagination={{
           pageSizeOptions: ['10', '15', '20'],
           current: query.pageIndex,
@@ -605,6 +614,7 @@ export default observer(function TableView() {
         }}
       />
     </div>
+    <studyInfoModal.Component />
   </Wrapper>
 })
 
