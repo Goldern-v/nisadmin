@@ -197,7 +197,12 @@ export default observer(function AddRecordModal(props: Props) {
             <Button
               onClick={nextStep}
               type="primary"
-              disabled={!stepViewModal.isOkStep(currentStep)}
+              disabled={
+                !stepViewModal.isOkStep(
+                  currentStep,
+                  stepViewModal.stepData1.teachingMethodName
+                )
+              }
             >
               下一步
             </Button>

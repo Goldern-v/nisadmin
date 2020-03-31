@@ -53,9 +53,8 @@ class StepViewModal {
   @observable public title = "";
 
   /** 步骤一完整 */
-  public isOkStep = (step: number) => {
+  public isOkStep = (step: number, type: string) => {
     /** step 必须完整 */
-
     if (step == 0) {
       if (!this.stepData1.teachingMethod) {
         return false;
@@ -68,16 +67,15 @@ class StepViewModal {
         stepData2.sicPersonList && stepData2.sicPersonList.length; // 签到负责人
       const scorePersonList =
         stepData2.scorePersonList && stepData2.scorePersonList.length; // 评分负责人
-      const address = stepData2.address.length; // 实操考核地址
-
-      if (
-        !stepData2.title ||
-        !stepData2.startTime ||
-        (sicPersonList && sicPersonList === 0) ||
-        (address && address === 0) ||
-        (scorePersonList && scorePersonList === 0)
-      ) {
+      const address = stepData2.address && stepData2.address.length; // 实操考核地址
+      console.log(sicPersonList, sicPersonList, scorePersonList, "333333");
+      if (!stepData2.title || !stepData2.startTime) {
         return false;
+      }
+      if (type === "实操") {
+        if (sicPersonList === 0 || address === 0 || scorePersonList === 0) {
+          return false;
+        }
       }
     }
     return true;
