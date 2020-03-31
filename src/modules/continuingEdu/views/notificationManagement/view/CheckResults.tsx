@@ -213,7 +213,6 @@ export default function TypeManagement() {
       title: "提示",
       content,
       okText: "确定",
-      okType: "danger",
       cancelText: "取消",
       onOk: () => {
         notificationApi.pushData(obj).then(res => {
