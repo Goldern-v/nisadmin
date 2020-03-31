@@ -106,8 +106,16 @@ export default observer(function Step4() {
 
   // 习题预览弹窗
   const handlePagePreview = () => {
+    let getObj: any = {
+      taskCode: allStepViewModal.taskCode
+    };
+    if (allStepViewModal.stepData1.ceptId) {
+      getObj.cetpId = allStepViewModal.stepData1.ceptId;
+    } else {
+      getObj.teachingMethod = allStepViewModal.stepData1.teachingMethod;
+    }
     testPage.show({
-      id: allStepViewModal.taskCode,
+      obj: getObj,
       teachingMethodName: "",
       title: "",
       startTime: "",

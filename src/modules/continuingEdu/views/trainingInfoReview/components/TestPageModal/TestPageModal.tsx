@@ -14,6 +14,7 @@ export interface Props extends ModalComponentProps {
   endTime?: string, //考试类型借宿时间
   examDuration?: string, //考试时间
   passScores?: string  //及格分数
+  obj?: any //修改添加弹窗入参
 }
 
 export default observer(function TestPageModal(props: Props) {
@@ -27,19 +28,29 @@ export default observer(function TestPageModal(props: Props) {
     startTime,
     endTime,
     examDuration,
-    passScores
+    passScores,
+    obj
   } = props
 
   const [questionInfo, setQuestionInfo] = useState([] as any)
 
   const getInfo = () => {
     setLoading(true)
-    trainingInfoReviewService
+    if (obj && obj.taskCode) {
+      trainingInfoReviewService
+        .getPreviewPaper(obj.taskCode,obj.teachingMethod || null,obj.cetpId || null)
+        .then(res => {
+          setLoading(false)
+          if (res.data) setQuestionInfo(res.data)
+        }, () => setLoading(false))  
+    } else {
+      trainingInfoReviewService
       .previewPaper(id?.toString() || '')
       .then(res => {
         setLoading(false)
         if (res.data) setQuestionInfo(res.data)
       }, () => setLoading(false))
+    }
   }
 
   useLayoutEffect(() => {

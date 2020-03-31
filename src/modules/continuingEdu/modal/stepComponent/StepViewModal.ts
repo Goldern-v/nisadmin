@@ -36,7 +36,8 @@ class StepViewModal {
     teachingMethod: null,
     teachingMethodName: null,
     name: null,
-    id: null
+    id: null,
+    ceptId: null
   };
 
   @observable public stepData3 = {
@@ -72,9 +73,9 @@ class StepViewModal {
       if (
         !stepData2.title ||
         !stepData2.startTime ||
-        sicPersonList === 0 ||
-        address === 0 ||
-        scorePersonList === 0
+        (sicPersonList && sicPersonList === 0) ||
+        (address && address === 0) ||
+        (scorePersonList && scorePersonList === 0)
       ) {
         return false;
       }
@@ -189,12 +190,11 @@ class StepViewModal {
   /** 数据初始化 */
   public initData = (data: any) => {
     this.oldData = data;
-
+    this.stepData1.ceptId = data.id;
     this.stepData1.id = data.thirdLevelMenuId;
     this.stepData1.name = "  ";
     this.stepData1.teachingMethod = data.teachingMethod;
     this.stepData1.teachingMethodName = "  ";
-
     this.stepData3.participantList = data.participantList.map((item: any) => {
       return {
         label: item.empName,
