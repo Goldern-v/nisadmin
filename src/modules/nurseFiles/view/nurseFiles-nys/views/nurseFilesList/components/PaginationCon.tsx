@@ -22,6 +22,7 @@ export default observer(function PaginationCon(props: Props) {
       <Pagination
         showSizeChanger
         showQuickJumper
+        showTotal={(total) => `共 ${total} 条`}
         defaultCurrent={1}
         total={totalCount}
         pageSizeOptions={pageSizeOptions}
@@ -32,6 +33,7 @@ export default observer(function PaginationCon(props: Props) {
     </Wrapper>
   )
 })
+
 const Wrapper = styled.div`
   clear: both;
   text-align: right;

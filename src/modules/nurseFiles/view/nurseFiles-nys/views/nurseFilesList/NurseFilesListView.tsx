@@ -17,7 +17,7 @@ import SelectCon from "./components/SelectCon";
 import { nurseFilesService } from "../../services/NurseFilesService";
 import { nurseFilesListViewModel } from "./NurseFilesListViewModel";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
 let rowNum: number = 5;
 const ThemeContext = React.createContext({
@@ -175,6 +175,7 @@ const onDoubleClick = (record: any) => {
 };
 
 export default observer(function NurseFilesListView() {
+
   return (
     <Wrapper>
       <SelectCon />
@@ -193,7 +194,7 @@ export default observer(function NurseFilesListView() {
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={380}
+        surplusHeight={nurseFilesListViewModel.isOpenFilter ? 380 : 275}
         surplusWidth={80}
         // type={['spaceRow']}
         onRow={(record: any) => {

@@ -30,133 +30,85 @@ export default observer(function TableView() {
     render: (text: any, record: any, index: any) => (query.pageIndex - 1) * query.pageSize + index + 1
   } as ColumnProps<any>
 
-  const renderContent = (text: any, record: any, index: any) => {
-    let renderItem = {
-      children: text,
-      props: {} as any
-    }
-
-    if (record.rowType) {
-      renderItem.props.colSpan = 0
-    }
-    return renderItem
-  }
-
   const columns = (): ColumnProps<any>[] => {
     switch (pannelName) {
       case '学分记录':
         return [
-          {
-            title: '序号',
-            key: 'index',
-            align: 'center',
-            width: 50,
-            render: (text: any, record: any, index: any) => {
-              if (record.rowType) {
-                return '合计'
-              } else {
-                return (query.pageIndex - 1) * query.pageSize + index + 1
-              }
-            }
-          },
+          indexColumn,
           {
             title: '项目',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
-            render: (text: any, record: any, index: any) => {
-              let renderItem = {
-                children: text,
-                props: {} as any
-              }
-              if (record.rowType) {
-                renderItem.children = record.text
-                renderItem.props.colSpan = 5
-              }
-
-              return renderItem
-            }
+            width: 180,
           },
           {
             title: '培训类型',
-            key: 'type',
+            dataIndex: 'teachingMethodName',
             width: 60,
             align: 'center',
-            render: renderContent,
           },
           {
             title: '日期',
-            key: 'startDate',
+            dataIndex: 'startTime',
             width: 60,
             align: 'center',
-            render: renderContent,
           },
           {
             title: '分值',
-            key: 'score',
+            dataIndex: 'creditDesc',
             width: 60,
             align: 'center',
-            render: renderContent,
+            render: (text: string, record: any) => {
+              if (record.remark) {
+                return <span style={{ color: 'red' }}>{text}</span>
+              } else {
+                return <span>{text}</span>
+              }
+            }
           },
           {
             title: '备注',
-            key: 'remark',
+            dataIndex: 'remark',
             width: 60,
             align: 'center',
-            render: renderContent,
+            render: (text: string, record: any) => {
+              if (record.remark) {
+                return <span style={{ color: 'red' }}>{text}</span>
+              } else {
+                return <span>{text}</span>
+              }
+            }
           },
         ]
       case '学时记录':
         return [
-          {
-            title: '序号',
-            key: 'index',
-            align: 'center',
-            width: 50,
-            render: (text: any, record: any, index: any) => {
-              if (record.rowType) {
-                return '合计'
-              } else {
-                return (query.pageIndex - 1) * query.pageSize + index + 1
-              }
-            }
-          },
+          indexColumn,
           {
             title: '项目',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
-            render: (text: any, record: any, index: any) => {
-              let renderItem = {
-                children: text,
-                props: {} as any
-              }
-              if (record.rowType) {
-                renderItem.children = record.text
-                renderItem.props.colSpan = 5
-              }
-
-              return renderItem
-            }
+            width: 180,
           },
           {
             title: '培训类型',
-            key: 'type',
+            dataIndex: 'teachingMethodName',
             width: 60,
             align: 'center',
-            render: renderContent,
+
           },
           {
             title: '日期',
-            key: 'startDate',
+            dataIndex: 'startTime',
             width: 60,
             align: 'center',
-            render: renderContent,
+
           },
           {
             title: '学时',
-            key: 'xueshi',
+            dataIndex: 'classHours',
             width: 60,
             align: 'center',
-            render: renderContent,
+
           },
         ]
       case '学习记录':
@@ -164,44 +116,51 @@ export default observer(function TableView() {
           indexColumn,
           {
             title: '类型',
-            key: 'type',
+            dataIndex: 'firstLevelMenuName',
             width: 150,
             align: 'center',
           },
           {
             title: '名称',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
+            width: 180,
           },
           {
             title: '时间',
-            key: 'startTime',
+            dataIndex: 'startTime',
             width: 120,
             align: 'center',
           },
           {
             title: '开放时间',
-            key: 'openTime',
+            dataIndex: 'openTimeDesc',
             width: 80,
             align: 'center',
           },
           {
             title: '学分',
-            key: 'xuefen',
+            dataIndex: 'creditDesc',
             width: 120,
             align: 'center',
           },
           {
             title: '学时',
-            key: 'xueshi',
+            dataIndex: 'classHours',
             width: 70,
             align: 'center',
           },
           {
             title: '完成情况',
             width: 70,
-            key: 'wanchengqingkuang',
+            dataIndex: 'taskStatusDesc',
             align: 'center',
+            render: (text: string) => {
+              if (text == '未完成')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
           }
         ]
       case '培训记录':
@@ -209,62 +168,69 @@ export default observer(function TableView() {
           indexColumn,
           {
             title: '类型',
-            key: 'type',
+            dataIndex: 'firstLevelMenuName',
             width: 150,
             align: 'center',
           },
           {
             title: '名称',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
+            width: 180,
           },
           {
             title: '时间',
-            key: 'startTime',
+            dataIndex: 'startTime',
             width: 120,
             align: 'left',
           },
           {
             title: '开放时间',
-            key: 'openTime',
+            dataIndex: 'openTimeDesc',
             width: 80,
             align: 'left',
           },
           {
             title: '组织方式',
-            key: 'oganizationWayName',
+            dataIndex: 'oranizationWayName',
             width: 80,
             align: 'center',
           },
           {
             title: '培训地址',
-            key: 'oganizationWayName',
+            dataIndex: 'address',
             width: 150,
             align: 'left',
           },
           {
             title: '签到',
-            key: 'signed',
+            dataIndex: 'isSignedInDesc',
             width: 60,
             align: 'center',
           },
           {
             title: '学分',
-            key: 'xuefen',
+            dataIndex: 'creditDesc',
             width: 120,
             align: 'center',
           },
           {
             title: '学时',
-            key: 'xueshi',
+            dataIndex: 'classHours',
             width: 70,
             align: 'center',
           },
           {
             title: '培训情况',
             width: 70,
-            key: 'wanchengqingkuang',
+            dataIndex: 'taskStatusDesc',
             align: 'center',
+            render: (text: string) => {
+              if (text == '未完成')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
           },
         ]
       case '考试记录':
@@ -272,50 +238,57 @@ export default observer(function TableView() {
           indexColumn,
           {
             title: '类型',
-            key: 'type',
+            dataIndex: 'firstLevelMenuName',
             width: 150,
             align: 'center',
           },
           {
             title: '名称',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
+            width: 180,
           },
           {
             title: '时间',
-            key: 'startTime',
+            dataIndex: 'startTime',
             width: 120,
             align: 'center',
           },
           {
             title: '开放时间',
-            key: 'openTime',
+            dataIndex: 'openTimeDesc',
             width: 80,
             align: 'center',
           },
           {
             title: '成绩',
-            key: 'chengji',
+            dataIndex: 'gaiScores',
             width: 80,
             align: 'center',
           },
           {
             title: '学分',
-            key: 'xuefen',
+            dataIndex: 'creditDesc',
             width: 120,
             align: 'center',
           },
           {
             title: '学时',
-            key: 'xueshi',
+            dataIndex: 'classHours',
             width: 70,
             align: 'center',
           },
           {
             title: '考试情况',
             width: 70,
-            key: 'wanchengqingkuang',
+            dataIndex: 'taskStatusDesc',
             align: 'center',
+            render: (text: string) => {
+              if (text == '未完成')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
           },
         ]
       case '练习记录':
@@ -323,50 +296,57 @@ export default observer(function TableView() {
           indexColumn,
           {
             title: '类型',
-            key: 'type',
+            dataIndex: 'firstLevelMenuName',
             width: 150,
             align: 'center',
           },
           {
             title: '名称',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
+            width: 180,
           },
           {
             title: '时间',
-            key: 'startTime',
+            dataIndex: 'startTime',
             width: 120,
             align: 'center',
           },
           {
             title: '开放时间',
-            key: 'openTime',
+            dataIndex: 'openTimeDesc',
             width: 80,
             align: 'center',
           },
           {
             title: '练习进度',
             width: 80,
-            key: 'lianxijindu',
+            dataIndex: 'progressRateDesc',
             align: 'center',
           },
           {
             title: '正确率',
             width: 80,
-            key: 'rightRate',
+            dataIndex: 'correctRateDesc',
             align: 'center',
           },
           {
             title: '学时',
-            key: 'xueshi',
+            dataIndex: 'classHours',
             width: 70,
             align: 'center',
           },
           {
             title: '练习情况',
             width: 70,
-            key: 'wanchengqingkuang',
+            dataIndex: 'taskStatusDesc',
             align: 'center',
+            render: (text: string) => {
+              if (text == '未完成')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
           },
         ]
       case '实操记录':
@@ -374,50 +354,57 @@ export default observer(function TableView() {
           indexColumn,
           {
             title: '类型',
-            key: 'type',
+            dataIndex: 'firstLevelMenuName',
             width: 150,
             align: 'center',
           },
           {
             title: '名称',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
+            width: 180,
           },
           {
             title: '时间',
-            key: 'startTime',
+            dataIndex: 'startTime',
             width: 120,
             align: 'center',
           },
           {
             title: '开放时间',
-            key: 'openTime',
+            dataIndex: 'openTimeDesc',
             width: 80,
             align: 'center',
           },
           {
             title: '签到',
-            key: 'openTime',
+            dataIndex: 'isSignedInDesc',
             width: 60,
             align: 'center',
           },
           {
             title: '成绩',
-            key: 'openTime',
+            dataIndex: 'openTimeDesc',
             width: 60,
             align: 'center',
           },
           {
             title: '学时',
-            key: 'xueshi',
+            dataIndex: 'classHours',
             width: 70,
             align: 'center',
           },
           {
             title: '实操情况',
             width: 70,
-            key: 'wanchengqingkuang',
+            dataIndex: 'taskStatusDesc',
             align: 'center',
+            render: (text: string) => {
+              if (text == '未完成')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
           },
         ]
       case '演练记录':
@@ -425,38 +412,45 @@ export default observer(function TableView() {
           indexColumn,
           {
             title: '类型',
-            key: 'type',
+            dataIndex: 'firstLevelMenuName',
             width: 150,
             align: 'center',
           },
           {
             title: '名称',
-            key: 'name',
+            dataIndex: 'title',
             align: 'left',
+            width: 180,
           },
           {
             title: '时间',
-            key: 'startTime',
+            dataIndex: 'startTime',
             width: 120,
             align: 'center',
           },
           {
             title: '开放时间',
-            key: 'openTime',
+            dataIndex: 'openTimeDesc',
             width: 80,
             align: 'center',
           },
           {
             title: '学时',
-            key: 'xueshi',
+            dataIndex: 'classHours',
             width: 70,
             align: 'center',
           },
           {
             title: '演练情况',
             width: 70,
-            key: 'wanchengqingkuang',
+            dataIndex: 'taskStatusDesc',
             align: 'center',
+            render: (text: string) => {
+              if (text == '未完成')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
           },
         ]
       default:
@@ -496,12 +490,18 @@ export default observer(function TableView() {
     }
   }
 
+  const handleQueryChange = (newQuery: any, req?: boolean) => {
+    empDetailModel.setQuery({ ...newQuery }, req || false, () => {
+
+    })
+  }
+
   useEffect(() => {
-    empDetailModel.setQuery({ ...query, type: '', pageIndex: 1 })
+    handleQueryChange({ ...query, type: '', pageIndex: 1 })
   }, [])
 
   useEffect(() => {
-    empDetailModel.setQuery({ ...query, type: '', pageIndex: 1 }, true)
+    handleQueryChange({ ...query, type: '', pageIndex: 1 }, true)
     resetTypeList()
   }, [appStore.match.params.pannelName])
 
@@ -515,11 +515,11 @@ export default observer(function TableView() {
   }
 
   const handlePageChange = (pageIndex: number) => {
-    empDetailModel.setQuery({ ...query, pageIndex }, true)
+    handleQueryChange({ ...query, pageIndex }, true)
   }
 
   const handleSizeChange = (pageIndex: number, pageSize: number) => {
-    empDetailModel.setQuery({ ...query, pageSize, pageIndex: 1 }, true)
+    handleQueryChange({ ...query, pageSize, pageIndex: 1 }, true)
   }
 
   const typeLabel = () => {
@@ -528,19 +528,16 @@ export default observer(function TableView() {
     return '类型'
   }
 
-  let formatTableData = tableData.concat()
-
+  let footer = <span style={{ display: 'none' }}></span>
   if (pannelName == '学分记录')
-    formatTableData.push({
-      rowType: 'sum',
-      text: '院级学分：232分    片区学分：45分    病区学分：15分'
-    })
-
+    footer = <span>合计： 院级学分：232分    片区学分：45分    病区学分：15分</span>
   if (pannelName == '学时记录')
-    formatTableData.push({
-      rowType: 'sum',
-      text: '42'
-    })
+    footer = <span>42</span>
+
+  let dateRange = [undefined, undefined] as [moment.Moment, moment.Moment] | [undefined, undefined]
+  if (query.startDate && query.endDate) {
+    dateRange = [moment(query.startDate), moment(query.endDate)]
+  }
 
   return <Wrapper>
     <div className="bar">
@@ -549,19 +546,16 @@ export default observer(function TableView() {
         <span className="label">起止时间: </span>
         <span className="content">
           <DatePicker.RangePicker
-            style={{ width: 200 }}
-            allowClear={false}
-            value={[
-              moment(query.startDate) || undefined,
-              moment(query.endDate) || undefined
-            ]}
+            style={{ width: 220 }}
+            allowClear={true}
+            value={dateRange}
             onChange={(newRange: any) => {
-              empDetailModel.setQuery({
+              handleQueryChange({
                 ...query,
-                startDate: newRange[0].format('YYYY-MM-DD'),
-                endDate: newRange[0].format('YYYY-MM-DD'),
+                startDate: newRange[0]?.format('YYYY-MM-DD') || '',
+                endDate: newRange[1]?.format('YYYY-MM-DD') || '',
                 pageIndex: 1
-              })
+              }, true)
             }} />
         </span>
         <span className="label">{typeLabel()}: </span>
@@ -570,7 +564,7 @@ export default observer(function TableView() {
             value={query.type}
             style={{ width: 120 }}
             onChange={(val: string) => {
-              empDetailModel.setQuery({
+              handleQueryChange({
                 ...query,
                 pageIndex: 1,
                 type: val,
@@ -589,16 +583,17 @@ export default observer(function TableView() {
     <div>
       <BaseTable
         columns={columns()}
-        dataSource={formatTableData}
+        dataSource={tableData.length > 0 ? tableData : [{}]}
         loading={loading}
         surplusHeight={355}
+        footer={() => footer}
         surplusWidth={200}
-        rowClassName={(record: any, index: number) => {
-          if (record.rowType == 'sum') {
-            return 'sum-row'
-          }
-          return ''
-        }}
+        // rowClassName={(record: any, index: number) => {
+        //   if (record.rowType == 'sum') {
+        //     return 'sum-row'
+        //   }
+        //   return ''
+        // }}
         pagination={{
           pageSizeOptions: ['10', '15', '20'],
           current: query.pageIndex,
@@ -607,7 +602,8 @@ export default observer(function TableView() {
           showSizeChanger: true,
           total: dataTotal,
           onShowSizeChange: handleSizeChange
-        }} />
+        }}
+      />
     </div>
   </Wrapper>
 })

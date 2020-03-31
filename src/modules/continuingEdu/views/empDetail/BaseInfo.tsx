@@ -65,19 +65,25 @@ export default observer(function BaseInfo() {
             <tr>
               <td className='td-title'>性别</td>
               <td className='td-content'>{baseInfo.sexual}</td>
+              <td className='td-title'>民族</td>
+              <td className='td-content'>{baseInfo.nation}</td>
+            </tr>
+            <tr>
+              <td className='td-title'>出生日期</td>
+              <td className='td-content'>{baseInfo.birthday}</td>
               <td className='td-title'>年龄</td>
               <td className='td-content'>{baseInfo.age}</td>
             </tr>
             <tr>
-              <td className='td-title'>学分</td>
-              <td className='td-content'>{baseInfo.credit}</td>
-              <td className='td-title'>积分</td>
-              <td className='td-content'>{baseInfo.rewardPoints}</td>
+              <td className='td-title'>籍贯</td>
+              <td className='td-content' colSpan={3}>
+                {baseInfo.nativePlace}
+              </td>
             </tr>
             <tr>
-              <td className='td-title'>职务</td>
+              <td className='td-title'>入职时间</td>
               <td className='td-content' colSpan={3}>
-                {baseInfo.job}
+                {baseInfo.entryDate}
               </td>
             </tr>
             <tr>
@@ -87,33 +93,27 @@ export default observer(function BaseInfo() {
               </td>
             </tr>
             <tr>
+              <td className='td-title'>身份证号</td>
+              <td className='td-content' colSpan={3}>
+                {baseInfo.cardNo}
+              </td>
+            </tr>
+            <tr>
+              <td className='td-title'>联系方式</td>
+              <td className='td-content' colSpan={3}>
+                {baseInfo.phone}
+              </td>
+            </tr>
+            <tr>
+              <td className='td-title'>职务</td>
+              <td className='td-content' colSpan={3}>
+                {baseInfo.job}
+              </td>
+            </tr>
+            <tr>
               <td className='td-title'>最高学历</td>
               <td className='td-content' colSpan={3}>
                 {baseInfo.highestEducation}
-              </td>
-            </tr>
-            <tr>
-              <td className='td-title'>层级</td>
-              <td className='td-content' colSpan={3}>
-                {baseInfo.nurseHierarchy}
-              </td>
-            </tr>
-            <tr>
-              <td className='td-title'>片区</td>
-              <td className='td-content' colSpan={3}>
-                {baseInfo.area}
-              </td>
-            </tr>
-            <tr>
-              <td className='td-title'>科室</td>
-              <td className='td-content' colSpan={3}>
-                {baseInfo.deptName}
-              </td>
-            </tr>
-            <tr>
-              <td className='td-title'>特殊准入</td>
-              <td className='td-content' colSpan={3}>
-                {baseInfo.specialAdmittance}
               </td>
             </tr>
           </tbody>

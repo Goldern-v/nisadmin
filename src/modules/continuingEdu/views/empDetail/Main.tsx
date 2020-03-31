@@ -84,7 +84,7 @@ export default observer(function Main(props: any) {
     if (search) query = qs.parse(search.replace('?', ''));
     setData({ ...data, ...query })
 
-    empDetailModel.init()
+    // empDetailModel.init()
   }, [])
 
   const targetComponent = () => {
@@ -123,7 +123,7 @@ export default observer(function Main(props: any) {
   return <Wrapper>
     <div className="topbar">
       <div className="nav">
-        <Link to="/continuingEdu">继续教育</Link>
+        <Link to="/continuingEdu">学习培训</Link>
         <span> / </span>
         <Link to="/continuingEdu/人员管理">人员管理</Link>
         <span> / {data.empName}</span>

@@ -8,7 +8,7 @@ export default class EmpManageService extends BaseApiService {
   }
   /**人员基本信息 */
   public async getEmpDetail(query: any) {
-    return this.post('/educon/eduMasterData/getBaseInformation', qs.stringify(query));
+    return this.post('/studyAndTrain/personelManage/getBasicInfo', qs.stringify(query));
   }
   /**学分记录 */
   public async getCreditRecord(query: any) {
@@ -36,13 +36,52 @@ export default class EmpManageService extends BaseApiService {
   }
   /**获取所有片区 */
   public async findAllAreas() {
-    return
-    this.post('/educon/eduMasterData/findAllAreas');
+    return this.post('/educon/eduMasterData/findAllAreas');
   }
 
   //获取一级菜单
   public async getMenuTree() {
     return this.get(`/studyAndTrain/menuManage/getMenuTree`);
+  }
+
+  //个人信息-获取学分记录
+  public async queryCreditRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryCreditRecordPageList`, query)
+  }
+
+  //个人信息-获取学时记录
+  public async queryClassHourRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryClassHourRecordPageList`, query)
+  }
+
+  //个人信息-获取学习记录
+  public async queryStudyRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryStudyRecordPageList`, query)
+  }
+
+  //个人信息-获取培训记录
+  public async queryTrainRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryTrainRecordPageList`, query)
+  }
+
+  //个人信息-获取考试记录
+  public async queryExamRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryExamRecordPageList`, query)
+  }
+
+  //个人信息-获取练习记录
+  public async queryExerciseRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryExerciseRecordPageList`, query)
+  }
+
+  //个人信息-获取实操记录
+  public async queryPractiseRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryPractiseRecordPageList`, query)
+  }
+
+  //个人信息-获取演练记录
+  public async queryWtRecordPageList(query: any) {
+    return this.post(`/studyAndTrain/personelManage/queryWtRecordPageList`, query)
   }
 }
 

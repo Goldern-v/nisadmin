@@ -163,14 +163,14 @@ export default observer(function FilterCon() {
         <div className="left">
           选择：
           {Object.keys(FILTER_MAP).map(
-            (item: any) =>
-              getFilterAdapter(item) &&
-              getFilterAdapter(item) !== "全部" && (
-                <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
-                  {getFilterAdapter(item)}
-                </Tag>
-              )
-          )}
+          (item: any) =>
+            getFilterAdapter(item) &&
+            getFilterAdapter(item) !== "全部" && (
+              <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
+                {getFilterAdapter(item)}
+              </Tag>
+            )
+        )}
         </div>
         <div className="right">
           <Button
@@ -182,7 +182,7 @@ export default observer(function FilterCon() {
           </Button>
         </div>
       </Head>
-      <Inner>
+      <Inner open={open}>
         <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
           <Row gutter={0}>
             <Col span={7} className="long">
@@ -245,12 +245,20 @@ export default observer(function FilterCon() {
 });
 
 const Wrapper = styled.div``;
-const Inner = styled.div`
+const Inner = styled.div<{ open: boolean }>`
   min-height: 100px;
   margin-top: 10px;
   padding: 25px 20px 0 10px;
   background: rgba(255, 255, 255, 1);
   box-shadow: ${p => p.theme.$shadow};
+  ${p =>
+    !p.open &&
+    `
+      min-height: 0;
+      padding:0;
+      height: 0;
+      overflow: hidden;
+    `}
   .label {
     margin-right: 6px;
   }
