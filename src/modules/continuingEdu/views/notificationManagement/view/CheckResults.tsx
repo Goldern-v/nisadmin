@@ -14,6 +14,8 @@ export default function TypeManagement() {
   let cetpId = Number(
     qs.parse(appStore.location.search.replace("?", "")).cetpId
   ); // 标题
+  let noticeContent =
+    qs.parse(appStore.location.search.replace("?", "")).noticeContent || ""; // 内容
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); // 表格数据
   const [query, setQuery] = useState({
@@ -183,11 +185,11 @@ export default function TypeManagement() {
   // 推送 ---current：1单条 2全部 3选中
   const pushData = (current: any, record?: any) => {
     let obj: any = { cetpId };
-    let world: any = "您确定要重新推送该条消息吗？";
+    // let world: any = "您确定要重新推送该条消息吗？";
     if (current === 1) {
       obj.empNos = [record];
     } else if (current === 2) {
-      world = "您确定要全部重新推送吗？";
+      // world = "您确定要全部重新推送吗？";
       notificationApi.getResultData({ cetpId }).then(res => {
         let arr: any = [];
         res.data.list.map((item: any) => {
@@ -196,7 +198,7 @@ export default function TypeManagement() {
         obj.empNos = arr.slice();
       });
     } else if (current === 3) {
-      world = "您确定要重新推送选中消息吗？";
+      // world = "您确定要重新推送选中消息吗？";
       if (empNos.length > 0) {
         obj.empNos = empNos.slice();
       } else {
@@ -206,7 +208,7 @@ export default function TypeManagement() {
     }
     let content = (
       <div>
-        <div>{world}</div>
+        <div>您确定要重新推送“{noticeContent}”吗</div>
       </div>
     );
     Modal.confirm({
@@ -221,9 +223,7 @@ export default function TypeManagement() {
           let total = success + fail;
           let content = (
             <div>
-              <div>
-                总共推送{total}人，异常{fail}人，完成推送{success}人！
-              </div>
+              总共推送{total}人，异常{fail}人，完成推送{success}人！
             </div>
           );
           Modal.warning({
