@@ -40,8 +40,12 @@ export default function StudyInfoModal(props: Props) {
 
   return <Modal
     footer={null}
-    width={760}
+    width={800}
     title={title}
+    bodyStyle={{
+      // padding: 0,
+      background: '#eee'
+    }}
     onCancel={onCancel}
     visible={visible}
     centered>
@@ -56,8 +60,8 @@ export default function StudyInfoModal(props: Props) {
 
 const Wrapper = styled.div`
 background: #fff;
-  /* border: 1px solid #ddd;
-  width: 760px; */
+  border: 1px solid #ddd;
+  /* width: 760px; */
   padding: 15px 20px;
   margin: 15px auto;
   min-height: 800px;

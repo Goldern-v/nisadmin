@@ -42,13 +42,12 @@ export default observer(function TableView() {
     title: '项目',
     dataIndex: 'title',
     align: 'left',
-    width: 180,
+    // width: 180,
     render: (text: any, record: any, index: any) => {
-      return <span
-        style={{ color: '#00F', cursor: 'pointer' }}
+      return <TitleCon
         onClick={() => handleDetail(record)}>
         {text}
-      </span>
+      </TitleCon>
     }
   } as ColumnProps<any>
 
@@ -70,19 +69,19 @@ export default observer(function TableView() {
           {
             title: '培训类型',
             dataIndex: 'teachingMethodName',
-            width: 60,
+            width: 80,
             align: 'center',
           },
           {
             title: '日期',
             dataIndex: 'startTime',
-            width: 60,
+            width: 180,
             align: 'center',
           },
           {
             title: '分值',
             dataIndex: 'creditDesc',
-            width: 60,
+            width: 140,
             align: 'center',
             render: (text: string, record: any) => {
               if (record.remark) {
@@ -95,7 +94,7 @@ export default observer(function TableView() {
           {
             title: '备注',
             dataIndex: 'remark',
-            width: 60,
+            width: 180,
             align: 'center',
             render: (text: string, record: any) => {
               if (record.remark) {
@@ -113,14 +112,14 @@ export default observer(function TableView() {
           {
             title: '培训类型',
             dataIndex: 'teachingMethodName',
-            width: 60,
+            width: 80,
             align: 'center',
 
           },
           {
             title: '日期',
             dataIndex: 'startTime',
-            width: 60,
+            width: 180,
             align: 'center',
 
           },
@@ -145,7 +144,7 @@ export default observer(function TableView() {
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 120,
+            width: 160,
             align: 'center',
           },
           {
@@ -192,7 +191,7 @@ export default observer(function TableView() {
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 120,
+            width: 160,
             align: 'left',
           },
           {
@@ -218,6 +217,12 @@ export default observer(function TableView() {
             dataIndex: 'isSignedInDesc',
             width: 60,
             align: 'center',
+            render: (text: string) => {
+              if (text == '未签到')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span>{text}</span>
+            }
           },
           {
             title: '学分',
@@ -257,7 +262,7 @@ export default observer(function TableView() {
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 120,
+            width: 160,
             align: 'center',
           },
           {
@@ -268,7 +273,7 @@ export default observer(function TableView() {
           },
           {
             title: '成绩',
-            dataIndex: 'gaiScores',
+            dataIndex: 'gainScores',
             width: 80,
             align: 'center',
           },
@@ -310,7 +315,7 @@ export default observer(function TableView() {
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 120,
+            width: 160,
             align: 'center',
           },
           {
@@ -363,19 +368,13 @@ export default observer(function TableView() {
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 120,
+            width: 160,
             align: 'center',
           },
           {
             title: '开放时间',
             dataIndex: 'openTimeDesc',
             width: 80,
-            align: 'center',
-          },
-          {
-            title: '签到',
-            dataIndex: 'isSignedInDesc',
-            width: 60,
             align: 'center',
           },
           {
@@ -391,17 +390,29 @@ export default observer(function TableView() {
             align: 'center',
           },
           {
-            title: '实操情况',
-            width: 70,
-            dataIndex: 'taskStatusDesc',
+            title: '签到',
+            dataIndex: 'isSignedInDesc',
+            width: 60,
             align: 'center',
             render: (text: string) => {
-              if (text == '未完成')
+              if (text == '未签到')
                 return <span style={{ color: 'red' }}>{text}</span>
               else
                 return <span>{text}</span>
             }
           },
+          // {
+          //   title: '实操情况',
+          //   width: 70,
+          //   dataIndex: 'taskStatusDesc',
+          //   align: 'center',
+          //   render: (text: string) => {
+          //     if (text == '未完成')
+          //       return <span style={{ color: 'red' }}>{text}</span>
+          //     else
+          //       return <span>{text}</span>
+          //   }
+          // },
         ]
       case '演练记录':
         return [
@@ -416,7 +427,7 @@ export default observer(function TableView() {
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 120,
+            width: 160,
             align: 'center',
           },
           {
@@ -590,14 +601,14 @@ export default observer(function TableView() {
         </span>
       </div>
     </div>
-    <div>
+    <div style={{ position: 'relative' }}>
       <BaseTable
         columns={columns()}
-        dataSource={tableData.length > 0 ? tableData : [{}]}
+        dataSource={tableData}
         loading={loading}
         surplusHeight={355}
-        footer={() => footer}
-        surplusWidth={200}
+        // footer={() => footer}
+        // surplusWidth={200}
         onRow={(record: any) => {
           return {
             onDoubleClick: () => handleDetail(record)
@@ -613,56 +624,72 @@ export default observer(function TableView() {
           onShowSizeChange: handleSizeChange
         }}
       />
+      <div className="footer">{footer}</div>
     </div>
     <studyInfoModal.Component />
   </Wrapper>
 })
 
 const Wrapper = styled.div`
-width: 100%;
-height: 100%;
-padding: 10px;
-/* overflow-y: auto; */
-.bar{
-  line-height: 30px;
-  margin-bottom: 5px;
-  .title{
-    font-size: 22px;
-    font-weight: bold;
-    color: #000;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  /* overflow-y: auto; */
+  .bar{
+    line-height: 30px;
+    margin-bottom: 5px;
+    .title{
+      font-size: 22px;
+      font-weight: bold;
+      color: #000;
+    }
+    .label{
+      margin-left: 15px;
+    }
+    .fr{
+      float: right;
+    }
   }
-  .label{
-    margin-left: 15px;
+  .sum-row{
+    td{
+      background-color: rgba(242, 242, 242, 1);
+      color: #000;
+    }
   }
-  .fr{
-    float: right;
-  }
-}
-.sum-row{
   td{
-    background-color: rgba(242, 242, 242, 1);
-    color: #000;
-  }
-}
-td{
-  >div{
-    width: 100%;
-    height: 22px;
-    position: relative;
-    span{
-      display: inline-block;
-      position: absolute;
+    >div{
+      width: 100%;
       height: 22px;
-      overflow: hidden;
-      left: 0;
-      right: 0;
-      text-overflow:ellipsis;
-      white-space:nowrap;
+      position: relative;
+      span{
+        display: inline-block;
+        position: absolute;
+        height: 22px;
+        overflow: hidden;
+        left: 0;
+        right: 0;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+      &.time,&.place{
+        color: #888;
+      }
+      
     }
-    &.time,&.place{
-      color: #888;
-    }
-    
   }
-}
+  .footer{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-weight: bold;
+    color: #444;
+    font-size: 12px;
+  }
+`
+
+const TitleCon = styled.div`
+  cursor: pointer;
+  &:hover{
+    color: #00F;
+  }
 `

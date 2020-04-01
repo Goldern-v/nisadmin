@@ -44,9 +44,12 @@ export default observer(function TabContent(props: Props) {
   return (
     <Wrapper>
       {data.length <= 0 && <div className="no-data">
-        <Icon type="inbox" />
+        <embed
+          type='image/svg+xml'
+          style={{ width: '100px' }}
+          src={require('src/modules/statistic/img/spacePhoto.svg')} />
         <br />
-        <span>未设置</span>
+        <span>暂无数据</span>
       </div>}
       {data.length > 0 && data.map((item: any, keyIdx: number) => {
         let itemCfg = promotionSettingModel.itemConfig(item)
