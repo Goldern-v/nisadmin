@@ -193,7 +193,7 @@ export default observer(function BankTable(props: Props) {
   }
 
   const getSelectedRows = () => {
-    return tableData.filter((item: any, idx: any) => selectedRowKeys.indexOf(idx) >= 0)
+    return tableData.filter((item: any, idx: any) => selectedRowKeys.indexOf(item.key) >= 0)
   }
 
   let btnList: BtnList[] = [

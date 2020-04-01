@@ -94,7 +94,7 @@ export default observer(function ChoiceQuestionEdit() {
   return <Wrapper>
     <div className="header">
       <NavCon>
-        <Link to="/continuingEdu">培训考试</Link>
+        <Link to="/continuingEdu">学习培训</Link>
         <span> > </span>
         <Link to="/continuingEdu/questionBankManagement?choiceType=选择题">题库管理</Link>
         <span> > </span>

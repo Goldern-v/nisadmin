@@ -83,6 +83,21 @@ export default class EmpManageService extends BaseApiService {
   public async queryWtRecordPageList(query: any) {
     return this.post(`/studyAndTrain/personelManage/queryWtRecordPageList`, query)
   }
+
+  /** 个人信息-学分合计 **/
+  public async countCreditByParams(query: any) {
+    return this.post(`/studyAndTrain/personelManage/countCreditByParams`, query)
+  }
+
+  /** 个人信息-学时合计 **/
+  public async countClassHoursByParams(query: any) {
+    return this.post(`/studyAndTrain/personelManage/countClassHoursByParams`, query)
+  }
+
+  /** 个人信息-学时合计 **/
+  public async addCredit(query: any) {
+    return this.post(`/studyAndTrain/personelManage/addCredit`, query)
+  }
 }
 
 export const empManageService = new EmpManageService();

@@ -19,6 +19,8 @@ class EmpDetailModel {
   }
   @observable loading = false
   @observable dataTotal = 0
+  @observable creditsDesc = ''
+  @observable classHoursDesc = ''
 
   @action public init() {
     let newQuery = {
@@ -39,6 +41,8 @@ class EmpDetailModel {
   }
 
   public getTabelData(callback?: Function) {
+    this.creditsDesc = ''
+    this.classHoursDesc = ''
     let pannelName: string = appStore.match.params?.pannelName || ''
     let empNo = appStore.queryObj.empNo
 
@@ -59,12 +63,32 @@ class EmpDetailModel {
             ...params,
             creditType: type,
           })
+
+        empManageService
+          .countCreditByParams({
+            ...params,
+            creditType: type,
+          }).then(res => {
+            this.creditsDesc = `合计： 
+            院级学分：${res.data.hospitalCreditTotal || 0}分    
+            片区学分：${res.data.areaCreditTotal || 0}分    
+            病区学分：${res.data.deptCreditTotal || 0}分
+            `
+          })
         break
       case '学时记录':
         reqMethod = empManageService
           .queryClassHourRecordPageList({
             ...params,
             teachingMethod: type,
+          })
+
+        empManageService
+          .countClassHoursByParams({
+            ...params,
+            creditType: type,
+          }).then(res => {
+            this.classHoursDesc = `合计： ${res.data.totalClassHours || 0}`
           })
         break
       case '学习记录':

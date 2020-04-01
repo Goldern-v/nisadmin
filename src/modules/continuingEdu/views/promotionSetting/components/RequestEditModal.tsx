@@ -33,42 +33,76 @@ export default observer(function RequestEditModal(props: Props) {
   let [targetKeys, setTargetKeys] = useState([] as string[])
   let [selectedKeys, setSelectedKeys] = useState([] as string[])
   let [promotionList, setPromotionList] = useState([] as string[])
+  let [targetKeysAll, setTargetKeysAll] = useState([] as any[])
 
   useLayoutEffect(() => {
     if (visible) {
       setLevelSort(defaultLevelSort || '')
-      getPromotionList(() => getCurentSetting(defaultLevelSort || ''))
+      getPromotionList(() => getCurentSettingAll(defaultLevelSort || ''))
     }
   }, [visible])
 
   const handleOk = () => {
-    let target = levelList.find((item: any) => item.sort == levelSort)
-    if (!target) {
-      message.error('未知晋升层级')
-      return
-    }
+    // let target = levelList.find((item: any) => item.sort == levelSort)
+    // if (!target) {
+    //   message.error('未知晋升层级')
+    //   return
+    // }
 
-    let params = {
-      promoteLevel: target.title,
-      promoteInfoList: targetKeys.map((name: string, idx: number) => {
-        return {
-          requestKey: name,
-          sort: idx + 1
-        }
-      })
-    }
+    // let params = {
+    //   promoteLevel: target.title,
+    //   promoteInfoList: targetKeys.map((name: string, idx: number) => {
+    //     return {
+    //       requestKey: name,
+    //       sort: idx + 1
+    //     }
+    //   })
+    // }
+
+    let paramsArr = targetKeysAll.map((item: any, idx: any) => {
+      let promoteLevel = ''
+
+      let sort = idx.toString()
+
+      let target = levelList.find((item: any) => item.sort == sort)
+
+      if (target.title) promoteLevel = target.title
+
+      return {
+        promoteLevel,
+        promoteInfoList: item.map((name: string, idx: number) => {
+          return {
+            requestKey: name,
+            sort: idx + 1
+          }
+        })
+      }
+    })
+
+    // promotionSettingService
+    //   .editPromoteConfig(params)
+    //   .then(res => {
+    //     message.success('保存成功', 1, () => {
+    //       setLoading(false)
+    //       onOkCallBack && onOkCallBack()
+    //       onCancel && onCancel()
+    //     })
+    //   }, err => setLoading(false))
 
     setLoading(true)
 
-    promotionSettingService
-      .editPromoteConfig(params)
-      .then(res => {
-        message.success('保存成功', 1, () => {
-          setLoading(false)
-          onOkCallBack && onOkCallBack()
-          onCancel && onCancel()
-        })
-      }, err => setLoading(false))
+    let saveReqArr = paramsArr.map((params: any) => {
+      return promotionSettingService.editPromoteConfig(params)
+    })
+
+    Promise.all(saveReqArr).then(res => {
+      setLoading(false)
+      message.success('保存成功', 1, () => {
+        setLoading(false)
+        onOkCallBack && onOkCallBack()
+        onCancel && onCancel()
+      })
+    }, err => setLoading(false))
   }
 
   const getPromotionList = (callback?: Function) => {
@@ -86,30 +120,50 @@ export default observer(function RequestEditModal(props: Props) {
       }, () => setLoading(false))
   }
 
-  const getCurentSetting = (levelSort: string) => {
-    let target = levelList.find((item: any) => item.sort == levelSort)
-    if (!target) return
+  const getCurentSettingAll = (levelSort: string) => {
+    // let target = levelList.find((item: any) => item.sort == levelSort)
+    let reqArr = levelList.map((item: any) => {
+      return promotionSettingService.getPromoteConfig(item.title)
+    })
+    // if (!target) return
 
     setSelectedKeys([])
     setTargetKeys([])
     setLoading(true)
-    promotionSettingService
-      .getPromoteConfig(target.title)
-      .then((res) => {
+
+    Promise
+      .all(reqArr)
+      .then(res => {
         setLoading(false)
 
-        if (res.data) setTargetKeys(res.data.map((item: any) => item.requestKey))
-      }, () => setLoading(false))
+        setTargetKeysAll(
+          res.map(
+            (res: any) => res.data.map((item: any) => item.requestKey)
+          )
+        )
+      }, err => setLoading(false))
+    // promotionSettingService
+    //   .getPromoteConfig(target.title)
+    //   .then((res) => {
+    //     setLoading(false)
+
+    //     if (res.data) setTargetKeys(res.data.map((item: any) => item.requestKey))
+    //   }, () => setLoading(false))
   }
 
   const handleTabChange = (idx: string) => {
     setLevelSort(idx)
-    getCurentSetting(idx)
+    setSelectedKeys([])
+    // getCurentSetting(idx)
   }
+
+  let visibleTargetKey = [] as any[]
+  if (targetKeysAll[Number(levelSort)])
+    visibleTargetKey = targetKeysAll[Number(levelSort)]
 
   const renderItem = (item: any) => {
     let draggable = false
-    let itemIdx = targetKeys.indexOf(item.title)
+    let itemIdx = visibleTargetKey.indexOf(item.title)
     if (itemIdx >= 0) draggable = true
 
     return <DragCon
@@ -134,17 +188,25 @@ export default observer(function RequestEditModal(props: Props) {
         e.target.parentNode.parentNode.style.background = '#fff'
 
         if (itemIdx < 0) return
-        let newTargetKeys = targetKeys.concat()
+        let newTargetKeys = visibleTargetKey.concat()
         let dragIdx = Number(e.dataTransfer.getData('dragIdx'))
         let cacheKey = newTargetKeys[dragIdx]
         newTargetKeys[dragIdx] = newTargetKeys[itemIdx]
         newTargetKeys[itemIdx] = cacheKey
 
-        setTargetKeys(newTargetKeys)
+        // setTargetKeys(newTargetKeys)
+        if (levelSort || levelSort === '0') {
+          if (targetKeysAll[Number(levelSort)]) {
+            targetKeysAll[Number(levelSort)] = newTargetKeys
+            setTargetKeysAll([...targetKeysAll])
+          }
+        }
       }}>
       {item.title}
     </DragCon>
   }
+
+
 
   return (
     <Modal
@@ -176,14 +238,22 @@ export default observer(function RequestEditModal(props: Props) {
         <Spin spinning={loading}>
           <div className="tabs-content">
             <Transfer
-              targetKeys={targetKeys}
+              targetKeys={visibleTargetKey}
               selectedKeys={selectedKeys}
               render={item => renderItem(item)}
               listStyle={{ width: "267px", height: "300px" }}
               onSelectChange={(keys: string[], keys1: string[]) =>
                 setSelectedKeys(keys.concat(keys1))
               }
-              onChange={(keys: any) => setTargetKeys(keys)}
+              onChange={(keys: any) => {
+                if (levelSort || levelSort === '0') {
+                  if (targetKeysAll[Number(levelSort)]) {
+                    targetKeysAll[Number(levelSort)] = keys
+                    setTargetKeysAll([...targetKeysAll])
+                  }
+                }
+                // setTargetKeys(keys)
+              }}
               dataSource={promotionList.map((item: any) => {
                 return {
                   key: item.name,

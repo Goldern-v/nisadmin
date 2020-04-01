@@ -18,7 +18,7 @@ const Option = Select.Option
 export interface Props extends RouteComponentProps { }
 
 export default observer(function TableView() {
-  const { query, loading, dataTotal, tableData } = empDetailModel
+  const { query, loading, dataTotal, tableData, classHoursDesc, creditsDesc } = empDetailModel
   const [menuTree, setMenuTree] = useState([] as any[])
   const [typeList, setTypeList] = useState([] as any[])
 
@@ -533,9 +533,9 @@ export default observer(function TableView() {
   //需要在底部额外显示
   let footer = <span style={{ display: 'none' }}></span>
   if (pannelName == '学分记录')
-    footer = <span>合计： 院级学分：232分    片区学分：45分    病区学分：15分</span>
+    footer = <span>{creditsDesc}</span>
   if (pannelName == '学时记录')
-    footer = <span>42</span>
+    footer = <span>{classHoursDesc}</span>
 
   //起止时间控件配置
   let dateRange =
@@ -586,7 +586,7 @@ export default observer(function TableView() {
           </Select>
         </span>
         <span className="label">
-          <Button type="primary">搜索</Button>
+          <Button type="primary" onClick={() => handleQueryChange({ ...query, pageIndex: 1 }, true)}>搜索</Button>
         </span>
       </div>
     </div>

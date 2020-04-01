@@ -114,7 +114,7 @@ export default observer(function Main(props: any) {
     appStore.history.replace(`${url}?${qs.stringify(query)}`);
 
     if (pannelName == '学分记录') {
-      console.log('刷新学分记录')
+      empDetailModel.getTabelData()
     }
   }
 
@@ -160,6 +160,7 @@ export default observer(function Main(props: any) {
     </div>
     <SorceAppendModal
       visible={sorceAppendVisible}
+      empNo={appStore.queryObj.empNo}
       onOk={handleSourceAppend}
       onCancel={() => setSorceAppendVisible(false)} />
   </Wrapper>

@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import React, { useState, useEffect } from "react"
-import { Button, InputNumber, Select, Modal, message } from "antd"
+import { Button, InputNumber, Select, Modal, message, Icon } from "antd"
 import { promotionSettingModel } from "../model/PromotionSettingModel"
 import { observer } from "mobx-react-lite"
 export interface Props {
@@ -43,7 +43,12 @@ export default observer(function TabContent(props: Props) {
 
   return (
     <Wrapper>
-      {data.map((item: any, keyIdx: number) => {
+      {data.length <= 0 && <div className="no-data">
+        <Icon type="inbox" />
+        <br />
+        <span>未设置</span>
+      </div>}
+      {data.length > 0 && data.map((item: any, keyIdx: number) => {
         let itemCfg = promotionSettingModel.itemConfig(item)
 
         let typeName = (name: string) => {
@@ -61,6 +66,7 @@ export default observer(function TabContent(props: Props) {
               {itemCfg.type === "number" && (
                 <React.Fragment>
                   <InputNumber
+                    min={0}
                     precision={itemCfg.precision}
                     className={typeName("input-type")}
                     value={item.requestValue}
@@ -141,8 +147,7 @@ export default observer(function TabContent(props: Props) {
 })
 
 const Wrapper = styled.div`
-  min-height: 300px;
-  max-height: calc(100vh - 158px);
+  height: calc(100vh - 158px);
   padding: 20px;
   overflow-y: auto;
   ::-webkit-scrollbar {
@@ -158,6 +163,23 @@ const Wrapper = styled.div`
     border-radius: 50px;
     background-color: #eaeaea;
   }
+  .no-data{
+    text-align:center;
+    cursor: default;
+    color: #999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    i{
+      font-size: 44px;
+      transform: scaleX(1.2);
+    }
+    span{
+      font-size:20px;
+    color: #666;
+    }
+  }
   div.row {
     margin-bottom: 10px;
     & > * {
@@ -168,12 +190,17 @@ const Wrapper = styled.div`
       text-align: right;
       display: inline-block;
     }
+    .content{
+      &>*{
+        vertical-align: middle;
+      }
+    }
     .opt-select {
       width: 152px;
     }
     .unit-select {
       position: relative;
-      top: -1px;
+      /* top: -1px; */
       margin-left: 5px;
     }
     .input-type1 {
@@ -195,8 +222,8 @@ const Wrapper = styled.div`
       text-align: center;
       position: relative;
       height: 32px;
-      vertical-align: middle;
-      top: -2px;
+      /* vertical-align: middle; */
+      /* top: -2px; */
     }
   }
 `

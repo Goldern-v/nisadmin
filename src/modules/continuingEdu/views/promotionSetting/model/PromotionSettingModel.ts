@@ -113,9 +113,24 @@ class PromotionSettingModel {
         .getPromoteConfig(target.title)
         .then(res => {
           this.loading = false
-          this.data = res.data ?
+          let newData = res.data ?
             res.data.sort((a: any, b: any) => a.sort - b.sort) :
             []
+
+          this.data = newData.map((item: any) => {
+            let requestValue = item.requestValue
+
+            if (requestValue === '') {
+              let itemCfg = this.itemConfig(item)
+              if (itemCfg.type == 'select' && itemCfg.vals?.length) requestValue = itemCfg.vals[0].code
+
+              if (itemCfg.type == 'number') requestValue = 0
+            }
+            return {
+              ...item,
+              requestValue
+            }
+          })
         }, () => this.loading = false)
     } else {
       this.loading = false

@@ -12,7 +12,7 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
@@ -21,6 +21,16 @@ import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
 import 晋升管理 from "./views/promotionSetting/PromotionSetting";
+
+import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement"
+import ChoiceQustionEdit from '../questionBankManagement/views/ChoiceQuestionEdit'
+import FillingQuestionEdit from '../questionBankManagement/views/FillingQuestionEdit'
+import ShortQuestionEdit from '../questionBankManagement/views/ShortQuestionEdit'
+import LabelQuestionBank from '../questionBankManagement/views/LabelQuestionBank'
+import UploadRecordQuestionBank from '../questionBankManagement/views/UploadRecordQuestionBank'
+import UploadQuestionBank from '../questionBankManagement/views/UploadQuestionBank'
+import WrongQuestionBank from '../questionBankManagement/views/WrongQuestionBank'
+
 import { authStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
@@ -33,7 +43,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <RYGL />,
       path: "/continuingEdu/人员管理",
       component: 人员管理,
-      hide: true
+      // hide: true
     },
     {
       title: "审核发布",
@@ -60,6 +70,55 @@ export default function ContinuingEdu(props: Props) {
       icon: <RYGL />,
       path: "/continuingEdu/晋升管理",
       component: 晋升管理,
+      // hide: true
+    },
+    {
+      title: '选择题新建和编辑',
+      hide: true,
+      path: '/continuingEdu/choiceQuestionEdit',
+      component: ChoiceQustionEdit
+    },
+    {
+      title: '填空题新建和编辑',
+      hide: true,
+      path: '/continuingEdu/fillingQuestionEdit',
+      component: FillingQuestionEdit
+    },
+    {
+      title: '问答题新建和编辑',
+      hide: true,
+      path: '/continuingEdu/shortQuestionEdit',
+      component: ShortQuestionEdit
+    },
+    {
+      title: '标签题库',
+      hide: true,
+      path: '/continuingEdu/labelQuestionBank',
+      component: LabelQuestionBank
+    },
+    {
+      title: '导入题库',
+      hide: true,
+      path: '/continuingEdu/uploadRecordQuestionBank',
+      component: UploadRecordQuestionBank
+    },
+    {
+      title: '上传新题库',
+      hide: true,
+      path: '/continuingEdu/uploadQuestionBank',
+      component: UploadQuestionBank
+    },
+    {
+      title: '错题反馈',
+      hide: true,
+      path: '/continuingEdu/wrongQuestionBank',
+      component: WrongQuestionBank
+    },
+    {
+      title: "题库管理",
+      icon: <TKGL />,
+      path: "/continuingEdu/questionBankManagement",
+      component: 题库管理,
       hide: true
     },
     {
@@ -96,7 +155,7 @@ export default function ContinuingEdu(props: Props) {
                     component: 主列表页,
                     path: `/continuingEdu/${Pid}/${item.id}?Pid=${Pid}&id=${
                       item.id
-                    }`
+                      }`
                   };
                   arr.push(obj2);
                   obj1.children = arr;

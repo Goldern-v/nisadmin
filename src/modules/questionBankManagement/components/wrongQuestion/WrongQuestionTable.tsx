@@ -187,7 +187,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
   }
 
   // const getSelectedRows = () => {
-  //   return tableData.filter((item: any, idx: any) => selectedRowKeys.indexOf(idx) >= 0)
+  //   return tableData.filter((item: any, idx: any) => selectedRowKeys.indexOf(item.key) >= 0)
   // }
 
   return (

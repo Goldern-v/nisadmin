@@ -3,18 +3,20 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Row, Col, Select, Input, InputNumber } from 'antd'
 import Form from 'src/components/Form/Form'
 import { Rules } from 'src/components/Form/interfaces'
+import { empManageService } from './../views/empDetail/api/EmpManageService'
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 
 export interface Props {
   visible: boolean,
+  empNo: string | number,
   onOk: any,
   onCancel: any
 }
 
 export default function SorceAppendModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
+  const { visible, onCancel, onOk, empNo } = props;
   const formRef = React.createRef<Form>();
   const [loading, setLoading] = useState(false)
 
@@ -26,9 +28,9 @@ export default function SorceAppendModal(props: Props) {
 
         if (current) current.clear(() => {
           let current = formRef.current;
-          if (current) current.setField('sorceType', '院级学分');
+          if (current) current.setField('creditType', '1');
         })
-      });
+      }, 500);
     }
     return () => {
       clearTimeout(timer)
@@ -37,11 +39,24 @@ export default function SorceAppendModal(props: Props) {
 
   const handleOk = () => {
     setLoading(true)
-    console.log(formRef.current && formRef.current.getFields())
-    setTimeout(() => {
-      setLoading(false)
-      onOk && onOk()
-    }, 1000)
+    // console.log(formRef.current && formRef.current.getFields())
+    // setTimeout(() => {
+    //   setLoading(false)
+    //   onOk && onOk()
+    // }, 1000)
+
+    let params = formRef.current && formRef.current.getFields()
+    params = { ...params }
+    params.credit = params.credit || 0
+    params.credit = -params.credit
+    params.empNo = empNo
+
+    empManageService
+      .addCredit(params)
+      .then(res => {
+        setLoading(false)
+        onOk && onOk()
+      }, err => setLoading(false))
   }
 
   return <Modal
@@ -56,11 +71,11 @@ export default function SorceAppendModal(props: Props) {
         <Row>
           <Col span={4} className="label">学分类型:</Col>
           <Col span={14}>
-            <Form.Field name="sorceType">
+            <Form.Field name="creditType">
               <Select>
-                <Option value="院级学分">院级学分</Option>
-                <Option value="片区学分">片区学分</Option>
-                <Option value="病区学分">病区学分</Option>
+                <Option value="1">院级学分</Option>
+                <Option value="2">片区学分</Option>
+                <Option value="3">病区学分</Option>
               </Select>
             </Form.Field>
           </Col>
@@ -68,7 +83,7 @@ export default function SorceAppendModal(props: Props) {
         <Row>
           <Col span={4} className="label">学分:</Col>
           <Col span={14}>
-            <Form.Field name="sorce">
+            <Form.Field name="credit">
               <InputNumber min={0} />
             </Form.Field>
           </Col>
@@ -79,7 +94,7 @@ export default function SorceAppendModal(props: Props) {
         <Row>
           <Col span={4} className="label">原因:</Col>
           <Col span={14}>
-            <Form.Field name="reason">
+            <Form.Field name="remark">
               <TextArea rows={3} />
             </Form.Field>
           </Col>

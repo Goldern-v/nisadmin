@@ -34,6 +34,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     labels: [] as any[],
     questionIds: [] as any[]
   })
+  console.log(tableData)
   const handleLabelAppendOk = (newLabels: any) => {
     let questionLabelIdList = newLabels.map((item: any) => item.id);
     let questionIdList = getSelectedRows().map((item: any) => item.id);
@@ -212,7 +213,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
   }
 
   const getSelectedRows = () => {
-    return tableData.filter((item: any, idx: any) => selectedRowKeys.indexOf(idx) >= 0)
+    return tableData.filter((item: any, idx: any) => selectedRowKeys.indexOf(item.key) >= 0)
   }
 
   let btnList: BtnList[] = [
