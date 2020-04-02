@@ -63,7 +63,7 @@ const Routes_Config = [
 ]
 
 export default observer(function Main(props: any) {
-  const [sorceAppendVisible, setSorceAppendVisible] = useState(false);
+  const [sorceAppendVisible, setSorceAppendVisible] = useState(false)
   const { history } = appStore
   const [data, setData] = useState({
     id: '',
@@ -79,9 +79,9 @@ export default observer(function Main(props: any) {
   const pannelName = appStore.match.params.pannelName || ''
 
   useEffect(() => {
-    let search: any = appStore.location.search;
-    let query = {} as any;
-    if (search) query = qs.parse(search.replace('?', ''));
+    let search: any = appStore.location.search
+    let query = {} as any
+    if (search) query = qs.parse(search.replace('?', ''))
     setData({ ...data, ...query })
 
     // empDetailModel.init()
@@ -89,36 +89,37 @@ export default observer(function Main(props: any) {
 
   const targetComponent = () => {
     for (let i = 0; i < Routes_Config.length; i++) {
-      if (appStore.match.params.pannelName == Routes_Config[i].name) return Routes_Config[i]
+      if (appStore.match.params.pannelName == Routes_Config[i].name)
+        return Routes_Config[i]
     }
-    return Routes_Config[0];
+    return Routes_Config[0]
   }
   const handleRouteChange = (name: string) => {
-    let search: any = appStore.location.search;
+    let search: any = appStore.location.search
     appStore.history.replace(`/continuingEduEmpDetail/${name}${search}`)
   }
 
   const handleSourceAppend = () => {
-    setSorceAppendVisible(false);
-    let url = appStore.match.url;
-    let search: any = appStore.location.search;
-    let query = {} as any;
+    setSorceAppendVisible(false)
+    let url = appStore.match.url
+    let search: any = appStore.location.search
+    let query = {} as any
 
-    if (search) query = qs.parse(search.replace('?', ''));
+    if (search) query = qs.parse(search.replace('?', ''))
 
     if (query.sourceChange >= 0)
-      query.sourceChange = Number(query.sourceChange) + 1;
+      query.sourceChange = Number(query.sourceChange) + 1
     else
       query.sourceChange = 1
 
-    appStore.history.replace(`${url}?${qs.stringify(query)}`);
+    appStore.history.replace(`${url}?${qs.stringify(query)}`)
 
     if (pannelName == '学分记录') {
       empDetailModel.getTabelData()
     }
   }
 
-  const TargetRoute = targetComponent();
+  const TargetRoute = targetComponent()
 
   return <Wrapper>
     <div className="topbar">
@@ -133,9 +134,13 @@ export default observer(function Main(props: any) {
           <img src={appStore.queryObj.nearImageUrl || ''} alt="" />
         </span>
         <span>
-          <span className="emp-name">{data.empName}</span>
+          <span className="emp-name">
+            {data.empName}
+          </span>
           <br />
-          <span className="emp-sub">{data.newTitle} | {data.nurseHierarchy} | {data.deptName} | {data.status}</span>
+          <span className="emp-sub">
+            {data.newTitle} | {data.nurseHierarchy} | {data.deptName} | {data.status}
+          </span>
         </span>
       </div>
       <div className="btn-group">
@@ -165,7 +170,7 @@ export default observer(function Main(props: any) {
       onCancel={() => setSorceAppendVisible(false)} />
   </Wrapper>
 })
-const defaultImg = require('./../../assets/护士默认头像.png');
+const defaultImg = require('./../../assets/护士默认头像.png')
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -247,7 +252,8 @@ const Wrapper = styled.div`
       height: calc(100vh - 185px);
       ::-webkit-scrollbar {
         /*滚动条整体样式*/
-        width: 8px; /*高宽分别对应横竖滚动条的尺寸*/
+        width: 8px; 
+        /*高宽分别对应横竖滚动条的尺寸*/
         height: 10px;
       }
       ::-webkit-scrollbar-thumb {

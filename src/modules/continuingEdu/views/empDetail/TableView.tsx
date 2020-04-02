@@ -114,21 +114,18 @@ export default observer(function TableView() {
             dataIndex: 'teachingMethodName',
             width: 80,
             align: 'center',
-
           },
           {
             title: '日期',
             dataIndex: 'startTime',
             width: 180,
             align: 'center',
-
           },
           {
             title: '学时',
             dataIndex: 'classHours',
             width: 60,
             align: 'center',
-
           },
         ]
       case '学习记录':
@@ -223,6 +220,17 @@ export default observer(function TableView() {
               else
                 return <span>{text}</span>
             }
+          }, {
+            title: '成绩有效',
+            dataIndex: 'isValidResultDesc',
+            width: 60,
+            align: 'center',
+            render: (text: string) => {
+              if (text == '无效')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span style={{ color: 'blue' }}>{text}</span>
+            }
           },
           {
             title: '学分',
@@ -276,6 +284,24 @@ export default observer(function TableView() {
             dataIndex: 'gainScores',
             width: 80,
             align: 'center',
+          },
+          {
+            title: '是否及格',
+            dataIndex: 'passedDesc',
+            width: 80,
+            align: 'center',
+          },
+          {
+            title: '成绩有效',
+            dataIndex: 'isValidResultDesc',
+            width: 60,
+            align: 'center',
+            render: (text: string) => {
+              if (text == '无效')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span style={{ color: 'blue' }}>{text}</span>
+            }
           },
           {
             title: '学分',
@@ -335,6 +361,17 @@ export default observer(function TableView() {
             width: 80,
             dataIndex: 'correctRateDesc',
             align: 'center',
+          }, {
+            title: '成绩有效',
+            dataIndex: 'isValidResultDesc',
+            width: 60,
+            align: 'center',
+            render: (text: string) => {
+              if (text == '无效')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span style={{ color: 'blue' }}>{text}</span>
+            }
           },
           {
             title: '学时',
@@ -379,9 +416,27 @@ export default observer(function TableView() {
           },
           {
             title: '成绩',
-            dataIndex: 'openTimeDesc',
+            dataIndex: 'gainScores',
+            width: 80,
+            align: 'center',
+          },
+          {
+            title: '是否及格',
+            dataIndex: 'passedDesc',
+            width: 80,
+            align: 'center',
+          },
+          {
+            title: '成绩有效',
+            dataIndex: 'isValidResultDesc',
             width: 60,
             align: 'center',
+            render: (text: string) => {
+              if (text == '无效')
+                return <span style={{ color: 'red' }}>{text}</span>
+              else
+                return <span style={{ color: 'blue' }}>{text}</span>
+            }
           },
           {
             title: '学时',
@@ -496,9 +551,12 @@ export default observer(function TableView() {
   }
 
   const handleQueryChange = (newQuery: any, req?: boolean) => {
-    empDetailModel.setQuery({ ...newQuery }, req || false, () => {
-
-    })
+    empDetailModel
+      .setQuery(
+        { ...newQuery },
+        req || false,
+        () => { }
+      )
   }
 
   useEffect(() => {
@@ -597,7 +655,12 @@ export default observer(function TableView() {
           </Select>
         </span>
         <span className="label">
-          <Button type="primary" onClick={() => handleQueryChange({ ...query, pageIndex: 1 }, true)}>搜索</Button>
+          <Button
+            type="primary"
+            onClick={() =>
+              handleQueryChange({ ...query, pageIndex: 1 }, true)}>
+            搜索
+          </Button>
         </span>
       </div>
     </div>

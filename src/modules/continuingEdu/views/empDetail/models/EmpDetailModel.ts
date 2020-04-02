@@ -14,9 +14,9 @@ class EmpDetailModel {
 
   @observable query = { ...this.defaultQuery } as any
   @observable tableData = [] as any[]
-  @observable baseInfo = {
-    sumText: ''
-  }
+  // @observable baseInfo = {
+  //   sumText: ''
+  // }
   @observable loading = false
   @observable dataTotal = 0
   @observable creditsDesc = ''
@@ -56,13 +56,15 @@ class EmpDetailModel {
       pageIndex,
       pageSize,
     }
+
     switch (pannelName) {
       case '学分记录':
-        reqMethod = empManageService
-          .queryCreditRecordPageList({
-            ...params,
-            creditType: type,
-          })
+        reqMethod =
+          empManageService
+            .queryCreditRecordPageList({
+              ...params,
+              creditType: type,
+            })
 
         empManageService
           .countCreditByParams({
@@ -77,11 +79,12 @@ class EmpDetailModel {
           })
         break
       case '学时记录':
-        reqMethod = empManageService
-          .queryClassHourRecordPageList({
-            ...params,
-            teachingMethod: type,
-          })
+        reqMethod =
+          empManageService
+            .queryClassHourRecordPageList({
+              ...params,
+              teachingMethod: type,
+            })
 
         empManageService
           .countClassHoursByParams({
@@ -92,46 +95,52 @@ class EmpDetailModel {
           })
         break
       case '学习记录':
-        reqMethod = empManageService
-          .queryStudyRecordPageList({
-            ...params,
-            firstLevelMenuId: type,
-          })
+        reqMethod =
+          empManageService
+            .queryStudyRecordPageList({
+              ...params,
+              firstLevelMenuId: type,
+            })
         break
       case '培训记录':
-        reqMethod = empManageService
-          .queryTrainRecordPageList({
-            ...params,
-            firstLevelMenuId: type,
-          })
+        reqMethod =
+          empManageService
+            .queryTrainRecordPageList({
+              ...params,
+              firstLevelMenuId: type,
+            })
         break
       case '考试记录':
-        reqMethod = empManageService
-          .queryExamRecordPageList({
-            ...params,
-            firstLevelMenuId: type,
-          })
+        reqMethod =
+          empManageService
+            .queryExamRecordPageList({
+              ...params,
+              firstLevelMenuId: type,
+            })
         break
       case '练习记录':
-        reqMethod = empManageService
-          .queryExerciseRecordPageList({
-            ...params,
-            firstLevelMenuId: type,
-          })
+        reqMethod =
+          empManageService
+            .queryExerciseRecordPageList({
+              ...params,
+              firstLevelMenuId: type,
+            })
         break
       case '实操记录':
-        reqMethod = empManageService
-          .queryPractiseRecordPageList({
-            ...params,
-            firstLevelMenuId: type,
-          })
+        reqMethod =
+          empManageService
+            .queryPractiseRecordPageList({
+              ...params,
+              firstLevelMenuId: type,
+            })
         break
       case '演练记录':
-        reqMethod = empManageService
-          .queryWtRecordPageList({
-            ...params,
-            firstLevelMenuId: type,
-          })
+        reqMethod =
+          empManageService
+            .queryWtRecordPageList({
+              ...params,
+              firstLevelMenuId: type,
+            })
         break
       default:
         return
@@ -150,9 +159,9 @@ class EmpDetailModel {
     }, err => this.loading = false)
   }
 
-  @action getBaseInfo() {
+  // @action getBaseInfo() {
 
-  }
+  // }
 }
 
 export const empDetailModel = new EmpDetailModel()

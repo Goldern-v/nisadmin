@@ -31,7 +31,7 @@ import UploadRecordQuestionBank from '../questionBankManagement/views/UploadReco
 import UploadQuestionBank from '../questionBankManagement/views/UploadQuestionBank'
 import WrongQuestionBank from '../questionBankManagement/views/WrongQuestionBank'
 
-import { authStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
   const [effect, setEffect] = useState(true);
@@ -56,7 +56,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <LXGL />,
       path: "/continuingEdu/评分管理",
       component: 评分管理,
-      hide: true
+      hide: !appStore.isDev
     },
     ...dataList,
     {
@@ -119,7 +119,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/questionBankManagement",
       component: 题库管理,
-      hide: true
+      hide: !appStore.isDev
     },
     {
       title: "菜单设置",
