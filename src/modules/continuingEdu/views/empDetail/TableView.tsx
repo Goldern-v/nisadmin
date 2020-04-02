@@ -134,14 +134,14 @@ export default observer(function TableView() {
           {
             title: '类型',
             dataIndex: 'firstLevelMenuName',
-            width: 150,
+            width: 120,
             align: 'center',
           },
           titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 160,
+            width: 140,
             align: 'center',
           },
           {
@@ -153,7 +153,7 @@ export default observer(function TableView() {
           {
             title: '学分',
             dataIndex: 'creditDesc',
-            width: 120,
+            width: 110,
             align: 'center',
           },
           {
@@ -181,15 +181,15 @@ export default observer(function TableView() {
           {
             title: '类型',
             dataIndex: 'firstLevelMenuName',
-            width: 150,
+            width: 120,
             align: 'center',
           },
           titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 160,
-            align: 'left',
+            width: 140,
+            align: 'center',
           },
           {
             title: '开放时间',
@@ -200,13 +200,13 @@ export default observer(function TableView() {
           {
             title: '组织方式',
             dataIndex: 'oranizationWayName',
-            width: 80,
+            width: 70,
             align: 'center',
           },
           {
             title: '培训地址',
             dataIndex: 'address',
-            width: 150,
+            width: 120,
             align: 'left',
           },
           {
@@ -235,18 +235,18 @@ export default observer(function TableView() {
           {
             title: '学分',
             dataIndex: 'creditDesc',
-            width: 120,
+            width: 110,
             align: 'center',
           },
           {
             title: '学时',
             dataIndex: 'classHours',
-            width: 70,
+            width: 60,
             align: 'center',
           },
           {
             title: '培训情况',
-            width: 70,
+            width: 60,
             dataIndex: 'taskStatusDesc',
             align: 'center',
             render: (text: string) => {
@@ -263,14 +263,14 @@ export default observer(function TableView() {
           {
             title: '类型',
             dataIndex: 'firstLevelMenuName',
-            width: 150,
+            width: 120,
             align: 'center',
           },
           titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 160,
+            width: 140,
             align: 'center',
           },
           {
@@ -306,7 +306,7 @@ export default observer(function TableView() {
           {
             title: '学分',
             dataIndex: 'creditDesc',
-            width: 120,
+            width: 110,
             align: 'center',
           },
           {
@@ -334,14 +334,14 @@ export default observer(function TableView() {
           {
             title: '类型',
             dataIndex: 'firstLevelMenuName',
-            width: 150,
+            width: 120,
             align: 'center',
           },
           titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 160,
+            width: 140,
             align: 'center',
           },
           {
@@ -398,14 +398,14 @@ export default observer(function TableView() {
           {
             title: '类型',
             dataIndex: 'firstLevelMenuName',
-            width: 150,
+            width: 120,
             align: 'center',
           },
           titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 160,
+            width: 140,
             align: 'center',
           },
           {
@@ -475,14 +475,14 @@ export default observer(function TableView() {
           {
             title: '类型',
             dataIndex: 'firstLevelMenuName',
-            width: 150,
+            width: 120,
             align: 'center',
           },
           titleColumn,
           {
             title: '时间',
             dataIndex: 'startTime',
-            width: 160,
+            width: 140,
             align: 'center',
           },
           {
@@ -700,7 +700,7 @@ const Wrapper = styled.div`
   /* overflow-y: auto; */
   .bar{
     line-height: 30px;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     .title{
       font-size: 22px;
       font-weight: bold;
@@ -720,9 +720,9 @@ const Wrapper = styled.div`
     }
   }
   td{
-    >div{
+    >div.row{
       width: 100%;
-      height: 22px;
+      /* height: 22px; */
       position: relative;
       span{
         display: inline-block;
