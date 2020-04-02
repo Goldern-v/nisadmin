@@ -44,10 +44,9 @@ export default observer(function TabContent(props: Props) {
   return (
     <Wrapper>
       {data.length <= 0 && <div className="no-data">
-        <embed
-          type='image/svg+xml'
+        <img
           style={{ width: '100px' }}
-          src={require('src/modules/statistic/img/spacePhoto.svg')} />
+          src={require('src/modules/statistic/img/noData.png')} />
         <br />
         <span>暂无数据</span>
       </div>}
@@ -180,7 +179,7 @@ const Wrapper = styled.div`
     }
     span{
       font-size:20px;
-    color: #666;
+    color: #aaa;
     }
   }
   div.row {
