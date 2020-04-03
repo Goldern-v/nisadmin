@@ -68,9 +68,8 @@ export default function LotChangeInitTimeModal(props: Props) {
       });
 
       /** 表单数据初始化 */
-
       refForm!.current!.setFields({
-        startDate: moment(),
+        startDate: moment().startOf("week"),
         initialHour: "",
         depts: []
       });
@@ -102,7 +101,18 @@ export default function LotChangeInitTimeModal(props: Props) {
 
           <Col span={20}>
             <Form.Field label={`科室`} name="depts" required>
-              <Select mode="multiple" style={{ width: "100%" }}>
+              <Select
+                mode="multiple"
+                style={{ width: "100%" }}
+                showSearch
+                filterOption={(input: any, option: any) => {
+                  return (
+                    option.props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  );
+                }}
+              >
                 {(deptList || []).map((item: any) => {
                   return (
                     <Select.Option key={item.code} value={item.code}>
