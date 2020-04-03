@@ -20,7 +20,7 @@ export interface Props {
 export default function NewNursingRulesAddModal(props: Props) {
   const refForm = React.createRef<Form>();
   const { visible, onOk, onCancel, params, catalogList, deptCode } = props;
-  const [empNo, setEmpNo] = useState();
+  const [empNo, setEmpNo] = useState('');
   const [uploadLoading, setUploadLoading] = useState(false);
   const [acceptingNewParams, setAcceptingNewParams] = useState(false);
 
@@ -248,7 +248,7 @@ export default function NewNursingRulesAddModal(props: Props) {
 const ModalContent = styled.div`
   .row{ 
     display: flex; 
-    margin- bottom: 10px;
+    margin-bottom: 10px;
     .label{
       width: 90px;
       text-align: right;

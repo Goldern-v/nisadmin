@@ -19,7 +19,7 @@ export interface Props {
 export default function NewNursingRulesAddModal(props: Props) {
   const refForm = React.createRef<Form>()
   const { visible, onOk, onCancel, params, deptCode } = props
-  const [empNo, setEmpNo] = useState()
+  const [empNo, setEmpNo] = useState('')
   const [uploadLoading, setUploadLoading] = useState(false)
   const [acceptingNewParams, setAcceptingNewParams] = useState(false)
 

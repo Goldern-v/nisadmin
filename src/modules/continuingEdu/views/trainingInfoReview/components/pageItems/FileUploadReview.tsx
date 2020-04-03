@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import { getFilePrevImg, getFileType } from 'src/utils/file/file'
 import service from 'src/services/api'
 import { getFileSize } from 'src/utils/file/file'
+import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService'
 
 import createModal from 'src/libs/createModal'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
@@ -24,7 +25,8 @@ export default function StudyUpload(props: Props) {
   }
 
   const downFile = (path: string, name: string) => {
-    service.commonApiService.getFileAndDown(path, name)
+    // service.commonApiService.getFileAndDown(path, name)
+    trainingInfoReviewService.downloadPage(path, name)
   }
 
   return <Wrapper>

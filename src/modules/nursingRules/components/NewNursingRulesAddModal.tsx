@@ -20,7 +20,7 @@ export default function NewNursingRulesAddModal(props: Props) {
   const { visible, onOk, onCancel, fileTypeList, params } = props
   const [deptList, setDeptList] = useState(authStore.deptList)
   const [deptCode, setDeptCode] = useState('000000')
-  const [empNo, setEmpNo] = useState()
+  const [empNo, setEmpNo] = useState('')
   const [uploadLoading, setUploadLoading] = useState(false)
   const [catalogList, setCatalogList] = useState([] as any)
   const [acceptingNewParams, setAcceptingNewParams] = useState(false)

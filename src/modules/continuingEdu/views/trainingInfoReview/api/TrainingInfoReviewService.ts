@@ -1,4 +1,6 @@
 import BaseApiService from "src/services/api/BaseApiService";
+import axios from 'axios'
+import { fileDownload } from 'src/utils/file/file'
 import qs from "qs";
 
 export default class TrainingInfoReviewService extends BaseApiService {
@@ -32,6 +34,11 @@ export default class TrainingInfoReviewService extends BaseApiService {
       "/studyAndTrain/teachingPlanManage/previewPaperByTaskCode",
       qs.stringify({ teachingMethod, taskCode, cetpId })
     );
+  }
+
+  //下载文件重新处理
+  public downloadPage(url: string, name?: string) {
+    axios.get(url, { responseType: 'blob' }).then((res) => fileDownload(res, name))
   }
 }
 

@@ -26,6 +26,40 @@ export default observer(function StudyResultReview() {
   const { history, queryObj } = appStore
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
+  const statusColumns = (() => {
+    if ((baseInfo.organizationWay || baseInfo.organizationWayName) == '线下')
+      return [{
+        dataIndex: 'signInTime',
+        title: '签到',
+        align: 'center',
+        width: 180,
+        render: (signInTime: string, record: any) => {
+          if (signInTime) return signInTime
+          return <span style={{ color: 'red' }}>未签到</span>
+        }
+      }] as ColumnProps<any>[]
+    else return [
+      {
+        dataIndex: 'taskStatus',
+        title: '学习情况',
+        align: 'center',
+        width: 60,
+        render: (status: number, record: any) => {
+          if (status == 0)
+            return <span style={{ color: 'red' }}>未完成</span>
+          else
+            return <span>已完成</span>
+        }
+      },
+      {
+        dataIndex: 'finishTime',
+        title: '完成时间',
+        align: 'center',
+        width: 100
+      },
+    ] as ColumnProps<any>[]
+  })()
+
   const columns: ColumnProps<any>[] = [
     {
       dataIndex: 'empName',
@@ -57,24 +91,7 @@ export default observer(function StudyResultReview() {
       align: 'center',
       width: 120,
     },
-    {
-      dataIndex: 'taskStatus',
-      title: '学习情况',
-      align: 'center',
-      width: 60,
-      render: (status: number, record: any) => {
-        if (status == 0)
-          return <span style={{ color: 'red' }}>未完成</span>
-        else
-          return <span>已完成</span>
-      }
-    },
-    {
-      dataIndex: 'finishTime',
-      title: '完成时间',
-      align: 'center',
-      width: 100
-    },
+    ...statusColumns,
     {
       dataIndex: 'creditDesc',
       title: '学分',
