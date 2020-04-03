@@ -473,6 +473,7 @@ class SheetViewModal {
   /** 根据日期获取当前的时间的标准工时 */
   getStandTime(date: string) {
     let initialHour = 37.5;
+    console.log(this.standardTimeList, "this.standardTimeList");
     for (let i = 0; i < this.standardTimeList.length; i++) {
       let dateNum = new Date(date).getTime();
       let standardTime = new Date(this.standardTimeList[i].startDate).getTime();
