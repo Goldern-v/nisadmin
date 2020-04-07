@@ -56,7 +56,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <LXGL />,
       path: "/continuingEdu/评分管理",
       component: 评分管理,
-      hide: !appStore.isDev
+      // hide: !appStore.isDev
     },
     ...dataList,
     {

@@ -52,6 +52,18 @@ export default observer(function ScoreManage(props: Props) {
       width: 40
     },
     {
+      title: "开始时间",
+      dataIndex: "startTime",
+      align: "center",
+      width: 100,
+    },
+    {
+      title: "结束时间",
+      dataIndex: "endTime",
+      align: "center",
+      width: 100,
+    },
+    {
       title: "一级分类",
       dataIndex: "firstLevelMenuName",
       align: "center",
@@ -122,13 +134,13 @@ export default observer(function ScoreManage(props: Props) {
     },
     {
       title: "参与人员",
-      dataIndex: "参与人员",
+      dataIndex: "participantsCount",
       width: 60,
       align: "center"
     },
     {
       title: "评分负责人",
-      dataIndex: "评分负责人",
+      dataIndex: "scorePersons",
       width: 120,
       align: "center"
     },
@@ -137,32 +149,18 @@ export default observer(function ScoreManage(props: Props) {
       dataIndex: "statusDesc",
       width: 100,
       align: "center",
-      render: (text: string) => {
-        let textColor = ''
-        switch (text) {
-          case '发布':
-            textColor = '#00F'
-            break
-          case '退回':
-            textColor = '#F00'
-            break
-          default:
-        }
-
-        return <span style={{ color: textColor }}>{text}</span>
-      }
     },
     {
       title: "操作",
       key: "8",
-      width: 60,
+      width: 80,
       align: "center",
       render: (text: any, record: any, c: any) => {
         let btnText = activeKey == 0 ? "立即评分" : "查看"
         return (
           <DoCon>
             {btnText == '立即评分' ?
-              (record.statusDesc == '结束' ?
+              (record.statusDesc == '已结束' ?
                 <span onClick={() => handleDetail(record)}>
                   {btnText}
                 </span> :
@@ -190,7 +188,7 @@ export default observer(function ScoreManage(props: Props) {
   }
 
   const handleDetail = (record: any) => {
-    if (record.statusDesc != '结束') return
+    if (record.statusDesc != '已结束') return
 
     let newQuery = {
       id: record.cetpId,
@@ -221,6 +219,7 @@ export default observer(function ScoreManage(props: Props) {
       </GroupPostBtn>} */}
     <BaseTable
       surplusHeight={280}
+      surplusWidth={280}
       dataSource={tableData}
       loading={loading}
       columns={columns}

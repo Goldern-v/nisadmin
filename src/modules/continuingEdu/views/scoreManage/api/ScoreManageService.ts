@@ -11,7 +11,7 @@ export default class ScoreManageService extends BaseApiService {
 
   /** 获取待我评分列表 */
   public queryToAuditPageList(query: any) {
-    return this.post(`/studyAndTrain/scoreManage/queryToScorePageListt`, query)
+    return this.post(`/studyAndTrain/scoreManage/queryToScorePageList`, query)
   }
 
   /** 获取菜单树 */
