@@ -62,6 +62,11 @@ export default class TrainingResultService extends BaseApiService {
     return this.post(`/studyAndTrain/practiseManage/uploadScores`,
       params)
   }
+
+  /**实操-上传成绩 */
+  public getAllDeptList() {
+    return this.get(`/dept/nursingUnit/all`)
+  }
 }
 
 export const trainingResultService = new TrainingResultService()

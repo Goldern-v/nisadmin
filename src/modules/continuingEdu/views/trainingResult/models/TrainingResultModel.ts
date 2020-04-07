@@ -41,6 +41,9 @@ class TrainingResultModel {
     }, true)
 
     this.deptList = []
+
+    if (this.deptList.length <= 0) this.getDeptList()
+
     if (this.bigDeptList.length <= 0) this.getBigDeptList()
 
     if (this.titleList.length <= 0) this.getTitleList()
@@ -83,6 +86,20 @@ class TrainingResultModel {
       .getBigDeptMentTree()
       .then(res => {
         if (res.data) this.bigDeptList = res.data
+      })
+  }
+
+  private getDeptList() {
+    trainingResultService
+      .getAllDeptList()
+      .then(res => {
+        if (res.data && res.data.deptList) this.deptList =
+          res.data.deptList.map((item: any) => {
+            return {
+              deptName: item.name,
+              deptCode: item.code
+            }
+          })
       })
   }
 

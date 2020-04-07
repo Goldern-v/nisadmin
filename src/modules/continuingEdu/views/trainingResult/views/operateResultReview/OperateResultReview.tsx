@@ -147,6 +147,18 @@ export default observer(function OperateResultReview() {
       width: 70
     },
     {
+      dataIndex: 'passedDesc',
+      title: '及格',
+      align: 'center',
+      width: 70,
+      render: (text: string) => {
+        if (text == '不及格')
+          return <span style={{ color: 'red' }}>{text}</span>
+        else
+          return <span>{text}</span>
+      }
+    },
+    {
       dataIndex: 'creditDesc',
       title: '学分',
       align: 'center',

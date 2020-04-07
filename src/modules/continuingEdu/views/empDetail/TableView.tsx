@@ -225,12 +225,12 @@ export default observer(function TableView() {
             dataIndex: 'isValidResultDesc',
             width: 60,
             align: 'center',
-            render: (text: string) => {
-              if (text == '无效')
-                return <span style={{ color: 'red' }}>{text}</span>
-              else
-                return <span style={{ color: 'blue' }}>{text}</span>
-            }
+            // render: (text: string) => {
+            //   if (text == '无效')
+            //     return <span style={{ color: 'red' }}>{text}</span>
+            //   else
+            //     return <span style={{ color: 'blue' }}>{text}</span>
+            // }
           },
           {
             title: '学分',
@@ -296,12 +296,12 @@ export default observer(function TableView() {
             dataIndex: 'isValidResultDesc',
             width: 60,
             align: 'center',
-            render: (text: string) => {
-              if (text == '无效')
-                return <span style={{ color: 'red' }}>{text}</span>
-              else
-                return <span style={{ color: 'blue' }}>{text}</span>
-            }
+            // render: (text: string) => {
+            //   if (text == '无效')
+            //     return <span style={{ color: 'red' }}>{text}</span>
+            //   else
+            //     return <span style={{ color: 'blue' }}>{text}</span>
+            // }
           },
           {
             title: '学分',
@@ -366,12 +366,12 @@ export default observer(function TableView() {
             dataIndex: 'isValidResultDesc',
             width: 60,
             align: 'center',
-            render: (text: string) => {
-              if (text == '无效')
-                return <span style={{ color: 'red' }}>{text}</span>
-              else
-                return <span style={{ color: 'blue' }}>{text}</span>
-            }
+            // render: (text: string) => {
+            //   if (text == '无效')
+            //     return <span style={{ color: 'red' }}>{text}</span>
+            //   else
+            //     return <span style={{ color: 'blue' }}>{text}</span>
+            // }
           },
           {
             title: '学时',
@@ -431,12 +431,12 @@ export default observer(function TableView() {
             dataIndex: 'isValidResultDesc',
             width: 60,
             align: 'center',
-            render: (text: string) => {
-              if (text == '无效')
-                return <span style={{ color: 'red' }}>{text}</span>
-              else
-                return <span style={{ color: 'blue' }}>{text}</span>
-            }
+            // render: (text: string) => {
+            //   if (text == '无效')
+            //     return <span style={{ color: 'red' }}>{text}</span>
+            //   else
+            //     return <span style={{ color: 'blue' }}>{text}</span>
+            // }
           },
           {
             title: '学时',

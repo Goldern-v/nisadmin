@@ -14,7 +14,7 @@ const Option = Select.Option
 
 export interface Props { }
 
-export default observer(function AuditEduPlan(props: Props) {
+export default observer(function ScoreManage(props: Props) {
 
   const { queryObj } = appStore
   const [tableData, setTableData] = useState([] as any[])
@@ -217,7 +217,7 @@ export default observer(function AuditEduPlan(props: Props) {
       <GroupPostBtn
         onClick={handleAuditOpen}
         style={{ right: 110 }}>
-        批量审核
+        批量评分
       </GroupPostBtn>} */}
     <BaseTable
       surplusHeight={280}

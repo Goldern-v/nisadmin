@@ -4,14 +4,14 @@ import qs from 'qs'
 
 
 export default class ScoreManageService extends BaseApiService {
-  /** 获取我已审核列表 */
+  /** 获取我已评分列表 */
   public queryAuditedPageList(query: any) {
     return this.post(`/studyAndTrain/auditManage/queryAuditedPageList`, query)
   }
 
-  /** 获取待我审核列表 */
+  /** 获取待我评分列表 */
   public queryToAuditPageList(query: any) {
-    return this.post(`/studyAndTrain/auditManage/queryToAuditPageList`, query)
+    return this.post(`/studyAndTrain/scoreManage/queryToScorePageListt`, query)
   }
 
   /** 获取菜单树 */
@@ -19,7 +19,7 @@ export default class ScoreManageService extends BaseApiService {
     return this.get(`/studyAndTrain/menuManage/getMenuTree`)
   }
 
-  /** 批量审核 */
+  /** 批量评分 */
   public auditEduPlan(params: any) {
     return this.post(`/studyAndTrain/auditManage/batchAuditTeachingPlan`, params)
   }
