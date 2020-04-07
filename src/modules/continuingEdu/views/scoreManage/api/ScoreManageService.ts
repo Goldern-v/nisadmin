@@ -6,7 +6,7 @@ import qs from 'qs'
 export default class ScoreManageService extends BaseApiService {
   /** 获取我已评分列表 */
   public queryAuditedPageList(query: any) {
-    return this.post(`/studyAndTrain/auditManage/queryAuditedPageList`, query)
+    return this.post(`/studyAndTrain/scoreManage/queryPublishedPageList`, query)
   }
 
   /** 获取待我评分列表 */
