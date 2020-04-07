@@ -351,7 +351,7 @@ export default observer(function ScoreManage(props: Props) {
             </Option>)}
       </Select>
       <Input
-        placeholder="输入要搜索的关键字，包括标题、提交人"
+        placeholder="输入要搜索的关键字，包括标题、评分负责人"
         style={{ width: 280, marginLeft: 20 }}
         allowClear
         defaultValue={query.keyWord}

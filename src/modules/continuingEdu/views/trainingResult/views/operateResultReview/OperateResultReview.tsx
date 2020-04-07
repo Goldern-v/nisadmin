@@ -180,8 +180,8 @@ export default observer(function OperateResultReview() {
       width: 100,
       render: (status: string, record: any) => {
         return <DoCon>
-          {record.signInTime && <span onClick={() => handleViewScore(record)}>查看成绩</span>}
-          {!record.signInTime && <span style={{ color: '#999', cursor: 'default' }}>查看成绩</span>}
+          {record.signInTime && <span onClick={() => handleViewScore(record)}>立即评分</span>}
+          {!record.signInTime && <span style={{ color: '#999', cursor: 'default' }}>立即评分</span>}
         </DoCon>
       }
     }
@@ -295,8 +295,7 @@ export default observer(function OperateResultReview() {
       </SubContent>
       <ButtonGroups>
         {(baseInfo.isResultPublished === 0 &&
-          baseInfo.showScoreInstantly === 0 &&
-          baseInfo.tqStatusDesc === '归档') &&
+          (baseInfo.tpStatusDesc === '归档' || baseInfo.tpStatusDesc === '已结束')) &&
           <Button
             type="primary"
             onClick={handlePublish}

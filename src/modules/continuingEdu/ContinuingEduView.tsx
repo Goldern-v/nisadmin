@@ -12,6 +12,8 @@ import { ReactComponent as SPXX } from "./assets/icon_svg/SPXX.svg";
 import { ReactComponent as TKGL } from "./assets/icon_svg/TKGL.svg";
 import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
+import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
+import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
 export interface Props extends RouteComponentProps { }
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
@@ -61,13 +63,13 @@ export default function ContinuingEdu(props: Props) {
     ...dataList,
     {
       title: "通知管理",
-      icon: <RYGL />,
+      icon: <TZGL />,
       path: "/continuingEdu/通知管理",
       component: 通知管理
     },
     {
       title: "晋升管理",
-      icon: <RYGL />,
+      icon: <JSGL />,
       path: "/continuingEdu/晋升管理",
       component: 晋升管理,
       // hide: true

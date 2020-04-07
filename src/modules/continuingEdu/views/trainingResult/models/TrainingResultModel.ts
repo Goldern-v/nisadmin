@@ -24,6 +24,7 @@ class TrainingResultModel {
   @observable tableDataTotal = 0 //列表数据
   @observable loading = false //页面载入状态
   @observable bigDeptList = [] as any[] //片区列表
+  @observable deptListAll = [] as any[] //全部病区列表
   @observable deptList = [] as any[] //病区列表
   @observable titleList = [] as any[] //职称列表
   @observable menuInfo = {} as any
@@ -42,7 +43,11 @@ class TrainingResultModel {
 
     this.deptList = []
 
-    if (this.deptList.length <= 0) this.getDeptList()
+    if (this.deptListAll.length <= 0) {
+      this.getDeptList()
+    } else {
+      this.deptList = this.deptListAll.concat()
+    }
 
     if (this.bigDeptList.length <= 0) this.getBigDeptList()
 
@@ -93,13 +98,18 @@ class TrainingResultModel {
     trainingResultService
       .getAllDeptList()
       .then(res => {
-        if (res.data && res.data.deptList) this.deptList =
-          res.data.deptList.map((item: any) => {
-            return {
-              deptName: item.name,
-              depCode: item.code
-            }
-          })
+        if (res.data && res.data.deptList) {
+          let deptListAll = this.deptList =
+            res.data.deptList.map((item: any) => {
+              return {
+                deptName: item.name,
+                depCode: item.code
+              }
+            })
+
+          this.deptList = deptListAll.concat()
+          this.deptListAll = deptListAll.concat()
+        }
       })
   }
 
@@ -151,6 +161,8 @@ class TrainingResultModel {
 
     if (target && target.childList)
       this.deptList = target.childList.concat()
+    else
+      this.deptList = this.deptListAll.concat()
   }
 }
 

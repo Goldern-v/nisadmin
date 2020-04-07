@@ -22,6 +22,10 @@ export default observer(function QueryPannel(props: Props) {
     trainingResultModel
       .setQuery({ ...query, pageIndex: 1 }, true)
 
+  const handleRefresh = () =>
+    trainingResultModel
+      .setQuery({ ...query }, true)
+
   return <Wrapper>
     <div className="fr">
       <span className="label">片区:</span>
@@ -42,6 +46,10 @@ export default observer(function QueryPannel(props: Props) {
       <span className="content">
         <Select
           style={{ width: '160px' }}
+          filterOption={(input: string, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          showSearch
           value={query.deptCode}
           onChange={(deptCode: string) =>
             handleQueryChange({ ...query, deptCode })}>
@@ -83,9 +91,15 @@ export default observer(function QueryPannel(props: Props) {
       </span>
       <span className="content">
         <Button
+          type="primary"
           onClick={handleSearch}>
           查询
-      </Button>
+        </Button>
+        <Button
+          style={{ marginLeft: '12px' }}
+          onClick={handleRefresh}>
+          刷新
+        </Button>
       </span>
     </div>
   </Wrapper>
