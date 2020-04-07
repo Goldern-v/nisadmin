@@ -97,7 +97,7 @@ class TrainingResultModel {
           res.data.deptList.map((item: any) => {
             return {
               deptName: item.name,
-              deptCode: item.code
+              depCode: item.code
             }
           })
       })

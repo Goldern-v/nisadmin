@@ -41,7 +41,7 @@ export default observer(function QueryPannel(props: Props) {
       <span className="label">病区:</span>
       <span className="content">
         <Select
-          style={{ width: '120px' }}
+          style={{ width: '160px' }}
           value={query.deptCode}
           onChange={(deptCode: string) =>
             handleQueryChange({ ...query, deptCode })}>
