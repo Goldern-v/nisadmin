@@ -278,7 +278,7 @@ export default observer(function TestingResultReview() {
       <ButtonGroups>
         {(baseInfo.isResultPublished === 0 &&
           baseInfo.showScoreInstantly === 0 &&
-          baseInfo.tqStatusDesc === '归档') &&
+          (baseInfo.tpStatusDesc === '归档' || baseInfo.tpStatusDesc === '已结束')) &&
           <Button
             type="primary"
             onClick={handlePublish}
