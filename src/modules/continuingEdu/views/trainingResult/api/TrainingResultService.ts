@@ -18,8 +18,8 @@ export default class TrainingResultService extends BaseApiService {
   }
 
   /** 发布成绩 */
-  public publishGrades(query: any) {
-    return this.post(`/studyAndTrain/teachingPlanManage/publishResults`, query)
+  public publishGrades(cetpId: string) {
+    return this.post(`/studyAndTrain/teachingPlanManage/publishResults`, qs.stringify({ cetpId }))
   }
 
   /** 获取片区病区数据 */
