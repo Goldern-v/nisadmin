@@ -7,6 +7,7 @@ import { Button, Modal, message as Message, Tabs } from "antd";
 import qs from "qs";
 import { notificationApi } from "../api/NotificationApi";
 const { TabPane } = Tabs;
+import PushModal from "../modal/PushModal"; // 一级菜单弹窗
 
 export default function TypeManagement() {
   const { history } = appStore;
@@ -29,6 +30,11 @@ export default function TypeManagement() {
   const [selectedRows, setSelectedRows] = useState([]); // 选中数据全部信息
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
   const [empNos, setEmpNos] = useState([]); // 选中的工号
+  const [empNames, setEmpNames] = useState([]); // 选中的员工名
+  const [arrEmpNos, setArrEmpNos] = useState([]); // 所有工号
+  const [arrEmpNames, setArrEmpNames] = useState([]); // 所有员工名
+  const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
+  const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
 
   const columns: any = [
     {
@@ -99,10 +105,10 @@ export default function TypeManagement() {
       key: "empNo",
       width: 120,
       align: "center",
-      render(text: any) {
+      render(text: any, record: any) {
         return (
           <DoCon>
-            <span onClick={() => pushData(1, text)}>重新推送</span>
+            <span onClick={() => pushData(1, record)}>重新推送</span>
           </DoCon>
         );
       }
@@ -122,6 +128,7 @@ export default function TypeManagement() {
       pageIndex: query.pageIndex,
       pageSize: query.pageSize
     };
+    // 获取当页数据
     notificationApi.getResultData(obj).then(res => {
       setLoading(false);
       setTableList(res.data.list || []);
@@ -132,6 +139,17 @@ export default function TypeManagement() {
       });
       setAllEmpNos(arr);
     });
+    // 获取全部数据
+    let arrEmpNo: any = [];
+    let arrEmpName: any = [];
+    notificationApi.getResultData({ cetpId }).then(res => {
+      res.data.list.map((item: any) => {
+        arrEmpNo.push(item.empNo);
+        arrEmpName.push(item.empName);
+      });
+    });
+    setArrEmpNos(arrEmpNo);
+    setArrEmpNames(arrEmpName);
   };
 
   // 获取是否已读人员名单
@@ -162,11 +180,14 @@ export default function TypeManagement() {
       });
       setSelectedRows(arr1);
       setSelectedRowKeys(selectedRowKeys);
-      let arr: any = [];
+      let arrEmpNo: any = [];
+      let arrEmpName: any = [];
       selectedRows.map((item: any) => {
-        arr.push(item.empNo);
+        arrEmpNo.push(item.empNo);
+        arrEmpName.push(item.empName);
       });
-      setEmpNos(arr);
+      setEmpNos(arrEmpNo);
+      setEmpNames(arrEmpName);
     },
     hideDefaultSelections: false,
     selections: [
@@ -184,57 +205,100 @@ export default function TypeManagement() {
 
   // 推送 ---current：1单条 2全部 3选中
   const pushData = (current: any, record?: any) => {
-    let obj: any = { cetpId };
-    // let world: any = "您确定要重新推送该条消息吗？";
     if (current === 1) {
-      obj.empNos = [record];
+      setEditParams({
+        cetpId,
+        noticeContent,
+        id: 1,
+        empNos: [record.empNo],
+        empNames: [record.empName]
+      });
     } else if (current === 2) {
-      // world = "您确定要全部重新推送吗？";
-      notificationApi.getResultData({ cetpId }).then(res => {
-        let arr: any = [];
-        res.data.list.map((item: any) => {
-          arr.push(item.empNo);
-        });
-        obj.empNos = arr.slice();
+      setEditParams({
+        cetpId,
+        noticeContent,
+        id: 1,
+        empNos: arrEmpNos.slice(),
+        empNames: arrEmpNames.slice()
       });
     } else if (current === 3) {
-      // world = "您确定要重新推送选中消息吗？";
       if (empNos.length > 0) {
-        obj.empNos = empNos.slice();
+        setEditParams({
+          cetpId,
+          noticeContent,
+          id: 1,
+          empNos: empNos.slice(),
+          empNames: empNames.slice()
+        });
       } else {
         Message.warning("推送前请至少选择一名员工");
         return;
       }
     }
-    let content = (
-      <div>
-        <div>您确定要重新推送“{noticeContent}”吗</div>
-      </div>
-    );
-    Modal.confirm({
-      title: "提示",
-      content,
-      okText: "确定",
-      cancelText: "取消",
-      onOk: () => {
-        notificationApi.pushData(obj).then(res => {
-          let success = res.data.successList.length;
-          let fail = res.data.failureList.length;
-          let total = success + fail;
-          let content = (
-            <div>
-              总共推送{total}人，异常{fail}人，完成推送{success}人！
-            </div>
-          );
-          Modal.warning({
-            title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
-            content,
-            okText: "确定",
-            onOk: () => {}
-          });
-        });
-      }
-    });
+    setEditVisible(true);
+  };
+
+  // const pushData = (current: any, record?: any) => {
+  //   let obj: any = { cetpId };
+  //   // let world: any = "您确定要重新推送该条消息吗？";
+  //   if (current === 1) {
+  //     obj.empNos = [record];
+  //   } else if (current === 2) {
+  //     // world = "您确定要全部重新推送吗？";
+  //     notificationApi.getResultData({ cetpId }).then(res => {
+  //       let arr: any = [];
+  //       res.data.list.map((item: any) => {
+  //         arr.push(item.empNo);
+  //       });
+  //       obj.empNos = arr.slice();
+  //     });
+  //   } else if (current === 3) {
+  //     // world = "您确定要重新推送选中消息吗？";
+  //     if (empNos.length > 0) {
+  //       obj.empNos = empNos.slice();
+  //     } else {
+  //       Message.warning("推送前请至少选择一名员工");
+  //       return;
+  //     }
+  //   }
+  //   let content = (
+  //     <div>
+  //       <div>您确定要重新推送“{noticeContent}”吗</div>
+  //     </div>
+  //   );
+  //   Modal.confirm({
+  //     title: "提示",
+  //     content,
+  //     okText: "确定",
+  //     cancelText: "取消",
+  //     onOk: () => {
+  //       notificationApi.pushData(obj).then(res => {
+  //         let success = res.data.successList.length;
+  //         let fail = res.data.failureList.length;
+  //         let total = success + fail;
+  //         let content = (
+  //           <div>
+  //             总共推送{total}人，异常{fail}人，完成推送{success}人！
+  //           </div>
+  //         );
+  //         Modal.warning({
+  //           title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
+  //           content,
+  //           okText: "确定",
+  //           onOk: () => {}
+  //         });
+  //       });
+  //     }
+  //   });
+  // };
+
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setEditParams({});
+  };
+  const handleEditOk = () => {
+    init();
+    handleEditCancel();
   };
 
   return (
@@ -319,6 +383,12 @@ export default function TypeManagement() {
           <Button onClick={() => pushData(3)}>推送选中</Button>
         </div>
       </Content>
+      <PushModal
+        visible={editVisible}
+        params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
     </Wrapper>
   );
 }

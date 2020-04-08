@@ -15,7 +15,7 @@ export default observer(function TotalCell(props: Props) {
   let user = sheetViewModal.sheetTableData.find((item: any) => {
     return item.id == props.id;
   });
-  console.log(user, "useruseruseruseruser");
+  // console.log(user, "useruseruseruseruser");
 
   if (user) {
     list = user.settingDtos;
@@ -24,7 +24,7 @@ export default observer(function TotalCell(props: Props) {
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     return total + Number(current.effectiveTime);
   }, 0);
-  console.log(total, "current");
+  // console.log(total, "current");
 
   /** 如果存在一周7天都是 */
   let weekObj: any = {};
@@ -39,7 +39,7 @@ export default observer(function TotalCell(props: Props) {
       }
     }
   }
-  console.log(weekObj, "weekObj");
+  // console.log(weekObj, "weekObj");
 
   /** 标准周工时 */
   sheetViewModal.standardTimeList;
@@ -50,13 +50,13 @@ export default observer(function TotalCell(props: Props) {
           .week(Number(key))
           .format("YYYY-MM-DD")
       );
-      console.log(
-        real_week,
-        moment()
-          .week(Number(key))
-          .format("YYYY-MM-DD"),
-        "real_week"
-      );
+      // console.log(
+      //   real_week,
+      //   moment()
+      //     .week(Number(key))
+      //     .format("YYYY-MM-DD"),
+      //   "real_week"
+      // );
       total -= (real_week / 5) * 2;
       // total = real_week;
     }

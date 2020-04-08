@@ -29,18 +29,45 @@ const BoxInner = styled.div<{ color?: string }>`
 /**重置某个用户某个班次的编号 */
 export const resetArrangeCount = (userId: number, arrangeName: string) => {
   let [user, list] = sheetViewModal.getUser(userId);
+  // let mess = {
+  //   workDate: "",
+  //   type: ""
+  // };
+  // let data: any = [];
+  // // 存放所有排班日期
+  // list.map((item: ArrangeItem, index: number) => {
+  //   for (let o in item) {
+  //     if (typeof item[o] === "string") {
+  //       console.log(o, "11111111");
+  //       if (item[1]) {
+  //         mess.type = item[1];
+  //         if (item[o].indexOf("-") !== -1) {
+  //           mess.workDate = item[o];
+  //         }
+  //       } else {
+  //         return;
+  //       }
+  //     }
+  //   }
+  // });
+  // console.log(mess, "ooooooooooo");
+
   if (user) {
     let baseCount = user.countArrangeBaseIndexObj[arrangeName];
     /** 计数顺序 */
     let _index = 0;
     /** 基本序号 */
     let _baseCount = baseCount;
+    let _oldTime = "";
     list
       .filter((item: ArrangeItem) => {
         return item.rangeName == arrangeName;
       })
       .forEach((item: ArrangeItem, index: number) => {
         if (!item) return;
+
+        // TODO:排班跨年修改(吴敏)
+        const timeData: any = item.workDate;
 
         if (
           (item!.rangeName == "公休" || item!.rangeName == "病假") &&
