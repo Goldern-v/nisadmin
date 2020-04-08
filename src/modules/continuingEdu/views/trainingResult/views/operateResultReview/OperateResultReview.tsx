@@ -175,6 +175,12 @@ export default observer(function OperateResultReview() {
       width: 100,
     },
     {
+      dataIndex: 'scoreEmpName',
+      title: '评分人',
+      align: 'center',
+      width: 80,
+    },
+    {
       dataIndex: 'oparate',
       title: '操作',
       width: 100,

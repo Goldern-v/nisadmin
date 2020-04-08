@@ -110,6 +110,18 @@ export default observer(function TestingResultReview() {
       width: 70,
     },
     {
+      dataIndex: 'passedDesc',
+      title: '及格',
+      align: 'center',
+      width: 70,
+      render: (text: string) => {
+        if (text == '不及格')
+          return <span style={{ color: 'red' }}>{text}</span>
+        else
+          return <span>{text}</span>
+      }
+    },
+    {
       dataIndex: 'finishTime',
       title: '答题时间',
       align: 'center',
@@ -140,6 +152,12 @@ export default observer(function TestingResultReview() {
       title: '学时',
       align: 'center',
       width: 100,
+    },
+    {
+      dataIndex: 'scoreEmpName',
+      title: '评分人',
+      align: 'center',
+      width: 80,
     },
     {
       dataIndex: 'oparate',

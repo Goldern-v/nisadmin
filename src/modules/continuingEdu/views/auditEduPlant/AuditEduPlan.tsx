@@ -13,7 +13,7 @@ import AuditModal from "./components/AuditModal";
 
 const Option = Select.Option;
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function AuditEduPlan(props: Props) {
   const auditModal = createModal(AuditModal);
@@ -30,7 +30,7 @@ export default observer(function AuditEduPlan(props: Props) {
     firstLevelMenuId: queryObj.firstLevelMenuId || "",
     secondLevelMenuId: queryObj.secondLevelMenuId || "",
     keyWord: queryObj.keyWord || "",
-    pageSize: queryObj.pageSize ? Number(queryObj.pageSize) : 15,
+    pageSize: queryObj.pageSize ? Number(queryObj.pageSize) : 20,
     pageIndex: queryObj.pageIndex ? Number(queryObj.pageIndex) : 1
   });
   const [activeKey, setActiveKey]: any = useState(queryObj.activeKey || "0");
@@ -228,7 +228,7 @@ export default observer(function AuditEduPlan(props: Props) {
         }}
         rowSelection={activeKey == 0 ? rowSelection : undefined}
         pagination={{
-          pageSizeOptions: ["10", "15", "20"],
+          pageSizeOptions: ["10", "15", "20", "30", "50"],
           total: dataTotal,
           onChange: handlePageChange,
           onShowSizeChange: handlePageSizeChange,
@@ -319,7 +319,7 @@ export default observer(function AuditEduPlan(props: Props) {
       <HeaderCon>
         <Title>审核发布</Title>
         <Place />
-        <span style={{ marginLeft: 20 }}>一级分类：</span>
+        <span style={{ marginLeft: 15 }}>一级分类：</span>
         <Select
           value={query.firstLevelMenuId}
           style={{ width: 120 }}
@@ -343,7 +343,7 @@ export default observer(function AuditEduPlan(props: Props) {
             </Option>
           ))}
         </Select>
-        <span style={{ marginLeft: 20 }}>二级分类：</span>
+        <span style={{ marginLeft: 15 }}>二级分类：</span>
         <Select
           value={query.secondLevelMenuId}
           style={{ width: 120 }}
@@ -359,8 +359,8 @@ export default observer(function AuditEduPlan(props: Props) {
           ))}
         </Select>
         <Input
-          placeholder="输入要搜索的关键字，包括标题、提交人"
-          style={{ width: 280, marginLeft: 20 }}
+          placeholder="输入关键字，包括标题、提交人"
+          style={{ width: 240, marginLeft: 15 }}
           allowClear
           defaultValue={query.keyWord}
           onBlur={(e: any) =>
@@ -370,7 +370,7 @@ export default observer(function AuditEduPlan(props: Props) {
         <Button
           type="primary"
           onClick={handleSearch}
-          style={{ marginLeft: 20 }}
+          style={{ marginLeft: 15 }}
         >
           搜索
         </Button>
