@@ -159,17 +159,18 @@ export default observer(function ScoreManage(props: Props) {
         let btnText = activeKey == 0 ? "立即评分" : "查看"
         return (
           <DoCon>
-            {btnText == '立即评分' ?
-              (record.statusDesc == '已结束' ?
-                <span onClick={() => handleDetail(record)}>
-                  {btnText}
-                </span> :
-                <span style={{
-                  color: '#999',
-                  cursor: 'default'
-                }}>
-                  {btnText}
-                </span>) :
+            {
+              // btnText == '立即评分' ?
+              // (record.statusDesc == '已结束' ?
+              //   <span onClick={() => handleDetail(record)}>
+              //     {btnText}
+              //   </span> :
+              //   <span style={{
+              //     color: '#999',
+              //     cursor: 'default'
+              //   }}>
+              //     {btnText}
+              //   </span>) :
               <span onClick={() => handleDetail(record)}>
                 {btnText}
               </span>}
@@ -188,7 +189,7 @@ export default observer(function ScoreManage(props: Props) {
   }
 
   const handleDetail = (record: any) => {
-    if (record.statusDesc != '已结束') return
+    // if (record.statusDesc != '已结束') return
 
     let newQuery = {
       id: record.cetpId,

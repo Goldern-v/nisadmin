@@ -27,7 +27,7 @@ export default observer(function WrongQuestionBank() {
     let newQuery = {
       bankType: '医院题库',
       pageIndex: 1,
-      pageSize: 15,
+      pageSize: 20,
       searchingContent: '',
       choiceType: '错题反馈'
     }

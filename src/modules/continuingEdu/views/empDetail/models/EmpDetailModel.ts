@@ -9,7 +9,7 @@ class EmpDetailModel {
     startDate: ``,
     endDate: ``,
     pageIndex: 1,
-    pageSize: 15,
+    pageSize: 20,
   }
 
   @observable query = { ...this.defaultQuery } as any
@@ -28,7 +28,7 @@ class EmpDetailModel {
       endDate: ``,
       type: '',
       pageIndex: 1,
-      pageSize: 15,
+      pageSize: 20,
     }
 
     this.setQuery(newQuery)

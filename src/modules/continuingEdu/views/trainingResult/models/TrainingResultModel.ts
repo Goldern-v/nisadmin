@@ -13,7 +13,7 @@ class TrainingResultModel {
       taskStatus: '' as string | number,//完成情况
       keyWord: '', //关键字
       pageIndex: 1,
-      pageSize: 15,
+      pageSize: 20,
     }))
   }
 

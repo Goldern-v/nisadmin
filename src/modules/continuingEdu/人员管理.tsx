@@ -23,7 +23,7 @@ export default observer(function 人员管理(props: Props) {
     deptCode: "", //科室
     // area: '',//片区
     pageIndex: 1,
-    pageSize: 15,
+    pageSize: 20,
     keyword: "",
     education: "", //学历
     title: "", //职称

@@ -32,7 +32,7 @@ export default observer(function CheckWardReportList() {
     status: '',
     year: moment().format('YYYY'),
     month: '',
-    pageSize: 15,
+    pageSize: 20,
   })
 
   const [createVisible, setCreateVisible] = useState(false)

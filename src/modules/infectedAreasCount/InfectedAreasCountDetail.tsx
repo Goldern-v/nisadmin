@@ -21,7 +21,7 @@ export default observer(function InfectedAreasCount() {
     companyName: appStore.queryObj.companyName || '',
     startDate: appStore.queryObj.startDate || moment().subtract(1, 'days').format('YYYY-MM-DD'),
     endDate: appStore.queryObj.endDate || moment().format('YYYY-MM-DD'),
-    pageSize: 15,
+    pageSize: 20,
   })
 
   const [tableData, setTableData] = useState([] as any)

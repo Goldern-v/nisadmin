@@ -7,7 +7,7 @@ export default class QuestionBankManageModel {
     bankType: '医院题库',
     choiceType: '选择题',
     pageIndex: 1,
-    pageSize: 15,
+    pageSize: 20,
     searchingContent: ''
   }
   //表格请求状态

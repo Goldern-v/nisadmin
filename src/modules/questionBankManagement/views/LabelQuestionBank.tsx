@@ -29,7 +29,7 @@ export default observer(function LabelQuestionBank() {
     let newQuery = {
       bankType: '医院题库',
       pageIndex: 1,
-      pageSize: 15,
+      pageSize: 20,
       searchingContent: '',
       choiceType: choiceType || '选择题'
     }
