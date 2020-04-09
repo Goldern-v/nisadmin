@@ -113,8 +113,8 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           let operatorWardName = timeData[i].operatorWardName
           let operatorWardCode = timeData[i].operatorWardCode
 
-          let dateString = timeData[i].operateDate
-          switch (new Date(dateString).getDay()) {
+          let dateString = timeData[i].operateDate || ''
+          if (dateString) switch (new Date(dateString).getDay()) {
             case 1:
               dateString += ' (周一)'
               break
@@ -156,9 +156,11 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             thExpain = <span style={{ color: 'red' }}>退回原因：{paramMap[`${badEventCode}_th_explain`] || '无'}</span>
           }
 
+          let line1Text = `${operatorName} ${operatorWardName}`
+          if (!newItem.id) line1Text = '未完成'
           description = (
             <div>
-              <span>{`${operatorName} ${operatorWardName}`}</span>
+              <span>{line1Text}</span>
               <br />
               <span>{dateString}</span>
               <br />
@@ -166,9 +168,13 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             </div>
           )
 
-          if (title) newItem.title = title
+          if (title) {
+            newItem.title = title
+          } else {
+            newItem.title = operatorName
+          }
 
-          if (newItem.instanceId) newTimeline.push({
+          newTimeline.push({
             ...newItem,
             description
           })
@@ -274,11 +280,16 @@ export default withRouter(function BadEventsNewDetail(props: any) {
               //   return ''
 
               let icon: any
+
               if (item.allow) {
                 icon = <Icon type='check-circle' className='icon-step success' />
               } else {
                 icon = <Icon type='close-circle' className='icon-step error' />
               }
+              if (!item.id)
+                icon = <Icon type='minus-circle' className='icon-step default' />
+              // icon = <Icon type='right-circle' className='icon-step default' />
+              console.log(item.title)
               return <Step title={item.title} icon={icon} description={item.description} key={idx} />
             })}
           </Steps>
@@ -387,6 +398,9 @@ const Wrapper = styled.div`
     overflow:hidden;
     &.success{
       background: #00A680;
+    }
+    &.default{
+      background: #DDD;
     }
     &.error{
       background: red;

@@ -137,7 +137,11 @@ export default observer(function AduitModal(props: Props) {
 
   const auditFormSubmit = (userAudit: any) => {
     let params = {} as any
-    setConfirmLoading(true)
+
+    let commitToQC = false
+    if (formMap[`${eventCode}_tjzlanwyh_option`] == '提交')
+      commitToQC = true
+
     params = {
       ...instance,
       paramMap: { ...formMap },
@@ -146,7 +150,7 @@ export default observer(function AduitModal(props: Props) {
       departmentCode: formMap[`${eventCode}_department_code`] || '',
       departmentName: formMap[`${eventCode}_department_name`] || '',
       sac: formMap[`${eventCode}_sac_option`],
-      commitToQC: formMap[`${eventCode}_tjzlanwyh_option`]
+      commitToQC,
     }
 
     params.isAllowNext = true
@@ -164,6 +168,7 @@ export default observer(function AduitModal(props: Props) {
 
     delete params.operatorStatus
 
+    setConfirmLoading(true)
     api
       .aduit(params)
       .then((res) => {
@@ -176,6 +181,7 @@ export default observer(function AduitModal(props: Props) {
         }
       }, () => setConfirmLoading(false))
   }
+
   const AduitPannelTitle = () => {
     switch (status) {
       case 'nurse_submit':

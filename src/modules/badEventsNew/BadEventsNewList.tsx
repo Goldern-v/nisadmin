@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 
 import BadEventsNewService from "./api/badEventsNewService";
 // import CustomPagination from './components/CustomPagination'
-import Moment from "moment";
+import moment from "moment";
 
 const api = new BadEventsNewService();
 
@@ -21,10 +21,10 @@ const { RangePicker } = DatePicker;
 export default observer(function BadEventNewList() {
 
   const defaultDateRange = () => {
-    let startDate = Moment(Moment().format("YYYY-MM-") + "01");
-    let ednDate = Moment(Moment().format("YYYY-MM-DD"));
+    let startDate = moment(moment().format("YYYY-MM-") + "01");
+    let ednDate = moment(moment().format("YYYY-MM-DD"));
 
-    return [startDate, ednDate] as [Moment.Moment, Moment.Moment];
+    return [startDate, ednDate] as [moment.Moment, moment.Moment];
   };
   // const queryForm = React.createRef<Form>()
   let dateRange = defaultDateRange()
@@ -123,7 +123,13 @@ export default observer(function BadEventNewList() {
       dataIndex: "commitToQC",
       key: "commitToQC",
       align: "center",
-      width: 110
+      width: 110,
+      render: (commitToQC: any, item: any) => {
+        if (!commitToQC || commitToQC == '不提交')
+          return '不提交'
+        else
+          return '提交'
+      }
     },
     {
       title: "事件状态",
@@ -162,24 +168,27 @@ export default observer(function BadEventNewList() {
   //不良事件状态对应的文本显示
   const [eventStatusList, setEventStatusList] = useState([] as any[])
   const getTypeList = () => {
-    service.commonApiService.dictInfo('badEvent_status').then((res: any) => {
-      setEventStatusList(res.data)
-    })
+    service.commonApiService
+      .dictInfo('badEvent_status')
+      .then((res: any) => {
+        setEventStatusList(res.data)
+      })
   }
 
   useEffect(() => {
-    api.getDeptList("2").then(res => {
-      let data = res.data;
-      if (data instanceof Array)
-        setDeptList(
-          data.map((item: any) => {
-            return {
-              name: item.deptName,
-              code: item.deptCode
-            };
-          })
-        );
-    });
+    api.getDeptList("2")
+      .then(res => {
+        let data = res.data;
+        if (data instanceof Array)
+          setDeptList(
+            data.map((item: any) => {
+              return {
+                name: item.deptName,
+                code: item.deptCode
+              };
+            })
+          );
+      });
 
     let deptCode = "";
     if (authStore.user) deptCode = authStore.user.deptCode;
