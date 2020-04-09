@@ -143,7 +143,7 @@ const Wrapper = styled.div`
     margin-bottom: 30px;
     border: 1px dashed #cccccc;
     background: rgba(245,245,245,1);
-    padding: 15px!important;
+    padding: 15px 15px 5px 15px!important;
     box-sizing: border-box;
     border-radius: 2px;
     .empNames {
