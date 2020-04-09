@@ -3,7 +3,7 @@ import React, { useState, useLayoutEffect } from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import { appStore } from "src/stores/index";
-import { Button, Modal, message as Message, Tabs } from "antd";
+import { Button, message as Message, Tabs } from "antd";
 import qs from "qs";
 import { notificationApi } from "../api/NotificationApi";
 const { TabPane } = Tabs;
@@ -14,7 +14,7 @@ export default function TypeManagement() {
   let title = qs.parse(appStore.location.search.replace("?", "")).title; // 标题
   let cetpId = Number(
     qs.parse(appStore.location.search.replace("?", "")).cetpId
-  ); // 标题
+  ); // id
   let noticeContent =
     qs.parse(appStore.location.search.replace("?", "")).noticeContent || ""; // 内容
   const [loading, setLoading] = useState(false); // loading
@@ -97,7 +97,7 @@ export default function TypeManagement() {
       align: "center",
       width: 80,
       render: (text: any, record: any) => {
-        return <span>{text === null ? "" : text === 1 ? "已读" : "未读"}</span>;
+        return <span>{!text ? "" : text === 1 ? "已读" : "未读"}</span>;
       }
     },
     {
@@ -220,7 +220,6 @@ export default function TypeManagement() {
       setEditParams({
         cetpId,
         noticeContent,
-        id: 1,
         empNos: [record.empNo],
         empNames: [record.empName]
       });
@@ -228,7 +227,6 @@ export default function TypeManagement() {
       setEditParams({
         cetpId,
         noticeContent,
-        id: 1,
         empNos: arrEmpNos.slice(),
         empNames: arrEmpNames.slice()
       });
@@ -237,7 +235,6 @@ export default function TypeManagement() {
         setEditParams({
           cetpId,
           noticeContent,
-          id: 1,
           empNos: empNos.slice(),
           empNames: empNames.slice()
         });
@@ -257,60 +254,6 @@ export default function TypeManagement() {
     }
     setEditVisible(true);
   };
-
-  // const pushData = (current: any, record?: any) => {
-  //   let obj: any = { cetpId };
-  //   // let world: any = "您确定要重新推送该条消息吗？";
-  //   if (current === 1) {
-  //     obj.empNos = [record];
-  //   } else if (current === 2) {
-  //     // world = "您确定要全部重新推送吗？";
-  //     notificationApi.getResultData({ cetpId }).then(res => {
-  //       let arr: any = [];
-  //       res.data.list.map((item: any) => {
-  //         arr.push(item.empNo);
-  //       });
-  //       obj.empNos = arr.slice();
-  //     });
-  //   } else if (current === 3) {
-  //     // world = "您确定要重新推送选中消息吗？";
-  //     if (empNos.length > 0) {
-  //       obj.empNos = empNos.slice();
-  //     } else {
-  //       Message.warning("推送前请至少选择一名员工");
-  //       return;
-  //     }
-  //   }
-  //   let content = (
-  //     <div>
-  //       <div>您确定要重新推送“{noticeContent}”吗</div>
-  //     </div>
-  //   );
-  //   Modal.confirm({
-  //     title: "提示",
-  //     content,
-  //     okText: "确定",
-  //     cancelText: "取消",
-  //     onOk: () => {
-  //       notificationApi.pushData(obj).then(res => {
-  //         let success = res.data.successList.length;
-  //         let fail = res.data.failureList.length;
-  //         let total = success + fail;
-  //         let content = (
-  //           <div>
-  //             总共推送{total}人，异常{fail}人，完成推送{success}人！
-  //           </div>
-  //         );
-  //         Modal.warning({
-  //           title: res.data.resultCode === "fail" ? "推送失败" : "推送成功",
-  //           content,
-  //           okText: "确定",
-  //           onOk: () => {}
-  //         });
-  //       });
-  //     }
-  //   });
-  // };
 
   const handleEditCancel = () => {
     setEditVisible(false);

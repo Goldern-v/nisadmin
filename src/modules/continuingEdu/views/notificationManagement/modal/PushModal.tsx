@@ -4,7 +4,6 @@ import { Input, Row, Col, Modal, message as Message, Button } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { notificationApi } from "../api/NotificationApi";
-import { appStore } from "src/stores";
 const TextArea = Input.TextArea;
 
 export interface Props {
@@ -27,7 +26,6 @@ export default function PushModal(props: Props) {
   };
 
   useEffect(() => {
-    console.log(props.params, "params1111");
     if (visible) {
       setTimeout(() => {
         let current = formRef.current;
@@ -47,7 +45,7 @@ export default function PushModal(props: Props) {
           current = formRef.current;
           if (current) {
             let newParams = params;
-            if (params.id) {
+            if (params.cetpId) {
               newParams.noticeContent = current.getFields().noticeContent
               setEditLoading(true);
               notificationApi.pushData(newParams).then(res => {
@@ -55,8 +53,6 @@ export default function PushModal(props: Props) {
                 Message.success("已推送！");   
                 onOk();          
               })
-            } else {
-
             }
           }
         })
@@ -78,9 +74,9 @@ export default function PushModal(props: Props) {
       onCancel={handleCancel}
       onOk={checkForm}
       confirmLoading={editLoading}
-      title={params.id ? "推送通知" : "推送详情"}
+      title={params.cetpId ? "推送通知" : "推送详情"}
       footer={
-        params.id ? (
+        params.cetpId ? (
           <div style={{ textAlign: "center" }}>
             <Button onClick={handleCancel} >取消</Button>
             <Button type="primary" onClick={confirm} loading={editLoading}>推送</Button>
@@ -117,7 +113,7 @@ export default function PushModal(props: Props) {
                 <TextArea
                   placeholder="请输入通知详情～"
                   autosize={{ minRows: 6 }}
-                  disabled={!params.id}
+                  disabled={!params.cetpId}
                 />
               </Form.Field>
             </Col>
@@ -138,22 +134,21 @@ const Wrapper = styled.div`
     margin-top: 8px;
   }
   .ul {
-    max-height: 148px;
-    overflow-y: auto;
+    max-height: 170px;
+    overflow-y: scroll;
     margin-bottom: 30px;
-    border: 1px dashed #cccccc;
-    background: rgba(245,245,245,1);
+    border: 1px solid #d9d9d9;
     padding: 15px 15px 5px 15px!important;
     box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: 5px;
     .empNames {
       display: inline-block;
-      padding: 0 7px;
+      padding: 2px 10px;
       line-height: 23px;
-      background: #00A680;
+      background: #f2f2f2;
       margin: 0 10px 10px 0;
       border-radius: 5px;
-      color: white;
+      color: #333;
     }
   }
 `;
