@@ -83,11 +83,11 @@ export default function PushModal(props: Props) {
         params.id ? (
           <div style={{ textAlign: "center" }}>
             <Button onClick={handleCancel} >取消</Button>
-            <Button type="primary" onClick={confirm} >推送</Button>
+            <Button type="primary" onClick={confirm} loading={editLoading}>推送</Button>
           </div>
         ) : (
           <div style={{ textAlign: "center" }}>
-            <Button type="primary" onClick={handleCancel} >我知道了</Button>
+            <Button type="primary" onClick={handleCancel}>我知道了</Button>
           </div>
         )
       }
