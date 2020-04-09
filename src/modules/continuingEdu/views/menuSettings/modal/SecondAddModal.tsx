@@ -365,7 +365,7 @@ export default function SecondAddModal(props: Props) {
               <div className="header">
                 <span>一级菜单</span>
               </div>
-              <ul>
+              <ul className="second-menu">
                 {props.params.map((item: any, index: any) => (
                   <li
                     className={item.id === checkedId ? "is-check" : ""}
