@@ -25,5 +25,13 @@ export default class NotificationApi extends BaseApiService {
   public async pushData(obj: any) {
     return this.post(`studyAndTrain/noticeManage/sendMessage`, obj);
   }
+
+  // 获取消息发送历史
+  public async getHistoryData(cetpId: any) {
+    return this.post(
+      `studyAndTrain/noticeManage/querySendMessageHisList`,
+      qs.stringify({ cetpId })
+    );
+  }
 }
 export const notificationApi = new NotificationApi();

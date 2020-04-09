@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Input, Row, Col, Modal, message as Message } from "antd";
+import { Input, Row, Col, Modal, message as Message, Button } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import { notificationApi } from "../api/NotificationApi";
@@ -19,6 +19,7 @@ export default function PushModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const formRef = React.createRef<Form>();
+  const checkForm = () => {};
 
   // 弹窗必填项
   const rules: Rules = {
@@ -31,17 +32,13 @@ export default function PushModal(props: Props) {
       setTimeout(() => {
         let current = formRef.current;
         if (!current) return;
-        if (params.id) {
           const { noticeContent } = params;
           current.setFields({ noticeContent });
-        } else {
-          current.clear();
-        }
       }, 100);
     }
   }, [visible]);
 
-  const checkForm = () => {
+  const confirm = () => {
     let current = formRef.current;
     if (current) {
       current
@@ -49,16 +46,18 @@ export default function PushModal(props: Props) {
         .then(res => {
           current = formRef.current;
           if (current) {
-            console.log(current.getFields(),"current.getFields()")
             let newParams = params;
-            delete newParams.empNames;
-            delete newParams.id;
             if (params.id) {
               newParams.noticeContent = current.getFields().noticeContent
               setEditLoading(true);
               notificationApi.pushData(newParams).then(res => {
-                Message.success("已推送！");              })
-            } else {}
+                setEditLoading(false);
+                Message.success("已推送！");   
+                onOk();          
+              })
+            } else {
+
+            }
           }
         })
         .catch(e => {
@@ -80,6 +79,19 @@ export default function PushModal(props: Props) {
       onOk={checkForm}
       confirmLoading={editLoading}
       title={params.id ? "推送通知" : "推送详情"}
+      footer={
+        params.id ? (
+          <div style={{ textAlign: "center" }}>
+            <Button onClick={handleCancel} >取消</Button>
+            <Button type="primary" onClick={confirm} >推送</Button>
+          </div>
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            <Button type="primary" onClick={handleCancel} >我知道了</Button>
+          </div>
+        )
+      }
+
     >
       <Wrapper>
         <div />
@@ -105,6 +117,7 @@ export default function PushModal(props: Props) {
                 <TextArea
                   placeholder="请输入通知详情～"
                   autosize={{ minRows: 6 }}
+                  disabled={!params.id}
                 />
               </Form.Field>
             </Col>

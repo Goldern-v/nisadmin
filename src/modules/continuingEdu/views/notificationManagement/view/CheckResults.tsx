@@ -35,6 +35,7 @@ export default function TypeManagement() {
   const [arrEmpNames, setArrEmpNames] = useState([]); // 所有员工名
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
+  const [historyData, setHistoryData] = useState([]); // 历史推动消息
 
   const columns: any = [
     {
@@ -164,10 +165,20 @@ export default function TypeManagement() {
     });
   };
 
+  // 获取消息发送历史
+  const historyMessage = () => {
+    notificationApi.getHistoryData(cetpId).then(res => {
+      if (res.data) {
+        setHistoryData(res.data);
+      }
+    });
+  };
+
   // 初始化函数
   const init = () => {
     getTableData();
     readyPeople();
+    historyMessage();
   };
 
   // 表格选中操作
@@ -204,8 +215,8 @@ export default function TypeManagement() {
   };
 
   // 推送 ---current：1单条 2全部 3选中
-  const pushData = (current: any, record?: any) => {
-    if (current === 1) {
+  const pushData = (current: any, record?: any, data?: any) => {
+    if (current === 1 && typeof record !== "number") {
       setEditParams({
         cetpId,
         noticeContent,
@@ -234,6 +245,15 @@ export default function TypeManagement() {
         Message.warning("推送前请至少选择一名员工");
         return;
       }
+    } else if (typeof current === "string" && typeof record === "number") {
+      let arr: any = [];
+      data.map((item: any) => {
+        arr.push(item.empName);
+      });
+      setEditParams({
+        noticeContent: current,
+        empNames: arr
+      });
     }
     setEditVisible(true);
   };
@@ -351,19 +371,65 @@ export default function TypeManagement() {
           />
         </Table>
         <People>
-          <Tabs defaultActiveKey="1">
+          <Tabs defaultActiveKey="3">
+            <TabPane tab={`推送（${historyData.length}）`} key="3">
+              {historyData && historyData.length > 0 ? (
+                <ul className="ul1">
+                  {historyData.map((item: any, index: any) => (
+                    <li
+                      key={index}
+                      className="li1"
+                      onClick={() =>
+                        pushData(
+                          item.noticeContent,
+                          5,
+                          item.messageRecipientList
+                        )
+                      }
+                    >
+                      <div style={{ marginBottom: "10px", fontWeight: "bold" }}>
+                        {item.noticeContent}
+                      </div>
+                      <div className="messageName">
+                        <span>
+                          {item.messageRecipientList.length > 1
+                            ? `${item.messageRecipientList[0].empName}等${
+                                item.messageRecipientList.length
+                              }人`
+                            : item.messageRecipientList[0].empName}
+                        </span>
+                        <span>{item.sendTime}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="noData">暂无推送</div>
+              )}
+            </TabPane>
             <TabPane tab={`已读（${isReady.length}）`} key="1">
               {isReady && isReady.length > 0 ? (
-                <div>youshuju</div>
+                <ul className="ul2">
+                  {isReady.map((item: any, index: any) => (
+                    <li key={index} className="li2">
+                      <img
+                        className="head-img"
+                        src={require("../images/护士默认头像.png")}
+                        alt=""
+                      />
+                      <p>{item.empName}</p>
+                    </li>
+                  ))}
+                </ul>
               ) : (
                 <div className="noData">暂无数据</div>
               )}
             </TabPane>
             <TabPane tab={`未读（${noReady.length}）`} key="2">
               {noReady && noReady.length > 0 ? (
-                <ul>
+                <ul className="ul2">
                   {noReady.map((item: any, index: any) => (
-                    <li key={index}>
+                    <li key={index} className="li2">
                       <img
                         className="head-img"
                         src={require("../images/护士默认头像.png")}
@@ -421,7 +487,7 @@ const People = styled.div`
   background: white;
   padding: 0 15px;
   /deep/ .ant-tabs-nav .ant-tabs-tab {
-    width: 200px;
+    width: 123px;
     text-align: center;
   }
   ul {
@@ -429,11 +495,11 @@ const People = styled.div`
     height: calc(100vh - 195px);
     overflow-y: auto;
   }
-  li {
+  .li2 {
     display: inline-block;
     height: 90px;
     width: 90px;
-    margin-right: 15px;
+    margin-right: 14px;
     margin-bottom: 10px;
     text-align: center;
     .head-img {
@@ -444,6 +510,25 @@ const People = styled.div`
       object-fit: contain;
       margin-bottom: 10px;
     }
+  }
+  .ul1 {
+    padding: 5px 10px !important;
+  }
+  .li1 {
+    width: 100%;
+    height: 80px;
+    cursor: pointer;
+    list-style-type: none;
+    padding: 15px 20px;
+    border-bottom: 1px dashed #eee;
+    .messageName {
+      display: flex;
+      justify-content: space-between;
+      color: #a3a3a3;
+    }
+  }
+  .li1: hover {
+    background: rgba(245, 245, 245, 1);
   }
   .noData {
     text-align: center;
