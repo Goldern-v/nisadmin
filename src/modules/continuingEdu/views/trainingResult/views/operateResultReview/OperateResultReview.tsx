@@ -195,11 +195,12 @@ export default observer(function OperateResultReview() {
 
   const handleViewScore = (record: any) => {
     if (!record.signInTime) return
+
     //查看考核成绩
     examScoreEdit.show({
       cetpId: appStore.queryObj.id,
       empNo: record.empNo,
-      type: editScoreAuth ? 'edit' : 'view',
+      type: appStore.queryObj.editable ? 'edit' : 'view',
       onOkCallBack: () => {
         trainingResultModel.getTableData()
       }
@@ -250,13 +251,15 @@ export default observer(function OperateResultReview() {
         trainingResultService
           .publishGrades(appStore.queryObj.id || '')
           .then(res => {
-            message.success('发布成功')
+            message.success('发布成功', 1, () => {
+              appStore.history.goBack()
+            })
             setLoading(false)
-            trainingResultModel.
-              setBaseInfo({
-                ...baseInfo,
-                isResultPublished: 1
-              })
+            // trainingResultModel.
+            //   setBaseInfo({
+            //     ...baseInfo,
+            //     isResultPublished: 1
+            //   })
           }, () => setLoading(false))
       }
     })

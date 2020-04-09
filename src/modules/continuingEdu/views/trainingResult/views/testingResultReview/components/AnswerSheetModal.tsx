@@ -69,7 +69,7 @@ export default observer(function AnswerSheetModal(props: Props) {
               if (item.questionType == 4)
                 return {
                   ...item,
-                  deduction: 0,
+                  deduction: item.deduction || 0,
                 }
 
               return item

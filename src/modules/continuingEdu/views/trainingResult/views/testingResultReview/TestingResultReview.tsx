@@ -219,10 +219,10 @@ export default observer(function TestingResultReview() {
     answerSheet.show({
       title: `${baseInfo.title}考卷`,
       empNo: record.empNo,
-      type: isScoreEdit ? 'edit' : 'view',
+      type: appStore.queryObj.editable ? 'edit' : 'view',
       cetpId: appStore.queryObj.id,
       onOkCallBack: () => {
-        console.log('ok')
+        trainingResultModel.getTableData()
       }
     })
   }
@@ -240,13 +240,15 @@ export default observer(function TestingResultReview() {
         trainingResultService
           .publishGrades(appStore.queryObj.id || '')
           .then(res => {
-            message.success('发布成功')
+            message.success('发布成功', 1, () => {
+              appStore.history.goBack()
+            })
             setLoading(false)
-            trainingResultModel.
-              setBaseInfo({
-                ...baseInfo,
-                isResultPublished: 1
-              })
+            // trainingResultModel.
+            //   setBaseInfo({
+            //     ...baseInfo,
+            //     isResultPublished: 1
+            //   })
           }, () => setLoading(false))
       }
     })

@@ -12,6 +12,11 @@ export default class TrainingResultService extends BaseApiService {
     return this.post(`/studyAndTrain/teachingPlanManage/viewResults`, query)
   }
 
+  /** 查看结果列表 */
+  public queryToScoreDetailList(query: any) {
+    return this.post(`/studyAndTrain/scoreManage/queryToScoreDetailList`, query)
+  }
+
   /** 修改成绩有效状态 */
   public updateGradesValid(query: any) {
     return this.post(`/studyAndTrain/teachingPlanManage/updateValidStatusOfAchievement`, query)

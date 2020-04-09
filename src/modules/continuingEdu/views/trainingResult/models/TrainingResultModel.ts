@@ -71,19 +71,31 @@ class TrainingResultModel {
   ) {
     before && before()
     this.loading = true
-    trainingResultService
-      .getTableData(this.query)
-      .then(res => {
-        this.loading = false
-        if (res.data) {
-          this.tableDataTotal = res.data.totalCount || 0
-          this.tableData = res.data.list
-          success && success(res.data)
-        }
-      }, () => {
-        error && error()
-        this.loading = false
-      })
+
+    const successCallback = (res: any) => {
+      this.loading = false
+      if (res.data) {
+        this.tableDataTotal = res.data.totalCount || 0
+        this.tableData = res.data.list
+        success && success(res.data)
+      }
+    }
+
+    const errorCallback = () => {
+      error && error()
+      this.loading = false
+    }
+
+    if (appStore.queryObj.editable) {
+      trainingResultService
+        .queryToScoreDetailList(this.query)
+        .then(res => successCallback(res), () => errorCallback())
+    } else {
+      trainingResultService
+        .getTableData(this.query)
+        .then(res => successCallback(res), () => errorCallback())
+    }
+
   }
 
   private getBigDeptList() {

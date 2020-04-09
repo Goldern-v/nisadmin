@@ -193,6 +193,7 @@ export default observer(function ScoreManage(props: Props) {
 
     let newQuery = {
       id: record.cetpId,
+      editable: true,
       // taskId: record.taskId,
       // statusDesc: record.statusDesc,
     } as any
