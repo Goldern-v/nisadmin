@@ -18,6 +18,11 @@ export default observer(function ChoiceQuestionEdit() {
   const search = qs.parse(location.search.replace('?', ''));
   const editType = search.id ? 'edit' : 'new';
   const [pageLoading, setPageLoading] = useState(false)
+  //用于保存答案输入框选中内容的起始下标和选中长度
+  const [splitAddPosition, setSplitAddPosition] = useState({
+    startIndex: 0,
+    length: 0
+  })
 
   const [editModel, setEditModel] = useState({
     id: '',
@@ -73,6 +78,7 @@ export default observer(function ChoiceQuestionEdit() {
     setEditModel(newNodel);
   }
 
+  //保存修改
   const handleSave = () => {
     let params = { ...editModel, bankName: '医院题库' };
 
@@ -88,6 +94,26 @@ export default observer(function ChoiceQuestionEdit() {
       setPageLoading(false)
     }, err => {
       setPageLoading(false)
+    })
+  }
+
+  //答案添加分隔符
+  const handleAddSplit = () => {
+    const { length, startIndex } = splitAddPosition
+    let newContent = editModel.answerContent
+
+    newContent = newContent.substr(0, startIndex) + '|' + newContent.substr(startIndex + length, newContent.length)
+
+    setEditModel({ ...editModel, answerContent: newContent })
+
+    //重新聚焦和定位答案输入框
+    setTimeout(() => {
+      let target = document.getElementById('answerContent') as HTMLTextAreaElement
+
+      if (target) {
+        target.focus()
+        target.selectionStart = startIndex + 1
+      }
     })
   }
 
@@ -134,10 +160,21 @@ export default observer(function ChoiceQuestionEdit() {
           <div className="label">答案:</div>
           <div className="content">
             <TextArea
-              style={{ width: '700px' }}
+              style={{ width: '600px' }}
+              id="answerContent"
               autosize={{ minRows: 2 }}
               value={editModel.answerContent}
+              onBlur={(e) => {
+                //保存答案选中文本下标和长度
+                setSplitAddPosition({
+                  startIndex: e.target.selectionStart,
+                  length: e.target.selectionEnd - e.target.selectionStart
+                })
+              }}
               onChange={(e) => setEditModel({ ...editModel, answerContent: e.target.value })} />
+            <Button
+              style={{ verticalAlign: 'top', marginLeft: '5px' }}
+              onClick={handleAddSplit}>添加分隔符</Button>
             <div className="sub-text">
               <div>一行对应一个【空】标准答案某个【空】</div>
               <div>有多个标准答案的，用竖线|分隔</div>
