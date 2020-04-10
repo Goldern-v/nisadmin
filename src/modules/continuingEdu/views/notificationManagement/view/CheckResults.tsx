@@ -461,6 +461,9 @@ const People = styled.div`
   .li1 {
     width: 100%;
     min-height: 80px;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
     cursor: pointer;
     list-style-type: none;
     padding: 15px 20px;
