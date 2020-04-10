@@ -31,7 +31,9 @@ export default class AppStore {
   @observable public isDev: boolean =
     process.env.NODE_ENV === "development" ||
     window.location.port == "34002" ||
-    window.location.port == "9093";
+    window.location.port == "9093" ||
+    window.location.port == "9864" ||
+    window.location.port == "9866";
 
   /** 路由控制器 */
   @observable public history!: H.History;

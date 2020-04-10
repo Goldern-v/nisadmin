@@ -28,11 +28,11 @@ export const navConfig: navConfigItem[] = [
     name: "一级质控",
     path: "/qcOne/nursingWorkPlainList"
   },
-  // {
-  //   name: "学习培训",
-  //   path: "/wardRegister",
-  //   hidden: !appStore.isDev
-  // },
+  {
+    name: "学习培训",
+    path: "/wardRegister",
+    hidden: !appStore.isDev
+  },
   // {
   //   name: "不良事件",
   //   path: "/wardRegister",
