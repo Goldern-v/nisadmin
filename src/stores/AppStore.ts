@@ -30,10 +30,9 @@ export default class AppStore {
   /** 开发环境 true-开发  false-生产*/
   @observable public isDev: boolean =
     process.env.NODE_ENV === "development" ||
-    window.location.port == "34002" ||
+    window.location.host == "nurse.cr-health.com:34002" || //武汉测试环境
     window.location.port == "9093" ||
-    window.location.port == "9864" ||
-    window.location.port == "9866";
+    window.location.hostname == "120.25.105.45"; //公司测试环境
 
   /** 路由控制器 */
   @observable public history!: H.History;
