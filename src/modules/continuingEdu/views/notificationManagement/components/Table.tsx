@@ -118,8 +118,8 @@ export default observer(function Table() {
     },
     {
       title: "推送时间",
-      dataIndex: "sendMesaageTime",
-      key: "sendMesaageTime",
+      dataIndex: "sendMessageTime",
+      key: "sendMessageTime",
       width: 140,
       align: "center"
     },

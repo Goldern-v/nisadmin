@@ -96,8 +96,8 @@ export default function TypeManagement() {
       key: "alReadyreadMessage",
       align: "center",
       width: 80,
-      render: (text: any, record: any) => {
-        return <span>{!text ? "" : text === 1 ? "已读" : "未读"}</span>;
+      render: (text: any) => {
+        return <span>{text === 1 ? "已读" : "未读"}</span>;
       }
     },
     {
@@ -456,10 +456,11 @@ const People = styled.div`
   }
   .ul1 {
     padding: 5px 10px !important;
+    width: 100%;
   }
   .li1 {
     width: 100%;
-    height: 80px;
+    min-height: 80px;
     cursor: pointer;
     list-style-type: none;
     padding: 15px 20px;
