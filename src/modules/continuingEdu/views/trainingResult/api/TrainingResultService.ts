@@ -14,7 +14,7 @@ export default class TrainingResultService extends BaseApiService {
 
   /** 查看结果列表 */
   public queryToScoreDetailList(query: any) {
-    return this.post(`/studyAndTrain/scoreManage/queryToScoreDetailList`, query)
+    return this.post(`/studyAndTrain/scoreManage/getScoreDetailList`, query)
   }
 
   /** 修改成绩有效状态 */
