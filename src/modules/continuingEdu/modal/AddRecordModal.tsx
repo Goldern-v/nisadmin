@@ -158,6 +158,7 @@ export default observer(function AddRecordModal(props: Props) {
       stepViewModal.initTaskCode();
       if (props.id) {
         /** 修改 */
+        setTitle("修改记录");
         stepServices.getCompleteInfo(props.id).then(res => {
           stepViewModal.initData(res.data);
           console.log(
@@ -170,6 +171,7 @@ export default observer(function AddRecordModal(props: Props) {
         });
       } else {
         setCurrentStep(0);
+        setTitle("添加记录");
       }
     } else {
       setCurrentStep(-1);

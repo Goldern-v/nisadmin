@@ -164,9 +164,21 @@ export default function MainBox() {
     }
   ];
 
+  // old:(仲杰)
+  // let promise =
+  //   appStore.HOSPITAL_ID == "wh"
+  //     ? authStore.isRoleManage
+  //     : (authStore.user && authStore.user.post) == "护理部" ||
+  //       (authStore.user && authStore.user.empName) == "管理员";
+
+  // new:南医三护士长可以编辑排班设置（吴敏）
   let promise =
     appStore.HOSPITAL_ID == "wh"
       ? authStore.isRoleManage
+      : appStore.HOSPITAL_ID == "nys"
+      ? (authStore.user && authStore.user.post) == "护理部" ||
+        (authStore.user && authStore.user.empName) == "管理员" ||
+        authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
         (authStore.user && authStore.user.empName) == "管理员";
 
@@ -186,6 +198,13 @@ export default function MainBox() {
                 onClick={(e: any) => {
                   addShiftModal.show({
                     editData: record,
+                    // 添加字段type：区分医院和登陆者身份（吴敏）
+                    type:
+                      appStore.HOSPITAL_ID == "nys" &&
+                      authStore.isRoleManage &&
+                      (authStore.user && authStore.user.empName) !== "管理员"
+                        ? "nys"
+                        : null,
                     onOkCallBack: () => {
                       getShiftList();
                     }
