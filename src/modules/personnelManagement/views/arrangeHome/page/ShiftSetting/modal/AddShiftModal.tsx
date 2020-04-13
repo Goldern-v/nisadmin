@@ -99,12 +99,12 @@ export default function AddShiftModal(props: Props) {
   }, [visible]);
 
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    // if (name == "shiftType" && value == "休假") {
-    //   form.setField("workTime", "");
-    //   form.setField("effectiveTime", 0);
-    //   form.setField("settingNightHour", 0);
-    //   form.setField("settingMorningHour", 0);
-    // }
+    if (name === "workTime") {
+      let index: any = value.indexOf("-");
+      let num1: any = value.substring(0, index).trim();
+      let num2: any = value.substring(index + 1, value.length).trim();
+      console.log(value, "value", num1, "num1", num2, "num2");
+    }
   };
 
   return (
@@ -121,18 +121,22 @@ export default function AddShiftModal(props: Props) {
           ref={refForm}
           rules={rules}
           labelWidth={80}
-          onChange={onFormChange}
+          onChange={props.type && props.type == "nys" ? onFormChange : () => {}}
         >
           <Row>
             <Col span={24}>
               <Form.Field label={`班次名称`} name="name" required>
-                <Input disabled={props.type && props.type == "nys"} />
+                <Input
+                  disabled={props.type && props.type == "nys" && props.identity}
+                />
               </Form.Field>
             </Col>
 
             <Col span={24}>
               <Form.Field label={`班次类别`} name="shiftType" required>
-                <Select disabled={props.type && props.type == "nys"}>
+                <Select
+                  disabled={props.type && props.type == "nys" && props.identity}
+                >
                   {shiftList.map((item: any, index: number) => (
                     <Select.Option key={index} value={item.code}>
                       {item.name}

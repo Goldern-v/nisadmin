@@ -199,12 +199,12 @@ export default function MainBox() {
                   addShiftModal.show({
                     editData: record,
                     // 添加字段type：区分医院和登陆者身份（吴敏）
-                    type:
-                      appStore.HOSPITAL_ID == "nys" &&
+                    type: appStore.HOSPITAL_ID == "nys" ? "nys" : null,
+                    identity:
                       authStore.isRoleManage &&
                       (authStore.user && authStore.user.empName) !== "管理员"
-                        ? "nys"
-                        : null,
+                        ? true
+                        : false,
                     onOkCallBack: () => {
                       getShiftList();
                     }
