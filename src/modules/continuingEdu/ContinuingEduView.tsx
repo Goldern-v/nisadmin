@@ -72,7 +72,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <JSGL />,
       path: "/continuingEdu/晋升管理",
       component: 晋升管理,
-      // hide: true
+      hide: !authStore.isDepartment //护理部可见
     },
     {
       title: '选择题新建和编辑',

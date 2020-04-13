@@ -119,41 +119,41 @@ if (
   ];
 
   //武汉护理制度
-  if (appStore.isDev) {
-    specialModule = specialModule.concat([
-      setLayout("/nursingRulesNew", NursingRulesNew_wh, layouts.MainLayout),
-      setLayout(
-        "/nursingRulesNewDetail",
-        NursingRulesNewDetail_wh,
-        layouts.MainLayout
-      ),
-      setLayout(
-        "/NursingRulesPagePreView",
-        NursingRulesPagePreview_wh,
-        layouts.MainLayout
-      ),
-      setLayout(
-        "/nursingRulesNewEdit",
-        NursingRulesNewEdit_wh,
-        layouts.MainLayout
-      )
-    ]);
-  } else {
-    specialModule = specialModule.concat([
-      setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
-      setLayout(
-        "/nursingRulesNewDetail",
-        NursingRulesNewDetail,
-        layouts.MainLayout
-      ),
-      setLayout(
-        "/NursingRulesPagePreView",
-        NursingRulesPagePreview,
-        layouts.MainLayout
-      ),
-      setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
-    ]);
-  }
+  // if (appStore.isDev) {
+  specialModule = specialModule.concat([
+    setLayout("/nursingRulesNew", NursingRulesNew_wh, layouts.MainLayout),
+    setLayout(
+      "/nursingRulesNewDetail",
+      NursingRulesNewDetail_wh,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/NursingRulesPagePreView",
+      NursingRulesPagePreview_wh,
+      layouts.MainLayout
+    ),
+    setLayout(
+      "/nursingRulesNewEdit",
+      NursingRulesNewEdit_wh,
+      layouts.MainLayout
+    )
+  ]);
+  // } else {
+  //   specialModule = specialModule.concat([
+  //     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
+  //     setLayout(
+  //       "/nursingRulesNewDetail",
+  //       NursingRulesNewDetail,
+  //       layouts.MainLayout
+  //     ),
+  //     setLayout(
+  //       "/NursingRulesPagePreView",
+  //       NursingRulesPagePreview,
+  //       layouts.MainLayout
+  //     ),
+  //     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
+  //   ]);
+  // }
 }
 
 export { specialModule };

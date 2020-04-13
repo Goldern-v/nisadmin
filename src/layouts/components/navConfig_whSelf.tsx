@@ -30,7 +30,7 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: "学习培训",
-    path: "/wardRegister",
+    path: "/continuingEdu",
     hidden: !appStore.isDev
   },
   // {

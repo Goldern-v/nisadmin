@@ -22,7 +22,7 @@ export default observer(function PromotionSetting() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>晋升要求设置</PageTitle>
+        <PageTitle maxWidth={1000}>晋升要求设置</PageTitle>
         <Place />
         <Button onClick={() => {
           if (!loading)
