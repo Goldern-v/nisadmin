@@ -14,7 +14,10 @@ import { DictItem } from 'src/services/api/CommonApiService'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
-export interface Props {}
+// import { fileDownload } from 'src/utils/file/file'
+
+export interface Props { }
+
 export default observer(function MyCreateList() {
   const [date, setDate]: any = useState(getCurrentMonthNow())
   const [templateList, setTemplateList]: any = useState([])
@@ -112,9 +115,33 @@ export default observer(function MyCreateList() {
     appStore.history.push(`/wardLogDetail?id=${record.id}`)
   }
 
+  // const handleExport = () => {
+  //   setPageLoading(true)
+  //   let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
+  //   let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
+  //   let params = {
+  //     ...pageOptions,
+  //     wardCode: authStore.selectedDeptCode,
+  //     startDate,
+  //     endDate,
+  //     templateId: selectedTemplate,
+  //     status
+  //   }
+
+  //   // fileDownload
+
+  //   setPageLoading(false)
+  // }
+
   useEffect(() => {
     getData()
-  }, [pageOptions.pageIndex, pageOptions.pageSize, date, selectedTemplate])
+  }, [
+    pageOptions.pageIndex,
+    pageOptions.pageSize,
+    date,
+    selectedTemplate,
+    authStore.selectedDeptCode
+  ])
 
   useEffect(() => {
     initData()
@@ -139,7 +166,7 @@ export default observer(function MyCreateList() {
           onChange={(value: any) => setDate(value)}
         />
         <span className='label'>科室:</span>
-        <DeptSelect onChange={() => {}} />
+        <DeptSelect onChange={() => { }} />
         <span className='label'>应用:</span>
         <Select style={{ width: 160 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
@@ -152,6 +179,7 @@ export default observer(function MyCreateList() {
         <Button type='primary' onClick={() => getData()}>
           查询
         </Button>
+        {/* <Button onClick={handleExport}>导出</Button> */}
       </PageHeader>
       <BaseTable
         loading={pageLoading}

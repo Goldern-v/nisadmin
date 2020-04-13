@@ -7,43 +7,44 @@ import NavCon from './../components/common/NavCon'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { questionBankManageService } from './../api/QuestionBankManageService'
-// import qs from 'qs';
+// import qs from 'qs'
 
 export default observer(function QuestionBankManagement() {
-  let { location, history } = appStore;
-  let fileRef = React.createRef<any>();
-  let [loading, setLoading] = useState(false);
+  let { location, history } = appStore
+  let fileRef = React.createRef<any>()
+  let [loading, setLoading] = useState(false)
 
   const handleUploadBtn = () => {
-    if (fileRef.current) {
-      fileRef.current.click();
-    }
+    if (fileRef.current)
+      fileRef.current.click()
   }
 
   const handleFileChange = (e: any) => {
-    let files = e.target.files;
+    let files = e.target.files
     if (files.length > 0) {
       let form = new FormData()
       form.set('file', files[0])
 
       setLoading(true)
-      questionBankManageService.uploadQuestionBank(form).then(res => {
-        Message.success('题库上传成功')
-        setLoading(false)
-      }, err => {
-        setLoading(false)
-      })
+      questionBankManageService
+        .uploadQuestionBank(form)
+        .then(res => {
+          Message.success('题库上传成功')
+          setLoading(false)
+        }, err => {
+          setLoading(false)
+        })
     }
   }
 
   const handleDownload = () => {
-    questionBankManageService.getUploadQuestionBankTemplate().then(res => {
-      fileDownload(res, { fileName: '题库上传模板' })
-    })
+    questionBankManageService
+      .getUploadQuestionBankTemplate()
+      .then(res => fileDownload(res, { fileName: '题库上传模板' }))
   }
 
   const fileDownload = (res: any, record?: any) => {
-    let filename = record.fileName;
+    let filename = record.fileName
     // decodeURIComponent
     // "attachment;filename=????2019-3-18-2019-3-24??.xls"
     // "application/json"
@@ -66,7 +67,13 @@ export default observer(function QuestionBankManagement() {
   }
 
   const FileInput = () => {
-    if (!loading) return <input type="file" style={{ display: 'none' }} ref={fileRef} onChange={handleFileChange} accept=".xls" />
+    if (!loading)
+      return <input
+        type="file"
+        style={{ display: 'none' }}
+        ref={fileRef}
+        onChange={handleFileChange}
+        accept=".xls" />
 
     return <span style={{ display: 'none' }}></span>
   }
