@@ -47,6 +47,7 @@ export default observer(function SelectPeople(props: Props) {
   const [checkedUserList, setCheckedUserList]: any = useState([]);
   const [searchUserList, setSearchUserList]: any = useState([]);
   const [searchWord, setSearchWord]: any = useState("");
+  const [allPeople, setAllPeople]: any = useState(0);
 
   const inCheckedUser = (user: User) => {
     return !!checkedUserList.find((item: any) => item.key === user.key);
@@ -60,10 +61,16 @@ export default observer(function SelectPeople(props: Props) {
           data.push(user[i]);
       }
       setCheckedUserList([...checkedUserList, ...data]);
+      setAllPeople(checkedUserList.length);
+      console.log(checkedUserList, "checkedUserList111");
     } else {
       let _user = checkedUserList.find((item: any) => item.key === user.key);
       if (!_user) {
         setCheckedUserList([...checkedUserList, user]);
+        console.log(checkedUserList, "checkedUserList2222");
+        if (typeof user == "object") {
+          console.log(user.label, "label");
+        }
       }
     }
   };
@@ -142,6 +149,7 @@ export default observer(function SelectPeople(props: Props) {
 
   const onClean = () => {
     setCheckedUserList([]);
+    setAllPeople(0);
   };
   return (
     <Wrapper>
@@ -236,6 +244,9 @@ export default observer(function SelectPeople(props: Props) {
 
           <div className="footer-con">
             {/* <Button onClick={onClose}>取消</Button> */}
+            <span>
+              共选择 {(checkedUserList && checkedUserList.length) || 0} 人
+            </span>
             <Button onClick={onClean}>重置</Button>
             {/* <Button type="primary" onClick={onSave}>
               确认
