@@ -197,16 +197,17 @@ export default observer(function Step5() {
                   <span style={{ marginRight: 10 }}>交卷后显示分数</span>
                 )}
               </div>
-            </td>
-            <td className="ab">
-              <Button
-                size="small"
-                onClick={() => {
-                  handlePagePreview();
-                }}
-              >
-                试卷预览
-              </Button>
+              <div>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    handlePagePreview();
+                  }}
+                  className="ab"
+                >
+                  试卷预览
+                </Button>
+              </div>
             </td>
           </tr>
 
@@ -259,9 +260,7 @@ const Wrapper = styled.div`
   padding: 20px 100px 20px;
   font-size: 14px;
   .ab {
-    display: inline-block;
-    margin-left: -306px;
-    margin-top: 17px;
+    margin: 5px 0;
   }
   table {
     width: 100%;

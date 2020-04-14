@@ -12,6 +12,7 @@
 /build
 build
 build.rar
+/publish
 # misc
 .DS_Store
 .env.local
