@@ -40,6 +40,7 @@ interface User {
   label?: string;
   key: string;
 }
+
 export default observer(function SelectPeople(props: Props) {
   let { onOkCallBack } = props;
 
@@ -61,16 +62,10 @@ export default observer(function SelectPeople(props: Props) {
           data.push(user[i]);
       }
       setCheckedUserList([...checkedUserList, ...data]);
-      setAllPeople(checkedUserList.length);
-      console.log(checkedUserList, "checkedUserList111");
     } else {
       let _user = checkedUserList.find((item: any) => item.key === user.key);
       if (!_user) {
         setCheckedUserList([...checkedUserList, user]);
-        console.log(checkedUserList, "checkedUserList2222");
-        if (typeof user == "object") {
-          console.log(user.label, "label");
-        }
       }
     }
   };
@@ -95,6 +90,28 @@ export default observer(function SelectPeople(props: Props) {
         setCheckedUserList([...checkedUserList]);
       }
     }
+  };
+
+  const addAll = (checkedUserList: any) => {
+    let num1 = 0;
+    let num2 = 0;
+    let num = 0;
+    checkedUserList.map((item: any) => {
+      if (typeof item == "object") {
+        if (item.label.indexOf("（") != -1) {
+          num1++;
+          let str1: any = item.label.indexOf("（");
+          let str2: any = item.label.indexOf("）");
+          num2 = Number(item.label.substring(str1 + 1, str2));
+        } else {
+          num2 = 0;
+        }
+        num += num2;
+      } else {
+        num = +1;
+      }
+    });
+    return checkedUserList.length + num - num1;
   };
 
   const onSave = () => {
@@ -151,6 +168,7 @@ export default observer(function SelectPeople(props: Props) {
     setCheckedUserList([]);
     setAllPeople(0);
   };
+
   return (
     <Wrapper>
       {/* {stepViewModal.stepData3.participantList.length} */}
@@ -244,9 +262,7 @@ export default observer(function SelectPeople(props: Props) {
 
           <div className="footer-con">
             {/* <Button onClick={onClose}>取消</Button> */}
-            <span>
-              共选择 {(checkedUserList && checkedUserList.length) || 0} 人
-            </span>
+            <span>共选择 {addAll(checkedUserList)} 人</span>
             <Button onClick={onClean}>重置</Button>
             {/* <Button type="primary" onClick={onSave}>
               确认

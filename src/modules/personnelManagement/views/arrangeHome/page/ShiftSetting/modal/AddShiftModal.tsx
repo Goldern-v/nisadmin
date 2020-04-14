@@ -100,10 +100,30 @@ export default function AddShiftModal(props: Props) {
 
   const onFormChange = (name: string, value: any, form: Form<any>) => {
     if (name === "workTime") {
+      let hour: any = 0;
+      let min: any = 0;
       let index: any = value.indexOf("-");
       let num1: any = value.substring(0, index).trim();
-      let num2: any = value.substring(index + 1, value.length).trim();
-      console.log(value, "value", num1, "num1", num2, "num2");
+      let index1: any = num1.indexOf(":");
+      let hour1: any = Number(num1.substring(0, index1).trim());
+      let min1: any = Number(num1.substring(index1 + 1, num1.length)) || 0;
+      let num2: any = value.substring(index + 1, value.length) || 0;
+      let index2: any = num2.indexOf(":");
+      let hour2: any = Number(num2.substring(0, index2)) || 0;
+      let min2: any = Number(num2.substring(index2 + 1, num2.length)) || 0;
+      if (12 <= hour2 && hour2 <= 14) {
+        hour = 12 - hour1;
+      } else {
+        hour = hour2 - hour1;
+      }
+      if (min2 >= min1) {
+        min = min2 - min1;
+      } else if (min2 < min1) {
+        hour = hour - 1;
+        min = 60 + min2 - min1;
+      }
+      form.setField("effectiveTime", min === 0 ? hour : `${hour}.${min}`);
+      // console.log(`${hour}.${min}`, "计算结果");
     }
   };
 
