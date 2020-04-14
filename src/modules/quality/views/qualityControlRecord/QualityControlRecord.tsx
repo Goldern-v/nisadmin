@@ -11,7 +11,7 @@ import { qualityControlRecordApi } from 'src/modules/quality/views/qualityContro
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
 import { useKeepAliveEffect } from 'react-keep-alive'
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
 
 export default observer(function QualityControlRecord() {
@@ -21,8 +21,10 @@ export default observer(function QualityControlRecord() {
       appStore.history.location.pathname.indexOf('qcThree') >= 0
         ? 3
         : appStore.history.location.pathname.indexOf('qcTwo') >= 0
-        ? 2
-        : 3
+          ? 2
+          : appStore.history.location.pathname.indexOf('qcOneHj') >= 0
+            ? 1
+            : 3
     qualityControlRecordVM.init(level).then((res) => {
       getTableData()
     })
@@ -53,7 +55,7 @@ export default observer(function QualityControlRecord() {
     if ((appStore.history && appStore.history.action) === 'POP') {
       getTableData()
     }
-    return () => {}
+    return () => { }
   })
   const getTableData = (obj?: any) => {
     setLoading(true)

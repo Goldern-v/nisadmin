@@ -3,7 +3,7 @@ import windowWidth from "src/hooks/windowWidth";
 import styled from "styled-components";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import { Table } from "antd";
+import { Table, Pagination } from "antd";
 import { TableProps } from "antd/lib/table";
 import { DragDropContext } from "react-dnd";
 
@@ -28,6 +28,8 @@ export interface Props extends TableProps<any> {
   fixedFooter?: boolean;
   /** 不水平滚动 */
   nohorizontalScroll?: boolean;
+  /** 是否使用外置分页器 */
+  useOuterPagination?: boolean;
 }
 
 export interface PageOptions {
@@ -72,7 +74,7 @@ export default observer(function BaseTable(props: Props) {
       if ((props.dataSource as any).length) {
         _total = (props.pagination as any).total;
       }
-    } catch (error) {}
+    } catch (error) { }
     let pagination = {
       showTotal: (total: number) => `共 ${_total} 条`,
       showSizeChanger: true,
@@ -195,7 +197,7 @@ export default observer(function BaseTable(props: Props) {
               $(tableRef!.current!.querySelector(".ant-table-body")).append(
                 $(tip)
               );
-            } catch (error) {}
+            } catch (error) { }
           }
         }
       }, 0);
@@ -212,11 +214,11 @@ export default observer(function BaseTable(props: Props) {
               $(tableRef!.current!.querySelector(".ant-table-body")).append(
                 $(tip)
               );
-            } catch (error) {}
+            } catch (error) { }
           }
         }
       }, 100);
-    } catch (error) {}
+    } catch (error) { }
     try {
       setTimeout(() => {
         if (tableRef.current && !option.fixedFooter) {
@@ -238,7 +240,7 @@ export default observer(function BaseTable(props: Props) {
           }
         }
       }, 100);
-    } catch (error) {}
+    } catch (error) { }
     try {
       setTimeout(() => {
         if (tableRef.current && option.surplusHeight) {
@@ -278,7 +280,7 @@ export default observer(function BaseTable(props: Props) {
           }
         }
       }, 100);
-    } catch (error) {}
+    } catch (error) { }
     setTimeout(() => {
       try {
         tableRef!.current!.querySelector(".ant-table-body").onscroll = (
@@ -287,18 +289,25 @@ export default observer(function BaseTable(props: Props) {
           scrollTop = e.target.scrollTop;
         };
         // scrollTop !== 0 && (tableRef!.current!.querySelector('.ant-table-body')!.scrollTop = scrollTop)
-      } catch (error) {}
+      } catch (error) { }
     }, 0);
     try {
       tableRef!.current!.querySelector(
         ".ant-table-body"
       )!.scrollTop = scrollTop;
-    } catch (error) {}
+    } catch (error) { }
   });
 
   useEffect(() => {
     scrollTop = 0;
   }, [option.pagination && option.pagination.current]);
+
+
+  //分离分页组件 去除table条目限制
+  let pageOptions = option.pagination ?
+    { ...option.pagination, size: 'small' } : null
+  let tableOptions = { ...option }
+  tableOptions.pagination = false
 
   let TableComponent =
     option.type && option.type.includes("diagRow")
@@ -307,7 +316,16 @@ export default observer(function BaseTable(props: Props) {
 
   return (
     <Wrapper style={option.wrapperStyle || {}} ref={tableRef} id="baseTable">
-      <TableComponent {...option} />
+      {props.useOuterPagination && <React.Fragment>
+        <TableComponent {...tableOptions} />
+        {pageOptions && <Pagination
+          {...pageOptions}
+          style={{
+            float: 'right',
+            marginTop: '15px'
+          }} />}
+      </React.Fragment>}
+      {!props.useOuterPagination && <TableComponent {...option} />}
     </Wrapper>
   );
 });
@@ -318,6 +336,7 @@ const Wrapper = styled.div`
     /* padding: 20px 30px; */
     padding: 15px 15px;
     box-sizing: content-box;
+    overflow:hidden;
     table {
       table-layout: fixed;
       width: 100%;

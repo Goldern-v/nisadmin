@@ -198,6 +198,7 @@ const HealthPropagandaEditNew = lazy(() =>
   import("src/modules/healthPropaganda/HealthPropagandaEditNew")
 );
 const QcOneRouter = lazy(() => import("src/modules/quality/QcOneRouter"));
+const QcOneRouterHj = lazy(() => import("src/modules/quality/QcOneRouter_hj"));
 const QcTwoRouter = lazy(() => import("src/modules/quality/QcTwoRouter"));
 const QcThreeRouter = lazy(() => import("src/modules/quality/QcThreeRouter"));
 const CheckWardRouter = lazy(() =>
@@ -546,6 +547,7 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout("/qcOne", QcOneRouter, layouts.MainLayout),
+  setLayout("/qcOneHj", QcOneRouterHj, layouts.MainLayout),
   setLayout("/qcTwo", QcTwoRouter, layouts.MainLayout),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),

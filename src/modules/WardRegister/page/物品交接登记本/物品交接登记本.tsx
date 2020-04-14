@@ -9,7 +9,10 @@ import {
   message,
   Input,
   Select,
-  DatePicker
+  DatePicker,
+  Modal,
+  Row,
+  Col
 } from "src/vendors/antd";
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { authStore, appStore } from "src/stores";
@@ -47,7 +50,7 @@ export default observer(function HandoverRegister(props: Props) {
   const [oldData, setOldData]: any = useState({});
   const [dataSource, setDataSource] = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
-  const [rangeConfigList, setRangeConfigList] = useState([]);
+  const [rangeConfigList, setRangeConfigList] = useState([] as any[]);
   const [selectedRange, setSelectedRange] = useState("");
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
@@ -100,9 +103,16 @@ export default observer(function HandoverRegister(props: Props) {
   };
 
   const cellDisabled = (record: any) => {
-    return (
-      record.signerName && record.auditorName && !authStore.isNotANormalNurse
-    );
+    if (!record.signerNo) return false
+    if (authStore.isNotANormalNurse) return false
+    if (!authStore.user?.empNo) return true
+    if (record.signerNo.toLowerCase() !== authStore.user?.empNo.toLowerCase())
+      return true
+
+    return false
+    // return (
+    //   record.signerName && record.auditorName && !authStore.isNotANormalNurse
+    // );
   };
 
   const columns: ColumnProps<any>[] | any = [
@@ -163,9 +173,26 @@ export default observer(function HandoverRegister(props: Props) {
       },
       dataIndex: "recordDate",
       align: "center",
+      className: 'input-cell',
       colSpan: 2,
       width: 107,
-      fixed: false && surplusWidth && "left"
+      fixed: false && surplusWidth && "left",
+      render: (text: string, record: any) => {
+        if (record.editType && record.editType == 'new') {
+          return <TdCell>
+            <DatePicker
+              className="td-date-picker"
+              allowClear={false}
+              value={text ? moment(text) : undefined}
+              onChange={(date: moment.Moment) => {
+                record.recordDate = date.format('YYYY-MM-DD')
+                updateDataSource()
+              }} />
+          </TdCell>
+        } else {
+          return <span>{text}</span>
+        }
+      }
     },
     {
       title: "班次",
@@ -173,7 +200,36 @@ export default observer(function HandoverRegister(props: Props) {
       width: 73,
       dataIndex: "range",
       align: "center",
-      fixed: false && surplusWidth && "left"
+      className: 'input-cell',
+      fixed: false && surplusWidth && "left",
+      render: (text: string, record: any) => {
+        if (record.editType && record.editType == 'new') {
+          return <TdCell>
+            <Select
+              className="td-range-picker"
+              value={text}
+              onChange={(val: string) => {
+                record.range = val
+
+                let target = rangeConfigList
+                  .find((item: any) => item.range == val)
+
+                if (target) record.rangeIndexNo = target.indexNo
+
+                updateDataSource()
+              }}>
+              {rangeConfigList
+                .map((item: any, idx: number) =>
+                  <Select.Option
+                    value={item.itemCode}
+                    key={idx}>{item.itemCode}
+                  </Select.Option>)}
+            </Select>
+          </TdCell>
+        } else {
+          return <span>{text}</span>
+        }
+      }
     },
     ...itemConfigList.map((item: any) => {
       if (item.checkSize) {
@@ -300,6 +356,9 @@ export default observer(function HandoverRegister(props: Props) {
       align: "center",
       fixed: false && surplusWidth && "right",
       render(text: string, record: any, index: number) {
+        if (record.editType && record.editType == 'new')
+          return <span style={{ cursor: 'not-allowed', color: '#999' }}>签名</span>
+
         return text ? (
           <div
             className="sign-name"
@@ -323,31 +382,31 @@ export default observer(function HandoverRegister(props: Props) {
                 : "")}
           </div>
         ) : (
-          <DoCon>
-            <span
-              onClick={() => {
-                globalModal
-                  .confirm("交班签名确认", "你确定交班签名吗？")
-                  .then(res => {
-                    wardRegisterService
-                      .saveAndSignAll(
-                        registerCode,
-                        selectedBlockId,
-                        [record],
-                        true
-                      )
-                      .then(res => {
-                        message.success("交班签名成功");
-                        Object.assign(record, res.data.itemDataList[0]);
-                        updateDataSource();
-                      });
-                  });
-              }}
-            >
-              签名
+            <DoCon>
+              <span
+                onClick={() => {
+                  globalModal
+                    .confirm("交班签名确认", "你确定交班签名吗？")
+                    .then(res => {
+                      wardRegisterService
+                        .saveAndSignAll(
+                          registerCode,
+                          selectedBlockId,
+                          [record],
+                          true
+                        )
+                        .then(res => {
+                          message.success("交班签名成功");
+                          Object.assign(record, res.data.itemDataList[0]);
+                          updateDataSource();
+                        });
+                    });
+                }}
+              >
+                签名
             </span>
-          </DoCon>
-        );
+            </DoCon>
+          );
       }
     },
     {
@@ -357,6 +416,9 @@ export default observer(function HandoverRegister(props: Props) {
       fixed: false && surplusWidth && "right",
       align: "center",
       render(text: string, record: any, index: number) {
+        if (record.editType && record.editType == 'new')
+          return <span style={{ cursor: 'not-allowed', color: '#999' }}>签名</span>
+
         return text ? (
           <div
             className="sign-name"
@@ -376,25 +438,36 @@ export default observer(function HandoverRegister(props: Props) {
             {text}
           </div>
         ) : (
-          <DoCon>
-            <span
-              onClick={() => {
-                globalModal
-                  .confirm("接班签名确认", "你确定接班签名吗？")
-                  .then(res => {
-                    wardRegisterService
-                      .auditAll(registerCode, [{ id: record.id }])
-                      .then(res => {
-                        message.success("接班签名成功");
-                        onSave();
-                      });
-                  });
-              }}
-            >
-              签名
+            <DoCon>
+              <span
+                onClick={() => {
+                  globalModal
+                    .confirm("接班签名确认", "你确定接班签名吗？")
+                    .then(res => {
+                      wardRegisterService
+                        .auditAll(registerCode, [{ id: record.id }])
+                        .then(res => {
+                          message.success("接班签名成功");
+                          onSave();
+                        });
+                    });
+                }}
+              >
+                签名
             </span>
-          </DoCon>
-        );
+            </DoCon>
+          );
+      }
+    },
+    {
+      title: "操作",
+      width: 80,
+      fixed: false && surplusWidth && "right",
+      align: "center",
+      render: (text: any, record: any, idx: number) => {
+        return <DoCon>
+          <span onClick={() => handleDeleteRow(record, idx)}>删除</span>
+        </DoCon>
       }
     }
     // {
@@ -502,12 +575,13 @@ export default observer(function HandoverRegister(props: Props) {
       .then(res => {
         console.log(res, "res");
         setTotal(res.data.itemDataPage.totalCount);
-        setDataSource(
+        setDataSource([])
+        setTimeout(() => setDataSource(
           res.data.itemDataPage.list.map((item: any) => ({
             ...item,
             modified: false
           }))
-        );
+        ))
         setItemConfigList(res.data.itemConfigList);
         setRangeConfigList(res.data.rangeConfigList);
         setPageLoading(false);
@@ -571,6 +645,51 @@ export default observer(function HandoverRegister(props: Props) {
       });
   };
 
+  const handleAdd = () => {
+    let range = ""
+    let rangeIndexNo = 0
+    if (rangeConfigList.length > 0) {
+      range = rangeConfigList[0].itemCode
+      rangeIndexNo = rangeConfigList[0].indexNo
+    }
+    let newRow = {
+      blockId: selectedBlockId,
+      description: "",
+      range,
+      rangeIndexNo,
+      recordDate: moment().format('YYYY-MM-DD'),
+      registerCode,
+      editType: 'new',
+      modified: true,
+    } as any
+
+    setDataSource([...dataSource, newRow] as any)
+  }
+
+  const handleDeleteRow = (record: any, idx: number) => {
+    let deleteRow = () => {
+      dataSource.splice(idx, 1)
+      setDataSource(dataSource.concat())
+    }
+    if (record.editType && record.editType == 'new') {
+      deleteRow()
+    } else {
+      globalModal
+        .confirm("删除确认", "确定要删除该条目吗？")
+        .then((res) => {
+          setPageLoading(true)
+
+          wardRegisterService
+            .deleteAll(registerCode, [{ id: record.id }])
+            .then(res => {
+              setPageLoading(false)
+              message.success('删除成功')
+              deleteRow()
+            })
+        })
+    }
+  }
+
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -590,9 +709,9 @@ export default observer(function HandoverRegister(props: Props) {
           (document as any).querySelector(
             "#HandoverRegisterTable .ant-table-body"
           ).scrollWidth ==
-            (document as any).querySelector(
-              "#HandoverRegisterTable .ant-table-body"
-            ).clientWidth
+          (document as any).querySelector(
+            "#HandoverRegisterTable .ant-table-body"
+          ).clientWidth
         ) {
           /** noscorll */
           (document as any).querySelector(
@@ -614,7 +733,7 @@ export default observer(function HandoverRegister(props: Props) {
           setSurplusWidth(280);
         }
       }, 100);
-    } catch (error) {}
+    } catch (error) { }
   }, [dataSource, surplusWidth]);
 
   return (
@@ -637,8 +756,8 @@ export default observer(function HandoverRegister(props: Props) {
           {blockList.map((item: any) => (
             <Select.Option value={item.id} key={item.id}>
               {// item.registerName +
-              //   " " +
-              moment(item.createTime).format("YYYY-MM-DD") + " 修订"}
+                //   " " +
+                moment(item.createTime).format("YYYY-MM-DD") + " 修订"}
             </Select.Option>
           ))}
         </Select>
@@ -653,7 +772,7 @@ export default observer(function HandoverRegister(props: Props) {
           style={{ width: 210 }}
         />
         <span className="label">科室</span>
-        <DeptSelect onChange={() => {}} style={{ width: 150 }} />
+        <DeptSelect onChange={() => { }} style={{ width: 150 }} />
         <span className="label">班次</span>
         <Select
           style={{ width: 70, minWidth: 70 }}
@@ -675,6 +794,9 @@ export default observer(function HandoverRegister(props: Props) {
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
+            <Button type="primary" onClick={handleAdd}>
+              新建行
+            </Button>
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
@@ -709,31 +831,38 @@ export default observer(function HandoverRegister(props: Props) {
             columns={columns}
             surplusWidth={surplusWidth}
             surplusHeight={280}
+            useOuterPagination={true}
             pagination={{
+              onChange: (pageIndex: number) => {
+                setPageOptions({ ...pageOptions, pageIndex })
+              },
+              onShowSizeChange: (pageIndex: number, pageSize: number) => {
+                setPageOptions({ ...pageOptions, pageSize })
+              },
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,
               total: total
             }}
-            onChange={(pagination: PaginationConfig) => {
-              setPageOptions({
-                pageIndex: pagination.current,
-                pageSize: pagination.pageSize
-              });
-            }}
+            // onChange={(pagination: PaginationConfig) => {
+            //   setPageOptions({
+            //     pageIndex: pagination.current,
+            //     pageSize: pagination.pageSize
+            //   });
+            // }}
             onRow={record => {
               return appStore.isDev && registerCode == "QCRG_02"
                 ? {
-                    onContextMenu: (e: any) => {
-                      console.log(e, "eeeeeeeeee");
-                      onContextMenu(e, record);
-                    }
+                  onContextMenu: (e: any) => {
+                    console.log(e, "eeeeeeeeee");
+                    onContextMenu(e, record);
                   }
+                }
                 : {};
             }}
           />
         ) : (
-          <NullBox onClick={onAddBlock} />
-        )}
+            <NullBox onClick={onAddBlock} />
+          )}
       </TableCon>
       <settingModal.Component />
       <MemoAddMessageModal />
@@ -841,6 +970,22 @@ const TableCon = styled.div`
   .checkSize-warning {
     input {
       color: red;
+    }
+  }
+  .td-date-picker,.td-range-picker{
+    border: 0;
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+    outline: none;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 32px;
+    transform: translateY(-50%);
+    .ant-select-selection,input{
+      border: 0;
+      border-radius: 0;
     }
   }
 `;
