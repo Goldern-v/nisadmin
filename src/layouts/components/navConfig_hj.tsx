@@ -52,7 +52,7 @@ export const navConfig: navConfigItem[] = [
       },
       {
         name: "一级质量",
-        path: "/qcOne/nursingWorkPlainList",
+        path: "/qcOneHj",
         icon: require("../images/menu-icon/一级质控@2x.png")
       },
       // {

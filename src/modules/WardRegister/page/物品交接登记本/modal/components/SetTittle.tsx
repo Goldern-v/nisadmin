@@ -31,6 +31,12 @@ export default observer(function SetTittle(props: Props) {
   const [pageLoading, setPageLoading] = useState(false);
   const [moveAble, setMoveAble] = useState(false);
   const { blockId, registerCode, onOkCallBack } = props;
+
+  const defaultOptions = [
+    { name: '√', value: '√' },
+    { name: '×', value: '×' },
+  ]
+
   const columns: ColumnProps<any>[] = [
     {
       title: "项目名称",
@@ -108,9 +114,15 @@ export default observer(function SetTittle(props: Props) {
               updateDataSource();
             }}
             value={text ? text.split(";") : []}
-            open={false}
-            tokenSeparators={[";", "；"]}
-          />
+            // open={false}
+            tokenSeparators={[";", "；"]}>
+            {defaultOptions.map((item: any, idx: number) =>
+              <Select.Option
+                key={idx}
+                value={item.value}>
+                {item.name}
+              </Select.Option>)}
+          </Select>
         );
       }
     },
@@ -234,6 +246,12 @@ const EditTableCon = styled.div`
       } */
       input {
         text-align: center;
+      }
+    }
+
+    .ant-select{
+      .ant-select-remove-icon{
+        color: #00A680;
       }
     }
   }
