@@ -61,10 +61,12 @@ export default observer(function SelectPeople(props: Props) {
         if (!checkedUserList.find((item: any) => item.key === user[i].key))
           data.push(user[i]);
       }
+      setNumber(user, 1);
       setCheckedUserList([...checkedUserList, ...data]);
     } else {
       let _user = checkedUserList.find((item: any) => item.key === user.key);
       if (!_user) {
+        setNumber(user, 1);
         setCheckedUserList([...checkedUserList, user]);
       }
     }
@@ -80,6 +82,7 @@ export default observer(function SelectPeople(props: Props) {
           checkedUserList.splice(index, 1);
         }
       }
+      setNumber(user, 2);
       setCheckedUserList([...checkedUserList]);
     } else {
       let index = checkedUserList.findIndex(
@@ -87,31 +90,46 @@ export default observer(function SelectPeople(props: Props) {
       );
       if (index > -1) {
         checkedUserList.splice(index, 1);
+        setNumber(user, 2);
         setCheckedUserList([...checkedUserList]);
       }
     }
   };
 
-  const addAll = (checkedUserList: any) => {
-    let num1 = 0;
-    let num2 = 0;
-    let num = 0;
-    checkedUserList.map((item: any) => {
-      if (typeof item == "object") {
-        if (item.label.indexOf("（") != -1) {
-          num1++;
-          let str1: any = item.label.indexOf("（");
-          let str2: any = item.label.indexOf("）");
-          num2 = Number(item.label.substring(str1 + 1, str2));
-        } else {
-          num2 = 0;
-        }
-        num += num2;
-      } else {
-        num = +1;
-      }
-    });
-    return checkedUserList.length + num - num1;
+  // const addAll = (checkedUserList: any) => {
+  //   let num1 = 0;
+  //   let num2 = 0;
+  //   let num = 0;
+  //   checkedUserList.map((item: any) => {
+  //     if (typeof item == "object") {
+  //       if (item.label.indexOf("（") != -1) {
+  //         num1++;
+  //         let str1: any = item.label.indexOf("（");
+  //         let str2: any = item.label.indexOf("）");
+  //         num2 = Number(item.label.substring(str1 + 1, str2));
+  //       } else {
+  //         num2 = 0;
+  //       }
+  //       num += num2;
+  //     } else {
+  //       num = +1;
+  //     }
+  //   });
+  //   return checkedUserList.length + num - num1;
+  // };
+
+  // 总人数统计
+  const setNumber = (data: any, type: any) => {
+    let number = 0;
+    if (data instanceof Array) {
+      data.map((item: any) => {
+        number += item.userList.length;
+      });
+    } else {
+      number += data.userList.length;
+    }
+    let value = type === 1 ? number + allPeople : allPeople - number;
+    setAllPeople(value);
   };
 
   const onSave = () => {
@@ -124,6 +142,7 @@ export default observer(function SelectPeople(props: Props) {
   useLayoutEffect(() => {
     selectPeopleViewModel.initData();
     setCheckedUserList(props.checkedUserList);
+    setNumber(props.checkedUserList, 1);
     setSearchWord("");
     setInitEd(true);
   }, [props.checkedUserList]);
@@ -259,16 +278,15 @@ export default observer(function SelectPeople(props: Props) {
               onDeselect={onDeselect}
             />
           </SelectCon>
-
-          <div className="footer-con">
-            {/* <Button onClick={onClose}>取消</Button> */}
-            <span>共选择 {addAll(checkedUserList)} 人</span>
-            <Button onClick={onClean}>重置</Button>
-            {/* <Button type="primary" onClick={onSave}>
+        </div>
+      </div>
+      <div className="footer-con">
+        {/* <Button onClick={onClose}>取消</Button> */}
+        <span>共选择 {allPeople} 人</span>
+        <Button onClick={onClean}>重置</Button>
+        {/* <Button type="primary" onClick={onSave}>
               确认
             </Button> */}
-          </div>
-        </div>
       </div>
     </Wrapper>
   );
@@ -440,8 +458,8 @@ const Wrapper = styled.div`
 
   .footer-con {
     position: absolute;
-    right: 20px;
-    bottom: 10px;
+    right: 50px;
+    top: 535px;
     button {
       margin-left: 15px;
     }
