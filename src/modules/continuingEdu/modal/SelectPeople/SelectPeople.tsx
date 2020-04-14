@@ -120,6 +120,7 @@ export default observer(function SelectPeople(props: Props) {
 
   // 总人数统计
   const setNumber = (data: any, type: any) => {
+    console.log(data, "00000000");
     let number = 0;
     if (data instanceof Array) {
       data.map((item: any) => {
@@ -459,7 +460,7 @@ const Wrapper = styled.div`
   .footer-con {
     position: absolute;
     right: 50px;
-    top: 535px;
+    bottom: 65px;
     button {
       margin-left: 15px;
     }
