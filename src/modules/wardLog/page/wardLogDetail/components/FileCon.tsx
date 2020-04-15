@@ -33,9 +33,7 @@ export default function FileCon(props: Props) {
               <Zimage
                 style={{ width: '100%', height: '100%' }}
                 src={
-                  'http://120.25.105.45:9866/crNursing/asset/nurseAttachment/20190710/20190710095946UhOQtPBk.jpg' ||
-                  item.path
-                }
+                  item.path || ''}
               />
             </div>
           ))}

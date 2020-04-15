@@ -10,7 +10,9 @@ import { useRef } from 'src/types/react'
 import printing from 'printing'
 import { wardLogService } from '../../services/WardLogService'
 import { Spin } from 'src/vendors/antd'
-export interface Props {}
+import { fileDownload } from 'src/utils/file/file'
+
+export interface Props { }
 
 export default function WardLogDetail() {
   const [pageData, setPageData]: any = useState({
@@ -26,7 +28,7 @@ export default function WardLogDetail() {
   })
   const [pageLoading, setPageLoading] = useState(false)
   const printRef: any = useRef(null)
-  const onExport = () => {
+  const onPrint = () => {
     let _title = document.title
     document.title = pageData.themeName
     printing(printRef.current, {
@@ -55,6 +57,18 @@ export default function WardLogDetail() {
     })
   }
 
+  const onExport = () => {
+    setPageLoading(true)
+
+    wardLogService
+      .exportDetail(pageData)
+      .then(res => {
+        setPageLoading(false)
+
+        fileDownload(res)
+      }, err => setPageLoading(false))
+  }
+
   useEffect(() => {
     onLoad()
   }, [])
@@ -67,6 +81,7 @@ export default function WardLogDetail() {
           <div className='title'>{pageData.themeName}</div>
           <div className='aside'>日期：{pageData.detail.createTime}</div>
           <div className='tool-con'>
+            <Button onClick={() => onPrint()}>打印</Button>
             <Button onClick={() => onExport()}>导出</Button>
             <Button onClick={() => appStore.history.goBack()}>返回</Button>
           </div>

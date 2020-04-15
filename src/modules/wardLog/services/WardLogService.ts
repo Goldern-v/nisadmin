@@ -19,6 +19,14 @@ export default class WardLogService extends BaseApiService {
   public saveRecord(params: any) {
     return this.post(`/InpatientAreaLog/send/saveRecord`, params)
   }
+  /** 删除病区记录 */
+  public deleteRecord(instanceId: any) {
+    return this.get(`/InpatientAreaLog/deleteRecord/${instanceId}`)
+  }
+  /** 导出详情excel */
+  public exportDetail(data: any) {
+    return this.post(`/InpatientAreaLog/info/export`, data)
+  }
 }
 
 export const wardLogService = new WardLogService()

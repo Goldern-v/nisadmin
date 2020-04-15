@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig } from 'src/vendors/antd'
+import { DatePicker, Select, ColumnProps, PaginationConfig, Modal, message } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
@@ -78,7 +78,8 @@ export default observer(function MyCreateList() {
         return (
           <DoCon>
             <span onClick={() => onDetail(record)}>查看详情</span>
-            {/* {status == '1' && <span onClick={() => onEdit(record)}>修改</span>} */}
+            {status == '1' && <span onClick={() => onEdit(record)}>修改</span>}
+            {status == '1' && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
       }
@@ -114,7 +115,7 @@ export default observer(function MyCreateList() {
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
         setPageLoading(false)
-      })
+      }, err => setPageLoading(false))
   }
 
   const onDetail = (record: any) => {
@@ -133,23 +134,22 @@ export default observer(function MyCreateList() {
     appStore.history.push(`/wardLogEdit?id=${record.id}`)
   }
 
-  // const handleExport = () => {
-  //   setPageLoading(true)
-  //   let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
-  //   let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
-  //   let params = {
-  //     ...pageOptions,
-  //     wardCode: authStore.selectedDeptCode,
-  //     startDate,
-  //     endDate,
-  //     templateId: selectedTemplate,
-  //     status
-  //   }
+  const onDelete = (record: any) => {
+    Modal.confirm({
+      title: '确认删除该记录吗',
+      centered: true,
+      onOk: () => {
+        setPageLoading(true)
 
-  //   // fileDownload
+        wardLogService
+          .deleteRecord(record.id)
+          .then(res => {
+            message.success('删除成功', 1, () => getData())
+          }, err => setPageLoading(false))
 
-  //   setPageLoading(false)
-  // }
+      }
+    })
+  }
 
   useEffect(() => {
     getData()
@@ -197,8 +197,7 @@ export default observer(function MyCreateList() {
         <Button type='primary' onClick={() => getData()}>
           查询
         </Button>
-        {/* {status == '1' && <Button onClick={handleAddNew}>新建</Button>} */}
-        {/* <Button onClick={handleExport}>导出</Button> */}
+        {status == '1' && <Button onClick={handleAddNew}>新建</Button>}
       </PageHeader>
       <BaseTable
         loading={pageLoading}

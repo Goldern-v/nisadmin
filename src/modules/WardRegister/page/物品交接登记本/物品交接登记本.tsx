@@ -340,7 +340,7 @@ export default observer(function HandoverRegister(props: Props) {
         return (
           <Input.TextArea
             disabled={cellDisabled(record)}
-            autosize={true}
+            autosize={{ minRows: 1 }}
             defaultValue={text}
             onChange={e => {
               record.description = e.target.value;
@@ -988,6 +988,16 @@ const TableCon = styled.div`
       border: 0;
       border-radius: 0;
     }
+  }
+  .ant-select-disabled .ant-select-selection{
+    background: rgba(0,0,0,0)!important;
+  }
+  .ant-input[disabled]{
+    color: #000!important;
+    background: rgba(0,0,0,0.03)!important;
+  }
+  textarea.ant-input{
+    overflow:hidden!important;
   }
 `;
 

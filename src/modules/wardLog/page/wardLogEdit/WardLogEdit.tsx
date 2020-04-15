@@ -70,13 +70,15 @@ export default observer(function WardLogEdit(props: any) {
       },
       templateDto: {
         ...info,
+        remark,
         templateProgress: editList
       },
       empNos: recievers.map((item: any) => item.empNo),
-      fileIds: attachmentList,
+      fileIds: attachmentList.map((item: any) => item.id.toString()),
       // tempSave
-    }
+    } as any
 
+    if (search.id) params.inpatientAreaLog.id = search.id
     console.log(params)
     setLoading(true)
     wardLogService
@@ -133,7 +135,50 @@ export default observer(function WardLogEdit(props: any) {
       .then(res => {
         setLoading(false)
         if (res.data) {
-          console.log(res.data)
+          //显示标题
+          setTitle(res.data.themeName || '')
+          //渲染模板内容
+          let newEditList = res.data.logDetail.map((item: any) => {
+            let editItem = { ...item }
+
+            //如果是选择类型 则匹配下拉列表
+            if (item.type == '5') {
+              item.dropDowns = []
+              if (res.data.progressDrop) {
+                for (let i = 0; i < res.data.progressDrop.length; i++) {
+                  let dropDowns = res.data.progressDrop[i]
+                  if (dropDowns[0] && dropDowns[0].progressId == item.id) item.dropDowns = dropDowns.concat()
+                }
+              }
+            }
+
+            return editItem
+          })
+
+          setEditList(newEditList)
+
+          if (res.data.detail) {
+            //渲染抄送人员
+            let newRecievers = (res.data.detail.receiverList || [])
+              .map((item: any) => {
+                return {
+                  ...item,
+                  label: item.empName,
+                  key: item.empNo,
+                }
+              })
+
+            setRecievers(newRecievers)
+            delete res.data.detail.receiverList
+
+            //渲染附件列表
+            setAttachmentList((res.data.detail.attachmentList || []))
+
+            //渲染详情和备注
+            setInfo({ ...res.data.detail })
+            setRemark(res.data.detail.remark || '')
+          }
+
         }
       }, err => setLoading(false))
   }
@@ -270,6 +315,8 @@ export default observer(function WardLogEdit(props: any) {
             <div className="title">附件</div>
             <div className="content">
               <MultiFileUploader
+                accept='image/jpg, image/jpeg, image/png, image/bmp'
+                type="wardlog"
                 data={attachmentList}
                 onChange={(newList: FileItem[]) => setAttachmentList(newList)} />
             </div>
@@ -523,5 +570,8 @@ const Wrapper = styled.div`
     &:hover{
       font-weight: bold;
     }
+  }
+  textarea.ant-input{
+    overflow: hidden!important;
   }
 `
