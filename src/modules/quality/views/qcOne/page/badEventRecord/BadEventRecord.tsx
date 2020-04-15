@@ -148,7 +148,7 @@ export default observer(function BadEventRecord() {
       dictCode: 'qc_bad_event_type'
     })
       .then(res => {
-        if (res.data) setTypeList(res.data)
+        if (res.data) setTypeList(res.data.list)
       })
   }
 
