@@ -14,6 +14,8 @@ import { DictItem } from 'src/services/api/CommonApiService'
 import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
 import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
+import WardLogAddModal from './../components/WardLogAddModal'
+import createModal from 'src/libs/createModal'
 // import { fileDownload } from 'src/utils/file/file'
 
 export interface Props { }
@@ -24,6 +26,9 @@ export default observer(function MyCreateList() {
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
   const [pageLoading, setPageLoading] = useState(false)
+
+  const wardLogAddModal = createModal(WardLogAddModal)
+
   /** 类别 */
   const pathMap: any = {
     myCreateList: '1',
@@ -73,6 +78,7 @@ export default observer(function MyCreateList() {
         return (
           <DoCon>
             <span onClick={() => onDetail(record)}>查看详情</span>
+            {/* {status == '1' && <span onClick={() => onEdit(record)}>修改</span>} */}
           </DoCon>
         )
       }
@@ -113,6 +119,18 @@ export default observer(function MyCreateList() {
 
   const onDetail = (record: any) => {
     appStore.history.push(`/wardLogDetail?id=${record.id}`)
+  }
+
+  const handleAddNew = (record: any) => {
+    wardLogAddModal
+      .show({
+        deptCode: authStore.selectedDeptCode || '',
+        templateList,
+      })
+  }
+
+  const onEdit = (record: any) => {
+    appStore.history.push(`/wardLogEdit?id=${record.id}`)
   }
 
   // const handleExport = () => {
@@ -179,6 +197,7 @@ export default observer(function MyCreateList() {
         <Button type='primary' onClick={() => getData()}>
           查询
         </Button>
+        {/* {status == '1' && <Button onClick={handleAddNew}>新建</Button>} */}
         {/* <Button onClick={handleExport}>导出</Button> */}
       </PageHeader>
       <BaseTable
@@ -203,6 +222,7 @@ export default observer(function MyCreateList() {
           return { onDoubleClick: () => onDetail(record) }
         }}
       />
+      <wardLogAddModal.Component />
     </Wrapper>
   )
 })

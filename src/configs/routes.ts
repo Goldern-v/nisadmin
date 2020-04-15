@@ -118,6 +118,9 @@ const QualityAnalysisDetail = lazy(() =>
 const WardLogDetail = lazy(() =>
   import("src/modules/wardLog/page/wardLogDetail/WardLogDetail")
 );
+const WardLogEdit = lazy(() =>
+  import("src/modules/wardLog/page/wardLogEdit/WardLogEdit")
+);
 
 const NursingReportDetailView = lazy(() =>
   import(
@@ -596,6 +599,7 @@ const routes: RouteItem[] = [
     ]
   ),
   setLayout("/WardLogDetail", WardLogDetail, layouts.MainLayout),
+  setLayout("/WardLogEdit", WardLogEdit),
   setLayout("/checkWardReportView", CheckWardReportView, layouts.MainLayout),
   setLayout("/nightChargingReport", nightChargingReport, layouts.MainLayout),
   setLayout("/InfectedAreasCount", InfectedAreasCount, layouts.MainLayout),

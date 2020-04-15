@@ -103,6 +103,7 @@ export default observer(function HandoverRegister(props: Props) {
   };
 
   const cellDisabled = (record: any) => {
+    if (record.auditorNo) return true
     if (!record.signerNo) return false
     if (authStore.isNotANormalNurse) return false
     if (!authStore.user?.empNo) return true
@@ -685,7 +686,7 @@ export default observer(function HandoverRegister(props: Props) {
               setPageLoading(false)
               message.success('删除成功')
               deleteRow()
-            })
+            }, err => setPageLoading(false))
         })
     }
   }

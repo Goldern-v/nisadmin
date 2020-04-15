@@ -122,22 +122,27 @@ export default observer(function SetRange(props: Props) {
         setPageLoading(false);
         getData();
         onOkCallBack();
-      });
+      }, err => setPageLoading(false));
   };
   const getData = () => {
     setPageLoading(true);
-    wardRegisterService.getRangeConfigByBlockId(blockId).then(res => {
-      setDataSource(res.data.itemList);
-      setPageLoading(false);
-    });
-    wardRegisterService.getArrangeMenu().then(res => {
-      // let map = _.groupBy(res.data, (item: any) => item.shiftType);
-      let map = res.data.filter(
-        (item: any) => !(item.name.includes("休") || item.name.includes("假"))
-      );
-      // console.log(map, "map");
-      setRangeDictMap(map);
-    });
+    wardRegisterService
+      .getRangeConfigByBlockId(blockId)
+      .then(res => {
+        setDataSource(res.data.itemList);
+        setPageLoading(false);
+      }, err => setPageLoading(false));
+
+    wardRegisterService
+      .getArrangeMenu()
+      .then(res => {
+        // let map = _.groupBy(res.data, (item: any) => item.shiftType);
+        let map = res.data.filter(
+          (item: any) => !(item.name.includes("休") || item.name.includes("假"))
+        );
+        // console.log(map, "map");
+        setRangeDictMap(map);
+      });
   };
 
   useEffect(() => {
