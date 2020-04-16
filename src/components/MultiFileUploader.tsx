@@ -19,7 +19,7 @@ export interface FileItem {
 
 export interface Props {
   accept?: string,
-  type: string,
+  type?: string,
   onChange?: any,
   readOnly?: boolean,
   data?: FileItem[]
@@ -51,9 +51,14 @@ export default function MultiFileUploader(props: Props) {
 
       let reqList = [] as any
       for (let i = 0; i < files.length; i++) {
-        let form = new FormData()
-        form.append('file', files[i])
-        reqList.push(commonApi.uploadAttachment(type, form))
+
+        if (type) {
+          let form = new FormData()
+          form.append('file', files[i])
+          reqList.push(commonApi.uploadAttachment(type, form))
+        } else {
+          reqList.push(commonApi.uploadFile({ 'file': files[i] }))
+        }
       }
 
       setLoading(true)

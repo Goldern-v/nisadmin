@@ -5,7 +5,7 @@ import TitleItem from './TitleItem'
 import FileCon from './FileCon'
 import MessageCon from './MessageCon'
 export interface Props {
-  pageData: any
+  pageData: any,
 }
 
 interface logItem {
@@ -31,7 +31,7 @@ export default React.forwardRef(function MainPage(props: Props, ref: any) {
       {props.pageData.logDetail.map((item: logItem, index: number) => (
         <TitleItem title={item.name} aside={item.content} key={index} />
       ))}
-
+      <TitleItem title={'备注'} aside={props.pageData?.detail?.remark || ''} />
       <Line />
       <FileCon pageData={props.pageData} />
       <BlockLine />

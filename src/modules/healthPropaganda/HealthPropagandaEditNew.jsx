@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, Spin, Select, message as Message, Modal, Icon, Input } from 'antd'
-import Moment from 'moment'
+import moment from 'moment'
 import store, { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import TemplatesPannel from './components/TemplatesPannel'
@@ -223,7 +223,7 @@ export default observer(function HealthPropagandaEditNew(props) {
     if (!params.deptCode) return Message.error('请选择科室')
     if (params.name === '') return Message.error('请输入宣教名称')
 
-    let creatDate = Moment().format('YYYY-MM-DD HH:mm:ss')
+    let creatDate = moment().format('YYYY-MM-DD HH:mm:ss')
     // let creatorName = params.creatorName;
     // let creator = params.creator;
 

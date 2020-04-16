@@ -420,7 +420,7 @@ export default observer(function NursingQualityCheckEdit() {
     qcCheckContentSettingService
       .getList(wardCode)
       .then(res => {
-        if (res.data) setContentList(res.data.map((item: any) => {
+        if (res.data) setContentList((res.data?.list || []).map((item: any) => {
           return {
             code: item.itemCode,
             name: item.itemName

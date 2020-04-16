@@ -455,7 +455,7 @@ export default observer(function NursingReportList() {
           <div className='item'>
             <Button onClick={handleSearch}>查询</Button>
           </div>
-          {isOnlyRoleManage && <div className="item">
+          {(isOnlyRoleManage || isDepartment) && <div className="item">
             <Button type="primary" onClick={handleCreate}>新建</Button>
           </div>}
           {/* {isSupervisorNurse && <div className="item">

@@ -37,7 +37,7 @@ export default function RightCon(props: Props) {
       </TabCon>
       <ScrollListCon>
         {list.map((item: any, index: number) => (
-          <UserBox>
+          <UserBox key={index}>
             <img src={item.nearImageUrl || require('src/assets/images/护士默认头像.png')} alt='' className='head-img' />
             <div className='name'>{item.empName}</div>
           </UserBox>

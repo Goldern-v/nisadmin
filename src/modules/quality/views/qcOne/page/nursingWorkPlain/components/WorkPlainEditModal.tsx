@@ -117,7 +117,7 @@ export default observer(function WorkPlainEditModal(props: Props) {
       wardCode: authStore.selectedDeptCode,
       dictCode: 'ward_qc_ward_schedule_content'
     }).then(res => {
-      if (res.data) setTemlateList(res.data)
+      if (res.data) setTemlateList(res.data.list)
     })
   }
 

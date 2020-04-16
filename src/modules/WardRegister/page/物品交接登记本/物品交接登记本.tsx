@@ -103,6 +103,7 @@ export default observer(function HandoverRegister(props: Props) {
   };
 
   const cellDisabled = (record: any) => {
+    if (record.auditorNo) return true
     if (!record.signerNo) return false
     if (authStore.isNotANormalNurse) return false
     if (!authStore.user?.empNo) return true
@@ -339,7 +340,7 @@ export default observer(function HandoverRegister(props: Props) {
         return (
           <Input.TextArea
             disabled={cellDisabled(record)}
-            autosize={true}
+            autosize={{ minRows: 1 }}
             defaultValue={text}
             onChange={e => {
               record.description = e.target.value;
@@ -685,7 +686,7 @@ export default observer(function HandoverRegister(props: Props) {
               setPageLoading(false)
               message.success('删除成功')
               deleteRow()
-            })
+            }, err => setPageLoading(false))
         })
     }
   }
@@ -987,6 +988,16 @@ const TableCon = styled.div`
       border: 0;
       border-radius: 0;
     }
+  }
+  .ant-select-disabled .ant-select-selection{
+    background: rgba(0,0,0,0)!important;
+  }
+  .ant-input[disabled]{
+    color: #000!important;
+    background: rgba(0,0,0,0.03)!important;
+  }
+  textarea.ant-input{
+    overflow:hidden!important;
   }
 `;
 

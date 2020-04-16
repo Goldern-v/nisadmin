@@ -177,7 +177,7 @@ export default observer(function SetTittle(props: Props) {
       .then(res => {
         setDataSource(res.data.itemList);
         setPageLoading(false);
-      });
+      }, err => setPageLoading(false));
   };
 
   useEffect(() => {

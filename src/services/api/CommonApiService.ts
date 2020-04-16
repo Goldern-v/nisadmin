@@ -128,7 +128,7 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => {})
+      onUploadProgress: onUploadProgress || (() => { })
     });
   }
   /** 下载文件并导出 */
@@ -192,6 +192,6 @@ export default class CommonApiService extends BaseApiService {
 
   //获取用户权限科室的所有护士
   public findAllNurseByPerDept() {
-    return this.get("/user/findAllNurseByPerDept");
+    return this.get("/qcNurseMeetingRecord/getPermissionDeptNurse ");
   }
 }

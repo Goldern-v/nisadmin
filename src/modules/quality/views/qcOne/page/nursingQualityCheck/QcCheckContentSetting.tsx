@@ -124,7 +124,7 @@ export default observer(function QcCheckContentSetting() {
     qcCheckContentSettingService.getList(wardCode)
       .then(res => {
         setTableLoading(false)
-        if (res.data) setQcContent(res.data.map((item: any) => {
+        if (res.data) setQcContent((res.data?.list || []).map((item: any) => {
           return {
             ...item,
             defaultIndexNo: item.indexNo
