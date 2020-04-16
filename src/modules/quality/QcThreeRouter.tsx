@@ -19,7 +19,11 @@ import ScheduleView from "./views/checkWard/view/schedule/ScheduleView";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
 
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+
+import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
+import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
+
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
 import { ReactComponent as YDBG } from "./images/icon/YDBG.svg";
@@ -28,16 +32,8 @@ import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
 import { appStore } from "src/stores";
 
 export default function QcThreeRouter(props: Props) {
-  useEffect(() => {}, [props.history.location.pathname]);
-  const LEFT_MENU_CONFIG: any = [
-    {
-      title: "三级质控记录",
-      icon: <SJZK />,
-      path: "/qcThree",
-      component: { ...QualityControlRecord },
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-    },
+  useEffect(() => { }, [props.history.location.pathname]);
+  let extra_menu = [
     {
       title: "三级质控月度报告",
       icon: <YDBG />,
@@ -94,6 +90,38 @@ export default function QcThreeRouter(props: Props) {
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     }
+  ]
+
+  if (appStore.HOSPITAL_ID == 'hj')
+    extra_menu = [
+      {
+        title: "护理质量巡查情况汇总表",
+        icon: <YDBG />,
+        path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
+        component: 护理质量巡查情况汇总表,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      },
+      {
+        title: "护理质量检查小结",
+        icon: <YDBG />,
+        path: "/qcThree/护理质量检查小结?qcLevel=3",
+        component: 护理质量检查小结,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+      },
+    ]
+
+  const LEFT_MENU_CONFIG: any = [
+    {
+      title: "三级质控记录",
+      icon: <SJZK />,
+      path: "/qcThree",
+      component: { ...QualityControlRecord },
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    },
+    ...extra_menu
   ];
   let currentRoutePath = props.history.location.pathname || "";
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
@@ -102,10 +130,10 @@ export default function QcThreeRouter(props: Props) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
         return item.children.find(
-          (item1: any) => item1[targetKey] === targetName
+          (item1: any) => item1[targetKey].split('?')[0] === targetName
         );
       } else {
-        return item[targetKey] === targetName;
+        return item[targetKey].split('?')[0] === targetName;
       }
     });
     if (chooseRoute && chooseRoute.children) {
@@ -134,10 +162,10 @@ export default function QcThreeRouter(props: Props) {
               />
             </KeepAlive>
           ) : (
-            <currentRoute.component
-              getTitle={currentRoute && currentRoute.title}
-            />
-          ))}
+              <currentRoute.component
+                getTitle={currentRoute && currentRoute.title}
+              />
+            ))}
       </MainCon>
     </Wrapper>
   );

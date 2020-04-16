@@ -33,11 +33,15 @@ export default class AuthApiService extends BaseApiService {
     })
   }
   public logout() {
-    const userLoginInfoMap:any = JSON.parse(
+    const userLoginInfoMap: any = JSON.parse(
       localStorage.userLoginInfoMap || "{}"
     );
     let _this = this
-    if(userLoginInfoMap[authStore.user?.empNo.toLowerCase() || '']) {
+
+    let empNo = authStore.user?.empNo
+    if (empNo) empNo = empNo.toLowerCase()
+
+    if (userLoginInfoMap[empNo || '']) {
       globalModal.confirm('是否清除登录信息', '是否清除记住账号密码, 再次登录将不再自动补全此账号密码').then(res => {
         delete userLoginInfoMap[authStore.user?.empNo.toLowerCase() || '']
         localStorage.userLoginInfoMap = JSON.stringify(userLoginInfoMap)
@@ -49,16 +53,16 @@ export default class AuthApiService extends BaseApiService {
     } else {
       _this.clearUser()
     }
-    
+
   }
 
-  clearUser () {
+  clearUser() {
     sessionStorage.removeItem('adminNurse')
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('user')
     sessionStorage.removeItem('selectedDeptCode')
     authStore.delUser()
     statisticsViewModal.hadData = false
-    window.location.href = '#/login' 
+    window.location.href = '#/login'
   }
 }

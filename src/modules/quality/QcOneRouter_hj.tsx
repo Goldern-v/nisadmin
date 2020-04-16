@@ -13,6 +13,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
+import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
 import { appStore } from 'src/stores'
 
 export default function QcOneRouterHj(props: Props) {
@@ -25,14 +26,14 @@ export default function QcOneRouterHj(props: Props) {
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     },
-    // {
-    //   title: '二级质控月度报告',
-    //   icon: <YDBG />,
-    //   path: '/qcOneHj/workSummaryReportList',
-    //   component: WorkSummaryReportList,
-    //   keepAlive: true,
-    //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    // }
+    {
+      title: '护理质量巡查情况汇总表',
+      icon: <YDBG />,
+      path: '/qcOneHj/护理质量巡查情况汇总表?qcLevel=1',
+      component: 护理质量巡查情况汇总表,
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    }
   ]
   useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
@@ -41,9 +42,9 @@ export default function QcOneRouterHj(props: Props) {
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
-        return item.children.find((item1: any) => item1[targetKey] === targetName)
+        return item.children.find((item1: any) => item1[targetKey].split('?')[0] === targetName)
       } else {
-        return item[targetKey] === targetName
+        return item[targetKey].split('?')[0] === targetName
       }
     })
     if (chooseRoute && chooseRoute.children) {

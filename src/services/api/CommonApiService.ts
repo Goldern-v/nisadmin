@@ -114,7 +114,10 @@ export default class CommonApiService extends BaseApiService {
 
   /** 根据用户名获取人员列表 */
   public searchUser(empName: string, postData: any = {}) {
-    return this.post(`/user/search`, { empName, ...postData });
+    //是否只查看权限科室 默认否
+    let showAuthDept = false
+    if (appStore.HOSPITAL_ID == 'wh') showAuthDept = true
+    return this.post(`/user/search`, { empName, ...postData, showAuthDept });
   }
   /** 获取默认科室人员列表 */
   public defaultDeptUser(keyword?: String, postData: any = {}) {

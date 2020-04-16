@@ -3,28 +3,22 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
-import QueryStatistics from './views/queryStatistics/QueryStatistics'
-import Analysis from './views/analysis/Analysis'
-import SummaryReport from './views/summaryReport/SummaryReport'
+// import QueryStatistics from './views/queryStatistics/QueryStatistics'
+// import Analysis from './views/analysis/Analysis'
+// import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
-import ProblemSummary from './views/problemSummary/ProblemSummary'
+import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
+// import ProblemSummary from './views/problemSummary/ProblemSummary'
 import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 import { appStore } from 'src/stores'
 
 export default function QcTwoRouter(props: Props) {
-  const LEFT_MENU_CONFIG: any = [
-    {
-      title: '二级质控记录',
-      path: '/qcTwo',
-      icon: <EJZK />,
-      component: { ...QualityControlRecord },
-      keepAlive: true,
-      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-    },
+
+  let extra_menu = [
     {
       title: '二级质控月度报告',
       icon: <YDBG />,
@@ -34,16 +28,40 @@ export default function QcTwoRouter(props: Props) {
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     }
   ]
-  useEffect(() => {}, [props.history.location.pathname])
+
+  if (appStore.HOSPITAL_ID == 'hj')
+    extra_menu = [
+      {
+        title: '护理质量巡查情况汇总表',
+        icon: <YDBG />,
+        path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
+        component: 护理质量巡查情况汇总表,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+      }
+    ]
+
+  const LEFT_MENU_CONFIG: any = [
+    {
+      title: '二级质控记录',
+      path: '/qcTwo',
+      icon: <EJZK />,
+      component: { ...QualityControlRecord },
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+    },
+    ...extra_menu
+  ]
+  useEffect(() => { }, [props.history.location.pathname])
   let currentRoutePath = props.history.location.pathname || ''
   let currentRoute = getTargetObj(LEFT_MENU_CONFIG, 'path', currentRoutePath)
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
-        return item.children.find((item1: any) => item1[targetKey] === targetName)
+        return item.children.find((item1: any) => item1[targetKey].split('?')[0] === targetName)
       } else {
-        return item[targetKey] === targetName
+        return item[targetKey].split('?')[0] === targetName
       }
     })
     if (chooseRoute && chooseRoute.children) {
@@ -65,8 +83,8 @@ export default function QcTwoRouter(props: Props) {
               <currentRoute.component getTitle={currentRoute && currentRoute.title} />
             </KeepAlive>
           ) : (
-            <currentRoute.component getTitle={currentRoute && currentRoute.title} />
-          ))}
+              <currentRoute.component getTitle={currentRoute && currentRoute.title} />
+            ))}
       </MainCon>
     </Wrapper>
   )
