@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, message } from "antd";
+import { Button, Modal, message as Message, Radio, message } from "antd";
 import BaseTable from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { stepServices } from "../services/stepServices";
@@ -9,6 +9,7 @@ import { stepViewModal } from "../StepViewModal";
 import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
 import { ksStepViewModal } from "./KSStepViewModal";
+import QuesBankModal from "./QuesBankModal";
 export interface Props {
   value?: any;
   onChange?: any;
@@ -18,6 +19,9 @@ export default observer(function UpdateTable(props: Props) {
   const { value, onChange } = props;
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [dataSource, setDataSource]: any = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [showType, setShowType] = useState(1); // 题库上传类型 （1--题库 2--本地）
+  const [quesVisible, setQuesVisible] = useState(false);
 
   /** 题目条数 */
   let totalNum = dataSource.reduce((total: any, current: any) => {
@@ -53,7 +57,7 @@ export default observer(function UpdateTable(props: Props) {
             <Button
               type="primary"
               icon="plus"
-              onClick={uploadFile}
+              onClick={() => setVisible(true)}
               style={{ margin: "10px auto" }}
             >
               题库上传
@@ -107,26 +111,46 @@ export default observer(function UpdateTable(props: Props) {
       }
     }
   ];
+
   const downFileWith = () => {
     stepServices.downLoadQueUploadTemplateWithShortQues().then(res => {
       fileDownload(res);
     });
   };
+
   const downFileWithout = () => {
     stepServices.downLoadQueUploadTemplateWithoutShortQues().then(res => {
       fileDownload(res);
     });
   };
+
   const uploadFile = () => {
-    fileInputRef.current && fileInputRef.current.click();
+    setVisible(true);
+    //
   };
+
+  const handleOk = () => {
+    if (showType) {
+      setQuesVisible(true);
+    } else {
+      fileInputRef.current && fileInputRef.current.click();
+    }
+    onCancel();
+  };
+
+  const onCancel = () => {
+    setVisible(false);
+  };
+
+  const handleEditOk = () => {
+    onCancel();
+  };
+
   const onFileChange = (e: any) => {
     e.persist();
-
     let files = e.target.files || [];
     let postData = new FormData();
     postData.append("file", files[0]);
-
     postData.append("taskCode", stepViewModal.taskCode);
     let hideLoading = message.loading("正在上传，请稍等", 0);
     stepServices
@@ -165,6 +189,28 @@ export default observer(function UpdateTable(props: Props) {
         style={{ display: "none" }}
         ref={fileInputRef}
         onChange={onFileChange}
+      />
+      <Modal
+        visible={visible}
+        title="题库上传"
+        width="450px"
+        onOk={handleOk}
+        onCancel={onCancel}
+      >
+        <Radio.Group
+          value={showType}
+          onChange={(e: any) => setShowType(e.target.value)}
+        >
+          <Radio value={1} style={{ margin: " 20px 80px 20px 70px" }}>
+            题库选择
+          </Radio>
+          <Radio value={0}>本地上传</Radio>
+        </Radio.Group>
+      </Modal>
+      <QuesBankModal
+        visible={quesVisible}
+        onCancel={onCancel}
+        onOk={handleEditOk}
       />
     </Wrapper>
   );
