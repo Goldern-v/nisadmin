@@ -120,14 +120,13 @@ export default observer(function SelectPeople(props: Props) {
 
   // 总人数统计
   const setNumber = (data: any, type: any) => {
-    console.log(data, "00000000");
     let number = 0;
     if (data instanceof Array) {
       data.map((item: any) => {
-        number += item.userList.length;
+        number += item.userList ? item.userList.length : 0;
       });
     } else {
-      number += data.userList.length;
+      number += data.userList ? data.userList.length : 0;
     }
     let value = type === 1 ? number + allPeople : allPeople - number;
     setAllPeople(value);
@@ -137,7 +136,8 @@ export default observer(function SelectPeople(props: Props) {
     onOkCallBack && onOkCallBack(checkedUserList);
   };
   const onDeselect = (key: any) => {
-    deleteUser(key);
+    let _user = checkedUserList.find((item: any) => item.key === key.key);
+    deleteUser(_user);
   };
 
   useLayoutEffect(() => {

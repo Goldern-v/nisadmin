@@ -46,6 +46,10 @@ class StepViewModal {
   @observable public stepData4 = {
     attachmentIds: []
   };
+  @observable public stepData4XX = {
+    studyLinkList: [] // 学习外网链接（吴敏）
+  };
+
   // @observable public stepData5: any = {
   //   /**  是否发送通知（1发通知  0不发通知） */
   //   ifSendMessage: null
@@ -149,7 +153,8 @@ class StepViewModal {
         // ifSendMessage: this.stepData5.ifSendMessage ? 1 : 0,
 
         ...(this.getCurrentStepViewModal.decodeData().detailInfo || {})
-      }
+      },
+      studyLinkList: this.stepData4XX.studyLinkList // 学习外网链接（吴敏）
     };
 
     if (this.stepData1.teachingMethod == 3) {
@@ -201,6 +206,7 @@ class StepViewModal {
       };
     });
     this.stepData4.attachmentIds = data.attachmentList;
+    this.stepData4XX.studyLinkList = data.studyLinkList; // 学习外网链接（吴敏）
   };
 
   /** 初始化taskCode */

@@ -7,6 +7,8 @@ import Zimage from "src/components/Zimage";
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
+import ShowTable from "../公共/table/ShowTable";
+
 export interface Props {}
 
 export default observer(function Step5() {
@@ -149,6 +151,16 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
+            <td className="key">外网资料：</td>
+            <td className="value" />
+          </tr>
+          <tr>
+            <td className="key" />
+            <td className="value showTable">
+              <ShowTable />
+            </td>
+          </tr>
+          <tr>
             <td className="key">通知设置：</td>
             <td className="value">
               <Radio
@@ -186,6 +198,9 @@ const Wrapper = styled.div`
       .files {
         padding: 12px 0px 12px !important;
       }
+    }
+    .showTable {
+      margin-bottom: 10px !important;
     }
   }
 `;

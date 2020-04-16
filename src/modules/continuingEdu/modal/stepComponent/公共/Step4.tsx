@@ -1,16 +1,21 @@
 import styled from "styled-components";
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { Button, Icon, message, Progress } from "antd";
+import { Button, Icon, message, Progress, Row, Col } from "antd";
 import { getFileType, getFileSize, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
 import { stepServices } from "../services/stepServices";
 import { stepViewModal } from "../StepViewModal";
-import Axios from "axios";
+import UpdateTable from "./table/UpdateTable";
+import Form from "src/components/Form";
+
 export interface Props {}
 
 export default function Step4() {
+  let refForm = React.createRef<Form>();
+
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [fileList, setFileList] = useState([]);
+  const [studyLinkList, setStudyLinkList] = useState([]);
 
   /** 上传文件状态 */
   const [progressEventMap, setProgressEventMap]: any = useState({});
@@ -28,15 +33,21 @@ export default function Step4() {
 
   useEffect(() => {
     console.log(
+      stepViewModal.stepData1.teachingMethod,
       stepViewModal.stepData4.attachmentIds,
+      stepViewModal.stepData4XX.studyLinkList,
       "stepViewModal.stepData4.attachmentIdsstepViewModal.stepData4.attachmentIds"
     );
     setFileList(stepViewModal.stepData4.attachmentIds);
+    setStudyLinkList(stepViewModal.stepData4XX.studyLinkList);
   }, []);
 
   useEffect(() => {
+    let current = refForm.current;
     stepViewModal.stepData4.attachmentIds = fileList;
-  }, [fileList]);
+    if (!current) return;
+    current.setFields({ studyLinkList });
+  }, [fileList, studyLinkList]);
 
   const deleteFile = (index: number) => {
     fileList.splice(index, 1);
@@ -135,6 +146,11 @@ export default function Step4() {
     //     hideLoading();
     //   });
   };
+  const onFormChange = (name: string, value: any, from: Form) => {
+    let data = from.getFields();
+    stepViewModal.stepData4XX.studyLinkList = data.studyLinkList;
+  };
+
   return (
     <Wrapper>
       <div className="btn-con">
@@ -194,6 +210,17 @@ export default function Step4() {
           multiple={true}
         />
       </FileList>
+      {stepViewModal.stepData1.teachingMethod === 1 && (
+        <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
+          <Row style={{ marginTop: 20 }}>
+            <Col span={24}>
+              <Form.Field label={`外网资料`} name="studyLinkList">
+                <UpdateTable />
+              </Form.Field>
+            </Col>
+          </Row>
+        </Form>
+      )}
     </Wrapper>
   );
 }
