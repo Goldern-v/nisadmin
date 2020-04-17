@@ -248,7 +248,7 @@ export default observer(function HandoverRegister(props: Props) {
           align: "center",
           dataIndex: item.itemCode,
           width: (15 * item.width || 50) + 8,
-          className: "input-cell",
+          className: "input-cell input-cell-custom",
           render(text: string, record: any, index: number) {
             return (
               <TdCell>
@@ -297,7 +297,7 @@ export default observer(function HandoverRegister(props: Props) {
             );
           },
           align: "center",
-          className: "input-cell",
+          className: "input-cell input-cell-custom",
           width: (15 * item.width || 50) + 8,
           dataIndex: item.itemCode,
           render(text: string, record: any, index: number) {
@@ -335,7 +335,7 @@ export default observer(function HandoverRegister(props: Props) {
       title: "备注",
       width: 150,
       dataIndex: "description",
-      className: "input-cell",
+      className: "input-cell input-cell-description",
       render(text: string, record: any, index: number) {
         return (
           <Input.TextArea
@@ -343,6 +343,7 @@ export default observer(function HandoverRegister(props: Props) {
             autosize={{ minRows: 1 }}
             defaultValue={text}
             onChange={e => {
+              record.modified = true
               record.description = e.target.value;
             }}
             onBlur={() => updateDataSource()}
@@ -833,6 +834,11 @@ export default observer(function HandoverRegister(props: Props) {
             surplusWidth={surplusWidth}
             surplusHeight={280}
             useOuterPagination={true}
+            rowClassName={(record: any, idx: number) => {
+              if (cellDisabled(record)) return 'disabled-row'
+
+              return ''
+            }}
             pagination={{
               onChange: (pageIndex: number) => {
                 setPageOptions({ ...pageOptions, pageIndex })
@@ -990,11 +996,16 @@ const TableCon = styled.div`
     }
   }
   .ant-select-disabled .ant-select-selection{
-    background: rgba(0,0,0,0)!important;
+      background: rgba(0,0,0,0.0)!important;
+  }
+  .disabled-row{
+    .input-cell-custom,.input-cell-description{
+      background: rgba(0,0,0,0.03)!important;
+    }
   }
   .ant-input[disabled]{
     color: #000!important;
-    background: rgba(0,0,0,0.03)!important;
+      background: rgba(0,0,0,0.0)!important;
   }
   textarea.ant-input{
     overflow:hidden!important;

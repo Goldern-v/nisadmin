@@ -18,7 +18,7 @@ import { appStore } from 'src/stores'
 
 export default function QcTwoRouter(props: Props) {
 
-  let extra_menu = [
+  let extra_menu: any = [
     {
       title: '二级质控月度报告',
       icon: <YDBG />,
@@ -37,6 +37,7 @@ export default function QcTwoRouter(props: Props) {
         path: '/qcTwo/护理质量巡查情况汇总表?qcLevel=2',
         component: 护理质量巡查情况汇总表,
         keepAlive: true,
+        hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
       }
     ]

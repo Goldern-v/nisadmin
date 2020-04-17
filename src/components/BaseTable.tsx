@@ -336,7 +336,13 @@ const Wrapper = styled.div`
     /* padding: 20px 30px; */
     padding: 15px 15px;
     box-sizing: content-box;
-    overflow:hidden;
+    &::after{
+      content:".";
+      display:block;
+      height:0;
+      clear:both;
+      visibility:hidden;
+    }
     table {
       table-layout: fixed;
       width: 100%;

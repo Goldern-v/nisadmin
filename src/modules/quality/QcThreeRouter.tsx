@@ -33,7 +33,7 @@ import { appStore } from "src/stores";
 
 export default function QcThreeRouter(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
-  let extra_menu = [
+  let extra_menu: any = [
     {
       title: "三级质控月度报告",
       icon: <YDBG />,
@@ -100,6 +100,7 @@ export default function QcThreeRouter(props: Props) {
         path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
         component: 护理质量巡查情况汇总表,
         keepAlive: true,
+        hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
       },
       {
@@ -108,6 +109,7 @@ export default function QcThreeRouter(props: Props) {
         path: "/qcThree/护理质量检查小结?qcLevel=3",
         component: 护理质量检查小结,
         keepAlive: true,
+        hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
       },
     ]

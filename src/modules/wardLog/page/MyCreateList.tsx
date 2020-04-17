@@ -25,6 +25,7 @@ export default observer(function MyCreateList() {
   const [templateList, setTemplateList]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
+  const [deptSelect, setDeptSelect] = useState(authStore.selectedDeptCode)
   const [pageLoading, setPageLoading] = useState(false)
 
   const wardLogAddModal = createModal(WardLogAddModal)
@@ -73,7 +74,7 @@ export default observer(function MyCreateList() {
     },
     {
       title: '操作',
-      width: 80,
+      width: status == '1' ? 120 : 80,
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
@@ -158,7 +159,7 @@ export default observer(function MyCreateList() {
     pageOptions.pageSize,
     date,
     selectedTemplate,
-    authStore.selectedDeptCode
+    deptSelect
   ])
 
   useEffect(() => {
@@ -184,7 +185,7 @@ export default observer(function MyCreateList() {
           onChange={(value: any) => setDate(value)}
         />
         <span className='label'>科室:</span>
-        <DeptSelect onChange={() => { }} />
+        <DeptSelect onChange={(val) => setDeptSelect(val)} />
         <span className='label'>应用:</span>
         <Select style={{ width: 160 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>

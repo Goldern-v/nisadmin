@@ -32,6 +32,7 @@ export default function QcOneRouterHj(props: Props) {
       path: '/qcOneHj/护理质量巡查情况汇总表?qcLevel=1',
       component: 护理质量巡查情况汇总表,
       keepAlive: true,
+      hide: !appStore.isDev,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
     }
   ]

@@ -26,7 +26,7 @@ export const navConfig: navConfigItem[] = [
   {
     name: "病区登记本",
     path: "/wardRegister",
-    hidden: !appStore.isDev
+    // hidden: !appStore.isDev
   },
   {
     name: "一级质控",
