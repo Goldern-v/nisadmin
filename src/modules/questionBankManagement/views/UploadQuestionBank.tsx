@@ -6,6 +6,8 @@ import NavCon from './../components/common/NavCon'
 
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
+import createModal from 'src/libs/createModal'
+import QuestionUploadSetting from './../components/common/QuestionUploadSetting'
 import { questionBankManageService } from './../api/QuestionBankManageService'
 // import qs from 'qs'
 
@@ -13,6 +15,8 @@ export default observer(function QuestionBankManagement() {
   let { location, history } = appStore
   let fileRef = React.createRef<any>()
   let [loading, setLoading] = useState(false)
+
+  const questionUploadSetting = createModal(QuestionUploadSetting)
 
   const handleUploadBtn = () => {
     if (fileRef.current)
@@ -29,7 +33,9 @@ export default observer(function QuestionBankManagement() {
       questionBankManageService
         .uploadQuestionBank(form)
         .then(res => {
-          Message.success('题库上传成功')
+          Message.success('题库上传成功', 0.5, () => {
+            if (res.data) openUploadSetting(res.data)
+          })
           setLoading(false)
         }, err => {
           setLoading(false)
@@ -78,6 +84,11 @@ export default observer(function QuestionBankManagement() {
     return <span style={{ display: 'none' }}></span>
   }
 
+  const openUploadSetting = (data: any) => {
+    questionUploadSetting
+      .show({ data })
+  }
+
   return (
     <Wrapper>
       <div className="header">
@@ -104,7 +115,11 @@ export default observer(function QuestionBankManagement() {
           <div className="desc">
             <span>说明：</span>
             <span className="desc-content">
-              <span>1. 上传前请下载模版，按照模版要求将内容填完后，再点击上方按钮进行导入。</span>
+              <span>
+                1. 上传前请
+                <span onClick={handleDownload} style={{ cursor: 'pointer', color: '#00f' }}>下载模版</span>
+                ，按照模版要求将内容填完后，再点击上方按钮进行导入。
+                </span>
               <br />
               <span>2. 请设置文件格式：题库名.xls，需要注意的是题库名也将作为快速筛选项目，以请设置有含义的文件名称。</span>
             </span>
@@ -116,6 +131,7 @@ export default observer(function QuestionBankManagement() {
           <Spin />
         </div>
       </div>
+      <questionUploadSetting.Component />
     </Wrapper>
   )
 })
@@ -165,7 +181,6 @@ const Wrapper = styled.div`
     height: 100%;
     overflow: auto;
     position: relative;
-
     .upload-box{
       width: 700px;
       height: 250px;
@@ -176,25 +191,26 @@ const Wrapper = styled.div`
       transform: translate(-50%,-50%);
       border-radius: 5px;
       border: 2px dashed #ccc;
+    background: #fff;
 
       .upload-btn{
         width: 200px;
         height: 60px;
         line-height: 60px;
         margin: 10px auto;
-        background: rgba(255,102,153,1);
+        background-color: rgba(0, 166, 128, 1);
         color: #fff;
         font-size: 20px;
         text-align: center;
         cursor: pointer;
         border-radius: 4px;
         margin-top: 40px;
-        transition: background .2s;
+        transition: background-color .2s;
         :hover{
-          background: rgba(255,102,153,0.6);
+          background-color: rgba(0, 166, 128, 0.6);
         }
         :active{
-          background: rgba(255,102,153,1);
+          background-color: rgba(0, 166, 128, 1);
         }
       }
 

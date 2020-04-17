@@ -40,6 +40,9 @@ export default observer(function TestingResultReview() {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
 
+  //发布功能的loading状态
+  const [publishLoading, setPublishLoading] = useState(false)
+
   const columns: ColumnProps<any>[] = [
     {
       dataIndex: 'empName',
@@ -227,7 +230,7 @@ export default observer(function TestingResultReview() {
     })
   }
 
-  const setLoading = (loading: boolean) => trainingResultModel.setLoading(loading)
+  // const setLoading = (loading: boolean) => trainingResultModel.setLoading(loading)
 
   const handlePublish = () => {
 
@@ -236,20 +239,20 @@ export default observer(function TestingResultReview() {
       centered: true,
       content: '确定给所有考生发布成绩？',
       onOk: () => {
-        setLoading(true)
+        setPublishLoading(true)
         trainingResultService
           .publishGrades(appStore.queryObj.id || '')
           .then(res => {
             message.success('发布成功', 1, () => {
               appStore.history.goBack()
             })
-            setLoading(false)
+            setPublishLoading(false)
             // trainingResultModel.
             //   setBaseInfo({
             //     ...baseInfo,
             //     isResultPublished: 1
             //   })
-          }, () => setLoading(false))
+          }, () => setPublishLoading(false))
       }
     })
   }
@@ -302,7 +305,7 @@ export default observer(function TestingResultReview() {
           <Button
             type="primary"
             onClick={handlePublish}
-            disabled={loading}>
+            disabled={publishLoading}>
             发布成绩
           </Button>}
         <Button onClick={() => history.goBack()}>返回</Button>

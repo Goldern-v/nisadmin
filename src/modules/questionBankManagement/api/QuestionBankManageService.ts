@@ -80,6 +80,10 @@ export default class QuestionBankManageService extends BaseApiService {
   public uploadQuestionBank(formData: any) {
     return this.post('/studyAndTrain/questionBankManage/uploadQuestionBank', formData);
   }
+  /**导入记录-更改导入批次的标签 */
+  public updateLabelsForQuestionBank(params: any) {
+    return this.post('/api/studyAndTrain/questionBankManage/questionLabel/updateLabelsForQuestionBank', params);
+  }
   /**导入题库模板下载路径 */
   public getUploadQuestionBankTemplate() {
     return this.get('/studyAndTrain/questionBankManage/getTemplate', { responseType: 'blob' });

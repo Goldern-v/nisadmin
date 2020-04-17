@@ -3,22 +3,28 @@ import React, { useState, useEffect } from 'react'
 import { Button, Select } from 'antd'
 import { questionBankManageService } from './../../api/QuestionBankManageService';
 
+import createModal from 'src/libs/createModal'
+import LabelTableEdit from './../labels/LabelTableEdit'
+
 const Option = Select.Option;
 
 export interface Props {
   onSelect?: any,
+  showAdd?: boolean,
   inputSelected?: boolean
 }
 
 export default function LabelsAppend(props: Props) {
-  const { onSelect, inputSelected } = props
+  const { onSelect, inputSelected, showAdd } = props
   const [query, setQuery] = useState({
     bankType: '',
     choiceType: '标签查看',
     searchingContent: '',
     pageIndex: 1,
-    pageSize: 100
+    pageSize: 30
   });
+
+  const [loading, setLoading] = useState(false)
 
   const [value, setValue] = useState({ label: '', key: '' })
 
@@ -29,6 +35,8 @@ export default function LabelsAppend(props: Props) {
   const [loadMore, setLoadMore] = useState(false);
 
   const [selecting, setSelecting] = useState(false);
+
+  const labelTableEdit = createModal(LabelTableEdit)
 
   const getLabelList = (newQuery: any) => {
     newQuery = newQuery || query
@@ -55,7 +63,9 @@ export default function LabelsAppend(props: Props) {
     setQuery(newQuery);
     if (newQuery.pageIndex == totalPage) setLoadMore(false)
 
+    setLoading(true)
     questionBankManageService.getQuestionBankList(newQuery).then(res => {
+      setLoading(false)
       let list = res.data.list || [];
       list = list.map((item: any) => {
         return {
@@ -65,7 +75,7 @@ export default function LabelsAppend(props: Props) {
       });
 
       setLabelList(labelList.concat(list || []));
-    })
+    }, err => setLoading(false))
   }
 
   const handleSearch = (search: any) => {
@@ -110,6 +120,14 @@ export default function LabelsAppend(props: Props) {
     })
   }
 
+  const handleAdd = () => {
+    labelTableEdit.show({
+      onOkCallback: (data?: any) => {
+        if (data) onSelect && onSelect(data)
+      }
+    })
+  }
+
   return <Wrapper>
     <div className="search-area">
       <Select
@@ -117,6 +135,7 @@ export default function LabelsAppend(props: Props) {
         value={value}
         showSearch
         labelInValue
+        loading={loading}
         defaultActiveFirstOption={false}
         onSearch={handleSearch}
         filterOption={false}
@@ -133,15 +152,19 @@ export default function LabelsAppend(props: Props) {
       </Select>
     </div>
     <Button onClick={handleCorrect}>确定</Button>
+    {showAdd && <Button onClick={handleAdd}>其他标签</Button>}
+    <labelTableEdit.Component />
   </Wrapper>
 }
 const Wrapper = styled.div`
   display:flex;
   width: 100%;
   min-width: 100px;
+  &>*{
+    margin-right: 5px;
+  }
   .search-area{
     flex: 1;
-    margin-right: 5px;
     .ant-select{
       width: 100%;
     }

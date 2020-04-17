@@ -30,7 +30,7 @@ export default observer(function LabelTable(props: Props) {
       labelContent: ''
     }
   });
-  const handleEditCancel = (info: any) => {
+  const handleEditCancel = (info: any): any => {
     if (info && info.reload) model.getList();
     setLabelEditCfg({ ...labelEditCfg, visible: false })
   }
@@ -241,7 +241,12 @@ export default observer(function LabelTable(props: Props) {
         }}
       />
       <FooterBtnCon btnList={btnList} />
-      <LabelTableEdit {...labelEditCfg} onCancel={handleEditCancel} />
+      <LabelTableEdit
+        {...labelEditCfg}
+        onOk={() => { }}
+        onCancel={() => { }}
+        onClose={() => { }}
+        onCancelCallback={handleEditCancel} />
       <LabelTableDelete {...labelDeleteCfg} onCancel={handleDeleteCancel} />
     </Wrapper>
   )

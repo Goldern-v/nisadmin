@@ -41,7 +41,7 @@ export default observer(function ChoiceQuestionEdit() {
         .map((item: any) => {
           return {
             answerContent: item.answerContent,
-            right: item.right
+            isRight: item.isRight
           }
         });
 
@@ -71,14 +71,14 @@ export default observer(function ChoiceQuestionEdit() {
     let newNodel = { ...editModel };
     newNodel.choiceQuestionList.push({
       answerContent: "",
-      right: false
+      isRight: false
     });
     setEditModel(newNodel);
   }
 
   const handleToogleRight = (item: any, idx: number) => {
     let newNodel = { ...editModel };
-    newNodel.choiceQuestionList.splice(idx, 1, { ...item, right: !item.right })
+    newNodel.choiceQuestionList.splice(idx, 1, { ...item, isRight: !item.isRight })
 
     setEditModel(newNodel);
   }
@@ -178,7 +178,7 @@ export default observer(function ChoiceQuestionEdit() {
           <div className="label">标题:</div>
           <div className="content">
             <TextArea
-              style={{ width: '700px' }}
+              style={{ width: 700 }}
               autosize={{ minRows: 2 }}
               value={editModel.questionContent}
               onChange={(e) => setEditModel({ ...editModel, questionContent: e.target.value })} />
@@ -194,12 +194,12 @@ export default observer(function ChoiceQuestionEdit() {
               return <div className="choiceItem" key={idx}>
                 <span className="idx">{String.fromCharCode(65 + idx)}.</span>
                 <TextArea
-                  style={{ width: '400px' }}
+                  style={{ width: 400, overflow: 'hidden' }}
                   autosize={{ minRows: 1 }}
                   value={item.answerContent}
                   className="answerContent"
                   onChange={(e) => handleAnswerContentChange(e, item, idx)} />
-                <Checkbox checked={item.right} onClick={() => handleToogleRight(item, idx)} />
+                <Checkbox checked={item.isRight} onClick={() => handleToogleRight(item, idx)} />
                 <Button size="small" disabled={idx <= 0} onClick={() => handleChoiceMove(idx, false)}>上移</Button>
                 <Button size="small" disabled={idx >= editModel.choiceQuestionList.length - 1} onClick={() => handleChoiceMove(idx, true)}>下移</Button>
                 <Button size="small" disabled={editModel.choiceQuestionList.length <= 1} onClick={() => handleChoiceDelete(idx)}>删除</Button>
@@ -209,12 +209,12 @@ export default observer(function ChoiceQuestionEdit() {
               <span className="idx">  </span>
               <Button type="dashed" style={{ width: '400px' }} onClick={addChoice}>新增</Button>
             </div>
-            <div className="choiceItem" onClick={() => setEditModel({ ...editModel, random: !editModel.random })}>
+            {/* <div className="choiceItem" onClick={() => setEditModel({ ...editModel, random: !editModel.random })}>
               <span>
                 <Checkbox checked={editModel.random} />
               </span>
               <span style={{ cursor: 'pointer' }}>选项允许随机</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

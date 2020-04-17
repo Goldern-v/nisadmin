@@ -39,6 +39,9 @@ export default observer(function OperateResultReview() {
     return item.empNo.toLowerCase() == authStore.user?.empNo.toLowerCase()
   })
 
+  //发布功能的loading状态
+  const [publishLoading, setPublishLoading] = useState(false)
+
   const [selectedRowKeys, setSelectedRowKeys] =
     useState([] as number[] | string[])
 
@@ -247,20 +250,20 @@ export default observer(function OperateResultReview() {
       centered: true,
       content: '确定给所有学员发布成绩？',
       onOk: () => {
-        setLoading(true)
+        setPublishLoading(true)
         trainingResultService
           .publishGrades(appStore.queryObj.id || '')
           .then(res => {
             message.success('发布成功', 1, () => {
               appStore.history.goBack()
             })
-            setLoading(false)
+            setPublishLoading(false)
             // trainingResultModel.
             //   setBaseInfo({
             //     ...baseInfo,
             //     isResultPublished: 1
             //   })
-          }, () => setLoading(false))
+          }, () => setPublishLoading(false))
       }
     })
   }
@@ -308,7 +311,7 @@ export default observer(function OperateResultReview() {
           <Button
             type="primary"
             onClick={handlePublish}
-            disabled={loading}>
+            disabled={publishLoading}>
             发布成绩
           </Button>}
         <Button onClick={() => history.goBack()}>返回</Button>

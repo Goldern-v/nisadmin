@@ -20,7 +20,7 @@ export default function QuestionTemplate(props: Props) {
 
   const CorrectOptions = () => {
     let correctArr: any[] = [];
-    correctArr = (choiceList || []).filter((item: any) => item.right == true).map((item: any) => item.questionOption);
+    correctArr = (choiceList || []).filter((item: any) => item.isRight == true).map((item: any) => item.questionOption);
 
     return correctArr.join('、')
   }
