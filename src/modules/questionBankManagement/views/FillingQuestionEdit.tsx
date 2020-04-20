@@ -176,8 +176,8 @@ export default observer(function ChoiceQuestionEdit() {
               style={{ verticalAlign: 'top', marginLeft: '5px' }}
               onClick={handleAddSplit}>添加分隔符</Button>
             <div className="sub-text">
-              <div>一行对应一个【空】标准答案某个【空】</div>
-              <div>有多个标准答案的，用竖线|分隔</div>
+              <div>2个或3个填空答案用空格断开，例如（答案1  答案2  答案3）</div>
+              <div>某个空有多个标准答案的用符号｜隔开，例如（答案1.0｜答案1.1   答案2  答案3</div>
             </div>
           </div>
         </div>

@@ -162,10 +162,10 @@ export default observer(function ShortQuestionTable(props: Props) {
   }
 
   const handleEdit = (record: any) => {
-    if (record.bankType == '系统题库' || model.query.bankType == '系统题库') {
-      Message.warning('系统题库无法修改')
-      return
-    }
+    // if (record.bankType == '系统题库' || model.query.bankType == '系统题库') {
+    //   Message.warning('系统题库无法修改')
+    //   return
+    // }
     history.push(`/continuingEdu/shortQuestionEdit?id=${record.id}`)
   }
 

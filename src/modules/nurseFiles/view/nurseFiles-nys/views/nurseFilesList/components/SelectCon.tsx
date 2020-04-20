@@ -6,11 +6,18 @@ import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import AddNursingModal from "../modal/AddNursingModal";
 import DeptSelect from "src/components/DeptSelect";
 import { observer } from "mobx-react-lite";
+import { nurseFilesService } from './../../../services/NurseFilesService'
+import { fileDownload } from "src/utils/file/file"
+
+// import ImportModal from './ImportModal'
+// import createModal from 'src/libs/createModal'
 
 const Option = Select.Option;
 
 export default observer(function SelectCon(props: any, context: any) {
   const [visible, setVisible] = useState(false);
+
+  // const importModal = createModal(ImportModal)
   const handleOk = () => {
     setVisible(false);
   };
@@ -31,6 +38,14 @@ export default observer(function SelectCon(props: any, context: any) {
   const exportFile = () => {
     nurseFilesListViewModel.exportNursingList();
   };
+
+  const downloadExportTemplate = () => {
+    nurseFilesService.downloadUploadExcel().then(res => fileDownload(res))
+  }
+
+  // const showImportModal = () => {
+  //   importModal.show({})
+  // }
 
   useEffect(() => {
     return () => {
@@ -55,6 +70,8 @@ export default observer(function SelectCon(props: any, context: any) {
           搜索
         </Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
+        {/* <Button onClick={downloadExportTemplate}>下载导入模板</Button>
+        <Button onClick={showImportModal}>导入</Button> */}
         <Button onClick={exportFile}>导出</Button>
       </Wrapper>
       <AddNursingModal
@@ -62,6 +79,7 @@ export default observer(function SelectCon(props: any, context: any) {
         handleOk={handleOk}
         handleCancel={handleCancel}
       />
+      {/* <importModal.Component /> */}
     </React.Fragment>
   );
 });

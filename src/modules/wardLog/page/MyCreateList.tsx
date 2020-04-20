@@ -16,7 +16,7 @@ import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import WardLogAddModal from './../components/WardLogAddModal'
 import createModal from 'src/libs/createModal'
-// import { fileDownload } from 'src/utils/file/file'
+import { fileDownload } from 'src/utils/file/file'
 
 export interface Props { }
 
@@ -27,6 +27,8 @@ export default observer(function MyCreateList() {
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState(authStore.selectedDeptCode)
   const [pageLoading, setPageLoading] = useState(false)
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
 
   const wardLogAddModal = createModal(WardLogAddModal)
 
@@ -113,9 +115,12 @@ export default observer(function MyCreateList() {
         status
       })
       .then((res) => {
+        setPageLoading(false)
+
+        setSelectedRowKeys([])
+
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
-        setPageLoading(false)
       }, err => setPageLoading(false))
   }
 
@@ -150,6 +155,25 @@ export default observer(function MyCreateList() {
 
       }
     })
+  }
+
+  const handleRowSelect = (rowKeys: string[] | number[]) => setSelectedRowKeys(rowKeys)
+
+  const handleExport = () => {
+    if (selectedRowKeys.length <= 0) {
+      message.warning('未勾选条目')
+      return
+    }
+
+    setPageLoading(true)
+
+    wardLogService
+      .exportDetailList({ ids: selectedRowKeys })
+      .then(res => {
+        setPageLoading(false)
+        setSelectedRowKeys([])
+        fileDownload(res)
+      }, err => setPageLoading(false))
   }
 
   useEffect(() => {
@@ -199,6 +223,7 @@ export default observer(function MyCreateList() {
           查询
         </Button>
         {status == '1' && <Button onClick={handleAddNew}>新建</Button>}
+        <Button onClick={handleExport}>导出</Button>
       </PageHeader>
       <BaseTable
         loading={pageLoading}
@@ -206,11 +231,16 @@ export default observer(function MyCreateList() {
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
+        rowKey='id'
         surplusHeight={220}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,
           total: total
+        }}
+        rowSelection={{
+          selectedRowKeys,
+          onChange: handleRowSelect
         }}
         onChange={(pagination: PaginationConfig) => {
           setPageOptions({

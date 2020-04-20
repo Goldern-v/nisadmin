@@ -52,9 +52,10 @@ export default function WardLogDetail() {
   const onLoad = () => {
     setPageLoading(true)
     wardLogService.getDetail(appStore.queryObj.id).then((res) => {
-      setPageData(res.data)
       setPageLoading(false)
-    })
+
+      setPageData(res.data)
+    }, err => setPageLoading(false))
   }
 
   const onExport = () => {

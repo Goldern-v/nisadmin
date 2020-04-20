@@ -48,7 +48,12 @@ export default observer(function QuestionBankManagement() {
 
   useEffect(() => {
     if (questionBankManageModel.tableData.length == 0 && questionBankManageModel.tableLoading) return
-    questionBankManageService.getCountMenu().then(res => {
+    questionBankManageService.getCountMenu({
+      bankType: questionBankManageModel.query.bankType || '',
+      status: '',
+      id: ''
+
+    }).then(res => {
       setMenuNum(res.data)
     })
   }, [questionBankManageModel.tableData])
@@ -201,7 +206,7 @@ export default observer(function QuestionBankManagement() {
         <SelectBox>
           <span className='label'>选择类型：</span>
 
-          <Radio.Group name='radiogroup' defaultValue={bankType} onChange={handleBankTypeChange}>
+          <Radio.Group name='radiogroup' value={bankType} onChange={handleBankTypeChange}>
             <Radio value={'系统题库'}>系统题库</Radio>
             <Radio value={'医院题库'}>医院题库</Radio>
           </Radio.Group>
