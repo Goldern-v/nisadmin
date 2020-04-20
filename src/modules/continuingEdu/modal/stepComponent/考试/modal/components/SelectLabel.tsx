@@ -18,11 +18,10 @@ export default observer(function SelectLabel(props: Props) {
     quesBankView.onload();
   };
 
-  const handleData = (data: any) => {
-    quesBankView.checkLabelList.filter((item: any) => {
-      console.log(data, item.id.toString() === data),
-        item.id.toString() === data ? item.labelContent : "";
-    });
+  const labelContent = (item: any) => {
+    return quesBankView.checkLabelList
+      .filter((k: any) => k.id.toString() === item)
+      .map((o: any) => o.labelContent);
   };
 
   return (
@@ -61,7 +60,7 @@ export default observer(function SelectLabel(props: Props) {
                   handleDel(item);
                 }}
               >
-                {item}
+                {labelContent(item)}
               </li>
             );
           })}

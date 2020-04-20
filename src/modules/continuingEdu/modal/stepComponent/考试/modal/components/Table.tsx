@@ -1,11 +1,22 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useState, useLayoutEffect } from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { quesBankView } from "../QuesBankView";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
+import ResultModal from "./modal/ResultModal";
 
 export default observer(function Table() {
+  const [selectedRows, setSelectedRows] = useState([]); // 选中数据全部信息
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
+  const [visible, setVisible] = useState(false);
+  const [params, setParams] = useState("");
+
+  // 初始化
+  useLayoutEffect(() => {
+    quesBankView.init();
+  }, []);
+
   const columns: any = [
     {
       title: "序号",
@@ -34,21 +45,55 @@ export default observer(function Table() {
       key: "8",
       width: 100,
       align: "center",
-      render: (text: any, row: any, c: any) => {
+      render: (text: any, record: any, c: any) => {
         return (
           <DoCon>
-            <span onClick={() => {}}>查看</span>
+            <span
+              onClick={() => {
+                resultLook(record.id);
+              }}
+            >
+              查看
+            </span>
           </DoCon>
         );
       }
     }
   ];
 
+  // 表格选中操作
+  const rowSelection: any = {
+    selectedRowKeys,
+    onChange: (selectedRowKeys: any, selectedRows: any) => {
+      console.log(selectedRowKeys, "selectedRowKeys", selectedRows);
+      let arr1: any = [];
+      selectedRowKeys.map((item: any) => {
+        arr1.push(selectedRows.filter((a: any) => a.key === item));
+      });
+      quesBankView.selectedRows = selectedRows;
+      setSelectedRows(arr1);
+      setSelectedRowKeys(selectedRowKeys);
+    }
+  };
+
+  //查看弹窗
+  const resultLook = (id: any) => {
+    setParams(id.toString());
+    setVisible(true);
+  };
+  const onCancel = () => {
+    setVisible(false);
+  };
+  const handleEditOk = () => {
+    onCancel();
+  };
+
   return (
     <Wrapper>
       <BaseTable
         loading={quesBankView.tableLoading}
         dataSource={quesBankView.tableList}
+        rowSelection={rowSelection}
         columns={columns}
         surplusHeight={480}
         pagination={{
@@ -62,6 +107,12 @@ export default observer(function Table() {
           quesBankView.pageSize = pagination.pageSize;
           quesBankView.onload();
         }}
+      />
+      <ResultModal
+        visible={visible}
+        onCancel={onCancel}
+        onOk={handleEditOk}
+        params={params}
       />
     </Wrapper>
   );

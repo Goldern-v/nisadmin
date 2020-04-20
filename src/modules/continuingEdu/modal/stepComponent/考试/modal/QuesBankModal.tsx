@@ -6,6 +6,7 @@ import { Rules } from "src/components/Form/interfaces";
 import SelectLabel from "./components/SelectLabel";
 import Header from "./components/Header";
 import Table from "./components/Table";
+import CheckedContent from "./components/CheckedContent";
 
 const { TabPane } = Tabs;
 
@@ -84,7 +85,7 @@ export default function PushModal(props: Props) {
             </div>
           </TabPane>
           <TabPane tab="我已选择" key="2">
-            222
+            <CheckedContent />
           </TabPane>
         </Tabs>
       </Modal>

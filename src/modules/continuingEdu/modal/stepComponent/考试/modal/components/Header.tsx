@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { useLayoutEffect } from "react";
 import { TableHeadCon } from "src/components/BaseTable";
-import { Radio, Select, Input, Button } from "antd";
+import { Radio, Select, Input, Button, Modal, message as Message } from "antd";
 import { quesBankView } from "../QuesBankView";
 import { observer } from "mobx-react-lite";
 
@@ -10,10 +10,43 @@ export default observer(function Header() {
     quesBankView.onload();
   }, []);
 
+  //加入试卷
+  const handleAdd = () => {
+    let content = (
+      <div>
+        <div>您确定要将选中题目加入试卷吗？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: () => {
+        quesBankView.questionList = [...quesBankView.selectedRows];
+        quesBankView.questionList.map((item: any) => {
+          quesBankView.questionIdList.push(item.id);
+        });
+        if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {
+          Message.success("已成功加入试卷");
+          console.log(quesBankView.questionList, "iiiiiiii");
+        } else {
+          Message.error("加入试卷失败");
+        }
+      }
+    });
+  };
+
   return (
     <Wrapper>
       <LeftIcon>
-        <Button className="checkButton" onClick={() => {}}>
+        <Button
+          className="checkButton"
+          onClick={() => {
+            handleAdd();
+          }}
+        >
           加入考卷
         </Button>
       </LeftIcon>
@@ -86,24 +119,6 @@ const Wrapper = styled(TableHeadCon)`
     color: #000 !important;
   }
 `;
-const LeftIcon = styled.div`
-  // height: 55px;
-  // font-size: 13px;
-  // position: relative;
-  // font-size: 13px;
-  // color: #333333;
-  // padding: 0;
-  // display: flex;
-  // align-items: center;
-`;
+const LeftIcon = styled.div``;
 
-const RightIcon = styled.div`
-  // height: 55px;
-  // font-size: 13px;
-  // position: relative;
-  // font-size: 13px;
-  // color: #333333;
-  // padding: 0 0 0 15px;
-  // display: flex;
-  // align-items: center;
-`;
+const RightIcon = styled.div``;
