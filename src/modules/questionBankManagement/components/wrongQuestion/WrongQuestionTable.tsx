@@ -123,10 +123,10 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
   // }
 
   const handleEdit = (record: any) => {
-    if (record.bankType == '系统题库') {
-      Message.warning('系统题库无法修改')
-      return
-    }
+    // if (record.bankType == '系统题库') {
+    //   Message.warning('系统题库无法修改')
+    //   return
+    // }
     let type = 'choice';
     let questionId = ''
     switch (record.questionType) {

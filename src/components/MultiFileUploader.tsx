@@ -184,6 +184,7 @@ const Wrapper = styled.div`
       height: 70px;
       border-radius: 5px;
       object-fit: cover;
+      display: inline-block;
     }
     .file-name{
       width: 80px;

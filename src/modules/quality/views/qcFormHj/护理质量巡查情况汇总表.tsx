@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
 import { PageTitle } from 'src/components/common'
 import { qcFormHjService } from './api/QcFormHjService'
+import { fileDownload } from "src/utils/file/file";
 import moment from 'moment'
 
 export interface Props { }
@@ -20,7 +21,25 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
 
   const columns: any[] = [
     {
-      title: '科室',
+      title: () => {
+        return <LineCon>
+          <TextCon>
+            <Text x="20%" y="70%" deg="0">
+              科室
+          </Text>
+            <Text x="65%" y="70%" deg="22">
+              通过率(%)
+          </Text>
+            <Text x="65%" y="20%" deg="0">
+              项目
+          </Text>
+          </TextCon>
+          <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <line x1="0" y1="0" x2="60%" y2="100%" />
+            <line x1="0" y1="0" x2="100%" y2="80%" />
+          </SvgCon>
+        </LineCon>
+      },
       dataIndex: 'wardName',
       width: 180,
       align: 'left'
@@ -35,7 +54,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   ]
 
   const getTableData = () => {
-    console.log(queryObj.qcLevel)
+    // console.log(queryObj.qcLevel)
     setLoading(true)
     qcFormHjService.countResult({
       qcLevel: queryObj.qcLevel || '1',
@@ -62,6 +81,21 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
 
           setTableData(newTableData)
         }
+      }, err => setLoading(false))
+  }
+
+  const handleExport = () => {
+    //fileDownload
+    setLoading(true)
+    qcFormHjService
+      .countResultExport({
+        qcLevel: queryObj.qcLevel || '1',
+        beginDate: filterDate[0].format('YYYY-MM-DD'),
+        endDate: filterDate[1].format('YYYY-MM-DD'),
+      })
+      .then(res => {
+        setLoading(false)
+        fileDownload(res)
       }, err => setLoading(false))
   }
 
@@ -95,6 +129,11 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
         <div className='item'>
           <Button type='primary' onClick={getTableData}>
             查询
+          </Button>
+        </div>
+        <div className="item">
+          <Button onClick={handleExport}>
+            导出
           </Button>
         </div>
       </RightIcon>
@@ -186,3 +225,35 @@ const TableCon = styled.div`
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
 `
+const LineCon = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-height: 100px;
+`;
+
+const SvgCon = styled.svg`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  line {
+    stroke: #e8e8e8;
+    stroke-width: 1;
+  }
+`;
+const TextCon = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+`;
+const Text = styled.div<{ x: string; y: string; deg: string }>`
+  position: absolute;
+  left: ${p => p.x};
+  top: ${p => p.y};
+  white-space: nowrap;
+  transform: rotate(${p => p.deg}deg);
+`;

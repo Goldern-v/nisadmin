@@ -308,6 +308,10 @@ export default class NurseFilesService extends BaseApiService {
       responseType: "blob"
     });
   }
+  /**下载导入护士需要的模板 */
+  public downloadUploadExcel() {
+    return this.post('/nurseInformation/downloadExcel', {}, { responseType: 'blob' })
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

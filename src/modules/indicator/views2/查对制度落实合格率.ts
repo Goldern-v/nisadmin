@@ -1,8 +1,8 @@
 const columns: any = [
   {
     title: '序号',
-    dataIndex: '1',
-    key: '1',
+
+
     render: (text: any, record: any, index: number) => index + 1,
     align: 'center',
     width: 50
@@ -11,28 +11,28 @@ const columns: any = [
     title: '护理单元',
     dataIndex: '护理单元',
     key: '护理单元',
-    width:180,
+    width: 180,
     align: 'left'
   },
   {
     title: '检查查对制度的总条款数',
     dataIndex: '检查查对制度的总条款数',
     key: '检查查对制度的总条款数',
-    width:180,
+    width: 180,
     align: 'center'
   },
   {
     title: '查对制度不合格条款数',
     dataIndex: '查对制度不合格条款数',
     key: '查对制度不合格条款数',
-    width:180,
+    width: 180,
     align: 'center'
   },
   {
     title: '不合格率(%)',
     dataIndex: '不合格率(%)',
     key: '不合格率(%)',
-    width:120,
+    width: 120,
     align: 'center'
   }
 ]

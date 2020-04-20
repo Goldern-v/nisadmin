@@ -7,6 +7,7 @@ import { appStore } from 'src/stores'
 import { PageTitle } from 'src/components/common'
 import { qcFormHjService } from './api/QcFormHjService'
 import { Chart, Tooltip, Axis, Bar, Legend } from 'viser-react'
+import { fileDownload } from "src/utils/file/file";
 const DataSet = require('@antv/data-set')
 import moment from 'moment'
 
@@ -21,9 +22,16 @@ export default observer(function 护理质量检查小结() {
   //柱状图相关数据
   const [chartData, setChartData] = useState([] as any[])
   const label = {
-    textStyle: {
-      fill: '#333',
-      fontSize: 14
+    // textStyle: {
+    //   textBaseline: 'top',
+    //   fill: '#333',
+    //   fontSize: 12
+    // },
+    offset: 0,
+    // autoRotate: false,
+    // rotate: 90,
+    htmlTemplate: (text: string, item: any, index: number) => {
+      return `<div style="width:40px;font-size:12px;position:fixed;top:458px;">${text}</div>`
     }
   }
 
@@ -74,7 +82,7 @@ export default observer(function 护理质量检查小结() {
       }
     },
     {
-      title: '通过率/得分',
+      title: '通过率(% )',
       dataIndex: 'evalRate',
       width: 80,
       align: 'center'
@@ -116,7 +124,7 @@ export default observer(function 护理质量检查小结() {
 
           setTableData(res.data.wardDetailList || [])
 
-          // setChartData(res.data.itemCountList || [])
+          setChartData(res.data.itemCountList || [])
         }
       }, err => setLoading(false))
   }
@@ -124,6 +132,19 @@ export default observer(function 护理质量检查小结() {
   // useEffect(() => {
   //   getTableData()
   // }, [])
+  const handleExport = () => {
+    setLoading(true)
+    qcFormHjService
+      .countDetailExport({
+        qcLevel: queryObj.qcLevel || '1',
+        beginDate: filterDate[0].format('YYYY-MM-DD'),
+        endDate: filterDate[1].format('YYYY-MM-DD'),
+      })
+      .then(res => {
+        setLoading(false)
+        fileDownload(res)
+      }, err => setLoading(false))
+  }
 
   useEffect(() => {
     getTableData()
@@ -151,6 +172,11 @@ export default observer(function 护理质量检查小结() {
         <div className='item'>
           <Button type='primary' onClick={getTableData}>
             查询
+          </Button>
+        </div>
+        <div className="item">
+          <Button onClick={handleExport}>
+            导出
           </Button>
         </div>
       </RightIcon>
@@ -186,15 +212,18 @@ export default observer(function 护理质量检查小结() {
                   value: item.size
                 }
               })}
-              padding={'auto'}
+              padding={[40, 20, 300, 40]}
               scale={[{
                 dataKey: 'value',
                 tickCount: 5,
                 alias: '频次'
               }]}>
               <Tooltip shared={true} />
-              <Axis dataKey="type" label={label} tickLine={tickLine} />
-              <Axis dataKey="value" label={labelFormat} title={title} />
+              <Axis
+                dataKey="type"
+                label={label}
+                tickLine={tickLine} />
+              <Axis dataKey="value" label={labelFormat} tickLine={tickLine} />
               <Legend
                 custom
                 position="top-right"
@@ -317,7 +346,7 @@ const MidCon = styled.div`
 `
 
 const ChartCon = styled.div`
-  padding: 20px 40px;
+  padding: 0 40px;
   min-height: 550px;
     position: relative;
   .no-data{

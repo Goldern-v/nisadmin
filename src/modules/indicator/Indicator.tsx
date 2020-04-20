@@ -59,7 +59,7 @@ import { indicatorService } from './services/IndicatorService'
 import 护患比统计图 from 'src/modules/indicator/chartView/护患比统计图.tsx'
 import 无图 from 'src/modules/indicator/chartView/无图.tsx'
 
-export interface Props extends RouteComponentProps<{ name?: string }> {}
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 const widthChar = '280%'
 // surplusHeight: 280,
 // surplusWidth: 260,
@@ -884,7 +884,7 @@ export default function Indicator(props: Props) {
       document.body.removeChild(a) // 移除a元素
     } else {
       let reader = new FileReader()
-      reader.addEventListener('loadend', function(data: any) {
+      reader.addEventListener('loadend', function (data: any) {
         // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`)
       })
@@ -915,7 +915,7 @@ export default function Indicator(props: Props) {
         // setLoading(true)
         const data = await indicatorService.getIndicatoeData(currentRoute!.exportName, startDate, endDate)
         // setLoading(false)
-      
+
         fileDownload(data)
         //除错
         // if (currentRoute && data) {
@@ -932,7 +932,7 @@ export default function Indicator(props: Props) {
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
   let ChartComponent = (currentRoute && currentRoute.chartComponent) || 护患比统计图
   const restClick = () => {
-  
+
   }
   return (
     <Wrapper>
@@ -964,6 +964,7 @@ export default function Indicator(props: Props) {
                   <BaseTableCon>
                     <BaseTable
                       loading={loading}
+                      rowKey="index"
                       dataSource={currentRoute!.dataSource}
                       columns={currentRoute!.columns}
                       surplusHeight={currentRoute.surplusHeight || 250}
@@ -990,8 +991,8 @@ export default function Indicator(props: Props) {
             )}
           </MainScroll>
         ) : (
-          <div style={{ marginTop: '200px', textAlign: 'center', fontSize: '30px' }}>暂无数据</div>
-        )}
+            <div style={{ marginTop: '200px', textAlign: 'center', fontSize: '30px' }}>暂无数据</div>
+          )}
       </MainCon>
     </Wrapper>
   )

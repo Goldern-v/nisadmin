@@ -32,7 +32,10 @@ export default observer(function WardLogAddModal(props: Props) {
     })
 
   const handleOk = () => {
-    if (!params.templateId) message.error('未选择新建模板')
+    if (!params.templateId) {
+      message.error('未选择应用')
+      return
+    }
     onCancel()
     history.push(`/wardLogEdit?${qs.stringify(params)}`)
   }
@@ -41,7 +44,7 @@ export default observer(function WardLogAddModal(props: Props) {
     if (visible)
       setParams({
         deptCode: deptCode,
-        templateId: ''
+        templateId: filterTemplateList[0] ? filterTemplateList[0].id : ''
       })
   }, [visible])
 
