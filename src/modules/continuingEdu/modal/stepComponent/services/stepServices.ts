@@ -121,6 +121,43 @@ export default class StepServices extends BaseApiService {
       file
     );
   }
+
+  /***  wumin   */
+  /***.题库管理--查询初始化数据 */
+  public queryQuestionsByPage(obj: any) {
+    // "bankType" questionType" keyWord" questionLabelIdList pageSize pageIndex
+    return this.post(
+      `/studyAndTrain/questionBankManage/exam/queryQuestionsByPage`,
+      obj
+    );
+  }
+
+  /***.题库管理--标签下拉框 */
+  public searchLabels(obj: any) {
+    //keyWord pageSize pageIndex
+    return this.post(
+      `/studyAndTrain/questionBankManage/exam/searchLabels`,
+      obj
+    );
+  }
+
+  /***.题库管理--预览 */
+  public previewPaper(obj: any) {
+    //questionIdList（问题id []）
+    return this.post(
+      `/studyAndTrain/questionBankManage/exam/previewPaper`,
+      obj
+    );
+  }
+
+  /***.题库管理--保存 */
+  public saveQuestionsToTeachingPlanTask(obj: any) {
+    //questionIdList（问题id []）
+    return this.post(
+      `/studyAndTrain/questionBankManage/exam/saveQuestionsToTeachingPlanTask`,
+      obj
+    );
+  }
 }
 
 export const stepServices = new StepServices();

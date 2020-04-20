@@ -8,17 +8,36 @@ import { authStore, appStore } from "./stores";
 import ExportNurseFile from "./modules/nurseFiles/view/nurseFiles-hj/views/exportNurseFile/ExportNurseFile";
 import DateTimePicker from "./components/DateTimePicker";
 import moment from "moment";
+
+import QuesBankModal from "src/modules/continuingEdu/modal/stepComponent/考试/modal/QuesBankModal";
+
 export interface Props extends RouteComponentProps {
   style: any;
 }
 
 export default function demo(props: Props) {
+  const [visible, setVisible] = useState(true);
+
   const [value, setValue] = useState(null);
+  const onCancel = () => {
+    setVisible(false);
+  };
+
+  const handleEditOk = () => {
+    onCancel();
+  };
+
   return (
     <Wrapper>
-      <DateTimePicker
+      {/* <DateTimePicker
         value={value}
         onChange={(_value: any) => setValue(_value)}
+      /> */}
+
+      <QuesBankModal
+        visible={visible}
+        onCancel={onCancel}
+        onOk={handleEditOk}
       />
     </Wrapper>
   );

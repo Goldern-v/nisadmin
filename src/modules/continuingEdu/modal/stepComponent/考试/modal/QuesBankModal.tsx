@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Modal, message as Message, Button, Tabs } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
+import SelectLabel from "./components/SelectLabel";
+import Header from "./components/Header";
+import Table from "./components/Table";
+
 const { TabPane } = Tabs;
 
 export interface Props {
@@ -63,8 +67,21 @@ export default function PushModal(props: Props) {
         }
       >
         <Tabs defaultActiveKey="1" type="card" style={{ minHeight: "500px" }}>
-          <TabPane tab="题库选择" key="1">
-            1111111
+          <TabPane tab="题库选择" key="1" style={{ display: "flex" }}>
+            <div
+              className="select"
+              style={{
+                width: "24%",
+                borderRight: "1px solid #ccc",
+                height: "450px"
+              }}
+            >
+              <SelectLabel />
+            </div>
+            <div className="content" style={{ width: "76%" }}>
+              <Header />
+              <Table />
+            </div>
           </TabPane>
           <TabPane tab="我已选择" key="2">
             222
@@ -75,7 +92,16 @@ export default function PushModal(props: Props) {
   );
 }
 const Wrapper = styled.div`
-  / deep/ .ant-modal-body {
+  .tabs {
+    display: inline-block;
+    width: 100px;
+    border-right: 1px solid #ccc;
+  }
+  .content {
+    width: 100%;
+    background: red;
+  }
+  .ant-modal-content / deep/ .ant-modal-body {
     padding: 0 !important;
     margin-top: 5px;
   }

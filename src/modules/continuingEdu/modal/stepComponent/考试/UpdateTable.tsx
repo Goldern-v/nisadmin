@@ -9,7 +9,7 @@ import { stepViewModal } from "../StepViewModal";
 import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
 import { ksStepViewModal } from "./KSStepViewModal";
-import QuesBankModal from "./QuesBankModal";
+import QuesBankModal from "./modal/QuesBankModal";
 export interface Props {
   value?: any;
   onChange?: any;
