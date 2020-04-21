@@ -1,12 +1,12 @@
-import BaseTable from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import Form from "src/components/Form";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Button, DatePicker, Select, Pagination } from "antd";
 import service from 'src/services/api'
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { ColumnProps } from "antd/lib/table";
-import { authStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 
 import BadEventsNewService from "./api/badEventsNewService";
@@ -101,7 +101,7 @@ export default observer(function BadEventNewList() {
       dataIndex: "happenPlace",
       key: "happenPlace",
       className: "happen-place",
-      align: "center",
+      align: "left",
       render: (text: string) => <div title={text}>{text}</div>
     },
     {
@@ -155,12 +155,9 @@ export default observer(function BadEventNewList() {
       width: 100,
       render: (text: string, item: any) => {
         return (
-          <Link
-            className="view-detail"
-            to={`/badEventsNewDetail/${item.id}/${item.badEventOrderNo}`}
-          >
-            查看
-          </Link>
+          <DoCon>
+            <span onClick={() => appStore.history.push(`/badEventsNewDetail/${item.id}/${item.badEventOrderNo}`)}>查看</span>
+          </DoCon>
         );
       }
     }
@@ -417,6 +414,8 @@ export default observer(function BadEventNewList() {
 });
 
 const Wrapper = styled.div`
+position:relative;
+height: 100%;
   .topbar{
     padding: 10px 15px;
     height: 55px;
@@ -474,7 +473,7 @@ const Wrapper = styled.div`
   .main-contain{
     position: absolute;
     left: 10px;
-    top: 110px;
+    top: 60px;
     right: 10px;
     bottom: 10px;
     .table-content{

@@ -6,17 +6,18 @@ import NavCon from './../components/common/NavCon'
 
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import createModal from 'src/libs/createModal'
+// import createModal from 'src/libs/createModal'
 import QuestionUploadSetting from './../components/common/QuestionUploadSetting'
 import { questionBankManageService } from './../api/QuestionBankManageService'
+import { fileDownload } from 'src/utils/file/file'
 // import qs from 'qs'
 
 export default observer(function QuestionBankManagement() {
-  let { location, history } = appStore
+  let { history } = appStore
   let fileRef = React.createRef<any>()
   let [loading, setLoading] = useState(false)
-
-  const questionUploadSetting = createModal(QuestionUploadSetting)
+  const [visible, setVisible] = useState(false)
+  const [editData, setEditData] = useState([] as any[])
 
   const handleUploadBtn = () => {
     if (fileRef.current)
@@ -33,9 +34,8 @@ export default observer(function QuestionBankManagement() {
       questionBankManageService
         .uploadQuestionBank(form)
         .then(res => {
-          Message.success('题库上传成功', 0.5, () => {
-            if (res.data) openUploadSetting(res.data)
-          })
+          if (res.data) openUploadSetting(res.data)
+          Message.success('题库上传成功')
           setLoading(false)
         }, err => {
           setLoading(false)
@@ -46,30 +46,7 @@ export default observer(function QuestionBankManagement() {
   const handleDownload = () => {
     questionBankManageService
       .getUploadQuestionBankTemplate()
-      .then(res => fileDownload(res, { fileName: '题库上传模板' }))
-  }
-
-  const fileDownload = (res: any, record?: any) => {
-    let filename = record.fileName
-    // decodeURIComponent
-    // "attachment;filename=????2019-3-18-2019-3-24??.xls"
-    // "application/json"
-    let blob = new Blob([res.data], {
-      type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
-    })
-    console.log(res.data.type)
-    // console.log('fileDownload', res)
-    // if (res.data.type && res.data.type.indexOf('excel') > -1) {
-    if (true) {
-      let a = document.createElement('a')
-      let href = window.URL.createObjectURL(blob) // 创建链接对象
-      a.href = href
-      a.download = filename // 自定义文件名
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(href)
-      document.body.removeChild(a) // 移除a元素
-    }
+      .then(res => fileDownload(res, '题库上传.xls'))
   }
 
   const FileInput = () => {
@@ -85,8 +62,8 @@ export default observer(function QuestionBankManagement() {
   }
 
   const openUploadSetting = (data: any) => {
-    questionUploadSetting
-      .show({ data })
+    setEditData(data)
+    setVisible(true)
   }
 
   return (
@@ -131,7 +108,15 @@ export default observer(function QuestionBankManagement() {
           <Spin />
         </div>
       </div>
-      <questionUploadSetting.Component />
+      <QuestionUploadSetting
+        data={editData}
+        visible={visible}
+        onOk={() => { }}
+        onCancel={() => {
+          setVisible(false)
+          setEditData([])
+        }}
+        onClose={() => { }} />
     </Wrapper>
   )
 })

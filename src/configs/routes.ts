@@ -78,9 +78,9 @@ const HealthPropagandaEdit = lazy(() =>
   import("src/modules/healthPropaganda/HealthPropagandaEdit")
 );
 //不良事件列表和审核流程
-const BadEventsNewList = lazy(() =>
-  import("src/modules/badEventsNew/BadEventsNewList")
-);
+// const BadEventsNewList = lazy(() =>
+//   import("src/modules/badEventsNew/BadEventsNewList")
+// );
 const BadEventsNewDetail = lazy(() =>
   import("src/modules/badEventsNew/BadEventsNewDetail")
 );
@@ -415,7 +415,7 @@ const routes: RouteItem[] = [
   setLayout("/healthPropagandaEditNew", HealthPropagandaEditNew),
   // setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
   // setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
-  setLayout("/badEventsNewList", BadEventsNewList, layouts.MainLayout),
+  // setLayout("/badEventsNewList", BadEventsNewList, layouts.MainLayout),
   setLayout(
     "/badEventsNewDetail/:id/:orderNo",
     BadEventsNewDetail,
@@ -659,7 +659,7 @@ const routes: RouteItem[] = [
 
   {
     path: "/",
-    redirect: "/home"
+    redirect: "/badEventsNewList"
   }
 ];
 

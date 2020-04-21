@@ -49,10 +49,11 @@ export default function QuestionList(props: Props) {
           答案: {item.answer && item.answer.rightAnswer}
         </div>
       case 4:
-        return <div
-          className="answer-content">
-          参考答案: {item.answer.suggestedAnswer}
-        </div>
+        return item.answer?.suggestedAnswer &&
+          <div
+            className="answer-content">
+            参考答案: {item.answer.suggestedAnswer}
+          </div>
       default:
         return <span></span>
     }

@@ -9,28 +9,28 @@ export interface Props {
   onDataChange?: (data: any[]) => void
 }
 
-export default function AnwserSheetPage(props: Props) {
+export default function 满意度问卷调查(props: Props) {
   const { data, type, title, onDataChange } = props
   const viewType = type || 'edit'
 
   const correctImg =
-    <img src={require('./../../../assets/question-correct.png')} />
+    <img src={require('./../../assets/question-correct.png')} />
 
   const choiceContent = (item: any, idx: number) => {
-    let selectedArr = []
+    // let selectedArr = []
     let answersList = item.answersList || []
-    for (let i = 0; i < answersList.length; i++) {
-      let answerItem = answersList[i]
+    // for (let i = 0; i < answersList.length; i++) {
+    //   let answerItem = answersList[i]
 
-      if (answerItem.isSelected)
-        selectedArr.push(answerItem.optionLabel)
-    }
+    //   if (answerItem.isSelected)
+    //     selectedArr.push(answerItem.optionLabel)
+    // }
 
     return <div className="question-item" key={idx || 0}>
       <span className="question-result">
-        {item.answerRight ?
+        {/* {item.answerRight ?
           <span>{correctImg}</span> :
-          <span>❌</span>}
+          <span>❌</span>} */}
       </span>
       <span className="question-content">
         <div>
@@ -39,15 +39,15 @@ export default function AnwserSheetPage(props: Props) {
             [{item.questionType == 1 ? '单选题' : '多选题'}]
           </span>
           <span className="question-desc">{item.questionContent}</span>
-          <span style={{ color: '#999' }}>({item.scores}分) </span>
+          {/* <span style={{ color: '#999' }}>({item.scores}分) </span>
           <span className="emp-choices">
             学员选【{selectedArr.join(',')}】
-          </span>
+          </span> */}
         </div>
         <div style={{ paddingLeft: '5px' }}>
           {answersList.map((awnserItem: any, awnserIdx: number) =>
             <span className="choice-item" key={`${idx}-${awnserIdx}`}>
-              {!!awnserItem.isRight &&
+              {!!awnserItem.isSelected &&
                 <span className="correct-choice">{correctImg}</span>}
               <span className="choice-desc">
                 {`${awnserItem.optionLabel}、${awnserItem.optionContent}`}
@@ -61,9 +61,9 @@ export default function AnwserSheetPage(props: Props) {
   const fillContent = (item: any, idx: number) => {
     return <div className="question-item" key={idx || 0}>
       <span className="question-result">
-        {item.answerRight ?
+        {/* {item.answerRight ?
           <span>{correctImg}</span> :
-          <span>❌</span>}
+          <span>❌</span>} */}
       </span>
       <span className="question-content">
         <div>
@@ -75,13 +75,13 @@ export default function AnwserSheetPage(props: Props) {
                 __html: `${item.questionContent
                   .replace(/##/g, '<span class="fill-underline"></span>')}`
               }}></span>
-            <span style={{ color: '#999' }}>({item.scores}分) </span>
+            {/* <span style={{ color: '#999' }}>({item.scores}分) </span> */}
           </span>
-          <span style={{ color: '#027DB4' }}>
+          {/* <span style={{ color: '#027DB4' }}>
             正确答案:{item.answersList
               .map((answer: any) => answer.rightAnswer)
               .join(',')}
-          </span>
+          </span> */}
         </div>
         <div style={{ paddingLeft: '5px' }}>
           <pre className="answer">
@@ -107,9 +107,10 @@ export default function AnwserSheetPage(props: Props) {
           <span className="index">{item.sort}、</span>
           <span className="question-type">[问答题] </span>
           <span className="question-desc">
-            {item.questionContent}（{item.scores}分）
+            {item.questionContent}
+            {/* （{item.scores}分） */}
           </span>
-          <Popover
+          {/* <Popover
             content={<pre>{answer.suggestedAnswer}</pre>}
             trigger="click" title="参考答案">
             <span className="refer">参考答案</span>
@@ -132,7 +133,7 @@ export default function AnwserSheetPage(props: Props) {
                 }
               }} />
             分
-          </span>}
+          </span>} */}
         </div>
         <div style={{ paddingLeft: '5px' }}>
           <pre className="answer">

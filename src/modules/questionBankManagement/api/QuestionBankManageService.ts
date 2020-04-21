@@ -82,7 +82,7 @@ export default class QuestionBankManageService extends BaseApiService {
   }
   /**导入记录-更改导入批次的标签 */
   public updateLabelsForQuestionBank(params: any) {
-    return this.post('/api/studyAndTrain/questionBankManage/questionLabel/updateLabelsForQuestionBank', params);
+    return this.post('/studyAndTrain/questionBankManage/questionLabel/updateLabelsForQuestionBank', params);
   }
   /**导入题库模板下载路径 */
   public getUploadQuestionBankTemplate() {

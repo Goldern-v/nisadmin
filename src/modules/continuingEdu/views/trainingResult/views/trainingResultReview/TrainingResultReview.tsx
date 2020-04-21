@@ -20,6 +20,8 @@ import { ColumnProps } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 // import moment from 'moment'
+import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
+
 import { trainingResultModel } from './../../models/TrainingResultModel'
 export interface Props { }
 
@@ -28,6 +30,8 @@ export default observer(function TrainingResultReview() {
   const { history } = appStore
   const scorceConfirm = createModal(ScoreConfirmModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
+
+  const answerSheetModal = createModal(AnswerSheetModal)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
 
@@ -65,7 +69,7 @@ export default observer(function TrainingResultReview() {
     ] as ColumnProps<any>[]
   })()
 
-  const columns: ColumnProps<any>[] = [
+  let columns: ColumnProps<any>[] = [
     {
       dataIndex: 'empName',
       title: '姓名',
@@ -144,8 +148,46 @@ export default observer(function TrainingResultReview() {
       title: '学时',
       align: 'center',
       width: 100,
-    },
+    }
   ]
+
+  if (baseInfo.questionStat) {
+    columns = columns.concat([
+      {
+        title: '培训后满意度调查问卷',
+        align: 'center',
+        width: 100,
+        children: [
+          {
+            dataIndex: 'scoresDesc',
+            title: '得分',
+            align: 'center',
+            width: 60,
+          },
+          {
+            dataIndex: 'fillTime',
+            title: '时间',
+            align: 'center',
+            width: 120,
+            render: (text: string) => {
+              return text || '未完成'
+            }
+          },
+          {
+            title: '操作',
+            dataIndex: 'indnex',
+            align: 'center',
+            width: 80,
+            render: (text: string, record: any) => {
+              return <DoCon>
+                <span onClick={() => viewAnwserPage(record)}>查看问卷</span>
+              </DoCon>
+            }
+          },
+        ]
+      }
+    ])
+  }
 
   const handleDetail = (record: any) => {
     //查看详情
@@ -179,6 +221,18 @@ export default observer(function TrainingResultReview() {
       },
       cetpId: appStore.queryObj.id,
       empNoList: selectedRowKeys
+    })
+  }
+
+  const viewAnwserPage = (record: any) => {
+    answerSheetModal.show({
+      title: baseInfo.title,
+      empNo: record.empNo,
+      type: 'view',
+      dataType: '问卷',
+      cetpId: appStore.queryObj.id,
+      hideRightSide: true,
+      onOkCallBack: () => { }
     })
   }
 
@@ -230,7 +284,7 @@ export default observer(function TrainingResultReview() {
           }}
           rowKey='empNo'
           surplusWidth={200}
-          surplusHeight={315}
+          surplusHeight={355}
           dataSource={tableData}
           onRow={(record: any) => {
             return {
@@ -273,6 +327,7 @@ export default observer(function TrainingResultReview() {
       </TableWrapper>
     </MainPannel>
     <scorceConfirm.Component />
+    <answerSheetModal.Component />
   </Wrapper>
 })
 

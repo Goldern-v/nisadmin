@@ -15,10 +15,10 @@ import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
 const toNavLink = (path: string | undefined) => {
-  return path ? () => appStore.history.push(path) : () => {};
+  return path ? () => appStore.history.push(path) : () => { };
 };
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 const itemHidden = (hidden?: any) => {
   if (!hidden) return false;
@@ -29,7 +29,7 @@ const itemHidden = (hidden?: any) => {
   }
 };
 
-const MenuCon = observer(function(props: {
+const MenuCon = observer(function (props: {
   list: navConfigItem[];
   style?: React.CSSProperties | undefined;
 }) {
@@ -96,10 +96,10 @@ export default observer(function NavBar(props: any) {
         ? navConfig_wh
         : navConfig_whSelf
       : appStore.HOSPITAL_ID == "ys"
-      ? navConfig_ys
-      : appStore.HOSPITAL_ID == "nys"
-      ? navConfig_nys
-      : navConfig;
+        ? navConfig_ys
+        : appStore.HOSPITAL_ID == "nys"
+          ? navConfig_nys
+          : navConfig;
 
   let location = appStore.location;
   return (
@@ -121,19 +121,19 @@ export default observer(function NavBar(props: any) {
             />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            <img
-              src={require("../images/logo-white.png")}
-              alt=""
-              className="logo"
-            />
-            <img
-              src={require("../images/宸瑞护理管理系统.png")}
-              alt=""
-              className="name"
-            />
-          </React.Fragment>
-        )}
+            <React.Fragment>
+              <img
+                src={require("../images/logo-white.png")}
+                alt=""
+                className="logo"
+              />
+              <img
+                src={require("../images/宸瑞护理管理系统.png")}
+                alt=""
+                className="name"
+              />
+            </React.Fragment>
+          )}
       </LogoCon>
       {realNavConfig.map(
         (item, index: number) =>
@@ -143,8 +143,8 @@ export default observer(function NavBar(props: any) {
                 item.children ? (
                   <MenuCon list={item.children} style={item.menuStyle} />
                 ) : (
-                  <div />
-                )
+                    <div />
+                  )
               }
               key={index}
             >
@@ -176,7 +176,7 @@ export default observer(function NavBar(props: any) {
       )}
       <Place />
       <RightCon>
-        <UserManual
+        {!appStore.onlyBadEvent && <UserManual
           onClick={() => {
             appStore.history.push("/UserManual");
           }}
@@ -184,7 +184,7 @@ export default observer(function NavBar(props: any) {
           <Tooltip placement="top" title="平台使用手册">
             <SYSC />
           </Tooltip>
-        </UserManual>
+        </UserManual>}
         {authStore.user && authStore.user.nearImageUrl && (
           <img src={authStore.user.nearImageUrl} alt="" className="headImg" />
         )}
