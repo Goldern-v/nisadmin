@@ -4,22 +4,25 @@ import { Modal, Radio, Input, Spin, Button } from 'antd'
 import { ModalComponentProps } from "src/libs/createModal";
 import { observer } from 'mobx-react-lite'
 import AnwserSheetPage from './AnwserSheetPage'
+import 满意度问卷调查 from './满意度问卷调查'
 import AnwserResultPannel from './AnwserResultPannel'
-import { trainingResultService } from './../../../api/TrainingResultService'
+import { trainingResultService } from './../../api/TrainingResultService'
 import { message } from 'antd/es';
 export interface Props extends ModalComponentProps {
   onOkCallBack?: Function,
   title?: string,
   type?: 'view' | 'edit',
+  dataType?: '考试' | '练习' | '问卷', //根据数据类型调用不同的接口
   cetpId?: string | number,
   empNo?: string | number,
+  hideRightSide?: boolean, //是否隐藏右侧面板
   visible: boolean
 }
 export default observer(function AnswerSheetModal(props: Props) {
   const bodyStyle = {
     padding: 0
   }
-  const { visible, onOkCallBack, onCancel, type, title, cetpId, empNo } = props
+  const { visible, onOkCallBack, onCancel, type, title, cetpId, empNo, dataType, hideRightSide } = props
   const viewType = type || 'edit'
   const [baseInfo, setBaseInfo] = useState({} as any)
   const [questionList, setQuestionList] = useState([] as any[])
@@ -57,25 +60,52 @@ export default observer(function AnswerSheetModal(props: Props) {
 
   const getAnswerInfo = () => {
     setLoading(true)
-    trainingResultService
-      // .reviewExamPaper(170, 6859)
-      .reviewExamPaper(cetpId || '', empNo || '')
-      .then((res) => {
-        if (res.data) {
-          setLoading(false)
-          setBaseInfo(res.data.summaryInfo)
-          setQuestionList(res.data.questionList
-            .map((item: any) => {
-              if (item.questionType == 4)
-                return {
-                  ...item,
-                  deduction: item.deduction || 0,
-                }
 
-              return item
-            }))
-        }
-      }, () => setLoading(false))
+    let req: Promise<any>
+
+    switch (dataType) {
+      case '问卷':
+        req = trainingResultService
+          .viewQuestionnaireResult(cetpId || '', empNo || '')
+        break
+      default:
+        req = trainingResultService
+          .reviewExamPaper(cetpId || '', empNo || '')
+    }
+
+    req.then((res) => {
+      if (res.data) {
+        setLoading(false)
+        setBaseInfo(res.data.summaryInfo)
+        setQuestionList(res.data.questionList
+          .map((item: any) => {
+            if (item.questionType == 4)
+              return {
+                ...item,
+                deduction: item.deduction || 0,
+              }
+
+            return item
+          }))
+      }
+    }, () => setLoading(false))
+  }
+
+  const PageContent = () => {
+    switch (dataType) {
+      case '问卷':
+        return <满意度问卷调查
+          type={viewType}
+          title={title}
+          data={questionList} />
+      default:
+        return <AnwserSheetPage
+          type={viewType}
+          title={title}
+          data={questionList}
+          onDataChange={(newList: any[]) =>
+            setQuestionList(newList)} />
+    }
   }
 
   useLayoutEffect(() => {
@@ -85,7 +115,7 @@ export default observer(function AnswerSheetModal(props: Props) {
   }, [visible])
 
   return <Modal
-    width={1200}
+    width={hideRightSide ? 900 : 1200}
     confirmLoading={loading}
     footer={<div>
       <Button onClick={onCancel}>取消</Button>
@@ -107,22 +137,18 @@ export default observer(function AnswerSheetModal(props: Props) {
       <div
         className="left"
         style={{
-          overflowY: loading ? 'hidden' : 'auto'
+          overflowY: loading ? 'hidden' : 'auto',
+          width: 900
         }}>
         <Spin spinning={loading}>
-          <AnwserSheetPage
-            type={viewType}
-            title={title}
-            data={questionList}
-            onDataChange={(newList: any[]) =>
-              setQuestionList(newList)} />
+          {PageContent()}
         </Spin>
       </div>
-      <div className="right">
+      {!hideRightSide && <div className="right">
         <AnwserResultPannel
           baseInfo={baseInfo}
           questionList={questionList} />
-      </div>
+      </div>}
     </Wrapper>
   </Modal>
 })
@@ -135,7 +161,6 @@ const Wrapper = styled.div`
     overflow-y: auto;
     float: left;
     &.left{
-      width: 900px;
       background: #eee;
     }
     &.right{

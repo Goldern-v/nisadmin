@@ -206,10 +206,11 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
 
   const StepsCurrent = () => {
+    let idx = -1
     for (let i = 0; i < timeLine.length; i++) {
-      if (timeLine[i].operatorStatus == detailData.status) return i
+      if (timeLine[i].operatorStatus == detailData.status) idx = i
     }
-    return -1
+    return idx
   }
 
   const AuditBtn = () => {

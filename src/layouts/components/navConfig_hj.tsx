@@ -10,7 +10,7 @@ export interface navConfigItem {
   menuStyle?: React.CSSProperties;
 }
 
-export const navConfig: navConfigItem[] = [
+const baseConfig: navConfigItem[] = [
   {
     name: "首页",
     path: "/home"
@@ -102,3 +102,7 @@ export const navConfig: navConfigItem[] = [
     path: "/personnelManagement"
   }
 ];
+
+const beConfig: navConfigItem[] = []
+
+export const navConfig: navConfigItem[] = appStore.onlyBadEvent ? beConfig : baseConfig

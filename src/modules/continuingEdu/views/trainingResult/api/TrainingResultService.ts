@@ -50,6 +50,13 @@ export default class TrainingResultService extends BaseApiService {
         { cetpId, empNo })
   }
 
+  /**查看个人调查问卷 */
+  public viewQuestionnaireResult(cetpId: string | number, empNo: string | number) {
+    return this
+      .post(`/studyAndTrain/trainManage/viewQuestionnaireResult`,
+        qs.stringify({ cetpId, empNo }))
+  }
+
   /**保存问答题评分 */
   public saveScores(params: any) {
     return this.post(`/studyAndTrain/examManage/saveScoresForShortQuestions`,

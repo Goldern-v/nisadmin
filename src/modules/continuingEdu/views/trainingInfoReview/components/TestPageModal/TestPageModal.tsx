@@ -15,6 +15,7 @@ export interface Props extends ModalComponentProps {
   examDuration?: string, //考试时间
   passScores?: string  //及格分数
   obj?: any //修改添加弹窗入参
+  hideAnwserInfo?: boolean //是否隐藏侧边栏
 }
 
 export default observer(function TestPageModal(props: Props) {
@@ -29,27 +30,29 @@ export default observer(function TestPageModal(props: Props) {
     endTime,
     examDuration,
     passScores,
-    obj
+    obj,
+    hideAnwserInfo
   } = props
 
   const [questionInfo, setQuestionInfo] = useState([] as any)
 
   const getInfo = () => {
     setLoading(true)
+
     if (obj && obj.taskCode) {
       trainingInfoReviewService
-        .getPreviewPaper(obj.taskCode,obj.teachingMethod || null,obj.cetpId || null)
+        .getPreviewPaper(obj.taskCode, obj.teachingMethod || null, obj.cetpId || null)
         .then(res => {
           setLoading(false)
           if (res.data) setQuestionInfo(res.data)
-        }, () => setLoading(false))  
+        }, () => setLoading(false))
     } else {
       trainingInfoReviewService
-      .previewPaper(id?.toString() || '')
-      .then(res => {
-        setLoading(false)
-        if (res.data) setQuestionInfo(res.data)
-      }, () => setLoading(false))
+        .previewPaper(id?.toString() || '')
+        .then(res => {
+          setLoading(false)
+          if (res.data) setQuestionInfo(res.data)
+        }, () => setLoading(false))
     }
   }
 
@@ -60,7 +63,7 @@ export default observer(function TestPageModal(props: Props) {
   }, [visible])
 
   return <Modal
-    width={1200}
+    width={hideAnwserInfo ? 900 : 1200}
     visible={visible}
     onCancel={onCancel}
     footer={null}
@@ -68,7 +71,12 @@ export default observer(function TestPageModal(props: Props) {
     title={`${teachingMethodName} ${title}`}
     confirmLoading={loading}>
     <Wrapper>
-      <div className="left" style={{ overflowY: loading ? 'hidden' : 'auto' }}>
+      <div
+        className="left"
+        style={{
+          width: 900,
+          overflowY: loading ? 'hidden' : 'auto'
+        }}>
         <Spin spinning={loading}>
           <QuestionList
             info={{
@@ -81,14 +89,15 @@ export default observer(function TestPageModal(props: Props) {
             }} />
         </Spin>
       </div>
-      <div className="right">
-        <AwnserInfo
-          info={{
-            ...questionInfo,
-            title,
-            teachingMethodName
-          }} />
-      </div>
+      {!hideAnwserInfo &&
+        <div className="right">
+          <AwnserInfo
+            info={{
+              ...questionInfo,
+              title,
+              teachingMethodName
+            }} />
+        </div>}
     </Wrapper>
   </Modal>
 })
@@ -101,7 +110,6 @@ const Wrapper = styled.div`
     overflow-y: auto;
     float: left;
     &.left{
-      width: 900px;
       background: #eee;
     }
     &.right{

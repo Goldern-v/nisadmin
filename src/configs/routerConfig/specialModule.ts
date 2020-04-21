@@ -45,7 +45,26 @@ const NursingRulesNewEdit_wh = lazy(() =>
   import("src/modules/nursingRulesNew-wh/views/NursingRulesNewEdit")
 );
 
+//不良事件视图
+const BadEventsNewList = lazy(() => import("src/modules/badEventsNew/BadEventsNewList"))
+import BadEventsRouters from "src/modules/badEventsNew/BadEventsRouters"
 let specialModule: any[] = [];
+
+//根据是否只展示不良事件指定页面
+const homeRouter = (view: any): any[] => {
+  if (appStore.onlyBadEvent) {
+    return [
+      //首页为不良事件的路由
+      setLayout("/home", BadEventsRouters, layouts.MainLayout)
+    ]
+  } else {
+    return [
+      //包含不良事件的路由
+      setLayout("/home", view, layouts.MainLayout),
+      setLayout("/badEventsNewList", BadEventsNewList, layouts.MainLayout)
+    ]
+  }
+}
 
 if (
   process.env.REACT_APP_HOSPITAL_ID == "hj" ||
@@ -60,7 +79,7 @@ if (
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
-    setLayout("/home", HomeView, layouts.MainLayout),
+    ...homeRouter(HomeView),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
     setLayout(
@@ -85,7 +104,7 @@ if (
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView, layouts.MainLayout),
-    setLayout("/home", HomeView_wh, layouts.MainLayout),
+    ...homeRouter(HomeView_wh),
     //厚街护理制度
     setLayout("/nursingRulesNew", NursingRulesNew, layouts.MainLayout),
     setLayout(
@@ -115,7 +134,7 @@ if (
       layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
-    setLayout("/home", HomeView_wh, layouts.MainLayout)
+    ...homeRouter(HomeView_wh),
   ];
 
   //武汉护理制度

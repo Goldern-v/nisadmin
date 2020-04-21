@@ -8,6 +8,7 @@ import TestInfo from '../pageItems/TestInfo'
 import PrecticeSetting from '../pageItems/PrecticeSetting'
 import OperateSetting from '../pageItems/OperateSetting'
 import OuterLink from '../pageItems/OuterLink'
+import Questionnaire from '../pageItems/Questionnaire'
 export interface Props {
   data: any
 }
@@ -21,6 +22,11 @@ export default function StudyContent(props: Props) {
         return <React.Fragment>
           <FileUploadReview info={data} />
           <OuterLink info={data} />
+        </React.Fragment>
+      case '培训':
+        return <React.Fragment>
+          <FileUploadReview info={data} />
+          <Questionnaire info={data} />
         </React.Fragment>
       case '考试':
         return <TestInfo info={data} />

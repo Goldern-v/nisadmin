@@ -312,6 +312,10 @@ export default class NurseFilesService extends BaseApiService {
   public downloadUploadExcel() {
     return this.post('/nurseInformation/downloadExcel', {}, { responseType: 'blob' })
   }
+  /** 人力资源 */
+  public qcNurseTransferGetPage(obj: any) {
+    return this.post(`/nurseTransfer/getPage`, obj)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

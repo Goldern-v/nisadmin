@@ -34,6 +34,9 @@ export default class AppStore {
     window.location.port == "9093" ||
     window.location.hostname == "120.25.105.45"; //公司测试环境
 
+  //是否是
+  @observable public onlyBadEvent: boolean = !!process.env.REACT_APP_ONLY_BAD_EVENT
+
   /** 路由控制器 */
   @observable public history!: H.History;
   @observable public match!: match<any>;

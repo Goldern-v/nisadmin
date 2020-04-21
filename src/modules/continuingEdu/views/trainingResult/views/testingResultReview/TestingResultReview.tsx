@@ -12,9 +12,9 @@ import {
   MainPannel,
   ActiveText,
 } from './../../components/common'
-import createModal from "src/libs/createModal";
+import createModal from "src/libs/createModal"
 
-import AnswerSheetModal from './components/AnswerSheetModal'
+import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
 import ScoreConfirmModal from './../../components/ScoreConfirmModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
