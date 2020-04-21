@@ -3,14 +3,15 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { quesBankView } from "../QuesBankView";
 import { Select } from "antd";
-
 export interface Props {}
 
 export default observer(function SelectLabel(props: Props) {
+  //初始化
   useLayoutEffect(() => {
     quesBankView.init();
   }, []);
 
+  // 删除标签
   const handleDel = (data: any) => {
     quesBankView.selectedLabel = quesBankView.selectedLabel.filter(
       (item: any) => item !== data
@@ -18,6 +19,7 @@ export default observer(function SelectLabel(props: Props) {
     quesBankView.onload();
   };
 
+  // 通过id获取标签名
   const labelContent = (item: any) => {
     return quesBankView.checkLabelList
       .filter((k: any) => k.id.toString() === item)

@@ -6,6 +6,7 @@ import { quesBankView } from "../QuesBankView";
 import { observer } from "mobx-react-lite";
 
 export default observer(function Header() {
+  // 初始化
   useLayoutEffect(() => {
     quesBankView.onload();
   }, []);
@@ -42,12 +43,6 @@ export default observer(function Header() {
         quesBankView.JDQuestionNum = quesBankView.questionList.filter(
           (item: any) => item.choiceType === "简答题"
         ).length;
-        console.log(
-          quesBankView.questionList,
-          "iiiiiiii",
-          quesBankView.allQuestionNum
-        );
-
         if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {
           Message.success("已成功加入试卷"); //choiceType
         } else {

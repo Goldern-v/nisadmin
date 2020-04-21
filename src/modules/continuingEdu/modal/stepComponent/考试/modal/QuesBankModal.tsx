@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Input, Row, Col, Modal, message as Message, Button, Tabs } from "antd";
+import { Modal, message as Message, Button, Tabs } from "antd";
 import SelectLabel from "./components/SelectLabel";
 import Header from "./components/Header";
 import Table from "./components/Table";
@@ -42,8 +42,8 @@ export default function PushModal(props: Props) {
     }
   };
 
+  // 保存
   const checkForm = () => {
-    console.log(quesBankView.questionIdList, "-------");
     if (quesBankView.questionIdList && quesBankView.questionIdList.length > 0) {
       let obj = {
         taskCode: allStepViewModal.taskCode,
@@ -71,7 +71,6 @@ export default function PushModal(props: Props) {
   const handleCancel = () => {
     if (editLoading) return;
     onCancel && onCancel();
-    console.log("111111");
   };
 
   return (
@@ -93,7 +92,7 @@ export default function PushModal(props: Props) {
             >
               预览试卷
             </Button>
-            <Button type="primary" onClick={checkForm}>
+            <Button type="primary" onClick={checkForm} loading={editLoading}>
               确定
             </Button>
           </div>

@@ -14,6 +14,7 @@ export interface Props {
 export default function ResultModal(props: Props) {
   const { visible, onCancel, onOk, params } = props;
   const [editLoading, setEditLoading] = useState(false);
+  const checkForm = () => {};
   const [quesContent, setQuesContent] = useState({
     questionType: 1,
     questionContent: "",
@@ -23,7 +24,6 @@ export default function ResultModal(props: Props) {
       suggestedAnswer: ""
     }
   });
-  const checkForm = () => {};
 
   const questionType = (data: any) => {
     const type = ["单选题", "多选题", "填空题", "问答题"];
@@ -107,7 +107,6 @@ export default function ResultModal(props: Props) {
         ) : (
           ""
         )}
-        {}
       </Modal>
     </Wrapper>
   );

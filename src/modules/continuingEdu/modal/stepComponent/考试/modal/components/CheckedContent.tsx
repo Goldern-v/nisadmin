@@ -98,7 +98,19 @@ export default observer(function CheckedContent() {
   };
 
   // 初始化函数
-  const getData = () => {};
+  const getData = () => {
+    setLoading(true);
+    console.log(quesBankView.questionList, "0000", query.type);
+    setTimeout(() => {
+      // quesBankView.questionList = quesBankView.questionList.filter(
+      //   (item: any) => item.choiceType === query.type
+      // );
+      // quesBankView.questionList = quesBankView.questionList.filter(
+      //   (item: any) => item.questionContent === query.keyWord
+      // );
+      setLoading(false);
+    }, 1000);
+  };
 
   // 删除 current---1删除单条  2批量删除
   const handleDel = (current: any, record?: any) => {
@@ -114,22 +126,20 @@ export default observer(function CheckedContent() {
       cancelText: "取消",
       onOk: () => {
         if (current === 1) {
-          console.log(current, "current");
           quesBankView.questionList = quesBankView.questionList.filter(
             (item: any) => item.id !== record.id
           );
-          quesBankView.questionList.map((item: any) => {
-            quesBankView.questionIdList.push(item.id);
-          });
+          quesBankView.questionIdList = quesBankView.questionList
+            .filter((item: any) => item.id !== record.id)
+            .map((o: any) => o.id);
         } else if (current === 2) {
           quesBankView.questionList = quesBankView.questionList.filter(
             (item: any) => idArr.indexOf(item.id) === -1
           );
-          quesBankView.questionList.map((item: any) => {
-            quesBankView.questionIdList.push(item.id);
-          });
+          quesBankView.questionIdList = quesBankView.questionList
+            .filter((item: any) => idArr.indexOf(item.id) === -1)
+            .map((o: any) => o.id);
         }
-
         setLoading(true);
         setTimeout(() => {
           setSelectedRows([]);

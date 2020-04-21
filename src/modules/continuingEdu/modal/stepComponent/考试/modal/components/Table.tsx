@@ -9,8 +9,8 @@ import ResultModal from "./modal/ResultModal";
 export default observer(function Table() {
   const [selectedRows, setSelectedRows] = useState([]); // 选中数据全部信息
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
-  const [visible, setVisible] = useState(false);
-  const [params, setParams] = useState("");
+  const [visible, setVisible] = useState(false); // 查看弹窗控制
+  const [params, setParams] = useState(""); // 查看弹窗传参
 
   // 初始化
   useLayoutEffect(() => {
@@ -68,7 +68,6 @@ export default observer(function Table() {
   const rowSelection: any = {
     selectedRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      console.log(selectedRowKeys, "selectedRowKeys", selectedRows);
       let arr1: any = [];
       selectedRowKeys.map((item: any) => {
         arr1.push(selectedRows.filter((a: any) => a.key === item));

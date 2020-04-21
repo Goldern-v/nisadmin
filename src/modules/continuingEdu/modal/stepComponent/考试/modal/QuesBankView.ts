@@ -13,7 +13,6 @@ class QuesBankView {
   @observable public pageIndex: any = 1;
   @observable public pageSize: any = 20;
   @observable public total: any = 0;
-  @observable public string = "";
   @observable public questionIdList: any = []; // 问题ID
   @observable public selectedRows: any = []; // 勾中的问题
   @observable public questionList: any = []; // 已选问题
@@ -52,6 +51,7 @@ class QuesBankView {
     };
   }
 
+  // 初始化查询数据（题库所有数据）
   onload() {
     this.tableLoading = true;
     stepServices.queryQuestionsByPage(this.postObj).then(res => {
