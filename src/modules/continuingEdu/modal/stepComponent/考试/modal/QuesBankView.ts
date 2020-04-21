@@ -17,6 +17,12 @@ class QuesBankView {
   @observable public questionIdList: any = []; // 问题ID
   @observable public selectedRows: any = []; // 勾中的问题
   @observable public questionList: any = []; // 已选问题
+  @observable public allQuestionNum: any = 0; // 已选问题条数
+  @observable public RadioQuestionNum: any = 0; // 单选条数
+  @observable public checkBoxQuestionNum: any = 0; // 多选条数
+  @observable public TKQuestionNum: any = 0; // 填空条数
+  @observable public JDQuestionNum: any = 0; // 简答条数
+  @observable public saveData: any = []; // 保存数据
 
   async initData() {
     await Promise.all([

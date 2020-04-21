@@ -15,6 +15,7 @@ export interface Props extends ModalComponentProps {
   examDuration?: string, //考试时间
   passScores?: string  //及格分数
   obj?: any //修改添加弹窗入参
+  questionIdList?: any //考试题库上传预览
 }
 
 export default observer(function TestPageModal(props: Props) {
@@ -29,7 +30,8 @@ export default observer(function TestPageModal(props: Props) {
     endTime,
     examDuration,
     passScores,
-    obj
+    obj,
+    questionIdList
   } = props
 
   const [questionInfo, setQuestionInfo] = useState([] as any)
@@ -43,7 +45,17 @@ export default observer(function TestPageModal(props: Props) {
           setLoading(false)
           if (res.data) setQuestionInfo(res.data)
         }, () => setLoading(false))  
-    } else {
+    } else if (questionIdList) {
+      let obj = {
+        questionIdList
+      }
+      trainingInfoReviewService
+      .KKTKpreviewPaper(obj || {})
+      .then(res => {
+        setLoading(false)
+        if (res.data) setQuestionInfo(res.data)
+      }, () => setLoading(false))
+    }  else {
       trainingInfoReviewService
       .previewPaper(id?.toString() || '')
       .then(res => {

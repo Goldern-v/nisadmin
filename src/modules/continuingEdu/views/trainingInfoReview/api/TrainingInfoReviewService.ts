@@ -1,6 +1,6 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import axios from 'axios'
-import { fileDownload } from 'src/utils/file/file'
+import axios from "axios";
+import { fileDownload } from "src/utils/file/file";
 import qs from "qs";
 
 export default class TrainingInfoReviewService extends BaseApiService {
@@ -36,9 +36,20 @@ export default class TrainingInfoReviewService extends BaseApiService {
     );
   }
 
+  /***.题库管理--预览 */
+  public KKTKpreviewPaper(obj: any) {
+    //questionIdList（问题id []）
+    return this.post(
+      `/studyAndTrain/questionBankManage/exam/previewPaper`,
+      obj
+    );
+  }
+
   //下载文件重新处理
   public downloadPage(url: string, name?: string) {
-    axios.get(url, { responseType: 'blob' }).then((res) => fileDownload(res, name))
+    axios
+      .get(url, { responseType: "blob" })
+      .then(res => fileDownload(res, name));
   }
 }
 

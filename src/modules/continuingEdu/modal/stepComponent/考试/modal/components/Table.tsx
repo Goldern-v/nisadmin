@@ -30,7 +30,10 @@ export default observer(function Table() {
       title: "题目",
       dataIndex: "questionContent",
       key: "questionContent",
-      align: "left"
+      align: "left",
+      render: (text: any) => {
+        return <span>{text.replace(/##/g, "____")}</span>;
+      }
     },
     {
       title: "类型",

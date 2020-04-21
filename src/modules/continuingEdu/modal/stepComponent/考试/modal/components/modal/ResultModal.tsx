@@ -14,8 +14,21 @@ export interface Props {
 export default function ResultModal(props: Props) {
   const { visible, onCancel, onOk, params } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const [quesType, setQuesType] = useState({});
+  const [quesContent, setQuesContent] = useState({
+    questionType: 1,
+    questionContent: "",
+    answerList: [],
+    answer: {
+      rightAnswer: "",
+      suggestedAnswer: ""
+    }
+  });
   const checkForm = () => {};
+
+  const questionType = (data: any) => {
+    const type = ["单选题", "多选题", "填空题", "问答题"];
+    return type[data - 1];
+  };
 
   useEffect(() => {
     if (visible) {
@@ -26,8 +39,7 @@ export default function ResultModal(props: Props) {
         setEditLoading(true);
         stepServices.previewPaper(obj).then((res: any) => {
           setEditLoading(false);
-          setQuesType(res.data.questionList[0]);
-          console.log(quesType, "quesType", res.data.questionList[0]);
+          setQuesContent(res.data.questionList[0]);
         });
       }, 100);
     }
@@ -46,7 +58,7 @@ export default function ResultModal(props: Props) {
         onCancel={handleCancel}
         onOk={checkForm}
         confirmLoading={editLoading}
-        title="题库选择"
+        title={questionType(quesContent.questionType)}
         footer={
           <div style={{ textAlign: "center" }}>
             <Button type="primary" onClick={handleCancel}>
@@ -54,22 +66,72 @@ export default function ResultModal(props: Props) {
             </Button>
           </div>
         }
-      />
+      >
+        {/* //1单选题、2多选题、3填空题、4、问答题 */}
+        {quesContent &&
+        (quesContent.questionType === 1 || quesContent.questionType === 2) ? (
+          <Content>
+            <div className="title">
+              {quesContent.questionContent.replace(/##/g, "____")}
+            </div>
+            <ul>
+              {quesContent.answerList.map((item: any, index: any) => (
+                <li className="content" key={index}>
+                  {item.optionLabel}. &nbsp;{item.optionContent}
+                </li>
+              ))}
+            </ul>
+            <div>
+              标准答案：
+              {quesContent.answerList.map((item: any, index: any) => (
+                <span>
+                  {item.isRight === 1 && <span>{item.optionLabel}</span>}
+                </span>
+              ))}
+            </div>
+          </Content>
+        ) : quesContent.questionType == 3 ? (
+          <Content>
+            <div className="title">
+              {quesContent.questionContent.replace(/##/g, "____")}
+            </div>
+            <div>标准答案：{quesContent.answer.rightAnswer}</div>
+          </Content>
+        ) : quesContent.questionType == 4 ? (
+          <Content>
+            <div className="title">
+              {quesContent.questionContent.replace(/##/g, "____")}
+            </div>
+            <div>标准答案：{quesContent.answer.suggestedAnswer}</div>
+          </Content>
+        ) : (
+          ""
+        )}
+        {}
+      </Modal>
     </Wrapper>
   );
 }
 const Wrapper = styled.div`
-  .tabs {
-    display: inline-block;
-    width: 100px;
-    border-right: 1px solid #ccc;
+  /deep/ .ant-modal-body {
+    .all {
+    }
+    .title {
+      margin-bottom: 8px !important;
+    }
+    .content {
+      list-style-type: none !important;
+      line-height: 25px !important;
+    }
+  }
+`;
+const Content = styled.div`
+  font-size: 14px !important;
+  .title {
+    margin-bottom: 8px !important;
   }
   .content {
-    width: 100%;
-    background: red;
-  }
-  .ant-modal-content / deep/ .ant-modal-body {
-    padding: 0 !important;
-    margin-top: 5px;
+    list-style-type: none !important;
+    line-height: 20px !important;
   }
 `;

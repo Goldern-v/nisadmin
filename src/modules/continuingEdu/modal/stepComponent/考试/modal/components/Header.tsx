@@ -28,12 +28,32 @@ export default observer(function Header() {
         quesBankView.questionList.map((item: any) => {
           quesBankView.questionIdList.push(item.id);
         });
+
+        quesBankView.allQuestionNum = quesBankView.questionList.length;
+        quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.choiceType === "单选题"
+        ).length;
+        quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.choiceType === "多选题"
+        ).length;
+        quesBankView.TKQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.choiceType === "填空题"
+        ).length;
+        quesBankView.JDQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.choiceType === "简答题"
+        ).length;
+        console.log(
+          quesBankView.questionList,
+          "iiiiiiii",
+          quesBankView.allQuestionNum
+        );
+
         if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {
-          Message.success("已成功加入试卷");
-          console.log(quesBankView.questionList, "iiiiiiii");
+          Message.success("已成功加入试卷"); //choiceType
         } else {
           Message.error("加入试卷失败");
         }
+        quesBankView.onload();
       }
     });
   };

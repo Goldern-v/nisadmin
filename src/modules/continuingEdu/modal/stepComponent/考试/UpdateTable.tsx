@@ -10,6 +10,8 @@ import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
 import { ksStepViewModal } from "./KSStepViewModal";
 import QuesBankModal from "./modal/QuesBankModal";
+import { quesBankView } from "./modal/QuesBankView";
+
 export interface Props {
   value?: any;
   onChange?: any;
@@ -124,11 +126,6 @@ export default observer(function UpdateTable(props: Props) {
     });
   };
 
-  const uploadFile = () => {
-    setVisible(true);
-    //
-  };
-
   const handleOk = () => {
     if (showType) {
       setQuesVisible(true);
@@ -137,13 +134,16 @@ export default observer(function UpdateTable(props: Props) {
     }
     onCancel();
   };
-
   const onCancel = () => {
     setVisible(false);
   };
 
-  const handleEditOk = () => {
-    onCancel();
+  const onQuesCancel = () => {
+    setQuesVisible(false);
+  };
+  const handleQuesOk = () => {
+    onQuesCancel();
+    onChange(quesBankView.saveData);
   };
 
   const onFileChange = (e: any) => {
@@ -192,8 +192,15 @@ export default observer(function UpdateTable(props: Props) {
       />
       <Modal
         visible={visible}
-        title="题库上传"
-        width="450px"
+        title={
+          <div>
+            <span>题库上传</span>
+            <span style={{ color: "red", fontSize: "14px" }}>
+              （*每次题库上传都会将上一次选择的题库覆盖清空）
+            </span>
+          </div>
+        }
+        width="460px"
         onOk={handleOk}
         onCancel={onCancel}
       >
@@ -209,8 +216,8 @@ export default observer(function UpdateTable(props: Props) {
       </Modal>
       <QuesBankModal
         visible={quesVisible}
-        onCancel={onCancel}
-        onOk={handleEditOk}
+        onCancel={onQuesCancel}
+        onOk={handleQuesOk}
       />
     </Wrapper>
   );

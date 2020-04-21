@@ -38,7 +38,10 @@ export default observer(function CheckedContent() {
       title: "题目",
       dataIndex: "questionContent",
       key: "questionContent",
-      align: "left"
+      align: "left",
+      render: (text: any) => {
+        return <span>{text.replace(/##/g, "____")}</span>;
+      }
     },
     {
       title: "类型",
@@ -108,7 +111,6 @@ export default observer(function CheckedContent() {
       title: "提示",
       content,
       okText: "确定",
-      okType: "danger",
       cancelText: "取消",
       onOk: () => {
         if (current === 1) {
@@ -116,14 +118,18 @@ export default observer(function CheckedContent() {
           quesBankView.questionList = quesBankView.questionList.filter(
             (item: any) => item.id !== record.id
           );
-        } else {
+          quesBankView.questionList.map((item: any) => {
+            quesBankView.questionIdList.push(item.id);
+          });
+        } else if (current === 2) {
           quesBankView.questionList = quesBankView.questionList.filter(
             (item: any) => idArr.indexOf(item.id) === -1
           );
+          quesBankView.questionList.map((item: any) => {
+            quesBankView.questionIdList.push(item.id);
+          });
         }
-        quesBankView.questionList.map((item: any) => {
-          quesBankView.questionIdList.push(item.id);
-        });
+
         setLoading(true);
         setTimeout(() => {
           setSelectedRows([]);
