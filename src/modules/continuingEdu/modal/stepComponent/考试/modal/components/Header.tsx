@@ -25,29 +25,32 @@ export default observer(function Header() {
         okText: "确定",
         cancelText: "取消",
         onOk: () => {
-          quesBankView.questionList = [...quesBankView.selectedRows];
+          quesBankView.questionList = [
+            ...quesBankView.questionList,
+            ...quesBankView.selectedRows
+          ];
           quesBankView.questionList.map((item: any) => {
             quesBankView.questionIdList.push(item.id);
           });
-
           quesBankView.allQuestionNum = quesBankView.questionList.length;
           quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.choiceType === "单选题"
+            (item: any) => item.questionType === "单选题"
           ).length;
           quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.choiceType === "多选题"
+            (item: any) => item.questionType === "多选题"
           ).length;
           quesBankView.TKQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.choiceType === "填空题"
+            (item: any) => item.questionType === "填空题"
           ).length;
           quesBankView.JDQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.choiceType === "简答题"
+            (item: any) => item.questionType === "简答题"
           ).length;
           if (
             quesBankView.selectedRows &&
             quesBankView.selectedRows.length > 0
           ) {
             Message.success("已成功加入试卷"); //choiceType
+            quesBankView.allRowKeys = [];
           } else {
             Message.error("加入试卷失败");
           }

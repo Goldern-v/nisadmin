@@ -8,7 +8,7 @@ import { Radio, Select, Input, Button, Modal, message as Message } from "antd";
 import ResultModal from "./modal/ResultModal";
 
 export default observer(function CheckedContent() {
-  const [selectedRows, setSelectedRows] = useState([]); // 选中数据全部信息
+  const [selectedList, setSelectedList] = useState([]); // 筛选出的数据集合
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
   const [idArr, setIdArr]: any = useState([]); // 选中id
   const [query, setQuery] = useState({
@@ -22,8 +22,9 @@ export default observer(function CheckedContent() {
   const [params, setParams] = useState("");
 
   useLayoutEffect(() => {
-    getData();
-  }, [query]);
+    setSelectedList(quesBankView.questionList);
+    getData(query.type);
+  }, [quesBankView.questionList]);
 
   const columns: any = [
     {
@@ -83,11 +84,6 @@ export default observer(function CheckedContent() {
   const rowSelection: any = {
     selectedRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      let arr1: any = [];
-      selectedRowKeys.map((item: any) => {
-        arr1.push(selectedRows.filter((a: any) => a.key === item));
-      });
-      setSelectedRows(arr1);
       setSelectedRowKeys(selectedRowKeys);
       let arr: any = [];
       selectedRows.map((item: any) => {
@@ -98,17 +94,23 @@ export default observer(function CheckedContent() {
   };
 
   // 初始化函数
-  const getData = () => {
+  const getData = (val?: any) => {
     setLoading(true);
-    console.log(quesBankView.questionList, "0000", query.type);
     setTimeout(() => {
-      // quesBankView.questionList = quesBankView.questionList.filter(
-      //   (item: any) => item.choiceType === query.type
-      // );
-      // quesBankView.questionList = quesBankView.questionList.filter(
-      //   (item: any) => item.questionContent === query.keyWord
-      // );
+      // 过略题目类型
+      let data: any = quesBankView.questionList.filter((item: any) => {
+        return item.questionType === (val || query.type);
+      });
+      // 过略关键字
+      if (query.keyWord !== "") {
+        data = data.filter(
+          (item: any) => item.questionContent.indexOf(query.keyWord) > -1
+        );
+      }
+      setSelectedList(data);
       setLoading(false);
+      setIdArr([]);
+      quesBankView.onload();
     }, 1000);
   };
 
@@ -129,20 +131,29 @@ export default observer(function CheckedContent() {
           quesBankView.questionList = quesBankView.questionList.filter(
             (item: any) => item.id !== record.id
           );
-          quesBankView.questionIdList = quesBankView.questionList
-            .filter((item: any) => item.id !== record.id)
-            .map((o: any) => o.id);
         } else if (current === 2) {
           quesBankView.questionList = quesBankView.questionList.filter(
             (item: any) => idArr.indexOf(item.id) === -1
           );
-          quesBankView.questionIdList = quesBankView.questionList
-            .filter((item: any) => idArr.indexOf(item.id) === -1)
-            .map((o: any) => o.id);
         }
+        quesBankView.questionIdList = quesBankView.questionList.map(
+          (o: any) => o.id
+        );
+        quesBankView.allQuestionNum = quesBankView.questionList.length;
+        quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.questionType === "单选题"
+        ).length;
+        quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.questionType === "多选题"
+        ).length;
+        quesBankView.TKQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.questionType === "填空题"
+        ).length;
+        quesBankView.JDQuestionNum = quesBankView.questionList.filter(
+          (item: any) => item.questionType === "简答题"
+        ).length;
         setLoading(true);
         setTimeout(() => {
-          setSelectedRows([]);
           setSelectedRowKeys([]);
           setLoading(false);
           getData();
@@ -173,6 +184,7 @@ export default observer(function CheckedContent() {
             onClick={() => {
               handleDel(2);
             }}
+            disabled={idArr && idArr.length === 0}
           >
             删除
           </Button>
@@ -185,7 +197,7 @@ export default observer(function CheckedContent() {
             onChange={(val: string) => {
               setQuery({ ...query, type: val });
               query.pageIndex = 1;
-              getData();
+              getData(val);
             }}
           >
             <Select.Option value="单选题">单选题</Select.Option>
@@ -199,13 +211,12 @@ export default observer(function CheckedContent() {
             value={query.keyWord}
             onChange={e => {
               setQuery({ ...query, keyWord: e.target.value });
-              getData();
             }}
           />
           <Button
             type="primary"
             onClick={() => {
-              quesBankView.onload();
+              getData();
             }}
           >
             查询
@@ -214,13 +225,13 @@ export default observer(function CheckedContent() {
       </TopBar>
       <BaseTable
         loading={loading}
-        dataSource={quesBankView.questionList}
+        dataSource={selectedList}
         rowSelection={rowSelection}
         columns={columns}
         surplusHeight={480}
         pagination={{
           current: query.pageIndex,
-          total: quesBankView.questionList.length,
+          total: selectedList.length,
           pageSize: query.pageSize,
           showSizeChanger: true,
           showQuickJumper: true,

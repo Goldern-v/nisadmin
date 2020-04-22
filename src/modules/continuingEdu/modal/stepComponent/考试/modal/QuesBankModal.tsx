@@ -3,6 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Modal, message as Message, Button, Tabs } from "antd";
 import SelectLabel from "./components/SelectLabel";
 import Header from "./components/Header";
+import { observer } from "mobx-react-lite";
 import Table from "./components/Table";
 import CheckedContent from "./components/CheckedContent";
 import { quesBankView } from "./QuesBankView";
@@ -20,7 +21,7 @@ export interface Props {
   onOkCallBack?: any;
 }
 
-export default function PushModal(props: Props) {
+export default observer(function PushModal(props: Props) {
   const { visible, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const testPage = createModal(TestPageModal); // 预览弹窗
@@ -35,7 +36,7 @@ export default function PushModal(props: Props) {
         startTime: "--",
         endTime: "--",
         examDuration: "--",
-        passScores: "--"
+        passScores: "--",
       });
     } else {
       Message.error("预览试卷前请先添加题目！");
@@ -47,7 +48,7 @@ export default function PushModal(props: Props) {
     if (quesBankView.questionIdList && quesBankView.questionIdList.length > 0) {
       let obj = {
         taskCode: allStepViewModal.taskCode,
-        questionIdList: quesBankView.questionIdList
+        questionIdList: quesBankView.questionIdList,
       };
       setEditLoading(true);
       stepServices
@@ -60,7 +61,7 @@ export default function PushModal(props: Props) {
           onOk();
           Message.success("题库上传成功");
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
     } else {
@@ -106,7 +107,7 @@ export default function PushModal(props: Props) {
                 style={{
                   width: "24%",
                   borderRight: "1px solid #ccc",
-                  height: "450px"
+                  height: "450px",
                 }}
               >
                 <SelectLabel />
@@ -132,7 +133,7 @@ export default function PushModal(props: Props) {
       <testPage.Component />
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div`
   .tabs {
     display: inline-block;

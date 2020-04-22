@@ -7,13 +7,25 @@ import { observer } from "mobx-react-lite";
 import ResultModal from "./modal/ResultModal";
 
 export default observer(function Table() {
-  const [selectedRows, setSelectedRows] = useState([]); // 选中数据全部信息
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
   const [visible, setVisible] = useState(false); // 查看弹窗控制
   const [params, setParams] = useState(""); // 查看弹窗传参
 
+  // 设置表格已选择项
+  // const setSelectData: any = () => {
+  //   let array: any = [];
+  //   quesBankView.tableList.map((item: any) => {
+  //     let data = quesBankView.questionList.find((o: any) => o.id === item.id);
+  //     if (data) {
+  //       array.push(item.id);
+  //     }
+  //   });
+  //   setSelectedRowKeys(array);
+  // };
+
   // 初始化
   useLayoutEffect(() => {
+    // setSelectData();
     quesBankView.init();
   }, []);
 
@@ -66,15 +78,17 @@ export default observer(function Table() {
 
   // 表格选中操作
   const rowSelection: any = {
-    selectedRowKeys,
+    selectedRowKeys: quesBankView.allRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      let arr1: any = [];
-      selectedRowKeys.map((item: any) => {
-        arr1.push(selectedRows.filter((a: any) => a.key === item));
-      });
+      let keyArray = selectedRows.map((item: any) => item.id);
       quesBankView.selectedRows = selectedRows;
-      setSelectedRows(arr1);
-      setSelectedRowKeys(selectedRowKeys);
+      quesBankView.allRowKeys = keyArray;
+    },
+    getCheckboxProps: (record: any) => {
+      let isHave = quesBankView.questionList.find(
+        (item: any) => item.id === record.id
+      );
+      return isHave ? { disabled: true } : {};
     }
   };
 
@@ -97,6 +111,7 @@ export default observer(function Table() {
         dataSource={quesBankView.tableList}
         rowSelection={rowSelection}
         columns={columns}
+        rowKey={record => record.id}
         surplusHeight={480}
         pagination={{
           current: quesBankView.pageIndex,

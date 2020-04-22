@@ -129,6 +129,20 @@ export default observer(function UpdateTable(props: Props) {
   const handleOk = () => {
     if (showType) {
       setQuesVisible(true);
+      // 再次打开题库上传 初始化数据
+      quesBankView.selectedLabel = [];
+      quesBankView.bankType = "系统题库";
+      quesBankView.questionType = "单选题";
+      quesBankView.keyWord = "";
+      quesBankView.questionIdList = [];
+      quesBankView.selectedRows = [];
+      quesBankView.questionList = [];
+      quesBankView.allQuestionNum = 0;
+      quesBankView.RadioQuestionNum = 0;
+      quesBankView.checkBoxQuestionNum = 0;
+      quesBankView.TKQuestionNum = 0;
+      quesBankView.JDQuestionNum = 0;
+      quesBankView.TKQuestionNum;
     } else {
       fileInputRef.current && fileInputRef.current.click();
     }
@@ -195,7 +209,7 @@ export default observer(function UpdateTable(props: Props) {
         title={
           <div>
             <span>题库上传</span>
-            <span style={{ color: "red", fontSize: "14px" }}>
+            <span style={{ color: "red", fontSize: "13px" }}>
               （*每次题库上传都会将上一次选择的题库覆盖清空）
             </span>
           </div>
