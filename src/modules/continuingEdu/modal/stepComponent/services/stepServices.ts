@@ -158,6 +158,24 @@ export default class StepServices extends BaseApiService {
       obj
     );
   }
+
+  /**下载问卷模板-----培训 */
+  public downLoadQueUploadTemplatePX() {
+    return this.get(
+      `/studyAndTrain/trainManage/downLoadTrainQuestionnaireTemplate`,
+      {
+        responseType: "blob"
+      }
+    );
+  }
+
+  /** 上传问卷---培训 */
+  public upLoadQuestionsPX(file: any) {
+    return this.post(
+      `studyAndTrain/teachingPlanManage/upLoadQuestionnaire`,
+      file
+    );
+  }
 }
 
 export const stepServices = new StepServices();

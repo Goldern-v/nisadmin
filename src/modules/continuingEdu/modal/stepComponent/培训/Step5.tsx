@@ -7,9 +7,14 @@ import Zimage from "src/components/Zimage";
 import { getFileType, getFilePrevImg } from "src/utils/file/file";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
+import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
+import createModal from "src/libs/createModal";
+
 export interface Props {}
 
 export default observer(function Step5() {
+  const testPage = createModal(TestPageModal); // 习题预览弹窗
+
   const organizationWayMap: any = {
     1: "线上",
     2: "线下"
@@ -28,6 +33,26 @@ export default observer(function Step5() {
     1: "院级学分",
     2: "片区学分",
     3: "病区学分"
+  };
+
+  // 习题预览弹窗
+  const handlePagePreview = () => {
+    let getObj: any = {
+      taskCode: stepViewModal.taskCode,
+      teachingMethod: stepViewModal.stepData1.teachingMethod
+    };
+    if (stepViewModal.stepData1.ceptId) {
+      getObj.cetpId = stepViewModal.stepData1.ceptId;
+    }
+    testPage.show({
+      obj: getObj,
+      teachingMethodName: "",
+      title: "",
+      startTime: "--",
+      endTime: "--",
+      examDuration: "--",
+      passScores: "--"
+    });
   };
 
   return (
@@ -191,6 +216,36 @@ export default observer(function Step5() {
             </td>
           </tr>
           <tr>
+            <td className="key">题目设置：</td>
+            <td className="value">
+              <div>一份试卷</div>
+              <div>
+                <span style={{ marginRight: 10 }}>
+                  《
+                  {
+                    stepViewModal.stepData4PX.questionStatList[0]
+                      .questionnaireTitle
+                  }
+                  》 共
+                  {stepViewModal.stepData4PX.questionStatList[0].questionCount}
+                  题
+                </span>
+              </div>
+              <div>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    handlePagePreview();
+                  }}
+                  className="ab"
+                >
+                  试卷预览
+                </Button>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
             <td className="key">通知设置：</td>
             <td className="value">
               <Radio
@@ -206,12 +261,17 @@ export default observer(function Step5() {
           </tr>
         </tbody>
       </table>
+      <testPage.Component />
     </Wrapper>
   );
 });
 const Wrapper = styled.div`
   padding: 20px 100px 20px;
   font-size: 14px;
+  .ab {
+    margin: 5px 0;
+  }
+
   table {
     width: 100%;
     tr,

@@ -1,22 +1,23 @@
 import styled from "styled-components";
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { Button, Icon, message, Progress, Row, Col } from "antd";
+import { Button, Icon, message, Progress, Row, Col, Select } from "antd";
 import { getFileType, getFileSize, getFilePrevImg } from "src/utils/file/file";
 import Zimage from "src/components/Zimage";
 import { stepServices } from "../services/stepServices";
 import { stepViewModal } from "../StepViewModal";
 import UpdateTable from "./table/UpdateTable";
+import PXUpdateTable from "./table/PXUpdateTable";
+
 import Form from "src/components/Form";
 
 export interface Props {}
 
 export default function Step4() {
   let refForm = React.createRef<Form>();
-
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [fileList, setFileList] = useState([]);
   const [studyLinkList, setStudyLinkList] = useState([]);
-
+  const [isHave, setIsHave] = useState("1");
   /** 上传文件状态 */
   const [progressEventMap, setProgressEventMap]: any = useState({});
 
@@ -47,6 +48,7 @@ export default function Step4() {
     stepViewModal.stepData4.attachmentIds = fileList;
     if (!current) return;
     current.setFields({ studyLinkList });
+    if (current) current.setField("isNeedQuestionnaire", "1");
   }, [fileList, studyLinkList]);
 
   const deleteFile = (index: number) => {
@@ -150,6 +152,14 @@ export default function Step4() {
     let data = from.getFields();
     stepViewModal.stepData4XX.studyLinkList = data.studyLinkList;
   };
+  const onFormChangePX = (name: string, value: any, from: Form) => {
+    let data = from.getFields();
+    setIsHave(data.isNeedQuestionnaire);
+    stepViewModal.stepData4PX.questionStatList = data.questionStatList;
+    stepViewModal.stepData4PX.isNeedQuestionnaire = Number(
+      data.isNeedQuestionnaire
+    );
+  };
 
   return (
     <Wrapper>
@@ -221,10 +231,43 @@ export default function Step4() {
           </Row>
         </Form>
       )}
+      {stepViewModal.stepData1.teachingMethod === 2 && (
+        <div>
+          <Form ref={refForm} labelWidth={100} onChange={onFormChangePX}>
+            <Row style={{ marginTop: 20 }}>
+              <Col span={22}>
+                <Form.Field label={`满意度调查表`} name="isNeedQuestionnaire">
+                  <Select style={{ width: 120 }}>
+                    <Select.Option value="1">需要</Select.Option>
+                    <Select.Option value="0">不需要</Select.Option>
+                  </Select>
+                </Form.Field>
+              </Col>
+            </Row>
+            {isHave === "1" && (
+              <Row style={{ marginTop: 10 }}>
+                <Col span={22}>
+                  <Form.Field label={``} name="questionStatList">
+                    <PXUpdateTable />
+                  </Form.Field>
+                </Col>
+              </Row>
+            )}
+          </Form>
+        </div>
+      )}
     </Wrapper>
   );
 }
 const Wrapper = styled.div`
+  position: relative;
+  .ab {
+    display: inline-block;
+    position: absolute;
+    right: 80px;
+    top: 224px;
+  }
+
   .btn-con {
     margin: 40px 30px 20px;
     display: flex;
