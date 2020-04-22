@@ -87,6 +87,11 @@ export default class QualityControlRecordApi extends BaseApiService {
   public revokeHandleForNode(params: any) {
     return this.post(`/qcItem/instance/revokeHandleForNode`, params)
   }
+
+  /**质控详情导出 */
+  public exportQcItemDetail(id: string) {
+    return this.get(`/qcItem/instance/export/${id}`, { responseType: 'blob' })
+  }
 }
 
 export const qualityControlRecordApi = new QualityControlRecordApi()

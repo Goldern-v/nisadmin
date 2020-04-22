@@ -100,7 +100,7 @@ export default function QcThreeRouter(props: Props) {
         path: "/qcThree/护理质量巡查情况汇总表?qcLevel=3",
         component: 护理质量巡查情况汇总表,
         keepAlive: true,
-        hide: !appStore.isDev,
+        // hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
       },
       {
@@ -109,7 +109,7 @@ export default function QcThreeRouter(props: Props) {
         path: "/qcThree/护理质量检查小结?qcLevel=3",
         component: 护理质量检查小结,
         keepAlive: true,
-        hide: !appStore.isDev,
+        // hide: !appStore.isDev,
         disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
       },
     ]

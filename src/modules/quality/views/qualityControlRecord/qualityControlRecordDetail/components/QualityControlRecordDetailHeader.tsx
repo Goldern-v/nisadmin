@@ -10,6 +10,7 @@ import HlbModal from "../modal/HlbModal";
 import EjkhszModal from "../modal/EjkhszModal";
 import { qualityControlRecordApi } from "./../../api/QualityControlRecordApi";
 import qs from "qs";
+import { fileDownload } from "src/utils/file/file"
 
 interface Props {
   detailData: any;
@@ -190,6 +191,12 @@ export default function qualityControlRecordDetailHeader(props: Props) {
     return master.status == "1" ? "已完成" : master.nextNodePendingName;
   };
 
+  const exportQcItem = () => {
+    qualityControlRecordApi
+      .exportQcItemDetail(master.id)
+      .then(res => fileDownload(res))
+  }
+
   return (
     <Con>
       <TopHeader>
@@ -206,8 +213,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 master.qcLevel == "3"
                   ? "/qcThree"
                   : master.qcLevel == "2"
-                  ? "/qcTwo"
-                  : "3"
+                    ? "/qcTwo"
+                    : "3"
             },
             {
               name: "记录详情"
@@ -267,6 +274,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   </Button>
                 </React.Fragment>
               )}
+            {appStore.HOSPITAL_ID == 'hj' && master.id && <Button onClick={exportQcItem}>导出</Button>}
             <Button onClick={topHeaderBack}>返回</Button>
           </div>
         </div>

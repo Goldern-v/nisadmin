@@ -25,9 +25,12 @@ export default observer(function QualityControlRecord() {
           : appStore.history.location.pathname.indexOf('qcOneHj') >= 0
             ? 1
             : 3
-    qualityControlRecordVM.init(level).then((res) => {
-      getTableData()
-    })
+
+    setLoading(true)
+    qualityControlRecordVM
+      .init(level).then((res) => {
+        getTableData()
+      }, err => setLoading(false))
 
     // ;(async () => {
     //   if (
@@ -87,6 +90,7 @@ export default observer(function QualityControlRecord() {
         setLoading(false)
       })
   }
+
   return (
     <Wrapper>
       <HeaderCon>

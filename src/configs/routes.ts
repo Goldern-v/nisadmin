@@ -659,7 +659,7 @@ const routes: RouteItem[] = [
 
   {
     path: "/",
-    redirect: "/badEventsNewList"
+    redirect: "/home"
   }
 ];
 

@@ -9,7 +9,7 @@ import { appStore } from "src/stores";
 import { Button } from "src/vendors/antd";
 import { AutoComplete } from "antd";
 
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
 export default function LoginView() {
   const [username, setUsername] = useState("");
@@ -89,6 +89,13 @@ export default function LoginView() {
     userNameDataSource = keys.filter((item: string) => item.includes(username));
   }
 
+  const Title = () => {
+    if (appStore.onlyBadEvent)
+      return '不良事件管理系统'
+
+    return '护理管理系统'
+  }
+
   return (
     <Wrapper>
       <BgImg>
@@ -98,7 +105,7 @@ export default function LoginView() {
         // }}
         >
           <img src={appStore.HOSPITAL_LOGO} alt="logo" className="BoxLogin" />
-          <h1 className="Title">护理管理系统</h1>
+          <h1 className="Title">{Title()}</h1>
 
           <div className="TextItem">
             <div className="iconfont NameIcon">&#xe648;</div>
@@ -133,7 +140,7 @@ export default function LoginView() {
             >
               <input
                 type="checkbox"
-                onChange={() => {}}
+                onChange={() => { }}
                 checked={isSavePassword}
               />
               <label>记住账号密码</label>

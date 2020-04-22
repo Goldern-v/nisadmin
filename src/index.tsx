@@ -12,3 +12,6 @@ ReactDOM.render(<App />, document.getElementById('root'))
 let preLoader: any = document!.getElementById('pre-loader')
 preLoader.parentNode.removeChild(preLoader)
 // registerServiceWorker()
+
+//更改标题
+if (process.env.REACT_APP_ONLY_BAD_EVENT) document.title = '不良事件管理系统'

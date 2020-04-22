@@ -4,20 +4,13 @@ import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 
 import { Provider, KeepAlive } from "react-keep-alive";
-import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
-import { ReactComponent as CFJHB } from "./images/icon/CFJHB.svg";
-import { ReactComponent as CFJHBG } from "./images/icon/CFJHBG.svg";
-import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
-import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
+// import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
 
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
-import { ReactComponent as SJZK } from "./images/icon/SJZK.svg";
-import { ReactComponent as YDBG } from "./images/icon/YDBG.svg";
-import { ReactComponent as HZBG } from "./images/icon/HZBG.svg";
-import { ReactComponent as WTBG } from "./images/icon/WTBG.svg";
 import { appStore } from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
+import 住院患者跌倒发生率统计 from './views/住院患者跌倒发生率统计'
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -30,6 +23,11 @@ export default function BadEventsRouters(props: Props) {
       component: BadEventsNewList,
       // keepAlive: true,
       // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    },
+    {
+      title: '住院患者跌倒发生率统计',
+      path: '/home/住院患者跌倒发生率统计',
+      component: 住院患者跌倒发生率统计,
     }
   ];
   let currentRoutePath = props.history.location.pathname || "";

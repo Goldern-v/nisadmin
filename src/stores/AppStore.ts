@@ -57,6 +57,9 @@ export default class AppStore {
   /** url 参数 */
   @computed
   public get HOSPITAL_LOGO() {
+    if (this.onlyBadEvent)
+      return require("src/assets/images/SystemLogo.svg")
+
     if (this.HOSPITAL_ID == "wh") {
       return require("src/assets/images/武汉logo.png");
     } else if (this.HOSPITAL_ID == "hj") {

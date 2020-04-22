@@ -30,5 +30,14 @@ export default class BadEventsNewService extends BaseApiService {
   public async getDeptList(types?: string) {
     return this.post(`/badEventDept/getByTypeList`, qs.stringify({ type: types || '1,2' }));
   }
+  //住院患者跌倒发生率统计数据
+  public async getPatientFallRatio(params: any) {
+    return this.post(`/nursingIndex/nationalIndex/getPatientFallRatio`, params);
+  }
+  //住院患者跌倒发生率统计导出
+  public async ptientFallRatioExport(params: any) {
+    return this.post(`/nursingIndex/nationalIndex/patientFallRatio/export`, params);
+  }
 }
 
+export const badEventsNewService = new BadEventsNewService()

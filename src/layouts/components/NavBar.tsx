@@ -102,10 +102,24 @@ export default observer(function NavBar(props: any) {
           : navConfig;
 
   let location = appStore.location;
-  return (
-    <Wrapper style={props.style || {}}>
-      <LogoCon>
-        {appStore.HOSPITAL_ID == "wh" ? (
+
+  const LogoView = () => {
+    let view = <React.Fragment>
+      <img
+        src={require("../images/logo-white.png")}
+        alt=""
+        className="logo"
+      />
+      <img
+        src={require("../images/宸瑞护理管理系统.png")}
+        alt=""
+        className="name"
+      />
+    </React.Fragment>
+    // console.log(appStore.HOSPITAL_ID, 'appStore.HOSPITAL_ID')
+    switch (appStore.HOSPITAL_ID) {
+      case 'wh':
+        view =
           <React.Fragment>
             <img
               src={require("../images/武汉logo.png")}
@@ -120,21 +134,32 @@ export default observer(function NavBar(props: any) {
               style={{ paddingRight: 30 }}
             />
           </React.Fragment>
-        ) : (
-            <React.Fragment>
-              <img
-                src={require("../images/logo-white.png")}
-                alt=""
-                className="logo"
-              />
-              <img
-                src={require("../images/宸瑞护理管理系统.png")}
-                alt=""
-                className="name"
-              />
-            </React.Fragment>
-          )}
-      </LogoCon>
+        break
+    }
+
+    if (appStore.onlyBadEvent)
+      view =
+        <React.Fragment>
+          <img
+            src={require("../images/SystemLogo.svg")}
+            alt=""
+            className="logo"
+            style={{ height: 30, paddingLeft: 30 }}
+          />
+          <img
+            src={require("../images/SystemLogoText.svg")}
+            alt=""
+            className="name"
+            style={{ paddingRight: 30 }}
+          />
+        </React.Fragment>
+
+    return <LogoCon>{view}</LogoCon>
+  }
+
+  return (
+    <Wrapper style={props.style || {}}>
+      {LogoView()}
       {realNavConfig.map(
         (item, index: number) =>
           !itemHidden(item.hidden) && (
