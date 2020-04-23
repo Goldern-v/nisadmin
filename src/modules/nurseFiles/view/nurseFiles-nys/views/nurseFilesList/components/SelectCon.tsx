@@ -9,15 +9,15 @@ import { observer } from "mobx-react-lite";
 import { nurseFilesService } from './../../../services/NurseFilesService'
 import { fileDownload } from "src/utils/file/file"
 
-// import ImportModal from './ImportModal'
-// import createModal from 'src/libs/createModal'
+import ImportModal from './ImportModal'
+import createModal from 'src/libs/createModal'
 
 const Option = Select.Option;
 
 export default observer(function SelectCon(props: any, context: any) {
   const [visible, setVisible] = useState(false);
 
-  // const importModal = createModal(ImportModal)
+  const importModal = createModal(ImportModal)
   const handleOk = () => {
     setVisible(false);
   };
@@ -43,9 +43,30 @@ export default observer(function SelectCon(props: any, context: any) {
     nurseFilesService.downloadUploadExcel().then(res => fileDownload(res))
   }
 
-  // const showImportModal = () => {
-  //   importModal.show({})
-  // }
+  //导入护士相关
+  const [importIptVisible, setImportIptVisible] = useState(false)
+  const handleImportClick = () => {
+    setImportIptVisible(false)
+    setTimeout(() => {
+      setImportIptVisible(true)
+      setTimeout(() => {
+        let el = document.getElementById('import-xls-file-ipt')
+        if (el) el.click()
+      })
+    })
+  }
+
+  const handleImportChange = (e: any) => {
+    if (e.target.files.length > 0)
+      nurseFilesService.importExcel(e.target.files[0]).then(res => {
+
+        if (res.data)
+          importModal.show({
+            data: res.data,
+            onOkCallback: () => onSearch()
+          })
+      })
+  }
 
   useEffect(() => {
     return () => {
@@ -70,8 +91,9 @@ export default observer(function SelectCon(props: any, context: any) {
           搜索
         </Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
-        {/* <Button onClick={downloadExportTemplate}>下载导入模板</Button>
-        <Button onClick={showImportModal}>导入</Button> */}
+        <Button onClick={downloadExportTemplate}>下载导入模板</Button>
+        <Button onClick={handleImportClick}>导入</Button>
+        {importIptVisible && <input id="import-xls-file-ipt" type="file" onChange={handleImportChange} />}
         <Button onClick={exportFile}>导出</Button>
       </Wrapper>
       <AddNursingModal
@@ -79,7 +101,7 @@ export default observer(function SelectCon(props: any, context: any) {
         handleOk={handleOk}
         handleCancel={handleCancel}
       />
-      {/* <importModal.Component /> */}
+      <importModal.Component />
     </React.Fragment>
   );
 });
@@ -91,6 +113,9 @@ const Wrapper = styled.div`
   input,
   button {
     margin-left: 10px;
+  }
+  #import-xls-file-ipt{
+    display:none;
   }
 `;
 const Title = styled.div`

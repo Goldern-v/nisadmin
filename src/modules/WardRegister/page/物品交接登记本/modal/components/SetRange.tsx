@@ -33,6 +33,7 @@ export default observer(function SetRange(props: Props) {
   const [moveAble, setMoveAble] = useState(false);
   const [rangeDictMap, setRangeDictMap]: any = useState([]);
   const { blockId, registerCode, onOkCallBack } = props;
+
   const columns: ColumnProps<any>[] = [
     {
       title: "项目名称",
@@ -48,7 +49,7 @@ export default observer(function SetRange(props: Props) {
             }}
             onBlur={() => updateDataSource()}
             defaultValue={text}
-            dataSource={Object.keys(rangeDictMap)}
+          // dataSource={Object.keys(rangeDictMap)}
           />
         );
       }
@@ -106,8 +107,18 @@ export default observer(function SetRange(props: Props) {
   };
 
   const delRow = (index: number) => {
-    dataSource.splice(index, 1);
-    updateDataSource();
+    let params = JSON.parse(JSON.stringify(dataSource))
+
+    params.splice(index, 1)
+
+    wardRegisterService
+      .saveOrUpdateRangeConfig(blockId, params)
+      .then(res => {
+        message.success('删除成功')
+        dataSource.splice(index, 1)
+        updateDataSource()
+      })
+
   };
   const addRow = () => {
     dataSource.push({});
@@ -115,7 +126,6 @@ export default observer(function SetRange(props: Props) {
   };
 
   const onSave = () => {
-    setPageLoading(true);
     wardRegisterService
       .saveOrUpdateRangeConfig(blockId, dataSource)
       .then(res => {

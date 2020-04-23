@@ -33,7 +33,8 @@ const FILTER_MAP: any = {
     "护理部副主任",
     "护理部主任"
   ],
-  科室属性: ["全部", "住院护理单元花名册", "门诊护理单元花名册"]
+  科室属性: ["全部", "住院护理单元花名册", "门诊护理单元花名册"],
+  性别: ["全部", "男", "女"]
 };
 
 type FilterMap = typeof FILTER_MAP;
@@ -54,6 +55,9 @@ const getFilterAdapter = (label: string) => {
     }
     case "科室属性": {
       return nurseFilesListViewModel.filterKs;
+    }
+    case "性别": {
+      return nurseFilesListViewModel.filterXb;
     }
     default: {
       return "";
@@ -89,6 +93,11 @@ const setFilterAdapter = (label: string, value: string) => {
         nurseFilesListViewModel.filterKs = value;
       }
       break;
+    case "性别":
+      {
+        nurseFilesListViewModel.filterXb = value;
+      }
+      break;
     default:
   }
 };
@@ -105,11 +114,11 @@ export default observer(function FilterCon() {
     }
     nurseFilesListViewModel.isOpenFilter = value;
   };
+  let refForm = React.createRef<Form>();
   const onClose = (e: any, item: any) => {
     e.preventDefault();
     setFilterAdapter(item, "全部");
   };
-  let refForm = React.createRef<Form>();
 
   const onFieldChange = async (name: string, text: any, form: Form<any>) => {
     let [err, value] = await to(form.validateFields());
@@ -123,6 +132,8 @@ export default observer(function FilterCon() {
     nurseFilesListViewModel.filterZc = value.newTitle;
     /** 职务 */
     nurseFilesListViewModel.filterZw = value.job;
+    /** 性别 */
+    nurseFilesListViewModel.filterXb = value.sex;
     /** 工作年限 */
     nurseFilesListViewModel.goHospitalWorkStartYear = value.goHospitalWork
       ? value.goHospitalWork[0]
@@ -167,7 +178,20 @@ export default observer(function FilterCon() {
             getFilterAdapter(item) &&
             getFilterAdapter(item) !== "全部" && (
               <Tag closable onClose={(e: any) => onClose(e, item)} key={item}>
-                {getFilterAdapter(item)}
+                {(() => {
+                  let val = getFilterAdapter(item)
+                  if (item == '性别') {
+                    switch (val) {
+                      case '0':
+                        val = '男'
+                        break
+                      case '1':
+                        val = '女'
+                        break
+                    }
+                  }
+                  return val
+                })()}
               </Tag>
             )
         )}
@@ -229,7 +253,23 @@ export default observer(function FilterCon() {
             <Col span={4} className="short">
               <Form.Field label={"学历"} name={"education"}>
                 <Select allowClear={true}>
-                  {titleList.map((item: any, index: number) => (
+                  {educationList.map((item: any, index: number) => (
+                    <Select.Option value={item.code} key={index}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row gutter={0}>
+            <Col span={4} className="short">
+              <Form.Field label={"性别"} name={"sex"}>
+                <Select allowClear={true}>
+                  {[
+                    { name: '男', code: '男' },
+                    { name: '女', code: '女' },
+                  ].map((item: any, index: number) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
                     </Select.Option>

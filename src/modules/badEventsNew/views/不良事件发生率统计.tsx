@@ -23,6 +23,14 @@ export default observer(function 不良事件发生率统计() {
   const [tableData, setTableData] = useState([] as any[])
   const [viewType, setViewType] = useState('table')
 
+  //图表高度自适应相关
+  const chartHeightCol = (restHeight = 220): number => {
+    let windowHeight = document.documentElement.clientHeight
+
+    return windowHeight - restHeight
+  }
+  const [chartHeight, setChartHeight] = useState(chartHeightCol())
+
   //图表相关数据
   const [chartData, setChartData] = useState([] as any[])
   const label = {
@@ -33,8 +41,13 @@ export default observer(function 不良事件发生率统计() {
     },
     offset: 10,
     // autoRotate: false,
-    rotate: 77.5,
-  }
+    rotate: 76,
+    formatter: (text: string) => {
+      let viewText = text
+      if (viewText.length > 9) viewText = `${viewText.substr(0, 9)}...`
+      return viewText
+    }
+  } as any
 
   const labelFormat = {
     textStyle: {
@@ -97,7 +110,7 @@ export default observer(function 不良事件发生率统计() {
   ]
 
   const getTableData = () => {
-    console.log(queryObj.qcLevel)
+    // console.log(queryObj.qcLevel)
     setLoading(true)
     badEventsNewService.getPatientFallRatio({
       beginDate: filterDate[0].format('YYYY-MM-DD'),
@@ -140,6 +153,13 @@ export default observer(function 不良事件发生率统计() {
       if (data instanceof Array)
         setEventTypeList(data.map((item: any) => item.name));
     })
+
+    let resizeCallBack = () => setChartHeight(chartHeightCol())
+
+    window.addEventListener('resize', resizeCallBack)
+    return () => {
+      window.removeEventListener('resize', resizeCallBack)
+    }
   }, [])
 
   useEffect(() => {
@@ -168,7 +188,7 @@ export default observer(function 不良事件发生率统计() {
           <div className="content">
             <Select
               style={{ width: 450 }}
-              maxTagCount={2}
+              maxTagCount={3}
               allowClear
               defaultValue={[]}
               placeholder="全部"
@@ -223,12 +243,12 @@ export default observer(function 不良事件发生率统计() {
       </TableCon>}
       {viewType == 'chart' &&
         <Spin spinning={loading}>
-          <ChartCon>
+          <ChartCon height={chartHeight}>
             <Chart
               forceFit
-              height={600}
+              height={chartHeight}
               data={chartData.slice(0, chartData.length - 1)}
-              padding={[40, 40, 300, 40]}
+              padding={[40, 40, 160, 40]}
               scale={[{
                 dataKey: 'fall_count',
                 tickCount: 5,
@@ -295,6 +315,9 @@ height: 100%;
       .month-select {
         width: 72px;
       }
+      .ant-select-selection__choice__content{
+        max-width: 80px;
+      }
     }
     .statistics {
       border-color: #fff;
@@ -348,7 +371,7 @@ const MidCon = styled.div`
   box-sizing: border-box;
   flex: 1;
   /* height: 0; */
-  margin: 0 15px 5px 15px;
+  margin: 0 15px 15px 15px;
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
   border-radius: 5px;
@@ -362,9 +385,11 @@ const MidCon = styled.div`
   }
 `
 
-const ChartCon = styled.div`
+const ChartCon = styled.div.attrs({
+  height: 0
+})`
   padding: 0 40px;
-  min-height: 550px;
+  min-height: ${(p) => p.height};
     position: relative;
   .no-data{
     text-align:center;

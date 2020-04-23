@@ -140,7 +140,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
     </HeaderCon>
     <TableCon>
       <BaseTable
-        surplusHeight={195}
+        surplusHeight={255}
         loading={loading}
         dataSource={tableData}
         columns={columns}
@@ -221,7 +221,7 @@ const HeaderCon = styled.div`
 
 const TableCon = styled.div`
   /* width: 700px; */
-  margin: 0 15px 5px 15px;
+  margin: 0 15px 15px 15px;
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
 `

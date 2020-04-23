@@ -25,7 +25,7 @@ export default observer(function MyCreateList() {
   const [templateList, setTemplateList]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
-  const [deptSelect, setDeptSelect] = useState(authStore.selectedDeptCode)
+  const [deptSelect, setDeptSelect] = useState('')
   const [pageLoading, setPageLoading] = useState(false)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
@@ -108,7 +108,7 @@ export default observer(function MyCreateList() {
     wardLogService
       .findLog({
         ...pageOptions,
-        wardCode: authStore.selectedDeptCode,
+        wardCode: deptSelect,
         startDate,
         endDate,
         templateId: selectedTemplate,
@@ -131,7 +131,7 @@ export default observer(function MyCreateList() {
   const handleAddNew = (record: any) => {
     wardLogAddModal
       .show({
-        deptCode: authStore.selectedDeptCode || '',
+        deptCode: deptSelect || authStore.selectedDeptCode || '',
         templateList,
       })
   }
@@ -209,8 +209,18 @@ export default observer(function MyCreateList() {
           onChange={(value: any) => setDate(value)}
         />
         <span className='label'>科室:</span>
-        <DeptSelect onChange={(val) => setDeptSelect(val)} />
-        {/* <Select></Select> */}
+        {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
+        <Select
+          value={deptSelect}
+          style={{ width: 180 }}
+          showSearch
+          filterOption={(input: any, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          onChange={(val: string) => setDeptSelect(val)}>
+          <Select.Option value={''}>全部</Select.Option>
+          {authStore.deptList.map((item: any, idx: any) =>
+            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+        </Select>
         <span className='label'>应用:</span>
         <Select style={{ width: 160 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>

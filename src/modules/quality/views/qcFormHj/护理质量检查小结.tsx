@@ -19,17 +19,25 @@ export default observer(function 护理质量检查小结() {
   const [tableData, setTableData] = useState([] as any[])
   const [viewType, setViewType] = useState('table')
 
+  //图表高度自适应相关
+  const chartHeightCol = (restHeight = 200): number => {
+    let windowHeight = document.documentElement.clientHeight
+
+    return windowHeight - restHeight
+  }
+  const [chartHeight, setChartHeight] = useState(chartHeightCol())
+
   //柱状图相关数据
   const [chartData, setChartData] = useState([] as any[])
   const label = {
-    // textStyle: {
-    //   textBaseline: 'top',
-    //   fill: '#333',
-    //   fontSize: 12
-    // },
+    textStyle: {
+      textBaseline: 'top',
+      fill: '#333',
+      fontSize: 14
+    },
     // offset: 0,
     // autoRotate: false,
-    rotate: 75,
+    rotate: 76.5,
     formatter: (text: string) => {
       let viewText = text
       if (viewText.length > 8) viewText = `${viewText.substr(0, 7)}...`
@@ -134,9 +142,6 @@ export default observer(function 护理质量检查小结() {
       }, err => setLoading(false))
   }
 
-  // useEffect(() => {
-  //   getTableData()
-  // }, [])
   const handleExport = () => {
     setLoading(true)
     qcFormHjService
@@ -150,6 +155,15 @@ export default observer(function 护理质量检查小结() {
         fileDownload(res)
       }, err => setLoading(false))
   }
+
+  useEffect(() => {
+    let resizeCallBack = () => setChartHeight(chartHeightCol())
+
+    window.addEventListener('resize', resizeCallBack)
+    return () => {
+      window.removeEventListener('resize', resizeCallBack)
+    }
+  }, [])
 
   useEffect(() => {
     getTableData()
@@ -207,17 +221,17 @@ export default observer(function 护理质量检查小结() {
       </TableCon>}
       {viewType == 'chart' &&
         <Spin spinning={loading}>
-          <ChartCon>
+          <ChartCon height={chartHeight}>
             <Chart
               forceFit
-              height={600}
+              height={chartHeight}
               data={chartData.map((item: any) => {
                 return {
                   type: item.itemName,
                   value: item.size
                 }
               })}
-              padding={[40, 20, 300, 40]}
+              padding={[40, 20, 160, 40]}
               scale={[{
                 dataKey: 'value',
                 tickCount: 5,
@@ -336,7 +350,7 @@ const MidCon = styled.div`
   box-sizing: border-box;
   flex: 1;
   /* height: 0; */
-  margin: 0 15px 5px 15px;
+  margin: 0 15px 15px 15px;
   box-shadow: ${(p) => p.theme.$shadow};
   background-color: #fff;
   border-radius: 5px;
@@ -350,9 +364,11 @@ const MidCon = styled.div`
   }
 `
 
-const ChartCon = styled.div`
+const ChartCon = styled.div.attrs({
+  height: 0
+})`
   padding: 0 40px;
-  min-height: 550px;
+  min-height: ${(p) => p.height};
     position: relative;
   .no-data{
     text-align:center;

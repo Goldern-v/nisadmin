@@ -21,7 +21,8 @@ class NurseFilesListViewModel {
         this.filterZc +
         this.filterCj +
         this.filterZw +
-        this.filterKs,
+        this.filterKs +
+        this.filterXb,
       () => {
         this.loadNursingList();
       }
@@ -34,6 +35,7 @@ class NurseFilesListViewModel {
   @observable public filterCj: string = "全部";
   @observable public filterZw: string = "全部";
   @observable public filterKs: string = "全部";
+  @observable public filterXb: string = "全部";
 
   /** 工作年限 */
   @observable public goHospitalWorkStartYear: string = "";
@@ -55,6 +57,7 @@ class NurseFilesListViewModel {
       title: this.filterZc /** 职称 */,
       currentLevel: this.filterCj /** 能级、层级 */,
       post: this.filterZw /**  职务  */,
+      sex: this.filterXb, /**  性别  */
       // zybz: kssxMap[this.filterKs] /**  科室属性  */,
       goHospitalWorkStartYear: this.goHospitalWorkStartYear,
       goHospitalWorkEndYear: this.goHospitalWorkEndYear,
@@ -80,6 +83,7 @@ class NurseFilesListViewModel {
       currentLevel: this.filterCj /** 能级、层级 */,
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       post: this.filterZw /**  职务  */,
+      sex: this.filterXb, /**  性别  */
       empName: this.filterText /** 工号 */
     };
     nurseFilesService.auditeNurseListExcel(obj).then(res => {

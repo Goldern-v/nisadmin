@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import BaseTable from 'src/components/BaseTable'
 import service from 'src/services/api'
-// import { nurseFilesService } from '../../../services/NurseFilesService'
+import { nurseFilesService } from '../../../services/NurseFilesService'
 import { ModalComponentProps } from "src/libs/createModal"
 import moment from 'moment'
 
@@ -15,11 +15,12 @@ const TextArea = Input.TextArea
 const Option = Select.Option
 
 export interface Props extends ModalComponentProps {
-
+  data?: any[],
+  onOkCallback?: Function
 }
 
 export default observer(function ImportModal(props: Props) {
-  const { visible, onCancel } = props
+  const { visible, onCancel, data, onOkCallback } = props
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])
   const [deptList, setDeptList] = useState([] as any[])
@@ -27,7 +28,7 @@ export default observer(function ImportModal(props: Props) {
   /** 下拉列表 */
   const [educationList, setEducationList] = useState([] as any[])
   const [titleList, setTitleList] = useState([] as any[])
-  const CURRENTLEVEL_LIST = ['N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
+  // const CURRENTLEVEL_LIST = ['N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
   const [postList, setPostList] = useState([] as any[])
 
   //文本类型
@@ -51,7 +52,7 @@ export default observer(function ImportModal(props: Props) {
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       onChange={(val: any) => {
         record[key] = val
-        if (key == 'empName') {
+        if (key == 'deptName') {
           let target = deptList.find((item: any) => item.name == val)
           if (target) record.empNo = target.code
         }
@@ -185,15 +186,15 @@ export default observer(function ImportModal(props: Props) {
         selectRender(text, row, index, 'highestEducation',
           [{ code: '', name: '' }, ...educationList])
     },
-    {
-      title: "状态",
-      dataIndex: "status",
-      width: 70,
-      align: "center",
-      className: 'ipt-cell',
-      render: (text: any, row: any, index: number) =>
-        textAreaRender(text, row, index, 'status')
-    },
+    // {
+    //   title: "状态",
+    //   dataIndex: "status",
+    //   width: 70,
+    //   align: "center",
+    //   className: 'ipt-cell',
+    //   render: (text: any, row: any, index: number) =>
+    //     textAreaRender(text, row, index, 'status')
+    // },
     {
       title: "籍贯",
       dataIndex: "nativePlace",
@@ -251,7 +252,15 @@ export default observer(function ImportModal(props: Props) {
   ]
   //nurseFilesListViewModel.loadNursingList()
   const handleOk = () => {
-    console.log(tableData)
+    setLoading(true)
+    nurseFilesService
+      .saveListImport(tableData)
+      .then(res => {
+        setLoading(false)
+        onCancel && onCancel()
+        onOkCallback && onOkCallback()
+        message.success('导入成功')
+      }, () => setLoading(false))
   }
 
 
@@ -286,6 +295,31 @@ export default observer(function ImportModal(props: Props) {
         setEducationList(res.data);
       });
   }, [])
+
+  useEffect(() => {
+    if (visible) {
+      let newData = (data?.concat() || []).map((item: any) => {
+        let deptCode = ''
+
+        for (let i = 0; i < deptList.length; i++) {
+          let deptItem = deptList[i]
+
+          if (deptItem.name == item.deptName) {
+            deptCode = deptItem.code
+            break
+          }
+        }
+
+        return {
+          ...item,
+          deptCode
+        }
+      })
+
+      console.log(newData)
+      setTableData(newData)
+    }
+  }, [visible])
 
   return <Modal
     title="导入护士档案"

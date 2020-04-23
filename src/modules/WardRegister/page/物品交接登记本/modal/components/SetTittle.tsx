@@ -154,15 +154,25 @@ export default observer(function SetTittle(props: Props) {
   };
 
   const delRow = (index: number) => {
-    dataSource.splice(index, 1);
-    updateDataSource();
+    let params = JSON.parse(JSON.stringify(dataSource))
+
+    params.splice(index, 1)
+
+    wardRegisterService
+      .saveOrUpdateItemConfig(registerCode, blockId, params)
+      .then(res => {
+        message.success('删除成功')
+        dataSource.splice(index, 1)
+        updateDataSource()
+      })
+
   };
   const addRow = () => {
     dataSource.push({});
     updateDataSource();
   };
 
-  const onSave = () => {
+  const onSave = (saved?: any) => {
     wardRegisterService
       .saveOrUpdateItemConfig(registerCode, blockId, dataSource)
       .then(res => {
