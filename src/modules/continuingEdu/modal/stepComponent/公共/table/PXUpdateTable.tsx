@@ -19,9 +19,7 @@ export default observer(function PXUpdateTable(props: Props) {
   const testPage = createModal(TestPageModal); // 习题预览弹窗
   const { value, onChange } = props;
   const fileInputRef = React.createRef<HTMLInputElement>();
-  const [dataSource, setDataSource]: any = useState([
-    { questionnaireTitle: "培训课后满意度调查问卷", questionCount: "11" }
-  ]);
+  const [dataSource, setDataSource]: any = useState([]);
 
   // 预览弹窗
   const handlePagePreview = () => {
@@ -119,10 +117,24 @@ export default observer(function PXUpdateTable(props: Props) {
       });
   };
 
+  const getData = () => {
+    let postData = new FormData();
+    postData.append("taskCode", stepViewModal.taskCode);
+    stepServices
+      .upLoadQuestionsPX(postData)
+      .then(res => {
+        setDataSource([res.data]);
+      })
+      .catch(e => {});
+  };
+
   useEffect(() => {
-    console.log(value, "aaaa");
     value && setDataSource(value);
   }, [value]);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Wrapper>

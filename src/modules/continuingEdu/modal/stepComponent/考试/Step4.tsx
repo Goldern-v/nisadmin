@@ -91,7 +91,7 @@ export default observer(function Step4() {
 
 
   /** 判断是否有问答题，只有问答题才允许选择评分负责人 */
-  let hasWdt = stepViewModal.stepData2.questionStatList.find((item:any) => {
+  let hasWdt = stepViewModal.stepData2.questionStatList && stepViewModal.stepData2.questionStatList.find((item:any) => {
     return item.questionType == 4
   })
   

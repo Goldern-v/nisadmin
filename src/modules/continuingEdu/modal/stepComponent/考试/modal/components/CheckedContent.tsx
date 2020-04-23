@@ -108,6 +108,7 @@ export default observer(function CheckedContent() {
         );
       }
       setSelectedList(data);
+      setQuery({ ...query, pageIndex: 1 });
       setLoading(false);
       setIdArr([]);
       quesBankView.onload();

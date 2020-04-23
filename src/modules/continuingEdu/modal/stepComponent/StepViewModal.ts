@@ -90,6 +90,15 @@ class StepViewModal {
           return false;
         }
       }
+    } else if (step == 3) {
+      if (type === "学习") {
+        let isOk = this.stepData4XX.studyLinkList.filter(
+          (item: any) => item.linkAddress === "" || item.linkTitle === ""
+        );
+        if (isOk && isOk.length > 0) {
+          return false;
+        }
+      }
     }
     return true;
     // const stepData2 = this.getCurrentStepViewModal
@@ -217,9 +226,9 @@ class StepViewModal {
       };
     });
     this.stepData4.attachmentIds = data.attachmentList;
-    this.stepData4XX.studyLinkList = data.studyLinkList; // 学习外网链接（吴敏）
-    this.stepData4PX.questionStatList = data.questionStatList;
-    this.stepData4PX.isNeedQuestionnaire = data.isNeedQuestionnaire;
+    this.stepData4XX.studyLinkList = data.studyLinkList || []; // 学习外网链接（吴敏）
+    this.stepData4PX.questionStatList = data.questionStatList || [];
+    this.stepData4PX.isNeedQuestionnaire = data.isNeedQuestionnaire || 0;
   };
 
   /** 初始化taskCode */

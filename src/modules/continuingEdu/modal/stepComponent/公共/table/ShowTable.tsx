@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import BaseTable from "src/components/BaseTable";
+import BaseTable, { DoCon } from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { observer } from "mobx-react-lite";
 import { stepViewModal } from "../../StepViewModal";
@@ -36,6 +36,25 @@ export default observer(function ShowTable(props: Props) {
       align: "center",
       render(text: any, record: any, index: number) {
         return text;
+      }
+    },
+    {
+      title: "操作",
+      width: 60,
+      align: "center",
+      dataIndex: "totalScores",
+      render(text: any, record: any, index: number) {
+        return (
+          <DoCon>
+            <span
+              onClick={() => {
+                window.open(`${record.linkAddress}`);
+              }}
+            >
+              预览
+            </span>
+          </DoCon>
+        );
       }
     }
   ];

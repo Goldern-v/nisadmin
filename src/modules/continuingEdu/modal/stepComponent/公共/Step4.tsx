@@ -187,7 +187,7 @@ export default function Step4() {
           </div>
         )}
 
-        {fileList.length > 0 && (
+        {fileList && fileList.length > 0 && (
           <FilesBox>
             {fileList.map((item: any, index: number) => (
               <div className="file-box" key={index}>
@@ -221,22 +221,34 @@ export default function Step4() {
         />
       </FileList>
       {stepViewModal.stepData1.teachingMethod === 1 && (
-        <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
-          <Row style={{ marginTop: 20 }}>
-            <Col span={24}>
-              <Form.Field label={`外网资料`} name="studyLinkList">
-                <UpdateTable />
-              </Form.Field>
-            </Col>
-          </Row>
-        </Form>
+        <FilesBox>
+          <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
+            <div style={{ fontSize: "14px" }}>
+              外网资料
+              <span
+                style={{ marginLeft: "10px", color: "#ccc", fontSize: "13px" }}
+              >
+                外网链接请输入完整网址例如：http://www.123.com 或
+                https://www.123.cn
+              </span>
+            </div>
+            <Row>
+              <Col span={24}>
+                <Form.Field name="studyLinkList">
+                  <UpdateTable />
+                </Form.Field>
+              </Col>
+            </Row>
+          </Form>
+        </FilesBox>
       )}
       {stepViewModal.stepData1.teachingMethod === 2 && (
-        <div>
+        <FilesBox>
+          <div style={{ fontSize: "14px" }}> 满意度调查表 </div>
           <Form ref={refForm} labelWidth={100} onChange={onFormChangePX}>
-            <Row style={{ marginTop: 20 }}>
+            <Row style={{ marginTop: 10 }}>
               <Col span={22}>
-                <Form.Field label={`满意度调查表`} name="isNeedQuestionnaire">
+                <Form.Field name="isNeedQuestionnaire">
                   <Select style={{ width: 120 }}>
                     <Select.Option value="1">需要</Select.Option>
                     <Select.Option value="0">不需要</Select.Option>
@@ -245,16 +257,16 @@ export default function Step4() {
               </Col>
             </Row>
             {isHave === "1" && (
-              <Row style={{ marginTop: 10 }}>
+              <Row>
                 <Col span={22}>
-                  <Form.Field label={``} name="questionStatList">
+                  <Form.Field name="questionStatList">
                     <PXUpdateTable />
                   </Form.Field>
                 </Col>
               </Row>
             )}
           </Form>
-        </div>
+        </FilesBox>
       )}
     </Wrapper>
   );
@@ -279,7 +291,9 @@ const Wrapper = styled.div`
     color: #999;
   }
 `;
-const FileList = styled.div``;
+const FileList = styled.div`
+  margin-bottom: 40px;
+`;
 const FilesBox = styled.div`
   padding: 12px 30px 12px;
   margin-top: -12px;

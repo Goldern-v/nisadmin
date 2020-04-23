@@ -36,7 +36,7 @@ export default observer(function PushModal(props: Props) {
         startTime: "--",
         endTime: "--",
         examDuration: "--",
-        passScores: "--",
+        passScores: "--"
       });
     } else {
       Message.error("预览试卷前请先添加题目！");
@@ -48,7 +48,7 @@ export default observer(function PushModal(props: Props) {
     if (quesBankView.questionIdList && quesBankView.questionIdList.length > 0) {
       let obj = {
         taskCode: allStepViewModal.taskCode,
-        questionIdList: quesBankView.questionIdList,
+        questionIdList: quesBankView.questionIdList
       };
       setEditLoading(true);
       stepServices
@@ -61,7 +61,7 @@ export default observer(function PushModal(props: Props) {
           onOk();
           Message.success("题库上传成功");
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     } else {
@@ -83,6 +83,7 @@ export default observer(function PushModal(props: Props) {
         onOk={checkForm}
         confirmLoading={editLoading}
         title="题库上传"
+        centered
         footer={
           <div style={{ textAlign: "center" }}>
             <Button onClick={handleCancel}>取消</Button>
@@ -107,7 +108,7 @@ export default observer(function PushModal(props: Props) {
                 style={{
                   width: "24%",
                   borderRight: "1px solid #ccc",
-                  height: "450px",
+                  height: "450px"
                 }}
               >
                 <SelectLabel />

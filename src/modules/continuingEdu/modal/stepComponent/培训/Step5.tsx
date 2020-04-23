@@ -185,33 +185,34 @@ export default observer(function Step5() {
             <td className="key">上传附件：</td>
             <td className="value">
               <FileList>
-                {stepViewModal.stepData4.attachmentIds.length > 0 && (
-                  <FilesBox className="files">
-                    {stepViewModal.stepData4.attachmentIds.map(
-                      (item: any, index: number) => (
-                        <div className="file-box" key={index}>
-                          {getFileType(item.path) == "img" ? (
-                            <Zimage
-                              src={item.path}
-                              className="type-img"
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              src={getFilePrevImg(item.path)}
-                              className="type-img"
-                              alt=""
-                            />
-                          )}
+                {stepViewModal.stepData4.attachmentIds &&
+                  stepViewModal.stepData4.attachmentIds.length > 0 && (
+                    <FilesBox className="files">
+                      {stepViewModal.stepData4.attachmentIds.map(
+                        (item: any, index: number) => (
+                          <div className="file-box" key={index}>
+                            {getFileType(item.path) == "img" ? (
+                              <Zimage
+                                src={item.path}
+                                className="type-img"
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                src={getFilePrevImg(item.path)}
+                                className="type-img"
+                                alt=""
+                              />
+                            )}
 
-                          <div className="name">{item.name}</div>
-                          <div className="size">{item.size}</div>
-                          {/* <Icon type="close" title="删除图片" /> */}
-                        </div>
-                      )
-                    )}
-                  </FilesBox>
-                )}
+                            <div className="name">{item.name}</div>
+                            <div className="size">{item.size}</div>
+                            {/* <Icon type="close" title="删除图片" /> */}
+                          </div>
+                        )
+                      )}
+                    </FilesBox>
+                  )}
               </FileList>
             </td>
           </tr>

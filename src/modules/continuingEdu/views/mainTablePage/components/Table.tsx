@@ -384,9 +384,7 @@ export default observer(function Table(props: Props) {
               Message.error("文件删除失败");
             }
           })
-          .catch(err => {
-            Message.error("文件删除失败");
-          });
+          .catch(e => {});
       }
     });
   };
