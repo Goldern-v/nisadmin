@@ -143,6 +143,7 @@ export default observer(function UpdateTable(props: Props) {
       quesBankView.TKQuestionNum = 0;
       quesBankView.JDQuestionNum = 0;
       quesBankView.TKQuestionNum;
+      quesBankView.init();
     } else {
       fileInputRef.current && fileInputRef.current.click();
     }

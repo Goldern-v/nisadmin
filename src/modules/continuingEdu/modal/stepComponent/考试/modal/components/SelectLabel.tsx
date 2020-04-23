@@ -6,13 +6,15 @@ import { Select, Checkbox } from "antd";
 export interface Props {}
 
 export default observer(function SelectLabel(props: Props) {
-  const [data, setData]: any = useState([]);
+  const [data, setData]: any = useState([]); //全部标签数据
+  const [getCheckbox, setGetCheckbox]: any = useState([]); //选中的多选框
+
   // 删除标签
-  const handleDel = (data: any) => {
+  const handleDel = (id: any) => {
     quesBankView.selectedLabel = quesBankView.selectedLabel.filter(
       (item: any) => item !== data
     );
-    setData(quesBankView.selectedLabel.filter((item: any) => item !== data));
+    setData(data.filter((item: any) => item !== id));
     quesBankView.onload();
   };
 
@@ -30,8 +32,9 @@ export default observer(function SelectLabel(props: Props) {
         maxTagCount={0}
         allowClear={true}
         placeholder="请输入标签查询"
-        value={quesBankView.selectedLabel}
+        value={data}
         onChange={(arr: any[]) => {
+          console.log(arr, "全部标签");
           quesBankView.selectedLabel = arr;
           setData(arr);
           quesBankView.pageIndex = 1;
@@ -39,9 +42,17 @@ export default observer(function SelectLabel(props: Props) {
         }}
         style={{ width: "95%" }}
         showSearch
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
+        filterOption={(input: string, option: any) => {
+          console.log(
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
+              0,
+            "pppppp"
+          );
+          return (
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
+            0
+          );
+        }}
       >
         {quesBankView.checkLabelList.map((item: any, index: number) => {
           return (
@@ -70,21 +81,22 @@ export default observer(function SelectLabel(props: Props) {
         value={quesBankView.selectedLabel}
         onChange={(checkedValue: any) => {
           quesBankView.selectedLabel = checkedValue;
+          setGetCheckbox(data);
           quesBankView.onload();
-          console.log(checkedValue, "checkedValue");
+          console.log(checkedValue, "入参");
         }}
       >
         {data &&
           data.map((item: any, index: any) => {
             return (
-              <div className="box">
-                <Checkbox className="li" key={index} value={item}>
+              <div className="box" key={index}>
+                <Checkbox className="li" value={item}>
                   {labelContent(item)}
                 </Checkbox>
                 <span
                   className="del"
                   onClick={e => {
-                    console.log(item, "00000000");
+                    console.log(e, "00000000");
                     handleDel(item);
                   }}
                 >

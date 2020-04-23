@@ -59,7 +59,7 @@ export default observer(function Table() {
           <DoCon>
             <span
               onClick={() => {
-                resultLook(record.id);
+                resultLook(record);
               }}
             >
               查看
@@ -87,8 +87,8 @@ export default observer(function Table() {
   };
 
   //查看弹窗
-  const resultLook = (id: any) => {
-    setParams(id.toString());
+  const resultLook = (record: any) => {
+    setParams(record);
     setVisible(true);
   };
   const onCancel = () => {
