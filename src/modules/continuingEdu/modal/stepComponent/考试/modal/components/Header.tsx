@@ -45,7 +45,6 @@ export default observer(function Header() {
             quesBankView.selectedRows.length > 0
           ) {
             Message.success("已成功加入试卷"); //choiceType
-            quesBankView.allRowKeys = [];
           } else {
             Message.error("加入试卷失败");
           }

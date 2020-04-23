@@ -15,7 +15,6 @@ class QuesBankView {
   @observable public total: any = 0;
   @observable public questionIdList: any = []; // 问题ID
   @observable public selectedRows: any = []; // 勾中的问题
-  @observable public allRowKeys: any = []; // 勾中的问题id
   @observable public questionList: any = []; // 已选问题
   @observable public allQuestionNum: any = 0; // 已选问题条数
   @observable public RadioQuestionNum: any = 0; // 单选条数

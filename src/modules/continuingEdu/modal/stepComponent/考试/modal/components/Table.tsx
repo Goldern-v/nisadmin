@@ -12,16 +12,20 @@ export default observer(function Table() {
   const [params, setParams] = useState(""); // 查看弹窗传参
 
   // 设置表格已选择项
-  // const setSelectData: any = () => {
-  //   let array: any = [];
-  //   quesBankView.tableList.map((item: any) => {
-  //     let data = quesBankView.questionList.find((o: any) => o.id === item.id);
-  //     if (data) {
-  //       array.push(item.id);
-  //     }
-  //   });
-  //   setSelectedRowKeys(array);
-  // };
+  const setSelectData: any = () => {
+    let array: any = [];
+    quesBankView.tableList.map((item: any) => {
+      let data = quesBankView.questionList.find((o: any) => o.id === item.id);
+      if (data) {
+        array.push(item.id);
+      }
+    });
+    setSelectedRowKeys(array);
+  };
+
+  useLayoutEffect(() => {
+    setSelectData();
+  }, [quesBankView.tableList]);
 
   const columns: any = [
     {
@@ -30,7 +34,7 @@ export default observer(function Table() {
       key: "",
       render: (text: any, record: any, index: number) => index + 1,
       align: "center",
-      width: 50
+      width: 50,
     },
     {
       title: "题目",
@@ -39,14 +43,14 @@ export default observer(function Table() {
       align: "left",
       render: (text: any) => {
         return <span>{text.replace(/##/g, "____")}</span>;
-      }
+      },
     },
     {
       title: "类型",
       dataIndex: "questionType",
       key: "questionType",
       align: "center",
-      width: 120
+      width: 120,
     },
     {
       title: "操作",
@@ -66,24 +70,23 @@ export default observer(function Table() {
             </span>
           </DoCon>
         );
-      }
-    }
+      },
+    },
   ];
 
   // 表格选中操作
   const rowSelection: any = {
-    selectedRowKeys: quesBankView.allRowKeys,
+    selectedRowKeys,
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      let keyArray = selectedRows.map((item: any) => item.id);
       quesBankView.selectedRows = selectedRows;
-      quesBankView.allRowKeys = keyArray;
+      setSelectedRowKeys(selectedRowKeys);
     },
     getCheckboxProps: (record: any) => {
       let isHave = quesBankView.questionList.find(
         (item: any) => item.id === record.id
       );
       return isHave ? { disabled: true } : {};
-    }
+    },
   };
 
   //查看弹窗
@@ -105,14 +108,14 @@ export default observer(function Table() {
         dataSource={quesBankView.tableList}
         rowSelection={rowSelection}
         columns={columns}
-        rowKey={record => record.id}
+        rowKey={(record) => record.id}
         surplusHeight={480}
         pagination={{
           current: quesBankView.pageIndex,
           total: quesBankView.total,
-          pageSize: quesBankView.pageSize
+          pageSize: quesBankView.pageSize,
         }}
-        onChange={pagination => {
+        onChange={(pagination) => {
           quesBankView.pageIndex = pagination.current;
           quesBankView.total = pagination.total;
           quesBankView.pageSize = pagination.pageSize;

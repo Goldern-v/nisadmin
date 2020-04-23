@@ -28,13 +28,12 @@ export default observer(function SelectLabel(props: Props) {
   return (
     <Wrapper>
       <Select
-        mode="tags"
+        mode="multiple"
         maxTagCount={0}
         allowClear={true}
         placeholder="请输入标签查询"
         value={data}
         onChange={(arr: any[]) => {
-          console.log(arr, "全部标签");
           quesBankView.selectedLabel = arr;
           setData(arr);
           quesBankView.pageIndex = 1;
@@ -42,25 +41,15 @@ export default observer(function SelectLabel(props: Props) {
         }}
         style={{ width: "95%" }}
         showSearch
-        filterOption={(input: string, option: any) => {
-          console.log(
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-              0,
-            "pppppp"
-          );
-          return (
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-            0
-          );
-        }}
+        filterOption={(input: string, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       >
-        {quesBankView.checkLabelList.map((item: any, index: number) => {
-          return (
-            <Select.Option value={item.id.toString()} key={item.id}>
-              {item.labelContent}
-            </Select.Option>
-          );
-        })}
+        {quesBankView.checkLabelList.map((item: any, index: number) => (
+          <Select.Option value={item.id.toString()} key={item.id}>
+            {item.labelContent}
+          </Select.Option>
+        ))}
       </Select>
       {/* {quesBankView.selectedLabel &&
           quesBankView.selectedLabel.map((item: any, index: any) => {
@@ -78,10 +67,16 @@ export default observer(function SelectLabel(props: Props) {
           })} */}
       <Checkbox.Group
         className="label"
-        value={quesBankView.selectedLabel}
+        value={quesBankView.selectedLabel.filter(
+          (o: any) => getCheckbox.indexOf(o) == -1
+        )}
         onChange={(checkedValue: any) => {
           quesBankView.selectedLabel = checkedValue;
-          setGetCheckbox(data);
+          setGetCheckbox(
+            data.filter(
+              (item: any) => quesBankView.selectedLabel.indexOf(item) == -1
+            )
+          );
           quesBankView.onload();
           console.log(checkedValue, "入参");
         }}
