@@ -49,7 +49,7 @@ export default observer(function SetRange(props: Props) {
             }}
             onBlur={() => updateDataSource()}
             defaultValue={text}
-          // dataSource={Object.keys(rangeDictMap)}
+            dataSource={['白班', '中班', '夜班']}
           />
         );
       }
