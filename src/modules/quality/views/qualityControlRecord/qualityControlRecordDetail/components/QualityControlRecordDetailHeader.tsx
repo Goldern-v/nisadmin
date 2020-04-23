@@ -214,7 +214,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   ? "/qcThree"
                   : master.qcLevel == "2"
                     ? "/qcTwo"
-                    : "3"
+                    : appStore.HOSPITAL_ID == 'hj' ? '/qcOneHj' : '/qcOne'
             },
             {
               name: "记录详情"

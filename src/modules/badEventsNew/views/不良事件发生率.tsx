@@ -13,7 +13,7 @@ import { fileDownload } from "src/utils/file/file"
 const DataSet = require('@antv/data-set')
 import moment from 'moment'
 
-export default observer(function 住院患者跌倒发生率统计() {
+export default observer(function 不良事件发生率() {
   const { queryObj } = appStore
   const [filterDate, setFilterDate] = useState([moment(moment().format('YYYY-MM') + '-01'), moment()])
 

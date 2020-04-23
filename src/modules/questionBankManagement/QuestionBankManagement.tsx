@@ -41,13 +41,14 @@ export default observer(function QuestionBankManagement() {
       if (choiceType == TAB_CONFIG[i].orginTitle) activeIdx = i.toString();
     }
 
-    setActiveKey(activeIdx);
-    questionBankManageModel.setQuery(newQuery);
-    questionBankManageModel.getList();
-  }, []);
+    setActiveKey(activeIdx)
+    questionBankManageModel.setQuery(newQuery)
 
-  useEffect(() => {
-    if (questionBankManageModel.tableData.length == 0 && questionBankManageModel.tableLoading) return
+    getCountMenu()
+    questionBankManageModel.getList()
+  }, [])
+
+  const getCountMenu = () => {
     questionBankManageService.getCountMenu({
       bankType: questionBankManageModel.query.bankType || '',
       status: '',
@@ -56,7 +57,7 @@ export default observer(function QuestionBankManagement() {
     }).then(res => {
       setMenuNum(res.data)
     })
-  }, [questionBankManageModel.tableData])
+  }
 
   const TAB_CONFIG = [
     {
@@ -109,8 +110,10 @@ export default observer(function QuestionBankManagement() {
       bankType: e.target.value,
       pageIndex: 1
     }
-    questionBankManageModel.setQuery(newQuery);
-    questionBankManageModel.getList();
+
+    questionBankManageModel.setQuery(newQuery)
+    getCountMenu()
+    questionBankManageModel.getList()
   }
 
   const onTabsChange = (activeKey: string) => {

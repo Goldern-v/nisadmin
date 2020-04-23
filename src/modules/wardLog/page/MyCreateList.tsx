@@ -210,6 +210,7 @@ export default observer(function MyCreateList() {
         />
         <span className='label'>科室:</span>
         <DeptSelect onChange={(val) => setDeptSelect(val)} />
+        {/* <Select></Select> */}
         <span className='label'>应用:</span>
         <Select style={{ width: 160 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
