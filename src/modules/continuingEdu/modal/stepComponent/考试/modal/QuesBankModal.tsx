@@ -26,6 +26,11 @@ export default observer(function PushModal(props: Props) {
   const [editLoading, setEditLoading] = useState(false);
   const testPage = createModal(TestPageModal); // 预览弹窗
 
+  // 初始化
+  useLayoutEffect(() => {
+    quesBankView.init();
+  }, []);
+
   // 习题预览弹窗
   const handlePagePreview = () => {
     if (quesBankView.questionIdList && quesBankView.questionIdList.length > 0) {

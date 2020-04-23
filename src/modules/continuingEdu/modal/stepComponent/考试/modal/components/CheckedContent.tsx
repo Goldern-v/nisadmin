@@ -12,18 +12,19 @@ export default observer(function CheckedContent() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
   const [idArr, setIdArr]: any = useState([]); // 选中id
   const [query, setQuery] = useState({
-    type: "单选题", //题目类型
+    type: "", //题目类型
     keyWord: "", //关键字搜索
     pageIndex: 1,
     pageSize: 20
   });
+  const [type, setType] = useState("全部");
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [params, setParams] = useState("");
 
   useLayoutEffect(() => {
     setSelectedList(quesBankView.questionList);
-    getData(query.type);
+    setType("全部");
   }, [quesBankView.questionList]);
 
   const columns: any = [
@@ -101,12 +102,16 @@ export default observer(function CheckedContent() {
       let data: any = quesBankView.questionList.filter((item: any) => {
         return item.questionType === (val || query.type);
       });
+      if (val === "全部") {
+        data = quesBankView.questionList;
+      }
       // 过略关键字
       if (query.keyWord !== "") {
         data = data.filter(
           (item: any) => item.questionContent.indexOf(query.keyWord) > -1
         );
       }
+      // console.log(val, "val", query.type, "query.type", data);
       setSelectedList(data);
       setQuery({ ...query, pageIndex: 1 });
       setLoading(false);
@@ -194,13 +199,15 @@ export default observer(function CheckedContent() {
           <span>类型：</span>
           <Select
             style={{ width: 120 }}
-            value={query.type}
+            value={type}
             onChange={(val: string) => {
-              setQuery({ ...query, type: val });
+              setType(val);
+              console.log(val, type);
               query.pageIndex = 1;
               getData(val);
             }}
           >
+            <Select.Option value="全部">全部</Select.Option>
             <Select.Option value="单选题">单选题</Select.Option>
             <Select.Option value="多选题">多选题</Select.Option>
             <Select.Option value="填空题">填空题</Select.Option>

@@ -2,20 +2,17 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { quesBankView } from "../QuesBankView";
-import { Select } from "antd";
+import { Select, Checkbox } from "antd";
 export interface Props {}
 
 export default observer(function SelectLabel(props: Props) {
-  //初始化
-  useLayoutEffect(() => {
-    quesBankView.init();
-  }, []);
-
+  const [data, setData]: any = useState([]);
   // 删除标签
   const handleDel = (data: any) => {
     quesBankView.selectedLabel = quesBankView.selectedLabel.filter(
       (item: any) => item !== data
     );
+    setData(quesBankView.selectedLabel.filter((item: any) => item !== data));
     quesBankView.onload();
   };
 
@@ -30,10 +27,13 @@ export default observer(function SelectLabel(props: Props) {
     <Wrapper>
       <Select
         mode="tags"
+        maxTagCount={0}
+        allowClear={true}
         placeholder="请输入标签查询"
         value={quesBankView.selectedLabel}
         onChange={(arr: any[]) => {
           quesBankView.selectedLabel = arr;
+          setData(arr);
           quesBankView.pageIndex = 1;
           quesBankView.onload();
         }}
@@ -51,8 +51,7 @@ export default observer(function SelectLabel(props: Props) {
           );
         })}
       </Select>
-      <ul className="label">
-        {quesBankView.selectedLabel &&
+      {/* {quesBankView.selectedLabel &&
           quesBankView.selectedLabel.map((item: any, index: any) => {
             return (
               <li
@@ -65,8 +64,36 @@ export default observer(function SelectLabel(props: Props) {
                 {labelContent(item)}
               </li>
             );
+          })} */}
+      <Checkbox.Group
+        className="label"
+        value={quesBankView.selectedLabel}
+        onChange={(checkedValue: any) => {
+          quesBankView.selectedLabel = checkedValue;
+          quesBankView.onload();
+          console.log(checkedValue, "checkedValue");
+        }}
+      >
+        {data &&
+          data.map((item: any, index: any) => {
+            return (
+              <div className="box">
+                <Checkbox className="li" key={index} value={item}>
+                  {labelContent(item)}
+                </Checkbox>
+                <span
+                  className="del"
+                  onClick={e => {
+                    console.log(item, "00000000");
+                    handleDel(item);
+                  }}
+                >
+                  ×
+                </span>
+              </div>
+            );
           })}
-      </ul>
+      </Checkbox.Group>
     </Wrapper>
   );
 });
@@ -76,25 +103,59 @@ const Wrapper = styled.div`
     height: 400px;
     width: 95%;
     padding: 15px 0 0 0;
-    position: relative;
-    .li {
-      height: 40px;
+    overflow: scroll;
+    .box {
       width: 100%;
-      list-style-type: none;
+      position: relative;
       line-height: 40px;
-      background: #eefdee;
+      color: rgba(0, 0, 0, 0.65);
+      background-color: #fafafa;
+      border: 1px solid #e8e8e8;
       margin-bottom: 10px;
       padding: 0 10px;
       box-sizing: border-box;
       border-radius: 5px;
+      height: 40px;
     }
-    .li:after {
-      content: "×";
+    .li {
+      width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .del {
+      position: absolute;
       font-size: 16px;
       font-weight: bold;
-      position: absolute;
       right: 10px;
       cursor: pointer;
     }
   }
 `;
+// const Wrapper = styled.div`
+//   .label {
+//     height: 400px;
+//     width: 95%;
+//     padding: 15px 0 0 0;
+//     position: relative;
+//     .li {
+//       height: 40px;
+//       width: 100%;
+//       list-style-type: none;
+//       line-height: 40px;
+//       background: #eefdee;
+//       margin-bottom: 10px;
+//       padding: 0 10px;
+//       box-sizing: border-box;
+//       border-radius: 5px;
+//     }
+//     .li:after {
+//       content: "×";
+//       font-size: 16px;
+//       font-weight: bold;
+//       position: absolute;
+//       right: 10px;
+//       cursor: pointer;
+//     }
+//   }
+// `;

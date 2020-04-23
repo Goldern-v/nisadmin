@@ -6,11 +6,6 @@ import { quesBankView } from "../QuesBankView";
 import { observer } from "mobx-react-lite";
 
 export default observer(function Header() {
-  // 初始化
-  useLayoutEffect(() => {
-    quesBankView.onload();
-  }, []);
-
   //加入试卷
   const handleAdd = () => {
     if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {

@@ -23,12 +23,6 @@ export default observer(function Table() {
   //   setSelectedRowKeys(array);
   // };
 
-  // 初始化
-  useLayoutEffect(() => {
-    // setSelectData();
-    quesBankView.init();
-  }, []);
-
   const columns: any = [
     {
       title: "序号",
