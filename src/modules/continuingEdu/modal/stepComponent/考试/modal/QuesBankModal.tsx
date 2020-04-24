@@ -106,14 +106,14 @@ export default observer(function PushModal(props: Props) {
         }
       >
         <Content>
-          <Tabs defaultActiveKey="1" type="card" style={{ minHeight: "500px" }}>
+          <Tabs defaultActiveKey="1" type="card" style={{ height: "800px" }}>
             <TabPane tab="题库选择" key="1" style={{ display: "flex" }}>
               <div
                 className="select"
                 style={{
                   width: "24%",
                   borderRight: "1px solid #ccc",
-                  height: "450px"
+                  height: "750px"
                 }}
               >
                 <SelectLabel />

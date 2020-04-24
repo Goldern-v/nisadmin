@@ -110,6 +110,7 @@ const Wrapper = styled.div`
     width: 95%;
     padding: 15px 0 0 0;
     overflow-y: auto;
+    height: 700px;
     .box {
       width: 100%;
       position: relative;
