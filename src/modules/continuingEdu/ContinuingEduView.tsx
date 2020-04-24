@@ -121,6 +121,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/questionBankManagement",
       component: 题库管理,
+      hide: !authStore.isDepartment // 菜单设置只有护理部可见
       // hide: !appStore.isDev || window.location.port == "34002"
     },
     {
