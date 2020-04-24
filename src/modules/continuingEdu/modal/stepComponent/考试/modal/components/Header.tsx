@@ -9,48 +9,37 @@ export default observer(function Header() {
   //加入试卷
   const handleAdd = () => {
     if (quesBankView.selectedRows && quesBankView.selectedRows.length > 0) {
-      let content = (
-        <div>
-          <div>您确定要将选中题目加入试卷吗？</div>
-        </div>
-      );
-      Modal.confirm({
-        title: "提示",
-        content,
-        okText: "确定",
-        cancelText: "取消",
-        onOk: () => {
-          quesBankView.questionList = [
-            ...quesBankView.questionList,
-            ...quesBankView.selectedRows
-          ];
-          quesBankView.questionList.map((item: any) => {
-            quesBankView.questionIdList.push(item.id);
-          });
-          quesBankView.allQuestionNum = quesBankView.questionList.length;
-          quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.questionType === "单选题"
-          ).length;
-          quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.questionType === "多选题"
-          ).length;
-          quesBankView.TKQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.questionType === "填空题"
-          ).length;
-          quesBankView.JDQuestionNum = quesBankView.questionList.filter(
-            (item: any) => item.questionType === "简答题"
-          ).length;
-          if (
-            quesBankView.selectedRows &&
-            quesBankView.selectedRows.length > 0
-          ) {
-            Message.success("已成功加入试卷"); //choiceType
-          } else {
-            Message.error("加入试卷失败");
-          }
-          quesBankView.onload();
-        }
+      quesBankView.questionList = [
+        ...quesBankView.questionList,
+        ...quesBankView.selectedRows
+      ];
+      quesBankView.selectedRows.map((item: any) => {
+        quesBankView.questionIdList.push(item.id);
       });
+      console.log(
+        quesBankView.questionList,
+        "000000",
+        quesBankView.questionIdList
+      );
+      quesBankView.allQuestionNum = quesBankView.questionList.length;
+      quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
+        (item: any) => item.questionType === "单选题"
+      ).length;
+      quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
+        (item: any) => item.questionType === "多选题"
+      ).length;
+      quesBankView.TKQuestionNum = quesBankView.questionList.filter(
+        (item: any) => item.questionType === "填空题"
+      ).length;
+      quesBankView.JDQuestionNum = quesBankView.questionList.filter(
+        (item: any) => item.questionType === "问答题"
+      ).length;
+      if (quesBankView.questionList && quesBankView.questionList.length > 0) {
+        quesBankView.onload();
+        Message.success("已成功加入试卷");
+      } else {
+        Message.error("加入试卷失败");
+      }
     } else {
       Message.error("点击按钮前请先选择您想加入的试卷题目！");
     }

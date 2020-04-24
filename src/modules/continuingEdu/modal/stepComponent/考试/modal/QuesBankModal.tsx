@@ -113,7 +113,7 @@ export default observer(function PushModal(props: Props) {
                 style={{
                   width: "24%",
                   borderRight: "1px solid #ccc",
-                  height: "600px"
+                  height: "510px"
                 }}
               >
                 <SelectLabel />

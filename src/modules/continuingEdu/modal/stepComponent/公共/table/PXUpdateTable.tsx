@@ -20,6 +20,7 @@ export default observer(function PXUpdateTable(props: Props) {
   const { value, onChange } = props;
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [dataSource, setDataSource]: any = useState([]);
+  const [loading, setLoading]: any = useState(false);
 
   // 预览弹窗
   const handlePagePreview = () => {
@@ -119,11 +120,14 @@ export default observer(function PXUpdateTable(props: Props) {
 
   const getData = () => {
     let postData = new FormData();
+    setLoading(true);
     postData.append("taskCode", stepViewModal.taskCode);
     stepServices
       .upLoadQuestionsPX(postData)
       .then(res => {
+        setLoading(false);
         setDataSource([res.data]);
+        onChange([res.data]);
       })
       .catch(e => {});
   };
@@ -144,6 +148,7 @@ export default observer(function PXUpdateTable(props: Props) {
       </div>
       <BaseTable
         dataSource={dataSource}
+        loading={loading}
         columns={columns}
         type={[""]}
         wrapperStyle={{ padding: 0 }}

@@ -131,4 +131,6 @@ export default observer(function Table() {
     </Wrapper>
   );
 });
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  height: 475px;
+`;

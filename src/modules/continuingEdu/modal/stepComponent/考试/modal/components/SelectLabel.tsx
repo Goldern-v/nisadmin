@@ -106,11 +106,12 @@ export default observer(function SelectLabel(props: Props) {
 });
 
 const Wrapper = styled.div`
+  height: 510px;
   .label {
     width: 95%;
     padding: 15px 0 0 0;
     overflow-y: auto;
-    height: 450px;
+    height: 470px;
     .box {
       width: 100%;
       position: relative;

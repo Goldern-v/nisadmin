@@ -173,7 +173,6 @@ class StepViewModal {
         ...(this.getCurrentStepViewModal.decodeData().detailInfo || {})
       },
       studyLinkList: this.stepData4XX.studyLinkList, // 学习外网链接（吴敏）
-      questionStatList: this.stepData4PX.questionStatList,
       isNeedQuestionnaire: this.stepData4PX.isNeedQuestionnaire
     };
 
@@ -227,7 +226,7 @@ class StepViewModal {
     });
     this.stepData4.attachmentIds = data.attachmentList;
     this.stepData4XX.studyLinkList = data.studyLinkList || []; // 学习外网链接（吴敏）
-    this.stepData4PX.questionStatList = data.questionStatList || [];
+    // this.stepData4PX.questionStatList = data.questionStatList || [];
     this.stepData4PX.isNeedQuestionnaire = data.isNeedQuestionnaire || 0;
   };
 

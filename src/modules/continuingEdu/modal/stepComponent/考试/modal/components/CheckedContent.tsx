@@ -231,23 +231,25 @@ export default observer(function CheckedContent() {
           </Button>
         </div>
       </TopBar>
-      <BaseTable
-        loading={loading}
-        dataSource={selectedList}
-        rowSelection={rowSelection}
-        columns={columns}
-        surplusHeight={430}
-        pagination={{
-          current: query.pageIndex,
-          total: selectedList.length,
-          pageSize: query.pageSize,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          onShowSizeChange: (pageIndex, pageSize) =>
-            setQuery({ ...query, pageSize }),
-          onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex })
-        }}
-      />
+      <Content>
+        <BaseTable
+          loading={loading}
+          dataSource={selectedList}
+          rowSelection={rowSelection}
+          columns={columns}
+          surplusHeight={430}
+          pagination={{
+            current: query.pageIndex,
+            total: selectedList.length,
+            pageSize: query.pageSize,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            onShowSizeChange: (pageIndex, pageSize) =>
+              setQuery({ ...query, pageSize }),
+            onChange: (pageIndex, pageSize) => setQuery({ ...query, pageIndex })
+          }}
+        />
+      </Content>
       <ResultModal
         visible={visible}
         onCancel={onCancel}
@@ -257,7 +259,9 @@ export default observer(function CheckedContent() {
     </Wrapper>
   );
 });
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  height: 510px;
+`;
 const TopBar = styled(TableHeadCon)`
   height: 31px !important;
   justify-content: space-between;
@@ -278,3 +282,4 @@ const TopBar = styled(TableHeadCon)`
     color: #000 !important;
   }
 `;
+const Content = styled.div``;

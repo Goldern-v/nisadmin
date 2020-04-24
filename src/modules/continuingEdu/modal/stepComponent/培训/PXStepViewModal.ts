@@ -3,6 +3,7 @@ import { appStore } from "src/stores";
 import { observable, computed, action } from "mobx";
 import { getVarType } from "src/utils/object/object";
 import moment from "moment";
+import { stepViewModal } from "../StepViewModal";
 
 const defaultStepData2 = {
   /** 培训名称 **/
@@ -143,7 +144,7 @@ class StepViewModal {
         teacherCreditType: this.stepData2.teacherCreditType,
         teacherCredit: this.stepData2.teacherCredit,
         teacherClassHours: this.stepData2.teacherClassHours,
-
+        questionStatList: stepViewModal.stepData4PX.questionStatList,
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {
             return [
@@ -196,6 +197,8 @@ class StepViewModal {
         };
       }
     );
+    stepViewModal.stepData4PX.questionStatList =
+      data.detailInfo.questionStatList || [];
   };
 }
 
