@@ -12,7 +12,7 @@ export default observer(function SelectLabel(props: Props) {
   // 删除标签
   const handleDel = (id: any) => {
     quesBankView.selectedLabel = quesBankView.selectedLabel.filter(
-      (item: any) => item !== data
+      (item: any) => item !== id
     );
     setData(data.filter((item: any) => item !== id));
     quesBankView.onload();
@@ -107,10 +107,9 @@ export default observer(function SelectLabel(props: Props) {
 
 const Wrapper = styled.div`
   .label {
-    height: 400px;
     width: 95%;
     padding: 15px 0 0 0;
-    overflow: scroll;
+    overflow-y: auto;
     .box {
       width: 100%;
       position: relative;
