@@ -109,7 +109,7 @@ export default observer(function Table() {
         rowSelection={rowSelection}
         columns={columns}
         rowKey={record => record.id}
-        surplusHeight={180}
+        surplusHeight={430}
         pagination={{
           current: quesBankView.pageIndex,
           total: quesBankView.total,
