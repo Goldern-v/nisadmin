@@ -328,6 +328,10 @@ export default class NurseFilesService extends BaseApiService {
   public qcNurseTransferGetPage(obj: any) {
     return this.post(`/nurseTransfer/getPage`, obj)
   }
+  /** 取消科室调动 */
+  public cancelNurseTransfer(id: string) {
+    return this.get(`/nurseTransfer/cancelNurseTransfer/${id}`)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

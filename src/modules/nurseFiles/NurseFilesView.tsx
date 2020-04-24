@@ -3,25 +3,70 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { appStore } from "src/stores";
+
 import NurseFilesListView_hj from "./view/nurseFiles-hj/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_wh from "./view/nurseFiles-wh/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_nys from "./view/nurseFiles-nys/views/nurseFilesList/NurseFilesListView";
+
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
+import RetiredRetireesNys from "./view/retiredRetirees-nys/RetiredRetireesView";
+
 import StatisticsView from "./view/statistics/StatisticsView";
 import StatisticsViews from "./view/statistics-hj/StatisticsView";
+import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
+
+import HumanResource from './view/nurseFiles-nys/views/humanResource/HumanResource'
+
 import { ReactComponent as ZZHSDA } from "./images/ZZHSDA.svg";
 import { ReactComponent as TXHSCX } from "./images/TXHSCX.svg";
 import { ReactComponent as CXTJ } from "./images/CXTJ.svg";
 
 // 引入自动推送设置页面
-export interface Props extends RouteComponentProps {}
+export interface Props extends RouteComponentProps { }
 
-const OnTheJobComponent =
-  appStore.HOSPITAL_ID == "wh"
-    ? NurseFilesListView_wh
-    : appStore.HOSPITAL_ID == "nys"
-    ? NurseFilesListView_nys
-    : NurseFilesListView_hj;
+const OnTheJobComponent = (() => {
+  switch (appStore.HOSPITAL_ID) {
+    case 'wh':
+      return NurseFilesListView_wh
+    case 'hj':
+      return NurseFilesListView_hj
+    case 'nys':
+      return NurseFilesListView_nys
+    default:
+      return NurseFilesListView_hj
+  }
+})()
+
+const LEFT_MENU_CONFIG_NYS = [
+  {
+    title: "在职护士档案",
+    path: "/nurseFile/onTheJob",
+    component: OnTheJobComponent,
+    icon: <ZZHSDA />
+  }, {
+    title: "护士调动",
+    path: "/nurseFile/humanResource",
+    component: HumanResource,
+    icon: <TXHSCX />
+  },
+  {
+    title: "离职/退休人员查询",
+    path: "/nurseFile/retiredRetirees",
+    component: RetiredRetireesNys,
+    icon: <TXHSCX />
+  },
+  {
+    title: "查询统计",
+    icon: <CXTJ />,
+    children: [
+      {
+        title: "外出进修",
+        path: "/nurseFile/outStudy",
+        component: StatisticsViewsNys
+      }
+    ]
+  }
+]
 
 const LEFT_MENU_CONFIG_HJ = [
   {
@@ -201,10 +246,23 @@ const LEFT_MENU_CONFIG_WH = [
   }
 ];
 
+const menuConfig = () => {
+  switch (appStore.HOSPITAL_ID) {
+    case 'wh':
+      return LEFT_MENU_CONFIG_WH
+    case 'hj':
+      return LEFT_MENU_CONFIG_HJ
+    case 'nys':
+      return LEFT_MENU_CONFIG_NYS
+    default:
+      return LEFT_MENU_CONFIG_HJ
+  }
+}
+
 export default function NurseFilesView(props: Props) {
   let currentRoutePath = props.match.url || "";
   let currentRoute = getTargetObj(
-    appStore.HOSPITAL_ID == "wh" ? LEFT_MENU_CONFIG_WH : LEFT_MENU_CONFIG_HJ,
+    menuConfig(),
     "path",
     currentRoutePath
   );
@@ -231,11 +289,7 @@ export default function NurseFilesView(props: Props) {
     <Wrapper>
       <LeftMenuCon>
         <LeftMenu
-          config={
-            appStore.HOSPITAL_ID == "wh"
-              ? LEFT_MENU_CONFIG_WH
-              : LEFT_MENU_CONFIG_HJ
-          }
+          config={menuConfig()}
           menuTitle="系统设置"
         />
       </LeftMenuCon>

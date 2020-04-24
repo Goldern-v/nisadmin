@@ -194,7 +194,7 @@ export default observer(function NurseFilesListView() {
         }}
         dataSource={nurseFilesListViewModel.nurseList}
         columns={columns}
-        surplusHeight={nurseFilesListViewModel.isOpenFilter ? 380 : 275}
+        surplusHeight={nurseFilesListViewModel.isOpenFilter ? 405 : 300}
         surplusWidth={80}
         // type={['spaceRow']}
         onRow={(record: any) => {

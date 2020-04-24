@@ -263,8 +263,8 @@ export default observer(function FilterCon() {
             </Col>
           </Row>
           <Row gutter={0}>
-            <Col span={4} className="short">
-              <Form.Field label={"性别"} name={"sex"}>
+            <Col span={4} className="short" style={{ marginLeft: 51 }}>
+              <Form.Field label={"性别"} name={"sex"} >
                 <Select allowClear={true}>
                   {[
                     { name: '男', code: '男' },

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, ColumnProps, PaginationConfig } from 'src/vendors/antd'
 import DeptSelect from 'src/components/DeptSelect'
@@ -12,6 +12,7 @@ import { DoCon } from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFile
 import { observer } from 'src/vendors/mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { getCurrentMonth, getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import { globalModal } from 'src/global/globalModal'
 import moment from 'moment'
 
 export interface Props { }
@@ -107,6 +108,17 @@ export default observer(function HumanResource() {
       align: 'left',
       dataIndex: 'remark',
       // width: 180
+    },
+    {
+      title: '操作',
+      align: 'left',
+      dataIndex: 'operate',
+      width: 60,
+      render: (text: any, record: any) => {
+        return <DoCon>
+          <span onClick={() => handleCancel(record)}>撤销</span>
+        </DoCon>
+      }
     }
     // {
     //   title: '创建人',
@@ -162,6 +174,24 @@ export default observer(function HumanResource() {
     }
   }
 
+  //撤销调动
+  const handleCancel = (record: any) => {
+    globalModal.confirm('提示', '是否撤销该记录?')
+      .then(res => {
+        setPageLoading(true)
+
+        nurseFilesService
+          .cancelNurseTransfer(record.id)
+          .then(() => {
+            setPageLoading(false)
+
+            message.success('撤销成功')
+
+            getData()
+          }, () => setPageLoading(false))
+      })
+  }
+
   useEffect(() => {
     getData()
   }, [
@@ -180,7 +210,7 @@ export default observer(function HumanResource() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>人力资源调配</PageTitle>
+        <PageTitle>护士调动</PageTitle>
         <Place />
         <span className='label'>日期:</span>
         <DatePicker.RangePicker allowClear={false} style={{ width: 220 }} {...getDateOptions()} />
@@ -205,14 +235,14 @@ export default observer(function HumanResource() {
               {item.name}
             </Select.Option>)}
         </Select>
-        <span className='label'>调配方式:</span>
+        {/* <span className='label'>调配方式:</span>
         <Select onChange={(value: string) => setTransferStatus(value)} value={transferStatus}>
           {tsList.map((item: DictItem, index: number) => (
             <Select.Option value={item.code} key={index}>
               {item.name}
             </Select.Option>
           ))}
-        </Select>
+        </Select> */}
         <span className='label'>转入转出:</span>
         <Select onChange={(value: string) => setSelectedDp(value)} value={selectedDp}>
           {dpList.map((item: DictItem, index: number) => (
