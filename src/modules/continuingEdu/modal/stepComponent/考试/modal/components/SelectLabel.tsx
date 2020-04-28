@@ -51,20 +51,6 @@ export default observer(function SelectLabel(props: Props) {
           </Select.Option>
         ))}
       </Select>
-      {/* {quesBankView.selectedLabel &&
-          quesBankView.selectedLabel.map((item: any, index: any) => {
-            return (
-              <li
-                className="li"
-                key={index}
-                onClick={e => {
-                  handleDel(item);
-                }}
-              >
-                {labelContent(item)}
-              </li>
-            );
-          })} */}
       <Checkbox.Group
         className="label"
         value={quesBankView.selectedLabel.filter(
@@ -78,7 +64,6 @@ export default observer(function SelectLabel(props: Props) {
             )
           );
           quesBankView.onload();
-          console.log(checkedValue, "入参");
         }}
       >
         {data &&
@@ -91,7 +76,6 @@ export default observer(function SelectLabel(props: Props) {
                 <span
                   className="del"
                   onClick={e => {
-                    console.log(e, "00000000");
                     handleDel(item);
                   }}
                 >

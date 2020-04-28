@@ -137,12 +137,14 @@ export default observer(function UpdateTable(props: Props) {
       quesBankView.questionIdList = [];
       quesBankView.selectedRows = [];
       quesBankView.questionList = [];
+      quesBankView.pageIndex = 1;
+      quesBankView.pageSize = 20;
       quesBankView.allQuestionNum = 0;
       quesBankView.RadioQuestionNum = 0;
       quesBankView.checkBoxQuestionNum = 0;
       quesBankView.TKQuestionNum = 0;
       quesBankView.JDQuestionNum = 0;
-      quesBankView.TKQuestionNum;
+      quesBankView.tableList = [];
       quesBankView.init();
     } else {
       fileInputRef.current && fileInputRef.current.click();

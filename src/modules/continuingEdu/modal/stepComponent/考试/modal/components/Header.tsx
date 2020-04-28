@@ -16,11 +16,6 @@ export default observer(function Header() {
       quesBankView.selectedRows.map((item: any) => {
         quesBankView.questionIdList.push(item.id);
       });
-      console.log(
-        quesBankView.questionList,
-        "000000",
-        quesBankView.questionIdList
-      );
       quesBankView.allQuestionNum = quesBankView.questionList.length;
       quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
         (item: any) => item.questionType === "单选题"

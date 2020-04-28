@@ -1,4 +1,3 @@
-import { authStore } from "./../../../../../../stores/index";
 import { observable, computed } from "mobx";
 import { stepServices } from "../../services/stepServices";
 
@@ -63,9 +62,9 @@ class QuesBankView {
     });
   }
 
-  async init() {
-    await this.initData();
-    await this.onload();
+  init() {
+    this.initData();
+    this.onload();
   }
 }
 

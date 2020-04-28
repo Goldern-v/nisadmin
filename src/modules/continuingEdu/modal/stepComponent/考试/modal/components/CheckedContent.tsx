@@ -12,19 +12,18 @@ export default observer(function CheckedContent() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]); // 选中的KEY值
   const [idArr, setIdArr]: any = useState([]); // 选中id
   const [query, setQuery] = useState({
-    type: "", //题目类型
     keyWord: "", //关键字搜索
     pageIndex: 1,
     pageSize: 20
   });
-  const [type, setType] = useState("全部");
+  const [type, setType] = useState("全部"); //题目类型
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [params, setParams] = useState("");
 
   useLayoutEffect(() => {
     setSelectedList(quesBankView.questionList);
-    setType("全部");
+    getData();
   }, [quesBankView.questionList]);
 
   const columns: any = [
@@ -97,13 +96,16 @@ export default observer(function CheckedContent() {
   // 初始化函数
   const getData = (val?: any) => {
     setLoading(true);
+    let value = val || type;
     setTimeout(() => {
       // 过略题目类型
-      let data: any = quesBankView.questionList.filter((item: any) => {
-        return item.questionType === (val || query.type);
-      });
-      if (val === "全部") {
+      let data: any = [];
+      if (value === "全部") {
         data = quesBankView.questionList;
+      } else {
+        data = quesBankView.questionList.filter((item: any) => {
+          return item.questionType === value;
+        });
       }
       // 过略关键字
       if (query.keyWord !== "") {
@@ -111,63 +113,44 @@ export default observer(function CheckedContent() {
           (item: any) => item.questionContent.indexOf(query.keyWord) > -1
         );
       }
-      // console.log(val, "val", query.type, "query.type", data);
       setSelectedList(data);
       setQuery({ ...query, pageIndex: 1 });
       setLoading(false);
       setIdArr([]);
       quesBankView.onload();
-    }, 1000);
+    }, 500);
   };
 
   // 删除 current---1删除单条  2批量删除
   const handleDel = (current: any, record?: any) => {
-    let content = (
-      <div>
-        <div>您确定要删除选中的题目吗？</div>
-      </div>
+    if (current === 1) {
+      quesBankView.questionList = quesBankView.questionList.filter(
+        (item: any) => item.id !== record.id
+      );
+    } else if (current === 2) {
+      quesBankView.questionList = quesBankView.questionList.filter(
+        (item: any) => idArr.indexOf(item.id) === -1
+      );
+    }
+    quesBankView.questionIdList = quesBankView.questionList.map(
+      (o: any) => o.id
     );
-    Modal.confirm({
-      title: "提示",
-      content,
-      okText: "确定",
-      cancelText: "取消",
-      onOk: () => {
-        if (current === 1) {
-          quesBankView.questionList = quesBankView.questionList.filter(
-            (item: any) => item.id !== record.id
-          );
-        } else if (current === 2) {
-          quesBankView.questionList = quesBankView.questionList.filter(
-            (item: any) => idArr.indexOf(item.id) === -1
-          );
-        }
-        quesBankView.questionIdList = quesBankView.questionList.map(
-          (o: any) => o.id
-        );
-        quesBankView.allQuestionNum = quesBankView.questionList.length;
-        quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
-          (item: any) => item.questionType === "单选题"
-        ).length;
-        quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
-          (item: any) => item.questionType === "多选题"
-        ).length;
-        quesBankView.TKQuestionNum = quesBankView.questionList.filter(
-          (item: any) => item.questionType === "填空题"
-        ).length;
-        quesBankView.JDQuestionNum = quesBankView.questionList.filter(
-          (item: any) => item.questionType === "问答题"
-        ).length;
-        setLoading(true);
-        setTimeout(() => {
-          setSelectedRowKeys([]);
-          setType("全部");
-          setLoading(false);
-          getData("全部");
-        }, 1000);
-        Message.success("已成功删除");
-      }
-    });
+    quesBankView.allQuestionNum = quesBankView.questionList.length;
+    quesBankView.RadioQuestionNum = quesBankView.questionList.filter(
+      (item: any) => item.questionType === "单选题"
+    ).length;
+    quesBankView.checkBoxQuestionNum = quesBankView.questionList.filter(
+      (item: any) => item.questionType === "多选题"
+    ).length;
+    quesBankView.TKQuestionNum = quesBankView.questionList.filter(
+      (item: any) => item.questionType === "填空题"
+    ).length;
+    quesBankView.JDQuestionNum = quesBankView.questionList.filter(
+      (item: any) => item.questionType === "问答题"
+    ).length;
+    setSelectedRowKeys([]);
+    getData();
+    Message.success("已成功删除");
   };
 
   //查看弹窗

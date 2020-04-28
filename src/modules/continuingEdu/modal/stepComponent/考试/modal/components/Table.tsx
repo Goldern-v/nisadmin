@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useState, useLayoutEffect } from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { quesBankView } from "../QuesBankView";
-import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import ResultModal from "./modal/ResultModal";
 
