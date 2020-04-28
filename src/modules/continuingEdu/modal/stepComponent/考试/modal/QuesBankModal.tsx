@@ -131,7 +131,7 @@ export default observer(function PushModal(props: Props) {
             已勾选（{quesBankView.allQuestionNum}）： 单选题（
             {quesBankView.RadioQuestionNum}） 多选题（
             {quesBankView.checkBoxQuestionNum}）填空题（
-            {quesBankView.TKQuestionNum}） 简答题（{quesBankView.JDQuestionNum}
+            {quesBankView.TKQuestionNum}） 问答题（{quesBankView.JDQuestionNum}
             ）
           </TotalNum>
         </Content>

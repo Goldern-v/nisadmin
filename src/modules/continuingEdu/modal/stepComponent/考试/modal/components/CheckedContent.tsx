@@ -63,7 +63,7 @@ export default observer(function CheckedContent() {
           <DoCon>
             <span
               onClick={() => {
-                resultLook(record.id);
+                resultLook(record);
               }}
             >
               查看
@@ -156,13 +156,14 @@ export default observer(function CheckedContent() {
           (item: any) => item.questionType === "填空题"
         ).length;
         quesBankView.JDQuestionNum = quesBankView.questionList.filter(
-          (item: any) => item.questionType === "简答题"
+          (item: any) => item.questionType === "问答题"
         ).length;
         setLoading(true);
         setTimeout(() => {
           setSelectedRowKeys([]);
+          setType("全部");
           setLoading(false);
-          getData();
+          getData("全部");
         }, 1000);
         Message.success("已成功删除");
       }
@@ -170,8 +171,8 @@ export default observer(function CheckedContent() {
   };
 
   //查看弹窗
-  const resultLook = (id: any) => {
-    setParams(id.toString());
+  const resultLook = (record: any) => {
+    setParams(record);
     setVisible(true);
   };
   const onCancel = () => {
@@ -237,7 +238,7 @@ export default observer(function CheckedContent() {
           dataSource={selectedList}
           rowSelection={rowSelection}
           columns={columns}
-          surplusHeight={430}
+          surplusHeight={930}
           pagination={{
             current: query.pageIndex,
             total: selectedList.length,

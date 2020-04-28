@@ -127,22 +127,22 @@ export default observer(function PXUpdateTable(props: Props) {
       .then(res => {
         setLoading(false);
         setDataSource([res.data]);
-        stepViewModal.stepData4PX.questionStatList =
-          res.data.detailInfo.questionStatList;
-        stepViewModal.stepData4PX.isNeedQuestionnaire = Number(
-          res.data.isNeedQuestionnaire
-        );
+        onChange([res.data]);
       })
       .catch(e => {});
   };
 
-  useEffect(() => {
-    value && setDataSource(value);
-  }, [value]);
+  // useEffect(() => {
+  //   value && setDataSource(value);
+  // }, [value]);
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (value && value.length > 0) {
+      setDataSource(value);
+    } else {
+      getData();
+    }
+  }, [value]);
 
   return (
     <Wrapper>

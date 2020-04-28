@@ -17,7 +17,7 @@ export default function Step4() {
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [fileList, setFileList] = useState([]);
   const [studyLinkList, setStudyLinkList] = useState([]);
-  const [isNeedQuestionnaire, setIsNeedQuestionnaire] = useState(0);
+  const [isNeedQuestionnaire, setIsNeedQuestionnaire] = useState("1");
   const [questionStatList, setQtionStatList] = useState([
     {
       questionCount: 0,
@@ -48,7 +48,9 @@ export default function Step4() {
     );
     setFileList(stepViewModal.stepData4.attachmentIds);
     setStudyLinkList(stepViewModal.stepData4XX.studyLinkList);
-    setIsNeedQuestionnaire(stepViewModal.stepData4PX.isNeedQuestionnaire);
+    setIsNeedQuestionnaire(
+      stepViewModal.stepData4PX.isNeedQuestionnaire.toString()
+    );
     setQtionStatList(stepViewModal.stepData4PX.questionStatList);
   }, []);
 
@@ -57,7 +59,7 @@ export default function Step4() {
     stepViewModal.stepData4.attachmentIds = fileList;
     if (!current) return;
     current.setFields({ studyLinkList, isNeedQuestionnaire, questionStatList });
-  }, [fileList, studyLinkList]);
+  }, [fileList, studyLinkList, isNeedQuestionnaire, questionStatList]);
 
   const deleteFile = (index: number) => {
     fileList.splice(index, 1);
