@@ -17,6 +17,13 @@ export default function Step4() {
   const fileInputRef = React.createRef<HTMLInputElement>();
   const [fileList, setFileList] = useState([]);
   const [studyLinkList, setStudyLinkList] = useState([]);
+  const [isNeedQuestionnaire, setIsNeedQuestionnaire] = useState(0);
+  const [questionStatList, setQtionStatList] = useState([
+    {
+      questionCount: 0,
+      questionnaireTitle: ""
+    }
+  ]);
   const [isHave, setIsHave] = useState("1");
   /** 上传文件状态 */
   const [progressEventMap, setProgressEventMap]: any = useState({});
@@ -41,14 +48,15 @@ export default function Step4() {
     );
     setFileList(stepViewModal.stepData4.attachmentIds);
     setStudyLinkList(stepViewModal.stepData4XX.studyLinkList);
+    setIsNeedQuestionnaire(stepViewModal.stepData4PX.isNeedQuestionnaire);
+    setQtionStatList(stepViewModal.stepData4PX.questionStatList);
   }, []);
 
   useEffect(() => {
     let current = refForm.current;
     stepViewModal.stepData4.attachmentIds = fileList;
     if (!current) return;
-    current.setFields({ studyLinkList });
-    if (current) current.setField("isNeedQuestionnaire", "1");
+    current.setFields({ studyLinkList, isNeedQuestionnaire, questionStatList });
   }, [fileList, studyLinkList]);
 
   const deleteFile = (index: number) => {

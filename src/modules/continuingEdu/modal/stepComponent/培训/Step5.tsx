@@ -223,12 +223,12 @@ export default observer(function Step5() {
               <div>
                 <span style={{ marginRight: 10 }}>
                   《
-                  {
+                  {stepViewModal.stepData4PX.questionStatList &&
                     stepViewModal.stepData4PX.questionStatList[0]
-                      .questionnaireTitle
-                  }
+                      .questionnaireTitle}
                   》 共
-                  {stepViewModal.stepData4PX.questionStatList[0].questionCount}
+                  {stepViewModal.stepData4PX.questionStatList &&
+                    stepViewModal.stepData4PX.questionStatList[0].questionCount}
                   题
                 </span>
               </div>

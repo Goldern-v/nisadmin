@@ -127,7 +127,11 @@ export default observer(function PXUpdateTable(props: Props) {
       .then(res => {
         setLoading(false);
         setDataSource([res.data]);
-        onChange([res.data]);
+        stepViewModal.stepData4PX.questionStatList =
+          res.data.detailInfo.questionStatList;
+        stepViewModal.stepData4PX.isNeedQuestionnaire = Number(
+          res.data.isNeedQuestionnaire
+        );
       })
       .catch(e => {});
   };
