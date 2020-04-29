@@ -411,7 +411,12 @@ export default observer(function NursingQualityCheckEdit() {
       dictCode: 'qc_ward_check_type'
     })
       .then(res => {
-        if (res.data) setTypeList(res.data)
+        if (res.data) setTypeList((res.data?.list || []).map((item: any) => {
+          return {
+            code: item.itemCode,
+            name: item.itemName
+          }
+        }))
       })
   }
 
@@ -441,7 +446,12 @@ export default observer(function NursingQualityCheckEdit() {
       dictCode: 'qc_ward_check_result'
     })
       .then(res => {
-        if (res.data) setResultList(res.data)
+        if (res.data) setResultList((res.data?.list || []).map((item: any) => {
+          return {
+            code: item.itemCode,
+            name: item.itemName
+          }
+        }))
       })
   }
 

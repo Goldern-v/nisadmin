@@ -148,7 +148,12 @@ export default observer(function BadEventRecord() {
       dictCode: 'qc_bad_event_type'
     })
       .then(res => {
-        if (res.data) setTypeList(res.data.list)
+        if (res.data) setTypeList((res.data?.list || []).map((item: any) => {
+          return {
+            code: item.itemCode,
+            name: item.itemName
+          }
+        }))
       })
   }
 

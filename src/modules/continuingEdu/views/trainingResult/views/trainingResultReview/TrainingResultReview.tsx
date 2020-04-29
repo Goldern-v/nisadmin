@@ -225,6 +225,10 @@ export default observer(function TrainingResultReview() {
   }
 
   const viewAnwserPage = (record: any) => {
+    if (!record.fillTime) {
+      message.warning('学员未填写问卷')
+      return
+    }
     answerSheetModal.show({
       title: baseInfo.title,
       empNo: record.empNo,
