@@ -194,7 +194,8 @@ export default observer(function ChoiceQuestionEdit() {
               {editModel.questionLabels.map((item: any, idx: number) => <Tag
                 key={idx}
                 closable
-                color="red"
+                className="label-tag"
+                color="green"
                 onClose={() => handleTagDelete(idx)}>
                 {item.labelContent}
               </Tag>)}
@@ -303,5 +304,9 @@ const Wrapper = styled.div`
       top: 50%;
       transform: translate(-50%,-50%);
     }
+  }
+  .label-tag{
+    border-color: #00A680;
+    color: #00A680;
   }
 `

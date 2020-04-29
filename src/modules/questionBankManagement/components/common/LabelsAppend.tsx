@@ -46,7 +46,8 @@ export default function LabelsAppend(props: Props) {
     return labelsEdit.map((item: any, idx: number) => <Tag
       closable
       key={idx}
-      color="red"
+      className="label-tag"
+      color="green"
       onClose={() => {
         labelsEdit.splice(idx, 1)
         setLabelsEdit(labelsEdit);
@@ -77,5 +78,10 @@ const Wrapper = styled.div`
   margin: 0 auto;
   .row{
     margin-bottom: 15px;
+  }
+  .label-tag{
+    border-color: #00A680;
+    color: #00A680;
+    margin-bottom:5px;
   }
 `
