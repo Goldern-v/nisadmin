@@ -2,11 +2,12 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import WrapPre from './../common/WrapPre'
 export interface Props {
-  data: any
+  data: any,
+  hideLabels?: boolean
 }
 
 export default function QuestionTemplate(props: Props) {
-  const { data } = props;
+  const { data, hideLabels } = props;
   const { questionContent, choiceQuestionList, labelList } = data;
   const choiceList = (choiceQuestionList || []).concat().sort((a: any, b: any) => {
     return a.serialNum - b.serialNum
@@ -41,10 +42,10 @@ export default function QuestionTemplate(props: Props) {
       </div>
       {Options()}
       <div className='answer'>标准答案：{CorrectOptions()}</div>
-      <div className='label-con'>
+      {!hideLabels && <div className='label-con'>
         <span>标签：</span>
         {Labels()}
-      </div>
+      </div>}
     </Wrapper>
   )
 }

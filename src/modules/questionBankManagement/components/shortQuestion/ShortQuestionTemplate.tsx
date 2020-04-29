@@ -2,11 +2,12 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import WrapPre from './../common/WrapPre'
 export interface Props {
-  data: any
+  data: any,
+  hideLabels?: boolean
 }
 
 export default function ShortQuestionTemplate(props: Props) {
-  const { data } = props;
+  const { data, hideLabels } = props;
   const { questionContent, answerContent, questionLabels } = data;
 
   const Labels = () => {
@@ -26,10 +27,10 @@ export default function ShortQuestionTemplate(props: Props) {
       <div className='answer'>
         <WrapPre>标准答案：{answerContent || ''}</WrapPre>
       </div>
-      <div className='label-con'>
+      {!hideLabels && <div className='label-con'>
         <span>标签：</span>
         {Labels()}
-      </div>
+      </div>}
     </Wrapper>
   )
 }

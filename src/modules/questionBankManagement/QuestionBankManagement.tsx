@@ -96,12 +96,12 @@ export default observer(function QuestionBankManagement() {
       size: '',
       component: <RecycleTable model={questionBankManageModel} />
     },
-    {
-      title: `错题反馈(${menuNum['错题反馈'] || '-'})`,
-      orginTitle: '错题反馈',
-      size: '',
-      component: null
-    }
+    // {
+    //   title: `错题反馈(${menuNum['错题反馈'] || '-'})`,
+    //   orginTitle: '错题反馈',
+    //   size: '',
+    //   component: null
+    // }
   ]
 
   const handleBankTypeChange = (e: any) => {

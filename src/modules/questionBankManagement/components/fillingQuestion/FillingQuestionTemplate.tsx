@@ -2,11 +2,12 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import WrapPre from './../common/WrapPre'
 export interface Props {
-  data: any
+  data: any,
+  hideLabels?: boolean
 }
 
 export default function FillingQuestionTemplate(props: Props) {
-  const { data } = props;
+  const { data, hideLabels } = props;
   const { questionContent, answerContent, questionLabels } = data;
 
   const Labels = () => {
@@ -34,10 +35,10 @@ export default function FillingQuestionTemplate(props: Props) {
     <Wrapper>
       <div className='title'>{FormatQustionContent()}</div>
       <div className='answer'>标准答案：{FormatAnswerContent()}</div>
-      <div className='label-con'>
+      {!hideLabels && <div className='label-con'>
         <span>标签：</span>
         {Labels()}
-      </div>
+      </div>}
     </Wrapper>
   )
 }

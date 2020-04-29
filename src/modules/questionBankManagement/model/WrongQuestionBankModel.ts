@@ -10,12 +10,12 @@ class WrongQuestionBankModel extends QuestionBankManageModel {
   }
 
   @action getList() {
+    const { pageIndex, pageSize, searchingContent } = this.query
     let query = {
-      status: this.status,
-      ...this.query,
+      pageIndex,
+      pageSize,
+      // keyword: searchingContent
     }
-
-    delete query.bankType;
 
     const successCallback = (list: any, total: number) => {
       this.setTableLoading(false);
@@ -25,11 +25,22 @@ class WrongQuestionBankModel extends QuestionBankManageModel {
 
     this.setTableData([]);
     this.setTableLoading(true);
-    questionBankManageService.getWrongQustionListBySearch(query).then(res => {
-      successCallback(res.data.list || [], res.data.totalCount || 0)
-    }, err => {
-      this.setTableLoading(false);
-    })
+
+    if (this.status == '待处理') {
+      questionBankManageService.getWrongQustionHandleList(query)
+        .then(res => {
+          successCallback(res.data.list || [], res.data.totalCount || 0)
+        }, err => {
+          this.setTableLoading(false);
+        })
+    } else {
+      questionBankManageService.getWrongQustionSolvedList(query)
+        .then(res => {
+          successCallback(res.data.list || [], res.data.totalCount || 0)
+        }, err => {
+          this.setTableLoading(false);
+        })
+    }
   }
 }
 
