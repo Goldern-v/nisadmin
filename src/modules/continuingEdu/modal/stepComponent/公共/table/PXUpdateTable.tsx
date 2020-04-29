@@ -9,6 +9,7 @@ import { stepViewModal } from "../../StepViewModal";
 import { observer } from "mobx-react-lite";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 import createModal from "src/libs/createModal";
+import { context } from "react-dnd/lib/cjs/DragDropContext";
 
 export interface Props {
   value?: any;
@@ -132,17 +133,15 @@ export default observer(function PXUpdateTable(props: Props) {
       .catch(e => {});
   };
 
-  // useEffect(() => {
-  //   value && setDataSource(value);
-  // }, [value]);
-
+  // 修改时回显文件
   useEffect(() => {
-    if (value && value.length > 0) {
-      setDataSource(value);
-    } else {
-      getData();
-    }
+    stepViewModal.oldData && value && setDataSource(value);
   }, [value]);
+
+  // 初始化默认文件
+  useEffect(() => {
+    !stepViewModal.oldData && getData();
+  }, []);
 
   return (
     <Wrapper>
