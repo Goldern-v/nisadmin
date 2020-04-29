@@ -244,7 +244,7 @@ export default observer(function CheckedContent() {
   );
 });
 const Wrapper = styled.div`
-  height: 510px;
+  height: 660px;
 `;
 const TopBar = styled(TableHeadCon)`
   height: 31px !important;

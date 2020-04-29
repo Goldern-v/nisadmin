@@ -131,5 +131,5 @@ export default observer(function Table() {
   );
 });
 const Wrapper = styled.div`
-  height: 475px;
+  height: 625px;
 `;
