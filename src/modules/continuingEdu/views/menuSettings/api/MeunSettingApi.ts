@@ -7,9 +7,13 @@ export default class MeunSettingApi extends BaseApiService {
   public async getData() {
     return this.get(`/studyAndTrain/menuManage/getMenuTreeByAuthorization`);
   }
-
   public async getGetData() {
     return this.get(`/studyAndTrain/menuManage/getMenuTree`);
+  }
+
+  // 菜单树权限
+  public async queyMenuAuthInfo() {
+    return this.get(`/studyAndTrain/teachingPlanManage/queyMenuAuthInfo`);
   }
 
   // 判断是否有教学计划

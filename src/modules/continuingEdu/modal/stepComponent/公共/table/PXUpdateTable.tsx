@@ -140,7 +140,12 @@ export default observer(function PXUpdateTable(props: Props) {
 
   // 初始化默认文件
   useEffect(() => {
-    !stepViewModal.oldData && getData();
+    if (
+      !stepViewModal.oldData ||
+      (stepViewModal.oldData && stepViewModal.oldData.isNeedQuestionnaire === 0)
+    ) {
+      getData();
+    }
   }, []);
 
   return (
