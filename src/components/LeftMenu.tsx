@@ -20,10 +20,21 @@ export default function LeftMenu(props: Props) {
       setOpenKeys("");
     }
   };
+
+  //判断是否隐藏 兼容Function类型
+  const isHide = (hide: any): boolean => {
+    if (typeof hide === 'boolean')
+      return hide
+    if (Object.prototype.toString.call(hide) === '[object Function]')
+      return !!hide()
+
+    return !!hide
+  }
+
   const renderMenu = (list: any) => {
     return list
       .filter((item: any) => {
-        return !item.hide;
+        return !isHide(item.hide);
       })
       .map((item: any, index: number) => {
         if (item.children && item.children.length > 0) {
@@ -74,7 +85,7 @@ export default function LeftMenu(props: Props) {
         if (currentPath) return currentPath;
       } else {
         if (item.path.split("?")[0] === path) {
-          if (item.hide) {
+          if (isHide(item.hide)) {
             for (let j = i; j < list.length; j++) {
               if (!list[j].hide) return [parentKeys, [list[j].path]];
             }
