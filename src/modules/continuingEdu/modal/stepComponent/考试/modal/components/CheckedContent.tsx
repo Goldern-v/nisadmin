@@ -221,7 +221,7 @@ export default observer(function CheckedContent() {
           dataSource={selectedList}
           rowSelection={rowSelection}
           columns={columns}
-          surplusHeight={930}
+          surplusHeight={430}
           pagination={{
             current: query.pageIndex,
             total: selectedList.length,
