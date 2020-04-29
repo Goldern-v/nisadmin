@@ -37,6 +37,7 @@ export default observer(function WardLogEdit(props: any) {
   const [remark, setRemark] = useState('')
   const [attachmentList, setAttachmentList] = useState([] as FileItem[])
   const [showAllReciever, SetShowAllReciever] = useState(false)
+  const [deptListAll, setDeptListAll] = useState([] as any[])
 
   const selectPeopleModal = createModal(SelectPeopleModal)
 
@@ -250,12 +251,31 @@ export default observer(function WardLogEdit(props: any) {
           value={item.content}
           allowClear
           style={{ minWidth: 180 }}
+          showSearch
+          filterOption={(input: string, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           onChange={(val: string) => handleChange(val)}>
           {(item.dropDowns || []).map((dropItem: any) =>
             <Option
               key={dropItem.indexNo}
               value={dropItem.name}>
               {dropItem.name}
+            </Option>)}
+        </Select>
+      case "6":
+        return <Select
+          value={item.content}
+          allowClear
+          showSearch
+          style={{ minWidth: 180 }}
+          filterOption={(input: string, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          onChange={(val: string) => handleChange(val)}>
+          {deptListAll.map((deptItem: any) =>
+            <Option
+              key={deptItem.code}
+              value={deptItem.name}>
+              {deptItem.name}
             </Option>)}
         </Select>
       default:
@@ -275,12 +295,21 @@ export default observer(function WardLogEdit(props: any) {
     })
   }
 
+  const getAllDept = () => {
+    service.commonApiService.getNursingUnitAll()
+      .then((res) => {
+        setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
+      }, err => { })
+  }
+
   //要显示的抄送人列表
   let visibleRecievers = recievers
   if (!showAllReciever && recievers.length >= 24) visibleRecievers = recievers.slice(0, 23)
 
   useEffect(() => {
     initAuth()
+
+    getAllDept()
 
     if (search.templateId)
       initEdit()
@@ -378,8 +407,17 @@ export default observer(function WardLogEdit(props: any) {
     </div>
     <div className="bottom">
       <div className="float-right">
-        <Button onClick={() => saveEdit()} type='primary'>提交</Button>
-        <Button onClick={() => history.goBack()}>取消</Button>
+        <Button
+          disabled={loading}
+          onClick={() => saveEdit()}
+          type='primary'>
+          提交
+          </Button>
+        <Button
+          disabled={loading}
+          onClick={() => history.goBack()}>
+          取消
+          </Button>
       </div>
     </div>
     <selectPeopleModal.Component />

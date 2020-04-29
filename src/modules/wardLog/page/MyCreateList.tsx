@@ -17,6 +17,7 @@ import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import WardLogAddModal from './../components/WardLogAddModal'
 import createModal from 'src/libs/createModal'
 import { fileDownload } from 'src/utils/file/file'
+import service from 'src/services/api'
 
 export interface Props { }
 
@@ -26,6 +27,7 @@ export default observer(function MyCreateList() {
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
+  const [deptListAll, setDeptListAll] = useState([] as any[])
   const [pageLoading, setPageLoading] = useState(false)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
@@ -99,6 +101,11 @@ export default observer(function MyCreateList() {
     wardLogService.findTemplates().then((res) => {
       setTemplateList([...res.data.publicTemplates, ...res.data.deptTemplates].map((item: any) => item.template))
     })
+
+    service.commonApiService
+      .getNursingUnitAll().then(res => {
+        setDeptListAll((res.data?.deptList || []).filter((item: any) => item.code !== '0001'))
+      })
   }
 
   const getData = () => {
@@ -218,7 +225,7 @@ export default observer(function MyCreateList() {
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           onChange={(val: string) => setDeptSelect(val)}>
           <Select.Option value={''}>全部</Select.Option>
-          {authStore.deptList.map((item: any, idx: any) =>
+          {deptListAll.map((item: any, idx: any) =>
             <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
         </Select>
         <span className='label'>应用:</span>
