@@ -80,7 +80,7 @@ export default observer(function WardLogEdit(props: any) {
     } as any
 
     if (search.id) params.inpatientAreaLog.id = search.id
-    console.log(params)
+    // console.log(params)
     setLoading(true)
     wardLogService
       .saveRecord(params)
@@ -129,7 +129,7 @@ export default observer(function WardLogEdit(props: any) {
   }
 
   const getRecordData = () => {
-    console.log(search)
+    // console.log(search)
     setLoading(true)
     wardLogService
       .getDetail(search.id)

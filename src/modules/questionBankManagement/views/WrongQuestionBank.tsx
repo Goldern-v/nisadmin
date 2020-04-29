@@ -77,13 +77,14 @@ export default observer(function WrongQuestionBank() {
     }
 
     wrongQuestionBankModel.setQuery(newQuery);
+    wrongQuestionBankModel.setStatus(status)
     wrongQuestionBankModel.getList();
     //更新url
     let url = match.url;
     let search: any = location.search;
     let query = {} as any;
 
-    if (search) query = qs.parse(search.replace('?', ''));
+    if (search) query = qs.parse(search.replace('?', ''))
     query.status = status
 
     history.replace(`${url}?${qs.stringify(query)}`);

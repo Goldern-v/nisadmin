@@ -6,7 +6,7 @@ import { ColumnProps } from 'antd/es/table'
 import FooterBtnCon, { BtnList } from '../common/FooterBtnCon'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import { Modal, message as Message } from 'antd'
+import { Modal, message, Input, Button } from 'antd'
 
 import QuestionTemplate from './../choiceQuestions/QuestionTemplate'
 import FillingQuestionTemplate from './../fillingQuestion/FillingQuestionTemplate'
@@ -43,8 +43,8 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     },
     {
       title: '提交人',
-      dataIndex: 'submitterName',
-      key: 'submitterName',
+      dataIndex: 'applyerName',
+      key: 'applyerName',
       width: 70,
       align: 'center'
     },
@@ -60,18 +60,15 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
       dataIndex: '题目',
       key: '题目',
       render(text: any, record: any, index: number) {
-        let data: any = {};
-
         switch (record.questionType) {
           case '选择题':
-            data = record.choiceQuestionDto
-            return <QuestionTemplate data={data} />
+          case '单选题':
+          case '多选题':
+            return <QuestionTemplate hideLabels data={record} />
           case '填空题':
-            data = record.questionBank
-            return <FillingQuestionTemplate data={data} />
+            return <FillingQuestionTemplate hideLabels data={record} />
           case '问答题':
-            data = record.questionBank
-            return <ShortQuestionTemplate data={data} />
+            return <ShortQuestionTemplate hideLabels data={record} />
           default:
             return <span></span>
         }
@@ -82,19 +79,29 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
       dataIndex: 'status',
       key: 'status',
       align: 'center',
-      width: 60
+      width: 60,
+      render(text: any, record: any) {
+        switch (text) {
+          case '2':
+            return '已处理'
+          case '3':
+            return '已通知'
+          default:
+            return '待处理'
+        }
+      }
     },
     {
       title: '提交时间',
-      dataIndex: 'submitTime',
-      key: 'submitTime',
+      dataIndex: 'applyTime',
+      key: 'applyTime',
       align: 'center',
       width: 150
     },
     {
       title: '提交原因',
-      dataIndex: 'submitReason',
-      key: 'submitReason',
+      dataIndex: 'applyContent',
+      key: 'applyContent',
       align: 'center',
       width: 150
     },
@@ -107,8 +114,10 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
         return (
           <div className="operate-area">
             <div onClick={() => handleEdit(record)}>编辑</div>
-            <div onClick={() => handleMark(record, true)}>标记为已处理并通知提交人</div>
-            <div onClick={() => handleMark(record, true)}>仅标记已处理</div>
+            {record.status == '2' && <React.Fragment>
+              <div onClick={() => handleMark(record, true)}>标记为已处理并通知提交人</div>
+              <div onClick={() => handleMark(record)}>仅标记已处理</div>
+            </React.Fragment>}
           </div>
         )
       }
@@ -124,7 +133,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
 
   const handleEdit = (record: any) => {
     // if (record.bankType == '系统题库') {
-    //   Message.warning('系统题库无法修改')
+    //   message.warning('系统题库无法修改')
     //   return
     // }
     let type = 'choice';
@@ -132,15 +141,15 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     switch (record.questionType) {
       case '填空题':
         type = 'filling'
-        questionId = record.questionBank.id
+        questionId = record.flowId
         break
       case '问答题':
         type = 'short'
-        questionId = record.questionBank.id
+        questionId = record.flowId
         break
       default:
         type = 'choice'
-        questionId = record.choiceQuestionDto.id
+        questionId = record.flowId
     }
     history.push(`/continuingEdu/${type}QuestionEdit?id=${questionId}`)
   }
@@ -155,33 +164,59 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     model.getList()
   }
 
-  const handleMark = (record: any, informSubmitter?: boolean) => {
-    informSubmitter = informSubmitter || false;
+  const handleMark = (record?: any, informSubmitter = false) => {
 
     let params = {
-      wrongQuestionId: record.id,
+      flowId: record?.flowId || '',
+      nodeCode: 'pending_audit',
       informSubmitter
     }
 
+    let handleContent = ''
+
     let modalTitle = '操作确认'
 
-    let modalContent = '您确认要将该题目标记为已处理吗？'
+    const TextStyle = {
+      width: 260,
+      marginTop: 15
+    }
 
-    if (informSubmitter) modalContent = '您确认要将该题目标记为已处理，并通知提交人吗？'
+    let modalContent =
+      <div>
+        <div>您确认要将该题目标记为已处理吗？</div>
+        <div>
+          <Input.TextArea
+            placeholder="请输入备注"
+            style={TextStyle}
+            onChange={(e: any) => handleContent = e.target.value} />
+        </div>
+      </div>
+
+    if (informSubmitter)
+      modalContent = <div>
+        <div>您确认要将该题目标记为已处理，并通知提交人吗？</div>
+        <div>
+          <Input.TextArea
+            placeholder="请输入备注"
+            style={TextStyle}
+            onChange={(e: any) => handleContent = e.target.value} />
+        </div>
+      </div>
 
     Modal.confirm({
       title: modalTitle,
       centered: true,
       content: modalContent,
       onOk: () => {
-        questionBankManageService
-          .handleWrongQuestionMark(params)
-          .then(res => {
-            Message.success('操作成功');
-            model.getList()
-          }, err => {
+        console.log({ ...params, handleContent })
+        // questionBankManageService
+        //   .handleWrongQuestionMark(params)
+        //   .then(res => {
+        //     message.success('操作成功');
+        //     model.getList()
+        //   }, err => {
 
-          })
+        //   })
       }
     })
   }

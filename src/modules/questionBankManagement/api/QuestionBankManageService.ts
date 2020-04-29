@@ -96,14 +96,23 @@ export default class QuestionBankManageService extends BaseApiService {
   public entireDeleteQuestion(params: any) {
     return this.post('/studyAndTrain/questionBankManage/recycleBin/entireDeleteQuestion', params);
   }
-  /**题库管理--错题反馈 */
+  /**题库管理--错题反馈--2020-04-29废弃 */
   public getWrongQustionListBySearch(query: any) {
     return this.post('/studyAndTrain/questionBankManage/getContentBySearch', query);
   }
-  /**错题反馈--标记已读 */
+  /**错题反馈--标记已读--2020-04-29废弃 */
   public handleWrongQuestionMark(query: any) {
     return this.post('/studyAndTrain/questionBankManage/wrongQuestionReply/handleQuestion', query);
   }
+  /**题库管理--错题反馈--待我处理 */
+  public getWrongQustionHandleList(query: any) {
+    return this.post('/studyAndTrain/questionBankManage/wrongQuestionReply/getPendingPage', query)
+  }
+  /**题库管理--错题反馈--我已处理 */
+  public getWrongQustionSolvedList(query: any) {
+    return this.post('/studyAndTrain/questionBankManage/wrongQuestionReply/getSolvedPage', query)
+  }
+  /**题库管理--错题反馈--标记解决 */
 }
 
 export const questionBankManageService = new QuestionBankManageService();
