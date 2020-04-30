@@ -182,7 +182,7 @@ export default observer(function HandoverRegister(props: Props) {
         if (record.editType && record.editType == 'new') {
           return <TdCell>
             <DatePicker
-              className="td-date-picker"
+              className="td-date-picker first-col-item"
               allowClear={false}
               value={text ? moment(text) : undefined}
               onChange={(date: moment.Moment) => {
@@ -539,11 +539,15 @@ export default observer(function HandoverRegister(props: Props) {
         setBlockList(res.data);
         if (res.data[res.data.length - 1]) {
           let blockId = (res.data[res.data.length - 1] as any)!.id;
-          let lastPageIndex = await getLastPageIndex(blockId);
+
+          //接口改为倒序 前端对应默认显示第一页内容
+          // let lastPageIndex = await getLastPageIndex(blockId);
+          let firstPageIndex = 1
           setSelectedBlockId(blockId);
           setPageOptions({
             ...pageOptions,
-            pageIndex: lastPageIndex
+            // pageIndex: lastPageIndex
+            pageIndex: firstPageIndex
           });
         } else {
           setSelectedBlockId(null);
@@ -665,7 +669,13 @@ export default observer(function HandoverRegister(props: Props) {
       modified: true,
     } as any
 
-    setDataSource([...dataSource, newRow] as any)
+    setDataSource([newRow, ...dataSource] as any)
+
+    setTimeout(() => {
+      let target = document.querySelector('.first-col-item')
+
+      if (target) target.scrollIntoView()
+    }, 100)
   }
 
   const handleDeleteRow = (record: any, idx: number) => {
