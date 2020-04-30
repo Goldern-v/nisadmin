@@ -7,7 +7,7 @@ import BaseTabs from '../components/common/BaseTabs'
 import NavCon from '../components/common/NavCon'
 
 import { wrongQuestionBankModel } from '../model/WrongQuestionBankModel'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import qs from 'qs';
 // import { questionBankManageService } from '../api/QuestionBankManageService';
@@ -25,7 +25,8 @@ export default observer(function WrongQuestionBank() {
     const { status } = search;
     let activeIdx = '0';
     let newQuery = {
-      bankType: '医院题库',
+      empNo: authStore.user?.empNo || '',
+      bankType: '',
       pageIndex: 1,
       pageSize: 20,
       searchingContent: '',

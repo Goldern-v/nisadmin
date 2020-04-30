@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/es/table'
 import FooterBtnCon, { BtnList } from '../common/FooterBtnCon'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { Modal, message, Input, Button } from 'antd'
 
@@ -114,7 +114,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
         return (
           <div className="operate-area">
             <div onClick={() => handleEdit(record)}>编辑</div>
-            {record.status == '2' && <React.Fragment>
+            {record.status == '1' && <React.Fragment>
               <div onClick={() => handleMark(record, true)}>标记为已处理并通知提交人</div>
               <div onClick={() => handleMark(record)}>仅标记已处理</div>
             </React.Fragment>}
@@ -164,12 +164,11 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     model.getList()
   }
 
-  const handleMark = (record?: any, informSubmitter = false) => {
+  const handleMark = (record?: any, isSendNotice = false) => {
 
     let params = {
       flowId: record?.flowId || '',
-      nodeCode: 'pending_audit',
-      informSubmitter
+      isSendNotice
     }
 
     let handleContent = ''
@@ -192,7 +191,7 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
         </div>
       </div>
 
-    if (informSubmitter)
+    if (isSendNotice)
       modalContent = <div>
         <div>您确认要将该题目标记为已处理，并通知提交人吗？</div>
         <div>
@@ -208,15 +207,18 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
       centered: true,
       content: modalContent,
       onOk: () => {
-        console.log({ ...params, handleContent })
-        // questionBankManageService
-        //   .handleWrongQuestionMark(params)
-        //   .then(res => {
-        //     message.success('操作成功');
-        //     model.getList()
-        //   }, err => {
-
-        //   })
+        // console.log({ ...params, handleContent })
+        questionBankManageService
+          .handleWrongQuestionMark({
+            ...params,
+            handleContent,
+            empNo: authStore.user?.empNo,
+            isSendNotice: isSendNotice ? '1' : '0'
+          })
+          .then(res => {
+            message.success('操作成功');
+            model.getList()
+          }, err => { })
       }
     })
   }
