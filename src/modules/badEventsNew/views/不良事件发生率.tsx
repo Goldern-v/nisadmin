@@ -18,6 +18,7 @@ export default observer(function 不良事件发生率() {
   const [filterDate, setFilterDate] = useState([moment(moment().format('YYYY-MM') + '-01'), moment()])
   //不良事件类型下拉选项
   const [eventTypeList, setEventTypeList] = useState([] as any)
+  const [eventTypeSelected, setEventTypeSelected] = useState([] as any)
 
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])
@@ -74,47 +75,78 @@ export default observer(function 不良事件发生率() {
     }
   }
 
+  //根据列表返回的事件类型显示对应的列
+  const customCols = [] as any
+
+  if (tableData[0] && tableData[0].eventTypeCount) {
+    let eventTypeCount = tableData[0].eventTypeCount
+    let keys = Object.keys(eventTypeCount) || []
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i]
+      let val = eventTypeCount[key]
+      let title = ''
+
+      let target = eventTypeList.find((item: any) => item.code == key)
+      if (target) title = target.name
+
+      if (target) customCols.push({
+        title,
+        dataIndex: key,
+        width: 60,
+        align: 'center',
+        render: () => val
+      })
+    }
+  }
+
   const columns: any[] = [
     {
       title: '序号',
-      width: 60,
+      width: 40,
       align: 'center',
-      render: (text: any, record: any, idx: number) => idx + 1
+      render: (text: any, record: any, idx: number) => {
+        if (record.wardCode == '000000') return '合计'
+
+        return idx + 1
+      }
     },
     {
       title: '科室',
       dataIndex: 'wardName',
-      width: 180,
+      width: 160,
       align: 'left'
     },
+    ...customCols,
     {
-      title: '跌倒病例数',
-      dataIndex: 'fall_count',
-      width: 120,
+      title: '合计例数',
+      dataIndex: 'eventTotal',
+      width: 80,
       align: 'center'
     },
     {
       title: '住院患者人日数',
-      dataIndex: 'patient_days',
+      dataIndex: 'patientDay',
       key: '住院患者人日数',
-      width: 140,
+      width: 80,
       align: 'center'
     },
     {
-      title: '跌倒发生率/千床日',
-      dataIndex: 'fall_ratio',
-      key: '跌倒发生率/千床日',
-      width: 180,
-      align: 'center'
+      title: '不良事件发生率/千床日',
+      dataIndex: 'patientDay',
+      key: '不良事件发生率/千床日',
+      width: 80,
+      align: 'center',
+      render: (text: string) => `${text}‰`
     }
   ]
 
   const getTableData = () => {
     // console.log(queryObj.qcLevel)
     setLoading(true)
-    badEventsNewService.getPatientFallRatio({
-      beginDate: filterDate[0].format('YYYY-MM-DD'),
-      endDate: filterDate[1].format('YYYY-MM-DD'),
+    badEventsNewService.badEventHappenPercent({
+      dateBegin: filterDate[0].format('YYYY-MM-DD'),
+      dateEnd: filterDate[1].format('YYYY-MM-DD'),
+      eventTypeList: eventTypeSelected || []
     })
       .then(res => {
         setLoading(false)
@@ -128,15 +160,13 @@ export default observer(function 不良事件发生率() {
       }, err => setLoading(false))
   }
 
-  // useEffect(() => {
-  //   getTableData()
-  // }, [])
   const handleExport = () => {
     setLoading(true)
     badEventsNewService
-      .ptientFallRatioExport({
-        beginDate: filterDate[0].format('YYYY-MM-DD'),
-        endDate: filterDate[1].format('YYYY-MM-DD'),
+      .badEventHappenPercentExport({
+        dateBegin: filterDate[0].format('YYYY-MM-DD'),
+        dateEnd: filterDate[1].format('YYYY-MM-DD'),
+        eventTypeList: eventTypeSelected || []
       })
       .then(res => {
         setLoading(false)
@@ -147,13 +177,15 @@ export default observer(function 不良事件发生率() {
   useEffect(() => {
     let deptCode = "";
     if (authStore.user) deptCode = authStore.user.deptCode;
-    badEventsNewService.getEvetTypetList(deptCode).then(res => {
-      let data = res.data;
+    badEventsNewService
+      .getEvetTypetList(deptCode)
+      .then(res => {
+        let data = res.data;
 
-      if (data instanceof Array)
-        setEventTypeList(data.map((item: any) => item.name));
-    })
+        setEventTypeList(data || [])
+      })
 
+    //图表高度重绘
     let resizeCallBack = () => setChartHeight(chartHeightCol())
 
     window.addEventListener('resize', resizeCallBack)
@@ -164,7 +196,7 @@ export default observer(function 不良事件发生率() {
 
   useEffect(() => {
     getTableData()
-  }, [filterDate])
+  }, [filterDate, eventTypeSelected])
 
   return <Wrapper>
     <HeaderCon>
@@ -194,15 +226,13 @@ export default observer(function 不良事件发生率() {
               placeholder="全部"
               showSearch
               mode="multiple"
-              onBlur={(payload: any) => {
-                console.log(payload, 'blur')
-              }}>
+              onBlur={(payload: any) => setEventTypeSelected(payload)}>
               {eventTypeList.map((item: any, idx: number) => {
                 return (
-                  <Select.Option value={item} key={idx}>
-                    {item}
+                  <Select.Option value={item.code} key={idx}>
+                    {item.name}
                   </Select.Option>
-                );
+                )
               })}
             </Select>
           </div>
@@ -237,6 +267,7 @@ export default observer(function 不良事件发生率() {
         <BaseTable
           loading={loading}
           surplusHeight={260}
+          surplusWidth={200}
           dataSource={tableData}
           columns={columns}
         />
@@ -247,33 +278,43 @@ export default observer(function 不良事件发生率() {
             <Chart
               forceFit
               height={chartHeight}
-              data={chartData.slice(0, chartData.length - 1)}
+              data={chartData.slice(0, chartData.length - 1)
+                .map((item: any) => {
+                  return {
+                    wardName: item.wardName,
+                    eventTotal: item.eventTotal,
+                    happenRate: parseInt(item.happenRate)
+                  }
+                })}
               padding={[40, 40, 160, 40]}
               scale={[{
-                dataKey: 'fall_count',
+                dataKey: 'eventTotal',
                 tickCount: 5,
-                alias: '跌倒病例数'
+                alias: '不良事件数'
               }, {
-                dataKey: 'fall_ratio',
+                dataKey: 'happenRate',
                 tickCount: 5,
-                alias: '跌倒发生率'
+                alias: '不良事件发生率',
+                max: 1000,
+                min: 0,
+                formatter: (text: number) => `${text}‰`
               }]}>
               <Tooltip shared={true} />
               <Axis
                 dataKey="wardName"
                 label={label}
                 tickLine={tickLine} />
-              <Axis dataKey="fall_count" label={labelFormat} tickLine={tickLine} />
+              <Axis dataKey="eventTotal" label={labelFormat} tickLine={tickLine} />
               <Legend
                 // custom
                 position="top-right"
               />
               <Bar
-                position="wardName*fall_count"
+                position="wardName*eventTotal"
                 opacity={1}
               />
-              {/* <Point shape='circle' position={'wardName*fall_ratio'} color='#fdae6b' size={3} /> */}
-              <SmoothLine position={'wardName*fall_ratio'} color='#fdae6b' size={3} />
+              {/* <Point shape='circle' position={'wardName*happenRate'} color='#fdae6b' size={3} /> */}
+              <SmoothLine position={'wardName*happenRate'} color='#fdae6b' size={3} />
             </Chart>
             {chartData.length <= 0 &&
               <div className="no-data">
@@ -364,6 +405,7 @@ const HeaderCon = styled.div`
 
 const TableCon = styled.div`
   /* width: 700px; */
+  width: 100%;
   margin: 0 auto;
 `
 

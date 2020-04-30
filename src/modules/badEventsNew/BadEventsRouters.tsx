@@ -11,7 +11,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> { }
 import { appStore } from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
 import 不良事件发生率 from './views/不良事件发生率'
-import 不良事件发生率统计 from './views/不良事件发生率统计'
+import 不良事件统计 from './views/不良事件统计'
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -26,14 +26,14 @@ export default function BadEventsRouters(props: Props) {
       // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     },
     {
+      title: '不良事件统计',
+      path: '/home/不良事件统计',
+      component: 不良事件统计,
+    },
+    {
       title: '不良事件发生率',
       path: '/home/不良事件发生率',
       component: 不良事件发生率,
-    },
-    {
-      title: '不良事件发生率统计',
-      path: '/home/不良事件发生率统计',
-      component: 不良事件发生率统计,
     }
   ];
   let currentRoutePath = props.history.location.pathname || "";

@@ -11,8 +11,8 @@ export default class BadEventsNewService extends BaseApiService {
     return this.get(`/badEvent/findBadEventDetailById/${id}`);
   }
   //不良事件类型列表
-  public async getEvetTypetList(wardCode?: any) {
-    return this.get(`/badEvent/findBadEventTemplateByWardCode/${wardCode}`);
+  public async getEvetTypetList(str?: any) {
+    return this.post(`/dept/dictInfo`, qs.stringify({ code: 'badEvent_eventType' }));
   }
   //不良事件详情操作时间线
   public async getTimeline(id: any) {
@@ -30,13 +30,21 @@ export default class BadEventsNewService extends BaseApiService {
   public async getDeptList(types?: string) {
     return this.post(`/badEventDept/getByTypeList`, qs.stringify({ type: types || '1,2' }));
   }
-  //住院患者跌倒发生率统计数据
-  public async getPatientFallRatio(params: any) {
-    return this.post(`/nursingIndex/nationalIndex/getPatientFallRatio`, params);
+  //不良事件统计数据
+  public async badEventTotal(params: any) {
+    return this.post(`/badEventM/badEventTotal`, params);
   }
-  //住院患者跌倒发生率统计导出
-  public async ptientFallRatioExport(params: any) {
-    return this.post(`/nursingIndex/nationalIndex/patientFallRatio/export`, params);
+  //不良事件统计导出
+  public async badEventTotalExport(params: any) {
+    return this.post(`/badEventM/badEventTotal/export`, params);
+  }
+  //不良事件发生率
+  public async badEventHappenPercent(params: any) {
+    return this.post(`/badEventM/badEventHappenPercent`, params);
+  }
+  //不良事件发生率导出
+  public async badEventHappenPercentExport(params: any) {
+    return this.post(`/badEventM/badEventHappenPercent/export`, params);
   }
 }
 
