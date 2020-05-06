@@ -140,11 +140,12 @@ export default observer(function 不良事件统计() {
     badEventsNewService.badEventTotal({
       beginDate: filterDate[0].format('YYYY-MM-DD'),
       endDate: filterDate[1].format('YYYY-MM-DD'),
+      eventTypeList: eventTypeSelected || []
     })
       .then(res => {
         setLoading(false)
         if (res.data) {
-          console.log(res.data)
+          // console.log(res.data)
 
           setTableData(res.data || [])
 
@@ -251,7 +252,7 @@ export default observer(function 不良事件统计() {
           buttonStyle="solid"
           value={viewType}
           onChange={(e) => setViewType(e.target.value)}>
-          <Radio.Button value="table" >表格</Radio.Button>
+          <Radio.Button value="table" >详情</Radio.Button>
           <Radio.Button value="chart">图表</Radio.Button>
         </Radio.Group>
       </span>

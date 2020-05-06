@@ -65,15 +65,15 @@ export default observer(function 不良事件发生率() {
     length: 1
   }
 
-  const title = {
-    offset: 70
-  }
+  // const title = {
+  //   offset: 70
+  // }
 
-  const style = {
-    text: {
-      fontSize: 14
-    }
-  }
+  // const style = {
+  //   text: {
+  //     fontSize: 14
+  //   }
+  // }
 
   //根据列表返回的事件类型显示对应的列
   const customCols = [] as any
@@ -151,7 +151,7 @@ export default observer(function 不良事件发生率() {
       .then(res => {
         setLoading(false)
         if (res.data) {
-          console.log(res.data)
+          // console.log(res.data)
 
           setTableData(res.data || [])
 
@@ -259,7 +259,7 @@ export default observer(function 不良事件发生率() {
           buttonStyle="solid"
           value={viewType}
           onChange={(e) => setViewType(e.target.value)}>
-          <Radio.Button value="table" >表格</Radio.Button>
+          <Radio.Button value="table" >详情</Radio.Button>
           <Radio.Button value="chart">图表</Radio.Button>
         </Radio.Group>
       </span>
@@ -286,7 +286,7 @@ export default observer(function 不良事件发生率() {
                     happenRate: parseInt(item.happenRate)
                   }
                 })}
-              padding={[40, 40, 160, 40]}
+              padding={[40, 50, 160, 40]}
               scale={[{
                 dataKey: 'eventTotal',
                 tickCount: 5,
