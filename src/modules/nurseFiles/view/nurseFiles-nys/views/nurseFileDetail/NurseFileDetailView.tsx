@@ -18,6 +18,7 @@ import ThreeBases from "./views/ThreeBases";
 import ExaminationResults from "./views/ExaminationResults";
 import WorkRegistrationForm from "./views/WorkRegistrationForm";
 import NurseJuniorSpecialFile from "./views/NurseJuniorSpecialFile";
+import OnEducation from "./views/OnEducation";
 import FileList from "./views/FileList";
 import { nurseFileDetailViewModal } from "./NurseFileDetailViewModal";
 import { appStore } from "src/stores";
@@ -93,6 +94,11 @@ const ROUTE_LIST = [
     type: "nurseJuniorSpecialFile",
     component: NurseJuniorSpecialFile,
     name: "专科护士"
+  },
+  {
+    type: "onEducation",
+    component: OnEducation,
+    name: "外出进修"
   }
   // {
   //   type: 'fileList',

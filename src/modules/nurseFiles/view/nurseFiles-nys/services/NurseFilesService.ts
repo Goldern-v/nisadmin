@@ -332,6 +332,22 @@ export default class NurseFilesService extends BaseApiService {
   public cancelNurseTransfer(id: string) {
     return this.get(`/nurseTransfer/cancelNurseTransfer/${id}`)
   }
+
+  /** 外出进修更新 */
+  public async onEducationSaveOrUpdate(type: string, obj: any) {
+    return this.post(`/${type}/saveOrUpdate`, obj)
+  }
+  /**外出进修列表 */
+  public async onEducationNoSubmit(type: string, empNo: any) {
+    return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then((res) => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    })
+  }
+  /** 外出进修删除 */
+  public async onEducationDelById(type: string, id: any) {
+    return this.get(`/${type}/delById/${id}`)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

@@ -51,10 +51,10 @@ export default function Format(row: any, getTableData: any) {
           },
           ...(row.zyzsUrl
             ? row.zyzsUrl.split(",").map((item: any, index: number) => {
-                return {
-                  ["执业证书" + (index + 1)]: item
-                };
-              })
+              return {
+                ["执业证书" + (index + 1)]: item
+              };
+            })
             : [])
         ],
         allData: row
@@ -100,10 +100,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -128,10 +128,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -153,10 +153,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -179,10 +179,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -205,10 +205,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -234,10 +234,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -256,10 +256,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -281,10 +281,10 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -329,10 +329,10 @@ export default function Format(row: any, getTableData: any) {
         tableFormat: [],
         fileData: row.path
           ? row.path.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
@@ -351,13 +351,44 @@ export default function Format(row: any, getTableData: any) {
         ],
         fileData: row.path
           ? row.path.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item
-              };
-            })
+            return {
+              ["附件" + (index + 1)]: item
+            };
+          })
           : [],
         allData: row
       });
+    }
+    case '外出进修': {
+      return globalModal.auditModal.show({
+        getTableData: getTableData,
+        id: row.id,
+        empNo: row.empNo || row.commiterNo,
+        type: 'nurseOutStudy',
+        title: '审核外出进修',
+        tableFormat: [
+          {
+            进修专业: `studyMajor`,
+            进修单位: `unit`
+          },
+          {
+            进修单位所属地: `unitLocal`,
+            进修开始时间: `startDate`
+          },
+          {
+            进修结束时间: `endDate`,
+            '进修时长(天)': `studyHour`
+          }
+        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+            return {
+              ['附件' + (index + 1)]: item
+            }
+          })
+          : [],
+        allData: row
+      })
     }
   }
 }
