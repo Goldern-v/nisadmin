@@ -87,11 +87,11 @@ class SelectPeopleViewModel {
       if (this.stepState.length == 1) {
         if (this.stepState[0] == "默认科室") {
           this.currentData = (await ser.defaultDeptUser("", {
-            showAuthDept: true
+            showAuthDept: false
           })).data;
         } else if (this.stepState[0] == "按片区选择") {
           this.currentData = {
-            list: (await ser.groupByBigDeptInDeptList({ showAuthDept: true }))
+            list: (await ser.groupByBigDeptInDeptList({ showAuthDept: false }))
               .data
           };
         } else if (this.stepState[0] == "按护理单元选择") {
@@ -100,7 +100,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         } else if (this.stepState[0] == "按职务选择") {
@@ -109,7 +109,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         } else if (this.stepState[0] == "按职称选择") {
@@ -118,7 +118,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         } else if (this.stepState[0] == "按层级选择") {
@@ -127,7 +127,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         }
@@ -142,7 +142,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         } else if (this.stepState[0] == "按职务选择") {
@@ -151,7 +151,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         } else if (this.stepState[0] == "按职称选择") {
@@ -160,7 +160,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         } else if (this.stepState[0] == "按层级选择") {
@@ -169,7 +169,7 @@ class SelectPeopleViewModel {
               this.selectedBigDeptCode,
               "",
               "",
-              { showAuthDept: true }
+              { showAuthDept: false }
             )).data
           };
         }

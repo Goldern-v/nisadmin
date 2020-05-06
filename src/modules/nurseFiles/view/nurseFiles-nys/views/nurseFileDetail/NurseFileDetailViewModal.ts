@@ -4,7 +4,8 @@ import { DictItem } from "src/services/api/CommonApiService";
 import service from "src/services/api";
 let dictList = {
   文件类型: "nurse_junior_special_type",
-  工作编制: "user_work_conversion"
+  工作编制: "user_work_conversion",
+  进修单位所属地: "level"
 };
 
 type DictList = typeof dictList;

@@ -55,17 +55,17 @@ const LEFT_MENU_CONFIG_NYS = [
     component: RetiredRetireesNys,
     icon: <TXHSCX />
   },
-  {
-    title: "查询统计",
-    icon: <CXTJ />,
-    children: [
-      {
-        title: "外出进修",
-        path: "/nurseFile/outStudy",
-        component: StatisticsViewsNys
-      }
-    ]
-  }
+  // {
+  //   title: "查询统计",
+  //   icon: <CXTJ />,
+  //   children: [
+  //     {
+  //       title: "外出进修",
+  //       path: "/nurseFile/outStudy",
+  //       component: StatisticsViewsNys
+  //     }
+  //   ]
+  // }
 ]
 
 const LEFT_MENU_CONFIG_HJ = [
