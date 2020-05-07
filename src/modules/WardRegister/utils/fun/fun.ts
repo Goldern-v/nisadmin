@@ -49,12 +49,12 @@ export function getFun(context: any) {
         if (res.data[res.data.length - 1]) {
           let blockId = (res.data[res.data.length - 1] as any)!.id;
           // let lastPageIndex = await getLastPageIndex(blockId);
-          // setSelectedBlockId(blockId);
-          setPageOptions({
-            ...pageOptions,
-            // pageIndex: lastPageIndex,
-            pageIndex: 1
-          });
+          setSelectedBlockId(blockId);
+          // setPageOptions({
+          //   ...pageOptions,
+          //   pageIndex: lastPageIndex,
+          // });
+          getPage(blockId)
         } else {
           setSelectedBlockId(null);
           setTotal(0);
@@ -106,14 +106,14 @@ export function getFun(context: any) {
     );
   };
 
-  const getPage = () => {
+  const getPage = (blockId?: any) => {
     setPageLoading(true);
     wardRegisterService
       .getPage(registerCode, {
         startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
         endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
         range: paramMap["班次"],
-        blockId: selectedBlockId,
+        blockId: selectedBlockId || blockId,
         paramMap,
         ...pageOptions
       })
