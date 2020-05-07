@@ -46,13 +46,15 @@ export default function AnwserSheetPage(props: Props) {
         </div>
         <div style={{ paddingLeft: '5px' }}>
           {answersList.map((awnserItem: any, awnserIdx: number) =>
-            <span className="choice-item" key={`${idx}-${awnserIdx}`}>
-              {!!awnserItem.isRight &&
-                <span className="correct-choice">{correctImg}</span>}
-              <span className="choice-desc">
-                {`${awnserItem.optionLabel}、${awnserItem.optionContent}`}
+            <React.Fragment>
+              <span className="choice-item" key={`${idx}-${awnserIdx}`}>
+                {!!awnserItem.isRight &&
+                  <span className="correct-choice">{correctImg}</span>}
+                <span className="choice-desc">
+                  {`${awnserItem.optionLabel}、${awnserItem.optionContent}`}
+                </span>
               </span>
-            </span>)}
+            </React.Fragment>)}
         </div>
       </span>
     </div>

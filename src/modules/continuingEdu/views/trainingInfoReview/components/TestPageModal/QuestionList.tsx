@@ -29,18 +29,21 @@ export default function QuestionList(props: Props) {
           {item
             .answerList
             .map((answer: any, asIdx: number) =>
-              <span
-                className="choice-item"
-                key={`${qsIdx}-${asIdx}`}>
-                {!!answer.isRight && <span
-                  className="correct-choice">
-                  {correctImg}
-                </span>}
+              <React.Fragment>
                 <span
-                  className="choice-desc">
-                  {answer.optionLabel}、{answer.optionContent}
+                  className="choice-item"
+                  key={`${qsIdx}-${asIdx}`}>
+                  {!!answer.isRight && <span
+                    className="correct-choice">
+                    {correctImg}
+                  </span>}
+                  <span
+                    className="choice-desc">
+                    {answer.optionLabel}、{answer.optionContent}
+                  </span>
                 </span>
-              </span>
+                <br />
+              </React.Fragment>
             )}
         </div>
       case 3:

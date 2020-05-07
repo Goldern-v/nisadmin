@@ -46,18 +46,19 @@ export default observer(function TestPageModal(props: Props) {
         .then(res => {
           setLoading(false)
           if (res.data) setQuestionInfo(res.data)
-        }, () => setLoading(false))  
+        }, () => setLoading(false))
     } else if (questionIdList) {
       let obj = {
         questionIdList
       }
       trainingInfoReviewService
-      .KKTKpreviewPaper(obj || {})
-      .then(res => {
-        setLoading(false)
-        if (res.data) setQuestionInfo(res.data)
-      }, () => setLoading(false))
+        .KKTKpreviewPaper(obj || {})
+        .then(res => {
+          setLoading(false)
+          if (res.data) setQuestionInfo(res.data)
+        }, () => setLoading(false))
     } else {
+      //根据学习计划id获取试卷信息
       trainingInfoReviewService
         .previewPaper(id?.toString() || '')
         .then(res => {

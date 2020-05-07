@@ -46,13 +46,16 @@ export default function 满意度问卷调查(props: Props) {
         </div>
         <div style={{ paddingLeft: '5px' }}>
           {answersList.map((awnserItem: any, awnserIdx: number) =>
-            <span className="choice-item" key={`${idx}-${awnserIdx}`}>
-              {!!awnserItem.isSelected &&
-                <span className="correct-choice">{correctImg}</span>}
-              <span className="choice-desc">
-                {`${awnserItem.optionLabel}、${awnserItem.optionContent}`}
+            <React.Fragment>
+              <span className="choice-item" key={`${idx}-${awnserIdx}`}>
+                {!!awnserItem.isSelected &&
+                  <span className="correct-choice">{correctImg}</span>}
+                <span className="choice-desc">
+                  {`${awnserItem.optionLabel}、${awnserItem.optionContent}`}
+                </span>
               </span>
-            </span>)}
+              <br />
+            </React.Fragment>)}
         </div>
       </span>
     </div>
