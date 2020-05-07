@@ -221,7 +221,7 @@ export default observer(function CheckedContent() {
           dataSource={selectedList}
           rowSelection={rowSelection}
           columns={columns}
-          surplusHeight={430}
+          surplusHeight={410}
           pagination={{
             current: query.pageIndex,
             total: selectedList.length,
@@ -243,9 +243,7 @@ export default observer(function CheckedContent() {
     </Wrapper>
   );
 });
-const Wrapper = styled.div`
-  height: 660px;
-`;
+const Wrapper = styled.div``;
 const TopBar = styled(TableHeadCon)`
   height: 31px !important;
   justify-content: space-between;

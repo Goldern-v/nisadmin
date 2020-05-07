@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import windowHeight from "src/hooks/windowHeight";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { quesBankView } from "../QuesBankView";
@@ -90,12 +91,14 @@ export default observer(function SelectLabel(props: Props) {
 });
 
 const Wrapper = styled.div`
-  height: 660px;
+  height: 100%;
   .label {
     width: 95%;
     padding: 15px 0 0 0;
-    overflow-y: auto;
-    height: 620px;
+    @media screen {
+      height: calc(100vh - 305px);
+      overflow-y: auto;
+    }
     .box {
       width: 100%;
       position: relative;

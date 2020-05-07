@@ -108,7 +108,7 @@ export default observer(function Table() {
         rowSelection={rowSelection}
         columns={columns}
         rowKey={record => record.id}
-        surplusHeight={430}
+        surplusHeight={410}
         pagination={{
           current: quesBankView.pageIndex,
           total: quesBankView.total,
@@ -130,6 +130,4 @@ export default observer(function Table() {
     </Wrapper>
   );
 });
-const Wrapper = styled.div`
-  height: 625px;
-`;
+const Wrapper = styled.div``;

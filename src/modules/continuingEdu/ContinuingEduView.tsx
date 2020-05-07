@@ -14,7 +14,7 @@ import { ReactComponent as PXGL } from "./assets/icon_svg/PXGL.svg";
 import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
 import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
-export interface Props extends RouteComponentProps { }
+export interface Props extends RouteComponentProps {}
 import 人员管理 from "./人员管理";
 import 审核发布 from "./views/auditEduPlant/AuditEduPlan";
 import 评分管理 from "./views/scoreManage/ScoreManage";
@@ -23,97 +23,98 @@ import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
 import 晋升管理 from "./views/promotionSetting/PromotionSetting";
-
-import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement"
-import ChoiceQustionEdit from '../questionBankManagement/views/ChoiceQuestionEdit'
-import FillingQuestionEdit from '../questionBankManagement/views/FillingQuestionEdit'
-import ShortQuestionEdit from '../questionBankManagement/views/ShortQuestionEdit'
-import LabelQuestionBank from '../questionBankManagement/views/LabelQuestionBank'
-import UploadRecordQuestionBank from '../questionBankManagement/views/UploadRecordQuestionBank'
-import UploadQuestionBank from '../questionBankManagement/views/UploadQuestionBank'
-import WrongQuestionBank from '../questionBankManagement/views/WrongQuestionBank'
-
-import { authStore, appStore } from "src/stores";
+import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
+import ChoiceQustionEdit from "../questionBankManagement/views/ChoiceQuestionEdit";
+import FillingQuestionEdit from "../questionBankManagement/views/FillingQuestionEdit";
+import ShortQuestionEdit from "../questionBankManagement/views/ShortQuestionEdit";
+import LabelQuestionBank from "../questionBankManagement/views/LabelQuestionBank";
+import UploadRecordQuestionBank from "../questionBankManagement/views/UploadRecordQuestionBank";
+import UploadQuestionBank from "../questionBankManagement/views/UploadQuestionBank";
+import WrongQuestionBank from "../questionBankManagement/views/WrongQuestionBank";
+import { appStore } from "src/stores";
 
 export default function ContinuingEdu(props: Props) {
-  const [effect, setEffect] = useState(true);
-  const [dataList, setDataList] = useState([] as any); // 菜单树
-  // 写死的菜单列表
+  const [dataList, setDataList] = useState([] as any); // 动态菜单树
+  const [authList, setAuthList] = useState([] as any); // 固定菜单权限
+
+  // 菜单列表
   const LEFT_MENU_CONFIG = [
     {
       title: "人员管理",
       icon: <RYGL />,
       path: "/continuingEdu/人员管理",
       component: 人员管理,
-      // hide: true
+      hide: () => queyMenuAuthInfo("nm_lat_personelManage")
     },
     {
       title: "审核发布",
       icon: <YNXXB />,
       path: "/continuingEdu/审核发布",
-      component: 审核发布
+      component: 审核发布,
+      hide: () => queyMenuAuthInfo("nm_lat_auditmanage")
     },
     {
       title: "评分管理",
       icon: <LXGL />,
       path: "/continuingEdu/评分管理",
       component: 评分管理,
-      // hide: !appStore.isDev
+      hide: () => queyMenuAuthInfo("nm_lat_scoremanage")
     },
     ...dataList,
     {
       title: "通知管理",
       icon: <TZGL />,
       path: "/continuingEdu/通知管理",
-      component: 通知管理
+      component: 通知管理,
+      hide: () => queyMenuAuthInfo("nm_lat_noticemanage")
     },
     {
       title: "晋升管理",
       icon: <JSGL />,
       path: "/continuingEdu/晋升管理",
       component: 晋升管理,
-      hide: !authStore.isDepartment //护理部可见
+      hide: () => queyMenuAuthInfo("nm_lat_promotemanage")
     },
     {
-      title: '选择题新建和编辑',
+      title: "选择题新建和编辑",
       hide: true,
-      path: '/continuingEdu/choiceQuestionEdit',
+      path: "/continuingEdu/choiceQuestionEdit",
       component: ChoiceQustionEdit
     },
     {
-      title: '填空题新建和编辑',
+      title: "填空题新建和编辑",
       hide: true,
-      path: '/continuingEdu/fillingQuestionEdit',
+      path: "/continuingEdu/fillingQuestionEdit",
       component: FillingQuestionEdit
     },
     {
-      title: '问答题新建和编辑',
+      title: "问答题新建和编辑",
       hide: true,
-      path: '/continuingEdu/shortQuestionEdit',
+      path: "/continuingEdu/shortQuestionEdit",
       component: ShortQuestionEdit
     },
     {
-      title: '标签题库',
+      title: "标签题库",
       hide: true,
-      path: '/continuingEdu/labelQuestionBank',
+      path: "/continuingEdu/labelQuestionBank",
       component: LabelQuestionBank
     },
     {
-      title: '导入题库',
+      title: "导入题库",
       hide: true,
-      path: '/continuingEdu/uploadRecordQuestionBank',
+      path: "/continuingEdu/uploadRecordQuestionBank",
       component: UploadRecordQuestionBank
     },
     {
-      title: '上传新题库',
+      title: "上传新题库",
       hide: true,
-      path: '/continuingEdu/uploadQuestionBank',
+      path: "/continuingEdu/uploadQuestionBank",
       component: UploadQuestionBank
     },
     {
-      title: '错题反馈',
+      title: "错题反馈",
       hide: true,
-      path: '/continuingEdu/wrongQuestionBank',
+      path: "/continuingEdu/wrongQuestionBank",
       component: WrongQuestionBank
     },
     {
@@ -121,68 +122,89 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/questionBankManagement",
       component: 题库管理,
-      hide: !authStore.isDepartment // 菜单设置只有护理部可见
-      // hide: !appStore.isDev || window.location.port == "34002"
+      hide: () => queyMenuAuthInfo("nm_lat_questionbankmanage")
     },
     {
       title: "菜单设置",
       icon: <KSGL />,
       path: "/continuingEdu/菜单设置",
       component: 菜单设置,
-      hide: !authStore.isDepartment // 菜单设置只有护理部可见
+      // hide: !authStore.isDepartment // 菜单设置只有护理部可见
+      hide: () => queyMenuAuthInfo("nm_lat_menusetting")
     }
   ];
+
   // 查询获取动态菜单列表
   const getList = () => {
-    if (effect) {
-      meunSettingApi.getData().then((res: any) => {
-        let newArr: any = [];
-        if (res.data) {
-          let arr = res.data;
-          if (arr.length > 0) {
-            arr.map((item: any, index: number) => {
-              var obj1: any = {
-                id: item.id,
-                title: item.name,
-                icon: getIcon(item.sort),
-                component: 无权限,
-                path: `/continuingEdu/${item.name}?Pid=${item.id}`
-              };
-              if (item.childList && item.childList.length) {
-                let Pid = item.id;
-                let arr: any = [];
-                item.childList.map((item: any, index: any) => {
-                  var obj2: any = {
-                    id: item.id,
-                    title: item.name,
-                    component: 主列表页,
-                    path: `/continuingEdu/${Pid}/${item.id}?Pid=${Pid}&id=${
-                      item.id
-                      }`
-                  };
-                  arr.push(obj2);
-                  obj1.children = arr;
-                });
-              }
-              newArr.push(obj1);
-            });
-            setDataList(newArr);
-          } else {
-            setDataList([]);
-          }
+    meunSettingApi.getData().then((res: any) => {
+      let newArr: any = [];
+      if (res.data) {
+        let arr = res.data;
+        if (arr.length > 0) {
+          arr.map((item: any, index: number) => {
+            var obj1: any = {
+              id: item.id,
+              title: item.name,
+              icon: getIcon(item.sort),
+              component: 无权限,
+              path: `/continuingEdu/${item.name}?Pid=${item.id}`
+              // hide: false
+            };
+            if (item.childList && item.childList.length) {
+              let Pid = item.id;
+              let arr: any = [];
+              item.childList.map((item: any, index: any) => {
+                var obj2: any = {
+                  id: item.id,
+                  title: item.name,
+                  component: 主列表页,
+                  path: `/continuingEdu/${Pid}/${item.id}?Pid=${Pid}&id=${
+                    item.id
+                  }`
+                  // hide: false
+                };
+                arr.push(obj2);
+                obj1.children = arr;
+              });
+            }
+            newArr.push(obj1);
+          });
+          setDataList(newArr);
+        } else {
+          setDataList([]);
         }
-      });
-    }
+      }
+    });
   };
 
+  // 获取固定菜单权限
+  const queyMenuAuthInfo = (val: any) => {
+    let isOk: any = authList.filter((item: any) => item.menuCode === val);
+    return !(isOk && isOk.length);
+  };
+  const getAuth = () => {
+    meunSettingApi.queyMenuAuthInfo().then((res: any) => {
+      setAuthList(res.data);
+    });
+  };
+
+  // 路由跳转
+  // const routerTo = () => {
+  //   console.log("11111111");
+  //   let data = LEFT_MENU_CONFIG.find((item: any, index: any) => {
+  //     return typeof item.hide === "boolean" ? !item.hide : !!!item.hide();
+  //   });
+  //   let url: any =
+  //     data && data.children ? data.children[0].path : data && data.path;
+  //   appStore.history.push(url);
+  // };
+
+  // 初始化动态菜单 菜单权限
   useLayoutEffect(() => {
-    setEffect(false);
-  }, []);
-  // 初始化
-  useEffect(() => {
-    setEffect(true);
+    getAuth();
     getList();
   }, [props.history.location.pathname]);
+
   // 获取icon
   const getIcon = (icon: any) => {
     switch (icon) {
