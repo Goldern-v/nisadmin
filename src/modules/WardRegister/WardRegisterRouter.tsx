@@ -50,6 +50,16 @@ export default function WardRegisterRouter() {
         registerName: "特殊交接登记本"
       }
     },
+    {
+      title: "重点患者评估登记本",
+      path: "/wardRegister/QCRG_03",
+      component: { ...重点患者评估登记本 },
+      icon: <ZDHZ />,
+      payload: {
+        registerCode: "QCRG_03",
+        registerName: "重点患者评估登记本"
+      }
+    },
   ]
 
   const _leftMenuConfig = [

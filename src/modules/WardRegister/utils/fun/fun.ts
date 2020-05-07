@@ -48,11 +48,12 @@ export function getFun(context: any) {
         setBlockList(res.data);
         if (res.data[res.data.length - 1]) {
           let blockId = (res.data[res.data.length - 1] as any)!.id;
-          let lastPageIndex = await getLastPageIndex(blockId);
-          setSelectedBlockId(blockId);
+          // let lastPageIndex = await getLastPageIndex(blockId);
+          // setSelectedBlockId(blockId);
           setPageOptions({
             ...pageOptions,
-            pageIndex: lastPageIndex
+            // pageIndex: lastPageIndex,
+            pageIndex: 1
           });
         } else {
           setSelectedBlockId(null);
@@ -128,7 +129,10 @@ export function getFun(context: any) {
         setRangeConfigList(res.data.rangeConfigList);
         setPageLoading(false);
         if (res.data.itemDataPage.list.length == 0) {
-          createRow();
+          // createRow();
+          setDataSource([
+            { recordDate: moment().format("YYYY-MM-DD") }
+          ])
         }
       });
   };
