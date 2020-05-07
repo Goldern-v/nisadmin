@@ -98,9 +98,13 @@ export default class AuthStore {
   /** 是否是护理部 */
   public get isDepartment() {
     try {
-      return (
-        (this.user && this.user.roleManageCode) === "QCR0001" || this.isAdmin
-      );
+      if (this.isAdmin) return true
+
+      if (this.user && this.user.roleManageCode === "QCR0001") return true
+
+      if (this.user && this.user.roleManageCodeList.find((code: string) => code === 'QCR0001')) return true
+
+      return ''
     } catch (error) {
       return "";
     }
@@ -108,7 +112,11 @@ export default class AuthStore {
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
     try {
-      return this.user && this.user.roleManageCode === "QCR0003";
+      if (this.user && this.user.roleManageCodeList.find((code: string) => code === 'QCR0003')) return true
+
+      if (this.user && (this.user.roleManageCode === "QCR0003")) return true
+
+      return ""
     } catch (error) {
       return "";
     }
