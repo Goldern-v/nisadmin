@@ -6,6 +6,7 @@ import { observer } from "src/vendors/mobx-react-lite";
 import { mainPageModal } from "../MainPageModal";
 import { mainPageApi } from "../api/MainPageApi";
 import { appStore } from "src/stores";
+import { stepServices } from "../../../modal/stepComponent/services/stepServices";
 
 interface Props {
   getId: any;
@@ -235,7 +236,7 @@ export default observer(function Table(props: Props) {
     {
       title: "操作",
       dataIndex: "",
-      width: 180,
+      width: 190,
       align: "center",
       // fixed: "right",
       render(text: any, record: any, index: number) {
@@ -254,6 +255,10 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
             ];
             break;
@@ -271,6 +276,10 @@ export default observer(function Table(props: Props) {
                 {
                   text: "撤销",
                   function: handleRevoke
+                },
+                {
+                  text: "复制",
+                  function: handleCopy
                 }
               ];
             } else {
@@ -282,6 +291,10 @@ export default observer(function Table(props: Props) {
                 {
                   text: "查看信息",
                   function: checkMessage
+                },
+                {
+                  text: "复制",
+                  function: handleCopy
                 }
               ];
             }
@@ -299,6 +312,10 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
             ];
             break;
@@ -315,6 +332,10 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
             ];
             break;
@@ -339,6 +360,10 @@ export default observer(function Table(props: Props) {
               {
                 text: "查看信息",
                 function: checkMessage
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
             ];
             break;
@@ -449,6 +474,54 @@ export default observer(function Table(props: Props) {
   // 查看信息
   const checkMessage = (record: any) => {
     appStore.history.push(`/trainingInfoReview?id=${record.id}`);
+  };
+
+  // 处理复制入参数据
+  const copyData = (data: any, record: any) => {
+    let ajaxMap: any = {
+      1: "addTeachingPlanInfoStudy",
+      2: "addTeachingPlanInfoTrain",
+      3: "addTeachingPlanInfoExam",
+      4: "addTeachingPlanInfoExercise",
+      5: "addTeachingPlanInfoPractise",
+      6: "addTeachingPlanInfoWalkthrough"
+    };
+    data.id && delete data.id;
+    data.archiveTime && delete data.archiveTime;
+    data.createTime && delete data.createTime;
+    data.endTime && delete data.endTime;
+    data.submitTime && delete data.submitTime;
+    data.status = 1;
+    return (stepServices as any)[ajaxMap[record.teachingMethod as any] as any](
+      data
+    );
+  };
+
+  // 复制
+  const handleCopy = (record: any) => {
+    let content = (
+      <div>
+        <div>您确定要复制选中的记录吗？</div>
+      </div>
+    );
+    Modal.confirm({
+      title: "提示",
+      content,
+      okText: "确定",
+      cancelText: "取消",
+      onOk: async () => {
+        let data: any = {};
+        await stepServices.getCompleteInfo(record.id).then(res => {
+          data = res.data;
+        });
+        await stepServices.generateTaskCode().then(res => {
+          data.taskCode = res.data;
+        });
+        await copyData(data, record);
+        Message.success("复制成功");
+        mainPageModal.onload();
+      }
+    });
   };
 
   return (

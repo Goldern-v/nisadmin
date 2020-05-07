@@ -118,8 +118,13 @@ export default observer(function Header(props: Props) {
     </Wrapper>
   );
 });
-const Wrapper = styled(TableHeadCon)`
+const Wrapper = styled.div`
+  width: calc(100vw-200px);
   justify-content: space-between;
+  height: 55px;
+  font-size: 13px;
+  color: #333;
+  padding: 12px 20px 0 20px;
   .ant-select {
     width: 150px;
     margin-right: 15px;
@@ -138,23 +143,11 @@ const Wrapper = styled(TableHeadCon)`
   }
 `;
 const LeftIcon = styled.div`
-  height: 55px;
-  font-size: 13px;
-  position: relative;
-  font-size: 13px;
-  color: #333333;
   padding: 0;
-  display: flex;
-  align-items: center;
+  float: left;
 `;
 
 const RightIcon = styled.div`
-  height: 55px;
-  font-size: 13px;
-  position: relative;
-  font-size: 13px;
-  color: #333333;
   padding: 0 0 0 15px;
-  display: flex;
-  align-items: center;
+  float: right;
 `;

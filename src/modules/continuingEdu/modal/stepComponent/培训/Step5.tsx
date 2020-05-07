@@ -220,18 +220,14 @@ export default observer(function Step5() {
             <td className="key">题目设置：</td>
             <td className="value">
               <div>一份试卷</div>
-              <div>
-                <span style={{ marginRight: 10 }}>
-                  《
-                  {stepViewModal.stepData4PX.questionStatList &&
-                    stepViewModal.stepData4PX.questionStatList[0]
-                      .questionnaireTitle}
-                  》 共
-                  {stepViewModal.stepData4PX.questionStatList &&
-                    stepViewModal.stepData4PX.questionStatList[0].questionCount}
-                  题
-                </span>
-              </div>
+              {stepViewModal.stepData4PX.questionStatList &&
+                stepViewModal.stepData4PX.questionStatList.map((item: any) => {
+                  <div>
+                    <span style={{ marginRight: 10 }}>
+                      《{item.questionnaireTitle}》 共{item.questionCount}题
+                    </span>
+                  </div>;
+                })}
               <div>
                 <Button
                   size="small"

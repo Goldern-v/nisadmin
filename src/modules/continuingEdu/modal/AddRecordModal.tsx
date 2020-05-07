@@ -227,8 +227,8 @@ export default observer(function AddRecordModal(props: Props) {
     >
       <StepHead>
         <Steps current={currentStep}>
-          {stepList.map(item => (
-            <Step title={item.title} />
+          {stepList.map((item: any, index: any) => (
+            <Step title={item.title} key={index} />
           ))}
         </Steps>
       </StepHead>

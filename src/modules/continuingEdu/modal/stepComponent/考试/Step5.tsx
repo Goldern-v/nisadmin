@@ -35,12 +35,14 @@ export default observer(function Step5() {
     3: "病区学分"
   };
 
-  let totalNum = ksStepViewModal.stepData2.questionStatList.reduce(
-    (total: any, current: any) => {
-      return total + current.questionCount;
-    },
-    0
-  );
+  let totalNum =
+    ksStepViewModal.stepData2.questionStatList &&
+    ksStepViewModal.stepData2.questionStatList.reduce(
+      (total: any, current: any) => {
+        return total + current.questionCount;
+      },
+      0
+    );
 
   // 习题预览弹窗
   const handlePagePreview = () => {
