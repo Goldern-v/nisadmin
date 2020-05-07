@@ -335,18 +335,27 @@ export default class NurseFilesService extends BaseApiService {
 
   /** 外出进修更新 */
   public async onEducationSaveOrUpdate(type: string, obj: any) {
-    return this.post(`/${type}/saveOrUpdate`, obj)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.post(`/${type}/saveOrUpdate`, obj).then(res => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    }, () => nurseFileDetailViewModal.pageSpinning = false)
   }
   /**外出进修列表 */
   public async onEducationNoSubmit(type: string, empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true
     return this.get(`/${type}/findByEmpNoSubmit/${empNo}`).then((res) => {
       nurseFileDetailViewModal.pageSpinning = false
       return res
-    })
+    }, () => nurseFileDetailViewModal.pageSpinning = false)
   }
   /** 外出进修删除 */
   public async onEducationDelById(type: string, id: any) {
-    return this.get(`/${type}/delById/${id}`)
+    nurseFileDetailViewModal.pageSpinning = true
+    return this.get(`/${type}/delById/${id}`).then(res => {
+      nurseFileDetailViewModal.pageSpinning = false
+      return res
+    }, () => nurseFileDetailViewModal.pageSpinning = false)
   }
 }
 

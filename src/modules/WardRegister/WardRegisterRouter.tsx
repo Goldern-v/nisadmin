@@ -39,19 +39,6 @@ export default function WardRegisterRouter() {
         registerCode: "QCRG_01",
         registerName: "物品交接登记本"
       }
-    }
-  ]
-
-  const _leftMenuConfig = [
-    {
-      title: "物品交接登记本",
-      path: "/wardRegister",
-      component: { ...物品交接登记本 },
-      icon: <WPJJ />,
-      payload: {
-        registerCode: "QCRG_01",
-        registerName: "物品交接登记本"
-      }
     },
     {
       title: "特殊交接登记本",
@@ -63,6 +50,29 @@ export default function WardRegisterRouter() {
         registerName: "特殊交接登记本"
       }
     },
+  ]
+
+  const _leftMenuConfig = [
+    // {
+    //   title: "物品交接登记本",
+    //   path: "/wardRegister",
+    //   component: { ...物品交接登记本 },
+    //   icon: <WPJJ />,
+    //   payload: {
+    //     registerCode: "QCRG_01",
+    //     registerName: "物品交接登记本"
+    //   }
+    // },
+    // {
+    //   title: "特殊交接登记本",
+    //   path: "/wardRegister/QCRG_02",
+    //   component: { ...物品交接登记本 },
+    //   icon: <TSWP />,
+    //   payload: {
+    //     registerCode: "QCRG_02",
+    //     registerName: "特殊交接登记本"
+    //   }
+    // },
     {
       title: "重点患者评估登记本",
       path: "/wardRegister/QCRG_03",

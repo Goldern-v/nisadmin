@@ -167,7 +167,8 @@ export default observer(function Awards() {
       content: '是否删除该记录?',
       centered: true,
       onOk: () => {
-        nurseFilesService.onEducationDelById('nurseOutStudy', id)
+        nurseFilesService
+          .onEducationDelById('nurseOutStudy', id)
           .then(res => {
             message.success('删除成功')
             getTableData()
