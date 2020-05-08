@@ -159,9 +159,10 @@ export default observer(function Step5() {
           <tr>
             <td className="key">必&nbsp;&nbsp;修：</td>
             <td className="value">
-              {pxStepViewModal.stepData2.bxNurse
-                .map((item: any) => bxNursingMap[item])
-                .join("，")}
+              {pxStepViewModal.stepData2.bxNurse &&
+                pxStepViewModal.stepData2.bxNurse
+                  .map((item: any) => bxNursingMap[item])
+                  .join("，")}
             </td>
           </tr>
           <tr>

@@ -33,6 +33,7 @@ export default observer(function Step1() {
     { name: "病区学分", code: 3 }
   ];
 
+  const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
   const bxNursing = [
     { name: "N0", code: "nurse0" },
     { name: "N1", code: "nurse1" },
@@ -47,7 +48,6 @@ export default observer(function Step1() {
     { name: "天", code: "天" },
     { name: "周", code: "周" }
   ];
-
   const selectNurseModal = createModal(SelectPeopleModal);
 
   let refForm = React.createRef<Form>();
@@ -57,8 +57,14 @@ export default observer(function Step1() {
   };
 
   const onFormChange = (name: string, value: any, from: Form) => {
-    console.log(name, value, "11");
+    setSelectedCheck([...selectedCheck, value]);
+    let isOk = selectedCheck.filter((item: any) => item);
     let data = from.getFields();
+    if (isOk) {
+      data.bxNurse = stepViewModal.stepData2.bxNurse;
+    } else {
+      data.bxNurse = [];
+    }
     stepViewModal.stepData2 = data;
   };
 
@@ -303,13 +309,56 @@ export default observer(function Step1() {
               name="bxNurse"
               aside="注：没有选择的默认为选修"
             >
-              <Checkbox.Group>
-                {bxNursing.map(item => (
-                  <Checkbox value={item.code} key={item.code}>
-                    {item.name}
-                  </Checkbox>
-                ))}
-              </Checkbox.Group>
+              <div>
+                <Checkbox
+                  indeterminate={(() => {
+                    if (stepViewModal.stepData2.bxNurse.length <= 0)
+                      return false;
+                    if (
+                      stepViewModal.stepData2.bxNurse.length >= bxNursing.length
+                    )
+                      return false;
+                    return true;
+                  })()}
+                  onChange={(e: any) => {
+                    let checked = e.target.checked;
+                    console.log(checked, "checkedchecked");
+                    if (checked)
+                      stepViewModal.stepData2.bxNurse = bxNursing.map(
+                        (item: any) => item.code
+                      );
+                    else stepViewModal.stepData2.bxNurse = [];
+                  }}
+                  checked={
+                    stepViewModal.stepData2.bxNurse.length >=
+                      bxNursing.length && bxNursing.length > 0
+                  }
+                >
+                  全选
+                </Checkbox>
+                <Checkbox.Group
+                  value={stepViewModal.stepData2.bxNurse}
+                  onChange={(val: any) => {
+                    stepViewModal.stepData2.bxNurse = val;
+                    console.log(val, "val1111");
+                  }}
+                >
+                  {bxNursing.map((item: any) => (
+                    <Checkbox
+                      onChange={(e: any) =>
+                        (stepViewModal.stepData2.bxNurse = [
+                          stepViewModal.stepData2.bxNurse,
+                          ...e.target.value
+                        ])
+                      }
+                      key={item.code}
+                      value={item.code}
+                    >
+                      {item.name}
+                    </Checkbox>
+                  ))}
+                </Checkbox.Group>
+              </div>
             </Form.Field>
           </Col>
           <Col span={24}>
