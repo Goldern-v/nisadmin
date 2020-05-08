@@ -4,7 +4,7 @@ import { Button, DatePicker, Radio, Spin, Select } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { appStore, authStore } from 'src/stores'
-import { PageTitle } from 'src/components/common'
+import { PageTitle, Place } from 'src/components/common'
 
 import { badEventsNewService } from './../api/badEventsNewService'
 
@@ -36,13 +36,14 @@ export default observer(function 不良事件发生率() {
   const [chartData, setChartData] = useState([] as any[])
   const label = {
     textStyle: {
-      textBaseline: 'top',
+      textBaseline: 'middle',
+      textAlign: 'left',
       fill: '#333',
-      fontSize: 14
+      fontSize: 12
     },
     offset: 10,
-    // autoRotate: false,
-    rotate: 76,
+    autoRotate: false,
+    rotate: 90,
     formatter: (text: string) => {
       let viewText = text
       if (viewText.length > 9) viewText = `${viewText.substr(0, 9)}...`
@@ -53,7 +54,7 @@ export default observer(function 不良事件发生率() {
   const labelFormat = {
     textStyle: {
       fill: '#333',
-      fontSize: 14
+      fontSize: 12
     },
     formatter: (text: string) => {
       return text.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
@@ -102,7 +103,7 @@ export default observer(function 不良事件发生率() {
   const columns: any[] = [
     {
       title: '序号',
-      width: 40,
+      width: 60,
       align: 'center',
       render: (text: any, record: any, idx: number) => {
         if (record.wardCode == '000000') return '合计'
@@ -201,9 +202,10 @@ export default observer(function 不良事件发生率() {
   return <Wrapper>
     <HeaderCon>
       <LeftIcon>
-        {/* <PageTitle>
-          {filterDate[0].format('YYYY')}年{queryObj.title || '护理质量检查小结'}
-        </PageTitle> */}
+        <PageTitle>不良事件发生率</PageTitle>
+      </LeftIcon>
+      <Place />
+      <RightIcon>
         <div className="item">
           <div className="label">时间：</div>
           <div className="content">
@@ -247,9 +249,6 @@ export default observer(function 不良事件发生率() {
             导出
           </Button>
         </div>
-      </LeftIcon>
-      <RightIcon>
-
       </RightIcon>
     </HeaderCon>
     <MidCon>
@@ -268,6 +267,11 @@ export default observer(function 不良事件发生率() {
           loading={loading}
           surplusHeight={260}
           surplusWidth={200}
+          rowClassName={(record: any, index: any): string => {
+            if (index == tableData.length - 1) return 'sum-row'
+
+            return ''
+          }}
           dataSource={tableData}
           columns={columns}
         />
@@ -371,6 +375,9 @@ height: 100%;
     & + .cell {
       border-top: 1px solid rgb(232, 232, 232);
     }
+  }
+  .sum-row{
+    font-weight: bold;
   }
 `
 

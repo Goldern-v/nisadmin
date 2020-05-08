@@ -20,12 +20,12 @@ export default observer(function Table() {
     })
   }
   const columns: ColumnProps<any>[] = [
-    {
-      title: '片区',
-      dataIndex: 'bigDept',
-      width: 100,
-      align: 'left'
-    },
+    // {
+    //   title: '片区',
+    //   dataIndex: 'bigDept',
+    //   width: 100,
+    //   align: 'left'
+    // },
     {
       title: '科室',
       dataIndex: 'deptName',
@@ -70,13 +70,13 @@ export default observer(function Table() {
       width: 90,
       align: 'center'
     },
-    {
-      title: '取得护士执业证书并从事护理岗位时间',
-      dataIndex: 'zyzsDate',
-      key: 'zyzsDate',
-      width: 200,
-      align: 'center'
-    },
+    // {
+    //   title: '取得护士执业证书并从事护理岗位时间',
+    //   dataIndex: 'zyzsDate',
+    //   key: 'zyzsDate',
+    //   width: 200,
+    //   align: 'center'
+    // },
     {
       title: '离职时间',
       dataIndex: 'leaveDate',
@@ -85,20 +85,26 @@ export default observer(function Table() {
       align: 'center'
     },
     {
-      title: '层级',
-      dataIndex: 'nurseHierarchy',
-      key: 'nurseHierarchy',
-      width: 90,
-      align: 'center'
+      title: '离职原因',
+      dataIndex: 'remark',
+      key: 'remark',
+      width: 120,
+      align: 'left'
     },
-    {
-      title: '编制',
-      dataIndex: 'workConversion',
-      key: 'workConversion',
-      width: 90,
-      align: 'center'
-    },
-
+    // {
+    //   title: '层级',
+    //   dataIndex: 'nurseHierarchy',
+    //   key: 'nurseHierarchy',
+    //   width: 90,
+    //   align: 'center'
+    // },
+    // {
+    //   title: '编制',
+    //   dataIndex: 'workConversion',
+    //   key: 'workConversion',
+    //   width: 90,
+    //   align: 'center'
+    // },
     {
       title: '状态',
       dataIndex: 'status',
