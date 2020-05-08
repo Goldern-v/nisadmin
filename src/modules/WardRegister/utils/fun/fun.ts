@@ -176,10 +176,19 @@ export function getFun(context: any) {
   };
 
   const createRow = () => {
-    setDataSource([
-      ...dataSource,
-      { recordDate: moment().format("YYYY-MM-DD") }
-    ]);
+    setDataSource([])
+
+    setTimeout(() => {
+      setDataSource([
+        { recordDate: moment().format("YYYY-MM-DD") },
+        ...dataSource
+      ])
+
+      setTimeout(() => {
+        let target = document.querySelector('.record-page-table .ant-table-row')
+        target && target.scrollIntoView
+      }, 100)
+    })
   };
   return {
     onInitData,

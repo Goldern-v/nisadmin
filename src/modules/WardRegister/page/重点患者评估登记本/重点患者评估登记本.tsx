@@ -523,10 +523,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
                         <div className="aside">{cItem.checkSize}</div>
                       </ThBox>
                     ) : (
-                      <span className="title-text">
-                        {cItem.label || cItem.itemCode}
-                      </span>
-                    )}
+                        <span className="title-text">
+                          {cItem.label || cItem.itemCode}
+                        </span>
+                      )}
                   </CTitleBox>
                 )
               )}
@@ -542,8 +542,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
             </ThBox>
           )
         ) : (
-          item.itemCode
-        ),
+              item.itemCode
+            ),
         align: "center",
         className: "input-cell",
         colSpan: item.colSpan,
@@ -884,23 +884,23 @@ export default observer(function 重点患者评估登记本(props: Props) {
             {record.signerName ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
-              <span
-                onClick={() => {
-                  globalModal
-                    .confirm("删除确认", "是否删除该记录")
-                    .then(res => {
-                      wardRegisterService
-                        .deleteAll(registerCode, [{ id: record.id }])
-                        .then(res => {
-                          message.success("删除成功");
-                          getPage();
-                        });
-                    });
-                }}
-              >
-                删除
-              </span>
-            )}
+                <span
+                  onClick={() => {
+                    globalModal
+                      .confirm("删除确认", "是否删除该记录")
+                      .then(res => {
+                        wardRegisterService
+                          .deleteAll(registerCode, [{ id: record.id }])
+                          .then(res => {
+                            message.success("删除成功");
+                            getPage();
+                          });
+                      });
+                  }}
+                >
+                  删除
+                </span>
+              )}
           </DoCon>
         );
       }
@@ -994,7 +994,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
-        <DeptSelect onChange={() => {}} style={{ width: 150 }} />
+        <DeptSelect onChange={() => { }} style={{ width: 150 }} />
         {popoverContent && (
           <Popover
             placement="bottom"
@@ -1046,6 +1046,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
         {/* {JSON.stringify(columns)} */}
         {selectedBlockId && itemConfigList.length ? (
           <BaseTable
+            className="record-page-table"
             loading={pageLoading}
             dataSource={dataSource}
             columns={columns.filter((item: any) => item)}
@@ -1064,12 +1065,12 @@ export default observer(function 重点患者评估登记本(props: Props) {
             }}
           />
         ) : (
-          <NullBox
-            onClick={onAddBlock}
-            text={"创建登记本"}
-            registerName={registerName}
-          />
-        )}
+            <NullBox
+              onClick={onAddBlock}
+              text={"创建登记本"}
+              registerName={registerName}
+            />
+          )}
       </TableCon>
       <settingModal.Component />
     </Container>

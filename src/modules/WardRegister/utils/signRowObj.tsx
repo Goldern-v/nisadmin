@@ -1,6 +1,7 @@
 import { globalModal } from "src/global/globalModal";
 import { wardRegisterService } from "../services/WardRegisterService";
 import { message } from "src/vendors/antd";
+import { authStore } from 'src/stores'
 import { DoCon } from "src/components/BaseTable";
 import React, { useState, useEffect } from "react";
 export function signRowObj(obj: {
@@ -40,10 +41,18 @@ export function signRowObj(obj: {
         );
       }
 
+      //新建行无法签名
+      if (!record.id) return '签名'
+
       return text ? (
         <div
           className="sign-name"
           onClick={() => {
+            if (title.match('护士长') && !authStore.isRoleManage) {
+              message.error('非护士长无法取消签名')
+              return
+            }
+
             globalModal
               .confirm(`${aside}签名取消`, `你确定取消${aside}签名吗？`)
               .then(res => {
@@ -58,26 +67,32 @@ export function signRowObj(obj: {
           {text}
         </div>
       ) : (
-        <DoCon>
-          <span
-            onClick={() => {
-              globalModal
-                .confirm(`${aside}签名确认`, `你确定${aside}签名吗？`)
-                .then(res => {
-                  signApi(registerCode, selectedBlockId, [record], true).then(
-                    res => {
-                      message.success(`${aside}签名成功`);
-                      Object.assign(record, res.data.itemDataList[0]);
-                      updateDataSource();
-                    }
-                  );
-                });
-            }}
-          >
-            签名
+          <DoCon>
+            <span
+              onClick={() => {
+                console.log(dataIndex, authStore.isRoleManage)
+                if (title.match('护士长') && !authStore.isRoleManage) {
+                  message.error('非护士长无法签名')
+                  return
+                }
+
+                globalModal
+                  .confirm(`${aside}签名确认`, `你确定${aside}签名吗？`)
+                  .then(res => {
+                    signApi(registerCode, selectedBlockId, [record], true).then(
+                      res => {
+                        message.success(`${aside}签名成功`);
+                        Object.assign(record, res.data.itemDataList[0]);
+                        updateDataSource();
+                      }
+                    );
+                  });
+              }}
+            >
+              签名
           </span>
-        </DoCon>
-      );
+          </DoCon>
+        );
     }
   };
 }

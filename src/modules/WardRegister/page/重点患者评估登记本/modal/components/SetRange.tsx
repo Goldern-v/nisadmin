@@ -48,7 +48,7 @@ export default observer(function SetRange(props: Props) {
             }}
             onBlur={() => updateDataSource()}
             defaultValue={text}
-            dataSource={Object.keys(rangeDictMap)}
+            dataSource={['白班', '中班', '夜班']}
           />
         );
       }
@@ -106,8 +106,17 @@ export default observer(function SetRange(props: Props) {
   };
 
   const delRow = (index: number) => {
-    dataSource.splice(index, 1);
-    updateDataSource();
+    let params = JSON.parse(JSON.stringify(dataSource))
+
+    params.splice(index, 1)
+
+    wardRegisterService
+      .saveOrUpdateRangeConfig(blockId, params)
+      .then(res => {
+        message.success('删除成功')
+        dataSource.splice(index, 1)
+        updateDataSource()
+      })
   };
   const addRow = () => {
     dataSource.push({});

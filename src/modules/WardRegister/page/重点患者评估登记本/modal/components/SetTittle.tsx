@@ -129,18 +129,18 @@ export default observer(function SetTittle(props: Props) {
             {empNameOptions()}
           </Select>
         ) : (
-          <Select
-            mode="tags"
-            style={{ width: "100%" }}
-            onChange={(value: any) => {
-              record.options = value.join(";");
-              updateDataSource();
-            }}
-            value={text ? text.split(";") : []}
-            open={false}
-            tokenSeparators={[";", "；"]}
-          />
-        );
+            <Select
+              mode="tags"
+              style={{ width: "100%" }}
+              onChange={(value: any) => {
+                record.options = value.join(";");
+                updateDataSource();
+              }}
+              value={text ? text.split(";") : []}
+              open={false}
+              tokenSeparators={[";", "；"]}
+            />
+          );
       }
     },
     {
@@ -173,8 +173,17 @@ export default observer(function SetTittle(props: Props) {
   };
 
   const delRow = (index: number) => {
-    dataSource.splice(index, 1);
-    updateDataSource();
+    let params = JSON.parse(JSON.stringify(dataSource))
+
+    params.splice(index, 1)
+
+    wardRegisterService
+      .saveOrUpdateItemConfig(registerCode, blockId, params)
+      .then(res => {
+        message.success('删除成功')
+        dataSource.splice(index, 1)
+        updateDataSource()
+      })
   };
   const addRow = () => {
     dataSource.push({});

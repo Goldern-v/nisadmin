@@ -49,38 +49,38 @@ export default function SettingModal(props: Props) {
 
   const tabConfig = visible
     ? [
-        {
-          title: "标题设置",
-          component: (
-            <SetTittle
-              blockId={blockId}
-              selectedBlockObj={selectedBlockObj}
-              registerCode={registerCode}
-              onOkCallBack={onOkCallBack}
-            />
-          ),
-          index: 1
-        },
-        ...[
-          codeAdapter(
-            {
-              QCRG_04: {
-                title: "交班班次与提醒设置",
-                component: (
-                  <SetRange
-                    blockId={blockId}
-                    registerCode={registerCode}
-                    onOkCallBack={onOkCallBack}
-                  />
-                ),
-                index: 2
-              },
-              other: null
+      {
+        title: "标题设置",
+        component: (
+          <SetTittle
+            blockId={blockId}
+            selectedBlockObj={selectedBlockObj}
+            registerCode={registerCode}
+            onOkCallBack={onOkCallBack}
+          />
+        ),
+        index: 1
+      },
+      ...[
+        codeAdapter(
+          {
+            QCRG_04: {
+              title: "交班班次与提醒设置",
+              component: (
+                <SetRange
+                  blockId={blockId}
+                  registerCode={registerCode}
+                  onOkCallBack={onOkCallBack}
+                />
+              ),
+              index: 2
             },
-            registerCode
-          )
-        ]
+            other: null
+          },
+          registerCode
+        )
       ]
+    ]
     : [];
 
   const onSave = async () => {
@@ -107,11 +107,17 @@ export default function SettingModal(props: Props) {
       closable={false}
       footer={
         <div>
-          <Button onClick={onCancel}>关闭</Button>
+          <Button onClick={() => {
+            onCancel()
+            onOkCallBack && onOkCallBack()
+          }}>关闭</Button>
         </div>
       }
       visible={visible}
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel()
+        onOkCallBack && onOkCallBack()
+      }}
       onOk={onSave}
       okText="保存"
       forceRender
