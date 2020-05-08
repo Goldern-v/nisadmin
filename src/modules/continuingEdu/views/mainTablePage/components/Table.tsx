@@ -236,7 +236,7 @@ export default observer(function Table(props: Props) {
     {
       title: "操作",
       dataIndex: "",
-      width: 190,
+      width: 180,
       align: "center",
       // fixed: "right",
       render(text: any, record: any, index: number) {
@@ -255,11 +255,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
-              },
-              {
-                text: "复制",
-                function: handleCopy
               }
+              // {
+              //   text: "复制",
+              //   function: handleCopy
+              // }
             ];
             break;
           case "待审核":
@@ -276,11 +276,11 @@ export default observer(function Table(props: Props) {
                 {
                   text: "撤销",
                   function: handleRevoke
-                },
-                {
-                  text: "复制",
-                  function: handleCopy
                 }
+                // {
+                //   text: "复制",
+                //   function: handleCopy
+                // }
               ];
             } else {
               data = [
@@ -291,11 +291,11 @@ export default observer(function Table(props: Props) {
                 {
                   text: "查看信息",
                   function: checkMessage
-                },
-                {
-                  text: "复制",
-                  function: handleCopy
                 }
+                // {
+                //   text: "复制",
+                //   function: handleCopy
+                // }
               ];
             }
             break;
@@ -312,11 +312,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
-              },
-              {
-                text: "复制",
-                function: handleCopy
               }
+              // {
+              //   text: "复制",
+              //   function: handleCopy
+              // }
             ];
             break;
           case "退回":
@@ -332,11 +332,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
-              },
-              {
-                text: "复制",
-                function: handleCopy
               }
+              // {
+              //   text: "复制",
+              //   function: handleCopy
+              // }
             ];
             break;
           case "草稿":
@@ -360,11 +360,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "查看信息",
                 function: checkMessage
-              },
-              {
-                text: "复制",
-                function: handleCopy
               }
+              // {
+              //   text: "复制",
+              //   function: handleCopy
+              // }
             ];
             break;
           default:

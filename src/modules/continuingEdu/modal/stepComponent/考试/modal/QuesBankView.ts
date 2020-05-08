@@ -6,7 +6,8 @@ class QuesBankView {
   @observable public selectedLabel: any = []; //选中标签
   @observable public bankType: any = "系统题库"; //题库类型
   @observable public questionType = "单选题"; //题目类型
-  @observable public keyWord = ""; //关键字
+  @observable public keyWord = ""; //关键字查询
+  @observable public keyWordSelect = ""; //关键字搜索
   @observable public tableList = []; // 表格内容
   @observable public tableLoading = false;
   @observable public pageIndex: any = 1;
@@ -34,7 +35,7 @@ class QuesBankView {
   @computed
   get checkObj() {
     return {
-      keyWord: "",
+      keyWord: this.keyWordSelect,
       pageIndex: 1,
       pageSize: 100
     };

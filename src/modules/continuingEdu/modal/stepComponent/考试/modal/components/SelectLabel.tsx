@@ -4,6 +4,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { quesBankView } from "../QuesBankView";
 import { Select, Checkbox } from "antd";
+// import { stepServices } from "../../../services/stepServices";
 export interface Props {}
 
 export default observer(function SelectLabel(props: Props) {
@@ -26,6 +27,13 @@ export default observer(function SelectLabel(props: Props) {
       .map((o: any) => o.labelContent);
   };
 
+  // 实时查询
+  // const toSearch = (value: any) => {
+  //   console.log(value, "value99999");
+  //   quesBankView.keyWordSelect = value;
+  //   quesBankView.initData();
+  // };
+
   return (
     <Wrapper>
       <Select
@@ -45,6 +53,8 @@ export default observer(function SelectLabel(props: Props) {
         filterOption={(input: string, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
+        // filterOption={false}
+        // onSearch={(value: any) => toSearch(value)}
       >
         {quesBankView.checkLabelList.map((item: any, index: number) => (
           <Select.Option value={item.id.toString()} key={item.id}>
@@ -127,30 +137,3 @@ const Wrapper = styled.div`
     }
   }
 `;
-// const Wrapper = styled.div`
-//   .label {
-//     height: 400px;
-//     width: 95%;
-//     padding: 15px 0 0 0;
-//     position: relative;
-//     .li {
-//       height: 40px;
-//       width: 100%;
-//       list-style-type: none;
-//       line-height: 40px;
-//       background: #eefdee;
-//       margin-bottom: 10px;
-//       padding: 0 10px;
-//       box-sizing: border-box;
-//       border-radius: 5px;
-//     }
-//     .li:after {
-//       content: "×";
-//       font-size: 16px;
-//       font-weight: bold;
-//       position: absolute;
-//       right: 10px;
-//       cursor: pointer;
-//     }
-//   }
-// `;
