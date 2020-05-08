@@ -267,8 +267,8 @@ export default observer(function FilterCon() {
               <Form.Field label={"性别"} name={"sex"} >
                 <Select allowClear={true}>
                   {[
-                    { name: '男', code: '男' },
-                    { name: '女', code: '女' },
+                    { name: '男', code: '0' },
+                    { name: '女', code: '1' },
                   ].map((item: any, index: number) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}

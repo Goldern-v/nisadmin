@@ -12,6 +12,13 @@ let zipPath = `publish/护理管理_${hospitalName}_${moment().format(
   "YYYY_MM_DD_HH_mm"
 )}.zip`;
 
+console.log(process.env.REACT_APP_ONLY_BAD_EVENT)
+
+if (process.env.REACT_APP_ONLY_BAD_EVENT)
+  zipPath = `publish/不良事件_${hospitalName}_${moment().format(
+    "YYYY_MM_DD_HH_mm"
+  )}.zip`;
+
 const resolve = dir => path.join(__dirname, "./", dir);
 const publishPath = resolve("publish");
 const zipName = (() => zipPath)();

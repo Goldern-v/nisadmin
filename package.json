@@ -85,7 +85,7 @@
     "start:nys": "env-cmd -e nys react-app-rewired start",
     "build:wh": "env-cmd -e wh react-app-rewired build && env-cmd -e wh node buildZip",
     "build:hj": "env-cmd -e hj react-app-rewired build && env-cmd -e hj node buildZip",
-    "build:hj-be": "env-cmd -e hj-be react-app-rewired build && env-cmd -e hj node buildZip",
+    "build:hj-be": "env-cmd -e hj-be react-app-rewired build && env-cmd -e hj-be node buildZip",
     "build:ys": "env-cmd -e ys react-app-rewired build && env-cmd -e ys node buildZip",
     "build:nys": "env-cmd -e nys react-app-rewired build && env-cmd -e nys node buildZip",
     "build": "env-cmd -e hj react-app-rewired build",
