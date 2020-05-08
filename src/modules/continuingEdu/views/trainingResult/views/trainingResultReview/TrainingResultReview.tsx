@@ -36,6 +36,7 @@ export default observer(function TrainingResultReview() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
 
   const statusColumns = (() => {
+    //根据线上还是线下判断展示学习情况还是签到情况
     if ((baseInfo.organizationWay || baseInfo.organizationWayName) == '线下')
       return [{
         dataIndex: 'signInTime',
@@ -54,10 +55,14 @@ export default observer(function TrainingResultReview() {
         align: 'center',
         width: 60,
         render: (status: number, record: any) => {
+          let percentStr = '(0%)'
+          if (record.taskFinishRate)
+            percentStr = `(${record.taskFinishRate}%)`
+
           if (status == 0)
             return <span style={{ color: 'red' }}>未完成</span>
           else
-            return <span>已完成</span>
+            return <span>已完成{percentStr}</span>
         }
       },
       {
