@@ -118,22 +118,32 @@ export function getFun(context: any) {
         ...pageOptions
       })
       .then(res => {
+        setPageLoading(false)
+        if (!res.data) return
+
         console.log(
           thMerge(res.data.itemConfigList),
           "thMerge(res.data.itemConfigList)"
         );
         console.log(res, "res");
+
+        let newList = res.data.itemDataPage.list || []
+
         setTotal(res.data.itemDataPage.totalCount);
-        setDataSource(res.data.itemDataPage.list);
         setItemConfigList(thMerge(res.data.itemConfigList));
         setRangeConfigList(res.data.rangeConfigList);
-        setPageLoading(false);
-        if (res.data.itemDataPage.list.length == 0) {
-          // createRow();
-          setDataSource([
-            { recordDate: moment().format("YYYY-MM-DD") }
-          ])
-        }
+
+        //清除table组件里面的表单组件残余的数值
+        setDataSource([])
+        setTimeout(() => {
+          if (newList.length == 0) {
+            setDataSource([
+              { recordDate: moment().format("YYYY-MM-DD") }
+            ])
+          } else {
+            setDataSource(newList)
+          }
+        })
       });
   };
 
@@ -175,6 +185,7 @@ export function getFun(context: any) {
     });
   };
 
+  //新建行
   const createRow = () => {
     setDataSource([])
 
@@ -190,12 +201,20 @@ export function getFun(context: any) {
       }, 100)
     })
   };
+
+  //行编辑禁用规则
+  const cellDisabled = (record: any) => {
+    // console.log(registerCode)
+    return !!record.signerName
+  }
+
   return {
     onInitData,
     getPage,
     onAddBlock,
     onSave,
     onDelete,
-    createRow
+    createRow,
+    cellDisabled
   };
 }

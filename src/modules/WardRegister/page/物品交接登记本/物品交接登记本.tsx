@@ -681,7 +681,8 @@ export default observer(function HandoverRegister(props: Props) {
   const handleDeleteRow = (record: any, idx: number) => {
     let deleteRow = () => {
       dataSource.splice(idx, 1)
-      setDataSource(dataSource.concat())
+      setDataSource([])
+      setTimeout(() => setDataSource(dataSource.concat()))
     }
     if (record.editType && record.editType == 'new') {
       deleteRow()
