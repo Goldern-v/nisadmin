@@ -120,12 +120,20 @@ export default observer(function SetTittle(props: Props) {
             mode="tags"
             style={{ width: "100%" }}
             onChange={(value: any) => {
-              record.options = value.join(";");
+              let target = value.find((item: any) => item == '全选')
+
+              if (target) {
+                record.options = empNameList.join(";")
+              } else {
+                record.options = value.join(";");
+              }
+
               updateDataSource();
             }}
             value={text ? text.split(";") : []}
             tokenSeparators={[";", "；"]}
           >
+            <Select.Option value="全选">全选</Select.Option>
             {empNameOptions()}
           </Select>
         ) : (

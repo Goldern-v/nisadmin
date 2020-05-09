@@ -444,9 +444,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 <Input
                   disabled={cellDisabled(record)}
                   defaultValue={text}
-                  onChange={value => {
-                    record.recordDate = value;
-                  }}
+                  onChange={e => record.recordDate = e.target.value}
                   onBlur={() => updateDataSource()}
                   className={isEndTime(record.recordDate, record.有效期) || ""}
                 />
