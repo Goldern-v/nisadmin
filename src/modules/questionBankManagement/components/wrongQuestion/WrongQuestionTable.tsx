@@ -141,15 +141,15 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     switch (record.questionType) {
       case '填空题':
         type = 'filling'
-        questionId = record.flowId
+        questionId = record.questionId
         break
       case '问答题':
         type = 'short'
-        questionId = record.flowId
+        questionId = record.questionId
         break
       default:
         type = 'choice'
-        questionId = record.flowId
+        questionId = record.questionId
     }
     history.push(`/continuingEdu/${type}QuestionEdit?id=${questionId}`)
   }
