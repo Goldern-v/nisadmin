@@ -2,12 +2,14 @@ import { observable, computed } from "mobx";
 import { stepServices } from "../../services/stepServices";
 
 class QuesBankView {
-  @observable public checkLabelList = [];
   @observable public selectedLabel: any = []; //选中标签
   @observable public bankType: any = "系统题库"; //题库类型
   @observable public questionType = "单选题"; //题目类型
   @observable public keyWord = ""; //关键字查询
-  @observable public keyWordSelect = ""; //关键字搜索
+  @observable public checkLabelList = []; // 下拉框所需数据
+  @observable public allData = []; // 下拉框全部数据
+  @observable public keyWordSelect = ""; //下拉框关键字搜索
+  @observable public selectLoading = false;
   @observable public tableList = []; // 表格内容
   @observable public tableLoading = false;
   @observable public pageIndex: any = 1;
@@ -23,23 +25,27 @@ class QuesBankView {
   @observable public JDQuestionNum: any = 0; // 简答条数
   @observable public saveData: any = []; // 保存数据
 
-  async initData() {
-    await Promise.all([
-      //标签
-      stepServices.searchLabels(this.checkObj).then(res => {
-        this.checkLabelList = res.data.list;
-      })
-    ]);
-  }
-
   @computed
+  // 获取所需数据入参
   get checkObj() {
     return {
       keyWord: this.keyWordSelect,
       pageIndex: 1,
       pageSize: 100
+      // getAll: true
     };
   }
+
+  // 获取全部数据入参
+  get allCheckObj() {
+    return {
+      keyWord: "",
+      pageIndex: 1,
+      pageSize: 20,
+      getAll: true
+    };
+  }
+
   get postObj() {
     return {
       pageIndex: this.pageIndex,
@@ -63,7 +69,24 @@ class QuesBankView {
     });
   }
 
+  //按需获取前100条数据
+  initData(obj?: any) {
+    stepServices.searchLabels(obj ? obj : this.checkObj).then(res => {
+      this.checkLabelList = res.data.list || [];
+    });
+  }
+
+  //获取所有标签数据
+  initAllData() {
+    this.selectLoading = true;
+    stepServices.searchLabels(this.allCheckObj).then(res => {
+      this.selectLoading = false;
+      this.allData = res.data.list || [];
+    });
+  }
+
   init() {
+    this.initAllData();
     this.initData();
     this.onload();
   }

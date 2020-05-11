@@ -59,5 +59,13 @@ export default class MainPageApi extends BaseApiService {
       qs.stringify({ id })
     );
   }
+
+  // 主菜单复制功能
+  public async copyTeachingPlan(id: any) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/copyTeachingPlan`,
+      qs.stringify({ id })
+    );
+  }
 }
 export const mainPageApi = new MainPageApi();

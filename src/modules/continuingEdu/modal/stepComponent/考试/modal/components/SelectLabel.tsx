@@ -4,7 +4,6 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { quesBankView } from "../QuesBankView";
 import { Select, Checkbox } from "antd";
-// import { stepServices } from "../../../services/stepServices";
 export interface Props {}
 
 export default observer(function SelectLabel(props: Props) {
@@ -22,17 +21,26 @@ export default observer(function SelectLabel(props: Props) {
 
   // 通过id获取标签名
   const labelContent = (item: any) => {
-    return quesBankView.checkLabelList
+    return quesBankView.allData
       .filter((k: any) => k.id.toString() === item)
       .map((o: any) => o.labelContent);
   };
 
   // 实时查询
-  // const toSearch = (value: any) => {
-  //   console.log(value, "value99999");
-  //   quesBankView.keyWordSelect = value;
-  //   quesBankView.initData();
-  // };
+  const toSearch = (value: any) => {
+    quesBankView.keyWordSelect = value;
+    quesBankView.initData();
+  };
+
+  // 聚焦获取前100条默认数据
+  const handleFocus = () => {
+    let obj = {
+      keyWord: "",
+      pageIndex: 1,
+      pageSize: 100
+    };
+    quesBankView.initData(obj);
+  };
 
   return (
     <Wrapper>
@@ -48,13 +56,15 @@ export default observer(function SelectLabel(props: Props) {
           quesBankView.pageIndex = 1;
           quesBankView.onload();
         }}
+        onFocus={handleFocus}
         style={{ width: "95%" }}
         showSearch
-        filterOption={(input: string, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        // filterOption={false}
-        // onSearch={(value: any) => toSearch(value)}
+        // filterOption={(input: string, option: any) =>
+        //   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        // }
+        filterOption={false}
+        onSearch={(value: any) => toSearch(value)}
+        loading={quesBankView.selectLoading}
       >
         {quesBankView.checkLabelList.map((item: any, index: number) => (
           <Select.Option value={item.id.toString()} key={item.id}>

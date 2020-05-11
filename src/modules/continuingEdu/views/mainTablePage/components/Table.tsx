@@ -255,11 +255,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
-              // {
-              //   text: "复制",
-              //   function: handleCopy
-              // }
             ];
             break;
           case "待审核":
@@ -276,11 +276,11 @@ export default observer(function Table(props: Props) {
                 {
                   text: "撤销",
                   function: handleRevoke
+                },
+                {
+                  text: "复制",
+                  function: handleCopy
                 }
-                // {
-                //   text: "复制",
-                //   function: handleCopy
-                // }
               ];
             } else {
               data = [
@@ -291,11 +291,11 @@ export default observer(function Table(props: Props) {
                 {
                   text: "查看信息",
                   function: checkMessage
+                },
+                {
+                  text: "复制",
+                  function: handleCopy
                 }
-                // {
-                //   text: "复制",
-                //   function: handleCopy
-                // }
               ];
             }
             break;
@@ -312,11 +312,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
-              // {
-              //   text: "复制",
-              //   function: handleCopy
-              // }
             ];
             break;
           case "退回":
@@ -332,11 +332,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "删除",
                 function: handleDelete
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
-              // {
-              //   text: "复制",
-              //   function: handleCopy
-              // }
             ];
             break;
           case "草稿":
@@ -360,11 +360,11 @@ export default observer(function Table(props: Props) {
               {
                 text: "查看信息",
                 function: checkMessage
+              },
+              {
+                text: "复制",
+                function: handleCopy
               }
-              // {
-              //   text: "复制",
-              //   function: handleCopy
-              // }
             ];
             break;
           default:
@@ -509,17 +509,11 @@ export default observer(function Table(props: Props) {
       content,
       okText: "确定",
       cancelText: "取消",
-      onOk: async () => {
-        let data: any = {};
-        await stepServices.getCompleteInfo(record.id).then(res => {
-          data = res.data;
+      onOk: () => {
+        mainPageApi.copyTeachingPlan(record.id).then(res => {
+          if (res.code === "200") Message.success("复制成功");
+          mainPageModal.onload();
         });
-        await stepServices.generateTaskCode().then(res => {
-          data.taskCode = res.data;
-        });
-        await copyData(data, record);
-        Message.success("复制成功");
-        mainPageModal.onload();
       }
     });
   };
