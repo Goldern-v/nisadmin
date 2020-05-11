@@ -48,13 +48,13 @@ export default observer(function ImportModal(props: Props) {
       style={{ width: '100%' }}
       defaultValue={val}
       showSearch
-      filterOption={() => (input: any, option: any) =>
+      filterOption={(input: any, option: any) =>
         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
       onChange={(val: any) => {
         record[key] = val
-        if (key == 'deptName') {
-          let target = deptList.find((item: any) => item.name == val)
-          if (target) record.empNo = target.code
+        if (key == 'deptCode') {
+          let target = deptList.find((item: any) => item.code == val)
+          if (target) record.deptName = target.name
         }
         setTableData(tableData)
       }}>
@@ -92,12 +92,12 @@ export default observer(function ImportModal(props: Props) {
     },
     {
       title: "科室",
-      dataIndex: "deptName",
+      dataIndex: "deptCode",
       width: 120,
       className: 'ipt-cell',
       align: "center",
       render: (text: any, row: any, index: number) =>
-        selectRender(text, row, index, 'deptName', deptList)
+        selectRender(text, row, index, 'deptCode', deptList)
     },
     {
       title: "员工号",
@@ -316,8 +316,9 @@ export default observer(function ImportModal(props: Props) {
         }
       })
 
-      console.log(newData)
       setTableData(newData)
+    } else {
+      setTableData([])
     }
   }, [visible])
 
