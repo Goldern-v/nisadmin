@@ -336,6 +336,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
   };
 
   const columns: ColumnProps<any>[] | any = [
+    //不同登记本固定的项目
     ...codeAdapter(
       {
         QCRG_12: [
@@ -391,7 +392,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             render(text: string, record: any, index: number) {
               return (
                 <Input
-                  disabled={!!record.signerName}
+                  disabled={cellDisabled(record)}
                   defaultValue={text}
                   onChange={value => {
                     record.recordDate = value;
@@ -441,11 +442,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
             render(text: string, record: any, index: number) {
               return (
                 <Input
-                  disabled={!!record.signerName}
+                  disabled={cellDisabled(record)}
                   defaultValue={text}
-                  onChange={value => {
-                    record.recordDate = value;
-                  }}
+                  onChange={e => record.recordDate = e.target.value}
                   onBlur={() => updateDataSource()}
                   className={isEndTime(record.recordDate, record.有效期) || ""}
                 />
@@ -467,7 +466,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           render(text: string, record: any, index: number) {
             let children = (
               <AutoComplete
-                disabled={!!record.signerName}
+                disabled={cellDisabled(record)}
                 dataSource={rangConfigList.map((item: any) => item.itemCode)}
                 defaultValue={text}
                 onChange={value => {
@@ -498,6 +497,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
       },
       registerCode
     ),
+    //后端返回的自定义项目
     ...itemConfigList.map((item: any) => {
       return {
         title: item.children ? (
@@ -561,7 +561,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 "checkSize-warning":
                   item.checkSize && (text != item.checkSize && text != "√")
               })}
-              disabled={!!record.signerName}
+              disabled={cellDisabled(record)}
               dataSource={
                 item.options
                   ? item.options.split(";").filter((item: any) => item)
@@ -606,7 +606,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
         }
       };
     }),
-
+    //不同登记本固定的项目
     ...codeAdapter(
       {
         QCRG_03: [
@@ -614,7 +614,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             title: "护士长",
             width: 70,
             dataIndex: "signerName",
-            aside: "交班",
+            aside: "",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -702,7 +702,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             render(text: string, record: any, index: number) {
               return (
                 <Input.TextArea
-                  disabled={!!record.signerName}
+                  disabled={cellDisabled(record)}
                   autosize={true}
                   defaultValue={text}
                   onChange={e => {
@@ -816,7 +816,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             render(text: string, record: any, index: number) {
               return (
                 <Input.TextArea
-                  disabled={!!record.signerName}
+                  disabled={cellDisabled(record)}
                   autosize={true}
                   defaultValue={text}
                   onChange={e => {
@@ -877,8 +877,14 @@ export default observer(function 重点患者评估登记本(props: Props) {
     {
       title: "操作",
       width: 50,
-      className: "input-cell",
+      className: "",
       render(text: string, record: any, index: number) {
+        let deleteRow = () => {
+          dataSource.splice(index, 1)
+          setDataSource([])
+          setTimeout(() => setDataSource(dataSource.concat()))
+        }
+
         return (
           <DoCon>
             {record.signerName ? (
@@ -886,18 +892,21 @@ export default observer(function 重点患者评估登记本(props: Props) {
             ) : (
                 <span
                   onClick={() => {
-                    globalModal
-                      .confirm("删除确认", "是否删除该记录")
-                      .then(res => {
-                        wardRegisterService
-                          .deleteAll(registerCode, [{ id: record.id }])
-                          .then(res => {
-                            message.success("删除成功");
-                            getPage();
-                          });
-                      });
-                  }}
-                >
+                    if (!record.id) {
+                      deleteRow()
+                    } else {
+                      globalModal
+                        .confirm("删除确认", "是否删除该记录")
+                        .then(res => {
+                          wardRegisterService
+                            .deleteAll(registerCode, [{ id: record.id }])
+                            .then(res => {
+                              message.success("删除成功");
+                              deleteRow()
+                            })
+                        })
+                    }
+                  }}>
                   删除
                 </span>
               )}
@@ -914,7 +923,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     onAddBlock,
     onSave,
     onDelete,
-    createRow
+    createRow,
+    cellDisabled,
   } = getFun({
     registerCode,
     registerName,
@@ -1057,6 +1067,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
               pageSize: pageOptions.pageSize,
               total: total
             }}
+            rowClassName={(record: any, idx: number) => {
+              if (record.signerName) return 'disabled-row'
+
+              return ''
+            }}
             onChange={(pagination: PaginationConfig) => {
               setPageOptions({
                 pageIndex: pagination.current,
@@ -1085,6 +1100,18 @@ const Container = styled(Wrapper)`
   .color-orange,
   .color-orange * {
     color: orange !important;
+  }
+  .ant-select-disabled .ant-select-selection{
+      background: rgba(0,0,0,0.0)!important;
+  }
+  .disabled-row{
+    td.input-cell{
+      background: rgba(0,0,0,0.03)!important;
+    }
+  }
+  .ant-input[disabled]{
+    color: #000!important;
+      background: rgba(0,0,0,0.0)!important;
   }
 `;
 

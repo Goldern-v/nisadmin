@@ -141,13 +141,13 @@ export default observer(function NavBar(props: any) {
       view =
         <React.Fragment>
           <img
-            src={require("../images/SystemLogo.svg")}
+            src={require("../images/BadEventLogo.svg")}
             alt=""
             className="logo"
             style={{ height: 30, paddingLeft: 30 }}
           />
           <img
-            src={require("../images/SystemLogoText.svg")}
+            src={require("../images/BadEventLogoText.svg")}
             alt=""
             className="name"
             style={{ paddingRight: 30 }}

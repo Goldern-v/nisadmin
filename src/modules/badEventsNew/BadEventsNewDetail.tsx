@@ -53,7 +53,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     })
   }
 
-  console.log(eventStatusList)
+  // console.log(eventStatusList)
 
   const iframeUrl = (): string => {
     let appToken = appStore.getAppToken()
@@ -350,9 +350,9 @@ const Wrapper = styled.div`
     bottom: 0;
     .status-line{
       float: right;
-      width: 300px;
+      width: 250px;
       height: 100%;
-      background: #fff;
+      background: #f7fafa;
       border-left: 1px solid #ddd;
       overflow-y: auto;
       overflow-x: hidden;
@@ -381,6 +381,9 @@ const Wrapper = styled.div`
   
   .ant-steps-vertical.ant-steps-small .ant-steps-item-tail{
     left: 14px;
+  }
+  .ant-steps-item-description{
+    font-size:12px!important;
   }
   
   .ant-steps-small .ant-steps-item-icon{

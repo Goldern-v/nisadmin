@@ -57,8 +57,13 @@ export default class AppStore {
   /** url 参数 */
   @computed
   public get HOSPITAL_LOGO() {
-    if (this.onlyBadEvent)
-      return require("src/assets/images/SystemLogo.svg")
+    if (this.onlyBadEvent) {
+      //不良事件系统登录界面显示单独的logo
+      if (window.location.hash.match('login'))
+        return require("src/assets/images/不良事件logo2.png")
+
+      return require("src/assets/images/BadEventLogo.svg")
+    }
 
     if (this.HOSPITAL_ID == "wh") {
       return require("src/assets/images/武汉logo.png");

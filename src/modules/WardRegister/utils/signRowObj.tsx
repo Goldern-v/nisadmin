@@ -12,6 +12,7 @@ export function signRowObj(obj: {
   registerCode: string;
   updateDataSource: () => void;
   selectedBlockId: number;
+  [p: string]: any
 }) {
   let {
     title,
@@ -70,7 +71,7 @@ export function signRowObj(obj: {
           <DoCon>
             <span
               onClick={() => {
-                console.log(dataIndex, authStore.isRoleManage)
+                // console.log(dataIndex, authStore.isRoleManage)
                 if (title.match('护士长') && !authStore.isRoleManage) {
                   message.error('非护士长无法签名')
                   return
