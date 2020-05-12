@@ -444,6 +444,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 <Input
                   disabled={cellDisabled(record)}
                   defaultValue={text}
+                  onKeyUp={handleNextIptFocus}
                   onChange={e => record.recordDate = e.target.value}
                   onBlur={() => updateDataSource()}
                   className={isEndTime(record.recordDate, record.有效期) || ""}
@@ -479,6 +480,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
               >
                 <TextArea
                   autosize
+                  data-key={'range'}
+                  onKeyUp={handleNextIptFocus}
+                  onFocus={() => tiggerAutoCompleteClick('range', index)}
                   style={{
                     lineHeight: 1.2,
                     overflow: "hidden",
@@ -569,7 +573,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               }
               defaultValue={text}
               onChange={value => {
-                record[item.itemCode] = value;
+                record[item.itemCode] = value.toString().replace(/\n/g, '');
               }}
               onBlur={() => updateDataSource()}
               onSelect={value => {
@@ -584,12 +588,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     updateDataSource(true);
                   }, 0);
                 } else {
-                  updateDataSource();
+                  // updateDataSource();
                 }
               }}
             >
               <TextArea
                 autosize
+                data-key={item.itemCode}
+                onKeyUp={handleNextIptFocus}
+                onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
                 style={{
                   lineHeight: 1.2,
                   overflow: "hidden",
@@ -705,8 +712,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
                   disabled={cellDisabled(record)}
                   autosize={true}
                   defaultValue={text}
+                  onKeyUp={handleNextIptFocus}
                   onChange={e => {
-                    record.description = e.target.value;
+                    record.modified = true
+                    record.description = e.target.value.replace(/\n/g, '');
                   }}
                   onBlur={() => updateDataSource()}
                 />
@@ -955,6 +964,37 @@ export default observer(function 重点患者评估登记本(props: Props) {
         fileDownload(res);
       });
   };
+
+  //手动触发AutoComplete组件的下拉
+  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
+    let rowEls = document.querySelectorAll('.ant-table-row') as any
+    let rowEl = rowEls[index]
+    if (rowEl) {
+      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
+      if (target) target.click()
+    }
+  }
+
+  //回车键去到下一个输入元素
+  const handleNextIptFocus = (e?: any, target?: any) => {
+    if (target || (e.keyCode && e.keyCode == 13)) {
+      let baseTableEl = document.getElementById('baseTable')
+      if (baseTableEl) {
+        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
+
+        for (let i = 0; i < iptList.length; i++) {
+          let el = iptList[i]
+          if (el == (target || e.target)) {
+            if (iptList[i + 1]) iptList[i + 1].focus && iptList[i + 1].focus()
+            if (e.target) {
+              e.target.value = e.target.value.replace(/\n/g, '')
+            }
+            break
+          }
+        }
+      }
+    }
+  }
 
   useEffect(() => {
     onInitData();

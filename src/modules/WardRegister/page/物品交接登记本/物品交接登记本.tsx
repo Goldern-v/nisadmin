@@ -181,14 +181,16 @@ export default observer(function HandoverRegister(props: Props) {
       render: (text: string, record: any) => {
         if (record.editType && record.editType == 'new') {
           return <TdCell>
-            <DatePicker
-              className="td-date-picker first-col-item"
-              allowClear={false}
-              value={text ? moment(text) : undefined}
-              onChange={(date: moment.Moment) => {
-                record.recordDate = date.format('YYYY-MM-DD')
-                updateDataSource()
-              }} />
+            <Input
+              style={{ textAlign: 'center' }}
+              disabled={cellDisabled(record)}
+              onKeyUp={handleNextIptFocus}
+              defaultValue={text}
+              onChange={e => {
+                record.recordDate = e.target.value;
+              }}
+              onBlur={() => updateDataSource()}
+            />
           </TdCell>
         } else {
           return <span>{text}</span>
@@ -203,29 +205,32 @@ export default observer(function HandoverRegister(props: Props) {
       align: "center",
       className: 'input-cell',
       fixed: false && surplusWidth && "left",
-      render: (text: string, record: any) => {
+      render: (text: string, record: any, index: number) => {
         if (record.editType && record.editType == 'new') {
           return <TdCell>
-            <Select
-              className="td-range-picker"
-              value={text}
-              onChange={(val: string) => {
-                record.range = val
-
-                let target = rangeConfigList
-                  .find((item: any) => item.range == val)
-
-                if (target) record.rangeIndexNo = target.indexNo
-
-                updateDataSource()
-              }}>
-              {rangeConfigList
-                .map((item: any, idx: number) =>
-                  <Select.Option
-                    value={item.itemCode}
-                    key={idx}>{item.itemCode}
-                  </Select.Option>)}
-            </Select>
+            <AutoComplete
+              disabled={cellDisabled(record)}
+              dataSource={rangeConfigList.map(item => item.itemCode)}
+              defaultValue={text}
+              onChange={value => {
+                record.range = value;
+                record.modified = true;
+              }}
+              onBlur={() => updateDataSource()}
+            >
+              <TextArea
+                data-key={'range'}
+                onFocus={() => tiggerAutoCompleteClick('range', index)}
+                onKeyUp={handleNextIptFocus}
+                autosize
+                style={{
+                  lineHeight: 1.2,
+                  overflow: "hidden",
+                  padding: "9px 2px",
+                  textAlign: "center"
+                }}
+              />
+            </AutoComplete>
           </TdCell>
         } else {
           return <span>{text}</span>
@@ -272,6 +277,8 @@ export default observer(function HandoverRegister(props: Props) {
                 >
                   <TextArea
                     data-key={item.itemCode}
+                    onKeyUp={handleNextIptFocus}
+                    onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
                     autosize
                     style={{
                       lineHeight: 1.2,
@@ -301,6 +308,7 @@ export default observer(function HandoverRegister(props: Props) {
           width: (15 * item.width || 50) + 8,
           dataIndex: item.itemCode,
           render(text: string, record: any, index: number) {
+
             return (
               <TdCell>
                 <AutoComplete
@@ -315,6 +323,8 @@ export default observer(function HandoverRegister(props: Props) {
                 >
                   <TextArea
                     data-key={item.itemCode}
+                    onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
+                    onKeyUp={handleNextIptFocus}
                     autosize
                     style={{
                       lineHeight: 1.2,
@@ -341,10 +351,11 @@ export default observer(function HandoverRegister(props: Props) {
           <Input.TextArea
             disabled={cellDisabled(record)}
             autosize={{ minRows: 1 }}
+            onKeyUp={handleNextIptFocus}
             defaultValue={text}
             onChange={e => {
               record.modified = true
-              record.description = e.target.value;
+              record.description = e.target.value.replace(/\n/g, '');
             }}
             onBlur={() => updateDataSource()}
           />
@@ -703,6 +714,35 @@ export default observer(function HandoverRegister(props: Props) {
     }
   }
 
+  //手动触发AutoComplete组件的下拉
+  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
+    let rowEls = document.querySelectorAll('.ant-table-row') as any
+    let rowEl = rowEls[index]
+    if (rowEl) {
+      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
+      if (target) target.click()
+    }
+  }
+
+  //回车键去到下一个输入元素
+  const handleNextIptFocus = (e?: any, target?: any) => {
+    if (target || (e.keyCode && e.keyCode == 13)) {
+      let baseTableEl = document.getElementById('baseTable')
+      if (baseTableEl) {
+        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
+
+        for (let i = 0; i < iptList.length; i++) {
+          let el = iptList[i]
+          if (el == (target || e.target)) {
+            if (iptList[i + 1]) iptList[i + 1].focus && iptList[i + 1].focus()
+            if (e.target) e.target.value = e.target.value.replace(/\n/g, '')
+            break
+          }
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     onInitData();
   }, [authStore.selectedDeptCode]);
@@ -966,7 +1006,7 @@ const TableCon = styled.div`
   .input-cell {
     padding: 0 !important;
   }
-  textarea {
+  input,textarea {
     border: 0;
     border-radius: 0;
     height: 100%;
