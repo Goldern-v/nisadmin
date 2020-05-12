@@ -6,9 +6,9 @@ class QuesBankView {
   @observable public bankType: any = "系统题库"; //题库类型
   @observable public questionType = "单选题"; //题目类型
   @observable public keyWord = ""; //关键字查询
-  @observable public checkLabelList = []; // 下拉框所需数据
-  @observable public allData = []; // 下拉框全部数据
-  @observable public keyWordSelect = ""; //下拉框关键字搜索
+  @observable public checkLabelList = []; // 选题搜索所需数据
+  @observable public allData = []; // 选题搜索全部数据
+  @observable public keyWordSelect = ""; //选题搜索关键字搜索
   @observable public selectLoading = false;
   @observable public tableList = []; // 表格内容
   @observable public tableLoading = false;
@@ -32,7 +32,6 @@ class QuesBankView {
       keyWord: this.keyWordSelect,
       pageIndex: 1,
       pageSize: 100
-      // getAll: true
     };
   }
 
@@ -71,16 +70,16 @@ class QuesBankView {
 
   //按需获取前100条数据
   initData(obj?: any) {
+    this.selectLoading = true;
     stepServices.searchLabels(obj ? obj : this.checkObj).then(res => {
+      this.selectLoading = false;
       this.checkLabelList = res.data.list || [];
     });
   }
 
   //获取所有标签数据
   initAllData() {
-    this.selectLoading = true;
     stepServices.searchLabels(this.allCheckObj).then(res => {
-      this.selectLoading = false;
       this.allData = res.data.list || [];
     });
   }

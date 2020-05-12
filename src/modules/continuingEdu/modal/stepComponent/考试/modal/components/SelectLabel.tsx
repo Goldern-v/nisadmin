@@ -26,12 +26,6 @@ export default observer(function SelectLabel(props: Props) {
       .map((o: any) => o.labelContent);
   };
 
-  // 实时查询
-  const toSearch = (value: any) => {
-    quesBankView.keyWordSelect = value;
-    quesBankView.initData();
-  };
-
   // 聚焦获取前100条默认数据
   const handleFocus = () => {
     let obj = {
@@ -59,11 +53,11 @@ export default observer(function SelectLabel(props: Props) {
         onFocus={handleFocus}
         style={{ width: "95%" }}
         showSearch
-        // filterOption={(input: string, option: any) =>
-        //   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        // }
         filterOption={false}
-        onSearch={(value: any) => toSearch(value)}
+        onSearch={(value: any) => {
+          quesBankView.keyWordSelect = value;
+          quesBankView.initData();
+        }}
         loading={quesBankView.selectLoading}
       >
         {quesBankView.checkLabelList.map((item: any, index: number) => (
