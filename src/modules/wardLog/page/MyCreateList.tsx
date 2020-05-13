@@ -18,7 +18,6 @@ import WardLogAddModal from './../components/WardLogAddModal'
 import createModal from 'src/libs/createModal'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
-
 export interface Props { }
 
 export default observer(function MyCreateList() {
@@ -175,7 +174,11 @@ export default observer(function MyCreateList() {
     setPageLoading(true)
 
     wardLogService
-      .exportDetailList({ ids: selectedRowKeys })
+      .exportDetailList({
+        ids: selectedRowKeys,
+        wardCode: deptSelect,
+        templateId: selectedTemplate
+      })
       .then(res => {
         setPageLoading(false)
         setSelectedRowKeys([])
@@ -258,7 +261,11 @@ export default observer(function MyCreateList() {
         }}
         rowSelection={{
           selectedRowKeys,
-          onChange: handleRowSelect
+          onChange: handleRowSelect,
+          getCheckboxProps: (record: any) => ({
+            disabled: !deptSelect || !selectedTemplate,
+            name: record.name
+          })
         }}
         onChange={(pagination: PaginationConfig) => {
           setPageOptions({

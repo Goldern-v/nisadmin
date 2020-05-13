@@ -5,14 +5,16 @@ import BaseTable from "src/components/BaseTable";
 import { ColumnProps } from "antd/lib/table";
 import { RouteComponentProps } from "react-router";
 import CommonHeader from "./components/CommonHeader";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 
-import DeptSelect from "src/components/DeptSelect";
+// import DeptSelect from "src/components/DeptSelect";
+import service from 'src/services/api'
 
 import FilterCon from "./components/FilterCon";
 import { empManageService } from "./views/empDetail/api/EmpManageService";
 import qs from "qs";
+import { message } from "antd/es";
 
 const Option = Select.Option;
 
@@ -20,7 +22,7 @@ export interface Props extends RouteComponentProps { }
 
 export default observer(function 人员管理(props: Props) {
   const [query, setQuery] = useState({
-    deptCode: "", //科室
+    deptCode: authStore.isDepartment ? '' : authStore.selectedDeptCode, //科室
     // area: '',//片区
     pageIndex: 1,
     pageSize: 20,
@@ -39,6 +41,7 @@ export default observer(function 人员管理(props: Props) {
   });
 
   const [tableData, setTableData] = useState([] as any);
+  const [deptAllList, setDeptAllList] = useState([] as any);
   const [total, setTotal] = useState(0 as number);
   const [dataLoading, setDataLoading] = useState(false);
   const [filterConVisible, setFilterConVisible] = useState(true);
@@ -158,9 +161,16 @@ export default observer(function 人员管理(props: Props) {
     // empManageService.findAllAreas().then(res => {
     //   console.log(res)
     // })
+    getTableData()
+    //护理部能查看所有科室
+    if (authStore.isDepartment) getDeptAll()
   }, []);
 
   const handleReview = (record: any) => {
+    if (!authStore.isNotANormalNurse) {
+      message.error('非护士长以上权限，无法查看')
+      return
+    }
     let search = {
       empNo: record.empNo,
       empName: record.empName,
@@ -254,6 +264,19 @@ export default observer(function 人员管理(props: Props) {
     return classList.join(" ");
   };
 
+  const deptOptions = () => {
+    if (authStore.isDepartment) {
+      return [
+        <Option value='' key="">全部</Option>,
+        ...deptAllList.map((item: any, idx: number) =>
+          <Option value={item.code} key={idx} title={item.name}>{item.name}</Option>)
+      ]
+    } else {
+      return authStore.deptList.map((item: any, idx: number) =>
+        <Option value={item.code} key={idx} title={item.name}>{item.name}</Option>)
+    }
+  }
+
   const handleSearchInputChange = (e: any) => {
     if (e.target.value == query.keyword) return;
 
@@ -262,12 +285,27 @@ export default observer(function 人员管理(props: Props) {
     getTableData(newQuery);
   };
 
+  const getDeptAll = () => {
+    service.commonApiService.getNursingUnitAll().then(res => {
+      if (res.data.deptList) setDeptAllList(res.data.deptList)
+    })
+  }
+
   return (
     <Wrapper className={switchWrapperName()}>
       <CommonHeader title={"人员管理"}>
         <span className="float-item title">科室:</span>
         <span className="float-item">
-          <DeptSelect onChange={handleDeptChange} />
+          {/* <DeptSelect onChange={handleDeptChange} /> */}
+          <Select
+            style={{ width: 180 }}
+            value={query.deptCode}
+            showSearch
+            filterOption={(input: any, option: any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            onChange={handleDeptChange}>
+            {deptOptions()}
+          </Select>
         </span>
         {/* <span className='float-item title'>片区:</span>
         <span className='float-item'>

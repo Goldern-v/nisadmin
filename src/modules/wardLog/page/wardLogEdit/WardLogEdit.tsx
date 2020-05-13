@@ -64,6 +64,9 @@ export default observer(function WardLogEdit(props: any) {
       return
     }
 
+    let wardCode = search.deptCode || info.wardCode || ''
+    if (wardCode == '全院') wardCode = authStore.defaultDeptCode
+
     let params = {
       inpatientAreaLog: {
         remark,
@@ -75,12 +78,13 @@ export default observer(function WardLogEdit(props: any) {
         templateProgress: editList
       },
       empNos: recievers.map((item: any) => item.empNo),
+      wardCode,
       fileIds: attachmentList.map((item: any) => item.id.toString()),
       // tempSave
     } as any
 
     if (search.id) params.inpatientAreaLog.id = search.id
-    // console.log(params)
+    // return console.log(params)
     setLoading(true)
     wardLogService
       .saveRecord(params)
@@ -101,7 +105,6 @@ export default observer(function WardLogEdit(props: any) {
 
         if (res.data) {
           const { templateDto } = res.data
-
 
           if (templateDto) {
             setInfo(templateDto)
