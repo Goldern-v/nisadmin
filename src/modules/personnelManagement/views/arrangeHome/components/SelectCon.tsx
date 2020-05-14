@@ -8,7 +8,9 @@ import {
   Select,
   message,
   Dropdown,
-  Menu
+  Menu,
+  Modal,
+  Checkbox
 } from "src/vendors/antd";
 import { fileDownload } from "src/utils/file/file";
 import { appStore, authStore } from "src/stores";
@@ -23,7 +25,7 @@ import { DictItem } from "src/services/api/CommonApiService";
 import createModal from "src/libs/createModal";
 import ShowStandardTimeModal from "../modal/ShowStandardTimeModal";
 
-export interface Props {}
+export interface Props { }
 
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true);
@@ -179,7 +181,31 @@ export default observer(function SelectCon() {
   }, []);
 
   const toPrint = () => {
-    printModal.printArrange();
+    if (appStore.HOSPITAL_ID == "nys") {
+      let visibleArr = ['nurseHierarchy', 'newTitle', 'year', 'total1', 'total2']
+      Modal.confirm({
+        title: '选择要打印的列',
+        centered: true,
+        width: 516,
+        content: <div style={{ marginTop: 30 }}>
+          <Checkbox.Group
+            defaultValue={visibleArr}
+            onChange={(newArr: any[]) => visibleArr = newArr}>
+            <Checkbox value="nurseHierarchy">层级</Checkbox>
+            <Checkbox value="newTitle">职称</Checkbox>
+            <Checkbox value="year">年限</Checkbox>
+            <Checkbox value="total1">工时小计</Checkbox>
+            <Checkbox value="total2">夜小时数</Checkbox>
+          </Checkbox.Group>
+        </div>,
+        onOk: () => {
+          console.log(visibleArr)
+          printModal.printArrangeNys(visibleArr)
+        }
+      })
+    } else {
+      printModal.printArrange();
+    }
   };
 
   const bigDeptmenu = (
@@ -205,9 +231,9 @@ export default observer(function SelectCon() {
                   let _date = date[0].format("YYYY-MM-DD");
                   if (
                     date[0].format("YYYY-MM-DD") ==
-                      date[0].startOf("week").format("YYYY-MM-DD") ||
+                    date[0].startOf("week").format("YYYY-MM-DD") ||
                     date[1].format("YYYY-MM-DD") ==
-                      date[0].endOf("week").format("YYYY-MM-DD")
+                    date[0].endOf("week").format("YYYY-MM-DD")
                   ) {
                     return [date[0].subtract(7, "d"), date[1].subtract(7, "d")];
                   }
@@ -225,9 +251,9 @@ export default observer(function SelectCon() {
                   let weeks = date[0].week();
                   if (
                     date[0].format("YYYY-MM-DD") ==
-                      date[0].startOf("week").format("YYYY-MM-DD") ||
+                    date[0].startOf("week").format("YYYY-MM-DD") ||
                     date[1].format("YYYY-MM-DD") ==
-                      date[0].endOf("week").format("YYYY-MM-DD")
+                    date[0].endOf("week").format("YYYY-MM-DD")
                   ) {
                     return [date[0].add(7, "d"), date[1].add(7, "d")];
                   }
@@ -340,17 +366,20 @@ export default observer(function SelectCon() {
           </div>
         )}
 
-        {appStore.HOSPITAL_ID == "hj" && (
-          <div className="item">
-            <Button
-              className="statistics getExcel"
-              disabled={sheetViewModal.tableLoading}
-              onClick={toPrint}
-            >
-              打印
+        {(
+          appStore.HOSPITAL_ID == "hj" ||
+          appStore.HOSPITAL_ID == "nys"
+        ) && (
+            <div className="item">
+              <Button
+                className="statistics getExcel"
+                disabled={sheetViewModal.tableLoading}
+                onClick={toPrint}
+              >
+                打印
             </Button>
-          </div>
-        )}
+            </div>
+          )}
       </LeftIcon>
       {/* <RightIcon>
         <span onClick={() => toPath('/personnelManagement/DeptBorrow')}>科室借用</span>

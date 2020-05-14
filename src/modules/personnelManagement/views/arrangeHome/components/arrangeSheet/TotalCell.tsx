@@ -11,9 +11,15 @@ export interface Props {
 }
 
 export default observer(function TotalCell(props: Props) {
+  let total = totalCellContent(props.id)
+
+  return <Wrapper>{total}</Wrapper>;
+});
+
+export const totalCellContent = (id: any) => {
   let list = [];
   let user = sheetViewModal.sheetTableData.find((item: any) => {
-    return item.id == props.id;
+    return item.id == id;
   });
   // console.log(user, "useruseruseruseruser");
 
@@ -62,6 +68,6 @@ export default observer(function TotalCell(props: Props) {
     }
   }
 
-  return <Wrapper>{Number(total).toFixed(1)}</Wrapper>;
-});
+  return Number(total).toFixed(1)
+}
 const Wrapper = styled.div``;

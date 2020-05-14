@@ -10,9 +10,14 @@ export interface Props {
 }
 
 export default observer(function NightHourCell(props: Props) {
+  let total = nightHourCellContent(props.id)
+  return <Wrapper>{total}</Wrapper>;
+});
+
+export const nightHourCellContent = (id: any) => {
   let list = [];
   let user = sheetViewModal.sheetTableData.find((item: any) => {
-    return item.id == props.id;
+    return item.id == id;
   });
   if (user) {
     list = user.settingDtos;
@@ -29,6 +34,8 @@ export default observer(function NightHourCell(props: Props) {
     }
     return total;
   }, 0);
-  return <Wrapper>{Number(total).toFixed(1)}</Wrapper>;
-});
+
+  return Number(total).toFixed(1)
+}
+
 const Wrapper = styled.div``;
