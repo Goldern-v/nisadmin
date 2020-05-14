@@ -6,8 +6,8 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { HorizontalMenuItem } from "src/types/horizontalMenu";
 import { appStore } from "src/stores";
-import { Radio, message } from "antd";
-
+import { Radio, message, Button, DatePicker } from "antd";
+import { crrentMonth } from "src/utils/moment/crrentMonth";
 import BaseChart from "./components/BaseChart";
 import StatisticLeftList from "./components/StatisticLeftList";
 import TopCon from "./components/TopCon";
@@ -911,6 +911,7 @@ export default function Indicator(props: Props) {
   let [currentRoute, setCurrentRoute]: [any, any] = useState(null);
   const [titleSecond, setTitleSecond] = useState("");
   const [templateShow, setTemplateShow] = useState(true);
+  const [timeData, setTimeData]: any = useState(crrentMonth());
   const [nursingData, setNursingData] = useState(false); //是否展示护理主质量相关数据页面（--true展示）
   let topRef: any = React.createRef();
   useLayoutEffect(() => {
@@ -922,11 +923,7 @@ export default function Indicator(props: Props) {
       setNursingData(false);
       onload();
     }
-
-    // try {
-
-    // } catch (error) {}
-  }, [props.match.params.name]);
+  }, [props.match.params.name, timeData]);
 
   const onload = async () => {
     let currentRouteName = props.match.params.name;
@@ -948,12 +945,8 @@ export default function Indicator(props: Props) {
       ) {
         setTemplateShow(true);
         setLoading(true);
-        let startDate = moment(
-          topRef.current.picker.state && topRef.current.picker.state.value[0]
-        ).format("YYYY-MM-DD");
-        let endDate = moment(
-          topRef.current.picker.state && topRef.current.picker.state.value[1]
-        ).format("YYYY-MM-DD");
+        let startDate = timeData[0].format("YYYY-MM-DD");
+        let endDate = timeData[1].format("YYYY-MM-DD");
         setStartDate(startDate);
         setEndDate(endDate);
 
@@ -975,6 +968,7 @@ export default function Indicator(props: Props) {
       }
     }
   };
+
   //导出数据处理方法
   const fileDownload = (res: any) => {
     let filename = res.headers["content-disposition"]
@@ -982,14 +976,9 @@ export default function Indicator(props: Props) {
           res.headers["content-disposition"].replace("attachment;filename=", "")
         )
       : "导出文件";
-    // decodeURIComponent
-    // "attachment;filename=????2019-3-18-2019-3-24??.xls"
-    // "application/json"
     let blob = new Blob([res.data], {
       type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
     });
-
-    // if (res.data.type.indexOf('excel') > -1) {
     if (res.data) {
       let a = document.createElement("a");
       let href = window.URL.createObjectURL(blob); // 创建链接对象
@@ -1002,7 +991,6 @@ export default function Indicator(props: Props) {
     } else {
       let reader = new FileReader();
       reader.addEventListener("loadend", function(data: any) {
-        // reader.result 包含转化为类型数组的blob
         message.error(`${reader.result}`);
       });
       reader.readAsText(blob);
@@ -1010,14 +998,8 @@ export default function Indicator(props: Props) {
   };
   //调用导出接口
   const onExport = async () => {
-    let startDate = moment(topRef.current.picker.state.value[0]).format(
-      "YYYY-MM-DD"
-    );
-    let endDate = moment(topRef.current.picker.state.value[1]).format(
-      "YYYY-MM-DD"
-    );
-    setStartDate(startDate);
-    setEndDate(endDate);
+    let startDate = timeData[0].format("YYYY-MM-DD");
+    let endDate = timeData[1].format("YYYY-MM-DD");
     let currentRouteName = props.match.params.name;
     let currentRoute = {
       ...ROUTE_LIST.find((item: any) => item.name === currentRouteName)
@@ -1035,31 +1017,23 @@ export default function Indicator(props: Props) {
         currentRoute!.name !== "湿包发生率"
       ) {
         setTemplateShow(true);
-        // setLoading(true)
         const data = await indicatorService.getIndicatoeData(
           currentRoute!.exportName,
           startDate,
           endDate
         );
-        // setLoading(false)
-
         fileDownload(data);
-        //除错
-        // if (currentRoute && data) {
-        //   currentRoute.dataSource = [...data]
-        //   let cacheTitle = currentRoute!.name + '统计'
-        //   setTitleSecond(cacheTitle)
-        //   setCurrentRoute(currentRoute)
-        // }
       } else {
         setTemplateShow(false);
       }
     }
   };
+
   // widthCharGet = currentRoute ? currentRoute.widthChar : '250%'
   let ChartComponent =
     (currentRoute && currentRoute.chartComponent) || 护患比统计图;
   const restClick = () => {};
+
   return (
     <Wrapper>
       <LeftMenuCon>
@@ -1072,8 +1046,27 @@ export default function Indicator(props: Props) {
         </div>
       ) : (
         <MainCon>
-          <TopCon ref={topRef} refreshData={onload} refExport={onExport} />
+          {/* <TopCon ref={topRef} refreshData={onload} refExport={onExport} /> */}
           {/* <div onClick={restClick}> testclick</div> */}
+          <HeaderCon>
+            <span>日期:</span>
+            <DatePicker.RangePicker
+              value={timeData}
+              onChange={data => {
+                setTimeData(data);
+              }}
+              style={{ width: 220, margin: "0 10px" }}
+            />
+            <Button
+              type="primary"
+              style={{ marginRight: 10 }}
+              onClick={() => onload()}
+            >
+              查询
+            </Button>
+            <Button onClick={() => onExport()}>导出excl</Button>
+          </HeaderCon>
+
           {templateShow ? (
             <MainScroll>
               {currentRoute && (
@@ -1259,4 +1252,18 @@ const BaseChartScrollCon = styled.div<{ widthGet: any }>`
 const BaseTableCon = styled.div`
   flex: 1;
   height: 0;
+`;
+const HeaderCon = styled.div`
+  height: 50px;
+  /* background: rgba(248, 248, 248, 1);
+  box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid #dbe0e4; */
+  font-size: 13px;
+  position: relative;
+  font-size: 13px;
+  color: #333333;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  z-index: 1;
 `;

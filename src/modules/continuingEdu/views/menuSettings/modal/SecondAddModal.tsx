@@ -11,7 +11,6 @@ import {
   Select
 } from "antd";
 import Form from "src/components/Form/Form";
-import { Rules } from "src/components/Form/interfaces";
 import { meunSettingApi } from "../api/MeunSettingApi";
 import createModal from "src/libs/createModal";
 import SelectPeopleModal from "./modal-two/SelectPeopleModal";

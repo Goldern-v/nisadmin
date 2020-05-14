@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import React from "react";
+import { observer } from "src/vendors/mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { message as Message, Modal, Input } from "src/vendors/antd";
-import { observer } from "src/vendors/mobx-react-lite";
-// import { mainPageModal } from "../MainPageModal";
-// import { mainPageApi } from "../api/MainPageApi";
+import { nursingDataModal } from "../NursingDataModal";
 
 interface Props {}
 
@@ -41,6 +40,39 @@ export default observer(function Content(props: Props) {
   ];
   return (
     <Wrapper>
+      <Cont className="specialCont">
+        <Title>1、护理数据配置相关数据</Title>
+        <Data>
+          {data.map((item: any, index: number) => (
+            <div key={index} className="main">
+              <div className="name">{item.name}</div>
+              <Input value={item.value} disabled style={{ width: "300px" }} />
+            </div>
+          ))}
+        </Data>
+      </Cont>
+      <Cont>
+        <Title>1、护理数据配置相关数据</Title>
+        <Data>
+          {data.map((item: any, index: number) => (
+            <div key={index} className="main">
+              <div className="name">{item.name}</div>
+              <Input value={item.value} disabled style={{ width: "300px" }} />
+            </div>
+          ))}
+        </Data>
+      </Cont>
+      <Cont>
+        <Title>1、护理数据配置相关数据</Title>
+        <Data>
+          {data.map((item: any, index: number) => (
+            <div key={index} className="main">
+              <div className="name">{item.name}</div>
+              <Input value={item.value} disabled style={{ width: "300px" }} />
+            </div>
+          ))}
+        </Data>
+      </Cont>
       <Cont>
         <Title>1、护理数据配置相关数据</Title>
         <Data>
@@ -60,11 +92,17 @@ const Wrapper = styled.div`
   background: rgb(255, 255, 255);
   padding: 15px 30px;
   box-sizing: border-box;
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+  .specialCont {
+    margin-top: 0 !important;
+  }
 `;
 const Cont = styled.div`
   border: 1px solid #ccc;
   background: rgb(238, 253, 238);
   padding: 0 20px 30px 20px;
+  margin-top: 20px;
 `;
 const Title = styled.div`
   font-size: 15px;

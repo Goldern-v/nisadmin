@@ -3,10 +3,13 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button, Modal, message as Message } from "antd";
+import { authStore } from "src/stores";
 import { meunSettingApi } from "./api/MeunSettingApi";
 import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
 import SecondEditModal from "./modal/SecondEditModal"; // 修改二级菜单
 import SecondAddModal from "./modal/SecondAddModal"; // 添加二级菜单
+import PermissionSettingsModal from "./modal/PermissionSettingsModal"; // 菜单设置权限弹窗
+
 interface Props {
   getList: any;
 }
@@ -19,6 +22,7 @@ export default observer(function MenuSettings(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改回显数据
   const [editSecondVisible, setEditSecondVisible] = useState(false); // 控制修改二级弹窗状态
   const [addSecondVisible, setAddSecondVisible] = useState(false); // 控制添加二级弹窗状态
+  const [settingsEditVisible, setsettingsEditVisible] = useState(false); // 控制添加二级弹窗状态
   const [addParams, setAddParams] = useState([]);
   useLayoutEffect(() => {
     setEffect(false);
@@ -228,6 +232,7 @@ export default observer(function MenuSettings(props: Props) {
     setEditVisible(false);
     setEditSecondVisible(false);
     setAddSecondVisible(false);
+    setsettingsEditVisible(false);
     setEditParams({});
   };
   const handleEditOk = () => {
@@ -242,6 +247,11 @@ export default observer(function MenuSettings(props: Props) {
           <div className="topHeaderTitle">
             <div className="title">菜单设置</div>
             <div className="topHeaderButton">
+              {authStore.isDepartment && (
+                <Button onClick={() => setsettingsEditVisible(true)}>
+                  菜单权限设置
+                </Button>
+              )}
               <Button onClick={getTableData}>刷新</Button>
               <Button type="primary" onClick={() => saveOrUpload()}>
                 添加一级菜单
@@ -280,6 +290,11 @@ export default observer(function MenuSettings(props: Props) {
       <SecondAddModal
         visible={addSecondVisible}
         params={tableList}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
+      <PermissionSettingsModal
+        visible={settingsEditVisible}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
