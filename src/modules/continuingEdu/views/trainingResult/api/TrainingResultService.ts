@@ -79,6 +79,24 @@ export default class TrainingResultService extends BaseApiService {
   public getAllDeptList() {
     return this.get(`/dept/nursingUnit/all`)
   }
+
+  /**查看结果-导出签到信息 */
+  public exportSignInInfo(cetpId: string) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/exportSignInInfo`,
+      qs.stringify({ cetpId }),
+      { responseType: 'blob' }
+    )
+  }
+
+  /**查看结果-导出出勤率统计信息 */
+  public exportAttendanceRateStatInfo(cetpId: string) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/exportAttendanceRateStatInfo`,
+      qs.stringify({ cetpId }),
+      { responseType: 'blob' }
+    )
+  }
 }
 
 export const trainingResultService = new TrainingResultService()

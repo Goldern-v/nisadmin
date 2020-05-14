@@ -1,6 +1,7 @@
 import { action, observable, computed } from 'mobx'
 import { appStore } from 'src/stores'
 import { trainingResultService } from './../api/TrainingResultService'
+import { fileDownload } from 'src/utils/file/file'
 
 class TrainingResultModel {
 
@@ -28,6 +29,11 @@ class TrainingResultModel {
   @observable deptList = [] as any[] //病区列表
   @observable titleList = [] as any[] //职称列表
   @observable menuInfo = {} as any
+
+  /**是否为线下签到类型 */
+  @computed get isSignType() {
+    return !!((this.baseInfo.organizationWay || this.baseInfo.organizationWayName) == '线下')
+  }
 
   @action public init() {
     this.iptVisible = false
@@ -175,6 +181,20 @@ class TrainingResultModel {
       this.deptList = target.childList.concat()
     else
       this.deptList = this.deptListAll.concat()
+  }
+
+  /**导出签到信息 */
+  @action public handleSignExport() {
+    trainingResultService
+      .exportSignInInfo(appStore.queryObj.id || '')
+      .then(res => fileDownload(res))
+  }
+
+  /**导出出勤率统计信息 */
+  @action public handleAttendanceExport() {
+    trainingResultService
+      .exportAttendanceRateStatInfo(appStore.queryObj.id || '')
+      .then(res => fileDownload(res))
   }
 }
 

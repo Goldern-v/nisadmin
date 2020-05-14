@@ -32,7 +32,7 @@ export default observer(function OperateResultReview() {
   const scorceConfirm = createModal(ScoreConfirmModal)
   const examScoreEdit = createModal(ExamScoreEditModal)
 
-  const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
+  const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
 
 
   let editScoreAuth = baseInfo.scorePersonList?.find((item: any) => {
@@ -46,7 +46,7 @@ export default observer(function OperateResultReview() {
     useState([] as number[] | string[])
 
   const statusColumns = (() => {
-    if ((baseInfo.organizationWay || baseInfo.organizationWayName) == '线下')
+    if (isSignType)
       return [{
         dataIndex: 'signInTime',
         title: '签到',
@@ -314,6 +314,9 @@ export default observer(function OperateResultReview() {
             disabled={publishLoading}>
             发布成绩
           </Button>}
+        {isSignType &&
+          <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
+        <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>

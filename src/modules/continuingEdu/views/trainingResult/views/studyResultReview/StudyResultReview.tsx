@@ -24,11 +24,11 @@ export interface Props { }
 //查看学习结果
 export default observer(function StudyResultReview() {
   const { history, queryObj } = appStore
-  const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
+  const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
 
   const statusColumns = (() => {
     //根据线上还是线下判断展示学习情况还是签到情况
-    if ((baseInfo.organizationWay || baseInfo.organizationWayName) == '线下')
+    if (isSignType)
       return [{
         dataIndex: 'signInTime',
         title: '签到',
@@ -157,6 +157,9 @@ export default observer(function StudyResultReview() {
         </span>
       </SubContent>
       <ButtonGroups>
+        {isSignType &&
+          <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
+        <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
