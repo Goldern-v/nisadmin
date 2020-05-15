@@ -65,5 +65,25 @@ export default class MeunSettingApi extends BaseApiService {
       qs.stringify({ pId })
     );
   }
+
+  // 获取查询菜单权限设置
+  public async getNursingData() {
+    let obj = {
+      menuCode: "nm_lat_menusetting",
+      authTypes: [1]
+    };
+    return this.post(
+      `studyAndTrain/menuAuthManage/queryAuthPersonsOfMenu`,
+      obj
+    );
+  }
+
+  // 保存菜单设置权限
+  public async saveNursingData(obj: any) {
+    return this.post(
+      `studyAndTrain/menuAuthManage/saveAuthPersonsForMenu`,
+      obj
+    );
+  }
 }
 export const meunSettingApi = new MeunSettingApi();

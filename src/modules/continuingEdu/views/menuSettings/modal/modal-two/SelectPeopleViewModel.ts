@@ -81,12 +81,6 @@ class SelectPeopleViewModel {
       label: "按层级选择",
       data: [],
       dataLabel: "level"
-    },
-    {
-      step: "按角色选择",
-      label: "按角色选择",
-      data: [],
-      dataLabel: "role"
     }
   ];
   @observable stepState: string[] = [];

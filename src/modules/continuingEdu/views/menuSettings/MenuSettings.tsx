@@ -22,7 +22,7 @@ export default observer(function MenuSettings(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改回显数据
   const [editSecondVisible, setEditSecondVisible] = useState(false); // 控制修改二级弹窗状态
   const [addSecondVisible, setAddSecondVisible] = useState(false); // 控制添加二级弹窗状态
-  const [settingsEditVisible, setsettingsEditVisible] = useState(false); // 控制添加二级弹窗状态
+  const [settingsEditVisible, setSettingsEditVisible] = useState(false); // 控制添加二级弹窗状态
   const [addParams, setAddParams] = useState([]);
   useLayoutEffect(() => {
     setEffect(false);
@@ -232,7 +232,7 @@ export default observer(function MenuSettings(props: Props) {
     setEditVisible(false);
     setEditSecondVisible(false);
     setAddSecondVisible(false);
-    setsettingsEditVisible(false);
+    setSettingsEditVisible(false);
     setEditParams({});
   };
   const handleEditOk = () => {
@@ -248,7 +248,7 @@ export default observer(function MenuSettings(props: Props) {
             <div className="title">菜单设置</div>
             <div className="topHeaderButton">
               {authStore.isDepartment && (
-                <Button onClick={() => setsettingsEditVisible(true)}>
+                <Button onClick={() => setSettingsEditVisible(true)}>
                   菜单权限设置
                 </Button>
               )}
