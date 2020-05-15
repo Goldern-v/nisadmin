@@ -54,7 +54,7 @@ export function getFun(context: any) {
           //   ...pageOptions,
           //   pageIndex: lastPageIndex,
           // });
-          getPage(blockId)
+          // getPage(blockId)
         } else {
           setSelectedBlockId(null);
           setTotal(0);

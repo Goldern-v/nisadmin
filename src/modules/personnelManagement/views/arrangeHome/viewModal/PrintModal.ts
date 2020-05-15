@@ -109,10 +109,11 @@ class PrintModal {
       let pageNo = 0;
       let tableId = "";
       //计算每列宽度
-      let cols = [col1Width, col2Width, col3Width].concat(
-        dateRow.map(() => othersWidth / dateLength),
-        [col4Width]
-      );
+      let cols = [
+        col1Width, col2Width, col3Width,
+        ...dateRow.map(() => othersWidth / dateLength),
+        col4Width
+      ]
 
       let colgroup = `
         <colgroup>
@@ -169,11 +170,7 @@ class PrintModal {
             ${tdEl({ colSpan: dateRow.length + 4 })}
           </tr>
           <tr>
-            ${tdEl({
-        colSpan: dateRow.length + 4,
-        class: "text-left",
-        content: "休假要求："
-      })}
+            ${tdEl({ colSpan: dateRow.length + 4, class: "text-left", content: "休假要求：" })}
           </tr>
           <tr>
             ${tdEl({ colSpan: dateRow.length + 4 })}
@@ -514,8 +511,7 @@ class PrintModal {
     }
     //td指定样式
     let tdStyle = (other?: string) => {
-      return `height:${tdHeight}px!important;padding:0!important;${other ||
-        ""}`;
+      return `height:${tdHeight}px!important;padding:0!important;${other || ""}`;
     };
     let tdEl = (option?: any) => {
       option = option || {};

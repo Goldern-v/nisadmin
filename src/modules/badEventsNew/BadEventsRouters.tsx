@@ -12,6 +12,7 @@ import { appStore } from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
 import 不良事件发生率 from './views/不良事件发生率'
 import 不良事件统计 from './views/不良事件统计'
+import BadEventReportList from './views/BadEventReportList/BadEventReportList'
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -34,6 +35,14 @@ export default function BadEventsRouters(props: Props) {
       title: '不良事件发生率',
       path: '/home/不良事件发生率',
       component: 不良事件发生率,
+    },
+    {
+      title: '不良事件分析报告',
+      path: '/home/不良事件分析报告',
+      component: BadEventReportList,
+      hide: true,
+      keepAlive: true,
+      disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     }
   ];
   let currentRoutePath = props.history.location.pathname || "";
