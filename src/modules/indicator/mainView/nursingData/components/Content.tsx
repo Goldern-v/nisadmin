@@ -76,7 +76,7 @@ export default observer(function Content(props: Props) {
       ]
     },
     {
-      title: "二、护士人力职称统计",
+      title: "二、人力资源结构--职称相关数据",
       data: [
         {
           name: "季初护士（初级）人数 ",
@@ -254,11 +254,132 @@ export default observer(function Content(props: Props) {
       ]
     },
     {
-      title: "五、离职人数",
+      title: "五、离职相关数据",
       data: [
         {
           name: "离职人数",
           value: nursingDataModal.dataList.dimission
+        }
+      ]
+    },
+    {
+      title: "六、身体约束相关数据",
+      data: [
+        {
+          name: "住院患者身体约束日期",
+          value: "--"
+        }
+      ]
+    },
+    {
+      title: "七、导管非计划拔管相关数据",
+      data: [
+        {
+          name: "气管导管非计划拔管例次数",
+          value: "--"
+        },
+        {
+          name: "气管导管留置总日数",
+          value: "--"
+        },
+        {
+          name: "CVC非计划拔管例次数",
+          value: "--"
+        },
+        {
+          name: " CVC留置总日数",
+          value: "--"
+        },
+        {
+          name: "PICC非计划拔管例次数",
+          value: "--"
+        },
+        {
+          name: "PICC留置总日数",
+          value: "--"
+        },
+        {
+          name: "导尿管非计划拔管发生例次数",
+          value: "--"
+        },
+        {
+          name: "导尿管留置总日数",
+          value: "--"
+        },
+        {
+          name: "胃肠管（经口鼻）非计划拔管发生例次数",
+          value: "--"
+        },
+        {
+          name: "胃肠管（经口鼻）留置总日数",
+          value: "--"
+        }
+      ]
+    },
+    {
+      title: "八、导管相关性感染相关数据",
+      data: [
+        {
+          name: "PICC相关血流感染发生例次数",
+          value: "--"
+        },
+        {
+          name: "CVC相关血流感染发生例次数",
+          value: "--"
+        },
+        {
+          name: "VAP发生例次数",
+          value: "--"
+        },
+        {
+          name: " 有创机械通气总日数",
+          value: "--"
+        },
+        {
+          name: "导尿管相关尿路感染（CAUTI)发生例次数",
+          value: "--"
+        }
+      ]
+    },
+    {
+      title: "九、跌倒相关数据",
+      data: [
+        {
+          name: "住院患者跌倒发生总例次数",
+          value: "--"
+        },
+        {
+          name: "住院患者跌倒伤害总例次数",
+          value: "--"
+        },
+        {
+          name: "住院患者跌倒无伤害（0级）例次数",
+          value: "--"
+        },
+        {
+          name: " 住院患者跌倒轻度伤害（1级）例次数",
+          value: "--"
+        },
+        {
+          name: "住院患者跌倒中度伤害（2级）例次数",
+          value: "--"
+        },
+        {
+          name: " 住院患者跌倒重度伤害（3级）例次数",
+          value: "--"
+        },
+        {
+          name: "住院患者跌倒死亡例数",
+          value: "--"
+        }
+      ]
+    },
+    {
+      title: "十、病区压力性损伤相关数据",
+      data: [
+        {
+          name: "2期及以上病区压力性损伤(包括粘膜压力性损伤)新发病例数",
+          value: "--"
         }
       ]
     }

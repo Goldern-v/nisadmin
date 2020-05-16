@@ -6,11 +6,11 @@ import { ReactComponent as ZKHL } from "./images/ZKHL.svg";
 import { ReactComponent as HLGZZL } from "./images/HLGZZL.svg";
 
 export const LEFT_MENU = [
-  // {
-  //   title: "护理质量相关数据",
-  //   icon: <ZKHL />,
-  //   path: "/indicator/护理质量相关数据"
-  // },
+  {
+    title: "护理质量相关数据",
+    icon: <ZKHL />,
+    path: "/indicator/护理质量相关数据"
+  },
   {
     title: "护理敏感质量指标",
     icon: <HLMGZL />,
