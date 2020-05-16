@@ -14,7 +14,9 @@ export default observer(function Header(props: Props) {
   const Title = props.getTitle || "";
   const deptList = authStore.deptList;
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    nursingDataModal.onload();
+  }, []);
 
   return (
     <Wrapper>

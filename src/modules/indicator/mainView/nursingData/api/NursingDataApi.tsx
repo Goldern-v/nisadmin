@@ -8,7 +8,9 @@ export default class NursingDataApi extends BaseApiService {
   }
 
   //查询数据
-  public getData() {}
+  public getData(obj: any) {
+    return this.post(`/nursingQuality/countAll`, obj);
+  }
 
   //导出
   public exportData() {}
