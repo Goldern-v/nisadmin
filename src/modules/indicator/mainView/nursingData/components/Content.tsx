@@ -446,12 +446,12 @@ const Title = styled.div`
 `;
 const Data = styled.div`
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   flex-wrap: wrap;
   .main {
     margin-top: 25px;
     height: 50px;
-    width: 33%;
+    width: 33.3%;
   }
   .name {
     margin-left: 5px;
