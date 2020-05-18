@@ -145,6 +145,12 @@ export default observer(function MainBox() {
           dataIndex: "job",
           key: "job",
           width: 120
+        },
+        {
+          title: "周工时",
+          dataIndex: "timeLimit",
+          key: "timeLimit",
+          width: 70
         }
       ],
       wh: () => [

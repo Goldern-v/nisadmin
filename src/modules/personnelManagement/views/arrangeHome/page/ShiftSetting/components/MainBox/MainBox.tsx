@@ -142,26 +142,38 @@ export default function MainBox() {
       title: "上班时间",
       dataIndex: "workTime",
       key: "workTime",
-      width: 250
+      width: 200
     },
     {
       title: "工时(小时）",
       dataIndex: "effectiveTime",
       key: "effectiveTime",
-      width: 100
+      width: 90
     },
     {
       title: "白小时数",
       dataIndex: "settingMorningHour",
       key: "settingMorningHour",
-      width: 100
+      width: 90
     },
     {
       title: "夜小时数",
       dataIndex: "settingNightHour",
       key: "settingNightHour",
-      width: 100
-    }
+      width: 90
+    },
+    ...appStore.hisAdapter({
+      nys: () => [
+        {
+          title: "  周班次数",
+          dataIndex: "rangeLimit",
+          key: "rangeLimit",
+          width: 70
+        }
+      ],
+      wh: () => [],
+      hj: () => []
+    })
   ];
 
   // old:(仲杰)

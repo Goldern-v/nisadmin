@@ -271,6 +271,11 @@ export default function AddScheduleNursingModal(props: Props) {
                       </Select>
                     </Form.Field>
                   </Col>
+                  <Col span={24}>
+                    <Form.Field label={`周工时`} name="timeLimit">
+                      <Input />
+                    </Form.Field>
+                  </Col>
                 </React.Fragment>
               ),
               wh: () => (

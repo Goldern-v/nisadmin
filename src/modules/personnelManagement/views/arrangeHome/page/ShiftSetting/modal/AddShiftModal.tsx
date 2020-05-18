@@ -17,7 +17,7 @@ import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import service from "src/services/api";
 import { Spin, Switch } from "src/vendors/antd";
-import { authStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 import SwitchField from "src/components/Swich";
 import { arrangeService } from "../../../services/ArrangeService";
 
@@ -81,7 +81,8 @@ export default function AddShiftModal(props: Props) {
               workTime: props.editData.workTime,
               effectiveTime: props.editData.effectiveTime,
               nameColor: props.editData.nameColor,
-              status: props.editData.status
+              status: props.editData.status,
+              rangeLimit: props.editData.rangeLimit
             });
           } else {
             /** 表单数据初始化 */
@@ -91,7 +92,8 @@ export default function AddShiftModal(props: Props) {
               workTime: "8:00 - 16:00",
               effectiveTime: "8",
               nameColor: "",
-              status: true
+              status: true,
+              rangeLimit: ""
             });
           }
         });
@@ -186,6 +188,13 @@ export default function AddShiftModal(props: Props) {
                 </Select>
               </Form.Field>
             </Col>
+            {appStore.HOSPITAL_ID == "nys" && (
+              <Col span={24}>
+                <Form.Field label={`周班次数`} name="rangeLimit">
+                  <Input />
+                </Form.Field>
+              </Col>
+            )}
             <Col span={24}>
               <Form.Field label={`启用状态`} name="status">
                 <SwitchField />

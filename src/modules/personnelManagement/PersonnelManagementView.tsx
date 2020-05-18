@@ -20,6 +20,8 @@ import ExpectedRecord from "./views/arrangeHome/page/expectedRecord/ExpectedReco
 import ExpectedRecordSelf from "./views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import NightHoursStatistics from "./views/arrangeHome/page/nightHoursStatistics/NightHoursStatistics";
 import StandardTime from "./views/arrangeHome/page/StandardTime/StandardTime";
+import NurseByShiftView from 'src/modules/statistic/views/nurseByShift/NurseByShiftView'
+
 export interface Props {}
 
 export default function PersonnelManagementView() {
@@ -114,7 +116,7 @@ export default function PersonnelManagementView() {
           title: "夜班费统计",
           path: "/personnelManagement/nightChargingReport",
           component: StarRatingReportList,
-          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID == "hj"
         },
         {
           title: "排班统计",
@@ -127,6 +129,12 @@ export default function PersonnelManagementView() {
           path: "/personnelManagement/expectedRecord",
           component: ExpectedRecord,
           hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "wh"
+        },
+        {
+          title: "排班统计属性统计",
+          path: "/personnelManagement/nurseByShiftView",
+          component: NurseByShiftView,
+          hide: !authStore.isRoleManage || appStore.HOSPITAL_ID != "nys"
         }
         // {
         //   title: "小时数统计",
