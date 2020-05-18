@@ -46,6 +46,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
   const ejkhszModal = createModal(EjkhszModal);
 
   const onAduit = (nodeName: string) => {
+    if (!nodeName) return
+
     if (master.qcLevel == "2" && nodeName == "科护士长审核") {
       return ejkhszModal.show({
         id: appStore.match.params.id,
@@ -105,6 +107,15 @@ export default function qualityControlRecordDetailHeader(props: Props) {
         }
 
         break;
+      default:
+        {
+          hlbModal.show({
+            id: appStore.match.params.id,
+            nodeCode: nextNode.nodeCode,
+            title: nodeName,
+            onOkCallBack: props.onload
+          });
+        }
     }
   };
 
