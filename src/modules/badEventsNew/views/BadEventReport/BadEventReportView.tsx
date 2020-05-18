@@ -102,7 +102,7 @@ export default observer(function NursingReportDetailView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '病区护理工作报表', link: '/qcOne/nursingReportList' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb data={[{ name: '不良事件分析报告', link: '/home/不良事件分析报告' }, { name: '报告详情', link: '' }]} />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>

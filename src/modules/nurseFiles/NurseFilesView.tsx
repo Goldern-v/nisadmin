@@ -15,7 +15,10 @@ import StatisticsView from "./view/statistics/StatisticsView";
 import StatisticsViews from "./view/statistics-hj/StatisticsView";
 import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
 
+//护士调动
 import HumanResource from './view/nurseFiles-nys/views/humanResource/HumanResource'
+//院级小组
+import NurseGroupManage from './view/nurseFiles-nys/views/nurseGroupManage/NurseGroupManage'
 
 import { ReactComponent as ZZHSDA } from "./images/ZZHSDA.svg";
 import { ReactComponent as TXHSCX } from "./images/TXHSCX.svg";
@@ -43,12 +46,19 @@ const LEFT_MENU_CONFIG_NYS = [
     path: "/nurseFile/onTheJob",
     component: OnTheJobComponent,
     icon: <ZZHSDA />
-  }, {
+  },
+  {
     title: "护士调动",
     path: "/nurseFile/humanResource",
     component: HumanResource,
     icon: <TXHSCX />
   },
+  // {
+  //   title: "院级小组管理",
+  //   path: "/nurseFile/nurseGroupManage",
+  //   component: NurseGroupManage,
+  //   icon: <TXHSCX />
+  // },
   {
     title: "离职/退休人员查询",
     path: "/nurseFile/retiredRetirees",

@@ -7,17 +7,20 @@ import createModal from 'src/libs/createModal'
 
 export interface Props extends ModalComponentProps {
   viewType: 'edit' | 'view',
-  data: any
+  data: any,
+  onOkCallback: Function
 }
 
 export default function NurseGroupEditModal(props: Props) {
-  const { visible, onCancel, viewType, data } = props
+  const { visible, onCancel, viewType, data, onOkCallback } = props
   const [editData, setEditData] = useState({} as any)
   const [loading, setLoading] = useState(false)
 
   let selectPeopleModal = createModal(SelectPeopleModal)
 
   const title = () => {
+    if (!data) return ''
+
     if (viewType == 'view') return '查看小组'
     else if (Object.keys(data).length > 0) return '编辑小组'
     else return '新建小组'
@@ -25,15 +28,23 @@ export default function NurseGroupEditModal(props: Props) {
 
   const handleSave = () => {
     console.log('save')
+    onOkCallback && onOkCallback()
   }
   return <React.Fragment>
     <Modal
       title={title()}
       confirmLoading={loading}
       centered
-      footer={viewType == 'edit' ?
-        <Button type="primary" onClick={handleSave}></Button> :
-        null}
+      footer={
+        viewType == 'edit' ?
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={handleSave}>
+            保存
+        </Button> :
+          null
+      }
       onCancel={onCancel}
       visible={visible}>
       <Wrapper>

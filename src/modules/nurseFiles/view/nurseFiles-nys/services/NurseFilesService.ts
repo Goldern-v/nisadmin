@@ -324,6 +324,7 @@ export default class NurseFilesService extends BaseApiService {
   public saveListImport(nurseNYSInformationDtos: any[]) {
     return this.post(`/nurseInformation/saveListImport`, { nurseNYSInformationDtos })
   }
+
   /** 人力资源 */
   public qcNurseTransferGetPage(obj: any) {
     return this.post(`/nurseTransfer/getPage`, obj)
@@ -336,7 +337,8 @@ export default class NurseFilesService extends BaseApiService {
   /** 外出进修更新 */
   public async onEducationSaveOrUpdate(type: string, obj: any) {
     nurseFileDetailViewModal.pageSpinning = true
-    return this.post(`/${type}/saveOrUpdate`, obj).then(res => {
+    // return this.post(`/${type}/saveOrUpdate`, obj).then(res => {
+    return this.post(`/${type}/saveOrUpdatePC`, obj).then(res => {
       nurseFileDetailViewModal.pageSpinning = false
       return res
     }, () => nurseFileDetailViewModal.pageSpinning = false)
@@ -356,6 +358,11 @@ export default class NurseFilesService extends BaseApiService {
       nurseFileDetailViewModal.pageSpinning = false
       return res
     }, () => nurseFileDetailViewModal.pageSpinning = false)
+  }
+
+  /** 查询院级小组管理列表 */
+  public async nurseGroupList(query: any) {
+    return this.post(`/nurseFileGroup/getByDeptCode`, query)
   }
 }
 

@@ -40,7 +40,7 @@ export default function BadEventsRouters(props: Props) {
       title: '不良事件分析报告',
       path: '/home/不良事件分析报告',
       component: BadEventReportList,
-      hide: true,
+      hide: appStore.isDev ? false : true,
       keepAlive: true,
       disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     }

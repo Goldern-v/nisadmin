@@ -326,6 +326,10 @@ const InfectedAreasCountDetail = lazy(() =>
   import("src/modules/infectedAreasCount/InfectedAreasCountDetail")
 );
 
+//不良事件管理模块
+//不良事件统计报告
+const BadEventReportView = lazy(() => import("src/modules/badEventsNew/views/BadEventReport/BadEventReportView"))
+
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
   setLayout("/login", LoginView),
@@ -603,6 +607,7 @@ const routes: RouteItem[] = [
   setLayout("/checkWardReportView", CheckWardReportView, layouts.MainLayout),
   setLayout("/nightChargingReport", nightChargingReport, layouts.MainLayout),
   setLayout("/InfectedAreasCount", InfectedAreasCount, layouts.MainLayout),
+  setLayout("/BadEventReportView", BadEventReportView, layouts.MainLayout),
   {
     path: "/nurseFile",
     redirect: "/nurseFile/onTheJob"
