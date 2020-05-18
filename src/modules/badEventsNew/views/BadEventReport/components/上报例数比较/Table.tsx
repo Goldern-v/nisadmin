@@ -60,33 +60,30 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
-          <col width='12.5%' />
+          {/* <col width='12.5%' />
           <col width='12.5%' />
           <col width='15%' />
           <col width='27.5%' />
-          <col width='27.5%' />
+          <col width='27.5%' /> */}
         </colgroup>
         <tbody>
           <tr className='header'>
-            <td>时间</td>
-            <td>当事人</td>
-            <td>事件种类</td>
-            <td>事情简要经过</td>
-            <td>后果</td>
+            <td>事件分类</td>
+            <td>发生次数</td>
+            <td>占比例</td>
           </tr>
 
-          {list.map((item, index) => (
+          {/* {list.map((item, index) => (
             <tr key={index}>
               <td>{item.eventDate}</td>
               <td>{item.eventEmpNames}</td>
               <td>{getEventTypeNameByCode(item.eventType)}</td>
               <td>
-                {/* <Pre>{item.briefCourseEvent}</Pre> */}
                 {item.briefCourseEvent}
               </td>
               <td>{item.result}</td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </table>
     </Wrapper>

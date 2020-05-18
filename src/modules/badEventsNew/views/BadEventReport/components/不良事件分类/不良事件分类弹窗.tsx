@@ -5,7 +5,7 @@ import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/ve
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem, Report, TypeCompare, DeptItem } from '../../types'
-import { badEventReportModel } from './../../BadEventReportModel'
+import { badEventReportModel } from '../../BadEventReportModel'
 import { EventTypeList } from './Table'
 import { DictItem } from 'src/services/api/CommonApiService'
 
@@ -15,7 +15,7 @@ export interface Props {
   setData: any
 }
 
-export default function 不良事件弹窗(props: Props) {
+export default function 不良事件分类弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   let report: Report = badEventReportModel.getDataInAllData('report')

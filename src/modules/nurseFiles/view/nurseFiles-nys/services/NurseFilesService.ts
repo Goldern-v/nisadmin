@@ -336,7 +336,8 @@ export default class NurseFilesService extends BaseApiService {
   /** 外出进修更新 */
   public async onEducationSaveOrUpdate(type: string, obj: any) {
     nurseFileDetailViewModal.pageSpinning = true
-    return this.post(`/${type}/saveOrUpdate`, obj).then(res => {
+    // return this.post(`/${type}/saveOrUpdate`, obj).then(res => {
+    return this.post(`/${type}/saveOrUpdatePC`, obj).then(res => {
       nurseFileDetailViewModal.pageSpinning = false
       return res
     }, () => nurseFileDetailViewModal.pageSpinning = false)

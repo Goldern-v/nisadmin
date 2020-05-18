@@ -63,12 +63,17 @@ export default function EditPersonWinningModal(props: Props) {
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
     value.endDate && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
-    nurseFilesService.onEducationSaveOrUpdate('nurseOutStudy', { ...obj, ...value, sign }).then((res: any) => {
-      message.success('保存成功')
-      props.getTableData && props.getTableData()
-      emitter.emit('refreshNurseFileDeatilLeftMenu')
-      onCancel()
-    })
+
+    nurseFilesService
+      .onEducationSaveOrUpdate(
+        'nurseOutStudy',
+        { ...obj, ...value, sign })
+      .then((res: any) => {
+        message.success('保存成功')
+        props.getTableData && props.getTableData()
+        emitter.emit('refreshNurseFileDeatilLeftMenu')
+        onCancel()
+      })
   }
 
   /** 自动关联进修时常 */
@@ -117,11 +122,14 @@ export default function EditPersonWinningModal(props: Props) {
         <Button key='back' onClick={onCancel}>
           关闭
         </Button>,
-        <Button key='save' type='primary' onClick={() => onSave(false)}>
-          保存
-        </Button>,
+        // <Button key='save' type='primary' onClick={() => onSave(false)}>
+        //   保存
+        // </Button>,
+        // <Button key='submit' type='primary' onClick={() => onSave(true)}>
+        //   提交审核
+        // </Button>
         <Button key='submit' type='primary' onClick={() => onSave(true)}>
-          提交审核
+          保存
         </Button>
       ]}
     >

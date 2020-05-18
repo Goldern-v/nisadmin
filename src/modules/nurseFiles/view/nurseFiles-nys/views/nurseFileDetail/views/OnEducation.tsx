@@ -102,11 +102,10 @@ export default observer(function Awards() {
                 <span
                   onClick={() => {
                     editOnEducationModal.show({ data: row, signShow: '修改' })
-                  }}
-                >
+                  }}>
                   修改
-              </span>
-                <span onClick={() => deleteRecord(row.id)}>删除</span>
+                </span>
+                {/* <span onClick={() => deleteRecord(row.id)}>删除</span> */}
               </React.Fragment>
             ) : (
                 ''

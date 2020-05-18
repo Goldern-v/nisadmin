@@ -111,16 +111,17 @@ class BadEventReportModel {
     let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
     /** 上月 */
     let lastMonth = currentMonth == 1 ? 12 : currentMonth - 1
-    this.getSectionData('报告名称')!.text = this.allData.report!.reportName || {}
-    this.getSectionData('护理工作计划')!.list = this.allData.workScheduleList || []
-    this.getSectionData('病区护理质量检查')!.list = this.allData.wardCheckList || []
-    this.getSectionData('护士会议记录')!.list = this.allData.nurseMeetingList || []
-    this.getSectionData('不良事件')!.list = this.allData.badEventList || []
-    this.getSectionData('人力资源调配')!.list = this.allData.hrAllocationList || []
+    // this.getSectionData('报告名称')!.text = this.allData.report!.reportName || {}
+    // this.getSectionData('护理工作计划')!.list = this.allData.workScheduleList || []
+    // this.getSectionData('病区护理质量检查')!.list = this.allData.wardCheckList || []
+    // this.getSectionData('护士会议记录')!.list = this.allData.nurseMeetingList || []
+    // this.getSectionData('不良事件')!.list = this.allData.badEventList || []
+    // this.getSectionData('人力资源调配')!.list = this.allData.hrAllocationList || []
     // this.getSectionData('检查形式')!.report = this.allData.report || {}
     // this.getSectionData('护理工作计划')!.list = []
   }
   async init(query?: any) {
+    return
     await this.initData(query)
     this.baseModal = createModal(BaseModal)
   }
