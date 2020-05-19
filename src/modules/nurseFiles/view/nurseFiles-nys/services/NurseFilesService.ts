@@ -364,6 +364,22 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseGroupList(query: any) {
     return this.post(`/nurseFileGroup/getByDeptCode`, query)
   }
+  /** 新增院级小组 */
+  public async saveNurseFileGroup(params: any) {
+    return this.post(`/nurseFileGroup/saveNurseFileGroup`, params)
+  }
+  /** 新增或修改分组人员 */
+  public async saveSettingNurseGroupDetail(params: any) {
+    return this.post(`/nurseFileGroup/saveSettingNurseGroupDetail`, params)
+  }
+  /** 根据分组ID获取对应的院级小组人员管理 */
+  public async getByNurseFileGroupId(groupId: string) {
+    return this.get(`/nurseFileGroup/getByNurseFileGroupId/${groupId}`)
+  }
+  /** 删除院级小组 */
+  public async deleteNurseFileGroup(groupId: string) {
+    return this.get(`/nurseFileGroup/delete/${groupId}`)
+  }
 }
 
 export const nurseFilesService = new NurseFilesService();

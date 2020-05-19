@@ -53,12 +53,13 @@ const LEFT_MENU_CONFIG_NYS = [
     component: HumanResource,
     icon: <TXHSCX />
   },
-  // {
-  //   title: "院级小组管理",
-  //   path: "/nurseFile/nurseGroupManage",
-  //   component: NurseGroupManage,
-  //   icon: <TXHSCX />
-  // },
+  {
+    title: "院级小组管理",
+    path: "/nurseFile/nurseGroupManage",
+    component: NurseGroupManage,
+    hidden: !appStore.isDev,
+    icon: <TXHSCX />
+  },
   {
     title: "离职/退休人员查询",
     path: "/nurseFile/retiredRetirees",

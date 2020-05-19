@@ -44,6 +44,7 @@ export default function WardRegisterRouter() {
       title: "特殊交接登记本",
       path: "/wardRegister/QCRG_02",
       component: { ...物品交接登记本 },
+      hide: !appStore.isDev,
       icon: <TSWP />,
       payload: {
         registerCode: "QCRG_02",

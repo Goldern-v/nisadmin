@@ -27,40 +27,19 @@ export default observer(function NurseGroupManage() {
 
   const columns: ColumnProps<any>[] = [
     {
-      title: '姓名',
-      align: 'center',
-      dataIndex: 'empName',
-      width: 100
-    },
-    {
-      title: '原科室',
-      dataIndex: 'deptCodeNameOld',
-      width: 160
-    },
-    {
-      title: '调往科室',
-      dataIndex: 'deptNameNew',
+      title: '小组名称',
+      align: 'left',
+      dataIndex: 'groupName',
       width: 180
     },
     {
-      title: '开始时间',
-      align: 'center',
-      dataIndex: 'startDate',
-      width: 150
-    },
-    {
-      title: '事由',
-      align: 'left',
-      dataIndex: 'remark',
-      // width: 180
-    },
-    {
       title: '操作',
-      align: 'left',
       dataIndex: 'operate',
       width: 60,
       render: (text: any, record: any) => {
         return <DoCon>
+          <span onClick={() => handleEdit(record)}>编辑</span>
+          <span onClick={() => handleDelete(record)}>删除</span>
         </DoCon>
       }
     }
@@ -79,7 +58,7 @@ export default observer(function NurseGroupManage() {
         ...pageOptions
       })
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         setTotal(res.data.totalCount)
         setDataSource(res.data.list)
         setPageLoading(false)
@@ -93,9 +72,34 @@ export default observer(function NurseGroupManage() {
       viewType: 'edit',
       data: {},
       onOkCallback: () => {
-        console.log('done')
+        getData()
       }
     })
+  }
+
+  const handleEdit = (record: any) => {
+    nurseGroupEditModal.show({
+      viewType: 'edit',
+      data: { ...record },
+      onOkCallback: () => {
+        getData()
+      }
+    })
+  }
+
+  const handleDelete = (record: any) => {
+    globalModal.confirm('提示', '是否删除该小组?')
+      .then(() => {
+        setPageLoading(true)
+        nurseFilesService
+          .deleteNurseFileGroup(record.id)
+          .then(res => {
+            message.success('删除成功', undefined, () => {
+              setPageLoading(false)
+              getData()
+            })
+          }, err => setPageLoading(false))
+      })
   }
 
   useEffect(() => {
@@ -112,9 +116,9 @@ export default observer(function NurseGroupManage() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>院级小组管理</PageTitle>
+        <PageTitle maxWidth={1200}>院级小组管理</PageTitle>
         <Place />
-        <span className='label'>科室:</span>
+        {/* <span className='label'>科室:</span> */}
         {/* <Select
           value={deptSelected}
           style={{ width: 200 }}
@@ -145,6 +149,7 @@ export default observer(function NurseGroupManage() {
         columns={columns}
         wrapperStyle={{ margin: '0 15px' }}
         type={['index']}
+        // expandedRowRender={() => '12321'}
         surplusHeight={220}
         surplusWidth={200}
         pagination={{
