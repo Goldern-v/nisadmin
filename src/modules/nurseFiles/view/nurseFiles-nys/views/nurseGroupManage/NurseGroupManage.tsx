@@ -2,7 +2,12 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button, message } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
-import { DatePicker, Select, ColumnProps, PaginationConfig } from 'src/vendors/antd'
+import {
+  // DatePicker, 
+  // Select, 
+  ColumnProps,
+  PaginationConfig
+} from 'src/vendors/antd'
 // import DeptSelect from 'src/components/DeptSelect'
 import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
@@ -39,6 +44,7 @@ export default observer(function NurseGroupManage() {
       render: (text: any, record: any) => {
         return <DoCon>
           <span onClick={() => handleEdit(record)}>编辑</span>
+          <span onClick={() => handleDetail(record)}>查看</span>
           <span onClick={() => handleDelete(record)}>删除</span>
         </DoCon>
       }
@@ -65,7 +71,13 @@ export default observer(function NurseGroupManage() {
       })
   }
 
-  const onDetail = (record: any) => { }
+  const handleDetail = (record: any) => {
+    nurseGroupEditModal.show({
+      viewType: 'view',
+      data: record,
+      onOkCallback: () => { }
+    })
+  }
 
   const handleAdd = () => {
     nurseGroupEditModal.show({
@@ -118,8 +130,8 @@ export default observer(function NurseGroupManage() {
       <PageHeader>
         <PageTitle maxWidth={1200}>院级小组管理</PageTitle>
         <Place />
-        {/* <span className='label'>科室:</span> */}
-        {/* <Select
+        {/* <span className='label'>科室:</span>
+        <Select
           value={deptSelected}
           style={{ width: 200 }}
           showSearch
@@ -164,7 +176,7 @@ export default observer(function NurseGroupManage() {
           })
         }}
         onRow={(record: any) => {
-          return { onDoubleClick: () => onDetail(record) }
+          return { onDoubleClick: () => handleDetail(record) }
         }}
       />
       <nurseGroupEditModal.Component />

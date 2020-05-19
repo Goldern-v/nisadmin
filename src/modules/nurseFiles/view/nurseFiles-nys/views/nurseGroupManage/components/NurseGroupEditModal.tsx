@@ -69,6 +69,7 @@ export default function NurseGroupEditModal(props: Props) {
     }
   }
 
+  //保存修改
   const handleSave = () => {
     if (editData.groupName.trim() == '') {
       message.warning('小组名称不能为空')
@@ -196,11 +197,16 @@ export default function NurseGroupEditModal(props: Props) {
               <span className="label">小组名称:</span>
             </Col>
             <Col span={16}>
-              <TextArea
-                disabled={data && data.id}
-                value={editData.groupName}
-                autosize={{ minRows: 1 }}
-                onChange={(e: any) => setEditData({ ...editData, groupName: e.target.value })} />
+              {viewType == 'edit' &&
+                <TextArea
+                  disabled={data && data.id}
+                  value={editData.groupName}
+                  autosize={{ minRows: 1 }}
+                  onChange={(e: any) => setEditData({ ...editData, groupName: e.target.value })} />}
+              {viewType == 'view' &&
+                <span className="content">
+                  {editData.groupName}
+                </span>}
             </Col>
           </Row>
           <Row className="edit-row">
@@ -208,27 +214,33 @@ export default function NurseGroupEditModal(props: Props) {
               <span className="label">小组成员:</span>
             </Col>
             <Col span={16}>
-              <Select
-                style={{ width: '100%' }}
-                mode="tags"
-                maxTagCount={15}
-                labelInValue
-                onChange={(payload: any) => {
-                  let newMemberList = []
-                  for (let i = 0; i < payload.length; i++) {
-                    let pItem = payload[i]
-                    let target = editData.memberList.find((item: any) => item.empNo == pItem.key)
-                    if (target) newMemberList.push(target)
-                  }
+              {viewType == 'edit' &&
+                <Select
+                  style={{ width: '100%' }}
+                  mode="tags"
+                  maxTagCount={15}
+                  labelInValue
+                  onChange={(payload: any) => {
+                    let newMemberList = []
+                    for (let i = 0; i < payload.length; i++) {
+                      let pItem = payload[i]
+                      let target = editData.memberList.find((item: any) => item.empNo == pItem.key)
+                      if (target) newMemberList.push(target)
+                    }
 
-                  setEditData({ ...editData, memberList: newMemberList })
-                }}
-                value={editData.memberList
-                  .map((item: any) => ({ key: item.empNo, label: item.empName }))}>
-              </Select>
+                    setEditData({ ...editData, memberList: newMemberList })
+                  }}
+                  value={editData.memberList
+                    .map((item: any) => ({ key: item.empNo, label: item.empName }))}>
+                </Select>}
+              {viewType == 'view' &&
+                <span className="content">
+                  {editData.memberList
+                    .map((item: any) => item.empName)}
+                </span>}
             </Col>
             <Col span={4}>
-              <Button className="btn-add" onClick={handleMemberEdit}>编辑</Button>
+              {viewType == 'edit' && <Button className="btn-add" onClick={handleMemberEdit}>编辑</Button>}
             </Col>
           </Row>
         </Spin>
@@ -240,7 +252,7 @@ export default function NurseGroupEditModal(props: Props) {
 const Wrapper = styled.div`
   .edit-row{
     margin-bottom: 15px;
-    .label{
+    .label,.content{
       line-height:30px;
     }
   }

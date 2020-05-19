@@ -29,6 +29,7 @@ import 消毒隔离工作登记本 from "./page/消毒隔离工作登记本/消�
 export interface Props { }
 
 export default function WardRegisterRouter() {
+
   const leftMenuConfig = [
     {
       title: "物品交接登记本",
@@ -44,8 +45,8 @@ export default function WardRegisterRouter() {
       title: "特殊交接登记本",
       path: "/wardRegister/QCRG_02",
       component: { ...物品交接登记本 },
-      hide: !appStore.isDev,
       icon: <TSWP />,
+      hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_02",
         registerName: "特殊交接登记本"
@@ -72,132 +73,98 @@ export default function WardRegisterRouter() {
         registerName: "医嘱核对登记本"
       }
     },
-  ]
-
-  const _leftMenuConfig = [
-    // {
-    //   title: "物品交接登记本",
-    //   path: "/wardRegister",
-    //   component: { ...物品交接登记本 },
-    //   icon: <WPJJ />,
-    //   payload: {
-    //     registerCode: "QCRG_01",
-    //     registerName: "物品交接登记本"
-    //   }
-    // },
-    // {
-    //   title: "特殊交接登记本",
-    //   path: "/wardRegister/QCRG_02",
-    //   component: { ...物品交接登记本 },
-    //   icon: <TSWP />,
-    //   payload: {
-    //     registerCode: "QCRG_02",
-    //     registerName: "特殊交接登记本"
-    //   }
-    // },
     {
-      title: "重点患者评估登记本",
-      path: "/wardRegister/QCRG_03",
+      title: "床单位消毒登记本",
+      path: "/wardRegister/QCRG_05",
       component: { ...重点患者评估登记本 },
-      icon: <ZDHZ />,
+      icon: <CDWXD />,
+      hide: !appStore.isDev,
       payload: {
-        registerCode: "QCRG_03",
-        registerName: "重点患者评估登记本"
+        registerCode: "QCRG_05",
+        registerName: "床单位消毒登记本"
       }
     },
     {
-      title: "医嘱核对登记本",
-      path: "/wardRegister/QCRG_04",
-      component: { ...重点患者评估登记本 },
-      icon: <YZHD />,
+      title: "紫外线空气消毒登记本",
+      path: "/wardRegister/QCRG_06",
+      component: { ...紫外线空气消毒登记本 },
+      hide: !appStore.isDev,
+      icon: <ZWXKQ />,
       payload: {
-        registerCode: "QCRG_04",
-        registerName: "医嘱核对登记本"
+        registerCode: "QCRG_06",
+        registerName: "紫外线空气消毒登记本"
       }
     },
-    // {
-    //   title: "床单位消毒登记本",
-    //   path: "/wardRegister/QCRG_05",
-    //   component: { ...重点患者评估登记本 },
-    //   icon: <CDWXD />,
-    //   payload: {
-    //     registerCode: "QCRG_05",
-    //     registerName: "床单位消毒登记本"
-    //   }
-    // },
-    // {
-    //   title: "紫外线空气消毒登记本",
-    //   path: "/wardRegister/QCRG_06",
-    //   component: { ...紫外线空气消毒登记本 },
-    //   icon: <ZWXKQ />,
-    //   payload: {
-    //     registerCode: "QCRG_06",
-    //     registerName: "紫外线空气消毒登记本"
-    //   }
-    // },
-    // {
-    //   title: "消毒隔离工作登记本",
-    //   path: "/wardRegister/QCRG_07",
-    //   component: { ...消毒隔离工作登记本 },
-    //   icon: <XDGL />,
-    //   payload: {
-    //     registerCode: "QCRG_07",
-    //     registerName: "消毒隔离工作登记本"
-    //   }
-    // },
-    // {
-    //   title: "出院患者登记本",
-    //   path: "/wardRegister/QCRG_08",
-    //   component: { ...重点患者评估登记本 },
-    //   icon: <CYHZ />,
-    //   payload: {
-    //     registerCode: "QCRG_08",
-    //     registerName: "出院患者登记本"
-    //   }
-    // },
-    // {
-    //   title: "备用药品管理登记本",
-    //   path: "/wardRegister/QCRG_10",
-    //   component: { ...重点患者评估登记本 },
-    //   icon: <BYYP />,
-    //   payload: {
-    //     registerCode: "QCRG_10",
-    //     registerName: "备用药品管理登记本"
-    //   }
-    // },
-    // {
-    //   title: "仪器设备使用登记",
-    //   path: "/wardRegister/QCRG_11",
-    //   component: { ...物品交接登记本 },
-    //   icon: <YQSB />,
-    //   payload: {
-    //     registerCode: "QCRG_11",
-    //     registerName: "仪器设备使用登记"
-    //   }
-    // },
-    // {
-    //   title: "急救车使用登记本",
-    //   path: "/wardRegister/QCRG_12",
-    //   component: { ...重点患者评估登记本 },
-    //   icon: <JJCSY />,
-    //   payload: {
-    //     registerCode: "QCRG_12",
-    //     registerName: "急救车使用登记本"
-    //   }
-    // },
-    // {
-    //   title: "毒麻药品使用登记",
-    //   path: "/wardRegister/QCRG_13",
-    //   component: { ...重点患者评估登记本 },
-    //   icon: <DMYP />,
-    //   payload: {
-    //     registerCode: "QCRG_13",
-    //     registerName: "毒麻药品使用登记"
-    //   }
-    // },
+    {
+      title: "消毒隔离工作登记本",
+      path: "/wardRegister/QCRG_07",
+      component: { ...消毒隔离工作登记本 },
+      icon: <XDGL />,
+      hide: !appStore.isDev,
+      payload: {
+        registerCode: "QCRG_07",
+        registerName: "消毒隔离工作登记本"
+      }
+    },
+    {
+      title: "出院患者登记本",
+      path: "/wardRegister/QCRG_08",
+      component: { ...重点患者评估登记本 },
+      icon: <CYHZ />,
+      hide: !appStore.isDev,
+      payload: {
+        registerCode: "QCRG_08",
+        registerName: "出院患者登记本"
+      }
+    },
+    {
+      title: "备用药品管理登记本",
+      path: "/wardRegister/QCRG_10",
+      component: { ...重点患者评估登记本 },
+      hide: !appStore.isDev,
+      icon: <BYYP />,
+      payload: {
+        registerCode: "QCRG_10",
+        registerName: "备用药品管理登记本"
+      }
+    },
+    {
+      title: "仪器设备使用登记",
+      path: "/wardRegister/QCRG_11",
+      component: { ...物品交接登记本 },
+      icon: <YQSB />,
+      hide: !appStore.isDev,
+      payload: {
+        registerCode: "QCRG_11",
+        registerName: "仪器设备使用登记"
+      }
+    },
+    {
+      title: "急救车使用登记本",
+      path: "/wardRegister/QCRG_12",
+      component: { ...重点患者评估登记本 },
+      icon: <JJCSY />,
+      hide: !appStore.isDev,
+      payload: {
+        registerCode: "QCRG_12",
+        registerName: "急救车使用登记本"
+      }
+    },
+    {
+      title: "毒麻药品使用登记",
+      path: "/wardRegister/QCRG_13",
+      component: { ...重点患者评估登记本 },
+      icon: <DMYP />,
+      hide: !appStore.isDev,
+      payload: {
+        registerCode: "QCRG_13",
+        registerName: "毒麻药品使用登记"
+      }
+    },
     {
       title: "库房物品登记本",
       icon: <KFWP />,
+      hide: !appStore.isDev,
       children: [
         {
           title: "库房物品入库登记",
@@ -219,10 +186,10 @@ export default function WardRegisterRouter() {
         }
       ]
     },
-
     {
       title: "中医护理登记本",
       icon: <ZYHL />,
+      hide: !appStore.isDev,
       children: [
         {
           title: "中医护理登记本",
@@ -265,6 +232,7 @@ export default function WardRegisterRouter() {
     {
       title: "静脉治疗登记",
       icon: <JMZL />,
+      hide: !appStore.isDev,
       children: [
         {
           title: "静脉治疗并发登记本",
@@ -301,78 +269,82 @@ export default function WardRegisterRouter() {
       icon: <HHGT />,
       path: "/wardRegister/QCRG_17",
       component: { ...重点患者评估登记本 },
+      hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_17",
         registerName: "护患沟通记录"
       }
     },
-    // {
-    //   title: "健康教育授课登记表",
-    //   path: "/wardRegister/QCRG_18",
-    //   component: { ...物品交接登记本 },
-    //   icon: <JKJY />,
-    //   payload: {
-    //     registerCode: "QCRG_18",
-    //     registerName: "健康教育授课登记表"
-    //   }
-    // },
-    // {
-    //   title: "实习、进修、新职工人员信息",
-    //   icon: <SXJX />,
-    //   children: [
-    //     {
-    //       title: "实习人员登记",
-    //       path: "/wardRegister/QCRG_19_1",
-    //       component: { ...重点患者评估登记本 },
-    //       payload: {
-    //         registerCode: "QCRG_19_1",
-    //         registerName: "实习人员登记"
-    //       }
-    //     },
-    //     {
-    //       title: "实习、进修人员、新职工、轮转职工登记",
-    //       path: "/wardRegister/QCRG_19_2",
-    //       component: { ...重点患者评估登记本 },
-    //       payload: {
-    //         registerCode: "QCRG_19_2",
-    //         registerName: "物品实习、进修人员、新职工、轮转职工登记交接登记本"
-    //       }
-    //     },
-    //     {
-    //       title: "新职工、轮转职工登记",
-    //       path: "/wardRegister/QCRG_19_3",
-    //       component: { ...重点患者评估登记本 },
-    //       payload: {
-    //         registerCode: "QCRG_19_4",
-    //         registerName: "新职工、轮转职工登记"
-    //       }
-    //     }
-    //   ]
-    // },
-    // {
-    //   title: "生命支持仪器管理",
-    //   icon: <SMZC />,
-    //   children: [
-    //     {
-    //       title: "生命支持仪器交接登记",
-    //       path: "/wardRegister/QCRG_20_1",
-    //       component: { ...重点患者评估登记本 },
-    //       payload: {
-    //         registerCode: "QCRG_20_1",
-    //         registerName: "生命支持仪器交接登记"
-    //       }
-    //     },
-    //     {
-    //       title: "生命支持仪器检查登记",
-    //       path: "/wardRegister/QCRG_20_2",
-    //       component: { ...重点患者评估登记本 },
-    //       payload: {
-    //         registerCode: "QCRG_20_2",
-    //         registerName: "生命支持仪器检查登记"
-    //       }
-    //     }
-    //   ]
-    // }
+    {
+      title: "健康教育授课登记表",
+      path: "/wardRegister/QCRG_18",
+      component: { ...物品交接登记本 },
+      hide: !appStore.isDev,
+      icon: <JKJY />,
+      payload: {
+        registerCode: "QCRG_18",
+        registerName: "健康教育授课登记表"
+      }
+    },
+    {
+      title: "实习、进修、新职工人员信息",
+      icon: <SXJX />,
+      hide: !appStore.isDev,
+      children: [
+        {
+          title: "实习人员登记",
+          path: "/wardRegister/QCRG_19_1",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_19_1",
+            registerName: "实习人员登记"
+          }
+        },
+        {
+          title: "实习、进修人员、新职工、轮转职工登记",
+          path: "/wardRegister/QCRG_19_2",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_19_2",
+            registerName: "物品实习、进修人员、新职工、轮转职工登记交接登记本"
+          }
+        },
+        {
+          title: "新职工、轮转职工登记",
+          path: "/wardRegister/QCRG_19_3",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_19_4",
+            registerName: "新职工、轮转职工登记"
+          }
+        }
+      ]
+    },
+    {
+      title: "生命支持仪器管理",
+      icon: <SMZC />,
+      hide: !appStore.isDev,
+      children: [
+        {
+          title: "生命支持仪器交接登记",
+          path: "/wardRegister/QCRG_20_1",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_20_1",
+            registerName: "生命支持仪器交接登记"
+          }
+        },
+        {
+          title: "生命支持仪器检查登记",
+          path: "/wardRegister/QCRG_20_2",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_20_2",
+            registerName: "生命支持仪器检查登记"
+          }
+        }
+      ]
+    }
   ];
 
   return (

@@ -581,7 +581,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                   registerCode == "QCRG_04" &&
                   item.itemCode == "组号及床号"
                 ) {
-                  let prevValue = record[item.itemCode];
+                  let prevValue = record[item.itemCode] || '';
                   setTimeout(() => {
                     record[item.itemCode] =
                       prevValue + (prevValue ? ";" : "") + value;

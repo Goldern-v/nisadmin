@@ -31,7 +31,7 @@ export function signRowObj(obj: {
     render(text: string, record: any, index: number) {
       let signApi = wardRegisterService.saveAndSignAll.bind(
         wardRegisterService
-      );
+      ) as any
       let cancelSignApi = wardRegisterService.cancelSign.bind(
         wardRegisterService
       );
@@ -80,13 +80,23 @@ export function signRowObj(obj: {
                 globalModal
                   .confirm(`${aside}签名确认`, `你确定${aside}签名吗？`)
                   .then(res => {
-                    signApi(registerCode, selectedBlockId, [record], true).then(
-                      res => {
-                        message.success(`${aside}签名成功`);
-                        Object.assign(record, res.data.itemDataList[0]);
-                        updateDataSource();
-                      }
-                    );
+                    //如果是sign类型
+                    if (dataIndex !== "auditorName") {
+                      signApi(registerCode, selectedBlockId, [record], true).then(
+                        (res: any) => {
+                          message.success(`${aside}签名成功`);
+                          Object.assign(record, res.data.itemDataList[0]);
+                          updateDataSource()
+                        })
+                    } else {
+                      signApi(registerCode, [{ id: record.id }]).then(
+                        (res: any) => {
+                          message.success(`${aside}签名成功`);
+                          Object.assign(record, res.data.list[0]);
+                          updateDataSource()
+                        })
+                    }
+                    //如果是audit类型
                   });
               }}
             >
