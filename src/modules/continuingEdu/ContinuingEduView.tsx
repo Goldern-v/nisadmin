@@ -130,7 +130,7 @@ export default function ContinuingEdu(props: Props) {
       title: "培训设置管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      // hide: true,
+      hide: true,
       children: [
         {
           title: "资质准入审核",
