@@ -24,6 +24,8 @@ import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
 import 晋升管理 from "./views/promotionSetting/PromotionSetting";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
+import FormReview from "./views/formReview/FormReview";
+import FormApply from "./views/formApply/FormApply";
 import ChoiceQustionEdit from "../questionBankManagement/views/ChoiceQuestionEdit";
 import FillingQuestionEdit from "../questionBankManagement/views/FillingQuestionEdit";
 import ShortQuestionEdit from "../questionBankManagement/views/ShortQuestionEdit";
@@ -125,11 +127,58 @@ export default function ContinuingEdu(props: Props) {
       hide: () => queyMenuAuthInfo("nm_lat_questionbankmanage")
     },
     {
+      title: "培训设置管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      // hide: true,
+      children: [
+        {
+          title: "资质准入审核",
+          path: "/continuingEdu/资质准入审核",
+          component: FormReview
+        },
+        {
+          title: "临床带教老师资质申请",
+          path: "/continuingEdu/临床带教老师资质申请",
+          component: FormApply
+        },
+        {
+          title: "护师执业/夜班准入申请",
+          path: "/continuingEdu/护师执业/夜班准入申请",
+          component: FormApply
+        },
+        {
+          title: "特殊岗位资质准入申请",
+          path: "/continuingEdu/特殊岗位资质准入申请",
+          component: FormApply
+        },
+        {
+          title: "护理会诊资质申请",
+          path: "/continuingEdu/护理会诊资质申请",
+          component: FormApply
+        },
+        {
+          title: "护士岗位层级晋升申请",
+          path: "/continuingEdu/护士岗位层级晋升申请",
+          component: FormApply
+        },
+        {
+          title: "层级岗位职责与能力",
+          path: "/continuingEdu/层级岗位职责与能力",
+          component: FormApply
+        },
+        {
+          title: "护士院内/院外进修",
+          path: "/continuingEdu/护士院内/院外进修",
+          component: FormApply
+        }
+      ]
+    },
+    {
       title: "菜单设置",
       icon: <KSGL />,
       path: "/continuingEdu/菜单设置",
       component: 菜单设置,
-      // hide: !authStore.isDepartment // 菜单设置只有护理部可见
       hide: () => queyMenuAuthInfo("nm_lat_menusetting")
     }
   ];
@@ -161,7 +210,6 @@ export default function ContinuingEdu(props: Props) {
                   path: `/continuingEdu/${Pid}/${item.id}?Pid=${Pid}&id=${
                     item.id
                   }`
-                  // hide: false
                 };
                 arr.push(obj2);
                 obj1.children = arr;
