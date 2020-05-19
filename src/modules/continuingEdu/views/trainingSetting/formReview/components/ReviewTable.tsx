@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button } from "antd";
 import { formReviewModal } from "../FormReviewModal";
+import { appStore } from "src/stores";
 
 export interface Props {
   type: string;
@@ -54,9 +55,23 @@ export default function ReviewTable(props: Props) {
       dataIndex: "cz",
       width: 100,
       align: "center",
-      render: (text: any, row: any) => {
+      render: (text: any, record: any) => {
         return (
-          <DoCon>{needAudit ? <span>审核</span> : <span>查看</span>}</DoCon>
+          <DoCon>
+            {needAudit ? (
+              <span
+                onClick={() => {
+                  appStore.history.push(
+                    `/continuingEduFormCheck/${record.empNo}`
+                  );
+                }}
+              >
+                审核
+              </span>
+            ) : (
+              <span>查看</span>
+            )}
+          </DoCon>
         );
       }
     }

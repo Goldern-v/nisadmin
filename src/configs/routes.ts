@@ -90,6 +90,7 @@ const TrainingExamination = lazy(() =>
 );
 //科室借用
 const DeptBorrow = lazy(() => import("src/modules/deptBorrow/DeptBorrow"));
+
 //继续教育
 const ContinuingEdu = lazy(() =>
   import("src/modules/continuingEdu/ContinuingEduView")
@@ -97,6 +98,10 @@ const ContinuingEdu = lazy(() =>
 const ContinuingEduEmpDetail = lazy(() =>
   import("src/modules/continuingEdu/views/empDetail/Main")
 );
+const ContinuingEduFormCheck = lazy(() =>
+  import("src/modules/continuingEdu/views/trainingSetting/formCheck/FormCheck")
+);
+
 // 护理质量
 const QualityView = lazy(() => import("src/modules/quality/QualityView"));
 const QualityControlRecordDetail = lazy(() =>
@@ -328,7 +333,9 @@ const InfectedAreasCountDetail = lazy(() =>
 
 //不良事件管理模块
 //不良事件统计报告
-const BadEventReportView = lazy(() => import("src/modules/badEventsNew/views/BadEventReport/BadEventReportView"))
+const BadEventReportView = lazy(() =>
+  import("src/modules/badEventsNew/views/BadEventReport/BadEventReportView")
+);
 
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -390,6 +397,11 @@ const routes: RouteItem[] = [
   setLayout("/practiceResultReview", PracticeResultReview, layouts.MainLayout),
   setLayout("/simulateResultReview", SimulateResultReview, layouts.MainLayout),
   setLayout("/trainingInfoReview", TrainingInfoReview, layouts.MainLayout),
+  setLayout(
+    "/continuingEduFormCheck",
+    ContinuingEduFormCheck,
+    layouts.MainLayout
+  ),
   {
     path: "/trainingExamination",
     redirect: "/trainingExamination/人员管理"

@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import { Select, Input, Button, DatePicker } from "antd";
-import { formApplyModal } from "../FormApplyModal";
+import { formApplyModal } from "../FormApplyModal"; // 仓库数据
+import FormEditModal from "../modal/FormEditModal"; // 新建弹窗
+
 const Option = Select.Option;
 
 interface Props {
@@ -10,6 +12,23 @@ interface Props {
 
 export default function ApplyHeader(props: Props) {
   const { getTitle } = props; //获取当前页面标题
+  const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
+  const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
+
+  // 修改表单
+  const saveOrUpload = (record?: any) => {
+    setEditParams({});
+    setEditVisible(true);
+  };
+
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setEditParams({});
+  };
+  const handleEditOk = () => {
+    // getTableData();
+    handleEditCancel();
+  };
 
   return (
     <Wrapper>
@@ -59,7 +78,20 @@ export default function ApplyHeader(props: Props) {
         >
           查询
         </Button>
+        <Button
+          type="primary"
+          className="span"
+          onClick={() => setEditVisible(true)}
+        >
+          新建
+        </Button>
       </RightIcon>
+      <FormEditModal
+        visible={editVisible}
+        params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      />
     </Wrapper>
   );
 }
@@ -85,6 +117,6 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   float: right;
   .span {
-    margin-left: 20px;
+    margin-left: 15px;
   }
 `;

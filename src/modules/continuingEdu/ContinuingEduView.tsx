@@ -100,12 +100,12 @@ export default function ContinuingEdu(props: Props) {
           component: FormApply
         },
         {
-          title: "层级岗位职责与能力",
+          title: "层级岗位职责与能力申请",
           path: "/continuingEdu/层级岗位职责与能力",
           component: FormApply
         },
         {
-          title: "护士院内/院外进修",
+          title: "护士院内/院外进修申请",
           path: "/continuingEdu/护士院内/院外进修",
           component: FormApply
         }
