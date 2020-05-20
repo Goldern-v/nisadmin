@@ -1,19 +1,17 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import { Select, Input, Button, DatePicker } from "antd";
+import { PageTitle } from "src/components/common";
 import { formApplyModal } from "../FormApplyModal"; // 仓库数据
 import FormEditModal from "../modal/FormEditModal"; // 新建弹窗
 
 const Option = Select.Option;
 
-interface Props {
-  getTitle: any;
-}
+interface Props {}
 
 export default function ApplyHeader(props: Props) {
-  const { getTitle } = props; //获取当前页面标题
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
-  const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
+  const [editVisible, setEditVisible] = useState(true); // 控制一弹窗状态
 
   // 修改表单
   const saveOrUpload = (record?: any) => {
@@ -33,7 +31,7 @@ export default function ApplyHeader(props: Props) {
   return (
     <Wrapper>
       <LeftIcon>
-        <Title>{getTitle}</Title>
+        <PageTitle maxWidth={1450}>{formApplyModal.getTitle}</PageTitle>
       </LeftIcon>
       <RightIcon>
         <span>创建日期：</span>

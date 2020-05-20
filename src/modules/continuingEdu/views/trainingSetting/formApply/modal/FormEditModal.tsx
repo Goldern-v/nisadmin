@@ -1,15 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import {
-  Input,
-  Row,
-  Col,
-  Modal,
-  message as Message,
-  Select,
-  Button
-} from "antd";
-import Form from "src/components/Form/Form";
+import { Modal, message as Message, Button } from "antd";
+import FormCommon from "./formCommon/FormCommon";
 
 export interface Props {
   visible: boolean;
@@ -22,7 +14,6 @@ export interface Props {
 export default function FormEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const formRef = React.createRef<Form>();
   const checkForm = () => {};
 
   useEffect(() => {
@@ -40,7 +31,7 @@ export default function FormEditModal(props: Props) {
 
   return (
     <Modal
-      width={1000}
+      width={860}
       visible={visible}
       onCancel={handleCancel}
       onOk={checkForm}
@@ -56,18 +47,7 @@ export default function FormEditModal(props: Props) {
         </div>
       }
     >
-      <Wrapper />
+      <FormCommon />
     </Modal>
   );
 }
-const Wrapper = styled.div`
-  width: 80%;
-  margin: 0 auto;
-  .label {
-    line-height: 32px;
-  }
-  .ant-switch {
-    margin-left: 10px;
-    margin-top: 8px;
-  }
-`;

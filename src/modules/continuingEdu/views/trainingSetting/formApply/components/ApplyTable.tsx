@@ -4,13 +4,9 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { Button } from "antd";
 import { formApplyModal } from "../FormApplyModal";
 
-interface Props {
-  getTitle: any;
-}
+interface Props {}
 
 export default function ApplyTable(props: Props) {
-  const { getTitle } = props; //获取当前页面标题
-
   const columns: any = [
     {
       title: "序号",

@@ -2,6 +2,7 @@ import { observable, computed } from "mobx";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 
 class FormApplyModal {
+  @observable public getTitle = ""; //表单名称
   @observable public keyWord = ""; //关键字
   @observable public stateType = ""; //类型
   @observable public pageIndex: any = 1; //页码

@@ -75,38 +75,38 @@ export default function ContinuingEdu(props: Props) {
           component: FormReview
         },
         {
-          title: "临床带教老师资质申请",
-          path: "/continuingEdu/临床带教老师资质申请",
+          title: "护理临床带教资质准入申请表",
+          path: "/continuingEdu/护理临床带教资质准入申请表",
           component: FormApply
         },
         {
-          title: "护师执业/夜班准入申请",
-          path: "/continuingEdu/护师执业/夜班准入申请",
+          title: "护师人员执业/夜班准入资格申请表",
+          path: "/continuingEdu/护师人员执业/夜班准入资格申请表",
           component: FormApply
         },
         {
-          title: "特殊岗位资质准入申请",
-          path: "/continuingEdu/特殊岗位资质准入申请",
+          title: "特殊护理岗位资质准入申请表",
+          path: "/continuingEdu/特殊护理岗位资质准入申请表",
           component: FormApply
         },
         {
-          title: "护理会诊资质申请",
-          path: "/continuingEdu/护理会诊资质申请",
+          title: "护理会诊人员资质认定表",
+          path: "/continuingEdu/护理会诊人员资质认定表",
           component: FormApply
         },
         {
-          title: "护士岗位层级晋升申请",
-          path: "/continuingEdu/护士岗位层级晋升申请",
+          title: "护理人员岗位层级晋升申请表",
+          path: "/continuingEdu/护理人员岗位层级晋升申请表",
           component: FormApply
         },
         {
-          title: "层级岗位职责与能力申请",
-          path: "/continuingEdu/层级岗位职责与能力",
+          title: "高风险诊疗技术操作人员资质申请表",
+          path: "/continuingEdu/高风险诊疗技术操作人员资质申请表",
           component: FormApply
         },
         {
-          title: "护士院内/院外进修申请",
-          path: "/continuingEdu/护士院内/院外进修",
+          title: "护理人员岗位院内进修备案简表",
+          path: "/continuingEdu/护理人员岗位院内进修备案简表",
           component: FormApply
         }
       ]

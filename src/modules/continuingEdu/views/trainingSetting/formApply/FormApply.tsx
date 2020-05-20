@@ -1,17 +1,22 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import ApplyHeader from "./components/ApplyHeader";
 import ApplyTable from "./components/ApplyTable";
+import { formApplyModal } from "./FormApplyModal"; // 仓库数据
+
 interface Props {
   getTitle: any;
 }
 
 export default function FormApply(props: Props) {
+  useLayoutEffect(() => {
+    formApplyModal.getTitle = props.getTitle;
+  }, [props.getTitle]);
   return (
     <Wrapper>
-      <ApplyHeader getTitle={props.getTitle} />
+      <ApplyHeader />
       <ScrollCon>
-        <ApplyTable getTitle={props.getTitle} />
+        <ApplyTable />
       </ScrollCon>
     </Wrapper>
   );
