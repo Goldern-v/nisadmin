@@ -63,6 +63,12 @@ export default observer(function NursingReportDetailView() {
          }
          table { page-break-inside:auto }
          tr{ page-break-inside:avoid; page-break-after:auto }
+        .chart-con>div{
+          display: none;
+        }
+        .chart-con .chart-con-img{
+          display: inline!important;
+        }
       `
     })
     setTimeout(() => {

@@ -94,7 +94,7 @@ export default observer(function SetTittle(props: Props) {
             }
           }
         ],
-        QCRG_02: []
+        other: [],
       },
       registerCode
     ),

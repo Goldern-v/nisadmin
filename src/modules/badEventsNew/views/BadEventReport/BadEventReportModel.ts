@@ -45,6 +45,37 @@ class BadEventReportModel {
     report: {}
   }
 
+  @observable public chartColors = [
+    '#FF4400',
+    '#FF8101',
+    '#FFD000',
+    '#F4FA17',
+    '#D9EF50',
+    '#B7E295',
+    '#9AD6D2',
+    '#87CEFA',
+    '#63B9EE',
+    '#7D95EB',
+    '#9478D4',
+    '#8F5DC0',
+    '#B548C6',
+    '#EF37A5',
+    '#AB9086',
+    '#C5BB90',
+    '#D5CFB4',
+    '#B1C891',
+    '#85B574',
+    '#75C3A5',
+    '#829CA7',
+    '#5C7D9F',
+    '#6386C5',
+    '#B1ABBA',
+    '#DD96DF',
+    '#E89F89',
+    '#5B808A',
+    '#A6A6A6',
+  ]
+
   /** 返回组件实例 */
   @action
   getSection(sectionId: string): SectionCase | null {

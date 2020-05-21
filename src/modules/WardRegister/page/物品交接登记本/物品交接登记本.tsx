@@ -175,7 +175,13 @@ export default observer(function HandoverRegister(props: Props) {
       dataIndex: "recordDate",
       align: "center",
       className: 'input-cell',
-      colSpan: 2,
+      colSpan: codeAdapter({
+        QCRG_11: 1,
+        QCRG_18: 1,
+        QCRG_15_3: 1,
+        QCRG_16_3: 1,
+        other: 2
+      }, registerCode),
       width: 107,
       fixed: false && surplusWidth && "left",
       render: (text: string, record: any) => {
@@ -197,46 +203,54 @@ export default observer(function HandoverRegister(props: Props) {
         }
       }
     },
-    {
-      title: "班次",
-      colSpan: 0,
-      width: 73,
-      dataIndex: "range",
-      align: "center",
-      className: 'input-cell',
-      fixed: false && surplusWidth && "left",
-      render: (text: string, record: any, index: number) => {
-        if (record.editType && record.editType == 'new') {
-          return <TdCell>
-            <AutoComplete
-              disabled={cellDisabled(record)}
-              dataSource={rangeConfigList.map(item => item.itemCode)}
-              defaultValue={text}
-              onChange={value => {
-                record.range = value;
-                record.modified = true;
-              }}
-              onBlur={() => updateDataSource()}
-            >
-              <TextArea
-                data-key={'range'}
-                onFocus={() => tiggerAutoCompleteClick('range', index)}
-                onKeyUp={handleNextIptFocus}
-                autosize
-                style={{
-                  lineHeight: 1.2,
-                  overflow: "hidden",
-                  padding: "9px 2px",
-                  textAlign: "center"
-                }}
-              />
-            </AutoComplete>
-          </TdCell>
-        } else {
-          return <span>{text}</span>
-        }
-      }
-    },
+    ...codeAdapter({
+      QCRG_11: [],
+      QCRG_18: [],
+      QCRG_15_3: [],
+      QCRG_16_3: [],
+      other: [
+        {
+          title: "班次",
+          colSpan: 0,
+          width: 73,
+          dataIndex: "range",
+          align: "center",
+          className: 'input-cell',
+          fixed: false && surplusWidth && "left",
+          render: (text: string, record: any, index: number) => {
+            if (record.editType && record.editType == 'new') {
+              return <TdCell>
+                <AutoComplete
+                  disabled={cellDisabled(record)}
+                  dataSource={rangeConfigList.map(item => item.itemCode)}
+                  defaultValue={text}
+                  onChange={value => {
+                    record.range = value;
+                    record.modified = true;
+                  }}
+                  onBlur={() => updateDataSource()}
+                >
+                  <TextArea
+                    data-key={'range'}
+                    onFocus={() => tiggerAutoCompleteClick('range', index)}
+                    onKeyUp={handleNextIptFocus}
+                    autosize
+                    style={{
+                      lineHeight: 1.2,
+                      overflow: "hidden",
+                      padding: "9px 2px",
+                      textAlign: "center"
+                    }}
+                  />
+                </AutoComplete>
+              </TdCell>
+            } else {
+              return <span>{text}</span>
+            }
+          }
+        },
+      ]
+    }, registerCode),
     ...itemConfigList.map((item: any) => {
       if (item.checkSize) {
         return {
@@ -755,36 +769,36 @@ export default observer(function HandoverRegister(props: Props) {
   useLayoutEffect(() => {
     try {
       setTimeout(() => {
-        if (
-          (document as any).querySelector(
-            "#HandoverRegisterTable .ant-table-body"
-          ) &&
-          (document as any).querySelector(
-            "#HandoverRegisterTable .ant-table-body"
-          ).scrollWidth ==
-          (document as any).querySelector(
-            "#HandoverRegisterTable .ant-table-body"
-          ).clientWidth
-        ) {
-          /** noscorll */
-          (document as any).querySelector(
-            "#HandoverRegisterTable #baseTable"
-          ).style.width =
-            columns.reduce((total: number, current: any) => {
-              return total + current.width;
-            }, 0) +
-            10 +
-            "px";
-          setSurplusWidth(false);
-        } else {
-          (document as any).querySelector(
-            "#HandoverRegisterTable #baseTable"
-          ) &&
-            ((document as any).querySelector(
-              "#HandoverRegisterTable #baseTable"
-            ).style.width = "auto");
-          setSurplusWidth(280);
-        }
+        // if (
+        //   (document as any).querySelector(
+        //     "#HandoverRegisterTable .ant-table-body"
+        //   ) &&
+        //   (document as any).querySelector(
+        //     "#HandoverRegisterTable .ant-table-body"
+        //   ).scrollWidth ==
+        //   (document as any).querySelector(
+        //     "#HandoverRegisterTable .ant-table-body"
+        //   ).clientWidth
+        // ) {
+        //   /** noscorll */
+        //   (document as any).querySelector(
+        //     "#HandoverRegisterTable #baseTable"
+        //   ).style.width =
+        //     columns.reduce((total: number, current: any) => {
+        //       return total + current.width;
+        //     }, 0) +
+        //     10 +
+        //     "px";
+        //   setSurplusWidth(false);
+        // } else {
+        //   (document as any).querySelector(
+        //     "#HandoverRegisterTable #baseTable"
+        //   ) &&
+        //     ((document as any).querySelector(
+        //       "#HandoverRegisterTable #baseTable"
+        //     ).style.width = "auto");
+        //   setSurplusWidth(280);
+        // }
       }, 100);
     } catch (error) { }
   }, [dataSource, surplusWidth]);
@@ -882,7 +896,7 @@ export default observer(function HandoverRegister(props: Props) {
             loading={pageLoading}
             dataSource={dataSource}
             columns={columns}
-            surplusWidth={surplusWidth}
+            surplusWidth={300}
             surplusHeight={280}
             useOuterPagination={true}
             rowClassName={(record: any, idx: number) => {

@@ -57,7 +57,7 @@ const LEFT_MENU_CONFIG_NYS = [
     title: "院级小组管理",
     path: "/nurseFile/nurseGroupManage",
     component: NurseGroupManage,
-    hidden: !appStore.isDev,
+    // hidden: !appStore.isDev,
     icon: <TXHSCX />
   },
   {

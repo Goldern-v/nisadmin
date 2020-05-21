@@ -21,6 +21,7 @@ import SetTittle from "./components/SetTittle";
 import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
 import { authStore } from "src/stores";
 import SetRange from "./components/SetRange";
+import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
@@ -41,6 +42,18 @@ export default function SettingModal(props: Props) {
 
   let refForm = React.createRef<Form>();
 
+  const rangeSettingTab = {
+    title: "交班班次与提醒设置",
+    component: (
+      <SetRange
+        blockId={blockId}
+        registerCode={registerCode}
+        onOkCallBack={onOkCallBack}
+      />
+    ),
+    index: 2
+  }
+
   const tabConfig = visible
     ? [
       {
@@ -54,17 +67,14 @@ export default function SettingModal(props: Props) {
         ),
         index: 1
       },
-      {
-        title: "交班班次与提醒设置",
-        component: (
-          <SetRange
-            blockId={blockId}
-            registerCode={registerCode}
-            onOkCallBack={onOkCallBack}
-          />
-        ),
-        index: 2
-      }
+      ...codeAdapter({
+        QCRG_11: [],
+        QCRG_18: [],
+        QCRG_15_3: [],
+        QCRG_16_3: [],
+        other: [rangeSettingTab]
+      }, registerCode)
+
     ]
     : [];
 
