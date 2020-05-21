@@ -44,6 +44,7 @@ const NursingRulesPagePreview_wh = lazy(() =>
 const NursingRulesNewEdit_wh = lazy(() =>
   import("src/modules/nursingRulesNew-wh/views/NursingRulesNewEdit")
 );
+const SettingView = lazy(() => import("src/modules/setting/SettingView"))
 
 //不良事件视图
 const BadEventsNewList = lazy(() => import("src/modules/badEventsNew/BadEventsNewList"))
@@ -173,6 +174,8 @@ if (
   //     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   //   ]);
   // }
+} else if (appStore.HOSPITAL_ID == 'dzlc') {
+  specialModule = [...homeRouter(SettingView)]
 }
 
 export { specialModule };

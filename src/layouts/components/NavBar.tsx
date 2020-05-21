@@ -11,6 +11,7 @@ import { navConfig as navConfig_wh } from "./navConfig_wh";
 import { navConfig as navConfig_whSelf } from "./navConfig_whSelf";
 import { navConfig as navConfig_ys } from "./navConfig_ys";
 import { navConfig as navConfig_nys } from "./navConfig_nys";
+import { navConfig as navConfig_dzlc } from "./navConfig_dzlc";
 import { ReactComponent as SYSC } from "src/modules/UserManual/images/SYSC.svg";
 import { ReactComponent as SYSCSZ } from "src/modules/UserManual/images/SYSCSZ.svg";
 
@@ -99,7 +100,9 @@ export default observer(function NavBar(props: any) {
         ? navConfig_ys
         : appStore.HOSPITAL_ID == "nys"
           ? navConfig_nys
-          : navConfig;
+          : appStore.HOSPITAL_ID == "dzlc" ?
+            navConfig_dzlc :
+            navConfig;
 
   let location = appStore.location;
 
