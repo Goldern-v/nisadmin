@@ -38,7 +38,7 @@ export default function FormApply(props: Props) {
       component: <GFXZL />
     },
     {
-      name: "护理人员岗位院内进修备案简表",
+      name: "护理人员院内进修备案简表",
       component: <YNJX />
     }
   ];

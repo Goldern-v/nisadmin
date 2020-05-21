@@ -105,7 +105,7 @@ export default function ContinuingEdu(props: Props) {
           component: FormApply
         },
         {
-          title: "护理人员岗位院内进修备案简表",
+          title: "护理人员院内进修备案简表",
           path: "/continuingEdu/护理人员岗位院内进修备案简表",
           component: FormApply
         }
