@@ -86,7 +86,6 @@ class NursingDataModal {
     this.dataLoading = true;
     nursingDataApi.getData(this.postObj).then(res => {
       this.dataLoading = false;
-      console.log(res);
       this.dataList = res.data;
     });
   }

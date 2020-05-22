@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
 import { Select, Input, Button, Radio } from "antd";
-import { CJJSWrapper, Span } from "./common";
+import { CJJSWrapper, Span } from "../common";
 
 interface Props {}
 

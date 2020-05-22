@@ -1,5 +1,53 @@
 import * as React from "react";
 import styled from "styled-components";
+
+export const Wrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  table {
+    width: 100%;
+  }
+  .specialInput {
+    /deep/.ant-input {
+      border-bottom: 1px solid #000 !important;
+      width: 150px;
+      border-radius: 0;
+    }
+  }
+  th,
+  td {
+    border: 1px solid #000;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    text-align: center;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+  .vailgnTop {
+    vertical-align: top !important;
+    text-align: left !important;
+  }
+  .textAlign {
+    text-align: left !important;
+  }
+  .vailgnBottom {
+    vertical-align: bottom !important;
+    text-align: right !important;
+  }
+  /deep/.ant-input {
+    border: none;
+    height: 100%;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+  /deep/.ant-input:focus {
+    border: none;
+    box-shadow: none;
+  }
+  /deep/ .ant-radio-wrapper {
+    margin-right: 0 !important;
+  }
+`;
 export const CJJSWrapper = styled.div`
   height: 100%;
   width: 100%;

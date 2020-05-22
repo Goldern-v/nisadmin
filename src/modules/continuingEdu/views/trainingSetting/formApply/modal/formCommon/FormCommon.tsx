@@ -80,5 +80,4 @@ const FromContent = styled.div`
   margin-top: 15px;
   width: 100%;
   height: 92%;
-  // border: 1px solid #000;
 `;

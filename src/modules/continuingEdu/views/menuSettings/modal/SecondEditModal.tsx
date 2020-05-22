@@ -34,14 +34,14 @@ export default function SecondEditModal(props: Props) {
   const [errorMessage, setErrorMessage]: any = useState("");
   const [isThirdAudit, setIsThirdAudit]: any = useState(false);
   const [isSecondAudit, setIsSecondAudit]: any = useState(false);
-  // const [submit, setSubmit]: any = useState([]);
+  const [submit, setSubmit]: any = useState([]);
   const [firstAudit, setFirstAudit]: any = useState([]);
   const [secondAudit, setSecondAudit]: any = useState([]);
   const [thirdAudit, setThirdAudit]: any = useState([]);
-  // const setArray = [setSubmit, setFirstAudit, setSecondAudit, setThirdAudit];
-  // const dataArray = [submit, firstAudit, secondAudit, thirdAudit];
-  const setArray = [setFirstAudit, setSecondAudit, setThirdAudit];
-  const dataArray = [firstAudit, secondAudit, thirdAudit];
+  const setArray = [setSubmit, setFirstAudit, setSecondAudit, setThirdAudit];
+  const dataArray = [submit, firstAudit, secondAudit, thirdAudit];
+  // const setArray = [setFirstAudit, setSecondAudit, setThirdAudit];
+  // const dataArray = [firstAudit, secondAudit, thirdAudit];
 
   const onOkCallBack = (
     checkedUserList: CheckUserItem[],
@@ -154,7 +154,7 @@ export default function SecondEditModal(props: Props) {
           setErrorMessage("");
           const {
             name,
-            // submitterType,
+            submitterType,
             firstAuditorType,
             secondAuditorType,
             thirdAuditorType,
@@ -162,11 +162,11 @@ export default function SecondEditModal(props: Props) {
           } = params;
           setInputValue(name);
           setSortValue(sort);
-          // let submit = submitterType
-          //   ? submitterType === 1
-          //     ? params.submitEmployees
-          //     : params.submitRoles
-          //   : [];
+          let submit = submitterType
+            ? submitterType === 1
+              ? params.submitEmployees
+              : params.submitRoles
+            : [];
           let firstAudit = firstAuditorType
             ? firstAuditorType === 1
               ? params.firstAuditEmployees
@@ -188,13 +188,13 @@ export default function SecondEditModal(props: Props) {
           if (thirdAudit && thirdAudit.length > 0) {
             setIsThirdAudit(true);
           }
-          // getData(submitterType, submit, setSubmit);
+          getData(submitterType, submit, setSubmit);
           getData(firstAuditorType, firstAudit, setFirstAudit);
           getData(secondAuditorType, secondAudit, setSecondAudit);
           getData(thirdAuditorType, thirdAudit, setThirdAudit);
           current.setFields({
             name,
-            // submit,
+            submit,
             firstAudit,
             secondAudit,
             thirdAudit,
@@ -206,8 +206,8 @@ export default function SecondEditModal(props: Props) {
   }, [secondVisible]);
 
   const setParamsData = () => {
-    // let nameList = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
-    let nameList = ["firstAudit", "secondAudit", "thirdAudit"];
+    let nameList = ["submit", "firstAudit", "secondAudit", "thirdAudit"];
+    // let nameList = ["firstAudit", "secondAudit", "thirdAudit"];
     let obj: any = {};
     dataArray.map((item, i) => {
       let data: any = [];
@@ -254,8 +254,8 @@ export default function SecondEditModal(props: Props) {
       current
         .validateFields()
         .then(res => {
-          // if (submit.length === 0 || firstAudit.length === 0) {
-          if (firstAudit.length === 0) {
+          if (submit.length === 0 || firstAudit.length === 0) {
+            // if (firstAudit.length === 0) {
             setErrorMessage("审核人必填！");
             return;
           } else {
@@ -263,13 +263,13 @@ export default function SecondEditModal(props: Props) {
           }
           let data = setParamsData();
           let typeList = {
-            // submitterType: judgeType(data.submit),
+            submitterType: judgeType(data.submit),
             firstAuditorType: judgeType(data.firstAudit),
             secondAuditorType: judgeType(data.secondAudit),
             thirdAuditorType: judgeType(data.thirdAudit),
             ...data
           };
-          // setParamsProperty(typeList, "submit", "submitterType");
+          setParamsProperty(typeList, "submit", "submitterType");
           setParamsProperty(typeList, "firstAudit", "firstAuditorType");
           setParamsProperty(typeList, "secondAudit", "secondAuditorType");
           setParamsProperty(typeList, "thirdAudit", "thirdAuditorType");
@@ -331,7 +331,7 @@ export default function SecondEditModal(props: Props) {
                   </Form.Field>
                 </Col>
               </Row>
-              {/* <Row>
+              <Row>
                 <Col span={4} className="label required-label">
                   提交人:
                 </Col>
@@ -353,7 +353,7 @@ export default function SecondEditModal(props: Props) {
                     </div>
                   </Form.Field>
                 </Col>
-              </Row> */}
+              </Row>
               <Row>
                 <Col span={4} className="label required-label">
                   审核人:
@@ -368,9 +368,9 @@ export default function SecondEditModal(props: Props) {
                         labelInValue={true}
                         style={{ width: "100%" }}
                         open={false}
-                        onDeselect={(user: any) => onDeselect(user, 0)}
+                        onDeselect={(user: any) => onDeselect(user, 1)}
                       />
-                      <ClickBtn onClick={() => openSelectPeopleModal(0)}>
+                      <ClickBtn onClick={() => openSelectPeopleModal(1)}>
                         ...
                       </ClickBtn>
                     </div>
@@ -392,9 +392,9 @@ export default function SecondEditModal(props: Props) {
                           labelInValue={true}
                           style={{ width: "100%" }}
                           open={false}
-                          onDeselect={(user: any) => onDeselect(user, 1)}
+                          onDeselect={(user: any) => onDeselect(user, 2)}
                         />
-                        <ClickBtn onClick={() => openSelectPeopleModal(1)}>
+                        <ClickBtn onClick={() => openSelectPeopleModal(2)}>
                           ...
                         </ClickBtn>
                       </div>
@@ -420,10 +420,10 @@ export default function SecondEditModal(props: Props) {
                           value={thirdAudit}
                           labelInValue={true}
                           style={{ width: "100%" }}
-                          onDeselect={(user: any) => onDeselect(user, 2)}
+                          onDeselect={(user: any) => onDeselect(user, 3)}
                           open={false}
                         />
-                        <ClickBtn onClick={() => openSelectPeopleModal(2)}>
+                        <ClickBtn onClick={() => openSelectPeopleModal(3)}>
                           ...
                         </ClickBtn>
                       </div>

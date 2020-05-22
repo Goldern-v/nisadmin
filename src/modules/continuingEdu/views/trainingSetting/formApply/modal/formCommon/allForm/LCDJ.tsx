@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import React from "react";
-import { Select, Input, Button, Radio } from "antd";
+import { Input, Radio } from "antd";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
+import { Wrapper, SpanMiddle, Span } from "../common";
 
 interface Props {}
 
@@ -9,8 +10,14 @@ export default function LCDJ(props: Props) {
   return (
     <Wrapper>
       <Header>
-        <span>所在科室：</span>
-        <span style={{ marginLeft: "300px" }}>申请日期：</span>
+        <span className="specialInput">
+          所在科室：
+          <Input />
+        </span>
+        <span style={{ marginLeft: "150px" }} className="specialInput">
+          申请日期：
+          <Input />
+        </span>
       </Header>
       <table>
         <colgroup>
@@ -101,8 +108,15 @@ export default function LCDJ(props: Props) {
           </tr>
           <tr style={{ height: "80px" }}>
             <td colSpan={2}>个人申请</td>
-            <td colSpan={6}>
-              <Input />
+            <td colSpan={6} className="vailgnBottom">
+              <SpanMiddle className="specialInput">
+                申请人签名：
+                <Input />
+              </SpanMiddle>
+              <SpanMiddle className="specialInput">
+                日期：
+                <Input />
+              </SpanMiddle>
             </td>
           </tr>
           <tr style={{ height: "80px" }}>
@@ -135,32 +149,6 @@ export default function LCDJ(props: Props) {
     </Wrapper>
   );
 }
-const Wrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  table {
-    width: 100%;
-  }
-  th,
-  td {
-    border: 1px solid #000;
-    padding: 5px 10px;
-    box-sizing: border-box;
-    text-align: center;
-    word-break: break-all;
-    word-wrap: break-word;
-  }
-  /deep/.ant-input {
-    border: none;
-    height: 100%;
-    word-break: break-all;
-    word-wrap: break-word;
-  }
-  /deep/.ant-input:focus {
-    border: none;
-    box-shadow: none;
-  }
-`;
 const Header = styled.div`
   height: 4opx;
   margin: 5px 10px;

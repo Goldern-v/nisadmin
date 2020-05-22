@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import React from "react";
 import { Select, Input, Button, Radio } from "antd";
-
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
+import { Wrapper } from "../common";
 
 interface Props {}
 
@@ -145,29 +145,3 @@ export default function YNJX(props: Props) {
     </Wrapper>
   );
 }
-const Wrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  table {
-    width: 100%;
-  }
-  th,
-  td {
-    border: 1px solid #000;
-    padding: 5px 10px;
-    box-sizing: border-box;
-    text-align: center;
-    word-break: break-all;
-    word-wrap: break-word;
-  }
-  /deep/.ant-input {
-    border: none;
-    height: 100%;
-    word-break: break-all;
-    word-wrap: break-word;
-  }
-  /deep/.ant-input:focus {
-    border: none;
-    box-shadow: none;
-  }
-`;

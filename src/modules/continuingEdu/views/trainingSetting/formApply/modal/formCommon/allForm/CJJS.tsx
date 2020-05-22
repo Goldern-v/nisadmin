@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
 import { Select, Input, Button, Radio } from "antd";
-import { CJJSWrapper, Span, SpanMiddle, SpanMax, SpanLength } from "./common";
+import { CJJSWrapper, Span, SpanMiddle, SpanMax, SpanLength } from "../common";
 
 interface Props {}
 
@@ -138,9 +138,75 @@ export default function CJJS(props: Props) {
                   <Radio value="否">否</Radio>
                 </Radio.Group>
               </Span>
+              <br />
+              <SpanLength>护理科研能力</SpanLength>
+              <span>
+                新技术新项目
+                <Input style={{ width: "35px" }} />例
+              </span>
+              <Span>
+                发表论文
+                <Input style={{ width: "35px" }} />篇
+              </Span>
+              <Span>
+                主持参与课题项目
+                <Input style={{ width: "35px" }} />项
+              </Span>
+              <SpanMax>
+                主持或参与循证项目
+                <Input style={{ width: "35px" }} />项
+              </SpanMax>
+              <br />
+              <SpanLength>专科护理能力</SpanLength>
+              <span style={{ marginTop: "3px" }}>参与护理会诊</span>
+              <Span>
+                <Radio.Group size="small">
+                  <Radio value="是">是</Radio>
+                  <Radio value="否">否</Radio>
+                </Radio.Group>
+              </Span>
+              <br />
+              <SpanMax>参与专科护理门诊</SpanMax>
+              <Span>
+                <Radio.Group size="small">
+                  <Radio value="是">是</Radio>
+                  <Radio value="否">否</Radio>
+                </Radio.Group>
+              </Span>
+              <br />
+              <SpanMax>指导基地专科学员</SpanMax>
+              <Span>
+                <Radio.Group size="small">
+                  <Radio value="是">是</Radio>
+                  <Radio value="否">否</Radio>
+                </Radio.Group>
+              </Span>
+              <br />
+              <SpanMax>专科护士课程培训</SpanMax>
+              <Span>
+                <Radio.Group size="small">
+                  <Radio value="是">是</Radio>
+                  <Radio value="否">否</Radio>
+                </Radio.Group>
+              </Span>
+              <br />
+              <SpanMax>指导专科小组开展工作</SpanMax>
+              <Span>
+                <Radio.Group size="small">
+                  <Radio value="是">是</Radio>
+                  <Radio value="否">否</Radio>
+                </Radio.Group>
+              </Span>
+              <br />
+              <SpanMax>修订本专科护理常规及技术规范，省市创新</SpanMax>
+              <Span>
+                <Radio.Group size="small">
+                  <Radio value="是">是</Radio>
+                  <Radio value="否">否</Radio>
+                </Radio.Group>
+              </Span>
             </td>
           </tr>
-
           <tr>
             <td>拟申请晋级层级</td>
             <td className="textAlign">
@@ -159,7 +225,7 @@ export default function CJJS(props: Props) {
               <br />
             </td>
           </tr>
-          <tr style={{ height: "90px" }}>
+          <tr style={{ height: "140px" }}>
             <td>科室意见</td>
             <td className="vailgnTop">
               <span>经科室讨论：</span>
@@ -171,7 +237,7 @@ export default function CJJS(props: Props) {
               </Span>
             </td>
           </tr>
-          <tr style={{ height: "90px" }}>
+          <tr style={{ height: "160px" }}>
             <td>护理部意见意见</td>
             <td className="vailgnTop" />
           </tr>
