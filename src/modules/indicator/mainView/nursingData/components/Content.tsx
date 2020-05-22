@@ -14,47 +14,47 @@ export default observer(function Content(props: Props) {
       title: "一、护士数量配置相关数据",
       data: [
         {
-          name: "本季度实际开放床位数 ",
+          name: "本时段实际开放床位数 ",
           value: nursingDataModal.dataList.nurseCount.bedSize
         },
         {
-          name: "季初病区执业护士总人数",
+          name: "时段初病区执业护士总人数",
           value: nursingDataModal.dataList.nurseCount.totalNurseInBegin
         },
         {
-          name: "季末病区执业护士总人数",
+          name: "时段末病区执业护士总人数",
           value: nursingDataModal.dataList.nurseCount.totalNurseInEnd
         },
         {
-          name: "本季度白班责任护士数",
+          name: "本时段白班责任护士数",
           value: nursingDataModal.dataList.nurseCount.nurseSizeInARange
         },
         {
-          name: "本季度白班护理患者数",
+          name: "本时段白班护理患者数",
           value: nursingDataModal.dataList.nurseCount.patientDaySizeInARange
         },
         {
-          name: "本季度夜班责任护士数",
+          name: "本时段夜班责任护士数",
           value: nursingDataModal.dataList.nurseCount.nurseSizeInNRange
         },
         {
-          name: "本季度夜班护理患者数",
+          name: "本时段夜班护理患者数",
           value: nursingDataModal.dataList.nurseCount.patientDaySizeInNRange
         },
         {
-          name: "本季度病区执业护士实际上班小时数 ",
+          name: "本时段病区执业护士实际上班小时数 ",
           value: nursingDataModal.dataList.nurseCount.totalWorkTime
         },
         {
-          name: "本季度住院患者实际占用床日数",
+          name: "本时段住院患者实际占用床日数",
           value: nursingDataModal.dataList.nurseCount.totalPatientDaySize
         },
         {
-          name: "季初在院患者数",
+          name: "时段初在院患者数",
           value: nursingDataModal.dataList.nurseCount.patientSizeInBegin
         },
         {
-          name: "本季度新入病区患者总数",
+          name: "本时段新入病区患者总数",
           value: nursingDataModal.dataList.nurseCount.patientSizeInEnd
         },
         {
@@ -79,57 +79,57 @@ export default observer(function Content(props: Props) {
       title: "二、人力资源结构--职称相关数据",
       data: [
         {
-          name: "季初护士（初级）人数 ",
+          name: "时段初护士（初级）人数 ",
           value: nursingDataModal.dataList.nurseTitleCount.juniorNurseInBegin
         },
         {
-          name: "季初护师人数",
+          name: "时段初护师人数",
           value:
             nursingDataModal.dataList.nurseTitleCount.nursePractitionerInBegin
         },
         {
-          name: "季初主管护师人数",
+          name: "时段初主管护师人数",
           value: nursingDataModal.dataList.nurseTitleCount.nurseInChargeInBegin
         },
         {
-          name: "季初副主任护师职称人数",
+          name: "时段初副主任护师职称人数",
           value:
             nursingDataModal.dataList.nurseTitleCount.aProfessorOfNursingInBegin
         },
         {
-          name: "季初主任护师人数",
+          name: "时段初主任护师人数",
           value:
             nursingDataModal.dataList.nurseTitleCount.professorOfNursingInBegin
         },
         {
-          name: "季初各职称护士总人数",
+          name: "时段初各职称护士总人数",
           value: nursingDataModal.dataList.nurseTitleCount.totalNurseInBegin
         },
         {
-          name: "季末护士（初级）人数",
+          name: "时段末护士（初级）人数",
           value: nursingDataModal.dataList.nurseTitleCount.juniorNurseInEnd
         },
         {
-          name: "季末护师人数 ",
+          name: "时段末护师人数 ",
           value:
             nursingDataModal.dataList.nurseTitleCount.nursePractitionerInEnd
         },
         {
-          name: "季末主管护师人数",
+          name: "时段末主管护师人数",
           value: nursingDataModal.dataList.nurseTitleCount.nurseInChargeInEnd
         },
         {
-          name: "季末副主任护师职称人数",
+          name: "时段末副主任护师职称人数",
           value:
             nursingDataModal.dataList.nurseTitleCount.aProfessorOfNursingInEnd
         },
         {
-          name: "季末主任护师人数",
+          name: "时段末主任护师人数",
           value:
             nursingDataModal.dataList.nurseTitleCount.professorOfNursingInEnd
         },
         {
-          name: "季末各职称护士总人数",
+          name: "时段末各职称护士总人数",
           value: nursingDataModal.dataList.nurseTitleCount.totalNurseInEnd
         }
       ]
@@ -138,51 +138,51 @@ export default observer(function Content(props: Props) {
       title: "三、人力资源结构--学历相关数据",
       data: [
         {
-          name: "季初中专护士人数 ",
+          name: "时段初中专护士人数 ",
           value: nursingDataModal.dataList.nurseEduCount.schoolInBegin
         },
         {
-          name: "季初大专护士人数",
+          name: "时段初大专护士人数",
           value: nursingDataModal.dataList.nurseEduCount.collegeInBegin
         },
         {
-          name: "季初本科护士人数",
+          name: "时段初本科护士人数",
           value: nursingDataModal.dataList.nurseEduCount.undergraduateInBegin
         },
         {
-          name: "季初硕士护士人数",
+          name: "时段初硕士护士人数",
           value: nursingDataModal.dataList.nurseEduCount.masterInBegin
         },
         {
-          name: "季初博士护士人数",
+          name: "时段初博士护士人数",
           value: nursingDataModal.dataList.nurseEduCount.doctorInBegin
         },
         {
-          name: "季初各学历护士总人数",
+          name: "时段初各学历护士总人数",
           value: nursingDataModal.dataList.nurseEduCount.totalNurseInBegin
         },
         {
-          name: "季末中专人数",
+          name: "时段末中专人数",
           value: nursingDataModal.dataList.nurseEduCount.schoolInEnd
         },
         {
-          name: "季末大专人数",
+          name: "时段末大专人数",
           value: nursingDataModal.dataList.nurseEduCount.collegeInEnd
         },
         {
-          name: "季末主管护师本科人数",
+          name: "时段末主管护师本科人数",
           value: nursingDataModal.dataList.nurseEduCount.undergraduateInEnd
         },
         {
-          name: "季末硕士人数",
+          name: "时段末硕士人数",
           value: nursingDataModal.dataList.nurseEduCount.masterInEnd
         },
         {
-          name: "季末博士人数",
+          name: "时段末博士人数",
           value: nursingDataModal.dataList.nurseEduCount.doctorInEnd
         },
         {
-          name: "季末各学历护士总人数",
+          name: "时段末各学历护士总人数",
           value: nursingDataModal.dataList.nurseEduCount.totalNurseInEnd
         }
       ]
@@ -191,64 +191,64 @@ export default observer(function Content(props: Props) {
       title: "四、人力资源结构--工作年限相关数据",
       data: [
         {
-          name: "季初<1年资护士人数 ",
+          name: "时段初<1年资护士人数 ",
           value: nursingDataModal.dataList.workYearsCount.lessThanAYearInBegin
         },
         {
-          name: "季初1≤y<2年资护士人数",
+          name: "时段初1≤y<2年资护士人数",
           value: nursingDataModal.dataList.workYearsCount.lessThanTwoYearInBegin
         },
         {
-          name: "季初2≤y<5年资护士人数",
+          name: "时段初2≤y<5年资护士人数",
           value:
             nursingDataModal.dataList.workYearsCount.lessThanFiveYearInBegin
         },
         {
-          name: "季初5≤y<10年资护士人数",
+          name: "时段初5≤y<10年资护士人数",
           value: nursingDataModal.dataList.workYearsCount.lessThanTenYearInBegin
         },
         {
-          name: "本季度白班护季初10≤y<20年资护士人数",
+          name: "本时段白班护时段初10≤y<20年资护士人数",
           value:
             nursingDataModal.dataList.workYearsCount.lessThanTwentyYearInBegin
         },
         {
-          name: "季初≥20年资护士人数",
+          name: "时段初≥20年资护士人数",
           value:
             nursingDataModal.dataList.workYearsCount.moreThanTwentyYearInBegin
         },
         {
-          name: "季初各工作年限护士总人数",
+          name: "时段初各工作年限护士总人数",
           value: nursingDataModal.dataList.workYearsCount.totalNurseInBegin
         },
         {
-          name: "季末<1年资护士人数",
+          name: "时段末<1年资护士人数",
           value: nursingDataModal.dataList.workYearsCount.lessThanAYearInEnd
         },
         {
-          name: "季末1≤y<2年资护士人数",
+          name: "时段末1≤y<2年资护士人数",
           value: nursingDataModal.dataList.workYearsCount.lessThanTwoYearInEnd
         },
         {
-          name: "季末2≤y<5年资护士人数",
+          name: "时段末2≤y<5年资护士人数",
           value: nursingDataModal.dataList.workYearsCount.lessThanFiveYearInEnd
         },
         {
-          name: "季末5≤y<10年资护士人数",
+          name: "时段末5≤y<10年资护士人数",
           value: nursingDataModal.dataList.workYearsCount.lessThanTenYearInEnd
         },
         {
-          name: "季末10≤y<20年资护士人数",
+          name: "时段末10≤y<20年资护士人数",
           value:
             nursingDataModal.dataList.workYearsCount.lessThanTwentyYearInEnd
         },
         {
-          name: "季末≥20年资护士人数",
+          name: "时段末≥20年资护士人数",
           value:
             nursingDataModal.dataList.workYearsCount.moreThanTwentyYearInEnd
         },
         {
-          name: "季季末各工作年限护士总人数",
+          name: "时段时段末各工作年限护士总人数",
           value: nursingDataModal.dataList.workYearsCount.totalNurseInEnd
         }
       ]
@@ -397,7 +397,7 @@ export default observer(function Content(props: Props) {
                   <div key={index} className="main">
                     <div className="name">{item.name}</div>
                     <Input
-                      value={item.value ? item.value : "--"}
+                      value={item.value || item.value === 0 ? item.value : ""}
                       disabled
                       style={{ width: "300px", color: "#666" }}
                     />
@@ -432,7 +432,7 @@ const SpinLoad = styled.div`
 
 const Cont = styled.div`
   border: 1px solid #eee;
-  background: #f8f8f8;
+  background: #fff;
   padding: 0 20px 30px 20px;
   margin-top: 20px;
   box-sizing: border-box;
