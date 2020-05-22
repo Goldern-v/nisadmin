@@ -25,6 +25,24 @@ import 不良事件分类比较弹窗 from '../components/不良事件分类比�
 import 伤害程度分类模块 from '../components/伤害程度分类/伤害程度分类模块'
 import 伤害程度分类弹窗 from '../components/伤害程度分类/伤害程度分类弹窗'
 
+import 伤害程度分类图表模块 from '../components/伤害程度分类图表/伤害程度分类图表模块'
+import 伤害程度分类图表弹窗 from '../components/伤害程度分类图表/伤害程度分类图表弹窗'
+
+import 不良事件发生时段模块 from '../components/不良事件发生时段/不良事件发生时段模块'
+import 不良事件发生时段弹窗 from '../components/不良事件发生时段/不良事件发生时段弹窗'
+
+import 科室分布模块 from '../components/科室分布/科室分布模块'
+import 科室分布弹窗 from '../components/科室分布/科室分布弹窗'
+
+import 科室分布图表模块 from '../components/科室分布图表/科室分布图表模块'
+import 科室分布图表弹窗 from '../components/科室分布图表/科室分布图表弹窗'
+
+import 相关人员模块 from '../components/相关人员/相关人员模块'
+import 相关人员弹窗 from '../components/相关人员/相关人员弹窗'
+
+import 发生阶段及可能原因模块 from '../components/发生阶段及可能原因/发生阶段及可能原因模块'
+import 发生阶段及可能原因弹窗 from '../components/发生阶段及可能原因/发生阶段及可能原因弹窗'
+
 export const sectionList: SectionListItem[] = [
   {
     sectionId: '报告名称',
@@ -96,5 +114,59 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 伤害程度分类模块,
     modal: 伤害程度分类弹窗
+  },
+  {
+    sectionId: '伤害程度分类图表',
+    sectionTitle: '伤害程度分类图表',
+    modalTitle: '编辑伤害程度分类图表',
+    modalWidth: 1000,
+    data: {},
+    section: 伤害程度分类图表模块,
+    modal: 伤害程度分类图表弹窗
+  },
+  {
+    sectionId: '不良事件发生时段',
+    sectionTitle: '不良事件发生时段',
+    modalTitle: '编辑不良事件发生时段',
+    modalWidth: 1000,
+    data: {},
+    section: 不良事件发生时段模块,
+    modal: 不良事件发生时段弹窗
+  },
+  {
+    sectionId: '科室分布',
+    sectionTitle: '科室分布',
+    modalTitle: '编辑科室分布',
+    modalWidth: 1000,
+    data: {},
+    section: 科室分布模块,
+    modal: 科室分布弹窗
+  },
+  {
+    sectionId: '科室分布图表',
+    sectionTitle: '科室分布图表',
+    modalTitle: '编辑科室分布图表',
+    modalWidth: 1000,
+    data: {},
+    section: 科室分布图表模块,
+    modal: 科室分布图表弹窗
+  },
+  {
+    sectionId: '相关人员',
+    sectionTitle: '相关人员',
+    modalTitle: '编辑相关人员',
+    modalWidth: 1000,
+    data: {},
+    section: 相关人员模块,
+    modal: 相关人员弹窗
+  },
+  {
+    sectionId: '发生阶段及可能原因',
+    sectionTitle: '发生阶段及可能原因',
+    modalTitle: '编辑发生阶段及可能原因',
+    modalWidth: 1000,
+    data: {},
+    section: 发生阶段及可能原因模块,
+    modal: 发生阶段及可能原因弹窗
   },
 ]

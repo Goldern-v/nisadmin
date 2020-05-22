@@ -4,7 +4,6 @@ import { Button } from 'antd'
 import { badEventReportModel } from '../../BadEventReportModel'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
-import ChartCon from './ChartCon'
 // import Chart from './Chart'
 import { Report } from '../../types'
 import moment from 'moment'
@@ -16,18 +15,20 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 伤害程度分类图表模块(props: Props) {
+export default observer(function 科室分布模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
+
+  const dataStr = `按发生不良事件的科室进行分类，其中大于5例的有新生儿、ICU、儿内、产科、普外、呼吸、健康体检中心、内分泌、感染等科室。`
 
   useEffect(() => { })
 
   return (
     <Wrapper>
-      <ChartCon list={list} />
+      <TwoLevelTitle text={`4.不良事件科室分布`} />
+      <div className="text-con">{dataStr}</div>
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑
@@ -50,5 +51,8 @@ const Wrapper = styled.div`
     position: absolute;
     top: 0px;
     right: 20px;
+  }
+  .text-con{
+    padding: 0 30px;
   }
 `

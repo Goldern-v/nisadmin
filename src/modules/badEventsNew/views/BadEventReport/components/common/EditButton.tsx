@@ -10,11 +10,12 @@ export interface Props extends NativeButtonProps {
 }
 
 export default observer(function EditButton(props: Props) {
-  if (!authStore.isOnlyRoleManage) return <span></span>
+  // if (!authStore.isOnlyRoleManage) return <span></span>
   let btnDisabled = () => {
-    if (!badEventReportModel.allData.report) return true
-    if (badEventReportModel.allData.report.status == '1') return true
     return false
+    // if (!badEventReportModel.allData.report) return true
+    // if (badEventReportModel.allData.report.status == '1') return true
+    // return false
   }
   return <ButtonStyl {...props} icon={'edit'} border={props.border ? 1 : 0} disabled={btnDisabled()} />
 })

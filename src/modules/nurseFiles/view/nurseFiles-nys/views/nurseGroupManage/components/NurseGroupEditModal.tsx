@@ -236,7 +236,7 @@ export default function NurseGroupEditModal(props: Props) {
               {viewType == 'view' &&
                 <span className="content">
                   {editData.memberList
-                    .map((item: any) => item.empName)}
+                    .map((item: any) => item.empName).join('; ')}
                 </span>}
             </Col>
             <Col span={4}>

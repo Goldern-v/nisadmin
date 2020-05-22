@@ -133,7 +133,8 @@ class BadEventReportModel {
 
   /** 数据初始化 */
   async initData(query?: any) {
-    let { data } = await badEventReportService.getReport(query)
+    // let { data } = await badEventReportService.getReport(query)
+    let data = { report: {} }
     this.allData = data
     /** 本月 */
     let currentYear: any = this.allData!.report!.year
@@ -142,7 +143,7 @@ class BadEventReportModel {
     let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
     /** 上月 */
     let lastMonth = currentMonth == 1 ? 12 : currentMonth - 1
-    // this.getSectionData('报告名称')!.text = this.allData.report!.reportName || {}
+    this.getSectionData('报告名称')!.text = this.allData.report!.reportName || '报告名称'
     // this.getSectionData('护理工作计划')!.list = this.allData.workScheduleList || []
     // this.getSectionData('病区护理质量检查')!.list = this.allData.wardCheckList || []
     // this.getSectionData('护士会议记录')!.list = this.allData.nurseMeetingList || []
@@ -152,7 +153,6 @@ class BadEventReportModel {
     // this.getSectionData('护理工作计划')!.list = []
   }
   async init(query?: any) {
-    return
     await this.initData(query)
     this.baseModal = createModal(BaseModal)
   }

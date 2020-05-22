@@ -5,6 +5,7 @@ import { badEventReportModel } from '../../BadEventReportModel'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
 import ChartCon from './ChartCon'
+// import TableCon from './TableCon'
 // import Chart from './Chart'
 import { Report } from '../../types'
 import moment from 'moment'
@@ -16,17 +17,17 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 伤害程度分类图表模块(props: Props) {
+export default observer(function 科室分布图表模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
 
   useEffect(() => { })
 
   return (
     <Wrapper>
+      {/* <TableCon list={list} /> */}
       <ChartCon list={list} />
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>

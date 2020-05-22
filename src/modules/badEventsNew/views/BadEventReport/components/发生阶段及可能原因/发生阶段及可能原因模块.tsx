@@ -4,11 +4,10 @@ import { Button } from 'antd'
 import { badEventReportModel } from '../../BadEventReportModel'
 import { observer } from 'src/vendors/mobx-react-lite'
 import EditButton from '../common/EditButton'
-import ChartCon from './ChartCon'
 // import Chart from './Chart'
 import { Report } from '../../types'
 import moment from 'moment'
-// import OneLevelTitle from '../common/OneLevelTitle'
+import OneLevelTitle from '../common/OneLevelTitle'
 import TwoLevelTitle from '../common/TwoLevelTitle'
 export interface Props {
   sectionId: string
@@ -16,18 +15,26 @@ export interface Props {
   modalTitle?: string | undefined
 }
 
-export default observer(function 伤害程度分类图表模块(props: Props) {
+export default observer(function 发生阶段及可能原因模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
+
+  list = [
+    { title: '输血事件110件', stage: '以验血错误为主80件，备血错误11件,传送错误8件', reason: '以与人员个人因素相关为主，表现为人员技术不当，医嘱书写模糊难辨识' }
+  ]
 
   useEffect(() => { })
 
   return (
     <Wrapper>
-      <ChartCon list={list} />
+      <OneLevelTitle text={`三、发生阶段及可能原因`} />
+      {list.map((item: any, idx: number) => <div key={idx} className="list-item">
+        <TwoLevelTitle text={`${idx + 1}.${item.title || ''}`} />
+        <div className="text-con">1) 错误发生阶段: {item.stage || ''}</div>
+        <div className="text-con">2) 发生原因: {item.reason || ''}</div>
+      </div>)}
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>
         编辑
@@ -50,5 +57,11 @@ const Wrapper = styled.div`
     position: absolute;
     top: 0px;
     right: 20px;
+  }
+  .list-item{
+    margin-bottom: 15px;
+  }
+  .text-con{
+    padding: 0 30px;
   }
 `
