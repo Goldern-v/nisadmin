@@ -27,7 +27,12 @@ export default class ArrangeService extends BaseApiService {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       setting: sheetViewModal.sheetTableData.map(
-        (item: any, index: number) => ({ ...item, status, sortValue: index })
+        (item: any, index: number) => ({
+          ...item,
+          status,
+          sortValue: index,
+          timeLimit: item.timeLimit
+        })
       ),
       remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode,

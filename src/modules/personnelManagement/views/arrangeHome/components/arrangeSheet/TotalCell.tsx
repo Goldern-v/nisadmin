@@ -24,33 +24,44 @@ export const totalCellContent = (id: any) => {
   let user = sheetViewModal.sheetTableData.find((item: any) => {
     return item.id == id;
   });
-  // console.log(user, "useruseruseruseruser", sheetViewModal.arrangeMenu);
 
   if (user) {
     list = user.settingDtos;
-    allTimeLimit = Math.ceil(list.length / 7) * user.timeLimit;
+    allTimeLimit = user.timeLimit
+      ? Math.ceil(list.length / 7) * user.timeLimit
+      : 0;
+    // sheetViewModal.timeLimit = user.timeLimit;
   }
-
-  // if (sheetViewModal.arrangeMenu) {
-  //   let rangeLength: any = [];
-  //   sheetViewModal.arrangeMenu.map((item: any, index: any) => {
-  //     console.log(list, "list", item.name);
-  //     rangeLength = list.filter((o: any) => item.name === o.rangeName);
-  //     console.log(rangeLength, "rangeLength");
-  //     // data.filter(item => array.indexOf(item.id) > -1)
-  //   });
-  //   // console.log(rangeLength.length, "rangeLength");
-  // }
 
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     return total + Number(current.effectiveTime);
   }, 0);
 
   // 超过周工作时长给提示
-  if (total > allTimeLimit) {
+  if (user.timeLimit && allTimeLimit && total > allTimeLimit) {
     Message.warning(
       `请注意： 该人员每周排班时长不可以超过 ${user.timeLimit} !`
     );
+  }
+
+  // 超过周班次数给提示
+  if (sheetViewModal.arrangeMenu) {
+    sheetViewModal.arrangeMenu.map((item: any, index: any) => {
+      let num = 0;
+      let rangeLength: any = item.rangeLimit
+        ? Math.ceil(list.length / 7) * item.rangeLimit
+        : 0;
+      list.map((o: any) => {
+        if (item.name === o.rangeName) {
+          num++;
+          if (rangeLength && num > rangeLength) {
+            Message.warning(
+              `请注意：每周排班该班次不可以超过 ${item.rangeLimit} !`
+            );
+          }
+        }
+      });
+    });
   }
 
   /** 如果存在一周7天都是 */
