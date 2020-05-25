@@ -1,70 +1,32 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { TypeCompare, Report, DeptItem } from '../../types'
+import { Report } from '../../types'
 import { appStore } from 'src/stores'
 import { badEventReportModel } from './../../BadEventReportModel'
 import { Pre } from 'src/components/common'
 export interface Props {
-  list: DeptItem[]
+  list: any[],
+  total: number,
 }
 
-export const EventTypeList = [
-  {
-    code: 'QCWET001',
-    name: '压疮不良事件'
-  },
-  {
-    code: 'QCWET002',
-    name: '给药/治疗错误不良事件'
-  },
-  {
-    code: 'QCWET003',
-    name: '操作不当不良事件'
-  },
-  {
-    code: 'QCWET004',
-    name: '跌倒/坠床不良事件'
-  },
-  {
-    code: 'QCWET005',
-    name: '非计划性拔管不良事件'
-  },
-  {
-    code: 'QCWET006',
-    name: '输液/输血渗透不良事件'
-  },
-  {
-    code: 'QCWET007',
-    name: '烫伤不良事件'
-  },
-  {
-    code: 'QCWET008',
-    name: '走失不良事件'
-  },
-  {
-    code: 'QCWET009',
-    name: '自杀'
-  }
-]
-
-const getEventTypeNameByCode = (code: string) => {
-  let obj = EventTypeList.find((item: any) => item.code == code)
-  return obj ? obj.name : ''
-}
 export default function Table(props: Props) {
-  let { list } = props
+  let { list, total } = props
   let report: Report = badEventReportModel.getDataInAllData('report') || {}
+
+  const getRate = (current: number, total: number) => {
+    if (total <= 0) return '0%'
+    let rate = Math.round(current / total * 10000) / 100
+    return `${rate}%`
+  }
 
   return (
     <Wrapper>
       <table>
         <colgroup>
-          {/* <col width='12.5%' />
-          <col width='12.5%' />
-          <col width='15%' />
-          <col width='27.5%' />
-          <col width='27.5%' /> */}
+          <col />
+          <col width="20%" />
+          <col width="20%" />
         </colgroup>
         <tbody>
           <tr className='header'>
@@ -72,18 +34,16 @@ export default function Table(props: Props) {
             <td>发生次数</td>
             <td>占比例</td>
           </tr>
-
-          {/* {list.map((item, index) => (
-            <tr key={index}>
-              <td>{item.eventDate}</td>
-              <td>{item.eventEmpNames}</td>
-              <td>{getEventTypeNameByCode(item.eventType)}</td>
-              <td>
-                {item.briefCourseEvent}
-              </td>
-              <td>{item.result}</td>
-            </tr>
-          ))} */}
+          {list.map((item: any, idx: number) => <tr key={idx}>
+            <td className="bad-event-title">{item.badEventName}</td>
+            <td>{item.happenedTimes}</td>
+            <td>{getRate(item.times, total)}</td>
+          </tr>)}
+          <tr className="sum">
+            <td className="bad-event-title">合计</td>
+            <td>{total}</td>
+            <td>100%</td>
+          </tr>
         </tbody>
       </table>
     </Wrapper>
@@ -124,5 +84,9 @@ const Wrapper = styled.div`
     font-size: 12px;
     margin-top: 10px;
     color: red;
+  }
+  .bad-event-title{
+    text-align:left;
+    padding: 0 10px;
   }
 `

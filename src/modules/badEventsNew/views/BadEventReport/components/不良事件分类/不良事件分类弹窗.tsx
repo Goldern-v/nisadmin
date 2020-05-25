@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { Input, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
+import { InputNumber, Radio, ColumnProps, AutoComplete, message, Select } from 'src/vendors/antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem, Report, TypeCompare, DeptItem } from '../../types'
 import { badEventReportModel } from '../../BadEventReportModel'
-import { EventTypeList } from './Table'
+// import { EventTypeList } from './Table'
 import { DictItem } from 'src/services/api/CommonApiService'
 
 export interface Props {
@@ -30,107 +30,26 @@ export default function 不良事件分类弹窗(props: Props) {
       align: 'center'
     },
     {
-      title: '时间',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.eventDate}
-            onChange={(e) => {
-              record.eventDate = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
+      title: '事件分类',
+      dataIndex: 'badEventName',
+      align: 'left',
     },
     {
-      title: `当事人`,
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.eventEmpNames}
-            onChange={(e) => {
-              record.eventEmpNames = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
+      title: '发生次数',
+      dataIndex: 'happenedTimes',
+      align: 'center',
+      width: 100,
+      render: (text: any, record: any, idx: number) => {
+        return <InputNumber
+          value={text}
+          min={0}
+          precision={0}
+          onChange={(val) => {
+            cloneData.list[idx].happenedTimes = val
+            setData(cloneData)
+          }} />
+      }
     },
-    {
-      title: `事情种类`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Select
-            value={record.eventType}
-            onChange={(value: any) => {
-              record.eventType = value
-              setData(cloneData)
-            }}
-          >
-            {EventTypeList.map((item: DictItem) => (
-              <Select.Option key={item.code} value={item.code}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
-          // <input
-          //   type='text'
-          //   className='cell-input'
-          //   value={record.eventType}
-          //   onChange={(e) => {
-          //     record.eventType = e.target.value
-          //     setData(cloneData)
-          //   }}
-          // />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情简要经过`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.briefCourseEvent}
-            onChange={(e) => {
-              record.briefCourseEvent = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `后果`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.result}
-            onChange={(e) => {
-              record.result = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-
     {
       title: '操作',
       key: '操作',
@@ -166,9 +85,9 @@ export default function 不良事件分类弹窗(props: Props) {
   return (
     <Wrapper>
       <div className='button-con'>
-        <Button icon='plus' size='small' onClick={addItem}>
+        {/* <Button icon='plus' size='small' onClick={addItem}>
           添加
-        </Button>
+        </Button> */}
       </div>
 
       <BaseTable

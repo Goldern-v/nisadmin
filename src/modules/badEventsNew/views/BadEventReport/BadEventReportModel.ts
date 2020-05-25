@@ -143,14 +143,30 @@ class BadEventReportModel {
     let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
     /** 上月 */
     let lastMonth = currentMonth == 1 ? 12 : currentMonth - 1
+
     this.getSectionData('报告名称')!.text = this.allData.report!.reportName || '报告名称'
-    // this.getSectionData('护理工作计划')!.list = this.allData.workScheduleList || []
-    // this.getSectionData('病区护理质量检查')!.list = this.allData.wardCheckList || []
-    // this.getSectionData('护士会议记录')!.list = this.allData.nurseMeetingList || []
-    // this.getSectionData('不良事件')!.list = this.allData.badEventList || []
-    // this.getSectionData('人力资源调配')!.list = this.allData.hrAllocationList || []
-    // this.getSectionData('检查形式')!.report = this.allData.report || {}
-    // this.getSectionData('护理工作计划')!.list = []
+
+    this.getSectionData('不良事件分类')!.list = [
+      { badEventName: '不良事件1', happenedTimes: '10' },
+      { badEventName: '不良事件2', happenedTimes: '12' },
+      { badEventName: '不良事件3', happenedTimes: '14' },
+      { badEventName: '不良事件4', happenedTimes: '16' },
+    ]
+
+    this.getSectionData('上报例数比较')!.list = [
+      { type: 'month', code: 1, happenedTimes: '12', rate: '12' },
+      { type: 'month', code: 2, happenedTimes: '14', rate: '16.67' },
+      { type: 'month', code: 3, happenedTimes: '16', rate: '14.29' },
+      { type: 'month', code: 4, happenedTimes: '18', rate: '12.5' },
+      { type: 'month', code: 5, happenedTimes: '20', rate: '11.11' },
+      { type: 'month', code: 6, happenedTimes: '22', rate: '10' },
+      { type: 'month', code: 7, happenedTimes: '22', rate: '0' },
+      { type: 'month', code: 8, happenedTimes: '20', rate: '-9.09' },
+      { type: 'month', code: 9, happenedTimes: '18', rate: '-10' },
+      { type: 'month', code: 10, happenedTimes: '16', rate: '-11.11' },
+      { type: 'month', code: 11, happenedTimes: '14', rate: '-12.5' },
+      { type: 'month', code: 12, happenedTimes: '12', rate: '-14.29' },
+    ]
   }
   async init(query?: any) {
     await this.initData(query)

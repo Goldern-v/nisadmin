@@ -30,53 +30,23 @@ export default observer(function BaseModal(props: Props) {
 
   const onSave = async () => {
     if (sectionData.sectionId == '报告名称') {
-      badEventReportService.updateReportName(data.text).then((res) => {
-        badEventReportModel.setSectionData(sectionData.sectionId, {
-          text: res.data.reportName
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '护理工作计划') {
-      badEventReportService.updateWorkScheduleList(data.list).then((res) => {
-        badEventReportModel.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '病区护理质量检查') {
-      badEventReportService.updateWardCheckList(data.list).then((res) => {
-        badEventReportModel.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '护士会议记录') {
-      badEventReportService.updateNurseMeetingList(data.list).then((res) => {
-        badEventReportModel.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '不良事件') {
-      badEventReportService.updateBadEventList(data.list).then((res) => {
-        badEventReportModel.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
-    } else if (sectionData.sectionId == '人力资源调配') {
-      badEventReportService.updateHrAllocationList(data.list).then((res) => {
-        badEventReportModel.setSectionData(sectionData.sectionId, {
-          list: res.data
-        })
-        message.success('保存成功')
-        onCancel()
-      })
+      console.log('onOk', data.text)
+      // badEventReportService.updateReportName(data.text).then((res) => {
+      //   badEventReportModel.setSectionData(sectionData.sectionId, {
+      //     text: res.data.reportName
+      //   })
+      //   message.success('保存成功')
+      //   onCancel()
+      // })
+    } else if (sectionData.sectionId == '不良事件分类') {
+      console.log(data)
+      // badEventReportService.updateWorkScheduleList(data.list).then((res) => {
+      //   badEventReportModel.setSectionData(sectionData.sectionId, {
+      //     list: res.data
+      //   })
+      //   message.success('保存成功')
+      //   onCancel()
+      // })
     }
   }
 

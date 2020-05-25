@@ -6,7 +6,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { LastImproveItem, Report, TypeCompare, DeptItem } from '../../types'
 import { badEventReportModel } from '../../BadEventReportModel'
-import { EventTypeList } from './Table'
+// import { EventTypeList } from './Table'
 import { DictItem } from 'src/services/api/CommonApiService'
 
 export interface Props {
@@ -29,108 +29,6 @@ export default function 上报例数比较弹窗(props: Props) {
       width: 50,
       align: 'center'
     },
-    {
-      title: '时间',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.eventDate}
-            onChange={(e) => {
-              record.eventDate = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `当事人`,
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <input
-            type='text'
-            className='cell-input'
-            value={record.eventEmpNames}
-            onChange={(e) => {
-              record.eventEmpNames = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情种类`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Select
-            value={record.eventType}
-            onChange={(value: any) => {
-              record.eventType = value
-              setData(cloneData)
-            }}
-          >
-            {EventTypeList.map((item: DictItem) => (
-              <Select.Option key={item.code} value={item.code}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
-          // <input
-          //   type='text'
-          //   className='cell-input'
-          //   value={record.eventType}
-          //   onChange={(e) => {
-          //     record.eventType = e.target.value
-          //     setData(cloneData)
-          //   }}
-          // />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `事情简要经过`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.briefCourseEvent}
-            onChange={(e) => {
-              record.briefCourseEvent = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-    {
-      title: `后果`,
-      className: 'cell-input',
-      render(text: any, record: DeptItem, index: number) {
-        return (
-          <Input.TextArea
-            autosize={true}
-            className='cell-input'
-            value={record.result}
-            onChange={(e) => {
-              record.result = e.target.value
-              setData(cloneData)
-            }}
-          />
-        )
-      },
-      width: 100
-    },
-
     {
       title: '操作',
       key: '操作',

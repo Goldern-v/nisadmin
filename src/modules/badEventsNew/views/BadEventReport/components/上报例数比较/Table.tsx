@@ -1,60 +1,26 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { TypeCompare, Report, DeptItem } from '../../types'
+import { TypeCompare, Report } from '../../types'
 import { appStore } from 'src/stores'
 import { badEventReportModel } from './../../BadEventReportModel'
-import { Pre } from 'src/components/common'
+// import { Pre } from 'src/components/common'
+import { numToChinese } from 'src/utils/number/numToChinese'
+import Title from 'antd/lib/skeleton/Title'
 export interface Props {
-  list: DeptItem[]
+  list: any[]
 }
 
-export const EventTypeList = [
-  {
-    code: 'QCWET001',
-    name: '压疮不良事件'
-  },
-  {
-    code: 'QCWET002',
-    name: '给药/治疗错误不良事件'
-  },
-  {
-    code: 'QCWET003',
-    name: '操作不当不良事件'
-  },
-  {
-    code: 'QCWET004',
-    name: '跌倒/坠床不良事件'
-  },
-  {
-    code: 'QCWET005',
-    name: '非计划性拔管不良事件'
-  },
-  {
-    code: 'QCWET006',
-    name: '输液/输血渗透不良事件'
-  },
-  {
-    code: 'QCWET007',
-    name: '烫伤不良事件'
-  },
-  {
-    code: 'QCWET008',
-    name: '走失不良事件'
-  },
-  {
-    code: 'QCWET009',
-    name: '自杀'
-  }
-]
-
-const getEventTypeNameByCode = (code: string) => {
-  let obj = EventTypeList.find((item: any) => item.code == code)
-  return obj ? obj.name : ''
-}
 export default function Table(props: Props) {
   let { list } = props
   let report: Report = badEventReportModel.getDataInAllData('report') || {}
+
+  let unit = '月'
+
+  const Title = (code: number) => {
+    if (unit == '季度') return `第${numToChinese(code)}${unit}`
+    return `${numToChinese(code)}${unit}`
+  }
 
   return (
     <Wrapper>
@@ -68,22 +34,20 @@ export default function Table(props: Props) {
         </colgroup>
         <tbody>
           <tr className='header'>
-            <td>事件分类</td>
-            <td>发生次数</td>
-            <td>占比例</td>
+            <td></td>
+            {list.map((item: any, idx: number) =>
+              <td key={idx}>{Title(item.code)}</td>)}
           </tr>
-
-          {/* {list.map((item, index) => (
-            <tr key={index}>
-              <td>{item.eventDate}</td>
-              <td>{item.eventEmpNames}</td>
-              <td>{getEventTypeNameByCode(item.eventType)}</td>
-              <td>
-                {item.briefCourseEvent}
-              </td>
-              <td>{item.result}</td>
-            </tr>
-          ))} */}
+          <tr>
+            <td></td>
+            {list.map((item: any, idx: number) =>
+              <td key={idx}>{item.happenedTimes}</td>)}
+          </tr>
+          <tr>
+            <td></td>
+            {list.map((item: any, idx: number) =>
+              <td key={idx}>{item.rate}</td>)}
+          </tr>
         </tbody>
       </table>
     </Wrapper>

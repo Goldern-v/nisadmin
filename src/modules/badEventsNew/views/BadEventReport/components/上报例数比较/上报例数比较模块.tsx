@@ -21,13 +21,13 @@ export default observer(function 上报例数比较模块(props: Props) {
   let data = badEventReportModel.getSectionData(sectionId)
   let report: Report = badEventReportModel.getDataInAllData('report')
   let list = data ? data.list || [] : []
-  const timeStr = '一月'
+  const unit = '月'
 
   useEffect(() => { })
 
   return (
     <Wrapper>
-      <TwoLevelTitle text={`2.比较：与2019年第一季度不良事件(件)上报例数相比`} />
+      <TwoLevelTitle text={`2.比较：与上个${unit}不良事件(件)上报例数相比`} />
       <Table list={list} />
       <EditButton
         onClick={() => badEventReportModel.openEditModal(sectionId)}>

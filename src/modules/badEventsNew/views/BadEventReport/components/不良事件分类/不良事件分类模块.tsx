@@ -10,6 +10,7 @@ import { Report } from '../../types'
 import moment from 'moment'
 import OneLevelTitle from '../common/OneLevelTitle'
 import TwoLevelTitle from '../common/TwoLevelTitle'
+import CenterText from '../common/CenterText'
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -23,13 +24,25 @@ export default observer(function 不良事件分类模块(props: Props) {
   let list = data ? data.list || [] : []
   const timeStr = '一月'
 
+
+  let viewList = JSON.parse(JSON.stringify(list))
+  let total = 0
+
+  for (let i = 0; i < viewList.length; i++) {
+    let times = Number(viewList[i].happenedTimes)
+    if (isNaN(times)) times = 0
+    viewList[i].times = times
+    total += times
+  }
+
   useEffect(() => { })
 
   return (
     <Wrapper>
       <OneLevelTitle text={`一、${timeStr}护理不良事件统计分类`} />
-      <TwoLevelTitle text={`1.统计${timeStr}共发生不良事件126件`} />
-      <Table list={list} />
+      <TwoLevelTitle text={`1.统计${timeStr}共发生不良事件${total}件`} />
+      <Table list={viewList} total={total} />
+      <CenterText text="表1-1 不良事件分类" />
       <EditButton onClick={() => badEventReportModel.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )
