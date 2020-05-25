@@ -77,36 +77,43 @@ export default function ContinuingEdu(props: Props) {
         {
           title: "护理临床带教资质准入申请表",
           path: "/continuingEdu/护理临床带教资质准入申请表",
+          formCode: "FQA00001",
           component: FormApply
         },
         {
           title: "护师人员执业/夜班准入资格申请表",
           path: "/continuingEdu/护师人员执业/夜班准入资格申请表",
+          formCode: "FQA00002",
           component: FormApply
         },
         {
           title: "特殊护理岗位资质准入申请表",
           path: "/continuingEdu/特殊护理岗位资质准入申请表",
+          formCode: "FQA00006",
           component: FormApply
         },
         {
           title: "护理会诊人员资质认定表",
           path: "/continuingEdu/护理会诊人员资质认定表",
+          formCode: "FQA00004",
           component: FormApply
         },
         {
           title: "护理人员岗位层级晋升申请表",
           path: "/continuingEdu/护理人员岗位层级晋升申请表",
+          formCode: "FQA00005",
           component: FormApply
         },
         {
           title: "高风险诊疗技术操作人员资质申请表",
           path: "/continuingEdu/高风险诊疗技术操作人员资质申请表",
+          formCode: "FQA00003",
           component: FormApply
         },
         {
           title: "护理人员院内进修备案简表",
           path: "/continuingEdu/护理人员岗位院内进修备案简表",
+          formCode: "FQA00007",
           component: FormApply
         }
       ]
@@ -304,6 +311,7 @@ export default function ContinuingEdu(props: Props) {
           <currentRoute.component
             getTitle={currentRoute && currentRoute.title} //菜单标题
             getId={currentRoute && currentRoute.id} //菜单id
+            getFormCode={currentRoute && currentRoute.formCode} //表单code值
             getList={getList} // 动态菜单树
           />
         )}

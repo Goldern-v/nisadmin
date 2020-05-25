@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
 import { Select, Input, Button, Radio } from "antd";
 import { CJJSWrapper, Span, SpanMiddle, SpanMax, SpanLength } from "../common";
@@ -7,6 +7,33 @@ import { CJJSWrapper, Span, SpanMiddle, SpanMax, SpanLength } from "../common";
 interface Props {}
 
 export default function CJJS(props: Props) {
+  const [cJJSContent, setCJJSContent] = useState({
+    f00001: "", //姓名
+    f00002: "", //出生日期
+    f00007: "", //专业技术职称
+    f00009: "", //来院时间
+    f00010: "", //参加临床带教时间
+    f00011: "", //最高学历
+    f00014: "", //护士层级
+    f00015: "", //联系方式
+    f00016: 1, //申报类别
+    f00017: "", //教学培训经历
+    f00018: "", //院内外授课/授课竞赛/技能竞赛情况
+    f00019: "", //申请人工号
+    f00020: "", //申请人姓名
+    f00021: "", //申请时间
+    f00022: "", //科室审批人工号
+    f00023: "", //科室审批人姓名
+    f00024: "", //科室审批结果（1通过；-1退回）
+    f00025: "", //科室审批时间
+    f00026: "", //准入考评小组审批人工号
+    f00027: "", //准入考评小组审批人姓名
+    f00028: "", //准入考评小组审批结果（1通过；-1退回）
+    f00029: "", //准入考评小组审批时间
+    f00030: "", //护理部审批人工号
+    f00031: "", //护理部审批人姓名
+    f00032: "" //护理部审批时间
+  });
   return (
     <CJJSWrapper>
       <table>
@@ -20,11 +47,22 @@ export default function CJJS(props: Props) {
             <td className="vailgnTop">
               <span>
                 姓名：
-                <Input />
+                <Input
+                  value={cJJSContent.f00001}
+                  onChange={(val: any) =>
+                    setCJJSContent({ ...cJJSContent, f00001: val })
+                  }
+                />
               </span>
               <Span>
                 性别：
-                <Input style={{ width: "45px" }} />
+                <Input
+                  value={cJJSContent.f00001}
+                  onChange={(val: any) =>
+                    setCJJSContent({ ...cJJSContent, f00001: val })
+                  }
+                  style={{ width: "45px" }}
+                />
               </Span>
               <Span>
                 技术职称：

@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+
+import React, { useState, useLayoutEffect } from "react";
 import { Select, Input, Button, DatePicker } from "antd";
 import { PageTitle } from "src/components/common";
 import { formApplyModal } from "../FormApplyModal"; // 仓库数据
@@ -9,9 +11,9 @@ const Option = Select.Option;
 
 interface Props {}
 
-export default function ApplyHeader(props: Props) {
+export default observer(function ApplyHeader(props: Props) {
   const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
-  const [editVisible, setEditVisible] = useState(true); // 控制一弹窗状态
+  const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
 
   // 修改表单
   const saveOrUpload = (record?: any) => {
@@ -24,7 +26,7 @@ export default function ApplyHeader(props: Props) {
     setEditParams({});
   };
   const handleEditOk = () => {
-    // getTableData();
+    formApplyModal.onload();
     handleEditCancel();
   };
 
@@ -58,8 +60,7 @@ export default function ApplyHeader(props: Props) {
           <Option value="1">草稿</Option>
           <Option value="2">待审核</Option>
           <Option value="3">退回</Option>
-          <Option value="4">发布</Option>
-          <Option value="5">归档</Option>
+          <Option value="4">通过</Option>
         </Select>
         <Input
           style={{ width: 200, marginLeft: 15, marginRight: 5 }}
@@ -92,7 +93,7 @@ export default function ApplyHeader(props: Props) {
       />
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div`
   width: calc(100vw-200px);
   justify-content: space-between;
