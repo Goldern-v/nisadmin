@@ -188,6 +188,9 @@ height: 100%;
       border-top: 1px solid rgb(232, 232, 232);
     }
   }
+  td{
+    word-break: break-all;
+  }
 `
 
 const LeftIcon = styled.div`

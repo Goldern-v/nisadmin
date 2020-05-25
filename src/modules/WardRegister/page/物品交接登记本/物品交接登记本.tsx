@@ -47,6 +47,7 @@ const MemoContextMenu = React.memo(contextMenu.Component);
 
 export default observer(function HandoverRegister(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
+  const registerName = props.payload && props.payload.registerName;
   const [oldData, setOldData]: any = useState({});
   const [dataSource, setDataSource] = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
@@ -622,10 +623,10 @@ export default observer(function HandoverRegister(props: Props) {
   const onAddBlock = () => {
     globalModal
       .confirm(
-        "是否新建物品交接登记本",
-        `新建物品交接登记本开始日期为${moment().format(
+        `是否新建${registerName}`,
+        `新建${registerName}开始日期为${moment().format(
           "YYYY-MM-DD"
-        )}，历史交接登记本请切换修订版本查看`
+        )}，历史${registerName}请切换修订版本查看`
       )
       .then(res => {
         wardRegisterService

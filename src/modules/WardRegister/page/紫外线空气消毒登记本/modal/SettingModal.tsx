@@ -40,29 +40,29 @@ export default function SettingModal(props: Props) {
 
   const tabConfig = visible
     ? [
-        {
-          title: "标题设置",
-          component: (
-            <SetTittle
-              blockId={blockId}
-              registerCode={registerCode}
-              onOkCallBack={onOkCallBack}
-            />
-          ),
-          index: 1
-        }
-        // {
-        //   title: "交班班次与提醒设置",
-        //   component: (
-        //     <SetRange
-        //       blockId={blockId}
-        //       registerCode={registerCode}
-        //       onOkCallBack={onOkCallBack}
-        //     />
-        //   ),
-        //   index: 2
-        // }
-      ]
+      {
+        title: "标题设置",
+        component: (
+          <SetTittle
+            blockId={blockId}
+            registerCode={registerCode}
+            onOkCallBack={onOkCallBack}
+          />
+        ),
+        index: 1
+      }
+      // {
+      //   title: "交班班次与提醒设置",
+      //   component: (
+      //     <SetRange
+      //       blockId={blockId}
+      //       registerCode={registerCode}
+      //       onOkCallBack={onOkCallBack}
+      //     />
+      //   ),
+      //   index: 2
+      // }
+    ]
     : [];
 
   const onSave = async () => {
@@ -93,7 +93,10 @@ export default function SettingModal(props: Props) {
         </div>
       }
       visible={visible}
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel()
+        onOkCallBack && onOkCallBack()
+      }}
       onOk={onSave}
       okText="保存"
       forceRender

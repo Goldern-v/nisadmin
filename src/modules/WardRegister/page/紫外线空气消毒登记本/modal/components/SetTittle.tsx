@@ -44,6 +44,14 @@ export default observer(function SetTittle(props: Props) {
     "床单位消毒机消毒执行者"
   ];
 
+  //静态不允许删除的选项
+  const staticOptions = {
+    '消毒类别': [
+      '无水酒精擦拭灯管',
+      '更换灯管'
+    ]
+  } as { [p: string]: string[] }
+
   const columns: ColumnProps<any>[] = [
     {
       title: "项目名称",
@@ -57,6 +65,7 @@ export default observer(function SetTittle(props: Props) {
             onChange={e => {
               record.itemCode = e.target.value;
             }}
+            disabled={true}
             onBlur={() => updateDataSource()}
             defaultValue={text}
           />
@@ -100,41 +109,55 @@ export default observer(function SetTittle(props: Props) {
             {empNameOptions()}
           </Select>
         ) : (
-          <Select
-            mode="tags"
-            style={{ width: "100%" }}
-            onChange={(value: any) => {
-              record.options = value.join(";");
-              updateDataSource();
-            }}
-            value={text ? text.split(";") : []}
-            open={false}
-            tokenSeparators={[";", "；"]}
-          />
-        );
+            <Select
+              mode="tags"
+              style={{ width: "100%" }}
+              onChange={(value: any) => {
+                //是否允许提交改动
+                let canSubmint = true
+
+                let targetOptions = staticOptions[record.itemCode] || null
+                if (targetOptions) {
+                  for (let i = 0; i < targetOptions.length; i++) {
+                    if (value.indexOf(targetOptions[i]) < 0) {
+                      value.push(targetOptions[i])
+                    }
+                  }
+                }
+
+                if (canSubmint) {
+                  record.options = value.join(";");
+                  updateDataSource()
+                }
+              }}
+              value={text ? text.split(";") : []}
+              open={false}
+              tokenSeparators={[";", "；"]}
+            />
+          );
       }
     },
-    {
-      title: " 操作 ",
-      width: 80,
-      render(text: string, record: any, index: number) {
-        return (
-          <DoCon>
-            <span
-              onClick={() => {
-                globalModal
-                  .confirm("删除确认", "你确定删除该配置项吗？")
-                  .then(res => {
-                    delRow(index);
-                  });
-              }}
-            >
-              删除
-            </span>
-          </DoCon>
-        );
-      }
-    }
+    // {
+    //   title: " 操作 ",
+    //   width: 80,
+    //   render(text: string, record: any, index: number) {
+    //     return (
+    //       <DoCon>
+    //         <span
+    //           onClick={() => {
+    //             globalModal
+    //               .confirm("删除确认", "你确定删除该配置项吗？")
+    //               .then(res => {
+    //                 delRow(index);
+    //               });
+    //           }}
+    //         >
+    //           删除
+    //         </span>
+    //       </DoCon>
+    //     );
+    //   }
+    // }
   ];
 
   const updateDataSource = () => {
@@ -191,7 +214,7 @@ export default observer(function SetTittle(props: Props) {
           checked={moveAble}
           onChange={(value: any) => setMoveAble(value)}
         />
-        <Button onClick={addRow}>添加</Button>
+        {/* <Button onClick={addRow}>添加</Button> */}
         <Button onClick={onSave} type="primary">
           保存
         </Button>
