@@ -87,9 +87,9 @@ export default function ContinuingEdu(props: Props) {
           component: FormApply
         },
         {
-          title: "特殊护理岗位资质准入申请表",
-          path: "/continuingEdu/特殊护理岗位资质准入申请表",
-          formCode: "FQA00006",
+          title: "高风险诊疗技术操作人员资质申请表",
+          path: "/continuingEdu/高风险诊疗技术操作人员资质申请表",
+          formCode: "FQA00003",
           component: FormApply
         },
         {
@@ -105,9 +105,9 @@ export default function ContinuingEdu(props: Props) {
           component: FormApply
         },
         {
-          title: "高风险诊疗技术操作人员资质申请表",
-          path: "/continuingEdu/高风险诊疗技术操作人员资质申请表",
-          formCode: "FQA00003",
+          title: "特殊护理岗位资质准入申请表",
+          path: "/continuingEdu/特殊护理岗位资质准入申请表",
+          formCode: "FQA00006",
           component: FormApply
         },
         {

@@ -12,22 +12,11 @@ const Option = Select.Option;
 interface Props {}
 
 export default observer(function ApplyHeader(props: Props) {
-  const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
 
-  // 修改表单
-  const saveOrUpload = (record?: any) => {
-    setEditParams({});
-    setEditVisible(true);
-  };
-
-  const handleEditCancel = () => {
-    setEditVisible(false);
-    setEditParams({});
-  };
   const handleEditOk = () => {
     formApplyModal.onload();
-    handleEditCancel();
+    setEditVisible(false);
   };
 
   return (
@@ -87,8 +76,7 @@ export default observer(function ApplyHeader(props: Props) {
       </RightIcon>
       <FormEditModal
         visible={editVisible}
-        params={editParams}
-        onCancel={handleEditCancel}
+        onCancel={() => setEditVisible(false)}
         onOk={handleEditOk}
       />
     </Wrapper>

@@ -7,6 +7,40 @@ export const Wrapper = styled.div`
   table {
     width: 100%;
   }
+  .special-radio {
+    /deep/ .ant-radio-wrapper {
+      display: flex;
+
+      > span:nth-child(2) {
+        text-align: left;
+      }
+      .ant-radio {
+        width: 16px;
+        height: 16px;
+        margin-top: 12px;
+      }
+    }
+  }
+  /deep/ textarea {
+    resize: none; //去右下角灰点
+  }
+
+
+  // /deep/ .ant-radio-inner {
+  //   border-radius: 0px;
+  // }
+  // /deep/ .ant-radio-inner::after {
+  //   background-color: #fff;
+  // }
+  // /deep/.ant-radio-wrapper-checked {
+  //   background: url('${require("../../../images/question-correct.png")}') no-repeat;
+  // }
+  // /deep/ .ant-radio-checked .ant-radio-inner {
+  //   opacity: 0;
+  // }
+
+
+  
   .specialInput {
     /deep/.ant-input {
       border-bottom: 1px solid #000 !important;
@@ -39,6 +73,9 @@ export const Wrapper = styled.div`
     height: 100%;
     word-break: break-all;
     word-wrap: break-word;
+  }
+  /deep/ .ant-input-disabled {
+    background-color: #fff !important;
   }
   /deep/.ant-input:focus {
     border: none;
@@ -79,6 +116,10 @@ export const CJJSWrapper = styled.div`
     width: 75px;
     border-radius: 0;
   }
+  /deep/ .ant-input-disabled {
+    background-color: #fff !important;
+  }
+
   /deep/.ant-input:focus {
     border: none;
     box-shadow: none;

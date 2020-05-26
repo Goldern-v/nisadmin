@@ -11,6 +11,7 @@ interface Props {}
 
 export default observer(function ApplyTable(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
+  const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
 
   const columns: any = [
     {
@@ -197,13 +198,15 @@ export default observer(function ApplyTable(props: Props) {
   const checkResult = () => {};
 
   // 修改
-  const handReWrite = () => {
-    // setEditParams({});
+  const handReWrite = (record: any) => {
+    setEditParams({
+      formId: record.formId
+    });
     setEditVisible(true);
   };
   const handleEditCancel = () => {
     setEditVisible(false);
-    // setEditParams({});
+    setEditParams({});
   };
   const handleEditOk = () => {
     formApplyModal.onload();
@@ -231,7 +234,7 @@ export default observer(function ApplyTable(props: Props) {
       />
       <FormEditModal
         visible={editVisible}
-        params="0000"
+        params={editParams}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
       />
