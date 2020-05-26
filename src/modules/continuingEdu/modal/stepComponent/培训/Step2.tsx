@@ -361,11 +361,11 @@ export default observer(function Step1() {
               </div>
             </Form.Field>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Field label={`通知消息`} name="noticeContent">
               <Input.TextArea placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送" />
             </Form.Field>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
       <selectNurseModal.Component />

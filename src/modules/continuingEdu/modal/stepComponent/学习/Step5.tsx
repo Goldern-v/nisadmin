@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, Radio, Icon } from "antd";
+import { Button, Radio, Input } from "antd";
 import { xxStepViewModal } from "./XXStepViewModal";
 import { stepViewModal } from "../StepViewModal";
 import Zimage from "src/components/Zimage";
@@ -172,6 +172,19 @@ export default observer(function Step5() {
               >
                 立即发送通知：发布后自动发送通知
               </Radio>
+            </td>
+          </tr>
+          <tr>
+            <td className="key" />
+            <td className="value">
+              <Input.TextArea
+                style={{ width: "100%" }}
+                placeholder="请输入通知详细或考试内容，在【完成】页面勾选通知设置，通知会自动发送"
+                value={xxStepViewModal.stepData2.noticeContent}
+                onChange={(e: any) =>
+                  (xxStepViewModal.stepData2.noticeContent = e.target.value)
+                }
+              />
             </td>
           </tr>
         </tbody>
