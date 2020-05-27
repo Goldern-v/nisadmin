@@ -30,13 +30,13 @@ export default observer(function ApplyTable(props: Props) {
       title: "创建时间",
       dataIndex: "createTime",
       align: "center",
-      width: 190
+      width: 180
     },
     {
       title: "提交时间",
       dataIndex: "submitTime",
       align: "center",
-      width: 190
+      width: 180
     },
     {
       title: "状态",
@@ -58,7 +58,7 @@ export default observer(function ApplyTable(props: Props) {
       title: "备注",
       dataIndex: "auditRemark",
       align: "left",
-      width: 230
+      width: 220
     },
     {
       title: "操作",

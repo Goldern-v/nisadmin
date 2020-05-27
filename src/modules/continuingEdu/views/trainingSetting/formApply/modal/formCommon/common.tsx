@@ -15,8 +15,6 @@ export const Wrapper = styled.div`
         text-align: left;
       }
       .ant-radio {
-        width: 16px;
-        height: 16px;
         margin-top: 12px;
       }
     }
@@ -25,22 +23,26 @@ export const Wrapper = styled.div`
     resize: none; //去右下角灰点
   }
 
+  /deep/ .ant-radio {
+    width: 16px;
+    height: 16px;
+    .ant-radio-inner {
+      border-radius: 0;
+      border-color: #ccc;
+    }
+  }
 
-  // /deep/ .ant-radio-inner {
-  //   border-radius: 0px;
-  // }
-  // /deep/ .ant-radio-inner::after {
-  //   background-color: #fff;
-  // }
-  // /deep/.ant-radio-wrapper-checked {
-  //   background: url('${require("../../../images/question-correct.png")}') no-repeat;
-  // }
-  // /deep/ .ant-radio-checked .ant-radio-inner {
-  //   opacity: 0;
-  // }
+  /deep/ .ant-radio-checked {
+    .ant-radio-inner::after {
+      background-color: transparent;
+      content: "✔";
+      font-size: 16px;
+      font-weight: 600;
+      top: -1px;
+      left: 0;
+    }
+  }
 
-
-  
   .specialInput {
     /deep/.ant-input {
       border-bottom: 1px solid #000 !important;
@@ -61,6 +63,13 @@ export const Wrapper = styled.div`
     vertical-align: top !important;
     text-align: left !important;
   }
+  .noPadding {
+    padding: 0 !important;
+  }
+  .padding {
+    padding: 0 10px !important;
+  }
+
   .textAlign {
     text-align: left !important;
   }
@@ -100,9 +109,41 @@ export const CJJSWrapper = styled.div`
     word-break: break-all;
     word-wrap: break-word;
   }
+  /deep/ .ant-radio {
+    width: 16px;
+    height: 16px;
+    .ant-radio-inner {
+      border-radius: 0;
+      border-color: #ccc;
+    }
+  }
+  .marginTop {
+    margin-top: 20px;
+  }
+
+  /deep/ .ant-radio-checked {
+    .ant-radio-inner::after {
+      background-color: transparent;
+      content: "✔";
+      font-size: 16px;
+      font-weight: 600;
+      top: -1px;
+      left: 0;
+    }
+  }
+  .vailgnBottom {
+    vertical-align: bottom !important;
+    text-align: right !important;
+  }
+
   .vailgnTop {
     vertical-align: top !important;
     text-align: left !important;
+  }
+  .godie {
+    /deep/.ant-input {
+      border: none !important;
+    }
   }
   .textAlign {
     text-align: left !important;
@@ -126,6 +167,15 @@ export const CJJSWrapper = styled.div`
   }
   /deep/ .ant-radio-wrapper {
     font-size: 12px !important;
+  }
+  .specialInput {
+    /deep/.ant-input {
+      width: 150px;
+    }
+  }
+  /deep/ textarea {
+    resize: none; //去右下角灰点
+    border: none !important;
   }
 `;
 export const Span = styled.span`

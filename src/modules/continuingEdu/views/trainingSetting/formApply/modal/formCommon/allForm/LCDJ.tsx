@@ -7,7 +7,7 @@ import { Wrapper, SpanMiddle, Span } from "../common";
 interface Props {}
 
 export default observer(function LCDJ(props: Props) {
-  const lCDJContent = formApplyModal.LCDJformContent;
+  const lCDJContent = formApplyModal.LCDJFormContent;
 
   return (
     <Wrapper>
@@ -111,12 +111,7 @@ export default observer(function LCDJ(props: Props) {
                 value={lCDJContent.f00016}
                 onChange={(e: any) => (lCDJContent.f00016 = e.target.value)}
               >
-                <Radio
-                  value={1}
-                  className={lCDJContent.f00016 === 1 ? "checked" : ""}
-                >
-                  基地学员带教老师
-                </Radio>
+                <Radio value={1}>基地学员带教老师</Radio>
               </Radio.Group>
             </td>
             <td className="special-radio" colSpan={2}>

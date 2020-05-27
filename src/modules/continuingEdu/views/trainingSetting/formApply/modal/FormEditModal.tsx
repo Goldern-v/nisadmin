@@ -17,36 +17,43 @@ export default function FormEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const checkForm = () => {};
-
+  // const obj: any = {
+  //   LCDJFormContent: "FQA00001",
+  //   RYZYFormContent: "FQA00002",
+  //   GFXZLFormContent: "FQA00003",
+  //   RYZZFormContent: "FQA00004",
+  //   CJJSFormContent: "FQA00005",
+  //   TSGWFormContent: "FQA00006",
+  //   YNJXFormContent: "FQA00007"
+  // };
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
         // 修改
         if (params && params.formId) {
-          let formName = getData();
-          console.log(formName, "formName");
           trainingSettingApi.formData(params.formId).then((res: any) => {
+            res.data.id = params.formId;
             switch (formApplyModal.getFormCode) {
               case "FQA00001":
-                return (formApplyModal.LCDJformContent = res.data);
+                return (formApplyModal.LCDJFormContent = res.data);
                 break;
               case "FQA00002":
-                return (formApplyModal.RYZYformContent = res.data);
+                return (formApplyModal.RYZYFormContent = res.data);
                 break;
               case "FQA00003":
-                return (formApplyModal.GFXZLformContent = res.data);
+                return (formApplyModal.GFXZLFormContent = res.data);
                 break;
               case "FQA00004":
-                return (formApplyModal.RYZZformContent = res.data);
+                return (formApplyModal.RYZZFormContent = res.data);
                 break;
               case "FQA00005":
-                return (formApplyModal.CJJSformContent = res.data);
+                return (formApplyModal.CJJSFormContent = res.data);
                 break;
               case "FQA00006":
-                return (formApplyModal.TSGWformContent = res.data);
+                return (formApplyModal.TSGWFormContent = res.data);
                 break;
               default:
-                return (formApplyModal.YNJXformContent = res.data);
+                return (formApplyModal.YNJXFormContent = res.data);
                 break;
             }
           });
@@ -60,8 +67,7 @@ export default function FormEditModal(props: Props) {
   //保存表单
   const confirmSave = (actionType: 1 | 2 | undefined) => {
     setEditLoading(true);
-    let data: any = getData();
-    return trainingSettingApi.saveForm(actionType, data).then(res => {
+    return trainingSettingApi.saveForm(actionType, getData()).then(res => {
       setEditLoading(false);
       if (actionType == 1) Message.success("保存草稿成功");
       if (actionType == 2) Message.success("提交成功");
@@ -72,15 +78,19 @@ export default function FormEditModal(props: Props) {
   // 通过form值判断入参
   const getData = () => {
     const formArr: any = [
-      formApplyModal.LCDJformContent,
-      formApplyModal.CJJSformContent
+      formApplyModal.LCDJFormContent,
+      formApplyModal.RYZYFormContent,
+      formApplyModal.GFXZLFormContent,
+      formApplyModal.RYZZFormContent,
+      formApplyModal.CJJSFormContent,
+      formApplyModal.TSGWFormContent,
+      formApplyModal.YNJXFormContent
     ];
     const key = Number(
       formApplyModal.getFormCode.substring(
         formApplyModal.getFormCode.length - 1
       )
     );
-    console.log(formArr[key - 1], "formArr[key - 1]");
     return formArr[key - 1];
   };
 
