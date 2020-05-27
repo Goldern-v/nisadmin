@@ -186,7 +186,13 @@ export default observer(function SetRange(props: Props) {
     </Wrapper>
   );
 });
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+.ant-select{
+    .ant-select-remove-icon{
+      color: #00A680;
+    }
+  }
+`;
 const EditTableCon = styled.div`
   .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
   .ant-table-row-hover {

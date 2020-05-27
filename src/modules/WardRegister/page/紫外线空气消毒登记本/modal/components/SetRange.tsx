@@ -205,6 +205,11 @@ const EditTableCon = styled.div`
       }
     }
   }
+  .ant-select{
+    .ant-select-remove-icon{
+      color: #00A680;
+    }
+  }
 `;
 
 const ToolCon = styled.div`

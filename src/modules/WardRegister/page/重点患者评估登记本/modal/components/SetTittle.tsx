@@ -41,6 +41,7 @@ export default observer(function SetTittle(props: Props) {
     "签名",
     "护士长签名",
     "责任人",
+    "责护名字",
     "消毒液擦拭床单位执行者",
     "床单位消毒机消毒执行者",
     "带教老师签名",
@@ -52,11 +53,15 @@ export default observer(function SetTittle(props: Props) {
       title: "项目名称",
       dataIndex: "itemCode",
       align: "center",
-      className: "input-cell",
+      className: [
+        "input-cell",
+        (selectedBlockObj && !selectedBlockObj.itemSizeEditable) ? 'disabled' : ''
+      ].join(' '),
       width: 150,
       render(text: any, record: any, index: any) {
         return (
-          <Input
+          <Input.TextArea
+            autosize={{ minRows: 1 }}
             disabled={selectedBlockObj && !selectedBlockObj.itemSizeEditable}
             onChange={e => {
               record.itemCode = e.target.value;
@@ -276,8 +281,21 @@ const EditTableCon = styled.div`
       background: #fff !important;
     }
   }
+  
+  .ant-table-tbody > tr.ant-table-row:hover{
+    .input-cell{
+      &.disabled{
+        background-color: #f5f5f5!important;
+      }
+    }
+  }
+
   .input-cell {
     padding: 0 !important;
+    &.disabled{
+      background-color: #f5f5f5;
+    }
+
     .ant-input, .ant-select, .ant-select-selection, .ant-input-number {
       position: relative;
       z-index: 1000;
@@ -295,6 +313,14 @@ const EditTableCon = styled.div`
         text-align: center;
       }
     }
+  }
+  .ant-select{
+    .ant-select-remove-icon{
+      color: #00A680;
+    }
+  }
+  textarea{
+    resize:none;
   }
 `;
 

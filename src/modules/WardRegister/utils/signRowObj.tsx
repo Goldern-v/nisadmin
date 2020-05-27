@@ -85,7 +85,7 @@ export function signRowObj(obj: {
                       signApi(registerCode, selectedBlockId, [record], true).then(
                         (res: any) => {
                           message.success(`${aside}签名成功`);
-                          Object.assign(record, res.data.itemDataList[0]);
+                          Object.assign(record, { ...res.data.itemDataList[0], modified: false });
                           updateDataSource()
                         })
                     } else {

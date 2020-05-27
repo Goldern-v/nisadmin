@@ -53,7 +53,9 @@ export default observer(function SetTittle(props: Props) {
       width: 150,
       render(text: any, record: any, index: any) {
         return (
-          <Input
+          <Input.TextArea
+            autosize={{ minRows: 1 }}
+            disabled={record.itemCode == '监测报告'}
             onChange={e => {
               record.itemCode = e.target.value;
             }}
@@ -86,6 +88,7 @@ export default observer(function SetTittle(props: Props) {
       width: 300,
       className: "input-cell",
       render(text: any, record: any, index: any) {
+        if (record.itemCode == '监测报告') return <span></span>
         return showEmpName.includes(record.itemCode) ? (
           <Select
             mode="tags"
@@ -100,24 +103,25 @@ export default observer(function SetTittle(props: Props) {
             {empNameOptions()}
           </Select>
         ) : (
-          <Select
-            mode="tags"
-            style={{ width: "100%" }}
-            onChange={(value: any) => {
-              record.options = value.join(";");
-              updateDataSource();
-            }}
-            value={text ? text.split(";") : []}
-            open={false}
-            tokenSeparators={[";", "；"]}
-          />
-        );
+            <Select
+              mode="tags"
+              style={{ width: "100%" }}
+              onChange={(value: any) => {
+                record.options = value.join(";");
+                updateDataSource();
+              }}
+              value={text ? text.split(";") : []}
+              open={false}
+              tokenSeparators={[";", "；"]}
+            />
+          );
       }
     },
     {
       title: " 操作 ",
       width: 80,
       render(text: string, record: any, index: number) {
+        if (record.itemCode == '监测报告') return <span></span>
         return (
           <DoCon>
             <span
@@ -216,7 +220,13 @@ export default observer(function SetTittle(props: Props) {
     </Wrapper>
   );
 });
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+.ant-select{
+  .ant-select-remove-icon{
+    color: #00A680;
+  }
+}
+`;
 const EditTableCon = styled.div`
   .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td,
   .ant-table-row-hover {

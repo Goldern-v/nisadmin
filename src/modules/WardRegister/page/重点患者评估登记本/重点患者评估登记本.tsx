@@ -328,9 +328,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
       endTime &&
       registerCode == "QCRG_10"
     ) {
-      let m = endTimeDate.diff(currentDate, "M");
-      if (m < 1) return "color-red";
-      if (m < 3) return "color-orange";
+      let m = endTimeDate.diff(currentDate, "d");
+      if (m <= 90) return "color-red";
+      // if (m < 3) return "color-orange";
     }
     return "";
   };
@@ -445,7 +445,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
                   disabled={cellDisabled(record)}
                   defaultValue={text}
                   onKeyUp={handleNextIptFocus}
-                  onChange={e => record.recordDate = e.target.value}
+                  onChange={e => {
+                    record.modified = true
+                    record.recordDate = e.target.value
+                  }}
                   onBlur={() => updateDataSource()}
                   className={isEndTime(record.recordDate, record.有效期) || ""}
                 />
@@ -471,6 +474,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 dataSource={rangConfigList.map((item: any) => item.itemCode)}
                 defaultValue={text}
                 onChange={value => {
+                  record.modified = true
                   record["range"] = value;
                 }}
                 onBlur={() => updateDataSource()}
@@ -506,7 +510,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
       return {
         title: item.children ? (
           <PTitleTh>
-            <MergeTitle>{item.itemCode}</MergeTitle>
+            <MergeTitle>{item.pTitle || item.itemCode}</MergeTitle>
             <PTitleCon>
               {item.children.map(
                 (cItem: ItemConfigItem, index: number, arr: any) => (
@@ -573,6 +577,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               }
               defaultValue={text}
               onChange={value => {
+                record.modified = true
                 record[item.itemCode] = value.toString().replace(/\n/g, '');
               }}
               onBlur={() => updateDataSource()}
@@ -660,8 +665,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_08: [
           signRowObj({
-            title: "责护签名",
-            width: 70,
+            title: "登记人签名",
+            width: 90,
             dataIndex: "signerName",
             aside: "责护",
             registerCode,
@@ -671,10 +676,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         QCRG_10: [
           signRowObj({
-            title: "备注者签名",
+            title: "检查者签名",
             width: 70,
             dataIndex: "signerName",
-            aside: "备注者",
+            aside: "检查者",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -1134,11 +1139,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
 const Container = styled(Wrapper)`
   .color-red,
-  .color-red * {
+  .color-red *,
+  .disabled-row .color-red[disabled],
+  .disabled-row .color-red *[disabled] {
     color: red !important;
   }
   .color-orange,
-  .color-orange * {
+  .color-orange *,
+  .disabled-row .color-orange[disabled],
+  .disabled-row .color-orange *[disabled] {
     color: orange !important;
   }
   .ant-select-disabled .ant-select-selection{

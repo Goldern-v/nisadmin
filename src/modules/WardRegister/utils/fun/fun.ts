@@ -19,6 +19,8 @@ export interface ItemConfigItem {
   width: number;
   colSpan?: number;
   label?: string;
+  modified?: boolean;
+  pTitle?: string,
   children?: ItemConfigItem[];
 }
 
@@ -82,13 +84,15 @@ export function getFun(context: any) {
           let pTitle = current.itemCode.split("：")[0];
           let cTitle = current.itemCode.split("：")[1];
           current.label = cTitle;
-          let pthObj: any = total.find(item => item.itemCode == pTitle);
+          let pthObj: any = total.find(item => (item.pTitle || item.itemCode) == pTitle);
           if (!pthObj) {
             pthObj = {
-              itemCode: pTitle,
+              itemCode: current.itemCode,
+              pTitle: pTitle,
               children: [current],
               colSpan: 1,
-              width: current.width
+              width: current.width,
+              options: current.options
             };
             total.push(pthObj);
           } else {
@@ -141,7 +145,7 @@ export function getFun(context: any) {
               { recordDate: moment().format("YYYY-MM-DD") }
             ])
           } else {
-            setDataSource(newList)
+            setDataSource(newList.map((item: any) => ({ ...item, modified: false })))
           }
         })
       });
@@ -166,8 +170,11 @@ export function getFun(context: any) {
   };
 
   const onSave = () => {
+    let reqDataSorce = dataSource.filter((item: any) => !item.id || item.modified)
+
+    console.log(JSON.parse(JSON.stringify(reqDataSorce)))
     wardRegisterService
-      .saveAndSignAll(registerCode, selectedBlockId, dataSource, false)
+      .saveAndSignAll(registerCode, selectedBlockId, reqDataSorce, false)
       .then(res => {
         message.success("保存成功");
         getPage();

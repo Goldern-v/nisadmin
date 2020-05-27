@@ -145,7 +145,7 @@ export default observer(function BadEventRecordDetail() {
           </div>
           <div className='topHeaderButton'>
             {editable() && <Button disabled={loading} type="primary" ghost onClick={handleEdit}>编辑</Button>}
-            {auth && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(badEvent)}>删除</Button>}
+            {editable() && <Button disabled={loading} type="danger" ghost onClick={() => handleDelete(badEvent)}>删除</Button>}
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
         </div>

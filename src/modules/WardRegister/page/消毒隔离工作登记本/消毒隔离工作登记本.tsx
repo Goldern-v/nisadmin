@@ -29,6 +29,10 @@ import moment from "moment";
 import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
 import { signRowObj } from "../../utils/signRowObj";
+import { getFun, ItemConfigItem } from "../../utils/fun/fun";
+
+const TextArea = Input.TextArea
+
 export interface Props {
   payload: any;
 }
@@ -38,33 +42,35 @@ const throttler2 = throttle();
 
 export default observer(function 消毒隔离工作登记本(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
+  const registerName = props.payload && props.payload.registerName;
+
   const [dataSource, setDataSource]: any = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
-  const [wzcdConfigList, setWzcdConfigList] = useState([
-    { label: "全部", value: "全部" },
-    { label: "高", value: "高" },
-    { label: "中", value: "中" },
-    { label: "低", value: "低" }
-  ]);
-  const [selectedWzcd, setSelectedWzcd] = useState("");
+  // const [wzcdConfigList, setWzcdConfigList] = useState([
+  //   { label: "全部", value: "全部" },
+  //   { label: "高", value: "高" },
+  //   { label: "中", value: "中" },
+  //   { label: "低", value: "低" }
+  // ]);
+  // const [selectedWzcd, setSelectedWzcd] = useState("");
 
-  const [hljbConfigList, setHljbConfigList] = useState([
-    { label: "全部", value: "全部" },
-    { label: "特级护理", value: "特级护理" },
-    { label: "一级护理", value: "一级护理" },
-    { label: "二级护理", value: "二级护理" },
-    { label: "三级护理", value: "三级护理" }
-  ]);
-  const [selectedHljb, setSelectedHljb] = useState("");
+  // const [hljbConfigList, setHljbConfigList] = useState([
+  //   { label: "全部", value: "全部" },
+  //   { label: "特级护理", value: "特级护理" },
+  //   { label: "一级护理", value: "一级护理" },
+  //   { label: "二级护理", value: "二级护理" },
+  //   { label: "三级护理", value: "三级护理" }
+  // ]);
+  // const [selectedHljb, setSelectedHljb] = useState("");
 
-  const [zlnlConfigList, setZlnlConfigList] = useState([
-    { label: "全部", value: "全部" },
-    { label: "重度依赖", value: "重度依赖" },
-    { label: "中度依赖", value: "中度依赖" },
-    { label: "轻度依赖", value: "轻度依赖" },
-    { label: "无需依赖", value: "无需依赖" }
-  ]);
-  const [selectedZlnl, setSelectedZlnl] = useState("");
+  // const [zlnlConfigList, setZlnlConfigList] = useState([
+  //   { label: "全部", value: "全部" },
+  //   { label: "重度依赖", value: "重度依赖" },
+  //   { label: "中度依赖", value: "中度依赖" },
+  //   { label: "轻度依赖", value: "轻度依赖" },
+  //   { label: "无需依赖", value: "无需依赖" }
+  // ]);
+  // const [selectedZlnl, setSelectedZlnl] = useState("");
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
@@ -113,6 +119,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
           <Input
             disabled={!!record.signerName}
             defaultValue={text}
+            onKeyUp={handleNextIptFocus}
             onChange={value => {
               record.recordDate = value;
             }}
@@ -143,7 +150,20 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
               }}
               onBlur={() => updateDataSource()}
               onSelect={() => updateDataSource()}
-            />
+            >
+              <TextArea
+                data-key={item.itemCode}
+                onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
+                onKeyUp={handleNextIptFocus}
+                autosize
+                style={{
+                  lineHeight: 1.2,
+                  overflow: "hidden",
+                  padding: "9px 2px",
+                  textAlign: "center"
+                }}
+              />
+            </AutoComplete>
           );
           if (
             item.itemCode == "消毒类别" &&
@@ -175,15 +195,44 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         }
       };
     }),
-
     ...codeAdapter(
       {
-        QCRG_06: [
+        QCRG_07: [
+          {
+            title: "备注",
+            width: 150,
+            dataIndex: "description",
+            className: "input-cell input-cell-description",
+            render(text: string, record: any, index: number) {
+              return (
+                <Input.TextArea
+                  disabled={cellDisabled(record)}
+                  autosize={{ minRows: 1 }}
+                  onKeyUp={handleNextIptFocus}
+                  defaultValue={text}
+                  onChange={e => {
+                    record.modified = true
+                    record.description = e.target.value.replace(/\n/g, '');
+                  }}
+                  onBlur={() => updateDataSource()}
+                />
+              );
+            }
+          },
           signRowObj({
-            title: "执行者",
+            title: "护士签名",
             width: 70,
             dataIndex: "signerName",
-            aside: "执行者",
+            aside: "护士",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          }),
+          signRowObj({
+            title: "护士长签名",
+            width: 70,
+            dataIndex: "auditorName",
+            aside: "护士长",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -192,105 +241,103 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         other: []
       },
       registerCode
-    )
+    ),
+    {
+      title: "操作",
+      width: 50,
+      className: "",
+      render(text: string, record: any, index: number) {
+        let deleteRow = () => {
+          dataSource.splice(index, 1)
+          setDataSource([])
+          setTimeout(() => setDataSource(dataSource.concat()))
+        }
+
+        return (
+          <DoCon>
+            {record.signerName ? (
+              <aside style={{ color: "#aaa" }}>删除</aside>
+            ) : (
+                <span
+                  onClick={() => {
+                    if (!record.id) {
+                      deleteRow()
+                    } else {
+                      globalModal
+                        .confirm("删除确认", "是否删除该记录")
+                        .then(res => {
+                          wardRegisterService
+                            .deleteAll(registerCode, [{ id: record.id }])
+                            .then(res => {
+                              message.success("删除成功");
+                              deleteRow()
+                            })
+                        })
+                    }
+                  }}>
+                  删除
+                </span>
+              )}
+          </DoCon>
+        );
+      }
+    }
   ];
 
-  const onInitData = async () => {
-    // setPageLoading(true);
-    await wardRegisterService
-      .qcRegisterBlockGetList(registerCode, authStore.selectedDeptCode)
-      .then(async res => {
-        setBlockList(res.data);
-        if (res.data[res.data.length - 1]) {
-          let blockId = (res.data[res.data.length - 1] as any)!.id;
-          let lastPageIndex = await getLastPageIndex(blockId);
-          setSelectedBlockId(blockId);
-          setPageOptions({
-            ...pageOptions,
-            pageIndex: lastPageIndex
-          });
-        } else {
-          setSelectedBlockId(null);
-          setTotal(0);
-          setDataSource([]);
-          setItemConfigList([]);
-          setWzcdConfigList([]);
+  //手动触发AutoComplete组件的下拉
+  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
+    let rowEls = document.querySelectorAll('.ant-table-row') as any
+    let rowEl = rowEls[index]
+    if (rowEl) {
+      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
+      if (target) target.click()
+    }
+  }
+
+  //回车键去到下一个输入元素
+  const handleNextIptFocus = (e?: any, target?: any) => {
+    if (target || (e.keyCode && e.keyCode == 13)) {
+      let baseTableEl = document.getElementById('baseTable')
+      if (baseTableEl) {
+        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
+
+        for (let i = 0; i < iptList.length; i++) {
+          let el = iptList[i]
+          if (el == (target || e.target)) {
+            if (iptList[i + 1]) iptList[i + 1].focus && iptList[i + 1].focus()
+            if (e.target) e.target.value = e.target.value.replace(/\n/g, '')
+            break
+          }
         }
-      });
-  };
+      }
+    }
+  }
 
-  const getLastPageIndex = async (blockId: any) => {
-    return await wardRegisterService
-      .getPage(registerCode, {
-        blockId: blockId,
-        ...pageOptions
-      })
-      .then(res => res.data.itemDataPage.totalPage);
-  };
-
-  const getPage = () => {
-    setPageLoading(true);
-    wardRegisterService
-      .getPage(registerCode, {
-        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
-        range: selectedWzcd,
-        blockId: selectedBlockId,
-        ...pageOptions
-      })
-      .then(res => {
-        console.log(res, "res");
-        setTotal(res.data.itemDataPage.totalPage);
-        setDataSource(res.data.itemDataPage.list);
-        setItemConfigList(res.data.itemConfigList);
-        setPageLoading(false);
-      });
-  };
-
-  const onAddBlock = () => {
-    globalModal
-      .confirm(
-        "是否新建物品交接登记本",
-        `新建物品交接登记本开始日期为${moment().format(
-          "YYYY-MM-DD"
-        )}，历史交接登记本请切换修订版本查看`
-      )
-      .then(res => {
-        wardRegisterService
-          .qcRegisterBlockCreate(registerCode, authStore.selectedDeptCode)
-          .then(res => {
-            message.success("创建成功");
-            onInitData();
-          });
-      });
-  };
-
-  const onSave = () => {
-    wardRegisterService
-      .saveAndSignAll(registerCode, selectedBlockId, dataSource, false)
-      .then(res => {
-        message.success("保存成功");
-        getPage();
-      });
-  };
-
-  const onDelete = () => {
-    globalModal.confirm("删除确认", "确定要删除此修订版本吗？").then(res => {
-      wardRegisterService
-        .qcRegisterBlockDelete(registerCode, selectedBlockId)
-        .then(res => {
-          message.success("保存成功");
-          onInitData();
-        });
-    });
-  };
-
-  const createRow = () => {
-    setDataSource([
-      ...dataSource,
-      { recordDate: moment().format("YYYY-MM-DD") }
-    ]);
-  };
+  const {
+    onInitData,
+    getPage,
+    onAddBlock,
+    onSave,
+    onDelete,
+    createRow,
+    cellDisabled,
+  } = getFun({
+    registerCode,
+    registerName,
+    setBlockList,
+    setSelectedBlockId,
+    setPageOptions,
+    pageOptions,
+    setTotal,
+    setDataSource,
+    setItemConfigList,
+    setRangeConfigList: Function,
+    setPageLoading,
+    date,
+    selectedBlockId,
+    dataSource,
+    paramMap: {}
+  })
 
   useEffect(() => {
     onInitData();
@@ -299,7 +346,12 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
   useEffect(() => {
     // selectedBlockId && getPage();
     selectedBlockId && throttler(getPage);
-  }, [pageOptions, date, selectedWzcd, selectedBlockId]);
+  }, [
+    pageOptions,
+    date,
+    // selectedWzcd, 
+    selectedBlockId
+  ]);
 
   return (
     <Wrapper>
@@ -333,8 +385,8 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
-        <DeptSelect onChange={() => {}} style={{ width: 150 }} />
-        <span className="label">危重程度</span>
+        <DeptSelect onChange={() => { }} style={{ width: 150 }} />
+        {/* <span className="label">危重程度</span>
         <Select
           style={{ width: 70, minWidth: 70 }}
           value={selectedWzcd}
@@ -375,7 +427,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
               {item.label}
             </Select.Option>
           ))}
-        </Select>
+        </Select> */}
 
         <Place />
 
@@ -412,12 +464,17 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             loading={pageLoading}
             dataSource={dataSource.filter((item: any) => item)}
             columns={columns}
-            surplusHeight={220}
+            surplusHeight={280}
             surplusWidth={300}
             pagination={{
               current: pageOptions.pageIndex,
               pageSize: pageOptions.pageSize,
               total: total
+            }}
+            rowClassName={(record: any, idx: number) => {
+              if (cellDisabled(record)) return 'disabled-row'
+
+              return ''
             }}
             onChange={(pagination: PaginationConfig) => {
               setPageOptions({
@@ -427,8 +484,8 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             }}
           />
         ) : (
-          <NullBox onClick={onAddBlock} />
-        )}
+            <NullBox onClick={onAddBlock} />
+          )}
       </TableCon>
       <settingModal.Component />
     </Wrapper>
@@ -536,6 +593,21 @@ const TableCon = styled.div`
     input {
       color: red;
     }
+  }
+  .ant-select-disabled .ant-select-selection{
+      background: rgba(0,0,0,0.0)!important;
+  }
+  .disabled-row{
+    td.input-cell{
+      background: rgba(0,0,0,0.03)!important;
+    }
+  }
+  .ant-input[disabled]{
+    color: #000!important;
+      background: rgba(0,0,0,0.0)!important;
+  }
+  textarea.ant-input{
+    overflow:hidden!important;
   }
 `;
 

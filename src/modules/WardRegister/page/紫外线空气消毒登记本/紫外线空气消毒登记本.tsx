@@ -191,7 +191,47 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
         ]
       },
       registerCode
-    )
+    ),
+    {
+      title: "操作",
+      width: 50,
+      className: "",
+      render(text: string, record: any, index: number) {
+        let deleteRow = () => {
+          dataSource.splice(index, 1)
+          setDataSource([])
+          setTimeout(() => setDataSource(dataSource.concat()))
+        }
+
+        return (
+          <DoCon>
+            {record.signerName ? (
+              <aside style={{ color: "#aaa" }}>删除</aside>
+            ) : (
+                <span
+                  onClick={() => {
+                    if (!record.id) {
+                      deleteRow()
+                    } else {
+                      globalModal
+                        .confirm("删除确认", "是否删除该记录")
+                        .then(res => {
+                          wardRegisterService
+                            .deleteAll(registerCode, [{ id: record.id }])
+                            .then(res => {
+                              message.success("删除成功");
+                              deleteRow()
+                            })
+                        })
+                    }
+                  }}>
+                  删除
+                </span>
+              )}
+          </DoCon>
+        );
+      }
+    }
   ];
 
   //手动触发AutoComplete组件的下拉
