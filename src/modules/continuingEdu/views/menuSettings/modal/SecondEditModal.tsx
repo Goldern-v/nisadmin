@@ -343,7 +343,7 @@ export default function SecondEditModal(props: Props) {
                         placeholder="提交人"
                         value={submit}
                         labelInValue={true}
-                        style={{ width: "100%" }}
+                        style={{ width: "95% !important" }}
                         open={false}
                         onDeselect={(user: any) => onDeselect(user, 0)}
                       />
@@ -466,6 +466,13 @@ const Spin = styled.div``;
 const Wrapper = styled.div`
   width: 85%;
   margin: 0 auto;
+  /deep/ .ant-select {
+    width: 87% !important;
+  }
+  /deep/ .ant-select-selection {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
   .label {
     line-height: 32px;
   }
@@ -475,6 +482,7 @@ const Wrapper = styled.div`
   }
   .divStyle {
     position: relative;
+    width: 100%;
   }
   .required-label {
     position: relative;
@@ -491,12 +499,15 @@ const ClickBtn = styled.span`
   position: absolute;
   right: 0;
   top: 0;
-  border-left: 1px solid #ccc;
+  border: 1px solid #ccc;
+  border-left: none;
   width: 50px;
   height: 100%;
   line-height: 28px;
   cursor: pointer;
   text-align: center;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 } 
 `;
 

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { Button, Modal, message as Message } from "antd";
+import { Button, Modal, message as Message, Tooltip } from "antd";
 import { authStore } from "src/stores";
 import { meunSettingApi } from "./api/MeunSettingApi";
 import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
@@ -38,12 +38,25 @@ export default observer(function MenuSettings(props: Props) {
   const setTextData = (data: any, type: any) => {
     if (data && data.length) {
       let str = "";
+      let str1 = "";
+      let str2 = "";
       data.map((item: any, i: any) => {
         let text = type === 1 ? item.empName || "" : item.roleName || "";
         let semicolon = text && i !== data.length - 1 ? "、" : "";
+        let semicolon1 = i < 2 ? "、" : "";
+        if (i < 3) {
+          str1 += text + semicolon1;
+          str2 = `${str1}...`;
+        }
         str += text + semicolon;
       });
-      return str;
+      return data.length > 3 ? (
+        <Tooltip placement="top" title={str}>
+          {str2}
+        </Tooltip>
+      ) : (
+        str
+      );
     } else {
       return "--";
     }
