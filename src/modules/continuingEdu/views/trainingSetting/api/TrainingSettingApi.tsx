@@ -53,5 +53,10 @@ export default class TrainingSettingApi extends BaseApiService {
       qs.stringify({ id })
     );
   }
+
+  // 获取所有科室
+  public getAllDeptList() {
+    return this.get(`/dept/nursingUnit/all`);
+  }
 }
 export const trainingSettingApi = new TrainingSettingApi();

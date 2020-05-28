@@ -14,11 +14,17 @@ export default observer(function LCDJ(props: Props) {
       <Header>
         <span className="specialInput">
           所在科室：
-          <Input />
+          <Input
+            value={lCDJContent.f00005}
+            onChange={(e: any) => (lCDJContent.f00005 = e.target.value)}
+          />
         </span>
         <span style={{ marginLeft: "150px" }} className="specialInput">
           申请日期：
-          <Input />
+          <Input
+            value={lCDJContent.f00137}
+            onChange={(e: any) => (lCDJContent.f00137 = e.target.value)}
+          />
         </span>
       </Header>
       <table>

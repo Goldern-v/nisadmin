@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
-import { Select, Input, Button, Radio } from "antd";
+import { Select, Input, Radio } from "antd";
 import { CJJSWrapper, Span, SpanMiddle, SpanMax, SpanLength } from "../common";
 
 interface Props {}
@@ -131,7 +131,7 @@ export default observer(function CJJS(props: Props) {
                 护理危重患者数量
                 <Input
                   style={{ width: "80px" }}
-                  value={Number(cJJSContent.f00067)}
+                  value={cJJSContent.f00067}
                   onChange={(e: any) =>
                     (cJJSContent.f00067 = Number(e.target.value))
                   }
@@ -139,7 +139,7 @@ export default observer(function CJJS(props: Props) {
                 例；一级护理患者数量
                 <Input
                   style={{ width: "80px" }}
-                  value={Number(cJJSContent.f00068)}
+                  value={cJJSContent.f00068}
                   onChange={(e: any) =>
                     (cJJSContent.f00068 = Number(e.target.value))
                   }
@@ -147,7 +147,7 @@ export default observer(function CJJS(props: Props) {
                 例；二级护理患者数量
                 <Input
                   style={{ width: "80px" }}
-                  value={Number(cJJSContent.f00069)}
+                  value={cJJSContent.f00069}
                   onChange={(e: any) =>
                     (cJJSContent.f00069 = Number(e.target.value))
                   }
@@ -210,7 +210,7 @@ export default observer(function CJJS(props: Props) {
                 科室授课
                 <Input
                   style={{ width: "40px" }}
-                  value={Number(cJJSContent.f00094)}
+                  value={cJJSContent.f00094}
                   onChange={(e: any) =>
                     (cJJSContent.f00094 = Number(e.target.value))
                   }
@@ -221,7 +221,7 @@ export default observer(function CJJS(props: Props) {
                 院内授课
                 <Input
                   style={{ width: "40px" }}
-                  value={Number(cJJSContent.f00095)}
+                  value={cJJSContent.f00095}
                   onChange={(e: any) =>
                     (cJJSContent.f00095 = Number(e.target.value))
                   }
@@ -232,7 +232,7 @@ export default observer(function CJJS(props: Props) {
                 室内或省内授课
                 <Input
                   style={{ width: "40px" }}
-                  value={Number(cJJSContent.f00096)}
+                  value={cJJSContent.f00096}
                   onChange={(e: any) =>
                     (cJJSContent.f00096 = Number(e.target.value))
                   }
@@ -245,7 +245,7 @@ export default observer(function CJJS(props: Props) {
                 书写完整个案
                 <Input
                   style={{ width: "30px" }}
-                  value={Number(cJJSContent.f00097)}
+                  value={cJJSContent.f00097}
                   onChange={(e: any) =>
                     (cJJSContent.f00097 = Number(e.target.value))
                   }
@@ -256,7 +256,7 @@ export default observer(function CJJS(props: Props) {
                 组织病例讨论
                 <Input
                   style={{ width: "30px" }}
-                  value={Number(cJJSContent.f00098)}
+                  value={cJJSContent.f00098}
                   onChange={(e: any) =>
                     (cJJSContent.f00098 = Number(e.target.value))
                   }
@@ -267,7 +267,7 @@ export default observer(function CJJS(props: Props) {
                 组织三级查房
                 <Input
                   style={{ width: "30px" }}
-                  value={Number(cJJSContent.f00099)}
+                  value={cJJSContent.f00099}
                   onChange={(e: any) =>
                     (cJJSContent.f00099 = Number(e.target.value))
                   }
@@ -319,9 +319,9 @@ export default observer(function CJJS(props: Props) {
                 新技术新项目
                 <Input
                   style={{ width: "35px" }}
-                  value={Number(cJJSContent.f00104)}
+                  value={cJJSContent.f00104}
                   onChange={(e: any) =>
-                    (cJJSContent.f00099 = Number(e.target.f00104))
+                    (cJJSContent.f00104 = Number(e.target.value))
                   }
                 />
                 例
@@ -330,7 +330,7 @@ export default observer(function CJJS(props: Props) {
                 发表论文
                 <Input
                   style={{ width: "35px" }}
-                  value={Number(cJJSContent.f00105)}
+                  value={cJJSContent.f00105}
                   onChange={(e: any) =>
                     (cJJSContent.f00105 = Number(e.target.value))
                   }
@@ -341,7 +341,7 @@ export default observer(function CJJS(props: Props) {
                 主持参与课题项目
                 <Input
                   style={{ width: "35px" }}
-                  value={Number(cJJSContent.f00106)}
+                  value={cJJSContent.f00106}
                   onChange={(e: any) =>
                     (cJJSContent.f00106 = Number(e.target.value))
                   }
@@ -352,7 +352,7 @@ export default observer(function CJJS(props: Props) {
                 主持或参与循证项目
                 <Input
                   style={{ width: "35px" }}
-                  value={Number(cJJSContent.f00107)}
+                  value={cJJSContent.f00107}
                   onChange={(e: any) =>
                     (cJJSContent.f00107 = Number(e.target.value))
                   }

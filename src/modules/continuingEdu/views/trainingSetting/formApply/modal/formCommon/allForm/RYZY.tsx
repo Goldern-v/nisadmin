@@ -237,7 +237,7 @@ export default observer(function RYZY(props: Props) {
                 护理危重患者数量
                 <Input
                   style={{ width: "80px" }}
-                  value={Number(rYZYContent.f00067)}
+                  value={rYZYContent.f00067}
                   onChange={(e: any) =>
                     (rYZYContent.f00067 = Number(e.target.value))
                   }
@@ -245,7 +245,7 @@ export default observer(function RYZY(props: Props) {
                 例；一级护理患者数量
                 <Input
                   style={{ width: "80px" }}
-                  value={Number(rYZYContent.f00068)}
+                  value={rYZYContent.f00068}
                   onChange={(e: any) =>
                     (rYZYContent.f00068 = Number(e.target.value))
                   }
@@ -253,7 +253,7 @@ export default observer(function RYZY(props: Props) {
                 例；二级护理患者数量
                 <Input
                   style={{ width: "80px" }}
-                  value={Number(rYZYContent.f00069)}
+                  value={rYZYContent.f00069}
                   onChange={(e: any) =>
                     (rYZYContent.f00069 = Number(e.target.value))
                   }
@@ -392,7 +392,7 @@ export default observer(function RYZY(props: Props) {
               <div className="vailgnTop">
                 <span>经科室讨论：</span>
                 <Span>
-                  <Radio.Group>
+                  <Radio.Group disabled>
                     <Radio value="通过">延期准入，仍需继续努力</Radio>
                     <Radio value="不适用">同意准入，在科室独立上岗</Radio>
                   </Radio.Group>
@@ -417,8 +417,9 @@ export default observer(function RYZY(props: Props) {
                 <span>经护理部讨论：</span>
                 <Span>
                   <Radio.Group
-                  // value={rYZYContent.f00001}
-                  // onChange={(e: any) => (rYZYContent.f00001 = e.target.value)}
+                    disabled
+                    // value={rYZYContent.f00001}
+                    // onChange={(e: any) => (rYZYContent.f00001 = e.target.value)}
                   >
                     <Radio value="通过">延期准入，仍需继续努力</Radio>
                     <Radio value="不适用">同意准入，在科室独立上岗</Radio>

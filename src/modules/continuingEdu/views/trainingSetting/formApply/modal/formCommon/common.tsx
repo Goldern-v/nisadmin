@@ -7,6 +7,14 @@ export const Wrapper = styled.div`
   table {
     width: 100%;
   }
+  /deep/ .ant-select-selection {
+    border: none !important;
+    text-align: center;
+  }
+  /deep/.ant-select-selection: focus {
+    border: none !important;
+  }
+
   .special-radio {
     /deep/ .ant-radio-wrapper {
       display: flex;
@@ -21,6 +29,7 @@ export const Wrapper = styled.div`
   }
   /deep/ textarea {
     resize: none; //去右下角灰点
+    text-align: left !important;
   }
 
   /deep/ .ant-radio {
@@ -82,6 +91,7 @@ export const Wrapper = styled.div`
     height: 100%;
     word-break: break-all;
     word-wrap: break-word;
+    text-align: center;
   }
   /deep/ .ant-input-disabled {
     background-color: #fff !important;
@@ -156,6 +166,7 @@ export const CJJSWrapper = styled.div`
     border-bottom: 1px solid #000 !important;
     width: 75px;
     border-radius: 0;
+    text-align: center;
   }
   /deep/ .ant-input-disabled {
     background-color: #fff !important;
@@ -176,6 +187,7 @@ export const CJJSWrapper = styled.div`
   /deep/ textarea {
     resize: none; //去右下角灰点
     border: none !important;
+    text-align: left !important;
   }
 `;
 export const Span = styled.span`

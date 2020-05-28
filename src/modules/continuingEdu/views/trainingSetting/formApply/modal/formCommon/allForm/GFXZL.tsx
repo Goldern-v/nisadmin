@@ -105,9 +105,7 @@ export default observer(function FormApply(props: Props) {
                 <td colSpan={3}>
                   <Input
                     value={item.f00084}
-                    onChange={(e: any) =>
-                      (item.f00084 = Number(e.target.value))
-                    }
+                    onChange={(e: any) => (item.f00084 = e.target.value)}
                   />
                 </td>
                 <td>
