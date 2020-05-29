@@ -70,7 +70,7 @@ export default function AnwserSheetPage(props: Props) {
       <span className="question-content">
         <div>
           <span className="index">{item.sort}、</span>
-          <span className="question-type">[问答题] </span>
+          <span className="question-type">[填空题] </span>
           <span className="question-desc">
             <span
               dangerouslySetInnerHTML={{
