@@ -42,6 +42,7 @@ const defaultRYZY: any = {
   f00006: "", //参加工作时间
   f00054: "", //专业技术资格及取得时间
   f00055: "", //最高学历及取得时间
+  f00013: "", //
   f00056: "", //以”病人为中心“，人文精神为病人提供的服务
   f00057: "", //自我形象
   f00058: "", //身体语言的应用
@@ -196,6 +197,7 @@ const defaultCJJS: any = {
   f00054: "", //专业技术资格及取得时间
   f00055: "", //最高学历及取得时间
   f00013: "", //本院变更注册/首次注册时间
+  f00014: "", //目前岗位层级资格
   f00065: "", //掌握护理岗位职责、护理常规、操作规程及工作标准
   f00066: "", //正确实施各项治疗护理措施，提供康复和健康指导
   f00067: "", //护理危重患者数量
@@ -338,7 +340,6 @@ const defaultYNJX: any = {
   f00051: "", //护理部审批时间
   f00052: "" //状态
 };
-
 type DefaultLCDJ = typeof defaultLCDJ;
 type DefaultRYZY = typeof defaultRYZY;
 type DefaultGFXZL = typeof defaultGFXZL;
@@ -347,7 +348,18 @@ type DefaultCJJS = typeof defaultCJJS;
 type DefaultTSGW = typeof defaultTSGW;
 type DefaultYNJX = typeof defaultYNJX;
 
+const obj: any = {
+  LCDJFormContent: "FQA00001",
+  RYZYFormContent: "FQA00002",
+  GFXZLFormContent: "FQA00003",
+  RYZZFormContent: "FQA00004",
+  CJJSFormContent: "FQA00005",
+  TSGWFormContent: "FQA00006",
+  YNJXFormContent: "FQA00007"
+};
+
 class FormApplyModal {
+  @observable public map: any;
   @observable public getTitle = ""; //表单名称
   @observable public getFormCode = ""; //表单code值
   @observable public keyWord = ""; //关键字
@@ -402,6 +414,16 @@ class FormApplyModal {
     this.YNJXFormContent = cloneJson(defaultYNJX);
   };
 
+  // 初始化数据
+  // public initData = (data: any) => {
+  //   for (let key in obj) {
+  //     if (this.getFormCode === obj[key]) {
+  //       return (this["map"][key] = data);
+  //     }
+  //   }
+  // };
+
+  // 用于查看表单对应字段
   getForm() {
     trainingSettingApi.field(this.getFormCode).then(res => {
       console.log(res.data, "pppppp");

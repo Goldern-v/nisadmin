@@ -3,7 +3,7 @@ import { formApplyModal } from "../formApply/FormApplyModal";
 import qs from "qs";
 
 export default class TrainingSettingApi extends BaseApiService {
-  // 获取表单对应字段
+  // 获取表单对应字段（用于前期查看字段）
   public async field(formCode: any) {
     return this.post(
       `/studyAndTrain/qualiAccessManage/queryFormItemsByFormCode`,
@@ -30,7 +30,7 @@ export default class TrainingSettingApi extends BaseApiService {
     );
   }
 
-  // 修改回显
+  // 获取修改回显数据
   public async formData(id: any) {
     return this.post(
       `/studyAndTrain/qualiAccessManage/queryFormContent`,
@@ -38,7 +38,7 @@ export default class TrainingSettingApi extends BaseApiService {
     );
   }
 
-  // 删除
+  // 表单删除
   public async deleteForm(id: any) {
     return this.post(
       `/studyAndTrain/qualiAccessManage/deleteForm`,
@@ -46,7 +46,7 @@ export default class TrainingSettingApi extends BaseApiService {
     );
   }
 
-  // 撤回
+  // 表单撤回
   public async revokeForm(id: any) {
     return this.post(
       `/studyAndTrain/qualiAccessManage/recallForm`,

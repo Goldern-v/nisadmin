@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-
 import React, { useState, useLayoutEffect } from "react";
 import { Select, Input, Button, DatePicker } from "antd";
 import { PageTitle } from "src/components/common";
@@ -89,11 +88,6 @@ const Wrapper = styled.div`
   font-size: 13px;
   color: #333;
   padding: 12px 15px 0 15px;
-`;
-const Title = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
 `;
 const LeftIcon = styled.div`
   padding: 0;

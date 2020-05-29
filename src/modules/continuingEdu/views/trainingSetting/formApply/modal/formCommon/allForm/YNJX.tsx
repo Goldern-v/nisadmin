@@ -167,8 +167,8 @@ export default observer(function YNJX(props: Props) {
                 </td>
                 <td colSpan={2}>
                   <Input
-                    value={item.foo136}
-                    onChange={(e: any) => (item.foo136 = e.target.value)}
+                    value={item.f00136}
+                    onChange={(e: any) => (item.f00136 = e.target.value)}
                   />
                 </td>
               </tr>

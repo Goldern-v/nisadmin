@@ -89,7 +89,11 @@ export default observer(function CJJS(props: Props) {
           <tr>
             <td>目前岗位层级资格</td>
             <td className="textAlign">
-              <Radio.Group style={{ margin: "0 !important" }}>
+              <Radio.Group
+                style={{ margin: "0 !important" }}
+                value={cJJSContent.f00014}
+                onChange={(e: any) => (cJJSContent.f00014 = e.target.value)}
+              >
                 <Radio value="n0">N0</Radio>
                 <Radio value="n1">N1</Radio>
                 <Radio value="n2">N2</Radio>

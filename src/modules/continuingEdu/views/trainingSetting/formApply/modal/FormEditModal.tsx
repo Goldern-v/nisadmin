@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Modal, message as Message, Button } from "antd";
 import FormCommon from "./formCommon/FormCommon";
@@ -17,15 +16,15 @@ export default function FormEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const checkForm = () => {};
-  // const obj: any = {
-  //   LCDJFormContent: "FQA00001",
-  //   RYZYFormContent: "FQA00002",
-  //   GFXZLFormContent: "FQA00003",
-  //   RYZZFormContent: "FQA00004",
-  //   CJJSFormContent: "FQA00005",
-  //   TSGWFormContent: "FQA00006",
-  //   YNJXFormContent: "FQA00007"
-  // };
+  const obj: any = {
+    LCDJFormContent: "FQA00001",
+    RYZYFormContent: "FQA00002",
+    GFXZLFormContent: "FQA00003",
+    RYZZFormContent: "FQA00004",
+    CJJSFormContent: "FQA00005",
+    TSGWFormContent: "FQA00006",
+    YNJXFormContent: "FQA00007"
+  };
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
@@ -33,29 +32,13 @@ export default function FormEditModal(props: Props) {
         if (params && params.formId) {
           trainingSettingApi.formData(params.formId).then((res: any) => {
             res.data.id = params.formId;
-            switch (formApplyModal.getFormCode) {
-              case "FQA00001":
-                return (formApplyModal.LCDJFormContent = res.data);
-                break;
-              case "FQA00002":
-                return (formApplyModal.RYZYFormContent = res.data);
-                break;
-              case "FQA00003":
-                return (formApplyModal.GFXZLFormContent = res.data);
-                break;
-              case "FQA00004":
-                return (formApplyModal.RYZZFormContent = res.data);
-                break;
-              case "FQA00005":
-                return (formApplyModal.CJJSFormContent = res.data);
-                break;
-              case "FQA00006":
-                return (formApplyModal.TSGWFormContent = res.data);
-                break;
-              default:
-                return (formApplyModal.YNJXFormContent = res.data);
-                break;
-            }
+            allData(res.data);
+            // for (let key in obj) {
+            //   if (formApplyModal.getFormCode === obj[key]) {
+            //     formApplyModal[key] = res.data;
+            //   }
+            // }
+            // formApplyModal.initData(res.data);
           });
         } else {
           formApplyModal.cleanAllStepData();
@@ -92,6 +75,33 @@ export default function FormEditModal(props: Props) {
       )
     );
     return formArr[key - 1];
+  };
+
+  // 判断回显哪张表单
+  const allData = (data: any) => {
+    switch (formApplyModal.getFormCode) {
+      case "FQA00001":
+        return (formApplyModal.LCDJFormContent = data);
+        break;
+      case "FQA00002":
+        return (formApplyModal.RYZYFormContent = data);
+        break;
+      case "FQA00003":
+        return (formApplyModal.GFXZLFormContent = data);
+        break;
+      case "FQA00004":
+        return (formApplyModal.RYZZFormContent = data);
+        break;
+      case "FQA00005":
+        return (formApplyModal.CJJSFormContent = data);
+        break;
+      case "FQA00006":
+        return (formApplyModal.TSGWFormContent = data);
+        break;
+      default:
+        return (formApplyModal.YNJXFormContent = data);
+        break;
+    }
   };
 
   // 取消关闭
