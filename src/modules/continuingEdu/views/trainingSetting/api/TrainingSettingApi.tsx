@@ -49,7 +49,7 @@ export default class TrainingSettingApi extends BaseApiService {
   // 撤回
   public async revokeForm(id: any) {
     return this.post(
-      `/studyAndTrain/qualiAccessManage/deleteForm`,
+      `/studyAndTrain/qualiAccessManage/recallForm`,
       qs.stringify({ id })
     );
   }
