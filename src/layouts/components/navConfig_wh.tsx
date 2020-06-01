@@ -25,7 +25,7 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: "病区登记本",
-    path: "/wardRegister",
+    path: "/wardRegister"
     // hidden: !appStore.isDev
   },
   {
@@ -42,8 +42,7 @@ export const navConfig: navConfigItem[] = [
   },
   {
     name: "学习培训",
-    path: "/continuingEdu",
-    hidden: !appStore.isDev
+    path: "/continuingEdu"
   },
   // {
   //   name: "不良事件",
