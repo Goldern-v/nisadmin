@@ -71,6 +71,21 @@ class StepViewModal {
   @computed
   public get overTime() {
     if (this.stepData2.startTime && this.stepData2.daysToArchive) {
+      if (
+        this.stepData2.startTime &&
+        this.stepData2.openTime &&
+        this.stepData2.openTimeUnit
+      ) {
+        let unitMap: any = {
+          小时: "h",
+          天: "d",
+          周: "w"
+        };
+        return moment(this.stepData2.startTime)
+          .add(this.stepData2.openTime, unitMap[this.stepData2.openTimeUnit])
+          .add(this.stepData2.daysToArchive, "d")
+          .format("YYYY-MM-DD HH:mm");
+      }
       return moment(this.stepData2.startTime)
         .add(this.stepData2.daysToArchive, "d")
         .format("YYYY-MM-DD HH:mm");
