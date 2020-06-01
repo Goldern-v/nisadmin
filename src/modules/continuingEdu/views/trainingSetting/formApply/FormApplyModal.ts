@@ -1,5 +1,6 @@
 import { cloneJson } from "src/utils/json/clone";
 import { observable, computed } from "mobx";
+import { appStore, authStore } from "src/stores";
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { trainingSettingApi } from "../api/TrainingSettingApi";
 
@@ -17,21 +18,21 @@ const defaultLCDJ: any = {
   f00015: "", //联系方式
   f00016: "", //申报类别
   f00017: "", //教学培训经历
-  f00018: "", //院内外授课/授课竞赛/技能竞赛情况
-  f00019: "", //申请人工号
-  f00020: "", //申请人姓名
-  f00021: "", //申请时间
-  f00022: "", //科室审批人工号
-  f00023: "", //科室审批人姓名
-  f00024: "", //科室审批结果（1通过；-1退回）
-  f00025: "", //科室审批时间
-  f00026: "", //准入考评小组审批人工号
-  f00027: "", //准入考评小组审批人姓名
-  f00028: "", //准入考评小组审批结果（1通过；-1退回）
-  f00029: "", //准入考评小组审批时间
-  f00030: "", //护理部审批人工号
-  f00031: "", //护理部审批人姓名
-  f00032: "" //护理部审批时间
+  f00018: "" //院内外授课/授课竞赛/技能竞赛情况
+  // f00019: "", //申请人工号
+  // f00020: "", //申请人姓名
+  // f00021: "", //申请时间
+  // f00022: "", //科室审批人工号
+  // f00023: "", //科室审批人姓名
+  // f00024: "", //科室审批结果（1通过；-1退回）
+  // f00025: "", //科室审批时间
+  // f00026: "", //准入考评小组审批人工号
+  // f00027: "", //准入考评小组审批人姓名
+  // f00028: "", //准入考评小组审批结果（1通过；-1退回）
+  // f00029: "", //准入考评小组审批时间
+  // f00030: "", //护理部审批人工号
+  // f00031: "", //护理部审批人姓名
+  // f00032: "" //护理部审批时间
 };
 // 人员执业字段
 const defaultRYZY: any = {
@@ -430,6 +431,15 @@ class FormApplyModal {
     });
   }
 
+  // 电子签名
+  signUrl(empNo: any) {
+    let appToken = appStore.getAppToken();
+    let authToken = authStore.getAuthToken();
+    let token = `App-Token-Nursing=${appToken}&Auth-Token-Nursing=${authToken}`;
+    return `/crNursing/api/file/signImage/${empNo}?${decodeURIComponent(
+      token || ""
+    )}`;
+  }
   async init() {
     await this.onload();
     this.getForm();

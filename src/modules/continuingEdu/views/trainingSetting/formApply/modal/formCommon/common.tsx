@@ -103,6 +103,10 @@ export const Wrapper = styled.div`
   /deep/ .ant-radio-wrapper {
     margin-right: 0 !important;
   }
+  .img {
+    height: 75px;
+    width: ;
+  }
 `;
 export const CJJSWrapper = styled.div`
   height: 100%;

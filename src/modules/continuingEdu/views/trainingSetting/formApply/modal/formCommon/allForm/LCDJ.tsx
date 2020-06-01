@@ -168,11 +168,16 @@ export default observer(function LCDJ(props: Props) {
             <td colSpan={6} className="vailgnBottom">
               <SpanMiddle className="specialInput">
                 申请人签名：
-                <Input disabled />
+                <img
+                  className="img"
+                  src={formApplyModal.signUrl(lCDJContent.f00020)}
+                  alt=""
+                  style={{ height: "35px" }}
+                />
               </SpanMiddle>
               <SpanMiddle className="specialInput">
                 日期：
-                <Input disabled />
+                <Input disabled value={lCDJContent.f00021} />
               </SpanMiddle>
             </td>
           </tr>
