@@ -18,7 +18,7 @@ class SelectPeopleViewModel {
     },
     {
       step: "默认科室",
-      label: authStore.defaultDeptName,
+      label: "",
       data: []
     },
 

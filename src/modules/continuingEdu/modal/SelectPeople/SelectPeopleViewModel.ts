@@ -1,12 +1,12 @@
 import { observable, computed, action } from "mobx";
 import { authStore } from "src/stores";
 import service from "src/services/api";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 class SelectPeopleViewModel {
   @observable modalLoading: boolean = false;
   /** 选择的片区 */
   @observable selectedBigDeptCode: any = "";
   @observable selectedBigDeptName: any = "";
-
   @observable public selectTreeDataAll = [
     {
       step: "按片区选择",
@@ -17,10 +17,9 @@ class SelectPeopleViewModel {
     },
     {
       step: "默认科室",
-      label: authStore.defaultDeptName,
+      label: "",
       data: []
     },
-
     {
       step: "按护理单元选择",
       label: "按护理单元选择",
@@ -252,7 +251,6 @@ class SelectPeopleViewModel {
       };
     }
   }
-
   /** 初始化数据 */
   initData() {
     // this.modalLoading = true

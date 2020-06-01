@@ -9,6 +9,7 @@ import FirstEditModal from "./modal/FirstEditModal"; // 一级菜单弹窗
 import SecondEditModal from "./modal/SecondEditModal"; // 修改二级菜单
 import SecondAddModal from "./modal/SecondAddModal"; // 添加二级菜单
 import PermissionSettingsModal from "./modal/PermissionSettingsModal"; // 菜单设置权限弹窗
+import { selectPeopleViewModel } from "./modal/modal-two/SelectPeopleViewModel";
 
 interface Props {
   getList: any;
@@ -33,6 +34,15 @@ export default observer(function MenuSettings(props: Props) {
     setEffect(true);
     getTableData();
   }, []);
+
+  useEffect(() => {
+    let dept = authStore.deptList.find(
+      (dept: any) => dept.code == authStore.defaultDeptCode
+    );
+    selectPeopleViewModel.newSelectTreeDataAll[1].label = dept
+      ? dept.name
+      : authStore.defaultDeptCodeName;
+  }, [authStore.defaultDeptCode]);
 
   // 提交 审核 一级 二级 三级函数封装
   const setTextData = (data: any, type: any) => {

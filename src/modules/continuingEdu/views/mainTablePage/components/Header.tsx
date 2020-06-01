@@ -2,9 +2,10 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { TableHeadCon } from "src/components/BaseTable";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { DatePicker, Select, Input, Button, message } from "src/vendors/antd";
 import { mainPageModal } from "../MainPageModal";
+import { selectPeopleViewModel } from "../../../modal/SelectPeople/SelectPeopleViewModel";
 import qs from "qs";
 interface Props {
   getTitle: any;
@@ -19,6 +20,14 @@ export default observer(function Header(props: Props) {
     mainPageModal.id = id;
     mainPageModal.init();
   }, [id, Title]);
+  useEffect(() => {
+    let dept = authStore.deptList.find(
+      (dept: any) => dept.code == authStore.defaultDeptCode
+    );
+    selectPeopleViewModel.selectTreeDataAll[1].label = dept
+      ? dept.name
+      : authStore.defaultDeptCodeName;
+  }, [authStore.defaultDeptCode]);
 
   return (
     <Wrapper>

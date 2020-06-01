@@ -22,6 +22,9 @@ export default class AuthStore {
   @observable public deptList: DeptType[] = [];
   /** 当前用户默认科室 */
   @observable public defaultDeptCode: any = "";
+  /** 当前用户默认科室名 */
+  @observable public defaultDeptCodeName: any = "";
+
   /** 用户选择的科室 */
   @observable public selectedDeptCode: any = "";
 
@@ -98,13 +101,17 @@ export default class AuthStore {
   /** 是否是护理部 */
   public get isDepartment() {
     try {
-      if (this.isAdmin) return true
+      if (this.isAdmin) return true;
 
-      if (this.user && this.user.roleManageCode === "QCR0001") return true
+      if (this.user && this.user.roleManageCode === "QCR0001") return true;
 
-      if (this.user && this.user.roleManageCodeList.find((code: string) => code === 'QCR0001')) return true
+      if (
+        this.user &&
+        this.user.roleManageCodeList.find((code: string) => code === "QCR0001")
+      )
+        return true;
 
-      return ''
+      return "";
     } catch (error) {
       return "";
     }
@@ -112,11 +119,15 @@ export default class AuthStore {
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
     try {
-      if (this.user && this.user.roleManageCodeList.find((code: string) => code === 'QCR0003')) return true
+      if (
+        this.user &&
+        this.user.roleManageCodeList.find((code: string) => code === "QCR0003")
+      )
+        return true;
 
-      if (this.user && (this.user.roleManageCode === "QCR0003")) return true
+      if (this.user && this.user.roleManageCode === "QCR0003") return true;
 
-      return ""
+      return "";
     } catch (error) {
       return "";
     }
@@ -144,6 +155,7 @@ export default class AuthStore {
     this.authToken = sessionStorage.getItem("authToken") || "";
     this.adminNurse = sessionStorage.getItem("adminNurse") || "";
     this.defaultDeptCode = this.user && this.user.deptCode;
+    this.defaultDeptCodeName = this.user && this.user.deptName;
     this.selectedDeptCode =
       sessionStorage.getItem("selectedDeptCode") || this.defaultDeptCode || "";
   }
@@ -156,6 +168,7 @@ export default class AuthStore {
     this.adminNurse = null;
     this.defaultDeptCode = null;
     this.selectedDeptCode = null;
+    this.defaultDeptCodeName = null;
     this.deptList = [];
   }
 
