@@ -251,16 +251,16 @@ export default function WardRegisterRouter() {
             registerCode: "QCRG_16_2",
             registerName: "静脉治疗月度统计登记"
           }
+        },
+        {
+          title: "静脉治疗相关培训登记",
+          path: "/wardRegister/QCRG_16_3",
+          component: { ...重点患者评估登记本 },
+          payload: {
+            registerCode: "QCRG_16_3",
+            registerName: "静脉治疗相关培训登记"
+          }
         }
-        // {
-        //   title: "静脉治疗月度统计登记",
-        //   path: "/wardRegister/QCRG_16_3",
-        //   component: { ...物品交接登记本 },
-        //   payload: {
-        //     registerCode: "QCRG_16_3",
-        //     registerName: "静脉治疗月度统计登记"
-        //   }
-        // }
       ]
     },
 

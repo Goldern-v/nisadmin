@@ -641,7 +641,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
 
                   if (rowEl) {
                     let target = rowEl.querySelector(`[data-key="${item.itemCode}"]`) as HTMLInputElement
-                    let val = record[item.itemCode].toString().replace(/\n/g, '')
+                    let val = (record[item.itemCode] || '').toString().replace(/\n/g, '')
                     target.value = val
                   }
                 }}

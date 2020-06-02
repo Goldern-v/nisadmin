@@ -179,7 +179,8 @@ export default observer(function HandoverRegister(props: Props) {
                   <line x1="0" y1="0" x2="100%" y2="80%" />
                 </SvgCon>
               </LineCon>
-            )
+            ),
+            other: '日期'
           },
           registerCode
         );
