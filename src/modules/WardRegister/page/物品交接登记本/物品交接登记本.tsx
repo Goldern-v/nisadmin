@@ -36,6 +36,11 @@ import TextArea from "antd/lib/input/TextArea";
 import { fileDownload } from "src/utils/file/file";
 import { createContextMenu } from "src/modules/personnelManagement/views/arrangeHome/components/arrangeSheet/ContextMenu";
 import TdCell from "./components/TdCell";
+import { getFun, ItemConfigItem } from "../../utils/fun/fun";
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import reactZmage from 'react-zmage'
+import FileUploadColumnRender from './../../components/FileUploadColumnRender'
 
 export interface Props {
   payload: any;
@@ -64,7 +69,13 @@ export default observer(function HandoverRegister(props: Props) {
     total: 0
   });
   const [total, setTotal] = useState(0);
+  /** 选中的blockObj */
+  const selectedBlockObj = blockList.find(
+    (item: any) => item.id == selectedBlockId
+  )
+
   const settingModal = createModal(SettingModal);
+  const previewModal = createModal(PreviewModal);
 
   const addMessageModal = useMemo(() => createModal(AddMessageModal), []);
   const MemoAddMessageModal = addMessageModal.Component;
@@ -233,7 +244,6 @@ export default observer(function HandoverRegister(props: Props) {
                 >
                   <TextArea
                     data-key={'range'}
-                    onFocus={() => tiggerAutoCompleteClick('range', index)}
                     onKeyUp={handleNextIptFocus}
                     autosize
                     style={{
@@ -270,6 +280,19 @@ export default observer(function HandoverRegister(props: Props) {
           width: (15 * item.width || 50) + 8,
           className: "input-cell input-cell-custom",
           render(text: string, record: any, index: number) {
+
+            //处理上传附件类型
+            if (item.itemType == "attachment")
+              return <FileUploadColumnRender
+                {...{
+                  record,
+                  itemCfg: item,
+                  index,
+                  cellDisabled,
+                  handleUpload,
+                  handlePreview
+                }} />
+
             return (
               <TdCell>
                 <AutoComplete
@@ -293,7 +316,6 @@ export default observer(function HandoverRegister(props: Props) {
                   <TextArea
                     data-key={item.itemCode}
                     onKeyUp={handleNextIptFocus}
-                    onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
                     autosize
                     style={{
                       lineHeight: 1.2,
@@ -323,6 +345,17 @@ export default observer(function HandoverRegister(props: Props) {
           width: (15 * item.width || 50) + 8,
           dataIndex: item.itemCode,
           render(text: string, record: any, index: number) {
+            //处理上传附件类型
+            if (item.itemType == "attachment")
+              return <FileUploadColumnRender
+                {...{
+                  record,
+                  itemCfg: item,
+                  index,
+                  cellDisabled,
+                  handleUpload,
+                  handlePreview
+                }} />
 
             return (
               <TdCell>
@@ -338,7 +371,6 @@ export default observer(function HandoverRegister(props: Props) {
                 >
                   <TextArea
                     data-key={item.itemCode}
-                    onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
                     onKeyUp={handleNextIptFocus}
                     autosize
                     style={{
@@ -377,386 +409,176 @@ export default observer(function HandoverRegister(props: Props) {
         );
       }
     },
-    {
-      title: "交班者签名",
-      width: 110,
-      dataIndex: "signerName",
-      align: "center",
-      fixed: false && surplusWidth && "right",
-      render(text: string, record: any, index: number) {
-        if (record.editType && record.editType == 'new')
-          return <span style={{ cursor: 'not-allowed', color: '#999' }}>签名</span>
+    ...codeAdapter({
+      QCRG_18: [],
+      other: [
+        {
+          title: "交班者签名",
+          width: 110,
+          dataIndex: "signerName",
+          align: "center",
+          fixed: false && surplusWidth && "right",
+          render(text: string, record: any, index: number) {
+            if (record.editType && record.editType == 'new')
+              return <span style={{ cursor: 'not-allowed', color: '#999' }}>签名</span>
 
-        return text ? (
-          <div
-            className="sign-name"
-            onClick={() => {
-              globalModal
-                .confirm("交班签名取消", "你确定取消交班签名吗？")
-                .then(res => {
-                  wardRegisterService
-                    .cancelSign(registerCode, [{ id: record.id }])
-                    .then(res => {
-                      message.success("取消交班签名成功");
-                      Object.assign(record, res.data.list[0]);
-                      updateDataSource();
-                    });
-                });
-            }}
-          >
-            {text +
-              (record.chiefNurseName || record.chiefNurseNo
-                ? `/${record.chiefNurseName || record.chiefNurseNo}`
-                : "")}
-          </div>
-        ) : (
-            <DoCon>
-              <span
+            return text ? (
+              <div
+                className="sign-name"
                 onClick={() => {
                   globalModal
-                    .confirm("交班签名确认", "你确定交班签名吗？")
+                    .confirm("交班签名取消", "你确定取消交班签名吗？")
                     .then(res => {
                       wardRegisterService
-                        .saveAndSignAll(
-                          registerCode,
-                          selectedBlockId,
-                          [record],
-                          true
-                        )
+                        .cancelSign(registerCode, [{ id: record.id }])
                         .then(res => {
-                          message.success("交班签名成功");
-                          Object.assign(record, res.data.itemDataList[0]);
+                          message.success("取消交班签名成功");
+                          Object.assign(record, res.data.list[0]);
                           updateDataSource();
                         });
                     });
                 }}
               >
-                签名
-            </span>
-            </DoCon>
-          );
-      }
-    },
-    {
-      title: "接班者签名",
-      width: 80,
-      dataIndex: "auditorName",
-      fixed: false && surplusWidth && "right",
-      align: "center",
-      render(text: string, record: any, index: number) {
-        if (record.editType && record.editType == 'new')
-          return <span style={{ cursor: 'not-allowed', color: '#999' }}>签名</span>
+                {text +
+                  (record.chiefNurseName || record.chiefNurseNo
+                    ? `/${record.chiefNurseName || record.chiefNurseNo}`
+                    : "")}
+              </div>
+            ) : (
+                <DoCon>
+                  <span
+                    onClick={() => {
+                      globalModal
+                        .confirm("交班签名确认", "你确定交班签名吗？")
+                        .then(res => {
+                          wardRegisterService
+                            .saveAndSignAll(
+                              registerCode,
+                              selectedBlockId,
+                              [record],
+                              true
+                            )
+                            .then(res => {
+                              message.success("交班签名成功");
+                              Object.assign(record, res.data.itemDataList[0]);
+                              updateDataSource();
+                            });
+                        });
+                    }}
+                  >
+                    签名
+                </span>
+                </DoCon>
+              );
+          }
+        },
+        {
+          title: "接班者签名",
+          width: 80,
+          dataIndex: "auditorName",
+          fixed: false && surplusWidth && "right",
+          align: "center",
+          render(text: string, record: any, index: number) {
+            if (record.editType && record.editType == 'new')
+              return <span style={{ cursor: 'not-allowed', color: '#999' }}>签名</span>
 
-        return text ? (
-          <div
-            className="sign-name"
-            onClick={() => {
-              globalModal
-                .confirm("接班签名取消", "你确定取消接班签名吗？")
-                .then(res => {
-                  wardRegisterService
-                    .cancelAudit(registerCode, [{ id: record.id }])
-                    .then(res => {
-                      message.success("取消接班签名成功");
-                      onSave();
-                    });
-                });
-            }}
-          >
-            {text}
-          </div>
-        ) : (
-            <DoCon>
-              <span
+            return text ? (
+              <div
+                className="sign-name"
                 onClick={() => {
                   globalModal
-                    .confirm("接班签名确认", "你确定接班签名吗？")
+                    .confirm("接班签名取消", "你确定取消接班签名吗？")
                     .then(res => {
                       wardRegisterService
-                        .auditAll(registerCode, [{ id: record.id }])
+                        .cancelAudit(registerCode, [{ id: record.id }])
                         .then(res => {
-                          message.success("接班签名成功");
+                          message.success("取消接班签名成功");
                           onSave();
                         });
                     });
                 }}
               >
-                签名
-            </span>
+                {text}
+              </div>
+            ) : (
+                <DoCon>
+                  <span
+                    onClick={() => {
+                      globalModal
+                        .confirm("接班签名确认", "你确定接班签名吗？")
+                        .then(res => {
+                          wardRegisterService
+                            .auditAll(registerCode, [{ id: record.id }])
+                            .then(res => {
+                              message.success("接班签名成功");
+                              onSave();
+                            });
+                        });
+                    }}
+                  >
+                    签名
+                </span>
+                </DoCon>
+              );
+          }
+        },
+        {
+          title: "操作",
+          width: 80,
+          fixed: false && surplusWidth && "right",
+          align: "center",
+          render: (text: any, record: any, idx: number) => {
+            return <DoCon>
+              <span onClick={() => handleDeleteRow(record, idx)}>删除</span>
             </DoCon>
-          );
-      }
-    },
-    {
-      title: "操作",
-      width: 80,
-      fixed: false && surplusWidth && "right",
-      align: "center",
-      render: (text: any, record: any, idx: number) => {
-        return <DoCon>
-          <span onClick={() => handleDeleteRow(record, idx)}>删除</span>
-        </DoCon>
-      }
-    }
-    // {
-    //   title: "护士长签名",
-    //   width: 80,
-    //   dataIndex: "chiefNurseName",
-    //   fixed: false && surplusWidth && "right",
-    //   align: "center",
-    //   render(text: string, record: any, index: number) {
-    //     return text ? (
-    //       <div
-    //         className="sign-name"
-    //         onClick={() => {
-    //           if (authStore.isNotANormalNurse) {
-    //             globalModal
-    //               .confirm("护士长签名取消", "你确定取消护士长签名吗？")
-    //               .then(res => {
-    //                 record.chiefNurseName = null;
-    //                 record.chiefNurseNo = null;
-    //                 record.chiefNurseUpdateTime = null;
-    //                 record.modified = true
-    //                 message.success("取消护士长签名成功");
-    //                 updateDataSource()
-    //                 onSave();
-    //               });
-    //           } else {
-    //             message.warning("只有护士长才有操作权限");
-    //           }
-    //         }}
-    //       >
-    //         {text}
-    //       </div>
-    //     ) : (
-    //       <DoCon>
-    //         <span
-    //           onClick={() => {
-    //             if (authStore.isNotANormalNurse) {
-    //               globalModal
-    //                 .confirm("护士长签名确认", "你确定护士长签名吗？")
-    //                 .then(res => {
-    //                   record.chiefNurseName = authStore.user?.empName;
-    //                   record.chiefNurseNo = authStore.user?.empNo;
-    //                   record.chiefNurseUpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    //                   record.modified = true
-    //                   message.success("取消护士长签名成功");
-    //                   updateDataSource()
-    //                   onSave();
-    //                 });
-    //             } else {
-    //               message.warning("只有护士长才有操作权限");
-    //             }
-    //           }}
-    //         >
-    //           签名
-    //         </span>
-    //       </DoCon>
-    //     );
-    //   }
-    // }
-  ];
-
-  const onInitData = async () => {
-    // setPageLoading(true);
-    await wardRegisterService
-      .qcRegisterBlockGetList(registerCode, authStore.selectedDeptCode)
-      .then(async res => {
-        setBlockList(res.data);
-        if (res.data[res.data.length - 1]) {
-          let blockId = (res.data[res.data.length - 1] as any)!.id;
-
-          //接口改为倒序 前端对应默认显示第一页内容
-          // let lastPageIndex = await getLastPageIndex(blockId);
-          let firstPageIndex = 1
-          setSelectedBlockId(blockId);
-          setPageOptions({
-            ...pageOptions,
-            // pageIndex: lastPageIndex
-            pageIndex: firstPageIndex
-          });
-        } else {
-          setSelectedBlockId(null);
-          setTotal(0);
-          setDataSource([]);
-          setItemConfigList([]);
-          setRangeConfigList([]);
-        }
-      });
-  };
-
-  const getLastPageIndex = async (blockId: any) => {
-    return await wardRegisterService
-      .getPage(registerCode, {
-        blockId: blockId,
-        ...pageOptions
-      })
-      .then(res => res.data.itemDataPage.totalPage);
-  };
-
-  const getPage = () => {
-    setPageLoading(true);
-    wardRegisterService
-      .getPage(registerCode, {
-        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
-        range: selectedRange,
-        blockId: selectedBlockId,
-        ...pageOptions
-      })
-      .then(res => {
-        console.log(res, "res");
-        setTotal(res.data.itemDataPage.totalCount);
-        setDataSource([])
-        setTimeout(() => setDataSource(
-          res.data.itemDataPage.list.map((item: any) => ({
-            ...item,
-            modified: false
-          }))
-        ))
-        setItemConfigList(res.data.itemConfigList);
-        setRangeConfigList(res.data.rangeConfigList);
-        setPageLoading(false);
-      });
-  };
-
-  const onAddBlock = () => {
-    globalModal
-      .confirm(
-        `是否新建${registerName}`,
-        `新建${registerName}开始日期为${moment().format(
-          "YYYY-MM-DD"
-        )}，历史${registerName}请切换修订版本查看`
-      )
-      .then(res => {
-        wardRegisterService
-          .qcRegisterBlockCreate(registerCode, authStore.selectedDeptCode)
-          .then(res => {
-            message.success("创建成功");
-            onInitData();
-          });
-      });
-  };
-
-  const onSave = () => {
-    wardRegisterService
-      .saveAndSignAll(
-        registerCode,
-        selectedBlockId,
-        dataSource.filter((item: any) => item.modified),
-        false
-      )
-      .then(res => {
-        message.success("保存成功");
-        getPage();
-      });
-  };
-
-  const onDelete = () => {
-    globalModal.confirm("删除确认", "确定要删除此修订版本吗？").then(res => {
-      wardRegisterService
-        .qcRegisterBlockDelete(registerCode, selectedBlockId)
-        .then(res => {
-          message.success("保存成功");
-          onInitData();
-        });
-    });
-  };
-
-  const exportExcel = () => {
-    wardRegisterService
-      .exportExcel(registerCode, {
-        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
-        range: selectedRange,
-        blockId: selectedBlockId,
-        ...pageOptions
-      })
-      .then(res => {
-        fileDownload(res);
-      });
-  };
-
-  const handleAdd = () => {
-    let range = ""
-    let rangeIndexNo = 0
-    if (rangeConfigList.length > 0) {
-      range = rangeConfigList[0].itemCode
-      rangeIndexNo = rangeConfigList[0].indexNo
-    }
-    let newRow = {
-      blockId: selectedBlockId,
-      description: "",
-      range,
-      rangeIndexNo,
-      recordDate: moment().format('YYYY-MM-DD'),
-      registerCode,
-      editType: 'new',
-      modified: true,
-    } as any
-
-    setDataSource([newRow, ...dataSource] as any)
-
-    setTimeout(() => {
-      let target = document.querySelector('.first-col-item')
-
-      if (target) target.scrollIntoView()
-    }, 100)
-  }
-
-  const handleDeleteRow = (record: any, idx: number) => {
-    let deleteRow = () => {
-      dataSource.splice(idx, 1)
-      setDataSource([])
-      setTimeout(() => setDataSource(dataSource.concat()))
-    }
-    if (record.editType && record.editType == 'new') {
-      deleteRow()
-    } else {
-      globalModal
-        .confirm("删除确认", "确定要删除该条目吗？")
-        .then((res) => {
-          setPageLoading(true)
-
-          wardRegisterService
-            .deleteAll(registerCode, [{ id: record.id }])
-            .then(res => {
-              setPageLoading(false)
-              message.success('删除成功')
-              deleteRow()
-            }, err => setPageLoading(false))
-        })
-    }
-  }
-
-  //手动触发AutoComplete组件的下拉
-  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
-    let rowEls = document.querySelectorAll('.ant-table-row') as any
-    let rowEl = rowEls[index]
-    if (rowEl) {
-      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
-      if (target) target.click()
-    }
-  }
-
-  //回车键去到下一个输入元素
-  const handleNextIptFocus = (e?: any, target?: any) => {
-    if (target || (e.keyCode && e.keyCode == 13)) {
-      let baseTableEl = document.getElementById('baseTable')
-      if (baseTableEl) {
-        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
-
-        for (let i = 0; i < iptList.length; i++) {
-          let el = iptList[i]
-          if (el == (target || e.target)) {
-            if (iptList[i + 1]) iptList[i + 1].focus && iptList[i + 1].focus()
-            if (e.target) e.target.value = e.target.value.replace(/\n/g, '')
-            break
           }
         }
-      }
+      ]
+    }, registerCode)
+  ];
+
+  //预览附件
+  const handlePreview = (file: any) => {
+    if (getFileType(file.name) == 'img') {
+      reactZmage.browsing({ src: file.path, backdrop: 'rgba(0,0,0, .8)' })
+    } else {
+      previewModal.show({
+        title: file.name,
+        path: file.path
+      })
     }
   }
+
+  /** 公共函数 */
+  const {
+    handleNextIptFocus,
+    handleUpload,
+    exportExcel,
+    handleDeleteRow,
+    createRow,
+    onSave,
+    onInitData,
+    onDelete,
+    onAddBlock,
+    getPage
+  } = getFun({
+    registerCode,
+    registerName,
+    setBlockList,
+    setSelectedBlockId,
+    setPageOptions,
+    pageOptions,
+    setTotal,
+    setDataSource,
+    setItemConfigList,
+    setRangeConfigList,
+    setPageLoading,
+    date,
+    rangeConfigList,
+    selectedBlockId,
+    dataSource,
+    paramMap: { '班次': selectedRange }
+  });
 
   useEffect(() => {
     onInitData();
@@ -862,7 +684,7 @@ export default observer(function HandoverRegister(props: Props) {
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
-            <Button type="primary" onClick={handleAdd}>
+            <Button type="primary" onClick={createRow}>
               新建行
             </Button>
             <Button type="primary" onClick={onSave}>
@@ -874,6 +696,7 @@ export default observer(function HandoverRegister(props: Props) {
                 onClick={() =>
                   settingModal.show({
                     blockId: selectedBlockId,
+                    selectedBlockObj: selectedBlockObj,
                     registerCode,
                     onOkCallBack: () => {
                       getPage();
@@ -898,7 +721,10 @@ export default observer(function HandoverRegister(props: Props) {
             dataSource={dataSource}
             columns={columns}
             surplusWidth={300}
-            surplusHeight={280}
+            surplusHeight={codeAdapter({
+              QCRG_18: 240,
+              other: 280
+            }, registerCode)}
             useOuterPagination={true}
             rowClassName={(record: any, idx: number) => {
               if (cellDisabled(record)) return 'disabled-row'
@@ -938,6 +764,7 @@ export default observer(function HandoverRegister(props: Props) {
           )}
       </TableCon>
       <settingModal.Component />
+      <previewModal.Component />
       <MemoAddMessageModal />
       <MemoContextMenu />
     </Wrapper>

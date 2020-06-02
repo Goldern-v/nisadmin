@@ -3,6 +3,8 @@ import { authStore } from "src/stores";
 import { globalModal } from "src/global/globalModal";
 import { message } from "src/vendors/antd";
 import moment from "moment";
+import service from "src/services/api";
+import { fileDownload } from "src/utils/file/file";
 
 export interface ItemConfigItem {
   blockId: number;
@@ -22,6 +24,9 @@ export interface ItemConfigItem {
   modified?: boolean;
   pTitle?: string,
   children?: ItemConfigItem[];
+  rangeConfigList?: any[],
+  selectedRowKeys?: any[],
+  setSelectedRowKeys?: Function
 }
 
 export function getFun(context: any) {
@@ -40,8 +45,13 @@ export function getFun(context: any) {
     date,
     selectedBlockId,
     dataSource,
-    paramMap
+    paramMap,
+    rangeConfigList,
+    selectedRowKeys,
+    setSelectedRowKeys
   } = context;
+
+  /** 初始化 */
   const onInitData = async () => {
     // setPageLoading(true);
     await wardRegisterService
@@ -52,10 +62,10 @@ export function getFun(context: any) {
           let blockId = (res.data[res.data.length - 1] as any)!.id;
           // let lastPageIndex = await getLastPageIndex(blockId);
           setSelectedBlockId(blockId);
-          // setPageOptions({
-          //   ...pageOptions,
-          //   pageIndex: lastPageIndex,
-          // });
+          setPageOptions({
+            ...pageOptions,
+            pageIndex: 1,
+          });
           // getPage(blockId)
         } else {
           setSelectedBlockId(null);
@@ -67,14 +77,14 @@ export function getFun(context: any) {
       });
   };
 
-  const getLastPageIndex = async (blockId: any) => {
-    return await wardRegisterService
-      .getPage(registerCode, {
-        blockId: blockId,
-        ...pageOptions
-      })
-      .then(res => res.data.itemDataPage.totalPage);
-  };
+  // const getLastPageIndex = async (blockId: any) => {
+  //   return await wardRegisterService
+  //     .getPage(registerCode, {
+  //       blockId: blockId,
+  //       ...pageOptions
+  //     })
+  //     .then(res => res.data.itemDataPage.totalPage);
+  // };
 
   /** 表头合并 */
   const thMerge = (list: ItemConfigItem[]) => {
@@ -87,12 +97,10 @@ export function getFun(context: any) {
           let pthObj: any = total.find(item => (item.pTitle || item.itemCode) == pTitle);
           if (!pthObj) {
             pthObj = {
-              itemCode: current.itemCode,
+              ...current,
               pTitle: pTitle,
               children: [current],
-              colSpan: 1,
-              width: current.width,
-              options: current.options
+              colSpan: 1
             };
             total.push(pthObj);
           } else {
@@ -110,17 +118,27 @@ export function getFun(context: any) {
     );
   };
 
+  /** 获取数据 */
   const getPage = (blockId?: any) => {
     setPageLoading(true);
+
+    setSelectedRowKeys && setSelectedRowKeys([])
+
+    let _paramsMap = JSON.parse(JSON.stringify(paramMap))
+    delete _paramsMap["班次"]
+
+    let params = {
+      startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+      endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+      range: paramMap["班次"] || '',
+      blockId: selectedBlockId || blockId,
+      paramMap: _paramsMap,
+      ...pageOptions
+    } as any
+
+
     wardRegisterService
-      .getPage(registerCode, {
-        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
-        range: paramMap["班次"],
-        blockId: selectedBlockId || blockId,
-        paramMap,
-        ...pageOptions
-      })
+      .getPage(registerCode, params)
       .then(res => {
         setPageLoading(false)
         if (!res.data) return
@@ -151,6 +169,7 @@ export function getFun(context: any) {
       });
   };
 
+  /**新增修订 */
   const onAddBlock = () => {
     globalModal
       .confirm(
@@ -169,6 +188,7 @@ export function getFun(context: any) {
       });
   };
 
+  /** 保存 */
   const onSave = () => {
     let reqDataSorce = dataSource.filter((item: any) => !item.id || item.modified)
 
@@ -181,6 +201,7 @@ export function getFun(context: any) {
       });
   };
 
+  /** 删除修订版本 */
   const onDelete = () => {
     globalModal.confirm("删除确认", "确定要删除此修订版本吗？").then(res => {
       wardRegisterService
@@ -192,27 +213,222 @@ export function getFun(context: any) {
     });
   };
 
-  //新建行
+  /** 新建行 */
   const createRow = () => {
+    let range = ""
+    let rangeIndexNo = 0
+    if (rangeConfigList && rangeConfigList.length > 0) {
+      range = rangeConfigList[0].itemCode
+      rangeIndexNo = rangeConfigList[0].indexNo
+    }
     setDataSource([])
+    setSelectedRowKeys && setSelectedRowKeys([])
 
     setTimeout(() => {
       setDataSource([
-        { recordDate: moment().format("YYYY-MM-DD") },
+        {
+          blockId: selectedBlockId,
+          description: "",
+          range,
+          rangeIndexNo,
+          recordDate: moment().format('YYYY-MM-DD'),
+          registerCode,
+          editType: 'new',
+          modified: true,
+        },
         ...dataSource
       ])
 
       setTimeout(() => {
         let target = document.querySelector('.record-page-table .ant-table-row')
-        target && target.scrollIntoView
+        target && target.scrollIntoView()
       }, 100)
     })
   };
 
-  //行编辑禁用规则
+  /** 行编辑禁用规则 */
   const cellDisabled = (record: any) => {
     // console.log(registerCode)
-    return !!record.signerName
+    if (record.auditorNo) return true
+    if (!record.signerNo) return false
+    if (authStore.isNotANormalNurse) return false
+    if (!authStore.user?.empNo) return true
+    if (record.signerNo.toLowerCase() !== authStore.user?.empNo.toLowerCase())
+      return true
+
+    return false
+  }
+
+
+  /**导出 */
+  const exportExcel = () => {
+    let _paramsMap = JSON.parse(JSON.stringify(paramMap))
+    delete _paramsMap["班次"]
+
+    wardRegisterService
+      .exportExcel(registerCode, {
+        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+        blockId: selectedBlockId,
+        range: paramMap['班次'] || '',
+        paramMap: _paramsMap,
+        ...pageOptions
+      })
+      .then(res => {
+        fileDownload(res);
+      });
+  };
+
+  /**回车键去到下一个输入元素 */
+  const handleNextIptFocus = (e?: any, target?: any) => {
+    if (target || (e.keyCode && e.keyCode == 13)) {
+      let baseTableEl = document.getElementById('baseTable')
+      if (baseTableEl) {
+        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
+
+        for (let i = 0; i < iptList.length; i++) {
+          let el = iptList[i]
+          if (el == (target || e.target)) {
+            if (iptList[i + 1]) {
+              iptList[i + 1].focus && iptList[i + 1].focus()
+              iptList[i + 1].click && iptList[i + 1].click()
+            }
+            if (e && e.target) e.target.value = e.target.value.replace(/\n/g, '')
+            break
+          }
+        }
+      }
+    }
+  }
+
+  /**手动触发AutoComplete组件的下拉 */
+  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
+    let rowEls = document.querySelectorAll('.ant-table-row') as any
+    let rowEl = rowEls[index]
+    if (rowEl) {
+      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
+      // if (target) target.click()
+    }
+  }
+
+  /**附件上传 */
+  const handleUpload = (
+    cfg: any,
+    record: any,
+    index: number,
+    uploadType: 'append' | 'replace',
+    multi?: boolean
+  ) => {
+    const id = "wardRegisterItemCodeAttachmentUploader"
+    const entityType = 'qcRegister'
+    // const entityType = 'mail'
+
+    let oldEl = document.getElementById(id)
+    if (oldEl) document.body.removeChild(oldEl)
+
+    let fileEl = document.createElement('input') as any
+    fileEl.id = id
+    fileEl.type = 'file'
+    fileEl.accept = cfg.options ? cfg.options.replace(/;/g, ',') : ''
+    fileEl.onchange = () => {
+      // console.log(fileEl.files)
+      if (fileEl.files.length >= 0) {
+        setPageLoading(true)
+        let form = new FormData()
+        form.append('file', fileEl.files[0])
+
+        service
+          .commonApiService
+          .uploadAttachment(entityType, form)
+          .then(res => {
+            setPageLoading(false)
+            let newDataSource = dataSource.concat()
+            let val = [] as any
+            if (uploadType == 'append') {
+              val = record[cfg.itemCode] || []
+            }
+
+            val.push(`${res.data.name || ''},${res.data.relativePath || ''}`)
+
+            newDataSource[index][cfg.itemCode] = val.join(';')
+            newDataSource[index].modified = true
+            setDataSource(newDataSource)
+
+            document.body.removeChild(fileEl)
+            fileEl = null
+          }, () => setPageLoading(false))
+      } else {
+        document.body.removeChild(fileEl)
+        fileEl = null
+      }
+    }
+
+    document.body.appendChild(fileEl)
+    fileEl.click()
+  }
+
+  /**删除行 */
+  const handleDeleteRow = (record: any, idx: number) => {
+    let deleteRow = () => {
+      dataSource.splice(idx, 1)
+      setDataSource([])
+      setTimeout(() => setDataSource(dataSource.concat()))
+    }
+    if (record.editType && record.editType == 'new') {
+      deleteRow()
+    } else {
+      globalModal
+        .confirm("删除确认", "确定要删除该条目吗？")
+        .then((res) => {
+          setPageLoading(true)
+
+          wardRegisterService
+            .deleteAll(registerCode, [{ id: record.id }])
+            .then(res => {
+              setPageLoading(false)
+              message.success('删除成功')
+              deleteRow()
+            }, err => setPageLoading(false))
+        })
+    }
+  }
+
+  /**护士长批量签名 */
+  const handleAuditAll = (aside?: string) => {
+    aside = aside || '护士长'
+    if (selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+
+    let ids = dataSource
+      .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
+      .map((item: any) => ({ id: item.id || '' }))
+
+    globalModal
+      .confirm(`${aside}批量签名确认`, `你确定${aside}签名吗？`)
+      .then((res) => {
+        setPageLoading(true)
+        wardRegisterService.auditAll(registerCode, ids)
+          .then((res) => {
+            message.success('签名成功')
+            if (res.data && res.data.list) {
+              let newDataSource = [...dataSource]
+              for (let i = 0; i < res.data.list.length; i++) {
+                let resRecord = res.data.list[i]
+                let record = newDataSource
+                  .find((item: any) => item.id == resRecord.id)
+
+                if (record) Object.assign(record, resRecord)
+              }
+
+              setDataSource(newDataSource)
+              setSelectedRowKeys([])
+              setPageLoading(false)
+            }
+          },
+            () => setPageLoading(false))
+      })
   }
 
   return {
@@ -222,6 +438,12 @@ export function getFun(context: any) {
     onSave,
     onDelete,
     createRow,
-    cellDisabled
+    cellDisabled,
+    exportExcel,
+    handleNextIptFocus,
+    tiggerAutoCompleteClick,
+    handleUpload,
+    handleDeleteRow,
+    handleAuditAll
   };
 }

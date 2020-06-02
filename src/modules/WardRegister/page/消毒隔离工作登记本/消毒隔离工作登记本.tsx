@@ -9,7 +9,8 @@ import {
   message,
   Input,
   Select,
-  DatePicker
+  DatePicker,
+  Popover
 } from "src/vendors/antd";
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { authStore, appStore } from "src/stores";
@@ -30,6 +31,10 @@ import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
 import { signRowObj } from "../../utils/signRowObj";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import reactZmage from 'react-zmage'
+import FileUploadColumnRender from './../../components/FileUploadColumnRender'
 
 const TextArea = Input.TextArea
 
@@ -81,12 +86,25 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     total: 0
   });
   const [total, setTotal] = useState(0);
+  /** 选中的blockObj */
+  const selectedBlockObj = blockList.find(
+    (item: any) => item.id == selectedBlockId
+  );
+
   const settingModal = createModal(SettingModal);
-  const updateDataSource = () => {
-    throttler2(() => {
+  const previewModal = createModal(PreviewModal);
+
+  const updateDataSource = (isAll?: boolean) => {
+    if (isAll) {
+      setDataSource([]);
       setDataSource([...dataSource]);
-    });
+    } else {
+      throttler2(() => {
+        setDataSource([...dataSource]);
+      });
+    }
   };
+
   const columns: ColumnProps<any>[] | any = [
     {
       title: () => {
@@ -121,6 +139,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             defaultValue={text}
             onKeyUp={handleNextIptFocus}
             onChange={value => {
+              record.modified = true
               record.recordDate = value;
             }}
             onBlur={() => updateDataSource()}
@@ -136,35 +155,52 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         width: (15 * item.width || 50) + 8,
         dataIndex: item.itemCode,
         render(text: string, record: any, index: number) {
-          const children = (
-            <AutoComplete
-              disabled={!!record.signerName}
-              dataSource={
-                item.options
-                  ? item.options.split(";").map((item: any) => item || " ")
-                  : undefined
-              }
-              defaultValue={text}
-              onChange={value => {
-                record[item.itemCode] = value;
-              }}
-              onBlur={() => updateDataSource()}
-              onSelect={() => updateDataSource()}
-            >
-              <TextArea
-                data-key={item.itemCode}
-                onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
-                onKeyUp={handleNextIptFocus}
-                autosize
-                style={{
-                  lineHeight: 1.2,
-                  overflow: "hidden",
-                  padding: "9px 2px",
-                  textAlign: "center"
+          let children: JSX.Element
+
+          //处理上传附件类型
+          if (item.itemType == "attachment") {
+
+            children = <FileUploadColumnRender
+              {...{
+                record,
+                itemCfg: item,
+                index,
+                cellDisabled,
+                handleUpload,
+                handlePreview
+              }} />
+          } else {
+            children = (
+              <AutoComplete
+                disabled={!!record.signerName}
+                dataSource={
+                  item.options
+                    ? item.options.split(";").map((item: any) => item || " ")
+                    : undefined
+                }
+                defaultValue={text}
+                onChange={value => {
+                  record.modified = true
+                  record[item.itemCode] = value;
                 }}
-              />
-            </AutoComplete>
-          );
+                onBlur={() => updateDataSource()}
+                onSelect={() => updateDataSource()}
+              >
+                <TextArea
+                  data-key={item.itemCode}
+                  onKeyUp={handleNextIptFocus}
+                  autosize
+                  style={{
+                    lineHeight: 1.2,
+                    overflow: "hidden",
+                    padding: "9px 2px",
+                    textAlign: "center"
+                  }}
+                />
+              </AutoComplete>
+            );
+          }
+
           if (
             item.itemCode == "消毒类别" &&
             (text == "酒精擦拭灯管" || text == "更换灯管")
@@ -247,34 +283,13 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       width: 50,
       className: "",
       render(text: string, record: any, index: number) {
-        let deleteRow = () => {
-          dataSource.splice(index, 1)
-          setDataSource([])
-          setTimeout(() => setDataSource(dataSource.concat()))
-        }
-
         return (
           <DoCon>
             {record.signerName ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
                 <span
-                  onClick={() => {
-                    if (!record.id) {
-                      deleteRow()
-                    } else {
-                      globalModal
-                        .confirm("删除确认", "是否删除该记录")
-                        .then(res => {
-                          wardRegisterService
-                            .deleteAll(registerCode, [{ id: record.id }])
-                            .then(res => {
-                              message.success("删除成功");
-                              deleteRow()
-                            })
-                        })
-                    }
-                  }}>
+                  onClick={() => handleDeleteRow(record, index)}>
                   删除
                 </span>
               )}
@@ -284,32 +299,15 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     }
   ];
 
-  //手动触发AutoComplete组件的下拉
-  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
-    let rowEls = document.querySelectorAll('.ant-table-row') as any
-    let rowEl = rowEls[index]
-    if (rowEl) {
-      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
-      if (target) target.click()
-    }
-  }
-
-  //回车键去到下一个输入元素
-  const handleNextIptFocus = (e?: any, target?: any) => {
-    if (target || (e.keyCode && e.keyCode == 13)) {
-      let baseTableEl = document.getElementById('baseTable')
-      if (baseTableEl) {
-        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
-
-        for (let i = 0; i < iptList.length; i++) {
-          let el = iptList[i]
-          if (el == (target || e.target)) {
-            if (iptList[i + 1]) iptList[i + 1].focus && iptList[i + 1].focus()
-            if (e.target) e.target.value = e.target.value.replace(/\n/g, '')
-            break
-          }
-        }
-      }
+  //预览附件
+  const handlePreview = (file: any) => {
+    if (getFileType(file.name) == 'img') {
+      reactZmage.browsing({ src: file.path, backdrop: 'rgba(0,0,0, .8)' })
+    } else {
+      previewModal.show({
+        title: file.name,
+        path: file.path
+      })
     }
   }
 
@@ -321,6 +319,10 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
     onDelete,
     createRow,
     cellDisabled,
+    exportExcel,
+    handleNextIptFocus,
+    handleUpload,
+    handleDeleteRow
   } = getFun({
     registerCode,
     registerName,
@@ -440,10 +442,11 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
-            <Button>导出</Button>
+            <Button onClick={exportExcel}>导出</Button>
             <Button
               onClick={() =>
                 settingModal.show({
+                  selectedBlockObj,
                   blockId: selectedBlockId,
                   registerCode,
                   onOkCallBack: () => {
@@ -488,6 +491,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
           )}
       </TableCon>
       <settingModal.Component />
+      <previewModal.Component />
     </Wrapper>
   );
 });

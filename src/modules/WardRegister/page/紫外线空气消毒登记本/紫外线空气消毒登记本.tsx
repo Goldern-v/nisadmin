@@ -79,6 +79,11 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     total: 0
   });
   const [total, setTotal] = useState(0);
+  /** 选中的blockObj */
+  const selectedBlockObj = blockList.find(
+    (item: any) => item.id == selectedBlockId
+  );
+
   const settingModal = createModal(SettingModal);
   const updateDataSource = () => {
     throttler2(() => {
@@ -95,13 +100,13 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <Input
-            disabled={!!record.signerName}
+            disabled={cellDisabled(record)}
             defaultValue={text}
             onChange={value => {
+              record.modified = true
               record.recordDate = value;
             }}
             onKeyUp={handleNextIptFocus}
-            onFocus={() => tiggerAutoCompleteClick('recordDate', index)}
             onBlur={() => updateDataSource()}
           />
         );
@@ -117,7 +122,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
         render(text: string, record: any, index: number) {
           const children = (
             <AutoComplete
-              disabled={!!record.signerName}
+              disabled={cellDisabled(record)}
               dataSource={
                 item.options
                   ? item.options.split(";").map((item: any) => item || " ")
@@ -125,6 +130,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
               }
               defaultValue={text}
               onChange={value => {
+                record.modified = true
                 record[item.itemCode] = value.toString().replace(/\n/g, '');
               }}
               onBlur={() => updateDataSource()}
@@ -134,7 +140,6 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
                 autosize={{ maxRows: 1 }}
                 data-key={item.itemCode}
                 onKeyUp={handleNextIptFocus}
-                onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
                 style={{
                   lineHeight: 1.2,
                   overflow: "hidden",
@@ -197,34 +202,13 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
       width: 50,
       className: "",
       render(text: string, record: any, index: number) {
-        let deleteRow = () => {
-          dataSource.splice(index, 1)
-          setDataSource([])
-          setTimeout(() => setDataSource(dataSource.concat()))
-        }
-
         return (
           <DoCon>
             {record.signerName ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
                 <span
-                  onClick={() => {
-                    if (!record.id) {
-                      deleteRow()
-                    } else {
-                      globalModal
-                        .confirm("删除确认", "是否删除该记录")
-                        .then(res => {
-                          wardRegisterService
-                            .deleteAll(registerCode, [{ id: record.id }])
-                            .then(res => {
-                              message.success("删除成功");
-                              deleteRow()
-                            })
-                        })
-                    }
-                  }}>
+                  onClick={() => handleDeleteRow(record, index)}>
                   删除
                 </span>
               )}
@@ -234,37 +218,6 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     }
   ];
 
-  //手动触发AutoComplete组件的下拉
-  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
-    let rowEls = document.querySelectorAll('.ant-table-row') as any
-    let rowEl = rowEls[index]
-    if (rowEl) {
-      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
-      if (target) target.click()
-    }
-  }
-
-  //回车键去到下一个输入元素
-  const handleNextIptFocus = (e?: any, target?: any) => {
-    if (target || (e.keyCode && e.keyCode == 13)) {
-      let baseTableEl = document.getElementById('baseTable')
-      if (baseTableEl) {
-        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
-
-        for (let i = 0; i < iptList.length; i++) {
-          let el = iptList[i]
-          if (el == (target || e.target)) {
-            if (iptList[i + 1]) iptList[i + 1].focus && iptList[i + 1].focus()
-            if (e.target) {
-              e.target.value = e.target.value.replace(/\n/g, '')
-            }
-            break
-          }
-        }
-      }
-    }
-  }
-
   const {
     onInitData,
     getPage,
@@ -273,6 +226,9 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     onDelete,
     createRow,
     cellDisabled,
+    exportExcel,
+    handleNextIptFocus,
+    handleDeleteRow
   } = getFun({
     registerCode,
     registerName,
@@ -392,10 +348,11 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
-            <Button>导出</Button>
+            <Button onClick={exportExcel}>导出</Button>
             <Button
               onClick={() =>
                 settingModal.show({
+                  selectedBlockObj,
                   blockId: selectedBlockId,
                   registerCode,
                   onOkCallBack: () => {

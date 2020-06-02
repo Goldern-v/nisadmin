@@ -235,12 +235,12 @@ export default function WardRegisterRouter() {
       hide: !appStore.isDev,
       children: [
         {
-          title: "静脉治疗并发登记本",
+          title: "静脉治疗并发症登记本",
           path: "/wardRegister/QCRG_16_1",
           component: { ...重点患者评估登记本 },
           payload: {
             registerCode: "QCRG_16_1",
-            registerName: "静脉治疗并发登记本"
+            registerName: "静脉治疗并发症登记本"
           }
         },
         {
@@ -287,39 +287,49 @@ export default function WardRegisterRouter() {
       }
     },
     {
-      title: "实习、进修、新职工人员信息",
+      title: "实习进修新职工登记",
+      path: "/wardRegister/QCRG_19_2",
       icon: <SXJX />,
-      hide: !appStore.isDev,
-      children: [
-        {
-          title: "实习人员登记",
-          path: "/wardRegister/QCRG_19_1",
-          component: { ...重点患者评估登记本 },
-          payload: {
-            registerCode: "QCRG_19_1",
-            registerName: "实习人员登记"
-          }
-        },
-        {
-          title: "实习、进修人员、新职工、轮转职工登记",
-          path: "/wardRegister/QCRG_19_2",
-          component: { ...重点患者评估登记本 },
-          payload: {
-            registerCode: "QCRG_19_2",
-            registerName: "物品实习、进修人员、新职工、轮转职工登记交接登记本"
-          }
-        },
-        {
-          title: "新职工、轮转职工登记",
-          path: "/wardRegister/QCRG_19_3",
-          component: { ...重点患者评估登记本 },
-          payload: {
-            registerCode: "QCRG_19_4",
-            registerName: "新职工、轮转职工登记"
-          }
-        }
-      ]
+      component: { ...重点患者评估登记本 },
+      payload: {
+        registerCode: "QCRG_19_2",
+        registerName: "实习进修新职工登记"
+      }
     },
+    // {
+    //   title: "实习、进修、新职工人员信息",
+    //   icon: <SXJX />,
+    //   hide: !appStore.isDev,
+    //   children: [
+    //     {
+    //       title: "实习人员登记",
+    //       path: "/wardRegister/QCRG_19_1",
+    //       component: { ...重点患者评估登记本 },
+    //       payload: {
+    //         registerCode: "QCRG_19_1",
+    //         registerName: "实习人员登记"
+    //       }
+    //     },
+    //     {
+    //       title: "实习、进修人员、新职工、轮转职工登记本",
+    //       path: "/wardRegister/QCRG_19_2",
+    //       component: { ...重点患者评估登记本 },
+    //       payload: {
+    //         registerCode: "QCRG_19_2",
+    //         registerName: "实习、进修人员、新职工、轮转职工登记交接登记本"
+    //       }
+    //     },
+    //     {
+    //       title: "新职工、轮转职工登记",
+    //       path: "/wardRegister/QCRG_19_3",
+    //       component: { ...重点患者评估登记本 },
+    //       payload: {
+    //         registerCode: "QCRG_19_4",
+    //         registerName: "新职工、轮转职工登记"
+    //       }
+    //     }
+    //   ]
+    // },
     {
       title: "生命支持仪器管理",
       icon: <SMZC />,

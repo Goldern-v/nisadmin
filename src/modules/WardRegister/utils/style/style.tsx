@@ -12,6 +12,15 @@ export const Wrapper = styled.div`
   }
 `;
 export const TableCon = styled.div`
+  position:relative;
+  .selected-operate-con{
+    position: absolute;
+    bottom: 12px;
+    left: 24px;
+  }
+  .ant-table-tbody > tr.ant-table-row-selected td{
+    background-color: transparent;
+  }
   .warning-value {
     input {
       color: red;

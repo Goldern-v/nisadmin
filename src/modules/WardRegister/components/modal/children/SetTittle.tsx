@@ -13,13 +13,16 @@ import {
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
 import { authStore, appStore } from "src/stores";
-import emitter from "src/libs/ev";
+// import emitter from "src/libs/ev";
 import { globalModal } from "src/global/globalModal";
 import update from "immutability-helper";
 import { Place } from "src/components/common";
 import { observer } from "mobx-react-lite";
 import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 import service from "src/services/api";
+
+const Option = Select.Option
+
 export interface Props {
   blockId: any;
   selectedBlockObj: any;
@@ -34,19 +37,62 @@ export default observer(function SetTittle(props: Props) {
   const [moveAble, setMoveAble] = useState(false);
   const [empNameList, setEmpNameList] = useState([]);
   const { blockId, registerCode, onOkCallBack, selectedBlockObj } = props;
-  const showEmpName = [
-    "责任护士",
-    "人员调配",
-    "责任组长",
-    "签名",
-    "护士长签名",
-    "责任人",
-    "责护名字",
-    "消毒液擦拭床单位执行者",
-    "床单位消毒机消毒执行者",
-    "带教老师签名",
-    "带教组长签名"
-  ];
+
+  // const showEmpName = [
+  //   "责任护士",
+  //   "人员调配",
+  //   "责任组长",
+  //   "签名",
+  //   "护士长签名",
+  //   "责任人",
+  //   "责护名字",
+  //   "消毒液擦拭床单位执行者",
+  //   "床单位消毒机消毒执行者",
+  //   "带教老师签名",
+  //   "带教组长签名"
+  // ];
+
+  //不允许删除的选项
+  const staticOptions: { [p: string]: string[] } =
+    codeAdapter({
+      QCRG_06: {
+        '消毒类别': [
+          '无水酒精擦拭灯管',
+          '更换灯管'
+        ]
+      },
+      other: {}
+    }, registerCode)
+
+
+  const baseNumCol: ColumnProps<any> = {
+    title: "基数",
+    width: 100,
+    dataIndex: "checkSize",
+    className: "input-cell",
+    render(text: any, record: any, index: any) {
+      return (
+        <Input
+          defaultValue={text}
+          onChange={e => {
+            record.checkSize = e.target.value;
+          }}
+          onBlur={() => updateDataSource()}
+        />
+      );
+    }
+  }
+
+  const defaultOptions = [
+    { name: '√', value: '√' },
+    { name: '×', value: '×' },
+  ]
+
+  const fileTypeOptions = [
+    { name: '文档', value: '.doc;.docx;.pdf' },
+    { name: '表格', value: '.xls;.xlsx' },
+    { name: '图片', value: '.jpg;.jpeg;.jpeg;.png;.gif' },
+  ]
 
   const columns: ColumnProps<any>[] = [
     {
@@ -72,6 +118,25 @@ export default observer(function SetTittle(props: Props) {
         );
       }
     },
+    // {
+    //   title: "类型",
+    //   dataIndex: "itemType",
+    //   className: "input-cell",
+    //   width: 100,
+    //   render: (text: any, record: any, index: any) => {
+    //     return <Select
+    //       value={text}
+    //       onChange={(val: string) => {
+    //         record.itemType = val
+    //         record.options = ''
+    //         updateDataSource()
+    //       }}>
+    //       <Option value="">下拉选项</Option>
+    //       <Option value="ward_user">科室护士</Option>
+    //       <Option value="attachment">附件上传</Option>
+    //     </Select>
+    //   }
+    // },
     {
       title: "列宽度(字数)",
       dataIndex: "width",
@@ -91,25 +156,8 @@ export default observer(function SetTittle(props: Props) {
     },
     ...codeAdapter(
       {
-        QCRG_12: [
-          {
-            title: "基数",
-            width: 100,
-            dataIndex: "checkSize",
-            className: "input-cell",
-            render(text: any, record: any, index: any) {
-              return (
-                <Input
-                  defaultValue={text}
-                  onChange={e => {
-                    record.checkSize = e.target.value;
-                  }}
-                  onBlur={() => updateDataSource()}
-                />
-              );
-            }
-          }
-        ],
+        QCRG_01: [baseNumCol],
+        QCRG_12: [baseNumCol],
         other: []
       },
       registerCode
@@ -120,8 +168,35 @@ export default observer(function SetTittle(props: Props) {
       width: 300,
       className: "input-cell",
       render(text: any, record: any, index: any) {
-        return showEmpName.includes(record.itemCode) ? (
-          <Select
+        if (record.itemType == 'attachment') {
+          return <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            onChange={(value: any) => {
+              let formatVal = value.join(';').split(';')
+              let newVal: string[] = []
+              for (let i = 0; i < formatVal.length; i++) {
+                if (newVal.indexOf(formatVal[i]) < 0) newVal.push(formatVal[i])
+              }
+
+              record.options = newVal.join(";");
+
+              updateDataSource();
+            }}
+            value={text ? text.split(";") : []}
+            tokenSeparators={[";", "；"]}
+          >
+            {/* <Option value="全选">全选</Option> */}
+            {fileTypeOptions.map((item: any) => (
+              <Option
+                key={item.value}
+                value={item.value}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+        } else if (record.itemType == 'ward_user') {
+          return <Select
             mode="tags"
             style={{ width: "100%" }}
             onChange={(value: any) => {
@@ -138,22 +213,43 @@ export default observer(function SetTittle(props: Props) {
             value={text ? text.split(";") : []}
             tokenSeparators={[";", "；"]}
           >
-            <Select.Option value="全选">全选</Select.Option>
+            <Option value="全选">全选</Option>
             {empNameOptions()}
           </Select>
-        ) : (
-            <Select
-              mode="tags"
-              style={{ width: "100%" }}
-              onChange={(value: any) => {
+        } else {
+          return <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            onChange={(value: any) => {
+              //是否允许提交改动
+              let canSubmint = true
+
+              let targetOptions = staticOptions[record.itemCode] || null
+              if (targetOptions) {
+                for (let i = 0; i < targetOptions.length; i++) {
+                  if (value.indexOf(targetOptions[i]) < 0) {
+                    value.push(targetOptions[i])
+                  }
+                }
+              }
+
+              if (canSubmint) {
                 record.options = value.join(";");
-                updateDataSource();
-              }}
-              value={text ? text.split(";") : []}
-              open={false}
-              tokenSeparators={[";", "；"]}
-            />
-          );
+                updateDataSource()
+              }
+            }}
+            value={text ? text.split(";") : []}
+            // open={false}
+            tokenSeparators={[";", "；"]}
+          >
+            {defaultOptions.map((item: any, idx: number) =>
+              <Option
+                key={idx}
+                value={item.value}>
+                {item.name}
+              </Option>)}
+          </Select>
+        }
       }
     },
     {
@@ -232,7 +328,7 @@ export default observer(function SetTittle(props: Props) {
 
   const empNameOptions = () =>
     empNameList.map((item: any) => (
-      <Select.Option key={item}>{item}</Select.Option>
+      <Option key={item}>{item}</Option>
     ));
   return (
     <Wrapper>

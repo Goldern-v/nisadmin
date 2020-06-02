@@ -31,7 +31,12 @@ import { createFilterInput } from "../../components/FilterInput";
 import TextArea from "antd/lib/input/TextArea";
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { globalModal } from "src/global/globalModal";
-import { fileDownload } from "src/utils/file/file";
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
+import PreviewModal from 'src/utils/file/modal/PreviewModal'
+import reactZmage from 'react-zmage'
+import FileUploadColumnRender from './../../components/FileUploadColumnRender'
+import DatePickerColumnRender from './../../components/DatePickerColumnRender'
+
 export interface Props {
   payload: any;
 }
@@ -57,6 +62,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     total: 0
   });
   const [total, setTotal] = useState(0);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 
   /** 选中的blockObj */
   const selectedBlockObj = blockList.find(
@@ -64,6 +70,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
   );
 
   const settingModal = createModal(SettingModal);
+  const previewModal = createModal(PreviewModal)
   const updateDataSource = (isAll?: boolean) => {
     if (isAll) {
       setDataSource([]);
@@ -186,7 +193,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
     }
   );
   const rylxFilterItem = createFilterItem(
-    "人员类型",
+    "人员类别",
     itemConfigList,
     rangConfigList,
     () => {
@@ -268,15 +275,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
           <jmlxFilterItem.Component />
         </div>
       ),
-      QCRG_19_1: (
-        <div>
-          <jmlxFilterItem.Component />
-        </div>
-      ),
+      // QCRG_19_1: (
+      //   <div>
+      //     <jmlxFilterItem.Component />
+      //   </div>
+      // ),
       QCRG_19_2: (
         <div>
           <rylxFilterItem.Component />
-          <jmlxFilterItem.Component />
+          {/* <jmlxFilterItem.Component /> */}
         </div>
       ),
       QCRG_19_3: (
@@ -318,15 +325,26 @@ export default observer(function 重点患者评估登记本(props: Props) {
   };
 
   /** 判断是否快过期 */
-  const isEndTime = (current: string, endTime: string) => {
+  const isEndTime = (record: any) => {
+    let current = ''
+    let endTime = ''
+    let itemCode = '有效期'
+
+    if (registerCode == "QCRG_14_1") {
+      itemCode = '失效日期'
+    } else if (registerCode == 'QCRG_14_2') {
+      itemCode = '生产日期'
+    }
+
+    endTime = record[itemCode] || ''
+    current = moment().format('YYYY-MM-DD')
+
     var currentDate = moment(current);
     var endTimeDate = moment(endTime);
     if (
       currentDate.isValid() &&
       endTimeDate.isValid() &&
-      current &&
-      endTime &&
-      registerCode == "QCRG_10"
+      current && endTime
     ) {
       let m = endTimeDate.diff(currentDate, "d");
       if (m <= 90) return "color-red";
@@ -371,16 +389,16 @@ export default observer(function 重点患者评估登记本(props: Props) {
             },
             dataIndex: "recordDate",
             align: "center",
-            colSpan: 2,
-            width: 107
+            colSpan: 1,
+            width: 160
           },
-          {
-            title: "班次",
-            colSpan: 0,
-            width: 73,
-            dataIndex: "range",
-            align: "center"
-          }
+          // {
+          //   title: "班次",
+          //   colSpan: 0,
+          //   width: 73,
+          //   dataIndex: "range",
+          //   align: "center"
+          // }
         ],
         QCRG_14_1: [
           {
@@ -398,7 +416,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     record.recordDate = value;
                   }}
                   onBlur={() => updateDataSource()}
-                  className={isEndTime(record.recordDate, record.有效期) || ""}
+                  className={isEndTime(record) || ""}
                 />
               );
             }
@@ -450,7 +468,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     record.recordDate = e.target.value
                   }}
                   onBlur={() => updateDataSource()}
-                  className={isEndTime(record.recordDate, record.有效期) || ""}
+                  className={isEndTime(record) || ""}
                 />
               );
             }
@@ -459,10 +477,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
       },
       registerCode
     ),
-    ,
     codeAdapter(
       {
-        QCRG_04: {
+        'QCRG_04,QCRG_20_1': {
           title: "班次",
           width: 73,
           dataIndex: "range",
@@ -486,7 +503,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
                   autosize
                   data-key={'range'}
                   onKeyUp={handleNextIptFocus}
-                  onFocus={() => tiggerAutoCompleteClick('range', index)}
                   style={{
                     lineHeight: 1.2,
                     overflow: "hidden",
@@ -503,7 +519,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
           }
         }
       },
-      registerCode
+      registerCode,
+      true
     ),
     //后端返回的自定义项目
     ...itemConfigList.map((item: any) => {
@@ -558,59 +575,107 @@ export default observer(function 重点患者评估登记本(props: Props) {
         width: (15 * item.width || 50) + 8,
         dataIndex: item.itemCode,
         render(text: string, record: any, index: number) {
-          let children = (
-            <AutoComplete
-              className={classNames({
-                "warning-value": text == "未完成",
-                [isEndTime(record.recordDate, record.有效期)]: isEndTime(
-                  record.recordDate,
-                  record.有效期
-                ),
-                "checkSize-warning":
-                  item.checkSize && (text != item.checkSize && text != "√")
-              })}
-              disabled={cellDisabled(record)}
-              dataSource={
-                item.options
-                  ? item.options.split(";").filter((item: any) => item)
-                  : undefined
-              }
-              defaultValue={text}
-              onChange={value => {
-                record.modified = true
-                record[item.itemCode] = value.toString().replace(/\n/g, '');
+          let children: JSX.Element
+          let childrenClassName = classNames({
+            "warning-value": text == "未完成",
+            [isEndTime(record)]: isEndTime(record),
+            "checkSize-warning":
+              item.checkSize && (text != item.checkSize && text != "√")
+          })
+
+          let dateItemCodeArr = codeAdapter({
+            QCRG_10: ['有效期'],
+            QCRG_14_1: ['生产日期', '失效日期'],
+            QCRG_14_2: ['生产日期'],
+            QCRG_19_2: ['开始时间', '结束时间'],
+            other: []
+          }, registerCode)
+
+          if (dateItemCodeArr.indexOf(item.itemCode) >= 0) {
+            children = <DatePickerColumnRender
+              {...{
+                className: childrenClassName,
+                cellDisabled,
+                record,
+                itemCfg: item,
+                index,
+                handleNextIptFocus,
+                updateDataSource,
+                registerCode
               }}
-              onBlur={() => updateDataSource()}
-              onSelect={value => {
-                if (
-                  registerCode == "QCRG_04" &&
-                  item.itemCode == "组号及床号"
-                ) {
-                  let prevValue = record[item.itemCode] || '';
-                  setTimeout(() => {
-                    record[item.itemCode] =
-                      prevValue + (prevValue ? ";" : "") + value;
-                    updateDataSource(true);
-                  }, 0);
-                } else {
-                  // updateDataSource();
+            />
+          }
+          else if (item.itemType == "attachment") {
+            //处理上传附件类型
+            children = <FileUploadColumnRender
+              {...{
+                className: childrenClassName,
+                record,
+                itemCfg: item,
+                index,
+                cellDisabled,
+                handleUpload,
+                handlePreview
+              }} />
+
+          } else {
+            children = (
+              <AutoComplete
+                className={childrenClassName}
+                disabled={cellDisabled(record)}
+                dataSource={
+                  item.options
+                    ? item.options.split(";").filter((item: any) => item)
+                    : undefined
                 }
-              }}
-            >
-              <TextArea
-                autosize
-                data-key={item.itemCode}
-                onKeyUp={handleNextIptFocus}
-                onFocus={() => tiggerAutoCompleteClick(item.itemCode, index)}
-                style={{
-                  lineHeight: 1.2,
-                  overflow: "hidden",
-                  padding: "9px 2px",
-                  textAlign: "center"
+                defaultValue={text}
+                onChange={value => {
+                  console.log('change')
+                  record.modified = true
+                  record[item.itemCode] = value.toString().replace(/\n/g, '');
+                  updateDataSource()
                 }}
-              />
-            </AutoComplete>
-          );
+                onBlur={() => {
+                  let rowEls = document.querySelectorAll('.ant-table-row') as any
+                  let rowEl = rowEls[index]
+
+                  if (rowEl) {
+                    let target = rowEl.querySelector(`[data-key="${item.itemCode}"]`) as HTMLInputElement
+                    let val = record[item.itemCode].toString().replace(/\n/g, '')
+                    target.value = val
+                  }
+                }}
+                onSelect={value => {
+                  if (
+                    registerCode == "QCRG_04" &&
+                    item.itemCode == "组号及床号"
+                  ) {
+                    let prevValue = record[item.itemCode] || '';
+                    setTimeout(() => {
+                      record[item.itemCode] =
+                        prevValue + (prevValue ? ";" : "") + value;
+                      updateDataSource(true);
+                    }, 0);
+                  } else {
+                    // updateDataSource();
+                  }
+                }}
+              >
+                <TextArea
+                  autosize
+                  data-key={item.itemCode}
+                  onKeyUp={handleNextIptFocus}
+                  style={{
+                    lineHeight: 1.2,
+                    overflow: "hidden",
+                    padding: "9px 2px",
+                    textAlign: "center"
+                  }}
+                />
+              </AutoComplete>
+            );
+          }
+
           let obj = {
             children
           };
@@ -712,35 +777,33 @@ export default observer(function 重点患者评估登记本(props: Props) {
             dataIndex: "description",
             className: "input-cell",
             render(text: string, record: any, index: number) {
-              return (
-                <Input.TextArea
-                  disabled={cellDisabled(record)}
-                  autosize={true}
-                  defaultValue={text}
-                  onKeyUp={handleNextIptFocus}
-                  onChange={e => {
-                    record.modified = true
-                    record.description = e.target.value.replace(/\n/g, '');
-                  }}
-                  onBlur={() => updateDataSource()}
-                />
-              );
+              return <Input.TextArea
+                disabled={cellDisabled(record)}
+                autosize={true}
+                defaultValue={text}
+                onKeyUp={handleNextIptFocus}
+                onChange={e => {
+                  record.modified = true
+                  record.description = e.target.value.replace(/\n/g, '');
+                }}
+                onBlur={() => updateDataSource()}
+              />
             }
           },
           signRowObj({
-            title: "责任护士签名",
+            title: "执行人签名",
             width: 90,
             dataIndex: "signerName",
-            aside: "责任护士",
+            aside: "执行人",
             registerCode,
             updateDataSource,
             selectedBlockId
           }),
           signRowObj({
-            title: "护士长签名",
+            title: "核对人签名",
             width: 70,
             dataIndex: "auditorName",
-            aside: "护士长",
+            aside: "核对人",
             registerCode,
             updateDataSource,
             selectedBlockId
@@ -788,17 +851,17 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           })
         ],
-        QCRG_19_1: [
-          signRowObj({
-            title: "护士长签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "护士长",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
+        // QCRG_19_1: [
+        //   signRowObj({
+        //     title: "护士长签名",
+        //     width: 90,
+        //     dataIndex: "signerName",
+        //     aside: "护士长",
+        //     registerCode,
+        //     updateDataSource,
+        //     selectedBlockId
+        //   })
+        // ],
         QCRG_19_2: [
           signRowObj({
             title: "护士长签名",
@@ -810,18 +873,18 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           })
         ],
-        QCRG_19_3: [
-          signRowObj({
-            title: "护士长签名",
-            width: 90,
-            dataIndex: "signerName",
-            aside: "护士长",
-            registerCode,
-            updateDataSource,
-            selectedBlockId
-          })
-        ],
-        QCRG_20_1: [
+        // QCRG_19_3: [
+        //   signRowObj({
+        //     title: "护士长签名",
+        //     width: 90,
+        //     dataIndex: "signerName",
+        //     aside: "护士长",
+        //     registerCode,
+        //     updateDataSource,
+        //     selectedBlockId
+        //   })
+        // ],
+        'QCRG_20_1,QCRG_20_2': [
           {
             title: "备注",
             width: 150,
@@ -893,34 +956,13 @@ export default observer(function 重点患者评估登记本(props: Props) {
       width: 50,
       className: "",
       render(text: string, record: any, index: number) {
-        let deleteRow = () => {
-          dataSource.splice(index, 1)
-          setDataSource([])
-          setTimeout(() => setDataSource(dataSource.concat()))
-        }
-
         return (
           <DoCon>
-            {record.signerName ? (
+            {cellDisabled(record) ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
                 <span
-                  onClick={() => {
-                    if (!record.id) {
-                      deleteRow()
-                    } else {
-                      globalModal
-                        .confirm("删除确认", "是否删除该记录")
-                        .then(res => {
-                          wardRegisterService
-                            .deleteAll(registerCode, [{ id: record.id }])
-                            .then(res => {
-                              message.success("删除成功");
-                              deleteRow()
-                            })
-                        })
-                    }
-                  }}>
+                  onClick={() => handleDeleteRow(record, index)}>
                   删除
                 </span>
               )}
@@ -929,6 +971,22 @@ export default observer(function 重点患者评估登记本(props: Props) {
       }
     }
   ];
+
+  const handlePreview = (file: any) => {
+    if (getFileType(file.name) == 'img') {
+      reactZmage.browsing({ src: file.path, backdrop: 'rgba(0,0,0, .8)' })
+    } else {
+      previewModal.show({
+        title: file.name,
+        path: file.path
+      })
+    }
+  }
+
+  const handleSelectedChange = (payload: any[]) => {
+    setSelectedRowKeys(payload)
+    // console.log(payload)
+  }
 
   /** 公共函数 */
   const {
@@ -939,6 +997,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
     onDelete,
     createRow,
     cellDisabled,
+    exportExcel,
+    handleNextIptFocus,
+    handleUpload,
+    handleDeleteRow,
+    handleAuditAll
   } = getFun({
     registerCode,
     registerName,
@@ -954,52 +1017,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
     date,
     selectedBlockId,
     dataSource,
+    selectedRowKeys,
+    setSelectedRowKeys,
     paramMap
   });
-
-  const exportExcel = () => {
-    wardRegisterService
-      .exportExcel(registerCode, {
-        startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
-        endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
-        blockId: selectedBlockId,
-        ...pageOptions
-      })
-      .then(res => {
-        fileDownload(res);
-      });
-  };
-
-  //手动触发AutoComplete组件的下拉
-  const tiggerAutoCompleteClick = (itemCode: string, index: number) => {
-    let rowEls = document.querySelectorAll('.ant-table-row') as any
-    let rowEl = rowEls[index]
-    if (rowEl) {
-      let target = rowEl.querySelector(`[data-key="${itemCode}"]`)
-      if (target) target.click()
-    }
-  }
-
-  //回车键去到下一个输入元素
-  const handleNextIptFocus = (e?: any, target?: any) => {
-    if (target || (e.keyCode && e.keyCode == 13)) {
-      let baseTableEl = document.getElementById('baseTable')
-      if (baseTableEl) {
-        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
-
-        for (let i = 0; i < iptList.length; i++) {
-          let el = iptList[i]
-          if (el == (target || e.target)) {
-            if (iptList[i + 1]) iptList[i + 1].focus && iptList[i + 1].focus()
-            if (e.target) {
-              e.target.value = e.target.value.replace(/\n/g, '')
-            }
-            break
-          }
-        }
-      }
-    }
-  }
 
   useEffect(() => {
     onInitData();
@@ -1100,30 +1121,62 @@ export default observer(function 重点患者评估登记本(props: Props) {
       <TableCon>
         {/* {JSON.stringify(columns)} */}
         {selectedBlockId && itemConfigList.length ? (
-          <BaseTable
-            className="record-page-table"
-            loading={pageLoading}
-            dataSource={dataSource}
-            columns={columns.filter((item: any) => item)}
-            surplusHeight={surplusHeight}
-            surplusWidth={300}
-            pagination={{
-              current: pageOptions.pageIndex,
-              pageSize: pageOptions.pageSize,
-              total: total
-            }}
-            rowClassName={(record: any, idx: number) => {
-              if (record.signerName) return 'disabled-row'
+          <React.Fragment>
+            <BaseTable
+              className="record-page-table"
+              loading={pageLoading}
+              dataSource={dataSource}
+              rowSelection={codeAdapter({
+                QCRG_14_1: {
+                  selectedRowKeys,
+                  onChange: handleSelectedChange,
+                  getCheckboxProps: (record: any) => ({
+                    disabled: (() => {
+                      if (!record.id) return true
 
-              return ''
-            }}
-            onChange={(pagination: PaginationConfig) => {
-              setPageOptions({
-                pageIndex: pagination.current,
-                pageSize: pagination.pageSize
-              });
-            }}
-          />
+                      if (registerCode == 'QCRG_14_1') {
+                        if (record.auditorName || !record.signerName)
+                          return true
+                      }
+                      return false
+                    })()
+                  })
+                },
+                other: undefined
+              }, registerCode)}
+              columns={columns.filter((item: any) => item)}
+              surplusHeight={surplusHeight}
+              surplusWidth={300}
+              pagination={{
+                current: pageOptions.pageIndex,
+                pageSize: pageOptions.pageSize,
+                total: total
+              }}
+              rowClassName={(record: any, idx: number) => {
+                if (cellDisabled(record)) return 'disabled-row'
+
+                return ''
+              }}
+              onChange={(pagination: PaginationConfig) => {
+                setPageOptions({
+                  pageIndex: pagination.current,
+                  pageSize: pagination.pageSize
+                });
+              }}
+            />
+            <div className="selected-operate-con">
+              <Button
+                disabled={
+                  pageLoading ||
+                  !authStore.isRoleManage ||
+                  selectedRowKeys.length <= 0
+                }
+                type="primary"
+                onClick={() => handleAuditAll('护士长')}>
+                护士长签名
+                </Button>
+            </div>
+          </React.Fragment>
         ) : (
             <NullBox
               onClick={onAddBlock}
@@ -1133,6 +1186,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           )}
       </TableCon>
       <settingModal.Component />
+      <previewModal.Component />
     </Container>
   );
 });

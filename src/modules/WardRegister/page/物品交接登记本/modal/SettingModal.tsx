@@ -17,10 +17,11 @@ import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import BaseTabs from "src/components/BaseTabs";
 import Table from "src/modules/quality/views/qcOne/report/NursingReportDetail/components/护理工作计划/Table";
-import SetTittle from "./components/SetTittle";
+
+import SetTittle from "./../../../components/modal/children/SetTittle";
+import SetRange from "./../../../components/modal/children/SetRange";
 import { wardRegisterService } from "src/modules/WardRegister/services/WardRegisterService";
 import { authStore } from "src/stores";
-import SetRange from "./components/SetRange";
 import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 
 const Option = Select.Option;
@@ -29,6 +30,7 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => void;
   blockId: any;
   registerCode: any;
+  selectedBlockObj: any;
 }
 
 /** 设置规则 */
@@ -38,7 +40,7 @@ const rules: Rules = {
 
 export default function SettingModal(props: Props) {
   const [title, setTitle] = useState("设置");
-  let { visible, onCancel, blockId, registerCode, onOkCallBack } = props;
+  let { visible, onCancel, blockId, registerCode, onOkCallBack, selectedBlockObj } = props;
 
   let refForm = React.createRef<Form>();
 
@@ -60,6 +62,7 @@ export default function SettingModal(props: Props) {
         title: "标题设置",
         component: (
           <SetTittle
+            selectedBlockObj={selectedBlockObj}
             blockId={blockId}
             registerCode={registerCode}
             onOkCallBack={onOkCallBack}

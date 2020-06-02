@@ -16,8 +16,8 @@ import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import BaseTabs from "src/components/BaseTabs";
-import SetTittle from "./components/SetTittle";
-import SetRange from "./components/SetRange";
+import SetTittle from "./../../../components/modal/children/SetTittle";
+import SetRange from "./../../../components/modal/children/SetRange";
 import { codeAdapter } from "src/modules/WardRegister/utils/codeAdapter";
 
 const Option = Select.Option;
@@ -47,6 +47,18 @@ export default function SettingModal(props: Props) {
 
   let refForm = React.createRef<Form>();
 
+  const rangeTag = {
+    title: "交班班次与提醒设置",
+    component: (
+      <SetRange
+        blockId={blockId}
+        registerCode={registerCode}
+        onOkCallBack={onOkCallBack}
+      />
+    ),
+    index: 2
+  }
+
   const tabConfig = visible
     ? [
       {
@@ -64,20 +76,11 @@ export default function SettingModal(props: Props) {
       ...[
         codeAdapter(
           {
-            QCRG_04: {
-              title: "交班班次与提醒设置",
-              component: (
-                <SetRange
-                  blockId={blockId}
-                  registerCode={registerCode}
-                  onOkCallBack={onOkCallBack}
-                />
-              ),
-              index: 2
-            },
+            'QCRG_04,QCRG_20_1': rangeTag,
             other: null
           },
-          registerCode
+          registerCode,
+          true
         )
       ]
     ]

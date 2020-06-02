@@ -16,8 +16,8 @@ import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import BaseTabs from "src/components/BaseTabs";
-import SetTittle from "./components/SetTittle";
-import SetRange from "./components/SetRange";
+import SetTittle from "./../../../components/modal/children/SetTittle";
+// import SetRange from "./../../../components/modal/children/SetRange";
 
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
@@ -25,16 +25,17 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => void;
   blockId: any;
   registerCode: any;
+  selectedBlockObj: any;
 }
 
 /** 设置规则 */
-const rules: Rules = {
-  publicDate: val => !!val || "请填写发表日期"
-};
+// const rules: Rules = {
+//   publicDate: val => !!val || "请填写发表日期"
+// };
 
 export default function SettingModal(props: Props) {
   const [title, setTitle] = useState("设置");
-  let { visible, onCancel, blockId, registerCode, onOkCallBack } = props;
+  let { visible, onCancel, blockId, registerCode, onOkCallBack, selectedBlockObj } = props;
 
   let refForm = React.createRef<Form>();
 
@@ -44,6 +45,7 @@ export default function SettingModal(props: Props) {
         title: "标题设置",
         component: (
           <SetTittle
+            selectedBlockObj={selectedBlockObj}
             blockId={blockId}
             registerCode={registerCode}
             onOkCallBack={onOkCallBack}
