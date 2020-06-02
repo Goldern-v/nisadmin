@@ -18,9 +18,15 @@ export default function AnwserResultPannel(props: Props) {
 
   let rightRate = 0
   if (
-    baseInfo.answerRightCount &&
-    baseInfo.totalQuestionsCount &&
-    baseInfo.shortQuestionsCount
+    (
+      baseInfo.answerRightCount || baseInfo.answerRightCount === 0
+    ) &&
+    (
+      baseInfo.totalQuestionsCount || baseInfo.totalQuestionsCount === 0
+    ) &&
+    (
+      baseInfo.shortQuestionsCount || baseInfo.shortQuestionsCount === 0
+    )
   ) {
     rightRate = Math.ceil(
       baseInfo.answerRightCount /
@@ -123,7 +129,7 @@ export default function AnwserResultPannel(props: Props) {
       <div className="row">题目数量：{baseInfo.totalQuestionsCount}</div>
       <div className="row">正确率：{rightRate}%</div>
     </div>
-    <div className="title">❌错题:</div>
+    {filterQuestionList.length > 0 && <div className="title">❌错题:</div>}
     <div className="wrong-awnser-list">
       {filterQuestionList.map((item: any) =>
         <div className="wrong-awnser-item" key={item.sort}>
