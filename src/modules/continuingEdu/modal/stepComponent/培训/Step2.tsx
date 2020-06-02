@@ -23,15 +23,33 @@ import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 export interface Props {}
+import { appStore } from "src/stores";
 
 export default observer(function Step1() {
   // 组织方式
   const zzfs = [{ name: "线上", code: 1 }, { name: "线下", code: 2 }];
-  const studentCreditTypeList = [
-    { name: "院级学分", code: 1 },
-    { name: "片区学分", code: 2 },
-    { name: "病区学分", code: 3 }
+  // 学分
+  const studentCreditTypeList =
+    appStore.HOSPITAL_ID === "wh"
+      ? [
+          { name: "国家级", code: 1 },
+          { name: "省级", code: 2 },
+          { name: "市级", code: 3 }
+        ]
+      : [
+          { name: "院级学分", code: 1 },
+          { name: "片区学分", code: 2 },
+          { name: "病区学分", code: 3 }
+        ];
+  //学时
+  const studentTimeTypeList = [
+    { name: 0.5, code: 0.5 },
+    { name: 1, code: 1 },
+    { name: 2, code: 2 },
+    { name: 3, code: 3 }
   ];
+  //学时自由输入
+  const [studyTime, setStudyTime] = useState(0);
 
   const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
   const bxNursing = [
@@ -289,7 +307,31 @@ export default observer(function Step1() {
               name="studentClassHours"
               suffix="学时"
             >
-              <InputNumber />
+              {appStore.HOSPITAL_ID === "wh" ? (
+                <Select
+                  showSearch
+                  onSearch={(val: any) => setStudyTime(Number(val))}
+                >
+                  {studyTime &&
+                  studyTime !== 0.5 &&
+                  studyTime !== 1 &&
+                  studyTime !== 2 &&
+                  studyTime !== 3 ? (
+                    <Select.Option value={studyTime} key={`${studyTime}-`}>
+                      {studyTime}
+                    </Select.Option>
+                  ) : (
+                    ""
+                  )}
+                  {studentTimeTypeList.map(item => (
+                    <Select.Option value={item.code} key={item.name}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              ) : (
+                <InputNumber />
+              )}
             </Form.Field>
           </Col>
 
@@ -299,7 +341,31 @@ export default observer(function Step1() {
               name="teacherClassHours"
               suffix="学时"
             >
-              <InputNumber />
+              {appStore.HOSPITAL_ID === "wh" ? (
+                <Select
+                  showSearch
+                  onSearch={(val: any) => setStudyTime(Number(val))}
+                >
+                  {studyTime &&
+                  studyTime !== 0.5 &&
+                  studyTime !== 1 &&
+                  studyTime !== 2 &&
+                  studyTime !== 3 ? (
+                    <Select.Option value={studyTime} key={`${studyTime}-`}>
+                      {studyTime}
+                    </Select.Option>
+                  ) : (
+                    ""
+                  )}
+                  {studentTimeTypeList.map(item => (
+                    <Select.Option value={item.code} key={item.name}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              ) : (
+                <InputNumber />
+              )}
             </Form.Field>
           </Col>
 
