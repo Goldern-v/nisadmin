@@ -304,6 +304,7 @@ const defaultYNJX: any = {
   f00007: "", //技术职称
   f00005: "", //所在科室名称
   f00127: "", //入科时间
+  f00138: "", //指导老师
   f00128: "", //拟进修科室编码
   f00129: "", //拟进修科室名称
   f00130: "", //拟进修开始时间
@@ -371,6 +372,9 @@ class FormApplyModal {
   @observable public selectedDate: any = crrentMonth(); //日期
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
+  @observable public teacherName = ""; //导师
+  @observable public teacherNameList = []; //导师选项
+  @observable public selectLoading = false;
   @observable public LCDJFormContent: DefaultLCDJ = cloneJson(defaultLCDJ); //临床带教
   @observable public RYZYFormContent: DefaultRYZY = cloneJson(defaultRYZY); //人员执业
   @observable public GFXZLFormContent: DefaultGFXZL = cloneJson(defaultGFXZL); //高风险诊疗
@@ -401,6 +405,15 @@ class FormApplyModal {
       this.total = res.data.totalCount;
       this.pageIndex = res.data.pageIndex;
       this.pageSize = res.data.pageSize;
+    });
+  }
+
+  //按需获取前100个导师
+  initData() {
+    this.selectLoading = true;
+    trainingSettingApi.getAllEmpName(this.teacherName).then(res => {
+      this.selectLoading = false;
+      this.teacherNameList = res.data.list || [];
     });
   }
 
@@ -440,8 +453,9 @@ class FormApplyModal {
       token || ""
     )}`;
   }
-  async init() {
-    await this.onload();
+  init() {
+    this.onload();
+    this.initData();
     this.getForm();
   }
 }

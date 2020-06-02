@@ -58,5 +58,15 @@ export default class TrainingSettingApi extends BaseApiService {
   public getAllDeptList() {
     return this.get(`/dept/nursingUnit/all`);
   }
+
+  // 获取导师
+  public getAllEmpName(empName?: any) {
+    let obj: any = {
+      empName,
+      pageIndex: 1,
+      pageSize: 100
+    };
+    return this.post(`studyAndTrain/basicInformation/user/getPage`, obj);
+  }
 }
 export const trainingSettingApi = new TrainingSettingApi();

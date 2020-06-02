@@ -11,11 +11,12 @@ interface Props {}
 export default observer(function YNJX(props: Props) {
   const YNJXContent = formApplyModal.YNJXFormContent;
   const [deptList, setDeptList] = useState([]); //所有科室
-
   useLayoutEffect(() => {
     trainingSettingApi.getAllDeptList().then((res: any) => {
-      console.log(res.data.deptList, "pppppp");
       setDeptList(res.data.deptList);
+    });
+    trainingSettingApi.getAllEmpName("").then((res: any) => {
+      console.log(res.data, "倒是导师");
     });
   }, []);
 
@@ -25,9 +26,9 @@ export default observer(function YNJX(props: Props) {
         <colgroup>
           <col width="6%" />
           <col width="10%" />
-          <col width="13%" />
+          <col width="11%" />
+          <col width="11%" />
           <col width="12%" />
-          <col width="9%" />
           <col width="13%" />
           <col width="14%" />
           <col width="12%" />
@@ -70,18 +71,44 @@ export default observer(function YNJX(props: Props) {
           </tr>
           <tr>
             <td colSpan={2}>参与工作时间</td>
-            <td colSpan={3}>
+            <td colSpan={2}>
               <Input
                 value={YNJXContent.f00006}
                 onChange={(e: any) => (YNJXContent.f00006 = e.target.value)}
               />
             </td>
             <td>技术职称</td>
-            <td colSpan={3}>
+            <td>
               <Input
                 value={YNJXContent.f00007}
                 onChange={(e: any) => (YNJXContent.f00007 = e.target.value)}
               />
+            </td>
+            <td>指导老师</td>
+            <td colSpan={2}>
+              <Select
+                value={YNJXContent.f00138}
+                onChange={(val: any) => {
+                  YNJXContent.f00138 = val;
+                }}
+                showArrow={false}
+                style={{ width: "100%" }}
+                showSearch
+                filterOption={false}
+                onSearch={(value: any) => {
+                  formApplyModal.teacherName = value;
+                  formApplyModal.initData();
+                }}
+                loading={formApplyModal.selectLoading}
+              >
+                {formApplyModal.teacherNameList.map(
+                  (item: any, index: number) => (
+                    <Select.Option value={item.empNo} key={index}>
+                      {item.empName}
+                    </Select.Option>
+                  )
+                )}
+              </Select>
             </td>
           </tr>
           <tr>

@@ -1,4 +1,3 @@
-import * as React from "react";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -92,6 +91,8 @@ export const Wrapper = styled.div`
     word-break: break-all;
     word-wrap: break-word;
     text-align: center;
+    font-size: 13px !important;
+    padding: 3px 0 !important;
   }
   /deep/ .ant-input-disabled {
     background-color: #fff !important;
@@ -104,8 +105,9 @@ export const Wrapper = styled.div`
     margin-right: 0 !important;
   }
   .img {
-    height: 75px;
-    width: ;
+    display: inline-block;
+    height: 30px;
+    width: 85px;
   }
 `;
 export const CJJSWrapper = styled.div`
@@ -171,6 +173,8 @@ export const CJJSWrapper = styled.div`
     width: 75px;
     border-radius: 0;
     text-align: center;
+    font-size: 13px !important;
+    padding: 3px 0 !important;
   }
   /deep/ .ant-input-disabled {
     background-color: #fff !important;

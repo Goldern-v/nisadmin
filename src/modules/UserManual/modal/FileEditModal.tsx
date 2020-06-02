@@ -112,19 +112,19 @@ export default function FileEditModal(props: Props) {
       };
       data.append("type", type);
       if (params && Object.keys(params).length > 0) {
+        //判断是否有文件名选择是重新上传还是修改
         if (nameEl.value) {
-          data.append("id", params.id);
-          let obj = {
-            id: params.id,
-            fileName: formData.fileName
-          };
-          userManualApi.update(obj).then(
+          //重新上传
+          Promise.all([
+            userManualApi.delete(params.id),
+            userManualApi.upload(data)
+          ]).then(
             res => {
-              if (res.code == 200) {
+              if (res[1].code == 200) {
                 successCallback(null, "修改成功");
               } else {
                 let msg = "修改失败";
-                if (res.desc) msg = res[1].desc;
+                if (res[1].desc) msg = res[1].desc;
                 failedCallback(null, msg);
               }
             },
@@ -132,6 +132,27 @@ export default function FileEditModal(props: Props) {
               failedCallback(err);
             }
           );
+        } else {
+          //修改
+          userManualApi
+            .update({
+              id: params.id,
+              fileName: formData.fileName
+            })
+            .then(
+              res => {
+                if (res.code == 200) {
+                  successCallback(null, "修改成功");
+                } else {
+                  let msg = "修改失败";
+                  if (res.desc) msg = res.desc;
+                  failedCallback(null, msg);
+                }
+              },
+              err => {
+                failedCallback(err);
+              }
+            );
         }
       } else {
         //新建

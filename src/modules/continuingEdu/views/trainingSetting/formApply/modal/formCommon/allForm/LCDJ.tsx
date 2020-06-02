@@ -170,9 +170,8 @@ export default observer(function LCDJ(props: Props) {
                 申请人签名：
                 <img
                   className="img"
-                  src={formApplyModal.signUrl(lCDJContent.f00020)}
+                  src={formApplyModal.signUrl("admin")}
                   alt=""
-                  style={{ height: "35px" }}
                 />
               </SpanMiddle>
               <SpanMiddle className="specialInput">

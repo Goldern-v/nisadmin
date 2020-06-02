@@ -19,7 +19,10 @@ export default function EditModal(props: Props) {
 
   const rules: Rules = {
     type: val => !!val || "目录名不能为空",
-    orderNo: val => !!val || "排序号不能为空"
+    orderNo: val =>
+      isNaN(Number(val)) || val === "" || Number(val) < 0
+        ? "排序必填且为正整数"
+        : ""
   };
 
   useEffect(() => {
