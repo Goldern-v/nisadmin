@@ -1127,7 +1127,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                QCRG_14_1: {
+                'QCRG_14_1,QCRG_10': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
                   getCheckboxProps: (record: any) => ({
@@ -1143,7 +1143,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                   })
                 },
                 other: undefined
-              }, registerCode)}
+              }, registerCode, true)}
               columns={columns.filter((item: any) => item)}
               surplusHeight={surplusHeight}
               surplusWidth={300}
@@ -1165,16 +1165,20 @@ export default observer(function 重点患者评估登记本(props: Props) {
               }}
             />
             <div className="selected-operate-con">
-              <Button
-                disabled={
-                  pageLoading ||
-                  !authStore.isRoleManage ||
-                  selectedRowKeys.length <= 0
-                }
-                type="primary"
-                onClick={() => handleAuditAll('护士长')}>
-                护士长签名
-                </Button>
+              {codeAdapter({
+                'QCRG_14_1,QCRG_10':
+                  <Button
+                    disabled={
+                      pageLoading ||
+                      !authStore.isRoleManage ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => handleAuditAll('护士长')}>
+                    护士长签名
+                </Button>,
+                other: <span></span>,
+              }, registerCode, true)}
             </div>
           </React.Fragment>
         ) : (
