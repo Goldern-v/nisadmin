@@ -628,22 +628,23 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     ? item.options.split(";").filter((item: any) => item)
                     : undefined
                 }
+                onFocus={() => fixInputValue(record, codeAdapter({
+                  QCRG_19_2: ['总计天数'],
+                  other: []
+                }, registerCode), index, 100)}
                 defaultValue={text}
                 onChange={value => {
                   console.log('change')
                   record.modified = true
                   record[item.itemCode] = value.toString().replace(/\n/g, '');
-                  updateDataSource()
+
                 }}
                 onBlur={() => {
-                  let rowEls = document.querySelectorAll('.ant-table-row') as any
-                  let rowEl = rowEls[index]
-
-                  if (rowEl) {
-                    let target = rowEl.querySelector(`[data-key="${item.itemCode}"]`) as HTMLInputElement
-                    let val = (record[item.itemCode] || '').toString().replace(/\n/g, '')
-                    target.value = val
-                  }
+                  updateDataSource()
+                  fixInputValue(record, codeAdapter({
+                    QCRG_19_2: ['总计天数'],
+                    other: []
+                  }, registerCode), index, 100)
                 }}
                 onSelect={value => {
                   if (
@@ -1001,7 +1002,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
     handleNextIptFocus,
     handleUpload,
     handleDeleteRow,
-    handleAuditAll
+    handleAuditAll,
+    fixInputValue,
+    handleCopyCreateRow
   } = getFun({
     registerCode,
     registerName,
@@ -1046,7 +1049,6 @@ export default observer(function 重点患者评估登记本(props: Props) {
             修订
           </Button>
         )}
-
         <span className="label">记录</span>
         <Select
           value={selectedBlockId}
@@ -1107,8 +1109,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                       getPage();
                     }
                   })
-                }
-              >
+                }>
                 设置
               </Button>
             )}
@@ -1127,20 +1128,9 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10': {
+                'QCRG_14_1,QCRG_10,QCRG_14_2': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
-                  getCheckboxProps: (record: any) => ({
-                    disabled: (() => {
-                      if (!record.id) return true
-
-                      if (registerCode == 'QCRG_14_1') {
-                        if (record.auditorName || !record.signerName)
-                          return true
-                      }
-                      return false
-                    })()
-                  })
                 },
                 other: undefined
               }, registerCode, true)}
@@ -1166,17 +1156,38 @@ export default observer(function 重点患者评估登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                'QCRG_14_1,QCRG_10':
+                'QCRG_14_2':
                   <Button
                     disabled={
                       pageLoading ||
-                      !authStore.isRoleManage ||
                       selectedRowKeys.length <= 0
                     }
                     type="primary"
-                    onClick={() => handleAuditAll('护士长')}>
-                    护士长签名
-                </Button>,
+                    onClick={() => handleCopyCreateRow()}>
+                    复制新增
+                  </Button>,
+                'QCRG_14_1,QCRG_10':
+                  <React.Fragment>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        !authStore.isRoleManage ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleAuditAll('护士长')}>
+                      护士长签名
+                    </Button>
+                    <Button
+                      disabled={
+                        pageLoading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => handleCopyCreateRow()}>
+                      复制新增
+                    </Button>
+                  </React.Fragment>,
                 other: <span></span>,
               }, registerCode, true)}
             </div>

@@ -135,7 +135,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <Input
-            disabled={!!record.signerName}
+            disabled={cellDisabled(record)}
             defaultValue={text}
             onKeyUp={handleNextIptFocus}
             onChange={value => {
@@ -172,7 +172,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
           } else {
             children = (
               <AutoComplete
-                disabled={!!record.signerName}
+                disabled={cellDisabled(record)}
                 dataSource={
                   item.options
                     ? item.options.split(";").map((item: any) => item || " ")
@@ -285,7 +285,7 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <DoCon>
-            {record.signerName ? (
+            {cellDisabled(record) ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
                 <span
@@ -358,9 +358,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
   return (
     <Wrapper>
       <PageHeader>
-        <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
+        {authStore.isNotANormalNurse && <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
           修订登记本
-        </Button>
+        </Button>}
         <span className="label">修订记录</span>
         <Select
           value={selectedBlockId}
@@ -388,62 +388,19 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         />
         <span className="label">科室</span>
         <DeptSelect onChange={() => { }} style={{ width: 150 }} />
-        {/* <span className="label">危重程度</span>
-        <Select
-          style={{ width: 70, minWidth: 70 }}
-          value={selectedWzcd}
-          onChange={(value: any) => {
-            setSelectedWzcd(value);
-          }}
-        >
-          {wzcdConfigList.map((item: any) => (
-            <Select.Option value={item.value} key={item.value}>
-              {item.label}
-            </Select.Option>
-          ))}
-        </Select>
-        <span className="label">护理级别</span>
-        <Select
-          style={{ width: 70, minWidth: 70 }}
-          value={selectedHljb}
-          onChange={(value: any) => {
-            setSelectedHljb(value);
-          }}
-        >
-          {hljbConfigList.map((item: any) => (
-            <Select.Option value={item.value} key={item.value}>
-              {item.label}
-            </Select.Option>
-          ))}
-        </Select>
-        <span className="label">自理能力</span>
-        <Select
-          style={{ width: 70, minWidth: 70 }}
-          value={selectedZlnl}
-          onChange={(value: any) => {
-            setSelectedZlnl(value);
-          }}
-        >
-          {zlnlConfigList.map((item: any) => (
-            <Select.Option value={item.value} key={item.value}>
-              {item.label}
-            </Select.Option>
-          ))}
-        </Select> */}
-
         <Place />
 
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
-            <Button type="primary" onClick={createRow}>
+            {/* <Button type="primary" onClick={createRow}>
               新建
-            </Button>
+            </Button> */}
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
             <Button onClick={exportExcel}>导出</Button>
-            <Button
+            {authStore.isNotANormalNurse && <Button
               onClick={() =>
                 settingModal.show({
                   selectedBlockObj,
@@ -456,8 +413,8 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
               }
             >
               设置
-            </Button>
-            <Button onClick={onDelete}>删除</Button>
+            </Button>}
+            {authStore.isNotANormalNurse && <Button onClick={onDelete}>删除</Button>}
           </React.Fragment>
         )}
       </PageHeader>

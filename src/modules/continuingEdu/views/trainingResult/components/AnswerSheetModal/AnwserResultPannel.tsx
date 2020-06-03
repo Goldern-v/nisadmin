@@ -34,6 +34,7 @@ export default function AnwserResultPannel(props: Props) {
       * 10000
     ) / 100
   }
+  if (isNaN(rightRate)) rightRate = 0
 
   const awnserTypeName = (type: number) => {
     switch (type) {

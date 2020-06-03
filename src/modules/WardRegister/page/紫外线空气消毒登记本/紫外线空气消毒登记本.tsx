@@ -30,6 +30,7 @@ import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
 import { signRowObj } from "../../utils/signRowObj";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
+import DatePickerColumnRender from './../../components/DatePickerColumnRender'
 export interface Props {
   payload: any;
 }
@@ -120,36 +121,61 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
         width: (15 * item.width || 50) + 8,
         dataIndex: item.itemCode,
         render(text: string, record: any, index: number) {
-          const children = (
-            <AutoComplete
-              disabled={cellDisabled(record)}
-              dataSource={
-                item.options
-                  ? item.options.split(";").map((item: any) => item || " ")
-                  : undefined
-              }
-              defaultValue={text}
-              onChange={value => {
-                record.modified = true
-                record[item.itemCode] = value.toString().replace(/\n/g, '');
+          let children: JSX.Element
+
+          let dateItemCodeArr = ['开始时间', '结束时间']
+          if (dateItemCodeArr.indexOf(item.itemCode) >= 0) {
+            children = <DatePickerColumnRender
+              {...{
+                className: '',
+                cellDisabled,
+                record,
+                itemCfg: item,
+                index,
+                format: "YYYY-MM-DD HH:mm",
+                showTime: true,
+                handleNextIptFocus,
+                updateDataSource,
+                registerCode
               }}
-              onBlur={() => updateDataSource()}
-              onSelect={() => updateDataSource()}
-            >
-              <TextArea
-                autosize={{ maxRows: 1 }}
-                data-key={item.itemCode}
-                onKeyUp={handleNextIptFocus}
-                style={{
-                  lineHeight: 1.2,
-                  overflow: "hidden",
-                  overflowY: "hidden",
-                  padding: "9px 2px",
-                  textAlign: "center"
+            />
+          } else {
+            children = (
+              <AutoComplete
+                disabled={cellDisabled(record)}
+                dataSource={
+                  item.options
+                    ? item.options.split(";").map((item: any) => item || " ")
+                    : undefined
+                }
+                defaultValue={text}
+                onChange={value => {
+                  record.modified = true
+                  record[item.itemCode] = value.toString().replace(/\n/g, '');
                 }}
-              />
-            </AutoComplete>
-          );
+                onFocus={() => fixInputValue(record, ['累计时间'], index, 100)}
+                onBlur={() => {
+                  updateDataSource()
+                  fixInputValue(record, ['累计时间'], index, 100)
+                }}
+                onSelect={() => updateDataSource()}
+              >
+                <TextArea
+                  autosize={{ maxRows: 1 }}
+                  data-key={item.itemCode}
+                  onKeyUp={handleNextIptFocus}
+                  style={{
+                    lineHeight: 1.2,
+                    overflow: "hidden",
+                    overflowY: "hidden",
+                    padding: "9px 2px",
+                    textAlign: "center"
+                  }}
+                />
+              </AutoComplete>
+            )
+          }
+
           if (
             item.itemCode == "消毒类别" &&
             (text == "酒精擦拭灯管" || text == "更换灯管")
@@ -228,7 +254,8 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     cellDisabled,
     exportExcel,
     handleNextIptFocus,
-    handleDeleteRow
+    handleDeleteRow,
+    fixInputValue
   } = getFun({
     registerCode,
     registerName,
@@ -264,9 +291,10 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
   return (
     <Wrapper>
       <PageHeader>
-        <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
-          修订登记本
-        </Button>
+        {authStore.isNotANormalNurse &&
+          <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
+            修订登记本
+        </Button>}
         <span className="label">修订记录</span>
         <Select
           value={selectedBlockId}
@@ -294,49 +322,6 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
         />
         <span className="label">科室</span>
         <DeptSelect onChange={() => { }} style={{ width: 150 }} />
-        {/* <span className="label">危重程度</span>
-        <Select
-          style={{ width: 70, minWidth: 70 }}
-          value={selectedWzcd}
-          onChange={(value: any) => {
-            setSelectedWzcd(value);
-          }}
-        >
-          {wzcdConfigList.map((item: any) => (
-            <Select.Option value={item.value} key={item.value}>
-              {item.label}
-            </Select.Option>
-          ))}
-        </Select>
-        <span className="label">护理级别</span>
-        <Select
-          style={{ width: 70, minWidth: 70 }}
-          value={selectedHljb}
-          onChange={(value: any) => {
-            setSelectedHljb(value);
-          }}
-        >
-          {hljbConfigList.map((item: any) => (
-            <Select.Option value={item.value} key={item.value}>
-              {item.label}
-            </Select.Option>
-          ))}
-        </Select>
-        <span className="label">自理能力</span>
-        <Select
-          style={{ width: 70, minWidth: 70 }}
-          value={selectedZlnl}
-          onChange={(value: any) => {
-            setSelectedZlnl(value);
-          }}
-        >
-          {zlnlConfigList.map((item: any) => (
-            <Select.Option value={item.value} key={item.value}>
-              {item.label}
-            </Select.Option>
-          ))}
-        </Select> */}
-
         <Place />
 
         {selectedBlockId && (
@@ -349,21 +334,23 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
               保存
             </Button>
             <Button onClick={exportExcel}>导出</Button>
-            <Button
-              onClick={() =>
-                settingModal.show({
-                  selectedBlockObj,
-                  blockId: selectedBlockId,
-                  registerCode,
-                  onOkCallBack: () => {
-                    getPage();
-                  }
-                })
-              }
-            >
-              设置
-            </Button>
-            <Button onClick={onDelete}>删除</Button>
+            {authStore.isNotANormalNurse &&
+              <Button
+                onClick={() =>
+                  settingModal.show({
+                    selectedBlockObj,
+                    blockId: selectedBlockId,
+                    registerCode,
+                    onOkCallBack: () => {
+                      getPage();
+                    }
+                  })
+                }
+              >
+                设置
+            </Button>}
+            {authStore.isNotANormalNurse &&
+              <Button onClick={onDelete}>删除</Button>}
           </React.Fragment>
         )}
       </PageHeader>

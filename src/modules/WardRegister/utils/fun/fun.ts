@@ -1,10 +1,11 @@
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { authStore } from "src/stores";
 import { globalModal } from "src/global/globalModal";
-import { message } from "src/vendors/antd";
+import { message, Modal } from "src/vendors/antd";
 import moment from "moment";
 import service from "src/services/api";
 import { fileDownload } from "src/utils/file/file";
+import Item from "antd/lib/list/Item";
 
 export interface ItemConfigItem {
   blockId: number;
@@ -394,15 +395,37 @@ export function getFun(context: any) {
   }
 
   /**护士长批量签名 */
-  const handleAuditAll = (aside?: string) => {
+  const handleAuditAll = (aside?: string, ) => {
     aside = aside || '护士长'
     if (selectedRowKeys.length <= 0) {
       message.warn('未勾选项目')
       return
     }
 
-    let ids = dataSource
+    let selectedRows = dataSource
       .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
+
+    let auditItems = selectedRows.filter((item: any) => item.auditorName)
+    let noSignItems = selectedRows.filter((item: any) => !item.signerName)
+    if (auditItems || noSignItems) {
+      let textArr = [] as string[]
+      if (noSignItems.length > 0) {
+        let idxArr = noSignItems.map((item: any) => dataSource.indexOf(item) + 1)
+        textArr.push(`第${idxArr.join('、')}条未签名`)
+      }
+      if (auditItems.length > 0) {
+        let idxArr = auditItems.map((item: any) => dataSource.indexOf(item) + 1)
+        textArr.push(`第${idxArr.join('、')}条${aside}已签名`)
+      }
+      Modal.warn({
+        centered: true,
+        title: '提示',
+        content: textArr.join(',')
+      })
+      return
+    }
+
+    let ids = selectedRows
       .map((item: any) => ({ id: item.id || '' }))
 
     globalModal
@@ -431,6 +454,63 @@ export function getFun(context: any) {
       })
   }
 
+  /**复制新增 */
+  const handleCopyCreateRow = () => {
+    if (selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+
+    globalModal
+      .confirm('复制新增', '是否复制新增选择的行?')
+      .then((res) => {
+        let selectedRows = dataSource.filter((item: any) =>
+          selectedRowKeys.indexOf(item.key) >= 0)
+
+        let newRows = selectedRows.map((item: any) => {
+          let newItem = JSON.parse(JSON.stringify(item))
+          delete newItem.id
+          return {
+            ...newItem,
+            recordDate: moment().format('YYYY-MM-DD'),
+            signerName: '',
+            signerNo: '',
+            auditorName: '',
+            auditorNo: ''
+          }
+        })
+
+        let newDataSource = [...newRows, ...dataSource]
+        setDataSource([])
+        setSelectedRowKeys([])
+        setTimeout(() => {
+          setDataSource(newDataSource)
+        })
+      })
+  }
+
+  /**修复AutoComplete获取焦点时 赋值错误的问题 */
+  const fixInputValue = (record: any, itemCodeArr: string[], index: number, timeout?: number) => {
+    if (itemCodeArr.length > 0)
+      setTimeout(() => {
+        let rowEls = document.querySelectorAll('.ant-table-row') as any
+        let rowEl = rowEls[index]
+
+        if (rowEl) {
+          for (let i = 0; i < itemCodeArr.length; i++) {
+            let itemCode = itemCodeArr[i]
+            let target = rowEl.querySelector(`[data-key="${itemCode}"]`) as HTMLInputElement
+
+            if (target) {
+              let val = (record[itemCode] || '').toString().replace(/\n/g, '')
+              target.value = val
+              target.innerHTML = val
+            }
+          }
+        }
+      }, timeout || 0)
+  }
+
   return {
     onInitData,
     getPage,
@@ -444,6 +524,8 @@ export function getFun(context: any) {
     tiggerAutoCompleteClick,
     handleUpload,
     handleDeleteRow,
-    handleAuditAll
+    handleAuditAll,
+    handleCopyCreateRow,
+    fixInputValue
   };
 }
