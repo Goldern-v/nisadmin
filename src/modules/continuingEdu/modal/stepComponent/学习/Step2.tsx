@@ -39,6 +39,7 @@ export default observer(function Step2() {
   ];
   //学时
   const studentTimeTypeList = [
+    { name: 0, code: 0 },
     { name: 0.5, code: 0.5 },
     { name: 1, code: 1 },
     { name: 2, code: 2 },
