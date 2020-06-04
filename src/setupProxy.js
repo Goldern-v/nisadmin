@@ -13,8 +13,9 @@ module.exports = function(app) {
       // target: "http://nurse.cr-health.com:34001",
       // target: 'http://192.168.2.75:8080',
       // target: "http://nurse.cr-health.com:34002", //武汉测试
-      target: "http://120.25.105.45:9864", //武汉继续教育接口测试
+      // target: "http://120.25.105.45:9864", //武汉继续教育接口测试
       // target: 'http://192.168.2.144:8062',
+      target: "http://192.168.20.90:8080", //广旭
       // target: 'http://192.168.2.75:8080',  //俊涛
       // target: 'http://172.16.199.58:8062',  //俊涛
       // target: 'http://172.16.199.49:8062', //晨昊

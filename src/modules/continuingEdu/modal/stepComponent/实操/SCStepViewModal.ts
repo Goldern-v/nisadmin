@@ -35,7 +35,8 @@ const defaultStepData2: any = {
   /** 题目统计信息 */
   scoreItems: [],
   totalScores: 0,
-  passScores: 0
+  passScores: 0,
+  socreInApp: 1 //是否app评分 --1是 0否
 };
 
 type DefaultStepData2 = typeof defaultStepData2;
@@ -148,6 +149,7 @@ class StepViewModal {
         scoreItems: this.stepData2.scoreItems,
         totalScores: this.stepData2.totalScores,
         passScores: this.stepData2.passScores,
+        socreInApp: this.stepData2.socreInApp,
         scorePersonList: this.stepData2.scorePersonList.reduce(
           (total: any[], item: any) => {
             return [

@@ -9,6 +9,8 @@ import { stepViewModal } from "../StepViewModal";
 import { InputNumber } from "antd/es";
 import { observer } from "mobx-react-lite";
 import { scStepViewModal } from "./SCStepViewModal";
+import { authStore, appStore } from "src/stores";
+
 export interface Props {
   value?: any;
   onChange?: any;
@@ -113,10 +115,12 @@ export default observer(function UpdateTable(props: Props) {
 
   const addList = () => {
     // 实操习题上传最多不可以超过4条
-    if (props.type && props.type === "sc") {
-      if (value && value.length > 3) {
-        message.warning("评分项最多只可添加4项");
-        return;
+    if (appStore.HOSPITAL_ID !== "wh") {
+      if (props.type && props.type === "sc") {
+        if (value && value.length > 3) {
+          message.warning("评分项最多只可添加4项");
+          return;
+        }
       }
     }
     onChange([

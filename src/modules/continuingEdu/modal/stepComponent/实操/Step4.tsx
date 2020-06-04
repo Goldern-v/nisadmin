@@ -24,10 +24,12 @@ import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
 import { cloneJson } from "src/utils/json/clone";
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
+import { appStore } from "src/stores";
 
 export interface Props {}
 
 export default observer(function Step4() {
+  const [isOk, setIsOk] = useState(false); // app评分开关默认值
   const testPage = createModal(TestPageModal); // 习题预览弹窗
   // 组织方式
 
@@ -41,6 +43,16 @@ export default observer(function Step4() {
 
   const onFormChange = (name: string, value: any, from: Form) => {
     let data = from.getFields();
+    if (appStore.HOSPITAL_ID == "wh") {
+      if (data.scoreItems && data.scoreItems.length > 4) {
+        setIsOk(true);
+        stepViewModal.stepData2.socreInApp = 0;
+        message.warning("评分项超过4项只能在PC端进行评分，无法在app操作！");
+        return;
+      } else {
+        setIsOk(false);
+      }
+    }
     Object.assign(stepViewModal.stepData2, data);
   };
 
@@ -71,11 +83,33 @@ export default observer(function Step4() {
           </Col>
         </Row>
         <Row style={{ marginTop: 20 }}>
-          <Col span={24}>
-            <Form.Field label={`上传题库`} name="scoreItems">
-              <UpdateTable type="sc" />
-            </Form.Field>
-          </Col>
+          {appStore.HOSPITAL_ID == "wh" ? (
+            <Col span={24} style={{ height: "28px" }}>
+              <span className="labelSpan">上传题库</span>
+              <Checkbox
+                className="checkbox"
+                disabled={isOk}
+                value={stepViewModal.stepData2.socreInApp}
+                checked={stepViewModal.stepData2.socreInApp ? true : false}
+                onChange={(e: any) => {
+                  e.target.checked
+                    ? (stepViewModal.stepData2.socreInApp = 1)
+                    : (stepViewModal.stepData2.socreInApp = 0);
+                }}
+              >
+                app评分
+              </Checkbox>
+              <Form.Field label={``} name="scoreItems">
+                <UpdateTable type="sc" />
+              </Form.Field>
+            </Col>
+          ) : (
+            <Col span={24}>
+              <Form.Field label={`上传题库`} name="scoreItems">
+                <UpdateTable type="sc" />
+              </Form.Field>
+            </Col>
+          )}
         </Row>
       </Form>
 
@@ -86,6 +120,14 @@ export default observer(function Step4() {
 });
 const Wrapper = styled.div`
   margin: 40px 100px 20px;
+  .labelSpan {
+    font-size: 14px;
+    margin-left: 42px;
+  }
+  .checkbox {
+    margin: 5px 0 10px 28px;
+    font-size: 13px;
+  }
 `;
 
 const DateSelectCon = styled.div`
