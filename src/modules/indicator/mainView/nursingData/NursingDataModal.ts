@@ -5,6 +5,8 @@ import { fileDownload } from "src/utils/file/file";
 
 class NursingDataModal {
   @observable public selectedDeptType = ""; //科室
+  @observable public deptList = []; //所有科室
+  @observable public isBigScreenOk = ""; //是否为大屏
   @observable public selectedDate: any = crrentMonth(); //日期
   @observable public dataList = {
     nurseCount: {
@@ -81,6 +83,20 @@ class NursingDataModal {
     };
   }
 
+  async initData() {
+    console.log(this.isBigScreenOk, "this.isBigScreenOk");
+    await Promise.all([
+      //类型
+      nursingDataApi
+        .getNursingUnit(
+          this.isBigScreenOk === "true" ? "nursingUnitPub" : "nursingUnit"
+        )
+        .then(res => {
+          this.deptList = res.data.deptList;
+        })
+    ]);
+  }
+
   //查询数据
   onload() {
     this.dataLoading = true;
@@ -98,7 +114,8 @@ class NursingDataModal {
   }
 
   async init() {
-    await this.onload();
+    await this.initData();
+    this.onload();
   }
 }
 

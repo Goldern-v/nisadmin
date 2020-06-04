@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { observer } from "mobx-react-lite";
-import { authStore } from "src/stores";
+import { appStore } from "src/stores";
 import { PageTitle } from "src/components/common";
 import { DatePicker, Select, Button, message } from "src/vendors/antd";
 import { nursingDataModal } from "../NursingDataModal";
@@ -12,10 +12,10 @@ interface Props {
 }
 export default observer(function Header(props: Props) {
   const Title = props.getTitle || "";
-  const deptList = authStore.deptList;
 
   useEffect(() => {
-    nursingDataModal.onload();
+    nursingDataModal.isBigScreenOk = appStore.queryObj.isBigScreenOk || "";
+    nursingDataModal.init();
   }, []);
 
   return (
@@ -38,14 +38,6 @@ export default observer(function Header(props: Props) {
             第二季度: [moment("2020-04-01"), moment("2020-06-30")],
             第三季度: [moment("2020-07-01"), moment("2020-09-30")],
             第四季度: [moment("2020-10-01"), moment("2020-12-31")]
-            // 下月: [
-            //   moment()
-            //     .month(moment().month() + 1)
-            //     .startOf("month"),
-            //   moment()
-            //     .month(moment().month() + 1)
-            //     .endOf("month")
-            // ]
           }}
         />
         <span>科室：</span>
@@ -58,7 +50,7 @@ export default observer(function Header(props: Props) {
           }}
         >
           <Select.Option value="">全部</Select.Option>
-          {deptList.map((item: any, index: number) => (
+          {nursingDataModal.deptList.map((item: any, index: number) => (
             <Select.Option value={item.code} key={item.code}>
               {item.name}
             </Select.Option>
