@@ -4,6 +4,7 @@ import { Input, Radio } from "antd";
 import { observer } from "mobx-react-lite";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
 import { Wrapper, SpanMiddle, Span } from "../common";
+
 interface Props {}
 
 export default observer(function LCDJ(props: Props) {
@@ -19,7 +20,7 @@ export default observer(function LCDJ(props: Props) {
             onChange={(e: any) => (lCDJContent.f00005 = e.target.value)}
           />
         </span>
-        <span style={{ marginLeft: "150px" }} className="specialInput">
+        <span style={{ marginLeft: "160px" }} className="specialInput">
           申请日期：
           <Input
             value={lCDJContent.f00137}
@@ -143,21 +144,21 @@ export default observer(function LCDJ(props: Props) {
               </Radio.Group>
             </td>
           </tr>
-          <tr style={{ height: "125px" }}>
+          <tr style={{ height: "110px" }}>
             <td colSpan={2}>教学培训经历</td>
             <td colSpan={6}>
               <Input.TextArea
-                rows={5}
+                rows={4}
                 value={lCDJContent.f00017}
                 onChange={(e: any) => (lCDJContent.f00017 = e.target.value)}
               />
             </td>
           </tr>
-          <tr style={{ height: "125px" }}>
+          <tr style={{ height: "110px" }}>
             <td colSpan={2}>院内外授课/授课竞赛/技能竞赛情况</td>
             <td colSpan={6}>
               <Input.TextArea
-                rows={5}
+                rows={4}
                 value={lCDJContent.f00018}
                 onChange={(e: any) => (lCDJContent.f00018 = e.target.value)}
               />
@@ -180,17 +181,26 @@ export default observer(function LCDJ(props: Props) {
               </SpanMiddle>
             </td>
           </tr>
-          <tr style={{ height: "80px" }}>
+          <tr style={{ height: "90px" }}>
             <td colSpan={2}>科室意见</td>
-            <td colSpan={6} className="vailgnBottom">
-              <SpanMiddle className="specialInput">
-                科室护长签名：
-                <Input disabled />
-              </SpanMiddle>
-              <SpanMiddle className="specialInput">
-                日期：
-                <Input disabled />
-              </SpanMiddle>
+            <td colSpan={6}>
+              <div className="vailgnTop godie">
+                <Input.TextArea />
+              </div>
+              <div className="vailgnBottom">
+                <SpanMiddle className="specialInput">
+                  科室护长签名：
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl("admin")}
+                    alt=""
+                  />
+                </SpanMiddle>
+                <SpanMiddle className="specialInput">
+                  日期：
+                  <Input disabled value={lCDJContent.f00025} />
+                </SpanMiddle>
+              </div>
             </td>
           </tr>
           <tr style={{ height: "80px" }}>
