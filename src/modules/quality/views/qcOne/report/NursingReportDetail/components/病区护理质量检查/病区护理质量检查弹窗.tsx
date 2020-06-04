@@ -17,6 +17,7 @@ export default function 病区护理质量检查弹窗(props: Props) {
   let { sectionId, setData, data } = props
   let cloneData: any = cloneJson(data || { list: [] })
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
+  console.log(sectionId)
   const columns: ColumnProps<any>[] = [
     {
       title: '序号',

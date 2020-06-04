@@ -84,6 +84,8 @@ export default observer(function BaseModal(props: Props) {
     if (visible) {
       let data = qualityAnalysisReportViewModal.getSectionData(sectionData.sectionId)
       setData(data)
+    } else {
+      setData(undefined)
     }
   }, [visible])
 

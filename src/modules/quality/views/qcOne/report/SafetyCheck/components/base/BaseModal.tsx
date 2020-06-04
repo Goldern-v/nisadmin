@@ -88,6 +88,8 @@ export default observer(function BaseModal(props: Props) {
     if (visible) {
       let data = safetyCheckEditModel.getSectionData(sectionData.sectionId)
       setData(data)
+    } else {
+      setData(undefined)
     }
   }, [visible])
 
@@ -108,7 +110,7 @@ export default observer(function BaseModal(props: Props) {
       width={(sectionData && sectionData.modalWidth) || 700}
       centered
     >
-      {Component && <Component {...props.sectionData} data={data} setData={setData} />}
+      {Component && data && <Component {...props.sectionData} data={data} setData={setData} />}
     </Modal>
   )
 })

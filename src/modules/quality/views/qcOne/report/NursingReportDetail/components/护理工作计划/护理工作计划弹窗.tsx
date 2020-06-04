@@ -48,7 +48,7 @@ export default function 护理工作计划弹窗(props: Props) {
     setData(cloneData)
   }
 
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
   return (
     <Wrapper>
       {/* <div className='button-con'>
