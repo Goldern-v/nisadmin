@@ -23,6 +23,7 @@ import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
 import 晋升管理 from "./views/promotionSetting/PromotionSetting";
+import 类型管理 from "./views/typeManagement/TypeManagement";
 import 题库管理 from "src/modules/questionBankManagement/QuestionBankManagement";
 import FormReview from "./views/trainingSetting/formReview/FormReview";
 import FormApply from "./views/trainingSetting/formApply/FormApply";
@@ -181,6 +182,13 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/questionBankManagement",
       component: 题库管理,
       hide: () => queyMenuAuthInfo("nm_lat_questionbankmanage")
+    },
+    {
+      title: "类型管理",
+      icon: <TKGL />,
+      path: "/continuingEdu/TypeManagement",
+      component: 类型管理,
+      hide: () => queyMenuAuthInfo("nm_lat_typemanage")
     },
     {
       title: "菜单设置",

@@ -46,7 +46,7 @@ export default observer(function Step4() {
     if (appStore.HOSPITAL_ID == "wh") {
       if (data.scoreItems && data.scoreItems.length > 4) {
         setIsOk(true);
-        stepViewModal.stepData2.socreInApp = 0;
+        stepViewModal.stepData2.scoreInApp = 0;
         message.warning("评分项超过4项只能在PC端进行评分，无法在app操作！");
         return;
       } else {
@@ -89,12 +89,12 @@ export default observer(function Step4() {
               <Checkbox
                 className="checkbox"
                 disabled={isOk}
-                value={stepViewModal.stepData2.socreInApp}
-                checked={stepViewModal.stepData2.socreInApp ? true : false}
+                value={stepViewModal.stepData2.scoreInApp}
+                checked={stepViewModal.stepData2.scoreInApp ? true : false}
                 onChange={(e: any) => {
                   e.target.checked
-                    ? (stepViewModal.stepData2.socreInApp = 1)
-                    : (stepViewModal.stepData2.socreInApp = 0);
+                    ? (stepViewModal.stepData2.scoreInApp = 1)
+                    : (stepViewModal.stepData2.scoreInApp = 0);
                 }}
               >
                 app评分

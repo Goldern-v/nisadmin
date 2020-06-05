@@ -13,13 +13,11 @@ import TypeEditModal from "../modal/TypeEditModal"; // 一级菜单弹窗
 
 export default withRouter(
   observer(function TypeManagement() {
-    const [titleType, setTitleType] = useState({} as any); // 存放路由跳转参数
     const [loading, setLoading] = useState(false); // loading
     const [tableList, setTableList] = useState([] as any); //表格数据
     const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
     const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
     let id = qs.parse(appStore.location.search.replace("?", "")).id;
-    let Pid = qs.parse(appStore.location.search.replace("?", "")).Pid;
     const { history } = appStore;
 
     //教育方式背景颜色函数封装
@@ -113,7 +111,6 @@ export default withRouter(
 
     // 初始化
     useEffect(() => {
-      setTitleType(qs.parse(appStore.location.search.replace("?", "")));
       getTableData();
     }, []);
 
@@ -198,16 +195,17 @@ export default withRouter(
                 paddingBottom: 2,
                 background: "rgba(0, 0, 0, 0)"
               }}
-              data={[
-                // continuingEdu/病区培训2?Pid=23&id=25
-                {
-                  name: `${titleType.type}`,
-                  link: `/continuingEdu/${titleType.type}?Pid=${Pid}&id=${id}`
-                },
-                {
-                  name: "类型管理"
-                }
-              ]}
+              data={
+                [
+                  //   // continuingEdu/病区培训2?Pid=23&id=25
+                  //   {
+                  //     name: `${titleType.type}`,
+                  //   },
+                  //   {
+                  //     name: "类型管理"
+                  //   }
+                ]
+              }
             />
             <div className="topHeaderTitle">
               <div className="title">类型管理</div>

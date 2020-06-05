@@ -101,7 +101,7 @@ export default observer(function Header(props: Props) {
         >
           导出
         </Button>
-        <Button
+        {/* <Button
           onClick={() =>
             appStore.history.push(
               `/typeManagement?type=${Title}&id=${id}&Pid=${Pid}`
@@ -109,7 +109,7 @@ export default observer(function Header(props: Props) {
           }
         >
           类型管理
-        </Button>
+        </Button> */}
         <Button
           type="primary"
           onClick={() => {
