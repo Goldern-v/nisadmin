@@ -318,7 +318,7 @@ export function getFun(context: any) {
     record: any,
     index: number,
     uploadType: 'append' | 'replace',
-    multi?: boolean
+    replaceStr?: string
   ) => {
     const id = "wardRegisterItemCodeAttachmentUploader"
     const entityType = 'qcRegister'
@@ -331,33 +331,51 @@ export function getFun(context: any) {
     fileEl.id = id
     fileEl.type = 'file'
     fileEl.accept = cfg.options ? cfg.options.replace(/;/g, ',') : ''
+    if (!replaceStr) fileEl.multiple = 'multiple'
     fileEl.onchange = () => {
-      // console.log(fileEl.files)
       if (fileEl.files.length >= 0) {
         setPageLoading(true)
-        let form = new FormData()
-        form.append('file', fileEl.files[0])
 
-        service
-          .commonApiService
-          .uploadAttachment(entityType, form)
-          .then(res => {
-            setPageLoading(false)
+        let reqArr = []
+
+        for (let i = 0; i < fileEl.files.length; i++) {
+          let form = new FormData()
+          form.append('file', fileEl.files[0])
+
+          reqArr.push(
+            service
+              .commonApiService
+              .uploadAttachment(entityType, form)
+          )
+        }
+
+        Promise.all(reqArr)
+          .then((resArr: any[]) => {
             let newDataSource = dataSource.concat()
-            let val = [] as any
-            if (uploadType == 'append') {
-              val = record[cfg.itemCode] || []
+            let val = record[cfg.itemCode] || ''
+            if (uploadType == 'replace') {
+              let res = resArr[0]
+              val = val.replace(
+                replaceStr,
+                `${res.data.name || ''},${res.data.relativePath || ''}`
+              )
+
+            } else {
+              let valArr = val.split(';')
+
+              let appendArr = resArr.map((res: any) => {
+                return `${res.data.name || ''},${res.data.relativePath || ''}`
+              })
+
+              val = valArr.concat(appendArr).filter((str: string) => str.trim() !== '').join(';')
             }
 
-            val.push(`${res.data.name || ''},${res.data.relativePath || ''}`)
-
-            newDataSource[index][cfg.itemCode] = val.join(';')
+            newDataSource[index][cfg.itemCode] = val
             newDataSource[index].modified = true
             setDataSource(newDataSource)
-
-            document.body.removeChild(fileEl)
-            fileEl = null
-          }, () => setPageLoading(false))
+            setPageLoading(false)
+          },
+            () => setPageLoading(false))
       } else {
         document.body.removeChild(fileEl)
         fileEl = null
@@ -528,4 +546,18 @@ export function getFun(context: any) {
     handleCopyCreateRow,
     fixInputValue
   };
+}
+/**获取当月最后一周的日期 */
+export const lastWeekDatesAMonth = (date?: any) => {
+  const _date = date || undefined
+  let lastDate = moment(_date).endOf('M')
+  //本月最后一周包含的日期
+  let lastWeekDates = [lastDate.format('YYYY-MM-DD')]
+  let prevDate = lastDate.subtract(1, 'd')
+  while (prevDate.weekday() !== 6) {
+    lastWeekDates.push(prevDate.format('YYYY-MM-DD'))
+    prevDate = prevDate.subtract(1, 'd')
+  }
+
+  return lastWeekDates
 }

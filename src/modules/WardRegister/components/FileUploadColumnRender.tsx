@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Popover } from 'antd'
+import { Popover, Button } from 'antd'
 import { stringify } from 'querystring'
 
 export interface Props {
@@ -11,6 +11,7 @@ export interface Props {
   handleUpload: Function,
   handlePreview: Function,
   className?: string,
+  updateDataSource: Function,
 }
 
 /** 上传附件render组件 */
@@ -22,7 +23,8 @@ export default function FileUploadColumnRender(props: Props) {
     index, //行下标
     cellDisabled, //是否禁用行
     handleUpload, //附件上传方法
-    handlePreview //预览方法
+    handlePreview, //预览方法,
+    updateDataSource, //更新数据的方法
   } = props
 
   let fileStr = record[itemCfg.itemCode] || ''
@@ -37,9 +39,20 @@ export default function FileUploadColumnRender(props: Props) {
       let path = fileArrStr[i].split(',')[1] || ''
       if (name && path) fileArr.push({
         name,
-        path: `${window.location.origin}/crNursing${path}`
+        path: `${window.location.origin}/crNursing${path}`,
+        origin: fileArrStr[i]
       })
     }
+  }
+
+  const handleDelete = (fileStr: string) => {
+    let newFileArr = fileArr.map((item: any) => item.origin)
+    newFileArr = newFileArr.filter((str: string) => fileStr !== str)
+
+    record.modified = true
+    record[itemCfg.itemCode] = newFileArr.join(';')
+
+    updateDataSource()
   }
 
   return <Wrapper className={["file-upload", className || ''].join(' ')}>
@@ -51,7 +64,7 @@ export default function FileUploadColumnRender(props: Props) {
           title="点击上传附件"
           style={{ cursor: 'pointer' }}
           onClick={() =>
-            handleUpload(itemCfg, record, index, 'replace')}>
+            handleUpload(itemCfg, record, index, 'append')}>
           {uploadText}
         </span>
       }
@@ -68,29 +81,55 @@ export default function FileUploadColumnRender(props: Props) {
         } else {
           return <Popover
             key={`${itemCfg.itemCode}-${index}-${fileIdx}`}
-
+            placement="leftTop"
             content={
               <React.Fragment>
-                <span
-                  style={{ color: '#00A680', cursor: 'pointer' }}
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{ marginRight: '8px' }}
                   onClick={() =>
-                    handleUpload(itemCfg, record, index, 'replace')}>
+                    handleUpload(itemCfg, record, index, 'replace', file.origin)}>
                   重新上传
-              </span>
+                </Button>
+                <Button
+                  type="primary"
+                  size="small"
+                  style={{ marginRight: '8px' }}
+                  onClick={() => handleUpload(itemCfg, record, index, 'append')}>
+                  上传更多
+                </Button>
+                <Button
+                  type="danger"
+                  size="small"
+                  style={{ marginRight: '8px' }}
+                  onClick={() => handleDelete(file.origin)}>
+                  删除
+                </Button>
               </React.Fragment>}
-            title="操作"
+            title={file.name}
             trigger="hover">
-            <span
+            <div
+              className="file-item"
               style={{ cursor: 'pointer', wordBreak: 'break-all' }}
               onClick={() => handlePreview(file)}>
               {file.name}
-            </span>
+            </div>
           </Popover>
         }
-
       })}
   </Wrapper>
 }
 const Wrapper = styled.span`
-
+  .file-item{
+    width: 100%;
+    height: 22px;
+    line-height: 22px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-align:left;
+    margin: 2px 0;
+    padding: 0 2px;
+  }
 `

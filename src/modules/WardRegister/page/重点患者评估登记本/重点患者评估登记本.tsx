@@ -615,7 +615,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 index,
                 cellDisabled,
                 handleUpload,
-                handlePreview
+                handlePreview,
+                updateDataSource
               }} />
 
           } else {

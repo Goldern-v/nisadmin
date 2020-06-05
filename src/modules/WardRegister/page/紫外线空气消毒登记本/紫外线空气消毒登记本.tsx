@@ -45,31 +45,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
   const registerName = props.payload && props.payload.registerName;
   const [dataSource, setDataSource]: any = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
-  // const [wzcdConfigList, setWzcdConfigList] = useState([
-  //   { label: "全部", value: "全部" },
-  //   { label: "高", value: "高" },
-  //   { label: "中", value: "中" },
-  //   { label: "低", value: "低" }
-  // ]);
-  // const [selectedWzcd, setSelectedWzcd] = useState("");
 
-  // const [hljbConfigList, setHljbConfigList] = useState([
-  //   { label: "全部", value: "全部" },
-  //   { label: "特级护理", value: "特级护理" },
-  //   { label: "一级护理", value: "一级护理" },
-  //   { label: "二级护理", value: "二级护理" },
-  //   { label: "三级护理", value: "三级护理" }
-  // ]);
-  // const [selectedHljb, setSelectedHljb] = useState("");
-
-  // const [zlnlConfigList, setZlnlConfigList] = useState([
-  //   { label: "全部", value: "全部" },
-  //   { label: "重度依赖", value: "重度依赖" },
-  //   { label: "中度依赖", value: "中度依赖" },
-  //   { label: "轻度依赖", value: "轻度依赖" },
-  //   { label: "无需依赖", value: "无需依赖" }
-  // ]);
-  // const [selectedZlnl, setSelectedZlnl] = useState("");
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
@@ -153,7 +129,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
                   record.modified = true
                   record[item.itemCode] = value.toString().replace(/\n/g, '');
                 }}
-                onFocus={() => fixInputValue(record, ['累计时间'], index, 100)}
+                onFocus={() => fixInputValue(record, ['累计时间'], index, 200)}
                 onBlur={() => {
                   updateDataSource()
                   fixInputValue(record, ['累计时间'], index, 100)
@@ -183,7 +159,17 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
             const obj = {
               children,
               props: {
-                colSpan: 6
+                colSpan: 5
+              }
+            };
+            return obj;
+          }
+
+          if (item.itemCode == '累计时间') {
+            const obj = {
+              children,
+              props: {
+                colSpan: 1
               }
             };
             return obj;

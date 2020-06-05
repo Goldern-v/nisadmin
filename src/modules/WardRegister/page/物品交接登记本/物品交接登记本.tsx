@@ -291,7 +291,8 @@ export default observer(function HandoverRegister(props: Props) {
                   index,
                   cellDisabled,
                   handleUpload,
-                  handlePreview
+                  handlePreview,
+                  updateDataSource
                 }} />
 
             return (
@@ -355,7 +356,8 @@ export default observer(function HandoverRegister(props: Props) {
                   index,
                   cellDisabled,
                   handleUpload,
-                  handlePreview
+                  handlePreview,
+                  updateDataSource
                 }} />
 
             return (

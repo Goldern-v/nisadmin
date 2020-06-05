@@ -26,6 +26,7 @@ import 物品交接登记本 from "./page/物品交接登记本/物品交接登�
 import 重点患者评估登记本 from "./page/重点患者评估登记本/重点患者评估登记本";
 import 紫外线空气消毒登记本 from "./page/紫外线空气消毒登记本/紫外线空气消毒登记本";
 import 消毒隔离工作登记本 from "./page/消毒隔离工作登记本/消毒隔离工作登记本";
+// import 基础模板登记本 from './page/基础模板登记本/基础模板登记本'
 export interface Props { }
 
 export default function WardRegisterRouter() {
@@ -354,7 +355,18 @@ export default function WardRegisterRouter() {
           }
         }
       ]
-    }
+    },
+    // {
+    //   title: "健康教育授课登记表",
+    //   icon: <SMZC />,
+    //   hide: !appStore.isDev,
+    //   path: "/wardRegister/QCRG_18",
+    //   component: { ...基础模板登记本 },
+    //   payload: {
+    //     registerCode: "QCRG_18",
+    //     registerName: "健康教育授课登记表"
+    //   }
+    // }
   ];
 
   return (

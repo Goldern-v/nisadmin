@@ -30,7 +30,7 @@ import moment from "moment";
 import { throttle } from "src/utils/throttle/throttle";
 import { codeAdapter } from "../../utils/codeAdapter";
 import { signRowObj } from "../../utils/signRowObj";
-import { getFun, ItemConfigItem } from "../../utils/fun/fun";
+import { getFun, ItemConfigItem, lastWeekDatesAMonth } from "../../utils/fun/fun";
 import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
@@ -49,33 +49,13 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
   const registerCode = props.payload && props.payload.registerCode;
   const registerName = props.payload && props.payload.registerName;
 
+  //当月最后一周的日期
+  const lastWeekDatesThisMonth = lastWeekDatesAMonth()
+  //今日是否当月最后一周
+  const currentInLastWeek = lastWeekDatesThisMonth.indexOf(moment().format('YYYY-MM-DD')) >= 0
+
   const [dataSource, setDataSource]: any = useState([]);
   const [itemConfigList, setItemConfigList] = useState([]);
-  // const [wzcdConfigList, setWzcdConfigList] = useState([
-  //   { label: "全部", value: "全部" },
-  //   { label: "高", value: "高" },
-  //   { label: "中", value: "中" },
-  //   { label: "低", value: "低" }
-  // ]);
-  // const [selectedWzcd, setSelectedWzcd] = useState("");
-
-  // const [hljbConfigList, setHljbConfigList] = useState([
-  //   { label: "全部", value: "全部" },
-  //   { label: "特级护理", value: "特级护理" },
-  //   { label: "一级护理", value: "一级护理" },
-  //   { label: "二级护理", value: "二级护理" },
-  //   { label: "三级护理", value: "三级护理" }
-  // ]);
-  // const [selectedHljb, setSelectedHljb] = useState("");
-
-  // const [zlnlConfigList, setZlnlConfigList] = useState([
-  //   { label: "全部", value: "全部" },
-  //   { label: "重度依赖", value: "重度依赖" },
-  //   { label: "中度依赖", value: "中度依赖" },
-  //   { label: "轻度依赖", value: "轻度依赖" },
-  //   { label: "无需依赖", value: "无需依赖" }
-  // ]);
-  // const [selectedZlnl, setSelectedZlnl] = useState("");
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
@@ -138,9 +118,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             disabled={cellDisabled(record)}
             defaultValue={text}
             onKeyUp={handleNextIptFocus}
-            onChange={value => {
+            onChange={e => {
               record.modified = true
-              record.recordDate = value;
+              record.recordDate = e.target.value;
             }}
             onBlur={() => updateDataSource()}
           />
@@ -156,23 +136,69 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         dataIndex: item.itemCode,
         render(text: string, record: any, index: number) {
           let children: JSX.Element
+          let { itemCode } = item
+
+          //是否符合操作的时间
+          const timeDisabled = (() => {
+            let recordMoment = moment(record.recordDate)
+            if (itemCode.match(/每月/)) {
+              //每月项目只能每月最后一周包含的日期填写
+              let recordDate = recordMoment.format('YYYY-MM-DD')
+              if (
+                record.recordDate &&
+                recordMoment.isValid() &&
+                lastWeekDatesThisMonth.indexOf(recordDate) >= 0 &&
+                currentInLastWeek
+              )
+                return false
+
+              return true
+            } else if (itemCode == '监测报告') {
+              //监测报告只有3/6/9/12月的30日才能填写
+              let recordDate = recordMoment.format('YYYY-MM-DD')
+              if (
+                record.recordDate &&
+                recordMoment.isValid() &&
+                lastWeekDatesThisMonth.indexOf(recordDate) >= 0 &&
+                [3, 6, 9, 12].indexOf(recordMoment.get('M') + 1) >= 0 &&
+                moment().get('date') == 30
+              )
+                return false
+
+              return true
+            }
+            return false
+          })()
 
           //处理上传附件类型
           if (item.itemType == "attachment") {
-
-            children = <FileUploadColumnRender
-              {...{
-                record,
-                itemCfg: item,
-                index,
-                cellDisabled,
-                handleUpload,
-                handlePreview
-              }} />
+            if (timeDisabled) {
+              children = <span
+                style={{
+                  display: 'inline-block',
+                  width: '100%',
+                  cursor: 'not-allow',
+                  background: '#f5f5f5',
+                  height: '33px',
+                  lineHeight: '33px',
+                  verticalAlign: 'middle'
+                }}></span>
+            } else {
+              children = <FileUploadColumnRender
+                {...{
+                  record,
+                  itemCfg: item,
+                  index,
+                  cellDisabled,
+                  handleUpload,
+                  handlePreview,
+                  updateDataSource
+                }} />
+            }
           } else {
             children = (
               <AutoComplete
-                disabled={cellDisabled(record)}
+                disabled={cellDisabled(record) || timeDisabled}
                 dataSource={
                   item.options
                     ? item.options.split(";").map((item: any) => item || " ")
@@ -393,9 +419,9 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
-            {/* <Button type="primary" onClick={createRow}>
+            <Button type="primary" onClick={createRow}>
               新建
-            </Button> */}
+            </Button>
             <Button type="primary" onClick={onSave}>
               保存
             </Button>
@@ -555,17 +581,18 @@ const TableCon = styled.div`
       color: red;
     }
   }
-  .ant-select-disabled .ant-select-selection{
-      background: rgba(0,0,0,0.0)!important;
-  }
+  
   .disabled-row{
     td.input-cell{
       background: rgba(0,0,0,0.03)!important;
     }
-  }
-  .ant-input[disabled]{
-    color: #000!important;
+    .ant-input[disabled]{
+      color: #000!important;
       background: rgba(0,0,0,0.0)!important;
+    }
+    .ant-select-disabled .ant-select-selection{
+      background: rgba(0,0,0,0.0)!important;
+    }
   }
   textarea.ant-input{
     overflow:hidden!important;
