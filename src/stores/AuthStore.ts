@@ -98,6 +98,17 @@ export default class AuthStore {
       return "";
     }
   }
+
+  public get isAd() {
+    try {
+      return (
+        this.user && (this.user.empNo == "admin" || this.user.empNo == "ADMIN")
+      ); //** admin */
+    } catch (error) {
+      return "";
+    }
+  }
+
   /** 是否是护理部 */
   public get isDepartment() {
     try {

@@ -5,7 +5,7 @@ import { message as Message, Modal } from "src/vendors/antd";
 import { observer } from "src/vendors/mobx-react-lite";
 import { mainPageModal } from "../MainPageModal";
 import { mainPageApi } from "../api/MainPageApi";
-import { appStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { stepServices } from "../../../modal/stepComponent/services/stepServices";
 
 interface Props {
@@ -236,14 +236,22 @@ export default observer(function Table(props: Props) {
     {
       title: "操作",
       dataIndex: "",
-      width: 180,
+      width: 200,
       align: "center",
       // fixed: "right",
       render(text: any, record: any, index: number) {
-        let data: any = [{ text: "暂无操作" }];
+        let data: any = authStore.isAd
+          ? [
+              {
+                text: "删除",
+                function: handleDelete
+              }
+            ]
+          : [];
         switch (record.statusDesc) {
           case "待开始":
             data = [
+              ...data,
               {
                 text: "查看结果",
                 function: checkResult
@@ -265,6 +273,7 @@ export default observer(function Table(props: Props) {
           case "待审核":
             if (record.auditStatus === 1) {
               data = [
+                ...data,
                 {
                   text: "查看结果",
                   function: checkResult
@@ -284,6 +293,7 @@ export default observer(function Table(props: Props) {
               ];
             } else {
               data = [
+                ...data,
                 {
                   text: "查看结果",
                   function: checkResult
@@ -301,6 +311,7 @@ export default observer(function Table(props: Props) {
             break;
           case "进行中":
             data = [
+              ...data,
               {
                 text: "查看结果",
                 function: checkResult
@@ -321,6 +332,7 @@ export default observer(function Table(props: Props) {
             break;
           case "退回":
             data = [
+              ...data,
               {
                 text: "查看信息",
                 function: checkMessage
@@ -341,6 +353,7 @@ export default observer(function Table(props: Props) {
             break;
           case "草稿":
             data = [
+              ...data,
               {
                 text: "修改",
                 function: handReWrite
@@ -353,6 +366,7 @@ export default observer(function Table(props: Props) {
             break;
           case "已结束":
             data = [
+              ...data,
               {
                 text: "查看结果",
                 function: checkResult
