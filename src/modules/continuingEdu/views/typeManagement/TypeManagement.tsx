@@ -14,7 +14,7 @@ export default observer(function TypeManagement(props: Props) {
   const [loading, setLoading] = useState(false); // loading
   const [tableList, setTableList] = useState([] as any); //表格数据
   const [editVisible, setEditVisible] = useState(false); // 控制弹窗状态
-
+  const [editParams, setEditParams] = useState({} as any); //弹窗参数
   const columns: any = [
     {
       title: "菜单设置",
@@ -74,8 +74,12 @@ export default observer(function TypeManagement(props: Props) {
     typeManagementApi.getMenuTree().then((res: any) => {
       setLoading(false);
       setTableList(res.data);
+      setEditParams({
+        data: res.data
+      });
     });
   };
+
   // 类型封装
   const setTextData = (data: any) => {
     if (data && data.length) {
@@ -105,11 +109,22 @@ export default observer(function TypeManagement(props: Props) {
       return "";
     }
   };
+
   // 父菜单字体加粗
   const fontWeight = (data: any) => {
     if (data) {
       return 900;
     }
+  };
+
+  //弹窗
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setEditParams({});
+  };
+  const handleEditOk = () => {
+    getData();
+    handleEditCancel();
   };
 
   return (
@@ -137,11 +152,10 @@ export default observer(function TypeManagement(props: Props) {
         />
       </Content>
       <TypeAddModal
+        params={editParams}
         visible={editVisible}
-        onCancel={() => setEditVisible(false)}
-        onOk={() => {
-          setEditVisible(false), getData();
-        }}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
       />
     </Wrapper>
   );

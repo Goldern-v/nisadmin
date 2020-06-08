@@ -8,13 +8,14 @@ import { typeManagementApi } from "../api/TypeManagementApi";
 
 export interface Props {
   visible: boolean;
+  params: any;
   onCancel: any;
   onOk: any;
   onOkCallBack?: any;
 }
 
 export default function TypeEditModal(props: Props) {
-  const { visible, onCancel, onOk } = props;
+  const { visible, params, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
   const [query, setQuery] = useState({
     firstLevelMenuId: "",
@@ -27,6 +28,7 @@ export default function TypeEditModal(props: Props) {
   // 弹窗必填项
   const rules: Rules = {
     name: val => !!val || "名称不能为空",
+    pId: val => !!val || "请根据一级菜单选择对应的二级菜单",
     teachingMethod: val => !!val || "教学方式不能为空"
   };
 
@@ -36,15 +38,15 @@ export default function TypeEditModal(props: Props) {
         let current = formRef.current;
         if (!current) return;
         // 获取一级、二级菜单下拉框
-        typeManagementApi.getMenuTree().then(res => {
-          if (res.data) {
-            setFirstLevelMenu(res.data);
-            let target = res.data.find(
-              (item: any) => item.id == query.firstLevelMenuId
-            );
-            if (target) setSecondLevelMenu(target.childList || []);
-          }
-        });
+        // typeManagementApi.getMenuTree().then(res => {
+        //   if (res.data) {
+        setFirstLevelMenu(params.data);
+        let target = params.data.find(
+          (item: any) => item.id == query.firstLevelMenuId
+        );
+        if (target) setSecondLevelMenu(target.childList || []);
+        //   }
+        // });
         current.clear();
         setQuery({ ...query, firstLevelMenuId: "" });
       }, 100);
