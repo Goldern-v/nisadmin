@@ -44,6 +44,11 @@ export default class EmpManageService extends BaseApiService {
     return this.get(`/studyAndTrain/menuManage/getMenuTree`);
   }
 
+  //获取一级菜单
+  public async getAllCreditTypes() {
+    return this.get(`/studyAndTrain/teachingPlanManage/getAllCreditTypes`);
+  }
+
   //个人信息-获取学分记录
   public async queryCreditRecordPageList(query: any) {
     return this.post(`/studyAndTrain/personelManage/queryCreditRecordPageList`, query)

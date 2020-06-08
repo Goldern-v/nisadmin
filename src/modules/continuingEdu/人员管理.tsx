@@ -219,14 +219,14 @@ export default observer(function 人员管理(props: Props) {
     // }, 1000)
   };
 
-  const handlePageChange = (page: number) => {
-    let newQuery = { ...query, pageIndex: page };
+  const handlePageChange = (pageIndex: number) => {
+    let newQuery = { ...query, pageIndex };
     setQuery(newQuery);
     getTableData(newQuery);
   };
 
-  const handleSizeChange = (page: number, size: number) => {
-    let newQuery = { ...query, pageIndex: 1, size };
+  const handleSizeChange = (pageIndex: number, pageSize: number) => {
+    let newQuery = { ...query, pageIndex: 1, pageSize };
     setQuery(newQuery);
     getTableData(newQuery);
   };

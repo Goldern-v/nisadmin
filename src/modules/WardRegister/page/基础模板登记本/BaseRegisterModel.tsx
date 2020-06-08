@@ -42,6 +42,8 @@ export default class BaseRegisterModel {
 
   /**初始化 */
   @action init(registerCode?: string, registerName?: string) {
+    if (this.loading) return
+
     registerCode && (this.registerCode = registerCode)
     registerName && (this.registerName = registerName)
     this.baseQuery = defaultQuery()
@@ -92,11 +94,47 @@ export default class BaseRegisterModel {
       .getPage(this.registerCode, _query)
       .then(res => {
         if (res.data) {
-          this.totalCount = res.data.itemDataPage.totalCount
-          this.tableData = res.data.itemDataPage.list
+          this.totalCount = res.data.itemDataPage.totalCount || 0
+          //表格数据
+          this.tableData = res.data.itemDataPage.
+            list.map((item: any) => ({ ...item, modified: false })) || []
+          //班次下拉列表
+          this.rangeConfigList = res.data.rangeConfigList || []
+
+          //重新组织表头
+          this.itemConfigList = this.formatItemConfigList(res.data.itemConfigList || [])
         }
         this.loading = false
       }, () => this.loading = false)
+  }
+
+  private formatItemConfigList = (cfgList: any[]) => {
+    let newCfgList = [] as any[]
+
+    for (let i = 0; i < cfgList.length; i++) {
+      let item = { ...cfgList[i] }
+      let { itemCode } = item
+
+      if (itemCode.includes("：")) {
+        let titleMain = itemCode.split("：")[0]
+        // let titleSub = itemCode.split("：")[1]
+
+        let target = newCfgList.find(item => item.title == titleMain)
+
+        if (target) {
+          target.children.push(item)
+        } else {
+          newCfgList.push({
+            title: titleMain,
+            ...item
+          })
+        }
+      } else {
+        newCfgList.push(item)
+      }
+    }
+
+    return newCfgList
   }
 
   /**更新baseQuery */
@@ -128,7 +166,9 @@ export default class BaseRegisterModel {
 
   /**更新tableData某行的某个字段 */
   @action setTableDataRowItem(newVal: any, key: any, index: number) {
-    this.tableData[index][key] = newVal
+    let newRow = { ...this.tableData[index], modified: true }
+    newRow[key] = newVal
+    this.tableData[index] = { ...newRow }
   }
 
   /**新增修订 */
@@ -146,17 +186,42 @@ export default class BaseRegisterModel {
           .then(res => {
             message.success("创建成功")
             this.init()
-          });
+          })
       })
   }
 
-  // private formatItemConfigList(itemConfigList:any[]){
-  //   let newItemConfig = []
-  //   for(let i=0;i<itemConfigList.length;i++){
-  //     let itemCfg = {...itemConfigList[i]}
-  //     let title = itemCfg
-  //   }
-  // }
+  /**回车跳转下一个输入框 */
+  public focusNextIpt(e?: any, target?: any) {
+    if (target || (e.keyCode && e.keyCode == 13)) {
+      let baseTableEl = document.getElementById('baseTable')
+      if (baseTableEl) {
+        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
+
+        for (let i = 0; i < iptList.length; i++) {
+          let el = iptList[i]
+          if (el == (target || e.target)) {
+            if (iptList[i + 1]) {
+              iptList[i + 1].focus && iptList[i + 1].focus()
+              iptList[i + 1].click && iptList[i + 1].click()
+            }
+            break
+          }
+        }
+      }
+    }
+  }
+
+  /**通用编辑禁用规则 */
+  public cellDisabled(record: any) {
+    if (record.auditorNo) return true
+    if (!record.signerNo) return false
+    if (authStore.isNotANormalNurse) return false
+    if (!authStore.user?.empNo) return true
+    if (record.signerNo.toLowerCase() !== authStore.user?.empNo.toLowerCase())
+      return true
+
+    return false
+  }
 }
 
 export const baseRegisterMode = new BaseRegisterModel()
