@@ -38,15 +38,15 @@ export default function TypeEditModal(props: Props) {
         let current = formRef.current;
         if (!current) return;
         // 获取一级、二级菜单下拉框
-        // typeManagementApi.getMenuTree().then(res => {
-        //   if (res.data) {
-        setFirstLevelMenu(params.data);
-        let target = params.data.find(
-          (item: any) => item.id == query.firstLevelMenuId
-        );
-        if (target) setSecondLevelMenu(target.childList || []);
-        //   }
-        // });
+        typeManagementApi.getMenuTree().then(res => {
+          if (res.data) {
+            setFirstLevelMenu(res.data);
+            let target = res.data.find(
+              (item: any) => item.id == query.firstLevelMenuId
+            );
+            if (target) setSecondLevelMenu(target.childList || []);
+          }
+        });
         current.clear();
         setQuery({ ...query, firstLevelMenuId: "" });
       }, 100);

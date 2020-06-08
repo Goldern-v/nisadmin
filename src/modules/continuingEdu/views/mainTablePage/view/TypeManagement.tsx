@@ -18,6 +18,9 @@ export default withRouter(
     const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
     const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
     let id = qs.parse(appStore.location.search.replace("?", "")).id;
+    let pName = qs.parse(appStore.location.search.replace("?", "")).pName;
+    let name = qs.parse(appStore.location.search.replace("?", "")).name;
+
     const { history } = appStore;
 
     //教育方式背景颜色函数封装
@@ -195,17 +198,14 @@ export default withRouter(
                 paddingBottom: 2,
                 background: "rgba(0, 0, 0, 0)"
               }}
-              data={
-                [
-                  //   // continuingEdu/病区培训2?Pid=23&id=25
-                  //   {
-                  //     name: `${titleType.type}`,
-                  //   },
-                  //   {
-                  //     name: "类型管理"
-                  //   }
-                ]
-              }
+              data={[
+                {
+                  name: `${pName}`
+                },
+                {
+                  name: `${name}`
+                }
+              ]}
             />
             <div className="topHeaderTitle">
               <div className="title">类型管理</div>

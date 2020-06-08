@@ -31,6 +31,14 @@ export default observer(function TypeManagement(props: Props) {
       title: "类型",
       dataIndex: "teachingTypeList",
       align: "left",
+      onCell: () => ({
+        style: {
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          cursor: "pointer"
+        }
+      }),
       render(text: any) {
         return setTextData(text);
       }
@@ -51,9 +59,22 @@ export default observer(function TypeManagement(props: Props) {
           record.teachingTypeList && (
             <DoCon>
               <span
-                onClick={() =>
-                  appStore.history.push(`/typeManagement?id=${record.id}`)
-                }
+                onClick={() => {
+                  let name =
+                    tableList.find((item: any) => {
+                      return (
+                        item.childList &&
+                        item.childList.find(
+                          (child: any) => child.id == record.id
+                        )
+                      );
+                    }).name || "";
+                  appStore.history.push(
+                    `/typeManagement?id=${record.id}&pName=${name}&name=${
+                      record.name
+                    }`
+                  );
+                }}
               >
                 管理
               </span>
@@ -81,29 +102,46 @@ export default observer(function TypeManagement(props: Props) {
   };
 
   // 类型封装
+  // const setTextData = (data: any) => {
+  //   if (data && data.length) {
+  //     let str = "";
+  //     let str1 = "";
+  //     data.map((item: any, i: any) => {
+  //       let text = item.name || "";
+  //       let semicolon = "";
+  //       if (data.length < 11) {
+  //         semicolon = text && i !== data.length - 1 ? "、" : "";
+  //       } else {
+  //         semicolon = text && i < 9 ? "、" : "";
+  //       }
+  //       if (i < 10) {
+  //         str1 += text + semicolon;
+  //       }
+  //       str += text + semicolon;
+  //     });
+  //     return data.length > 10 ? (
+  //       <Tooltip placement="top" title={str}>
+  //         {`${str1}...`}
+  //       </Tooltip>
+  //     ) : (
+  //       str
+  //     );
+  //   } else {
+  //     return "";
+  //   }
+  // };
   const setTextData = (data: any) => {
     if (data && data.length) {
       let str = "";
-      let str1 = "";
       data.map((item: any, i: any) => {
         let text = item.name || "";
-        let semicolon = "";
-        if (data.length < 11) {
-          semicolon = text && i !== data.length - 1 ? "、" : "";
-        } else {
-          semicolon = text && i < 9 ? "、" : "";
-        }
-        if (i < 10) {
-          str1 += text + semicolon;
-        }
+        let semicolon = text && i !== data.length - 1 ? "、" : "";
         str += text + semicolon;
       });
-      return data.length > 10 ? (
+      return (
         <Tooltip placement="top" title={str}>
-          {`${str1}...`}
+          {str}
         </Tooltip>
-      ) : (
-        str
       );
     } else {
       return "";
