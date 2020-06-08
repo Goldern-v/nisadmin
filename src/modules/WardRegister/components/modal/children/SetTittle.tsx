@@ -83,10 +83,13 @@ export default observer(function SetTittle(props: Props) {
     }
   }
 
-  const defaultOptions = [
-    { name: '√', value: '√' },
-    { name: '×', value: '×' },
-  ]
+  const defaultOptions = codeAdapter({
+    QCRG_03: [],
+    other: [
+      { name: '√', value: '√' },
+      { name: '×', value: '×' },
+    ]
+  }, registerCode)
 
   const fileTypeOptions = [
     { name: '文档', value: '.doc;.docx;.pdf' },
@@ -219,38 +222,70 @@ export default observer(function SetTittle(props: Props) {
             {empNameOptions()}
           </Select>
         } else {
-          return <Select
-            mode="tags"
-            style={{ width: "100%" }}
-            onChange={(value: any) => {
-              //是否允许提交改动
-              let canSubmint = true
+          return defaultOptions.length > 0 ?
+            <Select
+              mode="tags"
+              style={{ width: "100%" }}
+              onChange={(value: any) => {
+                //是否允许提交改动
+                let canSubmint = true
 
-              let targetOptions = staticOptions[record.itemCode] || null
-              if (targetOptions) {
-                for (let i = 0; i < targetOptions.length; i++) {
-                  if (value.indexOf(targetOptions[i]) < 0) {
-                    value.push(targetOptions[i])
+                let targetOptions = staticOptions[record.itemCode] || null
+                if (targetOptions) {
+                  for (let i = 0; i < targetOptions.length; i++) {
+                    if (value.indexOf(targetOptions[i]) < 0) {
+                      value.push(targetOptions[i])
+                    }
                   }
                 }
-              }
 
-              if (canSubmint) {
-                record.options = value.join(";");
-                updateDataSource()
-              }
-            }}
-            value={text ? text.split(";") : []}
-            // open={false}
-            tokenSeparators={[";", "；"]}
-          >
-            {defaultOptions.map((item: any, idx: number) =>
-              <Option
-                key={idx}
-                value={item.value}>
-                {item.name}
-              </Option>)}
-          </Select>
+                if (canSubmint) {
+                  record.options = value.join(";");
+                  updateDataSource()
+                }
+              }}
+              value={text ? text.split(";") : []}
+              tokenSeparators={[";", "；"]}
+            >
+              {defaultOptions.map((item: any, idx: number) =>
+                <Option
+                  key={idx}
+                  value={item.value}>
+                  {item.name}
+                </Option>)}
+            </Select> :
+            <Select
+              mode="tags"
+              style={{ width: "100%" }}
+              open={false}
+              onChange={(value: any) => {
+                //是否允许提交改动
+                let canSubmint = true
+
+                let targetOptions = staticOptions[record.itemCode] || null
+                if (targetOptions) {
+                  for (let i = 0; i < targetOptions.length; i++) {
+                    if (value.indexOf(targetOptions[i]) < 0) {
+                      value.push(targetOptions[i])
+                    }
+                  }
+                }
+
+                if (canSubmint) {
+                  record.options = value.join(";");
+                  updateDataSource()
+                }
+              }}
+              value={text ? text.split(";") : []}
+              tokenSeparators={[";", "；"]}
+            >
+              {defaultOptions.map((item: any, idx: number) =>
+                <Option
+                  key={idx}
+                  value={item.value}>
+                  {item.name}
+                </Option>)}
+            </Select>
         }
       }
     },
