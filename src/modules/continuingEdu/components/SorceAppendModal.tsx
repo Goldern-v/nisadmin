@@ -19,6 +19,7 @@ export default function SorceAppendModal(props: Props) {
   const { visible, onCancel, onOk, empNo } = props;
   const formRef = React.createRef<Form>();
   const [loading, setLoading] = useState(false)
+  const [creditTypeList, setCreditTypeList] = useState([] as any[])
 
   useEffect(() => {
     let timer = null as any | null;
@@ -36,6 +37,15 @@ export default function SorceAppendModal(props: Props) {
       clearTimeout(timer)
     }
   }, [visible])
+
+  useEffect(() => {
+    empManageService.getAllCreditTypes()
+      .then(res => {
+        if (res.data) {
+          setCreditTypeList(res.data)
+        }
+      })
+  }, [])
 
   const handleOk = () => {
     setLoading(true)
@@ -73,9 +83,10 @@ export default function SorceAppendModal(props: Props) {
           <Col span={14}>
             <Form.Field name="creditType">
               <Select>
-                <Option value="1">院级学分</Option>
+                {/* <Option value="1">院级学分</Option>
                 <Option value="2">片区学分</Option>
-                <Option value="3">病区学分</Option>
+                <Option value="3">病区学分</Option> */}
+                {creditTypeList.map((item: any) => <Option value={item.code.toString()}>{item.name}</Option>)}
               </Select>
             </Form.Field>
           </Col>
