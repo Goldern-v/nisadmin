@@ -20,6 +20,7 @@ export interface Props extends RouteComponentProps { }
 export default observer(function TableView() {
   const { query, loading, dataTotal, tableData, classHoursDesc, creditsDesc } = empDetailModel
   const [menuTree, setMenuTree] = useState([] as any[])
+  const [creditTypeList, setCreditTypeList] = useState([] as any[])
   const [typeList, setTypeList] = useState([] as any[])
 
   const studyInfoModal = createModal(StudyInfoModal)
@@ -529,11 +530,16 @@ export default observer(function TableView() {
           setTypeList(menuTree)
         break
       case '学分记录':
-        setTypeList([
-          { id: "1", name: "院级学分" },
-          { id: "2", name: "片区学分" },
-          { id: "3", name: "病区学分" },
-        ])
+        // setTypeList([
+        //   { id: "1", name: "院级学分" },
+        //   { id: "2", name: "片区学分" },
+        //   { id: "3", name: "病区学分" },
+        // ])
+        if (creditTypeList.length <= 0) {
+          getCreditTypeList()
+        } else {
+          setTypeList(creditTypeList)
+        }
         break
       case '学时记录':
         setTypeList([
@@ -568,19 +574,34 @@ export default observer(function TableView() {
     resetTypeList()
   }, [appStore.match.params.pannelName])
 
+  /**获取一级标题 */
   const getTypeList = () => {
     empManageService
       .getMenuTree()
       .then(res => {
         if (res.data) {
-          let newArr = res.data.map((item: any) => {
-            return {
-              id: item.id.toString(),
-              name: item.name
-            }
-          })
+          let newArr = res.data.map((item: any) => ({
+            id: item.id.toString(),
+            name: item.name
+          }))
           setTypeList(newArr)
           setMenuTree(newArr)
+        }
+      })
+  }
+
+  /**获取学分类型 */
+  const getCreditTypeList = () => {
+    empManageService
+      .getAllCreditTypes()
+      .then(res => {
+        if (res.data) {
+          let newArr = res.data.map((item: any) => ({
+            id: item.code,
+            name: item.name
+          }))
+          setTypeList(newArr)
+          setCreditTypeList(newArr)
         }
       })
   }
