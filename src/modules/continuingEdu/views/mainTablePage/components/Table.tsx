@@ -251,7 +251,6 @@ export default observer(function Table(props: Props) {
         switch (record.statusDesc) {
           case "待开始":
             data = [
-              ...data,
               {
                 text: "查看结果",
                 function: checkResult
@@ -273,7 +272,6 @@ export default observer(function Table(props: Props) {
           case "待审核":
             if (record.auditStatus === 1) {
               data = [
-                ...data,
                 {
                   text: "查看结果",
                   function: checkResult
@@ -289,11 +287,11 @@ export default observer(function Table(props: Props) {
                 {
                   text: "复制",
                   function: handleCopy
-                }
+                },
+                ...data
               ];
             } else {
               data = [
-                ...data,
                 {
                   text: "查看结果",
                   function: checkResult
@@ -305,13 +303,13 @@ export default observer(function Table(props: Props) {
                 {
                   text: "复制",
                   function: handleCopy
-                }
+                },
+                ...data
               ];
             }
             break;
           case "进行中":
             data = [
-              ...data,
               {
                 text: "查看结果",
                 function: checkResult
@@ -332,7 +330,6 @@ export default observer(function Table(props: Props) {
             break;
           case "退回":
             data = [
-              ...data,
               {
                 text: "查看信息",
                 function: checkMessage
@@ -353,7 +350,6 @@ export default observer(function Table(props: Props) {
             break;
           case "草稿":
             data = [
-              ...data,
               {
                 text: "修改",
                 function: handReWrite
@@ -366,7 +362,6 @@ export default observer(function Table(props: Props) {
             break;
           case "已结束":
             data = [
-              ...data,
               {
                 text: "查看结果",
                 function: checkResult
@@ -378,7 +373,8 @@ export default observer(function Table(props: Props) {
               {
                 text: "复制",
                 function: handleCopy
-              }
+              },
+              ...data
             ];
             break;
           default:
