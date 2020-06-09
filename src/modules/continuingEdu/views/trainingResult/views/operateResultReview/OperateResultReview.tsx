@@ -306,13 +306,18 @@ export default observer(function OperateResultReview() {
         </span>
       </SubContent>
       <ButtonGroups>
-        {(baseInfo.isResultPublished === 0 &&
-          (baseInfo.tpStatusDesc === '归档' || baseInfo.tpStatusDesc === '已结束')) &&
+        {baseInfo.isResultPublished === 0 &&
           <Button
             type="primary"
             onClick={handlePublish}
             disabled={publishLoading}>
             发布成绩
+          </Button>}
+        {baseInfo.isResultPublished !== 0 &&
+          <Button
+            type="primary"
+            disabled={true}>
+            已发布
           </Button>}
         {isSignType &&
           <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}

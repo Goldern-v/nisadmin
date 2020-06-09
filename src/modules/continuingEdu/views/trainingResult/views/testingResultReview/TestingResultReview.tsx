@@ -308,6 +308,12 @@ export default observer(function TestingResultReview() {
             disabled={publishLoading}>
             发布成绩
           </Button>}
+        {baseInfo.isResultPublished !== 0 &&
+          <Button
+            type="primary"
+            disabled={true}>
+            已发布
+          </Button>}
         <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
