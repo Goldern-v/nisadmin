@@ -111,12 +111,6 @@ export default observer(function TypeManagement(props: Props) {
     }
   };
 
-  // 打开弹窗
-  const handleOpen = () => {
-    typeManagementModal.getDefaultValue();
-    setEditVisible(true);
-  };
-
   //取消关闭弹窗
   const handleEditCancel = () => {
     setEditVisible(false);
@@ -133,7 +127,7 @@ export default observer(function TypeManagement(props: Props) {
           <div className="topHeaderTitle">
             <div className="title">类型管理</div>
             <div className="topHeaderButton">
-              <Button onClick={() => handleOpen()}>添加类型</Button>
+              <Button onClick={() => setEditVisible(true)}>添加类型</Button>
             </div>
           </div>
         </TopHeader>

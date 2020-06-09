@@ -1,5 +1,4 @@
 import BaseApiService from "src/services/api/BaseApiService";
-import qs from "qs";
 
 export default class TypeManagementApi extends BaseApiService {
   // 查询
