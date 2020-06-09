@@ -71,11 +71,14 @@ class EmpDetailModel {
             ...params,
             creditType: type,
           }).then(res => {
-            this.creditsDesc = `合计： 
-            院级学分：${res.data.hospitalCreditTotal || 0}分    
-            片区学分：${res.data.areaCreditTotal || 0}分    
-            病区学分：${res.data.deptCreditTotal || 0}分
-            `
+            // this.creditsDesc = `合计： 
+            // 院级学分：${res.data.hospitalCreditTotal || 0}分    
+            // 片区学分：${res.data.areaCreditTotal || 0}分    
+            // 病区学分：${res.data.deptCreditTotal || 0}分
+            // `
+            this.creditsDesc = `合计：${(res.data || []).map((item: any) => {
+              return `${item.creditName}：${item.totalCredit}`
+            }).join('    ')}`
           })
         break
       case '学时记录':
