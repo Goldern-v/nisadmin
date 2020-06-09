@@ -1,54 +1,37 @@
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Input, Row, Col, Modal, message as Message, Select } from "antd";
 import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
-import { appStore } from "src/stores";
 import { typeManagementApi } from "../api/TypeManagementApi";
+import { typeManagementModal } from "../TypeManagementModal";
 
 export interface Props {
   visible: boolean;
-  params: any;
   onCancel: any;
   onOk: any;
   onOkCallBack?: any;
 }
 
-export default function TypeEditModal(props: Props) {
-  const { visible, params, onCancel, onOk } = props;
+export default observer(function TypeEditModal(props: Props) {
+  const { visible, onCancel, onOk } = props;
   const [editLoading, setEditLoading] = useState(false);
-  const [query, setQuery] = useState({
-    firstLevelMenuId: "",
-    secondLevelMenuId: ""
-  });
-  const [firstLevelMenu, setFirstLevelMenu] = useState([] as any[]);
-  const [secondLevelMenu, setSecondLevelMenu] = useState([] as any[]);
   const formRef = React.createRef<Form>();
 
   // 弹窗必填项
   const rules: Rules = {
     name: val => !!val || "名称不能为空",
-    pId: val => !!val || "请根据一级菜单选择对应的二级菜单",
     teachingMethod: val => !!val || "教学方式不能为空"
   };
 
+  //初始化
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
         let current = formRef.current;
         if (!current) return;
-        // 获取一级、二级菜单下拉框
-        typeManagementApi.getMenuTree().then(res => {
-          if (res.data) {
-            setFirstLevelMenu(res.data);
-            let target = res.data.find(
-              (item: any) => item.id == query.firstLevelMenuId
-            );
-            if (target) setSecondLevelMenu(target.childList || []);
-          }
-        });
         current.clear();
-        setQuery({ ...query, firstLevelMenuId: "" });
       }, 100);
     }
   }, [visible]);
@@ -62,7 +45,7 @@ export default function TypeEditModal(props: Props) {
           current = formRef.current;
           if (current) {
             let newParams = current.getFields();
-            newParams.pId = Number(newParams.pId);
+            newParams.pId = Number(typeManagementModal.secondLevelMenuId);
             newParams.teachingMethod = Number(newParams.teachingMethod);
             setEditLoading(true);
             typeManagementApi.addTypeData(newParams).then(res => {
@@ -75,6 +58,7 @@ export default function TypeEditModal(props: Props) {
         })
         .catch(e => {
           console.log(e);
+          typeManagementModal.getDefaultValue();
         });
     }
   };
@@ -101,27 +85,25 @@ export default function TypeEditModal(props: Props) {
             <Col span={20}>
               <Form.Field name="">
                 <Select
-                  value={query.firstLevelMenuId}
+                  value={typeManagementModal.firstLevelMenuId}
                   style={{ width: 120 }}
                   onChange={(id: any) => {
-                    setQuery({
-                      ...query,
-                      firstLevelMenuId: id,
-                      secondLevelMenuId: ""
-                    });
-                    let newArr = [] as any[];
-                    let target = firstLevelMenu.find(
+                    (typeManagementModal.firstLevelMenuId = id),
+                      (typeManagementModal.secondLevelMenuId = "");
+                    let target: any = typeManagementModal.firstLevelMenu.find(
                       (item: any) => item.id == id
                     );
-                    if (target && target.childList) newArr = target.childList;
-                    setSecondLevelMenu(newArr);
+                    if (target && target.childList)
+                      typeManagementModal.secondLevelMenu = target.childList;
                   }}
                 >
-                  {firstLevelMenu.map((item: any, idx: number) => (
-                    <Select.Option value={item.id.toString()} key={idx}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
+                  {typeManagementModal.firstLevelMenu.map(
+                    (item: any, idx: number) => (
+                      <Select.Option value={item.id.toString()} key={idx}>
+                        {item.name}
+                      </Select.Option>
+                    )
+                  )}
                 </Select>
               </Form.Field>
             </Col>
@@ -131,19 +113,21 @@ export default function TypeEditModal(props: Props) {
               二级菜单:
             </Col>
             <Col span={20}>
-              <Form.Field name="pId">
+              <Form.Field name="">
                 <Select
-                  value={query.secondLevelMenuId}
+                  value={typeManagementModal.secondLevelMenuId}
                   style={{ width: 120 }}
                   onChange={(id: any) =>
-                    setQuery({ ...query, secondLevelMenuId: id })
+                    (typeManagementModal.secondLevelMenuId = id)
                   }
                 >
-                  {secondLevelMenu.map((item: any, idx: number) => (
-                    <Select.Option value={item.id.toString()} key={idx}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
+                  {typeManagementModal.secondLevelMenu.map(
+                    (item: any, idx: number) => (
+                      <Select.Option value={item.id.toString()} key={idx}>
+                        {item.name}
+                      </Select.Option>
+                    )
+                  )}
                 </Select>
               </Form.Field>
             </Col>
@@ -179,7 +163,7 @@ export default function TypeEditModal(props: Props) {
       </Wrapper>
     </Modal>
   );
-}
+});
 const Wrapper = styled.div`
   width: 80%;
   margin: 0 auto;

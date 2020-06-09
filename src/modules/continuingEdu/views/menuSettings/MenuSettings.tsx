@@ -49,13 +49,20 @@ export default observer(function MenuSettings(props: Props) {
     if (data && data.length) {
       let str = "";
       let str1 = "";
+      let semicolon = "";
       data.map((item: any, i: any) => {
         let text = type === 1 ? item.empName || "" : item.roleName || "";
-        let semicolon = text && (i !== data.length - 1 || i < 2) ? "、" : "";
+        let semicolon1 = text && i !== data.length - 1 ? "、" : "";
+
+        if (data.length < 4) {
+          semicolon = text && i !== data.length - 1 ? "、" : "";
+        } else {
+          semicolon = text && i < 2 ? "、" : "";
+        }
         if (i < 3) {
           str1 += text + semicolon;
         }
-        str += text + semicolon;
+        str += text + semicolon1;
       });
       return data.length > 3 ? (
         <Tooltip placement="top" title={str}>

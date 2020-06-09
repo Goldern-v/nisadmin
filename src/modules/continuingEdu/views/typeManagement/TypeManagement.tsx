@@ -1,20 +1,15 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { Button, Modal, message as Message, Tooltip } from "antd";
+import { Button, Tooltip } from "antd";
 import { appStore } from "src/stores";
 import TypeAddModal from "./modal/TypeAddModal";
-import { typeManagementApi } from "./api/TypeManagementApi";
-interface Props {
-  getList: any;
-}
+import { typeManagementModal } from "./TypeManagementModal";
+interface Props {}
 
 export default observer(function TypeManagement(props: Props) {
-  const [loading, setLoading] = useState(false); // loading
-  const [tableList, setTableList] = useState([] as any); //表格数据
   const [editVisible, setEditVisible] = useState(false); // 控制弹窗状态
-  const [editParams, setEditParams] = useState({} as any); //弹窗参数
   const columns: any = [
     {
       title: "菜单设置",
@@ -61,7 +56,7 @@ export default observer(function TypeManagement(props: Props) {
               <span
                 onClick={() => {
                   let name =
-                    tableList.find((item: any) => {
+                    typeManagementModal.tableList.find((item: any) => {
                       return (
                         item.childList &&
                         item.childList.find(
@@ -85,51 +80,12 @@ export default observer(function TypeManagement(props: Props) {
     }
   ];
 
+  // 初始化
   useLayoutEffect(() => {
-    getData();
+    typeManagementModal.onload();
   }, []);
 
-  // 查询
-  const getData = () => {
-    setLoading(true);
-    typeManagementApi.getMenuTree().then((res: any) => {
-      setLoading(false);
-      setTableList(res.data);
-      setEditParams({
-        data: res.data
-      });
-    });
-  };
-
-  // 类型封装
-  // const setTextData = (data: any) => {
-  //   if (data && data.length) {
-  //     let str = "";
-  //     let str1 = "";
-  //     data.map((item: any, i: any) => {
-  //       let text = item.name || "";
-  //       let semicolon = "";
-  //       if (data.length < 11) {
-  //         semicolon = text && i !== data.length - 1 ? "、" : "";
-  //       } else {
-  //         semicolon = text && i < 9 ? "、" : "";
-  //       }
-  //       if (i < 10) {
-  //         str1 += text + semicolon;
-  //       }
-  //       str += text + semicolon;
-  //     });
-  //     return data.length > 10 ? (
-  //       <Tooltip placement="top" title={str}>
-  //         {`${str1}...`}
-  //       </Tooltip>
-  //     ) : (
-  //       str
-  //     );
-  //   } else {
-  //     return "";
-  //   }
-  // };
+  //省略tip
   const setTextData = (data: any) => {
     if (data && data.length) {
       let str = "";
@@ -155,13 +111,18 @@ export default observer(function TypeManagement(props: Props) {
     }
   };
 
-  //弹窗
+  // 打开弹窗
+  const handleOpen = () => {
+    typeManagementModal.getDefaultValue();
+    setEditVisible(true);
+  };
+
+  //取消关闭弹窗
   const handleEditCancel = () => {
     setEditVisible(false);
-    setEditParams({});
   };
   const handleEditOk = () => {
-    getData();
+    typeManagementModal.onload();
     handleEditCancel();
   };
 
@@ -172,7 +133,7 @@ export default observer(function TypeManagement(props: Props) {
           <div className="topHeaderTitle">
             <div className="title">类型管理</div>
             <div className="topHeaderButton">
-              <Button onClick={() => setEditVisible(true)}>添加类型</Button>
+              <Button onClick={() => handleOpen()}>添加类型</Button>
             </div>
           </div>
         </TopHeader>
@@ -180,17 +141,15 @@ export default observer(function TypeManagement(props: Props) {
       <Content>
         <BaseTable
           rowKey={(record, index) => `complete${record.id}${index}`}
-          loading={loading}
+          loading={typeManagementModal.tableLoading}
           columns={columns}
-          dataSource={tableList}
+          dataSource={typeManagementModal.tableList}
           childrenColumnName="childList"
-          type={[]}
           surplusWidth={300}
           surplusHeight={200}
         />
       </Content>
       <TypeAddModal
-        params={editParams}
         visible={editVisible}
         onCancel={handleEditCancel}
         onOk={handleEditOk}
