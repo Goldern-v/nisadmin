@@ -1,4 +1,4 @@
-import { observable, computed } from "mobx";
+import { observable } from "mobx";
 import { typeManagementApi } from "./api/TypeManagementApi";
 
 class TypeManagementModal {
@@ -29,11 +29,6 @@ class TypeManagementModal {
         this.tableList.find((item: any) => item.id == this.firstLevelMenuId);
       if (target) this.secondLevelMenu = target.childList || [];
     });
-  }
-
-  getDefaultValue() {
-    this.firstLevelMenuId = this.menu.id.toString();
-    this.secondLevelMenuId = this.menu.childList[0].id.toString();
   }
 }
 

@@ -58,7 +58,6 @@ export default observer(function TypeEditModal(props: Props) {
         })
         .catch(e => {
           console.log(e);
-          typeManagementModal.getDefaultValue();
         });
     }
   };
