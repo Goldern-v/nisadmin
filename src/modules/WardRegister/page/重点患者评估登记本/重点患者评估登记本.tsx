@@ -588,6 +588,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
             QCRG_14_1: ['生产日期', '失效日期'],
             QCRG_14_2: ['生产日期'],
             QCRG_19_2: ['开始时间', '结束时间'],
+            QCRG_08: ['入院时间'],
             other: []
           }, registerCode)
 
@@ -601,7 +602,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                 index,
                 handleNextIptFocus,
                 updateDataSource,
-                registerCode
+                registerCode,
               }}
             />
           }
@@ -831,6 +832,17 @@ export default observer(function 重点患者评估登记本(props: Props) {
             selectedBlockId
           })
         ],
+        QCRG_14_2: [
+          signRowObj({
+            title: "责任护士签名",
+            width: 90,
+            dataIndex: "signerName",
+            aside: "责任护士",
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+        ],
         QCRG_16_1: [
           signRowObj({
             title: "签名",
@@ -951,7 +963,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
         ],
         other: []
       },
-      registerCode
+      registerCode,
+      true
     ),
     {
       title: "操作",

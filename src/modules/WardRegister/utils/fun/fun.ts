@@ -434,13 +434,14 @@ export function getFun(context: any) {
       if (auditItems.length > 0) {
         let idxArr = auditItems.map((item: any) => dataSource.indexOf(item) + 1)
         textArr.push(`第${idxArr.join('、')}条${aside}已签名`)
+
+        Modal.warn({
+          centered: true,
+          title: '提示',
+          content: textArr.join(',')
+        })
+        return
       }
-      Modal.warn({
-        centered: true,
-        title: '提示',
-        content: textArr.join(',')
-      })
-      return
     }
 
     let ids = selectedRows

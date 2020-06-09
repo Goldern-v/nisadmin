@@ -84,12 +84,12 @@ export default observer(function SetTittle(props: Props) {
   }
 
   const defaultOptions = codeAdapter({
-    QCRG_03: [],
-    other: [
+    'QCRG_01,QCRG_02,QCRG_07,QCRG_12,QCRG_20_1,QCRG_20_2': [
       { name: '√', value: '√' },
       { name: '×', value: '×' },
-    ]
-  }, registerCode)
+    ],
+    other: []
+  }, registerCode, true)
 
   const fileTypeOptions = [
     { name: '文档', value: '.doc;.docx;.pdf' },

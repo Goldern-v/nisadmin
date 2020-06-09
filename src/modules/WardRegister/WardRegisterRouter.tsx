@@ -314,6 +314,7 @@ export default function WardRegisterRouter() {
       path: "/wardRegister/QCRG_19_2",
       icon: <SXJX />,
       component: { ...重点患者评估登记本 },
+      hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_19_2",
         registerName: "实习进修新职工登记"

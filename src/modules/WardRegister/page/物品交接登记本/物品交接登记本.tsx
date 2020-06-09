@@ -41,6 +41,7 @@ import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from './../../components/FileUploadColumnRender'
+import DatePickerColumnRender from './../../components/DatePickerColumnRender'
 
 export interface Props {
   payload: any;
@@ -73,6 +74,19 @@ export default observer(function HandoverRegister(props: Props) {
   const selectedBlockObj = blockList.find(
     (item: any) => item.id == selectedBlockId
   )
+
+  const dateItemArr = codeAdapter({
+    other: [],
+    QCRG_11: [{
+      itemCode: '开始时间',
+      showTime: true,
+      format: "YYYY-MM-DD HH:mm"
+    }, {
+      itemCode: '结束时间',
+      showTime: true,
+      format: "YYYY-MM-DD HH:mm"
+    }],
+  }, registerCode)
 
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal);
@@ -282,6 +296,25 @@ export default observer(function HandoverRegister(props: Props) {
           className: "input-cell input-cell-custom",
           render(text: string, record: any, index: number) {
 
+            //处理时间选择类型
+            let target = dateItemArr.find((dateItem: any) => dateItem.itemCode == item.itemCode)
+
+            if (target)
+              return <DatePickerColumnRender
+                {...{
+                  className: '',
+                  cellDisabled,
+                  record,
+                  itemCfg: item,
+                  index,
+                  format: target.format || '',
+                  showTime: target.showTime || false,
+                  handleNextIptFocus,
+                  updateDataSource,
+                  registerCode
+                }}
+              />
+
             //处理上传附件类型
             if (item.itemType == "attachment")
               return <FileUploadColumnRender
@@ -347,6 +380,24 @@ export default observer(function HandoverRegister(props: Props) {
           width: (15 * item.width || 50) + 8,
           dataIndex: item.itemCode,
           render(text: string, record: any, index: number) {
+            //处理时间选择类型
+            let target = dateItemArr.find((dateItem: any) => dateItem.itemCode == item.itemCode)
+
+            if (target)
+              return <DatePickerColumnRender
+                {...{
+                  className: '',
+                  cellDisabled,
+                  record,
+                  itemCfg: item,
+                  index,
+                  format: target.format || '',
+                  showTime: target.showTime || false,
+                  handleNextIptFocus,
+                  updateDataSource,
+                  registerCode
+                }}
+              />
             //处理上传附件类型
             if (item.itemType == "attachment")
               return <FileUploadColumnRender
@@ -370,7 +421,17 @@ export default observer(function HandoverRegister(props: Props) {
                     record[item.itemCode] = value;
                     record.modified = true;
                   }}
-                  onBlur={() => updateDataSource()}
+                  onFocus={() => fixInputValue(record, codeAdapter({
+                    QCRG_11: ['合计时间（小时）'],
+                    other: []
+                  }, registerCode), index, 100)}
+                  onBlur={() => {
+                    updateDataSource()
+                    fixInputValue(record, codeAdapter({
+                      QCRG_11: ['合计时间（小时）'],
+                      other: []
+                    }, registerCode), index, 100)
+                  }}
                 >
                   <TextArea
                     data-key={item.itemCode}
@@ -563,7 +624,8 @@ export default observer(function HandoverRegister(props: Props) {
     onInitData,
     onDelete,
     onAddBlock,
-    getPage
+    getPage,
+    fixInputValue,
   } = getFun({
     registerCode,
     registerName,
@@ -666,21 +728,23 @@ export default observer(function HandoverRegister(props: Props) {
         />
         <span className="label">科室</span>
         <DeptSelect onChange={() => { }} style={{ width: 150 }} />
-        <span className="label">班次</span>
-        <Select
-          style={{ width: 70, minWidth: 70 }}
-          value={selectedRange}
-          onChange={(value: any) => {
-            setSelectedRange(value);
-          }}
-        >
-          <Select.Option value="">全部</Select.Option>
-          {rangeConfigList.map((item: any) => (
-            <Select.Option value={item.itemCode} key={item.itemCode}>
-              {item.itemCode}
-            </Select.Option>
-          ))}
-        </Select>
+        {rangeConfigList.length > 0 && <React.Fragment>
+          <span className="label">班次</span>
+          <Select
+            style={{ width: 70, minWidth: 70 }}
+            value={selectedRange}
+            onChange={(value: any) => {
+              setSelectedRange(value);
+            }}
+          >
+            <Select.Option value="">全部</Select.Option>
+            {rangeConfigList.map((item: any) => (
+              <Select.Option value={item.itemCode} key={item.itemCode}>
+                {item.itemCode}
+              </Select.Option>
+            ))}
+          </Select>
+        </React.Fragment>}
 
         <Place />
 

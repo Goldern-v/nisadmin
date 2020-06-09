@@ -9,7 +9,8 @@ import {
   message,
   Input,
   Select,
-  DatePicker
+  DatePicker,
+  Popover
 } from "src/vendors/antd";
 import { wardRegisterService } from "../../services/WardRegisterService";
 import { authStore, appStore } from "src/stores";
@@ -31,6 +32,7 @@ import { codeAdapter } from "../../utils/codeAdapter";
 import { signRowObj } from "../../utils/signRowObj";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import DatePickerColumnRender from './../../components/DatePickerColumnRender'
+import { createFilterItem } from "../../components/FilterItem"
 export interface Props {
   payload: any;
 }
@@ -60,6 +62,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
   const selectedBlockObj = blockList.find(
     (item: any) => item.id == selectedBlockId
   );
+  const [popoverVisible, setPopoverVisible]: any = useState(false);
 
   const settingModal = createModal(SettingModal);
   const updateDataSource = () => {
@@ -67,6 +70,44 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
       setDataSource([...dataSource]);
     });
   };
+
+  const xdlbFilter = createFilterItem(
+    "消毒类别",
+    itemConfigList,
+    [],
+    () => {
+      setPopoverVisible(false);
+      getPage();
+    }
+  )
+
+  const syffFilter = createFilterItem(
+    "使用方法",
+    itemConfigList,
+    [],
+    () => {
+      setPopoverVisible(false);
+      getPage();
+    }
+  )
+
+  const syddFilter = createFilterItem(
+    "使用地点",
+    itemConfigList,
+    [],
+    () => {
+      setPopoverVisible(false);
+      getPage();
+    }
+  )
+
+  /** 查询参数 */
+  const paramMap = {
+    ...xdlbFilter.value,
+    ...syffFilter.value,
+    ...syddFilter.value,
+  }
+
   const columns: ColumnProps<any>[] | any = [
     {
       title: "日期",
@@ -257,7 +298,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
     date,
     selectedBlockId,
     dataSource,
-    paramMap: {}
+    paramMap
   })
 
   useEffect(() => {
@@ -308,6 +349,20 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
         />
         <span className="label">科室</span>
         <DeptSelect onChange={() => { }} style={{ width: 150 }} />
+        <Popover
+          placement="bottom"
+          title={"筛选条件"}
+          visible={popoverVisible}
+          content={<div>
+            <xdlbFilter.Component />
+            <syffFilter.Component />
+            <syddFilter.Component />
+          </div>}
+          trigger="hover"
+          onVisibleChange={visible => setPopoverVisible(visible)}
+        >
+          <Button>筛选</Button>
+        </Popover>
         <Place />
 
         {selectedBlockId && (

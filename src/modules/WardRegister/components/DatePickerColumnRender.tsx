@@ -72,7 +72,17 @@ export default function DatePickerColumnRender(props: Props) {
         if (target) handleNextIptFocus(null, target)
       }, 500)
 
-      if (registerCode == 'QCRG_19_2') {
+      if (
+        registerCode == 'QCRG_19_2' ||
+        registerCode == 'QCRG_11'
+      ) {
+
+        let sumItemCode = '总计天数'
+        let diffUnit = 'd' as 'd' | 'h'
+        if (registerCode == 'QCRG_11') {
+          sumItemCode = '合计时间（小时）'
+          diffUnit = 'h'
+        }
         //时间差计算
         let newSum = ''
 
@@ -87,13 +97,13 @@ export default function DatePickerColumnRender(props: Props) {
           endTimeDate.isValid() &&
           current && endTime
         ) {
-          let m = endTimeDate.diff(currentDate, "d")
-          if (m >= 0) m += 1
+          let m = endTimeDate.diff(currentDate, diffUnit)
+          if (m >= 0 && diffUnit == 'd') m += 1
           newSum = m.toString()
         }
 
         if (newSum) {
-          record['总计天数'] = newSum
+          record[sumItemCode] = newSum
           updateDataSource(true)
 
           setTimeout(() => {
@@ -101,7 +111,7 @@ export default function DatePickerColumnRender(props: Props) {
             let sumEl = null
             if (dpEl) {
               let trEl = dpEl?.parentElement?.parentElement
-              sumEl = trEl?.querySelector('[data-key="总计天数"]') as HTMLInputElement
+              sumEl = trEl?.querySelector(`[data-key="${sumItemCode}"]`) as HTMLInputElement
 
               if (sumEl) {
                 sumEl.value = newSum
