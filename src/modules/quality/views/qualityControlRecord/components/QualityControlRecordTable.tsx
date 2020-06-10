@@ -11,10 +11,13 @@ export interface Props {
   tableData: any
   allData: any
   loadingGet: boolean
-  getTableData: any
+  getTableData: any,
+  showSelection?: boolean,
+  selectionChange?: Function,
+  selectedRowKeys?: any[]
 }
 export default observer(function qualityControlRecordTable(props: Props) {
-  const { allData, tableData, loadingGet } = props
+  const { allData, tableData, loadingGet, selectedRowKeys, showSelection, selectionChange } = props
   // .list
   // const tableRowData:any[] = tableData.list
   const columns: any[] = [
@@ -157,7 +160,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
           {/* {JSON.stringify(tableData)} */}
           {/* {allData.pageIndex} */}
           <BaseTable
-            surplusHeight={205}
+            surplusHeight={225}
             // surplusHeight={135}
             loading={loadingGet}
             dataSource={tableData}
@@ -168,6 +171,10 @@ export default observer(function qualityControlRecordTable(props: Props) {
                 onDoubleClick: () => record.id && onDoubleClick(record)
               }
             }}
+            rowSelection={showSelection ? {
+              onChange: (payload: any) => selectionChange && selectionChange(payload),
+              selectedRowKeys,
+            } : undefined}
             pagination={{
               total: allData.totalCount,
               current: allData.pageIndex,

@@ -121,7 +121,7 @@ export default observer(function TopCon(props: any) {
           新建
         </Button>
       )}
-      {/* <Button style={{ marginLeft: '10px' }} onClick={() => props.refExport()}>导出</Button> */}
+      {appStore.HOSPITAL_ID == 'hj' && <Button style={{ marginLeft: '10px' }} onClick={() => props.refExport && props.refExport()}>导出</Button>}
       <FormCreateModal
         onCancel={() => setFormCreateVisible(false)}
         onOk={() => setFormCreateVisible(false)}

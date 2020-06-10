@@ -54,6 +54,7 @@ export default observer(function 基础模板登记本(props: Props) {
   const cellDisabled = baseRegisterMode.cellDisabled
 
   const [columns, setColumns] = useState([] as ColumnProps<any>[])
+  const [superHeight, setSuperHeight] = useState(200)
 
   // console.log(columns)
 
@@ -87,6 +88,7 @@ export default observer(function 基础模板登记本(props: Props) {
   }
 
   useEffect(() => {
+    //重新渲染表头colunms
     /**固定项目 */
     let itemCfgBefore = [
       ...codeAdapter({
@@ -141,7 +143,7 @@ export default observer(function 基础模板登记本(props: Props) {
 
     /**自定义项目 */
     const renderColumn = (item: any) => {
-      const { itemCode, checkSize, width, options } = item
+      const { itemCode, checkSize, width, options, title } = item
       let columnItem = {} as ColumnProps<any>
 
       let columnWidth = (15 * width || 50) + 8
@@ -191,27 +193,18 @@ export default observer(function 基础模板登记本(props: Props) {
         }
       }
 
-      if (!!checkSize) {
-        columnItem = {
-          title: itemCode,
-          children: [
-            {
-              title: checkSize,
-              dataIndex: itemCode,
-              align: 'left',
-              wdith: columnWidth,
-              render
-            } as ColumnProps<any>
-          ]
-        }
-      } else {
-        columnItem = {
-          title: itemCode,
-          align: 'left',
-          width: columnWidth,
-          dataIndex: itemCode,
-          render,
-        }
+      columnItem = {
+        title: <FullTheader>
+          <div className="title">
+            <span>{title || itemCode}</span>
+          </div>
+          {checkSize && <div className="subtitle">{checkSize}</div>}
+        </FullTheader>,
+        align: 'left',
+        className: "input-cell",
+        width: columnWidth,
+        dataIndex: itemCode,
+        render,
       }
 
       return columnItem
@@ -223,7 +216,7 @@ export default observer(function 基础模板登记本(props: Props) {
 
         if (item.children) {
           newItem.title = item.title || item.itemCode
-          newItem.children = item.children.map((children: any) => renderColumn(item))
+          newItem.children = item.children.map((children: any) => renderColumn(children))
         } else {
           newItem = renderColumn(item)
         }
@@ -236,6 +229,16 @@ export default observer(function 基础模板登记本(props: Props) {
       ...newColumns,
       ...itemCfgAfter,
     ])
+
+    //表头变化时动态计算表格superHeight
+    if (itemConfigList.length > 0) {
+      setTimeout(() => {
+        let target = document.querySelector('#baseTable .ant-table-header') as any
+        if (target) {
+          setSuperHeight(target.offsetHeight ? target.offsetHeight + (200 - 25) : 200)
+        }
+      }, 100)
+    }
   }, [itemConfigList])
 
   return <Wrapper>
@@ -288,7 +291,8 @@ export default observer(function 基础模板登记本(props: Props) {
           <BaseTable
             columns={columns}
             dataSource={tableData}
-            surplusHeight={220}
+            surplusHeight={superHeight}
+            useOuterPagination
             surplusWidth={300}
             pagination={{
               current: baseQuery.pageIndex,
@@ -308,3 +312,23 @@ export default observer(function 基础模板登记本(props: Props) {
     </Spin>
   </Wrapper>
 })
+
+const FullTheader = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .title{
+    flex: 1 1 0%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  .subtitle{
+    border-top: 1px solid rgb(232, 232, 232);
+    width: 100%;
+    height: 20px;
+    font-weight: normal;
+    line-height: 20px;
+  }
+`

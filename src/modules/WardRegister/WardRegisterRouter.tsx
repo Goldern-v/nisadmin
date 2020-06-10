@@ -74,17 +74,6 @@ export default function WardRegisterRouter() {
         registerName: "医嘱核对登记本"
       }
     },
-    // {
-    //   title: "医嘱核对登记本",
-    //   icon: <SMZC />,
-    //   hide: !appStore.isDev,
-    //   path: "/wardRegister/QCRG_04",
-    //   component: { ...基础模板登记本 },
-    //   payload: {
-    //     registerCode: "QCRG_04",
-    //     registerName: "医嘱核对登记本"
-    //   }
-    // },
     {
       title: "床单位消毒登记本",
       path: "/wardRegister/QCRG_05",
@@ -298,17 +287,6 @@ export default function WardRegisterRouter() {
         registerName: "健康教育授课登记表"
       }
     },
-    // {
-    //   title: "健康教育授课登记表",
-    //   icon: <SMZC />,
-    //   hide: !appStore.isDev,
-    //   path: "/wardRegister/QCRG_18",
-    //   component: { ...基础模板登记本 },
-    //   payload: {
-    //     registerCode: "QCRG_18",
-    //     registerName: "健康教育授课登记表"
-    //   }
-    // },
     {
       title: "实习进修新职工登记",
       path: "/wardRegister/QCRG_19_2",

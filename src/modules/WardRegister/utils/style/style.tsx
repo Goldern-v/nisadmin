@@ -83,6 +83,46 @@ export const TableCon = styled.div`
       color: red;
     }
   }
+  td{
+    padding:0;
+    position:relative;
+    .bg{
+      position: absolute;
+      top:0;
+      bottom:0;
+      z-index:-1;
+      &.disabled{
+        background: rgba(0,0,0,0.03)!important;
+      }
+    }
+  }
+  .color-red,
+  .color-red *,
+  .disabled-row .color-red[disabled],
+  .disabled-row .color-red *[disabled] {
+    color: red !important;
+  }
+  .color-orange,
+  .color-orange *,
+  .disabled-row .color-orange[disabled],
+  .disabled-row .color-orange *[disabled] {
+    color: orange !important;
+  }
+  .ant-select-disabled .ant-select-selection{
+      background: rgba(0,0,0,0.0)!important;
+  }
+  .disabled-row{
+    td.input-cell{
+      background: rgba(0,0,0,0.03)!important;
+    }
+    .bg.disabled{
+      background: rgba(0,0,0,0.0)!important;
+    }
+  }
+  .ant-input[disabled]{
+    color: #000!important;
+      background: rgba(0,0,0,0.0)!important;
+  }
 `;
 
 export const ThBox = styled.div`

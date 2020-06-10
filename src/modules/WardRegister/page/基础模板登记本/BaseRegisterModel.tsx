@@ -3,6 +3,7 @@ import { wardRegisterService } from './../../services/WardRegisterService'
 import { appStore, authStore } from 'src/stores'
 import { message } from 'antd'
 import moment from 'moment'
+import { codeAdapter } from "../../utils/codeAdapter"
 import { globalModal } from "src/global/globalModal"
 
 const defaultQuery = function () {
@@ -51,6 +52,7 @@ export default class BaseRegisterModel {
     this.itemConfigList = []
     this.rangeConfigList = []
     this.tableData = []
+    this.filterQuery = this.initFilterQuery()
 
     this.getBlockList()
   }
@@ -112,27 +114,39 @@ export default class BaseRegisterModel {
     let newCfgList = [] as any[]
 
     for (let i = 0; i < cfgList.length; i++) {
-      let item = { ...cfgList[i] }
+      let item = JSON.parse(JSON.stringify(cfgList[i]))
       let { itemCode } = item
 
       if (itemCode.includes("：")) {
         let titleMain = itemCode.split("：")[0]
-        // let titleSub = itemCode.split("：")[1]
+        let titleSub = itemCode.split("：")[1]
 
-        let target = newCfgList.find(item => item.title == titleMain)
+        let target = newCfgList.find(abc => abc.title == titleMain)
 
         if (target) {
-          target.children.push(item)
+          target.children.push({
+            ...item,
+            title: titleSub,
+          })
+
         } else {
           newCfgList.push({
             title: titleMain,
-            ...item
+            ...item,
+            children: [
+              {
+                ...item,
+                title: titleSub,
+              }
+            ]
           })
         }
       } else {
         newCfgList.push(item)
       }
     }
+
+    console.log(newCfgList)
 
     return newCfgList
   }
@@ -221,6 +235,14 @@ export default class BaseRegisterModel {
       return true
 
     return false
+  }
+
+  /**初始化筛选条件 */
+  private initFilterQuery = () => {
+    return codeAdapter({
+      QCRG_08: { '转归': '' },
+      other: {}
+    }, this.registerCode)
   }
 }
 

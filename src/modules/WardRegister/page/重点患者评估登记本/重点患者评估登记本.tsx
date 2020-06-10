@@ -586,7 +586,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
           let dateItemCodeArr = codeAdapter({
             QCRG_10: ['有效期'],
             QCRG_14_1: ['生产日期', '失效日期'],
-            QCRG_14_2: ['生产日期'],
+            QCRG_14_2: ['失效日期'],
             QCRG_19_2: ['开始时间', '结束时间'],
             QCRG_08: ['入院时间'],
             other: []

@@ -4,18 +4,21 @@ import { RouteComponentProps } from 'react-router'
 import QualityControlRecordHeader from './components/QualityControlRecordHeader'
 import QualityControlRecordTable from './components/QualityControlRecordTable'
 import PaginationCon from './components/PaginationCon'
-import { Pagination, Spin } from 'antd'
+import { Pagination, Spin, message } from 'antd'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
 import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
 import { useKeepAliveEffect } from 'react-keep-alive'
+import { Modal } from 'antd/es'
+import { fileDownload } from 'src/utils/file/file'
 
 export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
 
 export default observer(function QualityControlRecord() {
   let [loading, setLoading] = useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
   useEffect(() => {
     let level =
       appStore.history.location.pathname.indexOf('qcThree') >= 0
@@ -60,7 +63,9 @@ export default observer(function QualityControlRecord() {
     }
     return () => { }
   })
+
   const getTableData = (obj?: any) => {
+    setSelectedRowKeys([])
     setLoading(true)
     let sendData = {
       pageIndex: obj ? obj.current : qualityControlRecordVM.allData.pageIndex || 1,
@@ -91,10 +96,36 @@ export default observer(function QualityControlRecord() {
       })
   }
 
+  const exportSelected = () => {
+    if (selectedRowKeys.length <= 0) {
+      message.warn('未勾选条目')
+      return
+    }
+
+    let selectedRecordIds = (qualityControlRecordVM.allData.list || [])
+      .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
+      .map((item: any) => item.id)
+
+    Modal.confirm({
+      title: '导出',
+      content: '是否导出选中条目？',
+      onOk: () => {
+        setLoading(true)
+        qualityControlRecordApi
+          .exportList(selectedRecordIds)
+          .then(res => {
+            setLoading(false)
+            fileDownload(res)
+            setSelectedRowKeys([])
+          }, () => setLoading(false))
+      }
+    })
+  }
+
   return (
     <Wrapper>
       <HeaderCon>
-        <QualityControlRecordHeader refreshData={getTableData} />
+        <QualityControlRecordHeader refreshData={getTableData} refExport={exportSelected} />
         {/* <button onClick={getTableData}>fffff</button> */}
       </HeaderCon>
       <MidCon>
@@ -111,6 +142,9 @@ export default observer(function QualityControlRecord() {
           tableData={qualityControlRecordVM.allData.list || []}
           allData={qualityControlRecordVM.allData}
           loadingGet={loading}
+          showSelection={appStore.HOSPITAL_ID == 'hj'}
+          selectionChange={(payload: any) => setSelectedRowKeys(payload)}
+          selectedRowKeys={selectedRowKeys}
           getTableData={getTableData}
         />
       </MidCon>
