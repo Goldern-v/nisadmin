@@ -51,7 +51,7 @@ export default observer(function TypeManagement(props: Props) {
       align: "center",
       render(text: any, record: any) {
         return (
-          record.teachingTypeList && (
+          record.level == 2 && (
             <DoCon>
               <span
                 onClick={() => {
