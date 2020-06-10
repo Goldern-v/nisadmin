@@ -7,7 +7,6 @@ import { stepServices } from "../services/stepServices";
 import { stepViewModal } from "../StepViewModal";
 import UpdateTable from "./table/UpdateTable";
 import PXUpdateTable from "./table/PXUpdateTable";
-
 import Form from "src/components/Form";
 
 export interface Props {}
@@ -72,6 +71,34 @@ export default function Step4() {
     e.persist();
     let promiseList: any[] = [];
     let files = e.target.files || [];
+    // 视频只允许MP4格式
+    const videoExtList = [
+      "avi",
+      "rmvb",
+      "rm",
+      "asf",
+      "divx",
+      "mpg",
+      "mpeg",
+      "mpe",
+      "wmv",
+      "mkv",
+      "vob"
+    ];
+    let fileExtList: any = [];
+    for (let key in files) {
+      let name = files[key].name;
+      if (Number(key) <= files.length - 1) {
+        var index = name.lastIndexOf(".");
+        var ext = name.substr(index + 1);
+        fileExtList.push(ext);
+      }
+    }
+    let isOk = fileExtList.find((item: any) => videoExtList.indexOf(item) > -1);
+    if (isOk) {
+      message.warning("暂时只支持上传MP4格式视频！");
+      return;
+    }
 
     for (let i = 0; i < files.length; i++) {
       let postData = new FormData();
