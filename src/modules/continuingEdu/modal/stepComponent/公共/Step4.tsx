@@ -96,7 +96,7 @@ export default function Step4() {
     }
     let isOk = fileExtList.find((item: any) => videoExtList.indexOf(item) > -1);
     if (isOk) {
-      message.warning("暂时只支持上传MP4格式视频！");
+      message.warning("暂时只支持MP4格式视频！");
       return;
     }
 
