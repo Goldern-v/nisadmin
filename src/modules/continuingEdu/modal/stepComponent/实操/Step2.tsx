@@ -122,7 +122,7 @@ export default observer(function Step1() {
             }))
           ];
         }, []);
-        if (userList.length > 3) {
+        if (name == "sicPersonList" && userList.length > 3) {
           return message.warn("选择人数不能超过三人");
         }
         refForm.current && refForm.current.setField(name, userList);
