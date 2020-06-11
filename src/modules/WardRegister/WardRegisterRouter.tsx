@@ -79,7 +79,6 @@ export default function WardRegisterRouter() {
       path: "/wardRegister/QCRG_05",
       component: { ...重点患者评估登记本 },
       icon: <CDWXD />,
-      hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_05",
         registerName: "床单位消毒登记本"
@@ -112,7 +111,6 @@ export default function WardRegisterRouter() {
       path: "/wardRegister/QCRG_08",
       component: { ...重点患者评估登记本 },
       icon: <CYHZ />,
-      hide: !appStore.isDev,
       payload: {
         registerCode: "QCRG_08",
         registerName: "出院患者登记本"
