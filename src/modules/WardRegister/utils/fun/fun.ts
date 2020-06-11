@@ -393,7 +393,7 @@ export function getFun(context: any) {
       setDataSource([])
       setTimeout(() => setDataSource(dataSource.concat()))
     }
-    if (record.editType && record.editType == 'new') {
+    if (!record.id) {
       deleteRow()
     } else {
       globalModal
@@ -413,7 +413,7 @@ export function getFun(context: any) {
   }
 
   /**护士长批量签名 */
-  const handleAuditAll = (aside?: string, ) => {
+  const handleAuditAll = (aside?: string,) => {
     aside = aside || '护士长'
     if (selectedRowKeys.length <= 0) {
       message.warn('未勾选项目')

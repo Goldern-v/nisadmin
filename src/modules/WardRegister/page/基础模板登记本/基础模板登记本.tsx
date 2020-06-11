@@ -19,9 +19,12 @@ import { authStore, appStore } from "src/stores"
 import { observer } from "mobx-react-lite"
 import moment from "moment"
 
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import { PageHeader, Place } from "src/components/common"
 import DeptSelect from "src/components/DeptSelect"
 import createModal from "src/libs/createModal"
+import SettingModal from "./components/SettingModal"
+import FileUploadRender from './components/FileUploadRender'
 import { codeAdapter } from "../../utils/codeAdapter"
 import FilterCon from './components/FilterCon'
 import SignColumn from './components/SignColumn'
@@ -47,6 +50,7 @@ export default observer(function 基础模板登记本(props: Props) {
 
   const { loading, blockList, tableData, baseQuery, totalCount, itemConfigList, rangeConfigList, filterQuery } = baseRegisterMode
   const init = baseRegisterMode.init.bind(baseRegisterMode)
+  const setLoading = baseRegisterMode.setLoading.bind(baseRegisterMode)
   const getTableData = baseRegisterMode.getTableData.bind(baseRegisterMode)
   const setQuery = baseRegisterMode.setQuery.bind(baseRegisterMode)
   const setFilter = baseRegisterMode.setFilter.bind(baseRegisterMode)
@@ -56,12 +60,15 @@ export default observer(function 基础模板登记本(props: Props) {
   const createRow = baseRegisterMode.createRow.bind(baseRegisterMode)
   const deleteRow = baseRegisterMode.deleteRow.bind(baseRegisterMode)
   const save = baseRegisterMode.save.bind(baseRegisterMode)
+  const deleteBlock = baseRegisterMode.deleteBlock.bind(baseRegisterMode)
   const exportExcel = baseRegisterMode.exportExcel.bind(baseRegisterMode)
   const focusNextIpt = baseRegisterMode.focusNextIpt
   const cellDisabled = baseRegisterMode.cellDisabled
 
   const [columns, setColumns] = useState([] as ColumnProps<any>[])
   const [superHeight, setSuperHeight] = useState(200)
+  const settingModal = createModal(SettingModal)
+  const previewModal = createModal(PreviewModal)
 
   // console.log(columns)
 
@@ -101,6 +108,7 @@ export default observer(function 基础模板登记本(props: Props) {
       {
         title: "日期",
         width: 108,
+        className: 'input-cell',
         dataIndex: "recordDate",
         align: "center",
         colSpan: codeAdapter({
@@ -132,6 +140,7 @@ export default observer(function 基础模板登记本(props: Props) {
         'QCRG_04,QCRG_20_1': [{
           title: "班次",
           width: 75,
+          className: 'input-cell',
           dataIndex: "range",
           align: "center",
           render(text: string, record: any, index: number) {
@@ -209,7 +218,7 @@ export default observer(function 基础模板登记本(props: Props) {
 
     /**自定义项目 */
     const renderColumn = (item: any) => {
-      const { itemCode, checkSize, width, options, title } = item
+      const { itemCode, checkSize, width, options, title, itemType } = item
       let columnItem = {} as ColumnProps<any>
 
       let columnWidth = (15 * width || 50) + 8
@@ -222,39 +231,70 @@ export default observer(function 基础模板登记本(props: Props) {
           "checkSize-warning":
             checkSize && (text != checkSize && text != "√")
         })
+        //文件上传
+        if (itemType == 'attachment') {
+          children =
+            <FileUploadRender
+              {...{
+                itemCfg: item,
+                record,
+                index,
+                cellDisabled,
+                className: childrenClassName,
+                setLoading,
+                handlePreview,
+                onChange: (newRecord: any, index: number) => setTableDataRow(newRecord, index),
+              }}
+            />
 
-        children = <AutoComplete
-          className={childrenClassName}
-          disabled={cellDisabled(record)}
-          dataSource={
-            options
-              ? options.split(";").filter((option: any) => option)
-              : undefined
-          }
-          value={text}
-          onChange={(val: any) => {
-            val = val.replace(/\n/g, '')
-            setTableDataRowItem(val, itemCode, index)
-          }}
-          onSelect={value => {
-            if (
-              registerCode == "QCRG_04" &&
-              item.itemCode == "组号及床号"
-            ) {
-              let prevValue = record[item.itemCode] || ''
-              setTimeout(() => {
-                prevValue = prevValue + (prevValue ? ";" : "") + value
-                setTableDataRowItem(prevValue, itemCode, index)
-              }, 0)
+          //时间选择
+        } else {
+          //带下拉选项的输入框
+          children = <AutoComplete
+            className={childrenClassName}
+            disabled={cellDisabled(record)}
+            dataSource={
+              options
+                ? options.split(";").filter((option: any) => option)
+                : undefined
             }
-          }}>
-          <TextArea autosize data-key={itemCode} onKeyDown={focusNextIpt} />
-        </AutoComplete>
+            value={text}
+            onChange={(val: any) => {
+              val = val.replace(/\n/g, '')
+              setTableDataRowItem(val, itemCode, index)
+            }}
+            onSelect={value => {
+              if (
+                registerCode == "QCRG_04" &&
+                item.itemCode == "组号及床号"
+              ) {
+                let prevValue = record[item.itemCode] || ''
+                setTimeout(() => {
+                  prevValue = prevValue + (prevValue ? ";" : "") + value
+                  setTableDataRowItem(prevValue, itemCode, index)
+                }, 0)
+              }
+            }}>
+            <TextArea
+              autosize
+              style={{
+                lineHeight: 1.2,
+                padding: "9px 2px",
+                textAlign: "center"
+              }}
+              data-key={itemCode} onKeyDown={focusNextIpt} />
+          </AutoComplete>
+        }
 
         return {
           children: <React.Fragment>
             {children}
-            <div className="bg"></div>
+            <div
+              className={[
+                'bg',
+                cellDisabled(record) ? 'disabled' : ''
+              ].join(' ')}>
+            </div>
           </React.Fragment>
         }
       }
@@ -306,6 +346,17 @@ export default observer(function 基础模板登记本(props: Props) {
       }, 100)
     }
   }, [itemConfigList])
+
+  const handlePreview = (file: any) => {
+    if (getFileType(file.name) == 'img') {
+      reactZmage.browsing({ src: file.path, backdrop: 'rgba(0,0,0, .8)' })
+    } else {
+      previewModal.show({
+        title: file.name,
+        path: file.path
+      })
+    }
+  }
 
   return <Wrapper>
     <Spin spinning={loading}>
@@ -363,8 +414,19 @@ export default observer(function 基础模板登记本(props: Props) {
         <Button type="primary" onClick={() => createRow()}>新建行</Button>
         <Button type="primary" onClick={() => save()}>保存</Button>
         <Button onClick={() => exportExcel()}>导出</Button>
-        <Button>设置</Button>
-        <Button>删除</Button>
+        <Button
+          onClick={() =>
+            settingModal.show({
+              blockId: baseQuery.blockId,
+              selectedBlockObj: blockList.find(
+                (item: any) => item.id == baseQuery.blockId
+              ),
+              registerCode,
+              onOkCallBack: () => getTableData()
+            })}>
+          设置
+        </Button>
+        <Button onClick={() => deleteBlock()}>删除</Button>
       </PageHeader>
       <TableCon>
         {(baseQuery.blockId && itemConfigList.length > 0) ?
@@ -390,6 +452,8 @@ export default observer(function 基础模板登记本(props: Props) {
         }
       </TableCon>
     </Spin>
+    <settingModal.Component />
+    <previewModal.Component />
   </Wrapper>
 })
 

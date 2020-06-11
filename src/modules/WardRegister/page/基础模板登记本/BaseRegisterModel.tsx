@@ -114,7 +114,7 @@ export default class BaseRegisterModel {
           this.itemConfigList = this.formatItemConfigList(res.data.itemConfigList || [])
 
           this.tableData = []
-          if (newTableData.length >= 0) {
+          if (newTableData.length > 0) {
             this.tableData = newTableData
           } else {
             this.createRow()
@@ -272,6 +272,19 @@ export default class BaseRegisterModel {
           .qcRegisterBlockCreate(this.registerCode, authStore.selectedDeptCode)
           .then(res => {
             message.success("创建成功")
+            this.init()
+          })
+      })
+  }
+
+  /**删除登记本或修订 */
+  @action deleteBlock = () => {
+    globalModal.confirm("删除确认", "确定要删除此修订版本吗？")
+      .then(res => {
+        wardRegisterService
+          .qcRegisterBlockDelete(this.registerCode, this.baseQuery.blockId)
+          .then(res => {
+            message.success("保存成功");
             this.init()
           })
       })

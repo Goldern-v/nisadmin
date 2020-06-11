@@ -118,17 +118,6 @@ export default function WardRegisterRouter() {
         registerName: "出院患者登记本"
       }
     },
-    // {
-    //   title: "出院患者登记本",
-    //   path: "/wardRegister/QCRG_08",
-    //   component: { ...基础模板登记本 },
-    //   icon: <CYHZ />,
-    //   hide: !appStore.isDev,
-    //   payload: {
-    //     registerCode: "QCRG_08",
-    //     registerName: "出院患者登记本"
-    //   }
-    // },
     {
       title: "备用药品管理登记本",
       path: "/wardRegister/QCRG_10",

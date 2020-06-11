@@ -45,6 +45,7 @@ export default function SignColumn(props: SignColumnProps) {
         </span>
       } else if (text) {
         children = <span
+          style={{ color: '#666' }}
           onClick={() => {
             if (title.match('护士长') && !isRoleManage) {
               message.error('非护士长无法取消签名')

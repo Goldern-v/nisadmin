@@ -474,7 +474,19 @@ export default observer(function HandoverRegister(props: Props) {
       }
     },
     ...codeAdapter({
-      QCRG_18: [],
+      QCRG_18: [
+        {
+          title: "操作",
+          width: 80,
+          fixed: false && surplusWidth && "right",
+          align: "center",
+          render: (text: any, record: any, idx: number) => {
+            return <DoCon>
+              <span onClick={() => handleDeleteRow(record, idx)}>删除</span>
+            </DoCon>
+          }
+        }
+      ],
       other: [
         {
           title: "交班者签名",
