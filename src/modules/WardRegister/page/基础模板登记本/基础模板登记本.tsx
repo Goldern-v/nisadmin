@@ -23,6 +23,7 @@ import { PageHeader, Place } from "src/components/common"
 import DeptSelect from "src/components/DeptSelect"
 import createModal from "src/libs/createModal"
 import { codeAdapter } from "../../utils/codeAdapter"
+import FilterCon from './components/FilterCon'
 import SignColumn from './components/SignColumn'
 import { NullBox } from "../../components/NullBox"
 import { TableCon, Wrapper } from "../../utils/style/style"
@@ -44,12 +45,18 @@ export default observer(function 基础模板登记本(props: Props) {
   const registerName = props.payload && props.payload.registerName
   const { isNotANormalNurse } = authStore
 
-  const { loading, blockList, tableData, baseQuery, totalCount, itemConfigList, rangeConfigList } = baseRegisterMode
+  const { loading, blockList, tableData, baseQuery, totalCount, itemConfigList, rangeConfigList, filterQuery } = baseRegisterMode
   const init = baseRegisterMode.init.bind(baseRegisterMode)
+  const getTableData = baseRegisterMode.getTableData.bind(baseRegisterMode)
   const setQuery = baseRegisterMode.setQuery.bind(baseRegisterMode)
+  const setFilter = baseRegisterMode.setFilter.bind(baseRegisterMode)
   const addBlock = baseRegisterMode.addBlock.bind(baseRegisterMode)
   const setTableDataRowItem = baseRegisterMode.setTableDataRowItem.bind(baseRegisterMode)
   const setTableDataRow = baseRegisterMode.setTableDataRow.bind(baseRegisterMode)
+  const createRow = baseRegisterMode.createRow.bind(baseRegisterMode)
+  const deleteRow = baseRegisterMode.deleteRow.bind(baseRegisterMode)
+  const save = baseRegisterMode.save.bind(baseRegisterMode)
+  const exportExcel = baseRegisterMode.exportExcel.bind(baseRegisterMode)
   const focusNextIpt = baseRegisterMode.focusNextIpt
   const cellDisabled = baseRegisterMode.cellDisabled
 
@@ -91,6 +98,36 @@ export default observer(function 基础模板登记本(props: Props) {
     //重新渲染表头colunms
     /**固定项目 */
     let itemCfgBefore = [
+      {
+        title: "日期",
+        width: 108,
+        dataIndex: "recordDate",
+        align: "center",
+        colSpan: codeAdapter({
+          other: 1,
+        }, registerCode, true),
+        render(text: string, record: any, index: number) {
+          let children = <AutoComplete
+            disabled={cellDisabled(record)}
+            value={text}
+            onChange={value => setTableDataRowItem(value, 'recordDate', index)}>
+            <TextArea
+              autosize
+              data-key={'recordDate'}
+              onKeyUp={focusNextIpt}
+              style={{
+                lineHeight: 1.2,
+                padding: "9px 2px",
+                textAlign: "center"
+              }}
+            />
+          </AutoComplete>
+          let obj = {
+            children
+          }
+          return obj
+        }
+      },
       ...codeAdapter({
         'QCRG_04,QCRG_20_1': [{
           title: "班次",
@@ -124,22 +161,51 @@ export default observer(function 基础模板登记本(props: Props) {
       }, registerCode, true)
     ]
 
-    let itemCfgAfter = codeAdapter({
-      QCRG_04: [
-        SignColumn({
-          title: "签名",
-          width: 70,
-          dataIndex: 'signerName',
-          aside: "",
-          registerCode,
-          blockId: baseQuery.blockId,
-          isRoleManage: !!authStore.isRoleManage,
-          successCallback: (newRecord: any, index: number) =>
-            setTableDataRow(newRecord, index)
-        })
-      ],
-      other: []
-    }, registerCode)
+    /**整合相同的签名参数 返回签名组件 */
+    const SignColumnFormat = (title?: string, aside?: string, dataIndex?: string, width?: number) => {
+      return SignColumn({
+        title: title || "签名",
+        width: width || 70,
+        dataIndex: dataIndex || 'signerName',
+        aside: aside || "",
+        registerCode,
+        blockId: baseQuery.blockId,
+        isRoleManage: !!authStore.isRoleManage,
+        successCallback: (newRecord: any, index: number) =>
+          setTableDataRow(newRecord, index)
+      })
+    }
+
+    let itemCfgAfter = [
+      ...codeAdapter({
+        QCRG_04: [
+          SignColumnFormat()
+        ],
+        QCRG_08: [
+          SignColumnFormat('登记人签名', '登记人')
+        ],
+        other: []
+      }, registerCode),
+      {
+        title: "操作",
+        width: 50,
+        className: "",
+        render(text: string, record: any, index: number) {
+          return (
+            <DoCon>
+              {cellDisabled(record) ? (
+                <aside style={{ color: "#aaa" }}>删除</aside>
+              ) : (
+                  <span
+                    onClick={() => deleteRow(record, index)}>
+                    删除
+                  </span>
+                )}
+            </DoCon>
+          );
+        }
+      }
+    ]
 
     /**自定义项目 */
     const renderColumn = (item: any) => {
@@ -285,9 +351,23 @@ export default observer(function 基础模板登记本(props: Props) {
         <DeptSelect
           onChange={() => init(registerCode, registerName)}
           style={{ width: 150 }} />
+        <FilterCon
+          filter={filterQuery}
+          itemConfigList={itemConfigList}
+          rangeConfigList={rangeConfigList}
+          filterChange={(payload: any) => setFilter(payload, true)} />
+        <Place />
+        <Button onClick={() => setQuery({ ...baseQuery, pageIndex: 1 }, true)}>
+          查询
+        </Button>
+        <Button type="primary" onClick={() => createRow()}>新建行</Button>
+        <Button type="primary" onClick={() => save()}>保存</Button>
+        <Button onClick={() => exportExcel()}>导出</Button>
+        <Button>设置</Button>
+        <Button>删除</Button>
       </PageHeader>
       <TableCon>
-        {baseQuery.blockId && itemConfigList.length > 0 ?
+        {(baseQuery.blockId && itemConfigList.length > 0) ?
           <BaseTable
             columns={columns}
             dataSource={tableData}

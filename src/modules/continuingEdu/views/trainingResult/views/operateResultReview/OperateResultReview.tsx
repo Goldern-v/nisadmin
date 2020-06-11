@@ -28,7 +28,8 @@ export interface Props { }
 
 //查看培训结果
 export default observer(function OperateResultReview() {
-  const { history } = appStore
+  const { history, queryObj } = appStore
+  const editable = !!queryObj.editable || false
   const scorceConfirm = createModal(ScoreConfirmModal)
   const examScoreEdit = createModal(ExamScoreEditModal)
 
@@ -188,9 +189,11 @@ export default observer(function OperateResultReview() {
       title: '操作',
       width: 100,
       render: (status: string, record: any) => {
+        const btnText = editable ? '立即评分' : '查看成绩'
+
         return <DoCon>
-          {record.signInTime && <span onClick={() => handleViewScore(record)}>立即评分</span>}
-          {!record.signInTime && <span style={{ color: '#999', cursor: 'default' }}>立即评分</span>}
+          {record.signInTime && <span onClick={() => handleViewScore(record)}>{btnText}</span>}
+          {!record.signInTime && <span style={{ color: '#999', cursor: 'default' }}>{btnText}</span>}
         </DoCon>
       }
     }
@@ -203,7 +206,7 @@ export default observer(function OperateResultReview() {
     examScoreEdit.show({
       cetpId: appStore.queryObj.id,
       empNo: record.empNo,
-      type: appStore.queryObj.editable ? 'edit' : 'view',
+      type: editable ? 'edit' : 'view',
       onOkCallBack: () => {
         trainingResultModel.getTableData()
       }
@@ -284,7 +287,7 @@ export default observer(function OperateResultReview() {
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
         <span> > </span>
         {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
-        <span> > 查看结果</span>
+        <span> > {editable ? '评分设置' : '查看结果'}</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>
@@ -313,15 +316,17 @@ export default observer(function OperateResultReview() {
             disabled={publishLoading}>
             发布成绩
           </Button>}
-        {baseInfo.isResultPublished !== 0 &&
-          <Button
-            type="primary"
-            disabled={true}>
-            已发布
+        {!editable && <React.Fragment>
+          {baseInfo.isResultPublished === 1 &&
+            <Button
+              type="primary"
+              disabled={true}>
+              已发布
           </Button>}
-        {isSignType &&
-          <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
-        <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+          {isSignType &&
+            <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
+          <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+        </React.Fragment>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>

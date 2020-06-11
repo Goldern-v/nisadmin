@@ -39,7 +39,8 @@ export default function SignColumn(props: SignColumnProps) {
       //未保存条目禁止签名
       if (!record.id) {
         children = <span
-          style={{ color: '#aaa', cursor: 'not-allowed' }}>
+          title="新建条目保存后可签名"
+          style={{ cursor: 'not-allowed' }}>
           签名
         </span>
       } else if (text) {

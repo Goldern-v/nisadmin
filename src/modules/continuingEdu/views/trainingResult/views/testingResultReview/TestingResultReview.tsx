@@ -29,7 +29,8 @@ export interface Props { }
 
 //查看考试结果
 export default observer(function TestingResultReview() {
-  const { history } = appStore
+  const { history, queryObj } = appStore
+  const editable = !!queryObj.editable || false
   const scorceConfirm = createModal(ScoreConfirmModal)
   const answerSheet = createModal(AnswerSheetModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
@@ -273,7 +274,7 @@ export default observer(function TestingResultReview() {
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
         <span> > </span>
         {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
-        <span> > 查看结果</span>
+        <span> > {editable ? '评分设置' : '查看结果'}</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>
@@ -308,13 +309,15 @@ export default observer(function TestingResultReview() {
             disabled={publishLoading}>
             发布成绩
           </Button>}
-        {baseInfo.isResultPublished !== 0 &&
-          <Button
-            type="primary"
-            disabled={true}>
-            已发布
+        {!editable && <React.Fragment>
+          {baseInfo.isResultPublished === 1 &&
+            <Button
+              type="primary"
+              disabled={true}>
+              已发布
           </Button>}
-        <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+          <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+        </React.Fragment>}
         <Button onClick={() => history.goBack()}>返回</Button>
       </ButtonGroups>
     </TopPannel>
