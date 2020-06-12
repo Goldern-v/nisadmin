@@ -170,10 +170,10 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
                   record.modified = true
                   record[item.itemCode] = value.toString().replace(/\n/g, '');
                 }}
-                onFocus={() => fixInputValue(record, ['累计时间'], index, 200)}
+                onFocus={() => fixInputValue(record, ['使用时间'], index, 200)}
                 onBlur={() => {
                   updateDataSource()
-                  fixInputValue(record, ['累计时间'], index, 100)
+                  fixInputValue(record, ['使用时间'], index, 100)
                 }}
                 onSelect={() => updateDataSource()}
               >
@@ -200,21 +200,12 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
             const obj = {
               children,
               props: {
-                colSpan: 5
+                colSpan: itemConfigList.length
               }
             };
             return obj;
           }
 
-          if (item.itemCode == '累计时间') {
-            const obj = {
-              children,
-              props: {
-                colSpan: 1
-              }
-            };
-            return obj;
-          }
           if (
             item.itemCode != "消毒类别" &&
             (record["消毒类别"] == "酒精擦拭灯管" ||
@@ -457,7 +448,7 @@ function NullBox(props: any) {
         className="file"
       />
       <Button type="primary" icon="file-add" size={"large"} onClick={onClick}>
-        创建物品交接登记本
+        创建紫外线空气消毒登记本
       </Button>
     </Wrapper>
   );

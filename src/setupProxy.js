@@ -1,6 +1,6 @@
 const proxy = require("http-proxy-middleware");
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(
     proxy("/crNursing/api", {
       // target: 'http://120.25.105.45:9865',

@@ -25,6 +25,7 @@ import DeptSelect from "src/components/DeptSelect"
 import createModal from "src/libs/createModal"
 import SettingModal from "./components/SettingModal"
 import FileUploadRender from './components/FileUploadRender'
+import DefaultRender from './components/DefaultRender'
 import { codeAdapter } from "../../utils/codeAdapter"
 import FilterCon from './components/FilterCon'
 import SignColumn from './components/SignColumn'
@@ -115,21 +116,18 @@ export default observer(function 基础模板登记本(props: Props) {
           other: 1,
         }, registerCode, true),
         render(text: string, record: any, index: number) {
-          let children = <AutoComplete
-            disabled={cellDisabled(record)}
-            value={text}
-            onChange={value => setTableDataRowItem(value, 'recordDate', index)}>
-            <TextArea
-              autosize
-              data-key={'recordDate'}
-              onKeyUp={focusNextIpt}
-              style={{
-                lineHeight: 1.2,
-                padding: "9px 2px",
-                textAlign: "center"
-              }}
-            />
-          </AutoComplete>
+          let children = <DefaultRender
+            {...{
+              cellDisabled,
+              record,
+              itemCode: 'recordDate',
+              index,
+              onChange: (val: any, itemCode: string, index: number) =>
+                setTableDataRowItem(val, 'recordDate', index),
+              focusNextIpt,
+            }}
+          />
+
           let obj = {
             children
           }
@@ -144,22 +142,19 @@ export default observer(function 基础模板登记本(props: Props) {
           dataIndex: "range",
           align: "center",
           render(text: string, record: any, index: number) {
-            let children = <AutoComplete
-              disabled={cellDisabled(record)}
-              dataSource={rangeConfigList.map((item: any) => item.itemCode)}
-              value={text}
-              onChange={value => setTableDataRowItem(value, 'range', index)}>
-              <TextArea
-                autosize
-                data-key={'range'}
-                onKeyUp={focusNextIpt}
-                style={{
-                  lineHeight: 1.2,
-                  padding: "9px 2px",
-                  textAlign: "center"
-                }}
-              />
-            </AutoComplete>
+            let children = <DefaultRender
+              {...{
+                cellDisabled,
+                record,
+                options: rangeConfigList.map((item: any) => item.itemCode),
+                itemCode: 'range',
+                index,
+                onChange: (val: any, itemCode: string, index: number) =>
+                  setTableDataRowItem(val, 'range', index),
+                focusNextIpt,
+              }}
+            />
+
             let obj = {
               children
             }
@@ -250,40 +245,31 @@ export default observer(function 基础模板登记本(props: Props) {
           //时间选择
         } else {
           //带下拉选项的输入框
-          children = <AutoComplete
-            className={childrenClassName}
-            disabled={cellDisabled(record)}
-            dataSource={
-              options
-                ? options.split(";").filter((option: any) => option)
-                : undefined
-            }
-            value={text}
-            onChange={(val: any) => {
-              val = val.replace(/\n/g, '')
-              setTableDataRowItem(val, itemCode, index)
-            }}
-            onSelect={value => {
-              if (
-                registerCode == "QCRG_04" &&
-                item.itemCode == "组号及床号"
-              ) {
-                let prevValue = record[item.itemCode] || ''
-                setTimeout(() => {
-                  prevValue = prevValue + (prevValue ? ";" : "") + value
-                  setTableDataRowItem(prevValue, itemCode, index)
-                }, 0)
+          children = <DefaultRender
+            {...{
+              record,
+              index,
+              itemCode,
+              className: childrenClassName,
+              cellDisabled,
+              focusNextIpt,
+              options: options ? options.split(";").filter((option: any) => option) : undefined,
+              onChange: (val: any, itemCode: string, index: number) =>
+                setTableDataRowItem(val, itemCode, index),
+              onSelect: (value: any) => {
+                if (
+                  registerCode == "QCRG_04" &&
+                  item.itemCode == "组号及床号"
+                ) {
+                  let prevValue = record[item.itemCode] || ''
+                  setTimeout(() => {
+                    prevValue = prevValue + (prevValue ? ";" : "") + value
+                    setTableDataRowItem(prevValue, itemCode, index)
+                  }, 0)
+                }
               }
-            }}>
-            <TextArea
-              autosize
-              style={{
-                lineHeight: 1.2,
-                padding: "9px 2px",
-                textAlign: "center"
-              }}
-              data-key={itemCode} onKeyDown={focusNextIpt} />
-          </AutoComplete>
+            }}
+          />
         }
 
         return {
