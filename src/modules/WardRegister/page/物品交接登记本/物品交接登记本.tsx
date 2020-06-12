@@ -64,6 +64,7 @@ export default observer(function HandoverRegister(props: Props) {
   const [selectedBlockId, setSelectedBlockId] = useState(null);
   const [date, setDate]: any = useState([null, null]);
   const [surplusWidth, setSurplusWidth]: any = useState(false);
+  const [surplusHeight, setSurplusHeight] = useState(200)
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
@@ -699,9 +700,16 @@ export default observer(function HandoverRegister(props: Props) {
         //     ).style.width = "auto");
         //   setSurplusWidth(280);
         // }
+
+        if (itemConfigList.length > 0) {
+          let target = document.querySelector('#baseTable .ant-table-header') as any
+          if (target) {
+            setSurplusHeight(target.offsetHeight ? target.offsetHeight + (200 - 25) : 200)
+          }
+        }
       }, 100);
     } catch (error) { }
-  }, [dataSource, surplusWidth]);
+  }, [itemConfigList]);
 
   return (
     <Wrapper id="HandoverRegisterTable">
@@ -800,10 +808,7 @@ export default observer(function HandoverRegister(props: Props) {
             dataSource={dataSource}
             columns={columns}
             surplusWidth={300}
-            surplusHeight={codeAdapter({
-              QCRG_18: 240,
-              other: 280
-            }, registerCode)}
+            surplusHeight={surplusHeight}
             useOuterPagination={true}
             rowClassName={(record: any, idx: number) => {
               if (cellDisabled(record)) return 'disabled-row'
