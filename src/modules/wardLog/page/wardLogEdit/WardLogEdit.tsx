@@ -67,13 +67,10 @@ export default observer(function WardLogEdit(props: any) {
     let wardCode = search.deptCode || info.wardCode || ''
     if (wardCode == '全院') wardCode = authStore.defaultDeptCode
 
-    let year = search.year || info.year || ''
-
     let params = {
       inpatientAreaLog: {
         remark,
         templateId: search.templateId,
-        year,
       },
       templateDto: {
         ...info,
