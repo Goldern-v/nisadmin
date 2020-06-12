@@ -141,6 +141,10 @@ export default observer(function SetTittle(props: Props) {
                 <Option value="">下拉选项</Option>
                 <Option value="ward_user">科室护士</Option>
                 <Option value="attachment">附件上传</Option>
+                {codeAdapter({
+                  QCRG_08: <Option value="date">日期选择</Option>,
+                  other: null,
+                }, registerCode, true)}
               </Select>
             }
           },
@@ -179,7 +183,9 @@ export default observer(function SetTittle(props: Props) {
       width: 300,
       className: "input-cell",
       render(text: any, record: any, index: any) {
-        if (record.itemType == 'attachment') {
+        if (record.itemType == 'date') {
+          return <span></span>
+        } else if (record.itemType == 'attachment') {
           return <Select
             mode="tags"
             style={{ width: "100%" }}

@@ -588,11 +588,11 @@ export default observer(function 重点患者评估登记本(props: Props) {
             QCRG_14_1: ['生产日期', '失效日期'],
             QCRG_14_2: ['失效日期'],
             QCRG_19_2: ['开始时间', '结束时间'],
-            QCRG_08: ['入院时间'],
+            // QCRG_08: ['入院时间'],
             other: []
           }, registerCode)
 
-          if (dateItemCodeArr.indexOf(item.itemCode) >= 0) {
+          if (item.itemType == 'date' || dateItemCodeArr.indexOf(item.itemCode) >= 0) {
             children = <DatePickerColumnRender
               {...{
                 className: childrenClassName,
