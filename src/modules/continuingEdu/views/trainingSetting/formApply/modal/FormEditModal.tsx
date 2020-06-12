@@ -32,7 +32,7 @@ export default function FormEditModal(props: Props) {
         if (params && params.formId) {
           trainingSettingApi.formData(params.formId).then((res: any) => {
             res.data.id = params.formId;
-            allData(res.data);
+            formApplyModal.allData(res.data);
             // for (let key in obj) {
             //   if (formApplyModal.getFormCode === obj[key]) {
             //     formApplyModal[key] = res.data;
@@ -77,32 +77,32 @@ export default function FormEditModal(props: Props) {
     return formArr[key - 1];
   };
 
-  // 判断回显哪张表单
-  const allData = (data: any) => {
-    switch (formApplyModal.getFormCode) {
-      case "FQA00001":
-        return (formApplyModal.LCDJFormContent = data);
-        break;
-      case "FQA00002":
-        return (formApplyModal.RYZYFormContent = data);
-        break;
-      case "FQA00003":
-        return (formApplyModal.GFXZLFormContent = data);
-        break;
-      case "FQA00004":
-        return (formApplyModal.RYZZFormContent = data);
-        break;
-      case "FQA00005":
-        return (formApplyModal.CJJSFormContent = data);
-        break;
-      case "FQA00006":
-        return (formApplyModal.TSGWFormContent = data);
-        break;
-      default:
-        return (formApplyModal.YNJXFormContent = data);
-        break;
-    }
-  };
+  // // 判断回显哪张表单
+  // const allData = (data: any) => {
+  //   switch (formApplyModal.getFormCode) {
+  //     case "FQA00001":
+  //       return (formApplyModal.LCDJFormContent = data);
+  //       break;
+  //     case "FQA00002":
+  //       return (formApplyModal.RYZYFormContent = data);
+  //       break;
+  //     case "FQA00003":
+  //       return (formApplyModal.GFXZLFormContent = data);
+  //       break;
+  //     case "FQA00004":
+  //       return (formApplyModal.RYZZFormContent = data);
+  //       break;
+  //     case "FQA00005":
+  //       return (formApplyModal.CJJSFormContent = data);
+  //       break;
+  //     case "FQA00006":
+  //       return (formApplyModal.TSGWFormContent = data);
+  //       break;
+  //     default:
+  //       return (formApplyModal.YNJXFormContent = data);
+  //       break;
+  //   }
+  // };
 
   // 取消关闭
   const handleCancel = () => {

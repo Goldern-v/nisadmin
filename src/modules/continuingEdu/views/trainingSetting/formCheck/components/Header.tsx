@@ -1,84 +1,46 @@
+import { observer } from "mobx-react-lite";
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import { appStore } from "src/stores";
 import { Button } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import HlbModal from "../modal/HlbModal";
-import BqclModal from "../modal/BqclModal";
-import createModal from "src/libs/createModal";
+import CheckModal from "../modal/CheckModal";
 
 interface Props {
   detailData: any;
   onload: any;
 }
 
-export default function Header(props: Props) {
-  //接口头部数据
-  let Title = props.detailData.record || {};
-
-  //头部目前审核状态
-  const titleStatus = () => {
-    switch (Title.status) {
-      case "1":
-        return "提交";
-      case "2":
-        return "病区处理";
-      case "3":
-        return "科护士长审核";
-      case "4":
-        return "护理部审核";
-      default:
-        return "";
-    }
-  };
-
-  //弹窗
-  const hlbModal = createModal(HlbModal);
-  const bqclModal = createModal(BqclModal);
+export default observer(function Header(props: Props) {
+  let nodeName = props.detailData.statusDesc || "";
+  const [editVisible, setEditVisible] = useState(false); // 弹窗状态
+  const [params, setParams] = useState({}); //弹窗传参
 
   let nodeDataList = JSON.parse(
-    JSON.stringify(props.detailData.handlenodeDto || [])
+    JSON.stringify(props.detailData.flowTaskHisList || [])
   );
   nodeDataList.reverse();
   //当前下标
   let currentNodeIndex =
-    nodeDataList.findIndex((item: any) => item.status == "1") || 0;
+    nodeDataList.findIndex((item: any) => item.flag == 1) || 0;
   //下一个审核阶段
   let nextNode = nodeDataList[currentNodeIndex - 1] || {};
 
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
-    switch (nodeName) {
-      case "病区处理":
-        {
-          bqclModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            onOkCallBack: props.onload
-          });
-        }
-        break;
-      case "科护士长审核":
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: "科护士长审核",
-            onOkCallBack: props.onload
-          });
-        }
-        break;
-      case "护理部审核":
-        {
-          hlbModal.show({
-            id: appStore.match.params.id,
-            nodeCode: nextNode.nodeCode,
-            title: "护理部审核",
-            onOkCallBack: props.onload
-          });
-        }
-        break;
-    }
+    setParams({
+      taskId: appStore.queryObj.taskId,
+      title: nodeName
+    });
+    setEditVisible(true);
+  };
+  const handleEditCancel = () => {
+    setEditVisible(false);
+    setParams({});
+  };
+  const onOkCallBack = () => {
+    handleEditCancel();
+    props.onload();
   };
 
   return (
@@ -103,13 +65,9 @@ export default function Header(props: Props) {
         <div className="topHeaderTitle">
           <div className="title">资质准入审核</div>
           <div className="topHeaderButton">
-            {nextNode.nodeName && (
-              <Button
-                onClick={() => onRole(nextNode.nodeName)}
-                type="primary"
-                disabled={!nextNode.canHandle}
-              >
-                {nextNode.nodeName}
+            {nextNode.taskTitle && !appStore.queryObj.checkResult && (
+              <Button onClick={() => onRole(nextNode.taskTitle)} type="primary">
+                {nextNode.taskTitle}
               </Button>
             )}
             <Button onClick={() => {}}>打印</Button>
@@ -125,14 +83,18 @@ export default function Header(props: Props) {
         </div>
         <div className="topHeaderStatus">
           状态：
-          <span style={{ color: "#6767ff" }}>{Title.nextNodePendingName}</span>
+          <span style={{ color: "#6767ff" }}>{nodeName}</span>
         </div>
       </TopHeader>
-      <hlbModal.Component />
-      <bqclModal.Component />
+      <CheckModal
+        visible={editVisible}
+        params={params}
+        onCancel={handleEditCancel}
+        onOkCallBack={onOkCallBack}
+      />
     </Con>
   );
-}
+});
 
 const Con = styled.div`
   box-sizing: border-box;

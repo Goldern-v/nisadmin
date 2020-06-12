@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useLayoutEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { Input, Button, DatePicker } from "antd";
 import { formReviewModal } from "../FormReviewModal";
 
-export default function ReviewHeader() {
+export default observer(function ReviewHeader() {
   return (
     <Wrapper>
       <LeftIcon>
@@ -39,7 +40,7 @@ export default function ReviewHeader() {
       </RightIcon>
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div`
   width: calc(100vw-200px);
   justify-content: space-between;

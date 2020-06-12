@@ -68,5 +68,23 @@ export default class TrainingSettingApi extends BaseApiService {
     };
     return this.post(`studyAndTrain/basicInformation/user/getPage`, obj);
   }
+
+  // 获取审核列表
+  public getReviewList(type: any, obj: any) {
+    return this.post(`/studyAndTrain/qualiAccessManage/${type}`, obj);
+  }
+
+  // 获取审核流程
+  public getFlowTaskHisByCetpId(formId: any) {
+    return this.post(
+      `/studyAndTrain/qualiAccessManage/getFlowTaskHisByCetpId`,
+      qs.stringify({ formId })
+    );
+  }
+
+  //审核保存
+  public auditForm(obj: any) {
+    return this.post(`/studyAndTrain/qualiAccessManage/auditForm`, obj);
+  }
 }
 export const trainingSettingApi = new TrainingSettingApi();

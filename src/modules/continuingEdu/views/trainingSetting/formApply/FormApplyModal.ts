@@ -350,16 +350,6 @@ type DefaultCJJS = typeof defaultCJJS;
 type DefaultTSGW = typeof defaultTSGW;
 type DefaultYNJX = typeof defaultYNJX;
 
-const obj: any = {
-  LCDJFormContent: "FQA00001",
-  RYZYFormContent: "FQA00002",
-  GFXZLFormContent: "FQA00003",
-  RYZZFormContent: "FQA00004",
-  CJJSFormContent: "FQA00005",
-  TSGWFormContent: "FQA00006",
-  YNJXFormContent: "FQA00007"
-};
-
 class FormApplyModal {
   @observable public map: any;
   @observable public getTitle = ""; //表单名称
@@ -428,20 +418,38 @@ class FormApplyModal {
     this.YNJXFormContent = cloneJson(defaultYNJX);
   };
 
-  // 初始化数据
-  // public initData = (data: any) => {
-  //   for (let key in obj) {
-  //     if (this.getFormCode === obj[key]) {
-  //       return (this["map"][key] = data);
-  //     }
-  //   }
-  // };
-
   // 用于查看表单对应字段
   getForm() {
     trainingSettingApi.field(this.getFormCode).then(res => {
       console.log(res.data, "pppppp");
     });
+  }
+
+  // 判断回显哪张表单
+  allData(data: any, formCode?: any) {
+    switch (formCode) {
+      case "FQA00001":
+        return (this.LCDJFormContent = data);
+        break;
+      case "FQA00002":
+        return (this.RYZYFormContent = data);
+        break;
+      case "FQA00003":
+        return (this.GFXZLFormContent = data);
+        break;
+      case "FQA00004":
+        return (this.RYZZFormContent = data);
+        break;
+      case "FQA00005":
+        return (this.CJJSFormContent = data);
+        break;
+      case "FQA00006":
+        return (this.TSGWFormContent = data);
+        break;
+      default:
+        return (this.YNJXFormContent = data);
+        break;
+    }
   }
 
   // 电子签名

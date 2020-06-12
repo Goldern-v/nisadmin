@@ -445,7 +445,7 @@ export default observer(function Table(props: Props) {
               Message.success("文件撤销成功");
               mainPageModal.onload();
             } else {
-              Message.error("文件撤销失败");
+              Message.error(`${res.dec}`);
             }
           })
           .catch(err => {

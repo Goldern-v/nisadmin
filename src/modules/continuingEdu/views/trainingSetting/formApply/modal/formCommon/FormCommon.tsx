@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import React from "react";
-import { formApplyModal } from "../../FormApplyModal"; // 仓库数据
+import React, { useLayoutEffect } from "react";
+import { observer } from "mobx-react-lite";
+import { appStore } from "src/stores";
+import { formApplyModal } from "../../FormApplyModal";
+import { trainingSettingApi } from "../../../api/TrainingSettingApi";
+
 import LCDJ from "./allForm/LCDJ"; //护理临床带教资质准入申请表
 import RYZY from "./allForm/RYZY"; //护师人员执业/夜班准入资格申请表
 import TSGW from "./allForm/TSGW"; //特殊护理岗位资质准入申请表
@@ -11,51 +15,73 @@ import YNJX from "./allForm/YNJX"; //护理人员岗位院内进修备案简表
 
 interface Props {}
 
-export default function FormApply(props: Props) {
+export default observer(function FormApply(props: Props) {
+  let formName = appStore.queryObj.formName;
+  let formCode = appStore.queryObj.formCode;
+  let formId = appStore.queryObj.formId;
+
+  //根据formcode对应表单
   const formList: any = [
     {
-      name: "护理临床带教资质准入申请表",
+      name: "FQA00001",
       component: <LCDJ />
     },
     {
-      name: "护师人员执业/夜班准入资格申请表",
+      name: "FQA00002",
       component: <RYZY />
     },
     {
-      name: "特殊护理岗位资质准入申请表",
+      name: "FQA00006",
       component: <TSGW />
     },
     {
-      name: "护理会诊人员资质认定表",
+      name: "FQA00004",
       component: <RYZZ />
     },
     {
-      name: "护理人员岗位层级晋升申请表",
+      name: "FQA00005",
       component: <CJJS />
     },
     {
-      name: "高风险诊疗技术操作人员资质申请表",
+      name: "FQA00003",
       component: <GFXZL />
     },
     {
-      name: "护理人员院内进修备案简表",
+      name: "FQA00007",
       component: <YNJX />
     }
   ];
 
+  //初始化函数
+  const getData = () => {
+    trainingSettingApi.formData(formId).then((res: any) => {
+      res.data.id = formId;
+      formApplyModal.allData(res.data, formCode);
+    });
+  };
+
+  useLayoutEffect(() => {
+    if (formId) getData();
+  }, []);
+
   return (
     <Wrapper>
       <Hospital>东莞市厚街医院</Hospital>
-      <Title>{formApplyModal.getTitle}</Title>
+      <Title>
+        {formApplyModal.getTitle ? formApplyModal.getTitle : formName}
+      </Title>
       <FromContent>
         {
-          formList.find((item: any) => item.name === formApplyModal.getTitle)
-            .component
+          formList.find((item: any) =>
+            item.name === formApplyModal.getFormCode
+              ? formApplyModal.getFormCode
+              : formCode
+          ).component
         }
       </FromContent>
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div`
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px;

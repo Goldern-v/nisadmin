@@ -1,21 +1,23 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import Header from "./components/Header";
-import Left from "./components/Left";
+import FormCommon from "../formApply/modal/formCommon/FormCommon";
 import Right from "./components/Right";
 import { ScrollBox } from "src/components/common";
-import { checkWardService } from "src/modules/quality/views/checkWard/services/CheckWardService";
+import { trainingSettingApi } from "../api/TrainingSettingApi";
 import { appStore } from "src/stores";
 import { Spin } from "antd";
+import { formApplyModal } from "../formApply/FormApplyModal"; // 仓库数据
+import { observer } from "mobx-react-lite";
 
-export default function FormCheck() {
+export default observer(function FormCheck() {
   const [detailData, setDetailData]: any = useState([]);
   const [loading, setLoading] = useState(false);
+  let formId = appStore.queryObj.formId;
 
   const onload = () => {
-    let id = appStore.match.params.id;
     setLoading(true);
-    checkWardService.getDetail(id).then(res => {
+    trainingSettingApi.getFlowTaskHisByCetpId(formId).then(res => {
       setDetailData(res.data);
       setLoading(false);
     });
@@ -42,7 +44,7 @@ export default function FormCheck() {
             )}
           </SpinCon>
           <MidLeftCon>
-            <Left detailData={detailData} />
+            <FormCommon />
           </MidLeftCon>
           <MidRightCon>
             <Right detailData={detailData} />
@@ -51,7 +53,7 @@ export default function FormCheck() {
       </MidCon>
     </Wrapper>
   );
-}
+});
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
