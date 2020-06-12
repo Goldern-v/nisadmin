@@ -68,8 +68,8 @@ export default function ContinuingEdu(props: Props) {
       title: "培训设置管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide: true,
-      // hide: appStore.HOSPITAL_ID != "hj",
+      // hide: true,
+      hide: appStore.HOSPITAL_ID != "hj",
       children: [
         {
           title: "资质准入审核",

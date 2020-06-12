@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import { appStore } from "src/stores";
 import { Button } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
+import printing from "printing";
 import CheckModal from "../modal/CheckModal";
-
+import { formApplyModal } from "../../formApply/FormApplyModal";
 interface Props {
   detailData: any;
   onload: any;
@@ -25,6 +26,23 @@ export default observer(function Header(props: Props) {
     nodeDataList.findIndex((item: any) => item.flag == 1) || 0;
   //下一个审核阶段
   let nextNode = nodeDataList[currentNodeIndex - 1] || {};
+
+  // 打印表单
+  const onPrint = () => {
+    printing(formApplyModal.printRef.current, {
+      scanStyles: false,
+      injectGlobalCss: true,
+      css: `
+         @page {
+           margin: 10mm;
+         }
+         #wardLogPrintPage {
+           margin: 0;
+           border: 0;
+         }
+      `
+    });
+  };
 
   //根据当前状态和角色显示按钮名称
   const onRole = (nodeName: string) => {
@@ -70,7 +88,7 @@ export default observer(function Header(props: Props) {
                 {nextNode.taskTitle}
               </Button>
             )}
-            <Button onClick={() => {}}>打印</Button>
+            <Button onClick={() => onPrint()}>打印</Button>
             <Button
               onClick={() => {
                 if (window.opener) window.close();

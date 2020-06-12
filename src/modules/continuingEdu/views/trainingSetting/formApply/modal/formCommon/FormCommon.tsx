@@ -66,19 +66,21 @@ export default observer(function FormApply(props: Props) {
 
   return (
     <Wrapper>
-      <Hospital>东莞市厚街医院</Hospital>
-      <Title>
-        {formApplyModal.getTitle ? formApplyModal.getTitle : formName}
-      </Title>
-      <FromContent>
-        {
-          formList.find((item: any) =>
-            item.name === formApplyModal.getFormCode
-              ? formApplyModal.getFormCode
-              : formCode
-          ).component
-        }
-      </FromContent>
+      <div ref={formApplyModal.printRef}>
+        <Hospital>东莞市厚街医院</Hospital>
+        <Title>
+          {formApplyModal.getTitle ? formApplyModal.getTitle : formName}
+        </Title>
+        <FromContent>
+          {
+            formList.find((item: any) =>
+              item.name === formApplyModal.getFormCode
+                ? formApplyModal.getFormCode
+                : formCode
+            ).component
+          }
+        </FromContent>
+      </div>
     </Wrapper>
   );
 });
@@ -86,7 +88,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px;
   background: rgb(255, 255, 255);
-  padding: 30px 40px;
+  padding: 15px 40px 30px 40px;
   width: 740px;
   height: 1047px;
   box-sizing: border-box;
@@ -95,6 +97,7 @@ const Hospital = styled.div`
   font-size: 18px;
   text-align: center;
   font-weight: bold;
+  margin-top: 15px;
 `;
 const Title = styled.div`
   font-size: 21px;
@@ -105,5 +108,5 @@ const Title = styled.div`
 const FromContent = styled.div`
   margin-top: 15px;
   width: 100%;
-  height: 92%;
+  height: 0%;
 `;

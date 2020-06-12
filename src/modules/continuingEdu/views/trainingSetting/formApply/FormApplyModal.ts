@@ -1,3 +1,4 @@
+import { useRef } from "src/types/react";
 import { cloneJson } from "src/utils/json/clone";
 import { observable, computed } from "mobx";
 import { appStore, authStore } from "src/stores";
@@ -19,20 +20,20 @@ const defaultLCDJ: any = {
   f00016: "", //申报类别
   f00017: "", //教学培训经历
   f00018: "" //院内外授课/授课竞赛/技能竞赛情况
-  // f00019: "", //申请人工号
-  // f00020: "", //申请人姓名
-  // f00021: "", //申请时间
-  // f00022: "", //科室审批人工号
-  // f00023: "", //科室审批人姓名
-  // f00024: "", //科室审批结果（1通过；-1退回）
-  // f00025: "", //科室审批时间
-  // f00026: "", //准入考评小组审批人工号
-  // f00027: "", //准入考评小组审批人姓名
-  // f00028: "", //准入考评小组审批结果（1通过；-1退回）
-  // f00029: "", //准入考评小组审批时间
-  // f00030: "", //护理部审批人工号
-  // f00031: "", //护理部审批人姓名
-  // f00032: "" //护理部审批时间
+  f00019: "", //申请人工号
+  f00020: "", //申请人姓名
+  f00021: "", //申请时间
+  f00022: "", //科室审批人工号
+  f00023: "", //科室审批人姓名
+  f00024: "", //科室审批结果（1通过；-1退回）
+  f00025: "", //科室审批时间
+  f00026: "", //准入考评小组审批人工号
+  f00027: "", //准入考评小组审批人姓名
+  f00028: "", //准入考评小组审批结果（1通过；-1退回）
+  f00029: "", //准入考评小组审批时间
+  f00030: "", //护理部审批人工号
+  f00031: "", //护理部审批人姓名
+  f00032: "" //护理部审批时间
 };
 // 人员执业字段
 const defaultRYZY: any = {
@@ -351,7 +352,7 @@ type DefaultTSGW = typeof defaultTSGW;
 type DefaultYNJX = typeof defaultYNJX;
 
 class FormApplyModal {
-  @observable public map: any;
+  @observable public printRef: any = useRef(null);
   @observable public getTitle = ""; //表单名称
   @observable public getFormCode = ""; //表单code值
   @observable public keyWord = ""; //关键字
@@ -461,6 +462,7 @@ class FormApplyModal {
       token || ""
     )}`;
   }
+
   init() {
     this.onload();
     this.initData();
