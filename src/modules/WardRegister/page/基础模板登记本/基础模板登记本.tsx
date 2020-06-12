@@ -19,10 +19,15 @@ import { authStore, appStore } from "src/stores"
 import { observer } from "mobx-react-lite"
 import moment from "moment"
 
+import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import { PageHeader, Place } from "src/components/common"
 import DeptSelect from "src/components/DeptSelect"
 import createModal from "src/libs/createModal"
+import SettingModal from "./components/SettingModal"
+import FileUploadRender from './components/FileUploadRender'
+import DefaultRender from './components/DefaultRender'
 import { codeAdapter } from "../../utils/codeAdapter"
+import FilterCon from './components/FilterCon'
 import SignColumn from './components/SignColumn'
 import { NullBox } from "../../components/NullBox"
 import { TableCon, Wrapper } from "../../utils/style/style"
@@ -44,17 +49,27 @@ export default observer(function 基础模板登记本(props: Props) {
   const registerName = props.payload && props.payload.registerName
   const { isNotANormalNurse } = authStore
 
-  const { loading, blockList, tableData, baseQuery, totalCount, itemConfigList, rangeConfigList } = baseRegisterMode
+  const { loading, blockList, tableData, baseQuery, totalCount, itemConfigList, rangeConfigList, filterQuery } = baseRegisterMode
   const init = baseRegisterMode.init.bind(baseRegisterMode)
+  const setLoading = baseRegisterMode.setLoading.bind(baseRegisterMode)
+  const getTableData = baseRegisterMode.getTableData.bind(baseRegisterMode)
   const setQuery = baseRegisterMode.setQuery.bind(baseRegisterMode)
+  const setFilter = baseRegisterMode.setFilter.bind(baseRegisterMode)
   const addBlock = baseRegisterMode.addBlock.bind(baseRegisterMode)
   const setTableDataRowItem = baseRegisterMode.setTableDataRowItem.bind(baseRegisterMode)
   const setTableDataRow = baseRegisterMode.setTableDataRow.bind(baseRegisterMode)
+  const createRow = baseRegisterMode.createRow.bind(baseRegisterMode)
+  const deleteRow = baseRegisterMode.deleteRow.bind(baseRegisterMode)
+  const save = baseRegisterMode.save.bind(baseRegisterMode)
+  const deleteBlock = baseRegisterMode.deleteBlock.bind(baseRegisterMode)
+  const exportExcel = baseRegisterMode.exportExcel.bind(baseRegisterMode)
   const focusNextIpt = baseRegisterMode.focusNextIpt
   const cellDisabled = baseRegisterMode.cellDisabled
 
   const [columns, setColumns] = useState([] as ColumnProps<any>[])
   const [superHeight, setSuperHeight] = useState(200)
+  const settingModal = createModal(SettingModal)
+  const previewModal = createModal(PreviewModal)
 
   // console.log(columns)
 
@@ -91,29 +106,55 @@ export default observer(function 基础模板登记本(props: Props) {
     //重新渲染表头colunms
     /**固定项目 */
     let itemCfgBefore = [
+      {
+        title: "日期",
+        width: 108,
+        className: 'input-cell',
+        dataIndex: "recordDate",
+        align: "center",
+        colSpan: codeAdapter({
+          other: 1,
+        }, registerCode, true),
+        render(text: string, record: any, index: number) {
+          let children = <DefaultRender
+            {...{
+              cellDisabled,
+              record,
+              itemCode: 'recordDate',
+              index,
+              onChange: (val: any, itemCode: string, index: number) =>
+                setTableDataRowItem(val, 'recordDate', index),
+              focusNextIpt,
+            }}
+          />
+
+          let obj = {
+            children
+          }
+          return obj
+        }
+      },
       ...codeAdapter({
         'QCRG_04,QCRG_20_1': [{
           title: "班次",
           width: 75,
+          className: 'input-cell',
           dataIndex: "range",
           align: "center",
           render(text: string, record: any, index: number) {
-            let children = <AutoComplete
-              disabled={cellDisabled(record)}
-              dataSource={rangeConfigList.map((item: any) => item.itemCode)}
-              value={text}
-              onChange={value => setTableDataRowItem(value, 'range', index)}>
-              <TextArea
-                autosize
-                data-key={'range'}
-                onKeyUp={focusNextIpt}
-                style={{
-                  lineHeight: 1.2,
-                  padding: "9px 2px",
-                  textAlign: "center"
-                }}
-              />
-            </AutoComplete>
+            let children = <DefaultRender
+              {...{
+                cellDisabled,
+                record,
+                options: rangeConfigList.map((item: any) => item.itemCode),
+                itemCode: 'range',
+                index,
+                onChange: (val: any, itemCode: string, index: number) =>
+                  setTableDataRowItem(val, 'range', index),
+                focusNextIpt,
+              }}
+            />
+
             let obj = {
               children
             }
@@ -124,26 +165,55 @@ export default observer(function 基础模板登记本(props: Props) {
       }, registerCode, true)
     ]
 
-    let itemCfgAfter = codeAdapter({
-      QCRG_04: [
-        SignColumn({
-          title: "签名",
-          width: 70,
-          dataIndex: 'signerName',
-          aside: "",
-          registerCode,
-          blockId: baseQuery.blockId,
-          isRoleManage: !!authStore.isRoleManage,
-          successCallback: (newRecord: any, index: number) =>
-            setTableDataRow(newRecord, index)
-        })
-      ],
-      other: []
-    }, registerCode)
+    /**整合相同的签名参数 返回签名组件 */
+    const SignColumnFormat = (title?: string, aside?: string, dataIndex?: string, width?: number) => {
+      return SignColumn({
+        title: title || "签名",
+        width: width || 70,
+        dataIndex: dataIndex || 'signerName',
+        aside: aside || "",
+        registerCode,
+        blockId: baseQuery.blockId,
+        isRoleManage: !!authStore.isRoleManage,
+        successCallback: (newRecord: any, index: number) =>
+          setTableDataRow(newRecord, index)
+      })
+    }
+
+    let itemCfgAfter = [
+      ...codeAdapter({
+        QCRG_04: [
+          SignColumnFormat()
+        ],
+        QCRG_08: [
+          SignColumnFormat('登记人签名', '登记人')
+        ],
+        other: []
+      }, registerCode),
+      {
+        title: "操作",
+        width: 50,
+        className: "",
+        render(text: string, record: any, index: number) {
+          return (
+            <DoCon>
+              {cellDisabled(record) ? (
+                <aside style={{ color: "#aaa" }}>删除</aside>
+              ) : (
+                  <span
+                    onClick={() => deleteRow(record, index)}>
+                    删除
+                  </span>
+                )}
+            </DoCon>
+          );
+        }
+      }
+    ]
 
     /**自定义项目 */
     const renderColumn = (item: any) => {
-      const { itemCode, checkSize, width, options, title } = item
+      const { itemCode, checkSize, width, options, title, itemType } = item
       let columnItem = {} as ColumnProps<any>
 
       let columnWidth = (15 * width || 50) + 8
@@ -156,39 +226,61 @@ export default observer(function 基础模板登记本(props: Props) {
           "checkSize-warning":
             checkSize && (text != checkSize && text != "√")
         })
+        //文件上传
+        if (itemType == 'attachment') {
+          children =
+            <FileUploadRender
+              {...{
+                itemCfg: item,
+                record,
+                index,
+                cellDisabled,
+                className: childrenClassName,
+                setLoading,
+                handlePreview,
+                onChange: (newRecord: any, index: number) => setTableDataRow(newRecord, index),
+              }}
+            />
 
-        children = <AutoComplete
-          className={childrenClassName}
-          disabled={cellDisabled(record)}
-          dataSource={
-            options
-              ? options.split(";").filter((option: any) => option)
-              : undefined
-          }
-          value={text}
-          onChange={(val: any) => {
-            val = val.replace(/\n/g, '')
-            setTableDataRowItem(val, itemCode, index)
-          }}
-          onSelect={value => {
-            if (
-              registerCode == "QCRG_04" &&
-              item.itemCode == "组号及床号"
-            ) {
-              let prevValue = record[item.itemCode] || ''
-              setTimeout(() => {
-                prevValue = prevValue + (prevValue ? ";" : "") + value
-                setTableDataRowItem(prevValue, itemCode, index)
-              }, 0)
-            }
-          }}>
-          <TextArea autosize data-key={itemCode} onKeyDown={focusNextIpt} />
-        </AutoComplete>
+          //时间选择
+        } else {
+          //带下拉选项的输入框
+          children = <DefaultRender
+            {...{
+              record,
+              index,
+              itemCode,
+              className: childrenClassName,
+              cellDisabled,
+              focusNextIpt,
+              options: options ? options.split(";").filter((option: any) => option) : undefined,
+              onChange: (val: any, itemCode: string, index: number) =>
+                setTableDataRowItem(val, itemCode, index),
+              onSelect: (value: any) => {
+                if (
+                  registerCode == "QCRG_04" &&
+                  item.itemCode == "组号及床号"
+                ) {
+                  let prevValue = record[item.itemCode] || ''
+                  setTimeout(() => {
+                    prevValue = prevValue + (prevValue ? ";" : "") + value
+                    setTableDataRowItem(prevValue, itemCode, index)
+                  }, 0)
+                }
+              }
+            }}
+          />
+        }
 
         return {
           children: <React.Fragment>
             {children}
-            <div className="bg"></div>
+            <div
+              className={[
+                'bg',
+                cellDisabled(record) ? 'disabled' : ''
+              ].join(' ')}>
+            </div>
           </React.Fragment>
         }
       }
@@ -241,6 +333,17 @@ export default observer(function 基础模板登记本(props: Props) {
     }
   }, [itemConfigList])
 
+  const handlePreview = (file: any) => {
+    if (getFileType(file.name) == 'img') {
+      reactZmage.browsing({ src: file.path, backdrop: 'rgba(0,0,0, .8)' })
+    } else {
+      previewModal.show({
+        title: file.name,
+        path: file.path
+      })
+    }
+  }
+
   return <Wrapper>
     <Spin spinning={loading}>
       <PageHeader>
@@ -285,9 +388,34 @@ export default observer(function 基础模板登记本(props: Props) {
         <DeptSelect
           onChange={() => init(registerCode, registerName)}
           style={{ width: 150 }} />
+        <FilterCon
+          filter={filterQuery}
+          itemConfigList={itemConfigList}
+          rangeConfigList={rangeConfigList}
+          filterChange={(payload: any) => setFilter(payload, true)} />
+        <Place />
+        <Button onClick={() => setQuery({ ...baseQuery, pageIndex: 1 }, true)}>
+          查询
+        </Button>
+        <Button type="primary" onClick={() => createRow()}>新建行</Button>
+        <Button type="primary" onClick={() => save()}>保存</Button>
+        <Button onClick={() => exportExcel()}>导出</Button>
+        <Button
+          onClick={() =>
+            settingModal.show({
+              blockId: baseQuery.blockId,
+              selectedBlockObj: blockList.find(
+                (item: any) => item.id == baseQuery.blockId
+              ),
+              registerCode,
+              onOkCallBack: () => getTableData()
+            })}>
+          设置
+        </Button>
+        <Button onClick={() => deleteBlock()}>删除</Button>
       </PageHeader>
       <TableCon>
-        {baseQuery.blockId && itemConfigList.length > 0 ?
+        {(baseQuery.blockId && itemConfigList.length > 0) ?
           <BaseTable
             columns={columns}
             dataSource={tableData}
@@ -310,6 +438,8 @@ export default observer(function 基础模板登记本(props: Props) {
         }
       </TableCon>
     </Spin>
+    <settingModal.Component />
+    <previewModal.Component />
   </Wrapper>
 })
 

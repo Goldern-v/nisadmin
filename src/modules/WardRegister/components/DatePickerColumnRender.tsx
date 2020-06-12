@@ -74,13 +74,18 @@ export default function DatePickerColumnRender(props: Props) {
 
       if (
         registerCode == 'QCRG_19_2' ||
-        registerCode == 'QCRG_11'
+        registerCode == 'QCRG_11' ||
+        registerCode == 'QCRG_06'
       ) {
 
         let sumItemCode = '总计天数'
         let diffUnit = 'd' as 'd' | 'h'
         if (registerCode == 'QCRG_11') {
           sumItemCode = '合计时间（小时）'
+          diffUnit = 'h'
+        }
+        if (registerCode == 'QCRG_06') {
+          sumItemCode = '使用时间'
           diffUnit = 'h'
         }
         //时间差计算

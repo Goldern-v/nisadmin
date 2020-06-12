@@ -121,27 +121,25 @@ export default observer(function SetTittle(props: Props) {
         );
       }
     },
-    ...(appStore.isDev ? [
-      {
-        title: "类型",
-        dataIndex: "itemType",
-        className: "input-cell",
-        width: 100,
-        render: (text: any, record: any, index: any) => {
-          return <Select
-            value={text}
-            onChange={(val: string) => {
-              record.itemType = val
-              record.options = ''
-              updateDataSource()
-            }}>
-            <Option value="">下拉选项</Option>
-            <Option value="ward_user">科室护士</Option>
-            <Option value="attachment">附件上传</Option>
-          </Select>
-        }
-      },
-    ] : []),
+    {
+      title: "类型",
+      dataIndex: "itemType",
+      className: "input-cell",
+      width: 100,
+      render: (text: any, record: any, index: any) => {
+        return <Select
+          value={text}
+          onChange={(val: string) => {
+            record.itemType = val
+            record.options = ''
+            updateDataSource()
+          }}>
+          <Option value="">下拉选项</Option>
+          <Option value="ward_user">科室护士</Option>
+          <Option value="attachment">附件上传</Option>
+        </Select>
+      }
+    },
     {
       title: "列宽度(字数)",
       dataIndex: "width",

@@ -2,6 +2,7 @@ import { action, observable, computed } from 'mobx'
 import { wardRegisterService } from './../../services/WardRegisterService'
 import { appStore, authStore } from 'src/stores'
 import { message } from 'antd'
+import { fileDownload } from "src/utils/file/file"
 import moment from 'moment'
 import { codeAdapter } from "../../utils/codeAdapter"
 import { globalModal } from "src/global/globalModal"
@@ -79,10 +80,8 @@ export default class BaseRegisterModel {
       }, () => this.loading = false)
   }
 
-  /**获取登记本数据 */
-  @action getTableData() {
-    this.selectedRowKeys = []
-    this.loading = true
+  /**格式化合并列表请求参数 */
+  private getQuery() {
     let paramMap = { ...this.filterQuery }
     delete paramMap['班次']
 
@@ -92,24 +91,48 @@ export default class BaseRegisterModel {
       range: this.filterQuery['班次'] || ''
     }
 
+    return _query
+  }
+
+  /**获取登记本数据 */
+  @action getTableData() {
+    this.selectedRowKeys = []
+    this.loading = true
+
     wardRegisterService
-      .getPage(this.registerCode, _query)
+      .getPage(this.registerCode, this.getQuery())
       .then(res => {
         if (res.data) {
           this.totalCount = res.data.itemDataPage.totalCount || 0
           //表格数据
-          this.tableData = res.data.itemDataPage.
+          let newTableData = res.data.itemDataPage.
             list.map((item: any) => ({ ...item, modified: false })) || []
           //班次下拉列表
           this.rangeConfigList = res.data.rangeConfigList || []
 
           //重新组织表头
           this.itemConfigList = this.formatItemConfigList(res.data.itemConfigList || [])
+
+          this.tableData = []
+          if (newTableData.length > 0) {
+            this.tableData = newTableData
+          } else {
+            this.createRow()
+          }
         }
         this.loading = false
       }, () => this.loading = false)
   }
 
+  /**添加行 */
+  @action createRow = () => {
+    this.tableData.unshift({
+      recordDate: moment().format('YYYY-MM-DD'),
+      range: this.rangeConfigList[0] ? this.rangeConfigList[0].itemCode : '',
+    })
+  }
+
+  /**格式化和合并表头配置 */
   private formatItemConfigList = (cfgList: any[]) => {
     let newCfgList = [] as any[]
 
@@ -145,8 +168,6 @@ export default class BaseRegisterModel {
         newCfgList.push(item)
       }
     }
-
-    console.log(newCfgList)
 
     return newCfgList
   }
@@ -185,6 +206,58 @@ export default class BaseRegisterModel {
     this.tableData[index] = { ...newRow }
   }
 
+  /**保存 */
+  @action save() {
+    let modifiedGroup = this.tableData.filter((item: any) => item.modified || !item.id)
+    this.loading = true
+
+    wardRegisterService
+      .saveAndSignAll(
+        this.registerCode,
+        this.baseQuery.blockId,
+        modifiedGroup,
+        false
+      )
+      .then(res => {
+        message.success("保存成功")
+        this.getTableData()
+      }, () => this.loading = false)
+  }
+
+  /**导出 */
+  public exportExcel() {
+    wardRegisterService
+      .exportExcel(this.registerCode, this.getQuery())
+      .then(res => fileDownload(res))
+  }
+
+  /**删除行 */
+  @action deleteRow(record: any, idx: number) {
+    let deleteRecord = () => {
+      let newTableData = this.tableData.concat()
+      newTableData.splice(idx, 1)
+      this.setTableData(newTableData)
+    }
+
+    if (!record.id) {
+      deleteRecord()
+    } else {
+      //对于有id的条目，先调用删除接口
+      globalModal
+        .confirm("删除确认", "确定要删除该条目吗？")
+        .then((res) => {
+          this.loading = true
+          wardRegisterService
+            .deleteAll(this.registerCode, [{ id: record.id }])
+            .then(res => {
+              this.loading = false
+              message.success('删除成功')
+              deleteRecord()
+            }, () => this.loading = false)
+        })
+    }
+  }
+
   /**新增修订 */
   @action addBlock() {
     globalModal
@@ -199,6 +272,19 @@ export default class BaseRegisterModel {
           .qcRegisterBlockCreate(this.registerCode, authStore.selectedDeptCode)
           .then(res => {
             message.success("创建成功")
+            this.init()
+          })
+      })
+  }
+
+  /**删除登记本或修订 */
+  @action deleteBlock = () => {
+    globalModal.confirm("删除确认", "确定要删除此修订版本吗？")
+      .then(res => {
+        wardRegisterService
+          .qcRegisterBlockDelete(this.registerCode, this.baseQuery.blockId)
+          .then(res => {
+            message.success("保存成功");
             this.init()
           })
       })

@@ -506,7 +506,7 @@ function NullBox(props: any) {
         className="file"
       />
       <Button type="primary" icon="file-add" size={"large"} onClick={onClick}>
-        创建物品交接登记本
+        创建消毒隔离工作登记本
       </Button>
     </Wrapper>
   );
