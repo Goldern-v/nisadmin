@@ -18,10 +18,12 @@ import WardLogAddModal from './../components/WardLogAddModal'
 import createModal from 'src/libs/createModal'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
+import YearPicker from 'src/components/YearPicker'
 export interface Props { }
 
 export default observer(function MyCreateList() {
   const [date, setDate]: any = useState(getCurrentMonthNow())
+  const [year, setYear] = useState(moment().format('YYYY'))
   const [templateList, setTemplateList]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])
@@ -46,7 +48,14 @@ export default observer(function MyCreateList() {
     {
       title: '创建日期',
       dataIndex: 'createTime',
-      width: 120
+      width: 100,
+      align: 'center'
+    },
+    {
+      title: '年份',
+      dataIndex: 'year',
+      width: 80,
+      align: 'center'
     },
     {
       title: '主题',
@@ -193,7 +202,8 @@ export default observer(function MyCreateList() {
     pageOptions.pageSize,
     date,
     selectedTemplate,
-    deptSelect
+    deptSelect,
+    year
   ])
 
   useEffect(() => {
@@ -211,6 +221,12 @@ export default observer(function MyCreateList() {
       <PageHeader>
         <PageTitle>病区日志</PageTitle>
         <Place />
+        <span className='label'>年份:</span>
+        <YearPicker
+          style={{ width: 80 }}
+          value={year ? moment(`${year}-01-01`) : undefined}
+          onChange={(_moment: any) => setYear(_moment ? _moment.format('YYYY') : '')}
+        />
         <span className='label'>日期:</span>
         <DatePicker.RangePicker
           allowClear={false}

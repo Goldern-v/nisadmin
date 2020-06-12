@@ -6,6 +6,7 @@ import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import qs from 'qs'
+import YearPicker from 'src/components/YearPicker'
 
 const Option = Select.Option
 
@@ -20,7 +21,8 @@ export default observer(function WardLogAddModal(props: Props) {
   const { history } = appStore
   const [params, setParams] = useState({
     deptCode: '',
-    templateId: ''
+    templateId: '',
+    year: moment().format('YYYY')
   } as any)
 
   const filterTemplateList = templateList || []
@@ -44,7 +46,8 @@ export default observer(function WardLogAddModal(props: Props) {
     if (visible)
       setParams({
         deptCode: deptCode,
-        templateId: filterTemplateList[0] ? filterTemplateList[0].id : ''
+        templateId: filterTemplateList[0] ? filterTemplateList[0].id : '',
+        year: moment().format('YYYY')
       })
   }, [visible])
 
@@ -87,6 +90,17 @@ export default observer(function WardLogAddModal(props: Props) {
                 {item.name}
               </Option>)}
           </Select>
+        </Col>
+      </Row>
+      <Row className="item-row">
+        <Col span={4}>
+          <div className="label">年 份:</div>
+        </Col>
+        <Col span={16}>
+          <YearPicker
+            allowClear={false}
+            value={moment(`${params.year}-01-01`)}
+            onChange={(_moment: any) => setParams({ ...params, year: _moment.format('YYYY') })} />
         </Col>
       </Row>
       <Row className="item-row">
