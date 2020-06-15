@@ -171,7 +171,7 @@ export default observer(function SetTittle(props: Props) {
     },
     ...codeAdapter(
       {
-        // QCRG_01: [baseNumCol],
+        QCRG_01: [baseNumCol],
         QCRG_12: [baseNumCol],
         other: []
       },
