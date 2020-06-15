@@ -1,7 +1,7 @@
 import { action, observable, computed } from 'mobx'
 import { wardRegisterService } from './../../services/WardRegisterService'
 import { appStore, authStore } from 'src/stores'
-import { message } from 'antd'
+import { message, Modal } from 'antd'
 import { fileDownload } from "src/utils/file/file"
 import moment from 'moment'
 import { codeAdapter } from "../../utils/codeAdapter"
@@ -329,6 +329,108 @@ export default class BaseRegisterModel {
       QCRG_08: { '转归': '' },
       other: {}
     }, this.registerCode)
+  }
+
+  /**设置选中的条目keys */
+  @action setSelectedRowKeys(newArr: string[]) {
+    this.selectedRowKeys = newArr.concat()
+  }
+
+  /**获取选中的条目 */
+  public getSelectedRows() {
+    return this.tableData.filter((item: any) =>
+      this.selectedRowKeys.indexOf(item.key) >= 0)
+  }
+
+  /**复制选中的条目新增 */
+  @action copyCreateSelectedRow() {
+    if (this.selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+
+    globalModal
+      .confirm('复制新增', '是否复制新增选择的行?')
+      .then((res) => {
+        let selectedRows = this.getSelectedRows()
+
+        let newRows = selectedRows.map((item: any) => {
+          let newItem = JSON.parse(JSON.stringify(item))
+          delete newItem.id
+          return {
+            ...newItem,
+            recordDate: moment().format('YYYY-MM-DD'),
+            signerName: '',
+            signerNo: '',
+            auditorName: '',
+            auditorNo: ''
+          }
+        })
+
+        let newTableData = [...newRows, ...this.tableData,]
+        this.setTableData(newTableData)
+        this.setSelectedRowKeys([])
+      })
+  }
+
+  /**选中的条目 audit批量签名 */
+  @action auditAll = (aside?: string,) => {
+    aside = aside || '护士长'
+    if (this.selectedRowKeys.length <= 0) {
+      message.warn('未勾选项目')
+      return
+    }
+
+    //判断是否有已签名的条目
+    let selectedRows = this.getSelectedRows()
+    let auditItems = selectedRows.filter((item: any) => item.auditorName)
+    let noSignItems = selectedRows.filter((item: any) => !item.signerName)
+    if (auditItems || noSignItems) {
+      let textArr = [] as string[]
+      if (noSignItems.length > 0) {
+        let idxArr = noSignItems.map((item: any) => this.tableData.indexOf(item) + 1)
+        textArr.push(`第${idxArr.join('、')}条未签名`)
+      }
+      if (auditItems.length > 0) {
+        let idxArr = auditItems.map((item: any) => this.tableData.indexOf(item) + 1)
+        textArr.push(`第${idxArr.join('、')}条${aside}已签名`)
+
+        Modal.warn({
+          centered: true,
+          title: '提示',
+          content: textArr.join(',')
+        })
+        return
+      }
+    }
+
+    let ids = selectedRows
+      .map((item: any) => ({ id: item.id || '' }))
+
+    globalModal
+      .confirm(`${aside}批量签名确认`, `你确定${aside}签名吗？`)
+      .then((res) => {
+        this.setLoading(true)
+        wardRegisterService.auditAll(this.registerCode, ids)
+          .then((res) => {
+            message.success('签名成功')
+            if (res.data && res.data.list) {
+              let newTableData = [...this.tableData]
+              for (let i = 0; i < res.data.list.length; i++) {
+                let resRecord = res.data.list[i]
+                let record = newTableData
+                  .find((item: any) => item.id == resRecord.id)
+
+                if (record) Object.assign(record, resRecord)
+              }
+
+              this.setTableData(newTableData)
+              this.setSelectedRowKeys([])
+              this.setLoading(false)
+            }
+          },
+            () => this.setLoading(false))
+      })
   }
 }
 

@@ -9,7 +9,7 @@ export interface Props {
   index: number,
   cellDisabled: Function,
   className?: string,
-  handleNextIptFocus: Function,
+  handleNextIptFocus?: Function,
   updateDataSource: Function,
   registerCode: any,
   format?: string,
@@ -49,15 +49,15 @@ export default function DatePickerColumnRender(props: Props) {
     allowClear
     dropdownClassName="disable-date-ipt"
     onOpenChange={(status) => {
-      if (status) {
-        setTimeout(() => {
-          let el = document.querySelector('.disable-date-ipt')
-          if (el) {
-            let ipt = el.querySelector('.ant-calendar-input') as HTMLInputElement
-            if (ipt) ipt.readOnly = true
-          }
-        }, 300)
-      }
+      // if (status) {
+      //   setTimeout(() => {
+      //     let el = document.querySelector('.disable-date-ipt')
+      //     if (el) {
+      //       let ipt = el.querySelector('.ant-calendar-input') as HTMLInputElement
+      //       if (ipt) ipt.readOnly = true
+      //     }
+      //   }, 300)
+      // }
     }}
     className={`${className} ${queryClassName}`}
     onChange={(val: any) => {
@@ -67,10 +67,10 @@ export default function DatePickerColumnRender(props: Props) {
       record.modified = true
 
       //跳转下一个输入框
-      if (newVal && !showTime) setTimeout(() => {
-        let target = document.querySelector(`.${queryClassName} input`)
-        if (target) handleNextIptFocus(null, target)
-      }, 500)
+      // if (newVal && !showTime) setTimeout(() => {
+      //   let target = document.querySelector(`.${queryClassName} input`)
+      //   if (target) handleNextIptFocus&&handleNextIptFocus(null, target)
+      // }, 500)
 
       if (
         registerCode == 'QCRG_19_2' ||

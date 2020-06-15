@@ -9,7 +9,7 @@ export interface Props {
   index: number,
   cellDisabled: Function,
   className?: string,
-  handleNextIptFocus?: any,
+  focusNextIpt?: any,
   onChange: Function,
   format?: string,
   showTime?: boolean,
@@ -22,7 +22,7 @@ export default function DatePickerRender(props: Props) {
     itemCfg, //当前列配置
     index, //行下标
     cellDisabled, //是否禁用行
-    handleNextIptFocus,
+    focusNextIpt,
     onChange,
     format,
     showTime,
@@ -39,32 +39,32 @@ export default function DatePickerRender(props: Props) {
   return <DatePicker
     disabled={cellDisabled(record)}
     style={{ width: '100%', minWidth: '0px!important' }}
-    defaultValue={dateStr ? moment(dateStr) : undefined}
+    value={dateStr ? moment(dateStr) : undefined}
     placeholder=" "
     showTime={showTime}
     format={_format}
     allowClear
     dropdownClassName="disable-date-ipt"
-    onOpenChange={(status) => {
-      if (status) {
-        setTimeout(() => {
-          let el = document.querySelector('.disable-date-ipt')
-          if (el) {
-            let ipt = el.querySelector('.ant-calendar-input') as HTMLInputElement
-            if (ipt) ipt.readOnly = true
-          }
-        }, 300)
-      }
-    }}
+    // onOpenChange={(status) => {
+    //   if (status) {
+    //     setTimeout(() => {
+    //       let el = document.querySelector('.disable-date-ipt')
+    //       if (el) {
+    //         let ipt = el.querySelector('.ant-calendar-input') as HTMLInputElement
+    //         if (ipt) ipt.readOnly = true
+    //       }
+    //     }, 300)
+    //   }
+    // }}
     className={`${className} ${queryClassName}`}
     onChange={(val: any) => {
       let newVal = val ? val.format(_format) : ''
 
       //跳转下一个输入框
-      if (newVal && !showTime) setTimeout(() => {
-        let target = document.querySelector(`.${queryClassName} input`)
-        if (target) handleNextIptFocus(null, target)
-      }, 500)
+      // if (newVal && !showTime) setTimeout(() => {
+      //   let target = document.querySelector(`.${queryClassName} input`)
+      //   if (target) focusNextIpt&&focusNextIpt(null, target)
+      // }, 500)
 
       onChange(newVal, itemCode, index)
 

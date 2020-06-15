@@ -25,6 +25,7 @@ import DeptSelect from "src/components/DeptSelect"
 import createModal from "src/libs/createModal"
 import SettingModal from "./components/SettingModal"
 import FileUploadRender from './components/FileUploadRender'
+import DatePickerRender from './components/DatePickerRender'
 import DefaultRender from './components/DefaultRender'
 import { codeAdapter } from "../../utils/codeAdapter"
 import FilterCon from './components/FilterCon'
@@ -49,7 +50,7 @@ export default observer(function 基础模板登记本(props: Props) {
   const registerName = props.payload && props.payload.registerName
   const { isNotANormalNurse } = authStore
 
-  const { loading, blockList, tableData, baseQuery, totalCount, itemConfigList, rangeConfigList, filterQuery } = baseRegisterMode
+  const { loading, blockList, tableData, baseQuery, totalCount, itemConfigList, rangeConfigList, filterQuery, selectedRowKeys } = baseRegisterMode
   const init = baseRegisterMode.init.bind(baseRegisterMode)
   const setLoading = baseRegisterMode.setLoading.bind(baseRegisterMode)
   const getTableData = baseRegisterMode.getTableData.bind(baseRegisterMode)
@@ -63,6 +64,9 @@ export default observer(function 基础模板登记本(props: Props) {
   const save = baseRegisterMode.save.bind(baseRegisterMode)
   const deleteBlock = baseRegisterMode.deleteBlock.bind(baseRegisterMode)
   const exportExcel = baseRegisterMode.exportExcel.bind(baseRegisterMode)
+  const setSelectedRowKeys = baseRegisterMode.setSelectedRowKeys.bind(baseRegisterMode)
+  const copyCreateSelectedRow = baseRegisterMode.copyCreateSelectedRow.bind(baseRegisterMode)
+  const auditAll = baseRegisterMode.auditAll.bind(baseRegisterMode)
   const focusNextIpt = baseRegisterMode.focusNextIpt
   const cellDisabled = baseRegisterMode.cellDisabled
 
@@ -243,6 +247,63 @@ export default observer(function 基础模板登记本(props: Props) {
             />
 
           //时间选择
+        } else if (itemType == 'date') {
+          children =
+            <DatePickerRender
+              {...{
+                itemCfg: item,
+                record,
+                index,
+                cellDisabled,
+                focusNextIpt,
+                className: childrenClassName,
+                onChange: (val: any) => {
+                  let newRow = { ...record, modified: true }
+                  newRow[itemCode] = val
+
+                  if (
+                    registerCode == 'QCRG_19_2' ||
+                    registerCode == 'QCRG_11' ||
+                    registerCode == 'QCRG_06'
+                  ) {
+                    let sumItemCode = '总计天数'
+                    let diffUnit = 'd' as 'd' | 'h'
+                    if (registerCode == 'QCRG_11') {
+                      sumItemCode = '合计时间（小时）'
+                      diffUnit = 'h'
+                    }
+                    if (registerCode == 'QCRG_06') {
+                      sumItemCode = '使用时间'
+                      diffUnit = 'h'
+                    }
+                    //时间差计算
+                    let newSum = ''
+
+                    let current = newRow['开始时间'] || ''
+                    let endTime = newRow['结束时间'] || ''
+
+                    var currentDate = moment(current)
+                    var endTimeDate = moment(endTime)
+
+                    if (
+                      currentDate.isValid() &&
+                      endTimeDate.isValid() &&
+                      current && endTime
+                    ) {
+                      let m = endTimeDate.diff(currentDate, diffUnit)
+                      if (m >= 0 && diffUnit == 'd') m += 1
+                      newSum = m.toString()
+                    }
+
+                    if (newSum) {
+                      newRow[sumItemCode] = newSum
+                    }
+                  }
+
+                  setTableDataRow(newRow, index)
+                }
+              }}
+            />
         } else {
           //带下拉选项的输入框
           children = <DefaultRender
@@ -416,20 +477,71 @@ export default observer(function 基础模板登记本(props: Props) {
       </PageHeader>
       <TableCon>
         {(baseQuery.blockId && itemConfigList.length > 0) ?
-          <BaseTable
-            columns={columns}
-            dataSource={tableData}
-            surplusHeight={superHeight}
-            useOuterPagination
-            surplusWidth={300}
-            pagination={{
-              current: baseQuery.pageIndex,
-              pageSize: baseQuery.pageSize,
-              total: totalCount,
-              onChange: (pageIndex: number) => setQuery({ ...baseQuery, pageIndex }, true),
-              onShowSizeChange: (pageIndex: number, pageSize: number) => setQuery({ ...baseQuery, pageIndex: 1, pageSize }, true)
-            }}
-          /> :
+          <React.Fragment>
+            <BaseTable
+              columns={columns}
+              dataSource={tableData}
+              surplusHeight={superHeight}
+              useOuterPagination
+              surplusWidth={300}
+              pagination={{
+                current: baseQuery.pageIndex,
+                pageSize: baseQuery.pageSize,
+                total: totalCount,
+                onChange: (pageIndex: number) => setQuery({ ...baseQuery, pageIndex }, true),
+                onShowSizeChange: (pageIndex: number, pageSize: number) => setQuery({ ...baseQuery, pageIndex: 1, pageSize }, true)
+              }}
+              rowClassName={(record: any, idx: number) => {
+                if (cellDisabled(record)) return 'disabled-row'
+
+                return ''
+              }}
+              rowSelection={codeAdapter({
+                'QCRG_14_1,QCRG_10,QCRG_14_2': {
+                  selectedRowKeys,
+                  onChange: setSelectedRowKeys,
+                },
+                other: undefined
+              }, registerCode, true)}
+            />
+            <div className="selected-operate-con">
+              {codeAdapter({
+                'QCRG_14_2':
+                  <Button
+                    disabled={
+                      loading ||
+                      selectedRowKeys.length <= 0
+                    }
+                    type="primary"
+                    onClick={() => copyCreateSelectedRow()}>
+                    复制新增
+                  </Button>,
+                'QCRG_14_1,QCRG_10':
+                  <React.Fragment>
+                    <Button
+                      disabled={
+                        loading ||
+                        !authStore.isRoleManage ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => auditAll('护士长')}>
+                      护士长签名
+                    </Button>
+                    <Button
+                      disabled={
+                        loading ||
+                        selectedRowKeys.length <= 0
+                      }
+                      type="primary"
+                      onClick={() => copyCreateSelectedRow()}>
+                      复制新增
+                    </Button>
+                  </React.Fragment>,
+                other: <span></span>,
+              }, registerCode, true)}
+            </div>
+          </React.Fragment> :
           <NullBox
             onClick={() => addBlock()}
             text={"创建登记本"}
