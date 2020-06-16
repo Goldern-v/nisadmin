@@ -362,7 +362,6 @@ export default observer(function TSGW(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={TSGWContent.f00025}
-                  onChange={(e: any) => (TSGWContent.f00025 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
@@ -376,11 +375,7 @@ export default observer(function TSGW(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input
-                    disabled
-                    value={TSGWContent.f00026}
-                    onChange={(e: any) => (TSGWContent.f00026 = e.target.value)}
-                  />
+                  <Input disabled value={TSGWContent.f00026} />
                 </SpanMiddle>
               </div>
             </td>
@@ -394,7 +389,6 @@ export default observer(function TSGW(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={TSGWContent.f00050}
-                  onChange={(e: any) => (TSGWContent.f00050 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
@@ -408,11 +402,7 @@ export default observer(function TSGW(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input
-                    disabled
-                    value={TSGWContent.f00051}
-                    onChange={(e: any) => (TSGWContent.f00051 = e.target.value)}
-                  />
+                  <Input disabled value={TSGWContent.f00051} />
                 </SpanMiddle>
               </div>
             </td>

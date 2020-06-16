@@ -413,7 +413,7 @@ export default observer(function RYZY(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input disabled value={rYZYContent.f00026} />
                 </SpanMiddle>
               </div>
             </td>
@@ -445,7 +445,7 @@ export default observer(function RYZY(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input disabled value={rYZYContent.f00051} />
                 </SpanMiddle>
               </div>
             </td>

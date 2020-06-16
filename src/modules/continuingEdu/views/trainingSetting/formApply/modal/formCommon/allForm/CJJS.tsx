@@ -479,7 +479,7 @@ export default observer(function CJJS(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input disabled value={cJJSContent.f00026} />
                 </SpanMiddle>
               </div>
             </td>
@@ -488,7 +488,11 @@ export default observer(function CJJS(props: Props) {
             <td>护理部意见</td>
             <td className="noPadding">
               <div className="vailgnTop godie">
-                <Input.TextArea style={{ width: "100%" }} disabled />
+                <Input.TextArea
+                  style={{ width: "100%" }}
+                  disabled
+                  value={cJJSContent.f00050}
+                />
               </div>
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
@@ -501,7 +505,7 @@ export default observer(function CJJS(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input disabled value={cJJSContent.f00051} />
                 </SpanMiddle>
               </div>
             </td>

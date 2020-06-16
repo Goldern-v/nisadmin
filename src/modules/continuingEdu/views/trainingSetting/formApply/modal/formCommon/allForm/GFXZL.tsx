@@ -128,7 +128,6 @@ export default observer(function FormApply(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={GFXZLContent.f00025}
-                  onChange={(e: any) => (GFXZLContent.f00025 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
@@ -142,13 +141,7 @@ export default observer(function FormApply(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input
-                    disabled
-                    value={GFXZLContent.f00025}
-                    onChange={(e: any) =>
-                      (GFXZLContent.f00026 = e.target.value)
-                    }
-                  />
+                  <Input disabled value={GFXZLContent.f00026} />
                 </SpanMiddle>
               </div>
             </td>
@@ -161,7 +154,6 @@ export default observer(function FormApply(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={GFXZLContent.f00050}
-                  onChange={(e: any) => (GFXZLContent.f00050 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
@@ -175,13 +167,7 @@ export default observer(function FormApply(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input
-                    disabled
-                    value={GFXZLContent.f00051}
-                    onChange={(e: any) =>
-                      (GFXZLContent.f00051 = e.target.value)
-                    }
-                  />
+                  <Input disabled value={GFXZLContent.f00051} />
                 </SpanMiddle>
               </div>
             </td>

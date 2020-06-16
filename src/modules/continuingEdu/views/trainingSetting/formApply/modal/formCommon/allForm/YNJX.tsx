@@ -206,7 +206,6 @@ export default observer(function YNJX(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={YNJXContent.f00025}
-                  onChange={(e: any) => (YNJXContent.f00025 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom">
@@ -237,7 +236,6 @@ export default observer(function YNJX(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={YNJXContent.f00040}
-                  onChange={(e: any) => (YNJXContent.f00040 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom">
@@ -251,11 +249,7 @@ export default observer(function YNJX(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input
-                    disabled
-                    value={YNJXContent.f00041}
-                    onChange={(e: any) => (YNJXContent.f00041 = e.target.value)}
-                  />
+                  <Input disabled value={YNJXContent.f00041} />
                 </SpanMiddle>
               </div>
             </td>
@@ -268,7 +262,6 @@ export default observer(function YNJX(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={YNJXContent.f00045}
-                  onChange={(e: any) => (YNJXContent.f00045 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom">
@@ -299,7 +292,6 @@ export default observer(function YNJX(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={YNJXContent.f00050}
-                  onChange={(e: any) => (YNJXContent.f00050 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom">
@@ -313,11 +305,7 @@ export default observer(function YNJX(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input
-                    disabled
-                    value={YNJXContent.f00025}
-                    onChange={(e: any) => (YNJXContent.f00025 = e.target.value)}
-                  />
+                  <Input disabled value={YNJXContent.f00051} />
                 </SpanMiddle>
               </div>
             </td>

@@ -134,7 +134,6 @@ export default observer(function RYZZ(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={RYZZLContent.f00025}
-                  onChange={(e: any) => (RYZZLContent.f00025 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
@@ -148,7 +147,7 @@ export default observer(function RYZZ(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input disabled value={RYZZLContent.f00026} />
                 </SpanMiddle>
               </div>
             </td>
@@ -162,7 +161,6 @@ export default observer(function RYZZ(props: Props) {
                   style={{ width: "100%" }}
                   disabled
                   value={RYZZLContent.f00050}
-                  onChange={(e: any) => (RYZZLContent.f00050 = e.target.value)}
                 />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
@@ -176,7 +174,7 @@ export default observer(function RYZZ(props: Props) {
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input disabled value={RYZZLContent.f00051} />
                 </SpanMiddle>
               </div>
             </td>
