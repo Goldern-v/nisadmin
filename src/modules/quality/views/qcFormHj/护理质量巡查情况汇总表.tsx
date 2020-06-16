@@ -48,7 +48,8 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
       return {
         title: item,
         dataIndex: item,
-        width: 100,
+        render: (text: string) => <PreCon>{text}</PreCon>,
+        width: 200,
       }
     })
   ]
@@ -260,3 +261,9 @@ const Text = styled.div<{ x: string; y: string; deg: string }>`
   white-space: nowrap;
   transform: rotate(${p => p.deg}deg);
 `;
+const PreCon = styled.pre`
+  word-break: break-all;
+  white-space: pre-wrap;
+  padding: 0;
+  margin: 0;
+`

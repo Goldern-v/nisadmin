@@ -32,6 +32,7 @@ import { codeAdapter } from "../../utils/codeAdapter";
 import { signRowObj } from "../../utils/signRowObj";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import DatePickerColumnRender from './../../components/DatePickerColumnRender'
+import InputColumnRender from './../../components/InputColumnRender'
 import { createFilterItem } from "../../components/FilterItem"
 export interface Props {
   payload: any;
@@ -157,40 +158,16 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
               }}
             />
           } else {
-            children = (
-              <AutoComplete
-                disabled={cellDisabled(record)}
-                dataSource={
-                  item.options
-                    ? item.options.split(";").map((item: any) => item || " ")
-                    : undefined
-                }
-                defaultValue={text}
-                onChange={value => {
-                  record.modified = true
-                  record[item.itemCode] = value.toString().replace(/\n/g, '');
-                }}
-                onFocus={() => fixInputValue(record, ['使用时间'], index, 200)}
-                onBlur={() => {
-                  updateDataSource()
-                  fixInputValue(record, ['使用时间'], index, 100)
-                }}
-                onSelect={() => updateDataSource()}
-              >
-                <TextArea
-                  autosize={{ maxRows: 1 }}
-                  data-key={item.itemCode}
-                  onKeyUp={handleNextIptFocus}
-                  style={{
-                    lineHeight: 1.2,
-                    overflow: "hidden",
-                    overflowY: "hidden",
-                    padding: "9px 2px",
-                    textAlign: "center"
-                  }}
-                />
-              </AutoComplete>
-            )
+            children = <InputColumnRender
+              {...{
+                cellDisabled,
+                record,
+                itemCfg: item,
+                itemCode: item.itemCode,
+                options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
+                updateDataSource,
+                handleNextIptFocus
+              }} />
           }
 
           if (

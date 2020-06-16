@@ -130,6 +130,11 @@ export default class BaseRegisterModel {
       recordDate: moment().format('YYYY-MM-DD'),
       range: this.rangeConfigList[0] ? this.rangeConfigList[0].itemCode : '',
     })
+
+    setTimeout(() => {
+      let target = document.querySelector('#baseTable .ant-table-row')
+      target && target.scrollIntoView()
+    }, 100)
   }
 
   /**格式化和合并表头配置 */

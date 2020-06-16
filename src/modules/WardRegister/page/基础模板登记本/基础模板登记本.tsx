@@ -31,7 +31,7 @@ import { codeAdapter } from "../../utils/codeAdapter"
 import FilterCon from './components/FilterCon'
 import SignColumn from './components/SignColumn'
 import { NullBox } from "../../components/NullBox"
-import { TableCon, Wrapper } from "../../utils/style/style"
+import { TableCon, Wrapper, LineCon, TextCon, Text, SvgCon } from "../../utils/style/style"
 //import SettingModal from "./modal/SettingModal"
 //import { createFilterItem } from "../../components/FilterItem"
 import { baseRegisterMode } from './BaseRegisterModel'
@@ -75,8 +75,6 @@ export default observer(function 基础模板登记本(props: Props) {
   const settingModal = createModal(SettingModal)
   const previewModal = createModal(PreviewModal)
 
-  // console.log(columns)
-
   /** 判断是否快过期 */
   const isEndTime = (record: any) => {
     let current = ''
@@ -108,15 +106,61 @@ export default observer(function 基础模板登记本(props: Props) {
 
   useEffect(() => {
     //重新渲染表头colunms
-    /**固定项目 */
+    //科室自定义列前面的列配置
     let itemCfgBefore = [
       {
-        title: "日期",
+        title: codeAdapter({
+          QCRG_01: <LineCon>
+            <TextCon>
+              <Text x="20%" y="75%" deg="0">
+                日期
+            </Text>
+              <Text x="65%" y="77%" deg="22">
+                班次
+            </Text>
+              <Text x="80%" y="62%" deg="21">
+                质量
+            </Text>
+              <Text x="83%" y="35%" deg="12">
+                基数
+            </Text>
+              <Text x="82%" y="8%" deg="0">
+                物品
+            </Text>
+            </TextCon>
+            <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
+              <line x1="0" y1="0" x2="60%" y2="100%" />
+              <line x1="0" y1="0" x2="100%" y2="100%" />
+              <line x1="0" y1="0" x2="100%" y2="33%" />
+              <line x1="0" y1="0" x2="100%" y2="66%" />
+              <line x1="0" y1="0" x2="100%" y2="100%" />
+            </SvgCon>
+          </LineCon>,
+          QCRG_02: <LineCon>
+            <TextCon>
+              <Text x="20%" y="70%" deg="0">
+                日期
+          </Text>
+              <Text x="65%" y="70%" deg="22">
+                班次
+          </Text>
+              <Text x="65%" y="20%" deg="0">
+                交班内容
+          </Text>
+            </TextCon>
+            <SvgCon xmlns="http://www.w3.org/2000/svg" version="1.1">
+              <line x1="0" y1="0" x2="60%" y2="100%" />
+              <line x1="0" y1="0" x2="100%" y2="80%" />
+            </SvgCon>
+          </LineCon>,
+          other: '日期'
+        }, registerCode),
         width: 108,
         className: 'input-cell',
         dataIndex: "recordDate",
         align: "center",
         colSpan: codeAdapter({
+          'QCRG_02,QCRG_01': 2,
           other: 1,
         }, registerCode, true),
         render(text: string, record: any, index: number) {
@@ -139,12 +183,16 @@ export default observer(function 基础模板登记本(props: Props) {
         }
       },
       ...codeAdapter({
-        'QCRG_04,QCRG_20_1': [{
+        'QCRG_02,QCRG_01,QCRG_04,QCRG_20_1': [{
           title: "班次",
           width: 75,
           className: 'input-cell',
           dataIndex: "range",
           align: "center",
+          colSpan: codeAdapter({
+            'QCRG_02,QCRG_01': 0,
+            other: 1,
+          }, registerCode, true),
           render(text: string, record: any, index: number) {
             let children = <DefaultRender
               {...{
@@ -184,8 +232,38 @@ export default observer(function 基础模板登记本(props: Props) {
       })
     }
 
+    //科室自定义列后面的列配置
     let itemCfgAfter = [
       ...codeAdapter({
+        'QCRG_01,QCRG_02,QCRG_11,QCRG_15_3,QCRG_18,QCRG_20_1,QCRG_20_2,QCRG_13': [
+          {
+            title: "备注",
+            width: 150,
+            dataIndex: "description",
+            className: "input-cell input-cell-description",
+            render(text: string, record: any, index: number) {
+              return <DefaultRender
+                {...{
+                  cellDisabled,
+                  record,
+                  itemCode: 'description',
+                  index,
+                  onChange: (val: any, itemCode: string, index: number) => {
+                    setTableDataRowItem(val, 'description', index)
+                    setTableDataRowItem(val, 'range', index)
+                  },
+                  focusNextIpt,
+                }} />
+            }
+          }
+        ],
+        other: [],
+      }, registerCode, true),
+      ...codeAdapter({
+        'QCRG_01,QCRG_02': [
+          SignColumnFormat('交班者签名', '交班者'),
+          SignColumnFormat('接班者签名', '接班者', 'auditorName'),
+        ],
         QCRG_04: [
           SignColumnFormat()
         ],
@@ -193,7 +271,7 @@ export default observer(function 基础模板登记本(props: Props) {
           SignColumnFormat('登记人签名', '登记人')
         ],
         other: []
-      }, registerCode),
+      }, registerCode, true),
       {
         title: "操作",
         width: 50,
@@ -377,6 +455,7 @@ export default observer(function 基础模板登记本(props: Props) {
         return newItem
       })
 
+    //合并表头固定列和科室自定义标题列
     setColumns([
       ...itemCfgBefore,
       ...newColumns,

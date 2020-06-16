@@ -36,6 +36,7 @@ import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from './../../components/FileUploadColumnRender'
 import DatePickerColumnRender from './../../components/DatePickerColumnRender'
+import InputColumnRender from './../../components/InputColumnRender'
 
 export interface Props {
   payload: any;
@@ -485,33 +486,16 @@ export default observer(function 重点患者评估登记本(props: Props) {
           dataIndex: "range",
           align: "center",
           render(text: string, record: any, index: number) {
-            let children = (
-              <AutoComplete
-                disabled={cellDisabled(record)}
-                dataSource={rangConfigList.map((item: any) => item.itemCode)}
-                defaultValue={text}
-                onChange={value => {
-                  record.modified = true
-                  record["range"] = value;
-                }}
-                onBlur={() => updateDataSource()}
-                onSelect={value => {
-                  updateDataSource();
-                }}
-              >
-                <TextArea
-                  autosize
-                  data-key={'range'}
-                  onKeyUp={handleNextIptFocus}
-                  style={{
-                    lineHeight: 1.2,
-                    overflow: "hidden",
-                    padding: "9px 2px",
-                    textAlign: "center"
-                  }}
-                />
-              </AutoComplete>
-            );
+            let children = <InputColumnRender
+              {...{
+                cellDisabled,
+                options: rangConfigList.map((item: any) => item.itemCode),
+                record,
+                itemCode: 'range',
+                updateDataSource,
+                handleNextIptFocus
+              }}
+            />
             let obj = {
               children
             };
@@ -621,34 +605,15 @@ export default observer(function 重点患者评估登记本(props: Props) {
               }} />
 
           } else {
-            children = (
-              <AutoComplete
-                className={childrenClassName}
-                disabled={cellDisabled(record)}
-                dataSource={
-                  item.options
-                    ? item.options.split(";").filter((item: any) => item)
-                    : undefined
-                }
-                onFocus={() => fixInputValue(record, codeAdapter({
-                  QCRG_19_2: ['总计天数'],
-                  other: []
-                }, registerCode), index, 100)}
-                defaultValue={text}
-                onChange={value => {
-                  console.log('change')
-                  record.modified = true
-                  record[item.itemCode] = value.toString().replace(/\n/g, '');
-
-                }}
-                onBlur={() => {
-                  updateDataSource()
-                  fixInputValue(record, codeAdapter({
-                    QCRG_19_2: ['总计天数'],
-                    other: []
-                  }, registerCode), index, 100)
-                }}
-                onSelect={value => {
+            children = <InputColumnRender
+              {...{
+                cellDisabled,
+                options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
+                record,
+                itemCode: item.itemCode,
+                updateDataSource,
+                handleNextIptFocus,
+                onSelect: (value: any) => {
                   if (
                     registerCode == "QCRG_04" &&
                     item.itemCode == "组号及床号"
@@ -659,24 +624,10 @@ export default observer(function 重点患者评估登记本(props: Props) {
                         prevValue + (prevValue ? ";" : "") + value;
                       updateDataSource(true);
                     }, 0);
-                  } else {
-                    // updateDataSource();
                   }
-                }}
-              >
-                <TextArea
-                  autosize
-                  data-key={item.itemCode}
-                  onKeyUp={handleNextIptFocus}
-                  style={{
-                    lineHeight: 1.2,
-                    overflow: "hidden",
-                    padding: "9px 2px",
-                    textAlign: "center"
-                  }}
-                />
-              </AutoComplete>
-            );
+                }
+              }}
+            />
           }
 
           let obj = {

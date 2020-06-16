@@ -30,16 +30,23 @@ export default function DefaultRender(props: Props) {
     className
   } = props
 
+  const [editValue, setEditValue] = useState('')
+
+  useEffect(() => {
+    if (record[itemCode] !== editValue) setEditValue(record[itemCode])
+  }, [record[itemCode]])
+
   return <AutoComplete
     className={className}
     disabled={cellDisabled(record)}
     dataSource={options}
-    value={record[itemCode]}
+    value={editValue}
     onSelect={onSelect}
     onChange={(value: any) => {
       value = value.replace(/\n/g, '')
-      onChange(value, itemCode, index)
-    }}>
+      setEditValue(value)
+    }}
+    onBlur={() => onChange(editValue, itemCode, index)}>
     <TextArea
       autosize
       data-key={itemCode}
@@ -47,7 +54,8 @@ export default function DefaultRender(props: Props) {
       style={{
         lineHeight: 1.2,
         padding: "9px 2px",
-        textAlign: "center"
+        textAlign: "center",
+        overflow: 'hidden'
       }}
     />
   </AutoComplete>
