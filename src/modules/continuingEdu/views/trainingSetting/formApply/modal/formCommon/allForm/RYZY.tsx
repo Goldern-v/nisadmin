@@ -18,7 +18,7 @@ export default observer(function RYZY(props: Props) {
           <col width="87%" />
         </colgroup>
         <tbody>
-          <tr style={{ height: "105px" }}>
+          <tr style={{ height: "90px" }}>
             <td>护士基本信息</td>
             <td className="vailgnTop">
               <span>
@@ -206,7 +206,7 @@ export default observer(function RYZY(props: Props) {
               </Span>
             </td>
           </tr>
-          <tr style={{ height: "160px" }}>
+          <tr style={{ height: "155px" }}>
             <td>岗位职责完成情况</td>
             <td className="vailgnTop">
               <span>掌握护理岗位职责、护理常规、操作规程及工作标准</span>
@@ -392,16 +392,24 @@ export default observer(function RYZY(props: Props) {
               <div className="vailgnTop">
                 <span>经科室讨论：</span>
                 <Span>
-                  <Radio.Group disabled>
-                    <Radio value="通过">延期准入，仍需继续努力</Radio>
-                    <Radio value="不适用">同意准入，在科室独立上岗</Radio>
+                  <Radio.Group
+                    disabled
+                    value={rYZYContent.f00024}
+                    onChange={(e: any) => (rYZYContent.f00024 = e.target.value)}
+                  >
+                    <Radio value={1}>延期准入，仍需继续努力</Radio>
+                    <Radio value={-1}>同意准入，在科室独立上岗</Radio>
                   </Radio.Group>
                 </Span>
               </div>
               <div className="vailgnBottom marginTop">
                 <SpanMiddle className="specialInput">
                   护长签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(rYZYContent.f00022)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
@@ -418,18 +426,22 @@ export default observer(function RYZY(props: Props) {
                 <Span>
                   <Radio.Group
                     disabled
-                    // value={rYZYContent.f00001}
-                    // onChange={(e: any) => (rYZYContent.f00001 = e.target.value)}
+                    value={rYZYContent.f00049}
+                    onChange={(e: any) => (rYZYContent.f00049 = e.target.value)}
                   >
-                    <Radio value="通过">延期准入，仍需继续努力</Radio>
-                    <Radio value="不适用">同意准入，在科室独立上岗</Radio>
+                    <Radio value={1}>延期准入，仍需继续努力</Radio>
+                    <Radio value={-1}>同意准入，在科室独立上岗</Radio>
                   </Radio.Group>
                 </Span>
               </div>
               <div className="vailgnBottom marginTop">
                 <SpanMiddle className="specialInput">
                   护理部：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(rYZYContent.f00047)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：

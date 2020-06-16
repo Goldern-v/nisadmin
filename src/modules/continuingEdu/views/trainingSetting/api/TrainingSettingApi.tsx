@@ -16,6 +16,14 @@ export default class TrainingSettingApi extends BaseApiService {
     return this.post(`/studyAndTrain/qualiAccessManage/queryFormPageList`, obj);
   }
 
+  //获取表单基本信息
+  public async getAutoGenerateItems(obj: any) {
+    return this.post(
+      `/studyAndTrain/qualiAccessManage/getAutoGenerateItems`,
+      obj
+    );
+  }
+
   // 保存
   public async saveForm(actionType: 1 | 2 | undefined, data: any) {
     //actionType(1保存为草稿；2提交审核)

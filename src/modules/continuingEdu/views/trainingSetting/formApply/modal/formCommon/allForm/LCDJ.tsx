@@ -171,13 +171,17 @@ export default observer(function LCDJ(props: Props) {
                 申请人签名：
                 <img
                   className="img"
-                  src={formApplyModal.signUrl("admin")}
+                  src={formApplyModal.signUrl(lCDJContent.f00019)}
                   alt=""
                 />
               </SpanMiddle>
               <SpanMiddle className="specialInput">
                 日期：
-                <Input disabled value={lCDJContent.f00021} />
+                <Input
+                  style={{ color: "black" }}
+                  disabled
+                  value={lCDJContent.f00021}
+                />
               </SpanMiddle>
             </td>
           </tr>
@@ -185,20 +189,24 @@ export default observer(function LCDJ(props: Props) {
             <td colSpan={2}>科室意见</td>
             <td colSpan={6}>
               <div className="vailgnTop godie">
-                <Input.TextArea />
+                <Input.TextArea disabled value={lCDJContent.f00021} />
               </div>
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
                   科室护长签名：
                   <img
                     className="img"
-                    src={formApplyModal.signUrl("admin")}
+                    src={formApplyModal.signUrl(lCDJContent.f00022)}
                     alt=""
                   />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled value={lCDJContent.f00025} />
+                  <Input
+                    style={{ color: "black" }}
+                    disabled
+                    value={lCDJContent.f00026}
+                  />
                 </SpanMiddle>
               </div>
             </td>
@@ -206,13 +214,53 @@ export default observer(function LCDJ(props: Props) {
           <tr style={{ height: "80px" }}>
             <td colSpan={2}>准入考评小组意见</td>
             <td colSpan={6}>
-              <Input.TextArea rows={3} disabled />
+              <div className="vailgnTop godie">
+                <Input.TextArea disabled value={lCDJContent.f00030} />
+              </div>
+              <div className="vailgnBottom">
+                <SpanMiddle className="specialInput">
+                  准入考评小组签名：
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(lCDJContent.f00027)}
+                    alt=""
+                  />
+                </SpanMiddle>
+                <SpanMiddle className="specialInput">
+                  日期：
+                  <Input
+                    style={{ color: "black" }}
+                    disabled
+                    value={lCDJContent.f00031}
+                  />
+                </SpanMiddle>
+              </div>
             </td>
           </tr>
           <tr style={{ height: "80px" }}>
             <td colSpan={2}>护理部意见</td>
             <td colSpan={6}>
-              <Input.TextArea rows={3} disabled />
+              <div className="vailgnTop godie">
+                <Input.TextArea disabled value={lCDJContent.f00050} />
+              </div>
+              <div className="vailgnBottom">
+                <SpanMiddle className="specialInput">
+                  护理部签名：
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(lCDJContent.f00047)}
+                    alt=""
+                  />
+                </SpanMiddle>
+                <SpanMiddle className="specialInput">
+                  日期：
+                  <Input
+                    style={{ color: "black" }}
+                    disabled
+                    value={lCDJContent.f00051}
+                  />
+                </SpanMiddle>
+              </div>
             </td>
           </tr>
         </tbody>

@@ -126,8 +126,8 @@ export default observer(function NurseAudit() {
     let newQuery = {
       taskId: record.taskId,
       formId: record.formId,
-      formCode: record.formCode,
-      formName: record.formName,
+      code: record.formCode,
+      name: record.formName,
       submitterEmpNo: record.submitterEmpNo,
       checkResult: checkResult ? checkResult : ""
     } as any;

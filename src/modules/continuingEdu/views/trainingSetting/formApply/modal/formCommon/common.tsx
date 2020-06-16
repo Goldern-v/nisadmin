@@ -197,6 +197,11 @@ export const CJJSWrapper = styled.div`
     border: none !important;
     text-align: left !important;
   }
+  .img {
+    display: inline-block;
+    height: 30px;
+    width: 85px;
+  }
 `;
 export const Span = styled.span`
   display: inline-block;

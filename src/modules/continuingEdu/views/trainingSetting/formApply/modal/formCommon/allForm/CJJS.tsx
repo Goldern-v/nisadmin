@@ -184,7 +184,6 @@ export default observer(function CJJS(props: Props) {
               </Span>
             </td>
           </tr>
-
           <tr style={{ height: "150px" }}>
             <td>专业能力进阶情况</td>
             <td className="vailgnTop">
@@ -459,20 +458,24 @@ export default observer(function CJJS(props: Props) {
               <div className="vailgnTop">
                 <span>经科室讨论：</span>
                 <Span>
-                  <Radio.Group>
-                    <Radio value="通过" disabled>
-                      延期准入，仍需继续努力
-                    </Radio>
-                    <Radio value="不适用" disabled>
-                      同意准入，在科室独立上岗
-                    </Radio>
+                  <Radio.Group
+                    disabled
+                    value={cJJSContent.f00024}
+                    onChange={(e: any) => (cJJSContent.f00024 = e.target.value)}
+                  >
+                    <Radio value={1}>延期准入，仍需继续努力</Radio>
+                    <Radio value={-1}>同意准入，在科室独立上岗</Radio>
                   </Radio.Group>
                 </Span>
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
                 <SpanMiddle className="specialInput">
                   护长签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(cJJSContent.f00022)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
@@ -490,7 +493,11 @@ export default observer(function CJJS(props: Props) {
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
                   护理部：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(cJJSContent.f00050)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：

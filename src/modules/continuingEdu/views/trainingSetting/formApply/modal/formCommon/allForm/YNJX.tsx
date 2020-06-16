@@ -15,9 +15,7 @@ export default observer(function YNJX(props: Props) {
     trainingSettingApi.getAllDeptList().then((res: any) => {
       setDeptList(res.data.deptList);
     });
-    trainingSettingApi.getAllEmpName("").then((res: any) => {
-      console.log(res.data, "倒是导师");
-    });
+    trainingSettingApi.getAllEmpName("").then((res: any) => {});
   }, []);
 
   return (
@@ -201,19 +199,32 @@ export default observer(function YNJX(props: Props) {
               </tr>
             ))}
           <tr style={{ height: "100px" }}>
-            <td colSpan={2}>进修科室意见</td>
+            <td colSpan={2}>科室意见</td>
             <td colSpan={7} className="noPadding">
               <div className="vailgnTop godie">
-                <Input.TextArea style={{ width: "100%" }} disabled />
+                <Input.TextArea
+                  style={{ width: "100%" }}
+                  disabled
+                  value={YNJXContent.f00025}
+                  onChange={(e: any) => (YNJXContent.f00025 = e.target.value)}
+                />
               </div>
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
                   护长签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(YNJXContent.f00022)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input
+                    disabled
+                    value={YNJXContent.f00026}
+                    onChange={(e: any) => (YNJXContent.f00026 = e.target.value)}
+                  />
                 </SpanMiddle>
               </div>
             </td>
@@ -222,16 +233,29 @@ export default observer(function YNJX(props: Props) {
             <td colSpan={1}>进修鉴定评语</td>
             <td colSpan={8} className="noPadding">
               <div className="vailgnTop godie">
-                <Input.TextArea style={{ width: "100%" }} disabled />
+                <Input.TextArea
+                  style={{ width: "100%" }}
+                  disabled
+                  value={YNJXContent.f00040}
+                  onChange={(e: any) => (YNJXContent.f00040 = e.target.value)}
+                />
               </div>
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
                   指导老师签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(YNJXContent.f00037)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input
+                    disabled
+                    value={YNJXContent.f00041}
+                    onChange={(e: any) => (YNJXContent.f00041 = e.target.value)}
+                  />
                 </SpanMiddle>
               </div>
             </td>
@@ -240,16 +264,29 @@ export default observer(function YNJX(props: Props) {
             <td colSpan={1}>进修科室意见</td>
             <td colSpan={8} className="noPadding">
               <div className="vailgnTop godie">
-                <Input.TextArea style={{ width: "100%" }} disabled />
+                <Input.TextArea
+                  style={{ width: "100%" }}
+                  disabled
+                  value={YNJXContent.f00045}
+                  onChange={(e: any) => (YNJXContent.f00045 = e.target.value)}
+                />
               </div>
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
                   护士长签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(YNJXContent.f00042)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input
+                    disabled
+                    value={YNJXContent.f00025}
+                    onChange={(e: any) => (YNJXContent.f00025 = e.target.value)}
+                  />
                 </SpanMiddle>
               </div>
             </td>
@@ -258,16 +295,29 @@ export default observer(function YNJX(props: Props) {
             <td colSpan={1}>护理部室意见</td>
             <td colSpan={8} className="noPadding">
               <div className="vailgnTop godie">
-                <Input.TextArea style={{ width: "100%" }} disabled />
+                <Input.TextArea
+                  style={{ width: "100%" }}
+                  disabled
+                  value={YNJXContent.f00050}
+                  onChange={(e: any) => (YNJXContent.f00050 = e.target.value)}
+                />
               </div>
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
                   护理部签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(YNJXContent.f00047)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
-                  <Input disabled />
+                  <Input
+                    disabled
+                    value={YNJXContent.f00025}
+                    onChange={(e: any) => (YNJXContent.f00025 = e.target.value)}
+                  />
                 </SpanMiddle>
               </div>
             </td>

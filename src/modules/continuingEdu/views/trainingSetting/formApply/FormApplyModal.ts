@@ -25,15 +25,20 @@ const defaultLCDJ: any = {
   f00021: "", //申请时间
   f00022: "", //科室审批人工号
   f00023: "", //科室审批人姓名
-  f00024: "", //科室审批结果（1通过；-1退回）
-  f00025: "", //科室审批时间
-  f00026: "", //准入考评小组审批人工号
-  f00027: "", //准入考评小组审批人姓名
-  f00028: "", //准入考评小组审批结果（1通过；-1退回）
-  f00029: "", //准入考评小组审批时间
-  f00030: "", //护理部审批人工号
-  f00031: "", //护理部审批人姓名
-  f00032: "" //护理部审批时间
+  f00024: "", //科室审批结果
+  f00025: "", //科室审批意见
+  f00026: "", //科室审批时间
+  f00027: "", //入考评小组审批人工号
+  f00028: "", //准入考评小组审批人姓名
+  f00029: "", //准入考评小组审批结果（1通过；-1退回）
+  f00030: "", //准入考评小组审批意见
+  f00031: "", //准入考评小组审批时间
+  f00047: "", //护理部审批人工号
+  f00048: "", //护理部审批人姓名
+  f00049: "", //护理部审批结果
+  f00050: "", //护理部审批意见
+  f00051: "", //护理部审批时间
+  f00052: "" //状态
 };
 // 人员执业字段
 const defaultRYZY: any = {
@@ -187,7 +192,21 @@ const defaultRYZZ: any = {
       f00090: "",
       f00091: ""
     }
-  ] //工作经历
+  ], //工作经历
+  f00019: "", //申请人工号
+  f00020: "", //申请人姓名
+  f00021: "", //申请时间
+  f00022: "", //科室审批人工号
+  f00023: "", //科室审批人姓名
+  f00024: "", //科室审批结果
+  f00025: "", //科室审批意见
+  f00026: "", //科室审批时间
+  f00047: "", //护理部审批人工号
+  f00048: "", //护理部审批人姓名
+  f00049: "", //护理部审批结果
+  f00050: "", //护理部审批意见
+  f00051: "", //护理部审批时间
+  f00052: "" //状态
 };
 // 层级晋升字段
 const defaultCJJS: any = {
@@ -336,6 +355,15 @@ const defaultYNJX: any = {
   f00024: "", //科室审批结果
   f00025: "", //科室审批意见
   f00026: "", //科室审批时间
+  f00037: "", //进修指导老师审批工号
+  f00038: "", //进修指导老师审批姓名
+  f00039: "", //进修指导老师审批结果
+  f00040: "", //进修指导老师审批意见
+  f00041: "", //进修指导老师审批时间
+  f00042: "", //进修科室审批人工号
+  f00043: "", //进修科室审批人姓名
+  f00044: "", //进修科室审批结果
+  f00045: "", //进修科室审批意见
   f00047: "", //护理部审批人工号
   f00048: "", //护理部审批人姓名
   f00049: "", //护理部审批结果
@@ -421,34 +449,32 @@ class FormApplyModal {
 
   // 用于查看表单对应字段
   getForm() {
-    trainingSettingApi.field(this.getFormCode).then(res => {
-      console.log(res.data, "pppppp");
-    });
+    trainingSettingApi.field(this.getFormCode).then(res => {});
   }
 
   // 判断回显哪张表单
   allData(data: any, formCode?: any) {
     switch (formCode) {
       case "FQA00001":
-        return (this.LCDJFormContent = data);
+        return (this.LCDJFormContent = { ...this.LCDJFormContent, ...data });
         break;
       case "FQA00002":
-        return (this.RYZYFormContent = data);
+        return (this.RYZYFormContent = { ...this.LCDJFormContent, ...data });
         break;
       case "FQA00003":
-        return (this.GFXZLFormContent = data);
+        return (this.GFXZLFormContent = { ...this.GFXZLFormContent, ...data });
         break;
       case "FQA00004":
-        return (this.RYZZFormContent = data);
+        return (this.RYZZFormContent = { ...this.RYZZFormContent, ...data });
         break;
       case "FQA00005":
-        return (this.CJJSFormContent = data);
+        return (this.CJJSFormContent = { ...this.CJJSFormContent, ...data });
         break;
       case "FQA00006":
-        return (this.TSGWFormContent = data);
+        return (this.TSGWFormContent = { ...this.TSGWFormContent, ...data });
         break;
       default:
-        return (this.YNJXFormContent = data);
+        return (this.YNJXFormContent = { ...this.YNJXFormContent, ...data });
         break;
     }
   }

@@ -32,7 +32,7 @@ export default function FormEditModal(props: Props) {
         if (params && params.formId) {
           trainingSettingApi.formData(params.formId).then((res: any) => {
             res.data.id = params.formId;
-            formApplyModal.allData(res.data);
+            formApplyModal.allData(res.data, formApplyModal.getFormCode);
             // for (let key in obj) {
             //   if (formApplyModal.getFormCode === obj[key]) {
             //     formApplyModal[key] = res.data;
@@ -41,11 +41,19 @@ export default function FormEditModal(props: Props) {
             // formApplyModal.initData(res.data);
           });
         } else {
+          // 清空表单数据
           formApplyModal.cleanAllStepData();
+          let obj = {
+            formCode: formApplyModal.getFormCode
+          };
+          // 获取表单基本信息
+          trainingSettingApi.getAutoGenerateItems(obj).then((res: any) => {
+            formApplyModal.allData(res.data, formApplyModal.getFormCode);
+          });
         }
       }, 100);
     }
-  }, [visible]);
+  }, [visible, formApplyModal.getFormCode]);
 
   //保存表单
   const confirmSave = (actionType: 1 | 2 | undefined) => {
@@ -76,33 +84,6 @@ export default function FormEditModal(props: Props) {
     );
     return formArr[key - 1];
   };
-
-  // // 判断回显哪张表单
-  // const allData = (data: any) => {
-  //   switch (formApplyModal.getFormCode) {
-  //     case "FQA00001":
-  //       return (formApplyModal.LCDJFormContent = data);
-  //       break;
-  //     case "FQA00002":
-  //       return (formApplyModal.RYZYFormContent = data);
-  //       break;
-  //     case "FQA00003":
-  //       return (formApplyModal.GFXZLFormContent = data);
-  //       break;
-  //     case "FQA00004":
-  //       return (formApplyModal.RYZZFormContent = data);
-  //       break;
-  //     case "FQA00005":
-  //       return (formApplyModal.CJJSFormContent = data);
-  //       break;
-  //     case "FQA00006":
-  //       return (formApplyModal.TSGWFormContent = data);
-  //       break;
-  //     default:
-  //       return (formApplyModal.YNJXFormContent = data);
-  //       break;
-  //   }
-  // };
 
   // 取消关闭
   const handleCancel = () => {

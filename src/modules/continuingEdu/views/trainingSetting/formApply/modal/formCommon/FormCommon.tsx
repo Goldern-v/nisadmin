@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { appStore } from "src/stores";
 import { formApplyModal } from "../../FormApplyModal";
@@ -16,9 +16,9 @@ import YNJX from "./allForm/YNJX"; //护理人员岗位院内进修备案简表
 interface Props {}
 
 export default observer(function FormApply(props: Props) {
-  let formName = appStore.queryObj.formName;
-  let formCode = appStore.queryObj.formCode;
-  let formId = appStore.queryObj.formId;
+  let name = appStore.queryObj.name ? appStore.queryObj.name : "";
+  let code = appStore.queryObj.code ? appStore.queryObj.code : "";
+  let formId = appStore.queryObj.formId ? appStore.queryObj.formId : "";
 
   //根据formcode对应表单
   const formList: any = [
@@ -56,11 +56,11 @@ export default observer(function FormApply(props: Props) {
   const getData = () => {
     trainingSettingApi.formData(formId).then((res: any) => {
       res.data.id = formId;
-      formApplyModal.allData(res.data, formCode);
+      formApplyModal.allData(res.data, code);
     });
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (formId) getData();
   }, []);
 
@@ -68,17 +68,17 @@ export default observer(function FormApply(props: Props) {
     <Wrapper>
       <div ref={formApplyModal.printRef}>
         <Hospital>东莞市厚街医院</Hospital>
-        <Title>
-          {formApplyModal.getTitle ? formApplyModal.getTitle : formName}
-        </Title>
+        {name ? (
+          <Title>{name}</Title>
+        ) : (
+          <Title>{formApplyModal.getTitle}</Title>
+        )}
         <FromContent>
-          {
-            formList.find((item: any) =>
-              item.name === formApplyModal.getFormCode
-                ? formApplyModal.getFormCode
-                : formCode
-            ).component
-          }
+          {code
+            ? formList.find((item: any) => item.name === code).component
+            : formList.find(
+                (item: any) => item.name === formApplyModal.getFormCode
+              ).component}
         </FromContent>
       </div>
     </Wrapper>

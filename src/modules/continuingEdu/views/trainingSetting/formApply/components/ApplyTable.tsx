@@ -6,6 +6,8 @@ import { Button, Modal, message as Message } from "antd";
 import { formApplyModal } from "../FormApplyModal";
 import { trainingSettingApi } from "../../api/TrainingSettingApi";
 import FormEditModal from "../modal/FormEditModal"; // 修改弹窗
+import { appStore } from "src/stores";
+import qs from "qs";
 
 interface Props {}
 
@@ -184,7 +186,7 @@ export default observer(function ApplyTable(props: Props) {
               Message.success("文件撤销成功");
               formApplyModal.onload();
             } else {
-              Message.error("文件撤销失败");
+              Message.error(`${res.dec}`);
             }
           })
           .catch(err => {
@@ -195,7 +197,13 @@ export default observer(function ApplyTable(props: Props) {
   };
 
   // 查看
-  const checkResult = () => {};
+  const checkResult = (record: any) => {
+    let newQuery = {
+      formId: record.formId,
+      haveHeader: false
+    } as any;
+    appStore.history.push(`/continuingEduFormCheck?${qs.stringify(newQuery)}`);
+  };
 
   // 修改
   const handReWrite = (record: any) => {

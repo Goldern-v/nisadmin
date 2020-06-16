@@ -129,12 +129,22 @@ export default observer(function RYZZ(props: Props) {
             <td className="padding" colSpan={4}>
               <div className="vailgnTop">
                 <div>科室意见：</div>
-                <Input.TextArea rows={6} style={{ width: "100%" }} disabled />
+                <Input.TextArea
+                  rows={6}
+                  style={{ width: "100%" }}
+                  disabled
+                  value={RYZZLContent.f00025}
+                  onChange={(e: any) => (RYZZLContent.f00025 = e.target.value)}
+                />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
                 <SpanMiddle className="specialInput">
                   护士长签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(RYZZLContent.f00022)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：
@@ -147,12 +157,22 @@ export default observer(function RYZZ(props: Props) {
             <td className="padding" colSpan={4}>
               <div className="vailgnTop">
                 <div>护理部审核意见：</div>
-                <Input.TextArea rows={8} style={{ width: "100%" }} disabled />
+                <Input.TextArea
+                  rows={8}
+                  style={{ width: "100%" }}
+                  disabled
+                  value={RYZZLContent.f00050}
+                  onChange={(e: any) => (RYZZLContent.f00050 = e.target.value)}
+                />
               </div>
               <div className="vailgnBottom" style={{ marginTop: "10px" }}>
                 <SpanMiddle className="specialInput">
                   签名：
-                  <Input disabled />
+                  <img
+                    className="img"
+                    src={formApplyModal.signUrl(RYZZLContent.f00047)}
+                    alt=""
+                  />
                 </SpanMiddle>
                 <SpanMiddle className="specialInput">
                   日期：

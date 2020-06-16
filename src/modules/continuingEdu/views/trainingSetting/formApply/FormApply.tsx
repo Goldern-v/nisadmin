@@ -14,7 +14,6 @@ export default observer(function FormApply(props: Props) {
   useLayoutEffect(() => {
     formApplyModal.getTitle = props.getTitle;
     formApplyModal.getFormCode = props.getFormCode;
-    // formApplyModal.onload();
     formApplyModal.init();
   }, [props.getTitle]);
 

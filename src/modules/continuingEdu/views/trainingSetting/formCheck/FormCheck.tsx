@@ -14,7 +14,6 @@ export default observer(function FormCheck() {
   const [detailData, setDetailData]: any = useState([]);
   const [loading, setLoading] = useState(false);
   let formId = appStore.queryObj.formId;
-
   const onload = () => {
     setLoading(true);
     trainingSettingApi.getFlowTaskHisByCetpId(formId).then(res => {
@@ -29,10 +28,19 @@ export default observer(function FormCheck() {
 
   return (
     <Wrapper>
-      <HeaderCon>
-        <Header detailData={detailData} onload={onload} />
-      </HeaderCon>
-      <MidCon>
+      {!appStore.queryObj.haveHeader && (
+        <HeaderCon>
+          <Header detailData={detailData} onload={onload} />
+        </HeaderCon>
+      )}
+      <MidCon
+        className={
+          appStore.queryObj.haveHeader &&
+          appStore.queryObj.haveHeader == "false"
+            ? "isok"
+            : ""
+        }
+      >
         <MidConScrollCon>
           <SpinCon>
             {loading ? (
@@ -69,6 +77,9 @@ const HeaderCon = styled.div`
 const MidCon = styled.div`
   flex: 1;
   height: calc(100vh - 145px);
+  &.isok {
+    height: calc(100vh) !important;
+  }
 `;
 const MidConScrollCon = styled.div`
   height: 100%;
