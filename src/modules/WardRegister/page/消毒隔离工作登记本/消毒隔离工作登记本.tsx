@@ -35,6 +35,7 @@ import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from './../../components/FileUploadColumnRender'
+import InputColumnRender from './../../components/InputColumnRender'
 
 const TextArea = Input.TextArea
 
@@ -196,35 +197,19 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
                 }} />
             }
           } else {
-            children = (
-              <AutoComplete
-                disabled={cellDisabled(record) || timeDisabled}
-                dataSource={
-                  item.options
-                    ? item.options.split(";").map((item: any) => item || " ")
-                    : undefined
-                }
-                defaultValue={text}
-                onChange={value => {
-                  record.modified = true
-                  record[item.itemCode] = value;
-                }}
-                onBlur={() => updateDataSource()}
-                onSelect={() => updateDataSource()}
-              >
-                <TextArea
-                  data-key={item.itemCode}
-                  onKeyUp={handleNextIptFocus}
-                  autosize
-                  style={{
-                    lineHeight: 1.2,
-                    overflow: "hidden",
-                    padding: "9px 2px",
-                    textAlign: "center"
-                  }}
-                />
-              </AutoComplete>
-            );
+            children = <InputColumnRender
+              {...{
+                cellDisabled: (record: any) => {
+                  return cellDisabled(record) || timeDisabled
+                },
+                itemCode: item.itemCode,
+                handleNextIptFocus,
+                record,
+                updateDataSource,
+                options: (item.options || "")
+                  .split(";")
+                  .filter((item: any) => item)
+              }} />
           }
 
           if (
@@ -266,19 +251,14 @@ export default observer(function 消毒隔离工作登记本(props: Props) {
             dataIndex: "description",
             className: "input-cell input-cell-description",
             render(text: string, record: any, index: number) {
-              return (
-                <Input.TextArea
-                  disabled={cellDisabled(record)}
-                  autosize={{ minRows: 1 }}
-                  onKeyUp={handleNextIptFocus}
-                  defaultValue={text}
-                  onChange={e => {
-                    record.modified = true
-                    record.description = e.target.value.replace(/\n/g, '');
-                  }}
-                  onBlur={() => updateDataSource()}
-                />
-              );
+              return <InputColumnRender
+                {...{
+                  cellDisabled,
+                  itemCode: 'description',
+                  handleNextIptFocus,
+                  record,
+                  updateDataSource,
+                }} />
             }
           },
           signRowObj({

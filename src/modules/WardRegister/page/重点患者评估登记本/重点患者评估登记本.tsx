@@ -856,17 +856,14 @@ export default observer(function 重点患者评估登记本(props: Props) {
             dataIndex: "description",
             className: "input-cell",
             render(text: string, record: any, index: number) {
-              return (
-                <Input.TextArea
-                  disabled={cellDisabled(record)}
-                  autosize={true}
-                  defaultValue={text}
-                  onChange={e => {
-                    record.description = e.target.value;
-                  }}
-                  onBlur={() => updateDataSource()}
-                />
-              );
+              return <InputColumnRender
+                {...{
+                  cellDisabled,
+                  itemCode: 'description',
+                  handleNextIptFocus,
+                  record,
+                  updateDataSource,
+                }} />
             }
           },
           signRowObj({

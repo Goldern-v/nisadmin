@@ -33,13 +33,13 @@ export default function WardRegisterRouter() {
 
   const leftMenuConfig = [
     {
-      title: "物品交接登记本",
+      title: "药品、物品、器械交接登记本",
       path: "/wardRegister",
       component: { ...物品交接登记本 },
       icon: <WPJJ />,
       payload: {
         registerCode: "QCRG_01",
-        registerName: "物品交接登记本"
+        registerName: "药品、物品、器械交接登记本"
       }
     },
     {

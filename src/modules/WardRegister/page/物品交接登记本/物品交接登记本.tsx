@@ -42,6 +42,7 @@ import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from './../../components/FileUploadColumnRender'
 import DatePickerColumnRender from './../../components/DatePickerColumnRender'
+import InputColumnRender from './../../components/InputColumnRender'
 
 export interface Props {
   payload: any;
@@ -248,28 +249,16 @@ export default observer(function HandoverRegister(props: Props) {
           render: (text: string, record: any, index: number) => {
             if (record.editType && record.editType == 'new') {
               return <TdCell>
-                <AutoComplete
-                  disabled={cellDisabled(record)}
-                  dataSource={rangeConfigList.map(item => item.itemCode)}
-                  defaultValue={text}
-                  onChange={value => {
-                    record.range = value;
-                    record.modified = true;
+                <InputColumnRender
+                  {...{
+                    cellDisabled,
+                    options: rangeConfigList.map((item: any) => item.itemCode),
+                    record,
+                    itemCode: 'range',
+                    updateDataSource,
+                    handleNextIptFocus
                   }}
-                  onBlur={() => updateDataSource()}
-                >
-                  <TextArea
-                    data-key={'range'}
-                    onKeyUp={handleNextIptFocus}
-                    autosize
-                    style={{
-                      lineHeight: 1.2,
-                      overflow: "hidden",
-                      padding: "9px 2px",
-                      textAlign: "center"
-                    }}
-                  />
-                </AutoComplete>
+                />
               </TdCell>
             } else {
               return <span>{text}</span>
@@ -278,180 +267,76 @@ export default observer(function HandoverRegister(props: Props) {
         },
       ]
     }, registerCode),
-    ...itemConfigList.map((item: any) => {
-      if (item.checkSize) {
-        return {
-          title(text: string, record: any, index: number) {
-            return (
-              <ThBox>
-                <div className="title">
-                  <span className="title-text">{item.itemCode}</span>
-                </div>
-                <div className="aside">{item.checkSize}</div>
-              </ThBox>
-            );
-          },
-          align: "center",
-          dataIndex: item.itemCode,
-          width: (15 * item.width || 50) + 8,
-          className: "input-cell input-cell-custom",
-          render(text: string, record: any, index: number) {
+    ...itemConfigList.map((item: any) => ({
+      title(text: string, record: any, index: number) {
+        return (
+          <ThBox>
+            <div className="title">
+              <span className="title-text">{item.itemCode}</span>
+            </div>
+            {item.checkSize && <div className="aside">{item.checkSize}</div>}
+          </ThBox>
+        );
+      },
+      align: "center",
+      dataIndex: item.itemCode,
+      width: (15 * item.width || 50) + 8,
+      className: "input-cell input-cell-custom",
+      render(text: string, record: any, index: number) {
+        let className = ''
+        if (item.checkSize) className = text != item.checkSize && text != "√"
+          ? "checkSize-warning"
+          : ""
 
-            //处理时间选择类型
-            let target = dateItemArr.find((dateItem: any) => dateItem.itemCode == item.itemCode)
+        //处理时间选择类型
+        let target = dateItemArr.find((dateItem: any) => dateItem.itemCode == item.itemCode)
 
-            if (target)
-              return <DatePickerColumnRender
-                {...{
-                  className: '',
-                  cellDisabled,
-                  record,
-                  itemCfg: item,
-                  index,
-                  format: target.format || '',
-                  showTime: target.showTime || false,
-                  handleNextIptFocus,
-                  updateDataSource,
-                  registerCode
-                }}
-              />
+        if (target)
+          return <DatePickerColumnRender
+            {...{
+              className: '',
+              cellDisabled,
+              record,
+              itemCfg: item,
+              index,
+              format: target.format || '',
+              showTime: target.showTime || false,
+              handleNextIptFocus,
+              updateDataSource,
+              registerCode
+            }}
+          />
 
-            //处理上传附件类型
-            if (item.itemType == "attachment")
-              return <FileUploadColumnRender
-                {...{
-                  record,
-                  itemCfg: item,
-                  index,
-                  cellDisabled,
-                  handleUpload,
-                  handlePreview,
-                  updateDataSource
-                }} />
+        //处理上传附件类型
+        if (item.itemType == "attachment")
+          return <FileUploadColumnRender
+            {...{
+              record,
+              itemCfg: item,
+              index,
+              cellDisabled,
+              handleUpload,
+              handlePreview,
+              updateDataSource
+            }} />
 
-            return (
-              <TdCell>
-                <AutoComplete
-                  className={
-                    text != item.checkSize && text != "√"
-                      ? "checkSize-warning"
-                      : ""
-                  }
-                  disabled={cellDisabled(record)}
-                  dataSource={(item.options || "")
-                    .split(";")
-                    .filter((item: any) => item)}
-                  defaultValue={text}
-                  onChange={value => {
-                    record[item.itemCode] = value;
-                    record.modified = true;
-                  }}
-                  onBlur={() => updateDataSource()}
-                  onSelect={() => updateDataSource()}
-                >
-                  <TextArea
-                    data-key={item.itemCode}
-                    onKeyUp={handleNextIptFocus}
-                    autosize
-                    style={{
-                      lineHeight: 1.2,
-                      overflow: "hidden",
-                      padding: "9px 2px",
-                      textAlign: "center"
-                    }}
-                  />
-                </AutoComplete>
-              </TdCell>
-            );
-          }
-        };
-      } else {
-        return {
-          title(text: string, record: any, index: number) {
-            return (
-              <ThBox>
-                <div className="title">
-                  <span className="title-text">{item.itemCode}</span>
-                </div>
-              </ThBox>
-            );
-          },
-          align: "center",
-          className: "input-cell input-cell-custom",
-          width: (15 * item.width || 50) + 8,
-          dataIndex: item.itemCode,
-          render(text: string, record: any, index: number) {
-            //处理时间选择类型
-            let target = dateItemArr.find((dateItem: any) => dateItem.itemCode == item.itemCode)
-
-            if (target)
-              return <DatePickerColumnRender
-                {...{
-                  className: '',
-                  cellDisabled,
-                  record,
-                  itemCfg: item,
-                  index,
-                  format: target.format || '',
-                  showTime: target.showTime || false,
-                  handleNextIptFocus,
-                  updateDataSource,
-                  registerCode
-                }}
-              />
-            //处理上传附件类型
-            if (item.itemType == "attachment")
-              return <FileUploadColumnRender
-                {...{
-                  record,
-                  itemCfg: item,
-                  index,
-                  cellDisabled,
-                  handleUpload,
-                  handlePreview,
-                  updateDataSource
-                }} />
-
-            return (
-              <TdCell>
-                <AutoComplete
-                  disabled={cellDisabled(record)}
-                  dataSource={item.options ? item.options.split(";") : []}
-                  defaultValue={text}
-                  onChange={value => {
-                    record[item.itemCode] = value;
-                    record.modified = true;
-                  }}
-                  onFocus={() => fixInputValue(record, codeAdapter({
-                    QCRG_11: ['合计时间（小时）'],
-                    other: []
-                  }, registerCode), index, 100)}
-                  onBlur={() => {
-                    updateDataSource()
-                    fixInputValue(record, codeAdapter({
-                      QCRG_11: ['合计时间（小时）'],
-                      other: []
-                    }, registerCode), index, 100)
-                  }}
-                >
-                  <TextArea
-                    data-key={item.itemCode}
-                    onKeyUp={handleNextIptFocus}
-                    autosize
-                    style={{
-                      lineHeight: 1.2,
-                      overflow: "hidden",
-                      padding: "9px 2px",
-                      textAlign: "center"
-                    }}
-                  />
-                </AutoComplete>
-              </TdCell>
-            );
-          }
-        };
+        return (
+          <TdCell>
+            <InputColumnRender
+              {...{
+                cellDisabled,
+                itemCode: item.itemCode,
+                handleNextIptFocus,
+                record,
+                updateDataSource,
+                options: (item.options || "")
+                  .split(";")
+                  .filter((item: any) => item)
+              }} />
+          </TdCell>
+        );
       }
-    }),
+    })),
 
     {
       title: "备注",
@@ -459,19 +344,14 @@ export default observer(function HandoverRegister(props: Props) {
       dataIndex: "description",
       className: "input-cell input-cell-description",
       render(text: string, record: any, index: number) {
-        return (
-          <Input.TextArea
-            disabled={cellDisabled(record)}
-            autosize={{ minRows: 1 }}
-            onKeyUp={handleNextIptFocus}
-            defaultValue={text}
-            onChange={e => {
-              record.modified = true
-              record.description = e.target.value.replace(/\n/g, '');
-            }}
-            onBlur={() => updateDataSource()}
-          />
-        );
+        return <InputColumnRender
+          {...{
+            cellDisabled,
+            itemCode: 'description',
+            handleNextIptFocus,
+            record,
+            updateDataSource,
+          }} />
       }
     },
     ...codeAdapter({
