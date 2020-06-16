@@ -481,12 +481,16 @@ class FormApplyModal {
 
   // 电子签名
   signUrl(empNo: any) {
-    let appToken = appStore.getAppToken();
-    let authToken = authStore.getAuthToken();
-    let token = `App-Token-Nursing=${appToken}&Auth-Token-Nursing=${authToken}`;
-    return `/crNursing/api/file/signImage/${empNo}?${decodeURIComponent(
-      token || ""
-    )}`;
+    if (empNo) {
+      let appToken = appStore.getAppToken();
+      let authToken = authStore.getAuthToken();
+      let token = `App-Token-Nursing=${appToken}&Auth-Token-Nursing=${authToken}`;
+      return `/crNursing/api/file/signImage/${empNo}?${decodeURIComponent(
+        token || ""
+      )}`;
+    } else {
+      return "";
+    }
   }
 
   init() {

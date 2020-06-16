@@ -189,7 +189,7 @@ export default observer(function LCDJ(props: Props) {
             <td colSpan={2}>科室意见</td>
             <td colSpan={6}>
               <div className="vailgnTop godie">
-                <Input.TextArea disabled value={lCDJContent.f00021} />
+                <Input.TextArea disabled value={lCDJContent.f00025} />
               </div>
               <div className="vailgnBottom">
                 <SpanMiddle className="specialInput">
