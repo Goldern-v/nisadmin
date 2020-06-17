@@ -1,4 +1,3 @@
-import { useRef } from "src/types/react";
 import { cloneJson } from "src/utils/json/clone";
 import { observable, computed } from "mobx";
 import { appStore, authStore } from "src/stores";
@@ -380,7 +379,7 @@ type DefaultTSGW = typeof defaultTSGW;
 type DefaultYNJX = typeof defaultYNJX;
 
 class FormApplyModal {
-  @observable public printRef: any = useRef(null);
+  @observable public printRef: any = null;
   @observable public getTitle = ""; //表单名称
   @observable public getFormCode = ""; //表单code值
   @observable public keyWord = ""; //关键字

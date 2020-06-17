@@ -13,7 +13,9 @@ import CJJS from "./allForm/CJJS"; //护理人员岗位层级晋升申请表
 import GFXZL from "./allForm/GFXZL"; //高风险诊疗技术操作人员资质申请表
 import YNJX from "./allForm/YNJX"; //护理人员岗位院内进修备案简表
 
-interface Props {}
+interface Props {
+  printRef?: any;
+}
 
 export default observer(function FormApply(props: Props) {
   let name = appStore.queryObj.name ? appStore.queryObj.name : "";
@@ -66,13 +68,9 @@ export default observer(function FormApply(props: Props) {
 
   return (
     <Wrapper>
-      <div ref={formApplyModal.printRef}>
+      <div ref={props.printRef}>
         <Hospital>东莞市厚街医院</Hospital>
-        {name ? (
-          <Title>{name}</Title>
-        ) : (
-          <Title>{formApplyModal.getTitle}</Title>
-        )}
+        <Title>{name ? name : formApplyModal.getTitle}</Title>
         <FromContent>
           {code
             ? formList.find((item: any) => item.name === code).component

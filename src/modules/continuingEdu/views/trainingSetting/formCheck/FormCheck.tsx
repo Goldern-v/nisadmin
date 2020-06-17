@@ -9,16 +9,37 @@ import { appStore } from "src/stores";
 import { Spin } from "antd";
 import { formApplyModal } from "../formApply/FormApplyModal"; // 仓库数据
 import { observer } from "mobx-react-lite";
+import { useRef } from "src/types/react";
+import printing from "printing";
 
 export default observer(function FormCheck() {
   const [detailData, setDetailData]: any = useState([]);
   const [loading, setLoading] = useState(false);
   let formId = appStore.queryObj.formId;
+  const printRef: any = useRef(null);
+
   const onload = () => {
     setLoading(true);
     trainingSettingApi.getFlowTaskHisByCetpId(formId).then(res => {
       setDetailData(res.data);
       setLoading(false);
+    });
+  };
+
+  // 打印表单
+  const onPrint = () => {
+    printing(printRef.current, {
+      scanStyles: false,
+      injectGlobalCss: true,
+      css: `
+           @page {
+             margin: 10mm;
+           }
+           #wardLogPrintPage {
+             margin: 0;
+             border: 0;
+           }
+        `
     });
   };
 
@@ -30,7 +51,7 @@ export default observer(function FormCheck() {
     <Wrapper>
       {!appStore.queryObj.haveHeader && (
         <HeaderCon>
-          <Header detailData={detailData} onload={onload} />
+          <Header detailData={detailData} onload={onload} onPrint={onPrint} />
         </HeaderCon>
       )}
       <MidCon
@@ -52,7 +73,7 @@ export default observer(function FormCheck() {
             )}
           </SpinCon>
           <MidLeftCon>
-            <FormCommon />
+            <FormCommon printRef={printRef} />
           </MidLeftCon>
           <MidRightCon>
             <Right detailData={detailData} />
