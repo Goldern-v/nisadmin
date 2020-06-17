@@ -413,8 +413,19 @@ export function getFun(context: any) {
   }
 
   /**护士长批量签名 */
-  const handleAuditAll = (aside?: string,) => {
+  const handleAuditAll = (aside?: string, type?: 'audit' | 'sign') => {
+    //处理签名类型 默认 审核audit
+    const _type = type || 'audit'
+    let req =
+      wardRegisterService.auditAll
+        .bind(wardRegisterService)
+    if (_type == 'sign') req =
+      wardRegisterService.signAll
+        .bind(wardRegisterService)
+
+    //签名的名称
     aside = aside || '护士长'
+
     if (selectedRowKeys.length <= 0) {
       message.warn('未勾选项目')
       return
@@ -423,17 +434,47 @@ export function getFun(context: any) {
     let selectedRows = dataSource
       .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
 
-    let auditItems = selectedRows.filter((item: any) => item.auditorName)
-    let noSignItems = selectedRows.filter((item: any) => !item.signerName)
-    if (auditItems || noSignItems) {
-      let textArr = [] as string[]
-      if (noSignItems.length > 0) {
-        let idxArr = noSignItems.map((item: any) => dataSource.indexOf(item) + 1)
-        textArr.push(`第${idxArr.join('、')}条未签名`)
+    //audit类型需要排除未签名和已审核的条目
+    if (_type == 'audit') {
+      let auditItems = selectedRows.filter((item: any) => item.auditorName)
+      let noSignItems = selectedRows.filter((item: any) => !item.signerName)
+
+      if (auditItems.length > 0 || noSignItems.length > 0) {
+        let textArr = [] as string[]
+        if (noSignItems.length > 0) {
+          let idxArr = noSignItems.map((item: any) => dataSource.indexOf(item) + 1)
+          textArr.push(`第${idxArr.join('、')}条未签名`)
+        }
+        if (auditItems.length > 0) {
+          let idxArr = auditItems.map((item: any) => dataSource.indexOf(item) + 1)
+          textArr.push(`第${idxArr.join('、')}条${aside}已签名`)
+        }
+
+        Modal.warn({
+          centered: true,
+          title: '提示',
+          content: textArr.join(',')
+        })
+        return
       }
-      if (auditItems.length > 0) {
-        let idxArr = auditItems.map((item: any) => dataSource.indexOf(item) + 1)
-        textArr.push(`第${idxArr.join('、')}条${aside}已签名`)
+    }
+
+    //sign类型需要排除未保存和已签名条目
+    if (_type == 'sign') {
+      let signItems = selectedRows.filter((item: any) => item.signerName)
+      let noIdItems = selectedRows.filter((item: any) => !item.id)
+
+      if (signItems.length > 0 || noIdItems.length > 0) {
+        let textArr = [] as string[]
+        if (noIdItems.length > 0) {
+          let idxArr = noIdItems.map((item: any) => dataSource.indexOf(item) + 1)
+          textArr.push(`第${idxArr.join('、')}条未保存`)
+        }
+
+        if (signItems.length > 0) {
+          let idxArr = signItems.map((item: any) => dataSource.indexOf(item) + 1)
+          textArr.push(`第${idxArr.join('、')}条已签名`)
+        }
 
         Modal.warn({
           centered: true,
@@ -451,7 +492,7 @@ export function getFun(context: any) {
       .confirm(`${aside}批量签名确认`, `你确定${aside}签名吗？`)
       .then((res) => {
         setPageLoading(true)
-        wardRegisterService.auditAll(registerCode, ids)
+        req(registerCode, ids)
           .then((res) => {
             message.success('签名成功')
             if (res.data && res.data.list) {

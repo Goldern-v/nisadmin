@@ -43,7 +43,11 @@ export function signRowObj(obj: {
       }
 
       //新建行无法签名
-      if (!record.id) return '签名'
+      if (!record.id) return <span
+        title="保存后可签名"
+        style={{ color: '#999', cursor: 'not-allowed' }}>
+        签名
+      </span>
 
       return text ? (
         <div

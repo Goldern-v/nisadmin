@@ -1090,7 +1090,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               loading={pageLoading}
               dataSource={dataSource}
               rowSelection={codeAdapter({
-                'QCRG_14_1,QCRG_10,QCRG_14_2': {
+                'QCRG_14_1,QCRG_10,QCRG_14_2,QCRG_03': {
                   selectedRowKeys,
                   onChange: handleSelectedChange,
                 },
@@ -1128,7 +1128,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
                     onClick={() => handleCopyCreateRow()}>
                     复制新增
                   </Button>,
-                'QCRG_14_1,QCRG_10':
+                'QCRG_14_1,QCRG_10,QCRG_03':
                   <React.Fragment>
                     <Button
                       disabled={
@@ -1137,7 +1137,13 @@ export default observer(function 重点患者评估登记本(props: Props) {
                         selectedRowKeys.length <= 0
                       }
                       type="primary"
-                      onClick={() => handleAuditAll('护士长')}>
+                      onClick={() => handleAuditAll(
+                        '护士长',
+                        codeAdapter({
+                          QCRG_03: 'sign',
+                          other: 'audit'
+                        }, registerCode)
+                      )}>
                       护士长签名
                     </Button>
                     <Button
