@@ -26,7 +26,7 @@ import 物品交接登记本 from "./page/物品交接登记本/物品交接登�
 import 重点患者评估登记本 from "./page/重点患者评估登记本/重点患者评估登记本";
 import 紫外线空气消毒登记本 from "./page/紫外线空气消毒登记本/紫外线空气消毒登记本";
 import 消毒隔离工作登记本 from "./page/消毒隔离工作登记本/消毒隔离工作登记本";
-import 基础模板登记本 from './page/基础模板登记本/基础模板登记本'
+// import 基础模板登记本 from './page/基础模板登记本/基础模板登记本'
 export interface Props { }
 
 export default function WardRegisterRouter() {
@@ -88,7 +88,6 @@ export default function WardRegisterRouter() {
       title: "紫外线空气消毒登记本",
       path: "/wardRegister/QCRG_06",
       component: { ...紫外线空气消毒登记本 },
-      hide: !appStore.isDev,
       icon: <ZWXKQ />,
       payload: {
         registerCode: "QCRG_06",
@@ -120,7 +119,6 @@ export default function WardRegisterRouter() {
       title: "备用药品管理登记本",
       path: "/wardRegister/QCRG_10",
       component: { ...重点患者评估登记本 },
-      hide: !appStore.isDev,
       icon: <BYYP />,
       payload: {
         registerCode: "QCRG_10",
