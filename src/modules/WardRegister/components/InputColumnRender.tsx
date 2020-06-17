@@ -47,9 +47,11 @@ export default function InputColumnRender(porps: Props) {
     }}
 
     onBlur={() => {
-      record.modified = true
-      record[itemCode] = editValue;
-      updateDataSource()
+      if (record[itemCode] !== editValue) {
+        record.modified = true
+        record[itemCode] = editValue;
+        updateDataSource()
+      }
       onBlur && onBlur(editValue)
     }}
     onSelect={onSelect || undefined}
