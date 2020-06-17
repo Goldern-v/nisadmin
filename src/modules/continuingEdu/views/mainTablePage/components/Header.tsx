@@ -74,12 +74,9 @@ export default observer(function Header(props: Props) {
           <Select.Option value="1">草稿</Select.Option>
           <Select.Option value="2">待审核</Select.Option>
           <Select.Option value="3">退回</Select.Option>
-          <Select.Option value="4">发布</Select.Option>
-          <Select.Option value="5">归档</Select.Option>
-
-          {/* <Select.Option value="41">待开始</Select.Option>
+          <Select.Option value="41">待开始</Select.Option>
           <Select.Option value="42">进行中</Select.Option>
-          <Select.Option value="43">已结束</Select.Option> */}
+          <Select.Option value="43">已结束</Select.Option>
         </Select>
       </LeftIcon>
       <RightIcon>
