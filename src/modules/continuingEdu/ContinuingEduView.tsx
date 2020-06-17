@@ -65,7 +65,7 @@ export default function ContinuingEdu(props: Props) {
     },
     ...dataList,
     {
-      title: "培训设置管理",
+      title: "培训设置管理1",
       path: "/continuingEdu",
       icon: <JXJH />,
       hide: appStore.HOSPITAL_ID != "hj",
