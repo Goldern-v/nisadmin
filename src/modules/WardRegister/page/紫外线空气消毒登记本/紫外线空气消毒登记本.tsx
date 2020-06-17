@@ -225,7 +225,7 @@ export default observer(function 紫外线空气消毒登记本(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <DoCon>
-            {record.signerName ? (
+            {cellDisabled(record) ? (
               <aside style={{ color: "#aaa" }}>删除</aside>
             ) : (
                 <span
