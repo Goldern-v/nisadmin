@@ -57,7 +57,7 @@ export default function InputColumnRender(porps: Props) {
     onSelect={onSelect || undefined}
   >
     <TextArea
-      autosize={{ maxRows: 1 }}
+      autosize={{ minRows: 1 }}
       data-key={itemCode}
       onKeyUp={handleNextIptFocus}
       style={{
