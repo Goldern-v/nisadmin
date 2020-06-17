@@ -175,7 +175,7 @@ export default observer(function Step1() {
                   : ""}
               </span>
             </div>
-            <div className="date-row">
+            {/* <div className="date-row">
               <span className="date-label">培训结束</span>
               <Form.Field label={``} name="daysToArchive" labelWidth={1}>
                 <InputNumber min={2} />
@@ -184,7 +184,7 @@ export default observer(function Step1() {
                 天后进行归档{" "}
                 {stepViewModal.overTime ? `即：${stepViewModal.overTime}` : ""}
               </span>
-            </div>
+            </div> */}
           </DateSelectCon>
 
           <Col span={24}>

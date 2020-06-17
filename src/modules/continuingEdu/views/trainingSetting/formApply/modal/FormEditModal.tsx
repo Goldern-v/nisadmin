@@ -35,10 +35,9 @@ export default function FormEditModal(props: Props) {
             formApplyModal.allData(res.data, formApplyModal.getFormCode);
             // for (let key in obj) {
             //   if (formApplyModal.getFormCode === obj[key]) {
-            //     formApplyModal[key] = res.data;
+            //     formApplyModal[key as string] = res.data;
             //   }
             // }
-            // formApplyModal.initData(res.data);
           });
         } else {
           // 清空表单数据
@@ -93,7 +92,8 @@ export default function FormEditModal(props: Props) {
 
   return (
     <Modal
-      width={860}
+      width={900}
+      bodyStyle={{ background: "#ccc" }}
       visible={visible}
       onCancel={handleCancel}
       onOk={checkForm}

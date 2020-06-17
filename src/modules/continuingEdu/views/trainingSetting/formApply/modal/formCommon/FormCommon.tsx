@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import { appStore } from "src/stores";
 import { formApplyModal } from "../../FormApplyModal";
 import { trainingSettingApi } from "../../../api/TrainingSettingApi";
-
 import LCDJ from "./allForm/LCDJ"; //护理临床带教资质准入申请表
 import RYZY from "./allForm/RYZY"; //护师人员执业/夜班准入资格申请表
 import TSGW from "./allForm/TSGW"; //特殊护理岗位资质准入申请表
