@@ -67,28 +67,25 @@ export default observer(function FormApply(props: Props) {
   }, []);
 
   return (
-    <Wrapper>
-      <div ref={props.printRef}>
-        <Hospital>东莞市厚街医院</Hospital>
-        <Title>{name ? name : formApplyModal.getTitle}</Title>
-        <FromContent>
-          {code
-            ? formList.find((item: any) => item.name === code).component
-            : formList.find(
-                (item: any) => item.name === formApplyModal.getFormCode
-              ).component}
-        </FromContent>
-      </div>
+    <Wrapper ref={props.printRef} id="wardLogPrintPage">
+      <Hospital>东莞市厚街医院</Hospital>
+      <Title>{name ? name : formApplyModal.getTitle}</Title>
+      <FromContent>
+        {code
+          ? formList.find((item: any) => item.name === code).component
+          : formList.find(
+              (item: any) => item.name === formApplyModal.getFormCode
+            ).component}
+      </FromContent>
     </Wrapper>
   );
 });
 const Wrapper = styled.div`
   margin: 0 auto;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px;
   background: rgb(255, 255, 255);
   padding: 15px 40px 30px 40px;
-  width: 740px;
-  height: 1047px;
+  width: 760px;
+  min-height: 740px;
   box-sizing: border-box;
 `;
 const Hospital = styled.div`

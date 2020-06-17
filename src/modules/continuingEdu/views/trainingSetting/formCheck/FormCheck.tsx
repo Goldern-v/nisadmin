@@ -49,19 +49,10 @@ export default observer(function FormCheck() {
 
   return (
     <Wrapper>
-      {!appStore.queryObj.haveHeader && (
-        <HeaderCon>
-          <Header detailData={detailData} onload={onload} onPrint={onPrint} />
-        </HeaderCon>
-      )}
-      <MidCon
-        className={
-          appStore.queryObj.haveHeader &&
-          appStore.queryObj.haveHeader == "false"
-            ? "isok"
-            : ""
-        }
-      >
+      <HeaderCon>
+        <Header detailData={detailData} onload={onload} onPrint={onPrint} />
+      </HeaderCon>
+      <MidCon>
         <MidConScrollCon>
           <SpinCon>
             {loading ? (

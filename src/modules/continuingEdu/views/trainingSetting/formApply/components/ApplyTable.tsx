@@ -157,7 +157,7 @@ export default observer(function ApplyTable(props: Props) {
               Message.success("文件删除成功");
               formApplyModal.onload();
             } else {
-              Message.error("文件删除失败");
+              Message.error(`${res.dec}`);
             }
           })
           .catch(e => {});
@@ -200,7 +200,9 @@ export default observer(function ApplyTable(props: Props) {
   const checkResult = (record: any) => {
     let newQuery = {
       formId: record.formId,
-      haveHeader: false
+      haveHeader: false,
+      title: formApplyModal.getTitle,
+      statusName: record.statusName
     } as any;
     appStore.history.push(`/continuingEduFormCheck?${qs.stringify(newQuery)}`);
   };

@@ -13,6 +13,8 @@ interface Props {
 
 export default observer(function Header(props: Props) {
   let nodeName = props.detailData.statusDesc || "";
+  let title = appStore.queryObj.title || "";
+  let statusName = appStore.queryObj.statusName || "";
   const [editVisible, setEditVisible] = useState(false); // 弹窗状态
   const [params, setParams] = useState({}); //弹窗传参
 
@@ -57,15 +59,17 @@ export default observer(function Header(props: Props) {
               name: "培训设置管理"
             },
             {
-              name: "资质准入审核",
-              link: "/continuingEdu/资质准入审核"
+              name: title ? title : "资质准入审核",
+              link: title
+                ? `/continuingEdu/${title}`
+                : "/continuingEdu/资质准入审核"
             }
           ]}
         />
         <div className="topHeaderTitle">
-          <div className="title">资质准入审核</div>
+          <div className="title">{title ? title : "资质准入审核"}</div>
           <div className="topHeaderButton">
-            {nextNode.taskTitle && !appStore.queryObj.checkResult && (
+            {nextNode.taskTitle && !appStore.queryObj.checkResult && !title && (
               <Button onClick={() => onRole(nextNode.taskTitle)} type="primary">
                 {nextNode.taskTitle}
               </Button>
@@ -83,7 +87,9 @@ export default observer(function Header(props: Props) {
         </div>
         <div className="topHeaderStatus">
           状态：
-          <span style={{ color: "#6767ff" }}>{nodeName}</span>
+          <span style={{ color: "#6767ff" }}>
+            {statusName ? statusName : nodeName}
+          </span>
         </div>
       </TopHeader>
       <CheckModal
