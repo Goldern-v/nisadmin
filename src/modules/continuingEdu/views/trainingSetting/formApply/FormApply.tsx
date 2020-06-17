@@ -12,9 +12,11 @@ interface Props {
 
 export default observer(function FormApply(props: Props) {
   useLayoutEffect(() => {
-    formApplyModal.getTitle = props.getTitle;
-    formApplyModal.getFormCode = props.getFormCode;
-    formApplyModal.init();
+    if (formApplyModal && Object.keys(formApplyModal).length > 0) {
+      formApplyModal.getTitle = props.getTitle;
+      formApplyModal.getFormCode = props.getFormCode;
+      formApplyModal.init();
+    }
   }, [props.getTitle]);
 
   return (

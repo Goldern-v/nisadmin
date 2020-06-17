@@ -496,7 +496,7 @@ class FormApplyModal {
   init() {
     this.onload();
     this.initData();
-    this.getForm();
+    // this.getForm();
   }
 }
 
