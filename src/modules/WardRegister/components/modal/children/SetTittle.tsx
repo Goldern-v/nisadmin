@@ -64,6 +64,10 @@ export default observer(function SetTittle(props: Props) {
       other: {}
     }, registerCode)
 
+  const trimStringArr = (arr: any[]) => {
+    return arr.map((str: string) => str.trim()).filter((str: string) => str)
+  }
+
 
   const baseNumCol: ColumnProps<any> = {
     title: "基数",
@@ -196,7 +200,7 @@ export default observer(function SetTittle(props: Props) {
                 if (newVal.indexOf(formatVal[i]) < 0) newVal.push(formatVal[i])
               }
 
-              record.options = newVal.join(";");
+              record.options = trimStringArr(newVal).join(";")
 
               updateDataSource();
             }}
@@ -252,7 +256,7 @@ export default observer(function SetTittle(props: Props) {
                 }
 
                 if (canSubmint) {
-                  record.options = value.join(";");
+                  record.options = trimStringArr(value).join(";");
                   updateDataSource()
                 }
               }}
@@ -284,7 +288,7 @@ export default observer(function SetTittle(props: Props) {
                 }
 
                 if (canSubmint) {
-                  record.options = value.join(";");
+                  record.options = trimStringArr(value).join(";")
                   updateDataSource()
                 }
               }}

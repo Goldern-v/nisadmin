@@ -65,7 +65,7 @@ export default observer(function SetRange(props: Props) {
             mode="tags"
             style={{ width: "100%" }}
             onChange={(value: any) => {
-              record.vsRange = value.join(";");
+              record.vsRange = value.map((str: string) => str.trim()).filter((str: string) => str).join(";");
               updateDataSource();
             }}
             value={text ? text.split(";") : []}
